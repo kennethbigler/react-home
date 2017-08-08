@@ -204,6 +204,19 @@ export default [
     subtitle: "Extracurriculars",
     years: [
       {
+        year: "Hackathons",
+        quarters: [
+          {
+            quarter: "Accenture Hackathon Games",
+            classes: [
+              "Date: Oct. 18-19, 2014",
+              "Prizes: Best Use of the PubNub API, Best Use of the Amazon Store API",
+              "Project: “feedbat”, an image-sharing web application for mobile devices to get anonymous feedback on various images (likes / dislikes / comments)"
+            ]
+          }
+        ]
+      },
+      {
         year: "Honors Societies",
         quarters: [
           {
@@ -262,12 +275,12 @@ export default [
             quarter: "",
             classes: [
               "Cars",
-              "Programming",
-              "International Travel",
-              "Salsa Dancing",
-              "Video Games (DOTA 2)",
+              "Piano",
               "Hiking",
-              "Piano"
+              "Programming",
+              "Salsa Dancing",
+              "International Travel",
+              "Video Games (DOTA 2)"
             ]
           }
         ]

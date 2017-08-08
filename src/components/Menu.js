@@ -8,7 +8,9 @@ const Menu = props => {
     <div>
       <MenuItem onTouchTap={() => props.onClick("/")}>Home</MenuItem>
       <MenuItem onTouchTap={() => props.onClick("/work")}>Work</MenuItem>
-      <MenuItem onTouchTap={() => props.onClick("/classes")}>Classes</MenuItem>
+      <MenuItem onTouchTap={() => props.onClick("/education")}>
+        Education
+      </MenuItem>
       <MenuItem onTouchTap={() => props.onClick("/projects")}>
         Projects
       </MenuItem>

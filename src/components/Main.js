@@ -1,9 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Work from "./pages/Work";
-import Classes from "./pages/Classes";
+import Education from "./pages/Education";
 import Projects from "./pages/Projects";
+import classes from "../constants/classes";
+import workExp from "../constants/work";
 
 const styles = {
   page: {
@@ -11,20 +13,56 @@ const styles = {
   }
 };
 
-const Main = () => {
-  return (
-    <div>
-      <main style={styles.page}>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/home" component={Home} />
-          <Route path="/work" component={Work} />
-          <Route path="/classes" component={Classes} />
-          <Route path="/projects" component={Projects} />
-        </Switch>
-      </main>
-    </div>
-  );
-};
+class Main extends Component {
+  constructor(props) {
+    super(props);
+    // set expanded state for each class
+    let expanded = {};
+    classes.forEach(degree => {
+      expanded[degree.degree] = true;
+    });
+    workExp.forEach(job => {
+      expanded[job.company] = true;
+    });
+    this.state = { expanded };
+  }
+
+  // toggle expanded state
+  handleExpandChange = (key, exp) => {
+    let expanded = this.state.expanded;
+    expanded[key] = exp;
+    this.setState({ expanded });
+  };
+
+  render() {
+    const education = (
+      <Education
+        onClick={this.handleExpandChange}
+        classes={classes}
+        expanded={this.state.expanded}
+      />
+    );
+    const work = (
+      <Work
+        onClick={this.handleExpandChange}
+        workExp={workExp}
+        expanded={this.state.expanded}
+      />
+    );
+    return (
+      <div>
+        <main style={styles.page}>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/home" component={Home} />
+            <Route path="/work" render={() => work} />
+            <Route path="/education" render={() => education} />
+            <Route path="/projects" component={Projects} />
+          </Switch>
+        </main>
+      </div>
+    );
+  }
+}
 
 export default Main;

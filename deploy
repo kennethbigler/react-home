@@ -1,5 +1,6 @@
 #!/bin/bash
 
 rm index.html
-cp -r build/index.html .
+cp -r build/index.html ./
+rm -rf ./static
 mv build/* ./
