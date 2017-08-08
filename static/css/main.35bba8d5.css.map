@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AAAA,KACE,SACA,SAAW,CAIb,2BAHE,6BAAkC","file":"static/css/main.35bba8d5.css","sourcesContent":["body {\n  margin: 0;\n  padding: 0;\n  font-family: 'Roboto', sans-serif;\n}\n\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\np,\na {\n  font-family: 'Roboto', sans-serif;\n}\n\n\n\n// WEBPACK FOOTER //\n// ./src/index.css"],"sourceRoot":""}

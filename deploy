@@ -2,4 +2,4 @@
 
 rm index.html
 cp -r build/index.html .
-mv build .
+mv build/* ./
