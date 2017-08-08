@@ -2,7 +2,6 @@
   "name": "react-home",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://kennethbigler.github.io/react-home",
   "dependencies": {
     "material-ui": "^0.18.7",
     "material-ui-icons": "^1.0.0-alpha.19",
@@ -20,8 +19,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "kdeploy": "./deploy"
+    "deploy": "./deploy"
   }
 }
