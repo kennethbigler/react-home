@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Card, CardHeader, CardText } from "material-ui/Card";
+import { Card, CardTitle, CardText } from "material-ui/Card";
 
 const Education = props => {
   return (
@@ -13,7 +13,7 @@ const Education = props => {
             onExpandChange={expanded => props.onClick(degree.degree, expanded)}
             key={degree.degree}
           >
-            <CardHeader
+            <CardTitle
               title={
                 degree.degree + (degree.major ? " in " + degree.major : "")
               }

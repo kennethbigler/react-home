@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Card, CardHeader, CardText } from "material-ui/Card";
+import { Card, CardTitle, CardText } from "material-ui/Card";
 
 const styles = {
   corpLogo: {
@@ -20,7 +20,7 @@ const Work = props => {
             onExpandChange={expanded => props.onClick(job.company, expanded)}
             key={job.company}
           >
-            <CardHeader
+            <CardTitle
               title={job.company + ", " + job.location}
               //avatar={job.src}
               subtitle={job.title}
