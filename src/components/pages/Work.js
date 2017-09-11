@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Card, CardTitle, CardText } from "material-ui/Card";
 
@@ -60,7 +60,7 @@ const Work = props => {
 
 Work.propTypes = {
   onClick: PropTypes.func.isRequired,
-  classes: PropTypes.array.isRequired,
+  workExp: PropTypes.array.isRequired,
   expanded: PropTypes.object.isRequired
 };
 

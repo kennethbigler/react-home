@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Work from "./pages/Work";
 import Education from "./pages/Education";
 import Projects from "./pages/Projects";
+import DougScore from "./pages/DougScore";
 import classes from "../constants/classes";
 import workExp from "../constants/work";
 
@@ -58,6 +59,7 @@ class Main extends Component {
             <Route path="/work" render={() => work} />
             <Route path="/education" render={() => education} />
             <Route path="/projects" component={Projects} />
+            <Route path="/doug" component={DougScore} />
           </Switch>
         </main>
       </div>
