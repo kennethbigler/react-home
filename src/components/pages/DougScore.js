@@ -6,36 +6,12 @@ import "react-table/react-table.css";
 
 const DougScore = props => {
   const columns = [
-    {
-      Header: "Vehicle",
-      accessor: "model",
-      minWidth: 78
-    },
-    {
-      Header: "Styling",
-      accessor: "styling",
-      minWidth: 44
-    },
-    {
-      Header: "Acceleration",
-      accessor: "acceleration",
-      minWidth: 46
-    },
-    {
-      Header: "Handling",
-      accessor: "handling",
-      minWidth: 54
-    },
-    {
-      Header: "Cool Factor",
-      accessor: "coolFactor",
-      minWidth: 50
-    },
-    {
-      Header: "Importance",
-      accessor: "importance",
-      minWidth: 54
-    },
+    { Header: "Vehicle", accessor: "model", minWidth: 78 },
+    { Header: "Styling", accessor: "styling", minWidth: 44 },
+    { Header: "Acceleration", accessor: "acceleration", minWidth: 46 },
+    { Header: "Handling", accessor: "handling", minWidth: 54 },
+    { Header: "Cool Factor", accessor: "coolFactor", minWidth: 50 },
+    { Header: "Importance", accessor: "importance", minWidth: 54 },
     {
       id: "weekendScore",
       Header: "Weekend Score",
@@ -43,31 +19,11 @@ const DougScore = props => {
       accessor: s =>
         s.styling + s.acceleration + s.handling + s.coolFactor + s.importance
     },
-    {
-      Header: "Features",
-      accessor: "features",
-      minWidth: 48
-    },
-    {
-      Header: "Comfort",
-      accessor: "comfort",
-      minWidth: 56
-    },
-    {
-      Header: "Quality",
-      accessor: "quality",
-      minWidth: 50
-    },
-    {
-      Header: "Practical",
-      accessor: "practical",
-      minWidth: 50
-    },
-    {
-      Header: "Value",
-      accessor: "value",
-      minWidth: 40
-    },
+    { Header: "Features", accessor: "features", minWidth: 48 },
+    { Header: "Comfort", accessor: "comfort", minWidth: 56 },
+    { Header: "Quality", accessor: "quality", minWidth: 50 },
+    { Header: "Practical", accessor: "practical", minWidth: 50 },
+    { Header: "Value", accessor: "value", minWidth: 40 },
     {
       id: "dailyScore",
       Header: "Daily Score",
@@ -107,6 +63,8 @@ const DougScore = props => {
     right: 15
   };
 
+  const defaultSort = [{ id: "dougScore", desc: true }];
+
   return (
     <ReactTable
       className="-striped -highlight"
@@ -116,7 +74,7 @@ const DougScore = props => {
       columns={columns}
       resizable={false}
       style={styles}
-      defaultSortDesc
+      defaultSorted={defaultSort}
     />
   );
 };

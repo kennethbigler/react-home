@@ -614,6 +614,20 @@ export default [
     quality: 1,
     practical: 1,
     value: 4
+  },
+  {
+    make: "Lexus",
+    model: "Lexus LC 500",
+    styling: 8,
+    acceleration: 6,
+    handling: 6,
+    coolFactor: 7,
+    importance: 7,
+    features: 9,
+    comfort: 7,
+    quality: 10,
+    practical: 2,
+    value: 6
   }
 ];
 
