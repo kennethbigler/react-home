@@ -5,4 +5,4 @@ rm index.html
 cp -r build/index.html ./
 rm -rf ./static
 mv build/* ./
-echo -e "\n--------------------\n Success \n--------------------\n"
+echo -e "Success \n--------------------\n"
