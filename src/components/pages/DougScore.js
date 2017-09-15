@@ -74,6 +74,7 @@ const DougScore = props => {
       columns={columns}
       resizable={false}
       style={styles}
+      defaultSortDesc
       defaultSorted={defaultSort}
     />
   );
