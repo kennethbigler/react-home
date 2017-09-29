@@ -628,6 +628,76 @@ export default [
     quality: 10,
     practical: 2,
     value: 6
+  },
+  {
+    make: "Bentley",
+    model: "07 Azure",
+    styling: 6,
+    acceleration: 3,
+    handling: 5,
+    coolFactor: 7,
+    importance: 6,
+    features: 5,
+    comfort: 9,
+    quality: 7,
+    practical: 4,
+    value: 6
+  },
+  {
+    make: "Lamborghini",
+    model: "Countach",
+    styling: 9,
+    acceleration: 6,
+    handling: 6,
+    coolFactor: 10,
+    importance: 8,
+    features: 3,
+    comfort: 3,
+    quality: 4,
+    practical: 2,
+    value: 7
+  },
+  {
+    make: "Mercedes",
+    model: "2012 E63 Wagon",
+    styling: 6,
+    acceleration: 7,
+    handling: 6,
+    coolFactor: 7,
+    importance: 6,
+    features: 7,
+    comfort: 7,
+    quality: 7,
+    practical: 8,
+    value: 7
+  },
+  {
+    make: "Porsche",
+    model: "918 Spyder",
+    styling: 8,
+    acceleration: 10,
+    handling: 10,
+    coolFactor: 10,
+    importance: 10,
+    features: 7,
+    comfort: 3,
+    quality: 8,
+    practical: 1,
+    value: 6
+  },
+  {
+    make: "Range Rover",
+    model: "Evoque Conv",
+    styling: 3,
+    acceleration: 1,
+    handling: 4,
+    coolFactor: 3,
+    importance: 5,
+    features: 7,
+    comfort: 7,
+    quality: 6,
+    practical: 3,
+    value: 3
   }
 ];
 
