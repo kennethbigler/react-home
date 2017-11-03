@@ -7,10 +7,25 @@ import 'react-table/react-table.css';
 const PokerNight = () => {
   // names
   let columns = [{ Header: 'Player', accessor: 'name' }];
+  let totalErrorMargin = 0;
   // all scores
   Object.keys(PN[0].scores).forEach((k, i) => {
-    columns.push({ Header: `Night ${i + 1}`, accessor: `scores.${k}` });
+    // calculate error margin
+    let errorMargin = 0;
+    PN.forEach(player => (errorMargin += player.scores[k]));
+    totalErrorMargin += errorMargin;
+    // add the column to the table
+    columns.push({
+      Header: `Night ${i + 1}`,
+      accessor: `scores.${k}`,
+      Footer: (
+        <span>
+          <strong>Error Margin:</strong> {errorMargin}
+        </span>
+      )
+    });
   });
+
   // total score
   columns.push({
     id: 'total',
@@ -19,7 +34,12 @@ const PokerNight = () => {
       let ret = 0;
       Object.keys(s.scores).forEach(k => (ret += s.scores[k]));
       return ret;
-    }
+    },
+    Footer: (
+      <span>
+        <strong>Error Margin:</strong> {totalErrorMargin}
+      </span>
+    )
   });
 
   const styles = {
