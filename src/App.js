@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { HashRouter } from "react-router-dom";
-import Header from "./components/Header";
-import Main from "./components/Main";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-import * as colors from "material-ui/styles/colors";
+import React, { Component } from 'react';
+import { HashRouter } from 'react-router-dom';
+import Header from './components/Header';
+import Main from './components/Main';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import * as colors from 'material-ui/styles/colors';
 
 class App extends Component {
   render() {

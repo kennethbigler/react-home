@@ -1,7 +1,7 @@
 export default [
   {
-    make: "Porsche",
-    model: "Carrera GT",
+    make: 'Porsche',
+    model: 'Carrera GT',
     styling: 9,
     acceleration: 9,
     handling: 10,
@@ -14,8 +14,8 @@ export default [
     value: 8
   },
   {
-    make: "Ferrari",
-    model: "488 Spider",
+    make: 'Ferrari',
+    model: '488 Spider',
     styling: 9,
     acceleration: 9,
     handling: 9,
@@ -28,8 +28,8 @@ export default [
     value: 6
   },
   {
-    make: "Lamborghini",
-    model: "Huracan",
+    make: 'Lamborghini',
+    model: 'Huracan',
     styling: 8,
     acceleration: 10,
     handling: 10,
@@ -42,8 +42,8 @@ export default [
     value: 7
   },
   {
-    make: "Bentley",
-    model: "Bentayga",
+    make: 'Bentley',
+    model: 'Bentayga',
     styling: 5,
     acceleration: 8,
     handling: 6,
@@ -56,8 +56,8 @@ export default [
     value: 5
   },
   {
-    make: "Audi",
-    model: "2017 R8 V10 Plus",
+    make: 'Audi',
+    model: '2017 R8 V10 Plus',
     styling: 7,
     acceleration: 10,
     handling: 8,
@@ -70,8 +70,8 @@ export default [
     value: 7
   },
   {
-    make: "Tesla",
-    model: "Model X 90D",
+    make: 'Tesla',
+    model: 'Model X 90D',
     styling: 5,
     acceleration: 6,
     handling: 5,
@@ -84,8 +84,8 @@ export default [
     value: 7
   },
   {
-    make: "Ford",
-    model: "2005 Ford GT",
+    make: 'Ford',
+    model: '2005 Ford GT',
     styling: 10,
     acceleration: 8,
     handling: 9,
@@ -98,8 +98,8 @@ export default [
     value: 8
   },
   {
-    make: "Rolls Royce",
-    model: "Wraith",
+    make: 'Rolls Royce',
+    model: 'Wraith',
     styling: 6,
     acceleration: 7,
     handling: 6,
@@ -112,8 +112,8 @@ export default [
     value: 4
   },
   {
-    make: "Ford",
-    model: "2017 Raptor",
+    make: 'Ford',
+    model: '2017 Raptor',
     styling: 7,
     acceleration: 5,
     handling: 4,
@@ -126,8 +126,8 @@ export default [
     value: 8
   },
   {
-    make: "Ferrari",
-    model: "GTC4Lusso",
+    make: 'Ferrari',
+    model: 'GTC4Lusso',
     styling: 5,
     acceleration: 9,
     handling: 7,
@@ -140,8 +140,8 @@ export default [
     value: 4
   },
   {
-    make: "Audi",
-    model: "2014 Audi R8",
+    make: 'Audi',
+    model: '2014 Audi R8',
     styling: 8,
     acceleration: 7,
     handling: 8,
@@ -154,8 +154,8 @@ export default [
     value: 8
   },
   {
-    make: "Aston Martin",
-    model: "DB11",
+    make: 'Aston Martin',
+    model: 'DB11',
     styling: 9,
     acceleration: 8,
     handling: 7,
@@ -168,8 +168,8 @@ export default [
     value: 3
   },
   {
-    make: "Ford",
-    model: "2017 Ford GT",
+    make: 'Ford',
+    model: '2017 Ford GT',
     styling: 8,
     acceleration: 10,
     handling: 10,
@@ -182,8 +182,8 @@ export default [
     value: 5
   },
   {
-    make: "Bentley",
-    model: "Conti Supersports",
+    make: 'Bentley',
+    model: 'Conti Supersports',
     styling: 6,
     acceleration: 9,
     handling: 7,
@@ -196,8 +196,8 @@ export default [
     value: 5
   },
   {
-    make: "Porsche",
-    model: "911R",
+    make: 'Porsche',
+    model: '911R',
     styling: 8,
     acceleration: 8,
     handling: 9,
@@ -210,8 +210,8 @@ export default [
     value: 3
   },
   {
-    make: "Lexus",
-    model: "Lexus LFA",
+    make: 'Lexus',
+    model: 'Lexus LFA',
     styling: 6,
     acceleration: 8,
     handling: 8,
@@ -224,8 +224,8 @@ export default [
     value: 4
   },
   {
-    make: "Porsche",
-    model: "997 Turbo",
+    make: 'Porsche',
+    model: '997 Turbo',
     styling: 7,
     acceleration: 8,
     handling: 7,
@@ -238,8 +238,8 @@ export default [
     value: 8
   },
   {
-    make: "McLaren",
-    model: "SLR",
+    make: 'McLaren',
+    model: 'SLR',
     styling: 7,
     acceleration: 9,
     handling: 6,
@@ -252,8 +252,8 @@ export default [
     value: 5
   },
   {
-    make: "Lamborghini",
-    model: "Aventador SV",
+    make: 'Lamborghini',
+    model: 'Aventador SV',
     styling: 7,
     acceleration: 10,
     handling: 8,
@@ -266,8 +266,8 @@ export default [
     value: 4
   },
   {
-    make: "Mercedes",
-    model: "R63 AMG",
+    make: 'Mercedes',
+    model: 'R63 AMG',
     styling: 4,
     acceleration: 7,
     handling: 5,
@@ -280,8 +280,8 @@ export default [
     value: 5
   },
   {
-    make: "BMW",
-    model: "BMW M5 (E39)",
+    make: 'BMW',
+    model: 'BMW M5 (E39)',
     styling: 8,
     acceleration: 6,
     handling: 6,
@@ -294,8 +294,8 @@ export default [
     value: 7
   },
   {
-    make: "Lamborghini",
-    model: "Diablo 6.0",
+    make: 'Lamborghini',
+    model: 'Diablo 6.0',
     styling: 9,
     acceleration: 9,
     handling: 7,
@@ -308,8 +308,8 @@ export default [
     value: 7
   },
   {
-    make: "Ferrari",
-    model: "430 Scuderia",
+    make: 'Ferrari',
+    model: '430 Scuderia',
     styling: 8,
     acceleration: 9,
     handling: 9,
@@ -322,8 +322,8 @@ export default [
     value: 7
   },
   {
-    make: "Ferrari",
-    model: "F40",
+    make: 'Ferrari',
+    model: 'F40',
     styling: 10,
     acceleration: 8,
     handling: 9,
@@ -336,8 +336,8 @@ export default [
     value: 7
   },
   {
-    make: "Chevrolet",
-    model: "Bolt",
+    make: 'Chevrolet',
+    model: 'Bolt',
     styling: 5,
     acceleration: 3,
     handling: 4,
@@ -350,8 +350,8 @@ export default [
     value: 8
   },
   {
-    make: "Ferrari",
-    model: "Ferrari F355",
+    make: 'Ferrari',
+    model: 'Ferrari F355',
     styling: 10,
     acceleration: 6,
     handling: 7,
@@ -364,8 +364,8 @@ export default [
     value: 6
   },
   {
-    make: "BMW",
-    model: "BMW M3 (E46)",
+    make: 'BMW',
+    model: 'BMW M3 (E46)',
     styling: 7,
     acceleration: 6,
     handling: 7,
@@ -378,8 +378,8 @@ export default [
     value: 7
   },
   {
-    make: "Porsche",
-    model: "996 C4S",
+    make: 'Porsche',
+    model: '996 C4S',
     styling: 5,
     acceleration: 6,
     handling: 7,
@@ -392,8 +392,8 @@ export default [
     value: 9
   },
   {
-    make: "Porsche",
-    model: "928 GTS",
+    make: 'Porsche',
+    model: '928 GTS',
     styling: 7,
     acceleration: 5,
     handling: 6,
@@ -406,8 +406,8 @@ export default [
     value: 6
   },
   {
-    make: "Dodge",
-    model: "97 Viper GTS",
+    make: 'Dodge',
+    model: '97 Viper GTS',
     styling: 7,
     acceleration: 7,
     handling: 6,
@@ -420,8 +420,8 @@ export default [
     value: 7
   },
   {
-    make: "Ferrari",
-    model: "Ferrari 348",
+    make: 'Ferrari',
+    model: 'Ferrari 348',
     styling: 6,
     acceleration: 4,
     handling: 6,
@@ -434,8 +434,8 @@ export default [
     value: 7
   },
   {
-    make: "Rolls Royce",
-    model: "Silver Spur",
+    make: 'Rolls Royce',
+    model: 'Silver Spur',
     styling: 4,
     acceleration: 1,
     handling: 3,
@@ -448,8 +448,8 @@ export default [
     value: 6
   },
   {
-    make: "Lamborghini",
-    model: "LM002",
+    make: 'Lamborghini',
+    model: 'LM002',
     styling: 5,
     acceleration: 1,
     handling: 4,
@@ -462,8 +462,8 @@ export default [
     value: 6
   },
   {
-    make: "Land Rover",
-    model: "06 Range Rover",
+    make: 'Land Rover',
+    model: '06 Range Rover',
     styling: 6,
     acceleration: 1,
     handling: 4,
@@ -476,8 +476,8 @@ export default [
     value: 5
   },
   {
-    make: "Maserati",
-    model: "05 Quattroporte",
+    make: 'Maserati',
+    model: '05 Quattroporte',
     styling: 4,
     acceleration: 5,
     handling: 6,
@@ -490,8 +490,8 @@ export default [
     value: 4
   },
   {
-    make: "Cadillac",
-    model: "1977 Eldorado",
+    make: 'Cadillac',
+    model: '1977 Eldorado',
     styling: 5,
     acceleration: 1,
     handling: 2,
@@ -504,8 +504,8 @@ export default [
     value: 6
   },
   {
-    make: "Plymouth",
-    model: "Prowler",
+    make: 'Plymouth',
+    model: 'Prowler',
     styling: 6,
     acceleration: 4,
     handling: 5,
@@ -518,8 +518,8 @@ export default [
     value: 5
   },
   {
-    make: "Pontiac",
-    model: "Aztek",
+    make: 'Pontiac',
+    model: 'Aztek',
     styling: 2,
     acceleration: 1,
     handling: 3,
@@ -532,8 +532,8 @@ export default [
     value: 5
   },
   {
-    make: "Cadillac",
-    model: "Cadillac ELR",
+    make: 'Cadillac',
+    model: 'Cadillac ELR',
     styling: 6,
     acceleration: 1,
     handling: 4,
@@ -546,8 +546,8 @@ export default [
     value: 2
   },
   {
-    make: "Yugo",
-    model: "Yugo",
+    make: 'Yugo',
+    model: 'Yugo',
     styling: 3,
     acceleration: 1,
     handling: 2,
@@ -560,8 +560,8 @@ export default [
     value: 4
   },
   {
-    make: "Nissan",
-    model: "Murano CC",
+    make: 'Nissan',
+    model: 'Murano CC',
     styling: 2,
     acceleration: 1,
     handling: 3,
@@ -574,8 +574,8 @@ export default [
     value: 3
   },
   {
-    make: "Daimler",
-    model: "Ferret Tank",
+    make: 'Daimler',
+    model: 'Ferret Tank',
     styling: 6,
     acceleration: 1,
     handling: 1,
@@ -588,8 +588,8 @@ export default [
     value: 7
   },
   {
-    make: "VEB Sachsenring Automobilwerke Zwickau",
-    model: "Trabant",
+    make: 'VEB Sachsenring Automobilwerke Zwickau',
+    model: 'Trabant',
     styling: 2,
     acceleration: 1,
     handling: 1,
@@ -602,8 +602,8 @@ export default [
     value: 5
   },
   {
-    make: "BMW",
-    model: "Isetta",
+    make: 'BMW',
+    model: 'Isetta',
     styling: 5,
     acceleration: 1,
     handling: 1,
@@ -616,8 +616,8 @@ export default [
     value: 4
   },
   {
-    make: "Lexus",
-    model: "Lexus LC 500",
+    make: 'Lexus',
+    model: 'Lexus LC 500',
     styling: 8,
     acceleration: 6,
     handling: 6,
@@ -630,8 +630,8 @@ export default [
     value: 6
   },
   {
-    make: "Bentley",
-    model: "07 Azure",
+    make: 'Bentley',
+    model: '07 Azure',
     styling: 6,
     acceleration: 3,
     handling: 5,
@@ -644,8 +644,8 @@ export default [
     value: 6
   },
   {
-    make: "Lamborghini",
-    model: "Countach",
+    make: 'Lamborghini',
+    model: 'Countach',
     styling: 9,
     acceleration: 6,
     handling: 6,
@@ -658,8 +658,8 @@ export default [
     value: 7
   },
   {
-    make: "Mercedes",
-    model: "2012 E63 Wagon",
+    make: 'Mercedes',
+    model: '2012 E63 Wagon',
     styling: 6,
     acceleration: 7,
     handling: 6,
@@ -672,8 +672,8 @@ export default [
     value: 7
   },
   {
-    make: "Porsche",
-    model: "918 Spyder",
+    make: 'Porsche',
+    model: '918 Spyder',
     styling: 8,
     acceleration: 10,
     handling: 10,
@@ -686,8 +686,8 @@ export default [
     value: 6
   },
   {
-    make: "Range Rover",
-    model: "Evoque Conv",
+    make: 'Range Rover',
+    model: 'Evoque Conv',
     styling: 3,
     acceleration: 1,
     handling: 4,

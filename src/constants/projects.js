@@ -1,48 +1,48 @@
-import casino from "../images/casino.png";
-import clickgame from "../images/clickgame.png";
-import timecard from "../images/timecard.png";
-import visualization from "../images/visualization.png";
-import taneisha from "../images/taneisha.png";
+import casino from '../images/casino.png';
+import clickgame from '../images/clickgame.png';
+import timecard from '../images/timecard.png';
+import visualization from '../images/visualization.png';
+import taneisha from '../images/taneisha.png';
 
 export default [
   {
-    title: "Casino",
+    title: 'Casino',
     src: casino,
-    alt: "Screenshot of my AngularJS casino application",
-    link: "http://kennethbigler.github.io/casino/",
-    caption: "Advancing work on Angular and creating casino games"
+    alt: 'Screenshot of my AngularJS casino application',
+    link: 'http://kennethbigler.github.io/casino/',
+    caption: 'Advancing work on Angular and creating casino games'
   },
   {
-    title: "Timecard",
+    title: 'Timecard',
     src: timecard,
-    alt: "Screenshot of my AngularJS timecard application",
-    link: "http://kennethbigler.github.io/timecard/",
+    alt: 'Screenshot of my AngularJS timecard application',
+    link: 'http://kennethbigler.github.io/timecard/',
     caption:
-      "This is a project I did to learn AngularJS, much of which I used throughout my later projects and jobs"
+      'This is a project I did to learn AngularJS, much of which I used throughout my later projects and jobs'
   },
   {
-    title: "Clicker",
+    title: 'Clicker',
     src: clickgame,
-    alt: "Screenshot of my AngularJS click game application",
-    link: "http://kennethbigler.github.io/clickgame/",
+    alt: 'Screenshot of my AngularJS click game application',
+    link: 'http://kennethbigler.github.io/clickgame/',
     caption:
-      "This is a project I did to learn AngularJS, much of which I used throughout my later projects and jobs"
+      'This is a project I did to learn AngularJS, much of which I used throughout my later projects and jobs'
   },
   {
-    title: "Graphs",
+    title: 'Graphs',
     src: visualization,
-    alt: "Screenshot of my AngularJS data visualization application",
-    link: "http://kennethbigler.github.io/DataProcessing/",
+    alt: 'Screenshot of my AngularJS data visualization application',
+    link: 'http://kennethbigler.github.io/DataProcessing/',
     caption:
-      "Application using AngularJS and SVG for to visualize and process data"
+      'Application using AngularJS and SVG for to visualize and process data'
   },
   {
-    title: "Taneisha",
+    title: 'Taneisha',
     src: taneisha,
-    alt: "Screenshot of Taneisha Figueroa's Website",
-    link: "http://www.taneishafigueroa.com/",
+    alt: 'Screenshot of Taneisha Figueroa\'s Website',
+    link: 'http://www.taneishafigueroa.com/',
     caption:
-      "This is a project I did in AngularJS, making a website for my friend Taneisha Figueroa"
+      'This is a project I did in AngularJS, making a website for my friend Taneisha Figueroa'
   }
 ];
 

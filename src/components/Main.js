@@ -1,16 +1,17 @@
-import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Work from "./pages/Work";
-import Education from "./pages/Education";
-import Projects from "./pages/Projects";
-import DougScore from "./pages/DougScore";
-import classes from "../constants/classes";
-import workExp from "../constants/work";
+import React, { Component } from 'react';
+import { Switch, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Work from './pages/Work';
+import Education from './pages/Education';
+import Projects from './pages/Projects';
+import DougScore from './pages/DougScore';
+import PokerNight from './pages/PokerNight';
+import classes from '../constants/classes';
+import workExp from '../constants/work';
 
 const styles = {
   page: {
-    padding: "1em"
+    padding: '1em'
   }
 };
 
@@ -60,6 +61,7 @@ class Main extends Component {
             <Route path="/education" render={() => education} />
             <Route path="/projects" component={Projects} />
             <Route path="/doug" component={DougScore} />
+            <Route path="/poker" component={PokerNight} />
           </Switch>
         </main>
       </div>

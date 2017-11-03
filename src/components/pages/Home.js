@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import { Table, TableBody, TableRow, TableRowColumn } from "material-ui/Table";
-import photo from "../../images/ken.jpg";
+import React, { Component } from 'react';
+import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
+import photo from '../../images/ken.jpg';
 
 const styles = {
   image: {
-    width: "100%",
-    display: "block",
-    margin: "auto",
-    maxWidth: "20em"
+    width: '100%',
+    display: 'block',
+    margin: 'auto',
+    maxWidth: '20em'
   }
 };
 
 class Home extends Component {
   handleClick = () => {
-    window.open("https://www.linkedin.com/in/kennethbigler", "_blank");
+    window.open('https://www.linkedin.com/in/kennethbigler', '_blank');
   };
   render() {
     return (
@@ -30,7 +30,7 @@ class Home extends Component {
             />
           </div>
           <div className="col-md-9">
-            <h2 style={{ align: "center" }}>
+            <h2 style={{ align: 'center' }}>
               Software Engineer at Cisco Systems
             </h2>
             <Table selectable={false}>

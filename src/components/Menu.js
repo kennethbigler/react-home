@@ -1,17 +1,17 @@
-import React from "react";
-import PropTypes from "prop-types";
-import MenuItem from "material-ui/MenuItem";
-import Divider from "material-ui/Divider";
+import React from 'react';
+import PropTypes from 'prop-types';
+import MenuItem from 'material-ui/MenuItem';
+import Divider from 'material-ui/Divider';
 
 const Menu = props => {
   return (
     <div>
-      <MenuItem onTouchTap={() => props.onClick("/")}>Home</MenuItem>
-      <MenuItem onTouchTap={() => props.onClick("/work")}>Work</MenuItem>
-      <MenuItem onTouchTap={() => props.onClick("/education")}>
+      <MenuItem onTouchTap={() => props.onClick('/')}>Home</MenuItem>
+      <MenuItem onTouchTap={() => props.onClick('/work')}>Work</MenuItem>
+      <MenuItem onTouchTap={() => props.onClick('/education')}>
         Education
       </MenuItem>
-      <MenuItem onTouchTap={() => props.onClick("/projects")}>
+      <MenuItem onTouchTap={() => props.onClick('/projects')}>
         Projects
       </MenuItem>
       {/* <MenuItem onTouchTap={() => props.onClick("/doug")}>DougScore</MenuItem> */}
@@ -33,7 +33,7 @@ const Menu = props => {
         <img
           src="http://stackoverflow.com/users/flair/4830309.png?theme=dark"
           id="stackOverflow"
-          style={{ display: "block", margin: "auto" }}
+          style={{ display: 'block', margin: 'auto' }}
           alt="profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
           title="profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
         />

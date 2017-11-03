@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Card, CardTitle, CardText } from "material-ui/Card";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Card, CardTitle, CardText } from 'material-ui/Card';
 
 const Education = props => {
   return (
@@ -15,12 +15,12 @@ const Education = props => {
           >
             <CardTitle
               title={
-                degree.degree + (degree.major ? " in " + degree.major : "")
+                degree.degree + (degree.major ? ' in ' + degree.major : '')
               }
               //avatar={job.src}
               subtitle={
                 degree.gpa
-                  ? "GPA: " + degree.gpa + " - Graduation: " + degree.graduation
+                  ? 'GPA: ' + degree.gpa + ' - Graduation: ' + degree.graduation
                   : degree.subtitle
               }
               actAsExpander={true}
@@ -33,26 +33,18 @@ const Education = props => {
                     <div
                       key={year.year}
                       className={
-                        "col-md-" + Math.ceil(12 / degree.years.length)
+                        'col-md-' + Math.ceil(12 / degree.years.length)
                       }
                     >
-                      <h3>
-                        {year.year}
-                      </h3>
+                      <h3>{year.year}</h3>
                       <hr />
                       {year.quarters.map(quarter => {
                         return (
                           <div key={quarter.quarter}>
-                            <h4>
-                              {quarter.quarter}
-                            </h4>
+                            <h4>{quarter.quarter}</h4>
                             <ul>
                               {quarter.classes.map(classes => {
-                                return (
-                                  <li key={classes}>
-                                    {classes}
-                                  </li>
-                                );
+                                return <li key={classes}>{classes}</li>;
                               })}
                             </ul>
                           </div>
