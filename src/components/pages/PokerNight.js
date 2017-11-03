@@ -16,11 +16,11 @@ const PokerNight = () => {
     totalErrorMargin += errorMargin;
     // add the column to the table
     columns.push({
-      Header: `Night ${i + 1}`,
+      Header: `Week ${i + 1}`,
       accessor: `scores.${k}`,
       Footer: (
         <span>
-          <strong>Error Margin:</strong> {errorMargin}
+          <strong>Err:</strong> {errorMargin}
         </span>
       )
     });
@@ -37,7 +37,7 @@ const PokerNight = () => {
     },
     Footer: (
       <span>
-        <strong>Error Margin:</strong> {totalErrorMargin}
+        <strong>Err:</strong> {totalErrorMargin}
       </span>
     )
   });
