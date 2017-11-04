@@ -6,21 +6,22 @@ import 'react-table/react-table.css';
 
 const PokerNight = () => {
   // names
-  let columns = [{ Header: 'Player', accessor: 'name' }];
+  let columns = [{ Header: 'Player', accessor: 'name', minWidth: 60 }];
   let totalErrorMargin = 0;
   // all scores
   Object.keys(PN[0].scores).forEach((k, i) => {
     // calculate error margin
-    let errorMargin = 0;
-    PN.forEach(player => (errorMargin += player.scores[k]));
-    totalErrorMargin += errorMargin;
+    let err = 0;
+    PN.forEach(p => (err += isNaN(p.scores[k]) ? 0 : p.scores[k]));
+    totalErrorMargin += err;
     // add the column to the table
     columns.push({
-      Header: `Week ${i + 1}`,
+      Header: `W${i + 1}`,
       accessor: `scores.${k}`,
+      minWidth: 40,
       Footer: (
         <span>
-          <strong>Err:</strong> {errorMargin}
+          <strong>Err:</strong> {err}
         </span>
       )
     });
@@ -30,9 +31,12 @@ const PokerNight = () => {
   columns.push({
     id: 'total',
     Header: 'Total',
+    minWidth: 50,
     accessor: s => {
       let ret = 0;
-      Object.keys(s.scores).forEach(k => (ret += s.scores[k]));
+      Object.keys(s.scores).forEach(
+        k => (ret += isNaN(s.scores[k]) ? 0 : s.scores[k])
+      );
       return ret;
     },
     Footer: (
