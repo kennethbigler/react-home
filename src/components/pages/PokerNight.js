@@ -4,18 +4,22 @@ import scores from '../../constants/poker';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
+function getTotal(obj) {
+  let total = 0;
+  Object.keys(obj.scores).forEach(
+    k => (total += isNaN(obj.scores[k]) ? 0 : obj.scores[k])
+  );
+  obj.total = total;
+}
+
 const PokerNight = () => {
   // sort the names
   let PN = [...scores].sort((a, b) => {
     if (!a.total) {
-      let total = 0;
-      Object.keys(a.scores).forEach(s => (total += a.scores[s]));
-      a.total = total;
+      getTotal(a);
     }
     if (!b.total) {
-      let total = 0;
-      Object.keys(b.scores).forEach(s => (total += b.scores[s]));
-      b.total = total;
+      getTotal(b);
     }
     if (a.total < b.total) {
       return -1;
