@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://www.kennethbigler.com/#/</loc>
     <loc>http://www.kennethbigler.com/#/work</loc>
     <loc>http://www.kennethbigler.com/#/classes</loc>
     <loc>http://www.kennethbigler.com/#/activities</loc>
     <loc>http://www.kennethbigler.com/#/projects</loc>
+    <loc>http://www.kennethbigler.com/#/doug</loc>
+    <loc>http://www.kennethbigler.com/#/poker</loc>
   </url>
 </urlset>

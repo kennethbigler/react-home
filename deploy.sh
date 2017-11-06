@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Running build/deploy scripts"
+echo "Running build/deploy scripts..."
 npm run build
 echo -e "\n--------------------\n Building react-home \n--------------------"
 rm index.html
@@ -11,3 +11,4 @@ git status
 git add .
 git status
 git commit
+echo -e "\n--------------------\n Complete\nFinish with a:\ngit push \n--------------------\n"
