@@ -1,29 +1,47 @@
 import React from 'react';
-import PN from '../../constants/poker';
+import scores from '../../constants/poker';
 // https://react-table.js.org/#/story/readme
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
 const PokerNight = () => {
+  // sort the names
+  let PN = [...scores].sort((a, b) => {
+    if (!a.total) {
+      let total = 0;
+      Object.keys(a.scores).forEach(s => (total += a.scores[s]));
+      a.total = total;
+    }
+    if (!b.total) {
+      let total = 0;
+      Object.keys(b.scores).forEach(s => (total += b.scores[s]));
+      b.total = total;
+    }
+    if (a.total < b.total) {
+      return -1;
+    } else if (a.total > b.total) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+
   // names
   let columns = [{ Header: 'Player', accessor: 'name', minWidth: 60 }];
-  let totalErrorMargin = 0;
+
   // all scores
-  Object.keys(PN[0].scores).forEach((k, i) => {
+  let totalErrorMargin = 0;
+  Object.keys(PN[0].scores).forEach(k => {
     // calculate error margin
     let err = 0;
     PN.forEach(p => (err += isNaN(p.scores[k]) ? 0 : p.scores[k]));
     totalErrorMargin += err;
     // add the column to the table
     columns.push({
-      Header: `W${i + 1}`,
+      Header: k,
       accessor: `scores.${k}`,
       minWidth: 40,
-      Footer: (
-        <span>
-          <strong>Err:</strong> {err}
-        </span>
-      )
+      Footer: <span>Err: {err}</span>
     });
   });
 
@@ -32,20 +50,11 @@ const PokerNight = () => {
     id: 'total',
     Header: 'Total',
     minWidth: 50,
-    accessor: s => {
-      let ret = 0;
-      Object.keys(s.scores).forEach(
-        k => (ret += isNaN(s.scores[k]) ? 0 : s.scores[k])
-      );
-      return ret;
-    },
-    Footer: (
-      <span>
-        <strong>Err:</strong> {totalErrorMargin}
-      </span>
-    )
+    accessor: 'total',
+    Footer: <span>Err: {totalErrorMargin}</span>
   });
 
+  // styling for when the table gets too large
   const styles = {
     // position: 'absolute',
     // top: 79,
