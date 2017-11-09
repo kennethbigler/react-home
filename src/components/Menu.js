@@ -14,7 +14,7 @@ const Menu = props => {
       <MenuItem onTouchTap={() => props.onClick('/projects')}>
         Projects
       </MenuItem>
-      {/* <MenuItem onTouchTap={() => props.onClick('/resume')}>Resume</MenuItem> */}
+      <MenuItem onTouchTap={() => props.onClick('/resume')}>Resume</MenuItem>
       {/* <MenuItem onTouchTap={() => props.onClick("/doug")}>DougScore</MenuItem> */}
       {/* External Links */}
       <Divider />

@@ -8,7 +8,7 @@ import DougScore from './pages/DougScore';
 import PokerNight from './pages/PokerNight';
 import classes from '../constants/classes';
 import workExp from '../constants/work';
-// import Resume from './pages/Resume';
+import Resume from './pages/Resume';
 
 const styles = {
   page: {
@@ -61,7 +61,7 @@ class Main extends Component {
             <Route path="/work" render={() => work} />
             <Route path="/education" render={() => education} />
             <Route path="/projects" component={Projects} />
-            {/* <Route path="/resume" component={Resume} /> */}
+            <Route path="/resume" component={Resume} />
             <Route path="/doug" component={DougScore} />
             <Route path="/poker" component={PokerNight} />
           </Switch>
