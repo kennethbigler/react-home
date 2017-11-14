@@ -45,6 +45,7 @@ const PokerNight = () => {
       Header: k,
       accessor: `scores.${k}`,
       minWidth: 40,
+      maxWidth: 160,
       Footer: <span>Err: {err}</span>
     });
   });
