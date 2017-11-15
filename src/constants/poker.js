@@ -1,7 +1,7 @@
 export default [
   {
     name: 'Ken',
-    scores: { W1: 5, W2: -42 }
+    scores: { W1: 5, W2: -42, W3: -100 }
   },
   {
     name: 'Lauren',
@@ -17,7 +17,7 @@ export default [
   },
   {
     name: 'Jordan',
-    scores: { W1: -25, W2: 94 }
+    scores: { W1: -25, W2: 94, W3: -24 }
   },
   {
     name: 'Landon',
@@ -25,7 +25,7 @@ export default [
   },
   {
     name: 'Lily',
-    scores: { W1: 3, W2: -131 }
+    scores: { W1: 3, W2: -131, W3: -45 }
   },
   {
     name: 'Keishi',
@@ -38,5 +38,13 @@ export default [
   {
     name: 'Mike',
     scores: { W2: 220 }
+  },
+  {
+    name: 'Tom',
+    scores: { W3: 39 }
+  },
+  {
+    name: 'Meeks',
+    scores: { W3: 147 }
   }
 ];
