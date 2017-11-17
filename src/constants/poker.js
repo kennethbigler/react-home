@@ -41,7 +41,7 @@ export default [
   },
   {
     name: 'Tom',
-    scores: { W3: 39 }
+    scores: { W3: 39, W4: -100 }
   },
   {
     name: 'Meeks',
