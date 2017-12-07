@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
-import { Timeline, TIMELINE_TITLE } from '../features/Timeline';
+import { Timeline, TIMELINE_TITLE, FORMAT } from '../features/Timeline';
 import moment from 'moment';
 
 const styles = {
@@ -12,8 +12,6 @@ const styles = {
 };
 
 function showRange(s, e, n) {
-  // format of date
-  const FORMAT = 'MMMM Y';
   // start date
   const start = s.format(FORMAT);
   // end date, check if it is the present
