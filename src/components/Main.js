@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import { TIMELINE_TITLE } from './features/Timeline';
 import Home from './pages/Home';
-import Work from './pages/Work';
+import { Work } from './pages/Work';
 import Education from './pages/Education';
 import Projects from './pages/Projects';
 import DougScore from './pages/DougScore';
@@ -27,6 +28,7 @@ class Main extends Component {
     workExp.forEach(job => {
       expanded[job.company] = true;
     });
+    expanded[TIMELINE_TITLE] = true;
     this.state = { expanded };
   }
 

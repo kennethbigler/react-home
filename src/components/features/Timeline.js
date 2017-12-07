@@ -1,58 +1,64 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardTitle, CardText } from 'material-ui/Card';
 import moment from 'moment';
 
-const styles = {
-  corpLogo: {
-    width: '100%',
-    maxWidth: '12em'
-  }
-};
+const FORMAT = 'MMMM Y';
+export const TIMELINE_TITLE = 'Timeline';
 
-function showRange(s, e, n) {
-  // format of date
-  const FORMAT = 'MMMM Y';
-  // start date
-  const start = s.format(FORMAT);
-  // end date, check if it is the present
-  const end = moment().diff(e, 'days') < 1 ? 'Present' : e.format(FORMAT);
-  // add optional notes
-  const notes = n ? n : '';
+export const Timeline = props => {
+  // sort array by start date
+  props.data.sort((a, b) => {
+    return a.start.diff(b.start, 'months');
+  });
 
-  // get the time range in years, months
-  const mon = e.diff(s, 'months') % 12;
-  const yr = e.diff(s, 'years');
-  const yRange = yr ? `${yr} year${yr > 1 ? 's' : ''}` : null;
-  const mRange = mon ? `${mon} month${mon > 1 ? 's' : ''}` : null;
-  const range = yRange ? yRange + (mRange ? `, ${mRange}` : '') : mRange;
-  // works faster but is a rough estimate
-  // const range = e.to(s, true);
+  // get max length
+  const beginning = props.data[0].start;
+  const total_duration = moment().diff(beginning, 'months');
+  console.log(total_duration);
 
-  // return string for output
-  return `${start} - ${end} (${range}) ${notes}`;
-}
+  const styles = {
+    black: {
+      backgroundColor: 'black',
+      height: '100px',
+      display: 'inline-block'
+    },
+    red: { backgroundColor: 'red', height: '100px', display: 'inline-block' }
+  };
 
-const Timeline = props => {
   return (
     <div>
-      {props.workExp.map(job => {
+      {props.data.map((job, i) => {
+        // company: 'Santa Clara University',
+        // location: 'Santa Clara, CA',
+        // title: 'Undergraduate Student',
+        // start: moment('2011-09-01'),
+        // end: moment('2015-06-30')
+        const start = Math.floor(
+          job.start.diff(beginning, 'months') / total_duration * 1000
+        );
+        const end = Math.floor(
+          job.end.diff(beginning, 'months') / total_duration * 1000
+        );
+
+        const mid = end - start;
+        const last = 1000 - end;
+
         return (
-          <div>
-            <div className="col-sm-9 col-xs-12">
-              <p>{showRange(job.start, job.end, job.notes)}</p>
+          <div className="row" key={i}>
+            {start > 0 && (
+              <div style={{ ...styles.black, width: `${start}px` }} />
+            )}
+            <div style={{ ...styles.red, width: `${mid}px` }}>
               <ul>
-                {job.expr.map((desc, i) => {
-                  return <li key={'desc' + i}>{desc}</li>;
-                })}
+                <li>{job.company}</li>
+                <li>{job.title}</li>
+                <li>{job.location}</li>
+                <li>{job.start.format(FORMAT)}</li>
               </ul>
             </div>
-            <img
-              className="col-sm-3 col-xs-12 pull-right"
-              style={styles.corpLogo}
-              src={job.src}
-              alt={job.alt}
-            />
+            {last > 0 && (
+              <div style={{ ...styles.black, width: `${last}px` }} />
+            )}
           </div>
         );
       })}
@@ -61,7 +67,5 @@ const Timeline = props => {
 };
 
 Timeline.propTypes = {
-  workExp: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired
 };
-
-export default Timeline;

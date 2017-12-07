@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
-import Timeline from '../features/Timeline';
+import { Timeline, TIMELINE_TITLE } from '../features/Timeline';
 import moment from 'moment';
 
 const styles = {
@@ -34,19 +34,18 @@ function showRange(s, e, n) {
   return `${start} - ${end} (${range}) ${notes}`;
 }
 
-const Work = props => {
-  const title = 'Timeline';
+export const Work = props => {
   return (
     <div>
       <h1>Work Experience</h1>
 
       <Card
-        expanded={props.expanded[title]}
-        onExpandChange={expanded => props.onClick(title, expanded)}
-        key={title}
+        expanded={props.expanded[TIMELINE_TITLE]}
+        onExpandChange={expanded => props.onClick(TIMELINE_TITLE, expanded)}
+        key={TIMELINE_TITLE}
       >
         <CardTitle
-          title={title}
+          title={TIMELINE_TITLE}
           //avatar={job.src}
           subtitle={'over time'}
           actAsExpander={true}
@@ -54,7 +53,7 @@ const Work = props => {
         />
         <CardText expandable={true}>
           <div className="row">
-            <Timeline />
+            <Timeline data={props.workExp} />
           </div>
         </CardText>
       </Card>
@@ -105,5 +104,3 @@ Work.propTypes = {
   workExp: PropTypes.array.isRequired,
   expanded: PropTypes.object.isRequired
 };
-
-export default Work;

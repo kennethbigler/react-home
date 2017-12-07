@@ -104,14 +104,14 @@ export default [
     location: 'Santa Clara, CA',
     title: 'Undergraduate Student',
     start: moment('2011-09-01'),
-    end: moment('2015-06-30')
+    end: moment('2015-06-01')
   },
   {
     isJob: false,
     company: 'Santa Clara University',
     location: 'Santa Clara, CA',
     title: 'Graduate Student',
-    start: moment('2015-07-01'),
+    start: moment('2015-06-01'),
     end: moment('2016-12-31')
   }
 ];
