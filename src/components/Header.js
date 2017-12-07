@@ -6,7 +6,7 @@ import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import Avatar from 'material-ui/Avatar';
-import Menu from './Menu';
+import Menu from './features/Menu';
 import photo from '../images/ken.jpg';
 
 class HeaderBody extends Component {

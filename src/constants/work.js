@@ -4,13 +4,16 @@ import vengefulLogo from '../images/vengefulgames_logo.png';
 import netappLogo from '../images/netapp_logo.svg.png';
 import SHFBLogo from '../images/SHFB_logo.jpg';
 import ciscoLogo from '../images/cisco_logo.gif';
+import moment from 'moment';
 
 export default [
   {
+    isJob: true,
     company: 'Cisco Systems',
     location: 'San Jose, CA',
     title: 'Software Engineer III',
-    range: 'April 2017 – Present',
+    start: moment('2017-04-01'),
+    end: moment(),
     src: ciscoLogo,
     alt: 'Cisco Systems Logo',
     expr: [
@@ -19,10 +22,12 @@ export default [
     ]
   },
   {
+    isJob: true,
     company: 'Second Harvest Food Bank',
     location: 'Santa Clara, CA',
     title: 'Volunteer Team Leader',
-    range: 'September 2010 – Present',
+    start: moment('2010-09-01'),
+    end: moment(),
     src: SHFBLogo,
     alt: 'Second Harvest Food Bank Logo',
     expr: [
@@ -31,10 +36,12 @@ export default [
     ]
   },
   {
+    isJob: true,
     company: 'Hoverboard Technologies',
     location: 'Mountain View, CA',
     title: 'Software Engineer',
-    range: 'October 2016 – April 2017',
+    start: moment('2016-10-01'),
+    end: moment('2017-04-01'),
     src: hoverboardLogo,
     alt: 'Hoverboard Logo',
     expr: [
@@ -44,10 +51,12 @@ export default [
     ]
   },
   {
+    isJob: true,
     company: 'Tesla, Inc.',
     location: 'Fremont, CA',
     title: 'Application Developer Intern, IT Applications',
-    range: 'June 2015 – June 2016',
+    start: moment('2015-06-01'),
+    end: moment('2016-06-30'),
     src: teslaLogo,
     alt: 'Tesla Logo',
     expr: [
@@ -57,10 +66,13 @@ export default [
     ]
   },
   {
+    isJob: true,
     company: 'Midnight Game Club, LLC',
     location: 'Sunnyvale, CA',
     title: 'Project Manager and Application Developer',
-    range: 'August 2014 – November 2015 (Spare Time)',
+    start: moment('2014-08-01'),
+    end: moment('2015-11-30'),
+    notes: '(Spare Time)',
     src: vengefulLogo,
     alt: 'Midnight Game Club Logo',
     expr: [
@@ -70,10 +82,12 @@ export default [
     ]
   },
   {
+    isJob: true,
     company: 'NetApp',
     location: 'Sunnyvale, CA',
     title: 'Web Technologist, Solutions and Process Enablement',
-    range: 'December 2012 – June 2015',
+    start: moment('2012-08-01'),
+    end: moment('2015-06-01'),
     src: netappLogo,
     alt: 'NetApp Logo',
     expr: [
@@ -83,5 +97,21 @@ export default [
       'Design and create new websites, migrate between CMS’s, as well as maintain and improve existing websites',
       'Create/update graphics using Adobe CS, resolve technical issues, educate department content owners on their choices'
     ]
+  },
+  {
+    isJob: false,
+    company: 'Santa Clara University',
+    location: 'Santa Clara, CA',
+    title: 'Undergraduate Student',
+    start: moment('2011-09-01'),
+    end: moment('2015-06-30')
+  },
+  {
+    isJob: false,
+    company: 'Santa Clara University',
+    location: 'Santa Clara, CA',
+    title: 'Graduate Student',
+    start: moment('2015-07-01'),
+    end: moment('2016-12-31')
   }
 ];
