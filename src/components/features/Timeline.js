@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import * as colors from 'material-ui/styles/colors';
 
 export const FORMAT = 'MMMM Y';
 export const TIMELINE_TITLE = 'Timeline';
+export const MONTH_SORT = (a, b) => a.start.diff(b.start, 'months');
+
+const WIDTH = 100;
+const MIN_TEXT_WIDTH = 94;
 
 const styles = {
   row: {
@@ -25,107 +29,132 @@ const styles = {
   }
 };
 
-export const Timeline = props => {
-  // sort array by start date
-  props.data.sort((a, b) => a.start.diff(b.start, 'months'));
+export class Timeline extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { data: [...props.data.sort(MONTH_SORT)] };
+  }
 
-  // get max length
-  const beginning = props.data[0].start;
-  const total_duration = moment().diff(beginning, 'months');
-  const WIDTH = 100;
-  const getTimeFromStart = val => {
-    return Math.floor(val.diff(beginning, 'months') / total_duration * WIDTH);
+  getTimeFromStart = val => {
+    // sort array by start date
+    const { start } = this.state.data[0];
+    // get max length
+    const total_duration = moment().diff(start, 'months');
+    return Math.floor(val.diff(start, 'months') / total_duration * WIDTH);
   };
 
-  // track elements added already
-  let added = [];
+  getSegments = (added, job, i) => {
+    const { data } = this.state;
 
-  return (
-    <div>
-      {props.data.map((job, i) => {
-        // skip if added already
-        if (added.indexOf(i) !== -1) {
-          return;
+    // skip if added already
+    if (added.indexOf(i) !== -1) {
+      return [];
+    }
+
+    // local variables
+    let segments = [];
+    let start = this.getTimeFromStart(job.start);
+    let end = this.getTimeFromStart(job.end);
+
+    // add main segments
+    if (start > 0) {
+      segments.push({ width: start });
+    }
+    const width = end - start;
+    // check if name has room
+    if (width * window.innerWidth / WIDTH < MIN_TEXT_WIDTH) {
+      segments.push({ company: job.company.substr(0, 1), width });
+    } else {
+      segments.push({ company: job.company, width });
+    }
+
+    // track that segments have been added
+    added.push(i);
+
+    // find any other segments that will fit
+    for (let j = i + 1; j < data.length; j += 1) {
+      // skip if added already
+      if (added.indexOf(j) !== -1) {
+        continue;
+      }
+      // test segment
+      const com = data[j];
+      start = this.getTimeFromStart(com.start);
+
+      // if start is after end of main segment
+      if (start >= end) {
+        // add filler in between end/start
+        if (start - end > 0) {
+          segments.push({ width: start - end });
         }
-
-        // local variables
-        // track segments to add
-        let segments = [];
-        // get start and end
-        let start = getTimeFromStart(job.start);
-        let end = getTimeFromStart(job.end);
-
-        // add main segments
-        if (start > 0) {
-          segments.push({ width: start });
+        // add next company
+        end = this.getTimeFromStart(com.end);
+        const width = end - start;
+        // check if name has room
+        if (width * window.innerWidth / WIDTH < MIN_TEXT_WIDTH) {
+          segments.push({ company: com.company.substr(0, 1), width });
+        } else {
+          segments.push({ company: com.company, width });
         }
-        segments.push({ company: job.company, width: end - start });
-        // track that segments have been added
-        added.push(i);
+        // mark as already added
+        added.push(j);
+      }
+    }
 
-        // find any other segments that will fit
-        for (let j = i + 1; j < props.data.length; j += 1) {
-          // skip if added already
-          if (added.indexOf(j) !== -1) {
-            continue;
-          }
-          // test segment
-          const com = props.data[j];
-          start = getTimeFromStart(com.start);
+    // get last segment
+    if (WIDTH - end > 0) {
+      segments.push({ width: WIDTH - end });
+    }
 
-          // if start is after end of main segment
-          if (start >= end) {
-            // add filler in between end/start
-            const gap = start - end;
-            if (gap > 0) {
-              segments.push({ width: gap });
-            }
-            // add next company
-            end = getTimeFromStart(com.end);
-            segments.push({ company: com.company, width: end - start });
-            // mark as already added
-            added.push(j);
-          }
-        }
+    return [...segments];
+  };
 
-        const last = WIDTH - end;
-        if (last > 0) {
-          segments.push({ width: last });
-        }
+  render() {
+    const { data } = this.state;
+    // track elements added already
+    let added = [];
 
-        return (
-          <div style={styles.row} key={i}>
-            {segments.map((seg, j) => {
-              if (seg.company) {
-                return (
-                  <div
-                    key={i + j + seg.company}
-                    style={{
-                      ...styles.box,
-                      ...styles.on,
-                      width: `${seg.width}%`
-                    }}
-                  >
-                    {seg.company}
-                  </div>
-                );
-              } else {
-                return (
-                  <div
-                    key={i + j}
-                    style={{ ...styles.box, width: `${seg.width}%` }}
-                  >
-                    <br />
-                  </div>
-                );
-              }
-            })}
-          </div>
-        );
-      })}
-    </div>
-  );
-};
+    return (
+      <div>
+        {data.map((job, i) => {
+          // track segments to add
+          const segments = this.getSegments(added, job, i);
+
+          return (
+            <div style={styles.row} key={i}>
+              {segments.map((seg, j) => {
+                // check if company or filler
+                if (seg.company) {
+                  return (
+                    <div
+                      key={`${i},${j}`}
+                      style={{
+                        ...styles.box,
+                        ...styles.on,
+                        width: `${seg.width}%`
+                      }}
+                    >
+                      {seg.company}
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div
+                      key={`${i},${j}`}
+                      style={{ ...styles.box, width: `${seg.width}%` }}
+                    >
+                      <br />
+                    </div>
+                  );
+                }
+              })}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+}
 
 Timeline.propTypes = {
   data: PropTypes.array.isRequired
