@@ -44,8 +44,7 @@ export const Work = props => {
       >
         <CardTitle
           title={TIMELINE_TITLE}
-          //avatar={job.src}
-          subtitle={'over time'}
+          subtitle="(In-Progress)"
           actAsExpander={true}
           showExpandableButton={true}
         />
