@@ -11,7 +11,7 @@ import moment from 'moment';
 export default [
   {
     isJob: true,
-    color: colors.lightBlue500,
+    color: colors.blue600,
     company: 'Cisco Systems',
     location: 'San Jose, CA',
     title: 'Software Engineer III, Core Software Group',
@@ -26,7 +26,7 @@ export default [
   },
   {
     isJob: true,
-    color: colors.greenA700,
+    color: colors.green800,
     company: 'Second Harvest Food Bank',
     location: 'Santa Clara, CA',
     title: 'Volunteer Team Leader',
@@ -41,7 +41,7 @@ export default [
   },
   {
     isJob: true,
-    color: colors.indigo500,
+    color: colors.blueGrey500,
     company: 'Hoverboard Technologies',
     location: 'Mountain View, CA',
     title: 'Software Engineer',
@@ -90,7 +90,7 @@ export default [
   },
   {
     isJob: true,
-    color: colors.blue500,
+    color: colors.indigo500,
     company: 'NetApp',
     location: 'Sunnyvale, CA',
     title: 'Web Technologist, Solutions and Process Enablement',

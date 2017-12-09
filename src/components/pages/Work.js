@@ -92,6 +92,7 @@ export const Work = props => {
             </Card>
           );
         }
+        return <div key={job.company} />;
       })}
     </div>
   );
