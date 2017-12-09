@@ -25,7 +25,7 @@ const styles = {
     borderWidth: '0 2px 0 0',
     borderColor: colors.indigoA700,
     boxShadow: '2px 3px 4px #999',
-    backgroundColor: colors.cyan300
+    backgroundColor: colors.greenA400
   }
 };
 
@@ -159,3 +159,8 @@ export class Timeline extends Component {
 Timeline.propTypes = {
   data: PropTypes.array.isRequired
 };
+
+/*
+* expand below on click
+* change project menu color
+*/
