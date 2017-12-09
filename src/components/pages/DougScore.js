@@ -3,8 +3,9 @@ import DS from '../../constants/dougscore';
 // https://react-table.js.org/#/story/readme
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+// Parents: Main
 
-const DougScore = () => {
+export const DougScore = () => {
   const columns = [
     { Header: 'Vehicle', accessor: 'model', minWidth: 78 },
     { Header: 'Styling', accessor: 'styling', minWidth: 44 },
@@ -79,5 +80,3 @@ const DougScore = () => {
     />
   );
 };
-
-export default DougScore;

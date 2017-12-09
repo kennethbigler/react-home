@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { TIMELINE_TITLE } from './features/Timeline';
-import Home from './pages/Home';
+import { Home } from './pages/Home';
 import { Work } from './pages/Work';
-import Education from './pages/Education';
-import Projects from './pages/Projects';
-import DougScore from './pages/DougScore';
-import PokerNight from './pages/PokerNight';
+import { Education } from './pages/Education';
+import { Projects } from './pages/Projects';
+import { DougScore } from './pages/DougScore';
+import { PokerNight } from './pages/PokerNight';
+import { Resume } from './pages/Resume';
 import classes from '../constants/classes';
 import workExp from '../constants/work';
-import Resume from './pages/Resume';
 
 const styles = {
   page: {

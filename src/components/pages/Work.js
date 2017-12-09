@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import { Timeline, TIMELINE_TITLE, FORMAT } from '../features/Timeline';
 import moment from 'moment';
+// Parents: Main
 
 const styles = {
   corpLogo: {
@@ -36,7 +37,7 @@ export const Work = props => {
   return (
     <div>
       <h1>Work Experience</h1>
-
+      {/* Timeline */}
       <Card
         expanded={props.expanded[TIMELINE_TITLE]}
         onExpandChange={expanded => props.onClick(TIMELINE_TITLE, expanded)}
@@ -44,7 +45,7 @@ export const Work = props => {
       >
         <CardTitle
           title={TIMELINE_TITLE}
-          subtitle="(In-Progress)"
+          subtitle="September 2010 - Present"
           actAsExpander={true}
           showExpandableButton={true}
         />
@@ -54,7 +55,7 @@ export const Work = props => {
           </div>
         </CardText>
       </Card>
-
+      {/* Companies */}
       {props.workExp.map(job => {
         if (job.isJob) {
           return (

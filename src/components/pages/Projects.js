@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import projects from '../../constants/projects';
+// Parents: Main
 
 const styles = {
   body: {
@@ -17,7 +18,7 @@ const styles = {
   }
 };
 
-const Projects = () => {
+export const Projects = () => {
   return (
     <div style={styles.body}>
       <Tabs>
@@ -41,5 +42,3 @@ const Projects = () => {
     </div>
   );
 };
-
-export default Projects;

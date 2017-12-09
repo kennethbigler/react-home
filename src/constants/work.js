@@ -4,11 +4,14 @@ import vengefulLogo from '../images/vengefulgames_logo.png';
 import netappLogo from '../images/netapp_logo.svg.png';
 import SHFBLogo from '../images/SHFB_logo.jpg';
 import ciscoLogo from '../images/cisco_logo.gif';
+import * as colors from 'material-ui/styles/colors';
 import moment from 'moment';
+// Parents: Main
 
 export default [
   {
     isJob: true,
+    color: colors.lightBlue500,
     company: 'Cisco Systems',
     location: 'San Jose, CA',
     title: 'Software Engineer III, Core Software Group',
@@ -17,12 +20,13 @@ export default [
     src: ciscoLogo,
     alt: 'Cisco Systems Logo',
     expr: [
-      'Front End Development using ReactJS, HTML, and CSS to process and display data from REST API\'s about network health',
+      'Develop web applications using ReactJS to process and display data from Java REST APIs about network health',
       'Write Time Series Analysis Pipelines to create aggregations of network packets over a fixed or rolling window'
     ]
   },
   {
     isJob: true,
+    color: colors.greenA700,
     company: 'Second Harvest Food Bank',
     location: 'Santa Clara, CA',
     title: 'Volunteer Team Leader',
@@ -37,6 +41,7 @@ export default [
   },
   {
     isJob: true,
+    color: colors.indigo500,
     company: 'Hoverboard Technologies',
     location: 'Mountain View, CA',
     title: 'Software Engineer',
@@ -45,13 +50,14 @@ export default [
     src: hoverboardLogo,
     alt: 'Hoverboard Logo',
     expr: [
-      'Develop web applications using AngularJS, Bootstrap, and AWS SDK for JavaScript in the Browser',
-      'Manage the team in India creating the Android application through testing and creating Hoverboard Simulators',
-      'Program applications to run the lights on the Hoverboard using Python syntax'
+      'Develop web applications using AngularJS 1.X and the AWS SDK for JavaScript in the Browser',
+      'Manage a team in India creating the Android application, and testing the app by creating realistic data simulations',
+      'Program applications to run the lights on the Hoverboard in Python-like language'
     ]
   },
   {
     isJob: true,
+    color: colors.red500,
     company: 'Tesla, Inc.',
     location: 'Fremont, CA',
     title: 'Application Developer Intern, IT Applications',
@@ -60,13 +66,14 @@ export default [
     src: teslaLogo,
     alt: 'Tesla Logo',
     expr: [
-      'Develop web applications using AngularJS and ASP.NET MVC with a SQL database',
+      'Develop web applications using AngularJS 1.X and ASP.NET MVC with a SQL database',
       'Gather requirements, create new software tools, and improve tools already used by various departments',
       'Redesign intranet pages to improve accessibility and incorporate responsive design elements'
     ]
   },
   {
     isJob: true,
+    color: colors.blueGrey900,
     company: 'Midnight Game Club, LLC',
     location: 'Sunnyvale, CA',
     title: 'Application Developer and Project Manager',
@@ -83,6 +90,7 @@ export default [
   },
   {
     isJob: true,
+    color: colors.blue500,
     company: 'NetApp',
     location: 'Sunnyvale, CA',
     title: 'Web Technologist, Solutions and Process Enablement',
@@ -100,6 +108,7 @@ export default [
   },
   {
     isJob: false,
+    color: colors.red800,
     company: 'Santa Clara University',
     location: 'Santa Clara, CA',
     title: 'Undergrad / Grad Student',

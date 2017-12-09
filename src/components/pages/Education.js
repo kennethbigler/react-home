@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
+// Parents: Main
 
-const Education = props => {
+export const Education = props => {
   return (
     <div>
       <h1>Education and Extracurriculars</h1>
@@ -67,5 +68,3 @@ Education.propTypes = {
   classes: PropTypes.array.isRequired,
   expanded: PropTypes.object.isRequired
 };
-
-export default Education;

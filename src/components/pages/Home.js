@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
 import photo from '../../images/ken.jpg';
+// Parents: Main
 
 const styles = {
   image: {
@@ -11,7 +12,7 @@ const styles = {
   }
 };
 
-class Home extends Component {
+export class Home extends Component {
   handleClick = () => {
     window.open('https://www.linkedin.com/in/kennethbigler', '_blank');
   };
@@ -126,5 +127,3 @@ class Home extends Component {
     );
   }
 }
-
-export default Home;

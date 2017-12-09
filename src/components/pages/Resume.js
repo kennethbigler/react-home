@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 // https://github.com/wojtekmaj/react-pdf
 import { Document, Page } from 'react-pdf';
 import resume from '../../images/kenneth_bigler_resume.pdf';
+// Parents: Main
 
-class Resume extends Component {
+export class Resume extends Component {
   state = {
     file: resume,
     pageNumber: null,
@@ -34,5 +35,3 @@ class Resume extends Component {
     );
   }
 }
-
-export default Resume;

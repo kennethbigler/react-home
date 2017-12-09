@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import * as colors from 'material-ui/styles/colors';
+// Parents: Work
 
 export const FORMAT = 'MMMM Y';
 export const TIMELINE_TITLE = 'Timeline';
@@ -21,18 +22,21 @@ const styles = {
     padding: '5px'
   },
   on: {
-    borderStyle: 'solid',
-    borderWidth: '0 2px 0 0',
-    borderColor: colors.indigoA700,
+    // added border if all segments are the same color
+    // borderStyle: 'solid',
+    // borderWidth: '0 2px 0 0',
+    // borderColor: colors.indigoA700,
     boxShadow: '2px 3px 4px #999',
-    backgroundColor: colors.greenA400
+    color: colors.grey50
   }
 };
 
 export class Timeline extends Component {
   constructor(props) {
     super(props);
-    this.state = { data: [...props.data.sort(MONTH_SORT)] };
+    let data = [...props.data];
+    data.sort(MONTH_SORT);
+    this.state = { data };
   }
 
   getTimeFromStart = val => {
@@ -63,9 +67,13 @@ export class Timeline extends Component {
     const width = end - start;
     // check if name has room
     if (width * window.innerWidth / WIDTH < MIN_TEXT_WIDTH) {
-      segments.push({ company: job.company.substr(0, 1), width });
+      segments.push({
+        company: job.company.substr(0, 1),
+        color: job.color,
+        width
+      });
     } else {
-      segments.push({ company: job.company, width });
+      segments.push({ company: job.company, color: job.color, width });
     }
 
     // track that segments have been added
@@ -92,9 +100,13 @@ export class Timeline extends Component {
         const width = end - start;
         // check if name has room
         if (width * window.innerWidth / WIDTH < MIN_TEXT_WIDTH) {
-          segments.push({ company: com.company.substr(0, 1), width });
+          segments.push({
+            company: com.company.substr(0, 1),
+            color: com.color,
+            width
+          });
         } else {
-          segments.push({ company: com.company, width });
+          segments.push({ company: com.company, color: com.color, width });
         }
         // mark as already added
         added.push(j);
@@ -131,7 +143,8 @@ export class Timeline extends Component {
                       style={{
                         ...styles.box,
                         ...styles.on,
-                        width: `${seg.width}%`
+                        width: `${seg.width}%`,
+                        backgroundColor: seg.color
                       }}
                     >
                       {seg.company}
