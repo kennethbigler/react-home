@@ -220,20 +220,29 @@ export default [
         year: 'Honors Societies',
         quarters: [
           {
-            quarter: 'Tau Beta Pi Engineering Honors Society',
-            classes: ['November 2014 - Present']
+            quarter: 'Tau Beta Pi',
+            classes: [
+              'The Engineering Honors Society',
+              'November 2014 - Present'
+            ]
           },
           {
-            quarter: 'Upsilon Pi Epsilon Honors Society',
+            quarter: 'Upsilon Pi Epsilon',
+            classes: [
+              'Computing and Information Honor Society',
+              'May 2015 - Present'
+            ]
+          },
+          {
+            quarter: 'Order of the Engineer',
             classes: ['May 2015 - Present']
           },
           {
-            quarter: 'Order of the Engineer Honors Society',
-            classes: ['May 2015 - Present']
-          },
-          {
-            quarter: 'Dean’s List (top 10% of GPAs)',
-            classes: ['September 2012 – Graduation (December 2016)']
+            quarter: 'Dean’s List',
+            classes: [
+              'top 10% of GPAs',
+              'September 2012 – Graduation (December 2016)'
+            ]
           }
         ]
       },

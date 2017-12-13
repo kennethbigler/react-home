@@ -32,8 +32,10 @@ class HeaderBody extends Component {
     );
     return (
       <div>
+        <div style={{ height: '4em' }}>&nbsp;</div>
         <AppBar
           title={title}
+          style={{ position: 'fixed', left: 0, right: 0, top: 0 }}
           iconClassNameRight="muidocs-icon-navigation-expand-more"
           onLeftIconButtonTouchTap={this.onTouchTap}
           onTitleTouchTap={() => this.handleNav('/')}
