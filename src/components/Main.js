@@ -5,17 +5,12 @@ import { Home } from './pages/Home';
 import { Work } from './pages/Work';
 import { Education } from './pages/Education';
 import { Projects } from './pages/Projects';
-import { DougScore } from './pages/DougScore';
 import { PokerNight } from './pages/PokerNight';
 import { Resume } from './pages/Resume';
 import classes from '../constants/classes';
 import workExp from '../constants/work';
 
-const styles = {
-  page: {
-    padding: '1em'
-  }
-};
+const styles = { page: { padding: '1em' } };
 
 class Main extends Component {
   constructor(props) {
@@ -64,7 +59,6 @@ class Main extends Component {
             <Route path="/education" render={() => education} />
             <Route path="/projects" component={Projects} />
             <Route path="/resume" component={Resume} />
-            <Route path="/doug" component={DougScore} />
             <Route path="/poker" component={PokerNight} />
           </Switch>
         </main>
