@@ -39,7 +39,7 @@ export const PokerNight = () => {
 
   // names
   let columns = [
-    { Header: 'Player', accessor: 'name', minWidth: 60, Footer: 'Error' }
+    { Header: 'Player', accessor: 'name', minWidth: 63, Footer: 'Error' }
   ];
 
   // all scores
@@ -55,24 +55,23 @@ export const PokerNight = () => {
       accessor: `scores.${k}`,
       minWidth: 40,
       maxWidth: 160,
-      Footer: err
+      Footer: <span>{err}</span>
     });
   });
 
-  // total score
-  columns.push({
+  // total score (added next to names)
+  columns.splice(1, 0, {
     id: 'total',
     Header: 'Total',
     minWidth: 50,
     accessor: 'total',
-    Footer: totalErrorMargin
+    Footer: <span>{totalErrorMargin}</span>
   });
 
   // styling for when the table gets too large
   const styles = {
     position: 'absolute',
     top: 79,
-    bottom: 15,
     left: 15,
     right: 15
   };
@@ -85,7 +84,7 @@ export const PokerNight = () => {
       defaultPageSize={PN.length}
       data={PN}
       columns={columns}
-      resizable={false}
+      // resizable={false}
       showPagination={false}
       style={styles}
       defaultSortDesc
