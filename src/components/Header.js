@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Menu } from './features/Menu';
+import { MenuCasino } from './features/MenuCasino';
+import photo from '../images/ken.jpg';
 import { withRouter } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import Avatar from 'material-ui/Avatar';
-import Menu from './features/Menu';
-import photo from '../images/ken.jpg';
+// Parents: App
 
 class HeaderBody extends Component {
   constructor(props) {
     super(props);
-    this.state = { open: false };
+    const isCasino = props.location.pathname.includes('/casino');
+    this.state = { open: false, isCasino };
   }
 
   onTouchTap = () => {
@@ -21,10 +24,23 @@ class HeaderBody extends Component {
 
   handleNav = loc => {
     this.setState({ open: false });
-    this.props.history.push(loc);
+    if (loc !== this.props.location.pathname) {
+      this.props.history.push(loc);
+    }
   };
 
+  componentWillReceiveProps(nextProps) {
+    const { pathname } = nextProps.location;
+    const { pathname: oldPN } = this.props.location;
+    if (pathname !== oldPN) {
+      this.setState({ isCasino: pathname.includes('/casino') });
+    }
+  }
+
   render() {
+    const { isCasino } = this.state;
+    const casinoMenu = <MenuCasino onClick={this.handleNav} />;
+    const resumeMenu = <Menu onClick={this.handleNav} />;
     const title = (
       <div>
         <Avatar src={photo} size={30} /> Kenneth Bigler
@@ -55,7 +71,7 @@ class HeaderBody extends Component {
             onLeftIconButtonTouchTap={this.onTouchTap}
             onTitleTouchTap={() => this.handleNav('/')}
           />
-          <Menu onClick={this.handleNav} />
+          {isCasino ? casinoMenu : resumeMenu}
         </Drawer>
       </div>
     );
@@ -68,6 +84,4 @@ HeaderBody.propTypes = {
   history: PropTypes.object.isRequired
 };
 
-const Header = withRouter(HeaderBody);
-
-export default Header;
+export const Header = withRouter(HeaderBody);

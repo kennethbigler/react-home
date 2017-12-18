@@ -7,12 +7,16 @@ import { Education } from './pages/Education';
 import { Projects } from './pages/Projects';
 import { PokerNight } from './pages/PokerNight';
 import { Resume } from './pages/Resume';
+import { Casino } from './pages/casino/Casino';
+import { BlackJack } from './pages/casino/BlackJack';
+import { Poker } from './pages/casino/Poker';
 import classes from '../constants/classes';
 import workExp from '../constants/work';
+// Parents: App
 
 const styles = { page: { padding: '1em' } };
 
-class Main extends Component {
+export class Main extends Component {
   constructor(props) {
     super(props);
     // set expanded state for each class
@@ -60,11 +64,12 @@ class Main extends Component {
             <Route path="/projects" component={Projects} />
             <Route path="/resume" component={Resume} />
             <Route path="/poker" component={PokerNight} />
+            <Route exact path="/casino/" component={Casino} />
+            <Route path="/casino/blackjack" component={BlackJack} />
+            <Route path="/casino/poker" component={Poker} />
           </Switch>
         </main>
       </div>
     );
   }
 }
-
-export default Main;

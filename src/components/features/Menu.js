@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
+// Parents: Header
 
-const Menu = props => {
+export const Menu = props => {
   return (
     <div>
       <MenuItem onTouchTap={() => props.onClick('/')}>Home</MenuItem>
@@ -15,7 +16,7 @@ const Menu = props => {
         Projects
       </MenuItem>
       <MenuItem onTouchTap={() => props.onClick('/resume')}>Resume</MenuItem>
-      {/* <MenuItem onTouchTap={() => props.onClick("/doug")}>DougScore</MenuItem> */}
+      {/* <MenuItem onTouchTap={() => props.onClick('/casino')}>Casino</MenuItem> */}
       {/* External Links */}
       <Divider />
       <MenuItem href="https://github.com/kennethbigler" rel="noopener">
@@ -46,5 +47,3 @@ const Menu = props => {
 Menu.propTypes = {
   onClick: PropTypes.func.isRequired
 };
-
-export default Menu;
