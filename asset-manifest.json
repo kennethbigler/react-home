@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "main.css": "static/css/main.b75ead11.css",
   "main.css.map": "static/css/main.b75ead11.css.map",
   "main.js": "static/js/main.40fa478b.js",
@@ -8,16 +7,6 @@
   "static/js/0.03faaa0d.chunk.js.map": "static/js/0.03faaa0d.chunk.js.map",
   "static/js/1.1f364753.chunk.js": "static/js/1.1f364753.chunk.js",
   "static/js/1.1f364753.chunk.js.map": "static/js/1.1f364753.chunk.js.map",
-=======
-  "main.css": "static/css/main.81a21efe.css",
-  "main.css.map": "static/css/main.81a21efe.css.map",
-  "main.js": "static/js/main.e9ad96e6.js",
-  "main.js.map": "static/js/main.e9ad96e6.js.map",
-  "static/js/0.b309cc86.chunk.js": "static/js/0.b309cc86.chunk.js",
-  "static/js/0.b309cc86.chunk.js.map": "static/js/0.b309cc86.chunk.js.map",
-  "static/js/1.ae65dc02.chunk.js": "static/js/1.ae65dc02.chunk.js",
-  "static/js/1.ae65dc02.chunk.js.map": "static/js/1.ae65dc02.chunk.js.map",
->>>>>>> b28232f6ed22b1cbd4471cde6a73a587424f2b75
   "static/media/SHFB_logo.jpg": "static/media/SHFB_logo.50fa2212.jpg",
   "static/media/casino.png": "static/media/casino.e578fd9a.png",
   "static/media/clickgame.png": "static/media/clickgame.abe755f2.png",
