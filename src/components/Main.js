@@ -63,8 +63,8 @@ export class Main extends Component {
             <Route path="/education" render={() => education} />
             <Route path="/projects" component={Projects} />
             <Route path="/resume" component={Resume} />
-            <Route path="/poker" component={PokerNight} />
-            <Route exact path="/casino/" component={Casino} />
+            <Route path="/(poker|casino/pokernight)" component={PokerNight} />
+            <Route exact path="/casino" component={Casino} />
             <Route path="/casino/blackjack" component={BlackJack} />
             <Route path="/casino/poker" component={Poker} />
           </Switch>
