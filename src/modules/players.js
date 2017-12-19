@@ -39,9 +39,8 @@ const NEW_HAND = 'casino/player/NEW_HAND';
 
 /**
  * function to add a player to the state
- * @input: players - to get unique id
- * @input: name - name of player is only var
- * @return new player to add to array
+ * @param {Object[]} players - to get unique id
+ * @param {string} name - name of player is only var
  */
 export function addPlayer(players, name) {
   const player = {
@@ -55,21 +54,27 @@ export function addPlayer(players, name) {
 
 /**
  * function to remove player from player array
- * @return id to remove player
+ * @param {number} id - id of player to remove
  */
 export function removePlayer(id = 0) {
   return { type: REMOVE, id };
 }
 
 /**
- *
+ * function to update a players name
+ * @param {number} id - id of player
+ * @param {string} name - new name of player
  */
 export function updatePlayerName(id = 0, name = '') {
   return { type: UPDATE_NAME, id, name };
 }
 
 /**
- *
+ * function to pay the winners and take money from the losers
+ * @param {number} id - id of player
+ * @param {string} status - win or lose
+ * @param {number} money - player's current money
+ * @param {number} bet - player's bet
  */
 export function payout(id, status, money, bet = 0) {
   switch (status) {
@@ -87,11 +92,10 @@ export function payout(id, status, money, bet = 0) {
 
 /**
  * function to split players cards into 2 hands
- * @input: hands - pass in player's hands to be mutated with new card
- * @input: id - tells us which player to update
- * @input: hNum - optional, if multiple hands
- * @input: weigh - optional, get weight of hand for game
- * @return: update state of player
+ * @param {Object[]} hands - pass in player's hands to be mutated with new card
+ * @param {number} id - tells us which player to update
+ * @param {number} hNum - optional, if multiple hands
+ * @param {function} weigh - optional, get weight of hand for game
  */
 export function splitHand(hands, id, hNum, weigh) {
   const hand = hands[hNum];
@@ -109,38 +113,36 @@ export function splitHand(hands, id, hNum, weigh) {
   // update global hands
   let newHands = updateArrayInArray(hands, hand2, hNum);
   newHands.splice(hNum, 0, hand1);
-  return { type: SPLIT_HAND, player: { id: id, hands: newHands } };
+  return { type: SPLIT_HAND, player: { id, hands: newHands } };
 }
 
 /**
  * function to have a player draw a card
- * @input: hands - pass in player's hands to be mutated with new card
- * @input: id - tells us which player to update
- * @input: hNum - optional, if multiple hands
- * @input: weigh - optional, get weight of hand for game
- * @input: num - optional, number of cards, default 1
- * @return: update state of player
+ * @param {Object[]} hands - pass in player's hands to be mutated with new card
+ * @param {number} id - tells us which player to update
+ * @param {number} hNum - optional, if multiple hands
+ * @param {function} weigh - optional, get weight of hand for game
+ * @param {number} num - optional, number of cards, default 1
  */
 export function drawCard(hands, id, hNum = 0, weigh, num = 1) {
   const cards = [...hands[hNum].cards, ...Deck.deal(num)];
   const { weight } = weigh ? weigh(cards) : { weight: 0 };
   const newHands = updateArrayInArray(hands, { cards, weight }, hNum);
-  return { type: DRAW_CARD, player: { id: id, hands: newHands } };
+  return { type: DRAW_CARD, player: { id, hands: newHands } };
 }
 
 /**
  * function to have a player draw a card
- * @input: id - optional, what player should get a new hand, default 0
- * @input: weigh - optional, get weight of hand for game
- * @input: num - optional, number of cards, default 1
- * @return: update state of player
+ * @param {number} id - optional, what player should get a new hand, default 0
+ * @param {function} weigh - optional, get weight of hand for game
+ * @param {number} num - optional, number of cards, default 1
  */
 export function newHand(id = 0, weigh, num = 1) {
   const cards = Deck.deal(num).sort(Deck.rankSort);
   const { weight } = weigh(cards);
   return {
     type: NEW_HAND,
-    player: { id: id, status: '', hands: [{ cards, weight }] }
+    player: { id, status: '', hands: [{ cards, weight }] }
   };
 }
 

@@ -18,6 +18,13 @@ class HeaderBody extends Component {
     this.state = { open: false, isCasino };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { pathname } = nextProps.location;
+    if (pathname !== this.props.location.pathname) {
+      this.setState({ isCasino: pathname.includes('/casino') });
+    }
+  }
+
   onTouchTap = () => {
     this.setState({ open: !this.state.open });
   };
@@ -28,14 +35,6 @@ class HeaderBody extends Component {
       this.props.history.push(loc);
     }
   };
-
-  componentWillReceiveProps(nextProps) {
-    const { pathname } = nextProps.location;
-    const { pathname: oldPN } = this.props.location;
-    if (pathname !== oldPN) {
-      this.setState({ isCasino: pathname.includes('/casino') });
-    }
-  }
 
   render() {
     const { isCasino } = this.state;

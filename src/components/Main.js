@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { TIMELINE_TITLE } from './features/Timeline';
-import { Home } from './pages/Home';
-import { Work } from './pages/Work';
-import { Education } from './pages/Education';
-import { Projects } from './pages/Projects';
-import { PokerNight } from './pages/PokerNight';
-import { Resume } from './pages/Resume';
-import { Casino } from './pages/casino/Casino';
-import { BlackJack } from './pages/casino/BlackJack';
-import { Poker } from './pages/casino/Poker';
+import { Home } from './resume/Home';
+import { Work } from './resume/Work';
+import { Education } from './resume/Education';
+import { Projects } from './resume/Projects';
+import { PokerNight } from './resume/PokerNight';
+import { Resume } from './resume/Resume';
+import { Casino } from './casino/Casino';
+import { BlackJack } from './casino/BlackJack';
+import { Poker } from './casino/Poker';
 import classes from '../constants/classes';
 import workExp from '../constants/work';
 // Parents: App

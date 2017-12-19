@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { GameTable } from '../../features/GameTable';
-import { Deck } from '../../../apis/Deck';
+import { GameTable } from '../features/GameTable';
+import { Deck } from '../../apis/Deck';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { incrPlayerTurn, resetTurn, incrHandTurn } from '../../../modules/turn';
-import { drawCard, newHand, splitHand, payout } from '../../../modules/players';
+import { incrPlayerTurn, resetTurn, incrHandTurn } from '../../modules/turn';
+import { drawCard, newHand, splitHand, payout } from '../../modules/players';
 // Parents: Main
 
 // Dealer constant
 const DEALER = 0;
 
-/** calculate the weight of a hand
- * inputs: hand
- * outputs: weight
+/**
+ * calculate the weight of a hand
  * stateChanges: none
+ * @param {Object[]} hand
+ * @return {string, string}
  */
 function weighHand(hand = []) {
   // set return values
@@ -60,15 +61,18 @@ class BJ extends Component {
     this.state = {
       gameFunctions: []
     };
-    // binding is necessary to make `this` work in callback when defined x(){}, not x=()=>{}
-    // this.setPlayerCount = this.setPlayerCount.bind(this);
   }
 
-  // runs 1x on load: componentWillMount > render > componentDidMount
+  /** runs on page load setting up a new game */
   componentWillMount() {
     this.newGame();
   }
 
+  /**
+   * runs anytime render would be called, use to update state
+   * componentWillReceiveProps > shouldComponentUpdate > componentWillUpdate > render > componentDidUpdate
+   * prepair game functions for current / next player if hand changed
+   */
   componentWillReceiveProps(nextProps) {
     const { players, turn } = this.props;
     const { players: np, turn: nt } = nextProps;
@@ -84,13 +88,13 @@ class BJ extends Component {
     const hand = lastPlayer ? lastPlayer.hands[turn.hand] : null;
     // if the hand updated, get the game functions
     if (hand !== newHand) {
-      const gameFunctions = this.getGameFunctions(newHand);
+      const gameFunctions = [...this.getGameFunctions(newHand)];
       this.setState({ gameFunctions });
     }
   }
 
+  /** function to execute dealer logic */
   playDealer = () => {
-    console.log('play dealer');
     const { players, turn } = this.props;
     const hand = players[turn.player].hands[DEALER].cards;
     // Dealer hits on 16 or less and soft 17
@@ -102,9 +106,10 @@ class BJ extends Component {
     }
   };
 
-  /** get the game functions for the present hand
-   * inputs: hand
-   * stateChanges: gameFunctions
+  /**
+   * get the game functions for the present hand
+   * @param {Object[]} hand
+   * @return {Object[]} gameFunctions
    */
   getGameFunctions = hand => {
     // check state
@@ -112,30 +117,26 @@ class BJ extends Component {
       return [];
     }
 
-    // reset game functions
-    let gameFunctions = [{ name: 'Stay', func: this.stay }];
+    // define game function options
+    const stay = { name: 'Stay', func: this.stay };
+    const hit = { name: 'Hit', func: this.hit };
+    const double = { name: 'Double', func: this.double };
+    const split = { name: 'Split', func: this.split };
 
-    // check if you can hit
+    // reset game functions
+    let gameFunctions = [stay];
+
+    // check if not a bust
     if (hand.weight < 21) {
-      gameFunctions.push({
-        name: 'Hit',
-        func: this.hit
-      });
-      // check if you can double
-      if (hand.cards.length <= 2) {
-        gameFunctions.push({
-          name: 'Double',
-          func: this.double
-        });
-        // check if split is possible
+      gameFunctions.push(hit);
+      // check if you only have 2 cards
+      if (hand.cards.length === 2) {
+        gameFunctions.push(double);
+        // check if card1 and card2 have equal weight
         const { weight: weight1 } = weighHand([hand.cards[0]]);
         const { weight: weight2 } = weighHand([hand.cards[1]]);
-        // check if cards are the same weight
         if (weight1 === weight2) {
-          gameFunctions.push({
-            name: 'Split',
-            func: this.split
-          });
+          gameFunctions.push(split);
         }
       }
     }
@@ -146,7 +147,6 @@ class BJ extends Component {
 
   /**
    * Start a new game
-   * inputs: playerCount
    * stateChanges: turn, players
    */
   newGame = () => {
@@ -163,7 +163,6 @@ class BJ extends Component {
 
   /**
    * finish the game and check for a winner
-   * inputs: playerCount
    * stateChanges: turn, player, gameFunctions
    */
   finishGame = () => {
@@ -193,8 +192,8 @@ class BJ extends Component {
     this.setState({ gameFunctions });
   };
 
-  /** function to get a new card
-   * inputs: players, turn
+  /**
+   * function to get a new card
    * stateChanges: players
    */
   hit = () => {
@@ -203,12 +202,11 @@ class BJ extends Component {
     let hands = players[turn.player].hands;
     let id = players[turn.player].id;
     // logic to hit
-    console.log(id);
     playerActions.drawCard(hands, id, turn.hand, weighHand);
   };
 
-  /** function to pass to the next player
-   * inputs: turn, playerCount
+  /**
+   * function to pass to the next player
    * stateChanges: turn
    */
   stay = () => {
@@ -229,8 +227,8 @@ class BJ extends Component {
     this.stay();
   };
 
-  /** function that takes a hand of duplicates and makes 2 hands
-   * inputs: players, turn
+  /**
+   * function that takes a hand of duplicates and makes 2 hands
    * stateChanges: players
    */
   split = () => {
@@ -242,15 +240,17 @@ class BJ extends Component {
     playerActions.splitHand(hands, id, turn.hand, weighHand);
   };
 
-  // function to be called on card clicks
+  /**
+   * function to be called on card clicks
+   * @param {number} playerNo - player number
+   * @param {number} handNo - hand number
+   * @param {number} cardNo - card number
+   */
   cardClickHandler = (playerNo, handNo, cardNo) => {
-    const card = this.state.players[playerNo].hands[handNo].cards[cardNo];
-    console.log(card);
+    console.log(this.props.players[playerNo].hands[handNo].cards[cardNo]);
   };
 
-  // runs anytime render would be called, use to update state
-  // componentWillReceiveProps > shouldComponentUpdate > componentWillUpdate > render > componentDidUpdate
-  // render standard board
+  /** render the UI */
   render() {
     const { turn, players } = this.props;
     const { gameFunctions } = this.state;
