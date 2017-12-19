@@ -14,7 +14,7 @@ export const Menu = props => {
   const education = () => props.onClick('/education');
   const projects = () => props.onClick('/projects');
   const resume = () => props.onClick('/resume');
-  const casino = () => props.onClick('/casino');
+  // const casino = () => props.onClick('/casino');
 
   return (
     <div>
