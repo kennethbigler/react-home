@@ -1,6 +1,6 @@
 {
-  "short_name": "Ken's Resume",
-  "name": "Kenneth Bigler's ReactJS Resume",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,6 +8,6 @@
       "type": "image/png"
     }
   ],
-  "start_url": "./build/index.html",
+  "start_url": "./index.html",
   "display": "standalone"
 }
