@@ -74,76 +74,46 @@ class BJ extends Component {
    * prepair game functions for current / next player if hand changed
    */
   componentWillReceiveProps(nextProps) {
-    const { players, turn } = this.props;
+    const { players: lp, turn: lt } = this.props;
     const { players: np, turn: nt } = nextProps;
     // validate that there is a next player
-    const lastPlayer = players[turn.player];
-    const nextPlayer = np[nt.player];
-    if (!nextPlayer) {
+    const player = np[nt.player];
+    if (!player) {
       return;
     }
     // get the next hand
-    const newHand = nextPlayer.hands[nt.hand];
+    const hand = player.hands[nt.hand];
     // get the old hand
-    const hand = lastPlayer ? lastPlayer.hands[turn.hand] : null;
+    const lastHand = lp[lt.player] ? lp[lt.player].hands[lt.hand] : null;
     // if the hand updated, get the game functions
-    if (hand !== newHand) {
-      const gameFunctions = [...this.getGameFunctions(newHand)];
+    if (lastHand !== hand) {
+      const gameFunctions = [...this.getGameFunctions(hand)];
       this.setState({ gameFunctions });
     }
   }
 
-  /** function to execute dealer logic */
-  playDealer = () => {
-    const { players, turn } = this.props;
-    const hand = players[turn.player].hands[DEALER].cards;
-    // Dealer hits on 16 or less and soft 17
-    let { weight, soft } = weighHand(hand);
-    if (weight < 17 || (weight === 17 && soft)) {
-      this.hit();
-    } else {
-      this.finishGame();
-    }
-  };
-
   /**
-   * get the game functions for the present hand
-   * @param {Object[]} hand
-   * @return {Object[]} gameFunctions
+   * runs anytime render would be called, use to update state
+   * componentWillReceiveProps > shouldComponentUpdate > componentWillUpdate > render > componentDidUpdate
+   * check if dealer and hand has updated to initiate dealer functions
    */
-  getGameFunctions = hand => {
-    // check state
-    if (!hand) {
-      return [];
+  componentDidUpdate(prevProps) {
+    const { players: lp, turn: lt } = prevProps;
+    const { players: np, turn: nt } = this.props;
+    // verify player exists and is dealer
+    const player = np[nt.player];
+    if (!player || player.id !== DEALER) {
+      return;
     }
-
-    // define game function options
-    const stay = { name: 'Stay', func: this.stay };
-    const hit = { name: 'Hit', func: this.hit };
-    const double = { name: 'Double', func: this.double };
-    const split = { name: 'Split', func: this.split };
-
-    // reset game functions
-    let gameFunctions = [stay];
-
-    // check if not a bust
-    if (hand.weight < 21) {
-      gameFunctions.push(hit);
-      // check if you only have 2 cards
-      if (hand.cards.length === 2) {
-        gameFunctions.push(double);
-        // check if card1 and card2 have equal weight
-        const { weight: weight1 } = weighHand([hand.cards[0]]);
-        const { weight: weight2 } = weighHand([hand.cards[1]]);
-        if (weight1 === weight2) {
-          gameFunctions.push(split);
-        }
-      }
+    // get the next hand
+    const hand = player.hands[nt.hand];
+    // get the old hand
+    const lastHand = lp[lt.player] ? lp[lt.player].hands[lt.hand] : null;
+    // if the hand updated, check for dealer
+    if (lastHand !== hand) {
+      this.playDealer();
     }
-
-    // update game state
-    return gameFunctions;
-  };
+  }
 
   /**
    * Start a new game
@@ -159,37 +129,6 @@ class BJ extends Component {
     players.forEach(player => {
       playerActions.newHand(player.id, weighHand, 2);
     });
-  };
-
-  /**
-   * finish the game and check for a winner
-   * stateChanges: turn, player, gameFunctions
-   */
-  finishGame = () => {
-    // state variables
-    let { turn, players, playerActions } = this.props;
-    const dealer = players[turn.player].hands[DEALER].weight;
-    // track and find the winners
-    const bet = 5;
-    players.forEach(player => {
-      player.hands.forEach(hand => {
-        const { weight } = hand;
-        let status = '';
-        if (weight <= 21 && weight > dealer) {
-          status = 'win';
-        } else if (weight <= 21 && weight === dealer) {
-          status = 'draw';
-        } else {
-          status = 'lose';
-        }
-        playerActions.payout(player.id, status, player.money, bet);
-      });
-    });
-
-    // update state variables
-    const gameFunctions = [{ name: 'New Game', func: this.newGame }];
-    // update state
-    this.setState({ gameFunctions });
   };
 
   /**
@@ -238,6 +177,89 @@ class BJ extends Component {
     const id = players[turn.player].id;
 
     playerActions.splitHand(hands, id, turn.hand, weighHand);
+  };
+
+  /**
+   * get the game functions for the present hand
+   * @param {Object[]} hand
+   * @return {Object[]} gameFunctions
+   */
+  getGameFunctions = hand => {
+    // check state
+    if (!hand) {
+      return [];
+    }
+
+    // define game function options
+    const stay = { name: 'Stay', func: this.stay };
+    const hit = { name: 'Hit', func: this.hit };
+    const double = { name: 'Double', func: this.double };
+    const split = { name: 'Split', func: this.split };
+
+    // reset game functions
+    let gameFunctions = [stay];
+
+    // check if not a bust
+    if (hand.weight < 21) {
+      gameFunctions.push(hit);
+      // check if you only have 2 cards
+      if (hand.cards.length === 2) {
+        gameFunctions.push(double);
+        // check if card1 and card2 have equal weight
+        const { weight: weight1 } = weighHand([hand.cards[0]]);
+        const { weight: weight2 } = weighHand([hand.cards[1]]);
+        if (weight1 === weight2) {
+          gameFunctions.push(split);
+        }
+      }
+    }
+
+    // update game state
+    return gameFunctions;
+  };
+
+  /**
+   * finish the game and check for a winner
+   * stateChanges: turn, player, gameFunctions
+   */
+  finishGame = () => {
+    // state variables
+    let { turn, players, playerActions } = this.props;
+    const dealer = players[turn.player].hands[DEALER].weight;
+    // track and find the winners
+    const bet = 5;
+    players.forEach(player => {
+      player.hands.forEach(hand => {
+        const { weight } = hand;
+        let status = '';
+        if (weight <= 21 && weight > dealer) {
+          status = 'win';
+        } else if (weight <= 21 && weight === dealer) {
+          status = 'draw';
+        } else {
+          status = 'lose';
+        }
+        playerActions.payout(player.id, status, player.money, bet);
+      });
+    });
+
+    // update state variables
+    const gameFunctions = [{ name: 'New Game', func: this.newGame }];
+    // update state
+    this.setState({ gameFunctions });
+  };
+
+  /** function to execute dealer logic */
+  playDealer = () => {
+    const { players, turn } = this.props;
+    let hand = players[turn.player].hands[turn.hand].cards;
+    let { weight, soft } = weighHand(hand);
+    // Dealer hits on 16 or less and soft 17
+    if (weight <= 16 || (weight === 17 && soft)) {
+      this.hit();
+    } else {
+      this.finishGame();
+    }
   };
 
   /**

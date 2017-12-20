@@ -4,21 +4,20 @@ import { Board } from './gametable/Board';
 import { ButtonGroup } from './gametable/ButtonGroup';
 // Parents: BlackJack
 
-/* MAP:
- *  GameTable ->  Board ->  Player  ->  Hand ->  Card
- *           |->  Button Group ->  Button
-*/
-
+/**
+ * MAP:
+ * GameTable ->  Board -> Player -> Hand -> Card
+ *          |->  Button Group  ->  Button
+ */
 export const GameTable = props => {
   const { turn, players, cardClickHandler, gameFunctions } = props;
+  const played = players.slice(0, turn.player + 1);
+  const future = players.slice(turn.player + 1);
   return (
     <div className="gameTable">
-      <Board
-        turn={turn}
-        players={players}
-        cardClickHandler={cardClickHandler}
-      />
+      <Board turn={turn} players={played} cardClickHandler={cardClickHandler} />
       <ButtonGroup gameFunctions={gameFunctions} />
+      <Board players={future} cardClickHandler={cardClickHandler} />
     </div>
   );
 };

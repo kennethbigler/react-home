@@ -11,7 +11,7 @@ export const Player = props => {
   // get vars from props
   const { playerNo, turn, player, cardClickHandler } = props;
   // set booleans
-  const isPlayerTurn = playerNo === turn.player;
+  const isPlayerTurn = !!turn && playerNo === turn.player;
   const isMultiHand = player.hands.length > 1;
   // set colors
   let color = isPlayerTurn
@@ -28,34 +28,34 @@ export const Player = props => {
     color = { background: colors.red300 };
   }
 
-  // code rendered per hand
-  const handCode = player.hands.map((hand, i) => {
-    return (
-      <div key={`hand${i}`}>
-        <h2 style={{ ...weight, marginBottom: 0 }}>{player.name}</h2>
-        <Hand
-          hand={hand}
-          playerNo={playerNo}
-          handNo={i}
-          isHandTurn={turn.hand === i}
-          isPlayerTurn={isPlayerTurn}
-          isMultiHand={isMultiHand}
-          cardClickHandler={cardClickHandler}
-        />
-      </div>
-    );
-  });
-
   return (
     <div className="player" style={color}>
-      {handCode}
+      {player.hands.map((hand, i) => {
+        const isHandTurn = !!turn && turn.hand === i;
+        return (
+          <div key={`hand${i}`}>
+            <h2 style={{ ...weight, marginBottom: 0 }}>
+              {player.name}: ${player.money}
+            </h2>
+            <Hand
+              hand={hand}
+              playerNo={playerNo}
+              handNo={i}
+              isHandTurn={isHandTurn}
+              isPlayerTurn={isPlayerTurn}
+              isMultiHand={isMultiHand}
+              cardClickHandler={cardClickHandler}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 };
 
 Player.propTypes = {
   //  PropTypes = [string, object, bool, number, func, array].isRequired
-  turn: PropTypes.object.isRequired,
+  turn: PropTypes.object,
   player: PropTypes.object.isRequired,
   playerNo: PropTypes.number.isRequired,
   cardClickHandler: PropTypes.func.isRequired
