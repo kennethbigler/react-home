@@ -4,6 +4,7 @@ export default {
       id: 1,
       name: 'Ken',
       money: 100,
+      bet: 5,
       status: '',
       hands: []
     },
@@ -11,6 +12,7 @@ export default {
       id: 2,
       name: 'Tyler',
       money: 100,
+      bet: 5,
       status: '',
       hands: []
     },
@@ -18,6 +20,7 @@ export default {
       id: 3,
       name: 'Meeks',
       money: 100,
+      bet: 5,
       status: '',
       hands: []
     },
@@ -25,6 +28,7 @@ export default {
       id: 4,
       name: 'Zach',
       money: 100,
+      bet: 5,
       status: '',
       hands: []
     },
@@ -32,6 +36,7 @@ export default {
       id: 5,
       name: 'Scott',
       money: 100,
+      bet: 5,
       status: '',
       hands: []
     },
@@ -39,6 +44,7 @@ export default {
       id: 6,
       name: 'Danny',
       money: 100,
+      bet: 5,
       status: '',
       hands: []
     },
@@ -46,6 +52,7 @@ export default {
       id: 0,
       name: 'Dealer',
       money: 0,
+      bet: 0,
       status: 'dealer',
       hands: []
     }

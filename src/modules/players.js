@@ -30,6 +30,7 @@ function removeItem(players, id) {
 const ADD = 'casino/player/ADD';
 const REMOVE = 'casino/player/REMOVE';
 const UPDATE_NAME = 'casino/player/UPDATE_NAME';
+const UPDATE_BET = 'casino/player/UPDATE_NAME';
 const FINISH_GAME = 'casino/player/FINISH_GAME';
 const SPLIT_HAND = 'casino/player/SPLIT_HAND';
 const DRAW_CARD = 'casino/player/DRAW_CARD';
@@ -47,6 +48,8 @@ export function addPlayer(players, name) {
     id: players.length,
     name: name,
     money: 100,
+    bet: 5,
+    status: '',
     hands: []
   };
   return { type: ADD, player };
@@ -61,12 +64,24 @@ export function removePlayer(id = 0) {
 }
 
 /**
- * function to update a players name
+ * function to update a player's name
  * @param {number} id - id of player
  * @param {string} name - new name of player
  */
 export function updatePlayerName(id = 0, name = '') {
-  return { type: UPDATE_NAME, id, name };
+  return { type: UPDATE_NAME, player: { id, name } };
+}
+
+/**
+ * function to update a player's bet
+ * @param {number} id - id of player
+ * @param {number} oldBet - current bet
+ * @param {boolean} incr - increase or decrease
+ * @param {number} val - magnitude of change
+ */
+export function updatePlayerBet(id = 0, oldBet, incr = true, val = 5) {
+  const bet = oldBet + incr ? val : -val;
+  return { type: UPDATE_BET, player: { id, bet } };
 }
 
 /**
@@ -77,8 +92,10 @@ export function updatePlayerName(id = 0, name = '') {
  * @param {number} bet - player's bet
  */
 export function payout(id, status, money, bet = 0) {
+  console.log(status);
   switch (status) {
     case 'win':
+    case 'dealer':
       money += bet;
       break;
     case 'lose':
@@ -140,9 +157,10 @@ export function drawCard(hands, id, hNum = 0, weigh, num = 1) {
 export function newHand(id = 0, weigh, num = 1) {
   const cards = Deck.deal(num).sort(Deck.rankSort);
   const { weight } = weigh(cards);
+  const status = id === 0 ? 'dealer' : '';
   return {
     type: NEW_HAND,
-    player: { id, status: '', hands: [{ cards, weight }] }
+    player: { id, status, bet: 5, hands: [{ cards, weight }] }
   };
 }
 
@@ -150,10 +168,12 @@ export function newHand(id = 0, weigh, num = 1) {
 
 export default function reducer(state = initialState.players, action) {
   switch (action.type) {
-    case SPLIT_HAND:
-    case NEW_HAND:
-    case DRAW_CARD:
+    case UPDATE_NAME:
+    case UPDATE_BET:
     case FINISH_GAME:
+    case SPLIT_HAND:
+    case DRAW_CARD:
+    case NEW_HAND:
       return updateObjectInArray(state, action.player, 'id');
     case ADD:
       return insertItem(state, action.player);

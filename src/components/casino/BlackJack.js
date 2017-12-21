@@ -228,19 +228,27 @@ class BJ extends Component {
     const dealer = players[turn.player].hands[DEALER].weight;
     // track and find the winners
     const bet = 5;
+    let house = 0;
     players.forEach(player => {
-      player.hands.forEach(hand => {
-        const { weight } = hand;
-        let status = '';
-        if (weight <= 21 && weight > dealer) {
-          status = 'win';
-        } else if (weight <= 21 && weight === dealer) {
-          status = 'draw';
-        } else {
-          status = 'lose';
-        }
-        playerActions.payout(player.id, status, player.money, bet);
-      });
+      const { id, money } = player;
+      if (id === DEALER) {
+        playerActions.payout(id, player.status, money, house);
+      } else {
+        player.hands.forEach(hand => {
+          const { weight } = hand;
+          let status = '';
+          if (weight <= 21 && (weight > dealer || dealer > 21)) {
+            status = 'win';
+            house -= bet;
+          } else if (weight <= 21 && weight === dealer) {
+            status = 'draw';
+          } else {
+            status = 'lose';
+            house += bet;
+          }
+          playerActions.payout(id, status, money, bet);
+        });
+      }
     });
 
     // update state variables
