@@ -18,7 +18,7 @@ export default [
   },
   {
     name: 'Aaron',
-    scores: { W1: -45, W2: -1, W4: -33, W5: 60, W7: 14, W8: 40 }
+    scores: { W1: -45, W2: -1, W4: -33, W5: 60, W7: 14, W8: -40 }
   },
   {
     name: 'Winston',
