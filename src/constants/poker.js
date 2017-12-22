@@ -91,6 +91,6 @@ export default [
   },
   {
     name: 'Scott',
-    scores: { W4: -100 }
+    scores: { W8: -100 }
   }
 ];
