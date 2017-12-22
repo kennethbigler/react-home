@@ -14,7 +14,7 @@ export const Hand = props => {
     hand,
     isMultiHand,
     isPlayerTurn,
-    cardClickHandler
+    cardHandler
   } = props;
 
   const bold =
@@ -36,7 +36,7 @@ export const Hand = props => {
           playerNo={playerNo}
           handNo={handNo}
           cardNo={i}
-          cardClickHandler={cardClickHandler}
+          cardHandler={cardHandler}
         />
       ))}
     </div>
@@ -51,5 +51,5 @@ Hand.propTypes = {
   isHandTurn: PropTypes.bool.isRequired,
   isPlayerTurn: PropTypes.bool.isRequired,
   isMultiHand: PropTypes.bool.isRequired,
-  cardClickHandler: PropTypes.func.isRequired
+  cardHandler: PropTypes.func
 };

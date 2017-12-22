@@ -12,6 +12,6 @@ export class Poker extends Component {
   // componentWillReceiveProps > shouldComponentUpdate > componentWillUpdate > render > componentDidUpdate
   // render standard board
   render() {
-    return <h1>Hello Poker</h1>;
+    return <h1>Placeholder for Future Poker Project</h1>;
   }
 }

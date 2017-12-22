@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as colors from 'material-ui/styles/colors';
 import { Hand } from './Hand';
+import Slider from 'material-ui/Slider';
+import * as colors from 'material-ui/styles/colors';
 // Parents: Board
 
 /* --------------------------------------------------
@@ -9,10 +10,16 @@ import { Hand } from './Hand';
  * -------------------------------------------------- */
 export const Player = props => {
   // get vars from props
-  const { playerNo, turn, player, cardClickHandler } = props;
+  const { playerNo, turn, player, cardHandler, betHandler, hideHands } = props;
   // set booleans
   const isPlayerTurn = !!turn && playerNo === turn.player;
   const isMultiHand = player.hands.length > 1;
+  const showSlider = !!hideHands && player.id > 0;
+  // set slider variables
+  const minBet = Math.max(Math.min(player.money, 5), 0);
+  const maxBet = Math.max(Math.min(player.money, 100), 10);
+  const step = 5;
+  const onSliderChange = (event, value) => betHandler(player.id, event, value);
   // set colors
   let color = isPlayerTurn
     ? { background: colors.cyan200 }
@@ -30,22 +37,36 @@ export const Player = props => {
 
   return (
     <div className="player" style={color}>
+      <h2 style={{ ...weight, marginBottom: 0 }}>
+        {player.name}: ${player.money}
+      </h2>
+      {showSlider && (
+        <Slider
+          min={minBet}
+          max={maxBet}
+          step={step}
+          value={player.bet}
+          onChange={onSliderChange}
+          sliderStyle={{ marginBottom: 0 }}
+          style={{ minWidth: '100px' }}
+        />
+      )}
+      <h3>Bet: ${player.bet}</h3>
       {player.hands.map((hand, i) => {
         const isHandTurn = !!turn && turn.hand === i;
         return (
           <div key={`hand${i}`}>
-            <h2 style={{ ...weight, marginBottom: 0 }}>
-              {player.name}: ${player.money}
-            </h2>
-            <Hand
-              hand={hand}
-              playerNo={playerNo}
-              handNo={i}
-              isHandTurn={isHandTurn}
-              isPlayerTurn={isPlayerTurn}
-              isMultiHand={isMultiHand}
-              cardClickHandler={cardClickHandler}
-            />
+            {!hideHands && (
+              <Hand
+                hand={hand}
+                playerNo={playerNo}
+                handNo={i}
+                isHandTurn={isHandTurn}
+                isPlayerTurn={isPlayerTurn}
+                isMultiHand={isMultiHand}
+                cardHandler={cardHandler}
+              />
+            )}
           </div>
         );
       })}
@@ -55,8 +76,10 @@ export const Player = props => {
 
 Player.propTypes = {
   //  PropTypes = [string, object, bool, number, func, array].isRequired
-  turn: PropTypes.object,
   player: PropTypes.object.isRequired,
   playerNo: PropTypes.number.isRequired,
-  cardClickHandler: PropTypes.func.isRequired
+  hideHands: PropTypes.bool,
+  turn: PropTypes.object,
+  betHandler: PropTypes.func,
+  cardHandler: PropTypes.func
 };

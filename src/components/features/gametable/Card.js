@@ -10,8 +10,8 @@ export const Card = props => {
   const { suit, name } = props;
   // handle click to for card
   const handleClick = () => {
-    const { cardClickHandler, playerNo, handNo, cardNo } = props;
-    cardClickHandler(playerNo, handNo, cardNo);
+    const { cardHandler, playerNo, handNo, cardNo } = props;
+    cardHandler(playerNo, handNo, cardNo);
   };
   // checking color based off suits: ♣♦♥♠
   const cardColor = {
@@ -38,5 +38,5 @@ Card.propTypes = {
   playerNo: PropTypes.number.isRequired,
   handNo: PropTypes.number.isRequired,
   cardNo: PropTypes.number.isRequired,
-  cardClickHandler: PropTypes.func.isRequired
+  cardHandler: PropTypes.func
 };

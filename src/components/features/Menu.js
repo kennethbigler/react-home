@@ -4,7 +4,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 // Parents: Header
 
-const github = 'https://github.com/kennethbigler';
+const github = 'https://github.com/kennethbigler/react-home';
 const linkedin = 'https://www.linkedin.com/in/kennethbigler';
 const stkovrflw = 'http://stackoverflow.com/users/4830309/ken-bigler';
 
@@ -14,7 +14,7 @@ export const Menu = props => {
   const education = () => props.onClick('/education');
   const projects = () => props.onClick('/projects');
   const resume = () => props.onClick('/resume');
-  // const casino = () => props.onClick('/casino');
+  const casino = () => props.onClick('/casino');
 
   return (
     <div>
@@ -23,7 +23,7 @@ export const Menu = props => {
       <MenuItem onTouchTap={education}>Education</MenuItem>
       <MenuItem onTouchTap={projects}>Projects</MenuItem>
       <MenuItem onTouchTap={resume}>Resume</MenuItem>
-      {/* <MenuItem onTouchTap={casino}>Casino</MenuItem> */}
+      <MenuItem onTouchTap={casino}>React Casino</MenuItem>
       {/* External Links */}
       <Divider />
       <MenuItem href={github} rel="noopener">

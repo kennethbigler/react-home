@@ -7,7 +7,7 @@ import { Player } from './Player';
  * Board
  * -------------------------------------------------- */
 export const Board = props => {
-  const { players, turn, cardClickHandler } = props;
+  const { players, turn, cardHandler, betHandler, hideHands } = props;
 
   return (
     <div className="board">
@@ -15,10 +15,12 @@ export const Board = props => {
         return (
           <Player
             key={`player${i}`}
-            turn={turn}
-            player={player}
             playerNo={i}
-            cardClickHandler={cardClickHandler}
+            player={player}
+            turn={turn}
+            hideHands={hideHands}
+            betHandler={betHandler}
+            cardHandler={cardHandler}
           />
         );
       })}
@@ -28,7 +30,9 @@ export const Board = props => {
 
 Board.propTypes = {
   //  PropTypes = [string, object, bool, number, func, array].isRequired
-  turn: PropTypes.object,
   players: PropTypes.array.isRequired,
-  cardClickHandler: PropTypes.func.isRequired
+  turn: PropTypes.object,
+  hideHands: PropTypes.bool,
+  betHandler: PropTypes.func,
+  cardHandler: PropTypes.func
 };

@@ -29,8 +29,9 @@ function removeItem(players, id) {
 
 const ADD = 'casino/player/ADD';
 const REMOVE = 'casino/player/REMOVE';
+const RESET = 'casino/player/RESET';
 const UPDATE_NAME = 'casino/player/UPDATE_NAME';
-const UPDATE_BET = 'casino/player/UPDATE_NAME';
+const UPDATE_BET = 'casino/player/UPDATE_BET';
 const FINISH_GAME = 'casino/player/FINISH_GAME';
 const SPLIT_HAND = 'casino/player/SPLIT_HAND';
 const DRAW_CARD = 'casino/player/DRAW_CARD';
@@ -68,19 +69,16 @@ export function removePlayer(id = 0) {
  * @param {number} id - id of player
  * @param {string} name - new name of player
  */
-export function updatePlayerName(id = 0, name = '') {
+export function updateName(id = 0, name = '') {
   return { type: UPDATE_NAME, player: { id, name } };
 }
 
 /**
  * function to update a player's bet
  * @param {number} id - id of player
- * @param {number} oldBet - current bet
- * @param {boolean} incr - increase or decrease
- * @param {number} val - magnitude of change
+ * @param {number} bet - current bet
  */
-export function updatePlayerBet(id = 0, oldBet, incr = true, val = 5) {
-  const bet = oldBet + incr ? val : -val;
+export function updateBet(id = 0, bet = 5) {
   return { type: UPDATE_BET, player: { id, bet } };
 }
 
@@ -92,7 +90,6 @@ export function updatePlayerBet(id = 0, oldBet, incr = true, val = 5) {
  * @param {number} bet - player's bet
  */
 export function payout(id, status, money, bet = 0) {
-  console.log(status);
   switch (status) {
     case 'win':
     case 'dealer':
@@ -157,17 +154,23 @@ export function drawCard(hands, id, hNum = 0, weigh, num = 1) {
 export function newHand(id = 0, weigh, num = 1) {
   const cards = Deck.deal(num).sort(Deck.rankSort);
   const { weight } = weigh(cards);
+  return { type: NEW_HAND, player: { id, hands: [{ cards, weight }] } };
+}
+
+/**
+ * function to reset player status
+ * @param {number} id - optional, what player should get a new hand, default 0
+ */
+export function resetStatus(id = 0) {
   const status = id === 0 ? 'dealer' : '';
-  return {
-    type: NEW_HAND,
-    player: { id, status, bet: 5, hands: [{ cards, weight }] }
-  };
+  return { type: RESET, player: { id, status, hands: [], bet: 5 } };
 }
 
 // --------------------     Reducer     -------------------- //
 
 export default function reducer(state = initialState.players, action) {
   switch (action.type) {
+    case RESET:
     case UPDATE_NAME:
     case UPDATE_BET:
     case FINISH_GAME:

@@ -23,7 +23,13 @@ export class Casino extends Component {
   render() {
     return (
       <div>
-        <h2>Casino Homepage Placeholder</h2>
+        <h2>Welcome to my ReactJS Casino Project</h2>
+        <h3>
+          This site was created to learn, check out the{' '}
+          <a href="https://github.com/kennethbigler/react-home">
+            {'<'}source code{' />'}
+          </a>
+        </h3>
       </div>
     );
   }
