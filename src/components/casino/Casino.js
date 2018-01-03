@@ -19,6 +19,14 @@ class Home extends Component {
     players.forEach(p => isBot.push(p.isBot));
     // set state
     this.state = { isBot };
+    this.styles = {
+      namepad: {
+        maxWidth: '420px',
+        width: '100%',
+        display: 'block',
+        margin: 'auto'
+      }
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,6 +45,12 @@ class Home extends Component {
     this.props.playerActions.updateBot(id, isChecked);
   };
 
+  handleKeyPress = (e, id) => {
+    if (e.key === 'Enter') {
+      this.props.playerActions.updateName(id, e.target.value);
+    }
+  };
+
   render() {
     const { players } = this.props;
     const { isBot } = this.state;
@@ -49,29 +63,38 @@ class Home extends Component {
             {'<'}source code{' />'}
           </a>
         </h3>
-        <h4 className="col-xs-9">Edit Player Names</h4>
-        <h4 className="col-xs-3">Is Bot?</h4>
-        {players.map(
-          (p, i) =>
-            p.id !== 0 ? (
-              <span key={`${p.name},${i}`}>
-                <div className="col-xs-9">
-                  <TextField
-                    defaultValue={p.name}
-                    hintText="Enter Player Name"
-                  />
+        <hr />
+        <div style={this.styles.namepad}>
+          <h4 className="col-xs-9">Edit Player Names</h4>
+          <h4 className="col-xs-3">Is Bot?</h4>
+          {players.map(
+            (p, i) =>
+              p.id !== 0 ? (
+                <span key={`${p.name},${i}`}>
+                  <div className="col-xs-9">
+                    <TextField
+                      defaultValue={p.name}
+                      onKeyPress={e => this.handleKeyPress(e, p.id)}
+                      hintText="Enter Player Name"
+                    />
+                  </div>
+                  <div className="col-xs-3" style={{ marginTop: '12px' }}>
+                    <Toggle
+                      toggled={isBot[i]}
+                      onToggle={(e, isC) => this.handleToggle(p.id, isC, e)}
+                    />
+                  </div>
+                </span>
+              ) : (
+                <div key={`${p.name},${i}`}>
+                  <h4 className="col-xs-9">{p.name}</h4>
+                  <div className="col-xs-3">
+                    <Toggle defaultToggled={true} disabled={true} />
+                  </div>
                 </div>
-                <div className="col-xs-3" style={{ marginTop: '12px' }}>
-                  <Toggle
-                    toggled={isBot[i]}
-                    onToggle={(e, isC) => this.handleToggle(p.id, isC)}
-                  />
-                </div>
-              </span>
-            ) : (
-              <h4 className="col-xs-12">{p.name}</h4>
-            )
-        )}
+              )
+          )}
+        </div>
       </div>
     );
   }
