@@ -14,7 +14,7 @@ export const Player = props => {
   // set booleans
   const isPlayerTurn = !!turn && playerNo === turn.player;
   const isMultiHand = player.hands.length > 1;
-  const showSlider = !!hideHands && player.id !== 0;
+  const showSlider = !!hideHands && player.id !== 0 && !player.isBot;
   // set slider variables
   const minBet = Math.max(Math.min(player.money, 5), 0);
   const maxBet = Math.max(Math.min(player.money, 100), 10);
@@ -51,7 +51,7 @@ export const Player = props => {
           style={{ minWidth: '100px' }}
         />
       )}
-      <h3>Bet: ${player.bet}</h3>
+      {player.id !== 0 && <h3>Bet: ${player.bet}</h3>}
       {player.hands.map((hand, i) => {
         const isHandTurn = !!turn && turn.hand === i;
         return (
