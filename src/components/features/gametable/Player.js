@@ -14,7 +14,7 @@ export const Player = props => {
   // set booleans
   const isPlayerTurn = !!turn && playerNo === turn.player;
   const isMultiHand = player.hands.length > 1;
-  const showSlider = !!hideHands && player.id > 0;
+  const showSlider = !!hideHands && player.id !== 0;
   // set slider variables
   const minBet = Math.max(Math.min(player.money, 5), 0);
   const maxBet = Math.max(Math.min(player.money, 100), 10);

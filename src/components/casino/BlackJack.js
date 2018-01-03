@@ -113,7 +113,12 @@ class BJ extends Component {
     const { players: np, turn: nt } = this.props;
     // verify player exists and is dealer
     const player = np[nt.player];
-    if (!player || player.id !== DEALER) {
+    if (!player) {
+      return;
+    } else if (player.isBot && player.id !== DEALER) {
+      this.playBot();
+      return;
+    } else if (player.id !== DEALER) {
       return;
     }
     // get the next hand
@@ -162,7 +167,8 @@ class BJ extends Component {
     Deck.shuffle();
     // deal the hands
     players.forEach(player => {
-      playerActions.newHand(player.id, weighHand, 2);
+      const num = player.id !== DEALER ? 2 : 1;
+      playerActions.newHand(player.id, weighHand, num);
     });
   };
 
@@ -263,6 +269,7 @@ class BJ extends Component {
     // state variables
     let { turn, players, playerActions } = this.props;
     const dealer = players[turn.player].hands[DEALER].weight;
+    const dealerLen = players[turn.player].hands[DEALER].cards.length;
     // track and find the winners
     let house = 0;
     players.forEach(player => {
@@ -270,20 +277,41 @@ class BJ extends Component {
       if (id === DEALER) {
         playerActions.payout(id, player.status, money, house);
       } else {
+        let status = '';
+        let payout = 0;
+        const win = (mul = 1) => {
+          house -= Math.floor(mul * bet);
+          payout += Math.floor(mul * bet);
+        };
+        const loss = () => {
+          house += bet;
+          payout -= bet;
+        };
         player.hands.forEach(hand => {
-          const { weight } = hand;
-          let status = '';
-          if (weight <= 21 && (weight > dealer || dealer > 21)) {
-            status = 'win';
-            house -= bet;
+          const { weight, cards } = hand;
+          if (dealer === 21 && dealerLen === 2) {
+            // dealer BlackJack
+            loss();
+          } else if (weight === 21 && cards.length === 2) {
+            // player BlackJack
+            win(6 / 5);
+          } else if (weight <= 21 && (weight > dealer || dealer > 21)) {
+            win();
           } else if (weight <= 21 && weight === dealer) {
-            status = 'draw';
+            // push, do nothing
           } else {
-            status = 'lose';
-            house += bet;
+            loss();
           }
-          playerActions.payout(id, status, money, bet);
         });
+        if (payout > 0) {
+          status = 'win';
+        } else if (payout < 0) {
+          status = 'lose';
+          payout *= -1;
+        } else {
+          status = 'push';
+        }
+        playerActions.payout(id, status, money, payout);
       }
     });
 
@@ -308,54 +336,43 @@ class BJ extends Component {
 
   // AI: https://www.blackjackinfo.com/blackjack-basic-strategy-engine/
   playBot = () => {
+    // functions
+    const { hit, split, double, stay } = this;
+    // player hand
     const { players, turn } = this.props;
     const hand = players[turn.player].hands[turn.hand];
+    // validate hand exists
+    if (!hand) {
+      return;
+    }
+    // get remaining vars
+    const dealer = players[players.length - 1].hands[DEALER];
     const n = hand.weight;
     const soft = hand.soft;
-    const d = 2;
-    const { weight: x } = weighHand(hand.cards[0]);
-    const { weight: y } = weighHand(hand.cards[1]);
+    // card / dealer weight
+    const { weight: d } = weighHand([dealer.cards[0]]);
+    const { weight: x } = weighHand([hand.cards[0]]);
+    const { weight: y } = weighHand([hand.cards[1]]);
 
-    const { hit, split, double, stay } = this;
-
+    // play AI logic
     if (n < 22) {
       // split algorithm
       if (x === y) {
         if (x === 2 || x === 3 || x === 7) {
           // 2,3,7, split d2-7, hit d8+
-          if (d <= 7) {
-            split();
-          } else {
-            hit();
-          }
+          d <= 7 ? split() : hit();
         } else if (x === 4) {
           // 4, split d5-6, else hit
-          if (d === 5 || d === 6) {
-            split();
-          } else {
-            hit();
-          }
+          d === 5 || d === 6 ? split() : hit();
         } else if (x === 5) {
           // 5, double d2-9, hit d10+
-          if (d <= 9) {
-            double();
-          } else {
-            hit();
-          }
+          d <= 9 ? double() : hit();
         } else if (x === 6) {
           // 6, split d2-6, else hit
-          if (d <= 6) {
-            split();
-          } else {
-            hit();
-          }
+          d <= 6 ? split() : hit();
         } else if (x === 9) {
           // 9, d7,10+ stay, else split
-          if (d === 7 || d >= 10) {
-            stay();
-          } else {
-            split();
-          }
+          d === 7 || d >= 10 ? stay() : split();
         } else if (x === 8 || x === 14) {
           // 8,A split
           split();
@@ -367,41 +384,19 @@ class BJ extends Component {
         // soft hands, A9+ stays
         if (n === 13 || n === 14) {
           // A2-A3 double d5-6, hit d2-4, d7-A
-          if (d === 5 || d === 6) {
-            double();
-          } else {
-            hit();
-          }
+          d === 5 || d === 6 ? double() : hit();
         } else if (n === 15 || n === 16) {
           // A4-A5 double d4-6, hit d2-3, d7-A
-          if (d >= 4 && d <= 6) {
-            double();
-          } else {
-            hit();
-          }
+          d >= 4 && d <= 6 ? double() : hit();
         } else if (n === 17) {
           // A6 double d3-6, hit d2, d7-A
-          if (d >= 3 && d <= 6) {
-            double();
-          } else {
-            hit();
-          }
+          d >= 3 && d <= 6 ? double() : hit();
         } else if (n === 18) {
           // A7 double d2-6, stay d7-8, hit d9-A
-          if (n >= 2 && n <= 6) {
-            double();
-          } else if (n === 7 || n === 8) {
-            stay();
-          } else {
-            hit();
-          }
+          n >= 2 && n <= 6 ? double() : n === 7 || n === 8 ? stay() : hit();
         } else if (n === 19) {
           // A8 double d6, else stay
-          if (d === 6) {
-            double();
-          } else {
-            stay();
-          }
+          d === 6 ? double() : stay();
         } else {
           console.error(`AI ${turn} Error: n ${n}, d ${d}, s ${soft}`);
         }
@@ -412,44 +407,29 @@ class BJ extends Component {
           hit();
         } else if (n === 9) {
           // 9 double d3-6, hit d2, d7-A
-          if (d >= 3 && d <= 6) {
-            double();
-          } else {
-            hit();
-          }
+          d >= 3 && d <= 6 ? double() : hit();
         } else if (n === 10) {
           // 10 double d2-9, hit d10-A
-          if (d >= 2 && d <= 9) {
-            double();
-          } else {
-            hit();
-          }
+          d >= 2 && d <= 9 ? double() : hit();
         } else if (n === 11) {
           // 11 double
           double();
         } else if (n === 12) {
           // 12 hit d2-3, stay d4-6, hit 7-A
-          if (d >= 4 && d <= 6) {
-            stay();
-          } else {
-            hit();
-          }
+          d >= 4 && d <= 6 ? stay() : hit();
         } else if (n >= 13 && n <= 16) {
           // 13-16 stay d2-6, hit 7-A
-          if (d >= 2 && d <= 6) {
-            stay();
-          } else {
-            hit();
-          }
+          d >= 2 && d <= 6 ? stay() : hit();
         } else {
           console.error(`AI ${turn} Error: n ${n}, d ${d}, s ${soft}`);
         }
       } else {
-        console.log(`AI ${turn}: n ${n}, d ${d}, s ${soft}`);
         stay();
       }
+    } else {
+      // bust
+      stay();
     }
-    console.log('bust');
   };
 
   /**

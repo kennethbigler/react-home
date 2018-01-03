@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from './Card';
+import * as colors from 'material-ui/styles/colors';
 // Parents: Player
 
 /* --------------------------------------------------
@@ -20,7 +21,7 @@ export const Hand = props => {
   const bold =
     (isHandTurn && isMultiHand && isPlayerTurn) ||
     (!isMultiHand && isPlayerTurn)
-      ? { fontWeight: 'bold' }
+      ? { fontWeight: 'bold', color: colors.red300 }
       : { fontWeight: 'normal' };
 
   return (
