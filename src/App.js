@@ -10,7 +10,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import * as colors from 'material-ui/styles/colors';
 // redux
-import { configureStore, saveState } from './modules/configureStore';
+import { configureStore, saveState } from './store/configureStore';
 import { Provider } from 'react-redux';
 import throttle from 'lodash/throttle';
 

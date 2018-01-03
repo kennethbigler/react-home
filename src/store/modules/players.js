@@ -1,11 +1,11 @@
-import { Deck } from '../apis/Deck';
+import { Deck } from '../../apis/Deck';
 import {
   removeItem,
   updateArrayInArray,
   updateObjectInArray,
   insertItem
-} from './immutableHelpers';
-import initialState from './initialState';
+} from '../immutableHelpers';
+import initialState from '../initialState';
 
 // --------------------     Actions     -------------------- //
 
@@ -112,10 +112,8 @@ export function splitHand(hands, id, hNum, weigh) {
   hand1.cards.push(Deck.deal(1)[0]);
   hand2.cards.push(Deck.deal(1)[0]);
   // update the weights
-  const { weight: weight1 } = weigh(hand1.cards);
-  const { weight: weight2 } = weigh(hand2.cards);
-  hand1.weight = weight1;
-  hand2.weight = weight2;
+  Object.assign(hand1, weigh(hand1.cards));
+  Object.assign(hand2, weigh(hand2.cards));
   // update global hands
   let newHands = updateArrayInArray(hands, hand2, hNum);
   newHands.splice(hNum, 0, hand1);
@@ -132,8 +130,8 @@ export function splitHand(hands, id, hNum, weigh) {
  */
 export function drawCard(hands, id, hNum = 0, weigh, num = 1) {
   const cards = [...hands[hNum].cards, ...Deck.deal(num)];
-  const { weight } = weigh ? weigh(cards) : { weight: 0 };
-  const newHands = updateArrayInArray(hands, { cards, weight }, hNum);
+  const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
+  const newHands = updateArrayInArray(hands, { cards, weight, soft }, hNum);
   return { type: DRAW_CARD, player: { id, hands: newHands } };
 }
 
@@ -145,8 +143,8 @@ export function drawCard(hands, id, hNum = 0, weigh, num = 1) {
  */
 export function newHand(id = 0, weigh, num = 1) {
   const cards = Deck.deal(num).sort(Deck.rankSort);
-  const { weight } = weigh(cards);
-  return { type: NEW_HAND, player: { id, hands: [{ cards, weight }] } };
+  const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
+  return { type: NEW_HAND, player: { id, hands: [{ cards, weight, soft }] } };
 }
 
 /**

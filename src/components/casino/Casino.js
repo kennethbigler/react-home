@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { updateName, updateBot } from '../../modules/players';
+import { updateName, updateBot } from '../../store/modules/players';
 import Toggle from 'material-ui/Toggle';
 import TextField from 'material-ui/TextField';
 // Parents: Main

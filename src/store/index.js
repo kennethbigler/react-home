@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import turn from './turn';
-import players from './players';
+import turn from './modules/turn';
+import players from './modules/players';
 
 const rootReducer = combineReducers({
   // ES6 shorthand property name: "x," === "x: x,"

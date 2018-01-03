@@ -1,5 +1,5 @@
 // initialState
-import initialState from './initialState';
+import initialState from '../initialState';
 
 // Actions
 const INCR_PLAYER = 'casino/turn/INCR';

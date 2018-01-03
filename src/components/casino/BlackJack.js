@@ -4,7 +4,11 @@ import { GameTable } from '../features/GameTable';
 import { Deck } from '../../apis/Deck';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { incrPlayerTurn, resetTurn, incrHandTurn } from '../../modules/turn';
+import {
+  incrPlayerTurn,
+  resetTurn,
+  incrHandTurn
+} from '../../store/modules/turn';
 import {
   drawCard,
   newHand,
@@ -12,7 +16,7 @@ import {
   payout,
   updateBet,
   resetStatus
-} from '../../modules/players';
+} from '../../store/modules/players';
 // Parents: Main
 
 // Dealer constant
@@ -300,6 +304,152 @@ class BJ extends Component {
     } else {
       this.finishGame();
     }
+  };
+
+  // AI: https://www.blackjackinfo.com/blackjack-basic-strategy-engine/
+  playBot = () => {
+    const { players, turn } = this.props;
+    const hand = players[turn.player].hands[turn.hand];
+    const n = hand.weight;
+    const soft = hand.soft;
+    const d = 2;
+    const { weight: x } = weighHand(hand.cards[0]);
+    const { weight: y } = weighHand(hand.cards[1]);
+
+    const { hit, split, double, stay } = this;
+
+    if (n < 22) {
+      // split algorithm
+      if (x === y) {
+        if (x === 2 || x === 3 || x === 7) {
+          // 2,3,7, split d2-7, hit d8+
+          if (d <= 7) {
+            split();
+          } else {
+            hit();
+          }
+        } else if (x === 4) {
+          // 4, split d5-6, else hit
+          if (d === 5 || d === 6) {
+            split();
+          } else {
+            hit();
+          }
+        } else if (x === 5) {
+          // 5, double d2-9, hit d10+
+          if (d <= 9) {
+            double();
+          } else {
+            hit();
+          }
+        } else if (x === 6) {
+          // 6, split d2-6, else hit
+          if (d <= 6) {
+            split();
+          } else {
+            hit();
+          }
+        } else if (x === 9) {
+          // 9, d7,10+ stay, else split
+          if (d === 7 || d >= 10) {
+            stay();
+          } else {
+            split();
+          }
+        } else if (x === 8 || x === 14) {
+          // 8,A split
+          split();
+        } else {
+          // 10 Stay
+          stay();
+        }
+      } else if (n < 20 && soft) {
+        // soft hands, A9+ stays
+        if (n === 13 || n === 14) {
+          // A2-A3 double d5-6, hit d2-4, d7-A
+          if (d === 5 || d === 6) {
+            double();
+          } else {
+            hit();
+          }
+        } else if (n === 15 || n === 16) {
+          // A4-A5 double d4-6, hit d2-3, d7-A
+          if (d >= 4 && d <= 6) {
+            double();
+          } else {
+            hit();
+          }
+        } else if (n === 17) {
+          // A6 double d3-6, hit d2, d7-A
+          if (d >= 3 && d <= 6) {
+            double();
+          } else {
+            hit();
+          }
+        } else if (n === 18) {
+          // A7 double d2-6, stay d7-8, hit d9-A
+          if (n >= 2 && n <= 6) {
+            double();
+          } else if (n === 7 || n === 8) {
+            stay();
+          } else {
+            hit();
+          }
+        } else if (n === 19) {
+          // A8 double d6, else stay
+          if (d === 6) {
+            double();
+          } else {
+            stay();
+          }
+        } else {
+          console.error(`AI ${turn} Error: n ${n}, d ${d}, s ${soft}`);
+        }
+      } else if (n < 17 && !soft) {
+        // hard hands, 17+ stays
+        if (n >= 5 && n <= 8) {
+          // 5-8 hit
+          hit();
+        } else if (n === 9) {
+          // 9 double d3-6, hit d2, d7-A
+          if (d >= 3 && d <= 6) {
+            double();
+          } else {
+            hit();
+          }
+        } else if (n === 10) {
+          // 10 double d2-9, hit d10-A
+          if (d >= 2 && d <= 9) {
+            double();
+          } else {
+            hit();
+          }
+        } else if (n === 11) {
+          // 11 double
+          double();
+        } else if (n === 12) {
+          // 12 hit d2-3, stay d4-6, hit 7-A
+          if (d >= 4 && d <= 6) {
+            stay();
+          } else {
+            hit();
+          }
+        } else if (n >= 13 && n <= 16) {
+          // 13-16 stay d2-6, hit 7-A
+          if (d >= 2 && d <= 6) {
+            stay();
+          } else {
+            hit();
+          }
+        } else {
+          console.error(`AI ${turn} Error: n ${n}, d ${d}, s ${soft}`);
+        }
+      } else {
+        console.log(`AI ${turn}: n ${n}, d ${d}, s ${soft}`);
+        stay();
+      }
+    }
+    console.log('bust');
   };
 
   /**
