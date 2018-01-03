@@ -1,29 +1,11 @@
-// Deck API and initialState
 import { Deck } from '../apis/Deck';
+import {
+  removeItem,
+  updateArrayInArray,
+  updateObjectInArray,
+  insertItem
+} from './immutableHelpers';
 import initialState from './initialState';
-
-// Immutable helper functions
-function insertItem(players, player) {
-  let newArray = players.slice();
-  newArray.push(player);
-  return newArray;
-}
-
-function updateObjectInArray(array, ins, key) {
-  return array.map(item => {
-    return item[key] !== ins[key] ? item : { ...item, ...ins };
-  });
-}
-
-function updateArrayInArray(array, ins, idx) {
-  return array.map((player, i) => {
-    return i !== idx ? player : ins;
-  });
-}
-
-function removeItem(players, id) {
-  return players.filter(player => player.id !== id);
-}
 
 // --------------------     Actions     -------------------- //
 
@@ -31,6 +13,7 @@ const ADD = 'casino/player/ADD';
 const REMOVE = 'casino/player/REMOVE';
 const RESET = 'casino/player/RESET';
 const UPDATE_NAME = 'casino/player/UPDATE_NAME';
+const UPDATE_BOT = 'casino/player/UPDATE_BOT';
 const UPDATE_BET = 'casino/player/UPDATE_BET';
 const FINISH_GAME = 'casino/player/FINISH_GAME';
 const SPLIT_HAND = 'casino/player/SPLIT_HAND';
@@ -71,6 +54,15 @@ export function removePlayer(id = 0) {
  */
 export function updateName(id = 0, name = '') {
   return { type: UPDATE_NAME, player: { id, name } };
+}
+
+/**
+ * function to update a player's bot status
+ * @param {number} id - id of player
+ * @param {boolean} isBot - is the player a bot
+ */
+export function updateBot(id = 0, isBot = true) {
+  return { type: UPDATE_BOT, player: { id, isBot } };
 }
 
 /**
@@ -172,6 +164,7 @@ export default function reducer(state = initialState.players, action) {
   switch (action.type) {
     case RESET:
     case UPDATE_NAME:
+    case UPDATE_BOT:
     case UPDATE_BET:
     case FINISH_GAME:
     case SPLIT_HAND:

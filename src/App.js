@@ -10,13 +10,15 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import * as colors from 'material-ui/styles/colors';
 // redux
-import configureStore from './modules/configureStore';
-import initialState from './modules/initialState';
+import { configureStore, saveState } from './modules/configureStore';
 import { Provider } from 'react-redux';
+import throttle from 'lodash/throttle';
 
-// you can pass an initial state into here if you would like
-const store = configureStore(initialState);
+// set state to previous or new state, and add watcher to save
+const store = configureStore();
+store.subscribe(throttle(() => saveState(store.getState()), 1000));
 
+/** App class that wraps higher level components of the application */
 class App extends Component {
   render() {
     const muiTheme = getMuiTheme({

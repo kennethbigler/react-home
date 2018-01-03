@@ -2,6 +2,7 @@ export default {
   players: [
     {
       id: 1,
+      isBot: false,
       name: 'Ken',
       money: 100,
       bet: 5,
@@ -10,7 +11,8 @@ export default {
     },
     {
       id: 2,
-      name: 'Tyler',
+      isBot: true,
+      name: 'Bot 1',
       money: 100,
       bet: 5,
       status: '',
@@ -18,7 +20,8 @@ export default {
     },
     {
       id: 3,
-      name: 'Meeks',
+      isBot: true,
+      name: 'Bot 2',
       money: 100,
       bet: 5,
       status: '',
@@ -26,7 +29,8 @@ export default {
     },
     {
       id: 4,
-      name: 'Zach',
+      isBot: true,
+      name: 'Bot 3',
       money: 100,
       bet: 5,
       status: '',
@@ -34,7 +38,8 @@ export default {
     },
     {
       id: 5,
-      name: 'Scott',
+      isBot: true,
+      name: 'Bot 4',
       money: 100,
       bet: 5,
       status: '',
@@ -42,7 +47,8 @@ export default {
     },
     {
       id: 6,
-      name: 'Danny',
+      isBot: true,
+      name: 'Bot 5',
       money: 100,
       bet: 5,
       status: '',
@@ -50,6 +56,7 @@ export default {
     },
     {
       id: 0,
+      isBot: true,
       name: 'Dealer',
       money: 0,
       bet: 0,
