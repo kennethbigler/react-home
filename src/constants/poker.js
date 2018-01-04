@@ -9,7 +9,8 @@ export default [
       W5: 218,
       W6: -33,
       W7: 187,
-      W8: 127
+      W8: 127,
+      W9: 11
     }
   },
   {
@@ -34,7 +35,8 @@ export default [
       W5: 82,
       W6: 46,
       W7: -46,
-      W8: 119
+      W8: 119,
+      W9: 17
     }
   },
   {
@@ -51,7 +53,7 @@ export default [
   },
   {
     name: 'Andy',
-    scores: { W1: -22, W2: -140, W6: 27 }
+    scores: { W1: -22, W2: -140, W6: 27, W9: 30 }
   },
   {
     name: 'Mike',
@@ -71,7 +73,7 @@ export default [
   },
   {
     name: 'Gus',
-    scores: { W4: -14, W7: -100, W8: 16 }
+    scores: { W4: -14, W7: -100, W8: 16, W9: -58 }
   },
   {
     name: 'Ashley',
