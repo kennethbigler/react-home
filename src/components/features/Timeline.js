@@ -21,7 +21,8 @@ const styles = {
     display: 'inline-block',
     padding: '5px',
     boxShadow: '2px 3px 4px #999',
-    color: colors.grey50
+    color: colors.grey50,
+    textAlign: 'center'
   }
 };
 
