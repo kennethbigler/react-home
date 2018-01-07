@@ -11,6 +11,7 @@ export const MenuCasino = props => {
   const poker = () => props.onClick('/casino/poker');
   const home = () => props.onClick('/');
   const pokernight = () => props.onClick('/casino/pokernight');
+  const murder = () => props.onClick('/casino/murder');
   // render menu
   return (
     <div>
@@ -18,6 +19,7 @@ export const MenuCasino = props => {
       <MenuItem onTouchTap={blackjack}>BlackJack</MenuItem>
       <MenuItem onTouchTap={poker}>Poker</MenuItem>
       <MenuItem onTouchTap={pokernight}>Poker Night Scores</MenuItem>
+      <MenuItem onTouchTap={murder}>Murder Mystery</MenuItem>
       <Divider />
       <MenuItem onTouchTap={home}>Back to Resume</MenuItem>
     </div>

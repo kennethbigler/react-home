@@ -8,10 +8,11 @@
     "moment": "^2.20.1",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
-    "react-pdf": "^2.4.2",
+    "react-newline-to-break": "^1.0.6",
+    "react-pdf": "^2.5.2",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
-    "react-table": "^6.7.5",
+    "react-table": "^6.7.6",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.7.2"
   },
