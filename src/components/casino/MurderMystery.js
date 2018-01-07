@@ -21,33 +21,25 @@ export const MurderMystery = () => {
     {
       Header: 'Character Description',
       accessor: 'description',
-      minWidth: 100,
+      minWidth: 120,
       style: { whiteSpace: 'normal' },
       Cell: row => nl2br(row.value)
     },
     {
       Header: 'Your Clue to Share',
       accessor: 'clue',
-      minWidth: 100,
+      minWidth: 120,
       style: { whiteSpace: 'normal' },
       Cell: row => nl2br(row.value)
     },
     {
       Header: 'Hints it Might be You',
       accessor: 'hint',
-      minWidth: 100,
+      minWidth: 120,
       style: { whiteSpace: 'normal' },
       Cell: row => nl2br(row.value)
     }
   ];
-
-  // styling for when the table gets too large
-  const styles = {
-    position: 'absolute',
-    top: 140,
-    left: 15,
-    right: 15
-  };
 
   const defaultSort = [{ id: 'importance', desc: false }];
 
@@ -59,9 +51,7 @@ export const MurderMystery = () => {
         defaultPageSize={profile.length}
         data={profile}
         columns={columns}
-        resizable={false}
         showPagination={false}
-        style={styles}
         defaultSortDesc
         defaultSorted={defaultSort}
       />
