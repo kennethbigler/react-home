@@ -6,20 +6,22 @@ import Divider from 'material-ui/Divider';
 
 export const MenuCasino = props => {
   // navigation
+  const home = () => props.onClick('/');
   const casino = () => props.onClick('/casino');
   const blackjack = () => props.onClick('/casino/blackjack');
-  const poker = () => props.onClick('/casino/poker');
-  const home = () => props.onClick('/');
   const pokernight = () => props.onClick('/casino/pokernight');
   const murder = () => props.onClick('/casino/murder');
+  const slots = () => props.onClick('/casino/slots');
+  const poker = () => props.onClick('/casino/poker');
   // render menu
   return (
     <div>
       <MenuItem onTouchTap={casino}>Casino</MenuItem>
       <MenuItem onTouchTap={blackjack}>BlackJack</MenuItem>
-      <MenuItem onTouchTap={poker}>Poker</MenuItem>
       <MenuItem onTouchTap={pokernight}>Poker Night Scores</MenuItem>
       <MenuItem onTouchTap={murder}>Murder Mystery</MenuItem>
+      <MenuItem onTouchTap={slots}>Slot Machine</MenuItem>
+      <MenuItem onTouchTap={poker}>Poker</MenuItem>
       <Divider />
       <MenuItem onTouchTap={home}>Back to Resume</MenuItem>
     </div>

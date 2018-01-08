@@ -9,6 +9,7 @@ import { Resume } from './resume/Resume';
 import { PokerNight } from './casino/PokerNight';
 import { MurderMystery } from './casino/MurderMystery';
 import { Casino } from './casino/Casino';
+import { Slots } from './casino/Slots';
 import { BlackJack } from './casino/BlackJack';
 import { Poker } from './casino/Poker';
 import classes from '../constants/classes';
@@ -65,9 +66,10 @@ export class Main extends Component {
             <Route path="/projects" component={Projects} />
             <Route path="/resume" component={Resume} />
             <Route path="/(poker|casino/pokernight)" component={PokerNight} />
-            <Route path="/casino/murder" component={MurderMystery} />
             <Route exact path="/casino" component={Casino} />
             <Route path="/casino/blackjack" component={BlackJack} />
+            <Route path="/casino/murder" component={MurderMystery} />
+            <Route path="/casino/slots" component={Slots} />
             <Route path="/casino/poker" component={Poker} />
           </Switch>
         </main>

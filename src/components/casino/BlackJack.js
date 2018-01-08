@@ -67,8 +67,8 @@ function weighHand(hand = []) {
 * -------------------------------------------------- */
 
 class BJ extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       gameFunctions: [{ name: 'Finish Betting', func: this.finishBetting }],
       hideHands: true

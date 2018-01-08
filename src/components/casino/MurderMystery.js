@@ -41,6 +41,15 @@ export const MurderMystery = () => {
     }
   ];
 
+  // styling for when the table gets too large
+  const styles = {
+    position: 'absolute',
+    top: 155,
+    bottom: 15,
+    left: 15,
+    right: 15
+  };
+
   const defaultSort = [{ id: 'importance', desc: false }];
 
   return (
@@ -49,6 +58,7 @@ export const MurderMystery = () => {
       <ReactTable
         className="-striped -highlight"
         defaultPageSize={profile.length}
+        style={styles}
         data={profile}
         columns={columns}
         showPagination={false}
