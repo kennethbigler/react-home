@@ -14,7 +14,14 @@ import {
 } from '../../apis/SlotMachine';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
-import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
+import {
+  Table,
+  TableBody,
+  TableRow,
+  TableRowColumn,
+  TableHeader,
+  TableHeaderColumn
+} from 'material-ui/Table';
 // Parents: Main
 
 const NUMREELS = 3;
@@ -66,6 +73,54 @@ function getPayout(reel, bet) {
   return 0;
 }
 
+const payoutTable = [
+  {
+    win: '3x',
+    symbol: JACKPOT,
+    payout: 1666
+  },
+  {
+    win: `${SEVEN} ${SEVEN}`,
+    symbol: SEVEN,
+    payout: 300
+  },
+  {
+    win: `${TRIPLE_BAR} ${TRIPLE_BAR}`,
+    symbol: TRIPLE_BAR,
+    payout: 100
+  },
+  {
+    win: `${DOUBLE_BAR} ${DOUBLE_BAR}`,
+    symbol: DOUBLE_BAR,
+    payout: 50
+  },
+  {
+    win: `${BAR} ${BAR}`,
+    symbol: BAR,
+    payout: 25
+  },
+  {
+    win: '3 of any',
+    symbol: 'bar',
+    payout: 12
+  },
+  {
+    win: '3x',
+    symbol: CHERRY,
+    payout: 12
+  },
+  {
+    win: '2x',
+    symbol: CHERRY,
+    payout: 6
+  },
+  {
+    win: '1x',
+    symbol: CHERRY,
+    payout: 3
+  }
+];
+
 /* --------------------------------------------------
 * Slot Machine
 * -------------------------------------------------- */
@@ -105,11 +160,35 @@ class SM extends Component {
     return (
       <div>
         <h1>Welcome to Ken's Casino Slot Machine</h1>
-        <div className="row">
-          <div className="col-sm-6">
+        <div className="row" style={{ marginTop: '2em' }}>
+          <div className="col-sm-6 col-xs-12">
             <div className="col-xs-12" style={{ marginBottom: '1em' }}>
-              <Table selectable={false}>
-                <TableBody displayRowCheckbox={false}>
+              <Paper style={paperCircle} className="col-xs-3" zDepth={2}>
+                <h2>{reel[0]}</h2>
+              </Paper>
+              <Paper style={paperCircle} className="col-xs-3" zDepth={2}>
+                <h2>{reel[1]}</h2>
+              </Paper>
+              <Paper style={paperCircle} className="col-xs-3" zDepth={2}>
+                <h2>{reel[2]}</h2>
+              </Paper>
+              <div className="col-xs-3">
+                <RaisedButton
+                  label="Spin"
+                  primary={true}
+                  onTouchTap={this.updateSlotMachine}
+                />
+              </div>
+            </div>
+            <div className="col-xs-12">
+              <Table selectable={false} fixedHeader>
+                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                  <TableRow>
+                    <TableHeaderColumn>Player</TableHeaderColumn>
+                    <TableHeaderColumn>Money</TableHeaderColumn>
+                  </TableRow>
+                </TableHeader>
+                <TableBody displayRowCheckbox={false} showRowHover>
                   <TableRow>
                     <TableRowColumn>{player.name}</TableRowColumn>
                     <TableRowColumn>${player.money}</TableRowColumn>
@@ -121,62 +200,24 @@ class SM extends Component {
                 </TableBody>
               </Table>
             </div>
-            <Paper style={paperCircle} className="col-sm-3" zDepth={2}>
-              <h2>{reel[0]}</h2>
-            </Paper>
-            <Paper style={paperCircle} className="col-sm-3" zDepth={2}>
-              <h2>{reel[1]}</h2>
-            </Paper>
-            <Paper style={paperCircle} className="col-sm-3" zDepth={2}>
-              <h2>{reel[2]}</h2>
-            </Paper>
-            <div className="col-sm-3">
-              <RaisedButton
-                label="Spin"
-                primary={true}
-                onTouchTap={this.updateSlotMachine}
-              />
-            </div>
           </div>
-          <div className="col-sm-6">
-            <Table selectable={false}>
-              <TableBody displayRowCheckbox={false}>
+          <div className="col-sm-6 col-xs-12">
+            <Table selectable={false} fixedHeader>
+              <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                 <TableRow>
-                  <TableRowColumn>3x Jackpot</TableRowColumn>
-                  <TableRowColumn>1666 : 1</TableRowColumn>
+                  <TableHeaderColumn>Slot Roll</TableHeaderColumn>
+                  <TableHeaderColumn>Payout</TableHeaderColumn>
                 </TableRow>
-                <TableRow>
-                  <TableRowColumn>7 7 7</TableRowColumn>
-                  <TableRowColumn>300 : 1</TableRowColumn>
-                </TableRow>
-                <TableRow>
-                  <TableRowColumn>Ξ Ξ Ξ</TableRowColumn>
-                  <TableRowColumn>100 : 1</TableRowColumn>
-                </TableRow>
-                <TableRow>
-                  <TableRowColumn>= = =</TableRowColumn>
-                  <TableRowColumn>50 : 1</TableRowColumn>
-                </TableRow>
-                <TableRow>
-                  <TableRowColumn>— — —</TableRowColumn>
-                  <TableRowColumn>25 : 1</TableRowColumn>
-                </TableRow>
-                <TableRow>
-                  <TableRowColumn>3 of any bar</TableRowColumn>
-                  <TableRowColumn>12 : 1</TableRowColumn>
-                </TableRow>
-                <TableRow>
-                  <TableRowColumn>3x cherries</TableRowColumn>
-                  <TableRowColumn>12 : 1</TableRowColumn>
-                </TableRow>
-                <TableRow>
-                  <TableRowColumn>2x cherries</TableRowColumn>
-                  <TableRowColumn>6 : 1</TableRowColumn>
-                </TableRow>
-                <TableRow>
-                  <TableRowColumn>1x cherry</TableRowColumn>
-                  <TableRowColumn>3 : 1</TableRowColumn>
-                </TableRow>
+              </TableHeader>
+              <TableBody displayRowCheckbox={false} showRowHover>
+                {payoutTable.map((row, i) => (
+                  <TableRow key={i}>
+                    <TableRowColumn>
+                      {row.win} {row.symbol}
+                    </TableRowColumn>
+                    <TableRowColumn>{row.payout} : 1</TableRowColumn>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </div>

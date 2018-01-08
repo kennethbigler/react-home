@@ -3,12 +3,12 @@
  * -------------------------------------------------- */
 
 export const EMPTY = ' ';
-export const CHERRY = 'cherry';
+export const CHERRY = 'C';
 export const BAR = '—';
 export const DOUBLE_BAR = '=';
 export const TRIPLE_BAR = 'Ξ';
 export const SEVEN = '7';
-export const JACKPOT = 'jackpot';
+export const JACKPOT = 'J';
 
 const settings = [
   { symbol: CHERRY, start: 1, stop: 2 },
