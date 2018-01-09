@@ -11,7 +11,7 @@ export const SEVEN = '7';
 export const JACKPOT = 'J';
 export const NUMREELS = 3;
 
-const reel = [
+const reels = [
   { symbol: CHERRY, start: 1, stop: 2 },
   { symbol: EMPTY, start: 3, stop: 7 },
   { symbol: BAR, start: 8, stop: 12 },
@@ -38,13 +38,13 @@ const reel = [
 
 let machine = [];
 
-reel.forEach((slot, i) => {
-  // wrap the reel
-  const prev = i - 1 > 0 ? i - 1 : reel.length - 1;
-  const next = i + 1 < reel.length ? i + 1 : 0;
+reels.forEach((slot, i) => {
+  // wrap the reels
+  const prev = i - 1 > 0 ? i - 1 : reels.length - 1;
+  const next = i + 1 < reels.length ? i + 1 : 0;
   // create the machine
   for (let j = slot.start; j <= slot.stop; j += 1) {
-    machine.push([reel[prev].symbol, slot.symbol, reel[next].symbol]);
+    machine.push([reels[prev].symbol, slot.symbol, reels[next].symbol]);
   }
 });
 
@@ -105,7 +105,7 @@ export const SlotMachine = {
   pullHandle: () => {
     let reel = [];
     for (let i = 0; i < NUMREELS; i += 1) {
-      reel[i] = spin()[1];
+      reel[i] = spin();
     }
     return reel;
   },
@@ -114,9 +114,10 @@ export const SlotMachine = {
     // for bar check
     const bars = [BAR, DOUBLE_BAR, TRIPLE_BAR];
     // get reel values
-    const r0 = reel[0];
-    const r1 = reel[1];
-    const r2 = reel[2];
+    const r0 = reel[0][1];
+    const r1 = reel[1][1];
+    const r2 = reel[2][1];
+    const fReel = [r0, r1, r2];
     // check if they match
     const m01 = r0 === r1;
     const m02 = r0 === r2;
@@ -145,10 +146,10 @@ export const SlotMachine = {
     ) {
       // if we have 3 of any bar
       return 12 * bet;
-    } else if (reel.indexOf(CHERRY, reel.indexOf(CHERRY) + 1) !== -1) {
+    } else if (fReel.indexOf(CHERRY, fReel.indexOf(CHERRY) + 1) !== -1) {
       // if we have 2 cherries
       return 6 * bet;
-    } else if (reel.indexOf(CHERRY) !== -1) {
+    } else if (fReel.indexOf(CHERRY) !== -1) {
       // if we have 1 cherry
       return 3 * bet;
     }

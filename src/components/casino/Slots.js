@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { payout, updateBet } from '../../store/modules/players';
 import { SlotMachine } from '../../apis/SlotMachine';
 import RaisedButton from 'material-ui/RaisedButton';
-import Paper from 'material-ui/Paper';
 import {
   Table,
   TableBody,
@@ -22,13 +21,6 @@ import {
 class SM extends Component {
   constructor(props) {
     super(props);
-
-    this.styles = {
-      paperCircle: {
-        minHeight: '73px',
-        textAlign: 'center'
-      }
-    };
 
     this.state = {
       reel: SlotMachine.pullHandle()
@@ -49,7 +41,6 @@ class SM extends Component {
   // https://vegasclick.com/games/slots/how-they-work
   render() {
     const { reel } = this.state;
-    const { paperCircle } = this.styles;
     const player = this.props.players[0];
     const dealer = this.props.players[this.props.players.length - 1];
     return (
@@ -57,16 +48,28 @@ class SM extends Component {
         <h1>Welcome to Ken's Casino Slot Machine</h1>
         <div className="row" style={{ marginTop: '2em' }}>
           <div className="col-sm-6 col-xs-12">
-            <div className="col-xs-12" style={{ marginBottom: '1em' }}>
-              <Paper style={paperCircle} className="col-xs-3" zDepth={2}>
-                <h2>{reel[0]}</h2>
-              </Paper>
-              <Paper style={paperCircle} className="col-xs-3" zDepth={2}>
-                <h2>{reel[1]}</h2>
-              </Paper>
-              <Paper style={paperCircle} className="col-xs-3" zDepth={2}>
-                <h2>{reel[2]}</h2>
-              </Paper>
+            <div className="row" style={{ marginBottom: '1em' }}>
+              <div className="col-xs-9">
+                <Table selectable={false} fixedHeader>
+                  <TableBody displayRowCheckbox={false} stripedRows>
+                    <TableRow>
+                      <TableRowColumn>{reel[0][0]}</TableRowColumn>
+                      <TableRowColumn>{reel[1][0]}</TableRowColumn>
+                      <TableRowColumn>{reel[2][0]}</TableRowColumn>
+                    </TableRow>
+                    <TableRow>
+                      <TableRowColumn>{reel[0][1]}</TableRowColumn>
+                      <TableRowColumn>{reel[1][1]}</TableRowColumn>
+                      <TableRowColumn>{reel[2][1]}</TableRowColumn>
+                    </TableRow>
+                    <TableRow>
+                      <TableRowColumn>{reel[0][2]}</TableRowColumn>
+                      <TableRowColumn>{reel[1][2]}</TableRowColumn>
+                      <TableRowColumn>{reel[2][2]}</TableRowColumn>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </div>
               <div className="col-xs-3">
                 <RaisedButton
                   label="Spin"
@@ -75,25 +78,30 @@ class SM extends Component {
                 />
               </div>
             </div>
-            <div className="col-xs-12">
-              <Table selectable={false} fixedHeader>
-                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                  <TableRow>
-                    <TableHeaderColumn>Player</TableHeaderColumn>
-                    <TableHeaderColumn>Money</TableHeaderColumn>
-                  </TableRow>
-                </TableHeader>
-                <TableBody displayRowCheckbox={false} showRowHover>
-                  <TableRow>
-                    <TableRowColumn>{player.name}</TableRowColumn>
-                    <TableRowColumn>${player.money}</TableRowColumn>
-                  </TableRow>
-                  <TableRow>
-                    <TableRowColumn>House</TableRowColumn>
-                    <TableRowColumn>${dealer.money}</TableRowColumn>
-                  </TableRow>
-                </TableBody>
-              </Table>
+            <div className="row">
+              <div className="col-xs-12">
+                <Table selectable={false} fixedHeader>
+                  <TableHeader
+                    displaySelectAll={false}
+                    adjustForCheckbox={false}
+                  >
+                    <TableRow>
+                      <TableHeaderColumn>Player</TableHeaderColumn>
+                      <TableHeaderColumn>Money</TableHeaderColumn>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody displayRowCheckbox={false} showRowHover>
+                    <TableRow>
+                      <TableRowColumn>{player.name}</TableRowColumn>
+                      <TableRowColumn>${player.money}</TableRowColumn>
+                    </TableRow>
+                    <TableRow>
+                      <TableRowColumn>House</TableRowColumn>
+                      <TableRowColumn>${dealer.money}</TableRowColumn>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           </div>
           <div className="col-sm-6 col-xs-12">
