@@ -18,10 +18,12 @@ export const MenuCasino = props => {
     <div>
       <MenuItem onTouchTap={casino}>Casino</MenuItem>
       <MenuItem onTouchTap={blackjack}>BlackJack</MenuItem>
-      <MenuItem onTouchTap={pokernight}>Poker Night Scores</MenuItem>
-      <MenuItem onTouchTap={murder}>Murder Mystery</MenuItem>
       <MenuItem onTouchTap={slots}>Slot Machine</MenuItem>
       <MenuItem onTouchTap={poker}>Poker</MenuItem>
+      {/* <MenuItem onTouchTap={bingo}>Bingo</MenuItem> */}
+      <Divider />
+      <MenuItem onTouchTap={pokernight}>Poker Night Scores</MenuItem>
+      <MenuItem onTouchTap={murder}>Murder Mystery</MenuItem>
       <Divider />
       <MenuItem onTouchTap={home}>Back to Resume</MenuItem>
     </div>
