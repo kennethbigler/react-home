@@ -12,6 +12,7 @@ import { Casino } from './casino/Casino';
 import { Slots } from './casino/Slots';
 import { BlackJack } from './casino/BlackJack';
 import { Poker } from './casino/Poker';
+import { TicTacToe } from './resume/TicTacToe';
 import classes from '../constants/classes';
 import workExp from '../constants/work';
 // Parents: App
@@ -43,14 +44,14 @@ export class Main extends Component {
   render() {
     const education = (
       <Education
-        onClick={this.handleExpandChange}
+        onTouchTap={this.handleExpandChange}
         classes={classes}
         expanded={this.state.expanded}
       />
     );
     const work = (
       <Work
-        onClick={this.handleExpandChange}
+        onTouchTap={this.handleExpandChange}
         workExp={workExp}
         expanded={this.state.expanded}
       />
@@ -65,6 +66,7 @@ export class Main extends Component {
             <Route path="/education" render={() => education} />
             <Route path="/projects" component={Projects} />
             <Route path="/resume" component={Resume} />
+            <Route path="/tictactoe" component={TicTacToe} />
             <Route path="/(poker|casino/pokernight)" component={PokerNight} />
             <Route exact path="/casino" component={Casino} />
             <Route path="/casino/blackjack" component={BlackJack} />

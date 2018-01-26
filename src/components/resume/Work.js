@@ -40,7 +40,7 @@ export const Work = props => {
       {/* Timeline */}
       <Card
         expanded={props.expanded[TIMELINE_TITLE]}
-        onExpandChange={expanded => props.onClick(TIMELINE_TITLE, expanded)}
+        onExpandChange={expanded => props.onTouchTap(TIMELINE_TITLE, expanded)}
         key={TIMELINE_TITLE}
       >
         <CardTitle
@@ -61,7 +61,9 @@ export const Work = props => {
           return (
             <Card
               expanded={props.expanded[job.company]}
-              onExpandChange={expanded => props.onClick(job.company, expanded)}
+              onExpandChange={expanded =>
+                props.onTouchTap(job.company, expanded)
+              }
               key={job.company}
             >
               <CardTitle
@@ -99,7 +101,7 @@ export const Work = props => {
 };
 
 Work.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onTouchTap: PropTypes.func.isRequired,
   workExp: PropTypes.array.isRequired,
   expanded: PropTypes.object.isRequired
 };

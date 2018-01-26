@@ -11,7 +11,9 @@ export const Education = props => {
         return (
           <Card
             expanded={props.expanded[degree.degree]}
-            onExpandChange={expanded => props.onClick(degree.degree, expanded)}
+            onExpandChange={expanded =>
+              props.onTouchTap(degree.degree, expanded)
+            }
             key={degree.degree}
           >
             <CardTitle
@@ -64,7 +66,7 @@ export const Education = props => {
 };
 
 Education.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onTouchTap: PropTypes.func.isRequired,
   classes: PropTypes.array.isRequired,
   expanded: PropTypes.object.isRequired
 };
