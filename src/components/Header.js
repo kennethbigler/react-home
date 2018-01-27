@@ -38,8 +38,8 @@ class HeaderBody extends Component {
 
   render() {
     const { isCasino } = this.state;
-    const casinoMenu = <MenuCasino onClick={this.handleNav} />;
-    const resumeMenu = <Menu onClick={this.handleNav} />;
+    const casinoMenu = <MenuCasino onTouchTap={this.handleNav} />;
+    const resumeMenu = <Menu onTouchTap={this.handleNav} />;
     const title = (
       <div>
         <Avatar src={photo} size={30} /> Kenneth Bigler

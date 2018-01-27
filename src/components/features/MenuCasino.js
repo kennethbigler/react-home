@@ -6,13 +6,13 @@ import Divider from 'material-ui/Divider';
 
 export const MenuCasino = props => {
   // navigation
-  const home = () => props.onClick('/');
-  const casino = () => props.onClick('/casino');
-  const blackjack = () => props.onClick('/casino/blackjack');
-  const pokernight = () => props.onClick('/casino/pokernight');
-  const murder = () => props.onClick('/casino/murder');
-  const slots = () => props.onClick('/casino/slots');
-  const poker = () => props.onClick('/casino/poker');
+  const home = () => props.onTouchTap('/');
+  const casino = () => props.onTouchTap('/casino');
+  const blackjack = () => props.onTouchTap('/casino/blackjack');
+  const pokernight = () => props.onTouchTap('/casino/pokernight');
+  const murder = () => props.onTouchTap('/casino/murder');
+  const slots = () => props.onTouchTap('/casino/slots');
+  const poker = () => props.onTouchTap('/casino/poker');
   // render menu
   return (
     <div>
@@ -31,5 +31,5 @@ export const MenuCasino = props => {
 };
 
 MenuCasino.propTypes = {
-  onClick: PropTypes.func.isRequired
+  onTouchTap: PropTypes.func.isRequired
 };

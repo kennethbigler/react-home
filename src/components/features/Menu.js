@@ -9,12 +9,12 @@ const linkedin = 'https://www.linkedin.com/in/kennethbigler';
 const stkovrflw = 'http://stackoverflow.com/users/4830309/ken-bigler';
 
 export const Menu = props => {
-  const home = () => props.onClick('/');
-  const work = () => props.onClick('/work');
-  const education = () => props.onClick('/education');
-  const projects = () => props.onClick('/projects');
-  const resume = () => props.onClick('/resume');
-  const casino = () => props.onClick('/casino');
+  const home = () => props.onTouchTap('/');
+  const work = () => props.onTouchTap('/work');
+  const education = () => props.onTouchTap('/education');
+  const projects = () => props.onTouchTap('/projects');
+  const resume = () => props.onTouchTap('/resume');
+  const casino = () => props.onTouchTap('/casino');
 
   return (
     <div>
@@ -48,5 +48,5 @@ export const Menu = props => {
 };
 
 Menu.propTypes = {
-  onClick: PropTypes.func.isRequired
+  onTouchTap: PropTypes.func.isRequired
 };

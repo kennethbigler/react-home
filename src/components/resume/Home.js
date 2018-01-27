@@ -26,7 +26,7 @@ export class Home extends Component {
             <img
               src={photo}
               alt="Kenneth Bigler"
-              onClick={this.handleClick}
+              onTouchTap={this.handleClick}
               style={styles.image}
             />
           </div>
