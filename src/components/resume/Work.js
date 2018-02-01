@@ -8,6 +8,7 @@ import moment from 'moment';
 const styles = {
   corpLogo: {
     width: '100%',
+    height: 'auto',
     maxWidth: '12em'
   }
 };
@@ -84,7 +85,7 @@ export const Work = props => {
                     </ul>
                   </div>
                   <img
-                    className="col-sm-3 col-xs-12 pull-right"
+                    className="col-sm-3 col-xs-12 pull-right img-fluid"
                     style={styles.corpLogo}
                     src={job.src}
                     alt={job.alt}

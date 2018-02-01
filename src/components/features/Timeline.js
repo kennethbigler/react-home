@@ -112,7 +112,7 @@ export class Timeline extends Component {
     let added = [];
 
     return (
-      <div>
+      <div className="col-sm-12">
         {data.map((job, i) => {
           // track segments to add
           const segments = this.getSegments(added, job, i);
