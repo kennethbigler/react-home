@@ -5,14 +5,6 @@ import { Timeline, TIMELINE_TITLE, FORMAT } from '../features/Timeline';
 import moment from 'moment';
 // Parents: Main
 
-const styles = {
-  corpLogo: {
-    width: '100%',
-    height: 'auto',
-    maxWidth: '12em'
-  }
-};
-
 function showRange(s, e, n) {
   // start date
   const start = s.format(FORMAT);
@@ -84,12 +76,14 @@ export const Work = props => {
                       })}
                     </ul>
                   </div>
-                  <img
-                    className="col-sm-3 col-xs-12 pull-right img-fluid"
-                    style={styles.corpLogo}
-                    src={job.src}
-                    alt={job.alt}
-                  />
+                  <div className="col-sm-3 col-xs-12">
+                    <img
+                      className="img-fluid"
+                      style={{ maxWidth: '12em' }}
+                      src={job.src}
+                      alt={job.alt}
+                    />
+                  </div>
                 </div>
               </CardText>
             </Card>

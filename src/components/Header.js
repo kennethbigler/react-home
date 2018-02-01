@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Menu } from './features/Menu';
-import { MenuCasino } from './features/MenuCasino';
+import { GameMenu } from './features/GameMenu';
 import photo from '../images/ken.jpg';
 import { withRouter } from 'react-router';
 import AppBar from 'material-ui/AppBar';
@@ -14,14 +14,14 @@ import Avatar from 'material-ui/Avatar';
 class HeaderBody extends Component {
   constructor(props) {
     super(props);
-    const isCasino = props.location.pathname.includes('/casino');
-    this.state = { open: false, isCasino };
+    const isGame = props.location.pathname.includes('/games');
+    this.state = { open: false, isGame };
   }
 
   componentWillReceiveProps(nextProps) {
     const { pathname } = nextProps.location;
     if (pathname !== this.props.location.pathname) {
-      this.setState({ isCasino: pathname.includes('/casino') });
+      this.setState({ isGame: pathname.includes('/games') });
     }
   }
 
@@ -37,8 +37,8 @@ class HeaderBody extends Component {
   };
 
   render() {
-    const { isCasino } = this.state;
-    const casinoMenu = <MenuCasino onTouchTap={this.handleNav} />;
+    const { isGame } = this.state;
+    const gameMenu = <GameMenu onTouchTap={this.handleNav} />;
     const resumeMenu = <Menu onTouchTap={this.handleNav} />;
     const title = (
       <div>
@@ -70,7 +70,7 @@ class HeaderBody extends Component {
             onLeftIconButtonTouchTap={this.onTouchTap}
             onTitleTouchTap={() => this.handleNav('/')}
           />
-          {isCasino ? casinoMenu : resumeMenu}
+          {isGame ? gameMenu : resumeMenu}
         </Drawer>
       </div>
     );

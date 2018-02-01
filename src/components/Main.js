@@ -6,13 +6,13 @@ import { Work } from './resume/Work';
 import { Education } from './resume/Education';
 import { Projects } from './resume/Projects';
 import { Resume } from './resume/Resume';
-import { PokerNight } from './casino/PokerNight';
-import { MurderMystery } from './casino/MurderMystery';
-import { Casino } from './casino/Casino';
-import { Slots } from './casino/Slots';
-import { BlackJack } from './casino/BlackJack';
-import { Poker } from './casino/Poker';
-import { TicTacToe } from './resume/TicTacToe';
+import { PokerNight } from './games/PokerNight';
+import { MurderMystery } from './games/MurderMystery';
+import { GameHome } from './games/Home';
+import { Slots } from './games/Slots';
+import { BlackJack } from './games/BlackJack';
+import { Poker } from './games/Poker';
+import { TicTacToe } from './games/TicTacToe';
 import classes from '../constants/classes';
 import workExp from '../constants/work';
 // Parents: App
@@ -66,13 +66,13 @@ export class Main extends Component {
             <Route path="/education" render={() => education} />
             <Route path="/projects" component={Projects} />
             <Route path="/resume" component={Resume} />
-            <Route path="/tictactoe" component={TicTacToe} />
-            <Route path="/(poker|casino/pokernight)" component={PokerNight} />
-            <Route exact path="/casino" component={Casino} />
-            <Route path="/casino/blackjack" component={BlackJack} />
-            <Route path="/casino/murder" component={MurderMystery} />
-            <Route path="/casino/slots" component={Slots} />
-            <Route path="/casino/poker" component={Poker} />
+            <Route path="/(tictactoe|games/tictactoe)" component={TicTacToe} />
+            <Route path="/(poker|games/pokernight)" component={PokerNight} />
+            <Route exact path="/games" component={GameHome} />
+            <Route path="/games/blackjack" component={BlackJack} />
+            <Route path="/games/murder" component={MurderMystery} />
+            <Route path="/games/slots" component={Slots} />
+            <Route path="/games/poker" component={Poker} />
           </Switch>
         </main>
       </div>

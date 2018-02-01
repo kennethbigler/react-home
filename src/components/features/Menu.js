@@ -14,7 +14,7 @@ export const Menu = props => {
   const education = () => props.onTouchTap('/education');
   const projects = () => props.onTouchTap('/projects');
   const resume = () => props.onTouchTap('/resume');
-  const casino = () => props.onTouchTap('/casino');
+  const games = () => props.onTouchTap('/games');
 
   return (
     <div>
@@ -23,7 +23,7 @@ export const Menu = props => {
       <MenuItem onTouchTap={education}>Education</MenuItem>
       <MenuItem onTouchTap={projects}>Projects</MenuItem>
       <MenuItem onTouchTap={resume}>Resume</MenuItem>
-      <MenuItem onTouchTap={casino}>React Casino</MenuItem>
+      <MenuItem onTouchTap={games}>React Games</MenuItem>
       {/* External Links */}
       <Divider />
       <MenuItem href={github} rel="noopener">
