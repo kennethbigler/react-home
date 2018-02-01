@@ -12,22 +12,24 @@ export const GameMenu = props => {
   const pokernight = () => props.onTouchTap('/games/pokernight');
   const murder = () => props.onTouchTap('/games/murder');
   const slots = () => props.onTouchTap('/games/slots');
-  const poker = () => props.onTouchTap('/games/poker');
   const tictactoe = () => props.onTouchTap('/games/tictactoe');
+  // const poker = () => props.onTouchTap('/games/poker');
+  // const bingo = () => props.onTouchTap('/games/bingo');
+
   // render menu
   return (
     <div>
-      <MenuItem onTouchTap={games}>Games Home</MenuItem>
-      <MenuItem onTouchTap={blackjack}>BlackJack</MenuItem>
-      <MenuItem onTouchTap={slots}>Slot Machine</MenuItem>
-      <MenuItem onTouchTap={poker}>Poker</MenuItem>
-      <MenuItem onTouchTap={tictactoe}>Tic-Tac-Toe</MenuItem>
-      {/* <MenuItem onTouchTap={bingo}>Bingo</MenuItem> */}
+      <MenuItem onTouchTap={games} primaryText="Games Home" />
+      <MenuItem onTouchTap={blackjack} primaryText="BlackJack" />
+      <MenuItem onTouchTap={slots} primaryText="Slot Machine" />
+      <MenuItem onTouchTap={tictactoe} primaryText="Tic-Tac-Toe" />
+      {/* <MenuItem onTouchTap={poker} primaryText="Poker" /> */}
+      {/* <MenuItem onTouchTap={bingo} primaryText="Bingo" /> */}
       <Divider />
-      <MenuItem onTouchTap={pokernight}>Poker Night Scores</MenuItem>
-      <MenuItem onTouchTap={murder}>Murder Mystery</MenuItem>
+      <MenuItem onTouchTap={pokernight} primaryText="Poker Night Scores" />
+      <MenuItem onTouchTap={murder} primaryText="Murder Mystery" />
       <Divider />
-      <MenuItem onTouchTap={home}>Back to Resume</MenuItem>
+      <MenuItem onTouchTap={home} primaryText="Back to Resume" />
     </div>
   );
 };
