@@ -113,21 +113,19 @@ class BJ extends Component {
     const { players: np, turn: nt } = this.props;
     // verify player exists and is dealer
     const player = np[nt.player];
-    if (!player) {
+    if (!player || (!player.isBot && player.id !== DEALER)) {
       return;
     } else if (player.isBot && player.id !== DEALER) {
       this.playBot();
-      return;
-    } else if (player.id !== DEALER) {
-      return;
-    }
-    // get the next hand
-    const hand = player.hands[nt.hand];
-    // get the old hand
-    const lastHand = lp[lt.player] ? lp[lt.player].hands[lt.hand] : null;
-    // if the hand updated, check for dealer
-    if (lastHand !== hand) {
-      this.playDealer();
+    } else {
+      // get the next hand
+      const hand = player.hands[nt.hand];
+      // get the old hand
+      const lastHand = lp[lt.player] ? lp[lt.player].hands[lt.hand] : null;
+      // if the hand updated, check for dealer
+      if (lastHand !== hand) {
+        this.playDealer();
+      }
     }
   }
 

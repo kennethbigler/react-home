@@ -4,7 +4,7 @@ import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
-import * as colors from 'material-ui/styles/colors';
+import { white, indigoA700 } from 'material-ui/styles/colors';
 
 // constants and helper functions
 const X = 'X';
@@ -53,10 +53,10 @@ function Cell(props) {
   // add attributes if cell is a winner
   const attr = winner
     ? {
-        style: { color: 'white' },
-        backgroundColor: colors.indigoA700,
-        hoverColor: colors.indigoA700,
-        rippleColor: colors.indigoA700
+        style: { color: white },
+        backgroundColor: indigoA700,
+        hoverColor: indigoA700,
+        rippleColor: indigoA700
       }
     : null;
 
@@ -149,8 +149,7 @@ class History extends Component {
 
   /** function that toggles asc vs. desc */
   handleMoveOrderToggle = () => {
-    const { ascend } = this.state;
-    this.setState({ ascend: !ascend });
+    this.setState({ ascend: !this.state.ascend });
   };
 
   /**
@@ -215,28 +214,26 @@ export class TicTacToe extends Component {
 
   /**
    * function that modifies board with appropriate turn
-   * @param {number} i - locaiton of board click (row * 3 + col)
+   * @param {number} location - locaiton of board click (row * 3 + col)
    */
-  handleTouchTap = i => {
-    let { turn, step } = this.state;
-    const history = this.state.history.slice(0, step + 1);
-    const current = history[step];
+  handleTouchTap = location => {
+    let { turn, step, history } = this.state;
+    const newHistory = history.slice(0, step + 1);
+    const current = newHistory[step];
     const board = current.board.slice();
 
     // game is over or cell is full
-    if (calculateWinner(board).winner || board[i] !== ' ') {
-      return;
+    if (!calculateWinner(board).winner && board[location] === ' ') {
+      // place marker, then update turn
+      board[location] = turn;
+
+      // update board state
+      this.setState({
+        history: newHistory.concat([{ board, location }]),
+        step: newHistory.length,
+        turn: turn === X ? O : X
+      });
     }
-
-    // place marker, then update turn
-    board[i] = turn;
-
-    // update board state
-    this.setState({
-      history: history.concat([{ board: board, location: i }]),
-      step: history.length,
-      turn: turn === X ? O : X
-    });
   };
 
   /** function that resets game back to it's initial state */
@@ -246,19 +243,17 @@ export class TicTacToe extends Component {
 
   /**
    * function that modifies board to go back to a previous point in history
-   * @param {number} stepNo - desired point in history
+   * @param {number} step - desired point in history
    */
-  jumpToStep = stepNo => {
-    const { step } = this.state;
-    const turn = getTurn(stepNo);
+  jumpToStep = step => {
+    const { step: stepNo, history } = this.state;
+    const state = { step, turn: getTurn(step) };
     // Double click will eliminate all other history if there is any
     if (step === stepNo) {
-      const history = this.state.history.slice(0, step + 1);
-      this.setState({ history, step: stepNo, turn });
-    } else {
-      // update board to previous state, non-permanent, history exists still
-      this.setState({ step: stepNo, turn });
+      state['history'] = history.slice(0, stepNo + 1);
     }
+    // update board to previous state, non-permanent, history exists still
+    this.setState(state);
   };
 
   render() {

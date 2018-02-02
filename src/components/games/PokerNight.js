@@ -28,13 +28,7 @@ export const PokerNight = () => {
     if (!b.total) {
       getTotal(b);
     }
-    if (a.total < b.total) {
-      return -1;
-    } else if (a.total > b.total) {
-      return 1;
-    } else {
-      return 0;
-    }
+    return a.total - b.total;
   });
 
   // names

@@ -41,8 +41,24 @@ class SM extends Component {
   // https://vegasclick.com/games/slots/how-they-work
   render() {
     const { reel } = this.state;
-    const player = this.props.players[0];
-    const dealer = this.props.players[this.props.players.length - 1];
+    const { players } = this.props;
+    const player = players[0];
+    const dealer = players[players.length - 1];
+
+    // generate code for slot machine
+    let slots = [];
+    for (let i = 0; i < 3; i += 1) {
+      // create 3 cells in a row
+      let row = [];
+      for (let j = 0; j < 3; j += 1) {
+        row.push(
+          <TableRowColumn key={`${j},${i}`}>{reel[j][i]}</TableRowColumn>
+        );
+      }
+      // separate into rows
+      slots.push(<TableRow key={`row${i}`}>{row}</TableRow>);
+    }
+
     return (
       <div>
         <h1>Welcome to Ken's Casino Slot Machine</h1>
@@ -52,29 +68,15 @@ class SM extends Component {
               <div className="col-xs-9">
                 <Table selectable={false} fixedHeader>
                   <TableBody displayRowCheckbox={false} stripedRows>
-                    <TableRow>
-                      <TableRowColumn>{reel[0][0]}</TableRowColumn>
-                      <TableRowColumn>{reel[1][0]}</TableRowColumn>
-                      <TableRowColumn>{reel[2][0]}</TableRowColumn>
-                    </TableRow>
-                    <TableRow>
-                      <TableRowColumn>{reel[0][1]}</TableRowColumn>
-                      <TableRowColumn>{reel[1][1]}</TableRowColumn>
-                      <TableRowColumn>{reel[2][1]}</TableRowColumn>
-                    </TableRow>
-                    <TableRow>
-                      <TableRowColumn>{reel[0][2]}</TableRowColumn>
-                      <TableRowColumn>{reel[1][2]}</TableRowColumn>
-                      <TableRowColumn>{reel[2][2]}</TableRowColumn>
-                    </TableRow>
+                    {slots}
                   </TableBody>
                 </Table>
               </div>
               <div className="col-xs-3">
                 <RaisedButton
                   label="Spin"
-                  primary={true}
                   onTouchTap={this.updateSlotMachine}
+                  primary
                 />
               </div>
             </div>

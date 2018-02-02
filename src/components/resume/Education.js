@@ -26,10 +26,10 @@ export const Education = props => {
                   ? 'GPA: ' + degree.gpa + ' - Graduation: ' + degree.graduation
                   : degree.subtitle
               }
-              actAsExpander={true}
-              showExpandableButton={true}
+              actAsExpander
+              showExpandableButton
             />
-            <CardText expandable={true}>
+            <CardText expandable>
               <div className="row">
                 {degree.years.map(year => {
                   return (

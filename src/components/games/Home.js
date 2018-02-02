@@ -54,6 +54,7 @@ class Home extends Component {
   render() {
     const { players } = this.props;
     const { isBot } = this.state;
+    const { namepad } = this.styles;
     return (
       <div>
         <h2>Welcome to my ReactJS Game Projects</h2>
@@ -64,7 +65,7 @@ class Home extends Component {
           </a>
         </h3>
         <hr />
-        <div style={this.styles.namepad}>
+        <div style={namepad}>
           <h4 className="col-xs-9">Edit Player Names</h4>
           <h4 className="col-xs-3">Is Bot?</h4>
           {players.map(
@@ -81,7 +82,7 @@ class Home extends Component {
                   <div className="col-xs-3" style={{ marginTop: '12px' }}>
                     <Toggle
                       toggled={isBot[i]}
-                      onToggle={(e, isC) => this.handleToggle(p.id, isC, e)}
+                      onToggle={(e, isC) => this.handleToggle(p.id, isC)}
                     />
                   </div>
                 </span>
@@ -89,7 +90,7 @@ class Home extends Component {
                 <div key={`${p.name},${i}`}>
                   <h4 className="col-xs-9">{p.name}</h4>
                   <div className="col-xs-3">
-                    <Toggle defaultToggled={true} disabled={true} />
+                    <Toggle defaultToggled disabled />
                   </div>
                 </div>
               )

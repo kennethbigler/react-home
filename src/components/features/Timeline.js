@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import * as colors from 'material-ui/styles/colors';
+import { grey50 } from 'material-ui/styles/colors';
 // Parents: Work
 
 export const FORMAT = 'MMMM Y';
@@ -11,27 +11,21 @@ export const MONTH_SORT = (a, b) => a.start.diff(b.start, 'months');
 const WIDTH = 100;
 const MIN_TEXT_WIDTH = 94;
 
-const styles = {
-  row: {
-    marginTop: '10px',
-    paddingLeft: '10px',
-    paddingRight: '10px'
-  },
-  box: {
-    display: 'inline-block',
-    padding: '5px',
-    boxShadow: '2px 3px 4px #999',
-    color: colors.grey50,
-    textAlign: 'center'
-  }
-};
-
 export class Timeline extends Component {
   constructor(props) {
     super(props);
     let data = [...props.data];
     data.sort(MONTH_SORT);
     this.state = { data };
+    this.styles = {
+      row: { marginTop: '10px' },
+      box: {
+        padding: '5px',
+        boxShadow: '2px 3px 4px #999',
+        color: grey50,
+        textAlign: 'center'
+      }
+    };
   }
 
   getTimeFromStart = val => {
@@ -108,6 +102,7 @@ export class Timeline extends Component {
 
   render() {
     const { data } = this.state;
+    const { row, box } = this.styles;
     // track elements added already
     let added = [];
 
@@ -118,34 +113,20 @@ export class Timeline extends Component {
           const segments = this.getSegments(added, job, i);
 
           return (
-            <div style={styles.row} key={i}>
+            <div style={row} key={i}>
               {segments.map((seg, j) => {
+                // var for segment
                 const { company, width, color, title } = seg;
-                // check if company or filler
-                if (company) {
-                  return (
-                    <div
-                      key={`${i},${j}`}
-                      title={title}
-                      style={{
-                        ...styles.box,
-                        width: `${width}%`,
-                        backgroundColor: color
-                      }}
-                    >
-                      {seg.company}
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div
-                      key={`${i},${j}`}
-                      style={{ display: 'inline-block', width: `${width}%` }}
-                    >
-                      <br />
-                    </div>
-                  );
-                }
+                // style for segment
+                const stl = { display: 'inline-block', width: `${width}%` };
+                const style = company
+                  ? { ...stl, ...box, backgroundColor: color }
+                  : stl;
+                return (
+                  <div key={`${i},${j}`} title={title} style={style}>
+                    {company ? company : <br />}
+                  </div>
+                );
               })}
             </div>
           );

@@ -39,10 +39,10 @@ export const Work = props => {
         <CardTitle
           title={TIMELINE_TITLE}
           subtitle="September 2010 - Present"
-          actAsExpander={true}
-          showExpandableButton={true}
+          actAsExpander
+          showExpandableButton
         />
-        <CardText expandable={true}>
+        <CardText expandable>
           <div className="row">
             <Timeline data={props.workExp} />
           </div>
@@ -63,10 +63,10 @@ export const Work = props => {
                 title={job.company + ', ' + job.location}
                 //avatar={job.src}
                 subtitle={job.title}
-                actAsExpander={true}
-                showExpandableButton={true}
+                actAsExpander
+                showExpandableButton
               />
-              <CardText expandable={true}>
+              <CardText expandable>
                 <div className="row">
                   <div className="col-sm-9 col-xs-12">
                     <p>{showRange(job.start, job.end, job.notes)}</p>
