@@ -53,6 +53,9 @@ export class Work extends Component {
   /** function to generate timeline card */
   genWorkExp = job => {
     const { onTouchTap, expanded } = this.props;
+    const imgStyle = { width: '100%', maxWidth: '12em', height: 'auto' };
+    const mainTxt = 'col-sm-9 col-xs-12';
+    const sideTxt = 'col-sm-3 col-xs-12';
 
     return job.isJob ? (
       <Card
@@ -69,7 +72,7 @@ export class Work extends Component {
         />
         <CardText expandable>
           <div className="row">
-            <div className="col-sm-9 col-xs-12">
+            <div className={mainTxt}>
               <p>{showRange(job.start, job.end, job.notes)}</p>
               <ul>
                 {job.expr.map((desc, i) => {
@@ -77,10 +80,10 @@ export class Work extends Component {
                 })}
               </ul>
             </div>
-            <div className="col-sm-3 col-xs-12">
+            <div className={sideTxt}>
               <img
-                className="img-fluid"
-                style={{ maxWidth: '12em' }}
+                className="float-right"
+                style={imgStyle}
                 src={job.src}
                 alt={job.alt}
               />
