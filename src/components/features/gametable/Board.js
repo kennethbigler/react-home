@@ -11,19 +11,17 @@ export const Board = props => {
 
   return (
     <div className="board">
-      {players.map((player, i) => {
-        return (
-          <Player
-            key={`player${i}`}
-            playerNo={i}
-            player={player}
-            turn={turn}
-            hideHands={hideHands}
-            betHandler={betHandler}
-            cardHandler={cardHandler}
-          />
-        );
-      })}
+      {players.map((player, i) => (
+        <Player
+          key={`player${i}`}
+          playerNo={i}
+          player={player}
+          turn={turn}
+          hideHands={hideHands}
+          betHandler={betHandler}
+          cardHandler={cardHandler}
+        />
+      ))}
     </div>
   );
 };

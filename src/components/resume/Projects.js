@@ -11,34 +11,32 @@ const styles = {
     display: 'block',
     margin: 'auto',
     width: '100%',
-    maxWidth: 'auto'
+    maxWidth: 'auto',
+    cursor: 'pointer'
   },
   center: {
     textAlign: 'center'
   }
 };
 
-export const Projects = () => {
-  return (
-    <div style={styles.body}>
-      <Tabs>
-        {projects.map(project => {
-          return (
-            <Tab label={project.title} key={project.title}>
-              <div className="container">
-                <h3 style={styles.center}>{project.caption}</h3>
-                <a href={project.link} rel="noopener">
-                  <img
-                    src={project.src}
-                    alt={project.alt}
-                    style={styles.photo}
-                  />
-                </a>
-              </div>
-            </Tab>
-          );
-        })}
-      </Tabs>
-    </div>
-  );
-};
+const href = url => window.open(url);
+
+export const Projects = () => (
+  <div style={styles.body}>
+    <Tabs>
+      {projects.map(p => (
+        <Tab label={p.title} key={p.title}>
+          <div className="container">
+            <h3 style={styles.center}>{p.caption}</h3>
+            <img
+              onTouchTap={href(p.link)}
+              src={p.src}
+              alt={p.alt}
+              style={styles.photo}
+            />
+          </div>
+        </Tab>
+      ))}
+    </Tabs>
+  </div>
+);
