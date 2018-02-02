@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import { Timeline, TIMELINE_TITLE, FORMAT } from '../features/Timeline';
@@ -19,21 +19,20 @@ function showRange(s, e, n) {
   const yRange = yr ? `${yr} year${yr > 1 ? 's' : ''}` : null;
   const mRange = mon ? `${mon} month${mon > 1 ? 's' : ''}` : null;
   const range = yRange ? yRange + (mRange ? `, ${mRange}` : '') : mRange;
-  // works faster but is a rough estimate
-  // const range = e.to(s, true);
 
   // return string for output
   return `${start} - ${end} (${range}) ${notes}`;
 }
 
-export const Work = props => {
-  return (
-    <div>
-      <h1>Work Experience</h1>
-      {/* Timeline */}
+export class Work extends Component {
+  /** function to generate timeline card */
+  genTimeline = () => {
+    const { onTouchTap, workExp, expanded } = this.props;
+
+    return (
       <Card
-        expanded={props.expanded[TIMELINE_TITLE]}
-        onExpandChange={expanded => props.onTouchTap(TIMELINE_TITLE, expanded)}
+        expanded={expanded[TIMELINE_TITLE]}
+        onExpandChange={expanded => onTouchTap(TIMELINE_TITLE, expanded)}
         key={TIMELINE_TITLE}
       >
         <CardTitle
@@ -44,56 +43,67 @@ export const Work = props => {
         />
         <CardText expandable>
           <div className="row">
-            <Timeline data={props.workExp} />
+            <Timeline data={workExp} />
           </div>
         </CardText>
       </Card>
-      {/* Companies */}
-      {props.workExp.map(job => {
-        if (job.isJob) {
-          return (
-            <Card
-              expanded={props.expanded[job.company]}
-              onExpandChange={expanded =>
-                props.onTouchTap(job.company, expanded)
-              }
-              key={job.company}
-            >
-              <CardTitle
-                title={job.company + ', ' + job.location}
-                //avatar={job.src}
-                subtitle={job.title}
-                actAsExpander
-                showExpandableButton
+    );
+  };
+
+  /** function to generate timeline card */
+  genWorkExp = job => {
+    const { onTouchTap, expanded } = this.props;
+
+    return job.isJob ? (
+      <Card
+        expanded={expanded[job.company]}
+        onExpandChange={expanded => onTouchTap(job.company, expanded)}
+        key={job.company}
+      >
+        <CardTitle
+          title={`${job.company}, ${job.location}`}
+          //avatar={job.src}
+          subtitle={job.title}
+          actAsExpander
+          showExpandableButton
+        />
+        <CardText expandable>
+          <div className="row">
+            <div className="col-sm-9 col-xs-12">
+              <p>{showRange(job.start, job.end, job.notes)}</p>
+              <ul>
+                {job.expr.map((desc, i) => {
+                  return <li key={`desc${i}`}>{desc}</li>;
+                })}
+              </ul>
+            </div>
+            <div className="col-sm-3 col-xs-12">
+              <img
+                className="img-fluid"
+                style={{ maxWidth: '12em' }}
+                src={job.src}
+                alt={job.alt}
               />
-              <CardText expandable>
-                <div className="row">
-                  <div className="col-sm-9 col-xs-12">
-                    <p>{showRange(job.start, job.end, job.notes)}</p>
-                    <ul>
-                      {job.expr.map((desc, i) => {
-                        return <li key={'desc' + i}>{desc}</li>;
-                      })}
-                    </ul>
-                  </div>
-                  <div className="col-sm-3 col-xs-12">
-                    <img
-                      className="img-fluid"
-                      style={{ maxWidth: '12em' }}
-                      src={job.src}
-                      alt={job.alt}
-                    />
-                  </div>
-                </div>
-              </CardText>
-            </Card>
-          );
-        }
-        return <div key={job.company} />;
-      })}
-    </div>
-  );
-};
+            </div>
+          </div>
+        </CardText>
+      </Card>
+    ) : (
+      <div key={job.company} />
+    );
+  };
+
+  render() {
+    const { workExp } = this.props;
+    return (
+      <div>
+        <h1>Work Experience</h1>
+        {this.genTimeline()}
+        {workExp.map(this.genWorkExp)}
+      </div>
+    );
+  }
+}
 
 Work.propTypes = {
   onTouchTap: PropTypes.func.isRequired,
