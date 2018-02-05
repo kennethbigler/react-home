@@ -14,7 +14,7 @@ function showRange(s, e, n) {
   const notes = n ? n : '';
 
   // get the time range in years, months
-  const mon = e.diff(s, 'months') % 12;
+  const mon = e.diff(s, 'months') % 12 + 1; // working Jan&Feb > (2 - 1 = 1)
   const yr = e.diff(s, 'years');
   const yRange = yr ? `${yr} year${yr > 1 ? 's' : ''}` : null;
   const mRange = mon ? `${mon} month${mon > 1 ? 's' : ''}` : null;
