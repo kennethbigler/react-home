@@ -2,7 +2,6 @@
  * Deck
  * -------------------------------------------------- */
 
-let deck = [];
 const newDeck = [
   { name: '2', weight: 2, suit: '♣' },
   { name: '3', weight: 3, suit: '♣' },
@@ -58,19 +57,23 @@ const newDeck = [
   { name: 'A', weight: 14, suit: '♠' }
 ];
 
-const getNewDeck = () => {
-  let ret = [];
-  newDeck.forEach(card => {
-    ret.push(Object.assign({}, card));
-  });
-  return ret;
-};
-
 export const Deck = {
+  // deck used
+  deck: [],
+
+  // immutable deck copy to new deck
+  getNewDeck: function() {
+    let ret = [];
+    newDeck.forEach(card => {
+      ret.push(Object.assign({}, card));
+    });
+    return ret;
+  },
+
   // randomize order of the cards
-  shuffle: () => {
+  shuffle: function() {
     // reset the old deck
-    deck = getNewDeck();
+    this.deck = this.getNewDeck();
     // number of shuffles
     const n = 100;
     // shuffle the cards
@@ -78,16 +81,16 @@ export const Deck = {
       const j = Math.floor(Math.random() * 52);
       const k = Math.floor(Math.random() * 52);
       // swap
-      const temp = deck[j];
-      deck[j] = deck[k];
-      deck[k] = temp;
+      const temp = this.deck[j];
+      this.deck[j] = this.deck[k];
+      this.deck[k] = temp;
     }
   },
 
   // return an array of a specified length
-  deal: (num = 0) => {
+  deal: function(num = 0) {
     // verify we have enough cards
-    if (num > deck.length) {
+    if (num > this.deck.length) {
       console.error('Not Enough Cards Left');
       return;
     }
@@ -95,7 +98,7 @@ export const Deck = {
     let cards = [];
     // get the cards
     for (let i = 0; i < num; i += 1) {
-      cards.push(deck.pop());
+      cards.push(this.deck.pop());
     }
     // return the card(s)
     return cards;
