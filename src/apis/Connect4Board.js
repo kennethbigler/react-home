@@ -1,5 +1,7 @@
 // dp constants
 const EMPTY = 0;
+const RED = 1;
+const BLACK = 2;
 const PIECE = 0;
 const STREAK = 1;
 const MAX = 2;
@@ -29,14 +31,51 @@ function helpEvalConnect4(board, row, col, line) {
 }
 
 //export
-const Connect4 = {
+const Connect4Board = {
+  // board for immutable reset
+  newBoard: [
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0]
+  ],
+  // board the game is played on
+  board: [],
+  turn: RED,
+  /** immutably reset the board */
+  getNewBoard: function() {
+    this.board = this.newBoard.reduce((acc, row) => acc.push([...row]), []);
+  },
+
+  updateTurn: function() {
+    this.turn = this.turn === RED ? BLACK : RED;
+  },
+
+  /** insert piece into the board */
+  insert: function(col) {
+    // check to see if there is an empty spot left
+    if (!this.board[this.board.length - 1][col]) {
+      let i = 0;
+      // look for the lowest empty spot
+      while (this.board[i][col] !== 0) {
+        i += 1;
+      }
+      // insert element
+      this.board[i][col] = this.turn;
+      // update turn
+      this.updateTurn();
+    }
+  },
+
   /** function to evaluate a connect 4 board based off the last piece played
    * NOTE: win condition will be within +-3 of the piece last played
    * @param {array} board - 6 x 7 matrix of spaces, 0 empty, 1 red, 2 black
    * @param {number} row - row location of play
    * @param {number} col - col location of play
    */
-  evalConnect4: (board, row, col) => {
+  evalConnect4: function(board, row, col) {
     // variables to track streaks
     let vertical = [0, 0, 0];
     let horizontal = [0, 0, 0];
@@ -58,7 +97,7 @@ const Connect4 = {
   /** function to evaluate a connect 4 board based off the last piece played
    * @param {array} board - 6 x 7 matrix of spaces, 0 empty, 1 red, 2 black
    */
-  evalRawConnect4: board => {
+  evalRawConnect4: function(board) {
     const len = Math.max(board.length, board[0].length);
     // variables to track streaks
     let line = [
@@ -86,23 +125,4 @@ const Connect4 = {
   }
 };
 
-Connect4.evalConnect4(
-  [
-    [1, 1, 0, 0, 2, 2, 2],
-    [0, 0, 0, 1, 0, 0, 0],
-    [0, 0, 0, 2, 1, 0, 1],
-    [0, 0, 0, 1, 0, 0, 0],
-    [0, 0, 1, 1, 0, 1, 0],
-    [0, 0, 0, 1, 0, 0, 0]
-  ],
-  0,
-  3
-);
-Connect4.evalRawConnect4([
-  [1, 1, 1, 0, 2, 2, 2],
-  [0, 0, 2, 1, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 1],
-  [0, 0, 0, 0, 0, 1, 0],
-  [0, 0, 0, 0, 1, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0]
-]);
+Connect4Board.getNewBoard();

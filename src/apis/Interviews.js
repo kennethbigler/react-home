@@ -70,31 +70,16 @@ isAmbigram1([1, 6, 1]);
 /* Code Golf - Is the input an Ambigram II
 Given a string, determine if it is an Ambigram
 Ambigram - The same word forwards, backwards, and upsidown
-EX: 1881
+EX: 1881, SwIMs
 
 Table (goes both ways)
-0  0
-1  1
-2  5
-6  9
-8  8
-a  e
-b  q
-d  p/P
-h  y/Y
-l  l
-m  w
-n  u/U
-o  o/O
-O  o/O
-s  s/S
-t  t
-x  x/X
-z  z/Z
-H  H
-I  I
-M  W
-N  N
+0  0      b  q        o  o/O      H  H
+1  1      d  p/P      O  o/O      I  I
+2  5      h  y/Y      s  s/S      M  W
+6  9      l  l        t  t        N  N
+8  8      m  w        x  x/X
+a  e      n  u/U      z  z/Z
+
 */
 function isAmbigram2(word) {
   // create map
