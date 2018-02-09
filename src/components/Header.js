@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Menu } from './features/Menu';
-import { GameMenu } from './features/GameMenu';
+import { Menu } from './common/Menu';
+import { GameMenu } from './common/GameMenu';
 import photo from '../images/ken.jpg';
 import { withRouter } from 'react-router';
 import AppBar from 'material-ui/AppBar';

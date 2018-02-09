@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { TIMELINE_TITLE } from './features/Timeline';
+import { TIMELINE_TITLE } from './common/Timeline';
 import { Home } from './resume/Home';
 import { Work } from './resume/Work';
 import { Education } from './resume/Education';
-import { Projects } from './resume/Projects';
 import { Resume } from './resume/Resume';
 import { PokerNight } from './games/PokerNight';
 import { MurderMystery } from './games/MurderMystery';
@@ -13,6 +12,7 @@ import { Slots } from './games/Slots';
 import { BlackJack } from './games/BlackJack';
 import { Poker } from './games/Poker';
 import { TicTacToe } from './games/TicTacToe';
+import { Connect4 } from './games/Connect4';
 import classes from '../constants/classes';
 import workExp from '../constants/work';
 // Parents: App
@@ -64,7 +64,6 @@ export class Main extends Component {
             <Route exact path="/home" component={Home} />
             <Route path="/work" render={() => work} />
             <Route path="/education" render={() => education} />
-            <Route path="/projects" component={Projects} />
             <Route path="/resume" component={Resume} />
             <Route path="/(tictactoe|games/tictactoe)" component={TicTacToe} />
             <Route path="/(poker|games/pokernight)" component={PokerNight} />
@@ -73,6 +72,7 @@ export class Main extends Component {
             <Route path="/games/murder" component={MurderMystery} />
             <Route path="/games/slots" component={Slots} />
             <Route path="/games/poker" component={Poker} />
+            <Route path="/games/connect4" component={Connect4} />
           </Switch>
         </main>
       </div>

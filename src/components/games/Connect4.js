@@ -1,130 +1,161 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Connect4Board } from '../../apis/Connect4Board';
-import RaisedButton from 'material-ui/RaisedButton';
-import {
-  Table,
-  TableBody,
-  TableRow,
-  TableRowColumn,
-  TableHeader,
-  TableHeaderColumn
-} from 'material-ui/Table';
+import { GameBoard } from './connect4/GameBoard';
 // Parents: Main
 
-/* --------------------------------------------------
-* Slot Machine
-* -------------------------------------------------- */
+// dp constants
+export const EMPTY = 0;
+export const RED = 1;
+export const BLACK = 2;
+const PIECE = 0;
+const STREAK = 1;
+const MAX = 2;
+const NEW_BOARD = [
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0]
+];
+
+const getNewGame = () => ({
+  board: NEW_BOARD.reduce((acc, row) => {
+    acc.push([...row]);
+    return acc;
+  }, []),
+  winner: null,
+  turn: RED
+});
+
 export class Connect4 extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      reel: Connect4.pullHandle()
-    };
+    this.state = getNewGame();
   }
 
-  updateConnect4 = () => {
-    const { payout } = this.props.playerActions;
-    const { id, money, bet } = this.props.players[0];
-    const dealer = this.props.players[this.props.players.length - 1];
-    let reel = Connect4.pullHandle();
-    let exchange = Connect4.getPayout(reel, bet) - bet;
-    payout(id, 'win', money, exchange);
-    payout(dealer.id, 'win', dealer.money, -exchange);
-    this.setState({ reel });
+  /** start a new game
+   * immutably reset the board
+   * set the turn to RED
+   */
+  newGame = () => {
+    this.setState(getNewGame());
   };
 
-  // https://vegasclick.com/games/slots/how-they-work
-  render() {
-    const { reel } = this.state;
-    const { players } = this.props;
-    const player = players[0];
-    const dealer = players[players.length - 1];
+  /** update turn, alternating red/black */
+  updateTurn = () => {
+    const { turn } = this.state;
+    this.setState({ turn: turn === RED ? BLACK : RED });
+  };
 
-    // generate code for slot machine
-    let slots = [];
-    for (let i = 0; i < 3; i += 1) {
-      // create 3 cells in a row
-      let row = [];
-      for (let j = 0; j < 3; j += 1) {
-        row.push(
-          <TableRowColumn key={`${j},${i}`}>{reel[j][i]}</TableRowColumn>
-        );
+  /** insert piece into the board */
+  insert = col => {
+    let { board, turn, winner } = this.state;
+    // check to see if there is an empty spot left
+    if (!winner && !board[board.length - 1][col]) {
+      let i = 0;
+      // look for the lowest empty spot
+      while (board[i][col] !== 0) {
+        i += 1;
       }
-      // separate into rows
-      slots.push(<TableRow key={`row${i}`}>{row}</TableRow>);
+      // insert element
+      board[i][col] = turn;
+      // update turn
+      this.updateTurn();
+      // check if win
+      this.evalConnect4(i, col);
     }
+  };
 
+  /** function to check for match and increment streak / max
+   * @param {number} row - row of piece
+   * @param {number} col - col of piece
+   * @param {array} line - dp storage, [PIECE, STREAK, MAX]
+   */
+  helpEvalConnect4 = (row, col, line) => {
+    const { board } = this.state;
+    // verify row
+    if (board[row] !== undefined) {
+      const piece = board[row][col];
+      // verify piece
+      if (piece !== undefined) {
+        // check piece
+        if (piece === line[PIECE] && piece !== EMPTY) {
+          // matches, increment streak and max if needed
+          line[STREAK] += 1;
+          line[MAX] = Math.max(line[STREAK], line[MAX]);
+        } else {
+          // doesn't match, restart streak
+          line[PIECE] = piece;
+          line[STREAK] = 1;
+        }
+      }
+    }
+  };
+
+  /** function to evaluate a connect 4 board based off the last piece played
+   * NOTE: win condition will be within +-3 of the piece last played
+   * @param {number} row - row location of play
+   * @param {number} col - col location of play
+   */
+  evalConnect4 = (row, col) => {
+    // variables to track streaks
+    let vertical = [0, 0, 0];
+    let horizontal = [0, 0, 0];
+    let diagDown = [0, 0, 0];
+    let diagUp = [0, 0, 0];
+    // win will be contained w/in +-3 of the token placed
+    for (let i = -3; i <= 3; i += 1) {
+      // check for streaks
+      this.helpEvalConnect4(row + i, col, vertical);
+      this.helpEvalConnect4(row, col + i, horizontal);
+      this.helpEvalConnect4(row + i, col + i, diagDown);
+      this.helpEvalConnect4(row - i, col + i, diagUp);
+    }
+    if (
+      Math.max(vertical[MAX], horizontal[MAX], diagDown[MAX], diagUp[MAX]) >= 4
+    ) {
+      this.setState({ winner: this.state.turn });
+    }
+  };
+
+  /** function to evaluate a connect 4 board based off the last piece played */
+  evalRawConnect4 = () => {
+    const numRows = this.state.board.length;
+    const numCols = this.state.board[0].length;
+    // variables to track streaks
+    let dp = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
+    // iterate over looking for 4 in a row
+    for (let i = 0; i < numCols; i += 1) {
+      for (let j = 0; j < numCols; j += 1) {
+        // vertical
+        this.helpEvalConnect4(j, i, dp[0]);
+        // horizontal
+        this.helpEvalConnect4(i, j, dp[1]);
+        if (0 <= i && i <= 2) {
+          // diagonal down top half
+          this.helpEvalConnect4(i + j, j, dp[2]);
+          // diagonal down bottom half
+          this.helpEvalConnect4(j, i + j + 1, dp[3]);
+          // diagonal up top half
+          this.helpEvalConnect4(3 + i - j, j, dp[4]);
+          // diagonal up bottom half
+          this.helpEvalConnect4(numRows - 1 - j, 1 + j + i, dp[5]);
+        }
+      }
+    }
+    return dp.reduce((a, c) => a || c[MAX] >= 4, false);
+  };
+
+  render() {
+    const { board, turn, winner } = this.state;
     return (
-      <div>
-        <h1>Welcome to Ken's Casino Slot Machine</h1>
-        <div className="row" style={{ marginTop: '2em' }}>
-          <div className="col-sm-6 col-xs-12">
-            <div className="row" style={{ marginBottom: '1em' }}>
-              <div className="col-xs-9">
-                <Table selectable={false} fixedHeader>
-                  <TableBody displayRowCheckbox={false} stripedRows>
-                    {slots}
-                  </TableBody>
-                </Table>
-              </div>
-              <div className="col-xs-3">
-                <RaisedButton
-                  label="Spin"
-                  onTouchTap={this.updateConnect4}
-                  primary
-                />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-xs-12">
-                <Table selectable={false} fixedHeader>
-                  <TableHeader
-                    displaySelectAll={false}
-                    adjustForCheckbox={false}
-                  >
-                    <TableRow>
-                      <TableHeaderColumn>Player</TableHeaderColumn>
-                      <TableHeaderColumn>Money</TableHeaderColumn>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody displayRowCheckbox={false} showRowHover>
-                    <TableRow>
-                      <TableRowColumn>{player.name}</TableRowColumn>
-                      <TableRowColumn>${player.money}</TableRowColumn>
-                    </TableRow>
-                    <TableRow>
-                      <TableRowColumn>House</TableRowColumn>
-                      <TableRowColumn>${dealer.money}</TableRowColumn>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
-          </div>
-          <div className="col-sm-6 col-xs-12">
-            <Table selectable={false} fixedHeader>
-              <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                <TableRow>
-                  <TableHeaderColumn>Slot Roll</TableHeaderColumn>
-                  <TableHeaderColumn>Payout</TableHeaderColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody displayRowCheckbox={false} showRowHover>
-                {Connect4.payoutTable.map((row, i) => (
-                  <TableRow key={i}>
-                    <TableRowColumn>
-                      {row.win} {row.symbol}
-                    </TableRowColumn>
-                    <TableRowColumn>{row.payout} : 1</TableRowColumn>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      </div>
+      <GameBoard
+        board={board}
+        insert={this.insert}
+        winner={winner}
+        turn={turn}
+        newGame={this.newGame}
+      />
     );
   }
 }

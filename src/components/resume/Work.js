@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
-import { Timeline, TIMELINE_TITLE, FORMAT } from '../features/Timeline';
+import { Timeline, TIMELINE_TITLE, FORMAT } from '../common/Timeline';
 import moment from 'moment';
 // Parents: Main
 

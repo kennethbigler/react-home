@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { GameTable } from '../features/GameTable';
+import { GameTable } from './gametable/GameTable';
 import { Deck } from '../../apis/Deck';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
