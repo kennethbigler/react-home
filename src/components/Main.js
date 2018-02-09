@@ -5,6 +5,7 @@ import { Home } from './resume/Home';
 import { Work } from './resume/Work';
 import { Education } from './resume/Education';
 import { Resume } from './resume/Resume';
+import { TravelMap } from './resume/TravelMap';
 import { PokerNight } from './games/PokerNight';
 import { MurderMystery } from './games/MurderMystery';
 import { GameHome } from './games/Home';
@@ -65,6 +66,7 @@ export class Main extends Component {
             <Route path="/work" render={() => work} />
             <Route path="/education" render={() => education} />
             <Route path="/resume" component={Resume} />
+            <Route path="/travel" component={TravelMap} />
             <Route path="/(tictactoe|games/tictactoe)" component={TicTacToe} />
             <Route path="/(poker|games/pokernight)" component={PokerNight} />
             <Route exact path="/games" component={GameHome} />

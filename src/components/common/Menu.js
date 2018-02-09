@@ -9,6 +9,7 @@ export const Menu = props => {
   const home = () => props.onTouchTap('/');
   const work = () => props.onTouchTap('/work');
   const education = () => props.onTouchTap('/education');
+  const travel = () => props.onTouchTap('/travel');
   const resume = () => props.onTouchTap('/resume');
   const games = () => props.onTouchTap('/games');
   // external links
@@ -24,6 +25,7 @@ export const Menu = props => {
       <MenuItem onTouchTap={home} primaryText="Home" />
       <MenuItem onTouchTap={work} primaryText="Work" />
       <MenuItem onTouchTap={education} primaryText="Education" />
+      <MenuItem onTouchTap={travel} primaryText="Travel Map" />
       <MenuItem onTouchTap={resume} primaryText="Resume" />
       <MenuItem onTouchTap={games} primaryText="React Games" />
       {/* External Links */}
