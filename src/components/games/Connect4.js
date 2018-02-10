@@ -9,6 +9,7 @@ export const BLACK = 2;
 const PIECE = 0;
 const STREAK = 1;
 const MAX = 2;
+const WIN = 3;
 const NEW_BOARD = [
   [0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0],
@@ -73,6 +74,7 @@ export class Connect4 extends Component {
    */
   helpEvalConnect4 = (row, col, line) => {
     const { board } = this.state;
+    let winRow = [];
     // verify row
     if (board[row] !== undefined) {
       const piece = board[row][col];
@@ -82,11 +84,18 @@ export class Connect4 extends Component {
         if (piece === line[PIECE] && piece !== EMPTY) {
           // matches, increment streak and max if needed
           line[STREAK] += 1;
-          line[MAX] = Math.max(line[STREAK], line[MAX]);
+          winRow.push([row, col]);
+          // update max and Win row if needed
+          if (line[STREAK] > line[MAX]) {
+            line[MAX] = line[STREAK];
+            line[WIN] = [...winRow];
+            // console.log(line[WIN]);
+          }
         } else {
           // doesn't match, restart streak
           line[PIECE] = piece;
           line[STREAK] = 1;
+          winRow = [[row, col]];
         }
       }
     }
@@ -99,10 +108,10 @@ export class Connect4 extends Component {
    */
   evalConnect4 = (row, col) => {
     // variables to track streaks
-    let vertical = [0, 0, 0];
-    let horizontal = [0, 0, 0];
-    let diagDown = [0, 0, 0];
-    let diagUp = [0, 0, 0];
+    let vertical = [0, 0, 0, []];
+    let horizontal = [0, 0, 0, []];
+    let diagDown = [0, 0, 0, []];
+    let diagUp = [0, 0, 0, []];
     // win will be contained w/in +-3 of the token placed
     for (let i = -3; i <= 3; i += 1) {
       // check for streaks
@@ -123,7 +132,10 @@ export class Connect4 extends Component {
     const numRows = this.state.board.length;
     const numCols = this.state.board[0].length;
     // variables to track streaks
-    let dp = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
+    let dp = [];
+    for (let i = 0; i < 6; i += 1) {
+      dp.push([0, 0, 0, []]);
+    }
     // iterate over looking for 4 in a row
     for (let i = 0; i < numCols; i += 1) {
       for (let j = 0; j < numCols; j += 1) {

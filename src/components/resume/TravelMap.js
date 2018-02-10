@@ -62,13 +62,17 @@ export const TravelMap = () => {
   for (let i = 0; i < len; i += 1) {
     let row = [];
     // add NA Country
-    row.push(<td style={styles.separator}>{NA[i]}</td>);
+    row.push(
+      <td key={`tmc${i}`} style={styles.separator}>
+        {NA[i]}
+      </td>
+    );
     // add EU Countries
     for (let j = 0; j < EURatio; j += 1) {
-      row.push(<td>{EU[EURatio * i + j]}</td>);
+      row.push(<td key={`tmc${i}${j}`}>{EU[EURatio * i + j]}</td>);
     }
     // form the row
-    countries.push(<tr>{row}</tr>);
+    countries.push(<tr key={`tmr${i}`}>{row}</tr>);
   }
 
   return (
