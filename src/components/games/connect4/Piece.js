@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import { black, red500 } from 'material-ui/styles/colors';
+import { black, red500, indigoA700 } from 'material-ui/styles/colors';
 // Parents: Board, Header
 
 /* --------------------------------------------------
@@ -10,7 +10,9 @@ import { black, red500 } from 'material-ui/styles/colors';
 * -------------------------------------------------- */
 export const Piece = props => {
   const { piece, enabled, onTouchTap } = props;
-  const color = !piece ? null : piece === 1 ? red500 : black;
+  const color = !piece
+    ? null
+    : piece === 1 ? red500 : piece === 2 ? black : indigoA700;
 
   return !enabled ? (
     <FloatingActionButton disabledColor={color} mini disabled />

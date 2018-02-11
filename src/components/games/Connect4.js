@@ -9,7 +9,6 @@ export const BLACK = 2;
 const PIECE = 0;
 const STREAK = 1;
 const MAX = 2;
-const WIN = 3;
 const NEW_BOARD = [
   [0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0],
@@ -25,6 +24,7 @@ const getNewGame = () => ({
     return acc;
   }, []),
   winner: null,
+  line: [],
   turn: RED
 });
 
@@ -74,7 +74,6 @@ export class Connect4 extends Component {
    */
   helpEvalConnect4 = (row, col, line) => {
     const { board } = this.state;
-    let winRow = [];
     // verify row
     if (board[row] !== undefined) {
       const piece = board[row][col];
@@ -83,19 +82,15 @@ export class Connect4 extends Component {
         // check piece
         if (piece === line[PIECE] && piece !== EMPTY) {
           // matches, increment streak and max if needed
-          line[STREAK] += 1;
-          winRow.push([row, col]);
+          line[STREAK].push([row, col]);
           // update max and Win row if needed
-          if (line[STREAK] > line[MAX]) {
-            line[MAX] = line[STREAK];
-            line[WIN] = [...winRow];
-            // console.log(line[WIN]);
+          if (line[STREAK].length > line[MAX].length) {
+            line[MAX] = [...line[STREAK]];
           }
         } else {
           // doesn't match, restart streak
           line[PIECE] = piece;
-          line[STREAK] = 1;
-          winRow = [[row, col]];
+          line[STREAK] = [[row, col]];
         }
       }
     }
@@ -108,23 +103,30 @@ export class Connect4 extends Component {
    */
   evalConnect4 = (row, col) => {
     // variables to track streaks
-    let vertical = [0, 0, 0, []];
-    let horizontal = [0, 0, 0, []];
-    let diagDown = [0, 0, 0, []];
-    let diagUp = [0, 0, 0, []];
+    let dp = [];
+    for (let i = 0; i < 4; i += 1) {
+      dp.push([0, [], []]);
+    }
     // win will be contained w/in +-3 of the token placed
     for (let i = -3; i <= 3; i += 1) {
       // check for streaks
-      this.helpEvalConnect4(row + i, col, vertical);
-      this.helpEvalConnect4(row, col + i, horizontal);
-      this.helpEvalConnect4(row + i, col + i, diagDown);
-      this.helpEvalConnect4(row - i, col + i, diagUp);
+      // vertical
+      this.helpEvalConnect4(row + i, col, dp[0]);
+      // horizontal
+      this.helpEvalConnect4(row, col + i, dp[1]);
+      // diagonal down
+      this.helpEvalConnect4(row + i, col + i, dp[2]);
+      // diagonal up
+      this.helpEvalConnect4(row - i, col + i, dp[3]);
     }
-    if (
-      Math.max(vertical[MAX], horizontal[MAX], diagDown[MAX], diagUp[MAX]) >= 4
-    ) {
-      this.setState({ winner: this.state.turn });
-    }
+
+    dp.forEach(line => {
+      if (line[MAX].length >= 4) {
+        let { board } = this.state;
+        line[MAX].forEach(t => (board[t[0]][t[1]] = 3));
+        this.setState({ winner: this.state.turn, board });
+      }
+    });
   };
 
   /** function to evaluate a connect 4 board based off the last piece played */
@@ -134,7 +136,7 @@ export class Connect4 extends Component {
     // variables to track streaks
     let dp = [];
     for (let i = 0; i < 6; i += 1) {
-      dp.push([0, 0, 0, []]);
+      dp.push([0, [], []]);
     }
     // iterate over looking for 4 in a row
     for (let i = 0; i < numCols; i += 1) {
@@ -155,7 +157,7 @@ export class Connect4 extends Component {
         }
       }
     }
-    return dp.reduce((a, c) => a || c[MAX] >= 4, false);
+    return dp.reduce((a, c) => a || c[MAX].length >= 4, false);
   };
 
   render() {
