@@ -1,4 +1,5 @@
 import React from 'react';
+import { countries } from '../../constants/countries';
 // Parents: Main
 
 export const TravelMap = () => {
@@ -11,41 +12,7 @@ export const TravelMap = () => {
   const travelMap =
     'https://d36tnp772eyphs.cloudfront.net/travel-maps/33db2343800e0aa83a1d102fc8d07f5a-1518204154/my-travel-map.png';
 
-  const NA = [
-    'Bahamas',
-    'British Virgin Islands',
-    'Canada',
-    'Cayman Islands',
-    'Mexico',
-    'U.S. Virgin Islands',
-    'United States'
-  ];
-  const EU = [
-    'Denmark',
-    'Estonia',
-    'Finland',
-    'France',
-    'Gibraltar',
-    'Greece',
-    'Iceland',
-    'Ireland',
-    'Italy',
-    'Malta',
-    'Monaco',
-    'Netherlands',
-    'Norway',
-    'Portugal',
-    'Russia',
-    'Spain',
-    'Sweden',
-    'Switzerland',
-    'Turkey',
-    'United Kingdom',
-    'Vatican'
-  ];
-
   const styles = {
-    separator: { borderRight: '1px solid lightgray' },
     img: {
       display: 'block',
       margin: 'auto',
@@ -55,25 +22,6 @@ export const TravelMap = () => {
     },
     margins: { marginTop: 24, marginBottom: 16 }
   };
-
-  const EURatio = 2;
-  const len = Math.max(NA.length, Math.ceil(EU.length / EURatio));
-  let countries = [];
-  for (let i = 0; i < len; i += 1) {
-    let row = [];
-    // add NA Country
-    row.push(
-      <td key={`tmc${i}`} style={styles.separator}>
-        {NA[i]}
-      </td>
-    );
-    // add EU Countries
-    for (let j = 0; j < EURatio; j += 1) {
-      row.push(<td key={`tmc${i}${j}`}>{EU[EURatio * i + j]}</td>);
-    }
-    // form the row
-    countries.push(<tr key={`tmr${i}`}>{row}</tr>);
-  }
 
   return (
     <div>

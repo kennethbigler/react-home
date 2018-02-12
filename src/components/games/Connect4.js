@@ -18,6 +18,9 @@ const NEW_BOARD = [
   [0, 0, 0, 0, 0, 0, 0]
 ];
 
+/** start a new game
+ * @return {Object} new board, empty winner, empty win line, turn to red
+ */
 const getNewGame = () => ({
   board: NEW_BOARD.reduce((acc, row) => {
     acc.push([...row]);
@@ -35,8 +38,7 @@ export class Connect4 extends Component {
   }
 
   /** start a new game
-   * immutably reset the board
-   * set the turn to RED
+   * @return immutably reset the board and helper vars in state
    */
   newGame = () => {
     this.setState(getNewGame());
@@ -48,7 +50,9 @@ export class Connect4 extends Component {
     this.setState({ turn: turn === RED ? BLACK : RED });
   };
 
-  /** insert piece into the board */
+  /** insert piece into the board, piece falls to the bottom row every time
+   * @param {number} - column number
+   */
   insert = col => {
     let { board, turn, winner } = this.state;
     // check to see if there is an empty spot left
@@ -98,8 +102,10 @@ export class Connect4 extends Component {
 
   /** function to evaluate a connect 4 board based off the last piece played
    * NOTE: win condition will be within +-3 of the piece last played
+   * O(N)
    * @param {number} row - row location of play
    * @param {number} col - col location of play
+   * @return - updates state of winner and board for highlighting
    */
   evalConnect4 = (row, col) => {
     // variables to track streaks
@@ -129,8 +135,11 @@ export class Connect4 extends Component {
     });
   };
 
-  /** function to evaluate a connect 4 board based off the last piece played */
-  evalRawConnect4 = () => {
+  /** function to evaluate a connect 4 board based off the last piece played
+   * O(N^2)
+   * @return {boolean} - is there a winner on the board?
+   */
+  isConnect4 = () => {
     const numRows = this.state.board.length;
     const numCols = this.state.board[0].length;
     // variables to track streaks

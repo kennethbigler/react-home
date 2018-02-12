@@ -15,7 +15,7 @@ export default [
     company: 'Cisco Systems',
     location: 'San Jose, CA',
     title: 'Software Engineer III, Core Software Group',
-    start: moment('2017-04-01'),
+    start: moment('2017-04-03'),
     end: moment(),
     src: ciscoLogo,
     alt: 'Cisco Systems Logo',
@@ -45,7 +45,7 @@ export default [
     company: 'Hoverboard Technologies',
     location: 'Mountain View, CA',
     title: 'Software Engineer',
-    start: moment('2016-10-01'),
+    start: moment('2016-10-03'),
     end: moment('2017-04-01'),
     src: hoverboardLogo,
     alt: 'Hoverboard Logo',
@@ -61,8 +61,8 @@ export default [
     company: 'Tesla, Inc.',
     location: 'Fremont, CA',
     title: 'Application Developer Intern, IT Applications',
-    start: moment('2015-06-01'),
-    end: moment('2016-06-30'),
+    start: moment('2015-06-08'),
+    end: moment('2016-06-24'),
     src: teslaLogo,
     alt: 'Tesla Logo',
     expr: [
@@ -77,8 +77,8 @@ export default [
     company: 'Midnight Game Club, LLC',
     location: 'Sunnyvale, CA',
     title: 'Application Developer and Project Manager',
-    start: moment('2014-08-01'),
-    end: moment('2015-11-30'),
+    start: moment('2014-08-04'),
+    end: moment('2015-11-25'),
     notes: '(Spare Time)',
     src: vengefulLogo,
     alt: 'Midnight Game Club Logo',
@@ -94,8 +94,8 @@ export default [
     company: 'NetApp',
     location: 'Sunnyvale, CA',
     title: 'Web Technologist, Solutions and Process Enablement',
-    start: moment('2012-08-01'),
-    end: moment('2015-06-01'),
+    start: moment('2012-08-06'),
+    end: moment('2015-06-06'),
     src: netappLogo,
     alt: 'NetApp Logo',
     expr: [
@@ -112,7 +112,7 @@ export default [
     company: 'Santa Clara University',
     location: 'Santa Clara, CA',
     title: 'Undergrad / Grad Student',
-    start: moment('2011-09-01'),
-    end: moment('2016-12-31')
+    start: moment('2011-09-19'),
+    end: moment('2016-12-11')
   }
 ];

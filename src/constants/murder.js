@@ -154,7 +154,7 @@ gunNut = Object.assign(gunNut, {
     'You own several guns.\n' +
     `You and your wife are a die-hard ${VICTIM} fans and you believe this ${VICTIM} impersonator is terrible since you have seen him before.\n` +
     'You have been to several of his other shows and heckle him on and off stage.',
-  hint: 'You are NOT the murderer.\n' + 'You have a gun with you.\n' + REGULAR,
+  hint: `You are NOT the murderer.\nYou have a gun with you.\n${REGULAR}`,
   clue: 'You lost your gun at the casino bar last week.'
 });
 
@@ -273,7 +273,7 @@ diver = Object.assign(diver, {
     'Your cover is a scuba diver.\n' +
     `You were NOT hired to murder ${VICTIM} or anyone else at ${CASINO}.\n` +
     'You are simply here to gamble and have a relaxing weekend.',
-  hint: 'You have a gun with you.\n' + 'You have an alibi.',
+  hint: 'You have a gun with you.\nYou have an alibi.',
   clue:
     `You were talking with "${owner}" during the shooting, this is your alibi for not shooting ${VICTIM}.\n` +
     'You can reveal you are an assassin in any way you would like, but you should reveal this at some point.'
@@ -281,7 +281,7 @@ diver = Object.assign(diver, {
 
 cop = Object.assign(cop, {
   description: 'You worked as a cop in New York for 30 years.',
-  hint: REGULAR + '\n' + 'You always carry your glock (police issued pistol).',
+  hint: `${REGULAR}\nYou always carry your glock (police issued pistol).`,
   clue:
     'You are retired and have lots of money because of your pension and an injury insurance payout from when you were shot in the arm on duty.\n' +
     `You cannot think of any motive you would have to murder ${VICTIM}.`
