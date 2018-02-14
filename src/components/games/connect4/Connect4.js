@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { GameBoard } from './connect4/GameBoard';
+import { GameBoard } from './GameBoard';
 // Parents: Main
 
 // dp constants

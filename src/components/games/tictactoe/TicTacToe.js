@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
-import { Header } from './tictactoe/Header';
-import { History } from './tictactoe/History';
-import { Board } from './tictactoe/Board';
-import { X, O, getTurn } from './tictactoe/constants';
+import { Header } from './Header';
+import { History } from './History';
+import { Board } from './Board';
+import { X, O, getTurn } from './constants';
 // Parents: Main
 
 // constants and helper functions

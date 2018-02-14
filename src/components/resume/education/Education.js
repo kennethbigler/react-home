@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Degree } from './education/Degree';
+import { Degree } from './Degree';
 // Parents: Main
 
 export const Education = props => {

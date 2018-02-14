@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Job } from './work/Job';
-import { TimelineCard } from './work/TimelineCard';
+import { Job } from './Job';
+import { TimelineCard } from './TimelineCard';
 // Parents: Main
 
 export const Work = props => {

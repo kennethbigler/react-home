@@ -1,14 +1,22 @@
+/* Theoretical Max Score:   386 everyone splits 3 times and busts with 30, dealer bust with 26
+ * Card Point Value:        340-380
+ * TODO: split aces is not blackjack
+ * TODO: get second card for dealer and hide it
+ * TODO: buy insurance on dealer's Ace
+ */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { GameTable } from './gametable/GameTable';
-import { Deck } from '../../apis/Deck';
+import { Popup } from './Popup';
+import { GameTable } from '../gametable/GameTable';
+import { Deck } from '../../../apis/Deck';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
   incrPlayerTurn,
   resetTurn,
   incrHandTurn
-} from '../../store/modules/turn';
+} from '../../../store/modules/turn';
 import {
   drawCard,
   newHand,
@@ -16,7 +24,7 @@ import {
   payout,
   updateBet,
   resetStatus
-} from '../../store/modules/players';
+} from '../../../store/modules/players';
 // Parents: Main
 
 // Dealer constant
@@ -69,10 +77,8 @@ function weighHand(hand = []) {
 class BJ extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      gameFunctions: [{ name: 'Finish Betting', func: this.finishBetting }],
-      hideHands: true
-    };
+    this.setNewGameRedux();
+    this.state = this.getNewGameState();
   }
 
   /**
@@ -130,6 +136,27 @@ class BJ extends Component {
   }
 
   /**
+   * function to generate the state of a new game
+   * @return {Object}
+   */
+  getNewGameState = () => {
+    // go back to betting phase
+    return {
+      gameFunctions: [{ name: 'Finish Betting', func: this.finishBetting }],
+      hideHands: true
+    };
+  };
+
+  /** function to reset turn and player status */
+  setNewGameRedux = () => {
+    const { turnActions, playerActions, players } = this.props;
+    // reset redux actions
+    turnActions.resetTurn();
+    // reset player statuses
+    players.forEach(player => playerActions.resetStatus(player.id));
+  };
+
+  /**
    * function to finish betting and start the game
    * stateChanges: hideHands
    */
@@ -143,16 +170,8 @@ class BJ extends Component {
    * stateChanges: hideHands
    */
   newGame = () => {
-    const { turnActions, playerActions, players } = this.props;
-    // reset redux actions
-    turnActions.resetTurn();
-    // reset player statuses
-    players.forEach(player => playerActions.resetStatus(player.id));
-    // go back to betting phase
-    this.setState({
-      gameFunctions: [{ name: 'Finish Betting', func: this.finishBetting }],
-      hideHands: true
-    });
+    this.setNewGameRedux();
+    this.setState(this.getNewGameState());
   };
 
   /**
@@ -455,14 +474,17 @@ class BJ extends Component {
     const { turn, players } = this.props;
     const { gameFunctions, hideHands } = this.state;
     return (
-      <GameTable
-        turn={turn}
-        players={players}
-        hideHands={hideHands}
-        betHandler={this.betHandler}
-        gameFunctions={gameFunctions}
-        cardClickHandler={this.cardClickHandler}
-      />
+      <div>
+        <Popup />
+        <GameTable
+          turn={turn}
+          players={players}
+          hideHands={hideHands}
+          betHandler={this.betHandler}
+          gameFunctions={gameFunctions}
+          cardClickHandler={this.cardClickHandler}
+        />
+      </div>
     );
   }
 }

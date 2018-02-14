@@ -20,7 +20,8 @@ export class Timeline extends Component {
     this.styles = {
       row: { marginTop: '10px' },
       box: {
-        padding: '5px',
+        paddingTop: '5px',
+        paddingBottom: '5px',
         boxShadow: '2px 3px 4px #999',
         color: grey50,
         textAlign: 'center'
@@ -36,7 +37,8 @@ export class Timeline extends Component {
     return Math.floor(val.diff(start, 'months') / total_duration * WIDTH);
   };
 
-  addCompany = (ending, beginning, segments, company, color, title) => {
+  addCompany = (ending, beginning, segments, job) => {
+    const { company, color, title } = job;
     const width = ending - beginning;
     // check if name has room
     if (width * window.innerWidth / WIDTH < MIN_TEXT_WIDTH) {
@@ -62,13 +64,13 @@ export class Timeline extends Component {
 
     // local variables
     let segments = [];
-    const { start, end, company, color, title } = job;
+    const { start, end } = job;
     let beginning = this.getTimeFromStart(start);
     let ending = this.getTimeFromStart(end);
 
     // add main segments
     this.addSegment(beginning, segments);
-    this.addCompany(ending, beginning, segments, company, color, title);
+    this.addCompany(ending, beginning, segments, job);
 
     // track that segments have been added
     added.push(i);
@@ -78,7 +80,7 @@ export class Timeline extends Component {
       // skip if added already
       if (added.indexOf(j) === -1) {
         // test segment
-        const { start, end, company, color } = data[j];
+        const { start, end } = data[j];
         beginning = this.getTimeFromStart(start);
 
         // if start is after end of main segment
@@ -87,7 +89,7 @@ export class Timeline extends Component {
           this.addSegment(beginning - ending, segments);
           // add next company
           ending = this.getTimeFromStart(end);
-          this.addCompany(ending, beginning, segments, company, color, title);
+          this.addCompany(ending, beginning, segments, data[j]);
           // mark as already added
           added.push(j);
         }
