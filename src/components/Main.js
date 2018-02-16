@@ -5,15 +5,16 @@ import { Home } from './resume/Home';
 import { Work } from './resume/work/Work';
 import { Education } from './resume/education/Education';
 import { Resume } from './resume/Resume';
-import { TravelMap } from './resume/TravelMap';
-import { PokerNight } from './games/PokerNight';
-import { MurderMystery } from './games/MurderMystery';
+import { TravelMap } from './resume/travel-map/TravelMap';
+import { PokerNight } from './games/poker-night/PokerNight';
+import { MurderMystery } from './games/murder-mystery/MurderMystery';
 import { GameHome } from './games/Home';
-import { Slots } from './games/Slots';
+import { Slots } from './games/slots/Slots';
 import { BlackJack } from './games/blackjack/BlackJack';
-import { Poker } from './games/Poker';
+import { Poker } from './games/poker/Poker';
 import { TicTacToe } from './games/tictactoe/TicTacToe';
 import { Connect4 } from './games/connect4/Connect4';
+import { DealOrNoDeal } from './games/deal-or-no-deal/DealOrNoDeal';
 import classes from '../constants/classes';
 import workExp from '../constants/work';
 // Parents: App
@@ -75,6 +76,7 @@ export class Main extends Component {
             <Route path="/games/slots" component={Slots} />
             <Route path="/games/poker" component={Poker} />
             <Route path="/games/connect4" component={Connect4} />
+            <Route path="/games/deal" component={DealOrNoDeal} />
           </Switch>
         </main>
       </div>

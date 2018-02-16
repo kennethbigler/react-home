@@ -1,5 +1,5 @@
 import React from 'react';
-import { countries } from '../../constants/countries';
+import { countries } from './countries';
 // Parents: Main
 
 export const TravelMap = () => {

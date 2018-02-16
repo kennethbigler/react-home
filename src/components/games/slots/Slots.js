@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { payout, updateBet } from '../../store/modules/players';
-import { SlotMachine } from '../../apis/SlotMachine';
+import { payout, updateBet } from '../../../store/modules/players';
+import { SlotMachine } from './SlotMachine';
 import RaisedButton from 'material-ui/RaisedButton';
 import {
   Table,

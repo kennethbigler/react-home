@@ -1,5 +1,5 @@
 import React from 'react';
-import scores from '../../constants/poker';
+import scores from './poker';
 // https://react-table.js.org/#/story/readme
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';

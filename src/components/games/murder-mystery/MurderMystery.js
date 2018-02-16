@@ -1,5 +1,5 @@
 import React from 'react';
-import profile, { CASINO } from '../../constants/murder';
+import profile, { CASINO } from './murder';
 // https://react-table.js.org/#/story/readme
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
