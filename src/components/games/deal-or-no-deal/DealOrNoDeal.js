@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal } from './Modal';
+import { Case } from './Case';
 
 const OPEN = 6;
 const SHUFFLE = 100;
@@ -49,6 +50,13 @@ export class DealOrNoDeal extends Component {
     this.newGame();
   }
 
+  /** check if it is time for an offer */
+  componentDidUpdate() {
+    if (this.state.casesToOpen === 0) {
+      this.handleOpen();
+    }
+  }
+
   /**
    * open a briefcase and update global states
    * @param {number} x - number of the selected briefcase
@@ -66,9 +74,6 @@ export class DealOrNoDeal extends Component {
         casesToOpen -= 1;
         // update state
         this.setState({ board, sum, numCases, casesToOpen });
-        if (casesToOpen === 0) {
-          this.handleOpen();
-        }
       }
     } else {
       this.setState({ playerChoice: board[x] });
@@ -86,9 +91,12 @@ export class DealOrNoDeal extends Component {
   };
 
   handleOpen = () => {
+    const { turn } = this.state;
+    // get the new offer
     const offer = this.getBankOffer();
-    console.log(offer);
-    this.setState({ offer, dndOpen: true });
+    // reset the counter
+    const casesToOpen = turn < OPEN - 1 ? OPEN - turn : 1;
+    this.setState({ offer, casesToOpen, dndOpen: true });
   };
 
   /**
@@ -135,8 +143,9 @@ export class DealOrNoDeal extends Component {
 
   /** called on selection of Deal */
   deal = () => {
-    const { playerChoice: pc } = this.state;
+    const { playerChoice: pc, offer } = this.state;
     console.log(`Your Case: ${pc.val}`);
+    console.log(`Your Deal: ${offer}`);
   };
 
   /**
@@ -145,10 +154,8 @@ export class DealOrNoDeal extends Component {
    */
   noDeal = () => {
     const { turn } = this.state;
-    // reset the counter
-    const casesToOpen = turn < OPEN - 1 ? OPEN - turn : 1;
     // advance the turn and update state
-    this.setState({ dndOpen: false, turn: turn + 1, casesToOpen });
+    this.setState({ dndOpen: false, turn: turn + 1 });
   };
 
   render() {
@@ -158,9 +165,11 @@ export class DealOrNoDeal extends Component {
         <h2>Your Case: {playerChoice ? playerChoice.loc : '?'}</h2>
         <h2>Number of Cases to Open: {casesToOpen}</h2>
         {board.map((bc, i) => (
-          <div key={i} onTouchTap={() => this.openBriefcase(i)}>
-            {bc.on ? `Case ${bc.loc}` : `$${bc.val}`}
-          </div>
+          <Case
+            key={i}
+            onTouchTap={() => this.openBriefcase(i)}
+            briefcase={bc}
+          />
         ))}
         <Modal
           board={board}
@@ -168,6 +177,7 @@ export class DealOrNoDeal extends Component {
           deal={this.deal}
           noDeal={this.noDeal}
           offer={offer}
+          modal
         />
       </div>
     );

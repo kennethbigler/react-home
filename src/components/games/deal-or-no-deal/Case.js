@@ -4,20 +4,17 @@ import { getMoneyText } from './common';
 // Parents: Degree
 
 /** render code for each class */
-export const Money = props => {
-  const { briefcase: bc } = props;
+export const Case = props => {
+  const { onTouchTap, briefcase: bc } = props;
   return (
-    <div>
-      {bc.on ? (
-        <b>{getMoneyText(bc.val)}</b>
-      ) : (
-        <del>{getMoneyText(bc.val)}</del>
-      )}
+    <div onTouchTap={onTouchTap}>
+      {bc.on ? `Case ${bc.loc}` : getMoneyText(bc.val)}
     </div>
   );
 };
 
-Money.propTypes = {
+Case.propTypes = {
   // PropTypes = [string, object, bool, number, func, array].isRequired
+  onTouchTap: PropTypes.func.isRequired,
   briefcase: PropTypes.object.isRequired
 };

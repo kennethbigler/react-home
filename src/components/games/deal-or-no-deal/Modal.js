@@ -4,7 +4,12 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import { red500, white } from 'material-ui/styles/colors';
 import { Money } from './Money';
+import { getMoneyText } from './common';
 // Parents: DealOrNoDeal
+
+const styles = {
+  cols: { width: '50%', display: 'inline-block' }
+};
 
 /** render code for each class */
 export const Modal = props => {
@@ -29,15 +34,13 @@ export const Modal = props => {
 
   return (
     <Dialog
-      title={`$${props.offer} - Deal or No Deal?`}
+      title={`${getMoneyText(props.offer)} - Deal or No Deal?`}
       actions={actions}
       open={props.open}
       autoScrollBodyContent
     >
-      <div className="row">
-        <div className="col-xs-6">{lhs}</div>
-        <div className="col-xs-6">{rhs}</div>
-      </div>
+      <div style={styles.cols}>{lhs}</div>
+      <div style={styles.cols}>{rhs}</div>
     </Dialog>
   );
 };
