@@ -25,7 +25,6 @@ class App extends Component {
       palette: {
         primary1Color: colors.indigoA700,
         primary2Color: colors.indigoA500,
-        accent1Color: colors.yellow200,
         pickerHeaderColor: colors.indigoA700
       }
     });

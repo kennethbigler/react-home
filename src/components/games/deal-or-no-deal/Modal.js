@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
-import { red500, white } from 'material-ui/styles/colors';
+import FlatButton from 'material-ui/FlatButton';
 import { Money } from './Money';
 import { getMoneyText } from './common';
 // Parents: DealOrNoDeal
@@ -11,32 +10,29 @@ const styles = {
   cols: { width: '50%', display: 'inline-block' }
 };
 
+const genMoneyCols = (arr, start, stop = arr.length) =>
+  arr.slice(start, stop).map(bc => <Money key={bc.loc} briefcase={bc} />);
+
 /** render code for each class */
 export const Modal = props => {
+  const { deal, noDeal, offer, open } = props;
+  const board = [...props.board].sort((a, b) => a.val - b.val);
+
+  // actions to exit modal
   const actions = [
-    <RaisedButton key="deal" label="Deal" primary onTouchTap={props.deal} />,
-    <RaisedButton
-      key="noDeal"
-      label="No Deal"
-      backgroundColor={red500}
-      labelColor={white}
-      onTouchTap={props.noDeal}
-    />
+    <FlatButton key="deal" label="Deal" primary onTouchTap={deal} />,
+    <FlatButton key="noDeal" label="No Deal" secondary onTouchTap={noDeal} />
   ];
 
-  const board = [...props.board].sort((a, b) => a.val - b.val);
-  const lhs = board
-    .slice(0, board.length / 2)
-    .map(bc => <Money key={bc.loc} briefcase={bc} />);
-  const rhs = board
-    .slice(board.length / 2)
-    .map(bc => <Money key={bc.loc} briefcase={bc} />);
+  // columns displaying money values left
+  const lhs = genMoneyCols(board, 0, board.length / 2);
+  const rhs = genMoneyCols(board, board.length / 2);
 
   return (
     <Dialog
-      title={`${getMoneyText(props.offer)} - Deal or No Deal?`}
+      title={`${getMoneyText(offer)} - Deal or No Deal?`}
       actions={actions}
-      open={props.open}
+      open={open}
       autoScrollBodyContent
     >
       <div style={styles.cols}>{lhs}</div>

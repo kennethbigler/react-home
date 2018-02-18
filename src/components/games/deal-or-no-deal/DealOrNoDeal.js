@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal } from './Modal';
 import { Case } from './Case';
+import { Header } from './Header';
 
 const OPEN = 6;
 const SHUFFLE = 100;
@@ -162,13 +163,13 @@ export class DealOrNoDeal extends Component {
     const { board, dndOpen, offer, playerChoice, casesToOpen } = this.state;
     return (
       <div>
-        <h2>Your Case: {playerChoice ? playerChoice.loc : '?'}</h2>
-        <h2>Number of Cases to Open: {casesToOpen}</h2>
+        <Header playerChoice={playerChoice} casesToOpen={casesToOpen} />
         {board.map((bc, i) => (
           <Case
             key={i}
             onTouchTap={() => this.openBriefcase(i)}
             briefcase={bc}
+            secondary={playerChoice && playerChoice.loc === bc.loc}
           />
         ))}
         <Modal
