@@ -27,7 +27,7 @@ export const Money = props => {
   return (
     <Paper style={style}>
       {bc.on ? (
-        <b>{getMoneyText(bc.val)}</b>
+        getMoneyText(bc.val)
       ) : (
         <del>{getMoneyText(bc.val)}</del>
       )}

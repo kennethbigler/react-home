@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import { Modal } from './Modal';
-import { Case } from './Case';
+import { Board } from './Board';
 import { Header } from './Header';
 
 const OPEN = 6;
 const SHUFFLE = 100;
 
+/** enhancements:
+ * TODO: avg (Expected value) is 131477.62
+ * charge $132, then divide winnings by 1k, or look up vegas rules
+ * https://wizardofodds.com/games/deal-or-no-deal/
+ *
+ * TODO: allow swap on last case (Monte Hall)
+ *
+ * TODO: show money values on the sides of main screen, but keep mobile in mind
+ */
 export class DealOrNoDeal extends Component {
   // local variable to track the board
   state = {
@@ -43,7 +52,8 @@ export class DealOrNoDeal extends Component {
     sum: 0,
     numCases: 0,
     offer: 0,
-    dndOpen: false
+    dndOpen: false,
+    isOver: false
   };
 
   /** reset board and shuffle cases */
@@ -54,7 +64,7 @@ export class DealOrNoDeal extends Component {
   /** check if it is time for an offer */
   componentDidUpdate() {
     if (this.state.casesToOpen === 0) {
-      this.handleOpen();
+      setTimeout(this.handleOpen, 300);
     }
   }
 
@@ -64,10 +74,24 @@ export class DealOrNoDeal extends Component {
    * NOTE: udpates sum, numCases, board, casesToOpen
    */
   openBriefcase = x => {
-    let { sum, numCases, board, casesToOpen, playerChoice } = this.state;
+    // state vars
+    let {
+      sum,
+      isOver,
+      numCases,
+      board,
+      casesToOpen,
+      playerChoice
+    } = this.state;
+    // check if player has already made case selection
     if (playerChoice) {
       // verify cases left and briefcase not already opened
-      if (casesToOpen > 0 && x !== playerChoice.loc - 1 && board[x].on) {
+      if (
+        !isOver &&
+        casesToOpen > 0 &&
+        x !== playerChoice.loc - 1 &&
+        board[x].on
+      ) {
         // flag the value and update global trackers
         board[x].on = false;
         sum -= board[x].val;
@@ -137,6 +161,7 @@ export class DealOrNoDeal extends Component {
       sum,
       numCases,
       turn: 1,
+      isOver: false,
       playerChoice: null,
       casesToOpen: OPEN
     });
@@ -144,9 +169,7 @@ export class DealOrNoDeal extends Component {
 
   /** called on selection of Deal */
   deal = () => {
-    const { playerChoice: pc, offer } = this.state;
-    console.log(`Your Case: ${pc.val}`);
-    console.log(`Your Deal: ${offer}`);
+    this.setState({ dndOpen: false, isOver: true });
   };
 
   /**
@@ -154,31 +177,43 @@ export class DealOrNoDeal extends Component {
    * NOTE: update turn, casesToOpen
    */
   noDeal = () => {
-    const { turn } = this.state;
+    const { turn, numCases } = this.state;
+    const isOver = numCases <= 1;
     // advance the turn and update state
-    this.setState({ dndOpen: false, turn: turn + 1 });
+    this.setState({ isOver, dndOpen: false, turn: turn + 1 });
   };
 
   render() {
-    const { board, dndOpen, offer, playerChoice, casesToOpen } = this.state;
+    // state vars
+    const {
+      board,
+      dndOpen,
+      isOver,
+      offer,
+      playerChoice,
+      casesToOpen
+    } = this.state;
+    // render component
     return (
       <div>
-        <Header playerChoice={playerChoice} casesToOpen={casesToOpen} />
-        {board.map((bc, i) => (
-          <Case
-            key={i}
-            onTouchTap={() => this.openBriefcase(i)}
-            briefcase={bc}
-            secondary={playerChoice && playerChoice.loc === bc.loc}
-          />
-        ))}
+        <Header
+          playerChoice={playerChoice}
+          casesToOpen={casesToOpen}
+          isOver={isOver}
+          offer={offer}
+          newGame={this.newGame}
+        />
+        <Board
+          board={board}
+          onTouchTap={this.openBriefcase}
+          playerChoice={playerChoice}
+        />
         <Modal
           board={board}
           open={dndOpen}
           deal={this.deal}
           noDeal={this.noDeal}
           offer={offer}
-          modal
         />
       </div>
     );

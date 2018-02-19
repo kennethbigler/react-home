@@ -25,5 +25,5 @@ Case.propTypes = {
   // PropTypes = [string, object, bool, number, func, array].isRequired
   onTouchTap: PropTypes.func.isRequired,
   briefcase: PropTypes.object.isRequired,
-  secondary: PropTypes.bool.isRequired
+  secondary: PropTypes.bool
 };
