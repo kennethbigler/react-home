@@ -22,7 +22,7 @@ export const Menu = props => {
 
   return (
     <div>
-      <MenuItem onTouchTap={home} primaryText="Home" />
+      <MenuItem onTouchTap={home} primaryText="Summary" />
       <MenuItem onTouchTap={work} primaryText="Work" />
       <MenuItem onTouchTap={education} primaryText="Education" />
       <MenuItem onTouchTap={travel} primaryText="Travel Map" />

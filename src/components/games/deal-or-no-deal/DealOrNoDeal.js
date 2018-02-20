@@ -54,6 +54,7 @@ const getNewState = () => ({
   isOver: false
 });
 
+// TODO: add rules to page
 export class DND extends Component {
   // local variable to track the board
   state = getNewState();
