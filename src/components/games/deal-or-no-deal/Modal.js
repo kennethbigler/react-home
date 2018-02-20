@@ -15,14 +15,24 @@ const genMoneyCols = (arr, start, stop = arr.length) =>
 
 /** render code for each class */
 export const Modal = props => {
-  const { deal, noDeal, offer, open } = props;
+  const { deal, noDeal, offer, open, swap, numCases } = props;
   const board = [...props.board].sort((a, b) => a.val - b.val);
 
   // actions to exit modal
-  const actions = [
-    <FlatButton key="deal" label="Deal" primary onTouchTap={deal} />,
-    <FlatButton key="noDeal" label="No Deal" secondary onTouchTap={noDeal} />
-  ];
+  let actions = [];
+
+  if (numCases > 2) {
+    actions = [
+      <FlatButton key="deal" label="Deal" primary onTouchTap={deal} />,
+      <FlatButton key="noDeal" label="No Deal" secondary onTouchTap={noDeal} />
+    ];
+  } else {
+    actions = [
+      <FlatButton key="deal" label="Deal" primary onTouchTap={deal} />,
+      <FlatButton key="noDeal" label="My Case" secondary onTouchTap={noDeal} />,
+      <FlatButton key="swap" label="Other Case" secondary onTouchTap={swap} />
+    ];
+  }
 
   // columns displaying money values left
   const lhs = genMoneyCols(board, 0, board.length / 2);
@@ -47,5 +57,7 @@ Modal.propTypes = {
   deal: PropTypes.func.isRequired,
   noDeal: PropTypes.func.isRequired,
   offer: PropTypes.number.isRequired,
-  board: PropTypes.array.isRequired
+  board: PropTypes.array.isRequired,
+  numCases: PropTypes.number.isRequired,
+  swap: PropTypes.func.isRequired
 };

@@ -14,7 +14,8 @@ export const Board = props => {
     padding: 9,
     textAlign: 'center',
     display: 'block',
-    margin: 'auto'
+    margin: 'auto',
+    marginTop: 20
   };
   // rendered component
   return (

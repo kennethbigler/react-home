@@ -5,11 +5,14 @@
  * TODO: buy insurance on dealer's Ace
  */
 
+// react
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// components
 import { Popup } from './Popup';
 import { GameTable } from '../gametable/GameTable';
 import { Deck } from '../../../apis/Deck';
+// redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
