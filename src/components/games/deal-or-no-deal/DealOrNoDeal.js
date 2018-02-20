@@ -239,15 +239,11 @@ DND.propTypes = {
 
 // react-redux export
 function mapStateToProps(state /*, ownProps*/) {
-  return {
-    player: state.players[0]
-  };
+  return { player: state.players[0] };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators({ payout }, dispatch)
-  };
+  return { actions: bindActionCreators({ payout }, dispatch) };
 }
 
 export const DealOrNoDeal = connect(mapStateToProps, mapDispatchToProps)(DND);

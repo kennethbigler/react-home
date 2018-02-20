@@ -14,6 +14,7 @@ export const GameMenu = props => {
   const slots = () => props.onTouchTap('/games/slots');
   const tictactoe = () => props.onTouchTap('/games/tictactoe');
   const connect4 = () => props.onTouchTap('/games/connect4');
+  const deal = () => props.onTouchTap('/games/deal');
 
   // const poker = () => props.onTouchTap('/games/poker');
   // const bingo = () => props.onTouchTap('/games/bingo');
@@ -22,10 +23,12 @@ export const GameMenu = props => {
   return (
     <div>
       <MenuItem onTouchTap={games} primaryText="Games Home" />
+      <Divider />
       <MenuItem onTouchTap={blackjack} primaryText="BlackJack" />
+      <MenuItem onTouchTap={connect4} primaryText="Connect4" />
+      <MenuItem onTouchTap={deal} primaryText="Deal or No Deal" />
       <MenuItem onTouchTap={slots} primaryText="Slot Machine" />
       <MenuItem onTouchTap={tictactoe} primaryText="Tic-Tac-Toe" />
-      <MenuItem onTouchTap={connect4} primaryText="Connect4" />
       {/* <MenuItem onTouchTap={poker} primaryText="Poker" /> */}
       {/* <MenuItem onTouchTap={bingo} primaryText="Bingo" /> */}
       <Divider />
