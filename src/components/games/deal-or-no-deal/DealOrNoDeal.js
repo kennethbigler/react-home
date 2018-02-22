@@ -72,6 +72,15 @@ export class DND extends Component {
   }
 
   /**
+   * charge user to play
+   * NOTE: avg (Expected win value) is 131477.62 / 1k = $132
+   */
+  chargePlayer = () => {
+    const { player, actions } = this.props;
+    actions.payout(player.id, 'lose', player.money, 132);
+  };
+
+  /**
    * open a briefcase and update global states
    * @param {number} x - number of the selected briefcase
    * NOTE: udpates sum, numCases, board, casesToOpen
@@ -96,6 +105,7 @@ export class DND extends Component {
       }
     } else {
       this.setState({ playerChoice: bc });
+      this.chargePlayer();
     }
   };
 
@@ -121,7 +131,6 @@ export class DND extends Component {
   /**
    * function to reset the game
    * NOTE: reset entire state
-   * NOTE: avg (Expected win value) is 131477.62 / 1k = $132
    */
   newGame = () => {
     let state = getNewState();
@@ -137,9 +146,6 @@ export class DND extends Component {
     });
     // sort function for the briefcases
     state.board.sort((a, b) => a.loc - b.loc);
-    // charge user to play
-    const { player, actions } = this.props;
-    actions.payout(player.id, 'lose', player.money, 132);
     // update state
     this.setState(state);
   };
