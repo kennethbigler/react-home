@@ -12,9 +12,6 @@ app.factory('RouletteService', [
       check = [],
       risk = 0;
 
-    //--------------------     Roulette Data Structure     --------------------//
-    // Model - [$index: {val: [], payout: int, bet: int}]
-
     //--------------------     RESTful calls to "db"     --------------------//
     factory.calc = {
       red: 0,
