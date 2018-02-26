@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
 import photo from '../../images/ken.jpg';
+import workExp, { REACT, ANGULAR } from '../../constants/work';
 // Parents: Main
 
 const styles = {
@@ -12,10 +13,16 @@ const styles = {
   }
 };
 
+const getJob = () => {
+  const job = workExp[0];
+  const end = job.parent ? ` (${job.parent})` : '';
+  return `${job.title}, ${job.company}${end}`;
+};
+
 export class Home extends Component {
-  handleClick = () => {
+  handleClick = () =>
     window.open('https://www.linkedin.com/in/kennethbigler', '_blank');
-  };
+
   render() {
     return (
       <div>
@@ -31,9 +38,7 @@ export class Home extends Component {
             />
           </div>
           <div className="col-md-9">
-            <h2 style={{ align: 'center' }}>
-              Software Engineer at Cisco Systems
-            </h2>
+            <h2 style={{ align: 'center' }}>{getJob()}</h2>
             <Table selectable={false}>
               <TableBody displayRowCheckbox={false}>
                 <TableRow>
@@ -76,7 +81,7 @@ export class Home extends Component {
         <hr />
         <ul>
           <li>
-            <b>Programming Languages:</b>&nbsp; ReactJS, AngularJS, JavaScript,
+            <b>Programming Languages:</b>&nbsp; {REACT}, {ANGULAR}, JavaScript,
             Bootstrap 3, CSS3, HTML5, AWS SDK for Javascript in Browser, Swift,
             C++, C#, C, Java, Android, SQL
           </li>

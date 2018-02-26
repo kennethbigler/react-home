@@ -3,28 +3,32 @@ import teslaLogo from '../images/tesla_motors_logo.svg.png';
 import vengefulLogo from '../images/vengefulgames_logo.png';
 import netappLogo from '../images/netapp_logo.svg.png';
 import SHFBLogo from '../images/SHFB_logo.jpg';
+import eyLogo from '../images/ey_logo.png';
 import ciscoLogo from '../images/cisco_logo.gif';
 import * as colors from 'material-ui/styles/colors';
 import moment from 'moment';
 // Parents: Main
 
+export const REACT = 'React.js';
+export const ANGULAR = 'Angular.js 1.X';
+const JOB_CHANGE = moment(); // '2018-03-05';
+
 export default [
   {
     isJob: true,
-    color: colors.blue600,
-    company: 'Cisco Systems',
-    short: 'CSCO',
-    location: 'San Jose, CA',
-    title: 'Software Engineer III, Core Software Group',
-    website:
-      'https://www.cisco.com/c/en/us/solutions/enterprise-networks/dna-analytics-assurance.html',
-    start: moment('2017-04-03'),
+    color: colors.yellow600,
+    company: 'GigNow',
+    parent: 'Ernst & Young',
+    short: 'GN',
+    location: 'Palo Alto, CA',
+    title: 'Frontend Engineer, Global Innovation Group',
+    website: 'https://www.gignow.com/',
+    start: JOB_CHANGE,
     end: moment(),
-    src: ciscoLogo,
-    alt: 'Cisco Systems Logo',
+    src: eyLogo,
+    alt: 'Ernst & Young Logo',
     expr: [
-      'Develop web applications using ReactJS to process and display data from Java REST APIs about network health',
-      'Write Time Series Analysis Pipelines to create aggregations of network packets over a fixed or rolling window'
+      `Help build startup ventures within EY, leveraging agile methodologies and development primarily in ${REACT}`
     ]
   },
   {
@@ -46,8 +50,28 @@ export default [
   },
   {
     isJob: true,
+    color: colors.blue600,
+    company: 'Cisco Systems',
+    short: 'CSCO',
+    location: 'San Jose, CA',
+    title: 'Software Engineer III, Core Software Group',
+    website:
+      'https://www.cisco.com/c/en/us/solutions/enterprise-networks/dna-analytics-assurance.html',
+    start: moment('2017-04-03'),
+    end: JOB_CHANGE,
+    src: ciscoLogo,
+    alt: 'Cisco Systems Logo',
+    expr: [
+      `Processed and displayed data about network health using Java REST APIs and ${REACT}`,
+      'Created several Proof of Concept integrations with Cisco DNA-Center and several acquisitions',
+      'Wrote Time Series Analysis Pipelines in JSON to create aggregations of network packets over a fixed or rolling window'
+    ]
+  },
+  {
+    isJob: true,
     color: colors.blueGrey500,
     company: 'Hoverboard Technologies',
+    parent: 'Equalia',
     short: 'HB',
     location: 'Mountain View, CA',
     title: 'Software Engineer',
@@ -57,9 +81,9 @@ export default [
     src: hoverboardLogo,
     alt: 'Hoverboard Logo',
     expr: [
-      'Develop web applications using AngularJS 1.X and the AWS SDK for JavaScript in the Browser',
-      'Manage a team in India creating the Android application, and testing the app by creating realistic data simulations',
-      'Program applications to run the lights on the Hoverboard in Python-like language'
+      `Developed web applications using ${ANGULAR} and the AWS SDK for JavaScript in the Browser`,
+      'Tested the Android App by creating realistic data simulators, and managed the team in India doing development',
+      'Programed applications to run the lights on the Hoverboard in a Python-like language'
     ]
   },
   {
@@ -75,9 +99,9 @@ export default [
     src: teslaLogo,
     alt: 'Tesla Logo',
     expr: [
-      'Develop web applications using AngularJS 1.X and ASP.NET MVC with a SQL database',
-      'Gather requirements, create new software tools, and improve tools already used by various departments',
-      'Redesign intranet pages to improve accessibility and incorporate responsive design elements'
+      `Developed web applications using ${ANGULAR} and ASP.NET MVC with a SQL database`,
+      'Gathered requirements, created new software tools, and improved tools already used by various departments',
+      'Redesigned intranet pages to improve accessibility and incorporate responsive design elements'
     ]
   },
   {
@@ -94,9 +118,9 @@ export default [
     src: vengefulLogo,
     alt: 'Midnight Game Club Logo',
     expr: [
-      'Manage a team of 3 other developers to meet requirements by the deadlines',
-      'Create functional HTML and CSS pages from the mockup images provided from the designers',
-      'Design Improvements to the look and feel, and improve the overall experience of the game'
+      'Managed a team of 3 other developers to meet requirements by the deadlines',
+      'Converted mockup images from the designers into functional HTML and CSS pages',
+      'Designed improvements to the look and feel, and improve the overall experience of the game'
     ]
   },
   {
@@ -112,11 +136,11 @@ export default [
     src: netappLogo,
     alt: 'NetApp Logo',
     expr: [
-      'Develop web-based applications to enable various processes, as well as train users',
-      'Communicate status of projects with upper management and how to resolve roadblocks',
-      'Support HR Intranet using WordPress; updating code, creating graphics and managing web projects',
-      'Design and create new websites, migrate between CMS’s, as well as maintain and improve existing websites',
-      'Create/update graphics using Adobe CS, resolve technical issues, educate department content owners on their choices'
+      `Developed web-based applications using ${ANGULAR} to enable various processes and train users`,
+      'Communicated status of projects with upper management and how to resolve roadblocks',
+      'Supported HR Intranet using WordPress; updated code, created graphics, and managed web projects',
+      'Designed and created new websites, migrated between CMS’s, and maintained existing websites',
+      'Created graphics using Adobe Creative Cloud'
     ]
   },
   {
