@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ExpandableCard } from '../../common/ExpandableCard';
-import { FORMAT } from '../../common/Timeline';
+import { FORMAT } from '../../common/timeline/Timeline';
 import moment from 'moment';
 // Parents: Work
 

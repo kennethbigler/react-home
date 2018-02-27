@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { grey50 } from 'material-ui/styles/colors';
+import { Row } from './Row';
 // Parents: Work
 
 export const FORMAT = 'MMMM Y';
@@ -14,30 +14,50 @@ const MIN_TEXT_WIDTH = 94;
 export class Timeline extends Component {
   constructor(props) {
     super(props);
+    // get immutable data from props and sort by start date
     let data = [...props.data];
     data.sort(MONTH_SORT);
-    this.state = { data };
-    this.styles = {
-      row: { marginTop: '10px' },
-      box: {
-        paddingTop: '5px',
-        paddingBottom: '5px',
-        boxShadow: '2px 3px 4px #999',
-        color: grey50,
-        textAlign: 'center'
-      }
-    };
+    // get 'start,' but start w/ college not volunteering
+    const { start } = data[1];
+    // set state and styles
+    this.state = { data, start };
   }
 
+  /**
+   * Get the width from the beginning of the graph to this bar
+   * @param {Object} val moment object for start time
+   * @returns {number} number (width %) from the start
+   */
   getTimeFromStart = val => {
     // sort array by start date
-    const { start } = this.state.data[0];
+    const { start } = this.state;
     // get max length
     const total_duration = moment().diff(start, 'months');
-    return Math.floor(val.diff(start, 'months') / total_duration * WIDTH);
+    const time_from_start = val.diff(start, 'months');
+    const width = Math.floor(time_from_start / total_duration * WIDTH);
+    return width > 0 ? width : 0;
   };
 
-  addCompany = (ending, beginning, segments, job) => {
+  /**
+   * function to add empty space between start and job segment
+   * @param {array} segments array to put the segments, will be modified
+   * @param {number} width as a % value out of WIDTH
+   * @returns {number} number (width %) from the start
+   */
+  addSegment = (segments, width) => {
+    if (width > 0) {
+      segments.push({ width });
+    }
+  };
+
+  /**
+   * function to add job segment
+   * @param {[Object]} segments array to put the segments, will be modified
+   * @param {Object} job object with information about the segment
+   * @param {Object} beginning start moment object
+   * @param {Object} ending end moment object
+   */
+  addCompany = (segments, job, beginning, ending) => {
     const { company, color, title } = job;
     const width = ending - beginning;
     // check if name has room
@@ -48,12 +68,13 @@ export class Timeline extends Component {
     }
   };
 
-  addSegment = (width, segments) => {
-    if (width > 0) {
-      segments.push({ width });
-    }
-  };
-
+  /**
+   * function to
+   * @param {[number]} added array of indexes that have been added
+   * @param {Object} job Object for each job
+   * @param {number} i index
+   * @returns {[Object]} array of objects to be displayed in a row
+   */
   getSegments = (added, job, i) => {
     const { data } = this.state;
 
@@ -69,8 +90,8 @@ export class Timeline extends Component {
     let ending = this.getTimeFromStart(end);
 
     // add main segments
-    this.addSegment(beginning, segments);
-    this.addCompany(ending, beginning, segments, job);
+    this.addSegment(segments, beginning);
+    this.addCompany(segments, job, beginning, ending);
 
     // track that segments have been added
     added.push(i);
@@ -86,10 +107,10 @@ export class Timeline extends Component {
         // if start is after end of main segment
         if (beginning >= ending) {
           // add filler in between end/start
-          this.addSegment(beginning - ending, segments);
+          this.addSegment(segments, beginning - ending);
           // add next company
           ending = this.getTimeFromStart(end);
-          this.addCompany(ending, beginning, segments, data[j]);
+          this.addCompany(segments, data[j], beginning, ending);
           // mark as already added
           added.push(j);
         }
@@ -97,42 +118,21 @@ export class Timeline extends Component {
     }
 
     // get last segment
-    this.addSegment(WIDTH - ending, segments);
+    this.addSegment(segments, WIDTH - ending);
 
     return [...segments];
   };
 
   render() {
     const { data } = this.state;
-    const { row, box } = this.styles;
     // track elements added already
     let added = [];
 
     return (
       <div className="col-sm-12">
-        {data.map((job, i) => {
-          // track segments to add
-          const segments = this.getSegments(added, job, i);
-
-          return (
-            <div style={row} key={i}>
-              {segments.map((seg, j) => {
-                // var for segment
-                const { company, width, color, title } = seg;
-                // style for segment
-                const stl = { display: 'inline-block', width: `${width}%` };
-                const style = company
-                  ? { ...stl, ...box, backgroundColor: color }
-                  : stl;
-                return (
-                  <div key={`${i},${j}`} title={title} style={style}>
-                    {company ? company : <br />}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
+        {data.map((job, i) => (
+          <Row key={i} segments={this.getSegments(added, job, i)} />
+        ))}
       </div>
     );
   }
@@ -143,6 +143,5 @@ Timeline.propTypes = {
 };
 
 /*
-* expand below on click
-* add hover text
+* TODO: expand below on click
 */

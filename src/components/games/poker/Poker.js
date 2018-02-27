@@ -27,28 +27,21 @@ const getHistogram = hand => {
  */
 const rankHand = (hand, hist) => {
   // iterate through and look for hands with multiple cards
-  const K4 = hist.indexOf(4);
-  // 4 of a kind
-  if (K4 !== -1) {
-    return 7;
+  if (hist.indexOf(4) !== -1) {
+    return 7; // 4 of a kind
   }
-
   // Check for hands with sets of 3 or 2 cards
-  const K3 = hist.indexOf(3);
-  const K2 = hist.indexOf(2);
-  const K2n1 = hist.indexOf(2, K2 + 1);
-  if (K3 !== -1 && K2 !== -1) {
-    // full house
-    return 6;
-  } else if (K3 !== -1) {
-    // 3 of a kind
-    return 3;
-  } else if (K2 !== -1 && K2n1 !== -1) {
-    // 2 pair
-    return 2;
-  } else if (K2 !== -1) {
-    // 1 pair
-    return 1;
+  const has3 = hist.indexOf(3) !== -1;
+  const i = hist.indexOf(2);
+  const has2 = i !== -1;
+  if (has3 && has2) {
+    return 6; // full house
+  } else if (has3) {
+    return 3; // 3 of a kind
+  } else if (has2 && hist.indexOf(2, i + 1) !== -1) {
+    return 2; // 2 pair
+  } else if (has2) {
+    return 1; // 1 pair
   } else {
     // all single cards, look for flush and straight
     const C1 = hist.indexOf(1);
@@ -65,25 +58,21 @@ const rankHand = (hand, hist) => {
 
     // check for flush
     let isFlush = true;
-    for (let i = 0; i < hand.length - 1; i += 1) {
-      if (hand[i].suit !== hand[i + 1].suit) {
+    for (let card of hand) {
+      if (card.suit !== hand[0].suit) {
         isFlush = false;
         break;
       }
     }
 
     if (isStraight && isFlush) {
-      // straight flush
-      return 8;
+      return 8; // straight flush
     } else if (isFlush) {
-      // flush
-      return 5;
+      return 5; // flush
     } else if (isStraight) {
-      // straight
-      return 4;
+      return 4; // straight
     } else {
-      // high card
-      return 0;
+      return 0; // high card
     }
   }
 };
@@ -167,43 +156,6 @@ export class Poker extends Component {
     const rank = rankHand(hand, hist);
 
     switch (rank) {
-      case 8: // draw 0 on straight flush
-      case 7: // draw 0 on 4 of a kind
-      case 6: // draw 0 on full house
-      case 5: // draw 0 on flush
-      case 4: {
-        // draw 0 on straight
-        return evaluate(hand);
-      }
-      case 3: // draw 1 on 2 Pair
-      case 2: {
-        // draw 1 on 3 of a kind
-        let temp = [];
-        const K1 = hist.indexOf(1);
-        for (let i = 0; i < hand.length; i += 1) {
-          if (K1 === hand[i].rank - 2) {
-            temp.push(i);
-            break;
-          }
-        }
-        this.discard(temp, turn);
-        return evaluate(hand);
-      }
-      case 1: {
-        // draw 3 on 2 of a kind
-        let temp = [];
-        const K1 = hist.indexOf(1);
-        const K1n1 = hist.indexOf(1, K1 + 1);
-        const K1n2 = hist.indexOf(1, K1n1 + 1);
-        for (let i = 0; i < hand.length; i += 1) {
-          const x = hand[i].rank - 2;
-          if (K1 === x || K1n1 === x || K1n2 === x) {
-            temp.push(i);
-          }
-        }
-        this.discard(temp, turn);
-        return evaluate(hand);
-      }
       case 0: {
         // draw 4-5 on high card
         const C5 = hist.lastIndexOf(1);
@@ -227,6 +179,42 @@ export class Poker extends Component {
           this.discard([0, 1, 2, 3, 4], turn);
           return evaluate(hand);
         }
+      }
+      case 1: {
+        // draw 3 on 2 of a kind
+        let temp = [];
+        const C1 = hist.indexOf(1);
+        const C2 = hist.indexOf(1, C1 + 1);
+        const C3 = hist.indexOf(1, C2 + 1);
+        for (let i = 0; i < hand.length; i += 1) {
+          const x = hand[i].rank - 2;
+          if (C1 === x || C2 === x || C3 === x) {
+            temp.push(i);
+          }
+        }
+        this.discard(temp, turn);
+        return evaluate(hand);
+      }
+      case 2: // draw 1 on 3 of a kind
+      case 3: {
+        // draw 1 on 2 Pair
+        let temp = [];
+        const C1 = hist.indexOf(1);
+        for (let i = 0; i < hand.length; i += 1) {
+          if (C1 === hand[i].rank - 2) {
+            temp.push(i);
+            break;
+          }
+        }
+        this.discard(temp, turn);
+        return evaluate(hand);
+      }
+      case 4: // draw 0 on straight
+      case 5: // draw 0 on flush
+      case 6: // draw 0 on full house
+      case 7: // draw 0 on 4 of a kind
+      case 8: {
+        return evaluate(hand); // draw 0 on straight flush
       }
       default:
         return 0;

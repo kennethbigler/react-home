@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { TIMELINE_TITLE } from './common/Timeline';
+import { TIMELINE_TITLE } from './common/timeline/Timeline';
 import { Home } from './resume/Home';
 import { Work } from './resume/work/Work';
 import { Education } from './resume/education/Education';

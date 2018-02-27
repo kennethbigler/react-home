@@ -39,7 +39,7 @@ export default [
     location: 'Santa Clara, CA',
     title: 'Volunteer Team Leader',
     website: 'https://www.shfb.org/',
-    start: moment('2010-09-01'),
+    start: moment('2009-09-01'),
     end: moment(),
     src: SHFBLogo,
     alt: 'Second Harvest Food Bank Logo',

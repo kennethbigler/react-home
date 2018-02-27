@@ -52,10 +52,8 @@ function isAmbigram1(nums) {
   const flip = { 0: 0, 1: 1, 6: 9, 9: 6, 8: 8 };
   // verify characters are good
   for (let i = 0; i < Math.ceil(nums.length / 2); i += 1) {
-    const a = nums[i];
-    const b = nums[nums.length - 1 - i];
     // failed check
-    if (!flip[a] || flip[a] !== b) {
+    if (!flip[nums[i]] || flip[nums[i]] !== nums[nums.length - 1 - i]) {
       return false;
     }
   }
@@ -128,10 +126,10 @@ function isAmbigram2(word) {
   for (let i = 0; i < Math.ceil(chars.length / 2); i += 1) {
     // get 2 opposite elements
     const arr = flip[chars[i]];
-    const b = chars[chars.length - 1 - i];
     // check if failed check
     if (!arr) return false;
     // check for match, store in flag
+    const b = chars[chars.length - 1 - i];
     let isMatch = false;
     for (let j = 0; j < arr.length; j += 1) {
       if (arr[j] === b) {
