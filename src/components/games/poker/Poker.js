@@ -1,5 +1,19 @@
+// react
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+// components
 import { Deck } from '../../../apis/Deck';
+// redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { incrPlayerTurn, resetTurn } from '../../../store/modules/turn';
+import {
+  drawCard,
+  newHand,
+  payout,
+  updateBet,
+  resetStatus
+} from '../../../store/modules/players';
 // Parents: Main
 
 const getHistogram = hand => {
@@ -7,7 +21,7 @@ const getHistogram = hand => {
   let hist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   // put hand into the histrogram
   hand.forEach(card => {
-    hist[card.rank - 2] += 1; //2-14 - 2 = 0-12
+    hist[card.rank - 2] += 1; // 2-14 - 2 = 0-12
   });
   return hist;
 };
@@ -43,19 +57,11 @@ const rankHand = (hand, hist) => {
   } else if (has2) {
     return 1; // 1 pair
   } else {
-    // all single cards, look for flush and straight
-    const C1 = hist.indexOf(1);
-    const C5 = hist.lastIndexOf(1);
-
-    // check for straight (end - start = 4) or (A,2,3,4,5)
+    // all single cards
+    // check for straight
     const isStraight =
-      C5 - C1 === 4 ||
-      (hist[12] === 1 &&
-        hist[0] === 1 &&
-        hist[1] === 1 &&
-        hist[2] === 1 &&
-        hist[3] === 1);
-
+      hist.lastIndexOf(1) - hist.indexOf(1) === 4 || // (end - start = 4)
+      (hist[12] && hist[0] && hist[1] && hist[2] && hist[3]); // (A,2,3,4,5)
     // check for flush
     let isFlush = true;
     for (let card of hand) {
@@ -64,7 +70,6 @@ const rankHand = (hand, hist) => {
         break;
       }
     }
-
     if (isStraight && isFlush) {
       return 8; // straight flush
     } else if (isFlush) {
@@ -88,46 +93,77 @@ const evaluate = hand => {
   const hist = getHistogram(hand);
   const rank = rankHand(hand, hist);
 
-  let cards = [0, 0, 0, 0, 0];
-  let total = 0;
-  let weight = 4;
-  let i = 0;
-  let last = -1;
+  let cards = [0, 0, 0, 0, 0]; // placeholder for card value
+  let total = 0; // track number of cards counted
+  let numCards = 4; // number of same cards in a set
+  let i = 0; // iterator
+  let last = -1; // track location of last in numCards set
 
   // get card values and display them in order of importance
   while (total < 5) {
-    const num = hist.indexOf(weight, last + 1);
+    const num = hist.indexOf(numCards, last + 1);
     if (num === -1) {
-      weight -= 1;
+      numCards -= 1;
       last = -1;
     } else {
       cards[i] = num.toString(13);
       i += 1;
-      total += weight;
+      total += numCards;
       last = num;
     }
   }
-
-  return `${rank}${cards[0]}${cards[1]}${cards[2]}${cards[3]}${cards[4]}`;
+  return `${rank}${cards.reduce((a, c) => `${a}${c}`)}`;
 };
 
 /* --------------------------------------------------
 * Poker
 * -------------------------------------------------- */
-export class Poker extends Component {
+export class Pkr extends Component {
   state = { hands: [] };
 
   /**
    * iterate through array, removing each index number from hand
    * then add new cards to the hand
    * @param {array} cards - array of index numbers
-   * @param {number} p - player number
    */
-  discard = (cards, p) => {
-    const { hands } = this.state;
-    cards.forEach(card => (hands[p][card] = Deck.deal(1)[0]));
-    hands[p].sort(Deck.rankSort);
+  discard = cards => {
+    let { hands } = this.state;
+    let { turn, turnActions } = this.props;
+    cards.forEach(i => (hands[turn.player][i] = Deck.deal(1)[0]));
+    hands[turn.player].sort(Deck.rankSort);
     this.setState({ hands });
+    turnActions.incrPlayerTurn();
+  };
+
+  /**
+   * function to remove n number of cards
+   * @param {number} n - number of cards to remove
+   * @param {[number]} hist - number of each respective card in hand
+   */
+  discardHelper = (n, hist) => {
+    const { turn } = this.props;
+    const { hands } = this.state;
+    const hand = hands[turn.player];
+    let discardCards = [];
+    let cardVals = [hist.indexOf(1)];
+
+    // find cards without pairs, starting with the smallest
+    for (let i = 1; i < n; i += 1) {
+      cardVals[i] = hist.indexOf(1, cardVals[i - 1] + 1);
+    }
+
+    // find hand indecies of individual cards
+    for (let i = 0; i < hand.length; i += 1) {
+      for (let c of cardVals) {
+        if (hand[i].rank - 2 === c) {
+          discardCards.push(i);
+          break;
+        }
+      }
+    }
+
+    // discard lowest, non-pair n cards
+    this.discard(discardCards);
   };
 
   /** computer play algorithm:
@@ -151,97 +187,67 @@ export class Poker extends Component {
     if K / A -> draw 4
     else draw 5
     */
-  computer = (hand, turn) => {
+  computer = () => {
+    const { turn } = this.props;
+    const { hands } = this.state;
+    const hand = hands[turn.player];
     const hist = getHistogram(hand);
     const rank = rankHand(hand, hist);
 
     switch (rank) {
-      case 0: {
-        // draw 4-5 on high card
-        const C5 = hist.lastIndexOf(1);
-        if (C5 >= 11) {
-          // if ace || king draw 4
-          let temp = [];
-          const C1 = hist.indexOf(1);
-          const C2 = hist.indexOf(1, C1 + 1);
-          const C3 = hist.indexOf(1, C2 + 1);
-          const C4 = hist.indexOf(1, C3 + 1);
-          for (let i = 0; i < hand.length; i += 1) {
-            const x = hand[i].rank - 2;
-            if (x === C1 || x === C2 || x === C3 || x === C4) {
-              temp.push(i);
-            }
-          }
-          this.discard(temp, turn);
-          return evaluate(hand);
-        } else {
-          // otherwise, draw all 5
-          this.discard([0, 1, 2, 3, 4], turn);
-          return evaluate(hand);
-        }
-      }
-      case 1: {
-        // draw 3 on 2 of a kind
-        let temp = [];
-        const C1 = hist.indexOf(1);
-        const C2 = hist.indexOf(1, C1 + 1);
-        const C3 = hist.indexOf(1, C2 + 1);
-        for (let i = 0; i < hand.length; i += 1) {
-          const x = hand[i].rank - 2;
-          if (C1 === x || C2 === x || C3 === x) {
-            temp.push(i);
-          }
-        }
-        this.discard(temp, turn);
-        return evaluate(hand);
-      }
+      case 0: // draw 4-5 on high card
+        hist.lastIndexOf(1) >= 11
+          ? this.discardHelper(4, hist) // if ace || king draw 4
+          : this.discard([0, 1, 2, 3, 4]); // otherwise, draw all 5
+        return;
+      case 1: // draw 3 on 2 of a kind
+        this.discardHelper(3, hist);
+        return;
       case 2: // draw 1 on 3 of a kind
-      case 3: {
-        // draw 1 on 2 Pair
-        let temp = [];
-        const C1 = hist.indexOf(1);
-        for (let i = 0; i < hand.length; i += 1) {
-          if (C1 === hand[i].rank - 2) {
-            temp.push(i);
-            break;
-          }
-        }
-        this.discard(temp, turn);
-        return evaluate(hand);
-      }
+      case 3: // draw 1 on 2 Pair
+        this.discardHelper(1, hist);
+        return;
       case 4: // draw 0 on straight
       case 5: // draw 0 on flush
       case 6: // draw 0 on full house
       case 7: // draw 0 on 4 of a kind
-      case 8: {
-        return evaluate(hand); // draw 0 on straight flush
-      }
+      case 8: // draw 0 on straight flush
       default:
-        return 0;
+        return;
     }
   };
-
-  add = (num, player) => {
-    return player;
-  };
-
-  sub = (num, player) => {
-    return player;
-  };
-
-  deal = num => {
-    return Deck.deal(num);
-  };
-
-  shuffle = () => {
-    Deck.shuffle();
-    return;
-  };
-
-  rankSort = Deck.rankSort;
 
   // render standard board
   render() {
     return <h1>Placeholder for Future Poker Project</h1>;
   }
 }
+
+// Prop Validation
+Pkr.propTypes = {
+  //  PropTypes = [string, object, bool, number, func, array].isRequired
+  turnActions: PropTypes.object.isRequired,
+  playerActions: PropTypes.object.isRequired,
+  players: PropTypes.array.isRequired,
+  turn: PropTypes.object.isRequired
+};
+
+// react-redux export
+function mapStateToProps(state /*, ownProps*/) {
+  return {
+    turn: state.turn,
+    players: state.players
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    turnActions: bindActionCreators({ incrPlayerTurn, resetTurn }, dispatch),
+    playerActions: bindActionCreators(
+      { drawCard, newHand, payout, updateBet, resetStatus },
+      dispatch
+    )
+  };
+}
+
+export const Poker = connect(mapStateToProps, mapDispatchToProps)(Pkr);
