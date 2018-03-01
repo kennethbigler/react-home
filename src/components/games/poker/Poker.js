@@ -3,12 +3,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // components
 import { Deck } from '../../../apis/Deck';
+import { GameTable } from '../gametable/GameTable';
 // redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { incrPlayerTurn, resetTurn } from '../../../store/modules/turn';
 import {
-  drawCard,
+  swapCards,
   newHand,
   payout,
   updateBet,
@@ -119,7 +120,68 @@ const evaluate = hand => {
 * Poker
 * -------------------------------------------------- */
 export class Pkr extends Component {
-  state = { hands: [] };
+  constructor(props) {
+    super(props);
+    this.setNewGameRedux();
+    this.state = this.getNewGameState();
+  }
+
+  /**
+   * function to generate the state of a new game
+   * @return {Object}
+   */
+  getNewGameState = () => {
+    // go back to betting phase
+    return {
+      gameFunctions: [{ name: 'Finish Betting', func: this.finishBetting }],
+      cardsToDiscard: [],
+      hideHands: true
+    };
+  };
+
+  /** function to reset turn and player status */
+  setNewGameRedux = () => {
+    const { turnActions, playerActions, players } = this.props;
+    // reset redux actions
+    turnActions.resetTurn();
+    // reset player statuses
+    players.forEach(player => playerActions.resetStatus(player.id));
+  };
+
+  /**
+   * Start a new round of hands
+   * stateChanges: turn, players
+   */
+  dealHands = () => {
+    const { playerActions, players } = this.props;
+    // shuffle the deck
+    Deck.shuffle();
+    // deal the hands
+    players.forEach(player => playerActions.newHand(player.id, 5));
+  };
+
+  /**
+   * function to finish betting and start the game
+   * stateChanges: hideHands
+   */
+  finishBetting = () => {
+    this.setState({ hideHands: false });
+    this.dealHands();
+  };
+
+  /** get hand from props */
+  getHand = () => {
+    // get state vars
+    const { turn, players } = this.props;
+    return players[turn.player].hands[0];
+  };
+
+  /** increment player turn and reset state */
+  endTurn = () => {
+    const { turnActions } = this.props;
+    turnActions.incrPlayerTurn();
+    this.setState({ cardsToDiscard: [] });
+  };
 
   /**
    * iterate through array, removing each index number from hand
@@ -127,12 +189,17 @@ export class Pkr extends Component {
    * @param {array} cards - array of index numbers
    */
   discard = cards => {
-    let { hands } = this.state;
-    let { turn, turnActions } = this.props;
-    cards.forEach(i => (hands[turn.player][i] = Deck.deal(1)[0]));
-    hands[turn.player].sort(Deck.rankSort);
-    this.setState({ hands });
-    turnActions.incrPlayerTurn();
+    // get state values
+    const { turn, playerActions, players } = this.props;
+    const { id, hands } = players[turn.player];
+    // logic to swap cards
+    playerActions.swapCards(hands, id, cards);
+  };
+
+  /** helper function wrapping discard, meant for UI */
+  handleDiscard = () => {
+    const { cardsToDiscard } = this.state;
+    this.discard(cardsToDiscard);
   };
 
   /**
@@ -141,17 +208,13 @@ export class Pkr extends Component {
    * @param {[number]} hist - number of each respective card in hand
    */
   discardHelper = (n, hist) => {
-    const { turn } = this.props;
-    const { hands } = this.state;
-    const hand = hands[turn.player];
+    const hand = this.getHand();
     let discardCards = [];
     let cardVals = [hist.indexOf(1)];
-
     // find cards without pairs, starting with the smallest
     for (let i = 1; i < n; i += 1) {
       cardVals[i] = hist.indexOf(1, cardVals[i - 1] + 1);
     }
-
     // find hand indecies of individual cards
     for (let i = 0; i < hand.length; i += 1) {
       for (let c of cardVals) {
@@ -188,9 +251,7 @@ export class Pkr extends Component {
     else draw 5
     */
   computer = () => {
-    const { turn } = this.props;
-    const { hands } = this.state;
-    const hand = hands[turn.player];
+    const hand = this.getHand();
     const hist = getHistogram(hand);
     const rank = rankHand(hand, hist);
 
@@ -217,9 +278,49 @@ export class Pkr extends Component {
     }
   };
 
+  /**
+   * function to be called on card clicks
+   * @param {number} playerNo - player number
+   * @param {number} handNo - hand number
+   * @param {number} cardNo - card number
+   */
+  cardClickHandler = (playerNo, handNo, cardNo) => {
+    let { cardsToDiscard } = this.state;
+    // find card
+    let i = cardsToDiscard.indexOf(cardNo);
+    // toggle in array
+    i === -1 ? cardsToDiscard.push(cardNo) : cardsToDiscard.splice(i, 1);
+    // update state
+    this.setState({ cardsToDiscard });
+  };
+
+  /**
+   * function to be called on card clicks
+   * @param {Object} event
+   * @param {number} value
+   * stateChanges: player
+   */
+  betHandler = (id, event, bet) => {
+    this.props.playerActions.updateBet(id, bet);
+  };
+
   // render standard board
   render() {
-    return <h1>Placeholder for Future Poker Project</h1>;
+    const { turn, players } = this.props;
+    const { gameFunctions, hideHands } = this.state;
+    return (
+      <div>
+        <h1>Placeholder for Future Poker Project</h1>
+        <GameTable
+          turn={turn}
+          players={players}
+          hideHands={hideHands}
+          betHandler={this.betHandler}
+          gameFunctions={gameFunctions}
+          cardClickHandler={this.cardClickHandler}
+        />
+      </div>
+    );
   }
 }
 
@@ -244,7 +345,7 @@ function mapDispatchToProps(dispatch) {
   return {
     turnActions: bindActionCreators({ incrPlayerTurn, resetTurn }, dispatch),
     playerActions: bindActionCreators(
-      { drawCard, newHand, payout, updateBet, resetStatus },
+      { swapCards, newHand, payout, updateBet, resetStatus },
       dispatch
     )
   };

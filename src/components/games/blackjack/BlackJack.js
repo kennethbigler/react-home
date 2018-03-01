@@ -188,7 +188,7 @@ class BJ extends Component {
     // deal the hands
     players.forEach(player => {
       const num = player.id !== DEALER ? 2 : 1;
-      playerActions.newHand(player.id, weighHand, num);
+      playerActions.newHand(player.id, num, weighHand);
     });
   };
 
@@ -201,7 +201,7 @@ class BJ extends Component {
     const { turn, playerActions, players } = this.props;
     const { id, hands } = players[turn.player];
     // logic to hit
-    playerActions.drawCard(hands, id, turn.hand, weighHand);
+    playerActions.drawCard(hands, id, turn.hand, 1, weighHand);
   };
 
   /**

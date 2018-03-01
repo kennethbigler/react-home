@@ -18,6 +18,7 @@ const UPDATE_BET = 'casino/player/UPDATE_BET';
 const FINISH_GAME = 'casino/player/FINISH_GAME';
 const SPLIT_HAND = 'casino/player/SPLIT_HAND';
 const DRAW_CARD = 'casino/player/DRAW_CARD';
+const SWAP_CARD = 'casino/player/SWAP_CARD';
 const NEW_HAND = 'casino/player/NEW_HAND';
 
 // -------------------- Action Creators     -------------------- //
@@ -103,7 +104,7 @@ export function payout(id, status, money, bet = 0) {
  * @param {number} hNum - optional, if multiple hands
  * @param {function} weigh - optional, get weight of hand for game
  */
-export function splitHand(hands, id, hNum, weigh) {
+export function splitHand(hands, id, hNum, weigh = null) {
   const hand = hands[hNum];
   // split the hands into 2
   let hand1 = { cards: [hand.cards[0]] };
@@ -128,11 +129,26 @@ export function splitHand(hands, id, hNum, weigh) {
  * @param {function} weigh - optional, get weight of hand for game
  * @param {number} num - optional, number of cards, default 1
  */
-export function drawCard(hands, id, hNum = 0, weigh, num = 1) {
+export function drawCard(hands, id, hNum = 0, num = 1, weigh = null) {
   const cards = [...hands[hNum].cards, ...Deck.deal(num)];
   const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
   const newHands = updateArrayInArray(hands, { cards, weight, soft }, hNum);
   return { type: DRAW_CARD, player: { id, hands: newHands } };
+}
+
+/**
+ * iterate through array, removing each index number from hand
+ * then add new cards to the hand
+ * @param {Object[]} hands - pass in player's hands to be mutated with new card
+ * @param {number} id - tells us which player to update
+ * @param {array} cardsToDiscard - array of index numbers
+ */
+export function swapCards(hands, id, cardsToDiscard) {
+  const cards = [...hands[0].cards];
+  cardsToDiscard.forEach(i => (cards[i] = Deck.deal(1)[0]));
+  cards.sort(Deck.rankSort);
+  const newHand = updateArrayInArray(hands, { cards }, 0);
+  return { type: SWAP_CARD, player: { id, hands: newHand } };
 }
 
 /**
@@ -141,7 +157,7 @@ export function drawCard(hands, id, hNum = 0, weigh, num = 1) {
  * @param {function} weigh - optional, get weight of hand for game
  * @param {number} num - optional, number of cards, default 1
  */
-export function newHand(id = 0, weigh, num = 1) {
+export function newHand(id = 0, num = 1, weigh = null) {
   const cards = Deck.deal(num).sort(Deck.rankSort);
   const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
   return { type: NEW_HAND, player: { id, hands: [{ cards, weight, soft }] } };
@@ -167,6 +183,7 @@ export default function reducer(state = initialState.players, action) {
     case FINISH_GAME:
     case SPLIT_HAND:
     case DRAW_CARD:
+    case SWAP_CARD:
     case NEW_HAND:
       return updateObjectInArray(state, action.player, 'id');
     case ADD:
