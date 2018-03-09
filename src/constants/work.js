@@ -11,7 +11,6 @@ import moment from 'moment';
 
 export const REACT = 'React.js';
 export const ANGULAR = 'Angular.js 1.X';
-const JOB_CHANGE = moment(); // '2018-03-05';
 
 export default [
   {
@@ -23,7 +22,7 @@ export default [
     location: 'Palo Alto, CA',
     title: 'Frontend Engineer, Global Innovation Group',
     website: 'https://www.gignow.com/',
-    start: JOB_CHANGE,
+    start: moment('2018-03-05'),
     end: moment(),
     src: eyLogo,
     alt: 'Ernst & Young Logo',
@@ -58,7 +57,7 @@ export default [
     website:
       'https://www.cisco.com/c/en/us/solutions/enterprise-networks/dna-analytics-assurance.html',
     start: moment('2017-04-03'),
-    end: JOB_CHANGE,
+    end: moment('2018-03-05'),
     src: ciscoLogo,
     alt: 'Cisco Systems Logo',
     expr: [

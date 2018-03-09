@@ -15,8 +15,8 @@ const styles = {
 
 const getJob = () => {
   const job = workExp[0];
-  const end = job.parent ? ` (${job.parent})` : '';
-  return `${job.title}, ${job.company}${end}`;
+  const parent = job.parent ? ` (${job.parent})` : '';
+  return `${job.title}, ${job.company}${parent}`;
 };
 
 export class Home extends Component {

@@ -32,7 +32,8 @@ export const Job = props => {
   const mainTxt = 'col-sm-9 col-xs-12';
   const sideTxt = 'col-sm-3 col-xs-12';
   const handleExpand = exp => onTouchTap(job.company, exp);
-  const title = `${job.company}, ${job.location}`;
+  const parent = job.parent ? ` (${job.parent})` : '';
+  const title = `${job.company}${parent}, ${job.location}`;
   const subtitle = job.title;
 
   return job.isJob ? (
