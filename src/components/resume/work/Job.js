@@ -14,10 +14,10 @@ function showRange(s, e, n) {
   const notes = n ? n : '';
 
   // get the time range in years, months
-  const mon = e.diff(s, 'months') % 12;
-  const yr = e.diff(s, 'years');
+  const mon = (e.diff(s, 'months') + 1) % 12;
+  const yr = e.diff(s, 'years') + (mon === 0 ? 1 : 0);
   const yRange = yr ? `${yr} year${yr > 1 ? 's' : ''}` : null;
-  const mRange = mon ? `${mon} month${mon > 1 ? 's' : ''}` : null;
+  const mRange = mon ? `${mon} month${mon > 1 ? 's' : ''}` : 0;
   const range = yRange ? yRange + (mRange ? `, ${mRange}` : '') : mRange;
 
   // return string for output
