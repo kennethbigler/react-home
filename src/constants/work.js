@@ -22,7 +22,7 @@ export default [
     location: 'Palo Alto, CA',
     title: 'Frontend Engineer, Global Innovation Group',
     website: 'https://www.gignow.com/',
-    start: moment('2018-03-05'),
+    start: moment('2018-03'),
     end: moment(),
     src: eyLogo,
     alt: 'Ernst & Young Logo',
@@ -38,7 +38,7 @@ export default [
     location: 'Santa Clara, CA',
     title: 'Volunteer Team Leader',
     website: 'https://www.shfb.org/',
-    start: moment('2009-09-01'),
+    start: moment('2009-09'),
     end: moment(),
     src: SHFBLogo,
     alt: 'Second Harvest Food Bank Logo',
@@ -56,8 +56,8 @@ export default [
     title: 'Software Engineer III, Core Software Group',
     website:
       'https://www.cisco.com/c/en/us/solutions/enterprise-networks/dna-analytics-assurance.html',
-    start: moment('2017-04-03'),
-    end: moment('2018-03-05'),
+    start: moment('2017-04'),
+    end: moment('2018-03'),
     src: ciscoLogo,
     alt: 'Cisco Systems Logo',
     expr: [
@@ -75,8 +75,8 @@ export default [
     location: 'Mountain View, CA',
     title: 'Software Engineer',
     website: 'https://www.hoverboard.com/',
-    start: moment('2016-10-03'),
-    end: moment('2017-04-01'),
+    start: moment('2016-10'),
+    end: moment('2017-04'),
     src: hoverboardLogo,
     alt: 'Hoverboard Logo',
     expr: [
@@ -93,8 +93,8 @@ export default [
     location: 'Fremont, CA',
     title: 'Application Developer Intern, IT Applications',
     website: 'https://www.tesla.com/',
-    start: moment('2015-06-08'),
-    end: moment('2016-06-24'),
+    start: moment('2015-06'),
+    end: moment('2016-06'),
     src: teslaLogo,
     alt: 'Tesla Logo',
     expr: [
@@ -111,8 +111,8 @@ export default [
     location: 'Sunnyvale, CA',
     title: 'Application Developer and Project Manager',
     website: 'http://www.midnightgameclub.com/',
-    start: moment('2014-08-04'),
-    end: moment('2015-11-25'),
+    start: moment('2014-08'),
+    end: moment('2015-11'),
     notes: '(Spare Time)',
     src: vengefulLogo,
     alt: 'Midnight Game Club Logo',
@@ -130,8 +130,8 @@ export default [
     location: 'Sunnyvale, CA',
     title: 'Web Technologist, Solutions and Process Enablement',
     website: 'https://www.netapp.com/us/index.aspx',
-    start: moment('2012-08-06'),
-    end: moment('2015-06-06'),
+    start: moment('2012-08'),
+    end: moment('2015-06'),
     src: netappLogo,
     alt: 'NetApp Logo',
     expr: [
@@ -150,7 +150,7 @@ export default [
     location: 'Santa Clara, CA',
     title: 'Undergrad / Grad Student',
     website: 'https://www.scu.edu/',
-    start: moment('2011-09-19'),
-    end: moment('2016-12-11')
+    start: moment('2011-09'),
+    end: moment('2016-12')
   }
 ];
