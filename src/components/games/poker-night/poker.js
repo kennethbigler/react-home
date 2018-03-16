@@ -10,12 +10,13 @@ export default [
       W6: -33,
       W7: 187,
       W8: 127,
-      W9: 11
+      W9: 11,
+      W10: -23
     }
   },
   {
     name: 'Lauren',
-    scores: { W1: -83, W5: -90 }
+    scores: { W1: -83, W5: -90, W10: 58 }
   },
   {
     name: 'Aaron',
@@ -36,16 +37,17 @@ export default [
       W6: 46,
       W7: -46,
       W8: 119,
-      W9: 17
+      W9: 17,
+      W10: -20
     }
   },
   {
     name: 'Landon',
-    scores: { W1: -27 }
+    scores: { W1: -27, W10: -100 }
   },
   {
     name: 'Lily',
-    scores: { W1: 3, W2: -131, W3: -45, W4: 179, W5: -70, W6: -98 }
+    scores: { W1: 3, W2: -131, W3: -45, W4: 179, W5: -70, W6: -98, W10: -100 }
   },
   {
     name: 'Keishi',
@@ -53,7 +55,7 @@ export default [
   },
   {
     name: 'Andy',
-    scores: { W1: -22, W2: -140, W6: 27, W9: 30 }
+    scores: { W1: -22, W2: -140, W6: 27, W9: 30, W10: 240 }
   },
   {
     name: 'Mike',
@@ -61,7 +63,7 @@ export default [
   },
   {
     name: 'Tom',
-    scores: { W3: 39, W4: -100, W5: -200, W7: -55 }
+    scores: { W3: 39, W4: -100, W5: -200, W7: -55, W10: 9 }
   },
   {
     name: 'Meeks',

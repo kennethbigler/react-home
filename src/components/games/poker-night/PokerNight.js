@@ -13,7 +13,9 @@ function getTotal(obj) {
     total += isNaN(obj.scores[k]) ? 0 : obj.scores[k];
     if (keys.indexOf(k) === -1) {
       keys.push(k);
-      keys.sort();
+      keys.sort(
+        (a, b) => parseInt(a.substr(1), 10) - parseInt(b.substr(1), 10)
+      );
     }
   });
   obj.total = total;
