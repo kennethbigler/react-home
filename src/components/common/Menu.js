@@ -47,5 +47,6 @@ export const Menu = props => {
 };
 
 Menu.propTypes = {
+  // PropTypes = [string, object, bool, number, func, array].isRequired
   onTouchTap: PropTypes.func.isRequired
 };

@@ -31,7 +31,7 @@ export const Header = props => {
 };
 
 Header.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
+  // PropTypes = [string, object, bool, number, func, array].isRequired
   winner: PropTypes.number,
   turn: PropTypes.number.isRequired,
   newGame: PropTypes.func.isRequired

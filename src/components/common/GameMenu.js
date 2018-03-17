@@ -41,5 +41,6 @@ export const GameMenu = props => {
 };
 
 GameMenu.propTypes = {
+  // PropTypes = [string, object, bool, number, func, array].isRequired
   onTouchTap: PropTypes.func.isRequired
 };

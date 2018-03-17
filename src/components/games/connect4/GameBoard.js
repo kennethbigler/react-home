@@ -26,7 +26,7 @@ export const GameBoard = props => {
 };
 
 GameBoard.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
+  // PropTypes = [string, object, bool, number, func, array].isRequired
   board: PropTypes.array.isRequired,
   insert: PropTypes.func.isRequired,
   winner: PropTypes.number,

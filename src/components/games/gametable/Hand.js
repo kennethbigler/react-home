@@ -45,7 +45,7 @@ export const Hand = props => {
 };
 
 Hand.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
+  // PropTypes = [string, object, bool, number, func, array].isRequired
   hand: PropTypes.object.isRequired,
   playerNo: PropTypes.number.isRequired,
   handNo: PropTypes.number.isRequired,

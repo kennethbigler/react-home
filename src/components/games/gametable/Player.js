@@ -75,7 +75,7 @@ export const Player = props => {
 };
 
 Player.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
+  // PropTypes = [string, object, bool, number, func, array].isRequired
   player: PropTypes.object.isRequired,
   playerNo: PropTypes.number.isRequired,
   hideHands: PropTypes.bool,

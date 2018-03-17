@@ -19,6 +19,6 @@ export const ButtonGroup = props => {
 };
 
 ButtonGroup.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
+  // PropTypes = [string, object, bool, number, func, array].isRequired
   gameFunctions: PropTypes.array.isRequired
 };

@@ -51,7 +51,7 @@ export const Board = props => {
 };
 
 Board.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
+  // PropTypes = [string, object, bool, number, func, array].isRequired
   board: PropTypes.array.isRequired,
   turn: PropTypes.number.isRequired,
   insert: PropTypes.func.isRequired

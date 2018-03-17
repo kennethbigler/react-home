@@ -43,7 +43,7 @@ export const GameTable = props => {
 };
 
 GameTable.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
+  // PropTypes = [string, object, bool, number, func, array].isRequired
   turn: PropTypes.object.isRequired,
   players: PropTypes.array.isRequired,
   gameFunctions: PropTypes.array.isRequired,

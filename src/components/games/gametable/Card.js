@@ -32,7 +32,7 @@ export const Card = props => {
 };
 
 Card.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
+  // PropTypes = [string, object, bool, number, func, array].isRequired
   name: PropTypes.string.isRequired,
   suit: PropTypes.string.isRequired,
   playerNo: PropTypes.number.isRequired,

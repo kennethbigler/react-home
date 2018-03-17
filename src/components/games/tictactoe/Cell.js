@@ -23,7 +23,7 @@ export const Cell = props => {
 };
 
 Cell.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
+  // PropTypes = [string, object, bool, number, func, array].isRequired
   value: PropTypes.string.isRequired,
   winner: PropTypes.bool.isRequired,
   onTouchTap: PropTypes.func.isRequired

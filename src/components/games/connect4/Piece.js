@@ -24,7 +24,7 @@ export const Piece = props => {
 };
 
 Piece.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
+  // PropTypes = [string, object, bool, number, func, array].isRequired
   piece: PropTypes.number.isRequired,
   enabled: PropTypes.bool,
   onTouchTap: PropTypes.func
