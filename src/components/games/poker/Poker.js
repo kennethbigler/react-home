@@ -120,6 +120,15 @@ const evaluate = hand => {
 * Poker
 * -------------------------------------------------- */
 export class Pkr extends Component {
+  // Prop Validation
+  static propTypes = {
+    // PropTypes = [string, object, bool, number, func, array].isRequired
+    turnActions: PropTypes.object.isRequired,
+    playerActions: PropTypes.object.isRequired,
+    players: PropTypes.array.isRequired,
+    turn: PropTypes.object.isRequired
+  };
+
   constructor(props) {
     super(props);
     this.setNewGameRedux();
@@ -323,15 +332,6 @@ export class Pkr extends Component {
     );
   }
 }
-
-// Prop Validation
-Pkr.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
-  turnActions: PropTypes.object.isRequired,
-  playerActions: PropTypes.object.isRequired,
-  players: PropTypes.array.isRequired,
-  turn: PropTypes.object.isRequired
-};
 
 // react-redux export
 function mapStateToProps(state /*, ownProps*/) {

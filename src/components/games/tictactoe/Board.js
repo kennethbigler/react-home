@@ -7,6 +7,13 @@ import { Cell } from './Cell';
  * Board
  * ======================================== */
 export class Board extends Component {
+  static propTypes = {
+    // PropTypes = [string, object, bool, number, func, array].isRequired
+    winRow: PropTypes.array.isRequired,
+    board: PropTypes.array.isRequired,
+    onTouchTap: PropTypes.func.isRequired
+  };
+
   /** function to render the cells of the Board */
   renderCells = () => {
     const { board, onTouchTap, winRow } = this.props;
@@ -35,13 +42,8 @@ export class Board extends Component {
     // return wrapped element
     return <tbody>{cells}</tbody>;
   };
+
   render() {
     return <table className="table table-bordered">{this.renderCells()}</table>;
   }
 }
-Board.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
-  winRow: PropTypes.array.isRequired,
-  board: PropTypes.array.isRequired,
-  onTouchTap: PropTypes.func.isRequired
-};

@@ -12,6 +12,11 @@ const WIDTH = 100;
 const MIN_TEXT_WIDTH = 94;
 
 export class Timeline extends Component {
+  static propTypes = {
+    // PropTypes = [string, object, bool, number, func, array].isRequired
+    data: PropTypes.array.isRequired
+  };
+
   constructor(props) {
     super(props);
     // get immutable data from props and sort by start date
@@ -137,10 +142,6 @@ export class Timeline extends Component {
     );
   }
 }
-
-Timeline.propTypes = {
-  data: PropTypes.array.isRequired
-};
 
 /*
 * TODO: expand below on click

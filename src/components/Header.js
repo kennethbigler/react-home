@@ -12,6 +12,13 @@ import Avatar from 'material-ui/Avatar';
 // Parents: App
 
 class HeaderBody extends Component {
+  static propTypes = {
+    // PropTypes = [string, object, bool, number, func, array].isRequired
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+  };
+
   constructor(props) {
     super(props);
     const isGame = props.location.pathname.includes('/games');
@@ -76,11 +83,5 @@ class HeaderBody extends Component {
     );
   }
 }
-
-HeaderBody.propTypes = {
-  match: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
-};
 
 export const Header = withRouter(HeaderBody);

@@ -11,6 +11,13 @@ import TextField from 'material-ui/TextField';
 * Home
 * -------------------------------------------------- */
 class Home extends Component {
+  // Prop Validation
+  static propTypes = {
+    // PropTypes = [string, object, bool, number, func, array].isRequired
+    playerActions: PropTypes.object.isRequired,
+    players: PropTypes.array.isRequired
+  };
+
   constructor(props) {
     super(props);
     // set bot status
@@ -100,13 +107,6 @@ class Home extends Component {
     );
   }
 }
-
-// Prop Validation
-Home.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
-  playerActions: PropTypes.object.isRequired,
-  players: PropTypes.array.isRequired
-};
 
 // react-redux export
 function mapStateToProps(state /*, ownProps*/) {

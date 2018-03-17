@@ -56,6 +56,13 @@ const getNewState = () => ({
 
 // TODO: add rules to page
 export class DND extends Component {
+  // Prop Validation
+  static propTypes = {
+    // PropTypes = [string, object, bool, number, func, array].isRequired
+    player: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired
+  };
+
   // local variable to track the board
   state = getNewState();
 
@@ -236,13 +243,6 @@ export class DND extends Component {
     );
   }
 }
-
-// Prop Validation
-DND.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
-  player: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
-};
 
 // react-redux export
 function mapStateToProps(state /*, ownProps*/) {

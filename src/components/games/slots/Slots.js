@@ -19,6 +19,13 @@ import {
 * Slot Machine
 * -------------------------------------------------- */
 class SM extends Component {
+  // Prop Validation
+  static propTypes = {
+    // PropTypes = [string, object, bool, number, func, array].isRequired
+    playerActions: PropTypes.object.isRequired,
+    players: PropTypes.array.isRequired
+  };
+
   constructor(props) {
     super(props);
 
@@ -131,13 +138,6 @@ class SM extends Component {
     );
   }
 }
-
-// Prop Validation
-SM.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
-  playerActions: PropTypes.object.isRequired,
-  players: PropTypes.array.isRequired
-};
 
 // react-redux export
 function mapStateToProps(state /*, ownProps*/) {

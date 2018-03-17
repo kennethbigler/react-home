@@ -8,6 +8,13 @@ import { getTurn } from './constants';
  * History
  * ======================================== */
 export class History extends Component {
+  static propTypes = {
+    // PropTypes = [string, object, bool, number, func, array].isRequired
+    step: PropTypes.number.isRequired,
+    history: PropTypes.array.isRequired,
+    jumpToStep: PropTypes.func.isRequired
+  };
+
   constructor(props) {
     super(props);
     this.state = { ascend: true };
@@ -61,10 +68,3 @@ export class History extends Component {
     );
   }
 }
-
-History.propTypes = {
-  //  PropTypes = [string, object, bool, number, func, array].isRequired
-  step: PropTypes.number.isRequired,
-  history: PropTypes.array.isRequired,
-  jumpToStep: PropTypes.func.isRequired
-};
