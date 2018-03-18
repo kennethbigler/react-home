@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { TIMELINE_TITLE } from './common/timeline/Timeline';
-import { Home } from './resume/Home';
-import { Work } from './resume/work/Work';
-import { Education } from './resume/education/Education';
-import { Resume } from './resume/Resume';
-import { TravelMap } from './resume/travel-map/TravelMap';
-import { PokerNight } from './games/poker-night/PokerNight';
-import { MurderMystery } from './games/murder-mystery/MurderMystery';
-import { GameHome } from './games/Home';
-import { Slots } from './games/slots/Slots';
-import { BlackJack } from './games/blackjack/BlackJack';
-import { Poker } from './games/poker/Poker';
-import { TicTacToe } from './games/tictactoe/TicTacToe';
-import { Connect4 } from './games/connect4/Connect4';
-import { DealOrNoDeal } from './games/deal-or-no-deal/DealOrNoDeal';
+import { Home, Work, Education, Resume, TravelMap, GitTools } from './resume/';
+import {
+  PokerNight,
+  MurderMystery,
+  GameHome,
+  Slots,
+  BlackJack,
+  Poker,
+  TicTacToe,
+  Connect4,
+  DealOrNoDeal
+} from './games/';
 import classes from '../constants/classes';
 import workExp from '../constants/work';
 // Parents: App
@@ -68,6 +66,7 @@ export class Main extends Component {
             <Route path="/education" render={() => education} />
             <Route path="/resume" component={Resume} />
             <Route path="/travel" component={TravelMap} />
+            <Route path="/git-tools" component={GitTools} />
             <Route path="/(tictactoe|games/tictactoe)" component={TicTacToe} />
             <Route path="/(poker|games/pokernight)" component={PokerNight} />
             <Route exact path="/games" component={GameHome} />
