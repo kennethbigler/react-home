@@ -27,7 +27,7 @@ export class GitTools extends Component {
   getSelectOptions = arr =>
     arr.map((t, i) => <MenuItem key={i} value={t} primaryText={t} />);
   getBranchPrefixOptions = () =>
-    this.getSelectOptions(['', 'features', 'fixes']);
+    this.getSelectOptions(['', 'chores', 'epics', 'features', 'fixes']);
   getCommitPrefixOptions = () =>
     this.getSelectOptions([
       '',
