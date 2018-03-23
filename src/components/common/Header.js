@@ -19,10 +19,6 @@ export class Header extends Component {
   };
 
   state = { open: false };
-  styles = {
-    height: { height: '4em' },
-    header: { position: 'fixed', left: 0, right: 0, top: 0 }
-  };
 
   handleOpen = () => {
     this.setState({ open: !this.state.open });
@@ -36,18 +32,15 @@ export class Header extends Component {
   render() {
     const { open } = this.state;
     const { children } = this.props;
-    const { height, header } = this.styles;
-    const title = (
-      <div>
-        <Avatar src={photo} size={30} /> Kenneth Bigler
-      </div>
-    );
     return (
-      <div>
-        <div style={height}>&nbsp;</div>
+      <div className="application-header">
         <AppBar
-          title={title}
-          style={header}
+          title={
+            <div>
+              <Avatar src={photo} size={30} /> Kenneth Bigler
+            </div>
+          }
+          style={{ position: 'fixed', left: 0, right: 0, top: 0 }}
           iconClassNameRight="muidocs-icon-navigation-expand-more"
           onLeftIconButtonTouchTap={this.handleOpen}
           onTitleTouchTap={() => this.handleNav('/')}
@@ -61,7 +54,6 @@ export class Header extends Component {
               </IconButton>
             }
             onLeftIconButtonTouchTap={this.handleOpen}
-            onTitleTouchTap={() => this.handleNav('/')}
           />
           {React.cloneElement(children, { onItemClick: this.handleNav })}
         </Drawer>

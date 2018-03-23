@@ -51,6 +51,7 @@ export default class Routes extends Component {
     const { match, handleNav } = this.props;
     const { url } = match;
     const { expanded } = this.state;
+
     const education = (
       <Education onTouchTap={this.handleExpand} {...{ classes, expanded }} />
     );
@@ -58,23 +59,20 @@ export default class Routes extends Component {
       <Work onTouchTap={this.handleExpand} {...{ workExp, expanded }} />
     );
 
-    const urls = [
+    const paths = [
       { name: 'work', component: () => work },
       { name: 'education', component: () => education },
       { name: 'travel', component: TravelMap },
       { name: 'resume', component: Resume },
       { name: 'git-tools', component: GitTools },
       { name: 'poker', component: PokerNight }
-    ];
-
-    let paths = [];
-
-    urls.forEach(obj => {
+    ].reduce((acc, obj) => {
       const { name, component } = obj;
       const path = `${url}${name}`;
-      paths.push(<Route key={`${path}r`} exact {...{ path, component }} />);
-      paths.push(<Redirect key={`${path}d`} from={`${path}*`} to={path} />);
-    });
+      acc.push(<Route key={`${path}r`} exact {...{ path, component }} />);
+      acc.push(<Redirect key={`${path}d`} from={`${path}*`} to={path} />);
+      return acc;
+    }, []);
 
     return (
       <div className="resume-app">

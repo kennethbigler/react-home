@@ -21,7 +21,7 @@ const Routes = props => {
   const { match, handleNav } = props;
   const { url } = match;
 
-  const urls = [
+  const paths = [
     { name: 'pokernight', component: PokerNight },
     { name: 'murder', component: MurderMystery },
     { name: 'slots', component: Slots },
@@ -30,16 +30,13 @@ const Routes = props => {
     { name: 'poker', component: Poker },
     { name: 'connect4', component: Connect4 },
     { name: 'deal', component: DealOrNoDeal }
-  ];
-
-  let paths = [];
-
-  urls.forEach(obj => {
+  ].reduce((acc, obj) => {
     const { name, component } = obj;
     const path = `${url}/${name}`;
-    paths.push(<Route key={`${path}r`} exact {...{ path, component }} />);
-    paths.push(<Redirect key={`${path}d`} from={`${path}*`} to={path} />);
-  });
+    acc.push(<Route key={`${path}r`} exact {...{ path, component }} />);
+    acc.push(<Redirect key={`${path}d`} from={`${path}*`} to={path} />);
+    return acc;
+  }, []);
 
   return (
     <div className="games-app">

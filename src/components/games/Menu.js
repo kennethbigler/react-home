@@ -6,19 +6,20 @@ import Divider from 'material-ui/Divider';
 
 export const Menu = props => {
   const { onItemClick } = props;
+  const baseUrl = '/games';
   // navigation
   const home = () => onItemClick('/');
-  const games = () => onItemClick('/games');
-  const blackjack = () => onItemClick('/games/blackjack');
-  const pokernight = () => onItemClick('/games/pokernight');
-  const murder = () => onItemClick('/games/murder');
-  const slots = () => onItemClick('/games/slots');
-  const tictactoe = () => onItemClick('/games/tictactoe');
-  const connect4 = () => onItemClick('/games/connect4');
-  const deal = () => onItemClick('/games/deal');
+  const games = () => onItemClick(`${baseUrl}`);
+  const blackjack = () => onItemClick(`${baseUrl}/blackjack`);
+  const pokernight = () => onItemClick(`${baseUrl}/pokernight`);
+  const murder = () => onItemClick(`${baseUrl}/murder`);
+  const slots = () => onItemClick(`${baseUrl}/slots`);
+  const tictactoe = () => onItemClick(`${baseUrl}/tictactoe`);
+  const connect4 = () => onItemClick(`${baseUrl}/connect4`);
+  const deal = () => onItemClick(`${baseUrl}/deal`);
 
-  // const poker = () => onItemClick('/games/poker');
-  // const bingo = () => onItemClick('/games/bingo');
+  // const poker = () => onItemClick(`${baseUrl}/poker`);
+  // const bingo = () => onItemClick(`${baseUrl}/bingo`);
 
   // render menu
   return (
