@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 // routing
 import { HashRouter } from 'react-router-dom';
 // my components
-import { Header } from './components/Header';
-import { Main } from './components/Main';
+import { Routes } from './components/Routes';
 // material UI
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -33,10 +32,7 @@ class App extends Component {
       <Provider store={store}>
         <MuiThemeProvider muiTheme={muiTheme}>
           <HashRouter>
-            <div className="App">
-              <Header />
-              <Main />
-            </div>
+            <Routes />
           </HashRouter>
         </MuiThemeProvider>
       </Provider>
