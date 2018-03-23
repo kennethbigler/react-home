@@ -3,13 +3,19 @@
   <url>
     <loc>http://www.kennethbigler.com/#/</loc>
     <loc>http://www.kennethbigler.com/#/work</loc>
-    <loc>http://www.kennethbigler.com/#/classes</loc>
-    <loc>http://www.kennethbigler.com/#/activities</loc>
-    <loc>http://www.kennethbigler.com/#/projects</loc>
+    <loc>http://www.kennethbigler.com/#/education</loc>
+    <loc>http://www.kennethbigler.com/#/resume</loc>
+    <loc>http://www.kennethbigler.com/#/travel</loc>
+    <loc>http://www.kennethbigler.com/#/git-tools</loc>
     <loc>http://www.kennethbigler.com/#/poker</loc>
-    <loc>http://www.kennethbigler.com/#/casino</loc>
-    <loc>http://www.kennethbigler.com/#/casino/blackjack</loc>
-    <loc>http://www.kennethbigler.com/#/casino/poker</loc>
-    <loc>http://www.kennethbigler.com/#/casino/pokernight</loc>
+    <loc>http://www.kennethbigler.com/#/games</loc>
+    <loc>http://www.kennethbigler.com/#/games/blackjack</loc>
+    <loc>http://www.kennethbigler.com/#/games/poker</loc>
+    <loc>http://www.kennethbigler.com/#/games/pokernight</loc>
+    <loc>http://www.kennethbigler.com/#/games/tictactoe</loc>
+    <loc>http://www.kennethbigler.com/#/games/murder</loc>
+    <loc>http://www.kennethbigler.com/#/games/slots</loc>
+    <loc>http://www.kennethbigler.com/#/games/connect4</loc>
+    <loc>http://www.kennethbigler.com/#/games/deal</loc>
   </url>
 </urlset>
