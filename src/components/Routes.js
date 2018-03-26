@@ -2,8 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // react router
-import { withRouter } from 'react-router';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 // Routes
 import ResumeRoutes from './resume/Routes';
 import GameRoutes from './games/Routes';
