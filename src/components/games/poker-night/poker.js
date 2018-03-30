@@ -11,7 +11,8 @@ export default [
       W7: 187,
       W8: 127,
       W9: 11,
-      W10: -23
+      W10: -23,
+      W11: 42
     }
   },
   {
@@ -20,7 +21,7 @@ export default [
   },
   {
     name: 'Aaron',
-    scores: { W1: -45, W2: -1, W4: -33, W5: 60, W7: 14, W8: -40 }
+    scores: { W1: -45, W2: -1, W4: -33, W5: 60, W7: 14, W8: -40, W11: -55 }
   },
   {
     name: 'Winston',
@@ -38,7 +39,8 @@ export default [
       W7: -46,
       W8: 119,
       W9: 17,
-      W10: -20
+      W10: -20,
+      W11: 0
     }
   },
   {
@@ -63,7 +65,7 @@ export default [
   },
   {
     name: 'Tom',
-    scores: { W3: 39, W4: -100, W5: -200, W7: -55, W10: 9 }
+    scores: { W3: 39, W4: -100, W5: -200, W7: -55, W10: 9, W11: 38 }
   },
   {
     name: 'Meeks',
@@ -75,7 +77,7 @@ export default [
   },
   {
     name: 'Gus',
-    scores: { W4: -14, W7: -100, W8: 16, W9: -58 }
+    scores: { W4: -14, W7: -100, W8: 16, W9: -58, W11: -25 }
   },
   {
     name: 'Ashley',
