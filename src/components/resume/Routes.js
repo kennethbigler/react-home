@@ -7,7 +7,7 @@ import { TIMELINE_TITLE } from '../common/timeline/Timeline';
 import { Header } from '../common/Header';
 import { Menu } from './Menu';
 // resume
-import { Home } from './Home';
+import { Summary } from './summary/Summary';
 import { Work } from './work/Work';
 import { Education } from './education/Education';
 import { Resume } from './Resume';
@@ -80,10 +80,10 @@ export default class Routes extends Component {
           <Menu />
         </Header>
         <Switch>
-          <Route exact path={`${url}`} component={Home} />
+          <Route exact path={`${url}`} component={Summary} />
           {paths}
           <Redirect from={`${url}*`} to={`${url}`} />
-          <Route component={Home} />
+          <Route component={Summary} />
         </Switch>
       </div>
     );

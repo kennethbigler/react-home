@@ -9,10 +9,15 @@ export const Degree = props => {
   const { degree, expanded, onTouchTap } = props;
 
   const handleChange = expanded => onTouchTap(degree.degree, expanded);
-  const title = `${degree.degree}${degree.major ? ` in ${degree.major}` : ''}`;
-  const subtitle = degree.gpa
-    ? `GPA: ${degree.gpa} - Graduation: ${degree.graduation}`
-    : degree.subtitle;
+  const school = degree.school ? `${degree.school} - ` : '';
+  const major = degree.major ? ` in ${degree.major}` : '';
+  const minor = degree.minor ? ` ${degree.minor}` : '';
+  const title = `${school}${degree.degree}${major}${minor}`;
+  const gpa = degree.gpa && `GPA: ${degree.gpa}`;
+  const graduation = degree.graduation
+    ? ` - Graduation: ${degree.graduation}`
+    : '';
+  const subtitle = gpa ? `${gpa}${graduation}` : degree.subtitle;
 
   return (
     <ExpandableCard

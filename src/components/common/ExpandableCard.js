@@ -22,7 +22,7 @@ export const ExpandableCard = props => {
 ExpandableCard.propTypes = {
   // PropTypes = [string, object, bool, number, func, array].isRequired
   expanded: PropTypes.bool.isRequired,
-  onExpandChange: PropTypes.func.isRequired,
+  onExpandChange: PropTypes.func,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   children: PropTypes.oneOfType([

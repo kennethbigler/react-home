@@ -1,7 +1,12 @@
+const SCU = 'Santa Clara University';
+
 export default [
   {
+    school: SCU,
+    location: 'Santa Clara, CA',
     degree: 'Master of Science',
-    major: 'Computer Engineering with an emphasis in Software Engineering',
+    major: 'Computer Engineering',
+    minor: 'With an Emphasis in Software Engineering',
     graduation: 'December 2016',
     gpa: 3.7,
     years: [
@@ -58,9 +63,13 @@ export default [
     ]
   },
   {
+    school: SCU,
+    location: 'Santa Clara, CA',
     degree: 'Bachelor of Science',
-    major: 'Computer Science & Engineering with a minor in Mathematics',
+    major: 'Computer Science & Engineering',
+    minor: 'With a Minor in Mathematics',
     graduation: 'June 2015',
+    honors: 'Dean’s List: Sept. 2012 – Graduation',
     gpa: 3.7,
     years: [
       {
@@ -193,6 +202,27 @@ export default [
               'Computer Architecture',
               'Design Project III',
               'Applied Engineering Communications III'
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    school: 'Stanford University',
+    location: 'Stanford, CA',
+    degree: 'Undergrad High School Summer Visitor',
+    gpa: 3.8,
+    graduation: 'August 2010',
+    years: [
+      {
+        year: 'Summer (2010)',
+        quarters: [
+          {
+            quarter: '',
+            classes: [
+              'Astronomy Laboratory and Observational Astronomy',
+              'Introduction to International Relations'
             ]
           }
         ]
