@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "copy-to-clipboard": "^3.0.8",
     "lodash": "^4.17.5",
     "material-ui": "^0.18.7",
     "moment": "^2.21.0",

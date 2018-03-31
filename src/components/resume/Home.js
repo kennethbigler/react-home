@@ -9,7 +9,8 @@ const styles = {
     width: '100%',
     display: 'block',
     margin: 'auto',
-    maxWidth: '20em'
+    maxWidth: '20em',
+    marginBottom: '1em'
   }
 };
 

@@ -27,7 +27,7 @@ export class AppRoutes extends Component {
 
   render() {
     return (
-      <main style={{ padding: '1em' }}>
+      <main style={{ padding: '1em', paddingTop: '5em' }}>
         <Switch>
           <Route path="/games" render={this.games} />
           <Route render={this.resume} />
