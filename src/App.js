@@ -22,7 +22,8 @@ class App extends Component {
   render() {
     const muiTheme = getMuiTheme({
       palette: {
-        primary1Color: colors.indigoA700,
+        // primary1Color: colors.indigoA700,
+        primary1Color: colors.blueGrey600,
         primary2Color: colors.indigoA500,
         pickerHeaderColor: colors.indigoA700
       }
