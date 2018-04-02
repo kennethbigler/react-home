@@ -19,7 +19,7 @@ export class BranchName extends Component {
   };
 
   state = {
-    branchPrefix: '',
+    branchPrefix: 'features',
     branchMessage: ''
   };
 
@@ -29,7 +29,7 @@ export class BranchName extends Component {
    * @return {[Object]}
    */
   getBranchPrefixOptions = () =>
-    this.props.getSelectOptions(['', 'chores', 'epics', 'features', 'fixes']);
+    this.props.getSelectOptions(['chores', 'epics', 'features', 'fixes']);
 
   /**
    * function to update select state based on value

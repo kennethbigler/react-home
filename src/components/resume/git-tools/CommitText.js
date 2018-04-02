@@ -20,7 +20,7 @@ export class CommitText extends Component {
   };
 
   state = {
-    commitPrefix: '',
+    commitPrefix: 'feat',
     commitMessage: '',
     commitDescription: '',
     finishes: false
@@ -33,7 +33,6 @@ export class CommitText extends Component {
    */
   getCommitPrefixOptions = () =>
     this.props.getSelectOptions([
-      '',
       'build',
       'chore',
       'ci',
