@@ -6,6 +6,8 @@ import { CopyTextDisplay } from './CopyTextDisplay';
 // material ui
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
+import IconButton from 'material-ui/IconButton';
+import Clear from 'material-ui/svg-icons/content/clear';
 // functions
 import snakeCase from 'lodash/snakeCase';
 // Parents: GitTools
@@ -47,6 +49,12 @@ export class BranchName extends Component {
     this.setState({ branchMessage: e.target.value });
 
   /**
+   * function to update text state based on value
+   * @param {Object} e event fired when select occurs
+   */
+  handleBranchMessageClear = () => this.setState({ branchMessage: '' });
+
+  /**
    * function to generate the branch name from inputs
    * @return {string} format prefix/<story_id>_name_lower_cased
    */
@@ -85,6 +93,12 @@ export class BranchName extends Component {
               multiLine
               fullWidth
             />
+            <IconButton
+              onTouchTap={this.handleBranchMessageClear}
+              style={{ marginLeft: -50 }}
+            >
+              <Clear />
+            </IconButton>
           </div>
         </div>
         <CopyTextDisplay text={branchName} handleCopy={this.props.handleCopy} />
