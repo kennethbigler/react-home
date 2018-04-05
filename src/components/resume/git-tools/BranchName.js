@@ -7,7 +7,7 @@ import { CopyTextDisplay } from './CopyTextDisplay';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 // functions
-import kebabCase from 'lodash/kebabCase';
+import snakeCase from 'lodash/snakeCase';
 // Parents: GitTools
 
 export class BranchName extends Component {
@@ -55,7 +55,7 @@ export class BranchName extends Component {
     const { branchPrefix, branchMessage } = this.state;
     const prefix = branchPrefix ? `${branchPrefix}/` : '';
     const id = storyID.replace(/\D/g, '');
-    const msg = kebabCase(`${id} ${branchMessage}`);
+    const msg = snakeCase(`${id} ${branchMessage}`);
     return `${prefix}${msg}`;
   };
 

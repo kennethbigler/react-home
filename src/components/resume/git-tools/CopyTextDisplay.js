@@ -19,6 +19,7 @@ export class CopyTextDisplay extends Component {
   };
 
   state = { open: false };
+  style = { chipLabel: { lineHeight: null, paddingTop: 6, paddingBottom: 6 } };
 
   /** function to toggle the snackbar */
   handleRequestOpen = () => this.setState({ open: true });
@@ -37,10 +38,13 @@ export class CopyTextDisplay extends Component {
   render() {
     const { open } = this.state;
     const { text } = this.props;
+    const { chipLabel } = this.style;
 
     return (
       <div className="copy-text-display">
-        <Chip onTouchTap={this.handleCopy}>{text}</Chip>
+        <Chip labelStyle={chipLabel} onTouchTap={this.handleCopy}>
+          {text}
+        </Chip>
         <Snackbar
           open={open}
           message="Copied Commit Text to clipboard!"

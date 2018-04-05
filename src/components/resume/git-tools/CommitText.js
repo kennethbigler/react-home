@@ -87,7 +87,7 @@ export class CommitText extends Component {
     const f = finishes ? 'finishes ' : '';
     const postfix = storyID ? ` [${f}${storyID}]` : '';
     return commitDescription
-      ? `${prefix}${commitMessage}\n${commitDescription}\n${postfix}`
+      ? `${prefix}${commitMessage}\n\n${commitDescription}\n\n${postfix}`
       : `${prefix}${commitMessage}${postfix}`;
   };
 
