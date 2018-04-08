@@ -1,12 +1,20 @@
 #!/bin/bash
-echo "Running build/deploy scripts..."
+LINE="--------------------"
+echo $LINE
+echo "Running build scripts..."
+echo $LINE
 npm run build
-echo -e "\n--------------------\nBuilding react-home \n--------------------"
-rm -rf ./static
-mv build/* ./
-echo -e "Success \n--------------------\n"
-git status
-git add .
-git status
-git commit
-echo -e "\n--------------------\nComplete\n--------------------\nFinish with a:\ngit push\n"
+echo $LINE
+echo "Building react-home"
+echo $LINE
+rm -rf ./docs/static
+mv build/* ./docs
+rm -rf build
+echo $LINE
+echo "Success"
+echo $LINE
+# git status
+# git add .
+# git status
+# git commit
+# echo -e "\n--------------------\nComplete\n--------------------\nFinish with a:\ngit push\n"

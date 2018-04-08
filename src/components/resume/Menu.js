@@ -36,7 +36,7 @@ export const Menu = props => {
   const linkedin = () =>
     window.open('https://www.linkedin.com/in/kennethbigler');
   const stkovrflw = () =>
-    window.open('http://stackoverflow.com/users/4830309/ken-bigler');
+    window.open('https://stackoverflow.com/users/4830309/ken-bigler');
 
   return (
     <div>
@@ -48,7 +48,7 @@ export const Menu = props => {
       <br />
       <img
         onTouchTap={stkovrflw}
-        src="http://stackoverflow.com/users/flair/4830309.png?theme=dark"
+        src="https://stackoverflow.com/users/flair/4830309.png?theme=dark"
         id="stackOverflow"
         style={{ display: 'block', margin: 'auto', cursor: 'pointer' }}
         alt="profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
