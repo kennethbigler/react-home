@@ -211,6 +211,25 @@ export default [
   {
     school: 'Stanford University',
     location: 'Stanford, CA',
+    degree: 'Stanford Continuing Studies',
+    subtitle: 'Recreational Classes (2017+)',
+    years: [
+      {
+        year: '2017',
+        quarters: [
+          {
+            quarter: 'Summer',
+            classes: [
+              'WSP 314: Alfred Hitchcock and the Subversive World of Film Noir'
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    school: 'Stanford University',
+    location: 'Stanford, CA',
     degree: 'Undergrad High School Summer Visitor',
     gpa: 3.8,
     graduation: 'August 2010',

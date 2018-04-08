@@ -6,13 +6,30 @@ import Divider from 'material-ui/Divider';
 
 export const Menu = props => {
   const { onItemClick } = props;
-  // internal redirects
-  const home = () => onItemClick('/');
-  const work = () => onItemClick('/work');
-  const education = () => onItemClick('/education');
-  const travel = () => onItemClick('/travel');
-  const resume = () => onItemClick('/resume');
-  const games = () => onItemClick('/games');
+  // internal routes
+  const menu = [
+    { name: 'Summary', route: '' },
+    { divider: true },
+    { name: 'Work', route: 'work' },
+    { name: 'Education', route: 'education' },
+    { name: 'Travel Map', route: 'travel' },
+    { name: 'Git Tools', route: 'git-tools' },
+    { name: 'Resume', route: 'resume' },
+    { divider: true },
+    { name: 'React Games', route: 'games' }
+  ].map(
+    (item, index) =>
+      item.divider ? (
+        <Divider key={index} />
+      ) : (
+        <MenuItem
+          key={item.name}
+          onTouchTap={() => onItemClick(`/${item.route}`)}
+          primaryText={item.name}
+        />
+      )
+  );
+
   // external links
   const github = () =>
     window.open('https://github.com/kennethbigler/react-home');
@@ -23,19 +40,12 @@ export const Menu = props => {
 
   return (
     <div>
-      <MenuItem onTouchTap={home} primaryText="Summary" />
-      <MenuItem onTouchTap={work} primaryText="Work" />
-      <MenuItem onTouchTap={education} primaryText="Education" />
-      <MenuItem onTouchTap={travel} primaryText="Travel Map" />
-      <MenuItem onTouchTap={resume} primaryText="Resume" />
-      <MenuItem onTouchTap={games} primaryText="React Games" />
-      {/* External Links */}
+      {menu}
       <Divider />
       <MenuItem onTouchTap={github} primaryText="GitHub" />
       <MenuItem onTouchTap={linkedin} primaryText="LinkedIn" />
       <Divider />
       <br />
-      {/* Stack Overflow */}
       <img
         onTouchTap={stkovrflw}
         src="http://stackoverflow.com/users/flair/4830309.png?theme=dark"
