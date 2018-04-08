@@ -13,8 +13,8 @@ export class Education extends Component {
           <ul>
             {d.minor && <li>{d.minor}</li>}
             {d.honors && <li>{d.honors}</li>}
-            <li>Completion: {d.graduation}</li>
-            <li>GPA: {d.gpa}</li>
+            {d.graduation && <li>Completion: {d.graduation}</li>}
+            {d.gpa && <li>GPA: {d.gpa}</li>}
           </ul>
         </div>
       );

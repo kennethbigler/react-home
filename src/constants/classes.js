@@ -211,37 +211,30 @@ export default [
   {
     school: 'Stanford University',
     location: 'Stanford, CA',
-    degree: 'Stanford Continuing Studies',
-    subtitle: 'Recreational Classes (2017+)',
+    degree: 'No Degree Obtained',
+    subtitle:
+      'Stanford Continuing Studies & Undergrad High School Summer Visitor',
+    gpa: 3.8,
     years: [
       {
-        year: '2017',
+        year: 'Undergrad High School Summer Visitor (2010)',
+        quarters: [
+          {
+            quarter: 'Summer',
+            classes: [
+              'Astronomy Laboratory and Observational Astronomy',
+              'Introduction to International Relations'
+            ]
+          }
+        ]
+      },
+      {
+        year: 'Stanford Continuing Studies (2017)',
         quarters: [
           {
             quarter: 'Summer',
             classes: [
               'WSP 314: Alfred Hitchcock and the Subversive World of Film Noir'
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    school: 'Stanford University',
-    location: 'Stanford, CA',
-    degree: 'Undergrad High School Summer Visitor',
-    gpa: 3.8,
-    graduation: 'August 2010',
-    years: [
-      {
-        year: 'Summer (2010)',
-        quarters: [
-          {
-            quarter: '',
-            classes: [
-              'Astronomy Laboratory and Observational Astronomy',
-              'Introduction to International Relations'
             ]
           }
         ]
