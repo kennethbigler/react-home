@@ -7,6 +7,8 @@ import { CopyTextDisplay } from './CopyTextDisplay';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 import SelectField from 'material-ui/SelectField';
+import IconButton from 'material-ui/IconButton';
+import Clear from 'material-ui/svg-icons/content/clear';
 // functions
 import nl2br from 'react-newline-to-break';
 // Parents: Main
@@ -65,6 +67,13 @@ export class CommitText extends Component {
     this.setState({ commitDescription: e.target.value });
 
   /**
+   * function to update text state based on value
+   * @param {Object} e event fired when select occurs
+   */
+  handleCommitMessageClear = () => this.setState({ commitMessage: '' });
+  handleCommitDescriptionClear = () => this.setState({ commitDescription: '' });
+
+  /**
    * function(event: object, isInputChecked: bool) => void
    * @param {Object} event: Change event targeting the toggle
    * @param {boolean} isInputChecked: The new value of the toggle
@@ -117,13 +126,13 @@ export class CommitText extends Component {
           </div>
           <div className="col-sm-6">
             <Toggle
-              style={{ maxWidth: 300, marginTop: 40 }}
+              style={{ maxWidth: 343, marginTop: 40 }}
               label="Finishes User Story"
               onToggle={this.handleFinishesToggle}
               toggled={finishes}
             />
           </div>
-          <div className="col-sm-6">
+          <div className="col-sm-5 col-10">
             <TextField
               hintText="Summary of Work Done (Message)"
               floatingLabelText="Commit Message"
@@ -133,7 +142,15 @@ export class CommitText extends Component {
               fullWidth
             />
           </div>
-          <div className="col-sm-6">
+          <div className="col-sm-1 col-2">
+            <IconButton
+              onTouchTap={this.handleCommitMessageClear}
+              style={{ marginTop: 20 }}
+            >
+              <Clear />
+            </IconButton>
+          </div>
+          <div className="col-sm-5 col-10">
             <TextField
               hintText="Summary of Work Done (Description)"
               floatingLabelText="Commit Description"
@@ -142,6 +159,14 @@ export class CommitText extends Component {
               multiLine
               fullWidth
             />
+          </div>
+          <div className="col-sm-1 col-2">
+            <IconButton
+              onTouchTap={this.handleCommitDescriptionClear}
+              style={{ marginTop: 20 }}
+            >
+              <Clear />
+            </IconButton>
           </div>
         </div>
         <CopyTextDisplay

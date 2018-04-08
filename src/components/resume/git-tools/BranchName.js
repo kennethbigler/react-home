@@ -6,6 +6,7 @@ import { CopyTextDisplay } from './CopyTextDisplay';
 // material ui
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import Clear from 'material-ui/svg-icons/content/clear';
 // functions
@@ -19,13 +20,13 @@ export class BranchName extends Component {
     // PropTypes = [string, object, bool, number, func, array].isRequired
     storyID: PropTypes.string,
     getSelectOptions: PropTypes.func.isRequired,
-    handleCopy: PropTypes.func.isRequired,
-    casePreference: PropTypes.number.isRequired
+    handleCopy: PropTypes.func.isRequired
   };
 
   state = {
     branchPrefix: 'features',
-    branchMessage: ''
+    branchMessage: '',
+    casePreference: 1
   };
 
   /**
@@ -58,12 +59,20 @@ export class BranchName extends Component {
   handleBranchMessageClear = () => this.setState({ branchMessage: '' });
 
   /**
+   * function to update text state based on value
+   * @param {Object} e event fired when select occurs
+   * @param {number} i index of select option
+   * @param {number} v value of select option
+   */
+  handleCasePrefChange = (e, i, v) => this.setState({ casePreference: v });
+
+  /**
    * function to generate the branch name from inputs
    * @return {string} format prefix/<story_id>_name_lower_cased
    */
   getBranchName = () => {
-    const { storyID, casePreference } = this.props;
-    const { branchPrefix, branchMessage } = this.state;
+    const { storyID } = this.props;
+    const { branchPrefix, branchMessage, casePreference } = this.state;
     const prefix = branchPrefix ? `${branchPrefix}/` : '';
     const id = storyID.replace(/\D/g, '');
     let msg;
@@ -84,14 +93,14 @@ export class BranchName extends Component {
   };
 
   render() {
-    const { branchPrefix, branchMessage } = this.state;
+    const { branchPrefix, branchMessage, casePreference } = this.state;
     const branchName = this.getBranchName();
 
     return (
       <div className="branch-name">
         <h2>Create Branch Name</h2>
         <div className="row">
-          <div className="col-sm-6">
+          <div className="col-sm-3">
             <SelectField
               floatingLabelText="Branch Prefix"
               value={branchPrefix}
@@ -100,7 +109,19 @@ export class BranchName extends Component {
               {this.getBranchPrefixOptions()}
             </SelectField>
           </div>
-          <div className="col-sm-6">
+          <div className="col-sm-3">
+            <SelectField
+              floatingLabelText="Case Preference"
+              value={casePreference}
+              onChange={this.handleCasePrefChange}
+            >
+              <MenuItem value={1} primaryText="snake_case" />
+              <MenuItem value={2} primaryText="kebab-case" />
+              <MenuItem value={3} primaryText="camelCase" />
+              <MenuItem value={4} primaryText="No Changes" />
+            </SelectField>
+          </div>
+          <div className="col-sm-5 col-10">
             <TextField
               hintText="Summary of User Story"
               floatingLabelText="Branch Name"
@@ -109,9 +130,11 @@ export class BranchName extends Component {
               multiLine
               fullWidth
             />
+          </div>
+          <div className="col-sm-1 col-2">
             <IconButton
               onTouchTap={this.handleBranchMessageClear}
-              style={{ marginLeft: -50 }}
+              style={{ marginTop: 20 }}
             >
               <Clear />
             </IconButton>

@@ -11,7 +11,7 @@ import copy from 'copy-to-clipboard';
 // Parents: Main
 
 export class GitTools extends Component {
-  state = { storyID: '', casePreference: 1 };
+  state = { storyID: '' };
 
   /**
    * function to generate select items based of input
@@ -29,14 +29,6 @@ export class GitTools extends Component {
 
   /**
    * function to update text state based on value
-   * @param {Object} e event fired when select occurs
-   * @param {number} i index of select option
-   * @param {number} v value of select option
-   */
-  handleCasePrefChange = (e, i, v) => this.setState({ casePreference: v });
-
-  /**
-   * function to update text state based on value
    * @param {string} str string to copy
    */
   handleCopy = str => {
@@ -44,23 +36,14 @@ export class GitTools extends Component {
   };
 
   render() {
-    const { storyID, casePreference } = this.state;
-    const {
-      handleIDChange,
-      handleCasePrefChange,
-      handleCopy,
-      getSelectOptions
-    } = this;
+    const { storyID } = this.state;
+    const { handleIDChange, handleCopy, getSelectOptions } = this;
 
     return (
       <div>
-        <Header
-          {...{ storyID, casePreference, handleIDChange, handleCasePrefChange }}
-        />
+        <Header {...{ storyID, handleIDChange }} />
         <hr />
-        <BranchName
-          {...{ storyID, casePreference, handleCopy, getSelectOptions }}
-        />
+        <BranchName {...{ storyID, handleCopy, getSelectOptions }} />
         <hr />
         <CommitText {...{ storyID, handleCopy, getSelectOptions }} />
       </div>
