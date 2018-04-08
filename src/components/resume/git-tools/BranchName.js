@@ -10,6 +10,8 @@ import IconButton from 'material-ui/IconButton';
 import Clear from 'material-ui/svg-icons/content/clear';
 // functions
 import snakeCase from 'lodash/snakeCase';
+import kebabCase from 'lodash/kebabCase';
+import camelCase from 'lodash/camelCase';
 // Parents: GitTools
 
 export class BranchName extends Component {
@@ -17,7 +19,8 @@ export class BranchName extends Component {
     // PropTypes = [string, object, bool, number, func, array].isRequired
     storyID: PropTypes.string,
     getSelectOptions: PropTypes.func.isRequired,
-    handleCopy: PropTypes.func.isRequired
+    handleCopy: PropTypes.func.isRequired,
+    casePreference: PropTypes.number.isRequired
   };
 
   state = {
@@ -59,11 +62,24 @@ export class BranchName extends Component {
    * @return {string} format prefix/<story_id>_name_lower_cased
    */
   getBranchName = () => {
-    const { storyID } = this.props;
+    const { storyID, casePreference } = this.props;
     const { branchPrefix, branchMessage } = this.state;
     const prefix = branchPrefix ? `${branchPrefix}/` : '';
     const id = storyID.replace(/\D/g, '');
-    const msg = snakeCase(`${id} ${branchMessage}`);
+    let msg;
+    switch (casePreference) {
+      case 1:
+        msg = snakeCase(`${id} ${branchMessage}`);
+        break;
+      case 2:
+        msg = kebabCase(`${id} ${branchMessage}`);
+        break;
+      case 3:
+        msg = camelCase(`${id} ${branchMessage}`);
+        break;
+      default:
+        msg = `${id} ${branchMessage}`;
+    }
     return `${prefix}${msg}`;
   };
 
@@ -75,7 +91,7 @@ export class BranchName extends Component {
       <div className="branch-name">
         <h2>Create Branch Name</h2>
         <div className="row">
-          <div className="col-sm-6 col-xs-12">
+          <div className="col-sm-6">
             <SelectField
               floatingLabelText="Branch Prefix"
               value={branchPrefix}
@@ -84,7 +100,7 @@ export class BranchName extends Component {
               {this.getBranchPrefixOptions()}
             </SelectField>
           </div>
-          <div className="col-sm-6 col-xs-12">
+          <div className="col-sm-6">
             <TextField
               hintText="Summary of User Story"
               floatingLabelText="Branch Name"

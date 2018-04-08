@@ -88,7 +88,7 @@ export class CommitText extends Component {
     const postfix = storyID ? `[${f}${storyID}]` : '';
     return commitDescription
       ? `${prefix}${commitMessage}\n\n${commitDescription}\n\n${postfix}`
-      : `${prefix}${commitMessage}${postfix}`;
+      : `${prefix}${commitMessage} ${postfix}`;
   };
 
   render() {
@@ -106,7 +106,7 @@ export class CommitText extends Component {
       <div className="commit-text">
         <h2>Create Commit Message</h2>
         <div className="row">
-          <div className="col-sm-6 col-xs-12">
+          <div className="col-sm-6">
             <SelectField
               floatingLabelText="Commit Prefix"
               value={commitPrefix}
@@ -115,7 +115,7 @@ export class CommitText extends Component {
               {this.getCommitPrefixOptions()}
             </SelectField>
           </div>
-          <div className="col-sm-6 col-xs-12">
+          <div className="col-sm-6">
             <Toggle
               style={{ maxWidth: 300, marginTop: 40 }}
               label="Finishes User Story"
@@ -123,7 +123,7 @@ export class CommitText extends Component {
               toggled={finishes}
             />
           </div>
-          <div className="col-sm-6 col-xs-12">
+          <div className="col-sm-6">
             <TextField
               hintText="Summary of Work Done (Message)"
               floatingLabelText="Commit Message"
@@ -133,7 +133,7 @@ export class CommitText extends Component {
               fullWidth
             />
           </div>
-          <div className="col-sm-6 col-xs-12">
+          <div className="col-sm-6">
             <TextField
               hintText="Summary of Work Done (Description)"
               floatingLabelText="Commit Description"

@@ -73,20 +73,20 @@ class Home extends Component {
         </h3>
         <hr />
         <div style={namepad}>
-          <h4 className="col-xs-9">Edit Player Names</h4>
-          <h4 className="col-xs-3">Is Bot?</h4>
+          <h4 className="col-9">Edit Player Names</h4>
+          <h4 className="col-3">Is Bot?</h4>
           {players.map(
             (p, i) =>
               p.id !== 0 ? (
                 <span key={`${p.name},${i}`}>
-                  <div className="col-xs-9">
+                  <div className="col-9">
                     <TextField
                       defaultValue={p.name}
                       onKeyPress={e => this.handleKeyPress(e, p.id)}
                       hintText="Enter Player Name"
                     />
                   </div>
-                  <div className="col-xs-3" style={{ marginTop: '12px' }}>
+                  <div className="col-3" style={{ marginTop: '12px' }}>
                     <Toggle
                       toggled={isBot[i]}
                       onToggle={(e, isC) => this.handleToggle(p.id, isC)}
@@ -95,8 +95,8 @@ class Home extends Component {
                 </span>
               ) : (
                 <div key={`${p.name},${i}`}>
-                  <h4 className="col-xs-9">{p.name}</h4>
-                  <div className="col-xs-3">
+                  <h4 className="col-9">{p.name}</h4>
+                  <div className="col-3">
                     <Toggle defaultToggled disabled />
                   </div>
                 </div>

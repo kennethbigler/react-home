@@ -29,8 +29,8 @@ export const Job = props => {
   const { job, onTouchTap, expanded } = props;
 
   const imgStyle = { width: '100%', maxWidth: '12em', height: 'auto' };
-  const mainTxt = 'col-sm-9 col-xs-12';
-  const sideTxt = 'col-sm-3 col-xs-12';
+  const mainTxt = 'col-sm-9';
+  const sideTxt = 'col-sm-3';
   const handleExpand = exp => onTouchTap(job.company, exp);
   const parent = job.parent ? ` (${job.parent})` : '';
   const title = `${job.company}${parent}, ${job.location}`;
