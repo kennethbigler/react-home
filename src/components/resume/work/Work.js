@@ -1,30 +1,18 @@
+// react
 import React from 'react';
-import PropTypes from 'prop-types';
+// components
 import { Job } from './Job';
 import { TimelineCard } from './TimelineCard';
+// constants
+import workExp from '../../../constants/work';
 // Parents: Main
 
-export const Work = props => {
-  const { workExp, expanded, onTouchTap } = props;
+export const Work = () => {
   return (
     <div>
       <h1>Work Experience</h1>
-      <TimelineCard {...props} />
-      {workExp.map(job => (
-        <Job
-          key={job.company}
-          job={job}
-          expanded={expanded}
-          onTouchTap={onTouchTap}
-        />
-      ))}
+      <TimelineCard workExp={workExp} />
+      {workExp.map(job => <Job key={job.company} job={job} />)}
     </div>
   );
-};
-
-Work.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  onTouchTap: PropTypes.func.isRequired,
-  workExp: PropTypes.array.isRequired,
-  expanded: PropTypes.object.isRequired
 };

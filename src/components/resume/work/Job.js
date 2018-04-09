@@ -26,28 +26,23 @@ function showRange(s, e, n) {
 
 /** function to generate timeline card */
 export const Job = props => {
-  const { job, onTouchTap, expanded } = props;
+  const { job } = props;
 
   const imgStyle = { width: '100%', maxWidth: '12em', height: 'auto' };
-  const mainTxt = 'col-sm-9';
-  const sideTxt = 'col-sm-3';
-  const handleExpand = exp => onTouchTap(job.company, exp);
   const parent = job.parent ? ` (${job.parent})` : '';
   const title = `${job.company}${parent}, ${job.location}`;
-  const subtitle = job.title;
 
   return job.isJob ? (
     <ExpandableCard
-      expanded={expanded[job.company]}
-      onExpandChange={handleExpand}
       title={title}
-      subtitle={subtitle}
+      subtitle={job.title}
+      backgroundColor={job.color}
     >
-      <div className={mainTxt}>
+      <div className="col-sm-9">
         <p>{showRange(job.start, job.end, job.notes)}</p>
         <ul>{job.expr.map((desc, i) => <li key={`desc${i}`}>{desc}</li>)}</ul>
       </div>
-      <div className={sideTxt}>
+      <div className="col-sm-3">
         <img
           className="float-right"
           style={imgStyle}
@@ -63,7 +58,5 @@ export const Job = props => {
 
 Job.propTypes = {
   // PropTypes = [string, object, bool, number, func, array].isRequired
-  job: PropTypes.object.isRequired,
-  expanded: PropTypes.object.isRequired,
-  onTouchTap: PropTypes.func.isRequired
+  job: PropTypes.object.isRequired
 };

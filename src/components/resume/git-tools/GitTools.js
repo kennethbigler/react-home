@@ -42,9 +42,7 @@ export class GitTools extends Component {
     return (
       <div>
         <Header {...{ storyID, handleIDChange }} />
-        <hr />
         <BranchName {...{ storyID, handleCopy, getSelectOptions }} />
-        <hr />
         <CommitText {...{ storyID, handleCopy, getSelectOptions }} />
       </div>
     );

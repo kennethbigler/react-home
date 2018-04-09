@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // components
+import { ExpandableCard } from '../../common/ExpandableCard';
 import { CopyTextDisplay } from './CopyTextDisplay';
 // material ui
 import TextField from 'material-ui/TextField';
@@ -9,6 +10,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import Clear from 'material-ui/svg-icons/content/clear';
+import { deepOrange600 } from 'material-ui/styles/colors';
 // functions
 import snakeCase from 'lodash/snakeCase';
 import kebabCase from 'lodash/kebabCase';
@@ -97,51 +99,61 @@ export class BranchName extends Component {
     const branchName = this.getBranchName();
 
     return (
-      <div className="branch-name">
-        <h2>Create Branch Name</h2>
-        <div className="row">
-          <div className="col-sm-3">
-            <SelectField
-              floatingLabelText="Branch Prefix"
-              value={branchPrefix}
-              onChange={this.handleBranchPrefixSelect}
-            >
-              {this.getBranchPrefixOptions()}
-            </SelectField>
+      <ExpandableCard
+        title="Create Branch Name"
+        backgroundColor={deepOrange600}
+      >
+        <div
+          className="branch-name"
+          style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}
+        >
+          <div className="row">
+            <div className="col-sm-3">
+              <SelectField
+                floatingLabelText="Branch Prefix"
+                value={branchPrefix}
+                onChange={this.handleBranchPrefixSelect}
+              >
+                {this.getBranchPrefixOptions()}
+              </SelectField>
+            </div>
+            <div className="col-sm-3">
+              <SelectField
+                floatingLabelText="Case Preference"
+                value={casePreference}
+                onChange={this.handleCasePrefChange}
+              >
+                <MenuItem value={1} primaryText="snake_case" />
+                <MenuItem value={2} primaryText="kebab-case" />
+                <MenuItem value={3} primaryText="camelCase" />
+                <MenuItem value={4} primaryText="No Changes" />
+              </SelectField>
+            </div>
+            <div className="col-sm-5 col-10">
+              <TextField
+                hintText="Summary of User Story"
+                floatingLabelText="Branch Name"
+                value={branchMessage}
+                onChange={this.handleBranchMessageChange}
+                multiLine
+                fullWidth
+              />
+            </div>
+            <div className="col-sm-1 col-2">
+              <IconButton
+                onTouchTap={this.handleBranchMessageClear}
+                style={{ marginTop: 20 }}
+              >
+                <Clear />
+              </IconButton>
+            </div>
           </div>
-          <div className="col-sm-3">
-            <SelectField
-              floatingLabelText="Case Preference"
-              value={casePreference}
-              onChange={this.handleCasePrefChange}
-            >
-              <MenuItem value={1} primaryText="snake_case" />
-              <MenuItem value={2} primaryText="kebab-case" />
-              <MenuItem value={3} primaryText="camelCase" />
-              <MenuItem value={4} primaryText="No Changes" />
-            </SelectField>
-          </div>
-          <div className="col-sm-5 col-10">
-            <TextField
-              hintText="Summary of User Story"
-              floatingLabelText="Branch Name"
-              value={branchMessage}
-              onChange={this.handleBranchMessageChange}
-              multiLine
-              fullWidth
-            />
-          </div>
-          <div className="col-sm-1 col-2">
-            <IconButton
-              onTouchTap={this.handleBranchMessageClear}
-              style={{ marginTop: 20 }}
-            >
-              <Clear />
-            </IconButton>
-          </div>
+          <CopyTextDisplay
+            text={branchName}
+            handleCopy={this.props.handleCopy}
+          />
         </div>
-        <CopyTextDisplay text={branchName} handleCopy={this.props.handleCopy} />
-      </div>
+      </ExpandableCard>
     );
   }
 }

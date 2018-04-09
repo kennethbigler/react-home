@@ -6,9 +6,8 @@ import { ExpandableCard } from '../../common/ExpandableCard';
 
 /** render code for each degree */
 export const Degree = props => {
-  const { degree, expanded, onTouchTap } = props;
+  const { degree } = props;
 
-  const handleChange = expanded => onTouchTap(degree.degree, expanded);
   const school = degree.school ? `${degree.school} - ` : '';
   const major = degree.major ? ` in ${degree.major}` : '';
   const minor = degree.minor ? ` ${degree.minor}` : '';
@@ -21,10 +20,9 @@ export const Degree = props => {
 
   return (
     <ExpandableCard
-      expanded={expanded[degree.degree]}
-      onExpandChange={handleChange}
       title={title}
       subtitle={subtitle}
+      backgroundColor={degree.color && degree.color}
     >
       {degree.years.map(year => (
         <Year key={year.year} year={year} len={degree.years.length} />
@@ -35,7 +33,5 @@ export const Degree = props => {
 
 Degree.propTypes = {
   // PropTypes = [string, object, bool, number, func, array].isRequired
-  degree: PropTypes.object.isRequired,
-  expanded: PropTypes.object.isRequired,
-  onTouchTap: PropTypes.func.isRequired
+  degree: PropTypes.object.isRequired
 };

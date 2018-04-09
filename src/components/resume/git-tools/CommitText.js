@@ -3,12 +3,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // components
 import { CopyTextDisplay } from './CopyTextDisplay';
+import { ExpandableCard } from '../../common/ExpandableCard';
 // material-ui
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 import SelectField from 'material-ui/SelectField';
 import IconButton from 'material-ui/IconButton';
 import Clear from 'material-ui/svg-icons/content/clear';
+import { deepOrange600 } from 'material-ui/styles/colors';
 // functions
 import nl2br from 'react-newline-to-break';
 // Parents: Main
@@ -112,69 +114,76 @@ export class CommitText extends Component {
     const displayText = commitText && nl2br(this.getCommitText());
 
     return (
-      <div className="commit-text">
-        <h2>Create Commit Message</h2>
-        <div className="row">
-          <div className="col-sm-6">
-            <SelectField
-              floatingLabelText="Commit Prefix"
-              value={commitPrefix}
-              onChange={this.handleCommitPrefixSelect}
-            >
-              {this.getCommitPrefixOptions()}
-            </SelectField>
+      <ExpandableCard
+        title="Create Commit Message"
+        backgroundColor={deepOrange600}
+      >
+        <div
+          className="commit-text"
+          style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}
+        >
+          <div className="row">
+            <div className="col-sm-6">
+              <SelectField
+                floatingLabelText="Commit Prefix"
+                value={commitPrefix}
+                onChange={this.handleCommitPrefixSelect}
+              >
+                {this.getCommitPrefixOptions()}
+              </SelectField>
+            </div>
+            <div className="col-sm-6">
+              <Toggle
+                style={{ maxWidth: 343, marginTop: 40 }}
+                label="Finishes User Story"
+                onToggle={this.handleFinishesToggle}
+                toggled={finishes}
+              />
+            </div>
+            <div className="col-sm-5 col-10">
+              <TextField
+                hintText="Summary of Work Done (Message)"
+                floatingLabelText="Commit Message"
+                value={commitMessage}
+                onChange={this.handleCommitMessageChange}
+                multiLine
+                fullWidth
+              />
+            </div>
+            <div className="col-sm-1 col-2">
+              <IconButton
+                onTouchTap={this.handleCommitMessageClear}
+                style={{ marginTop: 20 }}
+              >
+                <Clear />
+              </IconButton>
+            </div>
+            <div className="col-sm-5 col-10">
+              <TextField
+                hintText="Summary of Work Done (Description)"
+                floatingLabelText="Commit Description"
+                value={commitDescription}
+                onChange={this.handleCommitDescriptionChange}
+                multiLine
+                fullWidth
+              />
+            </div>
+            <div className="col-sm-1 col-2">
+              <IconButton
+                onTouchTap={this.handleCommitDescriptionClear}
+                style={{ marginTop: 20 }}
+              >
+                <Clear />
+              </IconButton>
+            </div>
           </div>
-          <div className="col-sm-6">
-            <Toggle
-              style={{ maxWidth: 343, marginTop: 40 }}
-              label="Finishes User Story"
-              onToggle={this.handleFinishesToggle}
-              toggled={finishes}
-            />
-          </div>
-          <div className="col-sm-5 col-10">
-            <TextField
-              hintText="Summary of Work Done (Message)"
-              floatingLabelText="Commit Message"
-              value={commitMessage}
-              onChange={this.handleCommitMessageChange}
-              multiLine
-              fullWidth
-            />
-          </div>
-          <div className="col-sm-1 col-2">
-            <IconButton
-              onTouchTap={this.handleCommitMessageClear}
-              style={{ marginTop: 20 }}
-            >
-              <Clear />
-            </IconButton>
-          </div>
-          <div className="col-sm-5 col-10">
-            <TextField
-              hintText="Summary of Work Done (Description)"
-              floatingLabelText="Commit Description"
-              value={commitDescription}
-              onChange={this.handleCommitDescriptionChange}
-              multiLine
-              fullWidth
-            />
-          </div>
-          <div className="col-sm-1 col-2">
-            <IconButton
-              onTouchTap={this.handleCommitDescriptionClear}
-              style={{ marginTop: 20 }}
-            >
-              <Clear />
-            </IconButton>
-          </div>
+          <CopyTextDisplay
+            text={displayText}
+            handleCopy={this.props.handleCopy}
+            copyText={commitText}
+          />
         </div>
-        <CopyTextDisplay
-          text={displayText}
-          handleCopy={this.props.handleCopy}
-          copyText={commitText}
-        />
-      </div>
+      </ExpandableCard>
     );
   }
 }

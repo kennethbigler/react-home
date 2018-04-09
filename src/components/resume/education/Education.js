@@ -1,28 +1,16 @@
+// react
 import React from 'react';
-import PropTypes from 'prop-types';
+// components
 import { Degree } from './Degree';
+// constants
+import classes from '../../../constants/classes';
 // Parents: Main
 
-export const Education = props => {
-  const { classes, onTouchTap, expanded } = props;
+export const Education = () => {
   return (
     <div>
       <h1>Education and Extracurriculars</h1>
-      {classes.map(d => (
-        <Degree
-          key={d.degree}
-          onTouchTap={onTouchTap}
-          expanded={expanded}
-          degree={d}
-        />
-      ))}
+      {classes.map(d => <Degree key={d.degree} degree={d} />)}
     </div>
   );
-};
-
-Education.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  onTouchTap: PropTypes.func.isRequired,
-  classes: PropTypes.array.isRequired,
-  expanded: PropTypes.object.isRequired
 };

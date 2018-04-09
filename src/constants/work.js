@@ -15,7 +15,7 @@ export const ANGULAR = 'Angular.js 1.X';
 export default [
   {
     isJob: true,
-    color: colors.yellow600,
+    color: colors.yellowA700,
     company: 'GigNow',
     parent: 'Ernst & Young',
     short: 'GN',

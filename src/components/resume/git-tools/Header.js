@@ -16,6 +16,7 @@ export const Header = props => {
         floatingLabelText="User Story ID"
         value={storyID}
         onChange={handleIDChange}
+        style={{ marginLeft: 20 }}
       />
       <br />
     </div>
