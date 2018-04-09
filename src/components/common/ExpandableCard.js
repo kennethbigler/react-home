@@ -45,5 +45,5 @@ ExpandableCard.propTypes = {
 };
 
 ExpandableCard.defaultProps = {
-  backgroundColor: colors.grey900
+  backgroundColor: colors.blueGrey600
 };
