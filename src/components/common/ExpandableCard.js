@@ -3,8 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // material ui
 import { Card, CardTitle, CardText } from 'material-ui/Card';
-import OpenIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import CloseIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
 import * as colors from 'material-ui/styles/colors';
 
 export const ExpandableCard = props => {
@@ -17,8 +15,6 @@ export const ExpandableCard = props => {
         subtitle={subtitle && subtitle}
         titleColor={colors.white}
         subtitleColor={colors.grey400}
-        closeIcon={<CloseIcon color={colors.white} />}
-        openIcon={<OpenIcon color={colors.white} />}
         actAsExpander
         showExpandableButton
         style={{
