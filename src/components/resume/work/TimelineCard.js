@@ -25,5 +25,5 @@ TimelineCard.propTypes = {
 };
 
 TimelineCard.defaultProps = {
-  workExp
+  workExp: workExp
 };
