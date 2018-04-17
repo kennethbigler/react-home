@@ -6,6 +6,7 @@ import { CommitText } from './CommitText';
 import { Header } from './Header';
 // material-ui
 import MenuItem from 'material-ui/MenuItem';
+import { deepOrange600 } from 'material-ui/styles/colors';
 // functions
 import copy from 'copy-to-clipboard';
 // Parents: Main
@@ -41,9 +42,23 @@ export class GitTools extends Component {
 
     return (
       <div>
-        <Header {...{ storyID, handleIDChange }} />
-        <BranchName {...{ storyID, handleCopy, getSelectOptions }} />
-        <CommitText {...{ storyID, handleCopy, getSelectOptions }} />
+        <Header {...{ gitTheme: deepOrange600, handleIDChange, storyID }} />
+        <BranchName
+          {...{
+            getSelectOptions,
+            gitTheme: deepOrange600,
+            handleCopy,
+            storyID
+          }}
+        />
+        <CommitText
+          {...{
+            getSelectOptions,
+            gitTheme: deepOrange600,
+            handleCopy,
+            storyID
+          }}
+        />
       </div>
     );
   }

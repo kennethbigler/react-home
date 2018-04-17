@@ -18,9 +18,10 @@ import nl2br from 'react-newline-to-break';
 export class CommitText extends Component {
   static propTypes = {
     // PropTypes = [string, object, bool, number, func, array].isRequired
-    storyID: PropTypes.string,
     getSelectOptions: PropTypes.func.isRequired,
-    handleCopy: PropTypes.func.isRequired
+    gitTheme: PropTypes.string.isRequired,
+    handleCopy: PropTypes.func.isRequired,
+    storyID: PropTypes.string
   };
 
   state = {
@@ -109,6 +110,7 @@ export class CommitText extends Component {
       commitDescription,
       finishes
     } = this.state;
+    const { gitTheme, handleCopy } = this.props;
 
     const commitText = this.getCommitText();
     const displayText = commitText && nl2br(this.getCommitText());
@@ -125,9 +127,12 @@ export class CommitText extends Component {
           <div className="row">
             <div className="col-sm-6">
               <SelectField
+                floatingLabelStyle={{ color: gitTheme }}
                 floatingLabelText="Commit Prefix"
-                value={commitPrefix}
                 onChange={this.handleCommitPrefixSelect}
+                selectedMenuItemStyle={{ color: gitTheme }}
+                underlineFocusStyle={{ borderColor: gitTheme }}
+                value={commitPrefix}
               >
                 {this.getCommitPrefixOptions()}
               </SelectField>
@@ -142,12 +147,14 @@ export class CommitText extends Component {
             </div>
             <div className="col-sm-5 col-10">
               <TextField
-                hintText="Summary of Work Done (Message)"
+                floatingLabelFocusStyle={{ color: gitTheme }}
                 floatingLabelText="Commit Message"
-                value={commitMessage}
-                onChange={this.handleCommitMessageChange}
-                multiLine
                 fullWidth
+                hintText="Summary of Work Done (Message)"
+                multiLine
+                onChange={this.handleCommitMessageChange}
+                underlineFocusStyle={{ borderColor: gitTheme }}
+                value={commitMessage}
               />
             </div>
             <div className="col-sm-1 col-2">
@@ -160,12 +167,14 @@ export class CommitText extends Component {
             </div>
             <div className="col-sm-5 col-10">
               <TextField
-                hintText="Summary of Work Done (Description)"
+                floatingLabelFocusStyle={{ color: gitTheme }}
                 floatingLabelText="Commit Description"
-                value={commitDescription}
-                onChange={this.handleCommitDescriptionChange}
-                multiLine
                 fullWidth
+                hintText="Summary of Work Done (Description)"
+                multiLine
+                onChange={this.handleCommitDescriptionChange}
+                underlineFocusStyle={{ borderColor: gitTheme }}
+                value={commitDescription}
               />
             </div>
             <div className="col-sm-1 col-2">
@@ -179,7 +188,7 @@ export class CommitText extends Component {
           </div>
           <CopyTextDisplay
             text={displayText}
-            handleCopy={this.props.handleCopy}
+            handleCopy={handleCopy}
             copyText={commitText}
           />
         </div>

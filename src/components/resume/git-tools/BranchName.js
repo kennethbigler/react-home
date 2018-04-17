@@ -20,9 +20,10 @@ import camelCase from 'lodash/camelCase';
 export class BranchName extends Component {
   static propTypes = {
     // PropTypes = [string, object, bool, number, func, array].isRequired
-    storyID: PropTypes.string,
     getSelectOptions: PropTypes.func.isRequired,
-    handleCopy: PropTypes.func.isRequired
+    gitTheme: PropTypes.string.isRequired,
+    handleCopy: PropTypes.func.isRequired,
+    storyID: PropTypes.string
   };
 
   state = {
@@ -96,6 +97,7 @@ export class BranchName extends Component {
 
   render() {
     const { branchPrefix, branchMessage, casePreference } = this.state;
+    const { gitTheme, handleCopy } = this.props;
     const branchName = this.getBranchName();
 
     return (
@@ -110,18 +112,24 @@ export class BranchName extends Component {
           <div className="row">
             <div className="col-sm-3">
               <SelectField
+                floatingLabelStyle={{ color: gitTheme }}
                 floatingLabelText="Branch Prefix"
-                value={branchPrefix}
                 onChange={this.handleBranchPrefixSelect}
+                selectedMenuItemStyle={{ color: gitTheme }}
+                underlineFocusStyle={{ borderColor: gitTheme }}
+                value={branchPrefix}
               >
                 {this.getBranchPrefixOptions()}
               </SelectField>
             </div>
             <div className="col-sm-3">
               <SelectField
+                floatingLabelStyle={{ color: gitTheme }}
                 floatingLabelText="Case Preference"
-                value={casePreference}
                 onChange={this.handleCasePrefChange}
+                selectedMenuItemStyle={{ color: gitTheme }}
+                underlineFocusStyle={{ borderColor: gitTheme }}
+                value={casePreference}
               >
                 <MenuItem value={1} primaryText="snake_case" />
                 <MenuItem value={2} primaryText="kebab-case" />
@@ -131,12 +139,14 @@ export class BranchName extends Component {
             </div>
             <div className="col-sm-5 col-10">
               <TextField
-                hintText="Summary of User Story"
+                floatingLabelFocusStyle={{ color: gitTheme }}
                 floatingLabelText="Branch Name"
-                value={branchMessage}
-                onChange={this.handleBranchMessageChange}
-                multiLine
                 fullWidth
+                hintText="Summary of User Story"
+                multiLine
+                onChange={this.handleBranchMessageChange}
+                underlineFocusStyle={{ borderColor: gitTheme }}
+                value={branchMessage}
               />
             </div>
             <div className="col-sm-1 col-2">
@@ -148,10 +158,7 @@ export class BranchName extends Component {
               </IconButton>
             </div>
           </div>
-          <CopyTextDisplay
-            text={branchName}
-            handleCopy={this.props.handleCopy}
-          />
+          <CopyTextDisplay text={branchName} handleCopy={handleCopy} />
         </div>
       </ExpandableCard>
     );

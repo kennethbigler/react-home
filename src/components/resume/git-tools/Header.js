@@ -6,17 +6,19 @@ import TextField from 'material-ui/TextField';
 // Parents: Main
 
 export const Header = props => {
-  const { storyID, handleIDChange } = props;
+  const { gitTheme, handleIDChange, storyID } = props;
 
   return (
     <div>
       <h1>Git Tools</h1>
       <TextField
-        hintText="#123456789"
+        floatingLabelFocusStyle={{ color: gitTheme }}
         floatingLabelText="User Story ID"
-        value={storyID}
+        hintText="#123456789"
         onChange={handleIDChange}
         style={{ marginLeft: 20 }}
+        underlineFocusStyle={{ borderColor: gitTheme }}
+        value={storyID}
       />
       <br />
     </div>
@@ -25,6 +27,7 @@ export const Header = props => {
 
 Header.propTypes = {
   // PropTypes = [string, object, bool, number, func, array].isRequired
-  storyID: PropTypes.string,
-  handleIDChange: PropTypes.func.isRequired
+  gitTheme: PropTypes.string.isRequired,
+  handleIDChange: PropTypes.func.isRequired,
+  storyID: PropTypes.string
 };
