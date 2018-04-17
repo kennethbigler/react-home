@@ -1,5 +1,7 @@
 // react
 import React, { Component } from 'react';
+// components
+import { ExpandableCard } from '../../common/ExpandableCard';
 // material ui
 import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
 // assests
@@ -41,23 +43,24 @@ export class Info extends Component {
           />
         </div>
         <div className="col-md-9">
-          <h2 style={{ align: 'center' }}>{this.getJob()}</h2>
-          <Table selectable={false}>
-            <TableBody displayRowCheckbox={false}>
-              <TableRow>
-                <TableRowColumn>Location</TableRowColumn>
-                <TableRowColumn>Mountain View, CA</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>Interests</TableRowColumn>
-                <TableRowColumn>Computer Software</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>Volunteer Work</TableRowColumn>
-                <TableRowColumn>Second Harvest Food Bank</TableRowColumn>
-              </TableRow>
-            </TableBody>
-          </Table>
+          <ExpandableCard title={this.getJob()}>
+            <Table selectable={false}>
+              <TableBody displayRowCheckbox={false}>
+                <TableRow>
+                  <TableRowColumn>Location</TableRowColumn>
+                  <TableRowColumn>Mountain View, CA</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>Interests</TableRowColumn>
+                  <TableRowColumn>Computer Software</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>Volunteer Work</TableRowColumn>
+                  <TableRowColumn>Second Harvest Food Bank</TableRowColumn>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </ExpandableCard>
         </div>
       </div>
     );

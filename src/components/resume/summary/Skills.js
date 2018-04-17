@@ -1,12 +1,12 @@
 import React from 'react';
 import { ExpandableCard } from '../../common/ExpandableCard';
-import { deepPurple500 } from 'material-ui/styles/colors';
+import { orangeA700 } from 'material-ui/styles/colors';
 import { REACT, ANGULAR } from '../../../constants/work';
 // Parents: Main
 
 export const Skills = () => {
   return (
-    <ExpandableCard title="Summary of Skills" backgroundColor={deepPurple500}>
+    <ExpandableCard title="Summary of Skills" backgroundColor={orangeA700}>
       <div style={{ paddingLeft: 20, paddingRight: 20 }}>
         <ul>
           <li>

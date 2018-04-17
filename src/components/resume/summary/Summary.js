@@ -3,6 +3,7 @@ import { Info } from './Info';
 import { Skills } from './Skills';
 import { Education } from './Education';
 import { TimelineCard } from '../work/TimelineCard';
+import { purple500 } from 'material-ui/styles/colors';
 // Parents: Main
 
 export class Summary extends Component {
@@ -12,7 +13,7 @@ export class Summary extends Component {
         <h1>Summary</h1>
         <hr />
         <Info />
-        <TimelineCard />
+        <TimelineCard backgroundColor={purple500} />
         <Skills />
         <Education />
       </div>
