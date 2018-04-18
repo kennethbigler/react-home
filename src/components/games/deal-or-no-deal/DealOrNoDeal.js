@@ -227,7 +227,7 @@ export class DND extends Component {
         />
         <Board
           board={board}
-          onTouchTap={this.openBriefcase}
+          onClick={this.openBriefcase}
           playerChoice={playerChoice}
         />
         <Modal

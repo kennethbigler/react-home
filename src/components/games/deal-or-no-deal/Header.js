@@ -29,7 +29,7 @@ export const Header = props => {
             : `Number of Cases to Open: ${casesToOpen}`}
         </h2>
         {isOver && (
-          <RaisedButton onTouchTap={newGame} primary label="New Game" />
+          <RaisedButton onClick={newGame} primary label="New Game" />
         )}
       </div>
       <div className="col-sm-6">

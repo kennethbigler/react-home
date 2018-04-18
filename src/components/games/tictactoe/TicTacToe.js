@@ -56,7 +56,7 @@ export class TicTacToe extends Component {
    * function that modifies board with appropriate turn
    * @param {number} location - locaiton of board click (row * 3 + col)
    */
-  handleTouchTap = location => {
+  handleClick = location => {
     let { turn, step, history } = this.state;
     const newHistory = history.slice(0, step + 1);
     const current = newHistory[step];
@@ -109,7 +109,7 @@ export class TicTacToe extends Component {
           <Board
             board={board}
             winRow={winRow}
-            onTouchTap={i => this.handleTouchTap(i)}
+            onClick={i => this.handleClick(i)}
           />
         </Paper>
         <History step={step} history={history} jumpToStep={this.jumpToStep} />

@@ -34,7 +34,7 @@ export const Board = props => {
     <TableHeaderColumn key={`c4h${i}`} style={styles.cell}>
       <Piece
         piece={!piece ? turn : 0}
-        onTouchTap={() => insert(i)}
+        onClick={() => insert(i)}
         enabled={!piece}
       />
     </TableHeaderColumn>

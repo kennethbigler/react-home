@@ -28,7 +28,7 @@ export const TravelMap = () => {
       <h1>Ken's Travel Map</h1>
       <hr />
       <img
-        onTouchTap={imgUrl}
+        onClick={imgUrl}
         src={travelMap}
         style={styles.img}
         alt="Ken’s Travel Map"

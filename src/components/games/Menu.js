@@ -29,7 +29,7 @@ export const Menu = props => {
       ) : (
         <MenuItem
           key={item.name}
-          onTouchTap={() => onItemClick(`${baseUrl}/${item.route}`)}
+          onClick={() => onItemClick(`${baseUrl}/${item.route}`)}
           primaryText={item.name}
         />
       )
@@ -41,7 +41,7 @@ export const Menu = props => {
   // render menu
   return (
     <div>
-      <MenuItem onTouchTap={home} primaryText="Back to Resume" />
+      <MenuItem onClick={home} primaryText="Back to Resume" />
       {menu}
     </div>
   );

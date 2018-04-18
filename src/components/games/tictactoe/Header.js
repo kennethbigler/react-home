@@ -18,7 +18,7 @@ export const Header = props => {
         <ToolbarTitle text={status} />
       </ToolbarGroup>
       <ToolbarGroup lastChild>
-        <RaisedButton label="Reset Game" onTouchTap={newGame} primary />
+        <RaisedButton label="Reset Game" onClick={newGame} primary />
       </ToolbarGroup>
     </Toolbar>
   );

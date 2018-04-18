@@ -159,7 +159,7 @@ export class CommitText extends Component {
             </div>
             <div className="col-sm-1 col-2">
               <IconButton
-                onTouchTap={this.handleCommitMessageClear}
+                onClick={this.handleCommitMessageClear}
                 style={{ marginTop: 20 }}
               >
                 <Clear />
@@ -179,7 +179,7 @@ export class CommitText extends Component {
             </div>
             <div className="col-sm-1 col-2">
               <IconButton
-                onTouchTap={this.handleCommitDescriptionClear}
+                onClick={this.handleCommitDescriptionClear}
                 style={{ marginTop: 20 }}
               >
                 <Clear />

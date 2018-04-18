@@ -12,7 +12,7 @@ export const Button = props => {
   const style = {
     margin: 12
   };
-  return <RaisedButton label={name} style={style} onTouchTap={func} primary />;
+  return <RaisedButton label={name} style={style} onClick={func} primary />;
 };
 
 Button.propTypes = {

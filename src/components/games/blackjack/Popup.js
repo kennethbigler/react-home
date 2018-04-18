@@ -28,7 +28,7 @@ export class Popup extends Component {
         key="Cancel"
         label="Cancel"
         primary={true}
-        onTouchTap={this.handleClose}
+        onClick={this.handleClose}
       />
     ];
 
@@ -36,7 +36,7 @@ export class Popup extends Component {
       <div>
         <RaisedButton
           label="BlackJack Rules"
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           primary
         />
         <Dialog

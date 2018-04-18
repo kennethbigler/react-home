@@ -6,12 +6,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 /** render code for each class */
 export const Case = props => {
-  const { onTouchTap, briefcase: bc, secondary } = props;
+  const { onClick, briefcase: bc, secondary } = props;
   const style = { margin: 10 };
   const label = bc.on ? bc.loc : getMoneyText(bc.val);
   return (
     <RaisedButton
-      onTouchTap={onTouchTap}
+      onClick={onClick}
       disabled={!bc.on}
       style={style}
       primary={!secondary}
@@ -23,7 +23,7 @@ export const Case = props => {
 
 Case.propTypes = {
   // PropTypes = [string, object, bool, number, func, array].isRequired
-  onTouchTap: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
   briefcase: PropTypes.object.isRequired,
   secondary: PropTypes.bool
 };

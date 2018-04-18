@@ -11,12 +11,12 @@ export class Board extends Component {
     // PropTypes = [string, object, bool, number, func, array].isRequired
     winRow: PropTypes.array.isRequired,
     board: PropTypes.array.isRequired,
-    onTouchTap: PropTypes.func.isRequired
+    onClick: PropTypes.func.isRequired
   };
 
   /** function to render the cells of the Board */
   renderCells = () => {
-    const { board, onTouchTap, winRow } = this.props;
+    const { board, onClick, winRow } = this.props;
     let cells = [];
     // create 3 rows
     for (let i = 0; i < 3; i += 1) {
@@ -31,7 +31,7 @@ export class Board extends Component {
             <Cell
               value={board[c]}
               winner={winner}
-              onTouchTap={() => onTouchTap(c)}
+              onClick={() => onClick(c)}
             />
           </td>
         );

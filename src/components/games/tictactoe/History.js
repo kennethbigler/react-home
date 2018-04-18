@@ -41,7 +41,7 @@ export class History extends Component {
     const style = step === move ? { fontWeight: 'bold' } : {};
     return (
       <li key={move}>
-        <a style={style} onTouchTap={() => jumpToStep(move)}>
+        <a style={style} onClick={() => jumpToStep(move)}>
           {description}
         </a>
       </li>
@@ -61,7 +61,7 @@ export class History extends Component {
       <div>
         <RaisedButton
           label={buttonLabel}
-          onTouchTap={this.handleMoveOrderToggle}
+          onClick={this.handleMoveOrderToggle}
         />
         <ul>{moves}</ul>
       </div>

@@ -42,7 +42,7 @@ export class CopyTextDisplay extends Component {
 
     return (
       <div className="copy-text-display">
-        <Chip labelStyle={chipLabel} onTouchTap={this.handleCopy}>
+        <Chip labelStyle={chipLabel} onClick={this.handleCopy}>
           {text}
         </Chip>
         <Snackbar

@@ -24,7 +24,7 @@ export const Card = props => {
 
   // display in view
   return (
-    <div className="playingCard" style={cardColor} onTouchTap={handleClick}>
+    <div className="playingCard" style={cardColor} onClick={handleClick}>
       <div style={styles.cardTitle}>{name + suit}</div>
       <h2 className="suit">{suit}</h2>
     </div>

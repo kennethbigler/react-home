@@ -42,8 +42,8 @@ export class Header extends Component {
           }
           style={{ position: 'fixed', left: 0, right: 0, top: 0 }}
           iconClassNameRight="muidocs-icon-navigation-expand-more"
-          onLeftIconButtonTouchTap={this.handleOpen}
-          onTitleTouchTap={() => this.handleNav('/')}
+          onLeftIconButtonClick={this.handleOpen}
+          onTitleClick={() => this.handleNav('/')}
         />
         <Drawer open={open} docked={false} onRequestChange={this.handleOpen}>
           <AppBar
@@ -53,7 +53,7 @@ export class Header extends Component {
                 <NavigationClose />
               </IconButton>
             }
-            onLeftIconButtonTouchTap={this.handleOpen}
+            onLeftIconButtonClick={this.handleOpen}
           />
           {React.cloneElement(children, { onItemClick: this.handleNav })}
         </Drawer>

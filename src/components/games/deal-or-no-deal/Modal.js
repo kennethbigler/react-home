@@ -23,14 +23,14 @@ export const Modal = props => {
 
   if (numCases > 2) {
     actions = [
-      <FlatButton key="deal" label="Deal" primary onTouchTap={deal} />,
-      <FlatButton key="noDeal" label="No Deal" secondary onTouchTap={noDeal} />
+      <FlatButton key="deal" label="Deal" primary onClick={deal} />,
+      <FlatButton key="noDeal" label="No Deal" secondary onClick={noDeal} />
     ];
   } else {
     actions = [
-      <FlatButton key="deal" label="Deal" primary onTouchTap={deal} />,
-      <FlatButton key="noDeal" label="My Case" secondary onTouchTap={noDeal} />,
-      <FlatButton key="swap" label="Other Case" secondary onTouchTap={swap} />
+      <FlatButton key="deal" label="Deal" primary onClick={deal} />,
+      <FlatButton key="noDeal" label="My Case" secondary onClick={noDeal} />,
+      <FlatButton key="swap" label="Other Case" secondary onClick={swap} />
     ];
   }
 

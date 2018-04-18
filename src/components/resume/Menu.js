@@ -24,7 +24,7 @@ export const Menu = props => {
       ) : (
         <MenuItem
           key={item.name}
-          onTouchTap={() => onItemClick(`/${item.route}`)}
+          onClick={() => onItemClick(`/${item.route}`)}
           primaryText={item.name}
         />
       )
@@ -42,12 +42,12 @@ export const Menu = props => {
     <div>
       {menu}
       <Divider />
-      <MenuItem onTouchTap={github} primaryText="GitHub" />
-      <MenuItem onTouchTap={linkedin} primaryText="LinkedIn" />
+      <MenuItem onClick={github} primaryText="GitHub" />
+      <MenuItem onClick={linkedin} primaryText="LinkedIn" />
       <Divider />
       <br />
       <img
-        onTouchTap={stkovrflw}
+        onClick={stkovrflw}
         src="https://stackoverflow.com/users/flair/4830309.png?theme=dark"
         id="stackOverflow"
         style={{ display: 'block', margin: 'auto', cursor: 'pointer' }}

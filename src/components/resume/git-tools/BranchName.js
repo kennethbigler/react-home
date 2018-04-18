@@ -151,7 +151,7 @@ export class BranchName extends Component {
             </div>
             <div className="col-sm-1 col-2">
               <IconButton
-                onTouchTap={this.handleBranchMessageClear}
+                onClick={this.handleBranchMessageClear}
                 style={{ marginTop: 20 }}
               >
                 <Clear />

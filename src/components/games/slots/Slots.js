@@ -82,7 +82,7 @@ class SM extends Component {
               <div className="col-3">
                 <RaisedButton
                   label="Spin"
-                  onTouchTap={this.updateSlotMachine}
+                  onClick={this.updateSlotMachine}
                   primary
                 />
               </div>

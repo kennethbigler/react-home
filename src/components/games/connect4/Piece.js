@@ -9,7 +9,7 @@ import { black, red500, indigoA700 } from 'material-ui/styles/colors';
 * Board - for Connect4
 * -------------------------------------------------- */
 export const Piece = props => {
-  const { piece, enabled, onTouchTap } = props;
+  const { piece, enabled, onClick } = props;
   const color = !piece
     ? null
     : piece === 1 ? red500 : piece === 2 ? black : indigoA700;
@@ -17,7 +17,7 @@ export const Piece = props => {
   return !enabled ? (
     <FloatingActionButton disabledColor={color} mini disabled />
   ) : (
-    <FloatingActionButton backgroundColor={color} onTouchTap={onTouchTap} mini>
+    <FloatingActionButton backgroundColor={color} onClick={onClick} mini>
       <ContentAdd />
     </FloatingActionButton>
   );
@@ -27,5 +27,5 @@ Piece.propTypes = {
   // PropTypes = [string, object, bool, number, func, array].isRequired
   piece: PropTypes.number.isRequired,
   enabled: PropTypes.bool,
-  onTouchTap: PropTypes.func
+  onClick: PropTypes.func
 };

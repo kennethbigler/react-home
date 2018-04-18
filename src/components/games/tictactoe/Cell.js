@@ -8,7 +8,7 @@ import { white, indigoA700 } from 'material-ui/styles/colors';
  * Cell
  * ======================================== */
 export const Cell = props => {
-  const { value, winner, onTouchTap } = props;
+  const { value, winner, onClick } = props;
   // add attributes if cell is a winner
   const attr = winner
     ? {
@@ -19,12 +19,12 @@ export const Cell = props => {
       }
     : null;
 
-  return <FlatButton label={value} {...attr} onTouchTap={() => onTouchTap()} />;
+  return <FlatButton label={value} {...attr} onClick={() => onClick()} />;
 };
 
 Cell.propTypes = {
   // PropTypes = [string, object, bool, number, func, array].isRequired
   value: PropTypes.string.isRequired,
   winner: PropTypes.bool.isRequired,
-  onTouchTap: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired
 };

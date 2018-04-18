@@ -38,7 +38,7 @@ export class Info extends Component {
           <img
             src={photo}
             alt="Kenneth Bigler"
-            onTouchTap={this.handleClick}
+            onClick={this.handleClick}
             style={image}
           />
         </div>

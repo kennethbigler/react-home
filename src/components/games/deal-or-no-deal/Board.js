@@ -7,7 +7,7 @@ import Paper from 'material-ui/Paper';
 /** render code for each class */
 export const Board = props => {
   // prop vars
-  const { board, onTouchTap, playerChoice: pc } = props;
+  const { board, onClick, playerChoice: pc } = props;
   // local styles
   const style = {
     maxWidth: 796,
@@ -23,7 +23,7 @@ export const Board = props => {
       {board.map((bc, i) => (
         <Case
           key={i}
-          onTouchTap={() => onTouchTap(i)}
+          onClick={() => onClick(i)}
           briefcase={bc}
           secondary={pc && pc.loc === bc.loc}
         />
@@ -35,6 +35,6 @@ export const Board = props => {
 Board.propTypes = {
   // PropTypes = [string, object, bool, number, func, array].isRequired
   board: PropTypes.array.isRequired,
-  onTouchTap: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
   playerChoice: PropTypes.object
 };
