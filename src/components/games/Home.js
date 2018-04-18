@@ -44,7 +44,7 @@ class Home extends Component {
     if (old !== players) {
       const isBot = [];
       players.forEach(p => isBot.push(p.isBot));
-      this.state = { isBot };
+      this.setState({ isBot });
     }
   }
 

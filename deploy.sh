@@ -8,6 +8,7 @@ echo "Building react-home"
 rm -rf ./docs/static
 mv build/* ./docs
 rm -rf build
+rmdir build
 echo $LINE
 echo "Success"
 echo $LINE
