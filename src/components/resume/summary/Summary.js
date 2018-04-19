@@ -13,7 +13,7 @@ export class Summary extends Component {
         <h1>Summary</h1>
         <hr />
         <Info />
-        <TimelineCard backgroundColor={purple500} />
+        <TimelineCard />
         <Skills />
         <Education />
       </div>

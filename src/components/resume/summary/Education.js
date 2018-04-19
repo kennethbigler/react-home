@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { ExpandableCard } from '../../common/ExpandableCard';
-import { green600 } from 'material-ui/styles/colors';
 import classes from '../../../constants/classes';
 // Parents: Main
 
@@ -26,7 +25,7 @@ export class Education extends Component {
 
   render() {
     return (
-      <ExpandableCard title="Education" backgroundColor={green600}>
+      <ExpandableCard title="Education">
         <div style={{ paddingLeft: 20, paddingRight: 20 }}>
           {classes.map(this.getClassData)}
         </div>

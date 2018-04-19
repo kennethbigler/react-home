@@ -36,6 +36,8 @@ class Home extends Component {
     };
   }
 
+  // https://github.com/reactjs/rfcs/issues/26
+  // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
   componentWillReceiveProps(nextProps) {
     // get old player and current player
     const { players: old } = this.props;
