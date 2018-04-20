@@ -1,5 +1,13 @@
 import React from 'react';
-import { countries } from './countries';
+import { NA, EU } from './countries';
+import {
+  Table,
+  TableHeader,
+  TableHeaderColumn,
+  TableBody,
+  TableRow,
+  TableRowColumn
+} from 'material-ui/Table';
 // Parents: Main
 
 export const TravelMap = () => {
@@ -20,8 +28,36 @@ export const TravelMap = () => {
       maxWidth: '792px',
       cursor: 'pointer'
     },
-    margins: { marginTop: 24, marginBottom: 16 }
+    margins: { marginTop: 24, marginBottom: 16 },
+    separator: { borderRight: '1px solid lightgray' }
   };
+
+  // ratio to display on table, 2:1 seemed to look best
+  const EURatio = 3;
+
+  // export array of <li> elements for display
+  let countries = [];
+  // iterate to the end of the longer list
+  const len = Math.max(NA.length, Math.ceil(EU.length / EURatio));
+  for (let i = 0; i < len; i += 1) {
+    let row = [];
+    // add NA Country
+    row.push(
+      <TableRowColumn key={`tmc${i}`} style={styles.separator}>
+        {NA[i]}
+      </TableRowColumn>
+    );
+    // add EU Countries
+    for (let j = 0; j < EURatio; j += 1) {
+      row.push(
+        <TableRowColumn key={`tmc${i}${j}`}>
+          {EU[EURatio * i + j]}
+        </TableRowColumn>
+      );
+    }
+    // form the row
+    countries.push(<TableRow key={`tmr${i}`}>{row}</TableRow>);
+  }
 
   return (
     <div>
@@ -34,15 +70,17 @@ export const TravelMap = () => {
         alt="Ken’s Travel Map"
       />
       <h3 style={styles.margins}>Ken has been to:</h3>
-      <table className="table table-hover table-striped">
-        <thead className="thead-dark">
-          <tr>
-            <th>North America</th>
-            <th colSpan="3">Europe</th>
-          </tr>
-        </thead>
-        <tbody>{countries}</tbody>
-      </table>
+      <Table>
+        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+          <TableRow>
+            <TableHeaderColumn style={styles.separator}>
+              North America
+            </TableHeaderColumn>
+            <TableHeaderColumn colSpan={EURatio}>Europe</TableHeaderColumn>
+          </TableRow>
+        </TableHeader>
+        <TableBody displayRowCheckbox={false}>{countries}</TableBody>
+      </Table>
     </div>
   );
 };
