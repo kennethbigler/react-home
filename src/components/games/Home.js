@@ -107,14 +107,8 @@ class Home extends Component {
 }
 
 // react-redux export
-function mapStateToProps(state /*, ownProps*/) {
-  return { players: state.players };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    playerActions: bindActionCreators({ updateName, updateBot }, dispatch)
-  };
-}
-
+const mapStateToProps = state => ({ players: state.players });
+const mapDispatchToProps = dispatch => ({
+  playerActions: bindActionCreators({ updateName, updateBot }, dispatch)
+});
 export const GameHome = connect(mapStateToProps, mapDispatchToProps)(Home);

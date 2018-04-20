@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Help } from './Help';
+import { Help } from './help/Help';
 import { Rules } from './Rules';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
