@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Cell } from './Cell';
 import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
+import { grey400 } from 'material-ui/styles/colors';
 // Parents: TicTacToe
 
 /** ========================================
@@ -33,7 +34,7 @@ export class Board extends Component {
             style={{
               padding: 0,
               textAlign: 'center',
-              border: '1px solid lightgrey'
+              border: `1px solid ${grey400}`
             }}
           >
             <Cell value={board[c]} winner={winner} onClick={() => onClick(c)} />

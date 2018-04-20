@@ -8,6 +8,7 @@ import {
   TableRow,
   TableRowColumn
 } from 'material-ui/Table';
+import { grey400 } from 'material-ui/styles/colors';
 // Parents: Main
 
 export const TravelMap = () => {
@@ -29,7 +30,7 @@ export const TravelMap = () => {
       cursor: 'pointer'
     },
     margins: { marginTop: 24, marginBottom: 16 },
-    separator: { borderRight: '1px solid lightgray' }
+    separator: { borderRight: `1px solid ${grey400}` }
   };
 
   // ratio to display on table, 2:1 seemed to look best
