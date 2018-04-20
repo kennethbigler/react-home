@@ -27,8 +27,8 @@ export class Popup extends Component {
       <FlatButton
         key="Cancel"
         label="Cancel"
-        primary={true}
         onClick={this.handleClose}
+        primary
       />
     ];
 
