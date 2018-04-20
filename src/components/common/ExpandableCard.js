@@ -3,22 +3,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // material ui
 import { Card, CardTitle, CardText } from 'material-ui/Card';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import * as colors from 'material-ui/styles/colors';
 
-export class ExpandableCard extends Component {
+export class EC extends Component {
   static propTypes = {
     // PropTypes = [string, object, bool, number, func, array].isRequired
     backgroundColor: PropTypes.string,
+    muiTheme: PropTypes.object,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     children: PropTypes.oneOfType([
       PropTypes.arrayOf(PropTypes.node),
       PropTypes.node
     ])
-  };
-
-  static defaultProps = {
-    backgroundColor: colors.blueGrey600
   };
 
   state = {
@@ -35,6 +33,7 @@ export class ExpandableCard extends Component {
       subtitle,
       children,
       backgroundColor,
+      muiTheme,
       ...otherProps
     } = this.props;
     const { expanded } = this.state;
@@ -43,7 +42,9 @@ export class ExpandableCard extends Component {
       card: { marginTop: 40 },
       closedCard: { marginTop: 20 },
       closed: {
-        backgroundColor: backgroundColor,
+        backgroundColor: backgroundColor
+          ? backgroundColor
+          : muiTheme.palette.primary1Color,
         borderRadius: 3,
         marginLeft: 10,
         marginRight: 10,
@@ -81,3 +82,5 @@ export class ExpandableCard extends Component {
     );
   }
 }
+
+export const ExpandableCard = muiThemeable()(EC);
