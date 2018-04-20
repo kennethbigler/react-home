@@ -44,6 +44,7 @@ export class Header extends Component {
           iconClassNameRight="muidocs-icon-navigation-expand-more"
           onLeftIconButtonClick={this.handleOpen}
           onTitleClick={() => this.handleNav('/')}
+          titleStyle={{ cursor: 'pointer' }}
         />
         <Drawer open={open} docked={false} onRequestChange={this.handleOpen}>
           <AppBar
