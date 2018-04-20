@@ -16,18 +16,20 @@ import { Deck } from '../../../apis/Deck';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
+  incrHandTurn,
   incrPlayerTurn,
-  resetTurn,
-  incrHandTurn
+  resetTurn
 } from '../../../store/modules/turn';
 import {
   drawCard,
   newHand,
-  splitHand,
   payout,
-  updateBet,
-  resetStatus
+  resetStatus,
+  splitHand,
+  updateBet
 } from '../../../store/modules/players';
+// functions
+import get from 'lodash/get';
 // Parents: Main
 
 // Dealer constant
@@ -81,10 +83,10 @@ class BJ extends Component {
   // Prop Validation
   static propTypes = {
     // PropTypes = [string, object, bool, number, func, array].isRequired
-    turnActions: PropTypes.object.isRequired,
     playerActions: PropTypes.object.isRequired,
     players: PropTypes.array.isRequired,
-    turn: PropTypes.object.isRequired
+    turn: PropTypes.object.isRequired,
+    turnActions: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -93,55 +95,29 @@ class BJ extends Component {
     this.state = this.getNewGameState();
   }
 
-  /**
-   * runs anytime render would be called, use to update state
-   * componentWillReceiveProps > shouldComponentUpdate > componentWillUpdate > render > componentDidUpdate
-   * prepair game functions for current / next player if hand changed
-   */
-  componentWillUpdate(nextProps, nextState) {
-    // check if check is required
-    if ((nextState.hideHands && this.state.hideHands) || nextState.hideHands) {
-      return;
-    }
-    const { players: lp, turn: lt } = this.props;
-    const { players: np, turn: nt } = nextProps;
-    // validate that there is a next player
-    const player = np[nt.player];
-    if (!player) {
-      return;
-    }
-    // get the next hand
-    const hand = player.hands[nt.hand];
-    // get the old hand
-    const lastHand = lp[lt.player] ? lp[lt.player].hands[lt.hand] : null;
-    // if the hand updated, get the game functions
-    if (lastHand !== hand) {
-      const gameFunctions = [...this.getGameFunctions(hand)];
-      this.setState({ gameFunctions });
-    }
-  }
-
-  /**
-   * runs anytime render would be called, use to update state
-   * componentWillReceiveProps > shouldComponentUpdate > componentWillUpdate > render > componentDidUpdate
-   * check if dealer and hand has updated to initiate dealer functions
-   */
   componentDidUpdate(prevProps) {
     const { players: lp, turn: lt } = prevProps;
     const { players: np, turn: nt } = this.props;
     // verify player exists and is dealer
     const player = np[nt.player];
-    if (!player || (!player.isBot && player.id !== DEALER)) {
+    if (this.state.hideHands || !player) {
       return;
+    }
+    if (!player.isBot && player.id !== DEALER) {
+      // get the next Hand
+      const hand = get(player, ['hands', nt.hand]);
+      // if the Hand updated, get the game functions
+      if (hand !== get(lp, [lt.player, 'hands', lt.hand])) {
+        const gameFunctions = [...this.getGameFunctions(hand)];
+        this.setState({ gameFunctions });
+      }
     } else if (player.isBot && player.id !== DEALER) {
       this.playBot();
     } else {
-      // get the next hand
+      // get the next Hand
       const hand = player.hands[nt.hand];
-      // get the old hand
-      const lastHand = lp[lt.player] ? lp[lt.player].hands[lt.hand] : null;
-      // if the hand updated, check for dealer
-      if (lastHand !== hand) {
+      // if the Hand updated, check for dealer
+      if (hand !== get(lp, [lt.player, 'hands', lt.hand])) {
         this.playDealer();
       }
     }
@@ -489,12 +465,12 @@ class BJ extends Component {
       <div>
         <Popup />
         <GameTable
-          turn={turn}
-          players={players}
-          hideHands={hideHands}
           betHandler={this.betHandler}
-          gameFunctions={gameFunctions}
           cardClickHandler={this.cardClickHandler}
+          gameFunctions={gameFunctions}
+          hideHands={hideHands}
+          players={players}
+          turn={turn}
         />
       </div>
     );
@@ -502,24 +478,18 @@ class BJ extends Component {
 }
 
 // react-redux export
-function mapStateToProps(state /*, ownProps*/) {
-  return {
-    turn: state.turn,
-    players: state.players
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    turnActions: bindActionCreators(
-      { incrPlayerTurn, resetTurn, incrHandTurn },
-      dispatch
-    ),
-    playerActions: bindActionCreators(
-      { drawCard, newHand, splitHand, payout, updateBet, resetStatus },
-      dispatch
-    )
-  };
-}
-
+const mapStateToProps = state => ({
+  turn: state.turn,
+  players: state.players
+});
+const mapDispatchToProps = dispatch => ({
+  turnActions: bindActionCreators(
+    { incrPlayerTurn, resetTurn, incrHandTurn },
+    dispatch
+  ),
+  playerActions: bindActionCreators(
+    { drawCard, newHand, splitHand, payout, updateBet, resetStatus },
+    dispatch
+  )
+});
 export const BlackJack = connect(mapStateToProps, mapDispatchToProps)(BJ);
