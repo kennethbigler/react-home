@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Cell } from './Cell';
+import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
 // Parents: TicTacToe
 
 /** ========================================
@@ -27,23 +28,30 @@ export class Board extends Component {
         // check if winning position
         const winner = winRow.indexOf(c) !== -1;
         row.push(
-          <td key={`${i},${j}`}>
-            <Cell
-              value={board[c]}
-              winner={winner}
-              onClick={() => onClick(c)}
-            />
-          </td>
+          <TableRowColumn
+            key={`${i},${j}`}
+            style={{
+              padding: 0,
+              textAlign: 'center',
+              border: '1px solid lightgrey'
+            }}
+          >
+            <Cell value={board[c]} winner={winner} onClick={() => onClick(c)} />
+          </TableRowColumn>
         );
       }
       // separate into rows
-      cells.push(<tr key={`row${i}`}>{row}</tr>);
+      cells.push(
+        <TableRow displayBorder key={`row${i}`}>
+          {row}
+        </TableRow>
+      );
     }
     // return wrapped element
-    return <tbody>{cells}</tbody>;
+    return <TableBody displayRowCheckbox={false}>{cells}</TableBody>;
   };
 
   render() {
-    return <table className="table table-bordered">{this.renderCells()}</table>;
+    return <Table>{this.renderCells()}</Table>;
   }
 }
