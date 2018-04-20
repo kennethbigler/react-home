@@ -18,37 +18,33 @@ class Home extends Component {
     players: PropTypes.array.isRequired
   };
 
-  constructor(props) {
-    super(props);
-    // set bot status
-    const { players } = props;
-    const isBot = [];
-    players.forEach(p => isBot.push(p.isBot));
-    // set state
-    this.state = { isBot };
-    this.styles = {
-      namepad: {
-        maxWidth: '420px',
-        width: '100%',
-        display: 'block',
-        margin: 'auto'
-      }
-    };
-  }
-
-  // https://github.com/reactjs/rfcs/issues/26
+  // https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
   // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     // get old player and current player
-    const { players: old } = this.props;
+    const { players: old } = prevState;
     const { players } = nextProps;
 
     if (old !== players) {
       const isBot = [];
       players.forEach(p => isBot.push(p.isBot));
-      this.setState({ isBot });
+      return { players, isBot };
     }
   }
+
+  state = {
+    isBot: {},
+    players: {}
+  };
+
+  styles = {
+    namepad: {
+      maxWidth: '420px',
+      width: '100%',
+      display: 'block',
+      margin: 'auto'
+    }
+  };
 
   handleToggle = (id, isChecked) => {
     this.props.playerActions.updateBot(id, isChecked);

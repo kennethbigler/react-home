@@ -3,7 +3,6 @@ import { Info } from './Info';
 import { Skills } from './Skills';
 import { Education } from './Education';
 import { TimelineCard } from '../work/TimelineCard';
-import { purple500 } from 'material-ui/styles/colors';
 // Parents: Main
 
 export class Summary extends Component {
