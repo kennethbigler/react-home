@@ -1,5 +1,5 @@
 import React from 'react';
-import { NA, EU } from './countries';
+import { NA, EU } from '../../../constants/countries';
 import {
   Table,
   TableHeader,
