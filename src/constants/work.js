@@ -8,9 +8,18 @@ import ciscoLogo from '../images/cisco_logo.gif';
 import * as colors from 'material-ui/styles/colors';
 import moment from 'moment';
 // Parents: Main
-
-export const REACT = 'React.js';
-export const ANGULAR = 'Angular.js 1.X';
+const REACT = 'React.js';
+const REACT15 = 'React.js 15.6';
+const REACT16 = 'React.js 16.3';
+const ANGULAR = 'Angular.js 1.X';
+const ES2015 = 'ECMAScript 2015';
+const ES2016 = 'ECMAScript 2016';
+const HTML = 'HTML5';
+const CSS = 'CSS3';
+const JS = 'JavaScript';
+const BS3 = 'Bootstrap 3';
+const BS4 = 'Bootstrap 4';
+const RR4 = 'React Router 4';
 
 export default [
   {
@@ -28,7 +37,8 @@ export default [
     alt: 'Ernst & Young Logo',
     expr: [
       `Help build startup ventures within EY, leveraging agile methodologies and development primarily in ${REACT}`
-    ]
+    ],
+    tech: [REACT16, RR4, ES2016, JS, HTML, CSS]
   },
   {
     isJob: true,
@@ -45,7 +55,8 @@ export default [
     expr: [
       'Instruct and supervise between 10 and 40 volunteers regarding food sorting, packaging and distribution',
       'Food is then distributed to smaller organizations that help the homeless and disadvantaged'
-    ]
+    ],
+    tech: ['Leadership', 'Coordination']
   },
   {
     isJob: true,
@@ -64,7 +75,8 @@ export default [
       `Processed and displayed data about network health using Java REST APIs and ${REACT}`,
       'Created several Proof of Concept integrations with Cisco DNA-Center and several acquisitions',
       'Wrote Time Series Analysis Pipelines in JSON to create aggregations of network packets over a fixed or rolling window'
-    ]
+    ],
+    tech: [REACT15, RR4, ES2015, JS, 'Java 8', BS4, HTML, CSS]
   },
   {
     isJob: true,
@@ -83,6 +95,15 @@ export default [
       `Developed web applications using ${ANGULAR} and the AWS SDK for JavaScript in the Browser`,
       'Tested the Android App by creating realistic data simulators, and managed the team in India doing development',
       'Programed applications to run the lights on the Hoverboard in a Python-like language'
+    ],
+    tech: [
+      ANGULAR,
+      'AWS SDK for JavaScript in the Browser',
+      JS,
+      'Python 2',
+      BS3,
+      HTML,
+      CSS
     ]
   },
   {
@@ -101,7 +122,8 @@ export default [
       `Developed web applications using ${ANGULAR} and ASP.NET MVC with a SQL database`,
       'Gathered requirements, created new software tools, and improved tools already used by various departments',
       'Redesigned intranet pages to improve accessibility and incorporate responsive design elements'
-    ]
+    ],
+    tech: [ANGULAR, JS, 'ASP.NET 2.0 MVC', 'C#', 'SQL', BS3, HTML, CSS]
   },
   {
     isJob: true,
@@ -120,7 +142,8 @@ export default [
       'Managed a team of 3 other developers to meet requirements by the deadlines',
       'Converted mockup images from the designers into functional HTML and CSS pages',
       'Designed improvements to the look and feel, and improve the overall experience of the game'
-    ]
+    ],
+    tech: ['Project Management', JS, HTML, CSS]
   },
   {
     isJob: true,
@@ -140,6 +163,15 @@ export default [
       'Supported HR Intranet using WordPress; updated code, created graphics, and managed web projects',
       'Designed and created new websites, migrated between CMS’s, and maintained existing websites',
       'Created graphics using Adobe Creative Cloud'
+    ],
+    tech: [
+      'WordPress',
+      'Adobe Creative Cloud',
+      ANGULAR,
+      JS,
+      'Joomla',
+      HTML,
+      CSS
     ]
   },
   {

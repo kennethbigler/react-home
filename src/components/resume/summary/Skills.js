@@ -1,6 +1,5 @@
 import React from 'react';
 import { ExpandableCard } from '../../common/ExpandableCard';
-import { REACT, ANGULAR } from '../../../constants/work';
 // Parents: Main
 
 export const Skills = () => {
@@ -28,9 +27,9 @@ export const Skills = () => {
         <h4>Computer Languages:</h4>
         <ul>
           <li>
-            <b>Programming Languages:</b>&nbsp; {REACT}, {ANGULAR}, JavaScript,
-            Bootstrap 3, CSS3, HTML5, AWS SDK for Javascript in Browser, Swift,
-            C++, C#, C, Java, Android, SQL
+            <b>Programming Languages:</b>&nbsp; React.js, Angular.js 1.X,
+            JavaScript, Bootstrap 3, CSS3, HTML5, AWS SDK for Javascript in
+            Browser, Swift, C++, C#, C, Java, Android, SQL
           </li>
           <li>
             <b>Miscellaneous Web Skills:</b>&nbsp; Adobe Creative Suite
