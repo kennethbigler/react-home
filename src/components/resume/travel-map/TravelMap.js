@@ -30,6 +30,12 @@ export const TravelMap = () => {
       cursor: 'pointer'
     },
     margins: { marginTop: 24, marginBottom: 16 },
+    cell: {
+      padding: 5,
+      textAlign: 'center',
+      whiteSpace: 'normal',
+      overflow: 'visible'
+    },
     separator: { borderRight: `1px solid ${grey400}` }
   };
 
@@ -44,14 +50,17 @@ export const TravelMap = () => {
     let row = [];
     // add NA Country
     row.push(
-      <TableRowColumn key={`tmc${i}`} style={styles.separator}>
+      <TableRowColumn
+        key={`tmc${i}`}
+        style={{ ...styles.cell, ...styles.separator }}
+      >
         {NA[i]}
       </TableRowColumn>
     );
     // add EU Countries
     for (let j = 0; j < EURatio; j += 1) {
       row.push(
-        <TableRowColumn key={`tmc${i}${j}`}>
+        <TableRowColumn key={`tmc${i}${j}`} style={styles.cell}>
           {EU[EURatio * i + j]}
         </TableRowColumn>
       );
@@ -74,10 +83,12 @@ export const TravelMap = () => {
       <Table>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
           <TableRow>
-            <TableHeaderColumn style={styles.separator}>
+            <TableHeaderColumn style={{ ...styles.cell, ...styles.separator }}>
               North America
             </TableHeaderColumn>
-            <TableHeaderColumn colSpan={EURatio}>Europe</TableHeaderColumn>
+            <TableHeaderColumn colSpan={EURatio} style={styles.cell}>
+              Europe
+            </TableHeaderColumn>
           </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false}>{countries}</TableBody>
