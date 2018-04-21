@@ -34,7 +34,7 @@ export class Job extends Component {
 
   getCSV = arr => {
     // return arr.reduce((acc, cur) => `${acc}, ${cur}`);
-    const style = { display: 'inline-block', marginRight: 5, marginTop: 5 };
+    const style = { display: 'inline-block', marginRight: 5, marginBottom: 5 };
     return arr.map(tech => (
       <Chip key={tech} style={style}>
         {tech}
@@ -58,7 +58,7 @@ export class Job extends Component {
         <div className="col-sm-9">
           <p>{this.showRange(job.start, job.end, job.notes)}</p>
           <ul>{job.expr.map((desc, i) => <li key={`desc${i}`}>{desc}</li>)}</ul>
-          {job.tech && <p>Technologies/Skills: {this.getCSV(job.tech)}</p>}
+          {job.tech && <div>Technologies/Skills: {this.getCSV(job.tech)}</div>}
         </div>
         <div className="col-sm-3">
           <img

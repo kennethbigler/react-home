@@ -1,5 +1,10 @@
 // react
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+// redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setGitToolsKey } from '../../../store/modules/git';
 // Components
 import { BranchName } from './BranchName';
 import { CommitText } from './CommitText';
@@ -11,7 +16,13 @@ import { deepOrange600 } from 'material-ui/styles/colors';
 import copy from 'copy-to-clipboard';
 // Parents: Main
 
-export class GitTools extends Component {
+class GT extends Component {
+  // Prop Validation
+  static propTypes = {
+    // PropTypes = [string, object, bool, number, func, array].isRequired
+    git: PropTypes.object.isRequired
+  };
+
   state = { storyID: '' };
 
   /**
@@ -26,7 +37,10 @@ export class GitTools extends Component {
    * function to update text state based on value
    * @param {Object} e event fired when typing occurs
    */
-  handleIDChange = e => this.setState({ storyID: e.target.value });
+  handleIDChange = e => {
+    this.props.gitActions.setGitToolsKey(e.target.value);
+    //this.setState({ storyID: e.target.value });
+  };
 
   /**
    * function to update text state based on value
@@ -37,7 +51,7 @@ export class GitTools extends Component {
   };
 
   render() {
-    const { storyID } = this.state;
+    const { storyID } = this.props.git;
     const { handleIDChange, handleCopy, getSelectOptions } = this;
 
     return (
@@ -63,3 +77,10 @@ export class GitTools extends Component {
     );
   }
 }
+
+// react-redux export
+const mapStateToProps = state => ({ git: state.git });
+const mapDispatchToProps = dispatch => ({
+  gitActions: bindActionCreators({ setGitToolsKey }, dispatch)
+});
+export const GitTools = connect(mapStateToProps, mapDispatchToProps)(GT);

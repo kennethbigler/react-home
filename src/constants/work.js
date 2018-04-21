@@ -21,7 +21,7 @@ const BS3 = 'Bootstrap 3';
 const BS4 = 'Bootstrap 4';
 const RR4 = 'React Router 4';
 
-export default [
+const workExp = [
   {
     isJob: true,
     color: colors.yellowA700,
@@ -186,3 +186,18 @@ export default [
     end: moment('2016-12')
   }
 ];
+
+export const techSummary = workExp
+  .reduce((acc, job) => {
+    if (job.tech) {
+      for (const tech of job.tech) {
+        if (acc.indexOf(tech) === -1) {
+          acc.push(tech);
+        }
+      }
+    }
+    return acc;
+  }, [])
+  .sort();
+
+export default workExp;

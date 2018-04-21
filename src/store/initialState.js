@@ -64,5 +64,6 @@ export default {
       hands: []
     }
   ],
-  turn: { player: 0, hand: 0 }
+  turn: { player: 0, hand: 0 },
+  git: { storyID: '' }
 };
