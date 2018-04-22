@@ -28,12 +28,10 @@ export const Header = props => {
             ? `You Won ${getMoneyText(offer)}`
             : `Number of Cases to Open: ${casesToOpen}`}
         </h2>
-        {isOver && (
-          <RaisedButton onClick={newGame} primary label="New Game" />
-        )}
+        {isOver && <RaisedButton onClick={newGame} primary label="New Game" />}
       </div>
       <div className="col-sm-6">
-        <h2 className="text-right">
+        <h2 style={{ textAlign: 'right' }}>
           {player.name}: {getMoneyText(player.money)}
         </h2>
       </div>

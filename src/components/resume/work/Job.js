@@ -45,7 +45,12 @@ export class Job extends Component {
   render() {
     const { job } = this.props;
 
-    const imgStyle = { width: '100%', maxWidth: '12em', height: 'auto' };
+    const imgStyle = {
+      width: '100%',
+      maxWidth: '12em',
+      height: 'auto',
+      float: 'right'
+    };
     const parent = job.parent ? ` (${job.parent})` : '';
     const title = `${job.company}${parent}, ${job.location}`;
 
@@ -61,12 +66,7 @@ export class Job extends Component {
           {job.tech && <div>Technologies/Skills: {this.getCSV(job.tech)}</div>}
         </div>
         <div className="col-sm-3">
-          <img
-            className="float-right"
-            style={imgStyle}
-            src={job.src}
-            alt={job.alt}
-          />
+          <img style={imgStyle} src={job.src} alt={job.alt} />
         </div>
       </ExpandableCard>
     ) : (
