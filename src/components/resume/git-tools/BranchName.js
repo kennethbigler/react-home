@@ -7,7 +7,6 @@ import { CopyTextDisplay } from './CopyTextDisplay';
 // material ui
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import Clear from 'material-ui/svg-icons/content/clear';
 import { deepOrange600 } from 'material-ui/styles/colors';
@@ -20,25 +19,36 @@ import camelCase from 'lodash/camelCase';
 export class BranchName extends Component {
   static propTypes = {
     // PropTypes = [string, object, bool, number, func, array].isRequired
+    branchPrefix: PropTypes.string.isRequired,
+    casePreference: PropTypes.string.isRequired,
     getSelectOptions: PropTypes.func.isRequired,
     gitTheme: PropTypes.string.isRequired,
     handleCopy: PropTypes.func.isRequired,
+    setBranchPrefix: PropTypes.func.isRequired,
+    setCasePreference: PropTypes.func.isRequired,
     storyID: PropTypes.string
   };
 
-  state = {
-    branchPrefix: 'features',
-    branchMessage: '',
-    casePreference: 1
-  };
+  state = { branchMessage: '' };
 
   /**
-   * function to generate select items based of input
-   * @param {[string]} arr input array of options
+   * function to generate select items for branch prefixes
    * @return {[Object]}
    */
   getBranchPrefixOptions = () =>
     this.props.getSelectOptions(['chores', 'epics', 'features', 'fixes']);
+
+  /**
+   * function to generate select items for case preference
+   * @return {[Object]}
+   */
+  getCasePreferenceOptions = () =>
+    this.props.getSelectOptions([
+      'snake_case',
+      'kebab-case',
+      'camelCase',
+      'No Changes'
+    ]);
 
   /**
    * function to update select state based on value
@@ -46,7 +56,14 @@ export class BranchName extends Component {
    * @param {number} i index of option selected
    * @param {number} v value of option selected
    */
-  handleBranchPrefixSelect = (e, i, v) => this.setState({ branchPrefix: v });
+  handleBranchPrefixSelect = (e, i, v) => this.props.setBranchPrefix(v);
+  /**
+   * function to update text state based on value
+   * @param {Object} e event fired when select occurs
+   * @param {number} i index of select option
+   * @param {number} v value of select option
+   */
+  handleCasePrefSelect = (e, i, v) => this.props.setCasePreference(v);
 
   /**
    * function to update text state based on value
@@ -54,7 +71,6 @@ export class BranchName extends Component {
    */
   handleBranchMessageChange = e =>
     this.setState({ branchMessage: e.target.value });
-
   /**
    * function to update text state based on value
    * @param {Object} e event fired when select occurs
@@ -62,31 +78,23 @@ export class BranchName extends Component {
   handleBranchMessageClear = () => this.setState({ branchMessage: '' });
 
   /**
-   * function to update text state based on value
-   * @param {Object} e event fired when select occurs
-   * @param {number} i index of select option
-   * @param {number} v value of select option
-   */
-  handleCasePrefChange = (e, i, v) => this.setState({ casePreference: v });
-
-  /**
    * function to generate the branch name from inputs
    * @return {string} format prefix/<story_id>_name_lower_cased
    */
   getBranchName = () => {
-    const { storyID } = this.props;
-    const { branchPrefix, branchMessage, casePreference } = this.state;
+    const { branchPrefix, casePreference, storyID } = this.props;
+    const { branchMessage } = this.state;
     const prefix = branchPrefix ? `${branchPrefix}/` : '';
     const id = storyID.replace(/\D/g, '');
     let msg;
     switch (casePreference) {
-      case 1:
+      case 'snake_case':
         msg = snakeCase(`${id} ${branchMessage}`);
         break;
-      case 2:
+      case 'kebab-case':
         msg = kebabCase(`${id} ${branchMessage}`);
         break;
-      case 3:
+      case 'camelCase':
         msg = camelCase(`${id} ${branchMessage}`);
         break;
       default:
@@ -96,8 +104,8 @@ export class BranchName extends Component {
   };
 
   render() {
-    const { branchPrefix, branchMessage, casePreference } = this.state;
-    const { gitTheme, handleCopy } = this.props;
+    const { branchMessage } = this.state;
+    const { branchPrefix, casePreference, gitTheme, handleCopy } = this.props;
     const branchName = this.getBranchName();
 
     return (
@@ -112,6 +120,7 @@ export class BranchName extends Component {
           <div className="row">
             <div className="col-sm-3">
               <SelectField
+                style={{ maxWidth: '100%' }}
                 floatingLabelStyle={{ color: gitTheme }}
                 floatingLabelText="Branch Prefix"
                 onChange={this.handleBranchPrefixSelect}
@@ -124,17 +133,15 @@ export class BranchName extends Component {
             </div>
             <div className="col-sm-3">
               <SelectField
+                style={{ maxWidth: '100%' }}
                 floatingLabelStyle={{ color: gitTheme }}
                 floatingLabelText="Case Preference"
-                onChange={this.handleCasePrefChange}
+                onChange={this.handleCasePrefSelect}
                 selectedMenuItemStyle={{ color: gitTheme }}
                 underlineFocusStyle={{ borderColor: gitTheme }}
                 value={casePreference}
               >
-                <MenuItem value={1} primaryText="snake_case" />
-                <MenuItem value={2} primaryText="kebab-case" />
-                <MenuItem value={3} primaryText="camelCase" />
-                <MenuItem value={4} primaryText="No Changes" />
+                {this.getCasePreferenceOptions()}
               </SelectField>
             </div>
             <div className="col-sm-5 col-10">

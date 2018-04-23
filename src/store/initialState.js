@@ -65,5 +65,5 @@ export default {
     }
   ],
   turn: { player: 0, hand: 0 },
-  git: { storyID: '' }
+  git: { storyID: '', branchPrefix: 'features', casePreference: 'snake_case' }
 };

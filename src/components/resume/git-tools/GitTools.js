@@ -4,7 +4,11 @@ import PropTypes from 'prop-types';
 // redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { setGitToolsKey } from '../../../store/modules/git';
+import {
+  setKey,
+  setBranchPrefix,
+  setCasePreference
+} from '../../../store/modules/git';
 // Components
 import { BranchName } from './BranchName';
 import { CommitText } from './CommitText';
@@ -20,7 +24,8 @@ class GT extends Component {
   // Prop Validation
   static propTypes = {
     // PropTypes = [string, object, bool, number, func, array].isRequired
-    git: PropTypes.object.isRequired
+    git: PropTypes.object.isRequired,
+    gitActions: PropTypes.object.isRequired
   };
 
   state = { storyID: '' };
@@ -38,7 +43,7 @@ class GT extends Component {
    * @param {Object} e event fired when typing occurs
    */
   handleIDChange = e => {
-    this.props.gitActions.setGitToolsKey(e.target.value);
+    this.props.gitActions.setKey(e.target.value);
     //this.setState({ storyID: e.target.value });
   };
 
@@ -51,7 +56,8 @@ class GT extends Component {
   };
 
   render() {
-    const { storyID } = this.props.git;
+    const { storyID, branchPrefix, casePreference } = this.props.git;
+    const { setBranchPrefix, setCasePreference } = this.props.gitActions;
     const { handleIDChange, handleCopy, getSelectOptions } = this;
 
     return (
@@ -59,9 +65,13 @@ class GT extends Component {
         <Header {...{ gitTheme: deepOrange600, handleIDChange, storyID }} />
         <BranchName
           {...{
+            branchPrefix,
+            casePreference,
             getSelectOptions,
             gitTheme: deepOrange600,
             handleCopy,
+            setBranchPrefix,
+            setCasePreference,
             storyID
           }}
         />
@@ -81,6 +91,9 @@ class GT extends Component {
 // react-redux export
 const mapStateToProps = state => ({ git: state.git });
 const mapDispatchToProps = dispatch => ({
-  gitActions: bindActionCreators({ setGitToolsKey }, dispatch)
+  gitActions: bindActionCreators(
+    { setKey, setBranchPrefix, setCasePreference },
+    dispatch
+  )
 });
 export const GitTools = connect(mapStateToProps, mapDispatchToProps)(GT);
