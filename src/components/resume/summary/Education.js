@@ -9,14 +9,15 @@ export class Education extends Component {
       const major = d.major ? ` in ${d.major}` : '';
       return (
         <div key={i}>
-          <h4>{`${d.school}, ${d.location}`}</h4>
-          <b>{d.degree + major}</b>
+          <h1>{`${d.school}, ${d.location}`}</h1>
+          <h2>{d.degree + major}</h2>
           <ul>
             {d.minor && <li>{d.minor}</li>}
             {d.honors && <li>{d.honors}</li>}
             {d.graduation && <li>Completion: {d.graduation}</li>}
             {d.gpa && <li>GPA: {d.gpa}</li>}
           </ul>
+          <hr />
         </div>
       );
     }

@@ -17,8 +17,9 @@ export class Skills extends Component {
 
   render() {
     return (
-      <ExpandableCard title="Summary of Skills">
+      <ExpandableCard title="Skills">
         <div style={{ paddingLeft: 20, paddingRight: 20 }}>
+          <h3>Summary of Skills:</h3>
           <ul>
             <li>
               Developing useful, multi-platform software tools and creating user
@@ -37,7 +38,8 @@ export class Skills extends Component {
               Internet and Intranet sites
             </li>
           </ul>
-          <h4>Technology Skills:</h4>
+          <hr />
+          <h3>Technology Skills:</h3>
           {this.getCSV(techSummary)}
         </div>
       </ExpandableCard>

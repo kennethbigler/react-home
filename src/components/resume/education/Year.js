@@ -8,7 +8,7 @@ export const Year = props => {
   const { year, len } = props;
   return (
     <div className={`col-md-${Math.ceil(12 / len)}`}>
-      <h3>{year.year}</h3>
+      <h2>{year.year}</h2>
       <hr />
       {year.quarters.map(quarter => (
         <Quarter key={quarter.quarter} quarter={quarter} />

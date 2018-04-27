@@ -51,7 +51,9 @@ export const Player = props => {
           style={{ minWidth: '100px' }}
         />
       )}
-      {player.id !== 0 && <h3>Bet: ${player.bet}</h3>}
+      {player.id !== 0 && (
+        <h3 style={{ marginBottom: 0 }}>Bet: ${player.bet}</h3>
+      )}
       {player.hands.map((hand, i) => {
         const isHandTurn = !!turn && turn.hand === i;
         return (

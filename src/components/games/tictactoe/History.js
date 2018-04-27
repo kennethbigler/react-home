@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import { getTurn } from './constants';
 // Parents: TicTacToe
 
@@ -38,13 +39,14 @@ export class History extends Component {
       : `Move #${move} (${getTurn(move - 1)}, ` +
         `${Math.floor(round.location / 3)}, ${round.location % 3})`;
     // highlight current turn displayed on board
-    const style = step === move ? { fontWeight: 'bold' } : {};
     return (
-      <li key={move}>
-        <a style={style} onClick={() => jumpToStep(move)}>
-          {description}
-        </a>
-      </li>
+      <FlatButton
+        secondary={step === move}
+        key={move}
+        onClick={() => jumpToStep(move)}
+        style={{ display: 'block' }}
+        label={description}
+      />
     );
   };
 
@@ -54,16 +56,16 @@ export class History extends Component {
     // move history
     const moves = history.map(this.getHistoryText);
     // asc vs. desc
-    const buttonLabel = ascend ? 'Asc' : 'Desc';
     !ascend && moves.reverse();
 
     return (
       <div>
         <RaisedButton
-          label={buttonLabel}
+          label={ascend ? 'Asc' : 'Desc'}
           onClick={this.handleMoveOrderToggle}
+          style={{ marginBottom: 20 }}
         />
-        <ul>{moves}</ul>
+        {moves}
       </div>
     );
   }

@@ -49,7 +49,7 @@ export const PokerNight = () => {
     columns.push({
       Header: k,
       accessor: `scores.${k}`,
-      minWidth: 40,
+      minWidth: 43,
       maxWidth: 160,
       Footer: <span>{err}</span>
     });

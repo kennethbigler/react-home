@@ -7,6 +7,7 @@ import eyLogo from '../images/ey_logo.png';
 import ciscoLogo from '../images/cisco_logo.gif';
 import * as colors from 'material-ui/styles/colors';
 import moment from 'moment';
+
 // Parents: Main
 const REACT = 'React.js';
 const REACT15 = 'React.js 15.6';
@@ -187,17 +188,15 @@ const workExp = [
   }
 ];
 
-export const techSummary = workExp
-  .reduce((acc, job) => {
-    if (job.tech) {
-      for (const tech of job.tech) {
-        if (acc.indexOf(tech) === -1) {
-          acc.push(tech);
-        }
+export const techSummary = workExp.reduce((acc, job) => {
+  if (job.tech) {
+    for (const tech of job.tech) {
+      if (acc.indexOf(tech) === -1) {
+        acc.push(tech);
       }
     }
-    return acc;
-  }, [])
-  .sort();
+  }
+  return acc;
+}, []);
 
 export default workExp;

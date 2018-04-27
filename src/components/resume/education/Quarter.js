@@ -8,7 +8,7 @@ export const Quarter = props => {
   const { quarter } = props;
   return (
     <div>
-      <h4>{quarter.quarter}</h4>
+      <h3>{quarter.quarter}</h3>
       <ul>{quarter.classes.map(c => <Class key={c} name={c} />)}</ul>
     </div>
   );

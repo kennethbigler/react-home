@@ -19,10 +19,10 @@ export const Header = props => {
   return (
     <div className="row">
       <div className="col-sm-6">
-        <h2>
+        <h1>
           Your Case: {pc ? pc.loc : '?'}
           {isOver && ` - ${getMoneyText(pc.val)}`}
-        </h2>
+        </h1>
         <h2>
           {isOver
             ? `You Won ${getMoneyText(offer)}`
@@ -31,9 +31,9 @@ export const Header = props => {
         {isOver && <RaisedButton onClick={newGame} primary label="New Game" />}
       </div>
       <div className="col-sm-6">
-        <h2 style={{ textAlign: 'right' }}>
+        <h1 style={{ textAlign: 'right' }}>
           {player.name}: {getMoneyText(player.money)}
-        </h2>
+        </h1>
       </div>
     </div>
   );

@@ -62,21 +62,23 @@ class Home extends Component {
     const { namepad } = this.styles;
     return (
       <div>
-        <h2>Welcome to my ReactJS Game Projects</h2>
-        <h3>
+        <h1>Welcome to my ReactJS Game Projects</h1>
+        <h2>
           This site was created to learn, check out the{' '}
           <a href="https://github.com/kennethbigler/react-home">
             {'<'}source code{' />'}
           </a>
-        </h3>
+        </h2>
         <hr />
         <div style={namepad}>
-          <h4 className="col-9">Edit Player Names</h4>
-          <h4 className="col-3">Is Bot?</h4>
+          <div className="row">
+            <h4 className="col-9">Edit Player Names</h4>
+            <h4 className="col-3">Is Bot?</h4>
+          </div>
           {players.map(
             (p, i) =>
               p.id !== 0 ? (
-                <span key={`${p.name},${i}`}>
+                <div className="row" key={`${p.name},${i}`}>
                   <div className="col-9">
                     <TextField
                       defaultValue={p.name}
@@ -90,9 +92,9 @@ class Home extends Component {
                       onToggle={(e, isC) => this.handleToggle(p.id, isC)}
                     />
                   </div>
-                </span>
+                </div>
               ) : (
-                <div key={`${p.name},${i}`}>
+                <div className="row" key={`${p.name},${i}`}>
                   <h4 className="col-9">{p.name}</h4>
                   <div className="col-3">
                     <Toggle defaultToggled disabled />
