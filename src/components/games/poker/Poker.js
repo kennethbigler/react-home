@@ -90,31 +90,31 @@ const rankHand = (hand, hist) => {
  * Compare values to see who wins
  * @return {number} value is a base 13 string, to be converted into base 10 for comparison
  */
-const evaluate = hand => {
-  const hist = getHistogram(hand);
-  const rank = rankHand(hand, hist);
-
-  let cards = [0, 0, 0, 0, 0]; // placeholder for card value
-  let total = 0; // track number of cards counted
-  let numCards = 4; // number of same cards in a set
-  let i = 0; // iterator
-  let last = -1; // track location of last in numCards set
-
-  // get card values and display them in order of importance
-  while (total < 5) {
-    const num = hist.indexOf(numCards, last + 1);
-    if (num === -1) {
-      numCards -= 1;
-      last = -1;
-    } else {
-      cards[i] = num.toString(13);
-      i += 1;
-      total += numCards;
-      last = num;
-    }
-  }
-  return `${rank}${cards.reduce((a, c) => `${a}${c}`)}`;
-};
+// const evaluate = hand => {
+//   const hist = getHistogram(hand);
+//   const rank = rankHand(hand, hist);
+//
+//   let cards = [0, 0, 0, 0, 0]; // placeholder for card value
+//   let total = 0; // track number of cards counted
+//   let numCards = 4; // number of same cards in a set
+//   let i = 0; // iterator
+//   let last = -1; // track location of last in numCards set
+//
+//   // get card values and display them in order of importance
+//   while (total < 5) {
+//     const num = hist.indexOf(numCards, last + 1);
+//     if (num === -1) {
+//       numCards -= 1;
+//       last = -1;
+//     } else {
+//       cards[i] = num.toString(13);
+//       i += 1;
+//       total += numCards;
+//       last = num;
+//     }
+//   }
+//   return `${rank}${cards.reduce((a, c) => `${a}${c}`)}`;
+// };
 
 /* --------------------------------------------------
 * Poker

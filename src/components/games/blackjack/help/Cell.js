@@ -5,18 +5,23 @@ import { TableRowColumn } from 'material-ui/Table';
 
 /** render code for each class */
 export const Cell = props => {
-  const { color, action, style, ...otherProps } = props;
-  const stl = { ...style, backgroundColor: color };
+  const { color, text, style, ...otherProps } = props;
+  const stl = {
+    ...style,
+    textAlign: 'center',
+    padding: 0,
+    backgroundColor: color
+  };
   return (
     <TableRowColumn style={stl} {...otherProps}>
-      {action}
+      {text}
     </TableRowColumn>
   );
 };
 
 Cell.propTypes = {
   // PropTypes = [string, object, bool, number, func, array].isRequired
-  color: PropTypes.string.isRequired,
-  action: PropTypes.string.isRequired,
+  color: PropTypes.string,
+  text: PropTypes.string.isRequired,
   style: PropTypes.object
 };

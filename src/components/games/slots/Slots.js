@@ -72,41 +72,40 @@ class SM extends Component {
         <div className="row" style={{ marginTop: '2em' }}>
           <div className="col-sm-6">
             <div className="row" style={{ marginBottom: '1em' }}>
-              <div className="col-9">
+              <div className="col-sm-3">
+                <RaisedButton
+                  label="Spin"
+                  onClick={this.updateSlotMachine}
+                  style={{ marginBottom: 15 }}
+                  primary
+                />
+              </div>
+              <div className="col-sm-9">
                 <Table selectable={false} fixedHeader>
                   <TableBody displayRowCheckbox={false} stripedRows>
                     {slots}
                   </TableBody>
                 </Table>
               </div>
-              <div className="col-3">
-                <RaisedButton
-                  label="Spin"
-                  onClick={this.updateSlotMachine}
-                  primary
-                />
-              </div>
             </div>
-            <div className="row">
-              <Table selectable={false} fixedHeader>
-                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                  <TableRow>
-                    <TableHeaderColumn>Player</TableHeaderColumn>
-                    <TableHeaderColumn>Money</TableHeaderColumn>
-                  </TableRow>
-                </TableHeader>
-                <TableBody displayRowCheckbox={false} showRowHover>
-                  <TableRow>
-                    <TableRowColumn>{player.name}</TableRowColumn>
-                    <TableRowColumn>${player.money}</TableRowColumn>
-                  </TableRow>
-                  <TableRow>
-                    <TableRowColumn>House</TableRowColumn>
-                    <TableRowColumn>${dealer.money}</TableRowColumn>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </div>
+            <Table selectable={false} fixedHeader>
+              <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                <TableRow>
+                  <TableHeaderColumn>Player</TableHeaderColumn>
+                  <TableHeaderColumn>Money</TableHeaderColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody displayRowCheckbox={false} showRowHover>
+                <TableRow>
+                  <TableRowColumn>{player.name}</TableRowColumn>
+                  <TableRowColumn>${player.money}</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>House</TableRowColumn>
+                  <TableRowColumn>${dealer.money}</TableRowColumn>
+                </TableRow>
+              </TableBody>
+            </Table>
           </div>
           <div className="col-sm-6">
             <Table selectable={false} fixedHeader>

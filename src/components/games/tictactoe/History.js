@@ -63,7 +63,7 @@ export class History extends Component {
         <RaisedButton
           label={ascend ? 'Asc' : 'Desc'}
           onClick={this.handleMoveOrderToggle}
-          style={{ marginBottom: 20 }}
+          style={{ marginTop: 20, marginBottom: 20 }}
         />
         {moves}
       </div>

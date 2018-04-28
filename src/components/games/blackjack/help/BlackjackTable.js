@@ -1,26 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row } from './Row';
+import { Cell } from './Cell';
 import {
   Table,
   TableHeader,
   TableHeaderColumn,
   TableBody,
-  TableRow,
-  TableRowColumn
+  TableRow
 } from 'material-ui/Table';
 // Parents: Popup
 
 /** render code for each class */
 export const BlackjackTable = props => {
   const { title, data } = props;
-
   const cards = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'A'];
-  const style = {
-    width: 75,
-    textAlign: 'center',
-    padding: 0
-  };
 
   return (
     <Table>
@@ -31,14 +25,10 @@ export const BlackjackTable = props => {
       </TableHeader>
       <TableBody displayRowCheckbox={false}>
         <TableRow>
-          <TableRowColumn rowSpan="2" style={style}>
-            Your<br />Hand
-          </TableRowColumn>
-          <TableRowColumn colSpan="10">Dealer</TableRowColumn>
+          <Cell rowSpan="2" style={{ width: 60 }} text="Hand" />
+          <Cell colSpan="10" text="Dealer" />
         </TableRow>
-        <TableRow>
-          {cards.map(c => <TableRowColumn key={c}>{c}</TableRowColumn>)}
-        </TableRow>
+        <TableRow>{cards.map(c => <Cell key={c} text={c} />)}</TableRow>
         {data.map(obj => <Row key={obj.name} {...obj} />)}
       </TableBody>
     </Table>

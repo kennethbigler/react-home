@@ -6,8 +6,7 @@ import {
   TableHeader,
   TableHeaderColumn,
   TableBody,
-  TableRow,
-  TableRowColumn
+  TableRow
 } from 'material-ui/Table';
 import * as colors from 'material-ui/styles/colors';
 // Parents: Popup
@@ -15,11 +14,11 @@ import * as colors from 'material-ui/styles/colors';
 /** render code for each class */
 export const Help = () => {
   // options
-  const h = { color: colors.green200, action: 'H' };
-  const d = { color: colors.teal200, action: 'D' };
-  const s = { color: colors.red200, action: 'S' };
-  const p = { color: colors.orange200, action: 'P' };
-  const ds = { color: colors.deepPurple200, action: 'DS' };
+  const h = { color: colors.green200, text: 'H' };
+  const d = { color: colors.teal200, text: 'D' };
+  const s = { color: colors.red200, text: 'S' };
+  const p = { color: colors.orange200, text: 'P' };
+  const ds = { color: colors.deepPurple200, text: 'DS' };
 
   // algorithms for options
   const hardTtl = [
@@ -75,23 +74,19 @@ export const Help = () => {
         <TableBody displayRowCheckbox={false}>
           <TableRow>
             <Cell {...h} />
-            <TableRowColumn colSpan="2">= Hit</TableRowColumn>
+            <Cell colSpan="2" text="= Hit" />
             <Cell {...s} />
-            <TableRowColumn colSpan="3">= Stand</TableRowColumn>
+            <Cell colSpan="3" text="= Stand" />
             <Cell {...p} />
-            <TableRowColumn colSpan="3">= Split</TableRowColumn>
+            <Cell colSpan="3" text="= Split" />
           </TableRow>
           <TableRow>
             <Cell {...d} />
-            <TableRowColumn colSpan="10">
-              = Double (Hit if not allowed)
-            </TableRowColumn>
+            <Cell colSpan="10" text="= Double (Hit if not allowed)" />
           </TableRow>
           <TableRow>
             <Cell {...ds} />
-            <TableRowColumn colSpan="10">
-              = Double (Stand if not allowed)
-            </TableRowColumn>
+            <Cell colSpan="10" text="= Double (Stand if not allowed)" />
           </TableRow>
         </TableBody>
       </Table>

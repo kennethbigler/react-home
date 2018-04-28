@@ -7,14 +7,13 @@ import { TableRow, TableRowColumn } from 'material-ui/Table';
 /** render code for each class */
 export const Row = props => {
   const { name, data } = props;
-  const style = {
-    textAlign: 'center',
-    padding: 0
-  };
+  console.log(data);
   return (
     <TableRow>
-      <TableRowColumn style={style}>{name}</TableRowColumn>
-      {data.map((action, i) => <Cell key={i} {...action} style={style} />)}
+      <TableRowColumn style={{ textAlign: 'center', padding: 0 }}>
+        {name}
+      </TableRowColumn>
+      {data.map((text, i) => <Cell key={i} {...text} />)}
     </TableRow>
   );
 };
