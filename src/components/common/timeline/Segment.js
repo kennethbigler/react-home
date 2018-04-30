@@ -1,14 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { grey50 } from 'material-ui/styles/colors';
-// Parents: Degree
+import types from 'prop-types';
+import { grey50, grey400 } from 'material-ui/styles/colors';
+// Parents: Row
 
 const styles = {
   box: {
     cursor: 'default',
     paddingTop: '5px',
     paddingBottom: '5px',
-    boxShadow: '2px 3px 4px #999',
+    boxShadow: `2px 3px 4px ${grey400}`,
     color: grey50,
     textAlign: 'center'
   }
@@ -35,6 +35,11 @@ export const Segment = props => {
 };
 
 Segment.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  data: PropTypes.object.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  data: types.shape({
+    company: types.any,
+    width: types.any.isRequired,
+    color: types.any,
+    title: types.any
+  }).isRequired
 };

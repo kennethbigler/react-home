@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Board } from './Board';
 import { ButtonGroup } from './ButtonGroup';
 // Parents: BlackJack
@@ -43,11 +43,13 @@ export const GameTable = props => {
 };
 
 GameTable.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  turn: PropTypes.object.isRequired,
-  players: PropTypes.array.isRequired,
-  gameFunctions: PropTypes.array.isRequired,
-  hideHands: PropTypes.bool,
-  betHandler: PropTypes.func,
-  cardClickHandler: PropTypes.func
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  turn: types.shape({
+    player: types.number.isRequired
+  }).isRequired,
+  players: types.array.isRequired,
+  gameFunctions: types.array.isRequired,
+  hideHands: types.bool,
+  betHandler: types.func,
+  cardClickHandler: types.func
 };

@@ -1,6 +1,6 @@
 // react
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 // components
 import { ExpandableCard } from '../../common/ExpandableCard';
 import { Timeline, TIMELINE_TITLE } from '../../common/timeline/Timeline';
@@ -25,9 +25,9 @@ export const TimelineCard = props => {
 };
 
 TimelineCard.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  workExp: PropTypes.array,
-  backgroundColor: PropTypes.string
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  workExp: types.array,
+  backgroundColor: types.string
 };
 
 TimelineCard.defaultProps = {

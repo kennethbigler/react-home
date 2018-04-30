@@ -1,6 +1,6 @@
 // react
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 // components
 import { ExpandableCard } from '../../common/ExpandableCard';
 import { CopyTextDisplay } from './CopyTextDisplay';
@@ -18,15 +18,15 @@ import camelCase from 'lodash/camelCase';
 
 export class BranchName extends Component {
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    branchPrefix: PropTypes.string.isRequired,
-    casePreference: PropTypes.string.isRequired,
-    getSelectOptions: PropTypes.func.isRequired,
-    gitTheme: PropTypes.string.isRequired,
-    handleCopy: PropTypes.func.isRequired,
-    setBranchPrefix: PropTypes.func.isRequired,
-    setCasePreference: PropTypes.func.isRequired,
-    storyID: PropTypes.string
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    branchPrefix: types.string.isRequired,
+    casePreference: types.string.isRequired,
+    getSelectOptions: types.func.isRequired,
+    gitTheme: types.string.isRequired,
+    handleCopy: types.func.isRequired,
+    setBranchPrefix: types.func.isRequired,
+    setCasePreference: types.func.isRequired,
+    storyID: types.string
   };
 
   state = { branchMessage: '' };

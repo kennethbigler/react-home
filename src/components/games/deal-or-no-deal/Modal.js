@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { Money } from './Money';
@@ -52,12 +52,16 @@ export const Modal = props => {
 };
 
 Modal.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  open: PropTypes.bool.isRequired,
-  deal: PropTypes.func.isRequired,
-  noDeal: PropTypes.func.isRequired,
-  offer: PropTypes.number.isRequired,
-  board: PropTypes.array.isRequired,
-  numCases: PropTypes.number.isRequired,
-  swap: PropTypes.func.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  open: types.bool.isRequired,
+  deal: types.func.isRequired,
+  noDeal: types.func.isRequired,
+  offer: types.number.isRequired,
+  board: types.arrayOf(
+    types.shape({
+      loc: types.number.isRequired
+    })
+  ).isRequired,
+  numCases: types.number.isRequired,
+  swap: types.func.isRequired
 };

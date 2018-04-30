@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import moment from 'moment';
 import { Row } from './Row';
 // Parents: Work
@@ -13,8 +13,20 @@ const MIN_TEXT_WIDTH = 94;
 
 export class Timeline extends Component {
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    data: PropTypes.array.isRequired
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    data: types.arrayOf(
+      types.shape({
+        company: types.string.isRequired,
+        color: types.string.isRequired,
+        title: types.string.isRequired,
+        start: types.shape({
+          diff: types.func.isRequired
+        }).isRequired,
+        end: types.shape({
+          diff: types.func.isRequired
+        }).isRequired
+      })
+    ).isRequired
   };
 
   constructor(props) {

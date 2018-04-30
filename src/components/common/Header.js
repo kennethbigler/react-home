@@ -1,21 +1,18 @@
 // React
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-// Assets
-import photo from '../../images/ken.jpg';
+import types from 'prop-types';
 // Material UI
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import Avatar from 'material-ui/Avatar';
 // Parents: App
 
 export class Header extends Component {
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    children: PropTypes.object.isRequired,
-    handleNav: PropTypes.func.isRequired
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    children: types.element.isRequired,
+    handleNav: types.func.isRequired
   };
 
   state = { open: false };
@@ -35,11 +32,7 @@ export class Header extends Component {
     return (
       <div className="application-header">
         <AppBar
-          title={
-            <div>
-              <Avatar src={photo} size={30} /> Kenneth Bigler
-            </div>
-          }
+          title="Kenneth Bigler"
           style={{ position: 'fixed', left: 0, right: 0, top: 0 }}
           iconClassNameRight="muidocs-icon-navigation-expand-more"
           onLeftIconButtonClick={this.handleOpen}

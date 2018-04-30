@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 // Parents: TicTacToe
@@ -25,8 +25,8 @@ export const Header = props => {
 };
 
 Header.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  winner: PropTypes.string,
-  turn: PropTypes.string.isRequired,
-  newGame: PropTypes.func.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  winner: types.string,
+  turn: types.string.isRequired,
+  newGame: types.func.isRequired
 };

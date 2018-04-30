@@ -1,6 +1,6 @@
 // react
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 // components
 import { Modal } from './Modal';
 import { Board } from './Board';
@@ -58,9 +58,14 @@ const getNewState = () => ({
 export class DND extends Component {
   // Prop Validation
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    player: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    player: types.shape({
+      id: types.number.isRequired,
+      money: types.number.isRequired
+    }).isRequired,
+    actions: types.shape({
+      payout: types.func.isRequired
+    }).isRequired
   };
 
   // local variable to track the board

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import { getTurn } from './constants';
@@ -10,10 +10,10 @@ import { getTurn } from './constants';
  * ======================================== */
 export class History extends Component {
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    step: PropTypes.number.isRequired,
-    history: PropTypes.array.isRequired,
-    jumpToStep: PropTypes.func.isRequired
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    step: types.number.isRequired,
+    history: types.arrayOf(types.shape({ location: types.number })).isRequired,
+    jumpToStep: types.func.isRequired
   };
 
   constructor(props) {

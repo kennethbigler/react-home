@@ -215,8 +215,7 @@ export default [
     school: 'Stanford University',
     color: colors.red500,
     location: 'Stanford, CA',
-    degree: 'No Degree Obtained',
-    subtitle:
+    degree:
       'Stanford Continuing Studies & Undergrad High School Summer Visitor',
     gpa: 3.8,
     years: [

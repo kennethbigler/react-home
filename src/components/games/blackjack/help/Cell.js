@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { TableRowColumn } from 'material-ui/Table';
 // Parents: Help
 
@@ -20,8 +20,8 @@ export const Cell = props => {
 };
 
 Cell.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  color: PropTypes.string,
-  text: PropTypes.string.isRequired,
-  style: PropTypes.object
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  color: types.string,
+  text: types.string.isRequired,
+  style: types.objectOf(types.oneOfType([types.string, types.number]))
 };

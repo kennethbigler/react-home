@@ -1,6 +1,6 @@
 // react
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 // material-ui
 import TextField from 'material-ui/TextField';
 // Parents: Main
@@ -26,8 +26,8 @@ export const Header = props => {
 };
 
 Header.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  gitTheme: PropTypes.string.isRequired,
-  handleIDChange: PropTypes.func.isRequired,
-  storyID: PropTypes.string
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  gitTheme: types.string.isRequired,
+  handleIDChange: types.func.isRequired,
+  storyID: types.string
 };

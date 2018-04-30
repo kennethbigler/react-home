@@ -1,6 +1,6 @@
 // react
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 // material ui
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import muiThemeable from 'material-ui/styles/muiThemeable';
@@ -8,15 +8,16 @@ import * as colors from 'material-ui/styles/colors';
 
 export class EC extends Component {
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    backgroundColor: PropTypes.string,
-    muiTheme: PropTypes.object,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.node),
-      PropTypes.node
-    ])
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    backgroundColor: types.string,
+    muiTheme: types.shape({
+      palette: types.shape({
+        primary1Color: types.string.isRequired
+      }).isRequired
+    }),
+    title: types.oneOfType([types.string, types.element]),
+    subtitle: types.oneOfType([types.string, types.element]),
+    children: types.oneOfType([types.arrayOf(types.node), types.node])
   };
 
   state = {

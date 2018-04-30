@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Player } from './Player';
 // Parents: GameTable
 
@@ -27,10 +27,13 @@ export const Board = props => {
 };
 
 Board.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  players: PropTypes.array.isRequired,
-  turn: PropTypes.object,
-  hideHands: PropTypes.bool,
-  betHandler: PropTypes.func,
-  cardHandler: PropTypes.func
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  players: types.arrayOf(types.object).isRequired,
+  turn: types.shape({
+    player: types.number.isRequired,
+    hand: types.number.isRequired
+  }),
+  hideHands: types.bool,
+  betHandler: types.func,
+  cardHandler: types.func
 };

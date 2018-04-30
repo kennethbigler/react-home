@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Class } from './Class';
 // Parents: Year
 
@@ -15,6 +15,9 @@ export const Quarter = props => {
 };
 
 Quarter.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  quarter: PropTypes.object.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  quarter: types.shape({
+    quarter: types.string.isRequired,
+    classes: types.arrayOf(types.string).isRequired
+  }).isRequired
 };

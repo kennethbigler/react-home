@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import { black, red500, lightGreen600 } from 'material-ui/styles/colors';
@@ -24,8 +24,8 @@ export const Piece = props => {
 };
 
 Piece.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  piece: PropTypes.number.isRequired,
-  enabled: PropTypes.bool,
-  onClick: PropTypes.func
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  piece: types.number.isRequired,
+  enabled: types.bool,
+  onClick: types.func
 };

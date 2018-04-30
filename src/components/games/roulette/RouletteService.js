@@ -1,4 +1,4 @@
-import crap from './RouletteTableValues';
+import crap from './roulette-table-values';
 
 /*global app*/
 app.factory('RouletteService', [

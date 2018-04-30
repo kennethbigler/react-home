@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import Paper from 'material-ui/Paper';
 import { Board } from './Board';
 import { Header } from './Header';
@@ -26,10 +26,10 @@ export const GameBoard = props => {
 };
 
 GameBoard.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  board: PropTypes.array.isRequired,
-  insert: PropTypes.func.isRequired,
-  winner: PropTypes.number,
-  turn: PropTypes.number.isRequired,
-  newGame: PropTypes.func.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  board: types.array.isRequired,
+  insert: types.func.isRequired,
+  winner: types.number,
+  turn: types.number.isRequired,
+  newGame: types.func.isRequired
 };

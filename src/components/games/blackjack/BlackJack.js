@@ -7,7 +7,7 @@
 
 // react
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 // components
 import { Popup } from './Popup';
 import { GameTable } from '../gametable/GameTable';
@@ -82,11 +82,40 @@ function weighHand(hand = []) {
 class BJ extends Component {
   // Prop Validation
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    playerActions: PropTypes.object.isRequired,
-    players: PropTypes.array.isRequired,
-    turn: PropTypes.object.isRequired,
-    turnActions: PropTypes.object.isRequired
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    playerActions: types.shape({
+      drawCard: types.func.isRequired,
+      newHand: types.func.isRequired,
+      payout: types.func.isRequired,
+      resetStatus: types.func.isRequired,
+      splitHand: types.func.isRequired,
+      updateBet: types.func.isRequired
+    }).isRequired,
+    players: types.arrayOf(
+      types.shape({
+        id: types.number.isRequired,
+        bet: types.number.isRequired,
+        status: types.string.isRequired,
+        money: types.number.isRequired,
+        hands: types.arrayOf(
+          types.shape({
+            weight: types.number.isRequired,
+            cards: types.arrayOf(
+              types.shape({ weight: types.number.isRequired })
+            ).isRequired
+          })
+        ).isRequired
+      })
+    ).isRequired,
+    turn: types.shape({
+      player: types.number.isRequired,
+      hand: types.number.isRequired
+    }).isRequired,
+    turnActions: types.shape({
+      incrHandTurn: types.func.isRequired,
+      incrPlayerTurn: types.func.isRequired,
+      resetTurn: types.func.isRequired
+    }).isRequired
   };
 
   constructor(props) {

@@ -1,6 +1,6 @@
 // react
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 // components
 import { CopyTextDisplay } from './CopyTextDisplay';
 import { ExpandableCard } from '../../common/ExpandableCard';
@@ -17,11 +17,11 @@ import nl2br from 'react-newline-to-break';
 
 export class CommitText extends Component {
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    getSelectOptions: PropTypes.func.isRequired,
-    gitTheme: PropTypes.string.isRequired,
-    handleCopy: PropTypes.func.isRequired,
-    storyID: PropTypes.string
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    getSelectOptions: types.func.isRequired,
+    gitTheme: types.string.isRequired,
+    handleCopy: types.func.isRequired,
+    storyID: types.string
   };
 
   state = {

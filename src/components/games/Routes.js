@@ -1,6 +1,6 @@
 // React
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 // common
 import { Header } from '../common/Header';
@@ -17,7 +17,7 @@ import { Connect4 } from './connect4/Connect4';
 import { DealOrNoDeal } from './deal-or-no-deal/DealOrNoDeal';
 // Parents: App
 
-const Routes = props => {
+export const Routes = props => {
   const { match, handleNav } = props;
   const { url } = match;
 
@@ -54,9 +54,9 @@ const Routes = props => {
 };
 
 Routes.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  match: PropTypes.object.isRequired,
-  handleNav: PropTypes.func.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  match: types.shape({
+    url: types.string.isRequired
+  }).isRequired,
+  handleNav: types.func.isRequired
 };
-
-export default Routes;

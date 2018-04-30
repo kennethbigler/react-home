@@ -1,7 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Year } from './Year';
 import { ExpandableCard } from '../../common/ExpandableCard';
+import get from 'lodash/get';
 // Parents: Work
 
 /** render code for each degree */
@@ -16,7 +17,7 @@ export const Degree = props => {
   const graduation = degree.graduation
     ? ` - Graduation: ${degree.graduation}`
     : '';
-  const subtitle = gpa ? `${gpa}${graduation}` : degree.subtitle;
+  const subtitle = get(degree, ['subtitle'], `${gpa}${graduation}`);
 
   return (
     <ExpandableCard
@@ -32,6 +33,20 @@ export const Degree = props => {
 };
 
 Degree.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  degree: PropTypes.object.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  degree: types.shape({
+    school: types.string,
+    major: types.string,
+    minor: types.string,
+    degree: types.string.isRequired,
+    gpa: types.oneOfType([types.string, types.number]),
+    graduation: types.string,
+    subtitle: types.string,
+    color: types.string,
+    years: types.arrayOf(
+      types.shape({
+        year: types.string.isRequired
+      }).isRequired
+    ).isRequired
+  }).isRequired
 };

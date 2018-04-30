@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Segment } from './Segment';
-// Parents: Degree
+// Parents: Timeline
 
 /** render code for each class */
 export const Row = props => {
@@ -15,6 +15,6 @@ export const Row = props => {
 };
 
 Row.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  segments: PropTypes.array.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  segments: types.arrayOf(types.object.isRequired).isRequired
 };

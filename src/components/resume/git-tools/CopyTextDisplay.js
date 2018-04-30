@@ -1,6 +1,6 @@
 // react
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 // material-ui
 import Snackbar from 'material-ui/Snackbar';
 import Chip from 'material-ui/Chip';
@@ -8,14 +8,10 @@ import Chip from 'material-ui/Chip';
 
 export class CopyTextDisplay extends Component {
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    handleCopy: PropTypes.func.isRequired,
-    text: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object,
-      PropTypes.array
-    ]).isRequired,
-    copyText: PropTypes.string
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    handleCopy: types.func.isRequired,
+    text: types.oneOfType([types.string, types.array]).isRequired,
+    copyText: types.string
   };
 
   state = { open: false };

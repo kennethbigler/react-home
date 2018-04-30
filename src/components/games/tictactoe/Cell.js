@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 import { white, indigoA700 } from 'material-ui/styles/colors';
 // Parents: Board
@@ -23,8 +23,8 @@ export const Cell = props => {
 };
 
 Cell.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  value: PropTypes.string.isRequired,
-  winner: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  value: types.string.isRequired,
+  winner: types.bool.isRequired,
+  onClick: types.func.isRequired
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 // Parents: Header
@@ -58,6 +58,6 @@ export const Menu = props => {
 };
 
 Menu.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  onItemClick: PropTypes.func
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  onItemClick: types.func
 };

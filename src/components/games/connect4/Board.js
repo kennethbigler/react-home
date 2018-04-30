@@ -1,6 +1,6 @@
 import React from 'react';
 import { Piece } from './Piece';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import {
   Table,
   TableBody,
@@ -51,8 +51,8 @@ export const Board = props => {
 };
 
 Board.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  board: PropTypes.array.isRequired,
-  turn: PropTypes.number.isRequired,
-  insert: PropTypes.func.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  board: types.arrayOf(types.arrayOf(types.number)).isRequired,
+  turn: types.number.isRequired,
+  insert: types.func.isRequired
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Hand } from './Hand';
 import Slider from 'material-ui/Slider';
 import * as colors from 'material-ui/styles/colors';
@@ -77,11 +77,22 @@ export const Player = props => {
 };
 
 Player.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  player: PropTypes.object.isRequired,
-  playerNo: PropTypes.number.isRequired,
-  hideHands: PropTypes.bool,
-  turn: PropTypes.object,
-  betHandler: PropTypes.func,
-  cardHandler: PropTypes.func
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  player: types.shape({
+    hands: types.arrayOf(types.object).isRequired,
+    id: types.number.isRequired,
+    isBot: types.bool.isRequired,
+    money: types.number.isRequired,
+    status: types.string.isRequired,
+    name: types.string.isRequired,
+    bet: types.number.isRequired
+  }).isRequired,
+  playerNo: types.number.isRequired,
+  hideHands: types.bool,
+  turn: types.shape({
+    player: types.number.isRequired,
+    hand: types.number.isRequired
+  }),
+  betHandler: types.func,
+  cardHandler: types.func
 };

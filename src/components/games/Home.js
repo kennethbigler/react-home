@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateName, updateBot } from '../../store/modules/players';
@@ -13,9 +13,18 @@ import TextField from 'material-ui/TextField';
 class Home extends Component {
   // Prop Validation
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    playerActions: PropTypes.object.isRequired,
-    players: PropTypes.array.isRequired
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    playerActions: types.shape({
+      updateName: types.func.isRequired,
+      updateBot: types.func.isRequired
+    }).isRequired,
+    players: types.arrayOf(
+      types.shape({
+        id: types.number.isRequired,
+        name: types.string.isRequired,
+        isBot: types.bool.isRequired
+      })
+    ).isRequired
   };
 
   // https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
@@ -30,6 +39,7 @@ class Home extends Component {
       players.forEach(p => isBot.push(p.isBot));
       return { players, isBot };
     }
+    return null;
   }
 
   state = {

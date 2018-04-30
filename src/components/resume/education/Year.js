@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Quarter } from './Quarter';
 // Parents: Degree
 
@@ -18,7 +18,10 @@ export const Year = props => {
 };
 
 Year.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  len: PropTypes.number.isRequired,
-  year: PropTypes.object.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  len: types.number.isRequired,
+  year: types.shape({
+    year: types.string.isRequired,
+    quarters: types.arrayOf(types.shape({ quarter: types.string.isRequired }))
+  }).isRequired
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Button } from './Button';
 // Parents: GameTable
 
@@ -19,6 +19,11 @@ export const ButtonGroup = props => {
 };
 
 ButtonGroup.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  gameFunctions: PropTypes.array.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  gameFunctions: types.arrayOf(
+    types.shape({
+      name: types.string.isRequired,
+      func: types.func.isRequired
+    })
+  ).isRequired
 };

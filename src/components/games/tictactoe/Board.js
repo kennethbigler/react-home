@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Cell } from './Cell';
 import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
 import { grey400 } from 'material-ui/styles/colors';
@@ -10,10 +10,10 @@ import { grey400 } from 'material-ui/styles/colors';
  * ======================================== */
 export class Board extends Component {
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    winRow: PropTypes.array.isRequired,
-    board: PropTypes.array.isRequired,
-    onClick: PropTypes.func.isRequired
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    winRow: types.arrayOf(types.number).isRequired,
+    board: types.arrayOf(types.string).isRequired,
+    onClick: types.func.isRequired
   };
 
   /** function to render the cells of the Board */

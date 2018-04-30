@@ -1,18 +1,20 @@
 // react
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 // react router
 import { Switch, Route, withRouter } from 'react-router-dom';
 // Routes
-import ResumeRoutes from './resume/Routes';
-import GameRoutes from './games/Routes';
+import { Routes as ResumeRoutes } from './resume/Routes';
+import { Routes as GameRoutes } from './games/Routes';
 // Parents: App
 
 export class AppRoutes extends Component {
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    location: types.shape({ pathname: types.string.isRequired }).isRequired,
+    history: types.shape({
+      push: types.func.isRequired
+    }).isRequired
   };
 
   handleNav = loc => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Card } from './Card';
 import * as colors from 'material-ui/styles/colors';
 // Parents: Player
@@ -45,12 +45,20 @@ export const Hand = props => {
 };
 
 Hand.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  hand: PropTypes.object.isRequired,
-  playerNo: PropTypes.number.isRequired,
-  handNo: PropTypes.number.isRequired,
-  isHandTurn: PropTypes.bool.isRequired,
-  isPlayerTurn: PropTypes.bool.isRequired,
-  isMultiHand: PropTypes.bool.isRequired,
-  cardHandler: PropTypes.func
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  hand: types.shape({
+    weight: types.number.isRequired,
+    cards: types.arrayOf(
+      types.shape({
+        name: types.string.isRequired,
+        suit: types.string.isRequired
+      })
+    ).isRequired
+  }).isRequired,
+  playerNo: types.number.isRequired,
+  handNo: types.number.isRequired,
+  isHandTurn: types.bool.isRequired,
+  isPlayerTurn: types.bool.isRequired,
+  isMultiHand: types.bool.isRequired,
+  cardHandler: types.func
 };

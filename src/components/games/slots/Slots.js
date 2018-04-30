@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { payout, updateBet } from '../../../store/modules/players';
@@ -21,9 +21,18 @@ import {
 class SM extends Component {
   // Prop Validation
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    playerActions: PropTypes.object.isRequired,
-    players: PropTypes.array.isRequired
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    playerActions: types.shape({
+      payout: types.func.isRequired,
+      updateBet: types.func.isRequired
+    }).isRequired,
+    players: types.arrayOf(
+      types.shape({
+        id: types.number.isRequired,
+        money: types.number.isRequired,
+        bet: types.number.isRequired
+      })
+    ).isRequired
   };
 
   constructor(props) {

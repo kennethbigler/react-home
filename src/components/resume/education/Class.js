@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 // Parents: Degree
 
 /** render code for each class */
@@ -8,6 +8,6 @@ export const Class = props => {
 };
 
 Class.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  name: PropTypes.string.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  name: types.string.isRequired
 };

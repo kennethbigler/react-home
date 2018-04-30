@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { getMoneyText } from './common';
 import RaisedButton from 'material-ui/RaisedButton';
 // Parents: Degree
@@ -22,8 +22,12 @@ export const Case = props => {
 };
 
 Case.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  onClick: PropTypes.func.isRequired,
-  briefcase: PropTypes.object.isRequired,
-  secondary: PropTypes.bool
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  onClick: types.func.isRequired,
+  briefcase: types.shape({
+    on: types.bool.isRequired,
+    loc: types.number.isRequired,
+    val: types.number.isRequired
+  }).isRequired,
+  secondary: types.bool
 };

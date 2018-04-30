@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 // Parents: ButtonGroup
 
@@ -16,7 +16,7 @@ export const Button = props => {
 };
 
 Button.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  name: PropTypes.string.isRequired,
-  func: PropTypes.func.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  name: types.string.isRequired,
+  func: types.func.isRequired
 };

@@ -1,6 +1,6 @@
 // react
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 // redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -23,9 +23,17 @@ import copy from 'copy-to-clipboard';
 class GT extends Component {
   // Prop Validation
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    git: PropTypes.object.isRequired,
-    gitActions: PropTypes.object.isRequired
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    git: types.shape({
+      storyID: types.string.isRequired,
+      branchPrefix: types.string.isRequired,
+      casePreference: types.string.isRequired
+    }).isRequired,
+    gitActions: types.shape({
+      setKey: types.func.isRequired,
+      setBranchPrefix: types.func.isRequired,
+      setCasePreference: types.func.isRequired
+    }).isRequired
   };
 
   state = { storyID: '' };

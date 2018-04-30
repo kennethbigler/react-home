@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Row } from './Row';
 import { Cell } from './Cell';
 import {
@@ -36,7 +36,11 @@ export const BlackjackTable = props => {
 };
 
 BlackjackTable.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  data: PropTypes.array.isRequired,
-  title: PropTypes.string.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  data: types.arrayOf(
+    types.shape({
+      name: types.string.isRequired
+    })
+  ).isRequired,
+  title: types.string.isRequired
 };

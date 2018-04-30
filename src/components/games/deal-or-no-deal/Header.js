@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { getMoneyText } from './common';
 import RaisedButton from 'material-ui/RaisedButton';
-// Parents: Degree
+// Parents: DealOrNoDeal
 
 /** render code for each class */
 export const Header = props => {
@@ -40,11 +40,17 @@ export const Header = props => {
 };
 
 Header.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  offer: PropTypes.number,
-  playerChoice: PropTypes.object,
-  newGame: PropTypes.func.isRequired,
-  casesToOpen: PropTypes.number.isRequired,
-  isOver: PropTypes.bool.isRequired,
-  player: PropTypes.object.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  offer: types.number,
+  playerChoice: types.shape({
+    loc: types.number.isRequired,
+    val: types.number.isRequired
+  }),
+  newGame: types.func.isRequired,
+  casesToOpen: types.number.isRequired,
+  isOver: types.bool.isRequired,
+  player: types.shape({
+    name: types.string.isRequired,
+    money: types.number.isRequired
+  }).isRequired
 };

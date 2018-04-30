@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { getMoneyText } from './common';
 import Paper from 'material-ui/Paper';
 import { grey700, amber500, white } from 'material-ui/styles/colors';
@@ -26,16 +26,15 @@ export const Money = props => {
 
   return (
     <Paper style={style}>
-      {bc.on ? (
-        getMoneyText(bc.val)
-      ) : (
-        <del>{getMoneyText(bc.val)}</del>
-      )}
+      {bc.on ? getMoneyText(bc.val) : <del>{getMoneyText(bc.val)}</del>}
     </Paper>
   );
 };
 
 Money.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  briefcase: PropTypes.object.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  briefcase: types.shape({
+    on: types.bool.isRequired,
+    val: types.number.isRequired
+  }).isRequired
 };

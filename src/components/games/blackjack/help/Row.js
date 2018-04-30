@@ -1,13 +1,13 @@
 import React from 'react';
 import { Cell } from './Cell';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { TableRow, TableRowColumn } from 'material-ui/Table';
 // Parents: Help
 
 /** render code for each class */
 export const Row = props => {
   const { name, data } = props;
-  console.log(data);
+
   return (
     <TableRow>
       <TableRowColumn style={{ textAlign: 'center', padding: 0 }}>
@@ -19,7 +19,7 @@ export const Row = props => {
 };
 
 Row.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  name: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  name: types.string.isRequired,
+  data: types.arrayOf(types.object).isRequired
 };

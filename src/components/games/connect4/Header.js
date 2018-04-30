@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Piece } from './Piece';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
@@ -31,8 +31,8 @@ export const Header = props => {
 };
 
 Header.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  winner: PropTypes.number,
-  turn: PropTypes.number.isRequired,
-  newGame: PropTypes.func.isRequired
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  winner: types.number,
+  turn: types.number.isRequired,
+  newGame: types.func.isRequired
 };

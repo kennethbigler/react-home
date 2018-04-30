@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { Case } from './Case';
 import Paper from 'material-ui/Paper';
 // Parents: Degree
@@ -33,8 +33,12 @@ export const Board = props => {
 };
 
 Board.propTypes = {
-  // PropTypes = [string, object, bool, number, func, array].isRequired
-  board: PropTypes.array.isRequired,
-  onClick: PropTypes.func.isRequired,
-  playerChoice: PropTypes.object
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  board: types.arrayOf(
+    types.shape({
+      loc: types.number.isRequired
+    })
+  ).isRequired,
+  onClick: types.func.isRequired,
+  playerChoice: types.shape({ loc: types.number.isRequired })
 };

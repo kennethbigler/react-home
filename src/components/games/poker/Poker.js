@@ -1,6 +1,6 @@
 // react
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 // components
 import { Deck } from '../../../apis/Deck';
 import { GameTable } from '../gametable/GameTable';
@@ -122,11 +122,33 @@ const rankHand = (hand, hist) => {
 export class Pkr extends Component {
   // Prop Validation
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    turnActions: PropTypes.object.isRequired,
-    playerActions: PropTypes.object.isRequired,
-    players: PropTypes.array.isRequired,
-    turn: PropTypes.object.isRequired
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    turnActions: types.shape({
+      incrPlayerTurn: types.func.isRequired,
+      resetTurn: types.func.isRequired
+    }).isRequired,
+    playerActions: types.shape({
+      swapCards: types.func.isRequired,
+      newHand: types.func.isRequired,
+      payout: types.func.isRequired,
+      updateBet: types.func.isRequired,
+      resetStatus: types.func.isRequired
+    }).isRequired,
+    players: types.arrayOf(
+      types.shape({
+        id: types.number.isRequired,
+        hands: types.arrayOf(
+          types.shape({
+            rank: types.number.isRequired,
+            suit: types.string.isRequired
+          })
+        ).isRequired
+      })
+    ).isRequired,
+    turn: types.shape({
+      player: types.number.isRequired,
+      hand: types.number.isRequired
+    }).isRequired
   };
 
   constructor(props) {

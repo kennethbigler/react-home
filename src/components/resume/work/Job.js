@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import types from 'prop-types';
 import { ExpandableCard } from '../../common/ExpandableCard';
 import { FORMAT } from '../../common/timeline/Timeline';
 import Chip from 'material-ui/Chip';
@@ -9,17 +9,35 @@ import moment from 'moment';
 /** function to generate timeline card */
 export class Job extends Component {
   static propTypes = {
-    // PropTypes = [string, object, bool, number, func, array].isRequired
-    job: PropTypes.object.isRequired
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    job: types.shape({
+      parent: types.string,
+      company: types.string.isRequired,
+      location: types.string.isRequired,
+      isJob: types.bool.isRequired,
+      title: types.string.isRequired,
+      color: types.string.isRequired,
+      start: types.shape({
+        format: types.func.isRequired,
+        diff: types.func.isRequired
+      }).isRequired,
+      end: types.shape({
+        format: types.func.isRequired,
+        diff: types.func.isRequired
+      }).isRequired,
+      notes: types.string,
+      expr: types.arrayOf(types.string),
+      tech: types.arrayOf(types.string),
+      src: types.string,
+      alt: types.string
+    }).isRequired
   };
 
-  showRange = (s, e, n) => {
+  showRange = (s, e, notes = '') => {
     // start date
     const start = s.format(FORMAT);
     // end date, check if it is the present
     const end = moment().diff(e, 'days') < 1 ? 'Present' : e.format(FORMAT);
-    // add optional notes
-    const notes = n ? n : '';
 
     // get the time range in years, months
     const mon = (e.diff(s, 'months') + 1) % 12;
@@ -54,23 +72,31 @@ export class Job extends Component {
     const parent = job.parent ? ` (${job.parent})` : '';
     const title = `${job.company}${parent}, ${job.location}`;
 
-    return job.isJob ? (
-      <ExpandableCard
-        title={title}
-        subtitle={job.title}
-        backgroundColor={job.color}
-      >
-        <div className="col-sm-9">
-          <p>{this.showRange(job.start, job.end, job.notes)}</p>
-          <ul>{job.expr.map((desc, i) => <li key={`desc${i}`}>{desc}</li>)}</ul>
-          {job.tech && <div>Technologies/Skills: {this.getCSV(job.tech)}</div>}
-        </div>
-        <div className="col-sm-3">
-          <img style={imgStyle} src={job.src} alt={job.alt} />
-        </div>
-      </ExpandableCard>
-    ) : (
-      <div />
+    return (
+      job.isJob && (
+        <ExpandableCard
+          title={title}
+          subtitle={job.title}
+          backgroundColor={job.color}
+        >
+          <div className="col-sm-9">
+            <p>{this.showRange(job.start, job.end, job.notes)}</p>
+            {job.expr && (
+              <ul>
+                {job.expr.map((desc, i) => <li key={`desc${i}`}>{desc}</li>)}
+              </ul>
+            )}
+            {job.tech && (
+              <div>Technologies/Skills: {this.getCSV(job.tech)}</div>
+            )}
+          </div>
+          {job.src && (
+            <div className="col-sm-3">
+              <img style={imgStyle} src={job.src} alt={job.alt} />
+            </div>
+          )}
+        </ExpandableCard>
+      )
     );
   }
 }
