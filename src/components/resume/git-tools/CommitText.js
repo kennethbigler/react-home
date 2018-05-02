@@ -97,10 +97,13 @@ export class CommitText extends Component {
     } = this.state;
     const prefix = commitPrefix ? `${commitPrefix}: ` : '';
     const f = finishes ? 'finishes ' : '';
-    const postfix = storyID ? `[${f}${storyID}]` : '';
-    return commitDescription
-      ? `${prefix}${commitMessage}\n\n${commitDescription}\n\n${postfix}`
-      : `${prefix}${commitMessage} ${postfix}`;
+    const desc = commitDescription ? `\n\n${commitDescription}\n\n` : '';
+
+    let postfix = '';
+    if (storyID) {
+      postfix = commitDescription ? `[${f}${storyID}]` : ` [${f}${storyID}]`;
+    }
+    return `git commit -m "${prefix}${commitMessage}${desc}${postfix}"`;
   };
 
   render() {
@@ -151,7 +154,6 @@ export class CommitText extends Component {
                 floatingLabelText="Commit Message"
                 fullWidth
                 hintText="Summary of Work Done (Message)"
-                multiLine
                 onChange={this.handleCommitMessageChange}
                 underlineFocusStyle={{ borderColor: gitTheme }}
                 value={commitMessage}
