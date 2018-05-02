@@ -95,14 +95,13 @@ export class CommitText extends Component {
       commitDescription,
       finishes
     } = this.state;
-    const prefix = commitPrefix ? `${commitPrefix}: ` : '';
-    const f = finishes ? 'finishes ' : '';
-    const desc = commitDescription ? `\n\n${commitDescription}\n\n` : '';
 
-    let postfix = '';
-    if (storyID) {
-      postfix = commitDescription ? `[${f}${storyID}]` : ` [${f}${storyID}]`;
-    }
+    const prefix = commitPrefix ? `${commitPrefix}: ` : '';
+    const desc = commitDescription ? `\n\n${commitDescription}\n\n` : ' ';
+
+    const f = finishes ? 'finishes ' : '';
+    const postfix = storyID ? `[${f}${storyID}]` : '';
+
     return `git commit -m "${prefix}${commitMessage}${desc}${postfix}"`;
   };
 
