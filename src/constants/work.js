@@ -3,15 +3,15 @@ import teslaLogo from '../images/tesla_motors_logo.svg.png';
 import vengefulLogo from '../images/vengefulgames_logo.png';
 import netappLogo from '../images/netapp_logo.svg.png';
 import SHFBLogo from '../images/SHFB_logo.jpg';
-import eyLogo from '../images/ey_logo.png';
+import gigNowLogo from '../images/gignow.png';
 import ciscoLogo from '../images/cisco_logo.gif';
 import * as colors from 'material-ui/styles/colors';
 import moment from 'moment';
 
 // Parents: Main
 const REACT = 'React.js';
-const REACT15 = 'React.js 15.6';
-const REACT16 = 'React.js 16.3';
+const REACT15 = 'React.js 15.X';
+const REACT16 = 'React.js 16.X';
 const ANGULAR = 'Angular.js 1.X';
 const ES2015 = 'ECMAScript 2015';
 const ES2016 = 'ECMAScript 2016';
@@ -21,25 +21,27 @@ const JS = 'JavaScript';
 const BS3 = 'Bootstrap 3';
 const BS4 = 'Bootstrap 4';
 const RR4 = 'React Router 4';
+const JASMINE = 'Jasmine 2.99';
+const SASS = 'SASS/SCSS';
 
 const workExp = [
   {
     isJob: true,
-    color: colors.yellowA700,
+    color: colors.cyan700,
     company: 'GigNow',
     parent: 'Ernst & Young',
     short: 'GN',
     location: 'Palo Alto, CA',
-    title: 'Frontend Engineer, Global Innovation Group',
+    title: 'Frontend Engineer, Global Innovation Ventures',
     website: 'https://www.gignow.com/',
     start: moment('2018-03'),
     end: moment(),
-    src: eyLogo,
-    alt: 'Ernst & Young Logo',
+    src: gigNowLogo,
+    alt: 'GigNow Logo',
     expr: [
       `Help build startup ventures within EY, leveraging agile methodologies and development primarily in ${REACT}`
     ],
-    tech: [REACT16, RR4, ES2016, JS, HTML, CSS]
+    tech: [REACT16, RR4, JASMINE, ES2016, JS, HTML, SASS, CSS]
   },
   {
     isJob: true,
@@ -77,7 +79,7 @@ const workExp = [
       'Created several Proof of Concept integrations with Cisco DNA-Center and several acquisitions',
       'Wrote Time Series Analysis Pipelines in JSON to create aggregations of network packets over a fixed or rolling window'
     ],
-    tech: [REACT15, RR4, ES2015, JS, 'Java 8', BS4, HTML, CSS]
+    tech: [REACT15, RR4, ES2015, JS, 'Java 8', BS4, HTML, SASS, CSS]
   },
   {
     isJob: true,
@@ -104,6 +106,7 @@ const workExp = [
       'Python 2',
       BS3,
       HTML,
+      SASS,
       CSS
     ]
   },
@@ -124,7 +127,7 @@ const workExp = [
       'Gathered requirements, created new software tools, and improved tools already used by various departments',
       'Redesigned intranet pages to improve accessibility and incorporate responsive design elements'
     ],
-    tech: [ANGULAR, JS, 'ASP.NET 2.0 MVC', 'C#', 'SQL', BS3, HTML, CSS]
+    tech: [ANGULAR, JS, 'ASP.NET 2.0 MVC', 'C#', 'SQL', BS3, HTML, SASS, CSS]
   },
   {
     isJob: true,

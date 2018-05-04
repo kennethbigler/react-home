@@ -72,7 +72,7 @@ export class EC extends Component {
           actAsExpander
           style={style}
           subtitle={subtitle}
-          subtitleColor={colors.grey400}
+          subtitleColor={colors.grey300}
           title={title}
           titleColor={colors.white}
         />
