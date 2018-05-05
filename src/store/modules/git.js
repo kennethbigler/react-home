@@ -5,6 +5,7 @@ import initialState from '../initialState';
 const SET_KEY = 'resume/git/SET_KEY';
 const SET_BRANCH_PREFIX = 'resume/git/SET_BRANCH_PREFIX';
 const SET_CASE_PREFERENCE = 'resume/git/SET_CASE_PREFERENCE';
+const SET_COMMIT_PREFIX = 'resume/git/SET_COMMIT_PREFIX';
 
 // Action Creators
 export function setKey(storyID = '') {
@@ -15,6 +16,9 @@ export function setBranchPrefix(branchPrefix = '') {
 }
 export function setCasePreference(casePreference = '') {
   return { type: SET_CASE_PREFERENCE, casePreference: casePreference };
+}
+export function setCommitPrefix(isSet = true) {
+  return { type: SET_COMMIT_PREFIX, commitPrefix: isSet };
 }
 
 // Reducer
@@ -28,6 +32,8 @@ export default function reducer(state = initialState.git, action) {
       return Object.assign({}, state, {
         casePreference: action.casePreference
       });
+    case SET_COMMIT_PREFIX:
+      return Object.assign({}, state, { commitPrefix: action.commitPrefix });
     default:
       return state;
   }

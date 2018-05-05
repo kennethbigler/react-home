@@ -1,6 +1,10 @@
 // react
 import React, { Component } from 'react';
 import types from 'prop-types';
+// redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setCommitPrefix } from '../../../store/modules/git';
 // components
 import { CopyTextDisplay } from './CopyTextDisplay';
 import { ExpandableCard } from '../../common/ExpandableCard';
@@ -15,10 +19,14 @@ import { deepOrange600 } from 'material-ui/styles/colors';
 import nl2br from 'react-newline-to-break';
 // Parents: Main
 
-export class CommitText extends Component {
+export class CT extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     getSelectOptions: types.func.isRequired,
+    gitActions: types.shape({
+      setCommitPrefix: types.func.isRequired
+    }).isRequired,
+    gitCommit: types.bool.isRequired,
     gitTheme: types.string.isRequired,
     handleCopy: types.func.isRequired,
     storyID: types.string
@@ -29,6 +37,14 @@ export class CommitText extends Component {
     commitMessage: '',
     commitDescription: '',
     finishes: false
+  };
+
+  styles = {
+    wrapper: { paddingLeft: 20, paddingRight: 20, width: '100%' },
+    toggle: { maxWidth: 343, marginTop: 40 },
+    marginTop: { marginTop: 20 },
+    textColor: { color: this.props.gitTheme },
+    borderColor: { borderColor: this.props.gitTheme }
   };
 
   /**
@@ -73,8 +89,8 @@ export class CommitText extends Component {
    * function to update text state based on value
    * @param {Object} e event fired when select occurs
    */
-  handleCommitMessageClear = () => this.setState({ commitMessage: '' });
-  handleCommitDescriptionClear = () => this.setState({ commitDescription: '' });
+  clearCommitMessage = () => this.setState({ commitMessage: '' });
+  clearCommitDescription = () => this.setState({ commitDescription: '' });
 
   /**
    * function(event: object, isInputChecked: bool) => void
@@ -82,13 +98,15 @@ export class CommitText extends Component {
    * @param {boolean} isInputChecked: The new value of the toggle
    */
   handleFinishesToggle = (e, isC) => this.setState({ finishes: isC });
+  handleGitCommitToggle = (e, isC) =>
+    this.props.gitActions.setCommitPrefix(isC);
 
   /**
    * function to generate the commit message from inputs
    * @return {string} format Prefix: Message [?Finishes? ID]
    */
   getCommitText = () => {
-    const { storyID } = this.props;
+    const { storyID, gitCommit } = this.props;
     const {
       commitPrefix,
       commitMessage,
@@ -96,13 +114,20 @@ export class CommitText extends Component {
       finishes
     } = this.state;
 
+    let gitMessage = '';
+    let quote = '';
+    if (gitCommit) {
+      gitMessage = 'git commit -m "';
+      quote = '"';
+    }
+
     const prefix = commitPrefix ? `${commitPrefix}: ` : '';
     const desc = commitDescription ? `\n\n${commitDescription}\n\n` : ' ';
 
     const f = finishes ? 'finishes ' : '';
     const postfix = storyID ? `[${f}${storyID}]` : '';
 
-    return `git commit -m "${prefix}${commitMessage}${desc}${postfix}"`;
+    return `${gitMessage}${prefix}${commitMessage}${desc}${postfix}${quote}`;
   };
 
   render() {
@@ -112,7 +137,8 @@ export class CommitText extends Component {
       commitDescription,
       finishes
     } = this.state;
-    const { gitTheme, handleCopy } = this.props;
+    const { handleCopy, gitCommit } = this.props;
+    const { wrapper, toggle, marginTop, textColor, borderColor } = this.styles;
 
     const commitText = this.getCommitText();
     const displayText = commitText && nl2br(this.getCommitText());
@@ -122,66 +148,68 @@ export class CommitText extends Component {
         title="Create Commit Message"
         backgroundColor={deepOrange600}
       >
-        <div
-          className="commit-text"
-          style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}
-        >
+        <div className="commit-text" style={wrapper}>
           <div className="row">
-            <div className="col-sm-6">
+            <div className="col-sm-4">
               <SelectField
-                floatingLabelStyle={{ color: gitTheme }}
+                floatingLabelStyle={textColor}
                 floatingLabelText="Commit Prefix"
                 onChange={this.handleCommitPrefixSelect}
-                selectedMenuItemStyle={{ color: gitTheme }}
-                underlineFocusStyle={{ borderColor: gitTheme }}
+                selectedMenuItemStyle={textColor}
+                underlineFocusStyle={borderColor}
                 value={commitPrefix}
               >
                 {this.getCommitPrefixOptions()}
               </SelectField>
             </div>
-            <div className="col-sm-6">
+            <div className="col-sm-4">
               <Toggle
-                style={{ maxWidth: 343, marginTop: 40 }}
+                style={toggle}
                 label="Finishes User Story"
                 onToggle={this.handleFinishesToggle}
                 toggled={finishes}
               />
             </div>
+            <div className="col-sm-4">
+              <Toggle
+                style={toggle}
+                label="Add git commit -m"
+                onToggle={this.handleGitCommitToggle}
+                toggled={gitCommit}
+              />
+            </div>
             <div className="col-sm-5 col-10">
               <TextField
-                floatingLabelFocusStyle={{ color: gitTheme }}
+                floatingLabelFocusStyle={textColor}
                 floatingLabelText="Commit Message"
                 fullWidth
                 hintText="Summary of Work Done (Message)"
                 onChange={this.handleCommitMessageChange}
-                underlineFocusStyle={{ borderColor: gitTheme }}
+                underlineFocusStyle={borderColor}
                 value={commitMessage}
               />
             </div>
             <div className="col-sm-1 col-2">
-              <IconButton
-                onClick={this.handleCommitMessageClear}
-                style={{ marginTop: 20 }}
-              >
+              <IconButton onClick={this.clearCommitMessage} style={marginTop}>
                 <Clear />
               </IconButton>
             </div>
             <div className="col-sm-5 col-10">
               <TextField
-                floatingLabelFocusStyle={{ color: gitTheme }}
+                floatingLabelFocusStyle={textColor}
                 floatingLabelText="Commit Description"
                 fullWidth
                 hintText="Summary of Work Done (Description)"
                 multiLine
                 onChange={this.handleCommitDescriptionChange}
-                underlineFocusStyle={{ borderColor: gitTheme }}
+                underlineFocusStyle={borderColor}
                 value={commitDescription}
               />
             </div>
             <div className="col-sm-1 col-2">
               <IconButton
-                onClick={this.handleCommitDescriptionClear}
-                style={{ marginTop: 20 }}
+                onClick={this.clearCommitDescription}
+                style={marginTop}
               >
                 <Clear />
               </IconButton>
@@ -197,3 +225,10 @@ export class CommitText extends Component {
     );
   }
 }
+
+// react-redux export
+const mapStateToProps = state => ({ gitCommit: state.git.commitPrefix });
+const mapDispatchToProps = dispatch => ({
+  gitActions: bindActionCreators({ setCommitPrefix }, dispatch)
+});
+export const CommitText = connect(mapStateToProps, mapDispatchToProps)(CT);
