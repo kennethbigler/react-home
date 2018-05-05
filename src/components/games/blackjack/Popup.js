@@ -40,12 +40,12 @@ export class Popup extends Component {
           primary
         />
         <Dialog
-          title="Blackjack Rules"
           actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
           autoScrollBodyContent
+          modal={false}
+          onRequestClose={this.handleClose}
+          open={this.state.open}
+          title="Blackjack Rules"
         >
           <Rules />
           <Help />
