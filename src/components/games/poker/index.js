@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import types from 'prop-types';
 // components
 import { Deck } from '../../../apis/Deck';
-import { GameTable } from '../gametable/GameTable';
+import { GameTable } from '../gametable/';
 // redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

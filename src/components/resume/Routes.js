@@ -6,13 +6,13 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { Header } from '../common/Header';
 import { Menu } from './Menu';
 // resume
-import { Summary } from './summary/Summary';
-import { Work } from './work/Work';
-import { Education } from './education/Education';
-import { Resume } from './Resume';
-import { TravelMap } from './travel-map/TravelMap';
-import { GitTools } from './git-tools/GitTools';
-import { PokerNight } from '../games/poker-night/PokerNight';
+import { Summary } from './summary/';
+import { Work } from './work/';
+import { Education } from './education/';
+import { Resume } from './resume/';
+import { TravelMap } from './travel-map/';
+import { GitTools } from './git-tools/';
+import { PokerNight } from '../games/poker-night/';
 // Parents: App
 
 export const Routes = props => {

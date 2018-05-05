@@ -6,15 +6,15 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { Header } from '../common/Header';
 import { Menu } from './Menu';
 // Components
-import { PokerNight } from './poker-night/PokerNight';
-import { MurderMystery } from './murder-mystery/MurderMystery';
+import { PokerNight } from './poker-night/';
+import { MurderMystery } from './murder-mystery/';
 import { GameHome } from './Home';
-import { Slots } from './slots/Slots';
-import { BlackJack } from './blackjack/BlackJack';
-import { Poker } from './poker/Poker';
-import { TicTacToe } from './tictactoe/TicTacToe';
-import { Connect4 } from './connect4/Connect4';
-import { DealOrNoDeal } from './deal-or-no-deal/DealOrNoDeal';
+import { Slots } from './slots/';
+import { BlackJack } from './blackjack/';
+// import { Poker } from './poker/';
+import { TicTacToe } from './tictactoe/';
+import { Connect4 } from './connect4/';
+import { DealOrNoDeal } from './deal-or-no-deal/';
 // Parents: App
 
 export const Routes = props => {
@@ -27,7 +27,7 @@ export const Routes = props => {
     { name: 'slots', component: Slots },
     { name: 'blackjack', component: BlackJack },
     { name: 'tictactoe', component: TicTacToe },
-    { name: 'poker', component: Poker },
+    // { name: 'poker', component: Poker },
     { name: 'connect4', component: Connect4 },
     { name: 'deal', component: DealOrNoDeal }
   ].reduce((acc, obj) => {

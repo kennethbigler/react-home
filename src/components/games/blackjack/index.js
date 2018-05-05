@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import types from 'prop-types';
 // components
 import { Popup } from './Popup';
-import { GameTable } from '../gametable/GameTable';
+import { GameTable } from '../gametable/';
 import { Deck } from '../../../apis/Deck';
 // redux
 import { connect } from 'react-redux';

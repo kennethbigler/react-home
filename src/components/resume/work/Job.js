@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import types from 'prop-types';
 import { ExpandableCard } from '../../common/ExpandableCard';
-import { FORMAT } from '../../common/timeline/Timeline';
+import { FORMAT } from '../../common/timeline/';
 import Chip from 'material-ui/Chip';
 import moment from 'moment';
 // Parents: Work

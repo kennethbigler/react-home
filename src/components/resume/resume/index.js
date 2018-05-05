@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // https://github.com/wojtekmaj/react-pdf
 import { Document, Page } from 'react-pdf';
-import resume from '../../images/kenneth_bigler_resume.pdf';
+import resume from '../../../images/kenneth_bigler_resume.pdf';
 // Parents: Main
 
 export class Resume extends Component {

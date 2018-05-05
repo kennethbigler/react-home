@@ -3,7 +3,7 @@ import React from 'react';
 import types from 'prop-types';
 // components
 import { ExpandableCard } from '../../common/ExpandableCard';
-import { Timeline, TIMELINE_TITLE } from '../../common/timeline/Timeline';
+import { Timeline, TIMELINE_TITLE } from '../../common/timeline/';
 import { grey900 } from 'material-ui/styles/colors';
 // constants
 import workExp from '../../../constants/work';
