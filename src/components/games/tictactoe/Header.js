@@ -26,7 +26,7 @@ export const Header = props => {
 
 Header.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
-  winner: types.string,
+  newGame: types.func.isRequired,
   turn: types.string.isRequired,
-  newGame: types.func.isRequired
+  winner: types.string
 };

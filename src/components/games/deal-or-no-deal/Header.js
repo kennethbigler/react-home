@@ -28,7 +28,7 @@ export const Header = props => {
             ? `You Won ${getMoneyText(offer)}`
             : `Number of Cases to Open: ${casesToOpen}`}
         </h2>
-        {isOver && <RaisedButton onClick={newGame} primary label="New Game" />}
+        {isOver && <RaisedButton label="New Game" onClick={newGame} primary />}
       </div>
       <div className="col-sm-6">
         <h1 style={{ textAlign: 'right' }}>
@@ -41,16 +41,16 @@ export const Header = props => {
 
 Header.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
-  offer: types.number,
-  playerChoice: types.shape({
-    loc: types.number.isRequired,
-    val: types.number.isRequired
-  }),
-  newGame: types.func.isRequired,
   casesToOpen: types.number.isRequired,
   isOver: types.bool.isRequired,
+  newGame: types.func.isRequired,
+  offer: types.number,
   player: types.shape({
     name: types.string.isRequired,
     money: types.number.isRequired
-  }).isRequired
+  }).isRequired,
+  playerChoice: types.shape({
+    loc: types.number.isRequired,
+    val: types.number.isRequired
+  })
 };

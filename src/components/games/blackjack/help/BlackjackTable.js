@@ -9,6 +9,7 @@ import {
   TableBody,
   TableRow
 } from 'material-ui/Table';
+import map from 'lodash/map';
 // Parents: Popup
 
 /** render code for each class */
@@ -18,7 +19,7 @@ export const BlackjackTable = props => {
 
   return (
     <Table>
-      <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+      <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
         <TableRow>
           <TableHeaderColumn colSpan="11">{title}</TableHeaderColumn>
         </TableRow>
@@ -28,8 +29,8 @@ export const BlackjackTable = props => {
           <Cell rowSpan="2" style={{ width: 60 }} text="Hand" />
           <Cell colSpan="10" text="Dealer" />
         </TableRow>
-        <TableRow>{cards.map(c => <Cell key={c} text={c} />)}</TableRow>
-        {data.map(obj => <Row key={obj.name} {...obj} />)}
+        <TableRow>{map(cards, c => <Cell key={c} text={c} />)}</TableRow>
+        {map(data, obj => <Row key={obj.name} {...obj} />)}
       </TableBody>
     </Table>
   );

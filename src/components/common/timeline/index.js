@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import types from 'prop-types';
 import moment from 'moment';
 import { Row } from './Row';
+import includes from 'lodash/includes';
+import map from 'lodash/map';
 // Parents: Work
 
 export const FORMAT = 'MMMM Y';
@@ -96,7 +98,7 @@ export class Timeline extends Component {
     const { data } = this.state;
 
     // skip if added already
-    if (added.indexOf(i) !== -1) {
+    if (includes(added, i)) {
       return [];
     }
 
@@ -116,7 +118,7 @@ export class Timeline extends Component {
     // find any other segments that will fit
     for (let j = i + 1; j < data.length; j += 1) {
       // skip if added already
-      if (added.indexOf(j) === -1) {
+      if (!includes(added, j)) {
         // test segment
         const { start, end } = data[j];
         beginning = this.getTimeFromStart(start);
@@ -147,7 +149,7 @@ export class Timeline extends Component {
 
     return (
       <div className="col-sm-12">
-        {data.map((job, i) => (
+        {map(data, (job, i) => (
           <Row key={i} segments={this.getSegments(added, job, i)} />
         ))}
       </div>

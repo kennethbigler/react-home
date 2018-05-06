@@ -57,13 +57,13 @@ export const MurderMystery = () => {
       <h2>Murder at {CASINO}</h2>
       <ReactTable
         className="-striped -highlight"
-        defaultPageSize={profile.length}
-        style={styles}
-        data={profile}
         columns={columns}
-        showPagination={false}
+        data={profile}
+        defaultPageSize={profile.length}
         defaultSortDesc
         defaultSorted={defaultSort}
+        showPagination={false}
+        style={styles}
       />
     </div>
   );

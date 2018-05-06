@@ -7,6 +7,9 @@ import gigNowLogo from '../images/gignow.png';
 import ciscoLogo from '../images/cisco_logo.gif';
 import * as colors from 'material-ui/styles/colors';
 import moment from 'moment';
+import reduce from 'lodash/reduce';
+import includes from 'lodash/includes';
+import forEach from 'lodash/forEach';
 
 // Parents: Main
 const REACT = 'React.js';
@@ -191,15 +194,17 @@ const workExp = [
   }
 ];
 
-export const techSummary = workExp.reduce((acc, job) => {
-  if (job.tech) {
-    for (const tech of job.tech) {
-      if (acc.indexOf(tech) === -1) {
+export const techSummary = reduce(
+  workExp,
+  (acc, job) => {
+    forEach(job.tech, tech => {
+      if (!includes(acc, tech)) {
         acc.push(tech);
       }
-    }
-  }
-  return acc;
-}, []);
+    });
+    return acc;
+  },
+  []
+);
 
 export default workExp;

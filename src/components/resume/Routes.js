@@ -13,26 +13,32 @@ import { Resume } from './resume/';
 import { TravelMap } from './travel-map/';
 import { GitTools } from './git-tools/';
 import { PokerNight } from '../games/poker-night/';
+// functions
+import reduce from 'lodash/reduce';
 // Parents: App
 
 export const Routes = props => {
   const { match, handleNav } = props;
   const { url } = match;
 
-  const paths = [
-    { name: 'work', component: Work },
-    { name: 'education', component: Education },
-    { name: 'travel', component: TravelMap },
-    { name: 'resume', component: Resume },
-    { name: 'git-tools', component: GitTools },
-    { name: 'poker', component: PokerNight }
-  ].reduce((acc, obj) => {
-    const { name, component } = obj;
-    const path = `${url}${name}`;
-    acc.push(<Route key={`${path}r`} exact {...{ path, component }} />);
-    acc.push(<Redirect key={`${path}d`} from={`${path}*`} to={path} />);
-    return acc;
-  }, []);
+  const paths = reduce(
+    [
+      { name: 'work', component: Work },
+      { name: 'education', component: Education },
+      { name: 'travel', component: TravelMap },
+      { name: 'resume', component: Resume },
+      { name: 'git-tools', component: GitTools },
+      { name: 'poker', component: PokerNight }
+    ],
+    (acc, obj) => {
+      const { name, component } = obj;
+      const path = `${url}${name}`;
+      acc.push(<Route exact key={`${path}r`} {...{ path, component }} />);
+      acc.push(<Redirect from={`${path}*`} key={`${path}d`} to={path} />);
+      return acc;
+    },
+    []
+  );
 
   return (
     <div className="resume-app">
@@ -40,7 +46,7 @@ export const Routes = props => {
         <Menu />
       </Header>
       <Switch>
-        <Route exact path={`${url}`} component={Summary} />
+        <Route component={Summary} exact path={`${url}`} />
         {paths}
         <Redirect from={`${url}*`} to={`${url}`} />
         <Route component={Summary} />

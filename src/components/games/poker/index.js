@@ -15,13 +15,16 @@ import {
   updateBet,
   resetStatus
 } from '../../../store/modules/players';
+// functions
+import forEach from 'lodash/forEach';
+import includes from 'lodash/includes';
 // Parents: Main
 
 const getHistogram = hand => {
   // Histogram for the cards
   let hist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   // put hand into the histrogram
-  hand.forEach(card => {
+  forEach(hand, card => {
     hist[card.rank - 2] += 1; // 2-14 - 2 = 0-12
   });
   return hist;
@@ -42,18 +45,18 @@ const getHistogram = hand => {
  */
 const rankHand = (hand, hist) => {
   // iterate through and look for hands with multiple cards
-  if (hist.indexOf(4) !== -1) {
+  if (includes(hist, 4)) {
     return 7; // 4 of a kind
   }
   // Check for hands with sets of 3 or 2 cards
-  const has3 = hist.indexOf(3) !== -1;
+  const has3 = includes(hist, 3);
   const i = hist.indexOf(2);
   const has2 = i !== -1;
   if (has3 && has2) {
     return 6; // full house
   } else if (has3) {
     return 3; // 3 of a kind
-  } else if (has2 && hist.indexOf(2, i + 1) !== -1) {
+  } else if (has2 && includes(hist, 2, i + 1)) {
     return 2; // 2 pair
   } else if (has2) {
     return 1; // 1 pair
@@ -123,10 +126,6 @@ export class Pkr extends Component {
   // Prop Validation
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
-    turnActions: types.shape({
-      incrPlayerTurn: types.func.isRequired,
-      resetTurn: types.func.isRequired
-    }).isRequired,
     playerActions: types.shape({
       swapCards: types.func.isRequired,
       newHand: types.func.isRequired,
@@ -148,6 +147,10 @@ export class Pkr extends Component {
     turn: types.shape({
       player: types.number.isRequired,
       hand: types.number.isRequired
+    }).isRequired,
+    turnActions: types.shape({
+      incrPlayerTurn: types.func.isRequired,
+      resetTurn: types.func.isRequired
     }).isRequired
   };
 
@@ -176,7 +179,7 @@ export class Pkr extends Component {
     // reset redux actions
     turnActions.resetTurn();
     // reset player statuses
-    players.forEach(player => playerActions.resetStatus(player.id));
+    forEach(players, player => playerActions.resetStatus(player.id));
   };
 
   /**
@@ -188,7 +191,7 @@ export class Pkr extends Component {
     // shuffle the deck
     Deck.shuffle();
     // deal the hands
-    players.forEach(player => playerActions.newHand(player.id, 5));
+    forEach(players, player => playerActions.newHand(player.id, 5));
   };
 
   /**
@@ -343,12 +346,12 @@ export class Pkr extends Component {
       <div>
         <h1>Placeholder for Future Poker Project</h1>
         <GameTable
-          turn={turn}
-          players={players}
-          hideHands={hideHands}
           betHandler={this.betHandler}
-          gameFunctions={gameFunctions}
           cardClickHandler={this.cardClickHandler}
+          gameFunctions={gameFunctions}
+          hideHands={hideHands}
+          players={players}
+          turn={turn}
         />
       </div>
     );

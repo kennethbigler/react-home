@@ -3,6 +3,7 @@ import types from 'prop-types';
 import { Year } from './Year';
 import { ExpandableCard } from '../../common/ExpandableCard';
 import get from 'lodash/get';
+import map from 'lodash/map';
 // Parents: Work
 
 /** render code for each degree */
@@ -17,16 +18,16 @@ export const Degree = props => {
   const graduation = degree.graduation
     ? ` - Graduation: ${degree.graduation}`
     : '';
-  const subtitle = get(degree, ['subtitle'], `${gpa}${graduation}`);
+  const subtitle = get(degree, 'subtitle', `${gpa}${graduation}`);
 
   return (
     <ExpandableCard
-      title={title}
-      subtitle={subtitle}
       backgroundColor={degree.color && degree.color}
+      subtitle={subtitle}
+      title={title}
     >
-      {degree.years.map(year => (
-        <Year key={year.year} year={year} len={degree.years.length} />
+      {map(degree.years, year => (
+        <Year key={year.year} len={degree.years.length} year={year} />
       ))}
     </ExpandableCard>
   );

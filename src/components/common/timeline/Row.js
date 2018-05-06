@@ -1,6 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
 import { Segment } from './Segment';
+import map from 'lodash/map';
 // Parents: Timeline
 
 /** render code for each class */
@@ -9,7 +10,7 @@ export const Row = props => {
   const style = { marginTop: '10px' };
   return (
     <div style={style}>
-      {segments.map((data, j) => <Segment key={j} data={data} />)}
+      {map(segments, (data, j) => <Segment data={data} key={j} />)}
     </div>
   );
 };

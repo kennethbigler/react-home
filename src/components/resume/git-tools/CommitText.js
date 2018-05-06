@@ -145,8 +145,8 @@ export class CT extends Component {
 
     return (
       <ExpandableCard
-        title="Create Commit Message"
         backgroundColor={deepOrange600}
+        title="Create Commit Message"
       >
         <div className="commit-text" style={wrapper}>
           <div className="row">
@@ -164,17 +164,17 @@ export class CT extends Component {
             </div>
             <div className="col-sm-4">
               <Toggle
-                style={toggle}
                 label="Finishes User Story"
                 onToggle={this.handleFinishesToggle}
+                style={toggle}
                 toggled={finishes}
               />
             </div>
             <div className="col-sm-4">
               <Toggle
-                style={toggle}
                 label="Add git commit -m"
                 onToggle={this.handleGitCommitToggle}
+                style={toggle}
                 toggled={gitCommit}
               />
             </div>
@@ -216,9 +216,9 @@ export class CT extends Component {
             </div>
           </div>
           <CopyTextDisplay
-            text={displayText}
-            handleCopy={handleCopy}
             copyText={commitText}
+            handleCopy={handleCopy}
+            text={displayText}
           />
         </div>
       </ExpandableCard>

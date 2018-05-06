@@ -1,3 +1,6 @@
+import forEach from 'lodash/forEach';
+import includes from 'lodash/includes';
+
 /* --------------------------------------------------
  * Slot Machine
  * -------------------------------------------------- */
@@ -38,7 +41,7 @@ const reels = [
 
 let machine = [];
 
-reels.forEach((slot, i) => {
+forEach(reels, (slot, i) => {
   // wrap the reels
   const prev = i - 1 > 0 ? i - 1 : reels.length - 1;
   const next = i + 1 < reels.length ? i + 1 : 0;
@@ -139,17 +142,13 @@ export const SlotMachine = {
         default:
           return 0;
       }
-    } else if (
-      bars.indexOf(r0) !== -1 &&
-      bars.indexOf(r1) !== -1 &&
-      bars.indexOf(r2) !== -1
-    ) {
+    } else if (includes(bars, r0) && includes(bars, r1) && includes(bars, r2)) {
       // if we have 3 of any bar
       return 12 * bet;
-    } else if (fReel.indexOf(CHERRY, fReel.indexOf(CHERRY) + 1) !== -1) {
+    } else if (includes(fReel, CHERRY, fReel.indexOf(CHERRY) + 1)) {
       // if we have 2 cherries
       return 6 * bet;
-    } else if (fReel.indexOf(CHERRY) !== -1) {
+    } else if (includes(fReel, CHERRY)) {
       // if we have 1 cherry
       return 3 * bet;
     }

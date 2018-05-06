@@ -1,3 +1,5 @@
+import split from 'lodash/split';
+
 /* Facebook - Task Execution Time with Cooldowns
 given an array of tasks (each number represents a different task)
 only 1 task can execute at a time, with a cool down in between the same tasks of the same number
@@ -14,7 +16,7 @@ Explanation: 1 _ _ 1 2 0 _ 2 1
 function doTasks(tasks, cooldown) {
   let lastRunMap = {};
   let ans = 0;
-  let debug = '';
+  // let debug = '';
   let currentTime = 0;
   for (let task of tasks) {
     const lastRun = lastRunMap[task] || 0;
@@ -22,16 +24,16 @@ function doTasks(tasks, cooldown) {
     if (waitTime && lastRunMap[task] !== undefined) {
       ans += waitTime;
       for (let x = 0; x < waitTime; x++) {
-        debug += ' -';
+        // debug += ' -';
       }
       currentTime += waitTime;
     }
     ans += 1;
-    debug += ` ${task}`;
+    // debug += ` ${task}`;
     lastRunMap[task] = currentTime;
     currentTime += 1;
   }
-  console.log(debug);
+  // console.log(debug);
   return ans;
 }
 
@@ -121,7 +123,7 @@ function isAmbigram2(word) {
     N: ['N']
   };
 
-  const chars = word.split('');
+  const chars = split(word, '');
   // verify characters are good
   for (let i = 0; i < Math.ceil(chars.length / 2); i += 1) {
     // get 2 opposite elements

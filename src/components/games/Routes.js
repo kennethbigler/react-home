@@ -11,32 +11,37 @@ import { MurderMystery } from './murder-mystery/';
 import { GameHome } from './Home';
 import { Slots } from './slots/';
 import { BlackJack } from './blackjack/';
-// import { Poker } from './poker/';
 import { TicTacToe } from './tictactoe/';
 import { Connect4 } from './connect4/';
 import { DealOrNoDeal } from './deal-or-no-deal/';
+// functions
+import reduce from 'lodash/reduce';
 // Parents: App
 
 export const Routes = props => {
   const { match, handleNav } = props;
   const { url } = match;
 
-  const paths = [
-    { name: 'pokernight', component: PokerNight },
-    { name: 'murder', component: MurderMystery },
-    { name: 'slots', component: Slots },
-    { name: 'blackjack', component: BlackJack },
-    { name: 'tictactoe', component: TicTacToe },
-    // { name: 'poker', component: Poker },
-    { name: 'connect4', component: Connect4 },
-    { name: 'deal', component: DealOrNoDeal }
-  ].reduce((acc, obj) => {
-    const { name, component } = obj;
-    const path = `${url}/${name}`;
-    acc.push(<Route key={`${path}r`} exact {...{ path, component }} />);
-    acc.push(<Redirect key={`${path}d`} from={`${path}*`} to={path} />);
-    return acc;
-  }, []);
+  const paths = reduce(
+    [
+      { name: 'pokernight', component: PokerNight },
+      { name: 'murder', component: MurderMystery },
+      { name: 'slots', component: Slots },
+      { name: 'blackjack', component: BlackJack },
+      { name: 'tictactoe', component: TicTacToe },
+      // { name: 'poker', component: Poker },
+      { name: 'connect4', component: Connect4 },
+      { name: 'deal', component: DealOrNoDeal }
+    ],
+    (acc, obj) => {
+      const { name, component } = obj;
+      const path = `${url}/${name}`;
+      acc.push(<Route exact key={`${path}r`} {...{ path, component }} />);
+      acc.push(<Redirect from={`${path}*`} key={`${path}d`} to={path} />);
+      return acc;
+    },
+    []
+  );
 
   return (
     <div className="games-app">
@@ -44,7 +49,7 @@ export const Routes = props => {
         <Menu />
       </Header>
       <Switch>
-        <Route exact path={`${url}`} component={GameHome} />
+        <Route component={GameHome} exact path={`${url}`} />
         {paths}
         <Redirect from={`${url}/*`} to={`${url}`} />
         <Route component={GameHome} />
@@ -55,8 +60,8 @@ export const Routes = props => {
 
 Routes.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
+  handleNav: types.func.isRequired,
   match: types.shape({
     url: types.string.isRequired
-  }).isRequired,
-  handleNav: types.func.isRequired
+  }).isRequired
 };

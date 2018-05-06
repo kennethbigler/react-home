@@ -18,6 +18,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { deepOrange600 } from 'material-ui/styles/colors';
 // functions
 import copy from 'copy-to-clipboard';
+import map from 'lodash/map';
 // Parents: Main
 
 class GT extends Component {
@@ -44,7 +45,7 @@ class GT extends Component {
    * @return {[Object]}
    */
   getSelectOptions = arr =>
-    arr.map((t, i) => <MenuItem key={i} value={t} primaryText={t} />);
+    map(arr, (t, i) => <MenuItem key={i} primaryText={t} value={t} />);
 
   /**
    * function to update text state based on value

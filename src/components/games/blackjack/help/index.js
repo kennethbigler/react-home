@@ -62,11 +62,11 @@ export const Help = () => {
 
   return (
     <div>
-      <BlackjackTable title="Hard Totals" data={hardTtl} />
-      <BlackjackTable title="Soft Totals" data={softTtl} />
-      <BlackjackTable title="Pairs" data={pairs} />
+      <BlackjackTable data={hardTtl} title="Hard Totals" />
+      <BlackjackTable data={softTtl} title="Soft Totals" />
+      <BlackjackTable data={pairs} title="Pairs" />
       <Table>
-        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+        <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
           <TableRow>
             <TableHeaderColumn colSpan="11">Key</TableHeaderColumn>
           </TableRow>

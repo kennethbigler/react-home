@@ -3,6 +3,7 @@ import types from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import { getTurn } from './constants';
+import map from 'lodash/map';
 // Parents: TicTacToe
 
 /** ========================================
@@ -11,9 +12,9 @@ import { getTurn } from './constants';
 export class History extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
-    step: types.number.isRequired,
     history: types.arrayOf(types.shape({ location: types.number })).isRequired,
-    jumpToStep: types.func.isRequired
+    jumpToStep: types.func.isRequired,
+    step: types.number.isRequired
   };
 
   constructor(props) {
@@ -41,11 +42,11 @@ export class History extends Component {
     // highlight current turn displayed on board
     return (
       <FlatButton
-        secondary={step === move}
         key={move}
-        onClick={() => jumpToStep(move)}
-        style={{ display: 'block' }}
         label={description}
+        onClick={() => jumpToStep(move)}
+        secondary={step === move}
+        style={{ display: 'block' }}
       />
     );
   };
@@ -54,7 +55,7 @@ export class History extends Component {
     const { ascend } = this.state;
     const { history } = this.props;
     // move history
-    const moves = history.map(this.getHistoryText);
+    const moves = map(history, this.getHistoryText);
     // asc vs. desc
     !ascend && moves.reverse();
 

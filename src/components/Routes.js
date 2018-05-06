@@ -11,10 +11,10 @@ import { Routes as GameRoutes } from './games/Routes';
 export class AppRoutes extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
-    location: types.shape({ pathname: types.string.isRequired }).isRequired,
     history: types.shape({
       push: types.func.isRequired
-    }).isRequired
+    }).isRequired,
+    location: types.shape({ pathname: types.string.isRequired }).isRequired
   };
 
   handleNav = loc => {

@@ -15,9 +15,9 @@ export const Piece = props => {
     : piece === 1 ? red500 : piece === 2 ? black : lightGreen600;
 
   return !enabled ? (
-    <FloatingActionButton disabledColor={color} mini disabled />
+    <FloatingActionButton disabled disabledColor={color} mini />
   ) : (
-    <FloatingActionButton backgroundColor={color} onClick={onClick} mini>
+    <FloatingActionButton backgroundColor={color} mini onClick={onClick}>
       <ContentAdd />
     </FloatingActionButton>
   );
@@ -25,7 +25,7 @@ export const Piece = props => {
 
 Piece.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
-  piece: types.number.isRequired,
   enabled: types.bool,
-  onClick: types.func
+  onClick: types.func,
+  piece: types.number.isRequired
 };

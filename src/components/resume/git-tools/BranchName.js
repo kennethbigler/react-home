@@ -14,6 +14,7 @@ import { deepOrange600 } from 'material-ui/styles/colors';
 import snakeCase from 'lodash/snakeCase';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
+import replace from 'lodash/replace';
 // Parents: GitTools
 
 export class BranchName extends Component {
@@ -85,7 +86,7 @@ export class BranchName extends Component {
     const { branchPrefix, casePreference, storyID } = this.props;
     const { branchMessage } = this.state;
     const prefix = branchPrefix ? `${branchPrefix}/` : '';
-    const id = storyID.replace(/\D/g, '');
+    const id = replace(storyID, /\D/g, '');
     let msg;
     switch (casePreference) {
       case 'snake_case':
@@ -110,8 +111,8 @@ export class BranchName extends Component {
 
     return (
       <ExpandableCard
-        title="Create Branch Name"
         backgroundColor={deepOrange600}
+        title="Create Branch Name"
       >
         <div
           className="branch-name"
@@ -120,11 +121,11 @@ export class BranchName extends Component {
           <div className="row">
             <div className="col-sm-3">
               <SelectField
-                style={{ maxWidth: '100%' }}
                 floatingLabelStyle={{ color: gitTheme }}
                 floatingLabelText="Branch Prefix"
                 onChange={this.handleBranchPrefixSelect}
                 selectedMenuItemStyle={{ color: gitTheme }}
+                style={{ maxWidth: '100%' }}
                 underlineFocusStyle={{ borderColor: gitTheme }}
                 value={branchPrefix}
               >
@@ -133,11 +134,11 @@ export class BranchName extends Component {
             </div>
             <div className="col-sm-3">
               <SelectField
-                style={{ maxWidth: '100%' }}
                 floatingLabelStyle={{ color: gitTheme }}
                 floatingLabelText="Case Preference"
                 onChange={this.handleCasePrefSelect}
                 selectedMenuItemStyle={{ color: gitTheme }}
+                style={{ maxWidth: '100%' }}
                 underlineFocusStyle={{ borderColor: gitTheme }}
                 value={casePreference}
               >
@@ -165,7 +166,7 @@ export class BranchName extends Component {
               </IconButton>
             </div>
           </div>
-          <CopyTextDisplay text={branchName} handleCopy={handleCopy} />
+          <CopyTextDisplay handleCopy={handleCopy} text={branchName} />
         </div>
       </ExpandableCard>
     );

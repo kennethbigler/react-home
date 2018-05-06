@@ -3,6 +3,7 @@ import types from 'prop-types';
 import { Cell } from './Cell';
 import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
 import { grey400 } from 'material-ui/styles/colors';
+import includes from 'lodash/includes';
 // Parents: TicTacToe
 
 /** ========================================
@@ -11,9 +12,9 @@ import { grey400 } from 'material-ui/styles/colors';
 export class Board extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
-    winRow: types.arrayOf(types.number).isRequired,
     board: types.arrayOf(types.string).isRequired,
-    onClick: types.func.isRequired
+    onClick: types.func.isRequired,
+    winRow: types.arrayOf(types.number).isRequired
   };
 
   /** function to render the cells of the Board */
@@ -27,7 +28,7 @@ export class Board extends Component {
       for (let j = 0; j < 3; j += 1) {
         const c = i * 3 + j;
         // check if winning position
-        const winner = winRow.indexOf(c) !== -1;
+        const winner = includes(winRow, c);
         row.push(
           <TableRowColumn
             key={`${i},${j}`}
@@ -37,7 +38,7 @@ export class Board extends Component {
               border: `1px solid ${grey400}`
             }}
           >
-            <Cell value={board[c]} winner={winner} onClick={() => onClick(c)} />
+            <Cell onClick={() => onClick(c)} value={board[c]} winner={winner} />
           </TableRowColumn>
         );
       }

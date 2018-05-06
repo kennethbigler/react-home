@@ -36,9 +36,9 @@ export class Info extends Component {
       <div className="row">
         <div className="col-md-3">
           <img
-            src={photo}
             alt="Kenneth Bigler"
             onClick={this.handleClick}
+            src={photo}
             style={image}
           />
         </div>

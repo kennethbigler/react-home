@@ -4,13 +4,15 @@ import React from 'react';
 import { Degree } from './Degree';
 // constants
 import classes from '../../../constants/classes';
+// functions
+import map from 'lodash/map';
 // Parents: Main
 
 export const Education = () => {
   return (
     <div>
       <h1>Education and Extracurriculars</h1>
-      {classes.map(d => <Degree key={d.degree} degree={d} />)}
+      {map(classes, d => <Degree degree={d} key={d.degree} />)}
     </div>
   );
 };

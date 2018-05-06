@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { ExpandableCard } from '../../common/ExpandableCard';
 import { techSummary } from '../../../constants/work';
 import Chip from 'material-ui/Chip';
+import map from 'lodash/map';
 // Parents: Main
 
 export class Skills extends Component {
   getCSV = arr => {
     // return arr.reduce((acc, cur) => `${acc}, ${cur}`);
     const style = { display: 'inline-block', marginRight: 5, marginTop: 5 };
-    return arr.map(tech => (
+    return map(arr, tech => (
       <Chip key={tech} style={style}>
         {tech}
       </Chip>

@@ -28,7 +28,7 @@ export const GameTable = props => {
     <div className="gameTable">
       {hideHands ? (
         <div>
-          <Board players={players} hideHands={hideHands} {...passProps} />
+          <Board hideHands={hideHands} players={players} {...passProps} />
           <ButtonGroup gameFunctions={gameFunctions} />
         </div>
       ) : (
@@ -44,12 +44,12 @@ export const GameTable = props => {
 
 GameTable.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
-  turn: types.shape({
-    player: types.number.isRequired
-  }).isRequired,
-  players: types.array.isRequired,
+  betHandler: types.func,
+  cardClickHandler: types.func,
   gameFunctions: types.array.isRequired,
   hideHands: types.bool,
-  betHandler: types.func,
-  cardClickHandler: types.func
+  players: types.array.isRequired,
+  turn: types.shape({
+    player: types.number.isRequired
+  }).isRequired
 };

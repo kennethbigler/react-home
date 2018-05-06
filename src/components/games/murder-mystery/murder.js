@@ -1,3 +1,4 @@
+import assign from 'lodash/assign';
 /**************************************************
              Define Global Constants
 **************************************************/
@@ -123,7 +124,7 @@ let crusader = {
 /**************************************************
                   Expand Profiles
 **************************************************/
-owner = Object.assign(owner, {
+owner = assign(owner, {
   description: `You are the owner of ${CASINO}, and you are running the murder mystery to make sure everything runs smoothly.`,
   hint:
     `"${
@@ -141,7 +142,7 @@ owner = Object.assign(owner, {
     '4. Is the character married?'
 });
 
-reporter = Object.assign(reporter, {
+reporter = assign(reporter, {
   description:
     'You are a resident bad boy/girl and have earned quite a reputation for your ability to try any underhanded trick you can think of to get the latest scoop.\n' +
     'Of course, your methods aren’t always legal…but that only matters if you get caught, right?',
@@ -149,7 +150,7 @@ reporter = Object.assign(reporter, {
   clue: `You have been following ${VICTIM} for a story and found out that ${VICTIM} was in a relationship with someone who was married.`
 });
 
-gunNut = Object.assign(gunNut, {
+gunNut = assign(gunNut, {
   description:
     'You own several guns.\n' +
     `You and your wife are a die-hard ${VICTIM} fans and you believe this ${VICTIM} impersonator is terrible since you have seen him before.\n` +
@@ -158,7 +159,7 @@ gunNut = Object.assign(gunNut, {
   clue: 'You lost your gun at the casino bar last week.'
 });
 
-escort = Object.assign(escort, {
+escort = assign(escort, {
   description:
     `You attend to a good number of ${CASINO}'s most esteemed guests.\n` +
     'You pride yourself on your class and would never associate with a hussie from the street.',
@@ -168,7 +169,7 @@ escort = Object.assign(escort, {
     'You tried to seduce him afterwards but he was not interested.'
 });
 
-gladiator = Object.assign(gladiator, {
+gladiator = assign(gladiator, {
   description:
     `You and ${VICTIM} used to be best friends.\n` +
     `You were previously employed by ${CASINO} to entertain the gamblers.`,
@@ -180,7 +181,7 @@ gladiator = Object.assign(gladiator, {
     }" that you were going to stab ${VICTIM} in the back, like Brutus stabbed Caesar.`
 });
 
-coach = Object.assign(coach, {
+coach = assign(coach, {
   description:
     'You are the Murderer!\n' +
     'You do not have to tell people the following secrets, but you CANNOT contradict them:\n' +
@@ -207,7 +208,7 @@ coach = Object.assign(coach, {
     'You can pretend you have no clue to share.'
 });
 
-bouncer = Object.assign(bouncer, {
+bouncer = assign(bouncer, {
   description:
     'You take care of a good majority of the owner`s dirty work.\n' +
     'Although loyal, you are not very bright but very friendly.\n' +
@@ -225,14 +226,14 @@ bouncer = Object.assign(bouncer, {
     }" when you heard the gunshots. He/She is not the murderer.`
 });
 
-follow = Object.assign(follow, {
+follow = assign(follow, {
   description:
     'Sugar-sweet, full of yourself, and never seen without a purse-full of pills to get through the night.',
   hint: EMPLOYEE,
   clue: `You wanted to hang out with ${VICTIM} later tonight for late night drinks but he told you he was busy because he "had to tell someone something."`
 });
 
-dancer = Object.assign(dancer, {
+dancer = assign(dancer, {
   description:
     'You have been a dancer since you were three years old.\n' +
     `Your a showgirl for ${CASINO}.\n` +
@@ -245,7 +246,7 @@ dancer = Object.assign(dancer, {
   }" was drunk and told you that he was going to murder ${VICTIM} by stabbing him in the back, like Brutus stabbed Caesar.`
 });
 
-director = Object.assign(director, {
+director = assign(director, {
   description:
     'You are so depressed, and say that way to inspire art.\n' +
     `You direct all the shows at ${CASINO} and go so far as to call each one a "picture," as if you were really creating a movie with each one.\n` +
@@ -255,7 +256,7 @@ director = Object.assign(director, {
   clue: `${VICTIM} constantly ridiculed you and your art.`
 });
 
-lawyer = Object.assign(lawyer, {
+lawyer = assign(lawyer, {
   description:
     'You are an up-and-coming lawyer and you are on a trip to Las Vegas.\n' +
     'You are slick, suave, and never go anywhere without a fresh shave, an expensive haircut and a shiny new pair of shoes.\n' +
@@ -267,7 +268,7 @@ lawyer = Object.assign(lawyer, {
     `You did not know ${VICTIM} was a performer at this casino until you saw his face on posters!`
 });
 
-diver = Object.assign(diver, {
+diver = assign(diver, {
   description:
     'You are a hitman.\n' +
     'Your cover is a scuba diver.\n' +
@@ -279,7 +280,7 @@ diver = Object.assign(diver, {
     'You can reveal you are an assassin in any way you would like, but you should reveal this at some point.'
 });
 
-cop = Object.assign(cop, {
+cop = assign(cop, {
   description: 'You worked as a cop in New York for 30 years.',
   hint: `${REGULAR}\nYou always carry your glock (police issued pistol).`,
   clue:
@@ -287,7 +288,7 @@ cop = Object.assign(cop, {
     `You cannot think of any motive you would have to murder ${VICTIM}.`
 });
 
-prof = Object.assign(prof, {
+prof = assign(prof, {
   description:
     'You are a professor at a local college.\n' +
     'You are trying your luck at card counting.',
@@ -299,7 +300,7 @@ prof = Object.assign(prof, {
     `"${bouncer.role}" is not the murderer and you have an alibi.`
 });
 
-diner = Object.assign(diner, {
+diner = assign(diner, {
   description:
     `You have tried to hire ${VICTIM} to play at your 70s diner for over a year now.\n` +
     'You came down to the casino to persuade him to play at your diner.',
@@ -309,7 +310,7 @@ diner = Object.assign(diner, {
   }" meaning neither of you were at the casino bar a week ago.`
 });
 
-ufo = Object.assign(ufo, {
+ufo = assign(ufo, {
   description:
     'You are convinced Aliens exist.\n' +
     `You think aliens are responsible for the murder of ${VICTIM}.`,
@@ -317,7 +318,7 @@ ufo = Object.assign(ufo, {
   clue: 'It was probably aliens. We cannot rule them out.'
 });
 
-crusader = Object.assign(crusader, {
+crusader = assign(crusader, {
   description:
     'By day, you are a very socially awkward individual, however you have an alter ego as a caped crusader crime fighter.\n' +
     'You can play this any way you wish (:',

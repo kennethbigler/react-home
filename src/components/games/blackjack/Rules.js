@@ -10,8 +10,8 @@ export const Rules = () => {
       <h4>Objective:</h4>
       <p>
         Get as close to 21 as you can, without going over. Each card is worth
-        it's number, J/Q/K are worth 10, and an Ace is worth 11 unless you go
-        over 21, then it is worth 1.
+        it&apos;s number, J/Q/K are worth 10, and an Ace is worth 11 unless you
+        go over 21, then it is worth 1.
       </p>
       <br />
       <h4>Blackjack:</h4>

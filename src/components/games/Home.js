@@ -1,10 +1,15 @@
+// react
 import React, { Component } from 'react';
 import types from 'prop-types';
+// redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateName, updateBot } from '../../store/modules/players';
+// material ui
 import Toggle from 'material-ui/Toggle';
 import TextField from 'material-ui/TextField';
+// functions
+import map from 'lodash/map';
 // Parents: Main
 
 /* --------------------------------------------------
@@ -34,12 +39,9 @@ class Home extends Component {
     const { players: old } = prevState;
     const { players } = nextProps;
 
-    if (old !== players) {
-      const isBot = [];
-      players.forEach(p => isBot.push(p.isBot));
-      return { players, isBot };
-    }
-    return null;
+    return old !== players
+      ? { players, isBot: map(players, ['isBot', true]) }
+      : null;
   }
 
   state = {
@@ -85,21 +87,22 @@ class Home extends Component {
             <h4 className="col-9">Edit Player Names</h4>
             <h4 className="col-3">Is Bot?</h4>
           </div>
-          {players.map(
+          {map(
+            players,
             (p, i) =>
               p.id !== 0 ? (
                 <div className="row" key={`${p.name},${i}`}>
                   <div className="col-9">
                     <TextField
                       defaultValue={p.name}
-                      onKeyPress={e => this.handleKeyPress(e, p.id)}
                       hintText="Enter Player Name"
+                      onKeyPress={e => this.handleKeyPress(e, p.id)}
                     />
                   </div>
                   <div className="col-3" style={{ marginTop: '12px' }}>
                     <Toggle
-                      toggled={isBot[i]}
                       onToggle={(e, isC) => this.handleToggle(p.id, isC)}
+                      toggled={isBot[i]}
                     />
                   </div>
                 </div>

@@ -10,14 +10,14 @@ export class EC extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     backgroundColor: types.string,
+    children: types.oneOfType([types.arrayOf(types.node), types.node]),
     muiTheme: types.shape({
       palette: types.shape({
         primary1Color: types.string.isRequired
       }).isRequired
     }),
-    title: types.oneOfType([types.string, types.element]),
     subtitle: types.oneOfType([types.string, types.element]),
-    children: types.oneOfType([types.arrayOf(types.node), types.node])
+    title: types.oneOfType([types.string, types.element])
   };
 
   state = {

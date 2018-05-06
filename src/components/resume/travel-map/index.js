@@ -71,17 +71,17 @@ export const TravelMap = () => {
 
   return (
     <div>
-      <h1>Ken's Travel Map</h1>
+      <h1>Ken&apos;s Travel Map</h1>
       <hr />
       <img
+        alt="Ken’s Travel Map"
         onClick={imgUrl}
         src={travelMap}
         style={styles.img}
-        alt="Ken’s Travel Map"
       />
       <h3 style={styles.margins}>Ken has been to:</h3>
       <Table>
-        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+        <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
           <TableRow>
             <TableHeaderColumn style={{ ...styles.cell, ...styles.separator }}>
               North America

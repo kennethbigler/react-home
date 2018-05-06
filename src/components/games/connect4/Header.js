@@ -19,8 +19,8 @@ export const Header = props => {
       <ToolbarGroup>
         <ToolbarTitle text={status} />
         <ToolbarTitle
-          text={<Piece piece={piece} />}
           style={{ marginTop: '-16px' }}
+          text={<Piece piece={piece} />}
         />
       </ToolbarGroup>
       <ToolbarGroup lastChild>
@@ -32,7 +32,7 @@ export const Header = props => {
 
 Header.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
-  winner: types.number,
+  newGame: types.func.isRequired,
   turn: types.number.isRequired,
-  newGame: types.func.isRequired
+  winner: types.number
 };

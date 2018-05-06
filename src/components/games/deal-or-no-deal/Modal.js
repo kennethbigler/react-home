@@ -4,6 +4,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { Money } from './Money';
 import { getMoneyText } from './common';
+import map from 'lodash/map';
 // Parents: DealOrNoDeal
 
 const styles = {
@@ -11,7 +12,7 @@ const styles = {
 };
 
 const genMoneyCols = (arr, start, stop = arr.length) =>
-  arr.slice(start, stop).map(bc => <Money key={bc.loc} briefcase={bc} />);
+  map(arr.slice(start, stop), bc => <Money briefcase={bc} key={bc.loc} />);
 
 /** render code for each class */
 export const Modal = props => {
@@ -23,14 +24,14 @@ export const Modal = props => {
 
   if (numCases > 2) {
     actions = [
-      <FlatButton key="deal" label="Deal" primary onClick={deal} />,
-      <FlatButton key="noDeal" label="No Deal" secondary onClick={noDeal} />
+      <FlatButton key="deal" label="Deal" onClick={deal} primary />,
+      <FlatButton key="noDeal" label="No Deal" onClick={noDeal} secondary />
     ];
   } else {
     actions = [
-      <FlatButton key="deal" label="Deal" primary onClick={deal} />,
-      <FlatButton key="noDeal" label="My Case" secondary onClick={noDeal} />,
-      <FlatButton key="swap" label="Other Case" secondary onClick={swap} />
+      <FlatButton key="deal" label="Deal" onClick={deal} primary />,
+      <FlatButton key="noDeal" label="My Case" onClick={noDeal} secondary />,
+      <FlatButton key="swap" label="Other Case" onClick={swap} secondary />
     ];
   }
 
@@ -40,10 +41,10 @@ export const Modal = props => {
 
   return (
     <Dialog
-      title={`${getMoneyText(offer)} - Deal or No Deal?`}
       actions={actions}
-      open={open}
       autoScrollBodyContent
+      open={open}
+      title={`${getMoneyText(offer)} - Deal or No Deal?`}
     >
       <div style={styles.cols}>{lhs}</div>
       <div style={styles.cols}>{rhs}</div>
@@ -53,15 +54,15 @@ export const Modal = props => {
 
 Modal.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
-  open: types.bool.isRequired,
-  deal: types.func.isRequired,
-  noDeal: types.func.isRequired,
-  offer: types.number.isRequired,
   board: types.arrayOf(
     types.shape({
       loc: types.number.isRequired
     })
   ).isRequired,
+  deal: types.func.isRequired,
+  noDeal: types.func.isRequired,
   numCases: types.number.isRequired,
+  offer: types.number.isRequired,
+  open: types.bool.isRequired,
   swap: types.func.isRequired
 };

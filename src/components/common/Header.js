@@ -32,22 +32,22 @@ export class Header extends Component {
     return (
       <div className="application-header">
         <AppBar
-          title="Kenneth Bigler"
-          style={{ position: 'fixed', left: 0, right: 0, top: 0 }}
           iconClassNameRight="muidocs-icon-navigation-expand-more"
           onLeftIconButtonClick={this.handleOpen}
           onTitleClick={() => this.handleNav('/')}
+          style={{ position: 'fixed', left: 0, right: 0, top: 0 }}
+          title="Kenneth Bigler"
           titleStyle={{ cursor: 'pointer' }}
         />
-        <Drawer open={open} docked={false} onRequestChange={this.handleOpen}>
+        <Drawer docked={false} onRequestChange={this.handleOpen} open={open}>
           <AppBar
-            title="Menu"
             iconElementLeft={
               <IconButton>
                 <NavigationClose />
               </IconButton>
             }
             onLeftIconButtonClick={this.handleOpen}
+            title="Menu"
           />
           {React.cloneElement(children, { onItemClick: this.handleNav })}
         </Drawer>

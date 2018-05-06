@@ -1,3 +1,6 @@
+import assign from 'lodash/assign';
+import map from 'lodash/map';
+
 /* --------------------------------------------------
  * Deck
  * -------------------------------------------------- */
@@ -63,11 +66,7 @@ export const Deck = {
 
   // immutable deck copy to new deck
   getNewDeck: function() {
-    let ret = [];
-    this.newDeck.forEach(card => {
-      ret.push(Object.assign({}, card));
-    });
-    return ret;
+    return map(this.newDeck, card => assign({}, card));
   },
 
   // randomize order of the cards

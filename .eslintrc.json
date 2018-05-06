@@ -22,13 +22,15 @@
     "es6": true,
     "browser": true,
     "node": true,
-    "jquery": true
+    "jquery": true,
+    "jest": true
   },
   "rules": {
     "quotes": ["warn", "single"],
     "no-var": "error",
     "semi": ["error", "always"],
     "no-trailing-spaces": "warn",
+    "no-console": "warn",
     "eol-last": "warn",
     "no-underscore-dangle": "warn",
     "no-alert": "warn",

@@ -4,6 +4,7 @@ import { ExpandableCard } from '../../common/ExpandableCard';
 import { FORMAT } from '../../common/timeline/';
 import Chip from 'material-ui/Chip';
 import moment from 'moment';
+import map from 'lodash/map';
 // Parents: Work
 
 /** function to generate timeline card */
@@ -53,7 +54,7 @@ export class Job extends Component {
   getCSV = arr => {
     // return arr.reduce((acc, cur) => `${acc}, ${cur}`);
     const style = { display: 'inline-block', marginRight: 5, marginBottom: 5 };
-    return arr.map(tech => (
+    return map(arr, tech => (
       <Chip key={tech} style={style}>
         {tech}
       </Chip>
@@ -75,15 +76,15 @@ export class Job extends Component {
     return (
       job.isJob && (
         <ExpandableCard
-          title={title}
-          subtitle={job.title}
           backgroundColor={job.color}
+          subtitle={job.title}
+          title={title}
         >
           <div className="col-sm-9">
             <p>{this.showRange(job.start, job.end, job.notes)}</p>
             {job.expr && (
               <ul>
-                {job.expr.map((desc, i) => <li key={`desc${i}`}>{desc}</li>)}
+                {map(job.expr, (desc, i) => <li key={`desc${i}`}>{desc}</li>)}
               </ul>
             )}
             {job.tech && (
@@ -92,7 +93,7 @@ export class Job extends Component {
           </div>
           {job.src && (
             <div className="col-sm-3">
-              <img style={imgStyle} src={job.src} alt={job.alt} />
+              <img alt={job.alt} src={job.src} style={imgStyle} />
             </div>
           )}
         </ExpandableCard>

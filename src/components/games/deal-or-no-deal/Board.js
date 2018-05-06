@@ -2,6 +2,7 @@ import React from 'react';
 import types from 'prop-types';
 import { Case } from './Case';
 import Paper from 'material-ui/Paper';
+import map from 'lodash/map';
 // Parents: Degree
 
 /** render code for each class */
@@ -20,11 +21,11 @@ export const Board = props => {
   // rendered component
   return (
     <Paper style={style} zDepth={2}>
-      {board.map((bc, i) => (
+      {map(board, (bc, i) => (
         <Case
+          briefcase={bc}
           key={i}
           onClick={() => onClick(i)}
-          briefcase={bc}
           secondary={pc && pc.loc === bc.loc}
         />
       ))}

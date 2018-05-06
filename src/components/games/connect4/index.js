@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { GameBoard } from './GameBoard';
+import reduce from 'lodash/reduce';
+import forEach from 'lodash/forEach';
 // Parents: Main
 
 // dp constants
@@ -22,10 +24,14 @@ const NEW_BOARD = [
  * @return {Object} new board, empty winner, empty win line, turn to red
  */
 const getNewGame = () => ({
-  board: NEW_BOARD.reduce((acc, row) => {
-    acc.push([...row]);
-    return acc;
-  }, []),
+  board: reduce(
+    NEW_BOARD,
+    (acc, row) => {
+      acc.push([...row]);
+      return acc;
+    },
+    []
+  ),
   winner: null,
   line: [],
   turn: RED
@@ -126,10 +132,10 @@ export class Connect4 extends Component {
       this.helpEvalConnect4(row - i, col + i, dp[3]);
     }
 
-    dp.forEach(line => {
+    forEach(dp, line => {
       if (line[MAX].length >= 4) {
         let { board } = this.state;
-        line[MAX].forEach(t => (board[t[0]][t[1]] = 3));
+        forEach(line[MAX], t => (board[t[0]][t[1]] = 3));
         this.setState({ winner: this.state.turn, board });
       }
     });
@@ -166,7 +172,7 @@ export class Connect4 extends Component {
         }
       }
     }
-    return dp.reduce((a, c) => a || c[MAX].length >= 4, false);
+    return reduce(dp, (a, c) => a || c[MAX].length >= 4, false);
   };
 
   render() {
@@ -175,9 +181,9 @@ export class Connect4 extends Component {
       <GameBoard
         board={board}
         insert={this.insert}
-        winner={winner}
-        turn={turn}
         newGame={this.newGame}
+        turn={turn}
+        winner={winner}
       />
     );
   }

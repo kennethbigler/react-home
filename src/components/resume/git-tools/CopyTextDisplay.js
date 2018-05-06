@@ -9,9 +9,9 @@ import Chip from 'material-ui/Chip';
 export class CopyTextDisplay extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
+    copyText: types.string,
     handleCopy: types.func.isRequired,
-    text: types.oneOfType([types.string, types.array]).isRequired,
-    copyText: types.string
+    text: types.oneOfType([types.string, types.array]).isRequired
   };
 
   state = { open: false };
@@ -42,10 +42,10 @@ export class CopyTextDisplay extends Component {
           {text}
         </Chip>
         <Snackbar
-          open={open}
-          message="Copied Commit Text to clipboard!"
           autoHideDuration={4000}
+          message="Copied Commit Text to clipboard!"
           onRequestClose={this.handleRequestClose}
+          open={open}
         />
       </div>
     );

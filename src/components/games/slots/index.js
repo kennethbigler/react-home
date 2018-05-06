@@ -1,9 +1,13 @@
+// react
 import React, { Component } from 'react';
 import types from 'prop-types';
+// redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { payout, updateBet } from '../../../store/modules/players';
+// components
 import { SlotMachine } from './SlotMachine';
+// material ui
 import RaisedButton from 'material-ui/RaisedButton';
 import {
   Table,
@@ -13,6 +17,8 @@ import {
   TableHeader,
   TableHeaderColumn
 } from 'material-ui/Table';
+// functions
+import map from 'lodash/map';
 // Parents: Main
 
 /* --------------------------------------------------
@@ -77,7 +83,7 @@ class SM extends Component {
 
     return (
       <div>
-        <h1>Welcome to Ken's Casino Slot Machine</h1>
+        <h1>Welcome to Ken&apos;s Casino Slot Machine</h1>
         <div className="row" style={{ marginTop: '2em' }}>
           <div className="col-sm-6">
             <div className="row" style={{ marginBottom: '1em' }}>
@@ -85,20 +91,20 @@ class SM extends Component {
                 <RaisedButton
                   label="Spin"
                   onClick={this.updateSlotMachine}
-                  style={{ marginBottom: 15 }}
                   primary
+                  style={{ marginBottom: 15 }}
                 />
               </div>
               <div className="col-sm-9">
-                <Table selectable={false} fixedHeader>
+                <Table fixedHeader selectable={false}>
                   <TableBody displayRowCheckbox={false} stripedRows>
                     {slots}
                   </TableBody>
                 </Table>
               </div>
             </div>
-            <Table selectable={false} fixedHeader>
-              <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+            <Table fixedHeader selectable={false}>
+              <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                 <TableRow>
                   <TableHeaderColumn>Player</TableHeaderColumn>
                   <TableHeaderColumn>Money</TableHeaderColumn>
@@ -117,15 +123,15 @@ class SM extends Component {
             </Table>
           </div>
           <div className="col-sm-6">
-            <Table selectable={false} fixedHeader>
-              <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+            <Table fixedHeader selectable={false}>
+              <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                 <TableRow>
                   <TableHeaderColumn>Slot Roll</TableHeaderColumn>
                   <TableHeaderColumn>Payout</TableHeaderColumn>
                 </TableRow>
               </TableHeader>
               <TableBody displayRowCheckbox={false} showRowHover>
-                {SlotMachine.payoutTable.map((row, i) => (
+                {map(SlotMachine.payoutTable, (row, i) => (
                   <TableRow key={i}>
                     <TableRowColumn>
                       {row.win} {row.symbol}
@@ -143,14 +149,8 @@ class SM extends Component {
 }
 
 // react-redux export
-function mapStateToProps(state /*, ownProps*/) {
-  return { players: state.players };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    playerActions: bindActionCreators({ payout, updateBet }, dispatch)
-  };
-}
-
+const mapStateToProps = (state /*, ownProps*/) => ({ players: state.players });
+const mapDispatchToProps = dispatch => ({
+  playerActions: bindActionCreators({ payout, updateBet }, dispatch)
+});
 export const Slots = connect(mapStateToProps, mapDispatchToProps)(SM);

@@ -22,6 +22,6 @@ export const Cell = props => {
 Cell.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   color: types.string,
-  text: types.string.isRequired,
-  style: types.objectOf(types.oneOfType([types.string, types.number]))
+  style: types.objectOf(types.oneOfType([types.string, types.number])),
+  text: types.string.isRequired
 };

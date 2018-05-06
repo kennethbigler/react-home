@@ -10,6 +10,8 @@ import { shuffle } from './common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { payout } from '../../../store/modules/players';
+// functions
+import forEach from 'lodash/forEach';
 // Parents: Main
 
 // name constant for reference
@@ -59,12 +61,12 @@ export class DND extends Component {
   // Prop Validation
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
+    actions: types.shape({
+      payout: types.func.isRequired
+    }).isRequired,
     player: types.shape({
       id: types.number.isRequired,
       money: types.number.isRequired
-    }).isRequired,
-    actions: types.shape({
-      payout: types.func.isRequired
     }).isRequired
   };
 
@@ -149,7 +151,7 @@ export class DND extends Component {
     // mix up board
     shuffle(state.board);
     // set all flags to un-touched
-    state.board.forEach(bc => {
+    forEach(state.board, bc => {
       // get sum and count of cases remaining
       state.sum += bc.val;
       state.numCases += 1;
@@ -223,12 +225,12 @@ export class DND extends Component {
     return (
       <div>
         <Header
-          playerChoice={playerChoice}
           casesToOpen={casesToOpen}
           isOver={isOver}
-          offer={offer}
           newGame={this.newGame}
+          offer={offer}
           player={player}
+          playerChoice={playerChoice}
         />
         <Board
           board={board}
@@ -237,12 +239,12 @@ export class DND extends Component {
         />
         <Modal
           board={board}
-          open={dndOpen}
-          offer={offer}
-          numCases={numCases}
-          swap={this.swap}
           deal={this.deal}
           noDeal={this.noDeal}
+          numCases={numCases}
+          offer={offer}
+          open={dndOpen}
+          swap={this.swap}
         />
       </div>
     );
@@ -250,12 +252,10 @@ export class DND extends Component {
 }
 
 // react-redux export
-function mapStateToProps(state /*, ownProps*/) {
-  return { player: state.players[0] };
-}
-
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators({ payout }, dispatch) };
-}
-
+const mapStateToProps = (state /*, ownProps*/) => ({
+  player: state.players[0]
+});
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({ payout }, dispatch)
+});
 export const DealOrNoDeal = connect(mapStateToProps, mapDispatchToProps)(DND);

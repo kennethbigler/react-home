@@ -3,6 +3,7 @@ import types from 'prop-types';
 import { Hand } from './Hand';
 import Slider from 'material-ui/Slider';
 import * as colors from 'material-ui/styles/colors';
+import map from 'lodash/map';
 // Parents: Board
 
 /* --------------------------------------------------
@@ -42,31 +43,31 @@ export const Player = props => {
       </h2>
       {showSlider && (
         <Slider
-          min={minBet}
           max={maxBet}
-          step={step}
-          value={player.bet}
+          min={minBet}
           onChange={onSliderChange}
           sliderStyle={{ marginBottom: 0 }}
+          step={step}
           style={{ minWidth: '100px' }}
+          value={player.bet}
         />
       )}
       {player.id !== 0 && (
         <h3 style={{ marginBottom: 0 }}>Bet: ${player.bet}</h3>
       )}
-      {player.hands.map((hand, i) => {
+      {map(player.hands, (hand, i) => {
         const isHandTurn = !!turn && turn.hand === i;
         return (
           <div key={`hand${i}`}>
             {!hideHands && (
               <Hand
+                cardHandler={cardHandler}
                 hand={hand}
-                playerNo={playerNo}
                 handNo={i}
                 isHandTurn={isHandTurn}
-                isPlayerTurn={isPlayerTurn}
                 isMultiHand={isMultiHand}
-                cardHandler={cardHandler}
+                isPlayerTurn={isPlayerTurn}
+                playerNo={playerNo}
               />
             )}
           </div>
@@ -78,6 +79,9 @@ export const Player = props => {
 
 Player.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
+  betHandler: types.func,
+  cardHandler: types.func,
+  hideHands: types.bool,
   player: types.shape({
     hands: types.arrayOf(types.object).isRequired,
     id: types.number.isRequired,
@@ -88,11 +92,8 @@ Player.propTypes = {
     bet: types.number.isRequired
   }).isRequired,
   playerNo: types.number.isRequired,
-  hideHands: types.bool,
   turn: types.shape({
     player: types.number.isRequired,
     hand: types.number.isRequired
-  }),
-  betHandler: types.func,
-  cardHandler: types.func
+  })
 };

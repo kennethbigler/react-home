@@ -3,17 +3,21 @@ import scores from './poker';
 // https://react-table.js.org/#/story/readme
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+// functions
+import keys from 'lodash/keys';
+import forEach from 'lodash/forEach';
+import includes from 'lodash/includes';
 // Parents: Main
 
-let keys = [];
+let pokerKeys = [];
 
 function getTotal(obj) {
   let total = 0;
-  Object.keys(obj.scores).forEach(k => {
+  forEach(keys(obj.scores), k => {
     total += isNaN(obj.scores[k]) ? 0 : obj.scores[k];
-    if (keys.indexOf(k) === -1) {
-      keys.push(k);
-      keys.sort(
+    if (!includes(pokerKeys, k)) {
+      pokerKeys.push(k);
+      pokerKeys.sort(
         (a, b) => parseInt(a.substr(1), 10) - parseInt(b.substr(1), 10)
       );
     }
@@ -40,10 +44,10 @@ export const PokerNight = () => {
 
   // all scores
   let totalErrorMargin = 0;
-  keys.forEach(k => {
+  forEach(pokerKeys, k => {
     // calculate error margin
     let err = 0;
-    PN.forEach(p => (err += isNaN(p.scores[k]) ? 0 : p.scores[k]));
+    forEach(PN, p => (err += isNaN(p.scores[k]) ? 0 : p.scores[k]));
     totalErrorMargin += err;
     // add the column to the table
     columns.push({
@@ -77,14 +81,14 @@ export const PokerNight = () => {
   return (
     <ReactTable
       className="-striped -highlight"
-      defaultPageSize={PN.length}
-      data={PN}
       columns={columns}
+      data={PN}
+      defaultPageSize={PN.length}
+      defaultSortDesc
+      defaultSorted={defaultSort}
       resizable={false}
       showPagination={false}
       style={styles}
-      defaultSortDesc
-      defaultSorted={defaultSort}
     />
   );
 };

@@ -16,10 +16,10 @@ export const GameBoard = props => {
   const { board, insert, winner, turn, newGame } = props;
   return (
     <div>
-      <h1>Welcome to Ken's Connect4 Game</h1>
+      <h1>Welcome to Ken&apos;s Connect4 Game</h1>
       <Paper style={styles.paper} zDepth={2}>
-        <Header winner={winner} turn={turn} newGame={newGame} />
-        <Board board={board} turn={turn} insert={insert} />
+        <Header newGame={newGame} turn={turn} winner={winner} />
+        <Board board={board} insert={insert} turn={turn} />
       </Paper>
     </div>
   );
@@ -29,7 +29,7 @@ GameBoard.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   board: types.array.isRequired,
   insert: types.func.isRequired,
-  winner: types.number,
+  newGame: types.func.isRequired,
   turn: types.number.isRequired,
-  newGame: types.func.isRequired
+  winner: types.number
 };

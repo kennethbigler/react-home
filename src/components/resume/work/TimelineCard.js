@@ -15,9 +15,9 @@ export const TimelineCard = props => {
 
   return (
     <ExpandableCard
-      title={TIMELINE_TITLE}
-      subtitle="September 2011 - Present"
       backgroundColor={backgroundColor}
+      subtitle="September 2011 - Present"
+      title={TIMELINE_TITLE}
     >
       <Timeline data={workExp} />
     </ExpandableCard>
@@ -26,8 +26,8 @@ export const TimelineCard = props => {
 
 TimelineCard.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
-  workExp: types.array,
-  backgroundColor: types.string
+  backgroundColor: types.string,
+  workExp: types.array
 };
 
 TimelineCard.defaultProps = {

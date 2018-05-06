@@ -2,22 +2,24 @@ import React from 'react';
 import types from 'prop-types';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
+import map from 'lodash/map';
 // Parents: Header
 
 export const Menu = props => {
   const { onItemClick } = props;
   // internal routes
-  const menu = [
-    { name: 'Summary', route: '' },
-    { divider: true },
-    { name: 'Work', route: 'work' },
-    { name: 'Education', route: 'education' },
-    { name: 'Travel Map', route: 'travel' },
-    { name: 'Git Tools', route: 'git-tools' },
-    { name: 'Resume', route: 'resume' },
-    { divider: true },
-    { name: 'React Games', route: 'games' }
-  ].map(
+  const menu = map(
+    [
+      { name: 'Summary', route: '' },
+      { divider: true },
+      { name: 'Work', route: 'work' },
+      { name: 'Education', route: 'education' },
+      { name: 'Travel Map', route: 'travel' },
+      { name: 'Git Tools', route: 'git-tools' },
+      { name: 'Resume', route: 'resume' },
+      { divider: true },
+      { name: 'React Games', route: 'games' }
+    ],
     (item, index) =>
       item.divider ? (
         <Divider key={index} />
@@ -47,11 +49,11 @@ export const Menu = props => {
       <Divider />
       <br />
       <img
+        alt="profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
+        id="stackOverflow"
         onClick={stkovrflw}
         src="https://stackoverflow.com/users/flair/4830309.png?theme=dark"
-        id="stackOverflow"
         style={{ display: 'block', margin: 'auto', cursor: 'pointer' }}
-        alt="profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
       />
     </div>
   );

@@ -28,7 +28,7 @@ export const Segment = props => {
   }
 
   return (
-    <div title={title} style={style}>
+    <div style={style} title={title}>
       {body}
     </div>
   );

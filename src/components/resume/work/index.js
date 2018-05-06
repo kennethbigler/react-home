@@ -5,6 +5,8 @@ import { Job } from './Job';
 import { TimelineCard } from './TimelineCard';
 // constants
 import workExp from '../../../constants/work';
+// functions
+import map from 'lodash/map';
 // Parents: Main
 
 export const Work = () => {
@@ -12,7 +14,7 @@ export const Work = () => {
     <div>
       <h1>Work Experience</h1>
       <TimelineCard workExp={workExp} />
-      {workExp.map(job => <Job key={job.company} job={job} />)}
+      {map(workExp, job => <Job job={job} key={job.company} />)}
     </div>
   );
 };

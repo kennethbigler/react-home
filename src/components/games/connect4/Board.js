@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableHeaderColumn
 } from 'material-ui/Table';
+import map from 'lodash/map';
 // Parents: GameBoard
 
 const styles = { cell: { padding: 1, textAlign: 'center' } };
@@ -19,30 +20,28 @@ const styles = { cell: { padding: 1, textAlign: 'center' } };
 export const Board = props => {
   const { board, turn, insert } = props;
   // generate code for Connect4 Board
-  const gameBoard = board
-    .map((arr, i) => {
-      const row = arr.map((piece, j) => (
-        <TableRowColumn key={`c4c${i},${j}`} style={styles.cell}>
-          <Piece piece={piece} />
-        </TableRowColumn>
-      ));
-      return <TableRow key={`c4r${i}`}>{row}</TableRow>;
-    })
-    .reverse();
+  const gameBoard = map(board, (arr, i) => {
+    const row = map(arr, (piece, j) => (
+      <TableRowColumn key={`c4c${i},${j}`} style={styles.cell}>
+        <Piece piece={piece} />
+      </TableRowColumn>
+    ));
+    return <TableRow key={`c4r${i}`}>{row}</TableRow>;
+  }).reverse();
   // generate buttons to play pieces based off top board row
-  const gameButtons = board[board.length - 1].map((piece, i) => (
+  const gameButtons = map(board[board.length - 1], (piece, i) => (
     <TableHeaderColumn key={`c4h${i}`} style={styles.cell}>
       <Piece
-        piece={!piece ? turn : 0}
-        onClick={() => insert(i)}
         enabled={!piece}
+        onClick={() => insert(i)}
+        piece={!piece ? turn : 0}
       />
     </TableHeaderColumn>
   ));
 
   return (
-    <Table selectable={false} fixedHeader>
-      <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+    <Table fixedHeader selectable={false}>
+      <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
         <TableRow>{gameButtons}</TableRow>
       </TableHeader>
       <TableBody displayRowCheckbox={false}>{gameBoard}</TableBody>
@@ -53,6 +52,6 @@ export const Board = props => {
 Board.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   board: types.arrayOf(types.arrayOf(types.number)).isRequired,
-  turn: types.number.isRequired,
-  insert: types.func.isRequired
+  insert: types.func.isRequired,
+  turn: types.number.isRequired
 };

@@ -4,12 +4,15 @@ import { Header } from './Header';
 import { History } from './History';
 import { Board } from './Board';
 import { X, O, getTurn } from './constants';
+import fill from 'lodash/fill';
 // Parents: Main
 
 // constants and helper functions
-const getNewGameVars = () => {
-  return { history: [{ board: Array(9).fill(' ') }], turn: X, step: 0 };
-};
+const getNewGameVars = () => ({
+  history: [{ board: fill(Array(9), ' ') }],
+  turn: X,
+  step: 0
+});
 
 /**
  * function to check if there are 3 in a row
@@ -105,14 +108,14 @@ export class TicTacToe extends Component {
     return (
       <div>
         <Paper style={this.styles.paper} zDepth={2}>
-          <Header winner={winner} turn={turn} newGame={this.newGame} />
+          <Header newGame={this.newGame} turn={turn} winner={winner} />
           <Board
             board={board}
-            winRow={winRow}
             onClick={i => this.handleClick(i)}
+            winRow={winRow}
           />
         </Paper>
-        <History step={step} history={history} jumpToStep={this.jumpToStep} />
+        <History history={history} jumpToStep={this.jumpToStep} step={step} />
       </div>
     );
   }

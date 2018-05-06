@@ -1,10 +1,11 @@
+import split from 'lodash/split';
 /**
  * function that takes a number and returns string displayed like money
  * @param {number} n
  * @returns {string} - $xxx,xxx,...
  */
 export const getMoneyText = n => {
-  let txt = n.toString().split('');
+  let txt = split(n.toString(), '');
   const e = txt[0] === '-' ? 1 : 0;
   for (let i = txt.length - 3; i > e; i -= 3) {
     txt.splice(i, 0, ',');

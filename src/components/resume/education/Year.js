@@ -1,6 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
 import { Quarter } from './Quarter';
+import map from 'lodash/map';
 // Parents: Degree
 
 /** render code for each year */
@@ -10,7 +11,7 @@ export const Year = props => {
     <div className={`col-md-${Math.ceil(12 / len)}`}>
       <h2>{year.year}</h2>
       <hr />
-      {year.quarters.map(quarter => (
+      {map(year.quarters, quarter => (
         <Quarter key={quarter.quarter} quarter={quarter} />
       ))}
     </div>
