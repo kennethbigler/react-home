@@ -6,8 +6,8 @@
     "plugin:import/errors",
     "plugin:lodash/recommended",
     "eslint:recommended",
-    "plugin:react/recommended",
-    "google"
+    "google",
+    "plugin:react/recommended"
   ],
   "parser": "babel-eslint",
   "parserOptions": {
