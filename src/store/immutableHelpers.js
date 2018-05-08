@@ -1,3 +1,6 @@
+import map from 'lodash/map';
+import reject from 'lodash/reject';
+
 // Immutable helper functions
 export function insertItem(array, item) {
   let newArr = array.slice();
@@ -6,17 +9,17 @@ export function insertItem(array, item) {
 }
 
 export function updateObjectInArray(array, ins, key) {
-  return array.map(item => {
+  return map(array, item => {
     return item[key] !== ins[key] ? item : { ...item, ...ins };
   });
 }
 
 export function updateArrayInArray(array, ins, idx) {
-  return array.map((player, i) => {
+  return map(array, (player, i) => {
     return i !== idx ? player : ins;
   });
 }
 
 export function removeItem(array, id) {
-  return array.filter(item => item.id !== id);
+  return reject(array, ['id', id]);
 }

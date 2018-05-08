@@ -1,3 +1,6 @@
+// functions
+import assign from 'lodash/assign';
+import forEach from 'lodash/forEach';
 import { Deck } from '../../apis/Deck';
 import {
   removeItem,
@@ -5,6 +8,8 @@ import {
   updateObjectInArray,
   insertItem
 } from '../immutableHelpers';
+
+// initialState
 import initialState from '../initialState';
 
 // --------------------     Actions     -------------------- //
@@ -113,8 +118,8 @@ export function splitHand(hands, id, hNum, weigh = null) {
   hand1.cards.push(Deck.deal(1)[0]);
   hand2.cards.push(Deck.deal(1)[0]);
   // update the weights
-  Object.assign(hand1, weigh(hand1.cards));
-  Object.assign(hand2, weigh(hand2.cards));
+  assign(hand1, weigh(hand1.cards));
+  assign(hand2, weigh(hand2.cards));
   // update global hands
   let newHands = updateArrayInArray(hands, hand2, hNum);
   newHands.splice(hNum, 0, hand1);
@@ -145,7 +150,7 @@ export function drawCard(hands, id, hNum = 0, num = 1, weigh = null) {
  */
 export function swapCards(hands, id, cardsToDiscard) {
   const cards = [...hands[0].cards];
-  cardsToDiscard.forEach(i => (cards[i] = Deck.deal(1)[0]));
+  forEach(cardsToDiscard, i => (cards[i] = Deck.deal(1)[0]));
   cards.sort(Deck.rankSort);
   const newHand = updateArrayInArray(hands, { cards }, 0);
   return { type: SWAP_CARD, player: { id, hands: newHand } };

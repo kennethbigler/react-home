@@ -138,8 +138,7 @@ class BJ extends Component {
       const hand = get(player, `hands.${nt.hand}`);
       // if the Hand updated, get the game functions
       if (hand !== get(lp, `${lt.player}.hands.${lt.hand}`)) {
-        const gameFunctions = [...this.getGameFunctions(hand)];
-        this.setState({ gameFunctions });
+        this.getGameFunctions(hand);
       }
     } else if (player.isBot && player.id !== DEALER) {
       this.playBot();
@@ -265,7 +264,7 @@ class BJ extends Component {
   getGameFunctions = hand => {
     // check state
     if (!hand) {
-      return [];
+      return;
     }
 
     // define game function options
@@ -293,7 +292,7 @@ class BJ extends Component {
     }
 
     // update game state
-    return gameFunctions;
+    this.setState({ gameFunctions });
   };
 
   /**
@@ -432,8 +431,6 @@ class BJ extends Component {
         } else if (n === 19) {
           // A8 double d6, else stay
           d === 6 ? double() : stay();
-        } else {
-          console.error(`AI ${turn} Error: n ${n}, d ${d}, s ${soft}`);
         }
       } else if (n < 17 && !soft) {
         // hard hands, 17+ stays
@@ -455,8 +452,6 @@ class BJ extends Component {
         } else if (n >= 13 && n <= 16) {
           // 13-16 stay d2-6, hit 7-A
           d >= 2 && d <= 6 ? stay() : hit();
-        } else {
-          console.error(`AI ${turn} Error: n ${n}, d ${d}, s ${soft}`);
         }
       } else {
         stay();

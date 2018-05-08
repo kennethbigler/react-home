@@ -1,3 +1,6 @@
+// functions
+import assign from 'lodash/assign';
+
 // initialState
 import initialState from '../initialState';
 
@@ -25,15 +28,15 @@ export function setCommitPrefix(isSet = true) {
 export default function reducer(state = initialState.git, action) {
   switch (action.type) {
     case SET_KEY:
-      return Object.assign({}, state, { storyID: action.storyID });
+      return assign({}, state, { storyID: action.storyID });
     case SET_BRANCH_PREFIX:
-      return Object.assign({}, state, { branchPrefix: action.branchPrefix });
+      return assign({}, state, { branchPrefix: action.branchPrefix });
     case SET_CASE_PREFERENCE:
-      return Object.assign({}, state, {
+      return assign({}, state, {
         casePreference: action.casePreference
       });
     case SET_COMMIT_PREFIX:
-      return Object.assign({}, state, { commitPrefix: action.commitPrefix });
+      return assign({}, state, { commitPrefix: action.commitPrefix });
     default:
       return state;
   }

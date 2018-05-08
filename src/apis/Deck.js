@@ -126,7 +126,6 @@ export const Deck = {
         break;
       default:
         ta = 0;
-        console.error(`Error! Suit is ${a.suit}`);
     }
     switch (b.suit) {
       case '♣':
@@ -143,7 +142,6 @@ export const Deck = {
         break;
       default:
         tb = 0;
-        console.error(`Error! Suit is ${b.suit}`);
     }
     return ta + a.weight - (tb + b.weight);
   }
