@@ -1,30 +1,30 @@
 // react
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import types from 'prop-types';
 // components
-import { Deck } from '../../../apis/Deck';
-import { GameTable } from '../gametable/';
+import {Deck} from '../../../apis/Deck';
+import {GameTable} from '../gametable/';
 // redux
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { incrPlayerTurn, resetTurn } from '../../../store/modules/turn';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {incrPlayerTurn, resetTurn} from '../../../store/modules/turn';
 import {
   swapCards,
   newHand,
   payout,
   updateBet,
-  resetStatus
+  resetStatus,
 } from '../../../store/modules/players';
 // functions
 import forEach from 'lodash/forEach';
 import includes from 'lodash/includes';
 // Parents: Main
 
-const getHistogram = hand => {
+const getHistogram = (hand) => {
   // Histogram for the cards
   let hist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   // put hand into the histrogram
-  forEach(hand, card => {
+  forEach(hand, (card) => {
     hist[card.rank - 2] += 1; // 2-14 - 2 = 0-12
   });
   return hist;
@@ -41,6 +41,9 @@ const getHistogram = hand => {
  *   2 Pair          2
  *   1 Pair          1
  *   High Card       0
+ *
+ * @param {Array} hand
+ * @param {Object} hist
  * @return {number} value is a base 13 string, to be converted into base 10 for comparison
  */
 const rankHand = (hand, hist) => {
@@ -131,7 +134,7 @@ export class Pkr extends Component {
       newHand: types.func.isRequired,
       payout: types.func.isRequired,
       updateBet: types.func.isRequired,
-      resetStatus: types.func.isRequired
+      resetStatus: types.func.isRequired,
     }).isRequired,
     players: types.arrayOf(
       types.shape({
@@ -139,19 +142,19 @@ export class Pkr extends Component {
         hands: types.arrayOf(
           types.shape({
             rank: types.number.isRequired,
-            suit: types.string.isRequired
+            suit: types.string.isRequired,
           })
-        ).isRequired
+        ).isRequired,
       })
     ).isRequired,
     turn: types.shape({
       player: types.number.isRequired,
-      hand: types.number.isRequired
+      hand: types.number.isRequired,
     }).isRequired,
     turnActions: types.shape({
       incrPlayerTurn: types.func.isRequired,
-      resetTurn: types.func.isRequired
-    }).isRequired
+      resetTurn: types.func.isRequired,
+    }).isRequired,
   };
 
   constructor(props) {
@@ -167,19 +170,19 @@ export class Pkr extends Component {
   getNewGameState = () => {
     // go back to betting phase
     return {
-      gameFunctions: [{ name: 'Finish Betting', func: this.finishBetting }],
+      gameFunctions: [{name: 'Finish Betting', func: this.finishBetting}],
       cardsToDiscard: [],
-      hideHands: true
+      hideHands: true,
     };
   };
 
   /** function to reset turn and player status */
   setNewGameRedux = () => {
-    const { turnActions, playerActions, players } = this.props;
+    const {turnActions, playerActions, players} = this.props;
     // reset redux actions
     turnActions.resetTurn();
     // reset player statuses
-    forEach(players, player => playerActions.resetStatus(player.id));
+    forEach(players, (player) => playerActions.resetStatus(player.id));
   };
 
   /**
@@ -187,11 +190,11 @@ export class Pkr extends Component {
    * stateChanges: turn, players
    */
   dealHands = () => {
-    const { playerActions, players } = this.props;
+    const {playerActions, players} = this.props;
     // shuffle the deck
     Deck.shuffle();
     // deal the hands
-    forEach(players, player => playerActions.newHand(player.id, 5));
+    forEach(players, (player) => playerActions.newHand(player.id, 5));
   };
 
   /**
@@ -199,22 +202,25 @@ export class Pkr extends Component {
    * stateChanges: hideHands
    */
   finishBetting = () => {
-    this.setState({ hideHands: false });
+    this.setState({hideHands: false});
     this.dealHands();
   };
 
-  /** get hand from props */
+  /**
+   * get hand from props
+   * @return {Array}
+   */
   getHand = () => {
     // get state vars
-    const { turn, players } = this.props;
+    const {turn, players} = this.props;
     return players[turn.player].hands[0];
   };
 
   /** increment player turn and reset state */
   endTurn = () => {
-    const { turnActions } = this.props;
+    const {turnActions} = this.props;
     turnActions.incrPlayerTurn();
-    this.setState({ cardsToDiscard: [] });
+    this.setState({cardsToDiscard: []});
   };
 
   /**
@@ -222,17 +228,17 @@ export class Pkr extends Component {
    * then add new cards to the hand
    * @param {array} cards - array of index numbers
    */
-  discard = cards => {
+  discard = (cards) => {
     // get state values
-    const { turn, playerActions, players } = this.props;
-    const { id, hands } = players[turn.player];
+    const {turn, playerActions, players} = this.props;
+    const {id, hands} = players[turn.player];
     // logic to swap cards
     playerActions.swapCards(hands, id, cards);
   };
 
   /** helper function wrapping discard, meant for UI */
   handleDiscard = () => {
-    const { cardsToDiscard } = this.state;
+    const {cardsToDiscard} = this.state;
     this.discard(cardsToDiscard);
   };
 
@@ -319,19 +325,20 @@ export class Pkr extends Component {
    * @param {number} cardNo - card number
    */
   cardClickHandler = (playerNo, handNo, cardNo) => {
-    let { cardsToDiscard } = this.state;
+    let {cardsToDiscard} = this.state;
     // find card
     let i = cardsToDiscard.indexOf(cardNo);
     // toggle in array
     i === -1 ? cardsToDiscard.push(cardNo) : cardsToDiscard.splice(i, 1);
     // update state
-    this.setState({ cardsToDiscard });
+    this.setState({cardsToDiscard});
   };
 
   /**
    * function to be called on card clicks
+   * @param {number} id
    * @param {Object} event
-   * @param {number} value
+   * @param {number} bet
    * stateChanges: player
    */
   betHandler = (id, event, bet) => {
@@ -340,8 +347,8 @@ export class Pkr extends Component {
 
   // render standard board
   render() {
-    const { turn, players } = this.props;
-    const { gameFunctions, hideHands } = this.state;
+    const {turn, players} = this.props;
+    const {gameFunctions, hideHands} = this.state;
     return (
       <div>
         <h1>Placeholder for Future Poker Project</h1>
@@ -359,20 +366,20 @@ export class Pkr extends Component {
 }
 
 // react-redux export
-function mapStateToProps(state /*, ownProps*/) {
+function mapStateToProps(state /* , ownProps*/) {
   return {
     turn: state.turn,
-    players: state.players
+    players: state.players,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    turnActions: bindActionCreators({ incrPlayerTurn, resetTurn }, dispatch),
+    turnActions: bindActionCreators({incrPlayerTurn, resetTurn}, dispatch),
     playerActions: bindActionCreators(
-      { swapCards, newHand, payout, updateBet, resetStatus },
+      {swapCards, newHand, payout, updateBet, resetStatus},
       dispatch
-    )
+    ),
   };
 }
 

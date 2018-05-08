@@ -17,52 +17,52 @@ export default [
         quarters: [
           {
             quarter: 'Fall Quarter (2014)',
-            classes: ['Web Search & Info Retrieval', 'Software Ethics']
+            classes: ['Web Search & Info Retrieval', 'Software Ethics'],
           },
           {
             quarter: 'Winter Quarter (2015)',
             classes: [
               'Software Development Process Management',
               'Object Oriented Analysis and Design Programming',
-              'Software Quality Assurance and Testing'
-            ]
+              'Software Quality Assurance and Testing',
+            ],
           },
           {
             quarter: 'Spring Quarter (2015)',
-            classes: ['Software Architecture', 'Web Programming II']
-          }
-        ]
+            classes: ['Software Architecture', 'Web Programming II'],
+          },
+        ],
       },
       {
         year: 'Year 2',
         quarters: [
           {
             quarter: 'Fall Quarter (2015)',
-            classes: ['Truth, Deduction & Computation']
+            classes: ['Truth, Deduction & Computation'],
           },
           {
             quarter: 'Winter Quarter (2016)',
             classes: [
               'Formal Methods in Software Engineering',
               'Internet of Things',
-              'User Experience Research'
-            ]
+              'User Experience Research',
+            ],
           },
           {
             quarter: 'Spring Quarter (2016)',
             classes: [
               'Computer Forensics',
               'Computer Forensics Lab',
-              'Wireless & Mobile Networks'
-            ]
+              'Wireless & Mobile Networks',
+            ],
           },
           {
             quarter: 'Fall Quarter (2016)',
-            classes: ['Distributed Systems']
-          }
-        ]
-      }
-    ]
+            classes: ['Distributed Systems'],
+          },
+        ],
+      },
+    ],
   },
   {
     school: SCU,
@@ -85,8 +85,8 @@ export default [
               'Intro to Engineering',
               'Calculus & Analytic Geometry IV',
               'General Chemistry I',
-              'Cosmology & Controversy (Critical Thinking & Writing I)'
-            ]
+              'Cosmology & Controversy (Critical Thinking & Writing I)',
+            ],
           },
           {
             quarter: 'Winter Quarter (2012)',
@@ -94,8 +94,8 @@ export default [
               'Advanced Programming',
               'Differential Equations',
               'Physics for Scientists and Engineers I',
-              'Cosmology & Controversy (Critical Thinking & Writing II)'
-            ]
+              'Cosmology & Controversy (Critical Thinking & Writing II)',
+            ],
           },
           {
             quarter: 'Spring Quarter (2012)',
@@ -103,10 +103,10 @@ export default [
               'Abstract Data Types & Data Structures',
               'Discrete Mathematics',
               'Probability & Statistics',
-              'Physics for Scientists and Engineers II'
-            ]
-          }
-        ]
+              'Physics for Scientists and Engineers II',
+            ],
+          },
+        ],
       },
       {
         year: 'Sophomore Year',
@@ -117,8 +117,8 @@ export default [
               'Introduction to Logic Design',
               'Physics for Scientists and Engineers III',
               'Ways of Understanding Religion',
-              'Global Music/Cultural Politics (Cultures and Ideas I)'
-            ]
+              'Global Music/Cultural Politics (Cultures and Ideas I)',
+            ],
           },
           {
             quarter: 'Winter Quarter (2013)',
@@ -126,8 +126,8 @@ export default [
               'Form Specification & Advanced Data Structures',
               'Linear Algebra',
               'Pop Music, Race, & American Culture',
-              'Global Music/Cultural Politics (Cultures and Ideas II)'
-            ]
+              'Global Music/Cultural Politics (Cultures and Ideas II)',
+            ],
           },
           {
             quarter: 'Spring Quarter (2013)',
@@ -135,10 +135,10 @@ export default [
               'Intro to Embedded Systems',
               'Electric Circuits I',
               'Ethics in Technology',
-              'Intro to Comparative Politics'
-            ]
-          }
-        ]
+              'Intro to Comparative Politics',
+            ],
+          },
+        ],
       },
       {
         year: 'Junior Year',
@@ -149,8 +149,8 @@ export default [
               'Web Programming I',
               'Operating Systems',
               'Advanced Linear Algebra',
-              'Religion in America'
-            ]
+              'Religion in America',
+            ],
           },
           {
             quarter: 'Winter Quarter (2014)',
@@ -158,8 +158,8 @@ export default [
               'Mobile Application Development (Android)',
               'Computer Networks',
               'Prin Des & Impl Prog Lang',
-              'Human Services'
-            ]
+              'Human Services',
+            ],
           },
           {
             quarter: 'Spring Quarter (2014)',
@@ -167,10 +167,10 @@ export default [
               'Intro: 3D Animation & Modeling',
               'Theory of Algorithms',
               'Digital Integrated Circuit Design',
-              'Combinatorics'
-            ]
-          }
-        ]
+              'Combinatorics',
+            ],
+          },
+        ],
       },
       {
         year: 'Senior Year',
@@ -183,8 +183,8 @@ export default [
               'Software Engineering',
               'Theology of Marriage',
               'Design Project I',
-              'Applied Engineering Communications I'
-            ]
+              'Applied Engineering Communications I',
+            ],
           },
           {
             quarter: 'Winter Quarter (2015)',
@@ -194,8 +194,8 @@ export default [
               'Software Quality Assurance and Testing',
               'Formal Language Theory and Compiler Construction',
               'Design Project II',
-              'Applied Engineering Communications II'
-            ]
+              'Applied Engineering Communications II',
+            ],
           },
           {
             quarter: 'Spring Quarter (2015)',
@@ -204,12 +204,12 @@ export default [
               'Web Programming II',
               'Computer Architecture',
               'Design Project III',
-              'Applied Engineering Communications III'
-            ]
-          }
-        ]
-      }
-    ]
+              'Applied Engineering Communications III',
+            ],
+          },
+        ],
+      },
+    ],
   },
   {
     school: 'Stanford University',
@@ -226,10 +226,10 @@ export default [
             quarter: 'Summer',
             classes: [
               'Astronomy Laboratory and Observational Astronomy',
-              'Introduction to International Relations'
-            ]
-          }
-        ]
+              'Introduction to International Relations',
+            ],
+          },
+        ],
       },
       {
         year: 'Stanford Continuing Studies (2017)',
@@ -237,12 +237,12 @@ export default [
           {
             quarter: 'Summer',
             classes: [
-              'WSP 314: Alfred Hitchcock and the Subversive World of Film Noir'
-            ]
-          }
-        ]
-      }
-    ]
+              'WSP 314: Alfred Hitchcock and the Subversive World of Film Noir',
+            ],
+          },
+        ],
+      },
+    ],
   },
   {
     degree: 'Activities',
@@ -256,10 +256,10 @@ export default [
             classes: [
               'Date: Oct. 18-19, 2014',
               'Prizes: Best Use of the PubNub API, Best Use of the Amazon Store API',
-              'Project: “feedbat”, an image-sharing web application for mobile devices to get anonymous feedback on various images (likes / dislikes / comments)'
-            ]
-          }
-        ]
+              'Project: “feedbat”, an image-sharing web application for mobile devices to get anonymous feedback on various images (likes / dislikes / comments)',
+            ],
+          },
+        ],
       },
       {
         year: 'Honors Societies',
@@ -268,28 +268,28 @@ export default [
             quarter: 'Tau Beta Pi',
             classes: [
               'The Engineering Honors Society',
-              'November 2014 - Present'
-            ]
+              'November 2014 - Present',
+            ],
           },
           {
             quarter: 'Upsilon Pi Epsilon',
             classes: [
               'Computing and Information Honor Society',
-              'May 2015 - Present'
-            ]
+              'May 2015 - Present',
+            ],
           },
           {
             quarter: 'Order of the Engineer',
-            classes: ['May 2015 - Present']
+            classes: ['May 2015 - Present'],
           },
           {
             quarter: 'Dean’s List',
             classes: [
               'top 10% of GPAs',
-              'September 2012 – Graduation (December 2016)'
-            ]
-          }
-        ]
+              'September 2012 – Graduation (December 2016)',
+            ],
+          },
+        ],
       },
       {
         year: 'Clubs and Activities',
@@ -298,29 +298,29 @@ export default [
             quarter: 'Salsa Clara',
             classes: [
               'Coach and Choreographer 2016 - 2017',
-              'September 2014 - May 2017'
-            ]
+              'September 2014 - May 2017',
+            ],
           },
           {
             quarter: 'Association for Computing Machinery',
             classes: [
               'Vice President 2012-2013',
-              'September 2011 - December 2016'
-            ]
+              'September 2011 - December 2016',
+            ],
           },
           {
             quarter: 'Coders Club',
-            classes: ['April 2012 - June 2013']
+            classes: ['April 2012 - June 2013'],
           },
           {
             quarter: 'Solar Decathlon 2013 Competition',
-            classes: ['Control Systems Team', 'March 2012 - June 2013']
+            classes: ['Control Systems Team', 'March 2012 - June 2013'],
           },
           {
             quarter: 'Intramural Soccer and Volleyball',
-            classes: ['Team Captain 2014 - 2016', 'January 2012 - June 2016']
-          }
-        ]
+            classes: ['Team Captain 2014 - 2016', 'January 2012 - June 2016'],
+          },
+        ],
       },
       {
         year: 'Activities and Interests',
@@ -334,11 +334,11 @@ export default [
               'Programming',
               'Salsa Dancing',
               'International Travel',
-              'Video Games (DOTA 2)'
-            ]
-          }
-        ]
-      }
-    ]
-  }
+              'Video Games (DOTA 2)',
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { ExpandableCard } from '../../common/ExpandableCard';
+import React, {Component} from 'react';
+import {ExpandableCard} from '../../common/ExpandableCard';
 import classes from '../../../constants/classes';
 import map from 'lodash/map';
 // Parents: Main
@@ -28,7 +28,7 @@ export class Education extends Component {
   render() {
     return (
       <ExpandableCard title="Education">
-        <div style={{ paddingLeft: 20, paddingRight: 20 }}>
+        <div style={{paddingLeft: 20, paddingRight: 20}}>
           {map(classes, this.getClassData)}
         </div>
       </ExpandableCard>

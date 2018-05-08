@@ -1,10 +1,10 @@
 // react
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import types from 'prop-types';
 // redux
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { updateName, updateBot } from '../../store/modules/players';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {updateName, updateBot} from '../../store/modules/players';
 // material ui
 import Toggle from 'material-ui/Toggle';
 import TextField from 'material-ui/TextField';
@@ -21,32 +21,32 @@ class Home extends Component {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     playerActions: types.shape({
       updateName: types.func.isRequired,
-      updateBot: types.func.isRequired
+      updateBot: types.func.isRequired,
     }).isRequired,
     players: types.arrayOf(
       types.shape({
         id: types.number.isRequired,
         name: types.string.isRequired,
-        isBot: types.bool.isRequired
+        isBot: types.bool.isRequired,
       })
-    ).isRequired
+    ).isRequired,
   };
 
   // https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
   // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
   static getDerivedStateFromProps(nextProps, prevState) {
     // get old player and current player
-    const { players: old } = prevState;
-    const { players } = nextProps;
+    const {players: old} = prevState;
+    const {players} = nextProps;
 
     return old !== players
-      ? { players, isBot: map(players, ['isBot', true]) }
+      ? {players, isBot: map(players, ['isBot', true])}
       : null;
   }
 
   state = {
     isBot: {},
-    players: {}
+    players: {},
   };
 
   styles = {
@@ -54,8 +54,8 @@ class Home extends Component {
       maxWidth: '420px',
       width: '100%',
       display: 'block',
-      margin: 'auto'
-    }
+      margin: 'auto',
+    },
   };
 
   handleToggle = (id, isChecked) => {
@@ -69,9 +69,9 @@ class Home extends Component {
   };
 
   render() {
-    const { players } = this.props;
-    const { isBot } = this.state;
-    const { namepad } = this.styles;
+    const {players} = this.props;
+    const {isBot} = this.state;
+    const {namepad} = this.styles;
     return (
       <div>
         <h1>Welcome to my ReactJS Game Projects</h1>
@@ -96,10 +96,10 @@ class Home extends Component {
                     <TextField
                       defaultValue={p.name}
                       hintText="Enter Player Name"
-                      onKeyPress={e => this.handleKeyPress(e, p.id)}
+                      onKeyPress={(e) => this.handleKeyPress(e, p.id)}
                     />
                   </div>
-                  <div className="col-3" style={{ marginTop: '12px' }}>
+                  <div className="col-3" style={{marginTop: '12px'}}>
                     <Toggle
                       onToggle={(e, isC) => this.handleToggle(p.id, isC)}
                       toggled={isBot[i]}
@@ -122,8 +122,8 @@ class Home extends Component {
 }
 
 // react-redux export
-const mapStateToProps = state => ({ players: state.players });
-const mapDispatchToProps = dispatch => ({
-  playerActions: bindActionCreators({ updateName, updateBot }, dispatch)
+const mapStateToProps = (state) => ({players: state.players});
+const mapDispatchToProps = (dispatch) => ({
+  playerActions: bindActionCreators({updateName, updateBot}, dispatch),
 });
 export const GameHome = connect(mapStateToProps, mapDispatchToProps)(Home);

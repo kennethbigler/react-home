@@ -1,8 +1,8 @@
 // react
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import types from 'prop-types';
 // material ui
-import { Card, CardTitle, CardText } from 'material-ui/Card';
+import {Card, CardTitle, CardText} from 'material-ui/Card';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import * as colors from 'material-ui/styles/colors';
 
@@ -13,19 +13,19 @@ export class EC extends Component {
     children: types.oneOfType([types.arrayOf(types.node), types.node]),
     muiTheme: types.shape({
       palette: types.shape({
-        primary1Color: types.string.isRequired
-      }).isRequired
+        primary1Color: types.string.isRequired,
+      }).isRequired,
     }),
     subtitle: types.oneOfType([types.string, types.element]),
-    title: types.oneOfType([types.string, types.element])
+    title: types.oneOfType([types.string, types.element]),
   };
 
   state = {
-    expanded: true
+    expanded: true,
   };
 
-  handleExpandChange = expanded => {
-    this.setState({ expanded });
+  handleExpandChange = (expanded) => {
+    this.setState({expanded});
   };
 
   render() {
@@ -37,11 +37,11 @@ export class EC extends Component {
       muiTheme,
       ...otherProps
     } = this.props;
-    const { expanded } = this.state;
+    const {expanded} = this.state;
 
     let styles = {
-      card: { marginTop: 40 },
-      closedCard: { marginTop: 20 },
+      card: {marginTop: 40},
+      closedCard: {marginTop: 20},
       closed: {
         backgroundColor: backgroundColor
           ? backgroundColor
@@ -49,14 +49,14 @@ export class EC extends Component {
         borderRadius: 3,
         marginLeft: 10,
         marginRight: 10,
-        boxShadow: `0px 15px 15px -10px ${colors.grey400}`
-      }
+        boxShadow: `0px 15px 15px -10px ${colors.grey400}`,
+      },
     };
     styles['open'] = {
       ...styles.closed,
       top: -20,
       marginLeft: 15,
-      marginRight: 15
+      marginRight: 15,
     };
 
     const style = expanded ? styles.open : styles.closed;

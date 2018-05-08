@@ -1,15 +1,15 @@
 // react
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import types from 'prop-types';
 // components
-import { Modal } from './Modal';
-import { Board } from './Board';
-import { Header } from './Header';
-import { shuffle } from './common';
+import {Modal} from './Modal';
+import {Board} from './Board';
+import {Header} from './Header';
+import {shuffle} from './common';
 // redux
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { payout } from '../../../store/modules/players';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {payout} from '../../../store/modules/players';
 // functions
 import forEach from 'lodash/forEach';
 // Parents: Main
@@ -19,32 +19,32 @@ const OPEN = 6;
 
 const getNewState = () => ({
   board: [
-    { val: 1, loc: 1, on: true },
-    { val: 2, loc: 2, on: true },
-    { val: 5, loc: 3, on: true },
-    { val: 10, loc: 4, on: true },
-    { val: 25, loc: 5, on: true },
-    { val: 50, loc: 6, on: true },
-    { val: 75, loc: 7, on: true },
-    { val: 100, loc: 8, on: true },
-    { val: 200, loc: 9, on: true },
-    { val: 300, loc: 10, on: true },
-    { val: 400, loc: 11, on: true },
-    { val: 500, loc: 12, on: true },
-    { val: 750, loc: 13, on: true },
-    { val: 1000, loc: 14, on: true },
-    { val: 5000, loc: 15, on: true },
-    { val: 10000, loc: 16, on: true },
-    { val: 25000, loc: 17, on: true },
-    { val: 50000, loc: 18, on: true },
-    { val: 75000, loc: 19, on: true },
-    { val: 100000, loc: 20, on: true },
-    { val: 200000, loc: 21, on: true },
-    { val: 300000, loc: 22, on: true },
-    { val: 400000, loc: 23, on: true },
-    { val: 500000, loc: 24, on: true },
-    { val: 750000, loc: 25, on: true },
-    { val: 1000000, loc: 26, on: true }
+    {val: 1, loc: 1, on: true},
+    {val: 2, loc: 2, on: true},
+    {val: 5, loc: 3, on: true},
+    {val: 10, loc: 4, on: true},
+    {val: 25, loc: 5, on: true},
+    {val: 50, loc: 6, on: true},
+    {val: 75, loc: 7, on: true},
+    {val: 100, loc: 8, on: true},
+    {val: 200, loc: 9, on: true},
+    {val: 300, loc: 10, on: true},
+    {val: 400, loc: 11, on: true},
+    {val: 500, loc: 12, on: true},
+    {val: 750, loc: 13, on: true},
+    {val: 1000, loc: 14, on: true},
+    {val: 5000, loc: 15, on: true},
+    {val: 10000, loc: 16, on: true},
+    {val: 25000, loc: 17, on: true},
+    {val: 50000, loc: 18, on: true},
+    {val: 75000, loc: 19, on: true},
+    {val: 100000, loc: 20, on: true},
+    {val: 200000, loc: 21, on: true},
+    {val: 300000, loc: 22, on: true},
+    {val: 400000, loc: 23, on: true},
+    {val: 500000, loc: 24, on: true},
+    {val: 750000, loc: 25, on: true},
+    {val: 1000000, loc: 26, on: true},
   ],
   turn: 1,
   playerChoice: null,
@@ -53,7 +53,7 @@ const getNewState = () => ({
   numCases: 0,
   offer: 0,
   dndOpen: false,
-  isOver: false
+  isOver: false,
 });
 
 // TODO: add rules to page
@@ -62,12 +62,12 @@ export class DND extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     actions: types.shape({
-      payout: types.func.isRequired
+      payout: types.func.isRequired,
     }).isRequired,
     player: types.shape({
       id: types.number.isRequired,
-      money: types.number.isRequired
-    }).isRequired
+      money: types.number.isRequired,
+    }).isRequired,
   };
 
   // local variable to track the board
@@ -90,7 +90,7 @@ export class DND extends Component {
    * NOTE: avg (Expected win value) is 131477.62 / 1k = $132
    */
   chargePlayer = () => {
-    const { player, actions } = this.props;
+    const {player, actions} = this.props;
     actions.payout(player.id, 'lose', player.money, 132);
   };
 
@@ -99,14 +99,14 @@ export class DND extends Component {
    * @param {number} x - number of the selected briefcase
    * NOTE: udpates sum, numCases, board, casesToOpen
    */
-  openBriefcase = x => {
+  openBriefcase = (x) => {
     // state vars
-    let { board, playerChoice: pc } = this.state;
+    let {board, playerChoice: pc} = this.state;
     let bc = board[x];
     // check if player has already made case selection
     if (pc) {
       // state vars
-      let { sum, isOver, numCases, casesToOpen } = this.state;
+      let {sum, isOver, numCases, casesToOpen} = this.state;
       // verify cases left and briefcase not already opened
       if (!isOver && casesToOpen > 0 && bc.loc !== pc.loc && bc.on) {
         // flag the value and update global trackers
@@ -115,10 +115,10 @@ export class DND extends Component {
         numCases -= 1;
         casesToOpen -= 1;
         // update state
-        this.setState({ board, sum, numCases, casesToOpen });
+        this.setState({board, sum, numCases, casesToOpen});
       }
     } else {
-      this.setState({ playerChoice: bc });
+      this.setState({playerChoice: bc});
       this.chargePlayer();
     }
   };
@@ -128,18 +128,18 @@ export class DND extends Component {
    * @return {number} bank offer in $
    */
   getBankOffer = () => {
-    const { sum, numCases, turn } = this.state;
+    const {sum, numCases, turn} = this.state;
     // return offer from the bank
     return Math.round(sum / numCases * (turn / 10));
   };
 
   handleOpen = () => {
-    const { turn } = this.state;
+    const {turn} = this.state;
     // get the new offer
     const offer = this.getBankOffer();
     // reset the counter
     const casesToOpen = turn < OPEN - 1 ? OPEN - turn : 1;
-    this.setState({ offer, casesToOpen, dndOpen: true });
+    this.setState({offer, casesToOpen, dndOpen: true});
   };
 
   /**
@@ -151,7 +151,7 @@ export class DND extends Component {
     // mix up board
     shuffle(state.board);
     // set all flags to un-touched
-    forEach(state.board, bc => {
+    forEach(state.board, (bc) => {
       // get sum and count of cases remaining
       state.sum += bc.val;
       state.numCases += 1;
@@ -167,16 +167,17 @@ export class DND extends Component {
   /**
    * function to finish the game
    * NOTE: payout to user offer / 1k
+   * @param {number} offer
    */
-  finishGame = offer => {
-    const { player, actions } = this.props;
+  finishGame = (offer) => {
+    const {player, actions} = this.props;
     actions.payout(player.id, 'win', player.money, Math.round(offer / 1000));
-    this.setState({ dndOpen: false, isOver: true, offer });
+    this.setState({dndOpen: false, isOver: true, offer});
   };
 
   /** called on selection of Deal */
   deal = () => {
-    const { offer } = this.state;
+    const {offer} = this.state;
     this.finishGame(offer);
   };
 
@@ -185,13 +186,13 @@ export class DND extends Component {
    * NOTE: update turn, casesToOpen
    */
   noDeal = () => {
-    let { turn, numCases, playerChoice } = this.state;
+    let {turn, numCases, playerChoice} = this.state;
     // no deal on last case
     if (numCases <= 2) {
       this.finishGame(playerChoice.val);
     }
     // advance the turn and update state
-    this.setState({ dndOpen: false, turn: turn + 1 });
+    this.setState({dndOpen: false, turn: turn + 1});
   };
 
   /**
@@ -199,7 +200,7 @@ export class DND extends Component {
    * @param {number} offer - case value
    */
   swap = () => {
-    const { board, playerChoice: pc } = this.state;
+    const {board, playerChoice: pc} = this.state;
     for (let bc of board) {
       if (bc.on && bc.loc !== pc.loc) {
         this.finishGame(bc.val);
@@ -217,10 +218,10 @@ export class DND extends Component {
       offer,
       playerChoice,
       casesToOpen,
-      numCases
+      numCases,
     } = this.state;
     // prop vars
-    const { player } = this.props;
+    const {player} = this.props;
     // render component
     return (
       <div>
@@ -252,10 +253,10 @@ export class DND extends Component {
 }
 
 // react-redux export
-const mapStateToProps = (state /*, ownProps*/) => ({
-  player: state.players[0]
+const mapStateToProps = (state /* , ownProps*/) => ({
+  player: state.players[0],
 });
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ payout }, dispatch)
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({payout}, dispatch),
 });
 export const DealOrNoDeal = connect(mapStateToProps, mapDispatchToProps)(DND);

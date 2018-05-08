@@ -1,6 +1,6 @@
 import React from 'react';
 import types from 'prop-types';
-import { Card } from './Card';
+import {Card} from './Card';
 import * as colors from 'material-ui/styles/colors';
 import map from 'lodash/map';
 // Parents: Player
@@ -8,7 +8,7 @@ import map from 'lodash/map';
 /* --------------------------------------------------
  * Hand
  * -------------------------------------------------- */
-export const Hand = props => {
+export const Hand = (props) => {
   const {
     handNo,
     playerNo,
@@ -16,18 +16,18 @@ export const Hand = props => {
     hand,
     isMultiHand,
     isPlayerTurn,
-    cardHandler
+    cardHandler,
   } = props;
 
   const bold =
     (isHandTurn && isMultiHand && isPlayerTurn) ||
     (!isMultiHand && isPlayerTurn)
-      ? { fontWeight: 'bold', color: colors.red300 }
-      : { fontWeight: 'normal' };
+      ? {fontWeight: 'bold', color: colors.red300}
+      : {fontWeight: 'normal'};
 
   return (
     <div className="hand">
-      <h3 style={{ ...bold, marginTop: '0.5em' }}>
+      <h3 style={{...bold, marginTop: '0.5em'}}>
         {(hand.weight > 21 ? 'Bust: ' : 'Hand Weight: ') + hand.weight}
       </h3>
       {map(hand.cards, (card, i) => (
@@ -53,13 +53,13 @@ Hand.propTypes = {
     cards: types.arrayOf(
       types.shape({
         name: types.string.isRequired,
-        suit: types.string.isRequired
+        suit: types.string.isRequired,
       })
-    ).isRequired
+    ).isRequired,
   }).isRequired,
   handNo: types.number.isRequired,
   isHandTurn: types.bool.isRequired,
   isMultiHand: types.bool.isRequired,
   isPlayerTurn: types.bool.isRequired,
-  playerNo: types.number.isRequired
+  playerNo: types.number.isRequired,
 };

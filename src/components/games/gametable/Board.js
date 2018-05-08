@@ -1,14 +1,14 @@
 import React from 'react';
 import types from 'prop-types';
-import { Player } from './Player';
+import {Player} from './Player';
 import map from 'lodash/map';
 // Parents: GameTable
 
 /* --------------------------------------------------
  * Board
  * -------------------------------------------------- */
-export const Board = props => {
-  const { players, turn, cardHandler, betHandler, hideHands } = props;
+export const Board = (props) => {
+  const {players, turn, cardHandler, betHandler, hideHands} = props;
 
   return (
     <div className="board">
@@ -35,6 +35,6 @@ Board.propTypes = {
   players: types.arrayOf(types.object).isRequired,
   turn: types.shape({
     player: types.number.isRequired,
-    hand: types.number.isRequired
-  })
+    hand: types.number.isRequired,
+  }),
 };

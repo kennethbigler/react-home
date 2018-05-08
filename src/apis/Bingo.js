@@ -13,5 +13,5 @@ export const Bingo = {
     }
     called[ball] = true;
     return ball;
-  }
+  },
 };

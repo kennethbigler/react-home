@@ -13,7 +13,7 @@ let pokerKeys = [];
 
 function getTotal(obj) {
   let total = 0;
-  forEach(keys(obj.scores), k => {
+  forEach(keys(obj.scores), (k) => {
     total += isNaN(obj.scores[k]) ? 0 : obj.scores[k];
     if (!includes(pokerKeys, k)) {
       pokerKeys.push(k);
@@ -39,15 +39,15 @@ export const PokerNight = () => {
 
   // names
   let columns = [
-    { Header: 'Player', accessor: 'name', minWidth: 63, Footer: 'Error' }
+    {Header: 'Player', accessor: 'name', minWidth: 63, Footer: 'Error'},
   ];
 
   // all scores
   let totalErrorMargin = 0;
-  forEach(pokerKeys, k => {
+  forEach(pokerKeys, (k) => {
     // calculate error margin
     let err = 0;
-    forEach(PN, p => (err += isNaN(p.scores[k]) ? 0 : p.scores[k]));
+    forEach(PN, (p) => (err += isNaN(p.scores[k]) ? 0 : p.scores[k]));
     totalErrorMargin += err;
     // add the column to the table
     columns.push({
@@ -55,7 +55,7 @@ export const PokerNight = () => {
       accessor: `scores.${k}`,
       minWidth: 43,
       maxWidth: 160,
-      Footer: <span>{err}</span>
+      Footer: <span>{err}</span>,
     });
   });
 
@@ -65,7 +65,7 @@ export const PokerNight = () => {
     Header: 'Total',
     minWidth: 50,
     accessor: 'total',
-    Footer: <span>{totalErrorMargin}</span>
+    Footer: <span>{totalErrorMargin}</span>,
   });
 
   // styling for when the table gets too large
@@ -73,10 +73,10 @@ export const PokerNight = () => {
     position: 'absolute',
     top: 79,
     left: 15,
-    right: 15
+    right: 15,
   };
 
-  const defaultSort = [{ id: 'total', desc: true }];
+  const defaultSort = [{id: 'total', desc: true}];
 
   return (
     <ReactTable

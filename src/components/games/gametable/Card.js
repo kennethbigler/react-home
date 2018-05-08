@@ -6,20 +6,20 @@ import * as colors from 'material-ui/styles/colors';
 /* --------------------------------------------------
  * Card
  * -------------------------------------------------- */
-export const Card = props => {
-  const { suit, name } = props;
+export const Card = (props) => {
+  const {suit, name} = props;
   // handle click to for card
   const handleClick = () => {
-    const { cardHandler, playerNo, handNo, cardNo } = props;
+    const {cardHandler, playerNo, handNo, cardNo} = props;
     cardHandler(playerNo, handNo, cardNo);
   };
   // checking color based off suits: ♣♦♥♠
   const cardColor = {
-    color: suit === '♣' || suit === '♠' ? colors.black : colors.red500
+    color: suit === '♣' || suit === '♠' ? colors.black : colors.red500,
   };
 
   const styles = {
-    cardTitle: { textAlign: 'left' }
+    cardTitle: {textAlign: 'left'},
   };
 
   // display in view
@@ -38,5 +38,5 @@ Card.propTypes = {
   handNo: types.number.isRequired,
   name: types.string.isRequired,
   playerNo: types.number.isRequired,
-  suit: types.string.isRequired
+  suit: types.string.isRequired,
 };

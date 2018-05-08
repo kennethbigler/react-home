@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import types from 'prop-types';
 import moment from 'moment';
-import { Row } from './Row';
+import {Row} from './Row';
 import includes from 'lodash/includes';
 import map from 'lodash/map';
 // Parents: Work
@@ -22,13 +22,13 @@ export class Timeline extends Component {
         color: types.string.isRequired,
         title: types.string.isRequired,
         start: types.shape({
-          diff: types.func.isRequired
+          diff: types.func.isRequired,
         }).isRequired,
         end: types.shape({
-          diff: types.func.isRequired
-        }).isRequired
+          diff: types.func.isRequired,
+        }).isRequired,
       })
-    ).isRequired
+    ).isRequired,
   };
 
   constructor(props) {
@@ -37,23 +37,23 @@ export class Timeline extends Component {
     let data = [...props.data];
     data.sort(MONTH_SORT);
     // get 'start,' but start w/ college not volunteering
-    const { start } = data[1];
+    const {start} = data[1];
     // set state and styles
-    this.state = { data, start };
+    this.state = {data, start};
   }
 
   /**
    * Get the width from the beginning of the graph to this bar
    * @param {Object} val moment object for start time
-   * @returns {number} number (width %) from the start
+   * @return {number} number (width %) from the start
    */
-  getTimeFromStart = val => {
+  getTimeFromStart = (val) => {
     // sort array by start date
-    const { start } = this.state;
+    const {start} = this.state;
     // get max length
-    const total_duration = moment().diff(start, 'months');
-    const time_from_start = val.diff(start, 'months');
-    const width = Math.floor(time_from_start / total_duration * WIDTH);
+    const totalDuration = moment().diff(start, 'months');
+    const timeFromStart = val.diff(start, 'months');
+    const width = Math.floor(timeFromStart / totalDuration * WIDTH);
     return width > 0 ? width : 0;
   };
 
@@ -61,11 +61,10 @@ export class Timeline extends Component {
    * function to add empty space between start and job segment
    * @param {array} segments array to put the segments, will be modified
    * @param {number} width as a % value out of WIDTH
-   * @returns {number} number (width %) from the start
    */
   addSegment = (segments, width) => {
     if (width > 0) {
-      segments.push({ width });
+      segments.push({width});
     }
   };
 
@@ -77,13 +76,13 @@ export class Timeline extends Component {
    * @param {Object} ending end moment object
    */
   addCompany = (segments, job, beginning, ending) => {
-    const { company, color, title } = job;
+    const {company, color, title} = job;
     const width = ending - beginning;
     // check if name has room
     if (width * window.innerWidth / WIDTH < MIN_TEXT_WIDTH) {
-      segments.push({ company: company.substr(0, 1), color, width, title });
+      segments.push({company: company.substr(0, 1), color, width, title});
     } else {
-      segments.push({ company, color, width, title });
+      segments.push({company, color, width, title});
     }
   };
 
@@ -92,10 +91,10 @@ export class Timeline extends Component {
    * @param {[number]} added array of indexes that have been added
    * @param {Object} job Object for each job
    * @param {number} i index
-   * @returns {[Object]} array of objects to be displayed in a row
+   * @return {[Object]} array of objects to be displayed in a row
    */
   getSegments = (added, job, i) => {
-    const { data } = this.state;
+    const {data} = this.state;
 
     // skip if added already
     if (includes(added, i)) {
@@ -104,7 +103,7 @@ export class Timeline extends Component {
 
     // local variables
     let segments = [];
-    const { start, end } = job;
+    const {start, end} = job;
     let beginning = this.getTimeFromStart(start);
     let ending = this.getTimeFromStart(end);
 
@@ -120,7 +119,7 @@ export class Timeline extends Component {
       // skip if added already
       if (!includes(added, j)) {
         // test segment
-        const { start, end } = data[j];
+        const {start, end} = data[j];
         beginning = this.getTimeFromStart(start);
 
         // if start is after end of main segment
@@ -143,7 +142,7 @@ export class Timeline extends Component {
   };
 
   render() {
-    const { data } = this.state;
+    const {data} = this.state;
     // track elements added already
     let added = [];
 

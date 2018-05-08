@@ -42,9 +42,9 @@ const workExp = [
     src: gigNowLogo,
     alt: 'GigNow Logo',
     expr: [
-      `Help build startup ventures within EY, leveraging agile methodologies and development primarily in ${REACT}`
+      `Help build startup ventures within EY, leveraging agile methodologies and development primarily in ${REACT}`,
     ],
-    tech: [REACT16, RR4, JASMINE, ES2016, JS, HTML, SASS, CSS]
+    tech: [REACT16, RR4, JASMINE, ES2016, JS, HTML, SASS, CSS],
   },
   {
     isJob: true,
@@ -60,9 +60,9 @@ const workExp = [
     alt: 'Second Harvest Food Bank Logo',
     expr: [
       'Instruct and supervise between 10 and 40 volunteers regarding food sorting, packaging and distribution',
-      'Food is then distributed to smaller organizations that help the homeless and disadvantaged'
+      'Food is then distributed to smaller organizations that help the homeless and disadvantaged',
     ],
-    tech: ['Leadership', 'Coordination']
+    tech: ['Leadership', 'Coordination'],
   },
   {
     isJob: true,
@@ -80,9 +80,9 @@ const workExp = [
     expr: [
       `Processed and displayed data about network health using Java REST APIs and ${REACT}`,
       'Created several Proof of Concept integrations with Cisco DNA-Center and several acquisitions',
-      'Wrote Time Series Analysis Pipelines in JSON to create aggregations of network packets over a fixed or rolling window'
+      'Wrote Time Series Analysis Pipelines in JSON to create aggregations of network packets over a fixed or rolling window',
     ],
-    tech: [REACT15, RR4, ES2015, JS, 'Java 8', BS4, HTML, SASS, CSS]
+    tech: [REACT15, RR4, ES2015, JS, 'Java 8', BS4, HTML, SASS, CSS],
   },
   {
     isJob: true,
@@ -100,7 +100,7 @@ const workExp = [
     expr: [
       `Developed web applications using ${ANGULAR} and the AWS SDK for JavaScript in the Browser`,
       'Tested the Android App by creating realistic data simulators, and managed the team in India doing development',
-      'Programed applications to run the lights on the Hoverboard in a Python-like language'
+      'Programed applications to run the lights on the Hoverboard in a Python-like language',
     ],
     tech: [
       ANGULAR,
@@ -110,8 +110,8 @@ const workExp = [
       BS3,
       HTML,
       SASS,
-      CSS
-    ]
+      CSS,
+    ],
   },
   {
     isJob: true,
@@ -128,9 +128,9 @@ const workExp = [
     expr: [
       `Developed web applications using ${ANGULAR} and ASP.NET MVC with a SQL database`,
       'Gathered requirements, created new software tools, and improved tools already used by various departments',
-      'Redesigned intranet pages to improve accessibility and incorporate responsive design elements'
+      'Redesigned intranet pages to improve accessibility and incorporate responsive design elements',
     ],
-    tech: [ANGULAR, JS, 'ASP.NET 2.0 MVC', 'C#', 'SQL', BS3, HTML, SASS, CSS]
+    tech: [ANGULAR, JS, 'ASP.NET 2.0 MVC', 'C#', 'SQL', BS3, HTML, SASS, CSS],
   },
   {
     isJob: true,
@@ -148,9 +148,9 @@ const workExp = [
     expr: [
       'Managed a team of 3 other developers to meet requirements by the deadlines',
       'Converted mockup images from the designers into functional HTML and CSS pages',
-      'Designed improvements to the look and feel, and improve the overall experience of the game'
+      'Designed improvements to the look and feel, and improve the overall experience of the game',
     ],
-    tech: ['Project Management', JS, HTML, CSS]
+    tech: ['Project Management', JS, HTML, CSS],
   },
   {
     isJob: true,
@@ -169,7 +169,7 @@ const workExp = [
       'Communicated status of projects with upper management and how to resolve roadblocks',
       'Supported HR Intranet using WordPress; updated code, created graphics, and managed web projects',
       'Designed and created new websites, migrated between CMS’s, and maintained existing websites',
-      'Created graphics using Adobe Creative Cloud'
+      'Created graphics using Adobe Creative Cloud',
     ],
     tech: [
       'WordPress',
@@ -178,8 +178,8 @@ const workExp = [
       JS,
       'Joomla',
       HTML,
-      CSS
-    ]
+      CSS,
+    ],
   },
   {
     isJob: false,
@@ -190,14 +190,14 @@ const workExp = [
     title: 'Undergrad / Grad Student',
     website: 'https://www.scu.edu/',
     start: moment('2011-09'),
-    end: moment('2016-12')
-  }
+    end: moment('2016-12'),
+  },
 ];
 
 export const techSummary = reduce(
   workExp,
   (acc, job) => {
-    forEach(job.tech, tech => {
+    forEach(job.tech, (tech) => {
       if (!includes(acc, tech)) {
         acc.push(tech);
       }

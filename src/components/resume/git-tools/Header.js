@@ -5,19 +5,19 @@ import types from 'prop-types';
 import TextField from 'material-ui/TextField';
 // Parents: Main
 
-export const Header = props => {
-  const { gitTheme, handleIDChange, storyID } = props;
+export const Header = (props) => {
+  const {gitTheme, handleIDChange, storyID} = props;
 
   return (
     <div>
       <h1>Git Tools</h1>
       <TextField
-        floatingLabelFocusStyle={{ color: gitTheme }}
+        floatingLabelFocusStyle={{color: gitTheme}}
         floatingLabelText="User Story ID"
         hintText="#123456789"
         onChange={handleIDChange}
-        style={{ marginLeft: 20 }}
-        underlineFocusStyle={{ borderColor: gitTheme }}
+        style={{marginLeft: 20}}
+        underlineFocusStyle={{borderColor: gitTheme}}
         value={storyID}
       />
       <br />
@@ -29,5 +29,5 @@ Header.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   gitTheme: types.string.isRequired,
   handleIDChange: types.func.isRequired,
-  storyID: types.string
+  storyID: types.string,
 };

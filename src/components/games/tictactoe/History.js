@@ -1,39 +1,40 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import types from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
-import { getTurn } from './constants';
+import {getTurn} from './constants';
 import map from 'lodash/map';
 // Parents: TicTacToe
 
-/** ========================================
+/* ========================================
  * History
  * ======================================== */
 export class History extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
-    history: types.arrayOf(types.shape({ location: types.number })).isRequired,
+    history: types.arrayOf(types.shape({location: types.number})).isRequired,
     jumpToStep: types.func.isRequired,
-    step: types.number.isRequired
+    step: types.number.isRequired,
   };
 
   constructor(props) {
     super(props);
-    this.state = { ascend: true };
+    this.state = {ascend: true};
   }
 
   /** function that toggles asc vs. desc */
   handleMoveOrderToggle = () => {
-    this.setState({ ascend: !this.state.ascend });
+    this.setState({ascend: !this.state.ascend});
   };
 
   /**
    * function that generates text for the history tracker
    * @param {Object} round - contains board and click location for turn
    * @param {number} move - just index tracking
+   * @return {Object}
    */
   getHistoryText = (round, move) => {
-    const { step, jumpToStep } = this.props;
+    const {step, jumpToStep} = this.props;
     // generate description text
     const description = !move
       ? 'Game Start (Turn, Col, Row)'
@@ -46,14 +47,14 @@ export class History extends Component {
         label={description}
         onClick={() => jumpToStep(move)}
         secondary={step === move}
-        style={{ display: 'block' }}
+        style={{display: 'block'}}
       />
     );
   };
 
   render() {
-    const { ascend } = this.state;
-    const { history } = this.props;
+    const {ascend} = this.state;
+    const {history} = this.props;
     // move history
     const moves = map(history, this.getHistoryText);
     // asc vs. desc
@@ -64,7 +65,7 @@ export class History extends Component {
         <RaisedButton
           label={ascend ? 'Asc' : 'Desc'}
           onClick={this.handleMoveOrderToggle}
-          style={{ marginTop: 20, marginBottom: 20 }}
+          style={{marginTop: 20, marginBottom: 20}}
         />
         {moves}
       </div>

@@ -2,11 +2,12 @@
   "root": true,
   "plugins": ["react", "lodash", "import"],
   "extends": [
+    "plugin:import/warnings",
+    "plugin:import/errors",
+    "plugin:lodash/recommended",
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:lodash/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings"
+    "google"
   ],
   "parser": "babel-eslint",
   "parserOptions": {
@@ -26,13 +27,10 @@
     "jest": true
   },
   "rules": {
-    "quotes": ["warn", "single"],
-    "no-var": "error",
-    "semi": ["error", "always"],
-    "no-trailing-spaces": "warn",
+    "max-len": "off",
+    "require-jsdoc": "off",
+    "no-invalid-this": "off",
     "no-console": "warn",
-    "eol-last": "warn",
-    "no-underscore-dangle": "warn",
     "no-alert": "warn",
     "no-lone-blocks": "warn",
     "jsx-quotes": ["warn", "prefer-double"],

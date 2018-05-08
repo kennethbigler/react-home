@@ -1,20 +1,20 @@
 // react
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import types from 'prop-types';
 // redux
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { setCommitPrefix } from '../../../store/modules/git';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {setCommitPrefix} from '../../../store/modules/git';
 // components
-import { CopyTextDisplay } from './CopyTextDisplay';
-import { ExpandableCard } from '../../common/ExpandableCard';
+import {CopyTextDisplay} from './CopyTextDisplay';
+import {ExpandableCard} from '../../common/ExpandableCard';
 // material-ui
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 import SelectField from 'material-ui/SelectField';
 import IconButton from 'material-ui/IconButton';
 import Clear from 'material-ui/svg-icons/content/clear';
-import { deepOrange600 } from 'material-ui/styles/colors';
+import {deepOrange600} from 'material-ui/styles/colors';
 // functions
 import nl2br from 'react-newline-to-break';
 // Parents: Main
@@ -24,27 +24,27 @@ export class CT extends Component {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     getSelectOptions: types.func.isRequired,
     gitActions: types.shape({
-      setCommitPrefix: types.func.isRequired
+      setCommitPrefix: types.func.isRequired,
     }).isRequired,
     gitCommit: types.bool.isRequired,
     gitTheme: types.string.isRequired,
     handleCopy: types.func.isRequired,
-    storyID: types.string
+    storyID: types.string,
   };
 
   state = {
     commitPrefix: 'feat',
     commitMessage: '',
     commitDescription: '',
-    finishes: false
+    finishes: false,
   };
 
   styles = {
-    wrapper: { paddingLeft: 20, paddingRight: 20, width: '100%' },
-    toggle: { maxWidth: 343, marginTop: 40 },
-    marginTop: { marginTop: 20 },
-    textColor: { color: this.props.gitTheme },
-    borderColor: { borderColor: this.props.gitTheme }
+    wrapper: {paddingLeft: 20, paddingRight: 20, width: '100%'},
+    toggle: {maxWidth: 343, marginTop: 40},
+    marginTop: {marginTop: 20},
+    textColor: {color: this.props.gitTheme},
+    borderColor: {borderColor: this.props.gitTheme},
   };
 
   /**
@@ -64,7 +64,7 @@ export class CT extends Component {
       'refactor',
       'revert',
       'style',
-      'test'
+      'test',
     ]);
 
   /**
@@ -73,45 +73,55 @@ export class CT extends Component {
    * @param {number} i index of option selected
    * @param {number} val value of option selected
    */
-  handleCommitPrefixSelect = (e, i, val) =>
-    this.setState({ commitPrefix: val });
+  handleCommitPrefixSelect = (e, i, val) => {
+    this.setState({commitPrefix: val});
+  };
 
   /**
    * function to update text state based on value
    * @param {Object} e event fired when select occurs
    */
-  handleCommitMessageChange = e =>
-    this.setState({ commitMessage: e.target.value });
-  handleCommitDescriptionChange = e =>
-    this.setState({ commitDescription: e.target.value });
+  handleCommitMessageChange = (e) => {
+    this.setState({commitMessage: e.target.value});
+  };
+  handleCommitDescriptionChange = (e) => {
+    this.setState({commitDescription: e.target.value});
+  };
 
   /**
    * function to update text state based on value
    * @param {Object} e event fired when select occurs
    */
-  clearCommitMessage = () => this.setState({ commitMessage: '' });
-  clearCommitDescription = () => this.setState({ commitDescription: '' });
+  clearCommitMessage = () => {
+    this.setState({commitMessage: ''});
+  };
+  clearCommitDescription = () => {
+    this.setState({commitDescription: ''});
+  };
 
   /**
    * function(event: object, isInputChecked: bool) => void
-   * @param {Object} event: Change event targeting the toggle
-   * @param {boolean} isInputChecked: The new value of the toggle
+   * @param {Object} e - event: Change event targeting the toggle
+   * @param {boolean} isC - is input checked: The new value of the toggle
    */
-  handleFinishesToggle = (e, isC) => this.setState({ finishes: isC });
-  handleGitCommitToggle = (e, isC) =>
+  handleFinishesToggle = (e, isC) => {
+    this.setState({finishes: isC});
+  };
+  handleGitCommitToggle = (e, isC) => {
     this.props.gitActions.setCommitPrefix(isC);
+  };
 
   /**
    * function to generate the commit message from inputs
    * @return {string} format Prefix: Message [?Finishes? ID]
    */
   getCommitText = () => {
-    const { storyID, gitCommit } = this.props;
+    const {storyID, gitCommit} = this.props;
     const {
       commitPrefix,
       commitMessage,
       commitDescription,
-      finishes
+      finishes,
     } = this.state;
 
     let gitMessage = '';
@@ -135,10 +145,10 @@ export class CT extends Component {
       commitPrefix,
       commitMessage,
       commitDescription,
-      finishes
+      finishes,
     } = this.state;
-    const { handleCopy, gitCommit } = this.props;
-    const { wrapper, toggle, marginTop, textColor, borderColor } = this.styles;
+    const {handleCopy, gitCommit} = this.props;
+    const {wrapper, toggle, marginTop, textColor, borderColor} = this.styles;
 
     const commitText = this.getCommitText();
     const displayText = commitText && nl2br(this.getCommitText());
@@ -227,8 +237,8 @@ export class CT extends Component {
 }
 
 // react-redux export
-const mapStateToProps = state => ({ gitCommit: state.git.commitPrefix });
-const mapDispatchToProps = dispatch => ({
-  gitActions: bindActionCreators({ setCommitPrefix }, dispatch)
+const mapStateToProps = (state) => ({gitCommit: state.git.commitPrefix});
+const mapDispatchToProps = (dispatch) => ({
+  gitActions: bindActionCreators({setCommitPrefix}, dispatch),
 });
 export const CommitText = connect(mapStateToProps, mapDispatchToProps)(CT);

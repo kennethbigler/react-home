@@ -7,10 +7,10 @@ import RaisedButton from 'material-ui/RaisedButton';
  * Button
  * -------------------------------------------------- */
 
-export const Button = props => {
-  const { func, name } = props;
+export const Button = (props) => {
+  const {func, name} = props;
   const style = {
-    margin: 12
+    margin: 12,
   };
   return <RaisedButton label={name} onClick={func} primary style={style} />;
 };
@@ -18,5 +18,5 @@ export const Button = props => {
 Button.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   func: types.func.isRequired,
-  name: types.string.isRequired
+  name: types.string.isRequired,
 };

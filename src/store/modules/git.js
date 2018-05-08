@@ -12,31 +12,31 @@ const SET_COMMIT_PREFIX = 'resume/git/SET_COMMIT_PREFIX';
 
 // Action Creators
 export function setKey(storyID = '') {
-  return { type: SET_KEY, storyID: storyID };
+  return {type: SET_KEY, storyID: storyID};
 }
 export function setBranchPrefix(branchPrefix = '') {
-  return { type: SET_BRANCH_PREFIX, branchPrefix: branchPrefix };
+  return {type: SET_BRANCH_PREFIX, branchPrefix: branchPrefix};
 }
 export function setCasePreference(casePreference = '') {
-  return { type: SET_CASE_PREFERENCE, casePreference: casePreference };
+  return {type: SET_CASE_PREFERENCE, casePreference: casePreference};
 }
 export function setCommitPrefix(isSet = true) {
-  return { type: SET_COMMIT_PREFIX, commitPrefix: isSet };
+  return {type: SET_COMMIT_PREFIX, commitPrefix: isSet};
 }
 
 // Reducer
 export default function reducer(state = initialState.git, action) {
   switch (action.type) {
     case SET_KEY:
-      return assign({}, state, { storyID: action.storyID });
+      return assign({}, state, {storyID: action.storyID});
     case SET_BRANCH_PREFIX:
-      return assign({}, state, { branchPrefix: action.branchPrefix });
+      return assign({}, state, {branchPrefix: action.branchPrefix});
     case SET_CASE_PREFERENCE:
       return assign({}, state, {
-        casePreference: action.casePreference
+        casePreference: action.casePreference,
       });
     case SET_COMMIT_PREFIX:
-      return assign({}, state, { commitPrefix: action.commitPrefix });
+      return assign({}, state, {commitPrefix: action.commitPrefix});
     default:
       return state;
   }

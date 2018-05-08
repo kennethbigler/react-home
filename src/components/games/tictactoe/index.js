@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Paper from 'material-ui/Paper';
-import { Header } from './Header';
-import { History } from './History';
-import { Board } from './Board';
-import { X, O, getTurn } from './constants';
+import {Header} from './Header';
+import {History} from './History';
+import {Board} from './Board';
+import {X, O, getTurn} from './constants';
 import fill from 'lodash/fill';
 // Parents: Main
 
 // constants and helper functions
 const getNewGameVars = () => ({
-  history: [{ board: fill(Array(9), ' ') }],
+  history: [{board: fill(Array(9), ' ')}],
   turn: X,
-  step: 0
+  step: 0,
 });
 
 /**
@@ -31,7 +31,7 @@ function calculateWinner(board) {
     [2, 5, 8],
     // diagonal
     [0, 4, 8],
-    [2, 4, 6]
+    [2, 4, 6],
   ];
   // check each win condition
   for (let line of lines) {
@@ -39,28 +39,28 @@ function calculateWinner(board) {
     // if all 3 match and aren't empty
     if (board[a] !== ' ' && board[a] === board[b] && board[a] === board[c]) {
       // return winner and winning positions
-      return { winner: board[a], winRow: line };
+      return {winner: board[a], winRow: line};
     }
   }
-  return { winner: null, winRow: [] };
+  return {winner: null, winRow: []};
 }
 
-/** ========================================
+/* ========================================
  * TicTacToe Game Logic
  * ======================================== */
 export class TicTacToe extends Component {
   constructor() {
     super();
     this.state = getNewGameVars();
-    this.styles = { paper: { width: 343, display: 'block', margin: 'auto' } };
+    this.styles = {paper: {width: 343, display: 'block', margin: 'auto'}};
   }
 
   /**
    * function that modifies board with appropriate turn
    * @param {number} location - locaiton of board click (row * 3 + col)
    */
-  handleClick = location => {
-    let { turn, step, history } = this.state;
+  handleClick = (location) => {
+    let {turn, step, history} = this.state;
     const newHistory = history.slice(0, step + 1);
     const current = newHistory[step];
     const board = current.board.slice();
@@ -72,9 +72,9 @@ export class TicTacToe extends Component {
 
       // update board state
       this.setState({
-        history: newHistory.concat([{ board, location }]),
+        history: newHistory.concat([{board, location}]),
         step: newHistory.length,
-        turn: turn === X ? O : X
+        turn: turn === X ? O : X,
       });
     }
   };
@@ -88,9 +88,9 @@ export class TicTacToe extends Component {
    * function that modifies board to go back to a previous point in history
    * @param {number} step - desired point in history
    */
-  jumpToStep = step => {
-    const { step: stepNo, history } = this.state;
-    const state = { step, turn: getTurn(step) };
+  jumpToStep = (step) => {
+    const {step: stepNo, history} = this.state;
+    const state = {step, turn: getTurn(step)};
     // Double click will eliminate all other history if there is any
     if (step === stepNo) {
       state['history'] = history.slice(0, stepNo + 1);
@@ -100,10 +100,10 @@ export class TicTacToe extends Component {
   };
 
   render() {
-    const { history, turn, step } = this.state;
+    const {history, turn, step} = this.state;
     const current = history[step];
     const board = current.board.slice();
-    const { winner, winRow } = calculateWinner(board);
+    const {winner, winRow} = calculateWinner(board);
 
     return (
       <div>
@@ -111,7 +111,7 @@ export class TicTacToe extends Component {
           <Header newGame={this.newGame} turn={turn} winner={winner} />
           <Board
             board={board}
-            onClick={i => this.handleClick(i)}
+            onClick={(i) => this.handleClick(i)}
             winRow={winRow}
           />
         </Paper>

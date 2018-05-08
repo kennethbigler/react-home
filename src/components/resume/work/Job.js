@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import types from 'prop-types';
-import { ExpandableCard } from '../../common/ExpandableCard';
-import { FORMAT } from '../../common/timeline/';
+import {ExpandableCard} from '../../common/ExpandableCard';
+import {FORMAT} from '../../common/timeline/';
 import Chip from 'material-ui/Chip';
 import moment from 'moment';
 import map from 'lodash/map';
 // Parents: Work
 
-/** function to generate timeline card */
+/* function to generate timeline card */
 export class Job extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
@@ -20,18 +20,18 @@ export class Job extends Component {
       color: types.string.isRequired,
       start: types.shape({
         format: types.func.isRequired,
-        diff: types.func.isRequired
+        diff: types.func.isRequired,
       }).isRequired,
       end: types.shape({
         format: types.func.isRequired,
-        diff: types.func.isRequired
+        diff: types.func.isRequired,
       }).isRequired,
       notes: types.string,
       expr: types.arrayOf(types.string),
       tech: types.arrayOf(types.string),
       src: types.string,
-      alt: types.string
-    }).isRequired
+      alt: types.string,
+    }).isRequired,
   };
 
   showRange = (s, e, notes = '') => {
@@ -51,10 +51,10 @@ export class Job extends Component {
     return `${start} - ${end} (${range}) ${notes}`;
   };
 
-  getCSV = arr => {
+  getCSV = (arr) => {
     // return arr.reduce((acc, cur) => `${acc}, ${cur}`);
-    const style = { display: 'inline-block', marginRight: 5, marginBottom: 5 };
-    return map(arr, tech => (
+    const style = {display: 'inline-block', marginRight: 5, marginBottom: 5};
+    return map(arr, (tech) => (
       <Chip key={tech} style={style}>
         {tech}
       </Chip>
@@ -62,13 +62,13 @@ export class Job extends Component {
   };
 
   render() {
-    const { job } = this.props;
+    const {job} = this.props;
 
     const imgStyle = {
       width: '100%',
       maxWidth: '12em',
       height: 'auto',
-      float: 'right'
+      float: 'right',
     };
     const parent = job.parent ? ` (${job.parent})` : '';
     const title = `${job.company}${parent}, ${job.location}`;

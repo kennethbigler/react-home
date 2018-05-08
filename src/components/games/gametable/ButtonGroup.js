@@ -1,6 +1,6 @@
 import React from 'react';
 import types from 'prop-types';
-import { Button } from './Button';
+import {Button} from './Button';
 import map from 'lodash/map';
 // Parents: GameTable
 
@@ -8,11 +8,11 @@ import map from 'lodash/map';
  * ButtonGroup
  * -------------------------------------------------- */
 
-export const ButtonGroup = props => {
-  const { gameFunctions } = props;
+export const ButtonGroup = (props) => {
+  const {gameFunctions} = props;
   return (
     <div className="buttonGroup">
-      {map(gameFunctions, obj => (
+      {map(gameFunctions, (obj) => (
         <Button func={obj.func} key={obj.name} name={obj.name} />
       ))}
     </div>
@@ -24,7 +24,7 @@ ButtonGroup.propTypes = {
   gameFunctions: types.arrayOf(
     types.shape({
       name: types.string.isRequired,
-      func: types.func.isRequired
+      func: types.func.isRequired,
     })
-  ).isRequired
+  ).isRequired,
 };

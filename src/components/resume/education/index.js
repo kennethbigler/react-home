@@ -1,7 +1,7 @@
 // react
 import React from 'react';
 // components
-import { Degree } from './Degree';
+import {Degree} from './Degree';
 // constants
 import classes from '../../../constants/classes';
 // functions
@@ -12,7 +12,7 @@ export const Education = () => {
   return (
     <div>
       <h1>Education and Extracurriculars</h1>
-      {map(classes, d => <Degree degree={d} key={d.degree} />)}
+      {map(classes, (d) => <Degree degree={d} key={d.degree} />)}
     </div>
   );
 };

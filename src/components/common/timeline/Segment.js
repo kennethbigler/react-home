@@ -1,6 +1,6 @@
 import React from 'react';
 import types from 'prop-types';
-import { grey50, grey400 } from 'material-ui/styles/colors';
+import {grey50, grey400} from 'material-ui/styles/colors';
 // Parents: Row
 
 const styles = {
@@ -10,20 +10,19 @@ const styles = {
     paddingBottom: '5px',
     boxShadow: `2px 3px 4px ${grey400}`,
     color: grey50,
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 };
 
-/** render code for each class */
-export const Segment = props => {
+export const Segment = (props) => {
   // var for segment
-  const { company, width, color, title } = props.data;
+  const {company, width, color, title} = props.data;
   // variables for empty segment
-  let style = { display: 'inline-block', width: `${width}%` };
+  let style = {display: 'inline-block', width: `${width}%`};
   let body = <br />;
   // company for company
   if (company) {
-    style = { ...style, ...styles.box, backgroundColor: color };
+    style = {...style, ...styles.box, backgroundColor: color};
     body = company;
   }
 
@@ -40,6 +39,6 @@ Segment.propTypes = {
     company: types.any,
     width: types.any.isRequired,
     color: types.any,
-    title: types.any
-  }).isRequired
+    title: types.any,
+  }).isRequired,
 };

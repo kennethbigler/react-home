@@ -1,5 +1,5 @@
 import React from 'react';
-import { Piece } from './Piece';
+import {Piece} from './Piece';
 import types from 'prop-types';
 import {
   Table,
@@ -7,18 +7,18 @@ import {
   TableRow,
   TableRowColumn,
   TableHeader,
-  TableHeaderColumn
+  TableHeaderColumn,
 } from 'material-ui/Table';
 import map from 'lodash/map';
 // Parents: GameBoard
 
-const styles = { cell: { padding: 1, textAlign: 'center' } };
+const styles = {cell: {padding: 1, textAlign: 'center'}};
 
 /* --------------------------------------------------
 * Board - for Connect4
 * -------------------------------------------------- */
-export const Board = props => {
-  const { board, turn, insert } = props;
+export const Board = (props) => {
+  const {board, turn, insert} = props;
   // generate code for Connect4 Board
   const gameBoard = map(board, (arr, i) => {
     const row = map(arr, (piece, j) => (
@@ -53,5 +53,5 @@ Board.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   board: types.arrayOf(types.arrayOf(types.number)).isRequired,
   insert: types.func.isRequired,
-  turn: types.number.isRequired
+  turn: types.number.isRequired,
 };

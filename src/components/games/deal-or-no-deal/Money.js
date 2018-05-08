@@ -1,14 +1,14 @@
 import React from 'react';
 import types from 'prop-types';
-import { getMoneyText } from './common';
+import {getMoneyText} from './common';
 import Paper from 'material-ui/Paper';
-import { grey700, amber500, white } from 'material-ui/styles/colors';
+import {grey700, amber500, white} from 'material-ui/styles/colors';
 
 // Parents: Degree
 
-/** render code for each class */
-export const Money = props => {
-  const { briefcase: bc } = props;
+
+export const Money = (props) => {
+  const {briefcase: bc} = props;
 
   let color = {};
   color.backgroundColor = bc.on ? amber500 : grey700;
@@ -21,7 +21,7 @@ export const Money = props => {
     padding: 5,
     textAlign: 'center',
     color: white,
-    ...color
+    ...color,
   };
 
   return (
@@ -35,6 +35,6 @@ Money.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   briefcase: types.shape({
     on: types.bool.isRequired,
-    val: types.number.isRequired
-  }).isRequired
+    val: types.number.isRequired,
+  }).isRequired,
 };

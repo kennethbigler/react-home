@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import types from 'prop-types';
-import { Cell } from './Cell';
-import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
-import { grey400 } from 'material-ui/styles/colors';
+import {Cell} from './Cell';
+import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
+import {grey400} from 'material-ui/styles/colors';
 import includes from 'lodash/includes';
 // Parents: TicTacToe
 
-/** ========================================
+/* ========================================
  * Board
  * ======================================== */
 export class Board extends Component {
@@ -14,12 +14,12 @@ export class Board extends Component {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     board: types.arrayOf(types.string).isRequired,
     onClick: types.func.isRequired,
-    winRow: types.arrayOf(types.number).isRequired
+    winRow: types.arrayOf(types.number).isRequired,
   };
 
-  /** function to render the cells of the Board */
+  /* function to render the cells of the Board */
   renderCells = () => {
-    const { board, onClick, winRow } = this.props;
+    const {board, onClick, winRow} = this.props;
     let cells = [];
     // create 3 rows
     for (let i = 0; i < 3; i += 1) {
@@ -35,7 +35,7 @@ export class Board extends Component {
             style={{
               padding: 0,
               textAlign: 'center',
-              border: `1px solid ${grey400}`
+              border: `1px solid ${grey400}`,
             }}
           >
             <Cell onClick={() => onClick(c)} value={board[c]} winner={winner} />

@@ -1,4 +1,4 @@
-/*global app*/
+/* global app*/
 app.factory('BridgeService', [
   '$log',
   '$deck',
@@ -7,8 +7,8 @@ app.factory('BridgeService', [
     let factory = {};
 
     factory.deal = function() {
-      let i,
-        hands = [];
+      let i;
+      let hands = [];
       $deck.shuffle();
       for (i = 0; i < 4; i += 1) {
         hands[i] = $deck.deal(13);
@@ -18,10 +18,10 @@ app.factory('BridgeService', [
     };
 
     return factory;
-  }
+  },
 ]);
 
-/*global $, app */
+/* global $, app */
 
 app.controller('BridgeController', [
   '$scope',
@@ -29,17 +29,17 @@ app.controller('BridgeController', [
   '$log',
   function($scope, $BS, $log) {
     'use strict';
-    let hands = [],
-      bids = [
-        ['none'],
-        ['1 ♣', '1 ♦', '1 ♥', '1 ♠', '1 NT'],
-        ['2 ♣', '2 ♦', '2 ♥', '2 ♠', '2 NT'],
-        ['3 ♣', '3 ♦', '3 ♥', '3 ♠', '3 NT'],
-        ['4 ♣', '4 ♦', '4 ♥', '4 ♠', '4 NT'],
-        ['5 ♣', '5 ♦', '5 ♥', '5 ♠', '5 NT'],
-        ['6 ♣', '6 ♦', '6 ♥', '6 ♠', '6 NT'],
-        ['7 ♣', '7 ♦', '7 ♥', '7 ♠', '7 NT']
-      ];
+    let hands = [];
+    let bids = [
+      ['none'],
+      ['1 ♣', '1 ♦', '1 ♥', '1 ♠', '1 NT'],
+      ['2 ♣', '2 ♦', '2 ♥', '2 ♠', '2 NT'],
+      ['3 ♣', '3 ♦', '3 ♥', '3 ♠', '3 NT'],
+      ['4 ♣', '4 ♦', '4 ♥', '4 ♠', '4 NT'],
+      ['5 ♣', '5 ♦', '5 ♥', '5 ♠', '5 NT'],
+      ['6 ♣', '6 ♦', '6 ♥', '6 ♠', '6 NT'],
+      ['7 ♣', '7 ♦', '7 ♥', '7 ♠', '7 NT'],
+    ];
     $scope.bids = bids;
     $log.log($scope.bids);
     $scope.currentBid = $scope.bids[0];
@@ -49,7 +49,7 @@ app.controller('BridgeController', [
     // deal hands
     hands = $BS.deal();
     $scope.hands = hands;
-    //$scope.hands = [hands[$scope.turn]];
+    // $scope.hands = [hands[$scope.turn]];
 
     // analyze then bid round robin
     $scope.setBid = function(x, y) {
@@ -57,7 +57,8 @@ app.controller('BridgeController', [
         return;
       }
       $log.log($scope.turn, $scope.betCounter);
-      let i, temp;
+      let i;
+      let temp;
       $scope.turn = ($scope.turn + 1) % 4;
       if (x === 0) {
         $scope.betCounter += 1;
@@ -86,5 +87,5 @@ app.controller('BridgeController', [
     // winner plays 2 hands [0, 2] or [1, 3]
     // have to play leading suit if you have it
     // if not, trump suit wins (if exists)
-  }
+  },
 ]);

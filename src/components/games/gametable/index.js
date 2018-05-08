@@ -1,29 +1,29 @@
 import React from 'react';
 import types from 'prop-types';
-import { Board } from './Board';
-import { ButtonGroup } from './ButtonGroup';
+import {Board} from './Board';
+import {ButtonGroup} from './ButtonGroup';
 // Parents: BlackJack
 
-/**
+/*
  * MAP:
  * GameTable ->  Board -> Player -> Hand -> Card
  *          |->  Button Group  ->  Button
  */
-export const GameTable = props => {
+export const GameTable = (props) => {
   const {
     turn,
     players,
     cardClickHandler,
     gameFunctions,
     betHandler,
-    hideHands
+    hideHands,
   } = props;
 
   // move game buttons to make turn more obvious and support mobile
   const played = players.slice(0, turn.player + 1);
   const future = players.slice(turn.player + 1);
   // pass common props
-  const passProps = { betHandler, cardHandler: cardClickHandler };
+  const passProps = {betHandler, cardHandler: cardClickHandler};
   return (
     <div className="gameTable">
       {hideHands ? (
@@ -50,6 +50,6 @@ GameTable.propTypes = {
   hideHands: types.bool,
   players: types.array.isRequired,
   turn: types.shape({
-    player: types.number.isRequired
-  }).isRequired
+    player: types.number.isRequired,
+  }).isRequired,
 };

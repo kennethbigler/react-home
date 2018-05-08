@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { GameBoard } from './GameBoard';
+import React, {Component} from 'react';
+import {GameBoard} from './GameBoard';
 import reduce from 'lodash/reduce';
 import forEach from 'lodash/forEach';
 // Parents: Main
@@ -17,7 +17,7 @@ const NEW_BOARD = [
   [0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0]
+  [0, 0, 0, 0, 0, 0, 0],
 ];
 
 /** start a new game
@@ -34,7 +34,7 @@ const getNewGame = () => ({
   ),
   winner: null,
   line: [],
-  turn: RED
+  turn: RED,
 });
 
 export class Connect4 extends Component {
@@ -44,7 +44,7 @@ export class Connect4 extends Component {
   }
 
   /** start a new game
-   * @return immutably reset the board and helper vars in state
+   * immutably reset the board and helper vars in state
    */
   newGame = () => {
     this.setState(getNewGame());
@@ -52,15 +52,15 @@ export class Connect4 extends Component {
 
   /** update turn, alternating red/black */
   updateTurn = () => {
-    const { turn } = this.state;
-    this.setState({ turn: turn === RED ? BLACK : RED });
+    const {turn} = this.state;
+    this.setState({turn: turn === RED ? BLACK : RED});
   };
 
   /** insert piece into the board, piece falls to the bottom row every time
-   * @param {number} - column number
+   * @param {number} col - column number
    */
-  insert = col => {
-    let { board, turn, winner } = this.state;
+  insert = (col) => {
+    let {board, turn, winner} = this.state;
     // check to see if there is an empty spot left
     if (!winner && !board[board.length - 1][col]) {
       let i = 0;
@@ -83,7 +83,7 @@ export class Connect4 extends Component {
    * @param {array} line - dp storage, [PIECE, STREAK, MAX]
    */
   helpEvalConnect4 = (row, col, line) => {
-    const { board } = this.state;
+    const {board} = this.state;
     // verify row
     if (board[row] !== undefined) {
       const piece = board[row][col];
@@ -111,7 +111,7 @@ export class Connect4 extends Component {
    * O(N)
    * @param {number} row - row location of play
    * @param {number} col - col location of play
-   * @return - updates state of winner and board for highlighting
+   * updates state of winner and board for highlighting
    */
   evalConnect4 = (row, col) => {
     // variables to track streaks
@@ -132,11 +132,11 @@ export class Connect4 extends Component {
       this.helpEvalConnect4(row - i, col + i, dp[3]);
     }
 
-    forEach(dp, line => {
+    forEach(dp, (line) => {
       if (line[MAX].length >= 4) {
-        let { board } = this.state;
-        forEach(line[MAX], t => (board[t[0]][t[1]] = 3));
-        this.setState({ winner: this.state.turn, board });
+        let {board} = this.state;
+        forEach(line[MAX], (t) => (board[t[0]][t[1]] = 3));
+        this.setState({winner: this.state.turn, board});
       }
     });
   };
@@ -176,7 +176,7 @@ export class Connect4 extends Component {
   };
 
   render() {
-    const { board, turn, winner } = this.state;
+    const {board, turn, winner} = this.state;
     return (
       <GameBoard
         board={board}

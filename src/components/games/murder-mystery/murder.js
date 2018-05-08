@@ -1,5 +1,5 @@
 import assign from 'lodash/assign';
-/**************************************************
+/** ************************************************
              Define Global Constants
 **************************************************/
 export const CASINO = 'The Cinema Magic Hotel and Casino';
@@ -15,113 +15,113 @@ const MOTIVE = `You have motive to murder ${VICTIM}.`;
 const REGULAR = `You are at ${CASINO} regularly.`;
 const NEW_VISIT = `You have never been to ${CASINO} before.`;
 
-/**************************************************
+/** ************************************************
                   Declare Profiles
 **************************************************/
 let owner = {
   role: 'The Casino Owner',
   importance: I1,
   person: 'Ken',
-  gender: NEUTRAL
+  gender: NEUTRAL,
 };
 let reporter = {
   role: 'The Reporter',
   importance: I1,
   person: 'Jon',
-  gender: NEUTRAL
+  gender: NEUTRAL,
 };
 let gunNut = {
   role: 'The Gun Nut',
   importance: I1,
   person: 'Andy',
-  gender: MALE
+  gender: MALE,
 };
 let escort = {
   role: 'The Escort',
   importance: I1,
   person: 'Julia',
-  gender: FEMALE
+  gender: FEMALE,
 };
 let gladiator = {
   role: 'The Recently Fired Gladiator Actor',
   importance: I1,
   person: 'Jordan',
-  gender: MALE
+  gender: MALE,
 };
 let coach = {
   role: 'The Singing Coach',
   importance: I1,
   person: 'Gus',
-  gender: MALE
+  gender: MALE,
 };
 let bouncer = {
   role: 'The Bouncer',
   importance: I2,
   person: 'Tom',
-  gender: NEUTRAL
+  gender: NEUTRAL,
 };
 let follow = {
   role: 'The Second Act',
   importance: I2,
   person: 'Libby',
-  gender: NEUTRAL
+  gender: NEUTRAL,
 };
 let dancer = {
   role: 'The Dancer',
   importance: I2,
   person: 'Emily',
-  gender: FEMALE
+  gender: FEMALE,
 };
 let director = {
   role: 'The Depressed Director',
   importance: I3,
   person: 'Aaron',
-  gender: NEUTRAL
+  gender: NEUTRAL,
 };
 let lawyer = {
   role: 'The Lawyer',
   importance: I3,
   person: '',
-  gender: MALE
+  gender: MALE,
 };
 let diver = {
   role: 'The Scuba Diver',
   importance: I3,
   person: 'Lauren',
-  gender: NEUTRAL
+  gender: NEUTRAL,
 };
 let cop = {
   role: 'The Retired Cop',
   importance: I3,
   person: 'Samantha',
-  gender: NEUTRAL
+  gender: NEUTRAL,
 };
 let prof = {
   role: 'The Professor',
   importance: I3,
   person: 'Emerald',
-  gender: NEUTRAL
+  gender: NEUTRAL,
 };
 let diner = {
   role: 'The Owner of Diner',
   importance: I3,
   person: '',
-  gender: NEUTRAL
+  gender: NEUTRAL,
 };
 let ufo = {
   role: 'The UFO Conspiracy Nut',
   importance: I3,
   person: 'Scott',
-  gender: NEUTRAL
+  gender: NEUTRAL,
 };
 let crusader = {
   role: 'The Caped Crusader',
   importance: I3,
   person: '',
-  gender: NEUTRAL
+  gender: NEUTRAL,
 };
 
-/**************************************************
+/** ************************************************
                   Expand Profiles
 **************************************************/
 owner = assign(owner, {
@@ -139,7 +139,7 @@ owner = assign(owner, {
       gunNut.role
     }'s" lost gun from the casino bar last week is the murder weapon!\n` +
     `3. Is the character a regular at ${CASINO}?\n` +
-    '4. Is the character married?'
+    '4. Is the character married?',
 });
 
 reporter = assign(reporter, {
@@ -147,7 +147,7 @@ reporter = assign(reporter, {
     'You are a resident bad boy/girl and have earned quite a reputation for your ability to try any underhanded trick you can think of to get the latest scoop.\n' +
     'Of course, your methods aren’t always legal…but that only matters if you get caught, right?',
   hint: NEW_VISIT,
-  clue: `You have been following ${VICTIM} for a story and found out that ${VICTIM} was in a relationship with someone who was married.`
+  clue: `You have been following ${VICTIM} for a story and found out that ${VICTIM} was in a relationship with someone who was married.`,
 });
 
 gunNut = assign(gunNut, {
@@ -156,7 +156,7 @@ gunNut = assign(gunNut, {
     `You and your wife are a die-hard ${VICTIM} fans and you believe this ${VICTIM} impersonator is terrible since you have seen him before.\n` +
     'You have been to several of his other shows and heckle him on and off stage.',
   hint: `You are NOT the murderer.\nYou have a gun with you.\n${REGULAR}`,
-  clue: 'You lost your gun at the casino bar last week.'
+  clue: 'You lost your gun at the casino bar last week.',
 });
 
 escort = assign(escort, {
@@ -166,7 +166,7 @@ escort = assign(escort, {
   hint: REGULAR,
   clue:
     `${VICTIM} once paid you to accompany him to a wedding.\n` +
-    'You tried to seduce him afterwards but he was not interested.'
+    'You tried to seduce him afterwards but he was not interested.',
 });
 
 gladiator = assign(gladiator, {
@@ -178,7 +178,7 @@ gladiator = assign(gladiator, {
     `${VICTIM} ratted you out to the owner for drinking on the job.\n` +
     `One night in a drunken stupor you told "${
       dancer.role
-    }" that you were going to stab ${VICTIM} in the back, like Brutus stabbed Caesar.`
+    }" that you were going to stab ${VICTIM} in the back, like Brutus stabbed Caesar.`,
 });
 
 coach = assign(coach, {
@@ -205,7 +205,7 @@ coach = assign(coach, {
     `You are a singing coach who has been coaching ${VICTIM} with his voice.\n` +
     `You give him private lessons and are frequently at ${CASINO} to critique and watch him.\n` +
     'You are married to your wife (she is not at the casino tonight).\n' +
-    'You can pretend you have no clue to share.'
+    'You can pretend you have no clue to share.',
 });
 
 bouncer = assign(bouncer, {
@@ -223,14 +223,14 @@ bouncer = assign(bouncer, {
     }" are carrying guns because you patted them down as they entered.\n` +
     `You were talking to "${
       prof.role
-    }" when you heard the gunshots. He/She is not the murderer.`
+    }" when you heard the gunshots. He/She is not the murderer.`,
 });
 
 follow = assign(follow, {
   description:
     'Sugar-sweet, full of yourself, and never seen without a purse-full of pills to get through the night.',
   hint: EMPLOYEE,
-  clue: `You wanted to hang out with ${VICTIM} later tonight for late night drinks but he told you he was busy because he "had to tell someone something."`
+  clue: `You wanted to hang out with ${VICTIM} later tonight for late night drinks but he told you he was busy because he "had to tell someone something."`,
 });
 
 dancer = assign(dancer, {
@@ -243,7 +243,7 @@ dancer = assign(dancer, {
   hint: EMPLOYEE,
   clue: `"${
     gladiator.role
-  }" was drunk and told you that he was going to murder ${VICTIM} by stabbing him in the back, like Brutus stabbed Caesar.`
+  }" was drunk and told you that he was going to murder ${VICTIM} by stabbing him in the back, like Brutus stabbed Caesar.`,
 });
 
 director = assign(director, {
@@ -253,7 +253,7 @@ director = assign(director, {
     'You have a habit of dragging down the party with your depressed whining and tend to overreact when people comment.\n' +
     '"It feeds me," you say to peoples\' comments, and walk away in a huff.',
   hint: EMPLOYEE + '\n' + MOTIVE,
-  clue: `${VICTIM} constantly ridiculed you and your art.`
+  clue: `${VICTIM} constantly ridiculed you and your art.`,
 });
 
 lawyer = assign(lawyer, {
@@ -265,7 +265,7 @@ lawyer = assign(lawyer, {
   clue:
     `You hired ${VICTIM} for a corporate gig, and ${VICTIM} showed up drunk.\n` +
     'You looked like a fool in front of the senior partners.\n' +
-    `You did not know ${VICTIM} was a performer at this casino until you saw his face on posters!`
+    `You did not know ${VICTIM} was a performer at this casino until you saw his face on posters!`,
 });
 
 diver = assign(diver, {
@@ -277,7 +277,7 @@ diver = assign(diver, {
   hint: 'You have a gun with you.\nYou have an alibi.',
   clue:
     `You were talking with "${owner}" during the shooting, this is your alibi for not shooting ${VICTIM}.\n` +
-    'You can reveal you are an assassin in any way you would like, but you should reveal this at some point.'
+    'You can reveal you are an assassin in any way you would like, but you should reveal this at some point.',
 });
 
 cop = assign(cop, {
@@ -285,7 +285,7 @@ cop = assign(cop, {
   hint: `${REGULAR}\nYou always carry your glock (police issued pistol).`,
   clue:
     'You are retired and have lots of money because of your pension and an injury insurance payout from when you were shot in the arm on duty.\n' +
-    `You cannot think of any motive you would have to murder ${VICTIM}.`
+    `You cannot think of any motive you would have to murder ${VICTIM}.`,
 });
 
 prof = assign(prof, {
@@ -297,7 +297,7 @@ prof = assign(prof, {
   }."`,
   clue:
     `You were talking with "${bouncer.role}" when the gun went off.\n` +
-    `"${bouncer.role}" is not the murderer and you have an alibi.`
+    `"${bouncer.role}" is not the murderer and you have an alibi.`,
 });
 
 diner = assign(diner, {
@@ -307,7 +307,7 @@ diner = assign(diner, {
   hint: NEW_VISIT,
   clue: `You came on the same Las Vegas flight as "${
     lawyer.role
-  }" meaning neither of you were at the casino bar a week ago.`
+  }" meaning neither of you were at the casino bar a week ago.`,
 });
 
 ufo = assign(ufo, {
@@ -315,7 +315,7 @@ ufo = assign(ufo, {
     'You are convinced Aliens exist.\n' +
     `You think aliens are responsible for the murder of ${VICTIM}.`,
   hint: `You frequent ${CASINO} to warn fellow humans of the impending invasion`,
-  clue: 'It was probably aliens. We cannot rule them out.'
+  clue: 'It was probably aliens. We cannot rule them out.',
 });
 
 crusader = assign(crusader, {
@@ -327,10 +327,10 @@ crusader = assign(crusader, {
     `You found "${
       reporter.role
     }'s" methods to be somewhat shady, so you were following him/her during the time of the murder.\n` +
-    `You know it was not "${reporter.role}."`
+    `You know it was not "${reporter.role}."`,
 });
 
-/**************************************************
+/** ************************************************
                   Export Profiles
 **************************************************/
 export default [
@@ -350,5 +350,5 @@ export default [
   prof,
   diner,
   ufo,
-  crusader
+  crusader,
 ];

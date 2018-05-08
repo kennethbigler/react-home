@@ -1,6 +1,6 @@
 import React from 'react';
 import types from 'prop-types';
-import { Hand } from './Hand';
+import {Hand} from './Hand';
 import Slider from 'material-ui/Slider';
 import * as colors from 'material-ui/styles/colors';
 import map from 'lodash/map';
@@ -9,9 +9,9 @@ import map from 'lodash/map';
 /* --------------------------------------------------
  * Player
  * -------------------------------------------------- */
-export const Player = props => {
+export const Player = (props) => {
   // get vars from props
-  const { playerNo, turn, player, cardHandler, betHandler, hideHands } = props;
+  const {playerNo, turn, player, cardHandler, betHandler, hideHands} = props;
   // set booleans
   const isPlayerTurn = !!turn && playerNo === turn.player;
   const isMultiHand = player.hands.length > 1;
@@ -23,22 +23,22 @@ export const Player = props => {
   const onSliderChange = (event, value) => betHandler(player.id, event, value);
   // set colors
   let color = isPlayerTurn
-    ? { background: colors.cyan200 }
-    : { background: colors.grey200 };
-  let weight = isPlayerTurn ? { fontWeight: 'bold' } : { fontWeight: 'normal' };
+    ? {background: colors.cyan200}
+    : {background: colors.grey200};
+  let weight = isPlayerTurn ? {fontWeight: 'bold'} : {fontWeight: 'normal'};
   if (player.status === 'win') {
-    color = { background: colors.green300 };
+    color = {background: colors.green300};
   }
   if (player.status === 'draw') {
-    color = { background: colors.blueGrey300 };
+    color = {background: colors.blueGrey300};
   }
   if (player.status === 'lose') {
-    color = { background: colors.red300 };
+    color = {background: colors.red300};
   }
 
   return (
     <div className="player" style={color}>
-      <h2 style={{ ...weight, marginBottom: 0 }}>
+      <h2 style={{...weight, marginBottom: 0}}>
         {player.name}: ${player.money}
       </h2>
       {showSlider && (
@@ -46,14 +46,14 @@ export const Player = props => {
           max={maxBet}
           min={minBet}
           onChange={onSliderChange}
-          sliderStyle={{ marginBottom: 0 }}
+          sliderStyle={{marginBottom: 0}}
           step={step}
-          style={{ minWidth: '100px' }}
+          style={{minWidth: '100px'}}
           value={player.bet}
         />
       )}
       {player.id !== 0 && (
-        <h3 style={{ marginBottom: 0 }}>Bet: ${player.bet}</h3>
+        <h3 style={{marginBottom: 0}}>Bet: ${player.bet}</h3>
       )}
       {map(player.hands, (hand, i) => {
         const isHandTurn = !!turn && turn.hand === i;
@@ -89,11 +89,11 @@ Player.propTypes = {
     money: types.number.isRequired,
     status: types.string.isRequired,
     name: types.string.isRequired,
-    bet: types.number.isRequired
+    bet: types.number.isRequired,
   }).isRequired,
   playerNo: types.number.isRequired,
   turn: types.shape({
     player: types.number.isRequired,
-    hand: types.number.isRequired
-  })
+    hand: types.number.isRequired,
+  }),
 };

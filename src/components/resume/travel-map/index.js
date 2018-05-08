@@ -1,14 +1,14 @@
 import React from 'react';
-import { NA, EU } from '../../../constants/countries';
+import {NA, EU} from '../../../constants/countries';
 import {
   Table,
   TableHeader,
   TableHeaderColumn,
   TableBody,
   TableRow,
-  TableRowColumn
+  TableRowColumn,
 } from 'material-ui/Table';
-import { grey400 } from 'material-ui/styles/colors';
+import {grey400} from 'material-ui/styles/colors';
 // Parents: Main
 
 export const TravelMap = () => {
@@ -27,16 +27,16 @@ export const TravelMap = () => {
       margin: 'auto',
       width: '100%',
       maxWidth: '792px',
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
-    margins: { marginTop: 24, marginBottom: 16 },
+    margins: {marginTop: 24, marginBottom: 16},
     cell: {
       padding: 5,
       textAlign: 'center',
       whiteSpace: 'normal',
-      overflow: 'visible'
+      overflow: 'visible',
     },
-    separator: { borderRight: `1px solid ${grey400}` }
+    separator: {borderRight: `1px solid ${grey400}`},
   };
 
   // ratio to display on table, 2:1 seemed to look best
@@ -52,7 +52,7 @@ export const TravelMap = () => {
     row.push(
       <TableRowColumn
         key={`tmc${i}`}
-        style={{ ...styles.cell, ...styles.separator }}
+        style={{...styles.cell, ...styles.separator}}
       >
         {NA[i]}
       </TableRowColumn>
@@ -83,7 +83,7 @@ export const TravelMap = () => {
       <Table>
         <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
           <TableRow>
-            <TableHeaderColumn style={{ ...styles.cell, ...styles.separator }}>
+            <TableHeaderColumn style={{...styles.cell, ...styles.separator}}>
               North America
             </TableHeaderColumn>
             <TableHeaderColumn colSpan={EURatio} style={styles.cell}>

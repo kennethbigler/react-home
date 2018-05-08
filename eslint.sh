@@ -1,3 +1,3 @@
 #!/bin/bash
 clear
-eslint src/. --fix
+./node_modules/.bin/eslint src/. --fix

@@ -1,18 +1,22 @@
 import split from 'lodash/split';
 
-/* Facebook - Task Execution Time with Cooldowns
-given an array of tasks (each number represents a different task)
-only 1 task can execute at a time, with a cool down in between the same tasks of the same number
-different tasks don't have to wait for the cooldown
-find how long execution of the tasks would take
-
-EX:
-nums: [1, 1, 2, 0, 2, 1]
-cooldown: 2
-Output: 9
-Explanation: 1 _ _ 1 2 0 _ 2 1
-*/
-
+/** Facebook - Task Execution Time with Cooldowns
+ * given an array of tasks (each number represents a different task)
+ * only 1 task can execute at a time,
+ * with a cool down in between the same tasks of the same number
+ * different tasks don't have to wait for the cooldown
+ * find how long execution of the tasks would take
+ *
+ * EX:
+ * nums: [1, 1, 2, 0, 2, 1]
+ * cooldown: 2
+ * Output: 9
+ * Explanation: 1 _ _ 1 2 0 _ 2 1
+ *
+ * @param {Array} tasks
+ * @param {number} cooldown
+ * @return {number}
+ */
 function doTasks(tasks, cooldown) {
   let lastRunMap = {};
   let ans = 0;
@@ -41,17 +45,20 @@ doTasks([1, 1, 2, 0, 2, 1], 4);
 doTasks([1, 1, 2, 0, 2, 1], 4);
 doTasks([1, 1, 3, 2, 1, 2, 1], 3);
 
-/* Google - Is the input an Ambigram I
-Given an array of numbers, determine if it is an Ambigram
-Ambigram - The same word forwards, backwards, and upsidown
-EX: 1881
-
-HINT1: consider the numbers that flip to stay the same: 0, 1, 8
-HINT2: consider the numbers that flip to become another number: 6, 9
-*/
+/** Google - Is the input an Ambigram I
+ * Given an array of numbers, determine if it is an Ambigram
+ * Ambigram - The same word forwards, backwards, and upsidown
+ * EX: 1881
+ *
+ * HINT1: consider the numbers that flip to stay the same: 0, 1, 8
+ * HINT2: consider the numbers that flip to become another number: 6, 9
+ *
+ * @param {Array} nums
+ * @return {boolean}
+ */
 function isAmbigram1(nums) {
   // create map
-  const flip = { 0: 0, 1: 1, 6: 9, 9: 6, 8: 8 };
+  const flip = {0: 0, 1: 1, 6: 9, 9: 6, 8: 8};
   // verify characters are good
   for (let i = 0; i < Math.ceil(nums.length / 2); i += 1) {
     // failed check
@@ -67,20 +74,22 @@ isAmbigram1([1, 8, 1]);
 isAmbigram1([1, 6, 9, 1]);
 isAmbigram1([1, 6, 1]);
 
-/* Code Golf - Is the input an Ambigram II
-Given a string, determine if it is an Ambigram
-Ambigram - The same word forwards, backwards, and upsidown
-EX: 1881, SwIMs
-
-Table (goes both ways)
-0  0      b  q        o  o/O      H  H
-1  1      d  p/P      O  o/O      I  I
-2  5      h  y/Y      s  s/S      M  W
-6  9      l  l        t  t        N  N
-8  8      m  w        x  x/X
-a  e      n  u/U      z  z/Z
-
-*/
+/** Code Golf - Is the input an Ambigram II
+ * Given a string, determine if it is an Ambigram
+ * Ambigram - The same word forwards, backwards, and upsidown
+ * EX: 1881, SwIMs
+ *
+ * Table (goes both ways)
+ * 0  0      b  q        o  o/O      H  H
+ * 1  1      d  p/P      O  o/O      I  I
+ * 2  5      h  y/Y      s  s/S      M  W
+ * 6  9      l  l        t  t        N  N
+ * 8  8      m  w        x  x/X
+ * a  e      n  u/U      z  z/Z
+ *
+ * @param {Array} word
+ * @return {boolean} test
+ */
 function isAmbigram2(word) {
   // create map
   const flip = {
@@ -91,36 +100,36 @@ function isAmbigram2(word) {
     '6': ['9'],
     '9': ['6'],
     '8': ['8'],
-    a: ['e'],
-    e: ['a'],
-    b: ['q'],
-    q: ['b'],
-    d: ['p', 'P'],
-    p: ['d'],
-    P: ['d'],
-    h: ['y', 'Y'],
-    y: ['h'],
-    Y: ['h'],
-    l: ['l'],
-    m: ['w'],
-    w: ['m'],
-    n: ['u', 'U'],
-    u: ['n'],
-    U: ['n'],
-    o: ['o', 'O'],
-    O: ['o', 'O'],
-    s: ['s', 'S'],
-    S: ['s', 'S'],
-    t: ['t'],
-    x: ['x', 'X'],
-    X: ['x', 'X'],
-    z: ['z', 'Z'],
-    Z: ['z', 'Z'],
-    H: ['H'],
-    I: ['I'],
-    M: ['W'],
-    W: ['M'],
-    N: ['N']
+    'a': ['e'],
+    'e': ['a'],
+    'b': ['q'],
+    'q': ['b'],
+    'd': ['p', 'P'],
+    'p': ['d'],
+    'P': ['d'],
+    'h': ['y', 'Y'],
+    'y': ['h'],
+    'Y': ['h'],
+    'l': ['l'],
+    'm': ['w'],
+    'w': ['m'],
+    'n': ['u', 'U'],
+    'u': ['n'],
+    'U': ['n'],
+    'o': ['o', 'O'],
+    'O': ['o', 'O'],
+    's': ['s', 'S'],
+    'S': ['s', 'S'],
+    't': ['t'],
+    'x': ['x', 'X'],
+    'X': ['x', 'X'],
+    'z': ['z', 'Z'],
+    'Z': ['z', 'Z'],
+    'H': ['H'],
+    'I': ['I'],
+    'M': ['W'],
+    'W': ['M'],
+    'N': ['N'],
   };
 
   const chars = split(word, '');

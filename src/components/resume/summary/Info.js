@@ -1,15 +1,15 @@
 // react
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 // components
-import { ExpandableCard } from '../../common/ExpandableCard';
+import {ExpandableCard} from '../../common/ExpandableCard';
 // material ui
-import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
+import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
 // assests
 import photo from '../../../images/ken.jpg';
 import workExp from '../../../constants/work';
 // Parents: Degree
 
-/** render code for each class */
+
 export class Info extends Component {
   style = {
     image: {
@@ -17,8 +17,8 @@ export class Info extends Component {
       display: 'block',
       margin: 'auto',
       maxWidth: '20em',
-      marginBottom: '1em'
-    }
+      marginBottom: '1em',
+    },
   };
 
   getJob = () => {
@@ -31,7 +31,7 @@ export class Info extends Component {
     window.open('https://www.linkedin.com/in/kennethbigler', '_blank');
 
   render() {
-    const { image } = this.style;
+    const {image} = this.style;
     return (
       <div className="row">
         <div className="col-md-3">

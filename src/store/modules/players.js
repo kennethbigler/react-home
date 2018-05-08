@@ -1,12 +1,12 @@
 // functions
 import assign from 'lodash/assign';
 import forEach from 'lodash/forEach';
-import { Deck } from '../../apis/Deck';
+import {Deck} from '../../apis/Deck';
 import {
   removeItem,
   updateArrayInArray,
   updateObjectInArray,
-  insertItem
+  insertItem,
 } from '../immutableHelpers';
 
 // initialState
@@ -32,6 +32,7 @@ const NEW_HAND = 'casino/player/NEW_HAND';
  * function to add a player to the state
  * @param {Object[]} players - to get unique id
  * @param {string} name - name of player is only var
+ * @return {Object}
  */
 export function addPlayer(players, name) {
   const player = {
@@ -40,44 +41,48 @@ export function addPlayer(players, name) {
     money: 100,
     bet: 5,
     status: '',
-    hands: []
+    hands: [],
   };
-  return { type: ADD, player };
+  return {type: ADD, player};
 }
 
 /**
  * function to remove player from player array
  * @param {number} id - id of player to remove
+ * @return {Object}
  */
 export function removePlayer(id = 0) {
-  return { type: REMOVE, id };
+  return {type: REMOVE, id};
 }
 
 /**
  * function to update a player's name
  * @param {number} id - id of player
  * @param {string} name - new name of player
+ * @return {Object}
  */
 export function updateName(id = 0, name = '') {
-  return { type: UPDATE_NAME, player: { id, name } };
+  return {type: UPDATE_NAME, player: {id, name}};
 }
 
 /**
  * function to update a player's bot status
  * @param {number} id - id of player
  * @param {boolean} isBot - is the player a bot
+ * @return {Object}
  */
 export function updateBot(id = 0, isBot = true) {
-  return { type: UPDATE_BOT, player: { id, isBot } };
+  return {type: UPDATE_BOT, player: {id, isBot}};
 }
 
 /**
  * function to update a player's bet
  * @param {number} id - id of player
  * @param {number} bet - current bet
+ * @return {Object}
  */
 export function updateBet(id = 0, bet = 5) {
-  return { type: UPDATE_BET, player: { id, bet } };
+  return {type: UPDATE_BET, player: {id, bet}};
 }
 
 /**
@@ -86,6 +91,7 @@ export function updateBet(id = 0, bet = 5) {
  * @param {string} status - win or lose
  * @param {number} money - player's current money
  * @param {number} bet - player's bet
+ * @return {Object}
  */
 export function payout(id, status, money, bet = 0) {
   switch (status) {
@@ -99,7 +105,7 @@ export function payout(id, status, money, bet = 0) {
     default:
       break;
   }
-  return { type: FINISH_GAME, player: { id, status, money } };
+  return {type: FINISH_GAME, player: {id, status, money}};
 }
 
 /**
@@ -108,12 +114,13 @@ export function payout(id, status, money, bet = 0) {
  * @param {number} id - tells us which player to update
  * @param {number} hNum - optional, if multiple hands
  * @param {function} weigh - optional, get weight of hand for game
+ * @return {Object}
  */
 export function splitHand(hands, id, hNum, weigh = null) {
   const hand = hands[hNum];
   // split the hands into 2
-  let hand1 = { cards: [hand.cards[0]] };
-  let hand2 = { cards: [hand.cards[1]] };
+  let hand1 = {cards: [hand.cards[0]]};
+  let hand2 = {cards: [hand.cards[1]]};
   // add 1 card each
   hand1.cards.push(Deck.deal(1)[0]);
   hand2.cards.push(Deck.deal(1)[0]);
@@ -123,7 +130,7 @@ export function splitHand(hands, id, hNum, weigh = null) {
   // update global hands
   let newHands = updateArrayInArray(hands, hand2, hNum);
   newHands.splice(hNum, 0, hand1);
-  return { type: SPLIT_HAND, player: { id, hands: newHands } };
+  return {type: SPLIT_HAND, player: {id, hands: newHands}};
 }
 
 /**
@@ -131,14 +138,15 @@ export function splitHand(hands, id, hNum, weigh = null) {
  * @param {Object[]} hands - pass in player's hands to be mutated with new card
  * @param {number} id - tells us which player to update
  * @param {number} hNum - optional, if multiple hands
- * @param {function} weigh - optional, get weight of hand for game
  * @param {number} num - optional, number of cards, default 1
+ * @param {function} weigh - optional, get weight of hand for game
+ * @return {Object}
  */
 export function drawCard(hands, id, hNum = 0, num = 1, weigh = null) {
   const cards = [...hands[hNum].cards, ...Deck.deal(num)];
-  const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
-  const newHands = updateArrayInArray(hands, { cards, weight, soft }, hNum);
-  return { type: DRAW_CARD, player: { id, hands: newHands } };
+  const {weight, soft} = weigh ? weigh(cards) : {weight: 0};
+  const newHands = updateArrayInArray(hands, {cards, weight, soft}, hNum);
+  return {type: DRAW_CARD, player: {id, hands: newHands}};
 }
 
 /**
@@ -147,34 +155,37 @@ export function drawCard(hands, id, hNum = 0, num = 1, weigh = null) {
  * @param {Object[]} hands - pass in player's hands to be mutated with new card
  * @param {number} id - tells us which player to update
  * @param {array} cardsToDiscard - array of index numbers
+ * @return {Object}
  */
 export function swapCards(hands, id, cardsToDiscard) {
   const cards = [...hands[0].cards];
-  forEach(cardsToDiscard, i => (cards[i] = Deck.deal(1)[0]));
+  forEach(cardsToDiscard, (i) => (cards[i] = Deck.deal(1)[0]));
   cards.sort(Deck.rankSort);
-  const newHand = updateArrayInArray(hands, { cards }, 0);
-  return { type: SWAP_CARD, player: { id, hands: newHand } };
+  const newHand = updateArrayInArray(hands, {cards}, 0);
+  return {type: SWAP_CARD, player: {id, hands: newHand}};
 }
 
 /**
  * function to have a player draw a card
  * @param {number} id - optional, what player should get a new hand, default 0
- * @param {function} weigh - optional, get weight of hand for game
  * @param {number} num - optional, number of cards, default 1
+ * @param {function} weigh - optional, get weight of hand for game
+ * @return {Object}
  */
 export function newHand(id = 0, num = 1, weigh = null) {
   const cards = Deck.deal(num).sort(Deck.rankSort);
-  const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
-  return { type: NEW_HAND, player: { id, hands: [{ cards, weight, soft }] } };
+  const {weight, soft} = weigh ? weigh(cards) : {weight: 0};
+  return {type: NEW_HAND, player: {id, hands: [{cards, weight, soft}]}};
 }
 
 /**
  * function to reset player status
  * @param {number} id - optional, what player should get a new hand, default 0
+ * @return {Object}
  */
 export function resetStatus(id = 0) {
   const status = id === 0 ? 'dealer' : '';
-  return { type: RESET, player: { id, status, hands: [], bet: 5 } };
+  return {type: RESET, player: {id, status, hands: [], bet: 5}};
 }
 
 // --------------------     Reducer     -------------------- //

@@ -1,11 +1,11 @@
 import React from 'react';
 import types from 'prop-types';
-import { getMoneyText } from './common';
+import {getMoneyText} from './common';
 import RaisedButton from 'material-ui/RaisedButton';
 // Parents: DealOrNoDeal
 
-/** render code for each class */
-export const Header = props => {
+
+export const Header = (props) => {
   // prop vars
   const {
     playerChoice: pc,
@@ -13,7 +13,7 @@ export const Header = props => {
     isOver,
     offer,
     newGame,
-    player
+    player,
   } = props;
   // rendered component
   return (
@@ -31,7 +31,7 @@ export const Header = props => {
         {isOver && <RaisedButton label="New Game" onClick={newGame} primary />}
       </div>
       <div className="col-sm-6">
-        <h1 style={{ textAlign: 'right' }}>
+        <h1 style={{textAlign: 'right'}}>
           {player.name}: {getMoneyText(player.money)}
         </h1>
       </div>
@@ -47,10 +47,10 @@ Header.propTypes = {
   offer: types.number,
   player: types.shape({
     name: types.string.isRequired,
-    money: types.number.isRequired
+    money: types.number.isRequired,
   }).isRequired,
   playerChoice: types.shape({
     loc: types.number.isRequired,
-    val: types.number.isRequired
-  })
+    val: types.number.isRequired,
+  }),
 };

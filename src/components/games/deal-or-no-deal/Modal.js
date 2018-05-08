@@ -2,21 +2,21 @@ import React from 'react';
 import types from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import { Money } from './Money';
-import { getMoneyText } from './common';
+import {Money} from './Money';
+import {getMoneyText} from './common';
 import map from 'lodash/map';
 // Parents: DealOrNoDeal
 
 const styles = {
-  cols: { width: '50%', display: 'inline-block' }
+  cols: {width: '50%', display: 'inline-block'},
 };
 
 const genMoneyCols = (arr, start, stop = arr.length) =>
-  map(arr.slice(start, stop), bc => <Money briefcase={bc} key={bc.loc} />);
+  map(arr.slice(start, stop), (bc) => <Money briefcase={bc} key={bc.loc} />);
 
-/** render code for each class */
-export const Modal = props => {
-  const { deal, noDeal, offer, open, swap, numCases } = props;
+
+export const Modal = (props) => {
+  const {deal, noDeal, offer, open, swap, numCases} = props;
   const board = [...props.board].sort((a, b) => a.val - b.val);
 
   // actions to exit modal
@@ -25,13 +25,13 @@ export const Modal = props => {
   if (numCases > 2) {
     actions = [
       <FlatButton key="deal" label="Deal" onClick={deal} primary />,
-      <FlatButton key="noDeal" label="No Deal" onClick={noDeal} secondary />
+      <FlatButton key="noDeal" label="No Deal" onClick={noDeal} secondary />,
     ];
   } else {
     actions = [
       <FlatButton key="deal" label="Deal" onClick={deal} primary />,
       <FlatButton key="noDeal" label="My Case" onClick={noDeal} secondary />,
-      <FlatButton key="swap" label="Other Case" onClick={swap} secondary />
+      <FlatButton key="swap" label="Other Case" onClick={swap} secondary />,
     ];
   }
 
@@ -56,7 +56,7 @@ Modal.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   board: types.arrayOf(
     types.shape({
-      loc: types.number.isRequired
+      loc: types.number.isRequired,
     })
   ).isRequired,
   deal: types.func.isRequired,
@@ -64,5 +64,5 @@ Modal.propTypes = {
   numCases: types.number.isRequired,
   offer: types.number.isRequired,
   open: types.bool.isRequired,
-  swap: types.func.isRequired
+  swap: types.func.isRequired,
 };

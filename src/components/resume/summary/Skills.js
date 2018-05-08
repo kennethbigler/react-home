@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { ExpandableCard } from '../../common/ExpandableCard';
-import { techSummary } from '../../../constants/work';
+import React, {Component} from 'react';
+import {ExpandableCard} from '../../common/ExpandableCard';
+import {techSummary} from '../../../constants/work';
 import Chip from 'material-ui/Chip';
 import map from 'lodash/map';
 // Parents: Main
 
 export class Skills extends Component {
-  getCSV = arr => {
+  getCSV = (arr) => {
     // return arr.reduce((acc, cur) => `${acc}, ${cur}`);
-    const style = { display: 'inline-block', marginRight: 5, marginTop: 5 };
-    return map(arr, tech => (
+    const style = {display: 'inline-block', marginRight: 5, marginTop: 5};
+    return map(arr, (tech) => (
       <Chip key={tech} style={style}>
         {tech}
       </Chip>
@@ -19,7 +19,7 @@ export class Skills extends Component {
   render() {
     return (
       <ExpandableCard title="Skills">
-        <div style={{ paddingLeft: 20, paddingRight: 20 }}>
+        <div style={{paddingLeft: 20, paddingRight: 20}}>
           <h3>Summary of Skills:</h3>
           <ul>
             <li>

@@ -1,12 +1,12 @@
 // react
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import types from 'prop-types';
 // redux
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { payout, updateBet } from '../../../store/modules/players';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {payout, updateBet} from '../../../store/modules/players';
 // components
-import { SlotMachine } from './SlotMachine';
+import {SlotMachine} from './SlotMachine';
 // material ui
 import RaisedButton from 'material-ui/RaisedButton';
 import {
@@ -15,7 +15,7 @@ import {
   TableRow,
   TableRowColumn,
   TableHeader,
-  TableHeaderColumn
+  TableHeaderColumn,
 } from 'material-ui/Table';
 // functions
 import map from 'lodash/map';
@@ -30,40 +30,40 @@ class SM extends Component {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     playerActions: types.shape({
       payout: types.func.isRequired,
-      updateBet: types.func.isRequired
+      updateBet: types.func.isRequired,
     }).isRequired,
     players: types.arrayOf(
       types.shape({
         id: types.number.isRequired,
         money: types.number.isRequired,
-        bet: types.number.isRequired
+        bet: types.number.isRequired,
       })
-    ).isRequired
+    ).isRequired,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      reel: SlotMachine.pullHandle()
+      reel: SlotMachine.pullHandle(),
     };
   }
 
   updateSlotMachine = () => {
-    const { payout } = this.props.playerActions;
-    const { id, money, bet } = this.props.players[0];
+    const {payout} = this.props.playerActions;
+    const {id, money, bet} = this.props.players[0];
     const dealer = this.props.players[this.props.players.length - 1];
     let reel = SlotMachine.pullHandle();
     let exchange = SlotMachine.getPayout(reel, bet) - bet;
     payout(id, 'win', money, exchange);
     payout(dealer.id, 'win', dealer.money, -exchange);
-    this.setState({ reel });
+    this.setState({reel});
   };
 
   // https://vegasclick.com/games/slots/how-they-work
   render() {
-    const { reel } = this.state;
-    const { players } = this.props;
+    const {reel} = this.state;
+    const {players} = this.props;
     const player = players[0];
     const dealer = players[players.length - 1];
 
@@ -84,15 +84,15 @@ class SM extends Component {
     return (
       <div>
         <h1>Welcome to Ken&apos;s Casino Slot Machine</h1>
-        <div className="row" style={{ marginTop: '2em' }}>
+        <div className="row" style={{marginTop: '2em'}}>
           <div className="col-sm-6">
-            <div className="row" style={{ marginBottom: '1em' }}>
+            <div className="row" style={{marginBottom: '1em'}}>
               <div className="col-sm-3">
                 <RaisedButton
                   label="Spin"
                   onClick={this.updateSlotMachine}
                   primary
-                  style={{ marginBottom: 15 }}
+                  style={{marginBottom: 15}}
                 />
               </div>
               <div className="col-sm-9">
@@ -149,8 +149,8 @@ class SM extends Component {
 }
 
 // react-redux export
-const mapStateToProps = (state /*, ownProps*/) => ({ players: state.players });
-const mapDispatchToProps = dispatch => ({
-  playerActions: bindActionCreators({ payout, updateBet }, dispatch)
+const mapStateToProps = (state /* , ownProps*/) => ({players: state.players});
+const mapDispatchToProps = (dispatch) => ({
+  playerActions: bindActionCreators({payout, updateBet}, dispatch),
 });
 export const Slots = connect(mapStateToProps, mapDispatchToProps)(SM);

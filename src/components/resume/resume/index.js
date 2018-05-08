@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 // https://github.com/wojtekmaj/react-pdf
-import { Document, Page } from 'react-pdf';
+import {Document, Page} from 'react-pdf';
 import resume from '../../../images/kenneth_bigler_resume.pdf';
 // Parents: Main
 
@@ -8,18 +8,18 @@ export class Resume extends Component {
   state = {
     file: resume,
     pageNumber: null,
-    numPages: null
+    numPages: null,
   };
 
-  onDocumentLoadSuccess = ({ numPages }) => {
+  onDocumentLoadSuccess = ({numPages}) => {
     this.setState({
       numPages,
-      pageNumber: null
+      pageNumber: null,
     });
   };
 
   render() {
-    const { file, numPages } = this.state;
+    const {file, numPages} = this.state;
 
     return (
       <Document file={file} onLoadSuccess={this.onDocumentLoadSuccess}>

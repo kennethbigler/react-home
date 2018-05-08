@@ -1,14 +1,14 @@
 import React from 'react';
 import types from 'prop-types';
-import { Case } from './Case';
+import {Case} from './Case';
 import Paper from 'material-ui/Paper';
 import map from 'lodash/map';
 // Parents: Degree
 
-/** render code for each class */
-export const Board = props => {
+
+export const Board = (props) => {
   // prop vars
-  const { board, onClick, playerChoice: pc } = props;
+  const {board, onClick, playerChoice: pc} = props;
   // local styles
   const style = {
     maxWidth: 796,
@@ -16,7 +16,7 @@ export const Board = props => {
     textAlign: 'center',
     display: 'block',
     margin: 'auto',
-    marginTop: 20
+    marginTop: 20,
   };
   // rendered component
   return (
@@ -37,9 +37,9 @@ Board.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   board: types.arrayOf(
     types.shape({
-      loc: types.number.isRequired
+      loc: types.number.isRequired,
     })
   ).isRequired,
   onClick: types.func.isRequired,
-  playerChoice: types.shape({ loc: types.number.isRequired })
+  playerChoice: types.shape({loc: types.number.isRequired}),
 };

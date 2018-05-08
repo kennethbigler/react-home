@@ -6,7 +6,7 @@ export const NA = [
   'Cayman Islands',
   'Mexico',
   'U.S. Virgin Islands',
-  'United States'
+  'United States',
 ];
 export const EU = [
   'Denmark',
@@ -29,5 +29,5 @@ export const EU = [
   'Switzerland',
   'Turkey',
   'United Kingdom',
-  'Vatican'
+  'Vatican',
 ];

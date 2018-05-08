@@ -7,7 +7,7 @@ export default {
       money: 100,
       bet: 5,
       status: '',
-      hands: []
+      hands: [],
     },
     {
       id: 2,
@@ -16,7 +16,7 @@ export default {
       money: 100,
       bet: 5,
       status: '',
-      hands: []
+      hands: [],
     },
     {
       id: 3,
@@ -25,7 +25,7 @@ export default {
       money: 100,
       bet: 5,
       status: '',
-      hands: []
+      hands: [],
     },
     {
       id: 4,
@@ -34,7 +34,7 @@ export default {
       money: 100,
       bet: 5,
       status: '',
-      hands: []
+      hands: [],
     },
     {
       id: 5,
@@ -43,7 +43,7 @@ export default {
       money: 100,
       bet: 5,
       status: '',
-      hands: []
+      hands: [],
     },
     {
       id: 6,
@@ -52,7 +52,7 @@ export default {
       money: 100,
       bet: 5,
       status: '',
-      hands: []
+      hands: [],
     },
     {
       id: 0,
@@ -61,14 +61,14 @@ export default {
       money: 0,
       bet: 0,
       status: 'dealer',
-      hands: []
-    }
+      hands: [],
+    },
   ],
-  turn: { player: 0, hand: 0 },
+  turn: {player: 0, hand: 0},
   git: {
     storyID: '',
     branchPrefix: 'features',
     casePreference: 'snake_case',
-    commitPrefix: true
-  }
+    commitPrefix: true,
+  },
 };

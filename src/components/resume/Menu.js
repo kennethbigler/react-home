@@ -5,20 +5,20 @@ import Divider from 'material-ui/Divider';
 import map from 'lodash/map';
 // Parents: Header
 
-export const Menu = props => {
-  const { onItemClick } = props;
+export const Menu = (props) => {
+  const {onItemClick} = props;
   // internal routes
   const menu = map(
     [
-      { name: 'Summary', route: '' },
-      { divider: true },
-      { name: 'Work', route: 'work' },
-      { name: 'Education', route: 'education' },
-      { name: 'Travel Map', route: 'travel' },
-      { name: 'Git Tools', route: 'git-tools' },
-      { name: 'Resume', route: 'resume' },
-      { divider: true },
-      { name: 'React Games', route: 'games' }
+      {name: 'Summary', route: ''},
+      {divider: true},
+      {name: 'Work', route: 'work'},
+      {name: 'Education', route: 'education'},
+      {name: 'Travel Map', route: 'travel'},
+      {name: 'Git Tools', route: 'git-tools'},
+      {name: 'Resume', route: 'resume'},
+      {divider: true},
+      {name: 'React Games', route: 'games'},
     ],
     (item, index) =>
       item.divider ? (
@@ -53,7 +53,7 @@ export const Menu = props => {
         id="stackOverflow"
         onClick={stkovrflw}
         src="https://stackoverflow.com/users/flair/4830309.png?theme=dark"
-        style={{ display: 'block', margin: 'auto', cursor: 'pointer' }}
+        style={{display: 'block', margin: 'auto', cursor: 'pointer'}}
       />
     </div>
   );
@@ -61,5 +61,5 @@ export const Menu = props => {
 
 Menu.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
-  onItemClick: types.func
+  onItemClick: types.func,
 };

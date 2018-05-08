@@ -1,13 +1,13 @@
 import React from 'react';
 import types from 'prop-types';
-import { getMoneyText } from './common';
+import {getMoneyText} from './common';
 import RaisedButton from 'material-ui/RaisedButton';
 // Parents: Degree
 
-/** render code for each class */
-export const Case = props => {
-  const { onClick, briefcase: bc, secondary } = props;
-  const style = { margin: 10 };
+
+export const Case = (props) => {
+  const {onClick, briefcase: bc, secondary} = props;
+  const style = {margin: 10};
   const label = bc.on ? bc.loc : getMoneyText(bc.val);
   return (
     <RaisedButton
@@ -26,8 +26,8 @@ Case.propTypes = {
   briefcase: types.shape({
     on: types.bool.isRequired,
     loc: types.number.isRequired,
-    val: types.number.isRequired
+    val: types.number.isRequired,
   }).isRequired,
   onClick: types.func.isRequired,
-  secondary: types.bool
+  secondary: types.bool,
 };

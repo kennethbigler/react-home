@@ -1,19 +1,19 @@
 import React from 'react';
 import types from 'prop-types';
 import Paper from 'material-ui/Paper';
-import { Board } from './Board';
-import { Header } from './Header';
+import {Board} from './Board';
+import {Header} from './Header';
 // Parents: Connect4
 
 const styles = {
-  paper: { maxWidth: 900, minWidth: 300, display: 'block', margin: 'auto' }
+  paper: {maxWidth: 900, minWidth: 300, display: 'block', margin: 'auto'},
 };
 
 /* --------------------------------------------------
 * Slot Machine
 * -------------------------------------------------- */
-export const GameBoard = props => {
-  const { board, insert, winner, turn, newGame } = props;
+export const GameBoard = (props) => {
+  const {board, insert, winner, turn, newGame} = props;
   return (
     <div>
       <h1>Welcome to Ken&apos;s Connect4 Game</h1>
@@ -31,5 +31,5 @@ GameBoard.propTypes = {
   insert: types.func.isRequired,
   newGame: types.func.isRequired,
   turn: types.number.isRequired,
-  winner: types.number
+  winner: types.number,
 };

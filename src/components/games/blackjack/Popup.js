@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
-import { Help } from './help/';
-import { Rules } from './Rules';
+import React, {Component} from 'react';
+import {Help} from './help/';
+import {Rules} from './Rules';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 // Parents: Board
 
-/** ========================================
+/* ========================================
  * Popup
  * ======================================== */
 export class Popup extends Component {
   state = {
-    open: false
+    open: false,
   };
 
   handleOpen = () => {
-    this.setState({ open: true });
+    this.setState({open: true});
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({open: false});
   };
 
   render() {
@@ -29,7 +29,7 @@ export class Popup extends Component {
         label="Cancel"
         onClick={this.handleClose}
         primary
-      />
+      />,
     ];
 
     return (
