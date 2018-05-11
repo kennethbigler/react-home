@@ -46,9 +46,9 @@ GameTable.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   betHandler: types.func,
   cardClickHandler: types.func,
-  gameFunctions: types.array.isRequired,
+  gameFunctions: types.arrayOf(types.object).isRequired,
   hideHands: types.bool,
-  players: types.array.isRequired,
+  players: types.arrayOf(types.object).isRequired,
   turn: types.shape({
     player: types.number.isRequired,
   }).isRequired,

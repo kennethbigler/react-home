@@ -27,7 +27,7 @@ export const TimelineCard = (props) => {
 TimelineCard.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   backgroundColor: types.string,
-  workExp: types.array,
+  workExp: types.arrayOf(types.object),
 };
 
 TimelineCard.defaultProps = {
