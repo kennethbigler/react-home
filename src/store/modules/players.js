@@ -10,7 +10,7 @@ import {
 } from '../immutableHelpers';
 
 // initialState
-import initialState from '../initialState';
+import initialState, {newPlayer} from '../initialState';
 
 // --------------------     Actions     -------------------- //
 
@@ -20,7 +20,7 @@ const RESET = 'casino/player/RESET';
 const UPDATE_NAME = 'casino/player/UPDATE_NAME';
 const UPDATE_BOT = 'casino/player/UPDATE_BOT';
 const UPDATE_BET = 'casino/player/UPDATE_BET';
-const FINISH_GAME = 'casino/player/FINISH_GAME';
+const PAY_PLAYER = 'casino/player/PAY_PLAYER';
 const SPLIT_HAND = 'casino/player/SPLIT_HAND';
 const DRAW_CARD = 'casino/player/DRAW_CARD';
 const SWAP_CARD = 'casino/player/SWAP_CARD';
@@ -35,14 +35,7 @@ const NEW_HAND = 'casino/player/NEW_HAND';
  * @return {Object}
  */
 export function addPlayer(players, name) {
-  const player = {
-    id: players.length,
-    name: name,
-    money: 100,
-    bet: 5,
-    status: '',
-    hands: [],
-  };
+  const player = newPlayer(players.length, name);
   return {type: ADD, player};
 }
 
@@ -51,7 +44,7 @@ export function addPlayer(players, name) {
  * @param {number} id - id of player to remove
  * @return {Object}
  */
-export function removePlayer(id = 0) {
+export function removePlayer(id) {
   return {type: REMOVE, id};
 }
 
@@ -61,7 +54,7 @@ export function removePlayer(id = 0) {
  * @param {string} name - new name of player
  * @return {Object}
  */
-export function updateName(id = 0, name = '') {
+export function updateName(id, name) {
   return {type: UPDATE_NAME, player: {id, name}};
 }
 
@@ -71,7 +64,7 @@ export function updateName(id = 0, name = '') {
  * @param {boolean} isBot - is the player a bot
  * @return {Object}
  */
-export function updateBot(id = 0, isBot = true) {
+export function updateBot(id, isBot = true) {
   return {type: UPDATE_BOT, player: {id, isBot}};
 }
 
@@ -94,6 +87,7 @@ export function updateBet(id = 0, bet = 5) {
  * @return {Object}
  */
 export function payout(id, status, money, bet = 0) {
+  // let money = 0;
   switch (status) {
     case 'win':
     case 'dealer':
@@ -105,7 +99,7 @@ export function payout(id, status, money, bet = 0) {
     default:
       break;
   }
-  return {type: FINISH_GAME, player: {id, status, money}};
+  return {type: PAY_PLAYER, player: {id, status, money}};
 }
 
 /**
@@ -196,7 +190,7 @@ export default function reducer(state = initialState.players, action) {
     case UPDATE_NAME:
     case UPDATE_BOT:
     case UPDATE_BET:
-    case FINISH_GAME:
+    case PAY_PLAYER:
     case SPLIT_HAND:
     case DRAW_CARD:
     case SWAP_CARD:
