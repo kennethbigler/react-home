@@ -1,6 +1,7 @@
 // functions
 import assign from 'lodash/assign';
 import forEach from 'lodash/forEach';
+import find from 'lodash/find';
 import {Deck} from '../../apis/Deck';
 import {
   removeItem,
@@ -82,23 +83,10 @@ export function updateBet(id = 0, bet = 5) {
  * function to pay the winners and take money from the losers
  * @param {number} id - id of player
  * @param {string} status - win or lose
- * @param {number} money - player's current money
- * @param {number} bet - player's bet
+ * @param {number} money - net money gained or lost
  * @return {Object}
  */
-export function payout(id, status, money, bet = 0) {
-  // let money = 0;
-  switch (status) {
-    case 'win':
-    case 'dealer':
-      money += bet;
-      break;
-    case 'lose':
-      money -= bet;
-      break;
-    default:
-      break;
-  }
+export function payout(id, status, money) {
   return {type: PAY_PLAYER, player: {id, status, money}};
 }
 
@@ -178,8 +166,7 @@ export function newHand(id = 0, num = 1, weigh = null) {
  * @return {Object}
  */
 export function resetStatus(id = 0) {
-  const status = id === 0 ? 'dealer' : '';
-  return {type: RESET, player: {id, status, hands: [], bet: 5}};
+  return {type: RESET, player: {id, status: '', hands: [], bet: 5}};
 }
 
 // --------------------     Reducer     -------------------- //
@@ -190,12 +177,22 @@ export default function reducer(state = initialState.players, action) {
     case UPDATE_NAME:
     case UPDATE_BOT:
     case UPDATE_BET:
-    case PAY_PLAYER:
     case SPLIT_HAND:
     case DRAW_CARD:
     case SWAP_CARD:
     case NEW_HAND:
       return updateObjectInArray(state, action.player, 'id');
+    case PAY_PLAYER: {
+      const {id, status, money} = action.player;
+      const player = find(state, ['id', id]);
+
+      const updatedPlayer = assign({}, player, {
+        money: (player.money += money),
+        status,
+      });
+
+      return updateObjectInArray(state, updatedPlayer, 'id');
+    }
     case ADD:
       return insertItem(state, action.player);
     case REMOVE:

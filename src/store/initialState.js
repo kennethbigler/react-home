@@ -1,8 +1,8 @@
-export const newPlayer = (id, name = 'Bot', isBot = true, status = '') => ({
+export const newPlayer = (id, name = 'Bot', isBot = true) => ({
   id,
   name,
   isBot,
-  status,
+  status: '',
   money: 100,
   bet: 5,
   hands: [],
@@ -16,7 +16,7 @@ export default {
     newPlayer(4),
     newPlayer(5),
     newPlayer(6),
-    newPlayer(0, 'Dealer', true, 'dealer'),
+    newPlayer(0, 'Dealer', true),
   ],
   turn: {player: 0, hand: 0},
   git: {

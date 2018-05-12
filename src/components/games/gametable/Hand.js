@@ -1,7 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
 import {Card} from './Card';
-import * as colors from 'material-ui/styles/colors';
+import {purple700} from 'material-ui/styles/colors';
 import map from 'lodash/map';
 // Parents: Player
 
@@ -22,7 +22,7 @@ export const Hand = (props) => {
   const bold =
     (isHandTurn && isMultiHand && isPlayerTurn) ||
     (!isMultiHand && isPlayerTurn)
-      ? {fontWeight: 'bold', color: colors.red300}
+      ? {fontWeight: 'bold', color: purple700}
       : {fontWeight: 'normal'};
 
   return (

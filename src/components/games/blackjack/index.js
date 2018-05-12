@@ -300,52 +300,53 @@ class BJ extends Component {
    * stateChanges: turn, player, gameFunctions
    */
   finishGame = () => {
+    // helper functions
+    const win = (playerStats, bet, mul = 1) => {
+      playerStats.house -= Math.floor(mul * bet);
+      playerStats.payout = Math.floor(mul * bet);
+      playerStats.status = 'win';
+    };
+    const loss = (playerStats, bet) => {
+      playerStats.house += bet;
+      playerStats.payout = -bet;
+      playerStats.status = 'lose';
+    };
     // state variables
     let {turn, players, playerActions} = this.props;
     const dealer = players[turn.player].hands[DEALER].weight;
     const dealerLen = players[turn.player].hands[DEALER].cards.length;
     // track and find the winners
-    let house = 0;
+    let playerStats = {house: 0, payout: 0, status: ''};
     forEach(players, (player) => {
-      const {id, money, bet} = player;
+      const {id, bet} = player;
       if (id === DEALER) {
-        playerActions.payout(id, player.status, money, house);
+        if (playerStats.house > 0) {
+          playerStats.status = 'win';
+        } else if (playerStats.house < 0) {
+          playerStats.status = 'lose';
+        } else {
+          playerStats.status = 'push';
+        }
+        playerActions.payout(id, playerStats.status, playerStats.house);
       } else {
-        let status = '';
-        let payout = 0;
-        const win = (mul = 1) => {
-          house -= Math.floor(mul * bet);
-          payout += Math.floor(mul * bet);
-        };
-        const loss = () => {
-          house += bet;
-          payout -= bet;
-        };
         forEach(player.hands, (hand) => {
           const {weight, cards} = hand;
           if (dealer === 21 && dealerLen === 2) {
             // dealer BlackJack
-            loss();
+            loss(playerStats, bet);
           } else if (weight === 21 && cards.length === 2) {
             // player BlackJack
-            win(6 / 5);
+            win(playerStats, bet, 6 / 5);
           } else if (weight <= 21 && (weight > dealer || dealer > 21)) {
-            win();
+            win(playerStats, bet);
           } else if (weight <= 21 && weight === dealer) {
-            // push, do nothing
+            playerStats.payout = 0;
+            playerStats.status = 'push';
           } else {
-            loss();
+            loss(playerStats, bet);
           }
         });
-        if (payout > 0) {
-          status = 'win';
-        } else if (payout < 0) {
-          status = 'lose';
-          payout *= -1;
-        } else {
-          status = 'push';
-        }
-        playerActions.payout(id, status, money, payout);
+        playerActions.payout(id, playerStats.status, playerStats.payout);
       }
     });
 
@@ -487,6 +488,7 @@ class BJ extends Component {
   render() {
     const {turn, players} = this.props;
     const {gameFunctions, hideHands} = this.state;
+
     return (
       <div>
         <Popup />
