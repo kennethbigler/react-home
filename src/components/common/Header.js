@@ -34,11 +34,8 @@ export class Header extends Component {
     const {children} = this.props;
     return (
       <div className="application-header">
-        <AppBar
-          position="sticky"
-          style={{position: 'fixed', left: 0, right: 0, top: 0}}
-        >
-          <Toolbar>
+        <AppBar style={{left: 0, right: 0, top: 0}}>
+          <Toolbar disableGutters>
             <IconButton
               aria-label="Menu"
               color="inherit"
@@ -58,7 +55,7 @@ export class Header extends Component {
         </AppBar>
         <Drawer docked={false} onRequestChange={this.handleOpen} open={open}>
           <AppBar position="sticky">
-            <Toolbar>
+            <Toolbar disableGutters>
               <IconButton
                 aria-label="Menu Close"
                 color="inherit"

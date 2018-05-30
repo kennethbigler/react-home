@@ -6,10 +6,11 @@ import {HashRouter} from 'react-router-dom';
 import {Routes} from './components/Routes';
 // material UI
 import CssBaseline from '@material-ui/core/CssBaseline';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import OldMuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-// import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import * as colors from 'material-ui/styles/colors';
+import blueGrey from '@material-ui/core/colors/blueGrey';
 // redux
 import {configureStore, saveState} from './store/configureStore';
 import {Provider} from 'react-redux';
@@ -22,7 +23,7 @@ store.subscribe(throttle(() => saveState(store.getState()), 1000));
 /** App class that wraps higher level components of the application */
 class App extends Component {
   render() {
-    const theme = getMuiTheme({
+    const muiTheme = getMuiTheme({
       palette: {
         primary1Color: colors.blueGrey600,
         primary2Color: colors.indigoA500,
@@ -30,14 +31,22 @@ class App extends Component {
       },
     });
 
+    const theme = createMuiTheme({
+      palette: {
+        primary: blueGrey,
+      },
+    });
+
     return (
       <Provider store={store}>
         <Fragment>
           <CssBaseline />
-          <MuiThemeProvider muiTheme={theme}>
-            <HashRouter>
-              <Routes />
-            </HashRouter>
+          <MuiThemeProvider theme={theme}>
+            <OldMuiThemeProvider muiTheme={muiTheme}>
+              <HashRouter>
+                <Routes />
+              </HashRouter>
+            </OldMuiThemeProvider>
           </MuiThemeProvider>
         </Fragment>
       </Provider>
