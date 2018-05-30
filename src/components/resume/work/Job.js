@@ -5,6 +5,7 @@ import {FORMAT} from '../../common/timeline/';
 import Chip from 'material-ui/Chip';
 import moment from 'moment';
 import map from 'lodash/map';
+import isEmpty from 'lodash/isEmpty';
 // Parents: Work
 
 /* function to generate timeline card */
@@ -29,6 +30,7 @@ export class Job extends Component {
       notes: types.string,
       expr: types.arrayOf(types.string),
       tech: types.arrayOf(types.string),
+      skills: types.arrayOf(types.string),
       src: types.string,
       alt: types.string,
     }).isRequired,
@@ -54,9 +56,9 @@ export class Job extends Component {
   getCSV = (arr) => {
     // return arr.reduce((acc, cur) => `${acc}, ${cur}`);
     const style = {display: 'inline-block', marginRight: 5, marginBottom: 5};
-    return map(arr, (tech) => (
-      <Chip key={tech} style={style}>
-        {tech}
+    return map(arr, (item) => (
+      <Chip key={item} style={style}>
+        {item}
       </Chip>
     ));
   };
@@ -87,8 +89,15 @@ export class Job extends Component {
                 {map(job.expr, (desc, i) => <li key={`desc${i}`}>{desc}</li>)}
               </ul>
             )}
-            {job.tech && (
-              <div>Technologies/Skills: {this.getCSV(job.tech)}</div>
+            {!isEmpty(job.tech) && (
+              <div>
+                <hr />Technologies: {this.getCSV(job.tech)}
+              </div>
+            )}
+            {!isEmpty(job.skills) && (
+              <div>
+                <hr />Skills: {this.getCSV(job.skills)}
+              </div>
             )}
           </div>
           {job.src && (

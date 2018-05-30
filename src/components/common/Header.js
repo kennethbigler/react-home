@@ -2,10 +2,13 @@
 import React, {Component} from 'react';
 import types from 'prop-types';
 // Material UI
-import AppBar from 'material-ui/AppBar';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import Drawer from 'material-ui/Drawer';
-import IconButton from 'material-ui/IconButton';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import MenuIcon from '@material-ui/icons/Menu';
+import NavigationClose from '@material-ui/icons/Close';
 // Parents: App
 
 export class Header extends Component {
@@ -32,23 +35,42 @@ export class Header extends Component {
     return (
       <div className="application-header">
         <AppBar
-          iconClassNameRight="muidocs-icon-navigation-expand-more"
-          onLeftIconButtonClick={this.handleOpen}
-          onTitleClick={() => this.handleNav('/')}
+          position="sticky"
           style={{position: 'fixed', left: 0, right: 0, top: 0}}
-          title="Kenneth Bigler"
-          titleStyle={{cursor: 'pointer'}}
-        />
+        >
+          <Toolbar>
+            <IconButton
+              aria-label="Menu"
+              color="inherit"
+              onClick={this.handleOpen}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              color="inherit"
+              onClick={() => this.handleNav('/')}
+              style={{cursor: 'pointer'}}
+              variant="title"
+            >
+              Kenneth Bigler
+            </Typography>
+          </Toolbar>
+        </AppBar>
         <Drawer docked={false} onRequestChange={this.handleOpen} open={open}>
-          <AppBar
-            iconElementLeft={
-              <IconButton>
+          <AppBar position="sticky">
+            <Toolbar>
+              <IconButton
+                aria-label="Menu Close"
+                color="inherit"
+                onClick={this.handleOpen}
+              >
                 <NavigationClose />
               </IconButton>
-            }
-            onLeftIconButtonClick={this.handleOpen}
-            title="Menu"
-          />
+              <Typography color="inherit" variant="title">
+                Menu
+              </Typography>
+            </Toolbar>
+          </AppBar>
           {React.cloneElement(children, {onItemClick: this.handleNav})}
         </Drawer>
       </div>

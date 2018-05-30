@@ -1,12 +1,14 @@
 // ReactJS
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 // routing
 import {HashRouter} from 'react-router-dom';
 // my components
 import {Routes} from './components/Routes';
 // material UI
+import CssBaseline from '@material-ui/core/CssBaseline';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+// import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import * as colors from 'material-ui/styles/colors';
 // redux
 import {configureStore, saveState} from './store/configureStore';
@@ -20,7 +22,7 @@ store.subscribe(throttle(() => saveState(store.getState()), 1000));
 /** App class that wraps higher level components of the application */
 class App extends Component {
   render() {
-    const muiTheme = getMuiTheme({
+    const theme = getMuiTheme({
       palette: {
         primary1Color: colors.blueGrey600,
         primary2Color: colors.indigoA500,
@@ -30,11 +32,14 @@ class App extends Component {
 
     return (
       <Provider store={store}>
-        <MuiThemeProvider muiTheme={muiTheme}>
-          <HashRouter>
-            <Routes />
-          </HashRouter>
-        </MuiThemeProvider>
+        <Fragment>
+          <CssBaseline />
+          <MuiThemeProvider muiTheme={theme}>
+            <HashRouter>
+              <Routes />
+            </HashRouter>
+          </MuiThemeProvider>
+        </Fragment>
       </Provider>
     );
   }

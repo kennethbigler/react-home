@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {ExpandableCard} from '../../common/ExpandableCard';
-import {techSummary} from '../../../constants/work';
+import {techSummary, skillSummary} from '../../../constants/work';
 import Chip from 'material-ui/Chip';
 import map from 'lodash/map';
 // Parents: Main
@@ -40,8 +40,11 @@ export class Skills extends Component {
             </li>
           </ul>
           <hr />
-          <h3>Technology Skills:</h3>
+          <h3>Technologies:</h3>
           {this.getCSV(techSummary)}
+          <hr />
+          <h3>Skills:</h3>
+          {this.getCSV(skillSummary)}
         </div>
       </ExpandableCard>
     );

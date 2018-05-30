@@ -26,6 +26,8 @@ const BS4 = 'Bootstrap 4';
 const RR4 = 'React Router 4';
 const JASMINE = 'Jasmine 2.99';
 const SASS = 'SASS/SCSS';
+const PM = 'Project Management';
+const INT = 'Managed Intern';
 
 const workExp = [
   {
@@ -44,7 +46,18 @@ const workExp = [
     expr: [
       `Help build startup ventures within EY, leveraging agile methodologies and development primarily in ${REACT}`,
     ],
-    tech: [REACT16, RR4, JASMINE, ES2016, JS, HTML, SASS, CSS],
+    tech: [
+      REACT16,
+      RR4,
+      'Recompose 0.27',
+      JASMINE,
+      ES2016,
+      JS,
+      HTML,
+      SASS,
+      CSS,
+    ],
+    skills: [],
   },
   {
     isJob: true,
@@ -62,7 +75,8 @@ const workExp = [
       'Instruct and supervise between 10 and 40 volunteers regarding food sorting, packaging and distribution',
       'Food is then distributed to smaller organizations that help the homeless and disadvantaged',
     ],
-    tech: ['Leadership', 'Coordination'],
+    tech: [],
+    skills: ['Leadership', 'Coordination'],
   },
   {
     isJob: true,
@@ -83,6 +97,7 @@ const workExp = [
       'Wrote Time Series Analysis Pipelines in JSON to create aggregations of network packets over a fixed or rolling window',
     ],
     tech: [REACT15, RR4, ES2015, JS, 'Java 8', BS4, HTML, SASS, CSS],
+    skills: [INT],
   },
   {
     isJob: true,
@@ -112,6 +127,7 @@ const workExp = [
       SASS,
       CSS,
     ],
+    skills: [PM, INT],
   },
   {
     isJob: true,
@@ -150,7 +166,8 @@ const workExp = [
       'Converted mockup images from the designers into functional HTML and CSS pages',
       'Designed improvements to the look and feel, and improve the overall experience of the game',
     ],
-    tech: ['Project Management', JS, HTML, CSS],
+    tech: [JS, HTML, CSS],
+    skills: [PM],
   },
   {
     isJob: true,
@@ -171,15 +188,8 @@ const workExp = [
       'Designed and created new websites, migrated between CMS’s, and maintained existing websites',
       'Created graphics using Adobe Creative Cloud',
     ],
-    tech: [
-      'WordPress',
-      'Adobe Creative Cloud',
-      ANGULAR,
-      JS,
-      'Joomla',
-      HTML,
-      CSS,
-    ],
+    tech: [ANGULAR, JS, HTML, CSS],
+    skills: ['WordPress', 'Adobe Creative Cloud', 'Joomla', PM],
   },
   {
     isJob: false,
@@ -194,17 +204,21 @@ const workExp = [
   },
 ];
 
-export const techSummary = reduce(
-  workExp,
-  (acc, job) => {
-    forEach(job.tech, (tech) => {
-      if (!includes(acc, tech)) {
-        acc.push(tech);
-      }
-    });
-    return acc;
-  },
-  []
-);
+const getSummary = (key) =>
+  reduce(
+    workExp,
+    (acc, job) => {
+      forEach(job[key], (item) => {
+        if (!includes(acc, item)) {
+          acc.push(item);
+        }
+      });
+      return acc;
+    },
+    []
+  );
+
+export const techSummary = getSummary('tech');
+export const skillSummary = getSummary('skills');
 
 export default workExp;

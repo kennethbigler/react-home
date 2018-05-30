@@ -10,6 +10,7 @@ export class Education extends Component {
       const major = d.major ? ` in ${d.major}` : '';
       return (
         <div key={i}>
+          {i !== 0 && <hr />}
           <h1>{`${d.school}, ${d.location}`}</h1>
           <h2>{d.degree + major}</h2>
           <ul>
@@ -18,7 +19,6 @@ export class Education extends Component {
             {d.graduation && <li>Completion: {d.graduation}</li>}
             {d.gpa && <li>GPA: {d.gpa}</li>}
           </ul>
-          <hr />
         </div>
       );
     }
