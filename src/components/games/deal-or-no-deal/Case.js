@@ -1,23 +1,24 @@
 import React from 'react';
 import types from 'prop-types';
 import {getMoneyText} from './common';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@material-ui/core/Button';
 // Parents: Degree
-
 
 export const Case = (props) => {
   const {onClick, briefcase: bc, secondary} = props;
+  const color = secondary ? 'secondary' : 'primary';
   const style = {margin: 10};
   const label = bc.on ? bc.loc : getMoneyText(bc.val);
   return (
-    <RaisedButton
+    <Button
+      color={color}
       disabled={!bc.on}
-      label={label}
       onClick={onClick}
-      primary={!secondary}
-      secondary={secondary}
       style={style}
-    />
+      variant="raised"
+    >
+      {label}
+    </Button>
   );
 };
 

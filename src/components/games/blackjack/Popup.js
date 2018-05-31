@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {Help} from './help/';
 import {Rules} from './Rules';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 // Parents: Board
 
 /* ========================================
@@ -23,32 +25,23 @@ export class Popup extends Component {
   };
 
   render() {
-    const actions = [
-      <FlatButton
-        key="Cancel"
-        label="Cancel"
-        onClick={this.handleClose}
-        primary
-      />,
-    ];
-
+    const {open} = this.state;
     return (
       <div>
-        <RaisedButton
-          label="BlackJack Rules"
-          onClick={this.handleOpen}
-          primary
-        />
-        <Dialog
-          actions={actions}
-          autoScrollBodyContent
-          modal={false}
-          onRequestClose={this.handleClose}
-          open={this.state.open}
-          title="Blackjack Rules"
-        >
-          <Rules />
-          <Help />
+        <Button color="primary" onClick={this.handleOpen} variant="raised">
+          BlackJack Rules
+        </Button>
+        <Dialog onClose={this.handleClose} open={open}>
+          <DialogTitle>Blackjack Rules</DialogTitle>
+          <DialogContent>
+            <Rules />
+            <Help />
+          </DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={this.handleClose}>
+              Cancel
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     );

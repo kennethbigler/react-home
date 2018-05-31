@@ -1,8 +1,9 @@
 import React from 'react';
 import types from 'prop-types';
 import {Piece} from './Piece';
-import RaisedButton from 'material-ui/RaisedButton';
-import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
+import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 // Parents: GameBoard
 
 /* ========================================
@@ -11,21 +12,24 @@ import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 export const Header = (props) => {
   const {winner, turn, newGame} = props;
   // status text
-  let status = winner ? 'Winner: ' : 'Turn: ';
+  let status = winner ? 'Winner:' : 'Turn:';
   let piece = winner ? winner : turn;
 
   return (
     <Toolbar>
-      <ToolbarGroup>
-        <ToolbarTitle text={status} />
-        <ToolbarTitle
-          style={{marginTop: '-16px'}}
-          text={<Piece piece={piece} />}
-        />
-      </ToolbarGroup>
-      <ToolbarGroup lastChild>
-        <RaisedButton label="Reset Game" onClick={newGame} primary />
-      </ToolbarGroup>
+      <Typography color="inherit" style={{marginRight: 10}} variant="title">
+        {status}
+      </Typography>
+      <Piece piece={piece} />
+      <div style={{flex: 1}} />
+      <Button
+        color="primary"
+        onClick={newGame}
+        style={{float: 'right'}}
+        variant="raised"
+      >
+        Reset Game
+      </Button>
     </Toolbar>
   );
 };

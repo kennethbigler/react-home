@@ -1,10 +1,9 @@
 import React from 'react';
 import types from 'prop-types';
 import {Case} from './Case';
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import map from 'lodash/map';
 // Parents: Degree
-
 
 export const Board = (props) => {
   // prop vars
@@ -20,7 +19,7 @@ export const Board = (props) => {
   };
   // rendered component
   return (
-    <Paper style={style} zDepth={2}>
+    <Paper elevation={2} style={style}>
       {map(board, (bc, i) => (
         <Case
           briefcase={bc}

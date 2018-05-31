@@ -53,7 +53,13 @@ export const Menu = (props) => {
         id="stackOverflow"
         onClick={stkovrflw}
         src="https://stackoverflow.com/users/flair/4830309.png?theme=dark"
-        style={{display: 'block', margin: 'auto', cursor: 'pointer'}}
+        style={{
+          display: 'block',
+          margin: 'auto',
+          cursor: 'pointer',
+          paddingLeft: 16,
+          paddingRight: 16,
+        }}
       />
     </div>
   );

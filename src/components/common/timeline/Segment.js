@@ -1,6 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
-import {grey50, grey400} from 'material-ui/styles/colors';
+import grey from '@material-ui/core/colors/grey';
+
 // Parents: Row
 
 const styles = {
@@ -8,8 +9,8 @@ const styles = {
     cursor: 'default',
     paddingTop: '5px',
     paddingBottom: '5px',
-    boxShadow: `2px 3px 4px ${grey400}`,
-    color: grey50,
+    boxShadow: `2px 3px 4px ${grey[400]}`,
+    color: grey[50],
     textAlign: 'center',
   },
 };

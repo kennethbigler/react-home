@@ -4,7 +4,7 @@ import types from 'prop-types';
 // Material UI
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Drawer from 'material-ui/Drawer';
+import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -20,7 +20,7 @@ export class Header extends Component {
 
   state = {open: false};
 
-  handleOpen = () => {
+  toggleOpen = () => {
     this.setState({open: !this.state.open});
   };
 
@@ -39,7 +39,7 @@ export class Header extends Component {
             <IconButton
               aria-label="Menu"
               color="inherit"
-              onClick={this.handleOpen}
+              onClick={this.toggleOpen}
             >
               <MenuIcon />
             </IconButton>
@@ -53,13 +53,13 @@ export class Header extends Component {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Drawer docked={false} onRequestChange={this.handleOpen} open={open}>
+        <Drawer onClose={this.toggleOpen} open={open}>
           <AppBar position="sticky">
             <Toolbar disableGutters>
               <IconButton
                 aria-label="Menu Close"
                 color="inherit"
-                onClick={this.handleOpen}
+                onClick={this.toggleOpen}
               >
                 <NavigationClose />
               </IconButton>

@@ -91,7 +91,7 @@ export class DND extends Component {
    */
   chargePlayer = () => {
     const {player, actions} = this.props;
-    actions.payout(player.id, 'lose', player.money, 132);
+    actions.payout(player.id, 'lose', -132);
   };
 
   /**
@@ -171,7 +171,7 @@ export class DND extends Component {
    */
   finishGame = (offer) => {
     const {player, actions} = this.props;
-    actions.payout(player.id, 'win', player.money, Math.round(offer / 1000));
+    actions.payout(player.id, 'win', Math.round(offer / 1000));
     this.setState({dndOpen: false, isOver: true, offer});
   };
 
