@@ -1,9 +1,8 @@
 import React from 'react';
 import types from 'prop-types';
 import {getMoneyText} from './common';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@material-ui/core/Button';
 // Parents: DealOrNoDeal
-
 
 export const Header = (props) => {
   // prop vars
@@ -28,7 +27,11 @@ export const Header = (props) => {
             ? `You Won ${getMoneyText(offer)}`
             : `Number of Cases to Open: ${casesToOpen}`}
         </h2>
-        {isOver && <RaisedButton label="New Game" onClick={newGame} primary />}
+        {isOver && (
+          <Button color="primary" onClick={newGame} variant="raised">
+            New Game
+          </Button>
+        )}
       </div>
       <div className="col-sm-6">
         <h1 style={{textAlign: 'right'}}>
