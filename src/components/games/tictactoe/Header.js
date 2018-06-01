@@ -1,7 +1,8 @@
 import React from 'react';
 import types from 'prop-types';
-import RaisedButton from 'material-ui/RaisedButton';
-import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
+import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 // Parents: TicTacToe
 
 /* ========================================
@@ -14,12 +15,12 @@ export const Header = (props) => {
 
   return (
     <Toolbar>
-      <ToolbarGroup>
-        <ToolbarTitle text={status} />
-      </ToolbarGroup>
-      <ToolbarGroup lastChild>
-        <RaisedButton label="Reset Game" onClick={newGame} primary />
-      </ToolbarGroup>
+      <Typography color="inherit" style={{flex: 1}} variant="title">
+        {status}
+      </Typography>
+      <Button color="primary" onClick={newGame} variant="raised">
+        Reset Game
+      </Button>
     </Toolbar>
   );
 };

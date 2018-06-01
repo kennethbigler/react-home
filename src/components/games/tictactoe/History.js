@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import types from 'prop-types';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '@material-ui/core/Button';
 import {getTurn} from './constants';
 import map from 'lodash/map';
 // Parents: TicTacToe
@@ -41,14 +40,16 @@ export class History extends Component {
       : `Move #${move} (${getTurn(move - 1)}, ` +
         `${Math.floor(round.location / 3)}, ${round.location % 3})`;
     // highlight current turn displayed on board
+    const color = step === move ? 'secondary' : 'default';
     return (
-      <FlatButton
+      <Button
+        color={color}
         key={move}
-        label={description}
         onClick={() => jumpToStep(move)}
-        secondary={step === move}
         style={{display: 'block'}}
-      />
+      >
+        {description}
+      </Button>
     );
   };
 
@@ -62,11 +63,13 @@ export class History extends Component {
 
     return (
       <div>
-        <RaisedButton
-          label={ascend ? 'Asc' : 'Desc'}
+        <Button
           onClick={this.handleMoveOrderToggle}
           style={{marginTop: 20, marginBottom: 20}}
-        />
+          variant="raised"
+        >
+          {ascend ? 'Asc' : 'Desc'}
+        </Button>
         {moves}
       </div>
     );

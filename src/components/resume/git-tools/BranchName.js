@@ -5,7 +5,7 @@ import types from 'prop-types';
 import {ExpandableCard} from '../../common/ExpandableCard';
 import {CopyTextDisplay} from './CopyTextDisplay';
 // material ui
-import TextField from 'material-ui/TextField';
+import TextField from '@material-ui/core/TextField';
 import SelectField from 'material-ui/SelectField';
 import IconButton from 'material-ui/IconButton';
 import Clear from 'material-ui/svg-icons/content/clear';
@@ -154,13 +154,11 @@ export class BranchName extends Component {
             </div>
             <div className="col-sm-5 col-10">
               <TextField
-                floatingLabelFocusStyle={{color: gitTheme}}
-                floatingLabelText="Branch Name"
                 fullWidth
-                hintText="Summary of User Story"
-                multiLine
+                label="Branch Name"
+                multiline
                 onChange={this.handleBranchMessageChange}
-                underlineFocusStyle={{borderColor: gitTheme}}
+                placeholder="Summary of User Story"
                 value={branchMessage}
               />
             </div>

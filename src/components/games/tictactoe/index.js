@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import {Header} from './Header';
 import {History} from './History';
 import {Board} from './Board';
@@ -107,7 +107,7 @@ export class TicTacToe extends Component {
 
     return (
       <div>
-        <Paper style={this.styles.paper} zDepth={2}>
+        <Paper elevation={2} style={this.styles.paper}>
           <Header newGame={this.newGame} turn={turn} winner={winner} />
           <Board
             board={board}
