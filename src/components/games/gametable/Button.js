@@ -1,6 +1,6 @@
 import React from 'react';
 import types from 'prop-types';
-import RaisedButton from 'material-ui/RaisedButton';
+import MuiButton from '@material-ui/core/Button';
 // Parents: ButtonGroup
 
 /* --------------------------------------------------
@@ -9,10 +9,17 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 export const Button = (props) => {
   const {func, name} = props;
-  const style = {
-    margin: 12,
-  };
-  return <RaisedButton label={name} onClick={func} primary style={style} />;
+
+  return (
+    <MuiButton
+      color="primary"
+      onClick={func}
+      style={{margin: 12}}
+      variant="raised"
+    >
+      {name}
+    </MuiButton>
+  );
 };
 
 Button.propTypes = {

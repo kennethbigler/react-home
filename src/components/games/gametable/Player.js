@@ -1,8 +1,12 @@
 import React from 'react';
 import types from 'prop-types';
 import {Hand} from './Hand';
-import Slider from 'material-ui/Slider';
-import * as colors from 'material-ui/styles/colors';
+import Slider from '@material-ui/lab/Slider';
+import cyan from '@material-ui/core/colors/cyan';
+import grey from '@material-ui/core/colors/grey';
+import green from '@material-ui/core/colors/green';
+import blueGrey from '@material-ui/core/colors/blueGrey';
+import red from '@material-ui/core/colors/red';
 import map from 'lodash/map';
 // Parents: Board
 
@@ -23,17 +27,17 @@ export const Player = (props) => {
   const onSliderChange = (event, value) => betHandler(player.id, event, value);
   // set colors
   let color = isPlayerTurn
-    ? {background: colors.cyan200}
-    : {background: colors.grey200};
+    ? {background: cyan[200]}
+    : {background: grey[200]};
   let weight = isPlayerTurn ? {fontWeight: 'bold'} : {fontWeight: 'normal'};
   if (player.status === 'win') {
-    color = {background: colors.green300};
+    color = {background: green[300]};
   }
   if (player.status === 'draw') {
-    color = {background: colors.blueGrey300};
+    color = {background: blueGrey[300]};
   }
   if (player.status === 'lose') {
-    color = {background: colors.red300};
+    color = {background: red[300]};
   }
 
   return (
@@ -46,7 +50,6 @@ export const Player = (props) => {
           max={maxBet}
           min={minBet}
           onChange={onSliderChange}
-          sliderStyle={{marginBottom: 0}}
           step={step}
           style={{minWidth: '100px'}}
           value={player.bet}

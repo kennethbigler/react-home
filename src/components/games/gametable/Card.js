@@ -1,6 +1,6 @@
 import React from 'react';
 import types from 'prop-types';
-import * as colors from 'material-ui/styles/colors';
+import red from '@material-ui/core/colors/red';
 // Parents: Hand
 
 /* --------------------------------------------------
@@ -15,7 +15,7 @@ export const Card = (props) => {
   };
   // checking color based off suits: ♣♦♥♠
   const cardColor = {
-    color: suit === '♣' || suit === '♠' ? colors.black : colors.red500,
+    color: suit === '♣' || suit === '♠' ? 'black' : red[500],
   };
 
   const styles = {

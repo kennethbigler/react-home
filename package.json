@@ -6,6 +6,7 @@
   "dependencies": {
     "@material-ui/core": "^1.1.0",
     "@material-ui/icons": "^1.1.0",
+    "@material-ui/lab": "^1.0.0-alpha.3",
     "bootstrap": "^4.1.1",
     "copy-to-clipboard": "^3.0.8",
     "lodash": "^4.17.10",

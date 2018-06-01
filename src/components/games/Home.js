@@ -6,8 +6,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {updateName, updateBot} from '../../store/modules/players';
 // material ui
-import Toggle from 'material-ui/Toggle';
-import TextField from 'material-ui/TextField';
+import Switch from '@material-ui/core/Switch';
+import TextField from '@material-ui/core/TextField';
 // functions
 import map from 'lodash/map';
 // Parents: Main
@@ -95,14 +95,15 @@ class Home extends Component {
                   <div className="col-9">
                     <TextField
                       defaultValue={p.name}
-                      hintText="Enter Player Name"
                       onKeyPress={(e) => this.handleKeyPress(e, p.id)}
+                      placeholder="Enter Player Name"
                     />
                   </div>
                   <div className="col-3" style={{marginTop: '12px'}}>
-                    <Toggle
-                      onToggle={(e, isC) => this.handleToggle(p.id, isC)}
-                      toggled={isBot[i]}
+                    <Switch
+                      checked={isBot[i]}
+                      color="primary"
+                      onChange={(e, isC) => this.handleToggle(p.id, isC)}
                     />
                   </div>
                 </div>
@@ -110,7 +111,7 @@ class Home extends Component {
                 <div className="row" key={`${p.name},${i}`}>
                   <h4 className="col-9">{p.name}</h4>
                   <div className="col-3">
-                    <Toggle defaultToggled disabled />
+                    <Switch checked disabled />
                   </div>
                 </div>
               )

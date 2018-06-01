@@ -1,17 +1,16 @@
 import React from 'react';
 import types from 'prop-types';
 import {getMoneyText} from './common';
-import Paper from 'material-ui/Paper';
-import {grey700, amber500, white} from 'material-ui/styles/colors';
-
-// Parents: Degree
-
+import Paper from '@material-ui/core/Paper';
+import amber from '@material-ui/core/colors/amber';
+import grey from '@material-ui/core/colors/grey';
+// Parents: Modal
 
 export const Money = (props) => {
   const {briefcase: bc} = props;
 
   let color = {};
-  color.backgroundColor = bc.on ? amber500 : grey700;
+  color.backgroundColor = bc.on ? amber[500] : grey[700];
 
   const style = {
     width: '90%',
@@ -20,7 +19,7 @@ export const Money = (props) => {
     marginBottom: 5,
     padding: 5,
     textAlign: 'center',
-    color: white,
+    color: 'white',
     ...color,
   };
 

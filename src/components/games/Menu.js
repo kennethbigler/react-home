@@ -1,7 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
-import MenuItem from 'material-ui/MenuItem';
-import Divider from 'material-ui/Divider';
+import MenuItem from '@material-ui/core/MenuItem';
+import Divider from '@material-ui/core/Divider';
 import map from 'lodash/map';
 // Parents: Header
 
@@ -32,8 +32,9 @@ export const Menu = (props) => {
         <MenuItem
           key={item.name}
           onClick={() => onItemClick(`${baseUrl}/${item.route}`)}
-          primaryText={item.name}
-        />
+        >
+          {item.name}
+        </MenuItem>
       )
   );
 
@@ -43,7 +44,7 @@ export const Menu = (props) => {
   // render menu
   return (
     <div>
-      <MenuItem onClick={home} primaryText="Back to Resume" />
+      <MenuItem onClick={home}>Back to Resume</MenuItem>
       {menu}
     </div>
   );
