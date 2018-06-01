@@ -4,7 +4,8 @@ import types from 'prop-types';
 // components
 import {ExpandableCard} from '../../common/ExpandableCard';
 import {Timeline, TIMELINE_TITLE} from '../../common/timeline/';
-import {grey900} from 'material-ui/styles/colors';
+// material-ui
+import grey from '@material-ui/core/colors/grey';
 // constants
 import workExp from '../../../constants/work';
 // Parents: Work
@@ -32,5 +33,5 @@ TimelineCard.propTypes = {
 
 TimelineCard.defaultProps = {
   workExp: workExp,
-  backgroundColor: grey900,
+  backgroundColor: grey[900],
 };

@@ -2,8 +2,11 @@
 import React, {Component} from 'react';
 import types from 'prop-types';
 // material-ui
-import Snackbar from 'material-ui/Snackbar';
-import Chip from 'material-ui/Chip';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Paper from '@material-ui/core/Paper';
+import grey from '@material-ui/core/colors/grey';
 // Parents: Main
 
 export class CopyTextDisplay extends Component {
@@ -15,7 +18,15 @@ export class CopyTextDisplay extends Component {
   };
 
   state = {open: false};
-  style = {chipLabel: {lineHeight: null, paddingTop: 6, paddingBottom: 6}};
+  style = {
+    paperStyle: {
+      padding: 10,
+      backgroundColor: grey[300],
+      cursor: 'pointer',
+      display: 'inline-block',
+      borderRadius: 20,
+    },
+  };
 
   /** function to toggle the snackbar */
   handleRequestOpen = () => {
@@ -38,17 +49,26 @@ export class CopyTextDisplay extends Component {
   render() {
     const {open} = this.state;
     const {text} = this.props;
-    const {chipLabel} = this.style;
+    const {paperStyle} = this.style;
 
     return (
       <div className="copy-text-display">
-        <Chip labelStyle={chipLabel} onClick={this.handleCopy}>
+        <Paper elevation={1} onClick={this.handleCopy} style={paperStyle}>
           {text}
-        </Chip>
+        </Paper>
         <Snackbar
+          action={[
+            <IconButton
+              color="inherit"
+              key="close"
+              onClick={this.handleRequestClose}
+            >
+              <CloseIcon />
+            </IconButton>,
+          ]}
           autoHideDuration={4000}
           message="Copied Commit Text to clipboard!"
-          onRequestClose={this.handleRequestClose}
+          onClose={this.handleRequestClose}
           open={open}
         />
       </div>

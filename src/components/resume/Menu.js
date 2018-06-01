@@ -1,7 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
-import MenuItem from 'material-ui/MenuItem';
-import Divider from 'material-ui/Divider';
+import MenuItem from '@material-ui/core/MenuItem';
+import Divider from '@material-ui/core/Divider';
 import map from 'lodash/map';
 // Parents: Header
 
@@ -24,11 +24,9 @@ export const Menu = (props) => {
       item.divider ? (
         <Divider key={index} />
       ) : (
-        <MenuItem
-          key={item.name}
-          onClick={() => onItemClick(`/${item.route}`)}
-          primaryText={item.name}
-        />
+        <MenuItem key={item.name} onClick={() => onItemClick(`/${item.route}`)}>
+          {item.name}
+        </MenuItem>
       )
   );
 
@@ -44,8 +42,8 @@ export const Menu = (props) => {
     <div>
       {menu}
       <Divider />
-      <MenuItem onClick={github} primaryText="GitHub" />
-      <MenuItem onClick={linkedin} primaryText="LinkedIn" />
+      <MenuItem onClick={github}>GitHub</MenuItem>
+      <MenuItem onClick={linkedin}>LinkedIn</MenuItem>
       <Divider />
       <br />
       <img

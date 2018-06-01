@@ -1,3 +1,4 @@
+// images
 import hoverboardLogo from '../images/hoverboard_logo.png';
 import teslaLogo from '../images/tesla_motors_logo.svg.png';
 import vengefulLogo from '../images/vengefulgames_logo.png';
@@ -5,7 +6,14 @@ import netappLogo from '../images/netapp_logo.svg.png';
 import SHFBLogo from '../images/SHFB_logo.jpg';
 import gigNowLogo from '../images/gignow.png';
 import ciscoLogo from '../images/cisco_logo.gif';
-import * as colors from 'material-ui/styles/colors';
+// colors
+import cyan from '@material-ui/core/colors/cyan';
+import green from '@material-ui/core/colors/green';
+import blue from '@material-ui/core/colors/blue';
+import blueGrey from '@material-ui/core/colors/blueGrey';
+import red from '@material-ui/core/colors/red';
+import indigo from '@material-ui/core/colors/indigo';
+// functions
 import moment from 'moment';
 import reduce from 'lodash/reduce';
 import includes from 'lodash/includes';
@@ -32,7 +40,7 @@ const INT = 'Managed Intern';
 const workExp = [
   {
     isJob: true,
-    color: colors.cyan700,
+    color: cyan[700],
     company: 'GigNow',
     parent: 'Ernst & Young',
     short: 'GN',
@@ -61,7 +69,7 @@ const workExp = [
   },
   {
     isJob: true,
-    color: colors.green800,
+    color: green[800],
     company: 'Second Harvest Food Bank',
     short: 'SHFB',
     location: 'Santa Clara, CA',
@@ -80,7 +88,7 @@ const workExp = [
   },
   {
     isJob: true,
-    color: colors.blue600,
+    color: blue[600],
     company: 'Cisco Systems',
     short: 'CSCO',
     location: 'San Jose, CA',
@@ -101,7 +109,7 @@ const workExp = [
   },
   {
     isJob: true,
-    color: colors.blueGrey500,
+    color: blueGrey[500],
     company: 'Hoverboard Technologies',
     parent: 'Equalia',
     short: 'HB',
@@ -131,7 +139,7 @@ const workExp = [
   },
   {
     isJob: true,
-    color: colors.red500,
+    color: red[500],
     company: 'Tesla, Inc.',
     short: 'TSLA',
     location: 'Fremont, CA',
@@ -150,7 +158,7 @@ const workExp = [
   },
   {
     isJob: true,
-    color: colors.blueGrey900,
+    color: blueGrey[900],
     company: 'Midnight Game Club, LLC',
     short: 'MGC',
     location: 'Sunnyvale, CA',
@@ -171,7 +179,7 @@ const workExp = [
   },
   {
     isJob: true,
-    color: colors.indigo500,
+    color: indigo[500],
     company: 'NetApp',
     short: 'NTAP',
     location: 'Sunnyvale, CA',
@@ -193,7 +201,7 @@ const workExp = [
   },
   {
     isJob: false,
-    color: colors.red800,
+    color: red[800],
     company: 'Santa Clara University',
     short: 'SCU',
     location: 'Santa Clara, CA',

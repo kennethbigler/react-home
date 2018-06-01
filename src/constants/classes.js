@@ -1,10 +1,10 @@
-import * as colors from 'material-ui/styles/colors';
+import red from '@material-ui/core/colors/red';
 const SCU = 'Santa Clara University';
 
 export default [
   {
     school: SCU,
-    color: colors.red800,
+    color: red[800],
     location: 'Santa Clara, CA',
     degree: 'Master of Science',
     major: 'Computer Engineering',
@@ -66,7 +66,7 @@ export default [
   },
   {
     school: SCU,
-    color: colors.red800,
+    color: red[800],
     location: 'Santa Clara, CA',
     degree: 'Bachelor of Science',
     major: 'Computer Science & Engineering',
@@ -213,7 +213,7 @@ export default [
   },
   {
     school: 'Stanford University',
-    color: colors.red500,
+    color: red[500],
     location: 'Stanford, CA',
     degree:
       'Stanford Continuing Studies & Undergrad High School Summer Visitor',

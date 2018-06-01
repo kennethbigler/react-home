@@ -1,8 +1,12 @@
+// react
 import React, {Component} from 'react';
 import types from 'prop-types';
+// components
 import {ExpandableCard} from '../../common/ExpandableCard';
 import {FORMAT} from '../../common/timeline/';
-import Chip from 'material-ui/Chip';
+// material-ui
+import Chip from '@material-ui/core/Chip';
+// functions
 import moment from 'moment';
 import map from 'lodash/map';
 import isEmpty from 'lodash/isEmpty';
@@ -54,13 +58,8 @@ export class Job extends Component {
   };
 
   getCSV = (arr) => {
-    // return arr.reduce((acc, cur) => `${acc}, ${cur}`);
-    const style = {display: 'inline-block', marginRight: 5, marginBottom: 5};
-    return map(arr, (item) => (
-      <Chip key={item} style={style}>
-        {item}
-      </Chip>
-    ));
+    const style = {marginRight: 5, marginBottom: 5};
+    return map(arr, (item) => <Chip key={item} label={item} style={style} />);
   };
 
   render() {

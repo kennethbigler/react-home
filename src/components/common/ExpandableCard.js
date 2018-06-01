@@ -2,21 +2,27 @@
 import React, {Component} from 'react';
 import types from 'prop-types';
 // material ui
-import {Card, CardTitle, CardText} from 'material-ui/Card';
-import muiThemeable from 'material-ui/styles/muiThemeable';
-import * as colors from 'material-ui/styles/colors';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import Collapse from '@material-ui/core/Collapse';
+import Typography from '@material-ui/core/Typography';
+import {withTheme} from '@material-ui/core/styles';
+import grey from '@material-ui/core/colors/grey';
 
 export class EC extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     backgroundColor: types.string,
     children: types.oneOfType([types.arrayOf(types.node), types.node]),
-    muiTheme: types.shape({
+    subtitle: types.oneOfType([types.string, types.element]),
+    theme: types.shape({
       palette: types.shape({
-        primary1Color: types.string.isRequired,
+        primary: types.shape({
+          main: types.string.isRequired,
+        }).isRequired,
       }).isRequired,
     }),
-    subtitle: types.oneOfType([types.string, types.element]),
     title: types.oneOfType([types.string, types.element]),
   };
 
@@ -24,64 +30,53 @@ export class EC extends Component {
     expanded: true,
   };
 
-  handleExpandChange = (expanded) => {
-    this.setState({expanded});
+  handleExpandChange = () => {
+    this.setState({expanded: !this.state.expanded});
   };
 
   render() {
-    const {
-      title,
-      subtitle,
-      children,
-      backgroundColor,
-      muiTheme,
-      ...otherProps
-    } = this.props;
+    const {title, subtitle, children, backgroundColor, theme} = this.props;
     const {expanded} = this.state;
 
     let styles = {
-      card: {marginTop: 40},
-      closedCard: {marginTop: 20},
-      closed: {
+      card: {marginTop: 40, overflow: 'visible'},
+      header: {
         backgroundColor: backgroundColor
           ? backgroundColor
-          : muiTheme.palette.primary1Color,
+          : theme.palette.primary.main,
         borderRadius: 3,
-        marginLeft: 10,
-        marginRight: 10,
-        boxShadow: `0px 15px 15px -10px ${colors.grey400}`,
+        marginLeft: 15,
+        marginRight: 15,
+        boxShadow: `0px 15px 15px -10px ${grey[400]}`,
+        position: 'relative',
+        top: -20,
       },
+      title: {color: 'white'},
+      subtitle: {color: grey[300]},
     };
-    styles['open'] = {
-      ...styles.closed,
-      top: -20,
-      marginLeft: 15,
-      marginRight: 15,
-    };
-
-    const style = expanded ? styles.open : styles.closed;
 
     return (
-      <Card
-        expanded={expanded}
-        onExpandChange={this.handleExpandChange}
-        style={expanded ? styles.card : styles.closedCard}
-        {...otherProps}
-      >
-        <CardTitle
-          actAsExpander
-          style={style}
-          subtitle={subtitle}
-          subtitleColor={colors.grey300}
-          title={title}
-          titleColor={colors.white}
+      <Card style={styles.card}>
+        <CardHeader
+          onClick={this.handleExpandChange}
+          style={styles.header}
+          subheader={
+            <Typography style={styles.subtitle}>{subtitle}</Typography>
+          }
+          title={
+            <Typography style={styles.title} variant="title">
+              {title}
+            </Typography>
+          }
         />
-        <CardText expandable>
-          <div className="row">{children}</div>
-        </CardText>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <div className="row">{children}</div>
+          </CardContent>
+        </Collapse>
       </Card>
     );
   }
 }
 
-export const ExpandableCard = muiThemeable()(EC);
+export const ExpandableCard = withTheme()(EC);
