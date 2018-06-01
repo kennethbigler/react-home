@@ -9,12 +9,15 @@ import {setCommitPrefix} from '../../../store/modules/git';
 import {CopyTextDisplay} from './CopyTextDisplay';
 import {ExpandableCard} from '../../common/ExpandableCard';
 // material-ui
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
-import SelectField from 'material-ui/SelectField';
-import IconButton from 'material-ui/IconButton';
-import Clear from 'material-ui/svg-icons/content/clear';
-import {deepOrange600} from 'material-ui/styles/colors';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import Select from '@material-ui/core/Select';
+import IconButton from '@material-ui/core/IconButton';
+import Clear from '@material-ui/icons/Clear';
 // functions
 import nl2br from 'react-newline-to-break';
 // Parents: Main
@@ -41,10 +44,7 @@ export class CT extends Component {
 
   styles = {
     wrapper: {paddingLeft: 20, paddingRight: 20, width: '100%'},
-    toggle: {maxWidth: 343, marginTop: 40},
-    marginTop: {marginTop: 20},
-    textColor: {color: this.props.gitTheme},
-    borderColor: {borderColor: this.props.gitTheme},
+    marginTop: {marginTop: 12},
   };
 
   /**
@@ -70,11 +70,9 @@ export class CT extends Component {
   /**
    * function to update select state based on value
    * @param {Object} e event fired when select occurs
-   * @param {number} i index of option selected
-   * @param {number} val value of option selected
    */
-  handleCommitPrefixSelect = (e, i, val) => {
-    this.setState({commitPrefix: val});
+  handleCommitPrefixSelect = (e) => {
+    this.setState({commitPrefix: e.target.value});
   };
 
   /**
@@ -147,55 +145,58 @@ export class CT extends Component {
       commitDescription,
       finishes,
     } = this.state;
-    const {handleCopy, gitCommit} = this.props;
-    const {wrapper, toggle, marginTop, textColor, borderColor} = this.styles;
+    const {handleCopy, gitCommit, gitTheme} = this.props;
+    const {wrapper, marginTop} = this.styles;
 
     const commitText = this.getCommitText();
     const displayText = commitText && nl2br(this.getCommitText());
 
     return (
-      <ExpandableCard
-        backgroundColor={deepOrange600}
-        title="Create Commit Message"
-      >
+      <ExpandableCard backgroundColor={gitTheme} title="Create Commit Message">
         <div className="commit-text" style={wrapper}>
           <div className="row">
             <div className="col-sm-4">
-              <SelectField
-                floatingLabelStyle={textColor}
-                floatingLabelText="Commit Prefix"
-                onChange={this.handleCommitPrefixSelect}
-                selectedMenuItemStyle={textColor}
-                underlineFocusStyle={borderColor}
-                value={commitPrefix}
-              >
-                {this.getCommitPrefixOptions()}
-              </SelectField>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="commit-prefix">Commit Prefix</InputLabel>
+                <Select
+                  input={<Input id="branch-prefix" />}
+                  onChange={this.handleCommitPrefixSelect}
+                  value={commitPrefix}
+                >
+                  {this.getCommitPrefixOptions()}
+                </Select>
+              </FormControl>
             </div>
             <div className="col-sm-4">
-              <Toggle
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={finishes}
+                    onChange={this.handleFinishesToggle}
+                    value="Finishes User Story"
+                  />
+                }
                 label="Finishes User Story"
-                onToggle={this.handleFinishesToggle}
-                style={toggle}
-                toggled={finishes}
               />
             </div>
             <div className="col-sm-4">
-              <Toggle
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={gitCommit}
+                    onChange={this.handleGitCommitToggle}
+                    value="Add git commit -m"
+                  />
+                }
                 label="Add git commit -m"
-                onToggle={this.handleGitCommitToggle}
-                style={toggle}
-                toggled={gitCommit}
               />
             </div>
             <div className="col-sm-5 col-10">
               <TextField
-                floatingLabelFocusStyle={textColor}
-                floatingLabelText="Commit Message"
                 fullWidth
-                hintText="Summary of Work Done (Message)"
+                label="Commit Message"
                 onChange={this.handleCommitMessageChange}
-                underlineFocusStyle={borderColor}
+                placeholder="Summary of Work Done (Message)"
                 value={commitMessage}
               />
             </div>
@@ -206,13 +207,11 @@ export class CT extends Component {
             </div>
             <div className="col-sm-5 col-10">
               <TextField
-                floatingLabelFocusStyle={textColor}
-                floatingLabelText="Commit Description"
                 fullWidth
-                hintText="Summary of Work Done (Description)"
-                multiLine
+                label="Commit Description"
+                multiline
                 onChange={this.handleCommitDescriptionChange}
-                underlineFocusStyle={borderColor}
+                placeholder="Summary of Work Done (Description)"
                 value={commitDescription}
               />
             </div>

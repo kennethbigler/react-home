@@ -14,8 +14,8 @@ import {BranchName} from './BranchName';
 import {CommitText} from './CommitText';
 import {Header} from './Header';
 // material-ui
-import MenuItem from 'material-ui/MenuItem';
-import {deepOrange600} from 'material-ui/styles/colors';
+import MenuItem from '@material-ui/core/MenuItem';
+import deepOrange from '@material-ui/core/colors/deepOrange';
 // functions
 import copy from 'copy-to-clipboard';
 import map from 'lodash/map';
@@ -45,7 +45,11 @@ class GT extends Component {
    * @return {[Object]}
    */
   getSelectOptions = (arr) =>
-    map(arr, (t, i) => <MenuItem key={i} primaryText={t} value={t} />);
+    map(arr, (t, i) => (
+      <MenuItem key={i} value={t}>
+        {t}
+      </MenuItem>
+    ));
 
   /**
    * function to update text state based on value
@@ -71,13 +75,13 @@ class GT extends Component {
 
     return (
       <div>
-        <Header {...{gitTheme: deepOrange600, handleIDChange, storyID}} />
+        <Header {...{gitTheme: deepOrange[600], handleIDChange, storyID}} />
         <BranchName
           {...{
             branchPrefix,
             casePreference,
             getSelectOptions,
-            gitTheme: deepOrange600,
+            gitTheme: deepOrange[600],
             handleCopy,
             setBranchPrefix,
             setCasePreference,
@@ -87,7 +91,7 @@ class GT extends Component {
         <CommitText
           {...{
             getSelectOptions,
-            gitTheme: deepOrange600,
+            gitTheme: deepOrange[600],
             handleCopy,
             storyID,
           }}

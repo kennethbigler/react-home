@@ -6,10 +6,12 @@ import {ExpandableCard} from '../../common/ExpandableCard';
 import {CopyTextDisplay} from './CopyTextDisplay';
 // material ui
 import TextField from '@material-ui/core/TextField';
-import SelectField from 'material-ui/SelectField';
-import IconButton from 'material-ui/IconButton';
-import Clear from 'material-ui/svg-icons/content/clear';
-import {deepOrange600} from 'material-ui/styles/colors';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import Input from '@material-ui/core/Input';
+import IconButton from '@material-ui/core/IconButton';
+import Clear from '@material-ui/icons/Clear';
 // functions
 import snakeCase from 'lodash/snakeCase';
 import kebabCase from 'lodash/kebabCase';
@@ -54,20 +56,16 @@ export class BranchName extends Component {
   /**
    * function to update select state based on value
    * @param {Object} e event fired when select occurs
-   * @param {number} i index of option selected
-   * @param {number} v value of option selected
    */
-  handleBranchPrefixSelect = (e, i, v) => {
-    this.props.setBranchPrefix(v);
+  handleBranchPrefixSelect = (e) => {
+    this.props.setBranchPrefix(e.target.value);
   };
   /**
    * function to update text state based on value
    * @param {Object} e event fired when select occurs
-   * @param {number} i index of select option
-   * @param {number} v value of select option
    */
-  handleCasePrefSelect = (e, i, v) => {
-    this.props.setCasePreference(v);
+  handleCasePrefSelect = (e) => {
+    this.props.setCasePreference(e.target.value);
   };
 
   /**
@@ -117,40 +115,35 @@ export class BranchName extends Component {
     const branchName = this.getBranchName();
 
     return (
-      <ExpandableCard
-        backgroundColor={deepOrange600}
-        title="Create Branch Name"
-      >
+      <ExpandableCard backgroundColor={gitTheme} title="Create Branch Name">
         <div
           className="branch-name"
           style={{paddingLeft: 20, paddingRight: 20, width: '100%'}}
         >
           <div className="row">
             <div className="col-sm-3">
-              <SelectField
-                floatingLabelStyle={{color: gitTheme}}
-                floatingLabelText="Branch Prefix"
-                onChange={this.handleBranchPrefixSelect}
-                selectedMenuItemStyle={{color: gitTheme}}
-                style={{maxWidth: '100%'}}
-                underlineFocusStyle={{borderColor: gitTheme}}
-                value={branchPrefix}
-              >
-                {this.getBranchPrefixOptions()}
-              </SelectField>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="branch-prefix">Branch Prefix</InputLabel>
+                <Select
+                  input={<Input id="branch-prefix" />}
+                  onChange={this.handleBranchPrefixSelect}
+                  value={branchPrefix}
+                >
+                  {this.getBranchPrefixOptions()}
+                </Select>
+              </FormControl>
             </div>
             <div className="col-sm-3">
-              <SelectField
-                floatingLabelStyle={{color: gitTheme}}
-                floatingLabelText="Case Preference"
-                onChange={this.handleCasePrefSelect}
-                selectedMenuItemStyle={{color: gitTheme}}
-                style={{maxWidth: '100%'}}
-                underlineFocusStyle={{borderColor: gitTheme}}
-                value={casePreference}
-              >
-                {this.getCasePreferenceOptions()}
-              </SelectField>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="branch-prefix">Case Preference</InputLabel>
+                <Select
+                  input={<Input id="branch-prefix" />}
+                  onChange={this.handleCasePrefSelect}
+                  value={casePreference}
+                >
+                  {this.getCasePreferenceOptions()}
+                </Select>
+              </FormControl>
             </div>
             <div className="col-sm-5 col-10">
               <TextField
@@ -165,7 +158,7 @@ export class BranchName extends Component {
             <div className="col-sm-1 col-2">
               <IconButton
                 onClick={this.handleBranchMessageClear}
-                style={{marginTop: 20}}
+                style={{marginTop: 12}}
               >
                 <Clear />
               </IconButton>
