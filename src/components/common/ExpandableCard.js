@@ -54,12 +54,16 @@ export class EC extends Component {
       title: {color: 'white'},
       subtitle: {color: grey[300]},
     };
+    styles['expandedHeader'] = {
+      ...styles.header,
+      marginBottom: -20,
+    };
 
     return (
       <Card style={styles.card}>
         <CardHeader
           onClick={this.handleExpandChange}
-          style={styles.header}
+          style={expanded ? styles.expandedHeader : styles.header}
           subheader={
             <Typography style={styles.subtitle}>{subtitle}</Typography>
           }

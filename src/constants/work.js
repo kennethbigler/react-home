@@ -58,6 +58,7 @@ const workExp = [
       REACT16,
       RR4,
       'Recompose 0.27',
+      'Mixpanel Browser 2.22',
       JASMINE,
       ES2016,
       JS,
