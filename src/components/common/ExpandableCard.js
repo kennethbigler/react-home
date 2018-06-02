@@ -7,6 +7,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Collapse from '@material-ui/core/Collapse';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import {withTheme} from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 
@@ -75,7 +76,9 @@ export class EC extends Component {
         />
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <div className="row">{children}</div>
+            <Grid container spacing={16}>
+              {children}
+            </Grid>
           </CardContent>
         </Collapse>
       </Card>

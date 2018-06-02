@@ -8,6 +8,7 @@ import {updateName, updateBot} from '../../store/modules/players';
 // material ui
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 // functions
 import map from 'lodash/map';
 // Parents: Main
@@ -83,37 +84,43 @@ class Home extends Component {
         </h2>
         <hr />
         <div style={namepad}>
-          <div className="row">
-            <h4 className="col-9">Edit Player Names</h4>
-            <h4 className="col-3">Is Bot?</h4>
-          </div>
+          <Grid container spacing={16}>
+            <Grid item xs={9}>
+              <h4>Edit Player Names</h4>
+            </Grid>
+            <Grid item xs={3}>
+              <h4>Is Bot?</h4>
+            </Grid>
+          </Grid>
           {map(
             players,
             (p, i) =>
               p.id !== 0 ? (
-                <div className="row" key={`${p.name},${i}`}>
-                  <div className="col-9">
+                <Grid container key={`${p.name},${i}`} spacing={16}>
+                  <Grid item xs={9}>
                     <TextField
                       defaultValue={p.name}
                       onKeyPress={(e) => this.handleKeyPress(e, p.id)}
                       placeholder="Enter Player Name"
                     />
-                  </div>
-                  <div className="col-3" style={{marginTop: '12px'}}>
+                  </Grid>
+                  <Grid item xs={3}>
                     <Switch
                       checked={isBot[i]}
                       color="primary"
                       onChange={(e, isC) => this.handleToggle(p.id, isC)}
                     />
-                  </div>
-                </div>
+                  </Grid>
+                </Grid>
               ) : (
-                <div className="row" key={`${p.name},${i}`}>
-                  <h4 className="col-9">{p.name}</h4>
-                  <div className="col-3">
+                <Grid container key={`${p.name},${i}`} spacing={16}>
+                  <Grid item xs={9}>
+                    <h4>{p.name}</h4>
+                  </Grid>
+                  <Grid item xs={3}>
                     <Switch checked disabled />
-                  </div>
-                </div>
+                  </Grid>
+                </Grid>
               )
           )}
         </div>

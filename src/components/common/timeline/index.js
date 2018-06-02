@@ -147,7 +147,7 @@ export class Timeline extends Component {
     let added = [];
 
     return (
-      <div className="col-sm-12">
+      <div style={{width: '100%'}}>
         {map(data, (job, i) => (
           <Row key={i} segments={this.getSegments(added, job, i)} />
         ))}

@@ -7,6 +7,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import Grid from '@material-ui/core/Grid';
 // assests
 import photo from '../../../images/ken.jpg';
 import workExp from '../../../constants/work';
@@ -35,16 +36,16 @@ export class Info extends Component {
   render() {
     const {image} = this.style;
     return (
-      <div className="row">
-        <div className="col-md-3">
+      <Grid container spacing={16}>
+        <Grid item md={3} xs={12}>
           <img
             alt="Kenneth Bigler"
             onClick={this.handleClick}
             src={photo}
             style={image}
           />
-        </div>
-        <div className="col-md-9">
+        </Grid>
+        <Grid item sm={9} xs={12}>
           <ExpandableCard title={this.getJob()}>
             <Table>
               <TableBody>
@@ -63,8 +64,8 @@ export class Info extends Component {
               </TableBody>
             </Table>
           </ExpandableCard>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     );
   }
 }

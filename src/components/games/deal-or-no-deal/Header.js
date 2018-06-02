@@ -2,6 +2,7 @@ import React from 'react';
 import types from 'prop-types';
 import {getMoneyText} from './common';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 // Parents: DealOrNoDeal
 
 export const Header = (props) => {
@@ -16,8 +17,8 @@ export const Header = (props) => {
   } = props;
   // rendered component
   return (
-    <div className="row">
-      <div className="col-sm-6">
+    <Grid container spacing={16}>
+      <Grid item sm={6} xs={12}>
         <h1>
           Your Case: {pc ? pc.loc : '?'}
           {isOver && ` - ${getMoneyText(pc.val)}`}
@@ -32,13 +33,13 @@ export const Header = (props) => {
             New Game
           </Button>
         )}
-      </div>
-      <div className="col-sm-6">
+      </Grid>
+      <Grid item sm={6} xs={12}>
         <h1 style={{textAlign: 'right'}}>
           {player.name}: {getMoneyText(player.money)}
         </h1>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 

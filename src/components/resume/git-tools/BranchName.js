@@ -12,6 +12,7 @@ import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
 import Clear from '@material-ui/icons/Clear';
+import Grid from '@material-ui/core/Grid';
 // functions
 import snakeCase from 'lodash/snakeCase';
 import kebabCase from 'lodash/kebabCase';
@@ -120,8 +121,8 @@ export class BranchName extends Component {
           className="branch-name"
           style={{paddingLeft: 20, paddingRight: 20, width: '100%'}}
         >
-          <div className="row">
-            <div className="col-sm-3">
+          <Grid container spacing={16}>
+            <Grid item sm={3} xs={12}>
               <FormControl fullWidth>
                 <InputLabel htmlFor="branch-prefix">Branch Prefix</InputLabel>
                 <Select
@@ -132,8 +133,8 @@ export class BranchName extends Component {
                   {this.getBranchPrefixOptions()}
                 </Select>
               </FormControl>
-            </div>
-            <div className="col-sm-3">
+            </Grid>
+            <Grid item sm={3} xs={12}>
               <FormControl fullWidth>
                 <InputLabel htmlFor="branch-prefix">Case Preference</InputLabel>
                 <Select
@@ -144,8 +145,8 @@ export class BranchName extends Component {
                   {this.getCasePreferenceOptions()}
                 </Select>
               </FormControl>
-            </div>
-            <div className="col-sm-5 col-10">
+            </Grid>
+            <Grid item sm={5} xs={10}>
               <TextField
                 fullWidth
                 label="Branch Name"
@@ -154,16 +155,16 @@ export class BranchName extends Component {
                 placeholder="Summary of User Story"
                 value={branchMessage}
               />
-            </div>
-            <div className="col-sm-1 col-2">
+            </Grid>
+            <Grid item sm={1} xs={2}>
               <IconButton
                 onClick={this.handleBranchMessageClear}
                 style={{marginTop: 12}}
               >
                 <Clear />
               </IconButton>
-            </div>
-          </div>
+            </Grid>
+          </Grid>
           <CopyTextDisplay handleCopy={handleCopy} text={branchName} />
         </div>
       </ExpandableCard>

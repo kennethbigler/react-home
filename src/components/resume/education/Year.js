@@ -1,6 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
 import {Quarter} from './Quarter';
+import Grid from '@material-ui/core/Grid';
 import map from 'lodash/map';
 // Parents: Degree
 
@@ -8,13 +9,13 @@ import map from 'lodash/map';
 export const Year = (props) => {
   const {year, len} = props;
   return (
-    <div className={`col-md-${Math.ceil(12 / len)}`}>
+    <Grid item md={Math.ceil(12 / len)} xs={12}>
       <h2>{year.year}</h2>
       <hr />
       {map(year.quarters, (quarter) => (
         <Quarter key={quarter.quarter} quarter={quarter} />
       ))}
-    </div>
+    </Grid>
   );
 };
 

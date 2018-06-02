@@ -10,6 +10,7 @@ import {SlotMachine} from './SlotMachine';
 import {DarkTableCell} from '../../common/DarkTableCell';
 // material ui
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -80,10 +81,10 @@ class SM extends Component {
     return (
       <div>
         <h1>Welcome to Ken&apos;s Casino Slot Machine</h1>
-        <div className="row" style={{marginTop: '2em'}}>
-          <div className="col-sm-6">
-            <div className="row" style={{marginBottom: '1em'}}>
-              <div className="col-sm-3">
+        <Grid container spacing={16} style={{marginTop: '2em'}}>
+          <Grid item sm={6} xs={12}>
+            <Grid container spacing={16} style={{marginBottom: '1em'}}>
+              <Grid item sm={3} xs={12}>
                 <Button
                   color="primary"
                   onClick={this.updateSlotMachine}
@@ -92,13 +93,13 @@ class SM extends Component {
                 >
                   Spin
                 </Button>
-              </div>
-              <div className="col-sm-9">
+              </Grid>
+              <Grid item sm={9} xs={12}>
                 <Table>
                   <TableBody>{slots}</TableBody>
                 </Table>
-              </div>
-            </div>
+              </Grid>
+            </Grid>
             <Table>
               <TableHead>
                 <TableRow>
@@ -117,8 +118,8 @@ class SM extends Component {
                 </TableRow>
               </TableBody>
             </Table>
-          </div>
-          <div className="col-sm-6">
+          </Grid>
+          <Grid item sm={6} xs={12}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -137,8 +138,8 @@ class SM extends Component {
                 ))}
               </TableBody>
             </Table>
-          </div>
-        </div>
+          </Grid>
+        </Grid>
       </div>
     );
   }

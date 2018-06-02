@@ -6,6 +6,7 @@ import {ExpandableCard} from '../../common/ExpandableCard';
 import {FORMAT} from '../../common/timeline/';
 // material-ui
 import Chip from '@material-ui/core/Chip';
+import Grid from '@material-ui/core/Grid';
 // functions
 import moment from 'moment';
 import map from 'lodash/map';
@@ -81,7 +82,7 @@ export class Job extends Component {
           subtitle={job.title}
           title={title}
         >
-          <div className="col-sm-9">
+          <Grid item sm={9} xs={12}>
             <p>{this.showRange(job.start, job.end, job.notes)}</p>
             {job.expr && (
               <ul>
@@ -98,11 +99,11 @@ export class Job extends Component {
                 <hr />Skills: {this.getCSV(job.skills)}
               </div>
             )}
-          </div>
+          </Grid>
           {job.src && (
-            <div className="col-sm-3">
+            <Grid item sm={3} xs={12}>
               <img alt={job.alt} src={job.src} style={imgStyle} />
-            </div>
+            </Grid>
           )}
         </ExpandableCard>
       )

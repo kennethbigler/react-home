@@ -18,6 +18,7 @@ import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
 import IconButton from '@material-ui/core/IconButton';
 import Clear from '@material-ui/icons/Clear';
+import Grid from '@material-ui/core/Grid';
 // functions
 import nl2br from 'react-newline-to-break';
 // Parents: Main
@@ -154,8 +155,8 @@ export class CT extends Component {
     return (
       <ExpandableCard backgroundColor={gitTheme} title="Create Commit Message">
         <div className="commit-text" style={wrapper}>
-          <div className="row">
-            <div className="col-sm-4">
+          <Grid container spacing={16}>
+            <Grid item sm={4} xs={12}>
               <FormControl fullWidth>
                 <InputLabel htmlFor="commit-prefix">Commit Prefix</InputLabel>
                 <Select
@@ -166,8 +167,8 @@ export class CT extends Component {
                   {this.getCommitPrefixOptions()}
                 </Select>
               </FormControl>
-            </div>
-            <div className="col-sm-4">
+            </Grid>
+            <Grid item sm={4} xs={12}>
               <FormControlLabel
                 control={
                   <Switch
@@ -178,8 +179,8 @@ export class CT extends Component {
                 }
                 label="Finishes User Story"
               />
-            </div>
-            <div className="col-sm-4">
+            </Grid>
+            <Grid item sm={4} xs={12}>
               <FormControlLabel
                 control={
                   <Switch
@@ -190,8 +191,8 @@ export class CT extends Component {
                 }
                 label="Add git commit -m"
               />
-            </div>
-            <div className="col-sm-5 col-10">
+            </Grid>
+            <Grid item sm={5} xs={10}>
               <TextField
                 fullWidth
                 label="Commit Message"
@@ -199,13 +200,13 @@ export class CT extends Component {
                 placeholder="Summary of Work Done (Message)"
                 value={commitMessage}
               />
-            </div>
-            <div className="col-sm-1 col-2">
+            </Grid>
+            <Grid item sm={1} xs={2}>
               <IconButton onClick={this.clearCommitMessage} style={marginTop}>
                 <Clear />
               </IconButton>
-            </div>
-            <div className="col-sm-5 col-10">
+            </Grid>
+            <Grid item sm={5} xs={10}>
               <TextField
                 fullWidth
                 label="Commit Description"
@@ -214,16 +215,16 @@ export class CT extends Component {
                 placeholder="Summary of Work Done (Description)"
                 value={commitDescription}
               />
-            </div>
-            <div className="col-sm-1 col-2">
+            </Grid>
+            <Grid item sm={1} xs={2}>
               <IconButton
                 onClick={this.clearCommitDescription}
                 style={marginTop}
               >
                 <Clear />
               </IconButton>
-            </div>
-          </div>
+            </Grid>
+          </Grid>
           <CopyTextDisplay
             copyText={commitText}
             handleCopy={handleCopy}
