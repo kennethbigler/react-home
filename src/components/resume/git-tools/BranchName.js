@@ -124,7 +124,9 @@ export class BranchName extends Component {
           <Grid container spacing={16}>
             <Grid item sm={3} xs={12}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="branch-prefix">Branch Prefix</InputLabel>
+                <InputLabel htmlFor="branch-prefix" style={{color: gitTheme}}>
+                  Branch Prefix
+                </InputLabel>
                 <Select
                   input={<Input id="branch-prefix" />}
                   onChange={this.handleBranchPrefixSelect}
@@ -136,7 +138,9 @@ export class BranchName extends Component {
             </Grid>
             <Grid item sm={3} xs={12}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="branch-prefix">Case Preference</InputLabel>
+                <InputLabel htmlFor="branch-prefix" style={{color: gitTheme}}>
+                  Case Preference
+                </InputLabel>
                 <Select
                   input={<Input id="branch-prefix" />}
                   onChange={this.handleCasePrefSelect}
@@ -148,6 +152,7 @@ export class BranchName extends Component {
             </Grid>
             <Grid item sm={5} xs={10}>
               <TextField
+                InputLabelProps={{style: {color: gitTheme}}}
                 fullWidth
                 label="Branch Name"
                 multiline

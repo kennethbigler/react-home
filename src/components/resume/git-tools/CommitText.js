@@ -158,7 +158,9 @@ export class CT extends Component {
           <Grid container spacing={16}>
             <Grid item sm={4} xs={12}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="commit-prefix">Commit Prefix</InputLabel>
+                <InputLabel htmlFor="commit-prefix" style={{color: gitTheme}}>
+                  Commit Prefix
+                </InputLabel>
                 <Select
                   input={<Input id="branch-prefix" />}
                   onChange={this.handleCommitPrefixSelect}
@@ -194,6 +196,7 @@ export class CT extends Component {
             </Grid>
             <Grid item sm={5} xs={10}>
               <TextField
+                InputLabelProps={{style: {color: gitTheme}}}
                 fullWidth
                 label="Commit Message"
                 onChange={this.handleCommitMessageChange}
@@ -208,6 +211,7 @@ export class CT extends Component {
             </Grid>
             <Grid item sm={5} xs={10}>
               <TextField
+                InputLabelProps={{style: {color: gitTheme}}}
                 fullWidth
                 label="Commit Description"
                 multiline

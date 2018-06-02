@@ -12,6 +12,7 @@ export const Header = (props) => {
     <div>
       <h1>Git Tools</h1>
       <TextField
+        InputLabelProps={{style: {color: props.gitTheme}}}
         label="User Story ID"
         onChange={handleIDChange}
         placeholder="#123456789"
