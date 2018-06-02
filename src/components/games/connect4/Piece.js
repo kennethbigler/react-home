@@ -18,7 +18,9 @@ export const Piece = (props) => {
   };
 
   return !enabled ? (
-    <Button disabled mini style={color} variant="fab" />
+    <Button disabled mini style={color} variant="fab">
+      <div />
+    </Button>
   ) : (
     <Button mini onClick={onClick} style={color} variant="fab">
       <ContentAdd style={{color: 'white'}} />

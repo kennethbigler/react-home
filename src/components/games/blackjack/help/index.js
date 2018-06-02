@@ -1,24 +1,29 @@
+// react
 import React from 'react';
+// components
 import {BlackjackTable} from './BlackjackTable';
 import {Cell} from './Cell';
-import {
-  Table,
-  TableHeader,
-  TableHeaderColumn,
-  TableBody,
-  TableRow,
-} from 'material-ui/Table';
-import * as colors from 'material-ui/styles/colors';
+// material-ui
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+// colors
+import green from '@material-ui/core/colors/green';
+import teal from '@material-ui/core/colors/teal';
+import red from '@material-ui/core/colors/red';
+import orange from '@material-ui/core/colors/orange';
+import deepPurple from '@material-ui/core/colors/deepPurple';
 // Parents: Popup
-
 
 export const Help = () => {
   // options
-  const h = {color: colors.green200, text: 'H'};
-  const d = {color: colors.teal200, text: 'D'};
-  const s = {color: colors.red200, text: 'S'};
-  const p = {color: colors.orange200, text: 'P'};
-  const ds = {color: colors.deepPurple200, text: 'DS'};
+  const h = {color: green[200], text: 'H'};
+  const d = {color: teal[200], text: 'D'};
+  const s = {color: red[200], text: 'S'};
+  const p = {color: orange[200], text: 'P'};
+  const ds = {color: deepPurple[200], text: 'DS'};
 
   // algorithms for options
   const hardTtl = [
@@ -66,12 +71,12 @@ export const Help = () => {
       <BlackjackTable data={softTtl} title="Soft Totals" />
       <BlackjackTable data={pairs} title="Pairs" />
       <Table>
-        <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+        <TableHead>
           <TableRow>
-            <TableHeaderColumn colSpan="11">Key</TableHeaderColumn>
+            <TableCell colSpan="11">Key</TableCell>
           </TableRow>
-        </TableHeader>
-        <TableBody displayRowCheckbox={false}>
+        </TableHead>
+        <TableBody>
           <TableRow>
             <Cell {...h} />
             <Cell colSpan="2" text="= Hit" />

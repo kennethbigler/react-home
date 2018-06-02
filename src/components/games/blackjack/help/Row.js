@@ -1,19 +1,17 @@
 import React from 'react';
 import {Cell} from './Cell';
 import types from 'prop-types';
-import {TableRow, TableRowColumn} from 'material-ui/Table';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 import map from 'lodash/map';
 // Parents: Help
-
 
 export const Row = (props) => {
   const {name, data} = props;
 
   return (
     <TableRow>
-      <TableRowColumn style={{textAlign: 'center', padding: 0}}>
-        {name}
-      </TableRowColumn>
+      <TableCell style={{textAlign: 'center', padding: 0}}>{name}</TableCell>
       {map(data, (text, i) => <Cell key={i} {...text} />)}
     </TableRow>
   );

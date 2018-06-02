@@ -1,14 +1,13 @@
 import React from 'react';
 import {NA, EU} from '../../../constants/countries';
-import {
-  Table,
-  TableHeader,
-  TableHeaderColumn,
-  TableBody,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
-import {grey400} from 'material-ui/styles/colors';
+import {DarkTableCell} from '../../common/DarkTableCell';
+// material-ui
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import grey from '@material-ui/core/colors/grey';
 // Parents: Main
 
 export const TravelMap = () => {
@@ -36,7 +35,7 @@ export const TravelMap = () => {
       whiteSpace: 'normal',
       overflow: 'visible',
     },
-    separator: {borderRight: `1px solid ${grey400}`},
+    separator: {borderRight: `1px solid ${grey[400]}`},
   };
 
   // ratio to display on table, 2:1 seemed to look best
@@ -50,19 +49,19 @@ export const TravelMap = () => {
     let row = [];
     // add NA Country
     row.push(
-      <TableRowColumn
+      <TableCell
         key={`tmc${i}`}
         style={{...styles.cell, ...styles.separator}}
       >
         {NA[i]}
-      </TableRowColumn>
+      </TableCell>
     );
     // add EU Countries
     for (let j = 0; j < EURatio; j += 1) {
       row.push(
-        <TableRowColumn key={`tmc${i}${j}`} style={styles.cell}>
+        <TableCell key={`tmc${i}${j}`} style={styles.cell}>
           {EU[EURatio * i + j]}
-        </TableRowColumn>
+        </TableCell>
       );
     }
     // form the row
@@ -81,17 +80,17 @@ export const TravelMap = () => {
       />
       <h3 style={styles.margins}>Ken has been to:</h3>
       <Table>
-        <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+        <TableHead>
           <TableRow>
-            <TableHeaderColumn style={{...styles.cell, ...styles.separator}}>
+            <DarkTableCell style={{...styles.cell, ...styles.separator}}>
               North America
-            </TableHeaderColumn>
-            <TableHeaderColumn colSpan={EURatio} style={styles.cell}>
+            </DarkTableCell>
+            <DarkTableCell colSpan={EURatio} style={styles.cell}>
               Europe
-            </TableHeaderColumn>
+            </DarkTableCell>
           </TableRow>
-        </TableHeader>
-        <TableBody displayRowCheckbox={false}>{countries}</TableBody>
+        </TableHead>
+        <TableBody>{countries}</TableBody>
       </Table>
     </div>
   );

@@ -2,13 +2,11 @@ import React from 'react';
 import types from 'prop-types';
 import {Row} from './Row';
 import {Cell} from './Cell';
-import {
-  Table,
-  TableHeader,
-  TableHeaderColumn,
-  TableBody,
-  TableRow,
-} from 'material-ui/Table';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import map from 'lodash/map';
 // Parents: Popup
 
@@ -18,12 +16,12 @@ export const BlackjackTable = (props) => {
 
   return (
     <Table>
-      <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+      <TableHead>
         <TableRow>
-          <TableHeaderColumn colSpan="11">{title}</TableHeaderColumn>
+          <TableCell colSpan="11">{title}</TableCell>
         </TableRow>
-      </TableHeader>
-      <TableBody displayRowCheckbox={false}>
+      </TableHead>
+      <TableBody>
         <TableRow>
           <Cell rowSpan="2" style={{width: 60}} text="Hand" />
           <Cell colSpan="10" text="Dealer" />

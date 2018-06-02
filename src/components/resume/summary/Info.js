@@ -3,12 +3,14 @@ import React, {Component} from 'react';
 // components
 import {ExpandableCard} from '../../common/ExpandableCard';
 // material ui
-import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 // assests
 import photo from '../../../images/ken.jpg';
 import workExp from '../../../constants/work';
 // Parents: Degree
-
 
 export class Info extends Component {
   style = {
@@ -44,19 +46,19 @@ export class Info extends Component {
         </div>
         <div className="col-md-9">
           <ExpandableCard title={this.getJob()}>
-            <Table selectable={false}>
-              <TableBody displayRowCheckbox={false}>
+            <Table>
+              <TableBody>
                 <TableRow>
-                  <TableRowColumn>Location</TableRowColumn>
-                  <TableRowColumn>Mountain View, CA</TableRowColumn>
+                  <TableCell>Location</TableCell>
+                  <TableCell>Mountain View, CA</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableRowColumn>Interests</TableRowColumn>
-                  <TableRowColumn>Computer Software</TableRowColumn>
+                  <TableCell>Interests</TableCell>
+                  <TableCell>Computer Software</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableRowColumn>Volunteer Work</TableRowColumn>
-                  <TableRowColumn>Second Harvest Food Bank</TableRowColumn>
+                  <TableCell>Volunteer Work</TableCell>
+                  <TableCell>Second Harvest Food Bank</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

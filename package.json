@@ -10,7 +10,6 @@
     "bootstrap": "^4.1.1",
     "copy-to-clipboard": "^3.0.8",
     "lodash": "^4.17.10",
-    "material-ui": "^0.20.1",
     "moment": "^2.22.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",

@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
 import types from 'prop-types';
 import {Cell} from './Cell';
-import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
-import {grey400} from 'material-ui/styles/colors';
+// material-ui
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import grey from '@material-ui/core/colors/grey';
+// functions
 import includes from 'lodash/includes';
 // Parents: TicTacToe
 
@@ -30,27 +35,23 @@ export class Board extends Component {
         // check if winning position
         const winner = includes(winRow, c);
         row.push(
-          <TableRowColumn
+          <TableCell
             key={`${i},${j}`}
             style={{
               padding: 0,
               textAlign: 'center',
-              border: `1px solid ${grey400}`,
+              border: `1px solid ${grey[400]}`,
             }}
           >
             <Cell onClick={() => onClick(c)} value={board[c]} winner={winner} />
-          </TableRowColumn>
+          </TableCell>
         );
       }
       // separate into rows
-      cells.push(
-        <TableRow displayBorder key={`row${i}`}>
-          {row}
-        </TableRow>
-      );
+      cells.push(<TableRow key={`row${i}`}>{row}</TableRow>);
     }
     // return wrapped element
-    return <TableBody displayRowCheckbox={false}>{cells}</TableBody>;
+    return <TableBody>{cells}</TableBody>;
   };
 
   render() {

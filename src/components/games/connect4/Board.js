@@ -1,14 +1,11 @@
 import React from 'react';
 import {Piece} from './Piece';
 import types from 'prop-types';
-import {
-  Table,
-  TableBody,
-  TableRow,
-  TableRowColumn,
-  TableHeader,
-  TableHeaderColumn,
-} from 'material-ui/Table';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import map from 'lodash/map';
 // Parents: GameBoard
 
@@ -22,29 +19,29 @@ export const Board = (props) => {
   // generate code for Connect4 Board
   const gameBoard = map(board, (arr, i) => {
     const row = map(arr, (piece, j) => (
-      <TableRowColumn key={`c4c${i},${j}`} style={styles.cell}>
+      <TableCell key={`c4c${i},${j}`} style={styles.cell}>
         <Piece piece={piece} />
-      </TableRowColumn>
+      </TableCell>
     ));
     return <TableRow key={`c4r${i}`}>{row}</TableRow>;
   }).reverse();
   // generate buttons to play pieces based off top board row
   const gameButtons = map(board[board.length - 1], (piece, i) => (
-    <TableHeaderColumn key={`c4h${i}`} style={styles.cell}>
+    <TableCell key={`c4h${i}`} style={styles.cell}>
       <Piece
         enabled={!piece}
         onClick={() => insert(i)}
         piece={!piece ? turn : 0}
       />
-    </TableHeaderColumn>
+    </TableCell>
   ));
 
   return (
-    <Table fixedHeader selectable={false}>
-      <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+    <Table>
+      <TableHead>
         <TableRow>{gameButtons}</TableRow>
-      </TableHeader>
-      <TableBody displayRowCheckbox={false}>{gameBoard}</TableBody>
+      </TableHead>
+      <TableBody>{gameBoard}</TableBody>
     </Table>
   );
 };

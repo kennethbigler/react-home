@@ -7,16 +7,14 @@ import {bindActionCreators} from 'redux';
 import {payout, updateBet} from '../../../store/modules/players';
 // components
 import {SlotMachine} from './SlotMachine';
+import {DarkTableCell} from '../../common/DarkTableCell';
 // material ui
-import RaisedButton from 'material-ui/RaisedButton';
-import {
-  Table,
-  TableBody,
-  TableRow,
-  TableRowColumn,
-  TableHeader,
-  TableHeaderColumn,
-} from 'material-ui/Table';
+import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 // functions
 import map from 'lodash/map';
 // Parents: Main
@@ -73,9 +71,7 @@ class SM extends Component {
       // create 3 cells in a row
       let row = [];
       for (let j = 0; j < 3; j += 1) {
-        row.push(
-          <TableRowColumn key={`${j},${i}`}>{reel[j][i]}</TableRowColumn>
-        );
+        row.push(<TableCell key={`${j},${i}`}>{reel[j][i]}</TableCell>);
       }
       // separate into rows
       slots.push(<TableRow key={`row${i}`}>{row}</TableRow>);
@@ -88,55 +84,55 @@ class SM extends Component {
           <div className="col-sm-6">
             <div className="row" style={{marginBottom: '1em'}}>
               <div className="col-sm-3">
-                <RaisedButton
-                  label="Spin"
+                <Button
+                  color="primary"
                   onClick={this.updateSlotMachine}
-                  primary
                   style={{marginBottom: 15}}
-                />
+                  variant="raised"
+                >
+                  Spin
+                </Button>
               </div>
               <div className="col-sm-9">
-                <Table fixedHeader selectable={false}>
-                  <TableBody displayRowCheckbox={false} stripedRows>
-                    {slots}
-                  </TableBody>
+                <Table>
+                  <TableBody>{slots}</TableBody>
                 </Table>
               </div>
             </div>
-            <Table fixedHeader selectable={false}>
-              <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+            <Table>
+              <TableHead>
                 <TableRow>
-                  <TableHeaderColumn>Player</TableHeaderColumn>
-                  <TableHeaderColumn>Money</TableHeaderColumn>
+                  <DarkTableCell>Player</DarkTableCell>
+                  <DarkTableCell>Money</DarkTableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody displayRowCheckbox={false} showRowHover>
+              </TableHead>
+              <TableBody>
                 <TableRow>
-                  <TableRowColumn>{player.name}</TableRowColumn>
-                  <TableRowColumn>${player.money}</TableRowColumn>
+                  <TableCell>{player.name}</TableCell>
+                  <TableCell>${player.money}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableRowColumn>House</TableRowColumn>
-                  <TableRowColumn>${dealer.money}</TableRowColumn>
+                  <TableCell>House</TableCell>
+                  <TableCell>${dealer.money}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </div>
           <div className="col-sm-6">
-            <Table fixedHeader selectable={false}>
-              <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+            <Table>
+              <TableHead>
                 <TableRow>
-                  <TableHeaderColumn>Slot Roll</TableHeaderColumn>
-                  <TableHeaderColumn>Payout</TableHeaderColumn>
+                  <DarkTableCell>Slot Roll</DarkTableCell>
+                  <DarkTableCell>Payout</DarkTableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody displayRowCheckbox={false} showRowHover>
+              </TableHead>
+              <TableBody>
                 {map(SlotMachine.payoutTable, (row, i) => (
                   <TableRow key={i}>
-                    <TableRowColumn>
+                    <TableCell>
                       {row.win} {row.symbol}
-                    </TableRowColumn>
-                    <TableRowColumn>{row.payout} : 1</TableRowColumn>
+                    </TableCell>
+                    <TableCell>{row.payout} : 1</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
