@@ -50,12 +50,12 @@ class SM extends Component {
 
   updateSlotMachine = () => {
     const {payout} = this.props.playerActions;
-    const {id, money, bet} = this.props.players[0];
+    const {id, bet} = this.props.players[0];
     const dealer = this.props.players[this.props.players.length - 1];
     let reel = SlotMachine.pullHandle();
     let exchange = SlotMachine.getPayout(reel, bet) - bet;
-    payout(id, 'win', money, exchange);
-    payout(dealer.id, 'win', dealer.money, -exchange);
+    payout(id, 'win', exchange);
+    payout(dealer.id, 'win', -exchange);
     this.setState({reel});
   };
 
