@@ -71,6 +71,7 @@ function isAmbigram1(nums) {
 }
 
 isAmbigram1([1, 8, 1]);
+isAmbigram1([1, 8, 8, 1]);
 isAmbigram1([1, 6, 9, 1]);
 isAmbigram1([1, 6, 1]);
 
@@ -158,3 +159,281 @@ function isAmbigram2(word) {
 isAmbigram2('181');
 isAmbigram2('1691');
 isAmbigram2('161');
+
+/**
+ * Say you have an array for which the ith element is the price of a given stock on day i.
+ *
+ * If you were only permitted to complete at most one transaction
+ * (i.e., buy one and sell one share of the stock),
+ * design an algorithm to find the maximum profit.
+ *
+ * Note that you cannot sell a stock before you buy one.
+ *
+ * Example 1:
+ * Input: [7,1,5,3,6,4]
+ * Output: 5
+ * Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+ *              Not 7-1 = 6, as selling price needs to be larger than buying price.
+ *
+ * Example 2:
+ * Input: [7,6,4,3,1]
+ * Output: 0
+ * Explanation: In this case, no transaction is done, i.e. max profit = 0.
+ **/
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+const maxProfit = (prices) => {
+  if (prices.length === 0) {
+    return 0;
+  }
+  let maxWindow = 0;
+  let min = prices[0];
+  for (let i = 0; i < prices.length; i += 1) {
+    if (prices[i] < min) {
+      // if a new low comes along, it may be better
+      min = prices[i];
+    } else if (prices[i] - min > maxWindow) {
+      // only replace max if we find a better one
+      maxWindow = prices[i] - min;
+    }
+  }
+  return maxWindow;
+};
+
+maxProfit([7, 1, 5, 3, 6, 4]) === 5;
+maxProfit([7, 6, 4, 3, 1]) === 0;
+
+/**
+ * Find the intersection of two sorted arrays.
+ * OR in other words,
+ * Given 2 sorted arrays, find all the elements which occur in both the arrays.
+ *
+ * Example 1:
+ * Input A: [1,2,3,3,4,5,6]
+ * Input B: [3,3,5]
+ * Output: [3,3,5]
+ *
+ * Example 2:
+ * Input A: [1,2,3,3,4,5,6]
+ * Input B: [3,5,7]
+ * Output: [3,5]
+ *
+ * @param {number[]} A
+ * @param {number[]} B
+ * @return {number[]}
+ */
+const intersect = (A, B) => {
+  let i = 0;
+  let j = 0;
+  let intersect = [];
+
+  while (i < A.length && j < B.length) {
+    // console.log(i, j);
+    if (A[i] == B[j]) {
+      intersect.push(A[i]);
+      i += 1;
+      j += 1;
+    } else if (A[i] < B[j]) {
+      i += 1;
+    } else {
+      j += 1;
+    }
+  }
+
+  return intersect;
+};
+
+intersect([1, 2, 3, 3, 4, 5, 6], [3, 3, 5]) === [3, 3, 5];
+intersect([1, 2, 3, 3, 4, 5, 6], [3, 5, 7]) === [3, 5];
+
+/**
+ * Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+ * Symbol       Value
+ *   I           1
+ *   V           5
+ *   X           10
+ *   L           50
+ *   C           100
+ *   D           500
+ *   M           1000
+ *
+ * For example, two is written as II in Roman numeral, just two one's added together.
+ * Twelve is written as, XII, which is simply X + II.
+ * The number twenty seven is written as XXVII, which is XX + V + II.
+ *
+ * Roman numerals are usually written largest to smallest from left to right.
+ * However, the numeral for four is not IIII. Instead, the number four is written as IV.
+ * Because the one is before the five we subtract it making four.
+ * The same principle applies to the number nine, which is written as IX.
+ * There are six instances where subtraction is used:
+ *     I can be placed before V (5) and X (10) to make 4 and 9.
+ *     X can be placed before L (50) and C (100) to make 40 and 90.
+ *     C can be placed before D (500) and M (1000) to make 400 and 900.
+ *
+ * Given an integer, convert it to a roman numeral.
+ * Input is guaranteed to be within the range from 1 to 3999.
+ *
+ * Example 1:
+ * Input: 3
+ * Output: "III"
+ *
+ * Example 2:
+ * Input: 4
+ * Output: "IV"
+ *
+ * Example 3:
+ * Input: 9
+ * Output: "IX"
+ *
+ * Example 4:
+ * Input: 58
+ * Output: "LVIII"
+ * Explanation: C = 100, L = 50, XXX = 30 and III = 3.
+ *
+ * Example 5:
+ * Input: 1994
+ * Output: "MCMXCIV"
+ * Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
+ */
+/**
+ * @param {number} num
+ * @param {string} roman
+ * @param {number} round
+ * @return {string}
+ */
+const itr = (num, roman = '', round = 0) => {
+  const divisor = [1000, 100, 10, 1];
+  // end condition
+  if (round >= divisor.length) {
+    return roman;
+  }
+
+  const temp = Math.floor(num / divisor[round]) % 10;
+  if (temp === 0) {
+    return itr(num, roman, round + 1);
+  }
+
+  // Symbol I  V  X   L   C    D    M
+  // Value  1  5  10  50  100  500  1,000
+  const n = [['M'], ['C', 'D', 'M'], ['X', 'L', 'C'], ['I', 'V', 'X']];
+
+  const d = divisor[round];
+  const nmrl = n[round];
+
+  if (temp === 9) {
+    return itr(num - 9 * d, roman + nmrl[0] + nmrl[2], round);
+  } else if (temp >= 5) {
+    return itr(num - 5 * d, roman + nmrl[1], round);
+  } else if (temp === 4) {
+    return itr(num - 4 * d, roman + nmrl[0] + nmrl[1], round);
+  } else if (temp >= 1) {
+    // console.log(roman, n[round][0]);
+    return itr(num - 1 * d, roman + nmrl[0], round);
+  }
+};
+
+/**
+ * @param {number} num
+ * @return {string}
+ */
+const intToRoman = (num) => {
+  if (num === 0) {
+    return false;
+  }
+  // verify non-negative
+  if (num < 0) {
+    return itr(-num);
+  }
+  return itr(num);
+};
+
+intToRoman(3) === 'III';
+intToRoman(4) === 'IV';
+intToRoman(9) === 'IX';
+intToRoman(58) === 'LVIII';
+intToRoman(1994) === 'MCMXCIV';
+
+/**
+ * Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+ * Symbol       Value
+ *   I           1
+ *   V           5
+ *   X           10
+ *   L           50
+ *   C           100
+ *   D           500
+ *   M           1000
+ *
+ * For example, two is written as II in Roman numeral, just two one's added together.
+ * Twelve is written as, XII, which is simply X + II.
+ * The number twenty seven is written as XXVII, which is XX + V + II.
+ *
+ * Roman numerals are usually written largest to smallest from left to right.
+ * However, the numeral for four is not IIII. Instead, the number four is written as IV.
+ * Because the one is before the five we subtract it making four.
+ * The same principle applies to the number nine, which is written as IX.
+ * There are six instances where subtraction is used:
+ *     I can be placed before V (5) and X (10) to make 4 and 9.
+ *     X can be placed before L (50) and C (100) to make 40 and 90.
+ *     C can be placed before D (500) and M (1000) to make 400 and 900.
+ *
+ * Given a roman numeral, convert it to an integer.
+ * Input is guaranteed to be within the range from 1 to 3999.
+ *
+ * Example 1:
+ * Input: "III"
+ * Output: 3
+ *
+ * Example 2:
+ * Input: "IV"
+ * Output: 4
+ *
+ * Example 3:
+ * Input: "IX"
+ * Output: 9
+ *
+ * Example 4:
+ * Input: "LVIII"
+ * Output: 58
+ * Explanation: C = 100, L = 50, XXX = 30 and III = 3.
+ *
+ * Example 5:
+ * Input: "MCMXCIV"
+ * Output: 1994
+ * Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
+ */
+/**
+ * @param {string} str
+ * @return {number}
+ */
+const romanToInt = (str) => {
+  if (str === '') {
+    return false;
+  }
+  let ret = 0;
+  const characters = split(str, '');
+  // Symbol I  V  X   L   C    D    M
+  // Value  1  5  10  50  100  500  1,000
+  const romanMap = {M: 1000, D: 500, C: 100, L: 50, X: 10, V: 5, I: 1};
+
+  for (let i = 0; i < characters.length; i += 1) {
+    const currentCharacter = romanMap[characters[i]];
+    const nextCharacter = romanMap[characters[i + 1]];
+
+    if (currentCharacter < nextCharacter) {
+      ret += nextCharacter - currentCharacter;
+      i += 1;
+    } else {
+      ret += currentCharacter;
+    }
+  }
+  return ret;
+};
+
+romanToInt('III') === 3;
+romanToInt('IV') === 4;
+romanToInt('IX') === 9;
+romanToInt('LVIII') === 58;
+romanToInt('MCMXCIV') === 1994;
