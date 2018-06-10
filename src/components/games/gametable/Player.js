@@ -53,8 +53,7 @@ export const Player = (props) => {
   return (
     <div className="player" style={color}>
       <h2 style={{...weight, marginBottom: 0}}>
-        {player.name}
-        {isBlackJack && `: $${player.money}`}
+        {player.name}: ${player.money}
       </h2>
       {showSlider && (
         <Slider

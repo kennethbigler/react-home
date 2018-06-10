@@ -15,6 +15,7 @@ export const GameTable = (props) => {
     cardClickHandler,
     cardsToDiscard,
     gameFunctions,
+    gameOver,
     hideHands,
     isBlackJack,
     players,
@@ -24,25 +25,31 @@ export const GameTable = (props) => {
   // move game buttons to make turn more obvious and support mobile
   const played = players.slice(0, turn.player + 1);
   const future = players.slice(turn.player + 1);
+  const playersToDisplay =
+    !hideHands && gameOver === false
+      ? players.slice(turn.player, turn.player + 1)
+      : players;
   // pass common props
   const passProps = {
     betHandler,
     cardsToDiscard,
+    hideHands,
     isBlackJack,
+    turn,
     cardHandler: cardClickHandler,
   };
   return (
     <div className="gameTable">
-      {hideHands ? (
+      {isBlackJack && !hideHands ? (
         <div>
-          <Board hideHands={hideHands} players={players} {...passProps} />
+          <Board players={played} {...passProps} />
           <ButtonGroup gameFunctions={gameFunctions} />
+          <Board players={future} {...passProps} />
         </div>
       ) : (
         <div>
-          <Board players={played} turn={turn} {...passProps} />
+          <Board players={playersToDisplay} {...passProps} />
           <ButtonGroup gameFunctions={gameFunctions} />
-          <Board players={future} {...passProps} />
         </div>
       )}
     </div>
@@ -55,6 +62,7 @@ GameTable.propTypes = {
   cardClickHandler: types.func,
   cardsToDiscard: types.arrayOf(types.number),
   gameFunctions: types.arrayOf(types.object).isRequired,
+  gameOver: types.bool,
   hideHands: types.bool,
   isBlackJack: types.bool,
   players: types.arrayOf(types.object).isRequired,

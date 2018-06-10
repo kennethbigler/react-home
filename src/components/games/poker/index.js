@@ -19,7 +19,11 @@ import {
 import forEach from 'lodash/forEach';
 import includes from 'lodash/includes';
 import reduce from 'lodash/reduce';
+import get from 'lodash/get';
 // Parents: Main
+
+const DEALER = 0;
+const LAST_PLAYER = 5;
 
 /* --------------------------------------------------
 * Poker
@@ -66,6 +70,104 @@ export class Pkr extends Component {
     this.state = this.getNewGameState();
   }
 
+  componentDidUpdate() {
+    const {players, turn} = this.props;
+    const {hideHands, gameOver} = this.state;
+    const player = players[turn.player];
+    const canPlay = player.id !== DEALER && player.id <= LAST_PLAYER;
+
+    if (!hideHands && !gameOver && player.isBot) {
+      canPlay ? this.computer() : this.endGame();
+    }
+  }
+
+  /** function to reset turn and player status */
+  setNewGameRedux = () => {
+    const {turnActions, playerActions, players} = this.props;
+    // reset redux actions
+    turnActions.resetTurn();
+    // reset player statuses
+    forEach(players, (player) => playerActions.resetStatus(player.id));
+  };
+
+  /**
+   * function to generate the state of a new game
+   * @return {Object}
+   */
+  getNewGameState = () => {
+    // go back to betting phase
+    return {
+      gameFunctions: [{name: 'Start Game', func: this.startGame}],
+      cardsToDiscard: [],
+      hideHands: true,
+      gameOver: false,
+    };
+  };
+
+  newGame = () => {
+    this.setNewGameRedux();
+    this.setState(this.getNewGameState());
+  };
+
+  /**
+   * function to finish betting and start the game
+   * stateChanges: hideHands
+   */
+  startGame = () => {
+    this.setState({
+      gameFunctions: [{name: 'Discard Cards', func: this.handleDiscard}],
+      hideHands: false,
+    });
+    this.dealHands();
+  };
+
+  /**
+   * get hand from props
+   * @return {Array}
+   */
+  getHand = () => {
+    // get state vars
+    const {turn, players} = this.props;
+    return get(players[turn.player], `hands[0].cards`, null);
+  };
+
+  /** increment player turn and reset state */
+  endTurn = () => {
+    const {turnActions} = this.props;
+    turnActions.incrPlayerTurn();
+    this.setState({
+      gameFunctions: [{name: 'Discard Cards', func: this.handleDiscard}],
+      cardsToDiscard: [],
+    });
+  };
+
+  endGame = () => {
+    const {players, playerActions} = this.props;
+    let winner = {val: 0, id: 0};
+    forEach(players, (player) => {
+      if (player.id === DEALER || player.id > LAST_PLAYER) {
+        return;
+      }
+      const playerScore = parseInt(this.evaluate(player.hands[0].cards), 14);
+      if (playerScore > winner.val) {
+        winner = {val: playerScore, id: player.id};
+      }
+    });
+    forEach(players, (player) => {
+      if (player.id === DEALER || player.id > LAST_PLAYER) {
+        return;
+      } else if (player.id === winner.id) {
+        playerActions.payout(player.id, 'win', 20);
+      } else {
+        playerActions.payout(player.id, 'lose', -5);
+      }
+    });
+    this.setState({
+      gameFunctions: [{name: 'New Game', func: this.newGame}],
+      gameOver: true,
+    });
+  };
+
   getHistogram = (hand) => {
     // Histogram for the cards
     let hist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -90,7 +192,7 @@ export class Pkr extends Component {
    *
    * @param {Array} hand
    * @param {Object} hist
-   * @return {number} value is a base 13 string, to be converted into base 10 for comparison
+   * @return {number} value is a base 14 string, to be converted into base 10 for comparison
    */
   rankHand = (hand, hist) => {
     // iterate through and look for hands with multiple cards
@@ -136,99 +238,6 @@ export class Pkr extends Component {
   };
 
   /**
-   * Compare hands to see who wins
-   * @param {array} hand - array of card objects
-   * Hands is assigned a weight based on hand, then card values
-   * Compare values to see who wins
-   * @return {number} value is a base 13 string, to be converted into base 10 for comparison
-   */
-  evaluate = (hand) => {
-    const hist = this.getHistogram(hand);
-    const rank = this.rankHand(hand, hist);
-
-    let cards = [0, 0, 0, 0, 0]; // placeholder for card value
-    let total = 0; // track number of cards counted
-    let numCards = 4; // number of same cards in a set
-    let i = 0; // iterator
-    let last = -1; // track location of last in numCards set
-
-    // get card values and display them in order of importance
-    while (total < 5) {
-      const num = hist.indexOf(numCards, last + 1);
-      if (num === -1) {
-        numCards -= 1;
-        last = -1;
-      } else {
-        cards[i] = num.toString(13);
-        i += 1;
-        total += numCards;
-        last = num;
-      }
-    }
-    return `${rank}${reduce(cards, (a, c) => `${a}${c}`)}`;
-  };
-
-  /**
-   * function to generate the state of a new game
-   * @return {Object}
-   */
-  getNewGameState = () => {
-    // go back to betting phase
-    return {
-      gameFunctions: [{name: 'Finish Betting', func: this.finishBetting}],
-      cardsToDiscard: [],
-      hideHands: true,
-    };
-  };
-
-  /** function to reset turn and player status */
-  setNewGameRedux = () => {
-    const {turnActions, playerActions, players} = this.props;
-    // reset redux actions
-    turnActions.resetTurn();
-    // reset player statuses
-    forEach(players, (player) => playerActions.resetStatus(player.id));
-  };
-
-  /**
-   * Start a new round of hands
-   * stateChanges: turn, players
-   */
-  dealHands = () => {
-    const {playerActions, players} = this.props;
-    // shuffle the deck
-    Deck.shuffle();
-    // deal the hands
-    forEach(players, (player) => playerActions.newHand(player.id, 5));
-  };
-
-  /**
-   * function to finish betting and start the game
-   * stateChanges: hideHands
-   */
-  finishBetting = () => {
-    this.setState({hideHands: false});
-    this.dealHands();
-  };
-
-  /**
-   * get hand from props
-   * @return {Array}
-   */
-  getHand = () => {
-    // get state vars
-    const {turn, players} = this.props;
-    return players[turn.player].hands[0];
-  };
-
-  /** increment player turn and reset state */
-  endTurn = () => {
-    const {turnActions} = this.props;
-    turnActions.incrPlayerTurn();
-    this.setState({cardsToDiscard: []});
-  };
-
-  /**
    * iterate through array, removing each index number from hand
    * then add new cards to the hand
    * @param {array} cards - array of index numbers
@@ -245,6 +254,10 @@ export class Pkr extends Component {
   handleDiscard = () => {
     const {cardsToDiscard} = this.state;
     this.discard(cardsToDiscard);
+    this.setState({
+      gameFunctions: [{name: 'End Turn', func: this.endTurn}],
+      cardsToDiscard: [],
+    });
   };
 
   /**
@@ -305,22 +318,23 @@ export class Pkr extends Component {
         hist.lastIndexOf(1) >= 11
           ? this.discardHelper(4, hist) // if ace || king draw 4
           : this.discard([0, 1, 2, 3, 4]); // otherwise, draw all 5
-        return;
+        break;
       case 1: // draw 3 on 2 of a kind
         this.discardHelper(3, hist);
-        return;
+        break;
       case 2: // draw 1 on 3 of a kind
       case 3: // draw 1 on 2 Pair
         this.discardHelper(1, hist);
-        return;
+        break;
       case 4: // draw 0 on straight
       case 5: // draw 0 on flush
       case 6: // draw 0 on full house
       case 7: // draw 0 on 4 of a kind
       case 8: // draw 0 on straight flush
       default:
-        return;
+        break;
     }
+    this.endTurn();
   };
 
   /**
@@ -336,7 +350,6 @@ export class Pkr extends Component {
     // toggle in array
     i === -1 ? cardsToDiscard.push(cardNo) : cardsToDiscard.splice(i, 1);
     // update state
-    console.log(cardsToDiscard);
     this.setState({cardsToDiscard});
   };
 
@@ -351,18 +364,70 @@ export class Pkr extends Component {
     this.props.playerActions.updateBet(id, bet);
   };
 
+  /**
+   * Compare hands to see who wins
+   * @param {array} hand - array of card objects
+   * Hands is assigned a weight based on hand, then card values
+   * Compare values to see who wins
+   * @return {number} value is a base 14 string, to be converted into base 10 for comparison
+   */
+  evaluate = (hand) => {
+    const hist = this.getHistogram(hand);
+    const rank = this.rankHand(hand, hist);
+
+    let cards = [0, 0, 0, 0, 0]; // placeholder for card value
+    let total = 0; // track number of cards counted
+    let numCards = 4; // number of same cards in a set
+    let i = 0; // iterator
+    let last = -1; // track location of last in numCards set
+
+    // get card values and display them in order of importance
+    while (total < 5) {
+      const num = hist.indexOf(numCards, last + 1);
+      if (num === -1) {
+        numCards -= 1;
+        last = -1;
+      } else {
+        cards[i] = num.toString(14);
+        i += 1;
+        total += numCards;
+        last = num;
+      }
+    }
+    return `${rank}${reduce(cards, (a, c) => `${a}${c}`)}`;
+  };
+
+  /**
+   * Start a new round of hands
+   * stateChanges: turn, players
+   */
+  dealHands = () => {
+    const {playerActions, players} = this.props;
+    // shuffle the deck
+    Deck.shuffle();
+    // deal the hands
+    forEach(
+      players,
+      (player) =>
+        player.id !== DEALER &&
+        player.id <= LAST_PLAYER &&
+        playerActions.newHand(player.id, 5)
+    );
+  };
+
   // render standard board
   render() {
     const {turn, players} = this.props;
-    const {gameFunctions, hideHands, cardsToDiscard} = this.state;
+    const {cardsToDiscard, gameFunctions, gameOver, hideHands} = this.state;
     return (
       <div>
-        <h1>Placeholder for Future Poker Project</h1>
+        <h1>5 Card Draw Poker</h1>
         <GameTable
           betHandler={this.betHandler}
           cardClickHandler={this.cardClickHandler}
           cardsToDiscard={cardsToDiscard}
           gameFunctions={gameFunctions}
+          gameOver={gameOver}
           hideHands={hideHands}
           isBlackJack={false}
           players={players}

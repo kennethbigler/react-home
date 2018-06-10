@@ -12,18 +12,18 @@ export const Menu = (props) => {
   // internal routes
   const menu = map(
     [
-      {name: 'Games Home', route: ''},
+      {name: 'Home - Games', route: ''},
       {divider: true},
+      // { name: 'Bingo', route: 'bingo' }
       {name: 'BlackJack', route: 'blackjack'},
       {name: 'Connect4', route: 'connect4'},
       {name: 'Deal or No Deal', route: 'deal'},
+      {name: 'Poker', route: 'poker'},
       {name: 'Slot Machine', route: 'slots'},
       {name: 'Tic-Tac-Toe', route: 'tictactoe'},
-      // { name: 'Poker', route: 'poker' },
-      // { name: 'Bingo', route: 'bingo' }
       {divider: true},
-      {name: 'Poker Night Scores', route: 'pokernight'},
       {name: 'Murder Mystery', route: 'murder'},
+      {name: 'Poker Night Scores', route: 'pokernight'},
     ],
     (item, index) =>
       item.divider ? (

@@ -58,7 +58,7 @@ Hand.propTypes = {
   cardHandler: types.func,
   cardsToDiscard: types.arrayOf(types.number),
   hand: types.shape({
-    weight: types.number.isRequired,
+    weight: types.number,
     cards: types.arrayOf(
       types.shape({
         name: types.string.isRequired,
