@@ -15,11 +15,21 @@ import map from 'lodash/map';
  * -------------------------------------------------- */
 export const Player = (props) => {
   // get vars from props
-  const {playerNo, turn, player, cardHandler, betHandler, hideHands} = props;
+  const {
+    betHandler,
+    cardHandler,
+    cardsToDiscard,
+    hideHands,
+    isBlackJack,
+    player,
+    playerNo,
+    turn,
+  } = props;
   // set booleans
   const isPlayerTurn = !!turn && playerNo === turn.player;
   const isMultiHand = player.hands.length > 1;
-  const showSlider = !!hideHands && player.id !== 0 && !player.isBot;
+  const showSlider =
+    !!hideHands && isBlackJack && player.id !== 0 && !player.isBot;
   // set slider variables
   const minBet = Math.max(Math.min(player.money, 5), 0);
   const maxBet = Math.max(Math.min(player.money, 100), 10);
@@ -43,7 +53,8 @@ export const Player = (props) => {
   return (
     <div className="player" style={color}>
       <h2 style={{...weight, marginBottom: 0}}>
-        {player.name}: ${player.money}
+        {player.name}
+        {isBlackJack && `: $${player.money}`}
       </h2>
       {showSlider && (
         <Slider
@@ -55,9 +66,10 @@ export const Player = (props) => {
           value={player.bet}
         />
       )}
-      {player.id !== 0 && (
-        <h3 style={{marginBottom: 0}}>Bet: ${player.bet}</h3>
-      )}
+      {isBlackJack &&
+        player.id !== 0 && (
+          <h3 style={{marginBottom: 0}}>Bet: ${player.bet}</h3>
+        )}
       {map(player.hands, (hand, i) => {
         const isHandTurn = !!turn && turn.hand === i;
         return (
@@ -65,8 +77,10 @@ export const Player = (props) => {
             {!hideHands && (
               <Hand
                 cardHandler={cardHandler}
+                cardsToDiscard={cardsToDiscard}
                 hand={hand}
                 handNo={i}
+                isBlackJack={isBlackJack}
                 isHandTurn={isHandTurn}
                 isMultiHand={isMultiHand}
                 isPlayerTurn={isPlayerTurn}
@@ -84,7 +98,9 @@ Player.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   betHandler: types.func,
   cardHandler: types.func,
+  cardsToDiscard: types.arrayOf(types.number),
   hideHands: types.bool,
+  isBlackJack: types.bool.isRequired,
   player: types.shape({
     hands: types.arrayOf(types.object).isRequired,
     id: types.number.isRequired,

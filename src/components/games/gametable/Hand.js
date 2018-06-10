@@ -3,6 +3,7 @@ import types from 'prop-types';
 import {Card} from './Card';
 import purple from '@material-ui/core/colors/purple';
 import map from 'lodash/map';
+import includes from 'lodash/includes';
 // Parents: Player
 
 /* --------------------------------------------------
@@ -10,13 +11,15 @@ import map from 'lodash/map';
  * -------------------------------------------------- */
 export const Hand = (props) => {
   const {
-    handNo,
-    playerNo,
-    isHandTurn,
+    cardHandler,
+    cardsToDiscard,
     hand,
+    handNo,
+    isBlackJack,
+    isHandTurn,
     isMultiHand,
     isPlayerTurn,
-    cardHandler,
+    playerNo,
   } = props;
 
   const bold =
@@ -28,19 +31,24 @@ export const Hand = (props) => {
   return (
     <div className="hand">
       <h3 style={{...bold, marginTop: '0.5em'}}>
-        {(hand.weight > 21 ? 'Bust: ' : 'Hand Weight: ') + hand.weight}
+        {isBlackJack &&
+          (hand.weight > 21 ? 'Bust: ' : 'Hand Weight: ') + hand.weight}
       </h3>
-      {map(hand.cards, (card, i) => (
-        <Card
-          cardHandler={cardHandler}
-          cardNo={i}
-          handNo={handNo}
-          key={card.name + card.suit}
-          name={card.name}
-          playerNo={playerNo}
-          suit={card.suit}
-        />
-      ))}
+      {map(hand.cards, (card, i) => {
+        const dropped = includes(cardsToDiscard, i);
+        return (
+          <Card
+            cardHandler={cardHandler}
+            cardNo={i}
+            dropped={dropped}
+            handNo={handNo}
+            key={card.name + card.suit}
+            name={card.name}
+            playerNo={playerNo}
+            suit={card.suit}
+          />
+        );
+      })}
     </div>
   );
 };
@@ -48,6 +56,7 @@ export const Hand = (props) => {
 Hand.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   cardHandler: types.func,
+  cardsToDiscard: types.arrayOf(types.number),
   hand: types.shape({
     weight: types.number.isRequired,
     cards: types.arrayOf(
@@ -58,6 +67,7 @@ Hand.propTypes = {
     ).isRequired,
   }).isRequired,
   handNo: types.number.isRequired,
+  isBlackJack: types.bool.isRequired,
   isHandTurn: types.bool.isRequired,
   isMultiHand: types.bool.isRequired,
   isPlayerTurn: types.bool.isRequired,

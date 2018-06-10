@@ -6,14 +6,15 @@ import {Switch, Route, Redirect} from 'react-router-dom';
 import {Header} from '../common/Header';
 import {Menu} from './Menu';
 // Components
-import {PokerNight} from './poker-night/';
-import {MurderMystery} from './murder-mystery/';
-import {GameHome} from './Home';
-import {Slots} from './slots/';
 import {BlackJack} from './blackjack/';
-import {TicTacToe} from './tictactoe/';
 import {Connect4} from './connect4/';
 import {DealOrNoDeal} from './deal-or-no-deal/';
+import {GameHome} from './Home';
+import {MurderMystery} from './murder-mystery/';
+import {Poker} from './poker/';
+import {PokerNight} from './poker-night/';
+import {Slots} from './slots/';
+import {TicTacToe} from './tictactoe/';
 // functions
 import reduce from 'lodash/reduce';
 // Parents: App
@@ -24,14 +25,14 @@ export const Routes = (props) => {
 
   const paths = reduce(
     [
-      {name: 'pokernight', component: PokerNight},
-      {name: 'murder', component: MurderMystery},
-      {name: 'slots', component: Slots},
       {name: 'blackjack', component: BlackJack},
-      {name: 'tictactoe', component: TicTacToe},
-      // { name: 'poker', component: Poker },
       {name: 'connect4', component: Connect4},
       {name: 'deal', component: DealOrNoDeal},
+      {name: 'murder', component: MurderMystery},
+      {name: 'poker', component: Poker},
+      {name: 'pokernight', component: PokerNight},
+      {name: 'slots', component: Slots},
+      {name: 'tictactoe', component: TicTacToe},
     ],
     (acc, obj) => {
       const {name, component} = obj;

@@ -7,7 +7,7 @@ import red from '@material-ui/core/colors/red';
  * Card
  * -------------------------------------------------- */
 export const Card = (props) => {
-  const {suit, name} = props;
+  const {dropped, suit, name} = props;
   // handle click to for card
   const handleClick = () => {
     const {cardHandler, playerNo, handNo, cardNo} = props;
@@ -16,6 +16,7 @@ export const Card = (props) => {
   // checking color based off suits: ♣♦♥♠
   const cardColor = {
     color: suit === '♣' || suit === '♠' ? 'black' : red[500],
+    backgroundColor: dropped ? red[100] : 'white',
   };
 
   const styles = {
@@ -35,6 +36,7 @@ Card.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   cardHandler: types.func,
   cardNo: types.number.isRequired,
+  dropped: types.bool,
   handNo: types.number.isRequired,
   name: types.string.isRequired,
   playerNo: types.number.isRequired,

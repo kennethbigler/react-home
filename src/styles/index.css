@@ -43,9 +43,6 @@ h4 {
   display: block;
   margin: auto;
   max-width: 30px;
+  text-align: center;
   width: 100%;
-}
-.dropped {
-  margin-left: 5px;
-  margin-top: 20px;
 }

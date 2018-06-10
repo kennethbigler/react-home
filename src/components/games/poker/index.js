@@ -18,109 +18,8 @@ import {
 // functions
 import forEach from 'lodash/forEach';
 import includes from 'lodash/includes';
+import reduce from 'lodash/reduce';
 // Parents: Main
-
-const getHistogram = (hand) => {
-  // Histogram for the cards
-  let hist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  // put hand into the histrogram
-  forEach(hand, (card) => {
-    hist[card.rank - 2] += 1; // 2-14 - 2 = 0-12
-  });
-  return hist;
-};
-
-/**
- * Rankings:
- *   Straight Flush  8
- *   4 of a Kind     7
- *   Full House      6
- *   Flush           5
- *   Straight        4
- *   3 of a Kind     3
- *   2 Pair          2
- *   1 Pair          1
- *   High Card       0
- *
- * @param {Array} hand
- * @param {Object} hist
- * @return {number} value is a base 13 string, to be converted into base 10 for comparison
- */
-const rankHand = (hand, hist) => {
-  // iterate through and look for hands with multiple cards
-  if (includes(hist, 4)) {
-    return 7; // 4 of a kind
-  }
-  // Check for hands with sets of 3 or 2 cards
-  const has3 = includes(hist, 3);
-  const i = hist.indexOf(2);
-  const has2 = i !== -1;
-  if (has3 && has2) {
-    return 6; // full house
-  } else if (has3) {
-    return 3; // 3 of a kind
-  } else if (has2 && includes(hist, 2, i + 1)) {
-    return 2; // 2 pair
-  } else if (has2) {
-    return 1; // 1 pair
-  } else {
-    // all single cards
-    // check for straight
-    const isStraight =
-      hist.lastIndexOf(1) - hist.indexOf(1) === 4 || // (end - start = 4)
-      (hist[12] && hist[0] && hist[1] && hist[2] && hist[3]); // (A,2,3,4,5)
-    // check for flush
-    let isFlush = true;
-    for (let card of hand) {
-      if (card.suit !== hand[0].suit) {
-        isFlush = false;
-        break;
-      }
-    }
-    if (isStraight && isFlush) {
-      return 8; // straight flush
-    } else if (isFlush) {
-      return 5; // flush
-    } else if (isStraight) {
-      return 4; // straight
-    } else {
-      return 0; // high card
-    }
-  }
-};
-
-/**
- * Compare hands to see who wins
- * @param {array} hand - array of card objects
- * Hands is assigned a weight based on hand, then card values
- * Compare values to see who wins
- * @return {number} value is a base 13 string, to be converted into base 10 for comparison
- */
-// const evaluate = hand => {
-//   const hist = getHistogram(hand);
-//   const rank = rankHand(hand, hist);
-//
-//   let cards = [0, 0, 0, 0, 0]; // placeholder for card value
-//   let total = 0; // track number of cards counted
-//   let numCards = 4; // number of same cards in a set
-//   let i = 0; // iterator
-//   let last = -1; // track location of last in numCards set
-//
-//   // get card values and display them in order of importance
-//   while (total < 5) {
-//     const num = hist.indexOf(numCards, last + 1);
-//     if (num === -1) {
-//       numCards -= 1;
-//       last = -1;
-//     } else {
-//       cards[i] = num.toString(13);
-//       i += 1;
-//       total += numCards;
-//       last = num;
-//     }
-//   }
-//   return `${rank}${cards.reduce((a, c) => `${a}${c}`)}`;
-// };
 
 /* --------------------------------------------------
 * Poker
@@ -141,9 +40,13 @@ export class Pkr extends Component {
         id: types.number.isRequired,
         hands: types.arrayOf(
           types.shape({
-            rank: types.number.isRequired,
-            suit: types.string.isRequired,
-          })
+            cards: types.arrayOf(
+              types.shape({
+                weight: types.number.isRequired,
+                suit: types.string.isRequired,
+              })
+            ).isRequired,
+          }).isRequired
         ).isRequired,
       })
     ).isRequired,
@@ -162,6 +65,108 @@ export class Pkr extends Component {
     this.setNewGameRedux();
     this.state = this.getNewGameState();
   }
+
+  getHistogram = (hand) => {
+    // Histogram for the cards
+    let hist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    // put hand into the histrogram
+    forEach(hand, (card) => {
+      hist[card.weight - 2] += 1; // 2-14 - 2 = 0-12
+    });
+    return hist;
+  };
+
+  /**
+   * Rankings:
+   *   Straight Flush  8
+   *   4 of a Kind     7
+   *   Full House      6
+   *   Flush           5
+   *   Straight        4
+   *   3 of a Kind     3
+   *   2 Pair          2
+   *   1 Pair          1
+   *   High Card       0
+   *
+   * @param {Array} hand
+   * @param {Object} hist
+   * @return {number} value is a base 13 string, to be converted into base 10 for comparison
+   */
+  rankHand = (hand, hist) => {
+    // iterate through and look for hands with multiple cards
+    if (includes(hist, 4)) {
+      return 7; // 4 of a kind
+    }
+    // Check for hands with sets of 3 or 2 cards
+    const has3 = includes(hist, 3);
+    const i = hist.indexOf(2);
+    const has2 = i !== -1;
+    if (has3 && has2) {
+      return 6; // full house
+    } else if (has3) {
+      return 3; // 3 of a kind
+    } else if (has2 && includes(hist, 2, i + 1)) {
+      return 2; // 2 pair
+    } else if (has2) {
+      return 1; // 1 pair
+    } else {
+      // all single cards
+      // check for straight
+      const isStraight =
+        hist.lastIndexOf(1) - hist.indexOf(1) === 4 || // (end - start = 4)
+        (hist[12] && hist[0] && hist[1] && hist[2] && hist[3]); // (A,2,3,4,5)
+      // check for flush
+      let isFlush = true;
+      for (let card of hand) {
+        if (card.suit !== hand[0].suit) {
+          isFlush = false;
+          break;
+        }
+      }
+      if (isStraight && isFlush) {
+        return 8; // straight flush
+      } else if (isFlush) {
+        return 5; // flush
+      } else if (isStraight) {
+        return 4; // straight
+      } else {
+        return 0; // high card
+      }
+    }
+  };
+
+  /**
+   * Compare hands to see who wins
+   * @param {array} hand - array of card objects
+   * Hands is assigned a weight based on hand, then card values
+   * Compare values to see who wins
+   * @return {number} value is a base 13 string, to be converted into base 10 for comparison
+   */
+  evaluate = (hand) => {
+    const hist = this.getHistogram(hand);
+    const rank = this.rankHand(hand, hist);
+
+    let cards = [0, 0, 0, 0, 0]; // placeholder for card value
+    let total = 0; // track number of cards counted
+    let numCards = 4; // number of same cards in a set
+    let i = 0; // iterator
+    let last = -1; // track location of last in numCards set
+
+    // get card values and display them in order of importance
+    while (total < 5) {
+      const num = hist.indexOf(numCards, last + 1);
+      if (num === -1) {
+        numCards -= 1;
+        last = -1;
+      } else {
+        cards[i] = num.toString(13);
+        i += 1;
+        total += numCards;
+        last = num;
+      }
+    }
+    return `${rank}${reduce(cards, (a, c) => `${a}${c}`)}`;
+  };
 
   /**
    * function to generate the state of a new game
@@ -258,7 +263,7 @@ export class Pkr extends Component {
     // find hand indecies of individual cards
     for (let i = 0; i < hand.length; i += 1) {
       for (let c of cardVals) {
-        if (hand[i].rank - 2 === c) {
+        if (hand[i].weight - 2 === c) {
           discardCards.push(i);
           break;
         }
@@ -292,8 +297,8 @@ export class Pkr extends Component {
     */
   computer = () => {
     const hand = this.getHand();
-    const hist = getHistogram(hand);
-    const rank = rankHand(hand, hist);
+    const hist = this.getHistogram(hand);
+    const rank = this.rankHand(hand, hist);
 
     switch (rank) {
       case 0: // draw 4-5 on high card
@@ -331,6 +336,7 @@ export class Pkr extends Component {
     // toggle in array
     i === -1 ? cardsToDiscard.push(cardNo) : cardsToDiscard.splice(i, 1);
     // update state
+    console.log(cardsToDiscard);
     this.setState({cardsToDiscard});
   };
 
@@ -348,15 +354,17 @@ export class Pkr extends Component {
   // render standard board
   render() {
     const {turn, players} = this.props;
-    const {gameFunctions, hideHands} = this.state;
+    const {gameFunctions, hideHands, cardsToDiscard} = this.state;
     return (
       <div>
         <h1>Placeholder for Future Poker Project</h1>
         <GameTable
           betHandler={this.betHandler}
           cardClickHandler={this.cardClickHandler}
+          cardsToDiscard={cardsToDiscard}
           gameFunctions={gameFunctions}
           hideHands={hideHands}
+          isBlackJack={false}
           players={players}
           turn={turn}
         />
@@ -383,4 +391,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export const Poker = connect(mapStateToProps, mapDispatchToProps)(Pkr);
+export const Poker = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Pkr);

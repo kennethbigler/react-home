@@ -8,7 +8,15 @@ import map from 'lodash/map';
  * Board
  * -------------------------------------------------- */
 export const Board = (props) => {
-  const {players, turn, cardHandler, betHandler, hideHands} = props;
+  const {
+    betHandler,
+    cardHandler,
+    cardsToDiscard,
+    hideHands,
+    isBlackJack,
+    players,
+    turn,
+  } = props;
 
   return (
     <div className="board">
@@ -16,7 +24,9 @@ export const Board = (props) => {
         <Player
           betHandler={betHandler}
           cardHandler={cardHandler}
+          cardsToDiscard={cardsToDiscard}
           hideHands={hideHands}
+          isBlackJack={isBlackJack}
           key={`player${i}`}
           player={player}
           playerNo={i}
@@ -31,7 +41,9 @@ Board.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   betHandler: types.func,
   cardHandler: types.func,
+  cardsToDiscard: types.arrayOf(types.number),
   hideHands: types.bool,
+  isBlackJack: types.bool.isRequired,
   players: types.arrayOf(types.object).isRequired,
   turn: types.shape({
     player: types.number.isRequired,
