@@ -12,7 +12,6 @@ import {
   swapCards,
   newHand,
   payout,
-  updateBet,
   resetStatus,
 } from '../../../store/modules/players';
 // functions
@@ -36,7 +35,6 @@ export class Pkr extends Component {
       swapCards: types.func.isRequired,
       newHand: types.func.isRequired,
       payout: types.func.isRequired,
-      updateBet: types.func.isRequired,
       resetStatus: types.func.isRequired,
     }).isRequired,
     players: types.arrayOf(
@@ -354,17 +352,6 @@ export class Pkr extends Component {
   };
 
   /**
-   * function to be called on card clicks
-   * @param {number} id
-   * @param {Object} event
-   * @param {number} bet
-   * stateChanges: player
-   */
-  betHandler = (id, event, bet) => {
-    this.props.playerActions.updateBet(id, bet);
-  };
-
-  /**
    * Compare hands to see who wins
    * @param {array} hand - array of card objects
    * Hands is assigned a weight based on hand, then card values
@@ -423,7 +410,6 @@ export class Pkr extends Component {
       <div>
         <h1>5 Card Draw Poker</h1>
         <GameTable
-          betHandler={this.betHandler}
           cardClickHandler={this.cardClickHandler}
           cardsToDiscard={cardsToDiscard}
           gameFunctions={gameFunctions}
@@ -450,7 +436,7 @@ function mapDispatchToProps(dispatch) {
   return {
     turnActions: bindActionCreators({incrPlayerTurn, resetTurn}, dispatch),
     playerActions: bindActionCreators(
-      {swapCards, newHand, payout, updateBet, resetStatus},
+      {swapCards, newHand, payout, resetStatus},
       dispatch
     ),
   };
