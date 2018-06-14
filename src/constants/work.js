@@ -101,7 +101,7 @@ const workExp = [
     src: ciscoLogo,
     alt: 'Cisco Systems Logo',
     expr: [
-      `Processed and displayed data about network health using Java REST APIs and ${REACT}`,
+      'Developed web applications to process and display data on network health and analytics',
       'Created several Proof of Concept integrations with Cisco DNA-Center and several acquisitions',
       'Wrote Time Series Analysis Pipelines in JSON to create aggregations of network packets over a fixed or rolling window',
     ],
@@ -122,9 +122,9 @@ const workExp = [
     src: hoverboardLogo,
     alt: 'Hoverboard Logo',
     expr: [
-      `Developed web applications using ${ANGULAR} and the AWS SDK for JavaScript in the Browser`,
-      'Tested the Android App by creating realistic data simulators, and managed the team in India doing development',
-      'Programed applications to run the lights on the Hoverboard in a Python-like language',
+      'Developed multi-platform software tools to view riding statistics of the hoverboard stored in AWS',
+      'Managed a team in India creating the Android application, and tested the app by creating realistic data simulations',
+      'Programed the LED light patterns around the rim of the Hoverboard',
     ],
     tech: [
       ANGULAR,
@@ -151,9 +151,9 @@ const workExp = [
     src: teslaLogo,
     alt: 'Tesla Logo',
     expr: [
-      `Developed web applications using ${ANGULAR} and ASP.NET MVC with a SQL database`,
+      'Developed web applications to track all welds on the Model X and Model 3',
       'Gathered requirements, created new software tools, and improved tools already used by various departments',
-      'Redesigned intranet pages to improve accessibility and incorporate responsive design elements',
+      'Redesigned intranet pages to improve accessibility and incorporate elements of responsive design',
     ],
     tech: [ANGULAR, JS, 'ASP.NET 2.0 MVC', 'C#', 'SQL', BS3, HTML, SASS, CSS],
   },
@@ -171,8 +171,8 @@ const workExp = [
     src: vengefulLogo,
     alt: 'Midnight Game Club Logo',
     expr: [
+      'Developed functional HTML and CSS pages from the mockup images provided from the designers',
       'Managed a team of 3 other developers to meet requirements by the deadlines',
-      'Converted mockup images from the designers into functional HTML and CSS pages',
       'Designed improvements to the look and feel, and improve the overall experience of the game',
     ],
     tech: [JS, HTML, CSS],
@@ -191,11 +191,9 @@ const workExp = [
     src: netappLogo,
     alt: 'NetApp Logo',
     expr: [
-      `Developed web-based applications using ${ANGULAR} to enable various processes and train users`,
-      'Communicated status of projects with upper management and how to resolve roadblocks',
-      'Supported HR Intranet using WordPress; updated code, created graphics, and managed web projects',
-      'Designed and created new websites, migrated between CMS’s, and maintained existing websites',
-      'Created graphics using Adobe Creative Cloud',
+      'Developed web applications to enable various processes and managed task assignment on web projects',
+      'Presented status of projects with upper management and provided solutions on how to resolve roadblocks',
+      'Migrated between CMS’s, supported new WordPress Intranet, and generated graphics in Photoshop',
     ],
     tech: [ANGULAR, JS, HTML, CSS],
     skills: ['WordPress', 'Adobe Creative Cloud', 'Joomla', PM],
