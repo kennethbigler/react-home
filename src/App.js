@@ -8,6 +8,7 @@ import {Routes} from './components/Routes';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import blueGrey from '@material-ui/core/colors/blueGrey';
+import deepOrange from '@material-ui/core/colors/deepOrange';
 // redux
 import {configureStore, saveState} from './store/configureStore';
 import {Provider} from 'react-redux';
@@ -23,6 +24,7 @@ class App extends Component {
     const theme = createMuiTheme({
       palette: {
         primary: blueGrey,
+        secondary: deepOrange,
       },
     });
 
