@@ -3,7 +3,6 @@ app.factory('BridgeService', [
   '$log',
   '$deck',
   function($log, $deck) {
-    'use strict';
     let factory = {};
 
     factory.deal = function() {
@@ -28,7 +27,6 @@ app.controller('BridgeController', [
   'BridgeService',
   '$log',
   function($scope, $BS, $log) {
-    'use strict';
     let hands = [];
     let bids = [
       ['none'],

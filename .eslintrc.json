@@ -7,6 +7,7 @@
     "plugin:lodash/recommended",
     "eslint:recommended",
     "google",
+    "react-app",
     "plugin:react/recommended"
   ],
   "parser": "babel-eslint",

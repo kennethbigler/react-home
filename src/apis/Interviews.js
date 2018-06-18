@@ -231,7 +231,7 @@ const intersect = (A, B) => {
 
   while (i < A.length && j < B.length) {
     // console.log(i, j);
-    if (A[i] == B[j]) {
+    if (A[i] === B[j]) {
       intersect.push(A[i]);
       i += 1;
       j += 1;

@@ -33,6 +33,11 @@ class Home extends Component {
     ).isRequired,
   };
 
+  state = {
+    isBot: {},
+    players: {},
+  };
+
   // https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
   // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -44,11 +49,6 @@ class Home extends Component {
       ? {players, isBot: map(players, ['isBot', true])}
       : null;
   }
-
-  state = {
-    isBot: {},
-    players: {},
-  };
 
   styles = {
     namepad: {
@@ -134,4 +134,7 @@ const mapStateToProps = (state) => ({players: state.players});
 const mapDispatchToProps = (dispatch) => ({
   playerActions: bindActionCreators({updateName, updateBot}, dispatch),
 });
-export const GameHome = connect(mapStateToProps, mapDispatchToProps)(Home);
+export const GameHome = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);
