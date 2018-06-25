@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^1.2.1",
+    "@material-ui/core": "^1.2.3",
     "@material-ui/icons": "^1.1.0",
     "@material-ui/lab": "^1.0.0-alpha.5",
     "copy-to-clipboard": "^3.0.8",
@@ -24,9 +24,9 @@
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "eslint-config-react-app": "^2.1.0",
-    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-lodash": "^2.7.0",
-    "eslint-plugin-react": "^7.9.1",
+    "eslint-plugin-react": "^7.10.0",
     "react-scripts": "1.1.4"
   },
   "scripts": {
