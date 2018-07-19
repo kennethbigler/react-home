@@ -18,7 +18,7 @@ export const TravelMap = () => {
     );
   };
   const travelMap =
-    'https://d36tnp772eyphs.cloudfront.net/travel-maps/33db2343800e0aa83a1d102fc8d07f5a-1518204154/my-travel-map.png';
+    'https://d36tnp772eyphs.cloudfront.net/travel-maps/03fbeadaffd678a201bed82831651905-1532004844/my-travel-map.png';
 
   const styles = {
     img: {

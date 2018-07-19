@@ -9,10 +9,12 @@ export const NA = [
   'United States',
 ];
 export const EU = [
+  'Austria',
   'Denmark',
   'Estonia',
   'Finland',
   'France',
+  'Germany',
   'Gibraltar',
   'Greece',
   'Iceland',
