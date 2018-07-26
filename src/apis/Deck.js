@@ -90,7 +90,9 @@ export default {
   deal(num = 0) {
     // verify we have enough cards
     if (num > this.deck.length) {
+      /* eslint-disable no-console */
       console.error('Not Enough Cards Left');
+      /* eslint-enable no-console */
       return null;
     }
     // create array to return

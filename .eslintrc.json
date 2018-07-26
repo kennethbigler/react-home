@@ -30,15 +30,15 @@
   },
   "rules": {
     "max-len": "off",
-    "require-jsdoc": "off",
-    "no-invalid-this": "off",
-    "no-console": "warn",
     "no-alert": "warn",
+    "no-console": "warn",
+    "no-invalid-this": "off",
+    "no-param-reassign": "off",
     "no-lone-blocks": "error",
-    "react/no-did-mount-set-state": "warn",
-    "react/require-default-props": "off",
     "prefer-destructuring": ["error", { "array": false, "object": true }],
-    "no-param-reassign": "off"
+    "require-jsdoc": "off",
+    "react/no-did-mount-set-state": "warn",
+    "react/require-default-props": "off"
   },
   "globals": {}
 }
