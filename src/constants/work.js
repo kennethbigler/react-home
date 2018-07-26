@@ -1,11 +1,4 @@
 // images
-import hoverboardLogo from '../images/hoverboard_logo.png';
-import teslaLogo from '../images/tesla_motors_logo.svg.png';
-import vengefulLogo from '../images/vengefulgames_logo.png';
-import netappLogo from '../images/netapp_logo.svg.png';
-import SHFBLogo from '../images/SHFB_logo.jpg';
-import gigNowLogo from '../images/gignow.png';
-import ciscoLogo from '../images/cisco_logo.gif';
 // colors
 import cyan from '@material-ui/core/colors/cyan';
 import green from '@material-ui/core/colors/green';
@@ -18,6 +11,13 @@ import moment from 'moment';
 import reduce from 'lodash/reduce';
 import includes from 'lodash/includes';
 import forEach from 'lodash/forEach';
+import ciscoLogo from '../images/cisco_logo.gif';
+import gigNowLogo from '../images/gignow.png';
+import SHFBLogo from '../images/SHFB_logo.jpg';
+import netappLogo from '../images/netapp_logo.svg.png';
+import vengefulLogo from '../images/vengefulgames_logo.png';
+import teslaLogo from '../images/tesla_motors_logo.svg.png';
+import hoverboardLogo from '../images/hoverboard_logo.png';
 
 // Parents: Main
 const REACT = 'React.js';
@@ -211,19 +211,18 @@ const workExp = [
   },
 ];
 
-const getSummary = (key) =>
-  reduce(
-    workExp,
-    (acc, job) => {
-      forEach(job[key], (item) => {
-        if (!includes(acc, item)) {
-          acc.push(item);
-        }
-      });
-      return acc;
-    },
-    []
-  );
+const getSummary = key => reduce(
+  workExp,
+  (acc, job) => {
+    forEach(job[key], (item) => {
+      if (!includes(acc, item)) {
+        acc.push(item);
+      }
+    });
+    return acc;
+  },
+  [],
+);
 
 export const techSummary = getSummary('tech');
 export const skillSummary = getSummary('skills');

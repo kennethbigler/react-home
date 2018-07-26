@@ -1,9 +1,11 @@
-import {withStyles} from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 
-export const DarkTableCell = withStyles((theme) => ({
+const DarkTableCell = withStyles(theme => ({
   head: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
   },
 }))(TableCell);
+
+export default DarkTableCell;

@@ -4,73 +4,73 @@ import map from 'lodash/map';
 /* --------------------------------------------------
  * Deck
  * -------------------------------------------------- */
-export const Deck = {
+export default {
   // used to reset the cards
   newDeck: [
-    {name: '2', weight: 2, suit: '♣'},
-    {name: '3', weight: 3, suit: '♣'},
-    {name: '4', weight: 4, suit: '♣'},
-    {name: '5', weight: 5, suit: '♣'},
-    {name: '6', weight: 6, suit: '♣'},
-    {name: '7', weight: 7, suit: '♣'},
-    {name: '8', weight: 8, suit: '♣'},
-    {name: '9', weight: 9, suit: '♣'},
-    {name: '10', weight: 10, suit: '♣'},
-    {name: 'J', weight: 11, suit: '♣'},
-    {name: 'Q', weight: 12, suit: '♣'},
-    {name: 'K', weight: 13, suit: '♣'},
-    {name: 'A', weight: 14, suit: '♣'},
-    {name: '2', weight: 2, suit: '♦'},
-    {name: '3', weight: 3, suit: '♦'},
-    {name: '4', weight: 4, suit: '♦'},
-    {name: '5', weight: 5, suit: '♦'},
-    {name: '6', weight: 6, suit: '♦'},
-    {name: '7', weight: 7, suit: '♦'},
-    {name: '8', weight: 8, suit: '♦'},
-    {name: '9', weight: 9, suit: '♦'},
-    {name: '10', weight: 10, suit: '♦'},
-    {name: 'J', weight: 11, suit: '♦'},
-    {name: 'Q', weight: 12, suit: '♦'},
-    {name: 'K', weight: 13, suit: '♦'},
-    {name: 'A', weight: 14, suit: '♦'},
-    {name: '2', weight: 2, suit: '♥'},
-    {name: '3', weight: 3, suit: '♥'},
-    {name: '4', weight: 4, suit: '♥'},
-    {name: '5', weight: 5, suit: '♥'},
-    {name: '6', weight: 6, suit: '♥'},
-    {name: '7', weight: 7, suit: '♥'},
-    {name: '8', weight: 8, suit: '♥'},
-    {name: '9', weight: 9, suit: '♥'},
-    {name: '10', weight: 10, suit: '♥'},
-    {name: 'J', weight: 11, suit: '♥'},
-    {name: 'Q', weight: 12, suit: '♥'},
-    {name: 'K', weight: 13, suit: '♥'},
-    {name: 'A', weight: 14, suit: '♥'},
-    {name: '2', weight: 2, suit: '♠'},
-    {name: '3', weight: 3, suit: '♠'},
-    {name: '4', weight: 4, suit: '♠'},
-    {name: '5', weight: 5, suit: '♠'},
-    {name: '6', weight: 6, suit: '♠'},
-    {name: '7', weight: 7, suit: '♠'},
-    {name: '8', weight: 8, suit: '♠'},
-    {name: '9', weight: 9, suit: '♠'},
-    {name: '10', weight: 10, suit: '♠'},
-    {name: 'J', weight: 11, suit: '♠'},
-    {name: 'Q', weight: 12, suit: '♠'},
-    {name: 'K', weight: 13, suit: '♠'},
-    {name: 'A', weight: 14, suit: '♠'},
+    { name: '2', weight: 2, suit: '♣' },
+    { name: '3', weight: 3, suit: '♣' },
+    { name: '4', weight: 4, suit: '♣' },
+    { name: '5', weight: 5, suit: '♣' },
+    { name: '6', weight: 6, suit: '♣' },
+    { name: '7', weight: 7, suit: '♣' },
+    { name: '8', weight: 8, suit: '♣' },
+    { name: '9', weight: 9, suit: '♣' },
+    { name: '10', weight: 10, suit: '♣' },
+    { name: 'J', weight: 11, suit: '♣' },
+    { name: 'Q', weight: 12, suit: '♣' },
+    { name: 'K', weight: 13, suit: '♣' },
+    { name: 'A', weight: 14, suit: '♣' },
+    { name: '2', weight: 2, suit: '♦' },
+    { name: '3', weight: 3, suit: '♦' },
+    { name: '4', weight: 4, suit: '♦' },
+    { name: '5', weight: 5, suit: '♦' },
+    { name: '6', weight: 6, suit: '♦' },
+    { name: '7', weight: 7, suit: '♦' },
+    { name: '8', weight: 8, suit: '♦' },
+    { name: '9', weight: 9, suit: '♦' },
+    { name: '10', weight: 10, suit: '♦' },
+    { name: 'J', weight: 11, suit: '♦' },
+    { name: 'Q', weight: 12, suit: '♦' },
+    { name: 'K', weight: 13, suit: '♦' },
+    { name: 'A', weight: 14, suit: '♦' },
+    { name: '2', weight: 2, suit: '♥' },
+    { name: '3', weight: 3, suit: '♥' },
+    { name: '4', weight: 4, suit: '♥' },
+    { name: '5', weight: 5, suit: '♥' },
+    { name: '6', weight: 6, suit: '♥' },
+    { name: '7', weight: 7, suit: '♥' },
+    { name: '8', weight: 8, suit: '♥' },
+    { name: '9', weight: 9, suit: '♥' },
+    { name: '10', weight: 10, suit: '♥' },
+    { name: 'J', weight: 11, suit: '♥' },
+    { name: 'Q', weight: 12, suit: '♥' },
+    { name: 'K', weight: 13, suit: '♥' },
+    { name: 'A', weight: 14, suit: '♥' },
+    { name: '2', weight: 2, suit: '♠' },
+    { name: '3', weight: 3, suit: '♠' },
+    { name: '4', weight: 4, suit: '♠' },
+    { name: '5', weight: 5, suit: '♠' },
+    { name: '6', weight: 6, suit: '♠' },
+    { name: '7', weight: 7, suit: '♠' },
+    { name: '8', weight: 8, suit: '♠' },
+    { name: '9', weight: 9, suit: '♠' },
+    { name: '10', weight: 10, suit: '♠' },
+    { name: 'J', weight: 11, suit: '♠' },
+    { name: 'Q', weight: 12, suit: '♠' },
+    { name: 'K', weight: 13, suit: '♠' },
+    { name: 'A', weight: 14, suit: '♠' },
   ],
 
   // deck used
   deck: [],
 
   // immutable deck copy to new deck
-  getNewDeck: function() {
-    return map(this.newDeck, (card) => assign({}, card));
+  getNewDeck() {
+    return map(this.newDeck, card => assign({}, card));
   },
 
   // randomize order of the cards
-  shuffle: function() {
+  shuffle() {
     // reset the old deck
     this.deck = this.getNewDeck();
     // number of shuffles
@@ -87,14 +87,14 @@ export const Deck = {
   },
 
   // return an array of a specified length
-  deal: function(num = 0) {
+  deal(num = 0) {
     // verify we have enough cards
     if (num > this.deck.length) {
       console.error('Not Enough Cards Left');
-      return;
+      return null;
     }
     // create array to return
-    let cards = [];
+    const cards = [];
     // get the cards
     for (let i = 0; i < num; i += 1) {
       cards.push(this.deck.pop());
@@ -104,9 +104,7 @@ export const Deck = {
   },
 
   // sort functions by weight
-  rankSort: (a, b) => {
-    return a.weight - b.weight;
-  },
+  rankSort: (a, b) => a.weight - b.weight,
 
   // sort cards by suit
   suitSort: (a, b) => {

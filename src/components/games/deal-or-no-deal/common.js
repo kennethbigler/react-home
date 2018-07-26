@@ -5,7 +5,7 @@ import split from 'lodash/split';
  * @return {string} - $xxx,xxx,...
  */
 export const getMoneyText = (n) => {
-  let txt = split(n.toString(), '');
+  const txt = split(n.toString(), '');
   const e = txt[0] === '-' ? 1 : 0;
   for (let i = txt.length - 3; i > e; i -= 3) {
     txt.splice(i, 0, ',');
@@ -25,7 +25,7 @@ export const shuffle = (arr) => {
     const j = Math.floor(Math.random() * arr.length);
     const k = Math.floor(Math.random() * arr.length);
     // swap the briefcases
-    let temp = arr[j].loc;
+    const temp = arr[j].loc;
     arr[j].loc = arr[k].loc;
     arr[k].loc = temp;
   }

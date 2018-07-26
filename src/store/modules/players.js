@@ -2,7 +2,7 @@
 import assign from 'lodash/assign';
 import forEach from 'lodash/forEach';
 import find from 'lodash/find';
-import {Deck} from '../../apis/Deck';
+import Deck from '../../apis/Deck';
 import {
   removeItem,
   updateArrayInArray,
@@ -11,7 +11,7 @@ import {
 } from '../immutableHelpers';
 
 // initialState
-import initialState, {newPlayer} from '../initialState';
+import initialState, { newPlayer } from '../initialState';
 
 // --------------------     Actions     -------------------- //
 
@@ -37,7 +37,7 @@ const NEW_HAND = 'casino/player/NEW_HAND';
  */
 export function addPlayer(players, name) {
   const player = newPlayer(players.length, name);
-  return {type: ADD, player};
+  return { type: ADD, player };
 }
 
 /**
@@ -46,7 +46,7 @@ export function addPlayer(players, name) {
  * @return {Object}
  */
 export function removePlayer(id) {
-  return {type: REMOVE, id};
+  return { type: REMOVE, id };
 }
 
 /**
@@ -56,7 +56,7 @@ export function removePlayer(id) {
  * @return {Object}
  */
 export function updateName(id, name) {
-  return {type: UPDATE_NAME, player: {id, name}};
+  return { type: UPDATE_NAME, player: { id, name } };
 }
 
 /**
@@ -66,7 +66,7 @@ export function updateName(id, name) {
  * @return {Object}
  */
 export function updateBot(id, isBot = true) {
-  return {type: UPDATE_BOT, player: {id, isBot}};
+  return { type: UPDATE_BOT, player: { id, isBot } };
 }
 
 /**
@@ -76,7 +76,7 @@ export function updateBot(id, isBot = true) {
  * @return {Object}
  */
 export function updateBet(id = 0, bet = 5) {
-  return {type: UPDATE_BET, player: {id, bet}};
+  return { type: UPDATE_BET, player: { id, bet } };
 }
 
 /**
@@ -87,7 +87,7 @@ export function updateBet(id = 0, bet = 5) {
  * @return {Object}
  */
 export function payout(id, status, money) {
-  return {type: PAY_PLAYER, player: {id, status, money}};
+  return { type: PAY_PLAYER, player: { id, status, money } };
 }
 
 /**
@@ -101,8 +101,8 @@ export function payout(id, status, money) {
 export function splitHand(hands, id, hNum, weigh = null) {
   const hand = hands[hNum];
   // split the hands into 2
-  let hand1 = {cards: [hand.cards[0]]};
-  let hand2 = {cards: [hand.cards[1]]};
+  const hand1 = { cards: [hand.cards[0]] };
+  const hand2 = { cards: [hand.cards[1]] };
   // add 1 card each
   hand1.cards.push(Deck.deal(1)[0]);
   hand2.cards.push(Deck.deal(1)[0]);
@@ -110,9 +110,9 @@ export function splitHand(hands, id, hNum, weigh = null) {
   assign(hand1, weigh(hand1.cards));
   assign(hand2, weigh(hand2.cards));
   // update global hands
-  let newHands = updateArrayInArray(hands, hand2, hNum);
+  const newHands = updateArrayInArray(hands, hand2, hNum);
   newHands.splice(hNum, 0, hand1);
-  return {type: SPLIT_HAND, player: {id, hands: newHands}};
+  return { type: SPLIT_HAND, player: { id, hands: newHands } };
 }
 
 /**
@@ -126,9 +126,9 @@ export function splitHand(hands, id, hNum, weigh = null) {
  */
 export function drawCard(hands, id, hNum = 0, num = 1, weigh = null) {
   const cards = [...hands[hNum].cards, ...Deck.deal(num)];
-  const {weight, soft} = weigh ? weigh(cards) : {weight: 0};
-  const newHands = updateArrayInArray(hands, {cards, weight, soft}, hNum);
-  return {type: DRAW_CARD, player: {id, hands: newHands}};
+  const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
+  const newHands = updateArrayInArray(hands, { cards, weight, soft }, hNum);
+  return { type: DRAW_CARD, player: { id, hands: newHands } };
 }
 
 /**
@@ -141,10 +141,12 @@ export function drawCard(hands, id, hNum = 0, num = 1, weigh = null) {
  */
 export function swapCards(hands, id, cardsToDiscard) {
   const cards = [...hands[0].cards];
-  forEach(cardsToDiscard, (i) => (cards[i] = Deck.deal(1)[0]));
+  forEach(cardsToDiscard, (i) => {
+    [cards[i]] = Deck.deal(1);
+  });
   cards.sort(Deck.rankSort);
-  const newHand = updateArrayInArray(hands, {cards}, 0);
-  return {type: SWAP_CARD, player: {id, hands: newHand}};
+  const updatedHand = updateArrayInArray(hands, { cards }, 0);
+  return { type: SWAP_CARD, player: { id, hands: updatedHand } };
 }
 
 /**
@@ -156,8 +158,8 @@ export function swapCards(hands, id, cardsToDiscard) {
  */
 export function newHand(id = 0, num = 1, weigh = null) {
   const cards = Deck.deal(num).sort(Deck.rankSort);
-  const {weight, soft} = weigh ? weigh(cards) : {weight: 0};
-  return {type: NEW_HAND, player: {id, hands: [{cards, weight, soft}]}};
+  const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
+  return { type: NEW_HAND, player: { id, hands: [{ cards, weight, soft }] } };
 }
 
 /**
@@ -166,7 +168,15 @@ export function newHand(id = 0, num = 1, weigh = null) {
  * @return {Object}
  */
 export function resetStatus(id = 0) {
-  return {type: RESET, player: {id, status: '', hands: [], bet: 5}};
+  return {
+    type: RESET,
+    player: {
+      id,
+      status: '',
+      hands: [],
+      bet: 5,
+    },
+  };
 }
 
 // --------------------     Reducer     -------------------- //
@@ -183,7 +193,7 @@ export default function reducer(state = initialState.players, action) {
     case NEW_HAND:
       return updateObjectInArray(state, action.player, 'id');
     case PAY_PLAYER: {
-      const {id, status, money} = action.player;
+      const { id, status, money } = action.player;
       const player = find(state, ['id', id]);
 
       const updatedPlayer = assign({}, player, {

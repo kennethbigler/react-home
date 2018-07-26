@@ -18,7 +18,7 @@ export default {
     newPlayer(6),
     newPlayer(0, 'Dealer', true),
   ],
-  turn: {player: 0, hand: 0},
+  turn: { player: 0, hand: 0 },
   git: {
     storyID: '',
     branchPrefix: 'features',

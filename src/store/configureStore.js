@@ -1,5 +1,5 @@
-import {createStore} from 'redux';
-import rootReducer from './';
+import createStore from 'redux';
+import rootReducer from '.';
 import initialState from './initialState';
 
 /**
@@ -31,6 +31,4 @@ export const saveState = (state) => {
   }
 };
 
-export const configureStore = () => {
-  return createStore(rootReducer, loadState());
-};
+export const configureStore = () => createStore(rootReducer, loadState());

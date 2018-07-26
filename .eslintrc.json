@@ -1,14 +1,15 @@
 {
   "root": true,
-  "plugins": ["react", "lodash", "import"],
+  "plugins": ["react", "lodash", "import", "jsx-a11y"],
   "extends": [
+    "plugin:lodash/recommended",
+    "google",
     "plugin:import/warnings",
     "plugin:import/errors",
-    "plugin:lodash/recommended",
+    "plugin:jsx-a11y/recommended",
     "eslint:recommended",
-    "google",
-    "react-app",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "airbnb"
   ],
   "parser": "babel-eslint",
   "parserOptions": {
@@ -34,25 +35,10 @@
     "no-console": "warn",
     "no-alert": "warn",
     "no-lone-blocks": "error",
-    "jsx-quotes": ["error", "prefer-double"],
-    "react/jsx-boolean-value": "off",
-    "react/jsx-closing-bracket-location": "error",
-    "react/jsx-indent-props": ["error", 2],
-    "react/jsx-pascal-case": "error",
-    "react/sort-prop-types": "warn",
-    "react/jsx-sort-props": "warn",
-    "react/no-danger": "error",
     "react/no-did-mount-set-state": "warn",
-    "react/no-did-update-set-state": "warn",
-    "react/prefer-es6-class": "error",
-    "react/self-closing-comp": "error",
-    "react/sort-comp": "error",
-    "react/forbid-prop-types": [
-      "warn",
-      { "forbid": ["any", "array", "object"] }
-    ],
-    "react/jsx-wrap-multilines": "warn",
-    "import/extensions": "warn"
+    "react/require-default-props": "off",
+    "prefer-destructuring": ["error", { "array": false, "object": true }],
+    "no-param-reassign": "off"
   },
   "globals": {}
 }

@@ -1,4 +1,7 @@
+/* eslint-disable no-unused-expressions */
+
 import split from 'lodash/split';
+import forEach from 'lodash/forEach';
 
 /** Facebook - Task Execution Time with Cooldowns
  * given an array of tasks (each number represents a different task)
@@ -18,16 +21,16 @@ import split from 'lodash/split';
  * @return {number}
  */
 function doTasks(tasks, cooldown) {
-  let lastRunMap = {};
+  const lastRunMap = {};
   let ans = 0;
   // let debug = '';
   let currentTime = 0;
-  for (let task of tasks) {
+  forEach(tasks, (task) => {
     const lastRun = lastRunMap[task] || 0;
     const waitTime = lastRun + cooldown + 1 - currentTime;
     if (waitTime && lastRunMap[task] !== undefined) {
       ans += waitTime;
-      for (let x = 0; x < waitTime; x++) {
+      for (let x = 0; x < waitTime; x += 1) {
         // debug += ' -';
       }
       currentTime += waitTime;
@@ -36,7 +39,7 @@ function doTasks(tasks, cooldown) {
     // debug += ` ${task}`;
     lastRunMap[task] = currentTime;
     currentTime += 1;
-  }
+  });
   // console.log(debug);
   return ans;
 }
@@ -58,7 +61,13 @@ doTasks([1, 1, 3, 2, 1, 2, 1], 3);
  */
 function isAmbigram1(nums) {
   // create map
-  const flip = {0: 0, 1: 1, 6: 9, 9: 6, 8: 8};
+  const flip = {
+    0: 0,
+    1: 1,
+    6: 9,
+    9: 6,
+    8: 8,
+  };
   // verify characters are good
   for (let i = 0; i < Math.ceil(nums.length / 2); i += 1) {
     // failed check
@@ -94,43 +103,43 @@ isAmbigram1([1, 6, 1]);
 function isAmbigram2(word) {
   // create map
   const flip = {
-    '0': ['0'],
-    '1': ['1'],
-    '2': ['5'],
-    '5': ['2'],
-    '6': ['9'],
-    '9': ['6'],
-    '8': ['8'],
-    'a': ['e'],
-    'e': ['a'],
-    'b': ['q'],
-    'q': ['b'],
-    'd': ['p', 'P'],
-    'p': ['d'],
-    'P': ['d'],
-    'h': ['y', 'Y'],
-    'y': ['h'],
-    'Y': ['h'],
-    'l': ['l'],
-    'm': ['w'],
-    'w': ['m'],
-    'n': ['u', 'U'],
-    'u': ['n'],
-    'U': ['n'],
-    'o': ['o', 'O'],
-    'O': ['o', 'O'],
-    's': ['s', 'S'],
-    'S': ['s', 'S'],
-    't': ['t'],
-    'x': ['x', 'X'],
-    'X': ['x', 'X'],
-    'z': ['z', 'Z'],
-    'Z': ['z', 'Z'],
-    'H': ['H'],
-    'I': ['I'],
-    'M': ['W'],
-    'W': ['M'],
-    'N': ['N'],
+    0: ['0'],
+    1: ['1'],
+    2: ['5'],
+    5: ['2'],
+    6: ['9'],
+    9: ['6'],
+    8: ['8'],
+    a: ['e'],
+    e: ['a'],
+    b: ['q'],
+    q: ['b'],
+    d: ['p', 'P'],
+    p: ['d'],
+    P: ['d'],
+    h: ['y', 'Y'],
+    y: ['h'],
+    Y: ['h'],
+    l: ['l'],
+    m: ['w'],
+    w: ['m'],
+    n: ['u', 'U'],
+    u: ['n'],
+    U: ['n'],
+    o: ['o', 'O'],
+    O: ['o', 'O'],
+    s: ['s', 'S'],
+    S: ['s', 'S'],
+    t: ['t'],
+    x: ['x', 'X'],
+    X: ['x', 'X'],
+    z: ['z', 'Z'],
+    Z: ['z', 'Z'],
+    H: ['H'],
+    I: ['I'],
+    M: ['W'],
+    W: ['M'],
+    N: ['N'],
   };
 
   const chars = split(word, '');
@@ -179,7 +188,7 @@ isAmbigram2('161');
  * Input: [7,6,4,3,1]
  * Output: 0
  * Explanation: In this case, no transaction is done, i.e. max profit = 0.
- **/
+ * */
 /**
  * @param {number[]} prices
  * @return {number}
@@ -227,12 +236,12 @@ maxProfit([7, 6, 4, 3, 1]) === 0;
 const intersect = (A, B) => {
   let i = 0;
   let j = 0;
-  let intersect = [];
+  const ret = [];
 
   while (i < A.length && j < B.length) {
     // console.log(i, j);
     if (A[i] === B[j]) {
-      intersect.push(A[i]);
+      ret.push(A[i]);
       i += 1;
       j += 1;
     } else if (A[i] < B[j]) {
@@ -242,7 +251,7 @@ const intersect = (A, B) => {
     }
   }
 
-  return intersect;
+  return ret;
 };
 
 intersect([1, 2, 3, 3, 4, 5, 6], [3, 3, 5]) === [3, 3, 5];
@@ -324,14 +333,18 @@ const itr = (num, roman = '', round = 0) => {
 
   if (temp === 9) {
     return itr(num - 9 * d, roman + nmrl[0] + nmrl[2], round);
-  } else if (temp >= 5) {
+  }
+  if (temp >= 5) {
     return itr(num - 5 * d, roman + nmrl[1], round);
-  } else if (temp === 4) {
+  }
+  if (temp === 4) {
     return itr(num - 4 * d, roman + nmrl[0] + nmrl[1], round);
-  } else if (temp >= 1) {
+  }
+  if (temp >= 1) {
     // console.log(roman, n[round][0]);
     return itr(num - 1 * d, roman + nmrl[0], round);
   }
+  return null;
 };
 
 /**
@@ -416,7 +429,15 @@ const romanToInt = (str) => {
   const characters = split(str, '');
   // Symbol I  V  X   L   C    D    M
   // Value  1  5  10  50  100  500  1,000
-  const romanMap = {M: 1000, D: 500, C: 100, L: 50, X: 10, V: 5, I: 1};
+  const romanMap = {
+    M: 1000,
+    D: 500,
+    C: 100,
+    L: 50,
+    X: 10,
+    V: 5,
+    I: 1,
+  };
 
   for (let i = 0; i < characters.length; i += 1) {
     const currentCharacter = romanMap[characters[i]];
@@ -437,3 +458,4 @@ romanToInt('IV') === 4;
 romanToInt('IX') === 9;
 romanToInt('LVIII') === 58;
 romanToInt('MCMXCIV') === 1994;
+/* eslint-enable no-unused-expressions */

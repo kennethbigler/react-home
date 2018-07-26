@@ -1,4 +1,5 @@
 import red from '@material-ui/core/colors/red';
+
 const SCU = 'Santa Clara University';
 
 export default [

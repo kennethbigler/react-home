@@ -2,10 +2,10 @@
  * Bingo
  * -------------------------------------------------- */
 
-let called = [true];
+const called = [true];
 const getRand = () => Math.floor(Math.random() * 75) + 1;
 
-export const Bingo = {
+const Bingo = {
   getBall: () => {
     let ball = 0;
     while (called[ball]) {
@@ -15,3 +15,5 @@ export const Bingo = {
     return ball;
   },
 };
+
+export default Bingo;
