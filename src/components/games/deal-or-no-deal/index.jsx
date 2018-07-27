@@ -2,13 +2,13 @@
 import React, { Component } from 'react';
 import types from 'prop-types';
 // components
-import connect from 'react-redux';
-import bindActionCreators from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import forEach from 'lodash/forEach';
 import Modal from './Modal';
 import Board from './Board';
 import Header from './Header';
-import shuffle from './common';
+import { shuffle } from './common';
 // redux
 import { payout } from '../../../store/modules/players';
 // functions

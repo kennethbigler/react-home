@@ -56,7 +56,7 @@ function spin() {
   return machine[Math.floor(Math.random() * machine.length)];
 }
 
-export const SlotMachine = {
+export default {
   // used to display the payout table
   payoutTable: [
     {

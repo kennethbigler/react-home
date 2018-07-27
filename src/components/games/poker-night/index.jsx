@@ -5,6 +5,7 @@ import 'react-table/react-table.css';
 // functions
 import keys from 'lodash/keys';
 import forEach from 'lodash/forEach';
+import isNumber from 'lodash/isNumber';
 import includes from 'lodash/includes';
 import scores from './poker';
 // Parents: Main
@@ -53,7 +54,8 @@ const PokerNight = () => {
     // calculate error margin
     let err = 0;
     forEach(PN, (p) => {
-      err += Number.isNaN(p.scores[k]) ? 0 : p.scores[k];
+      const score = p.scores[k];
+      err += isNumber(score) ? score : 0;
     });
     totalErrorMargin += err;
 

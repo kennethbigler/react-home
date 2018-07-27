@@ -7,7 +7,7 @@ import ExpandableCard from '../../common/ExpandableCard';
 // Parents: Work
 
 /* render code for each degree */
-export const Degree = (props) => {
+const Degree = (props) => {
   const { degree } = props;
 
   const school = degree.school ? `${degree.school} - ` : '';
@@ -51,3 +51,5 @@ Degree.propTypes = {
     ).isRequired,
   }).isRequired,
 };
+
+export default Degree;

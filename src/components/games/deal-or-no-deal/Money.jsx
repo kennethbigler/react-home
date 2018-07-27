@@ -3,7 +3,7 @@ import types from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import amber from '@material-ui/core/colors/amber';
 import grey from '@material-ui/core/colors/grey';
-import getMoneyText from './common';
+import { getMoneyText } from './common';
 // Parents: Modal
 
 const Money = (props) => {

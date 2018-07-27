@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import types from 'prop-types';
 // components
 // redux
-import connect from 'react-redux';
-import bindActionCreators from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 // functions
 import forEach from 'lodash/forEach';
 import includes from 'lodash/includes';
@@ -27,7 +27,7 @@ const LAST_PLAYER = 5;
 /* --------------------------------------------------
 * Poker
 * -------------------------------------------------- */
-export class Pkr extends Component {
+class Poker extends Component {
   // Prop Validation
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
@@ -449,7 +449,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export const Poker = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Pkr);
+)(Poker);

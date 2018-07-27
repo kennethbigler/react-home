@@ -41,7 +41,7 @@ export default class BranchName extends Component {
    */
   getBranchPrefixOptions = () => {
     const { getSelectOptions } = this.props;
-    getSelectOptions(['chores', 'epics', 'features', 'fixes']);
+    return getSelectOptions(['chores', 'epics', 'features', 'fixes']);
   };
 
   /**
@@ -49,8 +49,13 @@ export default class BranchName extends Component {
    * @return {[Object]}
    */
   getCasePreferenceOptions = () => {
-    const getSelectOptions = this.props;
-    getSelectOptions(['snake_case', 'kebab-case', 'camelCase', 'No Changes']);
+    const { getSelectOptions } = this.props;
+    return getSelectOptions([
+      'snake_case',
+      'kebab-case',
+      'camelCase',
+      'No Changes',
+    ]);
   };
 
   /**

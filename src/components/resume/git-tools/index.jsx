@@ -68,18 +68,23 @@ class GitTools extends Component {
   render() {
     const { git, gitActions } = this.props;
     const { storyID, branchPrefix, casePreference } = git;
-    const { handleIDChange, handleCopy, getSelectOptions } = this;
 
     return (
       <div>
-        <Header {...{ gitTheme: deepOrange[600], handleIDChange, storyID }} />
+        <Header
+          {...{
+            gitTheme: deepOrange[600],
+            handleIDChange: this.handleIDChange,
+            storyID,
+          }}
+        />
         <BranchName
           {...{
             branchPrefix,
             casePreference,
-            getSelectOptions,
+            getSelectOptions: this.getSelectOptions,
             gitTheme: deepOrange[600],
-            handleCopy,
+            handleCopy: this.handleCopy,
             setBranchPrefix: gitActions.setBranchPrefix,
             setCasePreference: gitActions.setCasePreference,
             storyID,
@@ -87,9 +92,9 @@ class GitTools extends Component {
         />
         <CommitText
           {...{
-            getSelectOptions,
+            getSelectOptions: this.getSelectOptions,
             gitTheme: deepOrange[600],
-            handleCopy,
+            handleCopy: this.handleCopy,
             storyID,
           }}
         />

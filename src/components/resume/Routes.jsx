@@ -17,7 +17,7 @@ import PokerNight from '../games/poker-night';
 // functions
 // Parents: App
 
-export const Routes = (props) => {
+const Routes = (props) => {
   const { match, handleNav } = props;
   const { url } = match;
 
@@ -62,3 +62,5 @@ Routes.propTypes = {
     url: types.string.isRequired,
   }).isRequired,
 };
+
+export default Routes;

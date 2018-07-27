@@ -14,43 +14,31 @@ const Piece = (props) => {
 
   let color = null;
   switch (piece) {
-    case undefined: {
+    case undefined:
       color = null;
       break;
-    }
-    case 0: {
+    case 0:
       color = null;
       break;
-    }
-    case 1: {
+    case 1:
       color = red[500];
       break;
-    }
-    case 2: {
+    case 2:
       color = 'black';
       break;
-    }
-    default: {
+    default:
       color = lightGreen[600];
       break;
-    }
   }
-  // const color = {
-  //   backgroundColor: !piece
-  //     ? null
-  //     : piece === 1
-  //       ? red[500]
-  //       : piece === 2
-  //         ? 'black'
-  //         : lightGreen[600],
-  // };
+
+  const style = { backgroundColor: color };
 
   return !enabled ? (
-    <Button disabled mini style={color} variant="fab">
+    <Button disabled mini style={style} variant="fab">
       <div />
     </Button>
   ) : (
-    <Button mini onClick={onClick} style={color} variant="fab">
+    <Button mini onClick={onClick} style={style} variant="fab">
       <ContentAdd style={{ color: 'white' }} />
     </Button>
   );

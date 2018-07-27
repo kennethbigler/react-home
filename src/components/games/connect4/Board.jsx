@@ -9,17 +9,17 @@ import map from 'lodash/map';
 import Piece from './Piece';
 // Parents: GameBoard
 
-const styles = { cell: { padding: 1, textAlign: 'center' } };
-
 /* --------------------------------------------------
 * Board - for Connect4
 * -------------------------------------------------- */
 const Board = (props) => {
   const { board, turn, insert } = props;
+  // styles
+  const styles = { padding: 1, textAlign: 'center' };
   // generate code for Connect4 Board
   const gameBoard = map(board, (arr, i) => {
     const row = map(arr, (piece, j) => (
-      <TableCell key={`c4c${i},${j}`} style={styles.cell}>
+      <TableCell key={`c4c${i},${j}`} style={styles}>
         <Piece piece={piece} />
       </TableCell>
     ));
@@ -31,7 +31,7 @@ const Board = (props) => {
   }).reverse();
   // generate buttons to play pieces based off top board row
   const gameButtons = map(board[board.length - 1], (piece, i) => (
-    <TableCell key={`c4h${i}`} style={styles.cell}>
+    <TableCell key={`c4h${i}`} style={styles}>
       <Piece
         enabled={!piece}
         onClick={() => insert(i)}

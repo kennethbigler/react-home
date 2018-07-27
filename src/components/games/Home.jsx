@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import types from 'prop-types';
 // redux
-import connect from 'react-redux';
-import bindActionCreators from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 // material ui
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';

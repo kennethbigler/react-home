@@ -34,6 +34,7 @@
     "no-invalid-this": "off",
     "no-param-reassign": "off",
     "no-lone-blocks": "error",
+    "no-unused-expressions": "off",
     "prefer-destructuring": ["error", { "array": false, "object": true }],
     "require-jsdoc": "off",
     "react/no-did-mount-set-state": "warn",

@@ -2,7 +2,7 @@ import React from 'react';
 import types from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import getMoneyText from './common';
+import { getMoneyText } from './common';
 // Parents: DealOrNoDeal
 
 const Header = (props) => {

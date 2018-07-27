@@ -8,15 +8,17 @@
 // react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// components
-import connect from 'react-redux';
-import bindActionCreators from 'redux';
+// redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// functions
 import get from 'lodash/get';
 import forEach from 'lodash/forEach';
+// components
 import Popup from './Popup';
 import GameTable from '../gametable';
 import Deck from '../../../apis/Deck';
-// redux
+// redux functions
 import {
   incrHandTurn,
   incrPlayerTurn,
@@ -30,7 +32,6 @@ import {
   splitHand,
   updateBet,
 } from '../../../store/modules/players';
-// functions
 // Parents: Main
 
 // Dealer constant
@@ -81,7 +82,7 @@ function weighHand(hand = []) {
 * BlackJack
 * -------------------------------------------------- */
 
-class BJ extends Component {
+class BlackJack extends Component {
   // Prop Validation
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
@@ -305,15 +306,15 @@ class BJ extends Component {
     // track and find the winners
     const playerStats = { house: 0, payout: 0, status: '' };
     // helper functions
-    const win = (bet, mul = 1) => {
-      playerStats.house -= Math.floor(mul * bet);
-      playerStats.payout = Math.floor(mul * bet);
-      playerStats.status = 'win';
+    const win = (ps, bet, mul = 1) => {
+      ps.house -= Math.floor(mul * bet);
+      ps.payout = Math.floor(mul * bet);
+      ps.status = 'win';
     };
-    const loss = (bet) => {
-      playerStats.house += bet;
-      playerStats.payout = -bet;
-      playerStats.status = 'lose';
+    const loss = (ps, bet) => {
+      ps.house += bet;
+      ps.payout = -bet;
+      ps.status = 'lose';
     };
     // iterate
     forEach(players, (player) => {
@@ -477,7 +478,9 @@ class BJ extends Component {
    */
   cardClickHandler = (playerNo, handNo, cardNo) => {
     const { players } = this.props;
+    /* eslint-disable no-console */
     console.log(players[playerNo].hands[handNo].cards[cardNo]);
+    /* eslint-enable no-console */
   };
 
   /**
@@ -539,4 +542,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(BJ);
+)(BlackJack);

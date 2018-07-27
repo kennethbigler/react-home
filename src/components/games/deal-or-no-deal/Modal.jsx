@@ -7,7 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import map from 'lodash/map';
 import Money from './Money';
-import getMoneyText from './common';
+import { getMoneyText } from './common';
 // Parents: DealOrNoDeal
 
 const styles = {
@@ -18,9 +18,9 @@ const genMoneyCols = (arr, start, stop = arr.length) => map(arr.slice(start, sto
 
 const Modal = (props) => {
   const {
-    deal, noDeal, offer, open, swap, numCases,
+    deal, noDeal, offer, open, swap, numCases, board: imBoard,
   } = props;
-  const board = [...props.board].sort((a, b) => a.val - b.val);
+  const board = [...imBoard].sort((a, b) => a.val - b.val);
 
   // columns displaying money values left
   const lhs = genMoneyCols(board, 0, board.length / 2);

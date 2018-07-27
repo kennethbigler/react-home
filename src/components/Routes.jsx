@@ -8,7 +8,7 @@ import ResumeRoutes from './resume/Routes';
 import GameRoutes from './games/Routes';
 // Parents: App
 
-export class AppRoutes extends Component {
+export class Routes extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     history: types.shape({
@@ -40,4 +40,4 @@ export class AppRoutes extends Component {
   }
 }
 
-export const Routes = withRouter(AppRoutes);
+export default withRouter(Routes);

@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import types from 'prop-types';
 // redux
-import connect from 'react-redux';
-import bindActionCreators from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 // components
 // material ui
 import Button from '@material-ui/core/Button';

@@ -8,10 +8,10 @@ import CardContent from '@material-ui/core/CardContent';
 import Collapse from '@material-ui/core/Collapse';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import withTheme from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 
-export class EC extends Component {
+class ExpandableCard extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     backgroundColor: types.string,
@@ -92,4 +92,4 @@ export class EC extends Component {
   }
 }
 
-export const ExpandableCard = withTheme()(EC);
+export default withTheme()(ExpandableCard);

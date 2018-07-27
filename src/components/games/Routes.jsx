@@ -19,7 +19,7 @@ import TicTacToe from './tictactoe';
 // functions
 // Parents: App
 
-export const Routes = (props) => {
+const Routes = (props) => {
   const { match, handleNav } = props;
   const { url } = match;
 
@@ -29,8 +29,8 @@ export const Routes = (props) => {
       { name: 'connect4', component: Connect4 },
       { name: 'deal', component: DealOrNoDeal },
       { name: 'murder', component: MurderMystery },
-      { name: 'poker', component: Poker },
       { name: 'pokernight', component: PokerNight },
+      { name: 'poker', component: Poker },
       { name: 'slots', component: Slots },
       { name: 'tictactoe', component: TicTacToe },
     ],
@@ -66,3 +66,5 @@ Routes.propTypes = {
     url: types.string.isRequired,
   }).isRequired,
 };
+
+export default Routes;
