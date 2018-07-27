@@ -33,7 +33,7 @@ export default class Popup extends Component {
         </Button>
         <Dialog onClose={this.handleClose} open={open}>
           <DialogTitle>
-Blackjack Rules
+            Blackjack Rules
           </DialogTitle>
           <DialogContent>
             <Rules />

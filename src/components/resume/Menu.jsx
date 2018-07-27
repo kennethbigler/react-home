@@ -39,10 +39,10 @@ const Menu = (props) => {
       {menu}
       <Divider />
       <MenuItem onClick={github}>
-GitHub
+        GitHub
       </MenuItem>
       <MenuItem onClick={linkedin}>
-LinkedIn
+        LinkedIn
       </MenuItem>
       <Divider />
       <br />

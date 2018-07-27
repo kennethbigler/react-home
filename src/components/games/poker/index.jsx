@@ -409,7 +409,7 @@ class Poker extends Component {
     return (
       <div>
         <h1>
-5 Card Draw Poker
+          5 Card Draw Poker
         </h1>
         <GameTable
           cardClickHandler={this.cardClickHandler}

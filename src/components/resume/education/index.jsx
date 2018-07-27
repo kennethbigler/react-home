@@ -11,7 +11,7 @@ import classes from '../../../constants/classes';
 const Education = () => (
   <div>
     <h1>
-Education and Extracurriculars
+      Education and Extracurriculars
     </h1>
     {map(classes, d => <Degree key={d.degree} degree={d} />)}
   </div>

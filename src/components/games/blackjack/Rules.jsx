@@ -7,7 +7,7 @@ import React from 'react';
 const Rules = () => (
   <div>
     <h4>
-Objective:
+      Objective:
     </h4>
     <p>
       Get as close to 21 as you can, without going over. Each card is worth
@@ -16,7 +16,7 @@ Objective:
     </p>
     <br />
     <h4>
-Blackjack:
+      Blackjack:
     </h4>
     <p>
       Delt an Ace and a 10/J/Q/K, this casino pays 3:2, but Vegas casinos do
@@ -24,21 +24,21 @@ Blackjack:
     </p>
     <br />
     <h4>
-Hit:
+      Hit:
     </h4>
     <p>
-Get an extra card which adds to your total.
+      Get an extra card which adds to your total.
     </p>
     <br />
     <h4>
-Stay:
+      Stay:
     </h4>
     <p>
-Move to the next player.
+      Move to the next player.
     </p>
     <br />
     <h4>
-Double Down:
+      Double Down:
     </h4>
     <p>
       This option is available with a two card hand; before another card has
@@ -47,7 +47,7 @@ Double Down:
     </p>
     <br />
     <h4>
-Splitting Pairs:
+      Splitting Pairs:
     </h4>
     <p>
       When you are dealt a pair of cards of the same rank, you are allowed to
@@ -56,7 +56,7 @@ Splitting Pairs:
     </p>
     <br />
     <h4>
-Resplitting:
+      Resplitting:
     </h4>
     <p>
       When you get additional pairs in the first two cards of a hand you can
@@ -65,7 +65,7 @@ Resplitting:
     </p>
     <br />
     <h4>
-Splitting Aces:
+      Splitting Aces:
     </h4>
     <p>
       Player is limited to drawing only one additional card on each Ace. If you
@@ -75,25 +75,25 @@ Splitting Aces:
     </p>
     <br />
     <h4>
-Other Rules:
+      Other Rules:
     </h4>
     <ul>
       <li>
-Dealer hits on 16 or less and soft 17
+        Dealer hits on 16 or less and soft 17
       </li>
       <li>
-Minimum bet is $5
+        Minimum bet is $5
       </li>
     </ul>
     <h4>
-AI Algorithm:
+      AI Algorithm:
     </h4>
     <ul>
       <li>
-House Rules: 6 decks, H17, DAS, No Surrender, Peek
+        House Rules: 6 decks, H17, DAS, No Surrender, Peek
       </li>
       <li>
-Estimated casino edge for these rules: 0.66%
+        Estimated casino edge for these rules: 0.66%
       </li>
     </ul>
   </div>

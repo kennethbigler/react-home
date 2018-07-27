@@ -184,7 +184,7 @@ class CommitText extends Component {
                     onChange={this.handleFinishesToggle}
                     value="Finishes User Story"
                   />
-)}
+                )}
                 label="Finishes User Story"
               />
             </Grid>
@@ -196,7 +196,7 @@ class CommitText extends Component {
                     onChange={this.handleGitCommitToggle}
                     value="Add git commit -m"
                   />
-)}
+                )}
                 label="Add git commit -m"
               />
             </Grid>

@@ -22,7 +22,7 @@ export default class Skills extends Component {
       <ExpandableCard title="Skills">
         <div style={sidePadding}>
           <h3>
-Summary of Skills:
+            Summary of Skills:
           </h3>
           <ul>
             <li>
@@ -44,12 +44,12 @@ Summary of Skills:
           </ul>
           <hr />
           <h3>
-Technologies:
+            Technologies:
           </h3>
           {this.getCSV(techSummary)}
           <hr />
           <h3>
-Skills:
+            Skills:
           </h3>
           {this.getCSV(skillSummary)}
         </div>

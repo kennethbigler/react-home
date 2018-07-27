@@ -37,6 +37,8 @@
     "no-unused-expressions": "off",
     "prefer-destructuring": ["error", { "array": false, "object": true }],
     "require-jsdoc": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
     "react/no-did-mount-set-state": "warn",
     "react/require-default-props": "off"
   },

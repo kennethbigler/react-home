@@ -65,8 +65,7 @@ const MurderMystery = () => {
   return (
     <div>
       <h2>
-        Murder at
-        {CASINO}
+        {`Murder at ${CASINO}`}
       </h2>
       <ReactTable
         className="-striped -highlight"

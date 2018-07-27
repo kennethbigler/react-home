@@ -15,7 +15,7 @@ const GameBoard = (props) => {
   return (
     <div>
       <h1>
-Welcome to Ken&apos;s Connect4 Game
+        Welcome to Ken&apos;s Connect4 Game
       </h1>
       <Paper
         elevation={2}

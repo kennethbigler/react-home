@@ -8,7 +8,7 @@ import TimelineCard from '../work/TimelineCard';
 const Summary = () => (
   <div>
     <h1>
-Summary
+      Summary
     </h1>
     <hr />
     <Info />

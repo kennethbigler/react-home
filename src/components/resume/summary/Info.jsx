@@ -50,26 +50,26 @@ export default class Info extends Component {
               <TableBody>
                 <TableRow>
                   <TableCell>
-Location
+                    Location
                   </TableCell>
                   <TableCell>
-Mountain View, CA
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-Interests
-                  </TableCell>
-                  <TableCell>
-Computer Software
+                    Mountain View, CA
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
-Volunteer Work
+                    Interests
                   </TableCell>
                   <TableCell>
-Second Harvest Food Bank
+                    Computer Software
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    Volunteer Work
+                  </TableCell>
+                  <TableCell>
+                    Second Harvest Food Bank
                   </TableCell>
                 </TableRow>
               </TableBody>

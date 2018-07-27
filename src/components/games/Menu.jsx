@@ -44,7 +44,7 @@ const Menu = (props) => {
   return (
     <div>
       <MenuItem onClick={home}>
-Back to Resume
+        Back to Resume
       </MenuItem>
       {menu}
     </div>

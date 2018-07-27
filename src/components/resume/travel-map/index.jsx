@@ -75,7 +75,7 @@ const TravelMap = () => {
   return (
     <div>
       <h1>
-Ken&apos;s Travel Map
+        Ken&apos;s Travel Map
       </h1>
       <hr />
       <img
@@ -85,7 +85,7 @@ Ken&apos;s Travel Map
         style={styles.img}
       />
       <h3 style={styles.margins}>
-Ken has been to:
+        Ken has been to:
       </h3>
       <Table>
         <TableHead>

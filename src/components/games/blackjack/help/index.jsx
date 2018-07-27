@@ -74,7 +74,7 @@ const Help = () => {
         <TableHead>
           <TableRow>
             <TableCell colSpan="11">
-Key
+              Key
             </TableCell>
           </TableRow>
         </TableHead>

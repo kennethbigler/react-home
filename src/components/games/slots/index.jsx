@@ -91,7 +91,7 @@ class Slots extends Component {
     return (
       <div>
         <h1>
-Welcome to Ken&apos;s Casino Slot Machine
+          Welcome to Ken&apos;s Casino Slot Machine
         </h1>
         <Grid container spacing={16} style={{ marginTop: '2em' }}>
           <Grid item sm={6} xs={12}>
@@ -118,10 +118,10 @@ Welcome to Ken&apos;s Casino Slot Machine
               <TableHead>
                 <TableRow>
                   <DarkTableCell>
-Player
+                    Player
                   </DarkTableCell>
                   <DarkTableCell>
-Money
+                    Money
                   </DarkTableCell>
                 </TableRow>
               </TableHead>
@@ -136,7 +136,7 @@ Money
                 </TableRow>
                 <TableRow>
                   <TableCell>
-House
+                    House
                   </TableCell>
                   <TableCell>
                     {`$${dealer.money}`}
@@ -150,10 +150,10 @@ House
               <TableHead>
                 <TableRow>
                   <DarkTableCell>
-Slot Roll
+                    Slot Roll
                   </DarkTableCell>
                   <DarkTableCell>
-Payout
+                    Payout
                   </DarkTableCell>
                 </TableRow>
               </TableHead>

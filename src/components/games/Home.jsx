@@ -78,7 +78,7 @@ class Home extends Component {
     return (
       <div>
         <h1>
-Welcome to my ReactJS Game Projects
+          Welcome to my ReactJS Game Projects
         </h1>
         <h2>
           This site was created to learn, check out the
@@ -94,12 +94,12 @@ Welcome to my ReactJS Game Projects
           <Grid container spacing={16}>
             <Grid item xs={9}>
               <h4>
-Edit Player Names
+                Edit Player Names
               </h4>
             </Grid>
             <Grid item xs={3}>
               <h4>
-Is Bot?
+                Is Bot?
               </h4>
             </Grid>
           </Grid>

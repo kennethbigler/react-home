@@ -12,7 +12,7 @@ import workExp from '../../../constants/work';
 const Work = () => (
   <div>
     <h1>
-Work Experience
+      Work Experience
     </h1>
     <TimelineCard workExp={workExp} />
     {map(workExp, job => <Job key={job.company} job={job} />)}

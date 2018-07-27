@@ -36,7 +36,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "./deploy",
-    "eslint": "clear; ./node_modules/.bin/eslint src/. --fix"
+    "deploy": "./deploy.sh",
+    "eslint": "./node_modules/.bin/eslint src/. --fix"
   }
 }

@@ -11,7 +11,7 @@ const Header = (props) => {
   return (
     <div>
       <h1>
-Git Tools
+        Git Tools
       </h1>
       <TextField
         InputLabelProps={{ style: { color: gitTheme } }}
