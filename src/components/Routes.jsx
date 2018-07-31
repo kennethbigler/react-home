@@ -8,7 +8,7 @@ import ResumeRoutes from './resume/Routes';
 import GameRoutes from './games/Routes';
 // Parents: App
 
-export class Routes extends Component {
+class Routes extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     history: types.shape({

@@ -1,5 +1,5 @@
 // ReactJS
-import React, { Component } from 'react';
+import React from 'react';
 // routing
 import { HashRouter } from 'react-router-dom';
 // my components
@@ -19,26 +19,24 @@ const store = configureStore();
 store.subscribe(throttle(() => saveState(store.getState()), 1000));
 
 /** App class that wraps higher level components of the application */
-class App extends Component {
-  render() {
-    const theme = createMuiTheme({
-      palette: {
-        primary: blueGrey,
-        secondary: deepOrange,
-      },
-    });
+const App = () => {
+  const theme = createMuiTheme({
+    palette: {
+      primary: blueGrey,
+      secondary: deepOrange,
+    },
+  });
 
-    return (
-      <Provider store={store}>
-        <MuiThemeProvider theme={theme}>
-          <CssBaseline />
-          <HashRouter>
-            <Routes />
-          </HashRouter>
-        </MuiThemeProvider>
-      </Provider>
-    );
-  }
-}
+  return (
+    <Provider store={store}>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <HashRouter>
+          <Routes />
+        </HashRouter>
+      </MuiThemeProvider>
+    </Provider>
+  );
+};
 
 export default App;
