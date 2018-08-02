@@ -4,15 +4,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^1.4.1",
+    "@material-ui/core": "^1.4.2",
     "@material-ui/icons": "^1.1.0",
-    "@material-ui/lab": "^1.0.0-alpha.7",
+    "@material-ui/lab": "^1.0.0-alpha.8",
     "copy-to-clipboard": "^3.0.8",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "prop-types": "^15.6.2",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
     "react-newline-to-break": "^1.0.6",
     "react-pdf": "^3.0.5",
     "react-redux": "^5.0.7",
@@ -35,9 +35,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "lint": "react-scripts run lint",
     "eject": "react-scripts eject",
     "deploy": "./deploy.sh",
     "eslint": "./node_modules/.bin/eslint src/** --fix",
-    "lint": "react-scripts run lint"
+    "qlint": "./node_modules/.bin/eslint src/** --fix --quiet"
   }
 }
