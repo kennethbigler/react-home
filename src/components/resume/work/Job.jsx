@@ -98,14 +98,14 @@ export default class Job extends Component {
             {!isEmpty(job.tech) && (
               <div>
                 <hr />
-                Technologies:
+                Technologies:&nbsp;
                 {this.getCSV(job.tech)}
               </div>
             )}
             {!isEmpty(job.skills) && (
               <div>
                 <hr />
-                Skills:
+                Skills:&nbsp;
                 {this.getCSV(job.skills)}
               </div>
             )}

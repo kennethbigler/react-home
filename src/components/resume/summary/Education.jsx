@@ -29,16 +29,14 @@ export default class Education extends Component {
             </li>
             )}
             {d.graduation && (
-              <li>
-                Completion:
-                {d.graduation}
-              </li>
+            <li>
+              {`Completion: ${d.graduation}`}
+            </li>
             )}
             {d.gpa && (
-              <li>
-                GPA:
-                {d.gpa}
-              </li>
+            <li>
+              {`GPA: ${d.gpa}`}
+            </li>
             )}
           </ul>
         </div>

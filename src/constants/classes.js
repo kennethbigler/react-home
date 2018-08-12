@@ -1,4 +1,5 @@
 import red from '@material-ui/core/colors/red';
+import indigo from '@material-ui/core/colors/indigo';
 
 const SCU = 'Santa Clara University';
 
@@ -9,7 +10,7 @@ export default [
     location: 'Santa Clara, CA',
     degree: 'Master of Science',
     major: 'Computer Engineering',
-    minor: 'With an Emphasis in Software Engineering',
+    minor: 'with an Emphasis in Software Engineering',
     graduation: 'December 2016',
     gpa: 3.7,
     years: [
@@ -71,7 +72,7 @@ export default [
     location: 'Santa Clara, CA',
     degree: 'Bachelor of Science',
     major: 'Computer Science & Engineering',
-    minor: 'With a Minor in Mathematics',
+    minor: 'with a Minor in Mathematics',
     graduation: 'June 2015',
     honors: 'Dean’s List: Sept. 2012 – Graduation',
     gpa: 3.7,
@@ -226,8 +227,8 @@ export default [
           {
             quarter: 'Summer',
             classes: [
-              'Astronomy Laboratory and Observational Astronomy',
-              'Introduction to International Relations',
+              'PHYS 50: Astronomy Laboratory and Observational Astronomy',
+              'POL 1Z: Introduction to International Relations',
             ],
           },
         ],
@@ -336,6 +337,134 @@ export default [
               'Salsa Dancing',
               'International Travel',
               'Video Games (DOTA 2)',
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    school: "The King's Academy",
+    color: indigo[500],
+    location: 'Sunnyvale, CA',
+    degree: 'High School Diploma',
+    graduation: 'June 2011',
+    honors:
+      'National Honors Society, California Scholarship Federation, Principal’s Honor Roll',
+    gpa: 4.16,
+    years: [
+      {
+        year: 'Freshman Year',
+        quarters: [
+          {
+            quarter: 'Fall Semester (2007)',
+            classes: [
+              'Algebra 2 Honors',
+              'Biology Honors',
+              'English 9 Honors',
+              'French 2',
+              'Bible 9',
+              'Physical Education',
+              'Broadcasting',
+            ],
+          },
+          {
+            quarter: 'Spring Semester (2008)',
+            classes: [
+              'Algebra 2 Honors',
+              'Biology Honors',
+              'English 9 Honors',
+              'French 2',
+              'Art Ceramics',
+              'Physical Education',
+              'Broadcasting',
+            ],
+          },
+        ],
+      },
+      {
+        year: 'Sophomore Year',
+        quarters: [
+          {
+            quarter: 'Fall Semester (2008)',
+            classes: [
+              'Advanced Math Honors',
+              'Chemistry',
+              'World History & Geography Honors',
+              'English 10 Honors',
+              'French 3',
+              'Physical Education',
+              'Study Hall',
+            ],
+          },
+          {
+            quarter: 'Spring Semester (2009)',
+            classes: [
+              'Advanced Math Honors',
+              'Chemistry',
+              'World History & Geography Honors',
+              'English 10 Honors',
+              'French 3',
+              'Physical Education',
+              'Bible 10',
+            ],
+          },
+        ],
+      },
+      {
+        year: 'Junior Year',
+        quarters: [
+          {
+            quarter: 'Fall Semester (2009)',
+            classes: [
+              'Calculus',
+              'Physics Honors',
+              'AP US History',
+              'English 11 Honors',
+              'French 4',
+              'Bible 11',
+              'Study Hall',
+            ],
+          },
+          {
+            quarter: 'Spring Semester (2010)',
+            classes: [
+              'Calculus',
+              'Physics Honors',
+              'AP US History',
+              'English 11 Honors',
+              'French 4',
+              'Bible 11',
+              'Study Hall',
+            ],
+          },
+        ],
+      },
+      {
+        year: 'Senior Year',
+        quarters: [
+          {
+            quarter: 'Fall Semester (2010)',
+            classes: [
+              'AP Calculus BC',
+              'Anatomy',
+              'Government & Economics Honors',
+              'English 12',
+              'French 5',
+              'Bible 12',
+              'Film Studies',
+            ],
+          },
+          {
+            quarter: 'Spring Semester (2011)',
+            classes: [
+              'AP Calculus BC',
+              'Anatomy',
+              'Government & Economics Honors',
+              'English 12',
+              'French 5',
+              'Bible 12',
+              'Film Studies',
             ],
           },
         ],

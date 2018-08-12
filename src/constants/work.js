@@ -18,8 +18,9 @@ import netappLogo from '../images/netapp_logo.svg.png';
 import vengefulLogo from '../images/vengefulgames_logo.png';
 import teslaLogo from '../images/tesla_motors_logo.svg.png';
 import hoverboardLogo from '../images/hoverboard_logo.png';
-
 // Parents: Main
+
+// tech constants
 const REACT = 'React.js';
 const REACT15 = 'React.js 15.X';
 const REACT16 = 'React.js 16.X';
@@ -34,6 +35,10 @@ const BS4 = 'Bootstrap 4';
 const RR4 = 'React Router 4';
 const JASMINE = 'Jasmine 2.99';
 const SASS = 'SASS/SCSS';
+const MOMENT = 'Moment.js 2.22';
+const ESLINT = 'ESLint';
+
+// skills constants
 const PM = 'Project Management';
 const INT = 'Managed Intern';
 
@@ -52,21 +57,26 @@ const workExp = [
     src: gigNowLogo,
     alt: 'GigNow Logo',
     expr: [
-      `Help build startup ventures within EY, leveraging agile methodologies and development primarily in ${REACT}`,
+      `Help build startup ventures within EY, leveraging agile methodologies and developing primarily in ${REACT}`,
+      'Add new features which helped scale the application to over double its Users, Contracts, and Countries',
+      'Implement React Hot Reloading, Mixpanel Data Tracking, and stricter ESLint configuration to improve code style',
     ],
     tech: [
       REACT16,
       RR4,
       'Recompose 0.27',
       'Mixpanel Browser 2.22',
+      'React Hot Loader',
+      MOMENT,
       JASMINE,
+      ESLINT,
       ES2016,
       JS,
       HTML,
       SASS,
       CSS,
     ],
-    skills: [],
+    skills: [INT],
   },
   {
     isJob: true,
@@ -105,7 +115,7 @@ const workExp = [
       'Created several Proof of Concept integrations with Cisco DNA-Center and several acquisitions',
       'Wrote Time Series Analysis Pipelines in JSON to create aggregations of network packets over a fixed or rolling window',
     ],
-    tech: [REACT15, RR4, ES2015, JS, 'Java 8', BS4, HTML, SASS, CSS],
+    tech: [REACT15, RR4, 'Java 8', ESLINT, ES2015, JS, HTML, SASS, CSS, BS4],
     skills: [INT],
   },
   {
@@ -129,12 +139,13 @@ const workExp = [
     tech: [
       ANGULAR,
       'AWS SDK for JavaScript in the Browser',
-      JS,
       'Python 2',
-      BS3,
+      MOMENT,
+      JS,
       HTML,
       SASS,
       CSS,
+      BS3,
     ],
     skills: [PM, INT],
   },
@@ -152,10 +163,10 @@ const workExp = [
     alt: 'Tesla Logo',
     expr: [
       'Developed web applications to track all welds on the Model X and Model 3',
-      'Gathered requirements, created new software tools, and improved tools already used by various departments',
-      'Redesigned intranet pages to improve accessibility and incorporate elements of responsive design',
+      'Improve the accessibility and responsive design of existing web applications and websites',
+      'Gathered requirements, and created new software tools to track weld joints on Tesla Models, improving vehicle safety',
     ],
-    tech: [ANGULAR, JS, 'ASP.NET 2.0 MVC', 'C#', 'SQL', BS3, HTML, SASS, CSS],
+    tech: [ANGULAR, 'ASP.NET 2.0 MVC', 'C#', 'SQL', JS, HTML, SASS, CSS, BS3],
   },
   {
     isJob: true,
