@@ -213,6 +213,7 @@ const maxProfit = (prices) => {
 
 maxProfit([7, 1, 5, 3, 6, 4]) === 5;
 maxProfit([7, 6, 4, 3, 1]) === 0;
+maxProfit([7, 2, 8, 1, 5, 3, 6, 4]) === 6;
 
 /**
  * Find the intersection of two sorted arrays.
