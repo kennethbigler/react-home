@@ -215,7 +215,7 @@ maxProfit([7, 1, 5, 3, 6, 4]) === 5;
 maxProfit([7, 6, 4, 3, 1]) === 0;
 maxProfit([7, 2, 8, 1, 5, 3, 6, 4]) === 6;
 
-/** GigNow - easy 2-pointers
+/**
  * Find the intersection of two sorted arrays.
  * OR in other words,
  * Given 2 sorted arrays, find all the elements which occur in both the arrays.
