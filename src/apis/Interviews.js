@@ -3,7 +3,8 @@
 import split from 'lodash/split';
 import forEach from 'lodash/forEach';
 
-/** Facebook - Task Execution Time with Cooldowns
+// ----------     Facebook     ---------- //
+/** Task Execution Time with Cooldowns
  * given an array of tasks (each number represents a different task)
  * only 1 task can execute at a time,
  * with a cool down in between the same tasks of the same number
@@ -48,13 +49,17 @@ doTasks([1, 1, 2, 0, 2, 1], 4);
 doTasks([1, 1, 2, 0, 2, 1], 4);
 doTasks([1, 1, 3, 2, 1, 2, 1], 3);
 
-/** Google - Is the input an Ambigram I
+// ----------     Google     ---------- //
+
+// HINT1: consider the numbers that flip to stay the same: 0, 1, 8
+// HINT2: consider the numbers that flip to become another number: 6, 9
+
+/** Is the input an Ambigram
  * Given an array of numbers, determine if it is an Ambigram
  * Ambigram - The same word forwards, backwards, and upsidown
- * EX: 1881
- *
- * HINT1: consider the numbers that flip to stay the same: 0, 1, 8
- * HINT2: consider the numbers that flip to become another number: 6, 9
+ * EX: 34 => false
+ * EX: 1881 => true
+ * EX: 13431 => false
  *
  * @param {Array} nums
  * @return {boolean}
@@ -84,7 +89,8 @@ isAmbigram1([1, 8, 8, 1]);
 isAmbigram1([1, 6, 9, 1]);
 isAmbigram1([1, 6, 1]);
 
-/** Code Golf - Is the input an Ambigram II
+// ----------     Code Golf     ---------- //
+/** Is the input an Ambigram II
  * Given a string, determine if it is an Ambigram
  * Ambigram - The same word forwards, backwards, and upsidown
  * EX: 1881, SwIMs
@@ -169,7 +175,51 @@ isAmbigram2('181');
 isAmbigram2('1691');
 isAmbigram2('161');
 
-/** GigNow
+// ----------     GigNow     ---------- //
+/**
+ * Find the intersection of two sorted arrays.
+ * OR in other words,
+ * Given 2 sorted arrays, find all the elements which occur in both the arrays.
+ *
+ * Example 1:
+ * Input A: [1,2,3,3,4,5,6]
+ * Input B: [3,3,5]
+ * Output: [3,3,5]
+ *
+ * Example 2:
+ * Input A: [1,2,3,3,4,5,6]
+ * Input B: [3,5,7]
+ * Output: [3,5]
+ *
+ * @param {number[]} A
+ * @param {number[]} B
+ * @return {number[]}
+ */
+const intersect = (A, B) => {
+  let i = 0;
+  let j = 0;
+  const ret = [];
+
+  while (i < A.length && j < B.length) {
+    // console.log(i, j);
+    if (A[i] === B[j]) {
+      ret.push(A[i]);
+      i += 1;
+      j += 1;
+    } else if (A[i] < B[j]) {
+      i += 1;
+    } else {
+      j += 1;
+    }
+  }
+
+  return ret;
+};
+
+intersect([1, 2, 3, 3, 4, 5, 6], [3, 3, 5]) === [3, 3, 5];
+intersect([1, 2, 3, 3, 4, 5, 6], [3, 5, 7]) === [3, 5];
+
+/**
  * Say you have an array for which the ith element is the price of a given stock on day i.
  *
  * If you were only permitted to complete at most one transaction
@@ -215,50 +265,7 @@ maxProfit([7, 1, 5, 3, 6, 4]) === 5;
 maxProfit([7, 6, 4, 3, 1]) === 0;
 maxProfit([7, 2, 8, 1, 5, 3, 6, 4]) === 6;
 
-/** GigNow
- * Find the intersection of two sorted arrays.
- * OR in other words,
- * Given 2 sorted arrays, find all the elements which occur in both the arrays.
- *
- * Example 1:
- * Input A: [1,2,3,3,4,5,6]
- * Input B: [3,3,5]
- * Output: [3,3,5]
- *
- * Example 2:
- * Input A: [1,2,3,3,4,5,6]
- * Input B: [3,5,7]
- * Output: [3,5]
- *
- * @param {number[]} A
- * @param {number[]} B
- * @return {number[]}
- */
-const intersect = (A, B) => {
-  let i = 0;
-  let j = 0;
-  const ret = [];
-
-  while (i < A.length && j < B.length) {
-    // console.log(i, j);
-    if (A[i] === B[j]) {
-      ret.push(A[i]);
-      i += 1;
-      j += 1;
-    } else if (A[i] < B[j]) {
-      i += 1;
-    } else {
-      j += 1;
-    }
-  }
-
-  return ret;
-};
-
-intersect([1, 2, 3, 3, 4, 5, 6], [3, 3, 5]) === [3, 3, 5];
-intersect([1, 2, 3, 3, 4, 5, 6], [3, 5, 7]) === [3, 5];
-
-/** GigNow
+/**
  * Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
  * Symbol       Value
  *   I           1
@@ -369,7 +376,7 @@ intToRoman(9) === 'IX';
 intToRoman(58) === 'LVIII';
 intToRoman(1994) === 'MCMXCIV';
 
-/** GigNow
+/**
  * Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
  * Symbol       Value
  *   I           1
