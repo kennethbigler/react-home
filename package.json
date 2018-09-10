@@ -4,15 +4,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^1.4.3",
-    "@material-ui/icons": "^1.1.0",
-    "@material-ui/lab": "^1.0.0-alpha.9",
+    "@material-ui/core": "^3.0.3",
+    "@material-ui/icons": "^3.0.1",
+    "@material-ui/lab": "^3.0.0-alpha.15",
     "copy-to-clipboard": "^3.0.8",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "prop-types": "^15.6.2",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
     "react-newline-to-break": "^1.0.6",
     "react-pdf": "^3.0.5",
     "react-redux": "^5.0.7",
@@ -21,15 +21,15 @@
     "redux": "^4.0.0"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^17.0.0",
-    "eslint-config-google": "^0.9.1",
-    "eslint-plugin-import": "^2.13.0",
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-google": "^0.10.0",
+    "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-lodash": "^2.7.0",
-    "eslint-plugin-react": "^7.10.0",
-    "react-scripts": "1.1.4"
+    "eslint-plugin-react": "^7.11.1",
+    "react-scripts": "^1.1.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -38,7 +38,7 @@
     "lint": "react-scripts run lint",
     "eject": "react-scripts eject",
     "deploy": "./deploy.sh",
-    "eslint": "./node_modules/.bin/eslint src/** --fix",
-    "qlint": "./node_modules/.bin/eslint src/** --fix --quiet"
+    "eslint": "./node_modules/.bin/eslint src/ --fix",
+    "qlint": "./node_modules/.bin/eslint src/ --fix --quiet"
   }
 }
