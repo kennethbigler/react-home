@@ -1,7 +1,6 @@
 import React from 'react';
 import types from 'prop-types';
 import grey from '@material-ui/core/colors/grey';
-
 // Parents: Row
 
 const styles = {
@@ -17,10 +16,11 @@ const styles = {
 
 const Segment = (props) => {
   // var for segment
-  const { data } = props;
   const {
-    company, width, color, title,
-  } = data;
+    data: {
+      company, width, color, title,
+    },
+  } = props;
   // variables for empty segment
   let style = { display: 'inline-block', width: `${width}%` };
   let body = <br />;

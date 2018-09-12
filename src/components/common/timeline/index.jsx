@@ -153,11 +153,8 @@ export class Timeline extends Component {
 
   getYearMarkers = () => {
     const years = [moment('2012-01'), moment('2013-01'), moment('2014-01'), moment('2015-01'), moment('2016-01'), moment('2017-01'), moment('2018-01')];
-    const width = 1;
-    const marker = {
-      width, color: 'black', company: ' ', title: ' ',
-    };
-    console.log(this.getTimeFromStart(years[0]));
+    const width = 0.3;
+    const marker = { width, company: ' ' };
     const yearMarkers = [{ width: this.getTimeFromStart(years[0]) - width }, marker];
 
     for (let i = 1; i < years.length; i += 1) {
@@ -166,7 +163,6 @@ export class Timeline extends Component {
       yearMarkers.push({ width: thisYear - lastYear - width });
       yearMarkers.push(marker);
     }
-    console.log(yearMarkers);
 
     return yearMarkers;
   }
@@ -178,10 +174,10 @@ export class Timeline extends Component {
 
     return (
       <div style={{ width: '100%' }}>
+        <Row key={data.length} segments={this.getYearMarkers()} yearMarkers />
         {map(data, (job, i) => (
           <Row key={i} segments={this.getSegments(added, job, i)} />
         ))}
-        <Row key={data.length} segments={this.getYearMarkers()} />
       </div>
     );
   }
