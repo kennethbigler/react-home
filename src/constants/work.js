@@ -25,8 +25,8 @@ const REACT = 'React.js';
 const REACT15 = 'React.js 15.X';
 const REACT16 = 'React.js 16.X';
 const ANGULAR = 'Angular.js 1.X';
-const ES2015 = 'ECMAScript 2015';
-const ES2016 = 'ECMAScript 2016';
+const ES2015 = 'ECMAScript 2015 (ES6)';
+const ES2016 = 'ECMAScript (Latest)';
 const HTML = 'HTML5';
 const CSS = 'CSS3';
 const JS = 'JavaScript';
@@ -157,7 +157,7 @@ const workExp = [
     location: 'Fremont, CA',
     title: 'Application Developer Intern, IT Applications',
     website: 'https://www.tesla.com/',
-    start: moment('2015-06'),
+    start: moment('2015-06-02'),
     end: moment('2016-06'),
     src: teslaLogo,
     alt: 'Tesla Logo',
@@ -212,12 +212,23 @@ const workExp = [
   {
     isJob: false,
     color: red[800],
-    company: 'Santa Clara University',
+    company: 'Santa Clara University Bachelor\'s',
     short: 'SCU',
     location: 'Santa Clara, CA',
     title: 'Undergrad / Grad Student',
     website: 'https://www.scu.edu/',
     start: moment('2011-09'),
+    end: moment('2015-06'),
+  },
+  {
+    isJob: false,
+    color: red[800],
+    company: 'SCU Master\'s',
+    short: 'SCU',
+    location: 'Santa Clara, CA',
+    title: 'Undergrad / Grad Student',
+    website: 'https://www.scu.edu/',
+    start: moment('2015-06'),
     end: moment('2016-12'),
   },
 ];

@@ -118,15 +118,15 @@ export class Timeline extends Component {
       // skip if added already
       if (!includes(added, j)) {
         // test segment
-        const { start, end } = data[j];
-        beginning = this.getTimeFromStart(start);
+        const { start: jStart, end: jEnd } = data[j];
+        beginning = this.getTimeFromStart(jStart);
 
         // if start is after end of main segment
         if (beginning >= ending) {
           // add filler in between end/start
           this.addSegment(segments, beginning - ending);
           // add next company
-          ending = this.getTimeFromStart(end);
+          ending = this.getTimeFromStart(jEnd);
           this.addCompany(segments, data[j], beginning, ending);
           // mark as already added
           added.push(j);

@@ -222,10 +222,10 @@ export default [
     gpa: 3.8,
     years: [
       {
-        year: 'Undergrad High School Summer Visitor (2010)',
+        year: 'Undergrad High School Summer Visitor',
         quarters: [
           {
-            quarter: 'Summer',
+            quarter: 'Summer (2010)',
             classes: [
               'PHYS 50: Astronomy Laboratory and Observational Astronomy',
               'POL 1Z: Introduction to International Relations',
@@ -234,10 +234,10 @@ export default [
         ],
       },
       {
-        year: 'Stanford Continuing Studies (2017)',
+        year: 'Stanford Continuing Studies',
         quarters: [
           {
-            quarter: 'Summer',
+            quarter: 'Summer (2017)',
             classes: [
               'WSP 314: Alfred Hitchcock and the Subversive World of Film Noir',
             ],
