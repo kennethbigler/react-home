@@ -6,7 +6,7 @@ import grey from '@material-ui/core/colors/grey';
 const styles = {
   box: {
     cursor: 'default',
-    backgroundColor: grey[300],
+    backgroundColor: grey[200],
     height: '160px',
     marginBottom: '-160px',
   },
