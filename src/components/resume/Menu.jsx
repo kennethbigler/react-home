@@ -55,6 +55,7 @@ const Menu = (props) => {
           display: 'block',
           margin: 'auto',
           cursor: 'pointer',
+          width: 240,
           paddingLeft: 16,
           paddingRight: 16,
         }}

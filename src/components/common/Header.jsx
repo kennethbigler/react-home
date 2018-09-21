@@ -47,11 +47,11 @@ export default class Header extends Component {
             </IconButton>
             <Typography
               color="inherit"
-              onClick={() => this.handleNav('/')}
+              onClick={this.toggleOpen}
               style={{ cursor: 'pointer' }}
               variant="title"
             >
-              Kenneth Bigler
+              Menu
             </Typography>
           </Toolbar>
         </AppBar>

@@ -1,13 +1,27 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Ken's Resume",
+  "name": "Kenneth Bigler's Resume Website",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#607D8B",
+  "lang": "en-US",
+  "description": "This is a site about Kenneth Bigler, Software Engineer at Ernst and Young, including his work, interests, and resume",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "../src/images/ken.jpg",
+      "type": "image/jpg",
+      "sizes": "192x192"
+    },
+    {
+      "src": "../src/images/ken.jpg",
+      "type": "image/jpg",
+      "sizes": "512x512"
+    },
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "16x16"
     }
-  ],
-  "start_url": "./index.html",
-  "display": "standalone"
+  ]
 }
