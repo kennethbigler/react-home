@@ -7,8 +7,8 @@ const styles = {
   box: {
     cursor: 'default',
     backgroundColor: grey[200],
-    height: '160px',
-    marginBottom: '-160px',
+    height: 500,
+    marginBottom: -500,
   },
 };
 

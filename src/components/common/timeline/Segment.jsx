@@ -11,6 +11,7 @@ const styles = {
     boxShadow: `2px 3px 4px ${grey[400]}`,
     color: grey[50],
     textAlign: 'center',
+    borderRadius: 2,
   },
 };
 

@@ -12,15 +12,15 @@ import workExperience from '../../../constants/work';
 
 /* function to generate timeline card */
 const TimelineCard = (props) => {
-  const { workExp, backgroundColor } = props;
+  const { experience, backgroundColor, title } = props;
 
   return (
     <ExpandableCard
       backgroundColor={backgroundColor}
       subtitle="September 2011 - Present"
-      title={TIMELINE_TITLE}
+      title={title}
     >
-      <Timeline data={workExp} />
+      <Timeline data={experience} />
     </ExpandableCard>
   );
 };
@@ -28,12 +28,14 @@ const TimelineCard = (props) => {
 TimelineCard.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   backgroundColor: types.string,
-  workExp: types.arrayOf(types.object),
+  experience: types.arrayOf(types.object),
+  title: types.string,
 };
 
 TimelineCard.defaultProps = {
-  workExp: workExperience,
+  experience: workExperience,
   backgroundColor: grey[900],
+  title: TIMELINE_TITLE,
 };
 
 export default TimelineCard;

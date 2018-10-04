@@ -1,4 +1,3 @@
-// images
 // colors
 import cyan from '@material-ui/core/colors/cyan';
 import green from '@material-ui/core/colors/green';
@@ -11,6 +10,7 @@ import moment from 'moment';
 import reduce from 'lodash/reduce';
 import includes from 'lodash/includes';
 import forEach from 'lodash/forEach';
+// images
 import ciscoLogo from '../images/cisco_logo.gif';
 import gigNowLogo from '../images/gignow.png';
 import SHFBLogo from '../images/SHFB_logo.jpg';
@@ -18,25 +18,30 @@ import netappLogo from '../images/netapp_logo.svg.png';
 import vengefulLogo from '../images/vengefulgames_logo.png';
 import teslaLogo from '../images/tesla_motors_logo.svg.png';
 import hoverboardLogo from '../images/hoverboard_logo.png';
+import {// tech constants
+  REACT,
+  ANGULAR,
+  HTML,
+  CSS,
+  JS,
+  BS3,
+  BS4,
+  RR,
+  JASMINE,
+  SASS,
+  MOMENT,
+  ESLINT,
+  COMPOSE,
+  MIXPANEL,
+  RELOADER,
+  JAVA,
+  AWS,
+  PYTHON2,
+  ASP2,
+  CSHARP,
+  SQL,
+} from './tech';
 // Parents: Main
-
-// tech constants
-const REACT = 'React.js';
-const REACT15 = 'React.js 15.X';
-const REACT16 = 'React.js 16.X';
-const ANGULAR = 'Angular.js 1.X';
-const ES2015 = 'ECMAScript 2015 (ES6)';
-const ES2016 = 'ECMAScript (Latest)';
-const HTML = 'HTML5';
-const CSS = 'CSS3';
-const JS = 'JavaScript';
-const BS3 = 'Bootstrap 3';
-const BS4 = 'Bootstrap 4';
-const RR4 = 'React Router 4';
-const JASMINE = 'Jasmine 2.99';
-const SASS = 'SASS/SCSS';
-const MOMENT = 'Moment.js 2.22';
-const ESLINT = 'ESLint';
 
 // skills constants
 const PM = 'Project Management';
@@ -62,15 +67,14 @@ const workExp = [
       'Implement React Hot Reloading, Mixpanel Data Tracking, and stricter ESLint configuration to improve code style',
     ],
     tech: [
-      REACT16,
-      RR4,
-      'Recompose 0.27',
-      'Mixpanel Browser 2.22',
-      'React Hot Loader',
+      REACT,
+      RR,
+      COMPOSE,
+      MIXPANEL,
+      RELOADER,
       MOMENT,
       JASMINE,
       ESLINT,
-      ES2016,
       JS,
       HTML,
       SASS,
@@ -115,7 +119,7 @@ const workExp = [
       'Created several Proof of Concept integrations with Cisco DNA-Center and several acquisitions',
       'Wrote Time Series Analysis Pipelines in JSON to create aggregations of network packets over a fixed or rolling window',
     ],
-    tech: [REACT15, RR4, 'Java 8', ESLINT, ES2015, JS, HTML, SASS, CSS, BS4],
+    tech: [REACT, RR, JAVA, ESLINT, JS, HTML, SASS, CSS, BS4],
     skills: [INT],
   },
   {
@@ -138,8 +142,8 @@ const workExp = [
     ],
     tech: [
       ANGULAR,
-      'AWS SDK for JavaScript in the Browser',
-      'Python 2',
+      AWS,
+      PYTHON2,
       MOMENT,
       JS,
       HTML,
@@ -166,7 +170,7 @@ const workExp = [
       'Improve the accessibility and responsive design of existing web applications and websites',
       'Gathered requirements, and created new software tools to track weld joints on Tesla Models, improving vehicle safety',
     ],
-    tech: [ANGULAR, 'ASP.NET 2.0 MVC', 'C#', 'SQL', JS, HTML, SASS, CSS, BS3],
+    tech: [ANGULAR, ASP2, CSHARP, SQL, JS, HTML, SASS, CSS, BS3],
   },
   {
     isJob: true,

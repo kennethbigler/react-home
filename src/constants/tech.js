@@ -1,0 +1,22 @@
+// tech constants
+export const REACT = 'React.js';
+export const ANGULAR = 'Angular.js 1.X';
+export const HTML = 'HTML5';
+export const CSS = 'CSS3';
+export const JS = 'JavaScript';
+export const BS3 = 'Bootstrap 3';
+export const BS4 = 'Bootstrap 4';
+export const RR = 'React Router';
+export const JASMINE = 'Jasmine';
+export const SASS = 'SASS/SCSS';
+export const MOMENT = 'Moment.js';
+export const ESLINT = 'ESLint';
+export const COMPOSE = 'Recompose';
+export const MIXPANEL = 'Mixpanel';
+export const RELOADER = 'React Hot Loader';
+export const JAVA = 'Java 8';
+export const AWS = 'AWS SDK for JavaScript in the Browser';
+export const PYTHON2 = 'Python 2';
+export const ASP2 = 'ASP.NET 2.0 MVC';
+export const CSHARP = 'C#';
+export const SQL = 'SQL';
