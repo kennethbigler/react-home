@@ -1,51 +1,49 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import types from 'prop-types';
 import grey from '@material-ui/core/colors/grey';
 // Parents: Row
 
-const styles = {
-  box: {
-    cursor: 'default',
-    paddingTop: '5px',
-    paddingBottom: '5px',
-    boxShadow: `2px 3px 4px ${grey[400]}`,
-    color: grey[50],
-    textAlign: 'center',
-    borderRadius: 2,
-  },
-};
-
-const Segment = (props) => {
-  // var for segment
-  const {
-    data: {
-      company, width, color, title,
-    },
-  } = props;
-  // variables for empty segment
-  let style = { display: 'inline-block', width: `${width}%` };
-  let body = <br />;
-  // company for company
-  if (company) {
-    style = { ...style, ...styles.box, backgroundColor: color };
-    body = company;
+export default class Segment extends PureComponent {
+  static propTypes = {
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    color: types.string,
+    company: types.string,
+    title: types.string,
+    width: types.number.isRequired,
+    inverted: types.bool,
   }
 
-  return (
-    <div style={style} title={title}>
-      {body}
-    </div>
-  );
-};
+  render() {
+    // var for segment
+    const {
+      company, width, color, title, inverted,
+    } = this.props;
+    // variables for empty segment
+    let style = {
+      display: 'inline-block',
+      width: `${width}%`,
+      color: inverted ? 'black' : grey[50],
+    };
+    let body = <br />;
+    // company for company
+    if (company) {
+      style = {
+        ...style,
+        cursor: 'default',
+        paddingTop: '5px',
+        paddingBottom: '5px',
+        boxShadow: `2px 3px 4px ${grey[400]}`,
+        textAlign: 'center',
+        borderRadius: 2,
+        backgroundColor: color,
+      };
+      body = company;
+    }
 
-Segment.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
-  data: types.shape({
-    color: types.any,
-    company: types.any,
-    title: types.any,
-    width: types.any.isRequired,
-  }).isRequired,
-};
-
-export default Segment;
+    return (
+      <div style={style} title={title}>
+        {body}
+      </div>
+    );
+  }
+}

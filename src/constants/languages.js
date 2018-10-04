@@ -29,6 +29,7 @@ import {// tech constants
 const languageExp = [
   {
     color: yellow.A700,
+    inverted: true,
     company: JS,
     title: JS,
     start: moment('2011-09'),
@@ -47,6 +48,7 @@ const languageExp = [
     end: moment(),
   }, {
     color: lightBlue[300],
+    inverted: true,
     company: REACT,
     title: REACT,
     start: moment('2017-04'),

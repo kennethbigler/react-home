@@ -65,13 +65,16 @@ export class Timeline extends Component {
    * @param {Object} ending end moment object
    */
   addCompany = (segments, job, beginning, ending) => {
-    const { company, color, title } = job;
+    const {
+      company, color, inverted, title,
+    } = job;
     const width = ending - beginning;
     // check if name has room
     if ((width * window.innerWidth) / WIDTH < MIN_TEXT_WIDTH) {
       segments.push({
         company: company.substr(0, 1),
         color,
+        inverted,
         width,
         title,
       });
@@ -79,6 +82,7 @@ export class Timeline extends Component {
       segments.push({
         company,
         color,
+        inverted,
         width,
         title,
       });
