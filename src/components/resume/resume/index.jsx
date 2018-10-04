@@ -1,33 +1,10 @@
-import React, { Component } from 'react';
-// https://github.com/wojtekmaj/react-pdf
-import { Document, Page } from 'react-pdf';
+import React from 'react';
+import PDF from './PDF';
 import resume from '../../../images/kenneth_bigler_resume.pdf';
 // Parents: Main
 
-export default class Resume extends Component {
-  state = {
-    file: resume,
-    numPages: null,
-  };
+const Resume = () => (
+  <PDF file={resume} />
+);
 
-  onDocumentLoadSuccess = ({ numPages }) => {
-    this.setState({ numPages });
-  };
-
-  render() {
-    const { file, numPages } = this.state;
-
-    return (
-      <Document file={file} onLoadSuccess={this.onDocumentLoadSuccess}>
-        {Array.from(new Array(numPages), (el, index) => (
-          <Page
-            key={`page_${index + 1}`}
-            onRenderSuccess={this.onPageRenderSuccess}
-            pageNumber={index + 1}
-            width={document.body.clientWidth - 42}
-          />
-        ))}
-      </Document>
-    );
-  }
-}
+export default Resume;
