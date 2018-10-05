@@ -1,5 +1,6 @@
 // colors
 import cyan from '@material-ui/core/colors/cyan';
+import lightBlue from '@material-ui/core/colors/lightBlue';
 import green from '@material-ui/core/colors/green';
 import blue from '@material-ui/core/colors/blue';
 import blueGrey from '@material-ui/core/colors/blueGrey';
@@ -50,7 +51,7 @@ const INT = 'Managed Intern';
 const workExp = [
   {
     isJob: true,
-    color: cyan[700],
+    color: blue[500],
     company: 'GigNow',
     parent: 'Ernst & Young',
     short: 'GN',
@@ -103,7 +104,7 @@ const workExp = [
   },
   {
     isJob: true,
-    color: blue[600],
+    color: lightBlue[700],
     company: 'Cisco Systems',
     short: 'CSCO',
     location: 'San Jose, CA',
@@ -124,7 +125,7 @@ const workExp = [
   },
   {
     isJob: true,
-    color: blueGrey[500],
+    color: cyan[900],
     company: 'Hoverboard Technologies',
     parent: 'Equalia',
     short: 'HB',
@@ -155,7 +156,7 @@ const workExp = [
   },
   {
     isJob: true,
-    color: red[500],
+    color: red[700],
     company: 'Tesla, Inc.',
     short: 'TSLA',
     location: 'Fremont, CA',
@@ -195,7 +196,7 @@ const workExp = [
   },
   {
     isJob: true,
-    color: indigo[500],
+    color: blue[800],
     company: 'NetApp',
     short: 'NTAP',
     location: 'Sunnyvale, CA',
