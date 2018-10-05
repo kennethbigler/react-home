@@ -1,7 +1,6 @@
 // react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// components
 // material-ui
 import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
@@ -9,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
 import map from 'lodash/map';
 import isEmpty from 'lodash/isEmpty';
+// components
 import { FORMAT } from '../../common/timeline';
 import ExpandableCard from '../../common/ExpandableCard';
 // Parents: Work

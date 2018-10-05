@@ -4,7 +4,7 @@ import types from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 // common
 import reduce from 'lodash/reduce';
-import Header from '../common/Header';
+import Header from '../common/header/Header';
 import Menu from './Menu';
 // Components
 import BlackJack from './blackjack';
@@ -46,7 +46,7 @@ const Routes = (props) => {
 
   return (
     <div className="games-app">
-      <Header handleNav={handleNav}>
+      <Header handleNav={handleNav} showPlayers>
         <Menu />
       </Header>
       <Switch>

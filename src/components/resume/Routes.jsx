@@ -4,7 +4,7 @@ import types from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 // common
 import reduce from 'lodash/reduce';
-import Header from '../common/Header';
+import Header from '../common/header/Header';
 import Menu from './Menu';
 // resume
 import Summary from './summary';
