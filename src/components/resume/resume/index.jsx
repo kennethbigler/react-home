@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 // https://github.com/wojtekmaj/react-pdf
-import { Document, Page } from 'react-pdf';
+import { pdfjs, Document, Page } from 'react-pdf';
 import resume from '../../../images/kenneth_bigler_resume.pdf';
 // Parents: Main
 
 const MAX_SCALE = 1.5;
 
 // Workaround for worker-loader failing on Webpack 4
-import PdfJsLib from 'pdfjs-dist'; // eslint-disable-line
-PdfJsLib.GlobalWorkerOptions.workerSrc = '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.550/pdf.worker.js';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 export default class Resume extends Component {
   state = {
