@@ -53,7 +53,7 @@ export default class Header extends Component {
               >
                 <NavigationClose />
               </IconButton>
-              <Typography color="inherit" variant="title">
+              <Typography color="inherit" variant="h6">
                 Menu
               </Typography>
             </Toolbar>

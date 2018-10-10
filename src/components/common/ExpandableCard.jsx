@@ -62,7 +62,7 @@ class ExpandableCard extends Component {
     };
 
     const titleJSX = (
-      <Typography style={styles.title} variant="title">
+      <Typography style={styles.title} variant="h6">
         {title}
       </Typography>
     );

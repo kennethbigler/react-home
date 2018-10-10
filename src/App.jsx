@@ -21,6 +21,9 @@ store.subscribe(throttle(() => saveState(store.getState()), 1000));
 /** App class that wraps higher level components of the application */
 const App = () => {
   const theme = createMuiTheme({
+    typography: {
+      useNextVariants: true,
+    },
     palette: {
       primary: blueGrey,
       secondary: deepOrange,

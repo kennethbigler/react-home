@@ -17,7 +17,7 @@ const Header = (props) => {
 
   return (
     <Toolbar>
-      <Typography color="inherit" style={{ marginRight: 10 }} variant="title">
+      <Typography color="inherit" style={{ marginRight: 10 }} variant="h6">
         {status}
       </Typography>
       <Piece piece={piece} />

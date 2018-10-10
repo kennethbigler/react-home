@@ -39,7 +39,7 @@ class TopBar extends PureComponent {
             color="inherit"
             onClick={toggleOpen}
             style={{ cursor: 'pointer', marginRight: 15 }}
-            variant="title"
+            variant="h6"
           >
             Menu
           </Typography>

@@ -5,7 +5,6 @@ import green from '@material-ui/core/colors/green';
 import blue from '@material-ui/core/colors/blue';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import red from '@material-ui/core/colors/red';
-import indigo from '@material-ui/core/colors/indigo';
 // functions
 import moment from 'moment';
 import reduce from 'lodash/reduce';
@@ -216,9 +215,9 @@ const workExp = [
   },
   {
     isJob: false,
-    color: red[800],
+    color: red[900],
     company: 'Santa Clara University Bachelor\'s',
-    short: 'SCU',
+    short: 'SCU-B',
     location: 'Santa Clara, CA',
     title: 'Undergrad / Grad Student',
     website: 'https://www.scu.edu/',
@@ -227,9 +226,9 @@ const workExp = [
   },
   {
     isJob: false,
-    color: red[800],
+    color: red[900],
     company: 'SCU Master\'s',
-    short: 'SCU',
+    short: 'SCU-M',
     location: 'Santa Clara, CA',
     title: 'Undergrad / Grad Student',
     website: 'https://www.scu.edu/',
