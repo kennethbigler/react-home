@@ -1,24 +1,10 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!--
-         ___ ___                       _____
-        /  //  /                    __/ /_ /
-       /  //  /___  ____  ____  ___/_  __//__
-      /     _/ __ \/ __ \/ __ \/ _ \/ /  __  \
-     /  /\  \  ___/ / / / / / / ___/ /  / /  /
-    /__/  \__\___/_/ /_/_/ /_/\___/_/__/ /__/
-         ______
-        /  __  \ __      __
-       /  /_/  //_/_____/ /__  ______
-      /  ___  </ / __  / / _ \/  ___/
-     /  /__/  / / /_/ / / ___/  /
-    /________/_/\__  /_/\___/__/
-               /____/
-    -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.png" />
-    <!--
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.png" />
+  <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -27,21 +13,76 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <!-- Keywords for SEO, feel free to ignore this, it's an Intranet -->
-    <meta name="keywords" content="Ken, Kenneth, Bigler, Kenneth Bigler, Ken Bigler, Resume, HTML, CSS, JavaScript, C++, C, Software Developer, Web, Web Developer, Web Technologist, Santa Clara, SCU, scu, Santa Clara University, Software Engineer, Engineering, Software Engineering, Software Development" />
-    <meta name="description" content="This is a site about Kenneth Bigler, Software Engineer at Ernst and Young, including his work, interests, and resume" />
-    <meta name="author" content="Kenneth Bigler" />
-    <title>Kenneth Bigler Resume Software Engineering</title>
-    <!-- Styles and external JS -->
-    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" />
-    <link rel="manifest" href="/manifest.json">
-  </head>
-  <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <div id="root"></div>
-    <!--
+  <!-- Keywords for SEO, feel free to ignore this, it's an Intranet -->
+  <meta name="keywords" content="Ken, Kenneth, Bigler, Kenneth Bigler, Ken Bigler, Resume, HTML, CSS, JavaScript, C++, C, Software Developer, Web, Web Developer, Web Technologist, Santa Clara, SCU, scu, Santa Clara University, Software Engineer, Engineering, Software Engineering, Software Development" />
+  <meta name="description" content="This is a site about Kenneth Bigler, Software Engineer at Ernst and Young, including his work, interests, and resume" />
+  <meta name="author" content="Kenneth Bigler" />
+  <title>Kenneth Bigler Resume Software Engineering</title>
+  <!-- Styles and external JS -->
+  <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" />
+  <link rel="manifest" href="/manifest.json">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54229318-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-54229318-1');
+  </script>
+  <!--
+           ___ ___                       _____
+          /  //  /                    __/ /_ /
+         /  //  /___  ____  ____  ___/_  __//__
+        /     _/ __ \/ __ \/ __ \/ _ \/ /  __  \
+       /  /\  \  ___/ / / / / / / ___/ /  / /  /
+      /__/  \__\___/_/ /_/_/ /_/\___/_/__/ /__/
+           ______
+          /  __  \ __      __
+         /  /_/  //_/_____/ /__  ______
+        /  ___  </ / __  / / _ \/  ___/
+       /  /__/  / / /_/ / / ___/  /
+      /________/_/\__  /_/\___/__/
+                 /____/
+  
+        ,..,........................................,.,,,,,,,,,,*,*
+        ..........................*/*,*/(*..............,,,,,,,,,,,
+        ......................./#///**/(((#/*.............,,,,,,,,,
+        .....................**/*/(/(/(/##(%#/..............,..,,,,
+        ........ ..... .... ,,*****/((#%###/((*...............,,,,,
+        ....... .... ...... **,*,**((###(#((##/..................,,
+        ...........      . ./*/*,..,,,,*****##/..................,.
+        .....   .           //(,*/((/*//#(/*(/(....................
+        .......  .          .*/,,*/#/./##(/**(,....................
+        ... . . .            ..,..,*,,********.....................
+        .    .                 ,*(*,,(//*//*,,,,,,,,,..............
+        ... ..                  ,,,*,,,*(***,,,,,,,,,,.............
+        ..  .  .                ,,,,,//*****,,,,,,,,,,......,......
+        ... .     .             .,,,,,,*****,,,,,,..,,..,..,,..,...
+        .. .    .             . .,,*////****./,,,,,,,,..,,.....,,,,
+        . ... .        .    #%%  ,,,******(..@&(,,,,..,..,.,,,..,,,
+        ......     .. /%%%%%%%%    *,***....*@&&&@@,,,,.,..,,,.,,
+        ..... ...%%%%%%%%%&%%&%,     ,   ...%@@&&@@@@@@@&&,,,,,,,,,
+        .......%&%%%%%%%%%%&&%%,   /#%%%   .@@@@@@@@@@@@@@@&&,,,,,,
+        .......%%&&&&&&&&&&&&%%( ,..#%&, . (&&@@@@@@@@@@@@&&&,,,,,,
+        ......#%&&&&&&&&&&&&&%&&.   %(%/ . &&&@@@@@@@@@@@@&&&(*,,,,
+        ......%&&&&&&&&&&&&&&&&&* .(%#%#...&&&&&&&@@&&&@@@@@@&,,,,,
+        ......%&&&@&&&&&&&&&&&&&& .%%##( ,&&&&&&&&&&&&&@@@@@@&***,*
+        .....(&&&@@&&&&&&&&&&&&&&..%%### *&&&&&&&&&&&@@@&@@@@&*****
+        .....%&&&@@@&&&&&&&&&&&&&*.%####.&&&&&&&&@&&@@@@&@@@@@#****
+        ,,...&&@@@@@&&&&&&&&&&&&&&.%%###/&&&&&@@@@@@@@@@@@@@@@&****
+        ,,,,.&&@@@@@&&&&&&&&@&&&&&,%%##%&&&&&@@@@@@@@@@@@@@@@@@****
+        ,,,.#&@@@@@@&&&&&&&&@@&&@@(%%%%%&&&&@@@@@@@@@@@@@@@@@@@****
+        ,,,,&&@@@@@@&&&&&@@@@@@@@@@%%%%&&@&@@@@@@@@@@@@@@@@@@@@////
+      -->
+</head>
+
+<body>
+  <noscript>
+    You need to enable JavaScript to run this app.
+  </noscript>
+  <div id="root"></div>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -51,5 +92,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
+</body>
+
 </html>

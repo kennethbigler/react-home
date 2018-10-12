@@ -12,6 +12,23 @@ import SimplePopover from '../ButtonPopover';
 import PlayerMenu from './PlayerMenu';
 // Parents: App
 
+const styles = {
+  flexLeft: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  flexRight: {
+    display: 'flex',
+    marginRight: 15,
+  },
+  container: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    alignItems: 'center',
+  },
+};
+
 class TopBar extends PureComponent {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
@@ -28,26 +45,32 @@ class TopBar extends PureComponent {
     return (
       <AppBar style={{ left: 0, right: 0, top: 0 }}>
         <Toolbar disableGutters>
-          <IconButton
-            aria-label="Menu"
-            color="inherit"
-            onClick={toggleOpen}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            color="inherit"
-            onClick={toggleOpen}
-            style={{ cursor: 'pointer', marginRight: 15 }}
-            variant="h6"
-          >
-            Menu
-          </Typography>
-          {showPlayers && (
-            <SimplePopover buttonText="Players">
-              <PlayerMenu />
-            </SimplePopover>
-          )}
+          <div style={styles.container}>
+            <div style={styles.flexLeft}>
+              <IconButton
+                aria-label="Menu"
+                color="inherit"
+                onClick={toggleOpen}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography
+                color="inherit"
+                onClick={toggleOpen}
+                style={{ cursor: 'pointer' }}
+                variant="h6"
+              >
+                Menu
+              </Typography>
+            </div>
+            {showPlayers && (
+              <div style={styles.flexRight}>
+                <SimplePopover buttonText="Players">
+                  <PlayerMenu />
+                </SimplePopover>
+              </div>
+            )}
+          </div>
         </Toolbar>
       </AppBar>
     );
