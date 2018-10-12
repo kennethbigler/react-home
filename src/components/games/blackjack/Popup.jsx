@@ -28,7 +28,7 @@ export default class Popup extends Component {
     const { open } = this.state;
     return (
       <div>
-        <Button color="primary" onClick={this.handleOpen} variant="raised">
+        <Button color="primary" onClick={this.handleOpen} variant="contained">
           BlackJack Rules
         </Button>
         <Dialog onClose={this.handleClose} open={open}>

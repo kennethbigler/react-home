@@ -101,7 +101,7 @@ class Slots extends Component {
                   color="primary"
                   onClick={this.updateSlotMachine}
                   style={{ marginBottom: 15 }}
-                  variant="raised"
+                  variant="contained"
                 >
                   Spin
                 </Button>

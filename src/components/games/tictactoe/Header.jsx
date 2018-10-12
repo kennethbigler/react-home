@@ -18,7 +18,7 @@ const Header = (props) => {
       <Typography color="inherit" style={{ flex: 1 }} variant="h6">
         {status}
       </Typography>
-      <Button color="primary" onClick={newGame} variant="raised">
+      <Button color="primary" onClick={newGame} variant="contained">
         Reset Game
       </Button>
     </Toolbar>

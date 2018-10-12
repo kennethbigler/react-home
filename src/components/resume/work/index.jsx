@@ -16,7 +16,7 @@ const Work = () => (
       Work Experience
     </h1>
     <TimelineCard experience={workExp} title="Work Timeline" />
-    <TimelineCard experience={languageExp} title="Programming Language Timeline" />
+    <TimelineCard experience={languageExp} title="Programming Language Timeline (Professional Use)" />
     {map(workExp, job => <Job key={job.company} job={job} />)}
   </div>
 );

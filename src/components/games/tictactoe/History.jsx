@@ -33,7 +33,7 @@ export default class History extends Component {
     const description = !move
       ? 'Game Start (Turn, Col, Row)'
       : `Move #${move} (${getTurn(move - 1)}, `
-        + `${Math.floor(round.location / 3)}, ${round.location % 3})`;
+      + `${Math.floor(round.location / 3)}, ${round.location % 3})`;
     // highlight current turn displayed on board
     const color = step === move ? 'secondary' : 'default';
     return (
@@ -67,7 +67,7 @@ export default class History extends Component {
         <Button
           onClick={this.handleMoveOrderToggle}
           style={{ marginTop: 20, marginBottom: 20 }}
-          variant="raised"
+          variant="contained"
         >
           {ascend ? 'Asc' : 'Desc'}
         </Button>

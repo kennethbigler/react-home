@@ -17,19 +17,22 @@ const Header = (props) => {
 
   return (
     <Toolbar>
-      <Typography color="inherit" style={{ marginRight: 10 }} variant="h6">
-        {status}
-      </Typography>
-      <Piece piece={piece} />
-      <div style={{ flex: 1 }} />
-      <Button
-        color="primary"
-        onClick={newGame}
-        style={{ float: 'right' }}
-        variant="raised"
-      >
-        Reset Game
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        <div style={{ display: 'flex' }}>
+          <Typography color="inherit" style={{ marginRight: 10 }} variant="h6">
+            {status}
+          </Typography>
+          <Piece piece={piece} />
+        </div>
+        <Button
+          color="primary"
+          onClick={newGame}
+          style={{ display: 'flex' }}
+          variant="contained"
+        >
+          Reset Game
+        </Button>
+      </div>
     </Toolbar>
   );
 };

@@ -15,7 +15,7 @@ const Button = (props) => {
       color="primary"
       onClick={func}
       style={{ margin: 12 }}
-      variant="raised"
+      variant="contained"
     >
       {name}
     </MuiButton>

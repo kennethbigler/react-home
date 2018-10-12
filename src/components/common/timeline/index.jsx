@@ -11,8 +11,8 @@ export const TIMELINE_TITLE = 'Timeline';
 export const MONTH_SORT = (a, b) => a.start.diff(b.start, 'months');
 
 const WIDTH = 100;
-const MIN_TEXT_WIDTH = 94;
-const MIN_SHORT_WIDTH = 45;
+const MIN_TEXT_WIDTH = 96;
+const MIN_SHORT_WIDTH = 42;
 
 export class Timeline extends Component {
   static propTypes = {
@@ -70,7 +70,7 @@ export class Timeline extends Component {
       company, color, inverted, title, short,
     } = job;
     const width = ending - beginning;
-    const textWidth = (width * window.innerWidth) / WIDTH;
+    const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
     // check if name has room
     if (textWidth < MIN_SHORT_WIDTH) {
       segments.push({

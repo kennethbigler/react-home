@@ -31,7 +31,7 @@ const Header = (props) => {
             : `Number of Cases to Open: ${casesToOpen}`}
         </h2>
         {isOver && (
-          <Button color="primary" onClick={newGame} variant="raised">
+          <Button color="primary" onClick={newGame} variant="contained">
             New Game
           </Button>
         )}

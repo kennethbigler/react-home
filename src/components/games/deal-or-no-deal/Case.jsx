@@ -15,7 +15,7 @@ const Case = (props) => {
       disabled={!bc.on}
       onClick={onClick}
       style={style}
-      variant="raised"
+      variant="contained"
     >
       {label}
     </Button>
