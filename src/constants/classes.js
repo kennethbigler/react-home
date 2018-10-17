@@ -1,12 +1,15 @@
 import red from '@material-ui/core/colors/red';
 import indigo from '@material-ui/core/colors/indigo';
+import moment from 'moment';
+import map from 'lodash/map';
+import forEach from 'lodash/forEach';
 
 const SCU = 'Santa Clara University';
 
-export default [
+const schools = [
   {
     school: SCU,
-    color: red[800],
+    color: red[900],
     location: 'Santa Clara, CA',
     degree: 'Master of Science',
     major: 'Computer Engineering',
@@ -19,10 +22,14 @@ export default [
         quarters: [
           {
             quarter: 'Fall Quarter (2014)',
+            start: moment('2014-09'),
+            end: moment('2014-12'),
             classes: ['Web Search & Info Retrieval', 'Software Ethics'],
           },
           {
             quarter: 'Winter Quarter (2015)',
+            start: moment('2015-01'),
+            end: moment('2015-04'),
             classes: [
               'Software Development Process Management',
               'Object Oriented Analysis and Design Programming',
@@ -31,6 +38,8 @@ export default [
           },
           {
             quarter: 'Spring Quarter (2015)',
+            start: moment('2015-04'),
+            end: moment('2015-07'),
             classes: ['Software Architecture', 'Web Programming II'],
           },
         ],
@@ -68,7 +77,7 @@ export default [
   },
   {
     school: SCU,
-    color: red[800],
+    color: red[900],
     location: 'Santa Clara, CA',
     degree: 'Bachelor of Science',
     major: 'Computer Science & Engineering',
@@ -472,3 +481,25 @@ export default [
     ],
   },
 ];
+
+const timeline = [];
+
+forEach(
+  schools[0].years,
+  (year) => {
+    forEach(year.quarters, (quarter) => {
+      forEach(quarter.classes, (course) => {
+        quarter.start && timeline.push({
+          start: quarter.start,
+          end: quarter.end,
+          title: course,
+          color: red[900],
+          course,
+        });
+      });
+    });
+  },
+);
+
+export const classTimeline = timeline.sort((a, b) => a.start.diff(b.start, 'months'));
+export default schools;

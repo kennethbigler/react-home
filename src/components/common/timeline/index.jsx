@@ -19,7 +19,6 @@ export class Timeline extends Component {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     data: types.arrayOf(
       types.shape({
-        company: types.string.isRequired,
         color: types.string.isRequired,
         title: types.string.isRequired,
         start: types.shape({
@@ -32,6 +31,9 @@ export class Timeline extends Component {
     ).isRequired,
     selector: types.string.isRequired,
     start: types.shape({
+      diff: types.func.isRequired,
+    }).isRequired,
+    end: types.shape({
       diff: types.func.isRequired,
     }).isRequired,
   };
@@ -51,9 +53,9 @@ export class Timeline extends Component {
    */
   getTimeFromStart = (val) => {
     // sort array by start date
-    const { start } = this.props;
+    const { start, end } = this.props;
     // get max length
-    const totalDuration = moment().diff(start, 'months');
+    const totalDuration = end.diff(start, 'months');
     const timeFromStart = val.diff(start, 'months');
     const width = Math.floor((timeFromStart / totalDuration) * WIDTH);
     return width > 0 ? width : 0;
@@ -74,6 +76,7 @@ export class Timeline extends Component {
     const width = ending - beginning;
     const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
     // check if name has room
+    console.log(`selector: ${selector}, val: ${elm[selector]}, elm: ${elm}`);
     if (textWidth < MIN_SHORT_WIDTH) {
       segments.push({
         body: elm[selector].substr(0, 1),
@@ -168,9 +171,9 @@ export class Timeline extends Component {
   };
 
   getYearMarkers = () => {
-    const { start } = this.props;
+    const { start, end } = this.props;
     const startYear = parseInt(start.format('YYYY'), 10);
-    const endYear = parseInt(moment().format('YYYY'), 10);
+    const endYear = parseInt(end.format('YYYY'), 10);
     const years = [];
     for (let year = startYear + 1; year <= endYear; year += 1) {
       years.push(moment(`${year}-01`));
