@@ -82,7 +82,7 @@ class ExpandableCard extends Component {
         />
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Grid container spacing={16}>
+            <Grid container spacing={16} style={{ overflowY: 'hidden' }}>
               {children}
             </Grid>
           </CardContent>

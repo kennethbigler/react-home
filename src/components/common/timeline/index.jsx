@@ -30,6 +30,10 @@ export class Timeline extends Component {
         }).isRequired,
       }),
     ).isRequired,
+    selector: types.string.isRequired,
+    start: types.shape({
+      diff: types.func.isRequired,
+    }).isRequired,
   };
 
   constructor(props) {
@@ -37,10 +41,7 @@ export class Timeline extends Component {
     // get immutable data from props and sort by start date
     const data = [...props.data];
     data.sort(MONTH_SORT);
-    // get 'start,' but start w/ college not volunteering
-    const { start } = data[1];
-    // set state and styles
-    this.state = { data, start };
+    this.state = { data };
   }
 
   /**
@@ -50,7 +51,7 @@ export class Timeline extends Component {
    */
   getTimeFromStart = (val) => {
     // sort array by start date
-    const { start } = this.state;
+    const { start } = this.props;
     // get max length
     const totalDuration = moment().diff(start, 'months');
     const timeFromStart = val.diff(start, 'months');
@@ -59,22 +60,23 @@ export class Timeline extends Component {
   };
 
   /**
-   * function to add job segment
+   * function to add elm segment
    * @param {[Object]} segments array to put the segments, will be modified
-   * @param {Object} job object with information about the segment
+   * @param {Object} elm object with information about the segment
    * @param {Object} beginning start moment object
    * @param {Object} ending end moment object
    */
-  addCompany = (segments, job, beginning, ending) => {
+  addSegment = (segments, elm, beginning, ending) => {
+    const { selector } = this.props;
     const {
-      company, color, inverted, title, short,
-    } = job;
+      color, inverted, title, short,
+    } = elm;
     const width = ending - beginning;
     const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
     // check if name has room
     if (textWidth < MIN_SHORT_WIDTH) {
       segments.push({
-        company: company.substr(0, 1),
+        body: elm[selector].substr(0, 1),
         color,
         inverted,
         width,
@@ -82,7 +84,7 @@ export class Timeline extends Component {
       });
     } else if (textWidth < MIN_TEXT_WIDTH) {
       segments.push({
-        company: short,
+        body: short,
         color,
         inverted,
         width,
@@ -90,7 +92,7 @@ export class Timeline extends Component {
       });
     } else {
       segments.push({
-        company,
+        body: elm[selector],
         color,
         inverted,
         width,
@@ -102,11 +104,11 @@ export class Timeline extends Component {
   /**
    * function to
    * @param {[number]} added array of indexes that have been added
-   * @param {Object} job Object for each job
+   * @param {Object} elm Object for each elm
    * @param {number} i index
    * @return {[Object]} array of objects to be displayed in a row
    */
-  getSegments = (added, job, i) => {
+  getSegments = (added, elm, i) => {
     const { data } = this.state;
 
     // skip if added already
@@ -116,13 +118,13 @@ export class Timeline extends Component {
 
     // local variables
     const segments = [];
-    const { start, end } = job;
+    const { start, end } = elm;
     let beginning = this.getTimeFromStart(start);
     let ending = this.getTimeFromStart(end);
 
     // add main segments
-    this.addSegment(segments, beginning);
-    this.addCompany(segments, job, beginning, ending);
+    this.addEmptySegment(segments, beginning);
+    this.addSegment(segments, elm, beginning, ending);
 
     // track that segments have been added
     added.push(i);
@@ -138,10 +140,10 @@ export class Timeline extends Component {
         // if start is after end of main segment
         if (beginning >= ending) {
           // add filler in between end/start
-          this.addSegment(segments, beginning - ending);
-          // add next company
+          this.addEmptySegment(segments, beginning - ending);
+          // add next segment
           ending = this.getTimeFromStart(jEnd);
-          this.addCompany(segments, data[j], beginning, ending);
+          this.addSegment(segments, data[j], beginning, ending);
           // mark as already added
           added.push(j);
         }
@@ -149,26 +151,33 @@ export class Timeline extends Component {
     }
 
     // get last segment
-    this.addSegment(segments, WIDTH - ending);
+    this.addEmptySegment(segments, WIDTH - ending);
 
     return [...segments];
   };
 
   /**
-   * function to add empty space between start and job segment
+   * function to add empty space between start and elm segment
    * @param {array} segments array to put the segments, will be modified
    * @param {number} width as a % value out of WIDTH
    */
-  addSegment = (segments, width) => {
+  addEmptySegment = (segments, width) => {
     if (width > 0) {
       segments.push({ width });
     }
   };
 
   getYearMarkers = () => {
-    const years = [moment('2012-01'), moment('2013-01'), moment('2014-01'), moment('2015-01'), moment('2016-01'), moment('2017-01'), moment('2018-01')];
+    const { start } = this.props;
+    const startYear = parseInt(start.format('YYYY'), 10);
+    const endYear = parseInt(moment().format('YYYY'), 10);
+    const years = [];
+    for (let year = startYear + 1; year <= endYear; year += 1) {
+      years.push(moment(`${year}-01`));
+    }
+
     const width = 0.3;
-    const marker = { width, company: ' ' };
+    const marker = { width, body: ' ' };
     const yearMarkers = [{ width: this.getTimeFromStart(years[0]) - width }, marker];
 
     for (let i = 1; i < years.length; i += 1) {
@@ -189,8 +198,8 @@ export class Timeline extends Component {
     return (
       <div style={{ width: '100%' }}>
         <Row key={data.length} segments={this.getYearMarkers()} yearMarkers />
-        {map(data, (job, i) => (
-          <Row key={i} segments={this.getSegments(added, job, i)} />
+        {map(data, (elm, i) => (
+          <Row key={i} segments={this.getSegments(added, elm, i)} />
         ))}
       </div>
     );

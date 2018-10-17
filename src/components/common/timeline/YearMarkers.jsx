@@ -14,19 +14,16 @@ const styles = {
 
 const YearMarkers = (props) => {
   // var for segment
-  const { data: { company, width } } = props;
+  const { data: { body, width } } = props;
   // variables for empty segment
   let style = { display: 'inline-block', width: `${width}%` };
-  let body = <br />;
-  // company for company
-  if (company) {
+  if (body) {
     style = { ...style, ...styles.box };
-    body = company;
   }
 
   return (
     <div style={style}>
-      {body}
+      {body || <br />}
     </div>
   );
 };
@@ -35,7 +32,7 @@ YearMarkers.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   data: types.shape({
     color: types.any,
-    company: types.any,
+    body: types.any,
     title: types.any,
     width: types.any.isRequired,
   }).isRequired,

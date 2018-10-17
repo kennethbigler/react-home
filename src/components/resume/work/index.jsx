@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import map from 'lodash/map';
 import Job from './Job';
-import TimelineCard from './TimelineCard';
+import TimelineCard from '../../common/TimelineCard';
 // constants
 import workExp from '../../../constants/work';
 import languageExp from '../../../constants/languages';

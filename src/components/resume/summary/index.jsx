@@ -2,7 +2,7 @@ import React from 'react';
 import Info from './Info';
 import Skills from './Skills';
 import Education from './Education';
-import TimelineCard from '../work/TimelineCard';
+import TimelineCard from '../../common/TimelineCard';
 // Parents: Main
 
 const Summary = () => (

@@ -7,7 +7,7 @@ export default class Segment extends PureComponent {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     color: types.string,
-    company: types.string,
+    body: types.string,
     title: types.string,
     width: types.number.isRequired,
     inverted: types.bool,
@@ -16,7 +16,7 @@ export default class Segment extends PureComponent {
   render() {
     // var for segment
     const {
-      company, width, color, title, inverted,
+      body, width, color, title, inverted,
     } = this.props;
     // variables for empty segment
     let style = {
@@ -24,9 +24,7 @@ export default class Segment extends PureComponent {
       width: `${width}%`,
       color: inverted ? 'black' : grey[50],
     };
-    let body = <br />;
-    // company for company
-    if (company) {
+    if (body) {
       style = {
         ...style,
         cursor: 'default',
@@ -37,12 +35,11 @@ export default class Segment extends PureComponent {
         borderRadius: 2,
         backgroundColor: color,
       };
-      body = company;
     }
 
     return (
       <div style={style} title={title}>
-        {body}
+        {body || <br />}
       </div>
     );
   }
