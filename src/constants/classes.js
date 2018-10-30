@@ -1,7 +1,6 @@
 import red from '@material-ui/core/colors/red';
 import indigo from '@material-ui/core/colors/indigo';
 import moment from 'moment';
-import map from 'lodash/map';
 import forEach from 'lodash/forEach';
 
 const SCU = 'Santa Clara University';
