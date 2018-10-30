@@ -238,8 +238,7 @@ intersect([1, 2, 3, 3, 4, 5, 6], [3, 5, 7]) === [3, 5];
  * Input: [7,6,4,3,1]
  * Output: 0
  * Explanation: In this case, no transaction is done, i.e. max profit = 0.
- * */
-/**
+ *
  * @param {number[]} prices
  * @return {number}
  */
@@ -313,8 +312,7 @@ maxProfit([7, 2, 8, 1, 5, 3, 6, 4]) === 6;
  * Input: 1994
  * Output: "MCMXCIV"
  * Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
- */
-/**
+ *
  * @param {number} num
  * @param {string} roman
  * @param {number} round
@@ -424,8 +422,7 @@ intToRoman(1994) === 'MCMXCIV';
  * Input: "MCMXCIV"
  * Output: 1994
  * Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
- */
-/**
+ *
  * @param {string} str
  * @return {number}
  */
