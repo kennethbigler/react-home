@@ -9,7 +9,7 @@ import moment from 'moment';
 import map from 'lodash/map';
 import isEmpty from 'lodash/isEmpty';
 // components
-import { FORMAT } from '../../common/timeline';
+import { FORMAT } from '../../common/timeline/Timeline';
 import ExpandableCard from '../../common/ExpandableCard';
 // Parents: Work
 

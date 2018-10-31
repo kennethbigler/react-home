@@ -4,6 +4,27 @@ import moment from 'moment';
 import forEach from 'lodash/forEach';
 
 const SCU = 'Santa Clara University';
+const FALL = 'fall';
+const WINTER = 'winter';
+const SPRING = 'spring';
+
+const getStart = (quarter, yy) => {
+  switch (quarter) {
+    case FALL: return moment(`20${yy}-09`);
+    case WINTER: return moment(`20${yy}-01`);
+    case SPRING: return moment(`20${yy}-04`);
+    default: return console.warn('Error');
+  }
+};
+
+const getEnd = (quarter, yy) => {
+  switch (quarter) {
+    case FALL: return moment(`20${yy}-12`);
+    case WINTER: return moment(`20${yy}-03`);
+    case SPRING: return moment(`20${yy}-07`);
+    default: return console.warn('Error');
+  }
+};
 
 const schools = [
   {
@@ -21,14 +42,14 @@ const schools = [
         quarters: [
           {
             quarter: 'Fall Quarter (2014)',
-            start: moment('2014-09'),
-            end: moment('2014-12'),
+            start: getStart(FALL, 14),
+            end: getEnd(FALL, 14),
             classes: ['Web Search & Info Retrieval', 'Software Ethics'],
           },
           {
             quarter: 'Winter Quarter (2015)',
-            start: moment('2015-01'),
-            end: moment('2015-04'),
+            start: getStart(WINTER, 15),
+            end: getEnd(WINTER, 15),
             classes: [
               'Software Development Process Management',
               'Object Oriented Analysis and Design Programming',
@@ -37,8 +58,8 @@ const schools = [
           },
           {
             quarter: 'Spring Quarter (2015)',
-            start: moment('2015-04'),
-            end: moment('2015-07'),
+            start: getStart(SPRING, 15),
+            end: getEnd(SPRING, 15),
             classes: ['Software Architecture', 'Web Programming II'],
           },
         ],
@@ -48,10 +69,14 @@ const schools = [
         quarters: [
           {
             quarter: 'Fall Quarter (2015)',
+            start: getStart(FALL, 15),
+            end: getEnd(FALL, 15),
             classes: ['Truth, Deduction & Computation'],
           },
           {
             quarter: 'Winter Quarter (2016)',
+            start: getStart(WINTER, 16),
+            end: getEnd(WINTER, 16),
             classes: [
               'Formal Methods in Software Engineering',
               'Internet of Things',
@@ -60,6 +85,8 @@ const schools = [
           },
           {
             quarter: 'Spring Quarter (2016)',
+            start: getStart(SPRING, 16),
+            end: getEnd(SPRING, 16),
             classes: [
               'Computer Forensics',
               'Computer Forensics Lab',
@@ -68,6 +95,8 @@ const schools = [
           },
           {
             quarter: 'Fall Quarter (2016)',
+            start: getStart(FALL, 16),
+            end: getEnd(FALL, 16),
             classes: ['Distributed Systems'],
           },
         ],
@@ -90,6 +119,8 @@ const schools = [
         quarters: [
           {
             quarter: 'Fall Quarter (2011)',
+            start: getStart(FALL, 11),
+            end: getEnd(FALL, 11),
             classes: [
               'Introduction to Programming',
               'Intro to Engineering',
@@ -100,6 +131,8 @@ const schools = [
           },
           {
             quarter: 'Winter Quarter (2012)',
+            start: getStart(WINTER, 12),
+            end: getEnd(WINTER, 12),
             classes: [
               'Advanced Programming',
               'Differential Equations',
@@ -109,6 +142,8 @@ const schools = [
           },
           {
             quarter: 'Spring Quarter (2012)',
+            start: getStart(SPRING, 12),
+            end: getEnd(SPRING, 12),
             classes: [
               'Abstract Data Types & Data Structures',
               'Discrete Mathematics',
@@ -123,6 +158,8 @@ const schools = [
         quarters: [
           {
             quarter: 'Fall Quarter (2012)',
+            start: getStart(FALL, 12),
+            end: getEnd(FALL, 12),
             classes: [
               'Introduction to Logic Design',
               'Physics for Scientists and Engineers III',
@@ -132,6 +169,8 @@ const schools = [
           },
           {
             quarter: 'Winter Quarter (2013)',
+            start: getStart(WINTER, 13),
+            end: getEnd(WINTER, 13),
             classes: [
               'Form Specification & Advanced Data Structures',
               'Linear Algebra',
@@ -141,6 +180,8 @@ const schools = [
           },
           {
             quarter: 'Spring Quarter (2013)',
+            start: getStart(SPRING, 13),
+            end: getEnd(SPRING, 13),
             classes: [
               'Intro to Embedded Systems',
               'Electric Circuits I',
@@ -155,6 +196,8 @@ const schools = [
         quarters: [
           {
             quarter: 'Fall Quarter (2013)',
+            start: getStart(FALL, 13),
+            end: getEnd(FALL, 13),
             classes: [
               'Web Programming I',
               'Operating Systems',
@@ -164,6 +207,8 @@ const schools = [
           },
           {
             quarter: 'Winter Quarter (2014)',
+            start: getStart(WINTER, 14),
+            end: getEnd(WINTER, 14),
             classes: [
               'Mobile Application Development (Android)',
               'Computer Networks',
@@ -173,6 +218,8 @@ const schools = [
           },
           {
             quarter: 'Spring Quarter (2014)',
+            start: getStart(SPRING, 14),
+            end: getEnd(SPRING, 14),
             classes: [
               'Intro: 3D Animation & Modeling',
               'Theory of Algorithms',
@@ -187,6 +234,8 @@ const schools = [
         quarters: [
           {
             quarter: 'Fall Quarter (2014)',
+            start: getStart(FALL, 14),
+            end: getEnd(FALL, 14),
             classes: [
               'Web Search & Info Retrieval',
               'Software Ethics',
@@ -198,6 +247,8 @@ const schools = [
           },
           {
             quarter: 'Winter Quarter (2015)',
+            start: getStart(WINTER, 15),
+            end: getEnd(WINTER, 15),
             classes: [
               'Software Development Process Management',
               'Object Oriented Analysis and Design Programming',
@@ -209,6 +260,8 @@ const schools = [
           },
           {
             quarter: 'Spring Quarter (2015)',
+            start: getStart(SPRING, 15),
+            end: getEnd(SPRING, 15),
             classes: [
               'Software Architecture',
               'Web Programming II',
@@ -483,9 +536,8 @@ const schools = [
 
 const timeline = [];
 
-forEach(
-  schools[0].years,
-  (year) => {
+forEach(schools, (school) => {
+  forEach(school.years, (year) => {
     forEach(year.quarters, (quarter) => {
       forEach(quarter.classes, (course) => {
         quarter.start && timeline.push({
@@ -497,8 +549,8 @@ forEach(
         });
       });
     });
-  },
-);
+  });
+});
 
 export const classTimeline = timeline.sort((a, b) => a.start.diff(b.start, 'months'));
 export default schools;

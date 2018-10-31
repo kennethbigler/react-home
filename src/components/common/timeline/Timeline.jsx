@@ -76,7 +76,6 @@ export class Timeline extends Component {
     const width = ending - beginning;
     const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
     // check if name has room
-    console.log(`selector: ${selector}, val: ${elm[selector]}, elm: ${elm}`);
     if (textWidth < MIN_SHORT_WIDTH) {
       segments.push({
         body: elm[selector].substr(0, 1),

@@ -5,7 +5,7 @@ import moment from 'moment';
 // components
 import grey from '@material-ui/core/colors/grey';
 import ExpandableCard from './ExpandableCard';
-import { Timeline, TIMELINE_TITLE } from './timeline';
+import { Timeline, TIMELINE_TITLE } from './timeline/Timeline';
 // material-ui
 // constants
 import workExperience from '../../constants/work';

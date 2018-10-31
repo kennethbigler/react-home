@@ -7,7 +7,6 @@ import YearMarkers from './YearMarkers';
 
 const Row = (props) => {
   const { segments, yearMarkers } = props;
-  console.log(segments);
   const style = yearMarkers
     ? { height: 0 }
     : { marginTop: '10px' };
