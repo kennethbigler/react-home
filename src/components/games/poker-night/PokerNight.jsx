@@ -15,7 +15,7 @@ import scores, { colors } from './poker';
 const PokerNight = () => {
   let prevWeek = {};
   const parsedScores = map(scores, (week) => {
-    const parsedWeek = reduce(assign({}, week, prevWeek), (parsed, val, key) => {
+    const parsedWeek = reduce(assign({}, week, prevWeek, { name: week.name }), (parsed, val, key) => {
       if (hasIn(prevWeek, key) && hasIn(week, key) && key !== 'name') {
         parsed[key] = prevWeek[key] + week[key];
       } else {
@@ -35,7 +35,7 @@ const PokerNight = () => {
         {map(colors, (color, key) => <Line type="monotone" dataKey={key} key={key} stroke={color} />)}
         <XAxis dataKey="name" />
         <YAxis />
-        <Tooltip />
+        <Tooltip itemSorter={(a, b) => b.value - a.value} />
         <Legend />
       </LineChart>
     </ResponsiveContainer>
