@@ -1,8 +1,9 @@
 import {
   amber, blue, blueGrey, brown, cyan, deepOrange, deepPurple, green, grey, indigo, lightBlue, lightGreen, lime, orange, pink, purple, red, teal, yellow,
 } from '@material-ui/core/colors/';
+import reduce from 'lodash/reduce';
 
-export default [
+const scores = [
   {
     name: 'Week 1',
     Ken: 5,
@@ -119,4 +120,14 @@ export const colors = {
   Ming: teal[500],
   Zach: yellow[500],
   Scott: grey[500],
+  Emily: grey[900],
 };
+
+const zeroes = reduce(colors, (result, val, key) => {
+  result[key] = 0;
+  return result;
+}, {});
+console.log(zeroes);
+scores.unshift(zeroes);
+
+export default scores;
