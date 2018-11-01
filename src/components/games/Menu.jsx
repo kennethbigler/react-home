@@ -21,9 +21,6 @@ const Menu = (props) => {
       { name: 'Poker', route: 'poker' },
       { name: 'Slot Machine', route: 'slots' },
       { name: 'Tic-Tac-Toe', route: 'tictactoe' },
-      { divider: true },
-      { name: 'Murder Mystery', route: 'murder' },
-      { name: 'Poker Night Scores', route: 'pokernight' },
     ],
     (item, index) => (item.divider ? (
       <Divider key={index} />

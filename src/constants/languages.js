@@ -16,7 +16,7 @@ import {// tech constants
   CSS,
   JS,
   SASS,
-  MIXPANEL,
+  JASMINE,
   JAVA,
   AWS,
   PYTHON2,
@@ -72,9 +72,9 @@ const languageExp = [
     end: moment(),
   }, {
     color: indigo[900],
-    company: MIXPANEL,
-    title: MIXPANEL,
-    short: 'MP',
+    company: JASMINE,
+    title: JASMINE,
+    short: 'J',
     start: moment('2018-03'),
     end: moment(),
   }, {

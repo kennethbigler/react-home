@@ -11,9 +11,7 @@ import BlackJack from './blackjack';
 import Connect4 from './connect4';
 import DealOrNoDeal from './deal-or-no-deal';
 import GameHome from './Home';
-import MurderMystery from './murder-mystery';
 import Poker from './poker';
-import PokerNight from './poker-night';
 import Slots from './slots';
 import TicTacToe from './tictactoe';
 // functions
@@ -28,8 +26,6 @@ const Routes = (props) => {
       { name: 'blackjack', component: BlackJack },
       { name: 'connect4', component: Connect4 },
       { name: 'deal', component: DealOrNoDeal },
-      { name: 'murder', component: MurderMystery },
-      { name: 'pokernight', component: PokerNight },
       { name: 'poker', component: Poker },
       { name: 'slots', component: Slots },
       { name: 'tictactoe', component: TicTacToe },

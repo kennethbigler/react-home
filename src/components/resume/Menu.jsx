@@ -11,12 +11,14 @@ const Menu = (props) => {
   const menu = map(
     [
       { name: 'Summary', route: '' },
-      { divider: true },
       { name: 'Work', route: 'work' },
       { name: 'Education', route: 'education' },
-      { name: 'Travel Map', route: 'travel' },
-      { name: 'Git Tools', route: 'git-tools' },
       { name: 'Resume', route: 'resume' },
+      { divider: true },
+      { name: 'Git Tools', route: 'git-tools' },
+      { name: 'Travel Map', route: 'travel' },
+      { name: 'Murder Mystery', route: 'murder' },
+      { name: 'Poker Night Scores', route: 'poker' },
       { divider: true },
       { name: 'React Games', route: 'games' },
     ],

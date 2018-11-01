@@ -13,7 +13,8 @@ import Education from './education';
 import Resume from './resume';
 import TravelMap from './travel-map';
 import GitTools from './git-tools';
-import PokerNight from '../games/poker-night';
+import MurderMystery from './murder-mystery';
+import Poker from './poker';
 // functions
 // Parents: App
 
@@ -28,7 +29,8 @@ const Routes = (props) => {
       { name: 'travel', component: TravelMap },
       { name: 'resume', component: Resume },
       { name: 'git-tools', component: GitTools },
-      { name: 'poker', component: PokerNight },
+      { name: 'poker', component: Poker },
+      { name: 'murder', component: MurderMystery },
     ],
     (acc, obj) => {
       const { name, component } = obj;

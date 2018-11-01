@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // https://github.com/wojtekmaj/react-pdf
 import { pdfjs, Document, Page } from 'react-pdf';
+import get from 'lodash/get';
 import resume from '../../../images/kenneth_bigler_resume.pdf';
 // Parents: Main
 
@@ -11,29 +12,28 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 export default class Resume extends Component {
   state = {
-    file: resume,
     numPages: null,
     width: 0,
   };
 
-  onDocumentLoadSuccess = ({ numPages }) => {
+  onDocumentLoadSuccess = (pdf) => {
+    const numPages = get(pdf, 'numPages', 1);
     this.setState({ numPages });
   };
 
   onLoadSuccess = (pdf) => {
-    const pdfWidth = pdf.pageInfo.view[2];
+    const pdfWidth = get(pdf, 'pageInfo.view[2]', 612);
     const screenWidth = document.body.clientWidth - 32;
     const width = screenWidth > pdfWidth * MAX_SCALE ? pdfWidth * MAX_SCALE : screenWidth;
-
     this.setState({ width });
   }
 
   render() {
-    const { file, numPages, width } = this.state;
+    const { numPages, width } = this.state;
 
     return (
       <div>
-        <Document file={file} onLoadSuccess={this.onDocumentLoadSuccess}>
+        <Document file={resume} onLoadSuccess={this.onDocumentLoadSuccess}>
           {Array.from(new Array(numPages), (el, index) => (
             <Page
               key={`page_${index + 1}`}
