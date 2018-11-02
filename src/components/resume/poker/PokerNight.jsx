@@ -7,7 +7,7 @@ import map from 'lodash/map';
 import assign from 'lodash/assign';
 import reduce from 'lodash/reduce';
 import hasIn from 'lodash/hasIn';
-import scores, { colors } from './poker';
+import scores, { colors } from '../../../constants/poker';
 // Parents: Main
 
 const PokerNight = () => {
@@ -27,7 +27,7 @@ const PokerNight = () => {
 
   return (
     <div>
-      <h2>Poker Night Scores</h2>
+      <h2>Penny Poker Night Scores</h2>
       <ResponsiveContainer width="100%" height={650}>
         <LineChart data={parsedScores}>
           {map(colors, (color, key) => <Line type="monotone" dataKey={key} key={key} stroke={color} />)}
