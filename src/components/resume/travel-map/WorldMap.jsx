@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   ComposableMap,
   ZoomableGroup,
@@ -7,21 +7,45 @@ import {
 } from 'react-simple-maps';
 import map from 'lodash/map';
 import blueGrey from '@material-ui/core/colors/blueGrey';
-import grey from '@material-ui/core/colors/grey';
+import {
+  amber, blue, brown, cyan, deepOrange, deepPurple, green, indigo, lightBlue, lightGreen, lime, orange, pink, purple, red, teal, yellow,
+} from '@material-ui/core/colors/';
+import Popover from './Popover';
 
-const wrapperStyles = {
-  width: '100%',
-  maxWidth: 980,
-  margin: '0 auto',
-  fontFamily: 'Roboto, sans-serif',
-};
 
 const STROKE = blueGrey[900];
-const HOVER = blueGrey[500];
+const HOVER = red[800];
 const FILL = blueGrey[100];
-const PRESSED = blueGrey[700];
+const PRESSED = blueGrey[800];
+const RATIO = 100 / 465.33;
 
-class WithReduxExample extends Component {
+const countries = {
+  Bahamas: amber[500],
+  Canada: blue[500],
+  Mexico: brown[500],
+  'United States of America': cyan[500],
+  Austria: deepOrange[500],
+  Denmark: deepPurple[500],
+  Estonia: green[500],
+  Finland: indigo[500],
+  France: lightBlue[500],
+  Germany: lightGreen[500],
+  Greece: lime[500],
+  Iceland: orange[500],
+  Ireland: pink[500],
+  Italy: purple[500],
+  Netherlands: red[500],
+  Norway: teal[500],
+  Portugal: yellow[500],
+  Russia: amber[800],
+  Spain: blue[800],
+  Sweden: cyan[800],
+  Switzerland: deepOrange[800],
+  Turkey: deepPurple[800],
+  'United Kingdom': green[800],
+};
+
+class WorldMap extends PureComponent {
   state = {
     x: 0,
     y: 0,
@@ -46,19 +70,11 @@ class WithReduxExample extends Component {
     const {
       x, y, hide, content,
     } = this.state;
-    const popoverStyle = {
-      position: 'absolute',
-      left: x,
-      top: y - 35,
-      display: hide ? 'none' : 'block',
-      backgroundColor: grey[800],
-      color: 'white',
-      padding: 5,
-    };
+    const screenWidth = document.body.clientWidth - 32;
 
     return (
-      <div style={wrapperStyles}>
-        <ComposableMap>
+      <div>
+        <ComposableMap width={screenWidth} height={screenWidth * 546 / 744} projectionConfig={{ scale: screenWidth * RATIO, rotation: [-10, 0, 0] }}>
           <ZoomableGroup>
             <Geographies geography="/world-110m.json">
               {(geographies, projection) => map(geographies, (geography, i) => (
@@ -70,7 +86,7 @@ class WithReduxExample extends Component {
                   onMouseLeave={this.handleLeave}
                   style={{
                     default: {
-                      fill: FILL,
+                      fill: countries[geography.properties.NAME] ? countries[geography.properties.NAME] : FILL,
                       stroke: STROKE,
                       strokeWidth: 0.75,
                       outline: 'none',
@@ -94,10 +110,10 @@ class WithReduxExample extends Component {
             </Geographies>
           </ZoomableGroup>
         </ComposableMap>
-        <div style={popoverStyle}>{content}</div>
+        <Popover x={x} y={y} hide={hide} content={content} />
       </div>
     );
   }
 }
 
-export default WithReduxExample;
+export default WorldMap;
