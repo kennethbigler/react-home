@@ -233,6 +233,7 @@ class DND extends Component {
     // render component
     return (
       <div>
+        <h1>Deal or No Deal</h1>
         <Header
           casesToOpen={casesToOpen}
           isOver={isOver}

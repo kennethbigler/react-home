@@ -7,10 +7,7 @@ import TimelineCard from '../../common/TimelineCard';
 
 const Summary = () => (
   <div>
-    <h1>
-      Summary
-    </h1>
-    <hr />
+    <h1>Summary</h1>
     <Info />
     <TimelineCard />
     <Skills />

@@ -20,9 +20,7 @@ class MurderMystery extends Component {
 
     return (
       <div>
-        <h2>
-          {`Murder at ${CASINO}`}
-        </h2>
+        <h1>{`Murder at ${CASINO}`}</h1>
         {map(profiles, (profile, i) => {
           const {
             role, importance, person, gender, description, hint, clue,

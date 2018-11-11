@@ -107,6 +107,7 @@ export default class TicTacToe extends Component {
 
     return (
       <div>
+        <h1>Tic-Tac-Toe</h1>
         <Paper elevation={2} style={this.styles.paper}>
           <Header newGame={this.newGame} turn={turn} winner={winner} />
           <Board

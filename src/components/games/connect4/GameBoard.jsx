@@ -13,24 +13,19 @@ const GameBoard = (props) => {
     board, insert, winner, turn, newGame,
   } = props;
   return (
-    <div>
-      <h1>
-        Welcome to Ken&apos;s Connect4 Game
-      </h1>
-      <Paper
-        elevation={2}
-        style={{
-          maxWidth: 900,
-          minWidth: 300,
-          display: 'block',
-          margin: 'auto',
-          paddingBottom: 5,
-        }}
-      >
-        <Header newGame={newGame} turn={turn} winner={winner} />
-        <Board board={board} insert={insert} turn={turn} />
-      </Paper>
-    </div>
+    <Paper
+      elevation={2}
+      style={{
+        maxWidth: 900,
+        minWidth: 300,
+        display: 'block',
+        margin: 'auto',
+        paddingBottom: 5,
+      }}
+    >
+      <Header newGame={newGame} turn={turn} winner={winner} />
+      <Board board={board} insert={insert} turn={turn} />
+    </Paper>
   );
 };
 

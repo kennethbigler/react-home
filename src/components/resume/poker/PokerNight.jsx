@@ -27,7 +27,7 @@ const PokerNight = () => {
 
   return (
     <div>
-      <h2>Penny Poker Night Scores</h2>
+      <h1>Penny Poker Night Scores</h1>
       <ResponsiveContainer width="100%" height={650}>
         <LineChart data={parsedScores}>
           {map(colors, (color, key) => <Line type="monotone" dataKey={key} key={key} stroke={color} />)}

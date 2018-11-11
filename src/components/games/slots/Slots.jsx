@@ -90,9 +90,7 @@ class Slots extends Component {
 
     return (
       <div>
-        <h1>
-          Welcome to Ken&apos;s Casino Slot Machine
-        </h1>
+        <h1>Casino Slot Machine</h1>
         <Grid container spacing={16} style={{ marginTop: '2em' }}>
           <Grid item sm={6} xs={12}>
             <Grid container spacing={16} style={{ marginBottom: '1em' }}>

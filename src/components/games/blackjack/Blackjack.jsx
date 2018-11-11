@@ -15,7 +15,7 @@ import { bindActionCreators } from 'redux';
 import get from 'lodash/get';
 import forEach from 'lodash/forEach';
 // components
-import Popup from './Popup';
+import Header from './Header';
 import GameTable from '../gametable';
 import Deck from '../../../apis/Deck';
 // redux functions
@@ -502,7 +502,7 @@ class BlackJack extends Component {
 
     return (
       <div>
-        <Popup />
+        <Header />
         <GameTable
           betHandler={this.betHandler}
           cardClickHandler={this.cardClickHandler}
