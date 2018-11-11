@@ -14,7 +14,8 @@ import Popover from './Popover';
 
 
 const STROKE = blueGrey[900];
-const HOVER = red[800];
+const HOVER = blueGrey[500];
+const VISITED_HOVER = red[800];
 const FILL = blueGrey[100];
 const PRESSED = blueGrey[800];
 const RATIO = 100 / 465.33;
@@ -92,7 +93,7 @@ class WorldMap extends PureComponent {
                       outline: 'none',
                     },
                     hover: {
-                      fill: HOVER,
+                      fill: countries[geography.properties.NAME] ? VISITED_HOVER : HOVER,
                       stroke: STROKE,
                       strokeWidth: 0.75,
                       outline: 'none',
