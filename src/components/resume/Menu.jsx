@@ -19,16 +19,19 @@ const Menu = (props) => {
       { name: 'Travel Map', route: 'travel' },
       { name: 'Murder Mystery', route: 'murder' },
       { name: 'Poker Night Scores', route: 'poker' },
+      { name: 'GraphQL', route: 'graphql' },
       { divider: true },
       { name: 'React Games', route: 'games' },
     ],
-    (item, index) => (item.divider ? (
-      <Divider key={index} />
-    ) : (
-      <MenuItem key={item.name} onClick={() => onItemClick(`/${item.route}`)}>
-        {item.name}
-      </MenuItem>
-    )),
+    (item, index) => (item.divider
+      ? (
+        <Divider key={index} />
+      ) : (
+        <MenuItem key={item.name} onClick={() => onItemClick(`/${item.route}`)}>
+          {item.name}
+        </MenuItem>
+      )
+    ),
   );
 
   // external links

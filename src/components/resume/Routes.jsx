@@ -2,8 +2,9 @@
 import React from 'react';
 import types from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
-// common
+// functions
 import reduce from 'lodash/reduce';
+// common
 import Header from '../common/header/Header';
 import Menu from './Menu';
 // resume
@@ -15,7 +16,7 @@ import TravelMap from './travel-map';
 import GitTools from './git-tools';
 import MurderMystery from './murder-mystery';
 import Poker from './poker';
-// functions
+import GraphQL from './graphql';
 // Parents: App
 
 const Routes = (props) => {
@@ -31,6 +32,7 @@ const Routes = (props) => {
       { name: 'git-tools', component: GitTools },
       { name: 'poker', component: Poker },
       { name: 'murder', component: MurderMystery },
+      { name: 'graphql', component: GraphQL },
     ],
     (acc, obj) => {
       const { name, component } = obj;
