@@ -1,5 +1,6 @@
 import red from '@material-ui/core/colors/red';
 import indigo from '@material-ui/core/colors/indigo';
+import blue from '@material-ui/core/colors/blue';
 import moment from 'moment';
 import forEach from 'lodash/forEach';
 
@@ -27,6 +28,39 @@ const getEnd = (quarter, yy) => {
 };
 
 const schools = [
+  {
+    color: blue[500],
+    degree: 'Hackathons',
+    subtitle: '',
+    years: [
+      {
+        year: 'GigNow - Hacking the Gig Economy Now',
+        quarters: [
+          {
+            quarter: 'GraphHoppers (2018)',
+            classes: [
+              'Date: Nov. 16, 2018',
+              'Prizes: 1st Place',
+              'Project: initial implementation of GraphQL to replace GigNow APIs',
+            ],
+          },
+        ],
+      },
+      {
+        year: 'Accenture Hackathon Games',
+        quarters: [
+          {
+            quarter: 'Feedbat (2014)',
+            classes: [
+              'Date: Oct. 18 - 19, 2014',
+              'Prizes: Best Use of the PubNub API, Best Use of the Amazon Store API',
+              'Project: “feedbat”, an image-sharing web application for mobile devices to get anonymous feedback on various images (likes / dislikes / comments)',
+            ],
+          },
+        ],
+      },
+    ],
+  },
   {
     school: SCU,
     color: red[900],
@@ -275,55 +309,9 @@ const schools = [
     ],
   },
   {
-    school: 'Stanford University',
-    color: red[500],
-    location: 'Stanford, CA',
-    degree:
-      'Stanford Continuing Studies & Undergrad High School Summer Visitor',
-    gpa: 3.8,
+    degree: 'Extracurriculars',
+    subtitle: '',
     years: [
-      {
-        year: 'Undergrad High School Summer Visitor',
-        quarters: [
-          {
-            quarter: 'Summer (2010)',
-            classes: [
-              'PHYS 50: Astronomy Laboratory and Observational Astronomy',
-              'POL 1Z: Introduction to International Relations',
-            ],
-          },
-        ],
-      },
-      {
-        year: 'Stanford Continuing Studies',
-        quarters: [
-          {
-            quarter: 'Summer (2017)',
-            classes: [
-              'WSP 314: Alfred Hitchcock and the Subversive World of Film Noir',
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    degree: 'Activities',
-    subtitle: 'Extracurriculars',
-    years: [
-      {
-        year: 'Hackathons',
-        quarters: [
-          {
-            quarter: 'Accenture Hackathon Games',
-            classes: [
-              'Date: Oct. 18-19, 2014',
-              'Prizes: Best Use of the PubNub API, Best Use of the Amazon Store API',
-              'Project: “feedbat”, an image-sharing web application for mobile devices to get anonymous feedback on various images (likes / dislikes / comments)',
-            ],
-          },
-        ],
-      },
       {
         year: 'Honors Societies',
         quarters: [
@@ -398,6 +386,39 @@ const schools = [
               'Salsa Dancing',
               'International Travel',
               'Video Games (DOTA 2)',
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    school: 'Stanford University',
+    color: red[500],
+    location: 'Stanford, CA',
+    degree:
+      'Stanford Continuing Studies & Undergrad High School Summer Visitor',
+    gpa: 3.8,
+    years: [
+      {
+        year: 'Undergrad High School Summer Visitor',
+        quarters: [
+          {
+            quarter: 'Summer (2010)',
+            classes: [
+              'PHYS 50: Astronomy Laboratory and Observational Astronomy',
+              'POL 1Z: Introduction to International Relations',
+            ],
+          },
+        ],
+      },
+      {
+        year: 'Stanford Continuing Studies',
+        quarters: [
+          {
+            quarter: 'Summer (2017)',
+            classes: [
+              'WSP 314: Alfred Hitchcock and the Subversive World of Film Noir',
             ],
           },
         ],

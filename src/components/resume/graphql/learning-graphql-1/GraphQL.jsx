@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import map from 'lodash/map';
 import split from 'lodash/split';
 import get from 'lodash/get';
+import Organization from './Organization';
 
 const axiosGitHubGraphQL = axios.create({
   baseURL: 'https://api.github.com/graphql',
@@ -161,12 +161,12 @@ class GraphQL extends Component {
   };
 
   onFetchMoreIssues = () => {
-    console.log('connected');
-    const { endCursor } = this.state.organization.repository.issues.pageInfo;
-    this.onFetchFromGitHub(this.state.path, endCursor);
+    const { organization, path } = this.state;
+    const { endCursor } = organization.repository.issues.pageInfo;
+    this.onFetchFromGitHub(path, endCursor);
   };
 
-  onStarRepository = (repositoryId, viewerHasStarred) => {
+  onStarRepository = (repositoryId) => {
     addStarToRepository(repositoryId).then(mutationResult => this.setState(resolveAddStarMutation(mutationResult)));
   };
 
@@ -208,69 +208,5 @@ class GraphQL extends Component {
     );
   }
 }
-
-const Organization = ({
-  organization,
-  errors,
-  onFetchMoreIssues,
-  onStarRepository,
-}) => (errors
-  ? (
-    <p>
-      <strong>Something went wrong: </strong>
-      {map(errors, 'message').join(' ')}
-    </p>
-  ) : (
-    <div>
-      <p>
-        <strong>Issues from Organization: </strong>
-        <a href={organization.url}>{organization.name}</a>
-      </p>
-      {organization.repository
-        && (
-          <Repository
-            repository={organization.repository}
-            onFetchMoreIssues={onFetchMoreIssues}
-            onStarRepository={onStarRepository}
-          />
-        )
-      }
-    </div>
-  ));
-
-const Repository = ({ repository, onFetchMoreIssues, onStarRepository }) => (
-  <div>
-    <p>
-      <strong>In Repository: </strong>
-      <a href={repository.url}>{repository.name}</a>
-    </p>
-
-    <button
-      type="button"
-      onClick={() => onStarRepository(repository.id, repository.viewerHasStarred)}
-    >
-      {repository.stargazers.totalCount}
-      {repository.viewerHasStarred ? 'Unstar' : 'Star'}
-    </button>
-
-    <ul>
-      {map(repository.issues.edges, issue => (
-        <li key={issue.node.id}>
-          <a href={issue.node.url}>{issue.node.title}</a>
-
-          <ul>
-            {map(issue.node.reactions.edges, reaction => (
-              <li key={reaction.node.id}>{reaction.node.content}</li>
-            ))}
-          </ul>
-        </li>
-      ))}
-    </ul>
-
-    <hr />
-
-    {repository.issues.pageInfo.hasNextPage && <button type="button" onClick={onFetchMoreIssues}>More</button>}
-  </div>
-);
 
 export default GraphQL;
