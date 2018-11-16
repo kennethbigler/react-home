@@ -1,13 +1,11 @@
 import React from 'react';
-import axios from 'axios';
+import Profile from './Profile';
 
-const axiosGitHubGraphQL = axios.create({
-  baseURL: 'https://api.github.com/graphql',
-  headers: {
-    Authorization: `bearer ${process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN}`,
-  },
-});
-
-const GraphQL = () => (<div>Hello GraphQL</div>);
+class GraphQL extends React.Component {
+  render() {
+    const test = 'hello world';
+    return (<Profile />);
+  }
+}
 
 export default GraphQL;
