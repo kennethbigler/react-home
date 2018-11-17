@@ -93,7 +93,7 @@ const TravelMap = () => {
 
   return (
     <div>
-      <h3 style={styles.margins}>I have been to:</h3>
+      <h3 style={styles.margins}>I have been to 30 countries:</h3>
       <Table>
         <TableHead>
           <TableRow>

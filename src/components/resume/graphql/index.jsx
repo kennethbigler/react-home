@@ -1,3 +1,3 @@
-import GraphQL from './GraphQLWrapper';
+import GraphQL from './GraphQL';
 
 export default GraphQL;

@@ -1,10 +1,7 @@
 import React, { Fragment } from 'react';
 import map from 'lodash/map';
-import Button from '@material-ui/core/Button';
 import RepositoryItem from './RepositoryItem';
-import Loading from '../Loading';
 import FetchMore from '../FetchMore';
-
 
 const updateQuery = (previousResult, { fetchMoreResult }) => {
   if (!fetchMoreResult) {
