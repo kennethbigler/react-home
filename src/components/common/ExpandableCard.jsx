@@ -66,11 +66,11 @@ class ExpandableCard extends Component {
         {title}
       </Typography>
     );
-    const subtitleJSX = (
+    const subtitleJSX = expanded ? (
       <Typography style={styles.subtitle}>
         {subtitle}
       </Typography>
-    );
+    ) : null;
 
     return (
       <Card style={styles.card}>
