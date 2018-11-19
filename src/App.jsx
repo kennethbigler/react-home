@@ -6,8 +6,6 @@ import { HashRouter } from 'react-router-dom';
 // material UI
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import blueGrey from '@material-ui/core/colors/blueGrey';
-import deepOrange from '@material-ui/core/colors/deepOrange';
 // redux
 import { Provider } from 'react-redux';
 import throttle from 'lodash/throttle';
@@ -18,6 +16,8 @@ import Routes from './components/Routes';
 const store = configureStore();
 store.subscribe(throttle(() => saveState(store.getState()), 1000));
 
+const { primary, secondary } = store.getState().theme;
+
 /** App class that wraps higher level components of the application */
 const App = () => {
   const theme = createMuiTheme({
@@ -25,8 +25,8 @@ const App = () => {
       useNextVariants: true,
     },
     palette: {
-      primary: blueGrey,
-      secondary: deepOrange,
+      primary,
+      secondary,
     },
   });
 

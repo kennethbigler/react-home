@@ -13,7 +13,7 @@ const Quarter = (props) => {
         {quarter.quarter}
       </h3>
       <ul>
-        {map(quarter.classes, c => <Class key={c} name={c} />)}
+        {map(quarter.classes, c => <Class key={c.name} name={c.name} catalog={c.catalog} />)}
       </ul>
     </div>
   );
@@ -22,7 +22,10 @@ const Quarter = (props) => {
 Quarter.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   quarter: types.shape({
-    classes: types.arrayOf(types.string).isRequired,
+    classes: types.arrayOf(types.shape({
+      name: types.string.isRequired,
+      catalog: types.string,
+    })).isRequired,
     quarter: types.string.isRequired,
   }).isRequired,
 };

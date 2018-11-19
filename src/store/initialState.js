@@ -1,3 +1,6 @@
+import blueGrey from '@material-ui/core/colors/blueGrey';
+import deepOrange from '@material-ui/core/colors/deepOrange';
+
 export const newPlayer = (id, name = 'Bot', isBot = true) => ({
   id,
   name,
@@ -24,5 +27,9 @@ export default {
     branchPrefix: 'features',
     casePreference: 'snake_case',
     commitPrefix: true,
+  },
+  theme: {
+    primary: blueGrey,
+    secondary: deepOrange,
   },
 };
