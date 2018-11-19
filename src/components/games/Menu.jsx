@@ -21,17 +21,20 @@ const Menu = (props) => {
       { name: 'Poker', route: 'poker' },
       { name: 'Slot Machine', route: 'slots' },
       { name: 'Tic-Tac-Toe', route: 'tictactoe' },
+      { name: 'Yatzee', route: 'yatzee' },
     ],
-    (item, index) => (item.divider ? (
-      <Divider key={index} />
-    ) : (
-      <MenuItem
-        key={item.name}
-        onClick={() => onItemClick(`${baseUrl}/${item.route}`)}
-      >
-        {item.name}
-      </MenuItem>
-    )),
+    (item, index) => (item.divider
+      ? (
+        <Divider key={index} />
+      ) : (
+        <MenuItem
+          key={item.name}
+          onClick={() => onItemClick(`${baseUrl}/${item.route}`)}
+        >
+          {item.name}
+        </MenuItem>
+      )
+    ),
   );
 
   // navigation
