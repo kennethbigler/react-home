@@ -19,6 +19,7 @@ class ScoreTable extends Component {
       score: types.number.isRequired,
     })),
     onTopScore: types.func.isRequired,
+    showScoreButtons: types.bool.isRequired,
   };
 
   shouldTopButtonDisplay = (d) => {
@@ -32,8 +33,30 @@ class ScoreTable extends Component {
     }, [0, 0]);
   }
 
+  getScoreDisplay = (sum, score, count, i) => {
+    const { onTopScore, showScoreButtons } = this.props;
+    if (score >= 0) {
+      return score;
+    }
+    if (showScoreButtons) {
+      if (count >= 3) {
+        return (
+          <Button color="primary" onClick={() => onTopScore(sum, i)} variant="outlined">
+            {`Add ${sum} Points`}
+          </Button>
+        );
+      }
+      return (
+        <Button color="primary" onClick={() => onTopScore(0, i)} variant="outlined">
+          {'Take 0'}
+        </Button>
+      );
+    }
+  }
+
   render() {
-    const { top, onTopScore } = this.props;
+    const { top } = this.props;
+    let topSum = 0;
     return (
       <Table>
         <TableHead>
@@ -46,23 +69,24 @@ class ScoreTable extends Component {
         <TableBody>
           {
             map(top, ({ name, score }, i) => {
+              if (score >= 0) {
+                topSum += score;
+              }
               const d = i + 1;
               const [count, sum] = this.shouldTopButtonDisplay(d);
               return (
                 <TableRow key={name}>
                   <TableCell>{`${name}: ${d},${d},${d} = ${d * 3}`}</TableCell>
                   <TableCell>{`Count and add only ${name}`}</TableCell>
-                  <TableCell>
-                    {score ? (<div>{score}</div>) : count >= 3 && (
-                      <Button color="primary" onClick={() => onTopScore(sum, i)} variant="outlined">
-                        {`Add ${sum} Points`}
-                      </Button>
-                    )}
-                  </TableCell>
+                  <TableCell>{this.getScoreDisplay(sum, score, count, i)}</TableCell>
                 </TableRow>
               );
             })
           }
+          <TableRow>
+            <TableCell colSpan={2}>Total</TableCell>
+            <TableCell>{topSum}</TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     );

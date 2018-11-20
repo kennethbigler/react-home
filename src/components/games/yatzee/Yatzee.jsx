@@ -11,13 +11,16 @@ const getInitialState = () => ({
   roll: 0,
   values: [0, 0, 0, 0, 0],
   saved: [],
+  turn: 0,
+  showScoreButtons: false,
+  hasScored: false,
   top: [
-    { name: 'Aces', score: 0 },
-    { name: 'Twos', score: 0 },
-    { name: 'Threes', score: 0 },
-    { name: 'Fours', score: 0 },
-    { name: 'Fives', score: 0 },
-    { name: 'Sixes', score: 0 },
+    { name: 'Aces', score: -1 },
+    { name: 'Twos', score: -1 },
+    { name: 'Threes', score: -1 },
+    { name: 'Fours', score: -1 },
+    { name: 'Fives', score: -1 },
+    { name: 'Sixes', score: -1 },
   ],
 });
 
@@ -28,12 +31,17 @@ class Yatzee extends Component {
   state = getInitialState();
 
   handleDiceRoll = () => {
-    const { roll } = this.state;
-    if (roll >= 3) {
+    const { roll, hasScored } = this.state;
+
+    if (roll >= 3 && hasScored === false) {
+      return;
+    }
+    if (roll >= 3 && hasScored === true) {
       this.setState({
         roll: 0,
         values: [0, 0, 0, 0, 0],
         saved: [],
+        hasScored: false,
       });
       return;
     }
@@ -46,11 +54,20 @@ class Yatzee extends Component {
     values.sort();
     saved.sort();
 
-    this.setState({ values, saved, roll: roll + 1 });
+    if (roll === 2) {
+      this.setState({
+        showScoreButtons: true, values, saved, roll: roll + 1,
+      });
+    } else {
+      this.setState({ values, saved, roll: roll + 1 });
+    }
   }
 
   handleSave = (i) => {
     const { saved, values } = this.state;
+    if (values[i] === 0) {
+      return;
+    }
     saved.push(values.splice(i, 1)[0]);
     saved.sort();
     this.setState({ saved });
@@ -92,15 +109,13 @@ class Yatzee extends Component {
 
   handleTopScore = (points, i) => {
     const { top } = this.state;
-    console.log(points);
     top[i].score = points;
-    console.log(top);
-    this.setState({ top });
+    this.setState({ top, hasScored: true, showScoreButtons: false });
   }
 
   render() {
     const {
-      values, saved, roll, top,
+      values, saved, roll, top, showScoreButtons,
     } = this.state;
 
     return (
@@ -133,6 +148,7 @@ class Yatzee extends Component {
           values={[...saved, ...values]}
           top={top}
           onTopScore={this.handleTopScore}
+          showScoreButtons={showScoreButtons}
         />
       </div>
     );
