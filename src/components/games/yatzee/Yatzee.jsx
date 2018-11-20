@@ -9,7 +9,7 @@ const NUM_DICE = 5;
 
 const getInitialState = () => ({
   roll: 0,
-  values: [],
+  values: [0, 0, 0, 0, 0],
   saved: [],
 });
 
@@ -26,40 +26,61 @@ class Yatzee extends Component {
       return;
     }
 
-    const { saved, values } = this.state;
+    const { values, saved } = this.state;
 
-    for (let i = 0; i < NUM_DICE; i += 1) {
-      console.log(!saved[i]);
-      if (!saved[i]) {
-        values[i] = Dice.roll();
-      }
+    for (let i = 0; i < values.length; i += 1) {
+      values[i] = Dice.roll();
     }
+    values.sort();
+    saved.sort();
 
-    console.log(values);
-    this.setState({ values, roll: roll + 1 });
+    this.setState({ values, saved, roll: roll + 1 });
   }
 
   handleSave = (i) => {
     const { saved, values } = this.state;
-    saved[i] = values[i];
+    saved.push(values.splice(i, 1)[0]);
     this.setState({ saved });
-    console.log(values, saved);
+  }
+
+  getButtonText = (roll) => {
+    switch (roll) {
+      case 0:
+        return 'Start Game';
+      case 1:
+      case 2:
+        return 'Roll Dice';
+      case 3:
+        return 'Restart';
+      default:
+        return 'Error';
+    }
   }
 
   render() {
-    const { values, saved } = this.state;
+    const { values, saved, roll } = this.state;
 
     return (
       <div>
+        <h1>Yatzee</h1>
+        <h2>
+          Roll #
+          {roll}
+        </h2>
         <div>
+          {map(saved, (val, i) => (
+            <Button color="secondary" onClick={() => this.handleSave(i)} variant="outlined" key={i}>
+              {val}
+            </Button>
+          ))}
           {map(values, (val, i) => (
-            <Button color={saved[i] ? 'secondary' : 'primary'} onClick={() => this.handleSave(i)} variant="contained" key={i}>
+            <Button color="primary" onClick={() => this.handleSave(i)} variant="outlined" key={i}>
               {val}
             </Button>
           ))}
         </div>
         <Button color="primary" onClick={this.handleDiceRoll} variant="contained">
-          Roll Dice
+          {this.getButtonText(roll)}
         </Button>
       </div>
     );
