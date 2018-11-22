@@ -4,7 +4,7 @@ import map from 'lodash/map';
 import forEach from 'lodash/forEach';
 import Button from '@material-ui/core/Button';
 import Dice from '../../../apis/Dice';
-import ScoreTable from './ScoreTable';
+import ScoreTable, { ADD_DICE } from './ScoreTable';
 // Parents: Main
 
 const getInitialState = () => ({
@@ -22,12 +22,35 @@ const getInitialState = () => ({
     { name: 'Fives', score: -1 },
     { name: 'Sixes', score: -1 },
   ],
+  bottom: [
+    {
+      name: '3 of a kind', hint: ADD_DICE, points: ADD_DICE, score: -1,
+    },
+    {
+      name: '4 of a kind', hint: ADD_DICE, points: ADD_DICE, score: -1,
+    },
+    {
+      name: 'Full House', hint: 'Score 25', points: 25, score: -1,
+    },
+    {
+      name: 'Sm. Straight (Sequence) of 4', hint: 'Score 30', points: 30, score: -1,
+    },
+    {
+      name: 'Lg. Straight (Sequence) of 5', hint: 'Score 40', points: 40, score: -1,
+    },
+    {
+      name: 'Yahtzee', hint: 'Score 50', points: 50, score: -1,
+    },
+    {
+      name: 'Chance', hint: ADD_DICE, points: ADD_DICE, score: -1,
+    },
+  ],
 });
 
 /* --------------------------------------------------
 * Home
 * -------------------------------------------------- */
-class Yatzee extends Component {
+class Yahtzee extends Component {
   state = getInitialState();
 
   handleDiceRoll = () => {
@@ -113,14 +136,20 @@ class Yatzee extends Component {
     this.setState({ top, hasScored: true, showScoreButtons: false });
   }
 
+  handleBottomScore = (points, i) => {
+    const { bottom } = this.state;
+    bottom[i].score = points;
+    this.setState({ bottom, hasScored: true, showScoreButtons: false });
+  }
+
   render() {
     const {
-      values, saved, roll, top, showScoreButtons,
+      values, saved, roll, top, showScoreButtons, bottom,
     } = this.state;
 
     return (
       <div>
-        <h1>Yatzee</h1>
+        <h1>Yahtzee</h1>
         <h2>
           {`Roll #${roll}/3`}
         </h2>
@@ -146,8 +175,10 @@ class Yatzee extends Component {
         </Button>
         <ScoreTable
           values={[...saved, ...values]}
+          bottom={bottom}
           top={top}
           onTopScore={this.handleTopScore}
+          onBottomScore={this.handleBottomScore}
           showScoreButtons={showScoreButtons}
         />
       </div>
@@ -155,4 +186,4 @@ class Yatzee extends Component {
   }
 }
 
-export default Yatzee;
+export default Yahtzee;

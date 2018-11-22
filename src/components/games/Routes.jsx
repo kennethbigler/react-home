@@ -14,7 +14,7 @@ import GameHome from './Home';
 import Poker from './poker';
 import Slots from './slots';
 import TicTacToe from './tictactoe';
-import Yatzee from './yatzee';
+import Yahtzee from './yahtzee';
 // functions
 // Parents: App
 
@@ -30,7 +30,7 @@ const Routes = (props) => {
       { name: 'poker', component: Poker },
       { name: 'slots', component: Slots },
       { name: 'tictactoe', component: TicTacToe },
-      { name: 'yatzee', component: Yatzee },
+      { name: 'yahtzee', component: Yahtzee },
     ],
     (acc, obj) => {
       const { name, component } = obj;
