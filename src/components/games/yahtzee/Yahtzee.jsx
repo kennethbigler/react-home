@@ -1,8 +1,8 @@
 // react
 import React, { Component } from 'react';
 import map from 'lodash/map';
-import forEach from 'lodash/forEach';
 import Button from '@material-ui/core/Button';
+import reduce from 'lodash/reduce';
 import Dice from '../../../apis/Dice';
 import ScoreTable, { ADD_DICE } from './ScoreTable';
 // Parents: Main
@@ -12,8 +12,12 @@ const getInitialState = () => ({
   values: [0, 0, 0, 0, 0],
   saved: [],
   turn: 0,
+  topSum: 0,
+  finalTopSum: 0,
+  bottomSum: 0,
   showScoreButtons: false,
   hasScored: false,
+  finish: false,
   top: [
     { name: 'Aces', score: -1 },
     { name: 'Twos', score: -1 },
@@ -53,8 +57,51 @@ const getInitialState = () => ({
 class Yahtzee extends Component {
   state = getInitialState();
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let { finalTopSum } = prevState;
+    const { top, bottom } = prevState;
+    let count = 0;
+
+    const topSum = reduce(top, (sum, { score }) => {
+      if (score >= 0) {
+        count += 1;
+        sum += score;
+        if (sum >= 63) {
+          finalTopSum = sum + 35;
+        } else {
+          finalTopSum = sum;
+        }
+      }
+      return sum;
+    }, 0);
+
+    const bottomSum = reduce(bottom, (sum, { score }) => {
+      if (score >= 0) {
+        count += 1;
+        sum += score;
+      }
+      return sum;
+    }, 0);
+
+    if (count >= 13) {
+      return { finish: true };
+    }
+    if (topSum !== prevState.topSum || bottomSum !== prevState.bottomSum) {
+      return { topSum, finalTopSum, bottomSum };
+    }
+    return null;
+  }
+
+  newGame = () => {
+    this.setState(getInitialState());
+  }
+
   handleDiceRoll = () => {
-    const { roll, hasScored } = this.state;
+    const { roll, hasScored, finish } = this.state;
+
+    if (finish) {
+      this.newGame();
+    }
 
     if (roll >= 3 && hasScored === false) {
       return;
@@ -104,6 +151,11 @@ class Yahtzee extends Component {
   }
 
   getButtonText = (roll) => {
+    const { finish } = this.state;
+    if (finish) {
+      return 'New Game';
+    }
+
     switch (roll) {
       case 0:
         return 'First Roll';
@@ -116,18 +168,6 @@ class Yahtzee extends Component {
       default:
         return 'Error';
     }
-  }
-
-  getSumScore = () => {
-    const { saved, values } = this.state;
-    let sum = 0;
-    forEach(saved, (val) => {
-      sum += val;
-    });
-    forEach(values, (val) => {
-      sum += val;
-    });
-    return sum;
   }
 
   handleTopScore = (points, i) => {
@@ -144,7 +184,7 @@ class Yahtzee extends Component {
 
   render() {
     const {
-      values, saved, roll, top, showScoreButtons, bottom,
+      values, saved, roll, top, showScoreButtons, bottom, topSum, finalTopSum, bottomSum,
     } = this.state;
 
     return (
@@ -180,6 +220,9 @@ class Yahtzee extends Component {
           onTopScore={this.handleTopScore}
           onBottomScore={this.handleBottomScore}
           showScoreButtons={showScoreButtons}
+          topSum={topSum}
+          finalTopSum={finalTopSum}
+          bottomSum={bottomSum}
         />
       </div>
     );

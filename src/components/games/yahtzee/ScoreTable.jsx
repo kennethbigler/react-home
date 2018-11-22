@@ -8,6 +8,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import map from 'lodash/map';
 import reduce from 'lodash/reduce';
+import {
+  hasXDice, getHistogram, isFullHouse, isStraight,
+} from './yahtzeeHelper';
 // Parents: Popup
 
 export const ADD_DICE = 'Add total of all dice';
@@ -27,38 +30,10 @@ class ScoreTable extends Component {
     onTopScore: types.func.isRequired,
     onBottomScore: types.func.isRequired,
     showScoreButtons: types.bool.isRequired,
+    topSum: types.number.isRequired,
+    finalTopSum: types.number.isRequired,
+    bottomSum: types.number.isRequired,
   };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let { finalTopSum } = prevState;
-    if (finalTopSum) {
-      return null;
-    }
-
-    const { top } = nextProps;
-    let count = 0;
-    const topSum = reduce(top, (sum, { score }) => {
-      if (score >= 0) {
-        count += 1;
-        sum += score;
-        if (count === 6) {
-          if (sum >= 63) {
-            finalTopSum = sum + 35;
-          } else {
-            finalTopSum = sum;
-          }
-        }
-      }
-      return sum;
-    }, 0);
-    return { topSum, finalTopSum };
-  }
-
-  state = {
-    topSum: 0,
-    bottomSum: 0,
-    finalTopSum: 0,
-  }
 
   getButtonInfo = (d) => {
     const { values } = this.props;
@@ -71,37 +46,38 @@ class ScoreTable extends Component {
     }, [0, 0]);
   }
 
-  getScoreDisplay = (score, showButton, points, top, i) => {
+  getScoreButton = (showButton, points, top, i) => {
+    const { onTopScore, onBottomScore } = this.props;
+    return showButton
+      ? (
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={top
+            ? () => onTopScore(points, i)
+            : () => onBottomScore(points, i)}
+        >
+          {`Add ${points} Points`}
+        </Button>
+      ) : (
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={top
+            ? () => onTopScore(0, i)
+            : () => onBottomScore(0, i)}
+        >
+          0
+        </Button>
+      );
+  }
+
+  getTopTableButtons = (score, showButton, sum, i) => {
+    const { showScoreButtons } = this.props;
     if (score >= 0) {
       return score;
     }
-
-    const { onTopScore, showScoreButtons, onBottomScore } = this.props;
-    if (showScoreButtons) {
-      return showButton
-        ? (
-          <Button
-            color="primary"
-            variant="outlined"
-            onClick={top
-              ? () => onTopScore(points, i)
-              : () => onBottomScore(points, i)}
-          >
-            {`Add ${points} Points`}
-          </Button>
-        ) : (
-          <Button
-            color="primary"
-            variant="outlined"
-            onClick={top
-              ? () => onTopScore(0, i)
-              : () => onBottomScore(0, i)}
-          >
-            0
-          </Button>
-        );
-    }
-    return null;
+    return showScoreButtons ? this.getScoreButton(showButton, sum, true, i) : null;
   }
 
   generateTopTable = () => {
@@ -115,7 +91,7 @@ class ScoreTable extends Component {
         <TableRow key={name}>
           <TableCell>{`${name}: ${d},${d},${d} = ${d * 3}`}</TableCell>
           <TableCell>{`Count and add only ${name}`}</TableCell>
-          <TableCell>{this.getScoreDisplay(score, showButton, sum, true, i)}</TableCell>
+          <TableCell>{this.getTopTableButtons(score, showButton, sum, i)}</TableCell>
         </TableRow>
       );
     });
@@ -126,60 +102,35 @@ class ScoreTable extends Component {
     return reduce(values, (sum, d) => sum + d, 0);
   }
 
-  hasXDice = n => (hist, val) => {
-    if (hist === true) {
-      return true;
-    }
-    if (!hist[val]) {
-      hist[val] = 1;
-    } else {
-      hist[val] += 1;
-      if (hist[val] >= n) {
-        return true;
-      }
-    }
-    return hist;
-  };
-
   showButton = (i) => {
     const { values } = this.props;
     switch (i) {
-      case 0: {
-        // 3 of a kind
-        const histogram = reduce(values, this.hasXDice(3), {});
-        return histogram === true;
-      }
-      case 1: {
-        // 4 of a kind
-        const histogram = reduce(values, this.hasXDice(4), {});
-        return histogram === true;
-      }
-      case 2: {
-        // Full House
+      case 0: // 3 of a kind
+        return reduce(values, hasXDice(3), {}) === true;
+      case 1: // 4 of a kind
+        return reduce(values, hasXDice(4), {}) === true;
+      case 2: // Full House
+        return isFullHouse(reduce(values, getHistogram(), {}));
+      case 3: // Sm. Straight
+        return isStraight(reduce(values, getHistogram(), {}), 4);
+      case 4: // Lg. Straight
+        return isStraight(reduce(values, getHistogram(), {}), 5);
+      case 5: // Yahtzee
+        return reduce(values, hasXDice(5), {}) === true;
+      case 6: // Chance
         return true;
-      }
-      case 3: {
-        // Sm. Straight
-        return true;
-      }
-      case 4: {
-        // Lg. Straight
-        return true;
-      }
-      case 5: {
-        // Yahtzee
-        const histogram = reduce(values, this.hasXDice(5), {});
-        return histogram === true;
-      }
-      case 6: {
-        // Chance
-        return true;
-      }
-      default: {
+      default:
         console.error('Unexpeccted Value');
         return false;
-      }
     }
+  }
+
+  getBottomTableButtons = (score, points, i) => {
+    const { showScoreButtons } = this.props;
+    if (score >= 0) {
+      return score;
+    }
+    return showScoreButtons ? this.getScoreButton(this.showButton(i), points, false, i) : null;
   }
 
   generateBottomTable = () => {
@@ -195,14 +146,14 @@ class ScoreTable extends Component {
         <TableRow key={name}>
           <TableCell>{name}</TableCell>
           <TableCell>{hint}</TableCell>
-          <TableCell>{this.getScoreDisplay(score, this.showButton(i), points, false, i)}</TableCell>
+          <TableCell>{this.getBottomTableButtons(score, points, i)}</TableCell>
         </TableRow>
       );
     });
   }
 
   render() {
-    const { topSum, finalTopSum, bottomSum } = this.state;
+    const { topSum, finalTopSum, bottomSum } = this.props;
 
     return (
       <Table>
