@@ -1,10 +1,18 @@
 // react
 import React, { Component } from 'react';
-import map from 'lodash/map';
-import Button from '@material-ui/core/Button';
+import types from 'prop-types';
+// redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// lodash
 import reduce from 'lodash/reduce';
+import map from 'lodash/map';
+// material
+import Button from '@material-ui/core/Button';
+// custom
 import Dice from '../../../apis/Dice';
 import ScoreTable, { ADD_DICE } from './ScoreTable';
+import { addScore } from '../../../store/modules/yahtzee';
 // Parents: Main
 
 const getInitialState = () => ({
@@ -55,9 +63,15 @@ const getInitialState = () => ({
 * Home
 * -------------------------------------------------- */
 class Yahtzee extends Component {
-  state = getInitialState();
+  static propTypes = {
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    actions: types.shape({
+      addScore: types.func.isRequired,
+    }).isRequired,
+  };
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(nextProps.scores);
     let { finalTopSum } = prevState;
     const { top, bottom } = prevState;
     let count = 0;
@@ -92,7 +106,12 @@ class Yahtzee extends Component {
     return null;
   }
 
+  state = getInitialState();
+
   newGame = () => {
+    const { actions } = this.props;
+    const { finalTopSum, bottomSum } = this.state;
+    actions.addScore(finalTopSum + bottomSum);
     this.setState(getInitialState());
   }
 
@@ -229,4 +248,12 @@ class Yahtzee extends Component {
   }
 }
 
-export default Yahtzee;
+// react-redux export
+const mapStateToProps = state => ({ scores: state.yahtzee });
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({ addScore }, dispatch),
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Yahtzee);

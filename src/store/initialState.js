@@ -21,6 +21,7 @@ export default {
     newPlayer(6),
     newPlayer(0, 'Dealer', true),
   ],
+  yahtzee: [],
   turn: { player: 0, hand: 0 },
   git: {
     storyID: '',
