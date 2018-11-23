@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
+import types from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
-import Rules from './Rules';
-import Help from './help';
 // Parents: Board
 
 /* ========================================
  * Popup
  * ======================================== */
-export default class Popup extends Component {
+export default class InfoPopup extends Component {
+  static propTypes = {
+    // types = [array, bool, func, number, object, string, symbol].isRequired
+    children: types.oneOfType([types.arrayOf(types.node), types.node]).isRequired,
+    title: types.oneOfType([types.string, types.element]).isRequired,
+    buttonText: types.oneOfType([types.string, types.element]),
+  };
+
   state = {
     open: false,
   };
@@ -26,22 +32,22 @@ export default class Popup extends Component {
 
   render() {
     const { open } = this.state;
+    const { buttonText, title, children } = this.props;
     return (
       <div>
         <Button color="primary" onClick={this.handleOpen} variant="contained">
-          BlackJack Rules
+          {buttonText || title}
         </Button>
-        <Dialog onClose={this.handleClose} open={open}>
+        <Dialog onClose={this.handleClose} open={open} maxWidth="md">
           <DialogTitle>
-            Blackjack Rules
+            {title}
           </DialogTitle>
           <DialogContent>
-            <Rules />
-            <Help />
+            {children}
           </DialogContent>
           <DialogActions>
             <Button color="primary" onClick={this.handleClose}>
-              Cancel
+              Close
             </Button>
           </DialogActions>
         </Dialog>

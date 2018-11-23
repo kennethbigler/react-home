@@ -1,5 +1,7 @@
 import React from 'react';
-import Popup from './Popup';
+import InfoPopup from '../../common/InfoPopup';
+import Rules from './Rules';
+import Help from './help';
 
 const Header = () => {
   const containerStyle = {
@@ -11,7 +13,10 @@ const Header = () => {
   return (
     <div style={containerStyle}>
       <h1>Blackjack (21)</h1>
-      <Popup />
+      <InfoPopup title="Blackjack Rules">
+        <Rules />
+        <Help />
+      </InfoPopup>
     </div>
   );
 };

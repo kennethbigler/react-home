@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 // custom
 import Dice from '../../../apis/Dice';
 import ScoreTable, { ADD_DICE } from './ScoreTable';
+import ScoreGraph from './ScoreGraph';
 import { addScore } from '../../../store/modules/yahtzee';
 // Parents: Main
 
@@ -68,10 +69,14 @@ class Yahtzee extends Component {
     actions: types.shape({
       addScore: types.func.isRequired,
     }).isRequired,
+    scores: types.arrayOf(
+      types.shape({
+        score: types.number.isRequired,
+      }).isRequired,
+    ).isRequired,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps.scores);
     let { finalTopSum } = prevState;
     const { top, bottom } = prevState;
     let count = 0;
@@ -205,10 +210,12 @@ class Yahtzee extends Component {
     const {
       values, saved, roll, top, showScoreButtons, bottom, topSum, finalTopSum, bottomSum,
     } = this.state;
+    const { scores } = this.props;
 
     return (
       <div>
         <h1>Yahtzee</h1>
+        <ScoreGraph scores={scores} />
         <h2>
           {`Roll #${roll}/3`}
         </h2>

@@ -85,7 +85,7 @@ class ScoreTable extends Component {
     return map(top, ({ name, score }, i) => {
       const d = i + 1;
       const [count, sum] = this.getButtonInfo(i + 1);
-      const showButton = count >= 3;
+      const showButton = count >= 1;
 
       return (
         <TableRow key={name}>
@@ -125,16 +125,36 @@ class ScoreTable extends Component {
     }
   }
 
-  getBottomTableButtons = (score, points, i) => {
+  getBottomTableButtons = (score, points, hasYahtzee, i) => {
     const { showScoreButtons } = this.props;
     if (score >= 0) {
       return score;
     }
-    return showScoreButtons ? this.getScoreButton(this.showButton(i), points, false, i) : null;
+    if (showScoreButtons) {
+      if (hasYahtzee) {
+        const { values, top } = this.props;
+        const canYahtzeeBonus = reduce(
+          reduce(values, getHistogram(), {}),
+          (acc, value, key) => {
+            if (value === 5 && top[key - 1].score >= 0) {
+              return true;
+            }
+            return acc;
+          },
+          false,
+        );
+        if (canYahtzeeBonus) {
+          return this.getScoreButton(true, points + 100, false, i);
+        }
+      }
+      return this.getScoreButton(this.showButton(i), points, false, i);
+    }
+    return null;
   }
 
   generateBottomTable = () => {
     const { bottom } = this.props;
+    const hasYahtzee = bottom[5].score > 0;
     return map(bottom, ({
       name, hint, points, score,
     }, i) => {
@@ -146,7 +166,7 @@ class ScoreTable extends Component {
         <TableRow key={name}>
           <TableCell>{name}</TableCell>
           <TableCell>{hint}</TableCell>
-          <TableCell>{this.getBottomTableButtons(score, points, i)}</TableCell>
+          <TableCell>{this.getBottomTableButtons(score, points, hasYahtzee, i)}</TableCell>
         </TableRow>
       );
     });
