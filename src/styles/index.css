@@ -12,6 +12,14 @@ h4 {
   margin-top: 5px;
 }
 
+/* reusable */
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 /* Misc styles for elements */
 .ReactTable {
   font-size: 14px;

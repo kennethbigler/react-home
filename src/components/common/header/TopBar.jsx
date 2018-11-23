@@ -21,12 +21,6 @@ const styles = {
     display: 'flex',
     marginRight: 15,
   },
-  container: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    alignItems: 'center',
-  },
 };
 
 class TopBar extends PureComponent {
@@ -45,7 +39,7 @@ class TopBar extends PureComponent {
     return (
       <AppBar style={{ left: 0, right: 0, top: 0 }}>
         <Toolbar disableGutters>
-          <div style={styles.container}>
+          <div className="flex-container">
             <div style={styles.flexLeft}>
               <IconButton
                 aria-label="Menu"

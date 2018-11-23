@@ -1,5 +1,6 @@
 import React from 'react';
 import types from 'prop-types';
+import maxBy from 'lodash/maxBy';
 import {
   ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area,
 } from 'recharts';
@@ -8,23 +9,27 @@ import InfoPopup from '../../common/InfoPopup';
 // Parents: Main
 
 const ScoreGraph = (props) => {
-  const { scores, theme } = props;
+  const { scores, theme: { palette: { secondary: { main } } } } = props;
+  const mostRecent = scores[scores.length - 1].score;
+  const topScore = maxBy(scores, 'score').score;
   return (
-    <InfoPopup title="Yahtzee Score History">
-      <ResponsiveContainer minWidth={255} height={300}>
+    <InfoPopup title="Yahtzee Score History" buttonText="Score History">
+      <ResponsiveContainer width="100%" height={300}>
         <AreaChart data={scores}>
           <defs>
             <linearGradient id="mainColor" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="20%" stopColor={theme.palette.secondary.main} stopOpacity={0.8} />
-              <stop offset="100%" stopColor={theme.palette.secondary.main} stopOpacity={0} />
+              <stop offset="20%" stopColor={main} stopOpacity={0.8} />
+              <stop offset="100%" stopColor={main} stopOpacity={0} />
             </linearGradient>
           </defs>
           <XAxis dataKey="name" interval="preserveStartEnd" />
           <YAxis width={40} orientation="right" tickLine={false} />
           <Tooltip />
-          <Area type="monotone" dataKey="score" stroke={theme.palette.secondary.main} fillOpacity={1} fill="url(#mainColor)" />
+          <Area type="monotone" dataKey="score" stroke={main} fillOpacity={1} fill="url(#mainColor)" />
         </AreaChart>
       </ResponsiveContainer>
+      <h3>{`Most Recent: ${mostRecent}`}</h3>
+      <h3>{`Top Score: ${topScore}`}</h3>
     </InfoPopup>
   );
 };

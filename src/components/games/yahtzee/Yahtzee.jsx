@@ -46,10 +46,10 @@ const getInitialState = () => ({
       name: 'Full House', hint: 'Score 25', points: 25, score: -1,
     },
     {
-      name: 'Sm. Straight (Sequence) of 4', hint: 'Score 30', points: 30, score: -1,
+      name: 'Sm. Straight (4)', hint: 'Score 30', points: 30, score: -1,
     },
     {
-      name: 'Lg. Straight (Sequence) of 5', hint: 'Score 40', points: 40, score: -1,
+      name: 'Lg. Straight (5)', hint: 'Score 40', points: 40, score: -1,
     },
     {
       name: 'Yahtzee', hint: 'Score 50', points: 50, score: -1,
@@ -214,31 +214,31 @@ class Yahtzee extends Component {
 
     return (
       <div>
-        <h1>Yahtzee</h1>
-        <ScoreGraph scores={scores} />
-        <h2>
-          {`Roll #${roll}/3`}
-        </h2>
-        <hr />
-        <br />
-        <div style={{ display: 'block', margin: 'auto', width: 320 }}>
-          {map(saved, (val, i) => (
-            <Button color="secondary" onClick={() => this.handleUnsave(i)} variant="outlined" key={i}>
-              {val}
-            </Button>
-          ))}
-          {map(values, (val, i) => (
-            <Button color="primary" onClick={() => this.handleSave(i)} variant="outlined" key={i}>
-              {val}
-            </Button>
-          ))}
+        <div className="flex-container">
+          <h1>Yahtzee</h1>
+          <ScoreGraph scores={scores} />
         </div>
-        <br />
         <hr />
-        <br />
-        <Button color="primary" onClick={this.handleDiceRoll} variant="contained">
-          {this.getButtonText(roll)}
-        </Button>
+        <div className="flex-container">
+          <h2>{`Roll #${roll}/3`}</h2>
+          <div style={{ display: 'block', margin: 'auto', width: 320 }}>
+            {map(saved, (val, i) => (
+              <Button color="secondary" onClick={() => this.handleUnsave(i)} variant="outlined" key={i}>
+                {val}
+              </Button>
+            ))}
+            {map(values, (val, i) => (
+              <Button color="primary" onClick={() => this.handleSave(i)} variant="outlined" key={i}>
+                {val}
+              </Button>
+            ))}
+          </div>
+          <Button color="primary" onClick={this.handleDiceRoll} variant="contained">
+            {this.getButtonText(roll)}
+          </Button>
+        </div>
+        <hr />
+        <h2>{`Total: ${finalTopSum + bottomSum}`}</h2>
         <ScoreTable
           values={[...saved, ...values]}
           bottom={bottom}

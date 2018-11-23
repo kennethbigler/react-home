@@ -13,8 +13,8 @@ import {
 } from './yahtzeeHelper';
 // Parents: Popup
 
-export const ADD_DICE = 'Add total of all dice';
-
+export const ADD_DICE = 'Sum of Dice';
+const centerStyle = { textAlign: 'center' };
 class ScoreTable extends Component {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
@@ -90,8 +90,8 @@ class ScoreTable extends Component {
       return (
         <TableRow key={name}>
           <TableCell>{`${name}: ${d},${d},${d} = ${d * 3}`}</TableCell>
-          <TableCell>{`Count and add only ${name}`}</TableCell>
-          <TableCell>{this.getTopTableButtons(score, showButton, sum, i)}</TableCell>
+          <TableCell>{`Add Only ${name}`}</TableCell>
+          <TableCell style={centerStyle}>{this.getTopTableButtons(score, showButton, sum, i)}</TableCell>
         </TableRow>
       );
     });
@@ -131,6 +131,7 @@ class ScoreTable extends Component {
       return score;
     }
     if (showScoreButtons) {
+      // Yahtzee Bonus
       if (hasYahtzee) {
         const { values, top } = this.props;
         const canYahtzeeBonus = reduce(
@@ -166,7 +167,7 @@ class ScoreTable extends Component {
         <TableRow key={name}>
           <TableCell>{name}</TableCell>
           <TableCell>{hint}</TableCell>
-          <TableCell>{this.getBottomTableButtons(score, points, hasYahtzee, i)}</TableCell>
+          <TableCell style={centerStyle}>{this.getBottomTableButtons(score, points, hasYahtzee, i)}</TableCell>
         </TableRow>
       );
     });
@@ -176,42 +177,42 @@ class ScoreTable extends Component {
     const { topSum, finalTopSum, bottomSum } = this.props;
 
     return (
-      <Table>
+      <Table padding="none">
         <TableHead>
           <TableRow>
             <TableCell>Minimum Required for Bonus</TableCell>
             <TableCell>How to Score</TableCell>
-            <TableCell>Game Score</TableCell>
+            <TableCell style={centerStyle}>Game Score</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {this.generateTopTable()}
           <TableRow>
-            <TableCell colSpan={2}>Total = 63</TableCell>
-            <TableCell>{topSum}</TableCell>
+            <TableCell colSpan={2}>Total == 63</TableCell>
+            <TableCell style={centerStyle}>{topSum}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Bonus if 63 or over</TableCell>
+            <TableCell>Bonus if &gt;= 63</TableCell>
             <TableCell>Score 35</TableCell>
-            <TableCell>{topSum >= 63 ? 35 : 0}</TableCell>
+            <TableCell style={centerStyle}>{topSum >= 63 ? 35 : 0}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell colSpan={2}>Total of Upper Half</TableCell>
-            <TableCell>{finalTopSum}</TableCell>
+            <TableCell colSpan={2}>Upper Half Total</TableCell>
+            <TableCell style={centerStyle}>{finalTopSum}</TableCell>
           </TableRow>
           <TableRow />
           {this.generateBottomTable()}
           <TableRow>
-            <TableCell colSpan={2}>Total of lower half</TableCell>
-            <TableCell>{bottomSum}</TableCell>
+            <TableCell colSpan={2}>Lower Half Total</TableCell>
+            <TableCell style={centerStyle}>{bottomSum}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell colSpan={2}>Total of upper half</TableCell>
-            <TableCell>{finalTopSum}</TableCell>
+            <TableCell colSpan={2}>Upper Half Total</TableCell>
+            <TableCell style={centerStyle}>{finalTopSum}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell colSpan={2}>Grand Total</TableCell>
-            <TableCell>{finalTopSum + bottomSum}</TableCell>
+            <TableCell style={centerStyle}>{finalTopSum + bottomSum}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

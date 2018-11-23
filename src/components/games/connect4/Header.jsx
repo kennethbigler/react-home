@@ -6,11 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import Piece from './Piece';
 // Parents: GameBoard
 
-const styles = {
-  flex: { display: 'flex' },
-  container: { display: 'flex', justifyContent: 'space-between', width: '100%' },
-};
-
 /* ========================================
  * Header
  * ======================================== */
@@ -22,8 +17,8 @@ const Header = (props) => {
 
   return (
     <Toolbar>
-      <div style={styles.container}>
-        <div style={styles.flex}>
+      <div className="flex-container">
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <Typography color="inherit" style={{ marginRight: 10 }} variant="h6">
             {status}
           </Typography>
@@ -32,7 +27,6 @@ const Header = (props) => {
         <Button
           color="primary"
           onClick={newGame}
-          style={styles.flex}
           variant="contained"
         >
           Reset Game

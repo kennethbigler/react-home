@@ -38,7 +38,7 @@ export default class InfoPopup extends Component {
         <Button color="primary" onClick={this.handleOpen} variant="contained">
           {buttonText || title}
         </Button>
-        <Dialog onClose={this.handleClose} open={open} maxWidth="md">
+        <Dialog onClose={this.handleClose} open={open} maxWidth="md" fullWidth>
           <DialogTitle>
             {title}
           </DialogTitle>
