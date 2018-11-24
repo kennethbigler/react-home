@@ -1,15 +1,14 @@
 // react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// components
-// redux
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 // functions
 import forEach from 'lodash/forEach';
 import includes from 'lodash/includes';
 import reduce from 'lodash/reduce';
 import get from 'lodash/get';
+// redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import {
   swapCards,
   newHand,
@@ -17,6 +16,7 @@ import {
   resetStatus,
 } from '../../../store/modules/players';
 import { incrPlayerTurn, resetTurn } from '../../../store/modules/turn';
+// components
 import GameTable from '../gametable';
 import Deck from '../../../apis/Deck';
 // Parents: Main

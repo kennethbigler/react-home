@@ -18,6 +18,7 @@ const Menu = (props) => {
       { name: 'BlackJack', route: 'blackjack' },
       { name: 'Connect4', route: 'connect4' },
       { name: 'Deal or No Deal', route: 'deal' },
+      { name: 'Dota 2 Picker', route: 'dota2' },
       { name: 'Poker', route: 'poker' },
       { name: 'Slot Machine', route: 'slots' },
       { name: 'Tic-Tac-Toe', route: 'tictactoe' },

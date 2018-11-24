@@ -10,6 +10,7 @@ import Menu from './Menu';
 import BlackJack from './blackjack';
 import Connect4 from './connect4';
 import DealOrNoDeal from './deal-or-no-deal';
+import Dota2Picker from './dota-2-picker';
 import GameHome from './Home';
 import Poker from './poker';
 import Slots from './slots';
@@ -27,6 +28,7 @@ const Routes = (props) => {
       { name: 'blackjack', component: BlackJack },
       { name: 'connect4', component: Connect4 },
       { name: 'deal', component: DealOrNoDeal },
+      { name: 'dota2', component: Dota2Picker },
       { name: 'poker', component: Poker },
       { name: 'slots', component: Slots },
       { name: 'tictactoe', component: TicTacToe },
