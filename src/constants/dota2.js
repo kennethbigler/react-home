@@ -1,8 +1,12 @@
+import sortBy from 'lodash/sortBy';
+import reduce from 'lodash/reduce';
+import forEach from 'lodash/forEach';
+
 const STR = 'Strength';
 const AGI = 'Agility';
 const INT = 'Intelligence';
 
-export default [
+export const heroes = [
   { name: 'Abaddon', selected: false, attribute: STR },
   { name: 'Alchemist', selected: false, attribute: STR },
   { name: 'Axe', selected: false, attribute: STR },
@@ -121,3 +125,19 @@ export default [
   { name: 'Wraith King', selected: false, attribute: STR },
   { name: 'Zeus', selected: false, attribute: INT },
 ];
+
+const orderedHeroes = reduce(sortBy(heroes, 'name'), (acc, hero) => {
+  const key = hero.name[0];
+  if (!acc[key]) {
+    acc[key] = [hero];
+  } else {
+    acc[key].push(hero);
+  }
+  return acc;
+}, {});
+
+export const resetHeroesStatuses = () => {
+  forEach(heroes, (hero) => { hero.selected = false; });
+};
+
+export default orderedHeroes;

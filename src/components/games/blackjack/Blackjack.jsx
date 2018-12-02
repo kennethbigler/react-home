@@ -539,7 +539,4 @@ const mapDispatchToProps = dispatch => ({
   ),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(BlackJack);
+export default connect(mapStateToProps, mapDispatchToProps)(BlackJack);

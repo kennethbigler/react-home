@@ -1,4 +1,5 @@
 import { createStore } from 'redux';
+import forEach from 'lodash/forEach';
 import rootReducer from '.';
 import initialState from './initialState';
 
@@ -12,7 +13,16 @@ const loadState = () => {
     if (!serializedState) {
       return initialState;
     }
-    return JSON.parse(serializedState);
+
+    const savedState = JSON.parse(serializedState);
+    // validate that we have all keys
+    forEach(initialState, (item, key) => {
+      if (!savedState[key]) {
+        savedState[key] = item;
+      }
+    });
+
+    return savedState;
   } catch (e) {
     return initialState;
   }

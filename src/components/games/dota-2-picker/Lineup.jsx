@@ -47,8 +47,8 @@ class Lineup extends Component {
   render() {
     const { i } = this.props;
     return (
-      <ExpansionPanel defaultExpanded={i === 1}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`Game ${i}`}</ExpansionPanelSummary>
+      <ExpansionPanel defaultExpanded={i === 0}>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`Game ${i + 1}`}</ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Table padding="none">
             <TableHead>

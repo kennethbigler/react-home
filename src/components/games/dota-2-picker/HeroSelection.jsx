@@ -7,6 +7,17 @@ import Button from '@material-ui/core/Button';
 // components
 // Parents: Main
 
+const heroType = types.shape({
+  attribute: types.string,
+  name: types.string.isRequired,
+  selected: types.oneOfType([types.string, types.bool]).isRequired,
+}).isRequired;
+
+const styles = {
+  heroRow: { display: 'inline-block', marginRight: 10 },
+  heroButton: { margin: 5 },
+};
+
 /* --------------------------------------------------
 * Dota 2 Picker
 * -------------------------------------------------- */
@@ -14,35 +25,71 @@ class HeroSelection extends Component {
   // Prop Validation
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
-    characters: types.arrayOf(
-      types.shape({
-        name: types.string.isRequired,
-        selected: types.bool.isRequired,
-        attribute: types.string,
-      }).isRequired,
-    ).isRequired,
+    characters: types.shape({
+      A: types.arrayOf(heroType),
+      B: types.arrayOf(heroType),
+      C: types.arrayOf(heroType),
+      D: types.arrayOf(heroType),
+      E: types.arrayOf(heroType),
+      F: types.arrayOf(heroType),
+      G: types.arrayOf(heroType),
+      H: types.arrayOf(heroType),
+      I: types.arrayOf(heroType),
+      J: types.arrayOf(heroType),
+      K: types.arrayOf(heroType),
+      L: types.arrayOf(heroType),
+      M: types.arrayOf(heroType),
+      N: types.arrayOf(heroType),
+      O: types.arrayOf(heroType),
+      P: types.arrayOf(heroType),
+      Q: types.arrayOf(heroType),
+      R: types.arrayOf(heroType),
+      S: types.arrayOf(heroType),
+      T: types.arrayOf(heroType),
+      U: types.arrayOf(heroType),
+      V: types.arrayOf(heroType),
+      W: types.arrayOf(heroType),
+      X: types.arrayOf(heroType),
+      Y: types.arrayOf(heroType),
+      Z: types.arrayOf(heroType),
+    }),
     onClick: types.func.isRequired,
   };
 
-  onClick = () => `cats${1}`;
+  getButtonCharacteristics = (status) => {
+    switch (status) {
+      case false: return { variant: 'outlined', color: 'primary' };
+      case true: return { variant: 'outlined', color: 'secondary' };
+      case 'P': return { variant: 'contained', color: 'primary' };
+      case 'B': return { variant: 'contained', color: 'secondary' };
+      default: return { color: 'secondary' };
+    }
+  }
 
-  render() {
-    const { characters, onClick } = this.props;
+  getHeroListForLetter = (heroes, letter) => {
+    const { onClick } = this.props;
     return (
-      <div>
-        {map(characters, (char, i) => (
-          <Button
-            key={char.name}
-            variant="outlined"
-            color={char.selected ? 'secondary' : 'primary'}
-            onClick={() => onClick(i)}
-            style={{ margin: 5 }}
-          >
-            {char.name}
-          </Button>
-        ))}
+      <div key={letter}>
+        <h2 style={styles.heroRow}>{letter}</h2>
+        {
+          map(heroes, (char, i) => (
+            <Button
+              key={char.name}
+              style={styles.heroButton}
+              onClick={() => onClick(letter, i)}
+              {...this.getButtonCharacteristics(char.selected)}
+            >
+              {char.name}
+            </Button>
+          ))
+        }
       </div>
     );
+  }
+
+  render() {
+    const { characters } = this.props;
+    return (<div>{map(characters, this.getHeroListForLetter)}</div>);
   }
 }
 

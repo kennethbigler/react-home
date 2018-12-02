@@ -17,7 +17,6 @@ export function addScore(score) {
 }
 
 // --------------------     Reducer     -------------------- //
-
 export default function reducer(state = initialState.yahtzee, action) {
   switch (action.type) {
     case ADD:

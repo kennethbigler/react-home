@@ -1,9 +1,9 @@
 {
-  "main.css": "/static/css/main.9a1e4a07.chunk.css",
-  "main.js": "/static/js/main.2f374470.chunk.js",
-  "main.js.map": "/static/js/main.2f374470.chunk.js.map",
-  "static/js/1.0b175afa.chunk.js": "/static/js/1.0b175afa.chunk.js",
-  "static/js/1.0b175afa.chunk.js.map": "/static/js/1.0b175afa.chunk.js.map",
+  "main.css": "/static/css/main.ea590bf4.chunk.css",
+  "main.js": "/static/js/main.61c0f5c5.chunk.js",
+  "main.js.map": "/static/js/main.61c0f5c5.chunk.js.map",
+  "static/js/1.56775358.chunk.js": "/static/js/1.56775358.chunk.js",
+  "static/js/1.56775358.chunk.js.map": "/static/js/1.56775358.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.229c360f.js",
   "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
   "static/media/ken.jpg": "/static/media/ken.8957e439.jpg",
@@ -14,8 +14,8 @@
   "static/media/hoverboard_logo.png": "/static/media/hoverboard_logo.3477c7e9.png",
   "static/media/kenneth_bigler_resume.pdf": "/static/media/kenneth_bigler_resume.84e03228.pdf",
   "static/media/gignow.png": "/static/media/gignow.fa723ab1.png",
-  "static/css/main.9a1e4a07.chunk.css.map": "/static/css/main.9a1e4a07.chunk.css.map",
+  "static/css/main.ea590bf4.chunk.css.map": "/static/css/main.ea590bf4.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.339561e01546dfff8df7f690a8ef8208.js": "/precache-manifest.339561e01546dfff8df7f690a8ef8208.js",
+  "precache-manifest.a5bd7ee51192e94cbd57f74e1b3612e6.js": "/precache-manifest.a5bd7ee51192e94cbd57f74e1b3612e6.js",
   "service-worker.js": "/service-worker.js"
 }
