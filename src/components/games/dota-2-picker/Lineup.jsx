@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import types from 'prop-types';
 import map from 'lodash/map';
+import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -29,6 +30,7 @@ class Lineup extends Component {
       }).isRequired,
     ).isRequired,
     i: types.number.isRequired,
+    resetLineup: types.func.isRequired,
   };
 
   renderTable = () => {
@@ -45,7 +47,7 @@ class Lineup extends Component {
   }
 
   render() {
-    const { i } = this.props;
+    const { resetLineup, i } = this.props;
     return (
       <ExpansionPanel defaultExpanded={i === 0}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`Game ${i + 1}`}</ExpansionPanelSummary>
@@ -63,6 +65,7 @@ class Lineup extends Component {
             </TableBody>
           </Table>
         </ExpansionPanelDetails>
+        <Button color="primary" fullWidth onClick={() => resetLineup(i)} variant="contained">Reset</Button>
       </ExpansionPanel>
     );
   }

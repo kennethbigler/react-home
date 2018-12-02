@@ -136,8 +136,7 @@ class Dota2Picker extends Component {
             </div>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Button color="primary" fullWidth onClick={() => actions.resetLineup(0)} variant="contained">Reset</Button>
-            {map(order, (lineup, i) => <Lineup order={lineup} i={i} key={i} />)}
+            {map(order, (lineup, i) => <Lineup order={lineup} resetLineup={actions.resetLineup} i={i} key={i} />)}
           </Grid>
           <Grid item xs={12} sm={8}>
             <HeroSelection characters={characters} onClick={this.handleClick} />
