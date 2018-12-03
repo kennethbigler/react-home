@@ -22,3 +22,7 @@ export function updateArrayInArray(array, ins, idx) {
 export function removeItem(array, id) {
   return reject(array, ['id', id]);
 }
+
+export function removeItemInArray(array, idx) {
+  return [...array.slice(0, idx), ...array.slice(idx + 1)];
+}

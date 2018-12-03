@@ -8,12 +8,16 @@ import { bindActionCreators } from 'redux';
 import map from 'lodash/map';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 // components
 import characterList, { resetHeroesStatuses } from '../../../constants/dota2';
 import Lineup from './Lineup';
 import HeroSelection from './HeroSelection';
 // redux functions
-import { updateLineup, resetLineup, addLineup } from '../../../store/modules/dota2';
+import {
+  addLineup, removeLineup, resetLineup, updateLineup,
+} from '../../../store/modules/dota2';
 // Parents: Main
 
 /* --------------------------------------------------
@@ -122,9 +126,21 @@ class Dota2Picker extends Component {
     this.setState({ characters, selected: { key, i } });
   }
 
+  handleReset = (i) => {
+    const { actions } = this.props;
+    actions.resetLineup(i);
+
+    const { set } = this.state;
+    if (set === i) {
+      resetHeroesStatuses();
+      this.setState({ turn: 1, selected: null });
+    }
+  }
+
   render() {
     const { order, actions } = this.props;
     const { turn, characters } = this.state;
+
     return (
       <div>
         <Grid container spacing={16}>
@@ -135,10 +151,20 @@ class Dota2Picker extends Component {
               <Button color="primary" onClick={this.selectHeroAndNextTurn} variant="contained">Select &amp; Next</Button>
             </div>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            {map(order, (lineup, i) => <Lineup order={lineup} resetLineup={actions.resetLineup} i={i} key={i} />)}
-          </Grid>
-          <Grid item xs={12} sm={8}>
+          {map(order, (lineup, i) => (
+            <Grid item xs={12} sm={4} key={i}>
+              <Lineup
+                order={lineup}
+                resetLineup={this.handleReset}
+                removeLineup={actions.removeLineup}
+                i={i}
+              />
+            </Grid>
+          ))}
+          <Fab color="primary" aria-label="Add" onClick={actions.addLineup}>
+            <AddIcon />
+          </Fab>
+          <Grid item xs={12}>
             <HeroSelection characters={characters} onClick={this.handleClick} />
           </Grid>
         </Grid>
@@ -150,7 +176,12 @@ class Dota2Picker extends Component {
 // react-redux export
 const mapStateToProps = state => ({ order: state.dota2 });
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ updateLineup, resetLineup, addLineup }, dispatch),
+  actions: bindActionCreators({
+    addLineup,
+    removeLineup,
+    resetLineup,
+    updateLineup,
+  }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dota2Picker);

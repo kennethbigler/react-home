@@ -31,6 +31,7 @@ class Lineup extends Component {
     ).isRequired,
     i: types.number.isRequired,
     resetLineup: types.func.isRequired,
+    removeLineup: types.func.isRequired,
   };
 
   renderTable = () => {
@@ -47,9 +48,9 @@ class Lineup extends Component {
   }
 
   render() {
-    const { resetLineup, i } = this.props;
+    const { resetLineup, removeLineup, i } = this.props;
     return (
-      <ExpansionPanel defaultExpanded={i === 0}>
+      <ExpansionPanel defaultExpanded>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`Game ${i + 1}`}</ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Table padding="none">
@@ -66,6 +67,7 @@ class Lineup extends Component {
           </Table>
         </ExpansionPanelDetails>
         <Button color="primary" fullWidth onClick={() => resetLineup(i)} variant="contained">Reset</Button>
+        <Button color="secondary" fullWidth onClick={() => removeLineup(i)} variant="contained">Remove</Button>
       </ExpansionPanel>
     );
   }

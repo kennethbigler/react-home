@@ -1,10 +1,11 @@
 // functions
-import { insertItem, updateArrayInArray } from '../immutableHelpers';
+import { insertItem, updateArrayInArray, removeItemInArray } from '../immutableHelpers';
 // initialState
 import initialState, { newDota2Lineup } from '../initialState';
 
 // --------------------     Actions     -------------------- //
 const ADD = 'casino/dota2/ADD_LINEUP';
+const REMOVE = 'casino/dota2/REMOVE_LINEUP';
 const UPDATE_LINEUP = 'casino/dota2/UPDATE_LINEUP';
 const RESET_LINEUP = 'casino/dota2/RESET_LINEUP';
 
@@ -15,6 +16,14 @@ const RESET_LINEUP = 'casino/dota2/RESET_LINEUP';
  */
 export function addLineup() {
   return { type: ADD, lineup: newDota2Lineup() };
+}
+
+/**
+ * function to remove a lineup in the state
+ * @return {Object}
+ */
+export function removeLineup(set) {
+  return { type: REMOVE, set };
 }
 
 /**
@@ -30,7 +39,6 @@ export function updateLineup(order, set) {
  * @return {Object}
  */
 export function resetLineup(set) {
-  console.log(newDota2Lineup());
   return { type: RESET_LINEUP, order: newDota2Lineup(), set };
 }
 
@@ -38,7 +46,9 @@ export function resetLineup(set) {
 export default function reducer(state = initialState.dota2, action) {
   switch (action.type) {
     case ADD:
-      return insertItem(state, { lineup: action.lineup });
+      return insertItem(state, action.lineup);
+    case REMOVE:
+      return removeItemInArray(state, action.set);
     case UPDATE_LINEUP:
     case RESET_LINEUP:
       return updateArrayInArray(state, action.order, action.set);
