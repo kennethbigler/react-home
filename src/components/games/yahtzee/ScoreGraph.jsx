@@ -1,6 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
 import maxBy from 'lodash/maxBy';
+import get from 'lodash/get';
 import {
   ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area,
 } from 'recharts';
@@ -10,8 +11,8 @@ import InfoPopup from '../../common/InfoPopup';
 
 const ScoreGraph = (props) => {
   const { scores, theme: { palette: { secondary: { main } } } } = props;
-  const mostRecent = scores[scores.length - 1].score;
-  const topScore = maxBy(scores, 'score').score;
+  const mostRecent = get(scores, `[${scores.length - 1}].score`, 0);
+  const topScore = scores.length > 0 ? maxBy(scores, 'score').score : 0;
   return (
     <InfoPopup title="Yahtzee Score History" buttonText="Score History">
       <ResponsiveContainer width="100%" height={300}>
