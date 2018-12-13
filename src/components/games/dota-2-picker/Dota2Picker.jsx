@@ -6,10 +6,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // helpers
 import map from 'lodash/map';
+import noop from 'lodash/noop';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import Snackbar from '@material-ui/core/Snackbar';
 // components
 import characterList, { resetHeroesStatuses } from '../../../constants/dota2';
 import Lineup from './Lineup';
@@ -53,6 +55,25 @@ class Dota2Picker extends Component {
     set: 0,
     characters: characterList,
     selected: null,
+  }
+
+  componentDidMount() {
+    const { order } = this.props;
+    let turn = 1;
+
+    for (let i = 0; i < order[order.length - 1].length; i += 1) {
+      const { dire, radiant } = order[order.length - 1][i];
+      if (dire.selection && radiant.selection) {
+        turn += 2;
+      } else if (dire.selection || radiant.selection) {
+        turn += 1;
+        break;
+      } else {
+        break;
+      }
+    }
+
+    this.setState({ turn });
   }
 
   getCurrentPhase = (i) => {
@@ -143,6 +164,12 @@ class Dota2Picker extends Component {
 
     return (
       <div>
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          open
+          onClose={noop}
+          message={this.pickingOrder(turn)}
+        />
         <Grid container spacing={16}>
           <Grid item xs={12}>
             <div className="flex-container">
@@ -156,7 +183,7 @@ class Dota2Picker extends Component {
               <Lineup
                 order={lineup}
                 resetLineup={this.handleReset}
-                removeLineup={actions.removeLineup}
+                removeLineup={order.length > 1 ? actions.removeLineup : noop}
                 i={i}
               />
             </Grid>
