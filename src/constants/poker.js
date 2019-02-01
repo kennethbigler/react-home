@@ -3,9 +3,9 @@ import {
 } from '@material-ui/core/colors/';
 import reduce from 'lodash/reduce';
 
-const scores = [
+export const pennyPokerScores = [
   {
-    name: 'Week 1',
+    name: 'Night 1',
     Ken: 5,
     Lauren: -83,
     Aaron: -45,
@@ -16,7 +16,7 @@ const scores = [
     Keishi: 209,
     Andy: -22,
   }, {
-    name: 'Week 2',
+    name: 'Night 2',
     Ken: -42,
     Aaron: -1,
     Jordan: 94,
@@ -24,14 +24,14 @@ const scores = [
     Andy: -140,
     Mike: 220,
   }, {
-    name: 'Week 3',
+    name: 'Night 3',
     Ken: -100,
     Jordan: -24,
     Lily: -45,
     Tom: 39,
     Meeks: 147,
   }, {
-    name: 'Week 4',
+    name: 'Night 4',
     Ken: 62,
     Aaron: -33,
     Jordan: 35,
@@ -45,7 +45,7 @@ const scores = [
     Geoff: -100,
     Ming: -100,
   }, {
-    name: 'Week 5',
+    name: 'Night 5',
     Ken: 218,
     Lauren: -90,
     Aaron: 60,
@@ -53,7 +53,7 @@ const scores = [
     Lily: -70,
     Tom: -200,
   }, {
-    name: 'Week 6',
+    name: 'Night 6',
     Ken: -33,
     Jordan: 46,
     Lily: -98,
@@ -61,14 +61,14 @@ const scores = [
     Andy: 27,
     Mike: 90,
   }, {
-    name: 'Week 7',
+    name: 'Night 7',
     Ken: 187,
     Aaron: 14,
     Jordan: -46,
     Tom: -55,
     Gus: -100,
   }, {
-    name: 'Week 8',
+    name: 'Night 8',
     Ken: 127,
     Aaron: -40,
     Jordan: 119,
@@ -76,13 +76,13 @@ const scores = [
     Zach: -122,
     Scott: -100,
   }, {
-    name: 'Week 9',
+    name: 'Night 9',
     Ken: 11,
     Jordan: 17,
     Andy: 30,
     Gus: -58,
   }, {
-    name: 'Week 10',
+    name: 'Night 10',
     Ken: -23,
     Lauren: 58,
     Jordan: -20,
@@ -91,7 +91,7 @@ const scores = [
     Andy: 240,
     Tom: 9,
   }, {
-    name: 'Week 11',
+    name: 'Night 11',
     Ken: 42,
     Aaron: -55,
     Jordan: 0,
@@ -100,7 +100,7 @@ const scores = [
   },
 ];
 
-export const colors = {
+export const pennyPokerColors = {
   Ken: amber[500],
   Lauren: blue[500],
   Aaron: blueGrey[500],
@@ -123,10 +123,36 @@ export const colors = {
   Emily: grey[900],
 };
 
-const zeroes = reduce(colors, (result, val, key) => {
-  result[key] = 0;
-  return result;
-}, {});
-scores.unshift(zeroes);
+export const gigNowPokerScores = [
+  {
+    name: 'Night 1',
+    Ken: 32.25,
+    Sabik: 35.25,
+    Avi: 15.50,
+    Seb: -23,
+    Jonathan: -20,
+    Mike: -20,
+    Brady: -20,
+  },
+];
 
-export default scores;
+export const gigNowPokerColors = {
+  Ken: amber[500],
+  Jonathan: blue[500],
+  Seb: blueGrey[500],
+  Sabik: brown[500],
+  Avi: cyan[500],
+  Mike: deepOrange[500],
+  Brady: deepPurple[500],
+};
+
+function zeroOutData(people, scores) {
+  const zeroes = reduce(people, (result, person, key) => {
+    result[key] = 0;
+    return result;
+  }, {});
+  scores.unshift(zeroes);
+}
+
+zeroOutData(pennyPokerColors, pennyPokerScores);
+zeroOutData(gigNowPokerColors, gigNowPokerScores);

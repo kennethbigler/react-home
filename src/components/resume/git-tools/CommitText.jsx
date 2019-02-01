@@ -18,7 +18,6 @@ import Clear from '@material-ui/icons/Clear';
 import Grid from '@material-ui/core/Grid';
 // functions
 import nl2br from 'react-newline-to-break';
-import ExpandableCard from '../../common/ExpandableCard';
 import CopyTextDisplay from './CopyTextDisplay';
 import { setCommitPrefix } from '../../../store/modules/git';
 // Parents: Main
@@ -159,89 +158,87 @@ class CommitText extends Component {
     const displayText = commitText && nl2br(this.getCommitText());
 
     return (
-      <ExpandableCard backgroundColor={gitTheme} title="Create Commit Message">
-        <div className="commit-text" style={wrapper}>
-          <Grid container spacing={16}>
-            <Grid item sm={4} xs={12}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor="commit-prefix" style={{ color: gitTheme }}>
-                  Commit Prefix
-                </InputLabel>
-                <Select
-                  input={<Input id="branch-prefix" />}
-                  onChange={this.handleCommitPrefixSelect}
-                  value={commitPrefix}
-                >
-                  {this.getCommitPrefixOptions()}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item sm={4} xs={12}>
-              <FormControlLabel
-                control={(
-                  <Switch
-                    checked={finishes}
-                    onChange={this.handleFinishesToggle}
-                    value="Finishes User Story"
-                  />
-                )}
-                label="Finishes User Story"
-              />
-            </Grid>
-            <Grid item sm={4} xs={12}>
-              <FormControlLabel
-                control={(
-                  <Switch
-                    checked={gitCommit}
-                    onChange={this.handleGitCommitToggle}
-                    value="Add git commit -m"
-                  />
-                )}
-                label="Add git commit -m"
-              />
-            </Grid>
-            <Grid item sm={5} xs={10}>
-              <TextField
-                fullWidth
-                InputLabelProps={{ style: { color: gitTheme } }}
-                label="Commit Message"
-                onChange={this.handleCommitMessageChange}
-                placeholder="Summary of Work Done (Message)"
-                value={commitMessage}
-              />
-            </Grid>
-            <Grid item sm={1} xs={2}>
-              <IconButton onClick={this.clearCommitMessage} style={marginTop}>
-                <Clear />
-              </IconButton>
-            </Grid>
-            <Grid item sm={5} xs={10}>
-              <TextField
-                fullWidth
-                InputLabelProps={{ style: { color: gitTheme } }}
-                label="Commit Description"
-                multiline
-                onChange={this.handleCommitDescriptionChange}
-                placeholder="Summary of Work Done (Description)"
-                value={commitDescription}
-              />
-            </Grid>
-            <Grid item sm={1} xs={2}>
-              <IconButton
-                onClick={this.clearCommitDescription}
-                style={marginTop}
+      <div className="commit-text" style={wrapper}>
+        <Grid container spacing={16}>
+          <Grid item sm={4} xs={12}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="commit-prefix" style={{ color: gitTheme }}>
+                Commit Prefix
+              </InputLabel>
+              <Select
+                input={<Input id="branch-prefix" />}
+                onChange={this.handleCommitPrefixSelect}
+                value={commitPrefix}
               >
-                <Clear />
-              </IconButton>
-            </Grid>
+                {this.getCommitPrefixOptions()}
+              </Select>
+            </FormControl>
           </Grid>
-          <CopyTextDisplay
-            copyText={commitText}
-            handleCopy={handleCopy}
-            text={displayText}
-          />
-        </div>
-      </ExpandableCard>
+          <Grid item sm={4} xs={12}>
+            <FormControlLabel
+              control={(
+                <Switch
+                  checked={finishes}
+                  onChange={this.handleFinishesToggle}
+                  value="Finishes User Story"
+                />
+              )}
+              label="Finishes User Story"
+            />
+          </Grid>
+          <Grid item sm={4} xs={12}>
+            <FormControlLabel
+              control={(
+                <Switch
+                  checked={gitCommit}
+                  onChange={this.handleGitCommitToggle}
+                  value="Add git commit -m"
+                />
+              )}
+              label="Add git commit -m"
+            />
+          </Grid>
+          <Grid item sm={5} xs={10}>
+            <TextField
+              fullWidth
+              InputLabelProps={{ style: { color: gitTheme } }}
+              label="Commit Message"
+              onChange={this.handleCommitMessageChange}
+              placeholder="Summary of Work Done (Message)"
+              value={commitMessage}
+            />
+          </Grid>
+          <Grid item sm={1} xs={2}>
+            <IconButton onClick={this.clearCommitMessage} style={marginTop}>
+              <Clear />
+            </IconButton>
+          </Grid>
+          <Grid item sm={5} xs={10}>
+            <TextField
+              fullWidth
+              InputLabelProps={{ style: { color: gitTheme } }}
+              label="Commit Description"
+              multiline
+              onChange={this.handleCommitDescriptionChange}
+              placeholder="Summary of Work Done (Description)"
+              value={commitDescription}
+            />
+          </Grid>
+          <Grid item sm={1} xs={2}>
+            <IconButton
+              onClick={this.clearCommitDescription}
+              style={marginTop}
+            >
+              <Clear />
+            </IconButton>
+          </Grid>
+        </Grid>
+        <CopyTextDisplay
+          copyText={commitText}
+          handleCopy={handleCopy}
+          text={displayText}
+        />
+      </div>
     );
   }
 }
