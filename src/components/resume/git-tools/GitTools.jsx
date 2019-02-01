@@ -98,19 +98,19 @@ class GitTools extends Component {
     const { branchMessage } = this.state;
     const prefix = branchPrefix ? `${branchPrefix}/` : '';
     const id = replace(storyID, /\D/g, '');
-    let msg;
+    let msg = '';
     switch (casePreference) {
       case 'snake_case':
-        msg = snakeCase(`${id} ${branchMessage}`);
+        msg = snakeCase(`${id && `${id}_`}${branchMessage}`);
         break;
       case 'kebab-case':
-        msg = kebabCase(`${id} ${branchMessage}`);
+        msg = kebabCase(`${id && `${id}-`}${branchMessage}`);
         break;
       case 'camelCase':
-        msg = camelCase(`${id} ${branchMessage}`);
+        msg = camelCase(`${id}${branchMessage}`);
         break;
       default:
-        msg = `${id} ${branchMessage}`;
+        msg = `${id}${branchMessage}`;
     }
     return `${prefix}${msg}`;
   };
