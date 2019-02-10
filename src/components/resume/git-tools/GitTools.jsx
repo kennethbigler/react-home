@@ -15,9 +15,10 @@ import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import replace from 'lodash/replace';
 import {
-  setKey,
+  setBranchMessage,
   setBranchPrefix,
   setCasePreference,
+  setKey,
 } from '../../../store/modules/git';
 // Components
 import BranchName from './BranchName';
@@ -37,13 +38,12 @@ class GitTools extends Component {
       casePreference: types.string.isRequired,
     }).isRequired,
     gitActions: types.shape({
-      setKey: types.func.isRequired,
+      setBranchMessage: types.func.isRequired,
       setBranchPrefix: types.func.isRequired,
       setCasePreference: types.func.isRequired,
+      setKey: types.func.isRequired,
     }).isRequired,
   };
-
-  state = { branchMessage: '' };
 
   /**
    * function to generate select items based of input
@@ -78,7 +78,8 @@ class GitTools extends Component {
    * @param {Object} e event fired when select occurs
    */
   handleBranchMessageChange = (e) => {
-    this.setState({ branchMessage: e.target.value });
+    const { gitActions } = this.props;
+    gitActions.setBranchMessage(e.target.value);
   };
 
   /**
@@ -86,7 +87,8 @@ class GitTools extends Component {
    * @param {Object} e event fired when select occurs
    */
   handleBranchMessageClear = () => {
-    this.setState({ branchMessage: '' });
+    const { gitActions } = this.props;
+    gitActions.setBranchMessage('');
   };
 
   /**
@@ -94,8 +96,11 @@ class GitTools extends Component {
    * @return {string} format prefix/<story_id>_name_lower_cased
    */
   getBranchName = () => {
-    const { git: { branchPrefix, casePreference, storyID } } = this.props;
-    const { branchMessage } = this.state;
+    const {
+      git: {
+        branchMessage, branchPrefix, casePreference, storyID,
+      },
+    } = this.props;
     const prefix = branchPrefix ? `${branchPrefix}/` : '';
     const id = replace(storyID, /\D/g, '');
     let msg = '';
@@ -116,8 +121,11 @@ class GitTools extends Component {
   };
 
   render() {
-    const { branchMessage } = this.state;
-    const { git: { storyID, branchPrefix, casePreference }, gitActions } = this.props;
+    const {
+      git: {
+        branchMessage, branchPrefix, casePreference, storyID,
+      }, gitActions,
+    } = this.props;
     const branchName = this.getBranchName();
     const gitTheme = deepOrange[600];
 
@@ -176,7 +184,12 @@ class GitTools extends Component {
 const mapStateToProps = state => ({ git: state.git });
 const mapDispatchToProps = dispatch => ({
   gitActions: bindActionCreators(
-    { setKey, setBranchPrefix, setCasePreference },
+    {
+      setBranchMessage,
+      setBranchPrefix,
+      setCasePreference,
+      setKey,
+    },
     dispatch,
   ),
 });

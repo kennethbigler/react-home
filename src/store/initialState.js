@@ -40,6 +40,7 @@ export default {
   turn: { player: 0, hand: 0 },
   git: {
     storyID: '',
+    branchMessage: '',
     branchPrefix: 'features',
     casePreference: 'snake_case',
     commitPrefix: true,
