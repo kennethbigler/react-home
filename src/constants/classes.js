@@ -90,39 +90,6 @@ const schools = [
     gpa: 3.7,
     years: [
       {
-        year: 'Year 1 (Senior Year)',
-        quarters: [
-          {
-            quarter: 'Fall Quarter (2014)',
-            start: getStart(FALL, 14),
-            end: getEnd(FALL, 14),
-            classes: [
-              { catalog: 'COEN 272', name: 'Web Search & Info Retrieval' },
-              { catalog: 'COEN 288', name: 'Software Ethics' },
-            ],
-          },
-          {
-            quarter: 'Winter Quarter (2015)',
-            start: getStart(WINTER, 15),
-            end: getEnd(WINTER, 15),
-            classes: [
-              { catalog: 'COEN 287', name: 'Software Development Process Management' },
-              { catalog: 'COEN 275', name: 'Object Oriented Analysis and Design Programming' },
-              { catalog: 'COEN 286', name: 'Software Quality Assurance and Testing' },
-            ],
-          },
-          {
-            quarter: 'Spring Quarter (2015)',
-            start: getStart(SPRING, 15),
-            end: getEnd(SPRING, 15),
-            classes: [
-              { catalog: 'COEN 386', name: 'Software Architecture' },
-              { catalog: 'COEN 278', name: 'Web Programming II' },
-            ],
-          },
-        ],
-      },
-      {
         year: 'Year 2',
         quarters: [
           {
@@ -159,6 +126,39 @@ const schools = [
           },
         ],
       },
+      {
+        year: 'Year 1 (Senior Year)',
+        quarters: [
+          {
+            quarter: 'Fall Quarter (2014)',
+            start: getStart(FALL, 14),
+            end: getEnd(FALL, 14),
+            classes: [
+              { catalog: 'COEN 272', name: 'Web Search & Info Retrieval' },
+              { catalog: 'COEN 288', name: 'Software Ethics' },
+            ],
+          },
+          {
+            quarter: 'Winter Quarter (2015)',
+            start: getStart(WINTER, 15),
+            end: getEnd(WINTER, 15),
+            classes: [
+              { catalog: 'COEN 287', name: 'Software Development Process Management' },
+              { catalog: 'COEN 275', name: 'Object Oriented Analysis and Design Programming' },
+              { catalog: 'COEN 286', name: 'Software Quality Assurance and Testing' },
+            ],
+          },
+          {
+            quarter: 'Spring Quarter (2015)',
+            start: getStart(SPRING, 15),
+            end: getEnd(SPRING, 15),
+            classes: [
+              { catalog: 'COEN 386', name: 'Software Architecture' },
+              { catalog: 'COEN 278', name: 'Web Programming II' },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
@@ -173,78 +173,45 @@ const schools = [
     gpa: 3.7,
     years: [
       {
-        year: 'Freshman Year',
+        year: 'Senior Year',
         quarters: [
           {
-            quarter: 'Fall Quarter (2011)',
-            start: getStart(FALL, 11),
-            end: getEnd(FALL, 11),
+            quarter: 'Fall Quarter (2014)',
+            start: getStart(FALL, 14),
+            end: getEnd(FALL, 14),
             classes: [
-              { catalog: 'COEN 10+L', name: 'Introduction to Programming' },
-              { catalog: 'ENGR 1', name: 'Intro to Engineering' },
-              { catalog: 'MATH 14', name: 'Calculus & Analytic Geometry IV' },
-              { catalog: 'CHEM 11+L', name: 'General Chemistry I' },
-              { catalog: 'ENGL 1A', name: 'Critical Thinking & Writing I - Cosmology & Controversy' },
+              { catalog: 'COEN 272', name: 'Web Search & Info Retrieval' },
+              { catalog: 'COEN 288', name: 'Software Ethics' },
+              { catalog: 'COEN 174+L', name: 'Software Engineering' },
+              { catalog: 'COEN 194', name: 'Design Project I' },
+              { catalog: 'TESP 124', name: 'Theology of Marriage' },
+              { catalog: 'ENGL 181', name: 'Applied Engineering Communications I' },
             ],
           },
           {
-            quarter: 'Winter Quarter (2012)',
-            start: getStart(WINTER, 12),
-            end: getEnd(WINTER, 12),
+            quarter: 'Winter Quarter (2015)',
+            start: getStart(WINTER, 15),
+            end: getEnd(WINTER, 15),
             classes: [
-              { catalog: 'COEN 11+L', name: 'Advanced Programming' },
-              { catalog: 'AMTH 106', name: 'Differential Equations' },
-              { catalog: 'PHYS 31', name: 'Physics for Scientists and Engineers I' },
-              { catalog: 'ENGL 2A', name: 'Critical Thinking & Writing II - Cosmology & Controversy' },
+              { catalog: 'COEN 287', name: 'Software Development Process Management' },
+              { catalog: 'COEN 275', name: 'Object Oriented Analysis and Design Programming' },
+              { catalog: 'COEN 286', name: 'Software Quality Assurance and Testing' },
+              { catalog: 'COEN 175+L', name: 'Formal Language Theory and Compiler Construction' },
+              { catalog: 'COEN 195', name: 'Design Project II' },
+              { catalog: 'ENGL 182A', name: 'Applied Engineering Communications IIA' },
+              { catalog: 'ENGR 170', name: 'Improv for Engineers' },
             ],
           },
           {
-            quarter: 'Spring Quarter (2012)',
-            start: getStart(SPRING, 12),
-            end: getEnd(SPRING, 12),
+            quarter: 'Spring Quarter (2015)',
+            start: getStart(SPRING, 15),
+            end: getEnd(SPRING, 15),
             classes: [
-              { catalog: 'COEN 12+L', name: 'Abstract Data Types & Data Structures' },
-              { catalog: 'COEN 19', name: 'Discrete Mathematics' },
-              { catalog: 'AMTH 108', name: 'Probability & Statistics' },
-              { catalog: 'PHYS 32+L', name: 'Physics for Scientists and Engineers II' },
-            ],
-          },
-        ],
-      },
-      {
-        year: 'Sophomore Year',
-        quarters: [
-          {
-            quarter: 'Fall Quarter (2012)',
-            start: getStart(FALL, 12),
-            end: getEnd(FALL, 12),
-            classes: [
-              { catalog: 'COEN 21+L', name: 'Introduction to Logic Design' },
-              { catalog: 'PHYS 33+L', name: 'Physics for Scientists and Engineers III' },
-              { catalog: 'RSOC 9', name: 'Ways of Understanding Religion' },
-              { catalog: 'MUSC 11A', name: 'Cultures and Ideas I - Global Music/Cultural Politics' },
-            ],
-          },
-          {
-            quarter: 'Winter Quarter (2013)',
-            start: getStart(WINTER, 13),
-            end: getEnd(WINTER, 13),
-            classes: [
-              { catalog: 'COEN 70+L', name: 'Form Specification & Advanced Data Structures' },
-              { catalog: 'MATH 53', name: 'Linear Algebra' },
-              { catalog: 'MUSC 134', name: 'Pop Music, Race, & American Culture' },
-              { catalog: 'MUSC 12A', name: 'Cultures and Ideas II - Global Music/Cultural Politics' },
-            ],
-          },
-          {
-            quarter: 'Spring Quarter (2013)',
-            start: getStart(SPRING, 13),
-            end: getEnd(SPRING, 13),
-            classes: [
-              { catalog: 'COEN 20+L', name: 'Intro to Embedded Systems' },
-              { catalog: 'ELEN 50+L', name: 'Electric Circuits I' },
-              { catalog: 'ENGR 19', name: 'Ethics in Technology' },
-              { catalog: 'POLI 2', name: 'Intro to Comparative Politics' },
+              { catalog: 'COEN 386', name: 'Software Architecture' },
+              { catalog: 'COEN 278', name: 'Web Programming II' },
+              { catalog: 'COEN 122+L', name: 'Computer Architecture' },
+              { catalog: 'COEN 196', name: 'Design Project III' },
+              { catalog: 'ENGL 182B', name: 'Applied Engineering Communications IIB' },
             ],
           },
         ],
@@ -288,45 +255,78 @@ const schools = [
         ],
       },
       {
-        year: 'Senior Year',
+        year: 'Sophomore Year',
         quarters: [
           {
-            quarter: 'Fall Quarter (2014)',
-            start: getStart(FALL, 14),
-            end: getEnd(FALL, 14),
+            quarter: 'Fall Quarter (2012)',
+            start: getStart(FALL, 12),
+            end: getEnd(FALL, 12),
             classes: [
-              { catalog: 'COEN 272', name: 'Web Search & Info Retrieval' },
-              { catalog: 'COEN 288', name: 'Software Ethics' },
-              { catalog: 'COEN 174+L', name: 'Software Engineering' },
-              { catalog: 'COEN 194', name: 'Design Project I' },
-              { catalog: 'TESP 124', name: 'Theology of Marriage' },
-              { catalog: 'ENGL 181', name: 'Applied Engineering Communications I' },
+              { catalog: 'COEN 21+L', name: 'Introduction to Logic Design' },
+              { catalog: 'PHYS 33+L', name: 'Physics for Scientists and Engineers III' },
+              { catalog: 'RSOC 9', name: 'Ways of Understanding Religion' },
+              { catalog: 'MUSC 11A', name: 'Cultures and Ideas I - Global Music/Cultural Politics' },
             ],
           },
           {
-            quarter: 'Winter Quarter (2015)',
-            start: getStart(WINTER, 15),
-            end: getEnd(WINTER, 15),
+            quarter: 'Winter Quarter (2013)',
+            start: getStart(WINTER, 13),
+            end: getEnd(WINTER, 13),
             classes: [
-              { catalog: 'COEN 287', name: 'Software Development Process Management' },
-              { catalog: 'COEN 275', name: 'Object Oriented Analysis and Design Programming' },
-              { catalog: 'COEN 286', name: 'Software Quality Assurance and Testing' },
-              { catalog: 'COEN 175+L', name: 'Formal Language Theory and Compiler Construction' },
-              { catalog: 'COEN 195', name: 'Design Project II' },
-              { catalog: 'ENGL 182A', name: 'Applied Engineering Communications IIA' },
-              { catalog: 'ENGR 170', name: 'Improv for Engineers' },
+              { catalog: 'COEN 70+L', name: 'Form Specification & Advanced Data Structures' },
+              { catalog: 'MATH 53', name: 'Linear Algebra' },
+              { catalog: 'MUSC 134', name: 'Pop Music, Race, & American Culture' },
+              { catalog: 'MUSC 12A', name: 'Cultures and Ideas II - Global Music/Cultural Politics' },
             ],
           },
           {
-            quarter: 'Spring Quarter (2015)',
-            start: getStart(SPRING, 15),
-            end: getEnd(SPRING, 15),
+            quarter: 'Spring Quarter (2013)',
+            start: getStart(SPRING, 13),
+            end: getEnd(SPRING, 13),
             classes: [
-              { catalog: 'COEN 386', name: 'Software Architecture' },
-              { catalog: 'COEN 278', name: 'Web Programming II' },
-              { catalog: 'COEN 122+L', name: 'Computer Architecture' },
-              { catalog: 'COEN 196', name: 'Design Project III' },
-              { catalog: 'ENGL 182B', name: 'Applied Engineering Communications IIB' },
+              { catalog: 'COEN 20+L', name: 'Intro to Embedded Systems' },
+              { catalog: 'ELEN 50+L', name: 'Electric Circuits I' },
+              { catalog: 'ENGR 19', name: 'Ethics in Technology' },
+              { catalog: 'POLI 2', name: 'Intro to Comparative Politics' },
+            ],
+          },
+        ],
+      },
+      {
+        year: 'Freshman Year',
+        quarters: [
+          {
+            quarter: 'Fall Quarter (2011)',
+            start: getStart(FALL, 11),
+            end: getEnd(FALL, 11),
+            classes: [
+              { catalog: 'COEN 10+L', name: 'Introduction to Programming' },
+              { catalog: 'ENGR 1', name: 'Intro to Engineering' },
+              { catalog: 'MATH 14', name: 'Calculus & Analytic Geometry IV' },
+              { catalog: 'CHEM 11+L', name: 'General Chemistry I' },
+              { catalog: 'ENGL 1A', name: 'Critical Thinking & Writing I - Cosmology & Controversy' },
+            ],
+          },
+          {
+            quarter: 'Winter Quarter (2012)',
+            start: getStart(WINTER, 12),
+            end: getEnd(WINTER, 12),
+            classes: [
+              { catalog: 'COEN 11+L', name: 'Advanced Programming' },
+              { catalog: 'AMTH 106', name: 'Differential Equations' },
+              { catalog: 'PHYS 31', name: 'Physics for Scientists and Engineers I' },
+              { catalog: 'ENGL 2A', name: 'Critical Thinking & Writing II - Cosmology & Controversy' },
+            ],
+          },
+          {
+            quarter: 'Spring Quarter (2012)',
+            start: getStart(SPRING, 12),
+            end: getEnd(SPRING, 12),
+            classes: [
+              { catalog: 'COEN 12+L', name: 'Abstract Data Types & Data Structures' },
+              { catalog: 'COEN 19', name: 'Discrete Mathematics' },
+              { catalog: 'AMTH 108', name: 'Probability & Statistics' },
+              { catalog: 'PHYS 32+L', name: 'Physics for Scientists and Engineers II' },
             ],
           },
         ],
@@ -432,6 +432,20 @@ const schools = [
     gpa: 3.8,
     years: [
       {
+        year: 'Stanford Continuing Studies',
+        quarters: [
+          {
+            quarter: 'Summer (2017)',
+            classes: [
+              {
+                catalog: 'WSP 314',
+                name: 'Alfred Hitchcock and the Subversive World of Film Noir',
+              },
+            ],
+          },
+        ],
+      },
+      {
         year: 'Undergrad High School Summer Visitor',
         quarters: [
           {
@@ -444,20 +458,6 @@ const schools = [
               {
                 catalog: 'POL 1Z',
                 name: 'Introduction to International Relations',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        year: 'Stanford Continuing Studies',
-        quarters: [
-          {
-            quarter: 'Summer (2017)',
-            classes: [
-              {
-                catalog: 'WSP 314',
-                name: 'Alfred Hitchcock and the Subversive World of Film Noir',
               },
             ],
           },
@@ -476,59 +476,30 @@ const schools = [
     gpa: 4.16,
     years: [
       {
-        year: 'Freshman Year',
+        year: 'Senior Year',
         quarters: [
           {
-            quarter: 'Fall Semester (2007)',
+            quarter: 'Fall Semester (2010)',
             classes: [
-              { name: 'Algebra 2 Honors' },
-              { name: 'Biology Honors' },
-              { name: 'English 9 Honors - Literature & Composition' },
-              { name: 'French 2' },
-              { name: 'Bible 9 - The Christian Life' },
-              { name: 'Physical Education' },
-              { name: 'Broadcasting' },
+              { name: 'AP Calculus BC' },
+              { name: 'Anatomy & Physiology' },
+              { name: 'Government & Politics Honors' },
+              { name: 'English 12 - British Literature & Composition' },
+              { name: 'French 5 - Language & Culture' },
+              { name: 'Bible 12 - Comparative Religions' },
+              { name: 'Film Studies' },
             ],
           },
           {
-            quarter: 'Spring Semester (2008)',
+            quarter: 'Spring Semester (2011)',
             classes: [
-              { name: 'Algebra 2 Honors' },
-              { name: 'Biology Honors' },
-              { name: 'English 9 Honors - Literature & Composition' },
-              { name: 'French 2' },
-              { name: 'Art Ceramics' },
-              { name: 'Physical Education' },
-              { name: 'Broadcasting' },
-            ],
-          },
-        ],
-      },
-      {
-        year: 'Sophomore Year',
-        quarters: [
-          {
-            quarter: 'Fall Semester (2008)',
-            classes: [
-              { name: 'Pre-Calculus Honors' },
-              { name: 'Chemistry' },
-              { name: 'World History & Geography Honors' },
-              { name: 'English 10 Honors - World Literature & Composition' },
-              { name: 'French 3' },
-              { name: 'Physical Education' },
-              { name: 'Study Hall' },
-            ],
-          },
-          {
-            quarter: 'Spring Semester (2009)',
-            classes: [
-              { name: 'Pre-Calculus Honors' },
-              { name: 'Chemistry' },
-              { name: 'World History & Geography Honors' },
-              { name: 'English 10 Honors - World Literature & Composition' },
-              { name: 'French 3' },
-              { name: 'Physical Education' },
-              { name: 'Bible 10 - The Christian Life' },
+              { name: 'AP Calculus BC' },
+              { name: 'Anatomy & Physiology' },
+              { name: 'Economics Honors' },
+              { name: 'English 12 - British Literature & Composition' },
+              { name: 'French 5 - Language & Culture' },
+              { name: 'Bible 12 - Apologetics: Defending Your Faith' },
+              { name: 'Film Studies' },
             ],
           },
         ],
@@ -563,30 +534,59 @@ const schools = [
         ],
       },
       {
-        year: 'Senior Year',
+        year: 'Sophomore Year',
         quarters: [
           {
-            quarter: 'Fall Semester (2010)',
+            quarter: 'Fall Semester (2008)',
             classes: [
-              { name: 'AP Calculus BC' },
-              { name: 'Anatomy & Physiology' },
-              { name: 'Government & Politics Honors' },
-              { name: 'English 12 - British Literature & Composition' },
-              { name: 'French 5 - Language & Culture' },
-              { name: 'Bible 12 - Comparative Religions' },
-              { name: 'Film Studies' },
+              { name: 'Pre-Calculus Honors' },
+              { name: 'Chemistry' },
+              { name: 'World History & Geography Honors' },
+              { name: 'English 10 Honors - World Literature & Composition' },
+              { name: 'French 3' },
+              { name: 'Physical Education' },
+              { name: 'Study Hall' },
             ],
           },
           {
-            quarter: 'Spring Semester (2011)',
+            quarter: 'Spring Semester (2009)',
             classes: [
-              { name: 'AP Calculus BC' },
-              { name: 'Anatomy & Physiology' },
-              { name: 'Economics Honors' },
-              { name: 'English 12 - British Literature & Composition' },
-              { name: 'French 5 - Language & Culture' },
-              { name: 'Bible 12 - Apologetics: Defending Your Faith' },
-              { name: 'Film Studies' },
+              { name: 'Pre-Calculus Honors' },
+              { name: 'Chemistry' },
+              { name: 'World History & Geography Honors' },
+              { name: 'English 10 Honors - World Literature & Composition' },
+              { name: 'French 3' },
+              { name: 'Physical Education' },
+              { name: 'Bible 10 - The Christian Life' },
+            ],
+          },
+        ],
+      },
+      {
+        year: 'Freshman Year',
+        quarters: [
+          {
+            quarter: 'Fall Semester (2007)',
+            classes: [
+              { name: 'Algebra 2 Honors' },
+              { name: 'Biology Honors' },
+              { name: 'English 9 Honors - Literature & Composition' },
+              { name: 'French 2' },
+              { name: 'Bible 9 - The Christian Life' },
+              { name: 'Physical Education' },
+              { name: 'Broadcasting' },
+            ],
+          },
+          {
+            quarter: 'Spring Semester (2008)',
+            classes: [
+              { name: 'Algebra 2 Honors' },
+              { name: 'Biology Honors' },
+              { name: 'English 9 Honors - Literature & Composition' },
+              { name: 'French 2' },
+              { name: 'Art Ceramics' },
+              { name: 'Physical Education' },
+              { name: 'Broadcasting' },
             ],
           },
         ],

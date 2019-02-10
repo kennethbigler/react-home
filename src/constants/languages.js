@@ -8,8 +8,6 @@ import moment from 'moment';
 import {// tech constants
   REACT,
   ANGULAR,
-  HTML,
-  CSS,
   JS,
   SASS,
   JASMINE,
@@ -28,19 +26,6 @@ const languageExp = [
     company: JS,
     title: JS,
     short: 'JS',
-    start: moment('2011-09'),
-    end: moment(),
-  }, {
-    color: red[900],
-    company: HTML,
-    title: HTML,
-    short: 'HTML',
-    start: moment('2011-09'),
-    end: moment(),
-  }, {
-    color: red[900],
-    company: CSS,
-    title: CSS,
     start: moment('2011-09'),
     end: moment(),
   }, {
@@ -80,7 +65,7 @@ const languageExp = [
     end: moment('2018-03'),
   }, {
     color: cyan[900],
-    company: AWS,
+    company: 'AWS',
     title: AWS,
     short: 'AWS',
     start: moment('2016-10'),
