@@ -17,6 +17,7 @@ import GitTools from './git-tools';
 import MurderMystery from './murder-mystery';
 import Poker from './poker';
 import GraphQL from './graphql';
+import Cars from './cars';
 // Parents: App
 
 const Routes = (props) => {
@@ -33,6 +34,7 @@ const Routes = (props) => {
       { name: 'poker', component: Poker },
       { name: 'murder', component: MurderMystery },
       { name: 'graphql', component: GraphQL },
+      { name: 'cars', component: Cars },
     ],
     (acc, obj) => {
       const { name, component } = obj;

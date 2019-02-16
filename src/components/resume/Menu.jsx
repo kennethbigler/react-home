@@ -16,6 +16,7 @@ const Menu = (props) => {
       { name: 'Hackathons & Education', route: 'education' },
       { divider: true },
       { name: 'Git Tools', route: 'git-tools' },
+      { name: 'Cars', route: 'cars' },
       { name: 'Travel Map', route: 'travel' },
       { name: 'Murder Mystery', route: 'murder' },
       { name: 'Poker Night Scores', route: 'poker' },
