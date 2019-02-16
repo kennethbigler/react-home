@@ -5,20 +5,23 @@ import red from '@material-ui/core/colors/red';
 import blue from '@material-ui/core/colors/blue';
 // functions
 import moment from 'moment';
-import {// tech constants
-  REACT,
+// tech constants
+import {
   ANGULAR,
-  JS,
-  SASS,
+  ASP2,
+  AWS,
+  CSHARP,
+  CSS,
+  HTML,
   JASMINE,
   JAVA,
-  AWS,
+  JS,
   PYTHON2,
-  ASP2,
-  CSHARP,
+  REACT,
+  SASS,
   SQL,
 } from './tech';
-// Parents: Main
+// Parents: Work
 
 const languageExp = [
   {
@@ -26,6 +29,19 @@ const languageExp = [
     company: JS,
     title: JS,
     short: 'JS',
+    start: moment('2011-09'),
+    end: moment(),
+  }, {
+    color: red[900],
+    company: HTML,
+    title: HTML,
+    short: 'HTML',
+    start: moment('2011-09'),
+    end: moment(),
+  }, {
+    color: red[900],
+    company: CSS,
+    title: CSS,
     start: moment('2011-09'),
     end: moment(),
   }, {

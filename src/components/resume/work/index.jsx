@@ -1,13 +1,14 @@
 // react
 import React from 'react';
-// components
+// functions
 import map from 'lodash/map';
+// components
 import Job from './Job';
 import TimelineCard from '../../common/TimelineCard';
+import ExpandableCard from '../../common/ExpandableCard';
+import TechBarChart from './TechBarChart';
 // constants
 import workExp from '../../../constants/work';
-import languageExp from '../../../constants/languages';
-// functions
 // Parents: Main
 
 const Work = () => (
@@ -16,7 +17,9 @@ const Work = () => (
       Work Experience
     </h1>
     <TimelineCard data={workExp} title="Work Timeline" />
-    <TimelineCard data={languageExp} title="Programming Language Timeline (Professional Use)" />
+    <ExpandableCard title="Programming Language Timeline (Professional Use)">
+      <TechBarChart />
+    </ExpandableCard>
     {map(workExp, job => <Job key={job.company} job={job} />)}
   </div>
 );
