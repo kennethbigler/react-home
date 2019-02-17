@@ -30,7 +30,7 @@ const Cars = () => (
         <Grid item sm={8} xs={12}>
           <CardContent>
             <h3>2008</h3>
-            <p>The car I learned how to drive on while I had my driver&lsquo;s permit was my father&lsquo;s 2007 Toyota Prius.</p>
+            <p>The car I learned how to drive on while I had my driver&lsquo;s permit was my father&lsquo;s new 2007 Toyota Prius.</p>
           </CardContent>
         </Grid>
         <Grid item sm={4} xs={12}>
@@ -82,7 +82,7 @@ const Cars = () => (
           <CardContent>
             <h3>2015</h3>
             <p>
-              I purchased my first vehicle, a 2015 Ford Mustang GT Premium with the 50 Years Edition Package.
+              I purchased my first vehicle, a new 2015 Ford Mustang GT Premium with the 50 Years Edition Package.
               I did some modifications to this car including: Rear Window Louvers, GT350 start button, metal dead pedal, ergonomic parking break, Borla Ford Racing Sport Catback Exhaust, &amp; Hurst automatic shift lever
             </p>
           </CardContent>

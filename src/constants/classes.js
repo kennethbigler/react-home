@@ -87,6 +87,7 @@ const schools = [
     major: 'Computer Engineering',
     minor: 'with an Emphasis in Software Engineering',
     graduation: 'December 2016',
+    honors: 'Dean’s List: Sept. 2012 – December 2016 (Graduation)',
     gpa: 3.7,
     years: [
       {
@@ -169,7 +170,7 @@ const schools = [
     major: 'Computer Science & Engineering',
     minor: 'with a Minor in Mathematics',
     graduation: 'June 2015',
-    honors: 'Dean’s List: Sept. 2012 – Graduation',
+    honors: 'Dean’s List: Sept. 2012 – December 2016 (Graduation)',
     gpa: 3.7,
     years: [
       {
@@ -362,7 +363,7 @@ const schools = [
             quarter: 'Dean’s List',
             classes: [
               { name: 'top 10% of GPAs' },
-              { name: 'September 2012 – Graduation (December 2016)' },
+              { name: 'September 2012 – December 2016 (Graduation)' },
             ],
           },
         ],
