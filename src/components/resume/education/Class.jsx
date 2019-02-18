@@ -1,15 +1,18 @@
 import React from 'react';
 import types from 'prop-types';
+import { Typography } from '@material-ui/core';
 // Parents: Quarter
 
 /* render code for each class */
 const Class = (props) => {
   const { name, catalog } = props;
   return (
-    <li>
-      {catalog && <strong>{`${catalog} - `}</strong>}
-      {name}
-    </li>
+    <Typography>
+      <li>
+        {catalog && <strong>{`${catalog} - `}</strong>}
+        {name}
+      </li>
+    </Typography>
   );
 };
 

@@ -4,6 +4,7 @@ import types from 'prop-types';
 // helpers
 import map from 'lodash/map';
 import Button from '@material-ui/core/Button';
+import { Typography } from '@material-ui/core';
 // components
 // Parents: Main
 
@@ -70,7 +71,7 @@ class HeroSelection extends Component {
     const { onClick } = this.props;
     return (
       <div key={letter}>
-        <h2 style={styles.heroRow}>{letter}</h2>
+        <Typography variant="h4" style={styles.heroRow}>{letter}</Typography>
         {
           map(heroes, (char, i) => (
             <Button

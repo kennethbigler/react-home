@@ -1,13 +1,10 @@
-// react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// material ui
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import Grid from '@material-ui/core/Grid';
-// components
 import CopyTextDisplay from './CopyTextDisplay';
 // Parents: GitTools
 
@@ -35,10 +32,7 @@ export default class BranchName extends Component {
     } = this.props;
 
     return (
-      <div
-        className="deploy-branch"
-        style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}
-      >
+      <div style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
         <Grid container spacing={16} style={{ display: 'flex', alignItems: 'center' }}>
           <Grid item sm={3} xs={12}>
             <FormControl fullWidth>

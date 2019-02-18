@@ -22,6 +22,7 @@ class ExpandableCard extends Component {
         primary: types.shape({
           main: types.string.isRequired,
         }).isRequired,
+        type: types.string,
       }).isRequired,
     }),
     title: types.oneOfType([types.string, types.element]),
@@ -49,13 +50,18 @@ class ExpandableCard extends Component {
         borderRadius: 3,
         marginLeft: 15,
         marginRight: 15,
-        boxShadow: `0px 15px 15px -10px ${grey[400]}`,
         position: 'relative',
         top: -20,
       },
       title: { color: 'white' },
       subtitle: { color: grey[300] },
     };
+    if (theme.palette.type !== 'dark') {
+      styles.header = {
+        ...styles.header,
+        boxShadow: `0px 15px 15px -10px ${grey[400]}`,
+      };
+    }
     styles.expandedHeader = {
       ...styles.header,
       marginBottom: -20,

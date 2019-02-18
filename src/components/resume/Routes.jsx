@@ -47,7 +47,7 @@ const Routes = (props) => {
   );
 
   return (
-    <div className="resume-app">
+    <div>
       <Header handleNav={handleNav}>
         <Menu />
       </Header>

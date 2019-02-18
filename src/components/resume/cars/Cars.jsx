@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import prius07 from '../../../images/07_toyota_prius.jpg';
 import pontiac93 from '../../../images/93_pontiac_bonneville.jpg';
@@ -24,13 +25,13 @@ const styles = {
 
 const Cars = () => (
   <div>
-    <h1>{'Ken\'s Cars'}</h1>
+    <Typography variant="h2">{'Ken\'s Cars'}</Typography>
     <Card style={styles.container}>
       <Grid container spacing={16}>
         <Grid item sm={8} xs={12}>
           <CardContent>
-            <h3>2008</h3>
-            <p>The car I learned how to drive on while I had my driver&lsquo;s permit was my father&lsquo;s new 2007 Toyota Prius.</p>
+            <Typography variant="h5">2008</Typography>
+            <Typography>The car I learned how to drive on while I had my driver&lsquo;s permit was my father&lsquo;s new 2007 Toyota Prius.</Typography>
           </CardContent>
         </Grid>
         <Grid item sm={4} xs={12}>
@@ -46,8 +47,8 @@ const Cars = () => (
       <Grid container spacing={16}>
         <Grid item sm={8} xs={12}>
           <CardContent>
-            <h3>2008</h3>
-            <p>I got my first car: a 1993 Pontiac Bonneville. It was previously my grandfather&lsquo;s (mother&lsquo;s side) and I got it as my first car when I got my license.</p>
+            <Typography variant="h5">2008</Typography>
+            <Typography>I got my first car: a 1993 Pontiac Bonneville. It was previously my grandfather&lsquo;s (mother&lsquo;s side) and I got it as my first car when I got my license.</Typography>
           </CardContent>
         </Grid>
         <Grid item sm={4} xs={12}>
@@ -63,8 +64,8 @@ const Cars = () => (
       <Grid container spacing={16}>
         <Grid item sm={8} xs={12}>
           <CardContent>
-            <h3>2011</h3>
-            <p>After selling my first car, my parents purchased a 2010 Chevrolet Impala LS for me to drive. It was a used Hertz rental car.</p>
+            <Typography variant="h5">2011</Typography>
+            <Typography>After selling my first car, my parents purchased a 2010 Chevrolet Impala LS for me to drive. It was a used Hertz rental car.</Typography>
           </CardContent>
         </Grid>
         <Grid item sm={4} xs={12}>
@@ -80,11 +81,11 @@ const Cars = () => (
       <Grid container spacing={16}>
         <Grid item sm={8} xs={12}>
           <CardContent>
-            <h3>2015</h3>
-            <p>
+            <Typography variant="h5">2015</Typography>
+            <Typography>
               I purchased my first vehicle, a new 2015 Ford Mustang GT Premium with the 50 Years Edition Package.
               I did some modifications to this car including: Rear Window Louvers, GT350 start button, metal dead pedal, ergonomic parking break, Borla Ford Racing Sport Catback Exhaust, &amp; Hurst automatic shift lever
-            </p>
+            </Typography>
           </CardContent>
         </Grid>
         <Grid item sm={4} xs={12}>
@@ -100,8 +101,8 @@ const Cars = () => (
       <Grid container spacing={16}>
         <Grid item sm={8} xs={12}>
           <CardContent>
-            <h3>2019</h3>
-            <p>I sold my Mustang (as the exhaust was too loud), and started driving a 2005 Jaguar XJ8-L that my grandfather (father&lsquo;s side) had given to my family.</p>
+            <Typography variant="h5">2019</Typography>
+            <Typography>I sold my Mustang (as the exhaust was too loud), and started driving a 2005 Jaguar XJ8-L that my grandfather (father&lsquo;s side) had given to my family.</Typography>
           </CardContent>
         </Grid>
         <Grid item sm={4} xs={12}>

@@ -1,11 +1,12 @@
 import React from 'react';
+import Typography from '@material-ui/core/Typography';
 import InfoPopup from '../../common/InfoPopup';
 import Rules from './Rules';
 import Help from './help';
 
 const Header = () => (
   <div className="flex-container">
-    <h1>Blackjack (21)</h1>
+    <Typography variant="h2" gutterBottom>Blackjack (21)</Typography>
     <InfoPopup title="Blackjack Rules">
       <Rules />
       <Help />

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import split from 'lodash/split';
 import get from 'lodash/get';
+import { Typography } from '@material-ui/core';
 import Organization from './Organization';
 
 const axiosGitHubGraphQL = axios.create({
@@ -176,7 +177,7 @@ class GraphQL extends Component {
 
     return (
       <div>
-        <h1>{TITLE}</h1>
+        <Typography variant="h2">{TITLE}</Typography>
 
         <form onSubmit={this.onSubmit}>
           <label htmlFor="url">
@@ -202,7 +203,7 @@ class GraphQL extends Component {
               onFetchMoreIssues={this.onFetchMoreIssues}
               onStarRepository={this.onStarRepository}
             />
-          ) : (<p>No information yet ...</p>)
+          ) : (<Typography>No information yet ...</Typography>)
         }
       </div>
     );

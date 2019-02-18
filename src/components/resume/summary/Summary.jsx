@@ -1,4 +1,5 @@
 import React from 'react';
+import { Typography } from '@material-ui/core';
 import Info from './Info';
 import Skills from './Skills';
 import Education from './Education';
@@ -7,7 +8,7 @@ import TimelineCard from '../../common/TimelineCard';
 
 const Summary = () => (
   <div>
-    <h1>Summary</h1>
+    <Typography variant="h2" gutterBottom>Summary</Typography>
     <Info />
     <TimelineCard />
     <Skills />

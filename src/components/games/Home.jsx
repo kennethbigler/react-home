@@ -1,5 +1,5 @@
-// react
 import React from 'react';
+import Typography from '@material-ui/core/Typography';
 // Parents: Main
 
 /* --------------------------------------------------
@@ -7,16 +7,16 @@ import React from 'react';
 * -------------------------------------------------- */
 const Home = () => (
   <div style={{ textAlign: 'center' }}>
-    <h1>
+    <Typography variant="h2">
       Welcome to my ReactJS Game Projects
-    </h1>
-    <h2>
+    </Typography>
+    <Typography variant="h3">
       This site was created to learn, check out the
       {' '}
       <a href="https://github.com/kennethbigler/react-home">
         {'<source code />'}
       </a>
-    </h2>
+    </Typography>
   </div>
 );
 

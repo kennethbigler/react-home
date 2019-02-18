@@ -1,15 +1,11 @@
-// react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// lodash
 import reduce from 'lodash/reduce';
 import map from 'lodash/map';
-// material
 import Button from '@material-ui/core/Button';
-// custom
+import Typography from '@material-ui/core/Typography';
 import Dice from '../../../apis/Dice';
 import ScoreTable, { ADD_DICE } from './ScoreTable';
 import ScoreGraph from './ScoreGraph';
@@ -215,12 +211,12 @@ class Yahtzee extends Component {
     return (
       <div>
         <div className="flex-container">
-          <h1>Yahtzee</h1>
+          <Typography variant="h2">Yahtzee</Typography>
           <ScoreGraph scores={scores} />
         </div>
         <hr />
         <div className="flex-container">
-          <h2>{`Roll #${roll}/3`}</h2>
+          <Typography variant="h4">{`Roll #${roll}/3`}</Typography>
           <div style={{ display: 'block', margin: 'auto', width: 320 }}>
             {map(saved, (val, i) => (
               <Button color="secondary" onClick={() => this.handleUnsave(i)} variant="outlined" key={i}>
@@ -238,7 +234,7 @@ class Yahtzee extends Component {
           </Button>
         </div>
         <hr />
-        <h2>{`Total: ${finalTopSum + bottomSum}`}</h2>
+        <Typography variant="h4">{`Total: ${finalTopSum + bottomSum}`}</Typography>
         <ScoreTable
           values={[...saved, ...values]}
           bottom={bottom}

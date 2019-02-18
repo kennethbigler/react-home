@@ -1,8 +1,5 @@
-// react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// components
-// material ui
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -84,10 +81,7 @@ export default class BranchName extends Component {
     } = this.props;
 
     return (
-      <div
-        className="branch-name"
-        style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}
-      >
+      <div style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
         <Grid container spacing={16}>
           <Grid item sm={3} xs={12}>
             <FormControl fullWidth>

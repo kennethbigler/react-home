@@ -1,21 +1,18 @@
-// react
 import React from 'react';
-// functions
 import map from 'lodash/map';
-// components
+import { Typography } from '@material-ui/core';
 import Job from './Job';
 import TimelineCard from '../../common/TimelineCard';
 import ExpandableCard from '../../common/ExpandableCard';
 import TechBarChart from './TechBarChart';
-// constants
 import workExp from '../../../constants/work';
 // Parents: Main
 
 const Work = () => (
   <div>
-    <h1>
+    <Typography variant="h2">
       Work Experience
-    </h1>
+    </Typography>
     <TimelineCard data={workExp} title="Work Timeline" />
     <ExpandableCard title="Programming Language Timeline (Professional Use)">
       <TechBarChart />

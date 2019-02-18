@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import map from 'lodash/map';
+import { Typography } from '@material-ui/core';
 import profiles, { CASINO } from '../../../constants/murder';
 import MurderMysteryPanel from './MurderMysteryPanel';
 // Parents: Main
@@ -20,7 +21,7 @@ class MurderMystery extends Component {
 
     return (
       <div>
-        <h1>{`Murder at ${CASINO}`}</h1>
+        <Typography variant="h2" gutterBottom>{`Murder at ${CASINO}`}</Typography>
         {map(profiles, (profile, i) => {
           const {
             role, importance, person, gender, description, hint, clue,

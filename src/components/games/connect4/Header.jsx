@@ -19,7 +19,7 @@ const Header = (props) => {
     <Toolbar>
       <div className="flex-container">
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Typography color="inherit" style={{ marginRight: 10 }} variant="h6">
+          <Typography style={{ marginRight: 10 }} variant="h6">
             {status}
           </Typography>
           <Piece piece={piece} />

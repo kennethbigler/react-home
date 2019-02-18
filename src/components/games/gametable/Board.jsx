@@ -19,7 +19,7 @@ const Board = (props) => {
   } = props;
 
   return (
-    <div className="board">
+    <div>
       {map(players, (player, i) => (
         <Player
           key={`player${i}`}

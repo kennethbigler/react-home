@@ -1,16 +1,13 @@
-// react
 import React from 'react';
-// components
 import map from 'lodash/map';
+import { Typography } from '@material-ui/core';
 import Degree from './Degree';
-// constants
 import classes from '../../../constants/classes';
-// functions
 // Parents: Main
 
 const Education = () => (
   <div>
-    <h1>Hackathons &amp; Education</h1>
+    <Typography variant="h2">Hackathons &amp; Education</Typography>
     {map(classes, d => <Degree key={d.degree} degree={d} />)}
   </div>
 );

@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import types from 'prop-types';
 import grey from '@material-ui/core/colors/grey';
+import { withTheme } from '@material-ui/core/styles';
 // Parents: Row
 
-export default class Segment extends PureComponent {
+class Segment extends PureComponent {
   static propTypes = {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     color: types.string,
@@ -11,12 +12,20 @@ export default class Segment extends PureComponent {
     title: types.string,
     width: types.number.isRequired,
     inverted: types.bool,
+    theme: types.shape({
+      palette: types.shape({
+        primary: types.shape({
+          main: types.string.isRequired,
+        }).isRequired,
+        type: types.string,
+      }).isRequired,
+    }),
   }
 
   render() {
     // var for segment
     const {
-      body, width, color, title, inverted,
+      body, width, color, title, inverted, theme: { palette: { type } },
     } = this.props;
     // variables for empty segment
     let style = {
@@ -30,11 +39,17 @@ export default class Segment extends PureComponent {
         cursor: 'default',
         paddingTop: '5px',
         paddingBottom: '5px',
-        boxShadow: `2px 3px 4px ${grey[400]}`,
         textAlign: 'center',
         borderRadius: 2,
         backgroundColor: color,
       };
+
+      if (type !== 'dark') {
+        style = {
+          ...style,
+          boxShadow: `2px 3px 4px ${grey[400]}`,
+        };
+      }
     }
 
     return (
@@ -44,3 +59,5 @@ export default class Segment extends PureComponent {
     );
   }
 }
+
+export default withTheme()(Segment);

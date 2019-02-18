@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, Legend,
+  ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip,
 } from 'recharts';
 // functions
 import map from 'lodash/map';
@@ -27,7 +27,6 @@ const PennyPokerNight = () => {
 
   return (
     <div>
-      <h1>Penny Poker Night Scores</h1>
       <ResponsiveContainer width="100%" height={650}>
         <LineChart data={parsedScores}>
           {map(pennyPokerColors, (color, key) => <Line type="monotone" dataKey={key} key={key} stroke={color} />)}
@@ -40,7 +39,6 @@ const PennyPokerNight = () => {
             ticks={[-400, -200, 0, 200, 400, 600]}
           />
           <Tooltip itemSorter={(a, b) => b.value - a.value} />
-          <Legend />
         </LineChart>
       </ResponsiveContainer>
     </div>

@@ -1,11 +1,11 @@
 import React from 'react';
-// material-ui
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import grey from '@material-ui/core/colors/grey';
+import { Typography } from '@material-ui/core';
 import DarkTableCell from '../../common/DarkTableCell';
 // Parents: Main
 
@@ -93,7 +93,7 @@ const TravelMap = () => {
 
   return (
     <div>
-      <h3 style={styles.margins}>I have been to 30 countries:</h3>
+      <Typography variant="h4" style={styles.margins}>I have been to 30 countries:</Typography>
       <Table>
         <TableHead>
           <TableRow>

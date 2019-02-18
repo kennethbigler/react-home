@@ -1,7 +1,29 @@
 import React from 'react';
 import types from 'prop-types';
 import red from '@material-ui/core/colors/red';
+import { Typography } from '@material-ui/core';
 // Parents: Hand
+
+const styles = {
+  cardFace: {
+    backgroundColor: 'white',
+    borderRadius: 5,
+    cursor: 'pointer',
+    display: 'inline-block',
+    fontWeight: 'bold',
+    height: 78,
+    margin: 5,
+    padding: 3,
+    width: 50,
+  },
+  cardTitle: { textAlign: 'left' },
+  suit: {
+    margin: 'auto',
+    maxWidth: 30,
+    textAlign: 'center',
+    width: '100%',
+  },
+};
 
 /* --------------------------------------------------
  * Card
@@ -21,19 +43,15 @@ const Card = (props) => {
     backgroundColor: dropped ? red[100] : 'white',
   };
 
-  const styles = {
-    cardTitle: { textAlign: 'left' },
-  };
-
   // display in view
   return (
-    <div className="playingCard" onClick={handleClick} style={cardColor}>
+    <div style={{ ...styles.cardFace, ...cardColor }} onClick={handleClick}>
       <div style={styles.cardTitle}>
         {name + suit}
       </div>
-      <h2 className="suit">
+      <Typography variant="h3" style={{ ...styles.suit, ...cardColor }}>
         {suit}
-      </h2>
+      </Typography>
     </div>
   );
 };

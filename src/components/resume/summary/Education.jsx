@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import map from 'lodash/map';
+import { Typography } from '@material-ui/core';
 import ExpandableCard from '../../common/ExpandableCard';
 import classes from '../../../constants/classes';
 // Parents: Main
@@ -11,32 +12,40 @@ export default class Education extends Component {
       return (
         <div key={i}>
           {i !== 0 && <hr />}
-          <h1>
+          <Typography variant="h4">
             {`${d.school}, ${d.location}`}
-          </h1>
-          <h2>
+          </Typography>
+          <Typography variant="h5">
             {d.degree + major}
-          </h2>
+          </Typography>
           <ul>
             {d.minor && (
-            <li>
-              {d.minor}
-            </li>
+              <Typography>
+                <li>
+                  {d.minor}
+                </li>
+              </Typography>
             )}
             {d.honors && (
-            <li>
-              {d.honors}
-            </li>
+              <Typography>
+                <li>
+                  {d.honors}
+                </li>
+              </Typography>
             )}
             {d.graduation && (
-            <li>
-              {`Completion: ${d.graduation}`}
-            </li>
+              <Typography>
+                <li>
+                  {`Completion: ${d.graduation}`}
+                </li>
+              </Typography>
             )}
             {d.gpa && (
-            <li>
-              {`GPA: ${d.gpa}`}
-            </li>
+              <Typography>
+                <li>
+                  {`GPA: ${d.gpa}`}
+                </li>
+              </Typography>
             )}
           </ul>
         </div>

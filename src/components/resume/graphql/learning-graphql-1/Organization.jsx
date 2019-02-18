@@ -1,22 +1,23 @@
 import React from 'react';
 import types from 'prop-types';
 import map from 'lodash/map';
+import { Typography } from '@material-ui/core';
 import Repository from './Repository';
 
 const Organization = ({
   organization, errors, onFetchMoreIssues, onStarRepository,
 }) => (errors
   ? (
-    <p>
+    <Typography>
       <strong>Something went wrong: </strong>
       {map(errors, 'message').join(' ')}
-    </p>
+    </Typography>
   ) : (
     <div>
-      <p>
+      <Typography>
         <strong>Issues from Organization: </strong>
         <a href={organization.url}>{organization.name}</a>
-      </p>
+      </Typography>
       {organization.repository
         && (
           <Repository

@@ -1,10 +1,7 @@
-// react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// helpers
 import map from 'lodash/map';
 import noop from 'lodash/noop';
 import Button from '@material-ui/core/Button';
@@ -12,11 +9,10 @@ import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Snackbar from '@material-ui/core/Snackbar';
-// components
+import Typography from '@material-ui/core/Typography';
 import characterList, { resetHeroesStatuses } from '../../../constants/dota2';
 import Lineup from './Lineup';
 import HeroSelection from './HeroSelection';
-// redux functions
 import {
   addLineup, removeLineup, resetLineup, updateLineup,
 } from '../../../store/modules/dota2';
@@ -173,8 +169,8 @@ class Dota2Picker extends Component {
         <Grid container spacing={16}>
           <Grid item xs={12}>
             <div className="flex-container">
-              <h1>Dota 2 Picker</h1>
-              <h2>{this.pickingOrder(turn)}</h2>
+              <Typography variant="h2">Dota 2 Picker</Typography>
+              <Typography variant="h4">{this.pickingOrder(turn)}</Typography>
               <Button color="primary" onClick={this.selectHeroAndNextTurn} variant="contained">Select &amp; Next</Button>
             </div>
           </Grid>

@@ -1,14 +1,11 @@
-// react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// material ui
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-// functions
+import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
 import { updateName, updateBot } from '../../../store/modules/players';
 // Parents: Main
@@ -79,14 +76,14 @@ class Home extends Component {
       <div style={namepad}>
         <Grid container spacing={16}>
           <Grid item xs={9}>
-            <h4>
+            <Typography variant="h5">
               Edit Player Names
-            </h4>
+            </Typography>
           </Grid>
           <Grid item xs={3}>
-            <h4>
+            <Typography variant="h5">
               Is Bot?
-            </h4>
+            </Typography>
           </Grid>
         </Grid>
         {map(players, (p, i) => (p.id !== 0
@@ -110,9 +107,9 @@ class Home extends Component {
           ) : (
             <Grid key={`${p.name},${i}`} container spacing={16}>
               <Grid item xs={9}>
-                <h4>
+                <Typography variant="h5">
                   {p.name}
-                </h4>
+                </Typography>
               </Grid>
               <Grid item xs={3}>
                 <Switch checked disabled />

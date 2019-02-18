@@ -6,12 +6,6 @@ body {
   padding: 0;
 }
 
-p,
-h4 {
-  margin-bottom: 5px;
-  margin-top: 5px;
-}
-
 /* reusable */
 .flex-container {
   display: flex;
@@ -27,34 +21,4 @@ h4 {
 .react-pdf__Page > canvas {
   display: block;
   margin: auto;
-}
-
-/* Hand styles */
-.player {
-  border-radius: 5px;
-  display: inline-block;
-  margin: 10px;
-  padding: 20px;
-  padding-top: 0;
-}
-
-/* Card styles */
-.playingCard {
-  background-color: white;
-  border-radius: 5px;
-  cursor: hand;
-  cursor: pointer;
-  display: inline-block;
-  font-weight: bold;
-  height: 78px;
-  margin: 5px;
-  padding: 3px;
-  width: 50px;
-}
-.suit {
-  display: block;
-  margin: auto;
-  max-width: 30px;
-  text-align: center;
-  width: 100%;
 }

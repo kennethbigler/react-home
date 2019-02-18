@@ -1,11 +1,7 @@
-// react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// components
-// material-ui
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -16,7 +12,6 @@ import Select from '@material-ui/core/Select';
 import IconButton from '@material-ui/core/IconButton';
 import Clear from '@material-ui/icons/Clear';
 import Grid from '@material-ui/core/Grid';
-// functions
 import nl2br from 'react-newline-to-break';
 import CopyTextDisplay from './CopyTextDisplay';
 import { setCommitPrefix } from '../../../store/modules/git';
@@ -158,7 +153,7 @@ class CommitText extends Component {
     const displayText = commitText && nl2br(this.getCommitText());
 
     return (
-      <div className="commit-text" style={wrapper}>
+      <div style={wrapper}>
         <Grid container spacing={16}>
           <Grid item sm={4} xs={12}>
             <FormControl fullWidth>

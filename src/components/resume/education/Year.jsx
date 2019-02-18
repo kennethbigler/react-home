@@ -2,6 +2,7 @@ import React from 'react';
 import types from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import map from 'lodash/map';
+import { Typography } from '@material-ui/core';
 import Quarter from './Quarter';
 // Parents: Degree
 
@@ -10,9 +11,9 @@ const Year = (props) => {
   const { year, len } = props;
   return (
     <Grid item md={Math.ceil(12 / len)} xs={12}>
-      <h2>
+      <Typography variant="h4">
         {year.year}
-      </h2>
+      </Typography>
       <hr />
       {map(year.quarters, quarter => (
         <Quarter key={quarter.quarter} quarter={quarter} />

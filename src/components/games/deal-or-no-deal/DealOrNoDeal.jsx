@@ -1,17 +1,14 @@
-// react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// components
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import forEach from 'lodash/forEach';
+import Typography from '@material-ui/core/Typography';
 import Modal from './Modal';
 import Board from './Board';
 import Header from './Header';
 import { shuffle } from './common';
-// redux
 import { payout } from '../../../store/modules/players';
-// functions
 // Parents: Main
 
 // name constant for reference
@@ -233,7 +230,7 @@ class DND extends Component {
     // render component
     return (
       <div>
-        <h1>Deal or No Deal</h1>
+        <Typography variant="h2" gutterBottom>Deal or No Deal</Typography>
         <Header
           casesToOpen={casesToOpen}
           isOver={isOver}

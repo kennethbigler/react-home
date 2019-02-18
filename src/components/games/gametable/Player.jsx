@@ -2,13 +2,24 @@ import React from 'react';
 import types from 'prop-types';
 import Slider from '@material-ui/lab/Slider';
 import cyan from '@material-ui/core/colors/cyan';
-import grey from '@material-ui/core/colors/grey';
 import green from '@material-ui/core/colors/green';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import red from '@material-ui/core/colors/red';
 import map from 'lodash/map';
+import { Typography } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
 import Hand from './Hand';
 // Parents: Board
+
+const styles = {
+  player: {
+    borderRadius: 5,
+    display: 'inline-block',
+    margin: 10,
+    padding: 20,
+  },
+  width: { minWidth: '100px' },
+};
 
 /* --------------------------------------------------
  * Player
@@ -35,12 +46,8 @@ const Player = (props) => {
   const step = 5;
   const onSliderChange = (event, value) => betHandler(player.id, event, value);
   // set colors
-  let color = isPlayerTurn
-    ? { background: cyan[200] }
-    : { background: grey[200] };
-  const weight = isPlayerTurn
-    ? { fontWeight: 'bold' }
-    : { fontWeight: 'normal' };
+  let color = isPlayerTurn ? { background: cyan[200] } : {};
+  const weight = isPlayerTurn ? { fontWeight: 'bold' } : { fontWeight: 'normal' };
   if (player.status === 'win') {
     color = { background: green[300] };
   }
@@ -52,28 +59,28 @@ const Player = (props) => {
   }
 
   return (
-    <div className="player" style={color}>
-      <h2 style={{ ...weight, marginBottom: 0 }}>
+    <Card style={{ ...styles.player, ...color }}>
+      <Typography variant="h4" style={{ ...weight }}>
         {player.name}
         : $
         {player.money}
-      </h2>
+      </Typography>
       {showSlider && (
         <Slider
           max={maxBet}
           min={minBet}
           onChange={onSliderChange}
           step={step}
-          style={{ minWidth: '100px' }}
+          style={styles.width}
           value={player.bet}
         />
       )}
       {isBlackJack
         && player.id !== 0 && (
-          <h3 style={{ marginBottom: 0 }}>
+          <Typography variant="h5">
             Bet: $
             {player.bet}
-          </h3>
+          </Typography>
       )}
       {map(player.hands, (hand, i) => {
         const isHandTurn = !!turn && turn.hand === i;
@@ -95,7 +102,7 @@ const Player = (props) => {
           </div>
         );
       })}
-    </div>
+    </Card>
   );
 };
 

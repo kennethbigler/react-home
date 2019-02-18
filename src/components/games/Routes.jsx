@@ -1,12 +1,9 @@
-// React
 import React from 'react';
 import types from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
-// common
 import reduce from 'lodash/reduce';
 import Header from '../common/header/Header';
 import Menu from './Menu';
-// Components
 import BlackJack from './blackjack';
 import Connect4 from './connect4';
 import DealOrNoDeal from './deal-or-no-deal';
@@ -16,7 +13,6 @@ import Poker from './poker';
 import Slots from './slots';
 import TicTacToe from './tictactoe';
 import Yahtzee from './yahtzee';
-// functions
 // Parents: App
 
 const Routes = (props) => {
@@ -45,7 +41,7 @@ const Routes = (props) => {
   );
 
   return (
-    <div className="games-app">
+    <div>
       <Header handleNav={handleNav} showPlayers>
         <Menu />
       </Header>

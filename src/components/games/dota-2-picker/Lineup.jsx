@@ -11,6 +11,7 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { Typography } from '@material-ui/core';
 // Parents: Popup
 
 class Lineup extends Component {
@@ -51,7 +52,7 @@ class Lineup extends Component {
     const { resetLineup, removeLineup, i } = this.props;
     return (
       <ExpansionPanel defaultExpanded>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`Game ${i + 1}`}</ExpansionPanelSummary>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}><Typography variant="h5">{`Game ${i + 1}`}</Typography></ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Table padding="none">
             <TableHead>

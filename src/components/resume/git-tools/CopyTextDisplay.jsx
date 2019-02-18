@@ -1,7 +1,5 @@
-// react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// material-ui
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -55,17 +53,13 @@ export default class CopyTextDisplay extends Component {
     const { paperStyle } = this.style;
 
     return (
-      <div className="copy-text-display">
+      <div>
         <Paper elevation={1} onClick={this.handleCopy} style={paperStyle}>
           {text}
         </Paper>
         <Snackbar
           action={[
-            <IconButton
-              key="close"
-              color="inherit"
-              onClick={this.handleRequestClose}
-            >
+            <IconButton key="close" onClick={this.handleRequestClose}>
               <CloseIcon />
             </IconButton>,
           ]}

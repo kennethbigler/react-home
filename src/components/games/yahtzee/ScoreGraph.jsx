@@ -6,6 +6,7 @@ import {
   ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area,
 } from 'recharts';
 import { withTheme } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 import InfoPopup from '../../common/InfoPopup';
 // Parents: Main
 
@@ -29,8 +30,8 @@ const ScoreGraph = (props) => {
           <Area type="monotone" dataKey="score" stroke={main} fillOpacity={1} fill="url(#mainColor)" />
         </AreaChart>
       </ResponsiveContainer>
-      <h3>{`Most Recent: ${mostRecent}`}</h3>
-      <h3>{`Top Score: ${topScore}`}</h3>
+      <Typography variant="h4">{`Most Recent: ${mostRecent}`}</Typography>
+      <Typography variant="h4">{`Top Score: ${topScore}`}</Typography>
     </InfoPopup>
   );
 };

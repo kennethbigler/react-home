@@ -1,4 +1,5 @@
 import React from 'react';
+import Typography from '@material-ui/core/Typography';
 // Parents: Popup
 
 /* ========================================
@@ -6,95 +7,87 @@ import React from 'react';
  * ======================================== */
 const Rules = () => (
   <div>
-    <h4>
+    <Typography variant="h5">
       Objective:
-    </h4>
-    <p>
+    </Typography>
+    <Typography>
       Get as close to 21 as you can, without going over. Each card is worth
       it&apos;s number, J/Q/K are worth 10, and an Ace is worth 11 unless you go
       over 21, then it is worth 1.
-    </p>
+    </Typography>
     <br />
-    <h4>
+    <Typography variant="h5">
       Blackjack:
-    </h4>
-    <p>
+    </Typography>
+    <Typography>
       Delt an Ace and a 10/J/Q/K, this casino pays 3:2, but Vegas casinos do
       6:5.
-    </p>
+    </Typography>
     <br />
-    <h4>
+    <Typography variant="h5">
       Hit:
-    </h4>
-    <p>
+    </Typography>
+    <Typography>
       Get an extra card which adds to your total.
-    </p>
+    </Typography>
     <br />
-    <h4>
+    <Typography variant="h5">
       Stay:
-    </h4>
-    <p>
+    </Typography>
+    <Typography>
       Move to the next player.
-    </p>
+    </Typography>
     <br />
-    <h4>
+    <Typography variant="h5">
       Double Down:
-    </h4>
-    <p>
+    </Typography>
+    <Typography>
       This option is available with a two card hand; before another card has
       been drawn double your bet and receive one (and only one) additional card
       to your hand. Play then moves to the next player.
-    </p>
+    </Typography>
     <br />
-    <h4>
+    <Typography variant="h5">
       Splitting Pairs:
-    </h4>
-    <p>
+    </Typography>
+    <Typography>
       When you are dealt a pair of cards of the same rank, you are allowed to
       split into two separate hands and play them independently. You will match
       your bet for the second hand. A double after a split is ok
-    </p>
+    </Typography>
     <br />
-    <h4>
+    <Typography variant="h5">
       Resplitting:
-    </h4>
-    <p>
+    </Typography>
+    <Typography>
       When you get additional pairs in the first two cards of a hand you can
       resplit. Typically a player is allowed to split up to 3 times (delt 4 of a
       kind).
-    </p>
+    </Typography>
     <br />
-    <h4>
+    <Typography variant="h5">
       Splitting Aces:
-    </h4>
-    <p>
+    </Typography>
+    <Typography>
       Player is limited to drawing only one additional card on each Ace. If you
       draw a ten-valued card on one of your split Aces, the hand is not
       considered a Blackjack (it is treated as a normal 21). You can re-split
       Aces.
-    </p>
+    </Typography>
     <br />
-    <h4>
+    <Typography variant="h5">
       Other Rules:
-    </h4>
+    </Typography>
     <ul>
-      <li>
-        Dealer hits on 16 or less and soft 17
-      </li>
-      <li>
-        Minimum bet is $5
-      </li>
+      <Typography><li>Dealer hits on 16 or less and soft 17</li></Typography>
+      <Typography><li>Minimum bet is $5</li></Typography>
     </ul>
-    <h4>
+    <Typography variant="h5">
       AI Algorithm:
-    </h4>
+    </Typography>
     <ul>
-      <li>
-        House Rules: 6 decks, H17, DAS, No Surrender, Peek
-      </li>
-      <li>
-        Estimated casino edge for these rules: 0.66%
-      </li>
+      <Typography><li>House Rules: 6 decks, H17, DAS, No Surrender, Peek</li></Typography>
+      <Typography><li>Estimated casino edge for these rules: 0.66%</li></Typography>
     </ul>
   </div>
 );

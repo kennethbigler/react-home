@@ -1,14 +1,11 @@
-// React
 import React, { Component } from 'react';
 import types from 'prop-types';
-// Material UI
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import NavigationClose from '@material-ui/icons/Close';
-// components
 import TopBar from './TopBar';
 // Parents: App
 
@@ -41,19 +38,18 @@ export default class Header extends Component {
     const { open } = this.state;
     const { children, showPlayers } = this.props;
     return (
-      <div className="application-header">
+      <div>
         <TopBar toggleOpen={this.toggleOpen} showPlayers={showPlayers} />
         <Drawer onClose={this.toggleOpen} open={open}>
           <AppBar position="sticky">
             <Toolbar disableGutters>
               <IconButton
                 aria-label="Menu Close"
-                color="inherit"
                 onClick={this.toggleOpen}
               >
                 <NavigationClose />
               </IconButton>
-              <Typography color="inherit" variant="h6">
+              <Typography variant="h6">
                 Menu
               </Typography>
             </Toolbar>

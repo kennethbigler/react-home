@@ -1,13 +1,14 @@
 import React from 'react';
 import types from 'prop-types';
 import map from 'lodash/map';
+import { Typography } from '@material-ui/core';
 
 const Repository = ({ repository, onFetchMoreIssues, onStarRepository }) => (
   <div>
-    <p>
+    <Typography>
       <strong>In Repository: </strong>
       <a href={repository.url}>{repository.name}</a>
-    </p>
+    </Typography>
 
     <button
       type="button"
@@ -19,15 +20,17 @@ const Repository = ({ repository, onFetchMoreIssues, onStarRepository }) => (
 
     <ul>
       {map(repository.issues.edges, issue => (
-        <li key={issue.node.id}>
-          <a href={issue.node.url}>{issue.node.title}</a>
+        <Typography>
+          <li key={issue.node.id}>
+            <a href={issue.node.url}>{issue.node.title}</a>
 
-          <ul>
-            {map(issue.node.reactions.edges, reaction => (
-              <li key={reaction.node.id}>{reaction.node.content}</li>
-            ))}
-          </ul>
-        </li>
+            <ul>
+              {map(issue.node.reactions.edges, reaction => (
+                <li key={reaction.node.id}>{reaction.node.content}</li>
+              ))}
+            </ul>
+          </li>
+        </Typography>
       ))}
     </ul>
 

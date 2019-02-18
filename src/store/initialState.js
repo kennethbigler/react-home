@@ -49,5 +49,6 @@ export default {
   theme: {
     primary: blueGrey,
     secondary: deepOrange,
+    type: 'dark',
   },
 };

@@ -14,7 +14,7 @@ const Cell = (props) => {
 
   return (
     <Button onClick={onClick} style={attr}>
-      {value}
+      {value || <br />}
     </Button>
   );
 };
@@ -22,7 +22,7 @@ const Cell = (props) => {
 Cell.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   onClick: types.func.isRequired,
-  value: types.string.isRequired,
+  value: types.string,
   winner: types.bool.isRequired,
 };
 

@@ -11,7 +11,7 @@ import Button from './Button';
 const ButtonGroup = (props) => {
   const { gameFunctions } = props;
   return (
-    <div className="buttonGroup">
+    <div>
       {map(gameFunctions, obj => (
         <Button key={obj.name} func={obj.func} name={obj.name} />
       ))}

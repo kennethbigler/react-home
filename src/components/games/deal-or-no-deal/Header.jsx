@@ -2,6 +2,7 @@ import React from 'react';
 import types from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import { getMoneyText } from './common';
 // Parents: DealOrNoDeal
 
@@ -19,17 +20,17 @@ const Header = (props) => {
   return (
     <Grid container spacing={16}>
       <Grid item sm={6} xs={12}>
-        <h1>
+        <Typography variant="h3" gutterBottom>
           Your Case:
           {' '}
           {pc ? pc.loc : '?'}
           {isOver && ` - ${getMoneyText(pc.val)}`}
-        </h1>
-        <h2>
+        </Typography>
+        <Typography variant="h4" gutterBottom>
           {isOver
             ? `You Won ${getMoneyText(offer)}`
             : `Number of Cases to Open: ${casesToOpen}`}
-        </h2>
+        </Typography>
         {isOver && (
           <Button color="primary" onClick={newGame} variant="contained">
             New Game
@@ -37,11 +38,11 @@ const Header = (props) => {
         )}
       </Grid>
       <Grid item sm={6} xs={12}>
-        <h1 style={{ textAlign: 'right' }}>
+        <Typography variant="h3" align="right" gutterBottom>
           {player.name}
           :
           {getMoneyText(player.money)}
-        </h1>
+        </Typography>
       </Grid>
     </Grid>
   );

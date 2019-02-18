@@ -1,11 +1,7 @@
-// react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// components
-// material ui
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
@@ -13,7 +9,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-// functions
+import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
 import DarkTableCell from '../../common/DarkTableCell';
 import SlotMachine from './SlotMachine';
@@ -90,7 +86,7 @@ class Slots extends Component {
 
     return (
       <div>
-        <h1>Casino Slot Machine</h1>
+        <Typography variant="h2">Casino Slot Machine</Typography>
         <Grid container spacing={16} style={{ marginTop: '2em' }}>
           <Grid item sm={6} xs={12}>
             <Grid container spacing={16} style={{ marginBottom: '1em' }}>

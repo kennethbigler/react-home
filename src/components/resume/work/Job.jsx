@@ -1,14 +1,11 @@
-// react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// material-ui
 import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
-// functions
 import moment from 'moment';
 import map from 'lodash/map';
 import isEmpty from 'lodash/isEmpty';
-// components
+import { Typography } from '@material-ui/core';
 import { FORMAT } from '../../common/timeline/Timeline';
 import ExpandableCard from '../../common/ExpandableCard';
 // Parents: Work
@@ -83,29 +80,31 @@ export default class Job extends Component {
           title={title}
         >
           <Grid item sm={9} xs={12}>
-            <p>
+            <Typography>
               {this.showRange(job.start, job.end, job.notes)}
-            </p>
+            </Typography>
             {job.expr && (
               <ul>
                 {map(job.expr, (desc, i) => (
-                  <li key={`desc${i}`}>
-                    {desc}
-                  </li>
+                  <Typography key={`desc${i}`}>
+                    <li>
+                      {desc}
+                    </li>
+                  </Typography>
                 ))}
               </ul>
             )}
             {!isEmpty(job.tech) && (
               <div>
                 <hr />
-                Technologies:&nbsp;
+                <Typography inline>Technologies:&nbsp;</Typography>
                 {this.getCSV(job.tech)}
               </div>
             )}
             {!isEmpty(job.skills) && (
               <div>
                 <hr />
-                Skills:&nbsp;
+                <Typography inline>Skills:&nbsp;</Typography>
                 {this.getCSV(job.skills)}
               </div>
             )}

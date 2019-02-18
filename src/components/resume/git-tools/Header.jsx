@@ -3,6 +3,7 @@ import React from 'react';
 import types from 'prop-types';
 // material-ui
 import TextField from '@material-ui/core/TextField';
+import { Typography } from '@material-ui/core';
 // Parents: Main
 
 const Header = (props) => {
@@ -10,9 +11,9 @@ const Header = (props) => {
 
   return (
     <div>
-      <h1>
+      <Typography variant="h2">
         Git Tools
-      </h1>
+      </Typography>
       <TextField
         InputLabelProps={{ style: { color: gitTheme } }}
         label="User Story ID"

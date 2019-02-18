@@ -24,9 +24,9 @@ export function displayLightTheme() {
 export default function reducer(state = initialState.theme, action) {
   switch (action.type) {
     case DARK_THEME:
-      return assign({}, state, { primary: grey, secondary: deepOrange });
+      return assign({}, state, { type: 'dark', primary: grey, secondary: deepOrange });
     case LIGHT_THEME:
-      return assign({}, state, { primary: blueGrey, secondary: deepOrange });
+      return assign({}, state, { type: 'light', primary: blueGrey, secondary: deepOrange });
     default:
       return state;
   }

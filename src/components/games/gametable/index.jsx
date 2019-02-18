@@ -38,19 +38,20 @@ const GameTable = (props) => {
     cardHandler: cardClickHandler,
   };
   return (
-    <div className="gameTable">
-      {isBlackJack && !hideHands ? (
-        <div>
-          <Board players={played} {...passProps} />
-          <ButtonGroup gameFunctions={gameFunctions} />
-          <Board players={future} {...passProps} />
-        </div>
-      ) : (
-        <div>
-          <Board players={playersToDisplay} {...passProps} />
-          <ButtonGroup gameFunctions={gameFunctions} />
-        </div>
-      )}
+    <div>
+      {isBlackJack && !hideHands
+        ? (
+          <div>
+            <Board players={played} {...passProps} />
+            <ButtonGroup gameFunctions={gameFunctions} />
+            <Board players={future} {...passProps} />
+          </div>
+        ) : (
+          <div>
+            <Board players={playersToDisplay} {...passProps} />
+            <ButtonGroup gameFunctions={gameFunctions} />
+          </div>
+        )}
     </div>
   );
 };

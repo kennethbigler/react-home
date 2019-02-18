@@ -2,6 +2,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import Button from '@material-ui/core/Button';
+import { Typography } from '@material-ui/core';
 import REPOSITORY_FRAGMENT from './fragments';
 import Link from '../Link';
 
@@ -145,9 +146,9 @@ const RepositoryItem = (props) => {
   return (
     <div>
       <div className="RepositoryItem-title">
-        <h2>
+        <Typography variant="h3">
           <Link href={url}>{name}</Link>
-        </h2>
+        </Typography>
 
         {!viewerHasStarred
           ? (
@@ -253,20 +254,20 @@ const RepositoryItem = (props) => {
         <div className="RepositoryItem-description-details">
           <div>
             {primaryLanguage && (
-              <span>
+              <Typography inline>
                 Language:
                 {' '}
                 {primaryLanguage.name}
-              </span>
+              </Typography>
             )}
           </div>
           <div>
             {owner && (
-              <span>
+              <Typography inline>
                 Owner:
                 {' '}
                 <a href={owner.url}>{owner.login}</a>
-              </span>
+              </Typography>
             )}
           </div>
         </div>

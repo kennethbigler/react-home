@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import reduce from 'lodash/reduce';
 import forEach from 'lodash/forEach';
+import Typography from '@material-ui/core/Typography';
 import GameBoard from './GameBoard';
 // Parents: Main
 
@@ -182,7 +183,7 @@ export default class Connect4 extends Component {
     const { board, turn, winner } = this.state;
     return (
       <div>
-        <h1>Welcome to Ken&apos;s Connect4 Game</h1>
+        <Typography variant="h2" gutterBottom>Welcome to Ken&apos;s Connect4 Game</Typography>
         <GameBoard
           board={board}
           insert={this.insert}

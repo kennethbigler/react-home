@@ -3,6 +3,7 @@ import types from 'prop-types';
 import purple from '@material-ui/core/colors/purple';
 import map from 'lodash/map';
 import includes from 'lodash/includes';
+import { Typography } from '@material-ui/core';
 import Card from './Card';
 // Parents: Player
 
@@ -28,11 +29,11 @@ const Hand = (props) => {
     : { fontWeight: 'normal' };
 
   return (
-    <div className="hand">
-      <h3 style={{ ...bold, marginTop: '0.5em' }}>
+    <div>
+      <Typography variant="h4" style={{ ...bold, marginTop: '0.5em' }}>
         {isBlackJack
           && (hand.weight > 21 ? 'Bust: ' : 'Hand Weight: ') + hand.weight}
-      </h3>
+      </Typography>
       {map(hand.cards, (card, i) => {
         const dropped = includes(cardsToDiscard, i);
         return (

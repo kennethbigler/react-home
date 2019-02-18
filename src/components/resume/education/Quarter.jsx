@@ -1,6 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
 import map from 'lodash/map';
+import { Typography } from '@material-ui/core';
 import Class from './Class';
 // Parents: Year
 
@@ -9,9 +10,9 @@ const Quarter = (props) => {
   const { quarter } = props;
   return (
     <div>
-      <h3>
+      <Typography variant="h5">
         {quarter.quarter}
-      </h3>
+      </Typography>
       <ul>
         {map(quarter.classes, c => <Class key={c.name} name={c.name} catalog={c.catalog} />)}
       </ul>

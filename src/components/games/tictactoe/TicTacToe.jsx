@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import fill from 'lodash/fill';
 import Header from './Header';
 import History from './History';
@@ -7,9 +8,11 @@ import Board from './Board';
 import { X, O, getTurn } from './constants';
 // Parents: Main
 
+const EMPTY = null;
+
 // constants and helper functions
 const getNewGameVars = () => ({
-  history: [{ board: fill(Array(9), ' ') }],
+  history: [{ board: fill(Array(9), EMPTY) }],
   turn: X,
   step: 0,
 });
@@ -37,7 +40,7 @@ function calculateWinner(board) {
   for (let i = 0; i < lines.length; i += 1) {
     const [a, b, c] = lines[i];
     // if all 3 match and aren't empty
-    if (board[a] !== ' ' && board[a] === board[b] && board[a] === board[c]) {
+    if (board[a] !== EMPTY && board[a] === board[b] && board[a] === board[c]) {
       // return winner and winning positions
       return { winner: board[a], winRow: lines[i] };
     }
@@ -66,7 +69,7 @@ export default class TicTacToe extends Component {
     const board = current.board.slice();
 
     // game is over or cell is full
-    if (!calculateWinner(board).winner && board[location] === ' ') {
+    if (!calculateWinner(board).winner && board[location] === EMPTY) {
       // place marker, then update turn
       board[location] = turn;
 
@@ -107,7 +110,7 @@ export default class TicTacToe extends Component {
 
     return (
       <div>
-        <h1>Tic-Tac-Toe</h1>
+        <Typography variant="h2" gutterBottom>Tic-Tac-Toe</Typography>
         <Paper elevation={2} style={this.styles.paper}>
           <Header newGame={this.newGame} turn={turn} winner={winner} />
           <Board

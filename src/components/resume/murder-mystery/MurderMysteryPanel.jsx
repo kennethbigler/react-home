@@ -10,6 +10,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import nl2br from 'react-newline-to-break';
+import { Typography } from '@material-ui/core';
 // Parents: Main
 
 const LabelTableCell = withStyles({
@@ -61,10 +62,10 @@ class MurderMysteryPanel extends PureComponent {
     return (
       <ExpansionPanel expanded={expanded === expandedKey} onChange={handleChange(expandedKey)}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <div style={styles.container}>
+          <Typography style={styles.container}>
             <div style={styles.item}>{role}</div>
             <div style={styles.item}>{importance}</div>
-          </div>
+          </Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Table>
