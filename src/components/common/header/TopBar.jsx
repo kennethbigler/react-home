@@ -1,12 +1,20 @@
 import React, { PureComponent } from 'react';
 import types from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
+import Switch from '@material-ui/core/Switch';
+import noop from 'lodash/noop';
 import SimplePopover from '../ButtonPopover';
 import PlayerMenu from './PlayerMenu';
+import {
+  displayDarkTheme,
+  displayLightTheme,
+} from '../../../store/modules/theme';
 // Parents: App
 
 const styles = {
@@ -25,14 +33,49 @@ class TopBar extends PureComponent {
     // types = [array, bool, func, number, object, string, symbol].isRequired
     toggleOpen: types.func.isRequired,
     showPlayers: types.bool,
+    theme: types.shape({
+      type: types.string,
+    }),
+    themeActions: types.shape({
+      displayDarkTheme: types.func.isRequired,
+      displayLightTheme: types.func.isRequired,
+    }),
   };
 
   static defaultProps = {
     showPlayers: false,
   }
 
+  state = {
+    checked: true,
+    toggleSwitch: noop,
+  }
+
+  componentDidMount() {
+    const { theme } = this.props;
+
+    if (theme.type === 'dark') {
+      this.setState({ checked: false, toggleSwitch: this.toLightTheme });
+    } else {
+      this.setState({ checked: true, toggleSwitch: this.toDarkTheme });
+    }
+  }
+
+  toDarkTheme = () => {
+    const { themeActions } = this.props;
+    themeActions.displayDarkTheme();
+    this.setState({ checked: false, toggleSwitch: this.toLightTheme });
+  };
+
+  toLightTheme = () => {
+    const { themeActions } = this.props;
+    themeActions.displayLightTheme();
+    this.setState({ checked: true, toggleSwitch: this.toDarkTheme });
+  };
+
   render() {
     const { toggleOpen, showPlayers } = this.props;
+    const { checked, toggleSwitch } = this.state;
     return (
       <AppBar style={{ left: 0, right: 0, top: 0 }}>
         <Toolbar disableGutters>
@@ -59,6 +102,9 @@ class TopBar extends PureComponent {
                 </SimplePopover>
               </div>
             )}
+            <div style={styles.flexRight}>
+              <Switch checked={checked} onChange={toggleSwitch} />
+            </div>
           </div>
         </Toolbar>
       </AppBar>
@@ -66,4 +112,15 @@ class TopBar extends PureComponent {
   }
 }
 
-export default TopBar;
+// react-redux export
+const mapStateToProps = state => ({
+  theme: state.theme,
+});
+const mapDispatchToProps = dispatch => ({
+  themeActions: bindActionCreators(
+    { displayDarkTheme, displayLightTheme },
+    dispatch,
+  ),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

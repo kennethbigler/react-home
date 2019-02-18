@@ -44,7 +44,7 @@ class TechBarChart extends PureComponent {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <Tooltip />
-          <Legend />
+          <Legend wrapperStyle={{ color: theme.palette.text.primary }} />
           <Bar dataKey="months" fill={theme.palette.secondary.main} />
         </BarChart>
       </ResponsiveContainer>

@@ -1,7 +1,5 @@
-// react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// material ui
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';

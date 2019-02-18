@@ -1,5 +1,5 @@
 import assign from 'lodash/assign';
-import blueGrey from '@material-ui/core/colors/blueGrey';
+import indigo from '@material-ui/core/colors/indigo';
 import deepOrange from '@material-ui/core/colors/deepOrange';
 
 export const newPlayer = (id, name = 'Bot', isBot = true) => ({
@@ -47,7 +47,7 @@ export default {
   },
   dota2: [newDota2Lineup()],
   theme: {
-    primary: blueGrey,
+    primary: indigo,
     secondary: deepOrange,
     type: 'dark',
   },
