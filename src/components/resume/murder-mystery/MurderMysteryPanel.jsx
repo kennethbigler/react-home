@@ -62,10 +62,10 @@ class MurderMysteryPanel extends PureComponent {
     return (
       <ExpansionPanel expanded={expanded === expandedKey} onChange={handleChange(expandedKey)}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography style={styles.container}>
-            <div style={styles.item}>{role}</div>
-            <div style={styles.item}>{importance}</div>
-          </Typography>
+          <div style={styles.container}>
+            <Typography style={styles.item}>{role}</Typography>
+            <Typography style={styles.item}>{importance}</Typography>
+          </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Table>

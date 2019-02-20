@@ -1,7 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
 import ContentAdd from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import red from '@material-ui/core/colors/red';
 import lightGreen from '@material-ui/core/colors/lightGreen';
 // Parents: Board, Header
@@ -33,15 +33,16 @@ const Piece = (props) => {
 
   const style = { backgroundColor: color };
 
-  return !enabled ? (
-    <Button disabled mini style={style} variant="fab">
-      <div />
-    </Button>
-  ) : (
-    <Button mini onClick={onClick} style={style} variant="fab">
-      <ContentAdd style={{ color: 'white' }} />
-    </Button>
-  );
+  return !enabled
+    ? (
+      <Fab disabled size="small" style={style}>
+        <div />
+      </Fab>
+    ) : (
+      <Fab size="small" onClick={onClick} style={style}>
+        <ContentAdd style={{ color: 'white' }} />
+      </Fab>
+    );
 };
 
 Piece.propTypes = {
