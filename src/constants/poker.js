@@ -133,6 +133,17 @@ export const gigNowPokerScores = [
     Jonathan: -20,
     Mike: -20,
     Brady: -20,
+  }, {
+    name: 'Night 2',
+    Jonathan: -20,
+    Seb: -40,
+    Sabik: -20,
+    Mike: 90,
+    Brady: -20,
+    'Michael A': 70,
+    Carlos: -20,
+    Matt: -20,
+    Dhruven: -20,
   },
 ];
 
@@ -144,6 +155,10 @@ export const gigNowPokerColors = {
   Avi: cyan[500],
   Mike: deepOrange[500],
   Brady: deepPurple[500],
+  'Michael A': green[500],
+  Carlos: indigo[500],
+  Matt: lightBlue[500],
+  Dhruven: lightGreen[500],
 };
 
 function zeroOutData(people, scores) {

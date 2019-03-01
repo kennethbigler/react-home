@@ -20,7 +20,7 @@
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.2",
-    "react-apollo": "^2.4.1",
+    "react-apollo": "^2.5.1",
     "react-dom": "^16.8.2",
     "react-newline-to-break": "^1.0.6",
     "react-pdf": "^4.0.3",
