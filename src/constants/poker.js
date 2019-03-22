@@ -97,6 +97,12 @@ export const pennyPokerScores = [
     Jordan: 0,
     Tom: 38,
     Gus: -25,
+  }, {
+    name: 'Night 12',
+    Ken: 57,
+    Aaron: 34,
+    Tom: 9,
+    Gus: -100,
   },
 ];
 
