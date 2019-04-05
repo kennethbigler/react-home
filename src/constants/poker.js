@@ -150,6 +150,17 @@ export const gigNowPokerScores = [
     Carlos: -20,
     Matt: -20,
     Dhruven: -20,
+  }, {
+    Jonathan: 71,
+    Dharam: 40,
+    Seb: 32,
+    Dhruven: 17,
+    Kaustubh: 0,
+    Brady: 0,
+    Matt: -20,
+    Ken: -40,
+    Patrick: -40,
+    Mike: -60,
   },
 ];
 
@@ -165,6 +176,9 @@ export const gigNowPokerColors = {
   Carlos: indigo[500],
   Matt: lightBlue[500],
   Dhruven: lightGreen[500],
+  Dharam: lime[500],
+  Kaustubh: orange[500],
+  Patrick: pink[500],
 };
 
 function zeroOutData(people, scores) {

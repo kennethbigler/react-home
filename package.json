@@ -13,7 +13,7 @@
     "apollo-link-error": "^1.1.10",
     "apollo-link-http": "^1.5.14",
     "axios": "^0.18.0",
-    "copy-to-clipboard": "^3.0.8",
+    "copy-to-clipboard": "^3.1.0",
     "graphql": "^14.2.0",
     "graphql-tag": "^2.10.1",
     "lodash": "^4.17.11",
