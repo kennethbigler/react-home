@@ -1,67 +1,48 @@
 // React
-import React from 'react';
+import React, { useState } from 'react';
 import types from 'prop-types';
 // Material UI
 import Button from '@material-ui/core/Button';
 import Popover from '@material-ui/core/Popover';
 
-class SimplePopover extends React.Component {
-  static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
-    children: types.element.isRequired,
-    buttonText: types.string.isRequired,
-  };
+const ButtonPopover = (props) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const { children, buttonText } = props;
+  const open = Boolean(anchorEl);
 
-  state = {
-    anchorEl: null,
-  };
+  return (
+    <div>
+      <Button
+        aria-owns={open ? 'simple-popper' : null}
+        aria-haspopup="true"
+        variant="contained"
+        onClick={(event) => { setAnchorEl(event.currentTarget); }}
+      >
+        {buttonText}
+      </Button>
+      <Popover
+        id="simple-popper"
+        open={open}
+        anchorEl={anchorEl}
+        onClose={() => { setAnchorEl(null); }}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        <div style={{ padding: 15 }}>{React.cloneElement(children)}</div>
+      </Popover>
+    </div>
+  );
+};
 
-  handleClick = (event) => {
-    this.setState({
-      anchorEl: event.currentTarget,
-    });
-  };
+ButtonPopover.propTypes = {
+  children: types.element.isRequired,
+  buttonText: types.string.isRequired,
+};
 
-  handleClose = () => {
-    this.setState({
-      anchorEl: null,
-    });
-  };
-
-  render() {
-    const { children, buttonText } = this.props;
-    const { anchorEl } = this.state;
-    const open = Boolean(anchorEl);
-
-    return (
-      <div>
-        <Button
-          aria-owns={open ? 'simple-popper' : null}
-          aria-haspopup="true"
-          variant="contained"
-          onClick={this.handleClick}
-        >
-          {buttonText}
-        </Button>
-        <Popover
-          id="simple-popper"
-          open={open}
-          anchorEl={anchorEl}
-          onClose={this.handleClose}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-        >
-          <div style={{ padding: 15 }}>{React.cloneElement(children)}</div>
-        </Popover>
-      </div>
-    );
-  }
-}
-
-export default SimplePopover;
+export default ButtonPopover;

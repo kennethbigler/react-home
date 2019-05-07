@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import types from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,64 +10,61 @@ import { withTheme } from '@material-ui/core/styles';
 import TopBar from './TopBar';
 // Parents: App
 
-class Header extends PureComponent {
-  static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
-    children: types.element.isRequired,
-    handleNav: types.func.isRequired,
-    showPlayers: types.bool,
-    theme: types.shape({
-      palette: types.shape({
-        type: types.string,
-      }).isRequired,
-    }),
+const Header = (props) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const {
+    children, handleNav, showPlayers, theme: { palette: { type } },
+  } = props;
+
+  const toggleOpen = () => {
+    setIsOpen(!isOpen);
   };
 
-  static defaultProps = {
-    showPlayers: false,
-  }
-
-  state = { open: false };
-
-  toggleOpen = () => {
-    const { open } = this.state;
-    this.setState({ open: !open });
-  };
-
-  handleNav = (loc) => {
-    const { handleNav } = this.props;
-    this.setState({ open: false });
+  const handleNavigation = (loc) => {
+    setIsOpen(false);
     handleNav(loc);
   };
 
-  render() {
-    const { open } = this.state;
-    const { children, showPlayers, theme: { palette: { type } } } = this.props;
-    const fontColor = type === 'light' ? 'inherit' : 'default';
+  const fontColor = type === 'light' ? 'inherit' : 'default';
 
-    return (
-      <div>
-        <TopBar toggleOpen={this.toggleOpen} showPlayers={showPlayers} fontColor={fontColor} />
-        <Drawer onClose={this.toggleOpen} open={open}>
-          <AppBar position="sticky">
-            <Toolbar disableGutters>
-              <IconButton
-                aria-label="Menu Close"
-                onClick={this.toggleOpen}
-                color={fontColor}
-              >
-                <NavigationClose />
-              </IconButton>
-              <Typography variant="h6" color={fontColor}>
-                Menu
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          {React.cloneElement(children, { onItemClick: this.handleNav })}
-        </Drawer>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <TopBar toggleOpen={toggleOpen} showPlayers={showPlayers} fontColor={fontColor} />
+      <Drawer onClose={toggleOpen} open={isOpen}>
+        <AppBar position="sticky">
+          <Toolbar disableGutters>
+            <IconButton
+              aria-label="Menu Close"
+              onClick={toggleOpen}
+              color={fontColor}
+            >
+              <NavigationClose />
+            </IconButton>
+            <Typography variant="h6" color={fontColor}>
+              Menu
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        {React.cloneElement(children, { onItemClick: handleNavigation })}
+      </Drawer>
+    </div>
+  );
+};
+
+Header.propTypes = {
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  children: types.element.isRequired,
+  handleNav: types.func.isRequired,
+  showPlayers: types.bool,
+  theme: types.shape({
+    palette: types.shape({
+      type: types.string,
+    }).isRequired,
+  }),
+};
+
+Header.defaultProps = {
+  showPlayers: false,
+};
 
 export default withTheme()(Header);

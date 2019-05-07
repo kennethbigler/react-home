@@ -2,8 +2,9 @@
   "root": true,
   "plugins": [
     "react",
-    "lodash",
+    "react-hooks",
     "import",
+    "lodash",
     "jsx-a11y"
   ],
   "extends": [
@@ -57,7 +58,9 @@
       {
         "ignorePureComponents": true
       }
-    ]
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
   "globals": {}
 }
