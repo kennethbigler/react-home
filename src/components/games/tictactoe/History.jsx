@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import types from 'prop-types';
 import Button from '@material-ui/core/Button';
 import map from 'lodash/map';
@@ -8,18 +8,9 @@ import { getTurn } from './constants';
 /* ========================================
  * History
  * ======================================== */
-export default class History extends Component {
-  static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
-    history: types.arrayOf(types.shape({ location: types.number })).isRequired,
-    jumpToStep: types.func.isRequired,
-    step: types.number.isRequired,
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = { ascend: true };
-  }
+const History = (props) => {
+  const [ascend, setAscend] = useState(true);
+  const { history, step, jumpToStep } = props;
 
   /**
    * function that generates text for the history tracker
@@ -27,8 +18,7 @@ export default class History extends Component {
    * @param {number} move - just index tracking
    * @return {Object}
    */
-  getHistoryText = (round, move) => {
-    const { step, jumpToStep } = this.props;
+  const getHistoryText = (round, move) => {
     // generate description text
     const description = !move
       ? 'Game Start (Turn, Col, Row)'
@@ -48,31 +38,30 @@ export default class History extends Component {
     );
   };
 
-  /** function that toggles asc vs. desc */
-  handleMoveOrderToggle = () => {
-    const { ascend } = this.state;
-    this.setState({ ascend: !ascend });
-  };
+  // move history
+  const moves = map(history, getHistoryText);
+  // asc vs. desc
+  !ascend && moves.reverse();
 
-  render() {
-    const { ascend } = this.state;
-    const { history } = this.props;
-    // move history
-    const moves = map(history, this.getHistoryText);
-    // asc vs. desc
-    !ascend && moves.reverse();
+  return (
+    <div>
+      <Button
+        onClick={() => { setAscend(!ascend); }}
+        style={{ marginTop: 20, marginBottom: 20 }}
+        variant="contained"
+      >
+        {ascend ? 'Asc' : 'Desc'}
+      </Button>
+      {moves}
+    </div>
+  );
+};
 
-    return (
-      <div>
-        <Button
-          onClick={this.handleMoveOrderToggle}
-          style={{ marginTop: 20, marginBottom: 20 }}
-          variant="contained"
-        >
-          {ascend ? 'Asc' : 'Desc'}
-        </Button>
-        {moves}
-      </div>
-    );
-  }
-}
+History.propTypes = {
+  // types = [array, bool, func, number, object, string, symbol].isRequired
+  history: types.arrayOf(types.shape({ location: types.number })).isRequired,
+  jumpToStep: types.func.isRequired,
+  step: types.number.isRequired,
+};
+
+export default History;
