@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import types from 'prop-types';
 import ContentAdd from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
@@ -9,7 +9,7 @@ import lightGreen from '@material-ui/core/colors/lightGreen';
 /* --------------------------------------------------
 * Board - for Connect4
 * -------------------------------------------------- */
-const Piece = (props) => {
+const Piece = memo((props) => {
   const { piece, enabled, onClick } = props;
 
   let color = null;
@@ -43,10 +43,9 @@ const Piece = (props) => {
         <ContentAdd style={{ color: 'white' }} />
       </Fab>
     );
-};
+});
 
 Piece.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   enabled: types.bool,
   onClick: types.func,
   piece: types.number.isRequired,

@@ -1,5 +1,5 @@
 // react
-import React from 'react';
+import React, { memo } from 'react';
 // components
 // material-ui
 import Table from '@material-ui/core/Table';
@@ -17,7 +17,7 @@ import Cell from './Cell';
 import BlackjackTable from './BlackjackTable';
 // Parents: Popup
 
-const Help = () => {
+const Help = memo(() => {
   // options
   const h = { color: green[200], text: 'H' };
   const d = { color: teal[200], text: 'D' };
@@ -99,6 +99,6 @@ const Help = () => {
       </Table>
     </div>
   );
-};
+});
 
 export default Help;

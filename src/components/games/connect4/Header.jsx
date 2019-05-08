@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import types from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,7 +9,7 @@ import Piece from './Piece';
 /* ========================================
  * Header
  * ======================================== */
-const Header = (props) => {
+const Header = memo((props) => {
   const { winner, turn, newGame } = props;
   // status text
   const status = winner ? 'Winner:' : 'Turn:';
@@ -34,10 +34,9 @@ const Header = (props) => {
       </div>
     </Toolbar>
   );
-};
+});
 
 Header.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   newGame: types.func.isRequired,
   turn: types.number.isRequired,
   winner: types.number,

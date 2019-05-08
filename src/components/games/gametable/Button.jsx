@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import types from 'prop-types';
 import MuiButton from '@material-ui/core/Button';
 // Parents: ButtonGroup
@@ -7,7 +7,7 @@ import MuiButton from '@material-ui/core/Button';
  * Button
  * -------------------------------------------------- */
 
-const Button = (props) => {
+const Button = memo((props) => {
   const { func, name } = props;
 
   return (
@@ -20,7 +20,7 @@ const Button = (props) => {
       {name}
     </MuiButton>
   );
-};
+});
 
 Button.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired

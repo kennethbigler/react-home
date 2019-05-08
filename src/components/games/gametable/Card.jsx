@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import types from 'prop-types';
 import red from '@material-ui/core/colors/red';
 import { Typography } from '@material-ui/core';
@@ -28,7 +28,7 @@ const styles = {
 /* --------------------------------------------------
  * Card
  * -------------------------------------------------- */
-const Card = (props) => {
+const Card = memo((props) => {
   const { dropped, suit, name } = props;
   // handle click to for card
   const handleClick = () => {
@@ -45,7 +45,7 @@ const Card = (props) => {
 
   // display in view
   return (
-    <div style={{ ...styles.cardFace, ...cardColor }} onClick={handleClick}>
+    <div style={{ ...styles.cardFace, ...cardColor }} onClick={handleClick} role="main">
       <div style={styles.cardTitle}>
         {name + suit}
       </div>
@@ -54,10 +54,9 @@ const Card = (props) => {
       </Typography>
     </div>
   );
-};
+});
 
 Card.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   cardHandler: types.func,
   cardNo: types.number.isRequired,
   dropped: types.bool,

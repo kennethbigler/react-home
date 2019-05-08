@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Typography from '@material-ui/core/Typography';
 // Parents: Popup
 
 /* ========================================
  * Rules
  * ======================================== */
-const Rules = () => (
+const Rules = memo(() => (
   <div>
     <Typography variant="h5">
       Objective:
@@ -90,6 +90,6 @@ const Rules = () => (
       <Typography><li>Estimated casino edge for these rules: 0.66%</li></Typography>
     </ul>
   </div>
-);
+));
 
 export default Rules;
