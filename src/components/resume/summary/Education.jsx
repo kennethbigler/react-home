@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import ExpandableCard from '../../common/ExpandableCard';
 import classes from '../../../constants/classes';
 // Parents: Main
 
-export default class Education extends Component {
+export default class Education extends PureComponent {
   getClassData = (d, i) => {
     if (d.school) {
       const major = d.major ? ` in ${d.major}` : '';

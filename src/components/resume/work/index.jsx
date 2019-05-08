@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import Job from './Job';
@@ -8,7 +8,7 @@ import TechBarChart from './TechBarChart';
 import workExp from '../../../constants/work';
 // Parents: Main
 
-const Work = () => (
+const Work = memo(() => (
   <div>
     <Typography variant="h2">
       Work Experience
@@ -19,6 +19,6 @@ const Work = () => (
     </ExpandableCard>
     {map(workExp, job => <Job key={job.company} job={job} />)}
   </div>
-);
+));
 
 export default Work;

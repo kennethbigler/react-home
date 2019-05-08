@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import types from 'prop-types';
 import { Typography } from '@material-ui/core';
 // Parents: Quarter
 
 /* render code for each class */
-const Class = (props) => {
+const Class = memo((props) => {
   const { name, catalog } = props;
   return (
     <Typography>
@@ -14,7 +14,7 @@ const Class = (props) => {
       </li>
     </Typography>
   );
-};
+});
 
 Class.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired

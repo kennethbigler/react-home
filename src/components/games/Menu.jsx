@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import types from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
 import map from 'lodash/map';
 // Parents: Header
 
-const Menu = (props) => {
+const Menu = memo((props) => {
   const { onItemClick } = props;
   const baseUrl = '/games';
 
@@ -50,7 +50,7 @@ const Menu = (props) => {
       {menu}
     </div>
   );
-};
+});
 
 Menu.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired

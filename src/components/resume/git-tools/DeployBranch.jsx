@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import types from 'prop-types';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import CopyTextDisplay from './CopyTextDisplay';
 // Parents: GitTools
 
-const BranchName = (props) => {
+const BranchName = memo((props) => {
   const [targetBranch, setTargetBranch] = useState('test-pipeline');
 
   const handleSelect = (e) => {
@@ -42,7 +42,7 @@ const BranchName = (props) => {
       </Grid>
     </div>
   );
-};
+});
 
 BranchName.propTypes = {
   branchName: types.string.isRequired,

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Typography from '@material-ui/core/Typography';
 // Parents: Main
 
 /* --------------------------------------------------
 * Home
 * -------------------------------------------------- */
-const Home = () => (
+const Home = memo(() => (
   <div style={{ textAlign: 'center' }}>
     <Typography variant="h2">
       Welcome to my ReactJS Game Projects
@@ -18,6 +18,6 @@ const Home = () => (
       </a>
     </Typography>
   </div>
-);
+));
 
 export default Home;

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import profiles, { CASINO } from '../../../constants/murder';
 import MurderMysteryPanel from './MurderMysteryPanel';
 // Parents: Main
 
-const MurderMystery = () => {
+const MurderMystery = memo(() => {
   const [expanded, setExpanded] = useState(null);
 
   const handleChange = panel => (event, exp) => {
@@ -39,6 +39,6 @@ const MurderMystery = () => {
       })}
     </div>
   );
-};
+});
 
 export default MurderMystery;

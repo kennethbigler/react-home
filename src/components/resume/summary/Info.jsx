@@ -1,5 +1,5 @@
 // react
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 // components
 // material ui
 import Table from '@material-ui/core/Table';
@@ -13,7 +13,7 @@ import photo from '../../../images/ken.jpg';
 import workExp from '../../../constants/work';
 // Parents: Degree
 
-export default class Info extends Component {
+export default class Info extends PureComponent {
   style = {
     image: {
       width: '100%',

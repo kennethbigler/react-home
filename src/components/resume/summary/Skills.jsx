@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Chip from '@material-ui/core/Chip';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
@@ -6,7 +6,7 @@ import ExpandableCard from '../../common/ExpandableCard';
 import { techSummary, skillSummary } from '../../../constants/work';
 // Parents: Main
 
-export default class Skills extends Component {
+export default class Skills extends PureComponent {
   styles = {
     chipStyle: { marginRight: 5, marginTop: 5 },
     sidePadding: { paddingLeft: 20, paddingRight: 20 },

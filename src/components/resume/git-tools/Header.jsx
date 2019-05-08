@@ -1,12 +1,12 @@
 // react
-import React from 'react';
+import React, { memo } from 'react';
 import types from 'prop-types';
 // material-ui
 import TextField from '@material-ui/core/TextField';
 import { Typography } from '@material-ui/core';
 // Parents: Main
 
-const Header = (props) => {
+const Header = memo((props) => {
   const { handleIDChange, storyID, gitTheme } = props;
 
   return (
@@ -25,7 +25,7 @@ const Header = (props) => {
       <br />
     </div>
   );
-};
+});
 
 Header.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired

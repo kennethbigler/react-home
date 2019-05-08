@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import types from 'prop-types';
 import Button from '@material-ui/core/Button';
 import indigo from '@material-ui/core/colors/indigo';
@@ -7,7 +7,7 @@ import indigo from '@material-ui/core/colors/indigo';
 /* ========================================
  * Cell
  * ======================================== */
-const Cell = (props) => {
+const Cell = memo((props) => {
   const { value, winner, onClick } = props;
   // add attributes if cell is a winner
   const attr = winner ? { color: 'white', backgroundColor: indigo.A700 } : null;
@@ -17,7 +17,7 @@ const Cell = (props) => {
       {value || <br />}
     </Button>
   );
-};
+});
 
 Cell.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired

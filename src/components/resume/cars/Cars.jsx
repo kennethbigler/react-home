@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -18,7 +18,7 @@ const styles = {
   },
 };
 
-const Cars = () => (
+const Cars = memo(() => (
   <div>
     <Typography variant="h2">{'Ken\'s Cars'}</Typography>
     {map(cars, car => (
@@ -41,6 +41,6 @@ const Cars = () => (
       </Card>
     ))}
   </div>
-);
+));
 
 export default Cars;

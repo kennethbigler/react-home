@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -44,7 +44,7 @@ export const EU = [
   'Vatican',
 ];
 
-const TravelMap = () => {
+const TravelMap = memo(() => {
   const styles = {
     margins: { marginTop: 24, marginBottom: 16 },
     cell: {
@@ -111,6 +111,6 @@ const TravelMap = () => {
       </Table>
     </div>
   );
-};
+});
 
 export default TravelMap;

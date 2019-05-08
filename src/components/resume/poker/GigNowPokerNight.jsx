@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip,
 } from 'recharts';
@@ -9,7 +9,7 @@ import hasIn from 'lodash/hasIn';
 import { gigNowPokerScores, gigNowPokerColors } from '../../../constants/poker';
 // Parents: PokerNightTabs
 
-const PokerNight = () => {
+const PokerNight = memo(() => {
   let prevWeek = {};
   const parsedScores = map(gigNowPokerScores, (week) => {
     const parsedWeek = reduce(assign({}, week, prevWeek, { name: week.name }), (parsed, val, key) => {
@@ -41,6 +41,6 @@ const PokerNight = () => {
       </ResponsiveContainer>
     </div>
   );
-};
+});
 
 export default PokerNight;
