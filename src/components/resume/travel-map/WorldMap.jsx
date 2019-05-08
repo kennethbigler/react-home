@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState, memo } from 'react';
 import {
   ComposableMap,
   ZoomableGroup,
@@ -46,75 +46,86 @@ const countries = {
   'United Kingdom': green[800],
 };
 
-class WorldMap extends PureComponent {
-  state = {
-    x: 0,
-    y: 0,
-    hide: true,
-    content: '',
-  }
+function useWorldMap() {
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+  const [content, setContent] = useState('');
+  const [hide, setHide] = useState(true);
 
-  handleMove = (geography, evt) => {
-    const x = evt.clientX;
-    const y = evt.clientY + window.pageYOffset;
-    const content = geography.properties.NAME;
-    this.setState({
-      hide: false, x, y, content,
-    });
-  }
+  const handleMove = (geography, evt) => {
+    setX(evt.clientX);
+    setY(evt.clientY + window.pageYOffset);
+    setContent(geography.properties.NAME);
+    setHide(false);
+  };
 
-  handleLeave = () => {
-    this.setState({ hide: true });
-  }
+  const handleLeave = () => {
+    setHide(true);
+  };
 
-  render() {
-    const {
-      x, y, hide, content,
-    } = this.state;
-    const screenWidth = document.body.clientWidth - 32;
-
-    return (
-      <div>
-        <ComposableMap width={screenWidth} height={screenWidth * 546 / 744} projectionConfig={{ scale: screenWidth * RATIO, rotation: [-10, 0, 0] }}>
-          <ZoomableGroup>
-            <Geographies geography="/world-110m.json">
-              {(geographies, projection) => map(geographies, (geography, i) => (
-                <Geography
-                  key={i}
-                  geography={geography}
-                  projection={projection}
-                  onMouseMove={this.handleMove}
-                  onMouseLeave={this.handleLeave}
-                  style={{
-                    default: {
-                      fill: countries[geography.properties.NAME] ? countries[geography.properties.NAME] : FILL,
-                      stroke: STROKE,
-                      strokeWidth: 0.75,
-                      outline: 'none',
-                    },
-                    hover: {
-                      fill: countries[geography.properties.NAME] ? VISITED_HOVER : HOVER,
-                      stroke: STROKE,
-                      strokeWidth: 0.75,
-                      outline: 'none',
-                    },
-                    pressed: {
-                      fill: PRESSED,
-                      stroke: STROKE,
-                      strokeWidth: 0.75,
-                      outline: 'none',
-                    },
-                  }}
-                />
-              ))
-              }
-            </Geographies>
-          </ZoomableGroup>
-        </ComposableMap>
-        <Popover x={x} y={y} hide={hide} content={content} />
-      </div>
-    );
-  }
+  return {
+    x,
+    y,
+    content,
+    hide,
+    handleMove,
+    handleLeave,
+  };
 }
+
+const WorldMap = memo(() => {
+  const {
+    x,
+    y,
+    content,
+    hide,
+    handleMove,
+    handleLeave,
+  } = useWorldMap();
+
+  const screenWidth = document.body.clientWidth - 32;
+
+  return (
+    <div>
+      <ComposableMap width={screenWidth} height={screenWidth * 546 / 744} projectionConfig={{ scale: screenWidth * RATIO, rotation: [-10, 0, 0] }}>
+        <ZoomableGroup>
+          <Geographies geography="/world-110m.json">
+            {(geographies, projection) => map(geographies, (geography, i) => (
+              <Geography
+                key={i}
+                geography={geography}
+                projection={projection}
+                onMouseMove={handleMove}
+                onMouseLeave={handleLeave}
+                style={{
+                  default: {
+                    fill: countries[geography.properties.NAME] ? countries[geography.properties.NAME] : FILL,
+                    stroke: STROKE,
+                    strokeWidth: 0.75,
+                    outline: 'none',
+                  },
+                  hover: {
+                    fill: countries[geography.properties.NAME] ? VISITED_HOVER : HOVER,
+                    stroke: STROKE,
+                    strokeWidth: 0.75,
+                    outline: 'none',
+                  },
+                  pressed: {
+                    fill: PRESSED,
+                    stroke: STROKE,
+                    strokeWidth: 0.75,
+                    outline: 'none',
+                  },
+                }}
+              />
+            ))
+            }
+          </Geographies>
+        </ZoomableGroup>
+      </ComposableMap>
+      <Popover x={x} y={y} hide={hide} content={content} />
+    </div>
+  );
+});
 
 export default WorldMap;
