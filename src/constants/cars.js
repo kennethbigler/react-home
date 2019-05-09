@@ -52,4 +52,6 @@ const cars = [
   },
 ];
 
+cars.reverse();
+
 export default cars;
