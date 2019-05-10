@@ -3,6 +3,9 @@
 # dependencies
 /node_modules
 
+# editor files
+/.idea
+
 # misc
 .DS_Store
 npm-debug.log*
