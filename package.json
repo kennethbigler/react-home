@@ -28,14 +28,14 @@
     "react-redux": "^7.0.3",
     "react-router-dom": "^5.0.0",
     "react-simple-maps": "^0.12.1",
-    "recharts": "^1.5.0",
+    "recharts": "^1.6.0",
     "redux": "^4.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-google": "^0.12.0",
+    "eslint-config-google": "^0.13.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-lodash": "^5.1.0",

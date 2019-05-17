@@ -28,6 +28,8 @@ import Header from './Header';
 import ExpandableCard from '../../common/ExpandableCard';
 // Parents: Main
 
+const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');
+
 class GitTools extends Component {
   // Prop Validation
   static propTypes = {
@@ -62,7 +64,8 @@ class GitTools extends Component {
    */
   handleIDChange = (e) => {
     const { gitActions } = this.props;
-    gitActions.setKey(e.target.value);
+    const [value] = validTypingId.exec(e.target.value) || [''];
+    gitActions.setKey(value);
   };
 
   /**

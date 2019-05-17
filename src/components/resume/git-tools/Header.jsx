@@ -6,8 +6,12 @@ import TextField from '@material-ui/core/TextField';
 import { Typography } from '@material-ui/core';
 // Parents: Main
 
+const validId = RegExp('[A-Z]{4}-[a-zA-Z0-9]+');
+
 const Header = memo((props) => {
   const { handleIDChange, storyID, gitTheme } = props;
+
+  const isIdValid = validId.test(storyID);
 
   return (
     <div>
@@ -18,9 +22,10 @@ const Header = memo((props) => {
         InputLabelProps={{ style: { color: gitTheme } }}
         label="User Story ID"
         onChange={handleIDChange}
-        placeholder="#123456789"
+        placeholder="GNAP-12345"
         style={{ marginLeft: 20 }}
         value={storyID}
+        error={!isIdValid}
       />
       <br />
     </div>
@@ -28,7 +33,6 @@ const Header = memo((props) => {
 });
 
 Header.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   gitTheme: types.string.isRequired,
   handleIDChange: types.func.isRequired,
   storyID: types.string,
