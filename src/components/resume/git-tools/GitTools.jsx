@@ -101,21 +101,20 @@ class GitTools extends Component {
   getBranchName = () => {
     const {
       git: {
-        branchMessage, branchPrefix, casePreference, storyID,
+        branchMessage, branchPrefix, casePreference, storyID: id,
       },
     } = this.props;
     const prefix = branchPrefix ? `${branchPrefix}/` : '';
-    const id = replace(storyID, /\D/g, '');
     let msg = '';
     switch (casePreference) {
       case 'snake_case':
-        msg = snakeCase(`${id && `${id}_`}${branchMessage}`);
+        msg = `${id && `${id}_`}${snakeCase(branchMessage)}`;
         break;
       case 'kebab-case':
-        msg = kebabCase(`${id && `${id}-`}${branchMessage}`);
+        msg = `${id && `${id}-`}${kebabCase(branchMessage)}`;
         break;
       case 'camelCase':
-        msg = camelCase(`${id}${branchMessage}`);
+        msg = `${id}${camelCase(branchMessage)}`;
         break;
       default:
         msg = `${id}${branchMessage}`;
