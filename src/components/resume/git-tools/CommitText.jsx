@@ -33,20 +33,24 @@ function useCommitText(storyID, gitCommit) {
    * @return {string} format Prefix: Message [?Finishes? ID]
    */
   const getCommitText = () => {
-    let gitMessage = '';
-    let quote = '';
-    if (gitCommit) {
-      gitMessage = 'git commit -m "';
-      quote = '"';
+    const prefix = commitPrefix ? `${commitPrefix}: ` : '';
+    let desc = ' ';
+    if (commitDescription && storyID) {
+      desc = `\n\n${commitDescription}\n\n`;
+    } else if (commitDescription) {
+      desc = `\n\n${commitDescription}`;
     }
 
-    const prefix = commitPrefix ? `${commitPrefix}: ` : '';
-    const desc = commitDescription ? `\n\n${commitDescription}\n\n` : ' ';
+    let postfix = '';
+    if (finishes && storyID) {
+      postfix = `[Resolves ${storyID} #finished]`;
+    } else if (storyID) {
+      postfix = `[${storyID}]`;
+    }
 
-    const f = finishes ? 'finishes ' : '';
-    const postfix = storyID ? `[${f}${storyID}]` : '';
+    const gitMessage = `${prefix}${commitMessage}${desc}${postfix}`;
 
-    return `${gitMessage}${prefix}${commitMessage}${desc}${postfix}${quote}`;
+    return gitCommit ? `git commit -m "${gitMessage}"` : gitMessage;
   };
 
   /**

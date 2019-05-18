@@ -13,7 +13,6 @@ import map from 'lodash/map';
 import snakeCase from 'lodash/snakeCase';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
-import replace from 'lodash/replace';
 import {
   setBranchMessage,
   setBranchPrefix,
