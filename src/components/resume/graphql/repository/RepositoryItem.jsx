@@ -254,7 +254,7 @@ const RepositoryItem = (props) => {
         <div className="RepositoryItem-description-details">
           <div>
             {primaryLanguage && (
-              <Typography inline>
+              <Typography display="inline">
                 Language:
                 {' '}
                 {primaryLanguage.name}
@@ -263,7 +263,7 @@ const RepositoryItem = (props) => {
           </div>
           <div>
             {owner && (
-              <Typography inline>
+              <Typography display="inline">
                 Owner:
                 {' '}
                 <a href={owner.url}>{owner.login}</a>

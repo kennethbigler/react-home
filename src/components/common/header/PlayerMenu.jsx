@@ -74,7 +74,7 @@ class Home extends Component {
     const { namepad } = this.styles;
     return (
       <div style={namepad}>
-        <Grid container spacing={16}>
+        <Grid container spacing={1}>
           <Grid item xs={9}>
             <Typography variant="h5">
               Edit Player Names
@@ -88,7 +88,7 @@ class Home extends Component {
         </Grid>
         {map(players, (p, i) => (p.id !== 0
           ? (
-            <Grid key={`${p.name},${i}`} container spacing={16}>
+            <Grid key={`${p.name},${i}`} container spacing={1}>
               <Grid item xs={9}>
                 <TextField
                   defaultValue={p.name}
@@ -105,7 +105,7 @@ class Home extends Component {
               </Grid>
             </Grid>
           ) : (
-            <Grid key={`${p.name},${i}`} container spacing={16}>
+            <Grid key={`${p.name},${i}`} container spacing={1}>
               <Grid item xs={9}>
                 <Typography variant="h5">
                   {p.name}

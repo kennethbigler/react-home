@@ -59,7 +59,7 @@ const ExpandableCard = (props) => {
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Grid container spacing={16} style={{ overflowY: 'hidden' }}>
+          <Grid container spacing={1} style={{ overflowY: 'hidden' }}>
             {children}
           </Grid>
         </CardContent>
@@ -84,4 +84,4 @@ ExpandableCard.propTypes = {
   title: types.oneOfType([types.string, types.element]),
 };
 
-export default withTheme()(ExpandableCard);
+export default withTheme(ExpandableCard);

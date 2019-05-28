@@ -30,9 +30,8 @@ const styles = {
 
 class TopBar extends PureComponent {
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     fontColor: types.string.isRequired,
-    toggleOpen: types.func.isRequired,
+    iconColor: types.string.isRequired,
     showPlayers: types.bool,
     theme: types.shape({
       type: types.string,
@@ -41,6 +40,7 @@ class TopBar extends PureComponent {
       displayDarkTheme: types.func.isRequired,
       displayLightTheme: types.func.isRequired,
     }),
+    toggleOpen: types.func.isRequired,
   };
 
   static defaultProps = {
@@ -75,7 +75,9 @@ class TopBar extends PureComponent {
   };
 
   render() {
-    const { toggleOpen, showPlayers, fontColor } = this.props;
+    const {
+      toggleOpen, showPlayers, fontColor, iconColor,
+    } = this.props;
     const { checked, toggleSwitch } = this.state;
     return (
       <AppBar style={{ left: 0, right: 0, top: 0 }}>
@@ -85,7 +87,7 @@ class TopBar extends PureComponent {
               <IconButton
                 aria-label="Menu"
                 onClick={toggleOpen}
-                color={fontColor}
+                color={iconColor}
               >
                 <MenuIcon />
               </IconButton>

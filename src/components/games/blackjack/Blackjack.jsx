@@ -4,14 +4,10 @@
  * TODO: get second card for dealer and hide it
  * TODO: buy insurance on dealer's Ace
  */
-
-// react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// functions
 import get from 'lodash/get';
 import forEach from 'lodash/forEach';
 // components

@@ -3,19 +3,8 @@ import types from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import Paper from '@material-ui/core/Paper';
-import grey from '@material-ui/core/colors/grey';
+import Chip from '@material-ui/core/Chip';
 // Parents: Main
-
-const styles = {
-  paperStyle: {
-    padding: 10,
-    backgroundColor: grey[300],
-    cursor: 'pointer',
-    display: 'inline-block',
-    borderRadius: 20,
-  },
-};
 
 const CopyTextDisplay = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,9 +22,7 @@ const CopyTextDisplay = (props) => {
 
   return (
     <div>
-      <Paper elevation={1} onClick={handleCopyText} style={styles.paperStyle}>
-        {text}
-      </Paper>
+      <Chip elevation={1} onClick={handleCopyText} label={text} />
       <Snackbar
         action={[
           <IconButton key="close" onClick={() => { setIsOpen(false); }}>

@@ -1,24 +1,25 @@
-// react
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import types from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
-// functions
 import reduce from 'lodash/reduce';
-// common
+import CircularProgress from '@material-ui/core/CircularProgress';
+// custom
 import Header from '../common/header/Header';
 import Menu from './Menu';
-// resume
-import Summary from './summary';
-import Work from './work';
-import Education from './education';
-import Resume from './resume';
-import TravelMap from './travel-map';
-import GitTools from './git-tools';
-import MurderMystery from './murder-mystery';
-import Poker from './poker';
-import GraphQL from './graphql';
-import Cars from './cars';
-// Parents: App
+// Parents: Routes (Main)
+
+// lazy load page components
+const Summary = lazy(() => import('./summary'));
+const Work = lazy(() => import('./work'));
+const Education = lazy(() => import('./education'));
+const TravelMap = lazy(() => import('./travel-map'));
+const Resume = lazy(() => import('./resume'));
+const GitTools = lazy(() => import('./git-tools'));
+const Poker = lazy(() => import('./poker'));
+const MurderMystery = lazy(() => import('./murder-mystery'));
+const GraphQL = lazy(() => import('./graphql'));
+const Cars = lazy(() => import('./cars'));
+
 
 const Routes = (props) => {
   const { match, handleNav } = props;
@@ -51,18 +52,19 @@ const Routes = (props) => {
       <Header handleNav={handleNav}>
         <Menu />
       </Header>
-      <Switch>
-        <Route component={Summary} exact path={`${url}`} />
-        {paths}
-        <Redirect from={`${url}*`} to={`${url}`} />
-        <Route component={Summary} />
-      </Switch>
+      <Suspense fallback={<CircularProgress />}>
+        <Switch>
+          <Route component={Summary} exact path={`${url}`} />
+          {paths}
+          <Redirect from={`${url}*`} to={`${url}`} />
+          <Route component={Summary} />
+        </Switch>
+      </Suspense>
     </div>
   );
 };
 
 Routes.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   handleNav: types.func.isRequired,
   match: types.shape({
     url: types.string.isRequired,

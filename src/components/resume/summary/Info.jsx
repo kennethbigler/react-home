@@ -35,7 +35,7 @@ export default class Info extends PureComponent {
   render() {
     const { image } = this.style;
     return (
-      <Grid container spacing={16}>
+      <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <img
             alt="Kenneth Bigler"

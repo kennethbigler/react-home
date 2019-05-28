@@ -82,7 +82,7 @@ export default class BranchName extends Component {
 
     return (
       <div style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
-        <Grid container spacing={16}>
+        <Grid container spacing={1}>
           <Grid item sm={3} xs={12}>
             <FormControl fullWidth>
               <InputLabel htmlFor="branch-prefix" style={{ color: gitTheme }}>

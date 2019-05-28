@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[34],{796:function(e,t,a){"use strict";a.r(t);var c=a(0),n=a.n(c),r=a(784),o=Object(c.memo)(function(){return n.a.createElement("div",{style:{textAlign:"center"}},n.a.createElement(r.a,{variant:"h2"},"Welcome to my ReactJS Game Projects"),n.a.createElement(r.a,{variant:"h3"},"This site was created to learn, check out the"," ",n.a.createElement("a",{href:"https://github.com/kennethbigler/react-home"},"<source code />")))});t.default=o}}]);
+//# sourceMappingURL=34.ca57ec41.chunk.js.map

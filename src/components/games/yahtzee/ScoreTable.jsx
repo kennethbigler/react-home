@@ -177,7 +177,7 @@ class ScoreTable extends Component {
     const { topSum, finalTopSum, bottomSum } = this.props;
 
     return (
-      <Table padding="none">
+      <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>Minimum Required for Bonus</TableCell>

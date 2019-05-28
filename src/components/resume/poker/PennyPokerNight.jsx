@@ -38,7 +38,7 @@ const PennyPokerNight = memo(() => {
             tickLine={false}
             ticks={[-400, -200, 0, 200, 400, 600]}
           />
-          <Tooltip itemSorter={(a, b) => b.value - a.value} />
+          <Tooltip itemSorter={a => -a.value} />
         </LineChart>
       </ResponsiveContainer>
     </div>

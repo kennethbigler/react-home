@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import types from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import reduce from 'lodash/reduce';
+import CircularProgress from '@material-ui/core/CircularProgress';
+// custom
 import Header from '../common/header/Header';
 import Menu from './Menu';
-import BlackJack from './blackjack';
-import Connect4 from './connect4';
-import DealOrNoDeal from './deal-or-no-deal';
-import Dota2Picker from './dota-2-picker';
-import GameHome from './Home';
-import Poker from './poker';
-import Slots from './slots';
-import TicTacToe from './tictactoe';
-import Yahtzee from './yahtzee';
-// Parents: App
+// Parents: Routes (main)
+
+// lazy load page components
+const GameHome = lazy(() => import('./Home'));
+const BlackJack = lazy(() => import('./blackjack'));
+const Connect4 = lazy(() => import('./connect4'));
+const DealOrNoDeal = lazy(() => import('./deal-or-no-deal'));
+const Dota2Picker = lazy(() => import('./dota-2-picker'));
+const Poker = lazy(() => import('./poker'));
+const Slots = lazy(() => import('./slots'));
+const TicTacToe = lazy(() => import('./tictactoe'));
+const Yahtzee = lazy(() => import('./yahtzee'));
 
 const Routes = (props) => {
   const { match, handleNav } = props;
@@ -45,12 +49,14 @@ const Routes = (props) => {
       <Header handleNav={handleNav} showPlayers>
         <Menu />
       </Header>
-      <Switch>
-        <Route component={GameHome} exact path={`${url}`} />
-        {paths}
-        <Redirect from={`${url}/*`} to={`${url}`} />
-        <Route component={GameHome} />
-      </Switch>
+      <Suspense fallback={<CircularProgress />}>
+        <Switch>
+          <Route component={GameHome} exact path={`${url}`} />
+          {paths}
+          <Redirect from={`${url}/*`} to={`${url}`} />
+          <Route component={GameHome} />
+        </Switch>
+      </Suspense>
     </div>
   );
 };

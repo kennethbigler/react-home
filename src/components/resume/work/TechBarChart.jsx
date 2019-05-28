@@ -52,4 +52,4 @@ class TechBarChart extends PureComponent {
   }
 }
 
-export default withTheme()(TechBarChart);
+export default withTheme(TechBarChart);

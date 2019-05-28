@@ -36,7 +36,7 @@ const PokerNight = memo(() => {
             orientation="right"
             tickLine={false}
           />
-          <Tooltip itemSorter={(a, b) => b.value - a.value} />
+          <Tooltip itemSorter={a => -a.value} />
         </LineChart>
       </ResponsiveContainer>
     </div>

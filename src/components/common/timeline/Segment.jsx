@@ -56,4 +56,4 @@ Segment.propTypes = {
   }),
 };
 
-export default withTheme()(Segment);
+export default withTheme(Segment);

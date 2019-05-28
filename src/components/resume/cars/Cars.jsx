@@ -23,7 +23,7 @@ const Cars = memo(() => (
     <Typography variant="h2">{'Ken\'s Cars'}</Typography>
     {map(cars, car => (
       <Card style={styles.container} key={car.makeModel}>
-        <Grid container spacing={16}>
+        <Grid container spacing={1}>
           <Grid item sm={8} xs={12}>
             <CardContent>
               <Typography variant="h5">{car.owned}</Typography>

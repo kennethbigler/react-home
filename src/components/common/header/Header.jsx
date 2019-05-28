@@ -25,18 +25,19 @@ const Header = (props) => {
     handleNav(loc);
   };
 
-  const fontColor = type === 'light' ? 'inherit' : 'default';
+  const iconColor = type === 'light' ? 'inherit' : 'default';
+  const fontColor = type === 'light' ? 'inherit' : 'initial';
 
   return (
     <div>
-      <TopBar toggleOpen={toggleOpen} showPlayers={showPlayers} fontColor={fontColor} />
+      <TopBar toggleOpen={toggleOpen} showPlayers={showPlayers} fontColor={fontColor} iconColor={iconColor} />
       <Drawer onClose={toggleOpen} open={isOpen}>
         <AppBar position="sticky">
           <Toolbar disableGutters>
             <IconButton
               aria-label="Menu Close"
               onClick={toggleOpen}
-              color={fontColor}
+              color={iconColor}
             >
               <NavigationClose />
             </IconButton>
@@ -67,4 +68,4 @@ Header.defaultProps = {
   showPlayers: false,
 };
 
-export default withTheme()(Header);
+export default withTheme(Header);

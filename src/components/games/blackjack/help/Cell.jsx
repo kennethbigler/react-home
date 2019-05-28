@@ -13,7 +13,7 @@ const Cell = (props) => {
     backgroundColor: color,
   };
   return (
-    <TableCell padding="none" style={stl} {...otherProps}>
+    <TableCell size="small" style={stl} {...otherProps}>
       {text}
     </TableCell>
   );

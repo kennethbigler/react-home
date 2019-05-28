@@ -52,4 +52,4 @@ ScoreGraph.propTypes = {
   }),
 };
 
-export default withTheme()(ScoreGraph);
+export default withTheme(ScoreGraph);

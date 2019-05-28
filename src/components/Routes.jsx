@@ -1,12 +1,12 @@
-// react
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
 import types from 'prop-types';
-// react router
 import { Switch, Route, withRouter } from 'react-router-dom';
-// Routes
-import ResumeRoutes from './resume/Routes';
-import GameRoutes from './games/Routes';
-// Parents: App
+import CircularProgress from '@material-ui/core/CircularProgress';
+// Parents: WithTheme
+
+// lazy load sub routers
+const ResumeRoutes = lazy(() => import('./resume/Routes'));
+const GameRoutes = lazy(() => import('./games/Routes'));
 
 class Routes extends Component {
   static propTypes = {
@@ -31,10 +31,12 @@ class Routes extends Component {
   render() {
     return (
       <main style={{ padding: '1em', paddingTop: '5em' }}>
-        <Switch>
-          <Route path="/games" render={this.games} />
-          <Route render={this.resume} />
-        </Switch>
+        <Suspense fallback={<CircularProgress />}>
+          <Switch>
+            <Route path="/games" render={this.games} />
+            <Route render={this.resume} />
+          </Switch>
+        </Suspense>
       </main>
     );
   }

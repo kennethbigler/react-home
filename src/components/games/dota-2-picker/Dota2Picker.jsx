@@ -166,7 +166,7 @@ class Dota2Picker extends Component {
           onClose={noop}
           message={this.pickingOrder(turn)}
         />
-        <Grid container spacing={16}>
+        <Grid container spacing={1}>
           <Grid item xs={12}>
             <div className="flex-container">
               <Typography variant="h2">Dota 2 Picker</Typography>

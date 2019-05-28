@@ -158,7 +158,7 @@ const CommitText = (props) => {
 
   return (
     <div style={wrapper}>
-      <Grid container spacing={16}>
+      <Grid container spacing={1}>
         <Grid item sm={4} xs={12}>
           <FormControl fullWidth>
             <InputLabel htmlFor="commit-prefix" style={{ color: gitTheme }}>

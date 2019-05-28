@@ -18,7 +18,7 @@ const Header = (props) => {
   } = props;
   // rendered component
   return (
-    <Grid container spacing={16}>
+    <Grid container spacing={1}>
       <Grid item sm={6} xs={12}>
         <Typography variant="h3" gutterBottom>
           Your Case:

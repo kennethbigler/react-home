@@ -21,7 +21,7 @@ const BranchName = memo((props) => {
 
   return (
     <div style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
-      <Grid container spacing={16} style={{ display: 'flex', alignItems: 'center' }}>
+      <Grid container spacing={1} style={{ display: 'flex', alignItems: 'center' }}>
         <Grid item sm={3} xs={12}>
           <FormControl fullWidth>
             <InputLabel htmlFor="target-branch" style={{ color: gitTheme }}>
