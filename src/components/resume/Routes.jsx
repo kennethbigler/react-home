@@ -1,25 +1,25 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import types from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import reduce from 'lodash/reduce';
-import CircularProgress from '@material-ui/core/CircularProgress';
 // custom
+import lazyWithPreload from '../../apis/lazyWithPreload';
 import Header from '../common/header/Header';
 import Menu from './Menu';
+import LoadingSpinner from '../common/LoadingSpinner';
 // Parents: Routes (Main)
 
 // lazy load page components
-const Summary = lazy(() => import('./summary'));
-const Work = lazy(() => import('./work'));
-const Education = lazy(() => import('./education'));
-const TravelMap = lazy(() => import('./travel-map'));
-const Resume = lazy(() => import('./resume'));
-const GitTools = lazy(() => import('./git-tools'));
-const Poker = lazy(() => import('./poker'));
-const MurderMystery = lazy(() => import('./murder-mystery'));
-const GraphQL = lazy(() => import('./graphql'));
-const Cars = lazy(() => import('./cars'));
-
+const Summary = lazyWithPreload(import('./summary'));
+const Work = lazyWithPreload(import('./work'));
+const Education = lazyWithPreload(import('./education'));
+const TravelMap = lazyWithPreload(import('./travel-map'));
+const Resume = lazyWithPreload(import('./resume'));
+const GitTools = lazyWithPreload(import('./git-tools'));
+const Poker = lazyWithPreload(import('./poker'));
+const MurderMystery = lazyWithPreload(import('./murder-mystery'));
+const GraphQL = lazyWithPreload(import('./graphql'));
+const Cars = lazyWithPreload(import('./cars'));
 
 const Routes = (props) => {
   const { match, handleNav } = props;
@@ -52,7 +52,7 @@ const Routes = (props) => {
       <Header handleNav={handleNav}>
         <Menu />
       </Header>
-      <Suspense fallback={<CircularProgress />}>
+      <Suspense fallback={<LoadingSpinner />}>
         <Switch>
           <Route component={Summary} exact path={`${url}`} />
           {paths}

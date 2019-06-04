@@ -1,7 +1,7 @@
 import React, { Component, Suspense, lazy } from 'react';
 import types from 'prop-types';
 import { Switch, Route, withRouter } from 'react-router-dom';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import LoadingSpinner from './common/LoadingSpinner';
 // Parents: WithTheme
 
 // lazy load sub routers
@@ -31,7 +31,7 @@ class Routes extends Component {
   render() {
     return (
       <main style={{ padding: '1em', paddingTop: '5em' }}>
-        <Suspense fallback={<CircularProgress />}>
+        <Suspense fallback={<LoadingSpinner />}>
           <Switch>
             <Route path="/games" render={this.games} />
             <Route render={this.resume} />

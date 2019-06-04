@@ -1,23 +1,24 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense } from 'react';
 import types from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import reduce from 'lodash/reduce';
-import CircularProgress from '@material-ui/core/CircularProgress';
 // custom
+import lazyWithPreload from '../../apis/lazyWithPreload';
 import Header from '../common/header/Header';
 import Menu from './Menu';
+import LoadingSpinner from '../common/LoadingSpinner';
 // Parents: Routes (main)
 
 // lazy load page components
-const GameHome = lazy(() => import('./Home'));
-const BlackJack = lazy(() => import('./blackjack'));
-const Connect4 = lazy(() => import('./connect4'));
-const DealOrNoDeal = lazy(() => import('./deal-or-no-deal'));
-const Dota2Picker = lazy(() => import('./dota-2-picker'));
-const Poker = lazy(() => import('./poker'));
-const Slots = lazy(() => import('./slots'));
-const TicTacToe = lazy(() => import('./tictactoe'));
-const Yahtzee = lazy(() => import('./yahtzee'));
+const GameHome = lazyWithPreload(import('./Home'));
+const BlackJack = lazyWithPreload(import('./blackjack'));
+const Connect4 = lazyWithPreload(import('./connect4'));
+const DealOrNoDeal = lazyWithPreload(import('./deal-or-no-deal'));
+const Dota2Picker = lazyWithPreload(import('./dota-2-picker'));
+const Poker = lazyWithPreload(import('./poker'));
+const Slots = lazyWithPreload(import('./slots'));
+const TicTacToe = lazyWithPreload(import('./tictactoe'));
+const Yahtzee = lazyWithPreload(import('./yahtzee'));
 
 const Routes = (props) => {
   const { match, handleNav } = props;
@@ -49,7 +50,7 @@ const Routes = (props) => {
       <Header handleNav={handleNav} showPlayers>
         <Menu />
       </Header>
-      <Suspense fallback={<CircularProgress />}>
+      <Suspense fallback={<LoadingSpinner />}>
         <Switch>
           <Route component={GameHome} exact path={`${url}`} />
           {paths}

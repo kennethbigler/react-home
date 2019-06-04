@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 * Home
 * -------------------------------------------------- */
 const Home = memo(() => (
-  <div style={{ textAlign: 'center' }}>
+  <div style={{ textAlign: 'center', marginTop: 20 }}>
     <Typography variant="h2">
       Welcome to my ReactJS Game Projects
     </Typography>
