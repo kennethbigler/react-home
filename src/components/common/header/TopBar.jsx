@@ -8,7 +8,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import Switch from '@material-ui/core/Switch';
-import noop from 'lodash/noop';
 import SimplePopover from '../ButtonPopover';
 import PlayerMenu from './PlayerMenu';
 import {
@@ -47,18 +46,14 @@ class TopBar extends PureComponent {
     showPlayers: false,
   }
 
-  state = {
-    checked: true,
-    toggleSwitch: noop,
-  }
-
-  componentDidMount() {
-    const { theme } = this.props;
+  constructor(props) {
+    super(props);
+    const { theme } = props;
 
     if (theme.type === 'dark') {
-      this.setState({ checked: false, toggleSwitch: this.toLightTheme });
+      this.state = { checked: false, toggleSwitch: this.toLightTheme };
     } else {
-      this.setState({ checked: true, toggleSwitch: this.toDarkTheme });
+      this.state = { checked: true, toggleSwitch: this.toDarkTheme };
     }
   }
 
