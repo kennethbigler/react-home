@@ -46,12 +46,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "lint": "react-scripts run lint",
-    "eject": "react-scripts eject",
+    "test": "react-scripts test",
     "deploy": "./deploy.sh",
-    "eslint": "./node_modules/.bin/eslint src/**/*.js --fix",
-    "qlint": "./node_modules/.bin/eslint src/**/*.js --fix --quiet"
+    "eslint": "./node_modules/.bin/eslint \"src/**/*.{js,jsx}\" --fix",
+    "qlint": "./node_modules/.bin/eslint \"src/**/*.{js,jsx}\" --fix --quiet"
   },
   "browserslist": [
     ">0.2%",
