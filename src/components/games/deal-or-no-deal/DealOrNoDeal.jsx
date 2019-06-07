@@ -67,12 +67,11 @@ class DND extends Component {
     }).isRequired,
   };
 
-  // local variable to track the board
-  state = getNewState();
-
   /** reset board and shuffle cases */
-  componentDidMount() {
-    this.newGame();
+  constructor(props) {
+    super(props);
+
+    this.state = this.prepareNewGameState();
   }
 
   /** check if it is time for an offer */
@@ -146,11 +145,8 @@ class DND extends Component {
     this.setState({ offer, casesToOpen, dndOpen: true });
   };
 
-  /**
-   * function to reset the game
-   * NOTE: reset entire state
-   */
-  newGame = () => {
+  /** function to get a new game state */
+  prepareNewGameState = () => {
     const state = getNewState();
     // mix up board
     shuffle(state.board);
@@ -164,6 +160,16 @@ class DND extends Component {
     });
     // sort function for the briefcases
     state.board.sort((a, b) => a.loc - b.loc);
+
+    return state;
+  }
+
+  /**
+   * function to reset the game
+   * NOTE: reset entire state
+   */
+  newGame = () => {
+    const state = this.prepareNewGameState();
     // update state
     this.setState(state);
   };

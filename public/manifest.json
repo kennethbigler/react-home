@@ -9,16 +9,6 @@
   "description": "This is a site about Kenneth Bigler, Software Engineer at Ernst and Young, including his work, interests, and resume",
   "icons": [
     {
-      "src": "../src/images/ken.jpg",
-      "type": "image/jpg",
-      "sizes": "192x192"
-    },
-    {
-      "src": "../src/images/ken.jpg",
-      "type": "image/jpg",
-      "sizes": "512x512"
-    },
-    {
       "src": "./favicon.png",
       "type": "image/png",
       "sizes": "16x16"

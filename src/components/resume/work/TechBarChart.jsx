@@ -20,19 +20,15 @@ class TechBarChart extends PureComponent {
     }),
   }
 
-  state = { data: [] }
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    this.prepData();
-  }
-
-  prepData = () => {
     const data = map(languageExp, obj => ({
       name: window.innerWidth < 1200 ? obj.short : obj.company,
       months: moment(obj.end).diff(obj.start, 'month'),
     }));
 
-    this.setState({ data: sortBy(data, ['months']).reverse() });
+    this.state = { data: sortBy(data, ['months']).reverse() };
   }
 
   render() {
