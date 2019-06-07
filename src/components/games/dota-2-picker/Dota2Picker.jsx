@@ -46,15 +46,10 @@ class Dota2Picker extends Component {
     }).isRequired,
   };
 
-  state = {
-    turn: 1,
-    set: 0,
-    characters: characterList,
-    selected: null,
-  }
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    const { order } = this.props;
+    const { order } = props;
     let turn = 1;
 
     for (let i = 0; i < order[order.length - 1].length; i += 1) {
@@ -69,7 +64,12 @@ class Dota2Picker extends Component {
       }
     }
 
-    this.setState({ turn });
+    this.state = {
+      turn,
+      set: 0,
+      characters: characterList,
+      selected: null,
+    };
   }
 
   getCurrentPhase = (i) => {

@@ -156,6 +156,7 @@ class GraphQL extends Component {
 
   onFetchFromGitHub = (path, cursor) => {
     getIssuesOfRepository(path, cursor).then((queryResult) => {
+      // eslint-disable-next-line no-console
       console.log(queryResult);
       this.setState(resolveIssuesQuery(queryResult, cursor));
     });

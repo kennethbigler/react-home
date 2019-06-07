@@ -120,7 +120,8 @@ class ScoreTable extends Component {
       case 6: // Chance
         return true;
       default:
-        console.error('Unexpeccted Value');
+        // eslint-disable-next-line no-console
+        console.error('Unexpected Value');
         return false;
     }
   }

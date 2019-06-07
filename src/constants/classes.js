@@ -14,6 +14,7 @@ const getStart = (quarter, yy) => {
     case FALL: return moment(`20${yy}-09`);
     case WINTER: return moment(`20${yy}-01`);
     case SPRING: return moment(`20${yy}-04`);
+    // eslint-disable-next-line no-console
     default: return console.warn('Error');
   }
 };
@@ -23,6 +24,7 @@ const getEnd = (quarter, yy) => {
     case FALL: return moment(`20${yy}-12`);
     case WINTER: return moment(`20${yy}-03`);
     case SPRING: return moment(`20${yy}-07`);
+    // eslint-disable-next-line no-console
     default: return console.warn('Error');
   }
 };
