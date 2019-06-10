@@ -16,7 +16,7 @@ const parseData = (scores) => {
   const totals = {};
 
   // iterate over all the scores
-  return map(scores, (week) => {
+  const parsedScores = map(scores, (week) => {
     // iterate over the players in a week
     const parsedWeek = reduce(week, (acc, val, key) => {
       if (hasIn(totals, key) && key !== 'name') {
@@ -32,6 +32,8 @@ const parseData = (scores) => {
     }, {});
     return parsedWeek;
   });
+
+  return { parsedScores, totals };
 };
 
 export default parseData;
