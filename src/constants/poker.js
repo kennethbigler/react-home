@@ -1,7 +1,7 @@
 import {
   amber, blue, blueGrey, brown, cyan, deepOrange, deepPurple, green, grey, indigo, lightBlue, lightGreen, lime, orange, pink, purple, red, teal, yellow,
 } from '@material-ui/core/colors/';
-import reduce from 'lodash/reduce';
+import forOwn from 'lodash/forOwn';
 
 export const pennyPokerScores = [
   {
@@ -181,13 +181,26 @@ export const gigNowPokerColors = {
   Patrick: pink[500],
 };
 
-function zeroOutData(people, scores) {
-  const zeroes = reduce(people, (result, person, key) => {
-    result[key] = 0;
-    return result;
-  }, {});
-  scores.unshift(zeroes);
+/**
+ * A function that creates an initial score entry of 0
+ * for all participants, the week before they joined.
+ *
+ * @param {Array} scores - scores from every poker night
+ */
+function zeroOutPreviousWeek(scores) {
+  scores.unshift({});
+
+  for (let i = 1; i < scores.length; i += 1) {
+    const thisWeek = scores[i];
+    const lastWeek = scores[i - 1];
+
+    forOwn(thisWeek, (value, key) => {
+      if (!lastWeek[key]) {
+        lastWeek[key] = 0;
+      }
+    });
+  }
 }
 
-zeroOutData(pennyPokerColors, pennyPokerScores);
-zeroOutData(gigNowPokerColors, gigNowPokerScores);
+zeroOutPreviousWeek(pennyPokerScores);
+zeroOutPreviousWeek(gigNowPokerScores);

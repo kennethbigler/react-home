@@ -7,22 +7,22 @@ import GigNowPokerNight from './GigNowPokerNight';
 // Parents: Main
 
 const PokerNightTabs = memo(() => {
-  const [value, setValue] = useState(0);
+  const [tab, setTab] = useState(0);
 
   const handleChange = (event, val) => {
-    setValue(val);
+    setTab(val);
   };
 
   return (
     <div>
-      <AppBar position="static">
-        <Tabs value={value} onChange={handleChange}>
+      <AppBar position="static" style={{ marginBottom: 20, marginTop: 10 }}>
+        <Tabs value={tab} onChange={handleChange}>
           <Tab label="GigNow Poker" />
           <Tab label="Penny Poker" />
         </Tabs>
       </AppBar>
-      {value === 0 && <GigNowPokerNight />}
-      {value === 1 && <PennyPokerNight />}
+      {tab === 0 && <GigNowPokerNight />}
+      {tab === 1 && <PennyPokerNight />}
     </div>
   );
 });
