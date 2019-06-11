@@ -2,9 +2,6 @@ import reduce from 'lodash/reduce';
 import hasIn from 'lodash/hasIn';
 import map from 'lodash/map';
 
-
-// TODO: has in previous week is not good enough, need has in previous.
-
 /**
  * Helper function that takes an array and changes scores to be
  * the sums for a player, rather than just the single night
@@ -27,6 +24,9 @@ const parseData = (scores) => {
         // add value to totals obj (totals did not exist)
         totals[key] = val;
         acc[key] = totals[key];
+      } else {
+        // key == name
+        acc[key] = val;
       }
       return acc;
     }, {});

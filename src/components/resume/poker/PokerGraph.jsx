@@ -4,8 +4,6 @@ import {
   ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip,
 } from 'recharts';
 import map from 'lodash/map';
-// custom
-// Parents: PokerNightTabs
 
 const PokerNight = (props) => {
   const {
