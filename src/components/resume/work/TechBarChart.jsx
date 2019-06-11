@@ -39,8 +39,18 @@ class TechBarChart extends PureComponent {
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <Tooltip />
-          <Legend wrapperStyle={{ color: theme.palette.text.primary }} />
+          <Tooltip
+            formatter={(months, name, props) => {
+              // FYI: name === 'months'
+              const displayMonths = months % 12;
+              const years = Math.floor(months / 12);
+
+              const label = props.payload.name;
+              const value = (years ? `${years}y ` : '') + (displayMonths ? `${displayMonths}m` : '');
+
+              return [value, label];
+            }}
+          />
           <Bar dataKey="months" fill={theme.palette.secondary.main} />
         </BarChart>
       </ResponsiveContainer>
