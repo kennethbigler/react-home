@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import types from 'prop-types';
 import {
-  ResponsiveContainer, BarChart, Bar, XAxis, CartesianGrid, Tooltip, Legend,
+  ResponsiveContainer, BarChart, Bar, XAxis, CartesianGrid, Tooltip,
 } from 'recharts';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
