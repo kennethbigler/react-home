@@ -33,7 +33,10 @@ function useCommitText(storyID, gitCommit) {
    * @return {string} format Prefix: Message [?Finishes? ID]
    */
   const getCommitText = () => {
+    // prefix
     const prefix = commitPrefix ? `${commitPrefix}: ` : '';
+
+    // description
     let desc = ' ';
     if (commitDescription && storyID) {
       desc = `\n\n${commitDescription}\n\n`;
@@ -41,15 +44,18 @@ function useCommitText(storyID, gitCommit) {
       desc = `\n\n${commitDescription}`;
     }
 
+    // postfix
     let postfix = '';
     if (finishes && storyID) {
-      postfix = `[Resolves ${storyID} #finished]`;
+      postfix = `[${storyID} #finish]`;
     } else if (storyID) {
       postfix = `[${storyID}]`;
     }
 
+    // compile all components together
     const gitMessage = `${prefix}${commitMessage}${desc}${postfix}`;
 
+    // add syntax wrapper
     return gitCommit ? `git commit -m "${gitMessage}"` : gitMessage;
   };
 
@@ -242,7 +248,6 @@ const CommitText = (props) => {
 };
 
 CommitText.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   getSelectOptions: types.func.isRequired,
   gitActions: types.shape({
     setCommitPrefix: types.func.isRequired,
