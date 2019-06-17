@@ -1,10 +1,14 @@
 import React from 'react';
+import types from 'prop-types';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 import REPOSITORY_FRAGMENT from './fragments';
 import Link from '../Link';
+
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/no-danger */
 
 const STAR_REPOSITORY = gql`
   mutation($id: ID!) {
@@ -274,6 +278,31 @@ const RepositoryItem = (props) => {
       </div>
     </div>
   );
+};
+
+/* eslint-enable no-unused-vars */
+/* eslint-enable react/no-danger */
+
+RepositoryItem.propTypes = {
+  id: types.string.isRequired,
+  name: types.string.isRequired,
+  url: types.string.isRequired,
+  descriptionHTML: types.string.isRequired,
+  primaryLanguage: types.shape({
+    name: types.string.isRequired,
+  }),
+  owner: types.shape({
+    url: types.string,
+    login: types.string,
+  }),
+  stargazers: types.shape({
+    totalCount: types.number,
+  }).isRequired,
+  watchers: types.shape({
+    totalCount: types.number,
+  }).isRequired,
+  viewerSubscription: types.string.isRequired,
+  viewerHasStarred: types.bool.isRequired,
 };
 
 export default RepositoryItem;

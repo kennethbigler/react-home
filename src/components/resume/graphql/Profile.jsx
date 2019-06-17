@@ -30,19 +30,21 @@ const GET_REPOSITORIES_OF_CURRENT_USER = gql`
 
 const Profile = () => (
   <Query query={GET_REPOSITORIES_OF_CURRENT_USER} notifyOnNetworkStatusChange>
-    {({
-      data, loading, error, fetchMore,
-    }) => {
+    {(response) => {
+      // check errors
+      const { error } = response;
       if (error) {
         return <ErrorMessage error={error} />;
       }
 
-      const { viewer } = data;
-
+      // check for data
+      const { data: { viewer }, loading } = response;
       if (loading && !viewer) {
         return <Loading />;
       }
 
+      // display data
+      const { fetchMore } = response;
       return <RepositoryList loading={loading} repositories={viewer.repositories} fetchMore={fetchMore} />;
     }}
   </Query>

@@ -16,12 +16,12 @@ const Menu = memo((props) => {
       { name: 'Hackathons & Education', route: 'education' },
       { divider: true },
       { name: 'Git Tools', route: 'git-tools' },
+      { name: 'GraphQL Demo', route: 'graphql' },
+      { divider: true },
       { name: 'Cars', route: 'cars' },
       { name: 'Travel Map', route: 'travel' },
       { name: 'Murder Mystery', route: 'murder' },
       { name: 'Poker Night Scores', route: 'poker' },
-      // { name: 'GraphQL', route: 'graphql' },
-      { divider: true },
       { name: 'React Games', route: 'games' },
     ],
     (item, index) => (item.divider
@@ -71,7 +71,6 @@ const Menu = memo((props) => {
 });
 
 Menu.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   onItemClick: types.func,
 };
 

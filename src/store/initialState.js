@@ -51,4 +51,7 @@ export default {
     secondary: deepOrange,
     type: 'dark',
   },
+  graphql: {
+    token: '',
+  },
 };

@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import types from 'prop-types';
 import map from 'lodash/map';
 import RepositoryItem from './RepositoryItem';
 import FetchMore from '../FetchMore';
@@ -45,5 +46,17 @@ const RepositoryList = ({ repositories, loading, fetchMore }) => (
     </FetchMore>
   </Fragment>
 );
+
+RepositoryList.propTypes = {
+  repositories: types.shape({
+    edges: types.arrayOf(types.object).isRequired,
+    pageInfo: types.shape({
+      hasNextPage: types.bool.isRequired,
+      endCursor: types.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  loading: types.bool.isRequired,
+  fetchMore: types.func.isRequired,
+};
 
 export default RepositoryList;
