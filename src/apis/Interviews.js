@@ -463,4 +463,16 @@ romanToInt('IV') === 4;
 romanToInt('IX') === 9;
 romanToInt('LVIII') === 58;
 romanToInt('MCMXCIV') === 1994;
+
+/**
+ * you have unlimited stickers (n)
+ * all stickers read "facebook"
+ * you get a pair of scissors -> cut stickers for a new word -> "cookbook"
+ * what is the min number of stickers needed to create a new word "cookbook"
+ * 1 "c book" 2 "oo k" => cookbook
+ * return -1 if sticker can't be created
+ */
+
+/** given an array of numbers, and a sum, find and return the index of 2 numbers that adds up to the sum */
+
 /* eslint-enable no-unused-expressions */
