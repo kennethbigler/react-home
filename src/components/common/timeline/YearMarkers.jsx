@@ -9,6 +9,12 @@ const styles = {
     backgroundColor: grey[200],
     height: 500,
     marginBottom: -500,
+    minWidth: 1,
+  },
+  label: {
+    position: 'relative',
+    bottom: -155,
+    right: 35,
   },
 };
 
@@ -23,7 +29,11 @@ const YearMarkers = (props) => {
 
   return (
     <div style={style}>
-      {body || <br />}
+      {body ? (
+        <div style={styles.label}>
+          {body}
+        </div>
+      ) : (<br />)}
     </div>
   );
 };

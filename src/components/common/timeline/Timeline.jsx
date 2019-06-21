@@ -178,15 +178,15 @@ export class Timeline extends Component {
       years.push(moment(`${year}-01`));
     }
 
-    const width = 0.3;
-    const marker = { width, body: ' ' };
+    const width = 0.1;
+    const marker = { width, body: years[0].year() };
     const yearMarkers = [{ width: this.getTimeFromStart(years[0]) - width }, marker];
 
     for (let i = 1; i < years.length; i += 1) {
       const lastYear = this.getTimeFromStart(years[i - 1]);
       const thisYear = this.getTimeFromStart(years[i]);
       yearMarkers.push({ width: thisYear - lastYear - width });
-      yearMarkers.push(marker);
+      yearMarkers.push({ width, body: years[i].year() });
     }
 
     return yearMarkers;
