@@ -6,10 +6,15 @@ import YearMarkers from './YearMarkers';
 // Parents: Timeline
 
 const Row = (props) => {
-  const { segments, yearMarkers } = props;
-  const style = yearMarkers
-    ? { height: 0 }
-    : { marginTop: '10px' };
+  const { segments, yearMarkers, first } = props;
+
+  let style = { marginTop: 10 };
+  if (yearMarkers) {
+    style = { height: 0 };
+  } else if (first) {
+    style = { marginTop: 20 };
+  }
+
   return (
     <div style={style}>
       {map(segments, (data, j) => (yearMarkers
@@ -24,10 +29,12 @@ Row.propTypes = {
   // types = [array, bool, func, number, object, string, symbol].isRequired
   segments: types.arrayOf(types.object.isRequired).isRequired,
   yearMarkers: types.bool,
+  first: types.bool,
 };
 
 Row.defaultProps = {
   yearMarkers: false,
+  first: false,
 };
 
 export default Row;

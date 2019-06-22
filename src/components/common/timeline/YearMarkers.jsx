@@ -13,8 +13,7 @@ const styles = {
   },
   label: {
     position: 'relative',
-    bottom: -155,
-    right: 35,
+    right: 22,
   },
 };
 
