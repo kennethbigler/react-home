@@ -5,14 +5,15 @@ import includes from 'lodash/includes';
  * Slot Machine
  * -------------------------------------------------- */
 
-export const EMPTY = ' ';
-export const CHERRY = 'C';
-export const BAR = '—';
-export const DOUBLE_BAR = '=';
-export const TRIPLE_BAR = 'Ξ';
-export const SEVEN = '7';
-export const JACKPOT = 'J';
-export const NUMREELS = 3;
+const NUM_REELS = 3;
+// options
+const EMPTY = ' ';
+const CHERRY = 'C';
+const BAR = '—';
+const DOUBLE_BAR = '=';
+const TRIPLE_BAR = 'Ξ';
+const SEVEN = '7';
+const JACKPOT = 'J';
 
 const reels = [
   { symbol: CHERRY, start: 1, stop: 2 },
@@ -39,17 +40,22 @@ const reels = [
   { symbol: EMPTY, start: 118, stop: 128 },
 ];
 
-const machine = [];
+// prepare the slot machine
+function prepareSlotMachine() {
+  const machine = [];
+  forEach(reels, (slot, i) => {
+    // wrap the reels
+    const prev = i - 1 > 0 ? i - 1 : reels.length - 1;
+    const next = i + 1 < reels.length ? i + 1 : 0;
+    // create the machine
+    for (let j = slot.start; j <= slot.stop; j += 1) {
+      machine.push([reels[prev].symbol, slot.symbol, reels[next].symbol]);
+    }
+  });
+  return machine;
+}
 
-forEach(reels, (slot, i) => {
-  // wrap the reels
-  const prev = i - 1 > 0 ? i - 1 : reels.length - 1;
-  const next = i + 1 < reels.length ? i + 1 : 0;
-  // create the machine
-  for (let j = slot.start; j <= slot.stop; j += 1) {
-    machine.push([reels[prev].symbol, slot.symbol, reels[next].symbol]);
-  }
-});
+const machine = prepareSlotMachine();
 
 // spin the slot machine and get a result
 function spin() {
@@ -59,59 +65,25 @@ function spin() {
 export default {
   // used to display the payout table
   payoutTable: [
-    {
-      win: '3x',
-      symbol: JACKPOT,
-      payout: 1666,
-    },
-    {
-      win: `${SEVEN} ${SEVEN}`,
-      symbol: SEVEN,
-      payout: 300,
-    },
-    {
-      win: `${TRIPLE_BAR} ${TRIPLE_BAR}`,
-      symbol: TRIPLE_BAR,
-      payout: 100,
-    },
-    {
-      win: `${DOUBLE_BAR} ${DOUBLE_BAR}`,
-      symbol: DOUBLE_BAR,
-      payout: 50,
-    },
-    {
-      win: `${BAR} ${BAR}`,
-      symbol: BAR,
-      payout: 25,
-    },
-    {
-      win: '3 of any',
-      symbol: 'bar',
-      payout: 12,
-    },
-    {
-      win: '3x',
-      symbol: CHERRY,
-      payout: 12,
-    },
-    {
-      win: '2x',
-      symbol: CHERRY,
-      payout: 6,
-    },
-    {
-      win: '1x',
-      symbol: CHERRY,
-      payout: 3,
-    },
+    { symbol: `${JACKPOT} ${JACKPOT} ${JACKPOT}`, payout: 1666 },
+    { symbol: `${SEVEN} ${SEVEN} ${SEVEN}`, payout: 300 },
+    { symbol: `${TRIPLE_BAR} ${TRIPLE_BAR} ${TRIPLE_BAR}`, payout: 100 },
+    { symbol: `${DOUBLE_BAR} ${DOUBLE_BAR} ${DOUBLE_BAR}`, payout: 50 },
+    { symbol: `${BAR} ${BAR} ${BAR}`, payout: 25 },
+    { symbol: '3 of any bar', payout: 12 },
+    { symbol: `${CHERRY} ${CHERRY} ${CHERRY}`, payout: 12 },
+    { symbol: `${CHERRY} ${CHERRY}`, payout: 6 },
+    { symbol: CHERRY, payout: 3 },
   ],
+
   pullHandle: () => {
     const reel = [];
-    for (let i = 0; i < NUMREELS; i += 1) {
+    for (let i = 0; i < NUM_REELS; i += 1) {
       reel[i] = spin();
     }
     return reel;
   },
+
   // evaluate slot machine based of 3 reels
   getPayout: (reel, bet) => {
     // for bar check

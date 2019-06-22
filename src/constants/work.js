@@ -18,7 +18,8 @@ import netappLogo from '../images/netapp_logo.svg.png';
 import vengefulLogo from '../images/vengefulgames_logo.png';
 import teslaLogo from '../images/tesla_motors_logo.svg.png';
 import hoverboardLogo from '../images/hoverboard_logo.png';
-import {// tech constants
+// tech constants
+import {
   REACT,
   ANGULAR,
   HTML,

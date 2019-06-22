@@ -21,7 +21,7 @@
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-apollo": "^2.5.7",
+    "react-apollo": "^2.5.8",
     "react-apollo-hooks": "^0.4.5",
     "react-dom": "^16.8.6",
     "react-newline-to-break": "^1.0.6",
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.2",
-    "eslint": "^5.16.0",
+    "eslint": "^6.0.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-google": "^0.13.0",
     "eslint-plugin-import": "^2.17.3",

@@ -16,13 +16,18 @@ import SlotMachine from './SlotMachine';
 import { payout, updateBet } from '../../../store/modules/players';
 // Parents: Main
 
+const styles = {
+  cell: {
+    minHeight: 39,
+    fontWeight: 900,
+  },
+};
+
 /* --------------------------------------------------
 * Slot Machine
 * -------------------------------------------------- */
 class Slots extends Component {
-  // Prop Validation
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     playerActions: types.shape({
       payout: types.func.isRequired,
       updateBet: types.func.isRequired,
@@ -36,13 +41,7 @@ class Slots extends Component {
     ).isRequired,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      reel: SlotMachine.pullHandle(),
-    };
-  }
+  state = { reel: SlotMachine.pullHandle() };
 
   updateSlotMachine = () => {
     const { playerActions, players } = this.props;
@@ -55,14 +54,11 @@ class Slots extends Component {
     this.setState({ reel });
   };
 
-  // https://vegasclick.com/games/slots/how-they-work
-  render() {
+  /** generate code for slot machine */
+  getSlots = () => {
     const { reel } = this.state;
-    const { players } = this.props;
-    const player = players[0];
-    const dealer = players[players.length - 1];
 
-    // generate code for slot machine
+    // display for slots
     const slots = [];
     for (let i = 0; i < 3; i += 1) {
       // create 3 cells in a row
@@ -70,9 +66,12 @@ class Slots extends Component {
       for (let j = 0; j < 3; j += 1) {
         const slotCell = (
           <TableCell key={`${j},${i}`}>
-            {reel[j][i]}
+            <Typography variant="h4" align="center" color="secondary" style={styles.cell}>
+              {reel[j][i]}
+            </Typography>
           </TableCell>
         );
+
         row.push(slotCell);
       }
       // separate into rows
@@ -83,6 +82,16 @@ class Slots extends Component {
       );
       slots.push(slotRow);
     }
+    return slots;
+  }
+
+  // https://vegasclick.com/games/slots/how-they-work
+  render() {
+    const { players } = this.props;
+    const player = players[0];
+    const dealer = players[players.length - 1];
+
+    const slots = this.getSlots();
 
     return (
       <div>
@@ -155,7 +164,7 @@ class Slots extends Component {
                 {map(SlotMachine.payoutTable, (row, i) => (
                   <TableRow key={i}>
                     <TableCell>
-                      {`${row.win} ${row.symbol}`}
+                      {row.symbol}
                     </TableCell>
                     <TableCell>
                       {`${row.payout} : 1`}
