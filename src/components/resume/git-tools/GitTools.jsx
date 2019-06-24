@@ -30,13 +30,12 @@ import ExpandableCard from '../../common/ExpandableCard';
 const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');
 
 class GitTools extends Component {
-  // Prop Validation
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     git: types.shape({
       storyID: types.string.isRequired,
       branchPrefix: types.string.isRequired,
       casePreference: types.string.isRequired,
+      branchMessage: types.string,
     }).isRequired,
     gitActions: types.shape({
       setBranchMessage: types.func.isRequired,

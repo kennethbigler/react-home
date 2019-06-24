@@ -37,6 +37,7 @@ class Slots extends Component {
         id: types.number.isRequired,
         money: types.number.isRequired,
         bet: types.number.isRequired,
+        name: types.string,
       }),
     ).isRequired,
   };

@@ -1,7 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { getMoneyText } from './common';
+import { getMoneyText } from './helpers';
 // Parents: Degree
 
 const Case = (props) => {

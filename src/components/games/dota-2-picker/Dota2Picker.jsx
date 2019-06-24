@@ -43,6 +43,8 @@ class Dota2Picker extends Component {
     actions: types.shape({
       updateLineup: types.func.isRequired,
       addLineup: types.func.isRequired,
+      resetLineup: types.func.isRequired,
+      removeLineup: types.func.isRequired,
     }).isRequired,
   };
 

@@ -7,7 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import map from 'lodash/map';
 import Money from './Money';
-import { getMoneyText } from './common';
+import { getMoneyText } from './helpers';
 // Parents: DealOrNoDeal
 
 const styles = {
@@ -39,28 +39,29 @@ const Modal = (props) => {
           {rhs}
         </div>
       </DialogContent>
-      {numCases > 2 ? (
-        <DialogActions>
-          <Button color="primary" onClick={deal}>
-            Deal
-          </Button>
-          <Button color="secondary" onClick={noDeal}>
-            No Deal
-          </Button>
-        </DialogActions>
-      ) : (
-        <DialogActions>
-          <Button color="primary" onClick={deal}>
-            Deal
-          </Button>
-          <Button color="secondary" onClick={noDeal}>
-            My Case
-          </Button>
-          <Button color="secondary" onClick={swap}>
-            Other Case
-          </Button>
-        </DialogActions>
-      )}
+      {numCases > 2
+        ? (
+          <DialogActions>
+            <Button color="primary" onClick={deal}>
+              Deal
+            </Button>
+            <Button color="secondary" onClick={noDeal}>
+              No Deal
+            </Button>
+          </DialogActions>
+        ) : (
+          <DialogActions>
+            <Button color="primary" onClick={deal}>
+              Deal
+            </Button>
+            <Button color="secondary" onClick={noDeal}>
+              My Case
+            </Button>
+            <Button color="secondary" onClick={swap}>
+              Other Case
+            </Button>
+          </DialogActions>
+        )}
     </Dialog>
   );
 };

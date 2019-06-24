@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Modal from './Modal';
 import Board from './Board';
 import Header from './Header';
-import { shuffle } from './common';
+import { shuffle } from './helpers';
 import { payout } from '../../../store/modules/players';
 // Parents: Main
 

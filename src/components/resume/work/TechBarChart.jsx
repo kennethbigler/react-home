@@ -16,6 +16,9 @@ class TechBarChart extends PureComponent {
         primary: types.shape({
           main: types.string.isRequired,
         }).isRequired,
+        secondary: types.shape({
+          main: types.string.isRequired,
+        }).isRequired,
       }).isRequired,
     }),
   }

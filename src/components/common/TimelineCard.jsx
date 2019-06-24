@@ -31,16 +31,17 @@ const TimelineCard = (props) => {
 };
 
 TimelineCard.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   backgroundColor: types.string,
   data: types.arrayOf(types.object),
   title: types.string,
   selector: types.string,
   start: types.shape({
     diff: types.func.isRequired,
+    format: types.func.isRequired,
   }),
   end: types.shape({
     diff: types.func.isRequired,
+    format: types.func.isRequired,
   }),
 };
 

@@ -31,9 +31,11 @@ export class Timeline extends Component {
     selector: types.string.isRequired,
     start: types.shape({
       diff: types.func.isRequired,
+      format: types.func.isRequired,
     }).isRequired,
     end: types.shape({
       diff: types.func.isRequired,
+      format: types.func.isRequired,
     }).isRequired,
   };
 
