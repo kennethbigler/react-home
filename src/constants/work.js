@@ -44,13 +44,17 @@ import {
 } from './tech';
 // Parents: Main
 
+export const WORK = 'work';
+export const VOLUNTEER = 'volunteer';
+export const SCHOOL = 'school';
+
 // skills constants
 const PM = 'Project Management';
 const INT = 'Managed Intern';
 
 const workExp = [
   {
-    isJob: true,
+    type: WORK,
     color: blue[500],
     company: 'GigNow',
     parent: 'Ernst & Young',
@@ -84,7 +88,7 @@ const workExp = [
     skills: [INT],
   },
   {
-    isJob: true,
+    type: VOLUNTEER,
     color: green[800],
     company: 'Second Harvest Food Bank',
     short: 'SHFB',
@@ -103,7 +107,7 @@ const workExp = [
     skills: ['Leadership', 'Coordination'],
   },
   {
-    isJob: true,
+    type: WORK,
     color: lightBlue[700],
     company: 'Cisco Systems',
     short: 'CSCO',
@@ -124,7 +128,7 @@ const workExp = [
     skills: [INT],
   },
   {
-    isJob: true,
+    type: WORK,
     color: cyan[900],
     company: 'Hoverboard Technologies',
     parent: 'Equalia',
@@ -155,7 +159,7 @@ const workExp = [
     skills: [PM, INT],
   },
   {
-    isJob: true,
+    type: WORK,
     color: red[700],
     company: 'Tesla, Inc.',
     short: 'TSLA',
@@ -174,7 +178,7 @@ const workExp = [
     tech: [ANGULAR, ASP2, CSHARP, SQL, JS, HTML, SASS, CSS, BS3],
   },
   {
-    isJob: true,
+    type: VOLUNTEER,
     color: blueGrey[900],
     company: 'Midnight Game Club, LLC',
     short: 'MGC',
@@ -195,7 +199,7 @@ const workExp = [
     skills: [PM],
   },
   {
-    isJob: true,
+    type: WORK,
     color: blue[800],
     company: 'NetApp',
     short: 'NTAP',
@@ -215,7 +219,7 @@ const workExp = [
     skills: ['WordPress', 'Adobe Creative Cloud', 'Joomla', PM],
   },
   {
-    isJob: false,
+    type: SCHOOL,
     color: red[900],
     company: 'Santa Clara University 5-Year Master\'s',
     short: 'SCU',

@@ -18,7 +18,6 @@ export default class Job extends Component {
       parent: types.string,
       company: types.string.isRequired,
       location: types.string.isRequired,
-      isJob: types.bool.isRequired,
       title: types.string.isRequired,
       color: types.string.isRequired,
       start: types.shape({
@@ -73,49 +72,47 @@ export default class Job extends Component {
     const title = `${job.company}${parent}, ${job.location}`;
 
     return (
-      job.isJob && (
-        <ExpandableCard
-          backgroundColor={job.color}
-          subtitle={job.title}
-          title={title}
-        >
-          <Grid item sm={9} xs={12}>
-            <Typography>
-              {this.showRange(job.start, job.end, job.notes)}
-            </Typography>
-            {job.expr && (
-              <ul>
-                {map(job.expr, (desc, i) => (
-                  <Typography key={`desc${i}`}>
-                    <li>
-                      {desc}
-                    </li>
-                  </Typography>
-                ))}
-              </ul>
-            )}
-            {!isEmpty(job.tech) && (
-              <div>
-                <hr />
-                <Typography display="inline">Technologies:&nbsp;</Typography>
-                {this.getCSV(job.tech)}
-              </div>
-            )}
-            {!isEmpty(job.skills) && (
-              <div>
-                <hr />
-                <Typography display="inline">Skills:&nbsp;</Typography>
-                {this.getCSV(job.skills)}
-              </div>
-            )}
-          </Grid>
-          {job.src && (
-            <Grid item sm={3} xs={12}>
-              <img alt={job.alt} src={job.src} style={imgStyle} />
-            </Grid>
+      <ExpandableCard
+        backgroundColor={job.color}
+        subtitle={job.title}
+        title={title}
+      >
+        <Grid item sm={9} xs={12}>
+          <Typography>
+            {this.showRange(job.start, job.end, job.notes)}
+          </Typography>
+          {job.expr && (
+            <ul>
+              {map(job.expr, (desc, i) => (
+                <Typography key={`desc${i}`}>
+                  <li>
+                    {desc}
+                  </li>
+                </Typography>
+              ))}
+            </ul>
           )}
-        </ExpandableCard>
-      )
+          {!isEmpty(job.tech) && (
+            <div>
+              <hr />
+              <Typography display="inline">Technologies:&nbsp;</Typography>
+              {this.getCSV(job.tech)}
+            </div>
+          )}
+          {!isEmpty(job.skills) && (
+            <div>
+              <hr />
+              <Typography display="inline">Skills:&nbsp;</Typography>
+              {this.getCSV(job.skills)}
+            </div>
+          )}
+        </Grid>
+        {job.src && (
+          <Grid item sm={3} xs={12}>
+            <img alt={job.alt} src={job.src} style={imgStyle} />
+          </Grid>
+        )}
+      </ExpandableCard>
     );
   }
 }
