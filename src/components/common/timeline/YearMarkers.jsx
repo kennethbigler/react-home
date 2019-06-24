@@ -38,7 +38,6 @@ const YearMarkers = (props) => {
 };
 
 YearMarkers.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   data: types.shape({
     color: types.any,
     body: types.any,

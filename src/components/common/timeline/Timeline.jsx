@@ -15,7 +15,6 @@ const MIN_SHORT_WIDTH = 42;
 
 export class Timeline extends Component {
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     data: types.arrayOf(
       types.shape({
         color: types.string.isRequired,

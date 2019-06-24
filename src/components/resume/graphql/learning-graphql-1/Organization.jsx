@@ -31,7 +31,6 @@ const Organization = ({
   ));
 
 Organization.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   organization: types.shape({}).isRequired,
   errors: types.arrayOf().isRequired,
   onFetchMoreIssues: types.func.isRequired,

@@ -20,7 +20,6 @@ const ButtonGroup = (props) => {
 };
 
 ButtonGroup.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   gameFunctions: types.arrayOf(
     types.shape({
       name: types.string.isRequired,

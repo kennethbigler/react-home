@@ -21,7 +21,6 @@ const Quarter = (props) => {
 };
 
 Quarter.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   quarter: types.shape({
     classes: types.arrayOf(types.shape({
       name: types.string.isRequired,

@@ -13,7 +13,6 @@ import CopyTextDisplay from './CopyTextDisplay';
 
 export default class BranchName extends Component {
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     branchMessage: types.string,
     branchName: types.string.isRequired,
     branchPrefix: types.string.isRequired,

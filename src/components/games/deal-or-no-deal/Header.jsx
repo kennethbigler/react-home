@@ -7,7 +7,6 @@ import { getMoneyText } from './helpers';
 // Parents: DealOrNoDeal
 
 const Header = (props) => {
-  // prop vars
   const {
     playerChoice: pc,
     casesToOpen,
@@ -49,7 +48,6 @@ const Header = (props) => {
 };
 
 Header.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   casesToOpen: types.number.isRequired,
   isOver: types.bool.isRequired,
   newGame: types.func.isRequired,

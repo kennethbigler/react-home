@@ -25,9 +25,7 @@ const LAST_PLAYER = 5;
 * Poker
 * -------------------------------------------------- */
 class Poker extends Component {
-  // Prop Validation
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     playerActions: types.shape({
       swapCards: types.func.isRequired,
       newHand: types.func.isRequired,

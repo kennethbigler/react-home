@@ -55,7 +55,6 @@ const Board = (props) => {
 };
 
 Board.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   board: types.arrayOf(types.arrayOf(types.number)).isRequired,
   insert: types.func.isRequired,
   turn: types.number.isRequired,

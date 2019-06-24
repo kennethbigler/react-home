@@ -21,7 +21,6 @@ const LabelTableCell = withStyles({
 
 class MurderMysteryPanel extends PureComponent {
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     expanded: types.string,
     expandedKey: types.string.isRequired,
     handleChange: types.func.isRequired,

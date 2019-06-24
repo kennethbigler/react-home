@@ -22,9 +22,7 @@ import {
 * Dota 2 Picker
 * -------------------------------------------------- */
 class Dota2Picker extends Component {
-  // Prop Validation
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     order: types.arrayOf(
       types.arrayOf(
         types.shape({

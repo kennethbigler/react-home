@@ -41,7 +41,6 @@ const Repository = ({ repository, onFetchMoreIssues, onStarRepository }) => (
 );
 
 Repository.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   repository: types.shape({}).isRequired,
   onFetchMoreIssues: types.func.isRequired,
   onStarRepository: types.func.isRequired,

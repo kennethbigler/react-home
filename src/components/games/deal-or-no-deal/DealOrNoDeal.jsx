@@ -55,9 +55,7 @@ const getNewState = () => ({
 
 // TODO: add rules to page
 class DND extends Component {
-  // Prop Validation
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     actions: types.shape({
       payout: types.func.isRequired,
     }).isRequired,
@@ -221,7 +219,6 @@ class DND extends Component {
   };
 
   render() {
-    // state vars
     const {
       board,
       dndOpen,
@@ -231,7 +228,6 @@ class DND extends Component {
       casesToOpen,
       numCases,
     } = this.state;
-    // prop vars
     const { player } = this.props;
     // render component
     return (

@@ -23,9 +23,7 @@ class Home extends Component {
     },
   };
 
-  // Prop Validation
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     playerActions: types.shape({
       updateName: types.func.isRequired,
       updateBot: types.func.isRequired,

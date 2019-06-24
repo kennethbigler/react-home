@@ -13,7 +13,6 @@ import ExpandableCard from '../../common/ExpandableCard';
 /* function to generate timeline card */
 export default class Job extends Component {
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     job: types.shape({
       parent: types.string,
       company: types.string.isRequired,

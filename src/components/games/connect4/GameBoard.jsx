@@ -30,7 +30,6 @@ const GameBoard = (props) => {
 };
 
 GameBoard.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   board: types.arrayOf(types.array).isRequired,
   insert: types.func.isRequired,
   newGame: types.func.isRequired,

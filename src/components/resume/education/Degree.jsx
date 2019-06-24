@@ -34,7 +34,6 @@ const Degree = (props) => {
 };
 
 Degree.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   degree: types.shape({
     school: types.string,
     major: types.string,

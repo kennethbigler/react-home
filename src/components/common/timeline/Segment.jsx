@@ -40,7 +40,6 @@ const Segment = memo((props) => {
 
 
 Segment.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   color: types.string,
   body: types.string,
   title: types.string,

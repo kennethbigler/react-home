@@ -69,7 +69,6 @@ const ExpandableCard = (props) => {
 };
 
 ExpandableCard.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   backgroundColor: types.string,
   children: types.oneOfType([types.arrayOf(types.node), types.node]),
   subtitle: types.oneOfType([types.string, types.element]),

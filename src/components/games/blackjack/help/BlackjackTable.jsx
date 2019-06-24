@@ -38,7 +38,6 @@ const BlackjackTable = (props) => {
 };
 
 BlackjackTable.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   data: types.arrayOf(
     types.shape({
       name: types.string.isRequired,

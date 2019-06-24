@@ -23,9 +23,7 @@ const styles = {
 * Dota 2 Picker
 * -------------------------------------------------- */
 class HeroSelection extends Component {
-  // Prop Validation
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     characters: types.shape({
       A: types.arrayOf(heroType),
       B: types.arrayOf(heroType),

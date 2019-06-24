@@ -53,7 +53,6 @@ const Menu = memo((props) => {
 });
 
 Menu.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   onItemClick: types.func,
 };
 

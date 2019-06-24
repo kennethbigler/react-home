@@ -6,7 +6,6 @@ import Case from './Case';
 // Parents: Degree
 
 const Board = (props) => {
-  // prop vars
   const { board, onClick, playerChoice: pc } = props;
   // local styles
   const style = {
@@ -33,7 +32,6 @@ const Board = (props) => {
 };
 
 Board.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   board: types.arrayOf(
     types.shape({
       loc: types.number.isRequired,

@@ -23,7 +23,6 @@ const Year = (props) => {
 };
 
 Year.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   len: types.number.isRequired,
   year: types.shape({
     year: types.string.isRequired,

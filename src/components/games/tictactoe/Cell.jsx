@@ -20,7 +20,6 @@ const Cell = memo((props) => {
 });
 
 Cell.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   onClick: types.func.isRequired,
   value: types.string,
   winner: types.bool.isRequired,

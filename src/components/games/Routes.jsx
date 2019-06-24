@@ -63,7 +63,6 @@ const Routes = (props) => {
 };
 
 Routes.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   handleNav: types.func.isRequired,
   match: types.shape({
     url: types.string.isRequired,

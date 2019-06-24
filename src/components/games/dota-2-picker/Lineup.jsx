@@ -16,7 +16,6 @@ import { Typography } from '@material-ui/core';
 
 class Lineup extends Component {
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     order: types.arrayOf(
       types.shape({
         name: types.string.isRequired,

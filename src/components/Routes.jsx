@@ -10,7 +10,6 @@ const GameRoutes = lazy(() => import('./games/Routes'));
 
 class Routes extends Component {
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     history: types.shape({
       push: types.func.isRequired,
     }).isRequired,

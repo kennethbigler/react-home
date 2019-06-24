@@ -17,7 +17,6 @@ const Class = memo((props) => {
 });
 
 Class.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   name: types.string.isRequired,
   catalog: types.string,
 };

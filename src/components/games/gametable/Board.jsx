@@ -38,7 +38,6 @@ const Board = (props) => {
 };
 
 Board.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   betHandler: types.func,
   cardHandler: types.func,
   cardsToDiscard: types.arrayOf(types.number),

@@ -58,7 +58,6 @@ const History = (props) => {
 };
 
 History.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   history: types.arrayOf(types.shape({ location: types.number })).isRequired,
   jumpToStep: types.func.isRequired,
   step: types.number.isRequired,

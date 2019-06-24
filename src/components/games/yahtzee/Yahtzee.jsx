@@ -61,7 +61,6 @@ const getInitialState = () => ({
 * -------------------------------------------------- */
 class Yahtzee extends Component {
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     actions: types.shape({
       addScore: types.func.isRequired,
     }).isRequired,

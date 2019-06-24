@@ -57,7 +57,6 @@ const GameTable = (props) => {
 };
 
 GameTable.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   betHandler: types.func,
   cardClickHandler: types.func,
   cardsToDiscard: types.arrayOf(types.number),

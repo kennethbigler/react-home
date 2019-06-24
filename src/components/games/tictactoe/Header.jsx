@@ -26,7 +26,6 @@ const Header = memo((props) => {
 });
 
 Header.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   newGame: types.func.isRequired,
   turn: types.string.isRequired,
   winner: types.string,

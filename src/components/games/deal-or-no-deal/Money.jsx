@@ -35,7 +35,6 @@ const Money = (props) => {
 };
 
 Money.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   briefcase: types.shape({
     on: types.bool.isRequired,
     val: types.number.isRequired,

@@ -54,7 +54,6 @@ const Hand = (props) => {
 };
 
 Hand.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   cardHandler: types.func,
   cardsToDiscard: types.arrayOf(types.number),
   hand: types.shape({

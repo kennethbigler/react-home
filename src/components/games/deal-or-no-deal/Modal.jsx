@@ -67,7 +67,6 @@ const Modal = (props) => {
 };
 
 Modal.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   board: types.arrayOf(
     types.shape({
       loc: types.number.isRequired,

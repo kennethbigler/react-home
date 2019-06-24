@@ -53,7 +53,6 @@ const Header = (props) => {
 };
 
 Header.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   children: types.element.isRequired,
   handleNav: types.func.isRequired,
   showPlayers: types.bool,

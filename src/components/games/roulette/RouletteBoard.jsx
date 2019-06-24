@@ -56,7 +56,6 @@ class RouletteBoard extends Component {
 }
 
 RouletteBoard.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   onClick: types.func.isRequired,
 };
 

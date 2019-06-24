@@ -37,7 +37,6 @@ const ScoreGraph = (props) => {
 };
 
 ScoreGraph.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   scores: types.arrayOf(
     types.shape({
       score: types.number.isRequired,

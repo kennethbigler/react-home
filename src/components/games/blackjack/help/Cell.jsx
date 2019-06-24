@@ -20,7 +20,6 @@ const Cell = (props) => {
 };
 
 Cell.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   color: types.string,
   style: types.objectOf(types.oneOfType([types.string, types.number])),
   text: types.string.isRequired,

@@ -23,7 +23,6 @@ const Case = (props) => {
 };
 
 Case.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   briefcase: types.shape({
     on: types.bool.isRequired,
     loc: types.number.isRequired,

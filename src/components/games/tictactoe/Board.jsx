@@ -16,7 +16,6 @@ import Cell from './Cell';
  * ======================================== */
 export default class Board extends Component {
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     board: types.arrayOf(types.string).isRequired,
     onClick: types.func.isRequired,
     winRow: types.arrayOf(types.number).isRequired,

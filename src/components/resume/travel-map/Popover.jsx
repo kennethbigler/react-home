@@ -4,7 +4,6 @@ import grey from '@material-ui/core/colors/grey';
 
 class Popover extends PureComponent {
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     x: types.number.isRequired,
     y: types.number.isRequired,
     hide: types.bool.isRequired,

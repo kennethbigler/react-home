@@ -17,7 +17,6 @@ export const ADD_DICE = 'Sum of Dice';
 const centerStyle = { textAlign: 'center' };
 class ScoreTable extends Component {
   static propTypes = {
-    // types = [array, bool, func, number, object, string, symbol].isRequired
     values: types.arrayOf(types.number.isRequired).isRequired,
     top: types.arrayOf(types.shape({
       name: types.string.isRequired,

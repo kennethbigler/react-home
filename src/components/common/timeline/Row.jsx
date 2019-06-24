@@ -26,7 +26,6 @@ const Row = (props) => {
 };
 
 Row.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   segments: types.arrayOf(types.object.isRequired).isRequired,
   yearMarkers: types.bool,
   first: types.bool,

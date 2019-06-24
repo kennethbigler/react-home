@@ -37,7 +37,6 @@ const InfoPopup = (props) => {
 };
 
 InfoPopup.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   children: types.oneOfType([types.arrayOf(types.node), types.node]).isRequired,
   title: types.oneOfType([types.string, types.element]).isRequired,
   buttonText: types.oneOfType([types.string, types.element]),

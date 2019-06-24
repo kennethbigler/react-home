@@ -39,7 +39,6 @@ const CopyTextDisplay = (props) => {
 };
 
 CopyTextDisplay.propTypes = {
-  // types = [array, bool, func, number, object, string, symbol].isRequired
   copyText: types.string,
   handleCopy: types.func.isRequired,
   text: types.oneOfType([types.string, types.array]).isRequired,
