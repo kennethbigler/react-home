@@ -37,13 +37,14 @@ const countries = {
   Italy: purple[500],
   Netherlands: red[500],
   Norway: teal[500],
-  Portugal: yellow[500],
-  Russia: amber[800],
-  Spain: blue[800],
-  Sweden: cyan[800],
-  Switzerland: deepOrange[800],
-  Turkey: deepPurple[800],
-  'United Kingdom': green[800],
+  Poland: yellow[500],
+  Portugal: amber[800],
+  Russia: blue[800],
+  Spain: cyan[800],
+  Sweden: deepOrange[800],
+  Switzerland: deepPurple[800],
+  Turkey: green[800],
+  'United Kingdom': indigo[800],
 };
 
 function useWorldMap() {

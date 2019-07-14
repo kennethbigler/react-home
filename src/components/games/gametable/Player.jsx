@@ -1,6 +1,6 @@
 import React from 'react';
 import types from 'prop-types';
-import Slider from '@material-ui/lab/Slider';
+import Slider from '@material-ui/core/Slider';
 import cyan from '@material-ui/core/colors/cyan';
 import green from '@material-ui/core/colors/green';
 import blueGrey from '@material-ui/core/colors/blueGrey';

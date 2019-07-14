@@ -5,6 +5,8 @@ import green from '@material-ui/core/colors/green';
 import blue from '@material-ui/core/colors/blue';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import red from '@material-ui/core/colors/red';
+import indigo from '@material-ui/core/colors/indigo';
+import yellow from '@material-ui/core/colors/yellow';
 // functions
 import moment from 'moment';
 import reduce from 'lodash/reduce';
@@ -18,6 +20,7 @@ import netappLogo from '../images/netapp_logo.svg.png';
 import vengefulLogo from '../images/vengefulgames_logo.png';
 import teslaLogo from '../images/tesla_motors_logo.svg.png';
 import hoverboardLogo from '../images/hoverboard_logo.png';
+import intuitLogo from '../images/intuit.png';
 // tech constants
 import {
   REACT,
@@ -55,7 +58,26 @@ const INT = 'Managed Intern';
 const workExp = [
   {
     type: WORK,
-    color: blue[500],
+    color: indigo.A400,
+    company: 'Intuit',
+    short: 'INTU',
+    location: 'Mountain View, CA',
+    title: 'Frontend Software Engineer',
+    website: 'https://www.intuit.com/',
+    start: moment('2019-06'),
+    end: moment(),
+    src: intuitLogo,
+    alt: 'Intuit Logo',
+    expr: [
+      'Work on Intuit\'s global component library',
+    ],
+    tech: [REACT],
+    skills: [],
+  },
+  {
+    type: WORK,
+    color: yellow[600],
+    inverted: true,
     company: 'GigNow',
     parent: 'Ernst & Young',
     short: 'GN',
@@ -63,7 +85,7 @@ const workExp = [
     title: 'Frontend Software Engineer, Global Innovation Ventures',
     website: 'https://www.gignow.com/',
     start: moment('2018-03'),
-    end: moment(),
+    end: moment('2019-06'),
     src: gigNowLogo,
     alt: 'GigNow Logo',
     expr: [
@@ -221,7 +243,7 @@ const workExp = [
   {
     type: SCHOOL,
     color: red[900],
-    company: 'Santa Clara University 5-Year Master\'s',
+    company: 'Santa Clara University BS/MS',
     short: 'SCU',
     location: 'Santa Clara, CA',
     title: 'Undergrad / Grad Student',

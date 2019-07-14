@@ -15,6 +15,7 @@ export default class Job extends Component {
   static propTypes = {
     job: types.shape({
       parent: types.string,
+      inverted: types.bool,
       company: types.string.isRequired,
       location: types.string.isRequired,
       title: types.string.isRequired,
@@ -74,6 +75,7 @@ export default class Job extends Component {
       <ExpandableCard
         backgroundColor={job.color}
         subtitle={job.title}
+        inverted={job.inverted}
         title={title}
       >
         <Grid item sm={9} xs={12}>

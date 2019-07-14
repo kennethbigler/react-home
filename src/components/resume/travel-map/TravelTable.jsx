@@ -34,6 +34,7 @@ export const EU = [
   'Monaco',
   'Netherlands',
   'Norway',
+  'Poland',
   'Portugal',
   'Russia',
   'Spain',
@@ -93,7 +94,9 @@ const TravelMap = memo(() => {
 
   return (
     <div>
-      <Typography variant="h4" style={styles.margins}>I have been to 30 countries:</Typography>
+      <Typography variant="h4" style={styles.margins}>
+        {`I have been to ${NA.length + EU.length} countries:`}
+      </Typography>
       <Table>
         <TableHead>
           <TableRow>
