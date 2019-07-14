@@ -1,14 +1,11 @@
-// react
 import React, { PureComponent } from 'react';
-// components
-// material ui
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Grid from '@material-ui/core/Grid';
 import ExpandableCard from '../../common/ExpandableCard';
-// assests
+// assets
 import photo from '../../../images/ken.jpg';
 import workExp from '../../../constants/work';
 // Parents: Degree
@@ -16,10 +13,9 @@ import workExp from '../../../constants/work';
 export default class Info extends PureComponent {
   style = {
     image: {
-      width: '100%',
+      width: '95%',
       display: 'block',
       margin: 'auto',
-      maxWidth: '20em',
       marginBottom: '1em',
     },
   };
@@ -36,7 +32,7 @@ export default class Info extends PureComponent {
     const { image } = this.style;
     return (
       <Grid container spacing={1}>
-        <Grid item md={3} xs={12}>
+        <Grid item md={4} xs={12}>
           <img
             alt="Kenneth Bigler"
             onClick={this.handleClick}
@@ -44,7 +40,7 @@ export default class Info extends PureComponent {
             style={image}
           />
         </Grid>
-        <Grid item sm={9} xs={12}>
+        <Grid item md={8} xs={12}>
           <ExpandableCard title={this.getJob()}>
             <Table>
               <TableBody>

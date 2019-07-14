@@ -1,0 +1,22 @@
+{
+    "short_name": "Ken's Resume",
+    "name": "Kenneth Bigler's Resume Website",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#607D8B",
+    "lang": "en-US",
+    "description": "This is a site about Kenneth Bigler, Software Engineer at Ernst and Young, including his work, interests, and resume",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

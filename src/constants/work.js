@@ -14,13 +14,13 @@ import includes from 'lodash/includes';
 import forEach from 'lodash/forEach';
 // images
 import ciscoLogo from '../images/cisco_logo.gif';
-import gigNowLogo from '../images/gignow.png';
+import gigNowLogo from '../images/gignow_logo.png';
 import SHFBLogo from '../images/SHFB_logo.jpg';
 import netappLogo from '../images/netapp_logo.svg.png';
 import vengefulLogo from '../images/vengefulgames_logo.png';
 import teslaLogo from '../images/tesla_motors_logo.svg.png';
 import hoverboardLogo from '../images/hoverboard_logo.png';
-import intuitLogo from '../images/intuit.png';
+import intuitLogo from '../images/intuit_logo.png';
 // tech constants
 import {
   REACT,
