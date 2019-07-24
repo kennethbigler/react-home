@@ -4,11 +4,9 @@
     "react",
     "react-hooks",
     "import",
-    "lodash",
     "jsx-a11y"
   ],
   "extends": [
-    "plugin:lodash/recommended",
     "google",
     "plugin:import/warnings",
     "plugin:import/errors",
@@ -35,32 +33,23 @@
   },
   "rules": {
     "max-len": "off",
-    "no-alert": "warn",
-    "no-console": "warn",
     "no-invalid-this": "off",
     "no-param-reassign": "off",
-    "no-lone-blocks": "error",
     "no-unused-expressions": "off",
-    "prefer-destructuring": [
-      "error",
-      {
-        "array": false,
-        "object": true
-      }
-    ],
     "require-jsdoc": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
-    "react/no-did-mount-set-state": "warn",
     "react/require-default-props": "off",
-    "react/prefer-stateless-function": [
-      "error",
-      {
-        "ignorePureComponents": true
-      }
-    ],
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+
+    "no-alert": "warn",
+    "no-console": "warn",
+    "react/no-did-mount-set-state": "warn",
+    "react-hooks/exhaustive-deps": "warn",
+
+    "no-lone-blocks": "error",
+    "prefer-destructuring": ["error", { "array": false, "object": true }],
+    "react/prefer-stateless-function": ["error", { "ignorePureComponents": true }],
+    "react-hooks/rules-of-hooks": "error"
   },
   "globals": {}
 }
