@@ -10,16 +10,16 @@ import LoadingSpinner from '../common/LoadingSpinner';
 // Parents: Routes (Main)
 
 // lazy load page components
-const Summary = lazyWithPreload(import('./summary'));
-const Work = lazyWithPreload(import('./work'));
-const Education = lazyWithPreload(import('./education'));
-const TravelMap = lazyWithPreload(import('./travel-map'));
-const Resume = lazyWithPreload(import('./resume'));
-const GitTools = lazyWithPreload(import('./git-tools'));
-const Poker = lazyWithPreload(import('./poker'));
-const MurderMystery = lazyWithPreload(import('./murder-mystery'));
-const GraphQL = lazyWithPreload(import('./graphql'));
-const Cars = lazyWithPreload(import('./cars'));
+const Summary = lazyWithPreload(import(/* webpackChunkName: "r_summary" */ './summary'));
+const Work = lazyWithPreload(import(/* webpackChunkName: "r_work" */ './work'));
+const Education = lazyWithPreload(import(/* webpackChunkName: "r_education" */ './education'));
+const TravelMap = lazyWithPreload(import(/* webpackChunkName: "r_travel" */ './travel-map'));
+const Resume = lazyWithPreload(import(/* webpackChunkName: "r_resume" */ './resume'));
+const GitTools = lazyWithPreload(import(/* webpackChunkName: "r_git" */ './git-tools'));
+const Poker = lazyWithPreload(import(/* webpackChunkName: "r_poker" */ './poker'));
+const MurderMystery = lazyWithPreload(import(/* webpackChunkName: "r_poker" */ './murder-mystery'));
+const GraphQL = lazyWithPreload(import(/* webpackChunkName: "r_graphql" */ './graphql'));
+const Cars = lazyWithPreload(import(/* webpackChunkName: "r_cars" */ './cars'));
 
 const Routes = (props) => {
   const { match, handleNav } = props;

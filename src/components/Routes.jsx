@@ -5,8 +5,8 @@ import LoadingSpinner from './common/LoadingSpinner';
 // Parents: WithTheme
 
 // lazy load sub routers
-const ResumeRoutes = lazy(() => import('./resume/Routes'));
-const GameRoutes = lazy(() => import('./games/Routes'));
+const ResumeRoutes = lazy(() => import(/* webpackChunkName: "resume" */ './resume/Routes'));
+const GameRoutes = lazy(() => import(/* webpackChunkName: "games" */ './games/Routes'));
 
 class Routes extends Component {
   static propTypes = {

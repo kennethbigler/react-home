@@ -10,15 +10,15 @@ import LoadingSpinner from '../common/LoadingSpinner';
 // Parents: Routes (main)
 
 // lazy load page components
-const GameHome = lazyWithPreload(import('./Home'));
-const BlackJack = lazyWithPreload(import('./blackjack'));
-const Connect4 = lazyWithPreload(import('./connect4'));
-const DealOrNoDeal = lazyWithPreload(import('./deal-or-no-deal'));
-const Dota2Picker = lazyWithPreload(import('./dota-2-picker'));
-const Poker = lazyWithPreload(import('./poker'));
-const Slots = lazyWithPreload(import('./slots'));
-const TicTacToe = lazyWithPreload(import('./tictactoe'));
-const Yahtzee = lazyWithPreload(import('./yahtzee'));
+const GameHome = lazyWithPreload(import(/* webpackChunkName: "g_home" */ './Home'));
+const BlackJack = lazyWithPreload(import(/* webpackChunkName: "g_bj" */ './blackjack'));
+const Connect4 = lazyWithPreload(import(/* webpackChunkName: "g_connect4" */ './connect4'));
+const DealOrNoDeal = lazyWithPreload(import(/* webpackChunkName: "g_dond" */ './deal-or-no-deal'));
+const Dota2Picker = lazyWithPreload(import(/* webpackChunkName: "g_d2p" */ './dota-2-picker'));
+const Poker = lazyWithPreload(import(/* webpackChunkName: "g_poker" */ './poker'));
+const Slots = lazyWithPreload(import(/* webpackChunkName: "g_slots" */ './slots'));
+const TicTacToe = lazyWithPreload(import(/* webpackChunkName: "g_tictactoe" */ './tictactoe'));
+const Yahtzee = lazyWithPreload(import(/* webpackChunkName: "g_yahtzee" */ './yahtzee'));
 
 const Routes = (props) => {
   const { match, handleNav } = props;

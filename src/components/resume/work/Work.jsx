@@ -7,7 +7,7 @@ import workExp, { VOLUNTEER, WORK } from '../../../constants/work';
 import LoadingSpinner from '../../common/LoadingSpinner';
 import WorkCards from './WorkCards';
 // Parents: Routes (Resume)
-const TechBarChart = lazy(() => import('./TechBarChart'));
+const TechBarChart = lazy(() => import(/* webpackChunkName: "r_work_bar_chart" */ './TechBarChart'));
 
 const Work = memo(() => (
   <div>
