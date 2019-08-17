@@ -47,6 +47,7 @@
     "react-hooks/exhaustive-deps": "warn",
 
     "no-lone-blocks": "error",
+    "object-curly-spacing": [ "error", "always", { "arraysInObjects": false, "objectsInObjects": false }],
     "prefer-destructuring": ["error", { "array": false, "object": true }],
     "react/prefer-stateless-function": ["error", { "ignorePureComponents": true }],
     "react-hooks/rules-of-hooks": "error"
