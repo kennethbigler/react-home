@@ -14,7 +14,7 @@ const styles = {
   cols: { width: '50%', display: 'inline-block' },
 };
 
-const genMoneyCols = (arr, start, stop = arr.length) => map(arr.slice(start, stop), bc => <Money key={bc.loc} briefcase={bc} />);
+const genMoneyCols = (arr, start, stop = arr.length) => map(arr.slice(start, stop), (bc) => <Money key={bc.loc} briefcase={bc} />);
 
 const Modal = (props) => {
   const {

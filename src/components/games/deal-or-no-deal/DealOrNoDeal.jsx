@@ -55,16 +55,6 @@ const getNewState = () => ({
 
 // TODO: add rules to page
 class DND extends Component {
-  static propTypes = {
-    actions: types.shape({
-      payout: types.func.isRequired,
-    }).isRequired,
-    player: types.shape({
-      id: types.number.isRequired,
-      money: types.number.isRequired,
-    }).isRequired,
-  };
-
   /** reset board and shuffle cases */
   constructor(props) {
     super(props);
@@ -260,11 +250,21 @@ class DND extends Component {
   }
 }
 
+DND.propTypes = {
+  actions: types.shape({
+    payout: types.func.isRequired,
+  }).isRequired,
+  player: types.shape({
+    id: types.number.isRequired,
+    money: types.number.isRequired,
+  }).isRequired,
+};
+
 // react-redux export
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   player: state.players[0],
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({ payout }, dispatch),
 });
 export default connect(

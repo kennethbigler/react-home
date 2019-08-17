@@ -8,7 +8,7 @@ import MurderMysteryPanel from './MurderMysteryPanel';
 const MurderMystery = memo(() => {
   const [expanded, setExpanded] = useState(null);
 
-  const handleChange = panel => (event, exp) => {
+  const handleChange = (panel) => (event, exp) => {
     setExpanded(exp ? panel : null);
   };
 

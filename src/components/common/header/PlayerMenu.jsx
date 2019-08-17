@@ -10,37 +10,27 @@ import map from 'lodash/map';
 import { updateName, updateBot } from '../../../store/modules/players';
 // Parents: Main
 
-/* --------------------------------------------------
-* Home
+const styles = {
+  namepad: {
+    maxWidth: '420px',
+    width: '100%',
+    display: 'block',
+    margin: 'auto',
+  },
+};
+
+/** --------------------------------------------------
+* PlayerMenu
 * -------------------------------------------------- */
-class Home extends Component {
-  styles = {
-    namepad: {
-      maxWidth: '420px',
-      width: '100%',
-      display: 'block',
-      margin: 'auto',
-    },
-  };
+class PlayerMenu extends Component {
+  constructor(props) {
+    super(props);
 
-  static propTypes = {
-    playerActions: types.shape({
-      updateName: types.func.isRequired,
-      updateBot: types.func.isRequired,
-    }).isRequired,
-    players: types.arrayOf(
-      types.shape({
-        id: types.number.isRequired,
-        name: types.string.isRequired,
-        isBot: types.bool.isRequired,
-      }),
-    ).isRequired,
-  };
-
-  state = {
-    isBot: {},
-    players: {},
-  };
+    this.setState({
+      isBot: {},
+      players: {},
+    });
+  }
 
   // https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
   // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
@@ -69,7 +59,7 @@ class Home extends Component {
   render() {
     const { players } = this.props;
     const { isBot } = this.state;
-    const { namepad } = this.styles;
+    const { namepad } = styles;
     return (
       <div style={namepad}>
         <Grid container spacing={1}>
@@ -90,7 +80,7 @@ class Home extends Component {
               <Grid item xs={9}>
                 <TextField
                   defaultValue={p.name}
-                  onKeyPress={e => this.handleKeyPress(e, p.id)}
+                  onKeyPress={(e) => this.handleKeyPress(e, p.id)}
                   placeholder="Enter Player Name"
                 />
               </Grid>
@@ -120,12 +110,26 @@ class Home extends Component {
   }
 }
 
+PlayerMenu.propTypes = {
+  playerActions: types.shape({
+    updateName: types.func.isRequired,
+    updateBot: types.func.isRequired,
+  }).isRequired,
+  players: types.arrayOf(
+    types.shape({
+      id: types.number.isRequired,
+      name: types.string.isRequired,
+      isBot: types.bool.isRequired,
+    }),
+  ).isRequired,
+};
+
 // react-redux export
-const mapStateToProps = state => ({ players: state.players });
-const mapDispatchToProps = dispatch => ({
+const mapStateToProps = (state) => ({ players: state.players });
+const mapDispatchToProps = (dispatch) => ({
   playerActions: bindActionCreators({ updateName, updateBot }, dispatch),
 });
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Home);
+)(PlayerMenu);

@@ -29,8 +29,7 @@ const RepositoryItem = (props) => {
         </Typography>
         {!viewerHasStarred
           ? (<StarRepository id={id} stargazers={stargazers} />)
-          : (<UnstarRepository id={id} stargazers={stargazers} />)
-        }
+          : (<UnstarRepository id={id} stargazers={stargazers} />)}
         <WatchRepository id={id} watchers={watchers} viewerSubscription={viewerSubscription} />
       </div>
 

@@ -1,6 +1,6 @@
 import forEach from 'lodash/forEach';
 
-export const hasXDice = n => (hist, val) => {
+export const hasXDice = (n) => (hist, val) => {
   if (hist === true) {
     return true;
   }

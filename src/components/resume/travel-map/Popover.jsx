@@ -1,36 +1,34 @@
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
 import types from 'prop-types';
 import grey from '@material-ui/core/colors/grey';
 
-class Popover extends PureComponent {
-  static propTypes = {
-    x: types.number.isRequired,
-    y: types.number.isRequired,
-    hide: types.bool.isRequired,
-    content: types.string.isRequired,
+const Popover = memo((props) => {
+  const {
+    x, y, hide, content,
+  } = props;
+
+  const popoverStyle = {
+    position: 'absolute',
+    left: x + 2,
+    top: y - 35,
+    display: hide ? 'none' : 'block',
+    backgroundColor: grey[800],
+    color: 'white',
+    padding: 5,
+    borderRadius: 2,
   };
 
-  render() {
-    const {
-      x, y, hide, content,
-    } = this.props;
 
-    const popoverStyle = {
-      position: 'absolute',
-      left: x + 2,
-      top: y - 35,
-      display: hide ? 'none' : 'block',
-      backgroundColor: grey[800],
-      color: 'white',
-      padding: 5,
-      borderRadius: 2,
-    };
+  return (
+    <div style={popoverStyle}>{content}</div>
+  );
+});
 
-
-    return (
-      <div style={popoverStyle}>{content}</div>
-    );
-  }
-}
+Popover.propTypes = {
+  x: types.number.isRequired,
+  y: types.number.isRequired,
+  hide: types.bool.isRequired,
+  content: types.string.isRequired,
+};
 
 export default Popover;

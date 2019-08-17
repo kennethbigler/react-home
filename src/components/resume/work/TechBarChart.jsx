@@ -10,23 +10,10 @@ import { withTheme } from '@material-ui/core/styles';
 import languageExp from '../../../constants/languages';
 
 class TechBarChart extends PureComponent {
-  static propTypes = {
-    theme: types.shape({
-      palette: types.shape({
-        primary: types.shape({
-          main: types.string.isRequired,
-        }).isRequired,
-        secondary: types.shape({
-          main: types.string.isRequired,
-        }).isRequired,
-      }).isRequired,
-    }),
-  }
-
   constructor(props) {
     super(props);
 
-    const data = map(languageExp, obj => ({
+    const data = map(languageExp, (obj) => ({
       name: window.innerWidth < 1200 ? obj.short : obj.company,
       months: moment(obj.end).diff(obj.start, 'month'),
     }));
@@ -60,5 +47,18 @@ class TechBarChart extends PureComponent {
     );
   }
 }
+
+TechBarChart.propTypes = {
+  theme: types.shape({
+    palette: types.shape({
+      primary: types.shape({
+        main: types.string.isRequired,
+      }).isRequired,
+      secondary: types.shape({
+        main: types.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }),
+};
 
 export default withTheme(TechBarChart);

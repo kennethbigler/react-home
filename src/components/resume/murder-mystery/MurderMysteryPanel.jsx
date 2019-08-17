@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
 import types from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -13,88 +13,86 @@ import nl2br from 'react-newline-to-break';
 import { Typography } from '@material-ui/core';
 // Parents: Main
 
+const styles = {
+  container: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '95%',
+  },
+  item: {
+    display: 'flex',
+  },
+};
+
 const LabelTableCell = withStyles({
   root: {
     maxWidth: 100,
   },
 })(TableCell);
 
-class MurderMysteryPanel extends PureComponent {
-  static propTypes = {
-    expanded: types.string,
-    expandedKey: types.string.isRequired,
-    handleChange: types.func.isRequired,
-    role: types.string.isRequired,
-    importance: types.string.isRequired,
-    person: types.string.isRequired,
-    gender: types.string.isRequired,
-    description: types.string.isRequired,
-    hint: types.string.isRequired,
-    clue: types.string.isRequired,
-  };
+const MurderMysteryPanel = memo((props) => {
+  const {
+    expanded,
+    expandedKey,
+    handleChange,
+    role,
+    importance,
+    person,
+    gender,
+    description,
+    hint,
+    clue,
+  } = props;
 
-  render() {
-    const {
-      expanded,
-      expandedKey,
-      handleChange,
-      role,
-      importance,
-      person,
-      gender,
-      description,
-      hint,
-      clue,
-    } = this.props;
+  return (
+    <ExpansionPanel expanded={expanded === expandedKey} onChange={handleChange(expandedKey)}>
+      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        <div style={styles.container}>
+          <Typography style={styles.item}>{role}</Typography>
+          <Typography style={styles.item}>{importance}</Typography>
+        </div>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <LabelTableCell>Player</LabelTableCell>
+              <TableCell>{person}</TableCell>
+            </TableRow>
+            <TableRow>
+              <LabelTableCell>Gender</LabelTableCell>
+              <TableCell>{gender}</TableCell>
+            </TableRow>
+            <TableRow>
+              <LabelTableCell>Description</LabelTableCell>
+              <TableCell>{nl2br(description)}</TableCell>
+            </TableRow>
+            <TableRow>
+              <LabelTableCell>Hint</LabelTableCell>
+              <TableCell>{nl2br(hint)}</TableCell>
+            </TableRow>
+            <TableRow>
+              <LabelTableCell>Clue</LabelTableCell>
+              <TableCell>{nl2br(clue)}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
+  );
+});
 
-    const styles = {
-      container: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        width: '95%',
-      },
-      item: {
-        display: 'flex',
-      },
-    };
-
-    return (
-      <ExpansionPanel expanded={expanded === expandedKey} onChange={handleChange(expandedKey)}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <div style={styles.container}>
-            <Typography style={styles.item}>{role}</Typography>
-            <Typography style={styles.item}>{importance}</Typography>
-          </div>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Table>
-            <TableBody>
-              <TableRow>
-                <LabelTableCell>Player</LabelTableCell>
-                <TableCell>{person}</TableCell>
-              </TableRow>
-              <TableRow>
-                <LabelTableCell>Gender</LabelTableCell>
-                <TableCell>{gender}</TableCell>
-              </TableRow>
-              <TableRow>
-                <LabelTableCell>Description</LabelTableCell>
-                <TableCell>{nl2br(description)}</TableCell>
-              </TableRow>
-              <TableRow>
-                <LabelTableCell>Hint</LabelTableCell>
-                <TableCell>{nl2br(hint)}</TableCell>
-              </TableRow>
-              <TableRow>
-                <LabelTableCell>Clue</LabelTableCell>
-                <TableCell>{nl2br(clue)}</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    );
-  }
-}
+MurderMysteryPanel.propTypes = {
+  expanded: types.string,
+  expandedKey: types.string.isRequired,
+  handleChange: types.func.isRequired,
+  role: types.string.isRequired,
+  importance: types.string.isRequired,
+  person: types.string.isRequired,
+  gender: types.string.isRequired,
+  description: types.string.isRequired,
+  hint: types.string.isRequired,
+  clue: types.string.isRequired,
+};
 
 export default MurderMysteryPanel;

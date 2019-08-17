@@ -45,7 +45,7 @@ function calculateWinner(board) {
       return { winner: board[a], winRow: lines[i] };
     }
   }
-  return { winner: null, winRow: [] };
+  return { winner: null, winRow: []};
 }
 
 /* ========================================
@@ -55,7 +55,7 @@ export default class TicTacToe extends Component {
   constructor() {
     super();
     this.state = getNewGameVars();
-    this.styles = { paper: { width: 343, display: 'block', margin: 'auto' } };
+    this.styles = { paper: { width: 343, display: 'block', margin: 'auto' }};
   }
 
   /**
@@ -115,7 +115,7 @@ export default class TicTacToe extends Component {
           <Header newGame={this.newGame} turn={turn} winner={winner} />
           <Board
             board={board}
-            onClick={i => this.handleClick(i)}
+            onClick={(i) => this.handleClick(i)}
             winRow={winRow}
           />
         </Paper>

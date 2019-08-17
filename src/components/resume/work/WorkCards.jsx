@@ -10,11 +10,11 @@ const styles = {
   marginTop: 25,
 };
 
-const WorkCards = ({ workExp, workTypes }) => map(workTypes, type => (
+const WorkCards = ({ workExp, workTypes }) => map(workTypes, (type) => (
   <div key={type} style={styles}>
     <Typography variant="h3">{`${startCase(type)} Experience`}</Typography>
     <hr />
-    {map(workExp, job => (job.type === type && <Job key={job.company} job={job} />))}
+    {map(workExp, (job) => (job.type === type && <Job key={job.company} job={job} />))}
   </div>
 ));
 

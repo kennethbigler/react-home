@@ -14,7 +14,7 @@ export default class Skills extends PureComponent {
 
   getCSV = (arr) => {
     const { chipStyle } = this.styles;
-    return map(arr, tech => <Chip key={tech} label={tech} style={chipStyle} />);
+    return map(arr, (tech) => <Chip key={tech} label={tech} style={chipStyle} />);
   };
 
   render() {

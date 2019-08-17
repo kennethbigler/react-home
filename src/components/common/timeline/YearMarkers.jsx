@@ -19,7 +19,7 @@ const styles = {
 
 const YearMarkers = (props) => {
   // var for segment
-  const { data: { body, width } } = props;
+  const { data: { body, width }} = props;
   // variables for empty segment
   let style = { display: 'inline-block', width: `${width}%` };
   if (body) {

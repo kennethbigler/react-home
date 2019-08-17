@@ -15,7 +15,7 @@ const Year = (props) => {
         {year.year}
       </Typography>
       <hr />
-      {map(year.quarters, quarter => (
+      {map(year.quarters, (quarter) => (
         <Quarter key={quarter.quarter} quarter={quarter} />
       ))}
     </Grid>

@@ -8,7 +8,7 @@ import CarChart from './CarChart';
 const Cars = memo(() => (
   <div>
     <Typography variant="h2">{'Ken\'s Cars'}</Typography>
-    {map(cars, car => (<CarCard car={car} key={car.makeModel} />))}
+    {map(cars, (car) => (<CarCard car={car} key={car.makeModel} />))}
     <br />
     <hr />
     <br />

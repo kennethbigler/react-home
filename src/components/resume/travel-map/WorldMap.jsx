@@ -88,7 +88,7 @@ const WorldMap = memo(() => {
 
   return (
     <div>
-      <ComposableMap width={screenWidth} height={screenWidth * 546 / 744} projectionConfig={{ scale: screenWidth * RATIO, rotation: [-10, 0, 0] }}>
+      <ComposableMap width={screenWidth} height={(screenWidth * 546) / 744} projectionConfig={{ scale: screenWidth * RATIO, rotation: [-10, 0, 0]}}>
         <ZoomableGroup>
           <Geographies geography="/world-110m.json">
             {(geographies, projection) => map(geographies, (geography, i) => (
@@ -119,8 +119,7 @@ const WorldMap = memo(() => {
                   },
                 }}
               />
-            ))
-            }
+            ))}
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>

@@ -27,22 +27,11 @@ const styles = {
 * Slot Machine
 * -------------------------------------------------- */
 class Slots extends Component {
-  static propTypes = {
-    playerActions: types.shape({
-      payout: types.func.isRequired,
-      updateBet: types.func.isRequired,
-    }).isRequired,
-    players: types.arrayOf(
-      types.shape({
-        id: types.number.isRequired,
-        money: types.number.isRequired,
-        bet: types.number.isRequired,
-        name: types.string,
-      }),
-    ).isRequired,
-  };
+  constructor(props) {
+    super(props);
 
-  state = { reel: SlotMachine.pullHandle() };
+    this.setState({ reel: SlotMachine.pullHandle() });
+  }
 
   updateSlotMachine = () => {
     const { playerActions, players } = this.props;
@@ -181,9 +170,24 @@ class Slots extends Component {
   }
 }
 
+Slots.propTypes = {
+  playerActions: types.shape({
+    payout: types.func.isRequired,
+    updateBet: types.func.isRequired,
+  }).isRequired,
+  players: types.arrayOf(
+    types.shape({
+      id: types.number.isRequired,
+      money: types.number.isRequired,
+      bet: types.number.isRequired,
+      name: types.string,
+    }),
+  ).isRequired,
+};
+
 // react-redux export
-const mapStateToProps = state => ({ players: state.players });
-const mapDispatchToProps = dispatch => ({
+const mapStateToProps = (state) => ({ players: state.players });
+const mapDispatchToProps = (dispatch) => ({
   playerActions: bindActionCreators({ payout, updateBet }, dispatch),
 });
 export default connect(

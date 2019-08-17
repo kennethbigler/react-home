@@ -12,7 +12,7 @@ const ButtonGroup = (props) => {
   const { gameFunctions } = props;
   return (
     <div>
-      {map(gameFunctions, obj => (
+      {map(gameFunctions, (obj) => (
         <Button key={obj.name} func={obj.func} name={obj.name} />
       ))}
     </div>

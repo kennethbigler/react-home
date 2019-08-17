@@ -56,7 +56,7 @@ export function removePlayer(id) {
  * @return {Object}
  */
 export function updateName(id, name) {
-  return { type: UPDATE_NAME, player: { id, name } };
+  return { type: UPDATE_NAME, player: { id, name }};
 }
 
 /**
@@ -66,7 +66,7 @@ export function updateName(id, name) {
  * @return {Object}
  */
 export function updateBot(id, isBot = true) {
-  return { type: UPDATE_BOT, player: { id, isBot } };
+  return { type: UPDATE_BOT, player: { id, isBot }};
 }
 
 /**
@@ -76,7 +76,7 @@ export function updateBot(id, isBot = true) {
  * @return {Object}
  */
 export function updateBet(id = 0, bet = 5) {
-  return { type: UPDATE_BET, player: { id, bet } };
+  return { type: UPDATE_BET, player: { id, bet }};
 }
 
 /**
@@ -87,7 +87,7 @@ export function updateBet(id = 0, bet = 5) {
  * @return {Object}
  */
 export function payout(id, status, money) {
-  return { type: PAY_PLAYER, player: { id, status, money } };
+  return { type: PAY_PLAYER, player: { id, status, money }};
 }
 
 /**
@@ -101,8 +101,8 @@ export function payout(id, status, money) {
 export function splitHand(hands, id, hNum, weigh = null) {
   const hand = hands[hNum];
   // split the hands into 2
-  const hand1 = { cards: [hand.cards[0]] };
-  const hand2 = { cards: [hand.cards[1]] };
+  const hand1 = { cards: [hand.cards[0]]};
+  const hand2 = { cards: [hand.cards[1]]};
   // add 1 card each
   hand1.cards.push(Deck.deal(1)[0]);
   hand2.cards.push(Deck.deal(1)[0]);
@@ -112,7 +112,7 @@ export function splitHand(hands, id, hNum, weigh = null) {
   // update global hands
   const newHands = updateArrayInArray(hands, hand2, hNum);
   newHands.splice(hNum, 0, hand1);
-  return { type: SPLIT_HAND, player: { id, hands: newHands } };
+  return { type: SPLIT_HAND, player: { id, hands: newHands }};
 }
 
 /**
@@ -128,7 +128,7 @@ export function drawCard(hands, id, hNum = 0, num = 1, weigh = null) {
   const cards = [...hands[hNum].cards, ...Deck.deal(num)];
   const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
   const newHands = updateArrayInArray(hands, { cards, weight, soft }, hNum);
-  return { type: DRAW_CARD, player: { id, hands: newHands } };
+  return { type: DRAW_CARD, player: { id, hands: newHands }};
 }
 
 /**
@@ -146,7 +146,7 @@ export function swapCards(hands, id, cardsToDiscard) {
   });
   cards.sort(Deck.rankSort);
   const updatedHand = updateArrayInArray(hands, { cards }, 0);
-  return { type: SWAP_CARD, player: { id, hands: updatedHand } };
+  return { type: SWAP_CARD, player: { id, hands: updatedHand }};
 }
 
 /**
@@ -159,7 +159,7 @@ export function swapCards(hands, id, cardsToDiscard) {
 export function newHand(id = 0, num = 1, weigh = null) {
   const cards = Deck.deal(num).sort(Deck.rankSort);
   const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
-  return { type: NEW_HAND, player: { id, hands: [{ cards, weight, soft }] } };
+  return { type: NEW_HAND, player: { id, hands: [{ cards, weight, soft }]}};
 }
 
 /**

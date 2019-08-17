@@ -19,7 +19,7 @@ const Header = memo((props) => {
         Git Tools
       </Typography>
       <TextField
-        InputLabelProps={{ style: { color: gitTheme } }}
+        InputLabelProps={{ style: { color: gitTheme }}}
         label="User Story ID"
         onChange={handleIDChange}
         placeholder="GNAP-12345"

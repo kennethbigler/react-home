@@ -39,12 +39,12 @@ const PokerTable = (props) => {
       {map(tableRows, (row, i) => (
         <TableBody key={i} style={styles.row}>
           <TableRow>
-            {map(row, obj => (
+            {map(row, (obj) => (
               <TableCell key={obj.key} style={styles.cell}>{obj.key}</TableCell>
             ))}
           </TableRow>
           <TableRow>
-            {map(row, obj => (
+            {map(row, (obj) => (
               <TableCell key={obj.key} style={styles.cell}>{obj.val}</TableCell>
             ))}
           </TableRow>

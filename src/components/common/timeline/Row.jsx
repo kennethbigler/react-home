@@ -19,8 +19,7 @@ const Row = (props) => {
     <div style={style}>
       {map(segments, (data, j) => (yearMarkers
         ? (<YearMarkers key={j} data={data} />)
-        : (<Segment key={j} {...data} />)))
-      }
+        : (<Segment key={j} {...data} />)))}
     </div>
   );
 };

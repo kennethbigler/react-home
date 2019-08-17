@@ -59,7 +59,7 @@ const NEW_DECK = [
 
 // immutably get a copy an array O(N)
 function getImmutableArray(arr) {
-  return map(arr, val => assign({}, val));
+  return map(arr, (val) => assign({}, val));
 }
 
 // immutably get a copy of new deck O(N)

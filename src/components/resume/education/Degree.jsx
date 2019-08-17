@@ -26,7 +26,7 @@ const Degree = (props) => {
       subtitle={subtitle}
       title={title}
     >
-      {map(degree.years, year => (
+      {map(degree.years, (year) => (
         <Year key={year.year} len={degree.years.length} year={year} />
       ))}
     </ExpandableCard>

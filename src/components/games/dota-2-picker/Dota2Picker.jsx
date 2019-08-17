@@ -22,30 +22,6 @@ import {
 * Dota 2 Picker
 * -------------------------------------------------- */
 class Dota2Picker extends Component {
-  static propTypes = {
-    order: types.arrayOf(
-      types.arrayOf(
-        types.shape({
-          name: types.string.isRequired,
-          radiant: types.shape({
-            number: types.number.isRequired,
-            selection: types.string,
-          }).isRequired,
-          dire: types.shape({
-            number: types.number.isRequired,
-            selection: types.string,
-          }).isRequired,
-        }).isRequired,
-      ),
-    ).isRequired,
-    actions: types.shape({
-      updateLineup: types.func.isRequired,
-      addLineup: types.func.isRequired,
-      resetLineup: types.func.isRequired,
-      removeLineup: types.func.isRequired,
-    }).isRequired,
-  };
-
   constructor(props) {
     super(props);
 
@@ -140,7 +116,7 @@ class Dota2Picker extends Component {
       characters[selected.key][selected.i].selected = false;
     }
     characters[key][i].selected = true;
-    this.setState({ characters, selected: { key, i } });
+    this.setState({ characters, selected: { key, i }});
   }
 
   handleReset = (i) => {
@@ -196,9 +172,33 @@ class Dota2Picker extends Component {
   }
 }
 
+Dota2Picker.propTypes = {
+  order: types.arrayOf(
+    types.arrayOf(
+      types.shape({
+        name: types.string.isRequired,
+        radiant: types.shape({
+          number: types.number.isRequired,
+          selection: types.string,
+        }).isRequired,
+        dire: types.shape({
+          number: types.number.isRequired,
+          selection: types.string,
+        }).isRequired,
+      }).isRequired,
+    ),
+  ).isRequired,
+  actions: types.shape({
+    updateLineup: types.func.isRequired,
+    addLineup: types.func.isRequired,
+    resetLineup: types.func.isRequired,
+    removeLineup: types.func.isRequired,
+  }).isRequired,
+};
+
 // react-redux export
-const mapStateToProps = state => ({ order: state.dota2 });
-const mapDispatchToProps = dispatch => ({
+const mapStateToProps = (state) => ({ order: state.dota2 });
+const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     addLineup,
     removeLineup,

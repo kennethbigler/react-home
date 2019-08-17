@@ -14,7 +14,7 @@ const Quarter = (props) => {
         {quarter.quarter}
       </Typography>
       <ul>
-        {map(quarter.classes, c => <Class key={c.name} name={c.name} catalog={c.catalog} />)}
+        {map(quarter.classes, (c) => <Class key={c.name} name={c.name} catalog={c.catalog} />)}
       </ul>
     </div>
   );

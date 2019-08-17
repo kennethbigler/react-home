@@ -11,7 +11,7 @@ export function insertItem(array, item) {
 export function updateObjectInArray(array, ins, key) {
   return map(
     array,
-    item => (item[key] !== ins[key] ? item : { ...item, ...ins }),
+    (item) => (item[key] !== ins[key] ? item : { ...item, ...ins }),
   );
 }
 

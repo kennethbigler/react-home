@@ -8,7 +8,7 @@ import classes from '../../../constants/classes';
 const Education = memo(() => (
   <div>
     <Typography variant="h2">Hackathons &amp; Education</Typography>
-    {map(classes, d => <Degree key={d.degree} degree={d} />)}
+    {map(classes, (d) => <Degree key={d.degree} degree={d} />)}
   </div>
 ));
 

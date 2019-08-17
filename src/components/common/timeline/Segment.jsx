@@ -7,7 +7,7 @@ import { withTheme } from '@material-ui/core/styles';
 const Segment = memo((props) => {
   // var for segment
   const {
-    body, width, color, title, inverted, theme: { palette: { type } },
+    body, width, color, title, inverted, theme: { palette: { type }},
   } = props;
   // variables for empty segment
   let style = {

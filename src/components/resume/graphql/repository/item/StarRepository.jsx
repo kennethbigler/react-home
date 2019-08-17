@@ -18,7 +18,7 @@ const STAR_REPOSITORY = gql`
 
 const updateAddStar = (
   client,
-  { data: { addStar: { starrable: { id } } } },
+  { data: { addStar: { starrable: { id }}}},
 ) => {
   const repository = client.readFragment({
     id: `Repository:${id}`,

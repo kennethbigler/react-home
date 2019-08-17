@@ -206,7 +206,7 @@ const CommitText = (props) => {
         <Grid item sm={5} xs={10}>
           <TextField
             fullWidth
-            InputLabelProps={{ style: { color: gitTheme } }}
+            InputLabelProps={{ style: { color: gitTheme }}}
             label="Commit Message"
             onChange={handleCommitMessageChange}
             placeholder="Summary of Work Done (Message)"
@@ -221,7 +221,7 @@ const CommitText = (props) => {
         <Grid item sm={5} xs={10}>
           <TextField
             fullWidth
-            InputLabelProps={{ style: { color: gitTheme } }}
+            InputLabelProps={{ style: { color: gitTheme }}}
             label="Commit Description"
             multiline
             onChange={handleCommitDescriptionChange}
@@ -259,8 +259,8 @@ CommitText.propTypes = {
 };
 
 // react-redux export
-const mapStateToProps = state => ({ gitCommit: state.git.commitPrefix });
-const mapDispatchToProps = dispatch => ({
+const mapStateToProps = (state) => ({ gitCommit: state.git.commitPrefix });
+const mapDispatchToProps = (dispatch) => ({
   gitActions: bindActionCreators({ setCommitPrefix }, dispatch),
 });
 export default connect(

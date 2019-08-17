@@ -30,27 +30,12 @@ import ExpandableCard from '../../common/ExpandableCard';
 const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');
 
 class GitTools extends Component {
-  static propTypes = {
-    git: types.shape({
-      storyID: types.string.isRequired,
-      branchPrefix: types.string.isRequired,
-      casePreference: types.string.isRequired,
-      branchMessage: types.string,
-    }).isRequired,
-    gitActions: types.shape({
-      setBranchMessage: types.func.isRequired,
-      setBranchPrefix: types.func.isRequired,
-      setCasePreference: types.func.isRequired,
-      setKey: types.func.isRequired,
-    }).isRequired,
-  };
-
   /**
    * function to generate select items based of input
    * @param {[string]} arr input array of options
    * @return {[Object]}
    */
-  getSelectOptions = arr => map(arr, (t, i) => (
+  getSelectOptions = (arr) => map(arr, (t, i) => (
     <MenuItem key={i} value={t}>
       {t}
     </MenuItem>
@@ -180,9 +165,24 @@ class GitTools extends Component {
   }
 }
 
+GitTools.propTypes = {
+  git: types.shape({
+    storyID: types.string.isRequired,
+    branchPrefix: types.string.isRequired,
+    casePreference: types.string.isRequired,
+    branchMessage: types.string,
+  }).isRequired,
+  gitActions: types.shape({
+    setBranchMessage: types.func.isRequired,
+    setBranchPrefix: types.func.isRequired,
+    setCasePreference: types.func.isRequired,
+    setKey: types.func.isRequired,
+  }).isRequired,
+};
+
 // react-redux export
-const mapStateToProps = state => ({ git: state.git });
-const mapDispatchToProps = dispatch => ({
+const mapStateToProps = (state) => ({ git: state.git });
+const mapDispatchToProps = (dispatch) => ({
   gitActions: bindActionCreators(
     {
       setBranchMessage,

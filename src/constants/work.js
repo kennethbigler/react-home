@@ -253,7 +253,7 @@ const workExp = [
   },
 ];
 
-const getSummary = key => reduce(
+const getSummary = (key) => reduce(
   workExp,
   (acc, job) => {
     forEach(job[key], (item) => {

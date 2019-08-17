@@ -16,24 +16,6 @@ import {
 export const ADD_DICE = 'Sum of Dice';
 const centerStyle = { textAlign: 'center' };
 class ScoreTable extends Component {
-  static propTypes = {
-    values: types.arrayOf(types.number.isRequired).isRequired,
-    top: types.arrayOf(types.shape({
-      name: types.string.isRequired,
-      score: types.number.isRequired,
-    })),
-    bottom: types.arrayOf(types.shape({
-      name: types.string.isRequired,
-      score: types.number.isRequired,
-    })),
-    onTopScore: types.func.isRequired,
-    onBottomScore: types.func.isRequired,
-    showScoreButtons: types.bool.isRequired,
-    topSum: types.number.isRequired,
-    finalTopSum: types.number.isRequired,
-    bottomSum: types.number.isRequired,
-  };
-
   getButtonInfo = (d) => {
     const { values } = this.props;
     return reduce(values, (count, val) => {
@@ -219,5 +201,23 @@ class ScoreTable extends Component {
     );
   }
 }
+
+ScoreTable.propTypes = {
+  values: types.arrayOf(types.number.isRequired).isRequired,
+  top: types.arrayOf(types.shape({
+    name: types.string.isRequired,
+    score: types.number.isRequired,
+  })),
+  bottom: types.arrayOf(types.shape({
+    name: types.string.isRequired,
+    score: types.number.isRequired,
+  })),
+  onTopScore: types.func.isRequired,
+  onBottomScore: types.func.isRequired,
+  showScoreButtons: types.bool.isRequired,
+  topSum: types.number.isRequired,
+  finalTopSum: types.number.isRequired,
+  bottomSum: types.number.isRequired,
+};
 
 export default ScoreTable;

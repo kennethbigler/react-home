@@ -14,30 +14,6 @@ const MIN_TEXT_WIDTH = 96;
 const MIN_SHORT_WIDTH = 42;
 
 export class Timeline extends Component {
-  static propTypes = {
-    data: types.arrayOf(
-      types.shape({
-        color: types.string.isRequired,
-        title: types.string.isRequired,
-        start: types.shape({
-          diff: types.func.isRequired,
-        }).isRequired,
-        end: types.shape({
-          diff: types.func.isRequired,
-        }).isRequired,
-      }),
-    ).isRequired,
-    selector: types.string.isRequired,
-    start: types.shape({
-      diff: types.func.isRequired,
-      format: types.func.isRequired,
-    }).isRequired,
-    end: types.shape({
-      diff: types.func.isRequired,
-      format: types.func.isRequired,
-    }).isRequired,
-  };
-
   constructor(props) {
     super(props);
     // get immutable data from props and sort by start date
@@ -206,6 +182,30 @@ export class Timeline extends Component {
     );
   }
 }
+
+Timeline.propTypes = {
+  data: types.arrayOf(
+    types.shape({
+      color: types.string.isRequired,
+      title: types.string.isRequired,
+      start: types.shape({
+        diff: types.func.isRequired,
+      }).isRequired,
+      end: types.shape({
+        diff: types.func.isRequired,
+      }).isRequired,
+    }),
+  ).isRequired,
+  selector: types.string.isRequired,
+  start: types.shape({
+    diff: types.func.isRequired,
+    format: types.func.isRequired,
+  }).isRequired,
+  end: types.shape({
+    diff: types.func.isRequired,
+    format: types.func.isRequired,
+  }).isRequired,
+};
 
 export default Timeline;
 

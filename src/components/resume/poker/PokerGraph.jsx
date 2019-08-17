@@ -30,7 +30,7 @@ const PokerNight = (props) => {
           tickLine={false}
           ticks={ticks && ticks}
         />
-        <Tooltip itemSorter={a => -a.value} />
+        <Tooltip itemSorter={(a) => -a.value} />
       </LineChart>
     </ResponsiveContainer>
   );

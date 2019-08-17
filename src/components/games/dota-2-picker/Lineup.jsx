@@ -15,28 +15,9 @@ import { Typography } from '@material-ui/core';
 // Parents: Popup
 
 class Lineup extends Component {
-  static propTypes = {
-    order: types.arrayOf(
-      types.shape({
-        name: types.string.isRequired,
-        radiant: types.shape({
-          number: types.number.isRequired,
-          selection: types.string,
-        }).isRequired,
-        dire: types.shape({
-          number: types.number.isRequired,
-          selection: types.string,
-        }).isRequired,
-      }).isRequired,
-    ).isRequired,
-    i: types.number.isRequired,
-    resetLineup: types.func.isRequired,
-    removeLineup: types.func.isRequired,
-  };
-
   renderTable = () => {
     const { order } = this.props;
-    return map(order, turn => (
+    return map(order, (turn) => (
       <TableRow key={turn.name} hover>
         <TableCell>{turn.name}</TableCell>
         <TableCell>{turn.radiant.number}</TableCell>
@@ -72,5 +53,24 @@ class Lineup extends Component {
     );
   }
 }
+
+Lineup.propTypes = {
+  order: types.arrayOf(
+    types.shape({
+      name: types.string.isRequired,
+      radiant: types.shape({
+        number: types.number.isRequired,
+        selection: types.string,
+      }).isRequired,
+      dire: types.shape({
+        number: types.number.isRequired,
+        selection: types.string,
+      }).isRequired,
+    }).isRequired,
+  ).isRequired,
+  i: types.number.isRequired,
+  resetLineup: types.func.isRequired,
+  removeLineup: types.func.isRequired,
+};
 
 export default Lineup;

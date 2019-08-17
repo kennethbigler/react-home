@@ -11,21 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import CopyTextDisplay from './CopyTextDisplay';
 // Parents: GitTools
 
-export default class BranchName extends Component {
-  static propTypes = {
-    branchMessage: types.string,
-    branchName: types.string.isRequired,
-    branchPrefix: types.string.isRequired,
-    casePreference: types.string.isRequired,
-    getSelectOptions: types.func.isRequired,
-    gitTheme: types.string.isRequired,
-    handleCopy: types.func.isRequired,
-    onBranchMessageChange: types.func.isRequired,
-    onBranchMessageClear: types.func.isRequired,
-    setBranchPrefix: types.func.isRequired,
-    setCasePreference: types.func.isRequired,
-  };
-
+class BranchName extends Component {
   /**
    * function to generate select items for branch prefixes
    * @return {[Object]}
@@ -113,7 +99,7 @@ export default class BranchName extends Component {
           <Grid item sm={5} xs={10}>
             <TextField
               fullWidth
-              InputLabelProps={{ style: { color: gitTheme } }}
+              InputLabelProps={{ style: { color: gitTheme }}}
               label="Branch Name"
               multiline
               onChange={onBranchMessageChange}
@@ -135,3 +121,19 @@ export default class BranchName extends Component {
     );
   }
 }
+
+BranchName.propTypes = {
+  branchMessage: types.string,
+  branchName: types.string.isRequired,
+  branchPrefix: types.string.isRequired,
+  casePreference: types.string.isRequired,
+  getSelectOptions: types.func.isRequired,
+  gitTheme: types.string.isRequired,
+  handleCopy: types.func.isRequired,
+  onBranchMessageChange: types.func.isRequired,
+  onBranchMessageClear: types.func.isRequired,
+  setBranchPrefix: types.func.isRequired,
+  setCasePreference: types.func.isRequired,
+};
+
+export default BranchName;

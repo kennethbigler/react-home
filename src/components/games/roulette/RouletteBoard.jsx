@@ -14,7 +14,7 @@ class RouletteBoard extends Component {
     return <TableCell key={c} text={c} onClick={onClick(c)} />;
   };
 
-  renderRows = row => (
+  renderRows = (row) => (
     <TableRow>
       {map(row, this.renderCells)}
     </TableRow>

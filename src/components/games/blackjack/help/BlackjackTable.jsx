@@ -29,9 +29,9 @@ const BlackjackTable = (props) => {
           <Cell colSpan="10" text="Dealer" />
         </TableRow>
         <TableRow>
-          {map(cards, c => <Cell key={c} text={c} />)}
+          {map(cards, (c) => <Cell key={c} text={c} />)}
         </TableRow>
-        {map(data, obj => <Row key={obj.name} {...obj} />)}
+        {map(data, (obj) => <Row key={obj.name} {...obj} />)}
       </TableBody>
     </Table>
   );

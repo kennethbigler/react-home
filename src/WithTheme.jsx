@@ -39,7 +39,7 @@ WithTheme.propTypes = {
 };
 
 // react-redux export
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   theme: state.theme,
 });
 

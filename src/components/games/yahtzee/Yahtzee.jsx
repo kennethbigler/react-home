@@ -60,17 +60,6 @@ const getInitialState = () => ({
 * Home
 * -------------------------------------------------- */
 class Yahtzee extends Component {
-  static propTypes = {
-    actions: types.shape({
-      addScore: types.func.isRequired,
-    }).isRequired,
-    scores: types.arrayOf(
-      types.shape({
-        score: types.number.isRequired,
-      }).isRequired,
-    ).isRequired,
-  };
-
   static getDerivedStateFromProps(nextProps, prevState) {
     let { finalTopSum } = prevState;
     const { top, bottom } = prevState;
@@ -106,7 +95,10 @@ class Yahtzee extends Component {
     return null;
   }
 
-  state = getInitialState();
+  constructor(props) {
+    super(props);
+    this.setState(getInitialState());
+  }
 
   newGame = () => {
     const { actions } = this.props;
@@ -250,9 +242,20 @@ class Yahtzee extends Component {
   }
 }
 
+Yahtzee.propTypes = {
+  actions: types.shape({
+    addScore: types.func.isRequired,
+  }).isRequired,
+  scores: types.arrayOf(
+    types.shape({
+      score: types.number.isRequired,
+    }).isRequired,
+  ).isRequired,
+};
+
 // react-redux export
-const mapStateToProps = state => ({ scores: state.yahtzee });
-const mapDispatchToProps = dispatch => ({
+const mapStateToProps = (state) => ({ scores: state.yahtzee });
+const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({ addScore }, dispatch),
 });
 export default connect(

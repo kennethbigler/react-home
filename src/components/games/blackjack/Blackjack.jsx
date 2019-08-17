@@ -79,42 +79,6 @@ function weighHand(hand = []) {
 * -------------------------------------------------- */
 
 class BlackJack extends Component {
-  static propTypes = {
-    playerActions: types.shape({
-      drawCard: types.func.isRequired,
-      newHand: types.func.isRequired,
-      payout: types.func.isRequired,
-      resetStatus: types.func.isRequired,
-      splitHand: types.func.isRequired,
-      updateBet: types.func.isRequired,
-    }).isRequired,
-    players: types.arrayOf(
-      types.shape({
-        bet: types.number.isRequired,
-        id: types.number.isRequired,
-        status: types.string.isRequired,
-        money: types.number.isRequired,
-        hands: types.arrayOf(
-          types.shape({
-            weight: types.number.isRequired,
-            cards: types.arrayOf(
-              types.shape({ weight: types.number.isRequired }),
-            ).isRequired,
-          }),
-        ).isRequired,
-      }),
-    ).isRequired,
-    turn: types.shape({
-      player: types.number.isRequired,
-      hand: types.number.isRequired,
-    }).isRequired,
-    turnActions: types.shape({
-      incrHandTurn: types.func.isRequired,
-      incrPlayerTurn: types.func.isRequired,
-      resetTurn: types.func.isRequired,
-    }).isRequired,
-  };
-
   constructor(props) {
     super(props);
     this.setNewGameRedux();
@@ -164,7 +128,7 @@ class BlackJack extends Component {
     // reset redux actions
     turnActions.resetTurn();
     // reset player statuses
-    forEach(players, player => playerActions.resetStatus(player.id));
+    forEach(players, (player) => playerActions.resetStatus(player.id));
   };
 
   /**
@@ -510,12 +474,48 @@ class BlackJack extends Component {
   }
 }
 
+BlackJack.propTypes = {
+  playerActions: types.shape({
+    drawCard: types.func.isRequired,
+    newHand: types.func.isRequired,
+    payout: types.func.isRequired,
+    resetStatus: types.func.isRequired,
+    splitHand: types.func.isRequired,
+    updateBet: types.func.isRequired,
+  }).isRequired,
+  players: types.arrayOf(
+    types.shape({
+      bet: types.number.isRequired,
+      id: types.number.isRequired,
+      status: types.string.isRequired,
+      money: types.number.isRequired,
+      hands: types.arrayOf(
+        types.shape({
+          weight: types.number.isRequired,
+          cards: types.arrayOf(
+            types.shape({ weight: types.number.isRequired }),
+          ).isRequired,
+        }),
+      ).isRequired,
+    }),
+  ).isRequired,
+  turn: types.shape({
+    player: types.number.isRequired,
+    hand: types.number.isRequired,
+  }).isRequired,
+  turnActions: types.shape({
+    incrHandTurn: types.func.isRequired,
+    incrPlayerTurn: types.func.isRequired,
+    resetTurn: types.func.isRequired,
+  }).isRequired,
+};
+
 // react-redux export
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   turn: state.turn,
   players: state.players,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   turnActions: bindActionCreators(
     { incrPlayerTurn, resetTurn, incrHandTurn },
     dispatch,

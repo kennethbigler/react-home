@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import types from 'prop-types';
 import map from 'lodash/map';
 import RepositoryItem from './item/RepositoryItem';
@@ -26,7 +26,7 @@ const updateQuery = (previousResult, { fetchMoreResult }) => {
 };
 
 const RepositoryList = ({ repositories, loading, fetchMore }) => (
-  <Fragment>
+  <>
     {map(repositories.edges, ({ node }) => (
       <div key={node.id} className="RepositoryItem">
         <RepositoryItem {...node} />
@@ -44,7 +44,7 @@ const RepositoryList = ({ repositories, loading, fetchMore }) => (
     >
       Repositories
     </FetchMore>
-  </Fragment>
+  </>
 );
 
 RepositoryList.propTypes = {

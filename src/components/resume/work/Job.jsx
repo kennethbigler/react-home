@@ -11,35 +11,10 @@ import ExpandableCard from '../../common/ExpandableCard';
 // Parents: Work
 
 /* function to generate timeline card */
-export default class Job extends Component {
-  static propTypes = {
-    job: types.shape({
-      parent: types.string,
-      inverted: types.bool,
-      company: types.string.isRequired,
-      location: types.string.isRequired,
-      title: types.string.isRequired,
-      color: types.string.isRequired,
-      start: types.shape({
-        format: types.func.isRequired,
-        diff: types.func.isRequired,
-      }).isRequired,
-      end: types.shape({
-        format: types.func.isRequired,
-        diff: types.func.isRequired,
-      }).isRequired,
-      notes: types.string,
-      expr: types.arrayOf(types.string),
-      tech: types.arrayOf(types.string),
-      skills: types.arrayOf(types.string),
-      src: types.string,
-      alt: types.string,
-    }).isRequired,
-  };
-
+class Job extends Component {
   getCSV = (arr) => {
     const style = { marginRight: 5, marginBottom: 5 };
-    return map(arr, item => <Chip key={item} label={item} style={style} />);
+    return map(arr, (item) => <Chip key={item} label={item} style={style} />);
   };
 
   showRange = (s, e, notes = '') => {
@@ -117,3 +92,30 @@ export default class Job extends Component {
     );
   }
 }
+
+Job.propTypes = {
+  job: types.shape({
+    parent: types.string,
+    inverted: types.bool,
+    company: types.string.isRequired,
+    location: types.string.isRequired,
+    title: types.string.isRequired,
+    color: types.string.isRequired,
+    start: types.shape({
+      format: types.func.isRequired,
+      diff: types.func.isRequired,
+    }).isRequired,
+    end: types.shape({
+      format: types.func.isRequired,
+      diff: types.func.isRequired,
+    }).isRequired,
+    notes: types.string,
+    expr: types.arrayOf(types.string),
+    tech: types.arrayOf(types.string),
+    skills: types.arrayOf(types.string),
+    src: types.string,
+    alt: types.string,
+  }).isRequired,
+};
+
+export default Job;

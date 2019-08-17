@@ -13,7 +13,7 @@ import TopBar from './TopBar';
 const Header = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const {
-    children, handleNav, showPlayers, theme: { palette: { type } },
+    children, handleNav, showPlayers, theme: { palette: { type }},
   } = props;
 
   const toggleOpen = () => {

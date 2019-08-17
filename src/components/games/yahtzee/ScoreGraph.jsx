@@ -11,7 +11,7 @@ import InfoPopup from '../../common/InfoPopup';
 // Parents: Main
 
 const ScoreGraph = (props) => {
-  const { scores, theme: { palette: { secondary: { main } } } } = props;
+  const { scores, theme: { palette: { secondary: { main }}}} = props;
   const mostRecent = get(scores, `[${scores.length - 1}].score`, 0);
   const topScore = scores.length > 0 ? maxBy(scores, 'score').score : 0;
   return (

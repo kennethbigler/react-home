@@ -31,8 +31,7 @@ const FetchMore = (props) => {
               {children}
             </Button>
           )
-        )
-      }
+        )}
     </div>
   );
 };

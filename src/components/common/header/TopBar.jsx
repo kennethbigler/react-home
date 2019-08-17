@@ -28,24 +28,6 @@ const styles = {
 };
 
 class TopBar extends PureComponent {
-  static propTypes = {
-    fontColor: types.string.isRequired,
-    iconColor: types.string.isRequired,
-    showPlayers: types.bool,
-    theme: types.shape({
-      type: types.string,
-    }),
-    themeActions: types.shape({
-      displayDarkTheme: types.func.isRequired,
-      displayLightTheme: types.func.isRequired,
-    }),
-    toggleOpen: types.func.isRequired,
-  };
-
-  static defaultProps = {
-    showPlayers: false,
-  }
-
   constructor(props) {
     super(props);
     const { theme } = props;
@@ -112,11 +94,29 @@ class TopBar extends PureComponent {
   }
 }
 
+TopBar.propTypes = {
+  fontColor: types.string.isRequired,
+  iconColor: types.string.isRequired,
+  showPlayers: types.bool,
+  theme: types.shape({
+    type: types.string,
+  }),
+  themeActions: types.shape({
+    displayDarkTheme: types.func.isRequired,
+    displayLightTheme: types.func.isRequired,
+  }),
+  toggleOpen: types.func.isRequired,
+};
+
+TopBar.defaultProps = {
+  showPlayers: false,
+};
+
 // react-redux export
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   theme: state.theme,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   themeActions: bindActionCreators(
     { displayDarkTheme, displayLightTheme },
     dispatch,

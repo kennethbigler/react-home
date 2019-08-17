@@ -18,7 +18,7 @@ const UNSTAR_REPOSITORY = gql`
 
 const updateRemoveStar = (
   client,
-  { data: { removeStar: { starrable: { id } } } },
+  { data: { removeStar: { starrable: { id }}}},
 ) => {
   const repository = client.readFragment({
     id: `Repository:${id}`,

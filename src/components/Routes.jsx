@@ -9,13 +9,6 @@ const ResumeRoutes = lazy(() => import(/* webpackChunkName: "resume" */ './resum
 const GameRoutes = lazy(() => import(/* webpackChunkName: "games" */ './games/Routes'));
 
 class Routes extends Component {
-  static propTypes = {
-    history: types.shape({
-      push: types.func.isRequired,
-    }).isRequired,
-    location: types.shape({ pathname: types.string.isRequired }).isRequired,
-  };
-
   handleNav = (loc) => {
     const { location, history } = this.props;
     if (loc !== location.pathname) {
@@ -23,9 +16,9 @@ class Routes extends Component {
     }
   };
 
-  resume = props => <ResumeRoutes handleNav={this.handleNav} {...props} />;
+  resume = (props) => <ResumeRoutes handleNav={this.handleNav} {...props} />;
 
-  games = props => <GameRoutes handleNav={this.handleNav} {...props} />;
+  games = (props) => <GameRoutes handleNav={this.handleNav} {...props} />;
 
   render() {
     return (
@@ -40,5 +33,12 @@ class Routes extends Component {
     );
   }
 }
+
+Routes.propTypes = {
+  history: types.shape({
+    push: types.func.isRequired,
+  }).isRequired,
+  location: types.shape({ pathname: types.string.isRequired }).isRequired,
+};
 
 export default withRouter(Routes);

@@ -71,8 +71,8 @@ GraphQL.propTypes = {
 };
 
 // react-redux export
-const mapStateToProps = state => ({ graphQLToken: state.graphql.token });
-const mapDispatchToProps = dispatch => ({
+const mapStateToProps = (state) => ({ graphQLToken: state.graphql.token });
+const mapDispatchToProps = (dispatch) => ({
   stateActions: bindActionCreators({ setToken }, dispatch),
 });
 export default connect(

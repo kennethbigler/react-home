@@ -64,7 +64,7 @@ const NEW_DECK = [
 
 // immutable copy of new deck O(N)
 function getNewDeck() {
-  return map(NEW_DECK, card => assign({}, card));
+  return map(NEW_DECK, (card) => assign({}, card));
 }
 
 /* --------------------------------------------------
@@ -75,7 +75,7 @@ export default function useDeck() {
 
   // get immutable copy of deck O(N)
   function getDeck() {
-    return map(deck, card => assign({}, card));
+    return map(deck, (card) => assign({}, card));
   }
 
   // randomize order of the cards O(N + M)

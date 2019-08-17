@@ -25,38 +25,6 @@ const LAST_PLAYER = 5;
 * Poker
 * -------------------------------------------------- */
 class Poker extends Component {
-  static propTypes = {
-    playerActions: types.shape({
-      swapCards: types.func.isRequired,
-      newHand: types.func.isRequired,
-      payout: types.func.isRequired,
-      resetStatus: types.func.isRequired,
-    }).isRequired,
-    players: types.arrayOf(
-      types.shape({
-        id: types.number.isRequired,
-        hands: types.arrayOf(
-          types.shape({
-            cards: types.arrayOf(
-              types.shape({
-                weight: types.number.isRequired,
-                suit: types.string.isRequired,
-              }),
-            ).isRequired,
-          }).isRequired,
-        ).isRequired,
-      }),
-    ).isRequired,
-    turn: types.shape({
-      player: types.number.isRequired,
-      hand: types.number.isRequired,
-    }).isRequired,
-    turnActions: types.shape({
-      incrPlayerTurn: types.func.isRequired,
-      resetTurn: types.func.isRequired,
-    }).isRequired,
-  };
-
   constructor(props) {
     super(props);
     this.setNewGameRedux();
@@ -80,7 +48,7 @@ class Poker extends Component {
     // reset redux actions
     turnActions.resetTurn();
     // reset player statuses
-    forEach(players, player => playerActions.resetStatus(player.id));
+    forEach(players, (player) => playerActions.resetStatus(player.id));
   };
 
   /**
@@ -389,7 +357,7 @@ class Poker extends Component {
     // deal the hands
     forEach(
       players,
-      player => player.id !== DEALER
+      (player) => player.id !== DEALER
         && player.id <= LAST_PLAYER
         && playerActions.newHand(player.id, 5),
     );
@@ -420,6 +388,38 @@ class Poker extends Component {
     );
   }
 }
+
+Poker.propTypes = {
+  playerActions: types.shape({
+    swapCards: types.func.isRequired,
+    newHand: types.func.isRequired,
+    payout: types.func.isRequired,
+    resetStatus: types.func.isRequired,
+  }).isRequired,
+  players: types.arrayOf(
+    types.shape({
+      id: types.number.isRequired,
+      hands: types.arrayOf(
+        types.shape({
+          cards: types.arrayOf(
+            types.shape({
+              weight: types.number.isRequired,
+              suit: types.string.isRequired,
+            }),
+          ).isRequired,
+        }).isRequired,
+      ).isRequired,
+    }),
+  ).isRequired,
+  turn: types.shape({
+    player: types.number.isRequired,
+    hand: types.number.isRequired,
+  }).isRequired,
+  turnActions: types.shape({
+    incrPlayerTurn: types.func.isRequired,
+    resetTurn: types.func.isRequired,
+  }).isRequired,
+};
 
 // react-redux export
 function mapStateToProps(state /* , ownProps */) {
