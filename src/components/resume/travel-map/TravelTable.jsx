@@ -4,59 +4,13 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import grey from '@material-ui/core/colors/grey';
 import { Typography } from '@material-ui/core';
 import DarkTableCell from '../../common/DarkTableCell';
+import styles from './TravelTable.styles';
+import { NA, EU } from '../../../constants/countries';
 // Parents: Main
 
-export const NA = [
-  'Bahamas',
-  'British Virgin Islands',
-  'Canada',
-  'Cayman Islands',
-  'Mexico',
-  'U.S. Virgin Islands',
-  'United States',
-];
-export const EU = [
-  'Austria',
-  'Denmark',
-  'Estonia',
-  'Finland',
-  'France',
-  'Germany',
-  'Gibraltar',
-  'Greece',
-  'Iceland',
-  'Ireland',
-  'Italy',
-  'Malta',
-  'Monaco',
-  'Netherlands',
-  'Norway',
-  'Poland',
-  'Portugal',
-  'Russia',
-  'Spain',
-  'Sweden',
-  'Switzerland',
-  'Turkey',
-  'United Kingdom',
-  'Vatican',
-];
-
 const TravelMap = memo(() => {
-  const styles = {
-    margins: { marginTop: 24, marginBottom: 16 },
-    cell: {
-      padding: 5,
-      textAlign: 'center',
-      whiteSpace: 'normal',
-      overflow: 'visible',
-    },
-    separator: { borderRight: `1px solid ${grey[400]}` },
-  };
-
   // ratio to display on table, 2:1 seemed to look best
   const EURatio = 3;
 

@@ -8,11 +8,8 @@ import Button from '@material-ui/core/Button';
 import map from 'lodash/map';
 import Money from './Money';
 import { getMoneyText } from './helpers';
+import styles from './Modal.styles';
 // Parents: DealOrNoDeal
-
-const styles = {
-  cols: { width: '50%', display: 'inline-block' },
-};
 
 const genMoneyCols = (arr, start, stop = arr.length) => map(arr.slice(start, stop), (bc) => <Money key={bc.loc} briefcase={bc} />);
 

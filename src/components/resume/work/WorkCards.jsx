@@ -6,12 +6,8 @@ import { Typography } from '@material-ui/core';
 import Job from './Job';
 // Parents: Routes (Resume)
 
-const styles = {
-  marginTop: 25,
-};
-
 const WorkCards = ({ workExp, workTypes }) => map(workTypes, (type) => (
-  <div key={type} style={styles}>
+  <div key={type} style={{ marginTop: 25 }}>
     <Typography variant="h3">{`${startCase(type)} Experience`}</Typography>
     <hr />
     {map(workExp, (job) => (job.type === type && <Job key={job.company} job={job} />))}

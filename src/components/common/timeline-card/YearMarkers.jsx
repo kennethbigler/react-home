@@ -1,21 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
-import grey from '@material-ui/core/colors/grey';
+import styles from './YearMarkers.styles';
 // Parents: Row
-
-const styles = {
-  box: {
-    cursor: 'default',
-    backgroundColor: grey[200],
-    height: 500,
-    marginBottom: -500,
-    minWidth: 1,
-  },
-  label: {
-    position: 'relative',
-    right: 22,
-  },
-};
 
 const YearMarkers = (props) => {
   // var for segment

@@ -7,11 +7,9 @@ import {
 } from 'react-simple-maps';
 import map from 'lodash/map';
 import blueGrey from '@material-ui/core/colors/blueGrey';
-import {
-  amber, blue, brown, cyan, deepOrange, deepPurple, green, indigo, lightBlue, lightGreen, lime, orange, pink, purple, red, teal, yellow,
-} from '@material-ui/core/colors/';
+import red from '@material-ui/core/colors/red';
 import Popover from './Popover';
-
+import countries from '../../../constants/countries';
 
 const STROKE = blueGrey[900];
 const HOVER = blueGrey[500];
@@ -19,33 +17,6 @@ const VISITED_HOVER = red[800];
 const FILL = blueGrey[100];
 const PRESSED = blueGrey[800];
 const RATIO = 100 / 465.33;
-
-const countries = {
-  Bahamas: amber[500],
-  Canada: blue[500],
-  Mexico: brown[500],
-  'United States of America': cyan[500],
-  Austria: deepOrange[500],
-  Denmark: deepPurple[500],
-  Estonia: green[500],
-  Finland: indigo[500],
-  France: lightBlue[500],
-  Germany: lightGreen[500],
-  Greece: lime[500],
-  Iceland: orange[500],
-  Ireland: pink[500],
-  Italy: purple[500],
-  Netherlands: red[500],
-  Norway: teal[500],
-  Poland: yellow[500],
-  Portugal: amber[800],
-  Russia: blue[800],
-  Spain: cyan[800],
-  Sweden: deepOrange[800],
-  Switzerland: deepPurple[800],
-  Turkey: green[800],
-  'United Kingdom': indigo[800],
-};
 
 function useWorldMap() {
   const [x, setX] = useState(0);
@@ -100,7 +71,7 @@ const WorldMap = memo(() => {
                 onMouseLeave={handleLeave}
                 style={{
                   default: {
-                    fill: countries[geography.properties.NAME] ? countries[geography.properties.NAME] : FILL,
+                    fill: countries[geography.properties.NAME] ? countries[geography.properties.NAME].color : FILL,
                     stroke: STROKE,
                     strokeWidth: 0.75,
                     outline: 'none',

@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import types from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -11,24 +10,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import nl2br from 'react-newline-to-break';
 import { Typography } from '@material-ui/core';
+import styles, { LabelTableCell } from './MurderMysteryPanel.styles';
 // Parents: Main
-
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '95%',
-  },
-  item: {
-    display: 'flex',
-  },
-};
-
-const LabelTableCell = withStyles({
-  root: {
-    maxWidth: 100,
-  },
-})(TableCell);
 
 const MurderMysteryPanel = memo((props) => {
   const {

@@ -15,12 +15,8 @@ import Grid from '@material-ui/core/Grid';
 import nl2br from 'react-newline-to-break';
 import CopyTextDisplay from './CopyTextDisplay';
 import { setCommitPrefix } from '../../../store/modules/git';
+import styles from './CommitText.styles';
 // Parents: Main
-
-const styles = {
-  wrapper: { paddingLeft: 20, paddingRight: 20, width: '100%' },
-  marginTop: { marginTop: 12 },
-};
 
 function useCommitText(storyID, gitCommit) {
   const [commitPrefix, setLocalCommitPrefix] = useState('feat');

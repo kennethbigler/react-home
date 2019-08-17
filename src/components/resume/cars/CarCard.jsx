@@ -4,19 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-
-const styles = {
-  container: {
-    maxWidth: 1488,
-    margin: 'auto',
-    marginTop: 20,
-  },
-  img: {
-    width: '100%',
-    maxWidth: '30em',
-    float: 'right',
-  },
-};
+import styles from './CarCard.styles';
 
 const CarCard = (props) => {
   const { car } = props;

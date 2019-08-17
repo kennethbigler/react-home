@@ -6,8 +6,8 @@ import moment from 'moment';
 import map from 'lodash/map';
 import isEmpty from 'lodash/isEmpty';
 import { Typography } from '@material-ui/core';
-import { FORMAT } from '../../common/timeline/Timeline';
-import ExpandableCard from '../../common/ExpandableCard';
+import { FORMAT } from '../../common/timeline-card/Timeline';
+import ExpandableCard from '../../common/expandable-card';
 // Parents: Work
 
 /* function to generate timeline card */

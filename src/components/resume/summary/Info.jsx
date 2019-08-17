@@ -4,7 +4,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Grid from '@material-ui/core/Grid';
-import ExpandableCard from '../../common/ExpandableCard';
+import ExpandableCard from '../../common/expandable-card';
 // assets
 import photo from '../../../images/ken.jpg';
 import workExp from '../../../constants/work';

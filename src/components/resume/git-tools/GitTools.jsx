@@ -24,7 +24,7 @@ import BranchName from './BranchName';
 import CommitText from './CommitText';
 import DeployBranch from './DeployBranch';
 import Header from './Header';
-import ExpandableCard from '../../common/ExpandableCard';
+import ExpandableCard from '../../common/expandable-card';
 // Parents: Main
 
 const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');

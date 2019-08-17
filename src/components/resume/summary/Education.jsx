@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
-import ExpandableCard from '../../common/ExpandableCard';
+import ExpandableCard from '../../common/expandable-card';
 import classes from '../../../constants/classes';
 // Parents: Main
 

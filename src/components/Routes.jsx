@@ -1,7 +1,7 @@
 import React, { Component, Suspense, lazy } from 'react';
 import types from 'prop-types';
 import { Switch, Route, withRouter } from 'react-router-dom';
-import LoadingSpinner from './common/LoadingSpinner';
+import LoadingSpinner from './common/loading-spinner';
 // Parents: WithTheme
 
 // lazy load sub routers

@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import map from 'lodash/map';
 import Piece from './Piece';
+import styles from './Board.styles';
 // Parents: GameBoard
 
 /* --------------------------------------------------
@@ -14,8 +15,6 @@ import Piece from './Piece';
 * -------------------------------------------------- */
 const Board = (props) => {
   const { board, turn, insert } = props;
-  // styles
-  const styles = { padding: 1, textAlign: 'center' };
   // generate code for Connect4 Board
   const gameBoard = map(board, (arr, i) => {
     const row = map(arr, (piece, j) => (

@@ -5,7 +5,7 @@ import types from 'prop-types';
 import map from 'lodash/map';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
-// components
+import styles from './HeroSelection.styles';
 // Parents: Main
 
 const heroType = types.shape({
@@ -13,11 +13,6 @@ const heroType = types.shape({
   name: types.string.isRequired,
   selected: types.oneOfType([types.string, types.bool]).isRequired,
 }).isRequired;
-
-const styles = {
-  heroRow: { display: 'inline-block', marginRight: 10 },
-  heroButton: { margin: 5 },
-};
 
 /* --------------------------------------------------
 * Dota 2 Picker

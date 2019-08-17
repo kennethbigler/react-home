@@ -14,18 +14,8 @@ import {
   displayDarkTheme,
   displayLightTheme,
 } from '../../../store/modules/theme';
+import styles from './TopBar.styles';
 // Parents: App
-
-const styles = {
-  flexLeft: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  flexRight: {
-    display: 'flex',
-    marginRight: 15,
-  },
-};
 
 class TopBar extends PureComponent {
   constructor(props) {

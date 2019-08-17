@@ -3,7 +3,7 @@ import types from 'prop-types';
 import get from 'lodash/get';
 import map from 'lodash/map';
 import Year from './Year';
-import ExpandableCard from '../../common/ExpandableCard';
+import ExpandableCard from '../../common/expandable-card';
 // Parents: Work
 
 /* render code for each degree */

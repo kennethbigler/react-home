@@ -8,17 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { withTheme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
-
-const styles = {
-  card: { marginTop: 40, overflow: 'visible' },
-  header: {
-    borderRadius: 3,
-    marginLeft: 15,
-    marginRight: 15,
-    position: 'relative',
-    top: -20,
-  },
-};
+import styles from './ExpandableCard.styles';
 
 const ExpandableCard = (props) => {
   const [expanded, setExpanded] = useState(true);

@@ -4,11 +4,11 @@ import types from 'prop-types';
 import moment from 'moment';
 // components
 import grey from '@material-ui/core/colors/grey';
-import ExpandableCard from './ExpandableCard';
-import { Timeline, TIMELINE_TITLE } from './timeline/Timeline';
+import ExpandableCard from '../expandable-card';
+import { Timeline, TIMELINE_TITLE } from './Timeline';
 // material-ui
 // constants
-import workExperience from '../../constants/work';
+import workExperience from '../../../constants/work';
 // Parents: Work
 
 const DATE_FORMAT = 'MMMM YYYY';

@@ -8,16 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import map from 'lodash/map';
 import chunk from 'lodash/chunk';
 import sortBy from 'lodash/sortBy';
-
-const styles = {
-  cell: {
-    paddingRight: 5,
-    whiteSpace: 'nowrap',
-  },
-  row: {
-    borderTop: '2px solid',
-  },
-};
+import styles from './PokerTable.styles';
 
 const PokerTable = (props) => {
   const { totals } = props;

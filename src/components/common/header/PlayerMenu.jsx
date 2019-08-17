@@ -8,16 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
 import { updateName, updateBot } from '../../../store/modules/players';
+import styles from './PlayerMenu.styles';
 // Parents: Main
-
-const styles = {
-  namepad: {
-    maxWidth: '420px',
-    width: '100%',
-    display: 'block',
-    margin: 'auto',
-  },
-};
 
 /** --------------------------------------------------
 * PlayerMenu
@@ -59,9 +51,9 @@ class PlayerMenu extends Component {
   render() {
     const { players } = this.props;
     const { isBot } = this.state;
-    const { namepad } = styles;
+
     return (
-      <div style={namepad}>
+      <div style={styles.namepad}>
         <Grid container spacing={1}>
           <Grid item xs={9}>
             <Typography variant="h5">

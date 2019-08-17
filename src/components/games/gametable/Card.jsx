@@ -2,28 +2,8 @@ import React, { memo } from 'react';
 import types from 'prop-types';
 import red from '@material-ui/core/colors/red';
 import { Typography } from '@material-ui/core';
+import styles from './Card.styles';
 // Parents: Hand
-
-const styles = {
-  cardFace: {
-    backgroundColor: 'white',
-    borderRadius: 5,
-    cursor: 'pointer',
-    display: 'inline-block',
-    fontWeight: 'bold',
-    height: 78,
-    margin: 5,
-    padding: 3,
-    width: 50,
-  },
-  cardTitle: { textAlign: 'left' },
-  suit: {
-    margin: 'auto',
-    maxWidth: 30,
-    textAlign: 'center',
-    width: '100%',
-  },
-};
 
 /* --------------------------------------------------
  * Card

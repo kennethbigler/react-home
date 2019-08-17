@@ -14,14 +14,8 @@ import map from 'lodash/map';
 import DarkTableCell from '../../common/DarkTableCell';
 import SlotMachine from './SlotMachine';
 import { payout, updateBet } from '../../../store/modules/players';
+import styles from './Slots.styles';
 // Parents: Main
-
-const styles = {
-  cell: {
-    minHeight: 39,
-    fontWeight: 900,
-  },
-};
 
 /* --------------------------------------------------
 * Slot Machine

@@ -9,17 +9,8 @@ import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import Hand from './Hand';
+import styles from './Player.styles';
 // Parents: Board
-
-const styles = {
-  player: {
-    borderRadius: 5,
-    display: 'inline-block',
-    margin: 10,
-    padding: 20,
-  },
-  width: { minWidth: '100px' },
-};
 
 /* --------------------------------------------------
  * Player

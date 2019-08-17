@@ -6,7 +6,7 @@ import reduce from 'lodash/reduce';
 import lazyWithPreload from '../../apis/lazyWithPreload';
 import Header from '../common/header/Header';
 import Menu from './Menu';
-import LoadingSpinner from '../common/LoadingSpinner';
+import LoadingSpinner from '../common/loading-spinner';
 // Parents: Routes (Main)
 
 // lazy load page components

@@ -1,10 +1,10 @@
 import React, { memo, lazy, Suspense } from 'react';
 import { Typography } from '@material-ui/core';
 // custom
-import TimelineCard from '../../common/TimelineCard';
-import ExpandableCard from '../../common/ExpandableCard';
+import TimelineCard from '../../common/timeline-card';
+import ExpandableCard from '../../common/expandable-card';
 import workExp, { VOLUNTEER, WORK } from '../../../constants/work';
-import LoadingSpinner from '../../common/LoadingSpinner';
+import LoadingSpinner from '../../common/loading-spinner';
 import WorkCards from './WorkCards';
 // Parents: Routes (Resume)
 const TechBarChart = lazy(() => import(/* webpackChunkName: "r_work_bar_chart" */ './TechBarChart'));
