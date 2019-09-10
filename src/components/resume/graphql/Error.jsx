@@ -8,7 +8,11 @@ const ErrorMessage = ({ error }) => (
 );
 
 ErrorMessage.propTypes = {
-  error: types.shape({}).isRequired,
+  error: types.shape({}),
+};
+
+ErrorMessage.defaultProps = {
+  error: 'Something Went Wrong',
 };
 
 export default ErrorMessage;

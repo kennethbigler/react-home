@@ -34,7 +34,7 @@ const Profile = () => {
   } = useQuery(GET_REPOSITORIES_OF_CURRENT_USER);
 
   // check errors
-  if (error) {
+  if (error || !data) {
     return <ErrorMessage error={error} />;
   }
 
