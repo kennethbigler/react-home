@@ -25,9 +25,10 @@ function useWorldMap() {
   const [hide, setHide] = useState(true);
 
   const handleMove = (geography, evt) => {
+    const name = geography.properties.NAME;
     setX(evt.clientX);
     setY(evt.clientY + window.pageYOffset);
-    setContent(geography.properties.NAME);
+    setContent(`${name} ${countries[name] ? countries[name].flag : ''}`);
     setHide(false);
   };
 
