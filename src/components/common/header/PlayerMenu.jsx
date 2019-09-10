@@ -18,10 +18,10 @@ class PlayerMenu extends Component {
   constructor(props) {
     super(props);
 
-    this.setState({
+    this.state = {
       isBot: {},
       players: {},
-    });
+    };
   }
 
   // https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html

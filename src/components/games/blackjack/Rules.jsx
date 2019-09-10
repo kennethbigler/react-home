@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, Fragment } from 'react';
 import Typography from '@material-ui/core/Typography';
 // Parents: Popup
 
@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
  * Rules
  * ======================================== */
 const Rules = memo(() => (
-  <div>
+  <Fragment>
     <Typography variant="h5">
       Objective:
     </Typography>
@@ -89,7 +89,7 @@ const Rules = memo(() => (
       <Typography><li>House Rules: 6 decks, H17, DAS, No Surrender, Peek</li></Typography>
       <Typography><li>Estimated casino edge for these rules: 0.66%</li></Typography>
     </ul>
-  </div>
+  </Fragment>
 ));
 
 export default Rules;

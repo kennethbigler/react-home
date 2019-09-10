@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import types from 'prop-types';
 import purple from '@material-ui/core/colors/purple';
 import map from 'lodash/map';
@@ -29,7 +29,7 @@ const Hand = (props) => {
     : { fontWeight: 'normal' };
 
   return (
-    <div>
+    <Fragment>
       <Typography variant="h4" style={{ ...bold, marginTop: '0.5em' }}>
         {isBlackJack
           && (hand.weight > 21 ? 'Bust: ' : 'Hand Weight: ') + hand.weight}
@@ -49,7 +49,7 @@ const Hand = (props) => {
           />
         );
       })}
-    </div>
+    </Fragment>
   );
 };
 

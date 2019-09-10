@@ -14,24 +14,20 @@ const Description = (props) => {
         dangerouslySetInnerHTML={{ __html: descriptionHTML }}
       />
       <div className="RepositoryItem-description-details">
-        <div>
-          {primaryLanguage && (
-            <Typography display="inline">
-              Language:
-              {' '}
-              {primaryLanguage.name}
-            </Typography>
-          )}
-        </div>
-        <div>
-          {owner && (
-            <Typography display="inline">
-              Owner:
-              {' '}
-              <a href={owner.url}>{owner.login}</a>
-            </Typography>
-          )}
-        </div>
+        {primaryLanguage && (
+          <Typography display="inline">
+            Language:
+            {' '}
+            {primaryLanguage.name}
+          </Typography>
+        )}
+        {owner && (
+          <Typography display="inline">
+            Owner:
+            {' '}
+            <a href={owner.url}>{owner.login}</a>
+          </Typography>
+        )}
       </div>
     </div>
   );

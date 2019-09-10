@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import types from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -29,7 +29,7 @@ const Header = (props) => {
   const fontColor = type === 'light' ? 'inherit' : 'initial';
 
   return (
-    <div>
+    <Fragment>
       <TopBar toggleOpen={toggleOpen} showPlayers={showPlayers} fontColor={fontColor} iconColor={iconColor} />
       <Drawer onClose={toggleOpen} open={isOpen}>
         <AppBar position="sticky">
@@ -48,7 +48,7 @@ const Header = (props) => {
         </AppBar>
         {React.cloneElement(children, { onItemClick: handleNavigation })}
       </Drawer>
-    </div>
+    </Fragment>
   );
 };
 

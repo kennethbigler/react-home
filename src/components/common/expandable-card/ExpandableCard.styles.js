@@ -1,4 +1,4 @@
-const styles = {
+export default {
   card: { marginTop: 40, overflow: 'visible' },
   header: {
     borderRadius: 3,
@@ -8,5 +8,3 @@ const styles = {
     top: -20,
   },
 };
-
-export default styles;

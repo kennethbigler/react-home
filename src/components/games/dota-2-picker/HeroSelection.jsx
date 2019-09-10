@@ -1,5 +1,5 @@
 // react
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import types from 'prop-types';
 // helpers
 import map from 'lodash/map';
@@ -51,7 +51,7 @@ class HeroSelection extends Component {
 
   render() {
     const { characters } = this.props;
-    return (<div>{map(characters, this.getHeroListForLetter)}</div>);
+    return (<Fragment>{map(characters, this.getHeroListForLetter)}</Fragment>);
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, Fragment } from 'react';
 import types from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
@@ -41,7 +41,7 @@ const Menu = memo((props) => {
   const stkovrflw = () => window.open('https://stackoverflow.com/users/4830309/ken-bigler');
 
   return (
-    <div>
+    <Fragment>
       {menu}
       <Divider />
       <MenuItem onClick={github}>
@@ -66,7 +66,7 @@ const Menu = memo((props) => {
           paddingRight: 16,
         }}
       />
-    </div>
+    </Fragment>
   );
 });
 

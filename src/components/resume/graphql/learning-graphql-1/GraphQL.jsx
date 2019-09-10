@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import split from 'lodash/split';
 import get from 'lodash/get';
@@ -177,7 +177,7 @@ class GraphQL extends Component {
     const { path, organization, errors } = this.state;
 
     return (
-      <div>
+      <Fragment>
         <Typography variant="h2">{TITLE}</Typography>
 
         <form onSubmit={this.onSubmit}>
@@ -206,7 +206,7 @@ class GraphQL extends Component {
             />
           ) : (<Typography>No information yet ...</Typography>)
         }
-      </div>
+      </Fragment>
     );
   }
 }

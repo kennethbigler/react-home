@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import types from 'prop-types';
 import map from 'lodash/map';
 import Player from './Player';
@@ -19,7 +19,7 @@ const Board = (props) => {
   } = props;
 
   return (
-    <div>
+    <Fragment>
       {map(players, (player, i) => (
         <Player
           key={`player${i}`}
@@ -33,7 +33,7 @@ const Board = (props) => {
           turn={turn}
         />
       ))}
-    </div>
+    </Fragment>
   );
 };
 

@@ -1,5 +1,5 @@
 // react
-import React, { memo } from 'react';
+import React, { memo, Fragment } from 'react';
 import types from 'prop-types';
 // material-ui
 import TextField from '@material-ui/core/TextField';
@@ -14,7 +14,7 @@ const Header = memo((props) => {
   const isIdValid = validId.test(storyID);
 
   return (
-    <div>
+    <Fragment>
       <Typography variant="h2">
         Git Tools
       </Typography>
@@ -28,7 +28,7 @@ const Header = memo((props) => {
         error={!isIdValid}
       />
       <br />
-    </div>
+    </Fragment>
   );
 });
 

@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, Fragment } from 'react';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import profiles, { CASINO } from '../../../constants/murder';
@@ -13,7 +13,7 @@ const MurderMystery = memo(() => {
   };
 
   return (
-    <div>
+    <Fragment>
       <Typography variant="h2" gutterBottom>{`Murder at ${CASINO}`}</Typography>
       {map(profiles, (profile, i) => {
         const {
@@ -37,7 +37,7 @@ const MurderMystery = memo(() => {
           />
         );
       })}
-    </div>
+    </Fragment>
   );
 });
 

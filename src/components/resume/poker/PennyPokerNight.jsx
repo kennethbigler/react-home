@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, Fragment } from 'react';
 // custom
 import PokerGraph from './PokerGraph';
 import PokerTable from './PokerTable';
@@ -10,7 +10,7 @@ const PennyPokerNight = memo(() => {
   const { parsedScores, totals } = parseData(pennyPokerScores);
 
   return (
-    <div>
+    <Fragment>
       <PokerGraph
         parsedScores={parsedScores}
         colors={pennyPokerColors}
@@ -18,7 +18,7 @@ const PennyPokerNight = memo(() => {
         ticks={[-400, -200, 0, 200, 400, 600]}
       />
       <PokerTable totals={totals} />
-    </div>
+    </Fragment>
   );
 });
 

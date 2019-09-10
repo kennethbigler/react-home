@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import types from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -37,10 +37,10 @@ const GraphQL = (props) => {
 
   if (!graphQLToken) {
     return (
-      <div>
+      <Fragment>
         <Header authToken={authToken} onChange={handleChange} />
         <NoToken />
-      </div>
+      </Fragment>
     );
   }
 

@@ -1,5 +1,5 @@
 // React
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import types from 'prop-types';
 // Material UI
 import Button from '@material-ui/core/Button';
@@ -11,7 +11,7 @@ const ButtonPopover = (props) => {
   const open = Boolean(anchorEl);
 
   return (
-    <div>
+    <Fragment>
       <Button
         aria-owns={open ? 'simple-popper' : null}
         aria-haspopup="true"
@@ -36,7 +36,7 @@ const ButtonPopover = (props) => {
       >
         <div style={{ padding: 15 }}>{React.cloneElement(children)}</div>
       </Popover>
-    </div>
+    </Fragment>
   );
 };
 

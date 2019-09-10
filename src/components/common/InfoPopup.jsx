@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import types from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -15,7 +15,7 @@ const InfoPopup = (props) => {
 
   const { buttonText, title, children } = props;
   return (
-    <div>
+    <Fragment>
       <Button color="primary" onClick={() => { setIsOpen(true); }} variant="contained">
         {buttonText || title}
       </Button>
@@ -32,7 +32,7 @@ const InfoPopup = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Fragment>
   );
 };
 

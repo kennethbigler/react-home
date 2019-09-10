@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, Fragment } from 'react';
 import { Typography } from '@material-ui/core';
 import Info from './Info';
 import Skills from './Skills';
@@ -7,13 +7,13 @@ import TimelineCard from '../../common/timeline-card';
 // Parents: Main
 
 const Summary = memo(() => (
-  <div>
+  <Fragment>
     <Typography variant="h2" gutterBottom>Summary</Typography>
     <Info />
     <TimelineCard />
     <Skills />
     <Education />
-  </div>
+  </Fragment>
 ));
 
 export default Summary;

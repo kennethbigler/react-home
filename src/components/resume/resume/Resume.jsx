@@ -41,18 +41,16 @@ const Resume = memo(() => {
   } = useResume();
 
   return (
-    <div>
-      <Document file={resume} onLoadSuccess={onDocumentLoadSuccess}>
-        {Array.from(new Array(numPages), (el, index) => (
-          <Page
-            key={`page_${index + 1}`}
-            onLoadSuccess={onLoadSuccess}
-            pageNumber={index + 1}
-            width={width}
-          />
-        ))}
-      </Document>
-    </div>
+    <Document file={resume} onLoadSuccess={onDocumentLoadSuccess}>
+      {Array.from(new Array(numPages), (el, index) => (
+        <Page
+          key={`page_${index + 1}`}
+          onLoadSuccess={onLoadSuccess}
+          pageNumber={index + 1}
+          width={width}
+        />
+      ))}
+    </Document>
   );
 });
 

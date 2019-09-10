@@ -17,23 +17,27 @@ const ExpandableCard = (props) => {
     title, subtitle, children, backgroundColor, theme, inverted,
   } = props;
 
-  styles.header.backgroundColor = backgroundColor || theme.palette.primary.main;
+  const headerStyle = {
+    ...styles.header,
+    backgroundColor: backgroundColor || theme.palette.primary.main,
+  };
+
   if (theme.palette.type !== 'dark') {
-    styles.header.boxShadow = `0px 15px 15px -10px ${grey[400]}`;
+    headerStyle.boxShadow = `0px 15px 15px -10px ${grey[400]}`;
   } else {
-    delete styles.header.boxShadow;
+    delete headerStyle.boxShadow;
   }
-  styles.expandedHeader = { ...styles.header, marginBottom: -20 };
-  styles.title = { color: inverted ? 'black' : 'white' };
-  styles.subtitle = { color: grey[inverted ? 800 : 300] };
+  const expandedHeaderStyle = { ...headerStyle, marginBottom: -20 };
+  const titleStyle = { color: inverted ? 'black' : 'white' };
+  const subtitleStyle = { color: grey[inverted ? 800 : 300] };
 
   const titleJSX = (
-    <Typography style={styles.title} variant="h6">
+    <Typography style={titleStyle} variant="h6">
       {title}
     </Typography>
   );
   const subtitleJSX = expanded ? (
-    <Typography style={styles.subtitle}>
+    <Typography style={subtitleStyle}>
       {subtitle}
     </Typography>
   ) : null;
@@ -42,7 +46,7 @@ const ExpandableCard = (props) => {
     <Card style={styles.card}>
       <CardHeader
         onClick={() => { setExpanded(!expanded); }}
-        style={expanded ? styles.expandedHeader : styles.header}
+        style={expanded ? expandedHeaderStyle : headerStyle}
         subheader={subtitleJSX}
         title={titleJSX}
       />

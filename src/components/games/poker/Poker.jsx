@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import types from 'prop-types';
 import forEach from 'lodash/forEach';
 import includes from 'lodash/includes';
@@ -370,7 +370,7 @@ class Poker extends Component {
       cardsToDiscard, gameFunctions, gameOver, hideHands,
     } = this.state;
     return (
-      <div>
+      <Fragment>
         <Typography variant="h2" gutterBottom>
           5 Card Draw Poker
         </Typography>
@@ -384,7 +384,7 @@ class Poker extends Component {
           players={players}
           turn={turn}
         />
-      </div>
+      </Fragment>
     );
   }
 }

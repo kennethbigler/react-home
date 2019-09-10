@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import types from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -24,7 +24,9 @@ class Slots extends Component {
   constructor(props) {
     super(props);
 
-    this.setState({ reel: SlotMachine.pullHandle() });
+    this.state = {
+      reel: SlotMachine.pullHandle(),
+    };
   }
 
   updateSlotMachine = () => {
@@ -78,7 +80,7 @@ class Slots extends Component {
     const slots = this.getSlots();
 
     return (
-      <div>
+      <Fragment>
         <Typography variant="h2">Casino Slot Machine</Typography>
         <Grid container spacing={1} style={{ marginTop: '2em' }}>
           <Grid item sm={6} xs={12}>
@@ -159,7 +161,7 @@ class Slots extends Component {
             </Table>
           </Grid>
         </Grid>
-      </div>
+      </Fragment>
     );
   }
 }

@@ -4,7 +4,7 @@
  * TODO: get second card for dealer and hide it
  * TODO: buy insurance on dealer's Ace
  */
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import types from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -459,7 +459,7 @@ class BlackJack extends Component {
     const { gameFunctions, hideHands } = this.state;
 
     return (
-      <div>
+      <Fragment>
         <Header />
         <GameTable
           betHandler={this.betHandler}
@@ -469,7 +469,7 @@ class BlackJack extends Component {
           players={players}
           turn={turn}
         />
-      </div>
+      </Fragment>
     );
   }
 }

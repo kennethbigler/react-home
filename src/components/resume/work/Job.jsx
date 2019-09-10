@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import types from 'prop-types';
 import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
@@ -69,18 +69,18 @@ class Job extends Component {
             </ul>
           )}
           {!isEmpty(job.tech) && (
-            <div>
+            <Fragment>
               <hr />
               <Typography display="inline">Technologies:&nbsp;</Typography>
               {this.getCSV(job.tech)}
-            </div>
+            </Fragment>
           )}
           {!isEmpty(job.skills) && (
-            <div>
+            <Fragment>
               <hr />
               <Typography display="inline">Skills:&nbsp;</Typography>
               {this.getCSV(job.skills)}
-            </div>
+            </Fragment>
           )}
         </Grid>
         {job.src && (

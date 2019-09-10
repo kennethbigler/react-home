@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, Fragment } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -47,7 +47,7 @@ const TravelMap = memo(() => {
   }
 
   return (
-    <div>
+    <Fragment>
       <Typography variant="h4" style={styles.margins}>
         {`I have been to ${NA.length + EU.length} countries:`}
       </Typography>
@@ -66,7 +66,7 @@ const TravelMap = memo(() => {
           {countries}
         </TableBody>
       </Table>
-    </div>
+    </Fragment>
   );
 });
 

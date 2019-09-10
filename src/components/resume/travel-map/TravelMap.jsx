@@ -1,14 +1,14 @@
-import React, { memo } from 'react';
+import React, { memo, Fragment } from 'react';
 import { Typography } from '@material-ui/core';
 import TravelTable from './TravelTable';
 import WorldMap from './WorldMap';
 
 const TravelMap = memo(() => (
-  <div>
+  <Fragment>
     <Typography variant="h2">My Travel Map</Typography>
     <WorldMap />
     <TravelTable />
-  </div>
+  </Fragment>
 ));
 
 export default TravelMap;

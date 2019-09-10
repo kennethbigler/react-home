@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import types from 'prop-types';
 import Board from './Board';
 import ButtonGroup from './ButtonGroup';
@@ -38,21 +38,21 @@ const GameTable = (props) => {
     cardHandler: cardClickHandler,
   };
   return (
-    <div>
+    <Fragment>
       {isBlackJack && !hideHands
         ? (
-          <div>
+          <Fragment>
             <Board players={played} {...passProps} />
             <ButtonGroup gameFunctions={gameFunctions} />
             <Board players={future} {...passProps} />
-          </div>
+          </Fragment>
         ) : (
-          <div>
+          <Fragment>
             <Board players={playersToDisplay} {...passProps} />
             <ButtonGroup gameFunctions={gameFunctions} />
-          </div>
+          </Fragment>
         )}
-    </div>
+    </Fragment>
   );
 };
 

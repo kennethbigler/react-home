@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, Fragment } from 'react';
 import types from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
@@ -43,12 +43,12 @@ const Menu = memo((props) => {
 
   // render menu
   return (
-    <div>
+    <Fragment>
       <MenuItem onClick={home}>
         Back to Resume
       </MenuItem>
       {menu}
-    </div>
+    </Fragment>
   );
 });
 

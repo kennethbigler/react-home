@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, Fragment } from 'react';
 import {
   ComposableMap,
   ZoomableGroup,
@@ -58,7 +58,7 @@ const WorldMap = memo(() => {
   const screenWidth = document.body.clientWidth - 32;
 
   return (
-    <div>
+    <Fragment>
       <ComposableMap width={screenWidth} height={(screenWidth * 546) / 744} projectionConfig={{ scale: screenWidth * RATIO, rotation: [-10, 0, 0]}}>
         <ZoomableGroup>
           <Geographies geography="/world-110m.json">
@@ -95,7 +95,7 @@ const WorldMap = memo(() => {
         </ZoomableGroup>
       </ComposableMap>
       <Popover x={x} y={y} hide={hide} content={content} />
-    </div>
+    </Fragment>
   );
 });
 

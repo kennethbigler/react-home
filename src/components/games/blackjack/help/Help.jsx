@@ -1,5 +1,5 @@
 // react
-import React, { memo } from 'react';
+import React, { Fragment, memo } from 'react';
 // components
 // material-ui
 import Table from '@material-ui/core/Table';
@@ -66,7 +66,7 @@ const Help = memo(() => {
   ];
 
   return (
-    <div>
+    <Fragment>
       <BlackjackTable data={hardTtl} title="Hard Totals" />
       <BlackjackTable data={softTtl} title="Soft Totals" />
       <BlackjackTable data={pairs} title="Pairs" />
@@ -97,7 +97,7 @@ const Help = memo(() => {
           </TableRow>
         </TableBody>
       </Table>
-    </div>
+    </Fragment>
   );
 });
 

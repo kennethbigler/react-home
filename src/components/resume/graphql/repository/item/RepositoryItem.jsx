@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import types from 'prop-types';
 import { Typography } from '@material-ui/core';
 import Link from '../../Link';
@@ -22,7 +22,7 @@ const RepositoryItem = (props) => {
   } = props;
 
   return (
-    <div>
+    <Fragment>
       <div className="RepositoryItem-title">
         <Typography variant="h3">
           <Link href={url}>{name}</Link>
@@ -34,7 +34,7 @@ const RepositoryItem = (props) => {
       </div>
 
       <Description descriptionHTML={descriptionHTML} primaryLanguage={primaryLanguage} owner={owner} />
-    </div>
+    </Fragment>
   );
 };
 

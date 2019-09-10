@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, Fragment } from 'react';
 import types from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import reduce from 'lodash/reduce';
@@ -48,7 +48,7 @@ const Routes = (props) => {
   );
 
   return (
-    <div>
+    <Fragment>
       <Header handleNav={handleNav}>
         <Menu />
       </Header>
@@ -60,7 +60,7 @@ const Routes = (props) => {
           <Route component={Summary} />
         </Switch>
       </Suspense>
-    </div>
+    </Fragment>
   );
 };
 

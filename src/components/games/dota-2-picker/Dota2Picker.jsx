@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import types from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -135,7 +135,7 @@ class Dota2Picker extends Component {
     const { turn, characters } = this.state;
 
     return (
-      <div>
+      <Fragment>
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           open
@@ -167,7 +167,7 @@ class Dota2Picker extends Component {
             <HeroSelection characters={characters} onClick={this.handleClick} />
           </Grid>
         </Grid>
-      </div>
+      </Fragment>
     );
   }
 }

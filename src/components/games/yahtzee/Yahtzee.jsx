@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import types from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -97,7 +97,7 @@ class Yahtzee extends Component {
 
   constructor(props) {
     super(props);
-    this.setState(getInitialState());
+    this.state = getInitialState();
   }
 
   newGame = () => {
@@ -200,7 +200,7 @@ class Yahtzee extends Component {
     const { scores } = this.props;
 
     return (
-      <div>
+      <Fragment>
         <div className="flex-container">
           <Typography variant="h2">Yahtzee</Typography>
           <ScoreGraph scores={scores} />
@@ -237,7 +237,7 @@ class Yahtzee extends Component {
           finalTopSum={finalTopSum}
           bottomSum={bottomSum}
         />
-      </div>
+      </Fragment>
     );
   }
 }

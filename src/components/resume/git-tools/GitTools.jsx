@@ -1,5 +1,5 @@
 // react
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import types from 'prop-types';
 // redux
 import { connect } from 'react-redux';
@@ -115,7 +115,7 @@ class GitTools extends Component {
     const gitTheme = deepOrange[600];
 
     return (
-      <div>
+      <Fragment>
         <Header
           {...{
             gitTheme,
@@ -160,7 +160,7 @@ class GitTools extends Component {
             }}
           />
         </ExpandableCard>
-      </div>
+      </Fragment>
     );
   }
 }

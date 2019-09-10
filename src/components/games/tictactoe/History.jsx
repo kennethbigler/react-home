@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import types from 'prop-types';
 import Button from '@material-ui/core/Button';
 import map from 'lodash/map';
@@ -44,7 +44,7 @@ const History = (props) => {
   !ascend && moves.reverse();
 
   return (
-    <div>
+    <Fragment>
       <Button
         onClick={() => { setAscend(!ascend); }}
         style={{ marginTop: 20, marginBottom: 20 }}
@@ -53,7 +53,7 @@ const History = (props) => {
         {ascend ? 'Asc' : 'Desc'}
       </Button>
       {moves}
-    </div>
+    </Fragment>
   );
 };
 
