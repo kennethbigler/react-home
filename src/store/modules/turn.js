@@ -1,15 +1,16 @@
 // functions
 import assign from 'lodash/assign';
-
 // initialState
 import initialState from '../initialState';
 
-// Actions
+// --------------------     Actions     -------------------- //
+
 const INCR_PLAYER = 'casino/turn/INCR';
 const INCR_HAND = 'casino/turn/INCR_HAND';
 const RESET = 'casino/turn/RESET';
 
-// Action Creators
+// --------------------     Action Creators     -------------------- //
+
 export function incrPlayerTurn() {
   return { type: INCR_PLAYER };
 }
@@ -20,7 +21,8 @@ export function resetTurn() {
   return { type: RESET };
 }
 
-// Reducer
+// --------------------     Reducers     -------------------- //
+
 export default function reducer(state = initialState.turn, action) {
   switch (action.type) {
     case INCR_PLAYER:
@@ -33,3 +35,5 @@ export default function reducer(state = initialState.turn, action) {
       return state;
   }
 }
+
+// --------------------     Thunks     -------------------- //

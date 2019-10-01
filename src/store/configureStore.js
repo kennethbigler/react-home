@@ -1,4 +1,5 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import forEach from 'lodash/forEach';
 import rootReducer from '.';
 import initialState from './initialState';
@@ -9,21 +10,23 @@ import initialState from './initialState';
  */
 const loadState = () => {
   try {
+    // get state from local storage
     const serializedState = localStorage.getItem('state');
+    // set to defaults if no local storage
     if (!serializedState) {
       return initialState;
     }
-
     const savedState = JSON.parse(serializedState);
     // validate that we have all keys
     forEach(initialState, (item, key) => {
+      // if local storage is only partial, fill with default state
       if (!savedState[key]) {
         savedState[key] = item;
       }
     });
-
     return savedState;
   } catch (e) {
+    // if there are any issues, just load default state
     return initialState;
   }
 };
@@ -41,4 +44,8 @@ export const saveState = (state) => {
   }
 };
 
-export const configureStore = () => createStore(rootReducer, loadState());
+export const configureStore = () => createStore(
+  rootReducer,
+  loadState(),
+  composeWithDevTools(applyMiddleware()),
+);

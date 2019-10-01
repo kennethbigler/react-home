@@ -4,11 +4,12 @@ import { insertItem } from '../immutableHelpers';
 import initialState from '../initialState';
 
 // --------------------     Actions     -------------------- //
+
 const ADD = 'casino/yahtzee/SCORE';
 
 // -------------------- Action Creators     -------------------- //
-/**
- * function to add a score to the state
+
+/** function to add a score to the state
  * @param {number} score - latest yahtzee score
  * @return {Object}
  */
@@ -16,7 +17,8 @@ export function addScore(score) {
   return { type: ADD, score };
 }
 
-// --------------------     Reducer     -------------------- //
+// --------------------     Reducers     -------------------- //
+
 export default function reducer(state = initialState.yahtzee, action) {
   switch (action.type) {
     case ADD:
@@ -25,3 +27,5 @@ export default function reducer(state = initialState.yahtzee, action) {
       return state;
   }
 }
+
+// --------------------     Thunks     -------------------- //

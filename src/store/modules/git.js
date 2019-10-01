@@ -1,17 +1,17 @@
 // functions
 import assign from 'lodash/assign';
-
 // initialState
 import initialState from '../initialState';
 
-// Actions
+// --------------------     Actions     -------------------- //
 const SET_KEY = 'resume/git/SET_KEY';
 const SET_BRANCH_MESSAGE = 'resume/git/SET_BRANCH_MESSAGE';
 const SET_BRANCH_PREFIX = 'resume/git/SET_BRANCH_PREFIX';
 const SET_CASE_PREFERENCE = 'resume/git/SET_CASE_PREFERENCE';
 const SET_COMMIT_PREFIX = 'resume/git/SET_COMMIT_PREFIX';
 
-// Action Creators
+// --------------------     Action Creators     -------------------- //
+
 export function setKey(storyID = '') {
   return { type: SET_KEY, storyID };
 }
@@ -28,7 +28,8 @@ export function setCommitPrefix(isSet = true) {
   return { type: SET_COMMIT_PREFIX, commitPrefix: isSet };
 }
 
-// Reducer
+// --------------------     Reducers     -------------------- //
+
 export default function reducer(state = initialState.git, action) {
   switch (action.type) {
     case SET_KEY:
@@ -47,3 +48,5 @@ export default function reducer(state = initialState.git, action) {
       return state;
   }
 }
+
+// --------------------     Thunks     -------------------- //

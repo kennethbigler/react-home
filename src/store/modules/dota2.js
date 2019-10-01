@@ -56,3 +56,5 @@ export default function reducer(state = initialState.dota2, action) {
       return state;
   }
 }
+
+// --------------------     Thunks     -------------------- //

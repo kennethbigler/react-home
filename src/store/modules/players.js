@@ -9,7 +9,6 @@ import {
   updateObjectInArray,
   insertItem,
 } from '../immutableHelpers';
-
 // initialState
 import initialState, { newPlayer } from '../initialState';
 
@@ -29,8 +28,7 @@ const NEW_HAND = 'casino/player/NEW_HAND';
 
 // -------------------- Action Creators     -------------------- //
 
-/**
- * function to add a player to the state
+/** function to add a player to the state
  * @param {Object[]} players - to get unique id
  * @param {string} name - name of player is only var
  * @return {Object}
@@ -40,8 +38,7 @@ export function addPlayer(players, name) {
   return { type: ADD, player };
 }
 
-/**
- * function to remove player from player array
+/** function to remove player from player array
  * @param {number} id - id of player to remove
  * @return {Object}
  */
@@ -49,8 +46,7 @@ export function removePlayer(id) {
   return { type: REMOVE, id };
 }
 
-/**
- * function to update a player's name
+/** function to update a player's name
  * @param {number} id - id of player
  * @param {string} name - new name of player
  * @return {Object}
@@ -59,8 +55,7 @@ export function updateName(id, name) {
   return { type: UPDATE_NAME, player: { id, name }};
 }
 
-/**
- * function to update a player's bot status
+/** function to update a player's bot status
  * @param {number} id - id of player
  * @param {boolean} isBot - is the player a bot
  * @return {Object}
@@ -69,8 +64,7 @@ export function updateBot(id, isBot = true) {
   return { type: UPDATE_BOT, player: { id, isBot }};
 }
 
-/**
- * function to update a player's bet
+/** function to update a player's bet
  * @param {number} id - id of player
  * @param {number} bet - current bet
  * @return {Object}
@@ -79,8 +73,7 @@ export function updateBet(id = 0, bet = 5) {
   return { type: UPDATE_BET, player: { id, bet }};
 }
 
-/**
- * function to pay the winners and take money from the losers
+/** function to pay the winners and take money from the losers
  * @param {number} id - id of player
  * @param {string} status - win or lose
  * @param {number} money - net money gained or lost
@@ -90,8 +83,7 @@ export function payout(id, status, money) {
   return { type: PAY_PLAYER, player: { id, status, money }};
 }
 
-/**
- * function to split players cards into 2 hands
+/** function to split players cards into 2 hands
  * @param {Object[]} hands - pass in player's hands to be mutated with new card
  * @param {number} id - tells us which player to update
  * @param {number} hNum - optional, if multiple hands
@@ -115,8 +107,7 @@ export function splitHand(hands, id, hNum, weigh = null) {
   return { type: SPLIT_HAND, player: { id, hands: newHands }};
 }
 
-/**
- * function to have a player draw a card
+/** function to have a player draw a card
  * @param {Object[]} hands - pass in player's hands to be mutated with new card
  * @param {number} id - tells us which player to update
  * @param {number} hNum - optional, if multiple hands
@@ -131,8 +122,7 @@ export function drawCard(hands, id, hNum = 0, num = 1, weigh = null) {
   return { type: DRAW_CARD, player: { id, hands: newHands }};
 }
 
-/**
- * iterate through array, removing each index number from hand
+/** iterate through array, removing each index number from hand
  * then add new cards to the hand
  * @param {Object[]} hands - pass in player's hands to be mutated with new card
  * @param {number} id - tells us which player to update
@@ -149,8 +139,7 @@ export function swapCards(hands, id, cardsToDiscard) {
   return { type: SWAP_CARD, player: { id, hands: updatedHand }};
 }
 
-/**
- * function to have a player draw a card
+/** function to have a player draw a card
  * @param {number} id - optional, what player should get a new hand, default 0
  * @param {number} num - optional, number of cards, default 1
  * @param {function} weigh - optional, get weight of hand for game
@@ -162,8 +151,7 @@ export function newHand(id = 0, num = 1, weigh = null) {
   return { type: NEW_HAND, player: { id, hands: [{ cards, weight, soft }]}};
 }
 
-/**
- * function to reset player status
+/** function to reset player status
  * @param {number} id - optional, what player should get a new hand, default 0
  * @return {Object}
  */
@@ -211,3 +199,5 @@ export default function reducer(state = initialState.players, action) {
       return state;
   }
 }
+
+// --------------------     Thunks     -------------------- //
