@@ -13,7 +13,6 @@ import {
 import initialState, { newPlayer } from '../initialState';
 
 // --------------------     Actions     -------------------- //
-
 const ADD = 'casino/player/ADD';
 const REMOVE = 'casino/player/REMOVE';
 const RESET = 'casino/player/RESET';
@@ -27,7 +26,6 @@ const SWAP_CARD = 'casino/player/SWAP_CARD';
 const NEW_HAND = 'casino/player/NEW_HAND';
 
 // -------------------- Action Creators     -------------------- //
-
 /** function to add a player to the state
  * @param {Object[]} players - to get unique id
  * @param {string} name - name of player is only var
@@ -159,16 +157,12 @@ export function resetStatus(id = 0) {
   return {
     type: RESET,
     player: {
-      id,
-      status: '',
-      hands: [],
-      bet: 5,
+      id, status: '', hands: [], bet: 5,
     },
   };
 }
 
 // --------------------     Reducer     -------------------- //
-
 export default function reducer(state = initialState.players, action) {
   switch (action.type) {
     case RESET:
@@ -182,12 +176,13 @@ export default function reducer(state = initialState.players, action) {
       return updateObjectInArray(state, action.player, 'id');
     case PAY_PLAYER: {
       const { id, status, money } = action.player;
-      const player = find(state, ['id', id]);
 
-      const updatedPlayer = assign({}, player, {
+      const player = find(state, ['id', id]);
+      const updatedPlayer = {
+        ...player,
         money: (player.money += money),
         status,
-      });
+      };
 
       return updateObjectInArray(state, updatedPlayer, 'id');
     }

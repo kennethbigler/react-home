@@ -11,7 +11,6 @@ const SET_CASE_PREFERENCE = 'resume/git/SET_CASE_PREFERENCE';
 const SET_COMMIT_PREFIX = 'resume/git/SET_COMMIT_PREFIX';
 
 // --------------------     Action Creators     -------------------- //
-
 export function setKey(storyID = '') {
   return { type: SET_KEY, storyID };
 }
@@ -29,7 +28,6 @@ export function setCommitPrefix(isSet = true) {
 }
 
 // --------------------     Reducers     -------------------- //
-
 export default function reducer(state = initialState.git, action) {
   switch (action.type) {
     case SET_KEY:

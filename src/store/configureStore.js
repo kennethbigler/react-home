@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
 import forEach from 'lodash/forEach';
 import rootReducer from '.';
 import initialState from './initialState';
@@ -47,5 +48,5 @@ export const saveState = (state) => {
 export const configureStore = () => createStore(
   rootReducer,
   loadState(),
-  composeWithDevTools(applyMiddleware()),
+  composeWithDevTools(applyMiddleware(thunk)),
 );

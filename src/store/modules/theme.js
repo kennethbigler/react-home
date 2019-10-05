@@ -8,21 +8,14 @@ import indigo from '@material-ui/core/colors/indigo';
 import initialState from '../initialState';
 
 // --------------------     Actions     -------------------- //
-
 const DARK_THEME = 'resume/theme/DARK_THEME';
 const LIGHT_THEME = 'resume/theme/LIGHT_THEME';
 
 // --------------------     Action Creators     -------------------- //
-
-export function displayDarkTheme() {
-  return { type: DARK_THEME };
-}
-export function displayLightTheme() {
-  return { type: LIGHT_THEME };
-}
+export const displayDarkTheme = () => ({ type: DARK_THEME });
+export const displayLightTheme = () => ({ type: LIGHT_THEME });
 
 // --------------------     Reducers     -------------------- //
-
 export default function reducer(state = initialState.theme, action) {
   switch (action.type) {
     case DARK_THEME:

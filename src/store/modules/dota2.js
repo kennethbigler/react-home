@@ -10,34 +10,15 @@ const UPDATE_LINEUP = 'casino/dota2/UPDATE_LINEUP';
 const RESET_LINEUP = 'casino/dota2/RESET_LINEUP';
 
 // -------------------- Action Creators     -------------------- //
-/**
- * function to add a lineup to the state
- * @return {Object}
- */
 export function addLineup() {
   return { type: ADD, lineup: newDota2Lineup() };
 }
-
-/**
- * function to remove a lineup in the state
- * @return {Object}
- */
 export function removeLineup(set) {
   return { type: REMOVE, set };
 }
-
-/**
- * function to update a lineup in the state
- * @return {Object}
- */
 export function updateLineup(order, set) {
   return { type: UPDATE_LINEUP, order, set };
 }
-
-/**
- * function to reset a lineup in the state
- * @return {Object}
- */
 export function resetLineup(set) {
   return { type: RESET_LINEUP, order: newDota2Lineup(), set };
 }

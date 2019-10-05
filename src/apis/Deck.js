@@ -124,48 +124,8 @@ function deal(num = 0) {
 // sort functions by weight
 const rankSort = (a, b) => a.weight - b.weight;
 
-// sort cards by suit
-const suitSort = (a, b) => {
-  let ta;
-  let tb;
-  switch (a.suit) {
-    case '♣':
-      ta = 20;
-      break;
-    case '♦':
-      ta = 40;
-      break;
-    case '♥':
-      ta = 60;
-      break;
-    case '♠':
-      ta = 80;
-      break;
-    default:
-      ta = 0;
-  }
-  switch (b.suit) {
-    case '♣':
-      tb = 20;
-      break;
-    case '♦':
-      tb = 40;
-      break;
-    case '♥':
-      tb = 60;
-      break;
-    case '♠':
-      tb = 80;
-      break;
-    default:
-      tb = 0;
-  }
-  return ta + a.weight - (tb + b.weight);
-};
-
 export default {
   shuffle,
   deal,
   rankSort,
-  suitSort,
 };
