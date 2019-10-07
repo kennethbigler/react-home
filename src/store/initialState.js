@@ -87,7 +87,6 @@ const NEW_DECK = [
 export const getNewDeck = () => map(NEW_DECK, (val) => assign({}, val));
 
 export default {
-  deck: getNewDeck(),
   dota2: [newDota2Lineup()],
   git: {
     storyID: '',

@@ -38,7 +38,7 @@ export default function reducer(deck = initialState.deck, action) {
         /* eslint-disable no-console */
         console.error('Not Enough Cards Left');
         /* eslint-enable no-console */
-        return null;
+        return deck;
       }
       // create array to return
       const newDeck = map(deck, (card) => assign({}, card));

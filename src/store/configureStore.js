@@ -1,52 +1,45 @@
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
+import localForage from 'localforage';
 import forEach from 'lodash/forEach';
 import rootReducer from '.';
 import initialState from './initialState';
 
-/**
- * funtion to read 'state' value from local storage and return it, or default state
+/** funtion to read 'state' value from local storage and return it, or default state
  * @return {Object[]} - last saved application state
  */
-const loadState = () => {
-  try {
-    // get state from local storage
-    const serializedState = localStorage.getItem('state');
+export const loadState = async () => localForage
+  .getItem('state')
+  .then((state) => {
     // set to defaults if no local storage
-    if (!serializedState) {
+    if (!state) {
       return initialState;
     }
-    const savedState = JSON.parse(serializedState);
     // validate that we have all keys
     forEach(initialState, (item, key) => {
       // if local storage is only partial, fill with default state
-      if (!savedState[key]) {
-        savedState[key] = item;
+      if (!state[key]) {
+        state[key] = item;
       }
     });
-    return savedState;
-  } catch (e) {
-    // if there are any issues, just load default state
-    return initialState;
-  }
-};
+    return state;
+  })
+  // if there are any issues, just load default state
+  .catch(() => initialState);
 
-/**
- * funtion to save 'state' value to local storage
+/** funtion to save 'state' value to local storage
  * @param {Object[]} state - current application state
  */
-export const saveState = (state) => {
-  try {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem('state', serializedState);
-  } catch (err) {
+export const saveState = (state) => localForage
+  .setItem('state', state)
+  .catch((e) => {
     // ignore the error and skip the save
-  }
-};
+    console.log(e);
+  });
 
-export const configureStore = () => createStore(
+export const configureStore = (state) => createStore(
   rootReducer,
-  loadState(),
+  state,
   composeWithDevTools(applyMiddleware(thunk)),
 );
