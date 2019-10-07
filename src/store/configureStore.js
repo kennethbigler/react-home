@@ -2,7 +2,6 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import localForage from 'localforage';
-import forEach from 'lodash/forEach';
 import rootReducer from '.';
 import initialState from './initialState';
 
@@ -11,20 +10,7 @@ import initialState from './initialState';
  */
 export const loadState = async () => localForage
   .getItem('state')
-  .then((state) => {
-    // set to defaults if no local storage
-    if (!state) {
-      return initialState;
-    }
-    // validate that we have all keys
-    forEach(initialState, (item, key) => {
-      // if local storage is only partial, fill with default state
-      if (!state[key]) {
-        state[key] = item;
-      }
-    });
-    return state;
-  })
+  .then((state) => (state ? { ...initialState, ...state } : initialState))
   // if there are any issues, just load default state
   .catch(() => initialState);
 

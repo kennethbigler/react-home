@@ -1,5 +1,4 @@
 import assign from 'lodash/assign';
-import map from 'lodash/map';
 import indigo from '@material-ui/core/colors/indigo';
 import deepOrange from '@material-ui/core/colors/deepOrange';
 
@@ -26,65 +25,6 @@ export const newDota2Lineup = () => [...[
   assign({}, { name: 'Ban 6', radiant: assign({}, { number: 20, selection: null }), dire: assign({}, { number: 19, selection: null }) }),
   assign({}, { name: 'Pick 5', radiant: assign({}, { number: 21, selection: null }), dire: assign({}, { number: 22, selection: null }) }),
 ]];
-
-// used to reset the cards
-const NEW_DECK = [
-  { name: '2', weight: 2, suit: '♣' },
-  { name: '3', weight: 3, suit: '♣' },
-  { name: '4', weight: 4, suit: '♣' },
-  { name: '5', weight: 5, suit: '♣' },
-  { name: '6', weight: 6, suit: '♣' },
-  { name: '7', weight: 7, suit: '♣' },
-  { name: '8', weight: 8, suit: '♣' },
-  { name: '9', weight: 9, suit: '♣' },
-  { name: '10', weight: 10, suit: '♣' },
-  { name: 'J', weight: 11, suit: '♣' },
-  { name: 'Q', weight: 12, suit: '♣' },
-  { name: 'K', weight: 13, suit: '♣' },
-  { name: 'A', weight: 14, suit: '♣' },
-  { name: '2', weight: 2, suit: '♦' },
-  { name: '3', weight: 3, suit: '♦' },
-  { name: '4', weight: 4, suit: '♦' },
-  { name: '5', weight: 5, suit: '♦' },
-  { name: '6', weight: 6, suit: '♦' },
-  { name: '7', weight: 7, suit: '♦' },
-  { name: '8', weight: 8, suit: '♦' },
-  { name: '9', weight: 9, suit: '♦' },
-  { name: '10', weight: 10, suit: '♦' },
-  { name: 'J', weight: 11, suit: '♦' },
-  { name: 'Q', weight: 12, suit: '♦' },
-  { name: 'K', weight: 13, suit: '♦' },
-  { name: 'A', weight: 14, suit: '♦' },
-  { name: '2', weight: 2, suit: '♥' },
-  { name: '3', weight: 3, suit: '♥' },
-  { name: '4', weight: 4, suit: '♥' },
-  { name: '5', weight: 5, suit: '♥' },
-  { name: '6', weight: 6, suit: '♥' },
-  { name: '7', weight: 7, suit: '♥' },
-  { name: '8', weight: 8, suit: '♥' },
-  { name: '9', weight: 9, suit: '♥' },
-  { name: '10', weight: 10, suit: '♥' },
-  { name: 'J', weight: 11, suit: '♥' },
-  { name: 'Q', weight: 12, suit: '♥' },
-  { name: 'K', weight: 13, suit: '♥' },
-  { name: 'A', weight: 14, suit: '♥' },
-  { name: '2', weight: 2, suit: '♠' },
-  { name: '3', weight: 3, suit: '♠' },
-  { name: '4', weight: 4, suit: '♠' },
-  { name: '5', weight: 5, suit: '♠' },
-  { name: '6', weight: 6, suit: '♠' },
-  { name: '7', weight: 7, suit: '♠' },
-  { name: '8', weight: 8, suit: '♠' },
-  { name: '9', weight: 9, suit: '♠' },
-  { name: '10', weight: 10, suit: '♠' },
-  { name: 'J', weight: 11, suit: '♠' },
-  { name: 'Q', weight: 12, suit: '♠' },
-  { name: 'K', weight: 13, suit: '♠' },
-  { name: 'A', weight: 14, suit: '♠' },
-];
-
-// immutably get a copy of new deck O(N)
-export const getNewDeck = () => map(NEW_DECK, (val) => assign({}, val));
 
 export default {
   dota2: [newDota2Lineup()],
