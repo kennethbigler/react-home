@@ -353,14 +353,15 @@ class Poker extends Component {
   dealHands = () => {
     const { playerActions, players } = this.props;
     // shuffle the deck
-    Deck.shuffle();
-    // deal the hands
-    forEach(
-      players,
-      (player) => player.id !== DEALER
-        && player.id <= LAST_PLAYER
-        && playerActions.newHand(player.id, 5),
-    );
+    Deck.shuffle().then(() => {
+      // deal the hands
+      forEach(
+        players,
+        (player) => player.id !== DEALER
+          && player.id <= LAST_PLAYER
+          && playerActions.newHand(player.id, 5),
+      );
+    });
   };
 
   // render standard board

@@ -81,71 +81,19 @@ export function payout(id, status, money) {
   return { type: PAY_PLAYER, player: { id, status, money }};
 }
 
-/** function to split players cards into 2 hands
- * @param {Object[]} hands - pass in player's hands to be mutated with new card
- * @param {number} id - tells us which player to update
- * @param {number} hNum - optional, if multiple hands
- * @param {function} weigh - optional, get weight of hand for game
- * @return {Object}
- */
-export function splitHand(hands, id, hNum, weigh = null) {
-  const hand = hands[hNum];
-  // split the hands into 2
-  const hand1 = { cards: [hand.cards[0]]};
-  const hand2 = { cards: [hand.cards[1]]};
-  // add 1 card each
-  hand1.cards.push(Deck.deal(1)[0]);
-  hand2.cards.push(Deck.deal(1)[0]);
-  // update the weights
-  assign(hand1, weigh(hand1.cards));
-  assign(hand2, weigh(hand2.cards));
-  // update global hands
-  const newHands = updateArrayInArray(hands, hand2, hNum);
-  newHands.splice(hNum, 0, hand1);
+function createSplitHandAction(id, newHands) {
   return { type: SPLIT_HAND, player: { id, hands: newHands }};
 }
 
-/** function to have a player draw a card
- * @param {Object[]} hands - pass in player's hands to be mutated with new card
- * @param {number} id - tells us which player to update
- * @param {number} hNum - optional, if multiple hands
- * @param {number} num - optional, number of cards, default 1
- * @param {function} weigh - optional, get weight of hand for game
- * @return {Object}
- */
-export function drawCard(hands, id, hNum = 0, num = 1, weigh = null) {
-  const cards = [...hands[hNum].cards, ...Deck.deal(num)];
-  const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
-  const newHands = updateArrayInArray(hands, { cards, weight, soft }, hNum);
+function createDrawCardAction(id, newHands) {
   return { type: DRAW_CARD, player: { id, hands: newHands }};
 }
 
-/** iterate through array, removing each index number from hand
- * then add new cards to the hand
- * @param {Object[]} hands - pass in player's hands to be mutated with new card
- * @param {number} id - tells us which player to update
- * @param {array} cardsToDiscard - array of index numbers
- * @return {Object}
- */
-export function swapCards(hands, id, cardsToDiscard) {
-  const cards = [...hands[0].cards];
-  forEach(cardsToDiscard, (i) => {
-    [cards[i]] = Deck.deal(1);
-  });
-  cards.sort(Deck.rankSort);
-  const updatedHand = updateArrayInArray(hands, { cards }, 0);
+function createSwapCardsAction(id, updatedHand) {
   return { type: SWAP_CARD, player: { id, hands: updatedHand }};
 }
 
-/** function to have a player draw a card
- * @param {number} id - optional, what player should get a new hand, default 0
- * @param {number} num - optional, number of cards, default 1
- * @param {function} weigh - optional, get weight of hand for game
- * @return {Object}
- */
-export function newHand(id = 0, num = 1, weigh = null) {
-  const cards = Deck.deal(num).sort(Deck.rankSort);
-  const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
+function createNewHandAction(id, cards, soft, weight) {
   return { type: NEW_HAND, player: { id, hands: [{ cards, weight, soft }]}};
 }
 
@@ -196,3 +144,92 @@ export default function reducer(state = initialState.players, action) {
 }
 
 // --------------------     Thunks     -------------------- //
+/** function to have a player draw a card
+ * @param {number} id - optional, what player should get a new hand, default 0
+ * @param {number} num - optional, number of cards, default 1
+ * @param {function} weigh - optional, get weight of hand for game
+ * @return {Object}
+ */
+export function newHand(id = 0, num = 1, weigh = null) {
+  return (dispatch) => Deck.deal(num)
+    .then((cards) => {
+      cards.sort(Deck.rankSort);
+      const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
+      return { weight, soft, cards };
+    })
+    .then(({ weight, soft, cards }) => dispatch(createNewHandAction(id, cards, soft, weight)));
+}
+
+/** function to have a player draw a card
+ * @param {Object[]} hands - pass in player's hands to be mutated with new card
+ * @param {number} id - tells us which player to update
+ * @param {number} hNum - optional, if multiple hands
+ * @param {number} num - optional, number of cards, default 1
+ * @param {function} weigh - optional, get weight of hand for game
+ * @return {Object}
+ */
+export function drawCard(hands, id, hNum = 0, num = 1, weigh = null) {
+  return (dispatch) => Deck.deal(num)
+    .then((drawnCards) => {
+      const cards = [...hands[hNum].cards, ...drawnCards];
+      const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
+      const newHands = updateArrayInArray(hands, { cards, weight, soft }, hNum);
+      return newHands;
+    })
+    .then((newHands) => dispatch(createDrawCardAction(id, newHands)));
+}
+
+/** function to split players cards into 2 hands
+ * @param {Object[]} hands - pass in player's hands to be mutated with new card
+ * @param {number} id - tells us which player to update
+ * @param {number} hNum - optional, if multiple hands
+ * @param {function} weigh - optional, get weight of hand for game
+ * @return {Object}
+ */
+export function splitHand(hands, id, hNum, weigh = null) {
+  return (dispatch) => {
+    const hand = hands[hNum];
+    // split the hands into 2
+    const hand1 = { cards: [hand.cards[0]]};
+    const hand2 = { cards: [hand.cards[1]]};
+
+    return Deck.deal(1)
+      .then((cards) => {
+        hand1.cards.push(cards[0]);
+      })
+      .then(() => {
+        Deck.deal(1)
+          .then((cards) => {
+            hand2.cards.push(cards[0]);
+
+            // update the weights
+            assign(hand1, weigh(hand1.cards));
+            assign(hand2, weigh(hand2.cards));
+            // update global hands
+            const newHands = updateArrayInArray(hands, hand2, hNum);
+            newHands.splice(hNum, 0, hand1);
+            return newHands;
+          })
+          .then((newHands) => dispatch(createSplitHandAction(id, newHands)));
+      });
+  };
+}
+
+/** iterate through array, removing each index number from hand
+ * then add new cards to the hand
+ * @param {Object[]} hands - pass in player's hands to be mutated with new card
+ * @param {number} id - tells us which player to update
+ * @param {array} cardsToDiscard - array of index numbers
+ * @return {Object}
+ */
+export function swapCards(hands, id, cardsToDiscard) {
+  return (dispatch) => {
+    const cards = [...hands[0].cards];
+    forEach(cardsToDiscard, async (i) => {
+      [cards[i]] = await Deck.deal(1);
+    });
+    cards.sort(Deck.rankSort);
+    const updatedHand = updateArrayInArray(hands, { cards }, 0);
+    dispatch(createSwapCardsAction(id, updatedHand));
+  };
+}

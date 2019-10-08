@@ -1,86 +1,57 @@
+import localForage from 'localforage';
 import assign from 'lodash/assign';
 import map from 'lodash/map';
 
-// used to reset the cards
 const NEW_DECK = [
-  { name: '2', weight: 2, suit: '♣' },
-  { name: '3', weight: 3, suit: '♣' },
-  { name: '4', weight: 4, suit: '♣' },
-  { name: '5', weight: 5, suit: '♣' },
-  { name: '6', weight: 6, suit: '♣' },
-  { name: '7', weight: 7, suit: '♣' },
-  { name: '8', weight: 8, suit: '♣' },
-  { name: '9', weight: 9, suit: '♣' },
-  { name: '10', weight: 10, suit: '♣' },
-  { name: 'J', weight: 11, suit: '♣' },
-  { name: 'Q', weight: 12, suit: '♣' },
-  { name: 'K', weight: 13, suit: '♣' },
-  { name: 'A', weight: 14, suit: '♣' },
-  { name: '2', weight: 2, suit: '♦' },
-  { name: '3', weight: 3, suit: '♦' },
-  { name: '4', weight: 4, suit: '♦' },
-  { name: '5', weight: 5, suit: '♦' },
-  { name: '6', weight: 6, suit: '♦' },
-  { name: '7', weight: 7, suit: '♦' },
-  { name: '8', weight: 8, suit: '♦' },
-  { name: '9', weight: 9, suit: '♦' },
-  { name: '10', weight: 10, suit: '♦' },
-  { name: 'J', weight: 11, suit: '♦' },
-  { name: 'Q', weight: 12, suit: '♦' },
-  { name: 'K', weight: 13, suit: '♦' },
-  { name: 'A', weight: 14, suit: '♦' },
-  { name: '2', weight: 2, suit: '♥' },
-  { name: '3', weight: 3, suit: '♥' },
-  { name: '4', weight: 4, suit: '♥' },
-  { name: '5', weight: 5, suit: '♥' },
-  { name: '6', weight: 6, suit: '♥' },
-  { name: '7', weight: 7, suit: '♥' },
-  { name: '8', weight: 8, suit: '♥' },
-  { name: '9', weight: 9, suit: '♥' },
-  { name: '10', weight: 10, suit: '♥' },
-  { name: 'J', weight: 11, suit: '♥' },
-  { name: 'Q', weight: 12, suit: '♥' },
-  { name: 'K', weight: 13, suit: '♥' },
-  { name: 'A', weight: 14, suit: '♥' },
-  { name: '2', weight: 2, suit: '♠' },
-  { name: '3', weight: 3, suit: '♠' },
-  { name: '4', weight: 4, suit: '♠' },
-  { name: '5', weight: 5, suit: '♠' },
-  { name: '6', weight: 6, suit: '♠' },
-  { name: '7', weight: 7, suit: '♠' },
-  { name: '8', weight: 8, suit: '♠' },
-  { name: '9', weight: 9, suit: '♠' },
-  { name: '10', weight: 10, suit: '♠' },
-  { name: 'J', weight: 11, suit: '♠' },
-  { name: 'Q', weight: 12, suit: '♠' },
-  { name: 'K', weight: 13, suit: '♠' },
-  { name: 'A', weight: 14, suit: '♠' },
+  { name: '2', weight: 2, suit: '♣' }, { name: '3', weight: 3, suit: '♣' },
+  { name: '4', weight: 4, suit: '♣' }, { name: '5', weight: 5, suit: '♣' },
+  { name: '6', weight: 6, suit: '♣' }, { name: '7', weight: 7, suit: '♣' },
+  { name: '8', weight: 8, suit: '♣' }, { name: '9', weight: 9, suit: '♣' },
+  { name: '10', weight: 10, suit: '♣' }, { name: 'J', weight: 11, suit: '♣' },
+  { name: 'Q', weight: 12, suit: '♣' }, { name: 'K', weight: 13, suit: '♣' },
+  { name: 'A', weight: 14, suit: '♣' }, { name: '2', weight: 2, suit: '♦' },
+  { name: '3', weight: 3, suit: '♦' }, { name: '4', weight: 4, suit: '♦' },
+  { name: '5', weight: 5, suit: '♦' }, { name: '6', weight: 6, suit: '♦' },
+  { name: '7', weight: 7, suit: '♦' }, { name: '8', weight: 8, suit: '♦' },
+  { name: '9', weight: 9, suit: '♦' }, { name: '10', weight: 10, suit: '♦' },
+  { name: 'J', weight: 11, suit: '♦' }, { name: 'Q', weight: 12, suit: '♦' },
+  { name: 'K', weight: 13, suit: '♦' }, { name: 'A', weight: 14, suit: '♦' },
+  { name: '2', weight: 2, suit: '♥' }, { name: '3', weight: 3, suit: '♥' },
+  { name: '4', weight: 4, suit: '♥' }, { name: '5', weight: 5, suit: '♥' },
+  { name: '6', weight: 6, suit: '♥' }, { name: '7', weight: 7, suit: '♥' },
+  { name: '8', weight: 8, suit: '♥' }, { name: '9', weight: 9, suit: '♥' },
+  { name: '10', weight: 10, suit: '♥' }, { name: 'J', weight: 11, suit: '♥' },
+  { name: 'Q', weight: 12, suit: '♥' }, { name: 'K', weight: 13, suit: '♥' },
+  { name: 'A', weight: 14, suit: '♥' }, { name: '2', weight: 2, suit: '♠' },
+  { name: '3', weight: 3, suit: '♠' }, { name: '4', weight: 4, suit: '♠' },
+  { name: '5', weight: 5, suit: '♠' }, { name: '6', weight: 6, suit: '♠' },
+  { name: '7', weight: 7, suit: '♠' }, { name: '8', weight: 8, suit: '♠' },
+  { name: '9', weight: 9, suit: '♠' }, { name: '10', weight: 10, suit: '♠' },
+  { name: 'J', weight: 11, suit: '♠' }, { name: 'Q', weight: 12, suit: '♠' },
+  { name: 'K', weight: 13, suit: '♠' }, { name: 'A', weight: 14, suit: '♠' },
 ];
 
-// immutably get a copy an array O(N)
-function getImmutableArray(arr) {
-  return map(arr, (val) => assign({}, val));
-}
-
-// immutably get a copy of new deck O(N)
+/** immutably get a copy of new deck O(N) */
 function getNewDeck() {
-  return getImmutableArray(NEW_DECK);
+  return map(NEW_DECK, (card) => assign({}, card));
 }
 
-// deck used
-let deck = [];
-
-// get immutable copy of deck O(N)
+/** get immutable copy of deck O(N) */
 function getDeck() {
-  return getImmutableArray(deck);
+  return localForage
+    .getItem('deck')
+    .then((data) => (data || getNewDeck()))
+    .catch(() => getNewDeck());
 }
 
-// immutably update deck O(N)
-function setDeck(newDeck) {
-  deck = getImmutableArray(newDeck);
+/** immutably update deck O(N) */
+function setDeck(deck) {
+  return localForage
+    .setItem('deck', deck)
+    .catch((e) => console.log(e));
 }
 
-// randomize order of the cards O(N + M)
+/** randomize order of the cards O(N + M) */
 function shuffle() {
   // get a new deck
   const shuffledDeck = getNewDeck();
@@ -96,36 +67,30 @@ function shuffle() {
     shuffledDeck[k] = temp;
   }
   // update deck state
-  setDeck(shuffledDeck);
+  return setDeck(shuffledDeck);
 }
 
-// return an array of a specified length O(2N)
+/** return an array of a specified length O(2N) */
 function deal(num = 0) {
-  // verify we have enough cards
-  if (num > deck.length) {
-    /* eslint-disable no-console */
-    console.error('Not Enough Cards Left');
-    /* eslint-enable no-console */
-    return null;
-  }
-  // create array to return
-  const newDeck = getDeck();
   const cards = [];
-  // get the cards
-  for (let i = 0; i < num; i += 1) {
-    cards.push(newDeck.pop());
-  }
-  // update deck state
-  setDeck(newDeck);
-  // return the card(s)
-  return cards;
+  return getDeck()
+    .then((deck) => {
+      // verify we have enough cards
+      if (num > deck.length) {
+        console.error('Not Enough Cards Left');
+        return deck;
+      }
+      // get the cards
+      for (let i = 0; i < num; i += 1) {
+        cards.push(deck.pop());
+      }
+      return deck;
+    })
+    .then((deck) => setDeck(deck))
+    .then(() => cards);
 }
 
-// sort functions by weight
+/** sort by card weight */
 const rankSort = (a, b) => a.weight - b.weight;
 
-export default {
-  shuffle,
-  deal,
-  rankSort,
-};
+export default { shuffle, deal, rankSort };

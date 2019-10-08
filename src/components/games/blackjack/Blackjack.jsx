@@ -226,11 +226,12 @@ class BlackJack extends Component {
   dealHands = () => {
     const { playerActions, players } = this.props;
     // shuffle the deck
-    Deck.shuffle();
-    // deal the hands
-    forEach(players, (player) => {
-      const num = player.id !== DEALER ? 2 : 1;
-      playerActions.newHand(player.id, num, weighHand);
+    Deck.shuffle().then(() => {
+      // deal the hands
+      forEach(players, (player) => {
+        const num = player.id !== DEALER ? 2 : 1;
+        await playerActions.newHand(player.id, num, weighHand);
+      });
     });
   };
 
