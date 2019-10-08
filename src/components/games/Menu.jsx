@@ -14,7 +14,6 @@ const Menu = memo((props) => {
     [
       { name: 'Home - Games', route: '' },
       { divider: true },
-      // { name: 'Bingo', route: 'bingo' }
       { name: 'BlackJack', route: 'blackjack' },
       { name: 'Connect4', route: 'connect4' },
       { name: 'Deal or No Deal', route: 'deal' },

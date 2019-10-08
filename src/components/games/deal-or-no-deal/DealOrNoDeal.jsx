@@ -86,7 +86,7 @@ class DND extends Component {
    */
   chargePlayer = () => {
     const { player, actions } = this.props;
-    actions.payout(player.id, 'lose', -132);
+    actions.payout(player.id, 'lose', -100);
   };
 
   /**

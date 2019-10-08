@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import get from 'lodash/get';
 import forEach from 'lodash/forEach';
+import asyncForEach from '../../../helpers/asyncForEach';
 // components
 import Header from './Header';
 import GameTable from '../gametable';
@@ -33,8 +34,7 @@ import {
 // Dealer constant
 const DEALER = 0;
 
-/**
- * calculate the weight of a hand
+/** calculate the weight of a hand
  * stateChanges: none
  *
  * @param {Object[]} hand
@@ -77,7 +77,6 @@ function weighHand(hand = []) {
 /* --------------------------------------------------
 * BlackJack
 * -------------------------------------------------- */
-
 class BlackJack extends Component {
   constructor(props) {
     super(props);
@@ -113,8 +112,7 @@ class BlackJack extends Component {
     }
   }
 
-  /**
-   * function to generate the state of a new game
+  /** function to generate the state of a new game
    * @return {Object}
    */
   getNewGameState = () => ({
@@ -131,8 +129,7 @@ class BlackJack extends Component {
     forEach(players, (player) => playerActions.resetStatus(player.id));
   };
 
-  /**
-   * get the game functions for the present hand
+  /** get the game functions for the present hand
    * @param {Object[]} hand
    */
   getGameFunctions = (hand) => {
@@ -169,8 +166,7 @@ class BlackJack extends Component {
     this.setState({ gameFunctions });
   };
 
-  /**
-   * function that takes a hand of duplicates and makes 2 hands
+  /** function that takes a hand of duplicates and makes 2 hands
    * stateChanges: players
    */
   split = () => {
@@ -192,8 +188,7 @@ class BlackJack extends Component {
     this.stay();
   };
 
-  /**
-   * function to pass to the next player
+  /** function to pass to the next player
    * stateChanges: turn
    */
   stay = () => {
@@ -207,8 +202,7 @@ class BlackJack extends Component {
       : turnActions.incrPlayerTurn();
   };
 
-  /**
-   * function to get a new card
+  /** function to get a new card
    * stateChanges: players
    */
   hit = () => {
@@ -219,8 +213,7 @@ class BlackJack extends Component {
     playerActions.drawCard(hands, id, turn.hand, 1, weighHand);
   };
 
-  /**
-   * Start a new round of hands
+  /** Start a new round of hands
    * stateChanges: turn, players
    */
   dealHands = () => {
@@ -228,15 +221,14 @@ class BlackJack extends Component {
     // shuffle the deck
     Deck.shuffle().then(() => {
       // deal the hands
-      forEach(players, (player) => {
+      asyncForEach(players, async (player) => {
         const num = player.id !== DEALER ? 2 : 1;
         await playerActions.newHand(player.id, num, weighHand);
       });
     });
   };
 
-  /**
-   * Start a new game
+  /** Start a new game
    * stateChanges: hideHands
    */
   newGame = () => {
@@ -244,8 +236,7 @@ class BlackJack extends Component {
     this.setState(this.getNewGameState());
   };
 
-  /**
-   * function to finish betting and start the game
+  /** function to finish betting and start the game
    * stateChanges: hideHands
    */
   finishBetting = () => {
@@ -253,8 +244,7 @@ class BlackJack extends Component {
     this.dealHands();
   };
 
-  /**
-   * finish the game and check for a winner
+  /** finish the game and check for a winner
    * stateChanges: turn, player, gameFunctions
    */
   finishGame = () => {
@@ -429,8 +419,7 @@ class BlackJack extends Component {
     }
   };
 
-  /**
-   * function to be called on card clicks
+  /** function to be called on card clicks
    * @param {number} playerNo - player number
    * @param {number} handNo - hand number
    * @param {number} cardNo - card number
@@ -442,8 +431,7 @@ class BlackJack extends Component {
     /* eslint-enable no-console */
   };
 
-  /**
-   * function to be called on card clicks
+  /** function to be called on card clicks
    * @param {number} id
    * @param {Object} event
    * @param {number} bet

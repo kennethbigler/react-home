@@ -7,6 +7,7 @@ import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import asyncForEach from '../../../helpers/asyncForEach';
 import {
   swapCards,
   newHand,
@@ -51,8 +52,7 @@ class Poker extends Component {
     forEach(players, (player) => playerActions.resetStatus(player.id));
   };
 
-  /**
-   * function to generate the state of a new game
+  /** function to generate the state of a new game
    * @return {Object}
    */
   getNewGameState = () => ({
@@ -62,8 +62,7 @@ class Poker extends Component {
     gameOver: false,
   });
 
-  /**
-   * get hand from props
+  /** get hand from props
    * @return {Array}
    */
   getHand = () => {
@@ -87,8 +86,7 @@ class Poker extends Component {
     this.setState(this.getNewGameState());
   };
 
-  /**
-   * function to finish betting and start the game
+  /** function to finish betting and start the game
    * stateChanges: hideHands
    */
   startGame = () => {
@@ -136,8 +134,7 @@ class Poker extends Component {
     });
   };
 
-  /**
-   * Rankings:
+  /** Rankings:
    *   Straight Flush  8
    *   4 of a Kind     7
    *   Full House      6
@@ -197,8 +194,7 @@ class Poker extends Component {
     return 0; // high card
   };
 
-  /**
-   * iterate through array, removing each index number from hand
+  /** iterate through array, removing each index number from hand
    * then add new cards to the hand
    * @param {array} cards - array of index numbers
    */
@@ -220,8 +216,7 @@ class Poker extends Component {
     });
   };
 
-  /**
-   * function to remove n number of cards
+  /** function to remove n number of cards
    * @param {number} n - number of cards to remove
    * @param {[number]} hist - number of each respective card in hand
    */
@@ -248,26 +243,26 @@ class Poker extends Component {
   };
 
   /** computer play algorithm:
-    PAIRS
-    draw 0 on 4 of a kind
-    draw 0 on full house
-    draw 1 on 3 of a kind, keep higher of 2
-    draw 1 on 2 pair
-    draw 3 on 2 of a kind
-
-    This is a nice to have, for now we only follow the first half
-    STRAIGHT/FLUSH
-    draw 0 on straight
-    draw 0 on flush
-    draw 0 on straight flush
-    if 1 away from sf -> draw 1
-    if 1 away from S -> draw 1 if 5+ players, else regular hand
-    if 1 away from F -> draw 1 if 5+ players, else regular hand
-
-    REGULAR HAND
-    if K / A -> draw 4
-    else draw 5
-    */
+   * PAIRS
+   * draw 0 on 4 of a kind
+   * draw 0 on full house
+   * draw 1 on 3 of a kind, keep higher of 2
+   * draw 1 on 2 pair
+   * draw 3 on 2 of a kind
+   *
+   * This is a nice to have, for now we only follow the first half
+   * STRAIGHT/FLUSH
+   * draw 0 on straight
+   * draw 0 on flush
+   * draw 0 on straight flush
+   * if 1 away from sf -> draw 1
+   * if 1 away from S -> draw 1 if 5+ players, else regular hand
+   * if 1 away from F -> draw 1 if 5+ players, else regular hand
+   *
+   * REGULAR HAND
+   * if K / A -> draw 4
+   * else draw 5
+   */
   computer = () => {
     const hand = this.getHand();
     const hist = this.getHistogram(hand);
@@ -297,8 +292,7 @@ class Poker extends Component {
     this.endTurn();
   };
 
-  /**
-   * function to be called on card clicks
+  /** function to be called on card clicks
    * @param {number} playerNo - player number
    * @param {number} handNo - hand number
    * @param {number} cardNo - card number
@@ -313,8 +307,7 @@ class Poker extends Component {
     this.setState({ cardsToDiscard });
   };
 
-  /**
-   * Compare hands to see who wins
+  /** Compare hands to see who wins
    * @param {array} hand - array of card objects
    * Hands is assigned a weight based on hand, then card values
    * Compare values to see who wins
@@ -346,8 +339,7 @@ class Poker extends Component {
     return `${rank}${reduce(cards, (a, c) => `${a}${c}`)}`;
   };
 
-  /**
-   * Start a new round of hands
+  /** Start a new round of hands
    * stateChanges: turn, players
    */
   dealHands = () => {
@@ -355,16 +347,14 @@ class Poker extends Component {
     // shuffle the deck
     Deck.shuffle().then(() => {
       // deal the hands
-      forEach(
-        players,
-        (player) => player.id !== DEALER
-          && player.id <= LAST_PLAYER
-          && playerActions.newHand(player.id, 5),
-      );
+      asyncForEach(players, async (player) => {
+        if (player.id !== DEALER && player.id <= LAST_PLAYER) {
+          await playerActions.newHand(player.id, 5);
+        }
+      });
     });
   };
 
-  // render standard board
   render() {
     const { turn, players } = this.props;
     const {

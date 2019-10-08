@@ -3,7 +3,7 @@ import types from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import reduce from 'lodash/reduce';
 // custom
-import lazyWithPreload from '../../apis/lazyWithPreload';
+import lazyWithPreload from '../../helpers/lazyWithPreload';
 import Header from '../common/header/Header';
 import Menu from './Menu';
 import LoadingSpinner from '../common/loading-spinner';

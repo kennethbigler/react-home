@@ -1,7 +1,7 @@
 // functions
 import assign from 'lodash/assign';
-import forEach from 'lodash/forEach';
 import find from 'lodash/find';
+import asyncForEach from '../../helpers/asyncForEach';
 import Deck from '../../apis/Deck';
 import {
   removeItem,
@@ -225,11 +225,12 @@ export function splitHand(hands, id, hNum, weigh = null) {
 export function swapCards(hands, id, cardsToDiscard) {
   return (dispatch) => {
     const cards = [...hands[0].cards];
-    forEach(cardsToDiscard, async (i) => {
-      [cards[i]] = await Deck.deal(1);
+    asyncForEach(cardsToDiscard, async (idx) => {
+      [cards[idx]] = await Deck.deal(1);
+    }).then(() => {
+      cards.sort(Deck.rankSort);
+      const updatedHand = updateArrayInArray(hands, { cards }, 0);
+      dispatch(createSwapCardsAction(id, updatedHand));
     });
-    cards.sort(Deck.rankSort);
-    const updatedHand = updateArrayInArray(hands, { cards }, 0);
-    dispatch(createSwapCardsAction(id, updatedHand));
   };
 }

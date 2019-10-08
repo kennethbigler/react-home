@@ -32,52 +32,42 @@ const NEW_DECK = [
 ];
 
 /** immutably get a copy of new deck O(N) */
-function getNewDeck() {
-  return map(NEW_DECK, (card) => assign({}, card));
-}
+const getNewDeck = () => map(NEW_DECK, (card) => assign({}, card));
 
 /** get immutable copy of deck O(N) */
-function getDeck() {
-  return localForage
-    .getItem('deck')
-    .then((data) => (data || getNewDeck()))
-    .catch(() => getNewDeck());
-}
+const getDeck = () => localForage
+  .getItem('deck')
+  .then((data) => (data || getNewDeck()))
+  .catch(() => getNewDeck());
 
 /** immutably update deck O(N) */
-function setDeck(deck) {
-  return localForage
-    .setItem('deck', deck)
-    .catch((e) => console.log(e));
-}
+const setDeck = (deck) => localForage
+  .setItem('deck', deck)
+  .catch(() => null);
 
 /** randomize order of the cards O(N + M) */
-function shuffle() {
+const shuffle = () => {
   // get a new deck
   const shuffledDeck = getNewDeck();
-  // number of shuffles
-  const n = 100;
   // shuffle the cards
-  for (let i = 0; i < n; i += 1) {
+  for (let i = 0; i < 100; i += 1) {
     const j = Math.floor(Math.random() * 52);
     const k = Math.floor(Math.random() * 52);
-    // swap
     const temp = shuffledDeck[j];
     shuffledDeck[j] = shuffledDeck[k];
     shuffledDeck[k] = temp;
   }
   // update deck state
   return setDeck(shuffledDeck);
-}
+};
 
 /** return an array of a specified length O(2N) */
-function deal(num = 0) {
+const deal = (num = 0) => {
   const cards = [];
   return getDeck()
     .then((deck) => {
       // verify we have enough cards
       if (num > deck.length) {
-        console.error('Not Enough Cards Left');
         return deck;
       }
       // get the cards
@@ -88,7 +78,7 @@ function deal(num = 0) {
     })
     .then((deck) => setDeck(deck))
     .then(() => cards);
-}
+};
 
 /** sort by card weight */
 const rankSort = (a, b) => a.weight - b.weight;

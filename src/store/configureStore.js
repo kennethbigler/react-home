@@ -19,10 +19,7 @@ export const loadState = async () => localForage
  */
 export const saveState = (state) => localForage
   .setItem('state', state)
-  .catch((e) => {
-    // ignore the error and skip the save
-    console.log(e);
-  });
+  .catch((e) => console.log('state to db save failed: ', e));
 
 export const configureStore = (state) => createStore(
   rootReducer,
