@@ -7,6 +7,7 @@
     "jsx-a11y"
   ],
   "extends": [
+    "plugin:@typescript-eslint/recommended",
     "google",
     "plugin:import/warnings",
     "plugin:import/errors",
@@ -15,7 +16,7 @@
     "plugin:react/recommended",
     "airbnb"
   ],
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 9,
     "sourceType": "module",
@@ -51,7 +52,17 @@
     "no-lone-blocks": "error",
     "object-curly-spacing": [ "error", "always", { "arraysInObjects": false, "objectsInObjects": false }],
     "prefer-destructuring": ["error", { "array": false, "object": true }],
+    "react/jsx-filename-extension": ["error", { "extensions": [".tsx", ".jsx"]}],
     "react-hooks/rules-of-hooks": "error"
   },
-  "globals": {}
+  "settings": {
+    "react": {
+      "version":  "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
 }

@@ -1,17 +1,26 @@
 import React, { memo } from 'react';
-import types from 'prop-types';
 import red from '@material-ui/core/colors/red';
 import { Typography } from '@material-ui/core';
 import styles from './Card.styles';
 // Parents: Hand
 
+interface Card {
+  cardHandler: Function;
+  cardNo: number;
+  dropped: boolean;
+  handNo: number;
+  name: string;
+  playerNo: number;
+  suit: string;
+}
+
 /* --------------------------------------------------
  * Card
  * -------------------------------------------------- */
-const Card = memo((props) => {
+const Card = memo((props: Card) => {
   const { dropped, suit, name } = props;
   // handle click to for card
-  const handleClick = () => {
+  const handleClick: () => void = () => {
     const {
       cardHandler, playerNo, handNo, cardNo,
     } = props;
@@ -35,15 +44,5 @@ const Card = memo((props) => {
     </div>
   );
 });
-
-Card.propTypes = {
-  cardHandler: types.func,
-  cardNo: types.number.isRequired,
-  dropped: types.bool,
-  handNo: types.number.isRequired,
-  name: types.string.isRequired,
-  playerNo: types.number.isRequired,
-  suit: types.string.isRequired,
-};
 
 export default Card;
