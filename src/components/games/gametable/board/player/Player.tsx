@@ -1,5 +1,4 @@
 import React from 'react';
-import types from 'prop-types';
 import Slider from '@material-ui/core/Slider';
 import cyan from '@material-ui/core/colors/cyan';
 import green from '@material-ui/core/colors/green';
@@ -8,24 +7,39 @@ import red from '@material-ui/core/colors/red';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
-import Hand from './Hand';
+import Hand, { DBHand } from '../Hand';
 import styles from './Player.styles';
 // Parents: Board
 
-/* --------------------------------------------------
- * Player
- * -------------------------------------------------- */
-const Player = (props) => {
+export interface DBTurn {
+  player: number;
+  hand: number;
+}
+export interface DBPlayer {
+  hands: DBHand[];
+  id: number;
+  isBot: boolean;
+  money: number;
+  status: string;
+  name: string;
+  bet: number;
+}
+interface PlayerProps {
+  betHandler?: Function;
+  cardHandler?: Function;
+  cardsToDiscard?: number[];
+  hideHands?: boolean;
+  isBlackJack?: boolean;
+  player: DBPlayer;
+  playerNo: number;
+  turn: DBTurn;
+}
+
+const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
   // get vars from props
   const {
-    betHandler,
-    cardHandler,
-    cardsToDiscard,
-    hideHands,
-    isBlackJack,
-    player,
-    playerNo,
-    turn,
+    betHandler, cardHandler, cardsToDiscard, hideHands,
+    isBlackJack, player, playerNo, turn,
   } = props;
   // set booleans
   const isPlayerTurn = !!turn && playerNo === turn.player;
@@ -35,10 +49,12 @@ const Player = (props) => {
   const minBet = Math.max(Math.min(player.money, 5), 0);
   const maxBet = Math.max(Math.min(player.money, 100), 10);
   const step = 5;
-  const onSliderChange = (event, value) => betHandler(player.id, event, value);
+  const onSliderChange = (event: React.ChangeEvent<{}>, value: number | number[]): void => {
+    betHandler && betHandler(player.id, event, value);
+  };
   // set colors
-  let color = isPlayerTurn ? { background: cyan[200] } : {};
-  const weight = isPlayerTurn ? { fontWeight: 'bold' } : { fontWeight: 'normal' };
+  let color: React.CSSProperties = isPlayerTurn ? { background: cyan[200] } : {};
+  const weight: React.CSSProperties = isPlayerTurn ? { fontWeight: 'bold' } : { fontWeight: 'normal' };
   if (player.status === 'win') {
     color = { background: green[300] };
   }
@@ -95,28 +111,6 @@ const Player = (props) => {
       })}
     </Card>
   );
-};
-
-Player.propTypes = {
-  betHandler: types.func,
-  cardHandler: types.func,
-  cardsToDiscard: types.arrayOf(types.number),
-  hideHands: types.bool,
-  isBlackJack: types.bool.isRequired,
-  player: types.shape({
-    hands: types.arrayOf(types.object).isRequired,
-    id: types.number.isRequired,
-    isBot: types.bool.isRequired,
-    money: types.number.isRequired,
-    status: types.string.isRequired,
-    name: types.string.isRequired,
-    bet: types.number.isRequired,
-  }).isRequired,
-  playerNo: types.number.isRequired,
-  turn: types.shape({
-    player: types.number.isRequired,
-    hand: types.number.isRequired,
-  }),
 };
 
 export default Player;

@@ -3,33 +3,30 @@ import purple from '@material-ui/core/colors/purple';
 import map from 'lodash/map';
 import includes from 'lodash/includes';
 import { Typography } from '@material-ui/core';
-import Card from './Card';
+import Card from './card/Card';
 // Parents: Player
 
-interface DataCard {
+interface DBCard {
   name: string;
   suit: string;
 }
-interface DataHand {
+export interface DBHand {
   weight: number;
-  cards: DataCard[];
+  cards: DBCard[];
 }
-interface Hand {
-  cardHandler: Function;
-  cardsToDiscard: number[];
-  hand: DataHand;
+interface HandProps {
+  cardHandler?: Function;
+  cardsToDiscard?: number[];
+  hand: DBHand;
   handNo: number;
-  isBlackJack: boolean;
+  isBlackJack?: boolean;
   isHandTurn: boolean;
   isMultiHand: boolean;
   isPlayerTurn: boolean;
   playerNo: number;
 }
 
-/* --------------------------------------------------
- * Hand
- * -------------------------------------------------- */
-const Hand: React.SFC<Hand> = (props: Hand) => {
+const Hand: React.FC<HandProps> = (props: HandProps) => {
   const {
     cardHandler, cardsToDiscard, hand, handNo,
     isBlackJack, isHandTurn, isMultiHand, isPlayerTurn,

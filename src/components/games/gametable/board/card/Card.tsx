@@ -4,8 +4,8 @@ import { Typography } from '@material-ui/core';
 import styles from './Card.styles';
 // Parents: Hand
 
-interface Card {
-  cardHandler: Function;
+interface CardProps {
+  cardHandler?: Function;
   cardNo: number;
   dropped: boolean;
   handNo: number;
@@ -14,17 +14,14 @@ interface Card {
   suit: string;
 }
 
-/* --------------------------------------------------
- * Card
- * -------------------------------------------------- */
-const Card = memo((props: Card) => {
+const Card = memo((props: CardProps) => {
   const { dropped, suit, name } = props;
   // handle click to for card
-  const handleClick: () => void = () => {
+  const handleClick = (): void => {
     const {
       cardHandler, playerNo, handNo, cardNo,
     } = props;
-    cardHandler(playerNo, handNo, cardNo);
+    cardHandler && cardHandler(playerNo, handNo, cardNo);
   };
   // checking color based off suits: ♣♦♥♠
   const cardColor = {
