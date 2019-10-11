@@ -42,12 +42,12 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
     isBlackJack, player, playerNo, turn,
   } = props;
   // set booleans
-  const isPlayerTurn = !!turn && playerNo === turn.player;
-  const isMultiHand = player.hands.length > 1;
-  const showSlider = !!hideHands && isBlackJack && player.id !== 0 && !player.isBot;
+  const isPlayerTurn: boolean = !!turn && playerNo === turn.player;
+  const isMultiHand: boolean = player.hands.length > 1;
+  const showSlider: boolean | undefined = !!hideHands && isBlackJack && player.id !== 0 && !player.isBot;
   // set slider variables
-  const minBet = Math.max(Math.min(player.money, 5), 0);
-  const maxBet = Math.max(Math.min(player.money, 100), 10);
+  const minBet: number = Math.max(Math.min(player.money, 5), 0);
+  const maxBet: number = Math.max(Math.min(player.money, 100), 10);
   const step = 5;
   const onSliderChange = (event: React.ChangeEvent<{}>, value: number | number[]): void => {
     betHandler && betHandler(player.id, event, value);
@@ -68,9 +68,7 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
   return (
     <Card style={{ ...styles.player, ...color }}>
       <Typography variant="h4" style={{ ...weight }}>
-        {player.name}
-        : $
-        {player.money}
+        {`${player.name}: $${player.money}`}
       </Typography>
       {showSlider && (
         <Slider
@@ -90,7 +88,7 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
           </Typography>
       )}
       {map(player.hands, (hand, i) => {
-        const isHandTurn = !!turn && turn.hand === i;
+        const isHandTurn: boolean = !!turn && turn.hand === i;
         return (
           <div key={`hand${i}`}>
             {!hideHands && (

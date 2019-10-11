@@ -28,9 +28,9 @@ const GameTable: React.FC<GameTableProps> = (props: GameTableProps) => {
   } = props;
 
   // move game buttons to make turn more obvious and support mobile
-  const played = players.slice(0, turn.player + 1);
-  const future = players.slice(turn.player + 1);
-  const playersToDisplay = !hideHands && gameOver === false
+  const played: DBPlayer[] = players.slice(0, turn.player + 1);
+  const future: DBPlayer[] = players.slice(turn.player + 1);
+  const playersToDisplay: DBPlayer[] = (!hideHands && gameOver === false)
     ? players.slice(turn.player, turn.player + 1)
     : players;
 

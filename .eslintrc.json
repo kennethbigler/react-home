@@ -1,20 +1,22 @@
 {
   "root": true,
   "plugins": [
-    "react",
-    "react-hooks",
+    "@typescript-eslint",
     "import",
-    "jsx-a11y"
+    "jsx-a11y",
+    "react",
+    "react-hooks"
   ],
   "extends": [
-    "plugin:@typescript-eslint/recommended",
     "google",
     "plugin:import/warnings",
     "plugin:import/errors",
     "plugin:jsx-a11y/recommended",
     "eslint:recommended",
     "plugin:react/recommended",
-    "airbnb"
+    "airbnb",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

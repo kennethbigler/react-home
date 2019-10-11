@@ -45,7 +45,7 @@ const Hand: React.FC<HandProps> = (props: HandProps) => {
           && (hand.weight > 21 ? 'Bust: ' : 'Hand Weight: ') + hand.weight}
       </Typography>
       {map(hand.cards, (card, i) => {
-        const dropped = includes(cardsToDiscard, i);
+        const dropped: boolean = includes(cardsToDiscard, i);
         return (
           <Card
             key={card.name + card.suit}

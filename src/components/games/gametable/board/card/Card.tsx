@@ -24,7 +24,7 @@ const Card = memo((props: CardProps) => {
     cardHandler && cardHandler(playerNo, handNo, cardNo);
   };
   // checking color based off suits: ♣♦♥♠
-  const cardColor = {
+  const cardColor: React.CSSProperties = {
     color: suit === '♣' || suit === '♠' ? 'black' : red[500],
     backgroundColor: dropped ? red[100] : 'white',
   };
