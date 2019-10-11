@@ -1,6 +1,5 @@
 // react
 import React, { Fragment, memo } from 'react';
-// components
 // material-ui
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,20 +12,23 @@ import teal from '@material-ui/core/colors/teal';
 import red from '@material-ui/core/colors/red';
 import orange from '@material-ui/core/colors/orange';
 import deepPurple from '@material-ui/core/colors/deepPurple';
-import Cell from './Cell';
+// components
+import Cell, { CellProps } from './Cell';
+import { RowProps } from './Row';
 import BlackjackTable from './BlackjackTable';
-// Parents: Popup
+// Parents: blackjack/Header
 
-const Help = memo(() => {
+/* Help  ->  BlackJackTable  ->  Row  -->  Cell */
+const Help: React.FC = memo(() => {
   // options
-  const h = { color: green[200], text: 'H' };
-  const d = { color: teal[200], text: 'D' };
-  const s = { color: red[200], text: 'S' };
-  const p = { color: orange[200], text: 'P' };
-  const ds = { color: deepPurple[200], text: 'DS' };
+  const h: CellProps = { color: green[200], text: 'H' };
+  const d: CellProps = { color: teal[200], text: 'D' };
+  const s: CellProps = { color: red[200], text: 'S' };
+  const p: CellProps = { color: orange[200], text: 'P' };
+  const ds: CellProps = { color: deepPurple[200], text: 'DS' };
 
   // algorithms for options
-  const hardTtl = [
+  const hardTtl: RowProps[] = [
     { name: 'Hard 5', data: [h, h, h, h, h, h, h, h, h, h]},
     { name: 'Hard 6', data: [h, h, h, h, h, h, h, h, h, h]},
     { name: 'Hard 7', data: [h, h, h, h, h, h, h, h, h, h]},
@@ -42,7 +44,7 @@ const Help = memo(() => {
     { name: 'Hard 17', data: [s, s, s, s, s, s, s, s, s, s]},
     { name: 'Hard 18+', data: [s, s, s, s, s, s, s, s, s, s]},
   ];
-  const softTtl = [
+  const softTtl: RowProps[] = [
     { name: 'Ace + 2', data: [h, h, h, d, d, h, h, h, h, h]},
     { name: 'Ace + 3', data: [h, h, h, d, d, h, h, h, h, h]},
     { name: 'Ace + 4', data: [h, h, d, d, d, h, h, h, h, h]},
@@ -52,7 +54,7 @@ const Help = memo(() => {
     { name: 'Ace + 8', data: [s, s, s, s, ds, s, s, s, s, s]},
     { name: 'Ace + 9', data: [s, s, s, s, s, s, s, s, s, s]},
   ];
-  const pairs = [
+  const pairs: RowProps[] = [
     { name: '(2,2)', data: [p, p, p, p, p, p, h, h, h, h]},
     { name: '(3,3)', data: [p, p, p, p, p, p, h, h, h, h]},
     { name: '(4,4)', data: [h, h, h, p, p, h, h, h, h, h]},
@@ -73,7 +75,7 @@ const Help = memo(() => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell colSpan="11">
+            <TableCell colSpan={11}>
               Key
             </TableCell>
           </TableRow>
@@ -81,19 +83,19 @@ const Help = memo(() => {
         <TableBody>
           <TableRow>
             <Cell {...h} />
-            <Cell colSpan="2" text="= Hit" />
+            <Cell colSpan={2} text="= Hit" />
             <Cell {...s} />
-            <Cell colSpan="3" text="= Stand" />
+            <Cell colSpan={3} text="= Stand" />
             <Cell {...p} />
-            <Cell colSpan="3" text="= Split" />
+            <Cell colSpan={3} text="= Split" />
           </TableRow>
           <TableRow>
             <Cell {...d} />
-            <Cell colSpan="10" text="= Double (Hit if not allowed)" />
+            <Cell colSpan={10} text="= Double (Hit if not allowed)" />
           </TableRow>
           <TableRow>
             <Cell {...ds} />
-            <Cell colSpan="10" text="= Double (Stand if not allowed)" />
+            <Cell colSpan={10} text="= Double (Stand if not allowed)" />
           </TableRow>
         </TableBody>
       </Table>

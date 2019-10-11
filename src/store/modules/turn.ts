@@ -3,18 +3,28 @@ import assign from 'lodash/assign';
 // initialState
 import initialState from '../initialState';
 
+// --------------------     DB Type     -------------------- //
+export interface DBTurn {
+  player: number;
+  hand: number;
+}
+
+interface Action {
+  type: string;
+}
+
 // --------------------     Actions     -------------------- //
 const INCR_PLAYER = 'casino/turn/INCR';
 const INCR_HAND = 'casino/turn/INCR_HAND';
 const RESET = 'casino/turn/RESET';
 
 // --------------------     Action Creators     -------------------- //
-export const incrPlayerTurn = () => ({ type: INCR_PLAYER });
-export const incrHandTurn = () => ({ type: INCR_HAND });
-export const resetTurn = () => ({ type: RESET });
+export const incrPlayerTurn = (): Action => ({ type: INCR_PLAYER });
+export const incrHandTurn = (): Action => ({ type: INCR_HAND });
+export const resetTurn = (): Action => ({ type: RESET });
 
 // --------------------     Reducers     -------------------- //
-export default function reducer(state = initialState.turn, action) {
+export default function reducer(state: DBTurn = initialState.turn, action: Action): DBTurn {
   switch (action.type) {
     case INCR_PLAYER:
       return assign({}, state, { player: state.player + 1, hand: 0 });

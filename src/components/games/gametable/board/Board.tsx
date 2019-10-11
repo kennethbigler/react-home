@@ -1,14 +1,15 @@
 import React from 'react';
 import map from 'lodash/map';
-import Player, { DBTurn, DBPlayer } from './player/Player';
+import Player, { DBPlayer } from './player/Player';
+import { DBTurn } from '../../../../store/modules/turn';
 // Parents: GameTable
 
 interface BoardProps {
   betHandler?: Function;
   cardHandler?: Function;
-  cardsToDiscard?: number[];
-  hideHands?: boolean;
-  isBlackJack?: boolean;
+  cardsToDiscard: number[];
+  hideHands: boolean;
+  isBlackJack: boolean;
   players: DBPlayer[];
   turn: DBTurn;
 }

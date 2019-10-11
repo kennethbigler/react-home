@@ -1,19 +1,16 @@
 import forEach from 'lodash/forEach';
+import get from 'lodash/get';
+import { DBCard } from '../../../store/modules/players';
 
-/** calculate the weight of a hand
- * stateChanges: none
- *
- * @param {Object[]} hand
- * @return {{string, string}}
- */
-export default function weighHand(hand = []) {
+/** calculate the weight of a hand */
+export default function weighHand(hand: DBCard[] = []): { weight: number; soft: boolean } {
   // set return values
   let weight = 0;
   let soft = false;
 
   // find the weight of the hand
   forEach(hand, (card) => {
-    const { weight: cardWeight } = card;
+    const cardWeight = get(card, 'weight', 0);
     if (cardWeight === 14) {
       // A
       if (weight <= 10) {

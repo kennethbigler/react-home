@@ -1,6 +1,7 @@
 // functions
 import assign from 'lodash/assign';
 import find from 'lodash/find';
+import get from 'lodash/get';
 import asyncForEach from '../../helpers/asyncForEach';
 import Deck from '../../apis/Deck';
 import {
@@ -11,6 +12,41 @@ import {
 } from '../immutableHelpers';
 // initialState
 import initialState, { newPlayer } from '../initialState';
+
+// --------------------     DB Type     -------------------- //
+export interface DBCard {
+  name: string;
+  suit: string;
+}
+export interface DBHand {
+  weight?: number;
+  soft?: boolean;
+  cards: DBCard[];
+}
+export interface DBPlayer {
+  hands: DBHand[];
+  id: number;
+  isBot: boolean;
+  money: number;
+  status: string;
+  name: string;
+  bet: number;
+}
+
+interface ActionPlayer {
+  id: number;
+  hands?: DBHand[];
+  isBot?: boolean;
+  money?: number;
+  status?: string;
+  name?: string;
+  bet?: number;
+}
+interface Action {
+  player?: ActionPlayer;
+  id?: number;
+  type: string;
+}
 
 // --------------------     Actions     -------------------- //
 const ADD = 'casino/player/ADD';
@@ -26,74 +62,50 @@ const SWAP_CARD = 'casino/player/SWAP_CARD';
 const NEW_HAND = 'casino/player/NEW_HAND';
 
 // -------------------- Action Creators     -------------------- //
-/** function to add a player to the state
- * @param {Object[]} players - to get unique id
- * @param {string} name - name of player is only var
- * @return {Object}
- */
-export function addPlayer(players, name) {
+/** function to add a player to the state */
+export function addPlayer(players: DBPlayer[], name: string): Action {
   const player = newPlayer(players.length, name);
   return { type: ADD, player };
 }
 
-/** function to remove player from player array
- * @param {number} id - id of player to remove
- * @return {Object}
- */
-export function removePlayer(id) {
+/** function to remove player from player array */
+export function removePlayer(id: number): Action {
   return { type: REMOVE, id };
 }
 
-/** function to update a player's name
- * @param {number} id - id of player
- * @param {string} name - new name of player
- * @return {Object}
- */
-export function updateName(id, name) {
+/** function to update a player's name */
+export function updateName(id: number, name: string): Action {
   return { type: UPDATE_NAME, player: { id, name }};
 }
 
-/** function to update a player's bot status
- * @param {number} id - id of player
- * @param {boolean} isBot - is the player a bot
- * @return {Object}
- */
-export function updateBot(id, isBot = true) {
+/** function to update a player's bot status */
+export function updateBot(id: number, isBot = true): Action {
   return { type: UPDATE_BOT, player: { id, isBot }};
 }
 
-/** function to update a player's bet
- * @param {number} id - id of player
- * @param {number} bet - current bet
- * @return {Object}
- */
-export function updateBet(id = 0, bet = 5) {
+/** function to update a player's bet */
+export function updateBet(id = 0, bet = 5): Action {
   return { type: UPDATE_BET, player: { id, bet }};
 }
 
-/** function to pay the winners and take money from the losers
- * @param {number} id - id of player
- * @param {string} status - win or lose
- * @param {number} money - net money gained or lost
- * @return {Object}
- */
-export function payout(id, status, money) {
+/** function to pay the winners and take money from the losers */
+export function payout(id: number, status: string, money: number): Action {
   return { type: PAY_PLAYER, player: { id, status, money }};
 }
 
-function createSplitHandAction(id, newHands) {
+function createSplitHandAction(id: number, newHands: DBHand[]): Action {
   return { type: SPLIT_HAND, player: { id, hands: newHands }};
 }
 
-function createDrawCardAction(id, newHands) {
+function createDrawCardAction(id: number, newHands: DBHand[]): Action {
   return { type: DRAW_CARD, player: { id, hands: newHands }};
 }
 
-function createSwapCardsAction(id, updatedHand) {
-  return { type: SWAP_CARD, player: { id, hands: updatedHand }};
+function createSwapCardsAction(id: number, updatedHands: DBHand[]): Action {
+  return { type: SWAP_CARD, player: { id, hands: updatedHands }};
 }
 
-function createNewHandAction(id, cards, soft, weight) {
+function createNewHandAction(id: number, cards: DBCard[], soft: boolean, weight: number): Action {
   return { type: NEW_HAND, player: { id, hands: [{ cards, weight, soft }]}};
 }
 
@@ -101,7 +113,7 @@ function createNewHandAction(id, cards, soft, weight) {
  * @param {number} id - optional, what player should get a new hand, default 0
  * @return {Object}
  */
-export function resetStatus(id = 0) {
+export function resetStatus(id = 0): Action {
   return {
     type: RESET,
     player: {
@@ -111,7 +123,7 @@ export function resetStatus(id = 0) {
 }
 
 // --------------------     Reducer     -------------------- //
-export default function reducer(state = initialState.players, action) {
+export default function reducer(state: DBPlayer[] = initialState.players, action: Action): DBPlayer[] {
   switch (action.type) {
     case RESET:
     case UPDATE_NAME:
@@ -123,14 +135,14 @@ export default function reducer(state = initialState.players, action) {
     case NEW_HAND:
       return updateObjectInArray(state, action.player, 'id');
     case PAY_PLAYER: {
-      const { id, status, money } = action.player;
+      const id = get(action, 'player.id', 1);
+      const status = get(action, 'player.status', '');
+      const money = get(action, 'player.money', 0);
 
       const player = find(state, ['id', id]);
-      const updatedPlayer = {
-        ...player,
-        money: (player.money += money),
-        status,
-      };
+      const playerMoney = get(player, 'money', 0);
+
+      const updatedPlayer = { ...player, money: (playerMoney + money), status };
 
       return updateObjectInArray(state, updatedPlayer, 'id');
     }
@@ -144,17 +156,18 @@ export default function reducer(state = initialState.players, action) {
 }
 
 // --------------------     Thunks     -------------------- //
+const defaultWeigh = (_: DBCard[]): { weight: number; soft: boolean } => ({ weight: 0, soft: false });
 /** function to have a player draw a card
  * @param {number} id - optional, what player should get a new hand, default 0
  * @param {number} num - optional, number of cards, default 1
  * @param {function} weigh - optional, get weight of hand for game
  * @return {Object}
  */
-export function newHand(id = 0, num = 1, weigh = null) {
-  return (dispatch) => Deck.deal(num)
+export function newHand(id = 0, num = 1, weigh = defaultWeigh) {
+  return (dispatch: Function): Promise<void> => Deck.deal(num)
     .then((cards) => {
       cards.sort(Deck.rankSort);
-      const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
+      const { weight, soft } = weigh(cards);
       return { weight, soft, cards };
     })
     .then(({ weight, soft, cards }) => dispatch(createNewHandAction(id, cards, soft, weight)));
@@ -168,11 +181,11 @@ export function newHand(id = 0, num = 1, weigh = null) {
  * @param {function} weigh - optional, get weight of hand for game
  * @return {Object}
  */
-export function drawCard(hands, id, hNum = 0, num = 1, weigh = null) {
-  return (dispatch) => Deck.deal(num)
+export function drawCard(hands: DBHand[], id: number, hNum = 0, num = 1, weigh = defaultWeigh) {
+  return (dispatch: Function): Promise<void> => Deck.deal(num)
     .then((drawnCards) => {
       const cards = [...hands[hNum].cards, ...drawnCards];
-      const { weight, soft } = weigh ? weigh(cards) : { weight: 0 };
+      const { weight, soft } = weigh(cards);
       const newHands = updateArrayInArray(hands, { cards, weight, soft }, hNum);
       return newHands;
     })
@@ -186,12 +199,12 @@ export function drawCard(hands, id, hNum = 0, num = 1, weigh = null) {
  * @param {function} weigh - optional, get weight of hand for game
  * @return {Object}
  */
-export function splitHand(hands, id, hNum, weigh = null) {
-  return (dispatch) => {
+export function splitHand(hands: DBHand[], id: number, hNum: number, weigh = defaultWeigh) {
+  return (dispatch: Function): Promise<void> => {
     const hand = hands[hNum];
     // split the hands into 2
-    const hand1 = { cards: [hand.cards[0]]};
-    const hand2 = { cards: [hand.cards[1]]};
+    const hand1: DBHand = { cards: [hand.cards[0]]};
+    const hand2: DBHand = { cards: [hand.cards[1]]};
 
     return Deck.deal(1)
       .then((cards) => {
@@ -206,7 +219,7 @@ export function splitHand(hands, id, hNum, weigh = null) {
             assign(hand1, weigh(hand1.cards));
             assign(hand2, weigh(hand2.cards));
             // update global hands
-            const newHands = updateArrayInArray(hands, hand2, hNum);
+            const newHands: DBHand[] = updateArrayInArray(hands, hand2, hNum);
             newHands.splice(hNum, 0, hand1);
             return newHands;
           })
@@ -222,15 +235,15 @@ export function splitHand(hands, id, hNum, weigh = null) {
  * @param {array} cardsToDiscard - array of index numbers
  * @return {Object}
  */
-export function swapCards(hands, id, cardsToDiscard) {
-  return (dispatch) => {
+export function swapCards(hands: DBHand[], id: number, cardsToDiscard: number[]) {
+  return (dispatch: Function): Promise<void> => {
     const cards = [...hands[0].cards];
-    asyncForEach(cardsToDiscard, async (idx) => {
+    return asyncForEach(cardsToDiscard, async (idx: number) => {
       [cards[idx]] = await Deck.deal(1);
     }).then(() => {
       cards.sort(Deck.rankSort);
-      const updatedHand = updateArrayInArray(hands, { cards }, 0);
-      dispatch(createSwapCardsAction(id, updatedHand));
+      const updatedHands: DBHand[] = updateArrayInArray(hands, { cards }, 0);
+      dispatch(createSwapCardsAction(id, updatedHands));
     });
   };
 }

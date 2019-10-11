@@ -4,22 +4,15 @@ import map from 'lodash/map';
 import includes from 'lodash/includes';
 import { Typography } from '@material-ui/core';
 import Card from './card/Card';
+import { DBHand } from '../../../../store/modules/players';
 // Parents: Player
 
-interface DBCard {
-  name: string;
-  suit: string;
-}
-export interface DBHand {
-  weight: number;
-  cards: DBCard[];
-}
 interface HandProps {
   cardHandler?: Function;
-  cardsToDiscard?: number[];
+  cardsToDiscard: number[];
   hand: DBHand;
   handNo: number;
-  isBlackJack?: boolean;
+  isBlackJack: boolean;
   isHandTurn: boolean;
   isMultiHand: boolean;
   isPlayerTurn: boolean;
@@ -38,11 +31,13 @@ const Hand: React.FC<HandProps> = (props: HandProps) => {
     ? { fontWeight: 'bold', color: purple[700] }
     : { fontWeight: 'normal' };
 
+  const handWeight = hand.weight || false;
+
   return (
     <>
       <Typography variant="h4" style={{ ...bold, marginTop: '0.5em' }}>
         {isBlackJack
-          && (hand.weight > 21 ? 'Bust: ' : 'Hand Weight: ') + hand.weight}
+          && (handWeight > 21 ? 'Bust: ' : 'Hand Weight: ') + hand.weight}
       </Typography>
       {map(hand.cards, (card, i) => {
         const dropped: boolean = includes(cardsToDiscard, i);

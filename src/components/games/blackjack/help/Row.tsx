@@ -1,27 +1,27 @@
 import React from 'react';
-import types from 'prop-types';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import map from 'lodash/map';
-import Cell from './Cell';
-// Parents: Help
+import Cell, { CellProps } from './Cell';
 
-const Row = (props) => {
+export interface RowProps {
+  data: CellProps[];
+  name: string;
+}
+
+const tableCellStyle: React.CSSProperties = { textAlign: 'center', padding: 0 };
+
+const Row: React.FC<RowProps> = (props: RowProps) => {
   const { name, data } = props;
 
   return (
     <TableRow>
-      <TableCell style={{ textAlign: 'center', padding: 0 }}>
+      <TableCell style={tableCellStyle}>
         {name}
       </TableCell>
       {map(data, (text, i) => <Cell key={i} {...text} />)}
     </TableRow>
   );
-};
-
-Row.propTypes = {
-  data: types.arrayOf(types.object).isRequired,
-  name: types.string.isRequired,
 };
 
 export default Row;

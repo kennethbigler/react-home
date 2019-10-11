@@ -1,18 +1,19 @@
 import React from 'react';
 import Board from './board/Board';
-import { DBPlayer, DBTurn } from './board/player/Player';
+import { DBPlayer } from './board/player/Player';
 import ButtonGroup from './button-group/ButtonGroup';
 import { ButtonProps } from './button-group/Button';
+import { DBTurn } from '../../../store/modules/turn';
 // Parents: BlackJack
 
 interface GameTableProps {
   betHandler?: Function;
   cardClickHandler?: Function;
-  cardsToDiscard?: number[];
+  cardsToDiscard: number[];
   gameFunctions: ButtonProps[];
-  gameOver?: boolean;
-  hideHands?: boolean;
-  isBlackJack?: boolean;
+  gameOver: boolean;
+  hideHands: boolean;
+  isBlackJack: boolean;
   players: DBPlayer[];
   turn: DBTurn;
 }
@@ -20,7 +21,7 @@ interface GameTableProps {
 /* GameTable ->  Board -> Player -> Hand -> Card
  *          |->  Button Group  ->  Button
  */
-const GameTable: React.FC<GameTableProps> = (props: GameTableProps) => {
+const GameTable: React.FC<GameTableProps> & { defaultProps: Partial<GameTableProps> } = (props: GameTableProps) => {
   const {
     betHandler, cardClickHandler, cardsToDiscard, gameFunctions,
     gameOver, hideHands, isBlackJack, players,
@@ -79,6 +80,9 @@ const GameTable: React.FC<GameTableProps> = (props: GameTableProps) => {
 
 GameTable.defaultProps = {
   isBlackJack: true,
+  hideHands: false,
+  gameOver: false,
+  cardsToDiscard: [],
 };
 
 export default GameTable;

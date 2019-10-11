@@ -7,14 +7,12 @@ import red from '@material-ui/core/colors/red';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
-import Hand, { DBHand } from '../Hand';
+import Hand from '../Hand';
+import { DBHand } from '../../../../../store/modules/players';
+import { DBTurn } from '../../../../../store/modules/turn';
 import styles from './Player.styles';
 // Parents: Board
 
-export interface DBTurn {
-  player: number;
-  hand: number;
-}
 export interface DBPlayer {
   hands: DBHand[];
   id: number;
@@ -27,9 +25,9 @@ export interface DBPlayer {
 interface PlayerProps {
   betHandler?: Function;
   cardHandler?: Function;
-  cardsToDiscard?: number[];
-  hideHands?: boolean;
-  isBlackJack?: boolean;
+  cardsToDiscard: number[];
+  hideHands: boolean;
+  isBlackJack: boolean;
   player: DBPlayer;
   playerNo: number;
   turn: DBTurn;
@@ -44,7 +42,7 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
   // set booleans
   const isPlayerTurn: boolean = !!turn && playerNo === turn.player;
   const isMultiHand: boolean = player.hands.length > 1;
-  const showSlider: boolean | undefined = !!hideHands && isBlackJack && player.id !== 0 && !player.isBot;
+  const showSlider: boolean = !!hideHands && isBlackJack && player.id !== 0 && !player.isBot;
   // set slider variables
   const minBet: number = Math.max(Math.min(player.money, 5), 0);
   const maxBet: number = Math.max(Math.min(player.money, 100), 10);
