@@ -1,17 +1,7 @@
-// functions
+import { Action } from 'redux';
 import assign from 'lodash/assign';
-// initialState
+import { DBTurn } from '../types';
 import initialState from '../initialState';
-
-// --------------------     DB Type     -------------------- //
-export interface DBTurn {
-  player: number;
-  hand: number;
-}
-
-interface Action {
-  type: string;
-}
 
 // --------------------     Actions     -------------------- //
 const INCR_PLAYER = 'casino/turn/INCR';

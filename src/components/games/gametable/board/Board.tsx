@@ -1,7 +1,7 @@
 import React from 'react';
 import map from 'lodash/map';
-import Player, { DBPlayer } from './player/Player';
-import { DBTurn } from '../../../../store/modules/turn';
+import Player from './player/Player';
+import { DBPlayer, DBTurn } from '../../../../store/types';
 // Parents: GameTable
 
 interface BoardProps {

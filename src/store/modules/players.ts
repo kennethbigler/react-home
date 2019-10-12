@@ -1,52 +1,15 @@
-// functions
+import { AnyAction } from 'redux';
 import assign from 'lodash/assign';
 import find from 'lodash/find';
 import get from 'lodash/get';
+
 import asyncForEach from '../../helpers/asyncForEach';
 import Deck from '../../apis/Deck';
 import {
-  removeItem,
-  updateArrayInArray,
-  updateObjectInArray,
-  insertItem,
+  removeItem, updateArrayInArray, updateObjectInArray, insertItem,
 } from '../immutableHelpers';
-// initialState
+import { DBCard, DBHand, DBPlayer } from '../types';
 import initialState, { newPlayer } from '../initialState';
-
-// --------------------     DB Type     -------------------- //
-export interface DBCard {
-  name: string;
-  suit: string;
-}
-export interface DBHand {
-  weight?: number;
-  soft?: boolean;
-  cards: DBCard[];
-}
-export interface DBPlayer {
-  hands: DBHand[];
-  id: number;
-  isBot: boolean;
-  money: number;
-  status: string;
-  name: string;
-  bet: number;
-}
-
-interface ActionPlayer {
-  id: number;
-  hands?: DBHand[];
-  isBot?: boolean;
-  money?: number;
-  status?: string;
-  name?: string;
-  bet?: number;
-}
-interface Action {
-  player?: ActionPlayer;
-  id?: number;
-  type: string;
-}
 
 // --------------------     Actions     -------------------- //
 const ADD = 'casino/player/ADD';
@@ -63,49 +26,49 @@ const NEW_HAND = 'casino/player/NEW_HAND';
 
 // -------------------- Action Creators     -------------------- //
 /** function to add a player to the state */
-export function addPlayer(players: DBPlayer[], name: string): Action {
+export function addPlayer(players: DBPlayer[], name: string): AnyAction {
   const player = newPlayer(players.length, name);
   return { type: ADD, player };
 }
 
 /** function to remove player from player array */
-export function removePlayer(id: number): Action {
+export function removePlayer(id: number): AnyAction {
   return { type: REMOVE, id };
 }
 
 /** function to update a player's name */
-export function updateName(id: number, name: string): Action {
+export function updateName(id: number, name: string): AnyAction {
   return { type: UPDATE_NAME, player: { id, name }};
 }
 
 /** function to update a player's bot status */
-export function updateBot(id: number, isBot = true): Action {
+export function updateBot(id: number, isBot = true): AnyAction {
   return { type: UPDATE_BOT, player: { id, isBot }};
 }
 
 /** function to update a player's bet */
-export function updateBet(id = 0, bet = 5): Action {
+export function updateBet(id = 0, bet = 5): AnyAction {
   return { type: UPDATE_BET, player: { id, bet }};
 }
 
 /** function to pay the winners and take money from the losers */
-export function payout(id: number, status: string, money: number): Action {
+export function payout(id: number, status: string, money: number): AnyAction {
   return { type: PAY_PLAYER, player: { id, status, money }};
 }
 
-function createSplitHandAction(id: number, newHands: DBHand[]): Action {
+function createSplitHandAction(id: number, newHands: DBHand[]): AnyAction {
   return { type: SPLIT_HAND, player: { id, hands: newHands }};
 }
 
-function createDrawCardAction(id: number, newHands: DBHand[]): Action {
+function createDrawCardAction(id: number, newHands: DBHand[]): AnyAction {
   return { type: DRAW_CARD, player: { id, hands: newHands }};
 }
 
-function createSwapCardsAction(id: number, updatedHands: DBHand[]): Action {
+function createSwapCardsAction(id: number, updatedHands: DBHand[]): AnyAction {
   return { type: SWAP_CARD, player: { id, hands: updatedHands }};
 }
 
-function createNewHandAction(id: number, cards: DBCard[], soft: boolean, weight: number): Action {
+function createNewHandAction(id: number, cards: DBCard[], soft: boolean, weight: number): AnyAction {
   return { type: NEW_HAND, player: { id, hands: [{ cards, weight, soft }]}};
 }
 
@@ -113,7 +76,7 @@ function createNewHandAction(id: number, cards: DBCard[], soft: boolean, weight:
  * @param {number} id - optional, what player should get a new hand, default 0
  * @return {Object}
  */
-export function resetStatus(id = 0): Action {
+export function resetStatus(id = 0): AnyAction {
   return {
     type: RESET,
     player: {
@@ -123,7 +86,7 @@ export function resetStatus(id = 0): Action {
 }
 
 // --------------------     Reducer     -------------------- //
-export default function reducer(state: DBPlayer[] = initialState.players, action: Action): DBPlayer[] {
+export default function reducer(state: DBPlayer[] = initialState.players, action: AnyAction): DBPlayer[] {
   switch (action.type) {
     case RESET:
     case UPDATE_NAME:
@@ -135,9 +98,7 @@ export default function reducer(state: DBPlayer[] = initialState.players, action
     case NEW_HAND:
       return updateObjectInArray(state, action.player, 'id');
     case PAY_PLAYER: {
-      const id = get(action, 'player.id', 1);
-      const status = get(action, 'player.status', '');
-      const money = get(action, 'player.money', 0);
+      const { id, status, money } = action.player;
 
       const player = find(state, ['id', id]);
       const playerMoney = get(player, 'money', 0);

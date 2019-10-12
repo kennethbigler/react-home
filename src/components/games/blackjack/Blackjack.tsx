@@ -16,13 +16,11 @@ import Header from './Header';
 import GameTable from '../gametable';
 import Deck from '../../../apis/Deck';
 // redux functions
-import {
-  incrHandTurn, incrPlayerTurn, resetTurn, DBTurn,
-} from '../../../store/modules/turn';
+import { DBTurn, DBHand, DBPlayer } from '../../../store/types';
+import { incrHandTurn, incrPlayerTurn, resetTurn } from '../../../store/modules/turn';
 import {
   drawCard, newHand, payout, resetStatus,
   splitHand, updateBet,
-  DBHand, DBPlayer,
 } from '../../../store/modules/players';
 // Parents: Main
 

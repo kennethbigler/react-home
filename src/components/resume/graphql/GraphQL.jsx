@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import types from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -10,7 +10,7 @@ import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import Profile from './Profile';
-import { setToken } from '../../../store/modules/graphql';
+import { setToken } from '../../../store/modules/gqlToken';
 import Header from './Header';
 import NoToken from './NoToken';
 
@@ -26,8 +26,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 const cache = new InMemoryCache();
 
 const GraphQL = (props) => {
-  const { graphQLToken, stateActions } = props;
-  const [authToken, setAuthToken] = useState(graphQLToken);
+  const { gqlToken, stateActions } = props;
+  const [authToken, setAuthToken] = useState(gqlToken);
 
   const handleChange = (e) => {
     const token = e.target.value;
@@ -35,19 +35,19 @@ const GraphQL = (props) => {
     setAuthToken(token);
   };
 
-  if (!graphQLToken) {
+  if (!gqlToken) {
     return (
-      <Fragment>
+      <>
         <Header authToken={authToken} onChange={handleChange} />
         <NoToken />
-      </Fragment>
+      </>
     );
   }
 
   const httpLink = new HttpLink({
     uri: GITHUB_BASE_URL,
     headers: {
-      authorization: `Bearer ${graphQLToken}`,
+      authorization: `Bearer ${gqlToken}`,
     },
   });
   const link = ApolloLink.from([errorLink, httpLink]);
@@ -64,14 +64,14 @@ const GraphQL = (props) => {
 };
 
 GraphQL.propTypes = {
-  graphQLToken: types.string,
+  gqlToken: types.string,
   stateActions: types.shape({
     setToken: types.func.isRequired,
   }).isRequired,
 };
 
 // react-redux export
-const mapStateToProps = (state) => ({ graphQLToken: state.graphql.token });
+const mapStateToProps = (state) => ({ gqlToken: state.gqlToken });
 const mapDispatchToProps = (dispatch) => ({
   stateActions: bindActionCreators({ setToken }, dispatch),
 });

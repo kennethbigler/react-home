@@ -4,7 +4,7 @@ import map from 'lodash/map';
 import includes from 'lodash/includes';
 import { Typography } from '@material-ui/core';
 import Card from './card/Card';
-import { DBHand } from '../../../../store/modules/players';
+import { DBHand } from '../../../../store/types';
 // Parents: Player
 
 interface HandProps {

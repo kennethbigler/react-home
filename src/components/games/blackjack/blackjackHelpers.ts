@@ -1,6 +1,6 @@
 import forEach from 'lodash/forEach';
 import get from 'lodash/get';
-import { DBCard } from '../../../store/modules/players';
+import { DBCard } from '../../../store/types';
 
 /** calculate the weight of a hand */
 export default function weighHand(hand: DBCard[] = []): { weight: number; soft: boolean } {

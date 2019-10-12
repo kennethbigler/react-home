@@ -1,9 +1,8 @@
 import React from 'react';
 import Board from './board/Board';
-import { DBPlayer } from './board/player/Player';
 import ButtonGroup from './button-group/ButtonGroup';
 import { ButtonProps } from './button-group/Button';
-import { DBTurn } from '../../../store/modules/turn';
+import { DBPlayer, DBTurn } from '../../../store/types';
 // Parents: BlackJack
 
 interface GameTableProps {

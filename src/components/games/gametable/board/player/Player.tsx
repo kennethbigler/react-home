@@ -8,8 +8,7 @@ import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import Hand from '../Hand';
-import { DBHand } from '../../../../../store/modules/players';
-import { DBTurn } from '../../../../../store/modules/turn';
+import { DBTurn, DBHand } from '../../../../../store/types';
 import styles from './Player.styles';
 // Parents: Board
 
