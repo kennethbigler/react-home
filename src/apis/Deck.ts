@@ -1,8 +1,9 @@
 import localForage from 'localforage';
 import assign from 'lodash/assign';
 import map from 'lodash/map';
+import { DBCard } from '../store/types';
 
-const NEW_DECK = [
+const NEW_DECK: DBCard[] = [
   { name: '2', weight: 2, suit: '♣' }, { name: '3', weight: 3, suit: '♣' },
   { name: '4', weight: 4, suit: '♣' }, { name: '5', weight: 5, suit: '♣' },
   { name: '6', weight: 6, suit: '♣' }, { name: '7', weight: 7, suit: '♣' },
@@ -32,16 +33,16 @@ const NEW_DECK = [
 ];
 
 /** immutably get a copy of new deck O(N) */
-const getNewDeck = () => map(NEW_DECK, (card) => assign({}, card));
+const getNewDeck = (): DBCard[] => map(NEW_DECK, (card) => assign({}, card));
 
 /** get immutable copy of deck O(N) */
-const getDeck = () => localForage
+const getDeck = (): Promise<DBCard[]> => localForage
   .getItem('deck')
-  .then((data) => (data || getNewDeck()))
+  .then((data: any) => (data || getNewDeck()))
   .catch(() => getNewDeck());
 
 /** immutably update deck O(N) */
-const setDeck = (deck) => localForage
+const setDeck = (deck: DBCard[]): Promise<any> => localForage
   .setItem('deck', deck)
   .catch(() => null);
 
@@ -62,25 +63,26 @@ const shuffle = () => {
 };
 
 /** return an array of a specified length O(2N) */
-const deal = (num = 0) => {
-  const cards = [];
+const deal = (num = 0): Promise<DBCard[]> => {
+  const cards: DBCard[] = [];
   return getDeck()
-    .then((deck) => {
+    .then((deck: DBCard[]): DBCard[] => {
       // verify we have enough cards
       if (num > deck.length) {
         return deck;
       }
       // get the cards
       for (let i = 0; i < num; i += 1) {
-        cards.push(deck.pop());
+        const card: DBCard | undefined = deck.pop();
+        card && cards.push(card);
       }
       return deck;
     })
-    .then((deck) => setDeck(deck))
+    .then((deck: DBCard[]) => setDeck(deck))
     .then(() => cards);
 };
 
 /** sort by card weight */
-const rankSort = (a, b) => a.weight - b.weight;
+const rankSort = (a: DBCard, b: DBCard) => a.weight - b.weight;
 
 export default { shuffle, deal, rankSort };

@@ -1,20 +1,9 @@
-// functions
 import moment from 'moment';
-// tech constants
 import {
-  ANGULAR,
-  AWS,
-  CSHARP,
-  CSS,
-  JASMINE,
-  JAVA,
-  JS,
-  PYTHON2,
-  REACT,
-  SASS,
-  SQL,
+  ANGULAR, AWS, CSHARP, CSS,
+  JASMINE, JAVA, JS, PYTHON2,
+  REACT, SASS, SQL,
 } from './tech';
-// Parents: Work
 
 const languageExp = [
   {

@@ -1,35 +1,70 @@
 import red from '@material-ui/core/colors/red';
 import indigo from '@material-ui/core/colors/indigo';
 import blue from '@material-ui/core/colors/blue';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import forEach from 'lodash/forEach';
 
-const SCU = 'Santa Clara University';
-const FALL = 'fall';
-const WINTER = 'winter';
-const SPRING = 'spring';
+// --------------------     Types     -------------------- //
+enum QTR {
+  SCU = 'Santa Clara University',
+  FALL = 'fall',
+  WINTER = 'winter',
+  SPRING = 'spring',
+}
 
-const getStart = (quarter, yy) => {
+interface Class {
+  name: string;
+  catalog?: string;
+}
+interface Quarter {
+  quarter: string;
+  classes: Class[];
+  start?: Moment;
+  end?: Moment;
+}
+interface Year {
+  year: string;
+  quarters: Quarter[];
+}
+interface School {
+  color?: string;
+  degree: string;
+  gpa?: number;
+  graduation?: string;
+  honors?: string;
+  location?: string;
+  major?: string;
+  minor?: string;
+  school?: string;
+  subtitle?: string;
+  years: Year[];
+}
+
+// --------------------     helpers     -------------------- //
+const getStart = (quarter: QTR, yy: number): Moment => {
   switch (quarter) {
-    case FALL: return moment(`20${yy}-09`);
-    case WINTER: return moment(`20${yy}-01`);
-    case SPRING: return moment(`20${yy}-04`);
-    // eslint-disable-next-line no-console
-    default: return console.warn('Error');
+    case QTR.FALL: return moment(`20${yy}-09`);
+    case QTR.WINTER: return moment(`20${yy}-01`);
+    case QTR.SPRING: return moment(`20${yy}-04`);
+    default:
+      console.warn('Error');
+      return moment();
   }
 };
 
-const getEnd = (quarter, yy) => {
+const getEnd = (quarter: QTR, yy: number): Moment => {
   switch (quarter) {
-    case FALL: return moment(`20${yy}-12`);
-    case WINTER: return moment(`20${yy}-03`);
-    case SPRING: return moment(`20${yy}-07`);
-    // eslint-disable-next-line no-console
-    default: return console.warn('Error');
+    case QTR.FALL: return moment(`20${yy}-12`);
+    case QTR.WINTER: return moment(`20${yy}-03`);
+    case QTR.SPRING: return moment(`20${yy}-07`);
+    default:
+      console.warn('Error');
+      return moment();
   }
 };
 
-const schools = [
+// --------------------     Constants     -------------------- //
+const schools: School[] = [
   {
     color: blue[500],
     degree: 'Hackathons',
@@ -82,7 +117,7 @@ const schools = [
     ],
   },
   {
-    school: SCU,
+    school: QTR.SCU,
     color: red[900],
     location: 'Santa Clara, CA',
     degree: 'Master of Science',
@@ -96,15 +131,15 @@ const schools = [
         year: 'Year 2',
         quarters: [
           {
-            quarter: 'Fall Quarter (2015)',
-            start: getStart(FALL, 15),
-            end: getEnd(FALL, 15),
+            quarter: 'Fall QTR (2015)',
+            start: getStart(QTR.FALL, 15),
+            end: getEnd(QTR.FALL, 15),
             classes: [{ catalog: 'COEN 260', name: 'Truth, Deduction & Computation' }],
           },
           {
-            quarter: 'Winter Quarter (2016)',
-            start: getStart(WINTER, 16),
-            end: getEnd(WINTER, 16),
+            quarter: 'Winter QTR (2016)',
+            start: getStart(QTR.WINTER, 16),
+            end: getEnd(QTR.WINTER, 16),
             classes: [
               { catalog: 'COEN 385', name: 'Formal Methods in Software Engineering' },
               { catalog: 'COEN 296', name: 'Topics in Computer Science & Engineering - Internet of Things' },
@@ -112,9 +147,9 @@ const schools = [
             ],
           },
           {
-            quarter: 'Spring Quarter (2016)',
-            start: getStart(SPRING, 16),
-            end: getEnd(SPRING, 16),
+            quarter: 'Spring QTR (2016)',
+            start: getStart(QTR.SPRING, 16),
+            end: getEnd(QTR.SPRING, 16),
             classes: [
               { catalog: 'COEN 252', name: 'Computer Forensics' },
               { catalog: 'COEN 252L', name: 'Computer Forensics Lab' },
@@ -122,9 +157,9 @@ const schools = [
             ],
           },
           {
-            quarter: 'Fall Quarter (2016)',
-            start: getStart(FALL, 16),
-            end: getEnd(FALL, 16),
+            quarter: 'Fall QTR (2016)',
+            start: getStart(QTR.FALL, 16),
+            end: getEnd(QTR.FALL, 16),
             classes: [{ catalog: 'COEN 317', name: 'Distributed Computing' }],
           },
         ],
@@ -133,18 +168,18 @@ const schools = [
         year: 'Year 1 (Senior Year)',
         quarters: [
           {
-            quarter: 'Fall Quarter (2014)',
-            start: getStart(FALL, 14),
-            end: getEnd(FALL, 14),
+            quarter: 'Fall QTR (2014)',
+            start: getStart(QTR.FALL, 14),
+            end: getEnd(QTR.FALL, 14),
             classes: [
               { catalog: 'COEN 272', name: 'Web Search & Info Retrieval' },
               { catalog: 'COEN 288', name: 'Software Ethics' },
             ],
           },
           {
-            quarter: 'Winter Quarter (2015)',
-            start: getStart(WINTER, 15),
-            end: getEnd(WINTER, 15),
+            quarter: 'Winter QTR (2015)',
+            start: getStart(QTR.WINTER, 15),
+            end: getEnd(QTR.WINTER, 15),
             classes: [
               { catalog: 'COEN 287', name: 'Software Development Process Management' },
               { catalog: 'COEN 275', name: 'Object Oriented Analysis and Design Programming' },
@@ -152,9 +187,9 @@ const schools = [
             ],
           },
           {
-            quarter: 'Spring Quarter (2015)',
-            start: getStart(SPRING, 15),
-            end: getEnd(SPRING, 15),
+            quarter: 'Spring QTR (2015)',
+            start: getStart(QTR.SPRING, 15),
+            end: getEnd(QTR.SPRING, 15),
             classes: [
               { catalog: 'COEN 386', name: 'Software Architecture' },
               { catalog: 'COEN 278', name: 'Web Programming II' },
@@ -165,7 +200,7 @@ const schools = [
     ],
   },
   {
-    school: SCU,
+    school: QTR.SCU,
     color: red[900],
     location: 'Santa Clara, CA',
     degree: 'Bachelor of Science',
@@ -179,9 +214,9 @@ const schools = [
         year: 'Senior Year',
         quarters: [
           {
-            quarter: 'Fall Quarter (2014)',
-            start: getStart(FALL, 14),
-            end: getEnd(FALL, 14),
+            quarter: 'Fall QTR (2014)',
+            start: getStart(QTR.FALL, 14),
+            end: getEnd(QTR.FALL, 14),
             classes: [
               { catalog: 'COEN 272', name: 'Web Search & Info Retrieval' },
               { catalog: 'COEN 288', name: 'Software Ethics' },
@@ -192,9 +227,9 @@ const schools = [
             ],
           },
           {
-            quarter: 'Winter Quarter (2015)',
-            start: getStart(WINTER, 15),
-            end: getEnd(WINTER, 15),
+            quarter: 'Winter QTR (2015)',
+            start: getStart(QTR.WINTER, 15),
+            end: getEnd(QTR.WINTER, 15),
             classes: [
               { catalog: 'COEN 287', name: 'Software Development Process Management' },
               { catalog: 'COEN 275', name: 'Object Oriented Analysis and Design Programming' },
@@ -206,9 +241,9 @@ const schools = [
             ],
           },
           {
-            quarter: 'Spring Quarter (2015)',
-            start: getStart(SPRING, 15),
-            end: getEnd(SPRING, 15),
+            quarter: 'Spring QTR (2015)',
+            start: getStart(QTR.SPRING, 15),
+            end: getEnd(QTR.SPRING, 15),
             classes: [
               { catalog: 'COEN 386', name: 'Software Architecture' },
               { catalog: 'COEN 278', name: 'Web Programming II' },
@@ -223,9 +258,9 @@ const schools = [
         year: 'Junior Year',
         quarters: [
           {
-            quarter: 'Fall Quarter (2013)',
-            start: getStart(FALL, 13),
-            end: getEnd(FALL, 13),
+            quarter: 'Fall QTR (2013)',
+            start: getStart(QTR.FALL, 13),
+            end: getEnd(QTR.FALL, 13),
             classes: [
               { catalog: 'COEN 161+L', name: 'Web Programming I' },
               { catalog: 'COEN 177+L', name: 'Operating Systems' },
@@ -234,9 +269,9 @@ const schools = [
             ],
           },
           {
-            quarter: 'Winter Quarter (2014)',
-            start: getStart(WINTER, 14),
-            end: getEnd(WINTER, 14),
+            quarter: 'Winter QTR (2014)',
+            start: getStart(QTR.WINTER, 14),
+            end: getEnd(QTR.WINTER, 14),
             classes: [
               { catalog: 'COEN 168', name: 'Mobile Application Development - Android' },
               { catalog: 'COEN 146+L', name: 'Computer Networks' },
@@ -245,9 +280,9 @@ const schools = [
             ],
           },
           {
-            quarter: 'Spring Quarter (2014)',
-            start: getStart(SPRING, 14),
-            end: getEnd(SPRING, 14),
+            quarter: 'Spring QTR (2014)',
+            start: getStart(QTR.SPRING, 14),
+            end: getEnd(QTR.SPRING, 14),
             classes: [
               { catalog: 'COEN 165', name: 'Intro: 3D Animation & Modeling' },
               { catalog: 'COEN 179', name: 'Theory of Algorithms' },
@@ -261,9 +296,9 @@ const schools = [
         year: 'Sophomore Year',
         quarters: [
           {
-            quarter: 'Fall Quarter (2012)',
-            start: getStart(FALL, 12),
-            end: getEnd(FALL, 12),
+            quarter: 'Fall QTR (2012)',
+            start: getStart(QTR.FALL, 12),
+            end: getEnd(QTR.FALL, 12),
             classes: [
               { catalog: 'COEN 21+L', name: 'Introduction to Logic Design' },
               { catalog: 'PHYS 33+L', name: 'Physics for Scientists and Engineers III' },
@@ -272,9 +307,9 @@ const schools = [
             ],
           },
           {
-            quarter: 'Winter Quarter (2013)',
-            start: getStart(WINTER, 13),
-            end: getEnd(WINTER, 13),
+            quarter: 'Winter QTR (2013)',
+            start: getStart(QTR.WINTER, 13),
+            end: getEnd(QTR.WINTER, 13),
             classes: [
               { catalog: 'COEN 70+L', name: 'Form Specification & Advanced Data Structures' },
               { catalog: 'MATH 53', name: 'Linear Algebra' },
@@ -283,9 +318,9 @@ const schools = [
             ],
           },
           {
-            quarter: 'Spring Quarter (2013)',
-            start: getStart(SPRING, 13),
-            end: getEnd(SPRING, 13),
+            quarter: 'Spring QTR (2013)',
+            start: getStart(QTR.SPRING, 13),
+            end: getEnd(QTR.SPRING, 13),
             classes: [
               { catalog: 'COEN 20+L', name: 'Intro to Embedded Systems' },
               { catalog: 'ELEN 50+L', name: 'Electric Circuits I' },
@@ -299,9 +334,9 @@ const schools = [
         year: 'Freshman Year',
         quarters: [
           {
-            quarter: 'Fall Quarter (2011)',
-            start: getStart(FALL, 11),
-            end: getEnd(FALL, 11),
+            quarter: 'Fall QTR (2011)',
+            start: getStart(QTR.FALL, 11),
+            end: getEnd(QTR.FALL, 11),
             classes: [
               { catalog: 'COEN 10+L', name: 'Introduction to Programming' },
               { catalog: 'ENGR 1', name: 'Intro to Engineering' },
@@ -311,9 +346,9 @@ const schools = [
             ],
           },
           {
-            quarter: 'Winter Quarter (2012)',
-            start: getStart(WINTER, 12),
-            end: getEnd(WINTER, 12),
+            quarter: 'Winter QTR (2012)',
+            start: getStart(QTR.WINTER, 12),
+            end: getEnd(QTR.WINTER, 12),
             classes: [
               { catalog: 'COEN 11+L', name: 'Advanced Programming' },
               { catalog: 'AMTH 106', name: 'Differential Equations' },
@@ -322,9 +357,9 @@ const schools = [
             ],
           },
           {
-            quarter: 'Spring Quarter (2012)',
-            start: getStart(SPRING, 12),
-            end: getEnd(SPRING, 12),
+            quarter: 'Spring QTR (2012)',
+            start: getStart(QTR.SPRING, 12),
+            end: getEnd(QTR.SPRING, 12),
             classes: [
               { catalog: 'COEN 12+L', name: 'Abstract Data Types & Data Structures' },
               { catalog: 'COEN 19', name: 'Discrete Mathematics' },
@@ -598,12 +633,12 @@ const schools = [
   },
 ];
 
-const timeline = [];
+const timeline: any[] = [];
 
-forEach(schools, (school) => {
-  forEach(school.years, (year) => {
-    forEach(year.quarters, (quarter) => {
-      forEach(quarter.classes, (course) => {
+forEach(schools, (school: School): void => {
+  forEach(school.years, (year: Year): void => {
+    forEach(year.quarters, (quarter: Quarter): void => {
+      forEach(quarter.classes, (course: Class): void => {
         quarter.start && timeline.push({
           start: quarter.start,
           end: quarter.end,
@@ -617,4 +652,5 @@ forEach(schools, (school) => {
 });
 
 export const classTimeline = timeline.sort((a, b) => a.start.diff(b.start, 'months'));
+
 export default schools;

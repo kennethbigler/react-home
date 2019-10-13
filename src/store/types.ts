@@ -1,10 +1,15 @@
 import { Color } from '@material-ui/core';
 
 // --------------------     dota2     -------------------- //
+export enum ATR {
+  STR = 'Strength',
+  AGI = 'Agility',
+  INT = 'Intelligence',
+}
 export interface DBDota2Hero {
   name: string;
   selected: boolean;
-  attribute: 'Strength' | 'Agility' | 'Intelligence';
+  attribute: ATR;
 }
 export interface DBDota2Turn {
   number: number;
@@ -29,6 +34,7 @@ export interface DBGit {
 export interface DBCard {
   name: string;
   suit: string;
+  weight: number;
 }
 export interface DBHand {
   weight?: number;

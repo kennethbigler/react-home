@@ -1,5 +1,9 @@
 import {
-  amber, blue, blueGrey, brown, cyan, deepOrange, deepPurple, green, grey, indigo, lightBlue, lightGreen, lime, orange, pink, purple, red, teal, yellow,
+  amber, blue, blueGrey, brown,
+  cyan, deepOrange, deepPurple, green,
+  grey, indigo, lightBlue, lightGreen,
+  lime, orange, pink, purple, red,
+  teal, yellow,
 } from '@material-ui/core/colors/';
 import forOwn from 'lodash/forOwn';
 
@@ -181,20 +185,17 @@ export const gigNowPokerColors = {
   Patrick: pink[500],
 };
 
-/**
- * A function that creates an initial score entry of 0
+/** A function that creates an initial score entry of 0
  * for all participants, the week before they joined.
- *
- * @param {Array} scores - scores from every poker night
  */
-function zeroOutPreviousWeek(scores) {
+function zeroOutPreviousWeek(scores: any[]): void {
   scores.unshift({});
 
   for (let i = 1; i < scores.length; i += 1) {
     const thisWeek = scores[i];
     const lastWeek = scores[i - 1];
 
-    forOwn(thisWeek, (value, key) => {
+    forOwn(thisWeek, (_value, key) => {
       if (!lastWeek[key]) {
         lastWeek[key] = 0;
       }

@@ -1,6 +1,9 @@
 import forEach from 'lodash/forEach';
 import {
-  amber, blue, brown, cyan, deepOrange, deepPurple, green, indigo, lightBlue, lightGreen, lime, orange, pink, purple, red, teal, yellow,
+  amber, blue, brown, cyan,
+  deepOrange, deepPurple, green, indigo,
+  lightBlue, lightGreen, lime, orange,
+  pink, purple, red, teal, yellow,
 } from '@material-ui/core/colors/';
 
 const countries = {
@@ -37,10 +40,10 @@ const countries = {
   Vatican: { continent: 'EU', flag: '🇻🇦' },
 };
 
-export const NA = [];
-export const EU = [];
+export const NA: string[] = [];
+export const EU: string[] = [];
 
-forEach(countries, (country, name) => {
+forEach(countries, (country, name): void => {
   country.continent === 'NA' && NA.push(`${name} ${country.flag}`);
   country.continent === 'EU' && EU.push(`${name} ${country.flag}`);
 });

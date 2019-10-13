@@ -1,7 +1,6 @@
 import assign from 'lodash/assign';
-/** ************************************************
-             Define Global Constants
-************************************************* */
+
+// --------------------     Globals     -------------------- //
 export const CASINO = 'The Cinema Magic Hotel and Casino';
 const VICTIM = 'Elvis';
 const MALE = 'M';
@@ -15,9 +14,7 @@ const MOTIVE = `You have motive to murder ${VICTIM}.`;
 const REGULAR = `You are at ${CASINO} regularly.`;
 const NEW_VISIT = `You have never been to ${CASINO} before.`;
 
-/** ************************************************
-                  Declare Profiles
-************************************************* */
+// --------------------     Profiles V1     -------------------- //
 let owner = {
   role: 'The Casino Owner',
   importance: I1,
@@ -121,9 +118,7 @@ let crusader = {
   gender: NEUTRAL,
 };
 
-/** ************************************************
-                  Expand Profiles
-************************************************* */
+// --------------------     Profiles V2     -------------------- //
 owner = assign(owner, {
   description: `You are the owner of ${CASINO}, and you are running the murder mystery to make sure everything runs smoothly.`,
   hint:
@@ -326,9 +321,7 @@ crusader = assign(crusader, {
     + `You know it was not "${reporter.role}."`,
 });
 
-/** ************************************************
-                  Export Profiles
-************************************************* */
+// --------------------     Exports     -------------------- //
 export default [
   owner,
   reporter,

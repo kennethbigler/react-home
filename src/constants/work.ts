@@ -8,8 +8,7 @@ import red from '@material-ui/core/colors/red';
 import indigo from '@material-ui/core/colors/indigo';
 import yellow from '@material-ui/core/colors/yellow';
 // functions
-import moment from 'moment';
-import reduce from 'lodash/reduce';
+import moment, { Moment } from 'moment';
 import includes from 'lodash/includes';
 import forEach from 'lodash/forEach';
 // images
@@ -23,27 +22,11 @@ import hoverboardLogo from '../images/hoverboard_logo.png';
 import intuitLogo from '../images/intuit_logo.png';
 // tech constants
 import {
-  REACT,
-  ANGULAR,
-  HTML,
-  CSS,
-  JS,
-  BS3,
-  BS4,
-  RR,
-  JASMINE,
-  SASS,
-  MOMENT,
-  ESLINT,
-  COMPOSE,
-  MIXPANEL,
-  RELOADER,
-  JAVA,
-  AWS,
-  PYTHON2,
-  ASP2,
-  CSHARP,
-  SQL,
+  REACT, ANGULAR, HTML, CSS,
+  JS, BS3, BS4, RR, JASMINE,
+  SASS, MOMENT, ESLINT, COMPOSE,
+  MIXPANEL, RELOADER, JAVA, AWS,
+  PYTHON2, ASP2, CSHARP, SQL,
 } from './tech';
 // Parents: Main
 
@@ -55,7 +38,27 @@ export const SCHOOL = 'school';
 const PM = 'Project Management';
 const INT = 'Managed Intern';
 
-const workExp = [
+interface Job {
+  alt?: string,
+  color: string,
+  company: string,
+  end: Moment,
+  expr?: string[],
+  inverted?: boolean,
+  location: string,
+  notes?: string,
+  parent?: string,
+  short: string,
+  skills?: string[],
+  src?: string,
+  start: Moment,
+  tech?: string[],
+  title: string,
+  type: 'work' | 'volunteer' | 'school';
+  website: string,
+}
+
+const workExp: Job[] = [
   {
     type: WORK,
     color: indigo.A400,
@@ -253,15 +256,15 @@ const workExp = [
   },
 ];
 
-const getSummary = (key) => reduce(
-  workExp,
-  (acc, job) => {
+const getSummary = (key: string) => workExp.reduce(
+  (acc, job: any): any => {
+    let newAcc: any[] = [...acc];
     forEach(job[key], (item) => {
       if (!includes(acc, item)) {
-        acc.push(item);
+        newAcc.push(item);
       }
     });
-    return acc;
+    return newAcc;
   },
   [],
 );
