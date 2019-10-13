@@ -7,7 +7,7 @@ const Header = (props) => {
   const { authToken, onChange } = props;
 
   return (
-    <Fragment>
+    <>
       <Typography variant="h2">GraphQL Demo</Typography>
       <TextField
         label="Authorization Code"
@@ -17,7 +17,7 @@ const Header = (props) => {
         style={{ margin: '20px 0 20px 0' }}
         fullWidth
       />
-    </Fragment>
+    </>
   );
 };
 

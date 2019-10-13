@@ -15,7 +15,7 @@ const InfoPopup = (props) => {
 
   const { buttonText, title, children } = props;
   return (
-    <Fragment>
+    <>
       <Button color="primary" onClick={() => { setIsOpen(true); }} variant="contained">
         {buttonText || title}
       </Button>
@@ -32,7 +32,7 @@ const InfoPopup = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Fragment>
+    </>
   );
 };
 

@@ -22,7 +22,7 @@ const RepositoryItem = (props) => {
   } = props;
 
   return (
-    <Fragment>
+    <>
       <div className="RepositoryItem-title">
         <Typography variant="h3">
           <Link href={url}>{name}</Link>
@@ -34,7 +34,7 @@ const RepositoryItem = (props) => {
       </div>
 
       <Description descriptionHTML={descriptionHTML} primaryLanguage={primaryLanguage} owner={owner} />
-    </Fragment>
+    </>
   );
 };
 

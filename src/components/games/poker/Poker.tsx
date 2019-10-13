@@ -1,42 +1,67 @@
-import React, { Component, Fragment } from 'react';
-import types from 'prop-types';
+import React, { Component } from 'react';
 import forEach from 'lodash/forEach';
 import includes from 'lodash/includes';
 import reduce from 'lodash/reduce';
 import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import asyncForEach from '../../../helpers/asyncForEach';
 import {
-  swapCards,
-  newHand,
-  payout,
-  resetStatus,
+  swapCards, newHand, payout, resetStatus,
 } from '../../../store/modules/players';
 import { incrPlayerTurn, resetTurn } from '../../../store/modules/turn';
-import GameTable from '../gametable';
+import GameTable from '../game-table';
 import Deck from '../../../apis/Deck';
+import {
+  DBPlayer, DBTurn, DBCard, DBRootState,
+} from '../../../store/types';
 // Parents: Main
 
 const DEALER = 0;
 const LAST_PLAYER = 5;
 
-/* --------------------------------------------------
-* Poker
-* -------------------------------------------------- */
-class Poker extends Component {
-  constructor(props) {
+interface PlayerActions {
+  swapCards: Function;
+  newHand: Function;
+  payout: Function;
+  resetStatus: Function;
+}
+interface TurnActions {
+  incrPlayerTurn: Function;
+  resetTurn: Function;
+}
+interface GameFunction {
+  name: string;
+  func: Function;
+}
+
+interface PokerProps {
+  playerActions: PlayerActions;
+  players: DBPlayer[];
+  turn: DBTurn;
+  turnActions: TurnActions;
+}
+interface PokerState {
+  gameFunctions: GameFunction[];
+  cardsToDiscard: number[];
+  hideHands: boolean;
+  gameOver: boolean;
+}
+
+class Poker extends Component<PokerProps, PokerState> {
+  constructor(props: PokerProps) {
     super(props);
     this.setNewGameRedux();
     this.state = this.getNewGameState();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(): void {
     const { players, turn } = this.props;
     const { hideHands, gameOver } = this.state;
-    const player = players[turn.player];
-    const canPlay = player.id !== DEALER && player.id <= LAST_PLAYER;
+
+    const player: DBPlayer = players[turn.player];
+    const canPlay: boolean = player.id !== DEALER && player.id <= LAST_PLAYER;
 
     if (!hideHands && !gameOver && player.isBot) {
       canPlay ? this.computer() : this.endGame();
@@ -44,7 +69,7 @@ class Poker extends Component {
   }
 
   /** function to reset turn and player status */
-  setNewGameRedux = () => {
+  setNewGameRedux = (): void => {
     const { turnActions, playerActions, players } = this.props;
     // reset redux actions
     turnActions.resetTurn();
@@ -52,36 +77,32 @@ class Poker extends Component {
     forEach(players, (player) => playerActions.resetStatus(player.id));
   };
 
-  /** function to generate the state of a new game
-   * @return {Object}
-   */
-  getNewGameState = () => ({
+  /** function to generate the state of a new game */
+  getNewGameState = (): PokerState => ({
     gameFunctions: [{ name: 'Start Game', func: this.startGame }],
     cardsToDiscard: [],
     hideHands: true,
     gameOver: false,
   });
 
-  /** get hand from props
-   * @return {Array}
-   */
-  getHand = () => {
+  /** get hand from props */
+  getHand = (): DBCard[] => {
     // get state vars
     const { turn, players } = this.props;
     return get(players[turn.player], 'hands[0].cards', null);
   };
 
-  getHistogram = (hand) => {
+  getHistogram = (hand: DBCard[]): number[] => {
     // Histogram for the cards
     const hist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    // put hand into the histrogram
+    // put hand into the histogram
     forEach(hand, (card) => {
-      hist[card.weight - 2] += 1; // 2-14 - 2 = 0-12
+      hist[get(card, 'weight', 2) - 2] += 1; // 2-14 - 2 = 0-12
     });
     return hist;
   };
 
-  newGame = () => {
+  newGame = (): void => {
     this.setNewGameRedux();
     this.setState(this.getNewGameState());
   };
@@ -89,7 +110,7 @@ class Poker extends Component {
   /** function to finish betting and start the game
    * stateChanges: hideHands
    */
-  startGame = () => {
+  startGame = (): void => {
     this.setState({
       gameFunctions: [{ name: 'Discard Cards', func: this.handleDiscard }],
       hideHands: false,
@@ -98,8 +119,9 @@ class Poker extends Component {
   };
 
   /** increment player turn and reset state */
-  endTurn = () => {
+  endTurn = (): void => {
     const { turnActions } = this.props;
+
     turnActions.incrPlayerTurn();
     this.setState({
       gameFunctions: [{ name: 'Discard Cards', func: this.handleDiscard }],
@@ -107,8 +129,9 @@ class Poker extends Component {
     });
   };
 
-  endGame = () => {
+  endGame = (): void => {
     const { players, playerActions } = this.props;
+
     let winner = { val: 0, id: 0 };
     forEach(players, (player) => {
       if (player.id === DEALER || player.id > LAST_PLAYER) {
@@ -144,12 +167,9 @@ class Poker extends Component {
    *   2 Pair          2
    *   1 Pair          1
    *   High Card       0
-   *
-   * @param {Array} hand
-   * @param {Object} hist
    * @return {number} value is a base 14 string, to be converted into base 10 for comparison
    */
-  rankHand = (hand, hist) => {
+  rankHand = (hand: DBCard[], hist: number[]): number => {
     // iterate through and look for hands with multiple cards
     if (includes(hist, 4)) {
       return 7; // 4 of a kind
@@ -196,18 +216,16 @@ class Poker extends Component {
 
   /** iterate through array, removing each index number from hand
    * then add new cards to the hand
-   * @param {array} cards - array of index numbers
    */
-  discard = (cards) => {
-    // get state values
+  discard = (cardsToDiscard: number[]): void => {
     const { turn, playerActions, players } = this.props;
+
     const { id, hands } = players[turn.player];
-    // logic to swap cards
-    playerActions.swapCards(hands, id, cards);
+    playerActions.swapCards(hands, id, cardsToDiscard);
   };
 
   /** helper function wrapping discard, meant for UI */
-  handleDiscard = () => {
+  handleDiscard = (): void => {
     const { cardsToDiscard } = this.state;
     this.discard(cardsToDiscard);
     this.setState({
@@ -216,11 +234,8 @@ class Poker extends Component {
     });
   };
 
-  /** function to remove n number of cards
-   * @param {number} n - number of cards to remove
-   * @param {[number]} hist - number of each respective card in hand
-   */
-  discardHelper = (n, hist) => {
+  /** function to remove n number of cards */
+  discardHelper = (n: number, hist: number[]): void => {
     const hand = this.getHand();
     const discardCards = [];
     const cardVals = [hist.indexOf(1)];
@@ -228,7 +243,7 @@ class Poker extends Component {
     for (let i = 1; i < n; i += 1) {
       cardVals[i] = hist.indexOf(1, cardVals[i - 1] + 1);
     }
-    // find hand indecies of individual cards
+    // find hand index of individual cards
     for (let i = 0; i < hand.length; i += 1) {
       for (let j = 0; j < cardVals.length; j += 1) {
         if (hand[i].weight - 2 === cardVals[j]) {
@@ -263,7 +278,7 @@ class Poker extends Component {
    * if K / A -> draw 4
    * else draw 5
    */
-  computer = () => {
+  computer = (): void => {
     const hand = this.getHand();
     const hist = this.getHistogram(hand);
     const rank = this.rankHand(hand, hist);
@@ -292,12 +307,8 @@ class Poker extends Component {
     this.endTurn();
   };
 
-  /** function to be called on card clicks
-   * @param {number} playerNo - player number
-   * @param {number} handNo - hand number
-   * @param {number} cardNo - card number
-   */
-  cardClickHandler = (playerNo, handNo, cardNo) => {
+  /** function to be called on card clicks */
+  cardClickHandler = (playerNo: number, handNo: number, cardNo: number): void => {
     const { cardsToDiscard } = this.state;
     // find card
     const i = cardsToDiscard.indexOf(cardNo);
@@ -313,11 +324,11 @@ class Poker extends Component {
    * Compare values to see who wins
    * @return {number} value is a base 14 string, to be converted into base 10 for comparison
    */
-  evaluate = (hand) => {
+  evaluate = (hand: DBCard[]): string => {
     const hist = this.getHistogram(hand);
     const rank = this.rankHand(hand, hist);
 
-    const cards = [0, 0, 0, 0, 0]; // placeholder for card value
+    const cards = ['0', '0', '0', '0', '0'];
     let total = 0; // track number of cards counted
     let numCards = 4; // number of same cards in a set
     let i = 0; // iterator
@@ -342,12 +353,12 @@ class Poker extends Component {
   /** Start a new round of hands
    * stateChanges: turn, players
    */
-  dealHands = () => {
+  dealHands = (): void => {
     const { playerActions, players } = this.props;
     // shuffle the deck
     Deck.shuffle().then(() => {
       // deal the hands
-      asyncForEach(players, async (player) => {
+      asyncForEach(players, async (player: DBPlayer) => {
         if (player.id !== DEALER && player.id <= LAST_PLAYER) {
           await playerActions.newHand(player.id, 5);
         }
@@ -355,13 +366,13 @@ class Poker extends Component {
     });
   };
 
-  render() {
+  render(): React.ReactNode {
     const { turn, players } = this.props;
     const {
       cardsToDiscard, gameFunctions, gameOver, hideHands,
     } = this.state;
     return (
-      <Fragment>
+      <>
         <Typography variant="h2" gutterBottom>
           5 Card Draw Poker
         </Typography>
@@ -375,60 +386,25 @@ class Poker extends Component {
           players={players}
           turn={turn}
         />
-      </Fragment>
+      </>
     );
   }
 }
 
-Poker.propTypes = {
-  playerActions: types.shape({
-    swapCards: types.func.isRequired,
-    newHand: types.func.isRequired,
-    payout: types.func.isRequired,
-    resetStatus: types.func.isRequired,
-  }).isRequired,
-  players: types.arrayOf(
-    types.shape({
-      id: types.number.isRequired,
-      hands: types.arrayOf(
-        types.shape({
-          cards: types.arrayOf(
-            types.shape({
-              weight: types.number.isRequired,
-              suit: types.string.isRequired,
-            }),
-          ).isRequired,
-        }).isRequired,
-      ).isRequired,
-    }),
-  ).isRequired,
-  turn: types.shape({
-    player: types.number.isRequired,
-    hand: types.number.isRequired,
-  }).isRequired,
-  turnActions: types.shape({
-    incrPlayerTurn: types.func.isRequired,
-    resetTurn: types.func.isRequired,
-  }).isRequired,
-};
-
 // react-redux export
-function mapStateToProps(state /* , ownProps */) {
+function mapStateToProps(state: DBRootState): { turn: DBTurn; players: DBPlayer[] } {
   return {
     turn: state.turn,
     players: state.players,
   };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: Dispatch): { turnActions: TurnActions; playerActions: PlayerActions } {
   return {
     turnActions: bindActionCreators({ incrPlayerTurn, resetTurn }, dispatch),
     playerActions: bindActionCreators(
       {
-        swapCards,
-        newHand,
-        payout,
-        resetStatus,
+        swapCards, newHand, payout, resetStatus,
       },
       dispatch,
     ),

@@ -135,7 +135,7 @@ class Dota2Picker extends Component {
     const { turn, characters } = this.state;
 
     return (
-      <Fragment>
+      <>
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           open
@@ -167,7 +167,7 @@ class Dota2Picker extends Component {
             <HeroSelection characters={characters} onClick={this.handleClick} />
           </Grid>
         </Grid>
-      </Fragment>
+      </>
     );
   }
 }

@@ -69,18 +69,18 @@ class Job extends Component {
             </ul>
           )}
           {!isEmpty(job.tech) && (
-            <Fragment>
+            <>
               <hr />
               <Typography display="inline">Technologies:&nbsp;</Typography>
               {this.getCSV(job.tech)}
-            </Fragment>
+            </>
           )}
           {!isEmpty(job.skills) && (
-            <Fragment>
+            <>
               <hr />
               <Typography display="inline">Skills:&nbsp;</Typography>
               {this.getCSV(job.skills)}
-            </Fragment>
+            </>
           )}
         </Grid>
         {job.src && (

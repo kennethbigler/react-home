@@ -80,7 +80,7 @@ class Slots extends Component {
     const slots = this.getSlots();
 
     return (
-      <Fragment>
+      <>
         <Typography variant="h2">Casino Slot Machine</Typography>
         <Grid container spacing={1} style={{ marginTop: '2em' }}>
           <Grid item sm={6} xs={12}>
@@ -161,7 +161,7 @@ class Slots extends Component {
             </Table>
           </Grid>
         </Grid>
-      </Fragment>
+      </>
     );
   }
 }

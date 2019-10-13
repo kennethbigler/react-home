@@ -6,7 +6,7 @@ import CarCard from './CarCard';
 import CarChart from './CarChart';
 
 const Cars = memo(() => (
-  <Fragment>
+  <>
     <Typography variant="h2">{'Ken\'s Cars'}</Typography>
     {map(cars, (car) => (<CarCard car={car} key={car.makeModel} />))}
     <br />
@@ -15,7 +15,7 @@ const Cars = memo(() => (
     <Typography variant="h2">Muscle Cars Compared</Typography>
     <br />
     <CarChart />
-  </Fragment>
+  </>
 ));
 
 export default Cars;

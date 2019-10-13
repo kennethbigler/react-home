@@ -51,7 +51,7 @@ class HeroSelection extends Component {
 
   render() {
     const { characters } = this.props;
-    return (<Fragment>{map(characters, this.getHeroListForLetter)}</Fragment>);
+    return (<>{map(characters, this.getHeroListForLetter)}</>);
   }
 }
 

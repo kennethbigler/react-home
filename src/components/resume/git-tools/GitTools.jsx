@@ -115,7 +115,7 @@ class GitTools extends Component {
     const gitTheme = deepOrange[600];
 
     return (
-      <Fragment>
+      <>
         <Header
           {...{
             gitTheme,
@@ -160,7 +160,7 @@ class GitTools extends Component {
             }}
           />
         </ExpandableCard>
-      </Fragment>
+      </>
     );
   }
 }

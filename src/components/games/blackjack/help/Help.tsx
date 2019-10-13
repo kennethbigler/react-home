@@ -68,7 +68,7 @@ const Help: React.FC = memo(() => {
   ];
 
   return (
-    <Fragment>
+    <>
       <BlackjackTable data={hardTtl} title="Hard Totals" />
       <BlackjackTable data={softTtl} title="Soft Totals" />
       <BlackjackTable data={pairs} title="Pairs" />
@@ -99,7 +99,7 @@ const Help: React.FC = memo(() => {
           </TableRow>
         </TableBody>
       </Table>
-    </Fragment>
+    </>
   );
 });
 

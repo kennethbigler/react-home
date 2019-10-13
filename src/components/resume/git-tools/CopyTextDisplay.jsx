@@ -21,7 +21,7 @@ const CopyTextDisplay = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Chip elevation={1} onClick={handleCopyText} label={text} />
       <Snackbar
         action={[
@@ -34,7 +34,7 @@ const CopyTextDisplay = (props) => {
         onClose={() => { setIsOpen(false); }}
         open={isOpen}
       />
-    </Fragment>
+    </>
   );
 };
 

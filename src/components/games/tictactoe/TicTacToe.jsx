@@ -109,7 +109,7 @@ export default class TicTacToe extends Component {
     const { winner, winRow } = calculateWinner(board);
 
     return (
-      <Fragment>
+      <>
         <Typography variant="h2" gutterBottom>Tic-Tac-Toe</Typography>
         <Paper elevation={2} style={this.styles.paper}>
           <Header newGame={this.newGame} turn={turn} winner={winner} />
@@ -120,7 +120,7 @@ export default class TicTacToe extends Component {
           />
         </Paper>
         <History history={history} jumpToStep={this.jumpToStep} step={step} />
-      </Fragment>
+      </>
     );
   }
 }

@@ -1,7 +1,7 @@
 import map from 'lodash/map';
 import reject from 'lodash/reject';
 
-/* eslint @typescript-eslint/no-explicit-any: 0 */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Immutable helper functions
 export function insertItem(array: any[], item: any): any[] {
   const newArr = array.slice();
@@ -27,3 +27,4 @@ export function removeItem(array: any[], id: number): any {
 export function removeItemInArray(array: any[], idx: number): any[] {
   return [...array.slice(0, idx), ...array.slice(idx + 1)];
 }
+/* eslint-enable @typescript-eslint/no-explicit-any */

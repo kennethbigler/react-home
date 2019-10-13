@@ -48,7 +48,7 @@ const Routes = (props) => {
   );
 
   return (
-    <Fragment>
+    <>
       <Header handleNav={handleNav}>
         <Menu />
       </Header>
@@ -60,7 +60,7 @@ const Routes = (props) => {
           <Route component={Summary} />
         </Switch>
       </Suspense>
-    </Fragment>
+    </>
   );
 };
 

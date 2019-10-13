@@ -41,7 +41,7 @@ const Menu = memo((props) => {
   const stkovrflw = () => window.open('https://stackoverflow.com/users/4830309/ken-bigler');
 
   return (
-    <Fragment>
+    <>
       {menu}
       <Divider />
       <MenuItem onClick={github}>
@@ -66,7 +66,7 @@ const Menu = memo((props) => {
           paddingRight: 16,
         }}
       />
-    </Fragment>
+    </>
   );
 });
 

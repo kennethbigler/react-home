@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import reduce from 'lodash/reduce';
 import forEach from 'lodash/forEach';
 import Typography from '@material-ui/core/Typography';
@@ -38,6 +38,9 @@ const getNewGame = () => ({
   turn: RED,
 });
 
+/* Connect4  ->  GameBoard  ->  Header  ->  Piece
+ *                         |->  Board   ->  Piece
+ */
 export default class Connect4 extends Component {
   constructor(props) {
     super(props);
@@ -182,7 +185,7 @@ export default class Connect4 extends Component {
   render() {
     const { board, turn, winner } = this.state;
     return (
-      <Fragment>
+      <>
         <Typography variant="h2" gutterBottom>Welcome to Ken&apos;s Connect4 Game</Typography>
         <GameBoard
           board={board}
@@ -191,7 +194,7 @@ export default class Connect4 extends Component {
           turn={turn}
           winner={winner}
         />
-      </Fragment>
+      </>
     );
   }
 }

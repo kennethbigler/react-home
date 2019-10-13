@@ -14,7 +14,7 @@ const PokerNightTabs = memo(() => {
   };
 
   return (
-    <Fragment>
+    <>
       <AppBar position="static" style={{ marginBottom: 20, marginTop: 10 }}>
         <Tabs value={tab} onChange={handleChange}>
           <Tab label="Penny Poker" />
@@ -23,7 +23,7 @@ const PokerNightTabs = memo(() => {
       </AppBar>
       {tab === 0 && <PennyPokerNight />}
       {tab === 1 && <GigNowPokerNight />}
-    </Fragment>
+    </>
   );
 });
 

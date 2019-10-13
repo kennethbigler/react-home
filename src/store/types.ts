@@ -6,6 +6,7 @@ export enum ATR {
   AGI = 'Agility',
   INT = 'Intelligence',
 }
+export default ATR;
 export interface DBDota2Hero {
   name: string;
   selected: boolean;

@@ -200,7 +200,7 @@ class Yahtzee extends Component {
     const { scores } = this.props;
 
     return (
-      <Fragment>
+      <>
         <div className="flex-container">
           <Typography variant="h2">Yahtzee</Typography>
           <ScoreGraph scores={scores} />
@@ -237,7 +237,7 @@ class Yahtzee extends Component {
           finalTopSum={finalTopSum}
           bottomSum={bottomSum}
         />
-      </Fragment>
+      </>
     );
   }
 }

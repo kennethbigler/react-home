@@ -29,7 +29,7 @@ const Header = (props) => {
   const fontColor = type === 'light' ? 'inherit' : 'initial';
 
   return (
-    <Fragment>
+    <>
       <TopBar toggleOpen={toggleOpen} showPlayers={showPlayers} fontColor={fontColor} iconColor={iconColor} />
       <Drawer onClose={toggleOpen} open={isOpen}>
         <AppBar position="sticky">
@@ -48,7 +48,7 @@ const Header = (props) => {
         </AppBar>
         {React.cloneElement(children, { onItemClick: handleNavigation })}
       </Drawer>
-    </Fragment>
+    </>
   );
 };
 

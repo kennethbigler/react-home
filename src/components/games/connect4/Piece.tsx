@@ -1,24 +1,25 @@
-import React, { memo } from 'react';
-import types from 'prop-types';
+import React, { memo, MouseEventHandler } from 'react';
 import ContentAdd from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import red from '@material-ui/core/colors/red';
 import lightGreen from '@material-ui/core/colors/lightGreen';
-// Parents: Board, Header
 
-/* --------------------------------------------------
-* Board - for Connect4
-* -------------------------------------------------- */
-const Piece = memo((props) => {
+interface PieceProps {
+  enabled: boolean;
+  onClick: MouseEventHandler;
+  piece: number;
+}
+
+const Piece: React.FC<PieceProps> = memo((props: PieceProps) => {
   const { piece, enabled, onClick } = props;
 
-  let color = null;
+  let color;
   switch (piece) {
     case undefined:
-      color = null;
+      color = undefined;
       break;
     case 0:
-      color = null;
+      color = undefined;
       break;
     case 1:
       color = red[500];
@@ -31,7 +32,7 @@ const Piece = memo((props) => {
       break;
   }
 
-  const style = { backgroundColor: color };
+  const style: React.CSSProperties = { backgroundColor: color };
 
   return !enabled
     ? (
@@ -44,11 +45,5 @@ const Piece = memo((props) => {
       </Fab>
     );
 });
-
-Piece.propTypes = {
-  enabled: types.bool,
-  onClick: types.func,
-  piece: types.number.isRequired,
-};
 
 export default Piece;

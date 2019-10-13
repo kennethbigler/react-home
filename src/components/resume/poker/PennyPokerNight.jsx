@@ -10,7 +10,7 @@ const PennyPokerNight = memo(() => {
   const { parsedScores, totals } = parseData(pennyPokerScores);
 
   return (
-    <Fragment>
+    <>
       <PokerGraph
         parsedScores={parsedScores}
         colors={pennyPokerColors}
@@ -18,7 +18,7 @@ const PennyPokerNight = memo(() => {
         ticks={[-400, -200, 0, 200, 400, 600]}
       />
       <PokerTable totals={totals} />
-    </Fragment>
+    </>
   );
 });
 

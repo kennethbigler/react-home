@@ -4,11 +4,7 @@ import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Piece from './Piece';
-// Parents: GameBoard
 
-/* ========================================
- * Header
- * ======================================== */
 const Header = memo((props) => {
   const { winner, turn, newGame } = props;
   // status text

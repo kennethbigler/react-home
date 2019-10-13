@@ -46,7 +46,7 @@ const Routes = (props) => {
   );
 
   return (
-    <Fragment>
+    <>
       <Header handleNav={handleNav} showPlayers>
         <Menu />
       </Header>
@@ -58,7 +58,7 @@ const Routes = (props) => {
           <Route component={GameHome} />
         </Switch>
       </Suspense>
-    </Fragment>
+    </>
   );
 };
 

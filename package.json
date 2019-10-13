@@ -59,8 +59,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "deploy": "./deploy.sh",
-    "lint": "clear && ./node_modules/.bin/eslint \"src/**/*.{js,jsx}\" --fix",
-    "qlint": "clear && ./node_modules/.bin/eslint \"src/**/*.{js,jsx}\" --fix --quiet"
+    "lint": "clear && ./node_modules/.bin/eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
+    "qlint": "clear && ./node_modules/.bin/eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet"
   },
   "browserslist": [
     ">0.2%",

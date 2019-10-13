@@ -10,14 +10,14 @@ const PokerNight = memo(() => {
   const { parsedScores, totals } = parseData(gigNowPokerScores);
 
   return (
-    <Fragment>
+    <>
       <PokerGraph
         parsedScores={parsedScores}
         colors={gigNowPokerColors}
         domain={[-100, 100]}
       />
       <PokerTable totals={totals} />
-    </Fragment>
+    </>
   );
 });
 

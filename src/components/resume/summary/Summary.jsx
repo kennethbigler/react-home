@@ -7,13 +7,13 @@ import TimelineCard from '../../common/timeline-card';
 // Parents: Main
 
 const Summary = memo(() => (
-  <Fragment>
+  <>
     <Typography variant="h2" gutterBottom>Summary</Typography>
     <Info />
     <TimelineCard />
     <Skills />
     <Education />
-  </Fragment>
+  </>
 ));
 
 export default Summary;

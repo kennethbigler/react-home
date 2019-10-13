@@ -42,12 +42,12 @@ const Menu = memo((props) => {
 
   // render menu
   return (
-    <Fragment>
+    <>
       <MenuItem onClick={home}>
         Back to Resume
       </MenuItem>
       {menu}
-    </Fragment>
+    </>
   );
 });
 

@@ -1,10 +1,10 @@
 /* Theoretical Max Score:   386 everyone splits 3 times and busts with 30, dealer bust with 26
  * Card Point Value:        340-380
- * TODO: split aces is not blackjack
- * TODO: get second card for dealer and hide it
- * TODO: buy insurance on dealer's Ace
+ * split aces is not blackjack
+ * get second card for dealer and hide it
+ * buy insurance on dealer's Ace
  */
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import get from 'lodash/get';
@@ -13,10 +13,12 @@ import asyncForEach from '../../../helpers/asyncForEach';
 import weighHand from './blackjackHelpers';
 // components
 import Header from './Header';
-import GameTable from '../gametable';
+import GameTable from '../game-table';
 import Deck from '../../../apis/Deck';
 // redux functions
-import { DBTurn, DBHand, DBPlayer } from '../../../store/types';
+import {
+  DBTurn, DBHand, DBPlayer, DBRootState,
+} from '../../../store/types';
 import { incrHandTurn, incrPlayerTurn, resetTurn } from '../../../store/modules/turn';
 import {
   drawCard, newHand, payout, resetStatus,
@@ -430,7 +432,7 @@ class BlackJack extends Component<BlackJackProps, BlackJackState> {
     const { gameFunctions, hideHands } = this.state;
 
     return (
-      <Fragment>
+      <>
         <Header />
         <GameTable
           betHandler={this.betHandler}
@@ -440,13 +442,13 @@ class BlackJack extends Component<BlackJackProps, BlackJackState> {
           players={players}
           turn={turn}
         />
-      </Fragment>
+      </>
     );
   }
 }
 
 // react-redux export
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: DBRootState): { turn: DBTurn; players: DBPlayer[] } => ({
   turn: state.turn,
   players: state.players,
 });

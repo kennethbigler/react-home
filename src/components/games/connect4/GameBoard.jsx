@@ -3,11 +3,7 @@ import types from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Board from './Board';
 import Header from './Header';
-// Parents: Connect4
 
-/* --------------------------------------------------
-* Slot Machine
-* -------------------------------------------------- */
 const GameBoard = (props) => {
   const {
     board, insert, winner, turn, newGame,

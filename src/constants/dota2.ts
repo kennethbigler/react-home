@@ -126,7 +126,7 @@ export const heroes: DBDota2Hero[] = [
 const orderedHeroes = reduce(
   sortBy(heroes, 'name'),
   (acc, hero: DBDota2Hero) => {
-    const newAcc: any = {...acc};
+    const newAcc: any = { ...acc };
     const key = hero.name[0];
 
     if (!newAcc[key]) {

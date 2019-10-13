@@ -11,7 +11,7 @@ const ButtonPopover = (props) => {
   const open = Boolean(anchorEl);
 
   return (
-    <Fragment>
+    <>
       <Button
         aria-owns={open ? 'simple-popper' : null}
         aria-haspopup="true"
@@ -36,7 +36,7 @@ const ButtonPopover = (props) => {
       >
         <div style={{ padding: 15 }}>{React.cloneElement(children)}</div>
       </Popover>
-    </Fragment>
+    </>
   );
 };
 

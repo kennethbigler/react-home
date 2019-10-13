@@ -47,7 +47,7 @@ const TravelMap = memo(() => {
   }
 
   return (
-    <Fragment>
+    <>
       <Typography variant="h4" style={styles.margins}>
         {`I have been to ${NA.length + EU.length} countries:`}
       </Typography>
@@ -66,7 +66,7 @@ const TravelMap = memo(() => {
           {countries}
         </TableBody>
       </Table>
-    </Fragment>
+    </>
   );
 });
 

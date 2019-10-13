@@ -12,14 +12,14 @@ import WorkCards from './WorkCards';
 const TechBarChart = lazy(() => import(/* webpackChunkName: "r_work_bar_chart" */ './TechBarChart'));
 
 const Work = memo(() => (
-  <Fragment>
+  <>
     <Typography variant="h2">Experience</Typography>
     <TimelineCard data={workExp} title="Work Timeline" />
     <ExpandableCard title="Programming Language Timeline (Professional Use)">
       <Suspense fallback={<LoadingSpinner />}><TechBarChart /></Suspense>
     </ExpandableCard>
     <WorkCards workExp={workExp} workTypes={[WORK, VOLUNTEER]} />
-  </Fragment>
+  </>
 ));
 
 export default Work;

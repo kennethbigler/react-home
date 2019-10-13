@@ -44,7 +44,7 @@ const History = (props) => {
   !ascend && moves.reverse();
 
   return (
-    <Fragment>
+    <>
       <Button
         onClick={() => { setAscend(!ascend); }}
         style={{ marginTop: 20, marginBottom: 20 }}
@@ -53,7 +53,7 @@ const History = (props) => {
         {ascend ? 'Asc' : 'Desc'}
       </Button>
       {moves}
-    </Fragment>
+    </>
   );
 };
 

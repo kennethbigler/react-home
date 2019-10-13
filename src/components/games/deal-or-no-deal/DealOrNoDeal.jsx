@@ -221,7 +221,7 @@ class DND extends Component {
     const { player } = this.props;
     // render component
     return (
-      <Fragment>
+      <>
         <Typography variant="h2" gutterBottom>Deal or No Deal</Typography>
         <Header
           casesToOpen={casesToOpen}
@@ -245,7 +245,7 @@ class DND extends Component {
           open={dndOpen}
           swap={this.swap}
         />
-      </Fragment>
+      </>
     );
   }
 }

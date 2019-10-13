@@ -13,7 +13,7 @@ const MurderMystery = memo(() => {
   };
 
   return (
-    <Fragment>
+    <>
       <Typography variant="h2" gutterBottom>{`Murder at ${CASINO}`}</Typography>
       {map(profiles, (profile, i) => {
         const {
@@ -37,7 +37,7 @@ const MurderMystery = memo(() => {
           />
         );
       })}
-    </Fragment>
+    </>
   );
 });
 

@@ -14,7 +14,7 @@ const Header = memo((props) => {
   const isIdValid = validId.test(storyID);
 
   return (
-    <Fragment>
+    <>
       <Typography variant="h2">
         Git Tools
       </Typography>
@@ -28,7 +28,7 @@ const Header = memo((props) => {
         error={!isIdValid}
       />
       <br />
-    </Fragment>
+    </>
   );
 });
 

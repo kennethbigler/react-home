@@ -8,11 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import map from 'lodash/map';
 import Piece from './Piece';
 import styles from './Board.styles';
-// Parents: GameBoard
 
-/* --------------------------------------------------
-* Board - for Connect4
-* -------------------------------------------------- */
 const Board = (props) => {
   const { board, turn, insert } = props;
   // generate code for Connect4 Board
