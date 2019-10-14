@@ -1,5 +1,4 @@
 import React from 'react';
-import types from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -7,9 +6,20 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import map from 'lodash/map';
 import Piece from './Piece';
-import styles from './Board.styles';
+import { Turn } from './types';
 
-const Board = (props) => {
+interface BoardProps {
+  board: number[][];
+  insert: Function;
+  turn: Turn;
+}
+
+const styles: React.CSSProperties = {
+  padding: 1,
+  textAlign: 'center',
+};
+
+const Board: React.FC<BoardProps> = (props: BoardProps) => {
   const { board, turn, insert } = props;
   // generate code for Connect4 Board
   const gameBoard = map(board, (arr, i) => {
@@ -29,7 +39,7 @@ const Board = (props) => {
     <TableCell key={`c4h${i}`} style={styles}>
       <Piece
         enabled={!piece}
-        onClick={() => insert(i)}
+        onClick={(): void => insert(i)}
         piece={!piece ? turn : 0}
       />
     </TableCell>
@@ -47,12 +57,6 @@ const Board = (props) => {
       </TableBody>
     </Table>
   );
-};
-
-Board.propTypes = {
-  board: types.arrayOf(types.arrayOf(types.number)).isRequired,
-  insert: types.func.isRequired,
-  turn: types.number.isRequired,
 };
 
 export default Board;

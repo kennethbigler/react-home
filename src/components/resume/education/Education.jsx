@@ -1,4 +1,4 @@
-import React, { memo, Fragment } from 'react';
+import React, { memo } from 'react';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import Degree from './Degree';

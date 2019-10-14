@@ -1,5 +1,5 @@
 // react
-import React, { memo, Fragment } from 'react';
+import React, { memo } from 'react';
 import types from 'prop-types';
 // material-ui
 import TextField from '@material-ui/core/TextField';

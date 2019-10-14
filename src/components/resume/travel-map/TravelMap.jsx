@@ -1,4 +1,4 @@
-import React, { memo, Fragment } from 'react';
+import React, { memo } from 'react';
 import { Typography } from '@material-ui/core';
 import TravelTable from './TravelTable';
 import WorldMap from './WorldMap';

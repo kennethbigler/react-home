@@ -13,7 +13,7 @@ const Organization = ({
       {map(errors, 'message').join(' ')}
     </Typography>
   ) : (
-    <Fragment>
+    <>
       <Typography>
         <strong>Issues from Organization: </strong>
         <a href={organization.url}>{organization.name}</a>
@@ -27,7 +27,7 @@ const Organization = ({
           />
         )
       }
-    </Fragment>
+    </>
   ));
 
 Organization.propTypes = {

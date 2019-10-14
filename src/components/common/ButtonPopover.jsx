@@ -1,5 +1,5 @@
 // React
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import types from 'prop-types';
 // Material UI
 import Button from '@material-ui/core/Button';

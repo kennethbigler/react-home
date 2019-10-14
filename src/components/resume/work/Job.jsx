@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import types from 'prop-types';
 import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';

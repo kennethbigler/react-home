@@ -1,4 +1,4 @@
-import React, { useState, memo, Fragment } from 'react';
+import React, { useState, memo } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';

@@ -1,5 +1,5 @@
 // react
-import React, { Fragment, memo } from 'react';
+import React, { memo } from 'react';
 // material-ui
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';

@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import types from 'prop-types';
 import Button from '@material-ui/core/Button';
 import map from 'lodash/map';

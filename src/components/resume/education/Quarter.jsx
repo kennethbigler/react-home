@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import types from 'prop-types';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';

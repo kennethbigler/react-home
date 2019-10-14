@@ -3,10 +3,11 @@ import ContentAdd from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import red from '@material-ui/core/colors/red';
 import lightGreen from '@material-ui/core/colors/lightGreen';
+import noop from 'lodash/noop';
 
 interface PieceProps {
-  enabled: boolean;
-  onClick: MouseEventHandler;
+  enabled?: boolean;
+  onClick?: MouseEventHandler;
   piece: number;
 }
 
@@ -45,5 +46,10 @@ const Piece: React.FC<PieceProps> = memo((props: PieceProps) => {
       </Fab>
     );
 });
+
+Piece.defaultProps = {
+  enabled: false,
+  onClick: noop,
+};
 
 export default Piece;

@@ -1,13 +1,23 @@
 import React from 'react';
-import types from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Board from './Board';
 import Header from './Header';
+import { Turn } from './types';
 
-const GameBoard = (props) => {
+interface GameBoardProps {
+  board: number[][];
+  insert: Function;
+  newGame: React.MouseEventHandler;
+  turn: Turn;
+  winner?: number;
+}
+
+const GameBoard: React.FC<GameBoardProps> = (props: GameBoardProps) => {
   const {
-    board, insert, winner, turn, newGame,
+    board, insert, winner, turn,
+    newGame,
   } = props;
+
   return (
     <Paper
       elevation={2}
@@ -23,14 +33,6 @@ const GameBoard = (props) => {
       <Board board={board} insert={insert} turn={turn} />
     </Paper>
   );
-};
-
-GameBoard.propTypes = {
-  board: types.arrayOf(types.array).isRequired,
-  insert: types.func.isRequired,
-  newGame: types.func.isRequired,
-  turn: types.number.isRequired,
-  winner: types.number,
 };
 
 export default GameBoard;

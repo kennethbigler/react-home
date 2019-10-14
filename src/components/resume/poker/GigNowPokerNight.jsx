@@ -1,4 +1,4 @@
-import React, { memo, Fragment } from 'react';
+import React, { memo } from 'react';
 // custom
 import PokerGraph from './PokerGraph';
 import PokerTable from './PokerTable';

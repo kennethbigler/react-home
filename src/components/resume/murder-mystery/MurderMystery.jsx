@@ -1,4 +1,4 @@
-import React, { useState, memo, Fragment } from 'react';
+import React, { useState, memo } from 'react';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import profiles, { CASINO } from '../../../constants/murder';

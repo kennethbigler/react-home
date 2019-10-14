@@ -1,6 +1,4 @@
-import React, {
-  memo, lazy, Suspense, Fragment,
-} from 'react';
+import React, { memo, lazy, Suspense } from 'react';
 import { Typography } from '@material-ui/core';
 // custom
 import TimelineCard from '../../common/timeline-card';

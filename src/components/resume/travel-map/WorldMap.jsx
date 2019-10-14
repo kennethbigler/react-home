@@ -1,4 +1,4 @@
-import React, { useState, memo, Fragment } from 'react';
+import React, { useState, memo } from 'react';
 import {
   ComposableMap,
   ZoomableGroup,

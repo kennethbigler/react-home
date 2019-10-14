@@ -1,5 +1,5 @@
 // react
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import types from 'prop-types';
 // helpers
 import map from 'lodash/map';

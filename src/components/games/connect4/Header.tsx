@@ -1,11 +1,17 @@
-import React, { memo } from 'react';
-import types from 'prop-types';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Piece from './Piece';
+import { Turn } from './types';
 
-const Header = memo((props) => {
+interface HeaderProps {
+  newGame: React.MouseEventHandler;
+  turn: Turn;
+  winner?: number;
+}
+
+const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
   const { winner, turn, newGame } = props;
   // status text
   const status = winner ? 'Winner:' : 'Turn:';
@@ -20,22 +26,12 @@ const Header = memo((props) => {
           </Typography>
           <Piece piece={piece} />
         </div>
-        <Button
-          color="primary"
-          onClick={newGame}
-          variant="contained"
-        >
+        <Button color="primary" onClick={newGame} variant="contained">
           Reset Game
         </Button>
       </div>
     </Toolbar>
   );
 });
-
-Header.propTypes = {
-  newGame: types.func.isRequired,
-  turn: types.number.isRequired,
-  winner: types.number,
-};
 
 export default Header;

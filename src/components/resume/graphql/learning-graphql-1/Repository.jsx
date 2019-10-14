@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import types from 'prop-types';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 
 const Repository = ({ repository, onFetchMoreIssues, onStarRepository }) => (
-  <Fragment>
+  <>
     <Typography>
       <strong>In Repository: </strong>
       <a href={repository.url}>{repository.name}</a>
@@ -37,7 +37,7 @@ const Repository = ({ repository, onFetchMoreIssues, onStarRepository }) => (
     <hr />
 
     {repository.issues.pageInfo.hasNextPage && <button type="button" onClick={onFetchMoreIssues}>More</button>}
-  </Fragment>
+  </>
 );
 
 Repository.propTypes = {
