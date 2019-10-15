@@ -9,12 +9,12 @@ export enum ATR {
 export default ATR;
 export interface DBDota2Hero {
   name: string;
-  selected: boolean;
+  selected: boolean | string;
   attribute: ATR;
 }
 export interface DBDota2Turn {
   number: number;
-  selection?: DBDota2Hero;
+  selection?: string;
 }
 export interface DBDota2Phase {
   name: string;

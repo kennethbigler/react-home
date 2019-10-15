@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import types from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import map from 'lodash/map';
 import noop from 'lodash/noop';
 import Button from '@material-ui/core/Button';
@@ -12,17 +11,37 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 import characterList, { resetHeroesStatuses } from '../../../constants/dota2';
 import Lineup from './Lineup';
-import HeroSelection from './HeroSelection';
+import HeroSelection, { AlphaCharacters } from './HeroSelection';
 import {
   addLineup, removeLineup, resetLineup, updateLineup,
 } from '../../../store/modules/dota2';
-// Parents: Main
+import { DBDota2Phase, DBRootState } from '../../../store/types';
 
-/* --------------------------------------------------
-* Dota 2 Picker
-* -------------------------------------------------- */
-class Dota2Picker extends Component {
-  constructor(props) {
+interface Dota2PickerActions {
+  updateLineup: Function;
+  addLineup: React.MouseEventHandler;
+  resetLineup: Function;
+  removeLineup: Function;
+}
+interface Dota2PickerProps {
+  order: DBDota2Phase[][];
+  actions: Dota2PickerActions;
+}
+type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z';
+interface Dota2PickerState {
+  turn: number;
+  set: number;
+  characters: AlphaCharacters;
+  selected?: {
+    key: Alphabet;
+    i: number;
+  };
+}
+
+/* Dota2Picker  ->  HeroSelection
+ *             |->  Lineup */
+class Dota2Picker extends Component<Dota2PickerProps, Dota2PickerState> {
+  constructor(props: Dota2PickerProps) {
     super(props);
 
     const { order } = props;
@@ -43,24 +62,24 @@ class Dota2Picker extends Component {
     this.state = {
       turn,
       set: 0,
-      characters: characterList,
-      selected: null,
+      characters: characterList as AlphaCharacters,
+      selected: undefined,
     };
   }
 
-  getCurrentPhase = (i) => {
+  getCurrentPhase = (i: number): DBDota2Phase => {
     const { order } = this.props;
     const { set } = this.state;
     return order[set][Math.floor((i - 1) / 2)];
   }
 
-  pickingOrder = (i) => {
+  pickingOrder = (i: number): string => {
     const phase = this.getCurrentPhase(i);
     const team = phase.dire.number === i ? 'Dire' : 'Radiant';
     return `${team} ${phase.name}`;
   }
 
-  selectHeroAndNextTurn = () => {
+  selectHeroAndNextTurn = (): void => {
     const { order, actions } = this.props;
     let { turn, set } = this.state;
     const { characters, selected } = this.state;
@@ -93,7 +112,7 @@ class Dota2Picker extends Component {
         resetHeroesStatuses();
       }
     } else {
-      // regular turn udpate
+      // regular turn update
       turn += 1;
     }
 
@@ -102,11 +121,11 @@ class Dota2Picker extends Component {
 
     actions.updateLineup(order[set], set);
     this.setState({
-      selected: null, turn, characters, set,
+      selected: undefined, turn, characters, set,
     });
   }
 
-  handleClick = (key, i) => {
+  handleClick = (key: Alphabet, i: number): void => {
     const { characters, selected } = this.state;
     if (characters[key][i].selected) {
       this.selectHeroAndNextTurn();
@@ -119,18 +138,18 @@ class Dota2Picker extends Component {
     this.setState({ characters, selected: { key, i }});
   }
 
-  handleReset = (i) => {
+  handleReset = (i: number): void => {
     const { actions } = this.props;
     actions.resetLineup(i);
 
     const { set } = this.state;
     if (set === i) {
       resetHeroesStatuses();
-      this.setState({ turn: 1, selected: null });
+      this.setState({ turn: 1, selected: undefined });
     }
   }
 
-  render() {
+  render(): React.ReactNode {
     const { order, actions } = this.props;
     const { turn, characters } = this.state;
 
@@ -172,33 +191,11 @@ class Dota2Picker extends Component {
   }
 }
 
-Dota2Picker.propTypes = {
-  order: types.arrayOf(
-    types.arrayOf(
-      types.shape({
-        name: types.string.isRequired,
-        radiant: types.shape({
-          number: types.number.isRequired,
-          selection: types.string,
-        }).isRequired,
-        dire: types.shape({
-          number: types.number.isRequired,
-          selection: types.string,
-        }).isRequired,
-      }).isRequired,
-    ),
-  ).isRequired,
-  actions: types.shape({
-    updateLineup: types.func.isRequired,
-    addLineup: types.func.isRequired,
-    resetLineup: types.func.isRequired,
-    removeLineup: types.func.isRequired,
-  }).isRequired,
-};
-
 // react-redux export
-const mapStateToProps = (state) => ({ order: state.dota2 });
-const mapDispatchToProps = (dispatch) => ({
+const mapStateToProps = (state: DBRootState): { order: DBDota2Phase[][] } => ({
+  order: state.dota2,
+});
+const mapDispatchToProps = (dispatch: Dispatch): { actions: Dota2PickerActions } => ({
   actions: bindActionCreators({
     addLineup,
     removeLineup,
