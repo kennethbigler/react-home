@@ -47,6 +47,7 @@
 
     "no-alert": "warn",
     "no-console": "warn",
+    "react/no-array-index-key": "warn",
     "react/no-did-mount-set-state": "warn",
     "react-hooks/exhaustive-deps": "warn",
 
