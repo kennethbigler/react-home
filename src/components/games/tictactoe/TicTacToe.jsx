@@ -17,8 +17,7 @@ const getNewGameVars = () => ({
   step: 0,
 });
 
-/**
- * function to check if there are 3 in a row
+/** function to check if there are 3 in a row
  * @param {array} board - array for board, 3 cells per 3 rows (0-8)
  * @return {Object} value of winner and positions for winner
  */
@@ -48,9 +47,9 @@ function calculateWinner(board) {
   return { winner: null, winRow: []};
 }
 
-/* ========================================
- * TicTacToe Game Logic
- * ======================================== */
+/* TicTacToe  ->  Header
+ *           |->  Board  ->  Cell
+ *           |->  History */
 export default class TicTacToe extends Component {
   constructor() {
     super();

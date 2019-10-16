@@ -7,9 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import SlotMachine, { SlotDisplay } from './SlotMachine';
 import { payout, updateBet } from '../../../store/modules/players';
 import { DBPlayer, DBRootState } from '../../../store/types';
-import SlotPayoutTable from './SlotPayoutTable';
+import PayoutTable from './PayoutTable';
 import MoneyTable from './MoneyTable';
-import SlotReelDisplay from './SlotReelDisplay';
+import ReelDisplay from './ReelDisplay';
 
 interface PlayerActions {
   payout: Function;
@@ -23,6 +23,9 @@ interface SlotState {
   reel: SlotDisplay[];
 }
 
+/* Slots  ->  ReelDisplay
+ *       |->  MoneyTable
+ *       |->  PayoutTable */
 class Slots extends Component<SlotProps, SlotState> {
   constructor(props: SlotProps) {
     super(props);
@@ -67,7 +70,7 @@ class Slots extends Component<SlotProps, SlotState> {
                 </Button>
               </Grid>
               <Grid item sm={9} xs={12}>
-                <SlotReelDisplay reel={reel} />
+                <ReelDisplay reel={reel} />
               </Grid>
             </Grid>
             <MoneyTable
@@ -77,7 +80,7 @@ class Slots extends Component<SlotProps, SlotState> {
             />
           </Grid>
           <Grid item sm={6} xs={12}>
-            <SlotPayoutTable />
+            <PayoutTable />
           </Grid>
         </Grid>
       </>

@@ -8,7 +8,7 @@ import map from 'lodash/map';
 import DarkTableCell from '../../common/DarkTableCell';
 import { payoutTable } from './SlotMachine';
 
-const SlotPayoutTable: React.FC<{}> = memo(() => (
+const PayoutTable: React.FC<{}> = memo(() => (
   <Table>
     <TableHead>
       <TableRow>
@@ -35,4 +35,4 @@ const SlotPayoutTable: React.FC<{}> = memo(() => (
   </Table>
 ));
 
-export default SlotPayoutTable;
+export default PayoutTable;

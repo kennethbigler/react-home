@@ -6,7 +6,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import { SlotDisplay } from './SlotMachine';
 
-interface SlotReelDisplayProps {
+interface ReelDisplayProps {
   reel: SlotDisplay[];
 }
 
@@ -15,7 +15,7 @@ const cellStyles: React.CSSProperties = {
   fontWeight: 900,
 };
 
-const SlotReelDisplay: React.FC<SlotReelDisplayProps> = (props: SlotReelDisplayProps) => {
+const ReelDisplay: React.FC<ReelDisplayProps> = (props: ReelDisplayProps) => {
   /** generate code for slot machine */
   const getSlots = (): React.ReactNode[] => {
     const { reel } = props;
@@ -46,4 +46,4 @@ const SlotReelDisplay: React.FC<SlotReelDisplayProps> = (props: SlotReelDisplayP
   );
 };
 
-export default SlotReelDisplay;
+export default ReelDisplay;
