@@ -1,22 +1,28 @@
 import React from 'react';
-import types from 'prop-types';
-// material-ui
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import grey from '@material-ui/core/colors/grey';
-// functions
 import includes from 'lodash/includes';
 import Cell from './Cell';
-// Parents: TicTacToe
 
-/* ========================================
- * Board
- * ======================================== */
-const Board = (props) => {
+interface BoardProps {
+  board: string[] | undefined[];
+  onClick: Function;
+  winRow: [number?, number?, number?];
+}
+
+const tableCellStyle: React.CSSProperties = {
+  padding: 0,
+  textAlign: 'center',
+  border: `1px solid ${grey[400]}`,
+};
+
+const Board: React.FC<BoardProps> = (props: BoardProps) => {
   const { board, onClick, winRow } = props;
   const cells = [];
+
   // create 3 rows
   for (let i = 0; i < 3; i += 1) {
     // create 3 cells in a row
@@ -26,15 +32,8 @@ const Board = (props) => {
       // check if winning position
       const winner = includes(winRow, c);
       row.push(
-        <TableCell
-          key={`${i},${j}`}
-          style={{
-            padding: 0,
-            textAlign: 'center',
-            border: `1px solid ${grey[400]}`,
-          }}
-        >
-          <Cell onClick={() => onClick(c)} value={board[c]} winner={winner} />
+        <TableCell key={`${i},${j}`} style={tableCellStyle}>
+          <Cell onClick={(): void => onClick(c)} value={board[c]} winner={winner} />
         </TableCell>,
       );
     }
@@ -54,12 +53,6 @@ const Board = (props) => {
       </TableBody>
     </Table>
   );
-};
-
-Board.propTypes = {
-  board: types.arrayOf(types.string).isRequired,
-  onClick: types.func.isRequired,
-  winRow: types.arrayOf(types.number).isRequired,
 };
 
 export default Board;

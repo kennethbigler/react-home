@@ -9,7 +9,6 @@ import Board from './Board';
 import Header from './Header';
 import { shuffle } from './helpers';
 import { payout } from '../../../store/modules/players';
-// Parents: Main
 
 // name constant for reference
 const OPEN = 6;
@@ -54,6 +53,9 @@ const getNewState = () => ({
 });
 
 // TODO: add rules to page
+/* DealOrNoDeal  ->  Header
+ *              |->  Board  ->  Case
+ *              |->  Modal  ->  Money */
 class DND extends Component {
   /** reset board and shuffle cases */
   constructor(props) {

@@ -1,36 +1,39 @@
 import React, { useState } from 'react';
-import types from 'prop-types';
 import Button from '@material-ui/core/Button';
 import map from 'lodash/map';
+import get from 'lodash/get';
 import { getTurn } from './constants';
-// Parents: TicTacToe
 
-/* ========================================
- * History
- * ======================================== */
-const History = (props) => {
+export interface HistoryEntry {
+  board: string[] | undefined[];
+  location?: number;
+}
+interface HistoryProps {
+  history: HistoryEntry[];
+  jumpToStep: Function;
+  step: number;
+}
+
+const History: React.FC<HistoryProps> = (props: HistoryProps) => {
   const [ascend, setAscend] = useState(true);
   const { history, step, jumpToStep } = props;
 
-  /**
-   * function that generates text for the history tracker
-   * @param {Object} round - contains board and click location for turn
-   * @param {number} move - just index tracking
-   * @return {Object}
-   */
-  const getHistoryText = (round, move) => {
+  /** function that generates text for the history tracker */
+  const getHistoryText = (round: HistoryEntry, move: number): React.ReactNode => {
+    const location = get(round, 'location', 0);
     // generate description text
     const description = !move
       ? 'Game Start (Turn, Col, Row)'
       : `Move #${move} (${getTurn(move - 1)}, `
-      + `${Math.floor(round.location / 3)}, ${round.location % 3})`;
+      + `${Math.floor(location / 3)}, ${location % 3})`;
     // highlight current turn displayed on board
     const color = step === move ? 'secondary' : 'default';
+
     return (
       <Button
         key={move}
         color={color}
-        onClick={() => jumpToStep(move)}
+        onClick={(): void => jumpToStep(move)}
         style={{ display: 'block' }}
       >
         {description}
@@ -46,7 +49,7 @@ const History = (props) => {
   return (
     <>
       <Button
-        onClick={() => { setAscend(!ascend); }}
+        onClick={(): void => { setAscend(!ascend); }}
         style={{ marginTop: 20, marginBottom: 20 }}
         variant="contained"
       >
@@ -55,12 +58,6 @@ const History = (props) => {
       {moves}
     </>
   );
-};
-
-History.propTypes = {
-  history: types.arrayOf(types.shape({ location: types.number })).isRequired,
-  jumpToStep: types.func.isRequired,
-  step: types.number.isRequired,
 };
 
 export default History;

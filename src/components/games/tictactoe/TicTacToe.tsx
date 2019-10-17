@@ -3,26 +3,31 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import fill from 'lodash/fill';
 import Header from './Header';
-import History from './History';
+import History, { HistoryEntry } from './History';
 import Board from './Board';
 import { X, O, getTurn } from './constants';
-// Parents: Main
 
-const EMPTY = null;
+
+interface TicTacToeState {
+  history: HistoryEntry[];
+  turn: string;
+  step: number;
+}
+
+const EMPTY = undefined;
 
 // constants and helper functions
-const getNewGameVars = () => ({
+const getNewGameVars = (): TicTacToeState => ({
   history: [{ board: fill(Array(9), EMPTY) }],
   turn: X,
   step: 0,
 });
 
 /** function to check if there are 3 in a row
- * @param {array} board - array for board, 3 cells per 3 rows (0-8)
  * @return {Object} value of winner and positions for winner
  */
-function calculateWinner(board) {
-  const lines = [
+function calculateWinner(board: string[] | undefined[]): { winner?: string; winRow: [number?, number?, number?] } {
+  const lines: [number, number, number][] = [
     // horizontal
     [0, 1, 2],
     [3, 4, 5],
@@ -44,24 +49,24 @@ function calculateWinner(board) {
       return { winner: board[a], winRow: lines[i] };
     }
   }
-  return { winner: null, winRow: []};
+  return { winner: undefined, winRow: []};
 }
+
+const paperStyles: React.CSSProperties = { width: 343, display: 'block', margin: 'auto' };
 
 /* TicTacToe  ->  Header
  *           |->  Board  ->  Cell
  *           |->  History */
-export default class TicTacToe extends Component {
-  constructor() {
-    super();
+export default class TicTacToe extends Component<{}, TicTacToeState> {
+  constructor(props: {}) {
+    super(props);
     this.state = getNewGameVars();
-    this.styles = { paper: { width: 343, display: 'block', margin: 'auto' }};
   }
 
-  /**
-   * function that modifies board with appropriate turn
-   * @param {number} location - locaiton of board click (row * 3 + col)
+  /** function that modifies board with appropriate turn
+   * @param {number} location - location of board click (row * 3 + col)
    */
-  handleClick = (location) => {
+  handleClick = (location: number): void => {
     const { turn, step, history } = this.state;
     const newHistory = history.slice(0, step + 1);
     const current = newHistory[step];
@@ -82,17 +87,16 @@ export default class TicTacToe extends Component {
   };
 
   /** function that resets game back to it's initial state */
-  newGame = () => {
+  newGame = (): void => {
     this.setState(getNewGameVars());
   };
 
-  /**
-   * function that modifies board to go back to a previous point in history
+  /** function that modifies board to go back to a previous point in history
    * @param {number} step - desired point in history
    */
-  jumpToStep = (step) => {
+  jumpToStep = (step: number): void => {
     const { step: stepNo, history } = this.state;
-    const state = { step, turn: getTurn(step) };
+    const state: TicTacToeState = { step, turn: getTurn(step), history };
     // Double click will eliminate all other history if there is any
     if (step === stepNo) {
       state.history = history.slice(0, stepNo + 1);
@@ -101,7 +105,7 @@ export default class TicTacToe extends Component {
     this.setState(state);
   };
 
-  render() {
+  render(): React.ReactNode {
     const { history, turn, step } = this.state;
     const current = history[step];
     const board = current.board.slice();
@@ -110,11 +114,11 @@ export default class TicTacToe extends Component {
     return (
       <>
         <Typography variant="h2" gutterBottom>Tic-Tac-Toe</Typography>
-        <Paper elevation={2} style={this.styles.paper}>
+        <Paper elevation={2} style={paperStyles}>
           <Header newGame={this.newGame} turn={turn} winner={winner} />
           <Board
             board={board}
-            onClick={(i) => this.handleClick(i)}
+            onClick={this.handleClick}
             winRow={winRow}
           />
         </Paper>

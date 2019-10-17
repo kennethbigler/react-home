@@ -1,14 +1,15 @@
 import React, { memo } from 'react';
-import types from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-// Parents: TicTacToe
 
-/* ========================================
- * Header
- * ======================================== */
-const Header = memo((props) => {
+interface HeaderProps {
+  newGame: React.MouseEventHandler;
+  turn: string;
+  winner?: string;
+}
+
+const Header: React.FC<HeaderProps> = memo((props: HeaderProps) => {
   const { winner, turn, newGame } = props;
   // status text
   const status = winner ? `Winner: ${winner}` : `Turn: ${turn}`;
@@ -24,11 +25,5 @@ const Header = memo((props) => {
     </Toolbar>
   );
 });
-
-Header.propTypes = {
-  newGame: types.func.isRequired,
-  turn: types.string.isRequired,
-  winner: types.string,
-};
 
 export default Header;

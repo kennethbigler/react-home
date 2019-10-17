@@ -1,5 +1,4 @@
 import React from 'react';
-import types from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,15 +7,30 @@ import Button from '@material-ui/core/Button';
 import map from 'lodash/map';
 import Money from './Money';
 import { getMoneyText } from './helpers';
-import styles from './Modal.styles';
-// Parents: DealOrNoDeal
+import { Briefcase } from './Case';
 
-const genMoneyCols = (arr, start, stop = arr.length) => map(arr.slice(start, stop), (bc) => <Money key={bc.loc} briefcase={bc} />);
+interface ModalProps {
+  board: Briefcase[];
+  deal: React.MouseEventHandler;
+  noDeal: React.MouseEventHandler;
+  numCases: number;
+  offer: number;
+  open: boolean;
+  swap: React.MouseEventHandler;
+}
 
-const Modal = (props) => {
+const colStyles: React.CSSProperties = { width: '50%', display: 'inline-block' };
+
+const genMoneyCols = (arr: Briefcase[], start: number, stop = arr.length): React.ReactNode[] => (
+  map(arr.slice(start, stop), (bc) => <Money key={bc.loc} briefcase={bc} />)
+);
+
+const Modal: React.FC<ModalProps> = (props: ModalProps) => {
   const {
-    deal, noDeal, offer, open, swap, numCases, board: imBoard,
+    deal, noDeal, offer, open,
+    swap, numCases, board: imBoard,
   } = props;
+
   const board = [...imBoard].sort((a, b) => a.val - b.val);
 
   // columns displaying money values left
@@ -29,10 +43,10 @@ const Modal = (props) => {
         {`${getMoneyText(offer)} - Deal or No Deal?`}
       </DialogTitle>
       <DialogContent>
-        <div style={styles.cols}>
+        <div style={colStyles}>
           {lhs}
         </div>
-        <div style={styles.cols}>
+        <div style={colStyles}>
           {rhs}
         </div>
       </DialogContent>
@@ -61,20 +75,6 @@ const Modal = (props) => {
         )}
     </Dialog>
   );
-};
-
-Modal.propTypes = {
-  board: types.arrayOf(
-    types.shape({
-      loc: types.number.isRequired,
-    }),
-  ).isRequired,
-  deal: types.func.isRequired,
-  noDeal: types.func.isRequired,
-  numCases: types.number.isRequired,
-  offer: types.number.isRequired,
-  open: types.bool.isRequired,
-  swap: types.func.isRequired,
 };
 
 export default Modal;
