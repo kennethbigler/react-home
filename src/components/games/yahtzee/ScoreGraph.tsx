@@ -37,6 +37,11 @@ class ScoreGraph extends React.Component<ScoreGraphProps, ScoreGraphState> {
     return null;
   }
 
+  shouldComponentUpdate(nextProps: ScoreGraphProps): boolean {
+    const { scores } = this.props;
+    return nextProps.scores.length > scores.length;
+  }
+
   render(): React.ReactNode {
     const { theme: { palette: { secondary: { main }}}} = this.props;
     const { scores } = this.state;
