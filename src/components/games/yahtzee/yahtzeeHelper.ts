@@ -1,6 +1,17 @@
 import forEach from 'lodash/forEach';
+import { Dice } from './types';
 
-export const hasXDice = (n) => (hist, val) => {
+interface DiceHistogram {
+  0?: number;
+  '1': number;
+  '2': number;
+  '3': number;
+  '4': number;
+  '5': number;
+  '6': number;
+}
+
+export const hasXDice = (n: number) => (hist: any, val: Dice): boolean | DiceHistogram => {
   if (hist === true) {
     return true;
   }
@@ -15,7 +26,7 @@ export const hasXDice = (n) => (hist, val) => {
   return hist;
 };
 
-export const getHistogram = () => (hist, val) => {
+export const getHistogram = () => (hist: any, val: Dice): boolean | DiceHistogram => {
   if (hist === true) {
     return true;
   }
@@ -27,14 +38,14 @@ export const getHistogram = () => (hist, val) => {
   return hist;
 };
 
-export const isFullHouse = (histogram) => {
+export const isFullHouse = (histogram: DiceHistogram): boolean => {
   let has3 = false;
   let has2 = false;
 
-  forEach(histogram, (value) => {
-    if (value >= 3) {
+  forEach(histogram, (value: number | undefined) => {
+    if (value && value >= 3) {
       has3 = true;
-    } else if (value >= 2) {
+    } else if (value && value >= 2) {
       has2 = true;
     }
   });
@@ -42,9 +53,9 @@ export const isFullHouse = (histogram) => {
   return has3 && has2;
 };
 
-export const isStraight = (histogram, length) => {
+export const isStraight = (histogram: DiceHistogram, length: number): boolean => {
   let count = 0;
-  forEach(['1', '2', '3', '4', '5', '6'], (i) => {
+  forEach(['1', '2', '3', '4', '5', '6'], (i: Dice) => {
     if (count < length) {
       const value = histogram[i];
       if (!value) {

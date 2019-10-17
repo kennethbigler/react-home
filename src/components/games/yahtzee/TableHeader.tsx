@@ -2,8 +2,8 @@ import React from 'react';
 import map from 'lodash/map';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { Dice } from './types';
 
-type Dice = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 interface TableHeaderProps {
   roll: Dice;
   values: Dice[];
