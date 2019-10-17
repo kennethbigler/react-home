@@ -1,21 +1,26 @@
 import React from 'react';
-import types from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { getMoneyText } from './helpers';
-// Parents: DealOrNoDeal
+import { DBPlayer } from '../../../store/types';
+import { Briefcase } from './Case';
 
-const Header = (props) => {
+interface HeaderProps {
+  casesToOpen: number;
+  isOver: boolean;
+  newGame: React.MouseEventHandler;
+  offer?: number;
+  player: DBPlayer;
+  playerChoice?: Briefcase;
+}
+
+const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
   const {
-    playerChoice: pc,
-    casesToOpen,
-    isOver,
-    offer,
-    newGame,
-    player,
+    playerChoice: pc, casesToOpen, isOver,
+    offer, newGame, player,
   } = props;
-  // rendered component
+
   return (
     <Grid container spacing={1}>
       <Grid item sm={6} xs={12}>
@@ -23,7 +28,7 @@ const Header = (props) => {
           Your Case:
           {' '}
           {pc ? pc.loc : '?'}
-          {isOver && ` - ${getMoneyText(pc.val)}`}
+          {isOver && ` - ${getMoneyText(pc && pc.val)}`}
         </Typography>
         <Typography variant="h4" gutterBottom>
           {isOver
@@ -45,21 +50,6 @@ const Header = (props) => {
       </Grid>
     </Grid>
   );
-};
-
-Header.propTypes = {
-  casesToOpen: types.number.isRequired,
-  isOver: types.bool.isRequired,
-  newGame: types.func.isRequired,
-  offer: types.number,
-  player: types.shape({
-    name: types.string.isRequired,
-    money: types.number.isRequired,
-  }).isRequired,
-  playerChoice: types.shape({
-    loc: types.number.isRequired,
-    val: types.number.isRequired,
-  }),
 };
 
 export default Header;

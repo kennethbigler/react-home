@@ -1,10 +1,8 @@
 import split from 'lodash/split';
-/**
- * function that takes a number and returns string displayed like money
- * @param {number} n
- * @return {string} - $xxx,xxx,...
- */
-export const getMoneyText = (n) => {
+import { Briefcase } from './Case';
+
+/** function that takes a number and returns string displayed like money */
+export const getMoneyText = (n = 0): string => {
   const txt = split(n.toString(), '');
   const e = txt[0] === '-' ? 1 : 0;
   for (let i = txt.length - 3; i > e; i -= 3) {
@@ -14,11 +12,8 @@ export const getMoneyText = (n) => {
   return txt.join('');
 };
 
-/**
- * function that takes an array and shuffles it's elements
- * @param {array} arr
- */
-export const shuffle = (arr) => {
+/** function that takes an array and shuffles it's elements */
+export const shuffle = (arr: Briefcase[]): void => {
   // shuffle values of briefcases
   for (let i = 0; i < 100; i += 1) {
     // get to random briefcases

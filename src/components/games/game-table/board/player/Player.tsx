@@ -8,19 +8,10 @@ import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import Hand from '../Hand';
-import { DBTurn, DBHand } from '../../../../../store/types';
+import { DBTurn, DBPlayer } from '../../../../../store/types';
 import styles from './Player.styles';
 // Parents: Board
 
-export interface DBPlayer {
-  hands: DBHand[];
-  id: number;
-  isBot: boolean;
-  money: number;
-  status: string;
-  name: string;
-  bet: number;
-}
 interface PlayerProps {
   betHandler?: Function;
   cardHandler?: Function;

@@ -7,7 +7,7 @@ import Case, { Briefcase } from './Case';
 interface BoardProps {
   board: Briefcase[];
   onClick: Function;
-  playerChoice: Briefcase;
+  playerChoice?: Briefcase;
 }
 
 const style: React.CSSProperties = {

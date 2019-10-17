@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import types from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import forEach from 'lodash/forEach';
 import Typography from '@material-ui/core/Typography';
 import Modal from './Modal';
@@ -9,11 +8,31 @@ import Board from './Board';
 import Header from './Header';
 import { shuffle } from './helpers';
 import { payout } from '../../../store/modules/players';
+import { DBRootState, DBPlayer } from '../../../store/types';
+import { Briefcase } from './Case';
 
-// name constant for reference
+interface ActionsProp {
+  payout: Function;
+}
+interface DNDProps {
+  actions: ActionsProp;
+  player: DBPlayer;
+}
+interface DNDState {
+  board: Briefcase[];
+  turn: number;
+  playerChoice?: Briefcase;
+  casesToOpen: number;
+  sum: number;
+  numCases: number;
+  offer: number;
+  dndOpen: boolean;
+  isOver: boolean;
+}
+
 const OPEN = 6;
 
-const getNewState = () => ({
+const getNewState = (): DNDState => ({
   board: [
     { val: 1, loc: 1, on: true },
     { val: 2, loc: 2, on: true },
@@ -43,7 +62,7 @@ const getNewState = () => ({
     { val: 1000000, loc: 26, on: true },
   ],
   turn: 1,
-  playerChoice: null,
+  playerChoice: undefined,
   casesToOpen: OPEN,
   sum: 0,
   numCases: 0,
@@ -56,47 +75,41 @@ const getNewState = () => ({
 /* DealOrNoDeal  ->  Header
  *              |->  Board  ->  Case
  *              |->  Modal  ->  Money */
-class DND extends Component {
+class DND extends Component<DNDProps, DNDState> {
   /** reset board and shuffle cases */
-  constructor(props) {
+  constructor(props: DNDProps) {
     super(props);
 
     this.state = this.prepareNewGameState();
   }
 
   /** check if it is time for an offer */
-  componentDidUpdate() {
+  componentDidUpdate(): void {
     const { casesToOpen } = this.state;
     if (casesToOpen === 0) {
       setTimeout(this.handleOpen, 300);
     }
   }
 
-  /**
-   * function to generate the bank offer
-   * @return {number} bank offer in $
-   */
-  getBankOffer = () => {
+  /** function to generate the bank offer */
+  getBankOffer = (): number => {
     const { sum, numCases, turn } = this.state;
     // return offer from the bank
     return Math.round((sum / numCases) * (turn / 10));
   };
 
-  /**
-   * charge user to play
+  /** charge user to play
    * NOTE: avg (Expected win value) is 131477.62 / 1k = $132
    */
-  chargePlayer = () => {
+  chargePlayer = (): void => {
     const { player, actions } = this.props;
     actions.payout(player.id, 'lose', -100);
   };
 
-  /**
-   * open a briefcase and update global states
-   * @param {number} x - number of the selected briefcase
+  /** open a briefcase and update global states
    * NOTE: udpates sum, numCases, board, casesToOpen
    */
-  openBriefcase = (x) => {
+  openBriefcase = (x: number): void => {
     // state vars
     const { board, playerChoice: pc } = this.state;
     const bc = board[x];
@@ -126,7 +139,7 @@ class DND extends Component {
     }
   };
 
-  handleOpen = () => {
+  handleOpen = (): void => {
     const { turn } = this.state;
     // get the new offer
     const offer = this.getBankOffer();
@@ -136,7 +149,7 @@ class DND extends Component {
   };
 
   /** function to get a new game state */
-  prepareNewGameState = () => {
+  prepareNewGameState = (): DNDState => {
     const state = getNewState();
     // mix up board
     shuffle(state.board);
@@ -154,42 +167,38 @@ class DND extends Component {
     return state;
   }
 
-  /**
-   * function to reset the game
+  /** function to reset the game
    * NOTE: reset entire state
    */
-  newGame = () => {
+  newGame = (): void => {
     const state = this.prepareNewGameState();
     // update state
     this.setState(state);
   };
 
-  /**
-   * function to finish the game
+  /** function to finish the game
    * NOTE: payout to user offer / 1k
-   * @param {number} offer
    */
-  finishGame = (offer) => {
+  finishGame = (offer: number): void => {
     const { player, actions } = this.props;
     actions.payout(player.id, 'win', Math.round(offer / 1000));
     this.setState({ dndOpen: false, isOver: true, offer });
   };
 
   /** called on selection of Deal */
-  deal = () => {
+  deal = (): void => {
     const { offer } = this.state;
     this.finishGame(offer);
   };
 
-  /**
-   * called on selection of No Deal
+  /** called on selection of No Deal
    * NOTE: update turn, casesToOpen
    */
-  noDeal = () => {
+  noDeal = (): void => {
     const { turn, numCases, playerChoice } = this.state;
     // no deal on last case
     if (numCases <= 2) {
-      this.finishGame(playerChoice.val);
+      this.finishGame(playerChoice ? playerChoice.val : -1);
     }
     // advance the turn and update state
     this.setState({ dndOpen: false, turn: turn + 1 });
@@ -199,18 +208,18 @@ class DND extends Component {
    * called on selection of 'Other Case'
    * @param {number} offer - case value
    */
-  swap = () => {
+  swap = (): void => {
     const { board, playerChoice: pc } = this.state;
     for (let i = 0; i < board.length; i += 1) {
       const bc = board[i];
-      if (bc.on && bc.loc !== pc.loc) {
+      if (bc.on && pc && bc.loc !== pc.loc) {
         this.finishGame(bc.val);
         return;
       }
     }
   };
 
-  render() {
+  render(): React.ReactNode {
     const {
       board,
       dndOpen,
@@ -252,21 +261,11 @@ class DND extends Component {
   }
 }
 
-DND.propTypes = {
-  actions: types.shape({
-    payout: types.func.isRequired,
-  }).isRequired,
-  player: types.shape({
-    id: types.number.isRequired,
-    money: types.number.isRequired,
-  }).isRequired,
-};
-
 // react-redux export
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: DBRootState): { player: DBPlayer } => ({
   player: state.players[0],
 });
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch): { actions: ActionsProp } => ({
   actions: bindActionCreators({ payout }, dispatch),
 });
 export default connect(
