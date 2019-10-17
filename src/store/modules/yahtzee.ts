@@ -1,5 +1,4 @@
 import { AnyAction } from 'redux';
-import { insertItem } from '../immutableHelpers';
 import initialState from '../initialState';
 
 // --------------------     Actions     -------------------- //
@@ -12,7 +11,7 @@ export const addScore = (score: number): AnyAction => ({ type: ADD, score });
 export default function reducer(state: number[] = initialState.yahtzee, action: AnyAction): number[] {
   switch (action.type) {
     case ADD:
-      return insertItem(state, { score: action.score });
+      return [...state, action.score];
     default:
       return state;
   }

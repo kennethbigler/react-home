@@ -3,14 +3,12 @@ import types from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import reduce from 'lodash/reduce';
-import map from 'lodash/map';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Dice from '../../../apis/Dice';
 import ScoreTable, { ADD_DICE } from './ScoreTable';
-import ScoreGraph from './ScoreGraph';
 import { addScore } from '../../../store/modules/yahtzee';
-// Parents: Main
+import Header from './Header';
+import TableHeader from './TableHeader';
 
 const getInitialState = () => ({
   roll: 0,
@@ -201,29 +199,17 @@ class Yahtzee extends Component {
 
     return (
       <>
-        <div className="flex-container">
-          <Typography variant="h2">Yahtzee</Typography>
-          <ScoreGraph scores={scores} />
-        </div>
+        <Header scores={scores} />
         <hr />
-        <div className="flex-container">
-          <Typography variant="h4">{`Roll #${roll}/3`}</Typography>
-          <div style={{ display: 'block', margin: 'auto', width: 320 }}>
-            {map(saved, (val, i) => (
-              <Button color="secondary" onClick={() => this.handleUnsave(i)} variant="outlined" key={i}>
-                {val}
-              </Button>
-            ))}
-            {map(values, (val, i) => (
-              <Button color="primary" onClick={() => this.handleSave(i)} variant="outlined" key={i}>
-                {val}
-              </Button>
-            ))}
-          </div>
-          <Button color="primary" onClick={this.handleDiceRoll} variant="contained">
-            {this.getButtonText(roll)}
-          </Button>
-        </div>
+        <TableHeader
+          values={values}
+          saved={saved}
+          roll={roll}
+          handleUnsave={this.handleUnsave}
+          handleSave={this.handleSave}
+          handleDiceRoll={this.handleDiceRoll}
+          getButtonText={this.getButtonText}
+        />
         <hr />
         <Typography variant="h4">{`Total: ${finalTopSum + bottomSum}`}</Typography>
         <ScoreTable
