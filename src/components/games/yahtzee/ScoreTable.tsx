@@ -7,27 +7,23 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import map from 'lodash/map';
 import reduce from 'lodash/reduce';
+import { Dice, GameScore, ADD_DICE } from './types';
 import {
-  hasXDice, getHistogram, isFullHouse, isStraight,
+  hasXDice, isFullHouse, isStraight, canYahtzeeBonus,
 } from './yahtzeeHelper';
 
-interface GameScore {
-  name: string;
-  score: number;
-}
 interface ScoreTableProps {
-  values: number[];
-  top: GameScore[];
   bottom: GameScore[];
+  bottomSum: number;
+  finalTopSum: number;
   onTopScore: Function;
   onBottomScore: Function;
   showScoreButtons: boolean;
+  top: GameScore[];
   topSum: number;
-  finalTopSum: number;
-  bottomSum: number;
+  values: Dice[];
 }
 
-export const ADD_DICE = 'Sum of Dice';
 const centerStyle: React.CSSProperties = { textAlign: 'center' };
 
 const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
@@ -43,6 +39,7 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
   };
 
   const getScoreButton = (showButton: boolean, points: number, top: boolean, i: number): React.ReactNode => {
+    // eslint-disable-next-line react/prop-types
     const { onTopScore, onBottomScore } = props;
     return showButton
       ? (
@@ -98,21 +95,21 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
     return reduce(values, (sum, d) => sum + d, 0);
   };
 
-  const showButton = (i) => {
+  const showButton = (i: number): boolean => {
     const { values } = props;
     switch (i) {
       case 0: // 3 of a kind
-        return reduce(values, hasXDice(3), {}) === true;
+        return hasXDice(values, 3);
       case 1: // 4 of a kind
-        return reduce(values, hasXDice(4), {}) === true;
+        return hasXDice(values, 4);
       case 2: // Full House
-        return isFullHouse(reduce(values, getHistogram(), {}));
+        return isFullHouse(values);
       case 3: // Sm. Straight
-        return isStraight(reduce(values, getHistogram(), {}), 4);
+        return isStraight(values, 4);
       case 4: // Lg. Straight
-        return isStraight(reduce(values, getHistogram(), {}), 5);
+        return isStraight(values, 5);
       case 5: // Yahtzee
-        return reduce(values, hasXDice(5), {}) === true;
+        return hasXDice(values, 5);
       case 6: // Chance
         return true;
       default:
@@ -122,7 +119,7 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
     }
   };
 
-  const getBottomTableButtons = (score, points, hasYahtzee, i) => {
+  const getBottomTableButtons = (score: number, points: number, hasYahtzee: boolean, i: number): React.ReactNode | null => {
     const { showScoreButtons } = props;
     if (score >= 0) {
       return score;
@@ -131,17 +128,7 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
       // Yahtzee Bonus
       if (hasYahtzee) {
         const { values, top } = props;
-        const canYahtzeeBonus = reduce(
-          reduce(values, getHistogram(), {}),
-          (acc, value, key) => {
-            if (value === 5 && top[key - 1].score >= 0) {
-              return true;
-            }
-            return acc;
-          },
-          false,
-        );
-        if (canYahtzeeBonus) {
+        if (canYahtzeeBonus(values, top)) {
           return getScoreButton(true, points + 100, false, i);
         }
       }
@@ -150,21 +137,21 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
     return null;
   };
 
-  const generateBottomTable = () => {
+  const generateBottomTable = (): React.ReactNode => {
     const { bottom } = props;
     const hasYahtzee = bottom[5].score > 0;
-    return map(bottom, ({
-      name, hint, points, score,
-    }, i) => {
-      if (points === ADD_DICE) {
-        points = getDiceValue();
-      }
+    return map(bottom, (gameScore, i) => {
+      const {
+        name, hint, points, score,
+      } = gameScore;
+
+      const parsedPoints = (points === ADD_DICE) ? getDiceValue() : points;
 
       return (
         <TableRow key={name}>
           <TableCell>{name}</TableCell>
           <TableCell>{hint}</TableCell>
-          <TableCell style={centerStyle}>{getBottomTableButtons(score, points, hasYahtzee, i)}</TableCell>
+          <TableCell style={centerStyle}>{getBottomTableButtons(score, parsedPoints, hasYahtzee, i)}</TableCell>
         </TableRow>
       );
     });

@@ -1,48 +1,44 @@
 import forEach from 'lodash/forEach';
-import { Dice } from './types';
+import reduce from 'lodash/reduce';
+import { Dice, GameScore } from './types';
 
 interface DiceHistogram {
   0?: number;
-  '1': number;
-  '2': number;
-  '3': number;
-  '4': number;
-  '5': number;
-  '6': number;
+  1: number;
+  2: number;
+  3: number;
+  4: number;
+  5: number;
+  6: number;
 }
 
-export const hasXDice = (n: number) => (hist: any, val: Dice): boolean | DiceHistogram => {
-  if (hist === true) {
-    return true;
-  }
+export const getHistogram = () => (hist: DiceHistogram, val: Dice): DiceHistogram => {
   if (!hist[val]) {
     hist[val] = 1;
   } else {
     hist[val] += 1;
-    if (hist[val] >= n) {
-      return true;
+  }
+  return hist;
+};
+
+export const hasXDice = (values: Dice[], n: number): boolean => {
+  const hist = reduce(values, getHistogram(), {} as DiceHistogram);
+  let hasDice = false;
+  forEach(hist, (value: number | undefined) => {
+    if (value && value >= n) {
+      hasDice = true;
     }
-  }
-  return hist;
+  });
+  return hasDice;
 };
 
-export const getHistogram = () => (hist: any, val: Dice): boolean | DiceHistogram => {
-  if (hist === true) {
-    return true;
-  }
-  if (!hist[val]) {
-    hist[val] = 1;
-  } else {
-    hist[val] += 1;
-  }
-  return hist;
-};
+export const isFullHouse = (values: Dice[]): boolean => {
+  const hist = reduce(values, getHistogram(), {} as DiceHistogram);
 
-export const isFullHouse = (histogram: DiceHistogram): boolean => {
   let has3 = false;
   let has2 = false;
 
-  forEach(histogram, (value: number | undefined) => {
+  forEach(hist, (value: number | undefined) => {
     if (value && value >= 3) {
       has3 = true;
     } else if (value && value >= 2) {
@@ -53,11 +49,13 @@ export const isFullHouse = (histogram: DiceHistogram): boolean => {
   return has3 && has2;
 };
 
-export const isStraight = (histogram: DiceHistogram, length: number): boolean => {
+export const isStraight = (values: Dice[], length: number): boolean => {
+  const hist = reduce(values, getHistogram(), {} as DiceHistogram);
+
   let count = 0;
-  forEach(['1', '2', '3', '4', '5', '6'], (i: Dice) => {
+  forEach([1, 2, 3, 4, 5, 6], (i: Dice) => {
     if (count < length) {
-      const value = histogram[i];
+      const value = hist[i];
       if (!value) {
         count = 0;
       } else {
@@ -67,3 +65,14 @@ export const isStraight = (histogram: DiceHistogram, length: number): boolean =>
   });
   return count >= length;
 };
+
+export const canYahtzeeBonus = (values: Dice[], top: GameScore[]): boolean => reduce(
+  reduce(values, getHistogram(), {} as DiceHistogram),
+  (acc: boolean, value, key) => {
+    if (value === 5 && top[parseInt(key, 10) - 1].score >= 0) {
+      return true;
+    }
+    return acc;
+  },
+  false,
+);

@@ -1,9 +1,10 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import ScoreGraph from './ScoreGraph';
+import { Scores } from './types';
 
 interface HeaderProps {
-  scores: number[];
+  scores: Scores;
 }
 
 const Header: React.FC<HeaderProps> = (props: HeaderProps) => {

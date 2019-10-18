@@ -14,6 +14,8 @@ interface TableHeaderProps {
   getButtonText: Function;
 }
 
+const wrapperStyles: React.CSSProperties = { display: 'block', margin: 'auto', width: 320 };
+
 const TableHeader: React.FC<TableHeaderProps> = (props: TableHeaderProps) => {
   const {
     values, saved, roll, handleUnsave,
@@ -23,7 +25,7 @@ const TableHeader: React.FC<TableHeaderProps> = (props: TableHeaderProps) => {
   return (
     <div className="flex-container">
       <Typography variant="h4">{`Roll #${roll}/3`}</Typography>
-      <div style={{ display: 'block', margin: 'auto', width: 320 }}>
+      <div style={wrapperStyles}>
         {map(saved, (val, i) => (
           <Button color="secondary" onClick={(): void => handleUnsave(i)} variant="outlined" key={i}>
             {val}

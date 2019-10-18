@@ -7,12 +7,14 @@ import {
 import { withTheme } from '@material-ui/core/styles';
 import { Typography, Theme } from '@material-ui/core';
 import InfoPopup from '../../common/InfoPopup';
+import { Scores } from './types';
 
 interface ScoreGraphProps {
-  scores: number[];
+  scores: Scores;
   theme: Theme;
 }
 interface ScoreGraphEntry {
+  // TODO: See if we can remove score from here
   score: number;
   value: number;
 }
