@@ -1,7 +1,7 @@
 import React from 'react';
 import grey from '@material-ui/core/colors/grey';
 
-interface YearMarker { // color?: any; // title?: any;
+export interface YearMarker { // color?: any; // title?: any;
   body?: any;
   width: number;
 }

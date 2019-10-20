@@ -4,7 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
-import useOpenState from './hooks/useOpenState';
+import useOpenState from '../../hooks/useOpenState';
 
 interface InfoPopupProps {
   children: React.ReactNodeArray;
@@ -18,10 +18,10 @@ const InfoPopup: React.FC<InfoPopupProps> = (props: InfoPopupProps) => {
   const { buttonText, title, children } = props;
   return (
     <>
-      <Button color="primary" onClick={handleOpen} variant="contained">
+      <Button color="primary" onClick={handleOpen as React.MouseEventHandler} variant="contained">
         {buttonText || title}
       </Button>
-      <Dialog onClose={handleClose} open={isOpen} maxWidth="md" fullWidth>
+      <Dialog onClose={handleClose as React.MouseEventHandler} open={isOpen} maxWidth="md" fullWidth>
         <DialogTitle>
           {title}
         </DialogTitle>
@@ -29,7 +29,7 @@ const InfoPopup: React.FC<InfoPopupProps> = (props: InfoPopupProps) => {
           {children}
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={handleClose}>
+          <Button color="primary" onClick={handleClose as React.MouseEventHandler}>
             Close
           </Button>
         </DialogActions>

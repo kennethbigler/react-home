@@ -2,8 +2,8 @@ import React from 'react';
 
 type OpenStateHook = [
   boolean,
-  React.MouseEventHandler,
-  React.MouseEventHandler,
+  Function,
+  Function,
 ]
 
 const useOpenState = (defaultVal = false): OpenStateHook => {

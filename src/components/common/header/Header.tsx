@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import NavigationClose from '@material-ui/icons/Close';
 import { withTheme, Theme } from '@material-ui/core/styles';
 import TopBar from './TopBar';
-import useToggleState from '../hooks/useToggle';
+import useToggleState from '../../../hooks/useToggle';
 
 interface HeaderProps {
   children: any;

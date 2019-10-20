@@ -4,18 +4,24 @@ import moment, { Moment } from 'moment';
 import map from 'lodash/map';
 import Row from './Row';
 import { ASegment } from './Segment';
+import { YearMarker } from './YearMarkers';
 
-interface DataEntry {
+export interface DataEntry {
   color: string;
   title: string;
   start: Moment;
   end: Moment;
+  inverted?: boolean;
+  short?: string;
 }
 interface TimelineProps {
   data: DataEntry[];
-  selector: 'color' | 'title';
+  selector: string;
   start: Moment;
   end: Moment;
+}
+interface TimelineState {
+  data: DataEntry[];
 }
 
 export const FORMAT = 'MMMM Y';
@@ -26,7 +32,7 @@ const WIDTH = 100;
 const MIN_TEXT_WIDTH = 96;
 const MIN_SHORT_WIDTH = 42;
 
-export class Timeline extends Component<TimelineProps, {}> {
+export class Timeline extends Component<TimelineProps, TimelineState> {
   constructor(props: TimelineProps) {
     super(props);
     // get immutable data from props and sort by start date
@@ -46,11 +52,8 @@ export class Timeline extends Component<TimelineProps, {}> {
     return width > 0 ? width : 0;
   };
 
-  /** function to add elm segment
-   * @param {[Object]} segments array to put the segments, will be modified
-   * @param {Object} elm object with information about the segment
-   */
-  addSegment = (segments: ASegment[], elm: DataEntry, beginning: number, ending: number): void => {
+  /** function to add elm segment */
+  addSegment = (segments: ASegment[], elm: any, beginning: number, ending: number): void => {
     const { selector } = this.props;
     const {
       color, inverted, title, short,
@@ -79,22 +82,16 @@ export class Timeline extends Component<TimelineProps, {}> {
     }
   };
 
-  /** function to
-   * @param {[number]} added array of indexes that have been added
-   * @param {Object} elm Object for each elm
-   * @param {number} i index
-   * @return {[Object]} array of objects to be displayed in a row
-   */
-  getSegments = (added, elm, i) => {
+  getSegments = (added: boolean[], elm: DataEntry, i: number): ASegment[] => {
     const { data } = this.state;
 
     // skip if added already
     if (added[i]) {
-      return false;
+      return [];
     }
 
     // local variables
-    const segments = [];
+    const segments: ASegment[] = [];
     const { start, end } = elm;
     let beginning = this.getTimeFromStart(start);
     let ending = this.getTimeFromStart(end);
@@ -133,17 +130,14 @@ export class Timeline extends Component<TimelineProps, {}> {
     return [...segments];
   };
 
-  /** function to add empty space between start and elm segment
-   * @param {array} segments array to put the segments, will be modified
-   * @param {number} width as a % value out of WIDTH
-   */
-  addEmptySegment = (segments, width) => {
+  /** function to add empty space between start and elm segment */
+  addEmptySegment = (segments: ASegment[], width: number): void => {
     if (width > 0) {
       segments.push({ width });
     }
   };
 
-  getYearMarkers = () => {
+  getYearMarkers = (): YearMarker[] => {
     const { start, end } = this.props;
 
     const startYear = parseInt(start.format('YYYY'), 10);
@@ -168,17 +162,17 @@ export class Timeline extends Component<TimelineProps, {}> {
     return yearMarkers;
   }
 
-  render() {
+  render(): React.ReactNode {
     const { data } = this.state;
     // track elements added already
-    const added = {};
+    const added: boolean[] = [];
 
     return (
       <div style={{ width: '100%' }}>
         <Row key={data.length} segments={this.getYearMarkers()} yearMarkers />
         {map(data, (elm, i) => {
           const segments = this.getSegments(added, elm, i);
-          return segments
+          return segments.length
             ? (<Row key={i} segments={segments} first={i === 0} />)
             : null;
         })}

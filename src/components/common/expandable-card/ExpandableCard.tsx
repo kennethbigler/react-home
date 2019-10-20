@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { withTheme, Theme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
-import useToggleState from '../hooks/useToggle';
+import useToggleState from '../../../hooks/useToggle';
 
 const cardStyles: React.CSSProperties = { marginTop: 40, overflow: 'visible' };
 const headerStyles: React.CSSProperties = {
@@ -20,7 +20,7 @@ const headerStyles: React.CSSProperties = {
 
 interface ExpandableCardProps {
   backgroundColor?: string;
-  children?: React.ReactNodeArray;
+  children?: React.ReactNode;
   inverted?: boolean;
   subtitle?: string | React.ReactNode;
   theme: Theme;
