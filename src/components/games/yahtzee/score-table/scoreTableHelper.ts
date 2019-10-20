@@ -1,6 +1,6 @@
 import forEach from 'lodash/forEach';
 import reduce from 'lodash/reduce';
-import { Dice, GameScore } from './types';
+import { Dice, TopGameScore } from '../types';
 
 interface DiceHistogram {
   0?: number;
@@ -66,7 +66,7 @@ export const isStraight = (values: Dice[], length: number): boolean => {
   return count >= length;
 };
 
-export const canYahtzeeBonus = (values: Dice[], top: GameScore[]): boolean => reduce(
+export const canYahtzeeBonus = (values: Dice[], top: TopGameScore[]): boolean => reduce(
   reduce(values, getHistogram(), {} as DiceHistogram),
   (acc: boolean, value, key) => {
     if (value === 5 && top[parseInt(key, 10) - 1].score >= 0) {
