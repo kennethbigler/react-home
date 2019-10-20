@@ -1,13 +1,17 @@
 import React, { Suspense } from 'react';
-import types from 'prop-types';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import {
+  Switch, Route, Redirect, match as Match,
+} from 'react-router-dom';
 import reduce from 'lodash/reduce';
-// custom
 import lazyWithPreload from '../../helpers/lazyWithPreload';
 import Header from '../common/header/Header';
 import Menu from './Menu';
 import LoadingSpinner from '../common/loading-spinner';
-// Parents: Routes (main)
+
+interface RoutesProps {
+  handleNav: (...args: any[]) => any;
+  match: Match;
+}
 
 // lazy load page components
 const GameHome = lazyWithPreload(import(/* webpackChunkName: "g_home" */ './Home'));
@@ -20,7 +24,7 @@ const Slots = lazyWithPreload(import(/* webpackChunkName: "g_slots" */ './slots'
 const TicTacToe = lazyWithPreload(import(/* webpackChunkName: "g_tictactoe" */ './tictactoe'));
 const Yahtzee = lazyWithPreload(import(/* webpackChunkName: "g_yahtzee" */ './yahtzee'));
 
-const Routes = (props) => {
+const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
   const { match, handleNav } = props;
   const { url } = match;
 
@@ -35,7 +39,7 @@ const Routes = (props) => {
       { name: 'tictactoe', component: TicTacToe },
       { name: 'yahtzee', component: Yahtzee },
     ],
-    (acc, obj) => {
+    (acc: React.ReactNode[], obj) => {
       const { name, component } = obj;
       const path = `${url}/${name}`;
       acc.push(<Route key={`${path}r`} exact {...{ path, component }} />);
@@ -60,13 +64,6 @@ const Routes = (props) => {
       </Suspense>
     </>
   );
-};
-
-Routes.propTypes = {
-  handleNav: types.func.isRequired,
-  match: types.shape({
-    url: types.string.isRequired,
-  }).isRequired,
 };
 
 export default Routes;

@@ -1,10 +1,6 @@
 import React, { memo } from 'react';
 import Typography from '@material-ui/core/Typography';
-// Parents: Main
 
-/* --------------------------------------------------
-* Home
-* -------------------------------------------------- */
 const Home = memo(() => (
   <div style={{ textAlign: 'center', marginTop: 20 }}>
     <Typography variant="h2">

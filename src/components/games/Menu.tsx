@@ -1,11 +1,13 @@
 import React, { memo } from 'react';
-import types from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
 import map from 'lodash/map';
-// Parents: Header
 
-const Menu = memo((props) => {
+interface MenuProps {
+  onItemClick?: Function;
+}
+
+const Menu: React.FC<MenuProps> = memo((props: MenuProps) => {
   const { onItemClick } = props;
   const baseUrl = '/games';
 
@@ -29,7 +31,7 @@ const Menu = memo((props) => {
       ) : (
         <MenuItem
           key={item.name}
-          onClick={() => onItemClick(`${baseUrl}/${item.route}`)}
+          onClick={(): void => onItemClick && onItemClick(`${baseUrl}/${item.route}`)}
         >
           {item.name}
         </MenuItem>
@@ -38,7 +40,7 @@ const Menu = memo((props) => {
   );
 
   // navigation
-  const home = () => onItemClick('/');
+  const home = (): void => onItemClick && onItemClick('/');
 
   // render menu
   return (
@@ -50,9 +52,5 @@ const Menu = memo((props) => {
     </>
   );
 });
-
-Menu.propTypes = {
-  onItemClick: types.func,
-};
 
 export default Menu;
