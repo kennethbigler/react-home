@@ -1,19 +1,16 @@
-// react
 import React from 'react';
 import types from 'prop-types';
 import moment from 'moment';
-// components
 import grey from '@material-ui/core/colors/grey';
 import ExpandableCard from '../expandable-card';
 import { Timeline, TIMELINE_TITLE } from './Timeline';
-// material-ui
-// constants
 import workExperience from '../../../constants/work';
-// Parents: Work
 
 const DATE_FORMAT = 'MMMM YYYY';
 
-/* function to generate timeline card */
+/* TimelineCard  ->  Timeline  ->  Row  ->  Segment
+ *                                     |->  YearMarkers */
+/** function to generate timeline card */
 const TimelineCard = (props) => {
   const {
     data, backgroundColor, title, selector, start, end,

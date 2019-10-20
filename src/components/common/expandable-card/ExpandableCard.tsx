@@ -1,24 +1,41 @@
-import React, { useState } from 'react';
-import types from 'prop-types';
+import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Collapse from '@material-ui/core/Collapse';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme, Theme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
-import styles from './ExpandableCard.styles';
+import useToggleState from '../hooks/useToggle';
 
-const ExpandableCard = (props) => {
-  const [expanded, setExpanded] = useState(true);
+const cardStyles: React.CSSProperties = { marginTop: 40, overflow: 'visible' };
+const headerStyles: React.CSSProperties = {
+  borderRadius: 3,
+  marginLeft: 15,
+  marginRight: 15,
+  position: 'relative',
+  top: -20,
+};
+
+interface ExpandableCardProps {
+  backgroundColor?: string;
+  children?: React.ReactNodeArray;
+  inverted?: boolean;
+  subtitle?: string | React.ReactNode;
+  theme: Theme;
+  title?: string | React.ReactNode;
+}
+
+const ExpandableCard: React.FC<ExpandableCardProps> = (props: ExpandableCardProps) => {
+  const [expanded, toggleExpanded] = useToggleState(true);
 
   const {
     title, subtitle, children, backgroundColor, theme, inverted,
   } = props;
 
   const headerStyle = {
-    ...styles.header,
+    ...headerStyles,
     backgroundColor: backgroundColor || theme.palette.primary.main,
   };
 
@@ -43,9 +60,9 @@ const ExpandableCard = (props) => {
   ) : null;
 
   return (
-    <Card style={styles.card}>
+    <Card style={cardStyles}>
       <CardHeader
-        onClick={() => { setExpanded(!expanded); }}
+        onClick={toggleExpanded}
         style={expanded ? expandedHeaderStyle : headerStyle}
         subheader={subtitleJSX}
         title={titleJSX}
@@ -59,22 +76,6 @@ const ExpandableCard = (props) => {
       </Collapse>
     </Card>
   );
-};
-
-ExpandableCard.propTypes = {
-  backgroundColor: types.string,
-  children: types.oneOfType([types.arrayOf(types.node), types.node]),
-  inverted: types.bool,
-  subtitle: types.oneOfType([types.string, types.element]),
-  theme: types.shape({
-    palette: types.shape({
-      primary: types.shape({
-        main: types.string.isRequired,
-      }).isRequired,
-      type: types.string,
-    }).isRequired,
-  }),
-  title: types.oneOfType([types.string, types.element]),
 };
 
 ExpandableCard.defaultProps = {

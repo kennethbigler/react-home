@@ -1,20 +1,33 @@
+/* TODO: expand below on click */
 import React, { Component } from 'react';
-import types from 'prop-types';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import map from 'lodash/map';
 import Row from './Row';
-// Parents: Work
+import { ASegment } from './Segment';
+
+interface DataEntry {
+  color: string;
+  title: string;
+  start: Moment;
+  end: Moment;
+}
+interface TimelineProps {
+  data: DataEntry[];
+  selector: 'color' | 'title';
+  start: Moment;
+  end: Moment;
+}
 
 export const FORMAT = 'MMMM Y';
 export const TIMELINE_TITLE = 'Timeline';
-export const MONTH_SORT = (a, b) => a.start.diff(b.start, 'months');
+export const MONTH_SORT = (a: DataEntry, b: DataEntry): number => a.start.diff(b.start, 'months');
 
 const WIDTH = 100;
 const MIN_TEXT_WIDTH = 96;
 const MIN_SHORT_WIDTH = 42;
 
-export class Timeline extends Component {
-  constructor(props) {
+export class Timeline extends Component<TimelineProps, {}> {
+  constructor(props: TimelineProps) {
     super(props);
     // get immutable data from props and sort by start date
     const data = [...props.data];
@@ -22,12 +35,8 @@ export class Timeline extends Component {
     this.state = { data };
   }
 
-  /**
-   * Get the width from the beginning of the graph to this bar
-   * @param {Object} val moment object for start time
-   * @return {number} number (width %) from the start
-   */
-  getTimeFromStart = (val) => {
+  /** Get the width from the beginning of the graph to this bar */
+  getTimeFromStart = (val: Moment): number => {
     // sort array by start date
     const { start, end } = this.props;
     // get max length
@@ -37,14 +46,11 @@ export class Timeline extends Component {
     return width > 0 ? width : 0;
   };
 
-  /**
-   * function to add elm segment
+  /** function to add elm segment
    * @param {[Object]} segments array to put the segments, will be modified
    * @param {Object} elm object with information about the segment
-   * @param {Object} beginning start moment object
-   * @param {Object} ending end moment object
    */
-  addSegment = (segments, elm, beginning, ending) => {
+  addSegment = (segments: ASegment[], elm: DataEntry, beginning: number, ending: number): void => {
     const { selector } = this.props;
     const {
       color, inverted, title, short,
@@ -73,8 +79,7 @@ export class Timeline extends Component {
     }
   };
 
-  /**
-   * function to
+  /** function to
    * @param {[number]} added array of indexes that have been added
    * @param {Object} elm Object for each elm
    * @param {number} i index
@@ -128,8 +133,7 @@ export class Timeline extends Component {
     return [...segments];
   };
 
-  /**
-   * function to add empty space between start and elm segment
+  /** function to add empty space between start and elm segment
    * @param {array} segments array to put the segments, will be modified
    * @param {number} width as a % value out of WIDTH
    */
@@ -183,32 +187,4 @@ export class Timeline extends Component {
   }
 }
 
-Timeline.propTypes = {
-  data: types.arrayOf(
-    types.shape({
-      color: types.string.isRequired,
-      title: types.string.isRequired,
-      start: types.shape({
-        diff: types.func.isRequired,
-      }).isRequired,
-      end: types.shape({
-        diff: types.func.isRequired,
-      }).isRequired,
-    }),
-  ).isRequired,
-  selector: types.string.isRequired,
-  start: types.shape({
-    diff: types.func.isRequired,
-    format: types.func.isRequired,
-  }).isRequired,
-  end: types.shape({
-    diff: types.func.isRequired,
-    format: types.func.isRequired,
-  }).isRequired,
-};
-
 export default Timeline;
-
-/*
-* TODO: expand below on click
-*/

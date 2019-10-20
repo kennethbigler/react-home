@@ -1,32 +1,45 @@
 import React, { Component } from 'react';
-import types from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
+import get from 'lodash/get';
 import { updateName, updateBot } from '../../../store/modules/players';
-import styles from './PlayerMenu.styles';
-// Parents: Main
+import { DBRootState, DBPlayer } from '../../../store/types';
 
-/** --------------------------------------------------
-* PlayerMenu
-* -------------------------------------------------- */
-class PlayerMenu extends Component {
-  constructor(props) {
+interface PlayerActions {
+  updateName: Function;
+  updateBot: Function;
+}
+interface PlayerMenuProps {
+  playerActions: PlayerActions;
+  players: DBPlayer[];
+}
+interface PlayerMenuState {
+  isBot: boolean[];
+  players: DBPlayer[];
+}
+
+const namePadStyles: React.CSSProperties = {
+  maxWidth: '420px',
+  width: '100%',
+  display: 'block',
+  margin: 'auto',
+};
+
+class PlayerMenu extends Component<PlayerMenuProps, PlayerMenuState> {
+  constructor(props: PlayerMenuProps) {
     super(props);
 
-    this.state = {
-      isBot: {},
-      players: {},
-    };
+    this.state = { isBot: [], players: []};
   }
 
   // https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
   // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: PlayerMenuProps, prevState: PlayerMenuState): any {
     // get old player and current player
     const { players: old } = prevState;
     const { players } = nextProps;
@@ -36,24 +49,24 @@ class PlayerMenu extends Component {
       : null;
   }
 
-  handleToggle = (id, isChecked) => {
+  handleToggle = (id: number, isChecked: boolean): void => {
     const { playerActions } = this.props;
     playerActions.updateBot(id, isChecked);
   };
 
-  handleKeyPress = (e, id) => {
+  handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>, id: number): void => {
     const { playerActions } = this.props;
     if (e.key === 'Enter') {
-      playerActions.updateName(id, e.target.value);
+      playerActions.updateName(id, get(e, 'target.value', ''));
     }
   };
 
-  render() {
+  render(): React.ReactNode {
     const { players } = this.props;
     const { isBot } = this.state;
 
     return (
-      <div style={styles.namepad}>
+      <div style={namePadStyles}>
         <Grid container spacing={1}>
           <Grid item xs={9}>
             <Typography variant="h5">
@@ -72,7 +85,7 @@ class PlayerMenu extends Component {
               <Grid item xs={9}>
                 <TextField
                   defaultValue={p.name}
-                  onKeyPress={(e) => this.handleKeyPress(e, p.id)}
+                  onKeyPress={(e: React.KeyboardEvent<HTMLDivElement>): void => this.handleKeyPress(e, p.id)}
                   placeholder="Enter Player Name"
                 />
               </Grid>
@@ -80,7 +93,7 @@ class PlayerMenu extends Component {
                 <Switch
                   checked={isBot[i]}
                   color="primary"
-                  onChange={(e, isC) => this.handleToggle(p.id, isC)}
+                  onChange={(_e, isC): void => this.handleToggle(p.id, isC)}
                 />
               </Grid>
             </Grid>
@@ -102,23 +115,11 @@ class PlayerMenu extends Component {
   }
 }
 
-PlayerMenu.propTypes = {
-  playerActions: types.shape({
-    updateName: types.func.isRequired,
-    updateBot: types.func.isRequired,
-  }).isRequired,
-  players: types.arrayOf(
-    types.shape({
-      id: types.number.isRequired,
-      name: types.string.isRequired,
-      isBot: types.bool.isRequired,
-    }),
-  ).isRequired,
-};
-
 // react-redux export
-const mapStateToProps = (state) => ({ players: state.players });
-const mapDispatchToProps = (dispatch) => ({
+const mapStateToProps = (state: DBRootState): { players: DBPlayer[] } => ({
+  players: state.players,
+});
+const mapDispatchToProps = (dispatch: Dispatch): { playerActions: PlayerActions } => ({
   playerActions: bindActionCreators({ updateName, updateBot }, dispatch),
 });
 export default connect(

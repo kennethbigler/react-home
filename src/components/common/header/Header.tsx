@@ -1,26 +1,29 @@
-import React, { useState } from 'react';
-import types from 'prop-types';
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import NavigationClose from '@material-ui/icons/Close';
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme, Theme } from '@material-ui/core/styles';
 import TopBar from './TopBar';
-// Parents: App
+import useToggleState from '../hooks/useToggle';
 
-const Header = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
+interface HeaderProps {
+  children: any;
+  handleNav: Function;
+  showPlayers?: boolean;
+  theme: Theme;
+}
+
+const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
+  const [isOpen, toggleOpen, setIsOpen] = useToggleState(false);
   const {
-    children, handleNav, showPlayers, theme: { palette: { type }},
+    children, handleNav, showPlayers,
+    theme: { palette: { type }},
   } = props;
 
-  const toggleOpen = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleNavigation = (loc) => {
+  const handleNavigation = (loc: string): void => {
     setIsOpen(false);
     handleNav(loc);
   };
@@ -50,17 +53,6 @@ const Header = (props) => {
       </Drawer>
     </>
   );
-};
-
-Header.propTypes = {
-  children: types.element.isRequired,
-  handleNav: types.func.isRequired,
-  showPlayers: types.bool,
-  theme: types.shape({
-    palette: types.shape({
-      type: types.string,
-    }).isRequired,
-  }),
 };
 
 Header.defaultProps = {

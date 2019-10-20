@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-import types from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,11 +13,40 @@ import {
   displayDarkTheme,
   displayLightTheme,
 } from '../../../store/modules/theme';
-import styles from './TopBar.styles';
-// Parents: App
+import { DBUITheme, DBRootState } from '../../../store/types';
 
-class TopBar extends PureComponent {
-  constructor(props) {
+interface ThemeActions {
+  displayDarkTheme: Function;
+  displayLightTheme: Function;
+}
+interface TopBarProps {
+  fontColor: 'inherit' | 'initial' | 'error' | 'primary' | 'secondary' | 'textPrimary' | 'textSecondary' | undefined;
+  iconColor: 'inherit' | 'primary' | 'secondary' | 'default' | undefined;
+  showPlayers?: boolean;
+  theme: DBUITheme;
+  themeActions: ThemeActions;
+  toggleOpen: React.MouseEventHandler;
+}
+interface TopBarState {
+  checked: boolean;
+  toggleSwitch: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+}
+
+const flexLeftStyles: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+};
+const flexRightStyles: React.CSSProperties = {
+  display: 'flex',
+  marginRight: 15,
+};
+
+class TopBar extends PureComponent<TopBarProps, TopBarState> {
+  static defaultProps: {
+    showPlayers: boolean;
+  };
+
+  constructor(props: TopBarProps) {
     super(props);
     const { theme } = props;
 
@@ -29,19 +57,19 @@ class TopBar extends PureComponent {
     }
   }
 
-  toDarkTheme = () => {
+  toDarkTheme = (): void => {
     const { themeActions } = this.props;
     themeActions.displayDarkTheme();
     this.setState({ checked: false, toggleSwitch: this.toLightTheme });
   };
 
-  toLightTheme = () => {
+  toLightTheme = (): void => {
     const { themeActions } = this.props;
     themeActions.displayLightTheme();
     this.setState({ checked: true, toggleSwitch: this.toDarkTheme });
   };
 
-  render() {
+  render(): React.ReactNode {
     const {
       toggleOpen, showPlayers, fontColor, iconColor,
     } = this.props;
@@ -50,7 +78,7 @@ class TopBar extends PureComponent {
       <AppBar style={{ left: 0, right: 0, top: 0 }}>
         <Toolbar disableGutters>
           <div className="flex-container">
-            <div style={styles.flexLeft}>
+            <div style={flexLeftStyles}>
               <IconButton
                 aria-label="Menu"
                 onClick={toggleOpen}
@@ -68,13 +96,13 @@ class TopBar extends PureComponent {
               </Typography>
             </div>
             {showPlayers && (
-              <div style={styles.flexRight}>
+              <div style={flexRightStyles}>
                 <SimplePopover buttonText="Players">
                   <PlayerMenu />
                 </SimplePopover>
               </div>
             )}
-            <div style={styles.flexRight}>
+            <div style={flexRightStyles}>
               <Switch checked={checked} onChange={toggleSwitch} />
             </div>
           </div>
@@ -84,29 +112,11 @@ class TopBar extends PureComponent {
   }
 }
 
-TopBar.propTypes = {
-  fontColor: types.string.isRequired,
-  iconColor: types.string.isRequired,
-  showPlayers: types.bool,
-  theme: types.shape({
-    type: types.string,
-  }),
-  themeActions: types.shape({
-    displayDarkTheme: types.func.isRequired,
-    displayLightTheme: types.func.isRequired,
-  }),
-  toggleOpen: types.func.isRequired,
-};
-
-TopBar.defaultProps = {
-  showPlayers: false,
-};
-
 // react-redux export
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: DBRootState): { theme: DBUITheme } => ({
   theme: state.theme,
 });
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch): { themeActions: ThemeActions } => ({
   themeActions: bindActionCreators(
     { displayDarkTheme, displayLightTheme },
     dispatch,

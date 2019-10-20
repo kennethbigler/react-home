@@ -1,14 +1,18 @@
 import React from 'react';
-import types from 'prop-types';
 import map from 'lodash/map';
 import Segment from './Segment';
 import YearMarkers from './YearMarkers';
-// Parents: Timeline
 
-const Row = (props) => {
+interface RowProps {
+  segments: any[];
+  yearMarkers?: boolean;
+  first?: boolean;
+}
+
+const Row: React.FC<RowProps> = (props: RowProps) => {
   const { segments, yearMarkers, first } = props;
 
-  let style = { marginTop: 10 };
+  let style: React.CSSProperties = { marginTop: 10 };
   if (yearMarkers) {
     style = { height: 0 };
   } else if (first) {
@@ -22,12 +26,6 @@ const Row = (props) => {
         : (<Segment key={j} {...data} />)))}
     </div>
   );
-};
-
-Row.propTypes = {
-  segments: types.arrayOf(types.object.isRequired).isRequired,
-  yearMarkers: types.bool,
-  first: types.bool,
 };
 
 Row.defaultProps = {

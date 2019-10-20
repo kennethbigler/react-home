@@ -1,16 +1,26 @@
 import React, { memo } from 'react';
-import types from 'prop-types';
 import grey from '@material-ui/core/colors/grey';
-import { withTheme } from '@material-ui/core/styles';
-// Parents: Row
+import { withTheme, Theme } from '@material-ui/core/styles';
 
-const Segment = memo((props) => {
-  // var for segment
+export interface ASegment {
+  color?: string;
+  body?: string;
+  title?: string;
+  width: number;
+  inverted?: boolean;
+}
+interface SegmentProps extends ASegment {
+  theme: Theme;
+}
+
+const Segment: React.FC<SegmentProps> = memo((props: SegmentProps) => {
   const {
-    body, width, color, title, inverted, theme: { palette: { type }},
+    body, width, color, title, inverted,
+    theme: { palette: { type }},
   } = props;
+
   // variables for empty segment
-  let style = {
+  let style: React.CSSProperties = {
     display: 'inline-block',
     width: `${width}%`,
     color: inverted ? 'black' : grey[50],
@@ -37,22 +47,5 @@ const Segment = memo((props) => {
     </div>
   );
 });
-
-
-Segment.propTypes = {
-  color: types.string,
-  body: types.string,
-  title: types.string,
-  width: types.number.isRequired,
-  inverted: types.bool,
-  theme: types.shape({
-    palette: types.shape({
-      primary: types.shape({
-        main: types.string.isRequired,
-      }).isRequired,
-      type: types.string,
-    }).isRequired,
-  }),
-};
 
 export default withTheme(Segment);
