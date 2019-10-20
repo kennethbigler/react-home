@@ -1,15 +1,37 @@
 import React from 'react';
-import types from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import styles from './CarCard.styles';
 
-const CarCard = (props) => {
+interface Car {
+  owned: string;
+  story: string;
+  src: string;
+  makeModel: string;
+  transmission: string;
+  horsePower: number;
+}
+interface CarCardProps {
+  car: Car;
+}
+
+const containerStyles: React.CSSProperties = {
+  maxWidth: 1488,
+  margin: 'auto',
+  marginTop: 20,
+};
+const imgStyles: React.CSSProperties = {
+  width: '100%',
+  maxWidth: '30em',
+  float: 'right',
+};
+
+const CarCard: React.FC<CarCardProps> = (props: CarCardProps) => {
   const { car } = props;
+
   return (
-    <Card style={styles.container}>
+    <Card style={containerStyles}>
       <Grid container spacing={1}>
         <Grid item sm={8} xs={12}>
           <CardContent>
@@ -22,22 +44,11 @@ const CarCard = (props) => {
           </CardContent>
         </Grid>
         <Grid item sm={4} xs={12}>
-          <img src={car.src} alt={car.makeModel} style={styles.img} />
+          <img src={car.src} alt={car.makeModel} style={imgStyles} />
         </Grid>
       </Grid>
     </Card>
   );
-};
-
-CarCard.propTypes = {
-  car: types.shape({
-    owned: types.string.isRequired,
-    story: types.string.isRequired,
-    src: types.string.isRequired,
-    makeModel: types.string.isRequired,
-    transmission: types.string.isRequired,
-    horsePower: types.number.isRequired,
-  }),
 };
 
 export default CarCard;
