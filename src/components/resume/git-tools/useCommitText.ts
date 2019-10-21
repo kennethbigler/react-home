@@ -6,12 +6,12 @@ interface UseCommitTextReturns {
   commitDescription: string;
   finishes: boolean;
   getCommitText: Function;
-  handleCommitPrefixSelect: React.ChangeEventHandler;
+  handleCommitPrefixSelect: (event: React.ChangeEvent<any>, child: React.ReactNode) => void;
   handleCommitMessageChange: React.ChangeEventHandler;
   handleCommitDescriptionChange: React.ChangeEventHandler;
   clearCommitMessage: React.MouseEventHandler;
   clearCommitDescription: React.MouseEventHandler;
-  handleFinishesToggle: Function;
+  handleFinishesToggle: (event: React.ChangeEvent<{}>, checked: boolean) => void;
 }
 
 function useCommitText(storyID?: string, gitCommit?: boolean): UseCommitTextReturns {
@@ -50,16 +50,16 @@ function useCommitText(storyID?: string, gitCommit?: boolean): UseCommitTextRetu
   };
 
   /** function to update select state based on value */
-  const handleCommitPrefixSelect = (e: any): void => {
+  const handleCommitPrefixSelect = (e: React.ChangeEvent<any>): void => {
     setLocalCommitPrefix(e.target.value);
   };
 
   /** function to update text state based on value */
-  const handleCommitMessageChange = (e: any): void => {
+  const handleCommitMessageChange = (e: React.ChangeEvent<any>): void => {
     setCommitMessage(e.target.value);
   };
 
-  const handleCommitDescriptionChange = (e: any): void => {
+  const handleCommitDescriptionChange = (e: React.ChangeEvent<any>): void => {
     setCommitDescription(e.target.value);
   };
 
@@ -72,7 +72,7 @@ function useCommitText(storyID?: string, gitCommit?: boolean): UseCommitTextRetu
     setCommitDescription('');
   };
 
-  const handleFinishesToggle = (_e: any, isC: boolean): void => {
+  const handleFinishesToggle = (_e: React.ChangeEvent<{}>, isC: boolean): void => {
     setFinishes(isC);
   };
 

@@ -1,17 +1,22 @@
 import React, { useState, memo } from 'react';
-import types from 'prop-types';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import Grid from '@material-ui/core/Grid';
 import CopyTextDisplay from './CopyTextDisplay';
-// Parents: GitTools
 
-const BranchName = memo((props) => {
+interface BranchNameProps {
+  branchName: string;
+  getSelectOptions: Function;
+  gitTheme: string;
+  handleCopy: Function;
+}
+
+const BranchName: React.FC<BranchNameProps> = memo((props: BranchNameProps) => {
   const [targetBranch, setTargetBranch] = useState('test-pipeline');
 
-  const handleSelect = (e) => {
+  const handleSelect = (e: React.ChangeEvent<any>): void => {
     setTargetBranch(e.target.value);
   };
 
@@ -43,12 +48,5 @@ const BranchName = memo((props) => {
     </div>
   );
 });
-
-BranchName.propTypes = {
-  branchName: types.string.isRequired,
-  getSelectOptions: types.func.isRequired,
-  gitTheme: types.string.isRequired,
-  handleCopy: types.func.isRequired,
-};
 
 export default BranchName;

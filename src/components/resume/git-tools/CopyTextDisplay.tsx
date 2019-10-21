@@ -8,8 +8,10 @@ import useOpenState from '../../../hooks/useOpenState';
 interface CopyTextDisplayProps {
   copyText?: string;
   handleCopy: Function;
-  text: string | string[];
+  text: string | React.ReactNode[];
 }
+
+const chipStyles: React.CSSProperties = { height: 'auto', paddingTop: 7, paddingBottom: 7 };
 
 const CopyTextDisplay: React.FC<CopyTextDisplayProps> = (props: CopyTextDisplayProps) => {
   const [isOpen, handleOpen, handleClose] = useOpenState(false);
@@ -24,7 +26,7 @@ const CopyTextDisplay: React.FC<CopyTextDisplayProps> = (props: CopyTextDisplayP
 
   return (
     <>
-      <Chip onClick={handleCopyText} label={text} />
+      <Chip onClick={handleCopyText} style={chipStyles} label={<div>{text}</div>} />
       <Snackbar
         action={[
           <IconButton key="close" onClick={handleClose as React.MouseEventHandler}>
