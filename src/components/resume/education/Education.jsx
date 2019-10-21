@@ -3,8 +3,8 @@ import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import Degree from './Degree';
 import classes from '../../../constants/classes';
-// Parents: Main
 
+/* Education  ->  Degree  -> Year  ->  Quarter  ->  Class */
 const Education = memo(() => (
   <>
     <Typography variant="h2">Hackathons &amp; Education</Typography>

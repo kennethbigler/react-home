@@ -1,11 +1,14 @@
 import React, { memo } from 'react';
-import types from 'prop-types';
 import { Typography } from '@material-ui/core';
-// Parents: Quarter
 
-/* render code for each class */
-const Class = memo((props) => {
+interface ClassProps {
+  name: string;
+  catalog?: string;
+}
+
+const Class: React.FC<ClassProps> = memo((props: ClassProps) => {
   const { name, catalog } = props;
+
   return (
     <Typography>
       <li>
@@ -15,10 +18,5 @@ const Class = memo((props) => {
     </Typography>
   );
 });
-
-Class.propTypes = {
-  name: types.string.isRequired,
-  catalog: types.string,
-};
 
 export default Class;
