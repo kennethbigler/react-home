@@ -1,17 +1,19 @@
-// react
 import React, { memo } from 'react';
-import types from 'prop-types';
-// material-ui
 import TextField from '@material-ui/core/TextField';
 import { Typography } from '@material-ui/core';
-// Parents: Main
+
+interface HeaderProps {
+  gitTheme: string;
+  handleIDChange: React.ChangeEventHandler;
+  storyID?: string;
+}
 
 const validId = RegExp('[A-Z]{4}-[a-zA-Z0-9]+');
 
-const Header = memo((props) => {
+const Header: React.FC<HeaderProps> = memo((props: HeaderProps) => {
   const { handleIDChange, storyID, gitTheme } = props;
 
-  const isIdValid = validId.test(storyID);
+  const isIdValid = storyID && validId.test(storyID);
 
   return (
     <>
@@ -31,11 +33,5 @@ const Header = memo((props) => {
     </>
   );
 });
-
-Header.propTypes = {
-  gitTheme: types.string.isRequired,
-  handleIDChange: types.func.isRequired,
-  storyID: types.string,
-};
 
 export default Header;

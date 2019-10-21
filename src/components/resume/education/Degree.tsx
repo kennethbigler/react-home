@@ -1,13 +1,25 @@
 import React from 'react';
-import types from 'prop-types';
 import get from 'lodash/get';
 import map from 'lodash/map';
-import Year from './Year';
+import Year, { YearType } from './Year';
 import ExpandableCard from '../../common/expandable-card';
-// Parents: Work
 
-/* render code for each degree */
-const Degree = (props) => {
+interface DegreeType {
+  school?: string;
+  major?: string;
+  minor?: string;
+  degree: string;
+  gpa?: string | number;
+  graduation?: string;
+  subtitle?: string;
+  color?: string;
+  years: YearType[];
+}
+interface DegreeProps {
+  degree: DegreeType;
+}
+
+const Degree: React.FC<DegreeProps> = (props: DegreeProps) => {
   const { degree } = props;
 
   const school = degree.school ? `${degree.school} - ` : '';
@@ -31,24 +43,6 @@ const Degree = (props) => {
       ))}
     </ExpandableCard>
   );
-};
-
-Degree.propTypes = {
-  degree: types.shape({
-    school: types.string,
-    major: types.string,
-    minor: types.string,
-    degree: types.string.isRequired,
-    gpa: types.oneOfType([types.string, types.number]),
-    graduation: types.string,
-    subtitle: types.string,
-    color: types.string,
-    years: types.arrayOf(
-      types.shape({
-        year: types.string.isRequired,
-      }).isRequired,
-    ).isRequired,
-  }).isRequired,
 };
 
 export default Degree;

@@ -1,16 +1,23 @@
 import React from 'react';
-import types from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
-import Quarter from './Quarter';
-// Parents: Degree
+import Quarter, { QuarterType } from './Quarter';
 
-/* render code for each year */
-const Year = (props) => {
+type GridSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+export interface YearType {
+  year: string;
+  quarters: QuarterType[];
+}
+interface YearProps {
+  len: number;
+  year: YearType;
+}
+
+const Year: React.FC<YearProps> = (props: YearProps) => {
   const { year, len } = props;
   return (
-    <Grid item md={Math.ceil(12 / len)} xs={12}>
+    <Grid item md={Math.ceil(12 / len) as GridSize} xs={12}>
       <Typography variant="h4">
         {year.year}
       </Typography>
@@ -20,14 +27,6 @@ const Year = (props) => {
       ))}
     </Grid>
   );
-};
-
-Year.propTypes = {
-  len: types.number.isRequired,
-  year: types.shape({
-    year: types.string.isRequired,
-    quarters: types.arrayOf(types.shape({ quarter: types.string.isRequired })),
-  }).isRequired,
 };
 
 export default Year;

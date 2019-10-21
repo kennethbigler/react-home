@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import types from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -15,105 +14,28 @@ import Grid from '@material-ui/core/Grid';
 import nl2br from 'react-newline-to-break';
 import CopyTextDisplay from './CopyTextDisplay';
 import { setCommitPrefix } from '../../../store/modules/git';
-import styles from './CommitText.styles';
-// Parents: Main
+import { DBRootState } from '../../../store/types';
+import useCommitText from './useCommitText';
 
-function useCommitText(storyID, gitCommit) {
-  const [commitPrefix, setLocalCommitPrefix] = useState('feat');
-  const [commitMessage, setCommitMessage] = useState('');
-  const [commitDescription, setCommitDescription] = useState('');
-  const [finishes, setFinishes] = useState(false);
-
-  /**
-   * function to generate the commit message from inputs
-   * @return {string} format Prefix: Message [?Finishes? ID]
-   */
-  const getCommitText = () => {
-    // prefix
-    const prefix = commitPrefix ? `${commitPrefix}: ` : '';
-
-    // description
-    let desc = ' ';
-    if (commitDescription && storyID) {
-      desc = `\n\n${commitDescription}\n\n`;
-    } else if (commitDescription) {
-      desc = `\n\n${commitDescription}`;
-    }
-
-    // postfix
-    let postfix = '';
-    if (finishes && storyID) {
-      postfix = `[${storyID} #finish]`;
-    } else if (storyID) {
-      postfix = `[${storyID}]`;
-    }
-
-    // compile all components together
-    const gitMessage = `${prefix}${commitMessage}${desc}${postfix}`;
-
-    // add syntax wrapper
-    return gitCommit ? `git commit -m "${gitMessage}"` : gitMessage;
-  };
-
-  /**
-   * function to update select state based on value
-   * @param {Object} e event fired when select occurs
-   */
-  const handleCommitPrefixSelect = (e) => {
-    setLocalCommitPrefix(e.target.value);
-  };
-
-  /**
-   * function to update text state based on value
-   * @param {Object} e event fired when select occurs
-   */
-  const handleCommitMessageChange = (e) => {
-    setCommitMessage(e.target.value);
-  };
-
-  const handleCommitDescriptionChange = (e) => {
-    setCommitDescription(e.target.value);
-  };
-
-  /**
-   * function to update text state based on value
-   * @param {Object} e event fired when select occurs
-   */
-  const clearCommitMessage = () => {
-    setCommitMessage('');
-  };
-
-  const clearCommitDescription = () => {
-    setCommitDescription('');
-  };
-
-  /**
-   * function(event: object, isInputChecked: bool) => void
-   * @param {Object} e - event: Change event targeting the toggle
-   * @param {boolean} isC - is input checked: The new value of the toggle
-   */
-  const handleFinishesToggle = (e, isC) => {
-    setFinishes(isC);
-  };
-
-  return {
-    commitPrefix,
-    commitMessage,
-    commitDescription,
-    finishes,
-    getCommitText,
-    handleCommitPrefixSelect,
-    handleCommitMessageChange,
-    handleCommitDescriptionChange,
-    clearCommitMessage,
-    clearCommitDescription,
-    handleFinishesToggle,
-  };
+interface GitActions {
+  setCommitPrefix: Function;
+}
+interface CommitTextProps {
+  getSelectOptions: Function;
+  gitActions: GitActions;
+  gitCommit: boolean;
+  gitTheme: string;
+  handleCopy: Function;
+  storyID?: string;
 }
 
-const CommitText = (props) => {
+const wrapperStyles: React.CSSProperties = { paddingLeft: 20, paddingRight: 20, width: '100%' };
+const marginTopStyles: React.CSSProperties = { marginTop: 12 };
+
+const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
   const {
-    getSelectOptions, storyID, gitActions, handleCopy, gitCommit, gitTheme,
+    getSelectOptions, storyID, gitActions, handleCopy,
+    gitCommit, gitTheme,
   } = props;
 
   const {
@@ -130,28 +52,14 @@ const CommitText = (props) => {
     handleFinishesToggle,
   } = useCommitText(storyID, gitCommit);
 
-  const { wrapper, marginTop } = styles;
-
-  /**
-   * function to generate select items based of input
-   * @param {[string]} arr input array of options
-   * @return {[Object]}
-   */
-  const getCommitPrefixOptions = () => getSelectOptions([
-    'build',
-    'chore',
-    'ci',
-    'docs',
-    'feat',
-    'fix',
-    'perf',
-    'refactor',
-    'revert',
-    'style',
-    'test',
+  /** function to generate select items based of input */
+  const getCommitPrefixOptions = (): React.ReactNode => getSelectOptions([
+    'build', 'chore', 'ci', 'docs',
+    'feat', 'fix', 'perf', 'refactor',
+    'revert', 'style', 'test',
   ]);
 
-  const handleGitCommitToggle = (e, isC) => {
+  const handleGitCommitToggle = (_e: any, isC: boolean): void => {
     gitActions.setCommitPrefix(isC);
   };
 
@@ -159,7 +67,7 @@ const CommitText = (props) => {
   const displayText = commitText && nl2br(getCommitText());
 
   return (
-    <div style={wrapper}>
+    <div style={wrapperStyles}>
       <Grid container spacing={1}>
         <Grid item sm={4} xs={12}>
           <FormControl fullWidth>
@@ -210,7 +118,7 @@ const CommitText = (props) => {
           />
         </Grid>
         <Grid item sm={1} xs={2}>
-          <IconButton onClick={clearCommitMessage} style={marginTop}>
+          <IconButton onClick={clearCommitMessage} style={marginTopStyles}>
             <Clear />
           </IconButton>
         </Grid>
@@ -228,7 +136,7 @@ const CommitText = (props) => {
         <Grid item sm={1} xs={2}>
           <IconButton
             onClick={clearCommitDescription}
-            style={marginTop}
+            style={marginTopStyles}
           >
             <Clear />
           </IconButton>
@@ -243,20 +151,9 @@ const CommitText = (props) => {
   );
 };
 
-CommitText.propTypes = {
-  getSelectOptions: types.func.isRequired,
-  gitActions: types.shape({
-    setCommitPrefix: types.func.isRequired,
-  }).isRequired,
-  gitCommit: types.bool.isRequired,
-  gitTheme: types.string.isRequired,
-  handleCopy: types.func.isRequired,
-  storyID: types.string,
-};
-
 // react-redux export
-const mapStateToProps = (state) => ({ gitCommit: state.git.commitPrefix });
-const mapDispatchToProps = (dispatch) => ({
+const mapStateToProps = (state: DBRootState): { gitCommit: boolean } => ({ gitCommit: state.git.commitPrefix });
+const mapDispatchToProps = (dispatch: Dispatch): { gitActions: GitActions } => ({
   gitActions: bindActionCreators({ setCommitPrefix }, dispatch),
 });
 export default connect(

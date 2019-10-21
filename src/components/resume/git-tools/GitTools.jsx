@@ -1,34 +1,29 @@
-// react
 import React, { Component } from 'react';
 import types from 'prop-types';
-// redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// material-ui
 import MenuItem from '@material-ui/core/MenuItem';
 import deepOrange from '@material-ui/core/colors/deepOrange';
-// functions
 import copy from 'copy-to-clipboard';
 import map from 'lodash/map';
 import snakeCase from 'lodash/snakeCase';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import {
-  setBranchMessage,
-  setBranchPrefix,
-  setCasePreference,
-  setKey,
+  setBranchMessage, setBranchPrefix, setCasePreference, setKey,
 } from '../../../store/modules/git';
-// Components
 import BranchName from './BranchName';
 import CommitText from './CommitText';
 import DeployBranch from './DeployBranch';
 import Header from './Header';
 import ExpandableCard from '../../common/expandable-card';
-// Parents: Main
 
 const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');
 
+/* GitTools  ->  Header
+ *          |->  BranchName    -|
+ *          |->  CommitText    -|->  CopyTextDisplay
+ *          |->  DeployBranch  -|    */
 class GitTools extends Component {
   /**
    * function to generate select items based of input

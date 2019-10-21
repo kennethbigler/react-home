@@ -1,12 +1,17 @@
 import React from 'react';
-import types from 'prop-types';
 import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
-import Class from './Class';
-// Parents: Year
+import Class, { ClassProps } from './Class';
 
-/* render code for each quarter */
-const Quarter = (props) => {
+export interface QuarterType {
+  classes: ClassProps[];
+  quarter: string;
+}
+interface QuarterProps {
+  quarter: QuarterType;
+}
+
+const Quarter: React.FC<QuarterProps> = (props: QuarterProps) => {
   const { quarter } = props;
   return (
     <>
@@ -18,16 +23,6 @@ const Quarter = (props) => {
       </ul>
     </>
   );
-};
-
-Quarter.propTypes = {
-  quarter: types.shape({
-    classes: types.arrayOf(types.shape({
-      name: types.string.isRequired,
-      catalog: types.string,
-    })).isRequired,
-    quarter: types.string.isRequired,
-  }).isRequired,
 };
 
 export default Quarter;

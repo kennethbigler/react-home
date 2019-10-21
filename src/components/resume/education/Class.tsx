@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Typography } from '@material-ui/core';
 
-interface ClassProps {
+export interface ClassProps {
   name: string;
   catalog?: string;
 }
