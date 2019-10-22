@@ -1,9 +1,18 @@
 import React from 'react';
-import types from 'prop-types';
 import gql from 'graphql-tag';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/react-hooks';
+import { MutationUpdaterFn } from 'apollo-client';
 import REPOSITORY_FRAGMENT from '../fragments';
+
+interface Watchers {
+  totalCount: number;
+}
+interface WatchRepositoryProps {
+  id: string;
+  watchers: Watchers;
+  viewerSubscription: string;
+}
 
 const WATCH_REPOSITORY = gql`
   mutation ($id: ID!, $viewerSubscription: SubscriptionState!) {
@@ -23,15 +32,24 @@ const VIEWER_SUBSCRIPTIONS = {
   UNSUBSCRIBED: 'UNSUBSCRIBED',
 };
 
-const isWatch = (viewerSubscription) => viewerSubscription === VIEWER_SUBSCRIPTIONS.SUBSCRIBED;
+const isWatch = (viewerSubscription: string): boolean => viewerSubscription === VIEWER_SUBSCRIPTIONS.SUBSCRIBED;
 
-const updateWatch = (cache, mutationResult) => {
-  const { data: { updateSubscription: { subscribable: { id, viewerSubscription }}}} = mutationResult;
+const updateWatch: MutationUpdaterFn = (cache, mutationResult) => {
+  const { data } = mutationResult;
+  if (!data) {
+    return;
+  }
 
-  const repository = cache.readFragment({
+  const { updateSubscription: { subscribable: { id, viewerSubscription }}} = data;
+
+  const repository: WatchRepositoryProps | null = cache.readFragment({
     id: `Repository:${id}`,
     fragment: REPOSITORY_FRAGMENT,
   });
+
+  if (!repository) {
+    return;
+  }
 
   let { totalCount } = repository.watchers;
   totalCount = viewerSubscription === VIEWER_SUBSCRIPTIONS.SUBSCRIBED
@@ -51,7 +69,7 @@ const updateWatch = (cache, mutationResult) => {
   });
 };
 
-const WatchRepository = (props) => {
+const WatchRepository: React.FC<WatchRepositoryProps> = (props: WatchRepositoryProps) => {
   const { id, watchers, viewerSubscription } = props;
   const [updateSubscription] = useMutation(WATCH_REPOSITORY, {
     variables: {
@@ -78,7 +96,7 @@ const WatchRepository = (props) => {
   return (
     <Button
       className="RepositoryItem-title-action"
-      onClick={updateSubscription}
+      onClick={updateSubscription as React.MouseEventHandler}
       variant="outlined"
       color="primary"
     >
@@ -86,14 +104,6 @@ const WatchRepository = (props) => {
       {` (${watchers.totalCount})`}
     </Button>
   );
-};
-
-WatchRepository.propTypes = {
-  id: types.string.isRequired,
-  watchers: types.shape({
-    totalCount: types.number,
-  }).isRequired,
-  viewerSubscription: types.string.isRequired,
 };
 
 export default WatchRepository;

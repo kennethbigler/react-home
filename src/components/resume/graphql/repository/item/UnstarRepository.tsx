@@ -1,9 +1,10 @@
 import React from 'react';
-import types from 'prop-types';
 import gql from 'graphql-tag';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/react-hooks';
+import { MutationUpdaterFn } from 'apollo-client';
 import REPOSITORY_FRAGMENT from '../fragments';
+import { StarRepositoryProps } from './types';
 
 const UNSTAR_REPOSITORY = gql`
   mutation($id: ID!) {
@@ -16,12 +17,21 @@ const UNSTAR_REPOSITORY = gql`
   }
 `;
 
-const updateRemoveStar = (cache, mutationResult) => {
-  const { data: { removeStar: { starrable: { id }}}} = mutationResult;
-  const repository = cache.readFragment({
+const updateRemoveStar: MutationUpdaterFn = (cache, mutationResult) => {
+  const { data } = mutationResult;
+  if (!data) {
+    return;
+  }
+
+  const { removeStar: { starrable: { id }}} = data;
+  const repository: StarRepositoryProps | null = cache.readFragment({
     id: `Repository:${id}`,
     fragment: REPOSITORY_FRAGMENT,
   });
+
+  if (!repository) {
+    return;
+  }
 
   const totalCount = repository.stargazers.totalCount - 1;
 
@@ -38,7 +48,7 @@ const updateRemoveStar = (cache, mutationResult) => {
   });
 };
 
-const UnstarRepository = (props) => {
+const UnstarRepository: React.FC<StarRepositoryProps> = (props: StarRepositoryProps) => {
   const { id, stargazers } = props;
   const [removeStar] = useMutation(UNSTAR_REPOSITORY, {
     variables: { id },
@@ -58,20 +68,13 @@ const UnstarRepository = (props) => {
   return (
     <Button
       className="RepositoryItem-title-action"
-      onClick={removeStar}
+      onClick={removeStar as React.MouseEventHandler}
       variant="outlined"
       color="primary"
     >
       {`UnStar (${stargazers.totalCount})`}
     </Button>
   );
-};
-
-UnstarRepository.propTypes = {
-  id: types.string.isRequired,
-  stargazers: types.shape({
-    totalCount: types.number,
-  }).isRequired,
 };
 
 export default UnstarRepository;

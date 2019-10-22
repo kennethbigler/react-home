@@ -4,14 +4,7 @@ import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/react-hooks';
 import { MutationUpdaterFn } from 'apollo-client';
 import REPOSITORY_FRAGMENT from '../fragments';
-
-interface StarGazers {
-  totalCount: number;
-}
-interface StarRepositoryProps {
-  id: string;
-  stargazers: StarGazers;
-}
+import { StarRepositoryProps } from './types';
 
 const STAR_REPOSITORY = gql`
   mutation($id: ID!) {
