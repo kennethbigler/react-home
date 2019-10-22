@@ -4,10 +4,8 @@ import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/react-hooks';
 import { MutationUpdaterFn } from 'apollo-client';
 import REPOSITORY_FRAGMENT from '../fragments';
+import { Watchers } from './types';
 
-interface Watchers {
-  totalCount: number;
-}
 interface WatchRepositoryProps {
   id: string;
   watchers: Watchers;

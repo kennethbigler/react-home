@@ -1,13 +1,7 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
+import { PrimaryLanguage, Owner } from './types';
 
-interface PrimaryLanguage {
-  name: string;
-}
-interface Owner {
-  url?: string;
-  login?: string;
-}
 interface DescriptionProps {
   descriptionHTML: string;
   primaryLanguage: PrimaryLanguage;
