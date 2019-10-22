@@ -1,7 +1,7 @@
 import React from 'react';
 import types from 'prop-types';
 import map from 'lodash/map';
-import RepositoryItem from './item/RepositoryItem';
+import RepositoryItem from './item';
 import FetchMore from '../FetchMore';
 
 const updateQuery = (previousResult, { fetchMoreResult }) => {

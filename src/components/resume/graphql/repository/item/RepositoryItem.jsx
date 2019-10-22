@@ -7,6 +7,10 @@ import WatchRepository from './WatchRepository';
 import StarRepository from './StarRepository';
 import UnstarRepository from './UnstarRepository';
 
+/* RepositoryItem  ->  StarRepository
+ *                |->  UnstarRepository
+ *                | -> WatchRepository
+ *                | -> Description */
 const RepositoryItem = (props) => {
   const {
     id,

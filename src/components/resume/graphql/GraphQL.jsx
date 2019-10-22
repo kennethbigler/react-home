@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import types from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ApolloProvider } from 'react-apollo';
-import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
+import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
@@ -55,10 +54,8 @@ const GraphQL = (props) => {
 
   return (
     <ApolloProvider client={client}>
-      <ApolloHooksProvider client={client}>
-        <Header authToken={authToken} onChange={handleChange} />
-        <Profile />
-      </ApolloHooksProvider>
+      <Header authToken={authToken} onChange={handleChange} />
+      <Profile />
     </ApolloProvider>
   );
 };

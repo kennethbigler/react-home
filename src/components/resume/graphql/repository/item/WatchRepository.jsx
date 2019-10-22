@@ -1,8 +1,8 @@
 import React from 'react';
 import types from 'prop-types';
 import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo';
 import Button from '@material-ui/core/Button';
+import { useMutation } from '@apollo/react-hooks';
 import REPOSITORY_FRAGMENT from '../fragments';
 
 const WATCH_REPOSITORY = gql`
@@ -25,17 +25,10 @@ const VIEWER_SUBSCRIPTIONS = {
 
 const isWatch = (viewerSubscription) => viewerSubscription === VIEWER_SUBSCRIPTIONS.SUBSCRIBED;
 
-const updateWatch = (
-  client,
-  {
-    data: {
-      updateSubscription: {
-        subscribable: { id, viewerSubscription },
-      },
-    },
-  },
-) => {
-  const repository = client.readFragment({
+const updateWatch = (cache, mutationResult) => {
+  const { data: { updateSubscription: { subscribable: { id, viewerSubscription }}}} = mutationResult;
+
+  const repository = cache.readFragment({
     id: `Repository:${id}`,
     fragment: REPOSITORY_FRAGMENT,
   });
@@ -45,7 +38,7 @@ const updateWatch = (
     ? totalCount + 1
     : totalCount - 1;
 
-  client.writeFragment({
+  cache.writeFragment({
     id: `Repository:${id}`,
     fragment: REPOSITORY_FRAGMENT,
     data: {
@@ -60,48 +53,40 @@ const updateWatch = (
 
 const WatchRepository = (props) => {
   const { id, watchers, viewerSubscription } = props;
-
-  /* eslint-disable no-unused-vars */
+  const [updateSubscription] = useMutation(WATCH_REPOSITORY, {
+    variables: {
+      id,
+      viewerSubscription: isWatch(viewerSubscription)
+        ? VIEWER_SUBSCRIPTIONS.UNSUBSCRIBED
+        : VIEWER_SUBSCRIPTIONS.SUBSCRIBED,
+    },
+    optimisticResponse: {
+      updateSubscription: {
+        __typename: 'Mutation',
+        subscribable: {
+          __typename: 'Repository',
+          id,
+          viewerSubscription: isWatch(viewerSubscription)
+            ? VIEWER_SUBSCRIPTIONS.UNSUBSCRIBED
+            : VIEWER_SUBSCRIPTIONS.SUBSCRIBED,
+        },
+      },
+    },
+    update: updateWatch,
+  });
 
   return (
-    <Mutation
-      mutation={WATCH_REPOSITORY}
-      variables={{
-        id,
-        viewerSubscription: isWatch(viewerSubscription)
-          ? VIEWER_SUBSCRIPTIONS.UNSUBSCRIBED
-          : VIEWER_SUBSCRIPTIONS.SUBSCRIBED,
-      }}
-      optimisticResponse={{
-        updateSubscription: {
-          __typename: 'Mutation',
-          subscribable: {
-            __typename: 'Repository',
-            id,
-            viewerSubscription: isWatch(viewerSubscription)
-              ? VIEWER_SUBSCRIPTIONS.UNSUBSCRIBED
-              : VIEWER_SUBSCRIPTIONS.SUBSCRIBED,
-          },
-        },
-      }}
-      update={updateWatch}
+    <Button
+      className="RepositoryItem-title-action"
+      onClick={updateSubscription}
+      variant="outlined"
+      color="primary"
     >
-      {(updateSubscription, { data, loading, error }) => (
-        <Button
-          className="RepositoryItem-title-action"
-          onClick={updateSubscription}
-          variant="outlined"
-          color="primary"
-        >
-          {isWatch(viewerSubscription) ? 'Unwatch' : 'Watch'}
-          {` (${watchers.totalCount})`}
-        </Button>
-      )}
-    </Mutation>
+      {isWatch(viewerSubscription) ? 'Unwatch' : 'Watch'}
+      {` (${watchers.totalCount})`}
+    </Button>
   );
 };
-
-/* eslint-enable no-unused-vars */
 
 WatchRepository.propTypes = {
   id: types.string.isRequired,

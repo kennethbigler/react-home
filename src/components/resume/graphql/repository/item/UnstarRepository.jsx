@@ -1,8 +1,8 @@
 import React from 'react';
 import types from 'prop-types';
 import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo';
 import Button from '@material-ui/core/Button';
+import { useMutation } from '@apollo/react-hooks';
 import REPOSITORY_FRAGMENT from '../fragments';
 
 const UNSTAR_REPOSITORY = gql`
@@ -16,18 +16,16 @@ const UNSTAR_REPOSITORY = gql`
   }
 `;
 
-const updateRemoveStar = (
-  client,
-  { data: { removeStar: { starrable: { id }}}},
-) => {
-  const repository = client.readFragment({
+const updateRemoveStar = (cache, mutationResult) => {
+  const { data: { removeStar: { starrable: { id }}}} = mutationResult;
+  const repository = cache.readFragment({
     id: `Repository:${id}`,
     fragment: REPOSITORY_FRAGMENT,
   });
 
   const totalCount = repository.stargazers.totalCount - 1;
 
-  client.writeFragment({
+  cache.writeFragment({
     id: `Repository:${id}`,
     fragment: REPOSITORY_FRAGMENT,
     data: {
@@ -42,42 +40,32 @@ const updateRemoveStar = (
 
 const UnstarRepository = (props) => {
   const { id, stargazers } = props;
-
-  /* eslint-disable no-unused-vars */
+  const [removeStar] = useMutation(UNSTAR_REPOSITORY, {
+    variables: { id },
+    optimisticResponse: {
+      removeStar: {
+        __typename: 'Mutation',
+        starrable: {
+          __typename: 'Repository',
+          id,
+          viewerHasStarred: false,
+        },
+      },
+    },
+    update: updateRemoveStar,
+  });
 
   return (
-    <Mutation
-      mutation={UNSTAR_REPOSITORY}
-      variables={{ id }}
-      optimisticResponse={{
-        removeStar: {
-          __typename: 'Mutation',
-          starrable: {
-            __typename: 'Repository',
-            id,
-            viewerHasStarred: false,
-          },
-        },
-      }}
-      update={updateRemoveStar}
+    <Button
+      className="RepositoryItem-title-action"
+      onClick={removeStar}
+      variant="outlined"
+      color="primary"
     >
-      {(removeStar, { data, loading, error }) => (
-        <Button
-          className="RepositoryItem-title-action"
-          onClick={removeStar}
-          variant="outlined"
-          color="primary"
-        >
-          UnStar (
-          {stargazers.totalCount}
-          )
-        </Button>
-      )}
-    </Mutation>
+      {`UnStar (${stargazers.totalCount})`}
+    </Button>
   );
 };
-
-/* eslint-enable no-unused-vars */
 
 UnstarRepository.propTypes = {
   id: types.string.isRequired,
