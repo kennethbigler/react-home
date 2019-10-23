@@ -3,13 +3,12 @@ import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import profiles, { CASINO } from '../../../constants/murder';
 import MurderMysteryPanel from './MurderMysteryPanel';
-// Parents: Main
 
-const MurderMystery = memo(() => {
-  const [expanded, setExpanded] = useState(null);
+const MurderMystery: React.FC<{}> = memo(() => {
+  const [expanded, setExpanded] = useState('');
 
-  const handleChange = (panel) => (event, exp) => {
-    setExpanded(exp ? panel : null);
+  const handleChange = (panel: string) => (_event: React.MouseEvent, exp?: string): void => {
+    setExpanded(exp ? panel : '');
   };
 
   return (

@@ -1,14 +1,29 @@
 import assign from 'lodash/assign';
 
+// --------------------     Types     -------------------- //
+enum Gender {
+  MALE = 'M',
+  FEMALE = 'F',
+  NEUTRAL = 'M/F',
+}
+enum Importance {
+  I1 = 'Required',
+  I2 = 'Recommended',
+  I3 = 'Optional',
+}
+interface MurderRole {
+  role: string;
+  gender: Gender;
+  importance: Importance;
+  person: string;
+  description: string;
+  hint: string;
+  clue: string;
+}
+
 // --------------------     Globals     -------------------- //
 export const CASINO = 'The Cinema Magic Hotel and Casino';
 const VICTIM = 'Elvis';
-const MALE = 'M';
-const FEMALE = 'F';
-const NEUTRAL = 'M/F';
-const I1 = 'Required';
-const I2 = 'Recommended';
-const I3 = 'Optional';
 const EMPLOYEE = `As an employee, you are at ${CASINO} regularly.`;
 const MOTIVE = `You have motive to murder ${VICTIM}.`;
 const REGULAR = `You are at ${CASINO} regularly.`;
@@ -17,122 +32,118 @@ const NEW_VISIT = `You have never been to ${CASINO} before.`;
 // --------------------     Profiles V1     -------------------- //
 let owner = {
   role: 'The Casino Owner',
-  importance: I1,
+  importance: Importance.I1,
   person: 'Ken',
-  gender: NEUTRAL,
+  gender: Gender.NEUTRAL,
 };
 let reporter = {
   role: 'The Reporter',
-  importance: I1,
+  importance: Importance.I1,
   person: 'Jon',
-  gender: NEUTRAL,
+  gender: Gender.NEUTRAL,
 };
 let gunNut = {
   role: 'The Gun Nut',
-  importance: I1,
+  importance: Importance.I1,
   person: 'Andy',
-  gender: MALE,
+  gender: Gender.MALE,
 };
 let escort = {
   role: 'The Escort',
-  importance: I1,
+  importance: Importance.I1,
   person: 'Julia',
-  gender: FEMALE,
+  gender: Gender.FEMALE,
 };
 let gladiator = {
   role: 'The Recently Fired Gladiator Actor',
-  importance: I1,
+  importance: Importance.I1,
   person: 'Jordan',
-  gender: MALE,
+  gender: Gender.MALE,
 };
 let coach = {
   role: 'The Singing Coach',
-  importance: I1,
+  importance: Importance.I1,
   person: 'Gus',
-  gender: MALE,
+  gender: Gender.MALE,
 };
 let bouncer = {
   role: 'The Bouncer',
-  importance: I2,
+  importance: Importance.I2,
   person: 'Tom',
-  gender: NEUTRAL,
+  gender: Gender.NEUTRAL,
 };
 let follow = {
   role: 'The Second Act',
-  importance: I2,
+  importance: Importance.I2,
   person: 'Libby',
-  gender: NEUTRAL,
+  gender: Gender.NEUTRAL,
 };
 let dancer = {
   role: 'The Dancer',
-  importance: I2,
+  importance: Importance.I2,
   person: 'Emily',
-  gender: FEMALE,
+  gender: Gender.FEMALE,
 };
 let director = {
   role: 'The Depressed Director',
-  importance: I3,
+  importance: Importance.I3,
   person: 'Aaron',
-  gender: NEUTRAL,
+  gender: Gender.NEUTRAL,
 };
 let lawyer = {
   role: 'The Lawyer',
-  importance: I3,
+  importance: Importance.I3,
   person: '',
-  gender: MALE,
+  gender: Gender.MALE,
 };
 let diver = {
   role: 'The Scuba Diver',
-  importance: I3,
+  importance: Importance.I3,
   person: 'Lauren',
-  gender: NEUTRAL,
+  gender: Gender.NEUTRAL,
 };
 let cop = {
   role: 'The Retired Cop',
-  importance: I3,
+  importance: Importance.I3,
   person: 'Samantha',
-  gender: NEUTRAL,
+  gender: Gender.NEUTRAL,
 };
 let prof = {
   role: 'The Professor',
-  importance: I3,
+  importance: Importance.I3,
   person: 'Emerald',
-  gender: NEUTRAL,
+  gender: Gender.NEUTRAL,
 };
 let diner = {
   role: 'The Owner of Diner',
-  importance: I3,
+  importance: Importance.I3,
   person: '',
-  gender: NEUTRAL,
+  gender: Gender.NEUTRAL,
 };
 let ufo = {
   role: 'The UFO Conspiracy Nut',
-  importance: I3,
+  importance: Importance.I3,
   person: 'Scott',
-  gender: NEUTRAL,
+  gender: Gender.NEUTRAL,
 };
 let crusader = {
   role: 'The Caped Crusader',
-  importance: I3,
+  importance: Importance.I3,
   person: '',
-  gender: NEUTRAL,
+  gender: Gender.NEUTRAL,
 };
 
 // --------------------     Profiles V2     -------------------- //
 owner = assign(owner, {
   description: `You are the owner of ${CASINO}, and you are running the murder mystery to make sure everything runs smoothly.`,
   hint:
-    `"${
-      reporter.role
-    } Clue" implies a married guest has motive to murder ${VICTIM}.\n`
+    `"${reporter.role} Clue" implies a married guest has motive to murder ${VICTIM}.\n`
     + 'Most people will assume his relationship is with a women.\n\n'
     + `"${gunNut.role} Clue" implies any regular could have the gun.\n\n`
     + `"${escort.role} Clue" is meant to imply ${VICTIM} is gay.`,
   clue:
     '1. Act as the lead detective if no one steps up. Simply ask: "What clues do we have and who can that rule out?"\n'
-    + `2. Breaking news, "${
-      gunNut.role
-    }'s" lost gun from the casino bar last week is the murder weapon!\n`
+    + `2. Breaking news, "${gunNut.role}'s" lost gun from the casino bar last week is the murder weapon!\n`
     + `3. Is the character a regular at ${CASINO}?\n`
     + '4. Is the character married?',
 });
@@ -171,9 +182,7 @@ gladiator = assign(gladiator, {
   hint: `You have a knife / sword.\n${MOTIVE}`,
   clue:
     `${VICTIM} ratted you out to the owner for drinking on the job.\n`
-    + `One night in a drunken stupor you told "${
-      dancer.role
-    }" that you were going to stab ${VICTIM} in the back, like Brutus stabbed Caesar.`,
+    + `One night in a drunken stupor you told "${dancer.role}" that you were going to stab ${VICTIM} in the back, like Brutus stabbed Caesar.`,
 });
 
 coach = assign(coach, {
@@ -183,9 +192,7 @@ coach = assign(coach, {
     + `1. You were in a sexual relationship with ${VICTIM}.\n`
     + `2. You promised ${VICTIM} you would leave your wife for him but never intended to.\n`
     + `3. ${VICTIM} learns you will never leave your wife and threatens to expose your love affair.\n`
-    + `4. You took "${
-      gunNut.role
-    }'s" gun (he forgot it at the casino bar one night) and shoot ${VICTIM}.\n`
+    + `4. You took "${gunNut.role}'s" gun (he forgot it at the casino bar one night) and shoot ${VICTIM}.\n`
     + '5. You sneak away into the crowd and join the confusion.',
   hint:
     `You are the murderer.\n${REGULAR}\n`
@@ -204,17 +211,11 @@ bouncer = assign(bouncer, {
     'You take care of a good majority of the owner`s dirty work.\n'
     + 'Although loyal, you are not very bright but very friendly.\n'
     + 'You are a bachelor(ette).\n'
-    + `"${
-      prof.role
-    }" is a regular at ${CASINO} and you are friends with him/her.`,
+    + `"${prof.role}" is a regular at ${CASINO} and you are friends with him/her.`,
   hint: EMPLOYEE,
   clue:
-    `You know "${diver.role}" and "${
-      cop.role
-    }" are carrying guns because you patted them down as they entered.\n`
-    + `You were talking to "${
-      prof.role
-    }" when you heard the gunshots. He/She is not the murderer.`,
+    `You know "${diver.role}" and "${cop.role}" are carrying guns because you patted them down as they entered.\n`
+    + `You were talking to "${prof.role}" when you heard the gunshots. He/She is not the murderer.`,
 });
 
 follow = assign(follow, {
@@ -232,9 +233,7 @@ dancer = assign(dancer, {
     + 'You carry pictures of yourself from plays and pageants (you do not actually need pictures, this is just for backstory).\n'
     + 'You are full of yourself, and will always lets anyone know when you enter or leave a room, and sometimes throw in a little dance step for good measure.',
   hint: EMPLOYEE,
-  clue: `"${
-    gladiator.role
-  }" was drunk and told you that he was going to murder ${VICTIM} by stabbing him in the back, like Brutus stabbed Caesar.`,
+  clue: `"${gladiator.role}" was drunk and told you that he was going to murder ${VICTIM} by stabbing him in the back, like Brutus stabbed Caesar.`,
 });
 
 director = assign(director, {
@@ -283,9 +282,7 @@ prof = assign(prof, {
   description:
     'You are a professor at a local college.\n'
     + 'You are trying your luck at card counting.',
-  hint: `You are at ${CASINO} quite regularly and have made friends with "${
-    bouncer.role
-  }."`,
+  hint: `You are at ${CASINO} quite regularly and have made friends with "${bouncer.role}."`,
   clue:
     `You were talking with "${bouncer.role}" when the gun went off.\n`
     + `"${bouncer.role}" is not the murderer and you have an alibi.`,
@@ -296,9 +293,7 @@ diner = assign(diner, {
     `You have tried to hire ${VICTIM} to play at your 70s diner for over a year now.\n`
     + 'You came down to the casino to persuade him to play at your diner.',
   hint: NEW_VISIT,
-  clue: `You came on the same Las Vegas flight as "${
-    lawyer.role
-  }" meaning neither of you were at the casino bar a week ago.`,
+  clue: `You came on the same Las Vegas flight as "${lawyer.role}" meaning neither of you were at the casino bar a week ago.`,
 });
 
 ufo = assign(ufo, {
@@ -315,9 +310,7 @@ crusader = assign(crusader, {
     + 'You can play this any way you wish (:',
   hint: NEW_VISIT,
   clue:
-    `You found "${
-      reporter.role
-    }'s" methods to be somewhat shady, so you were following him/her during the time of the murder.\n`
+    `You found "${reporter.role}'s" methods to be somewhat shady, so you were following him/her during the time of the murder.\n`
     + `You know it was not "${reporter.role}."`,
 });
 
@@ -340,4 +333,4 @@ export default [
   diner,
   ufo,
   crusader,
-];
+] as MurderRole[];
