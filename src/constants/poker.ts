@@ -7,7 +7,11 @@ import {
 } from '@material-ui/core/colors/';
 import forOwn from 'lodash/forOwn';
 
-export const pennyPokerScores = [
+export interface Totals {
+  [name: string]: string | number;
+}
+
+export const pennyPokerScores: Totals[] = [
   {
     name: 'Night 1',
     Ken: 5,
@@ -133,7 +137,7 @@ export const pennyPokerColors = {
   Emily: grey[900],
 };
 
-export const gigNowPokerScores = [
+export const gigNowPokerScores: Totals[] = [
   {
     name: 'Night 1',
     Ken: 32.25,

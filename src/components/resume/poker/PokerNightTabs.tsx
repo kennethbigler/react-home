@@ -4,12 +4,13 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PennyPokerNight from './PennyPokerNight';
 import GigNowPokerNight from './GigNowPokerNight';
-// Parents: Main
 
-const PokerNightTabs = memo(() => {
+/* PokerNightTabs  ->  PennyPokerNight   |->  PokerGraph
+ *                |->  GigNowPokerNight  |->  PokerTable */
+const PokerNightTabs: React.FC<{}> = memo(() => {
   const [tab, setTab] = useState(0);
 
-  const handleChange = (event, val) => {
+  const handleChange = (event: any, val: number): void => {
     setTab(val);
   };
 

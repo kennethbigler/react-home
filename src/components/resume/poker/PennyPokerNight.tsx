@@ -1,12 +1,10 @@
 import React, { memo } from 'react';
-// custom
 import PokerGraph from './PokerGraph';
 import PokerTable from './PokerTable';
 import parseData from './helpers';
 import { pennyPokerScores, pennyPokerColors } from '../../../constants/poker';
-// Parents: PokerNightTabs
 
-const PennyPokerNight = memo(() => {
+const PennyPokerNight: React.FC<{}> = memo(() => {
   const { parsedScores, totals } = parseData(pennyPokerScores);
 
   return (

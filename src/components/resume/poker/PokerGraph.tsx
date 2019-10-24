@@ -1,11 +1,17 @@
 import React from 'react';
-import types from 'prop-types';
 import {
-  ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip,
+  ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, AxisDomain,
 } from 'recharts';
 import map from 'lodash/map';
 
-const PokerNight = (props) => {
+interface PokerNightProps {
+  parsedScores: { [name: string]: string | number }[];
+  colors: { [name: string]: string };
+  domain: [AxisDomain, AxisDomain];
+  ticks?: number[];
+}
+
+const PokerNight: React.FC<PokerNightProps> = (props: PokerNightProps) => {
   const {
     parsedScores, colors, domain, ticks,
   } = props;
@@ -30,17 +36,10 @@ const PokerNight = (props) => {
           tickLine={false}
           ticks={ticks && ticks}
         />
-        <Tooltip itemSorter={(a) => -a.value} />
+        <Tooltip itemSorter={(a): number => -a.value} />
       </LineChart>
     </ResponsiveContainer>
   );
-};
-
-PokerNight.propTypes = {
-  parsedScores: types.arrayOf(types.objectOf(types.oneOfType([types.string, types.number]))).isRequired,
-  colors: types.objectOf(types.string).isRequired,
-  domain: types.arrayOf(types.number).isRequired,
-  ticks: types.arrayOf(types.number),
 };
 
 export default PokerNight;
