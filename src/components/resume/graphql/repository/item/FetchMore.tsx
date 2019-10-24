@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import Loading from './Loading';
+import Loading from '../../common/Loading';
 
 interface Variables {
   cursor: any;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
-import Link from '../../Link';
+import Link from './Link';
 import Description from './Description';
 import WatchRepository from './WatchRepository';
 import StarRepository from './StarRepository';

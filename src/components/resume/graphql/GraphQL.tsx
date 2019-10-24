@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import types from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
@@ -12,23 +11,32 @@ import Profile from './Profile';
 import { setToken } from '../../../store/modules/gqlToken';
 import Header from './Header';
 import NoToken from './NoToken';
+import { DBRootState } from '../../../store/types';
+
+interface StateActions {
+  setToken: Function;
+}
+interface GraphQLProps {
+  gqlToken: string;
+  stateActions: StateActions;
+}
 
 const GITHUB_BASE_URL = 'https://api.github.com/graphql';
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    // do something with graphql error
-  }
-  if (networkError) {
-    // do something with network error
-  }
+  if (graphQLErrors) { /* do something with graphql error */ }
+  if (networkError) { /* do something with network error */ }
 });
 const cache = new InMemoryCache();
 
-const GraphQL = (props) => {
+/* GraphQL  ->  Header
+ *         |->  NoToken
+ *         |->  Profile  ->  Repository
+ *            Loading  <-|->  ErrorMessage */
+const GraphQL: React.FC<GraphQLProps> = React.memo((props: GraphQLProps) => {
   const { gqlToken, stateActions } = props;
   const [authToken, setAuthToken] = useState(gqlToken);
 
-  const handleChange = (e) => {
+  const handleChange = (e: any): void => {
     const token = e.target.value;
     stateActions.setToken(token);
     setAuthToken(token);
@@ -58,18 +66,13 @@ const GraphQL = (props) => {
       <Profile />
     </ApolloProvider>
   );
-};
-
-GraphQL.propTypes = {
-  gqlToken: types.string,
-  stateActions: types.shape({
-    setToken: types.func.isRequired,
-  }).isRequired,
-};
+});
 
 // react-redux export
-const mapStateToProps = (state) => ({ gqlToken: state.gqlToken });
-const mapDispatchToProps = (dispatch) => ({
+const mapStateToProps = (state: DBRootState): { gqlToken: string } => ({
+  gqlToken: state.gqlToken,
+});
+const mapDispatchToProps = (dispatch: Dispatch): { stateActions: StateActions } => ({
   stateActions: bindActionCreators({ setToken }, dispatch),
 });
 export default connect(

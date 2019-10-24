@@ -1,9 +1,13 @@
 import React from 'react';
-import types from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import { Typography } from '@material-ui/core';
 
-const Header = (props) => {
+interface HeaderProps {
+  authToken?: string;
+  onChange: React.ChangeEventHandler;
+}
+
+const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
   const { authToken, onChange } = props;
 
   return (
@@ -11,7 +15,7 @@ const Header = (props) => {
       <Typography variant="h2">GraphQL Demo</Typography>
       <TextField
         label="Authorization Code"
-        placeholder="some32characterthingfromgithub"
+        placeholder="some 32 character string from github"
         value={authToken}
         onChange={onChange}
         style={{ margin: '20px 0 20px 0' }}
@@ -19,11 +23,6 @@ const Header = (props) => {
       />
     </>
   );
-};
-
-Header.propTypes = {
-  authToken: types.string,
-  onChange: types.func.isRequired,
-};
+});
 
 export default Header;

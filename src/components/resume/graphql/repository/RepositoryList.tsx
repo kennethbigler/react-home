@@ -1,7 +1,7 @@
 import React from 'react';
 import map from 'lodash/map';
 import RepositoryItem from './item';
-import FetchMore from '../FetchMore';
+import FetchMore from './item/FetchMore';
 
 interface PageInto {
   hasNextPage: boolean;

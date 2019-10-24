@@ -1,9 +1,9 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
-import Loading from './Loading';
+import Loading from './common/Loading';
 import RepositoryList, { REPOSITORY_FRAGMENT } from './repository';
-import ErrorMessage from './Error';
+import ErrorMessage from './ErrorMessage';
 
 const GET_REPOSITORIES_OF_CURRENT_USER = gql`
   query($cursor: String) {
@@ -28,7 +28,7 @@ const GET_REPOSITORIES_OF_CURRENT_USER = gql`
   ${REPOSITORY_FRAGMENT}
 `;
 
-const Profile = () => {
+const Profile: React.FC<{}> = React.memo(() => {
   const {
     error, data, loading, fetchMore,
   } = useQuery(GET_REPOSITORIES_OF_CURRENT_USER);
@@ -46,6 +46,6 @@ const Profile = () => {
 
   // display data
   return <RepositoryList loading={loading} repositories={viewer.repositories} fetchMore={fetchMore} />;
-};
+});
 
 export default Profile;

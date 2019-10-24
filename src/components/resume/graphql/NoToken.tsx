@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Typography } from '@material-ui/core';
 
-const NoToken = memo(() => (
+const NoToken: React.FC<{}> = memo(() => (
   <Typography variant="h6">
     You need to generate a personal access token with &quot;repo&quot; and &quot;admin:repo_hook&quot; permissions.
     <br />
