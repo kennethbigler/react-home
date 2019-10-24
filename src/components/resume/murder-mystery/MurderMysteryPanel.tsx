@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import types from 'prop-types';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -10,29 +9,42 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import nl2br from 'react-newline-to-break';
 import { Typography } from '@material-ui/core';
-import styles, { LabelTableCell } from './MurderMysteryPanel.styles';
-// Parents: Main
+import LabelTableCell from './LabelTableCell';
 
-const MurderMysteryPanel = memo((props) => {
+interface MurderMysteryPanelProps {
+  expanded?: string;
+  expandedKey: string;
+  handleChange: Function;
+  role: string;
+  importance: string;
+  person: string;
+  gender: string;
+  description: string;
+  hint: string;
+  clue: string;
+}
+
+
+const containerStyles: React.CSSProperties = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  width: '95%',
+};
+const itemStyles: React.CSSProperties = { display: 'flex' };
+
+const MurderMysteryPanel: React.FC<MurderMysteryPanelProps> = memo((props: MurderMysteryPanelProps) => {
   const {
-    expanded,
-    expandedKey,
-    handleChange,
-    role,
-    importance,
-    person,
-    gender,
-    description,
-    hint,
-    clue,
+    expanded, expandedKey, handleChange, role,
+    importance, person, gender, description,
+    hint, clue,
   } = props;
 
   return (
     <ExpansionPanel expanded={expanded === expandedKey} onChange={handleChange(expandedKey)}>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-        <div style={styles.container}>
-          <Typography style={styles.item}>{role}</Typography>
-          <Typography style={styles.item}>{importance}</Typography>
+        <div style={containerStyles}>
+          <Typography style={itemStyles}>{role}</Typography>
+          <Typography style={itemStyles}>{importance}</Typography>
         </div>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
@@ -64,18 +76,5 @@ const MurderMysteryPanel = memo((props) => {
     </ExpansionPanel>
   );
 });
-
-MurderMysteryPanel.propTypes = {
-  expanded: types.string,
-  expandedKey: types.string.isRequired,
-  handleChange: types.func.isRequired,
-  role: types.string.isRequired,
-  importance: types.string.isRequired,
-  person: types.string.isRequired,
-  gender: types.string.isRequired,
-  description: types.string.isRequired,
-  hint: types.string.isRequired,
-  clue: types.string.isRequired,
-};
 
 export default MurderMysteryPanel;
