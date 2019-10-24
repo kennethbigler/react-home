@@ -198,7 +198,7 @@ const cars = [
     transmission: 'Automatic',
     horsePower: 435,
   }, {
-    owned: '2018 - Present',
+    owned: '2019',
     story: 'I sold my Mustang (as the exhaust was too loud), and started driving a 2005 Jaguar XJ8-L that my grandfather (father\'s side) had given to my family.',
     src: jaguar05,
     makeModel: '2005 Jaguar XJ8-L',
