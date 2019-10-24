@@ -7,13 +7,16 @@ import {
 } from '@material-ui/core/colors/';
 import forOwn from 'lodash/forOwn';
 
-export interface Totals {
-  [name: string]: string | number;
+export interface PokerScoreEntry {
+  [name: string]: number;
+}
+export interface PokerColorEntry {
+  [name: string]: string;
 }
 
-export const pennyPokerScores: Totals[] = [
+export const pennyPokerScores: PokerScoreEntry[] = [
   {
-    name: 'Night 1',
+    name: 1,
     Ken: 5,
     Lauren: -83,
     Aaron: -45,
@@ -24,7 +27,7 @@ export const pennyPokerScores: Totals[] = [
     Keishi: 209,
     Andy: -22,
   }, {
-    name: 'Night 2',
+    name: 2,
     Ken: -42,
     Aaron: -1,
     Jordan: 94,
@@ -32,14 +35,14 @@ export const pennyPokerScores: Totals[] = [
     Andy: -140,
     Mike: 220,
   }, {
-    name: 'Night 3',
+    name: 3,
     Ken: -100,
     Jordan: -24,
     Lily: -45,
     Tom: 39,
     Meeks: 147,
   }, {
-    name: 'Night 4',
+    name: 4,
     Ken: 62,
     Aaron: -33,
     Jordan: 35,
@@ -53,7 +56,7 @@ export const pennyPokerScores: Totals[] = [
     Geoff: -100,
     Ming: -100,
   }, {
-    name: 'Night 5',
+    name: 5,
     Ken: 218,
     Lauren: -90,
     Aaron: 60,
@@ -61,7 +64,7 @@ export const pennyPokerScores: Totals[] = [
     Lily: -70,
     Tom: -200,
   }, {
-    name: 'Night 6',
+    name: 6,
     Ken: -33,
     Jordan: 46,
     Lily: -98,
@@ -69,14 +72,14 @@ export const pennyPokerScores: Totals[] = [
     Andy: 27,
     Mike: 90,
   }, {
-    name: 'Night 7',
+    name: 7,
     Ken: 187,
     Aaron: 14,
     Jordan: -46,
     Tom: -55,
     Gus: -100,
   }, {
-    name: 'Night 8',
+    name: 8,
     Ken: 127,
     Aaron: -40,
     Jordan: 119,
@@ -84,13 +87,13 @@ export const pennyPokerScores: Totals[] = [
     Zach: -122,
     Scott: -100,
   }, {
-    name: 'Night 9',
+    name: 9,
     Ken: 11,
     Jordan: 17,
     Andy: 30,
     Gus: -58,
   }, {
-    name: 'Night 10',
+    name: 10,
     Ken: -23,
     Lauren: 58,
     Jordan: -20,
@@ -99,14 +102,14 @@ export const pennyPokerScores: Totals[] = [
     Andy: 240,
     Tom: 9,
   }, {
-    name: 'Night 11',
+    name: 11,
     Ken: 42,
     Aaron: -55,
     Jordan: 0,
     Tom: 38,
     Gus: -25,
   }, {
-    name: 'Night 12',
+    name: 12,
     Ken: 57,
     Aaron: 34,
     Tom: 9,
@@ -114,7 +117,7 @@ export const pennyPokerScores: Totals[] = [
   },
 ];
 
-export const pennyPokerColors = {
+export const pennyPokerColors: PokerColorEntry = {
   Ken: amber[500],
   Lauren: blue[500],
   Aaron: blueGrey[500],
@@ -137,9 +140,9 @@ export const pennyPokerColors = {
   Emily: grey[900],
 };
 
-export const gigNowPokerScores: Totals[] = [
+export const gigNowPokerScores: PokerScoreEntry[] = [
   {
-    name: 'Night 1',
+    name: 1,
     Ken: 32.25,
     Sabik: 35.25,
     Avi: 15.50,
@@ -148,7 +151,7 @@ export const gigNowPokerScores: Totals[] = [
     Mike: -20,
     Brady: -20,
   }, {
-    name: 'Night 2',
+    name: 2,
     Jonathan: -20,
     Seb: -40,
     Sabik: -20,
@@ -159,6 +162,7 @@ export const gigNowPokerScores: Totals[] = [
     Matt: -20,
     Dhruven: -20,
   }, {
+    name: 3,
     Jonathan: 71,
     Dharam: 40,
     Seb: 32,
@@ -172,7 +176,7 @@ export const gigNowPokerScores: Totals[] = [
   },
 ];
 
-export const gigNowPokerColors = {
+export const gigNowPokerColors: PokerColorEntry = {
   Ken: amber[500],
   Jonathan: blue[500],
   Seb: blueGrey[500],
@@ -192,7 +196,7 @@ export const gigNowPokerColors = {
 /** A function that creates an initial score entry of 0
  * for all participants, the week before they joined.
  */
-function zeroOutPreviousWeek(scores: any[]): void {
+function zeroOutPreviousWeek(scores: PokerScoreEntry[]): void {
   scores.unshift({});
 
   for (let i = 1; i < scores.length; i += 1) {

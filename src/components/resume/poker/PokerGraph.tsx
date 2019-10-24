@@ -3,10 +3,11 @@ import {
   ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, AxisDomain,
 } from 'recharts';
 import map from 'lodash/map';
+import { PokerScoreEntry, PokerColorEntry } from '../../../constants/poker';
 
 interface PokerNightProps {
-  parsedScores: { [name: string]: string | number }[];
-  colors: { [name: string]: string };
+  parsedScores: PokerScoreEntry[];
+  colors: PokerColorEntry;
   domain: [AxisDomain, AxisDomain];
   ticks?: number[];
 }

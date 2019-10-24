@@ -7,11 +7,10 @@ import TableRow from '@material-ui/core/TableRow';
 import map from 'lodash/map';
 import chunk from 'lodash/chunk';
 import sortBy from 'lodash/sortBy';
+import { PokerScoreEntry } from '../../../constants/poker';
 
 interface PokerTableProps {
-  totals: {
-    [name: string]: number;
-  };
+  totals: PokerScoreEntry;
 }
 
 const cellStyles: React.CSSProperties = {
