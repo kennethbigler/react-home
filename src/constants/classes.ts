@@ -26,7 +26,7 @@ interface Year {
   year: string;
   quarters: Quarter[];
 }
-interface School {
+export interface School {
   color?: string;
   degree: string;
   gpa?: number;

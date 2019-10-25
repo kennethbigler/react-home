@@ -1,4 +1,3 @@
-// colors
 import cyan from '@material-ui/core/colors/cyan';
 import lightBlue from '@material-ui/core/colors/lightBlue';
 import green from '@material-ui/core/colors/green';
@@ -7,11 +6,9 @@ import blueGrey from '@material-ui/core/colors/blueGrey';
 import red from '@material-ui/core/colors/red';
 import indigo from '@material-ui/core/colors/indigo';
 import yellow from '@material-ui/core/colors/yellow';
-// functions
 import moment, { Moment } from 'moment';
 import includes from 'lodash/includes';
 import forEach from 'lodash/forEach';
-// tech constants
 import {
   REACT, ANGULAR, HTML, CSS,
   JS, BS3, BS4, RR, JASMINE,
@@ -19,18 +16,14 @@ import {
   MIXPANEL, RELOADER, JAVA, AWS,
   PYTHON2, ASP2, CSHARP, SQL,
 } from './tech';
-// images
-/* eslint-disable @typescript-eslint/no-var-requires */
-const ciscoLogo = require('../images/cisco_logo.gif');
-const gigNowLogo = require('../images/gignow_logo.png');
-const SHFBLogo = require('../images/SHFB_logo.jpg');
-const netappLogo = require('../images/netapp_logo.svg.png');
-const vengefulLogo = require('../images/vengefulgames_logo.png');
-const teslaLogo = require('../images/tesla_motors_logo.svg.png');
-const hoverboardLogo = require('../images/hoverboard_logo.png');
-const intuitLogo = require('../images/intuit_logo.png');
-/* eslint-enable @typescript-eslint/no-var-requires */
-// Parents: Main
+import ciscoLogo from '../images/cisco_logo.gif';
+import gigNowLogo from '../images/gignow_logo.png';
+import SHFBLogo from '../images/SHFB_logo.jpg';
+import netappLogo from '../images/netapp_logo.svg.png';
+import vengefulLogo from '../images/vengefulgames_logo.png';
+import teslaLogo from '../images/tesla_motors_logo.svg.png';
+import hoverboardLogo from '../images/hoverboard_logo.png';
+import intuitLogo from '../images/intuit_logo.png';
 
 export const WORK = 'work';
 export const VOLUNTEER = 'volunteer';
@@ -258,10 +251,10 @@ const workExp: Job[] = [
   },
 ];
 
-const getSummary = (key: string) => workExp.reduce(
-  (acc, job: any): any => {
-    const newAcc: any[] = [...acc];
-    forEach(job[key], (item) => {
+const getSummary = (key: 'tech' | 'skills'): string[] => workExp.reduce(
+  (acc: string[], job: Job): string[] => {
+    const newAcc: string[] = [...acc];
+    forEach(job[key], (item: string) => {
       if (!includes(acc, item)) {
         newAcc.push(item);
       }
@@ -271,7 +264,7 @@ const getSummary = (key: string) => workExp.reduce(
   [],
 );
 
-export const techSummary = getSummary('tech');
-export const skillSummary = getSummary('skills');
+export const techSummary: string[] = getSummary('tech');
+export const skillSummary: string[] = getSummary('skills');
 
 export default workExp;

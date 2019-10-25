@@ -7,11 +7,11 @@ import workExperience from '../../../constants/work';
 
 interface TimelineCardProps {
   backgroundColor?: string;
-  data: DataEntry[];
+  data?: DataEntry[];
   title?: string;
   selector?: string;
-  start: Moment;
-  end: Moment;
+  start?: Moment;
+  end?: Moment;
 }
 
 const DATE_FORMAT = 'MMMM YYYY';
@@ -24,6 +24,10 @@ const TimelineCard: React.FC<TimelineCardProps> = (props: TimelineCardProps) => 
     data, backgroundColor, title, selector,
     start, end,
   } = props;
+
+  if (!start || !end || !data) {
+    return null;
+  }
 
   return (
     <ExpandableCard
