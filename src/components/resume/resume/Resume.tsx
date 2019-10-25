@@ -1,6 +1,7 @@
 import React, { useState, memo } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
 import get from 'lodash/get';
+import { PDFPageProxy, PDFDocumentProxy } from 'pdfjs-dist';
 import resume from '../../../images/kenneth_bigler_resume.pdf';
 
 const MAX_SCALE = 1.5;
@@ -11,19 +12,19 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 interface ResumeHook {
   numPages: number;
   width: number;
-  onDocumentLoadSuccess: Function;
-  onLoadSuccess: Function;
+  onDocumentLoadSuccess: (pdf: PDFDocumentProxy) => void;
+  onLoadSuccess: (pdf: PDFPageProxy) => void;
 }
 
 function useResume(): ResumeHook {
   const [numPages, setNumPages] = useState(0);
   const [width, setWidth] = useState(0);
 
-  const onDocumentLoadSuccess = (pdf): void => {
+  const onDocumentLoadSuccess = (pdf: PDFDocumentProxy): void => {
     setNumPages(get(pdf, 'numPages', 1));
   };
 
-  const onLoadSuccess = (pdf): void => {
+  const onLoadSuccess = (pdf: PDFPageProxy): void => {
     const pdfWidth = get(pdf, 'pageInfo.view[2]', 612);
     const screenWidth = document.body.clientWidth - 32;
     setWidth(screenWidth > pdfWidth * MAX_SCALE ? pdfWidth * MAX_SCALE : screenWidth);
