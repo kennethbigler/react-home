@@ -1,16 +1,25 @@
 import React, { PureComponent } from 'react';
-import types from 'prop-types';
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, CartesianGrid, Tooltip,
 } from 'recharts';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme, Theme } from '@material-ui/core/styles';
 import languageExp from '../../../constants/languages';
 
-class TechBarChart extends PureComponent {
-  constructor(props) {
+interface TechBarChartProps {
+  theme: Theme;
+}
+interface TechBarChartState {
+  data: {
+    name: string;
+    months: number;
+  }[];
+}
+
+class TechBarChart extends PureComponent<TechBarChartProps, TechBarChartState> {
+  constructor(props: TechBarChartProps) {
     super(props);
 
     const data = map(languageExp, (obj) => ({
@@ -21,7 +30,7 @@ class TechBarChart extends PureComponent {
     this.state = { data: sortBy(data, ['months']).reverse() };
   }
 
-  render() {
+  render(): React.ReactNode {
     const { theme } = this.props;
     const { data } = this.state;
     return (
@@ -30,10 +39,10 @@ class TechBarChart extends PureComponent {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <Tooltip
-            formatter={(months, name, props) => {
+            formatter={(months: string | number | React.ReactText[], name: string, props): [string, string] => {
               // FYI: name === 'months'
-              const displayMonths = months % 12;
-              const years = Math.floor(months / 12);
+              const displayMonths = months as number % 12;
+              const years = Math.floor(months as number / 12);
 
               const label = props.payload.name;
               const value = (years ? `${years}y ` : '') + (displayMonths ? `${displayMonths}m` : '');
@@ -47,18 +56,5 @@ class TechBarChart extends PureComponent {
     );
   }
 }
-
-TechBarChart.propTypes = {
-  theme: types.shape({
-    palette: types.shape({
-      primary: types.shape({
-        main: types.string.isRequired,
-      }).isRequired,
-      secondary: types.shape({
-        main: types.string.isRequired,
-      }).isRequired,
-    }).isRequired,
-  }),
-};
 
 export default withTheme(TechBarChart);

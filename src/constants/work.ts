@@ -33,7 +33,7 @@ export const SCHOOL = 'school';
 const PM = 'Project Management';
 const INT = 'Managed Intern';
 
-interface Job {
+export interface Job {
   alt?: string;
   color: string;
   company: string;
