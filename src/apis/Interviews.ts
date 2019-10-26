@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-expressions */
-
 import split from 'lodash/split';
 import forEach from 'lodash/forEach';
 
@@ -16,13 +14,9 @@ import forEach from 'lodash/forEach';
  * cooldown: 2
  * Output: 9
  * Explanation: 1 _ _ 1 2 0 _ 2 1
- *
- * @param {Array} tasks
- * @param {number} cooldown
- * @return {number}
  */
-function doTasks(tasks, cooldown) {
-  const lastRunMap = {};
+function doTasks(tasks: number[], cooldown: number): number {
+  const lastRunMap: { [name: number]: number } = {};
   let ans = 0;
   // let debug = '';
   let currentTime = 0;
@@ -60,13 +54,10 @@ doTasks([1, 1, 3, 2, 1, 2, 1], 3);
  * EX: 34 => false
  * EX: 1881 => true
  * EX: 13431 => false
- *
- * @param {Array} nums
- * @return {boolean}
  */
-function isAmbigram1(nums) {
+function isAmbigram1(nums: number[]): boolean {
   // create map
-  const flip = {
+  const flip: { [name: number]: number } = {
     0: 0,
     1: 1,
     6: 9,
@@ -102,13 +93,10 @@ isAmbigram1([1, 6, 1]);
  * 6  9      l  l        t  t        N  N
  * 8  8      m  w        x  x/X
  * a  e      n  u/U      z  z/Z
- *
- * @param {Array} word
- * @return {boolean} test
  */
-function isAmbigram2(word) {
+function isAmbigram2(word: string): boolean {
   // create map
-  const flip = {
+  const flip: { [name: string]: string[] } = {
     0: ['0'],
     1: ['1'],
     2: ['5'],
@@ -190,12 +178,8 @@ isAmbigram2('161');
  * Input A: [1,2,3,3,4,5,6]
  * Input B: [3,5,7]
  * Output: [3,5]
- *
- * @param {number[]} A
- * @param {number[]} B
- * @return {number[]}
  */
-const intersect = (A, B) => {
+const intersect = (A: number[], B: number[]): number[] => {
   let i = 0;
   let j = 0;
   const ret = [];
@@ -238,11 +222,8 @@ intersect([1, 2, 3, 3, 4, 5, 6], [3, 5, 7]) === [3, 5];
  * Input: [7,6,4,3,1]
  * Output: 0
  * Explanation: In this case, no transaction is done, i.e. max profit = 0.
- *
- * @param {number[]} prices
- * @return {number}
  */
-const maxProfit = (prices) => {
+const maxProfit = (prices: number[]): number => {
   if (prices.length === 0) {
     return 0;
   }
@@ -312,13 +293,8 @@ maxProfit([7, 2, 8, 1, 5, 3, 6, 4]) === 6;
  * Input: 1994
  * Output: "MCMXCIV"
  * Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
- *
- * @param {number} num
- * @param {string} roman
- * @param {number} round
- * @return {string}
  */
-const itr = (num, roman = '', round = 0) => {
+const itr = (num: number, roman = '', round = 0): string => {
   const divisor = [1000, 100, 10, 1];
   // end condition
   if (round >= divisor.length) {
@@ -350,16 +326,13 @@ const itr = (num, roman = '', round = 0) => {
     // console.log(roman, n[round][0]);
     return itr(num - 1 * d, roman + nmrl[0], round);
   }
-  return null;
+  // switched from null to '' without tests
+  return '';
 };
 
-/**
- * @param {number} num
- * @return {string}
- */
-const intToRoman = (num) => {
+const intToRoman = (num: number): string => {
   if (num === 0) {
-    return false;
+    return '';
   }
   // verify non-negative
   if (num < 0) {
@@ -422,19 +395,16 @@ intToRoman(1994) === 'MCMXCIV';
  * Input: "MCMXCIV"
  * Output: 1994
  * Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
- *
- * @param {string} str
- * @return {number}
  */
-const romanToInt = (str) => {
+const romanToInt = (str: string): number => {
   if (str === '') {
-    return false;
+    return 0;
   }
   let ret = 0;
   const characters = split(str, '');
   // Symbol I  V  X   L   C    D    M
   // Value  1  5  10  50  100  500  1,000
-  const romanMap = {
+  const romanMap: { [name: string]: number } = {
     M: 1000,
     D: 500,
     C: 100,
@@ -474,5 +444,3 @@ romanToInt('MCMXCIV') === 1994;
  */
 
 /** given an array of numbers, and a sum, find and return the index of 2 numbers that adds up to the sum */
-
-/* eslint-enable no-unused-expressions */

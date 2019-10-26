@@ -410,9 +410,8 @@ class BlackJack extends Component<BlackJackProps, BlackJackState> {
   /** function to be called on card clicks */
   cardClickHandler = (playerNo: number, handNo: number, cardNo: number): void => {
     const { players } = this.props;
-    /* eslint-disable no-console */
+    // eslint-disable-next-line no-console
     console.log(players[playerNo].hands[handNo].cards[cardNo]);
-    /* eslint-enable no-console */
   };
 
   /** function to be called on card clicks

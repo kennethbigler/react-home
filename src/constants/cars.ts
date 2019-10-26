@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const prius07 = require('../images/07_toyota_prius.jpg');
-const pontiac93 = require('../images/93_pontiac_bonneville.jpg');
-const impala10 = require('../images/10_chevrolet_impala_ls.jpg');
-const mustang15 = require('../images/15_mustang_gt_premium.jpg');
-const jaguar05 = require('../images/05_jaguar_xj8l.jpg');
-const corvette18 = require('../images/18_corvette_zo6_3lz.jpeg');
-/* eslint-enable @typescript-eslint/no-var-requires */
+import prius07 from '../images/07_toyota_prius.jpg';
+import pontiac93 from '../images/93_pontiac_bonneville.jpg';
+import impala10 from '../images/10_chevrolet_impala_ls.jpg';
+import mustang15 from '../images/15_mustang_gt_premium.jpg';
+import jaguar05 from '../images/05_jaguar_xj8l.jpg';
+import corvette18 from '../images/18_corvette_zo6_3lz.jpeg';
 
 export const muscleCars = [
   {
