@@ -5,12 +5,20 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Typography } from '@material-ui/core';
+import grey from '@material-ui/core/colors/grey';
 import DarkTableCell from '../../common/DarkTableCell';
-import styles from './TravelTable.styles';
 import { NA, EU } from '../../../constants/countries';
-// Parents: Main
 
-const TravelMap = memo(() => {
+const marginStyles: React.CSSProperties = { marginTop: 24, marginBottom: 16 };
+const separatorStyles: React.CSSProperties = { borderRight: `1px solid ${grey[400]}` };
+const cellStyles: React.CSSProperties = {
+  padding: 5,
+  textAlign: 'center',
+  whiteSpace: 'normal',
+  overflow: 'visible',
+};
+
+const TravelMap: React.FC<{}> = memo(() => {
   // ratio to display on table, 2:1 seemed to look best
   const EURatio = 3;
 
@@ -24,7 +32,7 @@ const TravelMap = memo(() => {
     row.push(
       <TableCell
         key={`tmc${i}`}
-        style={{ ...styles.cell, ...styles.separator }}
+        style={{ ...cellStyles, ...separatorStyles }}
       >
         {NA[i]}
       </TableCell>,
@@ -32,7 +40,7 @@ const TravelMap = memo(() => {
     // add EU Countries
     for (let j = 0; j < EURatio; j += 1) {
       row.push(
-        <TableCell key={`tmc${i}${j}`} style={styles.cell}>
+        <TableCell key={`tmc${i}${j}`} style={cellStyles}>
           {EU[EURatio * i + j]}
         </TableCell>,
       );
@@ -48,16 +56,16 @@ const TravelMap = memo(() => {
 
   return (
     <>
-      <Typography variant="h4" style={styles.margins}>
+      <Typography variant="h4" style={marginStyles}>
         {`I have been to ${NA.length + EU.length} countries:`}
       </Typography>
       <Table>
         <TableHead>
           <TableRow>
-            <DarkTableCell style={{ ...styles.cell, ...styles.separator }}>
+            <DarkTableCell style={{ ...cellStyles, ...separatorStyles }}>
               North America
             </DarkTableCell>
-            <DarkTableCell colSpan={EURatio} style={styles.cell}>
+            <DarkTableCell colSpan={EURatio} style={cellStyles}>
               Europe
             </DarkTableCell>
           </TableRow>

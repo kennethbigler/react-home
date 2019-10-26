@@ -1,11 +1,14 @@
 import React, { memo } from 'react';
-import types from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
 import map from 'lodash/map';
-// Parents: Header
+import noop from 'lodash/noop';
 
-const Menu = memo((props) => {
+interface MenuProps {
+  onItemClick?: Function;
+}
+
+const Menu: React.FC<MenuProps> = memo((props: MenuProps) => {
   const { onItemClick } = props;
   // internal routes
   const menu = map(
@@ -28,7 +31,7 @@ const Menu = memo((props) => {
       ? (
         <Divider key={index} />
       ) : (
-        <MenuItem key={item.name} onClick={() => onItemClick(`/${item.route}`)}>
+        <MenuItem key={item.name} onClick={(): void => (onItemClick ? onItemClick(`/${item.route}`) : noop())}>
           {item.name}
         </MenuItem>
       )
@@ -36,9 +39,9 @@ const Menu = memo((props) => {
   );
 
   // external links
-  const github = () => window.open('https://github.com/kennethbigler/react-home');
-  const linkedin = () => window.open('https://www.linkedin.com/in/kennethbigler');
-  const stkovrflw = () => window.open('https://stackoverflow.com/users/4830309/ken-bigler');
+  const github = (): void => { window.open('https://github.com/kennethbigler/react-home'); };
+  const linkedIn = (): void => { window.open('https://www.linkedin.com/in/kennethbigler'); };
+  const stackOverflow = (): void => { window.open('https://stackoverflow.com/users/4830309/ken-bigler'); };
 
   return (
     <>
@@ -47,7 +50,7 @@ const Menu = memo((props) => {
       <MenuItem onClick={github}>
         GitHub
       </MenuItem>
-      <MenuItem onClick={linkedin}>
+      <MenuItem onClick={linkedIn}>
         LinkedIn
       </MenuItem>
       <Divider />
@@ -55,7 +58,7 @@ const Menu = memo((props) => {
       <img
         alt="profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
         id="stackOverflow"
-        onClick={stkovrflw}
+        onClick={stackOverflow}
         src="https://stackoverflow.com/users/flair/4830309.png?theme=dark"
         style={{
           display: 'block',
@@ -69,9 +72,5 @@ const Menu = memo((props) => {
     </>
   );
 });
-
-Menu.propTypes = {
-  onItemClick: types.func,
-};
 
 export default Menu;

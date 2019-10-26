@@ -6,7 +6,16 @@ import {
   pink, purple, red, teal, yellow,
 } from '@material-ui/core/colors/';
 
-const countries = {
+interface Country {
+  color?: string;
+  continent: string;
+  flag: string;
+}
+export interface Countries {
+  [name: string]: Country;
+}
+
+const countries: Countries = {
   Austria: { color: deepOrange[500], continent: 'EU', flag: '🇦🇹' },
   Bahamas: { color: amber[500], continent: 'NA', flag: '🇧🇸' },
   Canada: { color: blue[500], continent: 'NA', flag: '🇨🇦' },

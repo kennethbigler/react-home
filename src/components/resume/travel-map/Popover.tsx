@@ -1,13 +1,19 @@
 import React, { memo } from 'react';
-import types from 'prop-types';
 import grey from '@material-ui/core/colors/grey';
 
-const Popover = memo((props) => {
+interface PopoverProps {
+  x: number;
+  y: number;
+  hide: boolean;
+  content: string;
+}
+
+const Popover: React.FC<PopoverProps> = memo((props: PopoverProps) => {
   const {
     x, y, hide, content,
   } = props;
 
-  const popoverStyle = {
+  const popoverStyle: React.CSSProperties = {
     position: 'absolute',
     left: x + 2,
     top: y - 35,
@@ -18,17 +24,7 @@ const Popover = memo((props) => {
     borderRadius: 2,
   };
 
-
-  return (
-    <div style={popoverStyle}>{content}</div>
-  );
+  return (<div style={popoverStyle}>{content}</div>);
 });
-
-Popover.propTypes = {
-  x: types.number.isRequired,
-  y: types.number.isRequired,
-  hide: types.bool.isRequired,
-  content: types.string.isRequired,
-};
 
 export default Popover;

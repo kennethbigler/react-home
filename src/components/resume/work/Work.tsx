@@ -10,7 +10,7 @@ const TechBarChart = lazy(() => import(/* webpackChunkName: "r_work_bar_chart" *
 
 /* Work  ->  TechBarChart
  *      |->  WorkCards  ->  Job */
-const Work = memo(() => (
+const Work: React.FC<{}> = memo(() => (
   <>
     <Typography variant="h2">Experience</Typography>
     <TimelineCard data={workExp} title="Work Timeline" />
