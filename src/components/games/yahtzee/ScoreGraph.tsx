@@ -32,7 +32,7 @@ class ScoreGraph extends React.Component<ScoreGraphProps, ScoreGraphState> {
     this.state = generateScoreGraph(props.scores);
   }
 
-  static getDerivedStateFromProps(props: ScoreGraphProps, state: ScoreGraphState): ScoreGraphState | null {
+  static getDerivedStateFromProps: React.GetDerivedStateFromProps<ScoreGraphProps, ScoreGraphState> = (props, state) => {
     if (props.scores.length > state.scores.length) {
       return generateScoreGraph(props.scores);
     }

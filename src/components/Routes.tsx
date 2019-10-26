@@ -2,10 +2,9 @@ import React, { Suspense, lazy } from 'react';
 import {
   Switch, Route, withRouter, RouteComponentProps,
 } from 'react-router-dom';
-import { StaticContext } from 'react-router';
 import LoadingSpinner from './common/loading-spinner';
 
-type RoutesProps = RouteComponentProps<any, StaticContext, any>;
+type RoutesProps = RouteComponentProps<{ url: string }>;
 
 // lazy load sub routers
 const ResumeRoutes = lazy(() => import(/* webpackChunkName: "resume" */ './resume/Routes'));

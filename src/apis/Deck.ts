@@ -42,12 +42,12 @@ const getDeck = (): Promise<DBCard[]> => localForage
   .catch(() => getNewDeck());
 
 /** immutably update deck O(N) */
-const setDeck = (deck: DBCard[]): Promise<any> => localForage
+const setDeck = (deck: DBCard[]): Promise<DBCard[] | null> => localForage
   .setItem('deck', deck)
   .catch(() => null);
 
 /** randomize order of the cards O(N + M) */
-const shuffle = () => {
+const shuffle = (): Promise<DBCard[] | null> => {
   // get a new deck
   const shuffledDeck = getNewDeck();
   // shuffle the cards
@@ -83,6 +83,6 @@ const deal = (num = 0): Promise<DBCard[]> => {
 };
 
 /** sort by card weight */
-const rankSort = (a: DBCard, b: DBCard) => a.weight - b.weight;
+const rankSort = (a: DBCard, b: DBCard): number => a.weight - b.weight;
 
 export default { shuffle, deal, rankSort };

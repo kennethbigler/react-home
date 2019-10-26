@@ -76,9 +76,9 @@ const getInitialState = (): YahtzeeState => ({
 * Home
 * -------------------------------------------------- */
 class Yahtzee extends React.Component<YahtzeeProps, YahtzeeState> {
-  static getDerivedStateFromProps(nextProps: YahtzeeProps, prevState: YahtzeeState): any {
-    let { finalTopSum } = prevState;
-    const { top, bottom } = prevState;
+  static getDerivedStateFromProps: React.GetDerivedStateFromProps<YahtzeeProps, YahtzeeState> = (_props, state) => {
+    let { finalTopSum } = state;
+    const { top, bottom } = state;
     let count = 0;
 
     const topSum = reduce(top, (sum, { score }) => {
@@ -105,7 +105,7 @@ class Yahtzee extends React.Component<YahtzeeProps, YahtzeeState> {
     if (count >= 13) {
       return { finish: true };
     }
-    if (topSum !== prevState.topSum || bottomSum !== prevState.bottomSum) {
+    if (topSum !== state.topSum || bottomSum !== state.bottomSum) {
       return { topSum, finalTopSum, bottomSum };
     }
     return null;

@@ -20,7 +20,6 @@ interface PlayerMenuProps {
 }
 interface PlayerMenuState {
   isBot: boolean[];
-  players: DBPlayer[];
 }
 
 const namePadStyles: React.CSSProperties = {
@@ -34,20 +33,10 @@ class PlayerMenu extends Component<PlayerMenuProps, PlayerMenuState> {
   constructor(props: PlayerMenuProps) {
     super(props);
 
-    this.state = { isBot: [], players: []};
+    this.state = { isBot: []};
   }
 
-  // https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
-  // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
-  static getDerivedStateFromProps(nextProps: PlayerMenuProps, prevState: PlayerMenuState): any {
-    // get old player and current player
-    const { players: old } = prevState;
-    const { players } = nextProps;
-
-    return old !== players
-      ? { players, isBot: map(players, ['isBot', true]) }
-      : null;
-  }
+  static getDerivedStateFromProps: React.GetDerivedStateFromProps<PlayerMenuProps, PlayerMenuState> = (props) => ({ isBot: map(props.players, ['isBot', true]) })
 
   handleToggle = (id: number, isChecked: boolean): void => {
     const { playerActions } = this.props;

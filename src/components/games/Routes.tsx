@@ -9,7 +9,7 @@ import Menu from './Menu';
 import LoadingSpinner from '../common/loading-spinner';
 
 interface RoutesProps {
-  handleNav: (...args: any[]) => any;
+  handleNav: Function;
   match: Match;
 }
 

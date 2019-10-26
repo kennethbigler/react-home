@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import map from 'lodash/map';
 import reject from 'lodash/reject';
 
