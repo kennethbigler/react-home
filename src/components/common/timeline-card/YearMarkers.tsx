@@ -1,12 +1,9 @@
 import React from 'react';
 import grey from '@material-ui/core/colors/grey';
+import { SegmentType } from './types';
 
-export interface YearMarker { // color?: any; // title?: any;
-  body?: any;
-  width: number;
-}
 interface YearMarkersProps {
-  data: YearMarker;
+  data: SegmentType;
 }
 
 const boxStyles: React.CSSProperties = {

@@ -1,15 +1,9 @@
 import React, { memo } from 'react';
 import grey from '@material-ui/core/colors/grey';
 import { withTheme, Theme } from '@material-ui/core/styles';
+import { SegmentType } from './types';
 
-export interface ASegment {
-  color?: string;
-  body?: string;
-  title?: string;
-  width: number;
-  inverted?: boolean;
-}
-interface SegmentProps extends ASegment {
+interface SegmentProps extends SegmentType {
   theme: Theme;
 }
 

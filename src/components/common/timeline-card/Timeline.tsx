@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import moment, { Moment } from 'moment';
 import map from 'lodash/map';
 import Row from './Row';
-import { ASegment } from './Segment';
-import { YearMarker } from './YearMarkers';
+import { SegmentType } from './types';
 
 export interface DataEntry {
   color: string;
@@ -53,7 +52,7 @@ export class Timeline extends Component<TimelineProps, TimelineState> {
   };
 
   /** function to add elm segment */
-  addSegment = (segments: ASegment[], elm: any, beginning: number, ending: number): void => {
+  addSegment = (segments: SegmentType[], elm: any, beginning: number, ending: number): void => {
     const { selector } = this.props;
     const {
       color, inverted, title, short,
@@ -82,7 +81,7 @@ export class Timeline extends Component<TimelineProps, TimelineState> {
     }
   };
 
-  getSegments = (added: boolean[], elm: DataEntry, i: number): ASegment[] => {
+  getSegments = (added: boolean[], elm: DataEntry, i: number): SegmentType[] => {
     const { data } = this.state;
 
     // skip if added already
@@ -91,7 +90,7 @@ export class Timeline extends Component<TimelineProps, TimelineState> {
     }
 
     // local variables
-    const segments: ASegment[] = [];
+    const segments: SegmentType[] = [];
     const { start, end } = elm;
     let beginning = this.getTimeFromStart(start);
     let ending = this.getTimeFromStart(end);
@@ -131,13 +130,13 @@ export class Timeline extends Component<TimelineProps, TimelineState> {
   };
 
   /** function to add empty space between start and elm segment */
-  addEmptySegment = (segments: ASegment[], width: number): void => {
+  addEmptySegment = (segments: SegmentType[], width: number): void => {
     if (width > 0) {
       segments.push({ width });
     }
   };
 
-  getYearMarkers = (): YearMarker[] => {
+  getYearMarkers = (): SegmentType[] => {
     const { start, end } = this.props;
 
     const startYear = parseInt(start.format('YYYY'), 10);

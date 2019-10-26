@@ -1,7 +1,6 @@
 import React from 'react';
 import map from 'lodash/map';
 import Button, { ButtonProps } from './Button';
-// Parents: GameTable
 
 export interface ButtonGroupProps {
   gameFunctions: ButtonProps[];

@@ -42,13 +42,13 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
   };
 
   /** function to update select state based on value */
-  const handleBranchPrefixSelect = (e: any): void => {
+  const handleBranchPrefixSelect = (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>): void => {
     const { setBranchPrefix } = props;
     setBranchPrefix(e.target.value);
   };
 
   /** function to update text state based on value */
-  const handleCasePrefSelect = (e: any): void => {
+  const handleCasePrefSelect = (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>): void => {
     const { setCasePreference } = props;
     setCasePreference(e.target.value);
   };

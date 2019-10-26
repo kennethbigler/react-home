@@ -16,6 +16,7 @@ import Deck from '../../../apis/Deck';
 import {
   DBPlayer, DBTurn, DBCard, DBRootState,
 } from '../../../store/types';
+import { ButtonProps } from '../game-table/button-group/Button';
 // Parents: Main
 
 const DEALER = 0;
@@ -31,10 +32,6 @@ interface TurnActions {
   incrPlayerTurn: Function;
   resetTurn: Function;
 }
-interface GameFunction {
-  name: string;
-  func: Function;
-}
 
 interface PokerProps {
   playerActions: PlayerActions;
@@ -43,7 +40,7 @@ interface PokerProps {
   turnActions: TurnActions;
 }
 interface PokerState {
-  gameFunctions: GameFunction[];
+  gameFunctions: ButtonProps[];
   cardsToDiscard: number[];
   hideHands: boolean;
   gameOver: boolean;

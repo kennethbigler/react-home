@@ -2,9 +2,10 @@ import React from 'react';
 import map from 'lodash/map';
 import Segment from './Segment';
 import YearMarkers from './YearMarkers';
+import { SegmentType } from './types';
 
 interface RowProps {
-  segments: any[];
+  segments: SegmentType[];
   yearMarkers?: boolean;
   first?: boolean;
 }

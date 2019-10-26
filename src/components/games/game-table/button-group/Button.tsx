@@ -4,7 +4,7 @@ import { PropTypes } from '@material-ui/core/';
 // Parents: ButtonGroup
 
 export interface ButtonProps {
-  func: Function;
+  func: React.MouseEventHandler;
   name: string;
 }
 
@@ -17,7 +17,7 @@ const Button = memo((props: ButtonProps) => {
   return (
     <MuiButton
       color={color}
-      onClick={func as any}
+      onClick={func}
       style={buttonStyle}
       variant="contained"
     >

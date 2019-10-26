@@ -11,11 +11,9 @@ import get from 'lodash/get';
 import forEach from 'lodash/forEach';
 import asyncForEach from '../../../helpers/asyncForEach';
 import weighHand from './blackjackHelpers';
-// components
 import Header from './Header';
 import GameTable from '../game-table';
 import Deck from '../../../apis/Deck';
-// redux functions
 import {
   DBTurn, DBHand, DBPlayer, DBRootState,
 } from '../../../store/types';
@@ -24,9 +22,8 @@ import {
   drawCard, newHand, payout, resetStatus,
   splitHand, updateBet,
 } from '../../../store/modules/players';
-// Parents: Main
+import { ButtonProps } from '../game-table/button-group/Button';
 
-// Props
 interface PlayerActions {
   drawCard: Function;
   newHand: Function;
@@ -46,16 +43,10 @@ interface BlackJackProps {
   turn: DBTurn;
   turnActions: TurnActions;
 }
-// State
-interface GameFunction {
-  name: string;
-  func: Function;
-}
 interface BlackJackState {
-  gameFunctions: GameFunction[];
+  gameFunctions: ButtonProps[];
   hideHands: boolean;
 }
-// helpers
 interface PlayerStats {
   house: number;
   payout: number;
