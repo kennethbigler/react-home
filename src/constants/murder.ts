@@ -266,7 +266,7 @@ diver = assign(diver, {
     + 'You are simply here to gamble and have a relaxing weekend.',
   hint: 'You have a gun with you.\nYou have an alibi.',
   clue:
-    `You were talking with "${owner}" during the shooting, this is your alibi for not shooting ${VICTIM}.\n`
+    `You were talking with "${owner.role}" during the shooting, this is your alibi for not shooting ${VICTIM}.\n`
     + 'You can reveal you are an assassin in any way you would like, but you should reveal this at some point.',
 });
 
