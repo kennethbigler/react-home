@@ -19,6 +19,12 @@ const WithTheme: React.FC<WithThemeProps> = (props: WithThemeProps) => {
       primary: theme.primary,
       secondary: theme.secondary,
     },
+    typography: {
+      fontFamily: [
+        'Montserrat',
+        'sans-serif',
+      ].join(','),
+    },
   });
 
   return (
