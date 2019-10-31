@@ -17,13 +17,11 @@ interface MurderMysteryPanelProps {
   handleChange: Function;
   role: string;
   importance: string;
-  person: string;
   gender: string;
   description: string;
   hint: string;
   clue: string;
 }
-
 
 const containerStyles: React.CSSProperties = {
   display: 'flex',
@@ -35,8 +33,7 @@ const itemStyles: React.CSSProperties = { display: 'flex' };
 const MurderMysteryPanel: React.FC<MurderMysteryPanelProps> = memo((props: MurderMysteryPanelProps) => {
   const {
     expanded, expandedKey, handleChange, role,
-    importance, person, gender, description,
-    hint, clue,
+    importance, gender, description, hint, clue,
   } = props;
 
   return (
@@ -50,10 +47,6 @@ const MurderMysteryPanel: React.FC<MurderMysteryPanelProps> = memo((props: Murde
       <ExpansionPanelDetails>
         <Table>
           <TableBody>
-            <TableRow>
-              <LabelTableCell>Player</LabelTableCell>
-              <TableCell>{person}</TableCell>
-            </TableRow>
             <TableRow>
               <LabelTableCell>Gender</LabelTableCell>
               <TableCell>{gender}</TableCell>

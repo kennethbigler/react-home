@@ -16,7 +16,7 @@ const MurderMystery: React.FC<{}> = memo(() => {
       <Typography variant="h2" gutterBottom>{`Murder at ${CASINO}`}</Typography>
       {map(profiles, (profile, i) => {
         const {
-          role, importance, person, gender, description, hint, clue,
+          role, importance, gender, description, hint, clue,
         } = profile;
 
         return (
@@ -25,7 +25,6 @@ const MurderMystery: React.FC<{}> = memo(() => {
             expanded,
             role,
             importance,
-            person,
             gender,
             description,
             hint,
