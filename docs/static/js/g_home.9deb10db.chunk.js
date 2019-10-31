@@ -1,0 +1,2 @@
+(this["webpackJsonpreact-home"]=this["webpackJsonpreact-home"]||[]).push([[12],{797:function(e,t,a){"use strict";a.r(t);var c=a(0),r=a.n(c),n=a(782),o=Object(c.memo)((function(){return r.a.createElement("div",{style:{textAlign:"center",marginTop:20}},r.a.createElement(n.a,{variant:"h2"},"Welcome to my ReactJS Game Projects"),r.a.createElement(n.a,{variant:"h3"},"This site was created to learn, check out the"," ",r.a.createElement("a",{href:"https://github.com/kennethbigler/react-home"},"<source code />")))}));t.default=o}}]);
+//# sourceMappingURL=g_home.9deb10db.chunk.js.map
