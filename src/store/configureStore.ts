@@ -15,9 +15,10 @@ export const loadState = async (): Promise<DBRootState> => localForage
   .catch(() => initialState);
 
 /** funtion to save 'state' value to local storage */
-export const saveState = (state: DBRootState): Promise<any> => localForage
+export const saveState = (state: DBRootState): Promise<void | DBRootState> => localForage
   .setItem('state', state)
-  .catch((e) => console.log('state to db save failed: ', e));
+  // eslint-disable-next-line no-console
+  .catch((e) => console.error('state to db save failed: ', e));
 
 export const configureStore = (state: DBRootState): Store => createStore(
   rootReducer,

@@ -10,7 +10,7 @@ import GigNowPokerNight from './GigNowPokerNight';
 const PokerNightTabs: React.FC<{}> = memo(() => {
   const [tab, setTab] = useState(0);
 
-  const handleChange = (event: any, val: number): void => {
+  const handleChange = (event: React.ChangeEvent<{}>, val: number): void => {
     setTab(val);
   };
 

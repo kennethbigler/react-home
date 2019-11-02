@@ -1,12 +1,13 @@
 import React from 'react';
 
+type MaterialChange = any; // { name?: string | undefined; value: unknown };
 interface UseCommitTextReturns {
   commitPrefix: string;
   commitMessage: string;
   commitDescription: string;
   finishes: boolean;
   getCommitText: Function;
-  handleCommitPrefixSelect: (event: React.ChangeEvent<any>, child: React.ReactNode) => void;
+  handleCommitPrefixSelect: (event: React.ChangeEvent<MaterialChange>, child: React.ReactNode) => void;
   handleCommitMessageChange: React.ChangeEventHandler;
   handleCommitDescriptionChange: React.ChangeEventHandler;
   clearCommitMessage: React.MouseEventHandler;
@@ -50,16 +51,16 @@ function useCommitText(storyID?: string, gitCommit?: boolean): UseCommitTextRetu
   };
 
   /** function to update select state based on value */
-  const handleCommitPrefixSelect = (e: React.ChangeEvent<any>): void => {
+  const handleCommitPrefixSelect = (e: React.ChangeEvent<MaterialChange>): void => {
     setLocalCommitPrefix(e.target.value);
   };
 
   /** function to update text state based on value */
-  const handleCommitMessageChange = (e: React.ChangeEvent<any>): void => {
+  const handleCommitMessageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setCommitMessage(e.target.value);
   };
 
-  const handleCommitDescriptionChange = (e: React.ChangeEvent<any>): void => {
+  const handleCommitDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setCommitDescription(e.target.value);
   };
 

@@ -123,21 +123,23 @@ export const heroes: DBDota2Hero[] = [
   { name: 'Zeus', selected: false, attribute: ATR.INT },
 ];
 
+export type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z';
+type DotaHistogram = { [name in Alphabet]: DBDota2Hero[] };
+
 const orderedHeroes = reduce(
   sortBy(heroes, 'name'),
-  (acc, hero: DBDota2Hero) => {
-    const newAcc: any = { ...acc };
-    const key = hero.name[0];
+  (acc: DotaHistogram, hero: DBDota2Hero) => {
+    const key = hero.name[0] as Alphabet;
 
-    if (!newAcc[key]) {
-      newAcc[key] = [hero];
+    if (!acc[key]) {
+      acc[key] = [hero];
     } else {
-      newAcc[key].push(hero);
+      acc[key].push(hero);
     }
 
-    return newAcc;
+    return acc;
   },
-  {},
+  {} as DotaHistogram,
 );
 
 export const resetHeroesStatuses = (): void => {

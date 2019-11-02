@@ -9,7 +9,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
-import characterList, { resetHeroesStatuses } from '../../../constants/dota2';
+import characterList, { resetHeroesStatuses, Alphabet } from '../../../constants/dota2';
 import Lineup from './Lineup';
 import HeroSelection, { AlphaCharacters } from './HeroSelection';
 import {
@@ -27,7 +27,6 @@ interface Dota2PickerProps {
   order: DBDota2Phase[][];
   actions: Dota2PickerActions;
 }
-type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z';
 interface Dota2PickerState {
   turn: number;
   set: number;

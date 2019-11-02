@@ -36,7 +36,7 @@ const GraphQL: React.FC<GraphQLProps> = React.memo((props: GraphQLProps) => {
   const { gqlToken, stateActions } = props;
   const [authToken, setAuthToken] = useState(gqlToken);
 
-  const handleChange = (e: any): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const token = e.target.value;
     stateActions.setToken(token);
     setAuthToken(token);

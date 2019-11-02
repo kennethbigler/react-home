@@ -3,6 +3,7 @@ import indigo from '@material-ui/core/colors/indigo';
 import blue from '@material-ui/core/colors/blue';
 import moment, { Moment } from 'moment';
 import forEach from 'lodash/forEach';
+import { DataEntry } from '../components/common/timeline-card/Timeline';
 
 // --------------------     Types     -------------------- //
 enum QTR {
@@ -47,7 +48,8 @@ const getStart = (quarter: QTR, yy: number): Moment => {
     case QTR.WINTER: return moment(`20${yy}-01`);
     case QTR.SPRING: return moment(`20${yy}-04`);
     default:
-      console.warn('Error');
+      // eslint-disable-next-line no-console
+      console.error('Start Error: quarter given does not exist: ', quarter);
       return moment();
   }
 };
@@ -58,7 +60,8 @@ const getEnd = (quarter: QTR, yy: number): Moment => {
     case QTR.WINTER: return moment(`20${yy}-03`);
     case QTR.SPRING: return moment(`20${yy}-07`);
     default:
-      console.warn('Error');
+      // eslint-disable-next-line no-console
+      console.error('End Error: quarter given does not exist: ', quarter);
       return moment();
   }
 };
@@ -633,7 +636,10 @@ const schools: School[] = [
   },
 ];
 
-const timeline: any[] = [];
+interface TimelineEntry extends DataEntry {
+  course?: string;
+}
+const timeline: TimelineEntry[] = [];
 
 forEach(schools, (school: School): void => {
   forEach(school.years, (year: Year): void => {
@@ -641,8 +647,8 @@ forEach(schools, (school: School): void => {
       forEach(quarter.classes, (course: Class): void => {
         quarter.start && timeline.push({
           start: quarter.start,
-          end: quarter.end,
-          title: course,
+          end: quarter.end || moment(),
+          title: course.name,
           color: red[900],
           course: course.catalog,
         });
