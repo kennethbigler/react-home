@@ -3,6 +3,9 @@ import reduce from 'lodash/reduce';
 import forEach from 'lodash/forEach';
 import { ATR, DBDota2Hero } from '../store/types';
 
+export type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z';
+type DotaHistogram = { [name in Alphabet]: DBDota2Hero[] };
+
 export const heroes: DBDota2Hero[] = [
   { name: 'Abaddon', selected: false, attribute: ATR.STR },
   { name: 'Alchemist', selected: false, attribute: ATR.STR },
@@ -122,9 +125,6 @@ export const heroes: DBDota2Hero[] = [
   { name: 'Wraith King', selected: false, attribute: ATR.STR },
   { name: 'Zeus', selected: false, attribute: ATR.INT },
 ];
-
-export type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z';
-type DotaHistogram = { [name in Alphabet]: DBDota2Hero[] };
 
 const orderedHeroes = reduce(
   sortBy(heroes, 'name'),

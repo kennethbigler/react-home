@@ -12,7 +12,6 @@ enum QTR {
   WINTER = 'winter',
   SPRING = 'spring',
 }
-
 interface Class {
   name: string;
   catalog?: string;

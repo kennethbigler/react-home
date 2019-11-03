@@ -5,7 +5,7 @@ import {
 import {
   blue, orange, purple, yellow,
 } from '@material-ui/core/colors/';
-import { muscleCars } from '../../../constants/cars';
+import muscleCars from '../../../constants/muscle-cars';
 
 const Cars = memo(() => (
   <ResponsiveContainer width="100%" height={650}>
