@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Clear from '@material-ui/icons/Clear';
 import Grid from '@material-ui/core/Grid';
 import CopyTextDisplay from './CopyTextDisplay';
+import { MaterialSelectEventHandler } from './types';
 
 interface BranchNameProps {
   branchMessage?: string;
@@ -17,7 +18,7 @@ interface BranchNameProps {
   getSelectOptions: Function;
   gitTheme: string;
   handleCopy: Function;
-  onBranchMessageChange: React.ChangeEventHandler;
+  onBranchMessageChange: MaterialSelectEventHandler;
   onBranchMessageClear: React.MouseEventHandler;
   setBranchPrefix: Function;
   setCasePreference: Function;

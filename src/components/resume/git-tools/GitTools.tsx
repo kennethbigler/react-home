@@ -17,6 +17,7 @@ import DeployBranch from './DeployBranch';
 import Header from './Header';
 import ExpandableCard from '../../common/expandable-card';
 import { DBRootState, DBGit } from '../../../store/types';
+import { MaterialSelectEvent } from './types';
 
 interface GitActions {
   setBranchMessage: Function;
@@ -44,9 +45,9 @@ const GitTools: React.FC<GitToolsProps> = (props: GitToolsProps) => {
   ));
 
   /** function to update text state based on value */
-  const handleIDChange = (e: React.ChangeEvent<any>): void => {
+  const handleIDChange = (e: MaterialSelectEvent): void => {
     const { gitActions } = props;
-    const [value] = validTypingId.exec(e.target.value) || [''];
+    const [value] = validTypingId.exec(e.target.value as string) || [''];
     gitActions.setKey(value);
   };
 
@@ -56,9 +57,9 @@ const GitTools: React.FC<GitToolsProps> = (props: GitToolsProps) => {
   };
 
   /** function to update text state based on value */
-  const handleBranchMessageChange = (e: React.ChangeEvent<any>): void => {
+  const handleBranchMessageChange = (e: MaterialSelectEvent): void => {
     const { gitActions } = props;
-    gitActions.setBranchMessage(e.target.value);
+    gitActions.setBranchMessage(e.target.value as string);
   };
 
   /** function to update text state based on value */

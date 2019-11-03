@@ -1,10 +1,11 @@
 import React, { memo } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { Typography } from '@material-ui/core';
+import { MaterialSelectEventHandler } from './types';
 
 interface HeaderProps {
   gitTheme: string;
-  handleIDChange: React.ChangeEventHandler;
+  handleIDChange: MaterialSelectEventHandler;
   storyID?: string;
 }
 

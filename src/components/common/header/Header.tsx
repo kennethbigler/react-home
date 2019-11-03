@@ -9,8 +9,11 @@ import { withTheme, Theme } from '@material-ui/core/styles';
 import TopBar from './TopBar';
 import useToggleState from '../../../hooks/useToggle';
 
+interface NavProps {
+  onItemClick: (loc: string) => void;
+}
 interface HeaderProps {
-  children: any;
+  children: React.ReactElement<NavProps>;
   handleNav: Function;
   showPlayers?: boolean;
   theme: Theme;

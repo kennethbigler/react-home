@@ -38,7 +38,7 @@ const getNewDeck = (): DBCard[] => map(NEW_DECK, (card) => assign({}, card));
 /** get immutable copy of deck O(N) */
 const getDeck = (): Promise<DBCard[]> => localForage
   .getItem('deck')
-  .then((data: any) => (data || getNewDeck()))
+  .then((data: unknown) => (data as DBCard[] || getNewDeck()))
   .catch(() => getNewDeck());
 
 /** immutably update deck O(N) */

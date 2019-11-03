@@ -59,7 +59,7 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
     'revert', 'style', 'test',
   ]);
 
-  const handleGitCommitToggle = (_e: any, isC: boolean): void => {
+  const handleGitCommitToggle = (_e: React.ChangeEvent<HTMLInputElement>, isC: boolean): void => {
     gitActions.setCommitPrefix(isC);
   };
 

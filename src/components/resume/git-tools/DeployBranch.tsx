@@ -5,6 +5,7 @@ import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import Grid from '@material-ui/core/Grid';
 import CopyTextDisplay from './CopyTextDisplay';
+import { MaterialSelectEvent } from './types';
 
 interface BranchNameProps {
   branchName: string;
@@ -16,8 +17,8 @@ interface BranchNameProps {
 const BranchName: React.FC<BranchNameProps> = memo((props: BranchNameProps) => {
   const [targetBranch, setTargetBranch] = useState('test-pipeline');
 
-  const handleSelect = (e: React.ChangeEvent<any>): void => {
-    setTargetBranch(e.target.value);
+  const handleSelect = (e: MaterialSelectEvent): void => {
+    setTargetBranch(e.target.value as string);
   };
 
   const {
