@@ -23,7 +23,7 @@ const Info: React.FC<{}> = React.memo(() => {
   };
 
   const handleClick = (): void => {
-    window.open('https://www.linkedin.com/in/kennethbigler', '_blank');
+    window.open('https://www.linkedin.com/in/kennethbigler', 'linkedIn');
   };
 
   return (
