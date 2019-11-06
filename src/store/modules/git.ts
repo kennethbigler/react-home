@@ -1,4 +1,3 @@
-import assign from 'lodash/assign';
 import { AnyAction } from 'redux';
 import { DBGit } from '../types';
 import initialState from '../initialState';
@@ -31,17 +30,15 @@ export function setCommitPrefix(isSet = true): AnyAction {
 export default function reducer(state: DBGit = initialState.git, action: AnyAction): DBGit {
   switch (action.type) {
     case SET_KEY:
-      return assign({}, state, { storyID: action.storyID });
+      return { ...state, ...{ storyID: action.storyID }};
     case SET_BRANCH_PREFIX:
-      return assign({}, state, { branchPrefix: action.branchPrefix });
+      return { ...state, ...{ branchPrefix: action.branchPrefix }};
     case SET_BRANCH_MESSAGE:
-      return assign({}, state, { branchMessage: action.branchMessage });
+      return { ...state, ...{ branchMessage: action.branchMessage }};
     case SET_CASE_PREFERENCE:
-      return assign({}, state, {
-        casePreference: action.casePreference,
-      });
+      return { ...state, ...{ casePreference: action.casePreference }};
     case SET_COMMIT_PREFIX:
-      return assign({}, state, { commitPrefix: action.commitPrefix });
+      return { ...state, ...{ commitPrefix: action.commitPrefix }};
     default:
       return state;
   }

@@ -1,5 +1,4 @@
 import React from 'react';
-import map from 'lodash/map';
 import RepositoryItem from './item';
 import FetchMore from './item/FetchMore';
 
@@ -43,7 +42,7 @@ const RepositoryList: React.FC<RepositoryListProps> = (props: RepositoryListProp
 
   return (
     <>
-      {map(repositories.edges, ({ node }) => (
+      {repositories.edges.map(({ node }) => (
         <div key={node.id} className="RepositoryItem">
           <RepositoryItem {...node} />
         </div>

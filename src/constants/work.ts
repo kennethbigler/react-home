@@ -6,8 +6,6 @@ import blueGrey from '@material-ui/core/colors/blueGrey';
 import red from '@material-ui/core/colors/red';
 import indigo from '@material-ui/core/colors/indigo';
 import yellow from '@material-ui/core/colors/yellow';
-import includes from 'lodash/includes';
-import forEach from 'lodash/forEach';
 import dateObj, { DateObj } from '../apis/DateHelper';
 import {
   REACT, ANGULAR, HTML, CSS,
@@ -253,13 +251,13 @@ const workExp: Job[] = [
 
 const getSummary = (key: 'tech' | 'skills'): string[] => workExp.reduce(
   (acc: string[], job: Job): string[] => {
-    const newAcc: string[] = [...acc];
-    forEach(job[key], (item: string) => {
-      if (!includes(acc, item)) {
-        newAcc.push(item);
+    const arr: string[] = job[key] as string[] | [];
+    arr.forEach((item: string) => {
+      if (!acc.includes(item)) {
+        acc.push(item);
       }
     });
-    return newAcc;
+    return acc;
   },
   [],
 );

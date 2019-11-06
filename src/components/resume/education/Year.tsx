@@ -1,6 +1,5 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import Quarter, { QuarterType } from './Quarter';
 
@@ -22,7 +21,7 @@ const Year: React.FC<YearProps> = (props: YearProps) => {
         {year.year}
       </Typography>
       <hr />
-      {map(year.quarters, (quarter) => (
+      {year.quarters.map((quarter) => (
         <Quarter key={quarter.quarter} quarter={quarter} />
       ))}
     </Grid>

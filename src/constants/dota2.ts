@@ -1,6 +1,4 @@
 import sortBy from 'lodash/sortBy';
-import reduce from 'lodash/reduce';
-import forEach from 'lodash/forEach';
 import { ATR, DBDota2Hero } from '../store/types';
 
 export type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z';
@@ -126,8 +124,7 @@ export const heroes: DBDota2Hero[] = [
   { name: 'Zeus', selected: false, attribute: ATR.INT },
 ];
 
-const orderedHeroes = reduce(
-  sortBy(heroes, 'name'),
+const orderedHeroes = sortBy(heroes, 'name').reduce(
   (acc: DotaHistogram, hero: DBDota2Hero) => {
     const key = hero.name[0] as Alphabet;
 
@@ -143,7 +140,7 @@ const orderedHeroes = reduce(
 );
 
 export const resetHeroesStatuses = (): void => {
-  forEach(heroes, (hero: DBDota2Hero): void => { hero.selected = false; });
+  heroes.forEach((hero: DBDota2Hero): void => { hero.selected = false; });
 };
 
 export default orderedHeroes;

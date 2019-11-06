@@ -2,7 +2,6 @@ import React, { Suspense } from 'react';
 import {
   Switch, Route, Redirect, match as Match,
 } from 'react-router-dom';
-import reduce from 'lodash/reduce';
 import lazyWithPreload from '../../helpers/lazyWithPreload';
 import Header from '../common/header/Header';
 import Menu from './Menu';
@@ -29,27 +28,24 @@ const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
   const { match, handleNav } = props;
   const { url } = match;
 
-  const paths = reduce(
-    [
-      { name: 'work', component: Work },
-      { name: 'education', component: Education },
-      { name: 'travel', component: TravelMap },
-      { name: 'resume', component: Resume },
-      { name: 'git-tools', component: GitTools },
-      { name: 'poker', component: Poker },
-      { name: 'murder', component: MurderMystery },
-      { name: 'graphql', component: GraphQL },
-      { name: 'cars', component: Cars },
-    ],
-    (acc: React.ReactNodeArray, obj) => {
-      const { name, component } = obj;
-      const path = `${url}${name}`;
-      acc.push(<Route key={`${path}r`} exact {...{ path, component }} />);
-      acc.push(<Redirect key={`${path}d`} from={`${path}*`} to={path} />);
-      return acc;
-    },
-    [],
-  );
+  const paths = [
+    { name: 'work', component: Work },
+    { name: 'education', component: Education },
+    { name: 'travel', component: TravelMap },
+    { name: 'resume', component: Resume },
+    { name: 'git-tools', component: GitTools },
+    { name: 'poker', component: Poker },
+    { name: 'murder', component: MurderMystery },
+    { name: 'graphql', component: GraphQL },
+    { name: 'cars', component: Cars },
+  ].reduce((acc: React.ReactNodeArray, obj) => {
+    const { name, component } = obj;
+    const path = `${url}${name}`;
+    acc.push(<Route key={`${path}r`} exact {...{ path, component }} />);
+    acc.push(<Redirect key={`${path}d`} from={`${path}*`} to={path} />);
+    return acc;
+  },
+  []);
 
   return (
     <>

@@ -1,7 +1,6 @@
 import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import reduce from 'lodash/reduce';
 import {
   Dice, TopGameScore, BottomGameScore, ADD_DICE,
 } from '../types';
@@ -24,7 +23,7 @@ interface BottomTableProps {
 const BottomTable: React.FC<BottomTableProps> = (props: BottomTableProps) => {
   const getDiceValue = (): number => {
     const { values } = props;
-    return reduce(values, (sum, d) => sum + d, 0);
+    return values.reduce((sum: number, d) => sum + d, 0);
   };
 
   const showButton = (i: number): boolean => {

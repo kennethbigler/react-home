@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-import forEach from 'lodash/forEach';
-import includes from 'lodash/includes';
-import reduce from 'lodash/reduce';
-import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -17,7 +13,6 @@ import {
   DBPlayer, DBTurn, DBCard, DBRootState,
 } from '../../../store/types';
 import { ButtonProps } from '../game-table/button-group/Button';
-// Parents: Main
 
 const DEALER = 0;
 const LAST_PLAYER = 5;
@@ -71,7 +66,7 @@ class Poker extends Component<PokerProps, PokerState> {
     // reset redux actions
     turnActions.resetTurn();
     // reset player statuses
-    forEach(players, (player) => playerActions.resetStatus(player.id));
+    players.forEach((player) => playerActions.resetStatus(player.id));
   };
 
   /** function to generate the state of a new game */
@@ -86,15 +81,15 @@ class Poker extends Component<PokerProps, PokerState> {
   getHand = (): DBCard[] => {
     // get state vars
     const { turn, players } = this.props;
-    return get(players[turn.player], 'hands[0].cards', null);
+    return players[turn.player].hands[0].cards || null;
   };
 
   getHistogram = (hand: DBCard[]): number[] => {
     // Histogram for the cards
     const hist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     // put hand into the histogram
-    forEach(hand, (card) => {
-      hist[get(card, 'weight', 2) - 2] += 1; // 2-14 - 2 = 0-12
+    hand.forEach((card) => {
+      hist[(card.weight || 2) - 2] += 1; // 2-14 - 2 = 0-12
     });
     return hist;
   };
@@ -130,7 +125,7 @@ class Poker extends Component<PokerProps, PokerState> {
     const { players, playerActions } = this.props;
 
     let winner = { val: 0, id: 0 };
-    forEach(players, (player) => {
+    players.forEach((player) => {
       if (player.id === DEALER || player.id > LAST_PLAYER) {
         return;
       }
@@ -139,7 +134,7 @@ class Poker extends Component<PokerProps, PokerState> {
         winner = { val: playerScore, id: player.id };
       }
     });
-    forEach(players, (player) => {
+    players.forEach((player) => {
       if (player.id === DEALER || player.id > LAST_PLAYER) {
         // do nothing
       } else if (player.id === winner.id) {
@@ -168,11 +163,11 @@ class Poker extends Component<PokerProps, PokerState> {
    */
   rankHand = (hand: DBCard[], hist: number[]): number => {
     // iterate through and look for hands with multiple cards
-    if (includes(hist, 4)) {
+    if (hist.includes(4)) {
       return 7; // 4 of a kind
     }
     // Check for hands with sets of 3 or 2 cards
-    const has3 = includes(hist, 3);
+    const has3 = hist.includes(3);
     const i = hist.indexOf(2);
     const has2 = i !== -1;
     if (has3 && has2) {
@@ -181,7 +176,7 @@ class Poker extends Component<PokerProps, PokerState> {
     if (has3) {
       return 3; // 3 of a kind
     }
-    if (has2 && includes(hist, 2, i + 1)) {
+    if (has2 && hist.includes(2, i + 1)) {
       return 2; // 2 pair
     }
     if (has2) {
@@ -344,7 +339,7 @@ class Poker extends Component<PokerProps, PokerState> {
         last = num;
       }
     }
-    return `${rank}${reduce(cards, (a, c) => `${a}${c}`)}`;
+    return `${rank}${cards.reduce((a, c) => `${a}${c}`)}`;
   };
 
   /** Start a new round of hands

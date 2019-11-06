@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import reduce from 'lodash/reduce';
 import Typography from '@material-ui/core/Typography';
 import DiceAPI from '../../../apis/Dice';
 import ScoreTable from './score-table/ScoreTable';
@@ -81,7 +80,7 @@ class Yahtzee extends React.Component<YahtzeeProps, YahtzeeState> {
     const { top, bottom } = state;
     let count = 0;
 
-    const topSum = reduce(top, (sum, { score }) => {
+    const topSum = top.reduce((sum, { score }) => {
       if (score >= 0) {
         count += 1;
         sum += score;
@@ -94,7 +93,7 @@ class Yahtzee extends React.Component<YahtzeeProps, YahtzeeState> {
       return sum;
     }, 0);
 
-    const bottomSum = reduce(bottom, (sum, { score }) => {
+    const bottomSum = bottom.reduce((sum, { score }) => {
       if (score >= 0) {
         count += 1;
         sum += score;

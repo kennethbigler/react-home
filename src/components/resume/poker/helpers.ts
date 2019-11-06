@@ -1,6 +1,5 @@
 import reduce from 'lodash/reduce';
 import hasIn from 'lodash/hasIn';
-import map from 'lodash/map';
 import { PokerScoreEntry } from '../../../constants/poker';
 
 /** Helper function that takes an array and changes scores to be
@@ -13,7 +12,7 @@ const parseData = (scores: PokerScoreEntry[]): { totals: PokerScoreEntry; parsed
   const totals: PokerScoreEntry = {};
 
   // iterate over all the scores
-  const parsedScores = map(scores, (week) => {
+  const parsedScores = scores.map((week) => {
     // iterate over the players in a week
     const parsedWeek = reduce(week, (acc: PokerScoreEntry, val, key) => {
       if (hasIn(totals, key) && key !== 'name') {

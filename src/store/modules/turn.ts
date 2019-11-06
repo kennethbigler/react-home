@@ -1,5 +1,4 @@
 import { Action } from 'redux';
-import assign from 'lodash/assign';
 import { DBTurn } from '../types';
 import initialState from '../initialState';
 
@@ -17,11 +16,11 @@ export const resetTurn = (): Action => ({ type: RESET });
 export default function reducer(state: DBTurn = initialState.turn, action: Action): DBTurn {
   switch (action.type) {
     case INCR_PLAYER:
-      return assign({}, state, { player: state.player + 1, hand: 0 });
+      return { ...state, ...{ player: state.player + 1, hand: 0 }};
     case INCR_HAND:
-      return assign({}, state, { hand: state.hand + 1 });
+      return { ...state, ...{ hand: state.hand + 1 }};
     case RESET:
-      return assign({}, state, { player: 0, hand: 0 });
+      return { ...state, ...{ player: 0, hand: 0 }};
     default:
       return state;
   }

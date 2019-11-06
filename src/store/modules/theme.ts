@@ -2,7 +2,6 @@ import { Action } from 'redux';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import deepOrange from '@material-ui/core/colors/deepOrange';
 import indigo from '@material-ui/core/colors/indigo';
-import assign from 'lodash/assign';
 
 import { DBUITheme } from '../types';
 import initialState from '../initialState';
@@ -19,9 +18,9 @@ export const displayLightTheme = (): Action => ({ type: LIGHT_THEME });
 export default function reducer(state: DBUITheme = initialState.theme, action: Action): DBUITheme {
   switch (action.type) {
     case DARK_THEME:
-      return assign({}, state, { type: 'dark', primary: indigo, secondary: deepOrange });
+      return { ...state, ...{ type: 'dark', primary: indigo, secondary: deepOrange }};
     case LIGHT_THEME:
-      return assign({}, state, { type: 'light', primary: blueGrey, secondary: deepOrange });
+      return { ...state, ...{ type: 'light', primary: blueGrey, secondary: deepOrange }};
     default:
       return state;
   }

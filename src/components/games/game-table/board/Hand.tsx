@@ -1,11 +1,8 @@
 import React from 'react';
 import purple from '@material-ui/core/colors/purple';
-import map from 'lodash/map';
-import includes from 'lodash/includes';
 import { Typography } from '@material-ui/core';
 import Card from './card/Card';
 import { DBHand } from '../../../../store/types';
-// Parents: Player
 
 interface HandProps {
   cardHandler?: Function;
@@ -39,8 +36,8 @@ const Hand: React.FC<HandProps> = (props: HandProps) => {
         {isBlackJack
           && (handWeight > 21 ? 'Bust: ' : 'Hand Weight: ') + hand.weight}
       </Typography>
-      {map(hand.cards, (card, i) => {
-        const dropped: boolean = includes(cardsToDiscard, i);
+      {hand.cards.map((card, i) => {
+        const dropped: boolean = cardsToDiscard.includes(i);
         return (
           <Card
             key={card.name + card.suit}

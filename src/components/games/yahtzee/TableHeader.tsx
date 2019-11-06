@@ -1,5 +1,4 @@
 import React from 'react';
-import map from 'lodash/map';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Dice } from './types';
@@ -26,12 +25,12 @@ const TableHeader: React.FC<TableHeaderProps> = (props: TableHeaderProps) => {
     <div className="flex-container">
       <Typography variant="h4">{`Roll #${roll}/3`}</Typography>
       <div style={wrapperStyles}>
-        {map(saved, (val, i) => (
+        {saved.map((val, i) => (
           <Button color="secondary" onClick={(): void => handleUnsave(i)} variant="outlined" key={i}>
             {val}
           </Button>
         ))}
-        {map(values, (val, i) => (
+        {values.map((val, i) => (
           <Button color="primary" onClick={(): void => handleSave(i)} variant="outlined" key={i}>
             {val}
           </Button>

@@ -1,11 +1,10 @@
-import React, { useState, memo } from 'react';
-import map from 'lodash/map';
+import React from 'react';
 import { Typography } from '@material-ui/core';
 import profiles, { CASINO } from '../../../constants/murder';
 import MurderMysteryPanel from './MurderMysteryPanel';
 
-const MurderMystery: React.FC<{}> = memo(() => {
-  const [expanded, setExpanded] = useState('');
+const MurderMystery: React.FC<{}> = React.memo(() => {
+  const [expanded, setExpanded] = React.useState('');
 
   const handleChange = (panel: string) => (_event: React.MouseEvent, exp?: string): void => {
     setExpanded(exp ? panel : '');
@@ -14,7 +13,7 @@ const MurderMystery: React.FC<{}> = memo(() => {
   return (
     <>
       <Typography variant="h2" gutterBottom>{`Murder at ${CASINO}`}</Typography>
-      {map(profiles, (profile, i) => {
+      {profiles.map((profile, i) => {
         const {
           role, importance, gender, description, hint, clue,
         } = profile;

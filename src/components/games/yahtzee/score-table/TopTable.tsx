@@ -1,8 +1,6 @@
 import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import map from 'lodash/map';
-import reduce from 'lodash/reduce';
 import { Dice, TopGameScore } from '../types';
 import TopScores from './TopScores';
 
@@ -19,7 +17,7 @@ interface TopTableProps {
 const TopTable: React.FC<TopTableProps> = (props: TopTableProps) => {
   const getButtonInfo = (d: number): [number, number] => {
     const { values } = props;
-    return reduce(values, (count, val) => {
+    return values.reduce((count, val) => {
       if (val === d) {
         count[0] += 1;
         count[1] += d;
@@ -38,7 +36,7 @@ const TopTable: React.FC<TopTableProps> = (props: TopTableProps) => {
 
   const generateTopTable = (): React.ReactNode => {
     const { top, style } = props;
-    return map(top, ({ name, score }, i) => {
+    return top.map(({ name, score }, i) => {
       const d = i + 1;
       const [count, sum] = getButtonInfo(i + 1);
       const showButton = count >= 1;

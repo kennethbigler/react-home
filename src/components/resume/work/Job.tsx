@@ -1,8 +1,6 @@
 import React from 'react';
 import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
-import map from 'lodash/map';
-import isEmpty from 'lodash/isEmpty';
 import { Typography } from '@material-ui/core';
 import dateObj, { DateObj } from '../../../apis/DateHelper';
 import { FORMAT } from '../../common/timeline-card/Timeline';
@@ -21,9 +19,9 @@ const imgStyle: React.CSSProperties = {
 };
 
 const Job: React.FC<JobProps> = (props: JobProps) => {
-  const getCSV = (arr?: string[]): React.ReactNodeArray => {
+  const getCSV = (arr: string[] = []): React.ReactNodeArray => {
     const style = { marginRight: 5, marginBottom: 5 };
-    return map(arr, (item) => <Chip key={item} label={item} style={style} />);
+    return arr.map((item) => <Chip key={item} label={item} style={style} />);
   };
 
   const showRange = (s: DateObj, e: DateObj, notes = ''): string => {
@@ -61,7 +59,7 @@ const Job: React.FC<JobProps> = (props: JobProps) => {
         </Typography>
         {job.expr && (
         <ul>
-          {map(job.expr, (desc, i) => (
+          {job.expr.map((desc, i) => (
             <Typography key={`desc${i}`}>
               <li>
                 {desc}
@@ -70,14 +68,14 @@ const Job: React.FC<JobProps> = (props: JobProps) => {
           ))}
         </ul>
         )}
-        {!isEmpty(job.tech) && (
+        {job.tech && job.tech.length !== 0 && (
           <>
             <hr />
             <Typography display="inline">Technologies:&nbsp;</Typography>
               {getCSV(job.tech)}
           </>
         )}
-        {!isEmpty(job.skills) && (
+        {job.skills && job.skills.length !== 0 && (
           <>
             <hr />
             <Typography display="inline">Skills:&nbsp;</Typography>

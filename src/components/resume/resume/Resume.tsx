@@ -1,6 +1,5 @@
 import React, { useState, memo } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
-import get from 'lodash/get';
 import { PDFPageProxy, PDFDocumentProxy } from 'pdfjs-dist';
 import resume from '../../../images/kenneth_bigler_resume.pdf';
 
@@ -21,11 +20,11 @@ function useResume(): ResumeHook {
   const [width, setWidth] = useState(0);
 
   const onDocumentLoadSuccess = (pdf: PDFDocumentProxy): void => {
-    setNumPages(get(pdf, 'numPages', 1));
+    setNumPages(pdf.numPages || 1);
   };
 
   const onLoadSuccess = (pdf: PDFPageProxy): void => {
-    const pdfWidth = get(pdf, 'pageInfo.view[2]', 612);
+    const pdfWidth = pdf.view[2] || 612;
     const screenWidth = document.body.clientWidth - 32;
     setWidth(screenWidth > pdfWidth * MAX_SCALE ? pdfWidth * MAX_SCALE : screenWidth);
   };

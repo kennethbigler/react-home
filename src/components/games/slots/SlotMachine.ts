@@ -1,6 +1,3 @@
-import forEach from 'lodash/forEach';
-import includes from 'lodash/includes';
-
 enum SlotOptions {
   EMPTY = ' ',
   CHERRY = 'C',
@@ -10,7 +7,7 @@ enum SlotOptions {
   SEVEN = '7',
   JACKPOT = 'J',
 }
-export type SlotDisplay = [string, string, string];
+export type SlotDisplay = [SlotOptions, SlotOptions, SlotOptions];
 interface Reel {
   symbol: SlotOptions;
   start: number;
@@ -48,7 +45,7 @@ const reels: Reel[] = [
 // prepare the slot machine
 function prepareSlotMachine(): SlotDisplay[] {
   const machine: SlotDisplay[] = [];
-  forEach(reels, (reel: Reel, i: number) => {
+  reels.forEach((reel: Reel, i: number) => {
     // wrap the reels
     const prev = i - 1 > 0 ? i - 1 : reels.length - 1;
     const next = i + 1 < reels.length ? i + 1 : 0;
@@ -120,13 +117,13 @@ export default {
         default:
           return 0;
       }
-    } else if (includes(bars, r0) && includes(bars, r1) && includes(bars, r2)) {
+    } else if (bars.includes(r0) && bars.includes(r1) && bars.includes(r2)) {
       // if we have 3 of any bar
       return 12 * bet;
-    } else if (includes(fReel, SlotOptions.CHERRY, fReel.indexOf(SlotOptions.CHERRY) + 1)) {
+    } else if (fReel.includes(SlotOptions.CHERRY, fReel.indexOf(SlotOptions.CHERRY) + 1)) {
       // if we have 2 cherries
       return 6 * bet;
-    } else if (includes(fReel, SlotOptions.CHERRY)) {
+    } else if (fReel.includes(SlotOptions.CHERRY)) {
       // if we have 1 cherry
       return 3 * bet;
     }

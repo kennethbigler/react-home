@@ -5,11 +5,9 @@ import {
   Geographies,
   Geography,
 } from 'react-simple-maps';
-import map from 'lodash/map';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import red from '@material-ui/core/colors/red';
 import { GeoProjection } from 'd3-geo';
-import get from 'lodash/get';
 import Popover from './Popover';
 import countries from '../../../constants/countries';
 
@@ -23,7 +21,7 @@ interface WorldMapHook {
   y: number;
   content: string;
   hide: boolean;
-  handleMove: (geography: object, evt: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
+  handleMove: (geography: any, evt: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
   handleLeave: () => void;
 }
 
@@ -40,8 +38,8 @@ function useWorldMap(): WorldMapHook {
   const [content, setContent] = useState('');
   const [hide, setHide] = useState(true);
 
-  const handleMove = (geography: object, evt: React.MouseEvent<SVGPathElement, MouseEvent>): void => {
-    const name = get(geography, 'properties.NAME', '');
+  const handleMove = (geography: any, evt: React.MouseEvent<SVGPathElement, MouseEvent>): void => {
+    const name = geography.properties.NAME || '';
     setX(evt.clientX);
     setY(evt.clientY + window.pageYOffset);
     setContent(`${name} ${countries[name] ? countries[name].flag : ''}`);
@@ -75,8 +73,7 @@ const WorldMap = memo(() => {
       <ComposableMap width={screenWidth} height={(screenWidth * 546) / 744} projectionConfig={{ scale: screenWidth * RATIO, rotation: [-10, 0, 0]}}>
         <ZoomableGroup>
           <Geographies geography="/world-110m.json">
-            {(geographies: object[], projection: GeoProjection): React.ReactNodeArray => map(
-              geographies,
+            {(geographies: any[], projection: GeoProjection): React.ReactNodeArray => geographies.map(
               (geography: GeographyType, i) => (
                 <Geography
                   key={i}

@@ -1,6 +1,5 @@
 import React from 'react';
 import Chip from '@material-ui/core/Chip';
-import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import ExpandableCard from '../../common/expandable-card';
 import { techSummary, skillSummary } from '../../../constants/work';
@@ -9,8 +8,7 @@ const chipStyles: React.CSSProperties = { marginRight: 5, marginTop: 5 };
 const sidePadding: React.CSSProperties = { paddingLeft: 20, paddingRight: 20 };
 
 const Skills: React.FC<{}> = React.memo(() => {
-  const getCSV = (arr: string[]): React.ReactNodeArray => map(
-    arr,
+  const getCSV = (arr: string[]): React.ReactNodeArray => arr.map(
     (tech) => <Chip key={tech} label={tech} style={chipStyles} />,
   );
 

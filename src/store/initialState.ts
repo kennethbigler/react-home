@@ -1,6 +1,5 @@
 import indigo from '@material-ui/core/colors/indigo';
 import deepOrange from '@material-ui/core/colors/deepOrange';
-import assign from 'lodash/assign';
 
 import {
   DBDota2Phase, DBDota2Turn, DBGit, DBPlayer,
@@ -18,9 +17,9 @@ export const newPlayer = (id: number, name = 'Bot', isBot = true): DBPlayer => (
   hands: [],
 });
 
-const newDota2Phase = (name: string, radiant: DBDota2Turn, dire: DBDota2Turn): DBDota2Phase => assign(
-  {}, { name, radiant: { ...radiant }, dire: { ...dire }},
-);
+const newDota2Phase = (name: string, radiant: DBDota2Turn, dire: DBDota2Turn): DBDota2Phase => ({
+  name, radiant: { ...radiant }, dire: { ...dire },
+});
 
 export const newDota2Lineup = (): DBDota2Phase[] => [...[
   newDota2Phase('Ban 1', { number: 1 }, { number: 2 }),

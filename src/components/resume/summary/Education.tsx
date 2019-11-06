@@ -1,5 +1,4 @@
 import React from 'react';
-import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import ExpandableCard from '../../common/expandable-card';
 import classes, { School } from '../../../constants/classes';
@@ -7,7 +6,7 @@ import classes, { School } from '../../../constants/classes';
 const Education: React.FC<{}> = React.memo(() => (
   <ExpandableCard title="Education">
     <div style={{ paddingLeft: 20, paddingRight: 20 }}>
-      {map(classes, (d: School, i: number): React.ReactNode => {
+      {classes.map((d: School, i: number): React.ReactNode => {
         if (d.school) {
           const major = d.major ? ` in ${d.major}` : '';
           return (

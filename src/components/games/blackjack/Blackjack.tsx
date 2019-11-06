@@ -7,8 +7,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import get from 'lodash/get';
-import forEach from 'lodash/forEach';
 import asyncForEach from '../../../helpers/asyncForEach';
 import weighHand from './blackjackHelpers';
 import Header from './Header';
@@ -74,9 +72,9 @@ class BlackJack extends Component<BlackJackProps, BlackJackState> {
     }
     if (!player.isBot && player.id !== DEALER) {
       // get the next Hand
-      const hand = get(player, `hands.${nt.hand}`);
+      const hand = player.hands[nt.hand];
       // if the Hand updated, get the game functions
-      if (hand !== get(lp, `${lt.player}.hands.${lt.hand}`)) {
+      if (hand !== lp[lt.player].hands[lt.hand]) {
         this.getGameFunctions(hand);
       }
     } else if (player.isBot && player.id !== DEALER) {
@@ -85,7 +83,7 @@ class BlackJack extends Component<BlackJackProps, BlackJackState> {
       // get the next Hand
       const hand = player.hands[nt.hand];
       // if the Hand updated, check for dealer
-      if (hand !== get(lp, `${lt.player}.hands.${lt.hand}`)) {
+      if (hand !== lp[lt.player].hands[lt.hand]) {
         this.playDealer();
       }
     }
@@ -105,7 +103,7 @@ class BlackJack extends Component<BlackJackProps, BlackJackState> {
     // reset redux actions
     turnActions.resetTurn();
     // reset player statuses
-    forEach(players, (player) => playerActions.resetStatus(player.id));
+    players.forEach((player) => playerActions.resetStatus(player.id));
   };
 
   /** get the game functions for the present hand */
@@ -243,8 +241,7 @@ class BlackJack extends Component<BlackJackProps, BlackJackState> {
       ps.payout = -bet;
       ps.status = 'lose';
     };
-    // iterate
-    forEach(players, (player) => {
+    players.forEach((player) => {
       const { id, bet } = player;
       if (id === DEALER) {
         if (playerStats.house > 0) {
@@ -256,7 +253,7 @@ class BlackJack extends Component<BlackJackProps, BlackJackState> {
         }
         playerActions.payout(id, playerStats.status, playerStats.house);
       } else {
-        forEach(player.hands, (hand) => {
+        player.hands.forEach((hand) => {
           const { weight = 0, cards } = hand;
           if (dealer === 21 && dealerLen === 2) {
             // dealer BlackJack
@@ -311,7 +308,7 @@ class BlackJack extends Component<BlackJackProps, BlackJackState> {
     }
     // get remaining vars
     const dealer = players[players.length - 1].hands[DEALER];
-    const n = get(hand, 'weight', 0);
+    const n = hand.weight || 0;
     const { soft } = hand;
     // card / dealer weight
     const { weight: d } = weighHand([dealer.cards[0]]);

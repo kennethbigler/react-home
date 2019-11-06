@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, CartesianGrid, Tooltip,
 } from 'recharts';
-import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 import { withTheme, Theme } from '@material-ui/core/styles';
 import dateObj from '../../../apis/DateHelper';
@@ -22,7 +21,7 @@ class TechBarChart extends PureComponent<TechBarChartProps, TechBarChartState> {
   constructor(props: TechBarChartProps) {
     super(props);
 
-    const data = map(languageExp, (obj) => ({
+    const data = languageExp.map((obj) => ({
       name: window.innerWidth < 1200 ? obj.short : obj.company,
       months: dateObj(obj.end).diff(obj.start, 'month'),
     }));

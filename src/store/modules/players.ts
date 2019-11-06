@@ -1,8 +1,4 @@
 import { AnyAction } from 'redux';
-import assign from 'lodash/assign';
-import find from 'lodash/find';
-import get from 'lodash/get';
-
 import asyncForEach from '../../helpers/asyncForEach';
 import Deck from '../../apis/Deck';
 import {
@@ -100,8 +96,8 @@ export default function reducer(state: DBPlayer[] = initialState.players, action
     case PAY_PLAYER: {
       const { id, status, money } = action.player;
 
-      const player = find(state, ['id', id]);
-      const playerMoney = get(player, 'money', 0);
+      const player = state.find((obj) => obj.id === id);
+      const playerMoney = (player && player.money) || 0;
 
       const updatedPlayer = { ...player, money: (playerMoney + money), status };
 
@@ -179,8 +175,8 @@ export function splitHand(hands: DBHand[], id: number, hNum: number, weigh = def
             hand2.cards.push(cards[0]);
 
             // update the weights
-            assign(hand1, weigh(hand1.cards));
-            assign(hand2, weigh(hand2.cards));
+            Object.assign(hand1, weigh(hand1.cards));
+            Object.assign(hand2, weigh(hand2.cards));
             // update global hands
             const newHands: DBHand[] = updateArrayInArray(hands, hand2, hNum);
             newHands.splice(hNum, 0, hand1);

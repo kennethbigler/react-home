@@ -1,6 +1,4 @@
 import React from 'react';
-import get from 'lodash/get';
-import map from 'lodash/map';
 import Year, { YearType } from './Year';
 import ExpandableCard from '../../common/expandable-card';
 
@@ -30,7 +28,7 @@ const Degree: React.FC<DegreeProps> = (props: DegreeProps) => {
   const graduation = degree.graduation
     ? ` - Graduation: ${degree.graduation}`
     : '';
-  const subtitle = get(degree, 'subtitle', `${gpa}${graduation}`);
+  const subtitle = degree.subtitle || `${gpa}${graduation}`;
 
   return (
     <ExpandableCard
@@ -38,7 +36,7 @@ const Degree: React.FC<DegreeProps> = (props: DegreeProps) => {
       subtitle={subtitle}
       title={title}
     >
-      {map(degree.years, (year) => (
+      {degree.years.map((year) => (
         <Year key={year.year} len={degree.years.length} year={year} />
       ))}
     </ExpandableCard>

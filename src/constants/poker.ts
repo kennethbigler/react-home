@@ -5,7 +5,6 @@ import {
   lime, orange, pink, purple, red,
   teal, yellow,
 } from '@material-ui/core/colors/';
-import forOwn from 'lodash/forOwn';
 
 export interface PokerScoreEntry {
   [name: string]: number;
@@ -203,7 +202,7 @@ function zeroOutPreviousWeek(scores: PokerScoreEntry[]): void {
     const thisWeek = scores[i];
     const lastWeek = scores[i - 1];
 
-    forOwn(thisWeek, (_value, key) => {
+    Object.keys(thisWeek).forEach((key) => {
       if (!lastWeek[key]) {
         lastWeek[key] = 0;
       }

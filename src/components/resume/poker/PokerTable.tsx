@@ -38,15 +38,15 @@ const PokerTable: React.FC<PokerTableProps> = (props: PokerTableProps) => {
           <TableCell colSpan={3}>Totals</TableCell>
         </TableRow>
       </TableHead>
-      {map(tableRows, (row, i) => (
+      {tableRows.map((row, i) => (
         <TableBody key={i} style={rowStyles}>
           <TableRow>
-            {map(row, (obj) => (
+            {row.map((obj) => (
               <TableCell key={obj.key} style={cellStyles}>{obj.key}</TableCell>
             ))}
           </TableRow>
           <TableRow>
-            {map(row, (obj) => (
+            {row.map((obj) => (
               <TableCell key={obj.key} style={cellStyles}>{obj.val}</TableCell>
             ))}
           </TableRow>

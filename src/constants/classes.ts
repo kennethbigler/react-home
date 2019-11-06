@@ -1,7 +1,6 @@
 import red from '@material-ui/core/colors/red';
 import indigo from '@material-ui/core/colors/indigo';
 import blue from '@material-ui/core/colors/blue';
-import forEach from 'lodash/forEach';
 import dateObj, { DateObj } from '../apis/DateHelper';
 import { DataEntry } from '../components/common/timeline-card/Timeline';
 
@@ -640,10 +639,10 @@ interface TimelineEntry extends DataEntry {
 }
 const timeline: TimelineEntry[] = [];
 
-forEach(schools, (school: School): void => {
-  forEach(school.years, (year: Year): void => {
-    forEach(year.quarters, (quarter: Quarter): void => {
-      forEach(quarter.classes, (course: Class): void => {
+schools.forEach((school: School): void => {
+  school.years.forEach((year: Year): void => {
+    year.quarters.forEach((quarter: Quarter): void => {
+      quarter.classes.forEach((course: Class): void => {
         quarter.start && timeline.push({
           start: quarter.start,
           end: quarter.end || dateObj(),

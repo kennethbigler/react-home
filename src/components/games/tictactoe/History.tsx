@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import map from 'lodash/map';
-import get from 'lodash/get';
 import { getTurn } from './constants';
 
 export interface HistoryEntry {
@@ -20,7 +18,7 @@ const History: React.FC<HistoryProps> = (props: HistoryProps) => {
 
   /** function that generates text for the history tracker */
   const getHistoryText = (round: HistoryEntry, move: number): React.ReactNode => {
-    const location = get(round, 'location', 0);
+    const location = round.location || 0;
     // generate description text
     const description = !move
       ? 'Game Start (Turn, Col, Row)'
@@ -42,7 +40,7 @@ const History: React.FC<HistoryProps> = (props: HistoryProps) => {
   };
 
   // move history
-  const moves = map(history, getHistoryText);
+  const moves = history.map(getHistoryText);
   // asc vs. desc
   !ascend && moves.reverse();
 

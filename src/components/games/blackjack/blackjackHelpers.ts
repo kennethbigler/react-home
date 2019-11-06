@@ -1,5 +1,3 @@
-import forEach from 'lodash/forEach';
-import get from 'lodash/get';
 import { DBCard } from '../../../store/types';
 
 /** calculate the weight of a hand */
@@ -9,8 +7,8 @@ export default function weighHand(hand: DBCard[] = []): { weight: number; soft: 
   let soft = false;
 
   // find the weight of the hand
-  forEach(hand, (card) => {
-    const cardWeight = get(card, 'weight', 0);
+  hand.forEach((card) => {
+    const cardWeight = card.weight || 0;
     if (cardWeight === 14) {
       // A
       if (weight <= 10) {

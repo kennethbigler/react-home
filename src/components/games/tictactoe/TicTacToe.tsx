@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import fill from 'lodash/fill';
 import Header from './Header';
 import History, { HistoryEntry } from './History';
 import Board from './Board';
 import { X, O, getTurn } from './constants';
-
 
 interface TicTacToeState {
   history: HistoryEntry[];
@@ -18,7 +16,7 @@ const EMPTY = undefined;
 
 // constants and helper functions
 const getNewGameVars = (): TicTacToeState => ({
-  history: [{ board: fill(Array(9), EMPTY) }],
+  history: [{ board: Array(9).fill(EMPTY) }],
   turn: X,
   step: 0,
 });

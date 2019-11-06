@@ -4,7 +4,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import grey from '@material-ui/core/colors/grey';
-import includes from 'lodash/includes';
 import Cell from './Cell';
 
 interface BoardProps {
@@ -30,7 +29,7 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
     for (let j = 0; j < 3; j += 1) {
       const c = i * 3 + j;
       // check if winning position
-      const winner = includes(winRow, c);
+      const winner = winRow.includes(c);
       row.push(
         <TableCell key={`${i},${j}`} style={tableCellStyle}>
           <Cell onClick={(): void => onClick(c)} value={board[c]} winner={winner} />

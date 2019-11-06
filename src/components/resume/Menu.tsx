@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
-import map from 'lodash/map';
-import noop from 'lodash/noop';
+import noop from '../../apis/noop';
 
 interface MenuProps {
   onItemClick?: Function;
@@ -11,32 +10,29 @@ interface MenuProps {
 const Menu: React.FC<MenuProps> = memo((props: MenuProps) => {
   const { onItemClick } = props;
   // internal routes
-  const menu = map(
-    [
-      { name: 'Summary', route: '' },
-      { name: 'Work', route: 'work' },
-      { name: 'Resume', route: 'resume' },
-      { name: 'Hackathons & Education', route: 'education' },
-      { divider: true },
-      { name: 'Git Tools', route: 'git-tools' },
-      { name: 'GraphQL Demo', route: 'graphql' },
-      { divider: true },
-      { name: 'Cars', route: 'cars' },
-      { name: 'Travel Map', route: 'travel' },
-      { name: 'Murder Mystery', route: 'murder' },
-      { name: 'Poker Night Scores', route: 'poker' },
-      { name: 'React Games', route: 'games' },
-    ],
-    (item, index) => (item.divider
-      ? (
-        <Divider key={index} />
-      ) : (
-        <MenuItem key={item.name} onClick={(): void => (onItemClick ? onItemClick(`/${item.route}`) : noop())}>
-          {item.name}
-        </MenuItem>
-      )
-    ),
-  );
+  const menu = [
+    { name: 'Summary', route: '' },
+    { name: 'Work', route: 'work' },
+    { name: 'Resume', route: 'resume' },
+    { name: 'Hackathons & Education', route: 'education' },
+    { divider: true },
+    { name: 'Git Tools', route: 'git-tools' },
+    { name: 'GraphQL Demo', route: 'graphql' },
+    { divider: true },
+    { name: 'Cars', route: 'cars' },
+    { name: 'Travel Map', route: 'travel' },
+    { name: 'Murder Mystery', route: 'murder' },
+    { name: 'Poker Night Scores', route: 'poker' },
+    { name: 'React Games', route: 'games' },
+  ].map((item, index) => (item.divider
+    ? (
+      <Divider key={index} />
+    ) : (
+      <MenuItem key={item.name} onClick={(): void => (onItemClick ? onItemClick(`/${item.route}`) : noop())}>
+        {item.name}
+      </MenuItem>
+    )
+  ));
 
   // external links
   const github = (): void => { window.open('https://github.com/kennethbigler/react-home'); };

@@ -1,5 +1,4 @@
 import React from 'react';
-import get from 'lodash/get';
 import maxBy from 'lodash/maxBy';
 import {
   ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area,
@@ -48,8 +47,9 @@ class ScoreGraph extends React.Component<ScoreGraphProps, ScoreGraphState> {
     const { theme: { palette: { secondary: { main }}}} = this.props;
     const { scores } = this.state;
 
-    const mostRecent = get(scores, `[${scores.length - 1}].score`, 0);
-    const topScore = get(maxBy(scores, 'score'), 'score', 0);
+    const mostRecent = scores[scores.length - 1].score || 0;
+    const top = maxBy(scores, 'score') || { score: 0 };
+    const topScore = top.score;
 
     return (
       <InfoPopup title="Yahtzee Score History" buttonText="Score History">

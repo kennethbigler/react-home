@@ -1,7 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import map from 'lodash/map';
-import reject from 'lodash/reject';
-
 // Immutable helper functions
 export function insertItem(array: any[], item: any): any[] {
   const newArr = array.slice();
@@ -10,18 +7,17 @@ export function insertItem(array: any[], item: any): any[] {
 }
 
 export function updateObjectInArray(array: any[], ins: any, key: string | number): any[] {
-  return map(
-    array,
+  return array.map(
     (item) => (item[key] !== ins[key] ? item : { ...item, ...ins }),
   );
 }
 
 export function updateArrayInArray(array: any[], ins: any, idx: number): any[] {
-  return map(array, (item, i) => (i !== idx ? item : ins));
+  return array.map((item, i) => (i !== idx ? item : ins));
 }
 
 export function removeItem(array: any[], id: number): any {
-  return reject(array, ['id', id]);
+  return array.filter((obj) => obj.id !== id);
 }
 
 export function removeItemInArray(array: any[], idx: number): any[] {

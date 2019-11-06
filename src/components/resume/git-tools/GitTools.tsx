@@ -4,7 +4,6 @@ import { bindActionCreators, Dispatch } from 'redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import deepOrange from '@material-ui/core/colors/deepOrange';
 import copy from 'copy-to-clipboard';
-import map from 'lodash/map';
 import snakeCase from 'lodash/snakeCase';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
@@ -38,10 +37,8 @@ const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');
  *          |->  DeployBranch  -|    */
 const GitTools: React.FC<GitToolsProps> = (props: GitToolsProps) => {
   /** function to generate select items based of input */
-  const getSelectOptions = (arr: string[]): React.ReactNode => map(arr, (t, i) => (
-    <MenuItem key={i} value={t}>
-      {t}
-    </MenuItem>
+  const getSelectOptions = (arr: string[]): React.ReactNode => arr.map((t, i) => (
+    <MenuItem key={i} value={t}>{t}</MenuItem>
   ));
 
   /** function to update text state based on value */
