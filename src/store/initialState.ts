@@ -4,7 +4,7 @@ import assign from 'lodash/assign';
 
 import {
   DBDota2Phase, DBDota2Turn, DBGit, DBPlayer,
-  DBUITheme, DBTurn,
+  DBUITheme, DBTurn, DBRootState,
 } from './types';
 
 // --------------------     helpers     -------------------- //
@@ -71,4 +71,4 @@ export default {
   theme,
   turn,
   yahtzee,
-};
+} as DBRootState;

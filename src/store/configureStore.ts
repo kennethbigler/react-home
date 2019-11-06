@@ -10,7 +10,7 @@ import initialState from './initialState';
 /** funtion to read 'state' value from local storage and return it, or default state */
 export const loadState = async (): Promise<DBRootState> => localForage
   .getItem('state')
-  .then((state) => (state ? { ...initialState, ...state } : initialState) as DBRootState)
+  .then((state) => (state ? { ...initialState, ...state as DBRootState } : initialState))
   // if there are any issues, just load default state
   .catch(() => initialState);
 

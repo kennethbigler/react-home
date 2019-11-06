@@ -14,7 +14,7 @@ interface TimelineCardProps {
   end?: Moment;
 }
 
-const DATE_FORMAT = 'MMMM YYYY';
+const DATE_FORMAT = 'MMMM Y';
 
 /* TimelineCard  ->  Timeline  ->  Row  ->  Segment
  *                                     |->  YearMarkers */
