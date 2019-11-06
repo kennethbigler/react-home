@@ -1,8 +1,8 @@
 import red from '@material-ui/core/colors/red';
 import indigo from '@material-ui/core/colors/indigo';
 import blue from '@material-ui/core/colors/blue';
-import moment, { Moment } from 'moment';
 import forEach from 'lodash/forEach';
+import dateObj, { DateObj } from '../apis/DateHelper';
 import { DataEntry } from '../components/common/timeline-card/Timeline';
 
 // --------------------     Types     -------------------- //
@@ -19,8 +19,8 @@ interface Class {
 interface Quarter {
   quarter: string;
   classes: Class[];
-  start?: Moment;
-  end?: Moment;
+  start?: DateObj;
+  end?: DateObj;
 }
 interface Year {
   year: string;
@@ -41,27 +41,27 @@ export interface School {
 }
 
 // --------------------     helpers     -------------------- //
-const getStart = (quarter: QTR, yy: number): Moment => {
+const getStart = (quarter: QTR, yy: number): DateObj => {
   switch (quarter) {
-    case QTR.FALL: return moment(`20${yy}-09`);
-    case QTR.WINTER: return moment(`20${yy}-01`);
-    case QTR.SPRING: return moment(`20${yy}-04`);
+    case QTR.FALL: return dateObj(`20${yy}-09`);
+    case QTR.WINTER: return dateObj(`20${yy}-01`);
+    case QTR.SPRING: return dateObj(`20${yy}-04`);
     default:
       // eslint-disable-next-line no-console
       console.error('Start Error: quarter given does not exist: ', quarter);
-      return moment();
+      return dateObj();
   }
 };
 
-const getEnd = (quarter: QTR, yy: number): Moment => {
+const getEnd = (quarter: QTR, yy: number): DateObj => {
   switch (quarter) {
-    case QTR.FALL: return moment(`20${yy}-12`);
-    case QTR.WINTER: return moment(`20${yy}-03`);
-    case QTR.SPRING: return moment(`20${yy}-07`);
+    case QTR.FALL: return dateObj(`20${yy}-12`);
+    case QTR.WINTER: return dateObj(`20${yy}-03`);
+    case QTR.SPRING: return dateObj(`20${yy}-07`);
     default:
       // eslint-disable-next-line no-console
       console.error('End Error: quarter given does not exist: ', quarter);
-      return moment();
+      return dateObj();
   }
 };
 
@@ -646,7 +646,7 @@ forEach(schools, (school: School): void => {
       forEach(quarter.classes, (course: Class): void => {
         quarter.start && timeline.push({
           start: quarter.start,
-          end: quarter.end || moment(),
+          end: quarter.end || dateObj(),
           title: course.name,
           color: red[900],
           course: course.catalog,

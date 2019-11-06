@@ -6,9 +6,9 @@ import blueGrey from '@material-ui/core/colors/blueGrey';
 import red from '@material-ui/core/colors/red';
 import indigo from '@material-ui/core/colors/indigo';
 import yellow from '@material-ui/core/colors/yellow';
-import moment, { Moment } from 'moment';
 import includes from 'lodash/includes';
 import forEach from 'lodash/forEach';
+import dateObj, { DateObj } from '../apis/DateHelper';
 import {
   REACT, ANGULAR, HTML, CSS,
   JS, BS3, BS4, RR, JASMINE,
@@ -37,7 +37,7 @@ export interface Job {
   alt?: string;
   color: string;
   company: string;
-  end: Moment;
+  end: DateObj;
   expr?: string[];
   inverted?: boolean;
   location: string;
@@ -46,7 +46,7 @@ export interface Job {
   short: string;
   skills?: string[];
   src?: string;
-  start: Moment;
+  start: DateObj;
   tech?: string[];
   title: string;
   type: 'work' | 'volunteer' | 'school';
@@ -62,8 +62,8 @@ const workExp: Job[] = [
     location: 'Mountain View, CA',
     title: 'Frontend Software Engineer',
     website: 'https://www.intuit.com/',
-    start: moment('2019-06'),
-    end: moment(),
+    start: dateObj('2019-06'),
+    end: dateObj(),
     src: intuitLogo,
     alt: 'Intuit Logo',
     expr: [
@@ -82,8 +82,8 @@ const workExp: Job[] = [
     location: 'Palo Alto, CA',
     title: 'Frontend Software Engineer, Global Innovation Ventures',
     website: 'https://www.gignow.com/',
-    start: moment('2018-03'),
-    end: moment('2019-06'),
+    start: dateObj('2018-03'),
+    end: dateObj('2019-06'),
     src: gigNowLogo,
     alt: 'GigNow Logo',
     expr: [
@@ -115,8 +115,8 @@ const workExp: Job[] = [
     location: 'Santa Clara, CA',
     title: 'Volunteer Team Leader',
     website: 'https://www.shfb.org/',
-    start: moment('2009-09'),
-    end: moment(),
+    start: dateObj('2009-09'),
+    end: dateObj(),
     src: SHFBLogo,
     alt: 'Second Harvest Food Bank Logo',
     expr: [
@@ -135,8 +135,8 @@ const workExp: Job[] = [
     title: 'Full Stack Software Engineer III, Core Software Group',
     website:
       'https://www.cisco.com/c/en/us/solutions/enterprise-networks/dna-analytics-assurance.html',
-    start: moment('2017-04'),
-    end: moment('2018-03'),
+    start: dateObj('2017-04'),
+    end: dateObj('2018-03'),
     src: ciscoLogo,
     alt: 'Cisco Systems Logo',
     expr: [
@@ -156,8 +156,8 @@ const workExp: Job[] = [
     location: 'Mountain View, CA',
     title: 'Frontend Software Engineer',
     website: 'https://www.hoverboard.com/',
-    start: moment('2016-10'),
-    end: moment('2017-04'),
+    start: dateObj('2016-10'),
+    end: dateObj('2017-04'),
     src: hoverboardLogo,
     alt: 'Hoverboard Logo',
     expr: [
@@ -186,8 +186,8 @@ const workExp: Job[] = [
     location: 'Fremont, CA',
     title: 'Full Stack Software Engineering Master\'s Intern, Supply Chain Team',
     website: 'https://www.tesla.com/',
-    start: moment('2015-06-02'),
-    end: moment('2016-06'),
+    start: dateObj('2015-06-02'),
+    end: dateObj('2016-06'),
     src: teslaLogo,
     alt: 'Tesla Logo',
     expr: [
@@ -205,8 +205,8 @@ const workExp: Job[] = [
     location: 'Sunnyvale, CA',
     title: 'Frontend Software Engineer and Project Manager',
     website: 'http://www.midnightgameclub.com/',
-    start: moment('2014-08'),
-    end: moment('2015-11'),
+    start: dateObj('2014-08'),
+    end: dateObj('2015-11'),
     notes: '(Spare Time)',
     src: vengefulLogo,
     alt: 'Midnight Game Club Logo',
@@ -226,8 +226,8 @@ const workExp: Job[] = [
     location: 'Sunnyvale, CA',
     title: 'Frontend Web Developer (Contractor), HRSolutions and Process Enablement Team',
     website: 'https://www.netapp.com/us/index.aspx',
-    start: moment('2012-08'),
-    end: moment('2015-06'),
+    start: dateObj('2012-08'),
+    end: dateObj('2015-06'),
     src: netappLogo,
     alt: 'NetApp Logo',
     expr: [
@@ -246,8 +246,8 @@ const workExp: Job[] = [
     location: 'Santa Clara, CA',
     title: 'Undergrad / Grad Student',
     website: 'https://www.scu.edu/',
-    start: moment('2011-09'),
-    end: moment('2016-12'),
+    start: dateObj('2011-09'),
+    end: dateObj('2016-12'),
   },
 ];
 

@@ -4,8 +4,8 @@ import {
 } from 'recharts';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
-import moment from 'moment';
 import { withTheme, Theme } from '@material-ui/core/styles';
+import dateObj from '../../../apis/DateHelper';
 import languageExp from '../../../constants/languages';
 
 interface TechBarChartProps {
@@ -24,7 +24,7 @@ class TechBarChart extends PureComponent<TechBarChartProps, TechBarChartState> {
 
     const data = map(languageExp, (obj) => ({
       name: window.innerWidth < 1200 ? obj.short : obj.company,
-      months: moment(obj.end).diff(obj.start, 'month'),
+      months: dateObj(obj.end).diff(obj.start, 'month'),
     }));
 
     this.state = { data: sortBy(data, ['months']).reverse() };

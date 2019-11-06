@@ -1,6 +1,6 @@
 import React from 'react';
-import moment, { Moment } from 'moment';
 import grey from '@material-ui/core/colors/grey';
+import dateObj, { DateObj, FormatOutput } from '../../../apis/DateHelper';
 import ExpandableCard from '../expandable-card';
 import { Timeline, TIMELINE_TITLE, DataEntry } from './Timeline';
 import workExperience from '../../../constants/work';
@@ -10,11 +10,11 @@ interface TimelineCardProps {
   data?: DataEntry[];
   title?: string;
   selector?: string;
-  start?: Moment;
-  end?: Moment;
+  start?: DateObj;
+  end?: DateObj;
 }
 
-const DATE_FORMAT = 'MMMM Y';
+const DATE_FORMAT: FormatOutput = 'MMMM Y';
 
 /* TimelineCard  ->  Timeline  ->  Row  ->  Segment
  *                                     |->  YearMarkers */
@@ -50,8 +50,8 @@ TimelineCard.defaultProps = {
   backgroundColor: grey[900],
   title: TIMELINE_TITLE,
   selector: 'company',
-  start: moment('2011-09'),
-  end: moment(),
+  start: dateObj('2011-09'),
+  end: dateObj(),
 };
 
 export default TimelineCard;

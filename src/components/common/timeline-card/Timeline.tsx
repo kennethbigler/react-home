@@ -1,29 +1,29 @@
 /* TODO: expand below on click */
 import React, { Component } from 'react';
-import moment, { Moment } from 'moment';
 import map from 'lodash/map';
+import dateObj, { DateObj, FormatOutput } from '../../../apis/DateHelper';
 import Row from './Row';
 import { SegmentType } from './types';
 
 export interface DataEntry {
   color: string;
   title: string;
-  start: Moment;
-  end: Moment;
+  start: DateObj;
+  end: DateObj;
   inverted?: boolean;
   short?: string;
 }
 interface TimelineProps {
   data: DataEntry[];
   selector: string;
-  start: Moment;
-  end: Moment;
+  start: DateObj;
+  end: DateObj;
 }
 interface TimelineState {
   data: DataEntry[];
 }
 
-export const FORMAT = 'MMMM Y';
+export const FORMAT: FormatOutput = 'MMMM Y';
 export const TIMELINE_TITLE = 'Timeline';
 export const MONTH_SORT = (a: DataEntry, b: DataEntry): number => a.start.diff(b.start, 'months');
 
@@ -41,7 +41,7 @@ export class Timeline extends Component<TimelineProps, TimelineState> {
   }
 
   /** Get the width from the beginning of the graph to this bar */
-  getTimeFromStart = (val: Moment): number => {
+  getTimeFromStart = (val: DateObj): number => {
     // sort array by start date
     const { start, end } = this.props;
     // get max length
@@ -144,7 +144,7 @@ export class Timeline extends Component<TimelineProps, TimelineState> {
 
     const years = [];
     for (let year = startYear + 1; year <= endYear; year += 1) {
-      years.push(moment(`${year}-01`));
+      years.push(dateObj(`${year}-01`));
     }
 
     const width = 0.1;

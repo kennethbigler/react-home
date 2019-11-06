@@ -1,10 +1,10 @@
 import React from 'react';
 import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
-import moment, { Moment } from 'moment';
 import map from 'lodash/map';
 import isEmpty from 'lodash/isEmpty';
 import { Typography } from '@material-ui/core';
+import dateObj, { DateObj } from '../../../apis/DateHelper';
 import { FORMAT } from '../../common/timeline-card/Timeline';
 import ExpandableCard from '../../common/expandable-card';
 import { Job as JobType } from '../../../constants/work';
@@ -26,11 +26,11 @@ const Job: React.FC<JobProps> = (props: JobProps) => {
     return map(arr, (item) => <Chip key={item} label={item} style={style} />);
   };
 
-  const showRange = (s: Moment, e: Moment, notes = ''): string => {
+  const showRange = (s: DateObj, e: DateObj, notes = ''): string => {
     // start date
     const start = s.format(FORMAT);
     // end date, check if it is the present
-    const end = moment().diff(e, 'days') < 1 ? 'Present' : e.format(FORMAT);
+    const end = dateObj().diff(e, 'days') < 1 ? 'Present' : e.format(FORMAT);
 
     // get the time range in years, months
     const mon = (e.diff(s, 'months') + 1) % 12;
