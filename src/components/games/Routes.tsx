@@ -2,7 +2,6 @@ import React, { Suspense } from 'react';
 import {
   Switch, Route, Redirect, match as Match,
 } from 'react-router-dom';
-import reduce from 'lodash/reduce';
 import lazyWithPreload from '../../helpers/lazyWithPreload';
 import Header from '../common/header/Header';
 import Menu from './Menu';
@@ -28,26 +27,23 @@ const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
   const { match, handleNav } = props;
   const { url } = match;
 
-  const paths = reduce(
-    [
-      { name: 'blackjack', component: BlackJack },
-      { name: 'connect4', component: Connect4 },
-      { name: 'deal', component: DealOrNoDeal },
-      { name: 'dota2', component: Dota2Picker },
-      { name: 'poker', component: Poker },
-      { name: 'slots', component: Slots },
-      { name: 'tictactoe', component: TicTacToe },
-      { name: 'yahtzee', component: Yahtzee },
-    ],
-    (acc: React.ReactNode[], obj) => {
-      const { name, component } = obj;
-      const path = `${url}/${name}`;
-      acc.push(<Route key={`${path}r`} exact {...{ path, component }} />);
-      acc.push(<Redirect key={`${path}d`} from={`${path}*`} to={path} />);
-      return acc;
-    },
-    [],
-  );
+  const paths = [
+    { name: 'blackjack', component: BlackJack },
+    { name: 'connect4', component: Connect4 },
+    { name: 'deal', component: DealOrNoDeal },
+    { name: 'dota2', component: Dota2Picker },
+    { name: 'poker', component: Poker },
+    { name: 'slots', component: Slots },
+    { name: 'tictactoe', component: TicTacToe },
+    { name: 'yahtzee', component: Yahtzee },
+  ].reduce((acc: React.ReactNode[], obj) => {
+    const { name, component } = obj;
+    const path = `${url}/${name}`;
+    acc.push(<Route key={`${path}r`} exact {...{ path, component }} />);
+    acc.push(<Redirect key={`${path}d`} from={`${path}*`} to={path} />);
+    return acc;
+  },
+  []);
 
   return (
     <>

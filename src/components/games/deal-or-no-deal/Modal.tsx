@@ -4,7 +4,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import map from 'lodash/map';
 import Money from './Money';
 import { getMoneyText } from './helpers';
 import { Briefcase } from './Case';
@@ -22,7 +21,7 @@ interface ModalProps {
 const colStyles: React.CSSProperties = { width: '50%', display: 'inline-block' };
 
 const genMoneyCols = (arr: Briefcase[], start: number, stop = arr.length): React.ReactNode[] => (
-  map(arr.slice(start, stop), (bc) => <Money key={bc.loc} briefcase={bc} />)
+  arr.slice(start, stop).map((bc) => <Money key={bc.loc} briefcase={bc} />)
 );
 
 const Modal: React.FC<ModalProps> = (props: ModalProps) => {

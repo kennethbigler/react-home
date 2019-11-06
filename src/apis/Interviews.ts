@@ -1,5 +1,4 @@
 import split from 'lodash/split';
-import forEach from 'lodash/forEach';
 
 // ----------     Facebook     ---------- //
 /** Task Execution Time with Cooldowns
@@ -20,7 +19,7 @@ function doTasks(tasks: number[], cooldown: number): number {
   let ans = 0;
   // let debug = '';
   let currentTime = 0;
-  forEach(tasks, (task) => {
+  tasks.forEach((task) => {
     const lastRun = lastRunMap[task] || 0;
     const waitTime = lastRun + cooldown + 1 - currentTime;
     if (waitTime && lastRunMap[task] !== undefined) {

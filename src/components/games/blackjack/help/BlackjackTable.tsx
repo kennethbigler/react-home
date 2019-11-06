@@ -4,7 +4,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import map from 'lodash/map';
 import Cell from './Cell';
 import Row, { RowProps } from './Row';
 
@@ -34,9 +33,9 @@ const BlackjackTable: React.FC<BlackjackTable> = (props: BlackjackTable) => {
           <Cell colSpan={10} text="Dealer" />
         </TableRow>
         <TableRow>
-          {map(cards, (c) => <Cell key={c} text={c} />)}
+          {cards.map((c) => <Cell key={c} text={c} />)}
         </TableRow>
-        {map(data, (obj) => <Row key={obj.name} name={obj.name} data={obj.data} />)}
+        {data.map((obj) => <Row key={obj.name} name={obj.name} data={obj.data} />)}
       </TableBody>
     </Table>
   );

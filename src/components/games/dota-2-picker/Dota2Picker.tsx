@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import map from 'lodash/map';
-import noop from 'lodash/noop';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
+import noop from '../../../apis/noop';
 import characterList, { resetHeroesStatuses, Alphabet } from '../../../constants/dota2';
 import Lineup from './Lineup';
 import HeroSelection, { AlphaCharacters } from './HeroSelection';
@@ -168,7 +167,7 @@ class Dota2Picker extends Component<Dota2PickerProps, Dota2PickerState> {
               <Button color="primary" onClick={this.selectHeroAndNextTurn} variant="contained">Select &amp; Next</Button>
             </div>
           </Grid>
-          {map(order, (lineup, i) => (
+          {order.map((lineup, i) => (
             <Grid item xs={12} sm={4} key={i}>
               <Lineup
                 order={lineup}

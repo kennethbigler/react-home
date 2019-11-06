@@ -1,5 +1,4 @@
 import React from 'react';
-import map from 'lodash/map';
 import Segment from './Segment';
 import YearMarkers from './YearMarkers';
 import { SegmentType } from './types';
@@ -22,7 +21,7 @@ const Row: React.FC<RowProps> = (props: RowProps) => {
 
   return (
     <div style={style}>
-      {map(segments, (data, j) => (yearMarkers
+      {segments.map((data, j) => (yearMarkers
         ? (<YearMarkers key={j} data={data} />)
         : (<Segment key={j} {...data} />)))}
     </div>

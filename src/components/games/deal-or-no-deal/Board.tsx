@@ -1,8 +1,6 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
-import map from 'lodash/map';
 import Case, { Briefcase } from './Case';
-
 
 interface BoardProps {
   board: Briefcase[];
@@ -24,7 +22,7 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
 
   return (
     <Paper elevation={2} style={style}>
-      {map(board, (bc, i) => (
+      {board.map((bc, i) => (
         <Case
           key={i}
           briefcase={bc}

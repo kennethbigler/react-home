@@ -35,7 +35,7 @@ const Card = memo((props: CardProps) => {
       <div style={styles.cardTitle}>
         {name + suit}
       </div>
-      <Typography variant="h3" style={{ ...styles.suit, ...cardColor }}>
+      <Typography variant="h4" style={{ ...styles.suit, ...cardColor }}>
         {suit}
       </Typography>
     </div>

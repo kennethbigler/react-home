@@ -16,7 +16,7 @@ const cardTitle: React.CSSProperties = {
 
 const suit: React.CSSProperties = {
   margin: 'auto',
-  maxWidth: 30,
+  marginTop: 5,
   textAlign: 'center',
   width: '100%',
 };

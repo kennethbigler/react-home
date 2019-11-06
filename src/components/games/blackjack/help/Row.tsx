@@ -1,7 +1,6 @@
 import React from 'react';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import map from 'lodash/map';
 import Cell, { CellProps } from './Cell';
 
 export interface RowProps {
@@ -19,7 +18,7 @@ const Row: React.FC<RowProps> = (props: RowProps) => {
       <TableCell style={tableCellStyle}>
         {name}
       </TableCell>
-      {map(data, (text, i) => <Cell key={i} {...text} />)}
+      {data.map((text, i) => <Cell key={i} {...text} />)}
     </TableRow>
   );
 };

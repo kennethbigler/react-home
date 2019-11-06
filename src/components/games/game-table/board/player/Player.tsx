@@ -4,7 +4,6 @@ import cyan from '@material-ui/core/colors/cyan';
 import green from '@material-ui/core/colors/green';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import red from '@material-ui/core/colors/red';
-import map from 'lodash/map';
 import { Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import Hand from '../Hand';
@@ -75,7 +74,7 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
             {player.bet}
           </Typography>
       )}
-      {map(player.hands, (hand, i) => {
+      {player.hands.map((hand, i) => {
         const isHandTurn: boolean = !!turn && turn.hand === i;
         return (
           <div key={`hand${i}`}>

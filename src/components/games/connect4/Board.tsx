@@ -4,7 +4,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import map from 'lodash/map';
 import Piece from './Piece';
 import { Turn } from './types';
 
@@ -22,8 +21,8 @@ const styles: React.CSSProperties = {
 const Board: React.FC<BoardProps> = (props: BoardProps) => {
   const { board, turn, insert } = props;
   // generate code for Connect4 Board
-  const gameBoard = map(board, (arr, i) => {
-    const row = map(arr, (piece, j) => (
+  const gameBoard = board.map((arr, i) => {
+    const row = arr.map((piece, j) => (
       <TableCell key={`c4c${i},${j}`} style={styles}>
         <Piece piece={piece} />
       </TableCell>
@@ -35,7 +34,7 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
     );
   }).reverse();
   // generate buttons to play pieces based off top board row
-  const gameButtons = map(board[board.length - 1], (piece, i) => (
+  const gameButtons = board[board.length - 1].map((piece, i) => (
     <TableCell key={`c4h${i}`} style={styles}>
       <Piece
         enabled={!piece}

@@ -1,7 +1,6 @@
 import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import map from 'lodash/map';
 import reduce from 'lodash/reduce';
 import {
   Dice, TopGameScore, BottomGameScore, ADD_DICE,
@@ -73,7 +72,7 @@ const BottomTable: React.FC<BottomTableProps> = (props: BottomTableProps) => {
   const generateBottomTable = (): React.ReactNode => {
     const { bottom, style } = props;
     const hasYahtzee = bottom[5].score > 0;
-    return map(bottom, (gameScore, i) => {
+    return bottom.map((gameScore, i) => {
       const {
         name, hint, points, score,
       } = gameScore;

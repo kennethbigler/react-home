@@ -1,6 +1,4 @@
 import localForage from 'localforage';
-import assign from 'lodash/assign';
-import map from 'lodash/map';
 import { DBCard } from '../store/types';
 
 const NEW_DECK: DBCard[] = [
@@ -33,7 +31,7 @@ const NEW_DECK: DBCard[] = [
 ];
 
 /** immutably get a copy of new deck O(N) */
-const getNewDeck = (): DBCard[] => map(NEW_DECK, (card) => assign({}, card));
+const getNewDeck = (): DBCard[] => NEW_DECK.map((card) => ({ ...card }));
 
 /** get immutable copy of deck O(N) */
 const getDeck = (): Promise<DBCard[]> => localForage

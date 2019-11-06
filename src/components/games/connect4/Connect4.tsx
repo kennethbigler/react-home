@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import reduce from 'lodash/reduce';
-import forEach from 'lodash/forEach';
 import Typography from '@material-ui/core/Typography';
 import GameBoard from './GameBoard';
 import { Turn } from './types';
@@ -28,8 +26,7 @@ interface Connect4State {
 
 /** start a new game */
 const getNewGame = (): Connect4State => ({
-  board: reduce(
-    NEW_BOARD,
+  board: NEW_BOARD.reduce(
     (acc: number[][], row) => {
       acc.push([...row]);
       return acc;
@@ -134,10 +131,10 @@ export default class Connect4 extends Component<{}, Connect4State> {
       this.helpEvalConnect4(row - i, col + i, dp[3]);
     }
 
-    forEach(dp, (line) => {
+    dp.forEach((line) => {
       if (line[MAX].length >= 4) {
         const { board, turn } = this.state;
-        forEach(line[MAX], (t) => {
+        line[MAX].forEach((t) => {
           board[t[0]][t[1]] = 3;
         });
         this.setState({ winner: turn, board });
@@ -180,8 +177,7 @@ export default class Connect4 extends Component<{}, Connect4State> {
       }
     }
 
-    return reduce(
-      dp,
+    return dp.reduce(
       (acc: boolean, line: [number, [number, number][], [number, number][]]) => acc || line[MAX].length >= 4,
       false,
     );

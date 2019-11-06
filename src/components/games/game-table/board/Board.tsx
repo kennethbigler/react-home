@@ -1,5 +1,4 @@
 import React from 'react';
-import map from 'lodash/map';
 import Player from './player/Player';
 import { DBPlayer, DBTurn } from '../../../../store/types';
 // Parents: GameTable
@@ -22,7 +21,7 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
 
   return (
     <>
-      {map(players, (player, i) => (
+      {players.map((player, i) => (
         <Player
           key={`player${i}`}
           betHandler={betHandler}

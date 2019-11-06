@@ -58,7 +58,7 @@ const HeroSelection: React.FC<HeroSelectionProps> = (props: HeroSelectionProps) 
   const getHeroListForLetter = (heroes: DBDota2Hero[], letter: string): React.ReactNode => (
     <div key={letter}>
       <Typography variant="h4" style={styles.heroRow}>{letter}</Typography>
-      { map(heroes, (char, i) => {
+      {heroes.map((char, i) => {
         const { variant, color } = getButtonCharacteristics(char.selected);
         return (
           <Button

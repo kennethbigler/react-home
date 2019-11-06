@@ -5,8 +5,6 @@ import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import map from 'lodash/map';
-import get from 'lodash/get';
 import { updateName, updateBot } from '../../../store/modules/players';
 import { DBRootState, DBPlayer } from '../../../store/types';
 
@@ -36,7 +34,7 @@ class PlayerMenu extends Component<PlayerMenuProps, PlayerMenuState> {
     this.state = { isBot: []};
   }
 
-  static getDerivedStateFromProps: React.GetDerivedStateFromProps<PlayerMenuProps, PlayerMenuState> = (props) => ({ isBot: map(props.players, ['isBot', true]) })
+  static getDerivedStateFromProps: React.GetDerivedStateFromProps<PlayerMenuProps, PlayerMenuState> = (props) => ({ isBot: props.players.map((a) => a.isBot) })
 
   handleToggle = (id: number, isChecked: boolean): void => {
     const { playerActions } = this.props;
@@ -46,7 +44,7 @@ class PlayerMenu extends Component<PlayerMenuProps, PlayerMenuState> {
   handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>, id: number): void => {
     const { playerActions } = this.props;
     if (e.key === 'Enter') {
-      playerActions.updateName(id, get(e, 'target.value', ''));
+      playerActions.updateName(id, (e.target as HTMLInputElement).value || '');
     }
   };
 
@@ -68,7 +66,7 @@ class PlayerMenu extends Component<PlayerMenuProps, PlayerMenuState> {
             </Typography>
           </Grid>
         </Grid>
-        {map(players, (p, i) => (p.id !== 0
+        {players.map((p, i) => (p.id !== 0
           ? (
             <Grid key={`${p.name},${i}`} container spacing={1}>
               <Grid item xs={9}>

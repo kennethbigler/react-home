@@ -1,6 +1,5 @@
 /* TODO: expand below on click */
 import React, { Component } from 'react';
-import map from 'lodash/map';
 import dateObj, { DateObj, FormatOutput } from '../../../apis/DateHelper';
 import Row from './Row';
 import { SegmentType } from './types';
@@ -169,7 +168,7 @@ export class Timeline extends Component<TimelineProps, TimelineState> {
     return (
       <div style={{ width: '100%' }}>
         <Row key={data.length} segments={this.getYearMarkers()} yearMarkers />
-        {map(data, (elm, i) => {
+        {data.map((elm, i) => {
           const segments = this.getSegments(added, elm, i);
           return segments.length
             ? (<Row key={i} segments={segments} first={i === 0} />)

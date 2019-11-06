@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import forEach from 'lodash/forEach';
 import Typography from '@material-ui/core/Typography';
 import Modal from './Modal';
 import Board from './Board';
@@ -154,7 +153,7 @@ class DND extends Component<DNDProps, DNDState> {
     // mix up board
     shuffle(state.board);
     // set all flags to un-touched
-    forEach(state.board, (bc) => {
+    state.board.forEach((bc) => {
       // get sum and count of cases remaining
       state.sum += bc.val;
       state.numCases += 1;

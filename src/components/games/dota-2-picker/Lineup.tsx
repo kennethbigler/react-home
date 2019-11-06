@@ -1,5 +1,4 @@
 import React from 'react';
-import map from 'lodash/map';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -23,7 +22,7 @@ interface LineupProps {
 const Lineup: React.FC<LineupProps> = (props: LineupProps) => {
   const renderTable = (): React.ReactNode[] => {
     const { order } = props;
-    return map(order, (turn) => (
+    return order.map((turn) => (
       <TableRow key={turn.name} hover>
         <TableCell>{turn.name}</TableCell>
         <TableCell>{turn.radiant.number}</TableCell>

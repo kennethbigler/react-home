@@ -4,7 +4,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import map from 'lodash/map';
 import DarkTableCell from '../../common/DarkTableCell';
 import { payoutTable } from './SlotMachine';
 
@@ -21,7 +20,7 @@ const PayoutTable: React.FC<{}> = memo(() => (
       </TableRow>
     </TableHead>
     <TableBody>
-      { map(payoutTable, (row, i) => (
+      {payoutTable.map((row, i) => (
         <TableRow key={i}>
           <TableCell>
             { row.symbol }
