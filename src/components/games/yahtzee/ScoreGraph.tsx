@@ -47,7 +47,8 @@ class ScoreGraph extends React.Component<ScoreGraphProps, ScoreGraphState> {
     const { theme: { palette: { secondary: { main }}}} = this.props;
     const { scores } = this.state;
 
-    const mostRecent = scores[scores.length - 1].score || 0;
+    const recent = scores[scores.length - 1] || { score: 0 };
+    const mostRecent = recent.score;
     const top = maxBy(scores, 'score') || { score: 0 };
     const topScore = top.score;
 

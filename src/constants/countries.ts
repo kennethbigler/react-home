@@ -1,4 +1,3 @@
-import forEach from 'lodash/forEach';
 import {
   amber, blue, brown, cyan,
   deepOrange, deepPurple, green, indigo,
@@ -52,7 +51,7 @@ const countries: Countries = {
 export const NA: string[] = [];
 export const EU: string[] = [];
 
-forEach(countries, (country, name): void => {
+Object.entries(countries).forEach(([name, country]): void => {
   country.continent === 'NA' && NA.push(`${name} ${country.flag}`);
   country.continent === 'EU' && EU.push(`${name} ${country.flag}`);
 });

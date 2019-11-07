@@ -1,5 +1,4 @@
 import React from 'react';
-import map from 'lodash/map';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 import { DBDota2Hero } from '../../../store/types';
@@ -55,7 +54,7 @@ const HeroSelection: React.FC<HeroSelectionProps> = (props: HeroSelectionProps) 
     }
   };
 
-  const getHeroListForLetter = (heroes: DBDota2Hero[], letter: string): React.ReactNode => (
+  const getHeroListForLetter = ([letter, heroes]: [string, DBDota2Hero[]]): React.ReactNode => (
     <div key={letter}>
       <Typography variant="h4" style={styles.heroRow}>{letter}</Typography>
       {heroes.map((char, i) => {
@@ -76,7 +75,7 @@ const HeroSelection: React.FC<HeroSelectionProps> = (props: HeroSelectionProps) 
   );
 
   const { characters } = props;
-  return (<>{map(characters, getHeroListForLetter)}</>);
+  return (<>{Object.entries(characters).map(getHeroListForLetter)}</>);
 };
 
 export default HeroSelection;

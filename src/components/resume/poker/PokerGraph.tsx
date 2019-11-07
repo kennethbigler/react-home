@@ -2,7 +2,6 @@ import React from 'react';
 import {
   ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, AxisDomain,
 } from 'recharts';
-import map from 'lodash/map';
 import { PokerScoreEntry, PokerColorEntry } from '../../../constants/poker';
 
 interface PokerNightProps {
@@ -20,7 +19,7 @@ const PokerNight: React.FC<PokerNightProps> = (props: PokerNightProps) => {
   return (
     <ResponsiveContainer width="100%" height={650}>
       <LineChart data={parsedScores}>
-        {map(colors, (color, key) => (
+        {Object.entries(colors).map(([key, color]: [string, string]) => (
           <Line
             type="monotone"
             dataKey={key}

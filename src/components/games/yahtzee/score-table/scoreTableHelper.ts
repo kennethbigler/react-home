@@ -1,4 +1,3 @@
-import reduce from 'lodash/reduce';
 import { Dice, TopGameScore } from '../types';
 
 interface DiceHistogram {
@@ -23,8 +22,8 @@ export const getHistogram = () => (hist: DiceHistogram, val: Dice): DiceHistogra
 export const hasXDice = (values: Dice[], n: number): boolean => {
   const hist = values.reduce(getHistogram(), {} as DiceHistogram);
   let hasDice = false;
-  Object.keys(hist).forEach((value: string) => {
-    if (parseInt(value, 10) >= n) {
+  Object.values(hist).forEach((value) => {
+    if (value >= n) {
       hasDice = true;
     }
   });
@@ -37,10 +36,10 @@ export const isFullHouse = (values: Dice[]): boolean => {
   let has3 = false;
   let has2 = false;
 
-  Object.keys(hist).forEach((value: string) => {
-    if (parseInt(value, 10) >= 3) {
+  Object.values(hist).forEach((value) => {
+    if (value >= 3) {
       has3 = true;
-    } else if (parseInt(value, 10) >= 2) {
+    } else if (value >= 2) {
       has2 = true;
     }
   });
@@ -66,9 +65,10 @@ export const isStraight = (values: Dice[], length: number): boolean => {
   return count >= length;
 };
 
-export const canYahtzeeBonus = (values: Dice[], top: TopGameScore[]): boolean => reduce(
+export const canYahtzeeBonus = (values: Dice[], top: TopGameScore[]): boolean => Object.entries(
   values.reduce(getHistogram(), {} as DiceHistogram),
-  (acc: boolean, value, key) => {
+).reduce(
+  (acc: boolean, [key, value]) => {
     if (value === 5 && top[parseInt(key, 10) - 1].score >= 0) {
       return true;
     }

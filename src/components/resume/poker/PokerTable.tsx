@@ -4,7 +4,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import map from 'lodash/map';
 import chunk from 'lodash/chunk';
 import sortBy from 'lodash/sortBy';
 import { PokerScoreEntry } from '../../../constants/poker';
@@ -25,7 +24,7 @@ const PokerTable: React.FC<PokerTableProps> = (props: PokerTableProps) => {
   const { totals } = props;
   const tableRows = chunk(
     sortBy(
-      map(totals, (val, key) => ({ key, val })),
+      Object.entries(totals).map(([key, val]) => ({ key, val })),
       ['val'],
     ),
     4,
