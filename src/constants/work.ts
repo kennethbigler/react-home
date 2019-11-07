@@ -251,7 +251,7 @@ const workExp: Job[] = [
 
 const getSummary = (key: 'tech' | 'skills'): string[] => workExp.reduce(
   (acc: string[], job: Job): string[] => {
-    const arr: string[] = job[key] as string[] | [];
+    const arr: string[] = job[key] as string[] || [];
     arr.forEach((item: string) => {
       if (!acc.includes(item)) {
         acc.push(item);
