@@ -9,7 +9,6 @@ import Card from '@material-ui/core/Card';
 import Hand from '../Hand';
 import { DBTurn, DBPlayer } from '../../../../../store/types';
 import styles from './Player.styles';
-// Parents: Board
 
 interface PlayerProps {
   betHandler?: Function;
@@ -36,9 +35,12 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
   const minBet: number = Math.max(Math.min(player.money, 5), 0);
   const maxBet: number = Math.max(Math.min(player.money, 100), 10);
   const step = 5;
-  const onSliderChange = (event: React.ChangeEvent<{}>, value: number | number[]): void => {
-    betHandler && betHandler(player.id, event, value);
-  };
+  const onSliderChange = React.useCallback(
+    (event: React.ChangeEvent<{}>, value: number | number[]): void => {
+      betHandler && betHandler(player.id, event, value);
+    },
+    [betHandler, player.id],
+  );
   // set colors
   let color: React.CSSProperties = isPlayerTurn ? { background: cyan[200] } : {};
   const weight: React.CSSProperties = isPlayerTurn ? { fontWeight: 'bold' } : { fontWeight: 'normal' };
@@ -67,12 +69,10 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
           value={player.bet}
         />
       )}
-      {isBlackJack
-        && player.id !== 0 && (
-          <Typography variant="h5">
-            Bet: $
-            {player.bet}
-          </Typography>
+      {isBlackJack && player.id !== 0 && (
+        <Typography variant="h5">
+          {`Bet: $${player.bet}`}
+        </Typography>
       )}
       {player.hands.map((hand, i) => {
         const isHandTurn: boolean = !!turn && turn.hand === i;
