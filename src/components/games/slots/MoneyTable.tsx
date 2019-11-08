@@ -12,41 +12,37 @@ interface MoneyTableProps {
   dealerMoney: number;
 }
 
-const MoneyTable: React.FC<MoneyTableProps> = memo((props: MoneyTableProps) => {
-  const { playerName, playerMoney, dealerMoney } = props;
-
-  return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <DarkTableCell>
-            Player
-          </DarkTableCell>
-          <DarkTableCell>
-            Money
-          </DarkTableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        <TableRow>
-          <TableCell>
-            {playerName}
-          </TableCell>
-          <TableCell>
-            {`$${playerMoney}`}
-          </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>
-            House
-          </TableCell>
-          <TableCell>
-            {`$${dealerMoney}`}
-          </TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
-  );
-});
+const MoneyTable: React.FC<MoneyTableProps> = memo(({ playerName, playerMoney, dealerMoney }: MoneyTableProps) => (
+  <Table>
+    <TableHead>
+      <TableRow>
+        <DarkTableCell>
+          Player
+        </DarkTableCell>
+        <DarkTableCell>
+          Money
+        </DarkTableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      <TableRow>
+        <TableCell>
+          {playerName}
+        </TableCell>
+        <TableCell>
+          {`$${playerMoney}`}
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>
+          House
+        </TableCell>
+        <TableCell>
+          {`$${dealerMoney}`}
+        </TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+));
 
 export default MoneyTable;
