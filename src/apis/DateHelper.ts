@@ -5,7 +5,7 @@ const months = [
   'October', 'November', 'December',
 ];
 
-export type DateScale = 'years' | 'months' | 'days' | undefined;
+export type DateScale = 'year' | 'years' | 'month' | 'months' | 'days' | undefined;
 export type FormatOutput = 'YYYY' | 'MMMM Y' | '\'YY';
 export interface DateObj {
   year: number;
@@ -38,12 +38,14 @@ const dateHelper = (date?: DateObj | string): DateObj => {
 
   const diff = (dateObj: DateObj, scale: DateScale): number => {
     switch (scale) {
+      case 'year':
       case 'years':
         return year - dateObj.year;
+      case 'month':
       case 'months':
-        return (12 * year + month) - (12 * dateObj.year + dateObj.month);
+        return 12 * (year - dateObj.year) + (month - dateObj.month);
       default:
-        return (365 * year + 30 * (month + 1) + day) - (365 * dateObj.year + 30 * (dateObj.month + 1) + dateObj.day);
+        return 365 * (year - dateObj.year) + 30 * (month - dateObj.month) + (day - dateObj.day);
     }
   };
 

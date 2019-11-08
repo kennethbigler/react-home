@@ -2,7 +2,7 @@ import React from 'react';
 import grey from '@material-ui/core/colors/grey';
 import dateObj, { DateObj, FormatOutput } from '../../../apis/DateHelper';
 import ExpandableCard from '../expandable-card';
-import { Timeline, TIMELINE_TITLE, DataEntry } from './Timeline';
+import Timeline, { TIMELINE_TITLE, DataEntry } from './Timeline';
 import workExperience from '../../../constants/work';
 
 interface TimelineCardProps {
