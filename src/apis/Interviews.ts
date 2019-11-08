@@ -1,5 +1,3 @@
-import split from 'lodash/split';
-
 // ----------     Facebook     ---------- //
 /** Task Execution Time with Cooldowns
  * given an array of tasks (each number represents a different task)
@@ -135,7 +133,7 @@ function isAmbigram2(word: string): boolean {
     N: ['N'],
   };
 
-  const chars = split(word, '');
+  const chars = word.split('');
   // verify characters are good
   for (let i = 0; i < Math.ceil(chars.length / 2); i += 1) {
     // get 2 opposite elements
@@ -400,7 +398,7 @@ const romanToInt = (str: string): number => {
     return 0;
   }
   let ret = 0;
-  const characters = split(str, '');
+  const characters = str.split('');
   // Symbol I  V  X   L   C    D    M
   // Value  1  5  10  50  100  500  1,000
   const romanMap: { [name: string]: number } = {
@@ -443,3 +441,5 @@ romanToInt('MCMXCIV') === 1994;
  */
 
 /** given an array of numbers, and a sum, find and return the index of 2 numbers that adds up to the sum */
+
+export default {};
