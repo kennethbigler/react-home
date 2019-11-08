@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import Switch from '@material-ui/core/Switch';
@@ -16,9 +16,6 @@ interface PlayerMenuProps {
   playerActions: PlayerActions;
   players: DBPlayer[];
 }
-interface PlayerMenuState {
-  isBot: boolean[];
-}
 
 const namePadStyles: React.CSSProperties = {
   maxWidth: '420px',
@@ -27,80 +24,83 @@ const namePadStyles: React.CSSProperties = {
   margin: 'auto',
 };
 
-class PlayerMenu extends Component<PlayerMenuProps, PlayerMenuState> {
-  constructor(props: PlayerMenuProps) {
-    super(props);
+const PlayerMenu: React.FC<PlayerMenuProps> = (props: PlayerMenuProps) => {
+  const { players, playerActions } = props;
 
-    this.state = { isBot: []};
-  }
+  const isBot = React.useMemo(() => players.map((a) => a.isBot), [players]);
 
-  static getDerivedStateFromProps: React.GetDerivedStateFromProps<PlayerMenuProps, PlayerMenuState> = (props) => ({ isBot: props.players.map((a) => a.isBot) })
+  const handleToggle = React.useCallback(
+    (id: number, isChecked: boolean): void => {
+      playerActions.updateBot(id, isChecked);
+    },
+    [playerActions],
+  );
 
-  handleToggle = (id: number, isChecked: boolean): void => {
-    const { playerActions } = this.props;
-    playerActions.updateBot(id, isChecked);
-  };
+  const handleBlur = React.useCallback(
+    (id: number) => (e: React.FocusEvent<HTMLInputElement>): void => {
+      playerActions.updateName(id, e.target.value || '');
+    },
+    [playerActions],
+  );
 
-  handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>, id: number): void => {
-    const { playerActions } = this.props;
-    if (e.key === 'Enter') {
-      playerActions.updateName(id, (e.target as HTMLInputElement).value || '');
-    }
-  };
+  const handleKeyPress = React.useCallback(
+    (id: number) => (e: React.KeyboardEvent<HTMLDivElement>): void => {
+      if (e.key === 'Enter') {
+        playerActions.updateName(id, (e.target as HTMLInputElement).value || '');
+      }
+    },
+    [playerActions],
+  );
 
-  render(): React.ReactNode {
-    const { players } = this.props;
-    const { isBot } = this.state;
-
-    return (
-      <div style={namePadStyles}>
-        <Grid container spacing={1}>
-          <Grid item xs={9}>
-            <Typography variant="h5">
-              Edit Player Names
-            </Typography>
-          </Grid>
-          <Grid item xs={3}>
-            <Typography variant="h5">
-              Is Bot?
-            </Typography>
-          </Grid>
+  return (
+    <div style={namePadStyles}>
+      <Grid container spacing={1}>
+        <Grid item xs={9}>
+          <Typography variant="h5">
+            Edit Player Names
+          </Typography>
         </Grid>
-        {players.map((p, i) => (p.id !== 0
-          ? (
-            <Grid key={`${p.name},${i}`} container spacing={1}>
-              <Grid item xs={9}>
-                <TextField
-                  defaultValue={p.name}
-                  onKeyPress={(e: React.KeyboardEvent<HTMLDivElement>): void => this.handleKeyPress(e, p.id)}
-                  placeholder="Enter Player Name"
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <Switch
-                  checked={isBot[i]}
-                  color="primary"
-                  onChange={(_e, isC): void => this.handleToggle(p.id, isC)}
-                />
-              </Grid>
+        <Grid item xs={3}>
+          <Typography variant="h5">
+            Is Bot?
+          </Typography>
+        </Grid>
+      </Grid>
+      {players.map((p, i) => (p.id !== 0
+        ? (
+          <Grid key={`${p.name},${i}`} container spacing={1}>
+            <Grid item xs={9}>
+              <TextField
+                defaultValue={p.name}
+                onBlur={handleBlur(p.id)}
+                onKeyPress={handleKeyPress(p.id)}
+                placeholder="Enter Player Name"
+              />
             </Grid>
-          ) : (
-            <Grid key={`${p.name},${i}`} container spacing={1}>
-              <Grid item xs={9}>
-                <Typography variant="h5">
-                  {p.name}
-                </Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Switch checked disabled />
-              </Grid>
+            <Grid item xs={3}>
+              <Switch
+                checked={isBot[i]}
+                color="primary"
+                onChange={(_e, isC): void => handleToggle(p.id, isC)}
+              />
             </Grid>
-          )
-        ))}
-      </div>
-    );
-  }
-}
+          </Grid>
+        ) : (
+          <Grid key={`${p.name},${i}`} container spacing={1}>
+            <Grid item xs={9}>
+              <Typography variant="h5">
+                {p.name}
+              </Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Switch checked disabled />
+            </Grid>
+          </Grid>
+        )
+      ))}
+    </div>
+  );
+};
 
 // react-redux export
 const mapStateToProps = (state: DBRootState): { players: DBPlayer[] } => ({

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import AppBar from '@material-ui/core/AppBar';
@@ -27,10 +27,6 @@ interface TopBarProps {
   themeActions: ThemeActions;
   toggleOpen: React.MouseEventHandler;
 }
-interface TopBarState {
-  checked: boolean;
-  toggleSwitch: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-}
 
 const flexLeftStyles: React.CSSProperties = {
   display: 'flex',
@@ -40,77 +36,65 @@ const flexRightStyles: React.CSSProperties = {
   display: 'flex',
   marginRight: 15,
 };
+const spanTopStyles: React.CSSProperties = { left: 0, right: 0, top: 0 };
 
-class TopBar extends PureComponent<TopBarProps, TopBarState> {
-  static defaultProps: {
-    showPlayers: boolean;
-  };
+const TopBar: React.FC<TopBarProps> = React.memo((props: TopBarProps) => {
+  const {
+    theme, themeActions, toggleOpen, showPlayers, fontColor, iconColor,
+  } = props;
 
-  constructor(props: TopBarProps) {
-    super(props);
-    const { theme } = props;
+  const [checked, setChecked] = React.useState(theme.type !== 'dark');
 
-    if (theme.type === 'dark') {
-      this.state = { checked: false, toggleSwitch: this.toLightTheme };
-    } else {
-      this.state = { checked: true, toggleSwitch: this.toDarkTheme };
-    }
-  }
+  const toggleTheme = React.useCallback(
+    (): void => {
+      checked
+        ? themeActions.displayDarkTheme()
+        : themeActions.displayLightTheme();
+      setChecked(!checked);
+    },
+    [checked, themeActions],
+  );
 
-  toDarkTheme = (): void => {
-    const { themeActions } = this.props;
-    themeActions.displayDarkTheme();
-    this.setState({ checked: false, toggleSwitch: this.toLightTheme });
-  };
-
-  toLightTheme = (): void => {
-    const { themeActions } = this.props;
-    themeActions.displayLightTheme();
-    this.setState({ checked: true, toggleSwitch: this.toDarkTheme });
-  };
-
-  render(): React.ReactNode {
-    const {
-      toggleOpen, showPlayers, fontColor, iconColor,
-    } = this.props;
-    const { checked, toggleSwitch } = this.state;
-    return (
-      <AppBar style={{ left: 0, right: 0, top: 0 }}>
-        <Toolbar disableGutters>
-          <div className="flex-container">
-            <div style={flexLeftStyles}>
-              <IconButton
-                aria-label="Menu"
-                onClick={toggleOpen}
-                color={iconColor}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                onClick={toggleOpen}
-                style={{ cursor: 'pointer' }}
-                variant="h6"
-                color={fontColor}
-              >
-                Menu
-              </Typography>
-            </div>
-            {showPlayers && (
-              <div style={flexRightStyles}>
-                <SimplePopover buttonText="Players">
-                  <PlayerMenu />
-                </SimplePopover>
-              </div>
-            )}
-            <div style={flexRightStyles}>
-              <Switch checked={checked} onChange={toggleSwitch} />
-            </div>
+  return (
+    <AppBar style={spanTopStyles}>
+      <Toolbar disableGutters>
+        <div className="flex-container">
+          <div style={flexLeftStyles}>
+            <IconButton
+              aria-label="Menu"
+              onClick={toggleOpen}
+              color={iconColor}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              onClick={toggleOpen}
+              style={{ cursor: 'pointer' }}
+              variant="h6"
+              color={fontColor}
+            >
+              Menu
+            </Typography>
           </div>
-        </Toolbar>
-      </AppBar>
-    );
-  }
-}
+          {showPlayers && (
+            <div style={flexRightStyles}>
+              <SimplePopover buttonText="Players">
+                <PlayerMenu />
+              </SimplePopover>
+            </div>
+          )}
+          <div style={flexRightStyles}>
+            <Switch checked={checked} onChange={toggleTheme} />
+          </div>
+        </div>
+      </Toolbar>
+    </AppBar>
+  );
+});
+
+TopBar.defaultProps = {
+  showPlayers: false,
+};
 
 // react-redux export
 const mapStateToProps = (state: DBRootState): { theme: DBUITheme } => ({
