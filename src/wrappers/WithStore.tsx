@@ -3,8 +3,8 @@ import { Provider } from 'react-redux';
 import throttle from 'lodash/throttle';
 import { Store } from 'redux';
 import WithTheme from './WithTheme';
-import { loadState, saveState, configureStore } from './store/configureStore';
-import LoadingSpinner from './components/common/loading-spinner';
+import { loadState, saveState, configureStore } from '../store/configureStore';
+import LoadingSpinner from '../components/common/loading-spinner';
 
 interface WithStoreState {
   store?: Store;

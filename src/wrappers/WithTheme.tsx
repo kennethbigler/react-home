@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { HashRouter } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import Routes from './components/Routes';
-import { DBRootState, DBUITheme } from './store/types';
+import WithRouter from './WithRouter';
+import { DBRootState, DBUITheme } from '../store/types';
 
 interface WithThemeProps {
   theme: DBUITheme;
@@ -30,9 +29,7 @@ const WithTheme: React.FC<WithThemeProps> = (props: WithThemeProps) => {
   return (
     <MuiThemeProvider theme={setTheme}>
       <CssBaseline />
-      <HashRouter>
-        <Routes />
-      </HashRouter>
+      <WithRouter />
     </MuiThemeProvider>
   );
 };
