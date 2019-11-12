@@ -4,7 +4,8 @@ LINE="--------------------------------------------------"
 function throwError() {
   echo $LINE
   echo "Step Failed: $1"
-  set -e
+  echo $LINE
+  exit 1
 }
 
 function buildApp() {
