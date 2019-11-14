@@ -26,9 +26,9 @@ export function updateDBSlotMachine(id: number, dealerId: number, bet: number) {
     const reel = SlotMachine.pullHandle();
     const exchange = SlotMachine.getPayout(reel, bet) - bet;
 
-    const promise1 = dispatch(payout(id, 'win', exchange));
-    const promise2 = dispatch(payout(dealerId, 'win', -exchange));
-    const promise3 = dispatch(updateSlots(reel));
+    const promise1 = dispatch(updateSlots(reel));
+    const promise2 = dispatch(payout(id, 'win', exchange));
+    const promise3 = dispatch(payout(dealerId, 'win', -exchange));
     return Promise.all([promise1, promise2, promise3]);
   };
 }

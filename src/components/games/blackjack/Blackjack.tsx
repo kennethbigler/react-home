@@ -35,12 +35,15 @@ interface TurnActions {
   incrPlayerTurn: Function;
   resetTurn: Function;
 }
-interface BlackJackProps {
+interface BlackJackActions {
+  turnActions: TurnActions;
   playerActions: PlayerActions;
+}
+interface BlackJackDBState {
   players: DBPlayer[];
   turn: DBTurn;
-  turnActions: TurnActions;
 }
+interface BlackJackProps extends BlackJackDBState, BlackJackActions {}
 interface BlackJackState {
   gameFunctions: ButtonProps[];
   hideHands: boolean;
@@ -435,11 +438,11 @@ class BlackJack extends React.Component<BlackJackProps, BlackJackState> {
 }
 
 // react-redux export
-const mapStateToProps = (state: DBRootState): { turn: DBTurn; players: DBPlayer[] } => ({
+const mapStateToProps = (state: DBRootState): BlackJackDBState => ({
   turn: state.turn,
   players: state.players,
 });
-const mapDispatchToProps = (dispatch: Dispatch): { turnActions: TurnActions; playerActions: PlayerActions} => ({
+const mapDispatchToProps = (dispatch: Dispatch): BlackJackActions => ({
   turnActions: bindActionCreators(
     { incrPlayerTurn, resetTurn, incrHandTurn },
     dispatch,

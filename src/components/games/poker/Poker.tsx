@@ -27,13 +27,15 @@ interface TurnActions {
   incrPlayerTurn: Function;
   resetTurn: Function;
 }
-
-interface PokerProps {
-  playerActions: PlayerActions;
-  players: DBPlayer[];
-  turn: DBTurn;
+interface PokerActions {
   turnActions: TurnActions;
+  playerActions: PlayerActions;
 }
+interface PokerDBState {
+  turn: DBTurn;
+  players: DBPlayer[];
+}
+interface PokerProps extends PokerDBState, PokerActions {}
 interface PokerState {
   gameFunctions: ButtonProps[];
   cardsToDiscard: number[];
@@ -384,19 +386,22 @@ class Poker extends React.Component<PokerProps, PokerState> {
 }
 
 // react-redux export
-function mapStateToProps(state: DBRootState): { turn: DBTurn; players: DBPlayer[] } {
+function mapStateToProps(state: DBRootState): PokerDBState {
   return {
     turn: state.turn,
     players: state.players,
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch): { turnActions: TurnActions; playerActions: PlayerActions } {
+function mapDispatchToProps(dispatch: Dispatch): PokerActions {
   return {
     turnActions: bindActionCreators({ incrPlayerTurn, resetTurn }, dispatch),
     playerActions: bindActionCreators(
       {
-        swapCards, newHand, payout, resetStatus,
+        swapCards,
+        newHand,
+        payout,
+        resetStatus,
       },
       dispatch,
     ),

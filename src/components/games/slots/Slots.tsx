@@ -10,15 +10,15 @@ import PayoutTable from './PayoutTable';
 import MoneyTable from './MoneyTable';
 import ReelDisplay from './ReelDisplay';
 
-interface Actions {
+interface SlotActions {
   updateDBSlotMachine: Function;
 }
-interface SlotReduxState {
+interface SlotDBState {
   players: DBPlayer[];
   reel: DBSlotDisplay[];
 }
-interface SlotProps extends SlotReduxState {
-  actions: Actions;
+interface SlotProps extends SlotDBState {
+  slotActions: SlotActions;
 }
 
 /* Slots  ->  ReelDisplay
@@ -26,10 +26,10 @@ interface SlotProps extends SlotReduxState {
  *       |->  PayoutTable */
 const Slots: React.FC<SlotProps> = (props: SlotProps) => {
   const updateSlotMachine = (): void => {
-    const { actions, players } = props;
+    const { slotActions, players } = props;
     const { id, bet } = players[0];
     const dealerId = players[players.length - 1].id;
-    actions.updateDBSlotMachine(id, dealerId, bet);
+    slotActions.updateDBSlotMachine(id, dealerId, bet);
   };
 
   // https://vegasclick.com/games/slots/how-they-work
@@ -72,12 +72,12 @@ const Slots: React.FC<SlotProps> = (props: SlotProps) => {
 };
 
 // react-redux export
-const mapStateToProps = (state: DBRootState): SlotReduxState => ({
+const mapStateToProps = (state: DBRootState): SlotDBState => ({
   players: state.players,
   reel: state.slots,
 });
-const mapDispatchToProps = (dispatch: Dispatch): { actions: Actions } => ({
-  actions: bindActionCreators({ updateDBSlotMachine }, dispatch),
+const mapDispatchToProps = (dispatch: Dispatch): { slotActions: SlotActions } => ({
+  slotActions: bindActionCreators({ updateDBSlotMachine }, dispatch),
 });
 export default connect(
   mapStateToProps,
