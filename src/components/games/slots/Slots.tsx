@@ -4,7 +4,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import SlotMachine, { SlotDisplay } from './SlotMachine';
+import SlotMachine, { SlotDisplay } from '../../../apis/SlotMachine';
 import { payout, updateBet } from '../../../store/modules/players';
 import { DBPlayer, DBRootState } from '../../../store/types';
 import PayoutTable from './PayoutTable';
