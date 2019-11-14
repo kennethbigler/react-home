@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
+import React from 'react';
 import PokerGraph from './PokerGraph';
 import PokerTable from './PokerTable';
 import parseData from './helpers';
 import { pennyPokerScores, pennyPokerColors } from '../../../constants/poker';
 
-const PennyPokerNight: React.FC<{}> = memo(() => {
+const PennyPokerNight: React.FC<{}> = React.memo(() => {
   const { parsedScores, totals } = parseData(pennyPokerScores);
 
   return (

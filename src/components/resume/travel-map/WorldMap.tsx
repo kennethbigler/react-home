@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React from 'react';
 import {
   ComposableMap,
   ZoomableGroup,
@@ -33,10 +33,10 @@ const PRESSED = blueGrey[800];
 const RATIO = 100 / 465.33;
 
 function useWorldMap(): WorldMapHook {
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
-  const [content, setContent] = useState('');
-  const [hide, setHide] = useState(true);
+  const [x, setX] = React.useState(0);
+  const [y, setY] = React.useState(0);
+  const [content, setContent] = React.useState('');
+  const [hide, setHide] = React.useState(true);
 
   const handleMove = (geography: any, evt: React.MouseEvent<SVGPathElement, MouseEvent>): void => {
     const name = geography.properties.NAME || '';
@@ -60,7 +60,7 @@ function useWorldMap(): WorldMapHook {
   };
 }
 
-const WorldMap = memo(() => {
+const WorldMap = React.memo(() => {
   const {
     x, y, content, hide,
     handleMove, handleLeave,

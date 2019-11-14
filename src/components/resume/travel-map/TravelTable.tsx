@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,7 +18,7 @@ const cellStyles: React.CSSProperties = {
   overflow: 'visible',
 };
 
-const TravelMap: React.FC<{}> = memo(() => {
+const TravelMap: React.FC<{}> = React.memo(() => {
   // ratio to display on table, 2:1 seemed to look best
   const EURatio = 3;
 

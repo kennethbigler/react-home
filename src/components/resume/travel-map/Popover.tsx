@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import grey from '@material-ui/core/colors/grey';
 
 interface PopoverProps {
@@ -8,7 +8,7 @@ interface PopoverProps {
   content: string;
 }
 
-const Popover: React.FC<PopoverProps> = memo((props: PopoverProps) => {
+const Popover: React.FC<PopoverProps> = React.memo((props: PopoverProps) => {
   const {
     x, y, hide, content,
   } = props;

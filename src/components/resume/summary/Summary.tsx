@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Typography } from '@material-ui/core';
 import Info from './Info';
 import Skills from './Skills';
@@ -8,7 +8,7 @@ import TimelineCard from '../../common/timeline-card';
 /* Summary  ->  Info
  *         |->  Skills
  *         |->  Education */
-const Summary = memo(() => (
+const Summary = React.memo(() => (
   <>
     <Typography variant="h2" gutterBottom>Summary</Typography>
     <Info />

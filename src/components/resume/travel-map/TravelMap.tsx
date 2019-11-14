@@ -1,11 +1,11 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Typography } from '@material-ui/core';
 import TravelTable from './TravelTable';
 import WorldMap from './WorldMap';
 
 /* TravelMap  ->  WorldMap  ->  Popover
  *           |->  TravelTable */
-const TravelMap: React.FC<{}> = memo(() => (
+const TravelMap: React.FC<{}> = React.memo(() => (
   <>
     <Typography variant="h2">My Travel Map</Typography>
     <WorldMap />

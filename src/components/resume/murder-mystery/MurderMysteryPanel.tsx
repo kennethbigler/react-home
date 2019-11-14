@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -30,7 +30,7 @@ const containerStyles: React.CSSProperties = {
 };
 const itemStyles: React.CSSProperties = { display: 'flex' };
 
-const MurderMysteryPanel: React.FC<MurderMysteryPanelProps> = memo((props: MurderMysteryPanelProps) => {
+const MurderMysteryPanel: React.FC<MurderMysteryPanelProps> = React.memo((props: MurderMysteryPanelProps) => {
   const {
     expanded, expandedKey, handleChange, role,
     importance, gender, description, hint, clue,

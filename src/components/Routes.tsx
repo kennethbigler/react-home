@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import {
   Switch, Route, withRouter, RouteComponentProps,
 } from 'react-router-dom';
@@ -7,8 +7,8 @@ import LoadingSpinner from './common/loading-spinner';
 type RoutesProps = RouteComponentProps<{ url: string }>;
 
 // lazy load sub routers
-const ResumeRoutes = lazy(() => import(/* webpackChunkName: "resume" */ './resume/Routes'));
-const GameRoutes = lazy(() => import(/* webpackChunkName: "games" */ './games/Routes'));
+const ResumeRoutes = React.lazy(() => import(/* webpackChunkName: "resume" */ './resume/Routes'));
+const GameRoutes = React.lazy(() => import(/* webpackChunkName: "games" */ './games/Routes'));
 
 const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
   const handleNav = (loc: string): void => {
@@ -24,12 +24,12 @@ const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
 
   return (
     <main style={{ padding: '1em', paddingTop: '5em' }}>
-      <Suspense fallback={<LoadingSpinner />}>
+      <React.Suspense fallback={<LoadingSpinner />}>
         <Switch>
           <Route path="/games" render={games} />
           <Route render={resume} />
         </Switch>
-      </Suspense>
+      </React.Suspense>
     </main>
   );
 };

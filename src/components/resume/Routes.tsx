@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import {
   Switch, Route, Redirect, match as Match,
 } from 'react-router-dom';
@@ -52,14 +52,14 @@ const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
       <Header handleNav={handleNav}>
         <Menu />
       </Header>
-      <Suspense fallback={<LoadingSpinner />}>
+      <React.Suspense fallback={<LoadingSpinner />}>
         <Switch>
           <Route component={Summary} exact path={`${url}`} />
           {paths}
           <Redirect from={`${url}*`} to={`${url}`} />
           <Route component={Summary} />
         </Switch>
-      </Suspense>
+      </React.Suspense>
     </>
   );
 };
