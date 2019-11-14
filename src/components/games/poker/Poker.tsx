@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -41,7 +41,7 @@ interface PokerState {
   gameOver: boolean;
 }
 
-class Poker extends Component<PokerProps, PokerState> {
+class Poker extends React.Component<PokerProps, PokerState> {
   constructor(props: PokerProps) {
     super(props);
     this.setNewGameRedux();

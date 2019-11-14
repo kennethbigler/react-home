@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 
-const Home = memo(() => (
+const Home = React.memo(() => (
   <div style={{ textAlign: 'center', marginTop: 20 }}>
     <Typography variant="h2">
       Welcome to my ReactJS Game Projects

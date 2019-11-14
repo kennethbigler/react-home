@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Header from './Header';
@@ -55,7 +55,7 @@ const paperStyles: React.CSSProperties = { width: 343, display: 'block', margin:
 /* TicTacToe  ->  Header
  *           |->  Board  ->  Cell
  *           |->  History */
-export default class TicTacToe extends Component<{}, TicTacToeState> {
+export default class TicTacToe extends React.Component<{}, TicTacToeState> {
   constructor(props: {}) {
     super(props);
     this.state = getNewGameVars();

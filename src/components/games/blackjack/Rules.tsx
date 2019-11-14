@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 
-const Rules: React.FC = memo(() => (
+const Rules: React.FC = React.memo(() => (
   <>
     <Typography variant="h5">
       Objective:

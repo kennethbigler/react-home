@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -34,7 +34,7 @@ const cache = new InMemoryCache();
  *            Loading  <-|->  ErrorMessage */
 const GraphQL: React.FC<GraphQLProps> = React.memo((props: GraphQLProps) => {
   const { gqlToken, stateActions } = props;
-  const [authToken, setAuthToken] = useState(gqlToken);
+  const [authToken, setAuthToken] = React.useState(gqlToken);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const token = e.target.value;

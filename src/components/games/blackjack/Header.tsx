@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import InfoPopup from '../../common/InfoPopup';
 import Rules from './Rules';
 import Help from './help';
 
-const Header: React.FC = memo(() => (
+const Header: React.FC = React.memo(() => (
   <div className="flex-container">
     <Typography variant="h2" gutterBottom>Blackjack (21)</Typography>
     <InfoPopup title="Blackjack Rules">

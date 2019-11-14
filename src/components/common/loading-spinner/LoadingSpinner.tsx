@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const containerStyles: React.CSSProperties = {
@@ -7,7 +7,7 @@ const containerStyles: React.CSSProperties = {
   marginTop: 40,
 };
 
-const LoadingSpinner = memo(() => (
+const LoadingSpinner = React.memo(() => (
   <CircularProgress size={100} style={containerStyles} />
 ));
 

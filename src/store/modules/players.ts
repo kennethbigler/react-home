@@ -95,13 +95,14 @@ export default function reducer(state: DBPlayer[] = initialState.players, action
       return updateObjectInArray(state, action.player, 'id');
     case PAY_PLAYER: {
       const { id, status, money } = action.player;
-
       const player = state.find((obj) => obj.id === id);
-      const playerMoney = (player && player.money) || 0;
 
-      const updatedPlayer = { ...player, money: (playerMoney + money), status };
-
-      return updateObjectInArray(state, updatedPlayer, 'id');
+      if (player !== undefined) {
+        const playerMoney = player.money || 0;
+        const updatedPlayer = { ...player, money: (playerMoney + money), status };
+        return updateObjectInArray(state, updatedPlayer, 'id');
+      }
+      return state;
     }
     case ADD:
       return insertItem(state, action.player);

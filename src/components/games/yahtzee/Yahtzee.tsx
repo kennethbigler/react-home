@@ -71,9 +71,6 @@ const getInitialState = (): YahtzeeState => ({
   }],
 });
 
-/* --------------------------------------------------
-* Home
-* -------------------------------------------------- */
 class Yahtzee extends React.Component<YahtzeeProps, YahtzeeState> {
   static getDerivedStateFromProps: React.GetDerivedStateFromProps<YahtzeeProps, YahtzeeState> = (_props, state) => {
     let { finalTopSum } = state;

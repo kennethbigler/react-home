@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 
 export interface CellProps {
@@ -9,7 +9,7 @@ export interface CellProps {
   colSpan?: number;
 }
 
-const Cell: React.FC<CellProps> = memo((props: CellProps) => {
+const Cell: React.FC<CellProps> = React.memo((props: CellProps) => {
   const {
     color, text, style, ...otherProps
   } = props;

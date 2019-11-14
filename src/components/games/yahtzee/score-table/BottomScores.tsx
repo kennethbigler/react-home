@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
@@ -8,7 +8,7 @@ interface BottomScoresProps {
   style: React.CSSProperties;
 }
 
-const BottomScores: React.FC<BottomScoresProps> = memo((props: BottomScoresProps) => {
+const BottomScores: React.FC<BottomScoresProps> = React.memo((props: BottomScoresProps) => {
   const { finalTopSum, bottomSum, style } = props;
 
   return (

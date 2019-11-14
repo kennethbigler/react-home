@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import { Typography } from '@material-ui/core';
 import { MaterialSelectEventHandler } from './types';
@@ -11,7 +11,7 @@ interface HeaderProps {
 
 const validId = RegExp('[A-Z]{4}-[a-zA-Z0-9]+');
 
-const Header: React.FC<HeaderProps> = memo((props: HeaderProps) => {
+const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
   const { handleIDChange, storyID, gitTheme } = props;
 
   const isIdValid = storyID && validId.test(storyID);

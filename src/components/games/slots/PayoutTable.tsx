@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -20,7 +20,7 @@ const payoutTable = [
   { symbol: SO.CHERRY, payout: 3 },
 ];
 
-const PayoutTable: React.FC<{}> = memo(() => (
+const PayoutTable: React.FC<{}> = React.memo(() => (
   <Table>
     <TableHead>
       <TableRow>

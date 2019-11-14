@@ -22,37 +22,34 @@ interface ScoreTableProps {
 const centerStyle: React.CSSProperties = { textAlign: 'center' };
 
 const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
-  const getScoreButton = (showButton: boolean, points: number, top: boolean, i: number): React.ReactNode => {
-    // eslint-disable-next-line react/prop-types
-    const { onTopScore, onBottomScore } = props;
-    return showButton
-      ? (
-        <Button
-          color="primary"
-          variant="outlined"
-          onClick={top
-            ? (): void => onTopScore(points, i)
-            : (): void => onBottomScore(points, i)}
-        >
-          {`Add ${points} Points`}
-        </Button>
-      ) : (
-        <Button
-          color="primary"
-          variant="outlined"
-          onClick={top
-            ? (): void => onTopScore(0, i)
-            : (): void => onBottomScore(0, i)}
-        >
-          0
-        </Button>
-      );
-  };
-
   const {
     bottom, bottomSum, finalTopSum, showScoreButtons,
-    top, topSum, values,
+    top, topSum, values, onTopScore, onBottomScore,
   } = props;
+
+  const getScoreButton = (showButton: boolean, points: number, wasTop: boolean, i: number): React.ReactNode => (
+    showButton ? (
+      <Button
+        color="primary"
+        variant="outlined"
+        onClick={wasTop
+          ? (): void => onTopScore(points, i)
+          : (): void => onBottomScore(points, i)}
+      >
+        {`Add ${points} Points`}
+      </Button>
+    ) : (
+      <Button
+        color="primary"
+        variant="outlined"
+        onClick={wasTop
+          ? (): void => onTopScore(0, i)
+          : (): void => onBottomScore(0, i)}
+      >
+          0
+      </Button>
+    )
+  );
 
   return (
     <Table size="small">

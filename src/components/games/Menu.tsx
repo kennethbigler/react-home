@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
 
@@ -6,7 +6,7 @@ interface MenuProps {
   onItemClick?: Function;
 }
 
-const Menu: React.FC<MenuProps> = memo((props: MenuProps) => {
+const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
   const { onItemClick } = props;
   const baseUrl = '/games';
 

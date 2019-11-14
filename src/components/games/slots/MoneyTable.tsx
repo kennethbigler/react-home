@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,7 +12,7 @@ interface MoneyTableProps {
   dealerMoney: number;
 }
 
-const MoneyTable: React.FC<MoneyTableProps> = memo(({ playerName, playerMoney, dealerMoney }: MoneyTableProps) => (
+const MoneyTable: React.FC<MoneyTableProps> = React.memo(({ playerName, playerMoney, dealerMoney }: MoneyTableProps) => (
   <Table>
     <TableHead>
       <TableRow>

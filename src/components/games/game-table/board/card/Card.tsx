@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import red from '@material-ui/core/colors/red';
 import { Typography } from '@material-ui/core';
 import styles from './Card.styles';
@@ -13,7 +13,7 @@ interface CardProps {
   suit: string;
 }
 
-const Card = memo((props: CardProps) => {
+const Card = React.memo((props: CardProps) => {
   const {
     dropped, suit, name, cardHandler,
     playerNo, handNo, cardNo,

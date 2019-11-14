@@ -4,7 +4,7 @@
  * get second card for dealer and hide it
  * buy insurance on dealer's Ace
  */
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import asyncForEach from '../../../helpers/asyncForEach';
@@ -54,7 +54,7 @@ interface PlayerStats {
 // Dealer constant
 const DEALER = 0;
 
-class BlackJack extends Component<BlackJackProps, BlackJackState> {
+class BlackJack extends React.Component<BlackJackProps, BlackJackState> {
   constructor(props: BlackJackProps) {
     super(props);
     this.setNewGameRedux();

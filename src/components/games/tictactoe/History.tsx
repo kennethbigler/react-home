@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import { getTurn } from './constants';
 
@@ -13,7 +13,7 @@ interface HistoryProps {
 }
 
 const History: React.FC<HistoryProps> = (props: HistoryProps) => {
-  const [ascend, setAscend] = useState(true);
+  const [ascend, setAscend] = React.useState(true);
   const { history, step, jumpToStep } = props;
 
   /** function that generates text for the history tracker */

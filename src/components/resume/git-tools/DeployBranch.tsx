@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -14,8 +14,8 @@ interface BranchNameProps {
   handleCopy: Function;
 }
 
-const BranchName: React.FC<BranchNameProps> = memo((props: BranchNameProps) => {
-  const [targetBranch, setTargetBranch] = useState('test-pipeline');
+const BranchName: React.FC<BranchNameProps> = React.memo((props: BranchNameProps) => {
+  const [targetBranch, setTargetBranch] = React.useState('test-pipeline');
 
   const handleSelect = (e: MaterialSelectEvent): void => {
     setTargetBranch(e.target.value as string);

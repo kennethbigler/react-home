@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Typography } from '@material-ui/core';
 
 export interface ClassProps {
@@ -6,7 +6,7 @@ export interface ClassProps {
   catalog?: string;
 }
 
-const Class: React.FC<ClassProps> = memo((props: ClassProps) => {
+const Class: React.FC<ClassProps> = React.memo((props: ClassProps) => {
   const { name, catalog } = props;
 
   return (

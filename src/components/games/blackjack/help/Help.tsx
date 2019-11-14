@@ -1,5 +1,5 @@
 // react
-import React, { memo } from 'react';
+import React from 'react';
 // material-ui
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -19,7 +19,7 @@ import BlackjackTable from './BlackjackTable';
 // Parents: blackjack/Header
 
 /* Help  ->  BlackJackTable  ->  Row  -->  Cell */
-const Help: React.FC = memo(() => {
+const Help: React.FC = React.memo(() => {
   // options
   const h: CellProps = { color: green[200], text: 'H' };
   const d: CellProps = { color: teal[200], text: 'D' };

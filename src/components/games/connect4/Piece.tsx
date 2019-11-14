@@ -1,4 +1,4 @@
-import React, { memo, MouseEventHandler } from 'react';
+import React from 'react';
 import ContentAdd from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import red from '@material-ui/core/colors/red';
@@ -7,11 +7,11 @@ import noop from '../../../apis/noop';
 
 interface PieceProps {
   enabled?: boolean;
-  onClick?: MouseEventHandler;
+  onClick?: React.MouseEventHandler;
   piece: number;
 }
 
-const Piece: React.FC<PieceProps> = memo((props: PieceProps) => {
+const Piece: React.FC<PieceProps> = React.memo((props: PieceProps) => {
   const { piece, enabled, onClick } = props;
 
   let color;

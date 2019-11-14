@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -9,7 +9,7 @@ interface HeaderProps {
   winner?: string;
 }
 
-const Header: React.FC<HeaderProps> = memo((props: HeaderProps) => {
+const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
   const { winner, turn, newGame } = props;
   // status text
   const status = winner ? `Winner: ${winner}` : `Turn: ${turn}`;

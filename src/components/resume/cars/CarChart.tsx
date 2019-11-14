@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import {
   ResponsiveContainer, LineChart, Line, XAxis, YAxis, Legend,
 } from 'recharts';
@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core/colors/';
 import muscleCars from '../../../constants/muscle-cars';
 
-const Cars = memo(() => (
+const Cars = React.memo(() => (
   <ResponsiveContainer width="100%" height={650}>
     <LineChart data={muscleCars}>
       <XAxis dataKey="year" interval="preserveStartEnd" />

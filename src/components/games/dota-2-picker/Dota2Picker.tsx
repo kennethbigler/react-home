@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import Button from '@material-ui/core/Button';
@@ -38,7 +38,7 @@ interface Dota2PickerState {
 
 /* Dota2Picker  ->  HeroSelection
  *             |->  Lineup */
-class Dota2Picker extends Component<Dota2PickerProps, Dota2PickerState> {
+class Dota2Picker extends React.Component<Dota2PickerProps, Dota2PickerState> {
   constructor(props: Dota2PickerProps) {
     super(props);
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import GameBoard from './GameBoard';
 import { Turn } from './types';
@@ -40,7 +40,7 @@ const getNewGame = (): Connect4State => ({
 
 /* Connect4  ->  GameBoard  ->  Header  ->  Piece
  *                         |->  Board   ->  Piece */
-export default class Connect4 extends Component<{}, Connect4State> {
+export default class Connect4 extends React.Component<{}, Connect4State> {
   constructor(props: {}) {
     super(props);
     this.state = getNewGame();

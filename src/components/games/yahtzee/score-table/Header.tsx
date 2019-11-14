@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
@@ -7,7 +7,7 @@ interface HeaderProps {
   style: React.CSSProperties;
 }
 
-const Header: React.FC<HeaderProps> = memo((props: HeaderProps) => (
+const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => (
   <TableHead>
     <TableRow>
       <TableCell>Minimum Required for Bonus</TableCell>

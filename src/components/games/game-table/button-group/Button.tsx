@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import MuiButton from '@material-ui/core/Button';
 import { PropTypes } from '@material-ui/core/';
 
@@ -10,7 +10,7 @@ export interface ButtonProps {
   name: string;
 }
 
-const Button: React.FC<ButtonProps> = memo(({ func, name }: ButtonProps) => (
+const Button: React.FC<ButtonProps> = React.memo(({ func, name }: ButtonProps) => (
   <MuiButton
     color={color}
     onClick={func}

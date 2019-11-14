@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import Typography from '@material-ui/core/Typography';
@@ -74,7 +74,7 @@ const getNewState = (): DNDState => ({
 /* DealOrNoDeal  ->  Header
  *              |->  Board  ->  Case
  *              |->  Modal  ->  Money */
-class DND extends Component<DNDProps, DNDState> {
+class DND extends React.Component<DNDProps, DNDState> {
   /** reset board and shuffle cases */
   constructor(props: DNDProps) {
     super(props);

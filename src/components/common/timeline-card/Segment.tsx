@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import grey from '@material-ui/core/colors/grey';
 import { withTheme, Theme } from '@material-ui/core/styles';
 import { SegmentType } from './types';
@@ -7,7 +7,7 @@ interface SegmentProps extends SegmentType {
   theme: Theme;
 }
 
-const Segment: React.FC<SegmentProps> = memo((props: SegmentProps) => {
+const Segment: React.FC<SegmentProps> = React.memo((props: SegmentProps) => {
   const {
     body, width, color, title, inverted,
     theme: { palette: { type }},
