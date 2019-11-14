@@ -52,6 +52,18 @@ export interface DBPlayer {
   bet: number;
 }
 
+// --------------------     slots     -------------------- //
+export enum DBSlotOptions {
+  EMPTY = ' ',
+  CHERRY = 'C',
+  BAR = '—',
+  DOUBLE_BAR = '=',
+  TRIPLE_BAR = 'Ξ',
+  SEVEN = '7',
+  JACKPOT = 'J',
+}
+export type DBSlotDisplay = [DBSlotOptions, DBSlotOptions, DBSlotOptions];
+
 // --------------------     theme     -------------------- //
 export interface DBUITheme {
   type: 'light' | 'dark';
@@ -74,4 +86,5 @@ export interface DBRootState {
   theme: DBUITheme;
   turn: DBTurn;
   yahtzee: number[];
+  slots: DBSlotDisplay[];
 }

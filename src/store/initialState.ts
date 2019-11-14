@@ -1,9 +1,10 @@
 import indigo from '@material-ui/core/colors/indigo';
 import deepOrange from '@material-ui/core/colors/deepOrange';
+import { pullHandle } from '../apis/SlotMachine';
 
 import {
   DBDota2Phase, DBDota2Turn, DBGit, DBPlayer,
-  DBUITheme, DBTurn, DBRootState,
+  DBUITheme, DBTurn, DBRootState, DBSlotDisplay,
 } from './types';
 
 // --------------------     helpers     -------------------- //
@@ -54,6 +55,7 @@ const players: DBPlayer[] = [
   newPlayer(6),
   newPlayer(0, 'Dealer', true),
 ];
+const slots: DBSlotDisplay[] = pullHandle();
 const theme: DBUITheme = {
   primary: indigo,
   secondary: deepOrange,
@@ -67,6 +69,7 @@ export default {
   git,
   gqlToken,
   players,
+  slots,
   theme,
   turn,
   yahtzee,

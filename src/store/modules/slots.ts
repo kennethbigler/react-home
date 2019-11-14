@@ -1,28 +1,34 @@
-import { AnyAction } from 'redux';
-import { SlotDisplay } from '../../apis/SlotMachine';
+import { AnyAction, Dispatch } from 'redux';
+import { DBSlotDisplay } from '../types';
 import initialState from '../initialState';
+import SlotMachine from '../../apis/SlotMachine';
+import { payout } from './players';
 
 // --------------------     Actions     -------------------- //
 const UPDATE = 'casino/slots/UPDATE';
 
 // -------------------- Action Creators     -------------------- //
-export const pullHandle = (reel: SlotDisplay[]): AnyAction => ({ type: UPDATE });
+export const updateSlots = (reel: DBSlotDisplay[]): AnyAction => ({ type: UPDATE, reel });
 
 // --------------------     Reducers     -------------------- //
-export default function reducer(state: number[] = initialState.yahtzee, action: AnyAction): number[] {
+export default function reducer(state: DBSlotDisplay[] = initialState.slots, action: AnyAction): DBSlotDisplay[] {
   switch (action.type) {
     case UPDATE:
-      return [...state, action.score];
+      return [...action.reel];
     default:
       return state;
   }
 }
 
 // --------------------     Thunks     -------------------- //
-export function updateSlotMachine(id: number, dealerId: number, bet: number) {
-  return (dispatch: Function): Promise<void> => {
-    // do something here
-    const test = id;
-    return new Promise();
+export function updateDBSlotMachine(id: number, dealerId: number, bet: number) {
+  return (dispatch: Function): Promise<[Dispatch, Dispatch, Dispatch]> => {
+    const reel = SlotMachine.pullHandle();
+    const exchange = SlotMachine.getPayout(reel, bet) - bet;
+
+    const promise1 = dispatch(payout(id, 'win', exchange));
+    const promise2 = dispatch(payout(dealerId, 'win', -exchange));
+    const promise3 = dispatch(updateSlots(reel));
+    return Promise.all([promise1, promise2, promise3]);
   };
 }

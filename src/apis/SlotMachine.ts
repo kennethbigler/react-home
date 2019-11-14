@@ -1,15 +1,7 @@
-export enum SlotOptions {
-  EMPTY = ' ',
-  CHERRY = 'C',
-  BAR = '—',
-  DOUBLE_BAR = '=',
-  TRIPLE_BAR = 'Ξ',
-  SEVEN = '7',
-  JACKPOT = 'J',
-}
-export type SlotDisplay = [SlotOptions, SlotOptions, SlotOptions];
+import { DBSlotDisplay, DBSlotOptions as SO } from '../store/types';
+
 interface Reel {
-  symbol: SlotOptions;
+  symbol: SO;
   start: number;
   stop: number;
 }
@@ -18,33 +10,33 @@ const NUM_REELS = 3;
 
 /** options to be displayed on slot machine */
 const reels: Reel[] = [
-  { symbol: SlotOptions.CHERRY, start: 1, stop: 2 },
-  { symbol: SlotOptions.EMPTY, start: 3, stop: 7 },
-  { symbol: SlotOptions.BAR, start: 8, stop: 12 },
-  { symbol: SlotOptions.EMPTY, start: 13, stop: 17 },
-  { symbol: SlotOptions.SEVEN, start: 18, stop: 25 },
-  { symbol: SlotOptions.EMPTY, start: 26, stop: 30 },
-  { symbol: SlotOptions.BAR, start: 31, stop: 35 },
-  { symbol: SlotOptions.EMPTY, start: 36, stop: 41 },
-  { symbol: SlotOptions.CHERRY, start: 42, stop: 43 },
-  { symbol: SlotOptions.EMPTY, start: 44, stop: 49 },
-  { symbol: SlotOptions.DOUBLE_BAR, start: 50, stop: 56 },
-  { symbol: SlotOptions.EMPTY, start: 57, stop: 62 },
-  { symbol: SlotOptions.CHERRY, start: 63, stop: 63 },
-  { symbol: SlotOptions.EMPTY, start: 64, stop: 69 },
-  { symbol: SlotOptions.DOUBLE_BAR, start: 70, stop: 75 },
-  { symbol: SlotOptions.EMPTY, start: 76, stop: 81 },
-  { symbol: SlotOptions.BAR, start: 82, stop: 87 },
-  { symbol: SlotOptions.EMPTY, start: 88, stop: 93 },
-  { symbol: SlotOptions.TRIPLE_BAR, start: 94, stop: 104 },
-  { symbol: SlotOptions.EMPTY, start: 105, stop: 115 },
-  { symbol: SlotOptions.JACKPOT, start: 116, stop: 117 },
-  { symbol: SlotOptions.EMPTY, start: 118, stop: 128 },
+  { symbol: SO.CHERRY, start: 1, stop: 2 },
+  { symbol: SO.EMPTY, start: 3, stop: 7 },
+  { symbol: SO.BAR, start: 8, stop: 12 },
+  { symbol: SO.EMPTY, start: 13, stop: 17 },
+  { symbol: SO.SEVEN, start: 18, stop: 25 },
+  { symbol: SO.EMPTY, start: 26, stop: 30 },
+  { symbol: SO.BAR, start: 31, stop: 35 },
+  { symbol: SO.EMPTY, start: 36, stop: 41 },
+  { symbol: SO.CHERRY, start: 42, stop: 43 },
+  { symbol: SO.EMPTY, start: 44, stop: 49 },
+  { symbol: SO.DOUBLE_BAR, start: 50, stop: 56 },
+  { symbol: SO.EMPTY, start: 57, stop: 62 },
+  { symbol: SO.CHERRY, start: 63, stop: 63 },
+  { symbol: SO.EMPTY, start: 64, stop: 69 },
+  { symbol: SO.DOUBLE_BAR, start: 70, stop: 75 },
+  { symbol: SO.EMPTY, start: 76, stop: 81 },
+  { symbol: SO.BAR, start: 82, stop: 87 },
+  { symbol: SO.EMPTY, start: 88, stop: 93 },
+  { symbol: SO.TRIPLE_BAR, start: 94, stop: 104 },
+  { symbol: SO.EMPTY, start: 105, stop: 115 },
+  { symbol: SO.JACKPOT, start: 116, stop: 117 },
+  { symbol: SO.EMPTY, start: 118, stop: 128 },
 ];
 
 /** prepare the slot machine */
-function prepareSlotMachine(): SlotDisplay[] {
-  const machine: SlotDisplay[] = [];
+function prepareSlotMachine(): DBSlotDisplay[] {
+  const machine: DBSlotDisplay[] = [];
   reels.forEach((reel: Reel, i: number) => {
     // wrap the reels
     const prev = i - 1 > 0 ? i - 1 : reels.length - 1;
@@ -60,12 +52,12 @@ function prepareSlotMachine(): SlotDisplay[] {
 const machine = prepareSlotMachine();
 
 /** spin the slot machine and get a result */
-function spin(): SlotDisplay {
+function spin(): DBSlotDisplay {
   return machine[Math.floor(Math.random() * machine.length)];
 }
 
 /** Pull the slot machine handle, returns info needed for display */
-const pullHandle = (): SlotDisplay[] => {
+export const pullHandle = (): DBSlotDisplay[] => {
   const reel = [];
   for (let i = 0; i < NUM_REELS; i += 1) {
     reel[i] = spin();
@@ -74,9 +66,9 @@ const pullHandle = (): SlotDisplay[] => {
 };
 
 /** evaluate slot machine based of 3 reels */
-const getPayout = (reel: SlotDisplay[], bet: number): number => {
+export const getPayout = (reel: DBSlotDisplay[], bet: number): number => {
   // for bar check
-  const bars = [SlotOptions.BAR, SlotOptions.DOUBLE_BAR, SlotOptions.TRIPLE_BAR];
+  const bars = [SO.BAR, SO.DOUBLE_BAR, SO.TRIPLE_BAR];
   // get reel values
   const r0 = reel[0][1];
   const r1 = reel[1][1];
@@ -88,17 +80,17 @@ const getPayout = (reel: SlotDisplay[], bet: number): number => {
   // if we have 3 of a kind
   if (m01 && m02) {
     switch (r0) {
-      case SlotOptions.JACKPOT:
+      case SO.JACKPOT:
         return 1666 * bet;
-      case SlotOptions.SEVEN:
+      case SO.SEVEN:
         return 300 * bet;
-      case SlotOptions.TRIPLE_BAR:
+      case SO.TRIPLE_BAR:
         return 100 * bet;
-      case SlotOptions.DOUBLE_BAR:
+      case SO.DOUBLE_BAR:
         return 50 * bet;
-      case SlotOptions.BAR:
+      case SO.BAR:
         return 25 * bet;
-      case SlotOptions.CHERRY:
+      case SO.CHERRY:
         return 12 * bet;
       default:
         return 0;
@@ -106,10 +98,10 @@ const getPayout = (reel: SlotDisplay[], bet: number): number => {
   } else if (bars.includes(r0) && bars.includes(r1) && bars.includes(r2)) {
     // if we have 3 of any bar
     return 12 * bet;
-  } else if (fReel.includes(SlotOptions.CHERRY, fReel.indexOf(SlotOptions.CHERRY) + 1)) {
+  } else if (fReel.includes(SO.CHERRY, fReel.indexOf(SO.CHERRY) + 1)) {
     // if we have 2 cherries
     return 6 * bet;
-  } else if (fReel.includes(SlotOptions.CHERRY)) {
+  } else if (fReel.includes(SO.CHERRY)) {
     // if we have 1 cherry
     return 3 * bet;
   }

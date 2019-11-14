@@ -4,10 +4,10 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import { SlotDisplay } from '../../../apis/SlotMachine';
+import { DBSlotDisplay } from '../../../store/types';
 
 interface ReelDisplayProps {
-  reel: SlotDisplay[];
+  reel: DBSlotDisplay[];
 }
 
 const cellStyles: React.CSSProperties = {
