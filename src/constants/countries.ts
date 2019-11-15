@@ -10,9 +10,7 @@ interface Country {
   continent: string;
   flag: string;
 }
-export interface Countries {
-  [name: string]: Country;
-}
+export type Countries = Record<string, Country>;
 
 const countries: Countries = {
   Austria: { color: deepOrange[500], continent: 'EU', flag: '🇦🇹' },

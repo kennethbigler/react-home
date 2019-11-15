@@ -2,7 +2,7 @@ import sortBy from 'lodash/sortBy';
 import { ATR, DBDota2Hero } from '../store/types';
 
 export type Alphabet = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z';
-type DotaHistogram = { [name in Alphabet]: DBDota2Hero[] };
+type DotaHistogram = Record<Alphabet, DBDota2Hero[]>;
 
 export const heroes: DBDota2Hero[] = [
   { name: 'Abaddon', selected: false, attribute: ATR.STR },

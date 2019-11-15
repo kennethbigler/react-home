@@ -6,12 +6,8 @@ import {
   teal, yellow,
 } from '@material-ui/core/colors/';
 
-export interface PokerScoreEntry {
-  [name: string]: number;
-}
-export interface PokerColorEntry {
-  [name: string]: string;
-}
+export type PokerScoreEntry = Record<string, number>;
+export type PokerColorEntry = Record<string, string>;
 
 export const pennyPokerScores: PokerScoreEntry[] = [
   {

@@ -13,7 +13,7 @@
  * Explanation: 1 _ _ 1 2 0 _ 2 1
  */
 function doTasks(tasks: number[], cooldown: number): number {
-  const lastRunMap: { [name: number]: number } = {};
+  const lastRunMap: Record<number, number> = {};
   let ans = 0;
   // let debug = '';
   let currentTime = 0;
@@ -54,7 +54,7 @@ doTasks([1, 1, 3, 2, 1, 2, 1], 3);
  */
 function isAmbigram1(nums: number[]): boolean {
   // create map
-  const flip: { [name: number]: number } = {
+  const flip: Record<number, number> = {
     0: 0,
     1: 1,
     6: 9,
@@ -93,7 +93,7 @@ isAmbigram1([1, 6, 1]);
  */
 function isAmbigram2(word: string): boolean {
   // create map
-  const flip: { [name: string]: string[] } = {
+  const flip: Record<string, string[]> = {
     0: ['0'],
     1: ['1'],
     2: ['5'],
@@ -401,7 +401,7 @@ const romanToInt = (str: string): number => {
   const characters = str.split('');
   // Symbol I  V  X   L   C    D    M
   // Value  1  5  10  50  100  500  1,000
-  const romanMap: { [name: string]: number } = {
+  const romanMap: Record<string, number> = {
     M: 1000,
     D: 500,
     C: 100,
