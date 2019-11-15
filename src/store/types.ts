@@ -13,6 +13,25 @@ export interface DBConnect4 {
   turn: C4Turn;
 }
 
+// --------------------     dnd     -------------------- //
+export interface Briefcase {
+  on: boolean;
+  loc: number;
+  val: number;
+}
+export interface DBDND {
+  board: Briefcase[];
+  turn: number;
+  playerChoice?: Briefcase;
+  casesToOpen: number;
+  sum: number;
+  numCases: number;
+  offer: number;
+  dndOpen: boolean;
+  isOver: boolean;
+}
+export const briefcasesToOpen = 6;
+
 // --------------------     dota2     -------------------- //
 export enum ATR {
   STR = 'Strength',
@@ -118,6 +137,7 @@ export interface DBYahtzee {
 // --------------------     z-root     -------------------- //
 export interface DBRootState {
   connect4: DBConnect4;
+  dnd: DBDND;
   dota2: DBDota2Phase[][];
   git: DBGit;
   gqlToken: string;

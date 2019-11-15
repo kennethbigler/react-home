@@ -1,4 +1,4 @@
-import { AnyAction } from 'redux';
+import { Action, AnyAction } from 'redux';
 import { C4Turn, DBConnect4 } from '../types';
 import initialState, { newConnect4Game } from '../initialState';
 
@@ -8,7 +8,7 @@ const UPDATE_TURN = 'casino/ticTacToe/UPDATE_TURN';
 const UPDATE_EVAL = 'casino/ticTacToe/UPDATE_EVAL';
 
 // -------------------- Action Creators     -------------------- //
-export const newGame = (): AnyAction => ({ type: NEW_GAME });
+export const newGame = (): Action => ({ type: NEW_GAME });
 export const updateTurn = (turn: C4Turn): AnyAction => ({ type: UPDATE_TURN, turn });
 export const updateEval = (winner: number, board: number[][]): AnyAction => ({ type: UPDATE_EVAL, winner, board });
 

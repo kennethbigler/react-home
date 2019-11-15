@@ -1,6 +1,7 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
-import Case, { Briefcase } from './Case';
+import Case from './Case';
+import { Briefcase } from '../../../store/types';
 
 interface BoardProps {
   board: Briefcase[];

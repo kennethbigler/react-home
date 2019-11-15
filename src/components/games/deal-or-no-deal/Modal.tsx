@@ -6,7 +6,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Money from './Money';
 import { getMoneyText } from './helpers';
-import { Briefcase } from './Case';
+import { Briefcase } from '../../../store/types';
 
 interface ModalProps {
   board: Briefcase[];

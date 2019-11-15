@@ -1,12 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { getMoneyText } from './helpers';
+import { Briefcase } from '../../../store/types';
 
-export interface Briefcase {
-  on: boolean;
-  loc: number;
-  val: number;
-}
 interface CaseProps {
   briefcase: Briefcase;
   onClick: React.MouseEventHandler;

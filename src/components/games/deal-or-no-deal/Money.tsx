@@ -3,7 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import amber from '@material-ui/core/colors/amber';
 import grey from '@material-ui/core/colors/grey';
 import { getMoneyText } from './helpers';
-import { Briefcase } from './Case';
+import { Briefcase } from '../../../store/types';
 
 interface MoneyProps {
   briefcase: Briefcase;

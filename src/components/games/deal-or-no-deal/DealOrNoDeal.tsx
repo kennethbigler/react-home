@@ -5,267 +5,157 @@ import Typography from '@material-ui/core/Typography';
 import Modal from './Modal';
 import Board from './Board';
 import Header from './Header';
-import { shuffle } from './helpers';
-import { payout } from '../../../store/modules/players';
-import { DBRootState, DBPlayer } from '../../../store/types';
-import { Briefcase } from './Case';
+import {
+  newGame, setOpenCase, setOpenOffer, setNoDeal, setFinishGame, setPlayerChoice,
+} from '../../../store/modules/dnd';
+import {
+  DBRootState, DBPlayer, DBDND, briefcasesToOpen,
+} from '../../../store/types';
 
-interface ActionsProp {
-  payout: Function;
+interface DNDActions {
+  newGame: Function;
+  setOpenOffer: Function;
+  setOpenCase: Function;
+  setNoDeal: Function;
+  setFinishGame: Function;
+  setPlayerChoice: Function;
 }
-interface DNDProps {
-  actions: ActionsProp;
+interface DNDReduxState extends DBDND {
   player: DBPlayer;
 }
-interface DNDState {
-  board: Briefcase[];
-  turn: number;
-  playerChoice?: Briefcase;
-  casesToOpen: number;
-  sum: number;
-  numCases: number;
-  offer: number;
-  dndOpen: boolean;
-  isOver: boolean;
+interface DNDProps extends DNDReduxState {
+  dndActions: DNDActions;
 }
-
-const OPEN = 6;
-
-const getNewState = (): DNDState => ({
-  board: [
-    { val: 1, loc: 1, on: true },
-    { val: 2, loc: 2, on: true },
-    { val: 5, loc: 3, on: true },
-    { val: 10, loc: 4, on: true },
-    { val: 25, loc: 5, on: true },
-    { val: 50, loc: 6, on: true },
-    { val: 75, loc: 7, on: true },
-    { val: 100, loc: 8, on: true },
-    { val: 200, loc: 9, on: true },
-    { val: 300, loc: 10, on: true },
-    { val: 400, loc: 11, on: true },
-    { val: 500, loc: 12, on: true },
-    { val: 750, loc: 13, on: true },
-    { val: 1000, loc: 14, on: true },
-    { val: 5000, loc: 15, on: true },
-    { val: 10000, loc: 16, on: true },
-    { val: 25000, loc: 17, on: true },
-    { val: 50000, loc: 18, on: true },
-    { val: 75000, loc: 19, on: true },
-    { val: 100000, loc: 20, on: true },
-    { val: 200000, loc: 21, on: true },
-    { val: 300000, loc: 22, on: true },
-    { val: 400000, loc: 23, on: true },
-    { val: 500000, loc: 24, on: true },
-    { val: 750000, loc: 25, on: true },
-    { val: 1000000, loc: 26, on: true },
-  ],
-  turn: 1,
-  playerChoice: undefined,
-  casesToOpen: OPEN,
-  sum: 0,
-  numCases: 0,
-  offer: 0,
-  dndOpen: false,
-  isOver: false,
-});
 
 // TODO: add rules to page
 /* DealOrNoDeal  ->  Header
  *              |->  Board  ->  Case
  *              |->  Modal  ->  Money */
-class DND extends React.Component<DNDProps, DNDState> {
-  /** reset board and shuffle cases */
-  constructor(props: DNDProps) {
-    super(props);
-
-    this.state = this.prepareNewGameState();
-  }
-
-  /** check if it is time for an offer */
-  componentDidUpdate(): void {
-    const { casesToOpen } = this.state;
-    if (casesToOpen === 0) {
-      setTimeout(this.handleOpen, 300);
-    }
-  }
+const DND: React.FC<DNDProps> = (props: DNDProps) => {
+  const {
+    board,
+    dndOpen,
+    isOver,
+    offer,
+    player,
+    playerChoice,
+    casesToOpen,
+    numCases,
+    sum,
+    turn,
+  } = props;
 
   /** function to generate the bank offer */
-  getBankOffer = (): number => {
-    const { sum, numCases, turn } = this.state;
-    // return offer from the bank
-    return Math.round((sum / numCases) * (turn / 10));
-  };
+  const getBankOffer = (): number => Math.round((sum / numCases) * (turn / 10));
 
-  /** charge user to play
-   * NOTE: avg (Expected win value) is 131477.62 / 1k = $132
-   */
-  chargePlayer = (): void => {
-    const { player, actions } = this.props;
-    actions.payout(player.id, 'lose', -100);
-  };
-
-  /** open a briefcase and update global states
-   * NOTE: udpates sum, numCases, board, casesToOpen
-   */
-  openBriefcase = (x: number): void => {
-    // state vars
-    const { board, playerChoice: pc } = this.state;
+  /** open a briefcase and update global status
+   * NOTE: udpates sum, numCases, board, casesToOpen */
+  const openBriefcase = (x: number): void => {
+    const { dndActions } = props;
     const bc = board[x];
     // check if player has already made case selection
-    if (pc) {
-      // state vars
-      const { isOver } = this.state;
-      let { sum, numCases, casesToOpen } = this.state;
+    if (playerChoice) {
       // verify cases left and briefcase not already opened
-      if (!isOver && casesToOpen > 0 && bc.loc !== pc.loc && bc.on) {
+      if (!isOver && casesToOpen > 0 && bc.loc !== playerChoice.loc && bc.on) {
         // flag the value and update global trackers
         bc.on = false;
-        sum -= bc.val;
-        numCases -= 1;
-        casesToOpen -= 1;
-        // update state
-        this.setState({
-          board,
-          sum,
-          numCases,
-          casesToOpen,
-        });
+        // update board
+        dndActions.setOpenCase(board, sum - bc.val, numCases - 1, casesToOpen - 1);
       }
     } else {
-      this.setState({ playerChoice: bc });
-      this.chargePlayer();
+      dndActions.setPlayerChoice(player.id, bc);
     }
   };
 
-  handleOpen = (): void => {
-    const { turn } = this.state;
+  const handleOpen = (): void => {
+    const { dndActions } = props;
     // get the new offer
-    const offer = this.getBankOffer();
+    const newOffer = getBankOffer();
     // reset the counter
-    const casesToOpen = turn < OPEN - 1 ? OPEN - turn : 1;
-    this.setState({ offer, casesToOpen, dndOpen: true });
+    const newCasesToOpen = turn < briefcasesToOpen - 1 ? briefcasesToOpen - turn : 1;
+    dndActions.setOpenOffer(newOffer, newCasesToOpen);
   };
 
-  /** function to get a new game state */
-  prepareNewGameState = (): DNDState => {
-    const state = getNewState();
-    // mix up board
-    shuffle(state.board);
-    // set all flags to un-touched
-    state.board.forEach((bc) => {
-      // get sum and count of cases remaining
-      state.sum += bc.val;
-      state.numCases += 1;
-      // reset opened flag
-      bc.on = true;
-    });
-    // sort function for the briefcases
-    state.board.sort((a, b) => a.loc - b.loc);
-
-    return state;
-  }
-
-  /** function to reset the game
-   * NOTE: reset entire state
-   */
-  newGame = (): void => {
-    const state = this.prepareNewGameState();
-    // update state
-    this.setState(state);
+  /** function to reset the game */
+  const newDNDGame = (): void => {
+    const { dndActions } = props;
+    dndActions.newGame();
   };
 
   /** function to finish the game
-   * NOTE: payout to user offer / 1k
-   */
-  finishGame = (offer: number): void => {
-    const { player, actions } = this.props;
-    actions.payout(player.id, 'win', Math.round(offer / 1000));
-    this.setState({ dndOpen: false, isOver: true, offer });
+   * NOTE: payout to user offer / 1k */
+  const finishGame = (finalOffer: number): void => {
+    const { dndActions } = props;
+    dndActions.setFinishGame(player.id, finalOffer);
   };
 
   /** called on selection of Deal */
-  deal = (): void => {
-    const { offer } = this.state;
-    this.finishGame(offer);
-  };
+  const deal = (): void => finishGame(offer);
 
   /** called on selection of No Deal
-   * NOTE: update turn, casesToOpen
-   */
-  noDeal = (): void => {
-    const { turn, numCases, playerChoice } = this.state;
+   * NOTE: update turn, casesToOpen */
+  const noDeal = (): void => {
+    const { dndActions } = props;
     // no deal on last case
     if (numCases <= 2) {
-      this.finishGame(playerChoice ? playerChoice.val : -1);
+      finishGame(playerChoice ? playerChoice.val : -1);
+    } else {
+      // advance the turn
+      dndActions.setNoDeal(turn);
     }
-    // advance the turn and update state
-    this.setState({ dndOpen: false, turn: turn + 1 });
   };
 
-  /**
-   * called on selection of 'Other Case'
-   * @param {number} offer - case value
-   */
-  swap = (): void => {
-    const { board, playerChoice: pc } = this.state;
+  const swap = (): void => {
     for (let i = 0; i < board.length; i += 1) {
       const bc = board[i];
-      if (bc.on && pc && bc.loc !== pc.loc) {
-        this.finishGame(bc.val);
+      if (bc.on && playerChoice && bc.loc !== playerChoice.loc) {
+        finishGame(bc.val);
         return;
       }
     }
   };
 
-  render(): React.ReactNode {
-    const {
-      board,
-      dndOpen,
-      isOver,
-      offer,
-      playerChoice,
-      casesToOpen,
-      numCases,
-    } = this.state;
-    const { player } = this.props;
-    // render component
-    return (
-      <>
-        <Typography variant="h2" gutterBottom>Deal or No Deal</Typography>
-        <Header
-          casesToOpen={casesToOpen}
-          isOver={isOver}
-          newGame={this.newGame}
-          offer={offer}
-          player={player}
-          playerChoice={playerChoice}
-        />
-        <Board
-          board={board}
-          onClick={this.openBriefcase}
-          playerChoice={playerChoice}
-        />
-        <Modal
-          board={board}
-          deal={this.deal}
-          noDeal={this.noDeal}
-          numCases={numCases}
-          offer={offer}
-          open={dndOpen}
-          swap={this.swap}
-        />
-      </>
-    );
-  }
-}
+  // check if it is time for an offer
+  casesToOpen === 0 && setTimeout(handleOpen, 300);
+
+  return (
+    <>
+      <Typography variant="h2" gutterBottom>Deal or No Deal</Typography>
+      <Header
+        casesToOpen={casesToOpen}
+        isOver={isOver}
+        newGame={newDNDGame}
+        offer={offer}
+        player={player}
+        playerChoice={playerChoice}
+      />
+      <Board
+        board={board}
+        onClick={openBriefcase}
+        playerChoice={playerChoice}
+      />
+      <Modal
+        board={board}
+        deal={deal}
+        noDeal={noDeal}
+        numCases={numCases}
+        offer={offer}
+        open={dndOpen}
+        swap={swap}
+      />
+    </>
+  );
+};
 
 // react-redux export
-const mapStateToProps = (state: DBRootState): { player: DBPlayer } => ({
+const mapStateToProps = (state: DBRootState): DNDReduxState => ({
+  ...state.dnd,
   player: state.players[0],
 });
-const mapDispatchToProps = (dispatch: Dispatch): { actions: ActionsProp } => ({
-  actions: bindActionCreators({ payout }, dispatch),
+const mapDispatchToProps = (dispatch: Dispatch): { dndActions: DNDActions } => ({
+  dndActions: bindActionCreators({
+    newGame, setOpenOffer, setOpenCase, setNoDeal, setFinishGame, setPlayerChoice,
+  }, dispatch),
 });
 export default connect(
   mapStateToProps,

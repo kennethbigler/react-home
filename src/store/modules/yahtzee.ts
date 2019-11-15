@@ -1,4 +1,4 @@
-import { AnyAction } from 'redux';
+import { Action, AnyAction } from 'redux';
 import initialState, { newYahtzee } from '../initialState';
 import { DBYahtzee, Dice } from '../types';
 
@@ -13,9 +13,9 @@ const UPDATE_ROLL = 'casino/yahtzee/UPDATE_ROLL';
 
 // -------------------- Action Creators     -------------------- //
 export const addScore = (score: number): AnyAction => ({ type: ADD, score });
-export const newGame = (): AnyAction => ({ type: NEW_GAME });
+export const newGame = (): Action => ({ type: NEW_GAME });
 export const diceClick = (values: Dice[], saved: Dice[]): AnyAction => ({ type: DICE_CLICK, values, saved });
-export const nextRoll = (): AnyAction => ({ type: NEXT_ROLL });
+export const nextRoll = (): Action => ({ type: NEXT_ROLL });
 export const updateTop = (topScores: number[]): AnyAction => ({ type: UPDATE_TOP, topScores });
 export const updateBottom = (bottomScores: number[]): AnyAction => ({ type: UPDATE_BOTTOM, bottomScores });
 export const updateRoll = (values: Dice[], saved: Dice[], roll: Dice, showScoreButtons = false): AnyAction => ({
