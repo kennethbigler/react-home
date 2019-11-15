@@ -26,9 +26,9 @@ const dateHelper = (date?: DateObj | string): DateObj => {
   }
   if (typeof date === 'string') {
     const [y, m, d] = date.split('-');
-    year = parseInt(y, 10);
-    month = parseInt(m, 10) || 1;
-    day = parseInt(d, 10) || 1;
+    year = Number(y);
+    month = Number(m) || 1;
+    day = Number(d) || 1;
   } else {
     const now = new Date();
     year = now.getFullYear();

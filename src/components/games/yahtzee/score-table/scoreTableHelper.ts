@@ -69,7 +69,7 @@ export const canYahtzeeBonus = (values: Dice[], top: TopGameScore[]): boolean =>
   values.reduce(getHistogram(), {} as DiceHistogram),
 ).reduce(
   (acc: boolean, [key, value]) => {
-    if (value === 5 && top[parseInt(key, 10) - 1].score >= 0) {
+    if (value === 5 && top[Number(key) - 1].score >= 0) {
       return true;
     }
     return acc;

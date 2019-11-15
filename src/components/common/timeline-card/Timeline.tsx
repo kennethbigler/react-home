@@ -138,8 +138,8 @@ const Timeline: React.FC<TimelineProps> = (props: TimelineProps) => {
 
   const getYearMarkers = React.useCallback(
     (): SegmentType[] => {
-      const startYear = parseInt(start.format('YYYY'), 10);
-      const endYear = parseInt(end.format('YYYY'), 10);
+      const startYear = Number(start.format('YYYY'));
+      const endYear = Number(end.format('YYYY'));
 
       const years = [];
       for (let year = startYear + 1; year <= endYear; year += 1) {
