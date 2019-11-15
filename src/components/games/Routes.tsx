@@ -17,7 +17,6 @@ const GameHome = lazyWithPreload(import(/* webpackChunkName: "g_home" */ './Home
 const BlackJack = lazyWithPreload(import(/* webpackChunkName: "g_bj" */ './blackjack'));
 const Connect4 = lazyWithPreload(import(/* webpackChunkName: "g_connect4" */ './connect4'));
 const DealOrNoDeal = lazyWithPreload(import(/* webpackChunkName: "g_dond" */ './deal-or-no-deal'));
-const Dota2Picker = lazyWithPreload(import(/* webpackChunkName: "g_d2p" */ './dota-2-picker'));
 const Poker = lazyWithPreload(import(/* webpackChunkName: "g_poker" */ './poker'));
 const Slots = lazyWithPreload(import(/* webpackChunkName: "g_slots" */ './slots'));
 const TicTacToe = lazyWithPreload(import(/* webpackChunkName: "g_tictactoe" */ './tictactoe'));
@@ -31,7 +30,6 @@ const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
     { name: 'blackjack', component: BlackJack },
     { name: 'connect4', component: Connect4 },
     { name: 'deal', component: DealOrNoDeal },
-    { name: 'dota2', component: Dota2Picker },
     { name: 'poker', component: Poker },
     { name: 'slots', component: Slots },
     { name: 'tictactoe', component: TicTacToe },

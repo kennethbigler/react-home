@@ -3,7 +3,7 @@ import deepOrange from '@material-ui/core/colors/deepOrange';
 import { pullHandle } from '../apis/SlotMachine';
 
 import {
-  DBDota2Phase, DBDota2Turn, DBGit, DBPlayer,
+  DBGit, DBPlayer,
   DBUITheme, DBTurn, DBRootState, DBSlotDisplay,
   DBTicTacToe, DBConnect4, C4Turn, DBYahtzee, DBDND,
   briefcasesToOpen, Briefcase,
@@ -85,24 +85,6 @@ export const newDNDGame = (): DBDND => {
   return state;
 };
 
-// dota 2
-const newDota2Phase = (name: string, radiant: DBDota2Turn, dire: DBDota2Turn): DBDota2Phase => ({
-  name, radiant: { ...radiant }, dire: { ...dire },
-});
-export const newDota2Lineup = (): DBDota2Phase[] => [...[
-  newDota2Phase('Ban 1', { number: 1 }, { number: 2 }),
-  newDota2Phase('Ban 2', { number: 3 }, { number: 4 }),
-  newDota2Phase('Ban 3', { number: 5 }, { number: 6 }),
-  newDota2Phase('Pick 1', { number: 7 }, { number: 8 }),
-  newDota2Phase('Pick 2', { number: 10 }, { number: 9 }),
-  newDota2Phase('Ban 4', { number: 11 }, { number: 12 }),
-  newDota2Phase('Ban 5', { number: 13 }, { number: 14 }),
-  newDota2Phase('Pick 3', { number: 16 }, { number: 15 }),
-  newDota2Phase('Pick 4', { number: 18 }, { number: 17 }),
-  newDota2Phase('Ban 6', { number: 20 }, { number: 19 }),
-  newDota2Phase('Pick 5', { number: 21 }, { number: 22 }),
-]];
-
 // player
 export const newPlayer = (id: number, name = 'Bot', isBot = true): DBPlayer => ({
   id,
@@ -139,7 +121,6 @@ export const newYahtzee = (): Omit<DBYahtzee, 'scores'> => ({
 // --------------------     initial states     -------------------- //
 const connect4 = newConnect4Game();
 const dnd = newDNDGame();
-const dota2 = [newDota2Lineup()];
 const git: DBGit = {
   storyID: '',
   branchMessage: '',
@@ -171,7 +152,6 @@ const yahtzee: DBYahtzee = { ...newYahtzee(), scores: []};
 export default {
   connect4,
   dnd,
-  dota2,
   git,
   gqlToken,
   players,

@@ -32,28 +32,6 @@ export interface DBDND {
 }
 export const briefcasesToOpen = 6;
 
-// --------------------     dota2     -------------------- //
-export enum ATR {
-  STR = 'Strength',
-  AGI = 'Agility',
-  INT = 'Intelligence',
-}
-export default ATR;
-export interface DBDota2Hero {
-  name: string;
-  selected: boolean | string;
-  attribute: ATR;
-}
-export interface DBDota2Turn {
-  number: number;
-  selection?: string;
-}
-export interface DBDota2Phase {
-  name: string;
-  radiant: DBDota2Turn;
-  dire: DBDota2Turn;
-}
-
 // --------------------     git     -------------------- //
 export interface DBGit {
   storyID: string;
@@ -138,7 +116,6 @@ export interface DBYahtzee {
 export interface DBRootState {
   connect4: DBConnect4;
   dnd: DBDND;
-  dota2: DBDota2Phase[][];
   git: DBGit;
   gqlToken: string;
   players: DBPlayer[];
