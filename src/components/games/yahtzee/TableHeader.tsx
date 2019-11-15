@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { Dice } from './types';
+import { Dice } from '../../../store/types';
 
 interface TableHeaderProps {
   roll: Dice;

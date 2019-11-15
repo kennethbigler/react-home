@@ -101,7 +101,21 @@ export interface DBTurn {
   hand: number;
 }
 
-// --------------------     turn     -------------------- //
+// --------------------     yahtzee     -------------------- //
+export type Dice = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export interface DBYahtzee {
+  roll: Dice;
+  values: Dice[];
+  saved: Dice[];
+  turn: number;
+  showScoreButtons: boolean;
+  hasScored: boolean;
+  topScores: number[];
+  bottomScores: number[];
+  scores: number[];
+}
+
+// --------------------     z-root     -------------------- //
 export interface DBRootState {
   connect4: DBConnect4;
   dota2: DBDota2Phase[][];
@@ -111,6 +125,6 @@ export interface DBRootState {
   theme: DBUITheme;
   ticTacToe: DBTicTacToe;
   turn: DBTurn;
-  yahtzee: number[];
+  yahtzee: DBYahtzee;
   slots: DBSlotDisplay[];
 }

@@ -4,35 +4,26 @@ import { bindActionCreators, Dispatch } from 'redux';
 import Typography from '@material-ui/core/Typography';
 import DiceAPI from '../../../apis/Dice';
 import ScoreTable from './score-table/ScoreTable';
-import {
-  ADD_DICE, Scores, TopGameScore, BottomGameScore,
-  Dice,
-} from './types';
-import { addScore } from '../../../store/modules/yahtzee';
+import { ADD_DICE, TopGameScore, BottomGameScore } from './types';
 import Header from './Header';
 import TableHeader from './TableHeader';
-import { DBRootState } from '../../../store/types';
+import { DBRootState, Dice, DBYahtzee } from '../../../store/types';
+import {
+  addScore, diceClick, newGame, nextRoll,
+  updateTop, updateBottom, updateRoll,
+} from '../../../store/modules/yahtzee';
 
 interface YahtzeeActions {
   addScore: Function;
+  diceClick: Function;
+  newGame: Function;
+  nextRoll: Function;
+  updateTop: Function;
+  updateBottom: Function;
+  updateRoll: Function;
 }
-interface YahtzeeProps {
+interface YahtzeeProps extends DBYahtzee {
   actions: YahtzeeActions;
-  scores: Scores;
-}
-interface YahtzeeState {
-  roll: Dice;
-  values: Dice[];
-  saved: Dice[];
-  turn: number;
-  topSum: number;
-  finalTopSum: number;
-  bottomSum: number;
-  showScoreButtons: boolean;
-  hasScored: boolean;
-  finish: boolean;
-  topScores: number[];
-  bottomScores: number[];
 }
 
 const topConstants = [
@@ -53,89 +44,54 @@ const bottomConstants = [
   { name: 'Chance', hint: ADD_DICE, points: ADD_DICE },
 ];
 
-const getInitialState = (): YahtzeeState => ({
-  roll: 0,
-  values: [0, 0, 0, 0, 0],
-  saved: [],
-  turn: 0,
-  topSum: 0,
-  finalTopSum: 0,
-  bottomSum: 0,
-  showScoreButtons: false,
-  hasScored: false,
-  finish: false,
-  topScores: [-1, -1, -1, -1, -1, -1],
-  bottomScores: [-1, -1, -1, -1, -1, -1, -1],
-});
+const Yahtzee: React.FC<YahtzeeProps> = (props: YahtzeeProps) => {
+  const {
+    topScores, bottomScores, values, saved,
+    roll, showScoreButtons, scores, actions,
+  } = props;
 
-class Yahtzee extends React.Component<YahtzeeProps, YahtzeeState> {
-  static getDerivedStateFromProps: React.GetDerivedStateFromProps<YahtzeeProps, YahtzeeState> = (_props, state) => {
-    let { finalTopSum } = state;
-    const { topScores, bottomScores } = state;
-    let count = 0;
+  let count = 0;
 
-    const topSum = topScores.reduce((sum, score) => {
-      if (score >= 0) {
-        count += 1;
-        sum += score;
-        if (sum >= 63) {
-          finalTopSum = sum + 35;
-        } else {
-          finalTopSum = sum;
-        }
-      }
-      return sum;
-    }, 0);
-
-    const bottomSum = bottomScores.reduce((sum, score) => {
-      if (score >= 0) {
-        count += 1;
-        sum += score;
-      }
-      return sum;
-    }, 0);
-
-    if (count >= 13) {
-      return { finish: true };
+  const topSum = topScores.reduce((sum, score) => {
+    if (score >= 0) {
+      count += 1;
+      sum += score;
     }
-    if (topSum !== state.topSum || bottomSum !== state.bottomSum) {
-      return { topSum, finalTopSum, bottomSum };
+    return sum;
+  }, 0);
+  const bottomSum = bottomScores.reduce((sum, score) => {
+    if (score >= 0) {
+      count += 1;
+      sum += score;
     }
-    return null;
+    return sum;
+  }, 0);
+  let finalTopSum = 0;
+  if (topSum >= 63) {
+    finalTopSum += topSum + 35;
+  } else {
+    finalTopSum += topSum;
   }
 
-  constructor(props: YahtzeeProps) {
-    super(props);
-    this.state = getInitialState();
-  }
+  const finish = count >= 13;
 
-  newGame = (): void => {
-    const { actions } = this.props;
-    const { finalTopSum, bottomSum } = this.state;
+  const newYGame = (): void => {
     actions.addScore(finalTopSum + bottomSum);
-    this.setState(getInitialState());
-  }
+    actions.newGame();
+  };
 
-  handleDiceRoll = (): void => {
-    const { roll, hasScored, finish } = this.state;
+  const handleDiceRoll = (): void => {
+    const { hasScored } = props;
 
     if (finish) {
-      this.newGame();
+      newYGame();
     }
-    if (roll >= 3 && hasScored === false) {
+    if (roll >= 3) {
+      if (hasScored === true) {
+        actions.nextRoll();
+      }
       return;
     }
-    if (roll >= 3 && hasScored === true) {
-      this.setState({
-        roll: 0,
-        values: [0, 0, 0, 0, 0],
-        saved: [],
-        hasScored: false,
-      });
-      return;
-    }
-
-    const { values, saved } = this.state;
 
     for (let i = 0; i < values.length; i += 1) {
       values[i] = DiceAPI.roll() as Dice;
@@ -144,38 +100,33 @@ class Yahtzee extends React.Component<YahtzeeProps, YahtzeeState> {
     saved.sort();
 
     if (roll === 2) {
-      this.setState({
-        showScoreButtons: true, values, saved, roll: roll + 1 as Dice,
-      });
+      actions.updateRoll(values, saved, roll + 1, true);
     } else {
-      this.setState({ values, saved, roll: roll + 1 as Dice });
+      actions.updateRoll(values, saved, roll + 1);
     }
-  }
+  };
 
-  handleSave = (i: number): void => {
-    const { saved, values } = this.state;
+  const handleSave = (i: number): void => {
     if (values[i] === 0) {
       return;
     }
     saved.push(values.splice(i, 1)[0]);
     saved.sort();
-    this.setState({ saved });
-  }
+    actions.diceClick(values, saved);
+  };
 
-  handleUnsave = (i: number): void => {
-    const { saved, values } = this.state;
+  const handleUnsave = (i: number): void => {
     values.push(saved.splice(i, 1)[0]);
     values.sort();
-    this.setState({ values });
-  }
+    actions.diceClick(values, saved);
+  };
 
-  getButtonText = (roll: Dice): string => {
-    const { finish } = this.state;
+  const getButtonText = (rollNum: Dice): string => {
     if (finish) {
       return 'New Game';
     }
 
-    switch (roll) {
+    switch (rollNum) {
       case 0:
         return 'First Roll';
       case 1:
@@ -187,65 +138,63 @@ class Yahtzee extends React.Component<YahtzeeProps, YahtzeeState> {
       default:
         return 'Error';
     }
-  }
+  };
 
-  handleTopScore = (points: number, i: number): void => {
-    const { topScores } = this.state;
+  const handleTopScore = (points: number, i: number): void => {
     topScores[i] = points;
-    this.setState({ topScores, hasScored: true, showScoreButtons: false });
-  }
+    actions.updateTop(topScores);
+  };
 
-  handleBottomScore = (points: number, i: number): void => {
-    const { bottomScores } = this.state;
+  const handleBottomScore = (points: number, i: number): void => {
     bottomScores[i] = points;
-    this.setState({ bottomScores, hasScored: true, showScoreButtons: false });
-  }
+    actions.updateBottom(bottomScores);
+  };
 
-  render(): React.ReactNode {
-    const {
-      values, saved, roll, topScores, showScoreButtons,
-      bottomScores, topSum, finalTopSum, bottomSum,
-    } = this.state;
-    const { scores } = this.props;
+  const top = topScores.map((score, i) => ({ ...topConstants[i], score })) as TopGameScore[];
+  const bottom = bottomScores.map((score, i) => ({ ...bottomConstants[i], score })) as BottomGameScore[];
 
-    const top = topScores.map((score, i) => ({ ...topConstants[i], score })) as TopGameScore[];
-    const bottom = bottomScores.map((score, i) => ({ ...bottomConstants[i], score })) as BottomGameScore[];
-
-    return (
-      <>
-        <Header scores={scores} />
-        <hr />
-        <TableHeader
-          values={values}
-          saved={saved}
-          roll={roll}
-          handleUnsave={this.handleUnsave}
-          handleSave={this.handleSave}
-          handleDiceRoll={this.handleDiceRoll}
-          getButtonText={this.getButtonText}
-        />
-        <hr />
-        <Typography variant="h4">{`Total: ${finalTopSum + bottomSum}`}</Typography>
-        <ScoreTable
-          values={[...saved, ...values]}
-          bottom={bottom}
-          top={top}
-          onTopScore={this.handleTopScore}
-          onBottomScore={this.handleBottomScore}
-          showScoreButtons={showScoreButtons}
-          topSum={topSum}
-          finalTopSum={finalTopSum}
-          bottomSum={bottomSum}
-        />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Header scores={scores} />
+      <hr />
+      <TableHeader
+        values={values}
+        saved={saved}
+        roll={roll}
+        handleUnsave={handleUnsave}
+        handleSave={handleSave}
+        handleDiceRoll={handleDiceRoll}
+        getButtonText={getButtonText}
+      />
+      <hr />
+      <Typography variant="h4">{`Total: ${finalTopSum + bottomSum}`}</Typography>
+      <ScoreTable
+        values={[...saved, ...values]}
+        bottom={bottom}
+        top={top}
+        onTopScore={handleTopScore}
+        onBottomScore={handleBottomScore}
+        showScoreButtons={showScoreButtons}
+        topSum={topSum}
+        finalTopSum={finalTopSum}
+        bottomSum={bottomSum}
+      />
+    </>
+  );
+};
 
 // react-redux export
-const mapStateToProps = (state: DBRootState): { scores: Scores } => ({ scores: state.yahtzee });
+const mapStateToProps = (state: DBRootState): DBYahtzee => ({ ...state.yahtzee });
 const mapDispatchToProps = (dispatch: Dispatch): { actions: YahtzeeActions } => ({
-  actions: bindActionCreators({ addScore }, dispatch),
+  actions: bindActionCreators({
+    addScore,
+    diceClick,
+    newGame,
+    nextRoll,
+    updateTop,
+    updateBottom,
+    updateRoll,
+  }, dispatch),
 });
 export default connect(
   mapStateToProps,

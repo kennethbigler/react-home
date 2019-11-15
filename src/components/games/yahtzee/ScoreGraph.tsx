@@ -6,10 +6,9 @@ import {
 import { withTheme } from '@material-ui/core/styles';
 import { Typography, Theme } from '@material-ui/core';
 import InfoPopup from '../../common/InfoPopup';
-import { Scores } from './types';
 
 interface ScoreGraphProps {
-  scores: Scores;
+  scores: number[];
   theme: Theme;
 }
 interface ScoreGraphEntry {

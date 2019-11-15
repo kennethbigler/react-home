@@ -1,9 +1,8 @@
 import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import {
-  Dice, TopGameScore, BottomGameScore, ADD_DICE,
-} from '../types';
+import { TopGameScore, BottomGameScore, ADD_DICE } from '../types';
+import { Dice } from '../../../../store/types';
 import {
   hasXDice, isFullHouse, isStraight, canYahtzeeBonus,
 } from './scoreTableHelper';

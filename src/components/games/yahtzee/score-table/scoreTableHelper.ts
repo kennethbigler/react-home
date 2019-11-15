@@ -1,4 +1,5 @@
-import { Dice, TopGameScore } from '../types';
+import { TopGameScore } from '../types';
+import { Dice } from '../../../../store/types';
 
 interface DiceHistogram {
   0?: number;

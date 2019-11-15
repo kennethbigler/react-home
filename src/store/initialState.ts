@@ -5,7 +5,7 @@ import { pullHandle } from '../apis/SlotMachine';
 import {
   DBDota2Phase, DBDota2Turn, DBGit, DBPlayer,
   DBUITheme, DBTurn, DBRootState, DBSlotDisplay,
-  DBTicTacToe, DBConnect4, C4Turn,
+  DBTicTacToe, DBConnect4, C4Turn, DBYahtzee,
 } from './types';
 
 // --------------------     helpers     -------------------- //
@@ -67,6 +67,17 @@ export const newTicTacToe = (): DBTicTacToe => ({
   step: 0,
 });
 
+export const newYahtzee = (): Omit<DBYahtzee, 'scores'> => ({
+  roll: 0,
+  values: [0, 0, 0, 0, 0],
+  saved: [],
+  turn: 0,
+  showScoreButtons: false,
+  hasScored: false,
+  topScores: [-1, -1, -1, -1, -1, -1],
+  bottomScores: [-1, -1, -1, -1, -1, -1, -1],
+});
+
 // --------------------     initial state     -------------------- //
 const connect4 = newConnect4Game();
 const dota2 = [newDota2Lineup()];
@@ -95,7 +106,7 @@ const theme: DBUITheme = {
 };
 const ticTacToe: DBTicTacToe = newTicTacToe();
 const turn: DBTurn = { player: 0, hand: 0 };
-const yahtzee: number[] = [];
+const yahtzee: DBYahtzee = { ...newYahtzee(), scores: []};
 
 export default {
   connect4,

@@ -1,4 +1,4 @@
-import { Dice } from '../components/games/yahtzee/types';
+import { Dice } from '../store/types';
 
 export default {
   // randomize order of the cards

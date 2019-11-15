@@ -1,7 +1,8 @@
 import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import { Dice, TopGameScore } from '../types';
+import { TopGameScore } from '../types';
+import { Dice } from '../../../../store/types';
 import TopScores from './TopScores';
 
 interface TopTableProps {
