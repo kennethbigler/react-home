@@ -5,11 +5,12 @@ import gqlToken from './modules/gqlToken';
 import players from './modules/players';
 import slots from './modules/slots';
 import theme from './modules/theme';
+import ticTacToe from './modules/ticTacToe';
 import turn from './modules/turn';
 import yahtzee from './modules/yahtzee';
 
 const rootReducer = combineReducers({
-  dota2, git, gqlToken, players, slots, theme, turn, yahtzee,
+  dota2, git, gqlToken, players, slots, theme, ticTacToe, turn, yahtzee,
 });
 
 export default rootReducer;

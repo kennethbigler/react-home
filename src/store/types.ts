@@ -71,6 +71,17 @@ export interface DBUITheme {
   secondary: Color;
 }
 
+// --------------------     ticTacToe     -------------------- //
+export interface DBHistoryEntry {
+  board: string[] | undefined[];
+  location?: number;
+}
+export interface DBTicTacToe {
+  history: DBHistoryEntry[];
+  turn: string;
+  step: number;
+}
+
 // --------------------     turn     -------------------- //
 export interface DBTurn {
   player: number;
@@ -84,6 +95,7 @@ export interface DBRootState {
   gqlToken: string;
   players: DBPlayer[];
   theme: DBUITheme;
+  ticTacToe: DBTicTacToe;
   turn: DBTurn;
   yahtzee: number[];
   slots: DBSlotDisplay[];

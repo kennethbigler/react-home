@@ -5,6 +5,7 @@ import { pullHandle } from '../apis/SlotMachine';
 import {
   DBDota2Phase, DBDota2Turn, DBGit, DBPlayer,
   DBUITheme, DBTurn, DBRootState, DBSlotDisplay,
+  DBTicTacToe,
 } from './types';
 
 // --------------------     helpers     -------------------- //
@@ -36,6 +37,15 @@ export const newDota2Lineup = (): DBDota2Phase[] => [...[
   newDota2Phase('Pick 5', { number: 21 }, { number: 22 }),
 ]];
 
+export const X = 'X';
+export const O = 'O';
+export const EMPTY = undefined;
+export const newTicTacToe = (): DBTicTacToe => ({
+  history: [{ board: Array(9).fill(EMPTY) }],
+  turn: X,
+  step: 0,
+});
+
 // --------------------     initial state     -------------------- //
 const dota2 = [newDota2Lineup()];
 const git: DBGit = {
@@ -61,6 +71,7 @@ const theme: DBUITheme = {
   secondary: deepOrange,
   type: 'dark',
 };
+const ticTacToe: DBTicTacToe = newTicTacToe();
 const turn: DBTurn = { player: 0, hand: 0 };
 const yahtzee: number[] = [];
 
@@ -71,6 +82,7 @@ export default {
   players,
   slots,
   theme,
+  ticTacToe,
   turn,
   yahtzee,
 } as DBRootState;

@@ -1,13 +1,10 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { getTurn } from './constants';
+import { getTurn } from './helpers';
+import { DBHistoryEntry } from '../../../store/types';
 
-export interface HistoryEntry {
-  board: string[] | undefined[];
-  location?: number;
-}
 interface HistoryProps {
-  history: HistoryEntry[];
+  history: DBHistoryEntry[];
   jumpToStep: Function;
   step: number;
 }
@@ -17,7 +14,7 @@ const History: React.FC<HistoryProps> = (props: HistoryProps) => {
   const { history, step, jumpToStep } = props;
 
   /** function that generates text for the history tracker */
-  const getHistoryText = (round: HistoryEntry, move: number): React.ReactNode => {
+  const getHistoryText = (round: DBHistoryEntry, move: number): React.ReactNode => {
     const location = round.location || 0;
     // generate description text
     const description = !move
