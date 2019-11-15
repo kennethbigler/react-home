@@ -1,95 +1,54 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import Typography from '@material-ui/core/Typography';
+import { newGame, updateTurn, updateEval } from '../../../store/modules/connect4';
 import GameBoard from './GameBoard';
-import { Turn } from './types';
-// Parents: Main
+import { DBRootState, C4Turn, DBConnect4 } from '../../../store/types';
+
+interface C4Actions {
+  newGame: Function;
+  updateTurn: Function;
+  updateEval: Function;
+}
+
+interface Connect4Props extends DBConnect4 {
+  c4Actions: C4Actions;
+}
 
 // dp constants
 const PIECE = 0;
 const STREAK = 1;
 const MAX = 2;
-const NEW_BOARD = [
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-];
-
-interface Connect4State {
-  board: number[][];
-  winner?: number;
-  line: [number | undefined, [number, number][] | undefined, [number, number][] | undefined];
-  turn: Turn;
-}
-
-/** start a new game */
-const getNewGame = (): Connect4State => ({
-  board: NEW_BOARD.reduce(
-    (acc: number[][], row) => {
-      acc.push([...row]);
-      return acc;
-    },
-    [],
-  ),
-  winner: undefined,
-  line: [undefined, undefined, undefined],
-  turn: Turn.RED,
-});
 
 /* Connect4  ->  GameBoard  ->  Header  ->  Piece
  *                         |->  Board   ->  Piece */
-export default class Connect4 extends React.Component<{}, Connect4State> {
-  constructor(props: {}) {
-    super(props);
-    this.state = getNewGame();
-  }
+const Connect4: React.FC<Connect4Props> = (props: Connect4Props) => {
+  const {
+    c4Actions, board, turn, winner,
+  } = props;
 
-  /** start a new game
-   * immutably reset the board and helper vars in state
-   */
-  newGame = (): void => {
-    this.setState(getNewGame());
+  /** start a new game, reset the board and helper vars */
+  const newC4Game = (): void => {
+    c4Actions.newGame();
   };
 
   /** update turn, alternating red/black */
-  updateTurn = (): void => {
-    const { turn } = this.state;
-    this.setState({ turn: turn === Turn.RED ? Turn.BLACK : Turn.RED });
-  };
-
-  /** insert piece into the board, piece falls to the bottom row every time */
-  insert = (col: number): void => {
-    const { board, turn, winner } = this.state;
-    // check to see if there is an empty spot left
-    if (!winner && !board[board.length - 1][col]) {
-      let i = 0;
-      // look for the lowest empty spot
-      while (board[i][col] !== 0) {
-        i += 1;
-      }
-      // insert element
-      board[i][col] = turn;
-      // update turn
-      this.updateTurn();
-      // check if win
-      this.evalConnect4(i, col);
-    }
+  const updateC4Turn = (): void => {
+    c4Actions.updateTurn(turn === C4Turn.RED ? C4Turn.BLACK : C4Turn.RED);
   };
 
   /** function to check for match and increment streak / max
    * @param {array} line - dp storage, [PIECE, STREAK, MAX]
    */
-  helpEvalConnect4 = (row: number, col: number, line: [number, [number, number][], [number, number][]]): void => {
-    const { board } = this.state;
+  const helpEvalConnect4 = (row: number, col: number, line: [number, [number, number][], [number, number][]]): void => {
     // verify row
     if (board[row] !== undefined) {
       const piece = board[row][col];
       // verify piece
       if (piece !== undefined) {
         // check piece
-        if (piece === line[PIECE] && piece !== Turn.EMPTY) {
+        if (piece === line[PIECE] && piece !== C4Turn.EMPTY) {
           // matches, increment streak and max if needed
           line[STREAK].push([row, col]);
           // update max and Win row if needed
@@ -107,9 +66,8 @@ export default class Connect4 extends React.Component<{}, Connect4State> {
 
   /** function to evaluate a connect 4 board based off the last piece played
    * NOTE: win condition will be within +-3 of the piece last played - O(N)
-   * updates state of winner and board for highlighting
-   */
-  evalConnect4 = (row: number, col: number): void => {
+   * updates state of winner and board for highlighting */
+  const evalConnect4 = (row: number, col: number): void => {
     // variables to track streaks
     const dp: [number, [number, number][], [number, number][]][] = [];
     for (let i = 0; i < 4; i += 1) {
@@ -122,80 +80,65 @@ export default class Connect4 extends React.Component<{}, Connect4State> {
     for (let i = -3; i <= 3; i += 1) {
       // check for streaks
       // vertical
-      this.helpEvalConnect4(row + i, col, dp[0]);
+      helpEvalConnect4(row + i, col, dp[0]);
       // horizontal
-      this.helpEvalConnect4(row, col + i, dp[1]);
+      helpEvalConnect4(row, col + i, dp[1]);
       // diagonal down
-      this.helpEvalConnect4(row + i, col + i, dp[2]);
+      helpEvalConnect4(row + i, col + i, dp[2]);
       // diagonal up
-      this.helpEvalConnect4(row - i, col + i, dp[3]);
+      helpEvalConnect4(row - i, col + i, dp[3]);
     }
 
     dp.forEach((line) => {
       if (line[MAX].length >= 4) {
-        const { board, turn } = this.state;
         line[MAX].forEach((t) => {
           board[t[0]][t[1]] = 3;
         });
-        this.setState({ winner: turn, board });
+        c4Actions.updateEval(turn, board);
       }
     });
   };
 
-  /** function to evaluate a connect 4 board based off the last piece played
-   * O(N^2) - is there a winner on the board?
-   */
-  isConnect4 = (): boolean => {
-    const { board } = this.state;
-    const numRows = board.length;
-    const numCols = board[0].length;
-    // variables to track streaks
-    const dp: [number, [number, number][], [number, number][]][] = [];
-    for (let i = 0; i < 6; i += 1) {
-      const a1: [number, number][] = [];
-      const a2: [number, number][] = [];
-      dp.push([0, a1, a2]);
-    }
-
-    // iterate over looking for 4 in a row
-    for (let i = 0; i < numCols; i += 1) {
-      for (let j = 0; j < numCols; j += 1) {
-        // vertical
-        this.helpEvalConnect4(j, i, dp[0]);
-        // horizontal
-        this.helpEvalConnect4(i, j, dp[1]);
-        if (i >= 0 && i <= 2) {
-          // diagonal down top half
-          this.helpEvalConnect4(i + j, j, dp[2]);
-          // diagonal down bottom half
-          this.helpEvalConnect4(j, i + j + 1, dp[3]);
-          // diagonal up top half
-          this.helpEvalConnect4(3 + i - j, j, dp[4]);
-          // diagonal up bottom half
-          this.helpEvalConnect4(numRows - 1 - j, 1 + j + i, dp[5]);
-        }
+  /** insert piece into the board, piece falls to the bottom row every time */
+  const insert = (col: number): void => {
+    // check to see if there is an empty spot left
+    if (!winner && !board[board.length - 1][col]) {
+      let i = 0;
+      // look for the lowest empty spot
+      while (board[i][col] !== 0) {
+        i += 1;
       }
+      // insert element
+      board[i][col] = turn;
+      // update turn
+      updateC4Turn();
+      // check if win
+      evalConnect4(i, col);
     }
-
-    return dp.reduce(
-      (acc: boolean, line: [number, [number, number][], [number, number][]]) => acc || line[MAX].length >= 4,
-      false,
-    );
   };
 
-  render(): React.ReactNode {
-    const { board, turn, winner } = this.state;
-    return (
-      <>
-        <Typography variant="h2" gutterBottom>Welcome to Ken&apos;s Connect4 Game</Typography>
-        <GameBoard
-          board={board}
-          insert={this.insert}
-          newGame={this.newGame}
-          turn={turn}
-          winner={winner}
-        />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Typography variant="h2" gutterBottom>Welcome to Ken&apos;s Connect4 Game</Typography>
+      <GameBoard
+        board={board}
+        insert={insert}
+        newGame={newC4Game}
+        turn={turn}
+        winner={winner}
+      />
+    </>
+  );
+};
+
+// react-redux export
+const mapStateToProps = (state: DBRootState): DBConnect4 => ({
+  ...state.connect4,
+});
+const mapDispatchToProps = (dispatch: Dispatch): { c4Actions: C4Actions } => ({
+  c4Actions: bindActionCreators({ newGame, updateTurn, updateEval }, dispatch),
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Connect4);

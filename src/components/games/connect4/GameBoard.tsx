@@ -2,13 +2,13 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Board from './Board';
 import Header from './Header';
-import { Turn } from './types';
+import { C4Turn } from '../../../store/types';
 
 interface GameBoardProps {
   board: number[][];
   insert: Function;
   newGame: React.MouseEventHandler;
-  turn: Turn;
+  turn: C4Turn;
   winner?: number;
 }
 

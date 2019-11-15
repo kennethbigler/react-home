@@ -1,5 +1,18 @@
 import { Color } from '@material-ui/core';
 
+// --------------------     connect4     -------------------- //
+export enum C4Turn {
+  EMPTY = 0,
+  RED = 1,
+  BLACK = 2,
+}
+export interface DBConnect4 {
+  board: number[][];
+  winner?: number;
+  line: [number | undefined, [number, number][] | undefined, [number, number][] | undefined];
+  turn: C4Turn;
+}
+
 // --------------------     dota2     -------------------- //
 export enum ATR {
   STR = 'Strength',
@@ -90,6 +103,7 @@ export interface DBTurn {
 
 // --------------------     turn     -------------------- //
 export interface DBRootState {
+  connect4: DBConnect4;
   dota2: DBDota2Phase[][];
   git: DBGit;
   gqlToken: string;

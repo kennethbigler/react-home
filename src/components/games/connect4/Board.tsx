@@ -5,12 +5,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Piece from './Piece';
-import { Turn } from './types';
+import { C4Turn } from '../../../store/types';
 
 interface BoardProps {
   board: number[][];
   insert: Function;
-  turn: Turn;
+  turn: C4Turn;
 }
 
 const styles: React.CSSProperties = {

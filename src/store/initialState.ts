@@ -5,18 +5,29 @@ import { pullHandle } from '../apis/SlotMachine';
 import {
   DBDota2Phase, DBDota2Turn, DBGit, DBPlayer,
   DBUITheme, DBTurn, DBRootState, DBSlotDisplay,
-  DBTicTacToe,
+  DBTicTacToe, DBConnect4, C4Turn,
 } from './types';
 
 // --------------------     helpers     -------------------- //
-export const newPlayer = (id: number, name = 'Bot', isBot = true): DBPlayer => ({
-  id,
-  name,
-  isBot,
-  status: '',
-  money: 100,
-  bet: 5,
-  hands: [],
+const NEW_BOARD = [
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+];
+export const newConnect4Game = (): DBConnect4 => ({
+  board: NEW_BOARD.reduce(
+    (acc: number[][], row) => {
+      acc.push([...row]);
+      return acc;
+    },
+    [],
+  ),
+  winner: undefined,
+  line: [undefined, undefined, undefined],
+  turn: C4Turn.RED,
 });
 
 const newDota2Phase = (name: string, radiant: DBDota2Turn, dire: DBDota2Turn): DBDota2Phase => ({
@@ -37,6 +48,16 @@ export const newDota2Lineup = (): DBDota2Phase[] => [...[
   newDota2Phase('Pick 5', { number: 21 }, { number: 22 }),
 ]];
 
+export const newPlayer = (id: number, name = 'Bot', isBot = true): DBPlayer => ({
+  id,
+  name,
+  isBot,
+  status: '',
+  money: 100,
+  bet: 5,
+  hands: [],
+});
+
 export const X = 'X';
 export const O = 'O';
 export const EMPTY = undefined;
@@ -47,6 +68,7 @@ export const newTicTacToe = (): DBTicTacToe => ({
 });
 
 // --------------------     initial state     -------------------- //
+const connect4 = newConnect4Game();
 const dota2 = [newDota2Lineup()];
 const git: DBGit = {
   storyID: '',
@@ -76,6 +98,7 @@ const turn: DBTurn = { player: 0, hand: 0 };
 const yahtzee: number[] = [];
 
 export default {
+  connect4,
   dota2,
   git,
   gqlToken,

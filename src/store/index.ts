@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import connect4 from './modules/connect4';
 import dota2 from './modules/dota2';
 import git from './modules/git';
 import gqlToken from './modules/gqlToken';
@@ -10,7 +11,16 @@ import turn from './modules/turn';
 import yahtzee from './modules/yahtzee';
 
 const rootReducer = combineReducers({
-  dota2, git, gqlToken, players, slots, theme, ticTacToe, turn, yahtzee,
+  connect4,
+  dota2,
+  git,
+  gqlToken,
+  players,
+  slots,
+  theme,
+  ticTacToe,
+  turn,
+  yahtzee,
 });
 
 export default rootReducer;
