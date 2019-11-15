@@ -31,9 +31,27 @@ interface YahtzeeState {
   showScoreButtons: boolean;
   hasScored: boolean;
   finish: boolean;
-  top: TopGameScore[];
-  bottom: BottomGameScore[];
+  topScores: number[];
+  bottomScores: number[];
 }
+
+const topConstants = [
+  { name: 'Aces' },
+  { name: 'Twos' },
+  { name: 'Threes' },
+  { name: 'Fours' },
+  { name: 'Fives' },
+  { name: 'Sixes' },
+];
+const bottomConstants = [
+  { name: '3 of a kind', hint: ADD_DICE, points: ADD_DICE },
+  { name: '4 of a kind', hint: ADD_DICE, points: ADD_DICE },
+  { name: 'Full House', hint: 'Score 25', points: 25 },
+  { name: 'Sm. Straight (4)', hint: 'Score 30', points: 30 },
+  { name: 'Lg. Straight (5)', hint: 'Score 40', points: 40 },
+  { name: 'Yahtzee', hint: 'Score 50', points: 50 },
+  { name: 'Chance', hint: ADD_DICE, points: ADD_DICE },
+];
 
 const getInitialState = (): YahtzeeState => ({
   roll: 0,
@@ -46,38 +64,17 @@ const getInitialState = (): YahtzeeState => ({
   showScoreButtons: false,
   hasScored: false,
   finish: false,
-  top: [
-    { name: 'Aces', score: -1 },
-    { name: 'Twos', score: -1 },
-    { name: 'Threes', score: -1 },
-    { name: 'Fours', score: -1 },
-    { name: 'Fives', score: -1 },
-    { name: 'Sixes', score: -1 },
-  ],
-  bottom: [{
-    name: '3 of a kind', hint: ADD_DICE, points: ADD_DICE, score: -1,
-  }, {
-    name: '4 of a kind', hint: ADD_DICE, points: ADD_DICE, score: -1,
-  }, {
-    name: 'Full House', hint: 'Score 25', points: 25, score: -1,
-  }, {
-    name: 'Sm. Straight (4)', hint: 'Score 30', points: 30, score: -1,
-  }, {
-    name: 'Lg. Straight (5)', hint: 'Score 40', points: 40, score: -1,
-  }, {
-    name: 'Yahtzee', hint: 'Score 50', points: 50, score: -1,
-  }, {
-    name: 'Chance', hint: ADD_DICE, points: ADD_DICE, score: -1,
-  }],
+  topScores: [-1, -1, -1, -1, -1, -1],
+  bottomScores: [-1, -1, -1, -1, -1, -1, -1],
 });
 
 class Yahtzee extends React.Component<YahtzeeProps, YahtzeeState> {
   static getDerivedStateFromProps: React.GetDerivedStateFromProps<YahtzeeProps, YahtzeeState> = (_props, state) => {
     let { finalTopSum } = state;
-    const { top, bottom } = state;
+    const { topScores, bottomScores } = state;
     let count = 0;
 
-    const topSum = top.reduce((sum, { score }) => {
+    const topSum = topScores.reduce((sum, score) => {
       if (score >= 0) {
         count += 1;
         sum += score;
@@ -90,7 +87,7 @@ class Yahtzee extends React.Component<YahtzeeProps, YahtzeeState> {
       return sum;
     }, 0);
 
-    const bottomSum = bottom.reduce((sum, { score }) => {
+    const bottomSum = bottomScores.reduce((sum, score) => {
       if (score >= 0) {
         count += 1;
         sum += score;
@@ -193,22 +190,26 @@ class Yahtzee extends React.Component<YahtzeeProps, YahtzeeState> {
   }
 
   handleTopScore = (points: number, i: number): void => {
-    const { top } = this.state;
-    top[i].score = points;
-    this.setState({ top, hasScored: true, showScoreButtons: false });
+    const { topScores } = this.state;
+    topScores[i] = points;
+    this.setState({ topScores, hasScored: true, showScoreButtons: false });
   }
 
   handleBottomScore = (points: number, i: number): void => {
-    const { bottom } = this.state;
-    bottom[i].score = points;
-    this.setState({ bottom, hasScored: true, showScoreButtons: false });
+    const { bottomScores } = this.state;
+    bottomScores[i] = points;
+    this.setState({ bottomScores, hasScored: true, showScoreButtons: false });
   }
 
   render(): React.ReactNode {
     const {
-      values, saved, roll, top, showScoreButtons, bottom, topSum, finalTopSum, bottomSum,
+      values, saved, roll, topScores, showScoreButtons,
+      bottomScores, topSum, finalTopSum, bottomSum,
     } = this.state;
     const { scores } = this.props;
+
+    const top = topScores.map((score, i) => ({ ...topConstants[i], score })) as TopGameScore[];
+    const bottom = bottomScores.map((score, i) => ({ ...bottomConstants[i], score })) as BottomGameScore[];
 
     return (
       <>
