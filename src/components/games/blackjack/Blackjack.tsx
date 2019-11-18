@@ -22,22 +22,20 @@ import {
 } from '../../../store/modules/players';
 import { ButtonProps } from '../game-table/button-group/Button';
 
-interface PlayerActions {
-  drawCard: Function;
-  newHand: Function;
-  payout: Function;
-  resetStatus: Function;
-  splitHand: Function;
-  updateBet: Function;
-}
-interface TurnActions {
-  incrHandTurn: Function;
-  incrPlayerTurn: Function;
-  resetTurn: Function;
-}
 interface BlackJackActions {
-  turnActions: TurnActions;
-  playerActions: PlayerActions;
+  turnActions: {
+    incrHandTurn: Function;
+    incrPlayerTurn: Function;
+    resetTurn: Function;
+  };
+  playerActions: {
+    drawCard: Function;
+    newHand: Function;
+    payout: Function;
+    resetStatus: Function;
+    splitHand: Function;
+    updateBet: Function;
+  };
 }
 interface BlackJackDBState {
   players: DBPlayer[];

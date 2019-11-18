@@ -17,19 +17,17 @@ import { ButtonProps } from '../game-table/button-group/Button';
 const DEALER = 0;
 const LAST_PLAYER = 5;
 
-interface PlayerActions {
-  swapCards: Function;
-  newHand: Function;
-  payout: Function;
-  resetStatus: Function;
-}
-interface TurnActions {
-  incrPlayerTurn: Function;
-  resetTurn: Function;
-}
 interface PokerActions {
-  turnActions: TurnActions;
-  playerActions: PlayerActions;
+  turnActions: {
+    incrPlayerTurn: Function;
+    resetTurn: Function;
+  };
+  playerActions: {
+    swapCards: Function;
+    newHand: Function;
+    payout: Function;
+    resetStatus: Function;
+  };
 }
 interface PokerDBState {
   turn: DBTurn;
