@@ -12,13 +12,12 @@ const UPDATE_HAS_FUNCTIONS = 'casino/blackjack/UPDATE_HAS_FUNCTIONS';
 // -------------------- Action Creators     -------------------- //
 export const updateGameFunctions = (gameFunctions: string[]): AnyAction => ({ type: UPDATE_GAME_FUNCTIONS, gameFunctions });
 export const updateHideHands = (hideHands: boolean): AnyAction => ({ type: UPDATE_HIDE_HANDS, hideHands });
-export const updateHasFunctions = (hasFunctions: boolean): AnyAction => ({ type: UPDATE_HIDE_HANDS, hasFunctions });
+export const updateHasFunctions = (hasFunctions: boolean): AnyAction => ({ type: UPDATE_HAS_FUNCTIONS, hasFunctions });
 
 // --------------------     Reducers     -------------------- //
 export default function reducer(state: DBBlackjack = initialState.blackjack, action: AnyAction): DBBlackjack {
   switch (action.type) {
     case UPDATE_GAME_FUNCTIONS:
-      console.log('calling');
       return { ...state, gameFunctions: action.gameFunctions };
     case UPDATE_HIDE_HANDS:
       return { ...state, hideHands: action.hideHands };

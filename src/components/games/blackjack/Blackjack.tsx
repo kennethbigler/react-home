@@ -60,6 +60,7 @@ class BlackJack extends React.Component<BlackJackProps, {}> {
   componentDidUpdate(): void {
     const {
       players, turn, hideHands, hasFunctions,
+      gameFunctions,
     } = this.props;
     const player = players[turn.player];
 
@@ -73,7 +74,7 @@ class BlackJack extends React.Component<BlackJackProps, {}> {
     } else if (player.isBot && player.id !== DEALER) {
       this.playBot();
     } else {
-      this.playDealer();
+      !gameFunctions.includes(GameFunctions.NEW_GAME) && this.playDealer();
     }
   }
 
@@ -81,6 +82,7 @@ class BlackJack extends React.Component<BlackJackProps, {}> {
   getGameFunctions = (hand: DBHand): void => {
     if (!hand) { return; }
 
+    console.log(hand);
     // reset game functions
     const gameFunctions = [GameFunctions.STAY];
     const handWeight = hand.weight || 0;
@@ -114,8 +116,8 @@ class BlackJack extends React.Component<BlackJackProps, {}> {
     } = this.props;
     const { id, hands } = players[turn.player];
 
-    playerActions.splitHand(hands, id, turn.hand, weighHand);
-    bjActions.updateHasFunctions(false);
+    playerActions.splitHand(hands, id, turn.hand, weighHand)
+      .then(() => bjActions.updateHasFunctions(false));
   };
 
   /** function that doubles your bet, but you only get 1 card */
@@ -158,7 +160,7 @@ class BlackJack extends React.Component<BlackJackProps, {}> {
 
   /** Start a new round of hands */
   dealHands = (): void => {
-    const { playerActions, players } = this.props;
+    const { playerActions, bjActions, players } = this.props;
     // shuffle the deck
     Deck.shuffle().then(() => {
       // deal the hands
@@ -167,6 +169,7 @@ class BlackJack extends React.Component<BlackJackProps, {}> {
         await playerActions.newHand(player.id, num, weighHand);
       });
     });
+    bjActions.updateHasFunctions(false);
   };
 
   /** Start a new game */
