@@ -1,5 +1,21 @@
 import { Color } from '@material-ui/core';
 
+// --------------------     blackjack     -------------------- //
+export enum GameFunctions {
+  NEW_GAME = 'New Game',
+  FINISH_BETTING = 'Finish Betting',
+  STAY = 'Stay',
+  HIT = 'Hit',
+  DOUBLE = 'Double',
+  SPLIT = 'Split',
+}
+
+export interface DBBlackjack {
+  gameFunctions: string[];
+  hasFunctions: boolean;
+  hideHands: boolean;
+}
+
 // --------------------     connect4     -------------------- //
 export enum C4Turn {
   EMPTY = 0,
@@ -114,6 +130,7 @@ export interface DBYahtzee {
 
 // --------------------     z-root     -------------------- //
 export interface DBRootState {
+  blackjack: DBBlackjack;
   connect4: DBConnect4;
   dnd: DBDND;
   git: DBGit;

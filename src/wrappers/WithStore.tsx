@@ -1,34 +1,39 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import throttle from 'lodash/throttle';
-import { Store, AnyAction } from 'redux';
+import { Store } from 'redux';
 import WithTheme from './WithTheme';
 import { loadState, saveState, configureStore } from '../store/configureStore';
 import LoadingSpinner from '../components/common/loading-spinner';
-import { DBRootState } from '../store/types';
+
+interface WithStoreState {
+  store?: Store;
+}
 
 /** App class that wraps higher level components of the application */
-const WithStore: React.FC<{}> = React.memo(() => {
-  const [, updateState] = React.useState();
-  const forceUpdate = React.useCallback(() => updateState({}), []);
+class WithStore extends React.PureComponent<{}, WithStoreState> {
+  constructor(props: {}) {
+    super(props);
+    this.state = {};
+  }
 
-  const storeRef: React.MutableRefObject<Store<DBRootState, AnyAction> | undefined> = React.useRef(undefined);
-
-  React.useEffect(() => {
+  componentDidMount(): void {
     loadState()
       .then(configureStore)
       .then((store) => {
         store.subscribe(throttle(() => saveState(store.getState()), 1000));
-        storeRef.current = store;
-        forceUpdate();
+        this.setState({ store });
       });
-  });
+  }
 
-  return storeRef.current ? (
-    <Provider store={storeRef.current}>
-      <WithTheme />
-    </Provider>
-  ) : <LoadingSpinner />;
-});
+  render(): React.ReactNode {
+    const { store } = this.state;
+    return store ? (
+      <Provider store={store}>
+        <WithTheme />
+      </Provider>
+    ) : <LoadingSpinner />;
+  }
+}
 
 export default WithStore;

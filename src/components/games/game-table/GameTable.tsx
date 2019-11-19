@@ -1,17 +1,17 @@
 import React from 'react';
 import Board from './board/Board';
 import ButtonGroup from './button-group/ButtonGroup';
-import { ButtonProps } from './button-group/Button';
 import { DBPlayer, DBTurn } from '../../../store/types';
 
 interface GameTableProps {
   betHandler?: Function;
   cardClickHandler?: Function;
   cardsToDiscard: number[];
-  gameFunctions: ButtonProps[];
+  gameFunctions: string[];
   gameOver: boolean;
   hideHands: boolean;
   isBlackJack: boolean;
+  onClick: Function;
   players: DBPlayer[];
   turn: DBTurn;
 }
@@ -21,7 +21,7 @@ interface GameTableProps {
 const GameTable: React.FC<GameTableProps> & { defaultProps: Partial<GameTableProps> } = (props: GameTableProps) => {
   const {
     betHandler, cardClickHandler, cardsToDiscard, gameFunctions,
-    gameOver, hideHands, isBlackJack, players, turn,
+    gameOver, hideHands, isBlackJack, players, turn, onClick,
   } = props;
 
   // move game buttons to make turn more obvious and support mobile
@@ -47,7 +47,7 @@ const GameTable: React.FC<GameTableProps> & { defaultProps: Partial<GameTablePro
               isBlackJack={isBlackJack}
               turn={turn}
             />
-            <ButtonGroup gameFunctions={gameFunctions} />
+            <ButtonGroup gameFunctions={gameFunctions} onClick={onClick} />
             <Board
               players={future}
               betHandler={betHandler}
@@ -69,7 +69,7 @@ const GameTable: React.FC<GameTableProps> & { defaultProps: Partial<GameTablePro
               isBlackJack={isBlackJack}
               turn={turn}
             />
-            <ButtonGroup gameFunctions={gameFunctions} />
+            <ButtonGroup gameFunctions={gameFunctions} onClick={onClick} />
           </>
         )}
     </>
@@ -77,10 +77,11 @@ const GameTable: React.FC<GameTableProps> & { defaultProps: Partial<GameTablePro
 };
 
 GameTable.defaultProps = {
-  isBlackJack: true,
-  hideHands: false,
-  gameOver: false,
   cardsToDiscard: [],
+  gameFunctions: [],
+  gameOver: false,
+  hideHands: false,
+  isBlackJack: true,
 };
 
 export default GameTable;

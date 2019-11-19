@@ -13,39 +13,40 @@ import Header from './Header';
 import GameTable from '../game-table';
 import Deck from '../../../apis/Deck';
 import {
-  DBTurn, DBHand, DBPlayer, DBRootState,
+  DBTurn, DBHand, DBPlayer, DBRootState, GameFunctions, DBBlackjack,
 } from '../../../store/types';
-import { incrHandTurn, incrPlayerTurn, resetTurn } from '../../../store/modules/turn';
+import { incrHandTurn, incrPlayerTurn } from '../../../store/modules/turn';
 import {
-  drawCard, newHand, payout, resetStatus,
-  splitHand, updateBet,
+  setNewGame, updateGameFunctions, updateHideHands, updateHasFunctions,
+} from '../../../store/modules/blackjack';
+import {
+  drawCard, newHand, payout, splitHand, updateBet,
 } from '../../../store/modules/players';
-import { ButtonProps } from '../game-table/button-group/Button';
 
 interface BlackJackActions {
-  turnActions: {
-    incrHandTurn: Function;
-    incrPlayerTurn: Function;
-    resetTurn: Function;
+  bjActions: {
+    setNewGame: Function;
+    updateGameFunctions: Function;
+    updateHasFunctions: Function;
+    updateHideHands: Function;
   };
   playerActions: {
     drawCard: Function;
     newHand: Function;
     payout: Function;
-    resetStatus: Function;
     splitHand: Function;
     updateBet: Function;
   };
+  turnActions: {
+    incrHandTurn: Function;
+    incrPlayerTurn: Function;
+  };
 }
-interface BlackJackDBState {
+interface BlackJackDBState extends DBBlackjack {
   players: DBPlayer[];
   turn: DBTurn;
 }
 interface BlackJackProps extends BlackJackDBState, BlackJackActions {}
-interface BlackJackState {
-  gameFunctions: ButtonProps[];
-  hideHands: boolean;
-}
 interface PlayerStats {
   house: number;
   payout: number;
@@ -55,103 +56,66 @@ interface PlayerStats {
 // Dealer constant
 const DEALER = 0;
 
-class BlackJack extends React.Component<BlackJackProps, BlackJackState> {
-  constructor(props: BlackJackProps) {
-    super(props);
-    this.setNewGameRedux();
-    this.state = this.getNewGameState();
-  }
+class BlackJack extends React.Component<BlackJackProps, {}> {
+  componentDidUpdate(): void {
+    const {
+      players, turn, hideHands, hasFunctions,
+    } = this.props;
+    const player = players[turn.player];
 
-  componentDidUpdate(prevProps: BlackJackProps): void {
-    const { players: lp, turn: lt } = prevProps;
-    const { players: np, turn: nt } = this.props;
-    const { hideHands } = this.state;
-    // verify player exists and is dealer
-    const player = np[nt.player];
-    if (hideHands || !player) {
-      return;
-    }
+    if (hideHands || !player) { return; }
+
     if (!player.isBot && player.id !== DEALER) {
+      if (hasFunctions) { return; }
       // get the next Hand
-      const hand = player.hands[nt.hand];
-      // if the Hand updated, get the game functions
-      if (hand !== lp[lt.player].hands[lt.hand]) {
-        this.getGameFunctions(hand);
-      }
+      const hand = player.hands[turn.hand];
+      this.getGameFunctions(hand);
     } else if (player.isBot && player.id !== DEALER) {
       this.playBot();
     } else {
-      // get the next Hand
-      const hand = player.hands[nt.hand];
-      // if the Hand updated, check for dealer
-      if (hand !== lp[lt.player].hands[lt.hand]) {
-        this.playDealer();
-      }
+      this.playDealer();
     }
   }
 
-  /** function to generate the state of a new game
-   * @return {Object}
-   */
-  getNewGameState = (): BlackJackState => ({
-    gameFunctions: [{ name: 'Finish Betting', func: this.finishBetting }],
-    hideHands: true,
-  });
-
-  /** function to reset turn and player status */
-  setNewGameRedux = (): void => {
-    const { turnActions, playerActions, players } = this.props;
-    // reset redux actions
-    turnActions.resetTurn();
-    // reset player statuses
-    players.forEach((player) => playerActions.resetStatus(player.id));
-  };
-
   /** get the game functions for the present hand */
   getGameFunctions = (hand: DBHand): void => {
-    // check state
-    if (!hand) {
-      return;
-    }
-
-    // define game function options
-    const stay = { name: 'Stay', func: this.stay };
-    const hit = { name: 'Hit', func: this.hit };
-    const double = { name: 'Double', func: this.double };
-    const split = { name: 'Split', func: this.split };
+    if (!hand) { return; }
 
     // reset game functions
-    const gameFunctions = [stay];
+    const gameFunctions = [GameFunctions.STAY];
     const handWeight = hand.weight || 0;
 
     // check if not a bust
     if (handWeight < 21) {
-      gameFunctions.push(hit);
+      gameFunctions.push(GameFunctions.HIT);
       // check if you only have 2 cards
       if (hand.cards.length === 2) {
-        gameFunctions.push(double);
+        gameFunctions.push(GameFunctions.DOUBLE);
         // check if card1 and card2 have equal weight
         const { weight: weight1 } = weighHand([hand.cards[0]]);
         const { weight: weight2 } = weighHand([hand.cards[1]]);
         if (weight1 === weight2) {
-          gameFunctions.push(split);
+          gameFunctions.push(GameFunctions.SPLIT);
         }
       }
     }
 
     // update game state
-    this.setState({ gameFunctions });
+    const { bjActions } = this.props;
+    bjActions.updateGameFunctions(gameFunctions);
+    bjActions.updateHasFunctions(true);
   };
 
-  /** function that takes a hand of duplicates and makes 2 hands
-   * stateChanges: players
-   */
+  /** function that takes a hand of duplicates and makes 2 hands */
   split = (): void => {
     // get state values
-    const { turn, players, playerActions } = this.props;
+    const {
+      turn, players, bjActions, playerActions,
+    } = this.props;
     const { id, hands } = players[turn.player];
 
     playerActions.splitHand(hands, id, turn.hand, weighHand);
+    bjActions.updateHasFunctions(false);
   };
 
   /** function that doubles your bet, but you only get 1 card */
@@ -165,34 +129,34 @@ class BlackJack extends React.Component<BlackJackProps, BlackJackState> {
     this.stay();
   };
 
-  /** function to pass to the next player
-   * stateChanges: turn
-   */
+  /** function to pass to the next player */
   stay = (): void => {
     // get state values
-    const { turn, turnActions, players } = this.props;
+    const {
+      turn, turnActions, bjActions, players,
+    } = this.props;
     const lastHand = players[turn.player].hands.length - 1;
 
     // check if the player has more than 1 hand
     turn.hand < lastHand
       ? turnActions.incrHandTurn()
       : turnActions.incrPlayerTurn();
+    bjActions.updateHasFunctions(false);
   };
 
-  /** function to get a new card
-   * stateChanges: players
-   */
+  /** function to get a new card */
   hit = (): void => {
     // get state values
-    const { turn, playerActions, players } = this.props;
+    const {
+      turn, playerActions, bjActions, players,
+    } = this.props;
     const { id, hands } = players[turn.player];
     // logic to hit
     playerActions.drawCard(hands, id, turn.hand, 1, weighHand);
+    bjActions.updateHasFunctions(false);
   };
 
-  /** Start a new round of hands
-   * stateChanges: turn, players
-   */
+  /** Start a new round of hands */
   dealHands = (): void => {
     const { playerActions, players } = this.props;
     // shuffle the deck
@@ -205,28 +169,25 @@ class BlackJack extends React.Component<BlackJackProps, BlackJackState> {
     });
   };
 
-  /** Start a new game
-   * stateChanges: hideHands
-   */
+  /** Start a new game */
   newGame = (): void => {
-    this.setNewGameRedux();
-    this.setState(this.getNewGameState());
+    const { players, bjActions } = this.props;
+    bjActions.setNewGame(players);
   };
 
-  /** function to finish betting and start the game
-   * stateChanges: hideHands
-   */
+  /** function to finish betting and start the game */
   finishBetting = (): void => {
-    this.setState({ hideHands: false });
+    const { bjActions } = this.props;
+    bjActions.updateHideHands(false);
     this.dealHands();
   };
 
-  /** finish the game and check for a winner
-   * stateChanges: turn, player, gameFunctions
-   */
+  /** finish the game and check for a winner */
   finishGame = (): void => {
     // state variables
-    const { turn, players, playerActions } = this.props;
+    const {
+      turn, players, bjActions, playerActions,
+    } = this.props;
     const dealer = players[turn.player].hands[DEALER].weight || 0;
     const dealerLen = players[turn.player].hands[DEALER].cards.length;
     // track and find the winners
@@ -276,9 +237,9 @@ class BlackJack extends React.Component<BlackJackProps, BlackJackState> {
     });
 
     // update state variables
-    const gameFunctions = [{ name: 'New Game', func: this.newGame }];
+    const gameFunctions = [GameFunctions.NEW_GAME];
     // update state
-    this.setState({ gameFunctions });
+    bjActions.updateGameFunctions(gameFunctions);
   };
 
   /** function to execute dealer logic */
@@ -305,6 +266,7 @@ class BlackJack extends React.Component<BlackJackProps, BlackJackState> {
     const hand = players[turn.player].hands[turn.hand];
     // validate hand exists
     if (!hand) {
+      stay();
       return;
     }
     // get remaining vars
@@ -403,21 +365,38 @@ class BlackJack extends React.Component<BlackJackProps, BlackJackState> {
     console.log(players[playerNo].hands[handNo].cards[cardNo]);
   };
 
-  /** function to be called on card clicks
-   * @param {number} id
-   * @param {Object} event
-   * @param {number} bet
-   * stateChanges: player
-   */
+  /** function to be called on card clicks */
   betHandler = (id: number, event: React.MouseEvent, bet: number): void => {
     const { playerActions } = this.props;
     playerActions.updateBet(id, bet);
   };
 
+  /** function to route click actions */
+  handleGameFunctionClick = (type: GameFunctions): void => {
+    switch (type) {
+      case GameFunctions.NEW_GAME:
+        this.newGame(); break;
+      case GameFunctions.FINISH_BETTING:
+        this.finishBetting(); break;
+      case GameFunctions.STAY:
+        this.stay(); break;
+      case GameFunctions.HIT:
+        this.hit(); break;
+      case GameFunctions.DOUBLE:
+        this.double(); break;
+      case GameFunctions.SPLIT:
+        this.split(); break;
+      default:
+        // eslint-disable-next-line no-console
+        console.error('Unknown Game Function: ', type);
+    }
+  }
+
   /* render the UI */
   render(): React.ReactNode {
-    const { turn, players } = this.props;
-    const { gameFunctions, hideHands } = this.state;
+    const {
+      turn, players, gameFunctions, hideHands,
+    } = this.props;
 
     return (
       <>
@@ -426,6 +405,7 @@ class BlackJack extends React.Component<BlackJackProps, BlackJackState> {
           betHandler={this.betHandler}
           cardClickHandler={this.cardClickHandler}
           gameFunctions={gameFunctions}
+          onClick={this.handleGameFunctionClick}
           hideHands={hideHands}
           players={players}
           turn={turn}
@@ -437,12 +417,15 @@ class BlackJack extends React.Component<BlackJackProps, BlackJackState> {
 
 // react-redux export
 const mapStateToProps = (state: DBRootState): BlackJackDBState => ({
-  turn: state.turn,
+  ...state.blackjack,
   players: state.players,
+  turn: state.turn,
 });
 const mapDispatchToProps = (dispatch: Dispatch): BlackJackActions => ({
-  turnActions: bindActionCreators(
-    { incrPlayerTurn, resetTurn, incrHandTurn },
+  bjActions: bindActionCreators(
+    {
+      setNewGame, updateGameFunctions, updateHasFunctions, updateHideHands,
+    },
     dispatch,
   ),
   playerActions: bindActionCreators(
@@ -452,8 +435,11 @@ const mapDispatchToProps = (dispatch: Dispatch): BlackJackActions => ({
       splitHand,
       payout,
       updateBet,
-      resetStatus,
     },
+    dispatch,
+  ),
+  turnActions: bindActionCreators(
+    { incrPlayerTurn, incrHandTurn },
     dispatch,
   ),
 });

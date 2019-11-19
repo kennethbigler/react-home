@@ -1,14 +1,15 @@
 import React from 'react';
-import Button, { ButtonProps } from './Button';
+import Button from './Button';
 
 export interface ButtonGroupProps {
-  gameFunctions: ButtonProps[];
+  gameFunctions: string[];
+  onClick: Function;
 }
 
-const ButtonGroup: React.FC<ButtonGroupProps> = ({ gameFunctions }: ButtonGroupProps) => (
+const ButtonGroup: React.FC<ButtonGroupProps> = ({ gameFunctions, onClick }: ButtonGroupProps) => (
   <div>
-    {gameFunctions.map((obj) => (
-      <Button key={obj.name} func={obj.func} name={obj.name} />
+    {gameFunctions.map((key) => (
+      <Button key={key} onClick={onClick} name={key} />
     ))}
   </div>
 );

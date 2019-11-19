@@ -12,11 +12,16 @@ import Deck from '../../../apis/Deck';
 import {
   DBPlayer, DBTurn, DBCard, DBRootState,
 } from '../../../store/types';
-import { ButtonProps } from '../game-table/button-group/Button';
 
 const DEALER = 0;
 const LAST_PLAYER = 5;
 
+enum PokerGameFunctions {
+  DISCARD_CARDS = 'Discard Cards',
+  END_TURN = 'End Turn',
+  NEW_GAME = 'New Game',
+  START_GAME = 'Start Game',
+}
 interface PokerActions {
   turnActions: {
     incrPlayerTurn: Function;
@@ -35,7 +40,7 @@ interface PokerDBState {
 }
 interface PokerProps extends PokerDBState, PokerActions {}
 interface PokerState {
-  gameFunctions: ButtonProps[];
+  gameFunctions: string[];
   cardsToDiscard: number[];
   hideHands: boolean;
   gameOver: boolean;
@@ -71,7 +76,7 @@ class Poker extends React.Component<PokerProps, PokerState> {
 
   /** function to generate the state of a new game */
   getNewGameState = (): PokerState => ({
-    gameFunctions: [{ name: 'Start Game', func: this.startGame }],
+    gameFunctions: [PokerGameFunctions.START_GAME],
     cardsToDiscard: [],
     hideHands: true,
     gameOver: false,
@@ -104,7 +109,7 @@ class Poker extends React.Component<PokerProps, PokerState> {
    */
   startGame = (): void => {
     this.setState({
-      gameFunctions: [{ name: 'Discard Cards', func: this.handleDiscard }],
+      gameFunctions: [PokerGameFunctions.DISCARD_CARDS],
       hideHands: false,
     });
     this.dealHands();
@@ -116,7 +121,7 @@ class Poker extends React.Component<PokerProps, PokerState> {
 
     turnActions.incrPlayerTurn();
     this.setState({
-      gameFunctions: [{ name: 'Discard Cards', func: this.handleDiscard }],
+      gameFunctions: [PokerGameFunctions.DISCARD_CARDS],
       cardsToDiscard: [],
     });
   };
@@ -144,7 +149,7 @@ class Poker extends React.Component<PokerProps, PokerState> {
       }
     });
     this.setState({
-      gameFunctions: [{ name: 'New Game', func: this.newGame }],
+      gameFunctions: [PokerGameFunctions.NEW_GAME],
       gameOver: true,
     });
   };
@@ -221,7 +226,7 @@ class Poker extends React.Component<PokerProps, PokerState> {
     const { cardsToDiscard } = this.state;
     this.discard(cardsToDiscard);
     this.setState({
-      gameFunctions: [{ name: 'End Turn', func: this.endTurn }],
+      gameFunctions: [PokerGameFunctions.END_TURN],
       cardsToDiscard: [],
     });
   };
@@ -358,6 +363,23 @@ class Poker extends React.Component<PokerProps, PokerState> {
     });
   };
 
+  /** function to route click actions */
+  handleGameFunctionClick = (type: PokerGameFunctions): void => {
+    switch (type) {
+      case PokerGameFunctions.DISCARD_CARDS:
+        this.handleDiscard(); break;
+      case PokerGameFunctions.END_TURN:
+        this.endTurn(); break;
+      case PokerGameFunctions.NEW_GAME:
+        this.newGame(); break;
+      case PokerGameFunctions.START_GAME:
+        this.startGame(); break;
+      default:
+        // eslint-disable-next-line no-console
+        console.error('Unknown Game Function: ', type);
+    }
+  }
+
   render(): React.ReactNode {
     const { turn, players } = this.props;
     const {
@@ -372,6 +394,7 @@ class Poker extends React.Component<PokerProps, PokerState> {
           cardClickHandler={this.cardClickHandler}
           cardsToDiscard={cardsToDiscard}
           gameFunctions={gameFunctions}
+          onClick={this.handleGameFunctionClick}
           gameOver={gameOver}
           hideHands={hideHands}
           isBlackJack={false}

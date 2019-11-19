@@ -6,14 +6,14 @@ const buttonStyle: React.CSSProperties = { margin: 12 };
 const color: PropTypes.Color = 'primary';
 
 export interface ButtonProps {
-  func: React.MouseEventHandler;
+  onClick: Function;
   name: string;
 }
 
-const Button: React.FC<ButtonProps> = React.memo(({ func, name }: ButtonProps) => (
+const Button: React.FC<ButtonProps> = React.memo(({ onClick, name }: ButtonProps) => (
   <MuiButton
     color={color}
-    onClick={func}
+    onClick={(): void => onClick(name)}
     style={buttonStyle}
     variant="contained"
   >

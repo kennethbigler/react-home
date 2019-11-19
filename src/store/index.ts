@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import blackjack from './modules/blackjack';
 import connect4 from './modules/connect4';
 import dnd from './modules/dnd';
 import git from './modules/git';
@@ -11,6 +12,7 @@ import turn from './modules/turn';
 import yahtzee from './modules/yahtzee';
 
 const rootReducer = combineReducers({
+  blackjack,
   connect4,
   dnd,
   git,

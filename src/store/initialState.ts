@@ -3,13 +3,19 @@ import deepOrange from '@material-ui/core/colors/deepOrange';
 import { pullHandle } from '../apis/SlotMachine';
 
 import {
-  DBGit, DBPlayer,
+  DBGit, DBPlayer, DBBlackjack, GameFunctions,
   DBUITheme, DBTurn, DBRootState, DBSlotDisplay,
   DBTicTacToe, DBConnect4, C4Turn, DBYahtzee, DBDND,
   briefcasesToOpen, Briefcase,
 } from './types';
 
 // --------------------     helpers     -------------------- //
+// blackjack
+export const newBlackjackGame = (): DBBlackjack => ({
+  gameFunctions: [GameFunctions.FINISH_BETTING],
+  hasFunctions: false,
+  hideHands: true,
+});
 // connect4
 const NEW_BOARD = [
   [0, 0, 0, 0, 0, 0, 0],
@@ -119,6 +125,7 @@ export const newYahtzee = (): Omit<DBYahtzee, 'scores'> => ({
 });
 
 // --------------------     initial states     -------------------- //
+const blackjack = newBlackjackGame();
 const connect4 = newConnect4Game();
 const dnd = newDNDGame();
 const git: DBGit = {
@@ -150,6 +157,7 @@ const yahtzee: DBYahtzee = { ...newYahtzee(), scores: []};
 
 // --------------------     export     -------------------- //
 export default {
+  blackjack,
   connect4,
   dnd,
   git,
