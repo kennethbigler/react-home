@@ -15,31 +15,27 @@ import Deck from '../../../apis/Deck';
 import {
   DBTurn, DBHand, DBPlayer, DBRootState, GameFunctions, DBBlackjack,
 } from '../../../store/types';
-import { incrHandTurn, incrPlayerTurn } from '../../../store/modules/turn';
 import {
   setNewGame, updateGameFunctions, updateHideHands, updateHasFunctions,
+  splitHand, hitHand, stayHand, doubleHand,
 } from '../../../store/modules/blackjack';
-import {
-  drawCard, newHand, payout, splitHand, updateBet,
-} from '../../../store/modules/players';
+import { newHand, payout, updateBet } from '../../../store/modules/players';
 
 interface BlackJackActions {
   bjActions: {
+    doubleHand: Function;
+    hitHand: Function;
     setNewGame: Function;
+    splitHand: Function;
+    stayHand: Function;
     updateGameFunctions: Function;
     updateHasFunctions: Function;
     updateHideHands: Function;
   };
   playerActions: {
-    drawCard: Function;
     newHand: Function;
     payout: Function;
-    splitHand: Function;
     updateBet: Function;
-  };
-  turnActions: {
-    incrHandTurn: Function;
-    incrPlayerTurn: Function;
   };
 }
 interface BlackJackDBState extends DBBlackjack {
@@ -82,7 +78,6 @@ class BlackJack extends React.Component<BlackJackProps, {}> {
   getGameFunctions = (hand: DBHand): void => {
     if (!hand) { return; }
 
-    console.log(hand);
     // reset game functions
     const gameFunctions = [GameFunctions.STAY];
     const handWeight = hand.weight || 0;
@@ -111,51 +106,37 @@ class BlackJack extends React.Component<BlackJackProps, {}> {
   /** function that takes a hand of duplicates and makes 2 hands */
   split = (): void => {
     // get state values
-    const {
-      turn, players, bjActions, playerActions,
-    } = this.props;
+    const { turn, players, bjActions } = this.props;
     const { id, hands } = players[turn.player];
-
-    playerActions.splitHand(hands, id, turn.hand, weighHand)
-      .then(() => bjActions.updateHasFunctions(false));
+    bjActions.splitHand(hands, id, turn.hand, weighHand);
   };
 
   /** function that doubles your bet, but you only get 1 card */
   double = (): void => {
-    const { turn, playerActions, players } = this.props;
-    // double bet
-    const { id, bet } = players[turn.player];
-    playerActions.updateBet(id, bet * 2);
-    // hit then stay
-    this.hit();
-    this.stay();
+    const { turn, players, bjActions } = this.props;
+
+    const { id, bet, hands } = players[turn.player];
+    const lastHand = players[turn.player].hands.length - 1;
+
+    bjActions.doubleHand(id, bet, hands, id, turn.hand, weighHand, turn.hand < lastHand);
   };
 
   /** function to pass to the next player */
   stay = (): void => {
     // get state values
-    const {
-      turn, turnActions, bjActions, players,
-    } = this.props;
+    const { turn, players, bjActions } = this.props;
     const lastHand = players[turn.player].hands.length - 1;
-
     // check if the player has more than 1 hand
-    turn.hand < lastHand
-      ? turnActions.incrHandTurn()
-      : turnActions.incrPlayerTurn();
-    bjActions.updateHasFunctions(false);
+    bjActions.stayHand(turn.hand < lastHand);
   };
 
   /** function to get a new card */
   hit = (): void => {
     // get state values
-    const {
-      turn, playerActions, bjActions, players,
-    } = this.props;
+    const { bjActions, turn, players } = this.props;
     const { id, hands } = players[turn.player];
     // logic to hit
-    playerActions.drawCard(hands, id, turn.hand, 1, weighHand);
-    bjActions.updateHasFunctions(false);
+    bjActions.hitHand(hands, id, turn.hand, weighHand);
   };
 
   /** Start a new round of hands */
@@ -427,22 +408,19 @@ const mapStateToProps = (state: DBRootState): BlackJackDBState => ({
 const mapDispatchToProps = (dispatch: Dispatch): BlackJackActions => ({
   bjActions: bindActionCreators(
     {
-      setNewGame, updateGameFunctions, updateHasFunctions, updateHideHands,
+      doubleHand,
+      hitHand,
+      setNewGame,
+      splitHand,
+      stayHand,
+      updateGameFunctions,
+      updateHasFunctions,
+      updateHideHands,
     },
     dispatch,
   ),
   playerActions: bindActionCreators(
-    {
-      drawCard,
-      newHand,
-      splitHand,
-      payout,
-      updateBet,
-    },
-    dispatch,
-  ),
-  turnActions: bindActionCreators(
-    { incrPlayerTurn, incrHandTurn },
+    { newHand, payout, updateBet },
     dispatch,
   ),
 });

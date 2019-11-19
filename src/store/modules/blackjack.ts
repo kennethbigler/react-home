@@ -1,8 +1,14 @@
 import { AnyAction, Dispatch } from 'redux';
-import { DBBlackjack, DBPlayer } from '../types';
+import { DBBlackjack, DBPlayer, DBHand } from '../types';
 import initialState, { newBlackjackGame } from '../initialState';
-import { resetStatus } from './players';
-import { resetTurn } from './turn';
+import {
+  resetStatus,
+  splitHand as pSplitHand,
+  drawCard,
+  WeighFunc,
+  updateBet,
+} from './players';
+import { resetTurn, incrHandTurn, incrPlayerTurn } from './turn';
 
 // --------------------     Actions     -------------------- //
 const UPDATE_GAME_FUNCTIONS = 'casino/blackjack/UPDATE_GAME_FUNCTIONS';
@@ -39,5 +45,27 @@ export function setNewGame(players: DBPlayer[]) {
     promises.push(dispatch(resetTurn()));
     players.forEach((player) => promises.push(dispatch(resetStatus(player.id))));
     return Promise.all(promises);
+  };
+}
+export function splitHand(hands: DBHand[], id: number, hNum: number, weigh: WeighFunc) {
+  return (dispatch: Function): Promise<Dispatch[]> => dispatch(pSplitHand(hands, id, hNum, weigh))
+    .then(() => dispatch(updateHasFunctions(false)));
+}
+export function hitHand(hands: DBHand[], id: number, hNum: number, weigh: WeighFunc) {
+  return (dispatch: Function): Promise<Dispatch[]> => dispatch(drawCard(hands, id, hNum, 1, weigh))
+    .then(() => dispatch(updateHasFunctions(false)));
+}
+export function stayHand(readyForNextPlayer: boolean) {
+  return async (dispatch: Function): Promise<Dispatch[]> => {
+    readyForNextPlayer ? await dispatch(incrHandTurn()) : await dispatch(incrPlayerTurn());
+    return dispatch(updateHasFunctions(false));
+  };
+}
+export function doubleHand(id: number, bet: number, hands: DBHand[], hNum: number, weigh: WeighFunc, readyForNextPlayer: boolean) {
+  return async (dispatch: Function): Promise<void> => {
+    await dispatch(updateBet(id, bet * 2));
+    await dispatch(drawCard(hands, id, hNum, 1, weigh));
+    await dispatch(stayHand(readyForNextPlayer));
+    await dispatch(updateHasFunctions(false));
   };
 }

@@ -114,7 +114,7 @@ export default function reducer(state: DBPlayer[] = initialState.players, action
 }
 
 // --------------------     Thunks     -------------------- //
-type WeighFunc = (cards: DBCard[]) => { weight: number; soft: boolean };
+export type WeighFunc = (cards: DBCard[]) => { weight: number; soft: boolean };
 const defaultWeigh: WeighFunc = () => ({ weight: 0, soft: false });
 
 /** function to have a player draw a card
