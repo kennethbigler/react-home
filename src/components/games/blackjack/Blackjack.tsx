@@ -87,35 +87,35 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
   };
 
   /** function that takes a hand of duplicates and makes 2 hands */
-  const split = async (): Promise<void> => {
+  const split = (): void => {
     // get state values
     const { bjActions } = props;
     const { id, hands } = players[turn.player];
-    await bjActions.splitHand(hands, id, turn.hand, weighHand);
+    bjActions.splitHand(hands, id, turn.hand, weighHand);
   };
 
   /** function to pass to the next player */
-  const stay = async (): Promise<void> => {
+  const stay = (): void => {
     // get state values
     const { bjActions } = props;
     const lastHand = players[turn.player].hands.length - 1;
     // check if the player has more than 1 hand
-    await bjActions.stayHand(turn.hand < lastHand);
+    bjActions.stayHand(turn.hand < lastHand);
   };
 
   /** function that doubles your bet, but you only get 1 card */
-  const double = async (): Promise<void> => {
+  const double = (): void => {
     const { bjActions } = props;
-    await bjActions.doubleHand(players[turn.player], turn, weighHand);
+    bjActions.doubleHand(players[turn.player], turn, weighHand);
   };
 
   /** function to get a new card */
-  const hit = async (): Promise<void> => {
+  const hit = (): void => {
     // get state values
     const { bjActions } = props;
     const { id, hands } = players[turn.player];
     // logic to hit
-    await bjActions.hitHand(hands, id, turn.hand, weighHand);
+    bjActions.hitHand(hands, id, turn.hand, weighHand);
   };
 
   /** Start a new round of hands */
@@ -203,31 +203,31 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
   };
 
   /** function to get a new card */
-  const hitDealer = async (): Promise<void> => {
+  const hitDealer = (): void => {
     // get state values
     const { bjActions } = props;
     const { hands } = players.filter((p) => p.id === DEALER)[0];
     // logic to hit
-    await bjActions.hitHand(hands, DEALER, 0, weighHand);
+    bjActions.hitHand(hands, DEALER, 0, weighHand);
   };
 
   /** function to execute dealer logic */
-  const playDealer = async (): Promise<void> => {
+  const playDealer = (): void => {
     const { bjActions } = props;
     const dealer = players.filter((p) => p.id === DEALER)[0];
     const hand = dealer.hands[0].cards;
     const { weight, soft } = weighHand(hand);
     // Dealer hits on 16 or less and soft 17
     if (weight <= 16 || (weight === 17 && soft)) {
-      await bjActions.updateHasFunctions(true);
-      await hitDealer();
+      bjActions.updateHasFunctions(true);
+      hitDealer();
     } else {
       finishGame();
     }
   };
 
   // AI: https://www.blackjackinfo.com/blackjack-basic-strategy-engine/
-  const playBot = async (): Promise<void> => {
+  const playBot = (): void => {
     // player hand
     const hand = players[turn.player].hands[turn.hand];
     // validate hand exists
@@ -247,77 +247,77 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
       if (x === y) {
         if (x === 2 || x === 3 || x === 7) {
           // 2,3,7, split d2-7, hit d8+
-          d <= 7 ? await split() : await hit();
+          d <= 7 ? split() : hit();
         } else if (x === 4) {
           // 4, split d5-6, else hit
-          d === 5 || d === 6 ? await split() : await hit();
+          d === 5 || d === 6 ? split() : hit();
         } else if (x === 5) {
           // 5, double d2-9, hit d10+
-          d <= 9 ? await double() : await hit();
+          d <= 9 ? double() : hit();
         } else if (x === 6) {
           // 6, split d2-6, else hit
-          d <= 6 ? await split() : await hit();
+          d <= 6 ? split() : hit();
         } else if (x === 9) {
           // 9, d7,10+ stay, else split
-          d === 7 || d >= 10 ? await stay() : await split();
+          d === 7 || d >= 10 ? stay() : split();
         } else if (x === 8 || x === 14) {
           // 8,A split
-          await split();
+          split();
         } else {
           // 10 Stay
-          await stay();
+          stay();
         }
       } else if (n < 20 && soft) {
         // soft hands, A9+ stays
         if (n === 13 || n === 14) {
           // A2-A3 double d5-6, hit d2-4, d7-A
-          d === 5 || d === 6 ? await double() : await hit();
+          d === 5 || d === 6 ? double() : hit();
         } else if (n === 15 || n === 16) {
           // A4-A5 double d4-6, hit d2-3, d7-A
-          d >= 4 && d <= 6 ? await double() : await hit();
+          d >= 4 && d <= 6 ? double() : hit();
         } else if (n === 17) {
           // A6 double d3-6, hit d2, d7-A
-          d >= 3 && d <= 6 ? await double() : await hit();
+          d >= 3 && d <= 6 ? double() : hit();
         } else if (n === 18) {
           // A7 double d2-6, stay d7-8, hit d9-A
           if (d >= 2 && d <= 6) {
-            await double();
+            double();
           } else if (d === 7 || d === 8) {
-            await stay();
+            stay();
           } else {
-            await hit();
+            hit();
           }
         } else if (n === 19) {
           // A8 double d6, else stay
-          d === 6 ? await double() : await stay();
+          d === 6 ? double() : stay();
         }
       } else if (n < 17 && !soft) {
         // hard hands, 17+ stays
         if (n >= 5 && n <= 8) {
           // 5-8 hit
-          await hit();
+          hit();
         } else if (n === 9) {
           // 9 double d3-6, hit d2, d7-A
-          d >= 3 && d <= 6 ? await double() : await hit();
+          d >= 3 && d <= 6 ? double() : hit();
         } else if (n === 10) {
           // 10 double d2-9, hit d10-A
-          d >= 2 && d <= 9 ? await double() : await hit();
+          d >= 2 && d <= 9 ? double() : hit();
         } else if (n === 11) {
           // 11 double
-          await double();
+          double();
         } else if (n === 12) {
           // 12 hit d2-3, stay d4-6, hit 7-A
-          d >= 4 && d <= 6 ? await stay() : await hit();
+          d >= 4 && d <= 6 ? stay() : hit();
         } else if (n >= 13 && n <= 16) {
           // 13-16 stay d2-6, hit 7-A
-          d >= 2 && d <= 6 ? await stay() : await hit();
+          d >= 2 && d <= 6 ? stay() : hit();
         }
       } else {
-        await stay();
+        stay();
       }
     } else {
       // bust
-      await stay();
+      stay();
     }
   };
 
