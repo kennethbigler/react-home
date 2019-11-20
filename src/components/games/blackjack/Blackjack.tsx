@@ -149,8 +149,9 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
   const finishGame = (): void => {
     // state variables
     const { bjActions, playerActions } = props;
-    const dealer = players[turn.player].hands[DEALER].weight || 0;
-    const dealerLen = players[turn.player].hands[DEALER].cards.length;
+    const dealer = players.filter((p) => p.id === DEALER)[0];
+    const dWeight = dealer.hands[0].weight || 0;
+    const dLength = dealer.hands[0].cards.length;
     // track and find the winners
     const playerStats: PlayerStats = { house: 0, payout: 0, status: '' };
     // helper functions
@@ -178,15 +179,15 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
       } else {
         player.hands.forEach((hand) => {
           const { weight = 0, cards } = hand;
-          if (dealer === 21 && dealerLen === 2) {
+          if (dWeight === 21 && dLength === 2) {
             // dealer BlackJack
             loss(playerStats, bet);
           } else if (weight === 21 && cards.length === 2) {
             // player BlackJack
             win(playerStats, bet, 6 / 5);
-          } else if (weight <= 21 && (weight > dealer || dealer > 21)) {
+          } else if (weight <= 21 && (weight > dWeight || dWeight > 21)) {
             win(playerStats, bet);
-          } else if (weight <= 21 && weight === dealer) {
+          } else if (weight <= 21 && weight === dWeight) {
             playerStats.payout = 0;
             playerStats.status = 'push';
           } else {
@@ -201,19 +202,28 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
     bjActions.updateGameFunctions([GameFunctions.NEW_GAME]);
   };
 
+  /** function to get a new card */
+  const hitDealer = async (): Promise<void> => {
+    // get state values
+    const { bjActions } = props;
+    const { hands } = players.filter((p) => p.id === DEALER)[0];
+    console.log('hit: ', hands);
+    // logic to hit
+    await bjActions.hitHand(hands, DEALER, 0, weighHand);
+  };
+
   /** function to execute dealer logic */
   const playDealer = async (): Promise<void> => {
     const { bjActions } = props;
-    const hand = players[turn.player].hands[turn.hand].cards;
+    const dealer = players.filter((p) => p.id === DEALER)[0];
+    const hand = dealer.hands[0].cards;
     const { weight, soft } = weighHand(hand);
-    console.log('weigh/soft: ', hand, weight, soft);
     // Dealer hits on 16 or less and soft 17
+    console.log('play: ', dealer.hands[0].cards);
     if (weight <= 16 || (weight === 17 && soft)) {
-      console.log('hit');
-      await hit();
-      bjActions.updateHasFunctions(true);
+      await bjActions.updateHasFunctions(true);
+      await hitDealer();
     } else {
-      console.log('finish');
       finishGame();
     }
   };
@@ -225,7 +235,7 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
     // validate hand exists
     if (!hand) { return; }
     // get remaining vars
-    const dealer = players[players.length - 1].hands[DEALER];
+    const dealer = players[players.length - 1].hands[0];
     const n = hand.weight || 0;
     const { soft } = hand;
     // card / dealer weight
@@ -317,7 +327,7 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
     const { hasFunctions } = props;
     const player = players[turn.player];
 
-    if (hideHands || !player) { return; }
+    if (hasFunctions || hideHands || !player) { return; }
 
     if (!player.isBot && player.id !== DEALER) {
       if (hasFunctions) { return; }
@@ -328,7 +338,6 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
       if (hasFunctions) { return; }
       playBot();
     } else {
-      console.log('Dealer', gameFunctions.includes(GameFunctions.NEW_GAME));
       !gameFunctions.includes(GameFunctions.NEW_GAME) && playDealer();
     }
   };
