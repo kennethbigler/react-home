@@ -52,95 +52,75 @@ interface PlayerStats {
 // Dealer constant
 const DEALER = 0;
 
-class BlackJack extends React.Component<BlackJackProps, {}> {
-  componentDidUpdate(): void {
-    const {
-      players, turn, hideHands, hasFunctions,
-      gameFunctions,
-    } = this.props;
-    const player = players[turn.player];
-
-    if (hideHands || !player) { return; }
-
-    console.log(player.isBot, player.id, gameFunctions.includes(GameFunctions.NEW_GAME));
-
-    if (!player.isBot && player.id !== DEALER) {
-      if (hasFunctions) { return; }
-      // get the next Hand
-      const hand = player.hands[turn.hand];
-      this.getGameFunctions(hand);
-    } else if (player.isBot && player.id < DEALER) {
-      if (hasFunctions) { return; }
-      this.playBot();
-    } else {
-      !gameFunctions.includes(GameFunctions.NEW_GAME) && this.playDealer();
-    }
-  }
+const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
+  const {
+    turn, players, gameFunctions, hideHands,
+  } = props;
 
   /** get the game functions for the present hand */
-  getGameFunctions = (hand: DBHand): void => {
+  const getGameFunctions = (hand: DBHand): void => {
     if (!hand) { return; }
 
     // reset game functions
-    const gameFunctions = [GameFunctions.STAY];
+    const newGameFunctions = [GameFunctions.STAY];
     const handWeight = hand.weight || 0;
 
     // check if not a bust
     if (handWeight < 21) {
-      gameFunctions.push(GameFunctions.HIT);
+      newGameFunctions.push(GameFunctions.HIT);
       // check if you only have 2 cards
       if (hand.cards.length === 2) {
-        gameFunctions.push(GameFunctions.DOUBLE);
+        newGameFunctions.push(GameFunctions.DOUBLE);
         // check if card1 and card2 have equal weight
         const { weight: weight1 } = weighHand([hand.cards[0]]);
         const { weight: weight2 } = weighHand([hand.cards[1]]);
         if (weight1 === weight2) {
-          gameFunctions.push(GameFunctions.SPLIT);
+          newGameFunctions.push(GameFunctions.SPLIT);
         }
       }
     }
 
     // update game state
-    const { bjActions } = this.props;
-    bjActions.updateGameFunctions(gameFunctions);
+    const { bjActions } = props;
+    bjActions.updateGameFunctions(newGameFunctions);
     bjActions.updateHasFunctions(true);
   };
 
   /** function that takes a hand of duplicates and makes 2 hands */
-  split = async (): Promise<void> => {
+  const split = async (): Promise<void> => {
     // get state values
-    const { turn, players, bjActions } = this.props;
+    const { bjActions } = props;
     const { id, hands } = players[turn.player];
     await bjActions.splitHand(hands, id, turn.hand, weighHand);
   };
 
   /** function to pass to the next player */
-  stay = async (): Promise<void> => {
+  const stay = async (): Promise<void> => {
     // get state values
-    const { turn, players, bjActions } = this.props;
+    const { bjActions } = props;
     const lastHand = players[turn.player].hands.length - 1;
     // check if the player has more than 1 hand
     await bjActions.stayHand(turn.hand < lastHand);
   };
 
   /** function that doubles your bet, but you only get 1 card */
-  double = async (): Promise<void> => {
-    const { turn, players, bjActions } = this.props;
+  const double = async (): Promise<void> => {
+    const { bjActions } = props;
     await bjActions.doubleHand(players[turn.player], turn, weighHand);
   };
 
   /** function to get a new card */
-  hit = async (): Promise<void> => {
+  const hit = async (): Promise<void> => {
     // get state values
-    const { bjActions, turn, players } = this.props;
+    const { bjActions } = props;
     const { id, hands } = players[turn.player];
     // logic to hit
     await bjActions.hitHand(hands, id, turn.hand, weighHand);
   };
 
   /** Start a new round of hands */
-  dealHands = (): void => {
-    const { playerActions, bjActions, players } = this.props;
+  const dealHands = (): void => {
+    const { playerActions, bjActions } = props;
     // shuffle the deck
     Deck.shuffle().then(() => {
       // deal the hands
@@ -153,24 +133,22 @@ class BlackJack extends React.Component<BlackJackProps, {}> {
   };
 
   /** Start a new game */
-  newGame = (): void => {
-    const { players, bjActions } = this.props;
+  const newGame = (): void => {
+    const { bjActions } = props;
     bjActions.setNewGame(players);
   };
 
   /** function to finish betting and start the game */
-  finishBetting = (): void => {
-    const { bjActions } = this.props;
+  const finishBetting = (): void => {
+    const { bjActions } = props;
     bjActions.updateHideHands(false);
-    this.dealHands();
+    dealHands();
   };
 
   /** finish the game and check for a winner */
-  finishGame = (): void => {
+  const finishGame = (): void => {
     // state variables
-    const {
-      turn, players, bjActions, playerActions,
-    } = this.props;
+    const { bjActions, playerActions } = props;
     const dealer = players[turn.player].hands[DEALER].weight || 0;
     const dealerLen = players[turn.player].hands[DEALER].cards.length;
     // track and find the winners
@@ -219,33 +197,30 @@ class BlackJack extends React.Component<BlackJackProps, {}> {
       }
     });
 
-    // update state variables
-    const gameFunctions = [GameFunctions.NEW_GAME];
-    // update state
-    bjActions.updateGameFunctions(gameFunctions);
+    // update game functions
+    bjActions.updateGameFunctions([GameFunctions.NEW_GAME]);
   };
 
   /** function to execute dealer logic */
-  playDealer = (): void => {
-    const { players, turn } = this.props;
+  const playDealer = async (): Promise<void> => {
+    const { bjActions } = props;
     const hand = players[turn.player].hands[turn.hand].cards;
     const { weight, soft } = weighHand(hand);
+    console.log('weigh/soft: ', hand, weight, soft);
     // Dealer hits on 16 or less and soft 17
     if (weight <= 16 || (weight === 17 && soft)) {
-      this.hit();
+      console.log('hit');
+      await hit();
+      bjActions.updateHasFunctions(true);
     } else {
-      this.finishGame();
+      console.log('finish');
+      finishGame();
     }
   };
 
   // AI: https://www.blackjackinfo.com/blackjack-basic-strategy-engine/
-  playBot = async (): Promise<void> => {
-    // functions
-    const {
-      hit, split, double, stay,
-    } = this;
+  const playBot = async (): Promise<void> => {
     // player hand
-    const { players, turn } = this.props;
     const hand = players[turn.player].hands[turn.hand];
     // validate hand exists
     if (!hand) { return; }
@@ -338,62 +313,77 @@ class BlackJack extends React.Component<BlackJackProps, {}> {
     }
   };
 
+  const checkUpdate = (): void => {
+    const { hasFunctions } = props;
+    const player = players[turn.player];
+
+    if (hideHands || !player) { return; }
+
+    if (!player.isBot && player.id !== DEALER) {
+      if (hasFunctions) { return; }
+      // get the next Hand
+      const hand = player.hands[turn.hand];
+      getGameFunctions(hand);
+    } else if (player.isBot && player.id !== DEALER) {
+      if (hasFunctions) { return; }
+      playBot();
+    } else {
+      console.log('Dealer', gameFunctions.includes(GameFunctions.NEW_GAME));
+      !gameFunctions.includes(GameFunctions.NEW_GAME) && playDealer();
+    }
+  };
+
   /** function to be called on card clicks */
-  cardClickHandler = (playerNo: number, handNo: number, cardNo: number): void => {
-    const { players } = this.props;
+  const cardClickHandler = (playerNo: number, handNo: number, cardNo: number): void => {
     // eslint-disable-next-line no-console
     console.log(players[playerNo].hands[handNo].cards[cardNo]);
   };
 
   /** function to be called on card clicks */
-  betHandler = (id: number, event: React.MouseEvent, bet: number): void => {
-    const { playerActions } = this.props;
+  const betHandler = (id: number, event: React.MouseEvent, bet: number): void => {
+    const { playerActions } = props;
     playerActions.updateBet(id, bet);
   };
 
   /** function to route click actions */
-  handleGameFunctionClick = (type: GameFunctions): void => {
+  const handleGameFunctionClick = (type: GameFunctions): void => {
     switch (type) {
       case GameFunctions.NEW_GAME:
-        this.newGame(); break;
+        newGame(); break;
       case GameFunctions.FINISH_BETTING:
-        this.finishBetting(); break;
+        finishBetting(); break;
       case GameFunctions.STAY:
-        this.stay(); break;
+        stay(); break;
       case GameFunctions.HIT:
-        this.hit(); break;
+        hit(); break;
       case GameFunctions.DOUBLE:
-        this.double(); break;
+        double(); break;
       case GameFunctions.SPLIT:
-        this.split(); break;
+        split(); break;
       default:
         // eslint-disable-next-line no-console
         console.error('Unknown Game Function: ', type);
     }
-  }
+  };
 
   /* render the UI */
-  render(): React.ReactNode {
-    const {
-      turn, players, gameFunctions, hideHands,
-    } = this.props;
+  checkUpdate();
 
-    return (
-      <>
-        <Header />
-        <GameTable
-          betHandler={this.betHandler}
-          cardClickHandler={this.cardClickHandler}
-          gameFunctions={gameFunctions}
-          onClick={this.handleGameFunctionClick}
-          hideHands={hideHands}
-          players={players}
-          turn={turn}
-        />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Header />
+      <GameTable
+        betHandler={betHandler}
+        cardClickHandler={cardClickHandler}
+        gameFunctions={gameFunctions}
+        onClick={handleGameFunctionClick}
+        hideHands={hideHands}
+        players={players}
+        turn={turn}
+      />
+    </>
+  );
+};
 
 // react-redux export
 const mapStateToProps = (state: DBRootState): BlackJackDBState => ({
