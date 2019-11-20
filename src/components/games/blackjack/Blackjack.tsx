@@ -207,7 +207,6 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
     // get state values
     const { bjActions } = props;
     const { hands } = players.filter((p) => p.id === DEALER)[0];
-    console.log('hit: ', hands);
     // logic to hit
     await bjActions.hitHand(hands, DEALER, 0, weighHand);
   };
@@ -219,7 +218,6 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
     const hand = dealer.hands[0].cards;
     const { weight, soft } = weighHand(hand);
     // Dealer hits on 16 or less and soft 17
-    console.log('play: ', dealer.hands[0].cards);
     if (weight <= 16 || (weight === 17 && soft)) {
       await bjActions.updateHasFunctions(true);
       await hitDealer();
@@ -327,19 +325,18 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
     const { hasFunctions } = props;
     const player = players[turn.player];
 
-    if (hasFunctions || hideHands || !player) { return; }
-
-    if (!player.isBot && player.id !== DEALER) {
-      if (hasFunctions) { return; }
-      // get the next Hand
-      const hand = player.hands[turn.hand];
-      getGameFunctions(hand);
-    } else if (player.isBot && player.id !== DEALER) {
-      if (hasFunctions) { return; }
-      playBot();
-    } else {
-      !gameFunctions.includes(GameFunctions.NEW_GAME) && playDealer();
+    if (hasFunctions || hideHands) { return; }
+    if (player) {
+      if (!player.isBot && player.id !== DEALER) {
+        getGameFunctions(player.hands[turn.hand]);
+        return;
+      }
+      if (player.isBot && player.id !== DEALER) {
+        playBot();
+        return;
+      }
     }
+    !gameFunctions.includes(GameFunctions.NEW_GAME) && playDealer();
   };
 
   /** function to be called on card clicks */
