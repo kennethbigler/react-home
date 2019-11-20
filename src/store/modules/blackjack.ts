@@ -1,5 +1,7 @@
 import { AnyAction, Dispatch } from 'redux';
-import { DBBlackjack, DBPlayer, DBHand } from '../types';
+import {
+  DBBlackjack, DBPlayer, DBHand, DBTurn,
+} from '../types';
 import initialState, { newBlackjackGame } from '../initialState';
 import {
   resetStatus,
@@ -48,24 +50,33 @@ export function setNewGame(players: DBPlayer[]) {
   };
 }
 export function splitHand(hands: DBHand[], id: number, hNum: number, weigh: WeighFunc) {
-  return (dispatch: Function): Promise<Dispatch[]> => dispatch(pSplitHand(hands, id, hNum, weigh))
-    .then(() => dispatch(updateHasFunctions(false)));
-}
-export function hitHand(hands: DBHand[], id: number, hNum: number, weigh: WeighFunc) {
-  return (dispatch: Function): Promise<Dispatch[]> => dispatch(drawCard(hands, id, hNum, 1, weigh))
-    .then(() => dispatch(updateHasFunctions(false)));
-}
-export function stayHand(readyForNextPlayer: boolean) {
-  return async (dispatch: Function): Promise<Dispatch[]> => {
-    readyForNextPlayer ? await dispatch(incrHandTurn()) : await dispatch(incrPlayerTurn());
-    return dispatch(updateHasFunctions(false));
+  return async (dispatch: Function): Promise<void> => {
+    await dispatch(pSplitHand(hands, id, hNum, weigh));
+    await dispatch(updateHasFunctions(false));
   };
 }
-export function doubleHand(id: number, bet: number, hands: DBHand[], hNum: number, weigh: WeighFunc, readyForNextPlayer: boolean) {
+export function hitHand(hands: DBHand[], id: number, hNum: number, weigh: WeighFunc) {
   return async (dispatch: Function): Promise<void> => {
-    await dispatch(updateBet(id, bet * 2));
     await dispatch(drawCard(hands, id, hNum, 1, weigh));
-    await dispatch(stayHand(readyForNextPlayer));
     await dispatch(updateHasFunctions(false));
+  };
+}
+export function stayHand(readyForNextPlayer: boolean) {
+  return async (dispatch: Function): Promise<void> => {
+    readyForNextPlayer
+      ? await dispatch(incrHandTurn())
+      : await dispatch(incrPlayerTurn());
+    await dispatch(updateHasFunctions(false));
+  };
+}
+export function doubleHand(player: DBPlayer, turn: DBTurn, weigh: WeighFunc) {
+  return async (dispatch: Function): Promise<void> => {
+    const { id, bet, hands } = player;
+    const lastHand = hands.length - 1;
+
+    await dispatch(updateHasFunctions(true));
+    await dispatch(updateBet(id, bet * 2));
+    await dispatch(drawCard(hands, id, turn.hand, 1, weigh));
+    await dispatch(stayHand(turn.hand < lastHand));
   };
 }
