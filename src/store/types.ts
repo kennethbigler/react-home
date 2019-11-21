@@ -78,6 +78,20 @@ export interface DBPlayer {
   bet: number;
 }
 
+// --------------------     poker     -------------------- //
+export enum PokerGameFunctions {
+  DISCARD_CARDS = 'Discard Cards',
+  END_TURN = 'End Turn',
+  NEW_GAME = 'New Game',
+  START_GAME = 'Start Game',
+}
+export interface DBPoker {
+  gameFunctions: PokerGameFunctions[];
+  cardsToDiscard: number[];
+  hideHands: boolean;
+  gameOver: boolean;
+}
+
 // --------------------     slots     -------------------- //
 export enum DBSlotOptions {
   EMPTY = ' ',
@@ -136,6 +150,7 @@ export interface DBRootState {
   git: DBGit;
   gqlToken: string;
   players: DBPlayer[];
+  poker: DBPoker;
   theme: DBUITheme;
   ticTacToe: DBTicTacToe;
   turn: DBTurn;

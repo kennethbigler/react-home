@@ -5,6 +5,7 @@ import dnd from './modules/dnd';
 import git from './modules/git';
 import gqlToken from './modules/gqlToken';
 import players from './modules/players';
+import poker from './modules/poker';
 import slots from './modules/slots';
 import theme from './modules/theme';
 import ticTacToe from './modules/ticTacToe';
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   git,
   gqlToken,
   players,
+  poker,
   slots,
   theme,
   ticTacToe,

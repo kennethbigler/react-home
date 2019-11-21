@@ -6,7 +6,7 @@ import {
   DBGit, DBPlayer, DBBlackjack, GameFunctions,
   DBUITheme, DBTurn, DBRootState, DBSlotDisplay,
   DBTicTacToe, DBConnect4, C4Turn, DBYahtzee, DBDND,
-  briefcasesToOpen, Briefcase,
+  briefcasesToOpen, Briefcase, PokerGameFunctions, DBPoker,
 } from './types';
 
 // --------------------     helpers     -------------------- //
@@ -102,6 +102,15 @@ export const newPlayer = (id: number, name = 'Bot', isBot = true): DBPlayer => (
   hands: [],
 });
 
+// poker
+/** function to generate the state of a new game */
+export const newPokerGameState = (): DBPoker => ({
+  gameFunctions: [PokerGameFunctions.START_GAME],
+  cardsToDiscard: [],
+  hideHands: true,
+  gameOver: false,
+});
+
 // tic-tac-toe
 export const X = 'X';
 export const O = 'O';
@@ -145,6 +154,7 @@ const players: DBPlayer[] = [
   newPlayer(6),
   newPlayer(0, 'Dealer', true),
 ];
+const poker = newPokerGameState();
 const slots: DBSlotDisplay[] = pullHandle();
 const theme: DBUITheme = {
   primary: indigo,
@@ -163,6 +173,7 @@ export default {
   git,
   gqlToken,
   players,
+  poker,
   slots,
   theme,
   ticTacToe,
