@@ -13,12 +13,12 @@ import {
 } from '../../../store/types';
 
 interface DNDActions {
-  newGame: Function;
-  setOpenOffer: Function;
-  setOpenCase: Function;
-  setNoDeal: Function;
-  setFinishGame: Function;
-  setPlayerChoice: Function;
+  newGame: typeof newGame;
+  setOpenOffer: typeof setOpenOffer;
+  setOpenCase: typeof setOpenCase;
+  setNoDeal: typeof setNoDeal;
+  setFinishGame: typeof setFinishGame;
+  setPlayerChoice: typeof setPlayerChoice;
 }
 interface DNDReduxState extends DBDND {
   player: DBPlayer;

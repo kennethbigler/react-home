@@ -19,10 +19,10 @@ import { DBRootState, DBGit } from '../../../store/types';
 import { MaterialSelectEvent } from './types';
 
 interface GitActions {
-  setBranchMessage: Function;
-  setBranchPrefix: Function;
-  setCasePreference: Function;
-  setKey: Function;
+  setBranchMessage: typeof setBranchMessage;
+  setBranchPrefix: typeof setBranchPrefix;
+  setCasePreference: typeof setCasePreference;
+  setKey: typeof setKey;
 }
 interface GitToolsProps {
   git: DBGit;

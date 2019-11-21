@@ -14,13 +14,13 @@ import {
 } from '../../../store/modules/yahtzee';
 
 interface YahtzeeActions {
-  addScore: Function;
-  diceClick: Function;
-  newGame: Function;
-  nextRoll: Function;
-  updateTop: Function;
-  updateBottom: Function;
-  updateRoll: Function;
+  addScore: typeof addScore;
+  diceClick: typeof diceClick;
+  newGame: typeof newGame;
+  nextRoll: typeof nextRoll;
+  updateTop: typeof updateTop;
+  updateBottom: typeof updateBottom;
+  updateRoll: typeof updateRoll;
 }
 interface YahtzeeProps extends DBYahtzee {
   actions: YahtzeeActions;
@@ -100,9 +100,9 @@ const Yahtzee: React.FC<YahtzeeProps> = (props: YahtzeeProps) => {
     saved.sort();
 
     if (roll === 2) {
-      actions.updateRoll(values, saved, roll + 1, true);
+      actions.updateRoll(values, saved, roll + 1 as Dice, true);
     } else {
-      actions.updateRoll(values, saved, roll + 1);
+      actions.updateRoll(values, saved, roll + 1 as Dice);
     }
   };
 

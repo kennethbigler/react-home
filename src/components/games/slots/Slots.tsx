@@ -11,7 +11,7 @@ import MoneyTable from './MoneyTable';
 import ReelDisplay from './ReelDisplay';
 
 interface SlotActions {
-  updateDBSlotMachine: Function;
+  updateDBSlotMachine: typeof updateDBSlotMachine;
 }
 interface SlotDBState {
   players: DBPlayer[];

@@ -14,7 +14,7 @@ import NoToken from './NoToken';
 import { DBRootState } from '../../../store/types';
 
 interface StateActions {
-  setToken: Function;
+  setToken: typeof setToken;
 }
 interface GraphQLProps {
   gqlToken: string;

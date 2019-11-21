@@ -18,7 +18,7 @@ import { DBRootState } from '../../../store/types';
 import useCommitText from './useCommitText';
 
 interface GitActions {
-  setCommitPrefix: Function;
+  setCommitPrefix: typeof setCommitPrefix;
 }
 interface CommitTextProps {
   getSelectOptions: Function;

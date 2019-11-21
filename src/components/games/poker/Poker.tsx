@@ -24,14 +24,14 @@ enum PokerGameFunctions {
 }
 interface PokerActions {
   turnActions: {
-    incrPlayerTurn: Function;
-    resetTurn: Function;
+    incrPlayerTurn: typeof incrPlayerTurn;
+    resetTurn: typeof resetTurn;
   };
   playerActions: {
-    swapCards: Function;
-    newHand: Function;
-    payout: Function;
-    resetStatus: Function;
+    swapCards: typeof swapCards;
+    newHand: typeof newHand;
+    payout: typeof payout;
+    resetStatus: typeof resetStatus;
   };
 }
 interface PokerDBState {

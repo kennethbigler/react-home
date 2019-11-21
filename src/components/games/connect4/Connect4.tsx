@@ -7,9 +7,9 @@ import GameBoard from './GameBoard';
 import { DBRootState, C4Turn, DBConnect4 } from '../../../store/types';
 
 interface C4Actions {
-  newGame: Function;
-  updateTurn: Function;
-  updateEval: Function;
+  newGame: typeof newGame;
+  updateTurn: typeof updateTurn;
+  updateEval: typeof updateEval;
 }
 
 interface Connect4Props extends DBConnect4 {

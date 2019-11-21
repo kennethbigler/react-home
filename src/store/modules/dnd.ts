@@ -13,7 +13,7 @@ const FINISH_GAME = 'casino/dnd/FINISH_GAME';
 
 // --------------------     Action Creators     -------------------- //
 export const newGame = (): Action => ({ type: NEW_GAME });
-const updatePlayerChoice = (playerChoice: number): AnyAction => ({ type: PLAYER_CHOICE, playerChoice });
+const updatePlayerChoice = (playerChoice: Briefcase): AnyAction => ({ type: PLAYER_CHOICE, playerChoice });
 export const setOpenCase = (board: Briefcase[], sum: number, numCases: number, casesToOpen: number): AnyAction => ({
   type: OPEN_CASE, board, sum, numCases, casesToOpen,
 });
@@ -54,7 +54,7 @@ export default function reducer(state: DBDND = initialState.dnd, action: AnyActi
 // --------------------     Thunks     -------------------- //
 /** charge user to play and set player choice
    * NOTE: avg (Expected win value) is 131477.62 / 1k = $132 */
-export function setPlayerChoice(id: number, playerChoice: number) {
+export function setPlayerChoice(id: number, playerChoice: Briefcase) {
   return (dispatch: Function): Promise<[Dispatch, Dispatch]> => {
     const promise1 = dispatch(updatePlayerChoice(playerChoice));
     const promise2 = dispatch(payout(id, 'lose', -100));

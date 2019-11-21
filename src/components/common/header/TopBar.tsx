@@ -16,8 +16,8 @@ import {
 import { DBUITheme, DBRootState } from '../../../store/types';
 
 interface ThemeActions {
-  displayDarkTheme: Function;
-  displayLightTheme: Function;
+  displayDarkTheme: typeof displayDarkTheme;
+  displayLightTheme: typeof displayLightTheme;
 }
 interface TopBarProps {
   fontColor: 'inherit' | 'initial' | 'error' | 'primary' | 'secondary' | 'textPrimary' | 'textSecondary' | undefined;

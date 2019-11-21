@@ -9,8 +9,8 @@ import { updateName, updateBot } from '../../../store/modules/players';
 import { DBRootState, DBPlayer } from '../../../store/types';
 
 interface PlayerActions {
-  updateName: Function;
-  updateBot: Function;
+  updateName: typeof updateName;
+  updateBot: typeof updateBot;
 }
 interface PlayerMenuProps {
   playerActions: PlayerActions;

@@ -16,26 +16,26 @@ import {
   DBTurn, DBHand, DBPlayer, DBRootState, GameFunctions, DBBlackjack,
 } from '../../../store/types';
 import {
-  setNewGame, updateGameFunctions, updateHideHands, updateHasFunctions,
-  splitHand, hitHand, stayHand, doubleHand,
+  doubleHand, hitHand, setNewGame, splitHand, stayHand,
+  updateGameFunctions, updateHasFunctions, updateHideHands,
 } from '../../../store/modules/blackjack';
 import { newHand, payout, updateBet } from '../../../store/modules/players';
 
 interface BlackJackActions {
   bjActions: {
-    doubleHand: Function;
-    hitHand: Function;
-    setNewGame: Function;
-    splitHand: Function;
-    stayHand: Function;
-    updateGameFunctions: Function;
-    updateHasFunctions: Function;
-    updateHideHands: Function;
+    doubleHand: typeof doubleHand;
+    hitHand: typeof hitHand;
+    setNewGame: typeof setNewGame;
+    splitHand: typeof splitHand;
+    stayHand: typeof stayHand;
+    updateGameFunctions: typeof updateGameFunctions;
+    updateHasFunctions: typeof updateHasFunctions;
+    updateHideHands: typeof updateHideHands;
   };
   playerActions: {
-    newHand: Function;
-    payout: Function;
-    updateBet: Function;
+    newHand: typeof newHand;
+    payout: typeof payout;
+    updateBet: typeof updateBet;
   };
 }
 interface BlackJackDBState extends DBBlackjack {

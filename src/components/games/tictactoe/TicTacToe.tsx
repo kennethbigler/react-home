@@ -12,8 +12,8 @@ import { DBTicTacToe, DBRootState } from '../../../store/types';
 import { X, O, EMPTY } from '../../../store/initialState';
 
 interface TicTacToeActions {
-  playTurn: Function;
-  newGame: Function;
+  playTurn: typeof playTurn;
+  newGame: typeof newGame;
 }
 interface TicTacToeProps extends DBTicTacToe {
   ticTacToeActions: TicTacToeActions;
