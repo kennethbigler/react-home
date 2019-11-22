@@ -48,16 +48,13 @@ interface UsePokerFunctions {
 }
 
 const usePokerFunctions = (props: PokerProps): UsePokerFunctions => {
-  const {
-    players, cardsToDiscard, gameOver, hideHands,
-    turn: { player: turn },
-  } = props;
+  const { players, turn: { player: turn }} = props;
 
   // ----------     bot automation handlers     ---------- //
   /** increment player turn and reset state */
-  const endTurn = async (): Promise<void> => {
+  const endTurn = async (turnToEnd: number): Promise<void> => {
     const { pokerActions } = props;
-    await pokerActions.endPokerTurn();
+    await pokerActions.endPokerTurn(turnToEnd);
   };
 
   /** iterate through array, removing each index number from hand
@@ -140,10 +137,10 @@ const usePokerFunctions = (props: PokerProps): UsePokerFunctions => {
       default:
         break;
     }
-    await endTurn();
+    await endTurn(turn);
   };
 
-  const endGame = (): void => {
+  const endGame = async (): Promise<void> => {
     const { playerActions, pokerActions } = props;
 
     let winner = { val: 0, id: 0 };
@@ -155,6 +152,7 @@ const usePokerFunctions = (props: PokerProps): UsePokerFunctions => {
         winner = { val: playerScore, id: player.id };
       }
     });
+    await pokerActions.endPokerGame();
     players.forEach((player) => {
       if (player.id === DEALER || player.id > LAST_PLAYER) { return; }
 
@@ -164,16 +162,20 @@ const usePokerFunctions = (props: PokerProps): UsePokerFunctions => {
         playerActions.payout(player.id, 'lose', -5);
       }
     });
-    pokerActions.endPokerGame();
   };
 
   const checkUpdate = async (): Promise<void> => {
-    const player: DBPlayer = players[turn];
+    const { previousPlayer, hideHands } = props;
 
-    if (!hideHands && !gameOver && player.isBot) {
+    const player = players[turn] || { isBot: false };
+    const gameOver = previousPlayer >= LAST_PLAYER;
+    const hasNotPlayed = previousPlayer !== turn;
+
+    if (!hideHands && !gameOver && player.isBot && hasNotPlayed) {
+      console.log(previousPlayer);
       const canPlay: boolean = player.id !== DEALER && player.id <= LAST_PLAYER;
       console.log(canPlay ? `computer(${player.id})` : 'endGame()', player);
-      canPlay ? await computer() : endGame();
+      canPlay ? await computer() : await endGame();
     }
   };
 
@@ -201,7 +203,7 @@ const usePokerFunctions = (props: PokerProps): UsePokerFunctions => {
 
   /** helper function wrapping discard, meant for UI */
   const handleDiscard = (): void => {
-    const { pokerActions } = props;
+    const { pokerActions, cardsToDiscard } = props;
     discard(cardsToDiscard);
     pokerActions.discardCards();
   };
@@ -212,7 +214,7 @@ const usePokerFunctions = (props: PokerProps): UsePokerFunctions => {
       case PGF.DISCARD_CARDS:
         handleDiscard(); break;
       case PGF.END_TURN:
-        endTurn(); break;
+        endTurn(turn); break;
       case PGF.NEW_GAME:
         newGame(); break;
       case PGF.START_GAME:
@@ -232,7 +234,7 @@ const usePokerFunctions = (props: PokerProps): UsePokerFunctions => {
 const Poker: React.FC<PokerProps> = (props: PokerProps) => {
   const {
     turn, players, cardsToDiscard, gameFunctions,
-    gameOver, hideHands,
+    previousPlayer, hideHands,
   } = props;
 
   /** function to be called on card clicks */
@@ -261,7 +263,7 @@ const Poker: React.FC<PokerProps> = (props: PokerProps) => {
         cardsToDiscard={cardsToDiscard}
         gameFunctions={gameFunctions}
         onClick={handleGameFunctionClick}
-        gameOver={gameOver}
+        gameOver={previousPlayer >= LAST_PLAYER}
         hideHands={hideHands}
         isBlackJack={false}
         players={players}
