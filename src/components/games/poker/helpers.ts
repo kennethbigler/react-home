@@ -1,4 +1,4 @@
-import { DBCard } from '../../../store/types';
+import { DBCard, DBPlayer } from '../../../store/types';
 
 /** Rankings:
  *   Straight Flush  8
@@ -98,4 +98,11 @@ export const evaluate = (hand: DBCard[]): string => {
     }
   }
   return `${rank}${cards.reduce((a, c) => `${a}${c}`)}`;
+};
+
+export const getHand = (players: DBPlayer[], turn: number): DBCard[] => {
+  const player = players[turn] || {};
+  const hands = player.hands || [];
+  const hand = hands[0] || { cards: []};
+  return hand.cards;
 };

@@ -6,13 +6,15 @@ import asyncForEach from '../../../helpers/asyncForEach';
 import { swapCards, newHand, payout } from '../../../store/modules/players';
 import GameTable from '../game-table';
 import Deck from '../../../apis/Deck';
-import { rankHand, getHistogram, evaluate } from './helpers';
+import {
+  rankHand, getHistogram, evaluate, getHand,
+} from './helpers';
 import {
   newPokerGame, startPokerGame, endPokerTurn, endPokerGame,
   discardCards, updateCardsToDiscard,
 } from '../../../store/modules/poker';
 import {
-  DBPlayer, DBTurn, DBCard, DBRootState, DBPoker,
+  DBPlayer, DBTurn, DBRootState, DBPoker,
   PokerGameFunctions as PGF,
 } from '../../../store/types';
 
@@ -42,11 +44,9 @@ interface PokerProps extends PokerDBState, PokerActions {}
 
 const Poker: React.FC<PokerProps> = (props: PokerProps) => {
   const {
-    turn, players, cardsToDiscard, gameFunctions, gameOver, hideHands,
+    turn: { player: turn }, players, cardsToDiscard, gameFunctions,
+    gameOver, hideHands,
   } = props;
-
-  /** get hand from props */
-  const getHand = (): DBCard[] => players[turn.player].hands[0].cards || null;
 
   const newGame = (): void => {
     const { pokerActions } = props;
@@ -105,7 +105,7 @@ const Poker: React.FC<PokerProps> = (props: PokerProps) => {
   const discard = (cardsToDiscardInDB: number[]): void => {
     const { playerActions } = props;
 
-    const { id, hands } = players[turn.player];
+    const { id, hands } = players[turn];
     playerActions.swapCards(hands, id, cardsToDiscardInDB);
   };
 
@@ -118,17 +118,17 @@ const Poker: React.FC<PokerProps> = (props: PokerProps) => {
 
   /** function to remove n number of cards */
   const discardHelper = (n: number, hist: number[]): void => {
-    const hand = getHand();
+    const hand = getHand(players, turn);
     const nextCardsToDiscard = [];
-    const cardVals = [hist.indexOf(1)];
+    const cardValues = [hist.indexOf(1)];
     // find cards without pairs, starting with the smallest
     for (let i = 1; i < n; i += 1) {
-      cardVals[i] = hist.indexOf(1, cardVals[i - 1] + 1);
+      cardValues[i] = hist.indexOf(1, cardValues[i - 1] + 1);
     }
     // find hand index of individual cards
     for (let i = 0; i < hand.length; i += 1) {
-      for (let j = 0; j < cardVals.length; j += 1) {
-        if (hand[i].weight - 2 === cardVals[j]) {
+      for (let j = 0; j < cardValues.length; j += 1) {
+        if (hand[i].weight - 2 === cardValues[j]) {
           nextCardsToDiscard.push(i);
           break;
         }
@@ -161,7 +161,7 @@ const Poker: React.FC<PokerProps> = (props: PokerProps) => {
    * else draw 5
    */
   const computer = (): void => {
-    const hand = getHand();
+    const hand = getHand(players, turn);
     const hist = getHistogram(hand);
     const rank = rankHand(hand, hist);
 
@@ -192,13 +192,13 @@ const Poker: React.FC<PokerProps> = (props: PokerProps) => {
   /** function to be called on card clicks */
   const cardClickHandler = (playerNo: number, handNo: number, cardNo: number): void => {
     const { pokerActions } = props;
-    const newCardstoDiscard = [...cardsToDiscard];
+    const newCardsToDiscard = [...cardsToDiscard];
     // find card
-    const i = newCardstoDiscard.indexOf(cardNo);
+    const i = newCardsToDiscard.indexOf(cardNo);
     // toggle in array
-    i === -1 ? newCardstoDiscard.push(cardNo) : newCardstoDiscard.splice(i, 1);
+    i === -1 ? newCardsToDiscard.push(cardNo) : newCardsToDiscard.splice(i, 1);
     // update state
-    pokerActions.updateCardsToDiscard(newCardstoDiscard);
+    pokerActions.updateCardsToDiscard(newCardsToDiscard);
   };
 
   /** function to route click actions */
@@ -219,15 +219,18 @@ const Poker: React.FC<PokerProps> = (props: PokerProps) => {
   };
 
   const checkUpdate = (): void => {
-    const player: DBPlayer = players[turn.player];
-    const canPlay: boolean = player.id !== DEALER && player.id <= LAST_PLAYER;
+    const player: DBPlayer = players[turn];
 
     if (!hideHands && !gameOver && player.isBot) {
+      const canPlay: boolean = player.id !== DEALER && player.id <= LAST_PLAYER;
       canPlay ? computer() : endGame();
+      console.log(canPlay ? 'computer()' : 'endGame()');
     }
   };
 
   checkUpdate();
+
+  const playerTurn = React.useMemo(() => ({ player: turn, hand: 0 }), [turn]);
 
   return (
     <>
@@ -243,7 +246,7 @@ const Poker: React.FC<PokerProps> = (props: PokerProps) => {
         hideHands={hideHands}
         isBlackJack={false}
         players={players}
-        turn={turn}
+        turn={playerTurn}
       />
     </>
   );
@@ -260,10 +263,7 @@ function mapStateToProps(state: DBRootState): PokerDBState {
 
 function mapDispatchToProps(dispatch: Dispatch): PokerActions {
   return {
-    playerActions: bindActionCreators(
-      { swapCards, newHand, payout },
-      dispatch,
-    ),
+    playerActions: bindActionCreators({ swapCards, newHand, payout }, dispatch),
     pokerActions: bindActionCreators(
       {
         newPokerGame,
