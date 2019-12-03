@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,18 +12,12 @@ import {
   displayDarkTheme,
   displayLightTheme,
 } from '../../../store/modules/theme';
-import { DBUITheme, DBRootState } from '../../../store/types';
+import { DBRootState } from '../../../store/types';
 
-interface ThemeActions {
-  displayDarkTheme: typeof displayDarkTheme;
-  displayLightTheme: typeof displayLightTheme;
-}
 interface TopBarProps {
   fontColor: 'inherit' | 'initial' | 'error' | 'primary' | 'secondary' | 'textPrimary' | 'textSecondary' | undefined;
   iconColor: 'inherit' | 'primary' | 'secondary' | 'default' | undefined;
   showPlayers?: boolean;
-  theme: DBUITheme;
-  themeActions: ThemeActions;
   toggleOpen: React.MouseEventHandler;
 }
 
@@ -39,21 +32,24 @@ const flexRightStyles: React.CSSProperties = {
 const spanTopStyles: React.CSSProperties = { left: 0, right: 0, top: 0 };
 
 const TopBar: React.FC<TopBarProps> = React.memo((props: TopBarProps) => {
-  const {
-    theme, themeActions, toggleOpen, showPlayers, fontColor, iconColor,
-  } = props;
+  const theme = useSelector((state: DBRootState) => state.theme);
+  const dispatch = useDispatch();
 
   const [checked, setChecked] = React.useState(theme.type !== 'dark');
 
   const toggleTheme = React.useCallback(
     (): void => {
       checked
-        ? themeActions.displayDarkTheme()
-        : themeActions.displayLightTheme();
+        ? dispatch(displayDarkTheme())
+        : dispatch(displayLightTheme());
       setChecked(!checked);
     },
-    [checked, themeActions],
+    [checked, dispatch],
   );
+
+  const {
+    toggleOpen, showPlayers, fontColor, iconColor,
+  } = props;
 
   return (
     <AppBar style={spanTopStyles}>
@@ -96,15 +92,4 @@ TopBar.defaultProps = {
   showPlayers: false,
 };
 
-// react-redux export
-const mapStateToProps = (state: DBRootState): { theme: DBUITheme } => ({
-  theme: state.theme,
-});
-const mapDispatchToProps = (dispatch: Dispatch): { themeActions: ThemeActions } => ({
-  themeActions: bindActionCreators(
-    { displayDarkTheme, displayLightTheme },
-    dispatch,
-  ),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
+export default TopBar;
