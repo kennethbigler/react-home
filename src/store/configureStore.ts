@@ -20,8 +20,10 @@ export const saveState = (state: DBRootState): Promise<void | DBRootState> => lo
   // eslint-disable-next-line no-console
   .catch((e) => console.error('state to db save failed: ', e));
 
+const composeEnhancers = composeWithDevTools({ trace: true, traceLimit: 25 });
+
 export const configureStore = (state: DBRootState): Store => createStore(
   rootReducer,
   state,
-  composeWithDevTools(applyMiddleware(thunk)),
+  composeEnhancers(applyMiddleware(thunk)),
 );
