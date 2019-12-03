@@ -6,12 +6,10 @@ import { updateCardsToDiscard } from '../../../store/modules/poker';
 import { DBRootState } from '../../../store/types';
 import usePokerFunctions from './hooks';
 
-const LAST_PLAYER = 5;
-
 const Poker: React.FC<{}> = () => {
   const {
     turn, players, cardsToDiscard, gameFunctions,
-    previousPlayer, hideHands,
+    gameOver, hideHands,
   } = useSelector((state: DBRootState) => ({
     turn: state.turn,
     players: state.players,
@@ -20,7 +18,7 @@ const Poker: React.FC<{}> = () => {
   const dispatch = useDispatch();
 
   /** function to be called on card clicks */
-  const cardClickHandler = (playerNo: number, handNo: number, cardNo: number): void => {
+  const cardClickHandler = React.useCallback((playerNo: number, handNo: number, cardNo: number): void => {
     const newCardsToDiscard = [...cardsToDiscard];
     // find card
     const i = newCardsToDiscard.indexOf(cardNo);
@@ -28,17 +26,16 @@ const Poker: React.FC<{}> = () => {
     i === -1 ? newCardsToDiscard.push(cardNo) : newCardsToDiscard.splice(i, 1);
     // update state
     dispatch(updateCardsToDiscard(newCardsToDiscard));
-  };
+  }, [cardsToDiscard, dispatch]);
 
-  const { checkUpdate, handleGameFunctionClick } = usePokerFunctions({
-    turn,
-    players,
-    cardsToDiscard,
-    gameFunctions,
-    previousPlayer,
-    hideHands,
+  const { checkUpdate, handleGameFunctionClick } = usePokerFunctions(
     dispatch,
-  });
+    cardsToDiscard,
+    players,
+    turn.player,
+    hideHands,
+    gameOver,
+  );
 
   checkUpdate();
 
@@ -52,7 +49,7 @@ const Poker: React.FC<{}> = () => {
         cardsToDiscard={cardsToDiscard}
         gameFunctions={gameFunctions}
         onClick={handleGameFunctionClick}
-        gameOver={previousPlayer >= LAST_PLAYER}
+        gameOver={gameOver}
         hideHands={hideHands}
         isBlackJack={false}
         players={players}

@@ -108,7 +108,7 @@ export const newPokerGameState = (): DBPoker => ({
   gameFunctions: [PokerGameFunctions.START_GAME],
   cardsToDiscard: [],
   hideHands: true,
-  previousPlayer: -1,
+  gameOver: false,
 });
 
 // tic-tac-toe

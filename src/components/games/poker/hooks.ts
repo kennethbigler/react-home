@@ -1,3 +1,4 @@
+import React from 'react';
 import asyncForEach from '../../../helpers/asyncForEach';
 import { swapCards, newHand, payout } from '../../../store/modules/players';
 import Deck from '../../../apis/Deck';
@@ -9,7 +10,7 @@ import {
   discardCards,
 } from '../../../store/modules/poker';
 import {
-  DBPlayer, DBTurn, DBPoker, PokerGameFunctions as PGF,
+  DBPlayer, PokerGameFunctions as PGF,
 } from '../../../store/types';
 
 const DEALER = 0;
@@ -20,28 +21,26 @@ interface UsePokerFunctions {
   handleGameFunctionClick: (type: PGF) => void;
 }
 
-interface PokerHookProps extends DBPoker {
-  players: DBPlayer[];
-  turn: DBTurn;
-  dispatch: Function;
-}
-
-const usePokerFunctions = (props: PokerHookProps): UsePokerFunctions => {
+const usePokerFunctions = (
+  dispatch: Function,
+  cardsToDiscard: number[],
+  players: DBPlayer[],
+  turn: number,
+  hideHands: boolean,
+  gameOver: boolean,
+): UsePokerFunctions => {
   // ----------     bot automation handlers     ---------- //
   /** increment player turn and reset state */
-  const endTurn = async (turnToEnd: number): Promise<void> => {
-    const { dispatch } = props;
-    await dispatch(endPokerTurn(turnToEnd));
-  };
+  const endTurn = React.useCallback(async (): Promise<void> => {
+    await dispatch(endPokerTurn());
+  }, [dispatch]);
 
   /** iterate through array, removing each index number from hand
-   * then add new cards to the hand
-   */
-  const discard = async (cardsToDiscardInDB: number[], player: DBPlayer): Promise<void> => {
-    const { dispatch } = props;
+   * then add new cards to the hand */
+  const discard = React.useCallback(async (cardsToDiscardInDB: number[], player: DBPlayer): Promise<void> => {
     const { id, hands } = player;
     await dispatch(swapCards(hands, id, cardsToDiscardInDB));
-  };
+  }, [dispatch]);
 
   /** computer play algorithm:
    * PAIRS
@@ -64,7 +63,7 @@ const usePokerFunctions = (props: PokerHookProps): UsePokerFunctions => {
    * if K / A -> draw 4
    * else draw 5
    */
-  const computer = async (player: DBPlayer, turn: number): Promise<void> => {
+  const computer = React.useCallback(async (player: DBPlayer): Promise<void> => {
     const hand = player.hands[0].cards;
     const hist = getHistogram(hand);
     const rank = rankHand(hand, hist);
@@ -96,23 +95,28 @@ const usePokerFunctions = (props: PokerHookProps): UsePokerFunctions => {
       default:
         break;
     }
-    await endTurn(turn);
-  };
+  }, [discard]);
 
-  const endGame = async (): Promise<void> => {
-    const { dispatch, players } = props;
+  const endGame = React.useCallback(async (): Promise<void> => {
+    await dispatch(endPokerGame());
+
+    await asyncForEach(players, async (player: DBPlayer, i: number) => {
+      if (turn <= i && i < LAST_PLAYER) {
+        await computer(player);
+      }
+    });
 
     let winner = { val: 0, id: 0 };
+
     players.forEach((player) => {
       if (player.id === DEALER || player.id > LAST_PLAYER) { return; }
 
       const playerScore = parseInt(evaluate(player.hands[0].cards), 14);
       if (playerScore > winner.val) {
         winner = { val: playerScore, id: player.id };
-        console.log(winner);
       }
     });
-    await dispatch(endPokerGame());
+
     players.forEach((player) => {
       if (player.id === DEALER || player.id > LAST_PLAYER) { return; }
 
@@ -122,37 +126,23 @@ const usePokerFunctions = (props: PokerHookProps): UsePokerFunctions => {
         dispatch(payout(player.id, 'lose', -5));
       }
     });
-  };
+  }, [computer, dispatch, players, turn]);
 
-  const checkUpdate = async (): Promise<void> => {
-    const {
-      previousPlayer, hideHands, players, turn: { player: turn },
-    } = props;
-
+  const checkUpdate = React.useCallback(async (): Promise<void> => {
     const player = players[turn] || { isBot: false };
-    const gameOver = previousPlayer >= LAST_PLAYER;
-    const hasNotPlayed = previousPlayer !== turn;
 
-    if (!hideHands && !gameOver && player.isBot && hasNotPlayed) {
-      console.log('------------------------------');
-      console.log('previous player: ', previousPlayer);
-      const canPlay: boolean = player.id !== DEALER && player.id <= LAST_PLAYER;
-      console.log(canPlay ? `computer(${player.id}, ${turn})` : 'endGame()');
-      console.log(player);
-      canPlay ? await computer(player, turn) : await endGame();
+    if (!hideHands && !gameOver && player.isBot) {
+      await endGame();
     }
-  };
+  }, [endGame, players, gameOver, hideHands, turn]);
 
   // ----------     player handlers     ---------- //
-  const newGame = (): void => {
-    const { dispatch, players } = props;
+  const newGame = React.useCallback((): void => {
     dispatch(newPokerGame(players));
-  };
+  }, [dispatch, players]);
 
   /** function to finish betting and start the game */
-  const startGame = (): void => {
-    const { dispatch, players } = props;
-
+  const startGame = React.useCallback((): void => {
     dispatch(startPokerGame());
     // shuffle the deck
     Deck.shuffle().then(() => {
@@ -163,25 +153,21 @@ const usePokerFunctions = (props: PokerHookProps): UsePokerFunctions => {
         }
       });
     });
-  };
+  }, [dispatch, players]);
 
   /** helper function wrapping discard, meant for UI */
-  const handleDiscard = (): void => {
-    const {
-      dispatch, cardsToDiscard, players, turn: { player: turn },
-    } = props;
+  const handleDiscard = React.useCallback((): void => {
     discard(cardsToDiscard, players[turn]);
     dispatch(discardCards());
-  };
+  }, [discard, dispatch, players, turn, cardsToDiscard]);
 
   /** function to route click actions */
-  const handleGameFunctionClick = (type: PGF): void => {
-    const { turn: { player: turn }} = props;
+  const handleGameFunctionClick = React.useCallback((type: PGF): void => {
     switch (type) {
       case PGF.DISCARD_CARDS:
         handleDiscard(); break;
       case PGF.END_TURN:
-        endTurn(turn); break;
+        endTurn(); break;
       case PGF.NEW_GAME:
         newGame(); break;
       case PGF.START_GAME:
@@ -190,7 +176,7 @@ const usePokerFunctions = (props: PokerHookProps): UsePokerFunctions => {
         // eslint-disable-next-line no-console
         console.error('Unknown Game Function: ', type);
     }
-  };
+  }, [endTurn, handleDiscard, newGame, startGame]);
 
   return {
     checkUpdate,

@@ -89,7 +89,7 @@ export interface DBPoker {
   gameFunctions: PokerGameFunctions[];
   cardsToDiscard: number[];
   hideHands: boolean;
-  previousPlayer: number;
+  gameOver: boolean;
 }
 
 // --------------------     slots     -------------------- //

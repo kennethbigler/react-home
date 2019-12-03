@@ -16,7 +16,7 @@ const UPDATE_DISCARD_CARDS = 'casino/poker/UPDATE_DISCARD_CARDS';
 // --------------------     Action Creators     -------------------- //
 const newGame = (): Action => ({ type: NEW_GAME });
 export const startPokerGame = (): Action => ({ type: START_GAME });
-const endTurn = (previousPlayer: number): AnyAction => ({ type: END_TURN, previousPlayer });
+const endTurn = (): Action => ({ type: END_TURN });
 export const endPokerGame = (): Action => ({ type: END_GAME });
 export const discardCards = (): Action => ({ type: DISCARD_CARDS });
 export const updateCardsToDiscard = (cardsToDiscard: number[]): AnyAction => ({ type: UPDATE_DISCARD_CARDS, cardsToDiscard });
@@ -37,13 +37,12 @@ export default function reducer(state: DBPoker = initialState.poker, action: Any
         ...state,
         gameFunctions: [PGF.DISCARD_CARDS],
         cardsToDiscard: [],
-        previousPlayer: action.previousPlayer,
       };
     case END_GAME:
       return {
         ...state,
         gameFunctions: [PGF.NEW_GAME],
-        previousPlayer: 6,
+        gameOver: true,
       };
     case DISCARD_CARDS:
       return {
@@ -72,9 +71,9 @@ export function newPokerGame(players: DBPlayer[]) {
   };
 }
 
-export function endPokerTurn(previousPlayer: number) {
+export function endPokerTurn() {
   return async (dispatch: Function): Promise<void> => {
-    await dispatch(endTurn(previousPlayer));
+    await dispatch(endTurn());
     await dispatch(incrPlayerTurn());
   };
 }
