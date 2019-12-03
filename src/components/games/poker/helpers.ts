@@ -1,4 +1,4 @@
-import { DBCard, DBPlayer } from '../../../store/types';
+import { DBCard } from '../../../store/types';
 
 /** Rankings:
  *   Straight Flush  8
@@ -100,9 +100,22 @@ export const evaluate = (hand: DBCard[]): string => {
   return `${rank}${cards.reduce((a, c) => `${a}${c}`)}`;
 };
 
-export const getHand = (players: DBPlayer[], turn: number): DBCard[] => {
-  const player = players[turn] || {};
-  const hands = player.hands || [];
-  const hand = hands[0] || { cards: []};
-  return hand.cards;
+/** function to remove n number of cards */
+export const getCardsToDiscard = (n: number, hist: number[], hand: DBCard[]): number[] => {
+  const nextCardsToDiscard = [];
+  const cardValues = [hist.indexOf(1)];
+  // find cards without pairs, starting with the smallest
+  for (let i = 1; i < n; i += 1) {
+    cardValues[i] = hist.indexOf(1, cardValues[i - 1] + 1);
+  }
+  // find hand index of individual cards
+  for (let i = 0; i < hand.length; i += 1) {
+    for (let j = 0; j < cardValues.length; j += 1) {
+      if (hand[i].weight - 2 === cardValues[j]) {
+        nextCardsToDiscard.push(i);
+        break;
+      }
+    }
+  }
+  return nextCardsToDiscard;
 };

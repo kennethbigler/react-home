@@ -2,7 +2,7 @@ import asyncForEach from '../../../helpers/asyncForEach';
 import { swapCards, newHand, payout } from '../../../store/modules/players';
 import Deck from '../../../apis/Deck';
 import {
-  rankHand, getHistogram, evaluate, getHand,
+  rankHand, getHistogram, evaluate, getCardsToDiscard,
 } from './helpers';
 import {
   newPokerGame, startPokerGame, endPokerTurn, endPokerGame,
@@ -27,8 +27,6 @@ interface PokerHookProps extends DBPoker {
 }
 
 const usePokerFunctions = (props: PokerHookProps): UsePokerFunctions => {
-  const { players, turn: { player: turn }} = props;
-
   // ----------     bot automation handlers     ---------- //
   /** increment player turn and reset state */
   const endTurn = async (turnToEnd: number): Promise<void> => {
@@ -39,34 +37,10 @@ const usePokerFunctions = (props: PokerHookProps): UsePokerFunctions => {
   /** iterate through array, removing each index number from hand
    * then add new cards to the hand
    */
-  const discard = async (cardsToDiscardInDB: number[]): Promise<void> => {
+  const discard = async (cardsToDiscardInDB: number[], player: DBPlayer): Promise<void> => {
     const { dispatch } = props;
-
-    const { id, hands } = players[turn];
+    const { id, hands } = player;
     await dispatch(swapCards(hands, id, cardsToDiscardInDB));
-  };
-
-  /** function to remove n number of cards */
-  const discardHelper = async (n: number, hist: number[]): Promise<void> => {
-    const hand = getHand(players, turn);
-    const nextCardsToDiscard = [];
-    const cardValues = [hist.indexOf(1)];
-    // find cards without pairs, starting with the smallest
-    for (let i = 1; i < n; i += 1) {
-      cardValues[i] = hist.indexOf(1, cardValues[i - 1] + 1);
-    }
-    // find hand index of individual cards
-    for (let i = 0; i < hand.length; i += 1) {
-      for (let j = 0; j < cardValues.length; j += 1) {
-        if (hand[i].weight - 2 === cardValues[j]) {
-          nextCardsToDiscard.push(i);
-          break;
-        }
-      }
-    }
-
-    // discard lowest, non-pair n cards
-    await discard(nextCardsToDiscard);
   };
 
   /** computer play algorithm:
@@ -90,24 +64,30 @@ const usePokerFunctions = (props: PokerHookProps): UsePokerFunctions => {
    * if K / A -> draw 4
    * else draw 5
    */
-  const computer = async (): Promise<void> => {
-    const hand = getHand(players, turn);
+  const computer = async (player: DBPlayer, turn: number): Promise<void> => {
+    const hand = player.hands[0].cards;
     const hist = getHistogram(hand);
     const rank = rankHand(hand, hist);
 
     switch (rank) {
-      case 0: // draw 4-5 on high card
-        hist.lastIndexOf(1) >= 11
-          ? await discardHelper(4, hist) // if ace || king draw 4
-          : await discard([0, 1, 2, 3, 4]); // otherwise, draw all 5
+      case 0: /* draw 4-5 on high card */ {
+        const nextCardsToDiscard = hist.lastIndexOf(1) >= 11
+          ? getCardsToDiscard(4, hist, hand) // if ace || king draw 4
+          : [0, 1, 2, 3, 4]; // otherwise, draw all 5
+        await discard(nextCardsToDiscard, player);
         break;
-      case 1: // draw 3 on 2 of a kind
-        await discardHelper(3, hist);
+      }
+      case 1: /* draw 3 on 2 of a kind */ {
+        const nextCardsToDiscard = getCardsToDiscard(3, hist, hand);
+        await discard(nextCardsToDiscard, player);
         break;
-      case 2: // draw 1 on 3 of a kind
-      case 3: // draw 1 on 2 Pair
-        await discardHelper(1, hist);
+      }
+      case 2: /* draw 1 on 3 of a kind */
+      case 3: /* draw 1 on 2 Pair */ {
+        const nextCardsToDiscard = getCardsToDiscard(1, hist, hand);
+        await discard(nextCardsToDiscard, player);
         break;
+      }
       case 4: // draw 0 on straight
       case 5: // draw 0 on flush
       case 6: // draw 0 on full house
@@ -120,7 +100,7 @@ const usePokerFunctions = (props: PokerHookProps): UsePokerFunctions => {
   };
 
   const endGame = async (): Promise<void> => {
-    const { dispatch } = props;
+    const { dispatch, players } = props;
 
     let winner = { val: 0, id: 0 };
     players.forEach((player) => {
@@ -145,7 +125,9 @@ const usePokerFunctions = (props: PokerHookProps): UsePokerFunctions => {
   };
 
   const checkUpdate = async (): Promise<void> => {
-    const { previousPlayer, hideHands } = props;
+    const {
+      previousPlayer, hideHands, players, turn: { player: turn },
+    } = props;
 
     const player = players[turn] || { isBot: false };
     const gameOver = previousPlayer >= LAST_PLAYER;
@@ -155,21 +137,21 @@ const usePokerFunctions = (props: PokerHookProps): UsePokerFunctions => {
       console.log('------------------------------');
       console.log('previous player: ', previousPlayer);
       const canPlay: boolean = player.id !== DEALER && player.id <= LAST_PLAYER;
-      console.log(canPlay ? 'computer()' : 'endGame()');
+      console.log(canPlay ? `computer(${player.id}, ${turn})` : 'endGame()');
       console.log(player);
-      canPlay ? await computer() : await endGame();
+      canPlay ? await computer(player, turn) : await endGame();
     }
   };
 
   // ----------     player handlers     ---------- //
   const newGame = (): void => {
-    const { dispatch } = props;
+    const { dispatch, players } = props;
     dispatch(newPokerGame(players));
   };
 
   /** function to finish betting and start the game */
   const startGame = (): void => {
-    const { dispatch } = props;
+    const { dispatch, players } = props;
 
     dispatch(startPokerGame());
     // shuffle the deck
@@ -185,13 +167,16 @@ const usePokerFunctions = (props: PokerHookProps): UsePokerFunctions => {
 
   /** helper function wrapping discard, meant for UI */
   const handleDiscard = (): void => {
-    const { dispatch, cardsToDiscard } = props;
-    discard(cardsToDiscard);
+    const {
+      dispatch, cardsToDiscard, players, turn: { player: turn },
+    } = props;
+    discard(cardsToDiscard, players[turn]);
     dispatch(discardCards());
   };
 
   /** function to route click actions */
   const handleGameFunctionClick = (type: PGF): void => {
+    const { turn: { player: turn }} = props;
     switch (type) {
       case PGF.DISCARD_CARDS:
         handleDiscard(); break;
