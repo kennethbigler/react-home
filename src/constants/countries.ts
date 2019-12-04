@@ -25,6 +25,7 @@ const countries: Countries = {
   Iceland: { color: orange[500], continent: 'EU', flag: '🇮🇸' },
   Ireland: { color: pink[500], continent: 'EU', flag: '🇮🇪' },
   Italy: { color: purple[500], continent: 'EU', flag: '🇮🇹' },
+  Jamaica: { color: lightBlue[800], continent: 'NA', flag: '🇯🇲' },
   Mexico: { color: brown[500], continent: 'NA', flag: '🇲🇽' },
   Netherlands: { color: red[500], continent: 'EU', flag: '🇳🇱' },
   Norway: { color: teal[500], continent: 'EU', flag: '🇳🇴' },
