@@ -1,9 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import deepOrange from '@material-ui/core/colors/deepOrange';
-import copy from 'copy-to-clipboard';
+import handleCopy from 'copy-to-clipboard';
 import snakeCase from 'lodash/snakeCase';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
@@ -15,19 +14,8 @@ import CommitText from './CommitText';
 import DeployBranch from './DeployBranch';
 import Header from './Header';
 import ExpandableCard from '../../common/expandable-card';
-import { DBRootState, DBGit } from '../../../store/types';
+import { DBRootState } from '../../../store/types';
 import { MaterialSelectEvent } from './types';
-
-interface GitActions {
-  setBranchMessage: typeof setBranchMessage;
-  setBranchPrefix: typeof setBranchPrefix;
-  setCasePreference: typeof setCasePreference;
-  setKey: typeof setKey;
-}
-interface GitToolsProps {
-  git: DBGit;
-  gitActions: GitActions;
-}
 
 const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');
 
@@ -35,68 +23,61 @@ const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');
  *          |->  BranchName    -|
  *          |->  CommitText    -|->  CopyTextDisplay
  *          |->  DeployBranch  -|    */
-const GitTools: React.FC<GitToolsProps> = (props: GitToolsProps) => {
+const GitTools: React.FC<{}> = () => {
+  const {
+    branchMessage, branchPrefix, casePreference, storyID,
+  } = useSelector((state: DBRootState) => state.git);
+  const dispatch = useDispatch();
+
   /** function to generate select items based of input */
-  const getSelectOptions = (arr: string[]): React.ReactNode => arr.map((t, i) => (
+  const getSelectOptions = React.useCallback((arr: string[]): React.ReactNode => arr.map((t, i) => (
     <MenuItem key={i} value={t}>{t}</MenuItem>
-  ));
+  )), []);
 
   /** function to update text state based on value */
-  const handleIDChange = (e: MaterialSelectEvent): void => {
-    const { gitActions } = props;
+  const handleIDChange = React.useCallback((e: MaterialSelectEvent): void => {
     const [value] = validTypingId.exec(e.target.value as string) || [''];
-    gitActions.setKey(value);
-  };
+    dispatch(setKey(value));
+  }, [dispatch]);
 
   /** function to update text state based on value */
-  const handleCopy = (str: string): void => {
-    copy(str);
-  };
-
+  const handleBranchMessageChange = React.useCallback((e: MaterialSelectEvent): void => {
+    dispatch(setBranchMessage(e.target.value as string));
+  }, [dispatch]);
+  /** function to clear text state based on value */
+  const handleBranchMessageClear = React.useCallback((): void => {
+    dispatch(setBranchMessage(''));
+  }, [dispatch]);
   /** function to update text state based on value */
-  const handleBranchMessageChange = (e: MaterialSelectEvent): void => {
-    const { gitActions } = props;
-    gitActions.setBranchMessage(e.target.value as string);
-  };
-
-  /** function to update text state based on value */
-  const handleBranchMessageClear = (): void => {
-    const { gitActions } = props;
-    gitActions.setBranchMessage('');
-  };
+  const handleBranchPrefix = React.useCallback((newBranchPrefix: string): void => {
+    dispatch(setBranchPrefix(newBranchPrefix));
+  }, [dispatch]);
+  /** function to update case pref based on value */
+  const handleCasePreference = React.useCallback((newCasePreference: string): void => {
+    dispatch(setCasePreference(newCasePreference));
+  }, [dispatch]);
 
   /** function to generate the branch name from inputs
-   * @return {string} format prefix/<story_id>_name_lower_cased
-   */
-  const getBranchName = (): string => {
-    const {
-      git: {
-        branchMessage, branchPrefix, casePreference, storyID: id,
-      },
-    } = props;
+   * @return {string} format prefix/<story_id>_name_lower_cased */
+  const getBranchName = React.useCallback((): string => {
     const prefix = branchPrefix ? `${branchPrefix}/` : '';
     let msg = '';
     switch (casePreference) {
       case 'snake_case':
-        msg = `${id && `${id}_`}${snakeCase(branchMessage)}`;
+        msg = `${storyID && `${storyID}_`}${snakeCase(branchMessage)}`;
         break;
       case 'kebab-case':
-        msg = `${id && `${id}-`}${kebabCase(branchMessage)}`;
+        msg = `${storyID && `${storyID}-`}${kebabCase(branchMessage)}`;
         break;
       case 'camelCase':
-        msg = `${id}${camelCase(branchMessage)}`;
+        msg = `${storyID}${camelCase(branchMessage)}`;
         break;
       default:
-        msg = `${id}${branchMessage}`;
+        msg = `${storyID}${branchMessage}`;
     }
     return `${prefix}${msg}`;
-  };
+  }, [branchMessage, branchPrefix, casePreference, storyID]);
 
-  const {
-    git: {
-      branchMessage, branchPrefix, casePreference, storyID,
-    }, gitActions,
-  } = props;
   const branchName = getBranchName();
   const gitTheme = deepOrange[600];
 
@@ -121,8 +102,8 @@ const GitTools: React.FC<GitToolsProps> = (props: GitToolsProps) => {
             handleCopy,
             onBranchMessageChange: handleBranchMessageChange,
             onBranchMessageClear: handleBranchMessageClear,
-            setBranchPrefix: gitActions.setBranchPrefix,
-            setCasePreference: gitActions.setCasePreference,
+            setBranchPrefix: handleBranchPrefix,
+            setCasePreference: handleCasePreference,
           }}
         />
       </ExpandableCard>
@@ -150,19 +131,4 @@ const GitTools: React.FC<GitToolsProps> = (props: GitToolsProps) => {
   );
 };
 
-// react-redux export
-const mapStateToProps = (state: DBRootState): { git: DBGit } => ({
-  git: state.git,
-});
-const mapDispatchToProps = (dispatch: Dispatch): { gitActions: GitActions } => ({
-  gitActions: bindActionCreators(
-    {
-      setBranchMessage, setBranchPrefix, setCasePreference, setKey,
-    },
-    dispatch,
-  ),
-});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(GitTools);
+export default GitTools;

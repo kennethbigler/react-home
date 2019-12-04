@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -17,13 +16,8 @@ import { setCommitPrefix } from '../../../store/modules/git';
 import { DBRootState } from '../../../store/types';
 import useCommitText from './useCommitText';
 
-interface GitActions {
-  setCommitPrefix: typeof setCommitPrefix;
-}
 interface CommitTextProps {
   getSelectOptions: Function;
-  gitActions: GitActions;
-  gitCommit: boolean;
   gitTheme: string;
   handleCopy: Function;
   storyID?: string;
@@ -33,9 +27,11 @@ const wrapperStyles: React.CSSProperties = { paddingLeft: 20, paddingRight: 20, 
 const marginTopStyles: React.CSSProperties = { marginTop: 12 };
 
 const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
+  const gitCommit = useSelector((state: DBRootState) => state.git.commitPrefix);
+  const dispatch = useDispatch();
+
   const {
-    getSelectOptions, storyID, gitActions, handleCopy,
-    gitCommit, gitTheme,
+    getSelectOptions, storyID, handleCopy, gitTheme,
   } = props;
 
   const {
@@ -60,7 +56,7 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
   ]);
 
   const handleGitCommitToggle = (_e: React.ChangeEvent<HTMLInputElement>, isC: boolean): void => {
-    gitActions.setCommitPrefix(isC);
+    dispatch(setCommitPrefix(isC));
   };
 
   const commitText = getCommitText();
@@ -151,12 +147,4 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
   );
 };
 
-// react-redux export
-const mapStateToProps = (state: DBRootState): { gitCommit: boolean } => ({ gitCommit: state.git.commitPrefix });
-const mapDispatchToProps = (dispatch: Dispatch): { gitActions: GitActions } => ({
-  gitActions: bindActionCreators({ setCommitPrefix }, dispatch),
-});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(CommitText);
+export default CommitText;

@@ -1,17 +1,14 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import WithRouter from './WithRouter';
-import { DBRootState, DBUITheme } from '../store/types';
-
-interface WithThemeProps {
-  theme: DBUITheme;
-}
+import { DBRootState } from '../store/types';
 
 /** App class that wraps higher level components of the application */
-const WithTheme: React.FC<WithThemeProps> = (props: WithThemeProps) => {
-  const { theme } = props;
+const WithTheme: React.FC<{}> = () => {
+  const theme = useSelector((state: DBRootState) => state.theme);
+
   const setTheme = createMuiTheme({
     palette: {
       type: theme.type,
@@ -19,10 +16,7 @@ const WithTheme: React.FC<WithThemeProps> = (props: WithThemeProps) => {
       secondary: theme.secondary,
     },
     typography: {
-      fontFamily: [
-        'Montserrat',
-        'sans-serif',
-      ].join(','),
+      fontFamily: ['Montserrat', 'sans-serif'].join(','),
     },
   });
 
@@ -34,9 +28,4 @@ const WithTheme: React.FC<WithThemeProps> = (props: WithThemeProps) => {
   );
 };
 
-// react-redux export
-const mapStateToProps = (state: DBRootState): WithThemeProps => ({
-  theme: state.theme,
-});
-
-export default connect(mapStateToProps)(WithTheme);
+export default WithTheme;

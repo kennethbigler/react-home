@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
@@ -13,14 +12,6 @@ import Header from './Header';
 import NoToken from './NoToken';
 import { DBRootState } from '../../../store/types';
 
-interface StateActions {
-  setToken: typeof setToken;
-}
-interface GraphQLProps {
-  gqlToken: string;
-  stateActions: StateActions;
-}
-
 const GITHUB_BASE_URL = 'https://api.github.com/graphql';
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) { /* do something with graphql error */ }
@@ -32,13 +23,15 @@ const cache = new InMemoryCache();
  *         |->  NoToken
  *         |->  Profile  ->  Repository
  *            Loading  <-|->  ErrorMessage */
-const GraphQL: React.FC<GraphQLProps> = React.memo((props: GraphQLProps) => {
-  const { gqlToken, stateActions } = props;
+const GraphQL: React.FC<{}> = React.memo(() => {
+  const gqlToken = useSelector((state: DBRootState) => state.gqlToken);
+  const dispatch = useDispatch();
+
   const [authToken, setAuthToken] = React.useState(gqlToken);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const token = e.target.value;
-    stateActions.setToken(token);
+    dispatch(setToken(token));
     setAuthToken(token);
   };
 
@@ -68,14 +61,4 @@ const GraphQL: React.FC<GraphQLProps> = React.memo((props: GraphQLProps) => {
   );
 });
 
-// react-redux export
-const mapStateToProps = (state: DBRootState): { gqlToken: string } => ({
-  gqlToken: state.gqlToken,
-});
-const mapDispatchToProps = (dispatch: Dispatch): { stateActions: StateActions } => ({
-  stateActions: bindActionCreators({ setToken }, dispatch),
-});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(GraphQL);
+export default GraphQL;

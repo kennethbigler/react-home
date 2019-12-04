@@ -1,21 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { updateName, updateBot } from '../../../store/modules/players';
-import { DBRootState, DBPlayer } from '../../../store/types';
-
-interface PlayerActions {
-  updateName: typeof updateName;
-  updateBot: typeof updateBot;
-}
-interface PlayerMenuProps {
-  playerActions: PlayerActions;
-  players: DBPlayer[];
-}
+import { DBRootState } from '../../../store/types';
 
 const namePadStyles: React.CSSProperties = {
   maxWidth: '420px',
@@ -24,32 +14,33 @@ const namePadStyles: React.CSSProperties = {
   margin: 'auto',
 };
 
-const PlayerMenu: React.FC<PlayerMenuProps> = (props: PlayerMenuProps) => {
-  const { players, playerActions } = props;
+const PlayerMenu: React.FC<{}> = () => {
+  const players = useSelector((state: DBRootState) => state.players);
+  const dispatch = useDispatch();
 
   const isBot = React.useMemo(() => players.map((a) => a.isBot), [players]);
 
   const handleToggle = React.useCallback(
     (id: number, isChecked: boolean): void => {
-      playerActions.updateBot(id, isChecked);
+      dispatch(updateBot(id, isChecked));
     },
-    [playerActions],
+    [dispatch],
   );
 
   const handleBlur = React.useCallback(
     (id: number) => (e: React.FocusEvent<HTMLInputElement>): void => {
-      playerActions.updateName(id, e.target.value || '');
+      dispatch(updateName(id, e.target.value || ''));
     },
-    [playerActions],
+    [dispatch],
   );
 
   const handleKeyPress = React.useCallback(
     (id: number) => (e: React.KeyboardEvent<HTMLDivElement>): void => {
       if (e.key === 'Enter') {
-        playerActions.updateName(id, (e.target as HTMLInputElement).value || '');
+        dispatch(updateName(id, (e.target as HTMLInputElement).value || ''));
       }
     },
-    [playerActions],
+    [dispatch],
   );
 
   return (
@@ -102,14 +93,4 @@ const PlayerMenu: React.FC<PlayerMenuProps> = (props: PlayerMenuProps) => {
   );
 };
 
-// react-redux export
-const mapStateToProps = (state: DBRootState): { players: DBPlayer[] } => ({
-  players: state.players,
-});
-const mapDispatchToProps = (dispatch: Dispatch): { playerActions: PlayerActions } => ({
-  playerActions: bindActionCreators({ updateName, updateBot }, dispatch),
-});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(PlayerMenu);
+export default PlayerMenu;
