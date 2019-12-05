@@ -27,28 +27,24 @@ const imgStyles: React.CSSProperties = {
   float: 'right',
 };
 
-const CarCard: React.FC<CarCardProps> = (props: CarCardProps) => {
-  const { car } = props;
-
-  return (
-    <Card style={containerStyles}>
-      <Grid container spacing={1}>
-        <Grid item sm={8} xs={12}>
-          <CardContent>
-            <Typography variant="h5">{car.owned}</Typography>
-            <hr />
-            <Typography variant="h6">{`Horsepower: ${car.horsePower}`}</Typography>
-            <Typography variant="h6">{`Transmission: ${car.transmission}`}</Typography>
-            <hr />
-            <Typography>{car.story}</Typography>
-          </CardContent>
-        </Grid>
-        <Grid item sm={4} xs={12}>
-          <img src={car.src} alt={car.makeModel} style={imgStyles} />
-        </Grid>
+const CarCard: React.FC<CarCardProps> = ({ car }: CarCardProps) => (
+  <Card style={containerStyles}>
+    <Grid container spacing={1}>
+      <Grid item sm={8} xs={12}>
+        <CardContent>
+          <Typography variant="h5">{car.owned}</Typography>
+          <hr />
+          <Typography variant="h6">{`Horsepower: ${car.horsePower}`}</Typography>
+          <Typography variant="h6">{`Transmission: ${car.transmission}`}</Typography>
+          <hr />
+          <Typography>{car.story}</Typography>
+        </CardContent>
       </Grid>
-    </Card>
-  );
-};
+      <Grid item sm={4} xs={12}>
+        <img src={car.src} alt={car.makeModel} style={imgStyles} />
+      </Grid>
+    </Grid>
+  </Card>
+);
 
 export default CarCard;

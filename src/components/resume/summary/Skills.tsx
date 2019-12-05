@@ -7,56 +7,54 @@ import { techSummary, skillSummary } from '../../../constants/work';
 const chipStyles: React.CSSProperties = { marginRight: 5, marginTop: 5 };
 const sidePadding: React.CSSProperties = { paddingLeft: 20, paddingRight: 20 };
 
-const Skills: React.FC<{}> = React.memo(() => {
-  const getCSV = (arr: string[]): React.ReactNodeArray => arr.map(
-    (tech) => <Chip key={tech} label={tech} style={chipStyles} />,
-  );
+const getCSV = (arr: string[]): React.ReactNodeArray => arr.map(
+  (tech) => <Chip key={tech} label={tech} style={chipStyles} />,
+);
 
-  return (
-    <ExpandableCard title="Skills">
-      <div style={sidePadding}>
-        <Typography variant="h4">
-            Summary of Skills:
+const Skills: React.FC<{}> = React.memo(() => (
+  <ExpandableCard title="Skills">
+    <div style={sidePadding}>
+      <Typography variant="h4">
+        Summary of Skills:
+      </Typography>
+      <ul>
+        <Typography>
+          <li>
+            Developing useful, multi-platform software tools and creating user
+            interfaces
+          </li>
         </Typography>
-        <ul>
-          <Typography>
-            <li>
-                Developing useful, multi-platform software tools and creating user
-                interfaces
-            </li>
-          </Typography>
-          <Typography>
-            <li>
-                Managing international team members, strong communication skills,
-                team player, and detail-oriented
-            </li>
-          </Typography>
-          <Typography>
-            <li>
-                Gathering requirements, scheduling, prioritizing goals,
-                documenting processes, and creating project standards
-            </li>
-          </Typography>
-          <Typography>
-            <li>
-                Designing, building, and overseeing production of large and small
-                Internet and Intranet sites
-            </li>
-          </Typography>
-        </ul>
-        <hr />
-        <Typography variant="h4">
-            Technologies:
+        <Typography>
+          <li>
+            Managing international team members, strong communication skills,
+            team player, and detail-oriented
+          </li>
         </Typography>
-        {getCSV(techSummary)}
-        <hr />
-        <Typography variant="h4">
-            Skills:
+        <Typography>
+          <li>
+            Gathering requirements, scheduling, prioritizing goals,
+            documenting processes, and creating project standards
+          </li>
         </Typography>
-        {getCSV(skillSummary)}
-      </div>
-    </ExpandableCard>
-  );
-});
+        <Typography>
+          <li>
+            Designing, building, and overseeing production of large and small
+            Internet and Intranet sites
+          </li>
+        </Typography>
+      </ul>
+      <hr />
+      <Typography variant="h4">
+        Technologies:
+      </Typography>
+      {getCSV(techSummary)}
+      <hr />
+      <Typography variant="h4">
+        Skills:
+      </Typography>
+      {getCSV(skillSummary)}
+    </div>
+  </ExpandableCard>
+));
 
 export default Skills;

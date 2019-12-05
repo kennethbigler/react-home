@@ -7,15 +7,13 @@ import { useTheme } from '@material-ui/core/styles';
 import dateObj from '../../../apis/DateHelper';
 import languageExp from '../../../constants/languages';
 
-const TechBarChart: React.FC<{}> = React.memo(() => {
-  const data = React.useMemo(() => {
-    const storageData = languageExp.map((obj) => ({
-      name: window.innerWidth < 1200 ? obj.short : obj.company,
-      months: dateObj(obj.end).diff(obj.start, 'month'),
-    }));
-    return sortBy(storageData, ['months']).reverse();
-  }, []);
+const storageData = languageExp.map((obj) => ({
+  name: window.innerWidth < 1200 ? obj.short : obj.company,
+  months: dateObj(obj.end).diff(obj.start, 'month'),
+}));
+const data = sortBy(storageData, ['months']).reverse();
 
+const TechBarChart: React.FC<{}> = React.memo(() => {
   const { palette: { secondary: { main }}} = useTheme();
 
   return (

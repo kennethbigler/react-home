@@ -22,13 +22,13 @@ const rowStyles: React.CSSProperties = {
 
 const PokerTable: React.FC<PokerTableProps> = (props: PokerTableProps) => {
   const { totals } = props;
-  const tableRows = chunk(
+  const tableRows = React.useMemo(() => chunk(
     sortBy(
       Object.entries(totals).map(([key, val]) => ({ key, val })),
       ['val'],
     ),
     4,
-  );
+  ), [totals]);
 
   return (
     <Table>

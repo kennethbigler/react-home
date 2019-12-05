@@ -14,8 +14,8 @@ interface InfoPopupProps {
 
 const InfoPopup: React.FC<InfoPopupProps> = (props: InfoPopupProps) => {
   const [isOpen, handleOpen, handleClose] = useOpenState();
-
   const { buttonText, title, children } = props;
+
   return (
     <>
       <Button color="primary" onClick={handleOpen as React.MouseEventHandler} variant="contained">

@@ -23,10 +23,10 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { palette: { type }} = useTheme();
   const { children, handleNav, showPlayers } = props;
 
-  const handleNavigation = (loc: string): void => {
+  const handleNavigation = React.useCallback((loc: string): void => {
     setIsOpen(false);
     handleNav(loc);
-  };
+  }, [handleNav, setIsOpen]);
 
   const iconColor = type === 'light' ? 'inherit' : 'default';
   const fontColor = type === 'light' ? 'inherit' : 'initial';

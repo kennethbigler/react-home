@@ -7,10 +7,15 @@ interface MenuProps {
   onItemClick?: Function;
 }
 
+// external links
+const github = (): void => { window.open('https://github.com/kennethbigler/react-home'); };
+const linkedIn = (): void => { window.open('https://www.linkedin.com/in/kennethbigler'); };
+const stackOverflow = (): void => { window.open('https://stackoverflow.com/users/4830309/ken-bigler'); };
+
 const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
   const { onItemClick } = props;
   // internal routes
-  const menu = [
+  const menu = React.useMemo(() => [
     { name: 'Summary', route: '' },
     { name: 'Work', route: 'work' },
     { name: 'Resume', route: 'resume' },
@@ -32,12 +37,7 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
         {item.name}
       </MenuItem>
     )
-  ));
-
-  // external links
-  const github = (): void => { window.open('https://github.com/kennethbigler/react-home'); };
-  const linkedIn = (): void => { window.open('https://www.linkedin.com/in/kennethbigler'); };
-  const stackOverflow = (): void => { window.open('https://stackoverflow.com/users/4830309/ken-bigler'); };
+  )), [onItemClick]);
 
   return (
     <>

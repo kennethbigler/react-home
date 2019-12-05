@@ -4,10 +4,7 @@ import cars from '../../../constants/cars';
 import CarCard from './CarCard';
 import CarChart from './CarChart';
 
-const hrStyles: React.CSSProperties = {
-  marginTop: 60,
-  marginBottom: 20,
-};
+const hrStyles: React.CSSProperties = { marginTop: 60, marginBottom: 20 };
 
 const Cars = React.memo(() => (
   <>

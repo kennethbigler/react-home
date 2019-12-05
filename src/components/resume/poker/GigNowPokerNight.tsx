@@ -4,19 +4,17 @@ import PokerTable from './PokerTable';
 import parseData from './helpers';
 import { gigNowPokerScores, gigNowPokerColors } from '../../../constants/poker';
 
-const PokerNight: React.FC<{}> = React.memo(() => {
-  const { parsedScores, totals } = parseData(gigNowPokerScores);
+const { parsedScores, totals } = parseData(gigNowPokerScores);
 
-  return (
-    <>
-      <PokerGraph
-        parsedScores={parsedScores}
-        colors={gigNowPokerColors}
-        domain={[-100, 100]}
-      />
-      <PokerTable totals={totals} />
-    </>
-  );
-});
+const PokerNight: React.FC<{}> = React.memo(() => (
+  <>
+    <PokerGraph
+      parsedScores={parsedScores}
+      colors={gigNowPokerColors}
+      domain={[-100, 100]}
+    />
+    <PokerTable totals={totals} />
+  </>
+));
 
 export default PokerNight;

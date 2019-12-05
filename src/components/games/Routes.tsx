@@ -23,10 +23,9 @@ const TicTacToe = lazyWithPreload(import(/* webpackChunkName: "g_tictactoe" */ '
 const Yahtzee = lazyWithPreload(import(/* webpackChunkName: "g_yahtzee" */ './yahtzee'));
 
 const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
-  const { match, handleNav } = props;
-  const { url } = match;
+  const { match: { url }, handleNav } = props;
 
-  const paths = [
+  const paths = React.useMemo(() => [
     { name: 'blackjack', component: BlackJack },
     { name: 'connect4', component: Connect4 },
     { name: 'deal', component: DealOrNoDeal },
@@ -41,7 +40,7 @@ const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
     acc.push(<Redirect key={`${path}d`} from={`${path}*`} to={path} />);
     return acc;
   },
-  []);
+  []), [url]);
 
   return (
     <>

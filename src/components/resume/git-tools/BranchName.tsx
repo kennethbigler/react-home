@@ -24,35 +24,41 @@ interface BranchNameProps {
   setCasePreference: Function;
 }
 
+const wrapperStyles: React.CSSProperties = { paddingLeft: 20, paddingRight: 20, width: '100%' };
+const topSpacing: React.CSSProperties = { marginTop: 12 };
+
 const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
+  const { getSelectOptions, setBranchPrefix, setCasePreference } = props;
+
   /** function to generate select items for branch prefixes */
-  const getBranchPrefixOptions = (): React.ReactNode => {
-    const { getSelectOptions } = props;
-    return getSelectOptions(['chores', 'epics', 'features', 'fixes']);
-  };
+  const getBranchPrefixOptions = React.useCallback(
+    (): React.ReactNode => getSelectOptions(['chores', 'epics', 'features', 'fixes']),
+    [getSelectOptions],
+  );
 
   /** function to generate select items for case preference */
-  const getCasePreferenceOptions = (): React.ReactNode => {
-    const { getSelectOptions } = props;
-    return getSelectOptions([
-      'snake_case',
-      'kebab-case',
-      'camelCase',
-      'No Changes',
-    ]);
-  };
+  const getCasePreferenceOptions = React.useCallback(
+    (): React.ReactNode => getSelectOptions([
+      'snake_case', 'kebab-case', 'camelCase', 'No Changes',
+    ]),
+    [getSelectOptions],
+  );
 
   /** function to update select state based on value */
-  const handleBranchPrefixSelect = (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>): void => {
-    const { setBranchPrefix } = props;
-    setBranchPrefix(e.target.value);
-  };
+  const handleBranchPrefixSelect = React.useCallback(
+    (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>): void => {
+      setBranchPrefix(e.target.value);
+    },
+    [setBranchPrefix],
+  );
 
   /** function to update text state based on value */
-  const handleCasePrefSelect = (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>): void => {
-    const { setCasePreference } = props;
-    setCasePreference(e.target.value);
-  };
+  const handleCasePrefSelect = React.useCallback(
+    (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>): void => {
+      setCasePreference(e.target.value);
+    },
+    [setCasePreference],
+  );
 
   const {
     branchMessage,
@@ -65,12 +71,14 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
     onBranchMessageClear,
   } = props;
 
+  const gitThemeStyles: React.CSSProperties = React.useMemo(() => ({ color: gitTheme }), [gitTheme]);
+
   return (
-    <div style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
+    <div style={wrapperStyles}>
       <Grid container spacing={1}>
         <Grid item sm={3} xs={12}>
           <FormControl fullWidth>
-            <InputLabel htmlFor="branch-prefix" style={{ color: gitTheme }}>
+            <InputLabel htmlFor="branch-prefix" style={gitThemeStyles}>
               Branch Prefix
             </InputLabel>
             <Select
@@ -84,7 +92,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
         </Grid>
         <Grid item sm={3} xs={12}>
           <FormControl fullWidth>
-            <InputLabel htmlFor="branch-prefix" style={{ color: gitTheme }}>
+            <InputLabel htmlFor="branch-prefix" style={gitThemeStyles}>
               Case Preference
             </InputLabel>
             <Select
@@ -99,7 +107,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
         <Grid item sm={5} xs={10}>
           <TextField
             fullWidth
-            InputLabelProps={{ style: { color: gitTheme }}}
+            InputLabelProps={{ style: gitThemeStyles }}
             label="Branch Name"
             multiline
             onChange={onBranchMessageChange}
@@ -110,7 +118,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
         <Grid item sm={1} xs={2}>
           <IconButton
             onClick={onBranchMessageClear}
-            style={{ marginTop: 12 }}
+            style={topSpacing}
           >
             <Clear />
           </IconButton>

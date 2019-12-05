@@ -25,10 +25,9 @@ interface RoutesProps {
 }
 
 const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
-  const { match, handleNav } = props;
-  const { url } = match;
+  const { match: { url }, handleNav } = props;
 
-  const paths = [
+  const paths = React.useMemo(() => [
     { name: 'work', component: Work },
     { name: 'education', component: Education },
     { name: 'travel', component: TravelMap },
@@ -45,7 +44,7 @@ const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
     acc.push(<Redirect key={`${path}d`} from={`${path}*`} to={path} />);
     return acc;
   },
-  []);
+  []), [url]);
 
   return (
     <>

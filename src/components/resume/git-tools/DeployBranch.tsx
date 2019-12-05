@@ -17,9 +17,9 @@ interface BranchNameProps {
 const BranchName: React.FC<BranchNameProps> = React.memo((props: BranchNameProps) => {
   const [targetBranch, setTargetBranch] = React.useState('test-pipeline');
 
-  const handleSelect = (e: MaterialSelectEvent): void => {
+  const handleSelect = React.useCallback((e: MaterialSelectEvent): void => {
     setTargetBranch(e.target.value as string);
-  };
+  }, [setTargetBranch]);
 
   const {
     gitTheme, handleCopy, getSelectOptions, branchName,

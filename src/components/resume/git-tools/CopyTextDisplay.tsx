@@ -18,11 +18,11 @@ const CopyTextDisplay: React.FC<CopyTextDisplayProps> = (props: CopyTextDisplayP
   const { handleCopy, copyText, text } = props;
 
   /** copies text to clipboard and opens prompt to tell the user */
-  const handleCopyText = (): void => {
+  const handleCopyText = React.useCallback((): void => {
     handleOpen();
     const toCopy = copyText || text;
     handleCopy(toCopy);
-  };
+  }, [copyText, handleCopy, handleOpen, text]);
 
   return (
     <>

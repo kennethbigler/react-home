@@ -3,6 +3,14 @@ import grey from '@material-ui/core/colors/grey';
 import { useTheme } from '@material-ui/core/styles';
 import { SegmentType } from './types';
 
+const bodyStyles: React.CSSProperties = {
+  cursor: 'default',
+  paddingTop: '5px',
+  paddingBottom: '5px',
+  textAlign: 'center',
+  borderRadius: 2,
+};
+
 const Segment: React.FC<SegmentType> = React.memo((props: SegmentType) => {
   const { palette: { type }} = useTheme();
   const {
@@ -18,11 +26,7 @@ const Segment: React.FC<SegmentType> = React.memo((props: SegmentType) => {
   if (body) {
     style = {
       ...style,
-      cursor: 'default',
-      paddingTop: '5px',
-      paddingBottom: '5px',
-      textAlign: 'center',
-      borderRadius: 2,
+      ...bodyStyles,
       backgroundColor: color,
     };
 

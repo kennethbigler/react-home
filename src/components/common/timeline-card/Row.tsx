@@ -9,14 +9,18 @@ interface RowProps {
   first?: boolean;
 }
 
+const smMarginTop: React.CSSProperties = { marginTop: 10 };
+const lgMarginTop: React.CSSProperties = { marginTop: 20 };
+const noStyle: React.CSSProperties = { height: 0 };
+
 const Row: React.FC<RowProps> = (props: RowProps) => {
   const { segments, yearMarkers, first } = props;
 
-  let style: React.CSSProperties = { marginTop: 10 };
+  let style = smMarginTop;
   if (yearMarkers) {
-    style = { height: 0 };
+    style = noStyle;
   } else if (first) {
-    style = { marginTop: 20 };
+    style = lgMarginTop;
   }
 
   return (

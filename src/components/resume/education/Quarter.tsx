@@ -10,18 +10,15 @@ interface QuarterProps {
   quarter: QuarterType;
 }
 
-const Quarter: React.FC<QuarterProps> = (props: QuarterProps) => {
-  const { quarter } = props;
-  return (
-    <>
-      <Typography variant="h5">
-        {quarter.quarter}
-      </Typography>
-      <ul>
-        {quarter.classes.map((c) => <Class key={c.name} name={c.name} catalog={c.catalog} />)}
-      </ul>
-    </>
-  );
-};
+const Quarter: React.FC<QuarterProps> = ({ quarter }: QuarterProps) => (
+  <>
+    <Typography variant="h5">
+      {quarter.quarter}
+    </Typography>
+    <ul>
+      {quarter.classes.map((c) => <Class key={c.name} name={c.name} catalog={c.catalog} />)}
+    </ul>
+  </>
+);
 
 export default Quarter;

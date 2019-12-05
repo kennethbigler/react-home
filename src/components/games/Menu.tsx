@@ -11,7 +11,7 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
   const baseUrl = '/games';
 
   // internal routes
-  const menu = [
+  const menu = React.useMemo(() => [
     { name: 'Home - Games', route: '' },
     { divider: true },
     { name: 'BlackJack', route: 'blackjack' },
@@ -32,10 +32,13 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
         {item.name}
       </MenuItem>
     )
-  ));
+  )), [onItemClick]);
 
   // navigation
-  const home = (): void => onItemClick && onItemClick('/');
+  const home = React.useCallback(
+    (): void => onItemClick && onItemClick('/'),
+    [onItemClick],
+  );
 
   // render menu
   return (

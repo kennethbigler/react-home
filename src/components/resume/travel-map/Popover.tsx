@@ -13,7 +13,7 @@ const Popover: React.FC<PopoverProps> = React.memo((props: PopoverProps) => {
     x, y, hide, content,
   } = props;
 
-  const popoverStyle: React.CSSProperties = {
+  const popoverStyle: React.CSSProperties = React.useMemo(() => ({
     position: 'absolute',
     left: x + 2,
     top: y - 35,
@@ -22,7 +22,7 @@ const Popover: React.FC<PopoverProps> = React.memo((props: PopoverProps) => {
     color: 'white',
     padding: 5,
     borderRadius: 2,
-  };
+  }), [hide, x, y]);
 
   return (<div style={popoverStyle}>{content}</div>);
 });

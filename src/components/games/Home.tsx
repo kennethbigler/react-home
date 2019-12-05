@@ -1,8 +1,10 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 
+const wrapperStyles: React.CSSProperties = { textAlign: 'center', marginTop: 20 };
+
 const Home = React.memo(() => (
-  <div style={{ textAlign: 'center', marginTop: 20 }}>
+  <div style={wrapperStyles}>
     <Typography variant="h2">
       Welcome to my ReactJS Game Projects
     </Typography>

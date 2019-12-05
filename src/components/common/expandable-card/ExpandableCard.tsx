@@ -28,9 +28,7 @@ interface ExpandableCardProps {
 
 const ExpandableCard: React.FC<ExpandableCardProps> = (props: ExpandableCardProps) => {
   const [expanded, toggleExpanded] = useToggleState(true);
-
   const { palette } = useTheme();
-
   const {
     title, subtitle, children, backgroundColor, inverted,
   } = props;

@@ -49,15 +49,18 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
   } = useCommitText(storyID, gitCommit);
 
   /** function to generate select items based of input */
-  const getCommitPrefixOptions = (): React.ReactNode => getSelectOptions([
+  const getCommitPrefixOptions = React.useCallback((): React.ReactNode => getSelectOptions([
     'build', 'chore', 'ci', 'docs',
     'feat', 'fix', 'perf', 'refactor',
     'revert', 'style', 'test',
-  ]);
+  ]), [getSelectOptions]);
 
-  const handleGitCommitToggle = (_e: React.ChangeEvent<HTMLInputElement>, isC: boolean): void => {
-    dispatch(setCommitPrefix(isC));
-  };
+  const handleGitCommitToggle = React.useCallback(
+    (_e: React.ChangeEvent<HTMLInputElement>, isC: boolean): void => {
+      dispatch(setCommitPrefix(isC));
+    },
+    [dispatch],
+  );
 
   const commitText = getCommitText();
   const displayText = commitText && nl2br(getCommitText());

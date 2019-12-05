@@ -13,19 +13,16 @@ interface YearProps {
   year: YearType;
 }
 
-const Year: React.FC<YearProps> = (props: YearProps) => {
-  const { year, len } = props;
-  return (
-    <Grid item md={Math.ceil(12 / len) as GridSize} xs={12}>
-      <Typography variant="h4">
-        {year.year}
-      </Typography>
-      <hr />
-      {year.quarters.map((quarter) => (
-        <Quarter key={quarter.quarter} quarter={quarter} />
-      ))}
-    </Grid>
-  );
-};
+const Year: React.FC<YearProps> = ({ year, len }: YearProps) => (
+  <Grid item md={Math.ceil(12 / len) as GridSize} xs={12}>
+    <Typography variant="h4">
+      {year.year}
+    </Typography>
+    <hr />
+    {year.quarters.map((quarter) => (
+      <Quarter key={quarter.quarter} quarter={quarter} />
+    ))}
+  </Grid>
+);
 
 export default Year;

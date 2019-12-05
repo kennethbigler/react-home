@@ -11,16 +11,22 @@ const ResumeRoutes = React.lazy(() => import(/* webpackChunkName: "resume" */ '.
 const GameRoutes = React.lazy(() => import(/* webpackChunkName: "games" */ './games/Routes'));
 
 const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
-  const handleNav = (loc: string): void => {
-    const { location, history } = props;
-    if (loc !== location.pathname) {
+  const { location: { pathname }, history } = props;
+
+  const handleNav = React.useCallback((loc: string): void => {
+    if (loc !== pathname) {
       history.push(loc);
     }
-  };
+  }, [history, pathname]);
 
-  const resume = (passProps: RoutesProps): React.ReactNode => <ResumeRoutes handleNav={handleNav} {...passProps} />;
-
-  const games = (passProps: RoutesProps): React.ReactNode => <GameRoutes handleNav={handleNav} {...passProps} />;
+  const resume = React.useCallback(
+    (passProps: RoutesProps): React.ReactNode => <ResumeRoutes handleNav={handleNav} {...passProps} />,
+    [handleNav],
+  );
+  const games = React.useCallback(
+    (passProps: RoutesProps): React.ReactNode => <GameRoutes handleNav={handleNav} {...passProps} />,
+    [handleNav],
+  );
 
   return (
     <main style={{ padding: '1em', paddingTop: '5em' }}>
