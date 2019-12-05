@@ -1,30 +1,16 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import DiceAPI from '../../../apis/Dice';
 import ScoreTable from './score-table/ScoreTable';
 import { ADD_DICE, TopGameScore, BottomGameScore } from './types';
 import Header from './Header';
 import TableHeader from './TableHeader';
-import { DBRootState, Dice, DBYahtzee } from '../../../store/types';
+import { DBRootState, Dice } from '../../../store/types';
 import {
   addScore, diceClick, newGame, nextRoll,
   updateTop, updateBottom, updateRoll,
 } from '../../../store/modules/yahtzee';
-
-interface YahtzeeActions {
-  addScore: typeof addScore;
-  diceClick: typeof diceClick;
-  newGame: typeof newGame;
-  nextRoll: typeof nextRoll;
-  updateTop: typeof updateTop;
-  updateBottom: typeof updateBottom;
-  updateRoll: typeof updateRoll;
-}
-interface YahtzeeProps extends DBYahtzee {
-  actions: YahtzeeActions;
-}
 
 const topConstants = [
   { name: 'Aces' },
@@ -44,12 +30,14 @@ const bottomConstants = [
   { name: 'Chance', hint: ADD_DICE, points: ADD_DICE },
 ];
 
-const Yahtzee: React.FC<YahtzeeProps> = (props: YahtzeeProps) => {
-  const {
-    topScores, bottomScores, values, saved,
-    roll, showScoreButtons, scores, actions,
-  } = props;
+interface YahtzeeVars {
+  topSum: number;
+  bottomSum: number;
+  finalTopSum: number;
+  finish: boolean;
+}
 
+const getYahtzeeVars = (topScores: number[], bottomScores: number[]): YahtzeeVars => {
   let count = 0;
 
   const topSum = topScores.reduce((sum, score) => {
@@ -59,6 +47,7 @@ const Yahtzee: React.FC<YahtzeeProps> = (props: YahtzeeProps) => {
     }
     return sum;
   }, 0);
+
   const bottomSum = bottomScores.reduce((sum, score) => {
     if (score >= 0) {
       count += 1;
@@ -66,29 +55,45 @@ const Yahtzee: React.FC<YahtzeeProps> = (props: YahtzeeProps) => {
     }
     return sum;
   }, 0);
-  let finalTopSum = 0;
+
+  let finalTopSum = topSum;
   if (topSum >= 63) {
-    finalTopSum += topSum + 35;
-  } else {
-    finalTopSum += topSum;
+    finalTopSum += 35;
   }
 
   const finish = count >= 13;
 
-  const newYGame = (): void => {
-    actions.addScore(finalTopSum + bottomSum);
-    actions.newGame();
+  return {
+    topSum,
+    bottomSum,
+    finalTopSum,
+    finish,
   };
+};
 
-  const handleDiceRoll = (): void => {
-    const { hasScored } = props;
+const Yahtzee: React.FC<{}> = () => {
+  const {
+    topScores, bottomScores, values, saved,
+    roll, showScoreButtons, scores, hasScored,
+  } = useSelector((state: DBRootState) => ({ ...state.yahtzee }));
+  const dispatch = useDispatch();
 
+  const {
+    topSum, bottomSum, finalTopSum, finish,
+  } = React.useMemo(() => getYahtzeeVars(topScores, bottomScores), [topScores, bottomScores]);
+
+  const newYGame = React.useCallback((): void => {
+    dispatch(addScore(finalTopSum + bottomSum));
+    dispatch(newGame());
+  }, [bottomSum, dispatch, finalTopSum]);
+
+  const handleDiceRoll = React.useCallback((): void => {
     if (finish) {
       newYGame();
     }
     if (roll >= 3) {
       if (hasScored === true) {
-        actions.nextRoll();
+        dispatch(nextRoll());
       }
       return;
     }
@@ -100,28 +105,28 @@ const Yahtzee: React.FC<YahtzeeProps> = (props: YahtzeeProps) => {
     saved.sort();
 
     if (roll === 2) {
-      actions.updateRoll(values, saved, roll + 1 as Dice, true);
+      dispatch(updateRoll(values, saved, roll + 1 as Dice, true));
     } else {
-      actions.updateRoll(values, saved, roll + 1 as Dice);
+      dispatch(updateRoll(values, saved, roll + 1 as Dice));
     }
-  };
+  }, [dispatch, finish, hasScored, newYGame, roll, saved, values]);
 
-  const handleSave = (i: number): void => {
+  const handleSave = React.useCallback((i: number): void => {
     if (values[i] === 0) {
       return;
     }
     saved.push(values.splice(i, 1)[0]);
     saved.sort();
-    actions.diceClick(values, saved);
-  };
+    dispatch(diceClick(values, saved));
+  }, [dispatch, saved, values]);
 
-  const handleUnsave = (i: number): void => {
+  const handleUnsave = React.useCallback((i: number): void => {
     values.push(saved.splice(i, 1)[0]);
     values.sort();
-    actions.diceClick(values, saved);
-  };
+    dispatch(diceClick(values, saved));
+  }, [dispatch, saved, values]);
 
-  const getButtonText = (rollNum: Dice): string => {
+  const getButtonText = React.useCallback((rollNum: Dice): string => {
     if (finish) {
       return 'New Game';
     }
@@ -138,20 +143,26 @@ const Yahtzee: React.FC<YahtzeeProps> = (props: YahtzeeProps) => {
       default:
         return 'Error';
     }
-  };
+  }, [finish]);
 
-  const handleTopScore = (points: number, i: number): void => {
+  const handleTopScore = React.useCallback((points: number, i: number): void => {
     topScores[i] = points;
-    actions.updateTop(topScores);
-  };
+    dispatch(updateTop(topScores));
+  }, [dispatch, topScores]);
 
-  const handleBottomScore = (points: number, i: number): void => {
+  const handleBottomScore = React.useCallback((points: number, i: number): void => {
     bottomScores[i] = points;
-    actions.updateBottom(bottomScores);
-  };
+    dispatch(updateBottom(bottomScores));
+  }, [bottomScores, dispatch]);
 
-  const top = topScores.map((score, i) => ({ ...topConstants[i], score })) as TopGameScore[];
-  const bottom = bottomScores.map((score, i) => ({ ...bottomConstants[i], score })) as BottomGameScore[];
+  const top = React.useMemo(
+    () => topScores.map((score, i) => ({ ...topConstants[i], score })) as TopGameScore[],
+    [topScores],
+  );
+  const bottom = React.useMemo(
+    () => bottomScores.map((score, i) => ({ ...bottomConstants[i], score })) as BottomGameScore[],
+    [bottomScores],
+  );
 
   return (
     <>
@@ -183,20 +194,4 @@ const Yahtzee: React.FC<YahtzeeProps> = (props: YahtzeeProps) => {
   );
 };
 
-// react-redux export
-const mapStateToProps = (state: DBRootState): DBYahtzee => ({ ...state.yahtzee });
-const mapDispatchToProps = (dispatch: Dispatch): { actions: YahtzeeActions } => ({
-  actions: bindActionCreators({
-    addScore,
-    diceClick,
-    newGame,
-    nextRoll,
-    updateTop,
-    updateBottom,
-    updateRoll,
-  }, dispatch),
-});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Yahtzee);
+export default Yahtzee;

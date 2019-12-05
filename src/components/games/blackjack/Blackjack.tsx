@@ -5,15 +5,14 @@
  * buy insurance on dealer's Ace
  */
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import asyncForEach from '../../../helpers/asyncForEach';
 import weighHand from './blackjackHelpers';
 import Header from './Header';
 import GameTable from '../game-table';
 import Deck from '../../../apis/Deck';
 import {
-  DBTurn, DBHand, DBPlayer, DBRootState, GameFunctions, DBBlackjack,
+  DBHand, DBPlayer, DBRootState, GameFunctions,
 } from '../../../store/types';
 import {
   doubleHand, hitHand, setNewGame, splitHand, stayHand,
@@ -21,28 +20,6 @@ import {
 } from '../../../store/modules/blackjack';
 import { newHand, payout, updateBet } from '../../../store/modules/players';
 
-interface BlackJackActions {
-  bjActions: {
-    doubleHand: typeof doubleHand;
-    hitHand: typeof hitHand;
-    setNewGame: typeof setNewGame;
-    splitHand: typeof splitHand;
-    stayHand: typeof stayHand;
-    updateGameFunctions: typeof updateGameFunctions;
-    updateHasFunctions: typeof updateHasFunctions;
-    updateHideHands: typeof updateHideHands;
-  };
-  playerActions: {
-    newHand: typeof newHand;
-    payout: typeof payout;
-    updateBet: typeof updateBet;
-  };
-}
-interface BlackJackDBState extends DBBlackjack {
-  players: DBPlayer[];
-  turn: DBTurn;
-}
-interface BlackJackProps extends BlackJackDBState, BlackJackActions {}
 interface PlayerStats {
   house: number;
   payout: number;
@@ -52,10 +29,16 @@ interface PlayerStats {
 // Dealer constant
 const DEALER = 0;
 
-const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
+const BlackJack: React.FC<{}> = () => {
   const {
     turn, players, gameFunctions, hideHands,
-  } = props;
+    hasFunctions,
+  } = useSelector((state: DBRootState) => ({
+    ...state.blackjack,
+    players: state.players,
+    turn: state.turn,
+  }));
+  const dispatch = useDispatch();
 
   /** get the game functions for the present hand */
   const getGameFunctions = (hand: DBHand): void => {
@@ -81,74 +64,65 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
     }
 
     // update game state
-    const { bjActions } = props;
-    bjActions.updateGameFunctions(newGameFunctions);
-    bjActions.updateHasFunctions(true);
+    dispatch(updateGameFunctions(newGameFunctions));
+    dispatch(updateHasFunctions(true));
   };
 
   /** function that takes a hand of duplicates and makes 2 hands */
   const split = (): void => {
     // get state values
-    const { bjActions } = props;
     const { id, hands } = players[turn.player];
-    bjActions.splitHand(hands, id, turn.hand, weighHand);
+    dispatch(splitHand(hands, id, turn.hand, weighHand));
   };
 
   /** function to pass to the next player */
   const stay = (): void => {
     // get state values
-    const { bjActions } = props;
     const lastHand = players[turn.player].hands.length - 1;
     // check if the player has more than 1 hand
-    bjActions.stayHand(turn.hand < lastHand);
+    dispatch(stayHand(turn.hand < lastHand));
   };
 
   /** function that doubles your bet, but you only get 1 card */
   const double = (): void => {
-    const { bjActions } = props;
-    bjActions.doubleHand(players[turn.player], turn, weighHand);
+    dispatch(doubleHand(players[turn.player], turn, weighHand));
   };
 
   /** function to get a new card */
   const hit = (): void => {
     // get state values
-    const { bjActions } = props;
     const { id, hands } = players[turn.player];
     // logic to hit
-    bjActions.hitHand(hands, id, turn.hand, weighHand);
+    dispatch(hitHand(hands, id, turn.hand, weighHand));
   };
 
   /** Start a new round of hands */
   const dealHands = (): void => {
-    const { playerActions, bjActions } = props;
     // shuffle the deck
     Deck.shuffle().then(() => {
       // deal the hands
       asyncForEach(players, async (player: DBPlayer) => {
         const num = player.id !== DEALER ? 2 : 1;
-        await playerActions.newHand(player.id, num, weighHand);
+        await dispatch(newHand(player.id, num, weighHand));
       });
     });
-    bjActions.updateHasFunctions(false);
+    dispatch(updateHasFunctions(false));
   };
 
   /** Start a new game */
   const newGame = (): void => {
-    const { bjActions } = props;
-    bjActions.setNewGame(players);
+    dispatch(setNewGame(players));
   };
 
   /** function to finish betting and start the game */
   const finishBetting = (): void => {
-    const { bjActions } = props;
-    bjActions.updateHideHands(false);
+    dispatch(updateHideHands(false));
     dealHands();
   };
 
   /** finish the game and check for a winner */
   const finishGame = (): void => {
     // state variables
-    const { bjActions, playerActions } = props;
     const dealer = players.filter((p) => p.id === DEALER)[0];
     const dWeight = dealer.hands[0].weight || 0;
     const dLength = dealer.hands[0].cards.length;
@@ -175,7 +149,7 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
         } else {
           playerStats.status = 'push';
         }
-        playerActions.payout(id, playerStats.status, playerStats.house);
+        dispatch(payout(id, playerStats.status, playerStats.house));
       } else {
         player.hands.forEach((hand) => {
           const { weight = 0, cards } = hand;
@@ -194,32 +168,30 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
             loss(playerStats, bet);
           }
         });
-        playerActions.payout(id, playerStats.status, playerStats.payout);
+        dispatch(payout(id, playerStats.status, playerStats.payout));
       }
     });
 
     // update game functions
-    bjActions.updateGameFunctions([GameFunctions.NEW_GAME]);
+    dispatch(updateGameFunctions([GameFunctions.NEW_GAME]));
   };
 
   /** function to get a new card */
   const hitDealer = (): void => {
     // get state values
-    const { bjActions } = props;
     const { hands } = players.filter((p) => p.id === DEALER)[0];
     // logic to hit
-    bjActions.hitHand(hands, DEALER, 0, weighHand);
+    dispatch(hitHand(hands, DEALER, 0, weighHand));
   };
 
   /** function to execute dealer logic */
   const playDealer = (): void => {
-    const { bjActions } = props;
     const dealer = players.filter((p) => p.id === DEALER)[0];
     const hand = dealer.hands[0].cards;
     const { weight, soft } = weighHand(hand);
     // Dealer hits on 16 or less and soft 17
     if (weight <= 16 || (weight === 17 && soft)) {
-      bjActions.updateHasFunctions(true);
+      dispatch(updateHasFunctions(true));
       hitDealer();
     } else {
       finishGame();
@@ -322,7 +294,6 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
   };
 
   const checkUpdate = (): void => {
-    const { hasFunctions } = props;
     const player = players[turn.player];
 
     if (hasFunctions || hideHands) { return; }
@@ -347,8 +318,7 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
 
   /** function to be called on card clicks */
   const betHandler = (id: number, event: React.MouseEvent, bet: number): void => {
-    const { playerActions } = props;
-    playerActions.updateBet(id, bet);
+    dispatch(updateBet(id, bet));
   };
 
   /** function to route click actions */
@@ -391,30 +361,4 @@ const BlackJack: React.FC<BlackJackProps> = (props: BlackJackProps) => {
   );
 };
 
-// react-redux export
-const mapStateToProps = (state: DBRootState): BlackJackDBState => ({
-  ...state.blackjack,
-  players: state.players,
-  turn: state.turn,
-});
-const mapDispatchToProps = (dispatch: Dispatch): BlackJackActions => ({
-  bjActions: bindActionCreators(
-    {
-      doubleHand,
-      hitHand,
-      setNewGame,
-      splitHand,
-      stayHand,
-      updateGameFunctions,
-      updateHasFunctions,
-      updateHideHands,
-    },
-    dispatch,
-  ),
-  playerActions: bindActionCreators(
-    { newHand, payout, updateBet },
-    dispatch,
-  ),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(BlackJack);
+export default BlackJack;

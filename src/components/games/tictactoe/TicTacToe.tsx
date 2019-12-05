@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { playTurn, newGame } from '../../../store/modules/ticTacToe';
@@ -11,26 +10,18 @@ import { getTurn, calculateWinner } from './helpers';
 import { DBTicTacToe, DBRootState } from '../../../store/types';
 import { X, O, EMPTY } from '../../../store/initialState';
 
-interface TicTacToeActions {
-  playTurn: typeof playTurn;
-  newGame: typeof newGame;
-}
-interface TicTacToeProps extends DBTicTacToe {
-  ticTacToeActions: TicTacToeActions;
-}
-
 const paperStyles: React.CSSProperties = { width: 343, display: 'block', margin: 'auto' };
 
 /* TicTacToe  ->  Header
  *           |->  Board  ->  Cell
  *           |->  History */
-const TicTacToe: React.FC<TicTacToeProps> = (props: TicTacToeProps) => {
-  const {
-    turn, step, history, ticTacToeActions,
-  } = props;
+const TicTacToe: React.FC<{}> = () => {
+  const { turn, step, history } = useSelector((state: DBRootState) => ({ ...state.ticTacToe }));
+  const dispatch = useDispatch();
+
   /** function that modifies board with appropriate turn
    * @param location - location of board click (row * 3 + col) */
-  const handleClick = (location: number): void => {
+  const handleClick = React.useCallback((location: number): void => {
     const newHistory = history.slice(0, step + 1);
     const current = newHistory[step];
     const board = current.board.slice();
@@ -40,30 +31,30 @@ const TicTacToe: React.FC<TicTacToeProps> = (props: TicTacToeProps) => {
       // place marker, then update turn
       board[location] = turn;
 
-      ticTacToeActions.playTurn({
+      dispatch(playTurn({
         history: newHistory.concat([{ board, location }]),
         step: newHistory.length,
         turn: turn === X ? O : X,
-      });
+      }));
     }
-  };
+  }, [dispatch, history, step, turn]);
 
   /** function that resets game back to it's initial state */
-  const newTTTGame = (): void => {
-    ticTacToeActions.newGame();
-  };
+  const newTTTGame = React.useCallback((): void => {
+    dispatch(newGame());
+  }, [dispatch]);
 
   /** function that modifies board to go back to a previous point in history
    * @param step - desired point in history */
-  const jumpToStep = (stepNo: number): void => {
+  const jumpToStep = React.useCallback((stepNo: number): void => {
     const newTurn: DBTicTacToe = { step: stepNo, turn: getTurn(stepNo), history };
     // Double click will eliminate all other history if there is any
     if (step === stepNo) {
       newTurn.history = history.slice(0, step + 1);
     }
     // update board to previous turn, non-permanent, history exists still
-    ticTacToeActions.playTurn(newTurn);
-  };
+    dispatch(playTurn(newTurn));
+  }, [dispatch, history, step]);
 
   const current = history[step];
   const board = current.board.slice();
@@ -85,14 +76,4 @@ const TicTacToe: React.FC<TicTacToeProps> = (props: TicTacToeProps) => {
   );
 };
 
-// react-redux export
-const mapStateToProps = (state: DBRootState): DBTicTacToe => ({
-  ...state.ticTacToe,
-});
-const mapDispatchToProps = (dispatch: Dispatch): { ticTacToeActions: TicTacToeActions } => ({
-  ticTacToeActions: bindActionCreators({ playTurn, newGame }, dispatch),
-});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TicTacToe);
+export default TicTacToe;

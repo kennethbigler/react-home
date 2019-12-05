@@ -1,39 +1,31 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { updateDBSlotMachine } from '../../../store/modules/slots';
-import { DBPlayer, DBRootState, DBSlotDisplay } from '../../../store/types';
+import { DBRootState } from '../../../store/types';
 import PayoutTable from './PayoutTable';
 import MoneyTable from './MoneyTable';
 import ReelDisplay from './ReelDisplay';
 
-interface SlotActions {
-  updateDBSlotMachine: typeof updateDBSlotMachine;
-}
-interface SlotDBState {
-  players: DBPlayer[];
-  reel: DBSlotDisplay[];
-}
-interface SlotProps extends SlotDBState {
-  slotActions: SlotActions;
-}
-
 /* Slots  ->  ReelDisplay
  *       |->  MoneyTable
  *       |->  PayoutTable */
-const Slots: React.FC<SlotProps> = (props: SlotProps) => {
-  const updateSlotMachine = (): void => {
-    const { slotActions, players } = props;
+const Slots: React.FC<{}> = () => {
+  const { players, reel } = useSelector((state: DBRootState) => ({
+    players: state.players,
+    reel: state.slots,
+  }));
+  const dispatch = useDispatch();
+
+  const updateSlotMachine = useCallback((): void => {
     const { id, bet } = players[0];
     const dealerId = players[players.length - 1].id;
-    slotActions.updateDBSlotMachine(id, dealerId, bet);
-  };
+    dispatch(updateDBSlotMachine(id, dealerId, bet));
+  }, [players, dispatch]);
 
   // https://vegasclick.com/games/slots/how-they-work
-  const { players, reel } = props;
   const player = players[0];
   const dealer = players[players.length - 1];
 
@@ -71,15 +63,4 @@ const Slots: React.FC<SlotProps> = (props: SlotProps) => {
   );
 };
 
-// react-redux export
-const mapStateToProps = (state: DBRootState): SlotDBState => ({
-  players: state.players,
-  reel: state.slots,
-});
-const mapDispatchToProps = (dispatch: Dispatch): { slotActions: SlotActions } => ({
-  slotActions: bindActionCreators({ updateDBSlotMachine }, dispatch),
-});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Slots);
+export default Slots;
