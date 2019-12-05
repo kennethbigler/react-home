@@ -3,15 +3,11 @@ import {
   ResponsiveContainer, BarChart, Bar, XAxis, CartesianGrid, Tooltip,
 } from 'recharts';
 import sortBy from 'lodash/sortBy';
-import { withTheme, Theme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import dateObj from '../../../apis/DateHelper';
 import languageExp from '../../../constants/languages';
 
-interface TechBarChartProps {
-  theme: Theme;
-}
-
-const TechBarChart: React.FC<TechBarChartProps> = React.memo((props: TechBarChartProps) => {
+const TechBarChart: React.FC<{}> = React.memo(() => {
   const data = React.useMemo(() => {
     const storageData = languageExp.map((obj) => ({
       name: window.innerWidth < 1200 ? obj.short : obj.company,
@@ -20,7 +16,7 @@ const TechBarChart: React.FC<TechBarChartProps> = React.memo((props: TechBarChar
     return sortBy(storageData, ['months']).reverse();
   }, []);
 
-  const { theme } = props;
+  const { palette: { secondary: { main }}} = useTheme();
 
   return (
     <ResponsiveContainer width="100%" height={300}>
@@ -39,10 +35,10 @@ const TechBarChart: React.FC<TechBarChartProps> = React.memo((props: TechBarChar
             return [value, label];
           }}
         />
-        <Bar dataKey="months" fill={theme.palette.secondary.main} />
+        <Bar dataKey="months" fill={main} />
       </BarChart>
     </ResponsiveContainer>
   );
 });
 
-export default withTheme(TechBarChart);
+export default TechBarChart;

@@ -3,13 +3,12 @@ import maxBy from 'lodash/maxBy';
 import {
   ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area,
 } from 'recharts';
-import { withTheme } from '@material-ui/core/styles';
-import { Typography, Theme } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 import InfoPopup from '../../common/InfoPopup';
 
 interface ScoreGraphProps {
   scores: number[];
-  theme: Theme;
 }
 interface ScoreGraphEntry {
   value: number;
@@ -20,7 +19,8 @@ const generateScoreGraph = (scores: number[]): ScoreGraphEntry[] => (
 );
 
 const ScoreGraph: React.FC<ScoreGraphProps> = (props: ScoreGraphProps) => {
-  const { scores: dBScores, theme: { palette: { secondary: { main }}}} = props;
+  const { palette: { secondary: { main }}} = useTheme();
+  const { scores: dBScores } = props;
 
   const scores = React.useMemo(() => generateScoreGraph(dBScores), [dBScores]);
   const recent = scores[scores.length - 1] || { value: 0 };
@@ -50,4 +50,4 @@ const ScoreGraph: React.FC<ScoreGraphProps> = (props: ScoreGraphProps) => {
   );
 };
 
-export default withTheme(ScoreGraph);
+export default ScoreGraph;

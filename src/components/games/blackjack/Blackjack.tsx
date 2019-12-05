@@ -41,7 +41,7 @@ const BlackJack: React.FC<{}> = () => {
   const dispatch = useDispatch();
 
   /** get the game functions for the present hand */
-  const getGameFunctions = (hand: DBHand): void => {
+  const getGameFunctions = React.useCallback((hand: DBHand): void => {
     if (!hand) { return; }
 
     // reset game functions
@@ -66,38 +66,38 @@ const BlackJack: React.FC<{}> = () => {
     // update game state
     dispatch(updateGameFunctions(newGameFunctions));
     dispatch(updateHasFunctions(true));
-  };
+  }, [dispatch]);
 
   /** function that takes a hand of duplicates and makes 2 hands */
-  const split = (): void => {
+  const split = React.useCallback((): void => {
     // get state values
     const { id, hands } = players[turn.player];
     dispatch(splitHand(hands, id, turn.hand, weighHand));
-  };
+  }, [dispatch, players, turn.hand, turn.player]);
 
   /** function to pass to the next player */
-  const stay = (): void => {
+  const stay = React.useCallback((): void => {
     // get state values
     const lastHand = players[turn.player].hands.length - 1;
     // check if the player has more than 1 hand
     dispatch(stayHand(turn.hand < lastHand));
-  };
+  }, [dispatch, players, turn.hand, turn.player]);
 
   /** function that doubles your bet, but you only get 1 card */
-  const double = (): void => {
+  const double = React.useCallback((): void => {
     dispatch(doubleHand(players[turn.player], turn, weighHand));
-  };
+  }, [dispatch, players, turn]);
 
   /** function to get a new card */
-  const hit = (): void => {
+  const hit = React.useCallback((): void => {
     // get state values
     const { id, hands } = players[turn.player];
     // logic to hit
     dispatch(hitHand(hands, id, turn.hand, weighHand));
-  };
+  }, [dispatch, players, turn.hand, turn.player]);
 
   /** Start a new round of hands */
-  const dealHands = (): void => {
+  const dealHands = React.useCallback((): void => {
     // shuffle the deck
     Deck.shuffle().then(() => {
       // deal the hands
@@ -107,21 +107,21 @@ const BlackJack: React.FC<{}> = () => {
       });
     });
     dispatch(updateHasFunctions(false));
-  };
+  }, [dispatch, players]);
 
   /** Start a new game */
-  const newGame = (): void => {
+  const newGame = React.useCallback((): void => {
     dispatch(setNewGame(players));
-  };
+  }, [dispatch, players]);
 
   /** function to finish betting and start the game */
-  const finishBetting = (): void => {
+  const finishBetting = React.useCallback((): void => {
     dispatch(updateHideHands(false));
     dealHands();
-  };
+  }, [dealHands, dispatch]);
 
   /** finish the game and check for a winner */
-  const finishGame = (): void => {
+  const finishGame = React.useCallback((): void => {
     // state variables
     const dealer = players.filter((p) => p.id === DEALER)[0];
     const dWeight = dealer.hands[0].weight || 0;
@@ -174,18 +174,18 @@ const BlackJack: React.FC<{}> = () => {
 
     // update game functions
     dispatch(updateGameFunctions([GameFunctions.NEW_GAME]));
-  };
+  }, [dispatch, players]);
 
   /** function to get a new card */
-  const hitDealer = (): void => {
+  const hitDealer = React.useCallback((): void => {
     // get state values
     const { hands } = players.filter((p) => p.id === DEALER)[0];
     // logic to hit
     dispatch(hitHand(hands, DEALER, 0, weighHand));
-  };
+  }, [dispatch, players]);
 
   /** function to execute dealer logic */
-  const playDealer = (): void => {
+  const playDealer = React.useCallback((): void => {
     const dealer = players.filter((p) => p.id === DEALER)[0];
     const hand = dealer.hands[0].cards;
     const { weight, soft } = weighHand(hand);
@@ -196,10 +196,10 @@ const BlackJack: React.FC<{}> = () => {
     } else {
       finishGame();
     }
-  };
+  }, [dispatch, finishGame, hitDealer, players]);
 
   // AI: https://www.blackjackinfo.com/blackjack-basic-strategy-engine/
-  const playBot = (): void => {
+  const playBot = React.useCallback((): void => {
     // player hand
     const hand = players[turn.player].hands[turn.hand];
     // validate hand exists
@@ -291,9 +291,9 @@ const BlackJack: React.FC<{}> = () => {
       // bust
       stay();
     }
-  };
+  }, [double, hit, players, split, stay, turn.hand, turn.player]);
 
-  const checkUpdate = (): void => {
+  const checkUpdate = React.useCallback((): void => {
     const player = players[turn.player];
 
     if (hasFunctions || hideHands) { return; }
@@ -308,21 +308,21 @@ const BlackJack: React.FC<{}> = () => {
       }
     }
     !gameFunctions.includes(GameFunctions.NEW_GAME) && playDealer();
-  };
+  }, [gameFunctions, getGameFunctions, hasFunctions, hideHands, playBot, playDealer, players, turn.hand, turn.player]);
 
   /** function to be called on card clicks */
-  const cardClickHandler = (playerNo: number, handNo: number, cardNo: number): void => {
+  const cardClickHandler = React.useCallback((playerNo: number, handNo: number, cardNo: number): void => {
     // eslint-disable-next-line no-console
     console.log(players[playerNo].hands[handNo].cards[cardNo]);
-  };
+  }, [players]);
 
   /** function to be called on card clicks */
-  const betHandler = (id: number, event: React.MouseEvent, bet: number): void => {
+  const betHandler = React.useCallback((id: number, event: React.MouseEvent, bet: number): void => {
     dispatch(updateBet(id, bet));
-  };
+  }, [dispatch]);
 
   /** function to route click actions */
-  const handleGameFunctionClick = (type: GameFunctions): void => {
+  const handleGameFunctionClick = React.useCallback((type: GameFunctions): void => {
     switch (type) {
       case GameFunctions.NEW_GAME:
         newGame(); break;
@@ -340,7 +340,7 @@ const BlackJack: React.FC<{}> = () => {
         // eslint-disable-next-line no-console
         console.error('Unknown Game Function: ', type);
     }
-  };
+  }, [double, finishBetting, hit, newGame, split, stay]);
 
   /* render the UI */
   checkUpdate();

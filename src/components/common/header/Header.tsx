@@ -5,7 +5,7 @@ import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import NavigationClose from '@material-ui/icons/Close';
-import { withTheme, Theme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import TopBar from './TopBar';
 import useToggleState from '../../../hooks/useToggle';
 
@@ -16,15 +16,12 @@ interface HeaderProps {
   children: React.ReactElement<NavProps>;
   handleNav: Function;
   showPlayers?: boolean;
-  theme: Theme;
 }
 
 const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
   const [isOpen, toggleOpen, setIsOpen] = useToggleState(false);
-  const {
-    children, handleNav, showPlayers,
-    theme: { palette: { type }},
-  } = props;
+  const { palette: { type }} = useTheme();
+  const { children, handleNav, showPlayers } = props;
 
   const handleNavigation = (loc: string): void => {
     setIsOpen(false);
@@ -62,4 +59,4 @@ Header.defaultProps = {
   showPlayers: false,
 };
 
-export default withTheme(Header);
+export default Header;

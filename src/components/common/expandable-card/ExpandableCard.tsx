@@ -5,8 +5,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Collapse from '@material-ui/core/Collapse';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import { withTheme, Theme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
+import { useTheme } from '@material-ui/core/styles';
 import useToggleState from '../../../hooks/useToggle';
 
 const cardStyles: React.CSSProperties = { marginTop: 40, overflow: 'visible' };
@@ -23,23 +23,24 @@ interface ExpandableCardProps {
   children?: React.ReactNode;
   inverted?: boolean;
   subtitle?: string | React.ReactNode;
-  theme: Theme;
   title?: string | React.ReactNode;
 }
 
 const ExpandableCard: React.FC<ExpandableCardProps> = (props: ExpandableCardProps) => {
   const [expanded, toggleExpanded] = useToggleState(true);
 
+  const { palette } = useTheme();
+
   const {
-    title, subtitle, children, backgroundColor, theme, inverted,
+    title, subtitle, children, backgroundColor, inverted,
   } = props;
 
   const headerStyle = {
     ...headerStyles,
-    backgroundColor: backgroundColor || theme.palette.primary.main,
+    backgroundColor: backgroundColor || palette.primary.main,
   };
 
-  if (theme.palette.type !== 'dark') {
+  if (palette.type !== 'dark') {
     headerStyle.boxShadow = `0px 15px 15px -10px ${grey[400]}`;
   } else {
     delete headerStyle.boxShadow;
@@ -82,4 +83,4 @@ ExpandableCard.defaultProps = {
   inverted: false,
 };
 
-export default withTheme(ExpandableCard);
+export default ExpandableCard;
