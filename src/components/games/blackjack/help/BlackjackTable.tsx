@@ -15,30 +15,26 @@ interface BlackjackTable {
 const cards: string[] = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'A'];
 const cellStyle: React.CSSProperties = { width: 60 };
 
-const BlackjackTable: React.FC<BlackjackTable> = (props: BlackjackTable) => {
-  const { title, data } = props;
-
-  return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell colSpan={11}>
-            {title}
-          </TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        <TableRow>
-          <Cell rowSpan={2} style={cellStyle} text="Hand" />
-          <Cell colSpan={10} text="Dealer" />
-        </TableRow>
-        <TableRow>
-          {cards.map((c) => <Cell key={c} text={c} />)}
-        </TableRow>
-        {data.map((obj) => <Row key={obj.name} name={obj.name} data={obj.data} />)}
-      </TableBody>
-    </Table>
-  );
-};
+const BlackjackTable: React.FC<BlackjackTable> = ({ title, data }: BlackjackTable) => (
+  <Table>
+    <TableHead>
+      <TableRow>
+        <TableCell colSpan={11}>
+          {title}
+        </TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      <TableRow>
+        <Cell rowSpan={2} style={cellStyle} text="Hand" />
+        <Cell colSpan={10} text="Dealer" />
+      </TableRow>
+      <TableRow>
+        {cards.map((c) => <Cell key={c} text={c} />)}
+      </TableRow>
+      {data.map((obj) => <Row key={obj.name} name={obj.name} data={obj.data} />)}
+    </TableBody>
+  </Table>
+);
 
 export default BlackjackTable;

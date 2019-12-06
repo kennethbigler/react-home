@@ -15,7 +15,7 @@ const Cars = React.memo(() => (
         width={40}
         orientation="right"
         tickLine={false}
-        domain={['dataMin', 'dataMax + 1']}
+        domain={['dataMin', 'dataMax']}
         interval="preserveStartEnd"
         allowDecimals={false}
         reversed

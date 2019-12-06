@@ -16,9 +16,9 @@ const cellStyles: React.CSSProperties = {
 };
 
 const ReelDisplay: React.FC<ReelDisplayProps> = (props: ReelDisplayProps) => {
+  const { reel } = props;
   /** generate code for slot machine */
-  const getSlots = (): React.ReactNode[] => {
-    const { reel } = props;
+  const getSlots = React.useCallback((): React.ReactNode[] => {
     // display for slots
     const slots = [];
     for (let i = 0; i < 3; i += 1) {
@@ -35,7 +35,7 @@ const ReelDisplay: React.FC<ReelDisplayProps> = (props: ReelDisplayProps) => {
       slots.push(slotRow);
     }
     return slots;
-  };
+  }, [reel]);
 
   return (
     <Table>

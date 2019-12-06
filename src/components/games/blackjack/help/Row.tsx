@@ -10,17 +10,13 @@ export interface RowProps {
 
 const tableCellStyle: React.CSSProperties = { textAlign: 'center', padding: 0 };
 
-const Row: React.FC<RowProps> = (props: RowProps) => {
-  const { name, data } = props;
-
-  return (
-    <TableRow>
-      <TableCell style={tableCellStyle}>
-        {name}
-      </TableCell>
-      {data.map((text, i) => <Cell key={i} {...text} />)}
-    </TableRow>
-  );
-};
+const Row: React.FC<RowProps> = ({ name, data }: RowProps) => (
+  <TableRow>
+    <TableCell style={tableCellStyle}>
+      {name}
+    </TableCell>
+    {data.map((text, i) => <Cell key={i} {...text} />)}
+  </TableRow>
+);
 
 export default Row;

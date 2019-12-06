@@ -9,21 +9,15 @@ interface HeaderProps {
   winner?: string;
 }
 
-const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
-  const { winner, turn, newGame } = props;
-  // status text
-  const status = winner ? `Winner: ${winner}` : `Turn: ${turn}`;
-
-  return (
-    <Toolbar>
-      <Typography style={{ flex: 1 }} variant="h6">
-        {status}
-      </Typography>
-      <Button color="primary" onClick={newGame} variant="contained">
-        Reset Game
-      </Button>
-    </Toolbar>
-  );
-});
+const Header: React.FC<HeaderProps> = React.memo(({ winner, turn, newGame }: HeaderProps) => (
+  <Toolbar>
+    <Typography style={{ flex: 1 }} variant="h6">
+      {winner ? `Winner: ${winner}` : `Turn: ${turn}`}
+    </Typography>
+    <Button color="primary" onClick={newGame} variant="contained">
+      Reset Game
+    </Button>
+  </Toolbar>
+));
 
 export default Header;

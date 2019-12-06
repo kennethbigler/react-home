@@ -9,6 +9,16 @@ interface MoneyProps {
   briefcase: Briefcase;
 }
 
+const paperStyles: React.CSSProperties = {
+  width: '90%',
+  marginLeft: '5%',
+  marginRight: '5%',
+  marginBottom: 5,
+  padding: 5,
+  textAlign: 'center',
+  color: 'white',
+};
+
 const Money: React.FC<MoneyProps> = (props: MoneyProps) => {
   const { briefcase: bc } = props;
 
@@ -17,13 +27,7 @@ const Money: React.FC<MoneyProps> = (props: MoneyProps) => {
   };
 
   const style: React.CSSProperties = {
-    width: '90%',
-    marginLeft: '5%',
-    marginRight: '5%',
-    marginBottom: 5,
-    padding: 5,
-    textAlign: 'center',
-    color: 'white',
+    ...paperStyles,
     ...color,
   };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import indigo from '@material-ui/core/colors/indigo';
+import { useTheme } from '@material-ui/core/styles';
 
 interface CellProps {
   onClick: React.MouseEventHandler;
@@ -10,8 +10,9 @@ interface CellProps {
 
 const Cell: React.FC<CellProps> = React.memo((props: CellProps) => {
   const { value, winner, onClick } = props;
+  const { palette: { primary: { main }}} = useTheme();
   // add attributes if cell is a winner
-  const attr: React.CSSProperties = winner ? { color: 'white', backgroundColor: indigo.A700 } : {};
+  const attr: React.CSSProperties = winner ? { color: 'white', backgroundColor: main } : {};
 
   return (
     <Button onClick={onClick} style={attr}>

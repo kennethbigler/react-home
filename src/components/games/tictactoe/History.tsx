@@ -14,7 +14,7 @@ const History: React.FC<HistoryProps> = (props: HistoryProps) => {
   const { history, step, jumpToStep } = props;
 
   /** function that generates text for the history tracker */
-  const getHistoryText = (round: DBHistoryEntry, move: number): React.ReactNode => {
+  const getHistoryText = React.useCallback((round: DBHistoryEntry, move: number): React.ReactNode => {
     const location = round.location || 0;
     // generate description text
     const description = !move
@@ -34,7 +34,7 @@ const History: React.FC<HistoryProps> = (props: HistoryProps) => {
         {description}
       </Button>
     );
-  };
+  }, [jumpToStep, step]);
 
   // move history
   const moves = history.map(getHistoryText);

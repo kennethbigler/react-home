@@ -18,21 +18,17 @@ const style: React.CSSProperties = {
   marginTop: 20,
 };
 
-const Board: React.FC<BoardProps> = (props: BoardProps) => {
-  const { board, onClick, playerChoice: pc } = props;
-
-  return (
-    <Paper elevation={2} style={style}>
-      {board.map((bc, i) => (
-        <Case
-          key={i}
-          briefcase={bc}
-          onClick={(): void => onClick(i)}
-          secondary={pc && pc.loc === bc.loc}
-        />
-      ))}
-    </Paper>
-  );
-};
+const Board: React.FC<BoardProps> = ({ board, onClick, playerChoice: pc }: BoardProps) => (
+  <Paper elevation={2} style={style}>
+    {board.map((bc, i) => (
+      <Case
+        key={i}
+        briefcase={bc}
+        onClick={(): void => onClick(i)}
+        secondary={pc && pc.loc === bc.loc}
+      />
+    ))}
+  </Paper>
+);
 
 export default Board;

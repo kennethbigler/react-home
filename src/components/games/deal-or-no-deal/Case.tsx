@@ -9,10 +9,11 @@ interface CaseProps {
   secondary?: boolean;
 }
 
+const style = { margin: 10 };
+
 const Case: React.FC<CaseProps> = (props: CaseProps) => {
   const { onClick, briefcase: bc, secondary } = props;
   const color = secondary ? 'secondary' : 'primary';
-  const style = { margin: 10 };
   const label = bc.on ? bc.loc : getMoneyText(bc.val);
 
   return (
