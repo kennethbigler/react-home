@@ -28,28 +28,31 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
     top, topSum, values, onTopScore, onBottomScore,
   } = props;
 
-  const getScoreButton = (showButton: boolean, points: number, wasTop: boolean, i: number): React.ReactNode => (
-    showButton ? (
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={wasTop
-          ? (): void => onTopScore(points, i)
-          : (): void => onBottomScore(points, i)}
-      >
-        {`Add ${points} Points`}
-      </Button>
-    ) : (
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={wasTop
-          ? (): void => onTopScore(0, i)
-          : (): void => onBottomScore(0, i)}
-      >
-          0
-      </Button>
-    )
+  const getScoreButton = React.useCallback(
+    (showButton: boolean, points: number, wasTop: boolean, i: number): React.ReactNode => (
+      showButton ? (
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={wasTop
+            ? (): void => onTopScore(points, i)
+            : (): void => onBottomScore(points, i)}
+        >
+          {`Add ${points} Points`}
+        </Button>
+      ) : (
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={wasTop
+            ? (): void => onTopScore(0, i)
+            : (): void => onBottomScore(0, i)}
+        >
+            0
+        </Button>
+      )
+    ),
+    [onBottomScore, onTopScore],
   );
 
   return (

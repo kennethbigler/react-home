@@ -16,28 +16,36 @@ interface TopTableProps {
 }
 
 const TopTable: React.FC<TopTableProps> = (props: TopTableProps) => {
-  const getButtonInfo = (d: number): [number, number] => {
-    const { values } = props;
-    return values.reduce((count, val) => {
-      if (val === d) {
-        count[0] += 1;
-        count[1] += d;
+  const {
+    values, showScoreButtons, getScoreButton, top, style,
+  } = props;
+
+  const getButtonInfo = React.useCallback(
+    (d: number): [number, number] => values.reduce(
+      (count, val) => {
+        if (val === d) {
+          count[0] += 1;
+          count[1] += d;
+        }
+        return count;
+      },
+      [0, 0],
+    ),
+    [values],
+  );
+
+  const getTopTableButtons = React.useCallback(
+    (score: number, showButton: boolean, sum: number, i: number): React.ReactNode | null => {
+      if (score >= 0) {
+        return score;
       }
-      return count;
-    }, [0, 0]);
-  };
+      return showScoreButtons ? getScoreButton(showButton, sum, true, i) : null;
+    },
+    [getScoreButton, showScoreButtons],
+  );
 
-  const getTopTableButtons = (score: number, showButton: boolean, sum: number, i: number): React.ReactNode | null => {
-    const { showScoreButtons, getScoreButton } = props;
-    if (score >= 0) {
-      return score;
-    }
-    return showScoreButtons ? getScoreButton(showButton, sum, true, i) : null;
-  };
-
-  const generateTopTable = (): React.ReactNode => {
-    const { top, style } = props;
-    return top.map(({ name, score }, i) => {
+  const generateTopTable = React.useCallback(
+    (): React.ReactNode => top.map(({ name, score }, i) => {
       const d = i + 1;
       const [count, sum] = getButtonInfo(i + 1);
       const showButton = count >= 1;
@@ -49,10 +57,11 @@ const TopTable: React.FC<TopTableProps> = (props: TopTableProps) => {
           <TableCell style={style}>{getTopTableButtons(score, showButton, sum, i)}</TableCell>
         </TableRow>
       );
-    });
-  };
+    }),
+    [getButtonInfo, getTopTableButtons, style, top],
+  );
 
-  const { topSum, finalTopSum, style } = props;
+  const { topSum, finalTopSum } = props;
 
   return (
     <>
