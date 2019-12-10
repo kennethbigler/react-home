@@ -55,10 +55,12 @@ const MurderMysteryPanel: React.FC<MurderMysteryPanelProps> = React.memo((props:
               <LabelTableCell>Description</LabelTableCell>
               <TableCell>{nl2br(description)}</TableCell>
             </TableRow>
-            <TableRow>
-              <LabelTableCell>Hint</LabelTableCell>
-              <TableCell>{nl2br(hint)}</TableCell>
-            </TableRow>
+            {hint && (
+              <TableRow>
+                <LabelTableCell>Hint</LabelTableCell>
+                <TableCell>{nl2br(hint)}</TableCell>
+              </TableRow>
+            )}
             <TableRow>
               <LabelTableCell>Clue</LabelTableCell>
               <TableCell>{nl2br(clue)}</TableCell>
