@@ -35,6 +35,7 @@
     "jest": true
   },
   "rules": {
+    "import/extensions": "off",
     "max-len": "off",
     "no-invalid-this": "off",
     "no-param-reassign": "off",
