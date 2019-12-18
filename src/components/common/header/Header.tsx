@@ -8,21 +8,26 @@ import NavigationClose from '@material-ui/icons/Close';
 import { useTheme } from '@material-ui/core/styles';
 import TopBar from './TopBar';
 import useToggleState from '../../../hooks/useToggle';
+import noop from '../../../apis/noop';
 
 interface NavProps {
   onItemClick: (loc: string) => void;
 }
 interface HeaderProps {
+  /** content of the header bar */
   children: React.ReactElement<NavProps>;
+  /** callback function, wrapped with logic, then passed as onItemClick to children */
   handleNav: Function;
-  showPlayers?: boolean;
+  /** show/hide the player editor button */
+  showPlayers: boolean;
 }
 
-const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
+const Header = (props: HeaderProps): React.ReactElement => {
   const [isOpen, toggleOpen, setIsOpen] = useToggleState(false);
   const { palette: { type }} = useTheme();
   const { children, handleNav, showPlayers } = props;
 
+  /** close the menu and call the passed callback */
   const handleNavigation = React.useCallback((loc: string): void => {
     setIsOpen(false);
     handleNav(loc);
@@ -57,6 +62,7 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
 
 Header.defaultProps = {
   showPlayers: false,
+  handleNav: noop,
 };
 
 export default Header;

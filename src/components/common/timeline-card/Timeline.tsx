@@ -13,9 +13,13 @@ export interface DataEntry {
   short?: string;
 }
 interface TimelineProps {
+  /** reads [selector] from each array entry and creates segments */
   data: DataEntry[];
+  /** key to be used to read data */
   selector: string;
+  /** start of the timeline */
   start: DateObj;
+  /** end of the timeline */
   end: DateObj;
 }
 
@@ -34,7 +38,7 @@ const addEmptySegment = (segments: SegmentType[], width: number): void => {
   }
 };
 
-const Timeline: React.FC<TimelineProps> = (props: TimelineProps) => {
+const Timeline = (props: TimelineProps): React.ReactElement => {
   const {
     start, end, selector, data: propsData,
   } = props;
@@ -87,6 +91,7 @@ const Timeline: React.FC<TimelineProps> = (props: TimelineProps) => {
     [selector],
   );
 
+  /** break data up into segments */
   const getSegments = React.useCallback(
     (elm: DataEntry, i: number): SegmentType[] => {
       // skip if added already
@@ -136,6 +141,7 @@ const Timeline: React.FC<TimelineProps> = (props: TimelineProps) => {
     [addSegment, added, data, getTimeFromStart],
   );
 
+  /** adds gray lines to indicate years */
   const getYearMarkers = React.useCallback(
     (): SegmentType[] => {
       const startYear = Number(start.format('YYYY'));

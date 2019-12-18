@@ -20,6 +20,7 @@ const PlayerMenu: React.FC<{}> = () => {
 
   const isBot = React.useMemo(() => players.map((a) => a.isBot), [players]);
 
+  /** toggle between bot and human player - dispatch to redux */
   const handleToggle = React.useCallback(
     (id: number, isChecked: boolean): void => {
       dispatch(updateBot(id, isChecked));
@@ -27,6 +28,7 @@ const PlayerMenu: React.FC<{}> = () => {
     [dispatch],
   );
 
+  /** update player name onBlur - dispatch to redux */
   const handleBlur = React.useCallback(
     (id: number) => (e: React.FocusEvent<HTMLInputElement>): void => {
       dispatch(updateName(id, e.target.value || ''));
@@ -34,6 +36,7 @@ const PlayerMenu: React.FC<{}> = () => {
     [dispatch],
   );
 
+  /** if enter key was pressed in textfield, update name - dispatch to redux */
   const handleKeyPress = React.useCallback(
     (id: number) => (e: React.KeyboardEvent<HTMLDivElement>): void => {
       if (e.key === 'Enter') {

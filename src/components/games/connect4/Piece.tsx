@@ -6,33 +6,33 @@ import lightGreen from '@material-ui/core/colors/lightGreen';
 import noop from '../../../apis/noop';
 
 interface PieceProps {
-  enabled?: boolean;
-  onClick?: React.MouseEventHandler;
+  /** can the piece be clicked? */
+  enabled: boolean;
+  /** callback onClick of piece */
+  onClick: React.MouseEventHandler;
+  /** type of piece */
   piece: number;
 }
 
-const Piece: React.FC<PieceProps> = React.memo((props: PieceProps) => {
-  const { piece, enabled, onClick } = props;
-
-  let color;
+/** returns color based of piece type */
+const getColor = (piece: number): string | undefined => {
   switch (piece) {
     case undefined:
-      color = undefined;
-      break;
     case 0:
-      color = undefined;
-      break;
+      return undefined;
     case 1:
-      color = red[500];
-      break;
+      return red[500];
     case 2:
-      color = 'black';
-      break;
+      return 'black';
     default:
-      color = lightGreen[600];
-      break;
+      return lightGreen[600];
   }
+};
 
+const Piece = (props: PieceProps): React.ReactElement => {
+  const { piece, enabled, onClick } = props;
+
+  const color = getColor(piece);
   const style: React.CSSProperties = { backgroundColor: color };
 
   return !enabled
@@ -45,11 +45,11 @@ const Piece: React.FC<PieceProps> = React.memo((props: PieceProps) => {
         <ContentAdd style={{ color: 'white' }} />
       </Fab>
     );
-});
+};
 
 Piece.defaultProps = {
   enabled: false,
   onClick: noop,
 };
 
-export default Piece;
+export default React.memo(Piece);

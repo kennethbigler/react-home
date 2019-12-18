@@ -7,12 +7,15 @@ import Button from '@material-ui/core/Button';
 import useOpenState from '../../hooks/useOpenState';
 
 interface InfoPopupProps {
+  /** popup content */
   children: React.ReactNodeArray;
+  /** title content */
   title: string | React.ReactElement;
+  /** button content */
   buttonText?: string | React.ReactElement;
 }
 
-const InfoPopup: React.FC<InfoPopupProps> = (props: InfoPopupProps) => {
+const InfoPopup = (props: InfoPopupProps): React.ReactElement => {
   const [isOpen, handleOpen, handleClose] = useOpenState();
   const { buttonText, title, children } = props;
 

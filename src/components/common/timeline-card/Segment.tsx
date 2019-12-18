@@ -11,7 +11,7 @@ const bodyStyles: React.CSSProperties = {
   borderRadius: 2,
 };
 
-const Segment: React.FC<SegmentType> = React.memo((props: SegmentType) => {
+const Segment = React.memo((props: SegmentType): React.ReactElement => {
   const { palette: { type }} = useTheme();
   const {
     body, width, color, title, inverted,

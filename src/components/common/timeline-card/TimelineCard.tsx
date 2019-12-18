@@ -6,12 +6,18 @@ import Timeline, { TIMELINE_TITLE, DataEntry } from './Timeline';
 import workExperience from '../../../constants/work';
 
 interface TimelineCardProps {
-  backgroundColor?: string;
-  data?: DataEntry[];
-  title?: string;
-  selector?: string;
-  start?: DateObj;
-  end?: DateObj;
+  /** background color of the expandable card top bar */
+  backgroundColor: string;
+  /** reads [selector] from each array entry and creates segments */
+  data: DataEntry[];
+  /** title content */
+  title: string;
+  /** key to be used to read data */
+  selector: string;
+  /** start of the timeline */
+  start: DateObj;
+  /** end of the timeline */
+  end: DateObj;
 }
 
 const DATE_FORMAT: FormatOutput = 'MMMM Y';
@@ -19,15 +25,13 @@ const DATE_FORMAT: FormatOutput = 'MMMM Y';
 /* TimelineCard  ->  Timeline  ->  Row  ->  Segment
  *                                     |->  YearMarkers */
 /** function to generate timeline card */
-const TimelineCard: React.FC<TimelineCardProps> = (props: TimelineCardProps) => {
+const TimelineCard = (props: TimelineCardProps): React.ReactElement | null => {
   const {
     data, backgroundColor, title, selector,
     start, end,
   } = props;
 
-  if (!start || !end || !data) {
-    return null;
-  }
+  if (!start || !end || !data) { return null; }
 
   return (
     <ExpandableCard

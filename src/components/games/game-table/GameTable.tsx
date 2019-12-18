@@ -18,7 +18,7 @@ interface GameTableProps {
 
 /* GameTable ->  Board -> Player -> Hand -> Card
  *          |->  Button Group  ->  Button        */
-const GameTable: React.FC<GameTableProps> & { defaultProps: Partial<GameTableProps> } = (props: GameTableProps) => {
+const GameTable = (props: GameTableProps): React.ReactElement => {
   const {
     betHandler, cardClickHandler, cardsToDiscard, gameFunctions,
     gameOver, hideHands, isBlackJack, players, turn, onClick,

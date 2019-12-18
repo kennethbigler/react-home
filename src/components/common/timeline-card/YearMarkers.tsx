@@ -18,8 +18,9 @@ const labelStyles: React.CSSProperties = {
   right: 22,
 };
 
-const YearMarkers: React.FC<YearMarkersProps> = (props: YearMarkersProps) => {
+const YearMarkers = (props: YearMarkersProps): React.ReactElement => {
   const { data: { body, width }} = props;
+
   // variables for empty segment
   let style: React.CSSProperties = { display: 'inline-block', width: `${width}%` };
   if (body) {
@@ -28,11 +29,9 @@ const YearMarkers: React.FC<YearMarkersProps> = (props: YearMarkersProps) => {
 
   return (
     <div style={style}>
-      {body ? (
-        <div style={labelStyles}>
-          {body}
-        </div>
-      ) : (<br />)}
+      {body
+        ? (<div style={labelStyles}>{body}</div>)
+        : (<br />)}
     </div>
   );
 };

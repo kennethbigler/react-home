@@ -5,15 +5,15 @@ import { SegmentType } from './types';
 
 interface RowProps {
   segments: SegmentType[];
-  yearMarkers?: boolean;
-  first?: boolean;
+  yearMarkers: boolean;
+  first: boolean;
 }
 
 const smMarginTop: React.CSSProperties = { marginTop: 10 };
 const lgMarginTop: React.CSSProperties = { marginTop: 20 };
 const noStyle: React.CSSProperties = { height: 0 };
 
-const Row: React.FC<RowProps> = (props: RowProps) => {
+const Row = (props: RowProps): React.ReactElement => {
   const { segments, yearMarkers, first } = props;
 
   let style = smMarginTop;

@@ -19,14 +19,19 @@ const headerStyles: React.CSSProperties = {
 };
 
 interface ExpandableCardProps {
+  /** change the background color of the title bar */
   backgroundColor?: string;
+  /** content to be displayed in the main section of the card */
   children?: React.ReactNode;
-  inverted?: boolean;
+  /** invert the color of the title and subtitle */
+  inverted: boolean;
+  /** subtitle content */
   subtitle?: string | React.ReactNode;
+  /** title content */
   title?: string | React.ReactNode;
 }
 
-const ExpandableCard: React.FC<ExpandableCardProps> = (props: ExpandableCardProps) => {
+const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
   const [expanded, toggleExpanded] = useToggleState(true);
   const { palette } = useTheme();
   const {
@@ -37,15 +42,15 @@ const ExpandableCard: React.FC<ExpandableCardProps> = (props: ExpandableCardProp
     ...headerStyles,
     backgroundColor: backgroundColor || palette.primary.main,
   };
-
   if (palette.type !== 'dark') {
     headerStyle.boxShadow = `0px 15px 15px -10px ${grey[400]}`;
   } else {
     delete headerStyle.boxShadow;
   }
   const expandedHeaderStyle = { ...headerStyle, marginBottom: -20 };
-  const titleStyle = { color: inverted ? 'black' : 'white' };
-  const subtitleStyle = { color: grey[inverted ? 800 : 300] };
+
+  const titleStyle = React.useMemo(() => ({ color: inverted ? 'black' : 'white' }), [inverted]);
+  const subtitleStyle = React.useMemo(() => ({ color: grey[inverted ? 800 : 300] }), [inverted]);
 
   const titleJSX = (
     <Typography style={titleStyle} variant="h6">
