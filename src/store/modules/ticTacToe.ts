@@ -1,4 +1,4 @@
-import { Action, AnyAction } from 'redux';
+import { Action } from 'redux';
 import { DBTicTacToe } from '../types';
 import initialState, { newTicTacToe } from '../initialState';
 
@@ -7,11 +7,17 @@ const SET = 'casino/ticTacToe/SET';
 const NEW_GAME = 'casino/ticTacToe/NEW_GAME';
 
 // -------------------- Action Creators     -------------------- //
-export const playTurn = (turn: DBTicTacToe): AnyAction => ({ type: SET, turn });
-export const newGame = (): Action => ({ type: NEW_GAME });
+interface PlayTurnAction extends Action<typeof SET> { turn: DBTicTacToe }
+/** update game variables in TicTacToe DB */
+export const playTurn = (turn: DBTicTacToe): PlayTurnAction => ({ type: SET, turn });
+
+type NewGameAction = Action<typeof NEW_GAME>
+/** reset game variables in TicTacToe DB */
+export const newGame = (): NewGameAction => ({ type: NEW_GAME });
 
 // --------------------     Reducers     -------------------- //
-export default function reducer(state: DBTicTacToe = initialState.ticTacToe, action: AnyAction): DBTicTacToe {
+type TicTacToeActions = PlayTurnAction | NewGameAction;
+export default function reducer(state: DBTicTacToe = initialState.ticTacToe, action: TicTacToeActions): DBTicTacToe {
   switch (action.type) {
     case SET:
       return action.turn;

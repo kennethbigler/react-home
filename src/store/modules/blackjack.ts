@@ -1,4 +1,4 @@
-import { AnyAction, Dispatch } from 'redux';
+import { Dispatch, Action } from 'redux';
 import {
   DBBlackjack, DBPlayer, DBHand, DBTurn,
 } from '../types';
@@ -13,17 +13,26 @@ import {
 import { resetTurn, incrHandTurn, incrPlayerTurn } from './turn';
 
 // --------------------     Actions     -------------------- //
-const UPDATE_GAME_FUNCTIONS = 'casino/blackjack/UPDATE_GAME_FUNCTIONS';
-const UPDATE_HIDE_HANDS = 'casino/blackjack/UPDATE_HIDE_HANDS';
-const UPDATE_HAS_FUNCTIONS = 'casino/blackjack/UPDATE_HAS_FUNCTIONS';
+const UPDATE_GAME_FUNCTIONS = '@casino/blackjack/UPDATE_GAME_FUNCTIONS';
+const UPDATE_HIDE_HANDS = '@casino/blackjack/UPDATE_HIDE_HANDS';
+const UPDATE_HAS_FUNCTIONS = '@casino/blackjack/UPDATE_HAS_FUNCTIONS';
 
 // -------------------- Action Creators     -------------------- //
-export const updateGameFunctions = (gameFunctions: string[]): AnyAction => ({ type: UPDATE_GAME_FUNCTIONS, gameFunctions });
-export const updateHideHands = (hideHands: boolean): AnyAction => ({ type: UPDATE_HIDE_HANDS, hideHands });
-export const updateHasFunctions = (hasFunctions: boolean): AnyAction => ({ type: UPDATE_HAS_FUNCTIONS, hasFunctions });
+interface UpdateGameFunctionsAction extends Action<typeof UPDATE_GAME_FUNCTIONS> { gameFunctions: string[] }
+/** update gameFunctions in Blackjack DB */
+export const updateGameFunctions = (gameFunctions: string[]): UpdateGameFunctionsAction => ({ type: UPDATE_GAME_FUNCTIONS, gameFunctions });
+
+interface UpdateHideHandsAction extends Action<typeof UPDATE_HIDE_HANDS> { hideHands: boolean }
+/** update hideHands in Blackjack DB */
+export const updateHideHands = (hideHands: boolean): UpdateHideHandsAction => ({ type: UPDATE_HIDE_HANDS, hideHands });
+
+interface UpdateHasFunctionsAction extends Action<typeof UPDATE_HAS_FUNCTIONS> { hasFunctions: boolean }
+/** update hasFunctions in Blackjack DB */
+export const updateHasFunctions = (hasFunctions: boolean): UpdateHasFunctionsAction => ({ type: UPDATE_HAS_FUNCTIONS, hasFunctions });
 
 // --------------------     Reducers     -------------------- //
-export default function reducer(state: DBBlackjack = initialState.blackjack, action: AnyAction): DBBlackjack {
+type BlackjackAction = UpdateGameFunctionsAction | UpdateHideHandsAction | UpdateHasFunctionsAction;
+export default function reducer(state: DBBlackjack = initialState.blackjack, action: BlackjackAction): DBBlackjack {
   switch (action.type) {
     case UPDATE_GAME_FUNCTIONS:
       return { ...state, gameFunctions: action.gameFunctions };
@@ -37,6 +46,7 @@ export default function reducer(state: DBBlackjack = initialState.blackjack, act
 }
 
 // --------------------     Thunks     -------------------- //
+/** start a new game in Blackjack DB */
 export function setNewGame(players: DBPlayer[]) {
   return (dispatch: Function): Promise<Dispatch[]> => {
     const { gameFunctions, hideHands, hasFunctions } = newBlackjackGame();
@@ -49,18 +59,21 @@ export function setNewGame(players: DBPlayer[]) {
     return Promise.all(promises);
   };
 }
+/** split hands of provided player/hand in Blackjack DB */
 export function splitHand(hands: DBHand[], id: number, hNum: number, weigh: WeighFunc) {
   return async (dispatch: Function): Promise<void> => {
     await dispatch(pSplitHand(hands, id, hNum, weigh));
     await dispatch(updateHasFunctions(false));
   };
 }
+/** get a new card for turn hand in Blackjack DB */
 export function hitHand(hands: DBHand[], id: number, hNum: number, weigh: WeighFunc) {
   return async (dispatch: Function): Promise<void> => {
     await dispatch(drawCard(hands, id, hNum, 1, weigh));
     await dispatch(updateHasFunctions(false));
   };
 }
+/** go to the next turn in Blackjack DB */
 export function stayHand(readyForNextPlayer: boolean) {
   return async (dispatch: Function): Promise<void> => {
     readyForNextPlayer
@@ -69,6 +82,7 @@ export function stayHand(readyForNextPlayer: boolean) {
     await dispatch(updateHasFunctions(false));
   };
 }
+/** double your bet and get 1 card in Blackjack DB */
 export function doubleHand(player: DBPlayer, turn: DBTurn, weigh: WeighFunc) {
   return async (dispatch: Function): Promise<void> => {
     const { id, bet, hands } = player;

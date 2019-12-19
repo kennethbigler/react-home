@@ -1,19 +1,28 @@
-import { Action, AnyAction } from 'redux';
+import { Action } from 'redux';
 import { C4Turn, DBConnect4 } from '../types';
 import initialState, { newConnect4Game } from '../initialState';
 
 // --------------------     Actions     -------------------- //
-const NEW_GAME = 'casino/ticTacToe/NEW_GAME';
-const UPDATE_TURN = 'casino/ticTacToe/UPDATE_TURN';
-const UPDATE_EVAL = 'casino/ticTacToe/UPDATE_EVAL';
+const NEW_GAME = '@casino/ticTacToe/NEW_GAME';
+const UPDATE_TURN = '@casino/ticTacToe/UPDATE_TURN';
+const UPDATE_EVAL = '@casino/ticTacToe/UPDATE_EVAL';
 
 // -------------------- Action Creators     -------------------- //
-export const newGame = (): Action => ({ type: NEW_GAME });
-export const updateTurn = (turn: C4Turn): AnyAction => ({ type: UPDATE_TURN, turn });
-export const updateEval = (winner: number, board: number[][]): AnyAction => ({ type: UPDATE_EVAL, winner, board });
+type NewGameAction = Action<typeof NEW_GAME>;
+/** start a new game in Connect4 DB */
+export const newGame = (): NewGameAction => ({ type: NEW_GAME });
+
+interface UpdateTurnAction extends Action<typeof UPDATE_TURN> { turn: C4Turn }
+/** change player turn/color in Connect4 DB */
+export const updateTurn = (turn: C4Turn): UpdateTurnAction => ({ type: UPDATE_TURN, turn });
+
+interface UpdateEvalAction extends Action<typeof UPDATE_EVAL> { winner: number; board: number[][] }
+/** update a winner and the board in Connect4 DB */
+export const updateEval = (winner: number, board: number[][]): UpdateEvalAction => ({ type: UPDATE_EVAL, winner, board });
 
 // --------------------     Reducers     -------------------- //
-export default function reducer(state: DBConnect4 = initialState.connect4, action: AnyAction): DBConnect4 {
+type Connect4Actions = NewGameAction | UpdateTurnAction | UpdateEvalAction;
+export default function reducer(state: DBConnect4 = initialState.connect4, action: Connect4Actions): DBConnect4 {
   switch (action.type) {
     case NEW_GAME:
       return newConnect4Game();

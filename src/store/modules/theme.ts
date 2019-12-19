@@ -7,15 +7,20 @@ import { DBUITheme } from '../types';
 import initialState from '../initialState';
 
 // --------------------     Actions     -------------------- //
-const DARK_THEME = 'resume/theme/DARK_THEME';
-const LIGHT_THEME = 'resume/theme/LIGHT_THEME';
+enum ta {
+  DARK_THEME = 'resume/theme/DARK_THEME',
+  LIGHT_THEME = 'resume/theme/LIGHT_THEME',
+}
+const { DARK_THEME, LIGHT_THEME } = ta;
 
 // --------------------     Action Creators     -------------------- //
-export const displayDarkTheme = (): Action => ({ type: DARK_THEME });
-export const displayLightTheme = (): Action => ({ type: LIGHT_THEME });
+/** update to dark theme in Theme DB */
+export const displayDarkTheme = (): Action<typeof DARK_THEME> => ({ type: DARK_THEME });
+/** update to light theme in Theme DB */
+export const displayLightTheme = (): Action<typeof LIGHT_THEME> => ({ type: LIGHT_THEME });
 
 // --------------------     Reducers     -------------------- //
-export default function reducer(state: DBUITheme = initialState.theme, action: Action): DBUITheme {
+export default function reducer(state: DBUITheme = initialState.theme, action: Action<ta>): DBUITheme {
   switch (action.type) {
     case DARK_THEME:
       return { ...state, ...{ type: 'dark', primary: blue, secondary: deepOrange }};

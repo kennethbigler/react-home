@@ -1,4 +1,4 @@
-import { AnyAction } from 'redux';
+import { Action } from 'redux';
 import asyncForEach from '../../helpers/asyncForEach';
 import Deck from '../../apis/Deck';
 import {
@@ -8,63 +8,73 @@ import { DBCard, DBHand, DBPlayer } from '../types';
 import initialState, { newPlayer } from '../initialState';
 
 // --------------------     Actions     -------------------- //
-const ADD = 'casino/player/ADD';
-const REMOVE = 'casino/player/REMOVE';
-const RESET = 'casino/player/RESET';
-const UPDATE_NAME = 'casino/player/UPDATE_NAME';
-const UPDATE_BOT = 'casino/player/UPDATE_BOT';
-const UPDATE_BET = 'casino/player/UPDATE_BET';
-const PAY_PLAYER = 'casino/player/PAY_PLAYER';
-const SPLIT_HAND = 'casino/player/SPLIT_HAND';
-const DRAW_CARD = 'casino/player/DRAW_CARD';
-const SWAP_CARD = 'casino/player/SWAP_CARD';
-const NEW_HAND = 'casino/player/NEW_HAND';
+const REMOVE = '@casino/player/REMOVE';
+enum pa {
+  'ADD' = '@casino/player/ADD',
+  'RESET' = '@casino/player/RESET',
+  'UPDATE_NAME' = '@casino/player/UPDATE_NAME',
+  'UPDATE_BOT' = '@casino/player/UPDATE_BOT',
+  'UPDATE_BET' = '@casino/player/UPDATE_BET',
+  'PAY_PLAYER' = '@casino/player/PAY_PLAYER',
+  'SPLIT_HAND' = '@casino/player/SPLIT_HAND',
+  'DRAW_CARD' = '@casino/player/DRAW_CARD',
+  'SWAP_CARD' = '@casino/player/SWAP_CARD',
+  'NEW_HAND' = '@casino/player/NEW_HAND',
+}
+const {
+  ADD, RESET, UPDATE_NAME,
+  UPDATE_BOT, UPDATE_BET, PAY_PLAYER, SPLIT_HAND,
+  DRAW_CARD, SWAP_CARD, NEW_HAND,
+} = pa;
+
+interface PlayerAction extends Action<pa> { player: Partial<DBPlayer> }
 
 // -------------------- Action Creators     -------------------- //
 /** function to add a player to the state */
-export function addPlayer(players: DBPlayer[], name: string): AnyAction {
+export function addPlayer(players: DBPlayer[], name: string): PlayerAction {
   const player = newPlayer(players.length, name);
   return { type: ADD, player };
 }
 
+interface RemovePlayerAction extends Action<typeof REMOVE> { id: number }
 /** function to remove player from player array */
-export function removePlayer(id: number): AnyAction {
+export function removePlayer(id: number): RemovePlayerAction {
   return { type: REMOVE, id };
 }
 
 /** function to update a player's name */
-export function updateName(id: number, name: string): AnyAction {
+export function updateName(id: number, name: string): PlayerAction {
   return { type: UPDATE_NAME, player: { id, name }};
 }
 
 /** function to update a player's bot status */
-export function updateBot(id: number, isBot = true): AnyAction {
+export function updateBot(id: number, isBot = true): PlayerAction {
   return { type: UPDATE_BOT, player: { id, isBot }};
 }
 
 /** function to update a player's bet */
-export function updateBet(id = 0, bet = 5): AnyAction {
+export function updateBet(id = 0, bet = 5): PlayerAction {
   return { type: UPDATE_BET, player: { id, bet }};
 }
 
 /** function to pay the winners and take money from the losers */
-export function payout(id: number, status: string, money: number): AnyAction {
+export function payout(id: number, status: string, money: number): PlayerAction {
   return { type: PAY_PLAYER, player: { id, status, money }};
 }
 
-function createSplitHandAction(id: number, newHands: DBHand[]): AnyAction {
+function createSplitHandAction(id: number, newHands: DBHand[]): PlayerAction {
   return { type: SPLIT_HAND, player: { id, hands: newHands }};
 }
 
-function createDrawCardAction(id: number, newHands: DBHand[]): AnyAction {
+function createDrawCardAction(id: number, newHands: DBHand[]): PlayerAction {
   return { type: DRAW_CARD, player: { id, hands: newHands }};
 }
 
-function createSwapCardsAction(id: number, updatedHands: DBHand[]): AnyAction {
+function createSwapCardsAction(id: number, updatedHands: DBHand[]): PlayerAction {
   return { type: SWAP_CARD, player: { id, hands: updatedHands }};
 }
 
-function createNewHandAction(id: number, cards: DBCard[], soft: boolean, weight: number): AnyAction {
+function createNewHandAction(id: number, cards: DBCard[], soft: boolean, weight: number): PlayerAction {
   return { type: NEW_HAND, player: { id, hands: [{ cards, weight, soft }]}};
 }
 
@@ -72,7 +82,7 @@ function createNewHandAction(id: number, cards: DBCard[], soft: boolean, weight:
  * @param {number} id - optional, what player should get a new hand, default 0
  * @return {Object}
  */
-export function resetStatus(id = 0): AnyAction {
+export function resetStatus(id = 0): PlayerAction {
   return {
     type: RESET,
     player: {
@@ -82,7 +92,8 @@ export function resetStatus(id = 0): AnyAction {
 }
 
 // --------------------     Reducer     -------------------- //
-export default function reducer(state: DBPlayer[] = initialState.players, action: AnyAction): DBPlayer[] {
+type PlayerActions = PlayerAction | RemovePlayerAction;
+export default function reducer(state: DBPlayer[] = initialState.players, action: PlayerActions): DBPlayer[] {
   switch (action.type) {
     case RESET:
     case UPDATE_NAME:
@@ -92,20 +103,21 @@ export default function reducer(state: DBPlayer[] = initialState.players, action
     case DRAW_CARD:
     case SWAP_CARD:
     case NEW_HAND:
-      return updateObjectInArray(state, action.player, 'id');
+      return updateObjectInArray(state, action.player, 'id') as DBPlayer[];
     case PAY_PLAYER: {
       const { id, status, money } = action.player;
       const player = state.find((obj) => obj.id === id);
 
       if (player !== undefined) {
         const playerMoney = player.money || 0;
-        const updatedPlayer = { ...player, money: (playerMoney + money), status };
-        return updateObjectInArray(state, updatedPlayer, 'id');
+        const addedMoney = money || 0;
+        const updatedPlayer = { ...player, money: (playerMoney + addedMoney), status };
+        return updateObjectInArray(state, updatedPlayer, 'id') as DBPlayer[];
       }
       return state;
     }
     case ADD:
-      return insertItem(state, action.player);
+      return insertItem(state, action.player) as DBPlayer[];
     case REMOVE:
       return removeItem(state, action.id);
     default:

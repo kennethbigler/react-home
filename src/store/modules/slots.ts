@@ -1,4 +1,4 @@
-import { AnyAction, Dispatch } from 'redux';
+import { Dispatch, Action } from 'redux';
 import { DBSlotDisplay } from '../types';
 import initialState from '../initialState';
 import SlotMachine from '../../apis/SlotMachine';
@@ -8,10 +8,13 @@ import { payout } from './players';
 const UPDATE = 'casino/slots/UPDATE';
 
 // -------------------- Action Creators     -------------------- //
-export const updateSlots = (reel: DBSlotDisplay[]): AnyAction => ({ type: UPDATE, reel });
+interface UpdateSlotsAction extends Action<typeof UPDATE> { reel: DBSlotDisplay[] }
+/** update the slot reel in Slots DB */
+export const updateSlots = (reel: DBSlotDisplay[]): UpdateSlotsAction => ({ type: UPDATE, reel });
 
 // --------------------     Reducers     -------------------- //
-export default function reducer(state: DBSlotDisplay[] = initialState.slots, action: AnyAction): DBSlotDisplay[] {
+type SlotsActions = UpdateSlotsAction;
+export default function reducer(state: DBSlotDisplay[] = initialState.slots, action: SlotsActions): DBSlotDisplay[] {
   switch (action.type) {
     case UPDATE:
       return [...action.reel];
@@ -21,6 +24,7 @@ export default function reducer(state: DBSlotDisplay[] = initialState.slots, act
 }
 
 // --------------------     Thunks     -------------------- //
+/** play the slots game, updating the slots reel in Slots DB and player/dealer money in Player DB */
 export function updateDBSlotMachine(id: number, dealerId: number, bet: number) {
   return (dispatch: Function): Promise<[Dispatch, Dispatch, Dispatch]> => {
     const reel = SlotMachine.pullHandle();

@@ -1,28 +1,51 @@
-import { Action, AnyAction, Dispatch } from 'redux';
+import { Action, Dispatch } from 'redux';
 import { DBDND, Briefcase } from '../types';
 import initialState, { newDNDGame } from '../initialState';
 import { payout } from './players';
 
 // --------------------     Actions     -------------------- //
-const NEW_GAME = 'casino/dnd/NEW_GAME';
-const PLAYER_CHOICE = 'casino/dnd/PLAYER_CHOICE';
-const OPEN_CASE = 'casino/dnd/OPEN_CASE';
-const OPEN_OFFER = 'casino/dnd/OPEN_OFFER';
-const NO_DEAL = 'casino/dnd/NO_DEAL';
-const FINISH_GAME = 'casino/dnd/FINISH_GAME';
+const NEW_GAME = '@casino/dnd/NEW_GAME';
+const PLAYER_CHOICE = '@casino/dnd/PLAYER_CHOICE';
+const OPEN_CASE = '@casino/dnd/OPEN_CASE';
+const OPEN_OFFER = '@casino/dnd/OPEN_OFFER';
+const NO_DEAL = '@casino/dnd/NO_DEAL';
+const FINISH_GAME = '@casino/dnd/FINISH_GAME';
 
 // --------------------     Action Creators     -------------------- //
-export const newGame = (): Action => ({ type: NEW_GAME });
-const updatePlayerChoice = (playerChoice: Briefcase): AnyAction => ({ type: PLAYER_CHOICE, playerChoice });
-export const setOpenCase = (board: Briefcase[], sum: number, numCases: number, casesToOpen: number): AnyAction => ({
+type NewGameAction = Action<typeof NEW_GAME>;
+/** set to a new game in Deal or No Deal DB */
+export const newGame = (): NewGameAction => ({ type: NEW_GAME });
+
+interface UpdatePlayerChoiceAction extends Action<typeof PLAYER_CHOICE> { playerChoice: Briefcase }
+/** update the player's case choice in Deal or No Deal DB */
+const updatePlayerChoice = (playerChoice: Briefcase): UpdatePlayerChoiceAction => ({ type: PLAYER_CHOICE, playerChoice });
+
+interface SetOpenCaseAction extends Action<typeof OPEN_CASE> {
+  board: Briefcase[];
+  sum: number;
+  numCases: number;
+  casesToOpen: number;
+}
+/** open a case and update game variables in Deal or No Deal DB */
+export const setOpenCase = (board: Briefcase[], sum: number, numCases: number, casesToOpen: number): SetOpenCaseAction => ({
   type: OPEN_CASE, board, sum, numCases, casesToOpen,
 });
-export const setOpenOffer = (offer: number, casesToOpen: number): AnyAction => ({ type: OPEN_OFFER, offer, casesToOpen });
-export const setNoDeal = (turn: number): AnyAction => ({ type: NO_DEAL, turn });
-const finishGame = (offer: number): AnyAction => ({ type: FINISH_GAME, offer });
+
+interface SetOpenOfferAction extends Action<typeof OPEN_OFFER> { offer: number; casesToOpen: number }
+/** display the offer from the banker and open modal in Deal or No Deal DB */
+export const setOpenOffer = (offer: number, casesToOpen: number): SetOpenOfferAction => ({ type: OPEN_OFFER, offer, casesToOpen });
+
+interface SetNoDealAction extends Action<typeof NO_DEAL> { turn: number }
+/** reject the offer and continue playing in Deal or No Deal DB */
+export const setNoDeal = (turn: number): SetNoDealAction => ({ type: NO_DEAL, turn });
+
+interface FinishGameAction extends Action<typeof FINISH_GAME> { offer: number }
+/** finish the game in Deal or No Deal DB */
+const finishGame = (offer: number): FinishGameAction => ({ type: FINISH_GAME, offer });
 
 // --------------------     Reducers     -------------------- //
-export default function reducer(state: DBDND = initialState.dnd, action: AnyAction): DBDND {
+type DNDActions = NewGameAction | UpdatePlayerChoiceAction | SetOpenCaseAction | SetOpenOfferAction | SetNoDealAction | FinishGameAction;
+export default function reducer(state: DBDND = initialState.dnd, action: DNDActions): DBDND {
   switch (action.type) {
     case NEW_GAME:
       return newDNDGame();

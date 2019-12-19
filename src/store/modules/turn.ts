@@ -3,17 +3,23 @@ import { DBTurn } from '../types';
 import initialState from '../initialState';
 
 // --------------------     Actions     -------------------- //
-const INCR_PLAYER = 'casino/turn/INCR';
-const INCR_HAND = 'casino/turn/INCR_HAND';
-const RESET = 'casino/turn/RESET';
+enum ta {
+  INCR_PLAYER = 'casino/turn/INCR',
+  INCR_HAND = 'casino/turn/INCR_HAND',
+  RESET = 'casino/turn/RESET',
+}
+const { INCR_PLAYER, INCR_HAND, RESET } = ta;
 
 // --------------------     Action Creators     -------------------- //
-export const incrPlayerTurn = (): Action => ({ type: INCR_PLAYER });
-export const incrHandTurn = (): Action => ({ type: INCR_HAND });
-export const resetTurn = (): Action => ({ type: RESET });
+/** increment player turn in Turn DB */
+export const incrPlayerTurn = (): Action<typeof INCR_PLAYER> => ({ type: INCR_PLAYER });
+/** increment hand turn in Turn DB */
+export const incrHandTurn = (): Action<typeof INCR_HAND> => ({ type: INCR_HAND });
+/** reset back to first player in Turn DB */
+export const resetTurn = (): Action<typeof RESET> => ({ type: RESET });
 
 // --------------------     Reducers     -------------------- //
-export default function reducer(state: DBTurn = initialState.turn, action: Action): DBTurn {
+export default function reducer(state: DBTurn = initialState.turn, action: Action<ta>): DBTurn {
   switch (action.type) {
     case INCR_PLAYER:
       return { ...state, ...{ player: state.player + 1, hand: 0 }};
