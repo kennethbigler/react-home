@@ -10,13 +10,39 @@ import red from '@material-ui/core/colors/red';
 import Popover from './Popover';
 import countries from '../../../constants/countries';
 
+type HandleEnter = (geography: GeographyType) => (evt: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
+
 interface WorldMapHook {
   x: number;
   y: number;
   content: string;
   hide: boolean;
-  handleMove: (geography: GeographyType, evt: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
+  handleEnter: HandleEnter;
   handleLeave: () => void;
+}
+
+interface GeographyType {
+  type: 'Feature';
+  geometry: {
+    type: 'Polygon' | 'MultiPolygon';
+    coordinates: [number, number][];
+  };
+  properties: {
+    NAME: string;
+    NAME_LONG: string;
+    ABBREV: string;
+    FORMAL_EN: string;
+    POP_EST: number;
+    POP_RANK: number;
+    GDP_MD_EST: number;
+    POP_YEAR: number;
+    GDP_YEAR: number;
+    ISO_A2: string;
+    ISO_A3: string;
+    CONTINENT: string;
+    REGION_UN: string;
+    SUBREGION: string;
+  };
 }
 
 const STROKE = blueGrey[900];
@@ -26,13 +52,19 @@ const FILL = blueGrey[100];
 const PRESSED = blueGrey[800];
 const RATIO = 100 / 465.33;
 
+const defaultStyle: React.CSSProperties = {
+  stroke: STROKE,
+  strokeWidth: 0.75,
+  outline: 'none',
+};
+
 function useWorldMap(): WorldMapHook {
   const [x, setX] = React.useState(0);
   const [y, setY] = React.useState(0);
   const [content, setContent] = React.useState('');
   const [hide, setHide] = React.useState(true);
 
-  const handleMove = (geography: GeographyType, evt: React.MouseEvent<SVGPathElement, MouseEvent>): void => {
+  const handleEnter: HandleEnter = (geography) => (evt): void => {
     const name = geography.properties.NAME || '';
     setX(evt.clientX);
     setY(evt.clientY + window.pageYOffset);
@@ -49,7 +81,7 @@ function useWorldMap(): WorldMapHook {
     y,
     content,
     hide,
-    handleMove,
+    handleEnter,
     handleLeave,
   };
 }
@@ -57,42 +89,39 @@ function useWorldMap(): WorldMapHook {
 const WorldMap = React.memo(() => {
   const {
     x, y, content, hide,
-    handleMove, handleLeave,
+    handleEnter, handleLeave,
   } = useWorldMap();
 
   const screenWidth = document.body.clientWidth - 32;
 
   return (
     <>
-      <ComposableMap width={screenWidth} height={(screenWidth * 546) / 744} projectionConfig={{ scale: screenWidth * RATIO, rotation: [-10, 0, 0]}}>
+      <ComposableMap
+        width={screenWidth}
+        height={(screenWidth * 546) / 744}
+        projectionConfig={{ scale: screenWidth * RATIO, rotate: [-10, 0, 0]}}
+      >
         <ZoomableGroup>
           <Geographies geography="/world-110m.json">
-            {(geographies: GeographyType[], projection: Function): React.ReactNodeArray => geographies.map(
-              (geography: GeographyType, i) => (
+            {({ geographies }): React.ReactNodeArray => geographies.map(
+              (geo: any) => (
                 <Geography
-                  key={i}
-                  geography={geography}
-                  projection={projection}
-                  onMouseMove={handleMove}
+                  key={geo.rsmKey}
+                  geography={geo}
+                  onMouseEnter={handleEnter(geo)}
                   onMouseLeave={handleLeave}
                   style={{
                     default: {
-                      fill: countries[geography.properties.NAME] ? countries[geography.properties.NAME].color : FILL,
-                      stroke: STROKE,
-                      strokeWidth: 0.75,
-                      outline: 'none',
+                      fill: countries[geo.properties.NAME] ? countries[geo.properties.NAME].color : FILL,
+                      ...defaultStyle,
                     },
                     hover: {
-                      fill: countries[geography.properties.NAME] ? VISITED_HOVER : HOVER,
-                      stroke: STROKE,
-                      strokeWidth: 0.75,
-                      outline: 'none',
+                      fill: countries[geo.properties.NAME] ? VISITED_HOVER : HOVER,
+                      ...defaultStyle,
                     },
                     pressed: {
                       fill: PRESSED,
-                      stroke: STROKE,
-                      strokeWidth: 0.75,
-                      outline: 'none',
+                      ...defaultStyle,
                     },
                   }}
                 />
