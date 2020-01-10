@@ -4,6 +4,7 @@ import {
   ZoomableGroup,
   Geographies,
   Geography,
+  Sphere,
 } from 'react-simple-maps';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import red from '@material-ui/core/colors/red';
@@ -99,9 +100,10 @@ const WorldMap = React.memo(() => {
       <ComposableMap
         width={screenWidth}
         height={(screenWidth * 546) / 744}
-        projectionConfig={{ scale: screenWidth * RATIO, rotate: [-10, 0, 0]}}
+        projectionConfig={{ scale: screenWidth * RATIO }}
       >
         <ZoomableGroup>
+          <Sphere id="rsm-sphere" stroke={FILL} strokeWidth={2} fill="transparent" />
           <Geographies geography="/world-110m.json">
             {({ geographies }): React.ReactNodeArray => geographies.map(
               (geo: any) => (
