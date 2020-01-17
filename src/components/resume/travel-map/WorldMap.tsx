@@ -24,6 +24,8 @@ interface WorldMapHook {
 
 interface GeographyType {
   type: 'Feature';
+  rsmKey: string;
+  svgPath: string;
   geometry: {
     type: 'Polygon' | 'MultiPolygon';
     coordinates: [number, number][];
@@ -106,7 +108,7 @@ const WorldMap = React.memo(() => {
           <Sphere id="rsm-sphere" stroke={FILL} strokeWidth={2} fill="transparent" />
           <Geographies geography="/world-110m.json">
             {({ geographies }): React.ReactNodeArray => geographies.map(
-              (geo: any) => (
+              (geo: GeographyType) => (
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
