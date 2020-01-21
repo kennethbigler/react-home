@@ -149,7 +149,7 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
 
       const years = [];
       for (let year = startYear + 1; year <= endYear; year += 1) {
-        years.push(dateObj(`${year}-01`));
+        years.push(dateObj(`${year}`));
       }
 
       const width = 0.1;
@@ -157,9 +157,9 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
       const yearMarkers = [{ width: getTimeFromStart(years[0]) - width }, marker];
 
       for (let i = 1; i < years.length; i += 1) {
-        const lastYear = getTimeFromStart(years[i - 1]);
+        const previousYear = getTimeFromStart(years[i - 1]);
         const thisYear = getTimeFromStart(years[i]);
-        yearMarkers.push({ width: thisYear - lastYear - width });
+        yearMarkers.push({ width: thisYear - previousYear - width });
         yearMarkers.push({ width, body: years[i].format('\'YY') });
       }
 
