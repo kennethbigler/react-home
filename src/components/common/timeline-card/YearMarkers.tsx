@@ -8,10 +8,15 @@ interface YearMarkersProps {
 
 const boxStyles: React.CSSProperties = {
   cursor: 'default',
-  backgroundColor: grey[200],
   height: 500,
   marginBottom: -500,
   minWidth: 1,
+};
+const markerStyles: React.CSSProperties = {
+  ...boxStyles,
+  backgroundColor: grey[200],
+  width: '100%',
+  maxWidth: 2.5,
 };
 const labelStyles: React.CSSProperties = {
   position: 'relative',
@@ -23,15 +28,18 @@ const YearMarkers = (props: YearMarkersProps): React.ReactElement => {
 
   // variables for empty segment
   let style: React.CSSProperties = { display: 'inline-block', width: `${width}%` };
-  if (body) {
-    style = { ...style, ...boxStyles };
+
+  if (!body) {
+    return (<div style={style}><br /></div>);
   }
+
+  style = { ...style, ...boxStyles };
 
   return (
     <div style={style}>
-      {body
-        ? (<div style={labelStyles}>{body}</div>)
-        : (<br />)}
+      <div style={markerStyles}>
+        <div style={labelStyles}>{body}</div>
+      </div>
     </div>
   );
 };

@@ -27,9 +27,10 @@ export const FORMAT: FormatOutput = 'MMMM Y';
 export const TIMELINE_TITLE = 'Timeline';
 export const MONTH_SORT = (a: DataEntry, b: DataEntry): number => a.start.diff(b.start, 'months');
 
-const WIDTH = 100;
+const WIDTH = 99;
 const MIN_TEXT_WIDTH = 96;
 const MIN_SHORT_WIDTH = 42;
+const YEAR_WIDTH = 0.3;
 
 /** function to add empty space between start and elm segment */
 const addEmptySegment = (segments: SegmentType[], width: number): void => {
@@ -152,15 +153,14 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
         years.push(dateObj(`${year}`));
       }
 
-      const width = 0.1;
-      const marker = { width, body: years[0].format('\'YY') };
-      const yearMarkers = [{ width: getTimeFromStart(years[0]) - width }, marker];
+      const marker = { width: YEAR_WIDTH, body: years[0].format('\'YY') };
+      const yearMarkers = [{ width: getTimeFromStart(years[0]) - YEAR_WIDTH }, marker];
 
       for (let i = 1; i < years.length; i += 1) {
         const previousYear = getTimeFromStart(years[i - 1]);
         const thisYear = getTimeFromStart(years[i]);
-        yearMarkers.push({ width: thisYear - previousYear - width });
-        yearMarkers.push({ width, body: years[i].format('\'YY') });
+        yearMarkers.push({ width: thisYear - previousYear - YEAR_WIDTH });
+        yearMarkers.push({ width: YEAR_WIDTH, body: years[i].format('\'YY') });
       }
 
       return yearMarkers;
