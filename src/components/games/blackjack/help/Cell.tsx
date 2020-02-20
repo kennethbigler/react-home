@@ -17,6 +17,8 @@ const Cell: React.FC<CellProps> = React.memo((props: CellProps) => {
   const stl: React.CSSProperties = {
     ...style,
     textAlign: 'center',
+    paddingLeft: 0,
+    paddingRight: 0,
     backgroundColor: color,
   };
 
