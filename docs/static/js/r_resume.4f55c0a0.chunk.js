@@ -1,2 +1,0 @@
-(this["webpackJsonpreact-home"]=this["webpackJsonpreact-home"]||[]).push([[21],{433:function(e,t,n){e.exports=n.p+"static/media/kenneth_bigler_resume.ecd3383c.png"},724:function(e,t,n){"use strict";n.r(t);var a=n(0),i=n.n(a),r=n(433),c=n.n(r),s={maxWidth:1275,width:"100%",display:"block",margin:"auto"},o=i.a.memo((function(){return i.a.createElement("img",{src:c.a,alt:"Kenneth Bigler Software Engineer Resume",style:s})}));t.default=o}}]);
-//# sourceMappingURL=r_resume.4f55c0a0.chunk.js.map
