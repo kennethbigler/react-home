@@ -1,3 +1,1 @@
-import Resume from './Resume';
-
-export default Resume;
+export { default } from './Resume';

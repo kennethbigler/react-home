@@ -1,3 +1,1 @@
-import TicTacToe from './TicTacToe';
-
-export default TicTacToe;
+export { default } from './TicTacToe';

@@ -1,3 +1,1 @@
-import PokerNightTabs from './PokerNightTabs';
-
-export default PokerNightTabs;
+export { default } from './PokerNightTabs';

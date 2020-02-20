@@ -1,3 +1,1 @@
-import MurderMystery from './MurderMystery';
-
-export default MurderMystery;
+export { default } from './MurderMystery';

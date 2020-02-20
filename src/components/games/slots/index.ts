@@ -1,3 +1,1 @@
-import Slots from './Slots';
-
-export default Slots;
+export { default } from './Slots';

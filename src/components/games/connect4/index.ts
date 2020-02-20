@@ -1,3 +1,1 @@
-import Connect4 from './Connect4';
-
-export default Connect4;
+export { default } from './Connect4';

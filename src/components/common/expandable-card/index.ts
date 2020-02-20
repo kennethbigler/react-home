@@ -1,3 +1,1 @@
-import ExpandableCard from './ExpandableCard';
-
-export default ExpandableCard;
+export { default } from './ExpandableCard';

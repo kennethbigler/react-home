@@ -1,3 +1,1 @@
-import GitTools from './GitTools';
-
-export default GitTools;
+export { default } from './GitTools';

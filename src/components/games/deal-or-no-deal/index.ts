@@ -1,3 +1,1 @@
-import DealOrNoDeal from './DealOrNoDeal';
-
-export default DealOrNoDeal;
+export { default } from './DealOrNoDeal';

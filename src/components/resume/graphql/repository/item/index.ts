@@ -1,3 +1,1 @@
-import RepositoryItem from './RepositoryItem';
-
-export default RepositoryItem;
+export { default } from './RepositoryItem';

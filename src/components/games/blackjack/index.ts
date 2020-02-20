@@ -1,3 +1,1 @@
-import BlackJack from './Blackjack';
-
-export default BlackJack;
+export { default } from './Blackjack';

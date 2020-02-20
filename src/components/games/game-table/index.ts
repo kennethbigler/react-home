@@ -1,3 +1,1 @@
-import GameTable from './GameTable';
-
-export default GameTable;
+export { default } from './GameTable';

@@ -1,3 +1,1 @@
-import TimelineCard from './TimelineCard';
-
-export default TimelineCard;
+export { default } from './TimelineCard';
