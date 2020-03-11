@@ -443,23 +443,6 @@ const schools: School[] = [
           },
         ],
       },
-      {
-        year: 'Activities and Interests',
-        quarters: [
-          {
-            quarter: '',
-            classes: [
-              { name: 'Cars' },
-              { name: 'Piano' },
-              { name: 'Hiking' },
-              { name: 'Programming' },
-              { name: 'Salsa Dancing' },
-              { name: 'International Travel' },
-              { name: 'Video Games (DOTA 2)' },
-            ],
-          },
-        ],
-      },
     ],
   },
   {
@@ -473,6 +456,15 @@ const schools: School[] = [
       {
         year: 'Stanford Continuing Studies',
         quarters: [
+          {
+            quarter: 'Spring (2020)',
+            classes: [
+              {
+                catalog: 'FLM 129',
+                name: 'Politics and the American Cinema: Five Chilling Takes',
+              },
+            ],
+          },
           {
             quarter: 'Summer (2017)',
             classes: [

@@ -114,7 +114,7 @@ const workExp: Job[] = [
     title: 'Volunteer Team Leader',
     website: 'https://www.shfb.org/',
     start: dateObj('2009-09'),
-    end: dateObj(),
+    end: dateObj('2016-10'),
     src: SHFBLogo,
     alt: 'Second Harvest Food Bank Logo',
     expr: [
