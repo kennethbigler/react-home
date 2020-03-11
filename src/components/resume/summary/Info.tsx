@@ -40,27 +40,32 @@ const Info: React.FC<{}> = React.memo(() => (
         <Table>
           <TableBody>
             <TableRow>
-              <TableCell>
-                  Location
-              </TableCell>
-              <TableCell>
-                  Mountain View, CA
-              </TableCell>
+              <TableCell>Location</TableCell>
+              <TableCell>Mountain View, CA</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Interests</TableCell>
+              <TableCell>Computer Software</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Volunteer Work</TableCell>
+              <TableCell>Second Harvest Food Bank</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={2}>Licenses</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>
-                  Interests
+                <p>Driver License</p>
+                <p>GoKart Racing License</p>
+                <p>Range Safety Certified</p>
+                <p>CPR, AED, &amp; First Aid Certified (Adult, Child, &amp; Baby)</p>
               </TableCell>
               <TableCell>
-                  Computer Software
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                  Volunteer Work
-              </TableCell>
-              <TableCell>
-                  Second Harvest Food Bank
+                <p>Ordained Minister</p>
+                <p>Former Magician&apos;s Assistant</p>
+                <p>Former Salsa Dance Instructor</p>
+                <p>Former Salsa Dance Choreographer</p>
               </TableCell>
             </TableRow>
           </TableBody>
