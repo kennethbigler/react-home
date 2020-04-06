@@ -8,7 +8,7 @@ const containerStyles: React.CSSProperties = {
 };
 
 const LoadingSpinner = React.memo(() => (
-  <CircularProgress size={100} style={containerStyles} />
+  <CircularProgress size={100} style={containerStyles} title="Loading Spinner" />
 ));
 
 export default LoadingSpinner;
