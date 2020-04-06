@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /build
+/coverage
 
 # editor files
 /.idea

@@ -59,6 +59,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:ci": "CI=true react-scripts test --env=jsdom",
+    "test:coverage": "npm test -- --coverage",
     "deploy": "./scripts/deploy.sh",
     "analyze": "source-map-explorer 'docs/static/js/*.js'",
     "analyze-local": "./scripts/analyze.sh",
