@@ -69,13 +69,16 @@ const PlayerMenu: React.FC<{}> = () => {
                 onBlur={handleBlur(p.id)}
                 onKeyPress={handleKeyPress(p.id)}
                 placeholder="Enter Player Name"
+                title={`player ${i} name`}
               />
             </Grid>
             <Grid item xs={3}>
               <Switch
                 checked={isBot[i]}
+                value={isBot[i]}
                 color="primary"
                 onChange={(_e, isC): void => handleToggle(p.id, isC)}
+                title={`isBot-switch-${i}`}
               />
             </Grid>
           </Grid>
