@@ -4,5 +4,5 @@ import App from './wrappers/WithStore';
 
 it('renders without crashing', async () => {
   render(<App />);
-  expect(screen.getByTitle('Loading Spinner')).toBeInTheDOM();
+  expect(screen.getByTitle('Loading Spinner')).toBeInTheDocument();
 });

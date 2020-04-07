@@ -36,16 +36,15 @@ describe('common | header | PlayerMenu', () => {
   });
 
   it('performs name update onKeyPress or onBlur', () => {
-    const wrapper = render(<PlayerMenu />);
+    render(<PlayerMenu />);
 
     // verify it renders properly
     expect(screen.getByDisplayValue('Ken')).toBeInTheDocument();
 
     // click the expected element
     fireEvent.click(screen.getByDisplayValue('Ken'));
-    fireEvent.keyPress(screen.getByDisplayValue('Ken'), { key: 'n', code: 78 });
-    wrapper.debug();
-    fireEvent.keyPress(screen.getByDisplayValue('Ken'), { key: 'y', code: 89 });
+    fireEvent.change(screen.getByDisplayValue('Ken'), { target: { value: 'Kenny' }});
+    fireEvent.click(screen.getByText('Edit Player Names'));
 
     expect(screen.getByDisplayValue('Kenny')).toBeInTheDocument();
   });
