@@ -14,25 +14,17 @@ describe('common | header | PlayerMenu', () => {
 
   it('performs onToggle', () => {
     render(<PlayerMenu />);
+    const BotSwitch = screen.getByTitle('isBot-switch-0').querySelector('.MuiSwitch-input');
 
     // verify it renders properly
-    expect(screen.getByTitle('isBot-switch-0').getElementsByClassName('MuiSwitch-input')[0]).toBeInTheDocument();
-    expect(
-      screen.getByTitle('isBot-switch-0').querySelector('.MuiSwitch-input')
-        ?.attributes?.getNamedItem('value')?.value,
-    ).toEqual('false');
+    expect(BotSwitch).toBeInTheDocument();
+    expect(BotSwitch?.attributes?.getNamedItem('value')?.value).toEqual('false');
 
     // click the expected element
-    fireEvent.click(
-      screen.getByTitle('isBot-switch-0').querySelector('.MuiSwitch-input')
-      || screen.getByTitle('isBot-switch-0'),
-    );
+    fireEvent.click(BotSwitch || screen.getByTitle('isBot-switch-0'));
 
     // confirm switch was toggled
-    expect(
-      screen.getByTitle('isBot-switch-0').querySelector('.MuiSwitch-input')
-        ?.attributes?.getNamedItem('value')?.value,
-    ).toEqual('true');
+    expect(BotSwitch?.attributes?.getNamedItem('value')?.value).toEqual('true');
   });
 
   it('performs name update onKeyPress or onBlur', () => {

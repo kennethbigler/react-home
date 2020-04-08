@@ -51,7 +51,7 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
   } = props;
 
   return (
-    <AppBar style={spanTopStyles}>
+    <AppBar style={spanTopStyles} className={`header-${theme.type}-theme`}>
       <Toolbar disableGutters>
         <div className="flex-container">
           <div style={flexLeftStyles}>
@@ -59,6 +59,7 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
               aria-label="Menu"
               onClick={toggleOpen}
               color={iconColor}
+              title="Icon Menu Button"
             >
               <MenuIcon />
             </IconButton>
@@ -79,7 +80,7 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
             </div>
           )}
           <div style={flexRightStyles}>
-            <Switch checked={checked} onChange={toggleTheme} />
+            <Switch checked={checked} value={checked} onChange={toggleTheme} title="Theme Toggle Switch" />
           </div>
         </div>
       </Toolbar>
