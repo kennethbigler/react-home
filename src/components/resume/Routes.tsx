@@ -3,7 +3,7 @@ import {
   Switch, Route, Redirect, match as Match,
 } from 'react-router-dom';
 import lazyWithPreload from '../../helpers/lazyWithPreload';
-import Header from '../common/header/Header';
+import Header, { NavProps } from '../common/header/Header';
 import Menu from './Menu';
 import LoadingSpinner from '../common/loading-spinner';
 
@@ -49,7 +49,7 @@ const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
   return (
     <>
       <Header handleNav={handleNav}>
-        <Menu />
+        {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
       </Header>
       <React.Suspense fallback={<LoadingSpinner />}>
         <Switch>

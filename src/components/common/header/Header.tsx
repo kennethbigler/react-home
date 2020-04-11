@@ -10,12 +10,15 @@ import TopBar from './TopBar';
 import useToggleState from '../../../hooks/useToggle';
 import noop from '../../../apis/noop';
 
-interface NavProps {
-  onItemClick: (loc: string) => void;
+type ItemClick = (loc: string) => void;
+
+export interface NavProps {
+  onItemClick: ItemClick;
 }
+
 interface HeaderProps {
-  /** content of the header bar */
-  children: React.ReactElement<NavProps>;
+  /** content of the header bar via render props */
+  children: (onItemClick: ItemClick) => React.ReactElement<NavProps>;
   /** callback function, wrapped with logic, then passed as onItemClick to children */
   handleNav: Function;
   /** show/hide the player editor button */
@@ -54,7 +57,7 @@ const Header = (props: HeaderProps): React.ReactElement => {
             </Typography>
           </Toolbar>
         </AppBar>
-        {React.cloneElement(children, { onItemClick: handleNavigation })}
+        {children(handleNavigation)}
       </Drawer>
     </>
   );
