@@ -42,7 +42,7 @@ const Slots: React.FC<{}> = () => {
                 style={{ marginBottom: 15 }}
                 variant="contained"
               >
-                  Spin
+                Spin
               </Button>
             </Grid>
             <Grid item sm={9} xs={12}>
