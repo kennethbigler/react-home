@@ -4,14 +4,14 @@ import ButtonGroup from './button-group/ButtonGroup';
 import { DBPlayer, DBTurn } from '../../../store/types';
 
 interface GameTableProps {
-  betHandler?: Function;
-  cardClickHandler?: Function;
+  betHandler?: (id: number, event: React.ChangeEvent<{}>, value: number) => void;
+  cardClickHandler?: (playerNo: number, handNo: number, cardNo: number) => void;
   cardsToDiscard: number[];
   gameFunctions: string[];
   gameOver: boolean;
   hideHands: boolean;
   isBlackJack: boolean;
-  onClick: Function;
+  onClick: (name: string) => void;
   players: DBPlayer[];
   turn: DBTurn;
 }

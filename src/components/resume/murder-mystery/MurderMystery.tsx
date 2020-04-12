@@ -7,7 +7,7 @@ const MurderMystery: React.FC<{}> = React.memo(() => {
   const [expanded, setExpanded] = React.useState('');
 
   const handleChange = React.useCallback(
-    (panel: string) => (_event: React.MouseEvent, exp?: string): void => {
+    (panel: string) => (_event: React.ChangeEvent<{}>, exp?: boolean): void => {
       setExpanded(exp ? panel : '');
     },
     [setExpanded],

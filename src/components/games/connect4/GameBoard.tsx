@@ -6,7 +6,7 @@ import { C4Turn } from '../../../store/types';
 
 interface GameBoardProps {
   board: number[][];
-  insert: Function;
+  insert: (col: number) => void;
   newGame: React.MouseEventHandler;
   turn: C4Turn;
   winner?: number;

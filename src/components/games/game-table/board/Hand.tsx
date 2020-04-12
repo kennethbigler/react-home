@@ -8,7 +8,7 @@ const boldStyle: React.CSSProperties = { fontWeight: 'bold', marginTop: '0.5em' 
 const normalStyle: React.CSSProperties = { fontWeight: 'normal', marginTop: '0.5em' };
 
 interface HandProps {
-  cardHandler?: Function;
+  cardHandler?: (playerNo: number, handNo: number, cardNo: number) => void;
   cardsToDiscard: number[];
   hand: DBHand;
   handNo: number;

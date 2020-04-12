@@ -6,7 +6,7 @@ interface UseCommitTextReturns {
   commitMessage: string;
   commitDescription: string;
   finishes: boolean;
-  getCommitText: Function;
+  getCommitText: () => string;
   handleCommitPrefixSelect: (event: MaterialSelectEvent, child: React.ReactNode) => void;
   handleCommitMessageChange: React.ChangeEventHandler;
   handleCommitDescriptionChange: React.ChangeEventHandler;

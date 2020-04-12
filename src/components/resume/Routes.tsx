@@ -20,7 +20,7 @@ const GraphQL = lazyWithPreload(import(/* webpackChunkName: "r_graphql" */ './gr
 const Cars = lazyWithPreload(import(/* webpackChunkName: "r_cars" */ './cars'));
 
 interface RoutesProps {
-  handleNav: Function;
+  handleNav: (loc: string) => void;
   match: Match;
 }
 

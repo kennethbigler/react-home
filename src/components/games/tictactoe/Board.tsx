@@ -8,7 +8,7 @@ import Cell from './Cell';
 
 interface BoardProps {
   board: string[] | undefined[];
-  onClick: Function;
+  onClick: (cell: number) => void;
   winRow: [number?, number?, number?];
 }
 

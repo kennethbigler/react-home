@@ -20,7 +20,7 @@ interface HeaderProps {
   /** content of the header bar via render props */
   children: (onItemClick: ItemClick) => React.ReactElement<NavProps>;
   /** callback function, wrapped with logic, then passed as onItemClick to children */
-  handleNav: Function;
+  handleNav: (loc: string) => void;
   /** show/hide the player editor button */
   showPlayers: boolean;
 }

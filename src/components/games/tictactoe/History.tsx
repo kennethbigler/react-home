@@ -5,7 +5,7 @@ import { DBHistoryEntry } from '../../../store/types';
 
 interface HistoryProps {
   history: DBHistoryEntry[];
-  jumpToStep: Function;
+  jumpToStep: (move: number) => void;
   step: number;
 }
 

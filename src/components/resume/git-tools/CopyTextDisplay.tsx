@@ -7,8 +7,8 @@ import useOpenState from '../../../hooks/useOpenState';
 
 interface CopyTextDisplayProps {
   copyText?: string;
-  handleCopy: Function;
-  text: string | React.ReactNode[];
+  handleCopy: (text: string) => boolean;
+  text: string;
 }
 
 const chipStyles: React.CSSProperties = { height: 'auto', paddingTop: 7, paddingBottom: 7 };

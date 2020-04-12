@@ -18,7 +18,7 @@ const LAST_PLAYER = 5;
 
 interface UsePokerFunctions {
   checkUpdate: () => Promise<void>;
-  handleGameFunctionClick: (type: PGF) => void;
+  handleGameFunctionClick: (type: string) => void;
 }
 
 const usePokerFunctions = (
@@ -162,7 +162,7 @@ const usePokerFunctions = (
   }, [discard, dispatch, players, turn, cardsToDiscard]);
 
   /** function to route click actions */
-  const handleGameFunctionClick = React.useCallback((type: PGF): void => {
+  const handleGameFunctionClick = React.useCallback((type: string): void => {
     switch (type) {
       case PGF.DISCARD_CARDS:
         handleDiscard(); break;

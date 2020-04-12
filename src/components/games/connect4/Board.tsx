@@ -9,7 +9,7 @@ import { C4Turn } from '../../../store/types';
 
 interface BoardProps {
   board: number[][];
-  insert: Function;
+  insert: (col: number) => void;
   turn: C4Turn;
 }
 

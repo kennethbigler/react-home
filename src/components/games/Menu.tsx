@@ -3,7 +3,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
 
 interface MenuProps {
-  onItemClick?: Function;
+  onItemClick?: (loc: string) => void;
 }
 
 const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {

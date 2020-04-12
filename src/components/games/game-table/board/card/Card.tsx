@@ -4,7 +4,7 @@ import { Typography } from '@material-ui/core';
 import styles from './Card.styles';
 
 interface CardProps {
-  cardHandler?: Function;
+  cardHandler?: (playerNo: number, handNo: number, cardNo: number) => void;
   cardNo: number;
   dropped: boolean;
   handNo: number;

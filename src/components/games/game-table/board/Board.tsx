@@ -4,8 +4,8 @@ import { DBPlayer, DBTurn } from '../../../../store/types';
 // Parents: GameTable
 
 interface BoardProps {
-  betHandler?: Function;
-  cardHandler?: Function;
+  betHandler?: (id: number, event: React.ChangeEvent<{}>, value: number) => void;
+  cardHandler?: (playerNo: number, handNo: number, cardNo: number) => void;
   cardsToDiscard: number[];
   hideHands: boolean;
   isBlackJack: boolean;

@@ -8,7 +8,7 @@ import Menu from './Menu';
 import LoadingSpinner from '../common/loading-spinner';
 
 interface RoutesProps {
-  handleNav: Function;
+  handleNav: (loc: string) => void;
   match: Match;
 }
 

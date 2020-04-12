@@ -317,12 +317,12 @@ const BlackJack: React.FC<{}> = () => {
   }, [players]);
 
   /** function to be called on card clicks */
-  const betHandler = React.useCallback((id: number, event: React.MouseEvent, bet: number): void => {
+  const betHandler = React.useCallback((id: number, event: React.ChangeEvent<{}>, bet: number): void => {
     dispatch(updateBet(id, bet));
   }, [dispatch]);
 
   /** function to route click actions */
-  const handleGameFunctionClick = React.useCallback((type: GameFunctions): void => {
+  const handleGameFunctionClick = React.useCallback((type: string): void => {
     switch (type) {
       case GameFunctions.NEW_GAME:
         newGame(); break;

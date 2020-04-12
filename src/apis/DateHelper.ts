@@ -11,8 +11,8 @@ export interface DateObj {
   year: number;
   month: number;
   day: number;
-  diff: Function;
-  format: Function;
+  diff: (dateObj: DateObj, scale: DateScale) => number;
+  format: (output: FormatOutput) => string;
 }
 
 /** Takes format YYYY-MM-DD and creates a DateObj */

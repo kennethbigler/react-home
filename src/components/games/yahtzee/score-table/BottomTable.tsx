@@ -12,7 +12,7 @@ interface BottomTableProps {
   bottom: BottomGameScore[];
   bottomSum: number;
   finalTopSum: number;
-  getScoreButton: Function;
+  getScoreButton: (showButton: boolean, points: number, wasTop: boolean, i: number) => React.ReactNode;
   showScoreButtons: boolean;
   style: React.CSSProperties;
   top: TopGameScore[];

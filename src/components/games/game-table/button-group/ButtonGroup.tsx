@@ -3,7 +3,7 @@ import Button from './Button';
 
 export interface ButtonGroupProps {
   gameFunctions: string[];
-  onClick: Function;
+  onClick: (name: string) => void;
 }
 
 const ButtonGroup: React.FC<ButtonGroupProps> = ({ gameFunctions, onClick }: ButtonGroupProps) => (

@@ -15,13 +15,13 @@ interface BranchNameProps {
   branchName: string;
   branchPrefix: string;
   casePreference: string;
-  getSelectOptions: Function;
+  getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
-  handleCopy: Function;
+  handleCopy: (text: string) => boolean;
   onBranchMessageChange: MaterialSelectEventHandler;
   onBranchMessageClear: React.MouseEventHandler;
-  setBranchPrefix: Function;
-  setCasePreference: Function;
+  setBranchPrefix: (newBranchPrefix: string) => void;
+  setCasePreference: (newCasePreference: string) => void;
 }
 
 const wrapperStyles: React.CSSProperties = { paddingLeft: 20, paddingRight: 20, width: '100%' };
@@ -47,7 +47,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
   /** function to update select state based on value */
   const handleBranchPrefixSelect = React.useCallback(
     (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>): void => {
-      setBranchPrefix(e.target.value);
+      setBranchPrefix(e.target.value as string);
     },
     [setBranchPrefix],
   );
@@ -55,7 +55,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
   /** function to update text state based on value */
   const handleCasePrefSelect = React.useCallback(
     (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>): void => {
-      setCasePreference(e.target.value);
+      setCasePreference(e.target.value as string);
     },
     [setCasePreference],
   );

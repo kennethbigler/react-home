@@ -4,7 +4,7 @@ import Divider from '@material-ui/core/Divider';
 import noop from '../../apis/noop';
 
 interface MenuProps {
-  onItemClick?: Function;
+  onItemClick?: (loc: string) => void;
 }
 
 // external links

@@ -6,7 +6,7 @@ const buttonStyle: React.CSSProperties = { margin: 12 };
 const color: PropTypes.Color = 'primary';
 
 export interface ButtonProps {
-  onClick: Function;
+  onClick: (name: string) => void;
   name: string;
 }
 

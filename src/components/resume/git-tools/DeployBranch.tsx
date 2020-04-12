@@ -9,9 +9,9 @@ import { MaterialSelectEvent } from './types';
 
 interface BranchNameProps {
   branchName: string;
-  getSelectOptions: Function;
+  getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
-  handleCopy: Function;
+  handleCopy: (text: string) => boolean;
 }
 
 const BranchName: React.FC<BranchNameProps> = React.memo((props: BranchNameProps) => {

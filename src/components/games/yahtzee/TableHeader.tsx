@@ -7,10 +7,10 @@ interface TableHeaderProps {
   roll: Dice;
   values: Dice[];
   saved: Dice[];
-  handleUnsave: Function;
-  handleSave: Function;
+  handleUnsave: (i: number) => void;
+  handleSave: (i: number) => void;
   handleDiceRoll: React.MouseEventHandler;
-  getButtonText: Function;
+  getButtonText: (roll: Dice) => string;
 }
 
 const wrapperStyles: React.CSSProperties = { display: 'block', margin: 'auto', width: 320 };

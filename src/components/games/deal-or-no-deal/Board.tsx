@@ -5,7 +5,7 @@ import { Briefcase } from '../../../store/types';
 
 interface BoardProps {
   board: Briefcase[];
-  onClick: Function;
+  onClick: (x: number) => void;
   playerChoice?: Briefcase;
 }
 

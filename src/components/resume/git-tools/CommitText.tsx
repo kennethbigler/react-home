@@ -17,9 +17,9 @@ import { DBRootState } from '../../../store/types';
 import useCommitText from './useCommitText';
 
 interface CommitTextProps {
-  getSelectOptions: Function;
+  getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
-  handleCopy: Function;
+  handleCopy: (text: string) => boolean;
   storyID?: string;
 }
 

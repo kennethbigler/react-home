@@ -12,8 +12,8 @@ interface ScoreTableProps {
   bottom: BottomGameScore[];
   bottomSum: number;
   finalTopSum: number;
-  onTopScore: Function;
-  onBottomScore: Function;
+  onTopScore: (points: number, i: number) => void;
+  onBottomScore: (points: number, i: number) => void;
   showScoreButtons: boolean;
   top: TopGameScore[];
   topSum: number;
@@ -48,7 +48,7 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
             ? (): void => onTopScore(0, i)
             : (): void => onBottomScore(0, i)}
         >
-            0
+          0
         </Button>
       )
     ),
