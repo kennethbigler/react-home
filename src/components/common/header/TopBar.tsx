@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import Switch from '@material-ui/core/Switch';
-import SimplePopover from '../ButtonPopover';
+import SimplePopover from './ButtonPopover';
 import PlayerMenu from './PlayerMenu';
 import {
   displayDarkTheme,

@@ -6,7 +6,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Typography } from '@material-ui/core';
 import grey from '@material-ui/core/colors/grey';
-import DarkTableCell from '../../common/DarkTableCell';
+import DarkTableCell from '../../common/dark-table-cell/DarkTableCell';
 import { NA, EU } from '../../../constants/countries';
 
 const marginStyles: React.CSSProperties = { marginTop: 24, marginBottom: 16 };

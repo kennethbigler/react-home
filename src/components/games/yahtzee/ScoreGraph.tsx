@@ -5,7 +5,7 @@ import {
 } from 'recharts';
 import { useTheme } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
-import InfoPopup from '../../common/InfoPopup';
+import InfoPopup from '../../common/info-popover/InfoPopup';
 
 interface ScoreGraphProps {
   scores: number[];

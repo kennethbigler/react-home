@@ -4,7 +4,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import DarkTableCell from '../../common/DarkTableCell';
+import DarkTableCell from '../../common/dark-table-cell/DarkTableCell';
 
 interface MoneyTableProps {
   playerName: string;
