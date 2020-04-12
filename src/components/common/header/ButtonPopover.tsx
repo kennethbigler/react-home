@@ -34,7 +34,7 @@ const ButtonPopover = (props: ButtonPopoverProps): React.ReactElement => {
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <div style={contentStyle}>
-          {React.cloneElement(children)}
+          {children}
         </div>
       </Popover>
     </>
