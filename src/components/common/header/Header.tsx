@@ -49,6 +49,7 @@ const Header = (props: HeaderProps): React.ReactElement => {
               aria-label="Menu Close"
               onClick={toggleOpen}
               color={iconColor}
+              title="Close Side Menu"
             >
               <NavigationClose />
             </IconButton>

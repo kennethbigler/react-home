@@ -1,26 +1,78 @@
 import React from 'react';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, getByTitle } from '@testing-library/react';
 import { render } from '../../../redux-test-render';
-import Header from './Header';
+import Header, { NavProps } from './Header';
+
+/** This is just used for testing purposes */
+const Menu = (props: NavProps): React.ReactElement<NavProps> => (
+  <button onClick={(): void => props.onItemClick('button')} type="button">Test Button</button>
+);
 
 describe('common | header | Header', () => {
+  it('renders with basic elements', () => {
+    render(
+      <Header>
+        {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
+      </Header>,
+    );
+    // find TopBar elements
+    expect(screen.getByTitle('Icon Menu Button')).toBeInTheDocument();
+    expect(screen.getByText('Menu')).toBeInTheDocument();
+    // open the Drawer
+    fireEvent.click(screen.getByTitle('Icon Menu Button'));
+    // find Drawer elements
+    expect(screen.getByTitle('Close Side Menu')).toBeInTheDocument();
+    expect(screen.getAllByText('Menu')).toHaveLength(2);
+    expect(screen.getByText('Test Button')).toBeInTheDocument();
+  });
+
   describe('basic props tests', () => {
     it('displays children', () => {
-      expect(true);
+      render(
+        <Header>
+          {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
+        </Header>,
+      );
+      // open the Drawer
+      fireEvent.click(screen.getByTitle('Icon Menu Button'));
+      // find Drawer elements
+      expect(screen.getByText('Test Button')).toBeInTheDocument();
     });
 
     it('calls handleNav as expected', () => {
-      expect(true);
+      const handleNav = jest.fn();
+
+      render(
+        <Header handleNav={handleNav}>
+          {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
+        </Header>,
+      );
+
+      // open the Drawer
+      fireEvent.click(screen.getByTitle('Icon Menu Button'));
+      // find the button (child)
+      expect(screen.getByText('Test Button')).toBeInTheDocument();
+      // click the button
+      expect(handleNav).not.toHaveBeenCalled();
+      fireEvent.click(screen.getByText('Test Button'));
+      expect(handleNav).toHaveBeenCalled();
     });
 
     it('showsPlayers as expected', () => {
-      expect(true);
+      // render without player button
+      const { rerender } = render(
+        <Header>
+          {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
+        </Header>,
+      );
+      expect(screen.queryByText('Players')).toBeNull();
+      // rerender with player button
+      rerender(
+        <Header showPlayers>
+          {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
+        </Header>,
+      );
+      expect(screen.getByText('Players')).toBeInTheDocument();
     });
-    // /** content of the header bar via render props */
-    // children: (onItemClick: ItemClick) => React.ReactElement<NavProps>;
-    // /** callback function, wrapped with logic, then passed as onItemClick to children */
-    // handleNav: (loc: string) => void;
-    // /** show/hide the player editor button */
-    // showPlayers: boolean;
   });
 });
