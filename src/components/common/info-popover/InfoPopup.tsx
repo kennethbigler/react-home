@@ -8,7 +8,7 @@ import useOpenState from '../../../hooks/useOpenState';
 
 interface InfoPopupProps {
   /** popup content */
-  children: React.ReactNodeArray;
+  children: React.ReactNode | React.ReactNodeArray;
   /** title content */
   title: string | React.ReactElement;
   /** button content */
@@ -24,7 +24,7 @@ const InfoPopup = (props: InfoPopupProps): React.ReactElement => {
       <Button color="primary" onClick={handleOpen as React.MouseEventHandler} variant="contained">
         {buttonText || title}
       </Button>
-      <Dialog onClose={handleClose as React.MouseEventHandler} open={isOpen} maxWidth="md" fullWidth>
+      <Dialog title="info-popup" onClose={handleClose as React.MouseEventHandler} open={isOpen} maxWidth="md" fullWidth>
         <DialogTitle>
           {title}
         </DialogTitle>
