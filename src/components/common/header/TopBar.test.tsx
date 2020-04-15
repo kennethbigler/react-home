@@ -44,6 +44,7 @@ describe('common | header | TopBar', () => {
       expect(handleOpen).toHaveBeenCalledTimes(2);
     });
   });
+
   describe('theme toggle', () => {
     it('toggles theme as expected', () => {
       const handleOpen = jest.fn();
