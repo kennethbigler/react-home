@@ -24,7 +24,7 @@ const Row = (props: RowProps): React.ReactElement => {
   }
 
   return (
-    <div style={style}>
+    <div style={style} title="timeline-row">
       {segments.map((data, j) => (yearMarkers
         ? (<YearMarkers key={j} data={data} />)
         : (<Segment key={j} {...data} />)))}
