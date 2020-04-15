@@ -26,12 +26,13 @@ const ButtonPopover = (props: ButtonPopoverProps): React.ReactElement => {
         {buttonText}
       </Button>
       <Popover
-        id="simple-popper"
+        id="player-popover"
         open={open}
         anchorEl={anchorEl}
         onClose={clearAnchor}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        title="player-popover"
       >
         <div style={contentStyle}>
           {children}
