@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import ExpandableCard from './ExpandableCard';
 
-describe('common | expandable-card | ExpandableCard', () => {
+describe('common | ExpandableCard', () => {
   describe('Basic props tests', () => {
     it('displays title as expected', () => {
       render(<ExpandableCard title="Title" />);

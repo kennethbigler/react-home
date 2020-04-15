@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 import { render } from '../../../redux-test-render';
 import LoadingSpinner from './LoadingSpinner';
 
-describe('common | header | LoadingSpinner', () => {
+describe('common | LoadingSpinner', () => {
   it('renders as expected', () => {
     render(<LoadingSpinner />);
     expect(screen.getByTitle('Loading Spinner')).toBeInTheDocument();

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import InfoPopup from './InfoPopup';
 
-describe('common | header | LoadingSpinner', () => {
+describe('common | InfoPopup', () => {
   it('renders as expected', () => {
     render(<InfoPopup title="Title" buttonText="Button">Child</InfoPopup>);
     expect(screen.getByText('Button')).toBeInTheDocument();
