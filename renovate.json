@@ -1,8 +1,7 @@
 {
-  "extends": [
-    "config:base",
-    "schedule:weekends",
-    ":assignee(kennethbigler)"
-  ],
-  "labels": ["dependencies"]
+  "assignees": ["kennethbigler"],
+  "extends": ["config:base"],
+  "labels": ["dependencies"],
+  "reviewers": ["kennethbigler"],
+  "schedule": "every weekend"
 }
