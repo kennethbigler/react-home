@@ -1,4 +1,3 @@
-/* TODO: expand below on click */
 import React from 'react';
 import dateObj, { DateObj, FormatOutput } from '../../../apis/DateHelper';
 import Row from './Row';
