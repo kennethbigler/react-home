@@ -29,17 +29,15 @@ const YearMarkers = (props: YearMarkersProps): React.ReactElement => {
   // variables for empty segment
   const style: React.CSSProperties = { display: 'inline-block', width: `${width}%` };
 
-  if (!body) {
-    return (<div style={style}><br /></div>);
-  }
-
-  return (
-    <div style={{ ...style, ...boxStyles }}>
-      <div style={markerStyles}>
-        <div style={labelStyles}>{body}</div>
+  return !body
+    ? (<div title="year" style={style}><br /></div>)
+    : (
+      <div style={{ ...style, ...boxStyles }} title={body}>
+        <div style={markerStyles} title="year-marker">
+          <div style={labelStyles}>{body}</div>
+        </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default YearMarkers;
