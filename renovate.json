@@ -3,5 +3,6 @@
     "config:base",
     "schedule:weekends",
     ":assignee(kennethbigler)"
-  ]
+  ],
+  "labels": ["dependencies"]
 }
