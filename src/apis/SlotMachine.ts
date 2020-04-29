@@ -52,7 +52,7 @@ function prepareSlotMachine(): DBSlotDisplay[] {
 const machine = prepareSlotMachine();
 
 /** spin the slot machine and get a result */
-function spin(): DBSlotDisplay {
+export function spin(): DBSlotDisplay {
   return machine[Math.floor(Math.random() * machine.length)];
 }
 
