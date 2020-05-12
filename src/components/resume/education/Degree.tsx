@@ -24,7 +24,7 @@ const getTitles = (degree: DegreeType): { title: string; subtitle: string } => {
   const title = `${school}${degree.degree}${major}${minor}`;
   const gpa = degree.gpa && `GPA: ${degree.gpa}`;
   const graduation = degree.graduation ? ` - Graduation: ${degree.graduation}` : '';
-  const subtitle = degree.subtitle || `${gpa}${graduation}`;
+  const subtitle = degree.subtitle || ((gpa || graduation) && `${gpa}${graduation}`);
 
   return { title, subtitle };
 };

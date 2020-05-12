@@ -12,7 +12,7 @@ const Home = React.memo(() => (
       This site was created to learn, check out the
       {' '}
       <a href="https://github.com/kennethbigler/react-home">
-        {'<source code />'}
+        <code>&lt;source&nbsp;code/&gt;</code>
       </a>
     </Typography>
   </div>
