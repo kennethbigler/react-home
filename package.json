@@ -48,7 +48,7 @@
     "eslint-config-google": "0.14.0",
     "eslint-plugin-import": "2.20.2",
     "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-react": "7.20.0",
     "eslint-plugin-react-hooks": "4.0.0",
     "graphql": "15.0.0",
     "react-scripts": "3.4.1",
