@@ -12,7 +12,7 @@
  * Output: 9
  * Explanation: 1 _ _ 1 2 0 _ 2 1
  */
-function doTasks(tasks: number[], cooldown: number): number {
+export const doTasks = (tasks: number[], cooldown: number): number => {
   const lastRunMap: Record<number, number> = {};
   let ans = 0;
   // let debug = '';
@@ -34,11 +34,7 @@ function doTasks(tasks: number[], cooldown: number): number {
   });
   // console.log(debug);
   return ans;
-}
-
-doTasks([1, 1, 2, 0, 2, 1], 4);
-doTasks([1, 1, 2, 0, 2, 1], 4);
-doTasks([1, 1, 3, 2, 1, 2, 1], 3);
+};
 
 // ----------     Google     ---------- //
 
@@ -47,12 +43,12 @@ doTasks([1, 1, 3, 2, 1, 2, 1], 3);
 
 /** Is the input an Ambigram
  * Given an array of numbers, determine if it is an Ambigram
- * Ambigram - The same word forwards, backwards, and upsidown
+ * Ambigram - The same word forwards, backwards, and upside-down
  * EX: 34 => false
  * EX: 1881 => true
  * EX: 13431 => false
  */
-function isAmbigram1(nums: number[]): boolean {
+export const isAmbigram1 = (nums: number[]): boolean => {
   // create map
   const flip: Record<number, number> = {
     0: 0,
@@ -70,12 +66,7 @@ function isAmbigram1(nums: number[]): boolean {
   }
   // everything passes check
   return true;
-}
-
-isAmbigram1([1, 8, 1]);
-isAmbigram1([1, 8, 8, 1]);
-isAmbigram1([1, 6, 9, 1]);
-isAmbigram1([1, 6, 1]);
+};
 
 // ----------     Code Golf     ---------- //
 /** Is the input an Ambigram II
@@ -91,7 +82,7 @@ isAmbigram1([1, 6, 1]);
  * 8  8      m  w        x  x/X
  * a  e      n  u/U      z  z/Z
  */
-function isAmbigram2(word: string): boolean {
+export const isAmbigram2 = (word: string): boolean => {
   // create map
   const flip: Record<string, string[]> = {
     0: ['0'],
@@ -154,11 +145,7 @@ function isAmbigram2(word: string): boolean {
   }
   // everything passes check
   return true;
-}
-
-isAmbigram2('181');
-isAmbigram2('1691');
-isAmbigram2('161');
+};
 
 // ----------     GigNow     ---------- //
 /**
@@ -176,7 +163,7 @@ isAmbigram2('161');
  * Input B: [3,5,7]
  * Output: [3,5]
  */
-const intersect = (A: number[], B: number[]): number[] => {
+export const intersect = (A: number[], B: number[]): number[] => {
   let i = 0;
   let j = 0;
   const ret = [];
@@ -196,9 +183,6 @@ const intersect = (A: number[], B: number[]): number[] => {
 
   return ret;
 };
-
-intersect([1, 2, 3, 3, 4, 5, 6], [3, 3, 5]) === [3, 3, 5];
-intersect([1, 2, 3, 3, 4, 5, 6], [3, 5, 7]) === [3, 5];
 
 /**
  * Say you have an array for which the ith element is the price of a given stock on day i.
@@ -220,7 +204,7 @@ intersect([1, 2, 3, 3, 4, 5, 6], [3, 5, 7]) === [3, 5];
  * Output: 0
  * Explanation: In this case, no transaction is done, i.e. max profit = 0.
  */
-const maxProfit = (prices: number[]): number => {
+export const maxProfit = (prices: number[]): number => {
   if (prices.length === 0) {
     return 0;
   }
@@ -237,10 +221,6 @@ const maxProfit = (prices: number[]): number => {
   }
   return maxWindow;
 };
-
-maxProfit([7, 1, 5, 3, 6, 4]) === 5;
-maxProfit([7, 6, 4, 3, 1]) === 0;
-maxProfit([7, 2, 8, 1, 5, 3, 6, 4]) === 6;
 
 /**
  * Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
@@ -291,7 +271,7 @@ maxProfit([7, 2, 8, 1, 5, 3, 6, 4]) === 6;
  * Output: "MCMXCIV"
  * Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
  */
-const itr = (num: number, roman = '', round = 0): string => {
+export const itr = (num: number, roman = '', round = 0): string => {
   const divisor = [1000, 100, 10, 1];
   // end condition
   if (round >= divisor.length) {
@@ -323,11 +303,10 @@ const itr = (num: number, roman = '', round = 0): string => {
     // console.log(roman, n[round][0]);
     return itr(num - 1 * d, roman + nmrl[0], round);
   }
-  // switched from null to '' without tests
   return '';
 };
 
-const intToRoman = (num: number): string => {
+export const intToRoman = (num: number): string => {
   if (num === 0) {
     return '';
   }
@@ -337,12 +316,6 @@ const intToRoman = (num: number): string => {
   }
   return itr(num);
 };
-
-intToRoman(3) === 'III';
-intToRoman(4) === 'IV';
-intToRoman(9) === 'IX';
-intToRoman(58) === 'LVIII';
-intToRoman(1994) === 'MCMXCIV';
 
 /**
  * Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
@@ -393,7 +366,7 @@ intToRoman(1994) === 'MCMXCIV';
  * Output: 1994
  * Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
  */
-const romanToInt = (str: string): number => {
+export const romanToInt = (str: string): number => {
   if (str === '') {
     return 0;
   }
@@ -425,12 +398,6 @@ const romanToInt = (str: string): number => {
   return ret;
 };
 
-romanToInt('III') === 3;
-romanToInt('IV') === 4;
-romanToInt('IX') === 9;
-romanToInt('LVIII') === 58;
-romanToInt('MCMXCIV') === 1994;
-
 /**
  * you have unlimited stickers (n)
  * all stickers read "facebook"
@@ -441,5 +408,3 @@ romanToInt('MCMXCIV') === 1994;
  */
 
 /** given an array of numbers, and a sum, find and return the index of 2 numbers that adds up to the sum */
-
-export default {};
