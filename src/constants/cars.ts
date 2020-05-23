@@ -24,7 +24,7 @@ const cars = [
     owned: '2011 - 2015',
     story: 'After selling my first car, my parents purchased a 2010 Chevrolet Impala LS for me to drive. It was a used Hertz rental car.',
     src: impala10,
-    makeModel: '2010 Chevrolet Impala',
+    makeModel: '2010 Chevrolet Impala LS',
     transmission: 'Automatic',
     horsePower: 230,
   }, {

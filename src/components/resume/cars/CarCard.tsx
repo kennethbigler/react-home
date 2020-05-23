@@ -4,7 +4,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-interface Car {
+export interface Car {
   owned: string;
   story: string;
   src: string;
@@ -32,7 +32,10 @@ const CarCard: React.FC<CarCardProps> = ({ car }: CarCardProps) => (
     <Grid container spacing={1}>
       <Grid item sm={8} xs={12}>
         <CardContent>
-          <Typography variant="h5">{car.owned}</Typography>
+          <Typography variant="h5">
+            <strong style={{ paddingRight: 20 }}>{`(${car.owned})`}</strong>
+            {car.makeModel}
+          </Typography>
           <hr />
           <Typography variant="h6">{`Horsepower: ${car.horsePower}`}</Typography>
           <Typography variant="h6">{`Transmission: ${car.transmission}`}</Typography>
