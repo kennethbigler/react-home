@@ -1,0 +1,19 @@
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import Class from './Class';
+
+describe('resume | education | Class', () => {
+  it('renders with catalog', () => {
+    render(<Class name="ClassName" catalog="CLSS 101" />);
+
+    expect(screen.getByText('CLSS 101 -'));
+    expect(screen.getByText('ClassName'));
+  });
+
+  it('renders without catalog', () => {
+    render(<Class name="ClassName" />);
+
+    expect(screen.queryByText(' -')).toBeNull();
+    expect(screen.getByText('ClassName'));
+  });
+});
