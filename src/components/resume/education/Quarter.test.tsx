@@ -15,10 +15,10 @@ describe('resume | education | Quarter', () => {
 
     expect(screen.getByText('QuarterName'));
     expect(screen.getByText('CLSS 101 -'));
-    expect(screen.getByText('QuarterName'));
+    expect(screen.getByText('ClassName'));
   });
 
-  it('renders as expected', () => {
+  it('renders as expected with multiple classes', () => {
     quarter.classes.push({ name: 'Class 2', catalog: 'CLSS 202' });
     render(<Quarter quarter={quarter} />);
 
