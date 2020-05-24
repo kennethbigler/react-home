@@ -13,6 +13,7 @@ interface YearProps {
   year: YearType;
 }
 
+/** Education  ->  Degree  -> Year  ->  Quarter  ->  Class */
 const Year: React.FC<YearProps> = ({ year, len }: YearProps) => (
   <Grid item md={Math.ceil(12 / len) as GridSize} xs={12}>
     <Typography variant="h4">

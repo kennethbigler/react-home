@@ -29,6 +29,7 @@ const getTitles = (degree: DegreeType): { title: string; subtitle: string } => {
   return { title, subtitle };
 };
 
+/** Education  ->  Degree  -> Year  ->  Quarter  ->  Class */
 const Degree: React.FC<DegreeProps> = (props: DegreeProps) => {
   const { degree } = props;
   const { title, subtitle } = getTitles(degree);

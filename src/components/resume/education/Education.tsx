@@ -3,7 +3,7 @@ import { Typography } from '@material-ui/core';
 import Degree from './Degree';
 import classes from '../../../constants/classes';
 
-/* Education  ->  Degree  -> Year  ->  Quarter  ->  Class */
+/** Education  ->  Degree  -> Year  ->  Quarter  ->  Class */
 const Education = React.memo(() => (
   <>
     <Typography variant="h2">Hackathons &amp; Education</Typography>
