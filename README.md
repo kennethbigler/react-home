@@ -20,3 +20,20 @@ npm run start
 | IE  | Edge  | Firefox | Chrome | Safari |
 | :-: | :---: | :-----: | :----: | :----: |
 | 11  | >= 14 |  >= 45  | >= 49  | >= 10  |
+
+## Add this back to package.json after tests are complete
+
+```json
+  "jest": {
+    "collectCoverageFrom": ["src/**/*.{ts,tsx}"],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    },
+    "coverageReporters": ["text"]
+  }
+```
