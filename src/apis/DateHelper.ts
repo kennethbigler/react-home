@@ -27,7 +27,7 @@ const dateHelper = (date?: DateObj | string): DateObj => {
   if (typeof date === 'string') {
     const [y, m, d] = date.split('-');
     year = Number(y);
-    month = Number(m) || 0;
+    month = Number(m) - 1 || 0;
     day = Number(d) || 1;
   } else {
     const now = new Date();

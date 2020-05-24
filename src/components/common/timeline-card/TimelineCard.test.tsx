@@ -57,7 +57,7 @@ describe('common | timeline-card | TimelineCard', () => {
 
     // verify ExpandableCard
     expect(screen.getByText('Title')).toBeInTheDocument();
-    expect(screen.getByText('June 2019 - March 2020')).toBeInTheDocument();
+    expect(screen.getByText('May 2019 - February 2020')).toBeInTheDocument();
     expect(screen.getByText('Title').parentNode?.parentNode).toHaveStyle({ backgroundColor: 'red' });
 
     // verify Timeline
