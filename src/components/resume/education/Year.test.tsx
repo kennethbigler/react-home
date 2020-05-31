@@ -16,10 +16,10 @@ describe('resume | education | Year', () => {
   it('renders as expected', () => {
     render(<Year year={year} len={1} />);
 
-    expect(screen.getByText('YearName'));
-    expect(screen.getByText('QuarterName'));
-    expect(screen.getByText('CLSS 101 -'));
-    expect(screen.getByText('ClassName'));
+    expect(screen.getByText('YearName')).toBeInTheDocument();
+    expect(screen.getByText('QuarterName')).toBeInTheDocument();
+    expect(screen.getByText('CLSS 101 -')).toBeInTheDocument();
+    expect(screen.getByText('ClassName')).toBeInTheDocument();
   });
 
   it('renders as expected with multiple quarters', () => {
@@ -31,14 +31,14 @@ describe('resume | education | Year', () => {
     });
     render(<Year year={year} len={1} />);
 
-    expect(screen.getByText('YearName'));
+    expect(screen.getByText('YearName')).toBeInTheDocument();
 
-    expect(screen.getByText('QuarterName'));
-    expect(screen.getByText('CLSS 101 -'));
-    expect(screen.getByText('ClassName'));
+    expect(screen.getByText('QuarterName')).toBeInTheDocument();
+    expect(screen.getByText('CLSS 101 -')).toBeInTheDocument();
+    expect(screen.getByText('ClassName')).toBeInTheDocument();
 
-    expect(screen.getByText('Quarter 2'));
-    expect(screen.getByText('CLSS 202 -'));
-    expect(screen.getByText('Class 2'));
+    expect(screen.getByText('Quarter 2')).toBeInTheDocument();
+    expect(screen.getByText('CLSS 202 -')).toBeInTheDocument();
+    expect(screen.getByText('Class 2')).toBeInTheDocument();
   });
 });

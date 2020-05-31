@@ -6,14 +6,14 @@ describe('resume | education | Class', () => {
   it('renders with catalog', () => {
     render(<Class name="ClassName" catalog="CLSS 101" />);
 
-    expect(screen.getByText('CLSS 101 -'));
-    expect(screen.getByText('ClassName'));
+    expect(screen.getByText('CLSS 101 -')).toBeInTheDocument();
+    expect(screen.getByText('ClassName')).toBeInTheDocument();
   });
 
   it('renders without catalog', () => {
     render(<Class name="ClassName" />);
 
     expect(screen.queryByText(' -')).toBeNull();
-    expect(screen.getByText('ClassName'));
+    expect(screen.getByText('ClassName')).toBeInTheDocument();
   });
 });

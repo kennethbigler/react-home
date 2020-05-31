@@ -13,21 +13,21 @@ describe('resume | education | Quarter', () => {
   it('renders as expected', () => {
     render(<Quarter quarter={quarter} />);
 
-    expect(screen.getByText('QuarterName'));
-    expect(screen.getByText('CLSS 101 -'));
-    expect(screen.getByText('ClassName'));
+    expect(screen.getByText('QuarterName')).toBeInTheDocument();
+    expect(screen.getByText('CLSS 101 -')).toBeInTheDocument();
+    expect(screen.getByText('ClassName')).toBeInTheDocument();
   });
 
   it('renders as expected with multiple classes', () => {
     quarter.classes.push({ name: 'Class 2', catalog: 'CLSS 202' });
     render(<Quarter quarter={quarter} />);
 
-    expect(screen.getByText('QuarterName'));
+    expect(screen.getByText('QuarterName')).toBeInTheDocument();
 
-    expect(screen.getByText('CLSS 101 -'));
-    expect(screen.getByText('ClassName'));
+    expect(screen.getByText('CLSS 101 -')).toBeInTheDocument();
+    expect(screen.getByText('ClassName')).toBeInTheDocument();
 
-    expect(screen.getByText('CLSS 202 -'));
-    expect(screen.getByText('Class 2'));
+    expect(screen.getByText('CLSS 202 -')).toBeInTheDocument();
+    expect(screen.getByText('Class 2')).toBeInTheDocument();
   });
 });

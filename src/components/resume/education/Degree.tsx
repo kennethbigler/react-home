@@ -2,7 +2,7 @@ import React from 'react';
 import Year, { YearType } from './Year';
 import ExpandableCard from '../../common/expandable-card';
 
-interface DegreeType {
+export interface DegreeType {
   school?: string;
   major?: string;
   minor?: string;
