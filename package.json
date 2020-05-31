@@ -21,7 +21,7 @@
     "react-newline-to-break": "1.0.6",
     "react-redux": "7.2.0",
     "react-router-dom": "5.2.0",
-    "react-simple-maps": "2.0.0",
+    "react-simple-maps": "2.1.0",
     "recharts": "1.8.5",
     "redux": "4.0.5",
     "redux-devtools-extension": "2.13.8",
