@@ -77,6 +77,9 @@
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}"
     ],
+    "coveragePathIgnorePatterns": [
+      "src/components/common/dark-table-cell/"
+    ],
     "coverageThreshold": {
       "./src/apis/": {
         "branches": 90,
