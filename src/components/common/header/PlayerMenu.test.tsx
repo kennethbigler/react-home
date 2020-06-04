@@ -27,7 +27,7 @@ describe('common | header | PlayerMenu', () => {
     expect(BotSwitch?.attributes?.getNamedItem('value')?.value).toEqual('true');
   });
 
-  it('performs name update onKeyPress or onBlur', () => {
+  it('performs name update onKeyPress', () => {
     render(<PlayerMenu />);
 
     // verify it renders properly
@@ -36,6 +36,13 @@ describe('common | header | PlayerMenu', () => {
     // click the expected element
     fireEvent.click(screen.getByDisplayValue('Ken'));
     fireEvent.change(screen.getByDisplayValue('Ken'), { target: { value: 'Kenny' }});
+    fireEvent.keyPress(screen.getByDisplayValue('Kenny'), {
+      key: 'Enter',
+      location: 0,
+      which: 13,
+      code: 'Enter',
+    });
+    fireEvent.blur(screen.getByDisplayValue('Kenny'));
     fireEvent.click(screen.getByText('Edit Player Names'));
 
     expect(screen.getByDisplayValue('Kenny')).toBeInTheDocument();

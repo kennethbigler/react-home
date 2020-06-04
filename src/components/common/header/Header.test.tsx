@@ -17,6 +17,7 @@ describe('common | header | Header', () => {
     );
     // find TopBar elements
     expect(screen.getByTitle('Icon Menu Button')).toBeInTheDocument();
+    expect(screen.getByTitle('Icon Menu Button').className).toContain('MuiIconButton-colorInherit');
     expect(screen.getByText('Menu')).toBeInTheDocument();
     // open the Drawer
     fireEvent.click(screen.getByTitle('Icon Menu Button'));
