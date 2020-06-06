@@ -53,7 +53,7 @@
     "graphql": "15.0.0",
     "react-scripts": "3.4.1",
     "source-map-explorer": "2.4.2",
-    "typescript": "3.9.3"
+    "typescript": "3.9.5"
   },
   "scripts": {
     "start": "react-scripts start",
