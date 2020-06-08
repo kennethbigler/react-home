@@ -50,7 +50,7 @@
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.20.0",
     "eslint-plugin-react-hooks": "4.0.4",
-    "graphql": "15.0.0",
+    "graphql": "15.1.0",
     "react-scripts": "3.4.1",
     "source-map-explorer": "2.4.2",
     "typescript": "3.9.5"
