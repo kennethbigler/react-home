@@ -14,7 +14,7 @@
     "apollo-link-http": "1.5.17",
     "copy-to-clipboard": "3.3.1",
     "graphql-tag": "2.10.3",
-    "localforage": "1.7.3",
+    "localforage": "1.7.4",
     "lodash": "4.17.15",
     "react": "16.13.1",
     "react-dom": "16.13.1",
