@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import ExpandableCard from './ExpandableCard';
+import styles from '@material-ui/core/styles';
 
 describe('common | ExpandableCard', () => {
   describe('Basic props tests', () => {

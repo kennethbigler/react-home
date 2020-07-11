@@ -23,7 +23,7 @@ interface ExpandableCardProps {
   backgroundColor?: string;
   /** content to be displayed in the main section of the card */
   children?: React.ReactNode;
-  /** invert the color of the title and subtitle */
+  /** invert the color of the title and subtitle text */
   inverted: boolean;
   /** subtitle content */
   subtitle?: string | React.ReactNode;

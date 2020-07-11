@@ -31,8 +31,6 @@ const TimelineCard = (props: TimelineCardProps): React.ReactElement | null => {
     start, end,
   } = props;
 
-  if (!start || !end || !data) { return null; }
-
   return (
     <ExpandableCard
       backgroundColor={backgroundColor}
@@ -41,7 +39,7 @@ const TimelineCard = (props: TimelineCardProps): React.ReactElement | null => {
     >
       <Timeline
         data={data}
-        selector={selector || ''}
+        selector={selector}
         start={start}
         end={end}
       />
