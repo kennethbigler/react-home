@@ -13,7 +13,7 @@
     "apollo-link-error": "1.1.13",
     "apollo-link-http": "1.5.17",
     "copy-to-clipboard": "3.3.1",
-    "graphql-tag": "2.10.3",
+    "graphql-tag": "2.10.4",
     "localforage": "1.7.4",
     "lodash": "4.17.15",
     "react": "16.13.1",
