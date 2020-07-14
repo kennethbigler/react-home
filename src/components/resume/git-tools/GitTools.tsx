@@ -23,7 +23,7 @@ const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');
  *          |->  BranchName    -|
  *          |->  CommitText    -|->  CopyTextDisplay
  *          |->  DeployBranch  -|    */
-const GitTools: React.FC<{}> = () => {
+const GitTools: React.FC = () => {
   const {
     branchMessage, branchPrefix, casePreference, storyID,
   } = useSelector((state: DBRootState) => state.git);
