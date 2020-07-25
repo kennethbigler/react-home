@@ -31,7 +31,7 @@
     "@testing-library/jest-dom": "5.11.1",
     "@testing-library/react": "10.2.1",
     "@types/jest": "26.0.7",
-    "@types/lodash": "4.14.155",
+    "@types/lodash": "4.14.158",
     "@types/material-ui": "0.21.7",
     "@types/node": "13.13.12",
     "@types/react": "16.9.43",
