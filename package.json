@@ -28,7 +28,7 @@
     "redux-thunk": "2.3.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "5.11.1",
+    "@testing-library/jest-dom": "5.11.2",
     "@testing-library/react": "10.2.1",
     "@types/jest": "26.0.7",
     "@types/lodash": "4.14.158",
