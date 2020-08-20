@@ -7,17 +7,15 @@ import CommitText from './CommitText';
 
 describe('resume | git-tools | CommitText', () => {
   let handleSelectOptions;
-  let handleCopy;
-  let debug: any;
+  const handleCopy = jest.fn();
 
   beforeEach(() => {
     handleSelectOptions = jest.fn().mockReturnValue([
-      <MenuItem key="1" value="1">1</MenuItem>,
-      <MenuItem key="2" value="2">2</MenuItem>,
+      <MenuItem key="1" value="feat">feat</MenuItem>,
+      <MenuItem key="2" value="test">test</MenuItem>,
     ]);
-    handleCopy = jest.fn();
 
-    const { debug: wrapperDebug } = render(
+    render(
       <CommitText
         getSelectOptions={handleSelectOptions}
         gitTheme="red"
@@ -25,12 +23,11 @@ describe('resume | git-tools | CommitText', () => {
         storyID="KEN-1234"
       />,
     );
-
-    debug = wrapperDebug;
   });
 
   it('renders as expected', () => {
     expect(screen.getByText('Commit Prefix')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('feat')).toBeInTheDocument();
     expect(screen.getAllByRole('button')).toHaveLength(4);
     expect(screen.getByText('Finishes User Story')).toBeInTheDocument();
     expect(screen.getByText('Add git commit -m')).toBeInTheDocument();
@@ -45,14 +42,89 @@ describe('resume | git-tools | CommitText', () => {
     expect(screen.getByText('Commit Description')).toHaveStyle('color: red;');
   });
 
-  // it('updates commit prefix', () => {
-  //   debug();
-  //   expect(screen.getByText('Commit Prefix')).toBeInTheDocument();
+  it('adds git commit prefix on toggle', () => {
+    expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
+    fireEvent.click(screen.getByDisplayValue('Add git commit -m'));
+    expect(screen.getByText('feat: [KEN-1234]')).toBeInTheDocument();
+  });
 
-  //   fireEvent.change(
-  //     screen.getByText('Commit Prefix').nextElementSibling!.querySelector('#branch-prefix')!,
-  //     { target: { value: 'Kenny' }},
-  //   );
-  //   debug();
-  // });
+  it('adds a finishes tag on toggle', () => {
+    expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
+    fireEvent.click(screen.getByDisplayValue('Finishes User Story'));
+    expect(screen.getByText('git commit -m "feat: [KEN-1234 #finish]"')).toBeInTheDocument();
+  });
+
+  it('copies on click', () => {
+    expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole('button')[3]);
+    expect(handleCopy).toHaveBeenCalledWith('git commit -m "feat:  [KEN-1234]"');
+  });
+
+  it('swaps commit prefix on select', () => {
+    expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('feat')).toBeInTheDocument();
+    expect(screen.queryByDisplayValue('test')).toBeNull();
+    fireEvent.change(screen.getByDisplayValue('feat'), { target: { value: 'test' }});
+    expect(screen.queryByDisplayValue('feat')).toBeNull();
+    expect(screen.getByDisplayValue('test')).toBeInTheDocument();
+    expect(screen.getByText('git commit -m "test: [KEN-1234]"')).toBeInTheDocument();
+  });
+
+  it('updates output with changes to commit message text and can clear out the text', () => {
+    expect(screen.getByText('Commit Message')).toBeInTheDocument();
+    expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
+    // Add commit message
+    fireEvent.change(screen.getByText('Commit Message').nextSibling!.lastChild!, { target: { value: 'A Message' }});
+    expect(screen.getByText('git commit -m "feat: A Message [KEN-1234]"')).toBeInTheDocument();
+    // Remove commit message
+    fireEvent.click(screen.getAllByRole('button')[1]);
+    expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
+  });
+
+  it('updates output with changes to commit description text and can clear out the text', () => {
+    expect(screen.getByText('Commit Description')).toBeInTheDocument();
+    expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
+    // Add commit description
+    fireEvent.change(screen.getByText('Commit Description').nextSibling!.firstChild!, { target: { value: 'A Description' }});
+    expect(screen.getByText('git commit -m "feat:')).toBeInTheDocument();
+    expect(screen.getAllByText('A Description')).toHaveLength(2);
+    expect(screen.getByText('[KEN-1234]"')).toBeInTheDocument();
+    // Remove commit description
+    fireEvent.click(screen.getAllByRole('button')[2]);
+    expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
+  });
+
+  it('supports all ui features', () => {
+    expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
+    // Remove git wrapper text
+    fireEvent.click(screen.getByDisplayValue('Add git commit -m'));
+    expect(screen.getByText('feat: [KEN-1234]')).toBeInTheDocument();
+    // Add git wrapper text
+    fireEvent.click(screen.getByDisplayValue('Add git commit -m'));
+    expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
+    // Add a finish tag
+    fireEvent.click(screen.getByDisplayValue('Finishes User Story'));
+    expect(screen.getByText('git commit -m "feat: [KEN-1234 #finish]"')).toBeInTheDocument();
+    // Change the commit prefix
+    expect(screen.getByDisplayValue('feat')).toBeInTheDocument();
+    expect(screen.queryByDisplayValue('test')).toBeNull();
+    fireEvent.change(screen.getByDisplayValue('feat'), { target: { value: 'test' }});
+    expect(screen.queryByDisplayValue('feat')).toBeNull();
+    expect(screen.getByDisplayValue('test')).toBeInTheDocument();
+    expect(screen.getByText('git commit -m "test: [KEN-1234 #finish]"')).toBeInTheDocument();
+    // Add a commit message
+    fireEvent.change(screen.getByText('Commit Message').nextSibling!.lastChild!, { target: { value: 'A Message' }});
+    expect(screen.getByText('git commit -m "test: A Message [KEN-1234 #finish]"')).toBeInTheDocument();
+    // Add a commit description
+    fireEvent.change(screen.getByText('Commit Description').nextSibling!.firstChild!, { target: { value: 'A Description' }});
+    expect(screen.getByText('git commit -m "test: A Message')).toBeInTheDocument();
+    expect(screen.getAllByText('A Description')).toHaveLength(2);
+    expect(screen.getByText('[KEN-1234 #finish]"')).toBeInTheDocument();
+    // Remove commit description
+    fireEvent.click(screen.getAllByRole('button')[2]);
+    expect(screen.getByText('git commit -m "test: A Message [KEN-1234 #finish]"')).toBeInTheDocument();
+    // Remove commit message
+    fireEvent.click(screen.getAllByRole('button')[1]);
+    expect(screen.getByText('git commit -m "test: [KEN-1234 #finish]"')).toBeInTheDocument();
+  });
 });
