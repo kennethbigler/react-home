@@ -1,6 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import Loading from './common/Loading';
 import RepositoryList, { REPOSITORY_FRAGMENT } from './repository';
 import ErrorMessage from './ErrorMessage';

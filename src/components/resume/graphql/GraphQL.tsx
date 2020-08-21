@@ -1,11 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ApolloProvider } from '@apollo/react-hooks';
-import { ApolloClient } from 'apollo-client';
-import { ApolloLink } from 'apollo-link';
-import { HttpLink } from 'apollo-link-http';
-import { onError } from 'apollo-link-error';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import {
+  ApolloProvider, ApolloClient, ApolloLink, HttpLink, InMemoryCache,
+} from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
 import Profile from './Profile';
 import { setToken } from '../../../store/modules/gqlToken';
 import Header from './Header';
