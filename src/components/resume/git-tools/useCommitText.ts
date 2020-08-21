@@ -12,7 +12,7 @@ interface UseCommitTextReturns {
   handleCommitDescriptionChange: React.ChangeEventHandler;
   clearCommitMessage: React.MouseEventHandler;
   clearCommitDescription: React.MouseEventHandler;
-  handleFinishesToggle: (event: React.ChangeEvent<Record<string, unknown>>, checked: boolean) => void;
+  handleFinishesToggle: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
 function useCommitText(storyID?: string, gitCommit?: boolean): UseCommitTextReturns {
@@ -73,7 +73,7 @@ function useCommitText(storyID?: string, gitCommit?: boolean): UseCommitTextRetu
     setCommitDescription('');
   };
 
-  const handleFinishesToggle = (_e: React.ChangeEvent<Record<string, unknown>>, isC: boolean): void => {
+  const handleFinishesToggle = (_e: React.ChangeEvent<HTMLInputElement>, isC: boolean): void => {
     setFinishes(isC);
   };
 
