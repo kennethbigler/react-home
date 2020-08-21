@@ -48,9 +48,8 @@ describe('apis | DateHelper', () => {
     expect(DateHelper(sampleDateObj).format('\'YY')).toStrictEqual('\'20');
     expect(DateHelper(dateStr).format('\'YY')).toStrictEqual('\'19');
 
-    // disabling TS for specific test case
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: disabling TS for specific test case
     expect(DateHelper(dateStr).format('')).toStrictEqual('');
   });
 });

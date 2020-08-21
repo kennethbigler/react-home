@@ -42,20 +42,22 @@
     "no-unused-expressions": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": ["**/*.test.{ts,tsx}", "src/setupTests.ts"]}],
     "react/jsx-props-no-spreading": "off",
     "react/no-array-index-key": "off",
     "react/require-default-props": "off",
     "react/static-property-placement": "off",
 
+    "@typescript-eslint/ban-types": "warn",
     "no-alert": "warn",
     "no-console": "warn",
     "react/no-did-mount-set-state": "warn",
     "react-hooks/exhaustive-deps": "warn",
 
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": ["**/*.test.{ts,tsx}", "src/setupTests.ts"]}],   
     "no-lone-blocks": "error",
     "object-curly-spacing": [ "error", "always", { "arraysInObjects": false, "objectsInObjects": false }],
     "prefer-destructuring": ["error", { "array": false, "object": true }],
+    "react/default-props-match-prop-types": ["error", { "allowRequiredDefaults": true }],
     "react/jsx-filename-extension": ["error", { "extensions": [".tsx", ".jsx"]}],
     "react-hooks/rules-of-hooks": "error"
   },

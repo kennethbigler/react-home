@@ -6,7 +6,7 @@ import { updateCardsToDiscard } from '../../../store/modules/poker';
 import { DBRootState } from '../../../store/types';
 import usePokerFunctions from './hooks';
 
-const Poker: React.FC<{}> = () => {
+const Poker: React.FC = () => {
   const {
     turn, players, cardsToDiscard, gameFunctions,
     gameOver, hideHands,

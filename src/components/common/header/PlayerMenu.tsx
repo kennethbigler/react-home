@@ -14,7 +14,7 @@ const namePadStyles: React.CSSProperties = {
   margin: 'auto',
 };
 
-const PlayerMenu: React.FC<{}> = () => {
+const PlayerMenu: React.FC = () => {
   const players = useSelector((state: DBRootState) => state.players);
   const dispatch = useDispatch();
 

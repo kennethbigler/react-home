@@ -5,7 +5,7 @@ export function insertItem<T>(array: T[], item: T): T[] {
   return newArr;
 }
 
-export function updateObjectInArray<T extends object, K extends keyof T>(array: T[], ins: T, key: K): T[] {
+export function updateObjectInArray<T extends Record<string, unknown>, K extends keyof T>(array: T[], ins: T, key: K): T[] {
   return array.map(
     (item) => (item[key] !== ins[key] ? item : { ...item, ...ins }),
   );

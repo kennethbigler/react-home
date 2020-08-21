@@ -13,7 +13,7 @@ const storageData = languageExp.map((obj) => ({
 }));
 const data = sortBy(storageData, ['months']).reverse();
 
-const TechBarChart: React.FC<{}> = React.memo(() => {
+const TechBarChart: React.FC = React.memo(() => {
   const { palette: { secondary: { main }}} = useTheme();
 
   return (

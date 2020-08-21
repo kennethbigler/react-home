@@ -10,7 +10,9 @@ import {
   WeighFunc,
   updateBet,
 } from './players';
-import { resetTurn, incrHandTurn, incrPlayerTurn } from './turn';
+import {
+  resetTurn, incrHandTurn, incrPlayerTurn, ta,
+} from './turn';
 
 // --------------------     Actions     -------------------- //
 const UPDATE_GAME_FUNCTIONS = '@casino/blackjack/UPDATE_GAME_FUNCTIONS';
@@ -48,7 +50,7 @@ export default function reducer(state: DBBlackjack = initialState.blackjack, act
 // --------------------     Thunks     -------------------- //
 /** start a new game in Blackjack DB */
 export function setNewGame(players: DBPlayer[]) {
-  return (dispatch: Function): Promise<Dispatch[]> => {
+  return (dispatch: Dispatch): Promise<(UpdateGameFunctionsAction | UpdateHideHandsAction | UpdateHasFunctionsAction | Action<ta.RESET>)[]> => {
     const { gameFunctions, hideHands, hasFunctions } = newBlackjackGame();
     const promises = [];
     promises.push(dispatch(updateGameFunctions(gameFunctions)));
@@ -61,21 +63,21 @@ export function setNewGame(players: DBPlayer[]) {
 }
 /** split hands of provided player/hand in Blackjack DB */
 export function splitHand(hands: DBHand[], id: number, hNum: number, weigh: WeighFunc) {
-  return async (dispatch: Function): Promise<void> => {
+  return async (dispatch: Dispatch<any>): Promise<void> => {
     await dispatch(pSplitHand(hands, id, hNum, weigh));
     await dispatch(updateHasFunctions(false));
   };
 }
 /** get a new card for turn hand in Blackjack DB */
 export function hitHand(hands: DBHand[], id: number, hNum: number, weigh: WeighFunc) {
-  return async (dispatch: Function): Promise<void> => {
+  return async (dispatch: Dispatch<any>): Promise<void> => {
     await dispatch(drawCard(hands, id, hNum, 1, weigh));
     await dispatch(updateHasFunctions(false));
   };
 }
 /** go to the next turn in Blackjack DB */
 export function stayHand(readyForNextPlayer: boolean) {
-  return async (dispatch: Function): Promise<void> => {
+  return async (dispatch: Dispatch): Promise<void> => {
     readyForNextPlayer
       ? await dispatch(incrHandTurn())
       : await dispatch(incrPlayerTurn());
@@ -84,7 +86,7 @@ export function stayHand(readyForNextPlayer: boolean) {
 }
 /** double your bet and get 1 card in Blackjack DB */
 export function doubleHand(player: DBPlayer, turn: DBTurn, weigh: WeighFunc) {
-  return async (dispatch: Function): Promise<void> => {
+  return async (dispatch: Dispatch<any>): Promise<void> => {
     const { id, bet, hands } = player;
     const lastHand = hands.length - 1;
 

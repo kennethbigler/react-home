@@ -1,4 +1,5 @@
 import React from 'react';
+import { Dispatch } from 'redux';
 import asyncForEach from '../../../helpers/asyncForEach';
 import { swapCards, newHand, payout } from '../../../store/modules/players';
 import Deck from '../../../apis/Deck';
@@ -22,7 +23,7 @@ interface UsePokerFunctions {
 }
 
 const usePokerFunctions = (
-  dispatch: Function,
+  dispatch: Dispatch<any>,
   cardsToDiscard: number[],
   players: DBPlayer[],
   turn: number,

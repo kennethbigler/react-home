@@ -52,7 +52,7 @@ for (let i = 0; i < len; i += 1) {
   countries.push(countryRow);
 }
 
-const TravelMap: React.FC<{}> = React.memo(() => (
+const TravelMap: React.FC = React.memo(() => (
   <>
     <Typography variant="h4" style={marginStyles}>
       {`I have been to ${NA.length + EU.length} countries:`}

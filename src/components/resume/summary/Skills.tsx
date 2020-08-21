@@ -11,7 +11,7 @@ const getCSV = (arr: string[]): React.ReactNodeArray => arr.map(
   (tech) => <Chip key={tech} label={tech} style={chipStyles} />,
 );
 
-const Skills: React.FC<{}> = React.memo(() => (
+const Skills: React.FC = React.memo(() => (
   <ExpandableCard title="Skills">
     <div style={sidePadding}>
       <Typography variant="h4">

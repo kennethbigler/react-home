@@ -25,7 +25,7 @@ const handleClick = (): void => {
   window.open('https://www.linkedin.com/in/kennethbigler', 'linkedIn');
 };
 
-const Info: React.FC<{}> = React.memo(() => (
+const Info: React.FC = React.memo(() => (
   <Grid container spacing={1}>
     <Grid item md={4} xs={12}>
       <img

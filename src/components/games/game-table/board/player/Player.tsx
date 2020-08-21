@@ -11,7 +11,7 @@ import { DBTurn, DBPlayer } from '../../../../../store/types';
 import styles from './Player.styles';
 
 interface PlayerProps {
-  betHandler?: (id: number, event: React.ChangeEvent<{}>, value: number) => void;
+  betHandler?: (id: number, event: React.ChangeEvent<Record<string, unknown>>, value: number) => void;
   cardHandler?: (playerNo: number, handNo: number, cardNo: number) => void;
   cardsToDiscard: number[];
   hideHands: boolean;
@@ -36,7 +36,7 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
   const maxBet: number = Math.max(Math.min(player.money, 100), 10);
   const step = 5;
   const onSliderChange = React.useCallback(
-    (event: React.ChangeEvent<{}>, value: number | number[]): void => {
+    (event: React.ChangeEvent<Record<string, unknown>>, value: number | number[]): void => {
       betHandler && betHandler(player.id, event, value as number);
     },
     [betHandler, player.id],

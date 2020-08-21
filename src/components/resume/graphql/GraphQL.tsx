@@ -23,7 +23,7 @@ const cache = new InMemoryCache();
  *         |->  NoToken
  *         |->  Profile  ->  Repository
  *            Loading  <-|->  ErrorMessage */
-const GraphQL: React.FC<{}> = React.memo(() => {
+const GraphQL: React.FC = React.memo(() => {
   const gqlToken = useSelector((state: DBRootState) => state.gqlToken);
   const dispatch = useDispatch();
 

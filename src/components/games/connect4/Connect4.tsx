@@ -12,7 +12,7 @@ const MAX = 2;
 
 /* Connect4  ->  GameBoard  ->  Header  ->  Piece
  *                         |->  Board   ->  Piece */
-const Connect4: React.FC<{}> = () => {
+const Connect4: React.FC = () => {
   const { board, turn, winner } = useSelector((state: DBRootState) => ({ ...state.connect4 }));
   const dispatch = useDispatch();
 

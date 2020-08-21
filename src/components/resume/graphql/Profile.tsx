@@ -28,7 +28,7 @@ const GET_REPOSITORIES_OF_CURRENT_USER = gql`
   ${REPOSITORY_FRAGMENT}
 `;
 
-const Profile: React.FC<{}> = React.memo(() => {
+const Profile: React.FC = React.memo(() => {
   const {
     error, data, loading, fetchMore,
   } = useQuery(GET_REPOSITORIES_OF_CURRENT_USER);

@@ -14,7 +14,7 @@ import LabelTableCell from './LabelTableCell';
 interface MurderMysteryPanelProps {
   expanded?: string;
   expandedKey: string;
-  handleChange: (panel: string) => (_event: React.ChangeEvent<{}>, exp?: boolean) => void;
+  handleChange: (panel: string) => (_event: React.ChangeEvent<Record<string, unknown>>, exp?: boolean) => void;
   role: string;
   importance: string;
   gender: string;

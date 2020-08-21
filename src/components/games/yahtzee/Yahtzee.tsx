@@ -71,7 +71,7 @@ const getYahtzeeVars = (topScores: number[], bottomScores: number[]): YahtzeeVar
   };
 };
 
-const Yahtzee: React.FC<{}> = () => {
+const Yahtzee: React.FC = () => {
   const {
     topScores, bottomScores, values, saved,
     roll, showScoreButtons, scores, hasScored,

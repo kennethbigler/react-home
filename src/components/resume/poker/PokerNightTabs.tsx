@@ -7,10 +7,10 @@ import GigNowPokerNight from './GigNowPokerNight';
 
 /* PokerNightTabs  ->  PennyPokerNight   |->  PokerGraph
  *                |->  GigNowPokerNight  |->  PokerTable */
-const PokerNightTabs: React.FC<{}> = React.memo(() => {
+const PokerNightTabs: React.FC = React.memo(() => {
   const [tab, setTab] = React.useState(0);
 
-  const handleChange = React.useCallback((event: React.ChangeEvent<{}>, val: number): void => {
+  const handleChange = React.useCallback((event: React.ChangeEvent<Record<string, unknown>>, val: number): void => {
     setTab(val);
   }, [setTab]);
 

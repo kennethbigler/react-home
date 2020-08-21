@@ -3,7 +3,7 @@ import { Typography } from '@material-ui/core';
 import ExpandableCard from '../../common/expandable-card';
 import classes, { School } from '../../../constants/classes';
 
-const Education: React.FC<{}> = React.memo(() => (
+const Education: React.FC = React.memo(() => (
   <ExpandableCard title="Education">
     <div style={{ paddingLeft: 20, paddingRight: 20 }}>
       {classes.map((d: School, i: number): React.ReactNode => {

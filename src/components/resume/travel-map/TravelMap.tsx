@@ -5,7 +5,7 @@ import WorldMap from './WorldMap';
 
 /* TravelMap  ->  WorldMap  ->  Popover
  *           |->  TravelTable */
-const TravelMap: React.FC<{}> = React.memo(() => (
+const TravelMap: React.FC = React.memo(() => (
   <>
     <Typography variant="h2">My Travel Map</Typography>
     <WorldMap />

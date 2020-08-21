@@ -13,7 +13,7 @@ import { DBRootState, briefcasesToOpen } from '../../../store/types';
 /* DealOrNoDeal  ->  Header
  *              |->  Board  ->  Case
  *              |->  Modal  ->  Money */
-const DND: React.FC<{}> = () => {
+const DND: React.FC = () => {
   const {
     board, dndOpen, isOver, offer, sum, turn,
     player, playerChoice, casesToOpen, numCases,

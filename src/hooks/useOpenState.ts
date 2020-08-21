@@ -2,8 +2,8 @@ import React from 'react';
 
 type OpenStateHook = [
   boolean,
-  Function,
-  Function,
+  () => void,
+  () => void,
 ]
 
 const useOpenState = (defaultVal = false): OpenStateHook => {

@@ -11,8 +11,8 @@ interface WithStoreState {
 }
 
 /** App class that wraps higher level components of the application */
-class WithStore extends React.PureComponent<{}, WithStoreState> {
-  constructor(props: {}) {
+class WithStore extends React.PureComponent<null, WithStoreState> {
+  constructor(props: null) {
     super(props);
     this.state = {};
   }

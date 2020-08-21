@@ -3,7 +3,7 @@ import { HashRouter } from 'react-router-dom';
 import Routes from '../components/Routes';
 
 /** App class that wraps higher level components of the application */
-const WithRouter: React.FC<{}> = () => (
+const WithRouter: React.FC = () => (
   <HashRouter>
     <Routes />
   </HashRouter>

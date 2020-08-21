@@ -1,4 +1,4 @@
-import indigo from '@material-ui/core/colors/indigo';
+import cyan from '@material-ui/core/colors/cyan';
 import deepOrange from '@material-ui/core/colors/deepOrange';
 import { pullHandle } from '../apis/SlotMachine';
 
@@ -157,7 +157,7 @@ const players: DBPlayer[] = [
 const poker = newPokerGameState();
 const slots: DBSlotDisplay[] = pullHandle();
 const theme: DBUITheme = {
-  primary: indigo,
+  primary: cyan,
   secondary: deepOrange,
   type: 'dark',
 };

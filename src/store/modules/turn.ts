@@ -3,7 +3,7 @@ import { DBTurn } from '../types';
 import initialState from '../initialState';
 
 // --------------------     Actions     -------------------- //
-enum ta {
+export enum ta {
   INCR_PLAYER = 'casino/turn/INCR',
   INCR_HAND = 'casino/turn/INCR_HAND',
   RESET = 'casino/turn/RESET',

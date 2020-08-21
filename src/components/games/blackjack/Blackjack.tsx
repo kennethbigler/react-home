@@ -29,7 +29,7 @@ interface PlayerStats {
 // Dealer constant
 const DEALER = 0;
 
-const BlackJack: React.FC<{}> = () => {
+const BlackJack: React.FC = () => {
   const {
     turn, players, gameFunctions, hideHands,
     hasFunctions,
@@ -317,7 +317,7 @@ const BlackJack: React.FC<{}> = () => {
   }, [players]);
 
   /** function to be called on card clicks */
-  const betHandler = React.useCallback((id: number, event: React.ChangeEvent<{}>, bet: number): void => {
+  const betHandler = React.useCallback((id: number, event: React.ChangeEvent<Record<string, unknown>>, bet: number): void => {
     dispatch(updateBet(id, bet));
   }, [dispatch]);
 

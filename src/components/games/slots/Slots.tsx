@@ -12,7 +12,7 @@ import ReelDisplay from './ReelDisplay';
 /* Slots  ->  ReelDisplay
  *       |->  MoneyTable
  *       |->  PayoutTable */
-const Slots: React.FC<{}> = () => {
+const Slots: React.FC = () => {
   const { players, reel } = useSelector((state: DBRootState) => ({
     players: state.players,
     reel: state.slots,

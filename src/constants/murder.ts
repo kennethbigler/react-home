@@ -28,10 +28,10 @@ const NEW_VISIT = `You have never been to ${CASINO} before.`;
 
 // --------------------     Intro     -------------------- //
 export const intro = `${CASINO} in Las Vegas is holding a special night for high rollers. `
-+ `Everyone has sauntered through the casino and into the theatre for a swanky show. `
-+ `The music starts, a spotlight comes on, and the curtain rises. `
++ 'Everyone has sauntered through the casino and into the theatre for a swanky show. '
++ 'The music starts, a spotlight comes on, and the curtain rises. '
 + `The hotel's very own ${VICTIM} stands, mic in hand ready to perform when a shot echoes through the dark hall. `
-+ `${VICTIM} falls. It takes a moment for the crowd to realize this isn't part of the act, but when they finally do they know they've all become suspects.`
++ `${VICTIM} falls. It takes a moment for the crowd to realize this isn't part of the act, but when they finally do they know they've all become suspects.`;
 
 // --------------------     Profiles V1     -------------------- //
 let owner = {

@@ -6,7 +6,7 @@ import { gigNowPokerScores, gigNowPokerColors } from '../../../constants/poker';
 
 const { parsedScores, totals } = parseData(gigNowPokerScores);
 
-const PokerNight: React.FC<{}> = React.memo(() => (
+const PokerNight: React.FC = React.memo(() => (
   <>
     <PokerGraph
       parsedScores={parsedScores}

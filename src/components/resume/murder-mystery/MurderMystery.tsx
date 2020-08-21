@@ -3,11 +3,11 @@ import { Typography } from '@material-ui/core';
 import profiles, { CASINO, intro } from '../../../constants/murder';
 import MurderMysteryPanel from './MurderMysteryPanel';
 
-const MurderMystery: React.FC<{}> = React.memo(() => {
+const MurderMystery: React.FC = React.memo(() => {
   const [expanded, setExpanded] = React.useState('');
 
   const handleChange = React.useCallback(
-    (panel: string) => (_event: React.ChangeEvent<{}>, exp?: boolean): void => {
+    (panel: string) => (_event: React.ChangeEvent<Record<string, unknown>>, exp?: boolean): void => {
       setExpanded(exp ? panel : '');
     },
     [setExpanded],

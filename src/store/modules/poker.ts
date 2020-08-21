@@ -1,8 +1,8 @@
 import { Action, Dispatch } from 'redux';
 import { DBPoker, DBPlayer, PokerGameFunctions as PGF } from '../types';
 import initialState, { newPokerGameState } from '../initialState';
-import { resetTurn, incrPlayerTurn } from './turn';
-import { resetStatus } from './players';
+import { resetTurn, incrPlayerTurn, ta } from './turn';
+import { resetStatus, PlayerAction } from './players';
 
 // --------------------     Actions     -------------------- //
 const UPDATE_DISCARD_CARDS = 'casino/poker/UPDATE_DISCARD_CARDS';
@@ -77,8 +77,8 @@ export default function reducer(state: DBPoker = initialState.poker, action: Pok
 // --------------------     Thunks     -------------------- //
 /** start a new game in Poker DB */
 export function newPokerGame(players: DBPlayer[]) {
-  return (dispatch: Function): Promise<Dispatch[]> => {
-    const promises = [];
+  return (dispatch: Dispatch): Promise<(Action<ta.RESET> | Action<pa.NEW_GAME> | PlayerAction)[]> => {
+    const promises: (Action<ta.RESET> | Action<pa.NEW_GAME> | PlayerAction)[] = [];
     promises.push(dispatch(newGame()));
     promises.push(dispatch(resetTurn()));
     players.forEach((player) => promises.push(dispatch(resetStatus(player.id))));
@@ -88,7 +88,7 @@ export function newPokerGame(players: DBPlayer[]) {
 
 /** move to the next player in Poker DB and Turn DB */
 export function endPokerTurn() {
-  return async (dispatch: Function): Promise<void> => {
+  return async (dispatch: Dispatch): Promise<void> => {
     await dispatch(endTurn());
     await dispatch(incrPlayerTurn());
   };

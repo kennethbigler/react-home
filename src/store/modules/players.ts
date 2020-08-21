@@ -1,4 +1,4 @@
-import { Action } from 'redux';
+import { Action, Dispatch } from 'redux';
 import asyncForEach from '../../helpers/asyncForEach';
 import Deck from '../../apis/Deck';
 import {
@@ -27,7 +27,7 @@ const {
   DRAW_CARD, SWAP_CARD, NEW_HAND,
 } = pa;
 
-interface PlayerAction extends Action<pa> { player: Partial<DBPlayer> }
+export interface PlayerAction extends Action<pa> { player: Partial<DBPlayer> }
 
 // -------------------- Action Creators     -------------------- //
 /** function to add a player to the state */
@@ -136,7 +136,7 @@ const defaultWeigh: WeighFunc = () => ({ weight: 0, soft: false });
  * @return {Object}
  */
 export function newHand(id = 0, num = 1, weigh = defaultWeigh) {
-  return (dispatch: Function): Promise<void> => Deck.deal(num)
+  return (dispatch: Dispatch): Promise<PlayerAction> => Deck.deal(num)
     .then((cards) => {
       cards.sort(Deck.rankSort);
       const { weight, soft } = weigh(cards);
@@ -154,7 +154,7 @@ export function newHand(id = 0, num = 1, weigh = defaultWeigh) {
  * @return {Object}
  */
 export function drawCard(hands: DBHand[], id: number, hNum = 0, num = 1, weigh = defaultWeigh) {
-  return (dispatch: Function): Promise<void> => Deck.deal(num)
+  return (dispatch: Dispatch): Promise<PlayerAction> => Deck.deal(num)
     .then((drawnCards) => {
       const cards = [...hands[hNum].cards, ...drawnCards];
       const { weight, soft } = weigh(cards);
@@ -172,7 +172,7 @@ export function drawCard(hands: DBHand[], id: number, hNum = 0, num = 1, weigh =
  * @return {Object}
  */
 export function splitHand(hands: DBHand[], id: number, hNum: number, weigh = defaultWeigh) {
-  return (dispatch: Function): Promise<void> => {
+  return (dispatch: Dispatch): Promise<void> => {
     const hand = hands[hNum];
     // split the hands into 2
     const hand1: DBHand = { cards: [hand.cards[0]]};
@@ -208,7 +208,7 @@ export function splitHand(hands: DBHand[], id: number, hNum: number, weigh = def
  * @return {Object}
  */
 export function swapCards(hands: DBHand[], id: number, cardsToDiscard: number[]) {
-  return (dispatch: Function): Promise<void> => {
+  return (dispatch: Dispatch): Promise<void> => {
     const cards = [...hands[0].cards];
     return asyncForEach(cardsToDiscard, async (idx: number) => {
       [cards[idx]] = await Deck.deal(1);

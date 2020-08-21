@@ -15,7 +15,7 @@ const paperStyles: React.CSSProperties = { width: 343, display: 'block', margin:
 /* TicTacToe  ->  Header
  *           |->  Board  ->  Cell
  *           |->  History */
-const TicTacToe: React.FC<{}> = () => {
+const TicTacToe: React.FC = () => {
   const { turn, step, history } = useSelector((state: DBRootState) => ({ ...state.ticTacToe }));
   const dispatch = useDispatch();
 

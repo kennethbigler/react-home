@@ -6,7 +6,7 @@ import WithRouter from './WithRouter';
 import { DBRootState } from '../store/types';
 
 /** App class that wraps higher level components of the application */
-const WithTheme: React.FC<{}> = () => {
+const WithTheme: React.FC = () => {
   const theme = useSelector((state: DBRootState) => state.theme);
 
   const setTheme = createMuiTheme({
