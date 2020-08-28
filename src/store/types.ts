@@ -52,8 +52,8 @@ export const briefcasesToOpen = 6;
 export interface DBGit {
   storyID: string;
   branchMessage: string;
-  branchPrefix: string;
-  casePreference: string;
+  branchPrefix: 'chores' | 'epics' | 'features' | 'fixes';
+  casePreference: 'snake_case' | 'kebab-case' | 'camelCase' | 'No Changes';
   commitPrefix: boolean;
 }
 

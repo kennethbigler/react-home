@@ -7,14 +7,14 @@ import Grid from '@material-ui/core/Grid';
 import CopyTextDisplay from './CopyTextDisplay';
 import { MaterialSelectEvent } from './types';
 
-interface BranchNameProps {
+interface DeployBranchProps {
   branchName: string;
   getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
   handleCopy: (text: string) => boolean;
 }
 
-const BranchName: React.FC<BranchNameProps> = React.memo((props: BranchNameProps) => {
+const DeployBranch: React.FC<DeployBranchProps> = React.memo((props: DeployBranchProps) => {
   const [targetBranch, setTargetBranch] = React.useState('test-pipeline');
 
   const handleSelect = React.useCallback((e: MaterialSelectEvent): void => {
@@ -50,4 +50,4 @@ const BranchName: React.FC<BranchNameProps> = React.memo((props: BranchNameProps
   );
 });
 
-export default BranchName;
+export default DeployBranch;

@@ -13,8 +13,8 @@ import { MaterialSelectEventHandler } from './types';
 interface BranchNameProps {
   branchMessage?: string;
   branchName: string;
-  branchPrefix: string;
-  casePreference: string;
+  branchPrefix: 'chores' | 'epics' | 'features' | 'fixes';
+  casePreference: 'snake_case' | 'kebab-case' | 'camelCase' | 'No Changes';
   getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
   handleCopy: (text: string) => boolean;
