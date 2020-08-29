@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { DBGit } from '../types';
+import { DBGit, CasePreferences, BranchPrefixes } from '../types';
 import initialState from '../initialState';
 
 // --------------------     Actions     -------------------- //
@@ -22,15 +22,15 @@ export function setBranchMessage(branchMessage = ''): SetBranchMessageAction {
   return { type: SET_BRANCH_MESSAGE, branchMessage };
 }
 
-interface SetBranchPrefixAction extends Action<typeof SET_BRANCH_PREFIX> { branchPrefix: string }
+interface SetBranchPrefixAction extends Action<typeof SET_BRANCH_PREFIX> { branchPrefix: BranchPrefixes }
 /** update the branch prefix in Git DB */
-export function setBranchPrefix(branchPrefix = ''): SetBranchPrefixAction {
+export function setBranchPrefix(branchPrefix = 'features' as BranchPrefixes): SetBranchPrefixAction {
   return { type: SET_BRANCH_PREFIX, branchPrefix };
 }
 
-interface SetCasePreferenceAction extends Action<typeof SET_CASE_PREFERENCE> { casePreference: string }
+interface SetCasePreferenceAction extends Action<typeof SET_CASE_PREFERENCE> { casePreference: CasePreferences }
 /** update the casing of the branch in Git DB */
-export function setCasePreference(casePreference = ''): SetCasePreferenceAction {
+export function setCasePreference(casePreference = 'No Changes' as CasePreferences): SetCasePreferenceAction {
   return { type: SET_CASE_PREFERENCE, casePreference };
 }
 

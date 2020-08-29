@@ -14,7 +14,7 @@ import CommitText from './CommitText';
 import DeployBranch from './DeployBranch';
 import Header from './Header';
 import ExpandableCard from '../../common/expandable-card';
-import { DBRootState } from '../../../store/types';
+import { DBRootState, BranchPrefixes, CasePreferences } from '../../../store/types';
 import { MaterialSelectEvent } from './types';
 
 const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');
@@ -49,11 +49,11 @@ const GitTools: React.FC = () => {
     dispatch(setBranchMessage(''));
   }, [dispatch]);
   /** function to update text state based on value */
-  const handleBranchPrefix = React.useCallback((newBranchPrefix: string): void => {
+  const handleBranchPrefix = React.useCallback((newBranchPrefix: BranchPrefixes): void => {
     dispatch(setBranchPrefix(newBranchPrefix));
   }, [dispatch]);
   /** function to update case pref based on value */
-  const handleCasePreference = React.useCallback((newCasePreference: string): void => {
+  const handleCasePreference = React.useCallback((newCasePreference: CasePreferences): void => {
     dispatch(setCasePreference(newCasePreference));
   }, [dispatch]);
 

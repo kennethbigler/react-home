@@ -9,19 +9,20 @@ import Clear from '@material-ui/icons/Clear';
 import Grid from '@material-ui/core/Grid';
 import CopyTextDisplay from './CopyTextDisplay';
 import { MaterialSelectEventHandler } from './types';
+import { BranchPrefixes, CasePreferences } from '../../../store/types';
 
 interface BranchNameProps {
   branchMessage?: string;
   branchName: string;
-  branchPrefix: 'chores' | 'epics' | 'features' | 'fixes';
-  casePreference: 'snake_case' | 'kebab-case' | 'camelCase' | 'No Changes';
+  branchPrefix: BranchPrefixes;
+  casePreference: CasePreferences;
   getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
   handleCopy: (text: string) => boolean;
   onBranchMessageChange: MaterialSelectEventHandler;
   onBranchMessageClear: React.MouseEventHandler;
-  setBranchPrefix: (newBranchPrefix: string) => void;
-  setCasePreference: (newCasePreference: string) => void;
+  setBranchPrefix: (newBranchPrefix: BranchPrefixes) => void;
+  setCasePreference: (newCasePreference: CasePreferences) => void;
 }
 
 const wrapperStyles: React.CSSProperties = { paddingLeft: 20, paddingRight: 20, width: '100%' };
@@ -47,7 +48,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
   /** function to update select state based on value */
   const handleBranchPrefixSelect = React.useCallback(
     (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>): void => {
-      setBranchPrefix(e.target.value as string);
+      setBranchPrefix(e.target.value as BranchPrefixes);
     },
     [setBranchPrefix],
   );
@@ -55,7 +56,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
   /** function to update text state based on value */
   const handleCasePrefSelect = React.useCallback(
     (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>): void => {
-      setCasePreference(e.target.value as string);
+      setCasePreference(e.target.value as CasePreferences);
     },
     [setCasePreference],
   );

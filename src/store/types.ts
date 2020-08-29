@@ -49,11 +49,14 @@ export interface DBDND {
 export const briefcasesToOpen = 6;
 
 // --------------------     git     -------------------- //
+export type BranchPrefixes = 'chores' | 'epics' | 'features' | 'fixes';
+export type CasePreferences = 'snake_case' | 'kebab-case' | 'camelCase' | 'No Changes';
+
 export interface DBGit {
   storyID: string;
   branchMessage: string;
-  branchPrefix: 'chores' | 'epics' | 'features' | 'fixes';
-  casePreference: 'snake_case' | 'kebab-case' | 'camelCase' | 'No Changes';
+  branchPrefix: BranchPrefixes;
+  casePreference: CasePreferences;
   commitPrefix: boolean;
 }
 
