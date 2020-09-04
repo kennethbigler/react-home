@@ -36,7 +36,7 @@ const dateHelper = (date?: DateObj | string): DateObj => {
     day = now.getDate();
   }
 
-  const diff = (dateObj: DateObj, scale: DateScale): number => {
+  const diff = (dateObj: DateObj, scale: DateScale = 'days'): number => {
     switch (scale) {
       case 'year':
       case 'years':
