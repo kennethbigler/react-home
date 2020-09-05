@@ -9,7 +9,7 @@ describe('common | timeline-card | Segment', () => {
       // color
       expect(screen.getByTitle('Title')).toHaveStyle({ backgroundColor: 'rgb(255, 255, 255)' });
       // body
-      expect(screen.getByTitle('Body')).toBeInTheDocument();
+      expect(screen.getByText('Body')).toBeInTheDocument();
       // title
       expect(screen.getByTitle('Title')).toBeInTheDocument();
       // width
@@ -45,7 +45,7 @@ describe('common | timeline-card | Segment', () => {
       // color
       expect(screen.getByTitle('Title')).toHaveStyle({ backgroundColor: 'rgb(255, 255, 255)' });
       // body
-      expect(screen.getByTitle('Body')).toBeInTheDocument();
+      expect(screen.getByText('Body')).toBeInTheDocument();
       // title
       expect(screen.getByTitle('Title')).toBeInTheDocument();
       // width
@@ -57,7 +57,7 @@ describe('common | timeline-card | Segment', () => {
     it('with body', () => {
       render(<Segment body="Body" title="Title" width={100} />);
       // body
-      expect(screen.getByTitle('Body')).toBeInTheDocument();
+      expect(screen.getByText('Body')).toBeInTheDocument();
       // title
       expect(screen.getByTitle('Title')).toBeInTheDocument();
       // width
