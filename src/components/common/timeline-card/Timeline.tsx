@@ -92,54 +92,51 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
   );
 
   /** break data up into segments */
-  const getSegments = React.useCallback(
-    (elm: DataEntry, i: number): SegmentType[] => {
+  const getSegments = (elm: DataEntry, i: number): SegmentType[] => {
+    // skip if added already
+    if (added[i]) {
+      return [];
+    }
+
+    // local variables
+    const segments: SegmentType[] = [];
+    const { start: segStart, end: segEnd } = elm;
+    let beginning = getTimeFromStart(segStart);
+    let ending = getTimeFromStart(segEnd);
+
+    // add main segments
+    addEmptySegment(segments, beginning);
+    addSegment(segments, elm, beginning, ending);
+
+    // track that segments have been added
+    added[i] = true;
+
+    // find any other segments that will fit
+    for (let j = i + 1; j < data.length; j += 1) {
       // skip if added already
-      if (added[i]) {
-        return [];
-      }
+      if (!added[j]) {
+        // test segment
+        const { start: jStart, end: jEnd } = data[j];
+        beginning = getTimeFromStart(jStart);
 
-      // local variables
-      const segments: SegmentType[] = [];
-      const { start: segStart, end: segEnd } = elm;
-      let beginning = getTimeFromStart(segStart);
-      let ending = getTimeFromStart(segEnd);
-
-      // add main segments
-      addEmptySegment(segments, beginning);
-      addSegment(segments, elm, beginning, ending);
-
-      // track that segments have been added
-      added[i] = true;
-
-      // find any other segments that will fit
-      for (let j = i + 1; j < data.length; j += 1) {
-        // skip if added already
-        if (!added[j]) {
-          // test segment
-          const { start: jStart, end: jEnd } = data[j];
-          beginning = getTimeFromStart(jStart);
-
-          // if start is after end of main segment
-          if (beginning >= ending) {
-            // add filler in between end/start
-            addEmptySegment(segments, beginning - ending);
-            // add next segment
-            ending = getTimeFromStart(jEnd);
-            addSegment(segments, data[j], beginning, ending);
-            // mark as already added
-            added[j] = true;
-          }
+        // if start is after end of main segment
+        if (beginning >= ending) {
+          // add filler in between end/start
+          addEmptySegment(segments, beginning - ending);
+          // add next segment
+          ending = getTimeFromStart(jEnd);
+          addSegment(segments, data[j], beginning, ending);
+          // mark as already added
+          added[j] = true;
         }
       }
+    }
 
-      // get last segment
-      addEmptySegment(segments, WIDTH - ending);
+    // get last segment
+    addEmptySegment(segments, WIDTH - ending);
 
-      return [...segments];
-    },
-    [addSegment, added, data, getTimeFromStart],
-  );
+    return [...segments];
+  };
 
   /** adds gray lines to indicate years */
   const getYearMarkers = React.useCallback(

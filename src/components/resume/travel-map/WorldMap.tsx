@@ -11,17 +11,6 @@ import red from '@material-ui/core/colors/red';
 import Popover from './Popover';
 import countries from '../../../constants/countries';
 
-type HandleEnter = (geography: GeographyType) => (evt: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
-
-interface WorldMapHook {
-  x: number;
-  y: number;
-  content: string;
-  hide: boolean;
-  handleEnter: HandleEnter;
-  handleLeave: () => void;
-}
-
 interface GeographyType {
   type: 'Feature';
   rsmKey: string;
@@ -46,6 +35,17 @@ interface GeographyType {
     REGION_UN: string;
     SUBREGION: string;
   };
+}
+
+type HandleEnter = (geography: GeographyType) => (evt: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
+
+interface WorldMapHook {
+  x: number;
+  y: number;
+  content: string;
+  hide: boolean;
+  handleEnter: HandleEnter;
+  handleLeave: () => void;
 }
 
 const STROKE = blueGrey[900];
