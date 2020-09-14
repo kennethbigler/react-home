@@ -5,6 +5,7 @@ cache:
   directories:
   - node_modules
 script:
+  - npm run qlint
   - npm run test:ci
   - npm run test:coverage
   - npm run build
