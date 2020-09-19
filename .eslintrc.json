@@ -60,7 +60,10 @@
     "prefer-destructuring": ["error", { "array": false, "object": true }],
     "react/default-props-match-prop-types": ["error", { "allowRequiredDefaults": true }],
     "react/jsx-filename-extension": ["error", { "extensions": [".tsx", ".jsx"]}],
-    "react-hooks/rules-of-hooks": "error"
+    "react-hooks/rules-of-hooks": "error",
+
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": "error"
   },
   "settings": {
     "react": {

@@ -7,5 +7,4 @@ cache:
 script:
   - npm run qlint
   - npm run test:ci
-  - npm run test:coverage
-  - CI= npm run build
+  - npm run build
