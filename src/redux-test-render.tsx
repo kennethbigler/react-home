@@ -1,16 +1,22 @@
 import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { render as rtlRender } from '@testing-library/react';
-import { createStore } from 'redux';
+import { render as rtlRender, RenderOptions, RenderResult } from '@testing-library/react';
+import { createStore, Store } from 'redux';
 import { Provider } from 'react-redux';
 
 import reducer from './store';
+import { DBRootState } from './store/types';
+
+interface CustomRenderOptions extends Omit<RenderOptions, 'queries'> {
+  initialState?: DBRootState;
+  store?: Store;
+}
 
 const render = (
-  ui: any,
-  { initialState, store = createStore(reducer, initialState), ...renderOptions }: any = {},
-): any => {
-  const Wrapper = ({ children }: { children: any }): any => (
+  ui: React.ReactElement,
+  { initialState, store = createStore(reducer, initialState), ...renderOptions }: CustomRenderOptions = {},
+): RenderResult => {
+  const Wrapper: React.ComponentType = ({ children }: { children?: React.ReactNode }) => (
     <Provider store={store}>
       { children }
     </Provider>

@@ -1,22 +1,15 @@
 import React from 'react';
 import RepositoryItem from './item';
-import FetchMore from './item/FetchMore';
+import FetchMore, { UpdateQueryType, Repository } from './item/FetchMore';
 
-interface PageInto {
-  hasNextPage: boolean;
-  endCursor: string;
-}
-interface Repository {
-  edges: any[];
-  pageInfo: PageInto;
-}
 interface RepositoryListProps {
   repositories: Repository;
   loading: boolean;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   fetchMore: Function;
 }
 
-const updateQuery = (previousResult: any, { fetchMoreResult }: any): any => {
+const updateQuery: UpdateQueryType = (previousResult, { fetchMoreResult }) => {
   if (!fetchMoreResult) {
     return previousResult;
   }

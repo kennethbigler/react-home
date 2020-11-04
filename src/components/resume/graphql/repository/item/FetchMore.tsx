@@ -1,15 +1,38 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Loading from '../../common/Loading';
+import type { RepositoryItemProps } from './RepositoryItem';
 
 interface Variables {
-  cursor: any;
+  cursor: unknown;
 }
+interface PageInto {
+  hasNextPage: boolean;
+  endCursor: string;
+}
+interface Edge {
+  node: RepositoryItemProps;
+}
+export interface Repository {
+  edges: Array<Edge>;
+  pageInfo: PageInto;
+}
+interface Result {
+  viewer: {
+    repositories: Repository;
+    [props: string]: unknown;
+  }
+  [props: string]: unknown;
+}
+export type UpdateQueryType = (previousResult: Result, { fetchMoreResult }: {
+  fetchMoreResult: Result;
+}) => Result;
 interface FetchMoreProps {
   loading: boolean;
   hasNextPage: boolean;
   variables: Variables;
-  updateQuery: Function;
+  updateQuery: UpdateQueryType;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   fetchMore: Function;
   children?: React.ReactNodeArray | string;
 }

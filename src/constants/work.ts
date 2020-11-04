@@ -49,6 +49,7 @@ export interface Job {
   title: string;
   type: 'work' | 'volunteer' | 'school';
   website: string;
+  [prop: string]: string | string[] | DateObj | boolean | number | undefined;
 }
 
 const workExp: Job[] = [

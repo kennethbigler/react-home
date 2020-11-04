@@ -10,6 +10,7 @@ export interface DataEntry {
   end: DateObj;
   inverted?: boolean;
   short?: string;
+  [prop: string]: string | string[] | DateObj | boolean | number | undefined;
 }
 interface TimelineProps {
   /** reads [selector] from each array entry and creates segments */
@@ -61,7 +62,7 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
 
   /** function to add elm segment */
   const addSegment = React.useCallback(
-    (segments: SegmentType[], elm: any, beginning: number, ending: number): void => {
+    (segments: SegmentType[], elm: DataEntry, beginning: number, ending: number): void => {
       const {
         color, inverted, title, short,
       } = elm;
@@ -73,7 +74,7 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
       // check if name has room
       if (textWidth < MIN_SHORT_WIDTH) {
         segments.push({
-          body: elm[selector].substr(0, 1),
+          body: (elm[selector] as string).substr(0, 1),
           ...payload,
         });
       } else if (textWidth < MIN_TEXT_WIDTH) {
@@ -83,7 +84,7 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
         });
       } else {
         segments.push({
-          body: elm[selector],
+          body: (elm[selector] as string),
           ...payload,
         });
       }

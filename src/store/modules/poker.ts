@@ -6,7 +6,7 @@ import { resetStatus, PlayerAction } from './players';
 
 // --------------------     Actions     -------------------- //
 const UPDATE_DISCARD_CARDS = 'casino/poker/UPDATE_DISCARD_CARDS';
-enum pa {
+export enum pa {
   NEW_GAME = 'casino/poker/NEW_GAME',
   START_GAME = 'casino/poker/START_GAME',
   END_TURN = 'casino/poker/END_TURN',
@@ -30,7 +30,7 @@ export const endPokerGame = (): Action<typeof END_GAME> => ({ type: END_GAME });
 /** reset cards to discard back to empty in Poker DB */
 export const discardCards = (): Action<typeof DISCARD_CARDS> => ({ type: DISCARD_CARDS });
 
-interface UpdateCardsToDiscardAction extends Action<typeof UPDATE_DISCARD_CARDS> { cardsToDiscard: number[] }
+export interface UpdateCardsToDiscardAction extends Action<typeof UPDATE_DISCARD_CARDS> { cardsToDiscard: number[] }
 /** mark a card for discard in Poker DB */
 export const updateCardsToDiscard = (cardsToDiscard: number[]): UpdateCardsToDiscardAction => ({ type: UPDATE_DISCARD_CARDS, cardsToDiscard });
 

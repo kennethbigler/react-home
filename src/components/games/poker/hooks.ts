@@ -23,6 +23,7 @@ interface UsePokerFunctions {
 }
 
 const usePokerFunctions = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: Dispatch<any>,
   cardsToDiscard: number[],
   players: DBPlayer[],

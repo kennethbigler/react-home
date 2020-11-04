@@ -9,7 +9,7 @@ import {
   Owner, PrimaryLanguage, StarGazers, Watchers,
 } from './types';
 
-interface RepositoryItemProps {
+export interface RepositoryItemProps {
   id: string;
   name: string;
   url: string;

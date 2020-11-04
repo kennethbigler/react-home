@@ -63,6 +63,7 @@ export function setNewGame(players: DBPlayer[]) {
 }
 /** split hands of provided player/hand in Blackjack DB */
 export function splitHand(hands: DBHand[], id: number, hNum: number, weigh: WeighFunc) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return async (dispatch: Dispatch<any>): Promise<void> => {
     await dispatch(pSplitHand(hands, id, hNum, weigh));
     await dispatch(updateHasFunctions(false));
@@ -70,6 +71,7 @@ export function splitHand(hands: DBHand[], id: number, hNum: number, weigh: Weig
 }
 /** get a new card for turn hand in Blackjack DB */
 export function hitHand(hands: DBHand[], id: number, hNum: number, weigh: WeighFunc) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return async (dispatch: Dispatch<any>): Promise<void> => {
     await dispatch(drawCard(hands, id, hNum, 1, weigh));
     await dispatch(updateHasFunctions(false));
@@ -86,6 +88,7 @@ export function stayHand(readyForNextPlayer: boolean) {
 }
 /** double your bet and get 1 card in Blackjack DB */
 export function doubleHand(player: DBPlayer, turn: DBTurn, weigh: WeighFunc) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return async (dispatch: Dispatch<any>): Promise<void> => {
     const { id, bet, hands } = player;
     const lastHand = hands.length - 1;
