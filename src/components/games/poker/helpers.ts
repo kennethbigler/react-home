@@ -56,7 +56,6 @@ export const rankHand = (hand: DBCard[], hist: number[]): number => {
   return 0; // high card
 };
 
-
 export const getHistogram = (hand: DBCard[]): number[] => {
   // Histogram for the cards
   const hist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
