@@ -4,7 +4,6 @@ import { screen, fireEvent } from '@testing-library/react';
 import { render } from '../../../redux-test-render';
 import CommitText from './CommitText';
 
-
 describe('resume | git-tools | CommitText', () => {
   let handleSelectOptions;
   const handleCopy = jest.fn();

@@ -21,7 +21,6 @@ interface BottomTableProps {
 
 const getDiceValue = (values: Dice[]): number => values.reduce((sum: number, d) => sum + d, 0);
 
-
 const showButton = (i: number, values: Dice[]): boolean => {
   switch (i) {
     case 0: // 3 of a kind

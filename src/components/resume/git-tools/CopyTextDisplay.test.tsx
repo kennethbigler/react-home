@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import CopyTextDisplay from './CopyTextDisplay';
 
-
 describe('resume | git-tools | CopyTextDisplay', () => {
   it('renders as expected', () => {
     const handleCopy = jest.fn();
