@@ -25,7 +25,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "5.11.6",
     "@testing-library/react": "11.2.2",
-    "@types/jest": "26.0.16",
+    "@types/jest": "26.0.19",
     "@types/lodash": "4.14.165",
     "@types/material-ui": "0.21.8",
     "@types/node": "13.13.34",
