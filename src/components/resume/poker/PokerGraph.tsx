@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, AxisDomain,
+  ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip,
 } from 'recharts';
 import { PokerScoreEntry, PokerColorEntry } from '../../../constants/poker';
 
 interface PokerNightProps {
   parsedScores: PokerScoreEntry[];
   colors: PokerColorEntry;
-  domain: [AxisDomain, AxisDomain];
+  domain: [number, number];
   ticks?: number[];
 }
 
@@ -36,7 +36,7 @@ const PokerNight: React.FC<PokerNightProps> = (props: PokerNightProps) => {
           tickLine={false}
           ticks={ticks && ticks}
         />
-        <Tooltip itemSorter={(a): number => -a.value} />
+        <Tooltip itemSorter={(a): number => ((a.value !== undefined) ? -a.value : 0)} />
       </LineChart>
     </ResponsiveContainer>
   );
