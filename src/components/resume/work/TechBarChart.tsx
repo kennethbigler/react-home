@@ -8,6 +8,11 @@ import dateObj from '../../../apis/DateHelper';
 import languageExp from '../../../constants/languages';
 
 type Months = string | number | React.ReactText[];
+type Payload = {
+  payload: {
+    name: 'months';
+  }
+}
 
 const storageData = languageExp.map((obj) => ({
   name: window.innerWidth < 1200 ? obj.short : obj.company,
@@ -24,8 +29,7 @@ const TechBarChart: React.FC = React.memo(() => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <Tooltip
-          formatter={(months: Months, name: string, prop: any): [string, string] => {
-            // FYI: name === 'months'
+          formatter={(months: Months, name: string, prop: Payload): [string, string] => {
             const displayMonths = months as number % 12;
             const years = Math.floor(months as number / 12);
 
