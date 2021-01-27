@@ -158,4 +158,18 @@ describe('resume | git-tools | GitTools', () => {
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(screen.getByText('git push -f origin features/branch-message:test-pipeline')).toBeInTheDocument();
   });
+
+  it('adds multiple lines when a Commit Description is added', () => {
+    render(<GitTools />);
+
+    expect(screen.getByText('features/')).toBeInTheDocument();
+    expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
+    expect(screen.getByText('git push -f origin features/:test-pipeline')).toBeInTheDocument();
+
+    fireEvent.change(screen.getByText('Commit Description').nextSibling!.firstChild!, { target: { value: 'some desc' }});
+    expect(screen.getByText('features/')).toBeInTheDocument();
+    expect(screen.getByText('git commit -m "feat:')).toBeInTheDocument();
+    expect(screen.getByText('some desc"')).toBeInTheDocument();
+    expect(screen.getByText('git push -f origin features/:test-pipeline')).toBeInTheDocument();
+  });
 });
