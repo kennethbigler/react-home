@@ -25,7 +25,7 @@ function useCommitText(storyID?: string, gitCommit?: boolean): UseCommitTextRetu
    * @return {string} format Prefix: Message [?Finishes? ID] */
   const getCommitText = (): string => {
     // prefix
-    const prefix = commitPrefix ? `${commitPrefix}: ` : '';
+    const prefix = `${commitPrefix}: `;
 
     // description
     let desc = ' ';
