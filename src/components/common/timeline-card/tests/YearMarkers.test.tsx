@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import YearMarkers from './YearMarkers';
+import YearMarkers from '../YearMarkers';
 
 describe('common | timeline-card | YearMarkers', () => {
   describe('basic props tests', () => {

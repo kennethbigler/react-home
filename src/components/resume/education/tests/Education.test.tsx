@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Education from './Education';
+import Education from '../Education';
 
 describe('resume | education | Education', () => {
   it('renders as expected', () => {

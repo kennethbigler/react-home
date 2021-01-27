@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import ButtonPopover from './ButtonPopover';
+import ButtonPopover from '../ButtonPopover';
 
 describe('common | header | ButtonPopover', () => {
   it('renders as expected', () => {

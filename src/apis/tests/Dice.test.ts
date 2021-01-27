@@ -1,4 +1,4 @@
-import Dice, { diceRoller, useDice } from './Dice';
+import Dice, { diceRoller, useDice } from '../Dice';
 
 describe('apis | Dice', () => {
   it('rolls a number between 1 and 6', () => {

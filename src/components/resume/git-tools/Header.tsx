@@ -5,14 +5,14 @@ import { MaterialSelectEventHandler } from './types';
 
 interface HeaderProps {
   gitTheme: string;
-  handleIDChange: MaterialSelectEventHandler;
+  onIdChange: MaterialSelectEventHandler;
   storyID?: string;
 }
 
 const validId = RegExp('[A-Z]{4}-[a-zA-Z0-9]+');
 
 const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
-  const { handleIDChange, storyID, gitTheme } = props;
+  const { onIdChange, storyID, gitTheme } = props;
 
   const isIdValid = storyID && validId.test(storyID);
 
@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
       <TextField
         InputLabelProps={{ style: { color: gitTheme }}}
         label="User Story ID"
-        onChange={handleIDChange}
+        onChange={onIdChange}
         placeholder="GNAP-12345"
         style={{ marginLeft: 20 }}
         value={storyID}

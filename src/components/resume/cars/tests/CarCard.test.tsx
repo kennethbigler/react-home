@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import CarCard, { Car } from './CarCard';
+import CarCard, { Car } from '../CarCard';
 
 const demoCar: Car = {
   owned: '2020',

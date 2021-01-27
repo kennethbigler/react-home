@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
-import { render } from '../../../redux-test-render';
-import TopBar from './TopBar';
+import { render } from '../../../../redux-test-render';
+import TopBar from '../TopBar';
 
 describe('common | header | TopBar', () => {
   describe('basic props tests', () => {

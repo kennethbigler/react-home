@@ -2,8 +2,8 @@ import {
   spin,
   pullHandle,
   getPayout,
-} from './SlotMachine';
-import { DBSlotDisplay, DBSlotOptions as SO } from '../store/types';
+} from '../SlotMachine';
+import { DBSlotDisplay, DBSlotOptions as SO } from '../../store/types';
 
 describe('apis | SlotMachine', () => {
   test('spin', () => {

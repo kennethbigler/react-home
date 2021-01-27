@@ -86,7 +86,7 @@ const GitTools: React.FC = () => {
       <Header
         {...{
           gitTheme,
-          handleIDChange,
+          onIdChange: handleIDChange,
           storyID,
         }}
       />

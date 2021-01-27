@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Segment from './Segment';
+import Segment from '../Segment';
 
 describe('common | timeline-card | Segment', () => {
   describe('basic props tests', () => {

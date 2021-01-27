@@ -1,6 +1,6 @@
 import {
   doTasks, isAmbigram1, isAmbigram2, intersect, maxProfit, intToRoman, romanToInt,
-} from './Interviews';
+} from '../Interviews';
 
 describe('apis | Interviews', () => {
   test('Facebook | doTasks', () => {

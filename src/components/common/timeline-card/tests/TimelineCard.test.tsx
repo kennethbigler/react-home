@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import TimelineCard from './TimelineCard';
+import TimelineCard from '../TimelineCard';
 
-import dateObj from '../../../apis/DateHelper';
+import dateObj from '../../../../apis/DateHelper';
 
 const start = dateObj('2019-05');
 const end = dateObj('2020-02');

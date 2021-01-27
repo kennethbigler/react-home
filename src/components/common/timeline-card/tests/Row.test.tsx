@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Row from './Row';
+import Row from '../Row';
 
 const segments = [
   { title: 'Title 1', width: 50 },

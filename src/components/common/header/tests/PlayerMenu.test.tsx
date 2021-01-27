@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
-import { render } from '../../../redux-test-render';
-import PlayerMenu from './PlayerMenu';
+import { render } from '../../../../redux-test-render';
+import PlayerMenu from '../PlayerMenu';
 
 describe('common | header | PlayerMenu', () => {
   it('renders expected text', () => {

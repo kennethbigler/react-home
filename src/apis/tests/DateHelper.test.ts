@@ -1,4 +1,4 @@
-import DateHelper from './DateHelper';
+import DateHelper from '../DateHelper';
 
 const sampleDateObj = DateHelper('2020-01-02');
 const dateStr = '2019-03-04';

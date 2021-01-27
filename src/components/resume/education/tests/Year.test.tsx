@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Year from './Year';
+import Year from '../Year';
 
 const year = {
   year: 'YearName',

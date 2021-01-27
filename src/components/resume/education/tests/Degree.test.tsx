@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Degree, { DegreeType } from './Degree';
+import Degree, { DegreeType } from '../Degree';
 
 const degree: DegreeType = {
   degree: 'DegreeName',
