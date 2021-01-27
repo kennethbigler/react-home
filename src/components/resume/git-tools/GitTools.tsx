@@ -17,7 +17,39 @@ import ExpandableCard from '../../common/expandable-card';
 import { DBRootState, BranchPrefixes, CasePreferences } from '../../../store/types';
 import { MaterialSelectEvent } from './types';
 
-const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');
+const gitTheme = deepOrange[600];
+export const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');
+
+/** function to generate select items based of input */
+export const getSelectOptions = (arr: string[]): React.ReactNode => arr.map((t, i) => (
+  <MenuItem key={i} value={t}>{t}</MenuItem>
+));
+
+/** function to generate the branch name from inputs
+   * @return {string} format prefix/<story_id>_name_lower_cased */
+export const getBranchName = (
+  branchMessage: string,
+  branchPrefix: BranchPrefixes,
+  casePreference: CasePreferences,
+  storyID: string,
+): string => {
+  const prefix = branchPrefix ? `${branchPrefix}/` : '';
+  let msg = '';
+  switch (casePreference) {
+    case 'snake_case':
+      msg = `${storyID && `${storyID}_`}${snakeCase(branchMessage)}`;
+      break;
+    case 'kebab-case':
+      msg = `${storyID && `${storyID}-`}${kebabCase(branchMessage)}`;
+      break;
+    case 'camelCase':
+      msg = `${storyID}${camelCase(branchMessage)}`;
+      break;
+    default:
+      msg = `${storyID}${branchMessage}`;
+  }
+  return `${prefix}${msg}`;
+};
 
 /* GitTools  ->  Header
  *          |->  BranchName    -|
@@ -29,17 +61,11 @@ const GitTools: React.FC = () => {
   } = useSelector((state: DBRootState) => state.git);
   const dispatch = useDispatch();
 
-  /** function to generate select items based of input */
-  const getSelectOptions = React.useCallback((arr: string[]): React.ReactNode => arr.map((t, i) => (
-    <MenuItem key={i} value={t}>{t}</MenuItem>
-  )), []);
-
   /** function to update text state based on value */
   const handleIDChange = React.useCallback((e: MaterialSelectEvent): void => {
     const [value] = validTypingId.exec(e.target.value as string) || [''];
     dispatch(setKey(value));
   }, [dispatch]);
-
   /** function to update text state based on value */
   const handleBranchMessageChange = React.useCallback((e: MaterialSelectEvent): void => {
     dispatch(setBranchMessage(e.target.value as string));
@@ -57,29 +83,7 @@ const GitTools: React.FC = () => {
     dispatch(setCasePreference(newCasePreference));
   }, [dispatch]);
 
-  /** function to generate the branch name from inputs
-   * @return {string} format prefix/<story_id>_name_lower_cased */
-  const getBranchName = React.useCallback((): string => {
-    const prefix = branchPrefix ? `${branchPrefix}/` : '';
-    let msg = '';
-    switch (casePreference) {
-      case 'snake_case':
-        msg = `${storyID && `${storyID}_`}${snakeCase(branchMessage)}`;
-        break;
-      case 'kebab-case':
-        msg = `${storyID && `${storyID}-`}${kebabCase(branchMessage)}`;
-        break;
-      case 'camelCase':
-        msg = `${storyID}${camelCase(branchMessage)}`;
-        break;
-      default:
-        msg = `${storyID}${branchMessage}`;
-    }
-    return `${prefix}${msg}`;
-  }, [branchMessage, branchPrefix, casePreference, storyID]);
-
-  const branchName = getBranchName();
-  const gitTheme = deepOrange[600];
+  const branchName = getBranchName(branchMessage, branchPrefix, casePreference, storyID);
 
   return (
     <>

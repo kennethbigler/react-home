@@ -1,7 +1,7 @@
 import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import { render, screen, fireEvent } from '@testing-library/react';
-import BranchName from './BranchName';
+import BranchName from '../BranchName';
 
 describe('resume | git-tools | BranchName', () => {
   const getSelectOptions = jest.fn()
@@ -49,18 +49,6 @@ describe('resume | git-tools | BranchName', () => {
     expect(getSelectOptions).toHaveBeenCalledTimes(2);
     expect(getSelectOptions).toHaveBeenCalledWith(['chores', 'epics', 'features', 'fixes']);
     expect(getSelectOptions).toHaveBeenLastCalledWith(['snake_case', 'kebab-case', 'camelCase', 'No Changes']);
-  });
-
-  it.skip('calls setBranchPrefix on select of Branch Prefix option', () => {
-    expect(setBranchPrefix).not.toHaveBeenCalled();
-    fireEvent.change(screen.getAllByDisplayValue('one')[0], { target: { value: 'two' }});
-    expect(setBranchPrefix).toHaveBeenCalledWith('two');
-  });
-
-  it.skip('calls setCasePreference on select of case option', () => {
-    expect(setCasePreference).not.toHaveBeenCalled();
-    fireEvent.change(screen.getAllByDisplayValue('one')[1], { target: { value: 'two' }});
-    expect(setCasePreference).toHaveBeenCalledWith('two');
   });
 
   it('calls onBranchMessageChange when Branch Name is changed', () => {

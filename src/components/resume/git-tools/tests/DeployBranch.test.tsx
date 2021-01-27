@@ -1,8 +1,8 @@
 import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import { screen, fireEvent } from '@testing-library/react';
-import { render } from '../../../redux-test-render';
-import DeployBranch from './DeployBranch';
+import { render } from '../../../../redux-test-render';
+import DeployBranch from '../DeployBranch';
 
 describe('resume | git-tools | DeployBranch', () => {
   let handleSelectOptions;

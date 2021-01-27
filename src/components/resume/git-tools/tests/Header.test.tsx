@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Header from './Header';
+import Header from '../Header';
 
 describe('resume | git-tools | Header', () => {
   it('renders as expected', () => {
