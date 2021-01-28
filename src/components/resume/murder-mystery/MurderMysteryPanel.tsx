@@ -1,7 +1,7 @@
 import React from 'react';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -37,14 +37,14 @@ const MurderMysteryPanel: React.FC<MurderMysteryPanelProps> = React.memo((props:
   } = props;
 
   return (
-    <ExpansionPanel expanded={expanded === expandedKey} onChange={handleChange(expandedKey)}>
-      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+    <Accordion expanded={expanded === expandedKey} onChange={handleChange(expandedKey)}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <div style={containerStyles}>
           <Typography style={itemStyles}>{role}</Typography>
           <Typography style={itemStyles}>{importance}</Typography>
         </div>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
+      </AccordionSummary>
+      <AccordionDetails>
         <Table>
           <TableBody>
             <TableRow>
@@ -67,8 +67,8 @@ const MurderMysteryPanel: React.FC<MurderMysteryPanelProps> = React.memo((props:
             </TableRow>
           </TableBody>
         </Table>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionDetails>
+    </Accordion>
   );
 });
 

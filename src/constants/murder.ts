@@ -105,7 +105,7 @@ let prof = {
   gender: Gender.NEUTRAL,
 };
 let diner = {
-  role: 'The Owner of Diner',
+  role: 'The Owner of the Diner',
   importance: Importance.I3,
   gender: Gender.NEUTRAL,
 };
