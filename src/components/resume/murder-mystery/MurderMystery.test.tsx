@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import MurderMystery from './MurderMystery';
 
-describe('resume | murder-mystery | MurderMystery', () => {
+describe('resume | murder-mystery', () => {
   it('renders as expected', () => {
     render(<MurderMystery />);
 

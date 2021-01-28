@@ -11,6 +11,9 @@ interface PokerNightProps {
   ticks?: number[];
 }
 
+interface TooltipItem { value?: number; }
+export const itemSorter = (a:TooltipItem): number => ((a.value !== undefined) ? -a.value : 0);
+
 const PokerNight: React.FC<PokerNightProps> = (props: PokerNightProps) => {
   const {
     parsedScores, colors, domain, ticks,
@@ -36,7 +39,7 @@ const PokerNight: React.FC<PokerNightProps> = (props: PokerNightProps) => {
           tickLine={false}
           ticks={ticks && ticks}
         />
-        <Tooltip itemSorter={(a): number => ((a.value !== undefined) ? -a.value : 0)} />
+        <Tooltip itemSorter={itemSorter} />
       </LineChart>
     </ResponsiveContainer>
   );
