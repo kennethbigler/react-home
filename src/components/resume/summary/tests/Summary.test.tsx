@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Summary from './Summary';
+import Summary from '../Summary';
 
-describe('resume | summary', () => {
+describe('resume | summary | Summary', () => {
   it('renders as expected', () => {
     render(<Summary />);
 

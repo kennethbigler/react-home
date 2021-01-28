@@ -6,7 +6,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Grid from '@material-ui/core/Grid';
 import ExpandableCard from '../../common/expandable-card';
 import photo from '../../../images/ken.jpg';
-import workExp from '../../../constants/work';
+import workExp, { Job } from '../../../constants/work';
 
 const imageStyles: React.CSSProperties = {
   width: '95%',
@@ -15,8 +15,7 @@ const imageStyles: React.CSSProperties = {
   marginBottom: '1em',
 };
 
-const getJob = (): string => {
-  const job = workExp[0];
+export const getJob = (job: Job): string => {
   const parent = job.parent ? ` (${job.parent})` : '';
   return `${job.title}, ${job.company}${parent}`;
 };
@@ -36,7 +35,7 @@ const Info: React.FC = React.memo(() => (
       />
     </Grid>
     <Grid item md={8} xs={12}>
-      <ExpandableCard title={getJob()}>
+      <ExpandableCard title={getJob(workExp[0])}>
         <Table>
           <TableBody>
             <TableRow>
