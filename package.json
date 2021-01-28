@@ -53,7 +53,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "DEBUG_PRINT_LIMIT=100000 react-scripts test",
     "test:ci": "CI=true react-scripts test --env=jsdom",
     "test:coverage": "npm test -- --coverage",
     "deploy": "./scripts/deploy.sh",
