@@ -1,5 +1,9 @@
 # Home
 
+![CI](https://github.com/kennethbigler/react-home/workflows/CI/badge.svg)
+[![codecov](https://codecov.io/gh/kennethbigler/react-home/branch/main/graph/badge.svg)](https://codecov.io/gh/kennethbigler/react-home/)
+![License](https://img.shields.io/github/license/kennethbigler/react-home)
+
 This is a website created by me to represent my resume. I use ReactJS and it is hosted by GitHub Pages.
 
 View the site at [kennethbigler.com](http://www.kennethbigler.com/)
