@@ -10,7 +10,7 @@
     "copy-to-clipboard": "3.3.1",
     "graphql-tag": "2.11.0",
     "localforage": "1.9.0",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-newline-to-break": "1.0.6",
