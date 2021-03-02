@@ -48,11 +48,11 @@ jobs:
       - name: Run linters
         run: npm run qlint
 
+      - name: Build
+        run: npm run build
+
       - name: Run the tests and generate coverage report
         run: npm test -- --coverage
         
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v1.2.1
-
-      - name: Build
-        run: npm run build
