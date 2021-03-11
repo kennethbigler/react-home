@@ -93,5 +93,12 @@
     "coverageReporters": [
       "json", "text"
     ]
-  }
+  },
+  "keywords": [
+    "Ken", "Kenneth", "Bigler", "Kenneth Bigler", "Ken Bigler",
+    "Resume", "HTML", "CSS", "JavaScript", "C++", "C", "Software Developer",
+    "Web", "Web Developer", "Web Technologist", "Santa Clara", "SCU", "scu",
+    "Santa Clara University", "Software Engineer", "Engineering",
+    "Software Engineering", "Software Development"
+  ]
 }
