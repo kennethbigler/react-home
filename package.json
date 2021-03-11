@@ -91,7 +91,7 @@
       }
     },
     "coverageReporters": [
-      "text"
+      "json", "text"
     ]
   }
 }
