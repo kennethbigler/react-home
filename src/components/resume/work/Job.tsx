@@ -18,12 +18,12 @@ const imgStyle: React.CSSProperties = {
   float: 'right',
 };
 
-const getCSV = (arr: string[] = []): React.ReactNodeArray => {
+export const getCSV = (arr: string[] = []): React.ReactNodeArray => {
   const style = { marginRight: 5, marginBottom: 5 };
   return arr.map((item) => <Chip key={item} label={item} style={style} />);
 };
 
-const showRange = (s: DateObj, e: DateObj, notes = ''): string => {
+export const showRange = (s: DateObj, e: DateObj, notes = ''): string => {
   // start date
   const start = s.format(FORMAT);
   // end date, check if it is the present

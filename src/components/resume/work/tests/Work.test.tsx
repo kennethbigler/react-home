@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Work from './Work';
+import Work from '../Work';
 
 describe('resume | work | Work', () => {
   it('renders as expected', () => {

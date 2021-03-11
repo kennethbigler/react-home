@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import TravelMap from './TravelMap';
+import TravelMap from '../TravelMap';
 
 describe('resume | travel-map | TravelMap', () => {
   it('renders as expected', () => {
