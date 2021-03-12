@@ -55,8 +55,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "DEBUG_PRINT_LIMIT=100000 react-scripts test",
-    "test:ci": "CI=true react-scripts test --env=jsdom",
-    "test:coverage": "npm test -- --coverage",
+    "test:coverage": "react-scripts test --coverage",
+    "test:coverage-all": "react-scripts test --coverage --watchAll",
     "deploy": "./scripts/deploy.sh",
     "analyze": "source-map-explorer 'docs/static/js/*.js'",
     "analyze-local": "./scripts/analyze.sh",
@@ -71,10 +71,10 @@
   ],
   "jest": {
     "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}"
+      "<rootDir>/src/**/*.{ts,tsx}"
     ],
     "coveragePathIgnorePatterns": [
-      "src/components/common/dark-table-cell/"
+      "<rootDir>/src/components/common/dark-table-cell/"
     ],
     "coverageThreshold": {
       "./src/apis/": {
