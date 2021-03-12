@@ -15,7 +15,7 @@ const Cell: React.FC<CellProps> = React.memo((props: CellProps) => {
   const attr: React.CSSProperties = winner ? { color: 'white', backgroundColor: main } : {};
 
   return (
-    <Button onClick={onClick} style={attr}>
+    <Button onClick={onClick} style={attr} role="button">
       {value || <br />}
     </Button>
   );

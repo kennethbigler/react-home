@@ -29,6 +29,7 @@ const History: React.FC<HistoryProps> = (props: HistoryProps) => {
         key={move}
         color={color}
         onClick={(): void => jumpToStep(move)}
+        role="button"
         style={{ display: 'block' }}
       >
         {description}
@@ -47,6 +48,7 @@ const History: React.FC<HistoryProps> = (props: HistoryProps) => {
         onClick={(): void => { setAscend(!ascend); }}
         style={{ marginTop: 20, marginBottom: 20 }}
         variant="contained"
+        role="button"
       >
         {ascend ? 'Asc' : 'Desc'}
       </Button>
