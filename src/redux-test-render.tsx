@@ -24,9 +24,5 @@ const render = (
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
 };
 
-// re-export everything
-// eslint-disable-next-line import/no-extraneous-dependencies
-export * from '@testing-library/react';
-
 // override render method
-export { render };
+export default render;

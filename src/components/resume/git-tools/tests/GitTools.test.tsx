@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
-import { render } from '../../../../redux-test-render';
+import render from '../../../../redux-test-render';
 import GitTools, { validTypingId, getSelectOptions, getBranchName } from '../GitTools';
 
 describe('resume | git-tools | GitTools', () => {

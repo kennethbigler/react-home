@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
-import { render } from '../../../../redux-test-render';
+import render from '../../../../redux-test-render';
 import Header, { NavProps } from '../Header';
 
 /** This is just used for testing purposes */

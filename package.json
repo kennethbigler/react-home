@@ -55,7 +55,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "DEBUG_PRINT_LIMIT=100000 react-scripts test",
-    "test:coverage": "react-scripts test --coverage",
+    "test:coverage": "DEBUG_PRINT_LIMIT=100000 react-scripts test --coverage",
     "test:coverage-all": "react-scripts test --coverage --watchAll",
     "deploy": "./scripts/deploy.sh",
     "analyze": "source-map-explorer 'docs/static/js/*.js'",

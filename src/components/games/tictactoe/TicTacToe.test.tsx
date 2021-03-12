@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
-import { render } from '../../../redux-test-render';
+import render from '../../../redux-test-render';
 import TicTacToe from './TicTacToe';
 
 describe('games | tictactoe | TicTacToe', () => {
