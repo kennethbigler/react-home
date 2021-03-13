@@ -17,7 +17,6 @@ interface PieceProps {
 /** returns color based of piece type */
 const getColor = (piece: number): string | undefined => {
   switch (piece) {
-    case undefined:
     case 0:
       return undefined;
     case 1:
@@ -41,7 +40,7 @@ const Piece = (props: PieceProps): React.ReactElement => {
         <div />
       </Fab>
     ) : (
-      <Fab size="small" onClick={onClick} style={style}>
+      <Fab size="small" onClick={onClick} style={style} role="button">
         <ContentAdd style={{ color: 'white' }} />
       </Fab>
     );
