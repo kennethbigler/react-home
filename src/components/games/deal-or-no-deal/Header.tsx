@@ -24,8 +24,7 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
     <Grid container spacing={1}>
       <Grid item sm={6} xs={12}>
         <Typography variant="h3" gutterBottom>
-          {`Your Case: ${pc ? pc.loc : '?'}`}
-          {isOver && ` - ${getMoneyText(pc && pc.val)}`}
+          {`Your Case: ${pc ? pc.loc : '?'}${isOver ? ` - ${getMoneyText(pc && pc.val)}` : ''}`}
         </Typography>
         <Typography variant="h4" gutterBottom>
           {isOver

@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import render from '../../../redux-test-render';
 import Blackjack from './Blackjack';
 
@@ -14,6 +14,17 @@ describe('games | blackjack | Blackjack', () => {
     expect(screen.getAllByText('Bot: $100')).toHaveLength(5);
     expect(screen.getByText('Dealer: $100')).toBeInTheDocument();
     expect(screen.getByText('Finish Betting')).toBeInTheDocument();
+  });
+
+  it('opens the rules modal', () => {
+    render(<Blackjack />);
+
+    expect(screen.queryByText('Objective:')).toBeNull();
+    expect(screen.queryByText('Close')).toBeNull();
+
+    fireEvent.click(screen.getByText('Rules'));
+    expect(screen.getByText('Objective:')).toBeInTheDocument();
+    expect(screen.getByText('Close')).toBeInTheDocument();
   });
 
   // TODO: We aren't done, keep adding tests here, just had to leave for a hike

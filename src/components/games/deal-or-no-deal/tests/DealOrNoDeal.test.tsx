@@ -1,7 +1,7 @@
 import React from 'react';
-import { screen, fireEvent } from '@testing-library/react';
-import render from '../../../redux-test-render';
-import DealOrNoDeal from './DealOrNoDeal';
+import { screen } from '@testing-library/react';
+import render from '../../../../redux-test-render';
+import DealOrNoDeal from '../DealOrNoDeal';
 
 describe('games | deal-or-no-deal | DealOrNoDeal', () => {
   it('renders as expected', () => {

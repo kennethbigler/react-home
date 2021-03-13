@@ -74,7 +74,8 @@
       "<rootDir>/src/**/*.{ts,tsx}"
     ],
     "coveragePathIgnorePatterns": [
-      "<rootDir>/src/components/common/dark-table-cell/"
+      "<rootDir>/src/components/common/dark-table-cell/",
+      "<rootDir>/src/serviceWorker.ts"
     ],
     "coverageThreshold": {
       "./src/apis/": {
