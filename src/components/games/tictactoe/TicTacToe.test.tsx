@@ -73,11 +73,12 @@ describe('games | tictactoe | TicTacToe', () => {
     expect(screen.queryAllByText('X')).toHaveLength(0);
     expect(screen.queryAllByText('O')).toHaveLength(0);
 
-    fireEvent.click(screen.getAllByRole('button')[1]);
-    fireEvent.click(screen.getAllByRole('button')[2]);
-    fireEvent.click(screen.getAllByRole('button')[5]);
-    fireEvent.click(screen.getAllByRole('button')[3]);
-    fireEvent.click(screen.getAllByRole('button')[9]);
+    const buttons = screen.getAllByRole('button');
+    fireEvent.click(buttons[1]);
+    fireEvent.click(buttons[2]);
+    fireEvent.click(buttons[5]);
+    fireEvent.click(buttons[3]);
+    fireEvent.click(buttons[9]);
 
     expect(screen.getByText('Winner: X')).toBeInTheDocument();
     expect(screen.queryByText('Turn: X')).toBeNull();
@@ -86,14 +87,14 @@ describe('games | tictactoe | TicTacToe', () => {
     expect(screen.getByText('Move #5 (X, 2, 2)')).toBeInTheDocument();
 
     // it won't allow clicks after victory
-    fireEvent.click(screen.getAllByRole('button')[4]);
+    fireEvent.click(buttons[4]);
     expect(screen.getByText('Winner: X')).toBeInTheDocument();
     expect(screen.queryByText('Turn: X')).toBeNull();
     expect(screen.getAllByText('X')).toHaveLength(3);
     expect(screen.getAllByText('O')).toHaveLength(2);
 
     // it can reset to a new game
-    fireEvent.click(screen.getAllByRole('button')[0]);
+    fireEvent.click(buttons[0]);
     expect(screen.getByText('Turn: X')).toBeInTheDocument();
     expect(screen.queryByText('Winner: X')).toBeNull();
     expect(screen.queryAllByText('X')).toHaveLength(0);
@@ -109,8 +110,9 @@ describe('games | tictactoe | TicTacToe', () => {
     expect(screen.queryByText('O')).toBeNull();
     expect(screen.queryByText('Move #2 (O, 1, 0)')).toBeNull();
 
-    fireEvent.click(screen.getAllByRole('button')[1]);
-    fireEvent.click(screen.getAllByRole('button')[4]);
+    let buttons = screen.getAllByRole('button');
+    fireEvent.click(buttons[1]);
+    fireEvent.click(buttons[4]);
 
     expect(screen.getByText('X')).toBeInTheDocument();
     // button index 12
@@ -119,9 +121,10 @@ describe('games | tictactoe | TicTacToe', () => {
     // button index 13
     expect(screen.getByText('Move #2 (O, 1, 0)')).toBeInTheDocument();
     // with the 2 Move buttons available, we should be at 14 now
-    expect(screen.getAllByRole('button')).toHaveLength(14);
+    buttons = screen.getAllByRole('button');
+    expect(buttons).toHaveLength(14);
 
-    fireEvent.click(screen.getAllByRole('button')[12]);
+    fireEvent.click(buttons[12]);
     expect(screen.getByText('X')).toBeInTheDocument();
     expect(screen.getByText('Move #1 (X, 0, 0)')).toBeInTheDocument();
     // this is the only thing removed
@@ -129,7 +132,7 @@ describe('games | tictactoe | TicTacToe', () => {
     expect(screen.getByText('Move #2 (O, 1, 0)')).toBeInTheDocument();
 
     // double click will remove the ability to go forward in time
-    fireEvent.click(screen.getAllByRole('button')[12]);
+    fireEvent.click(buttons[12]);
     expect(screen.getByText('X')).toBeInTheDocument();
     expect(screen.getByText('Move #1 (X, 0, 0)')).toBeInTheDocument();
     expect(screen.queryByText('O')).toBeNull();
@@ -140,14 +143,15 @@ describe('games | tictactoe | TicTacToe', () => {
   it('can change the displayed order of the history', () => {
     render(<TicTacToe />);
 
+    const buttons = screen.getAllByRole('button');
     // populate history
-    fireEvent.click(screen.getAllByRole('button')[1]);
-    fireEvent.click(screen.getAllByRole('button')[4]);
+    fireEvent.click(buttons[1]);
+    fireEvent.click(buttons[4]);
 
     // button 10
     expect(screen.getByText('Asc')).toBeInTheDocument();
     expect(screen.queryByText('Desc')).toBeNull();
-    fireEvent.click(screen.getAllByRole('button')[10]);
+    fireEvent.click(buttons[10]);
     expect(screen.queryByText('Asc')).toBeNull();
     expect(screen.getByText('Desc')).toBeInTheDocument();
   });
