@@ -21,9 +21,7 @@ const Description: React.FC<DescriptionProps> = (props: DescriptionProps) => {
       <div className="RepositoryItem-description-details">
         {primaryLanguage && (
           <Typography display="inline">
-            Language:
-            {' '}
-            {primaryLanguage.name}
+            {`Language: ${primaryLanguage.name}`}
           </Typography>
         )}
         {owner && (

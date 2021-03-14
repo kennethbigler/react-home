@@ -14,7 +14,7 @@ interface Edge {
   node: RepositoryItemProps;
 }
 export interface Repository {
-  edges: Array<Edge>;
+  edges: Edge[];
   pageInfo: PageInto;
 }
 interface Result {
@@ -56,9 +56,7 @@ const FetchMore: React.FC<FetchMoreProps> = (props: FetchMoreProps) => {
               variant="outlined"
               color="primary"
             >
-              More
-              {' '}
-              {children}
+              {`More ${children}`}
             </Button>
           )
         )}
