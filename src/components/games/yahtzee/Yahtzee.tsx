@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import DiceAPI from '../../../apis/Dice';
 import ScoreTable from './score-table/ScoreTable';
-import { ADD_DICE, TopGameScore, BottomGameScore } from './types';
+import { ADD_DICE, BottomGameScore } from './types';
 import Header from './Header';
 import TableHeader from './TableHeader';
 import { DBRootState, Dice } from '../../../store/types';
@@ -11,6 +11,7 @@ import {
   addScore, diceClick, newGame, nextRoll,
   updateTop, updateBottom, updateRoll,
 } from '../../../store/modules/yahtzee';
+import getYahtzeeVars from './helpers';
 
 const topConstants = [
   { name: 'Aces' },
@@ -29,47 +30,6 @@ const bottomConstants = [
   { name: 'Yahtzee', hint: 'Score 50', points: 50 },
   { name: 'Chance', hint: ADD_DICE, points: ADD_DICE },
 ];
-
-interface YahtzeeVars {
-  topSum: number;
-  bottomSum: number;
-  finalTopSum: number;
-  finish: boolean;
-}
-
-const getYahtzeeVars = (topScores: number[], bottomScores: number[]): YahtzeeVars => {
-  let count = 0;
-
-  const topSum = topScores.reduce((sum, score) => {
-    if (score >= 0) {
-      count += 1;
-      sum += score;
-    }
-    return sum;
-  }, 0);
-
-  const bottomSum = bottomScores.reduce((sum, score) => {
-    if (score >= 0) {
-      count += 1;
-      sum += score;
-    }
-    return sum;
-  }, 0);
-
-  let finalTopSum = topSum;
-  if (topSum >= 63) {
-    finalTopSum += 35;
-  }
-
-  const finish = count >= 13;
-
-  return {
-    topSum,
-    bottomSum,
-    finalTopSum,
-    finish,
-  };
-};
 
 const Yahtzee: React.FC = () => {
   const {
@@ -155,14 +115,8 @@ const Yahtzee: React.FC = () => {
     dispatch(updateBottom(bottomScores));
   }, [bottomScores, dispatch]);
 
-  const top = React.useMemo(
-    () => topScores.map((score, i) => ({ ...topConstants[i], score })) as TopGameScore[],
-    [topScores],
-  );
-  const bottom = React.useMemo(
-    () => bottomScores.map((score, i) => ({ ...bottomConstants[i], score })) as BottomGameScore[],
-    [bottomScores],
-  );
+  const top = topScores.map((score, i) => ({ ...topConstants[i], score }));
+  const bottom = bottomScores.map((score, i) => ({ ...bottomConstants[i], score })) as BottomGameScore[];
 
   return (
     <>

@@ -27,7 +27,5 @@ describe('games | blackjack | Blackjack', () => {
     expect(screen.getByText('Close')).toBeInTheDocument();
   });
 
-  // TODO: We aren't done, keep adding tests here, just had to leave for a hike
-
   // CURRENTLY: we are running into an issue with testing and Redux Thunk, so full coverage will have to wait.
 });

@@ -61,7 +61,7 @@ export const getHistogram = (hand: DBCard[]): number[] => {
   const hist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   // put hand into the histogram
   hand.forEach((card) => {
-    hist[(card.weight || 2) - 2] += 1; // 2-14 - 2 = 0-12
+    hist[card.weight - 2] += 1; // 2-14 - 2 = 0-12
   });
   return hist;
 };
@@ -101,7 +101,7 @@ export const evaluate = (hand: DBCard[]): string => {
 
 /** function to remove n number of cards */
 export const getCardsToDiscard = (n: number, hist: number[], hand: DBCard[]): number[] => {
-  const nextCardsToDiscard = [];
+  const nextCardsToDiscard: number[] = [];
   const cardValues = [hist.indexOf(1)];
   // find cards without pairs, starting with the smallest
   for (let i = 1; i < n; i += 1) {
