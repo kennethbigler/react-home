@@ -3,7 +3,7 @@ import asyncForEach from '../../helpers/asyncForEach';
 import Deck from '../../apis/Deck';
 import {
   removeItem, updateArrayInArray, updateObjectInArray, insertItem,
-} from '../immutableHelpers';
+} from '../../helpers/immutableHelpers';
 import { DBCard, DBHand, DBPlayer } from '../types';
 import initialState, { newPlayer } from '../initialState';
 
