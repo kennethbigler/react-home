@@ -1,0 +1,24 @@
+import blueGrey from '@material-ui/core/colors/blueGrey';
+import deepOrange from '@material-ui/core/colors/deepOrange';
+import cyan from '@material-ui/core/colors/cyan';
+import themeReducer, { displayDarkTheme, displayLightTheme } from '../theme';
+import { DBUITheme } from '../../types';
+
+const darkState: DBUITheme = { type: 'dark', primary: cyan, secondary: deepOrange };
+const lightState: DBUITheme = { type: 'light', primary: blueGrey, secondary: deepOrange };
+
+describe('store | modules | theme', () => {
+  test('reducer', () => {
+    expect(themeReducer(lightState, displayDarkTheme())).toEqual(darkState);
+    expect(themeReducer(darkState, displayLightTheme())).toEqual(lightState);
+    expect(themeReducer(lightState, displayLightTheme())).toEqual(lightState);
+    expect(themeReducer(darkState, displayDarkTheme())).toEqual(darkState);
+  });
+
+  test('incorrect parameters', () => {
+    // @ts-expect-error: fake action for testing purposes
+    expect(themeReducer(lightState, { type: undefined })).toEqual(lightState);
+    // @ts-expect-error: fake action for testing purposes
+    expect(themeReducer(undefined, { type: undefined })).toEqual(darkState);
+  });
+});
