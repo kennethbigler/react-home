@@ -1,3 +1,4 @@
+import { newBlackjackGame } from '../../initialState';
 import blackjackReducer, { updateGameFunctions, updateHideHands, updateHasFunctions } from '../blackjack';
 
 const state = {
@@ -23,11 +24,12 @@ describe('store | modules | blackjack', () => {
       hasFunctions: false,
       hideHands: true,
     });
+  });
+
+  test('incorrect parameters', () => {
     // @ts-expect-error: for testing purposes, using fake action
-    expect(blackjackReducer(state, { type: undefined })).toEqual({
-      gameFunctions: ['black', 'jack'],
-      hasFunctions: true,
-      hideHands: true,
-    });
+    expect(blackjackReducer(state, { type: undefined })).toEqual(state);
+    // @ts-expect-error: for testing purposes, using fake action
+    expect(blackjackReducer(undefined, { type: undefined })).toEqual(newBlackjackGame());
   });
 });

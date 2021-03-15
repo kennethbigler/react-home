@@ -34,6 +34,13 @@ describe('store | modules | players', () => {
       }]);
   });
 
+  test('incorrect parameters', () => {
+    // @ts-expect-error: fake action for testing purposes
+    expect(playerReducer(state, { type: undefined })).toEqual(state);
+    // @ts-expect-error: fake action for testing purposes
+    expect(playerReducer(undefined, { type: undefined })).toHaveLength(7);
+  });
+
   test('when there is no valid user for payout, nothing happens', () => {
     expect(playerReducer(state, payout(3, 'status', -31))).toEqual(state);
   });

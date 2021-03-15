@@ -27,4 +27,11 @@ describe('store | modules | dnd', () => {
       ...state, dndOpen: false, isOver: true, offer: 7,
     });
   });
+
+  test('incorrect parameters', () => {
+    // @ts-expect-error: for testing purposes, using fake action
+    expect(dndReducer(state, { type: undefined })).toEqual(state);
+    // @ts-expect-error: for testing purposes, using fake action
+    expect(dndReducer(undefined, { type: undefined })).toMatchObject({ turn: 1 });
+  });
 });

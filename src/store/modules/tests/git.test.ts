@@ -33,6 +33,9 @@ describe('store | modules | git', () => {
       ...state,
       commitPrefix: true,
     });
+  });
+
+  test('incorrect parameters', () => {
     // @ts-expect-error: fake action for testing purposes
     expect(gitReducer(state, { type: undefined })).toEqual(state);
     // @ts-expect-error: fake action for testing purposes

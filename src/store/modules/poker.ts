@@ -20,11 +20,11 @@ const {
 
 // --------------------     Action Creators     -------------------- //
 /** start a new game in Poker DB */
-const newGame = (): Action<typeof NEW_GAME> => ({ type: NEW_GAME });
+export const newGame = (): Action<typeof NEW_GAME> => ({ type: NEW_GAME });
 /** deal cards and begin play (after betting) in Poker DB */
 export const startPokerGame = (): Action<typeof START_GAME> => ({ type: START_GAME });
 /** move to the next player in Poker DB */
-const endTurn = (): Action<typeof END_TURN> => ({ type: END_TURN });
+export const endTurn = (): Action<typeof END_TURN> => ({ type: END_TURN });
 /** end the game by updating a flag in Poker DB */
 export const endPokerGame = (): Action<typeof END_GAME> => ({ type: END_GAME });
 /** reset cards to discard back to empty in Poker DB */

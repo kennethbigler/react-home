@@ -21,6 +21,9 @@ describe('store | modules | connect4', () => {
       board: [[1, 2]],
       winner: 0,
     });
+  });
+
+  test('incorrect parameters', () => {
     // @ts-expect-error: for testing purposes, using fake action
     expect(connect4Reducer(state, { type: undefined })).toEqual(state);
     // @ts-expect-error: for testing purposes, using fake action
