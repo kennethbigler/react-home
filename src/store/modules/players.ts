@@ -62,19 +62,19 @@ export function payout(id: number, status: string, money: number): PlayerAction 
   return { type: PAY_PLAYER, player: { id, status, money }};
 }
 
-function createSplitHandAction(id: number, newHands: DBHand[]): PlayerAction {
+export function createSplitHandAction(id: number, newHands: DBHand[]): PlayerAction {
   return { type: SPLIT_HAND, player: { id, hands: newHands }};
 }
 
-function createDrawCardAction(id: number, newHands: DBHand[]): PlayerAction {
+export function createDrawCardAction(id: number, newHands: DBHand[]): PlayerAction {
   return { type: DRAW_CARD, player: { id, hands: newHands }};
 }
 
-function createSwapCardsAction(id: number, updatedHands: DBHand[]): PlayerAction {
+export function createSwapCardsAction(id: number, updatedHands: DBHand[]): PlayerAction {
   return { type: SWAP_CARD, player: { id, hands: updatedHands }};
 }
 
-function createNewHandAction(id: number, cards: DBCard[], soft: boolean, weight: number): PlayerAction {
+export function createNewHandAction(id: number, cards: DBCard[], soft: boolean, weight: number): PlayerAction {
   return { type: NEW_HAND, player: { id, hands: [{ cards, weight, soft }]}};
 }
 
