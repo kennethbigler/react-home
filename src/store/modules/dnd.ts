@@ -18,7 +18,7 @@ export const newGame = (): NewGameAction => ({ type: NEW_GAME });
 
 interface UpdatePlayerChoiceAction extends Action<typeof PLAYER_CHOICE> { playerChoice: Briefcase }
 /** update the player's case choice in Deal or No Deal DB */
-const updatePlayerChoice = (playerChoice: Briefcase): UpdatePlayerChoiceAction => ({ type: PLAYER_CHOICE, playerChoice });
+export const updatePlayerChoice = (playerChoice: Briefcase): UpdatePlayerChoiceAction => ({ type: PLAYER_CHOICE, playerChoice });
 
 interface SetOpenCaseAction extends Action<typeof OPEN_CASE> {
   board: Briefcase[];
@@ -41,7 +41,7 @@ export const setNoDeal = (turn: number): SetNoDealAction => ({ type: NO_DEAL, tu
 
 interface FinishGameAction extends Action<typeof FINISH_GAME> { offer: number }
 /** finish the game in Deal or No Deal DB */
-const finishGame = (offer: number): FinishGameAction => ({ type: FINISH_GAME, offer });
+export const finishGame = (offer: number): FinishGameAction => ({ type: FINISH_GAME, offer });
 
 // --------------------     Reducers     -------------------- //
 type DNDActions = NewGameAction | UpdatePlayerChoiceAction | SetOpenCaseAction | SetOpenOfferAction | SetNoDealAction | FinishGameAction;
