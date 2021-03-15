@@ -4,7 +4,7 @@ import connect4Reducer, { newGame, updateTurn, updateEval } from '../connect4';
 
 const state: DBConnect4 = newConnect4Game();
 
-describe('store | modules | blackjack', () => {
+describe('store | modules | connect4', () => {
   test('reducer', () => {
     expect(connect4Reducer({
       board: [[1]],

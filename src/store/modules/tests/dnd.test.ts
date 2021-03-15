@@ -5,7 +5,7 @@ import dndReducer, {
 
 const state = newDNDGame();
 
-describe('store | modules | blackjack', () => {
+describe('store | modules | dnd', () => {
   test('reducer', () => {
     expect(dndReducer(state, newGame())).not.toEqual(state);
     expect(dndReducer(state, updatePlayerChoice({ on: true, loc: 0, val: 0 })))
