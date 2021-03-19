@@ -9,7 +9,7 @@ import initialState, { newPlayer } from '../initialState';
 
 // --------------------     Actions     -------------------- //
 const REMOVE = '@casino/player/REMOVE';
-enum pa {
+export enum pa {
   'ADD' = '@casino/player/ADD',
   'RESET' = '@casino/player/RESET',
   'UPDATE_NAME' = '@casino/player/UPDATE_NAME',
@@ -171,7 +171,7 @@ export function drawCard(hands: DBHand[], id: number, hNum = 0, num = 1, weigh =
  * @param {function} weigh - optional, get weight of hand for game
  * @return {Object}
  */
-export function splitHand(hands: DBHand[], id: number, hNum: number, weigh = defaultWeigh) {
+export function splitHand(hands: DBHand[], id: number, hNum = 0, weigh = defaultWeigh) {
   return (dispatch: Dispatch): Promise<void> => {
     const hand = hands[hNum];
     // split the hands into 2
