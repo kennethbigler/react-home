@@ -4,12 +4,12 @@ import initialState, { newDNDGame } from '../initialState';
 import { payout, PlayerAction } from './players';
 
 // --------------------     Actions     -------------------- //
-const NEW_GAME = '@casino/dnd/NEW_GAME';
-const PLAYER_CHOICE = '@casino/dnd/PLAYER_CHOICE';
-const OPEN_CASE = '@casino/dnd/OPEN_CASE';
-const OPEN_OFFER = '@casino/dnd/OPEN_OFFER';
-const NO_DEAL = '@casino/dnd/NO_DEAL';
-const FINISH_GAME = '@casino/dnd/FINISH_GAME';
+export const NEW_GAME = '@casino/dnd/NEW_GAME';
+export const PLAYER_CHOICE = '@casino/dnd/PLAYER_CHOICE';
+export const OPEN_CASE = '@casino/dnd/OPEN_CASE';
+export const OPEN_OFFER = '@casino/dnd/OPEN_OFFER';
+export const NO_DEAL = '@casino/dnd/NO_DEAL';
+export const FINISH_GAME = '@casino/dnd/FINISH_GAME';
 
 // --------------------     Action Creators     -------------------- //
 type NewGameAction = Action<typeof NEW_GAME>;
