@@ -12,8 +12,8 @@ import playerReducer, {
 import Deck from '../../../apis/Deck';
 
 const state = [
-  newPlayer(1, 'Ken', false),
-  newPlayer(2),
+  newPlayer(0, 'Ken', false),
+  newPlayer(1),
 ];
 
 const king = { name: 'K', weight: 13, suit: '♣' };
@@ -24,42 +24,56 @@ const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 describe('store | modules | players', () => {
-  test('reducer', () => {
-    expect(playerReducer(state, addPlayer(state, 'Andrew'))).toHaveLength(3);
-    expect(playerReducer(state, removePlayer(2))).toEqual([state[0]]);
-    expect(playerReducer(state, updateName(2, 'Andrew'))).toEqual([state[0], { ...state[1], name: 'Andrew' }]);
-    expect(playerReducer(state, updateBot(2, false))).toEqual([state[0], { ...state[1], isBot: false }]);
-    expect(playerReducer(state, updateBet(2, 69))).toEqual([state[0], { ...state[1], bet: 69 }]);
-    expect(playerReducer(state, payout(2, 'status', -31))).toEqual([state[0], { ...state[1], status: 'status', money: 69 }]);
-    expect(playerReducer(state, createSplitHandAction(2, [{ cards: [king]}])))
-      .toEqual([state[0], { ...state[1], hands: [{ cards: [king]}]}]);
-    expect(playerReducer(state, createDrawCardAction(2, [{ cards: [king]}])))
-      .toEqual([state[0], { ...state[1], hands: [{ cards: [king]}]}]);
-    expect(playerReducer(state, createSwapCardsAction(2, [{ cards: [king]}])))
-      .toEqual([state[0], { ...state[1], hands: [{ cards: [king]}]}]);
-    expect(playerReducer(state, createNewHandAction(2, [king], true, 10)))
-      .toEqual([state[0], { ...state[1], hands: [{ soft: true, weight: 10, cards: [king]}]}]);
-    expect(playerReducer([state[0], {
-      ...state[1], status: 'any', bet: 10, hands: [{ cards: [king]}],
-    }], resetStatus(2)))
-      .toEqual([state[0], {
-        ...state[1], status: '', bet: 5, hands: [],
-      }]);
-  });
+  describe('reducer', () => {
+    test('actions', () => {
+      expect(playerReducer(state, addPlayer(state, 'Andrew'))).toHaveLength(3);
+      expect(playerReducer(state, removePlayer(1))).toEqual([state[0]]);
+      expect(playerReducer(state, updateName(1, 'Andrew'))).toEqual([state[0], { ...state[1], name: 'Andrew' }]);
 
-  test('incorrect parameters', () => {
-    // @ts-expect-error: fake action for testing purposes
-    expect(playerReducer(state, { type: undefined })).toEqual(state);
-    // @ts-expect-error: fake action for testing purposes
-    expect(playerReducer(undefined, { type: undefined })).toHaveLength(7);
-  });
+      expect(playerReducer(state, updateBot(1, false))).toEqual([state[0], { ...state[1], isBot: false }]);
+      expect(playerReducer(state, updateBot(1))).toEqual([state[0], { ...state[1], isBot: true }]);
 
-  test('when there is no valid user for payout, nothing happens', () => {
-    expect(playerReducer(state, payout(3, 'status', -31))).toEqual(state);
+      expect(playerReducer(state, updateBet(1, 69))).toEqual([state[0], { ...state[1], bet: 69 }]);
+      expect(playerReducer(state, updateBet())).toEqual([{ ...state[0], bet: 5 }, state[1]]);
+
+      expect(playerReducer(state, payout(1, 'status', -31))).toEqual([state[0], { ...state[1], status: 'status', money: 69 }]);
+      expect(playerReducer(state, createSplitHandAction(1, [{ cards: [king]}])))
+        .toEqual([state[0], { ...state[1], hands: [{ cards: [king]}]}]);
+      expect(playerReducer(state, createDrawCardAction(1, [{ cards: [king]}])))
+        .toEqual([state[0], { ...state[1], hands: [{ cards: [king]}]}]);
+      expect(playerReducer(state, createSwapCardsAction(1, [{ cards: [king]}])))
+        .toEqual([state[0], { ...state[1], hands: [{ cards: [king]}]}]);
+      expect(playerReducer(state, createNewHandAction(1, [king], true, 10)))
+        .toEqual([state[0], { ...state[1], hands: [{ soft: true, weight: 10, cards: [king]}]}]);
+
+      expect(playerReducer([state[0], {
+        ...state[1], status: 'any', bet: 10, hands: [{ cards: [king]}],
+      }], resetStatus(1)))
+        .toEqual([state[0], {
+          ...state[1], status: '', bet: 5, hands: [],
+        }]);
+      expect(playerReducer([{
+        ...state[0], status: 'any', bet: 10, hands: [{ cards: [king]}],
+      }, state[1]], resetStatus()))
+        .toEqual([{
+          ...state[0], status: '', bet: 5, hands: [],
+        }, state[1]]);
+    });
+
+    test('incorrect parameters', () => {
+      // @ts-expect-error: fake action for testing purposes
+      expect(playerReducer(state, { type: undefined })).toEqual(state);
+      // @ts-expect-error: fake action for testing purposes
+      expect(playerReducer(undefined, { type: undefined })).toHaveLength(7);
+    });
+
+    test('when there is no valid user for payout, nothing happens', () => {
+      expect(playerReducer(state, payout(3, 'status', -31))).toEqual(state);
+    });
   });
 
   describe('async thunk actions', () => {
-    it('creates a newHand', async () => {
+    test('newHand', () => {
       const cards = [king];
       jest.spyOn(Deck, 'deal').mockResolvedValue(cards);
       const expectedActions = [
@@ -73,7 +87,7 @@ describe('store | modules | players', () => {
       });
     });
 
-    it('draws a card', async () => {
+    test('drawCard', () => {
       jest.spyOn(Deck, 'deal').mockResolvedValue([king]);
       const expectedActions = [
         { type: pa.DRAW_CARD, player: { id: 0, hands: [{ cards: [queen, king], weight: 0, soft: false }]}},
@@ -86,7 +100,7 @@ describe('store | modules | players', () => {
       });
     });
 
-    it.skip('splits a hand', async () => {
+    test.skip('splitHand', () => {
       jest.spyOn(Deck, 'deal').mockResolvedValue([king]);
       const expectedActions = [
         { type: pa.SPLIT_HAND, player: { id: 0, hands: [{ cards: [queen, king]}, { cards: [jack, king]}]}},
@@ -99,7 +113,7 @@ describe('store | modules | players', () => {
       });
     });
 
-    it('swaps cards', async () => {
+    test('swapCards', () => {
       jest.spyOn(Deck, 'deal').mockResolvedValue([king]);
       const expectedActions = [
         { type: pa.SWAP_CARD, player: { id: 0, hands: [{ cards: [queen, king]}]}},

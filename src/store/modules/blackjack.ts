@@ -15,9 +15,9 @@ import {
 } from './turn';
 
 // --------------------     Actions     -------------------- //
-const UPDATE_GAME_FUNCTIONS = '@casino/blackjack/UPDATE_GAME_FUNCTIONS';
-const UPDATE_HIDE_HANDS = '@casino/blackjack/UPDATE_HIDE_HANDS';
-const UPDATE_HAS_FUNCTIONS = '@casino/blackjack/UPDATE_HAS_FUNCTIONS';
+export const UPDATE_GAME_FUNCTIONS = '@casino/blackjack/UPDATE_GAME_FUNCTIONS';
+export const UPDATE_HIDE_HANDS = '@casino/blackjack/UPDATE_HIDE_HANDS';
+export const UPDATE_HAS_FUNCTIONS = '@casino/blackjack/UPDATE_HAS_FUNCTIONS';
 
 // -------------------- Action Creators     -------------------- //
 interface UpdateGameFunctionsAction extends Action<typeof UPDATE_GAME_FUNCTIONS> { gameFunctions: string[] }
