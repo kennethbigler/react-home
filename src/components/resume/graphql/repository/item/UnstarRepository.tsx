@@ -16,7 +16,7 @@ const UNSTAR_REPOSITORY = gql`
   }
 `;
 
-const updateRemoveStar: MutationUpdaterFn = (cache, mutationResult) => {
+export const updateRemoveStar: MutationUpdaterFn = (cache, mutationResult) => {
   const { data } = mutationResult;
   if (!data) {
     return;

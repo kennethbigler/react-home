@@ -34,7 +34,7 @@ const repositories: Repository = {
   },
 };
 
-describe('resume | graphql | RepositoryItem', () => {
+describe('resume | graphql | RepositoryList', () => {
   it('renders as expected', () => {
     render(
       <MockedProvider mocks={[]} addTypename={false}>

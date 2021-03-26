@@ -16,7 +16,7 @@ const STAR_REPOSITORY = gql`
   }
 `;
 
-const updateAddStar: MutationUpdaterFn = (cache, mutationResult): void => {
+export const updateAddStar: MutationUpdaterFn = (cache, mutationResult): void => {
   const { data } = mutationResult;
   if (!data) {
     return;

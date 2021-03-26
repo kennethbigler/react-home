@@ -31,7 +31,7 @@ const VIEWER_SUBSCRIPTIONS = {
 
 const isWatch = (viewerSubscription: string): boolean => viewerSubscription === VIEWER_SUBSCRIPTIONS.SUBSCRIBED;
 
-const updateWatch: MutationUpdaterFn = (cache, mutationResult) => {
+export const updateWatch: MutationUpdaterFn = (cache, mutationResult) => {
   const { data } = mutationResult;
   if (!data) {
     return;
