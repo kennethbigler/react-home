@@ -59,6 +59,7 @@ describe('resume | graphql | Profile', () => {
   });
 
   it.skip('has data', async () => {
+    // https://www.apollographql.com/docs/react/development-testing/testing/
     const { debug } = render(
       <MockedProvider
         mocks={[{
