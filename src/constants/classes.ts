@@ -40,7 +40,7 @@ export interface School {
 }
 
 // --------------------     helpers     -------------------- //
-const getStart = (quarter: QTR, yy: number): DateObj => {
+export const getStart = (quarter: QTR, yy: number): DateObj => {
   switch (quarter) {
     case QTR.FALL: return dateObj(`20${yy}-09`);
     case QTR.WINTER: return dateObj(`20${yy}-01`);
@@ -52,7 +52,7 @@ const getStart = (quarter: QTR, yy: number): DateObj => {
   }
 };
 
-const getEnd = (quarter: QTR, yy: number): DateObj => {
+export const getEnd = (quarter: QTR, yy: number): DateObj => {
   switch (quarter) {
     case QTR.FALL: return dateObj(`20${yy}-12`);
     case QTR.WINTER: return dateObj(`20${yy}-03`);

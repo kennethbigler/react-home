@@ -7,14 +7,14 @@ import { DBRootState } from './types';
 import rootReducer from '.';
 import initialState from './initialState';
 
-/** funtion to read 'state' value from local storage and return it, or default state */
+/** function to read 'state' value from local storage and return it, or default state */
 export const loadState = async (): Promise<DBRootState> => localForage
   .getItem('state')
   .then((state) => (state ? { ...initialState, ...state as DBRootState } : initialState))
   // if there are any issues, just load default state
   .catch(() => initialState);
 
-/** funtion to save 'state' value to local storage */
+/** function to save 'state' value to local storage */
 export const saveState = (state: DBRootState): Promise<void | DBRootState> => localForage
   .setItem('state', state)
   // eslint-disable-next-line no-console

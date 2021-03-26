@@ -26,7 +26,7 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps): React.ReactElement => {
-  const [isOpen, toggleOpen, setIsOpen] = useToggleState(false);
+  const [isOpen, toggleOpen, setIsOpen] = useToggleState();
   const { palette: { type }} = useTheme();
   const { children, handleNav, showPlayers } = props;
 
