@@ -5,7 +5,7 @@ import Loading from './common/Loading';
 import RepositoryList, { REPOSITORY_FRAGMENT } from './repository';
 import ErrorMessage from './ErrorMessage';
 
-const GET_REPOSITORIES_OF_CURRENT_USER = gql`
+export const GET_REPOSITORIES_OF_CURRENT_USER = gql`
   query($cursor: String) {
     viewer {
       repositories(
@@ -34,18 +34,23 @@ const Profile: React.FC = React.memo(() => {
   } = useQuery(GET_REPOSITORIES_OF_CURRENT_USER);
 
   // check errors
-  if (error || !data) {
+  if (error || (!loading && !data)) {
     return <ErrorMessage error={error} />;
   }
 
   // check for data
-  const { viewer } = data;
-  if (loading && !viewer) {
+  if (loading && (!data || !data.viewer)) {
     return <Loading />;
   }
 
   // display data
-  return <RepositoryList loading={loading} repositories={viewer.repositories} fetchMore={fetchMore} />;
+  return (
+    <RepositoryList
+      loading={loading}
+      repositories={data.viewer.repositories}
+      fetchMore={fetchMore}
+    />
+  );
 });
 
 export default Profile;

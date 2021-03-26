@@ -11,9 +11,9 @@ import NoToken from './NoToken';
 import { DBRootState } from '../../../store/types';
 
 const GITHUB_BASE_URL = 'https://api.github.com/graphql';
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) { /* do something with graphql error */ }
-  if (networkError) { /* do something with network error */ }
+const errorLink = onError((/* { graphQLErrors, networkError } */) => {
+  /* if (graphQLErrors) { do something with graphql error } */
+  /* if (networkError) { do something with network error } */
 });
 const cache = new InMemoryCache();
 

@@ -2,7 +2,7 @@ import React from 'react';
 import RepositoryItem from './item';
 import FetchMore, { UpdateQueryType, Repository } from './item/FetchMore';
 
-interface RepositoryListProps {
+export interface RepositoryListProps {
   repositories: Repository;
   loading: boolean;
   // eslint-disable-next-line @typescript-eslint/ban-types

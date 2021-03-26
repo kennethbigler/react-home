@@ -97,8 +97,7 @@ const WatchRepository: React.FC<WatchRepositoryProps> = (props: WatchRepositoryP
       variant="outlined"
       color="primary"
     >
-      {isWatch(viewerSubscription) ? 'Unwatch' : 'Watch'}
-      {` (${watchers.totalCount})`}
+      {`${isWatch(viewerSubscription) ? 'Unwatch' : 'Watch'} (${watchers.totalCount})`}
     </Button>
   );
 };

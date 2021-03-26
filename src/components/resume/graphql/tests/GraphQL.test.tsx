@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
-import render from '../../../redux-test-render';
-import GraphQL from './GraphQL';
+import render from '../../../../redux-test-render';
+import GraphQL from '../GraphQL';
 
 describe('resume | graphql | GraphQL', () => {
   it('renders as expected', () => {
@@ -26,7 +26,7 @@ describe('resume | graphql | GraphQL', () => {
 
     // will be hidden for now
     expect(screen.queryByDisplayValue('1')).toBeNull();
-    expect(screen.queryByText('Something Went Wrong')).toBeNull();
+    expect(screen.queryByText('Loading ...')).toBeNull();
 
     fireEvent.change(screen.getByPlaceholderText('some 32 character string from github'), { target: { value: '1' }});
 
@@ -36,6 +36,6 @@ describe('resume | graphql | GraphQL', () => {
 
     // will be displayed because of an invalid token
     expect(screen.getByDisplayValue('1')).toBeInTheDocument();
-    expect(screen.getByText('Something Went Wrong')).toBeInTheDocument();
+    expect(screen.getByText('Loading ...')).toBeInTheDocument();
   });
 });
