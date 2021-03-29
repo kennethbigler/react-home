@@ -27,5 +27,24 @@ describe('games | blackjack | Blackjack', () => {
     expect(screen.getByText('Close')).toBeInTheDocument();
   });
 
-  // CURRENTLY: we are running into an issue with testing and Redux Thunk, so full coverage will have to wait.
+  // TODO: this test does not finish betting, something async may be happening?
+  it.skip('plays a game', () => {
+    jest.useFakeTimers();
+    const { debug } = render(<Blackjack />);
+    jest.runAllTimers();
+
+    expect(screen.getByText('Blackjack (21)')).toBeInTheDocument();
+    expect(screen.getByText('Rules')).toBeInTheDocument();
+    expect(screen.getByText('Ken: $100')).toBeInTheDocument();
+    expect(screen.getAllByText('Bet: $5')).toHaveLength(6);
+    expect(screen.getAllByText('Bot: $100')).toHaveLength(5);
+    expect(screen.getByText('Dealer: $100')).toBeInTheDocument();
+    expect(screen.getByText('Finish Betting')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Finish Betting'));
+    jest.runAllTimers();
+
+    debug();
+    expect(true);
+  });
 });

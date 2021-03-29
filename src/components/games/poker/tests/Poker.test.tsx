@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import render from '../../../../redux-test-render';
 import Poker from '../Poker';
 
@@ -14,5 +14,11 @@ describe('games | poker | Poker', () => {
     expect(screen.getByText('Start Game')).toBeInTheDocument();
   });
 
-  // CURRENTLY: we are running into an issue with testing and Redux Thunk, so full coverage will have to wait.
+  it('plays a game', () => {
+    render(<Poker />);
+
+    fireEvent.click(screen.getByText('Start Game'));
+    fireEvent.click(screen.getByText('Discard Cards'));
+    fireEvent.click(screen.getByText('End Turn'));
+  });
 });
