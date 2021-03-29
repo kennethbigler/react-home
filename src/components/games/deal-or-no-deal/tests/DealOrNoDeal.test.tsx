@@ -14,8 +14,11 @@ describe('games | deal-or-no-deal | DealOrNoDeal', () => {
     expect(screen.getAllByRole('button')).toHaveLength(26);
   });
 
-  it('plays a game and takes final deal', async () => {
+  it('plays a game and takes final deal', () => {
+    jest.useFakeTimers();
     render(<DealOrNoDeal />);
+    jest.clearAllTimers();
+    jest.runOnlyPendingTimers();
 
     expect(screen.getByText('Your Case: ?')).toBeInTheDocument();
     expect(screen.getByText('Number of Cases to Open: 6')).toBeInTheDocument();
@@ -40,7 +43,7 @@ describe('games | deal-or-no-deal | DealOrNoDeal', () => {
     // this one should not open
     fireEvent.click(screen.getAllByRole('button')[7]);
 
-    await new Promise((r) => setTimeout(r, 301));
+    jest.runOnlyPendingTimers();
 
     expect(screen.getAllByText('$1')).toBeDefined();
     expect(screen.getAllByText('$10')).toBeDefined();
@@ -56,7 +59,7 @@ describe('games | deal-or-no-deal | DealOrNoDeal', () => {
 
     fireEvent.click(screen.getByText('No Deal'));
 
-    await new Promise((r) => setTimeout(r, 201));
+    jest.runOnlyPendingTimers();
 
     expect(screen.getAllByRole('button')).toHaveLength(26);
 
@@ -67,7 +70,7 @@ describe('games | deal-or-no-deal | DealOrNoDeal', () => {
     fireEvent.click(screen.getAllByRole('button')[10]);
     fireEvent.click(screen.getAllByRole('button')[11]);
 
-    await new Promise((r) => setTimeout(r, 301));
+    jest.runOnlyPendingTimers();
 
     expect(screen.getAllByText('$1')).toBeDefined();
     expect(screen.getAllByText('$10')).toBeDefined();
@@ -83,7 +86,7 @@ describe('games | deal-or-no-deal | DealOrNoDeal', () => {
 
     fireEvent.click(screen.getByText('Deal'));
 
-    await new Promise((r) => setTimeout(r, 201));
+    jest.runOnlyPendingTimers();
 
     expect(screen.getByText('New Game')).toBeInTheDocument();
     expect(screen.getAllByRole('button')).toHaveLength(27);
