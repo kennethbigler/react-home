@@ -48,8 +48,14 @@ describe('apis | DateHelper', () => {
     expect(DateHelper(sampleDateObj).format('\'YY')).toStrictEqual('\'20');
     expect(DateHelper(dateStr).format('\'YY')).toStrictEqual('\'19');
 
+    const oldConsole = console.error;
+    console.error = jest.fn();
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: disabling TS for specific test case
     expect(DateHelper(dateStr).format('')).toStrictEqual('');
+    expect(console.error).toHaveBeenCalledWith('unknown date format: ', '');
+
+    console.error = oldConsole;
   });
 });

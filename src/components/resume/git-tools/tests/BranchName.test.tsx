@@ -5,9 +5,17 @@ import BranchName from '../BranchName';
 
 describe('resume | git-tools | BranchName', () => {
   const getSelectOptions = jest.fn()
-    .mockReturnValue([
-      <MenuItem key="1" value="one">one</MenuItem>,
-      <MenuItem key="2" value="two">two</MenuItem>,
+    .mockReturnValueOnce([
+      <MenuItem key="1" value="chores">chores</MenuItem>,
+      <MenuItem key="2" value="epics">epics</MenuItem>,
+      <MenuItem key="3" value="features">features</MenuItem>,
+      <MenuItem key="4" value="fixes">fixes</MenuItem>,
+    ])
+    .mockReturnValueOnce([
+      <MenuItem key="1" value="snake_case">snake_case</MenuItem>,
+      <MenuItem key="2" value="kebab-case">kebab-case</MenuItem>,
+      <MenuItem key="3" value="camelCase">camelCase</MenuItem>,
+      <MenuItem key="4" value="No Changes">No Changes</MenuItem>,
     ]);
   const handleCopy = jest.fn();
   const onBranchMessageChange = jest.fn();
@@ -20,12 +28,8 @@ describe('resume | git-tools | BranchName', () => {
       <BranchName
         branchMessage="branchMessage"
         branchName="branchName"
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error: disabled for testing purposes
-        branchPrefix="one"
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error: disabled for testing purposes
-        casePreference="one"
+        branchPrefix="features"
+        casePreference="snake_case"
         gitTheme="orange"
         getSelectOptions={getSelectOptions}
         handleCopy={handleCopy}
@@ -43,7 +47,8 @@ describe('resume | git-tools | BranchName', () => {
     expect(screen.getByText('Branch Name')).toBeInTheDocument();
     expect(screen.getByText('branchName')).toBeInTheDocument();
     expect(screen.getByText('branchMessage')).toBeInTheDocument();
-    expect(screen.getAllByDisplayValue('one')).toHaveLength(2);
+    expect(screen.getByDisplayValue('features')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('snake_case')).toBeInTheDocument();
     expect(screen.getAllByRole('button')).toHaveLength(4);
 
     expect(getSelectOptions).toHaveBeenCalledTimes(2);

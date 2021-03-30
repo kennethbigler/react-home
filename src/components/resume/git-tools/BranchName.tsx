@@ -7,6 +7,7 @@ import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
 import Clear from '@material-ui/icons/Clear';
 import Grid from '@material-ui/core/Grid';
+import MenuItem from '@material-ui/core/MenuItem';
 import CopyTextDisplay from './CopyTextDisplay';
 import { MaterialSelectEventHandler } from './types';
 import { BranchPrefixes, CasePreferences } from '../../../store/types';
@@ -87,7 +88,9 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
               onChange={handleBranchPrefixSelect}
               value={branchPrefix}
             >
-              {getBranchPrefixOptions()}
+              {getBranchPrefixOptions() || (
+                <MenuItem value="features">features</MenuItem>
+              )}
             </Select>
           </FormControl>
         </Grid>
@@ -101,7 +104,9 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
               onChange={handleCasePrefSelect}
               value={casePreference}
             >
-              {getCasePreferenceOptions()}
+              {getCasePreferenceOptions() || (
+                <MenuItem value="snake_case">snake_case</MenuItem>
+              )}
             </Select>
           </FormControl>
         </Grid>
