@@ -34,14 +34,22 @@ const usePokerFunctions = (
   // ----------     bot automation handlers     ---------- //
   /** increment player turn and reset state */
   const endTurn = React.useCallback(async (): Promise<void> => {
-    await dispatch(endPokerTurn());
+    try {
+      await dispatch(endPokerTurn());
+    } catch (e) {
+      console.error(e);
+    }
   }, [dispatch]);
 
   /** iterate through array, removing each index number from hand
    * then add new cards to the hand */
   const discard = React.useCallback(async (cardsToDiscardInDB: number[], player: DBPlayer): Promise<void> => {
-    const { id, hands } = player;
-    await dispatch(swapCards(hands, id, cardsToDiscardInDB));
+    try {
+      const { id, hands } = player;
+      await dispatch(swapCards(hands, id, cardsToDiscardInDB));
+    } catch (e) {
+      console.error(e);
+    }
   }, [dispatch]);
 
   /** computer play algorithm:
@@ -66,75 +74,87 @@ const usePokerFunctions = (
    * else draw 5
    */
   const computer = React.useCallback(async (player: DBPlayer): Promise<void> => {
-    const hand = player.hands[0].cards;
-    const hist = getHistogram(hand);
-    const rank = rankHand(hand, hist);
+    try {
+      const hand = player.hands[0].cards;
+      const hist = getHistogram(hand);
+      const rank = rankHand(hand, hist);
 
-    switch (rank) {
-      case 0: /* draw 4-5 on high card */ {
-        const nextCardsToDiscard = hist.lastIndexOf(1) >= 11
-          ? getCardsToDiscard(4, hist, hand) // if ace || king draw 4
-          : [0, 1, 2, 3, 4]; // otherwise, draw all 5
-        await discard(nextCardsToDiscard, player);
-        break;
+      switch (rank) {
+        case 0: /* draw 4-5 on high card */ {
+          const nextCardsToDiscard = hist.lastIndexOf(1) >= 11
+            ? getCardsToDiscard(4, hist, hand) // if ace || king draw 4
+            : [0, 1, 2, 3, 4]; // otherwise, draw all 5
+          await discard(nextCardsToDiscard, player);
+          break;
+        }
+        case 1: /* draw 3 on 2 of a kind */ {
+          const nextCardsToDiscard = getCardsToDiscard(3, hist, hand);
+          await discard(nextCardsToDiscard, player);
+          break;
+        }
+        case 2: /* draw 1 on 3 of a kind */
+        case 3: /* draw 1 on 2 Pair */ {
+          const nextCardsToDiscard = getCardsToDiscard(1, hist, hand);
+          await discard(nextCardsToDiscard, player);
+          break;
+        }
+        case 4: // draw 0 on straight
+        case 5: // draw 0 on flush
+        case 6: // draw 0 on full house
+        case 7: // draw 0 on 4 of a kind
+        case 8: // draw 0 on straight flush
+        default:
+          break;
       }
-      case 1: /* draw 3 on 2 of a kind */ {
-        const nextCardsToDiscard = getCardsToDiscard(3, hist, hand);
-        await discard(nextCardsToDiscard, player);
-        break;
-      }
-      case 2: /* draw 1 on 3 of a kind */
-      case 3: /* draw 1 on 2 Pair */ {
-        const nextCardsToDiscard = getCardsToDiscard(1, hist, hand);
-        await discard(nextCardsToDiscard, player);
-        break;
-      }
-      case 4: // draw 0 on straight
-      case 5: // draw 0 on flush
-      case 6: // draw 0 on full house
-      case 7: // draw 0 on 4 of a kind
-      case 8: // draw 0 on straight flush
-      default:
-        break;
+    } catch (e) {
+      console.error(e);
     }
   }, [discard]);
 
   const endGame = React.useCallback(async (): Promise<void> => {
-    await dispatch(endPokerGame());
+    try {
+      await dispatch(endPokerGame());
 
-    await asyncForEach(players, async (player: DBPlayer, i: number) => {
-      if (turn <= i && i < LAST_PLAYER) {
-        await computer(player);
-      }
-    });
+      await asyncForEach(players, async (player: DBPlayer, i: number) => {
+        if (turn <= i && i < LAST_PLAYER) {
+          await computer(player);
+        }
+      });
 
-    let winner = { val: 0, id: 0 };
+      let winner = { val: 0, id: 0 };
 
-    players.forEach((player) => {
-      if (player.id === DEALER || player.id > LAST_PLAYER) { return; }
+      players.forEach((player) => {
+        if (player.id === DEALER || player.id > LAST_PLAYER) { return; }
 
-      const playerScore = parseInt(evaluate(player.hands[0].cards), 14);
-      if (playerScore > winner.val) {
-        winner = { val: playerScore, id: player.id };
-      }
-    });
+        const playerScore = parseInt(evaluate(player.hands[0].cards), 14);
+        if (playerScore > winner.val) {
+          winner = { val: playerScore, id: player.id };
+        }
+      });
 
-    players.forEach((player) => {
-      if (player.id === DEALER || player.id > LAST_PLAYER) { return; }
+      players.forEach((player) => {
+        if (player.id === DEALER || player.id > LAST_PLAYER) { return; }
 
-      if (player.id === winner.id) {
-        dispatch(payout(player.id, 'win', 20));
-      } else {
-        dispatch(payout(player.id, 'lose', -5));
-      }
-    });
+        if (player.id === winner.id) {
+          dispatch(payout(player.id, 'win', 20));
+        } else {
+          dispatch(payout(player.id, 'lose', -5));
+        }
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }, [computer, dispatch, players, turn]);
 
   const checkUpdate = React.useCallback(async (): Promise<void> => {
-    const player = players[turn] || { isBot: false };
+    try {
+      const player = players[turn] || { isBot: false };
 
-    if (!hideHands && !gameOver && player.isBot) {
-      await endGame();
+      if (!hideHands && !gameOver && player.isBot) {
+        await endGame();
+      }
+    } catch (e) {
+      console.error(e);
     }
   }, [endGame, players, gameOver, hideHands, turn]);
 
@@ -151,7 +171,11 @@ const usePokerFunctions = (
       // deal the hands
       asyncForEach(players, async (player: DBPlayer) => {
         if (player.id !== DEALER && player.id <= LAST_PLAYER) {
-          await dispatch(newHand(player.id, 5));
+          try {
+            await dispatch(newHand(player.id, 5));
+          } catch (e) {
+            console.error(e);
+          }
         }
       });
     });

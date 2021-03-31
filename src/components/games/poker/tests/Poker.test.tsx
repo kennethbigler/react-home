@@ -3,7 +3,7 @@ import { fireEvent, screen } from '@testing-library/react';
 import render from '../../../../redux-test-render';
 import Poker from '../Poker';
 
-describe('games | poker | Poker', () => {
+describe('games | poker | Poker ', () => {
   it('renders as expected', () => {
     render(<Poker />);
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 
 import render from '../../../../redux-test-render';
@@ -35,9 +35,7 @@ describe('resume | graphql | Profile', () => {
       </MockedProvider>,
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
-    expect(screen.getByText('Error: An error occurred')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Error: An error occurred'));
   });
 
   it('has no data', async () => {
@@ -53,9 +51,7 @@ describe('resume | graphql | Profile', () => {
       </MockedProvider>,
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
-    expect(screen.getByText('Something Went Wrong')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Something Went Wrong'));
   });
 
   it.skip('has data', async () => {
