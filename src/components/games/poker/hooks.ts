@@ -164,49 +164,69 @@ const usePokerFunctions = (
   }, [endGame, players, gameOver, hideHands, turn]);
 
   // ----------     player handlers     ---------- //
-  const newGame = React.useCallback((): void => {
-    dispatch(newPokerGame(players));
+  const newGame = React.useCallback(async (): Promise<void> => {
+    try {
+      await dispatch(newPokerGame(players));
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
   }, [dispatch, players]);
 
   /** function to finish betting and start the game */
-  const startGame = React.useCallback((): void => {
-    dispatch(startPokerGame());
-    // shuffle the deck
-    Deck.shuffle().then(() => {
+  const startGame = React.useCallback(async (): Promise<void> => {
+    try {
+      await dispatch(startPokerGame());
+      // shuffle the deck
+      await Deck.shuffle().then(() => {
       // deal the hands
-      asyncForEach(players, async (player: DBPlayer) => {
-        if (player.id !== DEALER && player.id <= LAST_PLAYER) {
-          try {
-            await dispatch(newHand(player.id, 5));
-          } catch (e) {
+        asyncForEach(players, async (player: DBPlayer) => {
+          if (player.id !== DEALER && player.id <= LAST_PLAYER) {
+            try {
+              await dispatch(newHand(player.id, 5));
+            } catch (e) {
             // eslint-disable-next-line no-console
-            console.error(e);
+              console.error(e);
+            }
           }
-        }
+        });
       });
-    });
+    } catch (e) {
+    // eslint-disable-next-line no-console
+      console.error(e);
+    }
   }, [dispatch, players]);
 
   /** helper function wrapping discard, meant for UI */
-  const handleDiscard = React.useCallback((): void => {
-    discard(cardsToDiscard, players[turn]);
-    dispatch(discardCards());
+  const handleDiscard = React.useCallback(async (): Promise<void> => {
+    try {
+      await discard(cardsToDiscard, players[turn]);
+      await dispatch(discardCards());
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
   }, [discard, dispatch, players, turn, cardsToDiscard]);
 
   /** function to route click actions */
-  const handleGameFunctionClick = React.useCallback((type: string): void => {
-    switch (type) {
-      case PGF.DISCARD_CARDS:
-        handleDiscard(); break;
-      case PGF.END_TURN:
-        endTurn(); break;
-      case PGF.NEW_GAME:
-        newGame(); break;
-      case PGF.START_GAME:
-        startGame(); break;
-      default:
+  const handleGameFunctionClick = React.useCallback(async (type: string): Promise<void> => {
+    try {
+      switch (type) {
+        case PGF.DISCARD_CARDS:
+          await handleDiscard(); break;
+        case PGF.END_TURN:
+          await endTurn(); break;
+        case PGF.NEW_GAME:
+          await newGame(); break;
+        case PGF.START_GAME:
+          await startGame(); break;
+        default:
         // eslint-disable-next-line no-console
-        console.error('Unknown Game Function: ', type);
+          console.error('Unknown Game Function: ', type);
+      }
+    } catch (e) {
+    // eslint-disable-next-line no-console
+      console.error(e);
     }
   }, [endTurn, handleDiscard, newGame, startGame]);
 
