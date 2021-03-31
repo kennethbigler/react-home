@@ -37,6 +37,7 @@ const usePokerFunctions = (
     try {
       await dispatch(endPokerTurn());
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     }
   }, [dispatch]);
@@ -48,6 +49,7 @@ const usePokerFunctions = (
       const { id, hands } = player;
       await dispatch(swapCards(hands, id, cardsToDiscardInDB));
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     }
   }, [dispatch]);
@@ -107,6 +109,7 @@ const usePokerFunctions = (
           break;
       }
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     }
   }, [discard]);
@@ -142,6 +145,7 @@ const usePokerFunctions = (
         }
       });
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     }
   }, [computer, dispatch, players, turn]);
@@ -154,6 +158,7 @@ const usePokerFunctions = (
         await endGame();
       }
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     }
   }, [endGame, players, gameOver, hideHands, turn]);
@@ -174,6 +179,7 @@ const usePokerFunctions = (
           try {
             await dispatch(newHand(player.id, 5));
           } catch (e) {
+            // eslint-disable-next-line no-console
             console.error(e);
           }
         }
