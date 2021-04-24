@@ -23,7 +23,7 @@
     "react-router-dom": "5.2.0",
     "react-simple-maps": "2.3.0",
     "recharts": "2.0.9",
-    "redux": "4.0.5",
+    "redux": "4.1.0",
     "redux-devtools-extension": "2.13.9",
     "redux-thunk": "2.3.0"
   },
