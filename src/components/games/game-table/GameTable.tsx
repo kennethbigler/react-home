@@ -6,11 +6,11 @@ import { DBPlayer, DBTurn } from '../../../store/types';
 interface GameTableProps {
   betHandler?: (id: number, event: React.ChangeEvent<Record<string, unknown>>, value: number) => void;
   cardClickHandler?: (playerNo: number, handNo: number, cardNo: number) => void;
-  cardsToDiscard: number[];
-  gameFunctions: string[];
-  gameOver: boolean;
-  hideHands: boolean;
-  isBlackJack: boolean;
+  cardsToDiscard?: number[];
+  gameFunctions?: string[];
+  gameOver?: boolean;
+  hideHands?: boolean;
+  isBlackJack?: boolean;
   onClick: (name: string) => void;
   players: DBPlayer[];
   turn: DBTurn;
@@ -20,8 +20,10 @@ interface GameTableProps {
  *          |->  Button Group  ->  Button        */
 const GameTable = (props: GameTableProps): React.ReactElement => {
   const {
-    betHandler, cardClickHandler, cardsToDiscard, gameFunctions,
-    gameOver, hideHands, isBlackJack, players, turn, onClick,
+    betHandler, cardClickHandler,
+    cardsToDiscard = [], gameFunctions = [],
+    gameOver = false, hideHands = false, isBlackJack = true,
+    players, turn, onClick,
   } = props;
 
   // move game buttons to make turn more obvious and support mobile
@@ -74,14 +76,6 @@ const GameTable = (props: GameTableProps): React.ReactElement => {
         )}
     </>
   );
-};
-
-GameTable.defaultProps = {
-  cardsToDiscard: [],
-  gameFunctions: [],
-  gameOver: false,
-  hideHands: false,
-  isBlackJack: true,
 };
 
 export default GameTable;

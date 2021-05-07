@@ -25,7 +25,7 @@ interface TopBarProps {
   /** change the color scheme of the icon */
   iconColor: 'inherit' | 'primary' | 'secondary' | 'default' | undefined;
   /** show/hide the player editor button */
-  showPlayers: boolean;
+  showPlayers?: boolean;
   /** callback called onClick of Icon or Menu text */
   toggleOpen: React.MouseEventHandler;
 }
@@ -47,7 +47,7 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
   );
 
   const {
-    toggleOpen, showPlayers, fontColor, iconColor,
+    toggleOpen, showPlayers = false, fontColor, iconColor,
   } = props;
 
   return (
@@ -86,10 +86,6 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
       </Toolbar>
     </AppBar>
   );
-};
-
-TopBar.defaultProps = {
-  showPlayers: false,
 };
 
 export default React.memo(TopBar);

@@ -7,17 +7,17 @@ import workExperience from '../../../constants/work';
 
 interface TimelineCardProps {
   /** background color of the expandable card top bar */
-  backgroundColor: string;
+  backgroundColor?: string;
   /** reads [selector] from each array entry and creates segments */
-  data: DataEntry[];
+  data?: DataEntry[];
   /** title content */
-  title: string;
+  title?: string;
   /** key to be used to read data */
-  selector: string;
+  selector?: string;
   /** start of the timeline */
-  start: DateObj;
+  start?: DateObj;
   /** end of the timeline */
-  end: DateObj;
+  end?: DateObj;
 }
 
 const DATE_FORMAT: FormatOutput = 'MMMM Y';
@@ -27,8 +27,12 @@ const DATE_FORMAT: FormatOutput = 'MMMM Y';
 /** function to generate timeline card */
 const TimelineCard = (props: TimelineCardProps): React.ReactElement | null => {
   const {
-    data, backgroundColor, title, selector,
-    start, end,
+    data = workExperience,
+    backgroundColor = grey[900],
+    title = TIMELINE_TITLE,
+    selector = 'company',
+    start = dateObj('2011-09'),
+    end = dateObj(),
   } = props;
 
   return (
@@ -45,15 +49,6 @@ const TimelineCard = (props: TimelineCardProps): React.ReactElement | null => {
       />
     </ExpandableCard>
   );
-};
-
-TimelineCard.defaultProps = {
-  data: workExperience,
-  backgroundColor: grey[900],
-  title: TIMELINE_TITLE,
-  selector: 'company',
-  start: dateObj('2011-09'),
-  end: dateObj(),
 };
 
 export default TimelineCard;

@@ -24,7 +24,7 @@ interface ExpandableCardProps {
   /** content to be displayed in the main section of the card */
   children?: React.ReactNode;
   /** invert the color of the title and subtitle text */
-  inverted: boolean;
+  inverted?: boolean;
   /** subtitle content */
   subtitle?: string | React.ReactNode;
   /** title content */
@@ -35,7 +35,7 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
   const [expanded, toggleExpanded] = useToggleState(true);
   const { palette } = useTheme();
   const {
-    title, subtitle, children, backgroundColor, inverted,
+    title, subtitle, children, backgroundColor, inverted = false,
   } = props;
 
   const headerStyle = {
@@ -80,10 +80,6 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
       </Collapse>
     </Card>
   );
-};
-
-ExpandableCard.defaultProps = {
-  inverted: false,
 };
 
 export default ExpandableCard;

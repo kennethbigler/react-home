@@ -7,9 +7,9 @@ import noop from '../../../apis/noop';
 
 interface PieceProps {
   /** can the piece be clicked? */
-  enabled: boolean;
+  enabled?: boolean;
   /** callback onClick of piece */
-  onClick: React.MouseEventHandler;
+  onClick?: React.MouseEventHandler;
   /** type of piece */
   piece: number;
 }
@@ -29,7 +29,7 @@ const getColor = (piece: number): string | undefined => {
 };
 
 const Piece = (props: PieceProps): React.ReactElement => {
-  const { piece, enabled, onClick } = props;
+  const { piece, enabled = false, onClick = noop } = props;
 
   const color = getColor(piece);
   const style: React.CSSProperties = { backgroundColor: color };
@@ -44,11 +44,6 @@ const Piece = (props: PieceProps): React.ReactElement => {
         <ContentAdd style={{ color: 'white' }} />
       </Fab>
     );
-};
-
-Piece.defaultProps = {
-  enabled: false,
-  onClick: noop,
 };
 
 export default React.memo(Piece);

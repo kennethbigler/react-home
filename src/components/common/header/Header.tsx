@@ -20,15 +20,15 @@ interface HeaderProps {
   /** content of the header bar via render props */
   children: (onItemClick: ItemClick) => React.ReactElement<NavProps>;
   /** callback function, wrapped with logic, then passed as onItemClick to children */
-  handleNav: (loc: string) => void;
+  handleNav?: (loc: string) => void;
   /** show/hide the player editor button */
-  showPlayers: boolean;
+  showPlayers?: boolean;
 }
 
 const Header = (props: HeaderProps): React.ReactElement => {
   const [isOpen, toggleOpen, setIsOpen] = useToggleState();
   const { palette: { type }} = useTheme();
-  const { children, handleNav, showPlayers } = props;
+  const { children, handleNav = noop, showPlayers = false } = props;
 
   /** close the menu and call the passed callback */
   const handleNavigation = React.useCallback((loc: string): void => {
@@ -62,11 +62,6 @@ const Header = (props: HeaderProps): React.ReactElement => {
       </Drawer>
     </>
   );
-};
-
-Header.defaultProps = {
-  showPlayers: false,
-  handleNav: noop,
 };
 
 export default Header;
