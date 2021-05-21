@@ -84,6 +84,7 @@ describe('resume | git-tools | GitTools', () => {
   it('handles id changes with a valid id', () => {
     render(<GitTools />);
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     fireEvent.change(screen.getByText('User Story ID').nextSibling!.lastChild!, { target: { value: 'KEN-1234' }});
     expect(screen.getByDisplayValue('KEN-1234')).toBeInTheDocument();
     expect(screen.getByText('features/KEN-1234_')).toBeInTheDocument();
@@ -94,6 +95,7 @@ describe('resume | git-tools | GitTools', () => {
   it('handles id changes with an invalid id', () => {
     render(<GitTools />);
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     fireEvent.change(screen.getByText('User Story ID').nextSibling!.lastChild!, { target: { value: '1234' }});
     expect(screen.queryByDisplayValue('1234')).toBeNull();
     expect(screen.getByText('features/')).toBeInTheDocument();
@@ -104,6 +106,7 @@ describe('resume | git-tools | GitTools', () => {
   it('handles BranchMessageChange when Branch Name is changed', () => {
     render(<GitTools />);
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     fireEvent.change(screen.getByText('Branch Name').nextSibling!.firstChild!, { target: { value: 'branchMessage' }});
     expect(screen.getByDisplayValue('branchMessage')).toBeInTheDocument();
     expect(screen.getByText('features/branch_message')).toBeInTheDocument();
@@ -114,6 +117,7 @@ describe('resume | git-tools | GitTools', () => {
   it('calls onBranchMessageClear when Branch Name clear button is pressed', () => {
     render(<GitTools />);
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     fireEvent.change(screen.getByText('Branch Name').nextSibling!.firstChild!, { target: { value: 'branchMessage' }});
     expect(screen.getByDisplayValue('branchMessage')).toBeInTheDocument();
     expect(screen.getByText('features/branch_message')).toBeInTheDocument();
@@ -147,6 +151,7 @@ describe('resume | git-tools | GitTools', () => {
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(screen.getByText('git push -f origin features/:test-pipeline')).toBeInTheDocument();
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     fireEvent.change(screen.getByText('Branch Name').nextSibling!.firstChild!, { target: { value: 'branchMessage' }});
     expect(screen.getByDisplayValue('branchMessage')).toBeInTheDocument();
     expect(screen.getByText('features/branch_message')).toBeInTheDocument();
@@ -166,6 +171,7 @@ describe('resume | git-tools | GitTools', () => {
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(screen.getByText('git push -f origin features/:test-pipeline')).toBeInTheDocument();
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     fireEvent.change(screen.getByText('Commit Description').nextSibling!.firstChild!, { target: { value: 'some desc' }});
     expect(screen.getByText('features/')).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat:')).toBeInTheDocument();

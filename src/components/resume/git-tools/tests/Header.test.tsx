@@ -18,6 +18,7 @@ describe('resume | git-tools | Header', () => {
     const handleIdChange = jest.fn();
     render(<Header gitTheme="red" onIdChange={handleIdChange} />);
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     fireEvent.change(screen.getByText('User Story ID').nextSibling!.lastChild!, { target: { value: 'KEN-1234' }});
     expect(handleIdChange).toHaveBeenCalledTimes(1);
   });

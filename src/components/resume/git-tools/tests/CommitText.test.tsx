@@ -73,6 +73,7 @@ describe('resume | git-tools | CommitText', () => {
     expect(screen.getByText('Commit Message')).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
     // Add commit message
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     fireEvent.change(screen.getByText('Commit Message').nextSibling!.lastChild!, { target: { value: 'A Message' }});
     expect(screen.getByText('git commit -m "feat: A Message [KEN-1234]"')).toBeInTheDocument();
     // Remove commit message
@@ -84,6 +85,7 @@ describe('resume | git-tools | CommitText', () => {
     expect(screen.getByText('Commit Description')).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
     // Add commit description
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     fireEvent.change(screen.getByText('Commit Description').nextSibling!.firstChild!, { target: { value: 'A Description' }});
     expect(screen.getByText('git commit -m "feat:')).toBeInTheDocument();
     expect(screen.getAllByText('A Description')).toHaveLength(2);
@@ -112,9 +114,11 @@ describe('resume | git-tools | CommitText', () => {
     expect(screen.getByDisplayValue('test')).toBeInTheDocument();
     expect(screen.getByText('git commit -m "test: [KEN-1234 #finish]"')).toBeInTheDocument();
     // Add a commit message
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     fireEvent.change(screen.getByText('Commit Message').nextSibling!.lastChild!, { target: { value: 'A Message' }});
     expect(screen.getByText('git commit -m "test: A Message [KEN-1234 #finish]"')).toBeInTheDocument();
     // Add a commit description
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     fireEvent.change(screen.getByText('Commit Description').nextSibling!.firstChild!, { target: { value: 'A Description' }});
     expect(screen.getByText('git commit -m "test: A Message')).toBeInTheDocument();
     expect(screen.getAllByText('A Description')).toHaveLength(2);
