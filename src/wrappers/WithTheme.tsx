@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import WithRouter from './WithRouter';
 import { DBRootState } from '../store/types';
 
@@ -9,7 +9,7 @@ import { DBRootState } from '../store/types';
 const WithTheme: React.FC = () => {
   const theme = useSelector((state: DBRootState) => state.theme);
 
-  const setTheme = createMuiTheme({
+  const setTheme = createTheme({
     palette: {
       type: theme.type,
       primary: theme.primary,

@@ -55,7 +55,7 @@ const Info: React.FC = React.memo(() => (
             </TableRow>
             <TableRow>
               <TableCell>
-                <p>Driver License</p>
+                <p>Driver License (C &amp; M1)</p>
                 <p>GoKart Racing License</p>
                 <p>Range Safety Certified</p>
                 <p>CPR, AED, &amp; First Aid Certified (Adult, Child, &amp; Baby)</p>

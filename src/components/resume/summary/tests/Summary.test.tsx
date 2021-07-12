@@ -32,8 +32,8 @@ describe('resume | summary | Summary', () => {
   it('toggles display on header click', () => {
     const { container } = render(<Summary />);
 
-    expect(container.querySelectorAll('.MuiCollapse-container.MuiCollapse-entered')).toHaveLength(4);
+    expect(container.querySelectorAll('.MuiCollapse-root.MuiCollapse-entered')).toHaveLength(4);
     fireEvent.click(screen.getByText('Education'));
-    expect(container.querySelectorAll('.MuiCollapse-container.MuiCollapse-entered')).toHaveLength(3);
+    expect(container.querySelectorAll('.MuiCollapse-root.MuiCollapse-entered')).toHaveLength(3);
   });
 });
