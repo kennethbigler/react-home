@@ -55,7 +55,7 @@ jobs:
         run: npm test -- --coverage
         
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1.5.2
+        uses: codecov/codecov-action@v2.0.2
 
   # Adding a code analyzer job
   analyze:
