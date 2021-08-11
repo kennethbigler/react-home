@@ -9,10 +9,11 @@ import dateObj from '../apis/DateHelper';
 import prius07 from '../images/07_toyota_prius.jpg';
 import pontiac93 from '../images/93_pontiac_bonneville.jpg';
 import impala10 from '../images/10_chevrolet_impala_ls.jpg';
-import mustang15 from '../images/15_mustang_gt_premium.jpg';
+import mustang15 from '../images/15_mustang_gt_premium.png';
 import xj8l05 from '../images/05_jaguar_xj8l.jpg';
-import corvette18 from '../images/18_corvette_zo6_3lz.jpeg';
-import ftype15 from '../images/15_jaguar_f_type.jpg';
+import corvette18 from '../images/18_corvette_zo6_3lz.png';
+import ftype15 from '../images/15_jaguar_f_type.webp';
+import mustang20 from '../images/20_ford_mustang.jpeg';
 
 const prius = '2007 Toyota Prius';
 const bonneville = '1993 Pontiac Bonneville';
@@ -21,6 +22,7 @@ const mustang = '2015 Ford Mustang GT Premium';
 const ftype = '2015 Jaguar F-Type R Convertible';
 const xj8l = '2005 Jaguar XJ8-L';
 const corvette = '2018 Chevrolet Corvette Z06 3LZ Z07 Package';
+const mustang2 = '2020 Mustang GT Performance Pack 1';
 
 const cars = [
   {
@@ -104,6 +106,19 @@ const cars = [
     makeModel: xj8l,
     transmission: 'Automatic',
     horsePower: 390,
+  }, {
+    color: indigo[900],
+    start: dateObj('2020-03'),
+    end: dateObj(),
+    short: 'Mustang2',
+    title: mustang2,
+
+    owned: '2020 - Present',
+    story: `Emily purchased her first car, a ${mustang2}!`,
+    src: mustang20,
+    makeModel: mustang2,
+    transmission: 'Manual',
+    horsePower: 460,
   }, {
     color: yellow[500],
     start: dateObj('2019-01'),
