@@ -8,7 +8,7 @@ export interface Car {
   owned: string;
   story: string;
   src: string;
-  makeModel: string;
+  title: string;
   transmission: string;
   horsePower: number;
 }
@@ -34,7 +34,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }: CarCardProps) => (
         <CardContent>
           <Typography variant="h5">
             <strong style={{ paddingRight: 20 }}>{`(${car.owned})`}</strong>
-            {car.makeModel}
+            {car.title}
           </Typography>
           <hr />
           <Typography variant="h6">{`Horsepower: ${car.horsePower}`}</Typography>
@@ -44,7 +44,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }: CarCardProps) => (
         </CardContent>
       </Grid>
       <Grid item sm={4} xs={12}>
-        <img src={car.src} alt={car.makeModel} style={imgStyles} />
+        <img src={car.src} alt={car.title} style={imgStyles} />
       </Grid>
     </Grid>
   </Card>

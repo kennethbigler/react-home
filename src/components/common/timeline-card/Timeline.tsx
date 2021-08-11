@@ -21,6 +21,8 @@ interface TimelineProps {
   start: DateObj;
   /** end of the timeline */
   end: DateObj;
+  /** reduce year markers */
+  yearMarkerFrequency: number;
 }
 
 export const FORMAT: FormatOutput = 'MMMM Y';
@@ -41,7 +43,7 @@ const addEmptySegment = (segments: SegmentType[], width: number): void => {
 
 const Timeline = (props: TimelineProps): React.ReactElement => {
   const {
-    start, end, selector, data: propsData,
+    start, end, selector, data: propsData, yearMarkerFrequency,
   } = props;
   // get immutable data from props and sort by start date
   const data: DataEntry[] = React.useMemo(() => [...propsData].sort(MONTH_SORT), [propsData]);
@@ -146,7 +148,7 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
       const endYear = Number(end.format('YYYY'));
 
       const years = [];
-      for (let year = startYear + 1; year <= endYear; year += 1) {
+      for (let year = startYear + 1; year <= endYear; year += yearMarkerFrequency) {
         years.push(dateObj(`${year}`));
       }
 
@@ -162,7 +164,7 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
 
       return yearMarkers;
     },
-    [end, getTimeFromStart, start],
+    [end, getTimeFromStart, start, yearMarkerFrequency],
   );
 
   return (

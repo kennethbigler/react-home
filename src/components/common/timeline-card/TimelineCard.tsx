@@ -18,6 +18,8 @@ interface TimelineCardProps {
   start?: DateObj;
   /** end of the timeline */
   end?: DateObj;
+  /** reduce year markers */
+  yearMarkerFrequency?: number;
 }
 
 const DATE_FORMAT: FormatOutput = 'MMMM Y';
@@ -33,6 +35,7 @@ const TimelineCard = (props: TimelineCardProps): React.ReactElement | null => {
     selector = 'company',
     start = dateObj('2011-09'),
     end = dateObj(),
+    yearMarkerFrequency = 1,
   } = props;
 
   return (
@@ -46,6 +49,7 @@ const TimelineCard = (props: TimelineCardProps): React.ReactElement | null => {
         selector={selector}
         start={start}
         end={end}
+        yearMarkerFrequency={yearMarkerFrequency}
       />
     </ExpandableCard>
   );

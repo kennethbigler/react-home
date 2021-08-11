@@ -12,19 +12,13 @@ const Cars = React.memo(() => (
   <>
     <Typography variant="h2">{'Ken\'s Cars'}</Typography>
     <TimelineCard
-      data={cars.slice().reverse().slice(0, 3)}
-      selector="makeModel"
-      start={dateObj('2008-03')}
-      end={dateObj('2015-02')}
-      title="Early Cars (From Parents)"
-    />
-    <TimelineCard
       data={cars}
-      selector="makeModel"
-      start={dateObj('2015-02')}
+      selector="title"
+      start={dateObj('2008-03')}
       title="Ken's Cars"
+      yearMarkerFrequency={3}
     />
-    {cars.map((car) => (<CarCard car={car} key={car.makeModel} />))}
+    {cars.map((car) => (<CarCard car={car} key={car.title} />))}
     <hr style={hrStyles} />
     <Typography variant="h2">Muscle Cars Compared</Typography>
     <br />

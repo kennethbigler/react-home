@@ -15,14 +15,14 @@ import corvette18 from '../images/18_corvette_zo6_3lz.png';
 import ftype15 from '../images/15_jaguar_f_type.webp';
 import mustang20 from '../images/20_ford_mustang.jpeg';
 
-const prius = '2007 Toyota Prius';
-const bonneville = '1993 Pontiac Bonneville';
-const impala = '2010 Chevrolet Impala LS';
-const mustang = '2015 Ford Mustang GT Premium';
-const ftype = '2015 Jaguar F-Type R Convertible';
-const xj8l = '2005 Jaguar XJ8-L';
-const corvette = '2018 Chevrolet Corvette Z06 3LZ Z07 Package';
-const mustang2 = '2020 Mustang GT Performance Pack 1';
+const prius = 'Toyota Prius (2007)';
+const bonneville = 'Pontiac Bonneville (1993)';
+const impala = 'Chevrolet Impala LS (2010)';
+const mustang = 'Ford Mustang GT Premium (2015)';
+const ftype = 'Jaguar F-Type R Convertible (2015)';
+const xj8l = 'Jaguar XJ8-L (2005)';
+const corvette = 'Chevrolet Corvette Z06 (2018)';
+const mustang2 = 'Ford Mustang GT Premium (2020)';
 
 const cars = [
   {
@@ -35,7 +35,6 @@ const cars = [
     owned: '2008',
     story: `The car I learned how to drive on while I had my driver's permit was my father's new ${prius}.`,
     src: prius07,
-    makeModel: prius,
     transmission: 'Automatic',
     horsePower: 110,
   }, {
@@ -48,7 +47,6 @@ const cars = [
     owned: '2008 - 2010',
     story: `I got my first car: a ${bonneville}. It was previously my grandfather's (mother's side) and I got it as my first car when I got my license.`,
     src: pontiac93,
-    makeModel: bonneville,
     transmission: 'Automatic',
     horsePower: 205,
   }, {
@@ -62,7 +60,6 @@ const cars = [
     owned: '2010 - 2015',
     story: `After selling my first car, my parents purchased a ${impala} for me to drive. It was a used Hertz rental car.`,
     src: impala10,
-    makeModel: impala,
     transmission: 'Automatic',
     horsePower: 230,
   }, {
@@ -76,7 +73,6 @@ const cars = [
     story: `I purchased my first vehicle, a new ${mustang} with the 50 Years Edition Package. I did some modifications to this car including: `
       + 'Rear Window Louvers, GT350 start button, metal dead pedal, ergonomic parking break, Borla Ford Racing Sport Catback Exhaust, & Hurst automatic shift lever',
     src: mustang15,
-    makeModel: mustang,
     transmission: 'Automatic',
     horsePower: 435,
   }, {
@@ -90,7 +86,6 @@ const cars = [
     owned: '2018',
     story: `I rented a ${ftype} on Turo, which I wouldn't normally include in this list, but I totalled this car, so ended up having my insurance buy it! So I kind of owned it for one day.`,
     src: ftype15,
-    makeModel: ftype,
     transmission: 'Manual',
     horsePower: 550,
   }, {
@@ -103,7 +98,6 @@ const cars = [
     owned: '2019',
     story: `I sold my Mustang (as the exhaust was too loud), and started driving a ${xj8l} that my grandfather (father's side) had given to my family.`,
     src: xj8l05,
-    makeModel: xj8l,
     transmission: 'Automatic',
     horsePower: 390,
   }, {
@@ -114,9 +108,8 @@ const cars = [
     title: mustang2,
 
     owned: '2020 - Present',
-    story: `Emily purchased her first car, a ${mustang2}!`,
+    story: `Emily purchased her first car, a ${mustang2} with the Performance Pack 1!`,
     src: mustang20,
-    makeModel: mustang2,
     transmission: 'Manual',
     horsePower: 460,
   }, {
@@ -128,9 +121,8 @@ const cars = [
     inverted: true,
 
     owned: '2019 - Present',
-    story: `To replace my Mustang I purchased a ${corvette} used from the Ron Fellows Performance Driving School.`,
+    story: `To replace my Mustang I purchased a ${corvette} 3LZ with the Z07 Track Package used from the Ron Fellows Performance Driving School.`,
     src: corvette18,
-    makeModel: corvette,
     transmission: 'Manual',
     horsePower: 650,
   },

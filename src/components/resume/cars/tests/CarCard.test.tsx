@@ -6,7 +6,7 @@ const demoCar: Car = {
   owned: '2020',
   story: 'Story',
   src: 'pathToImg',
-  makeModel: '2018 Chevrolet Corvette',
+  title: '2018 Chevrolet Corvette',
   transmission: 'Manual',
   horsePower: 650,
 };
@@ -15,11 +15,11 @@ describe('resume | cars | CarCard', () => {
   it('renders as expected', () => {
     render(<CarCard car={demoCar} />);
     expect(screen.getByText(`(${demoCar.owned})`)).toBeInTheDocument();
-    expect(screen.getByText(demoCar.makeModel)).toBeInTheDocument();
+    expect(screen.getByText(demoCar.title)).toBeInTheDocument();
     expect(screen.getByText(`Horsepower: ${demoCar.horsePower}`)).toBeInTheDocument();
     expect(screen.getByText(`Transmission: ${demoCar.transmission}`)).toBeInTheDocument();
     expect(screen.getByText(demoCar.story)).toBeInTheDocument();
-    expect(screen.getByAltText(demoCar.makeModel)).toBeInTheDocument();
-    expect(screen.getByAltText(demoCar.makeModel)).toHaveAttribute('src', demoCar.src);
+    expect(screen.getByAltText(demoCar.title)).toBeInTheDocument();
+    expect(screen.getByAltText(demoCar.title)).toHaveAttribute('src', demoCar.src);
   });
 });
