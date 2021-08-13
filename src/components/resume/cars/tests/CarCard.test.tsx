@@ -8,7 +8,7 @@ const demoCar: Car = {
   src: 'pathToImg',
   title: '2018 Chevrolet Corvette',
   transmission: 'Manual',
-  horsePower: 650,
+  horsepower: 650,
 };
 
 describe('resume | cars | CarCard', () => {
@@ -16,7 +16,7 @@ describe('resume | cars | CarCard', () => {
     render(<CarCard car={demoCar} />);
     expect(screen.getByText(`(${demoCar.owned})`)).toBeInTheDocument();
     expect(screen.getByText(demoCar.title)).toBeInTheDocument();
-    expect(screen.getByText(`Horsepower: ${demoCar.horsePower}`)).toBeInTheDocument();
+    expect(screen.getByText(`Horsepower: ${demoCar.horsepower}`)).toBeInTheDocument();
     expect(screen.getByText(`Transmission: ${demoCar.transmission}`)).toBeInTheDocument();
     expect(screen.getByText(demoCar.story)).toBeInTheDocument();
     expect(screen.getByAltText(demoCar.title)).toBeInTheDocument();

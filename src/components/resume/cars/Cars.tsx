@@ -20,7 +20,7 @@ const Cars = React.memo(() => (
     />
     {cars.map((car) => (<CarCard car={car} key={car.title} />))}
     <hr style={hrStyles} />
-    <Typography variant="h2">Muscle Cars Compared</Typography>
+    <Typography variant="h2">Car Stats Compared</Typography>
     <br />
     <CarChart />
   </>

@@ -10,7 +10,7 @@ export interface Car {
   src: string;
   title: string;
   transmission: string;
-  horsePower: number;
+  horsepower: number;
 }
 interface CarCardProps {
   car: Car;
@@ -37,7 +37,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }: CarCardProps) => (
             {car.title}
           </Typography>
           <hr />
-          <Typography variant="h6">{`Horsepower: ${car.horsePower}`}</Typography>
+          <Typography variant="h6">{`Horsepower: ${car.horsepower}`}</Typography>
           <Typography variant="h6">{`Transmission: ${car.transmission}`}</Typography>
           <hr />
           <Typography>{car.story}</Typography>
