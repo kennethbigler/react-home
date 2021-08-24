@@ -3,6 +3,7 @@ import grey from '@material-ui/core/colors/grey';
 import red from '@material-ui/core/colors/red';
 import lime from '@material-ui/core/colors/lime';
 import yellow from '@material-ui/core/colors/yellow';
+import teal from '@material-ui/core/colors/teal';
 
 import dateObj from '../apis/DateHelper';
 
@@ -14,6 +15,7 @@ import xj8l05 from '../images/05_jaguar_xj8l.jpg';
 import corvette18 from '../images/18_corvette_zo6_3lz.png';
 import ftype15 from '../images/15_jaguar_f_type.webp';
 import mustang20 from '../images/20_ford_mustang.jpeg';
+import bronco21 from '../images/21_ford_bronco.webp';
 
 const prius = 'Toyota Prius (2007)';
 const bonneville = 'Pontiac Bonneville (1993)';
@@ -23,6 +25,8 @@ const ftype = 'Jaguar F-Type R Convertible (2015)';
 const xj8l = 'Jaguar XJ8-L (2005)';
 const corvette = 'Chevrolet Corvette Z06 (2018)';
 const mustang2 = 'Ford Mustang GT Premium (2020)';
+const bronco = 'Ford Bronco Badlands (2021)';
+const honda = 'Honda Rebel 500 (2021)';
 
 const cars = [
   {
@@ -30,6 +34,7 @@ const cars = [
     start: dateObj('2008-03'),
     end: dateObj('2008-09'),
     short: 'Prius',
+    char: 'P',
     title: prius,
 
     owned: '2008',
@@ -47,6 +52,8 @@ const cars = [
     start: dateObj('2008-09'),
     end: dateObj('2010-12'),
     short: 'Bonneville',
+    char: 'P',
+    nickname: 'Petunia',
     title: bonneville,
 
     owned: '2008 - 2010',
@@ -64,6 +71,8 @@ const cars = [
     start: dateObj('2010-12'),
     end: dateObj('2015-02'),
     short: 'Impala',
+    char: 'I',
+    nickname: 'Irene',
     title: impala,
     inverted: true,
 
@@ -82,6 +91,8 @@ const cars = [
     start: dateObj('2015-02'),
     end: dateObj('2019-01'),
     short: 'Mustang',
+    char: 'M1',
+    nickname: 'Miranda',
     title: mustang,
 
     owned: '2015 - 2019',
@@ -100,6 +111,7 @@ const cars = [
     start: dateObj('2018-03'),
     end: dateObj('2018-08'),
     short: 'F-Type',
+    char: 'J',
     title: ftype,
     inverted: true,
 
@@ -118,6 +130,7 @@ const cars = [
     start: dateObj('2019-01'),
     end: dateObj('2019-07'),
     short: 'XJ8-L',
+    char: 'J',
     title: xj8l,
 
     owned: '2019',
@@ -135,6 +148,8 @@ const cars = [
     start: dateObj('2020-03'),
     end: dateObj(),
     short: 'Mustang2',
+    char: 'M2',
+    nickname: 'Miranda Jr',
     title: mustang2,
 
     owned: '2020 - Present',
@@ -152,6 +167,8 @@ const cars = [
     start: dateObj('2019-01'),
     end: dateObj(),
     short: 'Corvette',
+    char: 'C',
+    nickname: 'Camilla',
     title: corvette,
     inverted: true,
 
@@ -165,6 +182,44 @@ const cars = [
     MPG: 18,
     torque: 650,
     weight: 3524,
+  }, {
+    color: teal[100],
+    start: dateObj('2021-09'),
+    end: dateObj(),
+    short: 'Bronco',
+    char: 'B',
+    nickname: 'Betty',
+    title: bronco,
+
+    owned: '2021 - Present',
+    story: `In an attempt to get a more practical daily driver, as well as dip my toes into the off-roading community, I purchased a ${bronco}.`,
+    src: bronco21,
+    transmission: 'Manual',
+
+    displacement: 2.3,
+    horsepower: 270,
+    MPG: 18,
+    torque: 310,
+    weight: 4997,
+  }, {
+    color: grey[100],
+    start: dateObj('2021-09'),
+    end: dateObj(),
+    short: 'Honda',
+    char: 'H',
+    title: honda,
+    inverted: true,
+
+    owned: '2021 - Present',
+    story: `motorcycle: ${honda}.`,
+    src: bronco21,
+    transmission: 'Manual',
+
+    displacement: 0.5,
+    horsepower: 46,
+    MPG: 67,
+    torque: 32,
+    weight: 408,
   },
 ];
 
@@ -175,6 +230,7 @@ interface CarStats {
   horsepower: number,
   MPG: number,
   short: string,
+  char: string,
   torque: number,
   weight: number,
 }
@@ -222,6 +278,7 @@ const processData = (data: CarStats[]): GraphData[] => {
       horsepower: (car.horsepower - minHorsepower) / (maxHorsepower - minHorsepower),
       MPG: (car.MPG - minMPG) / (maxMPG - minMPG),
       short: car.short,
+      char: car.char,
       torque: (car.torque - minTorque) / (maxTorque - minTorque),
       weight: (car.weight - minWeight) / (maxWeight - minWeight),
       powerToWeight: (powerToWeight - minPowerToWeight) / (maxPowerToWeight - minPowerToWeight),
