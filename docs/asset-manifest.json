@@ -35,8 +35,8 @@
     "main.css": "/static/css/main.a533e322.chunk.css",
     "main.js": "/static/js/main.75d56dff.chunk.js",
     "main.js.map": "/static/js/main.75d56dff.chunk.js.map",
-    "r_cars.js": "/static/js/r_cars.6427a99d.chunk.js",
-    "r_cars.js.map": "/static/js/r_cars.6427a99d.chunk.js.map",
+    "r_cars.js": "/static/js/r_cars.4f15c678.chunk.js",
+    "r_cars.js.map": "/static/js/r_cars.4f15c678.chunk.js.map",
     "r_education.js": "/static/js/r_education.850daba6.chunk.js",
     "r_education.js.map": "/static/js/r_education.850daba6.chunk.js.map",
     "r_git.js": "/static/js/r_git.2e0457e3.chunk.js",
@@ -57,8 +57,8 @@
     "r_work_bar_chart.js.map": "/static/js/r_work_bar_chart.ae765ae0.chunk.js.map",
     "resume.js": "/static/js/resume.99f04cdb.chunk.js",
     "resume.js.map": "/static/js/resume.99f04cdb.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.3239611e.js",
-    "runtime-main.js.map": "/static/js/runtime-main.3239611e.js.map",
+    "runtime-main.js": "/static/js/runtime-main.53ae9745.js",
+    "runtime-main.js.map": "/static/js/runtime-main.53ae9745.js.map",
     "static/js/29.c7d79017.chunk.js": "/static/js/29.c7d79017.chunk.js",
     "static/js/29.c7d79017.chunk.js.map": "/static/js/29.c7d79017.chunk.js.map",
     "static/js/30.922413ee.chunk.js": "/static/js/30.922413ee.chunk.js",
@@ -100,7 +100,7 @@
     "static/media/vengefulgames_logo.70c16539.png": "/static/media/vengefulgames_logo.70c16539.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.3239611e.js",
+    "static/js/runtime-main.53ae9745.js",
     "static/js/29.c7d79017.chunk.js",
     "static/css/main.a533e322.chunk.css",
     "static/js/main.75d56dff.chunk.js"

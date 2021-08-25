@@ -13,6 +13,8 @@ const Cars = React.memo(() => {
   const [showAnimation, setShowAnimation] = React.useState(true);
   const [hide, setHide] = React.useState<HideObject>({});
 
+  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+
   const handleClick = (key: ShowKey) => () => {
     setShowAnimation((hide.displacement && hide.horsepower && hide.MPG && hide.torque && hide.weight && hide.powerToWeight) || false);
     if (hide[key]) {
@@ -36,9 +38,8 @@ const Cars = React.memo(() => {
       <hr style={hrStyles} />
       <Typography variant="h2">Car Stats Compared</Typography>
       <br />
-      <CarChartControls onClick={handleClick} hide={hide} />
-      <br />
-      <CarChart showAnimation={showAnimation} hide={hide} />
+      <CarChartControls onClick={handleClick} hide={hide} vw={vw} />
+      <CarChart showAnimation={showAnimation} hide={hide} vw={vw} />
     </>
   );
 });

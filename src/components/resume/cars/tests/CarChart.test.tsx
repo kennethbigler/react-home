@@ -4,7 +4,7 @@ import CarChart from '../CarChart';
 
 describe('resume | cars | CarChart', () => {
   it('renders as expected', () => {
-    const { container } = render(<CarChart hide={{}} showAnimation />);
+    const { container } = render(<CarChart hide={{}} showAnimation vw={435} />);
     expect(container.querySelector('.recharts-responsive-container')).toBeInTheDocument();
   });
 });

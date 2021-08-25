@@ -5,7 +5,7 @@ import CarChartControls from '../CarChartControls';
 describe('resume | cars | CarChart', () => {
   it('renders as expected', () => {
     const handleClick = jest.fn();
-    const { getByText } = render(<CarChartControls hide={{}} onClick={handleClick} />);
+    const { getByText } = render(<CarChartControls hide={{}} onClick={handleClick} vw={435} />);
 
     expect(getByText('Displacement')).toBeInTheDocument();
     expect(getByText('Torque')).toBeInTheDocument();

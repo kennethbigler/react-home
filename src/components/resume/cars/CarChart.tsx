@@ -23,33 +23,30 @@ export interface HideObject {
 export interface CarChartProps {
   showAnimation: boolean;
   hide: HideObject;
+  vw: number;
 }
 
-const CarChart = React.memo(({ showAnimation, hide }: CarChartProps) => {
-  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-
-  return (
-    <ResponsiveContainer width="100%" height={650}>
-      <LineChart data={crunchedData}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey={vw >= 690 ? 'short' : 'char'} interval="preserveStartEnd" reversed />
-        <YAxis domain={['dataMin', 'dataMax']} tickCount={6} width={28} hide />
-        {!hide.displacement
+const CarChart = React.memo(({ showAnimation, hide, vw }: CarChartProps) => (
+  <ResponsiveContainer width="100%" height={650}>
+    <LineChart data={crunchedData}>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey={vw >= 690 ? 'short' : 'char'} interval="preserveStartEnd" reversed />
+      <YAxis domain={['dataMin', 'dataMax']} tickCount={6} width={28} hide />
+      {!hide.displacement
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="displacement" stroke={red[500]} />}
-        {!hide.torque
+      {!hide.torque
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="torque" stroke={yellow[500]} />}
-        {!hide.MPG
+      {!hide.MPG
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="MPG" stroke={orange[500]} />}
-        {!hide.horsepower
+      {!hide.horsepower
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="horsepower" stroke={green[500]} />}
-        {!hide.weight
+      {!hide.weight
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="weight" stroke={blue[500]} />}
-        {!hide.powerToWeight
+      {!hide.powerToWeight
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="powerToWeight" stroke={purple[500]} />}
-        <Legend verticalAlign="top" />
-      </LineChart>
-    </ResponsiveContainer>
-  );
-});
+      <Legend verticalAlign="top" />
+    </LineChart>
+  </ResponsiveContainer>
+));
 
 export default CarChart;
