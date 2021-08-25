@@ -26,7 +26,7 @@ const xj8l = 'Jaguar XJ8-L (2005)';
 const corvette = 'Chevrolet Corvette Z06 (2018)';
 const mustang2 = 'Ford Mustang GT Premium (2020)';
 const bronco = 'Ford Bronco Badlands (2021)';
-const honda = 'Honda Rebel 500 (2021)';
+// const honda = 'Honda Rebel 500 (2021)';
 
 const cars = [
   {
@@ -200,27 +200,27 @@ const cars = [
     horsepower: 270,
     MPG: 18,
     torque: 310,
-    weight: 4997,
-  }, {
-    color: grey[100],
-    start: dateObj('2021-09'),
-    end: dateObj(),
-    short: 'Honda',
-    char: 'H',
-    title: honda,
-    inverted: true,
+    weight: 4499,
+  }, // {
+  //   color: grey[100],
+  //   start: dateObj('2021-09'),
+  //   end: dateObj(),
+  //   short: 'Honda',
+  //   char: 'H',
+  //   title: honda,
+  //   inverted: true,
 
-    owned: '2021 - Present',
-    story: `motorcycle: ${honda}.`,
-    src: bronco21,
-    transmission: 'Manual',
+  //   owned: '2021 - Present',
+  //   story: `motorcycle: ${honda}.`,
+  //   src: bronco21,
+  //   transmission: 'Manual',
 
-    displacement: 0.5,
-    horsepower: 46,
-    MPG: 67,
-    torque: 32,
-    weight: 408,
-  },
+  //   displacement: 0.5,
+  //   horsepower: 46,
+  //   MPG: 67,
+  //   torque: 32,
+  //   weight: 408,
+  // },
 ];
 
 cars.reverse();

@@ -1,30 +1,55 @@
 import React from 'react';
 import {
-  ResponsiveContainer, LineChart, Line, XAxis, YAxis, Legend,
+  ResponsiveContainer,
+  LineChart,
+  CartesianGrid,
+  XAxis, YAxis,
+  Line, Legend,
 } from 'recharts';
 import {
   red, yellow, orange, green, blue, purple,
 } from '@material-ui/core/colors/';
 import { crunchedData } from '../../../constants/cars';
 
-const Cars = React.memo(() => {
+export interface HideObject {
+  displacement?: boolean;
+  torque?: boolean;
+  MPG?: boolean;
+  horsepower?: boolean;
+  weight?: boolean;
+  powerToWeight?: boolean;
+}
+
+export interface CarChartProps {
+  showAnimation: boolean;
+  hide: HideObject;
+}
+
+const CarChart = React.memo(({ showAnimation, hide }: CarChartProps) => {
   const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 
   return (
     <ResponsiveContainer width="100%" height={650}>
       <LineChart data={crunchedData}>
-        <Legend verticalAlign="top" />
+        <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey={vw >= 690 ? 'short' : 'char'} interval="preserveStartEnd" reversed />
-        <YAxis hide tickLine={false} domain={['dataMin', 'dataMax']} allowDecimals={false} />
-        <Line strokeWidth={2} type="monotone" dot={false} dataKey="displacement" stroke={red[500]} />
-        <Line strokeWidth={2} type="monotone" dot={false} dataKey="horsepower" stroke={yellow[500]} />
-        <Line strokeWidth={2} type="monotone" dot={false} dataKey="MPG" stroke={orange[500]} />
-        <Line strokeWidth={2} type="monotone" dot={false} dataKey="torque" stroke={green[500]} />
-        <Line strokeWidth={2} type="monotone" dot={false} dataKey="weight" stroke={blue[500]} />
-        <Line strokeWidth={2} type="monotone" dot={false} dataKey="powerToWeight" stroke={purple[500]} />
+        <YAxis domain={['dataMin', 'dataMax']} tickCount={6} width={28} hide />
+        {!hide.displacement
+          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="displacement" stroke={red[500]} />}
+        {!hide.torque
+          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="torque" stroke={yellow[500]} />}
+        {!hide.MPG
+          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="MPG" stroke={orange[500]} />}
+        {!hide.horsepower
+          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="horsepower" stroke={green[500]} />}
+        {!hide.weight
+          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="weight" stroke={blue[500]} />}
+        {!hide.powerToWeight
+          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="powerToWeight" stroke={purple[500]} />}
+        <Legend verticalAlign="top" />
       </LineChart>
     </ResponsiveContainer>
   );
 });
 
-export default Cars;
+export default CarChart;
