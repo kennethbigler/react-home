@@ -10,21 +10,27 @@ import dateObj from '../apis/DateHelper';
 import prius07 from '../images/07_toyota_prius.jpg';
 import pontiac93 from '../images/93_pontiac_bonneville.jpg';
 import impala10 from '../images/10_chevrolet_impala_ls.jpg';
+import equinox10 from '../images/10_chevy_equinox.png';
 import mustang15 from '../images/15_mustang_gt_premium.png';
+import tesla16 from '../images/16_tesla_x.webp';
 import xj8l05 from '../images/05_jaguar_xj8l.jpg';
 import corvette18 from '../images/18_corvette_zo6_3lz.png';
 import ftype15 from '../images/15_jaguar_f_type.webp';
 import mustang20 from '../images/20_ford_mustang.jpeg';
+import panamera21 from '../images/21_porsche_panamera.png';
 import bronco21 from '../images/21_ford_bronco.webp';
 
 const prius = 'Toyota Prius (2007)';
 const bonneville = 'Pontiac Bonneville (1993)';
+const equinox = 'Chevy Equinox LTZ (2010)';
 const impala = 'Chevrolet Impala LS (2010)';
 const mustang = 'Ford Mustang GT Premium (2015)';
+const tesla = 'Tesla Model X 90D (2016)';
 const ftype = 'Jaguar F-Type R Convertible (2015)';
 const xj8l = 'Jaguar XJ8-L (2005)';
 const corvette = 'Chevrolet Corvette Z06 (2018)';
 const mustang2 = 'Ford Mustang GT Premium (2020)';
+const panamera = 'Porsche Panamera E-Hybrid (2021)';
 const bronco = 'Ford Bronco Badlands (2021)';
 // const honda = 'Honda Rebel 500 (2021)';
 
@@ -32,13 +38,13 @@ const cars = [
   {
     color: indigo[500],
     start: dateObj('2008-03'),
-    end: dateObj('2008-09'),
+    end: dateObj('2016-08'),
     short: 'Prius',
     char: 'P',
     title: prius,
 
-    owned: '2008',
-    story: `The car I learned how to drive on while I had my driver's permit was my father's new ${prius}.`,
+    owned: '2008 - 2016',
+    story: `I learned to drive with a permit on my Father's ${prius}.`,
     src: prius07,
     transmission: 'Automatic',
 
@@ -57,7 +63,7 @@ const cars = [
     title: bonneville,
 
     owned: '2008 - 2010',
-    story: `I got my first car: a ${bonneville}. It was previously my grandfather's (mother's side) and I got it as my first car when I got my license.`,
+    story: `I got my first car: a ${bonneville}. It was previously my grandfather's and I got it as my first car when I got my license.`,
     src: pontiac93,
     transmission: 'Automatic',
 
@@ -67,9 +73,28 @@ const cars = [
     torque: 260,
     weight: 3607,
   }, {
+    color: yellow[600],
+    start: dateObj('2010-02'),
+    end: dateObj(),
+    short: 'Equinox',
+    char: 'E',
+    title: equinox,
+    inverted: true,
+
+    owned: '2010 - present',
+    story: `My Mother's ${equinox}.`,
+    src: equinox10,
+    transmission: 'Automatic',
+
+    displacement: 2.4,
+    horsepower: 182,
+    MPG: 26,
+    torque: 172,
+    weight: 3838,
+  }, {
     color: grey[400],
     start: dateObj('2010-12'),
-    end: dateObj('2015-02'),
+    end: dateObj('2015-06'),
     short: 'Impala',
     char: 'I',
     nickname: 'Irene',
@@ -97,7 +122,7 @@ const cars = [
 
     owned: '2015 - 2019',
     story: `I purchased my first vehicle, a new ${mustang} with the 50 Years Edition Package. I did some modifications to this car including: `
-      + 'Rear Window Louvers, GT350 start button, metal dead pedal, ergonomic parking break, Borla Ford Racing Sport Catback Exhaust, & Hurst automatic shift lever',
+      + 'Rear Window Louvers, GT350 start button, metal dead pedal, ergonomic parking break, Borla Ford Racing Sport Catback Exhaust, & Hurst automatic shift lever.',
     src: mustang15,
     transmission: 'Automatic',
 
@@ -106,6 +131,43 @@ const cars = [
     MPG: 19,
     torque: 400,
     weight: 3705,
+  }, {
+    color: grey[50],
+    start: dateObj('2016-03'),
+    end: dateObj(),
+    short: 'Model X',
+    char: 'X',
+    title: tesla,
+    inverted: true,
+
+    owned: '2016 - present',
+    story: `My father's ${tesla}.`,
+    src: tesla16,
+    transmission: 'Direct',
+
+    displacement: 0,
+    horsepower: 417,
+    MPG: 92,
+    torque: 485,
+    weight: 5271,
+  }, {
+    color: lime[800],
+    start: dateObj('2017-10'),
+    end: dateObj('2021-08'),
+    short: 'XJ8-L',
+    char: 'J',
+    title: xj8l,
+
+    owned: '2017 - 2021',
+    story: `My Family's ${xj8l}.`,
+    src: xj8l05,
+    transmission: 'Automatic',
+
+    displacement: 4.2,
+    horsepower: 294,
+    MPG: 19,
+    torque: 303,
+    weight: 3777,
   }, {
     color: grey[50],
     start: dateObj('2018-03'),
@@ -125,24 +187,6 @@ const cars = [
     MPG: 22,
     torque: 339,
     weight: 3558,
-  }, {
-    color: lime[800],
-    start: dateObj('2019-01'),
-    end: dateObj('2019-07'),
-    short: 'XJ8-L',
-    char: 'J',
-    title: xj8l,
-
-    owned: '2019',
-    story: `I sold my Mustang (as the exhaust was too loud), and started driving a ${xj8l} that my grandfather (father's side) had given to my family.`,
-    src: xj8l05,
-    transmission: 'Automatic',
-
-    displacement: 4.2,
-    horsepower: 294,
-    MPG: 19,
-    torque: 303,
-    weight: 3777,
   }, {
     color: indigo[900],
     start: dateObj('2020-03'),
@@ -182,6 +226,25 @@ const cars = [
     MPG: 18,
     torque: 650,
     weight: 3524,
+  }, {
+    color: grey[50],
+    start: dateObj('2021-08'),
+    end: dateObj(),
+    short: 'Panamera',
+    char: 'PP',
+    title: panamera,
+    inverted: true,
+
+    owned: '2021 - Present',
+    story: `My mother's ${panamera}.`,
+    src: panamera21,
+    transmission: 'Automatic',
+
+    displacement: 2.9,
+    horsepower: 455,
+    MPG: 22,
+    torque: 516,
+    weight: 4967,
   }, {
     color: teal[100],
     start: dateObj('2021-09'),
