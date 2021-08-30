@@ -56,7 +56,7 @@ describe('resume | graphql | Profile', () => {
 
   it.skip('has data', async () => {
     // https://www.apollographql.com/docs/react/development-testing/testing/
-    const { debug } = render(
+    render(
       <MockedProvider
         mocks={[{
           request: { query: GET_REPOSITORIES_OF_CURRENT_USER },
@@ -105,8 +105,6 @@ describe('resume | graphql | Profile', () => {
     );
 
     await new Promise((resolve) => setTimeout(resolve, 0));
-
-    debug();
 
     expect(screen.getByText('Something Went Wrong')).toBeInTheDocument();
   });

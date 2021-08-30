@@ -7,7 +7,6 @@ describe('games | yahtzee | Yahtzee', () => {
   it('renders as expected', () => {
     render(<Yahtzee />);
 
-    // debug();
     expect(screen.getAllByText('Yahtzee')).toHaveLength(2);
     // button 0
     expect(screen.getByText('Score History')).toBeInTheDocument();
