@@ -9,7 +9,7 @@ describe('resume | cars | Cars', () => {
   it('renders as expected', () => {
     const { container } = render(<Cars />);
 
-    expect(screen.getAllByText('Ken\'s Cars')).toHaveLength(2);
+    expect(screen.getAllByText('Ken\'s Cars')).toHaveLength(3);
     expect(screen.getAllByText(`(${demoCar.owned})`)).toHaveLength(2);
     expect(screen.getByText(demoCar.title)).toBeInTheDocument();
     expect(screen.getByText(`Horsepower: ${demoCar.horsepower}`)).toBeInTheDocument();

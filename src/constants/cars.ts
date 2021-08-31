@@ -34,7 +34,7 @@ const panamera = 'Porsche Panamera E-Hybrid (2021)';
 const bronco = 'Ford Bronco Badlands (2021)';
 // const honda = 'Honda Rebel 500 (2021)';
 
-const cars = [
+const familyCars = [
   {
     color: indigo[500],
     start: dateObj('2008-03'),
@@ -54,25 +54,6 @@ const cars = [
     torque: 82,
     weight: 2932,
   }, {
-    color: grey[800],
-    start: dateObj('2008-09'),
-    end: dateObj('2010-12'),
-    short: 'Bonneville',
-    char: 'P',
-    nickname: 'Petunia',
-    title: bonneville,
-
-    owned: '2008 - 2010',
-    story: `I got my first car: a ${bonneville}. It was previously my grandfather's and I got it as my first car when I got my license.`,
-    src: pontiac93,
-    transmission: 'Automatic',
-
-    displacement: 3.8,
-    horsepower: 205,
-    MPG: 18,
-    torque: 260,
-    weight: 3607,
-  }, {
     color: yellow[600],
     start: dateObj('2010-02'),
     end: dateObj(),
@@ -91,6 +72,104 @@ const cars = [
     MPG: 26,
     torque: 172,
     weight: 3838,
+  }, {
+    color: grey[50],
+    start: dateObj('2016-03'),
+    end: dateObj(),
+    short: 'Model X',
+    char: 'X',
+    title: tesla,
+    inverted: true,
+
+    owned: '2016 - present',
+    story: `My father's ${tesla}.`,
+    src: tesla16,
+    transmission: 'Direct',
+
+    displacement: 0,
+    horsepower: 417,
+    MPG: 92,
+    torque: 485,
+    weight: 5271,
+  }, {
+    color: lime[800],
+    start: dateObj('2017-10'),
+    end: dateObj('2021-08'),
+    short: 'XJ8-L',
+    char: 'J',
+    title: xj8l,
+
+    owned: '2017 - 2021',
+    story: `My Family's ${xj8l}.`,
+    src: xj8l05,
+    transmission: 'Automatic',
+
+    displacement: 4.2,
+    horsepower: 294,
+    MPG: 19,
+    torque: 303,
+    weight: 3777,
+  }, {
+    color: indigo[900],
+    start: dateObj('2020-03'),
+    end: dateObj(),
+    short: 'Mustang2',
+    char: 'M2',
+    nickname: 'Miranda Jr',
+    title: mustang2,
+
+    owned: '2020 - Present',
+    story: `Emily purchased her first car, a ${mustang2} with the Performance Pack 1!`,
+    src: mustang20,
+    transmission: 'Manual',
+
+    displacement: 5.0,
+    horsepower: 460,
+    MPG: 18,
+    torque: 420,
+    weight: 3705,
+  }, {
+    color: grey[50],
+    start: dateObj('2021-08'),
+    end: dateObj(),
+    short: 'Panamera',
+    char: 'PP',
+    title: panamera,
+    inverted: true,
+
+    owned: '2021 - Present',
+    story: `My mother's ${panamera}.`,
+    src: panamera21,
+    transmission: 'Automatic',
+
+    displacement: 2.9,
+    horsepower: 455,
+    MPG: 22,
+    torque: 516,
+    weight: 4967,
+  },
+];
+
+const kensCars = [
+  {
+    color: grey[800],
+    start: dateObj('2008-09'),
+    end: dateObj('2010-12'),
+    short: 'Bonneville',
+    char: 'P',
+    nickname: 'Petunia',
+    title: bonneville,
+
+    owned: '2008 - 2010',
+    story: `I got my first car: a ${bonneville}. It was previously my grandfather's and I got it as my first car when I got my license.`,
+    src: pontiac93,
+    transmission: 'Automatic',
+
+    displacement: 3.8,
+    horsepower: 205,
+    MPG: 18,
+    torque: 260,
+    weight: 3607,
   }, {
     color: grey[400],
     start: dateObj('2010-12'),
@@ -133,43 +212,6 @@ const cars = [
     weight: 3705,
   }, {
     color: grey[50],
-    start: dateObj('2016-03'),
-    end: dateObj(),
-    short: 'Model X',
-    char: 'X',
-    title: tesla,
-    inverted: true,
-
-    owned: '2016 - present',
-    story: `My father's ${tesla}.`,
-    src: tesla16,
-    transmission: 'Direct',
-
-    displacement: 0,
-    horsepower: 417,
-    MPG: 92,
-    torque: 485,
-    weight: 5271,
-  }, {
-    color: lime[800],
-    start: dateObj('2017-10'),
-    end: dateObj('2021-08'),
-    short: 'XJ8-L',
-    char: 'J',
-    title: xj8l,
-
-    owned: '2017 - 2021',
-    story: `My Family's ${xj8l}.`,
-    src: xj8l05,
-    transmission: 'Automatic',
-
-    displacement: 4.2,
-    horsepower: 294,
-    MPG: 19,
-    torque: 303,
-    weight: 3777,
-  }, {
-    color: grey[50],
     start: dateObj('2018-03'),
     end: dateObj('2018-08'),
     short: 'F-Type',
@@ -187,25 +229,6 @@ const cars = [
     MPG: 22,
     torque: 339,
     weight: 3558,
-  }, {
-    color: indigo[900],
-    start: dateObj('2020-03'),
-    end: dateObj(),
-    short: 'Mustang2',
-    char: 'M2',
-    nickname: 'Miranda Jr',
-    title: mustang2,
-
-    owned: '2020 - Present',
-    story: `Emily purchased her first car, a ${mustang2} with the Performance Pack 1!`,
-    src: mustang20,
-    transmission: 'Manual',
-
-    displacement: 5.0,
-    horsepower: 460,
-    MPG: 18,
-    torque: 420,
-    weight: 3705,
   }, {
     color: yellow[500],
     start: dateObj('2019-01'),
@@ -226,25 +249,6 @@ const cars = [
     MPG: 18,
     torque: 650,
     weight: 3524,
-  }, {
-    color: grey[50],
-    start: dateObj('2021-08'),
-    end: dateObj(),
-    short: 'Panamera',
-    char: 'PP',
-    title: panamera,
-    inverted: true,
-
-    owned: '2021 - Present',
-    story: `My mother's ${panamera}.`,
-    src: panamera21,
-    transmission: 'Automatic',
-
-    displacement: 2.9,
-    horsepower: 455,
-    MPG: 22,
-    torque: 516,
-    weight: 4967,
   }, {
     color: teal[100],
     start: dateObj('2021-09'),
@@ -286,7 +290,9 @@ const cars = [
   // },
 ];
 
-cars.reverse();
+familyCars.reverse();
+kensCars.reverse();
+const cars = [...kensCars, ...familyCars];
 
 interface CarStats {
   displacement: number,
@@ -297,22 +303,23 @@ interface CarStats {
   torque: number,
   weight: number,
 }
-interface GraphData extends CarStats {
+export interface GraphData extends CarStats {
   powerToWeight: number;
 }
 
 const processData = (data: CarStats[]): GraphData[] => {
-  let maxDisplacement = cars[0].displacement;
-  let maxHorsepower = cars[0].horsepower;
-  let maxMPG = cars[0].MPG;
-  let maxTorque = cars[0].torque;
-  let maxWeight = cars[0].weight;
+  let maxDisplacement = data[0].displacement;
+  let maxHorsepower = data[0].horsepower;
+  let maxMPG = data[0].MPG;
+  let maxTorque = data[0].torque;
+  let maxWeight = data[0].weight;
   let maxPowerToWeight = 0;
-  let minDisplacement = cars[0].displacement;
-  let minHorsepower = cars[0].horsepower;
-  let minMPG = cars[0].MPG;
-  let minTorque = cars[0].torque;
-  let minWeight = cars[0].weight;
+
+  let minDisplacement = data[0].displacement;
+  let minHorsepower = data[0].horsepower;
+  let minMPG = data[0].MPG;
+  let minTorque = data[0].torque;
+  let minWeight = data[0].weight;
   let minPowerToWeight = 10000;
 
   data.forEach((car) => {
@@ -351,6 +358,8 @@ const processData = (data: CarStats[]): GraphData[] => {
   return ret;
 };
 
-export const crunchedData = processData(cars);
+export const processedKensCars = processData(kensCars);
+export const processedFamilyCars = processData(familyCars);
+export const processedCars = processData(cars);
 
 export default cars;

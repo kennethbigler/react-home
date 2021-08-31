@@ -9,7 +9,9 @@ import {
 import {
   red, yellow, orange, green, blue, purple,
 } from '@material-ui/core/colors/';
-import { crunchedData } from '../../../constants/cars';
+import {
+  processedCars, processedFamilyCars, processedKensCars, GraphData,
+} from '../../../constants/cars';
 
 export interface HideObject {
   displacement?: boolean;
@@ -18,6 +20,8 @@ export interface HideObject {
   horsepower?: boolean;
   weight?: boolean;
   powerToWeight?: boolean;
+  family?: boolean;
+  ken?: boolean;
 }
 
 export interface CarChartProps {
@@ -26,27 +30,41 @@ export interface CarChartProps {
   vw: number;
 }
 
-const CarChart = React.memo(({ showAnimation, hide, vw }: CarChartProps) => (
-  <ResponsiveContainer width="100%" height={650}>
-    <LineChart data={crunchedData}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey={vw >= 1000 ? 'short' : 'char'} interval="preserveStartEnd" reversed />
-      <YAxis domain={['dataMin', 'dataMax']} tickCount={6} width={28} hide />
-      {!hide.displacement
+const CarChart = React.memo(({ showAnimation, hide, vw }: CarChartProps) => {
+  let data: GraphData[] = [];
+
+  if (hide.ken && hide.family) {
+    data = [];
+  } else if (hide.ken) {
+    data = processedFamilyCars;
+  } else if (hide.family) {
+    data = processedKensCars;
+  } else {
+    data = processedCars;
+  }
+
+  return (
+    <ResponsiveContainer width="100%" height={650}>
+      <LineChart data={data}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey={vw >= 1000 ? 'short' : 'char'} interval="preserveStartEnd" reversed />
+        <YAxis domain={['dataMin', 'dataMax']} tickCount={6} width={28} hide />
+        {!hide.displacement
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="displacement" stroke={red[500]} />}
-      {!hide.torque
+        {!hide.torque
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="torque" stroke={yellow[500]} />}
-      {!hide.MPG
+        {!hide.MPG
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="MPG" stroke={orange[500]} />}
-      {!hide.horsepower
+        {!hide.horsepower
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="horsepower" stroke={green[500]} />}
-      {!hide.weight
+        {!hide.weight
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="weight" stroke={blue[500]} />}
-      {!hide.powerToWeight
+        {!hide.powerToWeight
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="powerToWeight" stroke={purple[500]} />}
-      <Legend verticalAlign="top" />
-    </LineChart>
-  </ResponsiveContainer>
-));
+        <Legend verticalAlign="top" />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+});
 
 export default CarChart;

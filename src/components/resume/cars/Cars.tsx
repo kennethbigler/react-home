@@ -16,7 +16,11 @@ const Cars = React.memo(() => {
   const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 
   const handleClick = (key: ShowKey) => () => {
-    setShowAnimation((hide.displacement && hide.horsepower && hide.MPG && hide.torque && hide.weight && hide.powerToWeight) || false);
+    if (key === 'ken' || key === 'family') {
+      setShowAnimation(true);
+    } else {
+      setShowAnimation((hide.displacement && hide.horsepower && hide.MPG && hide.torque && hide.weight && hide.powerToWeight) || false);
+    }
     if (hide[key]) {
       setHide({ ...hide, [key]: false });
     } else {
