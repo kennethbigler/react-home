@@ -32,7 +32,7 @@ const corvette = 'Chevrolet Corvette Z06 (2018)';
 const mustang2 = 'Ford Mustang GT Premium (2020)';
 const panamera = 'Porsche Panamera E-Hybrid (2021)';
 const bronco = 'Ford Bronco Badlands (2021)';
-// const honda = 'Honda Rebel 500 (2021)';
+// const trident = 'Triumph Trident 660 (2022)';
 
 const familyCars = [
   {
@@ -272,21 +272,21 @@ const kensCars = [
   //   color: grey[100],
   //   start: dateObj('2021-09'),
   //   end: dateObj(),
-  //   short: 'Honda',
-  //   char: 'H',
-  //   title: honda,
+  //   short: 'Trident',
+  //   char: 'T',
+  //   title: trident,
   //   inverted: true,
 
   //   owned: '2021 - Present',
-  //   story: `motorcycle: ${honda}.`,
+  //   story: `motorcycle: ${trident}.`,
   //   src: bronco21,
   //   transmission: 'Manual',
 
-  //   displacement: 0.5,
-  //   horsepower: 46,
-  //   MPG: 67,
-  //   torque: 32,
-  //   weight: 408,
+  //   displacement: 0.66,
+  //   horsepower: 80,
+  //   MPG: 60,
+  //   torque: 47,
+  //   weight: 416.7,
   // },
 ];
 
