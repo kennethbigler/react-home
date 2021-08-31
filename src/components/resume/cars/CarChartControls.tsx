@@ -26,8 +26,8 @@ const CarChartControls = React.memo(({ onClick, hide, vw }: CarChartControlsProp
       <Button onClick={onClick('powerToWeight')} variant={hide.powerToWeight ? 'contained' : 'outlined'} aria-label="power to weight ratio">{vw >= 435 ? 'Power-to-Weight' : 'PTW'}</Button>
     </ButtonGroup>
     <ButtonGroup color="secondary" aria-label="outlined secondary button group controlling graph part 3">
-      <Button onClick={onClick('family')} variant={hide.family ? 'contained' : 'outlined'}>{vw >= 435 ? "Family's Cars" : 'Fam'}</Button>
-      <Button onClick={onClick('ken')} variant={hide.ken ? 'contained' : 'outlined'}>{vw >= 435 ? "Ken's Cars" : 'Ken'}</Button>
+      <Button onClick={onClick('family')} variant={hide.family ? 'contained' : 'outlined'}>{vw >= 435 ? "Hide Family's" : 'Fam'}</Button>
+      <Button onClick={onClick('ken')} variant={hide.ken ? 'contained' : 'outlined'}>{vw >= 435 ? "Hide Ken's" : 'Ken'}</Button>
     </ButtonGroup>
   </div>
 ));

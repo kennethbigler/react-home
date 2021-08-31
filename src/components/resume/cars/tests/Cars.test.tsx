@@ -9,7 +9,7 @@ describe('resume | cars | Cars', () => {
   it('renders as expected', () => {
     const { container } = render(<Cars />);
 
-    expect(screen.getAllByText('Ken\'s Cars')).toHaveLength(3);
+    expect(screen.getAllByText('Ken\'s Cars')).toHaveLength(2);
     expect(screen.getAllByText(`(${demoCar.owned})`)).toHaveLength(2);
     expect(screen.getByText(demoCar.title)).toBeInTheDocument();
     expect(screen.getByText(`Horsepower: ${demoCar.horsepower}`)).toBeInTheDocument();
@@ -40,6 +40,16 @@ describe('resume | cars | Cars', () => {
     fireEvent.click(screen.getByText('Horsepower'));
     fireEvent.click(screen.getByText('Weight'));
     fireEvent.click(screen.getByText('Power-to-Weight'));
+
+    expect(container.querySelector('.recharts-responsive-container')).toBeInTheDocument();
+  });
+
+  it('re-enables animations on data click', () => {
+    const { container } = render(<Cars />);
+
+    fireEvent.click(screen.getByText("Hide Family's"));
+    fireEvent.click(screen.getByText("Hide Ken's"));
+    fireEvent.click(screen.getByText("Hide Family's"));
 
     expect(container.querySelector('.recharts-responsive-container')).toBeInTheDocument();
   });
