@@ -365,5 +365,6 @@ const processData = (data: CarStats[]): GraphData[] => {
 export const processedKensCars = processData(kensCars);
 export const processedFamilyCars = processData(familyCars);
 export const processedCars = processData(cars);
+export { kensCars, familyCars };
 
 export default cars;

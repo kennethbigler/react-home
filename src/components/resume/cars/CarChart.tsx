@@ -44,10 +44,10 @@ const CarChart = React.memo(({ showAnimation, hide, vw }: CarChartProps) => {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={650}>
+    <ResponsiveContainer width="100%" height={720}>
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey={vw >= 1000 ? 'short' : 'char'} interval="preserveStartEnd" reversed />
+        <XAxis dataKey={vw >= 930 ? 'short' : 'char'} interval="preserveStartEnd" reversed />
         <YAxis domain={['dataMin', 'dataMax']} tickCount={6} width={28} hide />
         {!hide.displacement
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="displacement" stroke={red[500]} />}

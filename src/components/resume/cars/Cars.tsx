@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import TimelineCard from '../../common/timeline-card';
 import dateObj from '../../../apis/DateHelper';
-import cars from '../../../constants/cars';
+import cars, { kensCars, familyCars } from '../../../constants/cars';
 import CarCard from './CarCard';
 import CarChart, { HideObject } from './CarChart';
 import CarChartControls, { ShowKey } from './CarChartControls';
@@ -31,6 +31,9 @@ const Cars = React.memo(() => {
   return (
     <>
       <Typography variant="h2">{'Ken\'s Cars'}</Typography>
+      <br />
+      <CarChartControls onClick={handleClick} hide={hide} vw={vw} />
+      <CarChart showAnimation={showAnimation} hide={hide} vw={vw} />
       <TimelineCard
         data={cars}
         selector="title"
@@ -38,12 +41,9 @@ const Cars = React.memo(() => {
         title="Ken's Cars"
         yearMarkerFrequency={3}
       />
-      {cars.map((car) => (<CarCard car={car} key={car.title} />))}
+      {kensCars.map((car) => (<CarCard car={car} key={car.title} />))}
       <hr style={hrStyles} />
-      <Typography variant="h2">Car Stats Compared</Typography>
-      <br />
-      <CarChartControls onClick={handleClick} hide={hide} vw={vw} />
-      <CarChart showAnimation={showAnimation} hide={hide} vw={vw} />
+      {familyCars.map((car) => (<CarCard car={car} key={car.title} />))}
     </>
   );
 });
