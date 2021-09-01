@@ -313,17 +313,20 @@ const processData = (data: CarStats[]): GraphData[] => {
   let maxMPG = data[0].MPG;
   let maxTorque = data[0].torque;
   let maxWeight = data[0].weight;
-  let maxPowerToWeight = 0;
+  let maxPowerToWeight = data[0].horsepower / data[0].weight;
 
   let minDisplacement = data[0].displacement;
   let minHorsepower = data[0].horsepower;
   let minMPG = data[0].MPG;
   let minTorque = data[0].torque;
   let minWeight = data[0].weight;
-  let minPowerToWeight = 10000;
+  let minPowerToWeight = data[0].horsepower / data[0].weight;
 
-  data.forEach((car) => {
+  // find the min and max values in the array
+  for (let i = 1; i < data.length; i += 1) {
+    const car = data[i];
     const powerToWeight = car.horsepower / car.weight;
+
     maxDisplacement = (car.displacement > maxDisplacement) ? car.displacement : maxDisplacement;
     maxHorsepower = (car.horsepower > maxHorsepower) ? car.horsepower : maxHorsepower;
     maxMPG = (car.MPG > maxMPG) ? car.MPG : maxMPG;
@@ -337,10 +340,11 @@ const processData = (data: CarStats[]): GraphData[] => {
     minTorque = (car.torque < minTorque) ? car.torque : minTorque;
     minWeight = (car.weight < minWeight) ? car.weight : minWeight;
     minPowerToWeight = (powerToWeight < minPowerToWeight) ? powerToWeight : minPowerToWeight;
-  });
+  }
 
   const ret: GraphData[] = [];
 
+  // normalize the data to all fit on the same graph (0-1)
   data.forEach((car: CarStats) => {
     const powerToWeight = car.horsepower / car.weight;
     ret.push({
