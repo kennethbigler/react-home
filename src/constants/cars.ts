@@ -82,7 +82,7 @@ const familyCars = [
     inverted: true,
 
     owned: '2016 - present',
-    story: `My father's ${tesla}.`,
+    story: `My Father's ${tesla}.`,
     src: tesla16,
     transmission: 'Direct',
 
@@ -138,7 +138,7 @@ const familyCars = [
     inverted: true,
 
     owned: '2021 - Present',
-    story: `My mother's ${panamera}.`,
+    story: `My Mother's ${panamera}.`,
     src: panamera21,
     transmission: 'Automatic',
 
