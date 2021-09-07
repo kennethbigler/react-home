@@ -308,38 +308,32 @@ export interface GraphData extends CarStats {
 }
 
 const processData = (data: CarStats[]): GraphData[] => {
-  let maxDisplacement = data[0].displacement;
-  let maxHorsepower = data[0].horsepower;
-  let maxMPG = data[0].MPG;
-  let maxTorque = data[0].torque;
-  let maxWeight = data[0].weight;
-  let maxPowerToWeight = data[0].horsepower / data[0].weight;
-
-  let minDisplacement = data[0].displacement;
-  let minHorsepower = data[0].horsepower;
-  let minMPG = data[0].MPG;
-  let minTorque = data[0].torque;
-  let minWeight = data[0].weight;
-  let minPowerToWeight = data[0].horsepower / data[0].weight;
+  const max = {
+    displacement: data[0].displacement,
+    horsepower: data[0].horsepower,
+    MPG: data[0].MPG,
+    torque: data[0].torque,
+    weight: data[0].weight,
+    powerToWeight: data[0].horsepower / data[0].weight,
+  };
+  const min = { ...max };
 
   // find the min and max values in the array
   for (let i = 1; i < data.length; i += 1) {
-    const car = data[i];
-    const powerToWeight = car.horsepower / car.weight;
+    const powerToWeight = data[i].horsepower / data[i].weight;
 
-    maxDisplacement = (car.displacement > maxDisplacement) ? car.displacement : maxDisplacement;
-    maxHorsepower = (car.horsepower > maxHorsepower) ? car.horsepower : maxHorsepower;
-    maxMPG = (car.MPG > maxMPG) ? car.MPG : maxMPG;
-    maxTorque = (car.torque > maxTorque) ? car.torque : maxTorque;
-    maxWeight = (car.weight > maxWeight) ? car.weight : maxWeight;
-    maxPowerToWeight = (powerToWeight > maxPowerToWeight) ? powerToWeight : maxPowerToWeight;
-
-    minDisplacement = (car.displacement < minDisplacement) ? car.displacement : minDisplacement;
-    minHorsepower = (car.horsepower < minHorsepower) ? car.horsepower : minHorsepower;
-    minMPG = (car.MPG < minMPG) ? car.MPG : minMPG;
-    minTorque = (car.torque < minTorque) ? car.torque : minTorque;
-    minWeight = (car.weight < minWeight) ? car.weight : minWeight;
-    minPowerToWeight = (powerToWeight < minPowerToWeight) ? powerToWeight : minPowerToWeight;
+    (data[i].displacement > max.displacement && (max.displacement = data[i].displacement))
+    || (data[i].displacement < min.displacement && (min.displacement = data[i].displacement));
+    (data[i].horsepower > max.horsepower && (max.horsepower = data[i].horsepower))
+    || (data[i].horsepower < min.horsepower && (min.horsepower = data[i].horsepower));
+    (data[i].MPG > max.MPG && (max.MPG = data[i].MPG))
+    || (data[i].MPG < min.MPG && (min.MPG = data[i].MPG));
+    (data[i].torque > max.torque && (max.torque = data[i].torque))
+    || (data[i].torque < min.torque && (min.torque = data[i].torque));
+    (data[i].weight > max.weight && (max.weight = data[i].weight))
+    || (data[i].weight < min.weight && (min.weight = data[i].weight));
+    (powerToWeight > max.powerToWeight && (max.powerToWeight = powerToWeight))
+    || (powerToWeight < min.powerToWeight && (min.powerToWeight = powerToWeight));
   }
 
   const ret: GraphData[] = [];
@@ -348,14 +342,14 @@ const processData = (data: CarStats[]): GraphData[] => {
   data.forEach((car: CarStats) => {
     const powerToWeight = car.horsepower / car.weight;
     ret.push({
-      displacement: (car.displacement - minDisplacement) / (maxDisplacement - minDisplacement),
-      horsepower: (car.horsepower - minHorsepower) / (maxHorsepower - minHorsepower),
-      MPG: (car.MPG - minMPG) / (maxMPG - minMPG),
+      displacement: (car.displacement - min.displacement) / (max.displacement - min.displacement),
+      horsepower: (car.horsepower - min.horsepower) / (max.horsepower - min.horsepower),
+      MPG: (car.MPG - min.MPG) / (max.MPG - min.MPG),
       short: car.short,
       char: car.char,
-      torque: (car.torque - minTorque) / (maxTorque - minTorque),
-      weight: (car.weight - minWeight) / (maxWeight - minWeight),
-      powerToWeight: (powerToWeight - minPowerToWeight) / (maxPowerToWeight - minPowerToWeight),
+      torque: (car.torque - min.torque) / (max.torque - min.torque),
+      weight: (car.weight - min.weight) / (max.weight - min.weight),
+      powerToWeight: (powerToWeight - min.powerToWeight) / (max.powerToWeight - min.powerToWeight),
     });
   });
 
