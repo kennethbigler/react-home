@@ -9,9 +9,7 @@ import {
 import {
   red, yellow, orange, green, blue, purple,
 } from '@material-ui/core/colors/';
-import {
-  processedCars, processedFamilyCars, processedKensCars, GraphData,
-} from '../../../constants/cars';
+import { processData, CarStats } from '../../../constants/cars';
 
 export interface HideObject {
   displacement?: boolean;
@@ -28,24 +26,17 @@ export interface CarChartProps {
   showAnimation: boolean;
   hide: HideObject;
   vw: number;
+  data: CarStats[];
 }
 
-const CarChart = React.memo(({ showAnimation, hide, vw }: CarChartProps) => {
-  let data: GraphData[] = [];
-
-  if (hide.ken && hide.family) {
-    data = [];
-  } else if (hide.ken) {
-    data = processedFamilyCars;
-  } else if (hide.family) {
-    data = processedKensCars;
-  } else {
-    data = processedCars;
-  }
+const CarChart = React.memo(({
+  data, showAnimation, hide, vw,
+}: CarChartProps) => {
+  const processedData = processData(data);
 
   return (
     <ResponsiveContainer width="100%" height={720}>
-      <LineChart data={data}>
+      <LineChart data={processedData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey={vw >= 930 ? 'short' : 'char'} interval="preserveStartEnd" reversed />
         <YAxis domain={['dataMin', 'dataMax']} tickCount={6} width={28} hide />

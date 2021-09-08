@@ -28,14 +28,23 @@ const Cars = React.memo(() => {
     }
   };
 
+  let data = cars;
+  if (hide.ken && hide.family) {
+    data = [];
+  } else if (hide.ken) {
+    data = familyCars;
+  } else if (hide.family) {
+    data = kensCars;
+  }
+
   return (
     <>
       <Typography variant="h2">{'Ken\'s Cars'}</Typography>
       <br />
       <CarChartControls onClick={handleClick} hide={hide} vw={vw} />
-      <CarChart showAnimation={showAnimation} hide={hide} vw={vw} />
+      <CarChart showAnimation={showAnimation} data={data} hide={hide} vw={vw} />
       <TimelineCard
-        data={cars}
+        data={data}
         selector="title"
         start={dateObj('2008-03')}
         title="Ken's Cars"

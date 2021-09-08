@@ -44,13 +44,32 @@ describe('resume | cars | Cars', () => {
     expect(container.querySelector('.recharts-responsive-container')).toBeInTheDocument();
   });
 
-  it('re-enables animations on data click', () => {
-    const { container } = render(<Cars />);
+  it('hides family cars', () => {
+    render(<Cars />);
 
+    expect(screen.getByTitle('Toyota Prius (2007)')).toBeInTheDocument();
     fireEvent.click(screen.getByText("Hide Family's"));
+    expect(screen.queryByTitle('Toyota Prius (2007)')).toBeNull();
+  });
+
+  it('hides kens cars', () => {
+    render(<Cars />);
+
+    expect(screen.getByTitle('Chevrolet Corvette Z06 (2018)')).toBeInTheDocument();
     fireEvent.click(screen.getByText("Hide Ken's"));
-    fireEvent.click(screen.getByText("Hide Family's"));
+    expect(screen.queryByTitle('Chevrolet Corvette Z06 (2018)')).toBeNull();
+  });
 
-    expect(container.querySelector('.recharts-responsive-container')).toBeInTheDocument();
+  it('hides all cars', () => {
+    render(<Cars />);
+
+    expect(screen.getByTitle('Toyota Prius (2007)')).toBeInTheDocument();
+    expect(screen.getByTitle('Chevrolet Corvette Z06 (2018)')).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Hide Family's"));
+    expect(screen.queryByTitle('Toyota Prius (2007)')).toBeNull();
+    expect(screen.getByTitle('Chevrolet Corvette Z06 (2018)')).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Hide Ken's"));
+    expect(screen.queryByTitle('Toyota Prius (2007)')).toBeNull();
+    expect(screen.queryByTitle('Chevrolet Corvette Z06 (2018)')).toBeNull();
   });
 });

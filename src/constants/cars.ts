@@ -294,7 +294,7 @@ familyCars.reverse();
 kensCars.reverse();
 const cars = [...kensCars, ...familyCars];
 
-interface CarStats {
+export interface CarStats {
   displacement: number,
   horsepower: number,
   MPG: number,
@@ -307,7 +307,11 @@ export interface GraphData extends CarStats {
   powerToWeight: number;
 }
 
-const processData = (data: CarStats[]): GraphData[] => {
+export const processData = (data: CarStats[]): GraphData[] => {
+  if (data.length === 0) {
+    return [];
+  }
+
   const max = {
     displacement: data[0].displacement,
     horsepower: data[0].horsepower,
