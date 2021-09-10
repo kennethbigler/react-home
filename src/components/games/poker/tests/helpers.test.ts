@@ -1,5 +1,6 @@
+import { DBPlayer } from '../../../../store/types';
 import {
-  rankHand, getHistogram, evaluate, getCardsToDiscard,
+  rankHand, getHistogram, evaluate, getCardsToDiscard, computer,
 } from '../helpers';
 
 const hand = [
@@ -41,5 +42,42 @@ describe('games | poker | helpers', () => {
     expect(getCardsToDiscard(1, [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 3, 0], [{ name: 'K', weight: 13, suit: '♦' }, { name: 'K', weight: 13, suit: '♥' }, ...hand.slice(0, 3)])).toEqual([4]);
     /* draw 1 on 2 Pair */
     expect(getCardsToDiscard(1, [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 0], [{ name: 'K', weight: 13, suit: '♥' }, { name: 'Q', weight: 12, suit: '♥' }, ...hand.slice(0, 3)])).toEqual([4]);
+  });
+
+  test('computer', () => {
+    const player: DBPlayer = {
+      hands: [{
+        cards: [
+          { name: '7', weight: 7, suit: '♠' },
+          { name: '5', weight: 5, suit: '♠' },
+          { name: '4', weight: 4, suit: '♠' },
+          { name: '3', weight: 3, suit: '♠' },
+          { name: '2', weight: 2, suit: '♥' },
+        ],
+      }],
+      id: 1,
+      isBot: false,
+      money: 100,
+      status: '',
+      name: '',
+      bet: 5,
+    };
+
+    const discard = jest.fn().mockImplementation(() => {
+      throw new Error('test');
+    });
+
+    // eslint-disable-next-line no-console
+    const oldConsole = console.error;
+    // eslint-disable-next-line no-console
+    console.error = jest.fn();
+
+    computer(player, discard);
+
+    // eslint-disable-next-line no-console
+    expect(console.error).toHaveBeenCalled();
+
+    // eslint-disable-next-line no-console
+    console.error = oldConsole;
   });
 });
