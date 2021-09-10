@@ -10,6 +10,31 @@ const PIECE = 0;
 const STREAK = 1;
 const MAX = 2;
 
+/** function to check for match and increment streak / max
+ * @param {array} line - dp storage, [PIECE, STREAK, MAX] */
+const helpEvalConnect4 = (board: number[][], row: number, col: number, line: [number, [number, number][], [number, number][]]): void => {
+  // verify row
+  if (board[row] !== undefined) {
+    const piece = board[row][col];
+    // verify piece
+    if (piece !== undefined) {
+      // check piece
+      if (piece === line[PIECE] && piece !== C4Turn.EMPTY) {
+        // matches, increment streak and max if needed
+        line[STREAK].push([row, col]);
+        // update max and Win row if needed
+        if (line[STREAK].length > line[MAX].length) {
+          line[MAX] = [...line[STREAK]];
+        }
+      } else {
+        // doesn't match, restart streak
+        line[PIECE] = piece;
+        line[STREAK] = [[row, col]];
+      }
+    }
+  }
+};
+
 /* Connect4  ->  GameBoard  ->  Header  ->  Piece
  *                         |->  Board   ->  Piece */
 const Connect4: React.FC = () => {
@@ -25,32 +50,6 @@ const Connect4: React.FC = () => {
   const updateC4Turn = React.useCallback((): void => {
     dispatch(updateTurn(turn === C4Turn.RED ? C4Turn.BLACK : C4Turn.RED));
   }, [dispatch, turn]);
-
-  /** function to check for match and increment streak / max
-   * @param {array} line - dp storage, [PIECE, STREAK, MAX]
-   */
-  const helpEvalConnect4 = React.useCallback((row: number, col: number, line: [number, [number, number][], [number, number][]]): void => {
-    // verify row
-    if (board[row] !== undefined) {
-      const piece = board[row][col];
-      // verify piece
-      if (piece !== undefined) {
-        // check piece
-        if (piece === line[PIECE] && piece !== C4Turn.EMPTY) {
-          // matches, increment streak and max if needed
-          line[STREAK].push([row, col]);
-          // update max and Win row if needed
-          if (line[STREAK].length > line[MAX].length) {
-            line[MAX] = [...line[STREAK]];
-          }
-        } else {
-          // doesn't match, restart streak
-          line[PIECE] = piece;
-          line[STREAK] = [[row, col]];
-        }
-      }
-    }
-  }, [board]);
 
   /** function to evaluate a connect 4 board based off the last piece played
    * NOTE: win condition will be within +-3 of the piece last played - O(N)
@@ -68,13 +67,13 @@ const Connect4: React.FC = () => {
     for (let i = -3; i <= 3; i += 1) {
       // check for streaks
       // vertical
-      helpEvalConnect4(row + i, col, dp[0]);
+      helpEvalConnect4(board, row + i, col, dp[0]);
       // horizontal
-      helpEvalConnect4(row, col + i, dp[1]);
+      helpEvalConnect4(board, row, col + i, dp[1]);
       // diagonal down
-      helpEvalConnect4(row + i, col + i, dp[2]);
+      helpEvalConnect4(board, row + i, col + i, dp[2]);
       // diagonal up
-      helpEvalConnect4(row - i, col + i, dp[3]);
+      helpEvalConnect4(board, row - i, col + i, dp[3]);
     }
 
     dp.forEach((line) => {
@@ -85,7 +84,7 @@ const Connect4: React.FC = () => {
         dispatch(updateEval(turn, board));
       }
     });
-  }, [board, dispatch, helpEvalConnect4, turn]);
+  }, [board, dispatch, turn]);
 
   /** insert piece into the board, piece falls to the bottom row every time */
   const insert = React.useCallback((col: number): void => {
