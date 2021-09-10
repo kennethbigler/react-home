@@ -1,7 +1,7 @@
-import { DBCard } from '../../../store/types';
+import { DBCard, DBHand, DBPlayer } from '../../../store/types';
 
 /** calculate the weight of a hand */
-export default function weighHand(hand: DBCard[] = []): { weight: number; soft: boolean } {
+export function weighHand(hand: DBCard[] = []): { weight: number; soft: boolean } {
   // set return values
   let weight = 0;
   let soft = false;
@@ -34,3 +34,156 @@ export default function weighHand(hand: DBCard[] = []): { weight: number; soft: 
   // return object w/ useful information
   return { weight, soft };
 }
+
+// AI: https://www.blackjackinfo.com/blackjack-basic-strategy-engine/
+export const playBot = (hand: DBHand, dealer: DBHand, double: () => void, hit: () => void, split: () => void, stay: () => void): void => {
+  // validate hand exists
+  if (!hand) { return; }
+  const n = hand.weight || 0;
+  const { soft } = hand;
+  // card / dealer weight
+  const { weight: d } = weighHand([dealer.cards[0]]);
+  const { weight: x } = weighHand([hand.cards[0]]);
+  const { weight: y } = weighHand([hand.cards[1]]);
+
+  // play AI logic
+  if (n < 22) {
+    // split algorithm
+    if (x === y) {
+      if (x === 2 || x === 3 || x === 7) {
+        // 2,3,7, split d2-7, hit d8+
+        d <= 7 ? split() : hit();
+      } else if (x === 4) {
+        // 4, split d5-6, else hit
+        d === 5 || d === 6 ? split() : hit();
+      } else if (x === 5) {
+        // 5, double d2-9, hit d10+
+        d <= 9 ? double() : hit();
+      } else if (x === 6) {
+        // 6, split d2-6, else hit
+        d <= 6 ? split() : hit();
+      } else if (x === 9) {
+        // 9, d7,10+ stay, else split
+        d === 7 || d >= 10 ? stay() : split();
+      } else if (x === 8 || x === 11) {
+        // 8,A split
+        split();
+      } else {
+        // 10 Stay
+        stay();
+      }
+    } else if (n < 20 && soft) {
+      // soft hands, A9+ stays
+      if (n === 13 || n === 14) {
+        // A2-A3 double d5-6, hit d2-4, d7-A
+        d === 5 || d === 6 ? double() : hit();
+      } else if (n === 15 || n === 16) {
+        // A4-A5 double d4-6, hit d2-3, d7-A
+        d >= 4 && d <= 6 ? double() : hit();
+      } else if (n === 17) {
+        // A6 double d3-6, hit d2, d7-A
+        d >= 3 && d <= 6 ? double() : hit();
+      } else if (n === 18) {
+        // A7 double d2-6, stay d7-8, hit d9-A
+        if (d >= 2 && d <= 6) {
+          double();
+        } else if (d === 7 || d === 8) {
+          stay();
+        } else {
+          hit();
+        }
+      } else if (n === 19) {
+        // A8 double d6, else stay
+        d === 6 ? double() : stay();
+      }
+    } else if (n < 17 && !soft) {
+      // hard hands, 17+ stays
+      if (n >= 5 && n <= 8) {
+        // 5-8 hit
+        hit();
+      } else if (n === 9) {
+        // 9 double d3-6, hit d2, d7-A
+        d >= 3 && d <= 6 ? double() : hit();
+      } else if (n === 10) {
+        // 10 double d2-9, hit d10-A
+        d >= 2 && d <= 9 ? double() : hit();
+      } else if (n === 11) {
+        // 11 double
+        double();
+      } else if (n === 12) {
+        // 12 hit d2-3, stay d4-6, hit 7-A
+        d >= 4 && d <= 6 ? stay() : hit();
+      } else if (n >= 13 && n <= 16) {
+        // 13-16 stay d2-6, hit 7-A
+        d >= 2 && d <= 6 ? stay() : hit();
+      }
+    } else {
+      stay();
+    }
+  } else {
+    // bust
+    stay();
+  }
+};
+
+export interface PlayerStats {
+  house: number;
+  payout: number;
+  status: string;
+}
+
+// Dealer constant
+export const DEALER = 0;
+
+/** finish the game and check for a winner */
+export const banking = (players: DBPlayer[], payoutPlayer: (id: number, status: string, money: number) => void): void => {
+  // state variables
+  const dealer = players.filter((p) => p.id === DEALER)[0];
+  const dWeight = dealer.hands[0].weight || 0;
+  const dLength = dealer.hands[0].cards.length;
+  // track and find the winners
+  const playerStats: PlayerStats = { house: 0, payout: 0, status: '' };
+  // helper functions
+  const win = (ps: PlayerStats, bet: number, mul = 1): void => {
+    ps.house -= Math.floor(mul * bet);
+    ps.payout = Math.floor(mul * bet);
+    ps.status = 'win';
+  };
+  const loss = (ps: PlayerStats, bet: number): void => {
+    ps.house += bet;
+    ps.payout = -bet;
+    ps.status = 'lose';
+  };
+  players.forEach((player) => {
+    const { id, bet } = player;
+    if (id === DEALER) {
+      if (playerStats.house > 0) {
+        playerStats.status = 'win';
+      } else if (playerStats.house < 0) {
+        playerStats.status = 'lose';
+      } else {
+        playerStats.status = 'push';
+      }
+      payoutPlayer(id, playerStats.status, playerStats.house);
+    } else {
+      player.hands.forEach((hand) => {
+        const { weight = 0, cards } = hand;
+        if (dWeight === 21 && dLength === 2) {
+          // dealer BlackJack
+          loss(playerStats, bet);
+        } else if (weight === 21 && cards.length === 2) {
+          // player BlackJack
+          win(playerStats, bet, 6 / 5);
+        } else if (weight <= 21 && (weight > dWeight || dWeight > 21)) {
+          win(playerStats, bet);
+        } else if (weight <= 21 && weight === dWeight) {
+          playerStats.payout = 0;
+          playerStats.status = 'push';
+        } else {
+          loss(playerStats, bet);
+        }
+      });
+      payoutPlayer(id, playerStats.status, playerStats.payout);
+    }
+  });
+};
