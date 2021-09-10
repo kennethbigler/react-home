@@ -1,4 +1,4 @@
-import { DBCard } from '../../../store/types';
+import { DBCard, DBPlayer } from '../../../store/types';
 
 /** Rankings:
  *   Straight Flush  8
@@ -117,4 +117,90 @@ export const getCardsToDiscard = (n: number, hist: number[], hand: DBCard[]): nu
     }
   }
   return nextCardsToDiscard;
+};
+
+/** computer play algorithm:
+   * PAIRS
+   * draw 0 on 4 of a kind
+   * draw 0 on full house
+   * draw 1 on 3 of a kind, keep higher of 2
+   * draw 1 on 2 pair
+   * draw 3 on 2 of a kind
+   *
+   * This is a nice to have, for now we only follow the first half
+   * STRAIGHT/FLUSH
+   * draw 0 on straight
+   * draw 0 on flush
+   * draw 0 on straight flush
+   * if 1 away from sf -> draw 1
+   * if 1 away from S -> draw 1 if 5+ players, else regular hand
+   * if 1 away from F -> draw 1 if 5+ players, else regular hand
+   *
+   * REGULAR HAND
+   * if K / A -> draw 4
+   * else draw 5
+   */
+export const computer = async (player: DBPlayer, discard: (cardsToDiscardInDB: number[], player: DBPlayer) => Promise<void>): Promise<void> => {
+  try {
+    const hand = player.hands[0].cards;
+    const hist = getHistogram(hand);
+    const rank = rankHand(hand, hist);
+
+    switch (rank) {
+      case 0: /* draw 4-5 on high card */ {
+        const nextCardsToDiscard = hist.lastIndexOf(1) >= 11
+          ? getCardsToDiscard(4, hist, hand) // if ace || king draw 4
+          : [0, 1, 2, 3, 4]; // otherwise, draw all 5
+        await discard(nextCardsToDiscard, player);
+        break;
+      }
+      case 1: /* draw 3 on 2 of a kind */ {
+        const nextCardsToDiscard = getCardsToDiscard(3, hist, hand);
+        await discard(nextCardsToDiscard, player);
+        break;
+      }
+      case 2: /* draw 1 on 3 of a kind */
+      case 3: /* draw 1 on 2 Pair */ {
+        const nextCardsToDiscard = getCardsToDiscard(1, hist, hand);
+        await discard(nextCardsToDiscard, player);
+        break;
+      }
+      case 4: // draw 0 on straight
+      case 5: // draw 0 on flush
+      case 6: // draw 0 on full house
+      case 7: // draw 0 on 4 of a kind
+      case 8: // draw 0 on straight flush
+      default:
+        break;
+    }
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e);
+  }
+};
+
+export const DEALER = 0;
+export const LAST_PLAYER = 5;
+
+export const findAndPayWinner = (players: DBPlayer[], payPlayer: (id: number, status: string, money: number) => void): void => {
+  let winner = { val: 0, id: 0 };
+
+  players.forEach((player) => {
+    if (player.id === DEALER || player.id > LAST_PLAYER) { return; }
+
+    const playerScore = parseInt(evaluate(player.hands[0].cards), 14);
+    if (playerScore > winner.val) {
+      winner = { val: playerScore, id: player.id };
+    }
+  });
+
+  players.forEach((player) => {
+    if (player.id === DEALER || player.id > LAST_PLAYER) { return; }
+
+    if (player.id === winner.id) {
+      payPlayer(player.id, 'win', 20);
+    } else {
+      payPlayer(player.id, 'lose', -5);
+    }
+  });
 };
