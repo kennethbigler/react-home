@@ -32,7 +32,7 @@ const corvette = 'Chevrolet Corvette Z06 (2018)';
 const mustang2 = 'Ford Mustang GT Premium (2020)';
 const panamera = 'Porsche Panamera E-Hybrid (2021)';
 const bronco = 'Ford Bronco Badlands (2021)';
-// const trident = 'Triumph Trident 660 (2022)';
+// const slingshot = 'Polaris Slingshot (2022)';
 
 const familyCars = [
   {
@@ -269,24 +269,23 @@ const kensCars = [
     torque: 310,
     weight: 4499,
   }, // {
-  //   color: grey[100],
-  //   start: dateObj('2021-09'),
+  //   color: red[500],
+  //   start: dateObj('2022-01'),
   //   end: dateObj(),
-  //   short: 'Trident',
-  //   char: 'T',
-  //   title: trident,
-  //   inverted: true,
+  //   short: 'Slingshot',
+  //   char: 'S',
+  //   title: slingshot,
 
-  //   owned: '2021 - Present',
-  //   story: `motorcycle: ${trident}.`,
+  //   owned: '2022 - Present',
+  //   story: `motorcycle: ${slingshot}.`,
   //   src: bronco21,
   //   transmission: 'Manual',
 
-  //   displacement: 0.66,
-  //   horsepower: 80,
-  //   MPG: 60,
-  //   torque: 47,
-  //   weight: 416.7,
+  //   displacement: 2.0,
+  //   horsepower: 203,
+  //   MPG: 39,
+  //   torque: 144,
+  //   weight: 1645,
   // },
 ];
 
