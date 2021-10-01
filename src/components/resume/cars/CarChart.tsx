@@ -7,7 +7,7 @@ import {
   Line, Legend,
 } from 'recharts';
 import {
-  red, yellow, orange, green, blue, purple,
+  red, orange, green, blue,
 } from '@material-ui/core/colors/';
 import { processData, CarStats } from '../../../constants/cars';
 
@@ -40,18 +40,14 @@ const CarChart = React.memo(({
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey={vw >= 930 ? 'short' : 'char'} interval="preserveStartEnd" reversed />
         <YAxis domain={['dataMin', 'dataMax']} tickCount={6} width={28} hide />
-        {!hide.displacement
-          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="displacement" stroke={red[500]} />}
-        {!hide.torque
-          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="torque" stroke={yellow[500]} />}
         {!hide.MPG
-          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="MPG" stroke={orange[500]} />}
+          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="MPG" stroke={green[500]} />}
         {!hide.horsepower
-          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="horsepower" stroke={green[500]} />}
+          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="horsepower" stroke={red[500]} />}
         {!hide.weight
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="weight" stroke={blue[500]} />}
         {!hide.powerToWeight
-          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="powerToWeight" stroke={purple[500]} />}
+          && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="powerToWeight" stroke={orange[500]} />}
         <Legend verticalAlign="top" />
       </LineChart>
     </ResponsiveContainer>

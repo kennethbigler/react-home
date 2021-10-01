@@ -153,7 +153,7 @@ const familyCars = [
 const kensCars = [
   {
     color: grey[800],
-    start: dateObj('2008-09'),
+    start: dateObj('2008-03'),
     end: dateObj('2010-12'),
     short: 'Bonneville',
     char: 'P',
@@ -251,12 +251,13 @@ const kensCars = [
     weight: 3524,
   }, {
     color: teal[100],
-    start: dateObj('2021-09'),
+    start: dateObj('2021-10'),
     end: dateObj(),
     short: 'Bronco',
     char: 'B',
     nickname: 'Betty',
     title: bronco,
+    inverted: true,
 
     owned: '2021 - Present',
     story: `In an attempt to get a more practical daily driver, as well as dip my toes into the off-roading community, I purchased a ${bronco}.`,
