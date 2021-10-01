@@ -34,8 +34,6 @@ describe('resume | cars | Cars', () => {
   it('re-enables animations', () => {
     const { container } = render(<Cars />);
 
-    fireEvent.click(screen.getByText('Displacement'));
-    fireEvent.click(screen.getByText('Torque'));
     fireEvent.click(screen.getByText('MPG'));
     fireEvent.click(screen.getByText('Horsepower'));
     fireEvent.click(screen.getByText('Weight'));

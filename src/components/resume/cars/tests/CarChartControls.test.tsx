@@ -7,8 +7,6 @@ describe('resume | cars | CarChart', () => {
     const handleClick = jest.fn();
     const { getByText } = render(<CarChartControls hide={{}} onClick={handleClick} vw={435} />);
 
-    expect(getByText('Displacement')).toBeInTheDocument();
-    expect(getByText('Torque')).toBeInTheDocument();
     expect(getByText('MPG')).toBeInTheDocument();
     expect(getByText('Horsepower')).toBeInTheDocument();
     expect(getByText('Weight')).toBeInTheDocument();
@@ -24,8 +22,6 @@ describe('resume | cars | CarChart', () => {
     const handleClick = jest.fn();
     const { getByText } = render(<CarChartControls hide={{}} onClick={handleClick} vw={434} />);
 
-    expect(getByText('Displacement')).toBeInTheDocument();
-    expect(getByText('Torque')).toBeInTheDocument();
     expect(getByText('MPG')).toBeInTheDocument();
     expect(getByText('Horsepower')).toBeInTheDocument();
     expect(getByText('Weight')).toBeInTheDocument();

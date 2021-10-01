@@ -19,7 +19,7 @@ const Cars = React.memo(() => {
     if (key === 'ken' || key === 'family') {
       setShowAnimation(true);
     } else {
-      setShowAnimation((hide.displacement && hide.horsepower && hide.MPG && hide.torque && hide.weight && hide.powerToWeight) || false);
+      setShowAnimation((hide.horsepower && hide.MPG && hide.weight && hide.powerToWeight) || false);
     }
     if (hide[key]) {
       setHide({ ...hide, [key]: false });

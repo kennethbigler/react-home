@@ -12,8 +12,6 @@ import {
 import { processData, CarStats } from '../../../constants/cars';
 
 export interface HideObject {
-  displacement?: boolean;
-  torque?: boolean;
   MPG?: boolean;
   horsepower?: boolean;
   weight?: boolean;
