@@ -4,13 +4,11 @@ import {
 } from 'react-router-dom';
 import LoadingSpinner from './common/loading-spinner';
 
-type RoutesProps = RouteComponentProps<{ url: string }>;
-
 // lazy load sub routers
 const ResumeRoutes = React.lazy(() => import(/* webpackChunkName: "resume" */ './resume/Routes'));
 const GameRoutes = React.lazy(() => import(/* webpackChunkName: "games" */ './games/Routes'));
 
-const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
+const Routes: React.FC<RouteComponentProps> = (props: RouteComponentProps) => {
   const { location: { pathname }, history } = props;
 
   const handleNav = React.useCallback((loc: string): void => {
@@ -20,11 +18,11 @@ const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
   }, [history, pathname]);
 
   const resume = React.useCallback(
-    (passProps: RoutesProps): React.ReactNode => <ResumeRoutes handleNav={handleNav} {...passProps} />,
+    (props: RouteComponentProps): React.ReactNode => <ResumeRoutes handleNav={handleNav} {...props} />,
     [handleNav],
   );
   const games = React.useCallback(
-    (passProps: RoutesProps): React.ReactNode => <GameRoutes handleNav={handleNav} {...passProps} />,
+    (props: RouteComponentProps): React.ReactNode => <GameRoutes handleNav={handleNav} {...props} />,
     [handleNav],
   );
 
