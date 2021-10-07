@@ -3,6 +3,7 @@ import {
   Switch, Route, Redirect, match as Match,
 } from 'react-router-dom';
 import lazyWithPreload from '../../helpers/lazyWithPreload';
+import routeMaker from '../../helpers/routeMaker';
 import Header, { NavProps } from '../common/header/Header';
 import Menu from './Menu';
 import LoadingSpinner from '../common/loading-spinner';
@@ -25,7 +26,7 @@ const Yahtzee = lazyWithPreload(import(/* webpackChunkName: "g_yahtzee" */ './ya
 const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
   const { match: { url }, handleNav } = props;
 
-  const paths = React.useMemo(() => [
+  const paths = routeMaker([
     { name: 'blackjack', component: BlackJack },
     { name: 'connect4', component: Connect4 },
     { name: 'deal', component: DealOrNoDeal },
@@ -33,14 +34,7 @@ const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
     { name: 'slots', component: Slots },
     { name: 'tictactoe', component: TicTacToe },
     { name: 'yahtzee', component: Yahtzee },
-  ].reduce((acc: React.ReactNode[], obj) => {
-    const { name, component } = obj;
-    const path = `${url}/${name}`;
-    acc.push(<Route key={`${path}r`} exact {...{ path, component }} />);
-    acc.push(<Redirect key={`${path}d`} from={`${path}*`} to={path} />);
-    return acc;
-  },
-  []), [url]);
+  ], `${url}/`);
 
   return (
     <>
