@@ -15,7 +15,6 @@ describe('resume | Menu', () => {
     expect(screen.getByText('Cars')).toBeInTheDocument();
     expect(screen.getByText('Travel Map')).toBeInTheDocument();
     expect(screen.getByText('Murder Mystery')).toBeInTheDocument();
-    expect(screen.getByText('Poker Night Scores')).toBeInTheDocument();
     expect(screen.getByText('React Games')).toBeInTheDocument();
     expect(screen.getByText('GitHub')).toBeInTheDocument();
     expect(screen.getByText('LinkedIn')).toBeInTheDocument();

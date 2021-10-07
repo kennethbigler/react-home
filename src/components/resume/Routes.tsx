@@ -14,8 +14,7 @@ const Education = lazyWithPreload(import(/* webpackChunkName: "r_education" */ '
 const TravelMap = lazyWithPreload(import(/* webpackChunkName: "r_travel" */ './travel-map'));
 const Resume = lazyWithPreload(import(/* webpackChunkName: "r_resume" */ './resume'));
 const GitTools = lazyWithPreload(import(/* webpackChunkName: "r_git" */ './git-tools'));
-const Poker = lazyWithPreload(import(/* webpackChunkName: "r_poker" */ './poker'));
-const MurderMystery = lazyWithPreload(import(/* webpackChunkName: "r_poker" */ './murder-mystery'));
+const MurderMystery = lazyWithPreload(import(/* webpackChunkName: "r_mystery" */ './murder-mystery'));
 const GraphQL = lazyWithPreload(import(/* webpackChunkName: "r_graphql" */ './graphql'));
 const Cars = lazyWithPreload(import(/* webpackChunkName: "r_cars" */ './cars'));
 
@@ -33,7 +32,6 @@ const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
     { name: 'travel', component: TravelMap },
     { name: 'resume', component: Resume },
     { name: 'git-tools', component: GitTools },
-    { name: 'poker', component: Poker },
     { name: 'murder', component: MurderMystery },
     { name: 'graphql', component: GraphQL },
     { name: 'cars', component: Cars },

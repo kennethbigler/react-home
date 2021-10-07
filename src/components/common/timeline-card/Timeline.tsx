@@ -168,7 +168,7 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
   );
 
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '100%', paddingBottom: 7 }}>
       <Row key={data.length} segments={getYearMarkers()} yearMarkers />
       {data.map((elm, i) => {
         const segments = getSegments(elm, i);

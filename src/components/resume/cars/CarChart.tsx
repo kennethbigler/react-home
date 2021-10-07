@@ -33,7 +33,7 @@ const CarChart = React.memo(({
   const processedData = processData(data);
 
   return (
-    <ResponsiveContainer width="100%" height={720}>
+    <ResponsiveContainer width="100%" height={680}>
       <LineChart data={processedData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey={vw >= 930 ? 'short' : 'char'} interval="preserveStartEnd" reversed />

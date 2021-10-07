@@ -13,6 +13,7 @@ import {
   SASS, MOMENT, ESLINT, COMPOSE,
   MIXPANEL, RELOADER, JAVA, AWS,
   PYTHON2, ASP2, CSHARP, SQL,
+  JEST,
 } from './tech';
 import ciscoLogo from '../images/cisco_logo.gif';
 import gigNowLogo from '../images/gignow_logo.png';
@@ -66,9 +67,22 @@ const workExp: Job[] = [
     src: intuitLogo,
     alt: 'Intuit Logo',
     expr: [
-      'Work on Intuit\'s global component library',
+      "Working as a part of the Intuit Design Systems team to create reusable, accessible, well-tested TypeScript components that are used across many of Intuit's products.",
+      'Titles:',
+      'Frontend Stars - Train new engineers joining Intuit on our Frontend practices',
+      'Prosperity and Career Development Lead for the Next Generation Network',
+      'Intuit Emergency Response Team Member',
+      'Fun & Events Committee Leader',
     ],
-    tech: [REACT],
+    tech: [
+      REACT,
+      JEST,
+      ESLINT,
+      JS,
+      HTML,
+      SASS,
+      CSS,
+    ],
     skills: [],
   },
   {

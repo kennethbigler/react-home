@@ -28,11 +28,8 @@ const Segment = React.memo((props: SegmentType): React.ReactElement => {
       ...style,
       ...bodyStyles,
       backgroundColor: color,
+      boxShadow: `2px 3px 4px 1px ${type !== 'dark' ? grey[400] : grey[700]}`,
     };
-
-    if (type !== 'dark') {
-      style.boxShadow = `2px 3px 4px ${grey[400]}`;
-    }
   }
 
   return (

@@ -20,3 +20,4 @@ export const PYTHON2 = 'Python 2';
 export const ASP2 = 'ASP.NET 2.0 MVC';
 export const CSHARP = 'C#';
 export const SQL = 'SQL';
+export const JEST = 'Jest';

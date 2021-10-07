@@ -43,15 +43,15 @@ const Info: React.FC = React.memo(() => (
               <TableCell>Mountain View, CA</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Interests</TableCell>
-              <TableCell>Computer Software</TableCell>
+              <TableCell>Role</TableCell>
+              <TableCell>Senior Frontend Software Engineer</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Volunteer Work</TableCell>
               <TableCell>Second Harvest Food Bank</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell colSpan={2}>Licenses</TableCell>
+              <TableCell colSpan={2} align="center">Licenses</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>
