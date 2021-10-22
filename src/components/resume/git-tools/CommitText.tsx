@@ -67,8 +67,8 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
 
   return (
     <div style={wrapperStyles}>
-      <Grid container spacing={1}>
-        <Grid item sm={4} xs={12}>
+      <Grid container spacing={2} style={{ marginBottom: 16 }}>
+        <Grid item sm={4} xs={12} style={{ marginTop: 16 }}>
           <FormControl fullWidth>
             <InputLabel htmlFor="commit-prefix" style={{ color: gitTheme }}>
               Commit Prefix
@@ -82,7 +82,7 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item sm={4} xs={12}>
+        <Grid item sm={4} xs={12} style={{ marginTop: 16 }}>
           <FormControlLabel
             control={(
               <Switch
@@ -94,7 +94,7 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
             label="Finishes User Story"
           />
         </Grid>
-        <Grid item sm={4} xs={12}>
+        <Grid item sm={4} xs={12} style={{ marginTop: 16 }}>
           <FormControlLabel
             control={(
               <Switch

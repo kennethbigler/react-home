@@ -76,8 +76,8 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
 
   return (
     <div style={wrapperStyles}>
-      <Grid container spacing={1}>
-        <Grid item sm={3} xs={12}>
+      <Grid container spacing={2} style={{ marginBottom: 16 }}>
+        <Grid item sm={3} xs={12} style={{ marginTop: 16 }}>
           <FormControl fullWidth>
             <InputLabel htmlFor="branch-prefix" style={gitThemeStyles}>
               Branch Prefix
@@ -93,7 +93,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item sm={3} xs={12}>
+        <Grid item sm={3} xs={12} style={{ marginTop: 16 }}>
           <FormControl fullWidth>
             <InputLabel htmlFor="branch-prefix" style={gitThemeStyles}>
               Case Preference
@@ -109,7 +109,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item sm={5} xs={10}>
+        <Grid item sm={5} xs={10} style={{ marginTop: 16 }}>
           <TextField
             fullWidth
             InputLabelProps={{ style: gitThemeStyles }}
@@ -120,7 +120,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
             value={branchMessage}
           />
         </Grid>
-        <Grid item sm={1} xs={2}>
+        <Grid item sm={1} xs={2} style={{ marginTop: 16 }}>
           <IconButton onClick={onBranchMessageClear} style={topSpacing} size="large">
             <Clear />
           </IconButton>

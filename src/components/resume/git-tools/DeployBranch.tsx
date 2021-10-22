@@ -27,7 +27,7 @@ const DeployBranch: React.FC<DeployBranchProps> = React.memo((props: DeployBranc
   return (
     <div style={{ paddingLeft: 20, paddingRight: 20, width: '100%' }}>
       <Grid container spacing={1} style={{ display: 'flex', alignItems: 'center' }}>
-        <Grid item sm={3} xs={12}>
+        <Grid item sm={3} xs={12} style={{ marginTop: 16 }}>
           <FormControl fullWidth>
             <InputLabel htmlFor="target-branch" style={{ color: gitTheme }}>
               Target Branch
@@ -41,7 +41,7 @@ const DeployBranch: React.FC<DeployBranchProps> = React.memo((props: DeployBranc
             </Select>
           </FormControl>
         </Grid>
-        <Grid item sm={9} xs={12}>
+        <Grid item sm={9} xs={12} style={{ marginTop: 16 }}>
           <CopyTextDisplay handleCopy={handleCopy} text={`git push -f origin ${branchName}:${targetBranch}`} />
         </Grid>
       </Grid>
