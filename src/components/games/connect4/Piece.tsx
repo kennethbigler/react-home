@@ -1,5 +1,5 @@
 import React from 'react';
-import ContentAdd from '@material-ui/icons/Add';
+import ContentAdd from '@mui/icons-material/Add';
 import Fab from '@material-ui/core/Fab';
 import red from '@material-ui/core/colors/red';
 import lightGreen from '@material-ui/core/colors/lightGreen';

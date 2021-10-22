@@ -8,7 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
 import IconButton from '@material-ui/core/IconButton';
-import Clear from '@material-ui/icons/Clear';
+import Clear from '@mui/icons-material/Clear';
 import Grid from '@material-ui/core/Grid';
 import nl2br from 'react-newline-to-break';
 import CopyTextDisplay from './CopyTextDisplay';

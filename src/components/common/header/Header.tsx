@@ -4,7 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import NavigationClose from '@material-ui/icons/Close';
+import NavigationClose from '@mui/icons-material/Close';
 import { useTheme } from '@material-ui/core/styles';
 import TopBar from './TopBar';
 import useToggleState from '../../../hooks/useToggle';

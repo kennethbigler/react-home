@@ -4,7 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
-import MenuIcon from '@material-ui/icons/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
 import Switch from '@material-ui/core/Switch';
 import SimplePopover from './ButtonPopover';
 import PlayerMenu from './PlayerMenu';
