@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
-import Typography, { TypographyProps } from '@mui/material/Typography';
+import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import Switch from '@mui/material/Switch';
 import SimplePopover from './ButtonPopover';
@@ -20,10 +20,8 @@ const flexRightStyles: React.CSSProperties = { display: 'flex', marginRight: 15 
 const spanTopStyles: React.CSSProperties = { left: 0, right: 0, top: 0 };
 
 interface TopBarProps {
-  /** change the color scheme of the Menu text */
-  fontColor: TypographyProps['color'];
   /** change the color scheme of the icon */
-  iconColor: 'inherit' | 'primary' | 'secondary' | 'default' | undefined;
+  textColor: 'inherit' | 'primary' | 'secondary' | 'default' | undefined;
   /** show/hide the player editor button */
   showPlayers?: boolean;
   /** callback called onClick of Icon or Menu text */
@@ -47,7 +45,7 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
   );
 
   const {
-    toggleOpen, showPlayers = false, fontColor, iconColor,
+    toggleOpen, showPlayers = false, textColor,
   } = props;
 
   return (
@@ -58,7 +56,7 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
             <IconButton
               aria-label="Menu"
               onClick={toggleOpen}
-              color={iconColor}
+              color={textColor}
               title="Icon Menu Button"
               size="large"
             >
@@ -68,7 +66,7 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
               onClick={toggleOpen}
               style={cursorStyles}
               variant="h6"
-              color={fontColor}
+              color={textColor}
             >
               Menu
             </Typography>

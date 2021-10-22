@@ -30,15 +30,15 @@ describe('resume | git-tools | CommitText', () => {
     expect(screen.getAllByRole('button')).toHaveLength(4);
     expect(screen.getByText('Finishes User Story')).toBeInTheDocument();
     expect(screen.getByText('Add git commit -m')).toBeInTheDocument();
-    expect(screen.getByText('Commit Message')).toBeInTheDocument();
-    expect(screen.getByText('Commit Description')).toBeInTheDocument();
+    expect(screen.getAllByText('Commit Message')).toHaveLength(2);
+    expect(screen.getAllByText('Commit Description')).toHaveLength(2);
     expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
   });
 
   it('has expected color', () => {
     expect(screen.getByText('Commit Prefix')).toHaveStyle('color: red;');
-    expect(screen.getByText('Commit Message')).toHaveStyle('color: red;');
-    expect(screen.getByText('Commit Description')).toHaveStyle('color: red;');
+    expect(screen.getAllByText('Commit Message')[0]).toHaveStyle('color: red;');
+    expect(screen.getAllByText('Commit Description')[0]).toHaveStyle('color: red;');
   });
 
   it('adds git commit prefix on toggle', () => {
@@ -70,11 +70,11 @@ describe('resume | git-tools | CommitText', () => {
   });
 
   it('updates output with changes to commit message text and can clear out the text', () => {
-    expect(screen.getByText('Commit Message')).toBeInTheDocument();
+    expect(screen.getAllByText('Commit Message')).toHaveLength(2);
     expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
     // Add commit message
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    fireEvent.change(screen.getByText('Commit Message').nextSibling!.lastChild!, { target: { value: 'A Message' }});
+    fireEvent.change(screen.getAllByText('Commit Message')[0].nextSibling!.firstChild!, { target: { value: 'A Message' }});
     expect(screen.getByText('git commit -m "feat: A Message [KEN-1234]"')).toBeInTheDocument();
     // Remove commit message
     fireEvent.click(screen.getAllByRole('button')[1]);
@@ -82,11 +82,11 @@ describe('resume | git-tools | CommitText', () => {
   });
 
   it('updates output with changes to commit description text and can clear out the text', () => {
-    expect(screen.getByText('Commit Description')).toBeInTheDocument();
+    expect(screen.getAllByText('Commit Description')).toHaveLength(2);
     expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
     // Add commit description
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    fireEvent.change(screen.getByText('Commit Description').nextSibling!.firstChild!, { target: { value: 'A Description' }});
+    fireEvent.change(screen.getAllByText('Commit Description')[0].nextSibling!.firstChild!, { target: { value: 'A Description' }});
     expect(screen.getByText('git commit -m "feat:')).toBeInTheDocument();
     expect(screen.getAllByText('A Description')).toHaveLength(2);
     expect(screen.getByText('[KEN-1234]"')).toBeInTheDocument();
@@ -115,11 +115,11 @@ describe('resume | git-tools | CommitText', () => {
     expect(screen.getByText('git commit -m "test: [KEN-1234 #finish]"')).toBeInTheDocument();
     // Add a commit message
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    fireEvent.change(screen.getByText('Commit Message').nextSibling!.lastChild!, { target: { value: 'A Message' }});
+    fireEvent.change(screen.getAllByText('Commit Message')[0].nextSibling!.firstChild!, { target: { value: 'A Message' }});
     expect(screen.getByText('git commit -m "test: A Message [KEN-1234 #finish]"')).toBeInTheDocument();
     // Add a commit description
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    fireEvent.change(screen.getByText('Commit Description').nextSibling!.firstChild!, { target: { value: 'A Description' }});
+    fireEvent.change(screen.getAllByText('Commit Description')[0].nextSibling!.firstChild!, { target: { value: 'A Description' }});
     expect(screen.getByText('git commit -m "test: A Message')).toBeInTheDocument();
     expect(screen.getAllByText('A Description')).toHaveLength(2);
     expect(screen.getByText('[KEN-1234 #finish]"')).toBeInTheDocument();

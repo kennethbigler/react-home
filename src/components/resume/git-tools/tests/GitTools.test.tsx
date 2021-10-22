@@ -3,7 +3,7 @@ import { screen, fireEvent } from '@testing-library/react';
 import render from '../../../../redux-test-render';
 import GitTools, { validTypingId, getSelectOptions, getBranchName } from '../GitTools';
 
-describe('resume | git-tools | GitTools', () => {
+describe('resume | git-tools |  GitTools', () => {
   test('validTypingId', () => {
     const [value1] = validTypingId.exec('KEN-1234') || [''];
     expect(value1).toStrictEqual('KEN-1234');
@@ -52,8 +52,8 @@ describe('resume | git-tools | GitTools', () => {
 
     // Git Tools
     expect(screen.getByText('Git Tools')).toBeInTheDocument();
-    expect(screen.getByText('User Story ID')).toBeInTheDocument();
-    expect(screen.getByText('User Story ID')).toHaveStyle('color: rgb(244, 81, 30);');
+    expect(screen.getAllByText('User Story ID')).toHaveLength(2);
+    expect(screen.getAllByText('User Story ID')[0]).toHaveStyle('color: rgb(244, 81, 30);');
 
     // Create Branch Name
     expect(screen.getByText('Create Branch Name')).toBeInTheDocument();
@@ -61,7 +61,7 @@ describe('resume | git-tools | GitTools', () => {
     expect(screen.getByText('features')).toBeInTheDocument();
     expect(screen.getByText('Case Preference')).toBeInTheDocument();
     expect(screen.getByText('snake_case')).toBeInTheDocument();
-    expect(screen.getByText('Branch Name')).toBeInTheDocument();
+    expect(screen.getAllByText('Branch Name')).toHaveLength(2);
     expect(screen.getByText('features/')).toBeInTheDocument();
 
     // Create Commit Message
@@ -70,8 +70,8 @@ describe('resume | git-tools | GitTools', () => {
     expect(screen.getByText('feat')).toBeInTheDocument();
     expect(screen.getByText('Finishes User Story')).toBeInTheDocument();
     expect(screen.getByText('Add git commit -m')).toBeInTheDocument();
-    expect(screen.getByText('Commit Message')).toBeInTheDocument();
-    expect(screen.getByText('Commit Description')).toBeInTheDocument();
+    expect(screen.getAllByText('Commit Message')).toHaveLength(2);
+    expect(screen.getAllByText('Commit Description')).toHaveLength(2);
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
 
     // Deploy to Test Pipelines
@@ -85,7 +85,7 @@ describe('resume | git-tools | GitTools', () => {
     render(<GitTools />);
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    fireEvent.change(screen.getByText('User Story ID').nextSibling!.lastChild!, { target: { value: 'KEN-1234' }});
+    fireEvent.change(screen.getAllByText('User Story ID')[0].nextSibling!.firstChild!, { target: { value: 'KEN-1234' }});
     expect(screen.getByDisplayValue('KEN-1234')).toBeInTheDocument();
     expect(screen.getByText('features/KEN-1234_')).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: [KEN-1234]"')).toBeInTheDocument();
@@ -96,7 +96,7 @@ describe('resume | git-tools | GitTools', () => {
     render(<GitTools />);
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    fireEvent.change(screen.getByText('User Story ID').nextSibling!.lastChild!, { target: { value: '1234' }});
+    fireEvent.change(screen.getAllByText('User Story ID')[0].nextSibling!.firstChild!, { target: { value: '1234' }});
     expect(screen.queryByDisplayValue('1234')).toBeNull();
     expect(screen.getByText('features/')).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
@@ -107,7 +107,7 @@ describe('resume | git-tools | GitTools', () => {
     render(<GitTools />);
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    fireEvent.change(screen.getByText('Branch Name').nextSibling!.firstChild!, { target: { value: 'branchMessage' }});
+    fireEvent.change(screen.getAllByText('Branch Name')[0].nextSibling!.firstChild!, { target: { value: 'branchMessage' }});
     expect(screen.getByDisplayValue('branchMessage')).toBeInTheDocument();
     expect(screen.getByText('features/branch_message')).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
@@ -118,7 +118,7 @@ describe('resume | git-tools | GitTools', () => {
     render(<GitTools />);
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    fireEvent.change(screen.getByText('Branch Name').nextSibling!.firstChild!, { target: { value: 'branchMessage' }});
+    fireEvent.change(screen.getAllByText('Branch Name')[0].nextSibling!.firstChild!, { target: { value: 'branchMessage' }});
     expect(screen.getByDisplayValue('branchMessage')).toBeInTheDocument();
     expect(screen.getByText('features/branch_message')).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
@@ -152,7 +152,7 @@ describe('resume | git-tools | GitTools', () => {
     expect(screen.getByText('git push -f origin features/:test-pipeline')).toBeInTheDocument();
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    fireEvent.change(screen.getByText('Branch Name').nextSibling!.firstChild!, { target: { value: 'branchMessage' }});
+    fireEvent.change(screen.getAllByText('Branch Name')[0].nextSibling!.firstChild!, { target: { value: 'branchMessage' }});
     expect(screen.getByDisplayValue('branchMessage')).toBeInTheDocument();
     expect(screen.getByText('features/branch_message')).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
@@ -172,7 +172,7 @@ describe('resume | git-tools | GitTools', () => {
     expect(screen.getByText('git push -f origin features/:test-pipeline')).toBeInTheDocument();
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    fireEvent.change(screen.getByText('Commit Description').nextSibling!.firstChild!, { target: { value: 'some desc' }});
+    fireEvent.change(screen.getAllByText('Commit Description')[0].nextSibling!.firstChild!, { target: { value: 'some desc' }});
     expect(screen.getByText('features/')).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat:')).toBeInTheDocument();
     expect(screen.getByText('some desc"')).toBeInTheDocument();

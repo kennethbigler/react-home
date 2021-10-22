@@ -8,7 +8,7 @@ describe('resume | graphql | GraphQL', () => {
     render(<GraphQL />);
 
     expect(screen.getByText('GraphQL Demo')).toBeInTheDocument();
-    expect(screen.getByText('Authorization Code')).toBeInTheDocument();
+    expect(screen.getAllByText('Authorization Code')).toHaveLength(2);
     expect(screen.getByPlaceholderText('some 32 character string from github')).toBeInTheDocument();
     expect(screen.getByText('You need to generate a personal access token with "repo" and "admin:repo_hook" permissions.')).toBeInTheDocument();
     expect(screen.getByText('This can be done in the Developer settings on GitHub.')).toBeInTheDocument();

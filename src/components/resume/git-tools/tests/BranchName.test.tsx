@@ -44,7 +44,7 @@ describe('resume | git-tools | BranchName', () => {
   it('renders as expected', () => {
     expect(screen.getByText('Branch Prefix')).toBeInTheDocument();
     expect(screen.getByText('Case Preference')).toBeInTheDocument();
-    expect(screen.getByText('Branch Name')).toBeInTheDocument();
+    expect(screen.getAllByText('Branch Name')).toHaveLength(2);
     expect(screen.getByText('branchName')).toBeInTheDocument();
     expect(screen.getByText('branchMessage')).toBeInTheDocument();
     expect(screen.getByDisplayValue('features')).toBeInTheDocument();

@@ -5,39 +5,25 @@ import TopBar from '../TopBar';
 
 describe('common | header | TopBar', () => {
   describe('basic props tests', () => {
-    it('changes fontColor as expected', () => {
-      const { rerender } = render(<TopBar fontColor="textPrimary" iconColor="primary" toggleOpen={jest.fn()} />);
-      expect(screen.getByText('Menu').className).toContain('MuiTypography-colorTextPrimary');
-
-      rerender(<TopBar fontColor="textSecondary" iconColor="primary" toggleOpen={jest.fn()} />);
-      expect(screen.getByText('Menu').className).toContain('MuiTypography-colorTextSecondary');
-
-      rerender(<TopBar fontColor="primary" iconColor="primary" toggleOpen={jest.fn()} />);
-      expect(screen.getByText('Menu').className).toContain('MuiTypography-colorPrimary');
-
-      rerender(<TopBar fontColor="secondary" iconColor="primary" toggleOpen={jest.fn()} />);
-      expect(screen.getByText('Menu').className).toContain('MuiTypography-colorSecondary');
-    });
-
-    it('changes iconColor as expected', () => {
-      const { rerender } = render(<TopBar fontColor="primary" iconColor="primary" toggleOpen={jest.fn()} />);
+    it('changes textColor as expected', () => {
+      const { rerender } = render(<TopBar textColor="primary" toggleOpen={jest.fn()} />);
       expect(screen.getByTitle('Icon Menu Button').className).toContain('MuiIconButton-colorPrimary');
 
-      rerender(<TopBar fontColor="primary" iconColor="secondary" toggleOpen={jest.fn()} />);
+      rerender(<TopBar textColor="secondary" toggleOpen={jest.fn()} />);
       expect(screen.getByTitle('Icon Menu Button').className).toContain('MuiIconButton-colorSecondary');
     });
 
     it('shows players as expected', () => {
-      const { rerender } = render(<TopBar fontColor="primary" iconColor="primary" toggleOpen={jest.fn()} showPlayers />);
+      const { rerender } = render(<TopBar textColor="primary" toggleOpen={jest.fn()} showPlayers />);
       expect(screen.getByText('Players')).toBeInTheDocument();
 
-      rerender(<TopBar fontColor="primary" iconColor="primary" toggleOpen={jest.fn()} showPlayers={false} />);
+      rerender(<TopBar textColor="primary" toggleOpen={jest.fn()} showPlayers={false} />);
       expect(screen.queryByText('Players')).toBeNull();
     });
 
     it('toggles open as expected', () => {
       const handleOpen = jest.fn();
-      render(<TopBar fontColor="primary" iconColor="primary" toggleOpen={handleOpen} />);
+      render(<TopBar textColor="primary" toggleOpen={handleOpen} />);
       fireEvent.click(screen.getByText('Menu'));
       expect(handleOpen).toHaveBeenCalledTimes(1);
       fireEvent.click(screen.getByTitle('Icon Menu Button'));
@@ -48,7 +34,7 @@ describe('common | header | TopBar', () => {
   describe('theme toggle', () => {
     it('toggles theme as expected', () => {
       const handleOpen = jest.fn();
-      const { container } = render(<TopBar fontColor="primary" iconColor="primary" toggleOpen={handleOpen} />);
+      const { container } = render(<TopBar textColor="primary" toggleOpen={handleOpen} />);
       const ThemeToggle = screen.getByTitle('Theme Toggle Switch').querySelector('.MuiSwitch-input');
 
       expect(ThemeToggle?.attributes?.getNamedItem('value')?.value).toEqual('false');

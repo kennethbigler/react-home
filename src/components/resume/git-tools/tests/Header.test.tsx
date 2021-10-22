@@ -8,10 +8,10 @@ describe('resume | git-tools | Header', () => {
     render(<Header gitTheme="red" onIdChange={handleIdChange} storyID="KEN-1234" />);
 
     expect(screen.getByText('Git Tools')).toBeInTheDocument();
-    expect(screen.getByText('User Story ID')).toBeInTheDocument();
+    expect(screen.getAllByText('User Story ID')).toHaveLength(2);
     expect(screen.getByDisplayValue('KEN-1234')).toBeInTheDocument();
 
-    expect(screen.getByText('User Story ID')).toHaveStyle('color: red;');
+    expect(screen.getAllByText('User Story ID')[0]).toHaveStyle('color: red;');
   });
 
   it('handles id changes', () => {
@@ -19,7 +19,7 @@ describe('resume | git-tools | Header', () => {
     render(<Header gitTheme="red" onIdChange={handleIdChange} />);
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    fireEvent.change(screen.getByText('User Story ID').nextSibling!.lastChild!, { target: { value: 'KEN-1234' }});
+    fireEvent.change(screen.getAllByText('User Story ID')[0].nextSibling!.firstChild!, { target: { value: 'KEN-1234' }});
     expect(handleIdChange).toHaveBeenCalledTimes(1);
   });
 
@@ -28,8 +28,8 @@ describe('resume | git-tools | Header', () => {
     render(<Header gitTheme="red" onIdChange={handleIdChange} storyID="1234" />);
 
     expect(screen.getByText('Git Tools')).toBeInTheDocument();
-    expect(screen.getByText('User Story ID')).toBeInTheDocument();
+    expect(screen.getAllByText('User Story ID')).toHaveLength(2);
     expect(screen.getByDisplayValue('1234')).toBeInTheDocument();
-    expect(screen.getByText('User Story ID').parentNode?.querySelector('.Mui-error')).toBeInTheDocument();
+    expect(screen.getAllByText('User Story ID')[0].parentNode?.querySelector('.Mui-error')).toBeInTheDocument();
   });
 });

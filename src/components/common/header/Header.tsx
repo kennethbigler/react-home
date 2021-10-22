@@ -36,25 +36,24 @@ const Header = (props: HeaderProps): React.ReactElement => {
     handleNav(loc);
   }, [handleNav, setIsOpen]);
 
-  const iconColor = mode === 'light' ? 'inherit' : 'default';
-  const fontColor = mode === 'light' ? 'inherit' : 'initial';
+  const textColor = mode === 'light' ? 'inherit' : 'default';
 
   return (
     <>
-      <TopBar toggleOpen={toggleOpen} showPlayers={showPlayers} fontColor={fontColor} iconColor={iconColor} />
+      <TopBar toggleOpen={toggleOpen} showPlayers={showPlayers} textColor={textColor} />
       <Drawer onClose={toggleOpen} open={isOpen}>
         <AppBar position="sticky">
           <Toolbar disableGutters>
             <IconButton
               aria-label="Menu Close"
               onClick={toggleOpen}
-              color={iconColor}
+              color={textColor}
               title="Close Side Menu"
               size="large"
             >
               <NavigationClose />
             </IconButton>
-            <Typography variant="h6" color={fontColor}>
+            <Typography variant="h6" color={textColor}>
               Menu
             </Typography>
           </Toolbar>
