@@ -3,8 +3,8 @@ import maxBy from 'lodash/maxBy';
 import {
   ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area,
 } from 'recharts';
-import { useTheme } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { useTheme } from '@mui/material/styles';
+import { Typography } from '@mui/material';
 import InfoPopup from '../../common/info-popover/InfoPopup';
 
 interface ScoreGraphProps {

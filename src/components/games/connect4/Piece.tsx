@@ -1,8 +1,8 @@
 import React from 'react';
 import ContentAdd from '@mui/icons-material/Add';
-import Fab from '@material-ui/core/Fab';
-import red from '@material-ui/core/colors/red';
-import lightGreen from '@material-ui/core/colors/lightGreen';
+import Fab from '@mui/material/Fab';
+import { red, lightGreen } from '@mui/material/colors';
+
 import noop from '../../../apis/noop';
 
 interface PieceProps {

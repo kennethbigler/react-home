@@ -8,7 +8,7 @@ import {
 } from 'recharts';
 import {
   red, orange, green, blue,
-} from '@material-ui/core/colors/';
+} from '@mui/material/colors/';
 import { processData, CarStats } from '../../../constants/cars';
 
 export interface HideObject {

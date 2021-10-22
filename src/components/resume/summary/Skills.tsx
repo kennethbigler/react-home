@@ -1,6 +1,6 @@
 import React from 'react';
-import Chip from '@material-ui/core/Chip';
-import { Typography } from '@material-ui/core';
+import Chip from '@mui/material/Chip';
+import { Typography } from '@mui/material';
 import ExpandableCard from '../../common/expandable-card';
 import { techSummary, skillSummary } from '../../../constants/work';
 

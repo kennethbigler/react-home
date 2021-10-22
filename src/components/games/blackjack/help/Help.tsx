@@ -1,17 +1,14 @@
 // react
 import React from 'react';
 // material-ui
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-// colors
-import green from '@material-ui/core/colors/green';
-import teal from '@material-ui/core/colors/teal';
-import red from '@material-ui/core/colors/red';
-import orange from '@material-ui/core/colors/orange';
-import deepPurple from '@material-ui/core/colors/deepPurple';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import {
+  green, teal, red, orange, deepPurple,
+} from '@mui/material/colors';
 // components
 import Cell, { CellProps } from './Cell';
 import { RowProps } from './Row';

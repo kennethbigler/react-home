@@ -1,15 +1,14 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
-import IconButton from '@material-ui/core/IconButton';
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Input from '@mui/material/Input';
+import IconButton from '@mui/material/IconButton';
 import Clear from '@mui/icons-material/Clear';
-import Grid from '@material-ui/core/Grid';
-import MenuItem from '@material-ui/core/MenuItem';
+import Grid from '@mui/material/Grid';
+import MenuItem from '@mui/material/MenuItem';
 import CopyTextDisplay from './CopyTextDisplay';
-import { MaterialSelectEventHandler } from './types';
 import { BranchPrefixes, CasePreferences } from '../../../store/types';
 
 interface BranchNameProps {
@@ -20,7 +19,7 @@ interface BranchNameProps {
   getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
   handleCopy: (text: string) => boolean;
-  onBranchMessageChange: MaterialSelectEventHandler;
+  onBranchMessageChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onBranchMessageClear: React.MouseEventHandler;
   setBranchPrefix: (newBranchPrefix: BranchPrefixes) => void;
   setCasePreference: (newCasePreference: CasePreferences) => void;
@@ -48,7 +47,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
 
   /** function to update select state based on value */
   const handleBranchPrefixSelect = React.useCallback(
-    (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>): void => {
+    (e: SelectChangeEvent): void => {
       setBranchPrefix(e.target.value as BranchPrefixes);
     },
     [setBranchPrefix],
@@ -56,7 +55,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
 
   /** function to update text state based on value */
   const handleCasePrefSelect = React.useCallback(
-    (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>): void => {
+    (e: SelectChangeEvent): void => {
       setCasePreference(e.target.value as CasePreferences);
     },
     [setCasePreference],
@@ -122,10 +121,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
           />
         </Grid>
         <Grid item sm={1} xs={2}>
-          <IconButton
-            onClick={onBranchMessageClear}
-            style={topSpacing}
-          >
+          <IconButton onClick={onBranchMessageClear} style={topSpacing} size="large">
             <Clear />
           </IconButton>
         </Grid>

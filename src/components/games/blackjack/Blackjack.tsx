@@ -168,7 +168,7 @@ const BlackJack: React.FC = () => {
   }, [players]);
 
   /** function to be called on card clicks */
-  const betHandler = React.useCallback((id: number, event: React.ChangeEvent<Record<string, unknown>>, bet: number): void => {
+  const betHandler = React.useCallback((id: number, event: Event, bet: number): void => {
     dispatch(updateBet(id, bet));
   }, [dispatch]);
 

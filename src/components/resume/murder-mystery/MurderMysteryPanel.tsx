@@ -1,20 +1,20 @@
 import React from 'react';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
 import nl2br from 'react-newline-to-break';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import LabelTableCell from './LabelTableCell';
 
 interface MurderMysteryPanelProps {
   expanded?: string;
   expandedKey: string;
-  handleChange: (panel: string) => (_event: React.ChangeEvent<Record<string, unknown>>, exp?: boolean) => void;
+  handleChange: (panel: string) => (_event: React.SyntheticEvent<Element, Event>, exp?: boolean) => void;
   role: string;
   importance: string;
   gender: string;

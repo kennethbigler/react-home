@@ -4,7 +4,7 @@ import ButtonGroup from './button-group/ButtonGroup';
 import { DBPlayer, DBTurn } from '../../../store/types';
 
 interface GameTableProps {
-  betHandler?: (id: number, event: React.ChangeEvent<Record<string, unknown>>, value: number) => void;
+  betHandler?: (id: number, event: Event, value: number) => void;
   cardClickHandler?: (playerNo: number, handNo: number, cardNo: number) => void;
   cardsToDiscard?: number[];
   gameFunctions?: string[];

@@ -1,5 +1,5 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
+import Paper from '@mui/material/Paper';
 import Board from './Board';
 import Header from './Header';
 import { C4Turn } from '../../../store/types';

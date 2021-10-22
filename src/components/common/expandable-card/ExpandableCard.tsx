@@ -1,12 +1,12 @@
 import React from 'react';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Collapse from '@material-ui/core/Collapse';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import grey from '@material-ui/core/colors/grey';
-import { useTheme } from '@material-ui/core/styles';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import Collapse from '@mui/material/Collapse';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import { useTheme } from '@mui/material/styles';
+import { grey } from '@mui/material/colors';
 import useToggleState from '../../../hooks/useToggle';
 
 const cardStyles: React.CSSProperties = { marginTop: 40, overflow: 'visible' };
@@ -42,7 +42,7 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
     ...headerStyles,
     backgroundColor: backgroundColor || palette.primary.main,
   };
-  if (palette.type !== 'dark') {
+  if (palette.mode !== 'dark') {
     headerStyle.boxShadow = `0px 15px 15px -10px ${grey[400]}`;
   } else {
     delete headerStyle.boxShadow;

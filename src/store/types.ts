@@ -1,4 +1,4 @@
-import { Color } from '@material-ui/core';
+import { Color } from '@mui/material';
 
 // --------------------     blackjack     -------------------- //
 export enum GameFunctions {

@@ -1,6 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { useMutation, MutationUpdaterFn } from '@apollo/client';
 import REPOSITORY_FRAGMENT from '../fragments';
 import { Watchers } from './types';

@@ -1,5 +1,5 @@
 import React from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
+import MenuItem from '@mui/material/MenuItem';
 import { render, screen, fireEvent } from '@testing-library/react';
 import BranchName from '../BranchName';
 

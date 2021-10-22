@@ -1,5 +1,5 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import TimelineCard from '../../common/timeline-card';
 import dateObj from '../../../apis/DateHelper';
 import cars, { kensCars, familyCars } from '../../../constants/cars';

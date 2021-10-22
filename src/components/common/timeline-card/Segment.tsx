@@ -1,6 +1,6 @@
 import React from 'react';
-import grey from '@material-ui/core/colors/grey';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+import { grey } from '@mui/material/colors';
 import { SegmentType } from './types';
 
 const bodyStyles: React.CSSProperties = {
@@ -12,7 +12,7 @@ const bodyStyles: React.CSSProperties = {
 };
 
 const Segment = React.memo((props: SegmentType): React.ReactElement => {
-  const { palette: { type }} = useTheme();
+  const { palette: { mode }} = useTheme();
   const {
     body, width, color, title, inverted,
   } = props;
@@ -28,7 +28,7 @@ const Segment = React.memo((props: SegmentType): React.ReactElement => {
       ...style,
       ...bodyStyles,
       backgroundColor: color,
-      boxShadow: `2px 3px 4px 1px ${type !== 'dark' ? grey[400] : grey[700]}`,
+      boxShadow: `2px 3px 4px 1px ${mode !== 'dark' ? grey[400] : grey[700]}`,
     };
   }
 

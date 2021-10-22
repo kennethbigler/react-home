@@ -6,8 +6,7 @@ import {
   Geography,
   Sphere,
 } from 'react-simple-maps';
-import blueGrey from '@material-ui/core/colors/blueGrey';
-import red from '@material-ui/core/colors/red';
+import { blueGrey, red } from '@mui/material/colors';
 import Popover from './Popover';
 import countries from '../../../constants/countries';
 

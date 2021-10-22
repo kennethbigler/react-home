@@ -1,10 +1,6 @@
-import indigo from '@material-ui/core/colors/indigo';
-import grey from '@material-ui/core/colors/grey';
-import red from '@material-ui/core/colors/red';
-import lime from '@material-ui/core/colors/lime';
-import yellow from '@material-ui/core/colors/yellow';
-import teal from '@material-ui/core/colors/teal';
-
+import {
+  indigo, grey, red, lime, yellow, teal,
+} from '@mui/material/colors';
 import dateObj from '../apis/DateHelper';
 
 import prius07 from '../images/07_toyota_prius.jpg';

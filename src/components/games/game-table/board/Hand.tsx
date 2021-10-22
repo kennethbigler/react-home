@@ -1,6 +1,6 @@
 import React from 'react';
-import purple from '@material-ui/core/colors/purple';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
+import { purple } from '@mui/material/colors';
 import Card from './card/Card';
 import { DBHand } from '../../../../store/types';
 

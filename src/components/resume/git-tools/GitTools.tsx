@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import MenuItem from '@material-ui/core/MenuItem';
-import deepOrange from '@material-ui/core/colors/deepOrange';
+import MenuItem from '@mui/material/MenuItem';
+import { deepOrange } from '@mui/material/colors';
 import handleCopy from 'copy-to-clipboard';
 import snakeCase from 'lodash/snakeCase';
 import kebabCase from 'lodash/kebabCase';
@@ -15,7 +15,6 @@ import DeployBranch from './DeployBranch';
 import Header from './Header';
 import ExpandableCard from '../../common/expandable-card';
 import { DBRootState, BranchPrefixes, CasePreferences } from '../../../store/types';
-import { MaterialSelectEvent } from './types';
 
 const gitTheme = deepOrange[600];
 export const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');
@@ -62,12 +61,12 @@ const GitTools: React.FC = () => {
   const dispatch = useDispatch();
 
   /** function to update text state based on value */
-  const handleIDChange = React.useCallback((e: MaterialSelectEvent): void => {
+  const handleIDChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = React.useCallback((e) => {
     const [value] = validTypingId.exec(e.target.value as string) || [''];
     dispatch(setKey(value));
   }, [dispatch]);
   /** function to update text state based on value */
-  const handleBranchMessageChange = React.useCallback((e: MaterialSelectEvent): void => {
+  const handleBranchMessageChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = React.useCallback((e) => {
     dispatch(setBranchMessage(e.target.value as string));
   }, [dispatch]);
   /** function to clear text state based on value */

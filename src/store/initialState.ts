@@ -1,5 +1,4 @@
-import cyan from '@material-ui/core/colors/cyan';
-import deepOrange from '@material-ui/core/colors/deepOrange';
+import { cyan, deepOrange } from '@mui/material/colors';
 import { pullHandle } from '../apis/SlotMachine';
 
 import {

@@ -1,7 +1,6 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import amber from '@material-ui/core/colors/amber';
-import grey from '@material-ui/core/colors/grey';
+import Paper from '@mui/material/Paper';
+import { amber, grey } from '@mui/material/colors';
 import { getMoneyText } from './helpers';
 import { Briefcase } from '../../../store/types';
 

@@ -1,11 +1,10 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import { Typography } from '@material-ui/core';
-import { MaterialSelectEventHandler } from './types';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 interface HeaderProps {
   gitTheme: string;
-  onIdChange: MaterialSelectEventHandler;
+  onIdChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   storyID?: string;
 }
 

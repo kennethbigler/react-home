@@ -1,6 +1,5 @@
-import red from '@material-ui/core/colors/red';
-import indigo from '@material-ui/core/colors/indigo';
-import blue from '@material-ui/core/colors/blue';
+import { red, indigo, blue } from '@mui/material/colors';
+
 import dateObj, { DateObj } from '../apis/DateHelper';
 import { DataEntry } from '../components/common/timeline-card/Timeline';
 

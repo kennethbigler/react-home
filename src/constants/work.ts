@@ -1,11 +1,6 @@
-import cyan from '@material-ui/core/colors/cyan';
-import lightBlue from '@material-ui/core/colors/lightBlue';
-import green from '@material-ui/core/colors/green';
-import blue from '@material-ui/core/colors/blue';
-import blueGrey from '@material-ui/core/colors/blueGrey';
-import red from '@material-ui/core/colors/red';
-import indigo from '@material-ui/core/colors/indigo';
-import yellow from '@material-ui/core/colors/yellow';
+import {
+  cyan, lightBlue, green, blue, blueGrey, red, indigo, yellow,
+} from '@mui/material/colors';
 import dateObj, { DateObj } from '../apis/DateHelper';
 import {
   REACT, ANGULAR, HTML, CSS,

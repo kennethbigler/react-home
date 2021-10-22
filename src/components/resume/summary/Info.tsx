@@ -1,9 +1,9 @@
 import React from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Grid from '@material-ui/core/Grid';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import Grid from '@mui/material/Grid';
 import ExpandableCard from '../../common/expandable-card';
 import photo from '../../../images/ken.jpg';
 import workExp, { Job } from '../../../constants/work';

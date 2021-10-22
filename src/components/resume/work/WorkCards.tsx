@@ -1,6 +1,6 @@
 import React from 'react';
 import startCase from 'lodash/startCase';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import Job from './Job';
 import { Job as JobType } from '../../../constants/work';
 

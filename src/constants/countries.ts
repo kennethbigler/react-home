@@ -3,7 +3,7 @@ import {
   deepOrange, deepPurple, green, indigo,
   lightBlue, lightGreen, lime, orange,
   pink, purple, red, teal, yellow,
-} from '@material-ui/core/colors/';
+} from '@mui/material/colors/';
 
 interface Country {
   color?: string;

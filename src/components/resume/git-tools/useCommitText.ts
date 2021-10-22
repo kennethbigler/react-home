@@ -1,5 +1,5 @@
 import React from 'react';
-import { MaterialSelectEvent } from './types';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 interface UseCommitTextReturns {
   commitPrefix: string;
@@ -7,7 +7,7 @@ interface UseCommitTextReturns {
   commitDescription: string;
   finishes: boolean;
   getCommitText: () => string;
-  handleCommitPrefixSelect: (event: MaterialSelectEvent, child: React.ReactNode) => void;
+  handleCommitPrefixSelect: (event: SelectChangeEvent, child: React.ReactNode) => void;
   handleCommitMessageChange: React.ChangeEventHandler;
   handleCommitDescriptionChange: React.ChangeEventHandler;
   clearCommitMessage: React.MouseEventHandler;
@@ -51,7 +51,7 @@ function useCommitText(storyID?: string, gitCommit?: boolean): UseCommitTextRetu
   };
 
   /** function to update select state based on value */
-  const handleCommitPrefixSelect = (e: MaterialSelectEvent): void => {
+  const handleCommitPrefixSelect = (e: SelectChangeEvent): void => {
     setLocalCommitPrefix(e.target.value as string);
   };
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import red from '@material-ui/core/colors/red';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
+import { red } from '@mui/material/colors';
 import styles from './Card.styles';
 
 interface CardProps {

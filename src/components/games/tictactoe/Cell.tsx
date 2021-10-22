@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import { useTheme } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import { useTheme } from '@mui/material/styles';
 
 interface CellProps {
   onClick: React.MouseEventHandler;

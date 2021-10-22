@@ -1,11 +1,11 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import NavigationClose from '@mui/icons-material/Close';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 import TopBar from './TopBar';
 import useToggleState from '../../../hooks/useToggle';
 import noop from '../../../apis/noop';
@@ -27,7 +27,7 @@ interface HeaderProps {
 
 const Header = (props: HeaderProps): React.ReactElement => {
   const [isOpen, toggleOpen, setIsOpen] = useToggleState();
-  const { palette: { type }} = useTheme();
+  const { palette: { mode }} = useTheme();
   const { children, handleNav = noop, showPlayers = false } = props;
 
   /** close the menu and call the passed callback */
@@ -36,8 +36,8 @@ const Header = (props: HeaderProps): React.ReactElement => {
     handleNav(loc);
   }, [handleNav, setIsOpen]);
 
-  const iconColor = type === 'light' ? 'inherit' : 'default';
-  const fontColor = type === 'light' ? 'inherit' : 'initial';
+  const iconColor = mode === 'light' ? 'inherit' : 'default';
+  const fontColor = mode === 'light' ? 'inherit' : 'initial';
 
   return (
     <>
@@ -50,6 +50,7 @@ const Header = (props: HeaderProps): React.ReactElement => {
               onClick={toggleOpen}
               color={iconColor}
               title="Close Side Menu"
+              size="large"
             >
               <NavigationClose />
             </IconButton>

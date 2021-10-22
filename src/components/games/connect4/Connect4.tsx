@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { newGame, updateTurn, updateEval } from '../../../store/modules/connect4';
 import GameBoard from './GameBoard';
 import { DBRootState, C4Turn } from '../../../store/types';

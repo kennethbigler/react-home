@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import DiceAPI from '../../../apis/Dice';
 import ScoreTable from './score-table/ScoreTable';
 import { ADD_DICE, BottomGameScore } from './types';

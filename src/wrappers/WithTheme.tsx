@@ -1,7 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import {
+  ThemeProvider, StyledEngineProvider, createTheme, adaptV4Theme,
+} from '@mui/material/styles';
 import WithRouter from './WithRouter';
 import { DBRootState } from '../store/types';
 
@@ -9,22 +11,24 @@ import { DBRootState } from '../store/types';
 const WithTheme: React.FC = () => {
   const theme = useSelector((state: DBRootState) => state.theme);
 
-  const setTheme = createTheme({
+  const setTheme = createTheme(adaptV4Theme({
     palette: {
-      type: theme.type,
+      mode: theme.type,
       primary: theme.primary,
       secondary: theme.secondary,
     },
     typography: {
       fontFamily: ['Montserrat', 'sans-serif'].join(','),
     },
-  });
+  }));
 
   return (
-    <MuiThemeProvider theme={setTheme}>
-      <CssBaseline />
-      <WithRouter />
-    </MuiThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={setTheme}>
+        <CssBaseline />
+        <WithRouter />
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };
 

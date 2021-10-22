@@ -1,8 +1,5 @@
 import { Action } from 'redux';
-import blueGrey from '@material-ui/core/colors/blueGrey';
-import deepOrange from '@material-ui/core/colors/deepOrange';
-import cyan from '@material-ui/core/colors/cyan';
-
+import { blueGrey, deepOrange, cyan } from '@mui/material/colors';
 import { DBUITheme } from '../types';
 import initialState from '../initialState';
 

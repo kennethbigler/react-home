@@ -1,11 +1,10 @@
 import React from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
-import Grid from '@material-ui/core/Grid';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Input from '@mui/material/Input';
+import Grid from '@mui/material/Grid';
 import CopyTextDisplay from './CopyTextDisplay';
-import { MaterialSelectEvent } from './types';
 
 interface DeployBranchProps {
   branchName: string;
@@ -17,7 +16,7 @@ interface DeployBranchProps {
 const DeployBranch: React.FC<DeployBranchProps> = React.memo((props: DeployBranchProps) => {
   const [targetBranch, setTargetBranch] = React.useState('test-pipeline');
 
-  const handleSelect = React.useCallback((e: MaterialSelectEvent): void => {
+  const handleSelect = React.useCallback((e: SelectChangeEvent): void => {
     setTargetBranch(e.target.value as string);
   }, [setTargetBranch]);
 

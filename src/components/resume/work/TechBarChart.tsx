@@ -3,7 +3,7 @@ import {
   ResponsiveContainer, BarChart, Bar, XAxis, CartesianGrid, Tooltip, TooltipFormatter, TooltipPayload,
 } from 'recharts';
 import sortBy from 'lodash/sortBy';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 import dateObj from '../../../apis/DateHelper';
 import languageExp from '../../../constants/languages';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { getTurn } from './helpers';
 import { DBHistoryEntry } from '../../../store/types';
 
@@ -22,7 +22,7 @@ const History: React.FC<HistoryProps> = (props: HistoryProps) => {
       : `Move #${move} (${getTurn(move - 1)}, `
       + `${Math.floor(location / 3)}, ${location % 3})`;
     // highlight current turn displayed on board
-    const color = step === move ? 'secondary' : 'default';
+    const color = step === move ? 'secondary' : 'primary';
 
     return (
       <Button

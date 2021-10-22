@@ -1,7 +1,7 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
+import Button from '@mui/material/Button';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
 import { TopGameScore, BottomGameScore } from '../types';
 import { Dice } from '../../../../store/types';
 import Header from './Header';

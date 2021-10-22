@@ -1,6 +1,6 @@
 import React from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
-import Divider from '@material-ui/core/Divider';
+import MenuItem from '@mui/material/MenuItem';
+import Divider from '@mui/material/Divider';
 import noop from '../../apis/noop';
 
 interface MenuProps {

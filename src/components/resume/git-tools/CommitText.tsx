@@ -1,15 +1,15 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import Select from '@material-ui/core/Select';
-import IconButton from '@material-ui/core/IconButton';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Input from '@mui/material/Input';
+import Select from '@mui/material/Select';
+import IconButton from '@mui/material/IconButton';
 import Clear from '@mui/icons-material/Clear';
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import nl2br from 'react-newline-to-break';
 import CopyTextDisplay from './CopyTextDisplay';
 import { setCommitPrefix } from '../../../store/modules/git';
@@ -117,7 +117,7 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
           />
         </Grid>
         <Grid item sm={1} xs={2}>
-          <IconButton onClick={clearCommitMessage} style={marginTopStyles}>
+          <IconButton onClick={clearCommitMessage} style={marginTopStyles} size="large">
             <Clear />
           </IconButton>
         </Grid>
@@ -133,10 +133,7 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
           />
         </Grid>
         <Grid item sm={1} xs={2}>
-          <IconButton
-            onClick={clearCommitDescription}
-            style={marginTopStyles}
-          >
+          <IconButton onClick={clearCommitDescription} style={marginTopStyles} size="large">
             <Clear />
           </IconButton>
         </Grid>

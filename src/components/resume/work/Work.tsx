@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import TimelineCard from '../../common/timeline-card';
 import ExpandableCard from '../../common/expandable-card';
 import workExp, { VOLUNTEER, WORK } from '../../../constants/work';

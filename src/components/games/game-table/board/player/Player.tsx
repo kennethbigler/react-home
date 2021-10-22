@@ -1,17 +1,16 @@
 import React from 'react';
-import Slider from '@material-ui/core/Slider';
-import cyan from '@material-ui/core/colors/cyan';
-import green from '@material-ui/core/colors/green';
-import blueGrey from '@material-ui/core/colors/blueGrey';
-import red from '@material-ui/core/colors/red';
-import { Typography } from '@material-ui/core';
-import Card from '@material-ui/core/Card';
+import Slider from '@mui/material/Slider';
+import { Typography } from '@mui/material';
+import Card from '@mui/material/Card';
+import {
+  cyan, green, blueGrey, red,
+} from '@mui/material/colors';
 import Hand from '../Hand';
 import { DBTurn, DBPlayer } from '../../../../../store/types';
 import styles from './Player.styles';
 
 interface PlayerProps {
-  betHandler?: (id: number, event: React.ChangeEvent<Record<string, unknown>>, value: number) => void;
+  betHandler?: (id: number, event: Event, value: number) => void;
   cardHandler?: (playerNo: number, handNo: number, cardNo: number) => void;
   cardsToDiscard: number[];
   hideHands: boolean;
@@ -36,7 +35,7 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
   const maxBet: number = Math.max(Math.min(player.money, 100), 10);
   const step = 5;
   const onSliderChange = React.useCallback(
-    (event: React.ChangeEvent<Record<string, unknown>>, value: number | number[]): void => {
+    (event: Event, value: number | number[]): void => {
       betHandler && betHandler(player.id, event, value as number);
     },
     [betHandler, player.id],

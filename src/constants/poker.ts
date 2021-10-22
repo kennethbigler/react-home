@@ -4,7 +4,7 @@ import {
   grey, indigo, lightBlue, lightGreen,
   lime, orange, pink, purple, red,
   teal, yellow,
-} from '@material-ui/core/colors/';
+} from '@mui/material/colors/';
 
 export type PokerScoreEntry = Record<string, number>;
 export type PokerColorEntry = Record<string, string>;

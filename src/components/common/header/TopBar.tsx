@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import AppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
-import Switch from '@material-ui/core/Switch';
+import Switch from '@mui/material/Switch';
 import SimplePopover from './ButtonPopover';
 import PlayerMenu from './PlayerMenu';
 import {
@@ -60,6 +60,7 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
               onClick={toggleOpen}
               color={iconColor}
               title="Icon Menu Button"
+              size="large"
             >
               <MenuIcon />
             </IconButton>
