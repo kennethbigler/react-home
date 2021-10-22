@@ -109,7 +109,7 @@ export type DBSlotDisplay = [DBSlotOptions, DBSlotOptions, DBSlotOptions];
 
 // --------------------     theme     -------------------- //
 export interface DBUITheme {
-  type: 'light' | 'dark';
+  mode: 'light' | 'dark';
   primary: Color;
   secondary: Color;
 }

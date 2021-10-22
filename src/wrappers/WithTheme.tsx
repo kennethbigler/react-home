@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import CssBaseline from '@mui/material/CssBaseline';
 import {
-  ThemeProvider, StyledEngineProvider, createTheme, adaptV4Theme,
+  ThemeProvider, StyledEngineProvider, createTheme,
 } from '@mui/material/styles';
 import WithRouter from './WithRouter';
 import { DBRootState } from '../store/types';
@@ -11,16 +11,16 @@ import { DBRootState } from '../store/types';
 const WithTheme: React.FC = () => {
   const theme = useSelector((state: DBRootState) => state.theme);
 
-  const setTheme = createTheme(adaptV4Theme({
+  const setTheme = createTheme({
     palette: {
-      mode: theme.type,
+      mode: theme.mode,
       primary: theme.primary,
       secondary: theme.secondary,
     },
     typography: {
       fontFamily: ['Montserrat', 'sans-serif'].join(','),
     },
-  }));
+  });
 
   return (
     <StyledEngineProvider injectFirst>

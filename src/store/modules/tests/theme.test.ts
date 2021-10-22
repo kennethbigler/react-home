@@ -2,8 +2,8 @@ import { blueGrey, deepOrange, cyan } from '@mui/material/colors';
 import themeReducer, { displayDarkTheme, displayLightTheme } from '../theme';
 import { DBUITheme } from '../../types';
 
-const darkState: DBUITheme = { type: 'dark', primary: cyan, secondary: deepOrange };
-const lightState: DBUITheme = { type: 'light', primary: blueGrey, secondary: deepOrange };
+const darkState: DBUITheme = { mode: 'dark', primary: cyan, secondary: deepOrange };
+const lightState: DBUITheme = { mode: 'light', primary: blueGrey, secondary: deepOrange };
 
 describe('store | modules | theme', () => {
   test('reducer', () => {
@@ -15,8 +15,8 @@ describe('store | modules | theme', () => {
 
   test('incorrect parameters', () => {
     // @ts-expect-error: fake action for testing purposes
-    expect(themeReducer(lightState, { type: undefined })).toEqual(lightState);
+    expect(themeReducer(lightState, { mode: undefined })).toEqual(lightState);
     // @ts-expect-error: fake action for testing purposes
-    expect(themeReducer(undefined, { type: undefined })).toEqual(darkState);
+    expect(themeReducer(undefined, { mode: undefined })).toEqual(darkState);
   });
 });

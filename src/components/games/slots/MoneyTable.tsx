@@ -4,7 +4,6 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import DarkTableCell from '../../common/dark-table-cell/DarkTableCell';
 
 interface MoneyTableProps {
   playerName: string;
@@ -16,12 +15,12 @@ const MoneyTable: React.FC<MoneyTableProps> = React.memo(({ playerName, playerMo
   <Table>
     <TableHead>
       <TableRow>
-        <DarkTableCell>
+        <TableCell>
           Player
-        </DarkTableCell>
-        <DarkTableCell>
+        </TableCell>
+        <TableCell>
           Money
-        </DarkTableCell>
+        </TableCell>
       </TableRow>
     </TableHead>
     <TableBody>

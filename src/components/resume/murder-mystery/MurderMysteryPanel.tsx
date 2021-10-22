@@ -9,7 +9,6 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import nl2br from 'react-newline-to-break';
 import { Typography } from '@mui/material';
-import LabelTableCell from './LabelTableCell';
 
 interface MurderMysteryPanelProps {
   expanded?: string;
@@ -48,21 +47,21 @@ const MurderMysteryPanel: React.FC<MurderMysteryPanelProps> = React.memo((props:
         <Table>
           <TableBody>
             <TableRow>
-              <LabelTableCell>Gender</LabelTableCell>
+              <TableCell>Gender</TableCell>
               <TableCell>{gender}</TableCell>
             </TableRow>
             <TableRow>
-              <LabelTableCell>Description</LabelTableCell>
+              <TableCell>Description</TableCell>
               <TableCell>{nl2br(description)}</TableCell>
             </TableRow>
             {hint && (
               <TableRow>
-                <LabelTableCell>Hint</LabelTableCell>
+                <TableCell>Hint</TableCell>
                 <TableCell>{nl2br(hint)}</TableCell>
               </TableRow>
             )}
             <TableRow>
-              <LabelTableCell>Clue</LabelTableCell>
+              <TableCell>Clue</TableCell>
               <TableCell>{nl2br(clue)}</TableCell>
             </TableRow>
           </TableBody>

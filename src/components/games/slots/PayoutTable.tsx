@@ -4,7 +4,6 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import DarkTableCell from '../../common/dark-table-cell/DarkTableCell';
 import { DBSlotOptions as SO } from '../../../store/types';
 
 /** used to display the payout table */
@@ -24,12 +23,12 @@ const PayoutTable: React.FC = React.memo(() => (
   <Table>
     <TableHead>
       <TableRow>
-        <DarkTableCell>
+        <TableCell>
           Slot Roll
-        </DarkTableCell>
-        <DarkTableCell>
+        </TableCell>
+        <TableCell>
           Payout
-        </DarkTableCell>
+        </TableCell>
       </TableRow>
     </TableHead>
     <TableBody>

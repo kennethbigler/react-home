@@ -158,7 +158,7 @@ const slots: DBSlotDisplay[] = pullHandle();
 const theme: DBUITheme = {
   primary: cyan,
   secondary: deepOrange,
-  type: 'dark',
+  mode: 'dark',
 };
 const ticTacToe: DBTicTacToe = newTicTacToe();
 const turn: DBTurn = { player: 0, hand: 0 };

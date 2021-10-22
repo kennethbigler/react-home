@@ -33,7 +33,7 @@ interface TopBarProps {
 const TopBar = (props: TopBarProps): React.ReactElement => {
   const theme = useSelector((state: DBRootState) => state.theme);
   const dispatch = useDispatch();
-  const [checked, setChecked] = React.useState(theme.type !== 'dark');
+  const [checked, setChecked] = React.useState(theme.mode !== 'dark');
 
   /** function toggle between site's light and dark theme - dispatch to Redux */
   const toggleTheme = React.useCallback(
@@ -51,7 +51,7 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
   } = props;
 
   return (
-    <AppBar style={spanTopStyles} className={`header-${theme.type}-theme`}>
+    <AppBar style={spanTopStyles} className={`header-${theme.mode}-theme`}>
       <Toolbar disableGutters>
         <div className="flex-container">
           <div style={flexLeftStyles}>

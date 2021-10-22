@@ -6,7 +6,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import DarkTableCell from '../../common/dark-table-cell/DarkTableCell';
 import { NA, EU } from '../../../constants/countries';
 
 const marginStyles: React.CSSProperties = { marginTop: 24, marginBottom: 16 };
@@ -60,12 +59,12 @@ const TravelMap: React.FC = React.memo(() => (
     <Table>
       <TableHead>
         <TableRow>
-          <DarkTableCell style={{ ...cellStyles, ...separatorStyles }}>
+          <TableCell style={{ ...cellStyles, ...separatorStyles }}>
             North America
-          </DarkTableCell>
-          <DarkTableCell colSpan={EURatio} style={cellStyles}>
+          </TableCell>
+          <TableCell colSpan={EURatio} style={cellStyles}>
             Europe
-          </DarkTableCell>
+          </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>

@@ -20,9 +20,9 @@ export const displayLightTheme = (): Action<typeof LIGHT_THEME> => ({ type: LIGH
 export default function reducer(state: DBUITheme = initialState.theme, action: Action<ta>): DBUITheme {
   switch (action.type) {
     case DARK_THEME:
-      return { ...state, ...{ type: 'dark', primary: cyan, secondary: deepOrange }};
+      return { ...state, ...{ mode: 'dark', primary: cyan, secondary: deepOrange }};
     case LIGHT_THEME:
-      return { ...state, ...{ type: 'light', primary: blueGrey, secondary: deepOrange }};
+      return { ...state, ...{ mode: 'light', primary: blueGrey, secondary: deepOrange }};
     default:
       return state;
   }
