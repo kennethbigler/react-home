@@ -1,6 +1,6 @@
 import { newYahtzee } from '../../initialState';
 import yahtzeeReducer, {
-  addScore, newGame, diceClick, nextRoll, updateTop, updateBottom, updateRoll,
+  addScore, newGame, diceClick, updateTop, updateBottom, updateRoll,
 } from '../yahtzee';
 
 const state = { ...newYahtzee(), scores: []};
@@ -10,27 +10,18 @@ describe('store | modules | yahtzee', () => {
     expect(yahtzeeReducer(state, addScore(100))).toEqual({ ...state, scores: [100]});
     expect(yahtzeeReducer(state, newGame())).toEqual(state);
     expect(yahtzeeReducer(state, diceClick([1], [2]))).toEqual({ ...state, values: [1], saved: [2]});
-    expect(yahtzeeReducer(state, nextRoll())).toEqual({
-      ...state,
-      roll: 0,
-      values: [0, 0, 0, 0, 0],
-      saved: [],
-      hasScored: false,
-    });
     expect(yahtzeeReducer(state, updateTop([100]))).toEqual({
       ...state,
-      hasScored: true,
       showScoreButtons: false,
       topScores: [100],
     });
     expect(yahtzeeReducer(state, updateBottom([100]))).toEqual({
       ...state,
-      hasScored: true,
       showScoreButtons: false,
       bottomScores: [100],
     });
     expect(yahtzeeReducer(state, updateRoll([1], [2], 3))).toEqual({
-      ...state, values: [1], saved: [2], roll: 3, showScoreButtons: false,
+      ...state, values: [1], saved: [2], roll: 3, showScoreButtons: true,
     });
   });
 

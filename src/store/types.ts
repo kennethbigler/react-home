@@ -139,7 +139,6 @@ export interface DBYahtzee {
   saved: Dice[];
   turn: number;
   showScoreButtons: boolean;
-  hasScored: boolean;
   topScores: number[];
   bottomScores: number[];
   scores: number[];

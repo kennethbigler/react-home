@@ -36,7 +36,7 @@ const TableHeader: React.FC<TableHeaderProps> = (props: TableHeaderProps) => {
           </Button>
         ))}
       </div>
-      <Button color="primary" onClick={handleDiceRoll} variant="contained">
+      <Button color="primary" onClick={handleDiceRoll} variant="contained" disabled={roll === 3}>
         {getButtonText(roll)}
       </Button>
     </div>

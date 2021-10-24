@@ -127,7 +127,6 @@ export const newYahtzee = (): Omit<DBYahtzee, 'scores'> => ({
   saved: [],
   turn: 0,
   showScoreButtons: false,
-  hasScored: false,
   topScores: [-1, -1, -1, -1, -1, -1],
   bottomScores: [-1, -1, -1, -1, -1, -1, -1],
 });

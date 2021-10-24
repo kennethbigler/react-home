@@ -79,7 +79,7 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
             </div>
           )}
           <div style={flexRightStyles}>
-            <Switch checked={checked} value={checked} onChange={toggleTheme} title="Theme Toggle Switch" />
+            <Switch checked={checked} value={checked} onChange={toggleTheme} title="Theme Toggle Switch" color="secondary" />
           </div>
         </div>
       </Toolbar>

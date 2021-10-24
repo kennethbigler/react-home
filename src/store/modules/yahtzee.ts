@@ -6,7 +6,6 @@ import { DBYahtzee, Dice } from '../types';
 const ADD = 'casino/yahtzee/SCORE';
 const NEW_GAME = 'casino/yahtzee/NEW_GAME';
 const DICE_CLICK = 'casino/yahtzee/DICE_CLICK';
-const NEXT_ROLL = 'casino/yahtzee/NEXT_ROLL';
 const UPDATE_TOP = 'casino/yahtzee/UPDATE_TOP';
 const UPDATE_BOTTOM = 'casino/yahtzee/UPDATE_BOTTOM';
 const UPDATE_ROLL = 'casino/yahtzee/UPDATE_ROLL';
@@ -24,10 +23,6 @@ interface DiceClickAction extends Action<typeof DICE_CLICK> { values: Dice[]; sa
 /** save a dice in Yahtzee DB */
 export const diceClick = (values: Dice[], saved: Dice[]): DiceClickAction => ({ type: DICE_CLICK, values, saved });
 
-type NextRollAction = Action<typeof NEXT_ROLL>
-/** move to the next roll in Yahtzee DB */
-export const nextRoll = (): NextRollAction => ({ type: NEXT_ROLL });
-
 interface UpdateTopAction extends Action<typeof UPDATE_TOP> { topScores: number[] }
 /** update top scores in Yahtzee DB */
 export const updateTop = (topScores: number[]): UpdateTopAction => ({ type: UPDATE_TOP, topScores });
@@ -37,18 +32,18 @@ interface UpdateBottomAction extends Action<typeof UPDATE_BOTTOM> { bottomScores
 export const updateBottom = (bottomScores: number[]): UpdateBottomAction => ({ type: UPDATE_BOTTOM, bottomScores });
 
 interface UpdateRollAction extends Action<typeof UPDATE_ROLL> {
-  payload: { values: Dice[]; saved: Dice[]; roll: Dice; showScoreButtons: boolean };
+  payload: { values: Dice[]; saved: Dice[]; roll: Dice; showScoreButtons?: boolean };
 }
 /** new roll in Yahtzee DB */
-export const updateRoll = (values: Dice[], saved: Dice[], roll: Dice, showScoreButtons = false): UpdateRollAction => ({
+export const updateRoll = (values: Dice[], saved: Dice[], roll: Dice): UpdateRollAction => ({
   type: UPDATE_ROLL,
   payload: {
-    values, saved, roll, showScoreButtons,
+    values, saved, roll,
   },
 });
 
 // --------------------     Reducers     -------------------- //
-type YahtzeeActions = AddScoreAction | NewGameAction | DiceClickAction | NextRollAction | UpdateTopAction | UpdateBottomAction | UpdateRollAction
+type YahtzeeActions = AddScoreAction | NewGameAction | DiceClickAction | UpdateTopAction | UpdateBottomAction | UpdateRollAction
 export default function reducer(state: DBYahtzee = initialState.yahtzee, action: YahtzeeActions): DBYahtzee {
   switch (action.type) {
     case ADD:
@@ -60,29 +55,23 @@ export default function reducer(state: DBYahtzee = initialState.yahtzee, action:
     case UPDATE_TOP:
       return {
         ...state,
-        hasScored: true,
         showScoreButtons: false,
         topScores: action.topScores,
+        roll: 0,
+        values: [0, 0, 0, 0, 0],
+        saved: [],
       };
     case UPDATE_BOTTOM:
       return {
         ...state,
-        hasScored: true,
         showScoreButtons: false,
         bottomScores: action.bottomScores,
-      };
-    case NEXT_ROLL:
-      return {
-        ...state,
-        ...{
-          roll: 0,
-          values: [0, 0, 0, 0, 0],
-          saved: [],
-          hasScored: false,
-        },
+        roll: 0,
+        values: [0, 0, 0, 0, 0],
+        saved: [],
       };
     case UPDATE_ROLL:
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload, showScoreButtons: true };
     default:
       return state;
   }

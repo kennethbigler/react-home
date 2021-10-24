@@ -50,17 +50,17 @@ describe('games | yahtzee | Yahtzee', () => {
 
     // roll the dice
     fireEvent.click(screen.getByText('First Roll'));
-    expect(container.querySelectorAll('.MuiButton-outlinedPrimary')).toHaveLength(5);
+    expect(container.querySelectorAll('.MuiButton-outlinedPrimary')).toHaveLength(18);
     expect(container.querySelectorAll('.MuiButton-outlinedSecondary')).toHaveLength(0);
 
     // save the first button
     fireEvent.click(screen.getAllByRole('button')[1]);
-    expect(container.querySelectorAll('.MuiButton-outlinedPrimary')).toHaveLength(4);
+    expect(container.querySelectorAll('.MuiButton-outlinedPrimary')).toHaveLength(17);
     expect(container.querySelectorAll('.MuiButton-outlinedSecondary')).toHaveLength(1);
 
     // un-save the first button
     fireEvent.click(screen.getAllByRole('button')[1]);
-    expect(container.querySelectorAll('.MuiButton-outlinedPrimary')).toHaveLength(5);
+    expect(container.querySelectorAll('.MuiButton-outlinedPrimary')).toHaveLength(18);
     expect(container.querySelectorAll('.MuiButton-outlinedSecondary')).toHaveLength(0);
   });
 
@@ -72,14 +72,13 @@ describe('games | yahtzee | Yahtzee', () => {
     fireEvent.click(screen.getByText('First Roll'));
     fireEvent.click(screen.getByText('Second Roll'));
     fireEvent.click(screen.getByText('Last Roll'));
-    fireEvent.click(screen.getByText('Next Turn'));
+    fireEvent.click(screen.getByText('Score'));
     // the 4th click will not work
-    expect(screen.getByText('Next Turn')).toBeInTheDocument();
+    expect(screen.getByText('Score')).toBeInTheDocument();
     // so instead we pick our score
     fireEvent.click(screen.getAllByText('0')[0]);
-    fireEvent.click(screen.getByText('Next Turn'));
-    // now Next Turn should be gone
-    expect(screen.queryByText('Next Turn')).toBeNull();
+    // now Score should be gone
+    expect(screen.queryByText('Score')).toBeNull();
     // 1 zero should have been added to the UI
     expect(screen.getAllByText('0')).toHaveLength(12);
     // and adds to the bottom score
@@ -91,6 +90,6 @@ describe('games | yahtzee | Yahtzee', () => {
     fireEvent.click(chanceButton);
     // @ts-expect-error: we know this will have a value
     const submittedValue = parseInt(chanceButton.textContent[4] + chanceButton.textContent[5], 10);
-    expect(screen.getByText(`${submittedValue}`)).toBeInTheDocument();
+    expect(screen.getAllByText(`${submittedValue}`)).toHaveLength(3);
   });
 });
