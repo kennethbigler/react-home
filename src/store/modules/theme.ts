@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { blueGrey, deepOrange, cyan } from '@mui/material/colors';
+import { blueGrey, deepOrange, teal } from '@mui/material/colors';
 import { DBUITheme } from '../types';
 import initialState from '../initialState';
 
@@ -20,7 +20,7 @@ export const displayLightTheme = (): Action<typeof LIGHT_THEME> => ({ type: LIGH
 export default function reducer(state: DBUITheme = initialState.theme, action: Action<ta>): DBUITheme {
   switch (action.type) {
     case DARK_THEME:
-      return { ...state, ...{ mode: 'dark', primary: cyan, secondary: deepOrange }};
+      return { ...state, ...{ mode: 'dark', primary: teal, secondary: deepOrange }};
     case LIGHT_THEME:
       return { ...state, ...{ mode: 'light', primary: blueGrey, secondary: deepOrange }};
     default:

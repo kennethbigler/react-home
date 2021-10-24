@@ -1,4 +1,4 @@
-import { cyan, deepOrange } from '@mui/material/colors';
+import { teal, deepOrange } from '@mui/material/colors';
 import { pullHandle } from '../apis/SlotMachine';
 
 import {
@@ -156,7 +156,7 @@ const players: DBPlayer[] = [
 const poker = newPokerGameState();
 const slots: DBSlotDisplay[] = pullHandle();
 const theme: DBUITheme = {
-  primary: cyan,
+  primary: teal,
   secondary: deepOrange,
   mode: 'dark',
 };
