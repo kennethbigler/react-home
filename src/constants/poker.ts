@@ -191,7 +191,7 @@ export const gigNowPokerColors: PokerColorEntry = {
 /** A function that creates an initial score entry of 0
  * for all participants, the week before they joined.
  */
-function zeroOutPreviousWeek(scores: PokerScoreEntry[]): void {
+export function zeroOutPreviousWeek(scores: PokerScoreEntry[]): void {
   scores.unshift({});
 
   for (let i = 1; i < scores.length; i += 1) {
