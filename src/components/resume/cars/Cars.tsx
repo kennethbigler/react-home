@@ -50,9 +50,9 @@ const Cars = React.memo(() => {
         title="Ken's Cars"
         yearMarkerFrequency={3}
       />
-      {kensCars.map((car) => (<CarCard car={car} key={car.title} />))}
-      <hr style={hrStyles} />
-      {familyCars.map((car) => (<CarCard car={car} key={car.title} />))}
+      {!hide.ken && kensCars.map((car) => (<CarCard car={car} key={car.title} />))}
+      {!hide.ken && !hide.family && <hr style={hrStyles} />}
+      {!hide.family && familyCars.map((car) => (<CarCard car={car} key={car.title} />))}
     </>
   );
 });

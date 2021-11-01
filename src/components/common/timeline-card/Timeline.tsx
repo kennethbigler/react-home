@@ -30,8 +30,8 @@ export const TIMELINE_TITLE = 'Timeline';
 export const MONTH_SORT = (a: DataEntry, b: DataEntry): number => a.start.diff(b.start, 'months');
 
 const WIDTH = 99;
-const MIN_TEXT_WIDTH = 96;
-const MIN_SHORT_WIDTH = 42;
+const MIN_TEXT_WIDTH = 107;
+const MIN_SHORT_WIDTH = 54;
 const YEAR_WIDTH = 0.3;
 
 /** function to add empty space between start and elm segment */
