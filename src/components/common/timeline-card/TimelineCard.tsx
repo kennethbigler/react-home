@@ -20,6 +20,8 @@ interface TimelineCardProps {
   end?: DateObj;
   /** reduce year markers */
   yearMarkerFrequency?: number;
+  /** enables title field to be long version */
+  enableLongTitles?: boolean;
 }
 
 const DATE_FORMAT: FormatOutput = 'MMMM Y';
@@ -36,6 +38,7 @@ const TimelineCard = (props: TimelineCardProps): React.ReactElement | null => {
     start = dateObj('2011-09'),
     end = dateObj(),
     yearMarkerFrequency = 1,
+    enableLongTitles,
   } = props;
 
   return (
@@ -50,6 +53,7 @@ const TimelineCard = (props: TimelineCardProps): React.ReactElement | null => {
         start={start}
         end={end}
         yearMarkerFrequency={yearMarkerFrequency}
+        enableLongTitles={enableLongTitles}
       />
     </ExpandableCard>
   );

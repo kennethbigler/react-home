@@ -10,6 +10,7 @@ export interface DataEntry {
   end: DateObj;
   inverted?: boolean;
   short?: string;
+  char?: string;
   [prop: string]: string | string[] | DateObj | boolean | number | undefined;
 }
 interface TimelineProps {
@@ -23,6 +24,8 @@ interface TimelineProps {
   end: DateObj;
   /** reduce year markers */
   yearMarkerFrequency: number;
+  /** enables title field to be long version */
+  enableLongTitles?: boolean;
 }
 
 export const FORMAT: FormatOutput = 'MMMM Y';
@@ -30,7 +33,8 @@ export const TIMELINE_TITLE = 'Timeline';
 export const MONTH_SORT = (a: DataEntry, b: DataEntry): number => a.start.diff(b.start, 'months');
 
 const WIDTH = 99;
-const MIN_TEXT_WIDTH = 107;
+const MIN_LONG_WIDTH = 269;
+const MIN_TEXT_WIDTH = 85;
 const MIN_SHORT_WIDTH = 54;
 const YEAR_WIDTH = 0.3;
 
@@ -43,7 +47,7 @@ const addEmptySegment = (segments: SegmentType[], width: number): void => {
 
 const Timeline = (props: TimelineProps): React.ReactElement => {
   const {
-    start, end, selector, data: propsData, yearMarkerFrequency,
+    start, end, selector, data: propsData, yearMarkerFrequency, enableLongTitles,
   } = props;
   // get immutable data from props and sort by start date
   const data: DataEntry[] = React.useMemo(() => [...propsData].sort(MONTH_SORT), [propsData]);
@@ -66,7 +70,7 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
   const addSegment = React.useCallback(
     (segments: SegmentType[], elm: DataEntry, beginning: number, ending: number): void => {
       const {
-        color, inverted, title, short,
+        color, inverted, title, short, char,
       } = elm;
       const width = ending - beginning;
       const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
@@ -76,7 +80,7 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
       // check if name has room
       if (textWidth < MIN_SHORT_WIDTH) {
         segments.push({
-          body: (elm[selector] as string).substr(0, 1),
+          body: char || (elm[selector] as string).substr(0, 1),
           ...payload,
         });
       } else if (textWidth < MIN_TEXT_WIDTH) {
@@ -84,14 +88,19 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
           body: short,
           ...payload,
         });
-      } else {
+      } else if (!enableLongTitles || textWidth < MIN_LONG_WIDTH) {
         segments.push({
           body: (elm[selector] as string),
           ...payload,
         });
+      } else {
+        segments.push({
+          body: title,
+          ...payload,
+        });
       }
     },
-    [selector],
+    [selector, enableLongTitles],
   );
 
   /** break data up into segments */

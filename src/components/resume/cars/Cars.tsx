@@ -44,8 +44,9 @@ const Cars = React.memo(() => {
       <CarChartControls onClick={handleClick} hide={hide} vw={vw} />
       <CarChart showAnimation={showAnimation} data={data} hide={hide} vw={vw} />
       <TimelineCard
+        enableLongTitles
         data={data}
-        selector="title"
+        selector="car"
         start={dateObj('2008-03')}
         title="Ken's Cars"
         yearMarkerFrequency={3}

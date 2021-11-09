@@ -36,7 +36,7 @@ const CarChart = React.memo(({
     <ResponsiveContainer width="100%" height={680}>
       <LineChart data={processedData}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey={vw >= 930 ? 'short' : 'char'} interval="preserveStartEnd" reversed />
+        <XAxis dataKey={vw >= 930 ? 'car' : 'char'} interval="preserveStartEnd" reversed />
         <YAxis domain={['dataMin', 'dataMax']} tickCount={6} width={28} hide />
         {!hide.MPG
           && <Line strokeWidth={2} type="monotone" dot={false} isAnimationActive={showAnimation} dataKey="MPG" stroke={green[500]} />}
