@@ -9,7 +9,7 @@ describe('resume | work | Work', () => {
     expect(screen.getByText('Experience')).toBeInTheDocument();
 
     expect(screen.getByText('Work Timeline')).toBeInTheDocument();
-    expect(screen.getByText('TSLA')).toBeInTheDocument();
+    expect(screen.getByText('Tesla, Inc.')).toBeInTheDocument();
     expect(screen.getByText('Second Harvest Food Bank')).toBeInTheDocument();
     expect(screen.getByText('Santa Clara University BS')).toBeInTheDocument();
     expect(screen.getByText('Intuit')).toBeInTheDocument();
