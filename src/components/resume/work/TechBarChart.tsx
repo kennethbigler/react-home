@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ResponsiveContainer, BarChart, Bar, XAxis, CartesianGrid, Tooltip, TooltipFormatter, TooltipPayload,
+  ResponsiveContainer, BarChart, Bar, XAxis, CartesianGrid, Tooltip,
 } from 'recharts';
 import sortBy from 'lodash/sortBy';
 import { useTheme } from '@mui/material/styles';
@@ -15,7 +15,7 @@ const storageData = languageExp.map((obj) => ({
 }));
 const data = sortBy(storageData, ['months']).reverse();
 
-export const tooltipFormatter: TooltipFormatter = (months: Months, name: string, entry: TooltipPayload): [string, string] => {
+export const tooltipFormatter = (months: Months, name: string, entry: { payload: { name: string } }): [string, string] => {
   const displayMonths = months as number % 12;
   const years = Math.floor(months as number / 12);
 
