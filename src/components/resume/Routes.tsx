@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-  Switch, Route, Redirect, match as Match,
-} from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import lazyWithPreload from '../../helpers/lazyWithPreload';
-import routeMaker from '../../helpers/routeMaker';
 import Header, { NavProps } from '../common/header/Header';
 import Menu from './Menu';
 import LoadingSpinner from '../common/loading-spinner';
@@ -21,38 +18,27 @@ const Cars = lazyWithPreload(import(/* webpackChunkName: "r_cars" */ './cars'));
 
 interface RoutesProps {
   handleNav: (loc: string) => void;
-  match: Match;
 }
 
-const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
-  const { match: { url }, handleNav } = props;
+const ResumeRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
+  <>
+    <Header handleNav={handleNav}>
+      {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
+    </Header>
+    <React.Suspense fallback={<LoadingSpinner />}>
+      <Routes>
+        <Route path="/*" element={<Summary />} />
+        <Route path="work/*" element={<Work />} />
+        <Route path="education/*" element={<Education />} />
+        <Route path="travel/*" element={<TravelMap />} />
+        <Route path="resume/*" element={<Resume />} />
+        <Route path="git-tools/*" element={<GitTools />} />
+        <Route path="murder/*" element={<MurderMystery />} />
+        <Route path="graphql/*" element={<GraphQL />} />
+        <Route path="cars/*" element={<Cars />} />
+      </Routes>
+    </React.Suspense>
+  </>
+);
 
-  const paths = routeMaker([
-    { name: 'work', component: Work },
-    { name: 'education', component: Education },
-    { name: 'travel', component: TravelMap },
-    { name: 'resume', component: Resume },
-    { name: 'git-tools', component: GitTools },
-    { name: 'murder', component: MurderMystery },
-    { name: 'graphql', component: GraphQL },
-    { name: 'cars', component: Cars },
-  ], url);
-
-  return (
-    <>
-      <Header handleNav={handleNav}>
-        {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
-      </Header>
-      <React.Suspense fallback={<LoadingSpinner />}>
-        <Switch>
-          <Route component={Summary} exact path={`${url}`} />
-          {paths}
-          <Redirect from={`${url}*`} to={`${url}`} />
-          <Route component={Summary} />
-        </Switch>
-      </React.Suspense>
-    </>
-  );
-};
-
-export default Routes;
+export default ResumeRoutes;

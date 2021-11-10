@@ -1,16 +1,12 @@
 import React from 'react';
-import {
-  Switch, Route, Redirect, match as Match,
-} from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import lazyWithPreload from '../../helpers/lazyWithPreload';
-import routeMaker from '../../helpers/routeMaker';
 import Header, { NavProps } from '../common/header/Header';
 import Menu from './Menu';
 import LoadingSpinner from '../common/loading-spinner';
 
 interface RoutesProps {
   handleNav: (loc: string) => void;
-  match: Match;
 }
 
 // lazy load page components
@@ -23,34 +19,24 @@ const Slots = lazyWithPreload(import(/* webpackChunkName: "g_slots" */ './slots'
 const TicTacToe = lazyWithPreload(import(/* webpackChunkName: "g_tictactoe" */ './tictactoe'));
 const Yahtzee = lazyWithPreload(import(/* webpackChunkName: "g_yahtzee" */ './yahtzee'));
 
-const Routes: React.FC<RoutesProps> = (props: RoutesProps) => {
-  const { match: { url }, handleNav } = props;
+const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
+  <>
+    <Header handleNav={handleNav} showPlayers>
+      {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
+    </Header>
+    <React.Suspense fallback={<LoadingSpinner />}>
+      <Routes>
+        <Route path="/*" element={<GameHome />} />
+        <Route path="blackjack/*" element={<BlackJack />} />
+        <Route path="connect4/*" element={<Connect4 />} />
+        <Route path="deal/*" element={<DealOrNoDeal />} />
+        <Route path="poker/*" element={<Poker />} />
+        <Route path="slots/*" element={<Slots />} />
+        <Route path="tictactoe/*" element={<TicTacToe />} />
+        <Route path="yahtzee/*" element={<Yahtzee />} />
+      </Routes>
+    </React.Suspense>
+  </>
+);
 
-  const paths = routeMaker([
-    { name: 'blackjack', component: BlackJack },
-    { name: 'connect4', component: Connect4 },
-    { name: 'deal', component: DealOrNoDeal },
-    { name: 'poker', component: Poker },
-    { name: 'slots', component: Slots },
-    { name: 'tictactoe', component: TicTacToe },
-    { name: 'yahtzee', component: Yahtzee },
-  ], `${url}/`);
-
-  return (
-    <>
-      <Header handleNav={handleNav} showPlayers>
-        {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
-      </Header>
-      <React.Suspense fallback={<LoadingSpinner />}>
-        <Switch>
-          <Route component={GameHome} exact path={`${url}`} />
-          {paths}
-          <Redirect from={`${url}/*`} to={`${url}`} />
-          <Route component={GameHome} />
-        </Switch>
-      </React.Suspense>
-    </>
-  );
-};
-
-export default Routes;
+export default GameRoutes;
