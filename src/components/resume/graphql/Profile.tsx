@@ -46,19 +46,17 @@ const Profile: React.FC = React.memo(() => {
   }
 
   // check for data
-  if (loading && (!data || !data.viewer)) {
+  if (!data || !data.viewer || loading) {
     return <Loading />;
   }
 
   // display data
-  return data ? (
+  return (
     <RepositoryList
       loading={loading}
       repositories={data.viewer.repositories}
       fetchMore={fetchMore}
     />
-  ) : (
-    <Loading />
   );
 });
 
