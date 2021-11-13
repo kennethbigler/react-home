@@ -4,8 +4,8 @@ import render from "../../../../redux-test-render";
 import Header, { NavProps } from "../Header";
 
 /** This is just used for testing purposes */
-const Menu = (props: NavProps): React.ReactElement<NavProps> => (
-  <button onClick={(): void => props.onItemClick("button")} type="button">
+const Menu = ({ onItemClick }: NavProps): React.ReactElement<NavProps> => (
+  <button onClick={(): void => onItemClick("button")} type="button">
     Test Button
   </button>
 );
