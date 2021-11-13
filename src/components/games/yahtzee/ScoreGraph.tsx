@@ -1,11 +1,16 @@
-import React from 'react';
-import maxBy from 'lodash/maxBy';
+import React from "react";
+import maxBy from "lodash/maxBy";
 import {
-  ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area,
-} from 'recharts';
-import { useTheme } from '@mui/material/styles';
-import { Typography } from '@mui/material';
-import InfoPopup from '../../common/info-popover/InfoPopup';
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  AreaChart,
+  Area,
+} from "recharts";
+import { useTheme } from "@mui/material/styles";
+import { Typography } from "@mui/material";
+import InfoPopup from "../../common/info-popover/InfoPopup";
 
 interface ScoreGraphProps {
   scores: number[];
@@ -14,18 +19,21 @@ interface ScoreGraphEntry {
   value: number;
 }
 
-const generateScoreGraph = (scores: number[]): ScoreGraphEntry[] => (
-  scores.map((value) => ({ value }))
-);
+const generateScoreGraph = (scores: number[]): ScoreGraphEntry[] =>
+  scores.map((value) => ({ value }));
 
 const ScoreGraph: React.FC<ScoreGraphProps> = (props: ScoreGraphProps) => {
-  const { palette: { secondary: { main }}} = useTheme();
+  const {
+    palette: {
+      secondary: { main },
+    },
+  } = useTheme();
   const { scores: dBScores } = props;
 
   const scores = React.useMemo(() => generateScoreGraph(dBScores), [dBScores]);
   const recent = scores[scores.length - 1] || { value: 0 };
   const mostRecent = recent.value;
-  const top = maxBy(scores, 'value') || { value: 0 };
+  const top = maxBy(scores, "value") || { value: 0 };
   const topScore = top.value;
 
   return (
@@ -41,7 +49,13 @@ const ScoreGraph: React.FC<ScoreGraphProps> = (props: ScoreGraphProps) => {
           <XAxis dataKey="name" interval="preserveStartEnd" />
           <YAxis width={40} orientation="right" tickLine={false} />
           <Tooltip />
-          <Area type="monotone" dataKey="value" stroke={main} fillOpacity={1} fill="url(#mainColor)" />
+          <Area
+            type="monotone"
+            dataKey="value"
+            stroke={main}
+            fillOpacity={1}
+            fill="url(#mainColor)"
+          />
         </AreaChart>
       </ResponsiveContainer>
       <Typography variant="h4">{`Most Recent: ${mostRecent}`}</Typography>

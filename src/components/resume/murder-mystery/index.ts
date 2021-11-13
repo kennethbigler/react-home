@@ -1,1 +1,1 @@
-export { default } from './MurderMystery';
+export { default } from "./MurderMystery";

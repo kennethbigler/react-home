@@ -1,20 +1,20 @@
-import React from 'react';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import Collapse from '@mui/material/Collapse';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import { useTheme } from '@mui/material/styles';
-import { grey } from '@mui/material/colors';
-import useToggleState from '../../../hooks/useToggle';
+import React from "react";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
+import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import { useTheme } from "@mui/material/styles";
+import { grey } from "@mui/material/colors";
+import useToggleState from "../../../hooks/useToggle";
 
-const cardStyles: React.CSSProperties = { marginTop: 40, overflow: 'visible' };
+const cardStyles: React.CSSProperties = { marginTop: 40, overflow: "visible" };
 const headerStyles: React.CSSProperties = {
   borderRadius: 3,
   marginLeft: 15,
   marginRight: 15,
-  position: 'relative',
+  position: "relative",
   top: -20,
 };
 
@@ -35,22 +35,32 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
   const [expanded, toggleExpanded] = useToggleState(true);
   const { palette } = useTheme();
   const {
-    title, subtitle, children, backgroundColor, inverted = false,
+    title,
+    subtitle,
+    children,
+    backgroundColor,
+    inverted = false,
   } = props;
 
   const headerStyle = {
     ...headerStyles,
     backgroundColor: backgroundColor || palette.primary.main,
   };
-  if (palette.mode !== 'dark') {
+  if (palette.mode !== "dark") {
     headerStyle.boxShadow = `0px 15px 15px -10px ${grey[400]}`;
   } else {
     delete headerStyle.boxShadow;
   }
   const expandedHeaderStyle = { ...headerStyle, marginBottom: -20 };
 
-  const titleStyle = React.useMemo(() => ({ color: inverted ? 'black' : 'white' }), [inverted]);
-  const subtitleStyle = React.useMemo(() => ({ color: grey[inverted ? 800 : 300] }), [inverted]);
+  const titleStyle = React.useMemo(
+    () => ({ color: inverted ? "black" : "white" }),
+    [inverted]
+  );
+  const subtitleStyle = React.useMemo(
+    () => ({ color: grey[inverted ? 800 : 300] }),
+    [inverted]
+  );
 
   const titleJSX = (
     <Typography style={titleStyle} variant="h6">
@@ -58,9 +68,7 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
     </Typography>
   );
   const subtitleJSX = expanded ? (
-    <Typography style={subtitleStyle}>
-      {subtitle}
-    </Typography>
+    <Typography style={subtitleStyle}>{subtitle}</Typography>
   ) : null;
 
   return (
@@ -73,7 +81,7 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Grid container spacing={1} style={{ overflowY: 'hidden' }}>
+          <Grid container spacing={1} style={{ overflowY: "hidden" }}>
             {children}
           </Grid>
         </CardContent>

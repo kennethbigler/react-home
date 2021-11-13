@@ -85,46 +85,46 @@ export const isAmbigram1 = (nums: number[]): boolean => {
 export const isAmbigram2 = (word: string): boolean => {
   // create map
   const flip: Record<string, string[]> = {
-    0: ['0'],
-    1: ['1'],
-    2: ['5'],
-    5: ['2'],
-    6: ['9'],
-    9: ['6'],
-    8: ['8'],
-    a: ['e'],
-    e: ['a'],
-    b: ['q'],
-    q: ['b'],
-    d: ['p', 'P'],
-    p: ['d'],
-    P: ['d'],
-    h: ['y', 'Y'],
-    y: ['h'],
-    Y: ['h'],
-    l: ['l'],
-    m: ['w'],
-    w: ['m'],
-    n: ['u', 'U'],
-    u: ['n'],
-    U: ['n'],
-    o: ['o', 'O'],
-    O: ['o', 'O'],
-    s: ['s', 'S'],
-    S: ['s', 'S'],
-    t: ['t'],
-    x: ['x', 'X'],
-    X: ['x', 'X'],
-    z: ['z', 'Z'],
-    Z: ['z', 'Z'],
-    H: ['H'],
-    I: ['I'],
-    M: ['W'],
-    W: ['M'],
-    N: ['N'],
+    0: ["0"],
+    1: ["1"],
+    2: ["5"],
+    5: ["2"],
+    6: ["9"],
+    9: ["6"],
+    8: ["8"],
+    a: ["e"],
+    e: ["a"],
+    b: ["q"],
+    q: ["b"],
+    d: ["p", "P"],
+    p: ["d"],
+    P: ["d"],
+    h: ["y", "Y"],
+    y: ["h"],
+    Y: ["h"],
+    l: ["l"],
+    m: ["w"],
+    w: ["m"],
+    n: ["u", "U"],
+    u: ["n"],
+    U: ["n"],
+    o: ["o", "O"],
+    O: ["o", "O"],
+    s: ["s", "S"],
+    S: ["s", "S"],
+    t: ["t"],
+    x: ["x", "X"],
+    X: ["x", "X"],
+    z: ["z", "Z"],
+    Z: ["z", "Z"],
+    H: ["H"],
+    I: ["I"],
+    M: ["W"],
+    W: ["M"],
+    N: ["N"],
   };
 
-  const chars = word.split('');
+  const chars = word.split("");
   // verify characters are good
   for (let i = 0; i < Math.ceil(chars.length / 2); i += 1) {
     // get 2 opposite elements
@@ -271,7 +271,7 @@ export const maxProfit = (prices: number[]): number => {
  * Output: "MCMXCIV"
  * Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
  */
-export const itr = (num: number, roman = '', round = 0): string => {
+export const itr = (num: number, roman = "", round = 0): string => {
   const divisor = [1000, 100, 10, 1];
   // end condition
   if (round >= divisor.length) {
@@ -285,7 +285,7 @@ export const itr = (num: number, roman = '', round = 0): string => {
 
   // Symbol I  V  X   L   C    D    M
   // Value  1  5  10  50  100  500  1,000
-  const n = [['M'], ['C', 'D', 'M'], ['X', 'L', 'C'], ['I', 'V', 'X']];
+  const n = [["M"], ["C", "D", "M"], ["X", "L", "C"], ["I", "V", "X"]];
 
   const d = divisor[round];
   const nmrl = n[round];
@@ -303,12 +303,12 @@ export const itr = (num: number, roman = '', round = 0): string => {
     // console.log(roman, n[round][0]);
     return itr(num - 1 * d, roman + nmrl[0], round);
   }
-  return '';
+  return "";
 };
 
 export const intToRoman = (num: number): string => {
   if (num === 0) {
-    return '';
+    return "";
   }
   // verify non-negative
   if (num < 0) {
@@ -367,11 +367,11 @@ export const intToRoman = (num: number): string => {
  * Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
  */
 export const romanToInt = (str: string): number => {
-  if (str === '') {
+  if (str === "") {
     return 0;
   }
   let ret = 0;
-  const characters = str.split('');
+  const characters = str.split("");
   // Symbol I  V  X   L   C    D    M
   // Value  1  5  10  50  100  500  1,000
   const romanMap: Record<string, number> = {

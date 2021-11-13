@@ -1,9 +1,9 @@
-import React from 'react';
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import Chip from '@mui/material/Chip';
-import useOpenState from '../../../hooks/useOpenState';
+import React from "react";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Chip from "@mui/material/Chip";
+import useOpenState from "../../../hooks/useOpenState";
 
 interface CopyTextDisplayProps {
   copyText?: string;
@@ -11,9 +11,15 @@ interface CopyTextDisplayProps {
   text: string;
 }
 
-const chipStyles: React.CSSProperties = { height: 'auto', paddingTop: 7, paddingBottom: 7 };
+const chipStyles: React.CSSProperties = {
+  height: "auto",
+  paddingTop: 7,
+  paddingBottom: 7,
+};
 
-const CopyTextDisplay: React.FC<CopyTextDisplayProps> = (props: CopyTextDisplayProps) => {
+const CopyTextDisplay: React.FC<CopyTextDisplayProps> = (
+  props: CopyTextDisplayProps
+) => {
   const [isOpen, handleOpen, handleClose] = useOpenState(false);
   const { handleCopy, copyText, text } = props;
 
@@ -26,10 +32,18 @@ const CopyTextDisplay: React.FC<CopyTextDisplayProps> = (props: CopyTextDisplayP
 
   return (
     <>
-      <Chip onClick={handleCopyText} style={chipStyles} label={<div>{text}</div>} />
+      <Chip
+        onClick={handleCopyText}
+        style={chipStyles}
+        label={<div>{text}</div>}
+      />
       <Snackbar
         action={[
-          <IconButton key="close" onClick={handleClose as React.MouseEventHandler} size="large">
+          <IconButton
+            key="close"
+            onClick={handleClose as React.MouseEventHandler}
+            size="large"
+          >
             <CloseIcon />
           </IconButton>,
         ]}

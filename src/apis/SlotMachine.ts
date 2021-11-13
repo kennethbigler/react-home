@@ -1,4 +1,4 @@
-import { DBSlotDisplay, DBSlotOptions as SO } from '../store/types';
+import { DBSlotDisplay, DBSlotOptions as SO } from "../store/types";
 
 interface Reel {
   symbol: SO;
@@ -57,7 +57,7 @@ export function spin(): DBSlotDisplay {
 }
 
 /** Pull the slot machine handle, returns info needed for display */
-export const pullHandle = (): DBSlotDisplay[] => {
+const pullHandle = (): DBSlotDisplay[] => {
   const reel = [];
   for (let i = 0; i < NUM_REELS; i += 1) {
     reel[i] = spin();
@@ -66,7 +66,7 @@ export const pullHandle = (): DBSlotDisplay[] => {
 };
 
 /** evaluate slot machine based of 3 reels */
-export const getPayout = (reel: DBSlotDisplay[], bet: number): number => {
+const getPayout = (reel: DBSlotDisplay[], bet: number): number => {
   // for bar check
   const bars = [SO.BAR, SO.DOUBLE_BAR, SO.TRIPLE_BAR];
   // get reel values

@@ -1,9 +1,9 @@
-import React from 'react';
-import gql from 'graphql-tag';
-import Button from '@mui/material/Button';
-import { useMutation, MutationUpdaterFn } from '@apollo/client';
-import REPOSITORY_FRAGMENT from '../fragments';
-import { Watchers } from './types';
+import React from "react";
+import gql from "graphql-tag";
+import Button from "@mui/material/Button";
+import { useMutation, MutationUpdaterFn } from "@apollo/client";
+import REPOSITORY_FRAGMENT from "../fragments";
+import { Watchers } from "./types";
 
 interface WatchRepositoryProps {
   id: string;
@@ -25,11 +25,12 @@ const WATCH_REPOSITORY = gql`
 `;
 
 const VIEWER_SUBSCRIPTIONS = {
-  SUBSCRIBED: 'SUBSCRIBED',
-  UNSUBSCRIBED: 'UNSUBSCRIBED',
+  SUBSCRIBED: "SUBSCRIBED",
+  UNSUBSCRIBED: "UNSUBSCRIBED",
 };
 
-const isWatch = (viewerSubscription: string): boolean => viewerSubscription === VIEWER_SUBSCRIPTIONS.SUBSCRIBED;
+const isWatch = (viewerSubscription: string): boolean =>
+  viewerSubscription === VIEWER_SUBSCRIPTIONS.SUBSCRIBED;
 
 export const updateWatch: MutationUpdaterFn = (cache, mutationResult) => {
   const { data } = mutationResult;
@@ -37,10 +38,14 @@ export const updateWatch: MutationUpdaterFn = (cache, mutationResult) => {
     return;
   }
 
-  const { updateSubscription: { subscribable: { id, viewerSubscription }}} = data;
+  const {
+    updateSubscription: {
+      subscribable: { id, viewerSubscription },
+    },
+  } = data;
 
   const repository: WatchRepositoryProps | null = cache.readFragment({
-    id: `Repository:${id}`,
+    id: `Repository:${id as string}`,
     fragment: REPOSITORY_FRAGMENT,
   });
 
@@ -49,12 +54,13 @@ export const updateWatch: MutationUpdaterFn = (cache, mutationResult) => {
   }
 
   let { totalCount } = repository.watchers;
-  totalCount = viewerSubscription === VIEWER_SUBSCRIPTIONS.SUBSCRIBED
-    ? totalCount + 1
-    : totalCount - 1;
+  totalCount =
+    viewerSubscription === VIEWER_SUBSCRIPTIONS.SUBSCRIBED
+      ? totalCount + 1
+      : totalCount - 1;
 
   cache.writeFragment({
-    id: `Repository:${id}`,
+    id: `Repository:${id as string}`,
     fragment: REPOSITORY_FRAGMENT,
     data: {
       ...repository,
@@ -66,7 +72,9 @@ export const updateWatch: MutationUpdaterFn = (cache, mutationResult) => {
   });
 };
 
-const WatchRepository: React.FC<WatchRepositoryProps> = (props: WatchRepositoryProps) => {
+const WatchRepository: React.FC<WatchRepositoryProps> = (
+  props: WatchRepositoryProps
+) => {
   const { id, watchers, viewerSubscription } = props;
   const [updateSubscription] = useMutation(WATCH_REPOSITORY, {
     variables: {
@@ -77,9 +85,9 @@ const WatchRepository: React.FC<WatchRepositoryProps> = (props: WatchRepositoryP
     },
     optimisticResponse: {
       updateSubscription: {
-        __typename: 'Mutation',
+        __typename: "Mutation",
         subscribable: {
-          __typename: 'Repository',
+          __typename: "Repository",
           id,
           viewerSubscription: isWatch(viewerSubscription)
             ? VIEWER_SUBSCRIPTIONS.UNSUBSCRIBED
@@ -97,7 +105,9 @@ const WatchRepository: React.FC<WatchRepositoryProps> = (props: WatchRepositoryP
       variant="outlined"
       color="primary"
     >
-      {`${isWatch(viewerSubscription) ? 'Unwatch' : 'Watch'} (${watchers.totalCount})`}
+      {`${isWatch(viewerSubscription) ? "Unwatch" : "Watch"} (${
+        watchers.totalCount
+      })`}
     </Button>
   );
 };

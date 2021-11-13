@@ -1,4 +1,4 @@
-import { DBCard, DBPlayer } from '../../../store/types';
+import { DBCard, DBPlayer } from "../../../store/types";
 
 /** Rankings:
  *   Straight Flush  8
@@ -34,8 +34,9 @@ export const rankHand = (hand: DBCard[], hist: number[]): number => {
   }
   // all single cards
   // check for straight
-  const isStraight = hist.lastIndexOf(1) - hist.indexOf(1) === 4 // (end - start = 4)
-    || (hist[12] && hist[0] && hist[1] && hist[2] && hist[3]); // (A,2,3,4,5)
+  const isStraight =
+    hist.lastIndexOf(1) - hist.indexOf(1) === 4 || // (end - start = 4)
+    (hist[12] && hist[0] && hist[1] && hist[2] && hist[3]); // (A,2,3,4,5)
   // check for flush
   let isFlush = true;
   for (let j = 0; j < hand.length; j += 1) {
@@ -77,7 +78,7 @@ export const evaluate = (hand: DBCard[]): string => {
   const hist = getHistogram(hand);
   const rank = rankHand(hand, hist);
 
-  const cards = ['0', '0', '0', '0', '0'];
+  const cards = ["0", "0", "0", "0", "0"];
   let total = 0; // track number of cards counted
   let numCards = 4; // number of same cards in a set
   let i = 0; // iterator
@@ -100,7 +101,11 @@ export const evaluate = (hand: DBCard[]): string => {
 };
 
 /** function to remove n number of cards */
-export const getCardsToDiscard = (n: number, hist: number[], hand: DBCard[]): number[] => {
+export const getCardsToDiscard = (
+  n: number,
+  hist: number[],
+  hand: DBCard[]
+): number[] => {
   const nextCardsToDiscard: number[] = [];
   const cardValues = [hist.indexOf(1)];
   // find cards without pairs, starting with the smallest
@@ -120,27 +125,30 @@ export const getCardsToDiscard = (n: number, hist: number[], hand: DBCard[]): nu
 };
 
 /** computer play algorithm:
-   * PAIRS
-   * draw 0 on 4 of a kind
-   * draw 0 on full house
-   * draw 1 on 3 of a kind, keep higher of 2
-   * draw 1 on 2 pair
-   * draw 3 on 2 of a kind
-   *
-   * This is a nice to have, for now we only follow the first half
-   * STRAIGHT/FLUSH
-   * draw 0 on straight
-   * draw 0 on flush
-   * draw 0 on straight flush
-   * if 1 away from sf -> draw 1
-   * if 1 away from S -> draw 1 if 5+ players, else regular hand
-   * if 1 away from F -> draw 1 if 5+ players, else regular hand
-   *
-   * REGULAR HAND
-   * if K / A -> draw 4
-   * else draw 5
-   */
-export const computer = async (player: DBPlayer, discard: (cardsToDiscardInDB: number[], player: DBPlayer) => Promise<void>): Promise<void> => {
+ * PAIRS
+ * draw 0 on 4 of a kind
+ * draw 0 on full house
+ * draw 1 on 3 of a kind, keep higher of 2
+ * draw 1 on 2 pair
+ * draw 3 on 2 of a kind
+ *
+ * This is a nice to have, for now we only follow the first half
+ * STRAIGHT/FLUSH
+ * draw 0 on straight
+ * draw 0 on flush
+ * draw 0 on straight flush
+ * if 1 away from sf -> draw 1
+ * if 1 away from S -> draw 1 if 5+ players, else regular hand
+ * if 1 away from F -> draw 1 if 5+ players, else regular hand
+ *
+ * REGULAR HAND
+ * if K / A -> draw 4
+ * else draw 5
+ */
+export const computer = async (
+  player: DBPlayer,
+  discard: (cardsToDiscardInDB: number[], player: DBPlayer) => Promise<void>
+): Promise<void> => {
   try {
     const hand = player.hands[0].cards;
     const hist = getHistogram(hand);
@@ -148,9 +156,10 @@ export const computer = async (player: DBPlayer, discard: (cardsToDiscardInDB: n
 
     switch (rank) {
       case 0: /* draw 4-5 on high card */ {
-        const nextCardsToDiscard = hist.lastIndexOf(1) >= 11
-          ? getCardsToDiscard(4, hist, hand) // if ace || king draw 4
-          : [0, 1, 2, 3, 4]; // otherwise, draw all 5
+        const nextCardsToDiscard =
+          hist.lastIndexOf(1) >= 11
+            ? getCardsToDiscard(4, hist, hand) // if ace || king draw 4
+            : [0, 1, 2, 3, 4]; // otherwise, draw all 5
         await discard(nextCardsToDiscard, player);
         break;
       }
@@ -182,11 +191,16 @@ export const computer = async (player: DBPlayer, discard: (cardsToDiscardInDB: n
 export const DEALER = 0;
 export const LAST_PLAYER = 5;
 
-export const findAndPayWinner = (players: DBPlayer[], payPlayer: (id: number, status: string, money: number) => void): void => {
+export const findAndPayWinner = (
+  players: DBPlayer[],
+  payPlayer: (id: number, status: string, money: number) => void
+): void => {
   let winner = { val: 0, id: 0 };
 
   players.forEach((player) => {
-    if (player.id === DEALER || player.id > LAST_PLAYER) { return; }
+    if (player.id === DEALER || player.id > LAST_PLAYER) {
+      return;
+    }
 
     const playerScore = parseInt(evaluate(player.hands[0].cards), 14);
     if (playerScore > winner.val) {
@@ -195,12 +209,14 @@ export const findAndPayWinner = (players: DBPlayer[], payPlayer: (id: number, st
   });
 
   players.forEach((player) => {
-    if (player.id === DEALER || player.id > LAST_PLAYER) { return; }
+    if (player.id === DEALER || player.id > LAST_PLAYER) {
+      return;
+    }
 
     if (player.id === winner.id) {
-      payPlayer(player.id, 'win', 20);
+      payPlayer(player.id, "win", 20);
     } else {
-      payPlayer(player.id, 'lose', -5);
+      payPlayer(player.id, "lose", -5);
     }
   });
 };

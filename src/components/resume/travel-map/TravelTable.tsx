@@ -1,20 +1,22 @@
-import React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { Typography } from '@mui/material';
-import { grey } from '@mui/material/colors';
-import { NA, EU } from '../../../constants/countries';
+import React from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { Typography } from "@mui/material";
+import { grey } from "@mui/material/colors";
+import { NA, EU } from "../../../constants/countries";
 
 const marginStyles: React.CSSProperties = { marginTop: 24, marginBottom: 16 };
-const separatorStyles: React.CSSProperties = { borderRight: `1px solid ${grey[400]}` };
+const separatorStyles: React.CSSProperties = {
+  borderRight: `1px solid ${grey[400]}`,
+};
 const cellStyles: React.CSSProperties = {
   padding: 5,
-  textAlign: 'center',
-  whiteSpace: 'normal',
-  overflow: 'visible',
+  textAlign: "center",
+  whiteSpace: "normal",
+  overflow: "visible",
 };
 
 // ratio to display on table, 2:1 seemed to look best
@@ -27,27 +29,20 @@ for (let i = 0; i < len; i += 1) {
   const row = [];
   // add NA Country
   row.push(
-    <TableCell
-      key={`tmc${i}`}
-      style={{ ...cellStyles, ...separatorStyles }}
-    >
+    <TableCell key={`tmc${i}`} style={{ ...cellStyles, ...separatorStyles }}>
       {NA[i]}
-    </TableCell>,
+    </TableCell>
   );
   // add EU Countries
   for (let j = 0; j < EURatio; j += 1) {
     row.push(
       <TableCell key={`tmc${i}${j}`} style={cellStyles}>
         {EU[EURatio * i + j]}
-      </TableCell>,
+      </TableCell>
     );
   }
   // form the row
-  const countryRow = (
-    <TableRow key={`tmr${i}`}>
-      {row}
-    </TableRow>
-  );
+  const countryRow = <TableRow key={`tmr${i}`}>{row}</TableRow>;
   countries.push(countryRow);
 }
 
@@ -67,9 +62,7 @@ const TravelMap: React.FC = React.memo(() => (
           </TableCell>
         </TableRow>
       </TableHead>
-      <TableBody>
-        {countries}
-      </TableBody>
+      <TableBody>{countries}</TableBody>
     </Table>
   </>
 ));

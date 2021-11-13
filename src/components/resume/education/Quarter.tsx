@@ -1,6 +1,6 @@
-import React from 'react';
-import { Typography } from '@mui/material';
-import Class, { ClassProps } from './Class';
+import React from "react";
+import { Typography } from "@mui/material";
+import Class, { ClassProps } from "./Class";
 
 export interface QuarterType {
   classes: ClassProps[];
@@ -13,11 +13,11 @@ interface QuarterProps {
 /** Education  ->  Degree  -> Year  ->  Quarter  ->  Class */
 const Quarter: React.FC<QuarterProps> = ({ quarter }: QuarterProps) => (
   <>
-    <Typography variant="h5">
-      {quarter.quarter}
-    </Typography>
+    <Typography variant="h5">{quarter.quarter}</Typography>
     <ul>
-      {quarter.classes.map((c) => <Class key={c.name} name={c.name} catalog={c.catalog} />)}
+      {quarter.classes.map((c) => (
+        <Class key={c.name} name={c.name} catalog={c.catalog} />
+      ))}
     </ul>
   </>
 );

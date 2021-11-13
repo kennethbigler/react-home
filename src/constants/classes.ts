@@ -1,14 +1,14 @@
-import { red, indigo, blue } from '@mui/material/colors';
+import { red, indigo, blue } from "@mui/material/colors";
 
-import dateObj, { DateObj } from '../apis/DateHelper';
-import { DataEntry } from '../components/common/timeline-card/Timeline';
+import dateObj, { DateObj } from "../apis/DateHelper";
+import { DataEntry } from "../components/common/timeline-card/Timeline";
 
 // --------------------     Types     -------------------- //
 enum QTR {
-  SCU = 'Santa Clara University',
-  FALL = 'fall',
-  WINTER = 'winter',
-  SPRING = 'spring',
+  SCU = "Santa Clara University",
+  FALL = "fall",
+  WINTER = "winter",
+  SPRING = "spring",
 }
 interface Class {
   name: string;
@@ -41,24 +41,30 @@ export interface School {
 // --------------------     helpers     -------------------- //
 export const getStart = (quarter: QTR, yy: number): DateObj => {
   switch (quarter) {
-    case QTR.FALL: return dateObj(`20${yy}-09`);
-    case QTR.WINTER: return dateObj(`20${yy}-01`);
-    case QTR.SPRING: return dateObj(`20${yy}-04`);
+    case QTR.FALL:
+      return dateObj(`20${yy}-09`);
+    case QTR.WINTER:
+      return dateObj(`20${yy}-01`);
+    case QTR.SPRING:
+      return dateObj(`20${yy}-04`);
     default:
       // eslint-disable-next-line no-console
-      console.error('Start Error: quarter given does not exist: ', quarter);
+      console.error("Start Error: quarter given does not exist: ", quarter);
       return dateObj();
   }
 };
 
 export const getEnd = (quarter: QTR, yy: number): DateObj => {
   switch (quarter) {
-    case QTR.FALL: return dateObj(`20${yy}-12`);
-    case QTR.WINTER: return dateObj(`20${yy}-03`);
-    case QTR.SPRING: return dateObj(`20${yy}-07`);
+    case QTR.FALL:
+      return dateObj(`20${yy}-12`);
+    case QTR.WINTER:
+      return dateObj(`20${yy}-03`);
+    case QTR.SPRING:
+      return dateObj(`20${yy}-07`);
     default:
       // eslint-disable-next-line no-console
-      console.error('End Error: quarter given does not exist: ', quarter);
+      console.error("End Error: quarter given does not exist: ", quarter);
       return dateObj();
   }
 };
@@ -67,48 +73,48 @@ export const getEnd = (quarter: QTR, yy: number): DateObj => {
 const schools: School[] = [
   {
     color: blue[500],
-    degree: 'Hackathons',
-    subtitle: '',
+    degree: "Hackathons",
+    subtitle: "",
     years: [
       {
-        year: 'GigNow - Hacking the Gig Economy Now',
+        year: "GigNow - Hacking the Gig Economy Now",
         quarters: [
           {
-            quarter: 'GraphHoppers (2018)',
+            quarter: "GraphHoppers (2018)",
             classes: [
               {
-                catalog: 'Date',
-                name: 'Nov. 16, 2018',
+                catalog: "Date",
+                name: "Nov. 16, 2018",
               },
               {
-                catalog: 'Prizes',
-                name: '1st Place',
+                catalog: "Prizes",
+                name: "1st Place",
               },
               {
-                catalog: 'Project',
-                name: 'initial implementation of GraphQL to replace GigNow APIs',
+                catalog: "Project",
+                name: "initial implementation of GraphQL to replace GigNow APIs",
               },
             ],
           },
         ],
       },
       {
-        year: 'Accenture Hackathon Games',
+        year: "Accenture Hackathon Games",
         quarters: [
           {
-            quarter: 'Feedbat (2014)',
+            quarter: "Feedbat (2014)",
             classes: [
               {
-                catalog: 'Date',
-                name: 'Oct. 18 - 19, 2014',
+                catalog: "Date",
+                name: "Oct. 18 - 19, 2014",
               },
               {
-                catalog: 'Prizes',
-                name: 'Best Use of the PubNub API, Best Use of the Amazon Store API',
+                catalog: "Prizes",
+                name: "Best Use of the PubNub API, Best Use of the Amazon Store API",
               },
               {
-                catalog: 'Project',
-                name: '“feedbat”, an image-sharing web application for mobile devices to get anonymous feedback on various images (likes / dislikes / comments)',
+                catalog: "Project",
+                name: "“feedbat”, an image-sharing web application for mobile devices to get anonymous feedback on various images (likes / dislikes / comments)",
               },
             ],
           },
@@ -119,80 +125,100 @@ const schools: School[] = [
   {
     school: QTR.SCU,
     color: red[900],
-    location: 'Santa Clara, CA',
-    degree: 'Master of Science',
-    major: 'Computer Engineering',
-    minor: 'with an Emphasis in Software Engineering',
-    graduation: 'December 2016',
-    honors: 'Dean’s List: Sept. 2012 – December 2016 (Graduation)',
+    location: "Santa Clara, CA",
+    degree: "Master of Science",
+    major: "Computer Engineering",
+    minor: "with an Emphasis in Software Engineering",
+    graduation: "December 2016",
+    honors: "Dean’s List: Sept. 2012 – December 2016 (Graduation)",
     gpa: 3.7,
     years: [
       {
-        year: 'Year 2',
+        year: "Year 2",
         quarters: [
           {
-            quarter: 'Fall QTR (2015)',
+            quarter: "Fall QTR (2015)",
             start: getStart(QTR.FALL, 15),
             end: getEnd(QTR.FALL, 15),
-            classes: [{ catalog: 'COEN 260', name: 'Truth, Deduction & Computation' }],
+            classes: [
+              { catalog: "COEN 260", name: "Truth, Deduction & Computation" },
+            ],
           },
           {
-            quarter: 'Winter QTR (2016)',
+            quarter: "Winter QTR (2016)",
             start: getStart(QTR.WINTER, 16),
             end: getEnd(QTR.WINTER, 16),
             classes: [
-              { catalog: 'COEN 385', name: 'Formal Methods in Software Engineering' },
-              { catalog: 'COEN 296', name: 'Topics in Computer Science & Engineering - Internet of Things' },
-              { catalog: 'COEN 296', name: 'Topics in Computer Science & Engineering - User Experience Research' },
+              {
+                catalog: "COEN 385",
+                name: "Formal Methods in Software Engineering",
+              },
+              {
+                catalog: "COEN 296",
+                name: "Topics in Computer Science & Engineering - Internet of Things",
+              },
+              {
+                catalog: "COEN 296",
+                name: "Topics in Computer Science & Engineering - User Experience Research",
+              },
             ],
           },
           {
-            quarter: 'Spring QTR (2016)',
+            quarter: "Spring QTR (2016)",
             start: getStart(QTR.SPRING, 16),
             end: getEnd(QTR.SPRING, 16),
             classes: [
-              { catalog: 'COEN 252', name: 'Computer Forensics' },
-              { catalog: 'COEN 252L', name: 'Computer Forensics Lab' },
-              { catalog: 'COEN 331', name: 'Wireless & Mobile Networks' },
+              { catalog: "COEN 252", name: "Computer Forensics" },
+              { catalog: "COEN 252L", name: "Computer Forensics Lab" },
+              { catalog: "COEN 331", name: "Wireless & Mobile Networks" },
             ],
           },
           {
-            quarter: 'Fall QTR (2016)',
+            quarter: "Fall QTR (2016)",
             start: getStart(QTR.FALL, 16),
             end: getEnd(QTR.FALL, 16),
-            classes: [{ catalog: 'COEN 317', name: 'Distributed Computing' }],
+            classes: [{ catalog: "COEN 317", name: "Distributed Computing" }],
           },
         ],
       },
       {
-        year: 'Year 1 (Senior Year)',
+        year: "Year 1 (Senior Year)",
         quarters: [
           {
-            quarter: 'Fall QTR (2014)',
+            quarter: "Fall QTR (2014)",
             start: getStart(QTR.FALL, 14),
             end: getEnd(QTR.FALL, 14),
             classes: [
-              { catalog: 'COEN 272', name: 'Web Search & Info Retrieval' },
-              { catalog: 'COEN 288', name: 'Software Ethics' },
+              { catalog: "COEN 272", name: "Web Search & Info Retrieval" },
+              { catalog: "COEN 288", name: "Software Ethics" },
             ],
           },
           {
-            quarter: 'Winter QTR (2015)',
+            quarter: "Winter QTR (2015)",
             start: getStart(QTR.WINTER, 15),
             end: getEnd(QTR.WINTER, 15),
             classes: [
-              { catalog: 'COEN 287', name: 'Software Development Process Management' },
-              { catalog: 'COEN 275', name: 'Object Oriented Analysis and Design Programming' },
-              { catalog: 'COEN 286', name: 'Software Quality Assurance and Testing' },
+              {
+                catalog: "COEN 287",
+                name: "Software Development Process Management",
+              },
+              {
+                catalog: "COEN 275",
+                name: "Object Oriented Analysis and Design Programming",
+              },
+              {
+                catalog: "COEN 286",
+                name: "Software Quality Assurance and Testing",
+              },
             ],
           },
           {
-            quarter: 'Spring QTR (2015)',
+            quarter: "Spring QTR (2015)",
             start: getStart(QTR.SPRING, 15),
             end: getEnd(QTR.SPRING, 15),
             classes: [
-              { catalog: 'COEN 386', name: 'Software Architecture' },
-              { catalog: 'COEN 278', name: 'Web Programming II' },
+              { catalog: "COEN 386", name: "Software Architecture" },
+              { catalog: "COEN 278", name: "Web Programming II" },
             ],
           },
         ],
@@ -202,169 +228,226 @@ const schools: School[] = [
   {
     school: QTR.SCU,
     color: red[900],
-    location: 'Santa Clara, CA',
-    degree: 'Bachelor of Science',
-    major: 'Computer Science & Engineering',
-    minor: 'with a Minor in Mathematics',
-    graduation: 'June 2015',
-    honors: 'Dean’s List: Sept. 2012 – December 2016 (Graduation)',
+    location: "Santa Clara, CA",
+    degree: "Bachelor of Science",
+    major: "Computer Science & Engineering",
+    minor: "with a Minor in Mathematics",
+    graduation: "June 2015",
+    honors: "Dean’s List: Sept. 2012 – December 2016 (Graduation)",
     gpa: 3.7,
     years: [
       {
-        year: 'Senior Year',
+        year: "Senior Year",
         quarters: [
           {
-            quarter: 'Fall QTR (2014)',
+            quarter: "Fall QTR (2014)",
             start: getStart(QTR.FALL, 14),
             end: getEnd(QTR.FALL, 14),
             classes: [
-              { catalog: 'COEN 272', name: 'Web Search & Info Retrieval' },
-              { catalog: 'COEN 288', name: 'Software Ethics' },
-              { catalog: 'COEN 174+L', name: 'Software Engineering' },
-              { catalog: 'COEN 194', name: 'Design Project I' },
-              { catalog: 'TESP 124', name: 'Theology of Marriage' },
-              { catalog: 'ENGL 181', name: 'Applied Engineering Communications I' },
+              { catalog: "COEN 272", name: "Web Search & Info Retrieval" },
+              { catalog: "COEN 288", name: "Software Ethics" },
+              { catalog: "COEN 174+L", name: "Software Engineering" },
+              { catalog: "COEN 194", name: "Design Project I" },
+              { catalog: "TESP 124", name: "Theology of Marriage" },
+              {
+                catalog: "ENGL 181",
+                name: "Applied Engineering Communications I",
+              },
             ],
           },
           {
-            quarter: 'Winter QTR (2015)',
+            quarter: "Winter QTR (2015)",
             start: getStart(QTR.WINTER, 15),
             end: getEnd(QTR.WINTER, 15),
             classes: [
-              { catalog: 'COEN 287', name: 'Software Development Process Management' },
-              { catalog: 'COEN 275', name: 'Object Oriented Analysis and Design Programming' },
-              { catalog: 'COEN 286', name: 'Software Quality Assurance and Testing' },
-              { catalog: 'COEN 175+L', name: 'Formal Language Theory and Compiler Construction' },
-              { catalog: 'COEN 195', name: 'Design Project II' },
-              { catalog: 'ENGL 182A', name: 'Applied Engineering Communications IIA' },
-              { catalog: 'ENGR 170', name: 'Improv for Engineers' },
+              {
+                catalog: "COEN 287",
+                name: "Software Development Process Management",
+              },
+              {
+                catalog: "COEN 275",
+                name: "Object Oriented Analysis and Design Programming",
+              },
+              {
+                catalog: "COEN 286",
+                name: "Software Quality Assurance and Testing",
+              },
+              {
+                catalog: "COEN 175+L",
+                name: "Formal Language Theory and Compiler Construction",
+              },
+              { catalog: "COEN 195", name: "Design Project II" },
+              {
+                catalog: "ENGL 182A",
+                name: "Applied Engineering Communications IIA",
+              },
+              { catalog: "ENGR 170", name: "Improv for Engineers" },
             ],
           },
           {
-            quarter: 'Spring QTR (2015)',
+            quarter: "Spring QTR (2015)",
             start: getStart(QTR.SPRING, 15),
             end: getEnd(QTR.SPRING, 15),
             classes: [
-              { catalog: 'COEN 386', name: 'Software Architecture' },
-              { catalog: 'COEN 278', name: 'Web Programming II' },
-              { catalog: 'COEN 122+L', name: 'Computer Architecture' },
-              { catalog: 'COEN 196', name: 'Design Project III' },
-              { catalog: 'ENGL 182B', name: 'Applied Engineering Communications IIB' },
+              { catalog: "COEN 386", name: "Software Architecture" },
+              { catalog: "COEN 278", name: "Web Programming II" },
+              { catalog: "COEN 122+L", name: "Computer Architecture" },
+              { catalog: "COEN 196", name: "Design Project III" },
+              {
+                catalog: "ENGL 182B",
+                name: "Applied Engineering Communications IIB",
+              },
             ],
           },
         ],
       },
       {
-        year: 'Junior Year',
+        year: "Junior Year",
         quarters: [
           {
-            quarter: 'Fall QTR (2013)',
+            quarter: "Fall QTR (2013)",
             start: getStart(QTR.FALL, 13),
             end: getEnd(QTR.FALL, 13),
             classes: [
-              { catalog: 'COEN 161+L', name: 'Web Programming I' },
-              { catalog: 'COEN 177+L', name: 'Operating Systems' },
-              { catalog: 'MATH 103', name: 'Advanced Linear Algebra' },
-              { catalog: 'RSOC 51', name: 'Religion in America' },
+              { catalog: "COEN 161+L", name: "Web Programming I" },
+              { catalog: "COEN 177+L", name: "Operating Systems" },
+              { catalog: "MATH 103", name: "Advanced Linear Algebra" },
+              { catalog: "RSOC 51", name: "Religion in America" },
             ],
           },
           {
-            quarter: 'Winter QTR (2014)',
+            quarter: "Winter QTR (2014)",
             start: getStart(QTR.WINTER, 14),
             end: getEnd(QTR.WINTER, 14),
             classes: [
-              { catalog: 'COEN 168', name: 'Mobile Application Development - Android' },
-              { catalog: 'COEN 146+L', name: 'Computer Networks' },
-              { catalog: 'COEN 171', name: 'Prin Des & Impl Prog Lang' },
-              { catalog: 'SOCI 165', name: 'Human Services' },
+              {
+                catalog: "COEN 168",
+                name: "Mobile Application Development - Android",
+              },
+              { catalog: "COEN 146+L", name: "Computer Networks" },
+              { catalog: "COEN 171", name: "Prin Des & Impl Prog Lang" },
+              { catalog: "SOCI 165", name: "Human Services" },
             ],
           },
           {
-            quarter: 'Spring QTR (2014)',
+            quarter: "Spring QTR (2014)",
             start: getStart(QTR.SPRING, 14),
             end: getEnd(QTR.SPRING, 14),
             classes: [
-              { catalog: 'COEN 165', name: 'Intro: 3D Animation & Modeling' },
-              { catalog: 'COEN 179', name: 'Theory of Algorithms' },
-              { catalog: 'ELEN 153+L', name: 'Digital Integrated Circuit Design' },
-              { catalog: 'MATH 176', name: 'Combinatorics' },
+              { catalog: "COEN 165", name: "Intro: 3D Animation & Modeling" },
+              { catalog: "COEN 179", name: "Theory of Algorithms" },
+              {
+                catalog: "ELEN 153+L",
+                name: "Digital Integrated Circuit Design",
+              },
+              { catalog: "MATH 176", name: "Combinatorics" },
             ],
           },
         ],
       },
       {
-        year: 'Sophomore Year',
+        year: "Sophomore Year",
         quarters: [
           {
-            quarter: 'Fall QTR (2012)',
+            quarter: "Fall QTR (2012)",
             start: getStart(QTR.FALL, 12),
             end: getEnd(QTR.FALL, 12),
             classes: [
-              { catalog: 'COEN 21+L', name: 'Introduction to Logic Design' },
-              { catalog: 'PHYS 33+L', name: 'Physics for Scientists and Engineers III' },
-              { catalog: 'RSOC 9', name: 'Ways of Understanding Religion' },
-              { catalog: 'MUSC 11A', name: 'Cultures and Ideas I - Global Music/Cultural Politics' },
+              { catalog: "COEN 21+L", name: "Introduction to Logic Design" },
+              {
+                catalog: "PHYS 33+L",
+                name: "Physics for Scientists and Engineers III",
+              },
+              { catalog: "RSOC 9", name: "Ways of Understanding Religion" },
+              {
+                catalog: "MUSC 11A",
+                name: "Cultures and Ideas I - Global Music/Cultural Politics",
+              },
             ],
           },
           {
-            quarter: 'Winter QTR (2013)',
+            quarter: "Winter QTR (2013)",
             start: getStart(QTR.WINTER, 13),
             end: getEnd(QTR.WINTER, 13),
             classes: [
-              { catalog: 'COEN 70+L', name: 'Form Specification & Advanced Data Structures' },
-              { catalog: 'MATH 53', name: 'Linear Algebra' },
-              { catalog: 'MUSC 134', name: 'Pop Music, Race, & American Culture' },
-              { catalog: 'MUSC 12A', name: 'Cultures and Ideas II - Global Music/Cultural Politics' },
+              {
+                catalog: "COEN 70+L",
+                name: "Form Specification & Advanced Data Structures",
+              },
+              { catalog: "MATH 53", name: "Linear Algebra" },
+              {
+                catalog: "MUSC 134",
+                name: "Pop Music, Race, & American Culture",
+              },
+              {
+                catalog: "MUSC 12A",
+                name: "Cultures and Ideas II - Global Music/Cultural Politics",
+              },
             ],
           },
           {
-            quarter: 'Spring QTR (2013)',
+            quarter: "Spring QTR (2013)",
             start: getStart(QTR.SPRING, 13),
             end: getEnd(QTR.SPRING, 13),
             classes: [
-              { catalog: 'COEN 20+L', name: 'Intro to Embedded Systems' },
-              { catalog: 'ELEN 50+L', name: 'Electric Circuits I' },
-              { catalog: 'ENGR 19', name: 'Ethics in Technology' },
-              { catalog: 'POLI 2', name: 'Intro to Comparative Politics' },
+              { catalog: "COEN 20+L", name: "Intro to Embedded Systems" },
+              { catalog: "ELEN 50+L", name: "Electric Circuits I" },
+              { catalog: "ENGR 19", name: "Ethics in Technology" },
+              { catalog: "POLI 2", name: "Intro to Comparative Politics" },
             ],
           },
         ],
       },
       {
-        year: 'Freshman Year',
+        year: "Freshman Year",
         quarters: [
           {
-            quarter: 'Fall QTR (2011)',
+            quarter: "Fall QTR (2011)",
             start: getStart(QTR.FALL, 11),
             end: getEnd(QTR.FALL, 11),
             classes: [
-              { catalog: 'COEN 10+L', name: 'Introduction to Programming' },
-              { catalog: 'ENGR 1', name: 'Intro to Engineering' },
-              { catalog: 'MATH 14', name: 'Calculus & Analytic Geometry IV' },
-              { catalog: 'CHEM 11+L', name: 'General Chemistry I' },
-              { catalog: 'ENGL 1A', name: 'Critical Thinking & Writing I - Cosmology & Controversy' },
+              { catalog: "COEN 10+L", name: "Introduction to Programming" },
+              { catalog: "ENGR 1", name: "Intro to Engineering" },
+              { catalog: "MATH 14", name: "Calculus & Analytic Geometry IV" },
+              { catalog: "CHEM 11+L", name: "General Chemistry I" },
+              {
+                catalog: "ENGL 1A",
+                name: "Critical Thinking & Writing I - Cosmology & Controversy",
+              },
             ],
           },
           {
-            quarter: 'Winter QTR (2012)',
+            quarter: "Winter QTR (2012)",
             start: getStart(QTR.WINTER, 12),
             end: getEnd(QTR.WINTER, 12),
             classes: [
-              { catalog: 'COEN 11+L', name: 'Advanced Programming' },
-              { catalog: 'AMTH 106', name: 'Differential Equations' },
-              { catalog: 'PHYS 31', name: 'Physics for Scientists and Engineers I' },
-              { catalog: 'ENGL 2A', name: 'Critical Thinking & Writing II - Cosmology & Controversy' },
+              { catalog: "COEN 11+L", name: "Advanced Programming" },
+              { catalog: "AMTH 106", name: "Differential Equations" },
+              {
+                catalog: "PHYS 31",
+                name: "Physics for Scientists and Engineers I",
+              },
+              {
+                catalog: "ENGL 2A",
+                name: "Critical Thinking & Writing II - Cosmology & Controversy",
+              },
             ],
           },
           {
-            quarter: 'Spring QTR (2012)',
+            quarter: "Spring QTR (2012)",
             start: getStart(QTR.SPRING, 12),
             end: getEnd(QTR.SPRING, 12),
             classes: [
-              { catalog: 'COEN 12+L', name: 'Abstract Data Types & Data Structures' },
-              { catalog: 'COEN 19', name: 'Discrete Mathematics' },
-              { catalog: 'AMTH 108', name: 'Probability & Statistics' },
-              { catalog: 'PHYS 32+L', name: 'Physics for Scientists and Engineers II' },
+              {
+                catalog: "COEN 12+L",
+                name: "Abstract Data Types & Data Structures",
+              },
+              { catalog: "COEN 19", name: "Discrete Mathematics" },
+              { catalog: "AMTH 108", name: "Probability & Statistics" },
+              {
+                catalog: "PHYS 32+L",
+                name: "Physics for Scientists and Engineers II",
+              },
             ],
           },
         ],
@@ -372,72 +455,72 @@ const schools: School[] = [
     ],
   },
   {
-    degree: 'Extracurriculars',
-    subtitle: '',
+    degree: "Extracurriculars",
+    subtitle: "",
     years: [
       {
-        year: 'Honors Societies',
+        year: "Honors Societies",
         quarters: [
           {
-            quarter: 'Tau Beta Pi',
+            quarter: "Tau Beta Pi",
             classes: [
-              { name: 'The Engineering Honors Society' },
-              { name: 'November 2014 - Present' },
+              { name: "The Engineering Honors Society" },
+              { name: "November 2014 - Present" },
             ],
           },
           {
-            quarter: 'Upsilon Pi Epsilon',
+            quarter: "Upsilon Pi Epsilon",
             classes: [
-              { name: 'Computing and Information Honor Society' },
-              { name: 'May 2015 - Present' },
+              { name: "Computing and Information Honor Society" },
+              { name: "May 2015 - Present" },
             ],
           },
           {
-            quarter: 'Order of the Engineer',
-            classes: [{ name: 'May 2015 - Present' }],
+            quarter: "Order of the Engineer",
+            classes: [{ name: "May 2015 - Present" }],
           },
           {
-            quarter: 'Dean’s List',
+            quarter: "Dean’s List",
             classes: [
-              { name: 'top 10% of GPAs' },
-              { name: 'September 2012 – December 2016 (Graduation)' },
+              { name: "top 10% of GPAs" },
+              { name: "September 2012 – December 2016 (Graduation)" },
             ],
           },
         ],
       },
       {
-        year: 'Clubs and Activities',
+        year: "Clubs and Activities",
         quarters: [
           {
-            quarter: 'Salsa Clara',
+            quarter: "Salsa Clara",
             classes: [
-              { name: 'Coach and Choreographer 2016 - 2017' },
-              { name: 'September 2014 - May 2017' },
+              { name: "Coach and Choreographer 2016 - 2017" },
+              { name: "September 2014 - May 2017" },
             ],
           },
           {
-            quarter: 'Association for Computing Machinery',
+            quarter: "Association for Computing Machinery",
             classes: [
-              { name: 'Vice President 2012-2013' },
-              { name: 'September 2011 - December 2016' },
+              { name: "Vice President 2012-2013" },
+              { name: "September 2011 - December 2016" },
             ],
           },
           {
-            quarter: 'Coders Club',
-            classes: [{ name: 'April 2012 - June 2013' }],
+            quarter: "Coders Club",
+            classes: [{ name: "April 2012 - June 2013" }],
           },
           {
-            quarter: 'Solar Decathlon 2013 Competition',
+            quarter: "Solar Decathlon 2013 Competition",
             classes: [
-              { name: 'Control Systems Team' },
-              { name: 'March 2012 - June 2013' },
+              { name: "Control Systems Team" },
+              { name: "March 2012 - June 2013" },
             ],
           },
           {
-            quarter: 'Intramural Soccer and Volleyball',
+            quarter: "Intramural Soccer and Volleyball",
             classes: [
-              { name: 'Team Captain 2014 - 2016' },
-              { name: 'January 2012 - June 2016' },
+              { name: "Team Captain 2014 - 2016" },
+              { name: "January 2012 - June 2016" },
             ],
           },
         ],
@@ -445,49 +528,49 @@ const schools: School[] = [
     ],
   },
   {
-    school: 'Stanford University',
+    school: "Stanford University",
     color: red[500],
-    location: 'Stanford, CA',
+    location: "Stanford, CA",
     degree:
-      'Stanford Continuing Studies & Undergrad High School Summer Visitor',
+      "Stanford Continuing Studies & Undergrad High School Summer Visitor",
     gpa: 3.8,
     years: [
       {
-        year: 'Stanford Continuing Studies',
+        year: "Stanford Continuing Studies",
         quarters: [
           {
-            quarter: 'Spring (2020)',
+            quarter: "Spring (2020)",
             classes: [
               {
-                catalog: 'FLM 129',
-                name: 'Politics and the American Cinema: Five Chilling Takes',
+                catalog: "FLM 129",
+                name: "Politics and the American Cinema: Five Chilling Takes",
               },
             ],
           },
           {
-            quarter: 'Summer (2017)',
+            quarter: "Summer (2017)",
             classes: [
               {
-                catalog: 'WSP 314',
-                name: 'Alfred Hitchcock and the Subversive World of Film Noir',
+                catalog: "WSP 314",
+                name: "Alfred Hitchcock and the Subversive World of Film Noir",
               },
             ],
           },
         ],
       },
       {
-        year: 'Undergrad High School Summer Visitor',
+        year: "Undergrad High School Summer Visitor",
         quarters: [
           {
-            quarter: 'Summer (2010)',
+            quarter: "Summer (2010)",
             classes: [
               {
-                catalog: 'PHYS 50',
-                name: 'Astronomy Laboratory and Observational Astronomy',
+                catalog: "PHYS 50",
+                name: "Astronomy Laboratory and Observational Astronomy",
               },
               {
-                catalog: 'POL 1Z',
-                name: 'Introduction to International Relations',
+                catalog: "POL 1Z",
+                name: "Introduction to International Relations",
               },
             ],
           },
@@ -498,125 +581,125 @@ const schools: School[] = [
   {
     school: "The King's Academy",
     color: indigo[500],
-    location: 'Sunnyvale, CA',
-    degree: 'High School Diploma',
-    graduation: 'June 2011',
+    location: "Sunnyvale, CA",
+    degree: "High School Diploma",
+    graduation: "June 2011",
     honors:
-      'National Honors Society, California Scholarship Federation, Principal’s Honor Roll',
+      "National Honors Society, California Scholarship Federation, Principal’s Honor Roll",
     gpa: 4.16,
     years: [
       {
-        year: 'Senior Year',
+        year: "Senior Year",
         quarters: [
           {
-            quarter: 'Fall Semester (2010)',
+            quarter: "Fall Semester (2010)",
             classes: [
-              { name: 'AP Calculus BC' },
-              { name: 'Anatomy & Physiology' },
-              { name: 'Government & Politics Honors' },
-              { name: 'English 12 - British Literature & Composition' },
-              { name: 'French 5 - Language & Culture' },
-              { name: 'Bible 12 - Comparative Religions' },
-              { name: 'Film Studies' },
+              { name: "AP Calculus BC" },
+              { name: "Anatomy & Physiology" },
+              { name: "Government & Politics Honors" },
+              { name: "English 12 - British Literature & Composition" },
+              { name: "French 5 - Language & Culture" },
+              { name: "Bible 12 - Comparative Religions" },
+              { name: "Film Studies" },
             ],
           },
           {
-            quarter: 'Spring Semester (2011)',
+            quarter: "Spring Semester (2011)",
             classes: [
-              { name: 'AP Calculus BC' },
-              { name: 'Anatomy & Physiology' },
-              { name: 'Economics Honors' },
-              { name: 'English 12 - British Literature & Composition' },
-              { name: 'French 5 - Language & Culture' },
-              { name: 'Bible 12 - Apologetics: Defending Your Faith' },
-              { name: 'Film Studies' },
+              { name: "AP Calculus BC" },
+              { name: "Anatomy & Physiology" },
+              { name: "Economics Honors" },
+              { name: "English 12 - British Literature & Composition" },
+              { name: "French 5 - Language & Culture" },
+              { name: "Bible 12 - Apologetics: Defending Your Faith" },
+              { name: "Film Studies" },
             ],
           },
         ],
       },
       {
-        year: 'Junior Year',
+        year: "Junior Year",
         quarters: [
           {
-            quarter: 'Fall Semester (2009)',
+            quarter: "Fall Semester (2009)",
             classes: [
-              { name: 'Calculus' },
-              { name: 'Physics Honors' },
-              { name: 'AP US History' },
-              { name: 'English 11 Honors - American Literature & Composition' },
-              { name: 'French 4 - Language & Culture' },
-              { name: 'Bible 11 - Biblical Worldviews' },
-              { name: 'Study Hall' },
+              { name: "Calculus" },
+              { name: "Physics Honors" },
+              { name: "AP US History" },
+              { name: "English 11 Honors - American Literature & Composition" },
+              { name: "French 4 - Language & Culture" },
+              { name: "Bible 11 - Biblical Worldviews" },
+              { name: "Study Hall" },
             ],
           },
           {
-            quarter: 'Spring Semester (2010)',
+            quarter: "Spring Semester (2010)",
             classes: [
-              { name: 'Calculus' },
-              { name: 'Physics Honors' },
-              { name: 'AP US History' },
-              { name: 'English 11 Honors - American Literature & Composition' },
-              { name: 'French 4 - Language & Culture' },
-              { name: 'Bible 11 - Biblical Worldviews' },
-              { name: 'Study Hall' },
+              { name: "Calculus" },
+              { name: "Physics Honors" },
+              { name: "AP US History" },
+              { name: "English 11 Honors - American Literature & Composition" },
+              { name: "French 4 - Language & Culture" },
+              { name: "Bible 11 - Biblical Worldviews" },
+              { name: "Study Hall" },
             ],
           },
         ],
       },
       {
-        year: 'Sophomore Year',
+        year: "Sophomore Year",
         quarters: [
           {
-            quarter: 'Fall Semester (2008)',
+            quarter: "Fall Semester (2008)",
             classes: [
-              { name: 'Pre-Calculus Honors' },
-              { name: 'Chemistry' },
-              { name: 'World History & Geography Honors' },
-              { name: 'English 10 Honors - World Literature & Composition' },
-              { name: 'French 3' },
-              { name: 'Physical Education' },
-              { name: 'Study Hall' },
+              { name: "Pre-Calculus Honors" },
+              { name: "Chemistry" },
+              { name: "World History & Geography Honors" },
+              { name: "English 10 Honors - World Literature & Composition" },
+              { name: "French 3" },
+              { name: "Physical Education" },
+              { name: "Study Hall" },
             ],
           },
           {
-            quarter: 'Spring Semester (2009)',
+            quarter: "Spring Semester (2009)",
             classes: [
-              { name: 'Pre-Calculus Honors' },
-              { name: 'Chemistry' },
-              { name: 'World History & Geography Honors' },
-              { name: 'English 10 Honors - World Literature & Composition' },
-              { name: 'French 3' },
-              { name: 'Physical Education' },
-              { name: 'Bible 10 - The Christian Life' },
+              { name: "Pre-Calculus Honors" },
+              { name: "Chemistry" },
+              { name: "World History & Geography Honors" },
+              { name: "English 10 Honors - World Literature & Composition" },
+              { name: "French 3" },
+              { name: "Physical Education" },
+              { name: "Bible 10 - The Christian Life" },
             ],
           },
         ],
       },
       {
-        year: 'Freshman Year',
+        year: "Freshman Year",
         quarters: [
           {
-            quarter: 'Fall Semester (2007)',
+            quarter: "Fall Semester (2007)",
             classes: [
-              { name: 'Algebra 2 Honors' },
-              { name: 'Biology Honors' },
-              { name: 'English 9 Honors - Literature & Composition' },
-              { name: 'French 2' },
-              { name: 'Bible 9 - The Christian Life' },
-              { name: 'Physical Education' },
-              { name: 'Broadcasting' },
+              { name: "Algebra 2 Honors" },
+              { name: "Biology Honors" },
+              { name: "English 9 Honors - Literature & Composition" },
+              { name: "French 2" },
+              { name: "Bible 9 - The Christian Life" },
+              { name: "Physical Education" },
+              { name: "Broadcasting" },
             ],
           },
           {
-            quarter: 'Spring Semester (2008)',
+            quarter: "Spring Semester (2008)",
             classes: [
-              { name: 'Algebra 2 Honors' },
-              { name: 'Biology Honors' },
-              { name: 'English 9 Honors - Literature & Composition' },
-              { name: 'French 2' },
-              { name: 'Art Ceramics' },
-              { name: 'Physical Education' },
-              { name: 'Broadcasting' },
+              { name: "Algebra 2 Honors" },
+              { name: "Biology Honors" },
+              { name: "English 9 Honors - Literature & Composition" },
+              { name: "French 2" },
+              { name: "Art Ceramics" },
+              { name: "Physical Education" },
+              { name: "Broadcasting" },
             ],
           },
         ],
@@ -634,18 +717,21 @@ schools.forEach((school: School): void => {
   school.years.forEach((year: Year): void => {
     year.quarters.forEach((quarter: Quarter): void => {
       quarter.classes.forEach((course: Class): void => {
-        quarter.start && timeline.push({
-          start: quarter.start,
-          end: quarter.end || dateObj(),
-          title: course.name,
-          color: red[900],
-          course: course.catalog,
-        });
+        quarter.start &&
+          timeline.push({
+            start: quarter.start,
+            end: quarter.end || dateObj(),
+            title: course.name,
+            color: red[900],
+            course: course.catalog,
+          });
       });
     });
   });
 });
 
-export const classTimeline = timeline.sort((a, b) => a.start.diff(b.start, 'months'));
+export const classTimeline = timeline.sort((a, b) =>
+  a.start.diff(b.start, "months")
+);
 
 export default schools;

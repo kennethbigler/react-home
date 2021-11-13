@@ -1,40 +1,59 @@
-import { Dispatch, Action } from 'redux';
-import {
-  DBBlackjack, DBPlayer, DBHand, DBTurn,
-} from '../types';
-import initialState, { newBlackjackGame } from '../initialState';
+import { Dispatch, Action } from "redux";
+import { DBBlackjack, DBPlayer, DBHand, DBTurn } from "../types";
+import initialState, { newBlackjackGame } from "../initialState";
 import {
   resetStatus,
   splitHand as pSplitHand,
   drawCard,
   WeighFunc,
   updateBet,
-} from './players';
-import {
-  resetTurn, incrHandTurn, incrPlayerTurn, ta,
-} from './turn';
+} from "./players";
+import { resetTurn, incrHandTurn, incrPlayerTurn, TA } from "./turn";
 
 // --------------------     Actions     -------------------- //
-export const UPDATE_GAME_FUNCTIONS = '@casino/blackjack/UPDATE_GAME_FUNCTIONS';
-export const UPDATE_HIDE_HANDS = '@casino/blackjack/UPDATE_HIDE_HANDS';
-export const UPDATE_HAS_FUNCTIONS = '@casino/blackjack/UPDATE_HAS_FUNCTIONS';
+export const UPDATE_GAME_FUNCTIONS = "@casino/blackjack/UPDATE_GAME_FUNCTIONS";
+export const UPDATE_HIDE_HANDS = "@casino/blackjack/UPDATE_HIDE_HANDS";
+export const UPDATE_HAS_FUNCTIONS = "@casino/blackjack/UPDATE_HAS_FUNCTIONS";
 
 // -------------------- Action Creators     -------------------- //
-interface UpdateGameFunctionsAction extends Action<typeof UPDATE_GAME_FUNCTIONS> { gameFunctions: string[] }
+interface UpdateGameFunctionsAction
+  extends Action<typeof UPDATE_GAME_FUNCTIONS> {
+  gameFunctions: string[];
+}
 /** update gameFunctions in Blackjack DB */
-export const updateGameFunctions = (gameFunctions: string[]): UpdateGameFunctionsAction => ({ type: UPDATE_GAME_FUNCTIONS, gameFunctions });
+export const updateGameFunctions = (
+  gameFunctions: string[]
+): UpdateGameFunctionsAction => ({
+  type: UPDATE_GAME_FUNCTIONS,
+  gameFunctions,
+});
 
-interface UpdateHideHandsAction extends Action<typeof UPDATE_HIDE_HANDS> { hideHands: boolean }
+interface UpdateHideHandsAction extends Action<typeof UPDATE_HIDE_HANDS> {
+  hideHands: boolean;
+}
 /** update hideHands in Blackjack DB */
-export const updateHideHands = (hideHands: boolean): UpdateHideHandsAction => ({ type: UPDATE_HIDE_HANDS, hideHands });
+export const updateHideHands = (hideHands: boolean): UpdateHideHandsAction => ({
+  type: UPDATE_HIDE_HANDS,
+  hideHands,
+});
 
-interface UpdateHasFunctionsAction extends Action<typeof UPDATE_HAS_FUNCTIONS> { hasFunctions: boolean }
+interface UpdateHasFunctionsAction extends Action<typeof UPDATE_HAS_FUNCTIONS> {
+  hasFunctions: boolean;
+}
 /** update hasFunctions in Blackjack DB */
-export const updateHasFunctions = (hasFunctions: boolean): UpdateHasFunctionsAction => ({ type: UPDATE_HAS_FUNCTIONS, hasFunctions });
+export const updateHasFunctions = (
+  hasFunctions: boolean
+): UpdateHasFunctionsAction => ({ type: UPDATE_HAS_FUNCTIONS, hasFunctions });
 
 // --------------------     Reducers     -------------------- //
-type BlackjackAction = UpdateGameFunctionsAction | UpdateHideHandsAction | UpdateHasFunctionsAction;
-export default function reducer(state: DBBlackjack = initialState.blackjack, action: BlackjackAction): DBBlackjack {
+type BlackjackAction =
+  | UpdateGameFunctionsAction
+  | UpdateHideHandsAction
+  | UpdateHasFunctionsAction;
+export default function reducer(
+  state: DBBlackjack = initialState.blackjack,
+  action: BlackjackAction
+): DBBlackjack {
   switch (action.type) {
     case UPDATE_GAME_FUNCTIONS:
       return { ...state, gameFunctions: action.gameFunctions };
@@ -50,19 +69,35 @@ export default function reducer(state: DBBlackjack = initialState.blackjack, act
 // --------------------     Thunks     -------------------- //
 /** start a new game in Blackjack DB */
 export function setNewGame(players: DBPlayer[]) {
-  return (dispatch: Dispatch): Promise<(UpdateGameFunctionsAction | UpdateHideHandsAction | UpdateHasFunctionsAction | Action<ta.RESET>)[]> => {
+  return (
+    dispatch: Dispatch
+  ): Promise<
+    (
+      | UpdateGameFunctionsAction
+      | UpdateHideHandsAction
+      | UpdateHasFunctionsAction
+      | Action<TA.RESET>
+    )[]
+  > => {
     const { gameFunctions, hideHands, hasFunctions } = newBlackjackGame();
     const promises = [];
     promises.push(dispatch(updateGameFunctions(gameFunctions)));
     promises.push(dispatch(updateHasFunctions(hasFunctions)));
     promises.push(dispatch(updateHideHands(hideHands)));
     promises.push(dispatch(resetTurn()));
-    players.forEach((player) => promises.push(dispatch(resetStatus(player.id))));
+    players.forEach((player) =>
+      promises.push(dispatch(resetStatus(player.id)))
+    );
     return Promise.all(promises);
   };
 }
 /** split hands of provided player/hand in Blackjack DB */
-export function splitHand(hands: DBHand[], id: number, hNum: number, weigh: WeighFunc) {
+export function splitHand(
+  hands: DBHand[],
+  id: number,
+  hNum: number,
+  weigh: WeighFunc
+) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return async (dispatch: Dispatch<any>): Promise<void> => {
     await dispatch(pSplitHand(hands, id, hNum, weigh));
@@ -70,7 +105,12 @@ export function splitHand(hands: DBHand[], id: number, hNum: number, weigh: Weig
   };
 }
 /** get a new card for turn hand in Blackjack DB */
-export function hitHand(hands: DBHand[], id: number, hNum: number, weigh: WeighFunc) {
+export function hitHand(
+  hands: DBHand[],
+  id: number,
+  hNum: number,
+  weigh: WeighFunc
+) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return async (dispatch: Dispatch<any>): Promise<void> => {
     await dispatch(drawCard(hands, id, hNum, 1, weigh));

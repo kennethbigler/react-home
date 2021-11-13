@@ -1,10 +1,10 @@
-import React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import { DBSlotDisplay } from '../../../store/types';
+import React from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import { DBSlotDisplay } from "../../../store/types";
 
 interface ReelDisplayProps {
   reel: DBSlotDisplay[];
@@ -25,13 +25,18 @@ const ReelDisplay: React.FC<ReelDisplayProps> = (props: ReelDisplayProps) => {
       // create 3 cells in a row
       const row = reel.map((reelRow, j) => (
         <TableCell key={`${j},${i}`}>
-          <Typography variant="h4" align="center" color="secondary" style={cellStyles}>
+          <Typography
+            variant="h4"
+            align="center"
+            color="secondary"
+            style={cellStyles}
+          >
             {reelRow[i]}
           </Typography>
         </TableCell>
       ));
       // separate into rows
-      const slotRow = (<TableRow key={`row${i}`}>{row}</TableRow>);
+      const slotRow = <TableRow key={`row${i}`}>{row}</TableRow>;
       slots.push(slotRow);
     }
     return slots;
@@ -39,9 +44,7 @@ const ReelDisplay: React.FC<ReelDisplayProps> = (props: ReelDisplayProps) => {
 
   return (
     <Table>
-      <TableBody>
-        {getSlots()}
-      </TableBody>
+      <TableBody>{getSlots()}</TableBody>
     </Table>
   );
 };

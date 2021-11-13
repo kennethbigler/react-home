@@ -1,12 +1,14 @@
-import React from 'react';
-import {
-  Routes, Route, useNavigate, useLocation,
-} from 'react-router-dom';
-import LoadingSpinner from './common/loading-spinner';
+import React from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import LoadingSpinner from "./common/loading-spinner";
 
 // lazy load sub routers
-const ResumeRoutes = React.lazy(() => import(/* webpackChunkName: "resume" */ './resume/Routes'));
-const GameRoutes = React.lazy(() => import(/* webpackChunkName: "games" */ './games/Routes'));
+const ResumeRoutes = React.lazy(
+  () => import(/* webpackChunkName: "resume" */ "./resume/Routes")
+);
+const GameRoutes = React.lazy(
+  () => import(/* webpackChunkName: "games" */ "./games/Routes")
+);
 
 const RootRoutes: React.FC = () => {
   const navigate = useNavigate();
@@ -19,10 +21,13 @@ const RootRoutes: React.FC = () => {
   };
 
   return (
-    <main style={{ padding: '1em', paddingTop: '5em' }}>
+    <main style={{ padding: "1em", paddingTop: "5em" }}>
       <React.Suspense fallback={<LoadingSpinner />}>
         <Routes>
-          <Route path="games/*" element={<GameRoutes handleNav={handleNav} />} />
+          <Route
+            path="games/*"
+            element={<GameRoutes handleNav={handleNav} />}
+          />
           <Route path="/*" element={<ResumeRoutes handleNav={handleNav} />} />
         </Routes>
       </React.Suspense>

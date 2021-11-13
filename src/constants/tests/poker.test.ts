@@ -1,7 +1,7 @@
-import { zeroOutPreviousWeek, PokerScoreEntry } from '../poker';
+import { zeroOutPreviousWeek, PokerScoreEntry } from "../poker";
 
-describe('constants poker', () => {
-  test('zeroOutPreviousWeek', () => {
+describe("constants poker", () => {
+  test("zeroOutPreviousWeek", () => {
     const testArray: PokerScoreEntry[] = [{ hello: 1 }, { world: 2 }];
     zeroOutPreviousWeek(testArray);
     expect(testArray).toEqual([

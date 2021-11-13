@@ -1,1 +1,1 @@
-export { default } from './TravelMap';
+export { default } from "./TravelMap";

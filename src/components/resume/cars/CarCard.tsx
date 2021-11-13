@@ -1,8 +1,8 @@
-import React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
+import React from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 
 export interface Car {
   owned: string;
@@ -18,13 +18,13 @@ interface CarCardProps {
 
 const containerStyles: React.CSSProperties = {
   maxWidth: 1488,
-  margin: 'auto',
+  margin: "auto",
   marginTop: 20,
 };
 const imgStyles: React.CSSProperties = {
-  width: '100%',
-  maxWidth: '30em',
-  float: 'right',
+  width: "100%",
+  maxWidth: "30em",
+  float: "right",
 };
 
 const CarCard: React.FC<CarCardProps> = ({ car }: CarCardProps) => (

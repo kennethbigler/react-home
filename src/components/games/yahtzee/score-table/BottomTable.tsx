@@ -1,25 +1,34 @@
-import React from 'react';
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
-import { TopGameScore, BottomGameScore, ADD_DICE } from '../types';
-import { Dice } from '../../../../store/types';
+import React from "react";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
+import { TopGameScore, BottomGameScore, ADD_DICE } from "../types";
+import { Dice } from "../../../../store/types";
 import {
-  hasXDice, isFullHouse, isStraight, canYahtzeeBonus,
-} from './scoreTableHelper';
-import BottomScores from './BottomScores';
+  hasXDice,
+  isFullHouse,
+  isStraight,
+  canYahtzeeBonus,
+} from "./scoreTableHelper";
+import BottomScores from "./BottomScores";
 
 interface BottomTableProps {
   bottom: BottomGameScore[];
   bottomSum: number;
   finalTopSum: number;
-  getScoreButton: (showButton: boolean, points: number, wasTop: boolean, i: number) => React.ReactNode;
+  getScoreButton: (
+    showButton: boolean,
+    points: number,
+    wasTop: boolean,
+    i: number
+  ) => React.ReactNode;
   showScoreButtons: boolean;
   style: React.CSSProperties;
   top: TopGameScore[];
   values: Dice[];
 }
 
-const getDiceValue = (values: Dice[]): number => values.reduce((sum: number, d) => sum + d, 0);
+const getDiceValue = (values: Dice[]): number =>
+  values.reduce((sum: number, d) => sum + d, 0);
 
 const showButton = (i: number, values: Dice[]): boolean => {
   switch (i) {
@@ -39,46 +48,52 @@ const showButton = (i: number, values: Dice[]): boolean => {
       return true;
     default:
       // eslint-disable-next-line no-console
-      console.error('Unexpected Value');
+      console.error("Unexpected Value");
       return false;
   }
 };
 
 const BottomTable: React.FC<BottomTableProps> = (props: BottomTableProps) => {
-  const {
-    values, showScoreButtons, getScoreButton, top,
-  } = props;
-  const getBottomTableButtons = React.useCallback((score: number, points: number, hasYahtzee: boolean, i: number): React.ReactNode | null => {
-    if (score >= 0) {
-      return score;
-    }
-    if (showScoreButtons) {
-      // Yahtzee Bonus
-      if (hasYahtzee) {
-        if (canYahtzeeBonus(values, top)) {
-          return getScoreButton(true, points + 100, false, i);
-        }
+  const { values, showScoreButtons, getScoreButton, top } = props;
+  const getBottomTableButtons = React.useCallback(
+    (
+      score: number,
+      points: number,
+      hasYahtzee: boolean,
+      i: number
+    ): React.ReactNode | null => {
+      if (score >= 0) {
+        return score;
       }
-      return getScoreButton(showButton(i, values), points, false, i);
-    }
-    return null;
-  }, [getScoreButton, showScoreButtons, top, values]);
+      if (showScoreButtons) {
+        // Yahtzee Bonus
+        if (hasYahtzee) {
+          if (canYahtzeeBonus(values, top)) {
+            return getScoreButton(true, points + 100, false, i);
+          }
+        }
+        return getScoreButton(showButton(i, values), points, false, i);
+      }
+      return null;
+    },
+    [getScoreButton, showScoreButtons, top, values]
+  );
 
   const { bottom, style } = props;
   const generateBottomTable = React.useCallback((): React.ReactNode => {
     const hasYahtzee = bottom[5].score > 0;
     return bottom.map((gameScore, i) => {
-      const {
-        name, hint, points, score,
-      } = gameScore;
+      const { name, hint, points, score } = gameScore;
 
-      const parsedPoints = (points === ADD_DICE) ? getDiceValue(values) : points;
+      const parsedPoints = points === ADD_DICE ? getDiceValue(values) : points;
 
       return (
         <TableRow key={name}>
           <TableCell>{name}</TableCell>
           <TableCell>{hint}</TableCell>
-          <TableCell style={style}>{getBottomTableButtons(score, parsedPoints, hasYahtzee, i)}</TableCell>
+          <TableCell style={style}>
+            {getBottomTableButtons(score, parsedPoints, hasYahtzee, i)}
+          </TableCell>
         </TableRow>
       );
     });
@@ -89,7 +104,11 @@ const BottomTable: React.FC<BottomTableProps> = (props: BottomTableProps) => {
   return (
     <>
       {generateBottomTable()}
-      <BottomScores bottomSum={bottomSum} finalTopSum={finalTopSum} style={style} />
+      <BottomScores
+        bottomSum={bottomSum}
+        finalTopSum={finalTopSum}
+        style={style}
+      />
     </>
   );
 };

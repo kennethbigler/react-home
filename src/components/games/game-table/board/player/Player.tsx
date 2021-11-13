@@ -1,13 +1,11 @@
-import React from 'react';
-import Slider from '@mui/material/Slider';
-import { Typography } from '@mui/material';
-import Card from '@mui/material/Card';
-import {
-  cyan, green, blueGrey, red,
-} from '@mui/material/colors';
-import Hand from '../Hand';
-import { DBTurn, DBPlayer } from '../../../../../store/types';
-import styles from './Player.styles';
+import React from "react";
+import Slider from "@mui/material/Slider";
+import { Typography } from "@mui/material";
+import Card from "@mui/material/Card";
+import { cyan, green, blueGrey, red } from "@mui/material/colors";
+import Hand from "../Hand";
+import { DBTurn, DBPlayer } from "../../../../../store/types";
+import styles from "./Player.styles";
 
 interface PlayerProps {
   betHandler?: (id: number, event: Event, value: number) => void;
@@ -23,13 +21,20 @@ interface PlayerProps {
 const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
   // get vars from props
   const {
-    betHandler, cardHandler, cardsToDiscard, hideHands,
-    isBlackJack, player, playerNo, turn,
+    betHandler,
+    cardHandler,
+    cardsToDiscard,
+    hideHands,
+    isBlackJack,
+    player,
+    playerNo,
+    turn,
   } = props;
   // set booleans
   const isPlayerTurn: boolean = !!turn && playerNo === turn.player;
   const isMultiHand: boolean = player.hands.length > 1;
-  const showSlider: boolean = !!hideHands && isBlackJack && player.id !== 0 && !player.isBot;
+  const showSlider: boolean =
+    !!hideHands && isBlackJack && player.id !== 0 && !player.isBot;
   // set slider variables
   const minBet: number = Math.max(Math.min(player.money, 5), 0);
   const maxBet: number = Math.max(Math.min(player.money, 100), 10);
@@ -38,18 +43,22 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
     (event: Event, value: number | number[]): void => {
       betHandler && betHandler(player.id, event, value as number);
     },
-    [betHandler, player.id],
+    [betHandler, player.id]
   );
   // set colors
-  let color: React.CSSProperties = isPlayerTurn ? { background: cyan[200] } : {};
-  const weight: React.CSSProperties = isPlayerTurn ? { fontWeight: 'bold' } : { fontWeight: 'normal' };
-  if (player.status === 'win') {
+  let color: React.CSSProperties = isPlayerTurn
+    ? { background: cyan[200] }
+    : {};
+  const weight: React.CSSProperties = isPlayerTurn
+    ? { fontWeight: "bold" }
+    : { fontWeight: "normal" };
+  if (player.status === "win") {
     color = { background: green[300] };
   }
-  if (player.status === 'draw') {
+  if (player.status === "draw") {
     color = { background: blueGrey[300] };
   }
-  if (player.status === 'lose') {
+  if (player.status === "lose") {
     color = { background: red[300] };
   }
 
@@ -69,9 +78,7 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
         />
       )}
       {isBlackJack && player.id !== 0 && (
-        <Typography variant="h5">
-          {`Bet: $${player.bet}`}
-        </Typography>
+        <Typography variant="h5">{`Bet: $${player.bet}`}</Typography>
       )}
       {player.hands.map((hand, i) => {
         const isHandTurn: boolean = !!turn && turn.hand === i;

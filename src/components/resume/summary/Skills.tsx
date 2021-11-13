@@ -1,22 +1,19 @@
-import React from 'react';
-import Chip from '@mui/material/Chip';
-import { Typography } from '@mui/material';
-import ExpandableCard from '../../common/expandable-card';
-import { techSummary, skillSummary } from '../../../constants/work';
+import React from "react";
+import Chip from "@mui/material/Chip";
+import { Typography } from "@mui/material";
+import ExpandableCard from "../../common/expandable-card";
+import { techSummary, skillSummary } from "../../../constants/work";
 
 const chipStyles: React.CSSProperties = { marginRight: 5, marginTop: 5 };
 const sidePadding: React.CSSProperties = { paddingLeft: 20, paddingRight: 20 };
 
-const getCSV = (arr: string[]): React.ReactNodeArray => arr.map(
-  (tech) => <Chip key={tech} label={tech} style={chipStyles} />,
-);
+const getCSV = (arr: string[]): React.ReactNodeArray =>
+  arr.map((tech) => <Chip key={tech} label={tech} style={chipStyles} />);
 
 const Skills: React.FC = React.memo(() => (
   <ExpandableCard title="Skills">
     <div style={sidePadding}>
-      <Typography variant="h4">
-        Summary of Skills:
-      </Typography>
+      <Typography variant="h4">Summary of Skills:</Typography>
       <ul>
         <Typography>
           <li>
@@ -32,8 +29,8 @@ const Skills: React.FC = React.memo(() => (
         </Typography>
         <Typography>
           <li>
-            Gathering requirements, scheduling, prioritizing goals,
-            documenting processes, and creating project standards
+            Gathering requirements, scheduling, prioritizing goals, documenting
+            processes, and creating project standards
           </li>
         </Typography>
         <Typography>
@@ -44,14 +41,10 @@ const Skills: React.FC = React.memo(() => (
         </Typography>
       </ul>
       <hr />
-      <Typography variant="h4">
-        Technologies:
-      </Typography>
+      <Typography variant="h4">Technologies:</Typography>
       {getCSV(techSummary)}
       <hr />
-      <Typography variant="h4">
-        Skills:
-      </Typography>
+      <Typography variant="h4">Skills:</Typography>
       {getCSV(skillSummary)}
     </div>
   </ExpandableCard>

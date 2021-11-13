@@ -1,21 +1,38 @@
-import React from 'react';
-import MenuItem from '@mui/material/MenuItem';
-import { render, screen, fireEvent } from '@testing-library/react';
-import BranchName from '../BranchName';
+import React from "react";
+import MenuItem from "@mui/material/MenuItem";
+import { render, screen, fireEvent } from "@testing-library/react";
+import BranchName from "../BranchName";
 
-describe('resume | git-tools | BranchName', () => {
-  const getSelectOptions = jest.fn()
+describe("resume | git-tools | BranchName", () => {
+  const getSelectOptions = jest
+    .fn()
     .mockReturnValueOnce([
-      <MenuItem key="1" value="chores">chores</MenuItem>,
-      <MenuItem key="2" value="epics">epics</MenuItem>,
-      <MenuItem key="3" value="features">features</MenuItem>,
-      <MenuItem key="4" value="fixes">fixes</MenuItem>,
+      <MenuItem key="1" value="chores">
+        chores
+      </MenuItem>,
+      <MenuItem key="2" value="epics">
+        epics
+      </MenuItem>,
+      <MenuItem key="3" value="features">
+        features
+      </MenuItem>,
+      <MenuItem key="4" value="fixes">
+        fixes
+      </MenuItem>,
     ])
     .mockReturnValueOnce([
-      <MenuItem key="1" value="snake_case">snake_case</MenuItem>,
-      <MenuItem key="2" value="kebab-case">kebab-case</MenuItem>,
-      <MenuItem key="3" value="camelCase">camelCase</MenuItem>,
-      <MenuItem key="4" value="No Changes">No Changes</MenuItem>,
+      <MenuItem key="1" value="snake_case">
+        snake_case
+      </MenuItem>,
+      <MenuItem key="2" value="kebab-case">
+        kebab-case
+      </MenuItem>,
+      <MenuItem key="3" value="camelCase">
+        camelCase
+      </MenuItem>,
+      <MenuItem key="4" value="No Changes">
+        No Changes
+      </MenuItem>,
     ]);
   const handleCopy = jest.fn();
   const onBranchMessageChange = jest.fn();
@@ -37,40 +54,52 @@ describe('resume | git-tools | BranchName', () => {
         onBranchMessageClear={onBranchMessageClear}
         setBranchPrefix={setBranchPrefix}
         setCasePreference={setCasePreference}
-      />,
+      />
     );
   });
 
-  it('renders as expected', () => {
-    expect(screen.getByText('Branch Prefix')).toBeInTheDocument();
-    expect(screen.getByText('Case Preference')).toBeInTheDocument();
-    expect(screen.getAllByText('Branch Name')).toHaveLength(2);
-    expect(screen.getByText('branchName')).toBeInTheDocument();
-    expect(screen.getByText('branchMessage')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('features')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('snake_case')).toBeInTheDocument();
-    expect(screen.getAllByRole('button')).toHaveLength(4);
+  it("renders as expected", () => {
+    expect(screen.getByText("Branch Prefix")).toBeInTheDocument();
+    expect(screen.getByText("Case Preference")).toBeInTheDocument();
+    expect(screen.getAllByText("Branch Name")).toHaveLength(2);
+    expect(screen.getByText("branchName")).toBeInTheDocument();
+    expect(screen.getByText("branchMessage")).toBeInTheDocument();
+    expect(screen.getByDisplayValue("features")).toBeInTheDocument();
+    expect(screen.getByDisplayValue("snake_case")).toBeInTheDocument();
+    expect(screen.getAllByRole("button")).toHaveLength(4);
 
     expect(getSelectOptions).toHaveBeenCalledTimes(2);
-    expect(getSelectOptions).toHaveBeenCalledWith(['chores', 'epics', 'features', 'fixes']);
-    expect(getSelectOptions).toHaveBeenLastCalledWith(['snake_case', 'kebab-case', 'camelCase', 'No Changes']);
+    expect(getSelectOptions).toHaveBeenCalledWith([
+      "chores",
+      "epics",
+      "features",
+      "fixes",
+    ]);
+    expect(getSelectOptions).toHaveBeenLastCalledWith([
+      "snake_case",
+      "kebab-case",
+      "camelCase",
+      "No Changes",
+    ]);
   });
 
-  it('calls onBranchMessageChange when Branch Name is changed', () => {
+  it("calls onBranchMessageChange when Branch Name is changed", () => {
     expect(onBranchMessageChange).toHaveBeenCalledTimes(0);
-    fireEvent.change(screen.getByText('branchMessage'), { target: { value: 'test' }});
+    fireEvent.change(screen.getByText("branchMessage"), {
+      target: { value: "test" },
+    });
     expect(onBranchMessageChange).toHaveBeenCalledTimes(1);
   });
 
-  it('calls onBranchMessageClear when Branch Name clear button is pressed', () => {
+  it("calls onBranchMessageClear when Branch Name clear button is pressed", () => {
     expect(onBranchMessageClear).toHaveBeenCalledTimes(0);
-    fireEvent.click(screen.getAllByRole('button')[2]);
+    fireEvent.click(screen.getAllByRole("button")[2]);
     expect(onBranchMessageClear).toHaveBeenCalledTimes(1);
   });
 
-  it('calls handleCopy on click of BranchName', () => {
+  it("calls handleCopy on click of BranchName", () => {
     expect(handleCopy).not.toHaveBeenCalled();
-    fireEvent.click(screen.getAllByRole('button')[3]);
-    expect(handleCopy).toHaveBeenCalledWith('branchName');
+    fireEvent.click(screen.getAllByRole("button")[3]);
+    expect(handleCopy).toHaveBeenCalledWith("branchName");
   });
 });

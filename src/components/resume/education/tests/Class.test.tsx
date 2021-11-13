@@ -1,19 +1,19 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import Class from '../Class';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import Class from "../Class";
 
-describe('resume | education | Class', () => {
-  it('renders with catalog', () => {
+describe("resume | education | Class", () => {
+  it("renders with catalog", () => {
     render(<Class name="ClassName" catalog="CLSS 101" />);
 
-    expect(screen.getByText('CLSS 101 -')).toBeInTheDocument();
-    expect(screen.getByText('ClassName')).toBeInTheDocument();
+    expect(screen.getByText("CLSS 101 -")).toBeInTheDocument();
+    expect(screen.getByText("ClassName")).toBeInTheDocument();
   });
 
-  it('renders without catalog', () => {
+  it("renders without catalog", () => {
     render(<Class name="ClassName" />);
 
-    expect(screen.queryByText(' -')).toBeNull();
-    expect(screen.getByText('ClassName')).toBeInTheDocument();
+    expect(screen.queryByText(" -")).toBeNull();
+    expect(screen.getByText("ClassName")).toBeInTheDocument();
   });
 });

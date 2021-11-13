@@ -1,9 +1,9 @@
-import React from 'react';
-import ContentAdd from '@mui/icons-material/Add';
-import Fab from '@mui/material/Fab';
-import { red, lightGreen } from '@mui/material/colors';
+import React from "react";
+import ContentAdd from "@mui/icons-material/Add";
+import Fab from "@mui/material/Fab";
+import { red, lightGreen } from "@mui/material/colors";
 
-import noop from '../../../apis/noop';
+import noop from "../../../apis/noop";
 
 interface PieceProps {
   /** can the piece be clicked? */
@@ -22,7 +22,7 @@ const getColor = (piece: number): string | undefined => {
     case 1:
       return red[500];
     case 2:
-      return 'black';
+      return "black";
     default:
       return lightGreen[600];
   }
@@ -34,16 +34,15 @@ const Piece = (props: PieceProps): React.ReactElement => {
   const color = getColor(piece);
   const style: React.CSSProperties = { backgroundColor: color };
 
-  return !enabled
-    ? (
-      <Fab disabled size="small" style={style}>
-        <div />
-      </Fab>
-    ) : (
-      <Fab size="small" onClick={onClick} style={style} role="button">
-        <ContentAdd style={{ color: 'white' }} />
-      </Fab>
-    );
+  return !enabled ? (
+    <Fab disabled size="small" style={style}>
+      <div />
+    </Fab>
+  ) : (
+    <Fab size="small" onClick={onClick} style={style} role="button">
+      <ContentAdd style={{ color: "white" }} />
+    </Fab>
+  );
 };
 
 export default React.memo(Piece);

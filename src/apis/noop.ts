@@ -1,1 +1,3 @@
-export default (): void => { /* do nothing */ };
+export default (): void => {
+  /* do nothing */
+};

@@ -1,12 +1,25 @@
-import { teal, deepOrange } from '@mui/material/colors';
-import { pullHandle } from '../apis/SlotMachine';
+import { teal, deepOrange } from "@mui/material/colors";
+import SlotMachine from "../apis/SlotMachine";
 
 import {
-  DBGit, DBPlayer, DBBlackjack, GameFunctions,
-  DBUITheme, DBTurn, DBRootState, DBSlotDisplay,
-  DBTicTacToe, DBConnect4, C4Turn, DBYahtzee, DBDND,
-  briefcasesToOpen, Briefcase, PokerGameFunctions, DBPoker,
-} from './types';
+  DBGit,
+  DBPlayer,
+  DBBlackjack,
+  GameFunctions,
+  DBUITheme,
+  DBTurn,
+  DBRootState,
+  DBSlotDisplay,
+  DBTicTacToe,
+  DBConnect4,
+  C4Turn,
+  DBYahtzee,
+  DBDND,
+  briefcasesToOpen,
+  Briefcase,
+  PokerGameFunctions,
+  DBPoker,
+} from "./types";
 
 // --------------------     helpers     -------------------- //
 // blackjack
@@ -25,13 +38,10 @@ const NEW_BOARD = [
   [0, 0, 0, 0, 0, 0, 0],
 ];
 export const newConnect4Game = (): DBConnect4 => ({
-  board: NEW_BOARD.reduce(
-    (acc: number[][], row) => {
-      acc.push([...row]);
-      return acc;
-    },
-    [],
-  ),
+  board: NEW_BOARD.reduce((acc: number[][], row) => {
+    acc.push([...row]);
+    return acc;
+  }, []),
   winner: undefined,
   line: [undefined, undefined, undefined],
   turn: C4Turn.RED,
@@ -40,15 +50,32 @@ export const newConnect4Game = (): DBConnect4 => ({
 // dnd
 const getNewState = (): DBDND => ({
   board: [
-    { val: 1, loc: 1, on: true }, { val: 2, loc: 2, on: true }, { val: 5, loc: 3, on: true },
-    { val: 10, loc: 4, on: true }, { val: 25, loc: 5, on: true }, { val: 50, loc: 6, on: true },
-    { val: 75, loc: 7, on: true }, { val: 100, loc: 8, on: true }, { val: 200, loc: 9, on: true },
-    { val: 300, loc: 10, on: true }, { val: 400, loc: 11, on: true }, { val: 500, loc: 12, on: true },
-    { val: 750, loc: 13, on: true }, { val: 1000, loc: 14, on: true }, { val: 5000, loc: 15, on: true },
-    { val: 10000, loc: 16, on: true }, { val: 25000, loc: 17, on: true }, { val: 50000, loc: 18, on: true },
-    { val: 75000, loc: 19, on: true }, { val: 100000, loc: 20, on: true }, { val: 200000, loc: 21, on: true },
-    { val: 300000, loc: 22, on: true }, { val: 400000, loc: 23, on: true }, { val: 500000, loc: 24, on: true },
-    { val: 750000, loc: 25, on: true }, { val: 1000000, loc: 26, on: true },
+    { val: 1, loc: 1, on: true },
+    { val: 2, loc: 2, on: true },
+    { val: 5, loc: 3, on: true },
+    { val: 10, loc: 4, on: true },
+    { val: 25, loc: 5, on: true },
+    { val: 50, loc: 6, on: true },
+    { val: 75, loc: 7, on: true },
+    { val: 100, loc: 8, on: true },
+    { val: 200, loc: 9, on: true },
+    { val: 300, loc: 10, on: true },
+    { val: 400, loc: 11, on: true },
+    { val: 500, loc: 12, on: true },
+    { val: 750, loc: 13, on: true },
+    { val: 1000, loc: 14, on: true },
+    { val: 5000, loc: 15, on: true },
+    { val: 10000, loc: 16, on: true },
+    { val: 25000, loc: 17, on: true },
+    { val: 50000, loc: 18, on: true },
+    { val: 75000, loc: 19, on: true },
+    { val: 100000, loc: 20, on: true },
+    { val: 200000, loc: 21, on: true },
+    { val: 300000, loc: 22, on: true },
+    { val: 400000, loc: 23, on: true },
+    { val: 500000, loc: 24, on: true },
+    { val: 750000, loc: 25, on: true },
+    { val: 1000000, loc: 26, on: true },
   ],
   turn: 1,
   playerChoice: undefined,
@@ -91,11 +118,15 @@ export const newDNDGame = (): DBDND => {
 };
 
 // player
-export const newPlayer = (id: number, name = 'Bot', isBot = true): DBPlayer => ({
+export const newPlayer = (
+  id: number,
+  name = "Bot",
+  isBot = true
+): DBPlayer => ({
   id,
   name,
   isBot,
-  status: '',
+  status: "",
   money: 100,
   bet: 5,
   hands: [],
@@ -111,8 +142,8 @@ export const newPokerGameState = (): DBPoker => ({
 });
 
 // tic-tac-toe
-export const X = 'X';
-export const O = 'O';
+export const X = "X";
+export const O = "O";
 export const EMPTY = undefined;
 export const newTicTacToe = (): DBTicTacToe => ({
   history: [{ board: Array(9).fill(EMPTY) }],
@@ -121,7 +152,7 @@ export const newTicTacToe = (): DBTicTacToe => ({
 });
 
 // yahtzee
-export const newYahtzee = (): Omit<DBYahtzee, 'scores'> => ({
+export const newYahtzee = (): Omit<DBYahtzee, "scores"> => ({
   roll: 0,
   values: [0, 0, 0, 0, 0],
   saved: [],
@@ -136,32 +167,32 @@ const blackjack = newBlackjackGame();
 const connect4 = newConnect4Game();
 const dnd = newDNDGame();
 const git: DBGit = {
-  storyID: '',
-  branchMessage: '',
-  branchPrefix: 'features',
-  casePreference: 'snake_case',
+  storyID: "",
+  branchMessage: "",
+  branchPrefix: "features",
+  casePreference: "snake_case",
   commitPrefix: true,
 };
-const gqlToken = '';
+const gqlToken = "";
 const players: DBPlayer[] = [
-  newPlayer(1, 'Ken', false),
+  newPlayer(1, "Ken", false),
   newPlayer(2),
   newPlayer(3),
   newPlayer(4),
   newPlayer(5),
   newPlayer(6),
-  newPlayer(0, 'Dealer', true),
+  newPlayer(0, "Dealer", true),
 ];
 const poker = newPokerGameState();
-const slots: DBSlotDisplay[] = pullHandle();
+const slots: DBSlotDisplay[] = SlotMachine.pullHandle();
 const theme: DBUITheme = {
   primary: teal,
   secondary: deepOrange,
-  mode: 'dark',
+  mode: "dark",
 };
 const ticTacToe: DBTicTacToe = newTicTacToe();
 const turn: DBTurn = { player: 0, hand: 0 };
-const yahtzee: DBYahtzee = { ...newYahtzee(), scores: []};
+const yahtzee: DBYahtzee = { ...newYahtzee(), scores: [] };
 
 // --------------------     export     -------------------- //
 export default {

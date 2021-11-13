@@ -1,9 +1,9 @@
 const cardFace: React.CSSProperties = {
-  backgroundColor: 'white',
+  backgroundColor: "white",
   borderRadius: 5,
-  cursor: 'pointer',
-  display: 'inline-block',
-  fontWeight: 'bold',
+  cursor: "pointer",
+  display: "inline-block",
+  fontWeight: "bold",
   height: 78,
   margin: 5,
   padding: 3,
@@ -11,14 +11,14 @@ const cardFace: React.CSSProperties = {
 };
 
 const cardTitle: React.CSSProperties = {
-  textAlign: 'left',
+  textAlign: "left",
 };
 
 const suit: React.CSSProperties = {
-  margin: 'auto',
+  margin: "auto",
   marginTop: 5,
-  textAlign: 'center',
-  width: '100%',
+  textAlign: "center",
+  width: "100%",
 };
 
 export default {

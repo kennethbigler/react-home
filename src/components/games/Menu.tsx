@@ -1,6 +1,6 @@
-import React from 'react';
-import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider';
+import React from "react";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
 
 interface MenuProps {
   onItemClick?: (loc: string) => void;
@@ -8,44 +8,48 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
   const { onItemClick } = props;
-  const baseUrl = '/games';
+  const baseUrl = "/games";
 
   // internal routes
-  const menu = React.useMemo(() => [
-    { name: 'Home - Games', route: '' },
-    { divider: true },
-    { name: 'BlackJack', route: 'blackjack' },
-    { name: 'Connect4', route: 'connect4' },
-    { name: 'Deal or No Deal', route: 'deal' },
-    { name: 'Poker', route: 'poker' },
-    { name: 'Slot Machine', route: 'slots' },
-    { name: 'Tic-Tac-Toe', route: 'tictactoe' },
-    { name: 'Yahtzee', route: 'yahtzee' },
-  ].map((item, index) => (item.divider
-    ? (
-      <Divider key={index} />
-    ) : (
-      <MenuItem
-        key={item.name}
-        onClick={(): void => onItemClick && onItemClick(`${baseUrl}/${item.route}`)}
-      >
-        {item.name}
-      </MenuItem>
-    )
-  )), [onItemClick]);
+  const menu = React.useMemo(
+    () =>
+      [
+        { name: "Home - Games", route: "" },
+        { divider: true },
+        { name: "BlackJack", route: "blackjack" },
+        { name: "Connect4", route: "connect4" },
+        { name: "Deal or No Deal", route: "deal" },
+        { name: "Poker", route: "poker" },
+        { name: "Slot Machine", route: "slots" },
+        { name: "Tic-Tac-Toe", route: "tictactoe" },
+        { name: "Yahtzee", route: "yahtzee" },
+      ].map((item, index) =>
+        item.divider ? (
+          <Divider key={index} />
+        ) : (
+          <MenuItem
+            key={item.name}
+            onClick={(): void =>
+              onItemClick && onItemClick(`${baseUrl}/${item.route || ""}`)
+            }
+          >
+            {item.name}
+          </MenuItem>
+        )
+      ),
+    [onItemClick]
+  );
 
   // navigation
   const home = React.useCallback(
-    (): void => onItemClick && onItemClick('/'),
-    [onItemClick],
+    (): void => onItemClick && onItemClick("/"),
+    [onItemClick]
   );
 
   // render menu
   return (
     <>
-      <MenuItem onClick={home}>
-        Back to Resume
-      </MenuItem>
+      <MenuItem onClick={home}>Back to Resume</MenuItem>
       {menu}
     </>
   );

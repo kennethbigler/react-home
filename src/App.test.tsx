@@ -1,8 +1,8 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import App from './wrappers/WithStore';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import App from "./wrappers/WithStore";
 
-it('renders without crashing', () => {
+it("renders without crashing", () => {
   render(<App />);
-  expect(screen.getByTitle('Loading Spinner')).toBeInTheDocument();
+  expect(screen.getByTitle("Loading Spinner")).toBeInTheDocument();
 });

@@ -1,6 +1,6 @@
-import React from 'react';
-import Typography from '@mui/material/Typography';
-import ScoreGraph from './ScoreGraph';
+import React from "react";
+import Typography from "@mui/material/Typography";
+import ScoreGraph from "./ScoreGraph";
 
 interface HeaderProps {
   scores: number[];

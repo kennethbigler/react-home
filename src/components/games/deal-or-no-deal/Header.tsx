@@ -1,9 +1,9 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import { getMoneyText } from './helpers';
-import { DBPlayer, Briefcase } from '../../../store/types';
+import React from "react";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { getMoneyText } from "./helpers";
+import { DBPlayer, Briefcase } from "../../../store/types";
 
 interface HeaderProps {
   casesToOpen: number;
@@ -16,15 +16,21 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
   const {
-    playerChoice: pc, casesToOpen, isOver,
-    offer, newGame, player,
+    playerChoice: pc,
+    casesToOpen,
+    isOver,
+    offer,
+    newGame,
+    player,
   } = props;
 
   return (
     <Grid container spacing={1}>
       <Grid item sm={6} xs={12}>
         <Typography variant="h3" gutterBottom>
-          {`Your Case: ${pc ? pc.loc : '?'}${isOver ? ` - ${getMoneyText(pc && pc.val)}` : ''}`}
+          {`Your Case: ${pc ? pc.loc : "?"}${
+            isOver ? ` - ${getMoneyText(pc && pc.val)}` : ""
+          }`}
         </Typography>
         <Typography variant="h4" gutterBottom>
           {isOver

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Typography } from '@mui/material';
+import React from "react";
+import { Typography } from "@mui/material";
 
 export interface ClassProps {
   name: string;
@@ -7,13 +7,15 @@ export interface ClassProps {
 }
 
 /** Education  ->  Degree  -> Year  ->  Quarter  ->  Class */
-const Class: React.FC<ClassProps> = React.memo(({ name, catalog }: ClassProps) => (
-  <Typography>
-    <li>
-      {catalog && <strong>{`${catalog} - `}</strong>}
-      {name}
-    </li>
-  </Typography>
-));
+const Class: React.FC<ClassProps> = React.memo(
+  ({ name, catalog }: ClassProps) => (
+    <Typography>
+      <li>
+        {catalog && <strong>{`${catalog} - `}</strong>}
+        {name}
+      </li>
+    </Typography>
+  )
+);
 
 export default Class;

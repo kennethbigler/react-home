@@ -5,7 +5,10 @@ interface YahtzeeVars {
   finish: boolean;
 }
 
-const getYahtzeeVars = (topScores: number[], bottomScores: number[]): YahtzeeVars => {
+const getYahtzeeVars = (
+  topScores: number[],
+  bottomScores: number[]
+): YahtzeeVars => {
   let count = 0;
 
   const topSum = topScores.reduce((sum, score) => {

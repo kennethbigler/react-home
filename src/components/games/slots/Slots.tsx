@@ -1,13 +1,13 @@
-import React, { useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import { updateDBSlotMachine } from '../../../store/modules/slots';
-import { DBRootState } from '../../../store/types';
-import PayoutTable from './PayoutTable';
-import MoneyTable from './MoneyTable';
-import ReelDisplay from './ReelDisplay';
+import React, { useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { updateDBSlotMachine } from "../../../store/modules/slots";
+import { DBRootState } from "../../../store/types";
+import PayoutTable from "./PayoutTable";
+import MoneyTable from "./MoneyTable";
+import ReelDisplay from "./ReelDisplay";
 
 /* Slots  ->  ReelDisplay
  *       |->  MoneyTable
@@ -32,9 +32,9 @@ const Slots: React.FC = () => {
   return (
     <>
       <Typography variant="h2">Casino Slot Machine</Typography>
-      <Grid container spacing={1} style={{ marginTop: '2em' }}>
+      <Grid container spacing={1} style={{ marginTop: "2em" }}>
         <Grid item sm={6} xs={12}>
-          <Grid container spacing={1} style={{ marginBottom: '1em' }}>
+          <Grid container spacing={1} style={{ marginBottom: "1em" }}>
             <Grid item sm={3} xs={12}>
               <Button
                 color="primary"

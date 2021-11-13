@@ -1,7 +1,7 @@
-import React from 'react';
-import ExpandableCard from '../../common/expandable-card';
-import classes, { School } from '../../../constants/classes';
-import EducationSeg from './EducationSeg';
+import React from "react";
+import ExpandableCard from "../../common/expandable-card";
+import classes, { School } from "../../../constants/classes";
+import EducationSeg from "./EducationSeg";
 
 const Education: React.FC = React.memo(() => (
   <ExpandableCard title="Education">

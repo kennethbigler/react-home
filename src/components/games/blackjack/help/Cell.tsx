@@ -1,5 +1,5 @@
-import React from 'react';
-import TableCell from '@mui/material/TableCell';
+import React from "react";
+import TableCell from "@mui/material/TableCell";
 
 export interface CellProps {
   color?: string;
@@ -10,13 +10,11 @@ export interface CellProps {
 }
 
 const Cell: React.FC<CellProps> = React.memo((props: CellProps) => {
-  const {
-    color, text, style, ...otherProps
-  } = props;
+  const { color, text, style, ...otherProps } = props;
 
   const stl: React.CSSProperties = {
     ...style,
-    textAlign: 'center',
+    textAlign: "center",
     paddingLeft: 0,
     paddingRight: 0,
     backgroundColor: color,

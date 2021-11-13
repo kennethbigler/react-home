@@ -1,13 +1,18 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Typography from '@mui/material/Typography';
-import Modal from './Modal';
-import Board from './Board';
-import Header from './Header';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Typography from "@mui/material/Typography";
+import Modal from "./Modal";
+import Board from "./Board";
+import Header from "./Header";
 import {
-  newGame, setOpenCase, setOpenOffer, setNoDeal, setFinishGame, setPlayerChoice,
-} from '../../../store/modules/dnd';
-import { DBRootState, briefcasesToOpen } from '../../../store/types';
+  newGame,
+  setOpenCase,
+  setOpenOffer,
+  setNoDeal,
+  setFinishGame,
+  setPlayerChoice,
+} from "../../../store/modules/dnd";
+import { DBRootState, briefcasesToOpen } from "../../../store/types";
 
 // TODO: add rules to page
 /* DealOrNoDeal  ->  Header
@@ -15,8 +20,16 @@ import { DBRootState, briefcasesToOpen } from '../../../store/types';
  *              |->  Modal  ->  Money */
 const DND: React.FC = () => {
   const {
-    board, dndOpen, isOver, offer, sum, turn,
-    player, playerChoice, casesToOpen, numCases,
+    board,
+    dndOpen,
+    isOver,
+    offer,
+    sum,
+    turn,
+    player,
+    playerChoice,
+    casesToOpen,
+    numCases,
   } = useSelector((state: DBRootState) => ({
     ...state.dnd,
     player: state.players[0],
@@ -27,32 +40,52 @@ const DND: React.FC = () => {
   /** function to generate the bank offer */
   const getBankOffer = React.useCallback(
     (): number => Math.round((sum / numCases) * (turn / 10)),
-    [numCases, sum, turn],
+    [numCases, sum, turn]
   );
 
   /** open a briefcase and update global status
    * NOTE: udpates sum, numCases, board, casesToOpen */
-  const openBriefcase = React.useCallback((x: number): void => {
-    const bc = board[x];
-    // check if player has already made case selection
-    if (playerChoice) {
-      // verify cases left and briefcase not already opened
-      if (!isOver && casesToOpen > 0 && bc.loc !== playerChoice.loc && bc.on) {
-        // flag the value and update global trackers
-        bc.on = false;
-        // update board
-        dispatch(setOpenCase(board, sum - bc.val, numCases - 1, casesToOpen - 1));
+  const openBriefcase = React.useCallback(
+    (x: number): void => {
+      const bc = board[x];
+      // check if player has already made case selection
+      if (playerChoice) {
+        // verify cases left and briefcase not already opened
+        if (
+          !isOver &&
+          casesToOpen > 0 &&
+          bc.loc !== playerChoice.loc &&
+          bc.on
+        ) {
+          // flag the value and update global trackers
+          bc.on = false;
+          // update board
+          dispatch(
+            setOpenCase(board, sum - bc.val, numCases - 1, casesToOpen - 1)
+          );
+        }
+      } else {
+        dispatch(setPlayerChoice(player.id, bc));
       }
-    } else {
-      dispatch(setPlayerChoice(player.id, bc));
-    }
-  }, [board, casesToOpen, dispatch, isOver, numCases, player.id, playerChoice, sum]);
+    },
+    [
+      board,
+      casesToOpen,
+      dispatch,
+      isOver,
+      numCases,
+      player.id,
+      playerChoice,
+      sum,
+    ]
+  );
 
   const handleOpen = React.useCallback((): void => {
     // get the new offer
     const newOffer = getBankOffer();
     // reset the counter
-    const newCasesToOpen = turn < briefcasesToOpen - 1 ? briefcasesToOpen - turn : 1;
+    const newCasesToOpen =
+      turn < briefcasesToOpen - 1 ? briefcasesToOpen - turn : 1;
     dispatch(setOpenOffer(newOffer, newCasesToOpen));
   }, [dispatch, getBankOffer, turn]);
 
@@ -63,14 +96,17 @@ const DND: React.FC = () => {
 
   /** function to finish the game
    * NOTE: payout to user offer / 1k */
-  const finishGame = React.useCallback((finalOffer: number): void => {
-    dispatch(setFinishGame(player.id, finalOffer));
-  }, [dispatch, player.id]);
+  const finishGame = React.useCallback(
+    (finalOffer: number): void => {
+      dispatch(setFinishGame(player.id, finalOffer));
+    },
+    [dispatch, player.id]
+  );
 
   /** called on selection of Deal */
   const deal = React.useCallback(
     (): void => finishGame(offer),
-    [finishGame, offer],
+    [finishGame, offer]
   );
 
   /** called on selection of No Deal
@@ -100,7 +136,9 @@ const DND: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h2" gutterBottom>Deal or No Deal</Typography>
+      <Typography variant="h2" gutterBottom>
+        Deal or No Deal
+      </Typography>
       <Header
         casesToOpen={casesToOpen}
         isOver={isOver}

@@ -1,20 +1,16 @@
-import {
-  spin,
-  pullHandle,
-  getPayout,
-} from '../SlotMachine';
-import { DBSlotDisplay, DBSlotOptions as SO } from '../../store/types';
+import SlotMachine, { spin } from "../SlotMachine";
+import { DBSlotDisplay, DBSlotOptions as SO } from "../../store/types";
 
-describe('apis | SlotMachine', () => {
-  test('spin', () => {
+describe("apis | SlotMachine", () => {
+  test("spin", () => {
     const result = spin();
     expect(result).toHaveLength(3);
     expect(Object.values(SO)).toContain(result[0]);
     expect(Object.values(SO)).toContain(result[1]);
     expect(Object.values(SO)).toContain(result[2]);
   });
-  test('pullHandle', () => {
-    const slotDisplay = pullHandle();
+  test("pullHandle", () => {
+    const slotDisplay = SlotMachine.pullHandle();
     expect(slotDisplay).toHaveLength(3);
 
     expect(slotDisplay[0]).toHaveLength(3);
@@ -33,164 +29,164 @@ describe('apis | SlotMachine', () => {
     expect(Object.values(SO)).toContain(slotDisplay[2][1]);
     expect(Object.values(SO)).toContain(slotDisplay[2][2]);
   });
-  describe('getPayout', () => {
-    test('nothing', () => {
+  describe("getPayout", () => {
+    test("nothing", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(0);
     });
 
-    test('3 cherries', () => {
+    test("3 cherries", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(12);
     });
 
-    test('3 cherries with a larger bet', () => {
+    test("3 cherries with a larger bet", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 2);
+      const res = SlotMachine.getPayout(slotDisplay, 2);
       expect(res).toStrictEqual(24);
     });
 
-    test('3 BARs', () => {
+    test("3 BARs", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.BAR, SO.EMPTY],
         [SO.EMPTY, SO.BAR, SO.EMPTY],
         [SO.EMPTY, SO.BAR, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(25);
     });
 
-    test('3 Double BARs', () => {
+    test("3 Double BARs", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
         [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
         [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(50);
     });
 
-    test('3 Triple BARs', () => {
+    test("3 Triple BARs", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.TRIPLE_BAR, SO.EMPTY],
         [SO.EMPTY, SO.TRIPLE_BAR, SO.EMPTY],
         [SO.EMPTY, SO.TRIPLE_BAR, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(100);
     });
 
-    test('3 7s', () => {
+    test("3 7s", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.SEVEN, SO.EMPTY],
         [SO.EMPTY, SO.SEVEN, SO.EMPTY],
         [SO.EMPTY, SO.SEVEN, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(300);
     });
 
-    test('3 Jackpots', () => {
+    test("3 Jackpots", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.JACKPOT, SO.EMPTY],
         [SO.EMPTY, SO.JACKPOT, SO.EMPTY],
         [SO.EMPTY, SO.JACKPOT, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(1666);
     });
 
-    test('3 of any BARs', () => {
+    test("3 of any BARs", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.BAR, SO.EMPTY],
         [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
         [SO.EMPTY, SO.TRIPLE_BAR, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(12);
     });
 
-    test('3 of any BARs v2', () => {
+    test("3 of any BARs v2", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.BAR, SO.EMPTY],
         [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
         [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(12);
     });
 
-    test('2 Cherries', () => {
+    test("2 Cherries", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(6);
     });
 
-    test('2 Cherries v2', () => {
+    test("2 Cherries v2", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(6);
     });
 
-    test('2 Cherries v3', () => {
+    test("2 Cherries v3", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(6);
     });
 
-    test('1 Cherry', () => {
+    test("1 Cherry", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(3);
     });
 
-    test('1 Cherry v2', () => {
+    test("1 Cherry v2", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(3);
     });
 
-    test('1 Cherry v3', () => {
+    test("1 Cherry v3", () => {
       const slotDisplay: DBSlotDisplay[] = [
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
       ];
-      const res = getPayout(slotDisplay, 1);
+      const res = SlotMachine.getPayout(slotDisplay, 1);
       expect(res).toStrictEqual(3);
     });
   });

@@ -1,1 +1,1 @@
-export { default } from './DealOrNoDeal';
+export { default } from "./DealOrNoDeal";

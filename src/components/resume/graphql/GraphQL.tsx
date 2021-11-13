@@ -1,16 +1,20 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  ApolloProvider, ApolloClient, ApolloLink, HttpLink, InMemoryCache,
-} from '@apollo/client';
-import { onError } from '@apollo/client/link/error';
-import Profile from './Profile';
-import { setToken } from '../../../store/modules/gqlToken';
-import Header from './Header';
-import NoToken from './NoToken';
-import { DBRootState } from '../../../store/types';
+  ApolloProvider,
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
+import Profile from "./Profile";
+import { setToken } from "../../../store/modules/gqlToken";
+import Header from "./Header";
+import NoToken from "./NoToken";
+import { DBRootState } from "../../../store/types";
 
-const GITHUB_BASE_URL = 'https://api.github.com/graphql';
+const GITHUB_BASE_URL = "https://api.github.com/graphql";
 const errorLink = onError((/* { graphQLErrors, networkError } */) => {
   /* if (graphQLErrors) { do something with graphql error } */
   /* if (networkError) { do something with network error } */

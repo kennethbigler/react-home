@@ -5,9 +5,12 @@ export function insertItem<T>(array: T[], item: T): T[] {
   return newArr;
 }
 
-export function updateObjectInArray<T extends Record<string, unknown>, K extends keyof T>(array: T[], ins: T, key: K): T[] {
-  return array.map(
-    (item) => (item[key] !== ins[key] ? item : { ...item, ...ins }),
+export function updateObjectInArray<
+  T extends Record<string, unknown>,
+  K extends keyof T
+>(array: T[], ins: T, key: K): T[] {
+  return array.map((item) =>
+    item[key] !== ins[key] ? item : { ...item, ...ins }
   );
 }
 
@@ -15,7 +18,10 @@ export function updateArrayInArray<T>(array: T[], ins: T, idx: number): T[] {
   return array.map((item, i) => (i !== idx ? item : ins));
 }
 
-export function removeItem<T extends { id: number }>(array: T[], id: number): T[] {
+export function removeItem<T extends { id: number }>(
+  array: T[],
+  id: number
+): T[] {
   return array.filter((obj) => obj.id !== id);
 }
 

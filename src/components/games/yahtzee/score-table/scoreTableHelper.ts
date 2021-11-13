@@ -1,5 +1,5 @@
-import { TopGameScore } from '../types';
-import { Dice } from '../../../../store/types';
+import { TopGameScore } from "../types";
+import { Dice } from "../../../../store/types";
 
 interface DiceHistogram {
   0?: number;
@@ -11,14 +11,16 @@ interface DiceHistogram {
   6: number;
 }
 
-export const getHistogram = () => (hist: DiceHistogram, val: Dice): DiceHistogram => {
-  if (!hist[val]) {
-    hist[val] = 1;
-  } else {
-    hist[val] += 1;
-  }
-  return hist;
-};
+export const getHistogram =
+  () =>
+  (hist: DiceHistogram, val: Dice): DiceHistogram => {
+    if (!hist[val]) {
+      hist[val] = 1;
+    } else {
+      hist[val] += 1;
+    }
+    return hist;
+  };
 
 export const hasXDice = (values: Dice[], n: number): boolean => {
   const hist = values.reduce(getHistogram(), {} as DiceHistogram);
@@ -66,14 +68,13 @@ export const isStraight = (values: Dice[], length: number): boolean => {
   return count >= length;
 };
 
-export const canYahtzeeBonus = (values: Dice[], top: TopGameScore[]): boolean => Object.entries(
-  values.reduce(getHistogram(), {} as DiceHistogram),
-).reduce(
-  (acc: boolean, [key, value]) => {
-    if (value === 5 && top[Number(key) - 1].score >= 0) {
-      return true;
-    }
-    return acc;
-  },
-  false,
-);
+export const canYahtzeeBonus = (values: Dice[], top: TopGameScore[]): boolean =>
+  Object.entries(values.reduce(getHistogram(), {} as DiceHistogram)).reduce(
+    (acc: boolean, [key, value]) => {
+      if (value === 5 && top[Number(key) - 1].score >= 0) {
+        return true;
+      }
+      return acc;
+    },
+    false
+  );

@@ -1,13 +1,11 @@
-import React from 'react';
-import { Typography } from '@mui/material';
-import Link from './Link';
-import Description from './Description';
-import WatchRepository from './WatchRepository';
-import StarRepository from './StarRepository';
-import UnstarRepository from './UnstarRepository';
-import {
-  Owner, PrimaryLanguage, StarGazers, Watchers,
-} from './types';
+import React from "react";
+import { Typography } from "@mui/material";
+import Link from "./Link";
+import Description from "./Description";
+import WatchRepository from "./WatchRepository";
+import StarRepository from "./StarRepository";
+import UnstarRepository from "./UnstarRepository";
+import { Owner, PrimaryLanguage, StarGazers, Watchers } from "./types";
 
 export interface RepositoryItemProps {
   id: string;
@@ -26,7 +24,9 @@ export interface RepositoryItemProps {
  *                |->  UnstarRepository
  *                | -> WatchRepository
  *                | -> Description */
-const RepositoryItem: React.FC<RepositoryItemProps> = (props: RepositoryItemProps) => {
+const RepositoryItem: React.FC<RepositoryItemProps> = (
+  props: RepositoryItemProps
+) => {
   const {
     id,
     name,
@@ -46,13 +46,23 @@ const RepositoryItem: React.FC<RepositoryItemProps> = (props: RepositoryItemProp
         <Typography variant="h3">
           <Link href={url}>{name}</Link>
         </Typography>
-        {!viewerHasStarred
-          ? (<StarRepository id={id} stargazers={stargazers} />)
-          : (<UnstarRepository id={id} stargazers={stargazers} />)}
-        <WatchRepository id={id} watchers={watchers} viewerSubscription={viewerSubscription} />
+        {!viewerHasStarred ? (
+          <StarRepository id={id} stargazers={stargazers} />
+        ) : (
+          <UnstarRepository id={id} stargazers={stargazers} />
+        )}
+        <WatchRepository
+          id={id}
+          watchers={watchers}
+          viewerSubscription={viewerSubscription}
+        />
       </div>
 
-      <Description descriptionHTML={descriptionHTML} primaryLanguage={primaryLanguage} owner={owner} />
+      <Description
+        descriptionHTML={descriptionHTML}
+        primaryLanguage={primaryLanguage}
+        owner={owner}
+      />
     </>
   );
 };

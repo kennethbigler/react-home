@@ -1,1 +1,1 @@
-export { default } from './GitTools';
+export { default } from "./GitTools";

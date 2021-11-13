@@ -1,6 +1,6 @@
-import React from 'react';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import React from "react";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
 interface HeaderProps {
   gitTheme: string;
@@ -8,7 +8,7 @@ interface HeaderProps {
   storyID?: string;
 }
 
-const validId = RegExp('[A-Z]{4}-[a-zA-Z0-9]+');
+const validId = RegExp("[A-Z]{4}-[a-zA-Z0-9]+");
 
 const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
   const { onIdChange, storyID, gitTheme } = props;
@@ -17,11 +17,9 @@ const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
 
   return (
     <>
-      <Typography variant="h2">
-        Git Tools
-      </Typography>
+      <Typography variant="h2">Git Tools</Typography>
       <TextField
-        InputLabelProps={{ style: { color: gitTheme }}}
+        InputLabelProps={{ style: { color: gitTheme } }}
         label="User Story ID"
         onChange={onIdChange}
         placeholder="GNAP-12345"

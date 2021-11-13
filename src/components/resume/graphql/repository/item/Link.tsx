@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   children: React.ReactNode | React.ReactNodeArray;

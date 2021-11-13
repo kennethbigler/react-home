@@ -1,40 +1,40 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import FetchMore from '../FetchMore';
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import FetchMore from "../FetchMore";
 
-describe('resume | graphql | FetchMore', () => {
-  it('renders as expected when loading', () => {
+describe("resume | graphql | FetchMore", () => {
+  it("renders as expected when loading", () => {
     render(
       <FetchMore
         loading
         hasNextPage
-        variables={{ cursor: 'cursor' }}
+        variables={{ cursor: "cursor" }}
         updateQuery={jest.fn()}
         fetchMore={jest.fn()}
       >
         Children
-      </FetchMore>,
+      </FetchMore>
     );
 
-    expect(screen.getByText('Loading ...')).toBeInTheDocument();
+    expect(screen.getByText("Loading ...")).toBeInTheDocument();
   });
 
-  it('renders as expected when loaded', () => {
+  it("renders as expected when loaded", () => {
     const handleFetchMore = jest.fn();
     render(
       <FetchMore
         hasNextPage
         loading={false}
-        variables={{ cursor: 'cursor' }}
+        variables={{ cursor: "cursor" }}
         updateQuery={jest.fn()}
         fetchMore={handleFetchMore}
       >
         Children
-      </FetchMore>,
+      </FetchMore>
     );
 
     expect(handleFetchMore).toHaveBeenCalledTimes(0);
-    fireEvent.click(screen.getByText('More Children'));
+    fireEvent.click(screen.getByText("More Children"));
     expect(handleFetchMore).toHaveBeenCalledTimes(1);
   });
 });

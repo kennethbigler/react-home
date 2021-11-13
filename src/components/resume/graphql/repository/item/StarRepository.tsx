@@ -1,12 +1,12 @@
-import React from 'react';
-import gql from 'graphql-tag';
-import Button from '@mui/material/Button';
-import { useMutation, MutationUpdaterFn } from '@apollo/client';
-import REPOSITORY_FRAGMENT from '../fragments';
-import { StarRepositoryProps } from './types';
+import React from "react";
+import gql from "graphql-tag";
+import Button from "@mui/material/Button";
+import { useMutation, MutationUpdaterFn } from "@apollo/client";
+import REPOSITORY_FRAGMENT from "../fragments";
+import { StarRepositoryProps } from "./types";
 
 const STAR_REPOSITORY = gql`
-  mutation($id: ID!) {
+  mutation ($id: ID!) {
     addStar(input: { starrableId: $id }) {
       starrable {
         id
@@ -16,15 +16,22 @@ const STAR_REPOSITORY = gql`
   }
 `;
 
-export const updateAddStar: MutationUpdaterFn = (cache, mutationResult): void => {
+export const updateAddStar: MutationUpdaterFn = (
+  cache,
+  mutationResult
+): void => {
   const { data } = mutationResult;
   if (!data) {
     return;
   }
-  const { addStar: { starrable: { id }}} = data;
+  const {
+    addStar: {
+      starrable: { id },
+    },
+  } = data;
 
   const repository: StarRepositoryProps | null = cache.readFragment({
-    id: `Repository:${id}`,
+    id: `Repository:${id as string}`,
     fragment: REPOSITORY_FRAGMENT,
   });
 
@@ -35,7 +42,7 @@ export const updateAddStar: MutationUpdaterFn = (cache, mutationResult): void =>
   const totalCount = repository.stargazers.totalCount + 1;
 
   cache.writeFragment({
-    id: `Repository:${id}`,
+    id: `Repository:${id as string}`,
     fragment: REPOSITORY_FRAGMENT,
     data: {
       ...repository,
@@ -47,15 +54,17 @@ export const updateAddStar: MutationUpdaterFn = (cache, mutationResult): void =>
   });
 };
 
-const StarRepository: React.FC<StarRepositoryProps> = (props: StarRepositoryProps) => {
+const StarRepository: React.FC<StarRepositoryProps> = (
+  props: StarRepositoryProps
+) => {
   const { id, stargazers } = props;
   const [addStar] = useMutation(STAR_REPOSITORY, {
     variables: { id },
     update: updateAddStar,
     optimisticResponse: {
       addStar: {
-        __typename: 'Mutation',
-        starrable: { __typename: 'Repository', id, viewerHasStarred: true },
+        __typename: "Mutation",
+        starrable: { __typename: "Repository", id, viewerHasStarred: true },
       },
     },
   });

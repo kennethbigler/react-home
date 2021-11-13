@@ -1,6 +1,7 @@
-import { Dice } from '../store/types';
+import { Dice } from "../store/types";
 
-export const diceRoller = (): Dice => Math.floor(Math.random() * 6) + 1 as Dice;
+export const diceRoller = (): Dice =>
+  (Math.floor(Math.random() * 6) + 1) as Dice;
 
 export default {
   // randomize order of the cards

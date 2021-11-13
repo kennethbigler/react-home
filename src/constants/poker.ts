@@ -1,10 +1,24 @@
 import {
-  amber, blue, blueGrey, brown,
-  cyan, deepOrange, deepPurple, green,
-  grey, indigo, lightBlue, lightGreen,
-  lime, orange, pink, purple, red,
-  teal, yellow,
-} from '@mui/material/colors/';
+  amber,
+  blue,
+  blueGrey,
+  brown,
+  cyan,
+  deepOrange,
+  deepPurple,
+  green,
+  grey,
+  indigo,
+  lightBlue,
+  lightGreen,
+  lime,
+  orange,
+  pink,
+  purple,
+  red,
+  teal,
+  yellow,
+} from "@mui/material/colors/";
 
 export type PokerScoreEntry = Record<string, number>;
 export type PokerColorEntry = Record<string, string>;
@@ -21,7 +35,8 @@ export const pennyPokerScores: PokerScoreEntry[] = [
     Lily: 3,
     Keishi: 209,
     Andy: -22,
-  }, {
+  },
+  {
     name: 2,
     Ken: -42,
     Aaron: -1,
@@ -29,14 +44,16 @@ export const pennyPokerScores: PokerScoreEntry[] = [
     Lily: -131,
     Andy: -140,
     Mike: 220,
-  }, {
+  },
+  {
     name: 3,
     Ken: -100,
     Jordan: -24,
     Lily: -45,
     Tom: 39,
     Meeks: 147,
-  }, {
+  },
+  {
     name: 4,
     Ken: 62,
     Aaron: -33,
@@ -50,7 +67,8 @@ export const pennyPokerScores: PokerScoreEntry[] = [
     Ashley: -14,
     Geoff: -100,
     Ming: -100,
-  }, {
+  },
+  {
     name: 5,
     Ken: 218,
     Lauren: -90,
@@ -58,7 +76,8 @@ export const pennyPokerScores: PokerScoreEntry[] = [
     Jordan: 82,
     Lily: -70,
     Tom: -200,
-  }, {
+  },
+  {
     name: 6,
     Ken: -33,
     Jordan: 46,
@@ -66,14 +85,16 @@ export const pennyPokerScores: PokerScoreEntry[] = [
     Keishi: -32,
     Andy: 27,
     Mike: 90,
-  }, {
+  },
+  {
     name: 7,
     Ken: 187,
     Aaron: 14,
     Jordan: -46,
     Tom: -55,
     Gus: -100,
-  }, {
+  },
+  {
     name: 8,
     Ken: 127,
     Aaron: -40,
@@ -81,13 +102,15 @@ export const pennyPokerScores: PokerScoreEntry[] = [
     Gus: 16,
     Zach: -122,
     Scott: -100,
-  }, {
+  },
+  {
     name: 9,
     Ken: 11,
     Jordan: 17,
     Andy: 30,
     Gus: -58,
-  }, {
+  },
+  {
     name: 10,
     Ken: -23,
     Lauren: 58,
@@ -96,14 +119,16 @@ export const pennyPokerScores: PokerScoreEntry[] = [
     Lily: -100,
     Andy: 240,
     Tom: 9,
-  }, {
+  },
+  {
     name: 11,
     Ken: 42,
     Aaron: -55,
     Jordan: 0,
     Tom: 38,
     Gus: -25,
-  }, {
+  },
+  {
     name: 12,
     Ken: 57,
     Aaron: 34,
@@ -140,23 +165,25 @@ export const gigNowPokerScores: PokerScoreEntry[] = [
     name: 1,
     Ken: 32.25,
     Sabik: 35.25,
-    Avi: 15.50,
+    Avi: 15.5,
     Seb: -23,
     Jonathan: -20,
     Mike: -20,
     Brady: -20,
-  }, {
+  },
+  {
     name: 2,
     Jonathan: -20,
     Seb: -40,
     Sabik: -20,
     Mike: 90,
     Brady: -20,
-    'Michael A': 70,
+    "Michael A": 70,
     Carlos: -20,
     Matt: -20,
     Dhruven: -20,
-  }, {
+  },
+  {
     name: 3,
     Jonathan: 71,
     Dharam: 40,
@@ -179,7 +206,7 @@ export const gigNowPokerColors: PokerColorEntry = {
   Avi: cyan[500],
   Mike: deepOrange[500],
   Brady: deepPurple[500],
-  'Michael A': green[500],
+  "Michael A": green[500],
   Carlos: indigo[500],
   Matt: lightBlue[500],
   Dhruven: lightGreen[500],

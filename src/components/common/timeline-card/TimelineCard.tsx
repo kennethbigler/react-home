@@ -1,9 +1,9 @@
-import React from 'react';
-import { grey } from '@mui/material/colors';
-import dateObj, { DateObj, FormatOutput } from '../../../apis/DateHelper';
-import ExpandableCard from '../expandable-card';
-import Timeline, { TIMELINE_TITLE, DataEntry } from './Timeline';
-import workExperience from '../../../constants/work';
+import React from "react";
+import { grey } from "@mui/material/colors";
+import dateObj, { DateObj, FormatOutput } from "../../../apis/DateHelper";
+import ExpandableCard from "../expandable-card";
+import Timeline, { TIMELINE_TITLE, DataEntry } from "./Timeline";
+import workExperience from "../../../constants/work";
 
 interface TimelineCardProps {
   /** background color of the expandable card top bar */
@@ -24,7 +24,7 @@ interface TimelineCardProps {
   enableLongTitles?: boolean;
 }
 
-const DATE_FORMAT: FormatOutput = 'MMMM Y';
+const DATE_FORMAT: FormatOutput = "MMMM Y";
 
 /* TimelineCard  ->  Timeline  ->  Row  ->  Segment
  *                                     |->  YearMarkers */
@@ -34,8 +34,8 @@ const TimelineCard = (props: TimelineCardProps): React.ReactElement | null => {
     data = workExperience,
     backgroundColor = grey[700],
     title = TIMELINE_TITLE,
-    selector = 'company',
-    start = dateObj('2011-09'),
+    selector = "company",
+    start = dateObj("2011-09"),
     end = dateObj(),
     yearMarkerFrequency = 1,
     enableLongTitles,

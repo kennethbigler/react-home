@@ -1,5 +1,5 @@
-export const ADD_DICE = 'Sum of Dice';
-type AddDice = 'Sum of Dice';
+export const ADD_DICE = "Sum of Dice";
+type AddDice = "Sum of Dice";
 
 export interface TopGameScore {
   name: string;

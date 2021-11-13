@@ -1,47 +1,57 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import MenuItem from '@mui/material/MenuItem';
-import { deepOrange } from '@mui/material/colors';
-import handleCopy from 'copy-to-clipboard';
-import snakeCase from 'lodash/snakeCase';
-import kebabCase from 'lodash/kebabCase';
-import camelCase from 'lodash/camelCase';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import MenuItem from "@mui/material/MenuItem";
+import { deepOrange } from "@mui/material/colors";
+import handleCopy from "copy-to-clipboard";
+import snakeCase from "lodash/snakeCase";
+import kebabCase from "lodash/kebabCase";
+import camelCase from "lodash/camelCase";
 import {
-  setBranchMessage, setBranchPrefix, setCasePreference, setKey,
-} from '../../../store/modules/git';
-import BranchName from './BranchName';
-import CommitText from './CommitText';
-import DeployBranch from './DeployBranch';
-import Header from './Header';
-import ExpandableCard from '../../common/expandable-card';
-import { DBRootState, BranchPrefixes, CasePreferences } from '../../../store/types';
+  setBranchMessage,
+  setBranchPrefix,
+  setCasePreference,
+  setKey,
+} from "../../../store/modules/git";
+import BranchName from "./BranchName";
+import CommitText from "./CommitText";
+import DeployBranch from "./DeployBranch";
+import Header from "./Header";
+import ExpandableCard from "../../common/expandable-card";
+import {
+  DBRootState,
+  BranchPrefixes,
+  CasePreferences,
+} from "../../../store/types";
 
 const gitTheme = deepOrange[600];
-export const validTypingId = RegExp('[A-Z]{1,4}-?[a-zA-Z0-9]*');
+export const validTypingId = RegExp("[A-Z]{1,4}-?[a-zA-Z0-9]*");
 
 /** function to generate select items based of input */
-export const getSelectOptions = (arr: string[]): React.ReactNode => arr.map((t, i) => (
-  <MenuItem key={i} value={t}>{t}</MenuItem>
-));
+export const getSelectOptions = (arr: string[]): React.ReactNode =>
+  arr.map((t, i) => (
+    <MenuItem key={i} value={t}>
+      {t}
+    </MenuItem>
+  ));
 
 /** function to generate the branch name from inputs
-   * @return {string} format prefix/<story_id>_name_lower_cased */
+ * @return {string} format prefix/<story_id>_name_lower_cased */
 export const getBranchName = (
   branchMessage: string,
   branchPrefix: BranchPrefixes,
   casePreference: CasePreferences,
-  storyID: string,
+  storyID: string
 ): string => {
-  const prefix = branchPrefix ? `${branchPrefix}/` : '';
-  let msg = '';
+  const prefix = branchPrefix ? `${branchPrefix}/` : "";
+  let msg = "";
   switch (casePreference) {
-    case 'snake_case':
+    case "snake_case":
       msg = `${storyID && `${storyID}_`}${snakeCase(branchMessage)}`;
       break;
-    case 'kebab-case':
+    case "kebab-case":
       msg = `${storyID && `${storyID}-`}${kebabCase(branchMessage)}`;
       break;
-    case 'camelCase':
+    case "camelCase":
       msg = `${storyID}${camelCase(branchMessage)}`;
       break;
     default:
@@ -55,34 +65,55 @@ export const getBranchName = (
  *          |->  CommitText    -|->  CopyTextDisplay
  *          |->  DeployBranch  -|    */
 const GitTools: React.FC = () => {
-  const {
-    branchMessage, branchPrefix, casePreference, storyID,
-  } = useSelector((state: DBRootState) => state.git);
+  const { branchMessage, branchPrefix, casePreference, storyID } = useSelector(
+    (state: DBRootState) => state.git
+  );
   const dispatch = useDispatch();
 
   /** function to update text state based on value */
-  const handleIDChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = React.useCallback((e) => {
-    const [value] = validTypingId.exec(e.target.value as string) || [''];
-    dispatch(setKey(value));
-  }, [dispatch]);
+  const handleIDChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = React.useCallback(
+    (e) => {
+      const [value] = validTypingId.exec(e.target.value) || [""];
+      dispatch(setKey(value));
+    },
+    [dispatch]
+  );
   /** function to update text state based on value */
-  const handleBranchMessageChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = React.useCallback((e) => {
-    dispatch(setBranchMessage(e.target.value as string));
-  }, [dispatch]);
+  const handleBranchMessageChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = React.useCallback(
+    (e) => {
+      dispatch(setBranchMessage(e.target.value));
+    },
+    [dispatch]
+  );
   /** function to clear text state based on value */
   const handleBranchMessageClear = React.useCallback((): void => {
-    dispatch(setBranchMessage(''));
+    dispatch(setBranchMessage(""));
   }, [dispatch]);
   /** function to update text state based on value */
-  const handleBranchPrefix = React.useCallback((newBranchPrefix: BranchPrefixes): void => {
-    dispatch(setBranchPrefix(newBranchPrefix));
-  }, [dispatch]);
+  const handleBranchPrefix = React.useCallback(
+    (newBranchPrefix: BranchPrefixes): void => {
+      dispatch(setBranchPrefix(newBranchPrefix));
+    },
+    [dispatch]
+  );
   /** function to update case pref based on value */
-  const handleCasePreference = React.useCallback((newCasePreference: CasePreferences): void => {
-    dispatch(setCasePreference(newCasePreference));
-  }, [dispatch]);
+  const handleCasePreference = React.useCallback(
+    (newCasePreference: CasePreferences): void => {
+      dispatch(setCasePreference(newCasePreference));
+    },
+    [dispatch]
+  );
 
-  const branchName = getBranchName(branchMessage, branchPrefix, casePreference, storyID);
+  const branchName = getBranchName(
+    branchMessage,
+    branchPrefix,
+    casePreference,
+    storyID
+  );
 
   return (
     <>
@@ -120,7 +151,10 @@ const GitTools: React.FC = () => {
           }}
         />
       </ExpandableCard>
-      <ExpandableCard backgroundColor={gitTheme} title="Deploy to Test Pipelines">
+      <ExpandableCard
+        backgroundColor={gitTheme}
+        title="Deploy to Test Pipelines"
+      >
         <DeployBranch
           {...{
             branchName,

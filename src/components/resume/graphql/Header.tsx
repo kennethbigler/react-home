@@ -1,6 +1,6 @@
-import React from 'react';
-import TextField from '@mui/material/TextField';
-import { Typography } from '@mui/material';
+import React from "react";
+import TextField from "@mui/material/TextField";
+import { Typography } from "@mui/material";
 
 interface HeaderProps {
   authToken?: string;
@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
         placeholder="some 32 character string from github"
         value={authToken}
         onChange={onChange}
-        style={{ margin: '20px 0 20px 0' }}
+        style={{ margin: "20px 0 20px 0" }}
         fullWidth
       />
     </>

@@ -1,6 +1,6 @@
-import React from 'react';
-import Player from './player/Player';
-import { DBPlayer, DBTurn } from '../../../../store/types';
+import React from "react";
+import Player from "./player/Player";
+import { DBPlayer, DBTurn } from "../../../../store/types";
 // Parents: GameTable
 
 interface BoardProps {
@@ -15,8 +15,13 @@ interface BoardProps {
 
 const Board: React.FC<BoardProps> = (props: BoardProps) => {
   const {
-    betHandler, cardHandler, cardsToDiscard, hideHands,
-    isBlackJack, players, turn,
+    betHandler,
+    cardHandler,
+    cardsToDiscard,
+    hideHands,
+    isBlackJack,
+    players,
+    turn,
   } = props;
 
   return (

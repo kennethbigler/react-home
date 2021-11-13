@@ -1,21 +1,21 @@
-import React from 'react';
-import Paper from '@mui/material/Paper';
-import { amber, grey } from '@mui/material/colors';
-import { getMoneyText } from './helpers';
-import { Briefcase } from '../../../store/types';
+import React from "react";
+import Paper from "@mui/material/Paper";
+import { amber, grey } from "@mui/material/colors";
+import { getMoneyText } from "./helpers";
+import { Briefcase } from "../../../store/types";
 
 interface MoneyProps {
   briefcase: Briefcase;
 }
 
 const paperStyles: React.CSSProperties = {
-  width: '90%',
-  marginLeft: '5%',
-  marginRight: '5%',
+  width: "90%",
+  marginLeft: "5%",
+  marginRight: "5%",
   marginBottom: 5,
   padding: 5,
-  textAlign: 'center',
-  color: 'white',
+  textAlign: "center",
+  color: "white",
 };
 
 const Money: React.FC<MoneyProps> = (props: MoneyProps) => {
@@ -32,9 +32,7 @@ const Money: React.FC<MoneyProps> = (props: MoneyProps) => {
 
   return (
     <Paper style={style}>
-      { bc.on
-        ? getMoneyText(bc.val)
-        : (<del>{getMoneyText(bc.val)}</del>)}
+      {bc.on ? getMoneyText(bc.val) : <del>{getMoneyText(bc.val)}</del>}
     </Paper>
   );
 };

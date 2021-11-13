@@ -1,79 +1,93 @@
-import React from 'react';
-import { fireEvent, screen } from '@testing-library/react';
-import render from '../../../../redux-test-render';
-import Header, { NavProps } from '../Header';
+import React from "react";
+import { fireEvent, screen } from "@testing-library/react";
+import render from "../../../../redux-test-render";
+import Header, { NavProps } from "../Header";
 
 /** This is just used for testing purposes */
 const Menu = (props: NavProps): React.ReactElement<NavProps> => (
-  <button onClick={(): void => props.onItemClick('button')} type="button">Test Button</button>
+  <button onClick={(): void => props.onItemClick("button")} type="button">
+    Test Button
+  </button>
 );
 
-describe('common | header | Header', () => {
-  it('renders with basic elements', () => {
+describe("common | header | Header", () => {
+  it("renders with basic elements", () => {
     render(
       <Header>
-        {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
-      </Header>,
+        {(onItemClick): React.ReactElement<NavProps> => (
+          <Menu onItemClick={onItemClick} />
+        )}
+      </Header>
     );
     // find TopBar elements
-    expect(screen.getByTitle('Icon Menu Button')).toBeInTheDocument();
-    expect(screen.getByTitle('Icon Menu Button').className).toContain('MuiIconButton-colorInherit');
-    expect(screen.getByText('Menu')).toBeInTheDocument();
+    expect(screen.getByTitle("Icon Menu Button")).toBeInTheDocument();
+    expect(screen.getByTitle("Icon Menu Button").className).toContain(
+      "MuiIconButton-colorInherit"
+    );
+    expect(screen.getByText("Menu")).toBeInTheDocument();
     // open the Drawer
-    fireEvent.click(screen.getByTitle('Icon Menu Button'));
+    fireEvent.click(screen.getByTitle("Icon Menu Button"));
     // find Drawer elements
-    expect(screen.getByTitle('Close Side Menu')).toBeInTheDocument();
-    expect(screen.getAllByText('Menu')).toHaveLength(2);
-    expect(screen.getByText('Test Button')).toBeInTheDocument();
+    expect(screen.getByTitle("Close Side Menu")).toBeInTheDocument();
+    expect(screen.getAllByText("Menu")).toHaveLength(2);
+    expect(screen.getByText("Test Button")).toBeInTheDocument();
   });
 
-  describe('basic props tests', () => {
-    it('displays children', () => {
+  describe("basic props tests", () => {
+    it("displays children", () => {
       render(
         <Header>
-          {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
-        </Header>,
+          {(onItemClick): React.ReactElement<NavProps> => (
+            <Menu onItemClick={onItemClick} />
+          )}
+        </Header>
       );
       // open the Drawer
-      fireEvent.click(screen.getByTitle('Icon Menu Button'));
+      fireEvent.click(screen.getByTitle("Icon Menu Button"));
       // find Drawer elements
-      expect(screen.getByText('Test Button')).toBeInTheDocument();
+      expect(screen.getByText("Test Button")).toBeInTheDocument();
     });
 
-    it('calls handleNav as expected', () => {
+    it("calls handleNav as expected", () => {
       const handleNav = jest.fn();
 
       render(
         <Header handleNav={handleNav}>
-          {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
-        </Header>,
+          {(onItemClick): React.ReactElement<NavProps> => (
+            <Menu onItemClick={onItemClick} />
+          )}
+        </Header>
       );
 
       // open the Drawer
-      fireEvent.click(screen.getByTitle('Icon Menu Button'));
+      fireEvent.click(screen.getByTitle("Icon Menu Button"));
       // find the button (child)
-      expect(screen.getByText('Test Button')).toBeInTheDocument();
+      expect(screen.getByText("Test Button")).toBeInTheDocument();
       // click the button
       expect(handleNav).not.toHaveBeenCalled();
-      fireEvent.click(screen.getByText('Test Button'));
+      fireEvent.click(screen.getByText("Test Button"));
       expect(handleNav).toHaveBeenCalled();
     });
 
-    it('showsPlayers as expected', () => {
+    it("showsPlayers as expected", () => {
       // render without player button
       const { rerender } = render(
         <Header>
-          {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
-        </Header>,
+          {(onItemClick): React.ReactElement<NavProps> => (
+            <Menu onItemClick={onItemClick} />
+          )}
+        </Header>
       );
-      expect(screen.queryByText('Players')).toBeNull();
+      expect(screen.queryByText("Players")).toBeNull();
       // rerender with player button
       rerender(
         <Header showPlayers>
-          {(onItemClick): React.ReactElement<NavProps> => <Menu onItemClick={onItemClick} />}
-        </Header>,
+          {(onItemClick): React.ReactElement<NavProps> => (
+            <Menu onItemClick={onItemClick} />
+          )}
+        </Header>
       );
-      expect(screen.getByText('Players')).toBeInTheDocument();
+      expect(screen.getByText("Players")).toBeInTheDocument();
     });
   });
 });

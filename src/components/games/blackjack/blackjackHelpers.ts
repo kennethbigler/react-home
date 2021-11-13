@@ -1,7 +1,10 @@
-import { DBCard, DBHand, DBPlayer } from '../../../store/types';
+import { DBCard, DBHand, DBPlayer } from "../../../store/types";
 
 /** calculate the weight of a hand */
-export function weighHand(hand: DBCard[] = []): { weight: number; soft: boolean } {
+export function weighHand(hand: DBCard[] = []): {
+  weight: number;
+  soft: boolean;
+} {
   // set return values
   let weight = 0;
   let soft = false;
@@ -36,9 +39,18 @@ export function weighHand(hand: DBCard[] = []): { weight: number; soft: boolean 
 }
 
 // AI: https://www.blackjackinfo.com/blackjack-basic-strategy-engine/
-export const playBot = (hand: DBHand, dealer: DBHand, double: () => void, hit: () => void, split: () => void, stay: () => void): void => {
+export const playBot = (
+  hand: DBHand,
+  dealer: DBHand,
+  double: () => void,
+  hit: () => void,
+  split: () => void,
+  stay: () => void
+): void => {
   // validate hand exists
-  if (!hand) { return; }
+  if (!hand) {
+    return;
+  }
   const n = hand.weight || 0;
   const { soft } = hand;
   // card / dealer weight
@@ -136,33 +148,36 @@ export interface PlayerStats {
 export const DEALER = 0;
 
 /** finish the game and check for a winner */
-export const banking = (players: DBPlayer[], payoutPlayer: (id: number, status: string, money: number) => void): void => {
+export const banking = (
+  players: DBPlayer[],
+  payoutPlayer: (id: number, status: string, money: number) => void
+): void => {
   // state variables
   const dealer = players.filter((p) => p.id === DEALER)[0];
   const dWeight = dealer.hands[0].weight || 0;
   const dLength = dealer.hands[0].cards.length;
   // track and find the winners
-  const playerStats: PlayerStats = { house: 0, payout: 0, status: '' };
+  const playerStats: PlayerStats = { house: 0, payout: 0, status: "" };
   // helper functions
   const win = (ps: PlayerStats, bet: number, mul = 1): void => {
     ps.house -= Math.floor(mul * bet);
     ps.payout = Math.floor(mul * bet);
-    ps.status = 'win';
+    ps.status = "win";
   };
   const loss = (ps: PlayerStats, bet: number): void => {
     ps.house += bet;
     ps.payout = -bet;
-    ps.status = 'lose';
+    ps.status = "lose";
   };
   players.forEach((player) => {
     const { id, bet } = player;
     if (id === DEALER) {
       if (playerStats.house > 0) {
-        playerStats.status = 'win';
+        playerStats.status = "win";
       } else if (playerStats.house < 0) {
-        playerStats.status = 'lose';
+        playerStats.status = "lose";
       } else {
-        playerStats.status = 'push';
+        playerStats.status = "push";
       }
       payoutPlayer(id, playerStats.status, playerStats.house);
     } else {
@@ -178,7 +193,7 @@ export const banking = (players: DBPlayer[], payoutPlayer: (id: number, status: 
           win(playerStats, bet);
         } else if (weight <= 21 && weight === dWeight) {
           playerStats.payout = 0;
-          playerStats.status = 'push';
+          playerStats.status = "push";
         } else {
           loss(playerStats, bet);
         }

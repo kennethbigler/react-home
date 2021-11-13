@@ -1,11 +1,13 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import CssBaseline from '@mui/material/CssBaseline';
+import React from "react";
+import { useSelector } from "react-redux";
+import CssBaseline from "@mui/material/CssBaseline";
 import {
-  ThemeProvider, StyledEngineProvider, createTheme,
-} from '@mui/material/styles';
-import WithRouter from './WithRouter';
-import { DBRootState } from '../store/types';
+  ThemeProvider,
+  StyledEngineProvider,
+  createTheme,
+} from "@mui/material/styles";
+import WithRouter from "./WithRouter";
+import { DBRootState } from "../store/types";
 
 /** App class that wraps higher level components of the application */
 const WithTheme: React.FC = () => {
@@ -18,7 +20,7 @@ const WithTheme: React.FC = () => {
       secondary: theme.secondary,
     },
     typography: {
-      fontFamily: ['Montserrat', 'sans-serif'].join(','),
+      fontFamily: ["Montserrat", "sans-serif"].join(","),
     },
   });
 

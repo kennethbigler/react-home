@@ -1,6 +1,6 @@
-import React from 'react';
-import { Typography } from '@mui/material';
-import { PrimaryLanguage, Owner } from './types';
+import React from "react";
+import { Typography } from "@mui/material";
+import { PrimaryLanguage, Owner } from "./types";
 
 interface DescriptionProps {
   descriptionHTML: string;
@@ -26,9 +26,7 @@ const Description: React.FC<DescriptionProps> = (props: DescriptionProps) => {
         )}
         {owner && (
           <Typography display="inline">
-            Owner:
-            {' '}
-            <a href={owner.url}>{owner.login}</a>
+            Owner: <a href={owner.url}>{owner.login}</a>
           </Typography>
         )}
       </div>

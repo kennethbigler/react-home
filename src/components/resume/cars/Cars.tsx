@@ -1,11 +1,11 @@
-import React from 'react';
-import Typography from '@mui/material/Typography';
-import TimelineCard from '../../common/timeline-card';
-import dateObj from '../../../apis/DateHelper';
-import cars, { kensCars, familyCars } from '../../../constants/cars';
-import CarCard from './CarCard';
-import CarChart, { HideObject } from './CarChart';
-import CarChartControls, { ShowKey } from './CarChartControls';
+import React from "react";
+import Typography from "@mui/material/Typography";
+import TimelineCard from "../../common/timeline-card";
+import dateObj from "../../../apis/DateHelper";
+import cars, { kensCars, familyCars } from "../../../constants/cars";
+import CarCard from "./CarCard";
+import CarChart, { HideObject } from "./CarChart";
+import CarChartControls, { ShowKey } from "./CarChartControls";
 
 const hrStyles: React.CSSProperties = { marginTop: 60, marginBottom: 20 };
 
@@ -13,13 +13,19 @@ const Cars = React.memo(() => {
   const [showAnimation, setShowAnimation] = React.useState(true);
   const [hide, setHide] = React.useState<HideObject>({});
 
-  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+  const vw = Math.max(
+    document.documentElement.clientWidth || 0,
+    window.innerWidth || 0
+  );
 
   const handleClick = (key: ShowKey) => () => {
-    if (key === 'ken' || key === 'family') {
+    if (key === "ken" || key === "family") {
       setShowAnimation(true);
     } else {
-      setShowAnimation((hide.horsepower && hide.MPG && hide.weight && hide.powerToWeight) || false);
+      setShowAnimation(
+        (hide.horsepower && hide.MPG && hide.weight && hide.powerToWeight) ||
+          false
+      );
     }
     if (hide[key]) {
       setHide({ ...hide, [key]: false });
@@ -39,7 +45,7 @@ const Cars = React.memo(() => {
 
   return (
     <>
-      <Typography variant="h2">{'Ken\'s Cars'}</Typography>
+      <Typography variant="h2">Ken&apos;s Cars</Typography>
       <br />
       <CarChartControls onClick={handleClick} hide={hide} vw={vw} />
       <CarChart showAnimation={showAnimation} data={data} hide={hide} vw={vw} />
@@ -47,13 +53,15 @@ const Cars = React.memo(() => {
         enableLongTitles
         data={data}
         selector="car"
-        start={dateObj('2008-03')}
+        start={dateObj("2008-03")}
         title="Ken's Cars"
         yearMarkerFrequency={3}
       />
-      {!hide.ken && kensCars.map((car) => (<CarCard car={car} key={car.title} />))}
+      {!hide.ken &&
+        kensCars.map((car) => <CarCard car={car} key={car.title} />)}
       {!hide.ken && !hide.family && <hr style={hrStyles} />}
-      {!hide.family && familyCars.map((car) => (<CarCard car={car} key={car.title} />))}
+      {!hide.family &&
+        familyCars.map((car) => <CarCard car={car} key={car.title} />)}
     </>
   );
 });

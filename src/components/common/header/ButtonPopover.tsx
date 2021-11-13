@@ -1,7 +1,7 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import Popover from '@mui/material/Popover';
-import useAnchorEl from '../../../hooks/useAnchorEl';
+import React from "react";
+import Button from "@mui/material/Button";
+import Popover from "@mui/material/Popover";
+import useAnchorEl from "../../../hooks/useAnchorEl";
 
 interface ButtonPopoverProps {
   children: React.ReactElement;
@@ -30,13 +30,11 @@ const ButtonPopover = (props: ButtonPopoverProps): React.ReactElement => {
         open={open}
         anchorEl={anchorEl}
         onClose={clearAnchor}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        transformOrigin={{ vertical: "top", horizontal: "center" }}
         title="player-popover"
       >
-        <div style={contentStyle}>
-          {children}
-        </div>
+        <div style={contentStyle}>{children}</div>
       </Popover>
     </>
   );

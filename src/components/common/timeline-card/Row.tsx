@@ -1,7 +1,7 @@
-import React from 'react';
-import Segment from './Segment';
-import YearMarkers from './YearMarkers';
-import { SegmentType } from './types';
+import React from "react";
+import Segment from "./Segment";
+import YearMarkers from "./YearMarkers";
+import { SegmentType } from "./types";
 
 interface RowProps {
   segments: SegmentType[];
@@ -25,9 +25,13 @@ const Row = (props: RowProps): React.ReactElement => {
 
   return (
     <div style={style} title="timeline-row">
-      {segments.map((data, j) => (yearMarkers
-        ? (<YearMarkers key={j} data={data} />)
-        : (<Segment key={j} {...data} />)))}
+      {segments.map((data, j) =>
+        yearMarkers ? (
+          <YearMarkers key={j} data={data} />
+        ) : (
+          <Segment key={j} {...data} />
+        )
+      )}
     </div>
   );
 };

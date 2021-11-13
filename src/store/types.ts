@@ -1,13 +1,13 @@
-import { Color } from '@mui/material';
+import { Color } from "@mui/material";
 
 // --------------------     blackjack     -------------------- //
 export enum GameFunctions {
-  NEW_GAME = 'New Game',
-  FINISH_BETTING = 'Finish Betting',
-  STAY = 'Stay',
-  HIT = 'Hit',
-  DOUBLE = 'Double',
-  SPLIT = 'Split',
+  NEW_GAME = "New Game",
+  FINISH_BETTING = "Finish Betting",
+  STAY = "Stay",
+  HIT = "Hit",
+  DOUBLE = "Double",
+  SPLIT = "Split",
 }
 
 export interface DBBlackjack {
@@ -25,7 +25,11 @@ export enum C4Turn {
 export interface DBConnect4 {
   board: number[][];
   winner?: number;
-  line: [number | undefined, [number, number][] | undefined, [number, number][] | undefined];
+  line: [
+    number | undefined,
+    [number, number][] | undefined,
+    [number, number][] | undefined
+  ];
   turn: C4Turn;
 }
 
@@ -49,8 +53,12 @@ export interface DBDND {
 export const briefcasesToOpen = 6;
 
 // --------------------     git     -------------------- //
-export type BranchPrefixes = 'chores' | 'epics' | 'features' | 'fixes';
-export type CasePreferences = 'snake_case' | 'kebab-case' | 'camelCase' | 'No Changes';
+export type BranchPrefixes = "chores" | "epics" | "features" | "fixes";
+export type CasePreferences =
+  | "snake_case"
+  | "kebab-case"
+  | "camelCase"
+  | "No Changes";
 
 export interface DBGit {
   storyID: string;
@@ -83,10 +91,10 @@ export interface DBPlayer {
 
 // --------------------     poker     -------------------- //
 export enum PokerGameFunctions {
-  DISCARD_CARDS = 'Discard Cards',
-  END_TURN = 'End Turn',
-  NEW_GAME = 'New Game',
-  START_GAME = 'Start Game',
+  DISCARD_CARDS = "Discard Cards",
+  END_TURN = "End Turn",
+  NEW_GAME = "New Game",
+  START_GAME = "Start Game",
 }
 export interface DBPoker {
   gameFunctions: PokerGameFunctions[];
@@ -97,19 +105,19 @@ export interface DBPoker {
 
 // --------------------     slots     -------------------- //
 export enum DBSlotOptions {
-  EMPTY = ' ',
-  CHERRY = 'C',
-  BAR = '—',
-  DOUBLE_BAR = '=',
-  TRIPLE_BAR = 'Ξ',
-  SEVEN = '7',
-  JACKPOT = 'J',
+  EMPTY = " ",
+  CHERRY = "C",
+  BAR = "—",
+  DOUBLE_BAR = "=",
+  TRIPLE_BAR = "Ξ",
+  SEVEN = "7",
+  JACKPOT = "J",
 }
 export type DBSlotDisplay = [DBSlotOptions, DBSlotOptions, DBSlotOptions];
 
 // --------------------     theme     -------------------- //
 export interface DBUITheme {
-  mode: 'light' | 'dark';
+  mode: "light" | "dark";
   primary: Color;
   secondary: Color;
 }

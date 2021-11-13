@@ -1,21 +1,21 @@
-import React from 'react';
+import React from "react";
 import {
   ComposableMap,
   ZoomableGroup,
   Geographies,
   Geography,
   Sphere,
-} from 'react-simple-maps';
-import { blueGrey, red } from '@mui/material/colors';
-import Popover from './Popover';
-import countries from '../../../constants/countries';
+} from "react-simple-maps";
+import { blueGrey, red } from "@mui/material/colors";
+import Popover from "./Popover";
+import countries from "../../../constants/countries";
 
 interface GeographyType {
-  type: 'Feature';
+  type: "Feature";
   rsmKey: string;
   svgPath: string;
   geometry: {
-    type: 'Polygon' | 'MultiPolygon';
+    type: "Polygon" | "MultiPolygon";
     coordinates: [number, number][];
   };
   properties: {
@@ -36,7 +36,9 @@ interface GeographyType {
   };
 }
 
-type HandleEnter = (geography: GeographyType) => (evt: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
+type HandleEnter = (
+  geography: GeographyType
+) => (evt: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
 
 interface WorldMapHook {
   x: number;
@@ -57,22 +59,24 @@ const RATIO = 100 / 465.33;
 const defaultStyle: React.CSSProperties = {
   stroke: STROKE,
   strokeWidth: 0.75,
-  outline: 'none',
+  outline: "none",
 };
 
 function useWorldMap(): WorldMapHook {
   const [x, setX] = React.useState(0);
   const [y, setY] = React.useState(0);
-  const [content, setContent] = React.useState('');
+  const [content, setContent] = React.useState("");
   const [hide, setHide] = React.useState(true);
 
-  const handleEnter: HandleEnter = (geography) => (evt): void => {
-    const name = geography.properties.NAME || '';
-    setX(evt.clientX);
-    setY(evt.clientY + window.pageYOffset);
-    setContent(`${name} ${countries[name] ? countries[name].flag : ''}`);
-    setHide(false);
-  };
+  const handleEnter: HandleEnter =
+    (geography) =>
+    (evt): void => {
+      const name = geography.properties.NAME || "";
+      setX(evt.clientX);
+      setY(evt.clientY + window.pageYOffset);
+      setContent(`${name} ${countries[name] ? countries[name].flag : ""}`);
+      setHide(false);
+    };
 
   const handleLeave = (): void => {
     setHide(true);
@@ -89,10 +93,7 @@ function useWorldMap(): WorldMapHook {
 }
 
 const WorldMap = React.memo(() => {
-  const {
-    x, y, content, hide,
-    handleEnter, handleLeave,
-  } = useWorldMap();
+  const { x, y, content, hide, handleEnter, handleLeave } = useWorldMap();
 
   const screenWidth = document.body.clientWidth - 32;
 
@@ -104,10 +105,15 @@ const WorldMap = React.memo(() => {
         projectionConfig={{ scale: screenWidth * RATIO }}
       >
         <ZoomableGroup>
-          <Sphere id="rsm-sphere" stroke={FILL} strokeWidth={2} fill="transparent" />
+          <Sphere
+            id="rsm-sphere"
+            stroke={FILL}
+            strokeWidth={2}
+            fill="transparent"
+          />
           <Geographies geography="/world-110m.json">
-            {({ geographies }): React.ReactNodeArray => geographies.map(
-              (geo: GeographyType) => (
+            {({ geographies }): React.ReactNodeArray =>
+              geographies.map((geo: GeographyType) => (
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
@@ -115,11 +121,15 @@ const WorldMap = React.memo(() => {
                   onMouseLeave={handleLeave}
                   style={{
                     default: {
-                      fill: countries[geo.properties.NAME] ? countries[geo.properties.NAME].color : FILL,
+                      fill: countries[geo.properties.NAME]
+                        ? countries[geo.properties.NAME].color
+                        : FILL,
                       ...defaultStyle,
                     },
                     hover: {
-                      fill: countries[geo.properties.NAME] ? VISITED_HOVER : HOVER,
+                      fill: countries[geo.properties.NAME]
+                        ? VISITED_HOVER
+                        : HOVER,
                       ...defaultStyle,
                     },
                     pressed: {
@@ -128,8 +138,8 @@ const WorldMap = React.memo(() => {
                     },
                   }}
                 />
-              ),
-            )}
+              ))
+            }
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>

@@ -1,6 +1,6 @@
-import React from 'react';
-import RepositoryItem from './item';
-import FetchMore, { UpdateQueryType, Repository } from './item/FetchMore';
+import React from "react";
+import RepositoryItem from "./item";
+import FetchMore, { UpdateQueryType, Repository } from "./item/FetchMore";
 
 export interface RepositoryListProps {
   repositories: Repository;
@@ -30,7 +30,9 @@ const updateQuery: UpdateQueryType = (previousResult, { fetchMoreResult }) => {
   };
 };
 
-const RepositoryList: React.FC<RepositoryListProps> = (props: RepositoryListProps) => {
+const RepositoryList: React.FC<RepositoryListProps> = (
+  props: RepositoryListProps
+) => {
   const { repositories, loading, fetchMore } = props;
 
   return (

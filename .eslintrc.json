@@ -8,15 +8,20 @@
     "react-hooks"
   ],
   "extends": [
-    "google",
+    "airbnb",
+    "eslint:recommended",
+    "plugin:eslint-comments/recommended",
     "plugin:import/warnings",
     "plugin:import/errors",
-    "plugin:jsx-a11y/recommended",
-    "eslint:recommended",
+    "plugin:jest/recommended",
     "plugin:react/recommended",
-    "airbnb",
+    "plugin:jsx-a11y/recommended",
+    "./node_modules/gts",
+    "airbnb-typescript",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -35,18 +40,15 @@
     "jest": true
   },
   "rules": {
-    "import/extensions": "off",
-    "max-len": "off",
-    "no-invalid-this": "off",
-    "no-param-reassign": "off",
-    "no-shadow": "off",
-    "no-unused-expressions": "off",
+    "@typescript-eslint/await-thenable": "off",
+    "@typescript-eslint/no-unused-expressions": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
+    "no-param-reassign": "off",
+    "react/display-name": "off",
     "react/jsx-props-no-spreading": "off",
     "react/no-array-index-key": "off",
     "react/require-default-props": "off",
-    "react/static-property-placement": "off",
 
     "@typescript-eslint/ban-types": "warn",
     "no-alert": "warn",
@@ -54,25 +56,38 @@
     "react/no-did-mount-set-state": "warn",
     "react-hooks/exhaustive-deps": "warn",
 
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": ["**/*.test.{ts,tsx}", "src/setupTests.ts"]}],   
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": ["**/*.test.{ts,tsx}", "src/setupTests.ts"] }
+    ],
     "no-lone-blocks": "error",
-    "object-curly-spacing": [ "error", "always", { "arraysInObjects": false, "objectsInObjects": false }],
     "prefer-destructuring": ["error", { "array": false, "object": true }],
-    "react/default-props-match-prop-types": ["error", { "allowRequiredDefaults": true }],
-    "react/jsx-filename-extension": ["error", { "extensions": [".tsx", ".jsx"]}],
-    "react-hooks/rules-of-hooks": "error",
-
-    "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": "error"
+    "react-hooks/rules-of-hooks": "error"
   },
   "settings": {
     "react": {
-      "version":  "detect"
+      "version": "detect"
     },
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parserOptions": {
+        "project": ["./tsconfig.json"]
+      }
+    },
+    {
+      "files": ["*.test.ts", "*.test.tsx", "redux-test-render.tsx"],
+      "rules": {
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "node/no-unpublished-import": "off"
+      }
+    }
+  ]
 }

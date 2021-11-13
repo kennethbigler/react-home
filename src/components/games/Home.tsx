@@ -1,16 +1,16 @@
-import React from 'react';
-import Typography from '@mui/material/Typography';
+import React from "react";
+import Typography from "@mui/material/Typography";
 
-const wrapperStyles: React.CSSProperties = { textAlign: 'center', marginTop: 20 };
+const wrapperStyles: React.CSSProperties = {
+  textAlign: "center",
+  marginTop: 20,
+};
 
 const Home = React.memo(() => (
   <div style={wrapperStyles}>
-    <Typography variant="h2">
-      Welcome to my ReactJS Game Projects
-    </Typography>
+    <Typography variant="h2">Welcome to my ReactJS Game Projects</Typography>
     <Typography variant="h3">
-      This site was created to learn, check out the
-      {' '}
+      This site was created to learn, check out the{" "}
       <a href="https://github.com/kennethbigler/react-home">
         <code>&lt;source&nbsp;code/&gt;</code>
       </a>

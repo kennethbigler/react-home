@@ -1,48 +1,74 @@
-import localForage from 'localforage';
-import { DBCard } from '../store/types';
+import localForage from "localforage";
+import { DBCard } from "../store/types";
 
 const NEW_DECK: DBCard[] = [
-  { name: '2', weight: 2, suit: '♣' }, { name: '3', weight: 3, suit: '♣' },
-  { name: '4', weight: 4, suit: '♣' }, { name: '5', weight: 5, suit: '♣' },
-  { name: '6', weight: 6, suit: '♣' }, { name: '7', weight: 7, suit: '♣' },
-  { name: '8', weight: 8, suit: '♣' }, { name: '9', weight: 9, suit: '♣' },
-  { name: '10', weight: 10, suit: '♣' }, { name: 'J', weight: 11, suit: '♣' },
-  { name: 'Q', weight: 12, suit: '♣' }, { name: 'K', weight: 13, suit: '♣' },
-  { name: 'A', weight: 14, suit: '♣' }, { name: '2', weight: 2, suit: '♦' },
-  { name: '3', weight: 3, suit: '♦' }, { name: '4', weight: 4, suit: '♦' },
-  { name: '5', weight: 5, suit: '♦' }, { name: '6', weight: 6, suit: '♦' },
-  { name: '7', weight: 7, suit: '♦' }, { name: '8', weight: 8, suit: '♦' },
-  { name: '9', weight: 9, suit: '♦' }, { name: '10', weight: 10, suit: '♦' },
-  { name: 'J', weight: 11, suit: '♦' }, { name: 'Q', weight: 12, suit: '♦' },
-  { name: 'K', weight: 13, suit: '♦' }, { name: 'A', weight: 14, suit: '♦' },
-  { name: '2', weight: 2, suit: '♥' }, { name: '3', weight: 3, suit: '♥' },
-  { name: '4', weight: 4, suit: '♥' }, { name: '5', weight: 5, suit: '♥' },
-  { name: '6', weight: 6, suit: '♥' }, { name: '7', weight: 7, suit: '♥' },
-  { name: '8', weight: 8, suit: '♥' }, { name: '9', weight: 9, suit: '♥' },
-  { name: '10', weight: 10, suit: '♥' }, { name: 'J', weight: 11, suit: '♥' },
-  { name: 'Q', weight: 12, suit: '♥' }, { name: 'K', weight: 13, suit: '♥' },
-  { name: 'A', weight: 14, suit: '♥' }, { name: '2', weight: 2, suit: '♠' },
-  { name: '3', weight: 3, suit: '♠' }, { name: '4', weight: 4, suit: '♠' },
-  { name: '5', weight: 5, suit: '♠' }, { name: '6', weight: 6, suit: '♠' },
-  { name: '7', weight: 7, suit: '♠' }, { name: '8', weight: 8, suit: '♠' },
-  { name: '9', weight: 9, suit: '♠' }, { name: '10', weight: 10, suit: '♠' },
-  { name: 'J', weight: 11, suit: '♠' }, { name: 'Q', weight: 12, suit: '♠' },
-  { name: 'K', weight: 13, suit: '♠' }, { name: 'A', weight: 14, suit: '♠' },
+  { name: "2", weight: 2, suit: "♣" },
+  { name: "3", weight: 3, suit: "♣" },
+  { name: "4", weight: 4, suit: "♣" },
+  { name: "5", weight: 5, suit: "♣" },
+  { name: "6", weight: 6, suit: "♣" },
+  { name: "7", weight: 7, suit: "♣" },
+  { name: "8", weight: 8, suit: "♣" },
+  { name: "9", weight: 9, suit: "♣" },
+  { name: "10", weight: 10, suit: "♣" },
+  { name: "J", weight: 11, suit: "♣" },
+  { name: "Q", weight: 12, suit: "♣" },
+  { name: "K", weight: 13, suit: "♣" },
+  { name: "A", weight: 14, suit: "♣" },
+  { name: "2", weight: 2, suit: "♦" },
+  { name: "3", weight: 3, suit: "♦" },
+  { name: "4", weight: 4, suit: "♦" },
+  { name: "5", weight: 5, suit: "♦" },
+  { name: "6", weight: 6, suit: "♦" },
+  { name: "7", weight: 7, suit: "♦" },
+  { name: "8", weight: 8, suit: "♦" },
+  { name: "9", weight: 9, suit: "♦" },
+  { name: "10", weight: 10, suit: "♦" },
+  { name: "J", weight: 11, suit: "♦" },
+  { name: "Q", weight: 12, suit: "♦" },
+  { name: "K", weight: 13, suit: "♦" },
+  { name: "A", weight: 14, suit: "♦" },
+  { name: "2", weight: 2, suit: "♥" },
+  { name: "3", weight: 3, suit: "♥" },
+  { name: "4", weight: 4, suit: "♥" },
+  { name: "5", weight: 5, suit: "♥" },
+  { name: "6", weight: 6, suit: "♥" },
+  { name: "7", weight: 7, suit: "♥" },
+  { name: "8", weight: 8, suit: "♥" },
+  { name: "9", weight: 9, suit: "♥" },
+  { name: "10", weight: 10, suit: "♥" },
+  { name: "J", weight: 11, suit: "♥" },
+  { name: "Q", weight: 12, suit: "♥" },
+  { name: "K", weight: 13, suit: "♥" },
+  { name: "A", weight: 14, suit: "♥" },
+  { name: "2", weight: 2, suit: "♠" },
+  { name: "3", weight: 3, suit: "♠" },
+  { name: "4", weight: 4, suit: "♠" },
+  { name: "5", weight: 5, suit: "♠" },
+  { name: "6", weight: 6, suit: "♠" },
+  { name: "7", weight: 7, suit: "♠" },
+  { name: "8", weight: 8, suit: "♠" },
+  { name: "9", weight: 9, suit: "♠" },
+  { name: "10", weight: 10, suit: "♠" },
+  { name: "J", weight: 11, suit: "♠" },
+  { name: "Q", weight: 12, suit: "♠" },
+  { name: "K", weight: 13, suit: "♠" },
+  { name: "A", weight: 14, suit: "♠" },
 ];
 
 /** immutably get a copy of new deck O(N) */
 const getNewDeck = (): DBCard[] => NEW_DECK.map((card) => ({ ...card }));
 
 /** get immutable copy of deck O(N) */
-const getDeck = (): Promise<DBCard[]> => localForage
-  .getItem('deck')
-  .then((data: unknown) => (data as DBCard[] || getNewDeck()))
-  .catch(() => getNewDeck());
+const getDeck = (): Promise<DBCard[]> =>
+  localForage
+    .getItem("deck")
+    .then((data: unknown) => (data as DBCard[]) || getNewDeck())
+    .catch(() => getNewDeck());
 
 /** immutably update deck O(N) */
-const setDeck = (deck: DBCard[]): Promise<DBCard[] | null> => localForage
-  .setItem('deck', deck)
-  .catch(() => null);
+const setDeck = (deck: DBCard[]): Promise<DBCard[] | null> =>
+  localForage.setItem("deck", deck).catch(() => null);
 
 /** randomize order of the cards O(N + M) */
 const shuffle = (): Promise<DBCard[] | null> => {

@@ -1,10 +1,10 @@
-import React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
-import { grey } from '@mui/material/colors';
-import Cell from './Cell';
+import React from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
+import { grey } from "@mui/material/colors";
+import Cell from "./Cell";
 
 interface BoardProps {
   board: string[] | undefined[];
@@ -14,7 +14,7 @@ interface BoardProps {
 
 const tableCellStyle: React.CSSProperties = {
   padding: 0,
-  textAlign: 'center',
+  textAlign: "center",
   border: `1px solid ${grey[400]}`,
 };
 
@@ -34,15 +34,15 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
         const winner = winRow.includes(c);
         row.push(
           <TableCell key={`${i},${j}`} style={tableCellStyle}>
-            <Cell onClick={(): void => onClick(c)} value={board[c]} winner={winner} />
-          </TableCell>,
+            <Cell
+              onClick={(): void => onClick(c)}
+              value={board[c]}
+              winner={winner}
+            />
+          </TableCell>
         );
       }
-      const boardRow = (
-        <TableRow key={`row${i}`}>
-          {row}
-        </TableRow>
-      );
+      const boardRow = <TableRow key={`row${i}`}>{row}</TableRow>;
       // separate into rows
       newCells.push(boardRow);
     }
@@ -51,9 +51,7 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
 
   return (
     <Table>
-      <TableBody>
-        {cells}
-      </TableBody>
+      <TableBody>{cells}</TableBody>
     </Table>
   );
 };

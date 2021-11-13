@@ -1,8 +1,8 @@
-import React from 'react';
-import Paper from '@mui/material/Paper';
-import Board from './Board';
-import Header from './Header';
-import { C4Turn } from '../../../store/types';
+import React from "react";
+import Paper from "@mui/material/Paper";
+import Board from "./Board";
+import Header from "./Header";
+import { C4Turn } from "../../../store/types";
 
 interface GameBoardProps {
   board: number[][];
@@ -13,10 +13,7 @@ interface GameBoardProps {
 }
 
 const GameBoard: React.FC<GameBoardProps> = (props: GameBoardProps) => {
-  const {
-    board, insert, winner, turn,
-    newGame,
-  } = props;
+  const { board, insert, winner, turn, newGame } = props;
 
   return (
     <Paper
@@ -24,8 +21,8 @@ const GameBoard: React.FC<GameBoardProps> = (props: GameBoardProps) => {
       style={{
         maxWidth: 900,
         minWidth: 300,
-        display: 'block',
-        margin: 'auto',
+        display: "block",
+        margin: "auto",
         paddingBottom: 5,
       }}
     >

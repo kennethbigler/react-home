@@ -1,7 +1,7 @@
-import React from 'react';
-import { Typography } from '@mui/material';
-import TravelTable from './TravelTable';
-import WorldMap from './WorldMap';
+import React from "react";
+import { Typography } from "@mui/material";
+import TravelTable from "./TravelTable";
+import WorldMap from "./WorldMap";
 
 /* TravelMap  ->  WorldMap  ->  Popover
  *           |->  TravelTable */

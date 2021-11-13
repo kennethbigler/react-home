@@ -1,7 +1,7 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import { getMoneyText } from './helpers';
-import { Briefcase } from '../../../store/types';
+import React from "react";
+import Button from "@mui/material/Button";
+import { getMoneyText } from "./helpers";
+import { Briefcase } from "../../../store/types";
 
 interface CaseProps {
   briefcase: Briefcase;
@@ -13,7 +13,7 @@ const style = { margin: 10 };
 
 const Case: React.FC<CaseProps> = (props: CaseProps) => {
   const { onClick, briefcase: bc, secondary } = props;
-  const color = secondary ? 'secondary' : 'primary';
+  const color = secondary ? "secondary" : "primary";
   const label = bc.on ? bc.loc : getMoneyText(bc.val);
 
   return (

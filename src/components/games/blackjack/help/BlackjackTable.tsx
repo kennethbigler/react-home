@@ -1,27 +1,25 @@
-import React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Cell from './Cell';
-import Row, { RowProps } from './Row';
+import React from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Cell from "./Cell";
+import Row, { RowProps } from "./Row";
 
-interface BlackjackTable {
+interface BlackjackTableProps {
   data: RowProps[];
   title: string;
 }
 
-const cards: string[] = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'A'];
+const cards: string[] = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "A"];
 const cellStyle: React.CSSProperties = { width: 60 };
 
-const BlackjackTable: React.FC<BlackjackTable> = ({ title, data }: BlackjackTable) => (
+const BlackjackTable: React.FC<BlackjackTableProps> = ({ title, data }) => (
   <Table>
     <TableHead>
       <TableRow>
-        <TableCell colSpan={11}>
-          {title}
-        </TableCell>
+        <TableCell colSpan={11}>{title}</TableCell>
       </TableRow>
     </TableHead>
     <TableBody>
@@ -30,9 +28,13 @@ const BlackjackTable: React.FC<BlackjackTable> = ({ title, data }: BlackjackTabl
         <Cell colSpan={10} text="Dealer" />
       </TableRow>
       <TableRow>
-        {cards.map((c) => <Cell key={c} text={c} />)}
+        {cards.map((c) => (
+          <Cell key={c} text={c} />
+        ))}
       </TableRow>
-      {data.map((obj) => <Row key={obj.name} name={obj.name} data={obj.data} />)}
+      {data.map((obj) => (
+        <Row key={obj.name} name={obj.name} data={obj.data} />
+      ))}
     </TableBody>
   </Table>
 );

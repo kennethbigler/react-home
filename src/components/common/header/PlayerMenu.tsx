@@ -1,17 +1,17 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Switch from '@mui/material/Switch';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import { updateName, updateBot } from '../../../store/modules/players';
-import { DBRootState } from '../../../store/types';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Switch from "@mui/material/Switch";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { updateName, updateBot } from "../../../store/modules/players";
+import { DBRootState } from "../../../store/types";
 
 const namePadStyles: React.CSSProperties = {
-  maxWidth: '420px',
-  width: '100%',
-  display: 'block',
-  margin: 'auto',
+  maxWidth: "420px",
+  width: "100%",
+  display: "block",
+  margin: "auto",
 };
 
 const PlayerMenu: React.FC = () => {
@@ -25,43 +25,41 @@ const PlayerMenu: React.FC = () => {
     (id: number, isChecked: boolean): void => {
       dispatch(updateBot(id, isChecked));
     },
-    [dispatch],
+    [dispatch]
   );
 
   /** update player name onBlur - dispatch to redux */
   const handleBlur = React.useCallback(
-    (id: number) => (e: React.FocusEvent<HTMLInputElement>): void => {
-      dispatch(updateName(id, e.target.value || ''));
-    },
-    [dispatch],
+    (id: number) =>
+      (e: React.FocusEvent<HTMLInputElement>): void => {
+        dispatch(updateName(id, e.target.value || ""));
+      },
+    [dispatch]
   );
 
   /** if enter key was pressed in textfield, update name - dispatch to redux */
   const handleKeyPress = React.useCallback(
-    (id: number) => (e: React.KeyboardEvent<HTMLDivElement>): void => {
-      if (e.key === 'Enter') {
-        dispatch(updateName(id, (e.target as HTMLInputElement).value || ''));
-      }
-    },
-    [dispatch],
+    (id: number) =>
+      (e: React.KeyboardEvent<HTMLDivElement>): void => {
+        if (e.key === "Enter") {
+          dispatch(updateName(id, (e.target as HTMLInputElement).value || ""));
+        }
+      },
+    [dispatch]
   );
 
   return (
     <div style={namePadStyles}>
       <Grid container spacing={1}>
         <Grid item xs={9}>
-          <Typography variant="h5">
-            Edit Player Names
-          </Typography>
+          <Typography variant="h5">Edit Player Names</Typography>
         </Grid>
         <Grid item xs={3}>
-          <Typography variant="h5">
-            Is Bot?
-          </Typography>
+          <Typography variant="h5">Is Bot?</Typography>
         </Grid>
       </Grid>
-      {players.map((p, i) => (p.id !== 0
-        ? (
+      {players.map((p, i) =>
+        p.id !== 0 ? (
           <Grid key={`${p.name},${i}`} container spacing={1}>
             <Grid item xs={9}>
               <TextField
@@ -85,16 +83,14 @@ const PlayerMenu: React.FC = () => {
         ) : (
           <Grid key={`${p.name},${i}`} container spacing={1}>
             <Grid item xs={9}>
-              <Typography variant="h5">
-                {p.name}
-              </Typography>
+              <Typography variant="h5">{p.name}</Typography>
             </Grid>
             <Grid item xs={3}>
               <Switch checked disabled />
             </Grid>
           </Grid>
         )
-      ))}
+      )}
     </div>
   );
 };

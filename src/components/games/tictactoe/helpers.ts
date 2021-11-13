@@ -1,10 +1,13 @@
-import { O, X, EMPTY } from '../../../store/initialState';
+import { O, X, EMPTY } from "../../../store/initialState";
 
 export const getTurn = (n: number): string => (n % 2 ? O : X);
 
 /** function to check if there are 3 in a row
  * @return value of winner and positions for winner */
-export function calculateWinner(board: string[] | undefined[]): { winner?: string; winRow: [number?, number?, number?] } {
+export function calculateWinner(board: string[] | undefined[]): {
+  winner?: string;
+  winRow: [number?, number?, number?];
+} {
   const lines: [number, number, number][] = [
     // horizontal
     [0, 1, 2],
@@ -27,7 +30,7 @@ export function calculateWinner(board: string[] | undefined[]): { winner?: strin
       return { winner: board[a], winRow: lines[i] };
     }
   }
-  return { winner: undefined, winRow: []};
+  return { winner: undefined, winRow: [] };
 }
 
 export default getTurn;

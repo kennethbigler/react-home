@@ -1,7 +1,7 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { Dice } from '../../../store/types';
+import React from "react";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { Dice } from "../../../store/types";
 
 interface TableHeaderProps {
   roll: Dice;
@@ -13,12 +13,21 @@ interface TableHeaderProps {
   getButtonText: (roll: Dice) => string;
 }
 
-const wrapperStyles: React.CSSProperties = { display: 'block', margin: 'auto', width: 320 };
+const wrapperStyles: React.CSSProperties = {
+  display: "block",
+  margin: "auto",
+  width: 320,
+};
 
 const TableHeader: React.FC<TableHeaderProps> = (props: TableHeaderProps) => {
   const {
-    values, saved, roll, handleUnsave,
-    handleSave, handleDiceRoll, getButtonText,
+    values,
+    saved,
+    roll,
+    handleUnsave,
+    handleSave,
+    handleDiceRoll,
+    getButtonText,
   } = props;
 
   return (
@@ -26,17 +35,32 @@ const TableHeader: React.FC<TableHeaderProps> = (props: TableHeaderProps) => {
       <Typography variant="h4">{`Roll #${roll}/3`}</Typography>
       <div style={wrapperStyles}>
         {saved.map((val, i) => (
-          <Button color="secondary" onClick={(): void => handleUnsave(i)} variant="outlined" key={i}>
+          <Button
+            color="secondary"
+            onClick={(): void => handleUnsave(i)}
+            variant="outlined"
+            key={i}
+          >
             {val}
           </Button>
         ))}
         {values.map((val, i) => (
-          <Button color="primary" onClick={(): void => handleSave(i)} variant="outlined" key={i}>
+          <Button
+            color="primary"
+            onClick={(): void => handleSave(i)}
+            variant="outlined"
+            key={i}
+          >
             {val}
           </Button>
         ))}
       </div>
-      <Button color="primary" onClick={handleDiceRoll} variant="contained" disabled={roll === 3}>
+      <Button
+        color="primary"
+        onClick={handleDiceRoll}
+        variant="contained"
+        disabled={roll === 3}
+      >
         {getButtonText(roll)}
       </Button>
     </div>

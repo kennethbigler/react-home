@@ -1,53 +1,64 @@
-import React from 'react';
-import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider';
-import noop from '../../apis/noop';
+import React from "react";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
+import noop from "../../apis/noop";
 
 interface MenuProps {
   onItemClick?: (loc: string) => void;
 }
 
 // external links
-const github = (): void => { window.open('https://github.com/kennethbigler/react-home'); };
-const linkedIn = (): void => { window.open('https://www.linkedin.com/in/kennethbigler'); };
-const stackOverflow = (): void => { window.open('https://stackoverflow.com/users/4830309/ken-bigler'); };
+const github = (): void => {
+  window.open("https://github.com/kennethbigler/react-home");
+};
+const linkedIn = (): void => {
+  window.open("https://www.linkedin.com/in/kennethbigler");
+};
+const stackOverflow = (): void => {
+  window.open("https://stackoverflow.com/users/4830309/ken-bigler");
+};
 
 const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
   const { onItemClick } = props;
   // internal routes
-  const menu = React.useMemo(() => [
-    { name: 'Summary', route: '' },
-    { name: 'Work', route: 'work' },
-    { name: 'Resume', route: 'resume' },
-    { name: 'Hackathons & Education', route: 'education' },
-    { divider: true },
-    { name: 'Git Tools', route: 'git-tools' },
-    { name: 'GraphQL Demo', route: 'graphql' },
-    { divider: true },
-    { name: 'Cars', route: 'cars' },
-    { name: 'Travel Map', route: 'travel' },
-    { name: 'Murder Mystery', route: 'murder' },
-    { name: 'React Games', route: 'games' },
-  ].map((item, index) => (item.divider
-    ? (
-      <Divider key={index} />
-    ) : (
-      <MenuItem key={item.name} onClick={(): void => (onItemClick ? onItemClick(`/${item.route}`) : noop())}>
-        {item.name}
-      </MenuItem>
-    )
-  )), [onItemClick]);
+  const menu = React.useMemo(
+    () =>
+      [
+        { name: "Summary", route: "" },
+        { name: "Work", route: "work" },
+        { name: "Resume", route: "resume" },
+        { name: "Hackathons & Education", route: "education" },
+        { divider: true },
+        { name: "Git Tools", route: "git-tools" },
+        { name: "GraphQL Demo", route: "graphql" },
+        { divider: true },
+        { name: "Cars", route: "cars" },
+        { name: "Travel Map", route: "travel" },
+        { name: "Murder Mystery", route: "murder" },
+        { name: "React Games", route: "games" },
+      ].map((item, index) =>
+        item.divider ? (
+          <Divider key={index} />
+        ) : (
+          <MenuItem
+            key={item.name}
+            onClick={(): void =>
+              onItemClick ? onItemClick(`/${item.route || ""}`) : noop()
+            }
+          >
+            {item.name}
+          </MenuItem>
+        )
+      ),
+    [onItemClick]
+  );
 
   return (
     <>
       {menu}
       <Divider />
-      <MenuItem onClick={github}>
-        GitHub
-      </MenuItem>
-      <MenuItem onClick={linkedIn}>
-        LinkedIn
-      </MenuItem>
+      <MenuItem onClick={github}>GitHub</MenuItem>
+      <MenuItem onClick={linkedIn}>LinkedIn</MenuItem>
       <Divider />
       <br />
       <img
@@ -56,9 +67,9 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
         onClick={stackOverflow}
         src="https://stackoverflow.com/users/flair/4830309.png?theme=dark"
         style={{
-          display: 'block',
-          margin: 'auto',
-          cursor: 'pointer',
+          display: "block",
+          margin: "auto",
+          cursor: "pointer",
           width: 240,
           paddingLeft: 16,
           paddingRight: 16,
