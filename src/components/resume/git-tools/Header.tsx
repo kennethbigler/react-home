@@ -8,7 +8,7 @@ interface HeaderProps {
   storyID?: string;
 }
 
-const validId = RegExp("[A-Z]{4}-[a-zA-Z0-9]+");
+const validId = /[A-Z]{4}-[a-zA-Z0-9]+/;
 
 const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
   const { onIdChange, storyID, gitTheme } = props;

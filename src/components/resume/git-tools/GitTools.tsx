@@ -24,7 +24,7 @@ import {
 } from "../../../store/types";
 
 const gitTheme = deepOrange[600];
-export const validTypingId = RegExp("[A-Z]{1,4}-?[a-zA-Z0-9]*");
+export const validTypingId = /[A-Z]{1,4}-?[a-zA-Z0-9]*/;
 
 /** function to generate select items based of input */
 export const getSelectOptions = (arr: string[]): React.ReactNode =>

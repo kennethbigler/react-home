@@ -49,44 +49,40 @@ const GameTable = (props: GameTableProps): React.ReactElement => {
     [hideHands, gameOver, players, turn.player]
   );
 
-  return (
+  return isBlackJack && !hideHands ? (
     <>
-      {isBlackJack && !hideHands ? (
-        <>
-          <Board
-            players={played}
-            betHandler={betHandler}
-            cardHandler={cardClickHandler}
-            cardsToDiscard={cardsToDiscard}
-            hideHands={hideHands}
-            isBlackJack={isBlackJack}
-            turn={turn}
-          />
-          <ButtonGroup gameFunctions={gameFunctions} onClick={onClick} />
-          <Board
-            players={future}
-            betHandler={betHandler}
-            cardHandler={cardClickHandler}
-            cardsToDiscard={cardsToDiscard}
-            hideHands={hideHands}
-            isBlackJack={isBlackJack}
-            turn={{ player: -1, hand: -1 }}
-          />
-        </>
-      ) : (
-        <>
-          <Board
-            players={playersToDisplay}
-            betHandler={betHandler}
-            cardHandler={cardClickHandler}
-            cardsToDiscard={cardsToDiscard}
-            hideHands={hideHands}
-            isBlackJack={isBlackJack}
-            turn={turn}
-          />
-          <ButtonGroup gameFunctions={gameFunctions} onClick={onClick} />
-        </>
-      )}
+      <Board
+        players={played}
+        betHandler={betHandler}
+        cardHandler={cardClickHandler}
+        cardsToDiscard={cardsToDiscard}
+        hideHands={hideHands}
+        isBlackJack={isBlackJack}
+        turn={turn}
+      />
+      <ButtonGroup gameFunctions={gameFunctions} onClick={onClick} />
+      <Board
+        players={future}
+        betHandler={betHandler}
+        cardHandler={cardClickHandler}
+        cardsToDiscard={cardsToDiscard}
+        hideHands={hideHands}
+        isBlackJack={isBlackJack}
+        turn={{ player: -1, hand: -1 }}
+      />
+    </>
+  ) : (
+    <>
+      <Board
+        players={playersToDisplay}
+        betHandler={betHandler}
+        cardHandler={cardClickHandler}
+        cardsToDiscard={cardsToDiscard}
+        hideHands={hideHands}
+        isBlackJack={isBlackJack}
+        turn={turn}
+      />
+      <ButtonGroup gameFunctions={gameFunctions} onClick={onClick} />
     </>
   );
 };

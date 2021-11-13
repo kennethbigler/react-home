@@ -116,6 +116,7 @@ describe("resume | graphql | Profile", () => {
       </MockedProvider>
     );
 
+    // eslint-disable-next-line no-promise-executor-return
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(screen.getByText("Something Went Wrong")).toBeInTheDocument();

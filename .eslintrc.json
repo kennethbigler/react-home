@@ -45,10 +45,13 @@
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
     "no-param-reassign": "off",
+    "no-restricted-exports": "off",
     "react/display-name": "off",
+    "react/function-component-definition": "off",
     "react/jsx-props-no-spreading": "off",
     "react/no-array-index-key": "off",
     "react/require-default-props": "off",
+    "default-param-last": "off",
 
     "@typescript-eslint/ban-types": "warn",
     "no-alert": "warn",
