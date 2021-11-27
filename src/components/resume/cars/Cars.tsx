@@ -13,10 +13,10 @@ const Cars = React.memo(() => {
   const [showAnimation, setShowAnimation] = React.useState(true);
   const [hide, setHide] = React.useState<HideObject>({});
 
-  const vw = Math.max(
-    document.documentElement.clientWidth || 0,
-    window.innerWidth || 0
-  );
+  const { clientWidth, clientHeight } = document.documentElement;
+  const { innerWidth, innerHeight } = window;
+  const vw = Math.max(clientWidth, innerWidth, 0);
+  const vh = Math.max(clientHeight, innerHeight, 0);
 
   const handleClick = (key: ShowKey) => () => {
     if (key === "ken" || key === "family") {
@@ -48,7 +48,13 @@ const Cars = React.memo(() => {
       <Typography variant="h2">Ken&apos;s Cars</Typography>
       <br />
       <CarChartControls onClick={handleClick} hide={hide} vw={vw} />
-      <CarChart showAnimation={showAnimation} data={data} hide={hide} vw={vw} />
+      <CarChart
+        showAnimation={showAnimation}
+        data={data}
+        hide={hide}
+        vw={vw}
+        vh={vh}
+      />
       <TimelineCard
         enableLongTitles
         data={data}

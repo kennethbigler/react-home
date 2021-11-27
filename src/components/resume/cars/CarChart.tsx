@@ -24,15 +24,16 @@ export interface CarChartProps {
   showAnimation: boolean;
   hide: HideObject;
   vw: number;
+  vh: number;
   data: CarStats[];
 }
 
 const CarChart = React.memo(
-  ({ data, showAnimation, hide, vw }: CarChartProps) => {
+  ({ data, showAnimation, hide, vw, vh }: CarChartProps) => {
     const processedData = processData(data);
 
     return (
-      <ResponsiveContainer width="100%" height={680}>
+      <ResponsiveContainer width="100%" height={vh <= 744 ? vh - 80 : 664}>
         <LineChart data={processedData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
