@@ -27,7 +27,7 @@
     "recharts": "2.1.6",
     "redux": "4.1.2",
     "redux-devtools-extension": "2.13.9",
-    "redux-thunk": "2.4.0"
+    "redux-thunk": "2.4.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "5.15.1",
