@@ -39,17 +39,13 @@ const CopyTextDisplay: React.FC<CopyTextDisplayProps> = (
       />
       <Snackbar
         action={[
-          <IconButton
-            key="close"
-            onClick={handleClose as React.MouseEventHandler}
-            size="large"
-          >
+          <IconButton key="close" onClick={handleClose} size="large">
             <CloseIcon />
           </IconButton>,
         ]}
         autoHideDuration={4000}
         message="Copied Commit Text to clipboard!"
-        onClose={handleClose as React.ReactEventHandler}
+        onClose={handleClose}
         open={isOpen}
       />
     </>
