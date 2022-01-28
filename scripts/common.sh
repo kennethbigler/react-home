@@ -11,5 +11,5 @@ function throwError() {
 function buildApp() {
   echo "Running build scripts..."
   echo $LINE
-  DISABLE_ESLINT_PLUGIN=true npm run build || throwError "build"
+  npm run build || throwError "build"
 }

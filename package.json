@@ -64,8 +64,8 @@
     "typescript": "4.5.5"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
+    "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
     "test": "DEBUG_PRINT_LIMIT=100000 react-scripts test",
     "test:coverage": "react-scripts test --coverage",
     "test:debug": "DEBUG_PRINT_LIMIT=100000 react-scripts test --coverage",
