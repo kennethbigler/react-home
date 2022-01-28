@@ -108,11 +108,15 @@ describe("games | yahtzee | Yahtzee", () => {
     const buttons = screen.getAllByRole("button");
     const chanceButton = buttons[buttons.length - 1];
     fireEvent.click(chanceButton);
-    // @ts-expect-error: we know this will have a value
-    const submittedValue = parseInt(
-      chanceButton.textContent[4] + chanceButton.textContent[5],
-      10
-    );
+    const textContent = chanceButton.textContent || [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+    ];
+    const submittedValue = parseInt(textContent[4] + textContent[5], 10);
     expect(screen.getAllByText(`${submittedValue}`)).toHaveLength(3);
   });
 });
