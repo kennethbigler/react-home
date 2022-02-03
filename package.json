@@ -10,6 +10,8 @@
   "version": "4.0.0",
   "dependencies": {
     "@apollo/client": "3.5.8",
+    "@emotion/react": "11.7.1",
+    "@emotion/styled": "11.6.0",
     "@mui/icons-material": "5.3.1",
     "@mui/material": "5.3.1",
     "copy-to-clipboard": "3.3.1",
@@ -66,9 +68,9 @@
     "test:all": "react-scripts test --coverage --watchAll",
     "deploy": "./scripts/deploy.sh",
     "analyze": "source-map-explorer 'docs/static/js/*.js'",
-    "analyze-local": "./scripts/analyze.sh",
+    "analyze:local": "./scripts/analyze.sh",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
-    "qlint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet"
+    "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet"
   },
   "browserslist": [
     ">0.2%",
