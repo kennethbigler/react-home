@@ -9,7 +9,7 @@
   "license": "MIT",
   "version": "4.0.0",
   "dependencies": {
-    "@apollo/client": "3.5.8",
+    "@apollo/client": "3.5.9",
     "@emotion/react": "11.7.1",
     "@emotion/styled": "11.6.0",
     "@mui/icons-material": "5.4.1",
