@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import Cars from "../Cars";
 import cars from "../../../../constants/cars";
 
-const demoCar = cars[0];
+const demoCar = cars[1];
 
 describe("resume | cars | Cars", () => {
   it("renders as expected", () => {
