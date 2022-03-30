@@ -13,6 +13,7 @@ import ftype15 from "../images/15_jaguar_f_type.webp";
 import mustang20 from "../images/20_ford_mustang.jpeg";
 import panamera21 from "../images/21_porsche_panamera.png";
 import bronco21 from "../images/21_ford_bronco.webp";
+import grom22 from "../images/22_honda_grom.webp";
 
 const prius = "Toyota Prius (2007)";
 const bonneville = "Pontiac Bonneville (1993)";
@@ -26,7 +27,7 @@ const corvette = "Chevrolet Corvette Z06 (2018)";
 const mustang2 = "Ford Mustang GT Premium (2020)";
 const panamera = "Porsche Panamera E-Hybrid (2021)";
 const bronco = "Ford Bronco Badlands (2021)";
-// const slingshot = 'Polaris Slingshot (2022)';
+const grom = "Honda Grom (2022)";
 
 const familyCars = [
   {
@@ -286,26 +287,27 @@ const kensCars = [
     MPG: 18,
     torque: 310,
     weight: 4499,
-  }, // {
-  //   color: red[500],
-  //   start: dateObj('2022-01'),
-  //   end: dateObj(),
-  //   car: 'Slingshot',
-  //   short: 'Slsht',
-  //   char: 'S',
-  //   title: slingshot,
+  },
+  {
+    color: grey[900],
+    start: dateObj("2022-03"),
+    end: dateObj(),
+    car: "Grom",
+    short: "Grom",
+    char: "G",
+    title: grom,
 
-  //   owned: '2022 - Present',
-  //   story: `motorcycle: ${slingshot}.`,
-  //   src: bronco21,
-  //   transmission: 'Manual',
+    owned: "2022 - Present",
+    story: `motorcycle: ${grom}.`,
+    src: grom22,
+    transmission: "Manual",
 
-  //   displacement: 2.0,
-  //   horsepower: 203,
-  //   MPG: 39,
-  //   torque: 144,
-  //   weight: 1645,
-  // },
+    displacement: 0.124,
+    horsepower: 9.7,
+    MPG: 97,
+    torque: 7.7,
+    weight: 230,
+  },
 ];
 
 familyCars.reverse();
