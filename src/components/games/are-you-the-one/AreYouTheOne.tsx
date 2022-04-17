@@ -31,12 +31,26 @@ const gents = [
   "Tyler",
 ];
 
+// [round-i: { pairs: [woman-i: man-i], score: x }]
 // [
-//   [9, 3, 2, 8, 4, 1, ...]
-//   [9, 3, 2, 8, 4, 1, ...]
-//   [9, 3, 2, 8, 4, 1, ...]
+//   {pairs: [9, 3, 2, 8, 4, 1, 6, 5, 7], score: 3}
+//   {pairs: [9, 3, 2, 8, 4, 1, 6, 5, 7], score: 3}
+//   {pairs: [9, 3, 2, 8, 4, 1, 6, 5, 7], score: 3}
 //   ...
 // ]
+
+// {
+//   confirmed: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1] // [woman-i: man-i]
+//   noMatch: [
+//     [0/1, 0/1, 0/1, 0/1, 0/1, 0/1, 0/1, 0/1, 0/1, 0/1],
+//     ...,
+//   ]
+// }
+
+// pairs.forEach((gentI, ladyI) => {
+//   if (confirmed[ladyI] !== -1) // confirmed
+//   if (noMatch[ladyI][gentI]) // noMatch
+// })
 
 const AreYouTheOne = () => (
   <>
