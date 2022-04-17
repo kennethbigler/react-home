@@ -408,3 +408,14 @@ export const romanToInt = (str: string): number => {
  */
 
 /** given an array of numbers, and a sum, find and return the index of 2 numbers that adds up to the sum */
+
+/**
+Problem: Create random quote generator app using React. 
+App should have the following features:
+1.  Displays the quote
+2.  Displays author of the quote displayed
+3.  Button to randomly fetch a different quote
+4.  Uses the following API to fetch quotes
+    API url: https://type.fit/api/quotes
+5.  If have time, make it looks better with css
+*/
