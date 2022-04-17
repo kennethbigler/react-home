@@ -6,12 +6,6 @@ import TeamDisplay from "./TeamsDisplay";
 import GameRound from "./GameRound";
 import FastMoney from "./FastMoney";
 
-/** TODO: (Beyond MVP)
- * set everything up to use redux
- * move questions from hard coded to redux
- * create question entry form
- */
-
 const FamilyFeud = () => {
   const [value, setValue] = React.useState(0);
   const [score1, setScore1] = React.useState(0);
@@ -60,11 +54,8 @@ const FamilyFeud = () => {
             "Electronic Accessory",
             "Badge",
             "Laptop",
-            "",
-            "",
-            "",
           ]}
-          scores={[48, 22, 14, 7, 7, 0, 0, 0]}
+          scores={[48, 22, 14, 7, 7]}
           onScore1={handleScore1}
           onScore2={handleScore2}
         />
@@ -79,10 +70,8 @@ const FamilyFeud = () => {
             "Time Control",
             "Flight",
             "Mind Reading",
-            "",
-            "",
           ]}
-          scores={[46, 21, 9, 9, 6, 6, 0, 0]}
+          scores={[46, 21, 9, 9, 6, 6]}
           onScore1={handleScore1}
           onScore2={handleScore2}
         />
@@ -96,11 +85,8 @@ const FamilyFeud = () => {
             "Keys",
             "Wallet",
             "Water Bottle",
-            "",
-            "",
-            "",
           ]}
-          scores={[45, 28, 11, 8, 5, 0, 0, 0]}
+          scores={[45, 28, 11, 8, 5]}
           onScore1={handleScore1}
           onScore2={handleScore2}
           modifier={2}
@@ -116,10 +102,8 @@ const FamilyFeud = () => {
             "Cool Off",
             "Swim",
             "Wear Shorts/Flip Flops",
-            "",
-            "",
           ]}
-          scores={[43, 18, 12, 9, 9, 6, 0, 0]}
+          scores={[43, 18, 12, 9, 9, 6]}
           onScore1={handleScore1}
           onScore2={handleScore2}
           modifier={3}
@@ -128,17 +112,8 @@ const FamilyFeud = () => {
       <TabPanel value={value} index={4}>
         <GameRound
           question="Name something you could not get through the workday without."
-          answers={[
-            "Coffee",
-            "Laptop",
-            "Water",
-            "Headphones",
-            "Tea",
-            "Slack",
-            "",
-            "",
-          ]}
-          scores={[37, 20, 14, 11, 11, 5, 0, 0]}
+          answers={["Coffee", "Laptop", "Water", "Headphones", "Tea", "Slack"]}
+          scores={[37, 20, 14, 11, 11, 5]}
           onScore1={handleScore1}
           onScore2={handleScore2}
           modifier={300}
@@ -171,8 +146,6 @@ const FamilyFeud = () => {
               "Don't put all your eggs in one basket",
               "Hand Basket",
               "Gift Basket",
-              "",
-              "",
             ],
             [
               "Tulip",
@@ -181,8 +154,6 @@ const FamilyFeud = () => {
               "Daffodil",
               "Daisy",
               "Sun Flower",
-              "",
-              "",
             ],
             [
               "Jumper Cables/Tools",
@@ -194,14 +165,14 @@ const FamilyFeud = () => {
               "Cash",
               "First Aid Kit",
             ],
-            ["Flower", "Power", "Cower", "Tower", "Bower", "Hour", "", ""],
+            ["Flower", "Power", "Cower", "Tower", "Bower", "Hour"],
           ]}
           scores={[
             [35, 15, 12, 10, 7, 7, 5, 5],
-            [47, 20, 14, 8, 5, 2, 0, 0],
-            [48, 13, 10, 10, 10, 6, 0, 0],
+            [47, 20, 14, 8, 5, 2],
+            [48, 13, 10, 10, 10, 6],
             [21, 18, 15, 12, 9, 9, 6, 6],
-            [36, 33, 9, 9, 6, 6, 0, 0],
+            [36, 33, 9, 9, 6, 6],
           ]}
         />
       </TabPanel>
