@@ -34,6 +34,9 @@ const TicTacToe = lazyWithPreload(
 const Yahtzee = lazyWithPreload(
   import(/* webpackChunkName: "g_yahtzee" */ "./yahtzee")
 );
+const FamilyFeud = lazyWithPreload(
+  import(/* webpackChunkName: "g_family_feud" */ "./family-feud")
+);
 
 const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
   <>
@@ -52,6 +55,7 @@ const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
         <Route path="slots/*" element={<Slots />} />
         <Route path="tictactoe/*" element={<TicTacToe />} />
         <Route path="yahtzee/*" element={<Yahtzee />} />
+        <Route path="family-feud/*" element={<FamilyFeud />} />
       </Routes>
     </React.Suspense>
   </>

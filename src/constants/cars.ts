@@ -290,7 +290,7 @@ const kensCars = [
   },
   {
     color: grey[900],
-    start: dateObj("2022-03"),
+    start: dateObj("2022-04"),
     end: dateObj(),
     car: "Grom",
     short: "Grom",
@@ -300,7 +300,7 @@ const kensCars = [
     owned: "2022 - Present",
     story: `motorcycle: ${grom}.`,
     src: grom22,
-    transmission: "Manual",
+    transmission: "Sequential",
 
     displacement: 0.124,
     horsepower: 9.7,
