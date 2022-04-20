@@ -3,9 +3,9 @@ import { C4Turn, DBConnect4 } from "../types";
 import initialState, { newConnect4Game } from "../initialState";
 
 // --------------------     Actions     -------------------- //
-const NEW_GAME = "@casino/ticTacToe/NEW_GAME";
-const UPDATE_TURN = "@casino/ticTacToe/UPDATE_TURN";
-const UPDATE_EVAL = "@casino/ticTacToe/UPDATE_EVAL";
+const NEW_GAME = "@games/connext4/NEW_GAME";
+const UPDATE_TURN = "@games/connext4/UPDATE_TURN";
+const UPDATE_EVAL = "@games/connext4/UPDATE_EVAL";
 
 // -------------------- Action Creators     -------------------- //
 type NewGameAction = Action<typeof NEW_GAME>;

@@ -1,7 +1,9 @@
 import { teal, deepOrange } from "@mui/material/colors";
 import SlotMachine from "../apis/SlotMachine";
+import { ladies, gents } from "../constants/ayto";
 
 import {
+  DBAYTO,
   DBGit,
   DBPlayer,
   DBBlackjack,
@@ -22,6 +24,14 @@ import {
 } from "./types";
 
 // --------------------     helpers     -------------------- //
+// ayto
+export const newAreYouTheOne = (): DBAYTO => ({
+  matches: {
+    confirmed: ladies.map(() => -1),
+    noMatch: ladies.map(() => gents.map(() => false)),
+  },
+  roundPairings: [],
+});
 // blackjack
 export const newBlackjackGame = (): DBBlackjack => ({
   gameFunctions: [GameFunctions.FINISH_BETTING],
@@ -163,6 +173,7 @@ export const newYahtzee = (): Omit<DBYahtzee, "scores"> => ({
 });
 
 // --------------------     initial states     -------------------- //
+const ayto: DBAYTO = newAreYouTheOne();
 const blackjack = newBlackjackGame();
 const connect4 = newConnect4Game();
 const dnd = newDNDGame();
@@ -196,6 +207,7 @@ const yahtzee: DBYahtzee = { ...newYahtzee(), scores: [] };
 
 // --------------------     export     -------------------- //
 export default {
+  ayto,
   blackjack,
   connect4,
   dnd,

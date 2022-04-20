@@ -3,12 +3,12 @@ import initialState, { newYahtzee } from "../initialState";
 import { DBYahtzee, Dice } from "../types";
 
 // --------------------     Actions     -------------------- //
-const ADD = "casino/yahtzee/SCORE";
-const NEW_GAME = "casino/yahtzee/NEW_GAME";
-const DICE_CLICK = "casino/yahtzee/DICE_CLICK";
-const UPDATE_TOP = "casino/yahtzee/UPDATE_TOP";
-const UPDATE_BOTTOM = "casino/yahtzee/UPDATE_BOTTOM";
-const UPDATE_ROLL = "casino/yahtzee/UPDATE_ROLL";
+const ADD = "@games/yahtzee/SCORE";
+const NEW_GAME = "@games/yahtzee/NEW_GAME";
+const DICE_CLICK = "@games/yahtzee/DICE_CLICK";
+const UPDATE_TOP = "@games/yahtzee/UPDATE_TOP";
+const UPDATE_BOTTOM = "@games/yahtzee/UPDATE_BOTTOM";
+const UPDATE_ROLL = "@games/yahtzee/UPDATE_ROLL";
 
 // -------------------- Action Creators     -------------------- //
 interface AddScoreAction extends Action<typeof ADD> {

@@ -1,4 +1,5 @@
-import * as React from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,39 +8,81 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
+import { DBRootState } from "../../../store/types";
+import { updatePairs } from "../../../store/modules/ayto";
+import { options } from "../../../constants/ayto";
 
 interface AYTOTableProps {
   ladies: string[];
   gents: string[];
+  roundNumber: number;
 }
 
 const AYTOTable = (props: AYTOTableProps) => {
-  const { ladies, gents } = props;
+  const { ladies, gents, roundNumber: ri } = props;
+  const isTB = options.length === ri + 1;
+
+  // Redux
+  const { roundPairings } = useSelector((state: DBRootState) => ({
+    ...state.ayto,
+  }));
+  const dispatch = useDispatch();
+
+  // Handlers
+  const handleClick = (roundi: number, ladyi: number, genti: number) => () => {
+    const tempLI = roundPairings[roundi]?.pairs.indexOf(genti);
+    // TODO: if (isTB) -> need to populate different data structure
+    // Regular Round
+    if (tempLI !== -1) {
+      // deselect gent from old lady
+      dispatch(updatePairs(roundi, tempLI, -1));
+    }
+    // assign to new lady
+    dispatch(updatePairs(roundi, ladyi, genti));
+  };
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table aria-label="are you the one entry table">
         <TableHead>
           <TableRow>
             <TableCell />
             {gents.map((name) => (
-              <TableCell key={name}>{name}</TableCell>
+              <TableCell
+                key={name}
+                sx={{ paddingLeft: 0, paddingRight: 0, textAlign: "center" }}
+              >
+                {name}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {ladies.map((name) => (
+          {ladies.map((lName, li) => (
             <TableRow
-              key={name}
+              key={`ayto-table-row-${lName}`}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {name}
+                {lName}
               </TableCell>
-              {gents.map((gentName) => (
-                <TableCell key={name} sx={{ paddingTop: 0, paddingBottom: 0 }}>
-                  <Button variant="outlined">
-                    {name[0]}-{gentName[0]}
+              {gents.map((gName, gi) => (
+                <TableCell key={gName} sx={{ padding: 0, textAlign: "center" }}>
+                  {/* TODO: if isTB, need to load from a different data structure */}
+                  <Button
+                    variant={
+                      roundPairings[ri]?.pairs[li] === gi
+                        ? "contained"
+                        : "outlined"
+                    }
+                    onClick={handleClick(ri, li, gi)}
+                    color={
+                      roundPairings[ri]?.pairs[li] === gi && isTB
+                        ? "error"
+                        : "primary"
+                    }
+                  >
+                    {lName[0]}-{gName[0]}
                   </Button>
                 </TableCell>
               ))}

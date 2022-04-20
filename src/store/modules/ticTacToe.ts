@@ -3,8 +3,8 @@ import { DBTicTacToe } from "../types";
 import initialState, { newTicTacToe } from "../initialState";
 
 // --------------------     Actions     -------------------- //
-const SET = "casino/ticTacToe/SET";
-const NEW_GAME = "casino/ticTacToe/NEW_GAME";
+const SET = "@games/ticTacToe/SET";
+const NEW_GAME = "@games/ticTacToe/NEW_GAME";
 
 // -------------------- Action Creators     -------------------- //
 interface PlayTurnAction extends Action<typeof SET> {

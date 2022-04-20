@@ -4,9 +4,9 @@ import initialState from "../initialState";
 
 // --------------------     Actions     -------------------- //
 export enum TA {
-  INCR_PLAYER = "casino/turn/INCR",
-  INCR_HAND = "casino/turn/INCR_HAND",
-  RESET = "casino/turn/RESET",
+  INCR_PLAYER = "@casino/turn/INCR",
+  INCR_HAND = "@casino/turn/INCR_HAND",
+  RESET = "@casino/turn/RESET",
 }
 const { INCR_PLAYER, INCR_HAND, RESET } = TA;
 

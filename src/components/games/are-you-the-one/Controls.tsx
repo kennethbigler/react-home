@@ -1,4 +1,5 @@
-import * as React from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -8,35 +9,49 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
+import TextField from "@mui/material/TextField";
+import { DBRootState } from "../../../store/types";
+import { updateScore } from "../../../store/modules/ayto";
+import { options } from "../../../constants/ayto";
 
-const options = [
-  "Matchup 1",
-  "Matchup 2",
-  "Matchup 3",
-  "Matchup 4",
-  "Matchup 5",
-  "Matchup 6",
-  "Matchup 7",
-  "Matchup 8",
-  "Matchup 9",
-  "Matchup 10",
-  "Truth Booth",
-];
+interface ControlsProps {
+  roundNumber: number;
+  onSelect: (index: number) => void;
+}
 
-const Controls = () => {
+// eslint-disable-next-line no-restricted-globals
+const getScore = (value: number) => (isNaN(value) ? -1 : value);
+
+const Controls = (props: ControlsProps) => {
+  const { roundNumber, onSelect } = props;
+
+  // Redux
+  const { roundPairings } = useSelector((state: DBRootState) => ({
+    ...state.ayto,
+  }));
+  const dispatch = useDispatch();
+
+  // hooks/state
   const [open, setOpen] = React.useState(false);
+  const [score, setScore] = React.useState(
+    getScore(roundPairings[roundNumber]?.score)
+  );
   const anchorRef = React.useRef<HTMLDivElement>(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
 
-  const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
+  // handlers
+  const handleTextFieldChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setScore(parseInt(event.target.value, 10) || 0);
+    dispatch(updateScore(parseInt(event.target.value, 10), roundNumber));
   };
 
   const handleMenuItemClick = (
     event: React.MouseEvent<HTMLLIElement, MouseEvent>,
     index: number
   ) => {
-    setSelectedIndex(index);
+    setScore(getScore(roundPairings[index]?.score));
+    onSelect(index);
     setOpen(false);
   };
 
@@ -56,13 +71,14 @@ const Controls = () => {
   };
 
   return (
-    <>
+    <div style={{ display: "flex", justifyContent: "space-between" }}>
       <ButtonGroup
-        variant="contained"
         ref={anchorRef}
+        variant="contained"
         aria-label="split button"
+        color={roundNumber + 1 === options.length ? "error" : "primary"}
       >
-        <Button onClick={handleClick}>{options[selectedIndex]}</Button>
+        <Button>{options[roundNumber]}</Button>
         <Button
           size="small"
           aria-controls={open ? "split-button-menu" : undefined}
@@ -95,7 +111,7 @@ const Controls = () => {
                   {options.map((option, index) => (
                     <MenuItem
                       key={option}
-                      selected={index === selectedIndex}
+                      selected={index === roundNumber}
                       onClick={(event) => handleMenuItemClick(event, index)}
                     >
                       {option}
@@ -107,7 +123,15 @@ const Controls = () => {
           </Grow>
         )}
       </Popper>
-    </>
+      <TextField
+        id="score-input"
+        label="Score"
+        variant="outlined"
+        type="number"
+        value={score}
+        onChange={handleTextFieldChange}
+      />
+    </div>
   );
 };
 

@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import ayto from "./modules/ayto";
 import blackjack from "./modules/blackjack";
 import connect4 from "./modules/connect4";
 import dnd from "./modules/dnd";
@@ -13,6 +14,7 @@ import turn from "./modules/turn";
 import yahtzee from "./modules/yahtzee";
 
 const rootReducer = combineReducers({
+  ayto,
   blackjack,
   connect4,
   dnd,

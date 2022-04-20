@@ -2,63 +2,28 @@ import React from "react";
 import Controls from "./Controls";
 import Table from "./Table";
 import Equations from "./Equations";
-
-const ladies = [
-  "Alicia",
-  "Carolina",
-  "Cas",
-  "Gianna",
-  "Hannah",
-  "Kam",
-  "Kari",
-  "Kathryn",
-  "Shannon",
-  "Taylor",
-  "Tyranny",
-];
-
-const gents = [
-  "Andre",
-  "Derrick",
-  "Edward",
-  "Hayden",
-  "Jaylan",
-  "Joey",
-  "Michael",
-  "Mike",
-  "Osvaldo",
-  "Ozzy",
-  "Tyler",
-];
-
-// [round-i: { pairs: [woman-i: man-i], score: x }]
-// [
-//   {pairs: [9, 3, 2, 8, 4, 1, 6, 5, 7], score: 3}
-//   {pairs: [9, 3, 2, 8, 4, 1, 6, 5, 7], score: 3}
-//   {pairs: [9, 3, 2, 8, 4, 1, 6, 5, 7], score: 3}
-//   ...
-// ]
-
-// {
-//   confirmed: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1] // [woman-i: man-i]
-//   noMatch: [
-//     [0/1, 0/1, 0/1, 0/1, 0/1, 0/1, 0/1, 0/1, 0/1, 0/1],
-//     ...,
-//   ]
-// }
+import { ladies, gents } from "../../../constants/ayto";
 
 // pairs.forEach((gentI, ladyI) => {
 //   if (confirmed[ladyI] !== -1) // confirmed
 //   if (noMatch[ladyI][gentI]) // noMatch
 // })
+const AreYouTheOne = () => {
+  const [roundNumber, setRoundNumber] = React.useState(1);
 
-const AreYouTheOne = () => (
-  <>
-    <h1>Are You The One?</h1>
-    <Controls />
-    <Table ladies={ladies} gents={gents} />
-    <Equations />
-  </>
-);
+  const handleSelect = (selected: number) => {
+    setRoundNumber(selected);
+  };
+
+  return (
+    <>
+      <h1>Are You The One?</h1>
+      <Controls roundNumber={roundNumber} onSelect={handleSelect} />
+      <br />
+      <Table roundNumber={roundNumber} ladies={ladies} gents={gents} />
+      <Equations />
+    </>
+  );
+};
 
 export default AreYouTheOne;
