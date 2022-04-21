@@ -5,8 +5,13 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { Button } from "@mui/material";
 import { DBRootState } from "../../../../store/types";
-import { updatePairs, updateNoMatch } from "../../../../store/modules/ayto";
+import {
+  updatePairs,
+  updateNoMatch,
+  updateMatch,
+} from "../../../../store/modules/ayto";
 import { options } from "../../../../constants/ayto";
+import TBDialog from "./TBDialog";
 
 interface AYTOTableProps {
   ladies: string[];
@@ -24,11 +29,15 @@ const AYTOTableBody = (props: AYTOTableProps) => {
   );
   const dispatch = useDispatch();
 
+  // state
+  const [open, setOpen] = React.useState(false);
+  const [tbi, setTBI] = React.useState([-1, -1]);
+
   // Handlers
   const handleClick = (roundi: number, ladyi: number, genti: number) => () => {
     if (isTB) {
-      // popup modal. Match ? updateMatch : updateNoMatch
-      dispatch(updateNoMatch(ladyi, genti));
+      setTBI([ladyi, genti]);
+      setOpen(true);
       return;
     }
     // Regular Round, verify gent isn't already taken
@@ -39,6 +48,22 @@ const AYTOTableBody = (props: AYTOTableProps) => {
     }
     // assign to new lady
     dispatch(updatePairs(roundi, ladyi, genti));
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
+  const handleMatch = () => {
+    const [li, gi] = tbi;
+    dispatch(updateMatch(li, gi));
+    handleCancel();
+  };
+
+  const handleNoMatch = () => {
+    const [li, gi] = tbi;
+    dispatch(updateNoMatch(li, gi));
+    handleCancel();
   };
 
   return (
@@ -52,10 +77,12 @@ const AYTOTableBody = (props: AYTOTableProps) => {
             {lName}
           </TableCell>
           {gents.map((gName, gi) => {
+            // variables
             let variant: "outlined" | "contained" = "outlined";
-            let color: "primary" | "error" = "primary";
+            let color: "primary" | "error" | "success" = "primary";
             let disabled = false;
 
+            // logic
             if (isTB) {
               color = "error";
               // if noMatch
@@ -73,7 +100,13 @@ const AYTOTableBody = (props: AYTOTableProps) => {
                 disabled = true;
               }
             }
+            // if match
+            if (matches[li] === gi) {
+              variant = "contained";
+              color = "success";
+            }
 
+            // render
             return (
               <TableCell key={gName} sx={{ padding: 0, textAlign: "center" }}>
                 <Button
@@ -89,6 +122,13 @@ const AYTOTableBody = (props: AYTOTableProps) => {
           })}
         </TableRow>
       ))}
+      <TBDialog
+        open={open}
+        content={`${ladies[tbi[0]]} & ${gents[tbi[1]]}`}
+        onCancel={handleCancel}
+        onMatch={handleMatch}
+        onNoMatch={handleNoMatch}
+      />
     </TableBody>
   );
 };

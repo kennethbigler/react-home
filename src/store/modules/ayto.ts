@@ -1,11 +1,13 @@
 import { Action } from "redux";
 import { DBAYTO } from "../types";
 import initialState from "../initialState";
+import { ladies, gents } from "../../constants/ayto";
 
 // --------------------     Actions     -------------------- //
 const UPDATE_PAIRS = "@games/ayto/UPDATE_PAIRS";
 const UPDATE_SCORE = "@games/ayto/UPDATE_SCORE";
 const UPDATE_NO_MATCH = "@games/ayto/UPDATE_NO_MATCH";
+const UPDATE_MATCH = "@games/ayto/UPDATE_MATCH";
 
 // --------------------     Action Creators     -------------------- //
 interface UpdatePairsAction extends Action<typeof UPDATE_PAIRS> {
@@ -57,8 +59,28 @@ export const updateNoMatch = (li: number, gi: number): UpdateNoMatchAction => ({
   gi,
 });
 
+interface UpdateMatchAction extends Action<typeof UPDATE_MATCH> {
+  li: number;
+  gi: number;
+}
+/**
+ * Update no match grid
+ * @param li - lady index
+ * @param gi - gent index
+ * @returns Action<typeof UPDATE_MATCH>
+ */
+export const updateMatch = (li: number, gi: number): UpdateMatchAction => ({
+  type: UPDATE_MATCH,
+  li,
+  gi,
+});
+
 // --------------------     Reducers     -------------------- //
-type AYTOActions = UpdatePairsAction | UpdateScoreAction | UpdateNoMatchAction;
+type AYTOActions =
+  | UpdatePairsAction
+  | UpdateScoreAction
+  | UpdateNoMatchAction
+  | UpdateMatchAction;
 export default function reducer(
   state: DBAYTO = initialState.ayto,
   action: AYTOActions
@@ -73,6 +95,7 @@ export default function reducer(
       newRoundPairings[action.ri].pairs[action.li] = action.gi;
       return { ...state, roundPairings: newRoundPairings };
     }
+
     case UPDATE_SCORE: {
       const newRoundPairings = [...state.roundPairings];
       // if round doesn't exist yet, create skeleton one
@@ -82,17 +105,41 @@ export default function reducer(
       newRoundPairings[action.ri].score = action.score;
       return { ...state, roundPairings: newRoundPairings };
     }
+
     case UPDATE_NO_MATCH: {
       const newMatches = state.noMatch.map((gentArray: boolean[]) => [
         ...gentArray,
       ]);
       // if array for lady doesn't exist yet, create skeleton one
-      if (!newMatches[action.li]) {
-        newMatches[action.li] = [];
-      }
+      !newMatches[action.li] && (newMatches[action.li] = []);
+      // assign no match
       newMatches[action.li][action.gi] = !newMatches[action.li][action.gi];
+      // update state
       return { ...state, noMatch: newMatches };
     }
+
+    case UPDATE_MATCH: {
+      const newMatches = [...state.matches];
+      const newNoMatches = state.noMatch.map((gentArray: boolean[]) => [
+        ...gentArray,
+      ]);
+      // if array for lady doesn't exist yet, create skeleton one
+      !newNoMatches[action.li] && (newNoMatches[action.li] = []);
+      // assign new match
+      newMatches[action.li] = action.gi;
+      // make all gent options no matches
+      for (let i = 0; i < gents.length; i += 1) {
+        newNoMatches[action.li][i] = i !== action.gi;
+      }
+      // make all ladies options no matches
+      for (let i = 0; i < ladies.length; i += 1) {
+        !newNoMatches[i] && (newNoMatches[i] = []);
+        newNoMatches[i][action.gi] = i !== action.li;
+      }
+      // update state
+      return { ...state, matches: newMatches, noMatch: newNoMatches };
+    }
+
     default:
       return state;
   }

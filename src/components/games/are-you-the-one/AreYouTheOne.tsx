@@ -1,5 +1,5 @@
 import React from "react";
-import Controls from "./Controls";
+import Controls from "./controls/Controls";
 import Table from "./table/Table";
 import Equations from "./Equations";
 import { ladies, gents } from "../../../constants/ayto";
