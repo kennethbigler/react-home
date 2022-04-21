@@ -9,12 +9,10 @@ export interface RoundPairing {
 }
 
 export interface DBAYTO {
-  matches: {
-    /** [lady-i: (gent-i | -1), -1, -1, ...] */
-    confirmed: number[];
-    /** [lady-i: [gent-i: bool]] */
-    noMatch: boolean[][];
-  };
+  /** [lady-i: (gent-i | -1), -1, -1, ...] */
+  matches: number[];
+  /** [lady-i: [gent-i: bool]] */
+  noMatch: boolean[][];
   /** [round-i: RoundPairing] */
   roundPairings: RoundPairing[];
 }

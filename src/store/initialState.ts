@@ -26,10 +26,8 @@ import {
 // --------------------     helpers     -------------------- //
 // ayto
 export const newAreYouTheOne = (): DBAYTO => ({
-  matches: {
-    confirmed: ladies.map(() => -1),
-    noMatch: ladies.map(() => gents.map(() => false)),
-  },
+  matches: ladies.map(() => -1),
+  noMatch: ladies.map(() => gents.map(() => false)),
   roundPairings: [],
 });
 // blackjack

@@ -1,15 +1,11 @@
 import React from "react";
 import Controls from "./Controls";
-import Table from "./Table";
+import Table from "./table/Table";
 import Equations from "./Equations";
 import { ladies, gents } from "../../../constants/ayto";
 
-// pairs.forEach((gentI, ladyI) => {
-//   if (confirmed[ladyI] !== -1) // confirmed
-//   if (noMatch[ladyI][gentI]) // noMatch
-// })
 const AreYouTheOne = () => {
-  const [roundNumber, setRoundNumber] = React.useState(1);
+  const [roundNumber, setRoundNumber] = React.useState(0);
 
   const handleSelect = (selected: number) => {
     setRoundNumber(selected);
