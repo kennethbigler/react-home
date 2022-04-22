@@ -15,7 +15,6 @@ interface DropdownProps {
   onSelect: (index: number) => void;
 }
 
-/** TODO: Replace with MUI Dropdown when available */
 const Dropdown = (props: DropdownProps) => {
   const { roundNumber, options, onSelect } = props;
 
