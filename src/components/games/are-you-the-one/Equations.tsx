@@ -1,9 +1,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ladies, gents } from "../../../constants/ayto";
 import { DBRootState } from "../../../store/types";
 
-const Equations = () => {
+interface EquationsProps {
+  ladies: string[];
+  gents: string[];
+}
+
+const Equations = (props: EquationsProps) => {
+  const { ladies, gents } = props;
   // Redux
   const { roundPairings /* , matches, noMatches */ } = useSelector(
     (state: DBRootState) => ({ ...state.ayto })

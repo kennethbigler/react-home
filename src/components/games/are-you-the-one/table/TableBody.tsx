@@ -10,17 +10,17 @@ import {
   updateNoMatch,
   updateMatch,
 } from "../../../../store/modules/ayto";
-import { options } from "../../../../constants/ayto";
 import TBDialog from "./TBDialog";
 
 interface AYTOTableProps {
   ladies: string[];
   gents: string[];
+  options: string[];
   roundNumber: number;
 }
 
 const AYTOTableBody = (props: AYTOTableProps) => {
-  const { ladies, gents, roundNumber: ri } = props;
+  const { ladies, gents, options, roundNumber: ri } = props;
   const isTB = options.length === ri + 2;
   const isConsolidated = options.length === ri + 1;
 

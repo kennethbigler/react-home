@@ -10,11 +10,12 @@ import AYTOTableBody from "./TableBody";
 interface AYTOTableProps {
   ladies: string[];
   gents: string[];
+  options: string[];
   roundNumber: number;
 }
 
 const AYTOTable = (props: AYTOTableProps) => {
-  const { ladies, gents, roundNumber } = props;
+  const { ladies, gents, options, roundNumber } = props;
 
   return (
     <TableContainer component={Paper}>
@@ -36,6 +37,7 @@ const AYTOTable = (props: AYTOTableProps) => {
           roundNumber={roundNumber}
           ladies={ladies}
           gents={gents}
+          options={options}
         />
       </Table>
     </TableContainer>

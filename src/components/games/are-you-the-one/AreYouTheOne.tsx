@@ -2,7 +2,7 @@ import React from "react";
 import Controls from "./controls/Controls";
 import Table from "./table/Table";
 import Equations from "./Equations";
-import { ladies, gents } from "../../../constants/ayto";
+import { ladies, gents, options } from "../../../constants/ayto";
 
 const AreYouTheOne = () => {
   const [roundNumber, setRoundNumber] = React.useState(0);
@@ -14,10 +14,19 @@ const AreYouTheOne = () => {
   return (
     <>
       <h1>Are You The One?</h1>
-      <Controls roundNumber={roundNumber} onSelect={handleSelect} />
+      <Controls
+        roundNumber={roundNumber}
+        options={options}
+        onSelect={handleSelect}
+      />
       <br />
-      <Table roundNumber={roundNumber} ladies={ladies} gents={gents} />
-      <Equations />
+      <Table
+        roundNumber={roundNumber}
+        ladies={ladies}
+        gents={gents}
+        options={options}
+      />
+      <Equations ladies={ladies} gents={gents} />
     </>
   );
 };

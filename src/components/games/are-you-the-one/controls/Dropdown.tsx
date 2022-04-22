@@ -8,16 +8,16 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
-import { options } from "../../../../constants/ayto";
 
 interface DropdownProps {
   roundNumber: number;
+  options: string[];
   onSelect: (index: number) => void;
 }
 
 /** TODO: Replace with MUI Dropdown when available */
 const Dropdown = (props: DropdownProps) => {
-  const { roundNumber, onSelect } = props;
+  const { roundNumber, options, onSelect } = props;
 
   // hooks/state
   const [open, setOpen] = React.useState(false);
