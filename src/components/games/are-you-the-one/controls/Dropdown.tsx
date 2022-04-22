@@ -52,7 +52,7 @@ const Dropdown = (props: DropdownProps) => {
         ref={anchorRef}
         variant="contained"
         aria-label="split button"
-        color={roundNumber + 1 === options.length ? "error" : "primary"}
+        color={roundNumber + 2 === options.length ? "error" : "primary"}
       >
         <Button>{options[roundNumber]}</Button>
         <Button

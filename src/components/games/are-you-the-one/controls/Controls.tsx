@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import { DBRootState } from "../../../../store/types";
 import { updateScore } from "../../../../store/modules/ayto";
 import Dropdown from "./Dropdown";
+import { options } from "../../../../constants/ayto";
 
 interface ControlsProps {
   roundNumber: number;
@@ -43,14 +44,16 @@ const Controls = (props: ControlsProps) => {
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
       <Dropdown roundNumber={roundNumber} onSelect={handleSelect} />
-      <TextField
-        id="score-input"
-        label="Score"
-        variant="outlined"
-        type="number"
-        value={score}
-        onChange={handleTextFieldChange}
-      />
+      {roundNumber < options.length - 2 && (
+        <TextField
+          id="score-input"
+          label="Score"
+          variant="outlined"
+          type="number"
+          value={score}
+          onChange={handleTextFieldChange}
+        />
+      )}
     </div>
   );
 };

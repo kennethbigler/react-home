@@ -21,7 +21,8 @@ interface AYTOTableProps {
 
 const AYTOTableBody = (props: AYTOTableProps) => {
   const { ladies, gents, roundNumber: ri } = props;
-  const isTB = options.length === ri + 1;
+  const isTB = options.length === ri + 2;
+  const isConsolidated = options.length === ri + 1;
 
   // Redux
   const { roundPairings, matches, noMatch } = useSelector(
@@ -32,9 +33,21 @@ const AYTOTableBody = (props: AYTOTableProps) => {
   // state
   const [open, setOpen] = React.useState(false);
   const [tbi, setTBI] = React.useState([-1, -1]);
+  const hist: number[][] = [];
+
+  // create histogram
+  roundPairings.forEach((RP) => {
+    RP.pairs.forEach((gi, li) => {
+      !hist[li] && (hist[li] = []);
+      hist[li][gi] = !hist[li][gi] ? 1 : hist[li][gi] + 1;
+    });
+  });
 
   // Handlers
   const handleClick = (roundi: number, ladyi: number, genti: number) => () => {
+    if (isConsolidated) {
+      return;
+    }
     if (isTB) {
       setTBI([ladyi, genti]);
       setOpen(true);
@@ -106,6 +119,12 @@ const AYTOTableBody = (props: AYTOTableProps) => {
               color = "success";
             }
 
+            const histValue = hist[li] ? hist[li][gi] || 0 : 0;
+            // if consolidated
+            if (isConsolidated && histValue > 0) {
+              variant = "contained";
+            }
+
             // render
             return (
               <TableCell key={gName} sx={{ padding: 0, textAlign: "center" }}>
@@ -115,7 +134,7 @@ const AYTOTableBody = (props: AYTOTableProps) => {
                   onClick={handleClick(ri, li, gi)}
                   disabled={disabled}
                 >
-                  {lName[0]}-{gName[0]}
+                  {isConsolidated ? histValue : `${lName[0]}-${gName[0]}`}
                 </Button>
               </TableCell>
             );

@@ -39,4 +39,5 @@ export const options = [
   "Matchup 9",
   "Matchup 10",
   "Truth Booth",
+  "Consolidated",
 ];
