@@ -15,6 +15,15 @@ const Equations = (props: EquationsProps) => {
   const { roundPairings, noMatch, matches } = useSelector(
     (state: DBRootState) => ({ ...state.ayto })
   );
+  const hist: number[][] = [];
+
+  // create histogram
+  roundPairings.forEach((RP) => {
+    RP.pairs.forEach((gi, li) => {
+      !hist[li] && (hist[li] = []);
+      hist[li][gi] = !hist[li][gi] ? 1 : hist[li][gi] + 1;
+    });
+  });
 
   return (
     <div>
@@ -31,10 +40,14 @@ const Equations = (props: EquationsProps) => {
               tempScore -= 1;
               return null;
             }
+            const isRepeat = hist[li][gi] > 1;
             return (
               <Chip
                 key={`eq-r${ri}-l${li}-g${gi}`}
-                label={`${ladies[li]}-${gents[gi]}`}
+                label={`${ladies[li]}-${gents[gi]} ${
+                  isRepeat ? hist[li][gi] : ""
+                }`}
+                color={isRepeat ? "primary" : "default"}
               />
             );
           });
