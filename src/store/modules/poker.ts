@@ -5,13 +5,13 @@ import { resetTurn, incrPlayerTurn, TA } from "./turn";
 import { resetStatus, PlayerAction } from "./players";
 
 // --------------------     Actions     -------------------- //
-const UPDATE_DISCARD_CARDS = "casino/poker/UPDATE_DISCARD_CARDS";
+const UPDATE_DISCARD_CARDS = "@casino/poker/UPDATE_DISCARD_CARDS";
 export enum PA {
-  NEW_GAME = "casino/poker/NEW_GAME",
-  START_GAME = "casino/poker/START_GAME",
-  END_TURN = "casino/poker/END_TURN",
-  END_GAME = "casino/poker/END_GAME",
-  DISCARD_CARDS = "casino/poker/DISCARD_CARDS",
+  NEW_GAME = "@casino/poker/NEW_GAME",
+  START_GAME = "@casino/poker/START_GAME",
+  END_TURN = "@casino/poker/END_TURN",
+  END_GAME = "@casino/poker/END_GAME",
+  DISCARD_CARDS = "@casino/poker/DISCARD_CARDS",
 }
 const { NEW_GAME, START_GAME, END_TURN, END_GAME, DISCARD_CARDS } = PA;
 

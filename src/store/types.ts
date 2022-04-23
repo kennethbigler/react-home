@@ -1,5 +1,22 @@
 import { Color } from "@mui/material";
 
+// --------------------     ayto     -------------------- //
+export interface RoundPairing {
+  /** [lady-i: gent-i] */
+  pairs: number[];
+  /** score of the round */
+  score: number;
+}
+
+export interface DBAYTO {
+  /** [lady-i: (gent-i | -1), -1, -1, ...] */
+  matches: number[];
+  /** [lady-i: [gent-i: bool]] */
+  noMatch: boolean[][];
+  /** [round-i: RoundPairing] */
+  roundPairings: RoundPairing[];
+}
+
 // --------------------     blackjack     -------------------- //
 export enum GameFunctions {
   NEW_GAME = "New Game",
@@ -154,6 +171,7 @@ export interface DBYahtzee {
 
 // --------------------     z-root     -------------------- //
 export interface DBRootState {
+  ayto: DBAYTO;
   blackjack: DBBlackjack;
   connect4: DBConnect4;
   dnd: DBDND;

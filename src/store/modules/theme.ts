@@ -5,8 +5,8 @@ import initialState from "../initialState";
 
 // --------------------     Actions     -------------------- //
 enum TA {
-  DARK_THEME = "resume/theme/DARK_THEME",
-  LIGHT_THEME = "resume/theme/LIGHT_THEME",
+  DARK_THEME = "@resume/theme/DARK_THEME",
+  LIGHT_THEME = "@resume/theme/LIGHT_THEME",
 }
 const { DARK_THEME, LIGHT_THEME } = TA;
 

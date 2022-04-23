@@ -5,7 +5,7 @@ import SlotMachine from "../../apis/SlotMachine";
 import { payout, PlayerAction } from "./players";
 
 // --------------------     Actions     -------------------- //
-export const UPDATE = "casino/slots/UPDATE";
+export const UPDATE = "@casino/slots/UPDATE";
 
 // -------------------- Action Creators     -------------------- //
 interface UpdateSlotsAction extends Action<typeof UPDATE> {
