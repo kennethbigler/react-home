@@ -28,12 +28,12 @@ const Equations = (props: EquationsProps) => {
   return (
     <div>
       <h1>Equations</h1>
-      <Stack spacing={2}>
+      <Stack spacing={2} direction="row">
         {roundPairings.map(({ pairs, score }, ri) => {
           let tempScore = score;
           const equation = pairs.map((gi, li) => {
             // if noMatch, skip
-            if (noMatch[li][gi]) {
+            if (noMatch[li][gi] || li < 0 || gi < 0) {
               return null;
             }
             if (matches[li] === gi) {
@@ -51,12 +51,12 @@ const Equations = (props: EquationsProps) => {
               />
             );
           });
-          return (
-            <Stack key={`equation-${ri}`} direction="row" spacing={1}>
+          return !equation.every((e) => e === null) ? (
+            <Stack key={`equation-${ri}`} spacing={1}>
               {equation}
               <Chip label={tempScore} color="success" />
             </Stack>
-          );
+          ) : null;
         })}
       </Stack>
     </div>

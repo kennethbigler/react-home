@@ -7,9 +7,7 @@ import { ladies, gents, options } from "../../../constants/ayto";
 /**
  * TODO:
  * replace Dropdown with MUI Dropdown when available
- * auto noMatch on Blackout
  * if an equation exists in another equation, sub it out for remaining number
- * include histogram in equations
  * add percent likelihood to equations
  */
 const AreYouTheOne = () => {
