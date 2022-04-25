@@ -10,9 +10,9 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 
 interface DropdownProps {
-  roundNumber: number;
-  options: string[];
   onSelect: (index: number) => void;
+  options: string[];
+  roundNumber: number;
 }
 
 const Dropdown = (props: DropdownProps) => {

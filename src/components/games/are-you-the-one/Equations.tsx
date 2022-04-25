@@ -1,14 +1,19 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { DBRootState } from "../../../store/types";
+import { RoundPairing } from "../../../store/types";
 
 interface EquationsProps {
-  ladies: string[];
   gents: string[];
+  ladies: string[];
+  /** [lady-i: (gent-i | -1), -1, -1, ...] */
+  matches: number[];
+  /** [lady-i: [gent-i: bool]] */
+  noMatch: boolean[][];
+  /** [round-i: RoundPairing] */
+  roundPairings: RoundPairing[];
 }
 
 interface AYTOHist {
@@ -17,11 +22,7 @@ interface AYTOHist {
 }
 
 const Equations = (props: EquationsProps) => {
-  const { ladies, gents } = props;
-  // Redux
-  const { roundPairings, noMatch, matches } = useSelector(
-    (state: DBRootState) => ({ ...state.ayto })
-  );
+  const { gents, ladies, matches, noMatch, roundPairings } = props;
 
   // state
   const [showAll, setShowAll] = React.useState(false);
@@ -49,8 +50,12 @@ const Equations = (props: EquationsProps) => {
 
   roundPairings.forEach(({ pairs, score }, ri) => {
     pairs.forEach((gi, li) => {
-      const odds = Math.floor(((score - tempScore[ri]) * 100) / totals[ri]);
-      hist[li][gi].maxOdds = Math.max(hist[li][gi].maxOdds, odds);
+      if (!noMatch[li][gi]) {
+        const odds = totals[ri]
+          ? Math.floor(((score - tempScore[ri]) * 100) / totals[ri])
+          : 0;
+        hist[li][gi].maxOdds = Math.max(hist[li][gi].maxOdds, odds);
+      }
     });
   });
 
@@ -70,7 +75,7 @@ const Equations = (props: EquationsProps) => {
           label="Show All Couples"
         />
       </Stack>
-      <Stack spacing={2} direction="row">
+      <Stack spacing={1} direction="row" flexWrap="wrap">
         {roundPairings.map(({ pairs, score }, ri) => {
           const equation = pairs.map((gi, li) => {
             // if noMatch or match, skip

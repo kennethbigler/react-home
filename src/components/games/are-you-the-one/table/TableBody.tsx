@@ -1,34 +1,42 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { Button } from "@mui/material";
-import { DBRootState } from "../../../../store/types";
-import {
-  updatePairs,
-  updateNoMatch,
-  updateMatch,
-} from "../../../../store/modules/ayto";
+import { RoundPairing } from "../../../../store/types";
 import TBDialog from "./TBDialog";
 
-interface AYTOTableProps {
-  ladies: string[];
+export interface AYTOTableProps {
   gents: string[];
+  ladies: string[];
+  /** [lady-i: (gent-i | -1), -1, -1, ...] */
+  matches: number[];
+  /** [lady-i: [gent-i: bool]] */
+  noMatch: boolean[][];
   options: string[];
   roundNumber: number;
+  /** [round-i: RoundPairing] */
+  roundPairings: RoundPairing[];
+  updateMatch: (li: number, gi: number) => void;
+  updateNoMatch: (li: number, gi: number) => void;
+  updatePairs: (ri: number, li: number, gi: number) => void;
 }
 
 const AYTOTableBody = (props: AYTOTableProps) => {
-  const { ladies, gents, options, roundNumber: ri } = props;
+  const {
+    gents,
+    ladies,
+    matches,
+    noMatch,
+    options,
+    roundNumber: ri,
+    roundPairings,
+    updateMatch,
+    updateNoMatch,
+    updatePairs,
+  } = props;
   const isTB = options.length === ri + 2;
   const isConsolidated = options.length === ri + 1;
-
-  // Redux
-  const { roundPairings, matches, noMatch } = useSelector(
-    (state: DBRootState) => ({ ...state.ayto })
-  );
-  const dispatch = useDispatch();
 
   // state
   const [open, setOpen] = React.useState(false);
@@ -57,10 +65,10 @@ const AYTOTableBody = (props: AYTOTableProps) => {
     const tempLI = roundPairings[roundi]?.pairs.indexOf(genti);
     if (tempLI !== -1) {
       // deselect gent from old lady
-      dispatch(updatePairs(roundi, tempLI, -1));
+      updatePairs(roundi, tempLI, -1);
     }
     // assign to new lady
-    dispatch(updatePairs(roundi, ladyi, genti));
+    updatePairs(roundi, ladyi, genti);
   };
 
   const handleCancel = () => {
@@ -69,13 +77,13 @@ const AYTOTableBody = (props: AYTOTableProps) => {
 
   const handleMatch = () => {
     const [li, gi] = tbi;
-    dispatch(updateMatch(li, gi));
+    updateMatch(li, gi);
     handleCancel();
   };
 
   const handleNoMatch = () => {
     const [li, gi] = tbi;
-    dispatch(updateNoMatch(li, gi));
+    updateNoMatch(li, gi);
     handleCancel();
   };
 

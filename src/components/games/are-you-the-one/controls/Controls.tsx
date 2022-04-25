@@ -1,28 +1,37 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { DBRootState } from "../../../../store/types";
-import { updateScore, updateNoMatch } from "../../../../store/modules/ayto";
+import { RoundPairing } from "../../../../store/types";
 import Dropdown from "./Dropdown";
 
 interface ControlsProps {
-  roundNumber: number;
-  options: string[];
+  /** [lady-i: (gent-i | -1), -1, -1, ...] */
+  matches: number[];
+  /** [lady-i: [gent-i: bool]] */
+  noMatch: boolean[][];
   onSelect: (index: number) => void;
+  options: string[];
+  roundNumber: number;
+  /** [round-i: RoundPairing] */
+  roundPairings: RoundPairing[];
+  updateScore: (score: number) => void;
+  updateNoMatch: (li: number, gi: number) => void;
 }
 
 // eslint-disable-next-line no-restricted-globals
 const getScore = (value: number) => (isNaN(value) ? -1 : value);
 
 const Controls = (props: ControlsProps) => {
-  const { roundNumber, options, onSelect } = props;
-
-  // Redux
-  const { roundPairings, matches, noMatch } = useSelector(
-    (state: DBRootState) => ({ ...state.ayto })
-  );
-  const dispatch = useDispatch();
+  const {
+    matches,
+    noMatch,
+    options,
+    onSelect,
+    roundNumber,
+    roundPairings,
+    updateNoMatch,
+    updateScore,
+  } = props;
 
   // hooks/state
   const [score, setScore] = React.useState(
@@ -38,7 +47,7 @@ const Controls = (props: ControlsProps) => {
   const handleBlackout = () => {
     roundPairings[roundNumber].pairs.forEach((gi, li) => {
       if (matches[li] !== gi && !noMatch[li][gi]) {
-        dispatch(updateNoMatch(li, gi));
+        updateNoMatch(li, gi);
       }
     });
   };
@@ -47,7 +56,7 @@ const Controls = (props: ControlsProps) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setScore(parseInt(event.target.value, 10) || 0);
-    dispatch(updateScore(parseInt(event.target.value, 10), roundNumber));
+    updateScore(parseInt(event.target.value, 10));
   };
 
   return (
