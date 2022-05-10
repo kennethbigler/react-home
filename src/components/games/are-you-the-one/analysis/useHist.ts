@@ -84,6 +84,7 @@ const useHist = (
         return;
       }
       // create key from round combination
+      // TODO: requires couples have the same exact repeats, write this to work even if repeated 2 of 3 times
       const key = histObj.rounds.reduce((acc, val) => acc + val.toString(), "");
       // put that in the dictionary
       !dict[key] && (dict[key] = { couples: [], score: len });
@@ -106,7 +107,7 @@ const useHist = (
       // only care about repeat couples
       dict[key].couples.length > 2 &&
       // where there are more couples than score available
-      dict[key].couples.length > dict[key].score
+      dict[key].couples.length >= dict[key].score
     ) {
       const tempPairs: number[] = [];
       // convert to RP
