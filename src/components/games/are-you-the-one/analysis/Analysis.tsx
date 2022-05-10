@@ -22,7 +22,7 @@ const Analysis = (props: AnalysisProps) => {
 
   // state
   const [showAll, setShowAll] = React.useState(false);
-  const { hist, tempScore } = useHist(
+  const { hist, tempScore, calculatedEquations } = useHist(
     ladies.length,
     matches,
     noMatch,
@@ -101,6 +101,19 @@ const Analysis = (props: AnalysisProps) => {
             </Stack>
           ) : null;
         })}
+        {calculatedEquations.map(({ pairs, score }, cei) => (
+          <Stack key={`equation-${cei}`} spacing={1}>
+            <h2 style={{ textAlign: "center" }}>Calculated {cei + 1}</h2>
+            {pairs.map((gi, li) => (
+              <Chip
+                key={`eq-calc-l${li}-g${gi}`}
+                label={`${ladies[li]}-${gents[gi]} ${hist[li][gi].rounds.length} - ${hist[li][gi].odds}%`}
+                color="primary"
+              />
+            ))}
+            <Chip label={score} color="warning" />
+          </Stack>
+        ))}
       </Stack>
     </div>
   );

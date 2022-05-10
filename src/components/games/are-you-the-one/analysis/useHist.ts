@@ -88,7 +88,11 @@ const useHist = (
       // put that in the dictionary
       !dict[key] && (dict[key] = { couples: [], score: len });
       // calculate equations
-      dict[key].couples.push([li, gi]);
+      let canAdd = true;
+      dict[key].couples.forEach(([tli, _]) => {
+        canAdd = canAdd && tli !== li;
+      });
+      canAdd && dict[key].couples.push([li, gi]);
       dict[key].score = Math.min(score - tempScore[ri], dict[key].score);
     });
   });

@@ -106,9 +106,8 @@ const AYTOTableBody = (props: AYTOTableProps) => {
 
             // logic
             if (isTB) {
-              color = "error";
-              // if noMatch
-              if (noMatch[li] && noMatch[li][gi]) {
+              // if has data about match or no match
+              if ((noMatch[li] && noMatch[li][gi]) || matches[li] === gi) {
                 variant = "contained";
               }
             } else if (roundPairings[ri]?.pairs[li] === gi) {
@@ -118,6 +117,10 @@ const AYTOTableBody = (props: AYTOTableProps) => {
               // if no match and not paired
               variant = "contained";
               disabled = true;
+            }
+
+            if (noMatch[li] && noMatch[li][gi]) {
+              color = "error";
             }
 
             // if match
