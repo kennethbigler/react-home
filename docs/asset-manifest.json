@@ -1,9 +1,9 @@
 {
   "files": {
     "main.css": "/static/css/main.d3dfe0bf.css",
-    "main.js": "/static/js/main.ea47d444.js",
+    "main.js": "/static/js/main.897ecf28.js",
     "resume.js": "/static/js/resume.28bd60c0.chunk.js",
-    "games.js": "/static/js/games.7b9ba461.chunk.js",
+    "games.js": "/static/js/games.2d7be924.chunk.js",
     "r_summary.js": "/static/js/r_summary.b90815ca.chunk.js",
     "r_work.js": "/static/js/r_work.5ccc7a44.chunk.js",
     "r_education.js": "/static/js/r_education.86abfd58.chunk.js",
@@ -22,7 +22,7 @@
     "g_tictactoe.js": "/static/js/g_tictactoe.2af19949.chunk.js",
     "g_yahtzee.js": "/static/js/g_yahtzee.bc89491c.chunk.js",
     "g_family_feud.js": "/static/js/g_family_feud.86326730.chunk.js",
-    "g_are_you_the_one.js": "/static/js/g_are_you_the_one.c8052ce0.chunk.js",
+    "g_are_you_the_one.js": "/static/js/g_are_you_the_one.e840038d.chunk.js",
     "r_work_bar_chart.js": "/static/js/r_work_bar_chart.45743ae3.chunk.js",
     "static/js/801.ef7dab4b.chunk.js": "/static/js/801.ef7dab4b.chunk.js",
     "static/js/733.7a417e08.chunk.js": "/static/js/733.7a417e08.chunk.js",
@@ -67,9 +67,9 @@
     "static/media/intuit_logo.png": "/static/media/intuit_logo.70d74b8edeaa59688a37.png",
     "index.html": "/index.html",
     "main.d3dfe0bf.css.map": "/static/css/main.d3dfe0bf.css.map",
-    "main.ea47d444.js.map": "/static/js/main.ea47d444.js.map",
+    "main.897ecf28.js.map": "/static/js/main.897ecf28.js.map",
     "resume.28bd60c0.chunk.js.map": "/static/js/resume.28bd60c0.chunk.js.map",
-    "games.7b9ba461.chunk.js.map": "/static/js/games.7b9ba461.chunk.js.map",
+    "games.2d7be924.chunk.js.map": "/static/js/games.2d7be924.chunk.js.map",
     "r_summary.b90815ca.chunk.js.map": "/static/js/r_summary.b90815ca.chunk.js.map",
     "r_work.5ccc7a44.chunk.js.map": "/static/js/r_work.5ccc7a44.chunk.js.map",
     "r_education.86abfd58.chunk.js.map": "/static/js/r_education.86abfd58.chunk.js.map",
@@ -88,7 +88,7 @@
     "g_tictactoe.2af19949.chunk.js.map": "/static/js/g_tictactoe.2af19949.chunk.js.map",
     "g_yahtzee.bc89491c.chunk.js.map": "/static/js/g_yahtzee.bc89491c.chunk.js.map",
     "g_family_feud.86326730.chunk.js.map": "/static/js/g_family_feud.86326730.chunk.js.map",
-    "g_are_you_the_one.c8052ce0.chunk.js.map": "/static/js/g_are_you_the_one.c8052ce0.chunk.js.map",
+    "g_are_you_the_one.e840038d.chunk.js.map": "/static/js/g_are_you_the_one.e840038d.chunk.js.map",
     "r_work_bar_chart.45743ae3.chunk.js.map": "/static/js/r_work_bar_chart.45743ae3.chunk.js.map",
     "801.ef7dab4b.chunk.js.map": "/static/js/801.ef7dab4b.chunk.js.map",
     "733.7a417e08.chunk.js.map": "/static/js/733.7a417e08.chunk.js.map",
@@ -112,6 +112,6 @@
   },
   "entrypoints": [
     "static/css/main.d3dfe0bf.css",
-    "static/js/main.ea47d444.js"
+    "static/js/main.897ecf28.js"
   ]
 }

@@ -43,6 +43,7 @@ const AYTOTableBody = (props: AYTOTableProps) => {
   const [tbi, setTBI] = React.useState([-1, -1]);
   const hist: number[][] = [];
 
+  // TODO: re-plumb to use useHist?
   // create histogram
   roundPairings.forEach((RP) => {
     RP.pairs.forEach((gi, li) => {
@@ -62,10 +63,10 @@ const AYTOTableBody = (props: AYTOTableProps) => {
       return;
     }
     // Regular Round, verify gent isn't already taken
-    const tempLI = roundPairings[roundi]?.pairs.indexOf(genti);
-    if (tempLI !== -1) {
+    const tempLi = roundPairings[roundi]?.pairs.indexOf(genti);
+    if (tempLi !== -1) {
       // deselect gent from old lady
-      updatePairs(roundi, tempLI, -1);
+      updatePairs(roundi, tempLi, -1);
     }
     // assign to new lady
     updatePairs(roundi, ladyi, genti);
@@ -110,20 +111,17 @@ const AYTOTableBody = (props: AYTOTableProps) => {
               if (noMatch[li] && noMatch[li][gi]) {
                 variant = "contained";
               }
-            } else {
+            } else if (roundPairings[ri]?.pairs[li] === gi) {
               // if paired this round
-              if (roundPairings[ri]?.pairs[li] === gi) {
-                variant = "contained";
-              }
-              // if no match
-              if (noMatch[li] && noMatch[li][gi]) {
-                variant = "contained";
-                disabled = true;
-              }
+              variant = "contained";
+            } else if (noMatch[li] && noMatch[li][gi]) {
+              // if no match and not paired
+              variant = "contained";
+              disabled = true;
             }
+
             // if match
             if (matches[li] === gi) {
-              variant = "contained";
               color = "success";
             }
 

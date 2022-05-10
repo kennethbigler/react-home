@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Controls from "./controls/Controls";
 import Table from "./table/Table";
-import Equations from "./Equations";
+import Analysis from "./analysis/Analysis";
 import { ladies, gents, options } from "../../../constants/ayto";
 import { DBRootState } from "../../../store/types";
 import {
@@ -16,7 +16,7 @@ import {
  * TODO:
  * replace Dropdown with MUI Dropdown when available
  * if an equation exists in another equation, sub it out for remaining number
- * on Match, update so that all future matchup-s have that match
+ * useHist needs to move to this file
  */
 const AreYouTheOne = () => {
   // Redux
@@ -43,6 +43,15 @@ const AreYouTheOne = () => {
   };
   const handleUpdateMatch = (li: number, gi: number) => {
     dispatch(updateMatch(li, gi));
+    for (let ri = 0; ri < options.length - 2; ri += 1) {
+      if (
+        !roundPairings[ri] ||
+        roundPairings[ri].pairs[li] < 0 ||
+        roundPairings[ri].pairs[li] === undefined
+      ) {
+        dispatch(updatePairs(ri, li, gi));
+      }
+    }
   };
 
   return (
@@ -71,7 +80,7 @@ const AreYouTheOne = () => {
         updateNoMatch={handleUpdateNoMatch}
         updatePairs={handleUpdatePairs}
       />
-      <Equations
+      <Analysis
         gents={gents}
         ladies={ladies}
         matches={matches}

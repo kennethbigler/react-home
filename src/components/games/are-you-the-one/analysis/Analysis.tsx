@@ -3,9 +3,10 @@ import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { RoundPairing } from "../../../store/types";
+import { RoundPairing } from "../../../../store/types";
+import useHist from "./useHist";
 
-interface EquationsProps {
+interface AnalysisProps {
   gents: string[];
   ladies: string[];
   /** [lady-i: (gent-i | -1), -1, -1, ...] */
@@ -16,48 +17,17 @@ interface EquationsProps {
   roundPairings: RoundPairing[];
 }
 
-interface AYTOHist {
-  value: number;
-  maxOdds: number;
-}
-
-const Equations = (props: EquationsProps) => {
+const Analysis = (props: AnalysisProps) => {
   const { gents, ladies, matches, noMatch, roundPairings } = props;
 
   // state
   const [showAll, setShowAll] = React.useState(false);
-  const hist: AYTOHist[][] = [];
-  const tempScore: number[] = [];
-  const totals: number[] = [];
-
-  // create histogram
-  roundPairings.forEach(({ pairs }, ri) => {
-    tempScore[ri] = 0;
-    totals[ri] = ladies.length;
-    pairs.forEach((gi, li) => {
-      if (li < 0 || gi < 0 || noMatch[li][gi]) {
-        totals[ri] -= 1;
-      }
-      if (matches[li] === gi) {
-        tempScore[ri] += 1;
-        totals[ri] -= 1;
-      }
-      !hist[li] && (hist[li] = []);
-      !hist[li][gi] && (hist[li][gi] = { value: 0, maxOdds: 0 });
-      hist[li][gi].value += 1;
-    });
-  });
-
-  roundPairings.forEach(({ pairs, score }, ri) => {
-    pairs.forEach((gi, li) => {
-      if (!noMatch[li][gi]) {
-        const odds = totals[ri]
-          ? Math.floor(((score - tempScore[ri]) * 100) / totals[ri])
-          : 0;
-        hist[li][gi].maxOdds = Math.max(hist[li][gi].maxOdds, odds);
-      }
-    });
-  });
+  const { hist, tempScore } = useHist(
+    ladies.length,
+    matches,
+    noMatch,
+    roundPairings
+  );
 
   // handlers
   const handleSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +37,7 @@ const Equations = (props: EquationsProps) => {
   return (
     <div>
       <Stack direction="row" justifyContent="space-between">
-        <h1>Equations</h1>
+        <h1>Analysis</h1>
         <FormControlLabel
           control={
             <Switch checked={showAll} onChange={handleSwitch} name="show-all" />
@@ -78,17 +48,19 @@ const Equations = (props: EquationsProps) => {
       <Stack spacing={1} direction="row" flexWrap="wrap">
         {roundPairings.map(({ pairs, score }, ri) => {
           const equation = pairs.map((gi, li) => {
-            // if noMatch or match, skip
+            // if cleared pairing
             if (li < 0 || gi < 0) {
               return null;
             }
 
-            const isRepeat = hist[li][gi].value > 1;
+            const isRepeat = hist[li][gi].rounds.length > 1;
+            // TODO: make color options type
             let color: "primary" | "default" | "error" | "success" = isRepeat
               ? "primary"
               : "default";
 
             if (!showAll) {
+              // hide matches and noMatches
               if (noMatch[li][gi] || matches[li] === gi) {
                 return null;
               }
@@ -104,8 +76,8 @@ const Equations = (props: EquationsProps) => {
             }
 
             const label = `${ladies[li]}-${gents[gi]}${
-              isRepeat ? ` ${hist[li][gi].value}` : ""
-            } - ${hist[li][gi].maxOdds}%`;
+              isRepeat ? ` ${hist[li][gi].rounds.length}` : ""
+            } - ${hist[li][gi].odds}%`;
 
             // create equation chips
             return (
@@ -122,7 +94,10 @@ const Equations = (props: EquationsProps) => {
             <Stack key={`equation-${ri}`} spacing={1}>
               <h2 style={{ textAlign: "center" }}>Matchup {ri + 1}</h2>
               {equation}
-              <Chip label={`${score} - ${tempScore[ri]}`} color="warning" />
+              <Chip
+                label={showAll ? score : score - tempScore[ri]}
+                color="warning"
+              />
             </Stack>
           ) : null;
         })}
@@ -131,4 +106,4 @@ const Equations = (props: EquationsProps) => {
   );
 };
 
-export default Equations;
+export default Analysis;
