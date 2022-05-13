@@ -101,6 +101,9 @@ const Analysis = (props: AnalysisProps) => {
             </Stack>
           ) : null;
         })}
+      </Stack>
+      <hr />
+      <Stack spacing={1} direction="row" flexWrap="wrap">
         {calculatedEquations.map(({ pairs, score }, cei) => (
           <Stack key={`equation-${cei}`} spacing={1}>
             <h2 style={{ textAlign: "center" }}>Calculated {cei + 1}</h2>

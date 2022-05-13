@@ -83,15 +83,35 @@ const useHist = (
       if (histObj.rounds.length < 2) {
         return;
       }
-      // create key from round combination
-      // TODO: requires couples have the same exact repeats, write this to work even if repeated 2 of 3 times
+      // create key from round combination (length)
       const key = histObj.rounds.reduce((acc, val) => acc + val.toString(), "");
+      // add every pair of 2 rounds as keys
+      for (let i = 0; i < histObj.rounds.length; i += 1) {
+        for (let j = 1; j < histObj.rounds.length; j += 1) {
+          if (i !== j) {
+            const tKey = `${histObj.rounds[i]}${histObj.rounds[j]}`;
+            // put that in the dictionary
+            !dict[tKey] && (dict[tKey] = { couples: [], score: len });
+            // calculate equations
+            let canAdd = true;
+            dict[tKey].couples.forEach(([tli, tgi]) => {
+              canAdd = canAdd && tli !== li && tgi !== gi;
+            });
+            canAdd && dict[tKey].couples.push([li, gi]);
+            dict[tKey].score = Math.min(
+              score - tempScore[ri],
+              dict[tKey].score
+            );
+          }
+        }
+      }
+      // NOTE: length (l) and 2 are covered, anything in-between is not directly considered (still covered in 2s)
       // put that in the dictionary
       !dict[key] && (dict[key] = { couples: [], score: len });
       // calculate equations
       let canAdd = true;
-      dict[key].couples.forEach(([tli, _]) => {
-        canAdd = canAdd && tli !== li;
+      dict[key].couples.forEach(([tli, tgi]) => {
+        canAdd = canAdd && tli !== li && tgi !== gi;
       });
       canAdd && dict[key].couples.push([li, gi]);
       dict[key].score = Math.min(score - tempScore[ri], dict[key].score);
@@ -105,20 +125,49 @@ const useHist = (
   Object.keys(dict).forEach((key) => {
     if (
       // only care about repeat couples
-      dict[key].couples.length > 2 &&
+      dict[key].couples.length > 1 &&
       // where there are more couples than score available
-      dict[key].couples.length >= dict[key].score
+      dict[key].couples.length > dict[key].score
     ) {
       const tempPairs: number[] = [];
       // convert to RP
       dict[key].couples.forEach(([li, gi]) => {
         tempPairs[li] = gi;
       });
-      // Add RP to equations
-      calculatedEquations.push({
-        pairs: tempPairs,
-        score: dict[key].score,
+      // validate new equation doesn't already exist
+      let isRepeat = false;
+      calculatedEquations.forEach(({ pairs, score }, ci) => {
+        let hasExactRepeat = true;
+        let hasRoughRepeat = true;
+        for (let i = 0; i < pairs.length; i += 1) {
+          if (tempPairs[i] !== pairs[i]) {
+            if (tempPairs[i]) {
+              hasExactRepeat = false;
+              hasRoughRepeat = false;
+            } else {
+              // new equation has fewer couples, may still be a match but is missing some keys
+              hasExactRepeat = false;
+            }
+          }
+        }
+        isRepeat =
+          // compare against itself
+          isRepeat ||
+          // exclude if exact repeat
+          hasExactRepeat ||
+          // exclude if rough repeat with higher or equal score
+          (hasRoughRepeat && dict[key].score >= score);
+        // if exact repeat, pick the lower of the 2 scores
+        if (hasExactRepeat) {
+          calculatedEquations[ci].score = Math.min(score, dict[key].score);
+        }
       });
+      // Add RP to equations
+      !isRepeat &&
+        calculatedEquations.push({
+          pairs: tempPairs,
+          score: dict[key].score,
+        });
     }
   });
 
