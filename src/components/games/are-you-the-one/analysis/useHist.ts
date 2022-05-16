@@ -84,37 +84,25 @@ const useHist = (
         return;
       }
       // create key from round combination (length)
-      const key = histObj.rounds.reduce((acc, val) => acc + val.toString(), "");
+      const keys = [
+        histObj.rounds.reduce((acc, val) => acc + val.toString(), ""),
+      ];
       // add every pair of 2 rounds as keys
-      for (let i = 0; i < histObj.rounds.length; i += 1) {
-        for (let j = 1; j < histObj.rounds.length; j += 1) {
-          if (i !== j) {
-            const tKey = `${histObj.rounds[i]}${histObj.rounds[j]}`;
-            // put that in the dictionary
-            !dict[tKey] && (dict[tKey] = { couples: [], score: len });
-            // calculate equations
-            let canAdd = true;
-            dict[tKey].couples.forEach(([tli, tgi]) => {
-              canAdd = canAdd && tli !== li && tgi !== gi;
-            });
-            canAdd && dict[tKey].couples.push([li, gi]);
-            dict[tKey].score = Math.min(
-              score - tempScore[ri],
-              dict[tKey].score
-            );
-          }
-        }
+      for (let i = ri + 1; i < histObj.rounds.length; i += 1) {
+        keys.push(`${histObj.rounds[ri]}${histObj.rounds[i]}`);
       }
       // NOTE: length (l) and 2 are covered, anything in-between is not directly considered (still covered in 2s)
-      // put that in the dictionary
-      !dict[key] && (dict[key] = { couples: [], score: len });
-      // calculate equations
-      let canAdd = true;
-      dict[key].couples.forEach(([tli, tgi]) => {
-        canAdd = canAdd && tli !== li && tgi !== gi;
+      keys.forEach((key) => {
+        // put that in the dictionary
+        !dict[key] && (dict[key] = { couples: [], score });
+        // calculate equations
+        let canAdd = true;
+        dict[key].couples.forEach(([tli, tgi]) => {
+          canAdd = canAdd && tli !== li && tgi !== gi;
+        });
+        canAdd && dict[key].couples.push([li, gi]);
+        dict[key].score = Math.min(score - tempScore[ri], dict[key].score);
       });
-      canAdd && dict[key].couples.push([li, gi]);
-      dict[key].score = Math.min(score - tempScore[ri], dict[key].score);
     });
   });
 
