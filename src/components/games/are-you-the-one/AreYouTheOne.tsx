@@ -11,12 +11,10 @@ import {
   updatePairs,
   updateScore,
 } from "../../../store/modules/ayto";
+import useHist from "./analysis/useHist";
 
 /**
- * TODO:
- * replace Dropdown with MUI Dropdown when available
- * if an equation exists in another equation, sub it out for remaining number
- * useHist needs to move to this file
+ * TODO: replace Dropdown with MUI Dropdown when available
  */
 const AreYouTheOne = () => {
   // Redux
@@ -27,6 +25,12 @@ const AreYouTheOne = () => {
 
   // state
   const [roundNumber, setRoundNumber] = React.useState(0);
+  const { hist, tempScore, calculatedEquations } = useHist(
+    ladies.length,
+    matches,
+    noMatch,
+    roundPairings
+  );
 
   // handlers
   const handleSelect = (selected: number) => {
@@ -70,6 +74,7 @@ const AreYouTheOne = () => {
       <br />
       <Table
         gents={gents}
+        hist={hist}
         ladies={ladies}
         matches={matches}
         noMatch={noMatch}
@@ -81,11 +86,14 @@ const AreYouTheOne = () => {
         updatePairs={handleUpdatePairs}
       />
       <Analysis
+        calculatedEquations={calculatedEquations}
         gents={gents}
+        hist={hist}
         ladies={ladies}
         matches={matches}
         noMatch={noMatch}
         roundPairings={roundPairings}
+        tempScore={tempScore}
       />
     </>
   );

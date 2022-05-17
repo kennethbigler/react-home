@@ -4,10 +4,13 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { Button } from "@mui/material";
 import { RoundPairing } from "../../../../store/types";
+import { ColorOptions } from "../types";
 import TBDialog from "./TBDialog";
+import { AYTOHist } from "../analysis/useHist";
 
 export interface AYTOTableProps {
   gents: string[];
+  hist: AYTOHist[][];
   ladies: string[];
   /** [lady-i: (gent-i | -1), -1, -1, ...] */
   matches: number[];
@@ -25,6 +28,7 @@ export interface AYTOTableProps {
 const AYTOTableBody = (props: AYTOTableProps) => {
   const {
     gents,
+    hist,
     ladies,
     matches,
     noMatch,
@@ -41,16 +45,6 @@ const AYTOTableBody = (props: AYTOTableProps) => {
   // state
   const [open, setOpen] = React.useState(false);
   const [tbi, setTBI] = React.useState([-1, -1]);
-  const hist: number[][] = [];
-
-  // TODO: re-plumb to use useHist?
-  // create histogram
-  roundPairings.forEach((RP) => {
-    RP.pairs.forEach((gi, li) => {
-      !hist[li] && (hist[li] = []);
-      hist[li][gi] = !hist[li][gi] ? 1 : hist[li][gi] + 1;
-    });
-  });
 
   // Handlers
   const handleClick = (roundi: number, ladyi: number, genti: number) => () => {
@@ -101,8 +95,7 @@ const AYTOTableBody = (props: AYTOTableProps) => {
           {gents.map((gName, gi) => {
             // variables
             let variant: "outlined" | "contained" = "outlined";
-            let color: "primary" | "error" | "success" = "primary";
-            let disabled = false;
+            let color: ColorOptions = "primary";
 
             // logic
             if (isTB) {
@@ -113,10 +106,6 @@ const AYTOTableBody = (props: AYTOTableProps) => {
             } else if (roundPairings[ri]?.pairs[li] === gi) {
               // if paired this round
               variant = "contained";
-            } else if (noMatch[li] && noMatch[li][gi]) {
-              // if no match and not paired
-              variant = "contained";
-              disabled = true;
             }
 
             if (noMatch[li] && noMatch[li][gi]) {
@@ -128,7 +117,7 @@ const AYTOTableBody = (props: AYTOTableProps) => {
               color = "success";
             }
 
-            const histValue = hist[li] ? hist[li][gi] || 0 : 0;
+            const histValue = (hist[li] && hist[li][gi]?.rounds?.length) || 0;
             // if consolidated
             if (isConsolidated && histValue > 0) {
               variant = "contained";
@@ -141,7 +130,6 @@ const AYTOTableBody = (props: AYTOTableProps) => {
                   variant={variant}
                   color={color}
                   onClick={handleClick(ri, li, gi)}
-                  disabled={disabled}
                 >
                   {isConsolidated ? histValue : `${lName[0]}-${gName[0]}`}
                 </Button>

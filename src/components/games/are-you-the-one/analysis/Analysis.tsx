@@ -4,10 +4,13 @@ import Chip from "@mui/material/Chip";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { RoundPairing } from "../../../../store/types";
-import useHist from "./useHist";
+import { ChipColorOptions } from "../types";
+import { AYTOHist } from "./useHist";
 
 interface AnalysisProps {
+  calculatedEquations: RoundPairing[];
   gents: string[];
+  hist: AYTOHist[][];
   ladies: string[];
   /** [lady-i: (gent-i | -1), -1, -1, ...] */
   matches: number[];
@@ -15,19 +18,23 @@ interface AnalysisProps {
   noMatch: boolean[][];
   /** [round-i: RoundPairing] */
   roundPairings: RoundPairing[];
+  tempScore: number[];
 }
 
 const Analysis = (props: AnalysisProps) => {
-  const { gents, ladies, matches, noMatch, roundPairings } = props;
+  const {
+    gents,
+    ladies,
+    matches,
+    noMatch,
+    roundPairings,
+    hist,
+    tempScore,
+    calculatedEquations,
+  } = props;
 
   // state
   const [showAll, setShowAll] = React.useState(false);
-  const { hist, tempScore, calculatedEquations } = useHist(
-    ladies.length,
-    matches,
-    noMatch,
-    roundPairings
-  );
 
   // handlers
   const handleSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,10 +61,7 @@ const Analysis = (props: AnalysisProps) => {
             }
 
             const isRepeat = hist[li][gi].rounds.length > 1;
-            // TODO: make color options type
-            let color: "primary" | "default" | "error" | "success" = isRepeat
-              ? "primary"
-              : "default";
+            let color: ChipColorOptions = isRepeat ? "primary" : "default";
 
             if (!showAll) {
               // hide matches and noMatches
@@ -102,7 +106,7 @@ const Analysis = (props: AnalysisProps) => {
           ) : null;
         })}
       </Stack>
-      <hr />
+      {calculatedEquations.length > 0 && <hr />}
       <Stack spacing={1} direction="row" flexWrap="wrap">
         {calculatedEquations.map(({ pairs, score }, cei) => (
           <Stack key={`equation-${cei}`} spacing={1}>
@@ -114,7 +118,7 @@ const Analysis = (props: AnalysisProps) => {
                 color="primary"
               />
             ))}
-            <Chip label={score} color="warning" />
+            <Chip label={`max ${score}`} color="warning" />
           </Stack>
         ))}
       </Stack>

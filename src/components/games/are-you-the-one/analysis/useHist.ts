@@ -73,10 +73,20 @@ const useHist = (
       const odds = totals[ri]
         ? ((score - tempScore[ri]) * 100) / totals[ri]
         : 0;
-      // rolling average
-      histObj.odds = Math.floor(
-        (histObj.odds * histObj.oddsWeight + odds) / (histObj.oddsWeight + 1)
-      );
+      // assign first odds
+      if (histObj.oddsWeight === 0) {
+        histObj.odds = Math.floor(odds);
+      } else if (!odds || !histObj.odds) {
+        // if odds for either are 0
+        histObj.odds = 0;
+      } else {
+        // rolling average
+        histObj.odds = Math.floor(
+          (histObj.odds * histObj.oddsWeight + odds) / (histObj.oddsWeight + 1)
+        );
+      }
+      // update odds weight
+      histObj.oddsWeight += 1;
 
       // ----------     equations     ---------- //
       // only care about repeats
