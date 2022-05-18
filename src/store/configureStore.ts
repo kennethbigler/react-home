@@ -7,6 +7,8 @@ import { DBRootState } from "./types";
 import rootReducer from ".";
 import initialState from "./initialState";
 
+// TODO: Migrate to the latest redux patterns, these seem pretty dated.
+
 /** function to read 'state' value from local storage and return it, or default state */
 export const loadState = async (): Promise<DBRootState> =>
   localForage
