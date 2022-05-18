@@ -54,7 +54,7 @@ const Poker: React.FC = () => {
         cardClickHandler={cardClickHandler}
         cardsToDiscard={cardsToDiscard}
         gameFunctions={gameFunctions}
-        onClick={handleGameFunctionClick}
+        onClick={handleGameFunctionClick as (name: string) => void}
         gameOver={gameOver}
         hideHands={hideHands}
         isBlackJack={false}

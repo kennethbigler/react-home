@@ -12,11 +12,6 @@ import {
 } from "../../../store/modules/poker";
 import { DBPlayer, PokerGameFunctions as PGF } from "../../../store/types";
 
-interface UsePokerFunctions {
-  checkUpdate: () => Promise<void>;
-  handleGameFunctionClick: (type: string) => void;
-}
-
 const usePokerFunctions = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: Dispatch<any>,
@@ -25,7 +20,7 @@ const usePokerFunctions = (
   turn: number,
   hideHands: boolean,
   gameOver: boolean
-): UsePokerFunctions => {
+) => {
   // ----------     bot automation handlers     ---------- //
   /** increment player turn and reset state */
   const endTurn = async (): Promise<void> => {
@@ -131,7 +126,7 @@ const usePokerFunctions = (
   };
 
   /** function to route click actions */
-  const handleGameFunctionClick = async (type: string): Promise<void> => {
+  const handleGameFunctionClick = async (type: string) => {
     try {
       switch (type) {
         case PGF.DISCARD_CARDS:
