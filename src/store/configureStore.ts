@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, Store } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import localForage from "localforage";
@@ -8,6 +8,7 @@ import rootReducer from ".";
 import initialState from "./initialState";
 
 // TODO: Migrate to the latest redux patterns, these seem pretty dated.
+// https://redux-toolkit.js.org/tutorials/quick-start
 
 /** function to read 'state' value from local storage and return it, or default state */
 export const loadState = async (): Promise<DBRootState> =>
@@ -28,5 +29,5 @@ export const saveState = (state: DBRootState): Promise<void | DBRootState> =>
 
 const composeEnhancers = composeWithDevTools({ trace: true, traceLimit: 25 });
 
-export const configureStore = (state: DBRootState): Store =>
+export const configureStore = (state: DBRootState) =>
   createStore(rootReducer, state, composeEnhancers(applyMiddleware(thunk)));
