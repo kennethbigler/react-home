@@ -2,6 +2,7 @@ import { Connect4State } from "./modules/connect4";
 import { GitState } from "./modules/git";
 import { ThemeState } from "./modules/theme";
 import { TicTacToeState } from "./modules/ticTacToe";
+import { YahtzeeState } from "./modules/yahtzee";
 
 // --------------------     ayto     -------------------- //
 export interface RoundPairing {
@@ -108,20 +109,7 @@ export interface DBTurn {
   hand: number;
 }
 
-// --------------------     yahtzee     -------------------- //
-export type Dice = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-export interface DBYahtzee {
-  roll: Dice;
-  values: Dice[];
-  saved: Dice[];
-  turn: number;
-  showScoreButtons: boolean;
-  topScores: number[];
-  bottomScores: number[];
-  scores: number[];
-}
-
-// --------------------     z-root     -------------------- //
+// --------------------     root     -------------------- //
 export interface DBRootState {
   ayto: DBAYTO;
   blackjack: DBBlackjack;
@@ -134,6 +122,6 @@ export interface DBRootState {
   theme: ThemeState;
   ticTacToe: TicTacToeState;
   turn: DBTurn;
-  yahtzee: DBYahtzee;
+  yahtzee: YahtzeeState;
   slots: DBSlotDisplay[];
 }

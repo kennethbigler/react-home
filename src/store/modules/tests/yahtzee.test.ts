@@ -1,4 +1,3 @@
-import { newYahtzee } from "../../initialState";
 import yahtzeeReducer, {
   addScore,
   newGame,
@@ -6,6 +5,7 @@ import yahtzeeReducer, {
   updateTop,
   updateBottom,
   updateRoll,
+  newYahtzee,
 } from "../yahtzee";
 
 const state = { ...newYahtzee(), scores: [] };
@@ -17,7 +17,9 @@ describe("store | modules | yahtzee", () => {
       scores: [100],
     });
     expect(yahtzeeReducer(state, newGame())).toEqual(state);
-    expect(yahtzeeReducer(state, diceClick([1], [2]))).toEqual({
+    expect(
+      yahtzeeReducer(state, diceClick({ values: [1], saved: [2] }))
+    ).toEqual({
       ...state,
       values: [1],
       saved: [2],
@@ -32,7 +34,9 @@ describe("store | modules | yahtzee", () => {
       showScoreButtons: false,
       bottomScores: [100],
     });
-    expect(yahtzeeReducer(state, updateRoll([1], [2], 3))).toEqual({
+    expect(
+      yahtzeeReducer(state, updateRoll({ values: [1], saved: [2], roll: 3 }))
+    ).toEqual({
       ...state,
       values: [1],
       saved: [2],
@@ -42,9 +46,7 @@ describe("store | modules | yahtzee", () => {
   });
 
   test("incorrect parameters", () => {
-    // @ts-expect-error: fake action for testing purposes
     expect(yahtzeeReducer(state, { type: undefined })).toEqual(state);
-    // @ts-expect-error: fake action for testing purposes
     expect(yahtzeeReducer(undefined, { type: undefined })).toEqual(state);
   });
 });

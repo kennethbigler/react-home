@@ -1,4 +1,4 @@
-import { Dice } from "../store/types";
+import { Dice } from "../store/modules/yahtzee";
 
 export const diceRoller = (): Dice =>
   (Math.floor(Math.random() * 6) + 1) as Dice;

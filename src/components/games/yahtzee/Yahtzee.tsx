@@ -6,7 +6,7 @@ import ScoreTable from "./score-table/ScoreTable";
 import { ADD_DICE, BottomGameScore } from "./types";
 import Header from "./Header";
 import TableHeader from "./TableHeader";
-import { DBRootState, Dice } from "../../../store/types";
+import { DBRootState } from "../../../store/types";
 import {
   addScore,
   diceClick,
@@ -14,6 +14,7 @@ import {
   updateTop,
   updateBottom,
   updateRoll,
+  Dice,
 } from "../../../store/modules/yahtzee";
 import getYahtzeeVars from "./helpers";
 
@@ -52,10 +53,10 @@ const Yahtzee: React.FC = () => {
     bottomScores
   );
 
-  const newYGame = React.useCallback((): void => {
+  const newYGame = (): void => {
     dispatch(addScore(finalTopSum + bottomSum));
     dispatch(newGame());
-  }, [dispatch, finalTopSum, bottomSum]);
+  };
 
   const handleDiceRoll = (): void => {
     if (finish) {
@@ -66,27 +67,40 @@ const Yahtzee: React.FC = () => {
       return;
     }
 
-    for (let i = 0; i < values.length; i += 1) {
-      values[i] = DiceAPI.roll();
+    const newValues = [...values];
+    const newSaved = [...saved];
+
+    for (let i = 0; i < newValues.length; i += 1) {
+      newValues[i] = DiceAPI.roll();
     }
-    values.sort();
-    saved.sort();
-    dispatch(updateRoll(values, saved, (roll + 1) as Dice));
+    newValues.sort();
+    newSaved.sort();
+    dispatch(
+      updateRoll({
+        values: newValues,
+        saved: newSaved,
+        roll: (roll + 1) as Dice,
+      })
+    );
   };
 
   const handleSave = (i: number): void => {
     if (values[i] === 0) {
       return;
     }
-    saved.push(values.splice(i, 1)[0]);
-    saved.sort();
-    dispatch(diceClick(values, saved));
+    const newValues = [...values];
+    const newSaved = [...saved];
+    newSaved.push(newValues.splice(i, 1)[0]);
+    newSaved.sort();
+    dispatch(diceClick({ values: newValues, saved: newSaved }));
   };
 
   const handleUnsave = (i: number): void => {
-    values.push(saved.splice(i, 1)[0]);
-    values.sort();
-    dispatch(diceClick(values, saved));
+    const newValues = [...values];
+    const newSaved = [...saved];
+    newValues.push(newSaved.splice(i, 1)[0]);
+    newValues.sort();
+    dispatch(diceClick({ values: newValues, saved: newSaved }));
   };
 
   const getButtonText = React.useCallback(
@@ -111,21 +125,17 @@ const Yahtzee: React.FC = () => {
     [finish]
   );
 
-  const handleTopScore = React.useCallback(
-    (points: number, i: number): void => {
-      topScores[i] = points;
-      dispatch(updateTop(topScores));
-    },
-    [dispatch, topScores]
-  );
+  const handleTopScore = (points: number, i: number): void => {
+    const newTopScores = [...topScores];
+    newTopScores[i] = points;
+    dispatch(updateTop(newTopScores));
+  };
 
-  const handleBottomScore = React.useCallback(
-    (points: number, i: number): void => {
-      bottomScores[i] = points;
-      dispatch(updateBottom(bottomScores));
-    },
-    [dispatch, bottomScores]
-  );
+  const handleBottomScore = (points: number, i: number): void => {
+    const newBottomScores = [...bottomScores];
+    newBottomScores[i] = points;
+    dispatch(updateBottom(newBottomScores));
+  };
 
   const top = topScores.map((score, i) => ({ ...topConstants[i], score }));
   const bottom = bottomScores.map((score, i) => ({

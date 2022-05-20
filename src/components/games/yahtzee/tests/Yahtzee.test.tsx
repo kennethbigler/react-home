@@ -87,7 +87,7 @@ describe("games | yahtzee | Yahtzee", () => {
   it("plays the game and saves to the top half scores", () => {
     render(<Yahtzee />);
 
-    expect(screen.getAllByText("0")).toHaveLength(6);
+    expect(screen.getAllByText("0")).toHaveLength(11);
     // do the first 3 rolls, then try to do the 4th
     fireEvent.click(screen.getByText("First Roll"));
     fireEvent.click(screen.getByText("Second Roll"));

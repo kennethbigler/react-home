@@ -1,122 +1,79 @@
-import { Action } from "redux";
-import initialState, { newYahtzee } from "../initialState";
-import { DBYahtzee, Dice } from "../types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// --------------------     Actions     -------------------- //
-const ADD = "@games/yahtzee/SCORE";
-const NEW_GAME = "@games/yahtzee/NEW_GAME";
-const DICE_CLICK = "@games/yahtzee/DICE_CLICK";
-const UPDATE_TOP = "@games/yahtzee/UPDATE_TOP";
-const UPDATE_BOTTOM = "@games/yahtzee/UPDATE_BOTTOM";
-const UPDATE_ROLL = "@games/yahtzee/UPDATE_ROLL";
-
-// -------------------- Action Creators     -------------------- //
-interface AddScoreAction extends Action<typeof ADD> {
-  score: number;
-}
-/** add score to score table in Yahtzee DB */
-export const addScore = (score: number): AddScoreAction => ({
-  type: ADD,
-  score,
-});
-
-type NewGameAction = Action<typeof NEW_GAME>;
-/** reset game in Yahtzee DB */
-export const newGame = (): NewGameAction => ({ type: NEW_GAME });
-
-interface DiceClickAction extends Action<typeof DICE_CLICK> {
+export const dice = [0, 1, 2, 3, 4, 5, 6] as const;
+export type Dice = typeof dice[number];
+export interface YahtzeeState {
+  roll: Dice;
   values: Dice[];
   saved: Dice[];
-}
-/** save a dice in Yahtzee DB */
-export const diceClick = (values: Dice[], saved: Dice[]): DiceClickAction => ({
-  type: DICE_CLICK,
-  values,
-  saved,
-});
-
-interface UpdateTopAction extends Action<typeof UPDATE_TOP> {
+  turn: number;
+  showScoreButtons: boolean;
   topScores: number[];
-}
-/** update top scores in Yahtzee DB */
-export const updateTop = (topScores: number[]): UpdateTopAction => ({
-  type: UPDATE_TOP,
-  topScores,
-});
-
-interface UpdateBottomAction extends Action<typeof UPDATE_BOTTOM> {
   bottomScores: number[];
+  scores: number[];
 }
-/** update bottom scores in Yahtzee DB */
-export const updateBottom = (bottomScores: number[]): UpdateBottomAction => ({
-  type: UPDATE_BOTTOM,
-  bottomScores,
+
+export const newYahtzee = (): Omit<YahtzeeState, "scores"> => ({
+  roll: 0,
+  values: [0, 0, 0, 0, 0],
+  saved: [],
+  turn: 0,
+  showScoreButtons: false,
+  topScores: [-1, -1, -1, -1, -1, -1],
+  bottomScores: [-1, -1, -1, -1, -1, -1, -1],
 });
 
-interface UpdateRollAction extends Action<typeof UPDATE_ROLL> {
-  payload: {
-    values: Dice[];
-    saved: Dice[];
-    roll: Dice;
-    showScoreButtons?: boolean;
-  };
-}
-/** new roll in Yahtzee DB */
-export const updateRoll = (
-  values: Dice[],
-  saved: Dice[],
-  roll: Dice
-): UpdateRollAction => ({
-  type: UPDATE_ROLL,
-  payload: {
-    values,
-    saved,
-    roll,
+const initialState: YahtzeeState = { ...newYahtzee(), scores: [] };
+
+export const yahtzeeSlice = createSlice({
+  name: "yahtzee",
+  initialState,
+  reducers: {
+    addScore: (state, action: PayloadAction<number>) => {
+      state.scores.push(action.payload);
+    },
+    newGame: (state) => ({ ...newYahtzee(), scores: state.scores }),
+    diceClick: (
+      state,
+      action: PayloadAction<{ values: Dice[]; saved: Dice[] }>
+    ) => {
+      state.values = action.payload.values;
+      state.saved = action.payload.saved;
+    },
+    updateTop: (state, action: PayloadAction<number[]>) => {
+      state.showScoreButtons = false;
+      state.topScores = action.payload;
+      state.roll = 0;
+      state.values = [0, 0, 0, 0, 0];
+      state.saved = [];
+    },
+    updateBottom: (state, action: PayloadAction<number[]>) => {
+      state.showScoreButtons = false;
+      state.bottomScores = action.payload;
+      state.roll = 0;
+      state.values = [0, 0, 0, 0, 0];
+      state.saved = [];
+    },
+    updateRoll: (
+      state,
+      action: PayloadAction<{ values: Dice[]; saved: Dice[]; roll: Dice }>
+    ) => {
+      state.values = action.payload.values;
+      state.saved = action.payload.saved;
+      state.roll = action.payload.roll;
+      state.showScoreButtons = true;
+    },
   },
 });
 
-// --------------------     Reducers     -------------------- //
-type YahtzeeActions =
-  | AddScoreAction
-  | NewGameAction
-  | DiceClickAction
-  | UpdateTopAction
-  | UpdateBottomAction
-  | UpdateRollAction;
-export default function reducer(
-  state: DBYahtzee = initialState.yahtzee,
-  action: YahtzeeActions
-): DBYahtzee {
-  switch (action.type) {
-    case ADD:
-      return { ...state, scores: [...state.scores, action.score] };
-    case NEW_GAME:
-      return { ...newYahtzee(), scores: state.scores };
-    case DICE_CLICK:
-      return { ...state, values: [...action.values], saved: [...action.saved] };
-    case UPDATE_TOP:
-      return {
-        ...state,
-        showScoreButtons: false,
-        topScores: action.topScores,
-        roll: 0,
-        values: [0, 0, 0, 0, 0],
-        saved: [],
-      };
-    case UPDATE_BOTTOM:
-      return {
-        ...state,
-        showScoreButtons: false,
-        bottomScores: action.bottomScores,
-        roll: 0,
-        values: [0, 0, 0, 0, 0],
-        saved: [],
-      };
-    case UPDATE_ROLL:
-      return { ...state, ...action.payload, showScoreButtons: true };
-    default:
-      return state;
-  }
-}
+// Action creators are generated for each case reducer function
+export const {
+  addScore,
+  newGame,
+  diceClick,
+  updateTop,
+  updateBottom,
+  updateRoll,
+} = yahtzeeSlice.actions;
 
-// --------------------     Thunks     -------------------- //
+export default yahtzeeSlice.reducer;

@@ -5,6 +5,7 @@ import { newConnect4Game } from "./modules/connect4";
 import { GitState } from "./modules/git";
 import { ThemeState } from "./modules/theme";
 import { newTicTacToe } from "./modules/ticTacToe";
+import { YahtzeeState, newYahtzee } from "./modules/yahtzee";
 
 import {
   DBAYTO,
@@ -14,7 +15,6 @@ import {
   DBTurn,
   DBRootState,
   DBSlotDisplay,
-  DBYahtzee,
   DBDND,
   briefcasesToOpen,
   Briefcase,
@@ -130,17 +130,6 @@ export const newPokerGameState = (): DBPoker => ({
   gameOver: false,
 });
 
-// yahtzee
-export const newYahtzee = (): Omit<DBYahtzee, "scores"> => ({
-  roll: 0,
-  values: [0, 0, 0, 0, 0],
-  saved: [],
-  turn: 0,
-  showScoreButtons: false,
-  topScores: [-1, -1, -1, -1, -1, -1],
-  bottomScores: [-1, -1, -1, -1, -1, -1, -1],
-});
-
 // --------------------     initial states     -------------------- //
 const ayto: DBAYTO = newAreYouTheOne();
 const blackjack = newBlackjackGame();
@@ -172,7 +161,7 @@ const theme: ThemeState = {
 };
 const ticTacToe = newTicTacToe();
 const turn: DBTurn = { player: 0, hand: 0 };
-const yahtzee: DBYahtzee = { ...newYahtzee(), scores: [] };
+const yahtzee: YahtzeeState = { ...newYahtzee(), scores: [] };
 
 // --------------------     export     -------------------- //
 export default {

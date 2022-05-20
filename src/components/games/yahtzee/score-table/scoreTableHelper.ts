@@ -1,5 +1,5 @@
 import { TopGameScore } from "../types";
-import { Dice } from "../../../../store/types";
+import { Dice } from "../../../../store/modules/yahtzee";
 
 interface DiceHistogram {
   0?: number;
