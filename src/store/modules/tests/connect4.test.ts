@@ -1,8 +1,13 @@
-import { newConnect4Game } from "../../initialState";
-import { DBConnect4 } from "../../types";
-import connect4Reducer, { newGame, updateTurn, updateEval } from "../connect4";
+import connect4Reducer, {
+  newGame,
+  updateTurn,
+  updateBoard,
+  updateWinner,
+  Connect4State,
+  newConnect4Game,
+} from "../connect4";
 
-const state: DBConnect4 = newConnect4Game();
+const state: Connect4State = newConnect4Game();
 
 describe("store | modules | connect4", () => {
   test("reducer", () => {
@@ -21,17 +26,18 @@ describe("store | modules | connect4", () => {
       ...state,
       turn: 2,
     });
-    expect(connect4Reducer(state, updateEval(0, [[1, 2]]))).toEqual({
+    expect(connect4Reducer(state, updateWinner(0))).toEqual({
+      ...state,
+      winner: 0,
+    });
+    expect(connect4Reducer(state, updateBoard([[1, 2]]))).toEqual({
       ...state,
       board: [[1, 2]],
-      winner: 0,
     });
   });
 
   test("incorrect parameters", () => {
-    // @ts-expect-error: for testing purposes, using fake action
     expect(connect4Reducer(state, { type: undefined })).toEqual(state);
-    // @ts-expect-error: for testing purposes, using fake action
     expect(connect4Reducer(undefined, { type: undefined })).toEqual(state);
   });
 });

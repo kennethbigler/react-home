@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Piece from "./Piece";
-import { C4Turn } from "../../../store/types";
+import { C4Turn } from "../../../store/modules/connect4";
 
 interface HeaderProps {
   newGame: React.MouseEventHandler;

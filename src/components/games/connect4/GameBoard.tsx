@@ -2,7 +2,7 @@ import React from "react";
 import Paper from "@mui/material/Paper";
 import Board from "./Board";
 import Header from "./Header";
-import { C4Turn } from "../../../store/types";
+import { C4Turn } from "../../../store/modules/connect4";
 
 interface GameBoardProps {
   board: number[][];

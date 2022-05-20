@@ -1,52 +1,63 @@
-import { Action } from "redux";
-import { C4Turn, DBConnect4 } from "../types";
-import initialState, { newConnect4Game } from "../initialState";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// --------------------     Actions     -------------------- //
-const NEW_GAME = "@games/connext4/NEW_GAME";
-const UPDATE_TURN = "@games/connext4/UPDATE_TURN";
-const UPDATE_EVAL = "@games/connext4/UPDATE_EVAL";
-
-// -------------------- Action Creators     -------------------- //
-type NewGameAction = Action<typeof NEW_GAME>;
-/** start a new game in Connect4 DB */
-export const newGame = (): NewGameAction => ({ type: NEW_GAME });
-
-interface UpdateTurnAction extends Action<typeof UPDATE_TURN> {
+export enum C4Turn {
+  EMPTY = 0,
+  RED = 1,
+  BLACK = 2,
+}
+export interface Connect4State {
+  board: number[][];
+  winner?: number;
+  line: [
+    number | undefined,
+    [number, number][] | undefined,
+    [number, number][] | undefined
+  ];
   turn: C4Turn;
 }
-/** change player turn/color in Connect4 DB */
-export const updateTurn = (turn: C4Turn): UpdateTurnAction => ({
-  type: UPDATE_TURN,
-  turn,
+
+const NEW_BOARD = [
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+];
+
+export const immutableBoardCopy = (acc: number[][], row: number[]) => {
+  acc.push([...row]);
+  return acc;
+};
+
+export const newConnect4Game = (): Connect4State => ({
+  board: NEW_BOARD.reduce(immutableBoardCopy, []),
+  winner: undefined,
+  line: [undefined, undefined, undefined],
+  turn: C4Turn.RED,
 });
 
-interface UpdateEvalAction extends Action<typeof UPDATE_EVAL> {
-  winner: number;
-  board: number[][];
-}
-/** update a winner and the board in Connect4 DB */
-export const updateEval = (
-  winner: number,
-  board: number[][]
-): UpdateEvalAction => ({ type: UPDATE_EVAL, winner, board });
+const initialState = newConnect4Game();
 
-// --------------------     Reducers     -------------------- //
-type Connect4Actions = NewGameAction | UpdateTurnAction | UpdateEvalAction;
-export default function reducer(
-  state: DBConnect4 = initialState.connect4,
-  action: Connect4Actions
-): DBConnect4 {
-  switch (action.type) {
-    case NEW_GAME:
-      return newConnect4Game();
-    case UPDATE_TURN:
-      return { ...state, turn: action.turn };
-    case UPDATE_EVAL:
-      return { ...state, winner: action.winner, board: action.board };
-    default:
-      return state;
-  }
-}
+export const counterSlice = createSlice({
+  name: "connect4",
+  initialState,
+  reducers: {
+    newGame: () => newConnect4Game(),
+    updateTurn: (state, action: PayloadAction<C4Turn>) => {
+      state.turn = action.payload;
+    },
+    updateWinner: (state, action: PayloadAction<number>) => {
+      state.winner = action.payload;
+    },
+    updateBoard: (state, action: PayloadAction<number[][]>) => {
+      state.board = action.payload;
+    },
+  },
+});
 
-// --------------------     Thunks     -------------------- //
+// Action creators are generated for each case reducer function
+export const { newGame, updateTurn, updateWinner, updateBoard } =
+  counterSlice.actions;
+
+export default counterSlice.reducer;

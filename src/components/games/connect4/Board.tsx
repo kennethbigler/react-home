@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Piece from "./Piece";
-import { C4Turn } from "../../../store/types";
+import { C4Turn } from "../../../store/modules/connect4";
 
 interface BoardProps {
   board: number[][];

@@ -1,4 +1,5 @@
 import { Color } from "@mui/material";
+import { Connect4State } from "./modules/connect4";
 
 // --------------------     ayto     -------------------- //
 export interface RoundPairing {
@@ -31,23 +32,6 @@ export interface DBBlackjack {
   gameFunctions: string[];
   hasFunctions: boolean;
   hideHands: boolean;
-}
-
-// --------------------     connect4     -------------------- //
-export enum C4Turn {
-  EMPTY = 0,
-  RED = 1,
-  BLACK = 2,
-}
-export interface DBConnect4 {
-  board: number[][];
-  winner?: number;
-  line: [
-    number | undefined,
-    [number, number][] | undefined,
-    [number, number][] | undefined
-  ];
-  turn: C4Turn;
 }
 
 // --------------------     dnd     -------------------- //
@@ -173,7 +157,7 @@ export interface DBYahtzee {
 export interface DBRootState {
   ayto: DBAYTO;
   blackjack: DBBlackjack;
-  connect4: DBConnect4;
+  connect4: Connect4State;
   dnd: DBDND;
   git: DBGit;
   gqlToken: string;

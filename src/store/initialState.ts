@@ -1,6 +1,7 @@
 import { teal, deepOrange } from "@mui/material/colors";
 import SlotMachine from "../apis/SlotMachine";
 import { ladies, gents } from "../constants/ayto";
+import { newConnect4Game } from "./modules/connect4";
 
 import {
   DBAYTO,
@@ -13,8 +14,6 @@ import {
   DBRootState,
   DBSlotDisplay,
   DBTicTacToe,
-  DBConnect4,
-  C4Turn,
   DBYahtzee,
   DBDND,
   briefcasesToOpen,
@@ -35,24 +34,6 @@ export const newBlackjackGame = (): DBBlackjack => ({
   gameFunctions: [GameFunctions.FINISH_BETTING],
   hasFunctions: false,
   hideHands: true,
-});
-// connect4
-const NEW_BOARD = [
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0],
-];
-export const newConnect4Game = (): DBConnect4 => ({
-  board: NEW_BOARD.reduce((acc: number[][], row) => {
-    acc.push([...row]);
-    return acc;
-  }, []),
-  winner: undefined,
-  line: [undefined, undefined, undefined],
-  turn: C4Turn.RED,
 });
 
 // dnd

@@ -14,6 +14,8 @@
     "@emotion/styled": "11.8.1",
     "@mui/icons-material": "5.8.0",
     "@mui/material": "5.8.0",
+    "@redux-devtools/extension": "3.2.2",
+    "@reduxjs/toolkit": "1.8.1",
     "copy-to-clipboard": "3.3.1",
     "graphql-tag": "2.12.6",
     "localforage": "1.10.0",
@@ -26,7 +28,6 @@
     "react-simple-maps": "2.3.0",
     "recharts": "2.1.9",
     "redux": "4.1.2",
-    "redux-devtools-extension": "2.13.9",
     "redux-thunk": "2.4.1"
   },
   "devDependencies": {

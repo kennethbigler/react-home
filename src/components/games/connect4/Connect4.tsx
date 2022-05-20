@@ -4,10 +4,13 @@ import Typography from "@mui/material/Typography";
 import {
   newGame,
   updateTurn,
-  updateEval,
+  updateWinner,
+  updateBoard,
+  C4Turn,
+  immutableBoardCopy,
 } from "../../../store/modules/connect4";
 import GameBoard from "./GameBoard";
-import { DBRootState, C4Turn } from "../../../store/types";
+import { DBRootState } from "../../../store/types";
 
 // dp constants
 const PIECE = 0;
@@ -53,73 +56,72 @@ const Connect4: React.FC = () => {
   const dispatch = useDispatch();
 
   /** start a new game, reset the board and helper vars */
-  const newC4Game = React.useCallback((): void => {
+  const newC4Game = (): void => {
     dispatch(newGame());
-  }, [dispatch]);
-
-  /** update turn, alternating red/black */
-  const updateC4Turn = React.useCallback((): void => {
-    dispatch(updateTurn(turn === C4Turn.RED ? C4Turn.BLACK : C4Turn.RED));
-  }, [dispatch, turn]);
+  };
 
   /** function to evaluate a connect 4 board based off the last piece played
    * NOTE: win condition will be within +-3 of the piece last played - O(N)
    * updates state of winner and board for highlighting */
-  const evalConnect4 = React.useCallback(
-    (row: number, col: number): void => {
-      // variables to track streaks
-      const dp: [number, [number, number][], [number, number][]][] = [];
-      for (let i = 0; i < 4; i += 1) {
-        const a1: [number, number][] = [];
-        const a2: [number, number][] = [];
-        dp.push([0, a1, a2]);
-      }
+  const evalConnect4 = (
+    row: number,
+    col: number,
+    evalBoard: number[][]
+  ): void => {
+    // variables to track streaks
+    const dp: [number, [number, number][], [number, number][]][] = [];
+    for (let i = 0; i < 4; i += 1) {
+      const a1: [number, number][] = [];
+      const a2: [number, number][] = [];
+      dp.push([0, a1, a2]);
+    }
 
-      // win will be contained w/in +-3 of the token placed
-      for (let i = -3; i <= 3; i += 1) {
-        // check for streaks
-        // vertical
-        helpEvalConnect4(board, row + i, col, dp[0]);
-        // horizontal
-        helpEvalConnect4(board, row, col + i, dp[1]);
-        // diagonal down
-        helpEvalConnect4(board, row + i, col + i, dp[2]);
-        // diagonal up
-        helpEvalConnect4(board, row - i, col + i, dp[3]);
-      }
+    // win will be contained w/in +-3 of the token placed
+    for (let i = -3; i <= 3; i += 1) {
+      // check for streaks
+      // vertical
+      helpEvalConnect4(evalBoard, row + i, col, dp[0]);
+      // horizontal
+      helpEvalConnect4(evalBoard, row, col + i, dp[1]);
+      // diagonal down
+      helpEvalConnect4(evalBoard, row + i, col + i, dp[2]);
+      // diagonal up
+      helpEvalConnect4(evalBoard, row - i, col + i, dp[3]);
+    }
 
-      dp.forEach((line) => {
-        if (line[MAX].length >= 4) {
-          line[MAX].forEach((t) => {
-            board[t[0]][t[1]] = 3;
-          });
-          dispatch(updateEval(turn, board));
-        }
-      });
-    },
-    [board, dispatch, turn]
-  );
+    const tempBoard = evalBoard.reduce(immutableBoardCopy, []);
+
+    dp.forEach((line) => {
+      if (line[MAX].length >= 4) {
+        line[MAX].forEach((t) => {
+          tempBoard[t[0]][t[1]] = 3;
+        });
+        console.log(`winner! ${turn}`);
+        dispatch(updateWinner(turn));
+        dispatch(updateBoard(tempBoard));
+      }
+    });
+  };
 
   /** insert piece into the board, piece falls to the bottom row every time */
-  const insert = React.useCallback(
-    (col: number): void => {
-      // check to see if there is an empty spot left
-      if (!winner && !board[board.length - 1][col]) {
-        let i = 0;
-        // look for the lowest empty spot
-        while (board[i][col] !== 0) {
-          i += 1;
-        }
-        // insert element
-        board[i][col] = turn;
-        // update turn
-        updateC4Turn();
-        // check if win
-        evalConnect4(i, col);
+  const insert = (col: number) => {
+    // check to see if there is an empty spot left
+    if (!winner && !board[board.length - 1][col]) {
+      let i = 0;
+      // look for the lowest empty spot
+      while (board[i][col] !== 0) {
+        i += 1;
       }
-    },
-    [board, evalConnect4, turn, updateC4Turn, winner]
-  );
+      // insert element
+      const tempBoard = board.reduce(immutableBoardCopy, []);
+      tempBoard[i][col] = turn;
+      dispatch(updateBoard(tempBoard));
+      // update turn
+      dispatch(updateTurn(turn === C4Turn.RED ? C4Turn.BLACK : C4Turn.RED));
+      // check if win
+      evalConnect4(i, col, tempBoard);
+    }
+  };
 
   return (
     <>
