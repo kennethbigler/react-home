@@ -1,44 +1,40 @@
-import { Action } from "redux";
+import { createSlice } from "@reduxjs/toolkit";
 import { blueGrey, deepOrange, teal } from "@mui/material/colors";
-import { DBUITheme } from "../types";
-import initialState from "../initialState";
+import { Color } from "@mui/material";
 
-// --------------------     Actions     -------------------- //
-enum TA {
-  DARK_THEME = "@resume/theme/DARK_THEME",
-  LIGHT_THEME = "@resume/theme/LIGHT_THEME",
-}
-const { DARK_THEME, LIGHT_THEME } = TA;
+export const themes = ["light", "dark"] as const;
+export type Themes = typeof themes[number];
 
-// --------------------     Action Creators     -------------------- //
-/** update to dark theme in Theme DB */
-export const displayDarkTheme = (): Action<typeof DARK_THEME> => ({
-  type: DARK_THEME,
-});
-/** update to light theme in Theme DB */
-export const displayLightTheme = (): Action<typeof LIGHT_THEME> => ({
-  type: LIGHT_THEME,
-});
-
-// --------------------     Reducers     -------------------- //
-export default function reducer(
-  state: DBUITheme = initialState.theme,
-  action: Action<TA>
-): DBUITheme {
-  switch (action.type) {
-    case DARK_THEME:
-      return {
-        ...state,
-        ...{ mode: "dark", primary: teal, secondary: deepOrange },
-      };
-    case LIGHT_THEME:
-      return {
-        ...state,
-        ...{ mode: "light", primary: blueGrey, secondary: deepOrange },
-      };
-    default:
-      return state;
-  }
+export interface ThemeState {
+  mode: Themes;
+  primary: Color;
+  secondary: Color;
 }
 
-// --------------------     Thunks     -------------------- //
+const initialState: ThemeState = {
+  mode: themes[1],
+  primary: teal,
+  secondary: deepOrange,
+};
+
+export const themeSlice = createSlice({
+  name: "theme",
+  initialState,
+  reducers: {
+    displayDarkTheme: () => ({
+      mode: themes[1],
+      primary: teal,
+      secondary: deepOrange,
+    }),
+    displayLightTheme: () => ({
+      mode: themes[0],
+      primary: blueGrey,
+      secondary: deepOrange,
+    }),
+  },
+});
+
+// Action creators are generated for each case reducer function
+export const { displayDarkTheme, displayLightTheme } = themeSlice.actions;
+
+export default themeSlice.reducer;

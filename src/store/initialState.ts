@@ -3,13 +3,13 @@ import SlotMachine from "../apis/SlotMachine";
 import { ladies, gents } from "../constants/ayto";
 import { newConnect4Game } from "./modules/connect4";
 import { GitState } from "./modules/git";
+import { ThemeState } from "./modules/theme";
 
 import {
   DBAYTO,
   DBPlayer,
   DBBlackjack,
   GameFunctions,
-  DBUITheme,
   DBTurn,
   DBRootState,
   DBSlotDisplay,
@@ -175,7 +175,7 @@ const players: DBPlayer[] = [
 ];
 const poker = newPokerGameState();
 const slots: DBSlotDisplay[] = SlotMachine.pullHandle();
-const theme: DBUITheme = {
+const theme: ThemeState = {
   primary: teal,
   secondary: deepOrange,
   mode: "dark",

@@ -1,6 +1,6 @@
-import { Color } from "@mui/material";
 import { Connect4State } from "./modules/connect4";
 import { GitState } from "./modules/git";
+import { ThemeState } from "./modules/theme";
 
 // --------------------     ayto     -------------------- //
 export interface RoundPairing {
@@ -101,13 +101,6 @@ export enum DBSlotOptions {
 }
 export type DBSlotDisplay = [DBSlotOptions, DBSlotOptions, DBSlotOptions];
 
-// --------------------     theme     -------------------- //
-export interface DBUITheme {
-  mode: "light" | "dark";
-  primary: Color;
-  secondary: Color;
-}
-
 // --------------------     ticTacToe     -------------------- //
 export interface DBHistoryEntry {
   board: string[] | undefined[];
@@ -148,7 +141,7 @@ export interface DBRootState {
   gqlToken: string;
   players: DBPlayer[];
   poker: DBPoker;
-  theme: DBUITheme;
+  theme: ThemeState;
   ticTacToe: DBTicTacToe;
   turn: DBTurn;
   yahtzee: DBYahtzee;

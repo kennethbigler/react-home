@@ -1,13 +1,16 @@
 import { blueGrey, deepOrange, teal } from "@mui/material/colors";
-import themeReducer, { displayDarkTheme, displayLightTheme } from "../theme";
-import { DBUITheme } from "../../types";
+import themeReducer, {
+  displayDarkTheme,
+  displayLightTheme,
+  ThemeState,
+} from "../theme";
 
-const darkState: DBUITheme = {
+const darkState: ThemeState = {
   mode: "dark",
   primary: teal,
   secondary: deepOrange,
 };
-const lightState: DBUITheme = {
+const lightState: ThemeState = {
   mode: "light",
   primary: blueGrey,
   secondary: deepOrange,
