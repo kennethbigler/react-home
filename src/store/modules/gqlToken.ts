@@ -1,30 +1,16 @@
-import { Action } from "redux";
-import initialState from "../initialState";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// --------------------     Actions     -------------------- //
-const SET_TOKEN = "@resume/graphql/SET_TOKEN";
+const initialState = "";
 
-// --------------------     Action Creators     -------------------- //
-interface SetTokenAction extends Action<typeof SET_TOKEN> {
-  gqlToken: string;
-}
-export const setToken = (gqlToken = ""): SetTokenAction => ({
-  type: SET_TOKEN,
-  gqlToken,
+export const gqlTokenSlice = createSlice({
+  name: "gqlToken",
+  initialState,
+  reducers: {
+    setToken: (state, action: PayloadAction<string>) => action.payload,
+  },
 });
 
-// --------------------     Reducers     -------------------- //
-type GQLActions = SetTokenAction;
-export default function reducer(
-  state: string = initialState.gqlToken,
-  action: GQLActions
-): string {
-  switch (action.type) {
-    case SET_TOKEN:
-      return action.gqlToken;
-    default:
-      return state;
-  }
-}
+// Action creators are generated for each case reducer function
+export const { setToken } = gqlTokenSlice.actions;
 
-// --------------------     Thunks     -------------------- //
+export default gqlTokenSlice.reducer;
