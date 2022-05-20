@@ -1,39 +1,36 @@
-import { Action } from "redux";
-import { DBTicTacToe } from "../types";
-import initialState, { newTicTacToe } from "../initialState";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// --------------------     Actions     -------------------- //
-const SET = "@games/ticTacToe/SET";
-const NEW_GAME = "@games/ticTacToe/NEW_GAME";
-
-// -------------------- Action Creators     -------------------- //
-interface PlayTurnAction extends Action<typeof SET> {
-  turn: DBTicTacToe;
+export interface HistoryEntry {
+  board: string[] | undefined[];
+  location?: number;
 }
-/** update game variables in TicTacToe DB */
-export const playTurn = (turn: DBTicTacToe): PlayTurnAction => ({
-  type: SET,
-  turn,
+export interface TicTacToeState {
+  history: HistoryEntry[];
+  turn: string;
+  step: number;
+}
+
+export const X = "X";
+export const O = "O";
+export const EMPTY = undefined;
+export const newTicTacToe = (): TicTacToeState => ({
+  history: [{ board: Array(9).fill(EMPTY) }],
+  turn: X,
+  step: 0,
 });
 
-type NewGameAction = Action<typeof NEW_GAME>;
-/** reset game variables in TicTacToe DB */
-export const newGame = (): NewGameAction => ({ type: NEW_GAME });
+const initialState = newTicTacToe();
 
-// --------------------     Reducers     -------------------- //
-type TicTacToeActions = PlayTurnAction | NewGameAction;
-export default function reducer(
-  state: DBTicTacToe = initialState.ticTacToe,
-  action: TicTacToeActions
-): DBTicTacToe {
-  switch (action.type) {
-    case SET:
-      return action.turn;
-    case NEW_GAME:
-      return newTicTacToe();
-    default:
-      return state;
-  }
-}
+export const ticTacToeSlice = createSlice({
+  name: "ticTacToe",
+  initialState,
+  reducers: {
+    playTurn: (state, action: PayloadAction<TicTacToeState>) => action.payload,
+    newGame: () => newTicTacToe(),
+  },
+});
 
-// --------------------     Thunks     -------------------- //
+// Action creators are generated for each case reducer function
+export const { playTurn, newGame } = ticTacToeSlice.actions;
+
+export default ticTacToeSlice.reducer;

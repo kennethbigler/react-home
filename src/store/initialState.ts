@@ -4,6 +4,7 @@ import { ladies, gents } from "../constants/ayto";
 import { newConnect4Game } from "./modules/connect4";
 import { GitState } from "./modules/git";
 import { ThemeState } from "./modules/theme";
+import { newTicTacToe } from "./modules/ticTacToe";
 
 import {
   DBAYTO,
@@ -13,7 +14,6 @@ import {
   DBTurn,
   DBRootState,
   DBSlotDisplay,
-  DBTicTacToe,
   DBYahtzee,
   DBDND,
   briefcasesToOpen,
@@ -130,16 +130,6 @@ export const newPokerGameState = (): DBPoker => ({
   gameOver: false,
 });
 
-// tic-tac-toe
-export const X = "X";
-export const O = "O";
-export const EMPTY = undefined;
-export const newTicTacToe = (): DBTicTacToe => ({
-  history: [{ board: Array(9).fill(EMPTY) }],
-  turn: X,
-  step: 0,
-});
-
 // yahtzee
 export const newYahtzee = (): Omit<DBYahtzee, "scores"> => ({
   roll: 0,
@@ -180,7 +170,7 @@ const theme: ThemeState = {
   secondary: deepOrange,
   mode: "dark",
 };
-const ticTacToe: DBTicTacToe = newTicTacToe();
+const ticTacToe = newTicTacToe();
 const turn: DBTurn = { player: 0, hand: 0 };
 const yahtzee: DBYahtzee = { ...newYahtzee(), scores: [] };
 

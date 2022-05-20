@@ -1,6 +1,7 @@
 import { Connect4State } from "./modules/connect4";
 import { GitState } from "./modules/git";
 import { ThemeState } from "./modules/theme";
+import { TicTacToeState } from "./modules/ticTacToe";
 
 // --------------------     ayto     -------------------- //
 export interface RoundPairing {
@@ -101,17 +102,6 @@ export enum DBSlotOptions {
 }
 export type DBSlotDisplay = [DBSlotOptions, DBSlotOptions, DBSlotOptions];
 
-// --------------------     ticTacToe     -------------------- //
-export interface DBHistoryEntry {
-  board: string[] | undefined[];
-  location?: number;
-}
-export interface DBTicTacToe {
-  history: DBHistoryEntry[];
-  turn: string;
-  step: number;
-}
-
 // --------------------     turn     -------------------- //
 export interface DBTurn {
   player: number;
@@ -142,7 +132,7 @@ export interface DBRootState {
   players: DBPlayer[];
   poker: DBPoker;
   theme: ThemeState;
-  ticTacToe: DBTicTacToe;
+  ticTacToe: TicTacToeState;
   turn: DBTurn;
   yahtzee: DBYahtzee;
   slots: DBSlotDisplay[];

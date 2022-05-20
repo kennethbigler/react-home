@@ -1,4 +1,4 @@
-import { O, X, EMPTY } from "../../../store/initialState";
+import { O, X, EMPTY } from "../../../store/modules/ticTacToe";
 
 export const getTurn = (n: number): string => (n % 2 ? O : X);
 

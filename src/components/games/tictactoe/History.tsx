@@ -1,10 +1,10 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import { getTurn } from "./helpers";
-import { DBHistoryEntry } from "../../../store/types";
+import { HistoryEntry } from "../../../store/modules/ticTacToe";
 
 interface HistoryProps {
-  history: DBHistoryEntry[];
+  history: HistoryEntry[];
   jumpToStep: (move: number) => void;
   step: number;
 }
@@ -15,7 +15,7 @@ const History: React.FC<HistoryProps> = (props: HistoryProps) => {
 
   /** function that generates text for the history tracker */
   const getHistoryText = React.useCallback(
-    (round: DBHistoryEntry, move: number): React.ReactNode => {
+    (round: HistoryEntry, move: number): React.ReactNode => {
       const location = round.location || 0;
       // generate description text
       const description = !move

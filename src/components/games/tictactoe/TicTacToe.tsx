@@ -2,13 +2,19 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { playTurn, newGame } from "../../../store/modules/ticTacToe";
+import {
+  playTurn,
+  newGame,
+  TicTacToeState,
+  X,
+  O,
+  EMPTY,
+} from "../../../store/modules/ticTacToe";
 import Header from "./Header";
 import History from "./History";
 import Board from "./Board";
 import { getTurn, calculateWinner } from "./helpers";
-import { DBTicTacToe, DBRootState } from "../../../store/types";
-import { X, O, EMPTY } from "../../../store/initialState";
+import { DBRootState } from "../../../store/types";
 
 const paperStyles: React.CSSProperties = {
   width: 343,
@@ -59,7 +65,7 @@ const TicTacToe: React.FC = () => {
    * @param step - desired point in history */
   const jumpToStep = React.useCallback(
     (stepNo: number): void => {
-      const newTurn: DBTicTacToe = {
+      const newTurn: TicTacToeState = {
         step: stepNo,
         turn: getTurn(stepNo),
         history,

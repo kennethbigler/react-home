@@ -1,5 +1,4 @@
-import { newTicTacToe } from "../../initialState";
-import tttReducer, { playTurn, newGame } from "../ticTacToe";
+import tttReducer, { playTurn, newGame, newTicTacToe } from "../ticTacToe";
 
 const state = newTicTacToe();
 
@@ -17,9 +16,7 @@ describe("store | modules | ticTacToe", () => {
   });
 
   test("incorrect parameters", () => {
-    // @ts-expect-error: fake action for testing purposes
     expect(tttReducer(state, { type: undefined })).toEqual(state);
-    // @ts-expect-error: fake action for testing purposes
     expect(tttReducer(undefined, { type: undefined })).toEqual(state);
   });
 });
