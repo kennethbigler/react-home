@@ -5,6 +5,7 @@ import { Store } from "redux";
 import WithTheme from "./WithTheme";
 import { loadState, saveState, configureStore } from "../store/configureStore";
 import LoadingSpinner from "../components/common/loading-spinner";
+import { DBRootState } from "../store/types";
 
 interface WithStoreState {
   store?: Store;
@@ -24,8 +25,10 @@ class WithStore extends React.PureComponent<
     loadState()
       .then(configureStore)
       .then((store) => {
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises, @typescript-eslint/no-unsafe-argument
-        store.subscribe(throttle(() => saveState(store.getState()), 1000));
+        store.subscribe(
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          throttle(() => saveState(store.getState() as DBRootState), 1000)
+        );
         this.setState({ store });
       })
       .catch(() => {

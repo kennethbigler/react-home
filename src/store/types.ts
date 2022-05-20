@@ -1,5 +1,6 @@
 import { Color } from "@mui/material";
 import { Connect4State } from "./modules/connect4";
+import { GitState } from "./modules/git";
 
 // --------------------     ayto     -------------------- //
 export interface RoundPairing {
@@ -52,22 +53,6 @@ export interface DBDND {
   isOver: boolean;
 }
 export const briefcasesToOpen = 6;
-
-// --------------------     git     -------------------- //
-export type BranchPrefixes = "chores" | "epics" | "features" | "fixes";
-export type CasePreferences =
-  | "snake_case"
-  | "kebab-case"
-  | "camelCase"
-  | "No Changes";
-
-export interface DBGit {
-  storyID: string;
-  branchMessage: string;
-  branchPrefix: BranchPrefixes;
-  casePreference: CasePreferences;
-  commitPrefix: boolean;
-}
 
 // --------------------     players     -------------------- //
 export interface DBCard {
@@ -159,7 +144,7 @@ export interface DBRootState {
   blackjack: DBBlackjack;
   connect4: Connect4State;
   dnd: DBDND;
-  git: DBGit;
+  git: GitState;
   gqlToken: string;
   players: DBPlayer[];
   poker: DBPoker;

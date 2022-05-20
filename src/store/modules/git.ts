@@ -1,84 +1,60 @@
-import { Action } from "redux";
-import { DBGit, CasePreferences, BranchPrefixes } from "../types";
-import initialState from "../initialState";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// --------------------     Actions     -------------------- //
-const SET_KEY = "@resume/git/SET_KEY";
-const SET_BRANCH_MESSAGE = "@resume/git/SET_BRANCH_MESSAGE";
-const SET_BRANCH_PREFIX = "@resume/git/SET_BRANCH_PREFIX";
-const SET_CASE_PREFERENCE = "@resume/git/SET_CASE_PREFERENCE";
-const SET_COMMIT_PREFIX = "@resume/git/SET_COMMIT_PREFIX";
+export const branchPrefixes = ["chores", "epics", "features", "fixes"] as const;
+export type BranchPrefixes = typeof branchPrefixes[number];
+export const casePreferences = [
+  "snake_case",
+  "kebab-case",
+  "camelCase",
+  "No Changes",
+] as const;
+export type CasePreferences = typeof casePreferences[number];
 
-// --------------------     Action Creators     -------------------- //
-interface SetKeyAction extends Action<typeof SET_KEY> {
+export interface GitState {
   storyID: string;
-}
-/** update the story id in Git DB */
-export function setKey(storyID = ""): SetKeyAction {
-  return { type: SET_KEY, storyID };
-}
-
-interface SetBranchMessageAction extends Action<typeof SET_BRANCH_MESSAGE> {
   branchMessage: string;
-}
-/** update the branch message in Git DB */
-export function setBranchMessage(branchMessage = ""): SetBranchMessageAction {
-  return { type: SET_BRANCH_MESSAGE, branchMessage };
-}
-
-interface SetBranchPrefixAction extends Action<typeof SET_BRANCH_PREFIX> {
   branchPrefix: BranchPrefixes;
-}
-/** update the branch prefix in Git DB */
-export function setBranchPrefix(
-  branchPrefix = "features" as BranchPrefixes
-): SetBranchPrefixAction {
-  return { type: SET_BRANCH_PREFIX, branchPrefix };
-}
-
-interface SetCasePreferenceAction extends Action<typeof SET_CASE_PREFERENCE> {
   casePreference: CasePreferences;
-}
-/** update the casing of the branch in Git DB */
-export function setCasePreference(
-  casePreference = "No Changes" as CasePreferences
-): SetCasePreferenceAction {
-  return { type: SET_CASE_PREFERENCE, casePreference };
-}
-
-interface SetCommitPrefixAction extends Action<typeof SET_COMMIT_PREFIX> {
   commitPrefix: boolean;
 }
-/** update commit text in Git DB */
-export function setCommitPrefix(isSet = true): SetCommitPrefixAction {
-  return { type: SET_COMMIT_PREFIX, commitPrefix: isSet };
-}
 
-// --------------------     Reducers     -------------------- //
-type GitActions =
-  | SetKeyAction
-  | SetBranchMessageAction
-  | SetBranchPrefixAction
-  | SetCasePreferenceAction
-  | SetCommitPrefixAction;
-export default function reducer(
-  state: DBGit = initialState.git,
-  action: GitActions
-): DBGit {
-  switch (action.type) {
-    case SET_KEY:
-      return { ...state, ...{ storyID: action.storyID } };
-    case SET_BRANCH_PREFIX:
-      return { ...state, ...{ branchPrefix: action.branchPrefix } };
-    case SET_BRANCH_MESSAGE:
-      return { ...state, ...{ branchMessage: action.branchMessage } };
-    case SET_CASE_PREFERENCE:
-      return { ...state, ...{ casePreference: action.casePreference } };
-    case SET_COMMIT_PREFIX:
-      return { ...state, ...{ commitPrefix: action.commitPrefix } };
-    default:
-      return state;
-  }
-}
+const initialState = {
+  storyID: "",
+  branchMessage: "",
+  branchPrefix: "features",
+  casePreference: "snake_case",
+  commitPrefix: true,
+};
 
-// --------------------     Thunks     -------------------- //
+export const gitSlice = createSlice({
+  name: "git",
+  initialState,
+  reducers: {
+    setKey: (state, action: PayloadAction<string>) => {
+      state.storyID = action.payload;
+    },
+    setBranchMessage: (state, action: PayloadAction<string>) => {
+      state.branchMessage = action.payload;
+    },
+    setBranchPrefix: (state, action: PayloadAction<BranchPrefixes>) => {
+      state.branchPrefix = action.payload;
+    },
+    setCasePreference: (state, action: PayloadAction<CasePreferences>) => {
+      state.casePreference = action.payload;
+    },
+    setCommitPrefix: (state, action: PayloadAction<boolean>) => {
+      state.commitPrefix = action.payload;
+    },
+  },
+});
+
+// Action creators are generated for each case reducer function
+export const {
+  setKey,
+  setBranchMessage,
+  setBranchPrefix,
+  setCasePreference,
+  setCommitPrefix,
+} = gitSlice.actions;
+
+export default gitSlice.reducer;

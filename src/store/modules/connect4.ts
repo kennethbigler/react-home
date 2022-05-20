@@ -39,7 +39,7 @@ export const newConnect4Game = (): Connect4State => ({
 
 const initialState = newConnect4Game();
 
-export const counterSlice = createSlice({
+export const connect4Slice = createSlice({
   name: "connect4",
   initialState,
   reducers: {
@@ -58,6 +58,6 @@ export const counterSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { newGame, updateTurn, updateWinner, updateBoard } =
-  counterSlice.actions;
+  connect4Slice.actions;
 
-export default counterSlice.reducer;
+export default connect4Slice.reducer;

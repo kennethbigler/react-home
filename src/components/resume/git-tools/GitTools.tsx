@@ -11,17 +11,15 @@ import {
   setBranchPrefix,
   setCasePreference,
   setKey,
+  BranchPrefixes,
+  CasePreferences,
 } from "../../../store/modules/git";
 import BranchName from "./BranchName";
 import CommitText from "./CommitText";
 import DeployBranch from "./DeployBranch";
 import Header from "./Header";
 import ExpandableCard from "../../common/expandable-card";
-import {
-  DBRootState,
-  BranchPrefixes,
-  CasePreferences,
-} from "../../../store/types";
+import { DBRootState } from "../../../store/types";
 
 const gitTheme = deepOrange[600];
 export const validTypingId = /[A-Z]{1,4}-?[a-zA-Z0-9]*/;

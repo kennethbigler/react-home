@@ -1,13 +1,13 @@
-import { DBGit } from "../../types";
 import gitReducer, {
   setKey,
   setBranchMessage,
   setBranchPrefix,
   setCasePreference,
   setCommitPrefix,
+  GitState,
 } from "../git";
 
-const state: DBGit = {
+const state: GitState = {
   storyID: "storyID",
   branchMessage: "branchMessage",
   branchPrefix: "epics",
@@ -17,32 +17,30 @@ const state: DBGit = {
 
 describe("store | modules | git", () => {
   test("reducer with default action params", () => {
-    expect(gitReducer(state, setKey())).toEqual({
+    expect(gitReducer(state, setKey(""))).toEqual({
       ...state,
       storyID: "",
     });
-    expect(gitReducer(state, setBranchMessage())).toEqual({
+    expect(gitReducer(state, setBranchMessage(""))).toEqual({
       ...state,
       branchMessage: "",
     });
-    expect(gitReducer(state, setBranchPrefix())).toEqual({
+    expect(gitReducer(state, setBranchPrefix("features"))).toEqual({
       ...state,
       branchPrefix: "features",
     });
-    expect(gitReducer(state, setCasePreference())).toEqual({
+    expect(gitReducer(state, setCasePreference("No Changes"))).toEqual({
       ...state,
       casePreference: "No Changes",
     });
-    expect(gitReducer(state, setCommitPrefix())).toEqual({
+    expect(gitReducer(state, setCommitPrefix(true))).toEqual({
       ...state,
       commitPrefix: true,
     });
   });
 
   test("incorrect parameters", () => {
-    // @ts-expect-error: fake action for testing purposes
     expect(gitReducer(state, { type: undefined })).toEqual(state);
-    // @ts-expect-error: fake action for testing purposes
     expect(gitReducer(undefined, { type: undefined })).toEqual({
       storyID: "",
       branchMessage: "",

@@ -2,10 +2,10 @@ import { teal, deepOrange } from "@mui/material/colors";
 import SlotMachine from "../apis/SlotMachine";
 import { ladies, gents } from "../constants/ayto";
 import { newConnect4Game } from "./modules/connect4";
+import { GitState } from "./modules/git";
 
 import {
   DBAYTO,
-  DBGit,
   DBPlayer,
   DBBlackjack,
   GameFunctions,
@@ -156,7 +156,7 @@ const ayto: DBAYTO = newAreYouTheOne();
 const blackjack = newBlackjackGame();
 const connect4 = newConnect4Game();
 const dnd = newDNDGame();
-const git: DBGit = {
+const git: GitState = {
   storyID: "",
   branchMessage: "",
   branchPrefix: "features",

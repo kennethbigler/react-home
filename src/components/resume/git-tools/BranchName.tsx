@@ -9,7 +9,12 @@ import Clear from "@mui/icons-material/Clear";
 import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
 import CopyTextDisplay from "./CopyTextDisplay";
-import { BranchPrefixes, CasePreferences } from "../../../store/types";
+import {
+  branchPrefixes,
+  BranchPrefixes,
+  casePreferences,
+  CasePreferences,
+} from "../../../store/modules/git";
 
 interface BranchNameProps {
   branchMessage?: string;
@@ -39,15 +44,13 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
 
   /** function to generate select items for branch prefixes */
   const getBranchPrefixOptions = React.useCallback(
-    (): React.ReactNode =>
-      getSelectOptions(["chores", "epics", "features", "fixes"]),
+    (): React.ReactNode => getSelectOptions([...branchPrefixes]),
     [getSelectOptions]
   );
 
   /** function to generate select items for case preference */
   const getCasePreferenceOptions = React.useCallback(
-    (): React.ReactNode =>
-      getSelectOptions(["snake_case", "kebab-case", "camelCase", "No Changes"]),
+    (): React.ReactNode => getSelectOptions([...casePreferences]),
     [getSelectOptions]
   );
 
