@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { RoundPairing } from "../../../../store/types";
+import { RoundPairing } from "../../../../store/modules/ayto";
 import { ChipColorOptions } from "../types";
 import { AYTOHist } from "./useHist";
 

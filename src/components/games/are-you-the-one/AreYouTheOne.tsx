@@ -37,23 +37,23 @@ const AreYouTheOne = () => {
     setRoundNumber(selected);
   };
   const handleUpdateScore = (score: number) => {
-    dispatch(updateScore(score, roundNumber));
+    dispatch(updateScore({ score, ri: roundNumber }));
   };
   const handleUpdateNoMatch = (li: number, gi: number) => {
-    dispatch(updateNoMatch(li, gi));
+    dispatch(updateNoMatch({ li, gi }));
   };
   const handleUpdatePairs = (ri: number, li: number, gi: number) => {
-    dispatch(updatePairs(ri, li, gi));
+    dispatch(updatePairs({ ri, li, gi }));
   };
   const handleUpdateMatch = (li: number, gi: number) => {
-    dispatch(updateMatch(li, gi));
+    dispatch(updateMatch({ li, gi }));
     for (let ri = 0; ri < options.length - 2; ri += 1) {
       if (
         !roundPairings[ri] ||
         roundPairings[ri].pairs[li] < 0 ||
         roundPairings[ri].pairs[li] === undefined
       ) {
-        dispatch(updatePairs(ri, li, gi));
+        dispatch(updatePairs({ ri, li, gi }));
       }
     }
   };

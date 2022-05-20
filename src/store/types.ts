@@ -3,23 +3,7 @@ import { GitState } from "./modules/git";
 import { ThemeState } from "./modules/theme";
 import { TicTacToeState } from "./modules/ticTacToe";
 import { YahtzeeState } from "./modules/yahtzee";
-
-// --------------------     ayto     -------------------- //
-export interface RoundPairing {
-  /** [lady-i: gent-i] */
-  pairs: number[];
-  /** score of the round */
-  score: number;
-}
-
-export interface DBAYTO {
-  /** [lady-i: (gent-i | -1), -1, -1, ...] */
-  matches: number[];
-  /** [lady-i: [gent-i: bool]] */
-  noMatch: boolean[][];
-  /** [round-i: RoundPairing] */
-  roundPairings: RoundPairing[];
-}
+import { AYTOState } from "./modules/ayto";
 
 // --------------------     blackjack     -------------------- //
 export enum GameFunctions {
@@ -111,7 +95,7 @@ export interface DBTurn {
 
 // --------------------     root     -------------------- //
 export interface DBRootState {
-  ayto: DBAYTO;
+  ayto: AYTOState;
   blackjack: DBBlackjack;
   connect4: Connect4State;
   dnd: DBDND;

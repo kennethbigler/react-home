@@ -1,14 +1,13 @@
 import { teal, deepOrange } from "@mui/material/colors";
 import SlotMachine from "../apis/SlotMachine";
-import { ladies, gents } from "../constants/ayto";
 import { newConnect4Game } from "./modules/connect4";
 import { GitState } from "./modules/git";
 import { ThemeState } from "./modules/theme";
 import { newTicTacToe } from "./modules/ticTacToe";
 import { YahtzeeState, newYahtzee } from "./modules/yahtzee";
+import { newAreYouTheOne } from "./modules/ayto";
 
 import {
-  DBAYTO,
   DBPlayer,
   DBBlackjack,
   GameFunctions,
@@ -23,12 +22,6 @@ import {
 } from "./types";
 
 // --------------------     helpers     -------------------- //
-// ayto
-export const newAreYouTheOne = (): DBAYTO => ({
-  matches: ladies.map(() => -1),
-  noMatch: ladies.map(() => gents.map(() => false)),
-  roundPairings: [],
-});
 // blackjack
 export const newBlackjackGame = (): DBBlackjack => ({
   gameFunctions: [GameFunctions.FINISH_BETTING],
@@ -131,7 +124,7 @@ export const newPokerGameState = (): DBPoker => ({
 });
 
 // --------------------     initial states     -------------------- //
-const ayto: DBAYTO = newAreYouTheOne();
+const ayto = newAreYouTheOne();
 const blackjack = newBlackjackGame();
 const connect4 = newConnect4Game();
 const dnd = newDNDGame();

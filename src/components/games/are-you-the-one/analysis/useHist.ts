@@ -1,4 +1,4 @@
-import { RoundPairing } from "../../../../store/types";
+import { RoundPairing } from "../../../../store/modules/ayto";
 
 export interface AYTOHist {
   odds: number;
