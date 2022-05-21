@@ -1,4 +1,4 @@
-import { DBSlotDisplay, DBSlotOptions as SO } from "../store/types";
+import { DBSlotDisplay, DBSlotOptions as SO } from "../store/modules/types";
 
 interface Reel {
   symbol: SO;

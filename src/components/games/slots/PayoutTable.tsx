@@ -4,7 +4,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { DBSlotOptions as SO } from "../../../store/types";
+import { DBSlotOptions as SO } from "../../../store/modules/types";
 
 /** used to display the payout table */
 const payoutTable = [

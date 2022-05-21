@@ -4,7 +4,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import { DBSlotDisplay } from "../../../store/types";
+import { DBSlotDisplay } from "../../../store/modules/types";
 
 interface ReelDisplayProps {
   reel: DBSlotDisplay[];

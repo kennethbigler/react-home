@@ -1,13 +1,15 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { updateDBSlotMachine } from "../../../store/modules/slots";
+import { payout } from "../../../store/modules/players";
 import { DBRootState } from "../../../store/types";
 import PayoutTable from "./PayoutTable";
 import MoneyTable from "./MoneyTable";
 import ReelDisplay from "./ReelDisplay";
+import SlotMachine from "../../../apis/SlotMachine";
 
 /* Slots  ->  ReelDisplay
  *       |->  MoneyTable
@@ -19,11 +21,20 @@ const Slots: React.FC = () => {
   }));
   const dispatch = useDispatch();
 
-  const updateSlotMachine = useCallback((): void => {
+  const updateSlotMachine = () => {
+    // get ids
     const { id, bet } = players[0];
     const dealerId = players[players.length - 1].id;
-    dispatch(updateDBSlotMachine(id, dealerId, bet));
-  }, [players, dispatch]);
+
+    // get rolled reel
+    const newReel = SlotMachine.pullHandle();
+    dispatch(updateDBSlotMachine(newReel));
+
+    // exchange money
+    const exchange = SlotMachine.getPayout(newReel, bet) - bet;
+    dispatch(payout({ id, status: "win", money: exchange }));
+    dispatch(payout({ id: dealerId, status: "win", money: -exchange }));
+  };
 
   // https://vegasclick.com/games/slots/how-they-work
   const player = players[0];

@@ -8,12 +8,12 @@ import { YahtzeeState, newYahtzee } from "./modules/yahtzee";
 import { newAreYouTheOne } from "./modules/ayto";
 import { newPokerGameState } from "./modules/poker";
 import { newPlayer } from "./modules/players";
+import { DBSlotDisplay } from "./modules/types";
 
 import {
   DBBlackjack,
   GameFunctions,
   DBRootState,
-  DBSlotDisplay,
   DBDND,
   briefcasesToOpen,
   Briefcase,

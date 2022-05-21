@@ -6,7 +6,7 @@ import { YahtzeeState } from "./modules/yahtzee";
 import { AYTOState } from "./modules/ayto";
 import { PokerState } from "./modules/poker";
 import { TurnState } from "./modules/turn";
-import { DBPlayer } from "./modules/types";
+import { DBPlayer, DBSlotDisplay } from "./modules/types";
 
 // --------------------     blackjack     -------------------- //
 export enum GameFunctions {
@@ -42,18 +42,6 @@ export interface DBDND {
   isOver: boolean;
 }
 export const briefcasesToOpen = 6;
-
-// --------------------     slots     -------------------- //
-export enum DBSlotOptions {
-  EMPTY = " ",
-  CHERRY = "C",
-  BAR = "—",
-  DOUBLE_BAR = "=",
-  TRIPLE_BAR = "Ξ",
-  SEVEN = "7",
-  JACKPOT = "J",
-}
-export type DBSlotDisplay = [DBSlotOptions, DBSlotOptions, DBSlotOptions];
 
 // --------------------     root     -------------------- //
 export interface DBRootState {

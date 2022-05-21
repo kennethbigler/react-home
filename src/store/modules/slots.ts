@@ -1,48 +1,21 @@
-import { Dispatch, Action } from "redux";
-import { DBSlotDisplay } from "../types";
-import initialState from "../initialState";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import SlotMachine from "../../apis/SlotMachine";
-import { payout } from "./players";
+import { DBSlotDisplay } from "./types";
 
-// --------------------     Actions     -------------------- //
-export const UPDATE = "@casino/slots/UPDATE";
+const initialState: DBSlotDisplay[] = SlotMachine.pullHandle();
 
-// -------------------- Action Creators     -------------------- //
-interface UpdateSlotsAction extends Action<typeof UPDATE> {
-  reel: DBSlotDisplay[];
-}
-/** update the slot reel in Slots DB */
-export const updateSlots = (reel: DBSlotDisplay[]): UpdateSlotsAction => ({
-  type: UPDATE,
-  reel,
+export const slotsSlice = createSlice({
+  name: "slots",
+  initialState,
+  reducers: {
+    /** play the slots game, updating the slots reel in Slots DB and player/dealer money in Player DB */
+    updateDBSlotMachine: (state, action: PayloadAction<DBSlotDisplay[]>) => [
+      ...action.payload,
+    ],
+  },
 });
 
-// --------------------     Reducers     -------------------- //
-type SlotsActions = UpdateSlotsAction;
-export default function reducer(
-  state: DBSlotDisplay[] = initialState.slots,
-  action: SlotsActions
-): DBSlotDisplay[] {
-  switch (action.type) {
-    case UPDATE:
-      return [...action.reel];
-    default:
-      return state;
-  }
-}
+// Action creators are generated for each case reducer function
+export const { updateDBSlotMachine } = slotsSlice.actions;
 
-// --------------------     Thunks     -------------------- //
-/** play the slots game, updating the slots reel in Slots DB and player/dealer money in Player DB */
-export function updateDBSlotMachine(id: number, dealerId: number, bet: number) {
-  return (dispatch: Dispatch) => {
-    const reel = SlotMachine.pullHandle();
-    const exchange = SlotMachine.getPayout(reel, bet) - bet;
-
-    const promise1 = dispatch(updateSlots(reel));
-    const promise2 = dispatch(payout({ id, status: "win", money: exchange }));
-    const promise3 = dispatch(
-      payout({ id: dealerId, status: "win", money: -exchange })
-    );
-    return Promise.all([promise1, promise2, promise3]);
-  };
-}
+export default slotsSlice.reducer;
