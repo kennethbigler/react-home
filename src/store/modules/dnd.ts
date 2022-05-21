@@ -1,7 +1,7 @@
 import { Action, Dispatch } from "redux";
 import { DBDND, Briefcase } from "../types";
 import initialState, { newDNDGame } from "../initialState";
-import { payout, PlayerAction } from "./players";
+import { payout } from "./players";
 
 // --------------------     Actions     -------------------- //
 export const NEW_GAME = "@casino/dnd/NEW_GAME";
@@ -122,11 +122,9 @@ export default function reducer(
 /** charge user to play and set player choice
  * NOTE: avg (Expected win value) is 131477.62 / 1k = $132 */
 export function setPlayerChoice(id: number, playerChoice: Briefcase) {
-  return (
-    dispatch: Dispatch
-  ): Promise<[UpdatePlayerChoiceAction, PlayerAction]> => {
+  return (dispatch: Dispatch) => {
     const promise1 = dispatch(updatePlayerChoice(playerChoice));
-    const promise2 = dispatch(payout(id, "lose", -100));
+    const promise2 = dispatch(payout({ id, status: "lose", money: -100 }));
     return Promise.all([promise1, promise2]);
   };
 }
@@ -134,8 +132,10 @@ export function setPlayerChoice(id: number, playerChoice: Briefcase) {
 /** function to finish the game
  * NOTE: payout to user offer / 1k */
 export function setFinishGame(id: number, offer: number) {
-  return (dispatch: Dispatch): Promise<[PlayerAction, FinishGameAction]> => {
-    const promise1 = dispatch(payout(id, "win", Math.round(offer / 1000)));
+  return (dispatch: Dispatch) => {
+    const promise1 = dispatch(
+      payout({ id, status: "win", money: Math.round(offer / 1000) })
+    );
     const promise2 = dispatch(finishGame(offer));
     return Promise.all([promise1, promise2]);
   };

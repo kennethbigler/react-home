@@ -7,7 +7,7 @@ import { RoundPairing } from "../../../../store/modules/ayto";
 import { ChipColorOptions } from "../types";
 import { AYTOHist } from "./useHist";
 
-interface AnalysisProps {
+export interface AnalysisProps {
   calculatedEquations: RoundPairing[];
   gents: string[];
   hist: AYTOHist[][];

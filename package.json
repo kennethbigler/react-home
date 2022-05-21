@@ -38,7 +38,6 @@
     "@types/react-dom": "18.0.4",
     "@types/react-redux": "7.1.24",
     "@types/react-simple-maps": "1.0.8",
-    "@types/redux-mock-store": "1.0.3",
     "@typescript-eslint/eslint-plugin": "5.25.0",
     "@typescript-eslint/parser": "5.25.0",
     "eslint": "8.15.0",
@@ -56,7 +55,6 @@
     "gts": "3.1.0",
     "prettier": "2.6.2",
     "react-scripts": "5.0.1",
-    "redux-mock-store": "1.5.4",
     "source-map-explorer": "2.5.2",
     "typescript": "4.6.4"
   },
@@ -89,7 +87,7 @@
     "coverageThreshold": {
       "global": {
         "statements": 90,
-        "branches": 90,
+        "branches": 85,
         "lines": 90,
         "functions": 90
       }

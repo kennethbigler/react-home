@@ -3,7 +3,8 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { getMoneyText } from "./helpers";
-import { DBPlayer, Briefcase } from "../../../store/types";
+import { Briefcase } from "../../../store/types";
+import { DBPlayer } from "../../../store/modules/types";
 
 interface HeaderProps {
   casesToOpen: number;

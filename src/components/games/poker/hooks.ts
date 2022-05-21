@@ -1,6 +1,7 @@
 import { Dispatch } from "redux";
 import asyncForEach from "../../../helpers/asyncForEach";
 import { swapCards, newHand, payout } from "../../../store/modules/players";
+import { DBPlayer } from "../../../store/modules/types";
 import Deck from "../../../apis/Deck";
 import { DEALER, LAST_PLAYER, computer, findAndPayWinner } from "./helpers";
 import {
@@ -9,8 +10,9 @@ import {
   endPokerTurn,
   endPokerGame,
   discardCards,
+  PokerGameFunctions as PGF,
 } from "../../../store/modules/poker";
-import { DBPlayer, PokerGameFunctions as PGF } from "../../../store/types";
+import { resetTurn } from "../../../store/modules/turn";
 
 const usePokerFunctions = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,15 +24,6 @@ const usePokerFunctions = (
   gameOver: boolean
 ) => {
   // ----------     bot automation handlers     ---------- //
-  /** increment player turn and reset state */
-  const endTurn = async (): Promise<void> => {
-    try {
-      await dispatch(endPokerTurn());
-    } catch (e) {
-      console.error(e); // eslint-disable-line no-console
-    }
-  };
-
   /** iterate through array, removing each index number from hand
    * then add new cards to the hand */
   const discard = async (
@@ -39,14 +32,16 @@ const usePokerFunctions = (
   ): Promise<void> => {
     try {
       const { id, hands } = player;
-      await dispatch(swapCards(hands, id, cardsToDiscardInDB));
+      await dispatch(
+        swapCards({ hands, id, cardsToDiscard: cardsToDiscardInDB })
+      );
     } catch (e) {
       console.error(e); // eslint-disable-line no-console
     }
   };
 
   const payPlayer = (id: number, status: string, money: number) => {
-    dispatch(payout(id, status, money));
+    dispatch(payout({ id, status, money }));
   };
 
   const endGame = async (
@@ -81,14 +76,6 @@ const usePokerFunctions = (
   };
 
   // ----------     player handlers     ---------- //
-  const newGame = async (tempPlayers: DBPlayer[]): Promise<void> => {
-    try {
-      await dispatch(newPokerGame(tempPlayers));
-    } catch (e) {
-      console.error(e); // eslint-disable-line no-console
-    }
-  };
-
   /** function to finish betting and start the game */
   const startGame = async (tempPlayers: DBPlayer[]): Promise<void> => {
     try {
@@ -99,7 +86,7 @@ const usePokerFunctions = (
         await asyncForEach(tempPlayers, async (player: DBPlayer) => {
           if (player.id !== DEALER && player.id <= LAST_PLAYER) {
             try {
-              await dispatch(newHand(player.id, 5));
+              await dispatch(newHand({ id: player.id, num: 5 }));
             } catch (e) {
               console.error(e); // eslint-disable-line no-console
             }
@@ -133,10 +120,11 @@ const usePokerFunctions = (
           await handleDiscard(players, turn, cardsToDiscard);
           break;
         case PGF.END_TURN:
-          await endTurn();
+          dispatch(endPokerTurn());
           break;
         case PGF.NEW_GAME:
-          await newGame(players);
+          dispatch(newPokerGame(players));
+          dispatch(resetTurn());
           break;
         case PGF.START_GAME:
           await startGame(players);

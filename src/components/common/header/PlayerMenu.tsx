@@ -21,32 +21,27 @@ const PlayerMenu: React.FC = () => {
   const isBot = React.useMemo(() => players.map((a) => a.isBot), [players]);
 
   /** toggle between bot and human player - dispatch to redux */
-  const handleToggle = React.useCallback(
-    (id: number, isChecked: boolean): void => {
-      dispatch(updateBot(id, isChecked));
-    },
-    [dispatch]
-  );
+  const handleToggle = (id: number, isChecked: boolean): void => {
+    dispatch(updateBot({ id, isBot: isChecked }));
+  };
 
   /** update player name onBlur - dispatch to redux */
-  const handleBlur = React.useCallback(
+  const handleBlur =
     (id: number) =>
-      (e: React.FocusEvent<HTMLInputElement>): void => {
-        dispatch(updateName(id, e.target.value || ""));
-      },
-    [dispatch]
-  );
+    (e: React.FocusEvent<HTMLInputElement>): void => {
+      dispatch(updateName({ id, name: e.target.value || "" }));
+    };
 
   /** if enter key was pressed in textfield, update name - dispatch to redux */
-  const handleKeyPress = React.useCallback(
+  const handleKeyPress =
     (id: number) =>
-      (e: React.KeyboardEvent<HTMLDivElement>): void => {
-        if (e.key === "Enter") {
-          dispatch(updateName(id, (e.target as HTMLInputElement).value || ""));
-        }
-      },
-    [dispatch]
-  );
+    (e: React.KeyboardEvent<HTMLDivElement>): void => {
+      if (e.key === "Enter") {
+        dispatch(
+          updateName({ id, name: (e.target as HTMLInputElement).value || "" })
+        );
+      }
+    };
 
   return (
     <div style={namePadStyles}>

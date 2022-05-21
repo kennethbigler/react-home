@@ -1,4 +1,5 @@
-import { DBCard, DBHand, DBPlayer } from "../../../store/types";
+import { DBCard } from "../../../apis/Deck";
+import { DBHand, DBPlayer } from "../../../store/modules/types";
 
 /** calculate the weight of a hand */
 export function weighHand(hand: DBCard[] = []): {

@@ -1,5 +1,10 @@
 import localForage from "localforage";
-import { DBCard } from "../store/types";
+
+export interface DBCard {
+  name: string;
+  suit: string;
+  weight: number;
+}
 
 const NEW_DECK: DBCard[] = [
   { name: "2", weight: 2, suit: "♣" },

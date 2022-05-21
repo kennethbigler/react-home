@@ -1,4 +1,4 @@
-import { DBPlayer } from "../../../../store/types";
+import { DBPlayer } from "../../../../store/modules/types";
 import {
   rankHand,
   getHistogram,

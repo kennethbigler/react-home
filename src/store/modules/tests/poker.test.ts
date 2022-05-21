@@ -1,27 +1,15 @@
-import configureMockStore from "redux-mock-store";
-import thunk from "redux-thunk";
-
-import { newPokerGameState, newPlayer } from "../../initialState";
-import { PokerGameFunctions as PGF } from "../../types";
 import pokerReducer, {
-  PA as PokerActions,
-  newGame,
+  newPokerGame,
   startPokerGame,
-  endTurn,
+  endPokerTurn,
   endPokerGame,
   discardCards,
   updateCardsToDiscard,
-  newPokerGame,
-  endPokerTurn,
+  PokerGameFunctions as PGF,
+  newPokerGameState,
 } from "../poker";
-import { TA } from "../turn";
-import { PA } from "../players";
 
 const state = newPokerGameState();
-const ken = newPlayer(1, "Ken", false);
-
-const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
 
 describe("store | modules | poker", () => {
   describe("reducer", () => {
@@ -34,7 +22,7 @@ describe("store | modules | poker", () => {
             hideHands: true,
             gameOver: true,
           },
-          newGame()
+          newPokerGame([])
         )
       ).toEqual(state);
       expect(pokerReducer(state, startPokerGame())).toEqual({
@@ -42,7 +30,7 @@ describe("store | modules | poker", () => {
         gameFunctions: [PGF.DISCARD_CARDS],
         hideHands: false,
       });
-      expect(pokerReducer(state, endTurn())).toEqual({
+      expect(pokerReducer(state, endPokerTurn())).toEqual({
         ...state,
         gameFunctions: [PGF.DISCARD_CARDS],
         cardsToDiscard: [],
@@ -64,47 +52,8 @@ describe("store | modules | poker", () => {
     });
 
     test("incorrect parameters", () => {
-      // @ts-expect-error: fake action for testing purposes
       expect(pokerReducer(state, { type: undefined })).toEqual(state);
-      // @ts-expect-error: fake action for testing purposes
       expect(pokerReducer(undefined, { type: undefined })).toEqual(state);
-    });
-  });
-
-  describe("async thunk actions", () => {
-    test("newPokerGame", () => {
-      const expectedActions = [
-        { type: PokerActions.NEW_GAME },
-        { type: TA.RESET },
-        {
-          type: PA.RESET,
-          player: {
-            id: 1,
-            status: "",
-            hands: [],
-            bet: 5,
-          },
-        },
-      ];
-      const store = mockStore({});
-      // @ts-expect-error: no idea why dispatch has this issue
-      return store.dispatch(newPokerGame([ken])).then(() => {
-        // return of async actions
-        expect(store.getActions()).toEqual(expectedActions);
-      });
-    });
-
-    test("endPokerTurn", () => {
-      const expectedActions = [
-        { type: PokerActions.END_TURN },
-        { type: TA.INCR_PLAYER },
-      ];
-      const store = mockStore({});
-      // @ts-expect-error: no idea why dispatch has this issue
-      return store.dispatch(endPokerTurn()).then(() => {
-        // return of async actions
-        expect(store.getActions()).toEqual(expectedActions);
-      });
     });
   });
 });

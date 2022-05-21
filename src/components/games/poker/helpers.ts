@@ -1,4 +1,5 @@
-import { DBCard, DBPlayer } from "../../../store/types";
+import { DBCard } from "../../../apis/Deck";
+import { DBPlayer } from "../../../store/modules/types";
 
 /** Rankings:
  *   Straight Flush  8

@@ -11,12 +11,7 @@ import { weighHand, playBot, banking, DEALER } from "./blackjackHelpers";
 import Header from "./Header";
 import GameTable from "../game-table";
 import Deck from "../../../apis/Deck";
-import {
-  DBHand,
-  DBPlayer,
-  DBRootState,
-  GameFunctions,
-} from "../../../store/types";
+import { DBRootState, GameFunctions } from "../../../store/types";
 import {
   doubleHand,
   hitHand,
@@ -28,6 +23,7 @@ import {
   updateHideHands,
 } from "../../../store/modules/blackjack";
 import { newHand, payout, updateBet } from "../../../store/modules/players";
+import { DBHand, DBPlayer } from "../../../store/modules/types";
 
 const BlackJack: React.FC = () => {
   const { turn, players, gameFunctions, hideHands, hasFunctions } = useSelector(
@@ -109,7 +105,7 @@ const BlackJack: React.FC = () => {
           // deal the hands
           await asyncForEach(tempPlayers, async (player: DBPlayer) => {
             const num = player.id !== DEALER ? 2 : 1;
-            await dispatch(newHand(player.id, num, weighHand));
+            await dispatch(newHand({ id: player.id, num, weigh: weighHand }));
           });
         })
         .catch(() => {
@@ -141,7 +137,7 @@ const BlackJack: React.FC = () => {
   /** extract dispatch call to payout player */
   const payoutPlayer = React.useCallback(
     (id: number, status: string, money: number) => {
-      dispatch(payout(id, status, money));
+      dispatch(payout({ id, status, money }));
     },
     [dispatch]
   );
@@ -209,7 +205,7 @@ const BlackJack: React.FC = () => {
   /** function to be called on card clicks */
   const betHandler = React.useCallback(
     (id: number, event: Event, bet: number): void => {
-      dispatch(updateBet(id, bet));
+      dispatch(updateBet({ id, bet }));
     },
     [dispatch]
   );

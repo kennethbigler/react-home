@@ -2,7 +2,7 @@ import { Dispatch, Action } from "redux";
 import { DBSlotDisplay } from "../types";
 import initialState from "../initialState";
 import SlotMachine from "../../apis/SlotMachine";
-import { payout, PlayerAction } from "./players";
+import { payout } from "./players";
 
 // --------------------     Actions     -------------------- //
 export const UPDATE = "@casino/slots/UPDATE";
@@ -34,15 +34,15 @@ export default function reducer(
 // --------------------     Thunks     -------------------- //
 /** play the slots game, updating the slots reel in Slots DB and player/dealer money in Player DB */
 export function updateDBSlotMachine(id: number, dealerId: number, bet: number) {
-  return (
-    dispatch: Dispatch
-  ): Promise<[UpdateSlotsAction, PlayerAction, PlayerAction]> => {
+  return (dispatch: Dispatch) => {
     const reel = SlotMachine.pullHandle();
     const exchange = SlotMachine.getPayout(reel, bet) - bet;
 
     const promise1 = dispatch(updateSlots(reel));
-    const promise2 = dispatch(payout(id, "win", exchange));
-    const promise3 = dispatch(payout(dealerId, "win", -exchange));
+    const promise2 = dispatch(payout({ id, status: "win", money: exchange }));
+    const promise3 = dispatch(
+      payout({ id: dealerId, status: "win", money: -exchange })
+    );
     return Promise.all([promise1, promise2, promise3]);
   };
 }

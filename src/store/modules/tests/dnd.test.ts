@@ -1,25 +1,14 @@
-import configureMockStore from "redux-mock-store";
-import thunk from "redux-thunk";
-
 import { newDNDGame } from "../../initialState";
 import dndReducer, {
-  PLAYER_CHOICE,
-  FINISH_GAME,
   newGame,
   updatePlayerChoice,
   setOpenCase,
   setOpenOffer,
   setNoDeal,
   finishGame,
-  setPlayerChoice,
-  setFinishGame,
 } from "../dnd";
-import { PA } from "../players";
 
 const state = newDNDGame();
-
-const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
 
 describe("store | modules | dnd", () => {
   describe("reducer", () => {
@@ -58,35 +47,6 @@ describe("store | modules | dnd", () => {
       // @ts-expect-error: for testing purposes, using fake action
       expect(dndReducer(undefined, { type: undefined })).toMatchObject({
         turn: 1,
-      });
-    });
-  });
-
-  describe("async thunk actions", () => {
-    test("setPlayerChoice", () => {
-      const expectedActions = [
-        { type: PLAYER_CHOICE, playerChoice: { on: true, loc: 27, val: 69 } },
-        { type: PA.PAY_PLAYER, player: { id: 1, status: "lose", money: -100 } },
-      ];
-      const store = mockStore({});
-      return store // @ts-expect-error: no idea why dispatch has this issue
-        .dispatch(setPlayerChoice(1, { on: true, loc: 27, val: 69 }))
-        .then(() => {
-          // return of async actions
-          expect(store.getActions()).toEqual(expectedActions);
-        });
-    });
-
-    test("setFinishGame", () => {
-      const expectedActions = [
-        { type: PA.PAY_PLAYER, player: { id: 1, status: "win", money: 169 } },
-        { type: FINISH_GAME, offer: 169000 },
-      ];
-      const store = mockStore({});
-      // @ts-expect-error: no idea why dispatch has this issue
-      return store.dispatch(setFinishGame(1, 169000)).then(() => {
-        // return of async actions
-        expect(store.getActions()).toEqual(expectedActions);
       });
     });
   });

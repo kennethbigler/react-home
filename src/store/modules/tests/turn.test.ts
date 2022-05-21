@@ -16,9 +16,7 @@ describe("store | modules | turn", () => {
   });
 
   test("incorrect parameters", () => {
-    // @ts-expect-error: fake action for testing purposes
     expect(turnReducer(state, { type: undefined })).toEqual(state);
-    // @ts-expect-error: fake action for testing purposes
     expect(turnReducer(undefined, { type: undefined })).toEqual(state);
   });
 });

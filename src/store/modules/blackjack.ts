@@ -1,5 +1,5 @@
 import { Dispatch, Action } from "redux";
-import { DBBlackjack, DBPlayer, DBHand, DBTurn } from "../types";
+import { DBBlackjack } from "../types";
 import initialState, { newBlackjackGame } from "../initialState";
 import {
   resetStatus,
@@ -8,7 +8,8 @@ import {
   WeighFunc,
   updateBet,
 } from "./players";
-import { resetTurn, incrHandTurn, incrPlayerTurn, TA } from "./turn";
+import { resetTurn, incrHandTurn, incrPlayerTurn, TurnState } from "./turn";
+import { DBHand, DBPlayer } from "./types";
 
 // --------------------     Actions     -------------------- //
 export const UPDATE_GAME_FUNCTIONS = "@casino/blackjack/UPDATE_GAME_FUNCTIONS";
@@ -76,7 +77,6 @@ export function setNewGame(players: DBPlayer[]) {
       | UpdateGameFunctionsAction
       | UpdateHideHandsAction
       | UpdateHasFunctionsAction
-      | Action<TA.RESET>
     )[]
   > => {
     const { gameFunctions, hideHands, hasFunctions } = newBlackjackGame();
@@ -88,6 +88,8 @@ export function setNewGame(players: DBPlayer[]) {
     players.forEach((player) =>
       promises.push(dispatch(resetStatus(player.id)))
     );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: tbd
     return Promise.all(promises);
   };
 }
@@ -100,7 +102,7 @@ export function splitHand(
 ) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return async (dispatch: Dispatch<any>): Promise<void> => {
-    await dispatch(pSplitHand(hands, id, hNum, weigh));
+    await dispatch(pSplitHand({ hands, id, hNum, weigh }));
     await dispatch(updateHasFunctions(false));
   };
 }
@@ -113,7 +115,7 @@ export function hitHand(
 ) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return async (dispatch: Dispatch<any>): Promise<void> => {
-    await dispatch(drawCard(hands, id, hNum, 1, weigh));
+    await dispatch(drawCard({ hands, id, hNum, num: 1, weigh }));
     await dispatch(updateHasFunctions(false));
   };
 }
@@ -127,15 +129,19 @@ export function stayHand(readyForNextPlayer: boolean) {
   };
 }
 /** double your bet and get 1 card in Blackjack DB */
-export function doubleHand(player: DBPlayer, turn: DBTurn, weigh: WeighFunc) {
+export function doubleHand(
+  player: DBPlayer,
+  turn: TurnState,
+  weigh: WeighFunc
+) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return async (dispatch: Dispatch<any>): Promise<void> => {
     const { id, bet, hands } = player;
     const lastHand = hands.length - 1;
 
     await dispatch(updateHasFunctions(true));
-    await dispatch(updateBet(id, bet * 2));
-    await dispatch(drawCard(hands, id, turn.hand, 1, weigh));
+    await dispatch(updateBet({ id, bet: bet * 2 }));
+    await dispatch(drawCard({ hands, id, hNum: turn.hand, num: 1, weigh }));
     await dispatch(stayHand(turn.hand < lastHand));
   };
 }

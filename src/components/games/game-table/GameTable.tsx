@@ -1,7 +1,8 @@
 import React from "react";
 import Board from "./board/Board";
 import ButtonGroup from "./button-group/ButtonGroup";
-import { DBPlayer, DBTurn } from "../../../store/types";
+import { DBPlayer } from "../../../store/modules/types";
+import { TurnState } from "../../../store/modules/turn";
 
 interface GameTableProps {
   betHandler?: (id: number, event: Event, value: number) => void;
@@ -13,7 +14,7 @@ interface GameTableProps {
   isBlackJack?: boolean;
   onClick: (name: string) => void;
   players: DBPlayer[];
-  turn: DBTurn;
+  turn: TurnState;
 }
 
 /* GameTable ->  Board -> Player -> Hand -> Card

@@ -6,20 +6,19 @@ import { ThemeState } from "./modules/theme";
 import { newTicTacToe } from "./modules/ticTacToe";
 import { YahtzeeState, newYahtzee } from "./modules/yahtzee";
 import { newAreYouTheOne } from "./modules/ayto";
+import { newPokerGameState } from "./modules/poker";
+import { newPlayer } from "./modules/players";
 
 import {
-  DBPlayer,
   DBBlackjack,
   GameFunctions,
-  DBTurn,
   DBRootState,
   DBSlotDisplay,
   DBDND,
   briefcasesToOpen,
   Briefcase,
-  PokerGameFunctions,
-  DBPoker,
 } from "./types";
+import { TurnState } from "./modules/turn";
 
 // --------------------     helpers     -------------------- //
 // blackjack
@@ -99,30 +98,6 @@ export const newDNDGame = (): DBDND => {
   return state;
 };
 
-// player
-export const newPlayer = (
-  id: number,
-  name = "Bot",
-  isBot = true
-): DBPlayer => ({
-  id,
-  name,
-  isBot,
-  status: "",
-  money: 100,
-  bet: 5,
-  hands: [],
-});
-
-// poker
-/** function to generate the state of a new game */
-export const newPokerGameState = (): DBPoker => ({
-  gameFunctions: [PokerGameFunctions.START_GAME],
-  cardsToDiscard: [],
-  hideHands: true,
-  gameOver: false,
-});
-
 // --------------------     initial states     -------------------- //
 const ayto = newAreYouTheOne();
 const blackjack = newBlackjackGame();
@@ -136,7 +111,7 @@ const git: GitState = {
   commitPrefix: true,
 };
 const gqlToken = "";
-const players: DBPlayer[] = [
+const players = [
   newPlayer(1, "Ken", false),
   newPlayer(2),
   newPlayer(3),
@@ -153,7 +128,7 @@ const theme: ThemeState = {
   mode: "dark",
 };
 const ticTacToe = newTicTacToe();
-const turn: DBTurn = { player: 0, hand: 0 };
+const turn: TurnState = { player: 0, hand: 0 };
 const yahtzee: YahtzeeState = { ...newYahtzee(), scores: [] };
 
 // --------------------     export     -------------------- //

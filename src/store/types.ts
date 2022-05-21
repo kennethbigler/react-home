@@ -4,6 +4,9 @@ import { ThemeState } from "./modules/theme";
 import { TicTacToeState } from "./modules/ticTacToe";
 import { YahtzeeState } from "./modules/yahtzee";
 import { AYTOState } from "./modules/ayto";
+import { PokerState } from "./modules/poker";
+import { TurnState } from "./modules/turn";
+import { DBPlayer } from "./modules/types";
 
 // --------------------     blackjack     -------------------- //
 export enum GameFunctions {
@@ -40,41 +43,6 @@ export interface DBDND {
 }
 export const briefcasesToOpen = 6;
 
-// --------------------     players     -------------------- //
-export interface DBCard {
-  name: string;
-  suit: string;
-  weight: number;
-}
-export interface DBHand {
-  weight?: number;
-  soft?: boolean;
-  cards: DBCard[];
-}
-export interface DBPlayer {
-  hands: DBHand[];
-  id: number;
-  isBot: boolean;
-  money: number;
-  status: string;
-  name: string;
-  bet: number;
-}
-
-// --------------------     poker     -------------------- //
-export enum PokerGameFunctions {
-  DISCARD_CARDS = "Discard Cards",
-  END_TURN = "End Turn",
-  NEW_GAME = "New Game",
-  START_GAME = "Start Game",
-}
-export interface DBPoker {
-  gameFunctions: PokerGameFunctions[];
-  cardsToDiscard: number[];
-  hideHands: boolean;
-  gameOver: boolean;
-}
-
 // --------------------     slots     -------------------- //
 export enum DBSlotOptions {
   EMPTY = " ",
@@ -87,12 +55,6 @@ export enum DBSlotOptions {
 }
 export type DBSlotDisplay = [DBSlotOptions, DBSlotOptions, DBSlotOptions];
 
-// --------------------     turn     -------------------- //
-export interface DBTurn {
-  player: number;
-  hand: number;
-}
-
 // --------------------     root     -------------------- //
 export interface DBRootState {
   ayto: AYTOState;
@@ -102,10 +64,10 @@ export interface DBRootState {
   git: GitState;
   gqlToken: string;
   players: DBPlayer[];
-  poker: DBPoker;
+  poker: PokerState;
   theme: ThemeState;
   ticTacToe: TicTacToeState;
-  turn: DBTurn;
+  turn: TurnState;
   yahtzee: YahtzeeState;
   slots: DBSlotDisplay[];
 }

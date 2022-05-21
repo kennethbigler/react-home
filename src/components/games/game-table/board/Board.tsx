@@ -1,6 +1,7 @@
 import React from "react";
 import Player from "./player/Player";
-import { DBPlayer, DBTurn } from "../../../../store/types";
+import { DBPlayer } from "../../../../store/modules/types";
+import { TurnState } from "../../../../store/modules/turn";
 // Parents: GameTable
 
 interface BoardProps {
@@ -10,7 +11,7 @@ interface BoardProps {
   hideHands: boolean;
   isBlackJack: boolean;
   players: DBPlayer[];
-  turn: DBTurn;
+  turn: TurnState;
 }
 
 const Board: React.FC<BoardProps> = (props: BoardProps) => {

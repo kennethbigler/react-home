@@ -128,7 +128,7 @@ describe("games | blackjack | Blackjack", () => {
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king])
-      .mockResolvedValue([nine]);
+      .mockResolvedValue([nine, nine]);
 
     render(<Blackjack />);
 
