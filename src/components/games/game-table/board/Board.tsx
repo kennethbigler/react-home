@@ -1,7 +1,6 @@
 import React from "react";
 import Player from "./player/Player";
-import { DBPlayer } from "../../../../store/modules/types";
-import { TurnState } from "../../../../store/modules/turn";
+import { DBPlayer, TurnState } from "../../../../store/modules/types";
 // Parents: GameTable
 
 interface BoardProps {

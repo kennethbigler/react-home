@@ -1,8 +1,7 @@
 import React from "react";
 import Board from "./board/Board";
 import ButtonGroup from "./button-group/ButtonGroup";
-import { DBPlayer } from "../../../store/modules/types";
-import { TurnState } from "../../../store/modules/turn";
+import { DBPlayer, TurnState } from "../../../store/modules/types";
 
 interface GameTableProps {
   betHandler?: (id: number, event: Event, value: number) => void;

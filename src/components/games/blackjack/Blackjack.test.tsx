@@ -113,6 +113,7 @@ describe("games | blackjack | Blackjack", () => {
     await waitFor(() => screen.getByText("Bust: 30"));
     expect(screen.getAllByText("Bet: $5")).toHaveLength(5);
     expect(screen.getByText("Bet: $10")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Stay"));
     await waitFor(() => screen.getByText("New Game"));
     fireEvent.click(screen.getByText("New Game"));
     fireEvent.click(screen.getByText("Finish Betting"));

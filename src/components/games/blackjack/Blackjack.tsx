@@ -11,7 +11,7 @@ import { weighHand, playBot, banking, DEALER } from "./blackjackHelpers";
 import Header from "./Header";
 import GameTable from "../game-table";
 import Deck from "../../../apis/Deck";
-import { DBRootState, GameFunctions } from "../../../store/types";
+import { DBRootState } from "../../../store/types";
 import {
   doubleHand,
   hitHand,
@@ -21,8 +21,10 @@ import {
   updateGameFunctions,
   updateHasFunctions,
   updateHideHands,
+  GameFunctions,
 } from "../../../store/modules/blackjack";
-import { newHand, payout, updateBet } from "../../../store/modules/players";
+import { payout, updateBet } from "../../../store/modules/players";
+import { newHand } from "../../../store/modules/players-thunks";
 import { DBHand, DBPlayer } from "../../../store/modules/types";
 
 const BlackJack: React.FC = () => {
@@ -72,7 +74,7 @@ const BlackJack: React.FC = () => {
   const split = (): void => {
     // get state values
     const { id, hands } = players[turn.player];
-    dispatch(splitHand(hands, id, turn.hand, weighHand));
+    dispatch(splitHand({ hands, id, hNum: turn.hand, weigh: weighHand }));
   };
 
   /** function to pass to the next player */
@@ -85,7 +87,9 @@ const BlackJack: React.FC = () => {
 
   /** function that doubles your bet, but you only get 1 card */
   const double = (): void => {
-    dispatch(doubleHand(players[turn.player], turn, weighHand));
+    dispatch(
+      doubleHand({ player: players[turn.player], turn, weigh: weighHand })
+    );
   };
 
   /** function to get a new card */
@@ -93,7 +97,7 @@ const BlackJack: React.FC = () => {
     // get state values
     const { id, hands } = players[turn.player];
     // logic to hit
-    dispatch(hitHand(hands, id, turn.hand, weighHand));
+    dispatch(hitHand({ hands, id, hNum: turn.hand, weigh: weighHand }));
   };
 
   /** Start a new round of hands */
@@ -148,7 +152,7 @@ const BlackJack: React.FC = () => {
       // get state values
       const { hands } = tempPlayers.filter((p) => p.id === DEALER)[0];
       // logic to hit
-      dispatch(hitHand(hands, DEALER, 0, weighHand));
+      dispatch(hitHand({ hands, id: DEALER, hNum: 0, weigh: weighHand }));
     },
     [dispatch]
   );

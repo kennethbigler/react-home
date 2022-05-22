@@ -5,30 +5,14 @@ import { TicTacToeState } from "./modules/ticTacToe";
 import { YahtzeeState } from "./modules/yahtzee";
 import { AYTOState } from "./modules/ayto";
 import { PokerState } from "./modules/poker";
-import { TurnState } from "./modules/turn";
-import { DBPlayer, DBSlotDisplay } from "./modules/types";
+import { DBPlayer, DBSlotDisplay, TurnState } from "./modules/types";
 import { DNDState } from "./modules/dnd";
-
-// --------------------     blackjack     -------------------- //
-export enum GameFunctions {
-  NEW_GAME = "New Game",
-  FINISH_BETTING = "Finish Betting",
-  STAY = "Stay",
-  HIT = "Hit",
-  DOUBLE = "Double",
-  SPLIT = "Split",
-}
-
-export interface DBBlackjack {
-  gameFunctions: string[];
-  hasFunctions: boolean;
-  hideHands: boolean;
-}
+import { BlackjackState } from "./modules/blackjack";
 
 // --------------------     root     -------------------- //
 export interface DBRootState {
   ayto: AYTOState;
-  blackjack: DBBlackjack;
+  blackjack: BlackjackState;
   connect4: Connect4State;
   dnd: DNDState;
   git: GitState;

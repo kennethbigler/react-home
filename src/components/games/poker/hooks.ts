@@ -1,6 +1,7 @@
 import { Dispatch } from "redux";
 import asyncForEach from "../../../helpers/asyncForEach";
-import { swapCards, newHand, payout } from "../../../store/modules/players";
+import { payout } from "../../../store/modules/players";
+import { swapCards, newHand } from "../../../store/modules/players-thunks";
 import { DBPlayer } from "../../../store/modules/types";
 import Deck from "../../../apis/Deck";
 import { DEALER, LAST_PLAYER, computer, findAndPayWinner } from "./helpers";

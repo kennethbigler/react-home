@@ -15,6 +15,7 @@ export interface DBPlayer {
   name: string;
   bet: number;
 }
+export type WeighFunc = (cards: DBCard[]) => { weight: number; soft: boolean };
 
 // --------------------     slots     -------------------- //
 export enum DBSlotOptions {
@@ -27,3 +28,9 @@ export enum DBSlotOptions {
   JACKPOT = "J",
 }
 export type DBSlotDisplay = [DBSlotOptions, DBSlotOptions, DBSlotOptions];
+
+// --------------------     turn     -------------------- //
+export interface TurnState {
+  player: number;
+  hand: number;
+}

@@ -8,19 +8,10 @@ import { YahtzeeState, newYahtzee } from "./modules/yahtzee";
 import { newAreYouTheOne } from "./modules/ayto";
 import { newPokerGameState } from "./modules/poker";
 import { newPlayer } from "./modules/players";
-import { DBSlotDisplay } from "./modules/types";
+import { DBSlotDisplay, TurnState } from "./modules/types";
 import { newDNDGame } from "./modules/dnd";
-
-import { DBBlackjack, GameFunctions, DBRootState } from "./types";
-import { TurnState } from "./modules/turn";
-
-// --------------------     helpers     -------------------- //
-// blackjack
-export const newBlackjackGame = (): DBBlackjack => ({
-  gameFunctions: [GameFunctions.FINISH_BETTING],
-  hasFunctions: false,
-  hideHands: true,
-});
+import { DBRootState } from "./types";
+import { newBlackjackGame } from "./modules/blackjack";
 
 // --------------------     initial states     -------------------- //
 const ayto = newAreYouTheOne();
