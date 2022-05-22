@@ -6,7 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import Money from "./Money";
 import { getMoneyText } from "./helpers";
-import { Briefcase } from "../../../store/types";
+import { Briefcase } from "../../../store/modules/dnd";
 
 interface ModalProps {
   board: Briefcase[];

@@ -7,6 +7,7 @@ import { AYTOState } from "./modules/ayto";
 import { PokerState } from "./modules/poker";
 import { TurnState } from "./modules/turn";
 import { DBPlayer, DBSlotDisplay } from "./modules/types";
+import { DNDState } from "./modules/dnd";
 
 // --------------------     blackjack     -------------------- //
 export enum GameFunctions {
@@ -24,31 +25,12 @@ export interface DBBlackjack {
   hideHands: boolean;
 }
 
-// --------------------     dnd     -------------------- //
-export interface Briefcase {
-  on: boolean;
-  loc: number;
-  val: number;
-}
-export interface DBDND {
-  board: Briefcase[];
-  turn: number;
-  playerChoice?: Briefcase;
-  casesToOpen: number;
-  sum: number;
-  numCases: number;
-  offer: number;
-  dndOpen: boolean;
-  isOver: boolean;
-}
-export const briefcasesToOpen = 6;
-
 // --------------------     root     -------------------- //
 export interface DBRootState {
   ayto: AYTOState;
   blackjack: DBBlackjack;
   connect4: Connect4State;
-  dnd: DBDND;
+  dnd: DNDState;
   git: GitState;
   gqlToken: string;
   players: DBPlayer[];

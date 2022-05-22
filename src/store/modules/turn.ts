@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { endPokerTurn } from "./poker";
+import { newPokerGame, endPokerTurn } from "./poker";
 
 export interface TurnState {
   player: number;
@@ -22,12 +22,19 @@ export const turnSlice = createSlice({
       state.hand += 1;
     },
     /** reset back to first player in Turn DB */
-    resetTurn: () => ({ player: 0, hand: 0 }),
+    resetTurn: (state) => {
+      state.player = 0;
+      state.hand = 0;
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(endPokerTurn, (state) => {
-      turnSlice.caseReducers.incrPlayerTurn(state);
-    });
+    builder
+      .addCase(endPokerTurn, (state) => {
+        turnSlice.caseReducers.incrPlayerTurn(state);
+      })
+      .addCase(newPokerGame, (state) => {
+        turnSlice.caseReducers.resetTurn(state);
+      });
   },
 });
 

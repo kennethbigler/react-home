@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Deck, { DBCard } from "../../apis/Deck";
+import { setFinishGame, setPlayerChoice } from "./dnd";
 import { newPokerGame } from "./poker";
 import { DBHand, DBPlayer } from "./types";
 
@@ -277,6 +278,26 @@ export const playersSlice = createSlice({
             ...action,
             payload: player.id,
           });
+        });
+      })
+      .addCase(setPlayerChoice, (state, action) => {
+        playersSlice.caseReducers.payout(state, {
+          ...action,
+          payload: {
+            id: action.payload.id,
+            status: "lose",
+            money: -100,
+          },
+        });
+      })
+      .addCase(setFinishGame, (state, action) => {
+        playersSlice.caseReducers.payout(state, {
+          ...action,
+          payload: {
+            id: action.payload.id,
+            status: "win",
+            money: Math.round(action.payload.offer / 1000),
+          },
         });
       });
   },

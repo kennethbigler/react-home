@@ -1,7 +1,7 @@
 import React from "react";
 import Paper from "@mui/material/Paper";
 import Case from "./Case";
-import { Briefcase } from "../../../store/types";
+import { Briefcase } from "../../../store/modules/dnd";
 
 interface BoardProps {
   board: Briefcase[];

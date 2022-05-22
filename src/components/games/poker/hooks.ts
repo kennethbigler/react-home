@@ -12,7 +12,6 @@ import {
   discardCards,
   PokerGameFunctions as PGF,
 } from "../../../store/modules/poker";
-import { resetTurn } from "../../../store/modules/turn";
 
 const usePokerFunctions = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -124,7 +123,6 @@ const usePokerFunctions = (
           break;
         case PGF.NEW_GAME:
           dispatch(newPokerGame(players));
-          dispatch(resetTurn());
           break;
         case PGF.START_GAME:
           await startGame(players);

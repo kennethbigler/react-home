@@ -11,8 +11,9 @@ import {
   setNoDeal,
   setFinishGame,
   setPlayerChoice,
+  briefcasesToOpen,
 } from "../../../store/modules/dnd";
-import { DBRootState, briefcasesToOpen } from "../../../store/types";
+import { DBRootState } from "../../../store/types";
 
 // TODO: add rules to page
 /* DealOrNoDeal  ->  Header
@@ -44,92 +45,74 @@ const DND: React.FC = () => {
   );
 
   /** open a briefcase and update global status
-   * NOTE: udpates sum, numCases, board, casesToOpen */
-  const openBriefcase = React.useCallback(
-    (x: number): void => {
-      const bc = board[x];
-      // check if player has already made case selection
-      if (playerChoice) {
-        // verify cases left and briefcase not already opened
-        if (
-          !isOver &&
-          casesToOpen > 0 &&
-          bc.loc !== playerChoice.loc &&
-          bc.on
-        ) {
-          // flag the value and update global trackers
-          bc.on = false;
-          // update board
-          dispatch(
-            setOpenCase(board, sum - bc.val, numCases - 1, casesToOpen - 1)
-          );
-        }
-      } else {
-        dispatch(setPlayerChoice(player.id, bc));
+   * NOTE: updates sum, numCases, board, casesToOpen */
+  const openBriefcase = (x: number) => {
+    const bc = board[x];
+    // check if player has already made case selection
+    if (playerChoice) {
+      // verify cases left and briefcase not already opened
+      if (!isOver && casesToOpen > 0 && bc.loc !== playerChoice.loc && bc.on) {
+        // update board
+        dispatch(
+          setOpenCase({
+            board,
+            caseNum: x,
+            sum: sum - bc.val,
+            numCases: numCases - 1,
+            casesToOpen: casesToOpen - 1,
+          })
+        );
       }
-    },
-    [
-      board,
-      casesToOpen,
-      dispatch,
-      isOver,
-      numCases,
-      player.id,
-      playerChoice,
-      sum,
-    ]
-  );
+    } else {
+      dispatch(setPlayerChoice({ id: player.id, playerChoice: bc }));
+    }
+  };
 
-  const handleOpen = React.useCallback((): void => {
+  const handleOpen = (): void => {
     // get the new offer
     const newOffer = getBankOffer();
     // reset the counter
     const newCasesToOpen =
       turn < briefcasesToOpen - 1 ? briefcasesToOpen - turn : 1;
-    dispatch(setOpenOffer(newOffer, newCasesToOpen));
-  }, [dispatch, getBankOffer, turn]);
+    dispatch(setOpenOffer({ offer: newOffer, casesToOpen: newCasesToOpen }));
+  };
 
   /** function to reset the game */
-  const newDNDGame = React.useCallback((): void => {
+  const newDNDGame = (): void => {
     dispatch(newGame());
-  }, [dispatch]);
-
-  /** function to finish the game
-   * NOTE: payout to user offer / 1k */
-  const finishGame = React.useCallback(
-    (finalOffer: number): void => {
-      dispatch(setFinishGame(player.id, finalOffer));
-    },
-    [dispatch, player.id]
-  );
+  };
 
   /** called on selection of Deal */
-  const deal = React.useCallback(
-    (): void => finishGame(offer),
-    [finishGame, offer]
-  );
+  const deal = (): void => {
+    dispatch(setFinishGame({ id: player.id, offer }));
+  };
 
   /** called on selection of No Deal
    * NOTE: update turn, casesToOpen */
-  const noDeal = React.useCallback((): void => {
+  const noDeal = (): void => {
     // no deal on last case
     if (numCases <= 2) {
-      finishGame(playerChoice ? playerChoice.val : -1);
+      dispatch(
+        setFinishGame({
+          id: player.id,
+          offer: playerChoice ? playerChoice.val : -1,
+        })
+      );
     } else {
       // advance the turn
       dispatch(setNoDeal(turn));
     }
-  }, [dispatch, finishGame, numCases, playerChoice, turn]);
+  };
 
-  const swap = React.useCallback((): void => {
+  const swap = (): void => {
     for (let i = 0; i < board.length; i += 1) {
       const bc = board[i];
       if (bc.on && playerChoice && bc.loc !== playerChoice.loc) {
-        finishGame(bc.val);
+        dispatch(setFinishGame({ id: player.id, offer: bc.val }));
         return;
       }
     }
-  }, [board, finishGame, playerChoice]);
+  };
 
   // check if it is time for an offer
   casesToOpen === 0 && setTimeout(handleOpen, 300);
