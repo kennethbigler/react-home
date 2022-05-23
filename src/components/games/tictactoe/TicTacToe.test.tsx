@@ -19,63 +19,37 @@ describe("games | tictactoe | TicTacToe", () => {
     expect(screen.getByText("Game Start (Turn, Col, Row)")).toBeInTheDocument();
   });
 
-  it("plays the game on button click", () => {
+  it("plays the game", () => {
     render(<TicTacToe />);
 
+    // click first move
     expect(screen.queryByText("X")).toBeNull();
     expect(screen.queryByText("Move #1 (X, 0, 0)")).toBeNull();
-
     fireEvent.click(screen.getAllByRole("button")[1]);
-
     expect(screen.getByText("X")).toBeInTheDocument();
     expect(screen.getByText("Move #1 (X, 0, 0)")).toBeInTheDocument();
-  });
 
-  it("alternates players", () => {
-    render(<TicTacToe />);
-
-    expect(screen.queryByText("X")).toBeNull();
-    expect(screen.queryByText("Move #1 (X, 0, 0)")).toBeNull();
+    // alternates players
     expect(screen.queryByText("O")).toBeNull();
-    expect(screen.queryByText("Move #2 (O, 1, 0)")).toBeNull();
-
-    fireEvent.click(screen.getAllByRole("button")[1]);
-    fireEvent.click(screen.getAllByRole("button")[4]);
-
-    expect(screen.getByText("X")).toBeInTheDocument();
-    expect(screen.getByText("Move #1 (X, 0, 0)")).toBeInTheDocument();
+    expect(screen.queryByText("Move #2 (O, 0, 1)")).toBeNull();
+    fireEvent.click(screen.getAllByRole("button")[2]);
     expect(screen.getByText("O")).toBeInTheDocument();
-    expect(screen.getByText("Move #2 (O, 1, 0)")).toBeInTheDocument();
-  });
+    expect(screen.getByText("Move #2 (O, 0, 1)")).toBeInTheDocument();
 
-  it("ignores double clicks", () => {
-    render(<TicTacToe />);
-
-    expect(screen.queryByText("X")).toBeNull();
-    expect(screen.queryByText("Move #1 (X, 0, 0)")).toBeNull();
-    expect(screen.queryByText("O")).toBeNull();
-    expect(screen.queryByText("Move #2 (O, 1, 0)")).toBeNull();
-
+    // ignores double clicks
+    expect(screen.queryByText("Move #2", { exact: false })).toBeInTheDocument();
+    expect(screen.queryByText("Move #3", { exact: false })).toBeNull();
     fireEvent.click(screen.getAllByRole("button")[1]);
-    fireEvent.click(screen.getAllByRole("button")[1]);
+    expect(screen.queryByText("Move #2", { exact: false })).toBeInTheDocument();
+    expect(screen.queryByText("Move #3", { exact: false })).toBeNull();
 
-    expect(screen.getByText("X")).toBeInTheDocument();
-    expect(screen.getByText("Move #1 (X, 0, 0)")).toBeInTheDocument();
-    expect(screen.queryByText("O")).toBeNull();
-    expect(screen.queryByText("Move #2 (O, 1, 0)")).toBeNull();
-  });
-
-  it("can end the game on win", () => {
-    render(<TicTacToe />);
-
+    // can end the game on win
     expect(screen.getByText("Turn: X")).toBeInTheDocument();
     expect(screen.queryByText("Winner: X")).toBeNull();
-    expect(screen.queryAllByText("X")).toHaveLength(0);
-    expect(screen.queryAllByText("O")).toHaveLength(0);
+    expect(screen.queryAllByText("X")).toHaveLength(1);
+    expect(screen.queryAllByText("O")).toHaveLength(1);
 
     const buttons = screen.getAllByRole("button");
-    fireEvent.click(buttons[1]);
-    fireEvent.click(buttons[2]);
     fireEvent.click(buttons[5]);
     fireEvent.click(buttons[3]);
     fireEvent.click(buttons[9]);
