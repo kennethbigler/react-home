@@ -4,6 +4,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import reducer from ".";
 
 // TODO: Consider using this state globally, and just calling actions upon fetch of data from localForage.
+// https://redux.js.org/tutorials/essentials/part-5-async-logic#loading-users
 export const store = configureStore({
   reducer,
 });
