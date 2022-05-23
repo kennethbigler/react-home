@@ -55,6 +55,10 @@ describe("resume | git-tools | CommitText", () => {
     ).toBeInTheDocument();
     fireEvent.click(screen.getByDisplayValue("Add git commit -m"));
     expect(screen.getByText("feat: [KEN-1234]")).toBeInTheDocument();
+    fireEvent.click(screen.getByDisplayValue("Add git commit -m"));
+    expect(
+      screen.getByText('git commit -m "feat: [KEN-1234]"')
+    ).toBeInTheDocument();
   });
 
   it("adds a finishes tag on toggle", () => {
