@@ -5,13 +5,12 @@
  * buy insurance on dealer's Ace
  */
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import asyncForEach from "../../../helpers/asyncForEach";
 import { weighHand, playBot, banking, DEALER } from "./blackjackHelpers";
 import Header from "./Header";
 import GameTable from "../game-table";
 import Deck from "../../../apis/Deck";
-import { DBRootState } from "../../../store/types";
 import {
   doubleHand,
   hitHand,
@@ -28,14 +27,13 @@ import { newHand } from "../../../store/modules/players-thunks";
 import { DBHand, DBPlayer } from "../../../store/modules/types";
 
 const BlackJack: React.FC = () => {
-  const { turn, players, gameFunctions, hideHands, hasFunctions } = useSelector(
-    (state: DBRootState) => ({
+  const { turn, players, gameFunctions, hideHands, hasFunctions } =
+    useAppSelector((state) => ({
       ...state.blackjack,
       players: state.players,
       turn: state.turn,
-    })
-  );
-  const dispatch = useDispatch();
+    }));
+  const dispatch = useAppDispatch();
 
   /** get the game functions for the present hand */
   const getGameFunctions = React.useCallback(
@@ -74,7 +72,9 @@ const BlackJack: React.FC = () => {
   const split = (): void => {
     // get state values
     const { id, hands } = players[turn.player];
-    dispatch(splitHand({ hands, id, hNum: turn.hand, weigh: weighHand }));
+    dispatch(splitHand({ hands, id, hNum: turn.hand, weigh: weighHand })).catch(
+      (e) => console.log(e)
+    );
   };
 
   /** function to pass to the next player */
@@ -89,7 +89,7 @@ const BlackJack: React.FC = () => {
   const double = (): void => {
     dispatch(
       doubleHand({ player: players[turn.player], turn, weigh: weighHand })
-    );
+    ).catch((e) => console.log(e));
   };
 
   /** function to get a new card */
@@ -97,7 +97,9 @@ const BlackJack: React.FC = () => {
     // get state values
     const { id, hands } = players[turn.player];
     // logic to hit
-    dispatch(hitHand({ hands, id, hNum: turn.hand, weigh: weighHand }));
+    dispatch(hitHand({ hands, id, hNum: turn.hand, weigh: weighHand })).catch(
+      (e) => console.log(e)
+    );
   };
 
   /** Start a new round of hands */
@@ -152,7 +154,9 @@ const BlackJack: React.FC = () => {
       // get state values
       const { hands } = tempPlayers.filter((p) => p.id === DEALER)[0];
       // logic to hit
-      dispatch(hitHand({ hands, id: DEALER, hNum: 0, weigh: weighHand }));
+      dispatch(hitHand({ hands, id: DEALER, hNum: 0, weigh: weighHand })).catch(
+        (e) => console.log(e)
+      );
     },
     [dispatch]
   );

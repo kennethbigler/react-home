@@ -1,6 +1,6 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import {
   newGame,
   updateTurn,
@@ -10,7 +10,6 @@ import {
   immutableBoardCopy,
 } from "../../../store/modules/connect4";
 import GameBoard from "./GameBoard";
-import { DBRootState } from "../../../store/types";
 
 // dp constants
 const PIECE = 0;
@@ -50,10 +49,10 @@ const helpEvalConnect4 = (
 /* Connect4  ->  GameBoard  ->  Header  ->  Piece
  *                         |->  Board   ->  Piece */
 const Connect4: React.FC = () => {
-  const { board, turn, winner } = useSelector((state: DBRootState) => ({
+  const { board, turn, winner } = useAppSelector((state) => ({
     ...state.connect4,
   }));
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   /** start a new game, reset the board and helper vars */
   const newC4Game = (): void => {
@@ -96,7 +95,6 @@ const Connect4: React.FC = () => {
         line[MAX].forEach((t) => {
           tempBoard[t[0]][t[1]] = 3;
         });
-        console.log(`winner! ${turn}`);
         dispatch(updateWinner(turn));
         dispatch(updateBoard(tempBoard));
       }

@@ -1,11 +1,10 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { updateDBSlotMachine } from "../../../store/modules/slots";
 import { payout } from "../../../store/modules/players";
-import { DBRootState } from "../../../store/types";
 import PayoutTable from "./PayoutTable";
 import MoneyTable from "./MoneyTable";
 import ReelDisplay from "./ReelDisplay";
@@ -15,11 +14,11 @@ import SlotMachine from "../../../apis/SlotMachine";
  *       |->  MoneyTable
  *       |->  PayoutTable */
 const Slots: React.FC = () => {
-  const { players, reel } = useSelector((state: DBRootState) => ({
+  const { players, reel } = useAppSelector((state) => ({
     players: state.players,
     reel: state.slots,
   }));
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const updateSlotMachine = () => {
     // get ids

@@ -1,7 +1,7 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import {
   playTurn,
   newGame,
@@ -14,7 +14,6 @@ import Header from "./Header";
 import History from "./History";
 import Board from "./Board";
 import { getTurn, calculateWinner } from "./helpers";
-import { DBRootState } from "../../../store/types";
 
 const paperStyles: React.CSSProperties = {
   width: 343,
@@ -26,10 +25,10 @@ const paperStyles: React.CSSProperties = {
  *           |->  Board  ->  Cell
  *           |->  History */
 const TicTacToe: React.FC = () => {
-  const { turn, step, history } = useSelector((state: DBRootState) => ({
+  const { turn, step, history } = useAppSelector((state) => ({
     ...state.ticTacToe,
   }));
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   /** function that modifies board with appropriate turn
    * @param location - location of board click (row * 3 + col) */

@@ -5,15 +5,13 @@ import {
   RenderOptions,
   RenderResult,
 } from "@testing-library/react";
-import { createStore, applyMiddleware, Store } from "redux";
+import { Store } from "redux";
 import { Provider } from "react-redux";
-import thunk from "redux-thunk";
 
-import reducer from "./store";
-import { DBRootState } from "./store/types";
+import { store as renderStore, RootState } from "./store/store";
 
 interface CustomRenderOptions extends Omit<RenderOptions, "queries"> {
-  initialState?: DBRootState;
+  initialState?: RootState;
   store?: Store;
 }
 
@@ -21,7 +19,7 @@ const render = (
   ui: React.ReactElement,
   {
     initialState,
-    store = createStore(reducer, initialState, applyMiddleware(thunk)),
+    store = renderStore,
     ...renderOptions
   }: CustomRenderOptions = {}
 ): RenderResult => {

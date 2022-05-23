@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
@@ -11,9 +10,9 @@ import IconButton from "@mui/material/IconButton";
 import Clear from "@mui/icons-material/Clear";
 import Grid from "@mui/material/Grid";
 import nl2br from "react-newline-to-break";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import CopyTextDisplay from "./CopyTextDisplay";
 import { setCommitPrefix } from "../../../store/modules/git";
-import { DBRootState } from "../../../store/types";
 import useCommitText from "./useCommitText";
 
 interface CommitTextProps {
@@ -31,8 +30,8 @@ const wrapperStyles: React.CSSProperties = {
 const marginTopStyles: React.CSSProperties = { marginTop: 12 };
 
 const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
-  const gitCommit = useSelector((state: DBRootState) => state.git.commitPrefix);
-  const dispatch = useDispatch();
+  const gitCommit = useAppSelector((state) => state.git.commitPrefix);
+  const dispatch = useAppDispatch();
 
   const { getSelectOptions, storyID, handleCopy, gitTheme } = props;
 

@@ -18,7 +18,7 @@ export interface GitState {
   commitPrefix: boolean;
 }
 
-const initialState = {
+const initialState: GitState = {
   storyID: "",
   branchMessage: "",
   branchPrefix: "features",
