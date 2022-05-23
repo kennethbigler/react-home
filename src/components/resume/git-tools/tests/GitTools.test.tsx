@@ -214,7 +214,6 @@ describe("resume | git-tools |  GitTools", () => {
   it("calls setCasePreference on select of case option", () => {
     render(<GitTools />);
 
-    // TODO: Fix from here
     expect(screen.getByText("fixes/")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
