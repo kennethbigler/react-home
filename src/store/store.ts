@@ -3,6 +3,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import reducer from ".";
 
+// TODO: Consider using this state globally, and just calling actions upon fetch of data from localForage.
 export const store = configureStore({
   reducer,
 });
