@@ -1,9 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
 import Modal from "./Modal";
 import Board from "./Board";
 import Header from "./Header";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import {
   newGame,
   setOpenCase,
@@ -13,7 +13,6 @@ import {
   setPlayerChoice,
   briefcasesToOpen,
 } from "../../../store/modules/dnd";
-import { DBRootState } from "../../../store/types";
 
 // TODO: add rules to page
 /* DealOrNoDeal  ->  Header
@@ -31,12 +30,12 @@ const DND: React.FC = () => {
     playerChoice,
     casesToOpen,
     numCases,
-  } = useSelector((state: DBRootState) => ({
+  } = useAppSelector((state) => ({
     ...state.dnd,
     player: state.players[0],
   }));
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   /** function to generate the bank offer */
   const getBankOffer = React.useCallback(

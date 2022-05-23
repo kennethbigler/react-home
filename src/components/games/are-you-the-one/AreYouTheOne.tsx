@@ -1,10 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Controls from "./controls/Controls";
 import Table from "./table/Table";
 import Analysis from "./analysis/Analysis";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { ladies, gents, options } from "../../../constants/ayto";
-import { DBRootState } from "../../../store/types";
 import {
   updateMatch,
   updateNoMatch,
@@ -18,10 +17,10 @@ import useHist from "./analysis/useHist";
  */
 const AreYouTheOne = () => {
   // Redux
-  const { roundPairings, noMatch, matches } = useSelector(
-    (state: DBRootState) => ({ ...state.ayto })
-  );
-  const dispatch = useDispatch();
+  const { roundPairings, noMatch, matches } = useAppSelector((state) => ({
+    ...state.ayto,
+  }));
+  const dispatch = useAppDispatch();
 
   // state
   const [roundNumber, setRoundNumber] = React.useState(0);

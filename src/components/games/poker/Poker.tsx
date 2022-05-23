@@ -1,19 +1,18 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../../store/store";
 import GameTable from "../game-table";
 import { updateCardsToDiscard } from "../../../store/modules/poker";
-import { DBRootState } from "../../../store/types";
 import usePokerFunctions from "./hooks";
 
 const Poker: React.FC = () => {
   const { turn, players, cardsToDiscard, gameFunctions, gameOver, hideHands } =
-    useSelector((state: DBRootState) => ({
+    useAppSelector((state) => ({
       turn: state.turn,
       players: state.players,
       ...state.poker,
     }));
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   /** function to be called on card clicks */
   const cardClickHandler = React.useCallback(

@@ -56,12 +56,13 @@ describe("games | blackjack | Blackjack", () => {
     expect(screen.queryByText("Hit")).toBeNull();
     expect(screen.queryByText("Double")).toBeNull();
     expect(screen.queryByText("Split")).toBeNull();
-    expect(screen.getAllByText("Hand: 20")).toHaveLength(5);
-    expect(screen.getByText("Hand: 10")).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getAllByText("Hand: 20")).toHaveLength(5)
+    );
+    await waitFor(() => screen.getByText("Hand: 10"));
     fireEvent.click(screen.getByText("Stay"));
     await waitFor(() => screen.getByText("New Game"));
     fireEvent.click(screen.getByText("New Game"));
-    fireEvent.click(screen.getByText("Finish Betting"));
   });
 
   it("can HIT on a hand, stay, then start a new game", async () => {
@@ -79,15 +80,15 @@ describe("games | blackjack | Blackjack", () => {
     render(<Blackjack />);
 
     fireEvent.click(screen.getByText("Finish Betting"));
-    await waitFor(() => screen.getAllByText("Hand: 20"));
-    expect(screen.getAllByText("Hand: 20")).toHaveLength(6);
-    expect(screen.getByText("Hand: 10")).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getAllByText("Hand: 20")).toHaveLength(6)
+    );
+    await waitFor(() => screen.getByText("Hand: 10"));
     fireEvent.click(screen.getByText("Hit"));
     await waitFor(() => screen.getByText("Bust: 30"));
     fireEvent.click(screen.getByText("Stay"));
     await waitFor(() => screen.getByText("New Game"));
     fireEvent.click(screen.getByText("New Game"));
-    fireEvent.click(screen.getByText("Finish Betting"));
   });
 
   it("can DOUBLE on a hand, then start a new game", async () => {
@@ -105,18 +106,18 @@ describe("games | blackjack | Blackjack", () => {
     render(<Blackjack />);
 
     fireEvent.click(screen.getByText("Finish Betting"));
-    await waitFor(() => screen.getAllByText("Hand: 20"));
-    expect(screen.getAllByText("Hand: 20")).toHaveLength(6);
-    expect(screen.getByText("Hand: 10")).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getAllByText("Hand: 20")).toHaveLength(6)
+    );
+    await waitFor(() => screen.getByText("Hand: 10"));
     expect(screen.getAllByText("Bet: $5")).toHaveLength(6);
     fireEvent.click(screen.getByText("Double"));
     await waitFor(() => screen.getByText("Bust: 30"));
-    expect(screen.getAllByText("Bet: $5")).toHaveLength(5);
+    await waitFor(() => expect(screen.getAllByText("Bet: $5")).toHaveLength(5));
     expect(screen.getByText("Bet: $10")).toBeInTheDocument();
     fireEvent.click(screen.getByText("Stay"));
     await waitFor(() => screen.getByText("New Game"));
     fireEvent.click(screen.getByText("New Game"));
-    fireEvent.click(screen.getByText("Finish Betting"));
   });
 
   it("can SPLIT on a hand, then start a new game", async () => {
@@ -134,9 +135,10 @@ describe("games | blackjack | Blackjack", () => {
     render(<Blackjack />);
 
     fireEvent.click(screen.getByText("Finish Betting"));
-    await waitFor(() => screen.getAllByText("Hand: 20"));
-    expect(screen.getAllByText("Hand: 20")).toHaveLength(6);
-    expect(screen.getByText("Hand: 10")).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getAllByText("Hand: 20")).toHaveLength(6)
+    );
+    await waitFor(() => screen.getByText("Hand: 10"));
     fireEvent.click(screen.getByText("Split"));
     await waitFor(() => screen.getAllByText("Hand: 19"));
     expect(screen.getAllByText("Hand: 19")).toHaveLength(2);

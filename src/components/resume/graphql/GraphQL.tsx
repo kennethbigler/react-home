@@ -1,5 +1,4 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   ApolloProvider,
   ApolloClient,
@@ -8,11 +7,11 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import Profile from "./Profile";
 import { setToken } from "../../../store/modules/gqlToken";
 import Header from "./Header";
 import NoToken from "./NoToken";
-import { DBRootState } from "../../../store/types";
 
 const GITHUB_BASE_URL = "https://api.github.com/graphql";
 const errorLink = onError((/* { graphQLErrors, networkError } */) => {
@@ -26,8 +25,8 @@ const cache = new InMemoryCache();
  *         |->  Profile  ->  Repository
  *            Loading  <-|->  ErrorMessage */
 const GraphQL: React.FC = React.memo(() => {
-  const gqlToken = useSelector((state: DBRootState) => state.gqlToken);
-  const dispatch = useDispatch();
+  const gqlToken = useAppSelector((state) => state.gqlToken);
+  const dispatch = useAppDispatch();
 
   const [authToken, setAuthToken] = React.useState(gqlToken);
 

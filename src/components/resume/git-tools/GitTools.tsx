@@ -1,11 +1,11 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
 import { deepOrange } from "@mui/material/colors";
 import handleCopy from "copy-to-clipboard";
 import snakeCase from "lodash/snakeCase";
 import kebabCase from "lodash/kebabCase";
 import camelCase from "lodash/camelCase";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import {
   setBranchMessage,
   setBranchPrefix,
@@ -19,7 +19,6 @@ import CommitText from "./CommitText";
 import DeployBranch from "./DeployBranch";
 import Header from "./Header";
 import ExpandableCard from "../../common/expandable-card";
-import { DBRootState } from "../../../store/types";
 
 const gitTheme = deepOrange[600];
 export const validTypingId = /[A-Z]{1,4}-?[a-zA-Z0-9]*/;
@@ -63,10 +62,9 @@ export const getBranchName = (
  *          |->  CommitText    -|->  CopyTextDisplay
  *          |->  DeployBranch  -|    */
 const GitTools: React.FC = () => {
-  const { branchMessage, branchPrefix, casePreference, storyID } = useSelector(
-    (state: DBRootState) => state.git
-  );
-  const dispatch = useDispatch();
+  const { branchMessage, branchPrefix, casePreference, storyID } =
+    useAppSelector((state) => state.git);
+  const dispatch = useAppDispatch();
 
   /** function to update text state based on value */
   const handleIDChange: React.ChangeEventHandler<

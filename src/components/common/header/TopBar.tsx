@@ -1,18 +1,17 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import Switch from "@mui/material/Switch";
+import { useAppSelector, useAppDispatch } from "../../../store/store";
 import SimplePopover from "./ButtonPopover";
 import PlayerMenu from "./PlayerMenu";
 import {
   displayDarkTheme,
   displayLightTheme,
 } from "../../../store/modules/theme";
-import { DBRootState } from "../../../store/types";
 
 const cursorStyles: React.CSSProperties = { cursor: "pointer" };
 const flexLeftStyles: React.CSSProperties = {
@@ -35,8 +34,8 @@ interface TopBarProps {
 }
 
 const TopBar = (props: TopBarProps): React.ReactElement => {
-  const theme = useSelector((state: DBRootState) => state.theme);
-  const dispatch = useDispatch();
+  const theme = useAppSelector((state) => state.theme);
+  const dispatch = useAppDispatch();
   const [checked, setChecked] = React.useState(theme.mode !== "dark");
 
   /** function toggle between site's light and dark theme - dispatch to Redux */

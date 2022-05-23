@@ -82,12 +82,12 @@ describe("games | connect4 | Connect4", () => {
   it("recognizes 5 in a row", () => {
     render(<Connect4 />);
 
+    fireEvent.click(screen.getByText("Reset Game"));
+
     expect(screen.getByText("Turn:")).toBeInTheDocument();
     expect(screen.getAllByRole("button")[0]).toHaveStyle({
       backgroundColor: "rgb(244, 67, 54)",
     });
-
-    fireEvent.click(screen.getByText("Reset Game"));
 
     let buttons = screen.getAllByRole("button");
     fireEvent.click(buttons[2]);

@@ -1,17 +1,16 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
   ThemeProvider,
   StyledEngineProvider,
   createTheme,
 } from "@mui/material/styles";
+import { useAppSelector } from "../store/store";
 import WithRouter from "./WithRouter";
-import { DBRootState } from "../store/types";
 
 /** App class that wraps higher level components of the application */
 const WithTheme: React.FC = () => {
-  const theme = useSelector((state: DBRootState) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
 
   const setTheme = createTheme({
     palette: {

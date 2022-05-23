@@ -1,11 +1,10 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { updateName, updateBot } from "../../../store/modules/players";
-import { DBRootState } from "../../../store/types";
 
 const namePadStyles: React.CSSProperties = {
   maxWidth: "420px",
@@ -15,8 +14,8 @@ const namePadStyles: React.CSSProperties = {
 };
 
 const PlayerMenu: React.FC = () => {
-  const players = useSelector((state: DBRootState) => state.players);
-  const dispatch = useDispatch();
+  const players = useAppSelector((state) => state.players);
+  const dispatch = useAppDispatch();
 
   const isBot = React.useMemo(() => players.map((a) => a.isBot), [players]);
 

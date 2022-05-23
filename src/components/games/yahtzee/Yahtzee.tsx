@@ -1,12 +1,11 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import DiceAPI from "../../../apis/Dice";
 import ScoreTable from "./score-table/ScoreTable";
 import { ADD_DICE, BottomGameScore } from "./types";
 import Header from "./Header";
 import TableHeader from "./TableHeader";
-import { DBRootState } from "../../../store/types";
 import {
   addScore,
   diceClick,
@@ -45,8 +44,8 @@ const Yahtzee: React.FC = () => {
     roll,
     showScoreButtons,
     scores,
-  } = useSelector((state: DBRootState) => ({ ...state.yahtzee }));
-  const dispatch = useDispatch();
+  } = useAppSelector((state) => ({ ...state.yahtzee }));
+  const dispatch = useAppDispatch();
 
   const { topSum, bottomSum, finalTopSum, finish } = getYahtzeeVars(
     topScores,

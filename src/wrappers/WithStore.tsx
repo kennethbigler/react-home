@@ -1,11 +1,14 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
 import throttle from "lodash/throttle";
 import { Store } from "redux";
+import localForage from "localforage";
 import WithTheme from "./WithTheme";
-import { loadState, saveState, configureStore } from "../store/configureStore";
 import LoadingSpinner from "../components/common/loading-spinner";
-import { DBRootState } from "../store/types";
+// stores
+import reducer from "../store";
+import { RootState } from "../store/store";
 
 interface WithStoreState {
   store?: Store;
@@ -22,12 +25,17 @@ class WithStore extends React.PureComponent<
   }
 
   componentDidMount(): void {
-    loadState()
-      .then(configureStore)
+    localForage
+      .getItem("state")
+      .then((state) =>
+        state
+          ? configureStore({ reducer, preloadedState: state as RootState })
+          : configureStore({ reducer })
+      )
       .then((store) => {
         store.subscribe(
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          throttle(() => saveState(store.getState() as DBRootState), 1000)
+          throttle(() => localForage.setItem("state", store.getState()), 1000)
         );
         this.setState({ store });
       })

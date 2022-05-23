@@ -1,32 +1,31 @@
-import { combineReducers } from "redux";
-import ayto from "./modules/ayto";
-import blackjack from "./modules/blackjack";
-import connect4 from "./modules/connect4";
-import dnd from "./modules/dnd";
-import git from "./modules/git";
-import gqlToken from "./modules/gqlToken";
-import players from "./modules/players";
-import poker from "./modules/poker";
-import slots from "./modules/slots";
-import theme from "./modules/theme";
-import ticTacToe from "./modules/ticTacToe";
-import turn from "./modules/turn";
-import yahtzee from "./modules/yahtzee";
+import connect4Reducer from "./modules/connect4";
+import gitReducer from "./modules/git";
+import themeReducer from "./modules/theme";
+import ticTacToeReducer from "./modules/ticTacToe";
+import yahtzeeReducer from "./modules/yahtzee";
+import aytoReducer from "./modules/ayto";
+import pokerReducer from "./modules/poker";
+import playersReducer from "./modules/players";
+import turnReducer from "./modules/turn";
+import dndReducer from "./modules/dnd";
+import blackjackReducer from "./modules/blackjack";
+import gqlTokenReducer from "./modules/gqlToken";
+import slotsReducer from "./modules/slots";
 
-const rootReducer = combineReducers({
-  ayto,
-  blackjack,
-  connect4,
-  dnd,
-  git,
-  gqlToken,
-  players,
-  poker,
-  slots,
-  theme,
-  ticTacToe,
-  turn,
-  yahtzee,
-});
+const rootReducer = {
+  ayto: aytoReducer,
+  blackjack: blackjackReducer,
+  connect4: connect4Reducer,
+  dnd: dndReducer,
+  git: gitReducer,
+  gqlToken: gqlTokenReducer,
+  players: playersReducer,
+  poker: pokerReducer,
+  theme: themeReducer,
+  ticTacToe: ticTacToeReducer,
+  turn: turnReducer,
+  yahtzee: yahtzeeReducer,
+  slots: slotsReducer,
+};
 
 export default rootReducer;

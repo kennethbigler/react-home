@@ -36,9 +36,10 @@ describe("games | yahtzee | Yahtzee", () => {
     expect(screen.getByText("Grand Total")).toBeInTheDocument();
   });
 
-  it("saves and un-saves a dice", () => {
+  it("plays the game", () => {
     const { container } = render(<Yahtzee />);
 
+    // --------------------     saves and un-saves a dice     -------------------- //
     // baseline
     expect(
       container.querySelectorAll(".MuiButton-outlinedPrimary")
@@ -82,14 +83,9 @@ describe("games | yahtzee | Yahtzee", () => {
     expect(
       container.querySelectorAll(".MuiButton-outlinedSecondary")
     ).toHaveLength(0);
-  });
 
-  it("plays the game and saves to the top half scores", () => {
-    render(<Yahtzee />);
-
-    expect(screen.getAllByText("0")).toHaveLength(11);
-    // do the first 3 rolls, then try to do the 4th
-    fireEvent.click(screen.getByText("First Roll"));
+    // --------------------     saves to the top half scores     -------------------- //
+    // do the next 2 rolls, then try to do the 4th
     fireEvent.click(screen.getByText("Second Roll"));
     fireEvent.click(screen.getByText("Last Roll"));
     fireEvent.click(screen.getByText("Score"));
