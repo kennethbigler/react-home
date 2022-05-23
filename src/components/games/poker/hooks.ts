@@ -49,7 +49,7 @@ const usePokerFunctions = (
     tempTurn: number
   ): Promise<void> => {
     try {
-      await dispatch(endPokerGame());
+      dispatch(endPokerGame());
 
       await asyncForEach(tempPlayers, async (player: DBPlayer, i: number) => {
         if (tempTurn <= i && i < LAST_PLAYER) {
@@ -78,24 +78,20 @@ const usePokerFunctions = (
   // ----------     player handlers     ---------- //
   /** function to finish betting and start the game */
   const startGame = async (tempPlayers: DBPlayer[]): Promise<void> => {
-    try {
-      await dispatch(startPokerGame());
-      // shuffle the deck
-      await Deck.shuffle().then(async () => {
+    dispatch(startPokerGame());
+    // shuffle the deck
+    await Deck.shuffle()
+      .then(async () => {
         // deal the hands
         await asyncForEach(tempPlayers, async (player: DBPlayer) => {
           if (player.id !== DEALER && player.id <= LAST_PLAYER) {
-            try {
-              await dispatch(newHand({ id: player.id, num: 5 }));
-            } catch (e) {
-              console.error(e); // eslint-disable-line no-console
-            }
+            await dispatch(newHand({ id: player.id, num: 5 }));
           }
         });
+      })
+      .catch((e) => {
+        console.error(e); // eslint-disable-line no-console
       });
-    } catch (e) {
-      console.error(e); // eslint-disable-line no-console
-    }
   };
 
   /** helper function wrapping discard, meant for UI */
@@ -106,7 +102,7 @@ const usePokerFunctions = (
   ): Promise<void> => {
     try {
       await discard(tempCardsToDiscard, tempPlayers[tempTurn]);
-      await dispatch(discardCards());
+      dispatch(discardCards());
     } catch (e) {
       console.error(e); // eslint-disable-line no-console
     }
