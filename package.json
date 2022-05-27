@@ -14,7 +14,7 @@
     "@emotion/styled": "11.8.1",
     "@mui/icons-material": "5.8.0",
     "@mui/material": "5.8.1",
-    "@reduxjs/toolkit": "1.8.1",
+    "@reduxjs/toolkit": "1.8.2",
     "copy-to-clipboard": "3.3.1",
     "graphql-tag": "2.12.6",
     "localforage": "1.10.0",
