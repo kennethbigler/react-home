@@ -6,7 +6,7 @@ import countries from "../../../constants/countries";
 
 const data: DataItem[] = Object.keys(countries).map((k) => ({
   country: countries[k].code,
-  value: 0,
+  value: 1,
 }));
 
 const WorldMap = () => {

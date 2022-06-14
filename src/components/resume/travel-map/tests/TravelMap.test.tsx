@@ -1,12 +1,11 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import TravelMap from "../TravelMap";
+import TravelTable from "../TravelTable";
 
 describe("resume | travel-map | TravelMap", () => {
   it("renders as expected", () => {
-    render(<TravelMap />);
+    render(<TravelTable />);
 
-    expect(screen.getByText("My Travel Map")).toBeInTheDocument();
     expect(
       screen.getByText("I have been to 32 countries:")
     ).toBeInTheDocument();
