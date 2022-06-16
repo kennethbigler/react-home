@@ -3,6 +3,5 @@
   "extends": ["config:base"],
   "labels": ["dependencies"],
   "reviewers": ["kennethbigler"],
-  "schedule": "before 7am on Friday",
-  "suppressNotifications": ["artifactErrors"]
+  "schedule": "before 7am on Friday"
 }
