@@ -4,3 +4,12 @@
   align-items: center;
   width: 100%;
 }
+
+.worldmap__figure-container {
+  margin: 0;
+}
+
+.worldmap__figure-container > svg {
+  display: block;
+  margin: auto;
+}

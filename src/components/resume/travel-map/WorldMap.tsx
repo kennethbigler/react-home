@@ -11,7 +11,7 @@ const data: DataItem[] = Object.keys(countries).map((k) => ({
 
 const WorldMap = () => {
   const { theme } = useAppSelector((state) => ({ theme: state.theme.mode }));
-  const screenWidth = document.body.clientWidth - 112;
+  const screenWidth = Math.min(document.body.clientWidth - 32, 2000);
 
   return (
     <Map
