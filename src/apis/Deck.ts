@@ -76,20 +76,25 @@ const setDeck = (deck: DBCard[]): Promise<DBCard[] | null> =>
   localForage.setItem("deck", deck).catch(() => null);
 
 /** randomize order of the cards O(N + M) */
-const shuffle = (): Promise<DBCard[] | null> => {
-  // get a new deck
-  const shuffledDeck = getNewDeck();
+const shuffleDeck = (deck: DBCard[]): DBCard[] => {
+  const shuffledDeck: DBCard[] = [];
+  // create immutable copy of deck
+  deck.map((card) => shuffledDeck.push(card));
   // shuffle the cards
   for (let i = 0; i < 100; i += 1) {
-    const j = Math.floor(Math.random() * 52);
-    const k = Math.floor(Math.random() * 52);
+    const j = Math.floor(Math.random() * shuffledDeck.length);
+    const k = Math.floor(Math.random() * shuffledDeck.length);
     const temp = shuffledDeck[j];
     shuffledDeck[j] = shuffledDeck[k];
     shuffledDeck[k] = temp;
   }
   // update deck state
-  return setDeck(shuffledDeck);
+  return shuffledDeck;
 };
+
+/** randomize order of the cards O(N + M) */
+const shuffle = (): Promise<DBCard[] | null> =>
+  setDeck(shuffleDeck(getNewDeck()));
 
 /** return an array of a specified length O(2N) */
 const deal = (num = 0): Promise<DBCard[]> => {
