@@ -150,6 +150,9 @@ export const computer = async (
   player: DBPlayer,
   discard: (cardsToDiscardInDB: number[], player: DBPlayer) => Promise<void>
 ): Promise<void> => {
+  if (player.hands.length < 1) {
+    return;
+  }
   try {
     const hand = player.hands[0].cards;
     const hist = getHistogram(hand);
@@ -199,7 +202,11 @@ export const findAndPayWinner = (
   let winner = { val: 0, id: 0 };
 
   players.forEach((player) => {
-    if (player.id === DEALER || player.id > LAST_PLAYER) {
+    if (
+      player.id === DEALER ||
+      player.id > LAST_PLAYER ||
+      player.hands.length < 1
+    ) {
       return;
     }
 

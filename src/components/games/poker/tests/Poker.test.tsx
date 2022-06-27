@@ -93,20 +93,29 @@ describe("games | poker | Poker", () => {
     expect(screen.getByText("Dealer: $100")).toBeInTheDocument();
     expect(screen.getByText("Start Game")).toBeInTheDocument();
 
-    // plays a game
+    // starts the game
     fireEvent.click(screen.getByText("Start Game"));
     await waitFor(() => screen.getAllByText(/♣|♦|♥|♠/i));
+
+    // can select a card to discard
     const cardToDiscard = screen.getAllByText(/♣|♦|♥|♠/i)[0];
     fireEvent.click(cardToDiscard);
-    expect(cardToDiscard.innerHTML).toEqual(
-      screen.getAllByText(/♣|♦|♥|♠/i)[0].innerHTML
+    await waitFor(() =>
+      expect(cardToDiscard.innerHTML).toEqual(
+        screen.getAllByText(/♣|♦|♥|♠/i)[0].innerHTML
+      )
     );
+
+    // discards the card
     fireEvent.click(screen.getByText("Discard Cards"));
     await waitFor(() => screen.getByText("End Turn"));
-    // ensure we got a new card
+
+    // ensures we got a new card
     expect(cardToDiscard.innerHTML).not.toEqual(
       screen.getAllByText(/♣|♦|♥|♠/i)[0].innerHTML
     );
+
+    // can end the old game and start a new game
     fireEvent.click(screen.getByText("End Turn"));
     await waitFor(() => screen.getByText("New Game"));
     fireEvent.click(screen.getByText("New Game"));
