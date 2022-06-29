@@ -5,6 +5,23 @@ import cars from "../../../../constants/cars";
 
 const demoCar = cars[1];
 
+const { ResizeObserver } = window;
+
+beforeEach(() => {
+  // @ts-expect-error: TODO: overwriting to get rid of recharts error, remove later
+  delete window.ResizeObserver;
+  window.ResizeObserver = jest.fn().mockImplementation(() => ({
+    observe: jest.fn(),
+    unobserve: jest.fn(),
+    disconnect: jest.fn(),
+  }));
+});
+
+afterEach(() => {
+  window.ResizeObserver = ResizeObserver;
+  jest.restoreAllMocks();
+});
+
 describe("resume | cars | Cars", () => {
   it("renders as expected", () => {
     const { container } = render(<Cars />);
