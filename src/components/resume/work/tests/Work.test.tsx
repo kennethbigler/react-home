@@ -2,6 +2,23 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Work from "../Work";
 
+const { ResizeObserver } = window;
+
+beforeEach(() => {
+  // @ts-expect-error: TODO: overwriting to get rid of recharts error, remove later
+  delete window.ResizeObserver;
+  window.ResizeObserver = jest.fn().mockImplementation(() => ({
+    observe: jest.fn(),
+    unobserve: jest.fn(),
+    disconnect: jest.fn(),
+  }));
+});
+
+afterEach(() => {
+  window.ResizeObserver = ResizeObserver;
+  jest.restoreAllMocks();
+});
+
 describe("resume | work | Work", () => {
   it("renders as expected", () => {
     render(<Work />);
