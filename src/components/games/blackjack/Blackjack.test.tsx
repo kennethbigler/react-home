@@ -11,6 +11,7 @@ const king = { name: "K", weight: 13, suit: "♣" };
 const queen = { name: "Q", weight: 12, suit: "♣" };
 const jack = { name: "J", weight: 11, suit: "♣" };
 const nine = { name: "9", weight: 9, suit: "♣" };
+const eight = { name: "8", weight: 8, suit: "♣" };
 
 describe("games | blackjack | Blackjack", () => {
   it("renders as expected", () => {
@@ -130,22 +131,25 @@ describe("games | blackjack | Blackjack", () => {
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king])
-      .mockResolvedValue([nine, nine]);
+      .mockResolvedValue([nine, eight]);
 
     render(<Blackjack />);
 
     fireEvent.click(screen.getByText("Finish Betting"));
-    await waitFor(() =>
-      expect(screen.getAllByText("Hand: 20")).toHaveLength(6)
-    );
     await waitFor(() => screen.getByText("Hand: 10"));
+    expect(screen.getAllByText("Hand: 20")).toHaveLength(6);
+
+    // TODO: 1 act issue
     fireEvent.click(screen.getByText("Split"));
-    await waitFor(() => screen.getAllByText("Hand: 19"));
-    expect(screen.getAllByText("Hand: 19")).toHaveLength(2);
+    await waitFor(() => screen.getByText("Hand: 18"));
+    await waitFor(() => screen.getByText("Hand: 19"));
+
     fireEvent.click(screen.getByText("Stay"));
     fireEvent.click(screen.getByText("Stay"));
     await waitFor(() => screen.getByText("New Game"));
     fireEvent.click(screen.getByText("New Game"));
+
+    // TODO: adds 4 act issues
     fireEvent.click(screen.getByText("Finish Betting"));
   });
 });
