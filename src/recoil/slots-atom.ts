@@ -2,8 +2,8 @@ import { atom } from "recoil";
 import SlotMachine from "../apis/SlotMachine";
 import { DBSlotDisplay } from "../store/modules/types";
 
-const slotsState = atom({
-  key: "slotsState",
+const slotsAtom = atom({
+  key: "slotsAtom",
   default:
     (JSON.parse(
       localStorage.getItem("slots-atom") || "false"
@@ -17,4 +17,4 @@ const slotsState = atom({
   ],
 });
 
-export default slotsState;
+export default slotsAtom;

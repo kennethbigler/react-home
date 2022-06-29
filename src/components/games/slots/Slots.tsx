@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useRecoilState } from "recoil";
-import slotsState from "../../../recoil/slots-atom";
+import slotsAtom from "../../../recoil/slots-atom";
 import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { payout } from "../../../store/modules/players";
 import PayoutTable from "./PayoutTable";
@@ -20,7 +20,7 @@ const Slots: React.FC = () => {
   }));
   const dispatch = useAppDispatch();
 
-  const [reel, setReel] = useRecoilState(slotsState);
+  const [reel, setReel] = useRecoilState(slotsAtom);
 
   const updateSlotMachine = () => {
     // get ids
