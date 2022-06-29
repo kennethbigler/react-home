@@ -7,7 +7,7 @@ import {
 } from "@testing-library/react";
 import { Store } from "redux";
 import { Provider } from "react-redux";
-
+import { RecoilRoot } from "recoil";
 import { store as renderStore, RootState } from "./store/store";
 
 interface CustomRenderOptions extends Omit<RenderOptions, "queries"> {
@@ -27,7 +27,11 @@ const render = (
     children,
   }: {
     children?: React.ReactNode;
-  }) => <Provider store={store}>{children}</Provider>;
+  }) => (
+    <Provider store={store}>
+      <RecoilRoot>{children}</RecoilRoot>
+    </Provider>
+  );
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
 };
 

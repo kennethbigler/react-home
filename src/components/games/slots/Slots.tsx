@@ -2,8 +2,9 @@ import React from "react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { useRecoilState } from "recoil";
+import slotsState from "../../../recoil/slots-atom";
 import { useAppDispatch, useAppSelector } from "../../../store/store";
-import { updateDBSlotMachine } from "../../../store/modules/slots";
 import { payout } from "../../../store/modules/players";
 import PayoutTable from "./PayoutTable";
 import MoneyTable from "./MoneyTable";
@@ -14,11 +15,12 @@ import SlotMachine from "../../../apis/SlotMachine";
  *       |->  MoneyTable
  *       |->  PayoutTable */
 const Slots: React.FC = () => {
-  const { players, reel } = useAppSelector((state) => ({
+  const { players } = useAppSelector((state) => ({
     players: state.players,
-    reel: state.slots,
   }));
   const dispatch = useAppDispatch();
+
+  const [reel, setReel] = useRecoilState(slotsState);
 
   const updateSlotMachine = () => {
     // get ids
@@ -27,7 +29,7 @@ const Slots: React.FC = () => {
 
     // get rolled reel
     const newReel = SlotMachine.pullHandle();
-    dispatch(updateDBSlotMachine(newReel));
+    setReel(newReel);
 
     // exchange money
     const exchange = SlotMachine.getPayout(newReel, bet) - bet;

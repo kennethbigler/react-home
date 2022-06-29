@@ -10,7 +10,6 @@ import turnReducer from "./modules/turn";
 import dndReducer from "./modules/dnd";
 import blackjackReducer from "./modules/blackjack";
 import gqlTokenReducer from "./modules/gqlToken";
-import slotsReducer from "./modules/slots";
 
 const rootReducer = {
   ayto: aytoReducer,
@@ -25,7 +24,6 @@ const rootReducer = {
   ticTacToe: ticTacToeReducer,
   turn: turnReducer,
   yahtzee: yahtzeeReducer,
-  slots: slotsReducer,
 };
 
 export default rootReducer;
