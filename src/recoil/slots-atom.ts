@@ -1,6 +1,5 @@
 import { atom } from "recoil";
-import SlotMachine from "../apis/SlotMachine";
-import { DBSlotDisplay } from "../store/modules/types";
+import SlotMachine, { DBSlotDisplay } from "../apis/SlotMachine";
 
 const slotsAtom = atom({
   key: "slotsAtom",

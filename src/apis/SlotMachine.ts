@@ -1,7 +1,16 @@
-import { DBSlotDisplay, DBSlotOptions as SO } from "../store/modules/types";
+export enum DBSlotOptions {
+  EMPTY = " ",
+  CHERRY = "C",
+  BAR = "—",
+  DOUBLE_BAR = "=",
+  TRIPLE_BAR = "Ξ",
+  SEVEN = "7",
+  JACKPOT = "J",
+}
+export type DBSlotDisplay = [DBSlotOptions, DBSlotOptions, DBSlotOptions];
 
 interface Reel {
-  symbol: SO;
+  symbol: DBSlotOptions;
   start: number;
   stop: number;
 }
@@ -10,28 +19,28 @@ const NUM_REELS = 3;
 
 /** options to be displayed on slot machine */
 const reels: Reel[] = [
-  { symbol: SO.CHERRY, start: 1, stop: 2 },
-  { symbol: SO.EMPTY, start: 3, stop: 7 },
-  { symbol: SO.BAR, start: 8, stop: 12 },
-  { symbol: SO.EMPTY, start: 13, stop: 17 },
-  { symbol: SO.SEVEN, start: 18, stop: 25 },
-  { symbol: SO.EMPTY, start: 26, stop: 30 },
-  { symbol: SO.BAR, start: 31, stop: 35 },
-  { symbol: SO.EMPTY, start: 36, stop: 41 },
-  { symbol: SO.CHERRY, start: 42, stop: 43 },
-  { symbol: SO.EMPTY, start: 44, stop: 49 },
-  { symbol: SO.DOUBLE_BAR, start: 50, stop: 56 },
-  { symbol: SO.EMPTY, start: 57, stop: 62 },
-  { symbol: SO.CHERRY, start: 63, stop: 63 },
-  { symbol: SO.EMPTY, start: 64, stop: 69 },
-  { symbol: SO.DOUBLE_BAR, start: 70, stop: 75 },
-  { symbol: SO.EMPTY, start: 76, stop: 81 },
-  { symbol: SO.BAR, start: 82, stop: 87 },
-  { symbol: SO.EMPTY, start: 88, stop: 93 },
-  { symbol: SO.TRIPLE_BAR, start: 94, stop: 104 },
-  { symbol: SO.EMPTY, start: 105, stop: 115 },
-  { symbol: SO.JACKPOT, start: 116, stop: 117 },
-  { symbol: SO.EMPTY, start: 118, stop: 128 },
+  { symbol: DBSlotOptions.CHERRY, start: 1, stop: 2 },
+  { symbol: DBSlotOptions.EMPTY, start: 3, stop: 7 },
+  { symbol: DBSlotOptions.BAR, start: 8, stop: 12 },
+  { symbol: DBSlotOptions.EMPTY, start: 13, stop: 17 },
+  { symbol: DBSlotOptions.SEVEN, start: 18, stop: 25 },
+  { symbol: DBSlotOptions.EMPTY, start: 26, stop: 30 },
+  { symbol: DBSlotOptions.BAR, start: 31, stop: 35 },
+  { symbol: DBSlotOptions.EMPTY, start: 36, stop: 41 },
+  { symbol: DBSlotOptions.CHERRY, start: 42, stop: 43 },
+  { symbol: DBSlotOptions.EMPTY, start: 44, stop: 49 },
+  { symbol: DBSlotOptions.DOUBLE_BAR, start: 50, stop: 56 },
+  { symbol: DBSlotOptions.EMPTY, start: 57, stop: 62 },
+  { symbol: DBSlotOptions.CHERRY, start: 63, stop: 63 },
+  { symbol: DBSlotOptions.EMPTY, start: 64, stop: 69 },
+  { symbol: DBSlotOptions.DOUBLE_BAR, start: 70, stop: 75 },
+  { symbol: DBSlotOptions.EMPTY, start: 76, stop: 81 },
+  { symbol: DBSlotOptions.BAR, start: 82, stop: 87 },
+  { symbol: DBSlotOptions.EMPTY, start: 88, stop: 93 },
+  { symbol: DBSlotOptions.TRIPLE_BAR, start: 94, stop: 104 },
+  { symbol: DBSlotOptions.EMPTY, start: 105, stop: 115 },
+  { symbol: DBSlotOptions.JACKPOT, start: 116, stop: 117 },
+  { symbol: DBSlotOptions.EMPTY, start: 118, stop: 128 },
 ];
 
 /** prepare the slot machine */
@@ -68,7 +77,11 @@ const pullHandle = (): DBSlotDisplay[] => {
 /** evaluate slot machine based of 3 reels */
 const getPayout = (reel: DBSlotDisplay[], bet: number): number => {
   // for bar check
-  const bars = [SO.BAR, SO.DOUBLE_BAR, SO.TRIPLE_BAR];
+  const bars = [
+    DBSlotOptions.BAR,
+    DBSlotOptions.DOUBLE_BAR,
+    DBSlotOptions.TRIPLE_BAR,
+  ];
   // get reel values
   const r0 = reel[0][1];
   const r1 = reel[1][1];
@@ -80,17 +93,17 @@ const getPayout = (reel: DBSlotDisplay[], bet: number): number => {
   // if we have 3 of a kind
   if (m01 && m02) {
     switch (r0) {
-      case SO.JACKPOT:
+      case DBSlotOptions.JACKPOT:
         return 1666 * bet;
-      case SO.SEVEN:
+      case DBSlotOptions.SEVEN:
         return 300 * bet;
-      case SO.TRIPLE_BAR:
+      case DBSlotOptions.TRIPLE_BAR:
         return 100 * bet;
-      case SO.DOUBLE_BAR:
+      case DBSlotOptions.DOUBLE_BAR:
         return 50 * bet;
-      case SO.BAR:
+      case DBSlotOptions.BAR:
         return 25 * bet;
-      case SO.CHERRY:
+      case DBSlotOptions.CHERRY:
         return 12 * bet;
       default:
         return 0;
@@ -98,10 +111,15 @@ const getPayout = (reel: DBSlotDisplay[], bet: number): number => {
   } else if (bars.includes(r0) && bars.includes(r1) && bars.includes(r2)) {
     // if we have 3 of any bar
     return 12 * bet;
-  } else if (fReel.includes(SO.CHERRY, fReel.indexOf(SO.CHERRY) + 1)) {
+  } else if (
+    fReel.includes(
+      DBSlotOptions.CHERRY,
+      fReel.indexOf(DBSlotOptions.CHERRY) + 1
+    )
+  ) {
     // if we have 2 cherries
     return 6 * bet;
-  } else if (fReel.includes(SO.CHERRY)) {
+  } else if (fReel.includes(DBSlotOptions.CHERRY)) {
     // if we have 1 cherry
     return 3 * bet;
   }

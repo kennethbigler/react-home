@@ -1,5 +1,8 @@
-import SlotMachine, { spin } from "../SlotMachine";
-import { DBSlotDisplay, DBSlotOptions as SO } from "../../store/modules/types";
+import SlotMachine, {
+  spin,
+  DBSlotDisplay,
+  DBSlotOptions as SO,
+} from "../SlotMachine";
 
 describe("apis | SlotMachine", () => {
   test("spin", () => {
