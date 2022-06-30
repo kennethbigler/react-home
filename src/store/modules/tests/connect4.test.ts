@@ -12,15 +12,7 @@ const state: Connect4State = newConnect4Game();
 describe("store | modules | connect4", () => {
   test("reducer", () => {
     expect(
-      connect4Reducer(
-        {
-          board: [[1]],
-          winner: 1,
-          line: [undefined, undefined, undefined],
-          turn: 0,
-        },
-        newGame()
-      )
+      connect4Reducer({ board: [[1]], winner: 1, turn: 0 }, newGame())
     ).toEqual(state);
     expect(connect4Reducer(state, updateTurn(2))).toEqual({
       ...state,

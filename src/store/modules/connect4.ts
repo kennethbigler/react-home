@@ -8,11 +8,6 @@ export enum C4Turn {
 export interface Connect4State {
   board: number[][];
   winner?: number;
-  line: [
-    number | undefined,
-    [number, number][] | undefined,
-    [number, number][] | undefined
-  ];
   turn: C4Turn;
 }
 
@@ -33,7 +28,6 @@ export const immutableBoardCopy = (acc: number[][], row: number[]) => {
 export const newConnect4Game = (): Connect4State => ({
   board: NEW_BOARD.reduce(immutableBoardCopy, []),
   winner: undefined,
-  line: [undefined, undefined, undefined],
   turn: C4Turn.RED,
 });
 
