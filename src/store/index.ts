@@ -1,4 +1,3 @@
-import connect4Reducer from "./modules/connect4";
 import gitReducer from "./modules/git";
 import themeReducer from "./modules/theme";
 import ticTacToeReducer from "./modules/ticTacToe";
@@ -13,7 +12,6 @@ import gqlTokenReducer from "./modules/gqlToken";
 const rootReducer = {
   ayto: aytoReducer,
   blackjack: blackjackReducer,
-  connect4: connect4Reducer,
   dnd: dndReducer,
   git: gitReducer,
   gqlToken: gqlTokenReducer,
