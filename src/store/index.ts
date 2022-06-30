@@ -2,7 +2,6 @@ import connect4Reducer from "./modules/connect4";
 import gitReducer from "./modules/git";
 import themeReducer from "./modules/theme";
 import ticTacToeReducer from "./modules/ticTacToe";
-import yahtzeeReducer from "./modules/yahtzee";
 import aytoReducer from "./modules/ayto";
 import pokerReducer from "./modules/poker";
 import playersReducer from "./modules/players";
@@ -23,7 +22,6 @@ const rootReducer = {
   theme: themeReducer,
   ticTacToe: ticTacToeReducer,
   turn: turnReducer,
-  yahtzee: yahtzeeReducer,
 };
 
 export default rootReducer;

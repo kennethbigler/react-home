@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import { TopGameScore, BottomGameScore } from "../types";
-import { Dice } from "../../../../store/modules/yahtzee";
+import { Dice } from "../../../../recoil/yahtzee-atom";
 import Header from "./Header";
 import TopTable from "./TopTable";
 import BottomTable from "./BottomTable";
