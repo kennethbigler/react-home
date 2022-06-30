@@ -10,9 +10,9 @@ import IconButton from "@mui/material/IconButton";
 import Clear from "@mui/icons-material/Clear";
 import Grid from "@mui/material/Grid";
 import nl2br from "react-newline-to-break";
-import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { useRecoilState } from "recoil";
 import CopyTextDisplay from "./CopyTextDisplay";
-import { setCommitPrefix } from "../../../store/modules/git";
+import { commitPrefixGitAtom } from "../../../recoil/git-atom";
 import useCommitText from "./useCommitText";
 
 interface CommitTextProps {
@@ -30,8 +30,8 @@ const wrapperStyles: React.CSSProperties = {
 const marginTopStyles: React.CSSProperties = { marginTop: 12 };
 
 const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
-  const gitCommit = useAppSelector((state) => state.git.commitPrefix);
-  const dispatch = useAppDispatch();
+  const [hasCommitPrefix, setHasCommitPrefix] =
+    useRecoilState(commitPrefixGitAtom);
 
   const { getSelectOptions, storyID, handleCopy, gitTheme } = props;
 
@@ -47,7 +47,7 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
     clearCommitMessage,
     clearCommitDescription,
     handleFinishesToggle,
-  } = useCommitText(storyID, gitCommit);
+  } = useCommitText(storyID, hasCommitPrefix);
 
   /** function to generate select items based of input */
   const getCommitPrefixOptions = React.useCallback(
@@ -68,12 +68,12 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
     [getSelectOptions]
   );
 
-  const handleGitCommitToggle = React.useCallback(
-    (_e: React.ChangeEvent<HTMLInputElement>, isC: boolean): void => {
-      dispatch(setCommitPrefix(isC));
-    },
-    [dispatch]
-  );
+  const handleGitCommitToggle = (
+    _e: React.ChangeEvent<HTMLInputElement>,
+    isC: boolean
+  ): void => {
+    setHasCommitPrefix(isC);
+  };
 
   const commitText = getCommitText();
   const displayText = commitText && nl2br(getCommitText());
@@ -111,7 +111,7 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
           <FormControlLabel
             control={
               <Switch
-                checked={gitCommit}
+                checked={hasCommitPrefix}
                 onChange={handleGitCommitToggle}
                 value="Add git commit -m"
               />

@@ -1,5 +1,8 @@
-import SlotMachine, { spin } from "../SlotMachine";
-import { DBSlotDisplay, DBSlotOptions as SO } from "../../store/modules/types";
+import SlotMachine, {
+  spin,
+  SlotDisplay,
+  SlotOption as SO,
+} from "../SlotMachine";
 
 describe("apis | SlotMachine", () => {
   test("spin", () => {
@@ -31,7 +34,7 @@ describe("apis | SlotMachine", () => {
   });
   describe("getPayout", () => {
     test("nothing", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
@@ -41,7 +44,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("3 cherries", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
@@ -51,7 +54,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("3 cherries with a larger bet", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
@@ -61,7 +64,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("3 BARs", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.BAR, SO.EMPTY],
         [SO.EMPTY, SO.BAR, SO.EMPTY],
         [SO.EMPTY, SO.BAR, SO.EMPTY],
@@ -71,7 +74,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("3 Double BARs", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
         [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
         [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
@@ -81,7 +84,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("3 Triple BARs", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.TRIPLE_BAR, SO.EMPTY],
         [SO.EMPTY, SO.TRIPLE_BAR, SO.EMPTY],
         [SO.EMPTY, SO.TRIPLE_BAR, SO.EMPTY],
@@ -91,7 +94,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("3 7s", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.SEVEN, SO.EMPTY],
         [SO.EMPTY, SO.SEVEN, SO.EMPTY],
         [SO.EMPTY, SO.SEVEN, SO.EMPTY],
@@ -101,7 +104,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("3 Jackpots", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.JACKPOT, SO.EMPTY],
         [SO.EMPTY, SO.JACKPOT, SO.EMPTY],
         [SO.EMPTY, SO.JACKPOT, SO.EMPTY],
@@ -111,7 +114,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("3 of any BARs", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.BAR, SO.EMPTY],
         [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
         [SO.EMPTY, SO.TRIPLE_BAR, SO.EMPTY],
@@ -121,7 +124,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("3 of any BARs v2", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.BAR, SO.EMPTY],
         [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
         [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
@@ -131,7 +134,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("2 Cherries", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
@@ -141,7 +144,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("2 Cherries v2", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
@@ -151,7 +154,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("2 Cherries v3", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
@@ -161,7 +164,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("1 Cherry", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
@@ -171,7 +174,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("1 Cherry v2", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
@@ -181,7 +184,7 @@ describe("apis | SlotMachine", () => {
     });
 
     test("1 Cherry v3", () => {
-      const slotDisplay: DBSlotDisplay[] = [
+      const slotDisplay: SlotDisplay[] = [
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         [SO.EMPTY, SO.CHERRY, SO.EMPTY],

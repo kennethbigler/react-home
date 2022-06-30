@@ -2,7 +2,7 @@ import React from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { TopGameScore } from "../types";
-import { Dice } from "../../../../store/modules/yahtzee";
+import { Dice } from "../../../../recoil/yahtzee-atom";
 import TopScores from "./TopScores";
 
 interface TopTableProps {

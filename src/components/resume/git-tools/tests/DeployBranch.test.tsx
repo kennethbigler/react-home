@@ -23,7 +23,6 @@ describe("resume | git-tools | DeployBranch", () => {
         getSelectOptions={handleSelectOptions}
         gitTheme="red"
         handleCopy={handleCopy}
-        branchName="features/a-new-one"
       />
     );
   });
@@ -33,7 +32,7 @@ describe("resume | git-tools | DeployBranch", () => {
     expect(screen.getByDisplayValue("test-pipeline")).toBeInTheDocument();
     expect(screen.getAllByRole("button")).toHaveLength(2);
     expect(
-      screen.getByText("git push -f origin features/a-new-one:test-pipeline")
+      screen.getByText("git push -f origin features/:test-pipeline")
     ).toBeInTheDocument();
   });
 
@@ -43,12 +42,12 @@ describe("resume | git-tools | DeployBranch", () => {
 
   it("copies command to clipboard when clicked", () => {
     const copyPill = screen.getByText(
-      "git push -f origin features/a-new-one:test-pipeline"
+      "git push -f origin features/:test-pipeline"
     );
     expect(copyPill).toBeInTheDocument();
     fireEvent.click(copyPill);
     expect(handleCopy).toHaveBeenCalledWith(
-      "git push -f origin features/a-new-one:test-pipeline"
+      "git push -f origin features/:test-pipeline"
     );
     expect(
       screen.getByText("Copied Commit Text to clipboard!")
@@ -57,7 +56,7 @@ describe("resume | git-tools | DeployBranch", () => {
 
   it("swaps test-pipeline and sandbox-pipeline on select", () => {
     expect(
-      screen.getByText("git push -f origin features/a-new-one:test-pipeline")
+      screen.getByText("git push -f origin features/:test-pipeline")
     ).toBeInTheDocument();
     expect(screen.getByDisplayValue("test-pipeline")).toBeInTheDocument();
     expect(screen.queryByDisplayValue("sandbox-pipeline")).toBeNull();
@@ -69,7 +68,7 @@ describe("resume | git-tools | DeployBranch", () => {
     expect(screen.queryByDisplayValue("test-pipeline")).toBeNull();
     expect(screen.getByDisplayValue("sandbox-pipeline")).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin features/a-new-one:sandbox-pipeline")
+      screen.getByText("git push -f origin features/:sandbox-pipeline")
     ).toBeInTheDocument();
   });
 });

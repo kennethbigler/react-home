@@ -23,7 +23,7 @@ interface UseCommitTextReturns {
 
 function useCommitText(
   storyID?: string,
-  gitCommit?: boolean
+  hasCommitPrefix?: boolean
 ): UseCommitTextReturns {
   const [commitPrefix, setLocalCommitPrefix] = React.useState("feat");
   const [commitMessage, setCommitMessage] = React.useState("");
@@ -56,7 +56,7 @@ function useCommitText(
     const gitMessage = `${prefix}${commitMessage}${desc}${postfix}`;
 
     // add syntax wrapper
-    return gitCommit ? `git commit -m "${gitMessage}"` : gitMessage;
+    return hasCommitPrefix ? `git commit -m "${gitMessage}"` : gitMessage;
   };
 
   /** function to update select state based on value */

@@ -1,62 +1,23 @@
 import React from "react";
+import { useRecoilState } from "recoil";
 import Typography from "@mui/material/Typography";
-import { useAppDispatch, useAppSelector } from "../../../store/store";
-import {
-  newGame,
-  updateTurn,
-  updateWinner,
-  updateBoard,
+import helpEvalConnect4 from "./eval-connect4";
+import GameBoard from "./GameBoard";
+import connect4Atom, {
+  MAX,
   C4Turn,
   immutableBoardCopy,
-} from "../../../store/modules/connect4";
-import GameBoard from "./GameBoard";
-
-// dp constants
-const PIECE = 0;
-const STREAK = 1;
-const MAX = 2;
-
-/** function to check for match and increment streak / max
- * @param {array} line - dp storage, [PIECE, STREAK, MAX] */
-const helpEvalConnect4 = (
-  board: number[][],
-  row: number,
-  col: number,
-  line: [number, [number, number][], [number, number][]]
-): void => {
-  // verify row
-  if (board[row] !== undefined) {
-    const piece = board[row][col];
-    // verify piece
-    if (piece !== undefined) {
-      // check piece
-      if (piece === line[PIECE] && piece !== C4Turn.EMPTY) {
-        // matches, increment streak and max if needed
-        line[STREAK].push([row, col]);
-        // update max and Win row if needed
-        if (line[STREAK].length > line[MAX].length) {
-          line[MAX] = [...line[STREAK]];
-        }
-      } else {
-        // doesn't match, restart streak
-        line[PIECE] = piece;
-        line[STREAK] = [[row, col]];
-      }
-    }
-  }
-};
+  newConnect4Game,
+} from "../../../recoil/connect4-atom";
 
 /* Connect4  ->  GameBoard  ->  Header  ->  Piece
  *                         |->  Board   ->  Piece */
 const Connect4: React.FC = () => {
-  const { board, turn, winner } = useAppSelector((state) => ({
-    ...state.connect4,
-  }));
-  const dispatch = useAppDispatch();
+  const [{ turn, board, winner }, setState] = useRecoilState(connect4Atom);
 
   /** start a new game, reset the board and helper vars */
-  const newC4Game = (): void => {
-    dispatch(newGame());
+  const newGame = (): void => {
+    setState(newConnect4Game());
   };
 
   /** function to evaluate a connect 4 board based off the last piece played
@@ -95,8 +56,11 @@ const Connect4: React.FC = () => {
         line[MAX].forEach((t) => {
           tempBoard[t[0]][t[1]] = 3;
         });
-        dispatch(updateWinner(turn));
-        dispatch(updateBoard(tempBoard));
+        setState({
+          turn,
+          winner: turn,
+          board: tempBoard,
+        });
       }
     });
   };
@@ -113,9 +77,11 @@ const Connect4: React.FC = () => {
       // insert element
       const tempBoard = board.reduce(immutableBoardCopy, []);
       tempBoard[i][col] = turn;
-      dispatch(updateBoard(tempBoard));
-      // update turn
-      dispatch(updateTurn(turn === C4Turn.RED ? C4Turn.BLACK : C4Turn.RED));
+      setState({
+        winner,
+        turn: turn === C4Turn.RED ? C4Turn.BLACK : C4Turn.RED,
+        board: tempBoard,
+      });
       // check if win
       evalConnect4(i, col, tempBoard);
     }
@@ -129,7 +95,7 @@ const Connect4: React.FC = () => {
       <GameBoard
         board={board}
         insert={insert}
-        newGame={newC4Game}
+        newGame={newGame}
         turn={turn}
         winner={winner}
       />
