@@ -8,28 +8,20 @@ import IconButton from "@mui/material/IconButton";
 import Clear from "@mui/icons-material/Clear";
 import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
+import { useRecoilValue, useRecoilState } from "recoil";
+import gitSelector from "../../../recoil/git-selector";
 import CopyTextDisplay from "./CopyTextDisplay";
-import {
+import gitAtom, {
   branchPrefixes,
   BranchPrefixes,
   casePreferences,
   CasePreferences,
-} from "../../../store/modules/git";
+} from "../../../recoil/git-atom";
 
 interface BranchNameProps {
-  branchMessage?: string;
-  branchName: string;
-  branchPrefix: BranchPrefixes;
-  casePreference: CasePreferences;
   getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
   handleCopy: (text: string) => boolean;
-  onBranchMessageChange: React.ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  >;
-  onBranchMessageClear: React.MouseEventHandler;
-  setBranchPrefix: (newBranchPrefix: BranchPrefixes) => void;
-  setCasePreference: (newCasePreference: CasePreferences) => void;
 }
 
 const wrapperStyles: React.CSSProperties = {
@@ -40,46 +32,41 @@ const wrapperStyles: React.CSSProperties = {
 const topSpacing: React.CSSProperties = { marginTop: 12 };
 
 const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
-  const { getSelectOptions, setBranchPrefix, setCasePreference } = props;
+  const [state, setState] = useRecoilState(gitAtom);
+  const branchName = useRecoilValue(gitSelector);
 
-  /** function to generate select items for branch prefixes */
-  const getBranchPrefixOptions = React.useCallback(
-    (): React.ReactNode => getSelectOptions([...branchPrefixes]),
-    [getSelectOptions]
-  );
-
-  /** function to generate select items for case preference */
-  const getCasePreferenceOptions = React.useCallback(
-    (): React.ReactNode => getSelectOptions([...casePreferences]),
-    [getSelectOptions]
-  );
-
-  /** function to update select state based on value */
-  const handleBranchPrefixSelect = React.useCallback(
-    (e: SelectChangeEvent): void => {
-      setBranchPrefix(e.target.value as BranchPrefixes);
-    },
-    [setBranchPrefix]
-  );
+  const { getSelectOptions, gitTheme, handleCopy } = props;
+  const { branchMessage, branchPrefix, casePreference } = state;
 
   /** function to update text state based on value */
-  const handleCasePrefSelect = React.useCallback(
-    (e: SelectChangeEvent): void => {
-      setCasePreference(e.target.value as CasePreferences);
-    },
-    [setCasePreference]
-  );
+  const handleBranchMessageChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (e) => setState({ ...state, branchMessage: e.target.value });
+  /** function to clear text state based on value */
+  const handleBranchMessageClear = (): void =>
+    setState({ ...state, branchMessage: "" });
+  /** function to update text state based on value */
+  const setBranchPrefix = (newBranchPrefix: BranchPrefixes): void =>
+    setState({ ...state, branchPrefix: newBranchPrefix });
+  /** function to update case pref based on value */
+  const setCasePreference = (newCasePreference: CasePreferences): void =>
+    setState({ ...state, casePreference: newCasePreference });
 
-  const {
-    branchMessage,
-    branchName,
-    branchPrefix,
-    casePreference,
-    gitTheme,
-    handleCopy,
-    onBranchMessageChange,
-    onBranchMessageClear,
-  } = props;
+  /** function to generate select items for branch prefixes */
+  const getBranchPrefixOptions = (): React.ReactNode =>
+    getSelectOptions([...branchPrefixes]);
+
+  /** function to generate select items for case preference */
+  const getCasePreferenceOptions = (): React.ReactNode =>
+    getSelectOptions([...casePreferences]);
+
+  /** function to update select state based on value */
+  const handleBranchPrefixSelect = (e: SelectChangeEvent): void =>
+    setBranchPrefix(e.target.value as BranchPrefixes);
+
+  /** function to update text state based on value */
+  const handleCasePrefSelect = (e: SelectChangeEvent): void =>
+    setCasePreference(e.target.value as CasePreferences);
 
   const gitThemeStyles: React.CSSProperties = React.useMemo(
     () => ({ color: gitTheme }),
@@ -127,14 +114,14 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
             InputLabelProps={{ style: gitThemeStyles }}
             label="Branch Name"
             multiline
-            onChange={onBranchMessageChange}
+            onChange={handleBranchMessageChange}
             placeholder="Summary of User Story"
             value={branchMessage}
           />
         </Grid>
         <Grid item sm={1} xs={2} style={{ marginTop: 16 }}>
           <IconButton
-            onClick={onBranchMessageClear}
+            onClick={handleBranchMessageClear}
             style={topSpacing}
             size="large"
           >

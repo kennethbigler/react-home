@@ -1,11 +1,8 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
 import render from "../../../../redux-test-render";
-import GitTools, {
-  validTypingId,
-  getSelectOptions,
-  getBranchName,
-} from "../GitTools";
+import GitTools from "../GitTools";
+import { validTypingId, getSelectOptions } from "../helpers";
 
 describe("resume | git-tools |  GitTools", () => {
   test("validTypingId", () => {
@@ -19,61 +16,6 @@ describe("resume | git-tools |  GitTools", () => {
     const selectOptions = getSelectOptions(["feat", "test"]);
     // @ts-expect-error: we know this will be an array length 2
     expect(selectOptions.length).toStrictEqual(2);
-  });
-
-  describe("getBranchName", () => {
-    // prefix/<story_id>_name_lower_cased
-    it("handles if branchPrefix is provided or not", () => {
-      // @ts-expect-error: passing in empty prefix for test condition
-      const branchName1 = getBranchName("msg", "", "No Changes", "KEN-1234");
-      expect(branchName1).toStrictEqual("KEN-1234msg");
-      const branchName2 = getBranchName(
-        "msg",
-        "features",
-        "No Changes",
-        "KEN-1234"
-      );
-      expect(branchName2).toStrictEqual("features/KEN-1234msg");
-    });
-
-    describe("Case Preferences", () => {
-      test("snake_case", () => {
-        const branchName = getBranchName(
-          "branch msg",
-          "features",
-          "snake_case",
-          "KEN-1234"
-        );
-        expect(branchName).toStrictEqual("features/KEN-1234_branch_msg");
-      });
-      test("kebab-case", () => {
-        const branchName = getBranchName(
-          "branch msg",
-          "features",
-          "kebab-case",
-          "KEN-1234"
-        );
-        expect(branchName).toStrictEqual("features/KEN-1234-branch-msg");
-      });
-      test("camelCase", () => {
-        const branchName = getBranchName(
-          "branch msg",
-          "features",
-          "camelCase",
-          "KEN-1234"
-        );
-        expect(branchName).toStrictEqual("features/KEN-1234branchMsg");
-      });
-      test("No Changes", () => {
-        const branchName = getBranchName(
-          "branch msg",
-          "features",
-          "No Changes",
-          "KEN-1234"
-        );
-        expect(branchName).toStrictEqual("features/KEN-1234branch msg");
-      });
-    });
   });
 
   it("renders as expected", () => {
@@ -214,10 +156,10 @@ describe("resume | git-tools |  GitTools", () => {
   it("calls setCasePreference on select of case option", () => {
     render(<GitTools />);
 
-    expect(screen.getByText("fixes/")).toBeInTheDocument();
+    expect(screen.getByText("features/")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin fixes/:test-pipeline")
+      screen.getByText("git push -f origin features/:test-pipeline")
     ).toBeInTheDocument();
 
     fireEvent.change(
@@ -226,29 +168,33 @@ describe("resume | git-tools |  GitTools", () => {
       { target: { value: "branchMessage" } }
     );
     expect(screen.getByDisplayValue("branchMessage")).toBeInTheDocument();
-    expect(screen.getByText("fixes/branch_message")).toBeInTheDocument();
+    expect(screen.getByText("features/branch_message")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin fixes/branch_message:test-pipeline")
+      screen.getByText(
+        "git push -f origin features/branch_message:test-pipeline"
+      )
     ).toBeInTheDocument();
 
     fireEvent.change(screen.getByDisplayValue("snake_case"), {
       target: { value: "kebab-case" },
     });
-    expect(screen.getByText("fixes/branch-message")).toBeInTheDocument();
+    expect(screen.getByText("features/branch-message")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin fixes/branch-message:test-pipeline")
+      screen.getByText(
+        "git push -f origin features/branch-message:test-pipeline"
+      )
     ).toBeInTheDocument();
   });
 
   it("adds multiple lines when a Commit Description is added", () => {
     render(<GitTools />);
 
-    expect(screen.getByText("fixes")).toBeInTheDocument();
+    expect(screen.getByText("features")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin fixes/branch-message:test-pipeline")
+      screen.getByText("git push -f origin features/:test-pipeline")
     ).toBeInTheDocument();
 
     fireEvent.change(
@@ -256,11 +202,11 @@ describe("resume | git-tools |  GitTools", () => {
       screen.getAllByText("Commit Description")[0].nextSibling!.firstChild!,
       { target: { value: "some desc" } }
     );
-    expect(screen.getByText("fixes")).toBeInTheDocument();
+    expect(screen.getByText("features")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat:')).toBeInTheDocument();
     expect(screen.getByText('some desc"')).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin fixes/branch-message:test-pipeline")
+      screen.getByText("git push -f origin features/:test-pipeline")
     ).toBeInTheDocument();
   });
 });

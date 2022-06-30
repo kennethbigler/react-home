@@ -4,10 +4,11 @@ import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Input from "@mui/material/Input";
 import Grid from "@mui/material/Grid";
+import { useRecoilValue } from "recoil";
+import gitSelector from "../../../recoil/git-selector";
 import CopyTextDisplay from "./CopyTextDisplay";
 
 interface DeployBranchProps {
-  branchName: string;
   getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
   handleCopy: (text: string) => boolean;
@@ -15,16 +16,12 @@ interface DeployBranchProps {
 
 const DeployBranch: React.FC<DeployBranchProps> = React.memo(
   (props: DeployBranchProps) => {
+    const branchName = useRecoilValue(gitSelector);
     const [targetBranch, setTargetBranch] = React.useState("test-pipeline");
 
-    const handleSelect = React.useCallback(
-      (e: SelectChangeEvent): void => {
-        setTargetBranch(e.target.value);
-      },
-      [setTargetBranch]
-    );
-
-    const { gitTheme, handleCopy, getSelectOptions, branchName } = props;
+    const { gitTheme, handleCopy, getSelectOptions } = props;
+    const handleSelect = (e: SelectChangeEvent): void =>
+      setTargetBranch(e.target.value);
 
     return (
       <div style={{ paddingLeft: 20, paddingRight: 20, width: "100%" }}>
