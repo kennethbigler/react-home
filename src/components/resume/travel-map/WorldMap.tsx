@@ -1,8 +1,9 @@
 import React from "react";
+import { useRecoilState } from "recoil";
 import Map, { DataItem } from "react-svg-worldmap";
 import { blueGrey } from "@mui/material/colors";
-import { useAppSelector } from "../../../store/store";
 import countries from "../../../constants/countries";
+import themeAtom from "../../../recoil/theme-atom";
 
 const data: DataItem[] = Object.keys(countries).map((k) => ({
   country: countries[k].code,
@@ -10,7 +11,7 @@ const data: DataItem[] = Object.keys(countries).map((k) => ({
 }));
 
 const WorldMap = () => {
-  const { theme } = useAppSelector((state) => ({ theme: state.theme.mode }));
+  const [theme] = useRecoilState(themeAtom);
   const screenWidth = Math.min(document.body.clientWidth - 32, 2000);
 
   return (
@@ -19,7 +20,7 @@ const WorldMap = () => {
       data={data}
       size={screenWidth}
       backgroundColor="transparent"
-      borderColor={theme === "dark" ? "white" : "black"}
+      borderColor={theme.mode === "dark" ? "white" : "black"}
     />
   );
 };

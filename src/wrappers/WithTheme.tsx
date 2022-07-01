@@ -1,16 +1,17 @@
 import React from "react";
+import { useRecoilState } from "recoil";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
   ThemeProvider,
   StyledEngineProvider,
   createTheme,
 } from "@mui/material/styles";
-import { useAppSelector } from "../store/store";
+import themeAtom from "../recoil/theme-atom";
 import WithRouter from "./WithRouter";
 
 /** App class that wraps higher level components of the application */
 const WithTheme: React.FC = () => {
-  const theme = useAppSelector((state) => state.theme);
+  const [theme] = useRecoilState(themeAtom);
 
   const setTheme = createTheme({
     palette: {

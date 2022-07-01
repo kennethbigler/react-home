@@ -1,17 +1,14 @@
 import React from "react";
+import { useRecoilState } from "recoil";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import Switch from "@mui/material/Switch";
-import { useAppSelector, useAppDispatch } from "../../../store/store";
 import SimplePopover from "./ButtonPopover";
 import PlayerMenu from "./PlayerMenu";
-import {
-  displayDarkTheme,
-  displayLightTheme,
-} from "../../../store/modules/theme";
+import themeAtom, { darkTheme, lightTheme } from "../../../recoil/theme-atom";
 
 const cursorStyles: React.CSSProperties = { cursor: "pointer" };
 const flexLeftStyles: React.CSSProperties = {
@@ -34,15 +31,14 @@ interface TopBarProps {
 }
 
 const TopBar = (props: TopBarProps): React.ReactElement => {
-  const theme = useAppSelector((state) => state.theme);
-  const dispatch = useAppDispatch();
+  const [theme, setTheme] = useRecoilState(themeAtom);
   const [checked, setChecked] = React.useState(theme.mode !== "dark");
 
   /** function toggle between site's light and dark theme - dispatch to Redux */
-  const toggleTheme = React.useCallback((): void => {
-    checked ? dispatch(displayDarkTheme()) : dispatch(displayLightTheme());
+  const toggleTheme = (): void => {
+    checked ? setTheme(darkTheme) : setTheme(lightTheme);
     setChecked(!checked);
-  }, [checked, dispatch]);
+  };
 
   const { toggleOpen, showPlayers = false, textColor } = props;
 

@@ -1,4 +1,3 @@
-import themeReducer from "./modules/theme";
 import aytoReducer from "./modules/ayto";
 import pokerReducer from "./modules/poker";
 import playersReducer from "./modules/players";
@@ -12,7 +11,6 @@ const rootReducer = {
   dnd: dndReducer,
   players: playersReducer,
   poker: pokerReducer,
-  theme: themeReducer,
   turn: turnReducer,
 };
 
