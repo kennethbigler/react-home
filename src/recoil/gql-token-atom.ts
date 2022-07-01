@@ -5,8 +5,8 @@ const gqlTokenAtom = atom({
   default: JSON.parse(localStorage.getItem("gql-token-atom") || '""') as string,
   effects: [
     ({ onSet }) => {
-      onSet((newReel) => {
-        localStorage.setItem("gql-token-atom", JSON.stringify(newReel));
+      onSet((newToken) => {
+        localStorage.setItem("gql-token-atom", JSON.stringify(newToken));
       });
     },
   ],
