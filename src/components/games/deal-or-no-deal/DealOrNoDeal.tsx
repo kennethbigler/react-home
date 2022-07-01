@@ -1,24 +1,22 @@
 import React from "react";
+import { useRecoilState } from "recoil";
 import Typography from "@mui/material/Typography";
 import Modal from "./Modal";
 import Board from "./Board";
 import Header from "./Header";
-import { useAppDispatch, useAppSelector } from "../../../store/store";
-import {
-  newGame,
-  setOpenCase,
-  setOpenOffer,
-  setNoDeal,
-  setFinishGame,
-  setPlayerChoice,
+import dndAtom, {
   briefcasesToOpen,
-} from "../../../store/modules/dnd";
+  newDNDGame,
+} from "../../../recoil/deal-or-no-deal-atom";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { payout } from "../../../store/modules/players";
 
 // TODO: add rules to page
 /* DealOrNoDeal  ->  Header
  *              |->  Board  ->  Case
  *              |->  Modal  ->  Money */
 const DND: React.FC = () => {
+  const [state, setState] = useRecoilState(dndAtom);
   const {
     board,
     dndOpen,
@@ -26,15 +24,14 @@ const DND: React.FC = () => {
     offer,
     sum,
     turn,
-    player,
     playerChoice,
     casesToOpen,
     numCases,
-  } = useAppSelector((state) => ({
-    ...state.dnd,
-    player: state.players[0],
-  }));
+  } = state;
 
+  const { player } = useAppSelector((reduxState) => ({
+    player: reduxState.players[0],
+  }));
   const dispatch = useAppDispatch();
 
   /** function to generate the bank offer */
@@ -51,19 +48,23 @@ const DND: React.FC = () => {
     if (playerChoice) {
       // verify cases left and briefcase not already opened
       if (!isOver && casesToOpen > 0 && bc.loc !== playerChoice.loc && bc.on) {
+        // flag the value and update global trackers
+        const newBoard = [...board];
+        const newCase = { ...newBoard[x], on: false };
+        newBoard[x] = newCase;
+
         // update board
-        dispatch(
-          setOpenCase({
-            board,
-            caseNum: x,
-            sum: sum - bc.val,
-            numCases: numCases - 1,
-            casesToOpen: casesToOpen - 1,
-          })
-        );
+        setState({
+          ...state,
+          board: newBoard,
+          sum: sum - bc.val,
+          numCases: numCases - 1,
+          casesToOpen: casesToOpen - 1,
+        });
       }
     } else {
-      dispatch(setPlayerChoice({ id: player.id, playerChoice: bc }));
+      setState({ ...state, playerChoice: bc });
+      dispatch(payout({ id: player.id, status: "lose", money: -100 }));
     }
   };
 
@@ -73,17 +74,27 @@ const DND: React.FC = () => {
     // reset the counter
     const newCasesToOpen =
       turn < briefcasesToOpen - 1 ? briefcasesToOpen - turn : 1;
-    dispatch(setOpenOffer({ offer: newOffer, casesToOpen: newCasesToOpen }));
+    setState({
+      ...state,
+      offer: newOffer,
+      casesToOpen: newCasesToOpen,
+      dndOpen: true,
+    });
   };
 
   /** function to reset the game */
-  const newDNDGame = (): void => {
-    dispatch(newGame());
-  };
+  const newGame = (): void => setState(newDNDGame());
 
   /** called on selection of Deal */
   const deal = (): void => {
-    dispatch(setFinishGame({ id: player.id, offer }));
+    setState({
+      ...state,
+      dndOpen: false,
+      isOver: true,
+    });
+    dispatch(
+      payout({ id: player.id, status: "win", money: Math.round(offer / 1000) })
+    );
   };
 
   /** called on selection of No Deal
@@ -91,15 +102,27 @@ const DND: React.FC = () => {
   const noDeal = (): void => {
     // no deal on last case
     if (numCases <= 2) {
+      const newOffer = playerChoice ? playerChoice.val : -1;
+      setState({
+        ...state,
+        dndOpen: false,
+        isOver: true,
+        offer: newOffer,
+      });
       dispatch(
-        setFinishGame({
+        payout({
           id: player.id,
-          offer: playerChoice ? playerChoice.val : -1,
+          status: "win",
+          money: Math.round(newOffer / 1000),
         })
       );
     } else {
       // advance the turn
-      dispatch(setNoDeal(turn));
+      setState({
+        ...state,
+        dndOpen: false,
+        turn: turn + 1,
+      });
     }
   };
 
@@ -107,7 +130,19 @@ const DND: React.FC = () => {
     for (let i = 0; i < board.length; i += 1) {
       const bc = board[i];
       if (bc.on && playerChoice && bc.loc !== playerChoice.loc) {
-        dispatch(setFinishGame({ id: player.id, offer: bc.val }));
+        setState({
+          ...state,
+          dndOpen: false,
+          isOver: true,
+          offer: bc.val,
+        });
+        dispatch(
+          payout({
+            id: player.id,
+            status: "win",
+            money: Math.round(bc.val / 1000),
+          })
+        );
         return;
       }
     }
@@ -124,7 +159,7 @@ const DND: React.FC = () => {
       <Header
         casesToOpen={casesToOpen}
         isOver={isOver}
-        newGame={newDNDGame}
+        newGame={newGame}
         offer={offer}
         player={player}
         playerChoice={playerChoice}

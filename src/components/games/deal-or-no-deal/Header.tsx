@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { getMoneyText } from "./helpers";
-import { Briefcase } from "../../../store/modules/dnd";
+import { Briefcase } from "../../../recoil/deal-or-no-deal-atom";
 import { DBPlayer } from "../../../store/modules/types";
 
 interface HeaderProps {
