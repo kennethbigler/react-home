@@ -6,13 +6,11 @@ import playersReducer from "./modules/players";
 import turnReducer from "./modules/turn";
 import dndReducer from "./modules/dnd";
 import blackjackReducer from "./modules/blackjack";
-import gqlTokenReducer from "./modules/gqlToken";
 
 const rootReducer = {
   ayto: aytoReducer,
   blackjack: blackjackReducer,
   dnd: dndReducer,
-  gqlToken: gqlTokenReducer,
   players: playersReducer,
   poker: pokerReducer,
   theme: themeReducer,
