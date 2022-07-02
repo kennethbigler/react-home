@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { setNewGame, stayHand } from "./blackjack";
-import { newPokerGame, endPokerTurn } from "./poker";
 import { TurnState } from "./types";
 
 const initialState: TurnState = { player: 0, hand: 0 };
@@ -26,12 +25,6 @@ export const turnSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(endPokerTurn, (state) => {
-        turnSlice.caseReducers.incrPlayerTurn(state);
-      })
-      .addCase(newPokerGame, (state) => {
-        turnSlice.caseReducers.resetTurn(state);
-      })
       .addCase(setNewGame, (state) => {
         turnSlice.caseReducers.resetTurn(state);
       })

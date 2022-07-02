@@ -54,7 +54,7 @@ const Hand: React.FC<HandProps> = (props: HandProps) => {
       </Typography>
       {hand.cards.map((card, i) => {
         const dropped: boolean = cardsToDiscard.includes(i);
-        return (
+        return card ? (
           <Card
             key={card.name + card.suit}
             cardHandler={cardHandler}
@@ -65,7 +65,7 @@ const Hand: React.FC<HandProps> = (props: HandProps) => {
             playerNo={playerNo}
             suit={card.suit}
           />
-        );
+        ) : null;
       })}
     </>
   );

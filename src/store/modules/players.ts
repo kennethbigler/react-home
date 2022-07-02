@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Deck, { DBCard } from "../../apis/Deck";
 import { doubleHand, setNewGame } from "./blackjack";
-import { newPokerGame } from "./poker";
 import { DBHand, DBPlayer, WeighFunc } from "./types";
 import { newHand, drawCard, splitHand, swapCards } from "./players-thunks";
 
@@ -189,14 +188,6 @@ export const playersSlice = createSlice({
         playersSlice.caseReducers.updateHands(state, {
           ...action,
           payload: { id: action.meta.arg.id, hands },
-        });
-      })
-      .addCase(newPokerGame, (state, action) => {
-        action.payload.forEach((player) => {
-          playersSlice.caseReducers.resetStatus(state, {
-            ...action,
-            payload: player.id,
-          });
         });
       })
       .addCase(setNewGame, (state, action) => {

@@ -63,7 +63,7 @@ export const getHistogram = (hand: DBCard[]): number[] => {
   const hist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   // put hand into the histogram
   hand.forEach((card) => {
-    hist[card.weight - 2] += 1; // 2-14 - 2 = 0-12
+    card && (hist[card.weight - 2] += 1); // 2-14 - 2 = 0-12
   });
   return hist;
 };
@@ -148,10 +148,10 @@ export const getCardsToDiscard = (
  */
 export const computer = async (
   player: DBPlayer,
-  discard: (cardsToDiscardInDB: number[], player: DBPlayer) => Promise<void>
-): Promise<void> => {
+  discard: (cardsToDiscardInDB: number[], player: DBPlayer) => Promise<DBPlayer>
+): Promise<DBPlayer> => {
   if (player.hands.length < 1) {
-    return;
+    return player;
   }
   try {
     const hand = player.hands[0].cards;
@@ -164,19 +164,19 @@ export const computer = async (
           hist.lastIndexOf(1) >= 11
             ? getCardsToDiscard(4, hist, hand) // if ace || king draw 4
             : [0, 1, 2, 3, 4]; // otherwise, draw all 5
-        await discard(nextCardsToDiscard, player);
-        break;
+        const newPlayer = await discard(nextCardsToDiscard, player);
+        return newPlayer;
       }
       case 1: /* draw 3 on 2 of a kind */ {
         const nextCardsToDiscard = getCardsToDiscard(3, hist, hand);
-        await discard(nextCardsToDiscard, player);
-        break;
+        const newPlayer = await discard(nextCardsToDiscard, player);
+        return newPlayer;
       }
       case 2: /* draw 1 on 3 of a kind */
       case 3: /* draw 1 on 2 Pair */ {
         const nextCardsToDiscard = getCardsToDiscard(1, hist, hand);
-        await discard(nextCardsToDiscard, player);
-        break;
+        const newPlayer = await discard(nextCardsToDiscard, player);
+        return newPlayer;
       }
       case 4: // draw 0 on straight
       case 5: // draw 0 on flush
@@ -190,22 +190,20 @@ export const computer = async (
     // eslint-disable-next-line no-console
     console.error(e);
   }
+  return player;
 };
 
 export const DEALER = 0;
 export const LAST_PLAYER = 5;
 
-export const findAndPayWinner = (
-  players: DBPlayer[],
-  payPlayer: (id: number, status: string, money: number) => void
-): void => {
+export const findAndPayWinner = (players: DBPlayer[]): void => {
   let winner = { val: 0, id: 0 };
 
   players.forEach((player) => {
     if (
       player.id === DEALER ||
       player.id > LAST_PLAYER ||
-      player.hands.length < 1
+      player.hands[0]?.cards.length < 1
     ) {
       return;
     }
@@ -216,15 +214,17 @@ export const findAndPayWinner = (
     }
   });
 
-  players.forEach((player) => {
+  players.forEach((player, i) => {
     if (player.id === DEALER || player.id > LAST_PLAYER) {
       return;
     }
 
     if (player.id === winner.id) {
-      payPlayer(player.id, "win", 20);
+      const newPlayer = { ...player, status: "win", money: player.money + 20 };
+      players[i] = newPlayer;
     } else {
-      payPlayer(player.id, "lose", -5);
+      const newPlayer = { ...player, status: "lose", money: player.money - 5 };
+      players[i] = newPlayer;
     }
   });
 };
