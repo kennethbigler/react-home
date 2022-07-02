@@ -3,8 +3,8 @@ import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { useAppDispatch, useAppSelector } from "../../../store/store";
-import { updateName, updateBot } from "../../../store/modules/players";
+import { useRecoilState } from "recoil";
+import playerAtom from "../../../recoil/player-atom";
 
 const namePadStyles: React.CSSProperties = {
   maxWidth: "420px",
@@ -14,21 +14,32 @@ const namePadStyles: React.CSSProperties = {
 };
 
 const PlayerMenu: React.FC = () => {
-  const players = useAppSelector((state) => state.players);
-  const dispatch = useAppDispatch();
+  const [players, setPlayers] = useRecoilState(playerAtom);
 
   const isBot = React.useMemo(() => players.map((a) => a.isBot), [players]);
 
   /** toggle between bot and human player - dispatch to redux */
   const handleToggle = (id: number, isChecked: boolean): void => {
-    dispatch(updateBot({ id, isBot: isChecked }));
+    const pi = players.findIndex((p) => p.id === id);
+    if (pi !== -1) {
+      const newPlayers = [...players];
+      const newPlayer = { ...newPlayers[pi], isBot: isChecked };
+      newPlayers[pi] = newPlayer;
+      setPlayers(newPlayers);
+    }
   };
 
   /** update player name onBlur - dispatch to redux */
   const handleBlur =
     (id: number) =>
     (e: React.FocusEvent<HTMLInputElement>): void => {
-      dispatch(updateName({ id, name: e.target.value || "" }));
+      const pi = players.findIndex((p) => p.id === id);
+      if (pi !== -1) {
+        const newPlayers = [...players];
+        const newPlayer = { ...newPlayers[pi], name: e.target.value || "" };
+        newPlayers[pi] = newPlayer;
+        setPlayers(newPlayers);
+      }
     };
 
   /** if enter key was pressed in textfield, update name - dispatch to redux */
@@ -36,9 +47,16 @@ const PlayerMenu: React.FC = () => {
     (id: number) =>
     (e: React.KeyboardEvent<HTMLDivElement>): void => {
       if (e.key === "Enter") {
-        dispatch(
-          updateName({ id, name: (e.target as HTMLInputElement).value || "" })
-        );
+        const pi = players.findIndex((p) => p.id === id);
+        if (pi !== -1) {
+          const newPlayers = [...players];
+          const newPlayer = {
+            ...newPlayers[pi],
+            name: (e.target as HTMLInputElement).value || "",
+          };
+          newPlayers[pi] = newPlayer;
+          setPlayers(newPlayers);
+        }
       }
     };
 
