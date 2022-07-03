@@ -1,4 +1,5 @@
-import { atom } from "recoil";
+import { atom, DefaultValue, selector } from "recoil";
+import playerAtom from "./player-atom";
 
 export interface Briefcase {
   on: boolean;
@@ -87,7 +88,7 @@ export const newDNDGame = (): DNDState => {
   return state;
 };
 
-const dealOrNoDealAtom = atom({
+export const dealOrNoDealAtom = atom({
   key: "dealOrNoDealAtom",
   default:
     (JSON.parse(
@@ -102,4 +103,25 @@ const dealOrNoDealAtom = atom({
   ],
 });
 
-export default dealOrNoDealAtom;
+const dealOrNoDealState = selector({
+  key: "dealOrNoDealState",
+  get: ({ get }) => {
+    const dnd = get(dealOrNoDealAtom);
+    const player = get(playerAtom)[0];
+
+    return { dnd, player };
+  },
+  set: ({ get, set }, state) => {
+    if (!(state instanceof DefaultValue)) {
+      const { dnd, player } = state;
+      set(dealOrNoDealAtom, dnd);
+
+      const players = get(playerAtom);
+      const newPlayers = [...players];
+      newPlayers[0] = player;
+      set(playerAtom, newPlayers);
+    }
+  },
+});
+
+export default dealOrNoDealState;
