@@ -6,7 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import Money from "./Money";
 import { getMoneyText } from "./helpers";
-import { Briefcase } from "../../../recoil/deal-or-no-deal-atom";
+import { Briefcase } from "../../../recoil/deal-or-no-deal-state";
 
 interface ModalProps {
   board: Briefcase[];

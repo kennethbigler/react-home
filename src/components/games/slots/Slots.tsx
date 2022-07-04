@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useRecoilState } from "recoil";
-import slotsState from "../../../recoil/slots-atom";
+import slotsState from "../../../recoil/slots-state";
 import PayoutTable from "./PayoutTable";
 import MoneyTable from "./MoneyTable";
 import ReelDisplay from "./ReelDisplay";

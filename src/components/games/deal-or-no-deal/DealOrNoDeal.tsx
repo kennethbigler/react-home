@@ -7,7 +7,7 @@ import Header from "./Header";
 import dndState, {
   briefcasesToOpen,
   newDNDGame,
-} from "../../../recoil/deal-or-no-deal-atom";
+} from "../../../recoil/deal-or-no-deal-state";
 
 // TODO: add rules to page
 /* DealOrNoDeal  ->  Header

@@ -21,7 +21,7 @@ import { DBHand, DBPlayer } from "../../../recoil/player-atom";
 import blackjackState, {
   GameFunctions,
   newBlackjackGame,
-} from "../../../recoil/blackjack-atom";
+} from "../../../recoil/blackjack-state";
 
 const BlackJack: React.FC = () => {
   const [

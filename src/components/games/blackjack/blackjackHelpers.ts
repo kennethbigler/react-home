@@ -1,5 +1,5 @@
 import { DBCard } from "../../../apis/Deck";
-import { GameFunctions } from "../../../recoil/blackjack-atom";
+import { GameFunctions } from "../../../recoil/blackjack-state";
 import { DBHand, DBPlayer } from "../../../recoil/player-atom";
 
 /** calculate the weight of a hand */

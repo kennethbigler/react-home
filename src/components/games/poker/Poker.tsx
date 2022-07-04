@@ -8,7 +8,7 @@ import { DEALER, LAST_PLAYER, computer, findAndPayWinner } from "./helpers";
 import pokerState, {
   PokerGameFunctions as PGF,
   newPokerGameState,
-} from "../../../recoil/poker-atom";
+} from "../../../recoil/poker-state";
 import { DBPlayer, defaultWeigh } from "../../../recoil/player-atom";
 
 const Poker: React.FC = () => {

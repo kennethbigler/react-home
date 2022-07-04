@@ -2,7 +2,7 @@ import React from "react";
 import Paper from "@mui/material/Paper";
 import { amber, grey } from "@mui/material/colors";
 import { getMoneyText } from "./helpers";
-import { Briefcase } from "../../../recoil/deal-or-no-deal-atom";
+import { Briefcase } from "../../../recoil/deal-or-no-deal-state";
 
 interface MoneyProps {
   briefcase: Briefcase;
