@@ -34,7 +34,7 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
   const [theme, setTheme] = useRecoilState(themeAtom);
   const [checked, setChecked] = React.useState(theme.mode !== "dark");
 
-  /** function toggle between site's light and dark theme - dispatch to Redux */
+  /** function toggle between site's light and dark theme */
   const toggleTheme = (): void => {
     checked ? setTheme(darkTheme) : setTheme(lightTheme);
     setChecked(!checked);

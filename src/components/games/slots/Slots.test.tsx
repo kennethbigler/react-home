@@ -36,6 +36,4 @@ describe("games | slots | Slots", () => {
     expect(screen.getAllByText("C")[0]).toBeInTheDocument();
     expect(screen.getByText("3 : 1")).toBeInTheDocument();
   });
-
-  // CURRENTLY: we are running into an issue with testing and Redux Thunk, so full coverage will have to wait.
 });
