@@ -7,9 +7,9 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { useRecoilState } from "recoil";
+import gqlTokenAtom from "../../../recoil/gql-token-atom";
 import Profile from "./Profile";
-import { setToken } from "../../../store/modules/gqlToken";
 import Header from "./Header";
 import NoToken from "./NoToken";
 
@@ -25,18 +25,12 @@ const cache = new InMemoryCache();
  *         |->  Profile  ->  Repository
  *            Loading  <-|->  ErrorMessage */
 const GraphQL: React.FC = React.memo(() => {
-  const gqlToken = useAppSelector((state) => state.gqlToken);
-  const dispatch = useAppDispatch();
+  const [authToken, setAuthToken] = useRecoilState(gqlTokenAtom);
 
-  const [authToken, setAuthToken] = React.useState(gqlToken);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void =>
+    setAuthToken(e.target.value);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const token = e.target.value;
-    dispatch(setToken(token));
-    setAuthToken(token);
-  };
-
-  if (!gqlToken) {
+  if (!authToken) {
     return (
       <>
         <Header authToken={authToken} onChange={handleChange} />
@@ -48,7 +42,7 @@ const GraphQL: React.FC = React.memo(() => {
   const httpLink = new HttpLink({
     uri: GITHUB_BASE_URL,
     headers: {
-      authorization: `Bearer ${gqlToken}`,
+      authorization: `Bearer ${authToken}`,
     },
   });
   const link = ApolloLink.from([errorLink, httpLink]);

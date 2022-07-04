@@ -1,4 +1,4 @@
-import { RoundPairing } from "../../../../store/modules/ayto";
+import { RoundPairing } from "../../../../recoil/are-you-the-one-atom";
 
 export interface AYTOHist {
   odds: number;

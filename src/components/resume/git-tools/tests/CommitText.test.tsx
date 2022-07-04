@@ -1,7 +1,7 @@
 import React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import { screen, fireEvent } from "@testing-library/react";
-import render from "../../../../redux-test-render";
+import render from "../../../../recoil-test-render";
 import CommitText from "../CommitText";
 
 describe("resume | git-tools | CommitText", () => {

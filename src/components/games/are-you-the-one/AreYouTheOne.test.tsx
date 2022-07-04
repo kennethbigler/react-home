@@ -1,6 +1,6 @@
 import React from "react";
 import { screen, fireEvent, waitFor } from "@testing-library/react";
-import render from "../../../redux-test-render";
+import render from "../../../recoil-test-render";
 import AreYouTheOne from "./AreYouTheOne";
 
 describe("games | are-you-the-one | AreYouTheOne", () => {

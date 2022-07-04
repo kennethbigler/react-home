@@ -1,26 +1,18 @@
 import React from "react";
+import { useRecoilState } from "recoil";
 import Controls from "./controls/Controls";
 import Table from "./table/Table";
 import Analysis from "./analysis/Analysis";
-import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { ladies, gents, options } from "../../../constants/ayto";
-import {
-  updateMatch,
-  updateNoMatch,
-  updatePairs,
-  updateScore,
-} from "../../../store/modules/ayto";
+import aYTOAtom from "../../../recoil/are-you-the-one-atom";
 import useHist from "./analysis/useHist";
 
 /**
  * TODO: replace Dropdown with MUI Dropdown when available
  */
 const AreYouTheOne = () => {
-  // Redux
-  const { roundPairings, noMatch, matches } = useAppSelector((state) => ({
-    ...state.ayto,
-  }));
-  const dispatch = useAppDispatch();
+  const [{ matches, noMatch, roundPairings }, setState] =
+    useRecoilState(aYTOAtom);
 
   // state
   const [roundNumber, setRoundNumber] = React.useState(0);
@@ -35,26 +27,76 @@ const AreYouTheOne = () => {
   const handleSelect = (selected: number) => {
     setRoundNumber(selected);
   };
+
   const handleUpdateScore = (score: number) => {
-    dispatch(updateScore({ score, ri: roundNumber }));
+    const newRoundPairing = !roundPairings[roundNumber]
+      ? { pairs: [], score: 0 }
+      : { ...roundPairings[roundNumber] };
+    newRoundPairing.score = score;
+    const newRoundPairings = [...roundPairings];
+    newRoundPairings[roundNumber] = newRoundPairing;
+    setState({ matches, noMatch, roundPairings: newRoundPairings });
   };
+
   const handleUpdateNoMatch = (li: number, gi: number) => {
-    dispatch(updateNoMatch({ li, gi }));
+    const newMatches = noMatch.map((gentArray: boolean[]) => [...gentArray]);
+    // if array for lady doesn't exist yet, create skeleton one
+    !newMatches[li] && (newMatches[li] = []);
+    // assign no match
+    newMatches[li][gi] = !newMatches[li][gi];
+    // update state
+    setState({ matches, noMatch: newMatches, roundPairings });
   };
+
   const handleUpdatePairs = (ri: number, li: number, gi: number) => {
-    dispatch(updatePairs({ ri, li, gi }));
+    const newRoundPairing = !roundPairings[ri]
+      ? { pairs: [], score: 0 }
+      : { ...roundPairings[ri], pairs: [...roundPairings[ri].pairs] };
+    newRoundPairing.pairs[li] = gi;
+    const newRoundPairings = [...roundPairings];
+    newRoundPairings[roundNumber] = newRoundPairing;
+    setState({ matches, noMatch, roundPairings: newRoundPairings });
   };
+
   const handleUpdateMatch = (li: number, gi: number) => {
-    dispatch(updateMatch({ li, gi }));
+    const newMatches = [...matches];
+    const newNoMatches = noMatch.map((gentArray: boolean[]) => [...gentArray]);
+    // if array for lady doesn't exist yet, create skeleton one
+    !newNoMatches[li] && (newNoMatches[li] = []);
+    // assign new match
+    newMatches[li] = gi;
+    // make all gent options no matches
+    for (let i = 0; i < gents.length; i += 1) {
+      newNoMatches[li][i] = i !== gi;
+    }
+    // make all ladies options no matches
+    for (let i = 0; i < ladies.length; i += 1) {
+      !newNoMatches[i] && (newNoMatches[i] = []);
+      newNoMatches[i][gi] = i !== li;
+    }
+
+    // update round pairings
+    const newRoundPairings = [...roundPairings];
     for (let ri = 0; ri < options.length - 2; ri += 1) {
       if (
         !roundPairings[ri] ||
         roundPairings[ri].pairs[li] < 0 ||
         roundPairings[ri].pairs[li] === undefined
       ) {
-        dispatch(updatePairs({ ri, li, gi }));
+        const newRoundPairing = !newRoundPairings[ri]
+          ? { pairs: [], score: 0 }
+          : { ...roundPairings[ri], pairs: [...roundPairings[ri].pairs] };
+        newRoundPairing.pairs[li] = gi;
+        newRoundPairings[ri] = newRoundPairing;
       }
     }
+
+    // update state
+    setState({
+      matches: newMatches,
+      noMatch: newNoMatches,
+      roundPairings: newRoundPairings,
+    });
   };
 
   return (

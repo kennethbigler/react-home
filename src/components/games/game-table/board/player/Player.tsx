@@ -4,7 +4,8 @@ import { Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import { cyan, green, blueGrey, red } from "@mui/material/colors";
 import Hand from "../Hand";
-import { DBPlayer, TurnState } from "../../../../../store/modules/types";
+import { DBPlayer } from "../../../../../recoil/player-atom";
+import { TurnState } from "../../../../../recoil/turn-atom";
 import styles from "./Player.styles";
 
 interface PlayerProps {

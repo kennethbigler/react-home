@@ -3,9 +3,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useRecoilState } from "recoil";
-import slotsAtom from "../../../recoil/slots-atom";
-import { useAppDispatch, useAppSelector } from "../../../store/store";
-import { payout } from "../../../store/modules/players";
+import slotsState from "../../../recoil/slots-state";
 import PayoutTable from "./PayoutTable";
 import MoneyTable from "./MoneyTable";
 import ReelDisplay from "./ReelDisplay";
@@ -15,31 +13,23 @@ import SlotMachine from "../../../apis/SlotMachine";
  *       |->  MoneyTable
  *       |->  PayoutTable */
 const Slots: React.FC = () => {
-  const { players } = useAppSelector((state) => ({
-    players: state.players,
-  }));
-  const dispatch = useAppDispatch();
-
-  const [reel, setReel] = useRecoilState(slotsAtom);
+  const [{ reel, player, dealer }, setState] = useRecoilState(slotsState);
 
   const updateSlotMachine = () => {
-    // get ids
-    const { id, bet } = players[0];
-    const dealerId = players[players.length - 1].id;
-
     // get rolled reel
     const newReel = SlotMachine.pullHandle();
-    setReel(newReel);
 
-    // exchange money
+    // determine payout
+    const { bet } = player;
     const exchange = SlotMachine.getPayout(newReel, bet) - bet;
-    dispatch(payout({ id, status: "win", money: exchange }));
-    dispatch(payout({ id: dealerId, status: "win", money: -exchange }));
-  };
 
-  // https://vegasclick.com/games/slots/how-they-work
-  const player = players[0];
-  const dealer = players[players.length - 1];
+    // exchange money and update state
+    setState({
+      reel: newReel,
+      player: { ...player, money: player.money + exchange },
+      dealer: { ...dealer, money: dealer.money - exchange },
+    });
+  };
 
   return (
     <>

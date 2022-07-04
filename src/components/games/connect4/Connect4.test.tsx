@@ -1,6 +1,6 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
-import render from "../../../redux-test-render";
+import render from "../../../recoil-test-render";
 import Connect4 from "./Connect4";
 
 describe("games | connect4 | Connect4", () => {

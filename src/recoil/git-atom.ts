@@ -25,7 +25,7 @@ const initialState: GitState = {
 const gitAtom = atom({
   key: "gitAtom",
   default:
-    (JSON.parse(localStorage.getItem("git-atom") || "false") as GitState) ||
+    (JSON.parse(localStorage.getItem("git-atom") || "null") as GitState) ||
     initialState,
   effects: [
     ({ onSet }) => {

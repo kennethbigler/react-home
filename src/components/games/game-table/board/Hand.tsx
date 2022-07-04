@@ -2,7 +2,7 @@ import React from "react";
 import { Typography } from "@mui/material";
 import { purple } from "@mui/material/colors";
 import Card from "./card/Card";
-import { DBHand } from "../../../../store/modules/types";
+import { DBHand } from "../../../../recoil/player-atom";
 
 const boldStyle: React.CSSProperties = {
   fontWeight: "bold",
@@ -54,7 +54,7 @@ const Hand: React.FC<HandProps> = (props: HandProps) => {
       </Typography>
       {hand.cards.map((card, i) => {
         const dropped: boolean = cardsToDiscard.includes(i);
-        return (
+        return card ? (
           <Card
             key={card.name + card.suit}
             cardHandler={cardHandler}
@@ -65,7 +65,7 @@ const Hand: React.FC<HandProps> = (props: HandProps) => {
             playerNo={playerNo}
             suit={card.suit}
           />
-        );
+        ) : null;
       })}
     </>
   );

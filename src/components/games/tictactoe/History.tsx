@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import { getTurn } from "./helpers";
-import { HistoryEntry } from "../../../store/modules/ticTacToe";
+import { HistoryEntry } from "../../../recoil/tic-tac-toe-atom";
 
 interface HistoryProps {
   history: HistoryEntry[];

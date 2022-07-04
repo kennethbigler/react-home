@@ -74,7 +74,10 @@ const pullHandle = (): SlotDisplay[] => {
   return reel;
 };
 
-/** evaluate slot machine based of 3 reels */
+/**
+ * evaluate slot machine based of 3 reels
+ * https://vegasclick.com/games/slots/how-they-work
+ */
 const getPayout = (reel: SlotDisplay[], bet: number): number => {
   // for bar check
   const bars = [SlotOption.BAR, SlotOption.DOUBLE_BAR, SlotOption.TRIPLE_BAR];

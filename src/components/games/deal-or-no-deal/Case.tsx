@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import { getMoneyText } from "./helpers";
-import { Briefcase } from "../../../store/modules/dnd";
+import { Briefcase } from "../../../recoil/deal-or-no-deal-state";
 
 interface CaseProps {
   briefcase: Briefcase;

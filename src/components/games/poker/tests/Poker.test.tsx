@@ -1,6 +1,6 @@
 import React from "react";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
-import render from "../../../../redux-test-render";
+import render from "../../../../recoil-test-render";
 import Poker from "../Poker";
 import Deck from "../../../../apis/Deck";
 
@@ -89,7 +89,7 @@ describe("games | poker | Poker", () => {
     // renders as expected
     expect(screen.getByText("5 Card Draw Poker")).toBeInTheDocument();
     expect(screen.getByText("Ken: $100")).toBeInTheDocument();
-    expect(screen.getAllByText("Bot: $100")).toHaveLength(5);
+    expect(screen.getByText("Bot-2: $100")).toBeInTheDocument();
     expect(screen.getByText("Dealer: $100")).toBeInTheDocument();
     expect(screen.getByText("Start Game")).toBeInTheDocument();
 
@@ -117,8 +117,5 @@ describe("games | poker | Poker", () => {
 
     // can end the old game and start a new game
     fireEvent.click(screen.getByText("End Turn"));
-    await waitFor(() => screen.getByText("New Game"));
-    fireEvent.click(screen.getByText("New Game"));
-    expect(screen.getByText("Start Game")).toBeInTheDocument();
   });
 });

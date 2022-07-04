@@ -1,6 +1,6 @@
 import React from "react";
 import { screen, fireEvent, waitFor } from "@testing-library/react";
-import render from "../../../redux-test-render";
+import render from "../../../recoil-test-render";
 import Deck from "../../../apis/Deck";
 import Blackjack from "./Blackjack";
 
@@ -21,7 +21,7 @@ describe("games | blackjack | Blackjack", () => {
     expect(screen.getByText("Rules")).toBeInTheDocument();
     expect(screen.getByText("Ken: $100")).toBeInTheDocument();
     expect(screen.getAllByText("Bet: $5")).toHaveLength(6);
-    expect(screen.getAllByText("Bot: $100")).toHaveLength(5);
+    expect(screen.getByText("Bot-2: $100")).toBeInTheDocument();
     expect(screen.getByText("Dealer: $100")).toBeInTheDocument();
     expect(screen.getByText("Finish Betting")).toBeInTheDocument();
   });
@@ -116,7 +116,6 @@ describe("games | blackjack | Blackjack", () => {
     await waitFor(() => screen.getByText("Bust: 30"));
     await waitFor(() => expect(screen.getAllByText("Bet: $5")).toHaveLength(5));
     expect(screen.getByText("Bet: $10")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Stay"));
     await waitFor(() => screen.getByText("New Game"));
     fireEvent.click(screen.getByText("New Game"));
   });

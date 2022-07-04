@@ -1,6 +1,6 @@
 import React from "react";
 import { screen, fireEvent, waitFor } from "@testing-library/react";
-import render from "../../../../redux-test-render";
+import render from "../../../../recoil-test-render";
 import DealOrNoDeal from "../DealOrNoDeal";
 
 describe("games | deal-or-no-deal | DealOrNoDeal", () => {

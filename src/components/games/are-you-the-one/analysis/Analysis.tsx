@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { RoundPairing } from "../../../../store/modules/ayto";
+import { RoundPairing } from "../../../../recoil/are-you-the-one-atom";
 import { ChipColorOptions } from "../types";
 import { AYTOHist } from "./useHist";
 

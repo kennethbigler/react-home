@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { RoundPairing } from "../../../../store/modules/ayto";
+import { RoundPairing } from "../../../../recoil/are-you-the-one-atom";
 import Dropdown from "./Dropdown";
 
 interface ControlsProps {

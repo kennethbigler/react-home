@@ -26,7 +26,7 @@ export const newYahtzee = (): Omit<YahtzeeState, "scores"> => ({
 const yahtzeeAtom = atom({
   key: "yahtzeeAtom",
   default: (JSON.parse(
-    localStorage.getItem("yahtzee-atom") || "false"
+    localStorage.getItem("yahtzee-atom") || "null"
   ) as YahtzeeState) || { ...newYahtzee(), scores: [] },
   effects: [
     ({ onSet }) => {
