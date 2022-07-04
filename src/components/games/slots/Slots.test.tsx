@@ -1,6 +1,6 @@
 import React from "react";
 import { screen } from "@testing-library/react";
-import render from "../../../redux-test-render";
+import render from "../../../recoil-test-render";
 import Slots from "./Slots";
 
 describe("games | slots | Slots", () => {

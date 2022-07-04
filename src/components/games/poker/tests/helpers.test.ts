@@ -1,4 +1,4 @@
-import { DBPlayer } from "../../../../store/modules/types";
+import { DBPlayer } from "../../../../recoil/player-atom";
 import {
   rankHand,
   getHistogram,

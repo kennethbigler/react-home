@@ -1,6 +1,6 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
-import render from "../../../../redux-test-render";
+import render from "../../../../recoil-test-render";
 import GitTools from "../GitTools";
 import { validTypingId, getSelectOptions } from "../helpers";
 

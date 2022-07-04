@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { getMoneyText } from "./helpers";
 import { Briefcase } from "../../../recoil/deal-or-no-deal-atom";
-import { DBPlayer } from "../../../store/modules/types";
+import { DBPlayer } from "../../../recoil/player-atom";
 
 interface HeaderProps {
   casesToOpen: number;

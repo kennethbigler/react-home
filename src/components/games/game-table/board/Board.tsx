@@ -1,6 +1,6 @@
 import React from "react";
 import Player from "./player/Player";
-import { DBPlayer } from "../../../../store/modules/types";
+import { DBPlayer } from "../../../../recoil/player-atom";
 import { TurnState } from "../../../../recoil/turn-atom";
 // Parents: GameTable
 

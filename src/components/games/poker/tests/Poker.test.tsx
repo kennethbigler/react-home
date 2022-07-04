@@ -1,6 +1,6 @@
 import React from "react";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
-import render from "../../../../redux-test-render";
+import render from "../../../../recoil-test-render";
 import Poker from "../Poker";
 import Deck from "../../../../apis/Deck";
 

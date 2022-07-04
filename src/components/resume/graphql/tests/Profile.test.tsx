@@ -2,7 +2,7 @@ import React from "react";
 import { screen, waitFor } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
 
-import render from "../../../../redux-test-render";
+import render from "../../../../recoil-test-render";
 import Profile, { GET_REPOSITORIES_OF_CURRENT_USER } from "../Profile";
 
 describe("resume | graphql | Profile", () => {

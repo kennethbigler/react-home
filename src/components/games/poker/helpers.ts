@@ -1,5 +1,5 @@
 import { DBCard } from "../../../apis/Deck";
-import { DBPlayer } from "../../../store/modules/types";
+import { DBPlayer } from "../../../recoil/player-atom";
 
 /** Rankings:
  *   Straight Flush  8

@@ -18,7 +18,7 @@ const PlayerMenu: React.FC = () => {
 
   const isBot = React.useMemo(() => players.map((a) => a.isBot), [players]);
 
-  /** toggle between bot and human player - dispatch to redux */
+  /** toggle between bot and human player */
   const handleToggle = (id: number, isChecked: boolean): void => {
     const pi = players.findIndex((p) => p.id === id);
     if (pi !== -1) {
@@ -29,7 +29,7 @@ const PlayerMenu: React.FC = () => {
     }
   };
 
-  /** update player name onBlur - dispatch to redux */
+  /** update player name onBlur */
   const handleBlur =
     (id: number) =>
     (e: React.FocusEvent<HTMLInputElement>): void => {
@@ -42,7 +42,7 @@ const PlayerMenu: React.FC = () => {
       }
     };
 
-  /** if enter key was pressed in textfield, update name - dispatch to redux */
+  /** if enter key was pressed in textfield, update name */
   const handleKeyPress =
     (id: number) =>
     (e: React.KeyboardEvent<HTMLDivElement>): void => {
