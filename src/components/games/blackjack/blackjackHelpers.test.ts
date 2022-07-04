@@ -41,7 +41,7 @@ describe("games | blackjack | blackjackHelpers", () => {
     expect(weighHand()).toEqual({ weight: 0, soft: false });
   });
 
-  test("playBot | doubles", () => {
+  test("playBot | doubles", async () => {
     const double = jest.fn();
     const hit = jest.fn();
     const split = jest.fn();
@@ -58,13 +58,13 @@ describe("games | blackjack | blackjackHelpers", () => {
       ],
     };
 
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(0);
     expect(hit).toHaveBeenCalledTimes(0);
     expect(split).toHaveBeenCalledTimes(1);
     expect(stay).toHaveBeenCalledTimes(0);
     dealer.cards = [{ name: "A", suit: "♠", weight: 14 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(0);
     expect(hit).toHaveBeenCalledTimes(1);
     expect(split).toHaveBeenCalledTimes(1);
@@ -74,13 +74,13 @@ describe("games | blackjack | blackjackHelpers", () => {
       { name: "4", suit: "♠", weight: 4 },
       { name: "4", suit: "♠", weight: 4 },
     ];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(0);
     expect(hit).toHaveBeenCalledTimes(2);
     expect(split).toHaveBeenCalledTimes(1);
     expect(stay).toHaveBeenCalledTimes(0);
     dealer.cards = [{ name: "5", suit: "♠", weight: 5 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(0);
     expect(hit).toHaveBeenCalledTimes(2);
     expect(split).toHaveBeenCalledTimes(2);
@@ -90,13 +90,13 @@ describe("games | blackjack | blackjackHelpers", () => {
       { name: "5", suit: "♠", weight: 5 },
       { name: "5", suit: "♠", weight: 5 },
     ];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(2);
     expect(split).toHaveBeenCalledTimes(2);
     expect(stay).toHaveBeenCalledTimes(0);
     dealer.cards = [{ name: "A", suit: "♠", weight: 14 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(3);
     expect(split).toHaveBeenCalledTimes(2);
@@ -106,13 +106,13 @@ describe("games | blackjack | blackjackHelpers", () => {
       { name: "6", suit: "♠", weight: 6 },
       { name: "6", suit: "♠", weight: 6 },
     ];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(4);
     expect(split).toHaveBeenCalledTimes(2);
     expect(stay).toHaveBeenCalledTimes(0);
     dealer.cards = [{ name: "6", suit: "♠", weight: 6 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(4);
     expect(split).toHaveBeenCalledTimes(3);
@@ -122,13 +122,13 @@ describe("games | blackjack | blackjackHelpers", () => {
       { name: "9", suit: "♠", weight: 9 },
       { name: "9", suit: "♠", weight: 9 },
     ];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(4);
     expect(split).toHaveBeenCalledTimes(4);
     expect(stay).toHaveBeenCalledTimes(0);
     dealer.cards = [{ name: "A", suit: "♠", weight: 14 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(4);
     expect(split).toHaveBeenCalledTimes(4);
@@ -138,7 +138,7 @@ describe("games | blackjack | blackjackHelpers", () => {
       { name: "A", suit: "♠", weight: 14 },
       { name: "A", suit: "♠", weight: 14 },
     ];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(4);
     expect(split).toHaveBeenCalledTimes(5);
@@ -148,14 +148,14 @@ describe("games | blackjack | blackjackHelpers", () => {
       { name: "K", suit: "♠", weight: 13 },
       { name: "K", suit: "♠", weight: 13 },
     ];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(4);
     expect(split).toHaveBeenCalledTimes(5);
     expect(stay).toHaveBeenCalledTimes(2);
   });
 
-  test("playBot | soft hands", () => {
+  test("playBot | soft hands", async () => {
     const double = jest.fn();
     const hit = jest.fn();
     const split = jest.fn();
@@ -173,61 +173,61 @@ describe("games | blackjack | blackjackHelpers", () => {
       ],
     };
 
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(0);
     expect(stay).toHaveBeenCalledTimes(0);
     dealer.cards = [{ name: "A", suit: "♠", weight: 14 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(1);
     expect(stay).toHaveBeenCalledTimes(0);
 
     player.weight = 15;
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(2);
     expect(stay).toHaveBeenCalledTimes(0);
     dealer.cards = [{ name: "5", suit: "♠", weight: 5 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(2);
     expect(hit).toHaveBeenCalledTimes(2);
     expect(stay).toHaveBeenCalledTimes(0);
 
     player.weight = 17;
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(3);
     expect(hit).toHaveBeenCalledTimes(2);
     expect(stay).toHaveBeenCalledTimes(0);
     dealer.cards = [{ name: "A", suit: "♠", weight: 14 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(3);
     expect(hit).toHaveBeenCalledTimes(3);
     expect(stay).toHaveBeenCalledTimes(0);
 
     player.weight = 18;
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(3);
     expect(hit).toHaveBeenCalledTimes(4);
     expect(stay).toHaveBeenCalledTimes(0);
     dealer.cards = [{ name: "7", suit: "♠", weight: 7 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(3);
     expect(hit).toHaveBeenCalledTimes(4);
     expect(stay).toHaveBeenCalledTimes(1);
     dealer.cards = [{ name: "6", suit: "♠", weight: 6 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(4);
     expect(hit).toHaveBeenCalledTimes(4);
     expect(stay).toHaveBeenCalledTimes(1);
 
     player.weight = 19;
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(5);
     expect(hit).toHaveBeenCalledTimes(4);
     expect(stay).toHaveBeenCalledTimes(1);
     dealer.cards = [{ name: "A", suit: "♠", weight: 14 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(5);
     expect(hit).toHaveBeenCalledTimes(4);
     expect(stay).toHaveBeenCalledTimes(2);
@@ -235,7 +235,7 @@ describe("games | blackjack | blackjackHelpers", () => {
     expect(split).toHaveBeenCalledTimes(0);
   });
 
-  test("playBot | normal hands", () => {
+  test("playBot | normal hands", async () => {
     const double = jest.fn();
     const hit = jest.fn();
     const split = jest.fn();
@@ -253,69 +253,69 @@ describe("games | blackjack | blackjackHelpers", () => {
       ],
     };
 
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(0);
     expect(hit).toHaveBeenCalledTimes(1);
     expect(stay).toHaveBeenCalledTimes(0);
 
     player.weight = 9;
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(1);
     expect(stay).toHaveBeenCalledTimes(0);
     dealer.cards = [{ name: "A", suit: "♠", weight: 14 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(2);
     expect(stay).toHaveBeenCalledTimes(0);
 
     player.weight = 10;
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(1);
     expect(hit).toHaveBeenCalledTimes(3);
     expect(stay).toHaveBeenCalledTimes(0);
     dealer.cards = [{ name: "5", suit: "♠", weight: 5 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(2);
     expect(hit).toHaveBeenCalledTimes(3);
     expect(stay).toHaveBeenCalledTimes(0);
 
     player.weight = 11;
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(3);
     expect(hit).toHaveBeenCalledTimes(3);
     expect(stay).toHaveBeenCalledTimes(0);
 
     player.weight = 12;
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(3);
     expect(hit).toHaveBeenCalledTimes(3);
     expect(stay).toHaveBeenCalledTimes(1);
     dealer.cards = [{ name: "A", suit: "♠", weight: 14 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(3);
     expect(hit).toHaveBeenCalledTimes(4);
     expect(stay).toHaveBeenCalledTimes(1);
 
     player.weight = 15;
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(3);
     expect(hit).toHaveBeenCalledTimes(5);
     expect(stay).toHaveBeenCalledTimes(1);
     dealer.cards = [{ name: "5", suit: "♠", weight: 5 }];
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(3);
     expect(hit).toHaveBeenCalledTimes(5);
     expect(stay).toHaveBeenCalledTimes(2);
 
     player.weight = 19;
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(3);
     expect(hit).toHaveBeenCalledTimes(5);
     expect(stay).toHaveBeenCalledTimes(3);
 
     player.weight = 23;
-    playBot(player, dealer, double, hit, split, stay);
+    await playBot(player, dealer, double, hit, split, stay);
     expect(double).toHaveBeenCalledTimes(3);
     expect(hit).toHaveBeenCalledTimes(5);
     expect(stay).toHaveBeenCalledTimes(4);
