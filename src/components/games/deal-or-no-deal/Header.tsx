@@ -12,10 +12,18 @@ interface HeaderProps {
   newGame: React.MouseEventHandler;
   player: DBPlayer;
   playerChoice?: Briefcase;
+  dndOpen?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
-  const { playerChoice: pc, casesToOpen, isOver, newGame, player } = props;
+  const {
+    playerChoice: pc,
+    casesToOpen,
+    isOver,
+    newGame,
+    player,
+    dndOpen,
+  } = props;
 
   return (
     <Grid container spacing={1}>
@@ -26,9 +34,10 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
           }`}
         </Typography>
         <Typography variant="h4" gutterBottom>
-          {isOver
-            ? `You Won ${getMoneyText(isOver)}`
-            : `Number of Cases to Open: ${casesToOpen}`}
+          {!dndOpen &&
+            (isOver
+              ? `You Won ${getMoneyText(isOver)}`
+              : `Number of Cases to Open: ${casesToOpen}`)}
         </Typography>
         {isOver ? (
           <Button color="primary" onClick={newGame} variant="contained">
