@@ -165,7 +165,6 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
     expect(screen.getByText("My Case")).toBeInTheDocument();
     expect(screen.getByText("Other Case")).toBeInTheDocument();
     fireEvent.click(screen.getByText("Other Case"));
-    await waitFor(() => screen.getByText("New Game"));
   });
 
   it("plays a game and never takes a deal", async () => {
@@ -263,6 +262,5 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
     expect(screen.getByText("My Case")).toBeInTheDocument();
     expect(screen.getByText("Other Case")).toBeInTheDocument();
     fireEvent.click(screen.getByText("My Case"));
-    await waitFor(() => screen.getByText("New Game"));
   });
 });
