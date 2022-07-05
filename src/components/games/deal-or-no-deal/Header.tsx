@@ -8,22 +8,14 @@ import { DBPlayer } from "../../../recoil/player-atom";
 
 interface HeaderProps {
   casesToOpen: number;
-  isOver: boolean;
+  isOver: number;
   newGame: React.MouseEventHandler;
-  offer?: number;
   player: DBPlayer;
   playerChoice?: Briefcase;
 }
 
 const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
-  const {
-    playerChoice: pc,
-    casesToOpen,
-    isOver,
-    offer,
-    newGame,
-    player,
-  } = props;
+  const { playerChoice: pc, casesToOpen, isOver, newGame, player } = props;
 
   return (
     <Grid container spacing={1}>
@@ -35,14 +27,14 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
         </Typography>
         <Typography variant="h4" gutterBottom>
           {isOver
-            ? `You Won ${getMoneyText(offer)}`
+            ? `You Won ${getMoneyText(isOver)}`
             : `Number of Cases to Open: ${casesToOpen}`}
         </Typography>
-        {isOver && (
+        {isOver ? (
           <Button color="primary" onClick={newGame} variant="contained">
             New Game
           </Button>
-        )}
+        ) : null}
       </Grid>
       <Grid item sm={6} xs={12}>
         <Typography variant="h3" align="right" gutterBottom>

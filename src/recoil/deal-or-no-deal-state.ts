@@ -11,11 +11,8 @@ export interface DNDState {
   turn: number;
   playerChoice?: Briefcase;
   casesToOpen: number;
-  sum: number;
-  numCases: number;
-  offer: number;
   dndOpen: boolean;
-  isOver: boolean;
+  isOver: number;
 }
 export const briefcasesToOpen = 6;
 
@@ -51,11 +48,8 @@ const getNewState = (): DNDState => ({
   turn: 1,
   playerChoice: undefined,
   casesToOpen: briefcasesToOpen,
-  sum: 0,
-  numCases: 0,
-  offer: 0,
   dndOpen: false,
-  isOver: false,
+  isOver: 0,
 });
 /** function that takes an array and shuffles it's elements */
 const shuffle = (arr: Briefcase[]): void => {
@@ -77,9 +71,6 @@ export const newDNDGame = (): DNDState => {
   shuffle(state.board);
   // set all flags to un-touched
   state.board.forEach((bc) => {
-    // get sum and count of cases remaining
-    state.sum += bc.val;
-    state.numCases += 1;
     // reset opened flag
     bc.on = true;
   });
@@ -101,6 +92,27 @@ export const dealOrNoDealAtom = atom({
       });
     },
   ],
+});
+
+export const dndHelperSelector = selector({
+  key: "dndHelperSelector",
+  get: ({ get }) => {
+    // access state
+    const { board, turn } = get(dealOrNoDealAtom);
+    // compute iterated variables
+    let numCases = 0;
+    let sum = 0;
+    board.forEach((bc) => {
+      if (bc.on) {
+        numCases += 1;
+        sum += bc.val;
+      }
+    });
+    // get the new offer
+    const offer = Math.round((sum / numCases) * (turn / 10));
+    // return state
+    return { numCases, offer };
+  },
 });
 
 const dealOrNoDealState = selector({

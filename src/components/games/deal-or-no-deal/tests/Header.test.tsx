@@ -19,7 +19,7 @@ const ken = {
 describe("games | deal-or-no-deal | Header", () => {
   it("renders as expected", () => {
     render(
-      <Header casesToOpen={1} isOver={false} newGame={jest.fn()} player={ken} />
+      <Header casesToOpen={1} isOver={0} newGame={jest.fn()} player={ken} />
     );
 
     expect(screen.getByText("Your Case: ?")).toBeInTheDocument();
@@ -28,7 +28,9 @@ describe("games | deal-or-no-deal | Header", () => {
   });
 
   it("changes appearance when over", () => {
-    render(<Header casesToOpen={1} isOver newGame={jest.fn()} player={ken} />);
+    render(
+      <Header casesToOpen={1} isOver={1} newGame={jest.fn()} player={ken} />
+    );
     // removed
     expect(screen.queryByText("Your Case: ?")).toBeNull();
     expect(screen.queryByText("Number of Cases to Open: 1")).toBeNull();
@@ -36,7 +38,7 @@ describe("games | deal-or-no-deal | Header", () => {
     expect(screen.getByText("Ken: $1,000")).toBeInTheDocument();
     // new
     expect(screen.getByText("Your Case: ? - $0")).toBeInTheDocument();
-    expect(screen.getByText("You Won $0")).toBeInTheDocument();
+    expect(screen.getByText("You Won $1")).toBeInTheDocument();
     expect(screen.getByText("New Game")).toBeInTheDocument();
   });
 
@@ -44,7 +46,7 @@ describe("games | deal-or-no-deal | Header", () => {
     render(
       <Header
         casesToOpen={1}
-        isOver
+        isOver={1}
         newGame={jest.fn()}
         player={ken}
         playerChoice={{ on: true, loc: 1, val: 1000 }}
@@ -57,7 +59,7 @@ describe("games | deal-or-no-deal | Header", () => {
     expect(screen.queryByText("Your Case: ? - $0")).toBeNull();
     // stays
     expect(screen.getByText("Ken: $1,000")).toBeInTheDocument();
-    expect(screen.getByText("You Won $0")).toBeInTheDocument();
+    expect(screen.getByText("You Won $1")).toBeInTheDocument();
     expect(screen.getByText("New Game")).toBeInTheDocument();
     // new
     expect(screen.getByText("Your Case: 1 - $1,000")).toBeInTheDocument();

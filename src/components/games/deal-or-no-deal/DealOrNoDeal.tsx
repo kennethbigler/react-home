@@ -1,10 +1,11 @@
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import Typography from "@mui/material/Typography";
 import Modal from "./Modal";
 import Board from "./Board";
 import Header from "./Header";
 import dndState, {
+  dndHelperSelector,
   briefcasesToOpen,
   newDNDGame,
 } from "../../../recoil/deal-or-no-deal-state";
@@ -15,26 +16,21 @@ import dndState, {
  *              |->  Modal  ->  Money */
 const DND: React.FC = () => {
   const [{ dnd, player }, setState] = useRecoilState(dndState);
-  const {
-    board,
-    dndOpen,
-    isOver,
-    offer,
-    sum,
-    turn,
-    playerChoice,
-    casesToOpen,
-    numCases,
-  } = dnd;
+  const { numCases, offer } = useRecoilValue(dndHelperSelector);
+  const { board, dndOpen, isOver, turn, playerChoice, casesToOpen } = dnd;
 
-  /** function to generate the bank offer */
-  const getBankOffer = React.useCallback(
-    (): number => Math.round((sum / numCases) * (turn / 10)),
-    [numCases, sum, turn]
-  );
+  // --------------------     Header     -------------------- //
 
-  /** open a briefcase and update global status
-   * NOTE: updates sum, numCases, board, casesToOpen */
+  /** called in Header, resets game */
+  const newGame = (): void => setState({ dnd: newDNDGame(), player });
+
+  // --------------------     Board     -------------------- //
+
+  /**
+   * called in Board to open a briefcase
+   * gets: board, playerChoice, isOver, casesToOpen
+   * sets: dnd { board, casesTopOpen, playerChoice }, player { money }
+   */
   const openBriefcase = (x: number) => {
     const bc = board[x];
     // check if player has already made case selection
@@ -51,8 +47,6 @@ const DND: React.FC = () => {
           dnd: {
             ...dnd,
             board: newBoard,
-            sum: sum - bc.val,
-            numCases: numCases - 1,
             casesToOpen: casesToOpen - 1,
           },
           player,
@@ -69,34 +63,20 @@ const DND: React.FC = () => {
     }
   };
 
-  const handleOpen = (): void => {
-    // get the new offer
-    const newOffer = getBankOffer();
-    // reset the counter
-    const newCasesToOpen =
-      turn < briefcasesToOpen - 1 ? briefcasesToOpen - turn : 1;
-    setState({
-      dnd: {
-        ...dnd,
-        offer: newOffer,
-        casesToOpen: newCasesToOpen,
-        dndOpen: true,
-      },
-      player,
-    });
-  };
+  // --------------------     Modal     -------------------- //
 
-  /** function to reset the game */
-  const newGame = (): void => setState({ dnd: newDNDGame(), player });
-
-  /** called on selection of Deal */
+  /**
+   * called in Modal on selection of Deal
+   * gets: offer
+   * sets: dnd { dndOpen, isOver }, player: { status, money }
+   */
   const deal = (): void => {
     const total = Math.round(offer / 1000);
     setState({
       dnd: {
         ...dnd,
         dndOpen: false,
-        isOver: true,
+        isOver: total,
       },
       player: {
         ...player,
@@ -106,8 +86,11 @@ const DND: React.FC = () => {
     });
   };
 
-  /** called on selection of No Deal
-   * NOTE: update turn, casesToOpen */
+  /**
+   * called in Modal on selection of No Deal
+   * gets: numCases, playerChoice
+   * sets: dnd { dndOpen, isOver, turn }, player: { status, money }
+   */
   const noDeal = (): void => {
     // no deal on last case
     if (numCases <= 2) {
@@ -117,8 +100,7 @@ const DND: React.FC = () => {
         dnd: {
           ...dnd,
           dndOpen: false,
-          isOver: true,
-          offer: newOffer,
+          isOver: total,
         },
         player: {
           ...player,
@@ -139,6 +121,11 @@ const DND: React.FC = () => {
     }
   };
 
+  /**
+   * called in Modal
+   * gets: board, playerChoice, player.money
+   * sets: dnd { dndOpen, isOver }, player: { status, money }
+   */
   const swap = (): void => {
     for (let i = 0; i < board.length; i += 1) {
       const bc = board[i];
@@ -148,8 +135,7 @@ const DND: React.FC = () => {
           dnd: {
             ...dnd,
             dndOpen: false,
-            isOver: true,
-            offer: bc.val,
+            isOver: total,
           },
           player: {
             ...player,
@@ -161,6 +147,23 @@ const DND: React.FC = () => {
       }
     }
   };
+
+  // --------------------     render     -------------------- //
+
+  /**
+   * called in this file, reset the counter
+   * gets: turn
+   * sets: dnd { casesToOpen, dndOpen }
+   */
+  const handleOpen = (): void =>
+    setState({
+      dnd: {
+        ...dnd,
+        casesToOpen: turn < briefcasesToOpen - 1 ? briefcasesToOpen - turn : 1,
+        dndOpen: true,
+      },
+      player,
+    });
 
   // check if it is time for an offer
   casesToOpen === 0 && setTimeout(handleOpen, 300);
@@ -174,7 +177,6 @@ const DND: React.FC = () => {
         casesToOpen={casesToOpen}
         isOver={isOver}
         newGame={newGame}
-        offer={offer}
         player={player}
         playerChoice={playerChoice}
       />
