@@ -29,7 +29,7 @@ const DND: React.FC = () => {
   /**
    * called in Board to open a briefcase
    * gets: board, playerChoice, isOver, casesToOpen
-   * sets: dnd { board, casesTopOpen, playerChoice }, player { money }
+   * sets: dnd { board, casesTopOpen, playerChoice, dndOpen }, player { money }
    */
   const openBriefcase = (x: number) => {
     const bc = board[x];
@@ -47,6 +47,7 @@ const DND: React.FC = () => {
           dnd: {
             ...dnd,
             board: newBoard,
+            dndOpen: casesToOpen === 1,
             casesToOpen: casesToOpen - 1,
           },
           player,
@@ -89,7 +90,7 @@ const DND: React.FC = () => {
   /**
    * called in Modal on selection of No Deal
    * gets: numCases, playerChoice
-   * sets: dnd { dndOpen, isOver, turn }, player: { status, money }
+   * sets: dnd { dndOpen, isOver, turn, casesToOpen }, player: { status, money }
    */
   const noDeal = (): void => {
     // no deal on last case
@@ -115,6 +116,8 @@ const DND: React.FC = () => {
           ...dnd,
           dndOpen: false,
           turn: turn + 1,
+          casesToOpen:
+            turn < briefcasesToOpen - 1 ? briefcasesToOpen - turn : 1,
         },
         player,
       });
@@ -147,26 +150,6 @@ const DND: React.FC = () => {
       }
     }
   };
-
-  // --------------------     render     -------------------- //
-
-  /**
-   * called in this file, reset the counter
-   * gets: turn
-   * sets: dnd { casesToOpen, dndOpen }
-   */
-  const handleOpen = (): void =>
-    setState({
-      dnd: {
-        ...dnd,
-        casesToOpen: turn < briefcasesToOpen - 1 ? briefcasesToOpen - turn : 1,
-        dndOpen: true,
-      },
-      player,
-    });
-
-  // check if it is time for an offer
-  casesToOpen === 0 && setTimeout(handleOpen, 300);
 
   return (
     <>
