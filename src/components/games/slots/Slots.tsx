@@ -14,6 +14,7 @@ import SlotMachine from "../../../apis/SlotMachine";
  *       |->  PayoutTable */
 const Slots: React.FC = () => {
   const [{ reel, player, dealer }, setState] = useRecoilState(slotsState);
+  const [exchange, setExchange] = React.useState(0);
 
   const updateSlotMachine = () => {
     // get rolled reel
@@ -21,13 +22,14 @@ const Slots: React.FC = () => {
 
     // determine payout
     const { bet } = player;
-    const exchange = SlotMachine.getPayout(newReel, bet) - bet;
+    const newExchange = SlotMachine.getPayout(newReel, bet) - bet;
 
     // exchange money and update state
+    setExchange(newExchange);
     setState({
       reel: newReel,
-      player: { ...player, money: player.money + exchange },
-      dealer: { ...dealer, money: dealer.money - exchange },
+      player: { ...player, money: player.money + newExchange },
+      dealer: { ...dealer, money: dealer.money - newExchange },
     });
   };
 
@@ -47,6 +49,11 @@ const Slots: React.FC = () => {
               >
                 Spin
               </Button>
+              {exchange ? (
+                <Typography variant="h4">{`You ${
+                  exchange > 0 ? "won" : "lost"
+                } $${exchange}`}</Typography>
+              ) : null}
             </Grid>
             <Grid item sm={9} xs={12}>
               <ReelDisplay reel={reel} />
