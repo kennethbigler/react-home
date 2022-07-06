@@ -1,5 +1,5 @@
 import React from "react";
-import { screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import render from "../../../recoil-test-render";
 import Slots from "./Slots";
 
@@ -35,5 +35,8 @@ describe("games | slots | Slots", () => {
     expect(screen.getByText("6 : 1")).toBeInTheDocument();
     expect(screen.getAllByText("C")[0]).toBeInTheDocument();
     expect(screen.getByText("3 : 1")).toBeInTheDocument();
+    // spin the button
+    fireEvent.click(screen.getByText("Spin"));
+    expect(screen.getByText("You ", { exact: false })).toBeInTheDocument();
   });
 });
