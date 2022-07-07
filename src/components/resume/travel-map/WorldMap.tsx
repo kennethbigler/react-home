@@ -2,7 +2,7 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import Map, { DataItem } from "react-svg-worldmap";
 import { blueGrey } from "@mui/material/colors";
-import countries from "../../../constants/countries";
+import countries from "../../../constants/travel";
 import themeAtom from "../../../recoil/theme-atom";
 
 const data: DataItem[] = Object.keys(countries).map((k) => ({

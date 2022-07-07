@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import lazyWithPreload from "../../helpers/lazyWithPreload";
 import Header, { NavProps } from "../common/header/Header";
 import Menu from "./Menu";
+import GameHome from "./Home";
 import LoadingSpinner from "../common/loading-spinner";
 
 interface RoutesProps {
@@ -10,9 +11,6 @@ interface RoutesProps {
 }
 
 // lazy load page components
-const GameHome = lazyWithPreload(
-  import(/* webpackChunkName: "g_home" */ "./Home")
-);
 const BlackJack = lazyWithPreload(
   import(/* webpackChunkName: "g_bj" */ "./blackjack")
 );
@@ -50,16 +48,16 @@ const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
     </Header>
     <React.Suspense fallback={<LoadingSpinner />}>
       <Routes>
-        <Route path="/*" element={<GameHome />} />
+        <Route path="/*" element={<GameHome onItemClick={handleNav} />} />
+        <Route path="are-you-the-one/*" element={<AreYouTheOne />} />
         <Route path="blackjack/*" element={<BlackJack />} />
         <Route path="connect4/*" element={<Connect4 />} />
         <Route path="deal/*" element={<DealOrNoDeal />} />
+        <Route path="family-feud/*" element={<FamilyFeud />} />
         <Route path="poker/*" element={<Poker />} />
         <Route path="slots/*" element={<Slots />} />
         <Route path="tictactoe/*" element={<TicTacToe />} />
         <Route path="yahtzee/*" element={<Yahtzee />} />
-        <Route path="family-feud/*" element={<FamilyFeud />} />
-        <Route path="are-you-the-one/*" element={<AreYouTheOne />} />
       </Routes>
     </React.Suspense>
   </>
