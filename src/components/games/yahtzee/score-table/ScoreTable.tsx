@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import { TopGameScore, BottomGameScore } from "../types";
-import { Dice } from "../../../../recoil/yahtzee-atom";
+import { Dice } from "../../../../recoil/yahtzee-state";
 import Header from "./Header";
 import TopTable from "./TopTable";
 import BottomTable from "./BottomTable";
@@ -81,6 +81,7 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
           style={centerStyle}
           top={top}
           values={values}
+          bottom={bottom}
           topSum={topSum}
         />
         <BottomTable

@@ -17,14 +17,15 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
         { name: "Home - Games", route: "" },
         { divider: true },
         { name: "BlackJack", route: "blackjack" },
-        { name: "Connect4", route: "connect4" },
         { name: "Deal or No Deal", route: "deal" },
         { name: "Poker", route: "poker" },
         { name: "Slot Machine", route: "slots" },
-        { name: "Tic-Tac-Toe", route: "tictactoe" },
         { name: "Yahtzee", route: "yahtzee" },
-        { name: "Family Feud", route: "family-feud" },
+        { divider: true },
         { name: "Are You The One", route: "are-you-the-one" },
+        { name: "Connect4", route: "connect4" },
+        { name: "Family Feud", route: "family-feud" },
+        { name: "Tic-Tac-Toe", route: "tictactoe" },
       ].map((item, index) =>
         item.divider ? (
           <Divider key={index} />

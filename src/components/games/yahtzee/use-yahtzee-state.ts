@@ -1,11 +1,16 @@
 import { useRecoilState } from "recoil";
-import yahtzeeAtom, { newYahtzee, Dice } from "../../../recoil/yahtzee-atom";
+import yahtzeeState, { newYahtzee, Dice } from "../../../recoil/yahtzee-state";
 
 const useYahtzeeState = () => {
-  const [state, setState] = useRecoilState(yahtzeeAtom);
+  const [state, setState] = useRecoilState(yahtzeeState);
 
   const newGame = (score: number) =>
-    setState({ ...newYahtzee(), scores: [...state.scores, score] });
+    setState({
+      name: state.name,
+      ...newYahtzee(),
+      scores: [...state.scores, score],
+      money: state.money + Math.ceil(score / 10),
+    });
   const diceClick = (values: Dice[], saved: Dice[]) =>
     setState({
       ...state,
@@ -30,13 +35,19 @@ const useYahtzeeState = () => {
       values: [0, 0, 0, 0, 0],
       saved: [],
     });
-  const updateRoll = (values: Dice[], saved: Dice[], roll: Dice) =>
+  const updateRoll = (
+    values: Dice[],
+    saved: Dice[],
+    roll: Dice,
+    payToPlay: boolean
+  ) =>
     setState({
       ...state,
       values,
       saved,
       roll,
       showScoreButtons: true,
+      money: payToPlay ? state.money - 25 : state.money,
     });
 
   return {
