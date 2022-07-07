@@ -1,9 +1,9 @@
 {
   "files": {
     "main.css": "/static/css/main.18253566.css",
-    "main.js": "/static/js/main.71ff25a3.js",
+    "main.js": "/static/js/main.1910a50b.js",
     "resume.js": "/static/js/resume.945947cf.chunk.js",
-    "games.js": "/static/js/games.85ae2e54.chunk.js",
+    "games.js": "/static/js/games.9f4ea4f2.chunk.js",
     "r_summary.js": "/static/js/r_summary.b90815ca.chunk.js",
     "r_work.js": "/static/js/r_work.8707c720.chunk.js",
     "r_education.js": "/static/js/r_education.86abfd58.chunk.js",
@@ -65,9 +65,9 @@
     "static/media/intuit_logo.png": "/static/media/intuit_logo.70d74b8edeaa59688a37.png",
     "index.html": "/index.html",
     "main.18253566.css.map": "/static/css/main.18253566.css.map",
-    "main.71ff25a3.js.map": "/static/js/main.71ff25a3.js.map",
+    "main.1910a50b.js.map": "/static/js/main.1910a50b.js.map",
     "resume.945947cf.chunk.js.map": "/static/js/resume.945947cf.chunk.js.map",
-    "games.85ae2e54.chunk.js.map": "/static/js/games.85ae2e54.chunk.js.map",
+    "games.9f4ea4f2.chunk.js.map": "/static/js/games.9f4ea4f2.chunk.js.map",
     "r_summary.b90815ca.chunk.js.map": "/static/js/r_summary.b90815ca.chunk.js.map",
     "r_work.8707c720.chunk.js.map": "/static/js/r_work.8707c720.chunk.js.map",
     "r_education.86abfd58.chunk.js.map": "/static/js/r_education.86abfd58.chunk.js.map",
@@ -108,6 +108,6 @@
   },
   "entrypoints": [
     "static/css/main.18253566.css",
-    "static/js/main.71ff25a3.js"
+    "static/js/main.1910a50b.js"
   ]
 }

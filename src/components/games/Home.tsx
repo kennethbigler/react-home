@@ -16,6 +16,7 @@ interface HomeProps {
 const menuWrapperStyles: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-around",
+  flexWrap: "wrap",
 };
 const dividerStyles: React.CSSProperties = { marginTop: 60 };
 const subHeaderStyles: React.CSSProperties = {
@@ -28,7 +29,7 @@ const generateMenuItems =
   ({ name, route, icon }: MenuItem) =>
     (
       <Card
-        sx={{ minWidth: 250, cursor: "pointer" }}
+        sx={{ width: 250, cursor: "pointer" }}
         key={name}
         onClick={(): void =>
           onItemClick && onItemClick(`/games/${route || ""}`)
