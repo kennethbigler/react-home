@@ -2,9 +2,17 @@ import React from "react";
 import { fireEvent, screen } from "@testing-library/react";
 import render from "../../../recoil-test-render";
 import Slots from "./Slots";
+import SlotMachine, { SlotOption as SO } from "../../../apis/SlotMachine";
+
+const pullHandle = jest.spyOn(SlotMachine, "pullHandle");
 
 describe("games | slots | Slots", () => {
   it("renders as expected", () => {
+    pullHandle.mockImplementation(() => [
+      [SO.EMPTY, SO.EMPTY, SO.EMPTY],
+      [SO.EMPTY, SO.BAR, SO.EMPTY],
+      [SO.EMPTY, SO.EMPTY, SO.BAR],
+    ]);
     render(<Slots />);
 
     expect(screen.getByText("Casino Slot Machine")).toBeInTheDocument();
@@ -38,5 +46,6 @@ describe("games | slots | Slots", () => {
     // spin the button
     fireEvent.click(screen.getByText("Spin"));
     expect(screen.getByText("You ", { exact: false })).toBeInTheDocument();
+    pullHandle.mockRestore();
   });
 });
