@@ -10,8 +10,8 @@
   "version": "4.0.0",
   "dependencies": {
     "@apollo/client": "3.6.9",
-    "@emotion/react": "11.8.2",
-    "@emotion/styled": "11.8.1",
+    "@emotion/react": "11.9.3",
+    "@emotion/styled": "11.9.3",
     "@mui/icons-material": "5.8.4",
     "@mui/material": "5.8.5",
     "copy-to-clipboard": "3.3.1",
