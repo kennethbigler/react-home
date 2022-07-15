@@ -34,17 +34,11 @@ interface ExpandableCardProps {
 const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
   const [expanded, toggleExpanded] = useToggleState(true);
   const { palette } = useTheme();
-  const {
-    title,
-    subtitle,
-    children,
-    backgroundColor,
-    inverted = false,
-  } = props;
+  const { inverted, title, subtitle, children, backgroundColor } = props;
 
   const headerStyle = {
     ...headerStyles,
-    backgroundColor: backgroundColor || palette.primary.main,
+    backgroundColor: backgroundColor || palette.primary.dark,
   };
   if (palette.mode !== "dark") {
     headerStyle.boxShadow = `0px 15px 15px -10px ${grey[400]}`;
@@ -53,14 +47,9 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
   }
   const expandedHeaderStyle = { ...headerStyle, marginBottom: -20 };
 
-  const titleStyle = React.useMemo(
-    () => ({ color: inverted ? "black" : "white" }),
-    [inverted]
-  );
-  const subtitleStyle = React.useMemo(
-    () => ({ color: grey[inverted ? 800 : 300] }),
-    [inverted]
-  );
+  const titleStyle = {
+    color: inverted ? "black" : palette.primary.contrastText,
+  };
 
   const titleJSX = (
     <Typography style={titleStyle} variant="h6">
@@ -68,7 +57,7 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
     </Typography>
   );
   const subtitleJSX = expanded ? (
-    <Typography style={subtitleStyle}>{subtitle}</Typography>
+    <Typography style={titleStyle}>{subtitle}</Typography>
   ) : null;
 
   return (
