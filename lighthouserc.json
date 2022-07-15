@@ -1,0 +1,14 @@
+{
+  "ci": {
+    "assert": {
+      "preset": "lighthouse:recommended",
+      "assertions": {
+        "csp-xss": "off",
+        "errors-in-console": "off",
+        "heading-order": "off",
+        "non-composited-animations": "off",
+        "service-worker": "off"
+      }
+    }
+  }
+}
