@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import GameTable from "../game-table";
 import asyncForEach from "../../../helpers/asyncForEach";
 import Deck from "../../../apis/Deck";
-import { DEALER, LAST_PLAYER, computer, findAndPayWinner } from "./helpers";
+import { computer, findAndPayWinner } from "./helpers";
 import pokerState, {
   PokerGameFunctions as PGF,
   newPokerGameState,
@@ -50,7 +50,7 @@ const Poker: React.FC = () => {
 
         // returns immutable new players
         await asyncForEach(players, async (player: DBPlayer, i: number) => {
-          if (turn.player <= i && i < LAST_PLAYER) {
+          if (turn.player <= i) {
             const newPlayer = await computer(player, discard);
             newPlayers[i] = newPlayer;
           }
@@ -85,21 +85,19 @@ const Poker: React.FC = () => {
         const newPlayers = [...players];
         // deal the hands
         await asyncForEach(players, async (player: DBPlayer) => {
-          if (player.id !== DEALER && player.id <= LAST_PLAYER) {
-            // New Hand
-            const cards = await Deck.deal(5);
-            cards.sort(Deck.rankSort);
-            const { weight, soft } = defaultWeigh(cards);
+          // New Hand
+          const cards = await Deck.deal(5);
+          cards.sort(Deck.rankSort);
+          const { weight, soft } = defaultWeigh(cards);
 
-            // Create New Hand
-            const pi = players.findIndex((p) => p.id === player.id);
-            if (pi !== -1) {
-              const newPlayer = {
-                ...newPlayers[pi],
-                hands: [{ cards, weight, soft }],
-              };
-              newPlayers[pi] = newPlayer;
-            }
+          // Create New Hand
+          const pi = players.findIndex((p) => p.id === player.id);
+          if (pi !== -1) {
+            const newPlayer = {
+              ...newPlayers[pi],
+              hands: [{ cards, weight, soft }],
+            };
+            newPlayers[pi] = newPlayer;
           }
         });
         setState({

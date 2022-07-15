@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 interface HeaderProps {
   newGame: React.MouseEventHandler;
   turn: string;
-  winner?: string;
+  winner: string | null;
 }
 
 const Header: React.FC<HeaderProps> = React.memo(

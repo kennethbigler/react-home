@@ -6,6 +6,8 @@ import { red, lightGreen } from "@mui/material/colors";
 import noop from "../../../apis/noop";
 
 interface PieceProps {
+  /** aria label */
+  ariaLabel?: string;
   /** can the piece be clicked? */
   enabled?: boolean;
   /** callback onClick of piece */
@@ -29,17 +31,23 @@ const getColor = (piece: number): string | undefined => {
 };
 
 const Piece = (props: PieceProps): React.ReactElement => {
-  const { piece, enabled = false, onClick = noop } = props;
+  const { ariaLabel, piece, enabled = false, onClick = noop } = props;
 
   const color = getColor(piece);
   const style: React.CSSProperties = { backgroundColor: color };
 
   return !enabled ? (
-    <Fab disabled size="small" style={style}>
+    <Fab disabled size="small" style={style} aria-label="disabled column input">
       <div />
     </Fab>
   ) : (
-    <Fab size="small" onClick={onClick} style={style} role="button">
+    <Fab
+      size="small"
+      onClick={onClick}
+      style={style}
+      role="button"
+      aria-label={ariaLabel}
+    >
       <ContentAdd style={{ color: "white" }} />
     </Fab>
   );

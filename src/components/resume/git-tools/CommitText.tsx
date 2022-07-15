@@ -87,7 +87,7 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
               Commit Prefix
             </InputLabel>
             <Select
-              input={<Input id="branch-prefix" />}
+              input={<Input id="commit-prefix" />}
               onChange={handleCommitPrefixSelect}
               value={commitPrefix}
             >
@@ -134,6 +134,7 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
             onClick={clearCommitMessage}
             style={marginTopStyles}
             size="large"
+            aria-label="Clear Commit Message"
           >
             <Clear />
           </IconButton>
@@ -154,6 +155,7 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
             onClick={clearCommitDescription}
             style={marginTopStyles}
             size="large"
+            aria-label="Clear Commit Description"
           >
             <Clear />
           </IconButton>

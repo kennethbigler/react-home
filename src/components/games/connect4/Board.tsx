@@ -38,6 +38,7 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
         enabled={!piece}
         onClick={(): void => insert(i)}
         piece={!piece ? turn : 0}
+        ariaLabel={`insert piece into column ${i}`}
       />
     </TableCell>
   ));

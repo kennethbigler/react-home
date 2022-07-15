@@ -15,30 +15,30 @@ const Skills: React.FC = React.memo(() => (
     <div style={sidePadding}>
       <Typography variant="h4">Summary of Skills:</Typography>
       <ul>
-        <Typography>
-          <li>
+        <li>
+          <Typography>
             Developing useful, multi-platform software tools and creating user
             interfaces
-          </li>
-        </Typography>
-        <Typography>
-          <li>
+          </Typography>
+        </li>
+        <li>
+          <Typography>
             Managing international team members, strong communication skills,
             team player, and detail-oriented
-          </li>
-        </Typography>
-        <Typography>
-          <li>
+          </Typography>
+        </li>
+        <li>
+          <Typography>
             Gathering requirements, scheduling, prioritizing goals, documenting
             processes, and creating project standards
-          </li>
-        </Typography>
-        <Typography>
-          <li>
+          </Typography>
+        </li>
+        <li>
+          <Typography>
             Designing, building, and overseeing production of large and small
             Internet and Intranet sites
-          </li>
-        </Typography>
+          </Typography>
+        </li>
       </ul>
       <hr />
       <Typography variant="h4">Technologies:</Typography>

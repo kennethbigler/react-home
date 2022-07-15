@@ -22,24 +22,24 @@ const EducationSeg: React.FC<School> = React.memo(
       </Typography>
       <ul>
         {minor && (
-          <Typography>
-            <li>{minor}</li>
-          </Typography>
+          <li>
+            <Typography>{minor}</Typography>
+          </li>
         )}
         {honors && (
-          <Typography>
-            <li>{honors}</li>
-          </Typography>
+          <li>
+            <Typography>{honors}</Typography>
+          </li>
         )}
         {graduation && (
-          <Typography>
-            <li>{`Completion: ${graduation}`}</li>
-          </Typography>
+          <li>
+            <Typography>{`Completion: ${graduation}`}</Typography>
+          </li>
         )}
         {gpa && (
-          <Typography>
-            <li>{`GPA: ${gpa}`}</li>
-          </Typography>
+          <li>
+            <Typography>{`GPA: ${gpa}`}</Typography>
+          </li>
         )}
       </ul>
     </div>

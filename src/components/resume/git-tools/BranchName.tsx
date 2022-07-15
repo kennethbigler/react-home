@@ -94,11 +94,11 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
         </Grid>
         <Grid item sm={3} xs={12} style={{ marginTop: 16 }}>
           <FormControl fullWidth>
-            <InputLabel htmlFor="branch-prefix" style={gitThemeStyles}>
+            <InputLabel htmlFor="case-preference" style={gitThemeStyles}>
               Case Preference
             </InputLabel>
             <Select
-              input={<Input id="branch-prefix" />}
+              input={<Input id="case-preference" />}
               onChange={handleCasePrefSelect}
               value={casePreference}
             >
@@ -124,6 +124,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
             onClick={handleBranchMessageClear}
             style={topSpacing}
             size="large"
+            aria-label="Clear Branch Name"
           >
             <Clear />
           </IconButton>

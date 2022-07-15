@@ -9,12 +9,12 @@ export interface ClassProps {
 /** Education  ->  Degree  -> Year  ->  Quarter  ->  Class */
 const Class: React.FC<ClassProps> = React.memo(
   ({ name, catalog }: ClassProps) => (
-    <Typography>
-      <li>
+    <li>
+      <Typography>
         {catalog && <strong>{`${catalog} - `}</strong>}
         {name}
-      </li>
-    </Typography>
+      </Typography>
+    </li>
   )
 );
 

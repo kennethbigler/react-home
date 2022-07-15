@@ -36,10 +36,16 @@ const CopyTextDisplay: React.FC<CopyTextDisplayProps> = (
         onClick={handleCopyText}
         style={chipStyles}
         label={<div>{text}</div>}
+        aria-label={`copy to clipboard ${text}`}
       />
       <Snackbar
         action={[
-          <IconButton key="close" onClick={handleClose} size="large">
+          <IconButton
+            key="close"
+            onClick={handleClose}
+            size="large"
+            aria-label="close copy to clipboard confirmation"
+          >
             <CloseIcon />
           </IconButton>,
         ]}

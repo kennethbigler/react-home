@@ -76,6 +76,7 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
           step={step}
           style={styles.width}
           value={player.bet}
+          aria-label={`adjust bet for ${player.name}`}
         />
       )}
       {isBlackJack && player.id !== 0 && (

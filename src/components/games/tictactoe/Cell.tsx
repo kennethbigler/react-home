@@ -4,7 +4,7 @@ import { useTheme } from "@mui/material/styles";
 
 interface CellProps {
   onClick: React.MouseEventHandler;
-  value?: string;
+  value: string | null;
   winner: boolean;
 }
 
@@ -21,7 +21,13 @@ const Cell: React.FC<CellProps> = React.memo((props: CellProps) => {
     : {};
 
   return (
-    <Button onClick={onClick} style={attr} role="button">
+    <Button
+      onClick={onClick}
+      style={attr}
+      aria-label={`Tic Tac Toe Play Button ${
+        value ? `${value} selected` : "available"
+      }`}
+    >
       {value || <br />}
     </Button>
   );

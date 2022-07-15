@@ -20,6 +20,7 @@ const flexRightStyles: React.CSSProperties = {
   marginRight: 15,
 };
 const spanTopStyles: React.CSSProperties = { left: 0, right: 0, top: 0 };
+const label = { inputProps: { "aria-label": "Theme Toggle Switch" } };
 
 interface TopBarProps {
   /** change the color scheme of the icon */
@@ -77,7 +78,8 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
               checked={checked}
               value={checked}
               onChange={toggleTheme}
-              title="Theme Toggle Switch"
+              title={label.inputProps["aria-label"]}
+              {...label}
               color="secondary"
             />
           </div>

@@ -4,8 +4,8 @@ export const getTurn = (n: number): string => (n % 2 ? O : X);
 
 /** function to check if there are 3 in a row
  * @return value of winner and positions for winner */
-export function calculateWinner(board: string[] | undefined[]): {
-  winner?: string;
+export function calculateWinner(board: string[] | null[]): {
+  winner: string | null;
   winRow: [number?, number?, number?];
 } {
   const lines: [number, number, number][] = [
@@ -30,7 +30,7 @@ export function calculateWinner(board: string[] | undefined[]): {
       return { winner: board[a], winRow: lines[i] };
     }
   }
-  return { winner: undefined, winRow: [] };
+  return { winner: null, winRow: [] };
 }
 
 export default getTurn;

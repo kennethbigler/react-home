@@ -58,9 +58,9 @@ const Job: React.FC<JobProps> = (props: JobProps) => {
         {job.expr && (
           <ul>
             {job.expr.map((desc, i) => (
-              <Typography key={`desc${i}`}>
-                <li>{desc}</li>
-              </Typography>
+              <li key={`desc${i}`}>
+                <Typography>{desc}</Typography>
+              </li>
             ))}
           </ul>
         )}

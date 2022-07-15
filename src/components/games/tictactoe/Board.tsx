@@ -7,7 +7,7 @@ import { grey } from "@mui/material/colors";
 import Cell from "./Cell";
 
 interface BoardProps {
-  board: string[] | undefined[];
+  board: string[] | null[];
   onClick: (cell: number) => void;
   winRow: [number?, number?, number?];
 }
@@ -21,33 +21,30 @@ const tableCellStyle: React.CSSProperties = {
 const Board: React.FC<BoardProps> = (props: BoardProps) => {
   const { board, onClick, winRow } = props;
 
-  const cells = React.useMemo(() => {
-    const newCells = [];
+  const cells = [];
 
-    // create 3 rows
-    for (let i = 0; i < 3; i += 1) {
-      // create 3 cells in a row
-      const row = [];
-      for (let j = 0; j < 3; j += 1) {
-        const c = i * 3 + j;
-        // check if winning position
-        const winner = winRow.includes(c);
-        row.push(
-          <TableCell key={`${i},${j}`} style={tableCellStyle}>
-            <Cell
-              onClick={(): void => onClick(c)}
-              value={board[c]}
-              winner={winner}
-            />
-          </TableCell>
-        );
-      }
-      const boardRow = <TableRow key={`row${i}`}>{row}</TableRow>;
-      // separate into rows
-      newCells.push(boardRow);
+  // create 3 rows
+  for (let i = 0; i < 3; i += 1) {
+    // create 3 cells in a row
+    const row = [];
+    for (let j = 0; j < 3; j += 1) {
+      const c = i * 3 + j;
+      // check if winning position
+      const winner = winRow.includes(c);
+      row.push(
+        <TableCell key={`${i},${j}`} style={tableCellStyle}>
+          <Cell
+            onClick={(): void => onClick(c)}
+            value={board[c]}
+            winner={winner}
+          />
+        </TableCell>
+      );
     }
-    return newCells;
-  }, [board, onClick, winRow]);
+    const boardRow = <TableRow key={`row${i}`}>{row}</TableRow>;
+    // separate into rows
+    cells.push(boardRow);
+  }
 
   return (
     <Table>

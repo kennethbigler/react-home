@@ -90,7 +90,6 @@ describe("games | poker | Poker", () => {
     expect(screen.getByText("5 Card Draw Poker")).toBeInTheDocument();
     expect(screen.getByText("Ken: $100")).toBeInTheDocument();
     expect(screen.getByText("Bot-2: $100")).toBeInTheDocument();
-    expect(screen.getByText("Dealer: $100")).toBeInTheDocument();
     expect(screen.getByText("Start Game")).toBeInTheDocument();
 
     // starts the game

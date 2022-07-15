@@ -42,16 +42,17 @@ const pokerState = selector({
   get: ({ get }) => {
     const poker = get(pokerAtom);
     const turn = get(turnAtom);
-    const players = get(playerAtom);
+    const players = get(playerAtom).slice(0, 5);
 
     return { poker, turn, players };
   },
-  set: ({ set }, state) => {
+  set: ({ get, set }, state) => {
     if (!(state instanceof DefaultValue)) {
       const { poker, turn, players } = state;
+      const dataPlayers = get(playerAtom);
       set(pokerAtom, poker);
       set(turnAtom, turn);
-      set(playerAtom, players);
+      set(playerAtom, [...players, dataPlayers[4], dataPlayers[5]]);
     }
   },
 });

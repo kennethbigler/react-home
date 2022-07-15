@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
 export interface HistoryEntry {
-  board: string[] | undefined[];
+  board: string[] | null[];
   location?: number;
 }
 export interface TicTacToeState {
@@ -12,7 +12,7 @@ export interface TicTacToeState {
 
 export const X = "X";
 export const O = "O";
-export const EMPTY = undefined;
+export const EMPTY = null;
 export const newTicTacToe = (): TicTacToeState => ({
   history: [{ board: Array(9).fill(EMPTY) }],
   turn: X,

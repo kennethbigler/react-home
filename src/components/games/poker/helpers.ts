@@ -193,18 +193,11 @@ export const computer = async (
   return player;
 };
 
-export const DEALER = 0;
-export const LAST_PLAYER = 5;
-
 export const findAndPayWinner = (players: DBPlayer[]): void => {
   let winner = { val: 0, id: 0 };
 
   players.forEach((player) => {
-    if (
-      player.id === DEALER ||
-      player.id > LAST_PLAYER ||
-      player.hands[0]?.cards.length < 1
-    ) {
+    if (player.hands[0]?.cards.length < 1) {
       return;
     }
 
@@ -215,10 +208,6 @@ export const findAndPayWinner = (players: DBPlayer[]): void => {
   });
 
   players.forEach((player, i) => {
-    if (player.id === DEALER || player.id > LAST_PLAYER) {
-      return;
-    }
-
     if (player.id === winner.id) {
       const newPlayer = { ...player, status: "win", money: player.money + 20 };
       players[i] = newPlayer;
