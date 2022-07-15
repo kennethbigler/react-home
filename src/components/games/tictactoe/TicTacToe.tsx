@@ -70,8 +70,6 @@ const TicTacToe: React.FC = () => {
   const board = current.board.slice();
   const { winner, winRow } = calculateWinner(board);
 
-  console.log(winner, winRow);
-
   return (
     <>
       <Typography variant="h2" gutterBottom>

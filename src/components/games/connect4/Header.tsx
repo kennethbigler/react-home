@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
           color="primary"
           onClick={newGame}
           variant="contained"
-          role="button"
+          style={{ color: "black" }}
         >
           Reset Game
         </Button>

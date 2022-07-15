@@ -22,7 +22,6 @@ const Case: React.FC<CaseProps> = (props: CaseProps) => {
       disabled={!bc.on}
       onClick={onClick}
       style={style}
-      role="button"
       variant="contained"
     >
       {label}
