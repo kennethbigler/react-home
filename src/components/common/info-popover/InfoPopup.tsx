@@ -25,6 +25,7 @@ const InfoPopup = (props: InfoPopupProps): React.ReactElement => {
         color="primary"
         onClick={handleOpen as React.MouseEventHandler}
         variant="contained"
+        style={{ color: "black" }}
       >
         {buttonText || title}
       </Button>

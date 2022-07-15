@@ -13,7 +13,10 @@ const payoutTable = [
   { symbol: `${SO.TRIPLE_BAR} ${SO.TRIPLE_BAR} ${SO.TRIPLE_BAR}`, payout: 100 },
   { symbol: `${SO.DOUBLE_BAR} ${SO.DOUBLE_BAR} ${SO.DOUBLE_BAR}`, payout: 50 },
   { symbol: `${SO.BAR} ${SO.BAR} ${SO.BAR}`, payout: 25 },
-  { symbol: "3 of any bar", payout: 12 },
+  {
+    symbol: `3 of any ${SO.BAR} ${SO.DOUBLE_BAR} ${SO.TRIPLE_BAR}`,
+    payout: 12,
+  },
   { symbol: `${SO.CHERRY} ${SO.CHERRY} ${SO.CHERRY}`, payout: 12 },
   { symbol: `${SO.CHERRY} ${SO.CHERRY}`, payout: 6 },
   { symbol: SO.CHERRY, payout: 3 },

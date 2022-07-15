@@ -25,12 +25,7 @@ const ReelDisplay: React.FC<ReelDisplayProps> = (props: ReelDisplayProps) => {
       // create 3 cells in a row
       const row = reel.map((reelRow, j) => (
         <TableCell key={`${j},${i}`}>
-          <Typography
-            variant="h4"
-            align="center"
-            color="secondary"
-            style={cellStyles}
-          >
+          <Typography variant="h4" align="center" style={cellStyles}>
             {reelRow[i]}
           </Typography>
         </TableCell>

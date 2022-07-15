@@ -23,7 +23,7 @@ describe("games | game-table | GameTable", () => {
     );
 
     expect(screen.getByText("Ken: $1000").parentElement).toHaveStyle({
-      background: "rgb(128, 222, 234)",
+      background: "rgb(224, 224, 224)",
     });
     expect(screen.getByText("Ken: $1000")).toBeInTheDocument();
     expect(screen.getByText("Bet: $5")).toBeInTheDocument();

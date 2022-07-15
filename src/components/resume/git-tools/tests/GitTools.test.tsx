@@ -25,7 +25,7 @@ describe("resume | git-tools |  GitTools", () => {
     expect(screen.getByText("Git Tools")).toBeInTheDocument();
     expect(screen.getAllByText("User Story ID")).toHaveLength(2);
     expect(screen.getAllByText("User Story ID")[0]).toHaveStyle(
-      "color: rgb(244, 81, 30);"
+      "color: rgb(191, 54, 12);"
     );
 
     // Create Branch Name

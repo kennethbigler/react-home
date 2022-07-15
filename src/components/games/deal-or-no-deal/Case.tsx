@@ -9,7 +9,7 @@ interface CaseProps {
   secondary?: boolean;
 }
 
-const style = { margin: 10 };
+const style = { margin: 10, color: "black" };
 
 const Case: React.FC<CaseProps> = (props: CaseProps) => {
   const { onClick, briefcase: bc, secondary } = props;

@@ -11,7 +11,7 @@ import ExpandableCard from "../../common/expandable-card";
 
 import { getSelectOptions, validTypingId } from "./helpers";
 
-const gitTheme = deepOrange[600];
+const gitTheme = deepOrange[900];
 
 /* GitTools  ->  Header
  *          |->  BranchName    -|

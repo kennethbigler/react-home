@@ -22,7 +22,9 @@ describe("common | ExpandableCard", () => {
     describe("Title Text Colors", () => {
       it("displays title with white text by default", () => {
         render(<ExpandableCard title="Title" />);
-        expect(screen.getByText("Title")).toHaveStyle({ color: "white" });
+        expect(screen.getByText("Title")).toHaveStyle({
+          color: "rgb(255, 255, 255)",
+        });
       });
 
       it("displays title with black text when inverted", () => {
@@ -32,13 +34,6 @@ describe("common | ExpandableCard", () => {
     });
 
     describe("Title Background Colors", () => {
-      it("displays title with white text by default", () => {
-        render(<ExpandableCard title="Title" />);
-        expect(
-          screen.getByText("Title").parentElement?.parentElement
-        ).toHaveStyle({ backgroundColor: "rgb(25, 118, 210)" });
-      });
-
       it("displays title with black text when inverted", () => {
         render(<ExpandableCard title="Title" backgroundColor="#333" />);
         expect(

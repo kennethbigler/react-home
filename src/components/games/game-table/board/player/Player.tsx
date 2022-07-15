@@ -2,7 +2,7 @@ import React from "react";
 import Slider from "@mui/material/Slider";
 import { Typography } from "@mui/material";
 import Card from "@mui/material/Card";
-import { cyan, green, blueGrey, red } from "@mui/material/colors";
+import { green, blueGrey, red, grey } from "@mui/material/colors";
 import Hand from "../Hand";
 import { DBPlayer } from "../../../../../recoil/player-atom";
 import { TurnState } from "../../../../../recoil/turn-atom";
@@ -46,21 +46,19 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
     },
     [betHandler, player.id]
   );
+  const weight: React.CSSProperties = {
+    fontWeight: isPlayerTurn ? "bold" : "normal",
+  };
   // set colors
-  let color: React.CSSProperties = isPlayerTurn
-    ? { background: cyan[200] }
-    : {};
-  const weight: React.CSSProperties = isPlayerTurn
-    ? { fontWeight: "bold" }
-    : { fontWeight: "normal" };
+  let color: React.CSSProperties = { background: grey[900], color: "white" };
   if (player.status === "win") {
-    color = { background: green[300] };
-  }
-  if (player.status === "draw") {
-    color = { background: blueGrey[300] };
-  }
-  if (player.status === "lose") {
-    color = { background: red[300] };
+    color = { background: green[300], color: "white" };
+  } else if (player.status === "draw") {
+    color = { background: blueGrey[300], color: "white" };
+  } else if (player.status === "lose") {
+    color = { background: red[300], color: "white" };
+  } else if (isPlayerTurn) {
+    color = { background: grey[300], color: "black" };
   }
 
   return (
