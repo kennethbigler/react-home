@@ -15,6 +15,8 @@ interface DropdownProps {
   roundNumber: number;
 }
 
+const buttonTextColor: React.CSSProperties = { color: "black" };
+
 const Dropdown = (props: DropdownProps) => {
   const { roundNumber, options, onSelect } = props;
 
@@ -53,13 +55,14 @@ const Dropdown = (props: DropdownProps) => {
         aria-label="split button"
         color={roundNumber + 2 === options.length ? "error" : "primary"}
       >
-        <Button>{options[roundNumber]}</Button>
+        <Button style={buttonTextColor}>{options[roundNumber]}</Button>
         <Button
           size="small"
           aria-controls={open ? "split-button-menu" : undefined}
           aria-expanded={open ? "true" : undefined}
           aria-label="select matchup"
           aria-haspopup="menu"
+          style={buttonTextColor}
           onClick={handleToggle}
         >
           <ArrowDropDownIcon />

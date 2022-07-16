@@ -9,7 +9,7 @@ interface CaseProps {
   secondary?: boolean;
 }
 
-const style = { margin: 10 };
+const style = { margin: 10, color: "black" };
 
 const Case: React.FC<CaseProps> = (props: CaseProps) => {
   const { onClick, briefcase: bc, secondary } = props;
@@ -22,7 +22,6 @@ const Case: React.FC<CaseProps> = (props: CaseProps) => {
       disabled={!bc.on}
       onClick={onClick}
       style={style}
-      role="button"
       variant="contained"
     >
       {label}

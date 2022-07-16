@@ -1,11 +1,11 @@
 export enum SlotOption {
-  EMPTY = " ",
-  CHERRY = "C",
-  BAR = "—",
-  DOUBLE_BAR = "=",
-  TRIPLE_BAR = "Ξ",
-  SEVEN = "7",
-  JACKPOT = "J",
+  EMPTY = "-",
+  CHERRY = "🍒",
+  BAR = "🍺",
+  DOUBLE_BAR = "🍻",
+  TRIPLE_BAR = "🥃",
+  SEVEN = "❌",
+  JACKPOT = "💰",
 }
 export type SlotDisplay = [SlotOption, SlotOption, SlotOption];
 

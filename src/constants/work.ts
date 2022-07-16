@@ -152,6 +152,7 @@ const workExp: Job[] = [
   {
     type: WORK,
     color: lightBlue[700],
+    inverted: true,
     company: "Cisco Systems",
     short: "CSCO",
     location: "San Jose, CA",

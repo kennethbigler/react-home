@@ -43,9 +43,8 @@ const Slots: React.FC = () => {
               <Button
                 color="primary"
                 onClick={updateSlotMachine}
-                style={{ marginBottom: 15 }}
+                style={{ marginBottom: 15, color: "black" }}
                 variant="contained"
-                role="button"
               >
                 Spin
               </Button>

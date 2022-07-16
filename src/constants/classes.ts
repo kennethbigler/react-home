@@ -1,4 +1,4 @@
-import { red, indigo, blue } from "@mui/material/colors";
+import { red, indigo, blue, pink } from "@mui/material/colors";
 
 import dateObj, { DateObj } from "../apis/DateHelper";
 import { DataEntry } from "../components/common/timeline-card/Timeline";
@@ -72,7 +72,7 @@ export const getEnd = (quarter: QTR, yy: number): DateObj => {
 // --------------------     Constants     -------------------- //
 const schools: School[] = [
   {
-    color: blue[500],
+    color: blue[900],
     degree: "Hackathons",
     subtitle: "",
     years: [
@@ -124,7 +124,7 @@ const schools: School[] = [
   },
   {
     school: QTR.SCU,
-    color: red[900],
+    color: pink[900],
     location: "Santa Clara, CA",
     degree: "Master of Science",
     major: "Computer Engineering",
@@ -227,7 +227,7 @@ const schools: School[] = [
   },
   {
     school: QTR.SCU,
-    color: red[900],
+    color: pink[900],
     location: "Santa Clara, CA",
     degree: "Bachelor of Science",
     major: "Computer Science & Engineering",
@@ -529,7 +529,7 @@ const schools: School[] = [
   },
   {
     school: "Stanford University",
-    color: red[500],
+    color: red.A700,
     location: "Stanford, CA",
     degree:
       "Stanford Continuing Studies & Undergrad High School Summer Visitor",

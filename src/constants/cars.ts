@@ -51,14 +51,14 @@ const familyCars = [
     weight: 2932,
   },
   {
-    color: yellow[600],
+    color: lime[800],
+    inverted: true,
     start: dateObj("2010-02"),
     end: dateObj(),
     car: "Equinox",
     short: "Eqnox",
     char: "E",
     title: equinox,
-    inverted: true,
 
     owned: "2010 - present",
     story: `My Mother's ${equinox}.`,
@@ -94,6 +94,7 @@ const familyCars = [
   },
   {
     color: lime[800],
+    inverted: true,
     start: dateObj("2017-10"),
     end: dateObj("2021-08"),
     car: "Jag XJ8-L",

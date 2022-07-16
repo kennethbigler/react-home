@@ -32,7 +32,7 @@ const DATE_FORMAT: FormatOutput = "MMMM Y";
 const TimelineCard = (props: TimelineCardProps): React.ReactElement | null => {
   const {
     data = workExperience,
-    backgroundColor = grey[700],
+    backgroundColor = grey[800],
     title = TIMELINE_TITLE,
     selector = "company",
     start = dateObj("2011-09"),
