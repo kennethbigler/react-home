@@ -7,6 +7,7 @@
         "errors-in-console": "off",
         "heading-order": "off",
         "non-composited-animations": "off",
+        "preload-lcp-image": "off",
         "service-worker": "off",
         "unsized-images": "off",
         "unused-javascript": "off",
