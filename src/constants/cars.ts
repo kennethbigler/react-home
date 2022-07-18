@@ -328,6 +328,8 @@ export interface GraphData extends CarStats {
   powerToWeight: number;
 }
 
+const kWeight = 245;
+
 export const processData = (data: CarStats[]): GraphData[] => {
   if (data.length === 0) {
     return [];
@@ -338,29 +340,32 @@ export const processData = (data: CarStats[]): GraphData[] => {
     horsepower: data[0].horsepower,
     MPG: data[0].MPG,
     torque: data[0].torque,
-    weight: data[0].weight,
-    powerToWeight: data[0].horsepower / data[0].weight,
+    weight: data[0].weight + kWeight,
+    powerToWeight: data[0].horsepower / (data[0].weight + kWeight),
   };
   const min = { ...max };
 
   // find the min and max values in the array
   for (let i = 1; i < data.length; i += 1) {
-    const powerToWeight = data[i].horsepower / data[i].weight;
+    const {
+      horsepower,
+      displacement,
+      MPG,
+      torque,
+      weight: dryWeight,
+    } = data[i];
+    const weight = dryWeight + kWeight;
+    const powerToWeight = horsepower / weight;
 
-    (data[i].displacement > max.displacement &&
-      (max.displacement = data[i].displacement)) ||
-      (data[i].displacement < min.displacement &&
-        (min.displacement = data[i].displacement));
-    (data[i].horsepower > max.horsepower &&
-      (max.horsepower = data[i].horsepower)) ||
-      (data[i].horsepower < min.horsepower &&
-        (min.horsepower = data[i].horsepower));
-    (data[i].MPG > max.MPG && (max.MPG = data[i].MPG)) ||
-      (data[i].MPG < min.MPG && (min.MPG = data[i].MPG));
-    (data[i].torque > max.torque && (max.torque = data[i].torque)) ||
-      (data[i].torque < min.torque && (min.torque = data[i].torque));
-    (data[i].weight > max.weight && (max.weight = data[i].weight)) ||
-      (data[i].weight < min.weight && (min.weight = data[i].weight));
+    (displacement > max.displacement && (max.displacement = displacement)) ||
+      (displacement < min.displacement && (min.displacement = displacement));
+    (horsepower > max.horsepower && (max.horsepower = horsepower)) ||
+      (horsepower < min.horsepower && (min.horsepower = horsepower));
+    (MPG > max.MPG && (max.MPG = MPG)) || (MPG < min.MPG && (min.MPG = MPG));
+    (torque > max.torque && (max.torque = torque)) ||
+      (torque < min.torque && (min.torque = torque));
+    (weight > max.weight && (max.weight = weight)) ||
+      (weight < min.weight && (min.weight = weight));
     (powerToWeight > max.powerToWeight &&
       (max.powerToWeight = powerToWeight)) ||
       (powerToWeight < min.powerToWeight &&

@@ -95,10 +95,10 @@ const TravelMap: React.FC = React.memo(() => (
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell style={cellStyles}>Description</TableCell>
+          <TableCell style={cellStyles}>Description 📍</TableCell>
           <TableCell style={cellStyles}>Ship 🚢</TableCell>
-          <TableCell style={cellStyles}>Nights ( {totalNights} )</TableCell>
-          <TableCell style={cellStyles}>Departure</TableCell>
+          <TableCell style={cellStyles}>Nights ({totalNights} 🌙)</TableCell>
+          <TableCell style={cellStyles}>Departure 🗓</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>{cruiseCells}</TableBody>
