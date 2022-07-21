@@ -66,10 +66,10 @@ jobs:
 
       # Error: TypeError: chrome.setDefaultService is not a function
       # https://github.com/dequelabs/axe-core-npm/issues/538
-      # - name: Run axe
-      #   run: |
-      #     npm install -g @axe-core/cli
-      #     axe http://localhost:3000 --exit
+      - name: Run axe
+        run: |
+          npm install -g @axe-core/cli
+          axe http://localhost:3000 --exit
       #     axe http://localhost:3000 --exit
       #     axe http://localhost:3000/#/work --exit
       #     axe http://localhost:3000/#/resume --exit
