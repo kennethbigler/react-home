@@ -94,28 +94,8 @@ jobs:
 
       - name: Run pa11y
         run: |
-          npm install -g pa11y
-          pa11y http://localhost:3000
-          pa11y http://localhost:3000/#/work
-          pa11y http://localhost:3000/#/resume
-          pa11y http://localhost:3000/#/education
-          pa11y http://localhost:3000/#/git-tools
-          pa11y http://localhost:3000/#/graphql
-          pa11y http://localhost:3000/#/cars
-          pa11y http://localhost:3000/#/travel
-          pa11y http://localhost:3000/#/murder
-          # emoji's are not working well here, need to rework
-          # pa11y http://localhost:3000/#/games
-          pa11y http://localhost:3000/#/games/blackjack
-          pa11y http://localhost:3000/#/games/deal
-          pa11y http://localhost:3000/#/games/poker
-          pa11y http://localhost:3000/#/games/slots
-          pa11y http://localhost:3000/#/games/yahtzee
-          pa11y http://localhost:3000/#/games/are-you-the-one
-          pa11y http://localhost:3000/#/games/connect4
-          # really need to contribute better color contrast back to mui
-          # pa11y http://localhost:3000/#/games/family-feud
-          pa11y http://localhost:3000/#/games/tictactoe
+          npm install -g pa11y-ci
+          pa11y-ci
 
   # Adding a code analyzer job
   analyze:
