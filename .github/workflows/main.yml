@@ -30,7 +30,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3.4.1
         with:
           node-version: ${{ matrix.node-version }}
@@ -52,23 +52,34 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Run the tests and generate coverage report
+      - name: Run tests with coverage
         run: npm test -- --coverage
 
-      - name: Upload coverage to Codecov
+      - name: Codecov
         uses: codecov/codecov-action@v3.1.0
 
-      - run: npm install -g @lhci/cli@0.8.x
       - name: Run lighthouse
-        run: lhci autorun
+        run: |
+          npm install --location=global @lhci/cli@0.8.x
+          lhci autorun
 
-      - run: npm start & npx wait-on http://localhost:3000
+      - name: Start App
+        run: npm start & npx wait-on http://localhost:3000
+
+      - name: Run pa11y
+        run: |
+          npm install --location=global pa11y-ci
+          pa11y-ci
+          # TODO: emoji's are not working well here, need to rework
+          # "http://localhost:3000/#/games"
+          # TODO: really need to contribute better color contrast back to mui
+          # "http://localhost:3000/#/games/family-feud"
 
       # Error: TypeError: chrome.setDefaultService is not a function
       # https://github.com/dequelabs/axe-core-npm/issues/538
       - name: Run axe
         run: |
-          npm install -g @axe-core/cli
+          npm install --location=global @axe-core/cli
           axe http://localhost:3000 -q -v
       #     axe http://localhost:3000 --exit
       #     axe http://localhost:3000/#/work --exit
@@ -91,15 +102,6 @@ jobs:
       #     # really need to contribute better color contrast back to mui
       #     # axe http://localhost:3000/#/games/family-feud --exit
       #     axe http://localhost:3000/#/games/tictactoe --exit
-
-      - name: Run pa11y
-        run: |
-          npm install -g pa11y-ci
-          pa11y-ci
-          # TODO: emoji's are not working well here, need to rework
-          # "http://localhost:3000/#/games"
-          # TODO: really need to contribute better color contrast back to mui
-          # "http://localhost:3000/#/games/family-feud"
 
   # Adding a code analyzer job
   analyze:
