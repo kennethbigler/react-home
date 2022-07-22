@@ -63,11 +63,9 @@ jobs:
           npm install --location=global @lhci/cli@0.8.x
           lhci autorun
 
-      - name: Start App
-        run: npm start & npx wait-on http://localhost:3000
-
-      - name: Run pa11y-ci with axe
+      - name: Run pa11y-ci
         run: |
+          npm start & npx wait-on http://localhost:3000
           npm install --location=global pa11y-ci
           pa11y-ci
 

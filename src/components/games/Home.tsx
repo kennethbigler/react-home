@@ -40,7 +40,9 @@ const generateMenuItems =
           <Typography variant="h5" textAlign="center">
             {name}
           </Typography>
-          <Avatar style={{ margin: "auto", marginTop: 30 }}>{icon}</Avatar>
+          <Avatar style={{ margin: "auto", marginTop: 30, color: "white" }}>
+            {icon}
+          </Avatar>
         </CardContent>
       </Card>
     );
