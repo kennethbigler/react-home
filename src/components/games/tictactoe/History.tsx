@@ -50,7 +50,7 @@ const History: React.FC<HistoryProps> = (props: HistoryProps) => {
         onClick={(): void => {
           setAscend(!ascend);
         }}
-        style={{ marginTop: 20, marginBottom: 20, color: "black" }}
+        style={{ marginTop: 20, marginBottom: 20 }}
         variant="contained"
       >
         {ascend ? "Asc" : "Desc"}

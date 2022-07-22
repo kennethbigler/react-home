@@ -60,7 +60,6 @@ const TableHeader: React.FC<TableHeaderProps> = (props: TableHeaderProps) => {
         onClick={handleDiceRoll}
         variant="contained"
         disabled={roll === 3}
-        style={{ color: "black" }}
       >
         {getButtonText(roll)}
       </Button>

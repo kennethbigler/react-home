@@ -72,8 +72,6 @@ jobs:
           pa11y-ci
           # TODO: emoji's are not working well here, need to rework
           # "http://localhost:3000/#/games"
-          # TODO: really need to contribute better color contrast back to mui
-          # "http://localhost:3000/#/games/family-feud"
 
   # Adding a code analyzer job
   analyze:

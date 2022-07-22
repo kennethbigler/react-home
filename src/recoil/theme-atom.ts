@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { blueGrey, deepOrange, teal } from "@mui/material/colors";
+import { indigo, deepOrange, teal, deepPurple } from "@mui/material/colors";
 import { Color } from "@mui/material";
 
 export const themes = ["light", "dark"] as const;
@@ -13,12 +13,12 @@ export interface ThemeState {
 
 export const darkTheme: ThemeState = {
   mode: themes[1],
-  primary: teal,
-  secondary: deepOrange,
+  primary: deepPurple,
+  secondary: teal,
 };
 export const lightTheme: ThemeState = {
   mode: themes[0],
-  primary: blueGrey,
+  primary: indigo,
   secondary: deepOrange,
 };
 

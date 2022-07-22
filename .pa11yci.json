@@ -19,6 +19,7 @@
     "http://localhost:3000/#/games/yahtzee",
     "http://localhost:3000/#/games/are-you-the-one",
     "http://localhost:3000/#/games/connect4",
+    "http://localhost:3000/#/games/family-feud",
     "http://localhost:3000/#/games/tictactoe"
   ]
 }
