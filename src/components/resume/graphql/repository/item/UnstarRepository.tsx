@@ -75,7 +75,7 @@ const UnstarRepository: React.FC<StarRepositoryProps> = (
       className="RepositoryItem-title-action"
       onClick={removeStar as React.MouseEventHandler}
       variant="outlined"
-      color="primary"
+      color="secondary"
     >
       {`UnStar (${stargazers.totalCount})`}
     </Button>

@@ -9,7 +9,6 @@ export interface ButtonProps {
 const Button: React.FC<ButtonProps> = React.memo(
   ({ onClick, name }: ButtonProps) => (
     <MuiButton
-      color="primary"
       onClick={(): void => onClick(name)}
       style={{ margin: 12 }}
       variant="contained"

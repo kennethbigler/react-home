@@ -48,22 +48,22 @@ const Modal: React.FC<ModalProps> = (props: ModalProps) => {
       </DialogContent>
       {numCases > 2 ? (
         <DialogActions>
-          <Button color="primary" onClick={deal}>
+          <Button color="success" onClick={deal}>
             Deal
           </Button>
-          <Button color="secondary" onClick={noDeal}>
+          <Button color="error" onClick={noDeal}>
             No Deal
           </Button>
         </DialogActions>
       ) : (
         <DialogActions>
-          <Button color="primary" onClick={deal}>
+          <Button color="success" onClick={deal}>
             Deal
           </Button>
           <Button color="secondary" onClick={noDeal}>
             My Case
           </Button>
-          <Button color="secondary" onClick={swap}>
+          <Button color="error" onClick={swap}>
             Other Case
           </Button>
         </DialogActions>

@@ -36,27 +36,25 @@ const TableHeader: React.FC<TableHeaderProps> = (props: TableHeaderProps) => {
       <div style={wrapperStyles}>
         {saved.map((val, i) => (
           <Button
-            color="secondary"
-            onClick={(): void => handleUnsave(i)}
-            variant="outlined"
             key={i}
+            variant="contained"
+            onClick={(): void => handleUnsave(i)}
           >
             {val}
           </Button>
         ))}
         {values.map((val, i) => (
           <Button
-            color="primary"
-            onClick={(): void => handleSave(i)}
-            variant="outlined"
             key={i}
+            color="secondary"
+            variant="outlined"
+            onClick={(): void => handleSave(i)}
           >
             {val}
           </Button>
         ))}
       </div>
       <Button
-        color="primary"
         onClick={handleDiceRoll}
         variant="contained"
         disabled={roll === 3}

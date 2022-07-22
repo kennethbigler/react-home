@@ -41,7 +41,6 @@ const Slots: React.FC = () => {
           <Grid container spacing={1} style={{ marginBottom: "1em" }}>
             <Grid item sm={3} xs={12}>
               <Button
-                color="primary"
                 onClick={updateSlotMachine}
                 style={{ marginBottom: 15 }}
                 variant="contained"

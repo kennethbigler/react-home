@@ -103,7 +103,7 @@ const WatchRepository: React.FC<WatchRepositoryProps> = (
       className="RepositoryItem-title-action"
       onClick={updateSubscription as React.MouseEventHandler}
       variant="outlined"
-      color="primary"
+      color="secondary"
     >
       {`${isWatch(viewerSubscription) ? "Unwatch" : "Watch"} (${
         watchers.totalCount

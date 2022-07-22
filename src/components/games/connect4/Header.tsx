@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
           </Typography>
           <Piece piece={piece} />
         </div>
-        <Button color="primary" onClick={newGame} variant="contained">
+        <Button onClick={newGame} variant="contained">
           Reset Game
         </Button>
       </div>
