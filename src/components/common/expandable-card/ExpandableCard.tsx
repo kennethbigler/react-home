@@ -51,13 +51,11 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
     color: inverted ? "black" : palette.primary.contrastText,
   };
 
-  const titleJSX = (
-    <Typography style={titleStyle} variant="h6">
-      {title}
-    </Typography>
-  );
+  const titleJSX = <Typography style={titleStyle}>{title}</Typography>;
   const subtitleJSX = expanded ? (
-    <Typography style={titleStyle}>{subtitle}</Typography>
+    <Typography style={titleStyle} variant="body2">
+      {subtitle}
+    </Typography>
   ) : null;
 
   return (

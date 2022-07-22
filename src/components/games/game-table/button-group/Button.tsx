@@ -1,8 +1,6 @@
 import React from "react";
 import MuiButton from "@mui/material/Button";
 
-const buttonStyle: React.CSSProperties = { margin: 12, color: "black" };
-
 export interface ButtonProps {
   onClick: (name: string) => void;
   name: string;
@@ -11,9 +9,8 @@ export interface ButtonProps {
 const Button: React.FC<ButtonProps> = React.memo(
   ({ onClick, name }: ButtonProps) => (
     <MuiButton
-      color="primary"
       onClick={(): void => onClick(name)}
-      style={buttonStyle}
+      style={{ margin: 12 }}
       variant="contained"
     >
       {name}

@@ -33,8 +33,8 @@ const FamilyFeud = () => {
       <br />
       <Tabs
         value={value}
-        indicatorColor="primary"
-        textColor="primary"
+        indicatorColor="secondary"
+        textColor="secondary"
         onChange={handleChange}
         aria-label="disabled tabs example"
       >

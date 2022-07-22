@@ -22,10 +22,8 @@ const InfoPopup = (props: InfoPopupProps): React.ReactElement => {
   return (
     <>
       <Button
-        color="primary"
         onClick={handleOpen as React.MouseEventHandler}
         variant="contained"
-        style={{ color: "black" }}
       >
         {buttonText || title}
       </Button>
@@ -40,7 +38,7 @@ const InfoPopup = (props: InfoPopupProps): React.ReactElement => {
         <DialogContent>{children}</DialogContent>
         <DialogActions>
           <Button
-            color="primary"
+            color="secondary"
             onClick={handleClose as React.MouseEventHandler}
           >
             Close

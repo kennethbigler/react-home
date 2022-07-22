@@ -74,7 +74,7 @@ const StarRepository: React.FC<StarRepositoryProps> = (
       className="RepositoryItem-title-action"
       onClick={addStar as React.MouseEventHandler}
       variant="outlined"
-      color="primary"
+      color="secondary"
     >
       {`Star (${stargazers.totalCount})`}
     </Button>

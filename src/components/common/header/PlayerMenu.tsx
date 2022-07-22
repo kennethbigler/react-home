@@ -86,7 +86,6 @@ const PlayerMenu: React.FC = () => {
               <Switch
                 checked={isBot[i]}
                 value={isBot[i]}
-                color="primary"
                 onChange={(_e, isC): void => handleToggle(p.id, isC)}
                 title={`isBot-switch-${i}`}
               />

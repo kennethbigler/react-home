@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
               : `Number of Cases to Open: ${casesToOpen}`)}
         </Typography>
         {isOver ? (
-          <Button color="primary" onClick={newGame} variant="contained">
+          <Button onClick={newGame} variant="contained">
             New Game
           </Button>
         ) : null}

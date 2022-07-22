@@ -44,7 +44,7 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
     ): React.ReactNode =>
       showButton ? (
         <Button
-          color="primary"
+          color="secondary"
           variant="outlined"
           onClick={
             wasTop
@@ -56,7 +56,7 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
         </Button>
       ) : (
         <Button
-          color="primary"
+          color="secondary"
           variant="outlined"
           onClick={
             wasTop

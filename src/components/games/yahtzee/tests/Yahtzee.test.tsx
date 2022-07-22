@@ -42,47 +42,47 @@ describe("games | yahtzee | Yahtzee", () => {
     // --------------------     saves and un-saves a dice     -------------------- //
     // baseline
     expect(
-      container.querySelectorAll(".MuiButton-outlinedPrimary")
+      container.querySelectorAll(".MuiButton-outlinedSecondary")
     ).toHaveLength(5);
     expect(
-      container.querySelectorAll(".MuiButton-outlinedSecondary")
-    ).toHaveLength(0);
+      container.querySelectorAll(".MuiButton-containedPrimary")
+    ).toHaveLength(2);
 
     // it doesn't save if dice aren't ready
     fireEvent.click(screen.getAllByRole("button")[1]);
     expect(
-      container.querySelectorAll(".MuiButton-outlinedPrimary")
+      container.querySelectorAll(".MuiButton-outlinedSecondary")
     ).toHaveLength(5);
     expect(
-      container.querySelectorAll(".MuiButton-outlinedSecondary")
-    ).toHaveLength(0);
+      container.querySelectorAll(".MuiButton-containedPrimary")
+    ).toHaveLength(2);
 
     // roll the dice
     fireEvent.click(screen.getByText("First Roll"));
     expect(
-      container.querySelectorAll(".MuiButton-outlinedPrimary")
+      container.querySelectorAll(".MuiButton-outlinedSecondary")
     ).toHaveLength(18);
     expect(
-      container.querySelectorAll(".MuiButton-outlinedSecondary")
-    ).toHaveLength(0);
+      container.querySelectorAll(".MuiButton-containedPrimary")
+    ).toHaveLength(2);
 
     // save the first button
     fireEvent.click(screen.getAllByRole("button")[1]);
     expect(
-      container.querySelectorAll(".MuiButton-outlinedPrimary")
+      container.querySelectorAll(".MuiButton-outlinedSecondary")
     ).toHaveLength(17);
     expect(
-      container.querySelectorAll(".MuiButton-outlinedSecondary")
-    ).toHaveLength(1);
+      container.querySelectorAll(".MuiButton-containedPrimary")
+    ).toHaveLength(3);
 
     // un-save the first button
     fireEvent.click(screen.getAllByRole("button")[1]);
     expect(
-      container.querySelectorAll(".MuiButton-outlinedPrimary")
+      container.querySelectorAll(".MuiButton-outlinedSecondary")
     ).toHaveLength(18);
     expect(
-      container.querySelectorAll(".MuiButton-outlinedSecondary")
-    ).toHaveLength(0);
+      container.querySelectorAll(".MuiButton-containedPrimary")
+    ).toHaveLength(2);
 
     // --------------------     saves to the top half scores     -------------------- //
     // do the next 2 rolls, then try to do the 4th

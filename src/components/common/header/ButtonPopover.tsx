@@ -22,7 +22,6 @@ const ButtonPopover = (props: ButtonPopoverProps): React.ReactElement => {
         variant="contained"
         component="button"
         onClick={setAnchor}
-        style={{ color: "black" }}
       >
         {buttonText}
       </Button>

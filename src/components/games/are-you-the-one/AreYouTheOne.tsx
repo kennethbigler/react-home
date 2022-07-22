@@ -7,9 +7,7 @@ import { ladies, gents, options } from "../../../constants/ayto";
 import aYTOAtom from "../../../recoil/are-you-the-one-atom";
 import useHist from "./analysis/useHist";
 
-/**
- * TODO: replace Dropdown with MUI Dropdown when available
- */
+/** TODO: replace Dropdown with MUI Dropdown when available */
 const AreYouTheOne = () => {
   const [{ matches, noMatch, roundPairings }, setState] =
     useRecoilState(aYTOAtom);
@@ -46,6 +44,22 @@ const AreYouTheOne = () => {
     newMatches[li][gi] = !newMatches[li][gi];
     // update state
     setState({ matches, noMatch: newMatches, roundPairings });
+  };
+
+  const handleBlackout = (pairs: number[]) => {
+    // create immutable copy for storage
+    const newNoMatches = noMatch.map((gentArray: boolean[]) => [...gentArray]);
+    // no match for all pairs
+    pairs.forEach((gi, li) => {
+      if (matches[li] !== gi && !noMatch[li][gi]) {
+        // if array for lady doesn't exist yet, create skeleton one
+        !newNoMatches[li] && (newNoMatches[li] = []);
+        // assign no match
+        newNoMatches[li][gi] = true;
+      }
+    });
+    // update state
+    setState({ matches, noMatch: newNoMatches, roundPairings });
   };
 
   const handleUpdatePairs = (ri: number, li: number, gi: number) => {
@@ -103,13 +117,11 @@ const AreYouTheOne = () => {
     <>
       <h1>Are You The One?</h1>
       <Controls
-        matches={matches}
-        noMatch={noMatch}
         onSelect={handleSelect}
         options={options}
         roundNumber={roundNumber}
         roundPairings={roundPairings}
-        updateNoMatch={handleUpdateNoMatch}
+        onBlackout={handleBlackout}
         updateScore={handleUpdateScore}
       />
       <br />

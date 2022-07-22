@@ -57,7 +57,7 @@ const FetchMore: React.FC<FetchMoreProps> = (props: FetchMoreProps) => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             onClick={(): void => fetchMore({ variables, updateQuery })}
             variant="outlined"
-            color="primary"
+            color="secondary"
           >
             {`More ${children || ""}`}
           </Button>

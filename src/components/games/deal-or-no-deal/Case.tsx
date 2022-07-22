@@ -9,8 +9,6 @@ interface CaseProps {
   secondary?: boolean;
 }
 
-const style = { margin: 10, color: "black" };
-
 const Case: React.FC<CaseProps> = (props: CaseProps) => {
   const { onClick, briefcase: bc, secondary } = props;
   const color = secondary ? "secondary" : "primary";
@@ -21,7 +19,7 @@ const Case: React.FC<CaseProps> = (props: CaseProps) => {
       color={color}
       disabled={!bc.on}
       onClick={onClick}
-      style={style}
+      style={{ margin: 10 }}
       variant="contained"
     >
       {label}
