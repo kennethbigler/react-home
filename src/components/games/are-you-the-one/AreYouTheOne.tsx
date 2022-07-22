@@ -48,6 +48,24 @@ const AreYouTheOne = () => {
     setState({ matches, noMatch: newMatches, roundPairings });
   };
 
+  const handleBlackout = (pairs: number[]) => {
+    console.log(pairs);
+    // create immutable copy for storage
+    const newNoMatches = noMatch.map((gentArray: boolean[]) => [...gentArray]);
+    // no match for all pairs
+    pairs.forEach((gi, li) => {
+      if (matches[li] !== gi && !noMatch[li][gi]) {
+        // if array for lady doesn't exist yet, create skeleton one
+        !newNoMatches[li] && (newNoMatches[li] = []);
+        // assign no match
+        newNoMatches[li][gi] = true;
+      }
+    });
+    console.log(newNoMatches);
+    // update state
+    setState({ matches, noMatch: newNoMatches, roundPairings });
+  };
+
   const handleUpdatePairs = (ri: number, li: number, gi: number) => {
     const newRoundPairing = !roundPairings[ri]
       ? { pairs: [], score: 0 }
@@ -103,13 +121,11 @@ const AreYouTheOne = () => {
     <>
       <h1>Are You The One?</h1>
       <Controls
-        matches={matches}
-        noMatch={noMatch}
         onSelect={handleSelect}
         options={options}
         roundNumber={roundNumber}
         roundPairings={roundPairings}
-        updateNoMatch={handleUpdateNoMatch}
+        onBlackout={handleBlackout}
         updateScore={handleUpdateScore}
       />
       <br />
