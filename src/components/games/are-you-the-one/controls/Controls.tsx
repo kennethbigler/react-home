@@ -68,7 +68,7 @@ const Controls = (props: ControlsProps) => {
       />
       {roundNumber < options.length - 2 && (
         <>
-          <Button variant="outlined" onClick={handleBlackout}>
+          <Button variant="outlined" color="secondary" onClick={handleBlackout}>
             Blackout
           </Button>
           <TextField
