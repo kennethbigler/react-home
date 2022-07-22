@@ -251,7 +251,6 @@ const BlackJack: React.FC = () => {
     }
   };
 
-  // TODO: This isn't running after a split for some reason
   const checkUpdate = async (): Promise<void> => {
     const player = players[turn.player];
     if (!player.isBot || hideHands || !player) {

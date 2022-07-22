@@ -7,9 +7,7 @@ import { ladies, gents, options } from "../../../constants/ayto";
 import aYTOAtom from "../../../recoil/are-you-the-one-atom";
 import useHist from "./analysis/useHist";
 
-/**
- * TODO: replace Dropdown with MUI Dropdown when available
- */
+/** TODO: replace Dropdown with MUI Dropdown when available */
 const AreYouTheOne = () => {
   const [{ matches, noMatch, roundPairings }, setState] =
     useRecoilState(aYTOAtom);
@@ -49,7 +47,6 @@ const AreYouTheOne = () => {
   };
 
   const handleBlackout = (pairs: number[]) => {
-    console.log(pairs);
     // create immutable copy for storage
     const newNoMatches = noMatch.map((gentArray: boolean[]) => [...gentArray]);
     // no match for all pairs
@@ -61,7 +58,6 @@ const AreYouTheOne = () => {
         newNoMatches[li][gi] = true;
       }
     });
-    console.log(newNoMatches);
     // update state
     setState({ matches, noMatch: newNoMatches, roundPairings });
   };

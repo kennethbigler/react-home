@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import Link from "@mui/material/Link";
 import originalMenuItems, { MenuItem } from "./menu-items";
 
 const menuItems = [...originalMenuItems];
@@ -49,9 +50,12 @@ const Home: React.FC<HomeProps> = React.memo(({ onItemClick }: HomeProps) => (
     <Typography variant="h2">Welcome to my ReactJS Game Projects</Typography>
     <Typography variant="h3">
       This site was created to learn, check out the{" "}
-      <a href="https://github.com/kennethbigler/react-home">
+      <Link
+        href="https://github.com/kennethbigler/react-home"
+        color="secondary"
+      >
         <code>&lt;source&nbsp;code/&gt;</code>
-      </a>
+      </Link>
     </Typography>
     <hr style={dividerStyles} />
     <Typography variant="h4" style={subHeaderStyles}>
