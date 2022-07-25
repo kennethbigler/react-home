@@ -4,6 +4,7 @@
 /node_modules
 /build
 /coverage
+/.lighthouseci
 
 # editor files
 /.idea
