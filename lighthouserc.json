@@ -8,7 +8,6 @@
         "heading-order": "warn",
         "non-composited-animations": "warn",
         "preload-lcp-image": "warn",
-        "service-worker": "warn",
         "unsized-images": "warn",
         "unused-javascript": "warn",
         "uses-rel-preconnect": "warn",
