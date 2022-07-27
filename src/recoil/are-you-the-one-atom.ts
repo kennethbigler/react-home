@@ -1,5 +1,5 @@
-import { atom } from "recoil";
-import { ladies, gents } from "../constants/ayto";
+import { atom, DefaultValue, selector } from "recoil";
+import { aytoSeasons, options } from "../constants/ayto";
 
 export interface RoundPairing {
   /** [lady-i: gent-i] */
@@ -17,18 +17,21 @@ export interface AYTOState {
   roundPairings: RoundPairing[];
 }
 
-export const newAreYouTheOne = (): AYTOState => ({
-  matches: ladies.map(() => -1),
-  noMatch: ladies.map(() => gents.map(() => false)),
+const newAYTOState = (season = 6): AYTOState => ({
+  matches: aytoSeasons[season].ladies.map(() => -1),
+  noMatch: aytoSeasons[season].ladies.map(() =>
+    aytoSeasons[season].gents.map(() => false)
+  ),
   roundPairings: [],
 });
 
-const areYouTheOneAtom = atom({
+/** used for main game state */
+export const areYouTheOneAtom = atom({
   key: "areYouTheOneAtom",
   default:
     (JSON.parse(
       localStorage.getItem("are-you-the-one-atom") || "null"
-    ) as AYTOState) || newAreYouTheOne(),
+    ) as AYTOState) || newAYTOState(),
   effects: [
     ({ onSet }) => {
       onSet((state) => {
@@ -36,6 +39,49 @@ const areYouTheOneAtom = atom({
       });
     },
   ],
+});
+
+/** used internally to store season */
+const aytoSeasonAtom = atom({
+  key: "aytoSeason",
+  default:
+    (JSON.parse(
+      localStorage.getItem("ayto-season-atom") || "null"
+    ) as number) || 6,
+  effects: [
+    ({ onSet }) => {
+      onSet((state) => {
+        localStorage.setItem("ayto-season-atom", JSON.stringify(state));
+      });
+    },
+  ],
+});
+
+/** used externally to set season and side effects in main state */
+export const aytoSeasonSelector = selector({
+  key: "aytoSeasonSelector",
+  get: ({ get }) => get(aytoSeasonAtom),
+  set: ({ set }, state) => {
+    if (!(state instanceof DefaultValue)) {
+      set(aytoSeasonAtom, state);
+      set(areYouTheOneAtom, newAYTOState(state));
+    }
+  },
+});
+
+/** used externally to get player info */
+export const aytoPlayerSelector = selector({
+  key: "aytoPlayerSelector",
+  get: ({ get }) => {
+    const season = get(aytoSeasonAtom);
+    const newOptions = [...options];
+    // if season 1, there are only 9 TBs
+    if (season === 1) {
+      newOptions.splice(9, 1);
+    }
+
+    return { ...aytoSeasons[season], options };
+  },
 });
 
 export default areYouTheOneAtom;
