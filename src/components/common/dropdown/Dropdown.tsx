@@ -73,6 +73,7 @@ const Dropdown = (props: DropdownProps) => {
         role={undefined}
         transition
         disablePortal
+        sx={{ zIndex: 1501 }}
       >
         {({ TransitionProps, placement }) => (
           <Grow
