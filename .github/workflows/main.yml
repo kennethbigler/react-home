@@ -59,15 +59,12 @@ jobs:
         uses: codecov/codecov-action@v3.1.0
 
       - name: Run lighthouse
-        run: |
-          npm install --location=global @lhci/cli@0.8.x
-          lhci autorun
+        run: npx lhci autorun
 
       - name: Run pa11y-ci
         run: |
           npm start & npx wait-on http://localhost:3000
-          npm install --location=global pa11y-ci
-          pa11y-ci
+          npx pa11y-ci
 
   # Adding a code analyzer job
   analyze:
