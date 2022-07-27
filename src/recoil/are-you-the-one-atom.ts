@@ -17,7 +17,9 @@ export interface AYTOState {
   roundPairings: RoundPairing[];
 }
 
-const newAYTOState = (season = 6): AYTOState => ({
+const DEFAULT_SEASON = 4;
+
+const newAYTOState = (season = DEFAULT_SEASON): AYTOState => ({
   matches: aytoSeasons[season].ladies.map(() => -1),
   noMatch: aytoSeasons[season].ladies.map(() =>
     aytoSeasons[season].gents.map(() => false)
@@ -47,7 +49,7 @@ const aytoSeasonAtom = atom({
   default:
     (JSON.parse(
       localStorage.getItem("ayto-season-atom") || "null"
-    ) as number) || 6,
+    ) as number) || DEFAULT_SEASON,
   effects: [
     ({ onSet }) => {
       onSet((state) => {

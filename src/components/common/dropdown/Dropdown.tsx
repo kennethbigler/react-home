@@ -51,7 +51,7 @@ const Dropdown = (props: DropdownProps) => {
       <ButtonGroup
         ref={anchorRef}
         variant="contained"
-        aria-label={`${ariaLabel}-group`}
+        aria-label={`${ariaLabel} group`}
         color={value + 2 === options.length ? "error" : "primary"}
         sx={{ marginBottom: 1 }}
       >
@@ -60,7 +60,7 @@ const Dropdown = (props: DropdownProps) => {
           size="small"
           aria-controls={open ? "split-button-menu" : undefined}
           aria-expanded={open ? "true" : undefined}
-          aria-label={`${ariaLabel}-button`}
+          aria-label={`${ariaLabel} button`}
           aria-haspopup="menu"
           onClick={handleToggle}
         >

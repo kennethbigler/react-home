@@ -64,13 +64,13 @@ const Controls = (props: ControlsProps) => {
       }}
     >
       <Dropdown
-        ariaLabel="season-selection"
+        ariaLabel="select season"
         value={season}
         options={seasons}
         onSelect={handleSeasonSelect}
       />
       <Dropdown
-        ariaLabel="matchup-selection"
+        ariaLabel="select matchup"
         value={roundNumber}
         options={options}
         onSelect={handleMatchupSelect}
