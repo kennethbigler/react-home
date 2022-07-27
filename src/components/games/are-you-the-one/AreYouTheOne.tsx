@@ -1,16 +1,18 @@
 import React from "react";
-import { useRecoilState } from "recoil";
-import Controls from "./controls/Controls";
+import { useRecoilState, useRecoilValue } from "recoil";
+import Controls from "./Controls";
 import Table from "./table/Table";
 import Analysis from "./analysis/Analysis";
-import { ladies, gents, options } from "../../../constants/ayto";
-import aYTOAtom from "../../../recoil/are-you-the-one-atom";
+import aYTOAtom, {
+  aytoPlayerSelector,
+} from "../../../recoil/are-you-the-one-atom";
 import useHist from "./analysis/useHist";
 
 /** TODO: replace Dropdown with MUI Dropdown when available */
 const AreYouTheOne = () => {
   const [{ matches, noMatch, roundPairings }, setState] =
     useRecoilState(aYTOAtom);
+  const { ladies, gents, options } = useRecoilValue(aytoPlayerSelector);
 
   // state
   const [roundNumber, setRoundNumber] = React.useState(0);

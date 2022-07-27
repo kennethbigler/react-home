@@ -14,8 +14,8 @@ describe("games | are-you-the-one | AreYouTheOne", () => {
     expect(screen.getByText("Blackout")).toBeInTheDocument();
     expect(screen.getAllByText("Score")).toHaveLength(2);
     // Table
-    expect(screen.getByText("Andre")).toBeInTheDocument();
-    expect(screen.getByText("Alicia")).toBeInTheDocument();
+    expect(screen.getByText("Asia")).toBeInTheDocument();
+    expect(screen.getByText("Andrew")).toBeInTheDocument();
     expect(screen.getByText("A-A")).toBeInTheDocument();
     // Analysis
     expect(screen.getByText("Analysis")).toBeInTheDocument();
@@ -25,11 +25,11 @@ describe("games | are-you-the-one | AreYouTheOne", () => {
   it("can change the round and close the menu early", async () => {
     render(<AreYouTheOne />);
 
-    expect(screen.getByLabelText("select matchup")).toBeInTheDocument();
+    expect(screen.getByLabelText("select matchup button")).toBeInTheDocument();
     expect(screen.getByText("Matchup 1")).toBeInTheDocument();
     expect(screen.queryByText("Matchup 2")).toBeNull();
     // open menu
-    fireEvent.click(screen.getByLabelText("select matchup"));
+    fireEvent.click(screen.getByLabelText("select matchup button"));
     expect(screen.getAllByText("Matchup 1")).toHaveLength(2);
     expect(screen.getByText("Matchup 2")).toBeInTheDocument();
     // select item
@@ -40,6 +40,19 @@ describe("games | are-you-the-one | AreYouTheOne", () => {
 
   it("can process a round", async () => {
     render(<AreYouTheOne />);
+
+    // Set Season to 5 (so I don't need to update tests)
+    expect(screen.getByLabelText("select season button")).toBeInTheDocument();
+    expect(screen.getByText("Season 7")).toBeInTheDocument();
+    expect(screen.queryByText("Season 5")).toBeNull();
+    // open menu
+    fireEvent.click(screen.getByLabelText("select season button"));
+    expect(screen.getAllByText("Season 7")).toHaveLength(2);
+    expect(screen.getByText("Season 5")).toBeInTheDocument();
+    // select item
+    fireEvent.click(screen.getByText("Season 5"));
+    await waitFor(() => expect(screen.queryByText("Season 7")).toBeNull());
+    expect(screen.getByText("Season 5")).toBeInTheDocument();
 
     const AAButton = screen.getByText("A-A");
     const CDButton = screen.getAllByText("C-D")[0];
@@ -95,7 +108,7 @@ describe("games | are-you-the-one | AreYouTheOne", () => {
     });
     expect(screen.getByText("Tyranny-Tyler - 9%")).toBeInTheDocument();
     // open menu
-    fireEvent.click(screen.getByLabelText("select matchup"));
+    fireEvent.click(screen.getByLabelText("select matchup button"));
     expect(screen.getAllByText("Matchup 1")).toHaveLength(3);
     expect(screen.getByText("Truth Booth")).toBeInTheDocument();
     // select item

@@ -1,8 +1,13 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { RoundPairing } from "../../../../recoil/are-you-the-one-atom";
-import Dropdown from "./Dropdown";
+import { useRecoilState } from "recoil";
+import {
+  aytoSeasonSelector,
+  RoundPairing,
+} from "../../../recoil/are-you-the-one-atom";
+import { seasons } from "../../../constants/ayto";
+import Dropdown from "../../common/dropdown/Dropdown";
 
 interface ControlsProps {
   onSelect: (index: number) => void;
@@ -17,6 +22,7 @@ interface ControlsProps {
 // eslint-disable-next-line no-restricted-globals
 const getScore = (value: number) => (isNaN(value) ? -1 : value);
 
+/** Controls component for Are You The One */
 const Controls = (props: ControlsProps) => {
   const {
     options,
@@ -28,12 +34,14 @@ const Controls = (props: ControlsProps) => {
   } = props;
 
   // hooks/state
+  const [season, setSeason] = useRecoilState(aytoSeasonSelector);
   const [score, setScore] = React.useState(
     getScore(roundPairings[roundNumber]?.score)
   );
 
   // handlers
-  const handleSelect = (index: number) => {
+  const handleSeasonSelect = (newSeason: number) => setSeason(newSeason);
+  const handleMatchupSelect = (index: number) => {
     setScore(getScore(roundPairings[index]?.score));
     onSelect(index);
   };
@@ -48,11 +56,24 @@ const Controls = (props: ControlsProps) => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+      }}
+    >
       <Dropdown
-        roundNumber={roundNumber}
+        ariaLabel="select season"
+        value={season}
+        options={seasons}
+        onSelect={handleSeasonSelect}
+      />
+      <Dropdown
+        ariaLabel="select matchup"
+        value={roundNumber}
         options={options}
-        onSelect={handleSelect}
+        onSelect={handleMatchupSelect}
       />
       {roundNumber < options.length - 2 && (
         <>

@@ -12,11 +12,12 @@ import MenuList from "@mui/material/MenuList";
 interface DropdownProps {
   onSelect: (index: number) => void;
   options: string[];
-  roundNumber: number;
+  value: number;
+  ariaLabel: string;
 }
 
 const Dropdown = (props: DropdownProps) => {
-  const { roundNumber, options, onSelect } = props;
+  const { ariaLabel, value, options, onSelect } = props;
 
   // hooks/state
   const [open, setOpen] = React.useState(false);
@@ -50,15 +51,16 @@ const Dropdown = (props: DropdownProps) => {
       <ButtonGroup
         ref={anchorRef}
         variant="contained"
-        aria-label="split button"
-        color={roundNumber + 2 === options.length ? "error" : "primary"}
+        aria-label={`${ariaLabel} group`}
+        color={value + 2 === options.length ? "error" : "primary"}
+        sx={{ marginBottom: 1 }}
       >
-        <Button>{options[roundNumber]}</Button>
+        <Button>{options[value]}</Button>
         <Button
           size="small"
           aria-controls={open ? "split-button-menu" : undefined}
           aria-expanded={open ? "true" : undefined}
-          aria-label="select matchup"
+          aria-label={`${ariaLabel} button`}
           aria-haspopup="menu"
           onClick={handleToggle}
         >
@@ -86,7 +88,7 @@ const Dropdown = (props: DropdownProps) => {
                   {options.map((option, index) => (
                     <MenuItem
                       key={option}
-                      selected={index === roundNumber}
+                      selected={index === value}
                       onClick={(event) => handleMenuItemClick(event, index)}
                     >
                       {option}
