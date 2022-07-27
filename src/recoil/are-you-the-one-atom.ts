@@ -17,7 +17,7 @@ export interface AYTOState {
   roundPairings: RoundPairing[];
 }
 
-const DEFAULT_SEASON = 4;
+const DEFAULT_SEASON = 6;
 
 const newAYTOState = (season = DEFAULT_SEASON): AYTOState => ({
   matches: aytoSeasons[season].ladies.map(() => -1),
