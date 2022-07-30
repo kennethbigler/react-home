@@ -72,7 +72,7 @@ const DND: React.FC = () => {
    * sets: dnd { dndOpen, isOver }, player: { status, money }
    */
   const deal = (): void => {
-    const total = Math.round(offer / 1000);
+    const total = Math.ceil(offer / 1000);
     setState({
       dnd: {
         ...dnd,
@@ -96,7 +96,7 @@ const DND: React.FC = () => {
     // no deal on last case
     if (numCases <= 2) {
       const newOffer = playerChoice?.val || 0;
-      const total = Math.round(newOffer / 1000);
+      const total = Math.ceil(newOffer / 1000);
       setState({
         dnd: {
           ...dnd,
@@ -133,7 +133,7 @@ const DND: React.FC = () => {
     for (let i = 0; i < board.length; i += 1) {
       const bc = board[i];
       if (bc.on && playerChoice && bc.loc !== playerChoice.loc) {
-        const total = Math.round(bc.val / 1000);
+        const total = Math.ceil(bc.val / 1000);
         setState({
           dnd: {
             ...dnd,
