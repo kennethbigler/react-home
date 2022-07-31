@@ -1,21 +1,23 @@
 import { indigo, grey, red, lime, yellow, teal } from "@mui/material/colors";
 import dateObj from "../apis/DateHelper";
 
-import prius07 from "../images/07_toyota_prius.jpg";
-import pontiac93 from "../images/93_pontiac_bonneville.jpg";
-import impala10 from "../images/10_chevrolet_impala_ls.jpg";
+import prius07 from "../images/07_toyota_prius.avif";
+import voyager97 from "../images/97_plymouth_voyager.png";
+import pontiac93 from "../images/93_pontiac_bonneville.webp";
+import impala10 from "../images/10_chevrolet_impala.webp";
 import equinox10 from "../images/10_chevy_equinox.png";
 import mustang15 from "../images/15_mustang_gt_premium.png";
 import tesla16 from "../images/16_tesla_x.webp";
 import xj8l05 from "../images/05_jaguar_xj8l.jpg";
 import corvette18 from "../images/18_corvette_zo6_3lz.png";
 import ftype15 from "../images/15_jaguar_f_type.webp";
-import mustang20 from "../images/20_ford_mustang.jpeg";
+import mustang20 from "../images/20_ford_mustang.png";
 import panamera21 from "../images/21_porsche_panamera.png";
 import bronco21 from "../images/21_ford_bronco.webp";
 import grom22 from "../images/22_honda_grom.webp";
 
 const prius = "Toyota Prius (2007)";
+const voyager = "Plymouth Voyager (1997)";
 const bonneville = "Pontiac Bonneville (1993)";
 const equinox = "Chevy Equinox LTZ (2010)";
 const impala = "Chevrolet Impala LS (2010)";
@@ -49,6 +51,27 @@ const familyCars = [
     MPG: 46,
     torque: 82,
     weight: 2932,
+  },
+  {
+    color: grey[50],
+    start: dateObj("2008-03"),
+    end: dateObj("2010-02"),
+    car: "Voyager",
+    short: "Voygr",
+    char: "V",
+    title: voyager,
+    inverted: true,
+
+    owned: "1997 - 2010",
+    story: `My Mother had a ${voyager}.`,
+    src: voyager97,
+    transmission: "Automatic",
+
+    displacement: 3.7,
+    horsepower: 158,
+    MPG: 21,
+    torque: 203,
+    weight: 3696,
   },
   {
     color: lime[800],

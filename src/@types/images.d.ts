@@ -22,3 +22,8 @@ declare module "*.webp" {
   const image: string;
   export default image;
 }
+
+declare module "*.avif" {
+  const image: string;
+  export default image;
+}

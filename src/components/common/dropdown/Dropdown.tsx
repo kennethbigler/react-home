@@ -31,18 +31,12 @@ const Dropdown = (props: DropdownProps) => {
     setOpen(false);
   };
 
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
+  const handleToggle = () => setOpen((prevOpen) => !prevOpen);
 
   const handleClose = (event: Event) => {
-    if (
-      anchorRef.current &&
-      anchorRef.current.contains(event.target as HTMLElement)
-    ) {
+    if (anchorRef.current?.contains(event.target as HTMLElement)) {
       return;
     }
-
     setOpen(false);
   };
 
@@ -52,7 +46,7 @@ const Dropdown = (props: DropdownProps) => {
         ref={anchorRef}
         variant="contained"
         aria-label={`${ariaLabel} group`}
-        color={value + 2 === options.length ? "error" : "primary"}
+        color="primary"
         sx={{ marginBottom: 1 }}
       >
         <Button>{options[value]}</Button>
