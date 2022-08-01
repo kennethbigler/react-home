@@ -61,6 +61,9 @@ jobs:
       - name: Run lighthouse
         run: npx lhci autorun
 
+      - name: Run bbc-a11y
+        run: npx bbc-a11y
+
       - name: Run pa11y-ci
         run: |
           npm start & npx wait-on http://localhost:3000
