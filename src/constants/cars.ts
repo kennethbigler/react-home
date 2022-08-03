@@ -242,7 +242,7 @@ const kensCars = [
     transmission: "Automatic",
 
     displacement: 5.0,
-    horsepower: 435,
+    horsepower: 435 + 15,
     MPG: 19,
     torque: 400,
     weight: 3705,
@@ -327,9 +327,9 @@ const kensCars = [
     transmission: "Sequential",
 
     displacement: 0.124,
-    horsepower: 9.7,
+    horsepower: 9.7 * 1.139,
     MPG: 97,
-    torque: 7.7,
+    torque: 7.7 * 1.143,
     weight: 230,
   },
 ];
