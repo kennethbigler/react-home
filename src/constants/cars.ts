@@ -1,7 +1,7 @@
 import { indigo, grey, red, lime, yellow, teal } from "@mui/material/colors";
 import dateObj from "../apis/DateHelper";
 
-import prius07 from "../images/07_toyota_prius.avif";
+import prius07 from "../images/07_toyota_prius.png";
 import voyager97 from "../images/97_plymouth_voyager.png";
 import pontiac93 from "../images/93_pontiac_bonneville.webp";
 import impala10 from "../images/10_chevrolet_impala.webp";
