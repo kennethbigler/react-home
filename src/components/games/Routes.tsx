@@ -38,6 +38,9 @@ const FamilyFeud = lazyWithPreload(
 const AreYouTheOne = lazyWithPreload(
   import(/* webpackChunkName: "g_are_you_the_one" */ "./are-you-the-one")
 );
+const TypeChecker = lazyWithPreload(
+  import(/* webpackChunkName: "r_type_checker" */ "./type-checker")
+);
 
 const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
   <>
@@ -57,6 +60,7 @@ const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
         <Route path="poker/*" element={<Poker />} />
         <Route path="slots/*" element={<Slots />} />
         <Route path="tictactoe/*" element={<TicTacToe />} />
+        <Route path="types/*" element={<TypeChecker />} />
         <Route path="yahtzee/*" element={<Yahtzee />} />
       </Routes>
     </React.Suspense>

@@ -8,7 +8,7 @@ import originalMenuItems, { MenuItem } from "./menu-items";
 
 const menuItems = [...originalMenuItems];
 const casinoItems = menuItems.splice(2, 5);
-const gameItems = menuItems.splice(3, 4);
+const gameItems = menuItems.splice(3, menuItems.length);
 
 interface HomeProps {
   onItemClick?: (loc: string) => void;

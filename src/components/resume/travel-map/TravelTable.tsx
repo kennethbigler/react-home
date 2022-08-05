@@ -61,7 +61,7 @@ const cruiseCells = cruises.map((cruise, i) => {
       disneyCruises += 1;
       break;
     case lines[1]:
-      rcNights += cruise.nights;
+      rcNights += cruise.nights * (cruise.concierge ? 2 : 1);
       break;
     default:
       break;
@@ -76,7 +76,7 @@ const cruiseCells = cruises.map((cruise, i) => {
         {cruise.line} {cruise.ship}
       </TableCell>
       <TableCell key={`cruise-td-nights-${i}`} style={cellStyles}>
-        {cruise.nights}
+        {cruise.nights} {cruise.concierge ? "⭐️" : ""}
       </TableCell>
       <TableCell key={`cruise-td-departure-${i}`} style={cellStyles}>
         {cruise.departure.format("MMMM Y")}
