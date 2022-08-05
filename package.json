@@ -14,7 +14,7 @@
     "@emotion/styled": "11.9.3",
     "@mui/icons-material": "5.8.4",
     "@mui/material": "5.9.3",
-    "copy-to-clipboard": "3.3.1",
+    "copy-to-clipboard": "3.3.2",
     "graphql-tag": "2.12.6",
     "localforage": "1.10.0",
     "lodash": "4.17.21",
