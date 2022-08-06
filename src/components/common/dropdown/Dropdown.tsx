@@ -1,12 +1,8 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Grow from "@mui/material/Grow";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
-import MenuList from "@mui/material/MenuList";
+import Menu from "@mui/material/Menu";
 
 interface DropdownProps {
   onSelect: (index: number) => void;
@@ -54,40 +50,24 @@ const Dropdown = (props: DropdownProps) => {
       >
         {options[value]}
       </Button>
-      <Popper
-        open={open}
+      <Menu
+        id="split-button-menu"
         anchorEl={anchorRef.current}
-        role={undefined}
-        transition
-        disablePortal
-        sx={{ zIndex: 1501 }}
+        open={open}
+        autoFocus
+        PaperProps={{ style: { maxHeight: 48 * 5.5 } }}
+        onClose={handleClose}
       >
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin:
-                placement === "bottom" ? "center top" : "center bottom",
-            }}
+        {options.map((option, index) => (
+          <MenuItem
+            key={option}
+            selected={index === value}
+            onClick={(event) => handleMenuItemClick(event, index)}
           >
-            <Paper>
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList id="split-button-menu" autoFocusItem>
-                  {options.map((option, index) => (
-                    <MenuItem
-                      key={option}
-                      selected={index === value}
-                      onClick={(event) => handleMenuItemClick(event, index)}
-                    >
-                      {option}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
+            {option}
+          </MenuItem>
+        ))}
+      </Menu>
     </>
   );
 };

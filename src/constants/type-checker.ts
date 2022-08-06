@@ -42,7 +42,7 @@ export const types = [
   { name: "fairy", color: pink[100], inverted: true },
 ];
 
-export type Effectiveness = 0 | 0.5 | 1 | 2;
+export type Effectiveness = 0 | 0.25 | 0.5 | 1 | 2 | 4;
 
 export const effectiveness: Effectiveness[][] = [
   // normal

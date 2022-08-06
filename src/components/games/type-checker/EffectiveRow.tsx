@@ -3,14 +3,16 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import { SxProps } from "@mui/material";
-import { green, red, yellow } from "@mui/material/colors";
+import { green, orange, red, yellow } from "@mui/material/colors";
 import { Effectiveness, Types } from "../../../constants/type-checker";
 
 const buttonStyles = { padding: "4px 2px" };
 const colors = {
   0: red[200],
+  0.25: orange[200],
   0.5: yellow[200],
   2: green[200],
+  4: green[500],
 };
 
 interface EffectiveRowProps {
