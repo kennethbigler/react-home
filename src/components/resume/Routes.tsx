@@ -44,14 +44,14 @@ const ResumeRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
     <React.Suspense fallback={<LoadingSpinner />}>
       <Routes>
         <Route path="/*" element={<Summary />} />
-        <Route path="work/*" element={<Work />} />
-        <Route path="education/*" element={<Education />} />
-        <Route path="travel/*" element={<TravelMap />} />
-        <Route path="resume/*" element={<Resume />} />
-        <Route path="git-tools/*" element={<GitTools />} />
-        <Route path="murder/*" element={<MurderMystery />} />
-        <Route path="graphql/*" element={<GraphQL />} />
         <Route path="cars/*" element={<Cars />} />
+        <Route path="education/*" element={<Education />} />
+        <Route path="git-tools/*" element={<GitTools />} />
+        <Route path="graphql/*" element={<GraphQL />} />
+        <Route path="murder/*" element={<MurderMystery />} />
+        <Route path="resume/*" element={<Resume />} />
+        <Route path="travel/*" element={<TravelMap />} />
+        <Route path="work/*" element={<Work />} />
       </Routes>
     </React.Suspense>
   </>

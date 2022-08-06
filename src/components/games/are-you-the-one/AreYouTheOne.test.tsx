@@ -25,11 +25,11 @@ describe("games | are-you-the-one | AreYouTheOne", () => {
   it("can change the round and close the menu early", async () => {
     render(<AreYouTheOne />);
 
-    expect(screen.getByLabelText("select matchup button")).toBeInTheDocument();
+    expect(screen.getByLabelText("select matchup")).toBeInTheDocument();
     expect(screen.getByText("Matchup 1")).toBeInTheDocument();
     expect(screen.queryByText("Matchup 2")).toBeNull();
     // open menu
-    fireEvent.click(screen.getByLabelText("select matchup button"));
+    fireEvent.click(screen.getByLabelText("select matchup"));
     expect(screen.getAllByText("Matchup 1")).toHaveLength(2);
     expect(screen.getByText("Matchup 2")).toBeInTheDocument();
     // select item
@@ -42,11 +42,11 @@ describe("games | are-you-the-one | AreYouTheOne", () => {
     render(<AreYouTheOne />);
 
     // Set Season to 5 (so I don't need to update tests)
-    expect(screen.getByLabelText("select season button")).toBeInTheDocument();
+    expect(screen.getByLabelText("select season")).toBeInTheDocument();
     expect(screen.getByText("Season 7")).toBeInTheDocument();
     expect(screen.queryByText("Season 5")).toBeNull();
     // open menu
-    fireEvent.click(screen.getByLabelText("select season button"));
+    fireEvent.click(screen.getByLabelText("select season"));
     expect(screen.getAllByText("Season 7")).toHaveLength(2);
     expect(screen.getByText("Season 5")).toBeInTheDocument();
     // select item
@@ -108,7 +108,7 @@ describe("games | are-you-the-one | AreYouTheOne", () => {
     });
     expect(screen.getByText("Tyranny-Tyler - 9%")).toBeInTheDocument();
     // open menu
-    fireEvent.click(screen.getByLabelText("select matchup button"));
+    fireEvent.click(screen.getByLabelText("select matchup"));
     expect(screen.getAllByText("Matchup 1")).toHaveLength(3);
     expect(screen.getByText("Truth Booth")).toBeInTheDocument();
     // select item

@@ -1,13 +1,8 @@
 import React from "react";
 import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Grow from "@mui/material/Grow";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
-import MenuList from "@mui/material/MenuList";
+import Menu from "@mui/material/Menu";
 
 interface DropdownProps {
   onSelect: (index: number) => void;
@@ -21,7 +16,7 @@ const Dropdown = (props: DropdownProps) => {
 
   // hooks/state
   const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef<HTMLDivElement>(null);
+  const anchorRef = React.useRef<HTMLButtonElement>(null);
 
   const handleMenuItemClick = (
     event: React.MouseEvent<HTMLLIElement, MouseEvent>,
@@ -42,59 +37,37 @@ const Dropdown = (props: DropdownProps) => {
 
   return (
     <>
-      <ButtonGroup
+      <Button
         ref={anchorRef}
+        aria-controls={open ? "split-button-menu" : undefined}
+        aria-expanded={open ? "true" : undefined}
+        aria-label={ariaLabel}
+        aria-haspopup="menu"
+        endIcon={<ArrowDropDownIcon />}
+        size="small"
         variant="contained"
-        aria-label={`${ariaLabel} group`}
-        color="primary"
-        sx={{ marginBottom: 1 }}
+        onClick={handleToggle}
       >
-        <Button>{options[value]}</Button>
-        <Button
-          size="small"
-          aria-controls={open ? "split-button-menu" : undefined}
-          aria-expanded={open ? "true" : undefined}
-          aria-label={`${ariaLabel} button`}
-          aria-haspopup="menu"
-          onClick={handleToggle}
-        >
-          <ArrowDropDownIcon />
-        </Button>
-      </ButtonGroup>
-      <Popper
-        open={open}
+        {options[value]}
+      </Button>
+      <Menu
+        id="split-button-menu"
         anchorEl={anchorRef.current}
-        role={undefined}
-        transition
-        disablePortal
-        sx={{ zIndex: 1501 }}
+        open={open}
+        autoFocus
+        PaperProps={{ style: { maxHeight: 48 * 5.5 } }}
+        onClose={handleClose}
       >
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin:
-                placement === "bottom" ? "center top" : "center bottom",
-            }}
+        {options.map((option, index) => (
+          <MenuItem
+            key={option}
+            selected={index === value}
+            onClick={(event) => handleMenuItemClick(event, index)}
           >
-            <Paper>
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList id="split-button-menu" autoFocusItem>
-                  {options.map((option, index) => (
-                    <MenuItem
-                      key={option}
-                      selected={index === value}
-                      onClick={(event) => handleMenuItemClick(event, index)}
-                    >
-                      {option}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
+            {option}
+          </MenuItem>
+        ))}
+      </Menu>
     </>
   );
 };

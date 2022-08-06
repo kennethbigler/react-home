@@ -18,6 +18,7 @@ const menuItems: MenuItem[] = [
   { name: "Connect4", route: "connect4", icon: "🔴" },
   { name: "Family Feud", route: "family-feud", icon: "👨‍👩‍👧‍👦" },
   { name: "Tic-Tac-Toe", route: "tictactoe", icon: "❌" },
+  { name: "Type Checker", route: "types", icon: "🧪" },
 ];
 
 export default menuItems;

@@ -61,6 +61,7 @@ const Controls = (props: ControlsProps) => {
         display: "flex",
         justifyContent: "space-between",
         flexWrap: "wrap",
+        gap: "1em",
       }}
     >
       <Dropdown
