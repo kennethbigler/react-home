@@ -1,22 +1,45 @@
+import {
+  amber,
+  blue,
+  brown,
+  cyan,
+  deepOrange,
+  deepPurple,
+  green,
+  grey,
+  indigo,
+  lightBlue,
+  lightGreen,
+  pink,
+  red,
+  yellow,
+} from "@mui/material/colors";
+
+export interface Types {
+  name: string;
+  color: string;
+  inverted?: boolean;
+}
+
 export const types = [
-  "normal",
-  "fight",
-  "flying",
-  "poison",
-  "ground",
-  "rock",
-  "bug",
-  "ghost",
-  "steel",
-  "fire",
-  "water",
-  "grass",
-  "electric",
-  "psychic",
-  "ice",
-  "dragon",
-  "dark",
-  "fairy",
+  { name: "normal", color: grey[100], inverted: true },
+  { name: "fight", color: deepOrange[900] },
+  { name: "flying", color: lightBlue[200], inverted: true },
+  { name: "poison", color: deepPurple[500] },
+  { name: "ground", color: amber[100], inverted: true },
+  { name: "rock", color: brown[500] },
+  { name: "bug", color: lightGreen[400], inverted: true },
+  { name: "ghost", color: deepPurple[800] },
+  { name: "steel", color: grey[500], inverted: true },
+  { name: "fire", color: red[500] },
+  { name: "water", color: blue[500] },
+  { name: "grass", color: green[500] },
+  { name: "electric", color: yellow[600], inverted: true },
+  { name: "psychic", color: pink[300] },
+  { name: "ice", color: cyan[500] },
+  { name: "dragon", color: indigo.A700 },
+  { name: "dark", color: grey[800] },
+  { name: "fairy", color: pink[100], inverted: true },
 ];
 
 export type Effectiveness = 0 | 0.5 | 1 | 2;

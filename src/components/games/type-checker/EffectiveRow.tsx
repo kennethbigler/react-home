@@ -4,7 +4,7 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import { SxProps } from "@mui/material";
 import { green, red, yellow } from "@mui/material/colors";
-import { Effectiveness } from "../../../constants/type-checker";
+import { Effectiveness, Types } from "../../../constants/type-checker";
 
 const buttonStyles = { padding: "4px 2px" };
 const colors = {
@@ -15,26 +15,30 @@ const colors = {
 
 interface EffectiveRowProps {
   data: Effectiveness[][];
-  name: string;
+  type: Types;
   idx: number;
   onClick: (i: number) => () => void;
 }
 
 const EffectiveRow: React.FC<EffectiveRowProps> = ({
   data,
-  name,
+  type,
   idx,
   onClick,
 }) => (
   <TableRow>
-    <TableCell sx={{ padding: 0 }}>
+    <TableCell padding="none">
       <Button
         variant="contained"
         fullWidth
-        sx={buttonStyles}
+        sx={{
+          ...buttonStyles,
+          backgroundColor: type.color,
+          color: type.inverted ? "black" : "white",
+        }}
         onClick={onClick(idx)}
       >
-        {name}
+        {type.name}
       </Button>
     </TableCell>
     {data[idx].map((val, j) => {

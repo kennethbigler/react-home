@@ -10,19 +10,15 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import {
   types,
+  Types,
   effectiveness,
   Effectiveness,
 } from "../../../constants/type-checker";
 import EffectiveRow from "./EffectiveRow";
 
-// primary type dropdown
 // secondary type dropdown (conditionally show if 1st is selected)
-// click any button on the left, makes that the only row (auto select first dropdown)
-// buttons to match type color
-// display in table
 // add a clear button? Or click dropdown button to deselect?
 // connect to poke-api?
-// add poke-dropdown to select types?
 
 const buttonStyles = { padding: "4px 2px" };
 
@@ -30,8 +26,8 @@ const TypeChecker = () => {
   const [atkPrimary, setAtkPrimary] = React.useState(-1);
   const [defPrimary, setDefPrimary] = React.useState(-1);
   const [effChart, setEffChart] = React.useState([...effectiveness]);
-  const [effRowTypes, setEffRowTypes] = React.useState([...types]);
-  const [effColTypes, setEffColTypes] = React.useState([...types]);
+  const [effRowTypes, setEffRowTypes] = React.useState<Types[]>([...types]);
+  const [effColTypes, setEffColTypes] = React.useState<Types[]>([...types]);
 
   const resetState = () => {
     setAtkPrimary(-1);
@@ -50,7 +46,7 @@ const TypeChecker = () => {
 
     // calculate state
     const newEffChart: Effectiveness[] = [];
-    const newEffTypes: string[] = [];
+    const newEffTypes: Types[] = [];
     effectiveness[idx].forEach((val, i) => {
       if (val !== 1) {
         newEffChart.push(val);
@@ -74,7 +70,7 @@ const TypeChecker = () => {
 
     // calculate state
     const newEffChart: Effectiveness[][] = [];
-    const newEffTypes: string[] = [];
+    const newEffTypes: Types[] = [];
     for (let i = 0; i < effectiveness.length; i += 1) {
       const val = effectiveness[i][idx];
       if (val !== 1) {
@@ -99,15 +95,19 @@ const TypeChecker = () => {
             <TableRow>
               <TableCell />
               {defPrimary === -1 ? (
-                effRowTypes.map((name, i) => (
-                  <TableCell key={`header-${name}`} sx={{ padding: 0 }}>
+                effRowTypes.map((t, i) => (
+                  <TableCell key={`header-${t.name}`} sx={{ padding: 0 }}>
                     <Button
                       variant="contained"
-                      sx={buttonStyles}
+                      sx={{
+                        ...buttonStyles,
+                        backgroundColor: t.color,
+                        color: t.inverted ? "black" : "white",
+                      }}
                       fullWidth
                       onClick={handleColClick(i)}
                     >
-                      {name}
+                      {t.name}
                     </Button>
                   </TableCell>
                 ))
@@ -115,11 +115,15 @@ const TypeChecker = () => {
                 <TableCell sx={{ padding: 0 }}>
                   <Button
                     variant="contained"
-                    sx={buttonStyles}
+                    sx={{
+                      ...buttonStyles,
+                      backgroundColor: types[defPrimary].color,
+                      color: types[defPrimary].inverted ? "black" : "white",
+                    }}
                     fullWidth
                     onClick={handleColClick(defPrimary)}
                   >
-                    {types[defPrimary]}
+                    {types[defPrimary].name}
                   </Button>
                 </TableCell>
               )}
@@ -127,11 +131,11 @@ const TypeChecker = () => {
           </TableHead>
           <TableBody>
             {atkPrimary === -1 || defPrimary !== -1 ? (
-              effColTypes.map((name, i) => (
+              effColTypes.map((t, i) => (
                 <EffectiveRow
-                  key={`row-${name}`}
+                  key={`row-${t.name}`}
                   data={effChart}
-                  name={name}
+                  type={t}
                   idx={i}
                   onClick={handleRowClick}
                 />
@@ -139,7 +143,7 @@ const TypeChecker = () => {
             ) : (
               <EffectiveRow
                 data={effChart}
-                name={types[atkPrimary]}
+                type={types[atkPrimary]}
                 idx={0}
                 onClick={handleRowClick}
               />
