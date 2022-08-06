@@ -27,17 +27,24 @@ import EffectiveRow from "./EffectiveRow";
 const buttonStyles = { padding: "4px 2px" };
 
 const TypeChecker = () => {
-  const [primary, setPrimary] = React.useState(-1);
+  const [atkPrimary, setAtkPrimary] = React.useState(-1);
+  const [defPrimary, setDefPrimary] = React.useState(-1);
   const [effChart, setEffChart] = React.useState([...effectiveness]);
   const [effRowTypes, setEffRowTypes] = React.useState([...types]);
   const [effColTypes, setEffColTypes] = React.useState([...types]);
 
+  const resetState = () => {
+    setAtkPrimary(-1);
+    setDefPrimary(-1);
+    setEffChart([...effectiveness]);
+    setEffRowTypes([...types]);
+    setEffColTypes([...types]);
+  };
+
   const handleRowClick = (idx: number) => () => {
     // reset state
-    if (primary !== -1) {
-      setPrimary(-1);
-      setEffChart([...effectiveness]);
-      setEffRowTypes([...types]);
+    if (defPrimary !== -1 || atkPrimary !== -1) {
+      resetState();
       return;
     }
 
@@ -52,17 +59,16 @@ const TypeChecker = () => {
     });
 
     // update state
-    setPrimary(idx);
+    setDefPrimary(-1);
+    setAtkPrimary(idx);
     setEffChart([newEffChart]);
     setEffRowTypes(newEffTypes);
   };
 
   const handleColClick = (idx: number) => () => {
     // reset state
-    if (primary !== -1) {
-      setPrimary(-1);
-      setEffChart([...effectiveness]);
-      setEffColTypes([...types]);
+    if (defPrimary !== -1 || atkPrimary !== -1) {
+      resetState();
       return;
     }
 
@@ -78,7 +84,8 @@ const TypeChecker = () => {
     }
 
     // update state
-    setPrimary(idx);
+    setAtkPrimary(-1);
+    setDefPrimary(idx);
     setEffChart(newEffChart);
     setEffColTypes(newEffTypes);
   };
@@ -91,23 +98,35 @@ const TypeChecker = () => {
           <TableHead>
             <TableRow>
               <TableCell />
-              {effRowTypes.map((name, i) => (
-                <TableCell key={`header-${name}`} sx={{ padding: 0 }}>
+              {defPrimary === -1 ? (
+                effRowTypes.map((name, i) => (
+                  <TableCell key={`header-${name}`} sx={{ padding: 0 }}>
+                    <Button
+                      variant="contained"
+                      sx={buttonStyles}
+                      fullWidth
+                      onClick={handleColClick(i)}
+                    >
+                      {name}
+                    </Button>
+                  </TableCell>
+                ))
+              ) : (
+                <TableCell sx={{ padding: 0 }}>
                   <Button
                     variant="contained"
                     sx={buttonStyles}
                     fullWidth
-                    onClick={handleColClick(i)}
+                    onClick={handleColClick(defPrimary)}
                   >
-                    {name}
+                    {types[defPrimary]}
                   </Button>
                 </TableCell>
-              ))}
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
-            {/* This is the problem for clicking a col */}
-            {primary === -1 ? (
+            {atkPrimary === -1 || defPrimary !== -1 ? (
               effColTypes.map((name, i) => (
                 <EffectiveRow
                   key={`row-${name}`}
@@ -120,7 +139,7 @@ const TypeChecker = () => {
             ) : (
               <EffectiveRow
                 data={effChart}
-                name={types[primary]}
+                name={types[atkPrimary]}
                 idx={0}
                 onClick={handleRowClick}
               />
