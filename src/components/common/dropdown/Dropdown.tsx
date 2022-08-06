@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
@@ -21,7 +20,7 @@ const Dropdown = (props: DropdownProps) => {
 
   // hooks/state
   const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef<HTMLDivElement>(null);
+  const anchorRef = React.useRef<HTMLButtonElement>(null);
 
   const handleMenuItemClick = (
     event: React.MouseEvent<HTMLLIElement, MouseEvent>,
@@ -42,25 +41,19 @@ const Dropdown = (props: DropdownProps) => {
 
   return (
     <>
-      <ButtonGroup
+      <Button
         ref={anchorRef}
+        aria-controls={open ? "split-button-menu" : undefined}
+        aria-expanded={open ? "true" : undefined}
+        aria-label={ariaLabel}
+        aria-haspopup="menu"
+        endIcon={<ArrowDropDownIcon />}
+        size="small"
         variant="contained"
-        aria-label={`${ariaLabel} group`}
-        color="primary"
-        sx={{ marginBottom: 1 }}
+        onClick={handleToggle}
       >
-        <Button>{options[value]}</Button>
-        <Button
-          size="small"
-          aria-controls={open ? "split-button-menu" : undefined}
-          aria-expanded={open ? "true" : undefined}
-          aria-label={`${ariaLabel} button`}
-          aria-haspopup="menu"
-          onClick={handleToggle}
-        >
-          <ArrowDropDownIcon />
-        </Button>
-      </ButtonGroup>
+        {options[value]}
+      </Button>
       <Popper
         open={open}
         anchorEl={anchorRef.current}
