@@ -22,7 +22,7 @@
     "react-dom": "18.2.0",
     "react-newline-to-break": "1.0.6",
     "react-router-dom": "6.3.0",
-    "react-svg-worldmap": "2.0.0-alpha.1",
+    "react-svg-worldmap": "2.0.0-alpha.3",
     "recharts": "2.1.12",
     "recoil": "0.7.4"
   },
