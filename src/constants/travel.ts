@@ -240,7 +240,7 @@ export const cruises: Cruise[] = [
     name: "Catalina & Ensenada",
     ship: "Navigator of the Seas",
     line: "Royal Caribbean",
-    concierge: true,
+    concierge: false,
   },
 ];
 
