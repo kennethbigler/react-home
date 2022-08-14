@@ -1,9 +1,49 @@
+import {
+  amber,
+  blue,
+  brown,
+  cyan,
+  deepOrange,
+  deepPurple,
+  green,
+  indigo,
+  lightBlue,
+  lightGreen,
+  lime,
+  orange,
+  pink,
+  purple,
+  red,
+  teal,
+  yellow,
+} from "@mui/material/colors/";
 import dateObj, { DateObj } from "../apis/DateHelper";
+
+const colors = [
+  amber[500],
+  blue[500],
+  brown[500],
+  cyan[500],
+  deepOrange[500],
+  deepPurple[500],
+  green[500],
+  indigo[500],
+  lightBlue[500],
+  lightGreen[500],
+  lime[500],
+  orange[500],
+  pink[500],
+  purple[500],
+  red[500],
+  teal[500],
+  yellow[500],
+];
 
 interface Country {
   continent: string;
   flag: string;
   code: string;
+  color?: string;
 }
 export type Countries = Record<string, Country>;
 
@@ -41,6 +81,10 @@ const countries: Countries = {
   Monaco: { continent: "EU", flag: "🇲🇨", code: "mc" },
   Vatican: { continent: "EU", flag: "🇻🇦", code: "va" },
 };
+
+Object.keys(countries).forEach((country, i) => {
+  countries[country].color = colors[i % colors.length];
+});
 
 export const rcLoyalty = [
   { nights: 3, status: "Gold" },
