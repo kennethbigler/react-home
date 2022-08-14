@@ -327,9 +327,9 @@ const kensCars = [
     transmission: "Sequential",
 
     displacement: 0.124,
-    horsepower: 9.7 * 1.139,
+    horsepower: parseFloat((9.7 * 1.139).toPrecision(3)),
     MPG: 97,
-    torque: 7.7 * 1.143,
+    torque: parseFloat((7.7 * 1.143).toPrecision(3)),
     weight: 230,
   },
 ];

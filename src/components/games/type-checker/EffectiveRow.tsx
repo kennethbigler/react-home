@@ -22,6 +22,7 @@ interface EffectiveRowProps {
   onClick: (i: number) => () => void;
 }
 
+/** dynamic row display */
 const EffectiveRow: React.FC<EffectiveRowProps> = ({
   data,
   type,

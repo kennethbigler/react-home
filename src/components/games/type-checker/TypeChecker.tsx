@@ -24,6 +24,7 @@ const ddOptions = types.reduce(
 
 const buttonStyles = { padding: "4px 2px" };
 
+/** type checking tool */
 const TypeChecker = () => {
   const [atkPrimary, setAtkPrimary] = React.useState(-1);
   const [defPrimary, setDefPrimary] = React.useState(-1);
