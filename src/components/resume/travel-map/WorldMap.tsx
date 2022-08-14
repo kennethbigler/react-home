@@ -54,7 +54,7 @@ const HOVER = blueGrey[500];
 const VISITED_HOVER = red[800];
 const FILL = blueGrey[100];
 const PRESSED = blueGrey[800];
-const RATIO = 100 / 465.33;
+const RATIO = 1 / 4.7;
 
 const defaultStyle: React.CSSProperties = {
   stroke: STROKE,
@@ -101,47 +101,45 @@ const WorldMap = React.memo(() => {
     <>
       <ComposableMap
         width={screenWidth}
-        height={(screenWidth * 546) / 744}
+        height={(screenWidth * 5) / 8}
         projectionConfig={{ scale: screenWidth * RATIO }}
       >
-        <ZoomableGroup>
-          <Sphere
-            id="rsm-sphere"
-            stroke={FILL}
-            strokeWidth={2}
-            fill="transparent"
-          />
-          <Geographies geography="/world-110m.json">
-            {({ geographies }) =>
-              geographies.map((geo: GeographyType) => (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  onMouseEnter={handleEnter(geo)}
-                  onMouseLeave={handleLeave}
-                  style={{
-                    default: {
-                      fill: countries[geo.properties.NAME]
-                        ? countries[geo.properties.NAME].color
-                        : FILL,
-                      ...defaultStyle,
-                    },
-                    hover: {
-                      fill: countries[geo.properties.NAME]
-                        ? VISITED_HOVER
-                        : HOVER,
-                      ...defaultStyle,
-                    },
-                    pressed: {
-                      fill: PRESSED,
-                      ...defaultStyle,
-                    },
-                  }}
-                />
-              ))
-            }
-          </Geographies>
-        </ZoomableGroup>
+        <Sphere
+          id="rsm-sphere"
+          stroke={FILL}
+          strokeWidth={2}
+          fill="transparent"
+        />
+        <Geographies geography="/world-110m.json">
+          {({ geographies }) =>
+            geographies.map((geo: GeographyType) => (
+              <Geography
+                key={geo.rsmKey}
+                geography={geo}
+                onMouseEnter={handleEnter(geo)}
+                onMouseLeave={handleLeave}
+                style={{
+                  default: {
+                    fill: countries[geo.properties.NAME]
+                      ? countries[geo.properties.NAME].color
+                      : FILL,
+                    ...defaultStyle,
+                  },
+                  hover: {
+                    fill: countries[geo.properties.NAME]
+                      ? VISITED_HOVER
+                      : HOVER,
+                    ...defaultStyle,
+                  },
+                  pressed: {
+                    fill: PRESSED,
+                    ...defaultStyle,
+                  },
+                }}
+              />
+            ))
+          }
+        </Geographies>
       </ComposableMap>
       <Popover x={x} y={y} hide={hide} content={content} />
     </>
