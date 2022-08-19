@@ -37,7 +37,10 @@ describe("resume | work | Work", () => {
 
     expect(screen.getByText("Work Experience")).toBeInTheDocument();
     expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
-    expect(screen.getAllByText("Frontend Software Engineer")).toHaveLength(2);
+    expect(
+      screen.getByText("Accessibility Engineering Leader")
+    ).toBeInTheDocument();
+    expect(screen.getByText("Frontend Software Engineer")).toBeInTheDocument();
 
     expect(screen.getByText("Volunteer Experience")).toBeInTheDocument();
     expect(

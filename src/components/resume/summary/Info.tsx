@@ -44,7 +44,7 @@ const Info: React.FC = React.memo(() => (
             </TableRow>
             <TableRow>
               <TableCell>Role</TableCell>
-              <TableCell>Senior Frontend Software Engineer</TableCell>
+              <TableCell>Accessibility Engineer Leader</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Volunteer Work</TableCell>

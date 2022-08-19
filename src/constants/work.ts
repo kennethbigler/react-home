@@ -78,7 +78,7 @@ const workExp: Job[] = [
     company: "Intuit",
     short: "INTU",
     location: "Mountain View, CA",
-    title: "Frontend Software Engineer",
+    title: "Accessibility Engineering Leader",
     website: "https://www.intuit.com/",
     start: dateObj("2019-06"),
     end: dateObj(),
