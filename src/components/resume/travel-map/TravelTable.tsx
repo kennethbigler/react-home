@@ -6,7 +6,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { NA, EU, cruises, lines, rcLoyalty } from "../../../constants/travel";
+import {
+  americas,
+  euNaf,
+  asNau,
+  cruises,
+  lines,
+  rcLoyalty,
+} from "../../../constants/travel";
 
 // --------------------     Styles     -------------------- //
 const marginStyles: React.CSSProperties = { marginTop: 24, marginBottom: 16 };
@@ -26,23 +33,38 @@ const EURatio = 3;
 // export array of <li> elements for display
 const countries: React.ReactNode[] = [];
 // iterate to the end of the longer list
-const len = Math.max(NA.length, Math.ceil(EU.length / EURatio));
+const len = Math.max(
+  americas.length,
+  Math.ceil(euNaf.length / EURatio),
+  asNau.length
+);
 for (let i = 0; i < len; i += 1) {
   const row = [];
-  // add NA Country
+  // add Americas Country
   row.push(
     <TableCell key={`tmc${i}`} style={{ ...cellStyles, ...separatorStyles }}>
-      {NA[i]}
+      {americas[i]}
     </TableCell>
   );
-  // add EU Countries
+  // add EU or AF Countries
   for (let j = 0; j < EURatio; j += 1) {
     row.push(
-      <TableCell key={`tmc${i}${j}`} style={cellStyles}>
-        {EU[EURatio * i + j]}
+      <TableCell
+        key={`tmc${i}${j}`}
+        style={
+          j === EURatio - 1 ? { ...cellStyles, ...separatorStyles } : cellStyles
+        }
+      >
+        {euNaf[EURatio * i + j]}
       </TableCell>
     );
   }
+  // add AS or AU Country
+  row.push(
+    <TableCell key={`tmc${i}`} style={cellStyles}>
+      {asNau[i]}
+    </TableCell>
+  );
   // form the row
   const countryRow = <TableRow key={`tmr${i}`}>{row}</TableRow>;
   countries.push(countryRow);
@@ -99,16 +121,24 @@ rcLoyalty.forEach(({ nights, status }, i) => {
 const TravelMap: React.FC = React.memo(() => (
   <>
     <Typography variant="h4" style={marginStyles}>
-      {`I have been to ${NA.length + EU.length} countries:`}
+      {`I have been to ${
+        americas.length + euNaf.length + asNau.length
+      } countries:`}
     </Typography>
     <Table>
       <TableHead>
         <TableRow>
           <TableCell style={{ ...cellStyles, ...separatorStyles }}>
-            North America
+            The Americas
+          </TableCell>
+          <TableCell
+            colSpan={EURatio}
+            style={{ ...cellStyles, ...separatorStyles }}
+          >
+            Europe &amp; Africa
           </TableCell>
           <TableCell colSpan={EURatio} style={cellStyles}>
-            Europe
+            Asia &amp; Australia
           </TableCell>
         </TableRow>
       </TableHead>

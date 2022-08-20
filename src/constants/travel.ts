@@ -48,20 +48,31 @@ interface Country {
 export type Countries = Record<string, Country>;
 
 const countries: Countries = {
+  // Australia: { continent: "AU", flag: "🇦🇺", code: "au" },
   Austria: { continent: "EU", flag: "🇦🇹", code: "at" },
   Bahamas: { continent: "NA", flag: "🇧🇸", code: "bs" },
+  "British Virgin Islands": { continent: "NA", flag: "🇻🇬", code: "vg" },
   Canada: { continent: "NA", flag: "🇨🇦", code: "ca" },
+  "Cayman Islands": { continent: "NA", flag: "🇰🇾", code: "ky" },
+  // China: { continent: "AS", flag: "🇨🇳", code: "cn" },
   Denmark: { continent: "EU", flag: "🇩🇰", code: "dk" },
+  // Egypt: { continent: "AF", flag: "🇪🇬", code: "eg" },
   Estonia: { continent: "EU", flag: "🇪🇪", code: "ee" },
   Finland: { continent: "EU", flag: "🇫🇮", code: "fi" },
   France: { continent: "EU", flag: "🇫🇷", code: "fr" },
   Germany: { continent: "EU", flag: "🇩🇪", code: "de" },
+  Gibraltar: { continent: "EU", flag: "🇬🇮", code: "gi" },
   Greece: { continent: "EU", flag: "🇬🇷", code: "gr" },
+  // "Hong Kong": { continent: "AS", flag: "🇭🇰", code: "hk" },
   Iceland: { continent: "EU", flag: "🇮🇸", code: "is" },
+  // India: { continent: "AS", flag: "🇮🇳", code: "in" },
   Ireland: { continent: "EU", flag: "🇮🇪", code: "ie" },
   Italy: { continent: "EU", flag: "🇮🇹", code: "it" },
   Jamaica: { continent: "NA", flag: "🇯🇲", code: "jm" },
+  // Japan: { continent: "AS", flag: "🇯🇵", code: "jp" },
+  Malta: { continent: "EU", flag: "🇲🇹", code: "mt" },
   Mexico: { continent: "NA", flag: "🇲🇽", code: "mx" },
+  Monaco: { continent: "EU", flag: "🇲🇨", code: "mc" },
   Netherlands: { continent: "EU", flag: "🇳🇱", code: "nl" },
   Norway: { continent: "EU", flag: "🇳🇴", code: "no" },
   Poland: { continent: "EU", flag: "🇵🇱", code: "pl" },
@@ -71,14 +82,10 @@ const countries: Countries = {
   Sweden: { continent: "EU", flag: "🇸🇪", code: "se" },
   Switzerland: { continent: "EU", flag: "🇨🇭", code: "ch" },
   Turkey: { continent: "EU", flag: "🇹🇷", code: "tr" },
+  // "United Arab Emirates": { continent: "AF", flag: "🇦🇪", code: "ae" },
   "United Kingdom": { continent: "EU", flag: "🇬🇧", code: "gb" },
   "United States of America": { continent: "NA", flag: "🇺🇸", code: "us" },
-  "British Virgin Islands": { continent: "NA", flag: "🇻🇬", code: "vg" },
-  "Cayman Islands": { continent: "NA", flag: "🇰🇾", code: "ky" },
   "U.S. Virgin Islands": { continent: "NA", flag: "🇻🇮", code: "vi" },
-  Gibraltar: { continent: "EU", flag: "🇬🇮", code: "gi" },
-  Malta: { continent: "EU", flag: "🇲🇹", code: "mt" },
-  Monaco: { continent: "EU", flag: "🇲🇨", code: "mc" },
   Vatican: { continent: "EU", flag: "🇻🇦", code: "va" },
 };
 
@@ -286,14 +293,50 @@ export const cruises: Cruise[] = [
     line: "Royal Caribbean",
     concierge: false,
   },
+  // {
+  //   departure: dateObj("2022-12"),
+  //   nights: 3,
+  //   name: "Bahamas",
+  //   ship: "Wish",
+  //   line: "Disney",
+  //   concierge: false,
+  // },
+  // {
+  //   departure: dateObj("2022-12"),
+  //   nights: 4,
+  //   name: "Bahamas",
+  //   ship: "Wish",
+  //   line: "Disney",
+  //   concierge: true,
+  // },
+  // {
+  //   departure: dateObj("2023-05"),
+  //   nights: 4,
+  //   name: "Eastbound Transatlantic",
+  //   ship: "Dream",
+  //   line: "Disney",
+  //   concierge: true,
+  // },
 ];
 
-export const NA: string[] = [];
-export const EU: string[] = [];
+export const americas: string[] = [];
+export const euNaf: string[] = [];
+export const asNau: string[] = [];
 
 Object.entries(countries).forEach(([name, country]): void => {
-  country.continent === "NA" && NA.push(`${name} ${country.flag}`);
-  country.continent === "EU" && EU.push(`${name} ${country.flag}`);
+  switch (country.continent) {
+    case "NA":
+      americas.push(`${name} ${country.flag}`);
+      break;
+    case "EU":
+    case "AF":
+      euNaf.push(`${name} ${country.flag}`);
+      break;
+    case "AS":
+    case "AU":
+    default:
+      asNau.push(`${name} ${country.flag}`);
+  }
 });
 
 export default countries;
