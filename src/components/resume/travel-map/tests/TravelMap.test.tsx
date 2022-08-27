@@ -9,8 +9,9 @@ describe("resume | travel-map | TravelMap", () => {
     expect(
       screen.getByText("I have been to 32 countries:")
     ).toBeInTheDocument();
-    expect(screen.getByText("North America")).toBeInTheDocument();
-    expect(screen.getByText("Europe")).toBeInTheDocument();
+    expect(screen.getByText("The Americas")).toBeInTheDocument();
+    expect(screen.getByText("Europe & Africa")).toBeInTheDocument();
+    expect(screen.getByText("Asia & Australia")).toBeInTheDocument();
     expect(screen.getByText("Bahamas 🇧🇸")).toBeInTheDocument();
   });
 });
