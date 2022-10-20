@@ -139,15 +139,15 @@ const familyCars = [
   {
     color: indigo[900],
     start: dateObj("2020-03"),
-    end: dateObj(),
+    end: dateObj("2022-11"),
     car: "Mustang2",
     short: "Mstng",
     char: "M2",
     nickname: "Miranda Jr",
     title: mustang2,
 
-    owned: "2020 - Present",
-    story: `Emily purchased her first car, a ${mustang2} with the Performance Pack 1!`,
+    owned: "2020 - 2022",
+    story: `I shared a ${mustang2} with the Performance Pack 1 with my roommate!`,
     src: mustang20,
     transmission: "Manual",
 

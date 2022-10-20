@@ -48,7 +48,7 @@ interface Country {
 export type Countries = Record<string, Country>;
 
 const countries: Countries = {
-  // Australia: { continent: "AU", flag: "🇦🇺", code: "au" },
+  Australia: { continent: "AU", flag: "🇦🇺", code: "au" },
   Austria: { continent: "EU", flag: "🇦🇹", code: "at" },
   Bahamas: { continent: "NA", flag: "🇧🇸", code: "bs" },
   "British Virgin Islands": { continent: "NA", flag: "🇻🇬", code: "vg" },
@@ -65,7 +65,7 @@ const countries: Countries = {
   Greece: { continent: "EU", flag: "🇬🇷", code: "gr" },
   // "Hong Kong": { continent: "AS", flag: "🇭🇰", code: "hk" },
   Iceland: { continent: "EU", flag: "🇮🇸", code: "is" },
-  // India: { continent: "AS", flag: "🇮🇳", code: "in" },
+  India: { continent: "AS", flag: "🇮🇳", code: "in" },
   Ireland: { continent: "EU", flag: "🇮🇪", code: "ie" },
   Italy: { continent: "EU", flag: "🇮🇹", code: "it" },
   Jamaica: { continent: "NA", flag: "🇯🇲", code: "jm" },
@@ -82,7 +82,7 @@ const countries: Countries = {
   Sweden: { continent: "EU", flag: "🇸🇪", code: "se" },
   Switzerland: { continent: "EU", flag: "🇨🇭", code: "ch" },
   Turkey: { continent: "EU", flag: "🇹🇷", code: "tr" },
-  // "United Arab Emirates": { continent: "AF", flag: "🇦🇪", code: "ae" },
+  "United Arab Emirates": { continent: "AF", flag: "🇦🇪", code: "ae" },
   "United Kingdom": { continent: "EU", flag: "🇬🇧", code: "gb" },
   "United States of America": { continent: "NA", flag: "🇺🇸", code: "us" },
   "U.S. Virgin Islands": { continent: "NA", flag: "🇻🇮", code: "vi" },
