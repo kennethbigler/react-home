@@ -58,8 +58,10 @@ jobs:
       - name: Codecov
         uses: codecov/codecov-action@v3.1.1
 
-      - name: Run lighthouse
+      - name: Run lighthouse  
         run: npx lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
       - name: Run pa11y-ci
         run: |
