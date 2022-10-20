@@ -15,14 +15,9 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  checkout: 
+  # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -30,6 +25,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    needs: [checkout]
+    steps:
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3.5.1
         with:
@@ -70,7 +72,6 @@ jobs:
 
   # Adding a code analyzer job
   analyze:
-    name: Analyze
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -84,10 +85,8 @@ jobs:
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python' ]
         # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
 
+    needs: [checkout]
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
