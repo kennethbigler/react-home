@@ -3,7 +3,6 @@ import Typography from "@mui/material/Typography";
 import TimelineCard from "../../common/timeline-card";
 import dateObj from "../../../apis/DateHelper";
 import cars, { kensCars, familyCars } from "../../../constants/cars";
-// import letters from "../../../constants/letters";
 import CarCard from "./CarCard";
 import CarChart, { HideObject } from "./CarChart";
 import CarChartControls, { ShowKey } from "./CarChartControls";
@@ -69,13 +68,6 @@ const Cars = React.memo(() => {
       {!hide.ken && !hide.family && <hr style={hrStyles} />}
       {!hide.family &&
         familyCars.map((car) => <CarCard car={car} key={car.title} />)}
-      {/* <TimelineCard
-        data={letters}
-        selector="letter"
-        start={dateObj("2011-09")}
-        title="Letters"
-        yearMarkerFrequency={3}
-      /> */}
     </>
   );
 });
