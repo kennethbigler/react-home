@@ -30,7 +30,6 @@ export const tooltipFormatter = (
   name: string,
   entry: TooltipPayload
 ): [string, string] => {
-  console.log(entry);
   const displayMonths = (months as number) % 12;
   const years = Math.floor((months as number) / 12);
 
