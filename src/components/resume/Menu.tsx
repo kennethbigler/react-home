@@ -1,4 +1,5 @@
 import React from "react";
+import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import noop from "../../apis/noop";
@@ -54,7 +55,7 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
   );
 
   return (
-    <>
+    <MenuList>
       {menu}
       <Divider />
       <MenuItem onClick={github}>GitHub</MenuItem>
@@ -75,7 +76,7 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
           paddingRight: 16,
         }}
       />
-    </>
+    </MenuList>
   );
 });
 

@@ -1,10 +1,13 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import MurderMystery from "./MurderMystery";
 
 describe("resume | murder-mystery", () => {
-  it("renders as expected", () => {
-    render(<MurderMystery />);
+  it("renders as expected", async () => {
+    const { container } = render(<MurderMystery />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
 
     expect(
       screen.getByText("Murder at The Grand Cinema Magic Hotel and Casino")

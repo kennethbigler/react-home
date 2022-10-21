@@ -15,7 +15,9 @@ export type ShowKey = keyof HideObject;
 const CarChartControls = React.memo(
   ({ onClick, hide, vw }: CarChartControlsProps) => (
     <div>
-      <Typography variant="h4">Hide Data:</Typography>
+      <Typography variant="h3" component="h2">
+        Hide Data:
+      </Typography>
       <ButtonGroup
         color="secondary"
         aria-label="outlined secondary button group controlling graph"

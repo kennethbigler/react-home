@@ -1,11 +1,14 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import render from "../../../../recoil-test-render";
 import GraphQL from "../GraphQL";
 
 describe("resume | graphql | GraphQL", () => {
-  it("renders as expected", () => {
-    render(<GraphQL />);
+  it("renders as expected", async () => {
+    const { container } = render(<GraphQL />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
 
     expect(screen.getByText("GraphQL Demo")).toBeInTheDocument();
     expect(screen.getAllByText("Authorization Code")).toHaveLength(2);

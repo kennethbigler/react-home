@@ -120,7 +120,7 @@ rcLoyalty.forEach(({ nights, status }, i) => {
 // --------------------     Travel Map     -------------------- //
 const TravelMap: React.FC = React.memo(() => (
   <>
-    <Typography variant="h4" style={marginStyles}>
+    <Typography variant="h2" style={marginStyles}>
       {`I have been to ${
         americas.length + euNaf.length + asNau.length
       } countries:`}
@@ -145,7 +145,7 @@ const TravelMap: React.FC = React.memo(() => (
       <TableBody>{countries}</TableBody>
     </Table>
 
-    <Typography variant="h4" style={marginStyles}>
+    <Typography variant="h2" style={marginStyles}>
       {`I have been on ${cruises.length} cruises:`}
     </Typography>
     <Table>

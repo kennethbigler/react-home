@@ -1,5 +1,6 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import render from "../../../../recoil-test-render";
 import GitTools from "../GitTools";
 import { validTypingId, getSelectOptions } from "../helpers";
@@ -18,8 +19,10 @@ describe("resume | git-tools |  GitTools", () => {
     expect(selectOptions.length).toStrictEqual(2);
   });
 
-  it("renders as expected", () => {
-    render(<GitTools />);
+  it("renders as expected", async () => {
+    const { container } = render(<GitTools />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
 
     // Git Tools
     expect(screen.getByText("Git Tools")).toBeInTheDocument();

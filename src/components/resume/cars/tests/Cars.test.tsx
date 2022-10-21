@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import Cars from "../Cars";
 import cars from "../../../../constants/cars";
 
@@ -23,8 +24,10 @@ afterEach(() => {
 });
 
 describe("resume | cars | Cars", () => {
-  it("renders as expected", () => {
+  it("renders as expected", async () => {
     const { container } = render(<Cars />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
 
     expect(screen.getAllByText("Ken's Cars")).toHaveLength(2);
     expect(screen.getAllByText(`(${demoCar.owned})`)).toHaveLength(2);

@@ -1,4 +1,5 @@
 import React from "react";
+import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import menuItems from "./menu-items";
@@ -8,7 +9,7 @@ interface MenuProps {
 }
 
 const Menu: React.FC<MenuProps> = React.memo(({ onItemClick }: MenuProps) => (
-  <>
+  <MenuList>
     <MenuItem onClick={() => onItemClick && onItemClick("/")}>
       Back to Resume
     </MenuItem>
@@ -26,7 +27,7 @@ const Menu: React.FC<MenuProps> = React.memo(({ onItemClick }: MenuProps) => (
         </MenuItem>
       )
     )}
-  </>
+  </MenuList>
 ));
 
 export default Menu;

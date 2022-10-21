@@ -32,13 +32,19 @@ const CarCard: React.FC<CarCardProps> = ({ car }: CarCardProps) => (
     <Grid container spacing={1}>
       <Grid item sm={8} xs={12}>
         <CardContent>
-          <Typography variant="h5">
+          <Typography variant="h4" component="h3">
             <strong style={{ paddingRight: 20 }}>{`(${car.owned})`}</strong>
             {car.title}
           </Typography>
           <hr />
-          <Typography variant="h6">{`Horsepower: ${car.horsepower}`}</Typography>
-          <Typography variant="h6">{`Transmission: ${car.transmission}`}</Typography>
+          <Typography
+            variant="h5"
+            component="h4"
+          >{`Horsepower: ${car.horsepower}`}</Typography>
+          <Typography
+            variant="h5"
+            component="h4"
+          >{`Transmission: ${car.transmission}`}</Typography>
           <hr />
           <Typography>{car.story}</Typography>
         </CardContent>
