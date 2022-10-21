@@ -10,7 +10,7 @@ import TimelineCard from "../../common/timeline-card";
  *         |->  Education */
 const Summary = React.memo(() => (
   <>
-    <Typography variant="h1" gutterBottom>
+    <Typography variant="h2" component="h1" gutterBottom>
       Summary
     </Typography>
     <Info />

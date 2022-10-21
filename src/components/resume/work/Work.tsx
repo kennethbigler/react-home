@@ -14,7 +14,9 @@ const TechBarChart = React.lazy(
  *      |->  WorkCards  ->  Job */
 const Work: React.FC = React.memo(() => (
   <>
-    <Typography variant="h1">Experience</Typography>
+    <Typography variant="h2" component="h1">
+      Experience
+    </Typography>
     <TimelineCard data={workExp} title="Work Timeline" />
     <ExpandableCard title="Programming Language Timeline (Professional Use)">
       <React.Suspense fallback={<LoadingSpinner />}>

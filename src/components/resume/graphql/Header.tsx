@@ -12,7 +12,9 @@ const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
 
   return (
     <>
-      <Typography variant="h1">GraphQL Demo</Typography>
+      <Typography variant="h2" component="h1">
+        GraphQL Demo
+      </Typography>
       <TextField
         label="Authorization Code"
         placeholder="some 32 character string from github"

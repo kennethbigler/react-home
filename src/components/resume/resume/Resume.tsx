@@ -11,7 +11,9 @@ const imageStyles: React.CSSProperties = {
 
 const Resume = React.memo(() => (
   <>
-    <Typography variant="h1">Resume</Typography>
+    <Typography variant="h2" component="h1">
+      Resume
+    </Typography>
     <img
       src={resume}
       alt="Kenneth Bigler Software Engineer Resume"

@@ -153,7 +153,7 @@ const DND: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h1" gutterBottom>
+      <Typography variant="h2" component="h1" gutterBottom>
         Deal or No Deal
       </Typography>
       <Header

@@ -117,7 +117,9 @@ const TypeChecker = () => {
 
   return (
     <>
-      <Typography variant="h1">Type Checker</Typography>
+      <Typography variant="h2" component="h1">
+        Type Checker
+      </Typography>
       {defPrimary !== -1 && (
         <Dropdown
           ariaLabel="Secondary Type"

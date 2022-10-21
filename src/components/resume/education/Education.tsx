@@ -6,7 +6,9 @@ import classes from "../../../constants/classes";
 /** Education  ->  Degree  -> Year  ->  Quarter  ->  Class */
 const Education = React.memo(() => (
   <>
-    <Typography variant="h1">Hackathons &amp; Education</Typography>
+    <Typography variant="h2" component="h1">
+      Hackathons &amp; Education
+    </Typography>
     {classes.map((d) => (
       <Degree key={d.degree} degree={d} />
     ))}

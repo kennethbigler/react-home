@@ -14,7 +14,9 @@ const Header: React.FC<HeaderProps> = ({
   name,
 }: HeaderProps) => (
   <>
-    <Typography variant="h1">Yahtzee</Typography>
+    <Typography variant="h2" component="h1">
+      Yahtzee
+    </Typography>
     <div className="flex-container">
       <Typography variant="h4" component="h2">
         {name}: ${money}

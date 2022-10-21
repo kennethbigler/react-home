@@ -7,7 +7,9 @@ import WorldMap from "./WorldMap";
  *           |->  TravelTable */
 const TravelMap: React.FC = React.memo(() => (
   <>
-    <Typography variant="h1">My Travel Map</Typography>
+    <Typography variant="h2" component="h1">
+      My Travel Map
+    </Typography>
     <WorldMap />
     <TravelTable />
   </>

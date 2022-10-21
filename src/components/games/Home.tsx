@@ -49,8 +49,10 @@ const generateMenuItems =
 
 const Home: React.FC<HomeProps> = React.memo(({ onItemClick }: HomeProps) => (
   <div style={{ textAlign: "center", marginTop: 20 }}>
-    <Typography variant="h1">ReactJS Games</Typography>
-    <Typography variant="h2">
+    <Typography variant="h2" component="h1">
+      ReactJS Games
+    </Typography>
+    <Typography variant="h3" component="h2">
       This site was created to learn, check out the{" "}
       <Link
         href="https://github.com/kennethbigler/react-home"
@@ -60,14 +62,14 @@ const Home: React.FC<HomeProps> = React.memo(({ onItemClick }: HomeProps) => (
       </Link>
     </Typography>
     <hr style={dividerStyles} />
-    <Typography variant="h3" style={subHeaderStyles}>
+    <Typography variant="h4" component="h3" style={subHeaderStyles}>
       Casino
     </Typography>
     <div style={menuWrapperStyles}>
       {casinoItems.map(generateMenuItems(onItemClick))}
     </div>
     <hr style={dividerStyles} />
-    <Typography variant="h3" style={subHeaderStyles}>
+    <Typography variant="h4" component="h3" style={subHeaderStyles}>
       Games
     </Typography>
     <div style={menuWrapperStyles}>
