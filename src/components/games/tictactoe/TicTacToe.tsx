@@ -72,7 +72,7 @@ const TicTacToe: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h2" gutterBottom>
+      <Typography variant="h1" gutterBottom>
         Tic-Tac-Toe
       </Typography>
       <Paper elevation={2} style={paperStyles}>

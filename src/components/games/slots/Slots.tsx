@@ -35,7 +35,7 @@ const Slots: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h2">Casino Slot Machine</Typography>
+      <Typography variant="h1">Casino Slot Machine</Typography>
       <Grid container spacing={1} style={{ marginTop: "2em" }}>
         <Grid item sm={6} xs={12}>
           <Grid container spacing={1} style={{ marginBottom: "1em" }}>

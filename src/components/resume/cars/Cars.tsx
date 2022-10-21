@@ -45,7 +45,7 @@ const Cars = React.memo(() => {
 
   return (
     <>
-      <Typography variant="h2">Ken&apos;s Cars</Typography>
+      <Typography variant="h1">Ken&apos;s Cars</Typography>
       <br />
       <CarChartControls onClick={handleClick} hide={hide} vw={vw} />
       <CarChart

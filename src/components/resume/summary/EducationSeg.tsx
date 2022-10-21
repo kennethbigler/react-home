@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { School } from "../../../constants/classes";
 
 const EducationSeg: React.FC<School> = React.memo(
@@ -14,10 +14,10 @@ const EducationSeg: React.FC<School> = React.memo(
     school,
   }: School) => (
     <div>
-      <Typography variant="h4">{`${school || ""}, ${
+      <Typography variant="h4" component="h3">{`${school || ""}, ${
         location || ""
       }`}</Typography>
-      <Typography variant="h5">
+      <Typography variant="h5" component="h4">
         {degree + (major ? ` in ${major}` : "")}
       </Typography>
       <ul>

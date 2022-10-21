@@ -1,10 +1,13 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import Summary from "../Summary";
 
 describe("resume | summary | Summary", () => {
-  it("renders as expected", () => {
-    render(<Summary />);
+  it("renders as expected", async () => {
+    const { container } = render(<Summary />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
 
     expect(
       screen.getByText("Accessibility Engineering Leader, Intuit")

@@ -2,7 +2,7 @@ import React from "react";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import { RoundPairing } from "../../../../recoil/are-you-the-one-atom";
 import { ColorOptions } from "../types";
 import TBDialog from "./TBDialog";

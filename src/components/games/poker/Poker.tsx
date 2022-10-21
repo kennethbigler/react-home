@@ -223,7 +223,7 @@ const Poker: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h2" gutterBottom>
+      <Typography variant="h1" gutterBottom>
         5 Card Draw Poker
       </Typography>
       <GameTable

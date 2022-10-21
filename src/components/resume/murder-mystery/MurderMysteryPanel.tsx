@@ -8,7 +8,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import nl2br from "react-newline-to-break";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 interface MurderMysteryPanelProps {
   expanded?: string;

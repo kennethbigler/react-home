@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import Link from "./Link";
 import Description from "./Description";
 import WatchRepository from "./WatchRepository";

@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import Work from "../Work";
 
 const { ResizeObserver } = window;
@@ -20,8 +21,10 @@ afterEach(() => {
 });
 
 describe("resume | work | Work", () => {
-  it("renders as expected", () => {
-    render(<Work />);
+  it("renders as expected", async () => {
+    const { container } = render(<Work />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
 
     expect(screen.getByText("Experience")).toBeInTheDocument();
 

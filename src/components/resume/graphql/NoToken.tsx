@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 const NoToken: React.FC = React.memo(() => (
   <>

@@ -49,8 +49,8 @@ const generateMenuItems =
 
 const Home: React.FC<HomeProps> = React.memo(({ onItemClick }: HomeProps) => (
   <div style={{ textAlign: "center", marginTop: 20 }}>
-    <Typography variant="h2">Welcome to my ReactJS Game Projects</Typography>
-    <Typography variant="h3">
+    <Typography variant="h1">ReactJS Games</Typography>
+    <Typography variant="h2">
       This site was created to learn, check out the{" "}
       <Link
         href="https://github.com/kennethbigler/react-home"

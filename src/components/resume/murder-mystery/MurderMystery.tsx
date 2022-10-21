@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import profiles, { CASINO, intro } from "../../../constants/murder";
 import MurderMysteryPanel from "./MurderMysteryPanel";
 
@@ -41,11 +41,14 @@ const MurderMystery: React.FC = React.memo(() => {
 
   return (
     <>
+      <Typography variant="h1" gutterBottom>
+        Murder Mystery
+      </Typography>
+      <hr />
       <Typography variant="h2" gutterBottom>{`Murder at ${CASINO}`}</Typography>
       <hr />
-      <Typography variant="h5" gutterBottom>
-        {intro}
-      </Typography>
+      <Typography gutterBottom>{intro}</Typography>
+      <hr />
       {mmProfiles}
     </>
   );

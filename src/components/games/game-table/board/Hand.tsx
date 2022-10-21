@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { purple } from "@mui/material/colors";
 import Card from "./card/Card";
 import { DBHand } from "../../../../recoil/player-atom";

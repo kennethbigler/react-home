@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
 
   return (
     <>
-      <Typography variant="h2">Git Tools</Typography>
+      <Typography variant="h1">Git Tools</Typography>
       <TextField
         InputLabelProps={{ style: { color: gitTheme } }}
         label="User Story ID"
