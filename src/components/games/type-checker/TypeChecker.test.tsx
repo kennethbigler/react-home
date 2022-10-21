@@ -4,10 +4,14 @@ import { axe } from "jest-axe";
 import TypeChecker from "./TypeChecker";
 
 describe("resume | type-checker", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<TypeChecker />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    render(<TypeChecker />);
 
     expect(screen.getByText("Type Checker")).toBeInTheDocument();
   });

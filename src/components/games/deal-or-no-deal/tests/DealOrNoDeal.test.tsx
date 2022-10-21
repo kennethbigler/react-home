@@ -5,10 +5,14 @@ import render from "../../../../recoil-test-render";
 import DealOrNoDeal from "../DealOrNoDeal";
 
 describe("games | deal-or-no-deal | DealOrNoDeal", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<DealOrNoDeal />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    render(<DealOrNoDeal />);
 
     expect(screen.getByText("Deal or No Deal")).toBeInTheDocument();
     expect(screen.getByText("Your Case: ?")).toBeInTheDocument();

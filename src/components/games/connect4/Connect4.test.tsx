@@ -5,10 +5,14 @@ import render from "../../../recoil-test-render";
 import Connect4 from "./Connect4";
 
 describe("games | connect4 | Connect4", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<Connect4 />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    render(<Connect4 />);
 
     expect(
       screen.getByText("Welcome to Ken's Connect4 Game")

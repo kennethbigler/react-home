@@ -5,10 +5,14 @@ import render from "../../../recoil-test-render";
 import AreYouTheOne from "./AreYouTheOne";
 
 describe("games | are-you-the-one | AreYouTheOne", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<AreYouTheOne />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    render(<AreYouTheOne />);
 
     // Title
     expect(screen.getByText("Are You The One?")).toBeInTheDocument();

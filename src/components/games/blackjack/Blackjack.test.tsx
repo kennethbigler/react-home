@@ -15,10 +15,14 @@ const nine = { name: "9", weight: 9, suit: "♣" };
 const eight = { name: "8", weight: 8, suit: "♣" };
 
 describe("games | blackjack | Blackjack", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<Blackjack />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    render(<Blackjack />);
 
     expect(screen.getByText("Blackjack (21)")).toBeInTheDocument();
     expect(screen.getByText("Rules")).toBeInTheDocument();

@@ -5,10 +5,14 @@ import render from "../../../../recoil-test-render";
 import Yahtzee from "../Yahtzee";
 
 describe("games | yahtzee | Yahtzee", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<Yahtzee />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    render(<Yahtzee />);
 
     expect(screen.getAllByText("Yahtzee")).toHaveLength(2);
     // button 0

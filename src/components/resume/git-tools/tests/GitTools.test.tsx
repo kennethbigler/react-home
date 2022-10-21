@@ -19,10 +19,14 @@ describe("resume | git-tools |  GitTools", () => {
     expect(selectOptions.length).toStrictEqual(2);
   });
 
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<GitTools />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    render(<GitTools />);
 
     // Git Tools
     expect(screen.getByText("Git Tools")).toBeInTheDocument();

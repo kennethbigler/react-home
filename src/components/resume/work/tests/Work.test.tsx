@@ -21,10 +21,14 @@ afterEach(() => {
 });
 
 describe("resume | work | Work", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<Work />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    render(<Work />);
 
     expect(screen.getByText("Experience")).toBeInTheDocument();
 

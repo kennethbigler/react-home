@@ -4,10 +4,14 @@ import { axe } from "jest-axe";
 import FamilyFeud from "./FamilyFeud";
 
 describe("games | connect4 | Connect4", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<FamilyFeud />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    render(<FamilyFeud />);
 
     expect(screen.getByText("Family Feud!")).toBeInTheDocument();
     expect(screen.getAllByText("Team 1")).toHaveLength(2);

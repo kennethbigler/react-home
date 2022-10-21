@@ -29,6 +29,12 @@ const card = (name: string, suit: string) => {
 };
 
 describe("games | poker | Poker", () => {
+  it("passes axe", async () => {
+    const { container } = render(<Poker />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
   it("renders as expected & plays a game", async () => {
     deck
       .mockReset()
@@ -85,9 +91,7 @@ describe("games | poker | Poker", () => {
       // AI redraw 1
       .mockResolvedValueOnce([card("9", "♥")]);
 
-    const { container } = render(<Poker />);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+    render(<Poker />);
 
     // renders as expected
     expect(screen.getByText("5 Card Draw Poker")).toBeInTheDocument();

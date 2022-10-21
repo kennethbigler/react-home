@@ -5,10 +5,14 @@ import render from "../../../../recoil-test-render";
 import GraphQL from "../GraphQL";
 
 describe("resume | graphql | GraphQL", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<GraphQL />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    render(<GraphQL />);
 
     expect(screen.getByText("GraphQL Demo")).toBeInTheDocument();
     expect(screen.getAllByText("Authorization Code")).toHaveLength(2);

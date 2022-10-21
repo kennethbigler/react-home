@@ -24,10 +24,14 @@ afterEach(() => {
 });
 
 describe("resume | cars | Cars", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<Cars />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    const { container } = render(<Cars />);
 
     expect(screen.getAllByText("Ken's Cars")).toHaveLength(2);
     expect(screen.getAllByText(`(${demoCar.owned})`)).toHaveLength(2);

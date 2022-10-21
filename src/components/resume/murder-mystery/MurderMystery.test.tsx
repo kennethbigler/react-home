@@ -4,10 +4,14 @@ import { axe } from "jest-axe";
 import MurderMystery from "./MurderMystery";
 
 describe("resume | murder-mystery", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<MurderMystery />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    render(<MurderMystery />);
 
     expect(
       screen.getByText("Murder at The Grand Cinema Magic Hotel and Casino")

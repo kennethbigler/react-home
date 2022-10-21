@@ -8,15 +8,19 @@ import SlotMachine, { SlotOption as SO } from "../../../apis/SlotMachine";
 const pullHandle = jest.spyOn(SlotMachine, "pullHandle");
 
 describe("games | slots | Slots", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
+    const { container } = render(<Slots />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
     pullHandle.mockImplementation(() => [
       [SO.EMPTY, SO.EMPTY, SO.EMPTY],
       [SO.EMPTY, SO.BAR, SO.EMPTY],
       [SO.EMPTY, SO.EMPTY, SO.BAR],
     ]);
-    const { container } = render(<Slots />);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+    render(<Slots />);
 
     expect(screen.getByText("Casino Slot Machine")).toBeInTheDocument();
     expect(screen.getByText("Spin")).toBeInTheDocument();

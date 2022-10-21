@@ -4,10 +4,14 @@ import { axe } from "jest-axe";
 import Education from "../Education";
 
 describe("resume | education | Education", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<Education />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    render(<Education />);
 
     expect(screen.getByText("Hackathons & Education")).toBeInTheDocument();
     expect(screen.getByText("Hackathons")).toBeInTheDocument();

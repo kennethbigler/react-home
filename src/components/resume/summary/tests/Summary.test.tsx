@@ -4,10 +4,14 @@ import { axe } from "jest-axe";
 import Summary from "../Summary";
 
 describe("resume | summary | Summary", () => {
-  it("renders as expected", async () => {
+  it("passes axe", async () => {
     const { container } = render(<Summary />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it("renders as expected", () => {
+    render(<Summary />);
 
     expect(
       screen.getByText("Accessibility Engineering Leader, Intuit")
