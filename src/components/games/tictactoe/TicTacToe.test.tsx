@@ -1,11 +1,14 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import render from "../../../recoil-test-render";
 import TicTacToe from "./TicTacToe";
 
 describe("games | tictactoe | TicTacToe", () => {
-  it("renders as expected", () => {
-    render(<TicTacToe />);
+  it("renders as expected", async () => {
+    const { container } = render(<TicTacToe />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
 
     expect(screen.getByText("Tic-Tac-Toe")).toBeInTheDocument();
     expect(screen.getByText("Turn: X")).toBeInTheDocument();

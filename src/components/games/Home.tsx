@@ -37,7 +37,7 @@ const generateMenuItems =
         }
       >
         <CardContent>
-          <Typography variant="h5" textAlign="center">
+          <Typography variant="h5" component="h4" textAlign="center">
             {name}
           </Typography>
           <Avatar style={{ margin: "auto", marginTop: 30, color: "white" }}>
@@ -60,14 +60,14 @@ const Home: React.FC<HomeProps> = React.memo(({ onItemClick }: HomeProps) => (
       </Link>
     </Typography>
     <hr style={dividerStyles} />
-    <Typography variant="h4" style={subHeaderStyles}>
+    <Typography variant="h3" style={subHeaderStyles}>
       Casino
     </Typography>
     <div style={menuWrapperStyles}>
       {casinoItems.map(generateMenuItems(onItemClick))}
     </div>
     <hr style={dividerStyles} />
-    <Typography variant="h4" style={subHeaderStyles}>
+    <Typography variant="h3" style={subHeaderStyles}>
       Games
     </Typography>
     <div style={menuWrapperStyles}>

@@ -1,10 +1,13 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import FamilyFeud from "./FamilyFeud";
 
 describe("games | connect4 | Connect4", () => {
-  it("renders as expected", () => {
-    render(<FamilyFeud />);
+  it("renders as expected", async () => {
+    const { container } = render(<FamilyFeud />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
 
     expect(screen.getByText("Family Feud!")).toBeInTheDocument();
     expect(screen.getAllByText("Team 1")).toHaveLength(2);

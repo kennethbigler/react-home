@@ -1,10 +1,13 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 import TypeChecker from "./TypeChecker";
 
 describe("resume | type-checker", () => {
-  it("renders as expected", () => {
-    render(<TypeChecker />);
+  it("renders as expected", async () => {
+    const { container } = render(<TypeChecker />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
 
     expect(screen.getByText("Type Checker")).toBeInTheDocument();
   });

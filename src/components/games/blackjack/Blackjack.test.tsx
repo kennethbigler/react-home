@@ -1,5 +1,6 @@
 import React from "react";
 import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { axe } from "jest-axe";
 import render from "../../../recoil-test-render";
 import Deck from "../../../apis/Deck";
 import Blackjack from "./Blackjack";
@@ -14,8 +15,10 @@ const nine = { name: "9", weight: 9, suit: "♣" };
 const eight = { name: "8", weight: 8, suit: "♣" };
 
 describe("games | blackjack | Blackjack", () => {
-  it("renders as expected", () => {
-    render(<Blackjack />);
+  it("renders as expected", async () => {
+    const { container } = render(<Blackjack />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
 
     expect(screen.getByText("Blackjack (21)")).toBeInTheDocument();
     expect(screen.getByText("Rules")).toBeInTheDocument();

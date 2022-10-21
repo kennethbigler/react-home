@@ -48,7 +48,7 @@ const Slots: React.FC = () => {
                 Spin
               </Button>
               {exchange ? (
-                <Typography variant="h4">{`You ${
+                <Typography variant="h4" component="h2">{`You ${
                   exchange > 0 ? "won" : "lost"
                 } $${exchange}`}</Typography>
               ) : null}

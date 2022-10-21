@@ -12,7 +12,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = React.memo(
   ({ winner, turn, newGame }: HeaderProps) => (
     <Toolbar>
-      <Typography style={{ flex: 1 }} variant="h6">
+      <Typography style={{ flex: 1 }} variant="h4" component="h2">
         {winner ? `Winner: ${winner}` : `Turn: ${turn}`}
       </Typography>
       <Button onClick={newGame} variant="contained">

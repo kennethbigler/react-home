@@ -21,7 +21,7 @@ const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
     <Toolbar>
       <div className="flex-container">
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Typography style={{ marginRight: 10 }} variant="h6">
+          <Typography style={{ marginRight: 10 }} variant="h4" component="h2">
             {status}
           </Typography>
           <Piece piece={piece} />

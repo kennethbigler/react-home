@@ -1,11 +1,14 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import render from "../../../recoil-test-render";
 import Connect4 from "./Connect4";
 
 describe("games | connect4 | Connect4", () => {
-  it("renders as expected", () => {
-    render(<Connect4 />);
+  it("renders as expected", async () => {
+    const { container } = render(<Connect4 />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
 
     expect(
       screen.getByText("Welcome to Ken's Connect4 Game")

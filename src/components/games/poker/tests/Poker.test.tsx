@@ -1,5 +1,6 @@
 import React from "react";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
+import { axe } from "jest-axe";
 import render from "../../../../recoil-test-render";
 import Poker from "../Poker";
 import Deck from "../../../../apis/Deck";
@@ -84,7 +85,9 @@ describe("games | poker | Poker", () => {
       // AI redraw 1
       .mockResolvedValueOnce([card("9", "♥")]);
 
-    render(<Poker />);
+    const { container } = render(<Poker />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
 
     // renders as expected
     expect(screen.getByText("5 Card Draw Poker")).toBeInTheDocument();

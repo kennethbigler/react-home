@@ -130,7 +130,7 @@ const TypeChecker = () => {
         <Table aria-label="are you the one data entry table">
           <TableHead>
             <TableRow>
-              <TableCell />
+              <TableCell>-</TableCell>
               {defPrimary === -1 ? (
                 effRowTypes.map((t, i) => (
                   <TableCell key={`header-${t.name}`} sx={{ padding: 0 }}>

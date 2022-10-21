@@ -1,11 +1,14 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import render from "../../../../recoil-test-render";
 import Yahtzee from "../Yahtzee";
 
 describe("games | yahtzee | Yahtzee", () => {
-  it("renders as expected", () => {
-    render(<Yahtzee />);
+  it("renders as expected", async () => {
+    const { container } = render(<Yahtzee />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
 
     expect(screen.getAllByText("Yahtzee")).toHaveLength(2);
     // button 0
