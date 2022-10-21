@@ -13,7 +13,7 @@
     "@emotion/react": "11.10.4",
     "@emotion/styled": "11.10.4",
     "@mui/icons-material": "5.10.9",
-    "@mui/material": "5.10.9",
+    "@mui/material": "5.10.10",
     "@types/react-simple-maps": "1.0.8",
     "copy-to-clipboard": "3.3.2",
     "graphql-tag": "2.12.6",
