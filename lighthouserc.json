@@ -1,7 +1,7 @@
 {
   "ci": {
     "collect": {
-      "staticDistDir": "./docs"
+      "staticDistDir": "./build"
     },
     "upload": {
       "target": "temporary-public-storage"
