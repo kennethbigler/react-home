@@ -9,7 +9,7 @@ import {
   Area,
 } from "recharts";
 import { useTheme } from "@mui/material/styles";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import InfoPopup from "../../common/info-popover/InfoPopup";
 
 interface ScoreGraphProps {

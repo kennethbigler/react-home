@@ -1,6 +1,6 @@
 import React from "react";
 import Chip from "@mui/material/Chip";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import ExpandableCard from "../../common/expandable-card";
 import { techSummary, skillSummary } from "../../../constants/work";
 
@@ -13,7 +13,9 @@ const getCSV = (arr: string[]): React.ReactNodeArray =>
 const Skills: React.FC = React.memo(() => (
   <ExpandableCard title="Skills">
     <div style={sidePadding}>
-      <Typography variant="h4">Summary of Skills:</Typography>
+      <Typography variant="h3" component="h2">
+        Summary of Skills:
+      </Typography>
       <ul>
         <li>
           <Typography>
@@ -41,10 +43,14 @@ const Skills: React.FC = React.memo(() => (
         </li>
       </ul>
       <hr />
-      <Typography variant="h4">Technologies:</Typography>
+      <Typography variant="h3" component="h2">
+        Technologies:
+      </Typography>
       {getCSV(techSummary)}
       <hr />
-      <Typography variant="h4">Skills:</Typography>
+      <Typography variant="h3" component="h2">
+        Skills:
+      </Typography>
       {getCSV(skillSummary)}
     </div>
   </ExpandableCard>

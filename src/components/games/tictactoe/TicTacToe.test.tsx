@@ -1,9 +1,16 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import render from "../../../recoil-test-render";
 import TicTacToe from "./TicTacToe";
 
 describe("games | tictactoe | TicTacToe", () => {
+  it("passes axe", async () => {
+    const { container } = render(<TicTacToe />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
   it("renders as expected", () => {
     render(<TicTacToe />);
 

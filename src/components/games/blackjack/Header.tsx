@@ -6,7 +6,7 @@ import Help from "./help";
 
 const Header: React.FC = React.memo(() => (
   <div className="flex-container">
-    <Typography variant="h2" gutterBottom>
+    <Typography variant="h2" component="h1" gutterBottom>
       Blackjack (21)
     </Typography>
     <InfoPopup title="Rules">

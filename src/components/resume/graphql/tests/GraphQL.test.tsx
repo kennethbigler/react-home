@@ -1,9 +1,16 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import render from "../../../../recoil-test-render";
 import GraphQL from "../GraphQL";
 
 describe("resume | graphql | GraphQL", () => {
+  it("passes axe", async () => {
+    const { container } = render(<GraphQL />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
   it("renders as expected", () => {
     render(<GraphQL />);
 

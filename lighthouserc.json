@@ -11,7 +11,6 @@
       "assertions": {
         "csp-xss": "warn",
         "errors-in-console": "warn",
-        "heading-order": "warn",
         "non-composited-animations": "warn",
         "preload-lcp-image": "warn",
         "service-worker": "warn",

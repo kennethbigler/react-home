@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import Info from "./Info";
 import Skills from "./Skills";
 import Education from "./Education";
@@ -10,7 +10,7 @@ import TimelineCard from "../../common/timeline-card";
  *         |->  Education */
 const Summary = React.memo(() => (
   <>
-    <Typography variant="h2" gutterBottom>
+    <Typography variant="h2" component="h1" gutterBottom>
       Summary
     </Typography>
     <Info />

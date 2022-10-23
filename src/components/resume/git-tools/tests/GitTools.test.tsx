@@ -1,5 +1,6 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import render from "../../../../recoil-test-render";
 import GitTools from "../GitTools";
 import { validTypingId, getSelectOptions } from "../helpers";
@@ -16,6 +17,12 @@ describe("resume | git-tools |  GitTools", () => {
     const selectOptions = getSelectOptions(["feat", "test"]);
     // @ts-expect-error: we know this will be an array length 2
     expect(selectOptions.length).toStrictEqual(2);
+  });
+
+  it("passes axe", async () => {
+    const { container } = render(<GitTools />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 
   it("renders as expected", () => {

@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import Cars from "../Cars";
 import cars from "../../../../constants/cars";
 
@@ -23,6 +24,12 @@ afterEach(() => {
 });
 
 describe("resume | cars | Cars", () => {
+  it("passes axe", async () => {
+    const { container } = render(<Cars />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
   it("renders as expected", () => {
     const { container } = render(<Cars />);
 

@@ -117,7 +117,9 @@ const TypeChecker = () => {
 
   return (
     <>
-      <Typography variant="h2">Type Checker</Typography>
+      <Typography variant="h2" component="h1">
+        Type Checker
+      </Typography>
       {defPrimary !== -1 && (
         <Dropdown
           ariaLabel="Secondary Type"
@@ -130,7 +132,7 @@ const TypeChecker = () => {
         <Table aria-label="are you the one data entry table">
           <TableHead>
             <TableRow>
-              <TableCell />
+              <TableCell>-</TableCell>
               {defPrimary === -1 ? (
                 effRowTypes.map((t, i) => (
                   <TableCell key={`header-${t.name}`} sx={{ padding: 0 }}>

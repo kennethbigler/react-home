@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import TravelTable from "./TravelTable";
 import WorldMap from "./WorldMap";
 
@@ -7,7 +7,9 @@ import WorldMap from "./WorldMap";
  *           |->  TravelTable */
 const TravelMap: React.FC = React.memo(() => (
   <>
-    <Typography variant="h2">My Travel Map</Typography>
+    <Typography variant="h2" component="h1">
+      My Travel Map
+    </Typography>
     <WorldMap />
     <TravelTable />
   </>

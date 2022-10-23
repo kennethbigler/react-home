@@ -35,7 +35,9 @@ const Slots: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h2">Casino Slot Machine</Typography>
+      <Typography variant="h2" component="h1">
+        Casino Slot Machine
+      </Typography>
       <Grid container spacing={1} style={{ marginTop: "2em" }}>
         <Grid item sm={6} xs={12}>
           <Grid container spacing={1} style={{ marginBottom: "1em" }}>
@@ -48,7 +50,7 @@ const Slots: React.FC = () => {
                 Spin
               </Button>
               {exchange ? (
-                <Typography variant="h4">{`You ${
+                <Typography variant="h4" component="h2">{`You ${
                   exchange > 0 ? "won" : "lost"
                 } $${exchange}`}</Typography>
               ) : null}

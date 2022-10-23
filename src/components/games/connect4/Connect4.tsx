@@ -89,7 +89,7 @@ const Connect4: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h2" gutterBottom>
+      <Typography variant="h2" component="h1" gutterBottom>
         Welcome to Ken&apos;s Connect4 Game
       </Typography>
       <GameBoard

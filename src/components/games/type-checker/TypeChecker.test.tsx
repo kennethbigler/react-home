@@ -1,8 +1,15 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 import TypeChecker from "./TypeChecker";
 
 describe("resume | type-checker", () => {
+  it("passes axe", async () => {
+    const { container } = render(<TypeChecker />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
   it("renders as expected", () => {
     render(<TypeChecker />);
 

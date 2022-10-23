@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import TimelineCard from "../../common/timeline-card";
 import ExpandableCard from "../../common/expandable-card";
 import workExp, { VOLUNTEER, WORK } from "../../../constants/work";
@@ -14,7 +14,9 @@ const TechBarChart = React.lazy(
  *      |->  WorkCards  ->  Job */
 const Work: React.FC = React.memo(() => (
   <>
-    <Typography variant="h2">Experience</Typography>
+    <Typography variant="h2" component="h1">
+      Experience
+    </Typography>
     <TimelineCard data={workExp} title="Work Timeline" />
     <ExpandableCard title="Programming Language Timeline (Professional Use)">
       <React.Suspense fallback={<LoadingSpinner />}>

@@ -12,7 +12,7 @@ const AYTOTable = ({ gents, ...other }: AYTOTableProps) => (
     <Table aria-label="are you the one data entry table">
       <TableHead>
         <TableRow>
-          <TableCell />
+          <TableCell>-</TableCell>
           {gents.map((name) => (
             <TableCell
               key={name}

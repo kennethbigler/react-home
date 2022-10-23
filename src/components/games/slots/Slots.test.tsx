@@ -1,5 +1,6 @@
 import React from "react";
 import { fireEvent, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 import render from "../../../recoil-test-render";
 import Slots from "./Slots";
 import SlotMachine, { SlotOption as SO } from "../../../apis/SlotMachine";
@@ -7,6 +8,12 @@ import SlotMachine, { SlotOption as SO } from "../../../apis/SlotMachine";
 const pullHandle = jest.spyOn(SlotMachine, "pullHandle");
 
 describe("games | slots | Slots", () => {
+  it("passes axe", async () => {
+    const { container } = render(<Slots />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
   it("renders as expected", () => {
     pullHandle.mockImplementation(() => [
       [SO.EMPTY, SO.EMPTY, SO.EMPTY],

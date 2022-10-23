@@ -32,7 +32,7 @@ const TableHeader: React.FC<TableHeaderProps> = (props: TableHeaderProps) => {
 
   return (
     <div className="flex-container">
-      <Typography variant="h4">{`Roll #${roll}/3`}</Typography>
+      <Typography variant="h4" component="h3">{`Roll #${roll}/3`}</Typography>
       <div style={wrapperStyles}>
         {saved.map((val, i) => (
           <Button

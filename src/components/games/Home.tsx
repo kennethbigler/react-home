@@ -37,7 +37,7 @@ const generateMenuItems =
         }
       >
         <CardContent>
-          <Typography variant="h5" textAlign="center">
+          <Typography variant="h5" component="h4" textAlign="center">
             {name}
           </Typography>
           <Avatar style={{ margin: "auto", marginTop: 30, color: "white" }}>
@@ -49,8 +49,10 @@ const generateMenuItems =
 
 const Home: React.FC<HomeProps> = React.memo(({ onItemClick }: HomeProps) => (
   <div style={{ textAlign: "center", marginTop: 20 }}>
-    <Typography variant="h2">Welcome to my ReactJS Game Projects</Typography>
-    <Typography variant="h3">
+    <Typography variant="h2" component="h1">
+      ReactJS Games
+    </Typography>
+    <Typography variant="h3" component="h2">
       This site was created to learn, check out the{" "}
       <Link
         href="https://github.com/kennethbigler/react-home"
@@ -60,14 +62,14 @@ const Home: React.FC<HomeProps> = React.memo(({ onItemClick }: HomeProps) => (
       </Link>
     </Typography>
     <hr style={dividerStyles} />
-    <Typography variant="h4" style={subHeaderStyles}>
+    <Typography variant="h4" component="h3" style={subHeaderStyles}>
       Casino
     </Typography>
     <div style={menuWrapperStyles}>
       {casinoItems.map(generateMenuItems(onItemClick))}
     </div>
     <hr style={dividerStyles} />
-    <Typography variant="h4" style={subHeaderStyles}>
+    <Typography variant="h4" component="h3" style={subHeaderStyles}>
       Games
     </Typography>
     <div style={menuWrapperStyles}>

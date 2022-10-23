@@ -1,9 +1,16 @@
 import React from "react";
 import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { axe } from "jest-axe";
 import render from "../../../recoil-test-render";
 import AreYouTheOne from "./AreYouTheOne";
 
 describe("games | are-you-the-one | AreYouTheOne", () => {
+  it("passes axe", async () => {
+    const { container } = render(<AreYouTheOne />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
   it("renders as expected", () => {
     render(<AreYouTheOne />);
 
