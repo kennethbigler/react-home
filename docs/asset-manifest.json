@@ -1,9 +1,10 @@
 {
   "files": {
     "main.css": "/static/css/main.18253566.css",
-    "main.js": "/static/js/main.2be4dba6.js",
-    "resume.js": "/static/js/resume.1bb4c196.chunk.js",
+    "main.js": "/static/js/main.6e17d8ac.js",
+    "resume.js": "/static/js/resume.a9e61045.chunk.js",
     "games.js": "/static/js/games.08896269.chunk.js",
+    "static/js/496.629b6dc3.chunk.js": "/static/js/496.629b6dc3.chunk.js",
     "r_summary.js": "/static/js/r_summary.7f7eef7e.chunk.js",
     "r_work.js": "/static/js/r_work.877fd1fe.chunk.js",
     "r_education.js": "/static/js/r_education.9e5fa41b.chunk.js",
@@ -56,6 +57,7 @@
     "static/media/hoverboard_logo.png": "/static/media/hoverboard_logo.543e06df817458e42920.png",
     "static/media/SHFB_logo.jpg": "/static/media/SHFB_logo.754c7159580ef04303d4.jpg",
     "static/media/07_toyota_prius.png": "/static/media/07_toyota_prius.42117b3f6c76e18a836e.png",
+    "service-worker.js": "/service-worker.js",
     "static/media/97_plymouth_voyager.png": "/static/media/97_plymouth_voyager.ad5c5756d3f23de6bd41.png",
     "static/media/22_honda_grom.webp": "/static/media/22_honda_grom.fccb41b169268da9ebd4.webp",
     "static/media/tesla_motors_logo.svg.png": "/static/media/tesla_motors_logo.svg.547034b564bd177a482a.png",
@@ -67,9 +69,10 @@
     "static/media/intuit_logo.png": "/static/media/intuit_logo.70d74b8edeaa59688a37.png",
     "index.html": "/index.html",
     "main.18253566.css.map": "/static/css/main.18253566.css.map",
-    "main.2be4dba6.js.map": "/static/js/main.2be4dba6.js.map",
-    "resume.1bb4c196.chunk.js.map": "/static/js/resume.1bb4c196.chunk.js.map",
+    "main.6e17d8ac.js.map": "/static/js/main.6e17d8ac.js.map",
+    "resume.a9e61045.chunk.js.map": "/static/js/resume.a9e61045.chunk.js.map",
     "games.08896269.chunk.js.map": "/static/js/games.08896269.chunk.js.map",
+    "496.629b6dc3.chunk.js.map": "/static/js/496.629b6dc3.chunk.js.map",
     "r_summary.7f7eef7e.chunk.js.map": "/static/js/r_summary.7f7eef7e.chunk.js.map",
     "r_work.877fd1fe.chunk.js.map": "/static/js/r_work.877fd1fe.chunk.js.map",
     "r_education.9e5fa41b.chunk.js.map": "/static/js/r_education.9e5fa41b.chunk.js.map",
@@ -111,6 +114,6 @@
   },
   "entrypoints": [
     "static/css/main.18253566.css",
-    "static/js/main.2be4dba6.js"
+    "static/js/main.6e17d8ac.js"
   ]
 }
