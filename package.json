@@ -82,7 +82,9 @@
       "<rootDir>/src/**/*.{ts,tsx}"
     ],
     "coveragePathIgnorePatterns": [
-      "<rootDir>/src/serviceWorker.ts",
+      "<rootDir>/src/service-worker.ts",
+      "<rootDir>/src/serviceWorkerRegistration.ts",
+      "<rootDir>/src/reportWebVitals.ts",
       "<rootDir>/node_modules"
     ],
     "coverageThreshold": {
