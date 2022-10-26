@@ -2,6 +2,9 @@ import React from "react";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import noop from "../../apis/noop";
 
 interface MenuProps {
@@ -36,6 +39,7 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
         { name: "Cars", route: "cars" },
         { name: "Travel Map", route: "travel" },
         { name: "Murder Mystery", route: "murder" },
+        { divider: true },
         { name: "React Games", route: "games" },
       ].map((item, index) =>
         item.divider ? (
@@ -58,8 +62,16 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
     <MenuList>
       {menu}
       <Divider />
-      <MenuItem onClick={github}>GitHub</MenuItem>
-      <MenuItem onClick={linkedIn}>LinkedIn</MenuItem>
+      <MenuItem onClick={github}>
+        <GitHubIcon />
+        &nbsp;GitHub&nbsp;
+        <OpenInNewIcon fontSize="small" />
+      </MenuItem>
+      <MenuItem onClick={linkedIn}>
+        <LinkedInIcon />
+        &nbsp;LinkedIn&nbsp;
+        <OpenInNewIcon fontSize="small" />
+      </MenuItem>
       <Divider />
       <br />
       <img
