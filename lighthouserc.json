@@ -10,8 +10,6 @@
       "preset": "lighthouse:recommended",
       "assertions": {
         "csp-xss": "warn",
-        "errors-in-console": "warn",
-        "non-composited-animations": "warn",
         "preload-lcp-image": "warn",
         "unsized-images": "warn",
         "unused-javascript": "warn",
