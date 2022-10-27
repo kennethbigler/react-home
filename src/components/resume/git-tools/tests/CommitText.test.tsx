@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import { screen, fireEvent } from "@testing-library/react";
 import render from "../../../../recoil-test-render";

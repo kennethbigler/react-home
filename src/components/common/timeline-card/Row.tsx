@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Segment from "./Segment";
 import YearMarkers from "./YearMarkers";
 import { SegmentType } from "./types";

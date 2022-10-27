@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import gql from "graphql-tag";
 import Button from "@mui/material/Button";
 import { useMutation, MutationUpdaterFn } from "@apollo/client";

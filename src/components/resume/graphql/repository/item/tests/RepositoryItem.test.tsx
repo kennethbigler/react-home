@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { render, screen } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
 import RepositoryItem, { RepositoryItemProps } from "../RepositoryItem";

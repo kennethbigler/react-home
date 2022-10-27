@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { useRecoilState } from "recoil";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";

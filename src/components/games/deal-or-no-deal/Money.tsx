@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Paper from "@mui/material/Paper";
 import { amber, grey } from "@mui/material/colors";
 import { getMoneyText } from "./helpers";

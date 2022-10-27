@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Table from "@mui/material/Table";
 import TableCell from "@mui/material/TableCell";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Cell, { CellProps } from "./Cell";

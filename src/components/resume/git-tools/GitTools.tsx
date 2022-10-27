@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { deepOrange } from "@mui/material/colors";
 import handleCopy from "copy-to-clipboard";
 import { useRecoilState } from "recoil";

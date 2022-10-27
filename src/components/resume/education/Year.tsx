@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Quarter, { QuarterType } from "./Quarter";

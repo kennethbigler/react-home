@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Typography from "@mui/material/Typography";
 import TimelineCard from "../../common/timeline-card";
 import ExpandableCard from "../../common/expandable-card";

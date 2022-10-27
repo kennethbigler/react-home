@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
