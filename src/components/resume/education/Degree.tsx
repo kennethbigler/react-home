@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Year, { YearType } from "./Year";
 import ExpandableCard from "../../common/expandable-card";
 

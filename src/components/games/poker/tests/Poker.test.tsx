@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { axe } from "jest-axe";
 import render from "../../../../recoil-test-render";

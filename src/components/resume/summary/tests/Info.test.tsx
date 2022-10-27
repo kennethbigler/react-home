@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Info, { getJob } from "../Info";
 import { Job } from "../../../../constants/work";

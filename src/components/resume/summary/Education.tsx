@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import ExpandableCard from "../../common/expandable-card";
 import classes, { School } from "../../../constants/classes";
 import EducationSeg from "./EducationSeg";

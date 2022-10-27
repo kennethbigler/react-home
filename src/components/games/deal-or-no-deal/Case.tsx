@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Button from "@mui/material/Button";
 import { getMoneyText } from "./helpers";
 import { Briefcase } from "../../../recoil/deal-or-no-deal-state";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Player from "./player/Player";
 import { DBPlayer } from "../../../../recoil/player-atom";
 import { TurnState } from "../../../../recoil/turn-atom";

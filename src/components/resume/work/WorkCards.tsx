@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import startCase from "lodash/startCase";
 import Typography from "@mui/material/Typography";
 import Job from "./Job";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { useRecoilState } from "recoil";

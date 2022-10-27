@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Board from "./board/Board";
 import ButtonGroup from "./button-group/ButtonGroup";
 import { DBPlayer } from "../../../recoil/player-atom";

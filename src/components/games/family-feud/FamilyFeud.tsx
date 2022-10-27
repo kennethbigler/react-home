@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabPanel, { a11yProps } from "../../common/tab-panel";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { TopGameScore, BottomGameScore, ADD_DICE } from "../types";

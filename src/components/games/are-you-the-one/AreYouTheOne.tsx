@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Controls from "./Controls";
 import Table from "./table/Table";

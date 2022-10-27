@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { fireEvent, screen } from "@testing-library/react";
 import render from "../../../../recoil-test-render";
 import Header, { NavProps } from "../Header";

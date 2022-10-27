@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import FormControlLabel from "@mui/material/FormControlLabel";

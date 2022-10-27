@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import RepositoryItem from "./item";
 import FetchMore, { UpdateQueryType, Repository } from "./item/FetchMore";
 

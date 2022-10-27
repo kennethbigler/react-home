@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render as rtlRender, RenderResult } from "@testing-library/react";
 import { RecoilRoot } from "recoil";

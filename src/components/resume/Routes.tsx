@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Routes, Route } from "react-router-dom";
 import lazyWithPreload from "../../helpers/lazyWithPreload";
 import Header, { NavProps } from "../common/header/Header";

@@ -1,5 +1,5 @@
 // react
-import React from "react";
+import * as React from "react";
 // material-ui
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

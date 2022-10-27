@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import ContentAdd from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
 import { red, lightGreen } from "@mui/material/colors";

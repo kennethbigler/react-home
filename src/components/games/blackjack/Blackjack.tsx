@@ -4,7 +4,7 @@
  * get second card for dealer and hide it
  * buy insurance on dealer's Ace
  */
-import React from "react";
+import * as React from "react";
 import { useRecoilState } from "recoil";
 import asyncForEach from "../../../helpers/asyncForEach";
 import {

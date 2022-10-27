@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Typography from "@mui/material/Typography";
 import resume from "../../../images/kenneth_bigler_resume.png";
 

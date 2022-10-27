@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { useRecoilState } from "recoil";
 import Typography from "@mui/material/Typography";
 import helpEvalConnect4 from "./eval-connect4";

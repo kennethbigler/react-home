@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
 
 export const validTypingId = /[A-Z]{1,4}-?[a-zA-Z0-9]*/;

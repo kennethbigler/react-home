@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import ExpandableCard from "../../common/expandable-card";

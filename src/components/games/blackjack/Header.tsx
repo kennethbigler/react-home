@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import Typography from "@mui/material/Typography";
 import InfoPopup from "../../common/info-popover/InfoPopup";
 import Rules from "./Rules";
