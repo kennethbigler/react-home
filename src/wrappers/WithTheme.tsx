@@ -18,6 +18,7 @@ const WithTheme: React.FC = () => {
       mode: theme.mode,
       primary: theme.primary,
       secondary: theme.secondary,
+      contrastThreshold: 4.5, // this might have to be updated in a few years with WCAG 3.0
     },
     typography: {
       fontFamily: ["Montserrat", "sans-serif"].join(","),
