@@ -166,6 +166,7 @@ const DND: React.FC = () => {
       />
       <Board
         board={board}
+        isOver={!!isOver}
         onClick={openBriefcase}
         playerChoice={playerChoice}
       />

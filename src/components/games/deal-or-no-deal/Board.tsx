@@ -5,6 +5,7 @@ import { Briefcase } from "../../../recoil/deal-or-no-deal-state";
 
 interface BoardProps {
   board: Briefcase[];
+  isOver: boolean;
   onClick: (x: number) => void;
   playerChoice?: Briefcase;
 }
@@ -20,6 +21,7 @@ const style: React.CSSProperties = {
 
 const Board: React.FC<BoardProps> = ({
   board,
+  isOver,
   onClick,
   playerChoice: pc,
 }: BoardProps) => (
@@ -28,6 +30,7 @@ const Board: React.FC<BoardProps> = ({
       <Case
         key={i}
         briefcase={bc}
+        isOver={isOver}
         onClick={(): void => onClick(i)}
         secondary={pc && pc.loc === bc.loc}
       />

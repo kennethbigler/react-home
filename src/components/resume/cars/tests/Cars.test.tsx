@@ -34,7 +34,7 @@ describe("resume | cars | Cars", () => {
     const { container } = render(<Cars />);
 
     expect(screen.getAllByText("Ken's Cars")).toHaveLength(2);
-    expect(screen.getAllByText(`(${demoCar.owned})`)).toHaveLength(2);
+    expect(screen.getAllByText(`(${demoCar.owned})`)).toHaveLength(3);
     expect(screen.getByText(demoCar.title)).toBeInTheDocument();
     expect(
       screen.getByText(`Horsepower: ${demoCar.horsepower}`)
@@ -89,10 +89,10 @@ describe("resume | cars | Cars", () => {
     render(<Cars />);
 
     expect(
-      screen.getByTitle("Chevrolet Corvette Z06 (2018)")
+      screen.getByTitle("Ford Bronco Badlands (2021)")
     ).toBeInTheDocument();
     fireEvent.click(screen.getByText("Hide Ken's"));
-    expect(screen.queryByTitle("Chevrolet Corvette Z06 (2018)")).toBeNull();
+    expect(screen.queryByTitle("Ford Bronco Badlands (2021)")).toBeNull();
   });
 
   it("hides all cars", () => {
@@ -100,15 +100,15 @@ describe("resume | cars | Cars", () => {
 
     expect(screen.getByTitle("Toyota Prius (2007)")).toBeInTheDocument();
     expect(
-      screen.getByTitle("Chevrolet Corvette Z06 (2018)")
+      screen.getByTitle("Ford Bronco Badlands (2021)")
     ).toBeInTheDocument();
     fireEvent.click(screen.getByText("Hide Family's"));
     expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
     expect(
-      screen.getByTitle("Chevrolet Corvette Z06 (2018)")
+      screen.getByTitle("Ford Bronco Badlands (2021)")
     ).toBeInTheDocument();
     fireEvent.click(screen.getByText("Hide Ken's"));
     expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
-    expect(screen.queryByTitle("Chevrolet Corvette Z06 (2018)")).toBeNull();
+    expect(screen.queryByTitle("Ford Bronco Badlands (2021)")).toBeNull();
   });
 });
