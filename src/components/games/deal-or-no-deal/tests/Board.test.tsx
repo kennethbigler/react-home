@@ -13,6 +13,7 @@ describe("games | deal-or-no-deal | Board", () => {
     render(
       <Board
         board={board}
+        isOver={false}
         onClick={handleClick}
         playerChoice={{ on: true, loc: 2, val: 2 }}
       />
