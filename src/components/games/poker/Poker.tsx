@@ -233,7 +233,6 @@ const Poker: React.FC = () => {
         onClick={handleGameFunctionClick as (name: string) => void}
         gameOver={gameOver}
         hideHands={hideHands}
-        isBlackJack={false}
         players={players}
         turn={turn}
       />

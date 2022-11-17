@@ -26,7 +26,7 @@ describe("games | deal-or-no-deal | Case", () => {
     );
 
     expect(screen.queryByText("1")).toBeNull();
-    expect(screen.getByText("$1,000")).toBeInTheDocument();
+    expect(screen.getByText("1: $1,000")).toBeInTheDocument();
   });
 
   it("displays value when isOver", () => {
@@ -39,6 +39,6 @@ describe("games | deal-or-no-deal | Case", () => {
     );
 
     expect(screen.queryByText("1")).toBeNull();
-    expect(screen.getByText("$1,000")).toBeInTheDocument();
+    expect(screen.getByText("1: $1,000")).toBeInTheDocument();
   });
 });

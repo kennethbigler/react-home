@@ -16,6 +16,7 @@ describe("games | game-table | GameTable", () => {
   it("renders as expected with minimal props", () => {
     render(
       <GameTable
+        isBlackJack
         onClick={jest.fn()}
         players={[ken]}
         turn={{ player: 0, hand: 0 }}
@@ -36,6 +37,7 @@ describe("games | game-table | GameTable", () => {
   it("hides hands", () => {
     render(
       <GameTable
+        isBlackJack
         hideHands
         onClick={jest.fn()}
         players={[ken]}
@@ -58,6 +60,7 @@ describe("games | game-table | GameTable", () => {
     };
     render(
       <GameTable
+        isBlackJack
         onClick={jest.fn()}
         players={[multiHandKen]}
         turn={{ player: 0, hand: 0 }}
@@ -79,6 +82,7 @@ describe("games | game-table | GameTable", () => {
 
     render(
       <GameTable
+        isBlackJack
         onClick={jest.fn()}
         players={[bustKen]}
         turn={{ player: 0, hand: 0 }}
@@ -93,6 +97,7 @@ describe("games | game-table | GameTable", () => {
     const handleCardClick = jest.fn();
     render(
       <GameTable
+        isBlackJack
         cardClickHandler={handleCardClick}
         onClick={jest.fn()}
         players={[ken]}
@@ -109,6 +114,7 @@ describe("games | game-table | GameTable", () => {
     const winningKen = { ...ken, status: "win" };
     render(
       <GameTable
+        isBlackJack
         onClick={jest.fn()}
         players={[winningKen]}
         turn={{ player: 0, hand: 0 }}
@@ -124,6 +130,7 @@ describe("games | game-table | GameTable", () => {
     const tiedKen = { ...ken, status: "draw" };
     render(
       <GameTable
+        isBlackJack
         onClick={jest.fn()}
         players={[tiedKen]}
         turn={{ player: 0, hand: 0 }}
@@ -139,6 +146,7 @@ describe("games | game-table | GameTable", () => {
     const losingKen = { ...ken, status: "lose" };
     render(
       <GameTable
+        isBlackJack
         onClick={jest.fn()}
         players={[losingKen]}
         turn={{ player: 0, hand: 0 }}
@@ -154,6 +162,7 @@ describe("games | game-table | GameTable", () => {
     const handleClick = jest.fn();
     render(
       <GameTable
+        isBlackJack
         gameFunctions={["hello", "world"]}
         onClick={handleClick}
         players={[ken]}

@@ -11,6 +11,9 @@ interface RoutesProps {
 }
 
 // lazy load page components
+const AreYouTheOne = lazyWithPreload(
+  import(/* webpackChunkName: "g_are_you_the_one" */ "./are-you-the-one")
+);
 const BlackJack = lazyWithPreload(
   import(/* webpackChunkName: "g_bj" */ "./blackjack")
 );
@@ -20,8 +23,14 @@ const Connect4 = lazyWithPreload(
 const DealOrNoDeal = lazyWithPreload(
   import(/* webpackChunkName: "g_dond" */ "./deal-or-no-deal")
 );
+const FamilyFeud = lazyWithPreload(
+  import(/* webpackChunkName: "g_family_feud" */ "./family-feud")
+);
 const Poker = lazyWithPreload(
   import(/* webpackChunkName: "g_poker" */ "./poker")
+);
+const Regicide = lazyWithPreload(
+  import(/* webpackChunkName: "g_regicide" */ "./regicide")
 );
 const Slots = lazyWithPreload(
   import(/* webpackChunkName: "g_slots" */ "./slots")
@@ -29,17 +38,11 @@ const Slots = lazyWithPreload(
 const TicTacToe = lazyWithPreload(
   import(/* webpackChunkName: "g_tictactoe" */ "./tictactoe")
 );
+const TypeChecker = lazyWithPreload(
+  import(/* webpackChunkName: "g_type_checker" */ "./type-checker")
+);
 const Yahtzee = lazyWithPreload(
   import(/* webpackChunkName: "g_yahtzee" */ "./yahtzee")
-);
-const FamilyFeud = lazyWithPreload(
-  import(/* webpackChunkName: "g_family_feud" */ "./family-feud")
-);
-const AreYouTheOne = lazyWithPreload(
-  import(/* webpackChunkName: "g_are_you_the_one" */ "./are-you-the-one")
-);
-const TypeChecker = lazyWithPreload(
-  import(/* webpackChunkName: "r_type_checker" */ "./type-checker")
 );
 
 const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
@@ -58,6 +61,7 @@ const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
         <Route path="deal/*" element={<DealOrNoDeal />} />
         <Route path="family-feud/*" element={<FamilyFeud />} />
         <Route path="poker/*" element={<Poker />} />
+        <Route path="regicide/*" element={<Regicide />} />
         <Route path="slots/*" element={<Slots />} />
         <Route path="tictactoe/*" element={<TicTacToe />} />
         <Route path="types/*" element={<TypeChecker />} />

@@ -27,7 +27,7 @@ const GameTable = (props: GameTableProps): React.ReactElement => {
     gameFunctions = [],
     gameOver = false,
     hideHands = false,
-    isBlackJack = true,
+    isBlackJack = false,
     players,
     turn,
     onClick,

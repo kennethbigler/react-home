@@ -322,6 +322,7 @@ const BlackJack: React.FC = () => {
     <>
       <Header />
       <GameTable
+        isBlackJack
         betHandler={betHandler}
         cardClickHandler={cardClickHandler}
         gameFunctions={gameFunctions}

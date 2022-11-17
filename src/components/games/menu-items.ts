@@ -8,7 +8,7 @@ export interface MenuItem {
 const menuItems: MenuItem[] = [
   { name: "Home - Games", route: "" },
   { divider: true },
-  { name: "BlackJack", route: "blackjack", icon: "🃏" },
+  { name: "BlackJack", route: "blackjack", icon: "♠️" },
   { name: "Deal or No Deal", route: "deal", icon: "💼" },
   { name: "Poker", route: "poker", icon: "🍀" },
   { name: "Slot Machine", route: "slots", icon: "🎰" },
@@ -17,6 +17,7 @@ const menuItems: MenuItem[] = [
   { name: "Are You The One", route: "are-you-the-one", icon: "🤷‍♂️" },
   { name: "Connect4", route: "connect4", icon: "🔴" },
   { name: "Family Feud", route: "family-feud", icon: "👨‍👩‍👧‍👦" },
+  { name: "Regicide", route: "regicide", icon: "🃏" },
   { name: "Tic-Tac-Toe", route: "tictactoe", icon: "❌" },
   { name: "Type Checker", route: "types", icon: "🧪" },
 ];
