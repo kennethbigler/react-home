@@ -15,6 +15,7 @@ const addSPR = (gameFunctions: RGF[], soloPlayRedraws: number) =>
 
 /** https://www.badgersfrommars.com/assets/RegicideRulesA4.pdf */
 const Regicide: React.FC = () => {
+  const [cardsToDiscard, setCardsToDiscard] = React.useState<number[]>([]);
   const [{ regicide, turn, players }, setState] = useRecoilState(regicideState);
   const {
     gameFunctions,
@@ -22,7 +23,6 @@ const Regicide: React.FC = () => {
     tavernDeck,
     discardDeck,
     currentMonster,
-    cardsToDiscard,
     hideHands,
     gameOver,
     currentHealth,
@@ -68,7 +68,6 @@ const Regicide: React.FC = () => {
             tavernDeck: newTD,
             discardDeck: [],
             currentMonster: newMonster[0],
-            cardsToDiscard: [],
             hideHands: playerCount > 1,
             gameOver: false,
             currentHealth: newMonster[0].weight * 2,
@@ -78,6 +77,7 @@ const Regicide: React.FC = () => {
           players: newPlayers,
           turn: { player: 0, hand: 0 },
         });
+        setCardsToDiscard([]);
         return;
       }
       case RGF.START:
@@ -92,6 +92,12 @@ const Regicide: React.FC = () => {
         });
         return;
       case RGF.REDRAW: {
+        // remove redraw action if can't do it anymore
+        const newGameFunctions = [...gameFunctions];
+        if (soloPlayRedraws === 1) {
+          const idxToRemove = newGameFunctions.indexOf(RGF.REDRAW);
+          newGameFunctions.splice(idxToRemove, 1);
+        }
         // discard current hand
         const discard = [...discardDeck];
         players[0].hands[0].cards.forEach((card) => {
@@ -107,6 +113,7 @@ const Regicide: React.FC = () => {
             castleDeck: newCD,
             discardDeck: discard,
             soloPlayRedraws: soloPlayRedraws - 1,
+            gameFunctions: newGameFunctions,
           },
           players: [newPlayer],
           turn,
@@ -148,8 +155,8 @@ const Regicide: React.FC = () => {
         });
         return;
       case RGF.DISCARD: // 4. Suffer Damage from the enemy
-        // discard cards equal to monster.weight
-        // lose or move to next player
+        // check if hand weight < monster.weight ? lose : continue
+        // check if cardsToDiscard weight > monster.weight ? next player : show error message
         setState({
           regicide: {
             ...regicide,

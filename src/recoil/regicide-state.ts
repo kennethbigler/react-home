@@ -17,7 +17,6 @@ export interface RegicideState {
   tavernDeck: DBCard[];
   discardDeck: DBCard[];
   currentMonster?: DBCard;
-  cardsToDiscard: number[];
   hideHands: boolean;
   gameOver: boolean;
   currentHealth: number;
@@ -31,7 +30,6 @@ export const newRegicideGameState = (): Partial<RegicideState> => ({
   castleDeck: [],
   tavernDeck: [],
   discardDeck: [],
-  cardsToDiscard: [],
   currentHealth: 0,
   soloPlayRedraws: 2,
   hideHands: true,
