@@ -22,7 +22,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-newline-to-break": "1.0.6",
-    "react-router-dom": "6.4.4",
+    "react-router-dom": "6.4.5",
     "react-simple-maps": "3.0.0",
     "recharts": "2.1.16",
     "recoil": "0.7.6",
