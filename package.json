@@ -24,7 +24,7 @@
     "react-newline-to-break": "1.0.6",
     "react-router-dom": "6.4.4",
     "react-simple-maps": "3.0.0",
-    "recharts": "2.1.16",
+    "recharts": "2.2.0",
     "recoil": "0.7.6",
     "web-vitals": "3.1.0"
   },
