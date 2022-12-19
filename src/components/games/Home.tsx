@@ -31,6 +31,8 @@ const generateMenuItems =
     (
       <Card
         sx={{ width: 250, cursor: "pointer" }}
+        role="link"
+        tabIndex={0}
         key={name}
         onClick={(): void =>
           onItemClick && onItemClick(`/games/${route || ""}`)

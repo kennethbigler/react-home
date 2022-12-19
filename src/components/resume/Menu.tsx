@@ -74,20 +74,21 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
       </MenuItem>
       <Divider />
       <br />
-      <img
-        alt="profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
-        id="stackOverflow"
-        onClick={stackOverflow}
-        src="https://stackoverflow.com/users/flair/4830309.png?theme=dark"
-        style={{
-          display: "block",
-          margin: "auto",
-          cursor: "pointer",
-          width: 240,
-          paddingLeft: 16,
-          paddingRight: 16,
-        }}
-      />
+      <MenuItem onClick={stackOverflow}>
+        <img
+          alt="profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
+          id="stackOverflow"
+          src="https://stackoverflow.com/users/flair/4830309.png?theme=dark"
+          style={{
+            display: "block",
+            margin: "auto",
+            cursor: "pointer",
+            width: 240,
+            paddingLeft: 16,
+            paddingRight: 16,
+          }}
+        />
+      </MenuItem>
     </MenuList>
   );
 });

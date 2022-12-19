@@ -10,7 +10,6 @@ import SimplePopover from "./ButtonPopover";
 import PlayerMenu from "./PlayerMenu";
 import themeAtom, { darkTheme, lightTheme } from "../../../recoil/theme-atom";
 
-const cursorStyles: React.CSSProperties = { cursor: "pointer" };
 const flexLeftStyles: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
@@ -56,15 +55,11 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
               size="large"
             >
               <MenuIcon />
+              &nbsp;
+              <Typography variant="h6" color={textColor}>
+                Menu
+              </Typography>
             </IconButton>
-            <Typography
-              onClick={toggleOpen}
-              style={cursorStyles}
-              variant="h6"
-              color={textColor}
-            >
-              Menu
-            </Typography>
           </div>
           {showPlayers && (
             <div style={flexRightStyles}>
