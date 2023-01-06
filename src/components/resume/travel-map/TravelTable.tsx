@@ -13,6 +13,7 @@ import {
   cruises,
   lines,
   rcLoyalty,
+  disneyLoyalty,
 } from "../../../constants/travel";
 
 // --------------------     Styles     -------------------- //
@@ -117,6 +118,16 @@ rcLoyalty.forEach(({ nights, status }, i) => {
   }
 });
 
+let disneyNextLevel = 0;
+let disneyStatus = "N/A";
+
+disneyLoyalty.forEach(({ num, status }, i) => {
+  if (disneyCruises >= num) {
+    disneyStatus = status;
+    disneyNextLevel = disneyLoyalty[i + 1].num;
+  }
+});
+
 // --------------------     Travel Map     -------------------- //
 const TravelMap: React.FC = React.memo(() => (
   <>
@@ -161,7 +172,7 @@ const TravelMap: React.FC = React.memo(() => (
         <TableRow>
           {/* Disney */}
           <TableCell style={cellStyles}>
-            {disneyCruises} / 10 Cruises = Platinum
+            {disneyCruises} / {disneyNextLevel} Cruises = {disneyStatus}
           </TableCell>
           {/* Royal Caribbean */}
           <TableCell style={cellStyles}>

@@ -93,6 +93,13 @@ Object.keys(countries).forEach((country, i) => {
   countries[country].color = colors[i % colors.length];
 });
 
+export const disneyLoyalty = [
+  { num: 1, status: "Silver" },
+  { num: 5, status: "Gold" },
+  { num: 10, status: "Platinum" },
+  { num: 25, status: "Pearl" },
+];
+
 export const rcLoyalty = [
   { nights: 3, status: "Gold" },
   { nights: 30, status: "Platinum" },
@@ -310,10 +317,34 @@ export const cruises: Cruise[] = [
     concierge: true,
   },
   // {
+  //   departure: dateObj("2023-02"),
+  //   nights: 3,
+  //   name: "Catalina & Ensenada",
+  //   ship: "Navigator of the Seas",
+  //   line: "Royal Caribbean",
+  //   concierge: true,
+  // },
+  // {
   //   departure: dateObj("2023-05"),
-  //   nights: 4,
+  //   nights: 3,
+  //   name: "Bahamas",
+  //   ship: "Dream",
+  //   line: "Disney",
+  //   concierge: true,
+  // },
+  // {
+  //   departure: dateObj("2023-05"),
+  //   nights: 13,
   //   name: "Eastbound Transatlantic",
   //   ship: "Dream",
+  //   line: "Disney",
+  //   concierge: true,
+  // },
+  // {
+  //   departure: dateObj("2024-03"),
+  //   nights: 13,
+  //   name: "Sydney to Honolulu",
+  //   ship: "Magic",
   //   line: "Disney",
   //   concierge: true,
   // },
