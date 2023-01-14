@@ -110,7 +110,7 @@ export const rcLoyalty = [
 ];
 
 export const lines = ["Disney", "Royal Caribbean"] as const;
-export type Lines = typeof lines[number];
+export type Lines = (typeof lines)[number];
 
 export const ships = [
   "Magic",
@@ -120,7 +120,7 @@ export const ships = [
   "Wish",
   "Navigator of the Seas",
 ] as const;
-export type Ships = typeof ships[number];
+export type Ships = (typeof ships)[number];
 
 interface Cruise {
   departure: DateObj;
@@ -136,219 +136,273 @@ export const cruises: Cruise[] = [
     departure: dateObj("2004-04"),
     nights: 3,
     name: "Bahamas",
-    ship: "Wonder",
-    line: "Disney",
+    ship: ships[1],
+    line: lines[0],
     concierge: false,
   },
   {
     departure: dateObj("2005-06"),
     nights: 7,
     name: "Mexican Riviera",
-    ship: "Magic",
-    line: "Disney",
+    ship: ships[0],
+    line: lines[0],
     concierge: false,
   },
   {
     departure: dateObj("2011-06"),
     nights: 11,
     name: "Mediterranean",
-    ship: "Magic",
-    line: "Disney",
+    ship: ships[0],
+    line: lines[0],
     concierge: true,
   },
   {
     departure: dateObj("2012-06"),
     nights: 7,
     name: "Alaska",
-    ship: "Wonder",
-    line: "Disney",
+    ship: ships[1],
+    line: lines[0],
     concierge: false,
   },
   {
     departure: dateObj("2013-07"),
     nights: 12,
     name: "Mediterranean",
-    ship: "Magic",
-    line: "Disney",
+    ship: ships[0],
+    line: lines[0],
     concierge: true,
   },
   {
     departure: dateObj("2014-07"),
     nights: 7,
     name: "Alaska",
-    ship: "Wonder",
-    line: "Disney",
+    ship: ships[1],
+    line: lines[0],
     concierge: false,
   },
   {
     departure: dateObj("2015-07"),
     nights: 14,
     name: "Northern EU Capitals",
-    ship: "Magic",
-    line: "Disney",
+    ship: ships[0],
+    line: lines[0],
     concierge: true,
   },
   {
     departure: dateObj("2015-08"),
     nights: 7,
     name: "Dover-Barcelona",
-    ship: "Magic",
-    line: "Disney",
+    ship: ships[0],
+    line: lines[0],
     concierge: true,
   },
   {
     departure: dateObj("2015-12"),
     nights: 4,
     name: "Bahamas",
-    ship: "Dream",
-    line: "Disney",
+    ship: ships[2],
+    line: lines[0],
     concierge: false,
   },
   {
     departure: dateObj("2016-06"),
     nights: 12,
     name: "Iceland/Norway",
-    ship: "Magic",
-    line: "Disney",
+    ship: ships[0],
+    line: lines[0],
     concierge: false,
   },
   {
     departure: dateObj("2016-12"),
     nights: 7,
     name: "Eastern Caribbean",
-    ship: "Fantasy",
-    line: "Disney",
+    ship: ships[3],
+    line: lines[0],
     concierge: false,
   },
   {
     departure: dateObj("2017-05"),
     nights: 15,
     name: "East Bound Transatlantic",
-    ship: "Magic",
-    line: "Disney",
+    ship: ships[0],
+    line: lines[0],
     concierge: false,
   },
   {
     departure: dateObj("2017-12"),
     nights: 7,
     name: "Western Caribbean",
-    ship: "Fantasy",
-    line: "Disney",
+    ship: ships[3],
+    line: lines[0],
     concierge: false,
   },
   {
     departure: dateObj("2018-05"),
     nights: 13,
     name: "East Bound Transatlantic",
-    ship: "Magic",
-    line: "Disney",
+    ship: ships[0],
+    line: lines[0],
     concierge: false,
   },
   {
     departure: dateObj("2018-07"),
     nights: 10,
     name: "Mediterranean",
-    ship: "Magic",
-    line: "Disney",
+    ship: ships[0],
+    line: lines[0],
     concierge: false,
   },
   {
     departure: dateObj("2018-11"),
     nights: 7,
     name: "East Coast NY-FL-NY",
-    ship: "Magic",
-    line: "Disney",
+    ship: ships[0],
+    line: lines[0],
     concierge: false,
   },
   {
     departure: dateObj("2019-09"),
     nights: 10,
     name: "West Bound Transatlantic",
-    ship: "Magic",
-    line: "Disney",
+    ship: ships[0],
+    line: lines[0],
     concierge: true,
   },
   {
     departure: dateObj("2019-11"),
     nights: 7,
     name: "Western Caribbean",
-    ship: "Fantasy",
-    line: "Disney",
+    ship: ships[3],
+    line: lines[0],
     concierge: true,
   },
   {
     departure: dateObj("2021-12"),
     nights: 7,
     name: "Eastern Caribbean",
-    ship: "Fantasy",
-    line: "Disney",
+    ship: ships[3],
+    line: lines[0],
     concierge: true,
   },
   {
     departure: dateObj("2022-04"),
     nights: 10,
     name: "Hawaii: Vancouver-Honolulu",
-    ship: "Wonder",
-    line: "Disney",
+    ship: ships[1],
+    line: lines[0],
     concierge: true,
   },
   {
     departure: dateObj("2022-08"),
     nights: 4,
     name: "Catalina & Ensenada",
-    ship: "Navigator of the Seas",
-    line: "Royal Caribbean",
+    ship: ships[5],
+    line: lines[1],
     concierge: false,
   },
   {
     departure: dateObj("2022-12"),
     nights: 4,
     name: "Bahamas",
-    ship: "Wish",
-    line: "Disney",
+    ship: ships[4],
+    line: lines[0],
     concierge: false,
   },
   {
     departure: dateObj("2022-12"),
     nights: 3,
     name: "Bahamas",
-    ship: "Wish",
-    line: "Disney",
+    ship: ships[4],
+    line: lines[0],
     concierge: true,
   },
   // {
   //   departure: dateObj("2023-02"),
   //   nights: 3,
   //   name: "Catalina & Ensenada",
-  //   ship: "Navigator of the Seas",
-  //   line: "Royal Caribbean",
+  //   ship: ships[5],
+  //   line: lines[1],
   //   concierge: true,
   // },
   // {
   //   departure: dateObj("2023-05"),
   //   nights: 3,
   //   name: "Bahamas",
-  //   ship: "Dream",
-  //   line: "Disney",
+  //   ship: ships[2],
+  //   line: lines[0],
   //   concierge: true,
   // },
   // {
   //   departure: dateObj("2023-05"),
   //   nights: 13,
   //   name: "Eastbound Transatlantic",
-  //   ship: "Dream",
-  //   line: "Disney",
+  //   ship: ships[2],
+  //   line: lines[0],
   //   concierge: true,
   // },
   // {
   //   departure: dateObj("2024-03"),
   //   nights: 13,
   //   name: "Sydney to Honolulu",
-  //   ship: "Magic",
-  //   line: "Disney",
+  //   ship: ships[0],
+  //   line: lines[0],
   //   concierge: true,
   // },
 ];
+
+const numDisney = [0, 0, 0, 0, 0];
+const numRC = [0];
+
+cruises.forEach((cruise) => {
+  switch (cruise.ship) {
+    case ships[0]:
+      numDisney[0] += 1;
+      return;
+    case ships[1]:
+      numDisney[1] += 1;
+      return;
+    case ships[2]:
+      numDisney[2] += 1;
+      return;
+    case ships[3]:
+      numDisney[3] += 1;
+      return;
+    case ships[4]:
+      numDisney[4] += 1;
+      return;
+    default:
+      numRC[0] += 1;
+  }
+});
+
+const totalDisney =
+  numDisney[0] + numDisney[1] + numDisney[2] + numDisney[3] + numDisney[4];
+
+export const cruiseData = {
+  nodes: [
+    { name: "Cruises" },
+    { name: lines[0] },
+    { name: `${lines[0]} ${ships[0]}` },
+    { name: `${lines[0]} ${ships[1]}` },
+    { name: `${lines[0]} ${ships[2]}` },
+    { name: `${lines[0]} ${ships[3]}` },
+    { name: `${lines[0]} ${ships[4]}` },
+    { name: lines[1] },
+    { name: `${lines[1]} ${ships[5]}` },
+  ],
+  links: [
+    // level 1
+    { source: 0, target: 1, value: totalDisney },
+    { source: 0, target: 7, value: numRC[0] },
+    // level 2
+    { source: 1, target: 2, value: numDisney[0] },
+    { source: 1, target: 3, value: numDisney[1] },
+    { source: 1, target: 4, value: numDisney[2] },
+    { source: 1, target: 5, value: numDisney[3] },
+    { source: 1, target: 6, value: numDisney[4] },
+    { source: 7, target: 8, value: numRC[0] },
+  ],
+};
 
 export const americas: string[] = [];
 export const euNaf: string[] = [];
