@@ -1,6 +1,7 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import TravelTable from "./TravelTable";
+import CountryTable from "./CountryTable";
+import CruiseTable from "./CruiseTable";
 import WorldMap from "./WorldMap";
 import CruiseCharts from "./CruiseCharts";
 
@@ -16,8 +17,11 @@ const TravelMap: React.FC = () => {
         My Travel Map
       </Typography>
       <WorldMap screenWidth={screenWidth} />
-      <TravelTable />
+      <CountryTable />
+      <br />
+      <Typography variant="h2">Cruises</Typography>
       <CruiseCharts screenWidth={screenWidth} />
+      <CruiseTable />
     </>
   );
 };
