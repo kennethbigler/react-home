@@ -48,6 +48,10 @@ interface WorldMapHook {
   handleLeave: () => void;
 }
 
+interface WorldMapProps {
+  screenWidth: number;
+}
+
 const STROKE = blueGrey[900];
 const HOVER = blueGrey[500];
 const VISITED_HOVER = red[800];
@@ -91,10 +95,8 @@ function useWorldMap(): WorldMapHook {
   };
 }
 
-const WorldMap = React.memo(() => {
+const WorldMap = ({ screenWidth }: WorldMapProps) => {
   const { x, y, content, hide, handleEnter, handleLeave } = useWorldMap();
-
-  const screenWidth = document.body.clientWidth - 32;
 
   return (
     <>
@@ -143,6 +145,6 @@ const WorldMap = React.memo(() => {
       <Popover x={x} y={y} hide={hide} content={content} />
     </>
   );
-});
+};
 
 export default WorldMap;
