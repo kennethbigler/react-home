@@ -1,17 +1,17 @@
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-import TravelTable from "../TravelTable";
+import CountryTable from "../CountryTable";
 
 describe("resume | travel-map | TravelMap", () => {
   it("passes axe", async () => {
-    const { container } = render(<TravelTable />);
+    const { container } = render(<CountryTable />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
   it("renders as expected", () => {
-    render(<TravelTable />);
+    render(<CountryTable />);
 
     expect(
       screen.getByText("I have been to 35 countries:")
