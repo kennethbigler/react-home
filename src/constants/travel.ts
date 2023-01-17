@@ -109,8 +109,15 @@ export const rcLoyalty = [
   { nights: 700, status: "Pinnacle Club" },
 ];
 
-export const lines = ["Disney", "Royal Caribbean"] as const;
-export type Lines = (typeof lines)[number];
+export const princessLoyalty = [
+  { num: 1, nights: 1, status: "Gold" },
+  { num: 3, nights: 30, status: "Ruby" },
+  { num: 5, nights: 50, status: "Platinum" },
+  { num: 15, nights: 150, status: "Elite" },
+];
+
+export const lines = ["Disney", "Royal Caribbean", "Princess"] as const;
+export type Lines = typeof lines[number];
 
 export const ships = [
   "Magic",
@@ -119,8 +126,9 @@ export const ships = [
   "Fantasy",
   "Wish",
   "Navigator of the Seas",
+  "Discovery",
 ] as const;
-export type Ships = (typeof ships)[number];
+export type Ships = typeof ships[number];
 
 interface Cruise {
   departure: DateObj;
@@ -316,14 +324,14 @@ export const cruises: Cruise[] = [
     line: lines[0],
     concierge: true,
   },
-  // {
-  //   departure: dateObj("2023-02"),
-  //   nights: 3,
-  //   name: "Catalina & Ensenada",
-  //   ship: ships[5],
-  //   line: lines[1],
-  //   concierge: true,
-  // },
+  {
+    departure: dateObj("2023-02"),
+    nights: 4,
+    name: "San Diego & Ensenada",
+    ship: ships[6],
+    line: lines[2],
+    concierge: true,
+  },
   // {
   //   departure: dateObj("2023-05"),
   //   nights: 3,
@@ -352,6 +360,7 @@ export const cruises: Cruise[] = [
 
 const numDisney = [0, 0, 0, 0, 0];
 const numRC = [0];
+const numPrincess = [0];
 
 cruises.forEach((cruise) => {
   switch (cruise.ship) {
@@ -370,8 +379,11 @@ cruises.forEach((cruise) => {
     case ships[4]:
       numDisney[4] += 1;
       return;
-    default:
+    case ships[5]:
       numRC[0] += 1;
+      return;
+    default:
+      numPrincess[0] += 1;
   }
 });
 
@@ -387,13 +399,16 @@ export const cruiseData = {
     { name: `${lines[0]} ${ships[2]}` },
     { name: `${lines[0]} ${ships[3]}` },
     { name: `${lines[0]} ${ships[4]}` },
-    { name: lines[1] },
-    { name: `${lines[1]} ${ships[5]}` },
+    { name: "RC" },
+    { name: "RC Navigator" },
+    { name: lines[2] },
+    { name: `${lines[2]} ${ships[6]}` },
   ],
   links: [
     // level 1
     { source: 0, target: 1, value: totalDisney },
     { source: 0, target: 7, value: numRC[0] },
+    { source: 0, target: 9, value: numPrincess[0] },
     // level 2
     { source: 1, target: 2, value: numDisney[0] },
     { source: 1, target: 3, value: numDisney[1] },
@@ -401,6 +416,7 @@ export const cruiseData = {
     { source: 1, target: 5, value: numDisney[3] },
     { source: 1, target: 6, value: numDisney[4] },
     { source: 7, target: 8, value: numRC[0] },
+    { source: 9, target: 10, value: numPrincess[0] },
   ],
 };
 
