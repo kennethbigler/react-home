@@ -121,16 +121,17 @@ const TravelMap: React.FC = React.memo(() => (
         <TableRow>
           {/* Disney */}
           <TableCell style={cellStyles}>
-            {disneyCruises} / {disneyNextLevel} Cruises&nbsp;🛳 = {disneyStatus}
+            🛳&nbsp;{disneyCruises}&nbsp;/&nbsp;{disneyNextLevel} ={" "}
+            {disneyStatus}
           </TableCell>
           {/* Royal Caribbean */}
           <TableCell style={cellStyles}>
-            {rcNights} / {rcNextLevel} Nights&nbsp;🌙 = {rcStatus}
+            🌙&nbsp;{rcNights}&nbsp;/&nbsp;{rcNextLevel} = {rcStatus}
           </TableCell>
           {/* Princess */}
           <TableCell style={cellStyles}>
-            {princess[0]}&nbsp;/&nbsp;{princessNextCruises}&nbsp;🛳 {princess[1]}
-            &nbsp;/&nbsp;{princessNextNights}&nbsp;🌙 = {princessStatus}
+            🛳&nbsp;{princess[0]}&nbsp;/&nbsp;{princessNextCruises} - 🌙&nbsp;
+            {princess[1]}&nbsp;/&nbsp;{princessNextNights} = {princessStatus}
           </TableCell>
         </TableRow>
       </TableBody>

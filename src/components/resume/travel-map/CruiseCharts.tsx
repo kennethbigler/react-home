@@ -10,12 +10,12 @@ interface CruiseChartsProps {
 const CruiseCharts = ({ screenWidth }: CruiseChartsProps) => (
   <Sankey
     width={screenWidth}
-    height={400}
+    height={450}
     data={cruiseData}
     node={SankeyNode}
     nodePadding={25}
     margin={{
-      right: 136,
+      right: 80,
       top: 20,
       bottom: 20,
     }}
