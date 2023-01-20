@@ -1,6 +1,7 @@
 import * as React from "react";
 import { grey } from "@mui/material/colors/";
 import { Rectangle, Layer } from "recharts";
+import { cruiseData } from "../../../constants/travel";
 
 interface SankeyNodePayload {
   name: string;
@@ -14,7 +15,6 @@ interface SankeyNodeProps {
   height: number;
   index: number;
   payload: SankeyNodePayload;
-  containerWidth: number;
 }
 
 const SankeyNode = ({
@@ -24,9 +24,8 @@ const SankeyNode = ({
   height,
   index,
   payload,
-  containerWidth,
 }: SankeyNodeProps) => {
-  const isOut = x + width + 6 > containerWidth;
+  const isFirst = payload.name === cruiseData.nodes[0].name;
   return (
     <Layer key={`CustomNode${index}`}>
       <Rectangle
@@ -38,8 +37,8 @@ const SankeyNode = ({
         fillOpacity="1"
       />
       <text
-        textAnchor={isOut ? "end" : "start"}
-        x={isOut ? x - 6 : x + width + 6}
+        textAnchor={isFirst ? "start" : "end"}
+        x={isFirst ? x + width + 6 : x - 6}
         y={y + height / 2}
         fontSize="14"
         stroke={grey[600]}
@@ -47,8 +46,8 @@ const SankeyNode = ({
         {payload.name}
       </text>
       <text
-        textAnchor={isOut ? "end" : "start"}
-        x={isOut ? x - 6 : x + width + 6}
+        textAnchor={isFirst ? "start" : "end"}
+        x={isFirst ? x + width + 10 : x - 6}
         y={y + height / 2 + 13}
         fontSize="12"
         stroke={grey[500]}

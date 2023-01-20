@@ -392,7 +392,7 @@ const totalDisney =
 
 export const cruiseData = {
   nodes: [
-    { name: "Cruises" },
+    { name: "🛳" },
     { name: lines[0] },
     { name: ships[0] },
     { name: ships[1] },

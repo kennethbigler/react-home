@@ -15,7 +15,6 @@ const CruiseCharts = ({ screenWidth }: CruiseChartsProps) => (
     node={SankeyNode}
     nodePadding={25}
     margin={{
-      right: 80,
       top: 20,
       bottom: 20,
     }}
