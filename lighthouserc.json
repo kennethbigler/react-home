@@ -14,7 +14,6 @@
         "preload-lcp-image": "warn",
         "unsized-images": "warn",
         "unused-javascript": "warn",
-        "uses-rel-preconnect": "warn",
         "uses-responsive-images": "warn"
       }
     }
