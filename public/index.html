@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- preconnect -->
-    <link rel="preconnect" href="https://www.google.com">
-    <link rel="preconnect" href="https://stats.g.doubleclick.net">
-    <link rel="preconnect" href="https://www.google-analytics.com">
-    <link rel="preload" href="../src/images/ken.webp">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -74,6 +69,12 @@
       rel="apple-touch-startup-image"
       href="%PUBLIC_URL%/apple-touch-icon.png"
     />
+
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://www.google.com">
+    <link rel="preconnect" href="https://stats.g.doubleclick.net">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="preload" fetchpriority="high" as="image" href="../src/images/ken.webp" type="image/webp">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script
