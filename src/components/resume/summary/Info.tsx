@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Grid from "@mui/material/Grid";
 import ExpandableCard from "../../common/expandable-card";
-import photo from "../../../images/ken.jpg";
+import photo from "../../../images/ken.webp";
 import workExp, { Job } from "../../../constants/work";
 
 const imageStyles: React.CSSProperties = {
