@@ -117,7 +117,7 @@ export const princessLoyalty = [
 ];
 
 export const lines = ["Disney", "Royal Caribbean", "Princess"] as const;
-export type Lines = typeof lines[number];
+export type Lines = (typeof lines)[number];
 
 export const ships = [
   "Magic",
@@ -128,7 +128,7 @@ export const ships = [
   "Navigator of the Seas",
   "Discovery",
 ] as const;
-export type Ships = typeof ships[number];
+export type Ships = (typeof ships)[number];
 
 interface Cruise {
   departure: DateObj;

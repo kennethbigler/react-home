@@ -1,5 +1,4 @@
 import * as React from "react";
-import startCase from "lodash/startCase";
 import Typography from "@mui/material/Typography";
 import Job from "./Job";
 import { Job as JobType } from "../../../constants/work";
@@ -16,9 +15,13 @@ const WorkCards: React.FC<WorkCardsProps> = ({
   <>
     {workTypes.map((type) => (
       <div key={type} style={{ marginTop: 25 }}>
-        <Typography variant="h3" component="h2">{`${startCase(
-          type
-        )} Experience`}</Typography>
+        <Typography
+          variant="h3"
+          component="h2"
+          style={{ textTransform: "capitalize" }}
+        >
+          {`${type} Experience`}
+        </Typography>
         <hr />
         {workExp.map(
           (job) => job.type === type && <Job key={job.company} job={job} />

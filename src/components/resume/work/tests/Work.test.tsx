@@ -41,14 +41,14 @@ describe("resume | work | Work", () => {
       screen.getByText("Programming Language Timeline (Professional Use)")
     ).toBeInTheDocument();
 
-    expect(screen.getByText("Work Experience")).toBeInTheDocument();
+    expect(screen.getByText("work Experience")).toBeInTheDocument();
     expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
     expect(
       screen.getByText("Accessibility Engineering Leader")
     ).toBeInTheDocument();
     expect(screen.getByText("Frontend Software Engineer")).toBeInTheDocument();
 
-    expect(screen.getByText("Volunteer Experience")).toBeInTheDocument();
+    expect(screen.getByText("volunteer Experience")).toBeInTheDocument();
     expect(
       screen.getByText("Midnight Game Club, Sunnyvale, CA")
     ).toBeInTheDocument();

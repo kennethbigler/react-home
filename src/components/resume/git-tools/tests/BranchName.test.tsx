@@ -1,40 +1,24 @@
 import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
-import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
 import render from "../../../../recoil-test-render";
 import BranchName from "../BranchName";
 
 describe("resume | git-tools | BranchName", () => {
-  const getSelectOptions = jest
-    .fn()
-    .mockReturnValueOnce([
-      <MenuItem key="1" value="chores">
-        chores
-      </MenuItem>,
-      <MenuItem key="2" value="epics">
-        epics
-      </MenuItem>,
-      <MenuItem key="3" value="features">
-        features
-      </MenuItem>,
-      <MenuItem key="4" value="fixes">
-        fixes
-      </MenuItem>,
-    ])
-    .mockReturnValueOnce([
-      <MenuItem key="1" value="snake_case">
-        snake_case
-      </MenuItem>,
-      <MenuItem key="2" value="kebab-case">
-        kebab-case
-      </MenuItem>,
-      <MenuItem key="3" value="camelCase">
-        camelCase
-      </MenuItem>,
-      <MenuItem key="4" value="No Changes">
-        No Changes
-      </MenuItem>,
-    ]);
+  const getSelectOptions = jest.fn().mockReturnValue([
+    <MenuItem key="1" value="chores">
+      chores
+    </MenuItem>,
+    <MenuItem key="2" value="epics">
+      epics
+    </MenuItem>,
+    <MenuItem key="3" value="features">
+      features
+    </MenuItem>,
+    <MenuItem key="4" value="fixes">
+      fixes
+    </MenuItem>,
+  ]);
 
   beforeEach(() => {
     render(
@@ -44,24 +28,16 @@ describe("resume | git-tools | BranchName", () => {
 
   it("renders as expected", () => {
     expect(screen.getByText("Branch Prefix")).toBeInTheDocument();
-    expect(screen.getByText("Case Preference")).toBeInTheDocument();
     expect(screen.getAllByText("Branch Name")).toHaveLength(2);
     expect(screen.getByDisplayValue("features")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("snake_case")).toBeInTheDocument();
-    expect(screen.getAllByRole("button")).toHaveLength(4);
+    expect(screen.getAllByRole("button")).toHaveLength(3);
 
-    expect(getSelectOptions).toHaveBeenCalledTimes(2);
+    expect(getSelectOptions).toHaveBeenCalledTimes(1);
     expect(getSelectOptions).toHaveBeenCalledWith([
       "chores",
       "epics",
       "features",
       "fixes",
-    ]);
-    expect(getSelectOptions).toHaveBeenLastCalledWith([
-      "snake_case",
-      "kebab-case",
-      "camelCase",
-      "No Changes",
     ]);
   });
 
@@ -72,7 +48,7 @@ describe("resume | git-tools | BranchName", () => {
     });
     expect(screen.getByText("test")).toBeInTheDocument();
     // ensure it clears
-    fireEvent.click(screen.getAllByRole("button")[2]);
+    fireEvent.click(screen.getAllByRole("button")[1]);
     expect(screen.queryByText("test")).toBeNull();
   });
 });
