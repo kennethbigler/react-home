@@ -25,9 +25,9 @@ const CopyTextDisplay: React.FC<CopyTextDisplayProps> = (
   /** copies text to clipboard and opens prompt to tell the user */
   const handleCopyText = React.useCallback((): void => {
     handleOpen();
-    navigator.clipboard
-      .writeText(copyText || text)
-      .catch(() => console.warn("Failed to copy"));
+    navigator?.clipboard
+      ?.writeText(copyText || text)
+      ?.catch(() => console.warn("Failed to copy"));
   }, [copyText, handleOpen, text]);
 
   return (
