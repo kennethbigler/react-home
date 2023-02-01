@@ -7,7 +7,6 @@ import useOpenState from "../../../hooks/useOpenState";
 
 interface CopyTextDisplayProps {
   copyText?: string;
-  handleCopy: (text: string) => Promise<void>;
   text: string;
 }
 
@@ -21,14 +20,15 @@ const CopyTextDisplay: React.FC<CopyTextDisplayProps> = (
   props: CopyTextDisplayProps
 ) => {
   const [isOpen, handleOpen, handleClose] = useOpenState(false);
-  const { handleCopy, copyText, text } = props;
+  const { copyText, text } = props;
 
   /** copies text to clipboard and opens prompt to tell the user */
   const handleCopyText = React.useCallback((): void => {
     handleOpen();
-    const toCopy = copyText || text;
-    handleCopy(toCopy).catch(() => console.warn("Failed to copy"));
-  }, [copyText, handleCopy, handleOpen, text]);
+    navigator.clipboard
+      .writeText(copyText || text)
+      .catch(() => console.warn("Failed to copy"));
+  }, [copyText, handleOpen, text]);
 
   return (
     <>

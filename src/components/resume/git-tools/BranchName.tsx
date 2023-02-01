@@ -21,7 +21,6 @@ import gitAtom, {
 interface BranchNameProps {
   getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
-  handleCopy: (text: string) => Promise<void>;
 }
 
 const wrapperStyles: React.CSSProperties = {
@@ -35,7 +34,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
   const [state, setState] = useRecoilState(gitAtom);
   const branchName = useRecoilValue(gitSelector);
 
-  const { getSelectOptions, gitTheme, handleCopy } = props;
+  const { getSelectOptions, gitTheme } = props;
   const { branchMessage, branchPrefix, casePreference } = state;
 
   /** function to update text state based on value */
@@ -130,7 +129,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
           </IconButton>
         </Grid>
       </Grid>
-      <CopyTextDisplay handleCopy={handleCopy} text={branchName} />
+      <CopyTextDisplay text={branchName} />
     </div>
   );
 };

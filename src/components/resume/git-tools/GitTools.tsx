@@ -10,8 +10,6 @@ import ExpandableCard from "../../common/expandable-card";
 
 import { getSelectOptions, validTypingId } from "./helpers";
 
-const handleCopy = (text: string) => navigator.clipboard.writeText(text);
-
 const gitTheme = deepOrange[900];
 
 /* GitTools  ->  Header
@@ -37,17 +35,12 @@ const GitTools: React.FC = () => {
         storyID={storyID}
       />
       <ExpandableCard backgroundColor={gitTheme} title="Create Branch Name">
-        <BranchName
-          getSelectOptions={getSelectOptions}
-          gitTheme={gitTheme}
-          handleCopy={handleCopy}
-        />
+        <BranchName getSelectOptions={getSelectOptions} gitTheme={gitTheme} />
       </ExpandableCard>
       <ExpandableCard backgroundColor={gitTheme} title="Create Commit Message">
         <CommitText
           getSelectOptions={getSelectOptions}
           gitTheme={gitTheme}
-          handleCopy={handleCopy}
           storyID={storyID}
         />
       </ExpandableCard>
@@ -55,11 +48,7 @@ const GitTools: React.FC = () => {
         backgroundColor={gitTheme}
         title="Deploy to Test Pipelines"
       >
-        <DeployBranch
-          getSelectOptions={getSelectOptions}
-          gitTheme={gitTheme}
-          handleCopy={handleCopy}
-        />
+        <DeployBranch getSelectOptions={getSelectOptions} gitTheme={gitTheme} />
       </ExpandableCard>
     </>
   );

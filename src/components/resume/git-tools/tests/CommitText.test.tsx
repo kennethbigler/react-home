@@ -6,7 +6,6 @@ import CommitText from "../CommitText";
 
 describe("resume | git-tools | CommitText", () => {
   let handleSelectOptions;
-  const handleCopy = jest.fn();
 
   beforeEach(() => {
     handleSelectOptions = jest.fn().mockReturnValue([
@@ -22,7 +21,6 @@ describe("resume | git-tools | CommitText", () => {
       <CommitText
         getSelectOptions={handleSelectOptions}
         gitTheme="red"
-        handleCopy={handleCopy}
         storyID="KEN-1234"
       />
     );
@@ -69,16 +67,6 @@ describe("resume | git-tools | CommitText", () => {
     expect(
       screen.getByText('git commit -m "feat: [KEN-1234 #finish]"')
     ).toBeInTheDocument();
-  });
-
-  it("copies on click", () => {
-    expect(
-      screen.getByText('git commit -m "feat: [KEN-1234]"')
-    ).toBeInTheDocument();
-    fireEvent.click(screen.getAllByRole("button")[3]);
-    expect(handleCopy).toHaveBeenCalledWith(
-      'git commit -m "feat:  [KEN-1234]"'
-    );
   });
 
   it("swaps commit prefix on select", () => {
