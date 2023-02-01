@@ -1,5 +1,4 @@
 import * as React from "react";
-import maxBy from "lodash/maxBy";
 import {
   ResponsiveContainer,
   XAxis,
@@ -33,7 +32,10 @@ const ScoreGraph: React.FC<ScoreGraphProps> = (props: ScoreGraphProps) => {
   const scores = React.useMemo(() => generateScoreGraph(dBScores), [dBScores]);
   const recent = scores[scores.length - 1] || { value: 0 };
   const mostRecent = recent.value;
-  const top = maxBy(scores, "value") || { value: 0 };
+  const top = scores.reduce(
+    (prev, curr) => (curr.value > prev.value ? curr : prev),
+    { value: 0 }
+  );
   const topScore = top.value;
 
   return (

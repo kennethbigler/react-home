@@ -3,7 +3,7 @@ import { indigo, deepOrange, teal, deepPurple } from "@mui/material/colors";
 import { Color } from "@mui/material";
 
 export const themes = ["light", "dark"] as const;
-export type Themes = typeof themes[number];
+export type Themes = (typeof themes)[number];
 
 export interface ThemeState {
   mode: Themes;

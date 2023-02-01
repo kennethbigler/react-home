@@ -2,7 +2,7 @@ import { atom, DefaultValue, selector } from "recoil";
 import playerAtom from "./player-atom";
 
 export const dice = [0, 1, 2, 3, 4, 5, 6] as const;
-export type Dice = typeof dice[number];
+export type Dice = (typeof dice)[number];
 export interface YahtzeeState {
   roll: Dice;
   values: Dice[];

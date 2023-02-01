@@ -39,8 +39,6 @@ describe("resume | git-tools |  GitTools", () => {
     expect(screen.getByText("Create Branch Name")).toBeInTheDocument();
     expect(screen.getByText("Branch Prefix")).toBeInTheDocument();
     expect(screen.getByText("features")).toBeInTheDocument();
-    expect(screen.getByText("Case Preference")).toBeInTheDocument();
-    expect(screen.getByText("snake_case")).toBeInTheDocument();
     expect(screen.getAllByText("Branch Name")).toHaveLength(2);
     expect(screen.getByText("features/")).toBeInTheDocument();
 
@@ -72,12 +70,12 @@ describe("resume | git-tools |  GitTools", () => {
       { target: { value: "KEN-1234" } }
     );
     expect(screen.getByDisplayValue("KEN-1234")).toBeInTheDocument();
-    expect(screen.getByText("features/KEN-1234_")).toBeInTheDocument();
+    expect(screen.getByText("features/KEN-1234")).toBeInTheDocument();
     expect(
       screen.getByText('git commit -m "feat: [KEN-1234]"')
     ).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin features/KEN-1234_:test-pipeline")
+      screen.getByText("git push -f origin features/KEN-1234:test-pipeline")
     ).toBeInTheDocument();
   });
 
@@ -106,11 +104,11 @@ describe("resume | git-tools |  GitTools", () => {
       { target: { value: "branchMessage" } }
     );
     expect(screen.getByDisplayValue("branchMessage")).toBeInTheDocument();
-    expect(screen.getByText("features/branch_message")).toBeInTheDocument();
+    expect(screen.getByText("features/branchMessage")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
       screen.getByText(
-        "git push -f origin features/branch_message:test-pipeline"
+        "git push -f origin features/branchMessage:test-pipeline"
       )
     ).toBeInTheDocument();
   });
@@ -124,20 +122,22 @@ describe("resume | git-tools |  GitTools", () => {
       { target: { value: "branchMessage" } }
     );
     expect(screen.getByDisplayValue("branchMessage")).toBeInTheDocument();
-    expect(screen.getByText("features/branch_message")).toBeInTheDocument();
+    expect(screen.getByText("features/branchMessage")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
       screen.getByText(
-        "git push -f origin features/branch_message:test-pipeline"
+        "git push -f origin features/branchMessage:test-pipeline"
       )
     ).toBeInTheDocument();
 
     fireEvent.click(screen.getAllByRole("button")[2]);
-    expect(screen.queryByDisplayValue("branchMessage")).toBeNull();
-    expect(screen.getByText("features/")).toBeInTheDocument();
+    expect(screen.getByDisplayValue("branchMessage")).toBeInTheDocument();
+    expect(screen.getByText("features/branchMessage")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin features/:test-pipeline")
+      screen.getByText(
+        "git push -f origin features/branchMessage:test-pipeline"
+      )
     ).toBeInTheDocument();
   });
 
@@ -157,41 +157,6 @@ describe("resume | git-tools |  GitTools", () => {
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
       screen.getByText("git push -f origin fixes/:test-pipeline")
-    ).toBeInTheDocument();
-  });
-
-  it("calls setCasePreference on select of case option", () => {
-    render(<GitTools />);
-
-    expect(screen.getByText("features/")).toBeInTheDocument();
-    expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
-    expect(
-      screen.getByText("git push -f origin features/:test-pipeline")
-    ).toBeInTheDocument();
-
-    fireEvent.change(
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      screen.getAllByText("Branch Name")[0].nextSibling!.firstChild!,
-      { target: { value: "branchMessage" } }
-    );
-    expect(screen.getByDisplayValue("branchMessage")).toBeInTheDocument();
-    expect(screen.getByText("features/branch_message")).toBeInTheDocument();
-    expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "git push -f origin features/branch_message:test-pipeline"
-      )
-    ).toBeInTheDocument();
-
-    fireEvent.change(screen.getByDisplayValue("snake_case"), {
-      target: { value: "kebab-case" },
-    });
-    expect(screen.getByText("features/branch-message")).toBeInTheDocument();
-    expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "git push -f origin features/branch-message:test-pipeline"
-      )
     ).toBeInTheDocument();
   });
 

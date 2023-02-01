@@ -1,25 +1,16 @@
 import { atom } from "recoil";
 
 export const branchPrefixes = ["chores", "epics", "features", "fixes"] as const;
-export type BranchPrefixes = typeof branchPrefixes[number];
-export const casePreferences = [
-  "snake_case",
-  "kebab-case",
-  "camelCase",
-  "No Changes",
-] as const;
-export type CasePreferences = typeof casePreferences[number];
+export type BranchPrefixes = (typeof branchPrefixes)[number];
 
 export interface GitState {
   branchMessage: string;
   branchPrefix: BranchPrefixes;
-  casePreference: CasePreferences;
 }
 
 const initialState: GitState = {
   branchMessage: "",
   branchPrefix: "features",
-  casePreference: "snake_case",
 };
 
 const gitAtom = atom({

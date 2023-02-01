@@ -7,7 +7,6 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-import sortBy from "lodash/sortBy";
 import { useTheme } from "@mui/material/styles";
 import { Payload } from "recharts/types/component/DefaultTooltipContent";
 import dateObj from "../../../apis/DateHelper";
@@ -19,11 +18,12 @@ interface TooltipPayload extends Payload<string, string> {
   payload?: { name: string };
 }
 
-const storageData = languageExp.map((obj) => ({
-  name: window.innerWidth < 1200 ? obj.short : obj.company,
-  months: dateObj(obj.end).diff(obj.start, "month"),
-}));
-const data = sortBy(storageData, ["months"]).reverse();
+const data = languageExp
+  .map((obj) => ({
+    name: window.innerWidth < 1200 ? obj.short : obj.company,
+    months: dateObj(obj.end).diff(obj.start, "month"),
+  }))
+  .sort((a, b) => b.months - a.months);
 
 export const tooltipFormatter = (
   months: Months,
