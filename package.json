@@ -14,8 +14,6 @@
     "@emotion/styled": "11.10.5",
     "@mui/icons-material": "5.11.0",
     "@mui/material": "5.11.7",
-    "@types/react-simple-maps": "3.0.0",
-    "copy-to-clipboard": "3.3.3",
     "graphql-tag": "2.12.6",
     "localforage": "1.10.0",
     "lodash": "4.17.21",
@@ -25,8 +23,7 @@
     "react-router-dom": "6.8.0",
     "react-simple-maps": "3.0.0",
     "recharts": "2.3.2",
-    "recoil": "0.7.6",
-    "web-vitals": "3.1.1"
+    "recoil": "0.7.6"
   },
   "devDependencies": {
     "@lhci/cli": "0.10.0",
@@ -36,6 +33,7 @@
     "@types/lodash": "4.14.191",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
+    "@types/react-simple-maps": "3.0.0",
     "@typescript-eslint/eslint-plugin": "5.50.0",
     "@typescript-eslint/parser": "5.50.0",
     "eslint": "8.32.0",
@@ -84,7 +82,6 @@
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/service-worker.ts",
       "<rootDir>/src/serviceWorkerRegistration.ts",
-      "<rootDir>/src/reportWebVitals.ts",
       "<rootDir>/node_modules"
     ],
     "coverageThreshold": {

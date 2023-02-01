@@ -11,7 +11,7 @@ import CopyTextDisplay from "./CopyTextDisplay";
 interface DeployBranchProps {
   getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
-  handleCopy: (text: string) => boolean;
+  handleCopy: (text: string) => Promise<void>;
 }
 
 const DeployBranch: React.FC<DeployBranchProps> = React.memo(

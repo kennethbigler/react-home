@@ -21,7 +21,7 @@ import gitAtom, {
 interface BranchNameProps {
   getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
-  handleCopy: (text: string) => boolean;
+  handleCopy: (text: string) => Promise<void>;
 }
 
 const wrapperStyles: React.CSSProperties = {

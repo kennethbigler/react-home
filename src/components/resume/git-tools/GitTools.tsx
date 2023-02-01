@@ -1,6 +1,5 @@
 import * as React from "react";
 import { deepOrange } from "@mui/material/colors";
-import handleCopy from "copy-to-clipboard";
 import { useRecoilState } from "recoil";
 import { storyIdGitAtom } from "../../../recoil/git-atom";
 import BranchName from "./BranchName";
@@ -10,6 +9,8 @@ import Header from "./Header";
 import ExpandableCard from "../../common/expandable-card";
 
 import { getSelectOptions, validTypingId } from "./helpers";
+
+const handleCopy = (text: string) => navigator.clipboard.writeText(text);
 
 const gitTheme = deepOrange[900];
 

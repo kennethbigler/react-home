@@ -18,7 +18,7 @@ import useCommitText from "./useCommitText";
 interface CommitTextProps {
   getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
-  handleCopy: (text: string) => boolean;
+  handleCopy: (text: string) => Promise<void>;
   storyID?: string;
 }
 
