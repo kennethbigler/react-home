@@ -11,7 +11,6 @@ import CopyTextDisplay from "./CopyTextDisplay";
 interface DeployBranchProps {
   getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
-  handleCopy: (text: string) => boolean;
 }
 
 const DeployBranch: React.FC<DeployBranchProps> = React.memo(
@@ -19,7 +18,7 @@ const DeployBranch: React.FC<DeployBranchProps> = React.memo(
     const branchName = useRecoilValue(gitSelector);
     const [targetBranch, setTargetBranch] = React.useState("test-pipeline");
 
-    const { gitTheme, handleCopy, getSelectOptions } = props;
+    const { gitTheme, getSelectOptions } = props;
     const handleSelect = (e: SelectChangeEvent): void =>
       setTargetBranch(e.target.value);
 
@@ -46,7 +45,6 @@ const DeployBranch: React.FC<DeployBranchProps> = React.memo(
           </Grid>
           <Grid item sm={9} xs={12} style={{ marginTop: 16 }}>
             <CopyTextDisplay
-              handleCopy={handleCopy}
               text={`git push -f origin ${branchName}:${targetBranch}`}
             />
           </Grid>

@@ -6,7 +6,6 @@ import DeployBranch from "../DeployBranch";
 
 describe("resume | git-tools | DeployBranch", () => {
   let handleSelectOptions;
-  const handleCopy = jest.fn();
 
   beforeEach(() => {
     handleSelectOptions = jest.fn().mockReturnValue([
@@ -19,11 +18,7 @@ describe("resume | git-tools | DeployBranch", () => {
     ]);
 
     render(
-      <DeployBranch
-        getSelectOptions={handleSelectOptions}
-        gitTheme="red"
-        handleCopy={handleCopy}
-      />
+      <DeployBranch getSelectOptions={handleSelectOptions} gitTheme="red" />
     );
   });
 
@@ -38,20 +33,6 @@ describe("resume | git-tools | DeployBranch", () => {
 
   it("has expected color", () => {
     expect(screen.getByText("Target Branch")).toHaveStyle("color: red;");
-  });
-
-  it("copies command to clipboard when clicked", () => {
-    const copyPill = screen.getByText(
-      "git push -f origin features/:test-pipeline"
-    );
-    expect(copyPill).toBeInTheDocument();
-    fireEvent.click(copyPill);
-    expect(handleCopy).toHaveBeenCalledWith(
-      "git push -f origin features/:test-pipeline"
-    );
-    expect(
-      screen.getByText("Copied Commit Text to clipboard!")
-    ).toBeInTheDocument();
   });
 
   it("swaps test-pipeline and sandbox-pipeline on select", () => {

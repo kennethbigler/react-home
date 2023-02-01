@@ -18,7 +18,6 @@ import useCommitText from "./useCommitText";
 interface CommitTextProps {
   getSelectOptions: (arr: string[]) => React.ReactNode;
   gitTheme: string;
-  handleCopy: (text: string) => boolean;
   storyID?: string;
 }
 
@@ -33,7 +32,7 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
   const [hasCommitPrefix, setHasCommitPrefix] =
     useRecoilState(commitPrefixGitAtom);
 
-  const { getSelectOptions, storyID, handleCopy, gitTheme } = props;
+  const { getSelectOptions, storyID, gitTheme } = props;
 
   const {
     commitPrefix,
@@ -161,11 +160,7 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
           </IconButton>
         </Grid>
       </Grid>
-      <CopyTextDisplay
-        copyText={commitText}
-        handleCopy={handleCopy}
-        text={displayText}
-      />
+      <CopyTextDisplay copyText={commitText} text={displayText} />
     </div>
   );
 };

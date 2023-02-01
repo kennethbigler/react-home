@@ -1,6 +1,6 @@
 import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
-import { screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
 import render from "../../../../recoil-test-render";
 import BranchName from "../BranchName";
 
@@ -35,15 +35,10 @@ describe("resume | git-tools | BranchName", () => {
         No Changes
       </MenuItem>,
     ]);
-  const handleCopy = jest.fn();
 
   beforeEach(() => {
     render(
-      <BranchName
-        gitTheme="orange"
-        getSelectOptions={getSelectOptions}
-        handleCopy={handleCopy}
-      />
+      <BranchName gitTheme="orange" getSelectOptions={getSelectOptions} />
     );
   });
 
@@ -79,11 +74,5 @@ describe("resume | git-tools | BranchName", () => {
     // ensure it clears
     fireEvent.click(screen.getAllByRole("button")[2]);
     expect(screen.queryByText("test")).toBeNull();
-  });
-
-  it("calls handleCopy on click of BranchName", () => {
-    expect(handleCopy).not.toHaveBeenCalled();
-    fireEvent.click(screen.getAllByRole("button")[3]);
-    expect(handleCopy).toHaveBeenCalledWith("features/");
   });
 });

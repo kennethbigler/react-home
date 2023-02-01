@@ -1,6 +1,5 @@
 import * as React from "react";
 import { deepOrange } from "@mui/material/colors";
-import handleCopy from "copy-to-clipboard";
 import { useRecoilState } from "recoil";
 import { storyIdGitAtom } from "../../../recoil/git-atom";
 import BranchName from "./BranchName";
@@ -36,17 +35,12 @@ const GitTools: React.FC = () => {
         storyID={storyID}
       />
       <ExpandableCard backgroundColor={gitTheme} title="Create Branch Name">
-        <BranchName
-          getSelectOptions={getSelectOptions}
-          gitTheme={gitTheme}
-          handleCopy={handleCopy}
-        />
+        <BranchName getSelectOptions={getSelectOptions} gitTheme={gitTheme} />
       </ExpandableCard>
       <ExpandableCard backgroundColor={gitTheme} title="Create Commit Message">
         <CommitText
           getSelectOptions={getSelectOptions}
           gitTheme={gitTheme}
-          handleCopy={handleCopy}
           storyID={storyID}
         />
       </ExpandableCard>
@@ -54,11 +48,7 @@ const GitTools: React.FC = () => {
         backgroundColor={gitTheme}
         title="Deploy to Test Pipelines"
       >
-        <DeployBranch
-          getSelectOptions={getSelectOptions}
-          gitTheme={gitTheme}
-          handleCopy={handleCopy}
-        />
+        <DeployBranch getSelectOptions={getSelectOptions} gitTheme={gitTheme} />
       </ExpandableCard>
     </>
   );
