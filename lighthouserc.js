@@ -4,7 +4,8 @@ module.exports = {
       staticDistDir: "./build"
     },
     upload: {
-      githubToken: "$LHCI_GITHUB_APP_TOKEN",
+      githubAppToken: `${ secrets.LHCI_GITHUB_APP_TOKEN }`,
+      githubToken: `${ secrets.LHCI_GITHUB_TOKEN }`,
       target: "temporary-public-storage"
     },
     assert: {
