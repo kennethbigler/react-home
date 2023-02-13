@@ -26,6 +26,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3.6.0
@@ -56,7 +58,10 @@ jobs:
         uses: codecov/codecov-action@v3.1.1
 
       - name: Run lighthouse
-        run: npx @lhci/cli autorun
+        run: npm install -g @lhci/cli
+      - run: |
+          npm install -g @lhci/cli
+          lhci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
