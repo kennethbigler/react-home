@@ -56,7 +56,7 @@ jobs:
         uses: codecov/codecov-action@v3.1.1
 
       - name: Run lighthouse
-        run: npx lhci autorun
+        run: npx @lhci/cli autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
