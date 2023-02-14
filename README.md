@@ -22,9 +22,3 @@ To run this code locally:
 npm install
 npm run start
 ```
-
-## Supported Browsers
-
-| IE  | Edge  | Firefox | Chrome | Safari |
-| :-: | :---: | :-----: | :----: | :----: |
-| 11  | >= 14 |  >= 45  | >= 49  | >= 10  |
