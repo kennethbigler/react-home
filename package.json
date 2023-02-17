@@ -30,7 +30,7 @@
     "@testing-library/react": "13.4.0",
     "@types/jest-axe": "3.5.5",
     "@types/react": "18.0.27",
-    "@types/react-dom": "18.0.10",
+    "@types/react-dom": "18.0.11",
     "@types/react-simple-maps": "3.0.0",
     "@typescript-eslint/eslint-plugin": "5.51.0",
     "@typescript-eslint/parser": "5.51.0",
