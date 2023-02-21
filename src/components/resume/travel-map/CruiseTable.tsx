@@ -68,6 +68,7 @@ const cruiseCells = cruises.map((cruise, i) => {
 
 // --------------------     Cruise Loyalty     -------------------- //
 
+// Royal Caribbean
 let rcNextLevel = 0;
 let rcStatus = "N/A";
 
@@ -78,6 +79,7 @@ rcLoyalty.forEach(({ nights, status }, i) => {
   }
 });
 
+// Disney
 let disneyNextLevel = 0;
 let disneyStatus = "N/A";
 
@@ -89,6 +91,7 @@ disneyLoyalty.forEach(({ num, status }, i) => {
   }
 });
 
+// Princess
 let princessNextCruises = 0;
 let princessNextNights = 0;
 let princessStatus = "N/A";
