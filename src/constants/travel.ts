@@ -330,7 +330,7 @@ export const cruises: Cruise[] = [
     name: "San Diego & Ensenada",
     ship: ships[6],
     line: lines[2],
-    concierge: true,
+    concierge: false,
   },
   {
     departure: dateObj("2023-05"),
