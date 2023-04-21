@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import Info, { getJob } from "../Info";
 import { Job } from "../../../../constants/work";
 import dateHelper from "../../../../apis/DateHelper";
@@ -17,7 +17,7 @@ const exp: Job = {
 };
 
 describe("resume | summary | Info", () => {
-  it("take you to LinkedIn on Photo Click", async () => {
+  it("take you to LinkedIn on Photo Click", () => {
     window.open = jest.fn();
     render(<Info />);
     expect(screen.getByText("image loading...")).toBeInTheDocument();
