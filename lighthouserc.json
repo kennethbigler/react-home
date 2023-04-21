@@ -9,6 +9,7 @@
     "assert": {
       "preset": "lighthouse:recommended",
       "assertions": {
+        "bf-cache": "warn",
         "csp-xss": "warn",
         "non-composited-animations": "warn",
         "preload-lcp-image": "warn",
