@@ -3,7 +3,6 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import nl2br from "react-newline-to-break";
 import Typography from "@mui/material/Typography";
 
 interface WerewolfPanelProps {
@@ -51,7 +50,7 @@ const WerewolfPanel: React.FC<WerewolfPanelProps> = React.memo(
             <Typography style={itemStyles}>Cost: {value}</Typography>
           </div>
         </AccordionSummary>
-        <AccordionDetails>{nl2br(description)}</AccordionDetails>
+        <AccordionDetails>{description}</AccordionDetails>
       </Accordion>
     );
   }

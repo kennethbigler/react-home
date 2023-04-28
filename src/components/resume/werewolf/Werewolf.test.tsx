@@ -13,7 +13,9 @@ describe("games | werewolf", () => {
   it("renders as expected", () => {
     render(<Werewolf />);
 
-    expect(screen.getByText("Werewolf")).toBeInTheDocument();
+    expect(screen.getByText("Villagers")).toBeInTheDocument();
+    expect(screen.getByText("Outsiders")).toBeInTheDocument();
+    expect(screen.getByText("Wolves")).toBeInTheDocument();
   });
 
   it("handles accordion open and close", () => {
