@@ -178,23 +178,10 @@ export const villagers: Role[] = [
 
 export const outsiders: Role[] = [
   {
-    name: "Vampire",
+    name: "Cult Leader",
     description:
-      "Each night, choose a player. That player is eliminated when a player gets their 2nd accusation the next day.",
-    value: -7,
-    count: 8,
-  },
-  {
-    name: "Cursed",
-    description:
-      "You are on the Village team unless you are targeted for elimination by the Werewolves, at which time you become a Werewolf.",
-    value: -3,
-  },
-  {
-    name: "Tanner",
-    description:
-      "You hate your job and your life. You win if you are eliminated.",
-    value: -2,
+      "Each night, choose a player to join your cult. If all alive players are in your cult, you win.",
+    value: 1,
   },
   {
     name: "Hoodlum",
@@ -203,10 +190,23 @@ export const outsiders: Role[] = [
     value: 0,
   },
   {
-    name: "Cult Leader",
+    name: "Tanner",
     description:
-      "Each night, choose a player to join your cult. If all alive players are in your cult, you win.",
-    value: 1,
+      "You hate your job and your life. You win if you are eliminated.",
+    value: -2,
+  },
+  {
+    name: "Cursed",
+    description:
+      "You are on the Village team unless you are targeted for elimination by the Werewolves, at which time you become a Werewolf.",
+    value: -3,
+  },
+  {
+    name: "Vampire",
+    description:
+      "Each night, choose a player. That player is eliminated when a player gets their 2nd accusation the next day.",
+    value: -7,
+    count: 8,
   },
 ];
 
