@@ -13,7 +13,7 @@
     "@emotion/react": "11.10.8",
     "@emotion/styled": "11.10.8",
     "@mui/icons-material": "5.11.16",
-    "@mui/material": "5.12.1",
+    "@mui/material": "5.12.2",
     "graphql-tag": "2.12.6",
     "localforage": "1.10.0",
     "react": "18.2.0",
