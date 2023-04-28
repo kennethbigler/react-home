@@ -39,6 +39,7 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
         { name: "Cars", route: "cars" },
         { name: "Travel Map", route: "travel" },
         { name: "Murder Mystery", route: "murder" },
+        { name: "Werewolf", route: "werewolf" },
         { divider: true },
         { name: "React Games", route: "games" },
       ].map((item, index) =>

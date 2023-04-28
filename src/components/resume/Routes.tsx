@@ -25,6 +25,9 @@ const GitTools = lazyWithPreload(
 const MurderMystery = lazyWithPreload(
   import(/* webpackChunkName: "r_mystery" */ "./murder-mystery")
 );
+const Werewolf = lazyWithPreload(
+  import(/* webpackChunkName: "r_werewolf" */ "./werewolf")
+);
 const GraphQL = lazyWithPreload(
   import(/* webpackChunkName: "r_graphql" */ "./graphql")
 );
@@ -51,6 +54,7 @@ const ResumeRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
         <Route path="murder/*" element={<MurderMystery />} />
         <Route path="resume/*" element={<Resume />} />
         <Route path="travel/*" element={<TravelMap />} />
+        <Route path="werewolf/*" element={<Werewolf />} />
         <Route path="work/*" element={<Work />} />
       </Routes>
     </React.Suspense>

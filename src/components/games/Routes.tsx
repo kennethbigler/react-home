@@ -39,7 +39,7 @@ const AreYouTheOne = lazyWithPreload(
   import(/* webpackChunkName: "g_are_you_the_one" */ "./are-you-the-one")
 );
 const TypeChecker = lazyWithPreload(
-  import(/* webpackChunkName: "r_type_checker" */ "./type-checker")
+  import(/* webpackChunkName: "g_type_checker" */ "./type-checker")
 );
 
 const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (

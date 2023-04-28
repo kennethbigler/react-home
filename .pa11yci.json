@@ -9,6 +9,7 @@
     "http://localhost:3000/#/cars",
     "http://localhost:3000/#/travel",
     "http://localhost:3000/#/murder",
+    "http://localhost:3000/#/werewolf",
     "http://localhost:3000/#/games",
     "http://localhost:3000/#/games/blackjack",
     "http://localhost:3000/#/games/deal",
@@ -18,6 +19,7 @@
     "http://localhost:3000/#/games/are-you-the-one",
     "http://localhost:3000/#/games/connect4",
     "http://localhost:3000/#/games/family-feud",
-    "http://localhost:3000/#/games/tictactoe"
+    "http://localhost:3000/#/games/tictactoe",
+    "http://localhost:3000/#/games/types"
   ]
 }
