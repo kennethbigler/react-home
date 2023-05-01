@@ -13,9 +13,7 @@ export default defineConfig({
       reporter: ['text', 'html'],
       exclude: [
         'node_modules/',
-        'src/setupTests.ts',
-        'src/service-worker.ts',
-        'src/serviceWorkerRegistration.ts',
+        'src/setupTests.ts'
       ],
       statements: 90,
       branches: 85,
