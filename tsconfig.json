@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["vitest/globals"],
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
@@ -25,6 +26,5 @@
     "strictNullChecks": true,
   },
   "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }],
-  "types": ["vitest/globals"]
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

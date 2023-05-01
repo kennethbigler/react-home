@@ -1,5 +1,4 @@
-import * as React from "react";
-import { screen, fireEvent } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import render from "../../../../recoil-test-render";
 import GraphQL from "../GraphQL";
 

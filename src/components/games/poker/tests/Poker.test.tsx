@@ -1,6 +1,5 @@
-import * as React from "react";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 import render from "../../../../recoil-test-render";
 import Poker from "../Poker";
 import Deck from "../../../../apis/Deck";

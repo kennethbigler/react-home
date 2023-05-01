@@ -1,4 +1,3 @@
-import * as React from "react";
 import { screen, fireEvent, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
 import render from "../../../recoil-test-render";

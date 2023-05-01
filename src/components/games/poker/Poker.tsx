@@ -194,8 +194,8 @@ const Poker: React.FC = () => {
 
   /** function to be called on card clicks */
   const cardClickHandler = (
-    playerNo: number,
-    handNo: number,
+    _playerNo: number,
+    _handNo: number,
     cardNo: number
   ): void => {
     const newCardsToDiscard = [...cardsToDiscard];

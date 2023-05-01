@@ -278,7 +278,7 @@ const BlackJack: React.FC = () => {
   };
 
   /** function to be called on card clicks */
-  const betHandler = (id: number, event: Event, bet: number): void => {
+  const betHandler = (id: number, _event: Event, bet: number): void => {
     setState({
       bj: { gameFunctions, hideHands },
       turn,

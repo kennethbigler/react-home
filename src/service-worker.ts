@@ -8,10 +8,15 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
+// @ts-ignore part of service worker
 import { clientsClaim } from "workbox-core";
+// @ts-ignore part of service worker
 import { ExpirationPlugin } from "workbox-expiration";
+// @ts-ignore part of service worker
 import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
+// @ts-ignore part of service worker
 import { registerRoute } from "workbox-routing";
+// @ts-ignore part of service worker
 import { StaleWhileRevalidate } from "workbox-strategies";
 
 declare const self: ServiceWorkerGlobalScope;
@@ -22,6 +27,7 @@ clientsClaim();
 // Their URLs are injected into the manifest variable below.
 // This variable must be present somewhere in your service worker file,
 // even if you decide not to use precaching. See https://cra.link/PWA
+// @ts-ignore part of service worker
 precacheAndRoute(self.__WB_MANIFEST);
 
 // Set up App Shell-style routing, so that all navigation requests
@@ -57,6 +63,7 @@ registerRoute(
 // precache, in this case same-origin .png requests like those from in public/
 registerRoute(
   // Add in any other file extensions or routing criteria as needed.
+  // @ts-ignore part of service worker
   ({ url }) =>
     url.origin === self.location.origin && url.pathname.endsWith(".png"),
   // Customize this strategy as needed, e.g., by changing to CacheFirst.

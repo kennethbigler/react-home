@@ -1,4 +1,3 @@
-import * as React from "react";
 import { fireEvent, screen } from "@testing-library/react";
 import render from "../../../../recoil-test-render";
 import PlayerMenu from "../PlayerMenu";

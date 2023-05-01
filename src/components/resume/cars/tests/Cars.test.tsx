@@ -1,6 +1,5 @@
-import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 import Cars from "../Cars";
 import cars from "../../../../constants/cars";
 

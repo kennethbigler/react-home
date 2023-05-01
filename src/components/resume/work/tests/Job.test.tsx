@@ -1,4 +1,3 @@
-import * as React from "react";
 import Chip from "@mui/material/Chip";
 import { getCSV, showRange } from "../Job";
 import dateObj from "../../../../apis/DateHelper";

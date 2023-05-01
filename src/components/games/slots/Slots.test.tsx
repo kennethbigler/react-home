@@ -1,6 +1,5 @@
-import * as React from "react";
 import { fireEvent, screen } from "@testing-library/react";
-import { vi } from 'vitest';
+import { vi } from "vitest";
 import render from "../../../recoil-test-render";
 import Slots from "./Slots";
 import SlotMachine, { SlotOption as SO } from "../../../apis/SlotMachine";
