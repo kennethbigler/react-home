@@ -63,7 +63,7 @@ jobs:
 
       - name: Run pa11y-ci
         run: |
-          npm start & npx wait-on http://localhost:3000
+          npm run preview & npx wait-on http://localhost:4173
           npx pa11y-ci
 
   # Adding a code analyzer job
