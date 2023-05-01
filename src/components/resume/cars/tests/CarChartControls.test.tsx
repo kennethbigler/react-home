@@ -1,10 +1,11 @@
 import * as React from "react";
 import { render, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
 import CarChartControls from "../CarChartControls";
 
 describe("resume | cars | CarChart", () => {
   it("renders as expected", () => {
-    const handleClick = jest.fn();
+    const handleClick = vi.fn();
     const { getByText } = render(
       <CarChartControls hide={{}} onClick={handleClick} vw={435} />
     );
@@ -21,7 +22,7 @@ describe("resume | cars | CarChart", () => {
   });
 
   it("renders as expected on smaller screens", () => {
-    const handleClick = jest.fn();
+    const handleClick = vi.fn();
     const { getByText } = render(
       <CarChartControls hide={{}} onClick={handleClick} vw={434} />
     );

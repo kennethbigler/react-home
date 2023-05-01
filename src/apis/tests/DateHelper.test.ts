@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import DateHelper from "../DateHelper";
 
 const sampleDateObj = DateHelper("2020-01-02");
@@ -53,7 +54,7 @@ describe("apis | DateHelper", () => {
     // eslint-disable-next-line no-console
     const oldConsole = console.error;
     // eslint-disable-next-line no-console
-    console.error = jest.fn();
+    console.error = vi.fn();
 
     // @ts-expect-error: disabling TS for specific test case
     expect(DateHelper(dateStr).format("")).toStrictEqual("");

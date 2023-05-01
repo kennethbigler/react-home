@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import { DBPlayer } from "../../../../recoil/player-atom";
 import {
   rankHand,
@@ -103,14 +104,14 @@ describe("games | poker | helpers", () => {
       bet: 5,
     };
 
-    const discard = jest.fn().mockImplementation(() => {
+    const discard = vi.fn().mockImplementation(() => {
       throw new Error("test");
     });
 
     // eslint-disable-next-line no-console
     const oldConsole = console.error;
     // eslint-disable-next-line no-console
-    console.error = jest.fn();
+    console.error = vi.fn();
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     computer(player, discard);

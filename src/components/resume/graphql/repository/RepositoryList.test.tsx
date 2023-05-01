@@ -1,6 +1,7 @@
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
+import { vi } from "vitest";
 import RepositoryList from "./RepositoryList";
 import { Repository } from "./item/FetchMore";
 
@@ -43,7 +44,7 @@ describe("resume | graphql | RepositoryList", () => {
         <RepositoryList
           repositories={repositories}
           loading
-          fetchMore={jest.fn()}
+          fetchMore={vi.fn()}
         />
       </MockedProvider>
     );

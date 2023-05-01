@@ -1,5 +1,6 @@
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
+import { vi } from "vitest";
 import Case from "../Case";
 
 describe("games | deal-or-no-deal | Case", () => {
@@ -8,7 +9,7 @@ describe("games | deal-or-no-deal | Case", () => {
       <Case
         briefcase={{ on: true, loc: 1, val: 1000 }}
         isOver={false}
-        onClick={jest.fn()}
+        onClick={vi.fn()}
       />
     );
 
@@ -21,7 +22,7 @@ describe("games | deal-or-no-deal | Case", () => {
       <Case
         briefcase={{ on: false, loc: 1, val: 1000 }}
         isOver={false}
-        onClick={jest.fn()}
+        onClick={vi.fn()}
       />
     );
 
@@ -34,7 +35,7 @@ describe("games | deal-or-no-deal | Case", () => {
       <Case
         briefcase={{ on: true, loc: 1, val: 1000 }}
         isOver
-        onClick={jest.fn()}
+        onClick={vi.fn()}
       />
     );
 

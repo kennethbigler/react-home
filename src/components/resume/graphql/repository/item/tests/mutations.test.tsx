@@ -1,14 +1,15 @@
+import { vi } from "vitest";
 import { updateWatch } from "../WatchRepository";
 import { updateAddStar } from "../StarRepository";
 import { updateRemoveStar } from "../UnstarRepository";
 
 describe("resume | graphql | mutations", () => {
   test("updateWatch", () => {
-    const readFragment = jest
+    const readFragment = vi
       .fn()
       .mockReturnValueOnce(undefined)
       .mockReturnValueOnce({ watchers: { totalCount: 68 } });
-    const writeFragment = jest.fn();
+    const writeFragment = vi.fn();
     const cache = {
       readFragment,
       writeFragment,
@@ -44,11 +45,11 @@ describe("resume | graphql | mutations", () => {
   });
 
   test("updateAddStar", () => {
-    const readFragment = jest
+    const readFragment = vi
       .fn()
       .mockReturnValueOnce(undefined)
       .mockReturnValueOnce({ stargazers: { totalCount: 68 } });
-    const writeFragment = jest.fn();
+    const writeFragment = vi.fn();
     const cache = {
       readFragment,
       writeFragment,
@@ -72,11 +73,11 @@ describe("resume | graphql | mutations", () => {
   });
 
   test("updateRemoveStar", () => {
-    const readFragment = jest
+    const readFragment = vi
       .fn()
       .mockReturnValueOnce(undefined)
       .mockReturnValueOnce({ stargazers: { totalCount: 68 } });
-    const writeFragment = jest.fn();
+    const writeFragment = vi.fn();
     const cache = {
       readFragment,
       writeFragment,

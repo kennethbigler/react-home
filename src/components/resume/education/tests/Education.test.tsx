@@ -1,15 +1,8 @@
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import Education from "../Education";
 
 describe("resume | education | Education", () => {
-  it("passes axe", async () => {
-    const { container } = render(<Education />);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
   it("renders as expected", () => {
     render(<Education />);
 

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { fireEvent, screen } from "@testing-library/react";
+import { vi } from "vitest";
 import render from "../../../../recoil-test-render";
 import Header, { NavProps } from "../Header";
 
@@ -49,7 +50,7 @@ describe("common | header | Header", () => {
     });
 
     it("calls handleNav as expected", () => {
-      const handleNav = jest.fn();
+      const handleNav = vi.fn();
 
       render(
         <Header handleNav={handleNav}>

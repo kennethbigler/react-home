@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import { getStart, getEnd } from "../classes";
 import dateObj from "../../apis/DateHelper";
 
@@ -8,7 +9,7 @@ describe("constants classes", () => {
     // eslint-disable-next-line no-console
     oldConsole = console.error;
     // eslint-disable-next-line no-console
-    console.error = jest.fn();
+    console.error = vi.fn();
   });
 
   afterAll(() => {

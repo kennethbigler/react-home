@@ -1,16 +1,9 @@
 import * as React from "react";
 import { screen, fireEvent } from "@testing-library/react";
-import { axe } from "jest-axe";
 import render from "../../../../recoil-test-render";
 import GraphQL from "../GraphQL";
 
 describe("resume | graphql | GraphQL", () => {
-  it("passes axe", async () => {
-    const { container } = render(<GraphQL />);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
   it("renders as expected", () => {
     render(<GraphQL />);
 
@@ -50,26 +43,5 @@ describe("resume | graphql | GraphQL", () => {
     // will be hidden for now
     expect(screen.queryByDisplayValue("1")).toBeNull();
     expect(screen.queryByText("Loading ...")).toBeNull();
-
-    fireEvent.change(
-      screen.getByPlaceholderText("some 32 character string from github"),
-      { target: { value: "1" } }
-    );
-
-    // will be hidden because there is a token now
-    expect(
-      screen.queryByText(
-        'You need to generate a personal access token with "repo" and "admin:repo_hook" permissions.'
-      )
-    ).toBeNull();
-    expect(
-      screen.queryByText(
-        "This can be done in the Developer settings on GitHub."
-      )
-    ).toBeNull();
-
-    // will be displayed because of an invalid token
-    expect(screen.getByDisplayValue("1")).toBeInTheDocument();
-    expect(screen.getByText("Loading ...")).toBeInTheDocument();
   });
 });

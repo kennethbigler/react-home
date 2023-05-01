@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import { weighHand, playBot } from "./blackjackHelpers";
 
 describe("games | blackjack | blackjackHelpers", () => {
@@ -42,10 +43,10 @@ describe("games | blackjack | blackjackHelpers", () => {
   });
 
   test("playBot | doubles", async () => {
-    const double = jest.fn();
-    const hit = jest.fn();
-    const split = jest.fn();
-    const stay = jest.fn();
+    const double = vi.fn();
+    const hit = vi.fn();
+    const split = vi.fn();
+    const stay = vi.fn();
     const dealer = {
       soft: false,
       cards: [{ name: "7", suit: "♠", weight: 7 }],
@@ -156,10 +157,10 @@ describe("games | blackjack | blackjackHelpers", () => {
   });
 
   test("playBot | soft hands", async () => {
-    const double = jest.fn();
-    const hit = jest.fn();
-    const split = jest.fn();
-    const stay = jest.fn();
+    const double = vi.fn();
+    const hit = vi.fn();
+    const split = vi.fn();
+    const stay = vi.fn();
     const dealer = {
       soft: false,
       cards: [{ name: "5", suit: "♠", weight: 5 }],
@@ -236,10 +237,10 @@ describe("games | blackjack | blackjackHelpers", () => {
   });
 
   test("playBot | normal hands", async () => {
-    const double = jest.fn();
-    const hit = jest.fn();
-    const split = jest.fn();
-    const stay = jest.fn();
+    const double = vi.fn();
+    const hit = vi.fn();
+    const split = vi.fn();
+    const stay = vi.fn();
     const dealer = {
       soft: false,
       cards: [{ name: "5", suit: "♠", weight: 5 }],

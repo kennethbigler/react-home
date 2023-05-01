@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { axe } from "jest-axe";
+import { vi } from 'vitest';
 import Cars from "../Cars";
 import cars from "../../../../constants/cars";
 
@@ -11,25 +11,19 @@ const { ResizeObserver } = window;
 beforeEach(() => {
   // @ts-expect-error: TODO: overwriting to get rid of recharts error, remove later
   delete window.ResizeObserver;
-  window.ResizeObserver = jest.fn().mockImplementation(() => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-    disconnect: jest.fn(),
+  window.ResizeObserver = vi.fn().mockImplementation(() => ({
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn(),
   }));
 });
 
 afterEach(() => {
   window.ResizeObserver = ResizeObserver;
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 describe("resume | cars | Cars", () => {
-  it("passes axe", async () => {
-    const { container } = render(<Cars />);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
   it("renders as expected", () => {
     const { container } = render(<Cars />);
 

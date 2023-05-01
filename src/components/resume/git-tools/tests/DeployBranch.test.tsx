@@ -1,6 +1,7 @@
 import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import { screen, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
 import render from "../../../../recoil-test-render";
 import DeployBranch from "../DeployBranch";
 
@@ -8,7 +9,7 @@ describe("resume | git-tools | DeployBranch", () => {
   let handleSelectOptions;
 
   beforeEach(() => {
-    handleSelectOptions = jest.fn().mockReturnValue([
+    handleSelectOptions = vi.fn().mockReturnValue([
       <MenuItem key="1" value="test-pipeline">
         test-pipeline
       </MenuItem>,

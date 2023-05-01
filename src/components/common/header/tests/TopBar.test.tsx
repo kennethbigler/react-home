@@ -1,5 +1,6 @@
 import * as React from "react";
 import { fireEvent, screen } from "@testing-library/react";
+import { vi } from "vitest";
 import render from "../../../../recoil-test-render";
 import TopBar from "../TopBar";
 
@@ -7,13 +8,13 @@ describe("common | header | TopBar", () => {
   describe("basic props tests", () => {
     it("changes textColor as expected", () => {
       const { rerender } = render(
-        <TopBar textColor="primary" toggleOpen={jest.fn()} />
+        <TopBar textColor="primary" toggleOpen={vi.fn()} />
       );
       expect(screen.getByTitle("Icon Menu Button").className).toContain(
         "MuiIconButton-colorPrimary"
       );
 
-      rerender(<TopBar textColor="secondary" toggleOpen={jest.fn()} />);
+      rerender(<TopBar textColor="secondary" toggleOpen={vi.fn()} />);
       expect(screen.getByTitle("Icon Menu Button").className).toContain(
         "MuiIconButton-colorSecondary"
       );
@@ -21,22 +22,18 @@ describe("common | header | TopBar", () => {
 
     it("shows players as expected", () => {
       const { rerender } = render(
-        <TopBar textColor="primary" toggleOpen={jest.fn()} showPlayers />
+        <TopBar textColor="primary" toggleOpen={vi.fn()} showPlayers />
       );
       expect(screen.getByText("Players")).toBeInTheDocument();
 
       rerender(
-        <TopBar
-          textColor="primary"
-          toggleOpen={jest.fn()}
-          showPlayers={false}
-        />
+        <TopBar textColor="primary" toggleOpen={vi.fn()} showPlayers={false} />
       );
       expect(screen.queryByText("Players")).toBeNull();
     });
 
     it("toggles open as expected", () => {
-      const handleOpen = jest.fn();
+      const handleOpen = vi.fn();
       render(<TopBar textColor="primary" toggleOpen={handleOpen} />);
       fireEvent.click(screen.getByText("Menu"));
       expect(handleOpen).toHaveBeenCalledTimes(1);
@@ -47,7 +44,7 @@ describe("common | header | TopBar", () => {
 
   describe("theme toggle", () => {
     it("toggles theme as expected", () => {
-      const handleOpen = jest.fn();
+      const handleOpen = vi.fn();
       const { container } = render(
         <TopBar textColor="primary" toggleOpen={handleOpen} />
       );

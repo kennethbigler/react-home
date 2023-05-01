@@ -1,5 +1,6 @@
 import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
 import Menu from "../Menu";
 
 describe("games | Menu", () => {
@@ -18,7 +19,7 @@ describe("games | Menu", () => {
   });
 
   it("links to internal pages", () => {
-    const handleItemClick = jest.fn();
+    const handleItemClick = vi.fn();
     render(<Menu onItemClick={handleItemClick} />);
 
     fireEvent.click(screen.getByText("BlackJack"));
@@ -26,7 +27,7 @@ describe("games | Menu", () => {
   });
 
   it("links back to the resume half", () => {
-    const handleItemClick = jest.fn();
+    const handleItemClick = vi.fn();
     render(<Menu onItemClick={handleItemClick} />);
 
     fireEvent.click(screen.getByText("Back to Resume"));
