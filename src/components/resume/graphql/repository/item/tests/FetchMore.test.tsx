@@ -1,5 +1,5 @@
-import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
 import FetchMore from "../FetchMore";
 
 describe("resume | graphql | FetchMore", () => {
@@ -9,8 +9,8 @@ describe("resume | graphql | FetchMore", () => {
         loading
         hasNextPage
         variables={{ cursor: "cursor" }}
-        updateQuery={jest.fn()}
-        fetchMore={jest.fn()}
+        updateQuery={vi.fn()}
+        fetchMore={vi.fn()}
       >
         Children
       </FetchMore>
@@ -20,13 +20,13 @@ describe("resume | graphql | FetchMore", () => {
   });
 
   it("renders as expected when loaded", () => {
-    const handleFetchMore = jest.fn();
+    const handleFetchMore = vi.fn();
     render(
       <FetchMore
         hasNextPage
         loading={false}
         variables={{ cursor: "cursor" }}
-        updateQuery={jest.fn()}
+        updateQuery={vi.fn()}
         fetchMore={handleFetchMore}
       >
         Children

@@ -27,7 +27,7 @@ const data = languageExp
 
 export const tooltipFormatter = (
   months: Months,
-  name: string,
+  _name: string,
   entry: TooltipPayload
 ): [string, string] => {
   const displayMonths = (months as number) % 12;

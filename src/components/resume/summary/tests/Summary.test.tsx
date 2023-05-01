@@ -1,15 +1,7 @@
-import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { axe } from "jest-axe";
 import Summary from "../Summary";
 
 describe("resume | summary | Summary", () => {
-  it("passes axe", async () => {
-    const { container } = render(<Summary />);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
   it("renders as expected", () => {
     render(<Summary />);
 

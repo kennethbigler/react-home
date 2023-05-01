@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Sankey, Tooltip } from "recharts";
 import { cruiseData } from "../../../constants/travel";
 import SankeyNode from "./SankeyNode";

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { grey } from "@mui/material/colors/";
 import { Rectangle, Layer } from "recharts";
 import { cruiseData } from "../../../constants/travel";

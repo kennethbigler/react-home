@@ -1,4 +1,3 @@
-import * as React from "react";
 import { RecoilRoot } from "recoil";
 import WithTheme from "./WithTheme";
 // stores

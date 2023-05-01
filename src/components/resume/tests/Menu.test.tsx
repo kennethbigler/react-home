@@ -1,5 +1,5 @@
-import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
 import Menu from "../Menu";
 
 describe("resume | Menu", () => {
@@ -26,7 +26,7 @@ describe("resume | Menu", () => {
   });
 
   it("links to internal pages", () => {
-    const handleItemClick = jest.fn();
+    const handleItemClick = vi.fn();
     render(<Menu onItemClick={handleItemClick} />);
 
     fireEvent.click(screen.getByText("Resume"));
@@ -35,7 +35,7 @@ describe("resume | Menu", () => {
 
   it("links to external sites", () => {
     const jsdomOpen = window.open;
-    const windowOpen = jest.fn();
+    const windowOpen = vi.fn();
     window.open = windowOpen;
 
     render(<Menu />);

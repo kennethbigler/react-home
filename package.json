@@ -1,13 +1,28 @@
 {
+  "name": "react-home",
+  "private": true,
+  "version": "5.0.0",
+  "type": "module",
   "homepage": "http://kennethbigler.com/",
   "bugs": {
     "url": "https://github.com/kennethbigler/react-home/issues"
   },
   "description": "This is a site about Kenneth Bigler, Software Engineer at Intuit, including his work, interests, and resume",
   "author": "Ken Bigler <kennethbigler@gmail.com>",
-  "name": "react-home",
   "license": "MIT",
-  "version": "4.0.0",
+  "scripts": {
+    "start": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest watch",
+    "test:no-watch": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "deploy": "./scripts/deploy.sh",
+    "analyze": "source-map-explorer 'docs/static/js/*.js'",
+    "analyze:local": "./scripts/analyze.sh",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --report-unused-disable-directives",
+    "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet"
+  },
   "dependencies": {
     "@apollo/client": "3.7.13",
     "@emotion/react": "11.10.8",
@@ -28,72 +43,34 @@
     "@lhci/cli": "0.12.0",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
-    "@types/jest-axe": "3.5.5",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",
     "@types/react-simple-maps": "3.0.0",
     "@typescript-eslint/eslint-plugin": "5.59.1",
     "@typescript-eslint/parser": "5.59.1",
+    "@vitejs/plugin-react": "4.0.0",
+    "@vitest/coverage-c8": "0.30.1",
+    "c8": "7.13.0",
     "eslint": "8.39.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "17.0.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-eslint-comments": "3.2.0",
     "eslint-plugin-import": "2.27.5",
-    "eslint-plugin-jest": "27.2.1",
     "eslint-plugin-jsx-a11y": "6.7.1",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-react-hooks": "4.6.0",
+    "eslint-plugin-react-refresh": "0.3.4",
     "graphql": "16.6.0",
     "gts": "4.0.1",
-    "jest-axe": "7.0.1",
+    "jsdom": "21.1.2",
     "pa11y-ci": "3.0.1",
     "prettier": "2.8.8",
-    "react-scripts": "5.0.1",
     "source-map-explorer": "2.5.3",
-    "typescript": "4.9.5"
-  },
-  "scripts": {
-    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
-    "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
-    "test": "DEBUG_PRINT_LIMIT=100000 react-scripts test",
-    "test:coverage": "react-scripts test --coverage",
-    "test:debug": "DEBUG_PRINT_LIMIT=100000 react-scripts test --coverage",
-    "test:all": "react-scripts test --coverage --watchAll",
-    "deploy": "./scripts/deploy.sh",
-    "analyze": "source-map-explorer 'docs/static/js/*.js'",
-    "analyze:local": "./scripts/analyze.sh",
-    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
-    "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
-  "jest": {
-    "collectCoverageFrom": [
-      "<rootDir>/src/**/*.{ts,tsx}"
-    ],
-    "coveragePathIgnorePatterns": [
-      "<rootDir>/src/service-worker.ts",
-      "<rootDir>/src/serviceWorkerRegistration.ts",
-      "<rootDir>/node_modules"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 90,
-        "branches": 85,
-        "lines": 90,
-        "functions": 90
-      }
-    },
-    "coverageReporters": [
-      "json",
-      "text"
-    ]
+    "typescript": "5.0.2",
+    "vite": "4.3.2",
+    "vitest": "0.30.1"
   },
   "keywords": [
     "Ken",

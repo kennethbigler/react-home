@@ -1,10 +1,10 @@
-import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
 import Header from "../Header";
 
 describe("resume | git-tools | Header", () => {
   it("renders as expected", () => {
-    const handleIdChange = jest.fn();
+    const handleIdChange = vi.fn();
     render(
       <Header gitTheme="red" onIdChange={handleIdChange} storyID="KEN-1234" />
     );
@@ -17,7 +17,7 @@ describe("resume | git-tools | Header", () => {
   });
 
   it("handles id changes", () => {
-    const handleIdChange = jest.fn();
+    const handleIdChange = vi.fn();
     render(<Header gitTheme="red" onIdChange={handleIdChange} />);
 
     fireEvent.change(
@@ -29,7 +29,7 @@ describe("resume | git-tools | Header", () => {
   });
 
   it("displays an error when ticket of the wrong format is provided", () => {
-    const handleIdChange = jest.fn();
+    const handleIdChange = vi.fn();
     render(
       <Header gitTheme="red" onIdChange={handleIdChange} storyID="1234" />
     );

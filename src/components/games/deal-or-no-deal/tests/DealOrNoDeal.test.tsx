@@ -1,16 +1,8 @@
-import * as React from "react";
 import { screen, fireEvent, waitFor } from "@testing-library/react";
-import { axe } from "jest-axe";
 import render from "../../../../recoil-test-render";
 import DealOrNoDeal from "../DealOrNoDeal";
 
 describe("games | deal-or-no-deal | DealOrNoDeal", () => {
-  it("passes axe", async () => {
-    const { container } = render(<DealOrNoDeal />);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
   it("renders as expected", () => {
     render(<DealOrNoDeal />);
 

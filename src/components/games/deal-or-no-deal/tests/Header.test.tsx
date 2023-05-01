@@ -1,5 +1,5 @@
-import * as React from "react";
 import { render, screen } from "@testing-library/react";
+import { vi } from "vitest";
 import Header from "../Header";
 
 const ken = {
@@ -19,7 +19,7 @@ const ken = {
 describe("games | deal-or-no-deal | Header", () => {
   it("renders as expected", () => {
     render(
-      <Header casesToOpen={1} isOver={0} newGame={jest.fn()} player={ken} />
+      <Header casesToOpen={1} isOver={0} newGame={vi.fn()} player={ken} />
     );
 
     expect(screen.getByText("Your Case: ?")).toBeInTheDocument();
@@ -29,7 +29,7 @@ describe("games | deal-or-no-deal | Header", () => {
 
   it("changes appearance when over", () => {
     render(
-      <Header casesToOpen={1} isOver={1} newGame={jest.fn()} player={ken} />
+      <Header casesToOpen={1} isOver={1} newGame={vi.fn()} player={ken} />
     );
     // removed
     expect(screen.queryByText("Your Case: ?")).toBeNull();
@@ -47,7 +47,7 @@ describe("games | deal-or-no-deal | Header", () => {
       <Header
         casesToOpen={1}
         isOver={1}
-        newGame={jest.fn()}
+        newGame={vi.fn()}
         player={ken}
         playerChoice={{ on: true, loc: 1, val: 1000 }}
       />

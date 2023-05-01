@@ -1,11 +1,11 @@
-import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import { screen, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
 import render from "../../../../recoil-test-render";
 import BranchName from "../BranchName";
 
 describe("resume | git-tools | BranchName", () => {
-  const getSelectOptions = jest.fn().mockReturnValue([
+  const getSelectOptions = vi.fn().mockReturnValue([
     <MenuItem key="1" value="chores">
       chores
     </MenuItem>,

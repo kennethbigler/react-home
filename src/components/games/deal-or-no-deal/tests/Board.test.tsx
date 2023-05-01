@@ -1,5 +1,5 @@
-import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
 import Board from "../Board";
 
 const board = [
@@ -9,7 +9,7 @@ const board = [
 
 describe("games | deal-or-no-deal | Board", () => {
   it("calls onClick when a case is clicked", () => {
-    const handleClick = jest.fn();
+    const handleClick = vi.fn();
     render(
       <Board
         board={board}

@@ -19,7 +19,7 @@ const Dropdown = (props: DropdownProps) => {
   const anchorRef = React.useRef<HTMLButtonElement>(null);
 
   const handleMenuItemClick = (
-    event: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    _event: React.MouseEvent<HTMLLIElement, MouseEvent>,
     index: number
   ) => {
     onSelect(index);

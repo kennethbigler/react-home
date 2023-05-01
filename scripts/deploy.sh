@@ -4,8 +4,8 @@ source ./scripts/common.sh
 function deployCode() {
   echo "Building react-home"
   rm -rf ./docs/static &&
-  mv ./build/* ./docs &&
-  rm -rf ./build || throwError "deploy code"
+  mv ./dist/* ./docs &&
+  rm -rf ./dist || throwError "deploy code"
   echo $LINE
   echo "Success"
 }

@@ -7,9 +7,9 @@ buildApp
 echo $LINE
 echo "Running source-map-explorer..."
 echo $LINE
-npx source-map-explorer "build/static/js/*.js" || throwError "source-map"
+npx source-map-explorer "dist/static/js/*.js" || throwError "source-map"
 echo $LINE
 echo "Cleaning up files..."
-rm -rf build || throwError "cleanup"
+rm -rf dist || throwError "cleanup"
 echo $LINE
 echo "Complete! Check your browser."

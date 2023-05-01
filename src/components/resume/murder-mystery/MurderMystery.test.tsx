@@ -1,15 +1,7 @@
-import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { axe } from "jest-axe";
 import MurderMystery from "./MurderMystery";
 
 describe("resume | murder-mystery", () => {
-  it("passes axe", async () => {
-    const { container } = render(<MurderMystery />);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
   it("renders as expected", () => {
     render(<MurderMystery />);
 

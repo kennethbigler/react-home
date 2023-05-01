@@ -5,15 +5,16 @@
     "import",
     "jsx-a11y",
     "react",
-    "react-hooks"
+    "react-hooks",
+    "react-refresh"
   ],
   "extends": [
     "airbnb",
+    "plugin:react-hooks/recommended",
     "eslint:recommended",
     "plugin:eslint-comments/recommended",
     "plugin:import/warnings",
     "plugin:import/errors",
-    "plugin:jest/recommended",
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
     "./node_modules/gts",
@@ -25,7 +26,7 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 9,
+    "ecmaVersion": "latest",
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true,
@@ -36,8 +37,7 @@
     "es6": true,
     "browser": true,
     "node": true,
-    "jquery": true,
-    "jest": true
+    "jquery": true
   },
   "rules": {
     "@typescript-eslint/await-thenable": "off",
@@ -50,6 +50,7 @@
     "react/function-component-definition": "off",
     "react/jsx-props-no-spreading": "off",
     "react/no-array-index-key": "off",
+    "react/react-in-jsx-scope": "off",
     "react/require-default-props": "off",
     "default-param-last": "off",
 
@@ -58,6 +59,7 @@
     "no-console": "warn",
     "react/no-did-mount-set-state": "warn",
     "react-hooks/exhaustive-deps": "warn",
+    "react-refresh/only-export-components": "warn",
 
     "import/no-extraneous-dependencies": [
       "error",

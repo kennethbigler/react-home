@@ -1,11 +1,10 @@
-import * as React from "react";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
-import { axe } from "jest-axe";
+import { vi } from "vitest";
 import render from "../../../../recoil-test-render";
 import Poker from "../Poker";
 import Deck from "../../../../apis/Deck";
 
-const deck = jest.spyOn(Deck, "deal");
+const deck = vi.spyOn(Deck, "deal");
 
 const card = (name: string, suit: string) => {
   let weight = 0;
@@ -29,12 +28,6 @@ const card = (name: string, suit: string) => {
 };
 
 describe("games | poker | Poker", () => {
-  it("passes axe", async () => {
-    const { container } = render(<Poker />);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
   it("renders as expected & plays a game", async () => {
     deck
       .mockReset()

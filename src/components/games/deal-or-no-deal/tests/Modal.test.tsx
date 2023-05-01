@@ -1,5 +1,5 @@
-import * as React from "react";
 import { render, screen } from "@testing-library/react";
+import { vi } from "vitest";
 import Modal from "../Modal";
 
 const board = [
@@ -11,12 +11,12 @@ describe("games | deal-or-no-deal | Modal", () => {
   it("renders as expected", () => {
     render(
       <Modal
-        deal={jest.fn()}
-        noDeal={jest.fn()}
+        deal={vi.fn()}
+        noDeal={vi.fn()}
         numCases={1}
         offer={10000}
         open
-        swap={jest.fn()}
+        swap={vi.fn()}
         board={board}
       />
     );

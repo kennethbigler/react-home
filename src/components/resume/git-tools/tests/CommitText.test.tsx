@@ -1,6 +1,6 @@
-import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import { screen, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
 import render from "../../../../recoil-test-render";
 import CommitText from "../CommitText";
 
@@ -8,7 +8,7 @@ describe("resume | git-tools | CommitText", () => {
   let handleSelectOptions;
 
   beforeEach(() => {
-    handleSelectOptions = jest.fn().mockReturnValue([
+    handleSelectOptions = vi.fn().mockReturnValue([
       <MenuItem key="1" value="feat">
         feat
       </MenuItem>,

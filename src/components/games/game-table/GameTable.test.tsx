@@ -1,5 +1,5 @@
-import * as React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+import { vi } from "vitest";
 import GameTable from "./GameTable";
 
 const ken = {
@@ -16,7 +16,7 @@ describe("games | game-table | GameTable", () => {
   it("renders as expected with minimal props", () => {
     render(
       <GameTable
-        onClick={jest.fn()}
+        onClick={vi.fn()}
         players={[ken]}
         turn={{ player: 0, hand: 0 }}
       />
@@ -37,7 +37,7 @@ describe("games | game-table | GameTable", () => {
     render(
       <GameTable
         hideHands
-        onClick={jest.fn()}
+        onClick={vi.fn()}
         players={[ken]}
         turn={{ player: 0, hand: 0 }}
       />
@@ -58,7 +58,7 @@ describe("games | game-table | GameTable", () => {
     };
     render(
       <GameTable
-        onClick={jest.fn()}
+        onClick={vi.fn()}
         players={[multiHandKen]}
         turn={{ player: 0, hand: 0 }}
       />
@@ -79,7 +79,7 @@ describe("games | game-table | GameTable", () => {
 
     render(
       <GameTable
-        onClick={jest.fn()}
+        onClick={vi.fn()}
         players={[bustKen]}
         turn={{ player: 0, hand: 0 }}
       />
@@ -90,11 +90,11 @@ describe("games | game-table | GameTable", () => {
   });
 
   it("calls cardClickHandler when card is clicked", () => {
-    const handleCardClick = jest.fn();
+    const handleCardClick = vi.fn();
     render(
       <GameTable
         cardClickHandler={handleCardClick}
-        onClick={jest.fn()}
+        onClick={vi.fn()}
         players={[ken]}
         turn={{ player: 0, hand: 0 }}
       />
@@ -109,7 +109,7 @@ describe("games | game-table | GameTable", () => {
     const winningKen = { ...ken, status: "win" };
     render(
       <GameTable
-        onClick={jest.fn()}
+        onClick={vi.fn()}
         players={[winningKen]}
         turn={{ player: 0, hand: 0 }}
       />
@@ -124,7 +124,7 @@ describe("games | game-table | GameTable", () => {
     const tiedKen = { ...ken, status: "draw" };
     render(
       <GameTable
-        onClick={jest.fn()}
+        onClick={vi.fn()}
         players={[tiedKen]}
         turn={{ player: 0, hand: 0 }}
       />
@@ -139,7 +139,7 @@ describe("games | game-table | GameTable", () => {
     const losingKen = { ...ken, status: "lose" };
     render(
       <GameTable
-        onClick={jest.fn()}
+        onClick={vi.fn()}
         players={[losingKen]}
         turn={{ player: 0, hand: 0 }}
       />
@@ -151,7 +151,7 @@ describe("games | game-table | GameTable", () => {
   });
 
   it("renders and clicks gameFunctions", () => {
-    const handleClick = jest.fn();
+    const handleClick = vi.fn();
     render(
       <GameTable
         gameFunctions={["hello", "world"]}
