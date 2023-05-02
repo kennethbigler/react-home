@@ -121,4 +121,58 @@ describe("games | are-you-the-one | AreYouTheOne", () => {
     fireEvent.click(screen.getByText("Match"));
     expect(screen.getByText("Tyranny-Tyler - 0%")).toBeInTheDocument();
   });
+
+  it("can change couples to match or no match via truth booth", async () => {
+    render(<AreYouTheOne />);
+
+    // Set Season to 5 (so I don't need to update tests)
+    expect(screen.getByLabelText("select season")).toBeInTheDocument();
+    expect(screen.getByText("Season 9")).toBeInTheDocument();
+    expect(screen.queryByText("Season 5")).toBeNull();
+    // open menu
+    fireEvent.click(screen.getByLabelText("select season"));
+    expect(screen.getAllByText("Season 9")).toHaveLength(2);
+    expect(screen.getByText("Season 5")).toBeInTheDocument();
+    // select item
+    fireEvent.click(screen.getByText("Season 5"));
+    await waitFor(() => expect(screen.queryByText("Season 9")).toBeNull());
+    expect(screen.getByText("Season 5")).toBeInTheDocument();
+
+    // Set matchup to Truth Booth
+    expect(screen.getByLabelText("select matchup")).toBeInTheDocument();
+    expect(screen.getByText("Matchup 1")).toBeInTheDocument();
+    expect(screen.queryByText("Truth Booth")).toBeNull();
+    // open menu
+    fireEvent.click(screen.getByLabelText("select matchup"));
+    expect(screen.getByText("Truth Booth")).toBeInTheDocument();
+    // select item
+    fireEvent.click(screen.getByText("Truth Booth"));
+    await waitFor(() => expect(screen.queryByText("Matchup 1")).toBeNull());
+    expect(screen.getByText("Truth Booth")).toBeInTheDocument();
+
+    const AAButton = screen.getByText("A-A");
+    const ADButton = screen.getByText("A-D");
+    const CDButton = screen.getAllByText("C-D")[0];
+    const CEButton = screen.getAllByText("C-E")[1];
+
+    // test match
+    expect(AAButton).toHaveClass("MuiButton-outlined");
+    fireEvent.click(AAButton);
+    fireEvent.click(screen.getByText("Match"));
+    expect(AAButton).toHaveClass("MuiButton-containedSuccess");
+    // verify other pairs for these people got no match
+    expect(ADButton).toHaveClass("MuiButton-containedError");
+
+    // test no match
+    expect(CDButton).toHaveClass("MuiButton-outlined");
+    fireEvent.click(CDButton);
+    fireEvent.click(screen.getByText("No Match"));
+    expect(CDButton).toHaveClass("MuiButton-containedError");
+
+    // test cancel
+    expect(CEButton).toHaveClass("MuiButton-outlined");
+    fireEvent.click(CEButton);
+    fireEvent.click(screen.getByText("Cancel"));
+    expect(CEButton).toHaveClass("MuiButton-outlined");
+  });
 });
