@@ -60,8 +60,15 @@ const AreYouTheOne = () => {
         newNoMatches[li][gi] = true;
       }
     });
+    const newRoundPairing = { ...roundPairings[roundNumber], score: 0 };
+    const newRoundPairings = [...roundPairings];
+    newRoundPairings[roundNumber] = newRoundPairing;
     // update state
-    setState({ matches, noMatch: newNoMatches, roundPairings });
+    setState({
+      matches,
+      noMatch: newNoMatches,
+      roundPairings: newRoundPairings,
+    });
   };
 
   const handleUpdatePairs = (ri: number, li: number, gi: number) => {

@@ -46,7 +46,10 @@ const Controls = (props: ControlsProps) => {
     onSelect(index);
   };
 
-  const handleBlackout = () => onBlackout(roundPairings[roundNumber].pairs);
+  const handleBlackout = () => {
+    onBlackout(roundPairings[roundNumber].pairs);
+    setScore(0);
+  };
 
   const handleTextFieldChange = (
     event: React.ChangeEvent<HTMLInputElement>
