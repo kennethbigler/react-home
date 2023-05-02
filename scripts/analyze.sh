@@ -7,7 +7,7 @@ buildApp
 echo $LINE
 echo "Running source-map-explorer..."
 echo $LINE
-npx source-map-explorer "dist/static/js/*.js" || throwError "source-map"
+npx source-map-explorer "dist/assets/*.js" || throwError "source-map"
 echo $LINE
 echo "Cleaning up files..."
 rm -rf dist || throwError "cleanup"
