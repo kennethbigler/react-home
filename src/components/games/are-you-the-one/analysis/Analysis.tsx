@@ -54,10 +54,12 @@ const Analysis = (props: AnalysisProps) => {
       </Stack>
       <Stack spacing={1} direction="row" flexWrap="wrap">
         {roundPairings.map(({ pairs, score }, ri) => {
-          const equation = pairs.map((gi, li) => {
+          const equation: React.ReactNode[] = [];
+          let numNoMatches = 0;
+          pairs.forEach((gi, li) => {
             // if cleared pairing
-            if (li < 0 || gi < 0) {
-              return null;
+            if (li < 0 || gi < 0 || li === undefined || gi === undefined) {
+              return;
             }
 
             const isRepeat = hist[li][gi].rounds.length > 1;
@@ -66,7 +68,7 @@ const Analysis = (props: AnalysisProps) => {
             if (!showAll) {
               // hide matches and noMatches
               if (noMatch[li][gi] || matches[li] === gi) {
-                return null;
+                return;
               }
             } else {
               // no match chip
@@ -83,14 +85,26 @@ const Analysis = (props: AnalysisProps) => {
               isRepeat ? ` ${hist[li][gi].rounds.length}` : ""
             } - ${hist[li][gi].odds}%`;
 
-            // create equation chips
-            return (
+            const chip = (
               <Chip
                 key={`eq-r${ri}-l${li}-g${gi}`}
                 label={label}
                 color={color}
               />
             );
+
+            // create equation chips, green on top, red on bottom
+            switch (color) {
+              case "success":
+                equation.unshift(chip);
+                return;
+              case "error":
+                numNoMatches += 1;
+                equation.push(chip);
+                return;
+              default:
+                equation.splice(equation.length - numNoMatches, 0, chip);
+            }
           });
 
           // return each equation stack

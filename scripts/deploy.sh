@@ -3,7 +3,7 @@ source ./scripts/common.sh
 
 function deployCode() {
   echo "Building react-home"
-  rm -rf ./docs/static &&
+  rm -rf ./docs/assets &&
   mv ./dist/* ./docs &&
   rm -rf ./dist || throwError "deploy code"
   echo $LINE

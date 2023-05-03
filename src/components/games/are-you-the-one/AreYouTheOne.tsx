@@ -107,7 +107,7 @@ const AreYouTheOne = () => {
         roundPairings[ri].pairs[li] === undefined
       ) {
         const newRoundPairing = !newRoundPairings[ri]
-          ? { pairs: [], score: 0 }
+          ? { pairs: [], score: 1 }
           : { ...roundPairings[ri], pairs: [...roundPairings[ri].pairs] };
         newRoundPairing.pairs[li] = gi;
         newRoundPairings[ri] = newRoundPairing;
