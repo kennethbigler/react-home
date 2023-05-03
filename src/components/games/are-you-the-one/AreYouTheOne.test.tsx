@@ -11,7 +11,8 @@ describe("games | are-you-the-one | AreYouTheOne", () => {
     // Top Bar
     expect(screen.getByText("Matchup 1")).toBeInTheDocument();
     expect(screen.getByText("Blackout")).toBeInTheDocument();
-    expect(screen.getAllByText("Score")).toHaveLength(2);
+    expect(screen.getByText("+")).toBeInTheDocument();
+    expect(screen.getAllByText("-")).toHaveLength(2);
     // Analysis
     expect(screen.getByText("Analysis")).toBeInTheDocument();
     expect(screen.getByText("Show All Couples")).toBeInTheDocument();
@@ -98,9 +99,10 @@ describe("games | are-you-the-one | AreYouTheOne", () => {
     // verify equations were made
     expect(screen.getByText("Tyranny-Tyler - 0%")).toBeInTheDocument();
     // verify score updating works
-    fireEvent.change(screen.getByDisplayValue("-1"), {
-      target: { value: "1" },
-    });
+    fireEvent.click(screen.getByText("+"));
+    fireEvent.click(screen.getByText("+"));
+    fireEvent.click(screen.getByText("+"));
+    fireEvent.click(screen.getAllByText("-")[0]);
     expect(screen.getByText("Tyranny-Tyler - 9%")).toBeInTheDocument();
     // open menu
     fireEvent.click(screen.getByLabelText("select matchup"));

@@ -56,6 +56,7 @@ const Analysis = (props: AnalysisProps) => {
         {roundPairings.map(({ pairs, score }, ri) => {
           const equation: React.ReactNode[] = [];
           let numNoMatches = 0;
+          let numMatchAndRepeat = 0;
           pairs.forEach((gi, li) => {
             // if cleared pairing
             if (li < 0 || gi < 0 || li === undefined || gi === undefined) {
@@ -96,11 +97,16 @@ const Analysis = (props: AnalysisProps) => {
             // create equation chips, green on top, red on bottom
             switch (color) {
               case "success":
+                numMatchAndRepeat += 1;
                 equation.unshift(chip);
                 return;
               case "error":
                 numNoMatches += 1;
                 equation.push(chip);
+                return;
+              case "primary":
+                equation.splice(numMatchAndRepeat, 0, chip);
+                numMatchAndRepeat += 1;
                 return;
               default:
                 equation.splice(equation.length - numNoMatches, 0, chip);

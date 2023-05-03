@@ -1,6 +1,6 @@
 import * as React from "react";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import { useRecoilState } from "recoil";
 import {
   aytoSeasonSelector,
@@ -51,11 +51,13 @@ const Controls = (props: ControlsProps) => {
     setScore(0);
   };
 
-  const handleTextFieldChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setScore(parseInt(event.target.value, 10) || 0);
-    updateScore(parseInt(event.target.value, 10));
+  const incrScore = () => {
+    setScore(score + 1);
+    updateScore(score + 1);
+  };
+  const decrScore = () => {
+    setScore(score - 1);
+    updateScore(score - 1);
   };
 
   return (
@@ -84,14 +86,17 @@ const Controls = (props: ControlsProps) => {
           <Button variant="outlined" color="secondary" onClick={handleBlackout}>
             Blackout
           </Button>
-          <TextField
-            id="score-input"
-            label="Score"
-            variant="outlined"
-            type="number"
-            value={score}
-            onChange={handleTextFieldChange}
-          />
+          <div>
+            <p style={{ display: "inline", marginRight: 15 }}>Score: {score}</p>
+            <ButtonGroup variant="contained" aria-label="modify matchup score">
+              <Button aria-label="decrement score" onClick={decrScore}>
+                -
+              </Button>
+              <Button aria-label="increment score" onClick={incrScore}>
+                +
+              </Button>
+            </ButtonGroup>
+          </div>
         </>
       )}
     </div>
