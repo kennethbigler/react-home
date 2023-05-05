@@ -22,7 +22,7 @@ interface BottomTableProps {
     i: number
   ) => React.ReactNode;
   showScoreButtons: boolean;
-  style: React.CSSProperties;
+  sx: React.CSSProperties;
   top: TopGameScore[];
   values: Dice[];
 }
@@ -79,7 +79,7 @@ const BottomTable: React.FC<BottomTableProps> = (props: BottomTableProps) => {
     [getScoreButton, showScoreButtons, top, values]
   );
 
-  const { bottom, style } = props;
+  const { bottom, sx } = props;
   const generateBottomTable = React.useCallback((): React.ReactNode => {
     const hasYahtzee = bottom[5].score > 0;
     return bottom.map((gameScore, i) => {
@@ -91,24 +91,20 @@ const BottomTable: React.FC<BottomTableProps> = (props: BottomTableProps) => {
         <TableRow key={name}>
           <TableCell>{name}</TableCell>
           <TableCell>{hint}</TableCell>
-          <TableCell style={style}>
+          <TableCell sx={sx}>
             {getBottomTableButtons(score, parsedPoints, hasYahtzee, i)}
           </TableCell>
         </TableRow>
       );
     });
-  }, [bottom, getBottomTableButtons, style, values]);
+  }, [bottom, getBottomTableButtons, sx, values]);
 
   const { finalTopSum, bottomSum } = props;
 
   return (
     <>
       {generateBottomTable()}
-      <BottomScores
-        bottomSum={bottomSum}
-        finalTopSum={finalTopSum}
-        style={style}
-      />
+      <BottomScores bottomSum={bottomSum} finalTopSum={finalTopSum} sx={sx} />
     </>
   );
 };

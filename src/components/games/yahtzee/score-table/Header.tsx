@@ -4,15 +4,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 interface HeaderProps {
-  style: React.CSSProperties;
+  sx: React.CSSProperties;
 }
 
 const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => (
   <TableHead>
-    <TableRow>
+    <TableRow sx={{ borderBottom: 2 }}>
       <TableCell>Minimum Required for Bonus</TableCell>
       <TableCell>How to Score</TableCell>
-      <TableCell style={props.style}>Game Score</TableCell>
+      <TableCell sx={props.sx}>Game Score</TableCell>
     </TableRow>
   </TableHead>
 ));

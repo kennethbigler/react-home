@@ -5,23 +5,23 @@ import TableRow from "@mui/material/TableRow";
 interface BottomScoresProps {
   bottomSum: number;
   finalTopSum: number;
-  style: React.CSSProperties;
+  sx: React.CSSProperties;
 }
 
 const BottomScores: React.FC<BottomScoresProps> = React.memo(
-  ({ finalTopSum, bottomSum, style }: BottomScoresProps) => (
+  ({ finalTopSum, bottomSum, sx }: BottomScoresProps) => (
     <>
-      <TableRow>
+      <TableRow sx={{ borderTop: 2 }}>
         <TableCell colSpan={2}>Lower Half Total</TableCell>
-        <TableCell style={style}>{bottomSum}</TableCell>
+        <TableCell sx={sx}>{bottomSum}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell colSpan={2}>Upper Half Total</TableCell>
-        <TableCell style={style}>{finalTopSum}</TableCell>
+        <TableCell sx={sx}>{finalTopSum}</TableCell>
       </TableRow>
-      <TableRow>
+      <TableRow sx={{ borderBottom: 2 }}>
         <TableCell colSpan={2}>Grand Total</TableCell>
-        <TableCell style={style}>{finalTopSum + bottomSum}</TableCell>
+        <TableCell sx={sx}>{finalTopSum + bottomSum}</TableCell>
       </TableRow>
     </>
   )

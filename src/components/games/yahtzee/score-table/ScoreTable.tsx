@@ -72,13 +72,13 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
 
   return (
     <Table size="small">
-      <Header style={centerStyle} />
+      <Header sx={centerStyle} />
       <TableBody>
         <TopTable
           finalTopSum={finalTopSum}
           getScoreButton={getScoreButton}
           showScoreButtons={showScoreButtons}
-          style={centerStyle}
+          sx={centerStyle}
           top={top}
           values={values}
           bottom={bottom}
@@ -88,7 +88,7 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
           finalTopSum={finalTopSum}
           getScoreButton={getScoreButton}
           showScoreButtons={showScoreButtons}
-          style={centerStyle}
+          sx={centerStyle}
           top={top}
           values={values}
           bottom={bottom}
