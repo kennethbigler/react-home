@@ -352,7 +352,7 @@ export const cruises: Cruise[] = [
     departure: dateObj("2024-03"),
     nights: 13,
     name: "Sydney to Honolulu",
-    ship: ships[0],
+    ship: ships[1],
     line: lines[0],
     concierge: true,
   },
