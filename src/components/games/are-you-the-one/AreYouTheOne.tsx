@@ -98,17 +98,23 @@ const AreYouTheOne = () => {
       newNoMatches[i][gi] = i !== li;
     }
 
+    const numMatches = newMatches.reduce(
+      (acc, matchStatus) => (matchStatus >= 0 ? acc + 1 : acc),
+      0
+    );
+
     // update round pairings
     const newRoundPairings = [...roundPairings];
     for (let ri = 0; ri < options.length - 2; ri += 1) {
-      if (
-        !roundPairings[ri] ||
-        roundPairings[ri].pairs[li] < 0 ||
-        roundPairings[ri].pairs[li] === undefined
-      ) {
-        const newRoundPairing = !newRoundPairings[ri]
-          ? { pairs: [], score: 1 }
-          : { ...roundPairings[ri], pairs: [...roundPairings[ri].pairs] };
+      const { pairs, score } = roundPairings[ri] || {
+        pairs: [],
+        score: numMatches,
+      };
+      if (!roundPairings[ri] || pairs[li] < 0 || pairs[li] === undefined) {
+        const newRoundPairing = {
+          pairs: [...pairs],
+          score: Math.max(score, numMatches),
+        };
         newRoundPairing.pairs[li] = gi;
         newRoundPairings[ri] = newRoundPairing;
       }
