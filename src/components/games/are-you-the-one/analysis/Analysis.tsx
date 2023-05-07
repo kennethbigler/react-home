@@ -94,7 +94,7 @@ const Analysis = (props: AnalysisProps) => {
               />
             );
 
-            // create equation chips, green on top, red on bottom
+            // create equation chips: matches > repeats > first time > no match
             switch (color) {
               case "success":
                 numMatchAndRepeat += 1;

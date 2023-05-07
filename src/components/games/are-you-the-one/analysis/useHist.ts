@@ -64,8 +64,8 @@ const useHist = (
       if (noMatch[li][gi]) {
         return;
       }
-      // 100% odds for match
-      if (matches[li] === gi) {
+      // 100% odds for match or max score
+      if (matches[li] === gi || score === len) {
         histObj.odds = 100;
         return;
       }

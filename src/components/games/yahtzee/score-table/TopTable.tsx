@@ -15,7 +15,7 @@ interface TopTableProps {
     i: number
   ) => React.ReactNode;
   showScoreButtons: boolean;
-  style: React.CSSProperties;
+  sx: React.CSSProperties;
   top: TopGameScore[];
   bottom: BottomGameScore[];
   topSum: number;
@@ -29,7 +29,7 @@ const TopTable: React.FC<TopTableProps> = (props: TopTableProps) => {
     showScoreButtons,
     getScoreButton,
     top,
-    style,
+    sx,
     topSum,
     finalTopSum,
   } = props;
@@ -74,13 +74,13 @@ const TopTable: React.FC<TopTableProps> = (props: TopTableProps) => {
           <TableRow key={name}>
             <TableCell>{`${name}: ${d},${d},${d} = ${d * 3}`}</TableCell>
             <TableCell>{`Add Only ${name}`}</TableCell>
-            <TableCell style={style}>
+            <TableCell sx={sx}>
               {getTopTableButtons(score, showButton, sum, i)}
             </TableCell>
           </TableRow>
         );
       })}
-      <TopScores topSum={topSum} finalTopSum={finalTopSum} style={style} />
+      <TopScores topSum={topSum} finalTopSum={finalTopSum} sx={sx} />
     </>
   );
 };
