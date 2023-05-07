@@ -204,7 +204,7 @@ export const outsiders: Role[] = [
   {
     name: "Vampire",
     description:
-      "Each night, choose a player. That player is eliminated when a player gets their 2nd accusation the next day.",
+      "Each night, choose a player. That player is eliminated when a player gets accused and 2nd-ed the next day.",
     value: -7,
     count: 8,
   },

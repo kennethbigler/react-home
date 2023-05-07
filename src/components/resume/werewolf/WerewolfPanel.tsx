@@ -4,6 +4,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Typography from "@mui/material/Typography";
+import Rating from "@mui/material/Rating";
 
 interface WerewolfPanelProps {
   expanded?: string;
@@ -11,6 +12,7 @@ interface WerewolfPanelProps {
   handleChange: (
     panel: string
   ) => (_event: React.SyntheticEvent<Element, Event>, exp?: boolean) => void;
+  handleStar: (value: number, count: number, role: string) => void;
   name: string;
   description: string;
   value: number;
@@ -20,9 +22,11 @@ interface WerewolfPanelProps {
 const containerStyles: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
-  width: "95%",
+  alignItems: "center",
+  width: "100%",
+  marginLeft: 10,
+  marginRight: 10,
 };
-const itemStyles: React.CSSProperties = { display: "flex" };
 
 const WerewolfPanel: React.FC<WerewolfPanelProps> = React.memo(
   (props: WerewolfPanelProps) => {
@@ -30,6 +34,7 @@ const WerewolfPanel: React.FC<WerewolfPanelProps> = React.memo(
       expanded,
       expandedKey,
       handleChange,
+      handleStar,
       name,
       description,
       value,
@@ -42,12 +47,19 @@ const WerewolfPanel: React.FC<WerewolfPanelProps> = React.memo(
         onChange={handleChange(expandedKey)}
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Rating
+            max={count || 1}
+            sx={{
+              flexWrap: "wrap",
+              minWidth: Math.min(24 * (count || 1), 24 * 8),
+            }}
+            onChange={(_e, numStars) =>
+              handleStar(numStars ? value : -value, numStars || 0, name)
+            }
+          />
           <div style={containerStyles}>
-            <Typography style={itemStyles}>{name}</Typography>
-            {count && (
-              <Typography style={itemStyles}>Count: {count}</Typography>
-            )}
-            <Typography style={itemStyles}>Cost: {value}</Typography>
+            <Typography>{name}</Typography>
+            <Typography>Cost: {value}</Typography>
           </div>
         </AccordionSummary>
         <AccordionDetails>{description}</AccordionDetails>
