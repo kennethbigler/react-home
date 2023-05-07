@@ -51,7 +51,7 @@ const WerewolfPanel: React.FC<WerewolfPanelProps> = React.memo(
             max={count || 1}
             sx={{
               flexWrap: "wrap",
-              minWidth: Math.min(24 * (count || 1), 24 * 8),
+              minWidth: Math.min(24 * (count || 1), 24 * 7),
             }}
             onChange={(_e, numStars) =>
               handleStar(numStars ? value : -value, numStars || 0, name)
