@@ -1,9 +1,9 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Info from "./Info";
-import Skills from "./Skills";
 import Education from "./Education";
-import TimelineCard from "../../common/timeline-card";
+import Job from "../work/Job";
+import workExp from "../../../constants/work";
 
 /* Summary  ->  Info
  *         |->  Skills
@@ -14,8 +14,7 @@ const Summary = React.memo(() => (
       Summary
     </Typography>
     <Info />
-    <TimelineCard />
-    <Skills />
+    <Job job={workExp[0]} />
     <Education />
   </>
 ));

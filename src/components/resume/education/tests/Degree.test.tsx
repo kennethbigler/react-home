@@ -36,7 +36,6 @@ describe("resume | education | Degree", () => {
       major: "MajorName",
       minor: "MinorName",
       gpa: "3.97",
-      graduation: "GraduationName",
       subtitle: "SubTitle",
       color: "#0067C5",
     };
@@ -57,28 +56,19 @@ describe("resume | education | Degree", () => {
       "background-color: rgb(0, 103, 197);"
     );
 
-    expect(
-      screen.queryByText(
-        `GPA: ${localDegree.gpa} - Graduation: ${localDegree.graduation}`
-      )
-    ).toBeNull();
+    expect(screen.queryByText(`GPA: ${localDegree.gpa}`)).toBeNull();
   });
 
   it("renders gpa as expected without subtitle props", () => {
     const localDegree = {
       ...degree,
       gpa: "3.97",
-      graduation: "GraduationName",
     };
 
     render(<Degree degree={localDegree} />);
 
     expect(screen.getByText(localDegree.degree)).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        `GPA: ${localDegree.gpa} - Graduation: ${localDegree.graduation}`
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText(`GPA: ${localDegree.gpa}`)).toBeInTheDocument();
     expect(screen.getByText("YearName")).toBeInTheDocument();
     expect(screen.getByText("QuarterName")).toBeInTheDocument();
     expect(screen.getByText("CLSS 101 -")).toBeInTheDocument();

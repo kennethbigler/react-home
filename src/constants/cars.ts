@@ -337,7 +337,7 @@ const kensCars = [
   {
     color: teal[100],
     start: dateObj("2021-10"),
-    end: dateObj(),
+    end: dateObj("2023-03"),
     car: "Bronco",
     short: "Brnco",
     char: "B",
@@ -345,7 +345,7 @@ const kensCars = [
     title: bronco,
     inverted: true,
 
-    owned: "2021 - Present",
+    owned: "2021 - 2023",
     story: `In an attempt to get a more practical daily driver, as well as dip my toes into the off-roading community, I purchased a ${bronco}.`,
     src: bronco21,
     transmission: "Manual",
@@ -375,6 +375,28 @@ const kensCars = [
     MPG: 97,
     torque: parseFloat((7.7 * 1.143).toPrecision(3)),
     weight: 230,
+  },
+  {
+    color: yellow[500],
+    start: dateObj("2023-03"),
+    end: dateObj(),
+    car: "Corvette",
+    short: "Vette",
+    char: "C",
+    nickname: "Camilla",
+    title: corvette,
+    inverted: true,
+
+    owned: "2023 - Present",
+    story: `I borrowed the corvette again for a few months.`,
+    src: corvette18,
+    transmission: "Manual",
+
+    displacement: 6.2,
+    horsepower: 650,
+    MPG: 18,
+    torque: 650,
+    weight: 3524,
   },
 ];
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import TimelineCard from "../../common/timeline-card";
 import ExpandableCard from "../../common/expandable-card";
-import workExp, { VOLUNTEER, WORK } from "../../../constants/work";
+import workExp, { timelineExp, VOLUNTEER, WORK } from "../../../constants/work";
 import LoadingSpinner from "../../common/loading-spinner";
 import WorkCards from "./WorkCards";
 
@@ -17,7 +17,11 @@ const Work: React.FC = React.memo(() => (
     <Typography variant="h2" component="h1">
       Experience
     </Typography>
-    <TimelineCard data={workExp} title="Work Timeline" />
+    <TimelineCard
+      data={timelineExp}
+      title="Work Timeline"
+      yearMarkerFrequency={2}
+    />
     <ExpandableCard title="Programming Language Timeline (Professional Use)">
       <React.Suspense fallback={<LoadingSpinner />}>
         <TechBarChart />

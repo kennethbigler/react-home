@@ -3,7 +3,7 @@ import { vi } from "vitest";
 import Cars from "../Cars";
 import cars from "../../../../constants/cars";
 
-const demoCar = cars[1];
+const demoCar = cars[cars.length - 3];
 
 const { ResizeObserver } = window;
 
@@ -27,8 +27,8 @@ describe("resume | cars | Cars", () => {
     const { container } = render(<Cars />);
 
     expect(screen.getAllByText("Ken's Cars")).toHaveLength(2);
-    expect(screen.getAllByText(`(${demoCar.owned})`)).toHaveLength(3);
-    expect(screen.getByText(demoCar.title)).toBeInTheDocument();
+    expect(screen.getByText(`(${demoCar.owned})`)).toBeInTheDocument();
+    expect(screen.getAllByText(demoCar.title)).toHaveLength(2);
     expect(
       screen.getByText(`Horsepower: ${demoCar.horsepower}`)
     ).toBeInTheDocument();
