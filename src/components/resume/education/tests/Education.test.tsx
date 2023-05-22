@@ -17,9 +17,7 @@ describe("resume | education | Education", () => {
         "Santa Clara University - Master of Science in Computer Engineering with an Emphasis in Software Engineering"
       )
     ).toBeInTheDocument();
-    expect(
-      screen.getByText("GPA: 3.7 - Graduation: December 2016")
-    ).toBeInTheDocument();
+    expect(screen.getAllByText("GPA: 3.7")).toHaveLength(2);
     expect(screen.getByText("Year 2")).toBeInTheDocument();
     expect(screen.getByText("Year 1 (Senior Year)")).toBeInTheDocument();
 
@@ -28,9 +26,7 @@ describe("resume | education | Education", () => {
         "Santa Clara University - Bachelor of Science in Computer Science & Engineering with a Minor in Mathematics"
       )
     ).toBeInTheDocument();
-    expect(
-      screen.getByText("GPA: 3.7 - Graduation: June 2015")
-    ).toBeInTheDocument();
+    expect(screen.getAllByText("GPA: 3.7")).toHaveLength(2);
     expect(screen.getAllByText("Senior Year")).toHaveLength(2);
     expect(screen.getAllByText("Junior Year")).toHaveLength(2);
     expect(screen.getAllByText("Sophomore Year")).toHaveLength(2);
@@ -54,9 +50,7 @@ describe("resume | education | Education", () => {
     expect(
       screen.getByText("The King's Academy - High School Diploma")
     ).toBeInTheDocument();
-    expect(
-      screen.getByText("GPA: 4.16 - Graduation: June 2011")
-    ).toBeInTheDocument();
+    expect(screen.getByText("GPA: 4.16")).toBeInTheDocument();
 
     expect(screen.queryByText("Undefined")).toBeNull();
     expect(screen.queryByText("undefined")).toBeNull();

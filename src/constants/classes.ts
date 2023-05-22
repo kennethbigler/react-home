@@ -28,7 +28,6 @@ export interface School {
   color?: string;
   degree: string;
   gpa?: number;
-  graduation?: string;
   honors?: string;
   location?: string;
   major?: string;
@@ -80,7 +79,7 @@ const schools: School[] = [
         year: "GigNow - Hacking the Gig Economy Now",
         quarters: [
           {
-            quarter: "GraphHoppers (2018)",
+            quarter: "GraphHoppers",
             classes: [
               {
                 catalog: "Date",
@@ -102,7 +101,7 @@ const schools: School[] = [
         year: "Accenture Hackathon Games",
         quarters: [
           {
-            quarter: "Feedbat (2014)",
+            quarter: "Feedbat",
             classes: [
               {
                 catalog: "Date",
@@ -129,15 +128,14 @@ const schools: School[] = [
     degree: "Master of Science",
     major: "Computer Engineering",
     minor: "with an Emphasis in Software Engineering",
-    graduation: "December 2016",
-    honors: "Dean’s List: Sept. 2012 – December 2016 (Graduation)",
+    honors: "Tau Beta Pi, Upsilon Pi Epsilon, Dean’s List",
     gpa: 3.7,
     years: [
       {
         year: "Year 2",
         quarters: [
           {
-            quarter: "Fall QTR (2015)",
+            quarter: "Fall QTR",
             start: getStart(QTR.FALL, 15),
             end: getEnd(QTR.FALL, 15),
             classes: [
@@ -145,7 +143,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Winter QTR (2016)",
+            quarter: "Winter QTR",
             start: getStart(QTR.WINTER, 16),
             end: getEnd(QTR.WINTER, 16),
             classes: [
@@ -164,7 +162,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Spring QTR (2016)",
+            quarter: "Spring QTR",
             start: getStart(QTR.SPRING, 16),
             end: getEnd(QTR.SPRING, 16),
             classes: [
@@ -174,7 +172,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Fall QTR (2016)",
+            quarter: "Fall QTR",
             start: getStart(QTR.FALL, 16),
             end: getEnd(QTR.FALL, 16),
             classes: [{ catalog: "COEN 317", name: "Distributed Computing" }],
@@ -185,7 +183,7 @@ const schools: School[] = [
         year: "Year 1 (Senior Year)",
         quarters: [
           {
-            quarter: "Fall QTR (2014)",
+            quarter: "Fall QTR",
             start: getStart(QTR.FALL, 14),
             end: getEnd(QTR.FALL, 14),
             classes: [
@@ -194,7 +192,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Winter QTR (2015)",
+            quarter: "Winter QTR",
             start: getStart(QTR.WINTER, 15),
             end: getEnd(QTR.WINTER, 15),
             classes: [
@@ -213,7 +211,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Spring QTR (2015)",
+            quarter: "Spring QTR",
             start: getStart(QTR.SPRING, 15),
             end: getEnd(QTR.SPRING, 15),
             classes: [
@@ -232,15 +230,14 @@ const schools: School[] = [
     degree: "Bachelor of Science",
     major: "Computer Science & Engineering",
     minor: "with a Minor in Mathematics",
-    graduation: "June 2015",
-    honors: "Dean’s List: Sept. 2012 – December 2016 (Graduation)",
+    honors: "Tau Beta Pi, Upsilon Pi Epsilon, Dean’s List",
     gpa: 3.7,
     years: [
       {
         year: "Senior Year",
         quarters: [
           {
-            quarter: "Fall QTR (2014)",
+            quarter: "Fall QTR",
             start: getStart(QTR.FALL, 14),
             end: getEnd(QTR.FALL, 14),
             classes: [
@@ -256,7 +253,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Winter QTR (2015)",
+            quarter: "Winter QTR",
             start: getStart(QTR.WINTER, 15),
             end: getEnd(QTR.WINTER, 15),
             classes: [
@@ -285,7 +282,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Spring QTR (2015)",
+            quarter: "Spring QTR",
             start: getStart(QTR.SPRING, 15),
             end: getEnd(QTR.SPRING, 15),
             classes: [
@@ -305,7 +302,7 @@ const schools: School[] = [
         year: "Junior Year",
         quarters: [
           {
-            quarter: "Fall QTR (2013)",
+            quarter: "Fall QTR",
             start: getStart(QTR.FALL, 13),
             end: getEnd(QTR.FALL, 13),
             classes: [
@@ -316,7 +313,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Winter QTR (2014)",
+            quarter: "Winter QTR",
             start: getStart(QTR.WINTER, 14),
             end: getEnd(QTR.WINTER, 14),
             classes: [
@@ -330,7 +327,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Spring QTR (2014)",
+            quarter: "Spring QTR",
             start: getStart(QTR.SPRING, 14),
             end: getEnd(QTR.SPRING, 14),
             classes: [
@@ -349,7 +346,7 @@ const schools: School[] = [
         year: "Sophomore Year",
         quarters: [
           {
-            quarter: "Fall QTR (2012)",
+            quarter: "Fall QTR",
             start: getStart(QTR.FALL, 12),
             end: getEnd(QTR.FALL, 12),
             classes: [
@@ -366,7 +363,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Winter QTR (2013)",
+            quarter: "Winter QTR",
             start: getStart(QTR.WINTER, 13),
             end: getEnd(QTR.WINTER, 13),
             classes: [
@@ -386,7 +383,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Spring QTR (2013)",
+            quarter: "Spring QTR",
             start: getStart(QTR.SPRING, 13),
             end: getEnd(QTR.SPRING, 13),
             classes: [
@@ -402,7 +399,7 @@ const schools: School[] = [
         year: "Freshman Year",
         quarters: [
           {
-            quarter: "Fall QTR (2011)",
+            quarter: "Fall QTR",
             start: getStart(QTR.FALL, 11),
             end: getEnd(QTR.FALL, 11),
             classes: [
@@ -417,7 +414,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Winter QTR (2012)",
+            quarter: "Winter QTR",
             start: getStart(QTR.WINTER, 12),
             end: getEnd(QTR.WINTER, 12),
             classes: [
@@ -434,7 +431,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Spring QTR (2012)",
+            quarter: "Spring QTR",
             start: getStart(QTR.SPRING, 12),
             end: getEnd(QTR.SPRING, 12),
             classes: [
@@ -481,10 +478,7 @@ const schools: School[] = [
           },
           {
             quarter: "Dean’s List",
-            classes: [
-              { name: "top 10% of GPAs" },
-              { name: "September 2012 – December 2016 (Graduation)" },
-            ],
+            classes: [{ name: "top 10% of GPAs" }],
           },
         ],
       },
@@ -494,33 +488,30 @@ const schools: School[] = [
           {
             quarter: "Salsa Clara",
             classes: [
-              { name: "Coach and Choreographer 2016 - 2017" },
-              { name: "September 2014 - May 2017" },
+              { name: "Member (3 years)" },
+              { name: "Coach and Choreographer (1 year)" },
             ],
           },
           {
             quarter: "Association for Computing Machinery",
             classes: [
-              { name: "Vice President 2012-2013" },
-              { name: "September 2011 - December 2016" },
+              { name: "Member (4 year)" },
+              { name: "Vice President (1 year)" },
             ],
           },
           {
             quarter: "Coders Club",
-            classes: [{ name: "April 2012 - June 2013" }],
+            classes: [{ name: "Member (1 year)" }],
           },
           {
-            quarter: "Solar Decathlon 2013 Competition",
-            classes: [
-              { name: "Control Systems Team" },
-              { name: "March 2012 - June 2013" },
-            ],
+            quarter: "Solar Decathlon",
+            classes: [{ name: "Control Systems Team" }],
           },
           {
             quarter: "Intramural Soccer and Volleyball",
             classes: [
-              { name: "Team Captain 2014 - 2016" },
-              { name: "January 2012 - June 2016" },
+              { name: "Member (4 years)" },
+              { name: "Team Captain (2 years)" },
             ],
           },
         ],
@@ -562,7 +553,7 @@ const schools: School[] = [
         year: "Undergrad High School Summer Visitor",
         quarters: [
           {
-            quarter: "Summer (2010)",
+            quarter: "Summer",
             classes: [
               {
                 catalog: "PHYS 50",
@@ -583,7 +574,6 @@ const schools: School[] = [
     color: indigo[500],
     location: "Sunnyvale, CA",
     degree: "High School Diploma",
-    graduation: "June 2011",
     honors:
       "National Honors Society, California Scholarship Federation, Principal’s Honor Roll",
     gpa: 4.16,
@@ -592,7 +582,7 @@ const schools: School[] = [
         year: "Senior Year",
         quarters: [
           {
-            quarter: "Fall Semester (2010)",
+            quarter: "Fall Semester",
             classes: [
               { name: "AP Calculus BC" },
               { name: "Anatomy & Physiology" },
@@ -604,7 +594,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Spring Semester (2011)",
+            quarter: "Spring Semester",
             classes: [
               { name: "AP Calculus BC" },
               { name: "Anatomy & Physiology" },
@@ -621,7 +611,7 @@ const schools: School[] = [
         year: "Junior Year",
         quarters: [
           {
-            quarter: "Fall Semester (2009)",
+            quarter: "Fall Semester",
             classes: [
               { name: "Calculus" },
               { name: "Physics Honors" },
@@ -633,7 +623,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Spring Semester (2010)",
+            quarter: "Spring Semester",
             classes: [
               { name: "Calculus" },
               { name: "Physics Honors" },
@@ -650,7 +640,7 @@ const schools: School[] = [
         year: "Sophomore Year",
         quarters: [
           {
-            quarter: "Fall Semester (2008)",
+            quarter: "Fall Semester",
             classes: [
               { name: "Pre-Calculus Honors" },
               { name: "Chemistry" },
@@ -662,7 +652,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Spring Semester (2009)",
+            quarter: "Spring Semester",
             classes: [
               { name: "Pre-Calculus Honors" },
               { name: "Chemistry" },
@@ -679,7 +669,7 @@ const schools: School[] = [
         year: "Freshman Year",
         quarters: [
           {
-            quarter: "Fall Semester (2007)",
+            quarter: "Fall Semester",
             classes: [
               { name: "Algebra 2 Honors" },
               { name: "Biology Honors" },
@@ -691,7 +681,7 @@ const schools: School[] = [
             ],
           },
           {
-            quarter: "Spring Semester (2008)",
+            quarter: "Spring Semester",
             classes: [
               { name: "Algebra 2 Honors" },
               { name: "Biology Honors" },

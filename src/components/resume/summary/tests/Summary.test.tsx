@@ -11,20 +11,10 @@ describe("resume | summary | Summary", () => {
     expect(screen.getByText("Location")).toBeInTheDocument();
     expect(screen.getByText("Mountain View, CA")).toBeInTheDocument();
 
-    expect(screen.getByText("Timeline")).toBeInTheDocument();
-    expect(screen.getByText("Intuit")).toBeInTheDocument();
+    expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
 
-    expect(screen.getByText("Skills")).toBeInTheDocument();
-    expect(screen.getByText("Summary of Skills:")).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "Developing useful, multi-platform software tools and creating user interfaces"
-      )
-    ).toBeInTheDocument();
     expect(screen.getByText("Technologies:")).toBeInTheDocument();
     expect(screen.getByText("React.js")).toBeInTheDocument();
-    expect(screen.getByText("Skills:")).toBeInTheDocument();
-    expect(screen.getByText("Leadership")).toBeInTheDocument();
 
     expect(screen.getByText("Education")).toBeInTheDocument();
     expect(
@@ -49,10 +39,10 @@ describe("resume | summary | Summary", () => {
 
     expect(
       container.querySelectorAll(".MuiCollapse-root.MuiCollapse-entered")
-    ).toHaveLength(4);
+    ).toHaveLength(3);
     fireEvent.click(screen.getByText("Education"));
     expect(
       container.querySelectorAll(".MuiCollapse-root.MuiCollapse-entered")
-    ).toHaveLength(3);
+    ).toHaveLength(2);
   });
 });

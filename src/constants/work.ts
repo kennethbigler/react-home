@@ -50,6 +50,8 @@ export const SCHOOL = "school";
 const PM = "Project Management";
 const INT = "Managed Intern";
 
+export type WorkType = "work" | "volunteer" | "school";
+
 export interface Job {
   alt?: string;
   color: string;
@@ -66,7 +68,7 @@ export interface Job {
   start: DateObj;
   tech?: string[];
   title: string;
-  type: "work" | "volunteer" | "school";
+  type: WorkType;
   website: string;
   [prop: string]: string | string[] | DateObj | boolean | number | undefined;
 }
@@ -287,6 +289,11 @@ const getSummary = (key: "tech" | "skills"): string[] =>
     });
     return acc;
   }, []);
+
+export const timelineExp = workExp.reduce((acc: Job[], job: Job) => {
+  job.type !== VOLUNTEER && acc.push(job);
+  return acc;
+}, []);
 
 export const techSummary: string[] = getSummary("tech");
 export const skillSummary: string[] = getSummary("skills");

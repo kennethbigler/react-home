@@ -8,7 +8,6 @@ export interface DegreeType {
   minor?: string;
   degree: string;
   gpa?: string | number;
-  graduation?: string;
   subtitle?: string;
   color?: string;
   years: YearType[];
@@ -23,11 +22,7 @@ const getTitles = (degree: DegreeType): { title: string; subtitle: string } => {
   const minor = degree.minor ? ` ${degree.minor}` : "";
   const title = `${school}${degree.degree}${major}${minor}`;
   const gpa = degree.gpa && `GPA: ${degree.gpa}`;
-  const graduation = degree.graduation
-    ? ` - Graduation: ${degree.graduation}`
-    : "";
-  const subtitle =
-    degree.subtitle || ((gpa || graduation) && `${gpa || ""}${graduation}`);
+  const subtitle = degree.subtitle || `${gpa || ""}`;
 
   return { title, subtitle };
 };

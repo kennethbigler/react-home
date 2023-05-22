@@ -26,7 +26,7 @@ describe("resume | work | Work", () => {
     expect(screen.getByText("Experience")).toBeInTheDocument();
 
     expect(screen.getByText("Work Timeline")).toBeInTheDocument();
-    expect(screen.getByText("Second Harvest Food Bank")).toBeInTheDocument();
+    expect(screen.queryByText("Second Harvest Food Bank")).toBeNull();
     expect(screen.getByText("Santa Clara University BS")).toBeInTheDocument();
     expect(screen.getByText("Intuit")).toBeInTheDocument();
 

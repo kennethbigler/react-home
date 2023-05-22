@@ -66,10 +66,14 @@ const Cars = React.memo(() => {
         yearMarkerFrequency={3}
       />
       {!hide.ken &&
-        kensCars.map((car) => <CarCard car={car} key={car.title} />)}
+        kensCars.map((car, i) => (
+          <CarCard car={car} key={`k-${car.title}-${i}`} />
+        ))}
       {!hide.ken && !hide.family && <hr style={hrStyles} />}
       {!hide.family &&
-        familyCars.map((car) => <CarCard car={car} key={car.title} />)}
+        familyCars.map((car, i) => (
+          <CarCard car={car} key={`f-${car.title}-${i}`} />
+        ))}
     </>
   );
 });
