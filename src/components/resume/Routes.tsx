@@ -1,37 +1,40 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
-import lazyWithPreload from "../../helpers/lazyWithPreload";
 import Header, { NavProps } from "../common/header/Header";
 import Menu from "./Menu";
 import LoadingSpinner from "../common/loading-spinner";
 
 // lazy load page components
-const Summary = lazyWithPreload(
-  import(/* webpackChunkName: "r_summary" */ "./summary")
+const Summary = React.lazy(
+  () => import(/* webpackChunkName: "r_summary" */ "./summary")
 );
-const Work = lazyWithPreload(import(/* webpackChunkName: "r_work" */ "./work"));
-const Education = lazyWithPreload(
-  import(/* webpackChunkName: "r_education" */ "./education")
+const Work = React.lazy(
+  () => import(/* webpackChunkName: "r_work" */ "./work")
 );
-const TravelMap = lazyWithPreload(
-  import(/* webpackChunkName: "r_travel" */ "./travel-map")
+const Education = React.lazy(
+  () => import(/* webpackChunkName: "r_education" */ "./education")
 );
-const Resume = lazyWithPreload(
-  import(/* webpackChunkName: "r_resume" */ "./resume")
+const TravelMap = React.lazy(
+  () => import(/* webpackChunkName: "r_travel" */ "./travel-map")
 );
-const GitTools = lazyWithPreload(
-  import(/* webpackChunkName: "r_git" */ "./git-tools")
+const Resume = React.lazy(
+  () => import(/* webpackChunkName: "r_resume" */ "./resume")
 );
-const MurderMystery = lazyWithPreload(
-  import(/* webpackChunkName: "r_mystery" */ "./murder-mystery")
+const GitTools = React.lazy(
+  () => import(/* webpackChunkName: "r_git" */ "./git-tools")
 );
-const Werewolf = lazyWithPreload(
-  import(/* webpackChunkName: "r_werewolf" */ "./werewolf")
+const MurderMystery = React.lazy(
+  () => import(/* webpackChunkName: "r_mystery" */ "./murder-mystery")
 );
-const GraphQL = lazyWithPreload(
-  import(/* webpackChunkName: "r_graphql" */ "./graphql")
+const Werewolf = React.lazy(
+  () => import(/* webpackChunkName: "r_werewolf" */ "./werewolf")
 );
-const Cars = lazyWithPreload(import(/* webpackChunkName: "r_cars" */ "./cars"));
+const GraphQL = React.lazy(
+  () => import(/* webpackChunkName: "r_graphql" */ "./graphql")
+);
+const Cars = React.lazy(
+  () => import(/* webpackChunkName: "r_cars" */ "./cars")
+);
 
 interface RoutesProps {
   handleNav: (loc: string) => void;
