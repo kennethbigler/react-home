@@ -8,6 +8,10 @@
     {
       "matchPackagePatterns": ["eslint", "prettier"],
       "groupName": "lint"
+    },
+    {
+      "matchPackagePatterns": ["@emotion/react", "@emotion/styled", "@mui/material"],
+      "groupName": "mui"
     }
   ]
 }
