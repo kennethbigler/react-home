@@ -12,10 +12,8 @@ export default defineConfig({
     setupFiles: ['src/setupTests.ts'],
     coverage: {
       reporter: ['text', 'html', 'json'],
-      exclude: [
-        'node_modules/',
-        'src/setupTests.ts'
-      ],
+      include: ['src/**'],
+      exclude: ['src/setupTests.ts'],
       statements: 90,
       branches: 85,
       lines: 90,
