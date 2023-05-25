@@ -3,43 +3,20 @@ import { Routes, Route } from "react-router-dom";
 import Header, { NavProps } from "../common/header/Header";
 import Menu from "./Menu";
 import GameHome from "./Home";
-import LoadingSpinner from "../common/loading-spinner";
+import BlackJack from "./blackjack";
+import Connect4 from "./connect4";
+import DealOrNoDeal from "./deal-or-no-deal";
+import Poker from "./poker";
+import Slots from "./slots";
+import TicTacToe from "./tictactoe";
+import Yahtzee from "./yahtzee";
+import FamilyFeud from "./family-feud";
+import AreYouTheOne from "./are-you-the-one";
+import TypeChecker from "./type-checker";
 
 interface RoutesProps {
   handleNav: (loc: string) => void;
 }
-
-// lazy load page components
-const BlackJack = React.lazy(
-  () => import(/* webpackChunkName: "g_bj" */ "./blackjack")
-);
-const Connect4 = React.lazy(
-  () => import(/* webpackChunkName: "g_connect4" */ "./connect4")
-);
-const DealOrNoDeal = React.lazy(
-  () => import(/* webpackChunkName: "g_dond" */ "./deal-or-no-deal")
-);
-const Poker = React.lazy(
-  () => import(/* webpackChunkName: "g_poker" */ "./poker")
-);
-const Slots = React.lazy(
-  () => import(/* webpackChunkName: "g_slots" */ "./slots")
-);
-const TicTacToe = React.lazy(
-  () => import(/* webpackChunkName: "g_tictactoe" */ "./tictactoe")
-);
-const Yahtzee = React.lazy(
-  () => import(/* webpackChunkName: "g_yahtzee" */ "./yahtzee")
-);
-const FamilyFeud = React.lazy(
-  () => import(/* webpackChunkName: "g_family_feud" */ "./family-feud")
-);
-const AreYouTheOne = React.lazy(
-  () => import(/* webpackChunkName: "g_are_you_the_one" */ "./are-you-the-one")
-);
-const TypeChecker = React.lazy(
-  () => import(/* webpackChunkName: "g_type_checker" */ "./type-checker")
-);
 
 const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
   <>
@@ -48,21 +25,19 @@ const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
         <Menu onItemClick={onItemClick} />
       )}
     </Header>
-    <React.Suspense fallback={<LoadingSpinner />}>
-      <Routes>
-        <Route path="/*" element={<GameHome onItemClick={handleNav} />} />
-        <Route path="are-you-the-one/*" element={<AreYouTheOne />} />
-        <Route path="blackjack/*" element={<BlackJack />} />
-        <Route path="connect4/*" element={<Connect4 />} />
-        <Route path="deal/*" element={<DealOrNoDeal />} />
-        <Route path="family-feud/*" element={<FamilyFeud />} />
-        <Route path="poker/*" element={<Poker />} />
-        <Route path="slots/*" element={<Slots />} />
-        <Route path="tictactoe/*" element={<TicTacToe />} />
-        <Route path="types/*" element={<TypeChecker />} />
-        <Route path="yahtzee/*" element={<Yahtzee />} />
-      </Routes>
-    </React.Suspense>
+    <Routes>
+      <Route path="/*" element={<GameHome onItemClick={handleNav} />} />
+      <Route path="are-you-the-one/*" element={<AreYouTheOne />} />
+      <Route path="blackjack/*" element={<BlackJack />} />
+      <Route path="connect4/*" element={<Connect4 />} />
+      <Route path="deal/*" element={<DealOrNoDeal />} />
+      <Route path="family-feud/*" element={<FamilyFeud />} />
+      <Route path="poker/*" element={<Poker />} />
+      <Route path="slots/*" element={<Slots />} />
+      <Route path="tictactoe/*" element={<TicTacToe />} />
+      <Route path="types/*" element={<TypeChecker />} />
+      <Route path="yahtzee/*" element={<Yahtzee />} />
+    </Routes>
   </>
 );
 
