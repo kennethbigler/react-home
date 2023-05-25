@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
-import lazyWithPreload from "../../helpers/lazyWithPreload";
 import Header, { NavProps } from "../common/header/Header";
 import Menu from "./Menu";
 import GameHome from "./Home";
@@ -11,35 +10,35 @@ interface RoutesProps {
 }
 
 // lazy load page components
-const BlackJack = lazyWithPreload(
-  import(/* webpackChunkName: "g_bj" */ "./blackjack")
+const BlackJack = React.lazy(
+  () => import(/* webpackChunkName: "g_bj" */ "./blackjack")
 );
-const Connect4 = lazyWithPreload(
-  import(/* webpackChunkName: "g_connect4" */ "./connect4")
+const Connect4 = React.lazy(
+  () => import(/* webpackChunkName: "g_connect4" */ "./connect4")
 );
-const DealOrNoDeal = lazyWithPreload(
-  import(/* webpackChunkName: "g_dond" */ "./deal-or-no-deal")
+const DealOrNoDeal = React.lazy(
+  () => import(/* webpackChunkName: "g_dond" */ "./deal-or-no-deal")
 );
-const Poker = lazyWithPreload(
-  import(/* webpackChunkName: "g_poker" */ "./poker")
+const Poker = React.lazy(
+  () => import(/* webpackChunkName: "g_poker" */ "./poker")
 );
-const Slots = lazyWithPreload(
-  import(/* webpackChunkName: "g_slots" */ "./slots")
+const Slots = React.lazy(
+  () => import(/* webpackChunkName: "g_slots" */ "./slots")
 );
-const TicTacToe = lazyWithPreload(
-  import(/* webpackChunkName: "g_tictactoe" */ "./tictactoe")
+const TicTacToe = React.lazy(
+  () => import(/* webpackChunkName: "g_tictactoe" */ "./tictactoe")
 );
-const Yahtzee = lazyWithPreload(
-  import(/* webpackChunkName: "g_yahtzee" */ "./yahtzee")
+const Yahtzee = React.lazy(
+  () => import(/* webpackChunkName: "g_yahtzee" */ "./yahtzee")
 );
-const FamilyFeud = lazyWithPreload(
-  import(/* webpackChunkName: "g_family_feud" */ "./family-feud")
+const FamilyFeud = React.lazy(
+  () => import(/* webpackChunkName: "g_family_feud" */ "./family-feud")
 );
-const AreYouTheOne = lazyWithPreload(
-  import(/* webpackChunkName: "g_are_you_the_one" */ "./are-you-the-one")
+const AreYouTheOne = React.lazy(
+  () => import(/* webpackChunkName: "g_are_you_the_one" */ "./are-you-the-one")
 );
-const TypeChecker = lazyWithPreload(
-  import(/* webpackChunkName: "g_type_checker" */ "./type-checker")
+const TypeChecker = React.lazy(
+  () => import(/* webpackChunkName: "g_type_checker" */ "./type-checker")
 );
 
 const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
