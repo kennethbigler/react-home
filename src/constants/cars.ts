@@ -26,7 +26,7 @@ const tesla = "Tesla Model X 90D (2016)";
 const ftype = "Jaguar F-Type R Convertible (2015)";
 const xj8l = "Jaguar XJ8-L (2005)";
 const corvette = "Chevrolet Corvette Z06 (2018)";
-const mustang2 = "Ford Mustang GT Premium (2020)";
+const mustangB = "Ford Mustang GT Premium (2020)";
 const panamera = "Porsche Panamera E-Hybrid (2021)";
 const bronco = "Ford Bronco Badlands (2021)";
 const grom = "Honda Grom (2022)";
@@ -317,14 +317,14 @@ const kensCars = [
     color: indigo[900],
     start: dateObj("2020-03"),
     end: dateObj("2022-10"),
-    car: "Mustang2",
+    car: "MustangB",
     short: "Mstng",
-    char: "M2",
+    char: "Mb",
     nickname: "Miranda Jr",
-    title: mustang2,
+    title: mustangB,
 
     owned: "2020 - 2022",
-    story: `I shared a ${mustang2} with the Performance Pack 1 with my roommate!`,
+    story: `I shared a ${mustangB} with the Performance Pack 1 with my roommate!`,
     src: mustang20,
     transmission: "Manual",
 
