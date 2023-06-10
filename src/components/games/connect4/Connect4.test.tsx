@@ -36,9 +36,9 @@ describe("games | connect4 | Connect4", () => {
 
     fireEvent.click(buttons[2]);
     buttons = screen.getAllByRole("button");
-    expect(buttons[0]).toHaveStyle({ backgroundColor: "black" });
-    expect(buttons[2]).toHaveStyle({ backgroundColor: "black" });
-    expect(buttons[8]).toHaveStyle({ backgroundColor: "black" });
+    expect(buttons[0]).toHaveStyle({ backgroundColor: "rgb(0, 0, 0)" });
+    expect(buttons[2]).toHaveStyle({ backgroundColor: "rgb(0, 0, 0)" });
+    expect(buttons[8]).toHaveStyle({ backgroundColor: "rgb(0, 0, 0)" });
     expect(buttons[44]).toHaveStyle({ backgroundColor: "rgb(244, 67, 54)" });
 
     fireEvent.click(screen.getByText("Reset Game"));

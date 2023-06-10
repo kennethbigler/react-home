@@ -13,7 +13,9 @@ describe("resume | git-tools | Header", () => {
     expect(screen.getAllByText("User Story ID")).toHaveLength(2);
     expect(screen.getByDisplayValue("KEN-1234")).toBeInTheDocument();
 
-    expect(screen.getAllByText("User Story ID")[0]).toHaveStyle("color: red;");
+    expect(screen.getAllByText("User Story ID")[0]).toHaveStyle(
+      "color: rgb(255, 0, 0);"
+    );
   });
 
   it("handles id changes", () => {

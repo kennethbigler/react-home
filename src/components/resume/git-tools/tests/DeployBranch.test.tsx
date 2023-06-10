@@ -32,7 +32,9 @@ describe("resume | git-tools | DeployBranch", () => {
   });
 
   it("has expected color", () => {
-    expect(screen.getByText("Target Branch")).toHaveStyle("color: red;");
+    expect(screen.getByText("Target Branch")).toHaveStyle(
+      "color: rgb(255, 0, 0);"
+    );
   });
 
   it("swaps test-pipeline and sandbox-pipeline on select", () => {

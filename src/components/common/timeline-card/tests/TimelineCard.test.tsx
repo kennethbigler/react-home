@@ -58,7 +58,7 @@ describe("common | timeline-card | TimelineCard", () => {
     expect(screen.getByText("Title")).toBeInTheDocument();
     expect(screen.getByText("May 2019 - February 2020")).toBeInTheDocument();
     expect(screen.getByText("Title").parentNode?.parentNode).toHaveStyle({
-      backgroundColor: "red",
+      backgroundColor: "rgb(255, 0, 0)",
     });
 
     // verify Timeline
