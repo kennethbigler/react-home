@@ -40,10 +40,14 @@ describe("resume | git-tools | CommitText", () => {
   });
 
   it("has expected color", () => {
-    expect(screen.getByText("Commit Prefix")).toHaveStyle("color: red;");
-    expect(screen.getAllByText("Commit Message")[0]).toHaveStyle("color: red;");
+    expect(screen.getByText("Commit Prefix")).toHaveStyle(
+      "color: rgb(255, 0, 0);"
+    );
+    expect(screen.getAllByText("Commit Message")[0]).toHaveStyle(
+      "color: rgb(255, 0, 0);"
+    );
     expect(screen.getAllByText("Commit Description")[0]).toHaveStyle(
-      "color: red;"
+      "color: rgb(255, 0, 0);"
     );
   });
 

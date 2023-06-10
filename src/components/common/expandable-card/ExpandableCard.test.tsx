@@ -28,7 +28,7 @@ describe("common | ExpandableCard", () => {
 
       it("displays title with black text when inverted", () => {
         render(<ExpandableCard title="Title" inverted />);
-        expect(screen.getByText("Title")).toHaveStyle({ color: "black" });
+        expect(screen.getByText("Title")).toHaveStyle({ color: "rgb(0,0,0)" });
       });
     });
 
@@ -63,7 +63,7 @@ describe("common | ExpandableCard", () => {
       expect(screen.getByText("Title")).toBeInTheDocument();
       expect(screen.getByText("Subtitle")).toBeInTheDocument();
       expect(screen.getByText("Body")).toBeInTheDocument();
-      expect(screen.getByText("Title")).toHaveStyle({ color: "black" });
+      expect(screen.getByText("Title")).toHaveStyle({ color: "rgb(0,0,0)" });
       expect(
         screen.getByText("Title").parentElement?.parentElement
       ).toHaveStyle({ backgroundColor: "#333" });

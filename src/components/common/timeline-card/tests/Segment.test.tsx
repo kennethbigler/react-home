@@ -100,7 +100,7 @@ describe("common | timeline-card | Segment", () => {
       // width
       expect(screen.getByTitle("Title")).toHaveStyle({ width: "100%" });
       // inverted
-      expect(screen.getByTitle("Title")).toHaveStyle({ color: "black" });
+      expect(screen.getByTitle("Title")).toHaveStyle({ color: "rgb(0, 0, 0)" });
     });
   });
 });
