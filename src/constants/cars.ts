@@ -30,6 +30,7 @@ const mustangB = "Ford Mustang GT Premium (2020)";
 const panamera = "Porsche Panamera E-Hybrid (2021)";
 const bronco = "Ford Bronco Badlands (2021)";
 const grom = "Honda Grom (2022)";
+const cayenne = "Porsche Cayenne E-Hybrid (2019)";
 
 const familyCars = [
   {
@@ -379,7 +380,7 @@ const kensCars = [
   {
     color: yellow[500],
     start: dateObj("2023-03"),
-    end: dateObj(),
+    end: dateObj("2023-06"),
     car: "Corvette",
     short: "Vette",
     char: "C",
@@ -397,6 +398,28 @@ const kensCars = [
     MPG: 18,
     torque: 650,
     weight: 3524,
+  },
+  {
+    color: grey[50],
+    start: dateObj("2023-06"),
+    end: dateObj(),
+    car: "Cayenne",
+    short: "Cyne",
+    char: "C",
+    nickname: "Petunia",
+    title: cayenne,
+    inverted: true,
+
+    owned: "2023 - Present",
+    story: `I bought a plug-in hybrid`,
+    src: corvette18,
+    transmission: "Automatic",
+
+    displacement: 3.0,
+    horsepower: 455,
+    MPG: 46,
+    torque: 516,
+    weight: 5060,
   },
 ];
 
