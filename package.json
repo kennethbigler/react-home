@@ -16,7 +16,7 @@
     "preview": "vite preview",
     "test": "vitest watch",
     "test:no-watch": "vitest run",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "NODE_V8_COVERAGE=codecov_reports vitest run --coverage",
     "deploy": "./scripts/deploy.sh",
     "analyze": "source-map-explorer 'docs/assets/*.js'",
     "analyze:local": "./scripts/analyze.sh",

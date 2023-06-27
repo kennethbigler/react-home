@@ -12,6 +12,7 @@ lerna-debug.log*
 # dependencies
 build
 coverage
+codecov_reports
 .lighthouseci
 node_modules
 dist
