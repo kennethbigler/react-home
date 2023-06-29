@@ -15,6 +15,7 @@ import mustang20 from "../images/20_ford_mustang.png";
 import panamera21 from "../images/21_porsche_panamera.png";
 import bronco21 from "../images/21_ford_bronco.webp";
 import grom22 from "../images/22_honda_grom.webp";
+import porsche19 from "../images/19_porsche_cayenne.webp";
 
 const prius = "Toyota Prius (2007)";
 const voyager = "Plymouth Voyager (1997)";
@@ -412,7 +413,7 @@ const kensCars = [
 
     owned: "2023 - Present",
     story: `I bought a plug-in hybrid`,
-    src: corvette18,
+    src: porsche19,
     transmission: "Automatic",
 
     displacement: 3.0,
