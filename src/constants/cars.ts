@@ -381,7 +381,7 @@ const kensCars = [
   {
     color: yellow[500],
     start: dateObj("2023-03"),
-    end: dateObj("2023-06"),
+    end: dateObj("2023-08"),
     car: "Corvette",
     short: "Vette",
     char: "C",
@@ -389,7 +389,7 @@ const kensCars = [
     title: corvette,
     inverted: true,
 
-    owned: "2023 - Present",
+    owned: "2023",
     story: `I borrowed the corvette again for a few months.`,
     src: corvette18,
     transmission: "Manual",
@@ -402,7 +402,7 @@ const kensCars = [
   },
   {
     color: grey[50],
-    start: dateObj("2023-06"),
+    start: dateObj("2023-08"),
     end: dateObj(),
     car: "Cayenne",
     short: "Cyne",
