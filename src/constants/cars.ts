@@ -412,7 +412,7 @@ const kensCars = [
     inverted: true,
 
     owned: "2023 - Present",
-    story: `I bought a plug-in hybrid`,
+    story: `I bought a plug-in hybrid Cayenne as a bit of an upgrade to my old Bronco.`,
     src: porsche19,
     transmission: "Automatic",
 
