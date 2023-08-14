@@ -24,7 +24,7 @@
     "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet"
   },
   "dependencies": {
-    "@apollo/client": "3.7.17",
+    "@apollo/client": "3.8.1",
     "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
     "@mui/icons-material": "5.14.3",
