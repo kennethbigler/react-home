@@ -3,7 +3,7 @@ import { getStart, getEnd } from "../classes";
 import dateObj from "../../apis/DateHelper";
 
 describe("constants classes", () => {
-  let oldConsole: any;
+  let oldConsole: Console["error"];
 
   beforeAll(() => {
     // eslint-disable-next-line no-console
