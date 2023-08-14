@@ -36,7 +36,7 @@
     "react-newline-to-break": "1.0.6",
     "react-router-dom": "6.15.0",
     "react-simple-maps": "3.0.0",
-    "recharts": "2.7.2",
+    "recharts": "2.7.3",
     "recoil": "0.7.7"
   },
   "devDependencies": {
