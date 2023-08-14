@@ -29,7 +29,7 @@ const Connect4: React.FC = () => {
     evalBoard: number[][]
   ): void => {
     // variables to track streaks
-    const dp: [number, [number, number][], [number, number][]][] = [];
+    const dp: [C4Turn, [number, number][], [number, number][]][] = [];
     for (let i = 0; i < 4; i += 1) {
       const a1: [number, number][] = [];
       const a2: [number, number][] = [];

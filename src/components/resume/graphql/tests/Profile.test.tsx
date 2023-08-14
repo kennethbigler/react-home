@@ -38,10 +38,8 @@ describe("resume | graphql | Profile", () => {
       </MockedProvider>
     );
 
-    await waitFor(() => screen.getByText("ApolloError: An error occurred"));
-    expect(
-      screen.getByText("ApolloError: An error occurred")
-    ).toBeInTheDocument();
+    await waitFor(() => screen.getByText("An error occurred"));
+    expect(screen.getByText("An error occurred")).toBeInTheDocument();
   });
 
   it("has no data", async () => {

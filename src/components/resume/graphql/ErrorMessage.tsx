@@ -12,7 +12,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = (
 
   return (
     <div>
-      <small>{error ? error.toString() : "Something Went Wrong"}</small>
+      <small>{error ? error.message : "Something Went Wrong"}</small>
     </div>
   );
 };
