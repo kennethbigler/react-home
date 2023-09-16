@@ -125,6 +125,7 @@ export const ships = [
   "Dream",
   "Fantasy",
   "Wish",
+  "Treasure",
   "Navigator of the Seas",
   "Discovery",
 ] as const;
@@ -304,7 +305,7 @@ export const cruises: Cruise[] = [
     departure: dateObj("2022-08"),
     nights: 4,
     name: "Catalina & Ensenada",
-    ship: ships[5],
+    ship: ships[6],
     line: lines[1],
     concierge: false,
   },
@@ -328,7 +329,7 @@ export const cruises: Cruise[] = [
     departure: dateObj("2023-02"),
     nights: 4,
     name: "San Diego & Ensenada",
-    ship: ships[6],
+    ship: ships[7],
     line: lines[2],
     concierge: false,
   },
@@ -356,9 +357,17 @@ export const cruises: Cruise[] = [
     line: lines[0],
     concierge: true,
   },
+  {
+    departure: dateObj("2024-12"),
+    nights: 7,
+    name: "Maiden Voyage (Caribbean)",
+    ship: ships[5],
+    line: lines[0],
+    concierge: true,
+  },
 ];
 
-const numDisney = [0, 0, 0, 0, 0];
+const numDisney = [0, 0, 0, 0, 0, 0];
 const numRC = [0];
 const numPrincess = [0];
 
@@ -380,6 +389,9 @@ cruises.forEach((cruise) => {
       numDisney[4] += 1;
       return;
     case ships[5]:
+      numDisney[5] += 1;
+      return;
+    case ships[6]:
       numRC[0] += 1;
       return;
     default:
@@ -387,8 +399,7 @@ cruises.forEach((cruise) => {
   }
 });
 
-const totalDisney =
-  numDisney[0] + numDisney[1] + numDisney[2] + numDisney[3] + numDisney[4];
+const totalDisney = numDisney.reduce((acc, num) => acc + num, 0);
 
 export const cruiseData = {
   nodes: [
@@ -399,24 +410,30 @@ export const cruiseData = {
     { name: ships[2] },
     { name: ships[3] },
     { name: ships[4] },
+    { name: ships[5] },
     { name: lines[1] },
     { name: "Navigator" },
     { name: lines[2] },
-    { name: ships[6] },
+    { name: ships[7] },
   ],
   links: [
-    // level 1
+    // level 1 Disney
     { source: 0, target: 1, value: totalDisney },
-    { source: 0, target: 7, value: numRC[0] },
-    { source: 0, target: 9, value: numPrincess[0] },
-    // level 2
+    // level 2 Disney
     { source: 1, target: 2, value: numDisney[0] },
     { source: 1, target: 3, value: numDisney[1] },
     { source: 1, target: 4, value: numDisney[2] },
     { source: 1, target: 5, value: numDisney[3] },
     { source: 1, target: 6, value: numDisney[4] },
-    { source: 7, target: 8, value: numRC[0] },
-    { source: 9, target: 10, value: numPrincess[0] },
+    { source: 1, target: 7, value: numDisney[5] },
+    // level 1 RC
+    { source: 0, target: 8, value: numRC[0] },
+    // Level 2 RC
+    { source: 8, target: 9, value: numRC[0] },
+    // Level 1 Princess
+    { source: 0, target: 10, value: numPrincess[0] },
+    // level 2 Princess
+    { source: 10, target: 11, value: numPrincess[0] },
   ],
 };
 
