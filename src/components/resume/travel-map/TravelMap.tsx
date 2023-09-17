@@ -1,29 +1,35 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
+import { Grid } from "@mui/material";
 import CountryTable from "./CountryTable";
 import CruiseTable from "./CruiseTable";
 import WorldMap from "./WorldMap";
 import CruiseCharts from "./CruiseCharts";
+import ExpandableCard from "../../common/expandable-card";
 
 /* TravelMap  ->  WorldMap  ->  Popover
  *           |->  TravelTable
  *           |->  CruiseCharts */
-const TravelMap: React.FC = () => {
-  const screenWidth = document.body.clientWidth - 32;
-
-  return (
-    <>
-      <Typography variant="h2" component="h1">
-        My Travel Map
-      </Typography>
-      <WorldMap screenWidth={screenWidth} />
-      <CountryTable />
-      <br />
-      <Typography variant="h2">Cruises</Typography>
-      <CruiseCharts screenWidth={screenWidth} />
-      <CruiseTable />
-    </>
-  );
-};
+const TravelMap: React.FC = () => (
+  <>
+    <Typography variant="h2" component="h1">
+      Travel
+    </Typography>
+    <Grid container spacing={2}>
+      <Grid item sm={12} md={6} id="mapContainer">
+        <ExpandableCard title="Travel Map">
+          <WorldMap />
+          <CountryTable />
+        </ExpandableCard>
+      </Grid>
+      <Grid item sm={12} md={6} id="cruiseContainer">
+        <ExpandableCard title="Cruises">
+          <CruiseCharts />
+          <CruiseTable />
+        </ExpandableCard>
+      </Grid>
+    </Grid>
+  </>
+);
 
 export default TravelMap;
