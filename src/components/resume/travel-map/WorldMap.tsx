@@ -36,7 +36,7 @@ interface GeographyType {
 }
 
 type HandleEnter = (
-  geography: GeographyType
+  geography: GeographyType,
 ) => (evt: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
 
 interface WorldMapHook {
@@ -46,10 +46,6 @@ interface WorldMapHook {
   hide: boolean;
   handleEnter: HandleEnter;
   handleLeave: () => void;
-}
-
-interface WorldMapProps {
-  screenWidth: number;
 }
 
 const STROKE = blueGrey[900];
@@ -95,15 +91,15 @@ function useWorldMap(): WorldMapHook {
   };
 }
 
-const WorldMap = ({ screenWidth }: WorldMapProps) => {
+const WorldMap = () => {
   const { x, y, content, hide, handleEnter, handleLeave } = useWorldMap();
 
   return (
     <>
       <ComposableMap
-        width={screenWidth}
-        height={(screenWidth * 5) / 8}
-        projectionConfig={{ scale: screenWidth * RATIO }}
+        width={5000}
+        height={(5000 * 5) / 8}
+        projectionConfig={{ scale: 5000 * RATIO }}
       >
         <Sphere
           id="rsm-sphere"
