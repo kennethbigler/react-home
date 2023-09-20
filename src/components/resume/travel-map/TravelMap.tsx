@@ -1,6 +1,6 @@
 import * as React from "react";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { Grid } from "@mui/material";
 import CountryTable from "./CountryTable";
 import CruiseTable from "./CruiseTable";
 import WorldMap from "./WorldMap";
@@ -16,13 +16,13 @@ const TravelMap: React.FC = () => (
       Travel
     </Typography>
     <Grid container spacing={2}>
-      <Grid item sm={12} md={6} id="mapContainer">
+      <Grid item sm={12} md={6}>
         <ExpandableCard title="Travel Map">
           <WorldMap />
           <CountryTable />
         </ExpandableCard>
       </Grid>
-      <Grid item sm={12} md={6} id="cruiseContainer">
+      <Grid item sm={12} md={6}>
         <ExpandableCard title="Cruises">
           <CruiseCharts />
           <CruiseTable />

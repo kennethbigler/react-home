@@ -20,6 +20,7 @@ const containerStyles: React.CSSProperties = {
   maxWidth: 1488,
   margin: "auto",
   marginTop: 20,
+  width: "100%",
 };
 const imgStyles: React.CSSProperties = {
   width: "100%",

@@ -20,7 +20,7 @@ import porsche19 from "../images/19_porsche_cayenne.webp";
 const prius = "Toyota Prius (2007)";
 const voyager = "Plymouth Voyager (1997)";
 const bonneville = "Pontiac Bonneville (1993)";
-const equinox = "Chevy Equinox LTZ (2010)";
+const equinox = "Chevrolet Equinox LTZ (2010)";
 const impala = "Chevrolet Impala LS (2010)";
 const mustang = "Ford Mustang GT Premium (2015)";
 const tesla = "Tesla Model X 90D (2016)";
@@ -128,7 +128,7 @@ const familyCars = [
     char: "E",
     title: equinox,
 
-    owned: "2010 - present",
+    owned: "2010 - Present",
     story: `My Mother's ${equinox}.`,
     src: equinox10,
     transmission: "Automatic",
@@ -149,7 +149,7 @@ const familyCars = [
     title: tesla,
     inverted: true,
 
-    owned: "2016 - present",
+    owned: "2016 - Present",
     story: `My Father's ${tesla}.`,
     src: tesla16,
     transmission: "Direct",
@@ -514,5 +514,56 @@ export const processedKensCars = processData(kensCars);
 export const processedFamilyCars = processData(familyCars);
 export const processedCars = processData(cars);
 export { kensCars, familyCars };
+
+export const carSankeyData = {
+  nodes: [
+    { name: "🏎️" },
+    // level 1
+    { name: "🇺🇸" },
+    { name: "🇯🇵" },
+    { name: "🇩🇪" },
+    { name: "🇬🇧" },
+    // level 2
+    { name: "GM" }, // US 5
+    { name: "Chrysler" },
+    { name: "Ford" },
+    { name: "Tesla" },
+    { name: "Toyota" }, // Japan 9
+    { name: "Honda" },
+    { name: "Volkswagen" }, // Germany 11
+    { name: "Jaguar Land Rover" }, // UK 12
+    // level 3
+    // { name: "Pontiac" }, // 13
+    // { name: "Chevrolet" },
+    // { name: "Plymouth" },
+    // { name: "Porsche" }, // 16
+    // { name: "Jaguar" }, // 17
+  ],
+  links: [
+    // level 1
+    { source: 0, target: 1, value: 9 }, // US
+    { source: 0, target: 2, value: 2 }, // Japan
+    { source: 0, target: 3, value: 2 }, // UK
+    { source: 0, target: 4, value: 2 }, // Germany
+    // level 2
+    //     US
+    { source: 1, target: 5, value: 4 }, // GM
+    { source: 1, target: 6, value: 1 }, // Chrysler
+    { source: 1, target: 7, value: 3 }, // Ford
+    { source: 1, target: 8, value: 1 }, // Tesla
+    //     Japan
+    { source: 2, target: 9, value: 1 }, // Toyota
+    { source: 2, target: 10, value: 1 }, // Honda
+    //     Other
+    { source: 3, target: 11, value: 2 }, // JLR
+    { source: 4, target: 12, value: 2 }, // VW
+    // level 3
+    // { source: 5, target: 13, value: 1 }, // Pontiac
+    // { source: 5, target: 14, value: 3 }, // Chevy
+    // { source: 6, target: 15, value: 1 }, // Plymouth
+    // { source: 11, target: 16, value: 2 }, // Jaguar
+    // { source: 12, target: 17, value: 2 }, // Porsche
+  ],
+};
 
 export default cars;
