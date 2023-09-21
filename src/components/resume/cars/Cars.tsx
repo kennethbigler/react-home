@@ -1,15 +1,16 @@
 import * as React from "react";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TimelineCard from "../../common/timeline-card";
 import dateObj from "../../../apis/DateHelper";
 import cars, { kensCars, familyCars } from "../../../constants/cars";
 import CarCard from "./CarCard";
 import CarChart, { HideObject } from "./CarChart";
+import CarSankeyGraph from "./CarSankeyGraph";
 import CarChartControls, { ShowKey } from "./CarChartControls";
+import ExpandableCard from "../../common/expandable-card";
 
-const hrStyles: React.CSSProperties = { marginTop: 60, marginBottom: 20 };
-
-const Cars = React.memo(() => {
+const Cars = () => {
   const [showAnimation, setShowAnimation] = React.useState(true);
   const [hide, setHide] = React.useState<HideObject>({});
 
@@ -24,7 +25,7 @@ const Cars = React.memo(() => {
     } else {
       setShowAnimation(
         (hide.horsepower && hide.MPG && hide.weight && hide.powerToWeight) ||
-          false
+          false,
       );
     }
     if (hide[key]) {
@@ -49,14 +50,6 @@ const Cars = React.memo(() => {
         Ken&apos;s Cars
       </Typography>
       <br />
-      <CarChartControls onClick={handleClick} hide={hide} vw={vw} />
-      <CarChart
-        showAnimation={showAnimation}
-        data={data}
-        hide={hide}
-        vw={vw}
-        vh={vh}
-      />
       <TimelineCard
         enableLongTitles
         data={data}
@@ -65,17 +58,37 @@ const Cars = React.memo(() => {
         title="Ken's Cars"
         yearMarkerFrequency={3}
       />
-      {!hide.ken &&
-        kensCars.map((car, i) => (
-          <CarCard car={car} key={`k-${car.title}-${i}`} />
-        ))}
-      {!hide.ken && !hide.family && <hr style={hrStyles} />}
-      {!hide.family &&
-        familyCars.map((car, i) => (
-          <CarCard car={car} key={`f-${car.title}-${i}`} />
-        ))}
+      <CarSankeyGraph />
+      <CarChartControls onClick={handleClick} hide={hide} vw={vw} />
+      <CarChart
+        showAnimation={showAnimation}
+        data={data}
+        hide={hide}
+        vw={vw}
+        vh={vh}
+      />
+      <Grid container spacing={2}>
+        {!hide.ken && (
+          <Grid item sm={12} md={hide.family ? 12 : 6}>
+            <ExpandableCard title="Ken's Cars">
+              {kensCars.map((car, i) => (
+                <CarCard car={car} key={`k-${car.title}-${i}`} />
+              ))}
+            </ExpandableCard>
+          </Grid>
+        )}
+        {!hide.family && (
+          <Grid item sm={12} md={hide.ken ? 12 : 6}>
+            <ExpandableCard title="Family Cars">
+              {familyCars.map((car, i) => (
+                <CarCard car={car} key={`f-${car.title}-${i}`} />
+              ))}
+            </ExpandableCard>
+          </Grid>
+        )}
+      </Grid>
     </>
   );
-});
+};
 
 export default Cars;
