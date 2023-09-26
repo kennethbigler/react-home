@@ -12,6 +12,7 @@ import useToggleState from "../../../hooks/useToggle";
 const cardStyles: React.CSSProperties = { marginTop: 40, overflow: "visible" };
 const headerStyles: React.CSSProperties = {
   borderRadius: 3,
+  cursor: "pointer",
   marginLeft: 15,
   marginRight: 15,
   position: "relative",
