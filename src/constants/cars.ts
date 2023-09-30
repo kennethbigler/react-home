@@ -359,26 +359,6 @@ const kensCars = [
     weight: 4499,
   },
   {
-    color: grey[900],
-    start: dateObj("2022-04"),
-    end: dateObj(),
-    car: "Grom",
-    short: "Grom",
-    char: "G",
-    title: grom,
-
-    owned: "2022 - Present",
-    story: `motorcycle: ${grom}.`,
-    src: grom22,
-    transmission: "Sequential",
-
-    displacement: 0.124,
-    horsepower: parseFloat((9.7 * 1.139).toPrecision(3)),
-    MPG: 97,
-    torque: parseFloat((7.7 * 1.143).toPrecision(3)),
-    weight: 230,
-  },
-  {
     color: yellow[500],
     start: dateObj("2023-03"),
     end: dateObj("2023-08"),
@@ -399,6 +379,26 @@ const kensCars = [
     MPG: 18,
     torque: 650,
     weight: 3524,
+  },
+  {
+    color: grey[900],
+    start: dateObj("2022-04"),
+    end: dateObj(),
+    car: "Grom",
+    short: "Grom",
+    char: "G",
+    title: grom,
+
+    owned: "2022 - Present",
+    story: `motorcycle: ${grom}.`,
+    src: grom22,
+    transmission: "Sequential",
+
+    displacement: 0.124,
+    horsepower: parseFloat((9.7 * 1.139).toPrecision(3)),
+    MPG: 97,
+    torque: parseFloat((7.7 * 1.143).toPrecision(3)),
+    weight: 230,
   },
   {
     color: grey[50],
