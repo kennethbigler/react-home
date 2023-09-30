@@ -17,9 +17,10 @@ const menuItems: MenuItem[] = [
   { name: "Are You The One", route: "are-you-the-one", icon: "🤷‍♂️" },
   { name: "Connect4", route: "connect4", icon: "🔴" },
   { name: "Family Feud", route: "family-feud", icon: "👨‍👩‍👧‍👦" },
-  { name: "Murder Mystery", route: "murder", icon: "🔎" },
   { name: "Tic-Tac-Toe", route: "tictactoe", icon: "❌" },
   { name: "Type Checker", route: "types", icon: "🧪" },
+  { divider: true },
+  { name: "Murder Mystery", route: "murder", icon: "🔎" },
   { name: "Werewolf", route: "werewolf", icon: "🐺" },
 ];
 
