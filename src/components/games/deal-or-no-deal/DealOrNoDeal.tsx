@@ -9,6 +9,7 @@ import dndState, {
   briefcasesToOpen,
   newDNDGame,
 } from "../../../recoil/deal-or-no-deal-state";
+import PlayerMenu from "../../common/header/PlayerMenu";
 
 // TODO: add rules to page
 /* DealOrNoDeal  ->  Header
@@ -153,9 +154,12 @@ const DND: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h2" component="h1" gutterBottom>
-        Deal or No Deal
-      </Typography>
+      <div className="flex-container">
+        <Typography variant="h2" component="h1" gutterBottom>
+          Deal or No Deal
+        </Typography>
+        <PlayerMenu />
+      </div>
       <Header
         casesToOpen={casesToOpen}
         isOver={isOver}

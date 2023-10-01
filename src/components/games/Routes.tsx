@@ -5,6 +5,7 @@ import Menu from "./Menu";
 import GameHome from "./Home";
 import AreYouTheOne from "./are-you-the-one";
 import BlackJack from "./blackjack";
+import BotC from "./botc";
 import Connect4 from "./connect4";
 import DealOrNoDeal from "./deal-or-no-deal";
 import FamilyFeud from "./family-feud";
@@ -22,7 +23,7 @@ interface RoutesProps {
 
 const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
   <>
-    <Header handleNav={handleNav} showPlayers>
+    <Header handleNav={handleNav}>
       {(onItemClick): React.ReactElement<NavProps> => (
         <Menu onItemClick={onItemClick} />
       )}
@@ -30,6 +31,7 @@ const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
     <Routes>
       <Route path="/*" element={<GameHome onItemClick={handleNav} />} />
       <Route path="are-you-the-one/*" element={<AreYouTheOne />} />
+      <Route path="botc/*" element={<BotC />} />
       <Route path="blackjack/*" element={<BlackJack />} />
       <Route path="connect4/*" element={<Connect4 />} />
       <Route path="deal/*" element={<DealOrNoDeal />} />

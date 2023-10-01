@@ -18,12 +18,12 @@ describe("common | header | Header", () => {
         {(onItemClick): React.ReactElement<NavProps> => (
           <Menu onItemClick={onItemClick} />
         )}
-      </Header>
+      </Header>,
     );
     // find TopBar elements
     expect(screen.getByTitle("Icon Menu Button")).toBeInTheDocument();
     expect(screen.getByTitle("Icon Menu Button").className).toContain(
-      "MuiIconButton-colorInherit"
+      "MuiIconButton-colorInherit",
     );
     expect(screen.getByText("Menu")).toBeInTheDocument();
     // open the Drawer
@@ -41,7 +41,7 @@ describe("common | header | Header", () => {
           {(onItemClick): React.ReactElement<NavProps> => (
             <Menu onItemClick={onItemClick} />
           )}
-        </Header>
+        </Header>,
       );
       // open the Drawer
       fireEvent.click(screen.getByTitle("Icon Menu Button"));
@@ -57,7 +57,7 @@ describe("common | header | Header", () => {
           {(onItemClick): React.ReactElement<NavProps> => (
             <Menu onItemClick={onItemClick} />
           )}
-        </Header>
+        </Header>,
       );
 
       // open the Drawer
@@ -68,27 +68,6 @@ describe("common | header | Header", () => {
       expect(handleNav).not.toHaveBeenCalled();
       fireEvent.click(screen.getByText("Test Button"));
       expect(handleNav).toHaveBeenCalled();
-    });
-
-    it("showsPlayers as expected", () => {
-      // render without player button
-      const { rerender } = render(
-        <Header>
-          {(onItemClick): React.ReactElement<NavProps> => (
-            <Menu onItemClick={onItemClick} />
-          )}
-        </Header>
-      );
-      expect(screen.queryByText("Players")).toBeNull();
-      // rerender with player button
-      rerender(
-        <Header showPlayers>
-          {(onItemClick): React.ReactElement<NavProps> => (
-            <Menu onItemClick={onItemClick} />
-          )}
-        </Header>
-      );
-      expect(screen.getByText("Players")).toBeInTheDocument();
     });
   });
 });

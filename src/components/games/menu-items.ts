@@ -20,6 +20,7 @@ const menuItems: MenuItem[] = [
   { name: "Tic-Tac-Toe", route: "tictactoe", icon: "❌" },
   { name: "Type Checker", route: "types", icon: "🧪" },
   { divider: true },
+  { name: "BotC", route: "botc", icon: "⏱️" },
   { name: "Murder Mystery", route: "murder", icon: "🔎" },
   { name: "Werewolf", route: "werewolf", icon: "🐺" },
 ];

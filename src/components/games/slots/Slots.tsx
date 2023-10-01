@@ -8,6 +8,7 @@ import PayoutTable from "./PayoutTable";
 import MoneyTable from "./MoneyTable";
 import ReelDisplay from "./ReelDisplay";
 import SlotMachine from "../../../apis/SlotMachine";
+import PlayerMenu from "../../common/header/PlayerMenu";
 
 /* Slots  ->  ReelDisplay
  *       |->  MoneyTable
@@ -35,9 +36,12 @@ const Slots: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h2" component="h1">
-        Casino Slot Machine
-      </Typography>
+      <div className="flex-container">
+        <Typography variant="h2" component="h1">
+          Casino Slot Machine
+        </Typography>
+        <PlayerMenu />
+      </div>
       <Grid container spacing={1} style={{ marginTop: "2em" }}>
         <Grid item sm={6} xs={12}>
           <Grid container spacing={1} style={{ marginBottom: "1em" }}>
