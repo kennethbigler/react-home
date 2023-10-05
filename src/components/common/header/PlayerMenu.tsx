@@ -79,7 +79,7 @@ const PlayerMenu: React.FC = () => {
                 <TextField
                   defaultValue={p.name}
                   onBlur={handleBlur(p.id)}
-                  onKeyPress={handleKeyPress(p.id)}
+                  onKeyDown={handleKeyPress(p.id)}
                   placeholder="Enter Player Name"
                   title={`player ${i} name`}
                 />

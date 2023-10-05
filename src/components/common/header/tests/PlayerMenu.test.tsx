@@ -5,6 +5,10 @@ import PlayerMenu from "../PlayerMenu";
 describe("common | header | PlayerMenu", () => {
   it("renders expected text", () => {
     render(<PlayerMenu />);
+    // open menu
+    expect(screen.getByText("Players")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Players"));
+    // test menu
     expect(screen.getByText("Edit Player Names")).toBeInTheDocument();
     expect(screen.getByText("Is Bot?")).toBeInTheDocument();
     expect(screen.getAllByPlaceholderText("Enter Player Name")).toBeDefined();
@@ -13,6 +17,12 @@ describe("common | header | PlayerMenu", () => {
 
   it("performs onToggle", () => {
     render(<PlayerMenu />);
+
+    // open menu
+    expect(screen.getByText("Players")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Players"));
+
+    // test menu
     const BotSwitch = screen
       .getByTitle("isBot-switch-0")
       .querySelector(".MuiSwitch-input");
@@ -20,7 +30,7 @@ describe("common | header | PlayerMenu", () => {
     // verify it renders properly
     expect(BotSwitch).toBeInTheDocument();
     expect(BotSwitch?.attributes?.getNamedItem("value")?.value).toEqual(
-      "false"
+      "false",
     );
 
     // click the expected element
@@ -32,6 +42,10 @@ describe("common | header | PlayerMenu", () => {
 
   it("performs name update onKeyPress", () => {
     render(<PlayerMenu />);
+
+    // open menu
+    expect(screen.getByText("Players")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Players"));
 
     // verify it renders properly
     expect(screen.getByDisplayValue("Ken")).toBeInTheDocument();
