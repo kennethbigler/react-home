@@ -10,56 +10,32 @@ import {
   BOTC_MAX_PLAYERS,
   BOTC_MIN_PLAYERS,
   BotCPlayer,
-} from "../../../constants/botc";
+} from "../../../recoil/botc-atom";
+import { playerDist } from "../../../constants/botc";
 
 interface BotcHeaderProps {
   script: number;
-  setScript: React.Dispatch<React.SetStateAction<number>>;
   numPlayers: number;
-  setNumPlayers: React.Dispatch<React.SetStateAction<number>>;
   botcPlayers: BotCPlayer[];
-  setBotcPlayers: React.Dispatch<React.SetStateAction<BotCPlayer[]>>;
+  handleUpdateScript: (i: number) => () => void;
+  handleUpdateNumPlayers: (_e: Event, value: number | number[]) => void;
+  handleUpdatePlayersBlur: (
+    i: number,
+  ) => (e: React.FocusEvent<HTMLInputElement>) => void;
+  handleUpdatePlayersKeyDown: (
+    i: number,
+  ) => (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 const BotcHeader = ({
   script,
-  setScript,
   numPlayers,
-  setNumPlayers,
   botcPlayers,
-  setBotcPlayers,
+  handleUpdateScript,
+  handleUpdateNumPlayers,
+  handleUpdatePlayersBlur,
+  handleUpdatePlayersKeyDown,
 }: BotcHeaderProps) => {
-  /** update number of players */
-  const handleSliderChange = (_e: Event, value: number | number[]) =>
-    setNumPlayers(value as number);
-
-  /** update player name onBlur */
-  const handleBlur =
-    (i: number) =>
-    (e: React.FocusEvent<HTMLInputElement>): void => {
-      const newPlayers = [...botcPlayers];
-      const newPlayer = { ...newPlayers[i], name: e.target.value || "" };
-      newPlayers[i] = newPlayer;
-      setBotcPlayers(newPlayers);
-    };
-
-  /** if enter key was pressed in textfield, update name */
-  const handleKeyDown =
-    (i: number) =>
-    (e: React.KeyboardEvent<HTMLDivElement>): void => {
-      if (e.key === "Enter") {
-        const newPlayers = [...botcPlayers];
-        const newPlayer = {
-          ...newPlayers[i],
-          name: (e.target as HTMLInputElement).value || "",
-        };
-        newPlayers[i] = newPlayer;
-        setBotcPlayers(newPlayers);
-      }
-    };
-
-  const handleGameSelection = (i: number) => () => setScript(i);
-
   // set player TextFields
   const playerTextFields = [];
   for (let i = 0; i < numPlayers; i += 1) {
@@ -69,8 +45,8 @@ const BotcHeader = ({
           defaultValue={botcPlayers[i].name}
           placeholder="Enter Player Name"
           title={`player ${i} name`}
-          onBlur={handleBlur(i)}
-          onKeyDown={handleKeyDown(i)}
+          onBlur={handleUpdatePlayersBlur(i)}
+          onKeyDown={handleUpdatePlayersKeyDown(i)}
         />
       </Grid>,
     );
@@ -79,7 +55,7 @@ const BotcHeader = ({
   return (
     <div className="flex-container">
       <Typography variant="h2" component="h1" gutterBottom>
-        Blood on the Clocktower
+        BotC
       </Typography>
       <InfoPopup title="Players">
         <Grid container spacing={1}>
@@ -87,26 +63,28 @@ const BotcHeader = ({
             <ButtonGroup aria-label="Select BotC Game">
               <Button
                 variant={script === 0 ? "contained" : "outlined"}
-                onClick={handleGameSelection(0)}
+                onClick={handleUpdateScript(0)}
               >
-                Trouble Brewing
+                TB
               </Button>
               <Button
                 variant={script === 1 ? "contained" : "outlined"}
-                onClick={handleGameSelection(1)}
+                onClick={handleUpdateScript(1)}
               >
-                Sects and Violets
+                S&V
               </Button>
               <Button
                 variant={script === 2 ? "contained" : "outlined"}
-                onClick={handleGameSelection(2)}
+                onClick={handleUpdateScript(2)}
               >
-                Bad Moon Rising
+                BMR
               </Button>
             </ButtonGroup>
           </Grid>
           <Grid item xs={12}>
-            <Typography>Count: {numPlayers}</Typography>
+            <Typography>
+              Count: {numPlayers} / Dist: {playerDist[numPlayers]}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Slider
@@ -114,7 +92,7 @@ const BotcHeader = ({
               min={BOTC_MIN_PLAYERS}
               max={BOTC_MAX_PLAYERS}
               value={numPlayers}
-              onChange={handleSliderChange}
+              onChange={handleUpdateNumPlayers}
             />
           </Grid>
           {playerTextFields}

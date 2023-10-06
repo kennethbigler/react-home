@@ -22,7 +22,7 @@ const DEFAULT_SEASON = 7;
 const newAYTOState = (season = DEFAULT_SEASON): AYTOState => ({
   matches: aytoSeasons[season].ladies.map(() => -1),
   noMatch: aytoSeasons[season].ladies.map(() =>
-    aytoSeasons[season].gents.map(() => false)
+    aytoSeasons[season].gents.map(() => false),
   ),
   roundPairings: [],
 });
@@ -32,7 +32,7 @@ export const areYouTheOneAtom = atom({
   key: "areYouTheOneAtom",
   default:
     (JSON.parse(
-      localStorage.getItem("are-you-the-one-atom") || "null"
+      localStorage.getItem("are-you-the-one-atom") || "null",
     ) as AYTOState) || newAYTOState(),
   effects: [
     ({ onSet }) => {
@@ -48,7 +48,7 @@ const aytoSeasonAtom = atom({
   key: "aytoSeason",
   default:
     (JSON.parse(
-      localStorage.getItem("ayto-season-atom") || "null"
+      localStorage.getItem("ayto-season-atom") || "null",
     ) as number) || DEFAULT_SEASON,
   effects: [
     ({ onSet }) => {

@@ -30,7 +30,7 @@ const gitAtom = atom({
 export const storyIdGitAtom = atom({
   key: "storyIdGitAtom",
   default: JSON.parse(
-    localStorage.getItem("story-id-git-atom") || '""'
+    localStorage.getItem("story-id-git-atom") || '""',
   ) as string,
   effects: [
     ({ onSet }) => {
@@ -44,7 +44,7 @@ export const storyIdGitAtom = atom({
 export const commitPrefixGitAtom = atom({
   key: "commitPrefixGitAtom",
   default: JSON.parse(
-    localStorage.getItem("commit-prefix-git-atom") || "true"
+    localStorage.getItem("commit-prefix-git-atom") || "true",
   ) as boolean,
   effects: [
     ({ onSet }) => {

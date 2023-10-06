@@ -39,7 +39,7 @@ const connect4Atom = atom({
   key: "connect4Atom",
   default:
     (JSON.parse(
-      localStorage.getItem("connect4-atom") || "null"
+      localStorage.getItem("connect4-atom") || "null",
     ) as Connect4State) || newConnect4Game(),
   effects: [
     ({ onSet }) => {

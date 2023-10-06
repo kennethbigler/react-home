@@ -23,7 +23,7 @@ const tikTacToeAtom = atom({
   key: "tikTacToeAtom",
   default:
     (JSON.parse(
-      localStorage.getItem("tik-tac-toe-atom") || "null"
+      localStorage.getItem("tik-tac-toe-atom") || "null",
     ) as TicTacToeState) || newTicTacToe(),
   effects: [
     ({ onSet }) => {

@@ -1,50 +1,62 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+import { useRecoilState } from "recoil";
 import BotcHeader from "./BotcHeader";
-import { BOTC_MAX_PLAYERS, BotCPlayer } from "../../../constants/botc";
-
-const botcPlayerShell: BotCPlayer = {
-  name: "Ken",
-  roles: [],
-  liar: false,
-  dead: false,
-};
-
-const initBotcPlayers: BotCPlayer[] = [];
-for (let i = 0; i < BOTC_MAX_PLAYERS; i += 1) {
-  initBotcPlayers.push(botcPlayerShell);
-}
+import botcAtom from "../../../recoil/botc-atom";
+import PlayerNotes from "./PlayerNotes";
 
 const BotC: React.FC = React.memo(() => {
-  const [script, setScript] = React.useState(0);
-  const [numPlayers, setNumPlayers] = React.useState(8);
-  const [botcPlayers, setBotcPlayers] = React.useState(initBotcPlayers);
+  const [{ script, numPlayers, botcPlayers }, setState] =
+    useRecoilState(botcAtom);
 
-  // set player Buttons
-  const playerButtons = [];
-  for (let i = 0; i < numPlayers; i += 1) {
-    playerButtons.push(
-      <Grid item xs={4} sm={3} md={2} xl={1} key={`playerNo${i}`}>
-        <Button variant="contained">{botcPlayers[i].name}</Button>
-      </Grid>,
-    );
-  }
+  /* ----------     Header Functions     ---------- */
+  /** update botc script used */
+  const handleUpdateScript = (i: number) => () =>
+    setState({ script: i, numPlayers, botcPlayers });
+
+  /** update number of players */
+  const handleUpdateNumPlayers = (_e: Event, value: number | number[]) =>
+    setState({ script, botcPlayers, numPlayers: value as number });
+
+  /** update player name onBlur */
+  const handleUpdatePlayersBlur =
+    (i: number) =>
+    (e: React.FocusEvent<HTMLInputElement>): void => {
+      const newPlayers = [...botcPlayers];
+      const newPlayer = { ...newPlayers[i], name: e.target.value || "" };
+      newPlayers[i] = newPlayer;
+      setState({ script, numPlayers, botcPlayers: newPlayers });
+    };
+  /** if enter key was pressed in textfield, update name */
+  const handleUpdatePlayersKeyDown =
+    (i: number) =>
+    (e: React.KeyboardEvent<HTMLDivElement>): void => {
+      if (e.key === "Enter") {
+        const newPlayers = [...botcPlayers];
+        const newPlayer = {
+          ...newPlayers[i],
+          name: (e.target as HTMLInputElement).value || "",
+        };
+        newPlayers[i] = newPlayer;
+        setState({ script, numPlayers, botcPlayers: newPlayers });
+      }
+    };
 
   return (
     <>
       <BotcHeader
         script={script}
-        setScript={setScript}
         numPlayers={numPlayers}
-        setNumPlayers={setNumPlayers}
         botcPlayers={botcPlayers}
-        setBotcPlayers={setBotcPlayers}
+        handleUpdateScript={handleUpdateScript}
+        handleUpdateNumPlayers={handleUpdateNumPlayers}
+        handleUpdatePlayersBlur={handleUpdatePlayersBlur}
+        handleUpdatePlayersKeyDown={handleUpdatePlayersKeyDown}
       />
-      {/* PlayerNotes */}
-      <Grid container spacing={1}>
-        {playerButtons}
-      </Grid>
+      <PlayerNotes
+        script={script}
+        numPlayers={numPlayers}
+        botcPlayers={botcPlayers}
+      />
     </>
   );
 });
