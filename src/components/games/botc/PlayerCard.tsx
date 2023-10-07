@@ -14,6 +14,12 @@ interface PlayerCardProps {
     key: "liar" | "dead" | "used",
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   updatePlayerRoles: (i: number, role: string, selected: boolean) => () => void;
+  updatePlayerNotesBlur: (
+    i: number,
+  ) => (e: React.FocusEvent<HTMLInputElement>) => void;
+  updatePlayerNotesKeyDown: (
+    i: number,
+  ) => (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 const PlayerCard = ({
@@ -22,6 +28,8 @@ const PlayerCard = ({
   player,
   updatePlayerStats,
   updatePlayerRoles,
+  updatePlayerNotesBlur,
+  updatePlayerNotesKeyDown,
 }: PlayerCardProps) => (
   <Grid item xs={6} sm={4} md={3} lg={2} xl={1}>
     <Card sx={{ padding: "5px", textAlign: "center" }}>
@@ -36,13 +44,16 @@ const PlayerCard = ({
           "",
         )}
       </Typography>
-      <InfoPopup title="Roles">
+      <Typography>{player.notes}</Typography>
+      <InfoPopup title={`Roles - ${player.name}`}>
         <RoleDialog
           script={script}
           playerNo={playerNo}
           player={player}
           updatePlayerStats={updatePlayerStats}
           updatePlayerRoles={updatePlayerRoles}
+          updatePlayerNotesBlur={updatePlayerNotesBlur}
+          updatePlayerNotesKeyDown={updatePlayerNotesKeyDown}
         />
       </InfoPopup>
     </Card>

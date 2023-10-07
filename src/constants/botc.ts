@@ -17,6 +17,7 @@ export const tb = {
   outsiders: ["Butler", "Recluse", "Drunk", "Saint"],
   minions: ["Poisoner", "Baron", "Spy", "Scarlet Woman"],
   demons: ["Imp"],
+  travelers: ["Thief", "Bureaucrat", "Gunslinger", "Scapegoat", "Beggar"],
 };
 
 export const snv = {
@@ -38,6 +39,7 @@ export const snv = {
   outsiders: ["Mutant", "Sweetheart", "Barber", "Klutz"],
   minions: ["Witch", "Pit-Hag", "Cerenovus", "Evil Twin"],
   demons: ["Fang Gu", "No Dashii", "Vigormortis", "Vortox"],
+  travelers: ["Barista", "Harlot", "Butcher", "Deviant", "Bone Collector"],
 };
 
 export const bmr = {
@@ -59,6 +61,7 @@ export const bmr = {
   outsiders: ["Goon", "Tinker", "Lunatic", "Moonchild"],
   minions: ["Godfather", "Assassin", "Devil's Advocate", "Mastermind"],
   demons: ["Zombuul", "Shabaloth", "Pukka", "Po"],
+  travelers: ["Apprentice", "Matron", "Judge", "Voudon", "Bishop"],
 };
 
 export const travelers = [

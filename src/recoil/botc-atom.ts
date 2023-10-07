@@ -3,6 +3,7 @@ import { atom } from "recoil";
 export interface BotCPlayer {
   name: string;
   roles: string[];
+  notes: string;
   liar: boolean;
   dead: boolean;
   used: boolean;
@@ -20,6 +21,7 @@ export interface BotCState {
 const botcPlayerShell: BotCPlayer = {
   name: "Ken",
   roles: [],
+  notes: "",
   liar: false,
   dead: false,
   used: false,
