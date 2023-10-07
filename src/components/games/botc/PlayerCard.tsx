@@ -45,7 +45,7 @@ const PlayerCard = ({
         )}
       </Typography>
       <Typography>{player.notes}</Typography>
-      <InfoPopup title={`Roles - ${player.name}`}>
+      <InfoPopup buttonText="Roles" title={`Roles - ${player.name}`}>
         <RoleDialog
           script={script}
           playerNo={playerNo}
