@@ -17,12 +17,12 @@ interface BotcHeaderProps {
   script: number;
   numPlayers: number;
   botcPlayers: BotCPlayer[];
-  handleUpdateScript: (i: number) => () => void;
-  handleUpdateNumPlayers: (_e: Event, value: number | number[]) => void;
-  handleUpdatePlayersBlur: (
+  updateScript: (i: number) => () => void;
+  updateNumPlayers: (_e: Event, value: number | number[]) => void;
+  updatePlayersBlur: (
     i: number,
   ) => (e: React.FocusEvent<HTMLInputElement>) => void;
-  handleUpdatePlayersKeyDown: (
+  updatePlayersKeyDown: (
     i: number,
   ) => (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
@@ -31,10 +31,10 @@ const BotcHeader = ({
   script,
   numPlayers,
   botcPlayers,
-  handleUpdateScript,
-  handleUpdateNumPlayers,
-  handleUpdatePlayersBlur,
-  handleUpdatePlayersKeyDown,
+  updateScript,
+  updateNumPlayers,
+  updatePlayersBlur,
+  updatePlayersKeyDown,
 }: BotcHeaderProps) => {
   // set player TextFields
   const playerTextFields = [];
@@ -45,8 +45,8 @@ const BotcHeader = ({
           defaultValue={botcPlayers[i].name}
           placeholder="Enter Player Name"
           title={`player ${i} name`}
-          onBlur={handleUpdatePlayersBlur(i)}
-          onKeyDown={handleUpdatePlayersKeyDown(i)}
+          onBlur={updatePlayersBlur(i)}
+          onKeyDown={updatePlayersKeyDown(i)}
         />
       </Grid>,
     );
@@ -63,19 +63,19 @@ const BotcHeader = ({
             <ButtonGroup aria-label="Select BotC Game">
               <Button
                 variant={script === 0 ? "contained" : "outlined"}
-                onClick={handleUpdateScript(0)}
+                onClick={updateScript(0)}
               >
                 TB
               </Button>
               <Button
                 variant={script === 1 ? "contained" : "outlined"}
-                onClick={handleUpdateScript(1)}
+                onClick={updateScript(1)}
               >
                 S&V
               </Button>
               <Button
                 variant={script === 2 ? "contained" : "outlined"}
-                onClick={handleUpdateScript(2)}
+                onClick={updateScript(2)}
               >
                 BMR
               </Button>
@@ -92,7 +92,7 @@ const BotcHeader = ({
               min={BOTC_MIN_PLAYERS}
               max={BOTC_MAX_PLAYERS}
               value={numPlayers}
-              onChange={handleUpdateNumPlayers}
+              onChange={updateNumPlayers}
             />
           </Grid>
           {playerTextFields}

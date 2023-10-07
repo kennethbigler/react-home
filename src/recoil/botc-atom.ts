@@ -19,7 +19,7 @@ export interface BotCState {
 
 const botcPlayerShell: BotCPlayer = {
   name: "Ken",
-  roles: ["Imp", "Spy"],
+  roles: [],
   liar: false,
   dead: false,
   used: false,

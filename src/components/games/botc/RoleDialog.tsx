@@ -8,12 +8,21 @@ import RoleButton from "./RoleButton";
 
 interface RoleDialogProps {
   script: number;
+  playerNo: number;
   player: BotCPlayer;
+  updatePlayerStats: (
+    i: number,
+    key: "liar" | "dead" | "used",
+  ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  updatePlayerRoles: (i: number, role: string, selected: boolean) => () => void;
 }
 
 const RoleDialog = ({
   script,
+  playerNo,
   player: { name, roles, liar, dead, used },
+  updatePlayerStats,
+  updatePlayerRoles,
 }: RoleDialogProps) => {
   let active;
   switch (script) {
@@ -33,14 +42,22 @@ const RoleDialog = ({
   const demons: ReactNode[] = [];
   active.townsfolk.forEach((town) =>
     townsfolk.push(
-      <RoleButton role={town} selected={roles.includes(town)} key={town} />,
+      <RoleButton
+        role={town}
+        playerNo={playerNo}
+        selected={roles.includes(town)}
+        updatePlayerRoles={updatePlayerRoles}
+        key={town}
+      />,
     ),
   );
   active.outsiders.forEach((outsider) =>
     outsiders.push(
       <RoleButton
         role={outsider}
+        playerNo={playerNo}
         selected={roles.includes(outsider)}
+        updatePlayerRoles={updatePlayerRoles}
         key={outsider}
       />,
     ),
@@ -49,14 +66,22 @@ const RoleDialog = ({
     minions.push(
       <RoleButton
         role={minion}
+        playerNo={playerNo}
         selected={roles.includes(minion)}
+        updatePlayerRoles={updatePlayerRoles}
         key={minion}
       />,
     ),
   );
   active.demons.forEach((demon) =>
     demons.push(
-      <RoleButton role={demon} selected={roles.includes(demon)} key={demon} />,
+      <RoleButton
+        role={demon}
+        playerNo={playerNo}
+        selected={roles.includes(demon)}
+        updatePlayerRoles={updatePlayerRoles}
+        key={demon}
+      />,
     ),
   );
 
@@ -70,9 +95,33 @@ const RoleDialog = ({
       </Grid>
       <Grid item xs={12}>
         <FormGroup row sx={{ display: "block", textAlign: "center" }}>
-          <FormControlLabel control={<Checkbox checked={liar} />} label="😈" />
-          <FormControlLabel control={<Checkbox checked={dead} />} label="💀" />
-          <FormControlLabel control={<Checkbox checked={used} />} label="❌" />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={liar}
+                onChange={updatePlayerStats(playerNo, "liar")}
+              />
+            }
+            label="😈"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={dead}
+                onChange={updatePlayerStats(playerNo, "dead")}
+              />
+            }
+            label="💀"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={used}
+                onChange={updatePlayerStats(playerNo, "used")}
+              />
+            }
+            label="❌"
+          />
         </FormGroup>
       </Grid>
       <Grid item xs={12}>
