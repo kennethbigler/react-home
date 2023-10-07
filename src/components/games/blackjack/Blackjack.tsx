@@ -61,7 +61,7 @@ const BlackJack: React.FC = () => {
     let newGameFunctions: GameFunctions[] = [];
     if (!newPlayers[turn.player].isBot) {
       newGameFunctions = getGameFunctions(
-        newPlayers[turn.player].hands[turn.hand]
+        newPlayers[turn.player].hands[turn.hand],
       );
     }
 
@@ -84,7 +84,7 @@ const BlackJack: React.FC = () => {
     let newGameFunctions: GameFunctions[] = [];
     if (!players[newTurn.player].isBot) {
       newGameFunctions = getGameFunctions(
-        players[newTurn.player].hands[newTurn.hand]
+        players[newTurn.player].hands[newTurn.hand],
       );
     }
     // check if the player has more than 1 hand
@@ -104,7 +104,7 @@ const BlackJack: React.FC = () => {
     const cards = [...hands[turn.hand].cards, ...drawnCards];
     const { weight, soft } = weighHand(cards);
     const newHands = hands.map((item, i) =>
-      i !== turn.hand ? item : { cards, weight, soft }
+      i !== turn.hand ? item : { cards, weight, soft },
     );
     // create new players object
     const newPlayers = [...players];
@@ -122,7 +122,7 @@ const BlackJack: React.FC = () => {
     let newGameFunctions: GameFunctions[] = [];
     if (!newPlayers[newTurn.player].isBot) {
       newGameFunctions = getGameFunctions(
-        newPlayers[newTurn.player].hands[newTurn.hand]
+        newPlayers[newTurn.player].hands[newTurn.hand],
       );
     }
     // check if the player has more than 1 hand
@@ -143,7 +143,7 @@ const BlackJack: React.FC = () => {
     const cards = [...hands[turn.hand].cards, ...drawnCards];
     const { weight, soft } = weighHand(cards);
     const newHands = hands.map((item, i) =>
-      i !== turn.hand ? item : { cards, weight, soft }
+      i !== turn.hand ? item : { cards, weight, soft },
     );
     // create new players object
     const newPlayers = [...players];
@@ -152,7 +152,7 @@ const BlackJack: React.FC = () => {
     let newGameFunctions: GameFunctions[] = [];
     if (!newPlayers[turn.player].isBot) {
       newGameFunctions = getGameFunctions(
-        newPlayers[turn.player].hands[turn.hand]
+        newPlayers[turn.player].hands[turn.hand],
       );
     }
     // update state
@@ -201,7 +201,7 @@ const BlackJack: React.FC = () => {
     let newGameFunctions: GameFunctions[] = [];
     if (!newPlayers[turn.player].isBot) {
       newGameFunctions = getGameFunctions(
-        newPlayers[turn.player].hands[turn.hand]
+        newPlayers[turn.player].hands[turn.hand],
       );
     }
     // update game state
@@ -226,7 +226,7 @@ const BlackJack: React.FC = () => {
       const cards = [...hands[turn.hand].cards, ...drawnCards];
       const { weight, soft } = weighHand(cards);
       const newHands = hands.map((item, i) =>
-        i !== turn.hand ? item : { cards, weight, soft }
+        i !== turn.hand ? item : { cards, weight, soft },
       );
       // create new players object
       const newPlayers = [...players];
@@ -271,7 +271,7 @@ const BlackJack: React.FC = () => {
   const cardClickHandler = (
     playerNo: number,
     handNo: number,
-    cardNo: number
+    cardNo: number,
   ): void => {
     // eslint-disable-next-line no-console
     console.log(players[playerNo].hands[handNo].cards[cardNo]);
@@ -283,7 +283,7 @@ const BlackJack: React.FC = () => {
       bj: { gameFunctions, hideHands },
       turn,
       players: players.map((player) =>
-        player.id === id ? { ...player, bet } : player
+        player.id === id ? { ...player, bet } : player,
       ),
     });
   };

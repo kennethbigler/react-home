@@ -6,7 +6,7 @@ export const slotsAtom = atom({
   key: "slotsAtom",
   default:
     (JSON.parse(
-      localStorage.getItem("slots-atom") || "null"
+      localStorage.getItem("slots-atom") || "null",
     ) as SlotDisplay[]) || SlotMachine.pullHandle(),
   effects: [
     ({ onSet }) => {

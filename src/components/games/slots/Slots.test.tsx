@@ -18,7 +18,7 @@ describe("games | slots | Slots", () => {
     expect(screen.getByText("Casino Slot Machine")).toBeInTheDocument();
     expect(screen.getByText("Spin")).toBeInTheDocument();
     // this is the spin button ^v
-    expect(screen.getByRole("button")).toBeInTheDocument();
+    expect(screen.getAllByRole("button")).toHaveLength(2);
     expect(screen.getByText("Player")).toBeInTheDocument();
     expect(screen.getByText("Money")).toBeInTheDocument();
     expect(screen.getByText("Ken")).toBeInTheDocument();

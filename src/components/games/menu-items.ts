@@ -19,6 +19,10 @@ const menuItems: MenuItem[] = [
   { name: "Family Feud", route: "family-feud", icon: "👨‍👩‍👧‍👦" },
   { name: "Tic-Tac-Toe", route: "tictactoe", icon: "❌" },
   { name: "Type Checker", route: "types", icon: "🧪" },
+  { divider: true },
+  { name: "BotC", route: "botc", icon: "⏱️" },
+  { name: "Murder Mystery", route: "murder", icon: "🔎" },
+  { name: "Werewolf", route: "werewolf", icon: "🐺" },
 ];
 
 export default menuItems;

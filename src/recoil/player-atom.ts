@@ -23,7 +23,7 @@ export const defaultWeigh: WeighFunc = () => ({ weight: 0, soft: false });
 export const newPlayer = (
   id: number,
   name = `Bot-${id}`,
-  isBot = true
+  isBot = true,
 ): DBPlayer => ({
   id,
   name,

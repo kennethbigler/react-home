@@ -1,12 +1,12 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import MurderMystery from "./MurderMystery";
 
-describe("resume | murder-mystery", () => {
+describe("games | murder-mystery", () => {
   it("renders as expected", () => {
     render(<MurderMystery />);
 
     expect(
-      screen.getByText("Murder at The Grand Cinema Magic Hotel and Casino")
+      screen.getByText("Murder at The Grand Cinema Magic Hotel and Casino"),
     ).toBeInTheDocument();
 
     expect(screen.getByText("The Casino Owner")).toBeInTheDocument();
@@ -14,7 +14,7 @@ describe("resume | murder-mystery", () => {
     expect(screen.getByText("The Gun Nut")).toBeInTheDocument();
     expect(screen.getByText("The Escort")).toBeInTheDocument();
     expect(
-      screen.getByText("The Recently Fired Gladiator Actor")
+      screen.getByText("The Recently Fired Gladiator Actor"),
     ).toBeInTheDocument();
     expect(screen.getByText("The Singing Coach")).toBeInTheDocument();
     expect(screen.getByText("The Bouncer")).toBeInTheDocument();
@@ -31,7 +31,7 @@ describe("resume | murder-mystery", () => {
     expect(screen.getByText("The Librarian")).toBeInTheDocument();
     expect(screen.getByText("The Nearly Famous Author")).toBeInTheDocument();
     expect(
-      screen.getByText("The Professional Poker Player")
+      screen.getByText("The Professional Poker Player"),
     ).toBeInTheDocument();
 
     expect(screen.getAllByText("Required")).toHaveLength(6);
@@ -53,17 +53,17 @@ describe("resume | murder-mystery", () => {
 
     expect(screen.getAllByRole("button")[0]).toHaveAttribute(
       "aria-expanded",
-      "false"
+      "false",
     );
     fireEvent.click(screen.getAllByRole("button")[0]);
     expect(screen.getAllByRole("button")[0]).toHaveAttribute(
       "aria-expanded",
-      "true"
+      "true",
     );
     fireEvent.click(screen.getAllByRole("button")[0]);
     expect(screen.getAllByRole("button")[0]).toHaveAttribute(
       "aria-expanded",
-      "false"
+      "false",
     );
   });
 });

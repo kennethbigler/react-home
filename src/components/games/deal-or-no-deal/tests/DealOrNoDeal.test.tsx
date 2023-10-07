@@ -10,7 +10,7 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
     expect(screen.getByText("Your Case: ?")).toBeInTheDocument();
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
     expect(screen.getByText("Ken: $100")).toBeInTheDocument();
-    expect(screen.getAllByRole("button")).toHaveLength(26);
+    expect(screen.getAllByRole("button")).toHaveLength(27);
   });
 
   it("plays a game and takes a deal", async () => {
@@ -20,24 +20,24 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
     expect(screen.getByText("Ken: $100")).toBeInTheDocument();
     const buttons = screen.getAllByRole("button");
-    expect(buttons).toHaveLength(26);
+    expect(buttons).toHaveLength(27);
 
     // select case 7
-    fireEvent.click(buttons[6]);
+    fireEvent.click(buttons[7]);
 
     expect(screen.getByText("Your Case: 7")).toBeInTheDocument();
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
     expect(screen.getByText("Ken: $0")).toBeInTheDocument();
 
     // open cases 1-6
-    fireEvent.click(buttons[0]);
     fireEvent.click(buttons[1]);
     fireEvent.click(buttons[2]);
     fireEvent.click(buttons[3]);
     fireEvent.click(buttons[4]);
     fireEvent.click(buttons[5]);
+    fireEvent.click(buttons[6]);
     // this one should not open
-    fireEvent.click(buttons[7]);
+    fireEvent.click(buttons[8]);
 
     await waitFor(() => screen.getByText("Deal"));
     expect(screen.getByText("No Deal")).toBeInTheDocument();
@@ -51,11 +51,11 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
 
     await waitFor(() => screen.getByText("Number of Cases to Open: 5"));
     // open cases 8-12
-    fireEvent.click(buttons[7]);
     fireEvent.click(buttons[8]);
     fireEvent.click(buttons[9]);
     fireEvent.click(buttons[10]);
     fireEvent.click(buttons[11]);
+    fireEvent.click(buttons[12]);
 
     await waitFor(() => screen.getByText("Deal"));
     expect(screen.getByText("No Deal")).toBeInTheDocument();
@@ -76,24 +76,24 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
     expect(screen.getByText("Ken: $100")).toBeInTheDocument();
     const buttons = screen.getAllByRole("button");
-    expect(buttons).toHaveLength(26);
+    expect(buttons).toHaveLength(27);
 
     // select case 7
-    fireEvent.click(buttons[6]);
+    fireEvent.click(buttons[7]);
 
     expect(screen.getByText("Your Case: 7")).toBeInTheDocument();
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
     expect(screen.getByText("Ken: $0")).toBeInTheDocument();
 
     // open cases 1-6
-    fireEvent.click(buttons[0]);
     fireEvent.click(buttons[1]);
     fireEvent.click(buttons[2]);
     fireEvent.click(buttons[3]);
     fireEvent.click(buttons[4]);
     fireEvent.click(buttons[5]);
+    fireEvent.click(buttons[6]);
     // this one should not open
-    fireEvent.click(buttons[7]);
+    fireEvent.click(buttons[8]);
     await waitFor(() => screen.getByText("Deal"));
     expect(screen.getByText("No Deal")).toBeInTheDocument();
     // there should only be 2 buttons now
@@ -105,59 +105,59 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
 
     // open cases 8-12
     await waitFor(() => screen.getByText("Number of Cases to Open: 5"));
-    fireEvent.click(buttons[7]);
     fireEvent.click(buttons[8]);
     fireEvent.click(buttons[9]);
     fireEvent.click(buttons[10]);
     fireEvent.click(buttons[11]);
+    fireEvent.click(buttons[12]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open cases 13-16
     await waitFor(() => screen.getByText("Number of Cases to Open: 4"));
-    fireEvent.click(buttons[12]);
     fireEvent.click(buttons[13]);
     fireEvent.click(buttons[14]);
     fireEvent.click(buttons[15]);
+    fireEvent.click(buttons[16]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open cases 17-19
     await waitFor(() => screen.getByText("Number of Cases to Open: 3"));
-    fireEvent.click(buttons[16]);
     fireEvent.click(buttons[17]);
     fireEvent.click(buttons[18]);
+    fireEvent.click(buttons[19]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open cases 20-21
     await waitFor(() => screen.getByText("Number of Cases to Open: 2"));
-    fireEvent.click(buttons[19]);
     fireEvent.click(buttons[20]);
+    fireEvent.click(buttons[21]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open case 22
     await waitFor(() => screen.getByText("Number of Cases to Open: 1"));
-    fireEvent.click(buttons[21]);
+    fireEvent.click(buttons[22]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open case 23
     await waitFor(() => screen.getByText("Number of Cases to Open: 1"));
-    fireEvent.click(buttons[22]);
+    fireEvent.click(buttons[23]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open case 24
     await waitFor(() => screen.getByText("Number of Cases to Open: 1"));
-    fireEvent.click(buttons[23]);
+    fireEvent.click(buttons[24]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open case 25
     await waitFor(() => screen.getByText("Number of Cases to Open: 1"));
-    fireEvent.click(buttons[24]);
+    fireEvent.click(buttons[25]);
     await waitFor(() => screen.getByText("Deal"));
 
     // swap
@@ -173,24 +173,24 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
     expect(screen.getByText("Ken: $100")).toBeInTheDocument();
     const buttons = screen.getAllByRole("button");
-    expect(buttons).toHaveLength(26);
+    expect(buttons).toHaveLength(27);
 
     // select case 7
-    fireEvent.click(buttons[6]);
+    fireEvent.click(buttons[7]);
 
     expect(screen.getByText("Your Case: 7")).toBeInTheDocument();
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
     expect(screen.getByText("Ken: $0")).toBeInTheDocument();
 
     // open cases 1-6
-    fireEvent.click(buttons[0]);
     fireEvent.click(buttons[1]);
     fireEvent.click(buttons[2]);
     fireEvent.click(buttons[3]);
     fireEvent.click(buttons[4]);
     fireEvent.click(buttons[5]);
+    fireEvent.click(buttons[6]);
     // this one should not open
-    fireEvent.click(buttons[7]);
+    fireEvent.click(buttons[8]);
     await waitFor(() => screen.getByText("Deal"));
     expect(screen.getByText("No Deal")).toBeInTheDocument();
     // there should only be 2 buttons now
@@ -202,59 +202,59 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
 
     // open cases 8-12
     await waitFor(() => screen.getByText("Number of Cases to Open: 5"));
-    fireEvent.click(buttons[7]);
     fireEvent.click(buttons[8]);
     fireEvent.click(buttons[9]);
     fireEvent.click(buttons[10]);
     fireEvent.click(buttons[11]);
+    fireEvent.click(buttons[12]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open cases 13-16
     await waitFor(() => screen.getByText("Number of Cases to Open: 4"));
-    fireEvent.click(buttons[12]);
     fireEvent.click(buttons[13]);
     fireEvent.click(buttons[14]);
     fireEvent.click(buttons[15]);
+    fireEvent.click(buttons[16]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open cases 17-19
     await waitFor(() => screen.getByText("Number of Cases to Open: 3"));
-    fireEvent.click(buttons[16]);
     fireEvent.click(buttons[17]);
     fireEvent.click(buttons[18]);
+    fireEvent.click(buttons[19]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open cases 20-21
     await waitFor(() => screen.getByText("Number of Cases to Open: 2"));
-    fireEvent.click(buttons[19]);
     fireEvent.click(buttons[20]);
+    fireEvent.click(buttons[21]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open case 22
     await waitFor(() => screen.getByText("Number of Cases to Open: 1"));
-    fireEvent.click(buttons[21]);
+    fireEvent.click(buttons[22]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open case 23
     await waitFor(() => screen.getByText("Number of Cases to Open: 1"));
-    fireEvent.click(buttons[22]);
+    fireEvent.click(buttons[23]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open case 24
     await waitFor(() => screen.getByText("Number of Cases to Open: 1"));
-    fireEvent.click(buttons[23]);
+    fireEvent.click(buttons[24]);
     await waitFor(() => screen.getByText("Deal"));
     fireEvent.click(screen.getByText("No Deal"));
 
     // open case 25
     await waitFor(() => screen.getByText("Number of Cases to Open: 1"));
-    fireEvent.click(buttons[24]);
+    fireEvent.click(buttons[25]);
     await waitFor(() => screen.getByText("Deal"));
 
     // swap

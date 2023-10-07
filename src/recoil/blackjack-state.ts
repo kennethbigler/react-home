@@ -25,7 +25,7 @@ export const blackjackAtom = atom({
   key: "blackjackAtom",
   default:
     (JSON.parse(
-      localStorage.getItem("blackjack-atom") || "null"
+      localStorage.getItem("blackjack-atom") || "null",
     ) as BlackjackState) || newBlackjackGame(),
   effects: [
     ({ onSet }) => {

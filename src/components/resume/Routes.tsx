@@ -8,8 +8,6 @@ import Education from "./education";
 import TravelMap from "./travel-map";
 import Resume from "./resume";
 import GitTools from "./git-tools";
-import MurderMystery from "./murder-mystery";
-import Werewolf from "./werewolf";
 import GraphQL from "./graphql";
 import Cars from "./cars";
 
@@ -30,10 +28,8 @@ const ResumeRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
       <Route path="education/*" element={<Education />} />
       <Route path="git-tools/*" element={<GitTools />} />
       <Route path="graphql/*" element={<GraphQL />} />
-      <Route path="murder/*" element={<MurderMystery />} />
       <Route path="resume/*" element={<Resume />} />
       <Route path="travel/*" element={<TravelMap />} />
-      <Route path="werewolf/*" element={<Werewolf />} />
       <Route path="work/*" element={<Work />} />
     </Routes>
   </>

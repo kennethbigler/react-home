@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useRecoilState } from "recoil";
+import SimplePopover from "./ButtonPopover";
 import playerAtom from "../../../recoil/player-atom";
 
 const namePadStyles: React.CSSProperties = {
@@ -61,48 +62,50 @@ const PlayerMenu: React.FC = () => {
     };
 
   return (
-    <div style={namePadStyles}>
-      <Grid container spacing={1}>
-        <Grid item xs={9}>
-          <Typography variant="h5">Edit Player Names</Typography>
-        </Grid>
-        <Grid item xs={3}>
-          <Typography variant="h5">Is Bot?</Typography>
-        </Grid>
-      </Grid>
-      {players.map((p, i) =>
-        p.id !== 0 ? (
-          <Grid key={`${p.name},${i}`} container spacing={1}>
-            <Grid item xs={9}>
-              <TextField
-                defaultValue={p.name}
-                onBlur={handleBlur(p.id)}
-                onKeyPress={handleKeyPress(p.id)}
-                placeholder="Enter Player Name"
-                title={`player ${i} name`}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <Switch
-                checked={isBot[i]}
-                value={isBot[i]}
-                onChange={(_e, isC): void => handleToggle(p.id, isC)}
-                title={`isBot-switch-${i}`}
-              />
-            </Grid>
+    <SimplePopover buttonText="Players">
+      <div style={namePadStyles}>
+        <Grid container spacing={1}>
+          <Grid item xs={9}>
+            <Typography variant="h5">Edit Player Names</Typography>
           </Grid>
-        ) : (
-          <Grid key={`${p.name},${i}`} container spacing={1}>
-            <Grid item xs={9}>
-              <Typography variant="h5">{p.name}</Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Switch checked disabled />
-            </Grid>
+          <Grid item xs={3}>
+            <Typography variant="h5">Is Bot?</Typography>
           </Grid>
-        )
-      )}
-    </div>
+        </Grid>
+        {players.map((p, i) =>
+          p.id !== 0 ? (
+            <Grid key={`${p.name},${i}`} container spacing={1}>
+              <Grid item xs={9}>
+                <TextField
+                  defaultValue={p.name}
+                  onBlur={handleBlur(p.id)}
+                  onKeyDown={handleKeyPress(p.id)}
+                  placeholder="Enter Player Name"
+                  title={`player ${i} name`}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <Switch
+                  checked={isBot[i]}
+                  value={isBot[i]}
+                  onChange={(_e, isC): void => handleToggle(p.id, isC)}
+                  title={`isBot-switch-${i}`}
+                />
+              </Grid>
+            </Grid>
+          ) : (
+            <Grid key={`${p.name},${i}`} container spacing={1}>
+              <Grid item xs={9}>
+                <Typography variant="h5">{p.name}</Typography>
+              </Grid>
+              <Grid item xs={3}>
+                <Switch checked disabled />
+              </Grid>
+            </Grid>
+          ),
+        )}
+      </div>
+    </SimplePopover>
   );
 };
 

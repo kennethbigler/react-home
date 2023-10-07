@@ -21,8 +21,6 @@ interface HeaderProps {
   children: (onItemClick: ItemClick) => React.ReactElement<NavProps>;
   /** callback function, wrapped with logic, then passed as onItemClick to children */
   handleNav?: (loc: string) => void;
-  /** show/hide the player editor button */
-  showPlayers?: boolean;
 }
 
 const Header = (props: HeaderProps): React.ReactElement => {
@@ -30,7 +28,7 @@ const Header = (props: HeaderProps): React.ReactElement => {
   const {
     palette: { mode },
   } = useTheme();
-  const { children, handleNav = noop, showPlayers = false } = props;
+  const { children, handleNav = noop } = props;
 
   /** close the menu and call the passed callback */
   const handleNavigation = React.useCallback(
@@ -38,18 +36,14 @@ const Header = (props: HeaderProps): React.ReactElement => {
       setIsOpen(false);
       handleNav(loc);
     },
-    [handleNav, setIsOpen]
+    [handleNav, setIsOpen],
   );
 
   const textColor = mode === "light" ? "inherit" : "default";
 
   return (
     <>
-      <TopBar
-        toggleOpen={toggleOpen}
-        showPlayers={showPlayers}
-        textColor={textColor}
-      />
+      <TopBar toggleOpen={toggleOpen} textColor={textColor} />
       <Drawer onClose={toggleOpen} open={isOpen}>
         <AppBar position="sticky">
           <Toolbar disableGutters>

@@ -8,7 +8,8 @@ import originalMenuItems, { MenuItem } from "./menu-items";
 
 const menuItems = [...originalMenuItems];
 const casinoItems = menuItems.splice(2, 5);
-const gameItems = menuItems.splice(3, menuItems.length);
+const gameItems = menuItems.splice(3, 5);
+const socialItems = menuItems.splice(4, menuItems.length);
 
 interface HomeProps {
   onItemClick?: (loc: string) => void;
@@ -19,7 +20,7 @@ const menuWrapperStyles: React.CSSProperties = {
   justifyContent: "space-around",
   flexWrap: "wrap",
 };
-const dividerStyles: React.CSSProperties = { marginTop: 60 };
+const dividerStyles: React.CSSProperties = { marginTop: 40 };
 const subHeaderStyles: React.CSSProperties = {
   textAlign: "left",
   marginBottom: 40,
@@ -27,27 +28,24 @@ const subHeaderStyles: React.CSSProperties = {
 
 const generateMenuItems =
   (onItemClick?: (loc: string) => void) =>
-  ({ name, route, icon }: MenuItem) =>
-    (
-      <Card
-        sx={{ width: 250, cursor: "pointer" }}
-        role="link"
-        tabIndex={0}
-        key={name}
-        onClick={(): void =>
-          onItemClick && onItemClick(`/games/${route || ""}`)
-        }
-      >
-        <CardContent>
-          <Typography variant="h5" component="h4" textAlign="center">
-            {name}
-          </Typography>
-          <Avatar style={{ margin: "auto", marginTop: 30, color: "white" }}>
-            {icon}
-          </Avatar>
-        </CardContent>
-      </Card>
-    );
+  ({ name, route, icon }: MenuItem) => (
+    <Card
+      sx={{ width: 250, cursor: "pointer", marginBottom: "20px" }}
+      role="link"
+      tabIndex={0}
+      key={name}
+      onClick={(): void => onItemClick && onItemClick(`/games/${route || ""}`)}
+    >
+      <CardContent>
+        <Typography variant="h5" component="h4" textAlign="center">
+          {name}
+        </Typography>
+        <Avatar style={{ margin: "auto", marginTop: 30, color: "white" }}>
+          {icon}
+        </Avatar>
+      </CardContent>
+    </Card>
+  );
 
 const Home: React.FC<HomeProps> = React.memo(({ onItemClick }: HomeProps) => (
   <div style={{ textAlign: "center", marginTop: 20 }}>
@@ -76,6 +74,13 @@ const Home: React.FC<HomeProps> = React.memo(({ onItemClick }: HomeProps) => (
     </Typography>
     <div style={menuWrapperStyles}>
       {gameItems.map(generateMenuItems(onItemClick))}
+    </div>
+    <hr style={dividerStyles} />
+    <Typography variant="h4" component="h3" style={subHeaderStyles}>
+      Social Deduction
+    </Typography>
+    <div style={menuWrapperStyles}>
+      {socialItems.map(generateMenuItems(onItemClick))}
     </div>
   </div>
 ));

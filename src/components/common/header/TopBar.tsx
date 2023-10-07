@@ -6,8 +6,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import Switch from "@mui/material/Switch";
-import SimplePopover from "./ButtonPopover";
-import PlayerMenu from "./PlayerMenu";
 import themeAtom, { darkTheme, lightTheme } from "../../../recoil/theme-atom";
 
 const flexLeftStyles: React.CSSProperties = {
@@ -24,8 +22,6 @@ const label = { inputProps: { "aria-label": "Theme Toggle Switch" } };
 interface TopBarProps {
   /** change the color scheme of the icon */
   textColor: "inherit" | "primary" | "secondary" | "default" | undefined;
-  /** show/hide the player editor button */
-  showPlayers?: boolean;
   /** callback called onClick of Icon or Menu text */
   toggleOpen: React.MouseEventHandler;
 }
@@ -40,7 +36,7 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
     setChecked(!checked);
   };
 
-  const { toggleOpen, showPlayers = false, textColor } = props;
+  const { toggleOpen, textColor } = props;
 
   return (
     <AppBar style={spanTopStyles} className={`header-${theme.mode}-theme`}>
@@ -61,13 +57,6 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
               </Typography>
             </IconButton>
           </div>
-          {showPlayers && (
-            <div style={flexRightStyles}>
-              <SimplePopover buttonText="Players">
-                <PlayerMenu />
-              </SimplePopover>
-            </div>
-          )}
           <div style={flexRightStyles}>
             <Switch
               checked={checked}
@@ -84,4 +73,4 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
   );
 };
 
-export default React.memo(TopBar);
+export default TopBar;

@@ -14,14 +14,13 @@ describe("resume | Menu", () => {
     expect(screen.getByText("GraphQL Demo")).toBeInTheDocument();
     expect(screen.getByText("Cars")).toBeInTheDocument();
     expect(screen.getByText("Travel Map")).toBeInTheDocument();
-    expect(screen.getByText("Murder Mystery")).toBeInTheDocument();
     expect(screen.getByText("React Games")).toBeInTheDocument();
     expect(screen.getByText("GitHub")).toBeInTheDocument();
     expect(screen.getByText("LinkedIn")).toBeInTheDocument();
     expect(
       screen.getByAltText(
-        "profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
-      )
+        "profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers",
+      ),
     ).toBeInTheDocument();
   });
 
@@ -42,21 +41,21 @@ describe("resume | Menu", () => {
 
     fireEvent.click(screen.getByText("GitHub"));
     expect(windowOpen).toHaveBeenCalledWith(
-      "https://github.com/kennethbigler/react-home"
+      "https://github.com/kennethbigler/react-home",
     );
 
     fireEvent.click(screen.getByText("LinkedIn"));
     expect(windowOpen).toHaveBeenCalledWith(
-      "https://www.linkedin.com/in/kennethbigler"
+      "https://www.linkedin.com/in/kennethbigler",
     );
 
     fireEvent.click(
       screen.getByAltText(
-        "profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
-      )
+        "profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers",
+      ),
     );
     expect(windowOpen).toHaveBeenCalledWith(
-      "https://stackoverflow.com/users/4830309/ken-bigler"
+      "https://stackoverflow.com/users/4830309/ken-bigler",
     );
 
     expect(windowOpen).toHaveBeenCalledTimes(3);

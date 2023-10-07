@@ -7,28 +7,16 @@ describe("common | header | TopBar", () => {
   describe("basic props tests", () => {
     it("changes textColor as expected", () => {
       const { rerender } = render(
-        <TopBar textColor="primary" toggleOpen={vi.fn()} />
+        <TopBar textColor="primary" toggleOpen={vi.fn()} />,
       );
       expect(screen.getByTitle("Icon Menu Button").className).toContain(
-        "MuiIconButton-colorPrimary"
+        "MuiIconButton-colorPrimary",
       );
 
       rerender(<TopBar textColor="secondary" toggleOpen={vi.fn()} />);
       expect(screen.getByTitle("Icon Menu Button").className).toContain(
-        "MuiIconButton-colorSecondary"
+        "MuiIconButton-colorSecondary",
       );
-    });
-
-    it("shows players as expected", () => {
-      const { rerender } = render(
-        <TopBar textColor="primary" toggleOpen={vi.fn()} showPlayers />
-      );
-      expect(screen.getByText("Players")).toBeInTheDocument();
-
-      rerender(
-        <TopBar textColor="primary" toggleOpen={vi.fn()} showPlayers={false} />
-      );
-      expect(screen.queryByText("Players")).toBeNull();
     });
 
     it("toggles open as expected", () => {
@@ -45,14 +33,14 @@ describe("common | header | TopBar", () => {
     it("toggles theme as expected", () => {
       const handleOpen = vi.fn();
       const { container } = render(
-        <TopBar textColor="primary" toggleOpen={handleOpen} />
+        <TopBar textColor="primary" toggleOpen={handleOpen} />,
       );
       const ThemeToggle = screen
         .getByTitle("Theme Toggle Switch")
         .querySelector(".MuiSwitch-input");
 
       expect(ThemeToggle?.attributes?.getNamedItem("value")?.value).toEqual(
-        "false"
+        "false",
       );
       expect(container.querySelector(".header-light-theme")).toBeNull();
       expect(container.querySelector(".header-dark-theme")).toBeInTheDocument();
@@ -60,10 +48,10 @@ describe("common | header | TopBar", () => {
       fireEvent.click(ThemeToggle || screen.getByTitle("Theme Toggle Switch"));
 
       expect(ThemeToggle?.attributes?.getNamedItem("value")?.value).toEqual(
-        "true"
+        "true",
       );
       expect(
-        container.querySelector(".header-light-theme")
+        container.querySelector(".header-light-theme"),
       ).toBeInTheDocument();
       expect(container.querySelector(".header-dark-theme")).toBeNull();
     });

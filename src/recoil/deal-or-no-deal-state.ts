@@ -83,7 +83,7 @@ export const dealOrNoDealAtom = atom({
   key: "dealOrNoDealAtom",
   default:
     (JSON.parse(
-      localStorage.getItem("deal-or-no-deal-atom") || "null"
+      localStorage.getItem("deal-or-no-deal-atom") || "null",
     ) as DNDState) || newDNDGame(),
   effects: [
     ({ onSet }) => {

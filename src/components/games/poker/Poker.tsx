@@ -10,6 +10,7 @@ import pokerState, {
   newPokerGameState,
 } from "../../../recoil/poker-state";
 import { DBPlayer, defaultWeigh } from "../../../recoil/player-atom";
+import PlayerMenu from "../../common/header/PlayerMenu";
 
 const Poker: React.FC = () => {
   const [{ poker, turn, players }, setState] = useRecoilState(pokerState);
@@ -20,7 +21,7 @@ const Poker: React.FC = () => {
    * then add new cards to the hand */
   const discard = async (
     cardsToDiscardInDB: number[],
-    player: DBPlayer
+    player: DBPlayer,
   ): Promise<DBPlayer> => {
     const { hands } = player;
     const newPlayer = { ...player };
@@ -120,13 +121,13 @@ const Poker: React.FC = () => {
   const handleDiscard = async (
     tempPlayers: DBPlayer[],
     tempTurn: number,
-    tempCardsToDiscard: number[]
+    tempCardsToDiscard: number[],
   ): Promise<void> => {
     try {
       const newPlayers = [...players];
       const newPlayer = await discard(
         tempCardsToDiscard,
-        tempPlayers[tempTurn]
+        tempPlayers[tempTurn],
       );
       newPlayers[tempTurn] = newPlayer;
       setState({
@@ -172,7 +173,7 @@ const Poker: React.FC = () => {
               status: "",
               hands: [],
               bet: 5,
-            })
+            }),
           );
           setState({
             poker: newPokerGameState(),
@@ -196,7 +197,7 @@ const Poker: React.FC = () => {
   const cardClickHandler = (
     _playerNo: number,
     _handNo: number,
-    cardNo: number
+    cardNo: number,
   ): void => {
     const newCardsToDiscard = [...cardsToDiscard];
     // find card
@@ -223,9 +224,12 @@ const Poker: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h2" component="h1" gutterBottom>
-        5 Card Draw Poker
-      </Typography>
+      <div className="flex-container">
+        <Typography variant="h2" component="h1" gutterBottom>
+          5 Card Draw Poker
+        </Typography>
+        <PlayerMenu />
+      </div>
       <GameTable
         cardClickHandler={cardClickHandler}
         cardsToDiscard={cardsToDiscard}

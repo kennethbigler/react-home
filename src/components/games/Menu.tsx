@@ -25,7 +25,7 @@ const Menu: React.FC<MenuProps> = React.memo(({ onItemClick }: MenuProps) => (
         >
           {item.name}
         </MenuItem>
-      )
+      ),
     )}
   </MenuList>
 ));
