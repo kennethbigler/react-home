@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 
 interface RoleButtonProps {
   role: string;
+  color: "info" | "error" | "warning";
   playerNo: number;
   selected: boolean;
   updatePlayerRoles: (i: number, role: string, selected: boolean) => () => void;
@@ -10,6 +11,7 @@ interface RoleButtonProps {
 
 const RoleButton = ({
   role,
+  color,
   playerNo,
   selected,
   updatePlayerRoles,
@@ -17,7 +19,7 @@ const RoleButton = ({
   <Grid item xs={6} sx={{ textAlign: "center" }}>
     <Button
       variant={selected ? "contained" : "outlined"}
-      color={selected ? "primary" : "secondary"}
+      color={color}
       sx={{ padding: "6px", width: "100%" }}
       onClick={updatePlayerRoles(playerNo, role, selected)}
     >

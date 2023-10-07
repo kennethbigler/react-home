@@ -11,6 +11,12 @@ interface PlayerNotesProps {
     key: "liar" | "dead" | "used",
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   updatePlayerRoles: (i: number, role: string, selected: boolean) => () => void;
+  updatePlayerNotesBlur: (
+    i: number,
+  ) => (e: React.FocusEvent<HTMLInputElement>) => void;
+  updatePlayerNotesKeyDown: (
+    i: number,
+  ) => (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 const PlayerNotes = ({
@@ -19,6 +25,8 @@ const PlayerNotes = ({
   botcPlayers,
   updatePlayerStats,
   updatePlayerRoles,
+  updatePlayerNotesBlur,
+  updatePlayerNotesKeyDown,
 }: PlayerNotesProps) => {
   // set player Buttons
   const playerButtons = [];
@@ -30,6 +38,8 @@ const PlayerNotes = ({
         player={botcPlayers[i]}
         updatePlayerStats={updatePlayerStats}
         updatePlayerRoles={updatePlayerRoles}
+        updatePlayerNotesBlur={updatePlayerNotesBlur}
+        updatePlayerNotesKeyDown={updatePlayerNotesKeyDown}
         key={`playerNo${i}`}
       />,
     );

@@ -43,8 +43,13 @@ const BotC: React.FC = React.memo(() => {
 
   /** set a new game */
   const newBotcGame = () => {
-    const resetStats = { roles: [], liar: false, dead: false, used: false };
-
+    const resetStats = {
+      roles: [],
+      notes: "",
+      liar: false,
+      dead: false,
+      used: false,
+    };
     const newPlayers: BotCPlayer[] = [];
     botcPlayers.forEach((player) =>
       newPlayers.push({ name: player.name, ...resetStats }),
@@ -78,6 +83,30 @@ const BotC: React.FC = React.memo(() => {
       setState({ script, numPlayers, botcPlayers: newPlayers });
     };
 
+  /** update player notes onBlur */
+  const updatePlayerNotesBlur =
+    (i: number) =>
+    (e: React.FocusEvent<HTMLInputElement>): void => {
+      const newPlayers = [...botcPlayers];
+      const newPlayer = { ...newPlayers[i], notes: e.target.value || "" };
+      newPlayers[i] = newPlayer;
+      setState({ script, numPlayers, botcPlayers: newPlayers });
+    };
+  /** if enter key was pressed in textfield, update notes */
+  const updatePlayerNotesKeyDown =
+    (i: number) =>
+    (e: React.KeyboardEvent<HTMLDivElement>): void => {
+      if (e.key === "Enter") {
+        const newPlayers = [...botcPlayers];
+        const newPlayer = {
+          ...newPlayers[i],
+          notes: (e.target as HTMLInputElement).value || "",
+        };
+        newPlayers[i] = newPlayer;
+        setState({ script, numPlayers, botcPlayers: newPlayers });
+      }
+    };
+
   /* ----------     Render     ---------- */
   return (
     <>
@@ -97,6 +126,8 @@ const BotC: React.FC = React.memo(() => {
         botcPlayers={botcPlayers}
         updatePlayerStats={updatePlayerStats}
         updatePlayerRoles={updatePlayerRoles}
+        updatePlayerNotesBlur={updatePlayerNotesBlur}
+        updatePlayerNotesKeyDown={updatePlayerNotesKeyDown}
       />
     </>
   );

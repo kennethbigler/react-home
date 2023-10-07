@@ -1,6 +1,9 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import TextField from "@mui/material/TextField";
 import { ReactNode } from "react";
 import { BotCPlayer } from "../../../recoil/botc-atom";
 import { tb, snv, bmr } from "../../../constants/botc";
@@ -15,14 +18,22 @@ interface RoleDialogProps {
     key: "liar" | "dead" | "used",
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   updatePlayerRoles: (i: number, role: string, selected: boolean) => () => void;
+  updatePlayerNotesBlur: (
+    i: number,
+  ) => (e: React.FocusEvent<HTMLInputElement>) => void;
+  updatePlayerNotesKeyDown: (
+    i: number,
+  ) => (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 const RoleDialog = ({
   script,
   playerNo,
-  player: { name, roles, liar, dead, used },
+  player: { roles, notes, liar, dead, used },
   updatePlayerStats,
   updatePlayerRoles,
+  updatePlayerNotesBlur,
+  updatePlayerNotesKeyDown,
 }: RoleDialogProps) => {
   let active;
   switch (script) {
@@ -36,60 +47,43 @@ const RoleDialog = ({
       active = tb;
   }
 
+  const generateRoleButtons =
+    (arr: ReactNode[], color: "info" | "warning" | "error") => (role: string) =>
+      arr.push(
+        <RoleButton
+          role={role}
+          color={color}
+          playerNo={playerNo}
+          selected={roles.includes(role)}
+          updatePlayerRoles={updatePlayerRoles}
+          key={role}
+        />,
+      );
+
   const townsfolk: ReactNode[] = [];
   const outsiders: ReactNode[] = [];
   const minions: ReactNode[] = [];
   const demons: ReactNode[] = [];
-  active.townsfolk.forEach((town) =>
-    townsfolk.push(
-      <RoleButton
-        role={town}
-        playerNo={playerNo}
-        selected={roles.includes(town)}
-        updatePlayerRoles={updatePlayerRoles}
-        key={town}
-      />,
-    ),
-  );
-  active.outsiders.forEach((outsider) =>
-    outsiders.push(
-      <RoleButton
-        role={outsider}
-        playerNo={playerNo}
-        selected={roles.includes(outsider)}
-        updatePlayerRoles={updatePlayerRoles}
-        key={outsider}
-      />,
-    ),
-  );
-  active.minions.forEach((minion) =>
-    minions.push(
-      <RoleButton
-        role={minion}
-        playerNo={playerNo}
-        selected={roles.includes(minion)}
-        updatePlayerRoles={updatePlayerRoles}
-        key={minion}
-      />,
-    ),
-  );
-  active.demons.forEach((demon) =>
-    demons.push(
-      <RoleButton
-        role={demon}
-        playerNo={playerNo}
-        selected={roles.includes(demon)}
-        updatePlayerRoles={updatePlayerRoles}
-        key={demon}
-      />,
-    ),
-  );
+  const travelers: ReactNode[] = [];
+  active.townsfolk.forEach(generateRoleButtons(townsfolk, "info"));
+  active.outsiders.forEach(generateRoleButtons(outsiders, "info"));
+  active.minions.forEach(generateRoleButtons(minions, "error"));
+  active.demons.forEach(generateRoleButtons(demons, "error"));
+  active.travelers.forEach(generateRoleButtons(travelers, "warning"));
 
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
-        <Typography>{name}</Typography>
+        <TextField
+          fullWidth
+          label="Notes"
+          variant="standard"
+          defaultValue={notes}
+          onBlur={updatePlayerNotesBlur(playerNo)}
+          onKeyDown={updatePlayerNotesKeyDown(playerNo)}
+        />
       </Grid>
+
       <Grid item xs={12}>
         <hr />
       </Grid>
@@ -124,6 +118,7 @@ const RoleDialog = ({
           />
         </FormGroup>
       </Grid>
+
       <Grid item xs={12}>
         <hr />
       </Grid>
@@ -131,6 +126,7 @@ const RoleDialog = ({
         <Typography>Townsfolk</Typography>
       </Grid>
       {townsfolk}
+
       <Grid item xs={12}>
         <hr />
       </Grid>
@@ -138,6 +134,7 @@ const RoleDialog = ({
         <Typography>Outsiders</Typography>
       </Grid>
       {outsiders}
+
       <Grid item xs={12}>
         <hr />
       </Grid>
@@ -145,6 +142,7 @@ const RoleDialog = ({
         <Typography>Minions</Typography>
       </Grid>
       {minions}
+
       <Grid item xs={12}>
         <hr />
       </Grid>
@@ -152,6 +150,14 @@ const RoleDialog = ({
         <Typography>Demons</Typography>
       </Grid>
       {demons}
+
+      <Grid item xs={12}>
+        <hr />
+      </Grid>
+      <Grid item xs={12}>
+        <Typography>Travelers</Typography>
+      </Grid>
+      {travelers}
     </Grid>
   );
 };
