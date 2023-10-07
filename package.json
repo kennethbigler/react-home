@@ -63,7 +63,7 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-react-refresh": "0.4.3",
     "graphql": "16.8.1",
-    "gts": "5.0.1",
+    "gts": "5.2.0",
     "jsdom": "22.1.0",
     "pa11y-ci": "3.0.1",
     "prettier": "3.0.3",
