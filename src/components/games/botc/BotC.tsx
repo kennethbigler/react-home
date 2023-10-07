@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useRecoilState } from "recoil";
 import BotcHeader from "./BotcHeader";
-import botcAtom from "../../../recoil/botc-atom";
+import botcAtom, { BotCPlayer } from "../../../recoil/botc-atom";
 import PlayerNotes from "./PlayerNotes";
 
 const BotC: React.FC = React.memo(() => {
@@ -41,6 +41,17 @@ const BotC: React.FC = React.memo(() => {
       }
     };
 
+  /** set a new game */
+  const newBotcGame = () => {
+    const resetStats = { roles: [], liar: false, dead: false, used: false };
+
+    const newPlayers: BotCPlayer[] = [];
+    botcPlayers.forEach((player) =>
+      newPlayers.push({ name: player.name, ...resetStats }),
+    );
+    setState({ script, numPlayers, botcPlayers: newPlayers });
+  };
+
   /* ----------     Notes Functions     ---------- */
   /** handle checkboxes checked for player stat updates */
   const updatePlayerStats =
@@ -74,6 +85,7 @@ const BotC: React.FC = React.memo(() => {
         script={script}
         numPlayers={numPlayers}
         botcPlayers={botcPlayers}
+        newBotcGame={newBotcGame}
         updateScript={updateScript}
         updateNumPlayers={updateNumPlayers}
         updatePlayersBlur={updatePlayersNamesBlur}

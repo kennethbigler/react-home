@@ -17,6 +17,7 @@ interface BotcHeaderProps {
   script: number;
   numPlayers: number;
   botcPlayers: BotCPlayer[];
+  newBotcGame: () => void;
   updateScript: (i: number) => () => void;
   updateNumPlayers: (_e: Event, value: number | number[]) => void;
   updatePlayersBlur: (
@@ -31,6 +32,7 @@ const BotcHeader = ({
   script,
   numPlayers,
   botcPlayers,
+  newBotcGame,
   updateScript,
   updateNumPlayers,
   updatePlayersBlur,
@@ -60,26 +62,31 @@ const BotcHeader = ({
       <InfoPopup title="Players">
         <Grid container spacing={1}>
           <Grid item xs={12} sx={{ textAlign: "center" }}>
-            <ButtonGroup aria-label="Select BotC Game">
-              <Button
-                variant={script === 0 ? "contained" : "outlined"}
-                onClick={updateScript(0)}
-              >
-                TB
+            <div className="flex-container">
+              <ButtonGroup aria-label="Select BotC Game">
+                <Button
+                  variant={script === 0 ? "contained" : "outlined"}
+                  onClick={updateScript(0)}
+                >
+                  TB
+                </Button>
+                <Button
+                  variant={script === 1 ? "contained" : "outlined"}
+                  onClick={updateScript(1)}
+                >
+                  S&V
+                </Button>
+                <Button
+                  variant={script === 2 ? "contained" : "outlined"}
+                  onClick={updateScript(2)}
+                >
+                  BMR
+                </Button>
+              </ButtonGroup>
+              <Button variant="contained" color="error" onClick={newBotcGame}>
+                Reset
               </Button>
-              <Button
-                variant={script === 1 ? "contained" : "outlined"}
-                onClick={updateScript(1)}
-              >
-                S&V
-              </Button>
-              <Button
-                variant={script === 2 ? "contained" : "outlined"}
-                onClick={updateScript(2)}
-              >
-                BMR
-              </Button>
-            </ButtonGroup>
+            </div>
           </Grid>
           <Grid item xs={12}>
             <Typography>
