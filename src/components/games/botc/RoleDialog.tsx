@@ -8,6 +8,7 @@ import { ReactNode } from "react";
 import { BotCPlayer } from "../../../recoil/botc-atom";
 import { tb, snv, bmr } from "../../../constants/botc";
 import RoleButton from "./RoleButton";
+import { MuiColors } from "../../common/types";
 
 interface RoleDialogProps {
   script: number;
@@ -17,7 +18,12 @@ interface RoleDialogProps {
     i: number,
     key: "liar" | "dead" | "used",
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  updatePlayerRoles: (i: number, role: string, selected: boolean) => () => void;
+  updatePlayerRoles: (
+    i: number,
+    role: string,
+    selected: boolean,
+    alignment: MuiColors,
+  ) => () => void;
   updatePlayerNotesBlur: (
     i: number,
   ) => (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -36,19 +42,27 @@ const RoleDialog = ({
   updatePlayerNotesKeyDown,
 }: RoleDialogProps) => {
   let active;
+  let backup1;
+  let backup2;
   switch (script) {
     case 1:
       active = snv;
+      backup1 = tb;
+      backup2 = bmr;
       break;
     case 2:
       active = bmr;
+      backup1 = tb;
+      backup2 = snv;
       break;
     default:
       active = tb;
+      backup1 = snv;
+      backup2 = bmr;
   }
 
   const generateRoleButtons =
-    (arr: ReactNode[], color: "info" | "warning" | "error") => (role: string) =>
+    (arr: ReactNode[], color: MuiColors) => (role: string) =>
       arr.push(
         <RoleButton
           role={role}
@@ -65,11 +79,14 @@ const RoleDialog = ({
   const minions: ReactNode[] = [];
   const demons: ReactNode[] = [];
   const travelers: ReactNode[] = [];
+  const travelers2: ReactNode[] = [];
   active.townsfolk.forEach(generateRoleButtons(townsfolk, "info"));
-  active.outsiders.forEach(generateRoleButtons(outsiders, "info"));
+  active.outsiders.forEach(generateRoleButtons(outsiders, "success"));
   active.minions.forEach(generateRoleButtons(minions, "error"));
   active.demons.forEach(generateRoleButtons(demons, "error"));
   active.travelers.forEach(generateRoleButtons(travelers, "warning"));
+  backup1.travelers.forEach(generateRoleButtons(travelers2, "warning"));
+  backup2.travelers.forEach(generateRoleButtons(travelers2, "warning"));
 
   return (
     <Grid container spacing={1}>
@@ -158,6 +175,14 @@ const RoleDialog = ({
         <Typography>Travelers</Typography>
       </Grid>
       {travelers}
+
+      <Grid item xs={12}>
+        <hr />
+      </Grid>
+      <Grid item xs={12}>
+        <Typography>Other Travelers</Typography>
+      </Grid>
+      {travelers2}
     </Grid>
   );
 };

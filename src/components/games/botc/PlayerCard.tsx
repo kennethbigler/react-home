@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { BotCPlayer } from "../../../recoil/botc-atom";
 import InfoPopup from "../../common/info-popover/InfoPopup";
 import RoleDialog from "./RoleDialog";
+import { MuiColors } from "../../common/types";
 
 interface PlayerCardProps {
   script: number;
@@ -13,7 +14,12 @@ interface PlayerCardProps {
     i: number,
     key: "liar" | "dead" | "used",
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  updatePlayerRoles: (i: number, role: string, selected: boolean) => () => void;
+  updatePlayerRoles: (
+    i: number,
+    role: string,
+    selected: boolean,
+    alignment: MuiColors,
+  ) => () => void;
   updatePlayerNotesBlur: (
     i: number,
   ) => (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -45,7 +51,11 @@ const PlayerCard = ({
         )}
       </Typography>
       <Typography>{player.notes}</Typography>
-      <InfoPopup buttonText="Roles" title={`Roles - ${player.name}`}>
+      <InfoPopup
+        buttonColor={player.alignment}
+        buttonText="Roles"
+        title={`Roles - ${player.name}`}
+      >
         <RoleDialog
           script={script}
           playerNo={playerNo}

@@ -4,9 +4,9 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import { RoundPairing } from "../../../../recoil/are-you-the-one-atom";
-import { ColorOptions } from "../types";
 import TBDialog from "./TBDialog";
 import { AYTOHist } from "../analysis/useHist";
+import { MuiColors } from "../../../common/types";
 
 export interface AYTOTableProps {
   gents: string[];
@@ -95,7 +95,7 @@ const AYTOTableBody = (props: AYTOTableProps) => {
           {gents.map((gName, gi) => {
             // variables
             let variant: "outlined" | "contained" = "outlined";
-            let color: ColorOptions = "primary";
+            let color: MuiColors = "primary";
 
             // logic
             if (isTB) {

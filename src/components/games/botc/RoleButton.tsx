@@ -1,12 +1,18 @@
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import { MuiColors } from "../../common/types";
 
 interface RoleButtonProps {
   role: string;
-  color: "info" | "error" | "warning";
+  color: MuiColors;
   playerNo: number;
   selected: boolean;
-  updatePlayerRoles: (i: number, role: string, selected: boolean) => () => void;
+  updatePlayerRoles: (
+    i: number,
+    role: string,
+    selected: boolean,
+    alignment: MuiColors,
+  ) => () => void;
 }
 
 const RoleButton = ({
@@ -21,7 +27,7 @@ const RoleButton = ({
       variant={selected ? "contained" : "outlined"}
       color={color}
       sx={{ padding: "6px", width: "100%" }}
-      onClick={updatePlayerRoles(playerNo, role, selected)}
+      onClick={updatePlayerRoles(playerNo, role, selected, color)}
     >
       {role}
     </Button>

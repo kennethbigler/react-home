@@ -1,6 +1,7 @@
 import Grid from "@mui/material/Grid";
 import PlayerCard from "./PlayerCard";
 import { BotCPlayer } from "../../../recoil/botc-atom";
+import { MuiColors } from "../../common/types";
 
 interface PlayerNotesProps {
   script: number;
@@ -10,7 +11,12 @@ interface PlayerNotesProps {
     i: number,
     key: "liar" | "dead" | "used",
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  updatePlayerRoles: (i: number, role: string, selected: boolean) => () => void;
+  updatePlayerRoles: (
+    i: number,
+    role: string,
+    selected: boolean,
+    alignment: MuiColors,
+  ) => () => void;
   updatePlayerNotesBlur: (
     i: number,
   ) => (e: React.FocusEvent<HTMLInputElement>) => void;
