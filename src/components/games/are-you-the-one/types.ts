@@ -1,10 +1,3 @@
-export type ColorOptions =
-  | "error"
-  | "info"
-  | "inherit"
-  | "primary"
-  | "secondary"
-  | "success"
-  | "warning";
+import { MuiColors } from "../../common/types";
 
-export type ChipColorOptions = ColorOptions | "default";
+export type ChipColorOptions = MuiColors | "default";

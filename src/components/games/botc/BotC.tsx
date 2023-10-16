@@ -1,8 +1,12 @@
 import * as React from "react";
 import { useRecoilState } from "recoil";
 import BotcHeader from "./BotcHeader";
-import botcAtom, { BotCPlayer } from "../../../recoil/botc-atom";
+import botcAtom, {
+  BotCPlayer,
+  botcPlayerShell,
+} from "../../../recoil/botc-atom";
 import PlayerNotes from "./PlayerNotes";
+import { MuiColors } from "../../common/types";
 
 const BotC: React.FC = React.memo(() => {
   const [{ script, numPlayers, botcPlayers }, setState] =
@@ -43,16 +47,9 @@ const BotC: React.FC = React.memo(() => {
 
   /** set a new game */
   const newBotcGame = () => {
-    const resetStats = {
-      roles: [],
-      notes: "",
-      liar: false,
-      dead: false,
-      used: false,
-    };
     const newPlayers: BotCPlayer[] = [];
     botcPlayers.forEach((player) =>
-      newPlayers.push({ name: player.name, ...resetStats }),
+      newPlayers.push({ ...botcPlayerShell, name: player.name }),
     );
     setState({ script, numPlayers, botcPlayers: newPlayers });
   };
@@ -71,7 +68,8 @@ const BotC: React.FC = React.memo(() => {
 
   /** handle role selections */
   const updatePlayerRoles =
-    (i: number, role: string, selected: boolean) => (): void => {
+    (i: number, role: string, selected: boolean, alignment: MuiColors) =>
+    (): void => {
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i] };
       if (selected) {
@@ -79,6 +77,8 @@ const BotC: React.FC = React.memo(() => {
       } else {
         newPlayer.roles = [...newPlayer.roles, role];
       }
+      newPlayer.alignment =
+        newPlayer.roles.length === 1 ? alignment : "primary";
       newPlayers[i] = newPlayer;
       setState({ script, numPlayers, botcPlayers: newPlayers });
     };

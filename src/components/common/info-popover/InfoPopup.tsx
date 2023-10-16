@@ -5,6 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import useOpenState from "../../../hooks/useOpenState";
+import { MuiColors } from "../types";
 
 interface InfoPopupProps {
   /** popup content */
@@ -13,17 +14,20 @@ interface InfoPopupProps {
   title: string | React.ReactElement;
   /** button content */
   buttonText?: string | React.ReactElement;
+  /** set the color of the button */
+  buttonColor?: MuiColors;
 }
 
 const InfoPopup = (props: InfoPopupProps): React.ReactElement => {
   const [isOpen, handleOpen, handleClose] = useOpenState();
-  const { buttonText, title, children } = props;
+  const { buttonText, title, children, buttonColor } = props;
 
   return (
     <>
       <Button
         onClick={handleOpen as React.MouseEventHandler}
         variant="contained"
+        color={buttonColor || "primary"}
       >
         {buttonText || title}
       </Button>
