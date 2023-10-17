@@ -12,11 +12,12 @@ export interface BotCPlayer {
 }
 
 export const BOTC_MIN_PLAYERS = 5;
-export const BOTC_MAX_PLAYERS = 20;
+export const BOTC_MAX_PLAYERS = 15;
 
 export interface BotCState {
   script: number;
   numPlayers: number;
+  numTravelers: number;
   botcPlayers: BotCPlayer[];
 }
 
@@ -38,6 +39,7 @@ for (let i = 0; i < BOTC_MAX_PLAYERS; i += 1) {
 export const newBotcGame = () => ({
   script: 0,
   numPlayers: 8,
+  numTravelers: 0,
   botcPlayers: initBotcPlayers,
 });
 
