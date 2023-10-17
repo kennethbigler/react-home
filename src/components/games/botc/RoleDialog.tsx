@@ -18,12 +18,7 @@ interface RoleDialogProps {
     i: number,
     key: "liar" | "dead" | "used",
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  updatePlayerRoles: (
-    i: number,
-    role: string,
-    selected: boolean,
-    alignment: MuiColors,
-  ) => () => void;
+  updatePlayerRoles: (i: number, role: string, selected: boolean) => () => void;
   updatePlayerNotesBlur: (
     i: number,
   ) => (e: React.FocusEvent<HTMLInputElement>) => void;

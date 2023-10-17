@@ -6,7 +6,9 @@ import botcAtom, {
   botcPlayerShell,
 } from "../../../recoil/botc-atom";
 import PlayerNotes from "./PlayerNotes";
+import { tb, snv, bmr } from "../../../constants/botc";
 import { MuiColors } from "../../common/types";
+import getAlignment from "./botc-helpers";
 
 const BotC: React.FC = React.memo(() => {
   const [{ script, numPlayers, botcPlayers }, setState] =
@@ -68,17 +70,41 @@ const BotC: React.FC = React.memo(() => {
 
   /** handle role selections */
   const updatePlayerRoles =
-    (i: number, role: string, selected: boolean, alignment: MuiColors) =>
-    (): void => {
+    (i: number, role: string, selected: boolean) => (): void => {
+      // set up immutability for new player
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i] };
+      // find the active script
+      let active;
+      switch (script) {
+        case 1:
+          active = snv;
+          break;
+        case 2:
+          active = bmr;
+          break;
+        default:
+          active = tb;
+      }
+      // if selected remove, if not add
       if (selected) {
         newPlayer.roles = newPlayer.roles.filter((r) => r !== role);
+        // set alignment based of all roles
+        let newAlignment: MuiColors = newPlayer.roles.length
+          ? "inherit"
+          : "primary";
+        for (let j = 0; j < newPlayer.roles.length; j += 1) {
+          newAlignment = getAlignment(newAlignment, active, newPlayer.roles[j]);
+        }
+        newPlayer.alignment = newAlignment;
       } else {
+        newPlayer.alignment = getAlignment(
+          newPlayer.roles.length ? newPlayer.alignment : "inherit",
+          active,
+          role,
+        );
         newPlayer.roles = [...newPlayer.roles, role];
       }
-      newPlayer.alignment =
-        newPlayer.roles.length === 1 ? alignment : "primary";
       newPlayers[i] = newPlayer;
       setState({ script, numPlayers, botcPlayers: newPlayers });
     };
