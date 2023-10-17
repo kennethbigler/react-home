@@ -16,10 +16,12 @@ import { playerDist } from "../../../constants/botc";
 interface BotcHeaderProps {
   script: number;
   numPlayers: number;
+  numTravelers: number;
   botcPlayers: BotCPlayer[];
   newBotcGame: () => void;
   updateScript: (i: number) => () => void;
   updateNumPlayers: (_e: Event, value: number | number[]) => void;
+  updateNumTravelers: (_e: Event, value: number | number[]) => void;
   updatePlayersBlur: (
     i: number,
   ) => (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -31,16 +33,18 @@ interface BotcHeaderProps {
 const BotcHeader = ({
   script,
   numPlayers,
+  numTravelers,
   botcPlayers,
   newBotcGame,
   updateScript,
   updateNumPlayers,
+  updateNumTravelers,
   updatePlayersBlur,
   updatePlayersKeyDown,
 }: BotcHeaderProps) => {
   // set player TextFields
   const playerTextFields = [];
-  for (let i = 0; i < numPlayers; i += 1) {
+  for (let i = 0; i < (numPlayers + numTravelers); i += 1) {
     playerTextFields.push(
       <Grid item xs={6} sm={4} key={`playerNo${i}`}>
         <TextField
@@ -89,17 +93,23 @@ const BotcHeader = ({
             </div>
           </Grid>
           <Grid item xs={12}>
-            <Typography>
-              Count: {numPlayers} / Dist: {playerDist[numPlayers]}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
+            <Typography>Players: {numPlayers} / Dist: {playerDist[numPlayers]}</Typography>
             <Slider
               aria-label="player count"
               min={BOTC_MIN_PLAYERS}
               max={BOTC_MAX_PLAYERS}
               value={numPlayers}
               onChange={updateNumPlayers}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography>Travelers: {numTravelers}</Typography>
+            <Slider
+              aria-label="traveler count"
+              min={0}
+              max={5}
+              value={numTravelers}
+              onChange={updateNumTravelers}
             />
           </Grid>
           {playerTextFields}

@@ -11,17 +11,21 @@ import { MuiColors } from "../../common/types";
 import getAlignment from "./botc-helpers";
 
 const BotC: React.FC = React.memo(() => {
-  const [{ script, numPlayers, botcPlayers }, setState] =
+  const [{ script, numPlayers, numTravelers, botcPlayers }, setState] =
     useRecoilState(botcAtom);
 
   /* ----------     Header Functions     ---------- */
   /** update botc script used */
   const updateScript = (i: number) => () =>
-    setState({ script: i, numPlayers, botcPlayers });
+    setState({ script: i, numPlayers, numTravelers, botcPlayers });
 
   /** update number of players */
   const updateNumPlayers = (_e: Event, value: number | number[]) =>
-    setState({ script, botcPlayers, numPlayers: value as number });
+    setState({ script, numTravelers, botcPlayers, numPlayers: value as number });
+
+  /** update number of players */
+  const updateNumTravelers = (_e: Event, value: number | number[]) =>
+    setState({ script, numPlayers, botcPlayers, numTravelers: value as number });
 
   /** update player name onBlur */
   const updatePlayersNamesBlur =
@@ -30,7 +34,7 @@ const BotC: React.FC = React.memo(() => {
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i], name: e.target.value || "" };
       newPlayers[i] = newPlayer;
-      setState({ script, numPlayers, botcPlayers: newPlayers });
+      setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
   /** if enter key was pressed in textfield, update name */
   const updatePlayersNamesKeyDown =
@@ -43,7 +47,7 @@ const BotC: React.FC = React.memo(() => {
           name: (e.target as HTMLInputElement).value || "",
         };
         newPlayers[i] = newPlayer;
-        setState({ script, numPlayers, botcPlayers: newPlayers });
+        setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
       }
     };
 
@@ -53,7 +57,7 @@ const BotC: React.FC = React.memo(() => {
     botcPlayers.forEach((player) =>
       newPlayers.push({ ...botcPlayerShell, name: player.name }),
     );
-    setState({ script, numPlayers, botcPlayers: newPlayers });
+    setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
   };
 
   /* ----------     Notes Functions     ---------- */
@@ -65,7 +69,7 @@ const BotC: React.FC = React.memo(() => {
       const newPlayer = { ...newPlayers[i] };
       newPlayer[key] = checked;
       newPlayers[i] = newPlayer;
-      setState({ script, numPlayers, botcPlayers: newPlayers });
+      setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
 
   /** handle role selections */
@@ -106,7 +110,7 @@ const BotC: React.FC = React.memo(() => {
         newPlayer.roles = [...newPlayer.roles, role];
       }
       newPlayers[i] = newPlayer;
-      setState({ script, numPlayers, botcPlayers: newPlayers });
+      setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
 
   /** update player notes onBlur */
@@ -116,7 +120,7 @@ const BotC: React.FC = React.memo(() => {
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i], notes: e.target.value || "" };
       newPlayers[i] = newPlayer;
-      setState({ script, numPlayers, botcPlayers: newPlayers });
+      setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
   /** if enter key was pressed in textfield, update notes */
   const updatePlayerNotesKeyDown =
@@ -129,7 +133,7 @@ const BotC: React.FC = React.memo(() => {
           notes: (e.target as HTMLInputElement).value || "",
         };
         newPlayers[i] = newPlayer;
-        setState({ script, numPlayers, botcPlayers: newPlayers });
+        setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
       }
     };
 
@@ -139,10 +143,12 @@ const BotC: React.FC = React.memo(() => {
       <BotcHeader
         script={script}
         numPlayers={numPlayers}
+        numTravelers={numTravelers}
         botcPlayers={botcPlayers}
         newBotcGame={newBotcGame}
         updateScript={updateScript}
         updateNumPlayers={updateNumPlayers}
+        updateNumTravelers={updateNumTravelers}
         updatePlayersBlur={updatePlayersNamesBlur}
         updatePlayersKeyDown={updatePlayersNamesKeyDown}
       />
