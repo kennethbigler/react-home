@@ -155,6 +155,7 @@ const BotC: React.FC = React.memo(() => {
       <PlayerNotes
         script={script}
         numPlayers={numPlayers}
+        numTravelers={numTravelers}
         botcPlayers={botcPlayers}
         updatePlayerStats={updatePlayerStats}
         updatePlayerRoles={updatePlayerRoles}
