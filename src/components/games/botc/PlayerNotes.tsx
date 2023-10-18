@@ -1,10 +1,13 @@
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import PlayerCard from "./PlayerCard";
 import { BotCPlayer } from "../../../recoil/botc-atom";
+import { playerDist } from "../../../constants/botc";
 
 interface PlayerNotesProps {
   script: number;
   numPlayers: number;
+  numTravelers: number;
   botcPlayers: BotCPlayer[];
   updatePlayerStats: (
     i: number,
@@ -22,6 +25,7 @@ interface PlayerNotesProps {
 const PlayerNotes = ({
   script,
   numPlayers,
+  numTravelers,
   botcPlayers,
   updatePlayerStats,
   updatePlayerRoles,
@@ -47,6 +51,9 @@ const PlayerNotes = ({
 
   return (
     <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Typography>Dist: {playerDist[numPlayers]} + {numTravelers}</Typography>
+      </Grid>
       {playerButtons}
     </Grid>
   );
