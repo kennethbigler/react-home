@@ -31,11 +31,12 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
         { name: "Summary", route: "" },
         { name: "Work", route: "work" },
         { name: "Resume", route: "resume" },
+        { name: "Git Tools", route: "git-tools" },
         { name: "Hackathons & Education", route: "education" },
+        { divider: true },
         { name: "Cars", route: "cars" },
         { name: "Travel Map", route: "travel" },
         { divider: true },
-        { name: "Git Tools", route: "git-tools" },
         { name: "React Games", route: "games" },
       ].map((item, index) =>
         item.divider ? (
