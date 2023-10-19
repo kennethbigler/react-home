@@ -94,16 +94,14 @@ const BotC: React.FC = React.memo(() => {
       if (selected) {
         newPlayer.roles = newPlayer.roles.filter((r) => r !== role);
         // set alignment based of all roles
-        let newAlignment: MuiColors = newPlayer.roles.length
-          ? "inherit"
-          : "primary";
+        let newAlignment: MuiColors = "primary";
         for (let j = 0; j < newPlayer.roles.length; j += 1) {
           newAlignment = getAlignment(newAlignment, active, newPlayer.roles[j]);
         }
         newPlayer.alignment = newAlignment;
       } else {
         newPlayer.alignment = getAlignment(
-          newPlayer.roles.length ? newPlayer.alignment : "inherit",
+          newPlayer.roles.length ? newPlayer.alignment : "primary",
           active,
           role,
         );

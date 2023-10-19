@@ -52,7 +52,7 @@ const PlayerNotes = ({
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Typography>Dist: {playerDist[numPlayers]} + {numTravelers}</Typography>
+        <Typography>Dist: {playerDist[numPlayers]}{numTravelers ? ` +${numTravelers}` : ""}</Typography>
       </Grid>
       {playerButtons}
     </Grid>

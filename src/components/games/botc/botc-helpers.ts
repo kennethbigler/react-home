@@ -6,32 +6,17 @@ const getAlignment = (
   script: BotcScript,
   role: string,
 ): MuiColors => {
-  if (alignment === "primary") {
-    return "primary";
-  }
-  if (
-    (alignment === "inherit" || alignment === "info") &&
-    script.townsfolk.indexOf(role) > -1
-  ) {
-    return "info";
-  }
-  if (
-    (alignment === "inherit" || alignment === "success") &&
-    script.outsiders.indexOf(role) > -1
-  ) {
-    return "success";
-  }
-  if (
-    (alignment === "inherit" || alignment === "error") &&
-    (script.minions.indexOf(role) > -1 || script.demons.indexOf(role) > -1)
-  ) {
+  if (alignment === "error" || script.minions.indexOf(role) > -1 || script.demons.indexOf(role) > -1) {
     return "error";
   }
-  if (
-    (alignment === "inherit" || alignment === "warning") &&
-    script.travelers.indexOf(role) > -1
-  ) {
+  if (alignment === "warning" || script.travelers.indexOf(role) > -1) {
     return "warning";
+  }
+  if (alignment === "success" || script.outsiders.indexOf(role) > -1) {
+    return "success";
+  }
+  if (alignment === "info" || script.townsfolk.indexOf(role) > -1) {
+    return "info";
   }
   return "primary";
 };
