@@ -10,6 +10,7 @@ import Popover from "./Popover";
 import countries from "../../../constants/travel";
 
 interface GeographyType {
+  id: string;
   type: "Feature";
   rsmKey: string;
   svgPath: string;
@@ -18,20 +19,7 @@ interface GeographyType {
     coordinates: [number, number][];
   };
   properties: {
-    NAME: string;
-    NAME_LONG: string;
-    ABBREV: string;
-    FORMAL_EN: string;
-    POP_EST: number;
-    POP_RANK: number;
-    GDP_MD_EST: number;
-    POP_YEAR: number;
-    GDP_YEAR: number;
-    ISO_A2: string;
-    ISO_A3: string;
-    CONTINENT: string;
-    REGION_UN: string;
-    SUBREGION: string;
+    name: string;
   };
 }
 
@@ -70,7 +58,7 @@ function useWorldMap(): WorldMapHook {
   const handleEnter: HandleEnter =
     (geography) =>
     (evt): void => {
-      const name = geography.properties.NAME || "";
+      const name = geography.properties.name || "";
       setX(evt.clientX);
       setY(evt.clientY + window.pageYOffset);
       setContent(`${name} ${countries[name] ? countries[name].flag : ""}`);
@@ -107,23 +95,25 @@ const WorldMap = () => {
           strokeWidth={2}
           fill="transparent"
         />
-        <Geographies geography="/world-110m.json">
+        <Geographies geography="https://unpkg.com/world-atlas@2.0.2/countries-110m.json">
           {({ geographies }) =>
-            geographies.map((geo: GeographyType) => (
+            geographies.map((geo: GeographyType) => {
+              // console.log(geo);
+              return (
               <Geography
-                key={geo.rsmKey}
+                key={`${geo.rsmKey}-${geo.id}`}
                 geography={geo}
                 onMouseEnter={handleEnter(geo)}
                 onMouseLeave={handleLeave}
                 style={{
                   default: {
-                    fill: countries[geo.properties.NAME]
-                      ? countries[geo.properties.NAME].color
+                    fill: countries[geo.properties.name]
+                      ? countries[geo.properties.name].color
                       : FILL,
                     ...defaultStyle,
                   },
                   hover: {
-                    fill: countries[geo.properties.NAME]
+                    fill: countries[geo.properties.name]
                       ? VISITED_HOVER
                       : HOVER,
                     ...defaultStyle,
@@ -134,7 +124,7 @@ const WorldMap = () => {
                   },
                 }}
               />
-            ))
+            )})
           }
         </Geographies>
       </ComposableMap>
