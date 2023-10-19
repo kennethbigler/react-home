@@ -1,4 +1,4 @@
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { render, fireEvent, screen } from "@testing-library/react";
 import ExpandableCard from "./ExpandableCard";
 
 describe("common | ExpandableCard", () => {
@@ -63,7 +63,7 @@ describe("common | ExpandableCard", () => {
     });
   });
 
-  it("expands as expected with Title and SubTitle", async () => {
+  it("expands as expected with Title and SubTitle", () => {
     render(<ExpandableCard title="Title" subtitle="Subtitle" />);
 
     expect(screen.queryByText("Title")).toBeInTheDocument();

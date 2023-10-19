@@ -1,6 +1,8 @@
 #!/bin/bash
 source ./scripts/common.sh
 
+echo "npm i"
+npm i
 echo "Analyze the bundle size of non-deployed code"
 echo $LINE
 buildApp
