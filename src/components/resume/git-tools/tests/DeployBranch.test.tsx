@@ -25,7 +25,7 @@ describe("resume | git-tools | DeployBranch", () => {
   it("renders as expected", () => {
     expect(screen.getByText("Target Branch")).toBeInTheDocument();
     expect(screen.getByDisplayValue("test-pipeline")).toBeInTheDocument();
-    expect(screen.getAllByRole("button")).toHaveLength(2);
+    expect(screen.getByRole("button")).toBeInTheDocument();
     expect(
       screen.getByText("git push -f origin features/:test-pipeline")
     ).toBeInTheDocument();

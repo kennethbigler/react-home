@@ -29,7 +29,7 @@ describe("resume | git-tools | CommitText", () => {
   it("renders as expected", () => {
     expect(screen.getByText("Commit Prefix")).toBeInTheDocument();
     expect(screen.getByDisplayValue("feat")).toBeInTheDocument();
-    expect(screen.getAllByRole("button")).toHaveLength(4);
+    expect(screen.getAllByRole("button")).toHaveLength(3);
     expect(screen.getByText("Finishes User Story")).toBeInTheDocument();
     expect(screen.getByText("Add git commit -m")).toBeInTheDocument();
     expect(screen.getAllByText("Commit Message")).toHaveLength(2);
@@ -104,7 +104,7 @@ describe("resume | git-tools | CommitText", () => {
       screen.getByText('git commit -m "feat: A Message [KEN-1234]"')
     ).toBeInTheDocument();
     // Remove commit message
-    fireEvent.click(screen.getAllByRole("button")[1]);
+    fireEvent.click(screen.getAllByRole("button")[0]);
     expect(
       screen.getByText('git commit -m "feat: [KEN-1234]"')
     ).toBeInTheDocument();
@@ -125,7 +125,7 @@ describe("resume | git-tools | CommitText", () => {
     expect(screen.getAllByText("A Description")).toHaveLength(2);
     expect(screen.getByText('[KEN-1234]"')).toBeInTheDocument();
     // Remove commit description
-    fireEvent.click(screen.getAllByRole("button")[2]);
+    fireEvent.click(screen.getAllByRole("button")[1]);
     expect(
       screen.getByText('git commit -m "feat: [KEN-1234]"')
     ).toBeInTheDocument();
@@ -180,12 +180,12 @@ describe("resume | git-tools | CommitText", () => {
     expect(screen.getAllByText("A Description")).toHaveLength(2);
     expect(screen.getByText('[KEN-1234 #finish]"')).toBeInTheDocument();
     // Remove commit description
-    fireEvent.click(screen.getAllByRole("button")[2]);
+    fireEvent.click(screen.getAllByRole("button")[1]);
     expect(
       screen.getByText('git commit -m "test: A Message [KEN-1234 #finish]"')
     ).toBeInTheDocument();
     // Remove commit message
-    fireEvent.click(screen.getAllByRole("button")[1]);
+    fireEvent.click(screen.getAllByRole("button")[0]);
     expect(
       screen.getByText('git commit -m "test: [KEN-1234 #finish]"')
     ).toBeInTheDocument();
