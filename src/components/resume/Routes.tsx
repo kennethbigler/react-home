@@ -8,7 +8,6 @@ import Education from "./education";
 import TravelMap from "./travel-map";
 import Resume from "./resume";
 import GitTools from "./git-tools";
-import GraphQL from "./graphql";
 import Cars from "./cars";
 
 interface RoutesProps {
@@ -27,7 +26,6 @@ const ResumeRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
       <Route path="cars/*" element={<Cars />} />
       <Route path="education/*" element={<Education />} />
       <Route path="git-tools/*" element={<GitTools />} />
-      <Route path="graphql/*" element={<GraphQL />} />
       <Route path="resume/*" element={<Resume />} />
       <Route path="travel/*" element={<TravelMap />} />
       <Route path="work/*" element={<Work />} />

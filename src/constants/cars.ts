@@ -525,19 +525,13 @@ export const carSankeyData = {
     { name: "🇬🇧" },
     // level 2
     { name: "GM" }, // US 5
-    { name: "Chrysler" },
+    { name: "Plymouth" },
     { name: "Ford" },
     { name: "Tesla" },
     { name: "Toyota" }, // Japan 9
     { name: "Honda" },
-    { name: "Volkswagen" }, // Germany 11
-    { name: "Jaguar Land Rover" }, // UK 12
-    // level 3
-    // { name: "Pontiac" }, // 13
-    // { name: "Chevrolet" },
-    // { name: "Plymouth" },
-    // { name: "Porsche" }, // 16
-    // { name: "Jaguar" }, // 17
+    { name: "Porsche" }, // Germany 11
+    { name: "Jaguar" }, // UK 12
   ],
   links: [
     // level 1
@@ -555,14 +549,8 @@ export const carSankeyData = {
     { source: 2, target: 9, value: 1 }, // Toyota
     { source: 2, target: 10, value: 1 }, // Honda
     //     Other
-    { source: 3, target: 11, value: 2 }, // JLR
-    { source: 4, target: 12, value: 2 }, // VW
-    // level 3
-    // { source: 5, target: 13, value: 1 }, // Pontiac
-    // { source: 5, target: 14, value: 3 }, // Chevy
-    // { source: 6, target: 15, value: 1 }, // Plymouth
-    // { source: 11, target: 16, value: 2 }, // Jaguar
-    // { source: 12, target: 17, value: 2 }, // Porsche
+    { source: 3, target: 11, value: 2 }, // VW
+    { source: 4, target: 12, value: 2 }, // JLR
   ],
 };
 

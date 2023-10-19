@@ -46,18 +46,16 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
   } else {
     delete headerStyle.boxShadow;
   }
+  if (inverted) {
+    headerStyle.color = "black";
+  }
   const expandedHeaderStyle = { ...headerStyle, marginBottom: -20 };
 
-  const titleStyle = {
-    color: inverted ? "black" : palette.primary.contrastText,
-  };
-
-  const titleJSX = <Typography style={titleStyle}>{title}</Typography>;
-  const subtitleJSX = expanded ? (
-    <Typography style={titleStyle} variant="body2">
+  const subtitleJSX = (
+    <Typography style={inverted ? { color: "black" } : {}} variant="body1">
       {subtitle}
     </Typography>
-  ) : null;
+  );
 
   return (
     <Card style={cardStyles}>
@@ -65,7 +63,7 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
         onClick={toggleExpanded}
         style={expanded ? expandedHeaderStyle : headerStyle}
         subheader={subtitleJSX}
-        title={titleJSX}
+        title={title}
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>

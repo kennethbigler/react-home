@@ -30,7 +30,7 @@ describe("resume | git-tools | BranchName", () => {
     expect(screen.getByText("Branch Prefix")).toBeInTheDocument();
     expect(screen.getAllByText("Branch Name")).toHaveLength(2);
     expect(screen.getByDisplayValue("features")).toBeInTheDocument();
-    expect(screen.getAllByRole("button")).toHaveLength(3);
+    expect(screen.getAllByRole("button")).toHaveLength(2);
 
     expect(getSelectOptions).toHaveBeenCalledTimes(1);
     expect(getSelectOptions).toHaveBeenCalledWith([
@@ -48,7 +48,7 @@ describe("resume | git-tools | BranchName", () => {
     });
     expect(screen.getByText("test")).toBeInTheDocument();
     // ensure it clears
-    fireEvent.click(screen.getAllByRole("button")[1]);
+    fireEvent.click(screen.getAllByRole("button")[0]);
     expect(screen.queryByText("test")).toBeNull();
   });
 });

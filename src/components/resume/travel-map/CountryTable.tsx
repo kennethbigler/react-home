@@ -14,7 +14,7 @@ const separatorStyles: React.CSSProperties = {
   borderRight: `1px solid ${grey[400]}`,
 };
 const cellStyles: React.CSSProperties = {
-  padding: 5,
+  padding: "5px 1px",
   textAlign: "center",
   whiteSpace: "normal",
   overflow: "visible",
@@ -35,7 +35,7 @@ for (let i = 0; i < len; i += 1) {
   const row = [];
   // add Americas Country
   row.push(
-    <TableCell key={`tmc${i}`} style={{ ...cellStyles, ...separatorStyles }}>
+    <TableCell key={`tmc${i}-americas`} style={{ ...cellStyles, ...separatorStyles }}>
       {americas[i]}
     </TableCell>
   );
@@ -43,7 +43,7 @@ for (let i = 0; i < len; i += 1) {
   for (let j = 0; j < EURatio; j += 1) {
     row.push(
       <TableCell
-        key={`tmc${i}${j}`}
+        key={`tmc${i}${j}-eu-af`}
         style={
           j === EURatio - 1 ? { ...cellStyles, ...separatorStyles } : cellStyles
         }
@@ -54,7 +54,7 @@ for (let i = 0; i < len; i += 1) {
   }
   // add AS or AU Country
   row.push(
-    <TableCell key={`tmc${i}`} style={cellStyles}>
+    <TableCell key={`tmc${i}-as-au`} style={cellStyles}>
       {asNau[i]}
     </TableCell>
   );

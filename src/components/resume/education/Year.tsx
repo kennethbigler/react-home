@@ -20,8 +20,8 @@ const Year: React.FC<YearProps> = ({ year, len }: YearProps) => (
       {year.year}
     </Typography>
     <hr />
-    {year.quarters.map((quarter) => (
-      <Quarter key={quarter.quarter} quarter={quarter} />
+    {year.quarters.map((quarter, i) => (
+      <Quarter key={`${quarter.quarter}-${i}`} quarter={quarter} />
     ))}
   </Grid>
 );

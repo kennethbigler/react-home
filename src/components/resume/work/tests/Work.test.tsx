@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import Work from "../Work";
 
@@ -48,20 +48,5 @@ describe("resume | work | Work", () => {
     expect(
       screen.getByText("Frontend Software Engineer and Project Manager")
     ).toBeInTheDocument();
-  });
-
-  it("expands and collapses on title click", () => {
-    render(<Work />);
-
-    expect(
-      screen.getByText("Midnight Game Club, Sunnyvale, CA")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("Frontend Software Engineer and Project Manager")
-    ).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Midnight Game Club, Sunnyvale, CA"));
-    expect(
-      screen.queryByText("Frontend Software Engineer and Project Manager")
-    ).toBeNull();
   });
 });
