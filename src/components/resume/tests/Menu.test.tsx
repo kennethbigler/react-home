@@ -10,10 +10,9 @@ describe("resume | Menu", () => {
     expect(screen.getByText("Work")).toBeInTheDocument();
     expect(screen.getByText("Resume")).toBeInTheDocument();
     expect(screen.getByText("Hackathons & Education")).toBeInTheDocument();
-    expect(screen.getByText("Git Tools")).toBeInTheDocument();
-    expect(screen.getByText("GraphQL Demo")).toBeInTheDocument();
     expect(screen.getByText("Cars")).toBeInTheDocument();
     expect(screen.getByText("Travel Map")).toBeInTheDocument();
+    expect(screen.getByText("Git Tools")).toBeInTheDocument();
     expect(screen.getByText("React Games")).toBeInTheDocument();
     expect(screen.getByText("GitHub")).toBeInTheDocument();
     expect(screen.getByText("LinkedIn")).toBeInTheDocument();

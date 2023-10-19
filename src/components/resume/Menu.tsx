@@ -32,13 +32,10 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
         { name: "Work", route: "work" },
         { name: "Resume", route: "resume" },
         { name: "Hackathons & Education", route: "education" },
-        { divider: true },
-        { name: "Git Tools", route: "git-tools" },
-        { name: "GraphQL Demo", route: "graphql" },
-        { divider: true },
         { name: "Cars", route: "cars" },
         { name: "Travel Map", route: "travel" },
         { divider: true },
+        { name: "Git Tools", route: "git-tools" },
         { name: "React Games", route: "games" },
       ].map((item, index) =>
         item.divider ? (
@@ -78,14 +75,7 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
           alt="profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
           id="stackOverflow"
           src="https://stackoverflow.com/users/flair/4830309.png?theme=dark"
-          style={{
-            display: "block",
-            margin: "auto",
-            cursor: "pointer",
-            width: 240,
-            paddingLeft: 16,
-            paddingRight: 16,
-          }}
+          style={{ display: "block", margin: "auto", cursor: "pointer", width: 208 }}
         />
       </MenuItem>
     </MenuList>
