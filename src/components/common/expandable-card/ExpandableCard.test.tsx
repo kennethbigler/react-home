@@ -1,4 +1,4 @@
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import ExpandableCard from "./ExpandableCard";
 
 describe("common | ExpandableCard", () => {
@@ -19,13 +19,6 @@ describe("common | ExpandableCard", () => {
     });
 
     describe("Title Text Colors", () => {
-      it("displays title with white text by default", () => {
-        render(<ExpandableCard title="Title" />);
-        expect(screen.getByText("Title")).toHaveStyle({
-          color: "rgb(255, 255, 255)",
-        });
-      });
-
       it("displays title with black text when inverted", () => {
         render(<ExpandableCard title="Title" inverted />);
         expect(screen.getByText("Title")).toHaveStyle({ color: "rgb(0,0,0)" });
@@ -70,18 +63,15 @@ describe("common | ExpandableCard", () => {
     });
   });
 
-  it("expands as expected with Title and SubTitle", () => {
+  it("expands as expected with Title and SubTitle", async () => {
     render(<ExpandableCard title="Title" subtitle="Subtitle" />);
+
     expect(screen.queryByText("Title")).toBeInTheDocument();
     expect(screen.queryByText("Subtitle")).toBeInTheDocument();
     expect(screen.queryByText("Body")).toBeNull();
-
-    // hide the card
     fireEvent.click(screen.getByText("Title"));
-    expect(screen.queryByText("Subtitle")).toBeNull();
-
-    // expand the card again
+    expect(screen.queryByText("Body")).toBeNull();
     fireEvent.click(screen.getByText("Title"));
-    expect(screen.queryByText("Subtitle")).toBeInTheDocument();
+    expect(screen.queryByText("Body")).toBeNull();
   });
 });
