@@ -33,21 +33,9 @@ const PlayerCard = ({
 }: PlayerCardProps) => (
   <Grid item xs={6} sm={4} md={3} lg={2} xl={1}>
     <Card sx={{ padding: "5px", textAlign: "center" }}>
-      <Typography>
-        {player.name} {player.liar && "😈"}
-        {player.dead && "💀"}
-        {player.used && "❌"}
-      </Typography>
-      <Typography>
-        {player.roles.reduce(
-          (acc, role, i) => (i !== 0 ? `${acc}, ${role}` : role),
-          "",
-        )}
-      </Typography>
-      <Typography>{player.notes}</Typography>
       <InfoPopup
         buttonColor={player.alignment}
-        buttonText="Roles"
+        buttonText={player.name}
         title={`Roles - ${player.name}`}
       >
         <RoleDialog
@@ -60,6 +48,19 @@ const PlayerCard = ({
           updatePlayerNotesKeyDown={updatePlayerNotesKeyDown}
         />
       </InfoPopup>
+      <Typography>
+        {player.liar && "😈"}
+        {player.dead && "💀"}
+        {player.used && "❌"}
+        {(player.liar || player.dead || player.used) && player.notes && " - "}
+        {player.notes}
+      </Typography>
+      <Typography>
+        {player.roles.reduce(
+          (acc, role, i) => (i !== 0 ? `${acc}, ${role}` : role),
+          "",
+        )}
+      </Typography>
     </Card>
   </Grid>
 );
