@@ -12,7 +12,7 @@ describe("games | BotC", () => {
     expect(screen.getByText("Close")).toBeInTheDocument();
     fireEvent.click(screen.getByText("Close"));
     // Press Roles button (for Player Dashboard)
-    fireEvent.click(screen.getAllByText("Roles")[0]);
+    fireEvent.click(screen.getAllByText("Ken")[0]);
     expect(screen.getByText("Chef")).toBeInTheDocument();
     expect(screen.getByText("Monk")).toBeInTheDocument();
     // Select 2 roles
