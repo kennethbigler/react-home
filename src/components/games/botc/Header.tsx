@@ -10,6 +10,7 @@ import Alert from "@mui/material/Alert";
 import InfoPopup from "../../common/info-popover/InfoPopup";
 import {
   BOTC_MAX_PLAYERS,
+  BOTC_MAX_TRAVELERS,
   BOTC_MIN_PLAYERS,
   BotCPlayer,
 } from "../../../recoil/botc-atom";
@@ -114,7 +115,7 @@ const BotCHeader = ({
             <Slider
               aria-label="traveler count"
               min={0}
-              max={5}
+              max={BOTC_MAX_TRAVELERS}
               value={numTravelers}
               onChange={updateNumTravelers}
             />

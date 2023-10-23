@@ -18,22 +18,60 @@ const BotC: React.FC = React.memo(() => {
     setState({ script: i, numPlayers, numTravelers, botcPlayers });
 
   /** update number of players */
-  const updateNumPlayers = (_e: Event, value: number | number[]) =>
-    setState({
-      script,
-      numTravelers,
-      botcPlayers,
-      numPlayers: value as number,
-    });
+  const updateNumPlayers = (_e: Event, value: number | number[]) => {
+    // new values
+    const newNumPlayers = Array.isArray(value) ? value[0] : value;
+    const newTotal = numTravelers + newNumPlayers;
+    // check if not enough players
+    if (botcPlayers.length < newTotal) {
+      const newPlayers = [...botcPlayers];
+      for (let i = botcPlayers.length; i < newTotal; i += 1) {
+        newPlayers.push(botcPlayerShell);
+      }
+      setState({
+        script,
+        numTravelers,
+        botcPlayers: newPlayers,
+        numPlayers: newNumPlayers,
+      });
+    } else {
+      // otherwise just update count
+      setState({
+        script,
+        numTravelers,
+        botcPlayers,
+        numPlayers: newNumPlayers,
+      });
+    }
+  };
 
   /** update number of players */
-  const updateNumTravelers = (_e: Event, value: number | number[]) =>
-    setState({
-      script,
-      numPlayers,
-      botcPlayers,
-      numTravelers: value as number,
-    });
+  const updateNumTravelers = (_e: Event, value: number | number[]) => {
+    // new values
+    const newNumTravelers = Array.isArray(value) ? value[0] : value;
+    const newTotal = numPlayers + newNumTravelers;
+    // check if not enough players
+    if (botcPlayers.length < newTotal) {
+      const newPlayers = [...botcPlayers];
+      for (let i = botcPlayers.length; i < newTotal; i += 1) {
+        newPlayers.push(botcPlayerShell);
+      }
+      setState({
+        script,
+        numPlayers,
+        botcPlayers: newPlayers,
+        numTravelers: newNumTravelers,
+      });
+    } else {
+      // otherwise just update count
+      setState({
+        script,
+        numPlayers,
+        botcPlayers,
+        numTravelers: newNumTravelers,
+      });
+    }
+  };
 
   /** update player name onBlur */
   const updateNamesOnBlur =

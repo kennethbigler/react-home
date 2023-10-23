@@ -52,13 +52,14 @@ const RoleDialog = ({
       backup2 = bmr;
   }
 
+  const roleKey = roles.reduce((acc, r) => ({ ...acc, [r.name]: true }), {});
   const generateRoleButtons =
     (arr: ReactNode[], alignment: MuiColors) => (name: string) =>
       arr.push(
         <RoleButton
           role={{ name, alignment }}
           playerNo={playerNo}
-          selected={roles.reduce((acc, r) => acc || r.name === name, false)}
+          selected={name in roleKey}
           updateRoles={updateRoles}
           key={name}
         />,
