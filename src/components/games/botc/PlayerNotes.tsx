@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import PlayerCard from "./PlayerCard";
 import { BotCPlayer } from "../../../recoil/botc-atom";
 import { playerDist } from "../../../constants/botc";
+import { MuiColors } from "../../common/types";
 
 interface PlayerNotesProps {
   script: number;
@@ -13,7 +14,12 @@ interface PlayerNotesProps {
     i: number,
     key: "liar" | "dead" | "used",
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  updatePlayerRoles: (i: number, role: string, selected: boolean) => () => void;
+  updatePlayerRoles: (
+    i: number,
+    role: string,
+    selected: boolean,
+    alignment: MuiColors,
+  ) => () => void;
   updatePlayerNotesBlur: (
     i: number,
   ) => (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -52,7 +58,10 @@ const PlayerNotes = ({
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Typography>Dist: {playerDist[numPlayers]}{numTravelers ? ` +${numTravelers}` : ""}</Typography>
+        <Typography>
+          Dist: {playerDist[numPlayers]}
+          {numTravelers ? ` +${numTravelers}` : ""}
+        </Typography>
       </Grid>
       {playerButtons}
     </Grid>

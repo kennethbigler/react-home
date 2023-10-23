@@ -1,14 +1,18 @@
 import { atom } from "recoil";
 import { MuiColors } from "../components/common/types";
 
+interface BotCRole {
+  name: string;
+  alignment: MuiColors;
+}
+
 export interface BotCPlayer {
   name: string;
-  roles: string[];
+  roles: BotCRole[];
   notes: string;
   liar: boolean;
   dead: boolean;
   used: boolean;
-  alignment: MuiColors;
 }
 
 export const BOTC_MIN_PLAYERS = 5;
@@ -28,7 +32,6 @@ export const botcPlayerShell: BotCPlayer = {
   liar: false,
   dead: false,
   used: false,
-  alignment: "primary",
 };
 
 const initBotcPlayers: BotCPlayer[] = [];

@@ -1,9 +1,11 @@
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
 import { BotCPlayer } from "../../../recoil/botc-atom";
 import InfoPopup from "../../common/info-popover/InfoPopup";
 import RoleDialog from "./RoleDialog";
+import { MuiColors } from "../../common/types";
 
 interface PlayerCardProps {
   script: number;
@@ -13,7 +15,12 @@ interface PlayerCardProps {
     i: number,
     key: "liar" | "dead" | "used",
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  updatePlayerRoles: (i: number, role: string, selected: boolean) => () => void;
+  updatePlayerRoles: (
+    i: number,
+    role: string,
+    selected: boolean,
+    alignment: MuiColors,
+  ) => () => void;
   updatePlayerNotesBlur: (
     i: number,
   ) => (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -21,6 +28,8 @@ interface PlayerCardProps {
     i: number,
   ) => (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
+
+const chipStyle = { marginRight: "5px", marginTop: "5px" };
 
 const PlayerCard = ({
   script,
@@ -33,11 +42,7 @@ const PlayerCard = ({
 }: PlayerCardProps) => (
   <Grid item xs={6} sm={4} md={3} lg={2} xl={1}>
     <Card sx={{ padding: "5px", textAlign: "center" }}>
-      <InfoPopup
-        buttonColor={player.alignment}
-        buttonText={player.name}
-        title={`Roles - ${player.name}`}
-      >
+      <InfoPopup buttonText={player.name} title={`Roles - ${player.name}`}>
         <RoleDialog
           script={script}
           playerNo={playerNo}
@@ -55,12 +60,20 @@ const PlayerCard = ({
         {(player.liar || player.dead || player.used) && player.notes && " - "}
         {player.notes}
       </Typography>
-      <Typography>
-        {player.roles.reduce(
-          (acc, role, i) => (i !== 0 ? `${acc}, ${role}` : role),
-          "",
-        )}
-      </Typography>
+      {player.roles.map((role) => (
+        <Chip
+          key={role.name}
+          label={role.name}
+          color={role.alignment}
+          onDelete={updatePlayerRoles(
+            playerNo,
+            role.name,
+            true,
+            role.alignment,
+          )}
+          sx={chipStyle}
+        />
+      ))}
     </Card>
   </Grid>
 );
