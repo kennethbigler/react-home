@@ -1,7 +1,8 @@
 import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import TabPanel, { a11yProps } from "../../common/tab-panel";
+import TabPanel from "../../common/tab-panel/tab-panel";
+import a11yProps from "../../common/tab-panel/tab-panel-helper";
 import TeamDisplay from "./TeamsDisplay";
 import GameRound from "./GameRound";
 import FastMoney from "./FastMoney";
@@ -13,7 +14,7 @@ const FamilyFeud = () => {
 
   const handleChange = (
     _: React.SyntheticEvent<Element, Event>,
-    tabValue: number
+    tabValue: number,
   ) => {
     setValue(tabValue);
   };

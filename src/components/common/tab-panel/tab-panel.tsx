@@ -23,9 +23,4 @@ const TabPanel = (props: TabPanelProps) => {
   );
 };
 
-export const a11yProps = (index: number) => ({
-  id: `simple-tab-${index}`,
-  "aria-controls": `simple-tabpanel-${index}`,
-});
-
 export default TabPanel;

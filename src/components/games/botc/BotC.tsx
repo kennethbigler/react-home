@@ -84,9 +84,6 @@ const BotC: React.FC = React.memo(() => {
   const updatePlayerRoles =
     (i: number, role: string, selected: boolean, alignment: MuiColors) =>
     (): void => {
-      console.log(
-        `(i: ${i}, role: ${role}, selected: ${selected}, alignment: ${alignment})`,
-      );
       // set up immutability for new player
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i] };

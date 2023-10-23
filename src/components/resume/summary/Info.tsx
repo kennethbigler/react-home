@@ -15,7 +15,7 @@ const imageStyles: React.CSSProperties = {
   marginBottom: "1em",
 };
 
-export const getJob = (job: Job): string => {
+const getJob = (job: Job): string => {
   const parent = job.parent ? ` (${job.parent})` : "";
   return `${job.title}, ${job.company}${parent}`;
 };

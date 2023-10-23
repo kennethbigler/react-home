@@ -1,4 +1,4 @@
-import { tooltipFormatter } from "../TechBarChart";
+import { tooltipFormatter } from "../job-helpers";
 
 const entry = {
   name: "months1",
