@@ -30,7 +30,7 @@ const PlayerNotes = ({
 }: PlayerNotesProps) => {
   // set player Buttons
   const playerButtons = [];
-  for (let i = 0; i < numPlayers; i += 1) {
+  for (let i = 0; i < numPlayers + numTravelers; i += 1) {
     playerButtons.push(
       <PlayerCard
         script={script}
