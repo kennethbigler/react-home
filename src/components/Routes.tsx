@@ -4,10 +4,10 @@ import LoadingSpinner from "./common/loading-spinner";
 
 // lazy load sub routers
 const ResumeRoutes = React.lazy(
-  () => import(/* webpackChunkName: "resume" */ "./resume/Routes")
+  () => import(/* webpackChunkName: "resume" */ "./resume/Routes"),
 );
 const GameRoutes = React.lazy(
-  () => import(/* webpackChunkName: "games" */ "./games/Routes")
+  () => import(/* webpackChunkName: "games" */ "./games/Routes"),
 );
 
 const RootRoutes: React.FC = () => {

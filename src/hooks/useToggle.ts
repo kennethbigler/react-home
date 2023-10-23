@@ -3,7 +3,7 @@ import * as React from "react";
 type ToggleStateHook = [
   boolean,
   React.MouseEventHandler,
-  React.Dispatch<React.SetStateAction<boolean>>
+  React.Dispatch<React.SetStateAction<boolean>>,
 ];
 
 const useToggleState = (defaultVal = false): ToggleStateHook => {

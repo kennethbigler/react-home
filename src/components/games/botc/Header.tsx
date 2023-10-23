@@ -15,41 +15,37 @@ import {
 } from "../../../recoil/botc-atom";
 import { playerDist } from "../../../constants/botc";
 
-interface BotcHeaderProps {
+interface BotCHeaderProps {
   script: number;
   numPlayers: number;
   numTravelers: number;
   botcPlayers: BotCPlayer[];
-  newBotcGame: () => void;
+  newBotCGame: () => void;
   updateScript: (i: number) => () => void;
   updateNumPlayers: (_e: Event, value: number | number[]) => void;
   updateNumTravelers: (_e: Event, value: number | number[]) => void;
-  updatePlayersBlur: (
+  updateNamesOnBlur: (
     i: number,
   ) => (e: React.FocusEvent<HTMLInputElement>) => void;
-  updatePlayersKeyDown: (
-    i: number,
-  ) => (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
-const BotcHeader = ({
+const BotCHeader = ({
   script,
   numPlayers,
   numTravelers,
   botcPlayers,
-  newBotcGame,
+  newBotCGame,
   updateScript,
   updateNumPlayers,
   updateNumTravelers,
-  updatePlayersBlur,
-  updatePlayersKeyDown,
-}: BotcHeaderProps) => {
+  updateNamesOnBlur,
+}: BotCHeaderProps) => {
   const [hasToast, setHasToast] = React.useState(false);
   /** close the toast message */
   const handleClose = () => setHasToast(false);
   /** reset the BOTC game and open the success toast */
   const handleReset = () => {
-    newBotcGame();
+    newBotCGame();
     setHasToast(true);
   };
   // set player TextFields
@@ -61,8 +57,7 @@ const BotcHeader = ({
           defaultValue={botcPlayers[i].name}
           placeholder="Enter Player Name"
           title={`player ${i} name`}
-          onBlur={updatePlayersBlur(i)}
-          onKeyDown={updatePlayersKeyDown(i)}
+          onBlur={updateNamesOnBlur(i)}
         />
       </Grid>,
     );
@@ -136,4 +131,4 @@ const BotcHeader = ({
   );
 };
 
-export default BotcHeader;
+export default BotCHeader;

@@ -51,7 +51,7 @@ const DeployBranch: React.FC<DeployBranchProps> = React.memo(
         </Grid>
       </div>
     );
-  }
+  },
 );
 
 export default DeployBranch;

@@ -105,7 +105,7 @@ export const evaluate = (hand: DBCard[]): string => {
 export const getCardsToDiscard = (
   n: number,
   hist: number[],
-  hand: DBCard[]
+  hand: DBCard[],
 ): number[] => {
   const nextCardsToDiscard: number[] = [];
   const cardValues = [hist.indexOf(1)];
@@ -148,7 +148,10 @@ export const getCardsToDiscard = (
  */
 export const computer = async (
   player: DBPlayer,
-  discard: (cardsToDiscardInDB: number[], player: DBPlayer) => Promise<DBPlayer>
+  discard: (
+    cardsToDiscardInDB: number[],
+    player: DBPlayer,
+  ) => Promise<DBPlayer>,
 ): Promise<DBPlayer> => {
   if (player.hands.length < 1) {
     return player;

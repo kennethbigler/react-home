@@ -12,7 +12,7 @@ interface TopTableProps {
     showButton: boolean,
     points: number,
     wasTop: boolean,
-    i: number
+    i: number,
   ) => React.ReactNode;
   showScoreButtons: boolean;
   sx: React.CSSProperties;
@@ -43,7 +43,7 @@ const TopTable: React.FC<TopTableProps> = (props: TopTableProps) => {
         }
         return count;
       },
-      [0, 0]
+      [0, 0],
     );
 
   const hasYahtzee = bottom[5].score > 0;
@@ -53,7 +53,7 @@ const TopTable: React.FC<TopTableProps> = (props: TopTableProps) => {
     score: number,
     showButton: boolean,
     sum: number,
-    i: number
+    i: number,
   ): React.ReactNode | null => {
     if (score >= 0) {
       return score;

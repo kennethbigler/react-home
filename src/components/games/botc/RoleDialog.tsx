@@ -5,7 +5,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import { ReactNode } from "react";
-import { BotCPlayer } from "../../../recoil/botc-atom";
+import { BotCPlayer, BotCRole } from "../../../recoil/botc-atom";
 import { tb, snv, bmr } from "../../../constants/botc";
 import RoleButton from "./RoleButton";
 import { MuiColors } from "../../common/types";
@@ -14,32 +14,23 @@ interface RoleDialogProps {
   script: number;
   playerNo: number;
   player: BotCPlayer;
-  updatePlayerStats: (
+  updateStats: (
     i: number,
     key: "liar" | "dead" | "used",
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  updatePlayerRoles: (
-    i: number,
-    role: string,
-    selected: boolean,
-    alignment: MuiColors,
-  ) => () => void;
-  updatePlayerNotesBlur: (
+  updateRoles: (i: number, role: BotCRole, selected: boolean) => () => void;
+  updateNotesOnBlur: (
     i: number,
   ) => (e: React.FocusEvent<HTMLInputElement>) => void;
-  updatePlayerNotesKeyDown: (
-    i: number,
-  ) => (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 const RoleDialog = ({
   script,
   playerNo,
   player: { roles, notes, liar, dead, used },
-  updatePlayerStats,
-  updatePlayerRoles,
-  updatePlayerNotesBlur,
-  updatePlayerNotesKeyDown,
+  updateStats,
+  updateRoles,
+  updateNotesOnBlur,
 }: RoleDialogProps) => {
   let active;
   let backup1;
@@ -62,15 +53,14 @@ const RoleDialog = ({
   }
 
   const generateRoleButtons =
-    (arr: ReactNode[], color: MuiColors) => (role: string) =>
+    (arr: ReactNode[], alignment: MuiColors) => (name: string) =>
       arr.push(
         <RoleButton
-          role={role}
-          color={color}
+          role={{ name, alignment }}
           playerNo={playerNo}
-          selected={roles.reduce((acc, r) => acc || r.name === role, false)}
-          updatePlayerRoles={updatePlayerRoles}
-          key={role}
+          selected={roles.reduce((acc, r) => acc || r.name === name, false)}
+          updateRoles={updateRoles}
+          key={name}
         />,
       );
 
@@ -96,8 +86,7 @@ const RoleDialog = ({
           label="Notes"
           variant="standard"
           defaultValue={notes}
-          onBlur={updatePlayerNotesBlur(playerNo)}
-          onKeyDown={updatePlayerNotesKeyDown(playerNo)}
+          onBlur={updateNotesOnBlur(playerNo)}
         />
       </Grid>
 
@@ -110,7 +99,7 @@ const RoleDialog = ({
             control={
               <Checkbox
                 checked={liar}
-                onChange={updatePlayerStats(playerNo, "liar")}
+                onChange={updateStats(playerNo, "liar")}
               />
             }
             label="😈"
@@ -119,7 +108,7 @@ const RoleDialog = ({
             control={
               <Checkbox
                 checked={dead}
-                onChange={updatePlayerStats(playerNo, "dead")}
+                onChange={updateStats(playerNo, "dead")}
               />
             }
             label="💀"
@@ -128,7 +117,7 @@ const RoleDialog = ({
             control={
               <Checkbox
                 checked={used}
-                onChange={updatePlayerStats(playerNo, "used")}
+                onChange={updateStats(playerNo, "used")}
               />
             }
             label="❌"

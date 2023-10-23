@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = React.memo(
         Reset Game
       </Button>
     </Toolbar>
-  )
+  ),
 );
 
 export default Header;

@@ -30,7 +30,7 @@ const Row = (props: RowProps): React.ReactElement => {
           <YearMarkers key={j} data={data} />
         ) : (
           <Segment key={j} {...data} />
-        )
+        ),
       )}
     </div>
   );

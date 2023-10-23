@@ -47,7 +47,7 @@ export const playBot = async (
   double: () => Promise<void>,
   hit: () => Promise<void>,
   split: () => Promise<void>,
-  stay: () => void
+  stay: () => void,
 ): Promise<void> => {
   // validate hand exists
   if (!hand) {

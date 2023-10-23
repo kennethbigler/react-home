@@ -16,16 +16,16 @@ describe("resume | cars | CarCard", () => {
     expect(screen.getByText(`(${demoCar.owned})`)).toBeInTheDocument();
     expect(screen.getByText(demoCar.title)).toBeInTheDocument();
     expect(
-      screen.getByText(`Horsepower: ${demoCar.horsepower}`)
+      screen.getByText(`Horsepower: ${demoCar.horsepower}`),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(`Transmission: ${demoCar.transmission}`)
+      screen.getByText(`Transmission: ${demoCar.transmission}`),
     ).toBeInTheDocument();
     expect(screen.getByText(demoCar.story)).toBeInTheDocument();
     expect(screen.getByAltText(demoCar.title)).toBeInTheDocument();
     expect(screen.getByAltText(demoCar.title)).toHaveAttribute(
       "src",
-      demoCar.src
+      demoCar.src,
     );
   });
 });

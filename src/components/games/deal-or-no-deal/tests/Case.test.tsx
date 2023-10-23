@@ -9,7 +9,7 @@ describe("games | deal-or-no-deal | Case", () => {
         briefcase={{ on: true, loc: 1, val: 1000 }}
         isOver={false}
         onClick={vi.fn()}
-      />
+      />,
     );
 
     expect(screen.getByText("1")).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe("games | deal-or-no-deal | Case", () => {
         briefcase={{ on: false, loc: 1, val: 1000 }}
         isOver={false}
         onClick={vi.fn()}
-      />
+      />,
     );
 
     expect(screen.queryByText("1")).toBeNull();
@@ -35,7 +35,7 @@ describe("games | deal-or-no-deal | Case", () => {
         briefcase={{ on: true, loc: 1, val: 1000 }}
         isOver
         onClick={vi.fn()}
-      />
+      />,
     );
 
     expect(screen.queryByText("1")).toBeNull();

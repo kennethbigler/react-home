@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useRecoilState } from "recoil";
-import BotcHeader from "./BotcHeader";
+import BotCHeader from "./Header";
 import botcAtom, {
   BotCPlayer,
+  BotCRole,
   botcPlayerShell,
 } from "../../../recoil/botc-atom";
 import PlayerNotes from "./PlayerNotes";
-import { MuiColors } from "../../common/types";
 
 const BotC: React.FC = React.memo(() => {
   const [{ script, numPlayers, numTravelers, botcPlayers }, setState] =
@@ -36,7 +36,7 @@ const BotC: React.FC = React.memo(() => {
     });
 
   /** update player name onBlur */
-  const updatePlayersNamesBlur =
+  const updateNamesOnBlur =
     (i: number) =>
     (e: React.FocusEvent<HTMLInputElement>): void => {
       const newPlayers = [...botcPlayers];
@@ -44,23 +44,9 @@ const BotC: React.FC = React.memo(() => {
       newPlayers[i] = newPlayer;
       setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
-  /** if enter key was pressed in textfield, update name */
-  const updatePlayersNamesKeyDown =
-    (i: number) =>
-    (e: React.KeyboardEvent<HTMLDivElement>): void => {
-      if (e.key === "Enter") {
-        const newPlayers = [...botcPlayers];
-        const newPlayer = {
-          ...newPlayers[i],
-          name: (e.target as HTMLInputElement).value || "",
-        };
-        newPlayers[i] = newPlayer;
-        setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
-      }
-    };
 
   /** set a new game */
-  const newBotcGame = () => {
+  const newBotCGame = () => {
     const newPlayers: BotCPlayer[] = [];
     botcPlayers.forEach((player) =>
       newPlayers.push({ ...botcPlayerShell, name: player.name }),
@@ -70,7 +56,7 @@ const BotC: React.FC = React.memo(() => {
 
   /* ----------     Notes Functions     ---------- */
   /** handle checkboxes checked for player stat updates */
-  const updatePlayerStats =
+  const updateStats =
     (i: number, key: "liar" | "dead" | "used") =>
     (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
       const newPlayers = [...botcPlayers];
@@ -81,24 +67,23 @@ const BotC: React.FC = React.memo(() => {
     };
 
   /** handle role selections */
-  const updatePlayerRoles =
-    (i: number, role: string, selected: boolean, alignment: MuiColors) =>
-    (): void => {
+  const updateRoles =
+    (i: number, role: BotCRole, selected: boolean) => (): void => {
       // set up immutability for new player
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i] };
       // if selected remove, if not add
       if (selected) {
-        newPlayer.roles = newPlayer.roles.filter((r) => r.name !== role);
+        newPlayer.roles = newPlayer.roles.filter((r) => r.name !== role.name);
       } else {
-        newPlayer.roles = [...newPlayer.roles, { name: role, alignment }];
+        newPlayer.roles = [...newPlayer.roles, role];
       }
       newPlayers[i] = newPlayer;
       setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
 
   /** update player notes onBlur */
-  const updatePlayerNotesBlur =
+  const updateNotesOnBlur =
     (i: number) =>
     (e: React.FocusEvent<HTMLInputElement>): void => {
       const newPlayers = [...botcPlayers];
@@ -106,45 +91,29 @@ const BotC: React.FC = React.memo(() => {
       newPlayers[i] = newPlayer;
       setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
-  /** if enter key was pressed in textfield, update notes */
-  const updatePlayerNotesKeyDown =
-    (i: number) =>
-    (e: React.KeyboardEvent<HTMLDivElement>): void => {
-      if (e.key === "Enter") {
-        const newPlayers = [...botcPlayers];
-        const newPlayer = {
-          ...newPlayers[i],
-          notes: (e.target as HTMLInputElement).value || "",
-        };
-        newPlayers[i] = newPlayer;
-        setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
-      }
-    };
 
   /* ----------     Render     ---------- */
   return (
     <>
-      <BotcHeader
+      <BotCHeader
         script={script}
         numPlayers={numPlayers}
         numTravelers={numTravelers}
         botcPlayers={botcPlayers}
-        newBotcGame={newBotcGame}
+        newBotCGame={newBotCGame}
         updateScript={updateScript}
         updateNumPlayers={updateNumPlayers}
         updateNumTravelers={updateNumTravelers}
-        updatePlayersBlur={updatePlayersNamesBlur}
-        updatePlayersKeyDown={updatePlayersNamesKeyDown}
+        updateNamesOnBlur={updateNamesOnBlur}
       />
       <PlayerNotes
         script={script}
         numPlayers={numPlayers}
         numTravelers={numTravelers}
         botcPlayers={botcPlayers}
-        updatePlayerStats={updatePlayerStats}
-        updatePlayerRoles={updatePlayerRoles}
-        updatePlayerNotesBlur={updatePlayerNotesBlur}
-        updatePlayerNotesKeyDown={updatePlayerNotesKeyDown}
+        updateStats={updateStats}
+        updateRoles={updateRoles}
+        updateNotesOnBlur={updateNotesOnBlur}
       />
     </>
   );

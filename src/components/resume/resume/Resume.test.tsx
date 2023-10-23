@@ -6,7 +6,7 @@ describe("resume | resume", () => {
     render(<Resume />);
 
     expect(
-      screen.getByAltText("Kenneth Bigler Software Engineer Resume")
+      screen.getByAltText("Kenneth Bigler Software Engineer Resume"),
     ).toBeInTheDocument();
   });
 });

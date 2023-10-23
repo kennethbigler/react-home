@@ -10,7 +10,7 @@ interface WerewolfPanelProps {
   expanded?: string;
   expandedKey: string;
   handleChange: (
-    panel: string
+    panel: string,
   ) => (_event: React.SyntheticEvent<Element, Event>, exp?: boolean) => void;
   handleStar: (value: number, count: number, role: string) => void;
   name: string;
@@ -65,7 +65,7 @@ const WerewolfPanel: React.FC<WerewolfPanelProps> = React.memo(
         <AccordionDetails>{description}</AccordionDetails>
       </Accordion>
     );
-  }
+  },
 );
 
 export default WerewolfPanel;

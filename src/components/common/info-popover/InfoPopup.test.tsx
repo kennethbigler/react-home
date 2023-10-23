@@ -6,7 +6,7 @@ describe("common | InfoPopup", () => {
     render(
       <InfoPopup title="Title" buttonText="Button">
         Child
-      </InfoPopup>
+      </InfoPopup>,
     );
     expect(screen.getByText("Button")).toBeInTheDocument();
     expect(screen.queryByText("Title")).toBeNull();
@@ -26,7 +26,7 @@ describe("common | InfoPopup", () => {
     render(
       <InfoPopup title="Title" buttonText="Button">
         Child
-      </InfoPopup>
+      </InfoPopup>,
     );
     expect(screen.getByText("Button")).toBeInTheDocument();
     // check that it opens

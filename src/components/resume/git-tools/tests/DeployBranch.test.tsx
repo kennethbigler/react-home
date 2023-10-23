@@ -18,7 +18,7 @@ describe("resume | git-tools | DeployBranch", () => {
     ]);
 
     render(
-      <DeployBranch getSelectOptions={handleSelectOptions} gitTheme="red" />
+      <DeployBranch getSelectOptions={handleSelectOptions} gitTheme="red" />,
     );
   });
 
@@ -27,19 +27,19 @@ describe("resume | git-tools | DeployBranch", () => {
     expect(screen.getByDisplayValue("test-pipeline")).toBeInTheDocument();
     expect(screen.getByRole("button")).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin features/:test-pipeline")
+      screen.getByText("git push -f origin features/:test-pipeline"),
     ).toBeInTheDocument();
   });
 
   it("has expected color", () => {
     expect(screen.getByText("Target Branch")).toHaveStyle(
-      "color: rgb(255, 0, 0);"
+      "color: rgb(255, 0, 0);",
     );
   });
 
   it("swaps test-pipeline and sandbox-pipeline on select", () => {
     expect(
-      screen.getByText("git push -f origin features/:test-pipeline")
+      screen.getByText("git push -f origin features/:test-pipeline"),
     ).toBeInTheDocument();
     expect(screen.getByDisplayValue("test-pipeline")).toBeInTheDocument();
     expect(screen.queryByDisplayValue("sandbox-pipeline")).toBeNull();
@@ -51,7 +51,7 @@ describe("resume | git-tools | DeployBranch", () => {
     expect(screen.queryByDisplayValue("test-pipeline")).toBeNull();
     expect(screen.getByDisplayValue("sandbox-pipeline")).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin features/:sandbox-pipeline")
+      screen.getByText("git push -f origin features/:sandbox-pipeline"),
     ).toBeInTheDocument();
   });
 });

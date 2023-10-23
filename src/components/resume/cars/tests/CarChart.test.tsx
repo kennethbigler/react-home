@@ -35,19 +35,19 @@ afterEach(() => {
 describe("resume | cars | CarChart", () => {
   it("renders as expected", () => {
     const { container } = render(
-      <CarChart hide={{}} showAnimation vw={435} vh={900} data={data} />
+      <CarChart hide={{}} showAnimation vw={435} vh={900} data={data} />,
     );
     expect(
-      container.querySelector(".recharts-responsive-container")
+      container.querySelector(".recharts-responsive-container"),
     ).toHaveStyle({ width: "100%", height: "664px" });
   });
 
   it("renders with lower height", () => {
     const { container } = render(
-      <CarChart hide={{}} showAnimation vw={435} vh={480} data={data} />
+      <CarChart hide={{}} showAnimation vw={435} vh={480} data={data} />,
     );
     expect(
-      container.querySelector(".recharts-responsive-container")
+      container.querySelector(".recharts-responsive-container"),
     ).toHaveStyle({ width: "100%", height: "400px" });
   });
 });

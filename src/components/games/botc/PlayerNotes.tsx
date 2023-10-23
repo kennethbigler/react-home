@@ -1,31 +1,22 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import PlayerCard from "./PlayerCard";
-import { BotCPlayer } from "../../../recoil/botc-atom";
+import { BotCPlayer, BotCRole } from "../../../recoil/botc-atom";
 import { playerDist } from "../../../constants/botc";
-import { MuiColors } from "../../common/types";
 
 interface PlayerNotesProps {
   script: number;
   numPlayers: number;
   numTravelers: number;
   botcPlayers: BotCPlayer[];
-  updatePlayerStats: (
+  updateStats: (
     i: number,
     key: "liar" | "dead" | "used",
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  updatePlayerRoles: (
-    i: number,
-    role: string,
-    selected: boolean,
-    alignment: MuiColors,
-  ) => () => void;
-  updatePlayerNotesBlur: (
+  updateRoles: (i: number, role: BotCRole, selected: boolean) => () => void;
+  updateNotesOnBlur: (
     i: number,
   ) => (e: React.FocusEvent<HTMLInputElement>) => void;
-  updatePlayerNotesKeyDown: (
-    i: number,
-  ) => (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 const PlayerNotes = ({
@@ -33,10 +24,9 @@ const PlayerNotes = ({
   numPlayers,
   numTravelers,
   botcPlayers,
-  updatePlayerStats,
-  updatePlayerRoles,
-  updatePlayerNotesBlur,
-  updatePlayerNotesKeyDown,
+  updateStats,
+  updateRoles,
+  updateNotesOnBlur,
 }: PlayerNotesProps) => {
   // set player Buttons
   const playerButtons = [];
@@ -46,10 +36,9 @@ const PlayerNotes = ({
         script={script}
         playerNo={i}
         player={botcPlayers[i]}
-        updatePlayerStats={updatePlayerStats}
-        updatePlayerRoles={updatePlayerRoles}
-        updatePlayerNotesBlur={updatePlayerNotesBlur}
-        updatePlayerNotesKeyDown={updatePlayerNotesKeyDown}
+        updateStats={updateStats}
+        updateRoles={updateRoles}
+        updateNotesOnBlur={updateNotesOnBlur}
         key={`playerNo${i}`}
       />,
     );

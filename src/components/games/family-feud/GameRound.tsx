@@ -64,7 +64,7 @@ const GameRound = (props: GameRoundProps) => {
               >
                 {content}
               </Button>
-            )
+            ),
           )}
         </Stack>
         <Stack spacing={2} style={wrapperStyles}>
@@ -81,7 +81,7 @@ const GameRound = (props: GameRoundProps) => {
               >
                 {content}
               </Button>
-            )
+            ),
           )}
         </Stack>
       </Stack>

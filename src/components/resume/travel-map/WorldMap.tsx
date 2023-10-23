@@ -97,9 +97,8 @@ const WorldMap = () => {
         />
         <Geographies geography="https://unpkg.com/world-atlas@2.0.2/countries-110m.json">
           {({ geographies }) =>
-            geographies.map((geo: GeographyType) => {
+            geographies.map((geo: GeographyType) => (
               // console.log(geo);
-              return (
               <Geography
                 key={`${geo.rsmKey}-${geo.id}`}
                 geography={geo}
@@ -124,7 +123,7 @@ const WorldMap = () => {
                   },
                 }}
               />
-            )})
+            ))
           }
         </Geographies>
       </ComposableMap>

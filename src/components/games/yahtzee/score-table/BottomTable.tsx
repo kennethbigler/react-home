@@ -19,7 +19,7 @@ interface BottomTableProps {
     showButton: boolean,
     points: number,
     wasTop: boolean,
-    i: number
+    i: number,
   ) => React.ReactNode;
   showScoreButtons: boolean;
   sx: React.CSSProperties;
@@ -60,7 +60,7 @@ const BottomTable: React.FC<BottomTableProps> = (props: BottomTableProps) => {
       score: number,
       points: number,
       hasYahtzee: boolean,
-      i: number
+      i: number,
     ): React.ReactNode | null => {
       if (score >= 0) {
         return score;
@@ -76,7 +76,7 @@ const BottomTable: React.FC<BottomTableProps> = (props: BottomTableProps) => {
       }
       return null;
     },
-    [getScoreButton, showScoreButtons, top, values]
+    [getScoreButton, showScoreButtons, top, values],
   );
 
   const { bottom, sx } = props;

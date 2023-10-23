@@ -66,7 +66,7 @@ const CarChartControls = React.memo(
         </Button>
       </ButtonGroup>
     </div>
-  )
+  ),
 );
 
 export default CarChartControls;

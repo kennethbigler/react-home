@@ -10,7 +10,7 @@ describe("resume | git-tools | CopyTextDisplay", () => {
 
     fireEvent.click(screen.getByText("Copy this text"));
     expect(
-      screen.getByText("Copied Commit Text to clipboard!")
+      screen.getByText("Copied Commit Text to clipboard!"),
     ).toBeInTheDocument();
   });
 });

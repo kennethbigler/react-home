@@ -38,7 +38,7 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
             value={board[c]}
             winner={winner}
           />
-        </TableCell>
+        </TableCell>,
       );
     }
     const boardRow = <TableRow key={`row${i}`}>{row}</TableRow>;

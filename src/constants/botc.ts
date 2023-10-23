@@ -1,4 +1,4 @@
-export interface BotcScript {
+export interface BotCScript {
   townsfolk: string[];
   outsiders: string[];
   minions: string[];
@@ -6,7 +6,7 @@ export interface BotcScript {
   travelers: string[];
 }
 
-export const tb: BotcScript = {
+export const tb: BotCScript = {
   townsfolk: [
     "Washerwoman",
     "Monk",
@@ -28,7 +28,7 @@ export const tb: BotcScript = {
   travelers: ["Thief", "Bureaucrat", "Gunslinger", "Scapegoat", "Beggar"],
 };
 
-export const snv: BotcScript = {
+export const snv: BotCScript = {
   townsfolk: [
     "Clockmaker",
     "Savant",
@@ -50,7 +50,7 @@ export const snv: BotcScript = {
   travelers: ["Barista", "Harlot", "Butcher", "Deviant", "Bone Collector"],
 };
 
-export const bmr: BotcScript = {
+export const bmr: BotCScript = {
   townsfolk: [
     "Grandmother",
     "Gossip",

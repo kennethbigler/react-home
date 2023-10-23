@@ -1,35 +1,28 @@
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import { MuiColors } from "../../common/types";
+import { BotCRole } from "../../../recoil/botc-atom";
 
 interface RoleButtonProps {
-  role: string;
-  color: MuiColors;
+  role: BotCRole;
   playerNo: number;
   selected: boolean;
-  updatePlayerRoles: (
-    i: number,
-    role: string,
-    selected: boolean,
-    alignment: MuiColors,
-  ) => () => void;
+  updateRoles: (i: number, role: BotCRole, selected: boolean) => () => void;
 }
 
 const RoleButton = ({
   role,
-  color,
   playerNo,
   selected,
-  updatePlayerRoles,
+  updateRoles,
 }: RoleButtonProps) => (
   <Grid item xs={6} sx={{ textAlign: "center" }}>
     <Button
       variant={selected ? "contained" : "outlined"}
-      color={color}
+      color={role.alignment}
       sx={{ padding: "6px", width: "100%" }}
-      onClick={updatePlayerRoles(playerNo, role, selected, color)}
+      onClick={updateRoles(playerNo, role, selected)}
     >
-      {role}
+      {role.name}
     </Button>
   </Grid>
 );

@@ -19,7 +19,7 @@ import EffectiveRow from "./EffectiveRow";
 
 const ddOptions = types.reduce(
   (acc: string[], { name }) => acc.concat([name]),
-  ["select secondary"]
+  ["select secondary"],
 );
 
 const buttonStyles = { padding: "4px 2px" };

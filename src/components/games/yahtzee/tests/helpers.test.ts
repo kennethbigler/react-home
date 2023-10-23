@@ -23,10 +23,10 @@ describe("games | yahtzee | helpers", () => {
 
   test("canYahtzeeBonus", () => {
     expect(
-      canYahtzeeBonus([1, 1, 1, 1, 1], [{ name: "Ken", score: 5 }])
+      canYahtzeeBonus([1, 1, 1, 1, 1], [{ name: "Ken", score: 5 }]),
     ).toStrictEqual(true);
     expect(
-      canYahtzeeBonus([1, 1, 2, 2, 3], [{ name: "Ken", score: 5 }])
+      canYahtzeeBonus([1, 1, 2, 2, 3], [{ name: "Ken", score: 5 }]),
     ).toStrictEqual(false);
   });
 });

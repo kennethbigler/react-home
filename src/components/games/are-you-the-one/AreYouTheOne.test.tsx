@@ -111,7 +111,7 @@ describe("games | are-you-the-one | AreYouTheOne", () => {
     // select item
     fireEvent.click(screen.getByText("Truth Booth"));
     await waitFor(() =>
-      expect(screen.getAllByText("Matchup 1")).toHaveLength(1)
+      expect(screen.getAllByText("Matchup 1")).toHaveLength(1),
     );
     expect(screen.getByText("Truth Booth")).toBeInTheDocument();
     // assign a no match

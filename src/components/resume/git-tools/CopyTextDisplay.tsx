@@ -17,7 +17,7 @@ const chipStyles: React.CSSProperties = {
 };
 
 const CopyTextDisplay: React.FC<CopyTextDisplayProps> = (
-  props: CopyTextDisplayProps
+  props: CopyTextDisplayProps,
 ) => {
   const [isOpen, handleOpen, handleClose] = useOpenState(false);
   const { copyText, text } = props;

@@ -76,7 +76,12 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
           alt="profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
           id="stackOverflow"
           src="https://stackoverflow.com/users/flair/4830309.png?theme=dark"
-          style={{ display: "block", margin: "auto", cursor: "pointer", width: 208 }}
+          style={{
+            display: "block",
+            margin: "auto",
+            cursor: "pointer",
+            width: 208,
+          }}
         />
       </MenuItem>
     </MenuList>

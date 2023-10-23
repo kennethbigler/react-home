@@ -16,7 +16,7 @@ interface FastMoneyProps {
   takenAnswerIndex?: number[];
   onClick: (
     questionIndex: number,
-    answerIndex: number
+    answerIndex: number,
   ) => React.MouseEventHandler;
 }
 
@@ -47,7 +47,7 @@ const FastMoney = (props: FastMoneyProps) => {
                     >
                       {answerIndex[i] === j ? ans : j + 1}
                     </Button>
-                  )
+                  ),
                 )}
                 {answerIndex[i] < 0 && (
                   <Button

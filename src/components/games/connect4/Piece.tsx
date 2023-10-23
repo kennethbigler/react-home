@@ -30,7 +30,7 @@ const getColor = (piece: number): string | undefined => {
   }
 };
 
-const Piece = (props: PieceProps): React.ReactElement => {
+const Piece = React.memo((props: PieceProps): React.ReactElement => {
   const { ariaLabel, piece, enabled = false, onClick = noop } = props;
 
   const color = getColor(piece);
@@ -51,6 +51,6 @@ const Piece = (props: PieceProps): React.ReactElement => {
       <ContentAdd style={{ color: "white" }} />
     </Fab>
   );
-};
+});
 
-export default React.memo(Piece);
+export default Piece;

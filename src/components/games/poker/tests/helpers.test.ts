@@ -46,16 +46,16 @@ describe("games | poker | helpers", () => {
       getCardsToDiscard(
         4,
         [0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0],
-        [...hand.slice(0, 4), { name: "8", weight: 8, suit: "♥" }]
-      )
+        [...hand.slice(0, 4), { name: "8", weight: 8, suit: "♥" }],
+      ),
     ).toEqual([1, 2, 3, 4]);
     /* draw 3 on 2 of a kind */
     expect(
       getCardsToDiscard(
         3,
         [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 0],
-        [{ name: "K", weight: 13, suit: "♥" }, ...hand.slice(0, 4)]
-      )
+        [{ name: "K", weight: 13, suit: "♥" }, ...hand.slice(0, 4)],
+      ),
     ).toEqual([2, 3, 4]);
     /* draw 1 on 3 of a kind */
     expect(
@@ -66,8 +66,8 @@ describe("games | poker | helpers", () => {
           { name: "K", weight: 13, suit: "♦" },
           { name: "K", weight: 13, suit: "♥" },
           ...hand.slice(0, 3),
-        ]
-      )
+        ],
+      ),
     ).toEqual([4]);
     /* draw 1 on 2 Pair */
     expect(
@@ -78,8 +78,8 @@ describe("games | poker | helpers", () => {
           { name: "K", weight: 13, suit: "♥" },
           { name: "Q", weight: 12, suit: "♥" },
           ...hand.slice(0, 3),
-        ]
-      )
+        ],
+      ),
     ).toEqual([4]);
   });
 

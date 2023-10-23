@@ -76,5 +76,5 @@ export const canYahtzeeBonus = (values: Dice[], top: TopGameScore[]): boolean =>
       }
       return acc;
     },
-    false
+    false,
   );

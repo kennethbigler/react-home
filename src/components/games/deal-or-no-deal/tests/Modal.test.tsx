@@ -18,7 +18,7 @@ describe("games | deal-or-no-deal | Modal", () => {
         open
         swap={vi.fn()}
         board={board}
-      />
+      />,
     );
 
     expect(screen.getByText("$10,000 - Deal or No Deal?")).toBeInTheDocument();

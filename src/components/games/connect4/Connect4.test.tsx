@@ -7,7 +7,7 @@ describe("games | connect4 | Connect4", () => {
     render(<Connect4 />);
 
     expect(
-      screen.getByText("Welcome to Ken's Connect4 Game")
+      screen.getByText("Welcome to Ken's Connect4 Game"),
     ).toBeInTheDocument();
     expect(screen.getByText("Turn:")).toBeInTheDocument();
     // get buttons only once to save time

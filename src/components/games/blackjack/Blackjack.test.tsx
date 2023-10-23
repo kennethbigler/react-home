@@ -58,7 +58,7 @@ describe("games | blackjack | Blackjack", () => {
     expect(screen.queryByText("Double")).toBeNull();
     expect(screen.queryByText("Split")).toBeNull();
     await waitFor(() =>
-      expect(screen.getAllByText("Hand: 20")).toHaveLength(5)
+      expect(screen.getAllByText("Hand: 20")).toHaveLength(5),
     );
     await waitFor(() => screen.getByText("Hand: 10"));
     fireEvent.click(screen.getByText("Stay"));
@@ -82,7 +82,7 @@ describe("games | blackjack | Blackjack", () => {
 
     fireEvent.click(screen.getByText("Finish Betting"));
     await waitFor(() =>
-      expect(screen.getAllByText("Hand: 20")).toHaveLength(6)
+      expect(screen.getAllByText("Hand: 20")).toHaveLength(6),
     );
     await waitFor(() => screen.getByText("Hand: 10"));
     fireEvent.click(screen.getByText("Hit"));
@@ -108,7 +108,7 @@ describe("games | blackjack | Blackjack", () => {
 
     fireEvent.click(screen.getByText("Finish Betting"));
     await waitFor(() =>
-      expect(screen.getAllByText("Hand: 20")).toHaveLength(6)
+      expect(screen.getAllByText("Hand: 20")).toHaveLength(6),
     );
     await waitFor(() => screen.getByText("Hand: 10"));
     expect(screen.getAllByText("Bet: $5")).toHaveLength(6);

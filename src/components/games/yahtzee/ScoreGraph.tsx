@@ -34,7 +34,7 @@ const ScoreGraph: React.FC<ScoreGraphProps> = (props: ScoreGraphProps) => {
   const mostRecent = recent.value;
   const top = scores.reduce(
     (prev, curr) => (curr.value > prev.value ? curr : prev),
-    { value: 0 }
+    { value: 0 },
   );
   const topScore = top.value;
 

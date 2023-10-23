@@ -15,7 +15,7 @@ import PlayerMenu from "../../common/header/PlayerMenu";
 /* DealOrNoDeal  ->  Header
  *              |->  Board  ->  Case
  *              |->  Modal  ->  Money */
-const DND: React.FC = () => {
+const DealOrNoDeal: React.FC = () => {
   const [{ dnd, player }, setState] = useRecoilState(dndState);
   const { numCases, offer } = useRecoilValue(dndHelperSelector);
   const { board, dndOpen, isOver, turn, playerChoice, casesToOpen } = dnd;
@@ -187,4 +187,4 @@ const DND: React.FC = () => {
   );
 };
 
-export default DND;
+export default DealOrNoDeal;

@@ -20,7 +20,7 @@ const Dropdown = (props: DropdownProps) => {
 
   const handleMenuItemClick = (
     _event: React.MouseEvent<HTMLLIElement, MouseEvent>,
-    index: number
+    index: number,
   ) => {
     onSelect(index);
     setOpen(false);

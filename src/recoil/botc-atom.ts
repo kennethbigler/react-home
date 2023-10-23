@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 import { MuiColors } from "../components/common/types";
 
-interface BotCRole {
+export interface BotCRole {
   name: string;
   alignment: MuiColors;
 }
@@ -34,23 +34,23 @@ export const botcPlayerShell: BotCPlayer = {
   used: false,
 };
 
-const initBotcPlayers: BotCPlayer[] = [];
+const initBotCPlayers: BotCPlayer[] = [];
 for (let i = 0; i < BOTC_MAX_PLAYERS; i += 1) {
-  initBotcPlayers.push(botcPlayerShell);
+  initBotCPlayers.push(botcPlayerShell);
 }
 
-export const newBotcGame = () => ({
+export const newBotCGame = () => ({
   script: 0,
   numPlayers: 8,
   numTravelers: 0,
-  botcPlayers: initBotcPlayers,
+  botcPlayers: initBotCPlayers,
 });
 
 const botcAtom = atom({
   key: "botcAtom",
   default:
     (JSON.parse(localStorage.getItem("botc-atom") || "null") as BotCState) ||
-    newBotcGame(),
+    newBotCGame(),
   effects: [
     ({ onSet }) => {
       onSet((state) => {

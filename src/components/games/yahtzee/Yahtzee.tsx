@@ -67,7 +67,7 @@ const Yahtzee: React.FC = () => {
       newValues,
       newSaved,
       (roll + 1) as Dice,
-      bottomSum + topSum === 0 && roll === 0
+      bottomSum + topSum === 0 && roll === 0,
     );
   };
 
@@ -109,7 +109,7 @@ const Yahtzee: React.FC = () => {
           return "Error";
       }
     },
-    [finish]
+    [finish],
   );
 
   const handleTopScore = (points: number, i: number): void => {

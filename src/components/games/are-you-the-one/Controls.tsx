@@ -36,7 +36,7 @@ const Controls = (props: ControlsProps) => {
   // hooks/state
   const [season, setSeason] = useRecoilState(aytoSeasonSelector);
   const [score, setScore] = React.useState(
-    getScore(roundPairings[roundNumber]?.score)
+    getScore(roundPairings[roundNumber]?.score),
   );
 
   // handlers

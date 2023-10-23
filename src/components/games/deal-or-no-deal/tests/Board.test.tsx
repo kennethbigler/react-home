@@ -16,7 +16,7 @@ describe("games | deal-or-no-deal | Board", () => {
         isOver={false}
         onClick={handleClick}
         playerChoice={{ on: true, loc: 2, val: 2 }}
-      />
+      />,
     );
 
     expect(handleClick).toHaveBeenCalledTimes(0);

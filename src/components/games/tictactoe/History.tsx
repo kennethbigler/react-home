@@ -36,7 +36,7 @@ const History: React.FC<HistoryProps> = (props: HistoryProps) => {
         </Button>
       );
     },
-    [jumpToStep, step]
+    [jumpToStep, step],
   );
 
   // move history

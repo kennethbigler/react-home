@@ -6,7 +6,7 @@ describe("resume | summary | Summary", () => {
     render(<Summary />);
 
     expect(
-      screen.getByText("Accessibility Engineering Leader, Intuit")
+      screen.getByText("Accessibility Engineering Leader, Intuit"),
     ).toBeInTheDocument();
     expect(screen.getByText("Location")).toBeInTheDocument();
     expect(screen.getByText("Mountain View, CA")).toBeInTheDocument();
@@ -18,19 +18,19 @@ describe("resume | summary | Summary", () => {
 
     expect(screen.getByText("Education")).toBeInTheDocument();
     expect(
-      screen.getAllByText("Santa Clara University, Santa Clara, CA")
+      screen.getAllByText("Santa Clara University, Santa Clara, CA"),
     ).toHaveLength(2);
     expect(
-      screen.getByText("Master of Science in Computer Engineering")
+      screen.getByText("Master of Science in Computer Engineering"),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Bachelor of Science in Computer Science & Engineering")
+      screen.getByText("Bachelor of Science in Computer Science & Engineering"),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Stanford University, Stanford, CA")
+      screen.getByText("Stanford University, Stanford, CA"),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("The King's Academy, Sunnyvale, CA")
+      screen.getByText("The King's Academy, Sunnyvale, CA"),
     ).toBeInTheDocument();
   });
 
@@ -38,11 +38,11 @@ describe("resume | summary | Summary", () => {
     const { container } = render(<Summary />);
 
     expect(
-      container.querySelectorAll(".MuiCollapse-root.MuiCollapse-entered")
+      container.querySelectorAll(".MuiCollapse-root.MuiCollapse-entered"),
     ).toHaveLength(3);
     fireEvent.click(screen.getByText("Education"));
     expect(
-      container.querySelectorAll(".MuiCollapse-root.MuiCollapse-entered")
+      container.querySelectorAll(".MuiCollapse-root.MuiCollapse-entered"),
     ).toHaveLength(2);
   });
 });

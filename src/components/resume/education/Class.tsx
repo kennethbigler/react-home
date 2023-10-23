@@ -15,7 +15,7 @@ const Class: React.FC<ClassProps> = React.memo(
         {name}
       </Typography>
     </li>
-  )
+  ),
 );
 
 export default Class;

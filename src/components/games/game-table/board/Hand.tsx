@@ -43,7 +43,7 @@ const Hand: React.FC<HandProps> = (props: HandProps) => {
       isPlayerTurn && (!isMultiHand || (isMultiHand && isHandTurn))
         ? { ...boldStyle, color: purple[700] }
         : normalStyle,
-    [isPlayerTurn, isMultiHand, isHandTurn]
+    [isPlayerTurn, isMultiHand, isHandTurn],
   );
   const handWeight = hand.weight || 0;
 

@@ -6,7 +6,7 @@ describe("resume | git-tools | Header", () => {
   it("renders as expected", () => {
     const handleIdChange = vi.fn();
     render(
-      <Header gitTheme="red" onIdChange={handleIdChange} storyID="KEN-1234" />
+      <Header gitTheme="red" onIdChange={handleIdChange} storyID="KEN-1234" />,
     );
 
     expect(screen.getByText("Git Tools")).toBeInTheDocument();
@@ -14,7 +14,7 @@ describe("resume | git-tools | Header", () => {
     expect(screen.getByDisplayValue("KEN-1234")).toBeInTheDocument();
 
     expect(screen.getAllByText("User Story ID")[0]).toHaveStyle(
-      "color: rgb(255, 0, 0);"
+      "color: rgb(255, 0, 0);",
     );
   });
 
@@ -23,9 +23,8 @@ describe("resume | git-tools | Header", () => {
     render(<Header gitTheme="red" onIdChange={handleIdChange} />);
 
     fireEvent.change(
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       screen.getAllByText("User Story ID")[0].nextSibling!.firstChild!,
-      { target: { value: "KEN-1234" } }
+      { target: { value: "KEN-1234" } },
     );
     expect(handleIdChange).toHaveBeenCalledTimes(1);
   });
@@ -33,7 +32,7 @@ describe("resume | git-tools | Header", () => {
   it("displays an error when ticket of the wrong format is provided", () => {
     const handleIdChange = vi.fn();
     render(
-      <Header gitTheme="red" onIdChange={handleIdChange} storyID="1234" />
+      <Header gitTheme="red" onIdChange={handleIdChange} storyID="1234" />,
     );
 
     expect(screen.getByText("Git Tools")).toBeInTheDocument();
@@ -42,7 +41,7 @@ describe("resume | git-tools | Header", () => {
     expect(
       screen
         .getAllByText("User Story ID")[0]
-        .parentNode?.querySelector(".Mui-error")
+        .parentNode?.querySelector(".Mui-error"),
     ).toBeInTheDocument();
   });
 });
