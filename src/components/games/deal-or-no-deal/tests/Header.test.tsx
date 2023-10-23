@@ -19,7 +19,7 @@ const ken = {
 describe("games | deal-or-no-deal | Header", () => {
   it("renders as expected", () => {
     render(
-      <Header casesToOpen={1} isOver={0} newGame={vi.fn()} player={ken} />
+      <Header casesToOpen={1} isOver={0} newGame={vi.fn()} player={ken} />,
     );
 
     expect(screen.getByText("Your Case: ?")).toBeInTheDocument();
@@ -29,7 +29,7 @@ describe("games | deal-or-no-deal | Header", () => {
 
   it("changes appearance when over", () => {
     render(
-      <Header casesToOpen={1} isOver={1} newGame={vi.fn()} player={ken} />
+      <Header casesToOpen={1} isOver={1} newGame={vi.fn()} player={ken} />,
     );
     // removed
     expect(screen.queryByText("Your Case: ?")).toBeNull();
@@ -50,7 +50,7 @@ describe("games | deal-or-no-deal | Header", () => {
         newGame={vi.fn()}
         player={ken}
         playerChoice={{ on: true, loc: 1, val: 1000 }}
-      />
+      />,
     );
     // removed from isOver=false
     expect(screen.queryByText("Your Case: ?")).toBeNull();

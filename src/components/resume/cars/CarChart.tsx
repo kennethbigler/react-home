@@ -91,7 +91,7 @@ const CarChart = React.memo(
         </LineChart>
       </ResponsiveContainer>
     );
-  }
+  },
 );
 
 export default CarChart;

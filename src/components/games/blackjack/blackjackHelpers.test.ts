@@ -7,14 +7,14 @@ describe("games | blackjack | blackjackHelpers", () => {
       weighHand([
         { name: "K", suit: "♠", weight: 13 },
         { name: "Q", suit: "♠", weight: 12 },
-      ])
+      ]),
     ).toEqual({ weight: 20, soft: false });
 
     expect(
       weighHand([
         { name: "9", suit: "♠", weight: 9 },
         { name: "A", suit: "♠", weight: 14 },
-      ])
+      ]),
     ).toEqual({ weight: 20, soft: true });
 
     expect(
@@ -22,7 +22,7 @@ describe("games | blackjack | blackjackHelpers", () => {
         { name: "9", suit: "♠", weight: 9 },
         { name: "A", suit: "♠", weight: 14 },
         { name: "4", suit: "♠", weight: 4 },
-      ])
+      ]),
     ).toEqual({ weight: 14, soft: false });
 
     expect(
@@ -30,7 +30,7 @@ describe("games | blackjack | blackjackHelpers", () => {
         { name: "4", suit: "♠", weight: 4 },
         { name: "9", suit: "♠", weight: 9 },
         { name: "A", suit: "♠", weight: 14 },
-      ])
+      ]),
     ).toEqual({ weight: 14, soft: false });
 
     // @ts-expect-error: for testing reasons

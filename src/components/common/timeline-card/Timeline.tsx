@@ -1,18 +1,9 @@
 import * as React from "react";
-import dateObj, { DateObj, FormatOutput } from "../../../apis/DateHelper";
+import dateObj, { DateObj } from "../../../apis/DateHelper";
 import Row from "./Row";
 import { SegmentType } from "./types";
+import { DataEntry, MONTH_SORT } from "./timeline-consts";
 
-export interface DataEntry {
-  color: string;
-  title: string;
-  start: DateObj;
-  end: DateObj;
-  inverted?: boolean;
-  short?: string;
-  char?: string;
-  [prop: string]: string | string[] | DateObj | boolean | number | undefined;
-}
 interface TimelineProps {
   /** reads [selector] from each array entry and creates segments */
   data: DataEntry[];
@@ -27,11 +18,6 @@ interface TimelineProps {
   /** enables title field to be long version */
   enableLongTitles?: boolean;
 }
-
-export const FORMAT: FormatOutput = "MMMM Y";
-export const TIMELINE_TITLE = "Timeline";
-export const MONTH_SORT = (a: DataEntry, b: DataEntry): number =>
-  a.start.diff(b.start, "months");
 
 const WIDTH = 99;
 const MIN_LONG_WIDTH = 269;
@@ -58,7 +44,7 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
   // get immutable data from props and sort by start date
   const data: DataEntry[] = React.useMemo(
     () => [...propsData].sort(MONTH_SORT),
-    [propsData]
+    [propsData],
   );
   // track elements added already
   const added: boolean[] = [];
@@ -72,7 +58,7 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
       const width = Math.floor((timeFromStart / totalDuration) * WIDTH);
       return width > 0 ? width : 0;
     },
-    [end, start]
+    [end, start],
   );
 
   /** function to add elm segment */
@@ -81,7 +67,7 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
       segments: SegmentType[],
       elm: DataEntry,
       beginning: number,
-      ending: number
+      ending: number,
     ): void => {
       const { color, inverted, title, short, char } = elm;
       const width = ending - beginning;
@@ -115,7 +101,7 @@ const Timeline = (props: TimelineProps): React.ReactElement => {
         });
       }
     },
-    [selector, enableLongTitles]
+    [selector, enableLongTitles],
   );
 
   /** break data up into segments */

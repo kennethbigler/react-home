@@ -25,7 +25,7 @@ const TopScores: React.FC<TopScoresProps> = React.memo(
         <TableCell sx={sx}>{finalTopSum}</TableCell>
       </TableRow>
     </>
-  )
+  ),
 );
 
 export default TopScores;

@@ -11,7 +11,7 @@ const MurderMystery: React.FC = React.memo(() => {
       (_event: React.SyntheticEvent<Element, Event>, exp?: boolean): void => {
         setExpanded(exp ? panel : "");
       },
-    [setExpanded]
+    [setExpanded],
   );
 
   const mmProfiles = React.useMemo(
@@ -36,7 +36,7 @@ const MurderMystery: React.FC = React.memo(() => {
           />
         );
       }),
-    [expanded, handleChange]
+    [expanded, handleChange],
   );
 
   return (

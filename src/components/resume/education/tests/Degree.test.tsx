@@ -44,8 +44,8 @@ describe("resume | education | Degree", () => {
 
     expect(
       screen.getByText(
-        `${localDegree.school} - ${localDegree.degree} in ${localDegree.major} ${localDegree.minor}`
-      )
+        `${localDegree.school} - ${localDegree.degree} in ${localDegree.major} ${localDegree.minor}`,
+      ),
     ).toBeInTheDocument();
     expect(screen.getByText(localDegree.subtitle)).toBeInTheDocument();
     expect(screen.getByText("YearName")).toBeInTheDocument();
@@ -53,7 +53,7 @@ describe("resume | education | Degree", () => {
     expect(screen.getByText("CLSS 101 -")).toBeInTheDocument();
     expect(screen.getByText("ClassName")).toBeInTheDocument();
     expect(container.querySelector(".MuiCardHeader-root")).toHaveStyle(
-      "background-color: rgb(0, 103, 197);"
+      "background-color: rgb(0, 103, 197);",
     );
 
     expect(screen.queryByText(`GPA: ${localDegree.gpa}`)).toBeNull();

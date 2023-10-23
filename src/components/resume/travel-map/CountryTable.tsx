@@ -29,15 +29,18 @@ const countries: React.ReactNode[] = [];
 const len = Math.max(
   americas.length,
   Math.ceil(euNaf.length / EURatio),
-  asNau.length
+  asNau.length,
 );
 for (let i = 0; i < len; i += 1) {
   const row = [];
   // add Americas Country
   row.push(
-    <TableCell key={`tmc${i}-americas`} style={{ ...cellStyles, ...separatorStyles }}>
+    <TableCell
+      key={`tmc${i}-americas`}
+      style={{ ...cellStyles, ...separatorStyles }}
+    >
       {americas[i]}
-    </TableCell>
+    </TableCell>,
   );
   // add EU or AF Countries
   for (let j = 0; j < EURatio; j += 1) {
@@ -49,14 +52,14 @@ for (let i = 0; i < len; i += 1) {
         }
       >
         {euNaf[EURatio * i + j]}
-      </TableCell>
+      </TableCell>,
     );
   }
   // add AS or AU Country
   row.push(
     <TableCell key={`tmc${i}-as-au`} style={cellStyles}>
       {asNau[i]}
-    </TableCell>
+    </TableCell>,
   );
   // form the row
   const countryRow = <TableRow key={`tmr${i}`}>{row}</TableRow>;

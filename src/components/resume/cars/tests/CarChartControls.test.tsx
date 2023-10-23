@@ -6,7 +6,7 @@ describe("resume | cars | CarChart", () => {
   it("renders as expected", () => {
     const handleClick = vi.fn();
     const { getByText } = render(
-      <CarChartControls hide={{}} onClick={handleClick} vw={435} />
+      <CarChartControls hide={{}} onClick={handleClick} vw={435} />,
     );
 
     expect(getByText("MPG")).toBeInTheDocument();
@@ -23,7 +23,7 @@ describe("resume | cars | CarChart", () => {
   it("renders as expected on smaller screens", () => {
     const handleClick = vi.fn();
     const { getByText } = render(
-      <CarChartControls hide={{}} onClick={handleClick} vw={434} />
+      <CarChartControls hide={{}} onClick={handleClick} vw={434} />,
     );
 
     expect(getByText("MPG")).toBeInTheDocument();

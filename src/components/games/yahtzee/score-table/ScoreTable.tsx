@@ -40,7 +40,7 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
       showButton: boolean,
       points: number,
       wasTop: boolean,
-      i: number
+      i: number,
     ): React.ReactNode =>
       showButton ? (
         <Button
@@ -67,7 +67,7 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
           0
         </Button>
       ),
-    [onBottomScore, onTopScore]
+    [onBottomScore, onTopScore],
   );
 
   return (

@@ -44,7 +44,7 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
     (event: Event, value: number | number[]): void => {
       betHandler && betHandler(player.id, event, value as number);
     },
-    [betHandler, player.id]
+    [betHandler, player.id],
   );
   const weight: React.CSSProperties = {
     fontWeight: isPlayerTurn ? "bold" : "normal",

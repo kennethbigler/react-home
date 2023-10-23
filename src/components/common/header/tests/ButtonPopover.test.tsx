@@ -6,7 +6,7 @@ describe("common | header | ButtonPopover", () => {
     render(
       <ButtonPopover buttonText="Button Text">
         <span>Children Text</span>
-      </ButtonPopover>
+      </ButtonPopover>,
     );
     expect(screen.getByText("Button Text")).toBeInTheDocument();
     expect(screen.queryByText("Children Text")).toBeNull();
@@ -19,14 +19,14 @@ describe("common | header | ButtonPopover", () => {
     render(
       <ButtonPopover buttonText="Button Text">
         <span>Children Text</span>
-      </ButtonPopover>
+      </ButtonPopover>,
     );
     expect(screen.queryByTitle("player-popover")).toBeNull();
     // click to open
     fireEvent.click(screen.getByText("Button Text"));
     expect(screen.getByTitle("player-popover")).not.toHaveAttribute(
       "aria-hidden",
-      "true"
+      "true",
     );
     // press escape to close
     fireEvent.keyDown(screen.getByRole("presentation"), {
@@ -36,7 +36,7 @@ describe("common | header | ButtonPopover", () => {
     });
     expect(screen.getByTitle("player-popover")).toHaveAttribute(
       "aria-hidden",
-      "true"
+      "true",
     );
   });
 });

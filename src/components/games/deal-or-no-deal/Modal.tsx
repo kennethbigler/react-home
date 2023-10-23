@@ -26,7 +26,7 @@ const colStyles: React.CSSProperties = {
 const genMoneyCols = (
   arr: Briefcase[],
   start: number,
-  stop = arr.length
+  stop = arr.length,
 ): React.ReactNode[] =>
   arr.slice(start, stop).map((bc) => <Money key={bc.loc} briefcase={bc} />);
 

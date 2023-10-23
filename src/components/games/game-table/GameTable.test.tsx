@@ -19,7 +19,7 @@ describe("games | game-table | GameTable", () => {
         onClick={vi.fn()}
         players={[ken]}
         turn={{ player: 0, hand: 0 }}
-      />
+      />,
     );
 
     expect(screen.getByText("Ken: $1000").parentElement).toHaveStyle({
@@ -40,7 +40,7 @@ describe("games | game-table | GameTable", () => {
         onClick={vi.fn()}
         players={[ken]}
         turn={{ player: 0, hand: 0 }}
-      />
+      />,
     );
 
     expect(screen.getByText("Ken: $1000")).toBeInTheDocument();
@@ -61,7 +61,7 @@ describe("games | game-table | GameTable", () => {
         onClick={vi.fn()}
         players={[multiHandKen]}
         turn={{ player: 0, hand: 0 }}
-      />
+      />,
     );
 
     expect(screen.getByText("Ken: $1000")).toBeInTheDocument();
@@ -82,7 +82,7 @@ describe("games | game-table | GameTable", () => {
         onClick={vi.fn()}
         players={[bustKen]}
         turn={{ player: 0, hand: 0 }}
-      />
+      />,
     );
 
     expect(screen.queryByText("Hand: 0")).toBeNull();
@@ -97,7 +97,7 @@ describe("games | game-table | GameTable", () => {
         onClick={vi.fn()}
         players={[ken]}
         turn={{ player: 0, hand: 0 }}
-      />
+      />,
     );
 
     expect(handleCardClick).not.toHaveBeenCalled();
@@ -112,7 +112,7 @@ describe("games | game-table | GameTable", () => {
         onClick={vi.fn()}
         players={[winningKen]}
         turn={{ player: 0, hand: 0 }}
-      />
+      />,
     );
 
     const player = screen.getByText("Ken: $1000").parentElement;
@@ -127,7 +127,7 @@ describe("games | game-table | GameTable", () => {
         onClick={vi.fn()}
         players={[tiedKen]}
         turn={{ player: 0, hand: 0 }}
-      />
+      />,
     );
 
     const player = screen.getByText("Ken: $1000").parentElement;
@@ -142,7 +142,7 @@ describe("games | game-table | GameTable", () => {
         onClick={vi.fn()}
         players={[losingKen]}
         turn={{ player: 0, hand: 0 }}
-      />
+      />,
     );
 
     const player = screen.getByText("Ken: $1000").parentElement;
@@ -158,7 +158,7 @@ describe("games | game-table | GameTable", () => {
         onClick={handleClick}
         players={[ken]}
         turn={{ player: 0, hand: 0 }}
-      />
+      />,
     );
 
     expect(screen.getByText("hello")).toBeInTheDocument();

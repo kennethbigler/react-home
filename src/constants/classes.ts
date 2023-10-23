@@ -1,7 +1,7 @@
 import { red, indigo, blue, pink } from "@mui/material/colors";
 
 import dateObj, { DateObj } from "../apis/DateHelper";
-import { DataEntry } from "../components/common/timeline-card/Timeline";
+import { DataEntry } from "../components/common/timeline-card/timeline-consts";
 
 // --------------------     Types     -------------------- //
 enum QTR {
@@ -721,7 +721,7 @@ schools.forEach((school: School): void => {
 });
 
 export const classTimeline = timeline.sort((a, b) =>
-  a.start.diff(b.start, "months")
+  a.start.diff(b.start, "months"),
 );
 
 export default schools;

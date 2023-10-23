@@ -24,7 +24,7 @@ describe("resume | git-tools |  GitTools", () => {
     expect(screen.getByText("Git Tools")).toBeInTheDocument();
     expect(screen.getAllByText("User Story ID")).toHaveLength(2);
     expect(screen.getAllByText("User Story ID")[0]).toHaveStyle(
-      "color: rgb(191, 54, 12);"
+      "color: rgb(191, 54, 12);",
     );
 
     // Create Branch Name
@@ -49,7 +49,7 @@ describe("resume | git-tools |  GitTools", () => {
     expect(screen.getByText("Target Branch")).toBeInTheDocument();
     expect(screen.getByText("test-pipeline")).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin features/:test-pipeline")
+      screen.getByText("git push -f origin features/:test-pipeline"),
     ).toBeInTheDocument();
   });
 
@@ -57,17 +57,16 @@ describe("resume | git-tools |  GitTools", () => {
     render(<GitTools />);
 
     fireEvent.change(
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       screen.getAllByText("User Story ID")[0].nextSibling!.firstChild!,
-      { target: { value: "KEN-1234" } }
+      { target: { value: "KEN-1234" } },
     );
     expect(screen.getByDisplayValue("KEN-1234")).toBeInTheDocument();
     expect(screen.getByText("features/KEN-1234")).toBeInTheDocument();
     expect(
-      screen.getByText('git commit -m "feat: [KEN-1234]"')
+      screen.getByText('git commit -m "feat: [KEN-1234]"'),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin features/KEN-1234:test-pipeline")
+      screen.getByText("git push -f origin features/KEN-1234:test-pipeline"),
     ).toBeInTheDocument();
   });
 
@@ -75,15 +74,14 @@ describe("resume | git-tools |  GitTools", () => {
     render(<GitTools />);
 
     fireEvent.change(
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       screen.getAllByText("User Story ID")[0].nextSibling!.firstChild!,
-      { target: { value: "1234" } }
+      { target: { value: "1234" } },
     );
     expect(screen.queryByDisplayValue("1234")).toBeNull();
     expect(screen.getByText("features/")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin features/:test-pipeline")
+      screen.getByText("git push -f origin features/:test-pipeline"),
     ).toBeInTheDocument();
   });
 
@@ -91,17 +89,16 @@ describe("resume | git-tools |  GitTools", () => {
     render(<GitTools />);
 
     fireEvent.change(
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       screen.getAllByText("Branch Name")[0].nextSibling!.firstChild!,
-      { target: { value: "branchMessage" } }
+      { target: { value: "branchMessage" } },
     );
     expect(screen.getByDisplayValue("branchMessage")).toBeInTheDocument();
     expect(screen.getByText("features/branchMessage")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
       screen.getByText(
-        "git push -f origin features/branchMessage:test-pipeline"
-      )
+        "git push -f origin features/branchMessage:test-pipeline",
+      ),
     ).toBeInTheDocument();
   });
 
@@ -109,17 +106,16 @@ describe("resume | git-tools |  GitTools", () => {
     render(<GitTools />);
 
     fireEvent.change(
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       screen.getAllByText("Branch Name")[0].nextSibling!.firstChild!,
-      { target: { value: "branchMessage" } }
+      { target: { value: "branchMessage" } },
     );
     expect(screen.getByDisplayValue("branchMessage")).toBeInTheDocument();
     expect(screen.getByText("features/branchMessage")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
       screen.getByText(
-        "git push -f origin features/branchMessage:test-pipeline"
-      )
+        "git push -f origin features/branchMessage:test-pipeline",
+      ),
     ).toBeInTheDocument();
 
     fireEvent.click(screen.getAllByRole("button")[2]);
@@ -128,8 +124,8 @@ describe("resume | git-tools |  GitTools", () => {
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
       screen.getByText(
-        "git push -f origin features/branchMessage:test-pipeline"
-      )
+        "git push -f origin features/branchMessage:test-pipeline",
+      ),
     ).toBeInTheDocument();
   });
 
@@ -139,7 +135,7 @@ describe("resume | git-tools |  GitTools", () => {
     expect(screen.getByText("features/")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin features/:test-pipeline")
+      screen.getByText("git push -f origin features/:test-pipeline"),
     ).toBeInTheDocument();
 
     fireEvent.change(screen.getByDisplayValue("features"), {
@@ -148,7 +144,7 @@ describe("resume | git-tools |  GitTools", () => {
     expect(screen.getByText("fixes/")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin fixes/:test-pipeline")
+      screen.getByText("git push -f origin fixes/:test-pipeline"),
     ).toBeInTheDocument();
   });
 
@@ -158,19 +154,18 @@ describe("resume | git-tools |  GitTools", () => {
     expect(screen.getByText("features")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat: "')).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin features/:test-pipeline")
+      screen.getByText("git push -f origin features/:test-pipeline"),
     ).toBeInTheDocument();
 
     fireEvent.change(
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       screen.getAllByText("Commit Description")[0].nextSibling!.firstChild!,
-      { target: { value: "some desc" } }
+      { target: { value: "some desc" } },
     );
     expect(screen.getByText("features")).toBeInTheDocument();
     expect(screen.getByText('git commit -m "feat:')).toBeInTheDocument();
     expect(screen.getByText('some desc"')).toBeInTheDocument();
     expect(
-      screen.getByText("git push -f origin features/:test-pipeline")
+      screen.getByText("git push -f origin features/:test-pipeline"),
     ).toBeInTheDocument();
   });
 });

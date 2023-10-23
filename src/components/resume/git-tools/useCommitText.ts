@@ -9,7 +9,7 @@ interface UseCommitTextReturns {
   getCommitText: () => string;
   handleCommitPrefixSelect: (
     event: SelectChangeEvent,
-    child: React.ReactNode
+    child: React.ReactNode,
   ) => void;
   handleCommitMessageChange: React.ChangeEventHandler;
   handleCommitDescriptionChange: React.ChangeEventHandler;
@@ -17,13 +17,13 @@ interface UseCommitTextReturns {
   clearCommitDescription: React.MouseEventHandler;
   handleFinishesToggle: (
     event: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean
+    checked: boolean,
   ) => void;
 }
 
 function useCommitText(
   storyID?: string,
-  hasCommitPrefix?: boolean
+  hasCommitPrefix?: boolean,
 ): UseCommitTextReturns {
   const [commitPrefix, setLocalCommitPrefix] = React.useState("feat");
   const [commitMessage, setCommitMessage] = React.useState("");
@@ -66,13 +66,13 @@ function useCommitText(
 
   /** function to update text state based on value */
   const handleCommitMessageChange = (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ): void => {
     setCommitMessage(e.target.value);
   };
 
   const handleCommitDescriptionChange = (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ): void => {
     setCommitDescription(e.target.value);
   };
@@ -88,7 +88,7 @@ function useCommitText(
 
   const handleFinishesToggle = (
     _e: React.ChangeEvent<HTMLInputElement>,
-    isC: boolean
+    isC: boolean,
   ): void => {
     setFinishes(isC);
   };

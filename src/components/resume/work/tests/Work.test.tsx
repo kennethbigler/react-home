@@ -31,22 +31,22 @@ describe("resume | work | Work", () => {
     expect(screen.getByText("Intuit")).toBeInTheDocument();
 
     expect(
-      screen.getByText("Programming Language Timeline (Professional Use)")
+      screen.getByText("Programming Language Timeline (Professional Use)"),
     ).toBeInTheDocument();
 
     expect(screen.getByText("work Experience")).toBeInTheDocument();
     expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
     expect(
-      screen.getByText("Accessibility Engineering Leader")
+      screen.getByText("Accessibility Engineering Leader"),
     ).toBeInTheDocument();
     expect(screen.getByText("Frontend Software Engineer")).toBeInTheDocument();
 
     expect(screen.getByText("volunteer Experience")).toBeInTheDocument();
     expect(
-      screen.getByText("Midnight Game Club, Sunnyvale, CA")
+      screen.getByText("Midnight Game Club, Sunnyvale, CA"),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Frontend Software Engineer and Project Manager")
+      screen.getByText("Frontend Software Engineer and Project Manager"),
     ).toBeInTheDocument();
   });
 });

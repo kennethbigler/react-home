@@ -56,7 +56,7 @@ const BranchName: React.FC<BranchNameProps> = (props: BranchNameProps) => {
 
   const gitThemeStyles: React.CSSProperties = React.useMemo(
     () => ({ color: gitTheme }),
-    [gitTheme]
+    [gitTheme],
   );
 
   return (

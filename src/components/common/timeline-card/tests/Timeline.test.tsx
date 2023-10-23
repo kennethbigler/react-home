@@ -50,7 +50,7 @@ describe("common | timeline-card | Timeline", () => {
         selector={selector}
         data={data}
         yearMarkerFrequency={1}
-      />
+      />,
     );
     // verify year marker is on the screen
     expect(screen.getByTitle("year")).toBeInTheDocument();
@@ -70,15 +70,15 @@ describe("common | timeline-card | Timeline", () => {
         selector={selector}
         data={data}
         yearMarkerFrequency={1}
-      />
+      />,
     );
     // verify we have year row + 3 data rows
     expect(screen.getAllByTitle("timeline-row")).toHaveLength(4);
     expect(screen.getByText("Body 1").parentNode).toEqual(
-      screen.getByText("Body 4").parentNode
+      screen.getByText("Body 4").parentNode,
     );
     expect(screen.getByText("Body 1").parentNode).not.toEqual(
-      screen.getByText("Body 3").parentNode
+      screen.getByText("Body 3").parentNode,
     );
     expect(screen.getByText("Body 1")).toHaveStyle({ width: "33%" });
     expect(screen.getByText("Body 4")).toHaveStyle({ width: "55%" });
@@ -93,7 +93,7 @@ describe("common | timeline-card | Timeline", () => {
           selector={selector}
           data={data}
           yearMarkerFrequency={1}
-        />
+        />,
       );
       expect(screen.getByTitle("Title 1")).toBeInTheDocument();
       expect(screen.getByTitle("Title 2")).toBeInTheDocument();
@@ -109,7 +109,7 @@ describe("common | timeline-card | Timeline", () => {
           selector={selector}
           data={data}
           yearMarkerFrequency={1}
-        />
+        />,
       );
       expect(screen.getByText("Body 1")).toBeInTheDocument();
       expect(screen.getByText("Body 2")).toBeInTheDocument();
@@ -125,7 +125,7 @@ describe("common | timeline-card | Timeline", () => {
           selector={selector}
           data={data}
           yearMarkerFrequency={1}
-        />
+        />,
       );
 
       expect(screen.getAllByTitle("year")).toHaveLength(3);
@@ -147,7 +147,7 @@ describe("common | timeline-card | Timeline", () => {
           selector={selector}
           data={data}
           yearMarkerFrequency={2}
-        />
+        />,
       );
 
       expect(screen.getAllByTitle("year")).toHaveLength(2);

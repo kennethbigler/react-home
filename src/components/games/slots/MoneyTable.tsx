@@ -31,7 +31,7 @@ const MoneyTable: React.FC<MoneyTableProps> = React.memo(
         </TableRow>
       </TableBody>
     </Table>
-  )
+  ),
 );
 
 export default MoneyTable;

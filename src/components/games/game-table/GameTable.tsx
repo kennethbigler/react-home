@@ -36,18 +36,18 @@ const GameTable = (props: GameTableProps): React.ReactElement => {
   // move game buttons to make turn more obvious and support mobile
   const played: DBPlayer[] = React.useMemo(
     () => players.slice(0, turn.player + 1),
-    [players, turn.player]
+    [players, turn.player],
   );
   const future: DBPlayer[] = React.useMemo(
     () => players.slice(turn.player + 1),
-    [players, turn.player]
+    [players, turn.player],
   );
   const playersToDisplay: DBPlayer[] = React.useMemo(
     () =>
       !hideHands && gameOver === false
         ? players.slice(turn.player, turn.player + 1)
         : players,
-    [hideHands, gameOver, players, turn.player]
+    [hideHands, gameOver, players, turn.player],
   );
 
   return isBlackJack && !hideHands ? (

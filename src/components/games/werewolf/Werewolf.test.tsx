@@ -15,17 +15,17 @@ describe("games | werewolf", () => {
 
     expect(screen.getAllByRole("button")[0]).toHaveAttribute(
       "aria-expanded",
-      "false"
+      "false",
     );
     fireEvent.click(screen.getAllByRole("button")[0]);
     expect(screen.getAllByRole("button")[0]).toHaveAttribute(
       "aria-expanded",
-      "true"
+      "true",
     );
     fireEvent.click(screen.getAllByRole("button")[0]);
     expect(screen.getAllByRole("button")[0]).toHaveAttribute(
       "aria-expanded",
-      "false"
+      "false",
     );
   });
 });

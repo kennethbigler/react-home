@@ -24,7 +24,7 @@ const WorkCards: React.FC<WorkCardsProps> = ({
         </Typography>
         <hr />
         {workExp.map(
-          (job) => job.type === type && <Job key={job.company} job={job} />
+          (job) => job.type === type && <Job key={job.company} job={job} />,
         )}
       </div>
     ))}

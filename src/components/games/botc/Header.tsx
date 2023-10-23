@@ -5,54 +5,60 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import InfoPopup from "../../common/info-popover/InfoPopup";
 import {
   BOTC_MAX_PLAYERS,
+  BOTC_MAX_TRAVELERS,
   BOTC_MIN_PLAYERS,
   BotCPlayer,
 } from "../../../recoil/botc-atom";
 import { playerDist } from "../../../constants/botc";
 
-interface BotcHeaderProps {
+interface BotCHeaderProps {
   script: number;
   numPlayers: number;
   numTravelers: number;
   botcPlayers: BotCPlayer[];
-  newBotcGame: () => void;
+  newBotCGame: () => void;
   updateScript: (i: number) => () => void;
   updateNumPlayers: (_e: Event, value: number | number[]) => void;
   updateNumTravelers: (_e: Event, value: number | number[]) => void;
-  updatePlayersBlur: (
+  updateNamesOnBlur: (
     i: number,
   ) => (e: React.FocusEvent<HTMLInputElement>) => void;
-  updatePlayersKeyDown: (
-    i: number,
-  ) => (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
-const BotcHeader = ({
+const BotCHeader = ({
   script,
   numPlayers,
   numTravelers,
   botcPlayers,
-  newBotcGame,
+  newBotCGame,
   updateScript,
   updateNumPlayers,
   updateNumTravelers,
-  updatePlayersBlur,
-  updatePlayersKeyDown,
-}: BotcHeaderProps) => {
+  updateNamesOnBlur,
+}: BotCHeaderProps) => {
+  const [hasToast, setHasToast] = React.useState(false);
+  /** close the toast message */
+  const handleClose = () => setHasToast(false);
+  /** reset the BOTC game and open the success toast */
+  const handleReset = () => {
+    newBotCGame();
+    setHasToast(true);
+  };
   // set player TextFields
   const playerTextFields = [];
-  for (let i = 0; i < (numPlayers + numTravelers); i += 1) {
+  for (let i = 0; i < numPlayers + numTravelers; i += 1) {
     playerTextFields.push(
       <Grid item xs={6} sm={4} key={`playerNo${i}`}>
         <TextField
           defaultValue={botcPlayers[i].name}
           placeholder="Enter Player Name"
           title={`player ${i} name`}
-          onBlur={updatePlayersBlur(i)}
-          onKeyDown={updatePlayersKeyDown(i)}
+          onBlur={updateNamesOnBlur(i)}
         />
       </Grid>,
     );
@@ -87,13 +93,15 @@ const BotcHeader = ({
                   BMR
                 </Button>
               </ButtonGroup>
-              <Button variant="contained" color="error" onClick={newBotcGame}>
+              <Button variant="contained" color="error" onClick={handleReset}>
                 Reset
               </Button>
             </div>
           </Grid>
           <Grid item xs={12}>
-            <Typography>Players: {numPlayers} / Dist: {playerDist[numPlayers]}</Typography>
+            <Typography>
+              Players: {numPlayers} / Dist: {playerDist[numPlayers]}
+            </Typography>
             <Slider
               aria-label="player count"
               min={BOTC_MIN_PLAYERS}
@@ -107,7 +115,7 @@ const BotcHeader = ({
             <Slider
               aria-label="traveler count"
               min={0}
-              max={5}
+              max={BOTC_MAX_TRAVELERS}
               value={numTravelers}
               onChange={updateNumTravelers}
             />
@@ -115,8 +123,13 @@ const BotcHeader = ({
           {playerTextFields}
         </Grid>
       </InfoPopup>
+      <Snackbar open={hasToast} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Game Reset
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
 
-export default BotcHeader;
+export default BotCHeader;

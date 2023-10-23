@@ -7,7 +7,7 @@ import LoadingSpinner from "../../common/loading-spinner";
 import WorkCards from "./WorkCards";
 
 const TechBarChart = React.lazy(
-  () => import(/* webpackChunkName: "r_work_bar_chart" */ "./TechBarChart")
+  () => import(/* webpackChunkName: "r_work_bar_chart" */ "./TechBarChart"),
 );
 
 /* Work  ->  TechBarChart

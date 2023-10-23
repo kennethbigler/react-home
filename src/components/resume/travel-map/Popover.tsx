@@ -22,7 +22,7 @@ const Popover: React.FC<PopoverProps> = React.memo((props: PopoverProps) => {
       padding: 5,
       borderRadius: 2,
     }),
-    [hide, x, y]
+    [hide, x, y],
   );
 
   return <div style={popoverStyle}>{content}</div>;

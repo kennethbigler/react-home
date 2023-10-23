@@ -25,14 +25,14 @@ describe("games | connect4 | Connect4", () => {
     render(<FamilyFeud />);
     expect(
       screen.queryByText(
-        "Name a superpower that would give you an advantage in an easter egg hunt."
-      )
+        "Name a superpower that would give you an advantage in an easter egg hunt.",
+      ),
     ).toBeNull();
     fireEvent.click(screen.getByText("Round 2"));
     expect(
       screen.getByText(
-        "Name a superpower that would give you an advantage in an easter egg hunt."
-      )
+        "Name a superpower that would give you an advantage in an easter egg hunt.",
+      ),
     ).toBeInTheDocument();
   });
 

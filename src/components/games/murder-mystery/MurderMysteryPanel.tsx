@@ -14,7 +14,7 @@ interface MurderMysteryPanelProps {
   expanded?: string;
   expandedKey: string;
   handleChange: (
-    panel: string
+    panel: string,
   ) => (_event: React.SyntheticEvent<Element, Event>, exp?: boolean) => void;
   role: string;
   importance: string;
@@ -82,7 +82,7 @@ const MurderMysteryPanel: React.FC<MurderMysteryPanelProps> = React.memo(
         </AccordionDetails>
       </Accordion>
     );
-  }
+  },
 );
 
 export default MurderMysteryPanel;

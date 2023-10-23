@@ -101,8 +101,8 @@ describe("games | poker | Poker", () => {
     fireEvent.click(cardToDiscard);
     await waitFor(() =>
       expect(cardToDiscard.innerHTML).toEqual(
-        screen.getAllByText(/♣|♦|♥|♠/i)[0].innerHTML
-      )
+        screen.getAllByText(/♣|♦|♥|♠/i)[0].innerHTML,
+      ),
     );
 
     // discards the card
@@ -111,7 +111,7 @@ describe("games | poker | Poker", () => {
 
     // ensures we got a new card
     expect(cardToDiscard.innerHTML).not.toEqual(
-      screen.getAllByText(/♣|♦|♥|♠/i)[0].innerHTML
+      screen.getAllByText(/♣|♦|♥|♠/i)[0].innerHTML,
     );
 
     // can end the old game and start a new game

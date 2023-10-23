@@ -20,10 +20,10 @@ describe("games | BotC", () => {
     fireEvent.click(screen.getByText("Chef"));
     expect(screen.getAllByText("Chef")).toHaveLength(2);
     fireEvent.click(screen.getByText("Monk"));
-    expect(screen.getAllByText("Chef")).toHaveLength(1);
-    expect(screen.getByText("Chef, Monk")).toBeInTheDocument();
+    expect(screen.getAllByText("Monk")).toHaveLength(2);
     // Deselect a role
-    fireEvent.click(screen.getByText("Monk"));
+    fireEvent.click(screen.getAllByText("Monk")[1]);
+    expect(screen.getAllByText("Monk")).toHaveLength(1);
     expect(screen.getAllByText("Chef")).toHaveLength(2);
   });
 });

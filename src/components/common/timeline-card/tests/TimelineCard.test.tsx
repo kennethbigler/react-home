@@ -51,7 +51,7 @@ describe("common | timeline-card | TimelineCard", () => {
         data={data}
         title="Title"
         backgroundColor="red"
-      />
+      />,
     );
 
     // verify ExpandableCard

@@ -13,7 +13,7 @@ describe("constants classes", () => {
   });
 
   afterAll(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, no-console
+    // eslint-disable-next-line no-console
     console.error = oldConsole;
   });
 
@@ -23,7 +23,7 @@ describe("constants classes", () => {
     // eslint-disable-next-line no-console
     expect(console.error).toHaveBeenCalledWith(
       "Start Error: quarter given does not exist: ",
-      null
+      null,
     );
   });
 
@@ -33,7 +33,7 @@ describe("constants classes", () => {
     // eslint-disable-next-line no-console
     expect(console.error).toHaveBeenCalledWith(
       "End Error: quarter given does not exist: ",
-      null
+      null,
     );
   });
 });

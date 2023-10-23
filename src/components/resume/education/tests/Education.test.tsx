@@ -8,14 +8,14 @@ describe("resume | education | Education", () => {
     expect(screen.getByText("Hackathons & Education")).toBeInTheDocument();
     expect(screen.getByText("Hackathons")).toBeInTheDocument();
     expect(
-      screen.getByText("GigNow - Hacking the Gig Economy Now")
+      screen.getByText("GigNow - Hacking the Gig Economy Now"),
     ).toBeInTheDocument();
     expect(screen.getByText("Accenture Hackathon Games")).toBeInTheDocument();
 
     expect(
       screen.getByText(
-        "Santa Clara University - Master of Science in Computer Engineering with an Emphasis in Software Engineering"
-      )
+        "Santa Clara University - Master of Science in Computer Engineering with an Emphasis in Software Engineering",
+      ),
     ).toBeInTheDocument();
     expect(screen.getAllByText("GPA: 3.7")).toHaveLength(2);
     expect(screen.getByText("Year 2")).toBeInTheDocument();
@@ -23,8 +23,8 @@ describe("resume | education | Education", () => {
 
     expect(
       screen.getByText(
-        "Santa Clara University - Bachelor of Science in Computer Science & Engineering with a Minor in Mathematics"
-      )
+        "Santa Clara University - Bachelor of Science in Computer Science & Engineering with a Minor in Mathematics",
+      ),
     ).toBeInTheDocument();
     expect(screen.getAllByText("GPA: 3.7")).toHaveLength(2);
     expect(screen.getAllByText("Senior Year")).toHaveLength(2);
@@ -38,17 +38,17 @@ describe("resume | education | Education", () => {
 
     expect(
       screen.getByText(
-        "Stanford University - Stanford Continuing Studies & Undergrad High School Summer Visitor"
-      )
+        "Stanford University - Stanford Continuing Studies & Undergrad High School Summer Visitor",
+      ),
     ).toBeInTheDocument();
     expect(screen.getByText("GPA: 3.8")).toBeInTheDocument();
     expect(screen.getByText("Stanford Continuing Studies")).toBeInTheDocument();
     expect(
-      screen.getByText("Undergrad High School Summer Visitor")
+      screen.getByText("Undergrad High School Summer Visitor"),
     ).toBeInTheDocument();
 
     expect(
-      screen.getByText("The King's Academy - High School Diploma")
+      screen.getByText("The King's Academy - High School Diploma"),
     ).toBeInTheDocument();
     expect(screen.getByText("GPA: 4.16")).toBeInTheDocument();
 

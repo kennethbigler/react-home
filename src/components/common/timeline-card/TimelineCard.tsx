@@ -2,7 +2,8 @@ import * as React from "react";
 import { grey } from "@mui/material/colors";
 import dateObj, { DateObj, FormatOutput } from "../../../apis/DateHelper";
 import ExpandableCard from "../expandable-card";
-import Timeline, { TIMELINE_TITLE, DataEntry } from "./Timeline";
+import Timeline from "./Timeline";
+import { TIMELINE_TITLE, DataEntry } from "./timeline-consts";
 import workExperience from "../../../constants/work";
 
 interface TimelineCardProps {

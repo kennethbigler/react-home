@@ -29,7 +29,7 @@ const EducationSeg: React.FC<School> = React.memo(
         )}
       </ul>
     </div>
-  )
+  ),
 );
 
 export default EducationSeg;

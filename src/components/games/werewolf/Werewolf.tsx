@@ -12,7 +12,7 @@ import WerewolfPanel from "./WerewolfPanel";
 const Werewolf: React.FC = React.memo(() => {
   const [expanded, setExpanded] = React.useState("");
   const [gameTotal, setGameTotal] = React.useState<number | undefined>(
-    undefined
+    undefined,
   );
   const [masonCount, setMasonCount] = React.useState(0);
   const [villagerCount, setVillagerCount] = React.useState(0);
@@ -24,34 +24,34 @@ const Werewolf: React.FC = React.memo(() => {
       (_event: React.SyntheticEvent<Element, Event>, exp?: boolean): void => {
         setExpanded(exp ? panel : "");
       },
-    [setExpanded]
+    [setExpanded],
   );
 
   const handleStar = (value: number, count: number, role: string) => {
     switch (role) {
       case "Mason":
         setGameTotal(
-          (gameTotal || 0) + value * (count ? count - masonCount : masonCount)
+          (gameTotal || 0) + value * (count ? count - masonCount : masonCount),
         );
         setMasonCount(count);
         return;
       case "Villager":
         setGameTotal(
           (gameTotal || 0) +
-            value * (count ? count - villagerCount : villagerCount)
+            value * (count ? count - villagerCount : villagerCount),
         );
         setVillagerCount(count);
         return;
       case "Vampire":
         setGameTotal(
           (gameTotal || 0) +
-            value * (count ? count - vampireCount : vampireCount)
+            value * (count ? count - vampireCount : vampireCount),
         );
         setVampireCount(count);
         return;
       case "Werewolf":
         setGameTotal(
-          (gameTotal || 0) + value * (count ? count - wolfCount : wolfCount)
+          (gameTotal || 0) + value * (count ? count - wolfCount : wolfCount),
         );
         setWolfCount(count);
         return;

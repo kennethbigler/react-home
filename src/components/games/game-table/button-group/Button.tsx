@@ -15,7 +15,7 @@ const Button: React.FC<ButtonProps> = React.memo(
     >
       {name}
     </MuiButton>
-  )
+  ),
 );
 
 export default Button;

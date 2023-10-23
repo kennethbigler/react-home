@@ -22,7 +22,7 @@ const useHist = (
   len: number,
   matches: number[],
   noMatch: boolean[][],
-  roundPairings: RoundPairing[]
+  roundPairings: RoundPairing[],
 ) => {
   // state
   const hist: AYTOHist[][] = [];
@@ -82,7 +82,7 @@ const useHist = (
       } else {
         // rolling average
         histObj.odds = Math.floor(
-          (histObj.odds * histObj.oddsWeight + odds) / (histObj.oddsWeight + 1)
+          (histObj.odds * histObj.oddsWeight + odds) / (histObj.oddsWeight + 1),
         );
       }
       // update odds weight

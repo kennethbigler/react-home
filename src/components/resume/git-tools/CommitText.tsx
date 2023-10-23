@@ -64,12 +64,12 @@ const CommitText: React.FC<CommitTextProps> = (props: CommitTextProps) => {
         "style",
         "test",
       ]),
-    [getSelectOptions]
+    [getSelectOptions],
   );
 
   const handleGitCommitToggle = (
     _e: React.ChangeEvent<HTMLInputElement>,
-    isC: boolean
+    isC: boolean,
   ): void => {
     setHasCommitPrefix(isC);
   };

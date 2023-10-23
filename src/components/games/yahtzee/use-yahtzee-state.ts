@@ -39,7 +39,7 @@ const useYahtzeeState = () => {
     values: Dice[],
     saved: Dice[],
     roll: Dice,
-    payToPlay: boolean
+    payToPlay: boolean,
   ) =>
     setState({
       ...state,

@@ -6,7 +6,7 @@ const evalConnect4 = (
   board: number[][],
   row: number,
   col: number,
-  line: [C4Turn, [number, number][], [number, number][]]
+  line: [C4Turn, [number, number][], [number, number][]],
 ): void => {
   // verify row
   if (board[row] !== undefined) {

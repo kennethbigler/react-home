@@ -43,7 +43,7 @@ describe("apis | DateHelper", () => {
 
     expect(sampleDateObj.format("MMMM Y")).toStrictEqual("January 2020");
     expect(DateHelper(sampleDateObj).format("MMMM Y")).toStrictEqual(
-      "January 2020"
+      "January 2020",
     );
     expect(DateHelper(dateStr).format("MMMM Y")).toStrictEqual("March 2019");
 

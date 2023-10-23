@@ -20,7 +20,7 @@ const AreYouTheOne = () => {
     ladies.length,
     matches,
     noMatch,
-    roundPairings
+    roundPairings,
   );
 
   // handlers
@@ -100,7 +100,7 @@ const AreYouTheOne = () => {
 
     const numMatches = newMatches.reduce(
       (acc, matchStatus) => (matchStatus >= 0 ? acc + 1 : acc),
-      0
+      0,
     );
 
     // update round pairings

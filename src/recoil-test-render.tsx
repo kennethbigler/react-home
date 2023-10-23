@@ -5,7 +5,7 @@ import { RecoilRoot } from "recoil";
 
 const render = (
   ui: React.ReactElement,
-  { ...renderOptions } = {}
+  { ...renderOptions } = {},
 ): RenderResult => {
   const Wrapper: React.ComponentType = ({
     children,

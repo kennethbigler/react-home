@@ -22,7 +22,7 @@ describe("resume | git-tools | BranchName", () => {
 
   beforeEach(() => {
     render(
-      <BranchName gitTheme="orange" getSelectOptions={getSelectOptions} />
+      <BranchName gitTheme="orange" getSelectOptions={getSelectOptions} />,
     );
   });
 

@@ -24,7 +24,7 @@ const BottomScores: React.FC<BottomScoresProps> = React.memo(
         <TableCell sx={sx}>{finalTopSum + bottomSum}</TableCell>
       </TableRow>
     </>
-  )
+  ),
 );
 
 export default BottomScores;

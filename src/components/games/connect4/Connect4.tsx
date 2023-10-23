@@ -26,7 +26,7 @@ const Connect4: React.FC = () => {
   const evalConnect4 = (
     row: number,
     col: number,
-    evalBoard: number[][]
+    evalBoard: number[][],
   ): void => {
     // variables to track streaks
     const dp: [C4Turn, [number, number][], [number, number][]][] = [];
