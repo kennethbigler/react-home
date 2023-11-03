@@ -46,7 +46,7 @@
     "@types/react-simple-maps": "3.0.2",
     "@typescript-eslint/eslint-plugin": "6.9.1",
     "@typescript-eslint/parser": "6.9.1",
-    "@vitejs/plugin-react": "4.1.0",
+    "@vitejs/plugin-react": "4.1.1",
     "@vitest/coverage-v8": "0.34.6",
     "c8": "8.0.1",
     "eslint": "8.52.0",
