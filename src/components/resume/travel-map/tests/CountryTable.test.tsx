@@ -6,7 +6,7 @@ describe("resume | travel-map | TravelMap", () => {
     render(<CountryTable />);
 
     expect(
-      screen.getByText("I have been to 39 countries:"),
+      screen.getByText("I have been to 42 countries:"),
     ).toBeInTheDocument();
     expect(screen.getByText("The Americas")).toBeInTheDocument();
     expect(screen.getByText("Europe & Africa")).toBeInTheDocument();

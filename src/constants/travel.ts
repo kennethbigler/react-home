@@ -48,6 +48,7 @@ interface Country {
 export type Countries = Record<string, Country>;
 
 const countries: Countries = {
+  "American Samoa": { continent: "AS", flag: "🇦🇸", code: "as" },
   Australia: { continent: "AU", flag: "🇦🇺", code: "au" },
   Austria: { continent: "EU", flag: "🇦🇹", code: "at" },
   Bahamas: { continent: "NA", flag: "🇧🇸", code: "bs" },
@@ -58,6 +59,7 @@ const countries: Countries = {
   Denmark: { continent: "EU", flag: "🇩🇰", code: "dk" },
   Egypt: { continent: "AF", flag: "🇪🇬", code: "eg" },
   Estonia: { continent: "EU", flag: "🇪🇪", code: "ee" },
+  Fiji: { continent: "AS", flag: "🇫🇯", code: "fj" },
   Finland: { continent: "EU", flag: "🇫🇮", code: "fi" },
   France: { continent: "EU", flag: "🇫🇷", code: "fr" },
   Germany: { continent: "EU", flag: "🇩🇪", code: "de" },
@@ -74,6 +76,7 @@ const countries: Countries = {
   Mexico: { continent: "NA", flag: "🇲🇽", code: "mx" },
   Monaco: { continent: "EU", flag: "🇲🇨", code: "mc" },
   Netherlands: { continent: "EU", flag: "🇳🇱", code: "nl" },
+  "New Caledonia": { continent: "AS", flag: "🇳🇨", code: "nc" },
   Norway: { continent: "EU", flag: "🇳🇴", code: "no" },
   Poland: { continent: "EU", flag: "🇵🇱", code: "pl" },
   Portugal: { continent: "EU", flag: "🇵🇹", code: "pt" },
