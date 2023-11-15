@@ -52,7 +52,7 @@ const pokerState = selector({
       const dataPlayers = get(playerAtom);
       set(pokerAtom, poker);
       set(turnAtom, turn);
-      set(playerAtom, [...players, dataPlayers[4], dataPlayers[5]]);
+      set(playerAtom, [...players, dataPlayers[5], dataPlayers[6]]);
     }
   },
 });

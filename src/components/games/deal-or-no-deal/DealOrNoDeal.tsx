@@ -16,14 +16,15 @@ import PlayerMenu from "../../common/header/PlayerMenu";
  *              |->  Board  ->  Case
  *              |->  Modal  ->  Money */
 const DealOrNoDeal: React.FC = () => {
-  const [{ dnd, player }, setState] = useRecoilState(dndState);
+  const [{ dnd, name, money, status }, setState] = useRecoilState(dndState);
   const { numCases, offer } = useRecoilValue(dndHelperSelector);
   const { board, dndOpen, isOver, turn, playerChoice, casesToOpen } = dnd;
 
   // --------------------     Header     -------------------- //
 
   /** called in Header, resets game */
-  const newGame = (): void => setState({ dnd: newDNDGame(), player });
+  const newGame = (): void =>
+    setState({ dnd: newDNDGame(), name, money, status });
 
   // --------------------     Board     -------------------- //
 
@@ -51,16 +52,17 @@ const DealOrNoDeal: React.FC = () => {
             dndOpen: casesToOpen === 1,
             casesToOpen: casesToOpen - 1,
           },
-          player,
+          name,
+          money,
+          status,
         });
       }
     } else {
       setState({
         dnd: { ...dnd, playerChoice: bc },
-        player: {
-          ...player,
-          money: player.money - 100,
-        },
+        name,
+        status,
+        money: money - 100,
       });
     }
   };
@@ -80,11 +82,9 @@ const DealOrNoDeal: React.FC = () => {
         dndOpen: false,
         isOver: total,
       },
-      player: {
-        ...player,
-        status: total > 100 ? "win" : "lose",
-        money: player.money + total,
-      },
+      name,
+      status: total > 100 ? "win" : "lose",
+      money: money + total,
     });
   };
 
@@ -104,11 +104,9 @@ const DealOrNoDeal: React.FC = () => {
           dndOpen: false,
           isOver: total,
         },
-        player: {
-          ...player,
-          status: total > 100 ? "win" : "lose",
-          money: player.money + total,
-        },
+        name,
+        status: total > 100 ? "win" : "lose",
+        money: money + total,
       });
     } else {
       // advance the turn
@@ -120,14 +118,16 @@ const DealOrNoDeal: React.FC = () => {
           casesToOpen:
             turn < briefcasesToOpen - 1 ? briefcasesToOpen - turn : 1,
         },
-        player,
+        name,
+        money,
+        status,
       });
     }
   };
 
   /**
    * called in Modal
-   * gets: board, playerChoice, player.money
+   * gets: board, playerChoice, money
    * sets: dnd { dndOpen, isOver }, player: { status, money }
    */
   const swap = (): void => {
@@ -141,11 +141,9 @@ const DealOrNoDeal: React.FC = () => {
             dndOpen: false,
             isOver: total,
           },
-          player: {
-            ...player,
-            status: total > 100 ? "win" : "lose",
-            money: player.money + total,
-          },
+          name,
+          status: total > 100 ? "win" : "lose",
+          money: money + total,
         });
         return;
       }
@@ -164,7 +162,8 @@ const DealOrNoDeal: React.FC = () => {
         casesToOpen={casesToOpen}
         isOver={isOver}
         newGame={newGame}
-        player={player}
+        name={name}
+        money={money}
         playerChoice={playerChoice}
         dndOpen={dndOpen}
       />

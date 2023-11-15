@@ -22,20 +22,25 @@ const slotsState = selector({
   get: ({ get }) => {
     const reel = get(slotsAtom);
     const players = get(playerAtom);
-    const player = players[0];
-    const dealer = players[players.length - 1];
+    const { money, bet, name } = players[0];
+    const { money: houseMoney } = players[players.length - 1];
 
-    return { reel, player, dealer };
+    return { reel, money, bet, name, houseMoney };
   },
   set: ({ get, set }, state) => {
     if (!(state instanceof DefaultValue)) {
-      const { reel, player, dealer } = state;
+      // set reel state
+      const { reel, money, houseMoney } = state;
       set(slotsAtom, reel);
 
+      // get player state
       const players = get(playerAtom);
+      const DEALER_IDX = players.length - 1;
+
+      // set player state
       const newPlayers = [...players];
-      newPlayers[0] = player;
-      newPlayers[players.length - 1] = dealer;
+      newPlayers[0] = { ...players[0], money };
+      newPlayers[DEALER_IDX] = { ...players[DEALER_IDX], money: houseMoney };
       set(playerAtom, newPlayers);
     }
   },

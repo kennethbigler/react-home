@@ -14,7 +14,8 @@ import PlayerMenu from "../../common/header/PlayerMenu";
  *       |->  MoneyTable
  *       |->  PayoutTable */
 const Slots: React.FC = () => {
-  const [{ reel, player, dealer }, setState] = useRecoilState(slotsState);
+  const [{ reel, money, bet, name, houseMoney }, setState] =
+    useRecoilState(slotsState);
   const [exchange, setExchange] = React.useState(0);
 
   const updateSlotMachine = () => {
@@ -22,15 +23,16 @@ const Slots: React.FC = () => {
     const newReel = SlotMachine.pullHandle();
 
     // determine payout
-    const { bet } = player;
     const newExchange = SlotMachine.getPayout(newReel, bet) - bet;
 
     // exchange money and update state
     setExchange(newExchange);
     setState({
+      bet,
+      name,
       reel: newReel,
-      player: { ...player, money: player.money + newExchange },
-      dealer: { ...dealer, money: dealer.money - newExchange },
+      money: money + newExchange,
+      houseMoney: houseMoney - newExchange,
     });
   };
 
@@ -63,11 +65,7 @@ const Slots: React.FC = () => {
               <ReelDisplay reel={reel} />
             </Grid>
           </Grid>
-          <MoneyTable
-            playerMoney={player.money}
-            playerName={player.name}
-            dealerMoney={dealer.money}
-          />
+          <MoneyTable money={money} name={name} houseMoney={houseMoney} />
         </Grid>
         <Grid item sm={6} xs={12}>
           <PayoutTable />

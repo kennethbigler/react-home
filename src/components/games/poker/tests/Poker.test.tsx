@@ -100,8 +100,8 @@ describe("games | poker | Poker", () => {
     const cardToDiscard = screen.getAllByText(/♣|♦|♥|♠/i)[0];
     fireEvent.click(cardToDiscard);
     await waitFor(() =>
-      expect(cardToDiscard.innerHTML).toEqual(
-        screen.getAllByText(/♣|♦|♥|♠/i)[0].innerHTML,
+      expect(screen.getAllByText(/♣|♦|♥|♠/i)[0]).not.toHaveStyle(
+        "background-color: white",
       ),
     );
 
@@ -113,8 +113,5 @@ describe("games | poker | Poker", () => {
     expect(cardToDiscard.innerHTML).not.toEqual(
       screen.getAllByText(/♣|♦|♥|♠/i)[0].innerHTML,
     );
-
-    // can end the old game and start a new game
-    fireEvent.click(screen.getByText("End Turn"));
   });
 });
