@@ -88,6 +88,7 @@ const WorldMap = () => {
         width={5000}
         height={(5000 * 5) / 8}
         projectionConfig={{ scale: 5000 * RATIO }}
+        style={{ width: "100%" }}
       >
         <Sphere
           id="rsm-sphere"
