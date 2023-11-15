@@ -6,13 +6,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 interface MoneyTableProps {
-  playerName: string;
-  playerMoney: number;
-  dealerMoney: number;
+  name: string;
+  money: number;
+  houseMoney: number;
 }
 
 const MoneyTable: React.FC<MoneyTableProps> = React.memo(
-  ({ playerName, playerMoney, dealerMoney }: MoneyTableProps) => (
+  ({ name, money, houseMoney }: MoneyTableProps) => (
     <Table>
       <TableHead>
         <TableRow>
@@ -22,12 +22,12 @@ const MoneyTable: React.FC<MoneyTableProps> = React.memo(
       </TableHead>
       <TableBody>
         <TableRow>
-          <TableCell>{playerName}</TableCell>
-          <TableCell>{`$${playerMoney}`}</TableCell>
+          <TableCell>{name}</TableCell>
+          <TableCell>{`$${money}`}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell>House</TableCell>
-          <TableCell>{`$${dealerMoney}`}</TableCell>
+          <TableCell>{`$${houseMoney}`}</TableCell>
         </TableRow>
       </TableBody>
     </Table>

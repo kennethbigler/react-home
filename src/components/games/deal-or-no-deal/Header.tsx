@@ -4,13 +4,13 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { getMoneyText } from "./helpers";
 import { Briefcase } from "../../../recoil/deal-or-no-deal-state";
-import { DBPlayer } from "../../../recoil/player-atom";
 
 interface HeaderProps {
   casesToOpen: number;
   isOver: number;
   newGame: React.MouseEventHandler;
-  player: DBPlayer;
+  name: string;
+  money: number;
   playerChoice?: Briefcase;
   dndOpen?: boolean;
 }
@@ -21,7 +21,8 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
     casesToOpen,
     isOver,
     newGame,
-    player,
+    name,
+    money,
     dndOpen,
   } = props;
 
@@ -47,7 +48,7 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
       </Grid>
       <Grid item sm={6} xs={12}>
         <Typography variant="h3" align="right" gutterBottom>
-          {`${player.name}: ${getMoneyText(player.money)}`}
+          {`${name}: ${getMoneyText(money)}`}
         </Typography>
       </Grid>
     </Grid>

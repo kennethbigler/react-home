@@ -82,11 +82,6 @@ const BlackJack: React.FC = () => {
         ? { ...turn, hand: turn.hand + 1 }
         : { player: turn.player + 1, hand: 0 };
     let newGameFunctions: GameFunctions[] = [];
-    if (!players[newTurn.player]) {
-      console.log(players);
-      console.log(newTurn);
-      return;
-    }
     if (!players[newTurn.player].isBot) {
       newGameFunctions = getGameFunctions(
         players[newTurn.player].hands[newTurn.hand],
@@ -220,8 +215,8 @@ const BlackJack: React.FC = () => {
   /** function to execute dealer logic */
   const playDealer = async (): Promise<void> => {
     const dealer = players.filter((p) => p.id === DEALER)[0];
-    const hand = dealer.hands[0].cards;
-    const { weight: tempW, soft: tempS } = weighHand(hand);
+    const { weight: tempW, soft: tempS } = weighHand(dealer.hands[0].cards);
+
     // Dealer hits on 16 or less and soft 17
     if (tempW <= 16 || (tempW === 17 && tempS)) {
       // get state values
@@ -258,7 +253,7 @@ const BlackJack: React.FC = () => {
 
   const checkUpdate = async (): Promise<void> => {
     const player = players[turn.player];
-    if (!player.isBot || hideHands || !player) {
+    if (!player.isBot || hideHands) {
       return;
     }
 

@@ -119,18 +119,18 @@ const dealOrNoDealState = selector({
   key: "dealOrNoDealState",
   get: ({ get }) => {
     const dnd = get(dealOrNoDealAtom);
-    const player = get(playerAtom)[0];
+    const { name, money, status } = get(playerAtom)[0];
 
-    return { dnd, player };
+    return { dnd, name, money, status };
   },
   set: ({ get, set }, state) => {
     if (!(state instanceof DefaultValue)) {
-      const { dnd, player } = state;
+      const { dnd, money, status } = state;
       set(dealOrNoDealAtom, dnd);
 
       const players = get(playerAtom);
       const newPlayers = [...players];
-      newPlayers[0] = player;
+      newPlayers[0] = { ...players[0], money, status };
       set(playerAtom, newPlayers);
     }
   },

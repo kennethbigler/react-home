@@ -138,7 +138,6 @@ describe("games | blackjack | Blackjack", () => {
     await waitFor(() => screen.getByText("Hand: 10"));
     expect(screen.getAllByText("Hand: 20")).toHaveLength(6);
 
-    // TODO: 1 act issue
     fireEvent.click(screen.getByText("Split"));
     await waitFor(() => screen.getByText("Hand: 18"));
     await waitFor(() => screen.getByText("Hand: 19"));
@@ -148,7 +147,6 @@ describe("games | blackjack | Blackjack", () => {
     await waitFor(() => screen.getByText("New Game"));
     fireEvent.click(screen.getByText("New Game"));
 
-    // TODO: adds 4 act issues
     fireEvent.click(screen.getByText("Finish Betting"));
   });
 });

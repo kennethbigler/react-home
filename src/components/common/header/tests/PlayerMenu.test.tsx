@@ -55,24 +55,6 @@ describe("common | header | PlayerMenu", () => {
     fireEvent.change(screen.getByDisplayValue("Ken"), {
       target: { value: "Kenny" },
     });
-    fireEvent.keyPress(screen.getByDisplayValue("Kenny"), {
-      key: "Enter",
-      location: 0,
-      which: 13,
-      code: "Enter",
-    });
-    fireEvent.keyDown(screen.getByDisplayValue("Kenny"), {
-      key: "Enter",
-      location: 0,
-      which: 13,
-      code: "Enter",
-    });
-    fireEvent.keyUp(screen.getByDisplayValue("Kenny"), {
-      key: "Enter",
-      location: 0,
-      which: 13,
-      code: "Enter",
-    });
     fireEvent.blur(screen.getByDisplayValue("Kenny"));
     fireEvent.click(screen.getByText("Edit Player Names"));
 

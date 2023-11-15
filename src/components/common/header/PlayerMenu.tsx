@@ -17,8 +17,6 @@ const namePadStyles: React.CSSProperties = {
 const PlayerMenu: React.FC = () => {
   const [players, setPlayers] = useRecoilState(playerAtom);
 
-  const isBot = React.useMemo(() => players.map((a) => a.isBot), [players]);
-
   /** toggle between bot and human player */
   const handleToggle = (id: number, isChecked: boolean): void => {
     const pi = players.findIndex((p) => p.id === id);
@@ -43,24 +41,6 @@ const PlayerMenu: React.FC = () => {
       }
     };
 
-  /** if enter key was pressed in textfield, update name */
-  const handleKeyPress =
-    (id: number) =>
-    (e: React.KeyboardEvent<HTMLDivElement>): void => {
-      if (e.key === "Enter") {
-        const pi = players.findIndex((p) => p.id === id);
-        if (pi !== -1) {
-          const newPlayers = [...players];
-          const newPlayer = {
-            ...newPlayers[pi],
-            name: (e.target as HTMLInputElement).value || "",
-          };
-          newPlayers[pi] = newPlayer;
-          setPlayers(newPlayers);
-        }
-      }
-    };
-
   return (
     <SimplePopover buttonText="Players">
       <div style={namePadStyles}>
@@ -79,15 +59,14 @@ const PlayerMenu: React.FC = () => {
                 <TextField
                   defaultValue={p.name}
                   onBlur={handleBlur(p.id)}
-                  onKeyDown={handleKeyPress(p.id)}
                   placeholder="Enter Player Name"
                   title={`player ${i} name`}
                 />
               </Grid>
               <Grid item xs={3}>
                 <Switch
-                  checked={isBot[i]}
-                  value={isBot[i]}
+                  checked={players[i].isBot}
+                  value={players[i].isBot}
                   onChange={(_e, isC): void => handleToggle(p.id, isC)}
                   title={`isBot-switch-${i}`}
                 />

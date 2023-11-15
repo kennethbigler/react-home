@@ -2,24 +2,16 @@ import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import Header from "../Header";
 
-const ken = {
-  id: 1,
-  isBot: false,
-  money: 1000,
-  status: "coding",
-  name: "Ken",
-  bet: 5,
-  hands: [
-    {
-      cards: [{ name: "K", weight: 13, suit: "♠" }],
-    },
-  ],
-};
-
 describe("games | deal-or-no-deal | Header", () => {
   it("renders as expected", () => {
     render(
-      <Header casesToOpen={1} isOver={0} newGame={vi.fn()} player={ken} />,
+      <Header
+        casesToOpen={1}
+        isOver={0}
+        newGame={vi.fn()}
+        name="Ken"
+        money={1000}
+      />,
     );
 
     expect(screen.getByText("Your Case: ?")).toBeInTheDocument();
@@ -29,7 +21,13 @@ describe("games | deal-or-no-deal | Header", () => {
 
   it("changes appearance when over", () => {
     render(
-      <Header casesToOpen={1} isOver={1} newGame={vi.fn()} player={ken} />,
+      <Header
+        casesToOpen={1}
+        isOver={1}
+        newGame={vi.fn()}
+        name="Ken"
+        money={1000}
+      />,
     );
     // removed
     expect(screen.queryByText("Your Case: ?")).toBeNull();
@@ -48,7 +46,8 @@ describe("games | deal-or-no-deal | Header", () => {
         casesToOpen={1}
         isOver={1}
         newGame={vi.fn()}
-        player={ken}
+        name="Ken"
+        money={1000}
         playerChoice={{ on: true, loc: 1, val: 1000 }}
       />,
     );
