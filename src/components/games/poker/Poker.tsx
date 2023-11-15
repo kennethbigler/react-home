@@ -146,7 +146,7 @@ const Poker: React.FC = () => {
   };
 
   /** function to route click actions */
-  const handleGameFunctionClick = async (type: string) => {
+  const handleGameFunctionClick = async (type: PGF) => {
     try {
       const newPlayers: DBPlayer[] = [];
 

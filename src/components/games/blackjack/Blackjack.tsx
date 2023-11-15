@@ -76,12 +76,17 @@ const BlackJack: React.FC = () => {
   /** function to pass to the next player */
   const stay = (): void => {
     // get state values
-    const lastHand = players[turn.player].hands.length - 1;
+    const numHands = players[turn.player].hands.length - 1;
     const newTurn =
-      turn.hand < lastHand
+      turn.hand < numHands
         ? { ...turn, hand: turn.hand + 1 }
         : { player: turn.player + 1, hand: 0 };
     let newGameFunctions: GameFunctions[] = [];
+    if (!players[newTurn.player]) {
+      console.log(players);
+      console.log(newTurn);
+      return;
+    }
     if (!players[newTurn.player].isBot) {
       newGameFunctions = getGameFunctions(
         players[newTurn.player].hands[newTurn.hand],
@@ -289,7 +294,7 @@ const BlackJack: React.FC = () => {
   };
 
   /** function to route click actions */
-  const handleGameFunctionClick = (type: string): void => {
+  const handleGameFunctionClick = (type: GameFunctions): void => {
     switch (type) {
       case GameFunctions.NEW_GAME:
         newGame();
@@ -325,7 +330,7 @@ const BlackJack: React.FC = () => {
         betHandler={betHandler}
         cardClickHandler={cardClickHandler}
         gameFunctions={gameFunctions}
-        onClick={handleGameFunctionClick}
+        onClick={handleGameFunctionClick as (type: string) => void}
         hideHands={hideHands}
         players={players}
         turn={turn}
