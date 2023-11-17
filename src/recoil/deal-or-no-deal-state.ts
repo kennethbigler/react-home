@@ -94,11 +94,12 @@ export const dealOrNoDealAtom = atom({
   ],
 });
 
-export const dndHelperSelector = selector({
-  key: "dndHelperSelector",
+export const dndReadOnlyState = selector({
+  key: "dndReadOnlyState",
   get: ({ get }) => {
     // access state
     const { board, turn } = get(dealOrNoDealAtom);
+    const { name } = get(playerAtom)[0];
     // compute iterated variables
     let numCases = 0;
     let sum = 0;
@@ -111,7 +112,7 @@ export const dndHelperSelector = selector({
     // get the new offer
     const offer = Math.round((sum / numCases) * (turn / 10));
     // return state
-    return { numCases, offer };
+    return { numCases, offer, name };
   },
 });
 
@@ -119,9 +120,9 @@ const dealOrNoDealState = selector({
   key: "dealOrNoDealState",
   get: ({ get }) => {
     const dnd = get(dealOrNoDealAtom);
-    const { name, money, status } = get(playerAtom)[0];
+    const { money, status } = get(playerAtom)[0];
 
-    return { dnd, name, money, status };
+    return { dnd, money, status };
   },
   set: ({ get, set }, state) => {
     if (!(state instanceof DefaultValue)) {

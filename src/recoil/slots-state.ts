@@ -17,15 +17,24 @@ export const slotsAtom = atom({
   ],
 });
 
+export const slotsReadOnlyState = selector({
+  key: "slotsReadOnlyState",
+  get: ({ get }) => {
+    const players = get(playerAtom);
+    const { bet, name } = players[0];
+    return { bet, name };
+  },
+});
+
 const slotsState = selector({
   key: "slotsState",
   get: ({ get }) => {
     const reel = get(slotsAtom);
     const players = get(playerAtom);
-    const { money, bet, name } = players[0];
+    const { money } = players[0];
     const { money: houseMoney } = players[players.length - 1];
 
-    return { reel, money, bet, name, houseMoney };
+    return { reel, money, houseMoney };
   },
   set: ({ get, set }, state) => {
     if (!(state instanceof DefaultValue)) {

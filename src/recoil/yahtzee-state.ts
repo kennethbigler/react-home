@@ -38,10 +38,11 @@ export const yahtzeeAtom = atom({
   ],
 });
 
-export const sumsYahtzeeSelector = selector({
-  key: "sumsYahtzeeSelector",
+export const yahtzeeReadOnlyState = selector({
+  key: "yahtzeeReadOnlyState",
   get: ({ get }) => {
     const { topScores, bottomScores } = get(yahtzeeAtom);
+    const { name } = get(playerAtom)[0];
 
     let count = 0;
 
@@ -73,6 +74,7 @@ export const sumsYahtzeeSelector = selector({
       bottomSum,
       finalTopSum,
       finish,
+      name,
     };
   },
 });
@@ -81,13 +83,13 @@ const yahtzeeState = selector({
   key: "yahtzeeState",
   get: ({ get }) => {
     const yahtzee = get(yahtzeeAtom);
-    const { money, name } = get(playerAtom)[0];
+    const { money } = get(playerAtom)[0];
 
-    return { ...yahtzee, money, name };
+    return { ...yahtzee, money };
   },
   set: ({ get, set }, state) => {
     if (!(state instanceof DefaultValue)) {
-      const { money, name, ...yahtzee } = state;
+      const { money, ...yahtzee } = state;
       set(yahtzeeAtom, yahtzee);
 
       const players = get(playerAtom);

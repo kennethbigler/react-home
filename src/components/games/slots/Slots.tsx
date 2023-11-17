@@ -2,8 +2,8 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { useRecoilState } from "recoil";
-import slotsState from "../../../recoil/slots-state";
+import { useRecoilState, useRecoilValue } from "recoil";
+import slotsState, { slotsReadOnlyState } from "../../../recoil/slots-state";
 import PayoutTable from "./PayoutTable";
 import MoneyTable from "./MoneyTable";
 import ReelDisplay from "./ReelDisplay";
@@ -14,8 +14,8 @@ import PlayerMenu from "../../common/header/PlayerMenu";
  *       |->  MoneyTable
  *       |->  PayoutTable */
 const Slots: React.FC = () => {
-  const [{ reel, money, bet, name, houseMoney }, setState] =
-    useRecoilState(slotsState);
+  const [{ reel, money, houseMoney }, setState] = useRecoilState(slotsState);
+  const { bet, name } = useRecoilValue(slotsReadOnlyState);
   const [exchange, setExchange] = React.useState(0);
 
   const updateSlotMachine = () => {
@@ -28,8 +28,6 @@ const Slots: React.FC = () => {
     // exchange money and update state
     setExchange(newExchange);
     setState({
-      bet,
-      name,
       reel: newReel,
       money: money + newExchange,
       houseMoney: houseMoney - newExchange,
