@@ -5,7 +5,7 @@ import Modal from "./Modal";
 import Board from "./Board";
 import Header from "./Header";
 import dndState, {
-  dndHelperSelector,
+  dndReadOnlyState,
   briefcasesToOpen,
   newDNDGame,
 } from "../../../recoil/deal-or-no-deal-state";
@@ -16,15 +16,14 @@ import PlayerMenu from "../../common/header/PlayerMenu";
  *              |->  Board  ->  Case
  *              |->  Modal  ->  Money */
 const DealOrNoDeal: React.FC = () => {
-  const [{ dnd, name, money, status }, setState] = useRecoilState(dndState);
-  const { numCases, offer } = useRecoilValue(dndHelperSelector);
+  const [{ dnd, money, status }, setState] = useRecoilState(dndState);
+  const { numCases, offer, name } = useRecoilValue(dndReadOnlyState);
   const { board, dndOpen, isOver, turn, playerChoice, casesToOpen } = dnd;
 
   // --------------------     Header     -------------------- //
 
   /** called in Header, resets game */
-  const newGame = (): void =>
-    setState({ dnd: newDNDGame(), name, money, status });
+  const newGame = (): void => setState({ dnd: newDNDGame(), money, status });
 
   // --------------------     Board     -------------------- //
 
@@ -52,7 +51,6 @@ const DealOrNoDeal: React.FC = () => {
             dndOpen: casesToOpen === 1,
             casesToOpen: casesToOpen - 1,
           },
-          name,
           money,
           status,
         });
@@ -60,9 +58,8 @@ const DealOrNoDeal: React.FC = () => {
     } else {
       setState({
         dnd: { ...dnd, playerChoice: bc },
-        name,
-        status,
         money: money - 100,
+        status,
       });
     }
   };
@@ -82,9 +79,8 @@ const DealOrNoDeal: React.FC = () => {
         dndOpen: false,
         isOver: total,
       },
-      name,
-      status: total > 100 ? "win" : "lose",
       money: money + total,
+      status: total > 100 ? "win" : "lose",
     });
   };
 
@@ -104,9 +100,8 @@ const DealOrNoDeal: React.FC = () => {
           dndOpen: false,
           isOver: total,
         },
-        name,
-        status: total > 100 ? "win" : "lose",
         money: money + total,
+        status: total > 100 ? "win" : "lose",
       });
     } else {
       // advance the turn
@@ -118,7 +113,6 @@ const DealOrNoDeal: React.FC = () => {
           casesToOpen:
             turn < briefcasesToOpen - 1 ? briefcasesToOpen - turn : 1,
         },
-        name,
         money,
         status,
       });
@@ -141,9 +135,8 @@ const DealOrNoDeal: React.FC = () => {
             dndOpen: false,
             isOver: total,
           },
-          name,
-          status: total > 100 ? "win" : "lose",
           money: money + total,
+          status: total > 100 ? "win" : "lose",
         });
         return;
       }

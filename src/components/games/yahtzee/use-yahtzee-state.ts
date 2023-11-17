@@ -6,7 +6,6 @@ const useYahtzeeState = () => {
 
   const newGame = (score: number) =>
     setState({
-      name: state.name,
       ...newYahtzee(),
       scores: [...state.scores, score],
       money: state.money + Math.ceil(score / 10),

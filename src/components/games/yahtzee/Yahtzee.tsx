@@ -6,7 +6,7 @@ import ScoreTable from "./score-table/ScoreTable";
 import { ADD_DICE, BottomGameScore } from "./types";
 import Header from "./Header";
 import TableHeader from "./TableHeader";
-import { Dice, sumsYahtzeeSelector } from "../../../recoil/yahtzee-state";
+import { Dice, yahtzeeReadOnlyState } from "../../../recoil/yahtzee-state";
 import useYahtzeeState from "./use-yahtzee-state";
 
 const topConstants = [
@@ -40,11 +40,10 @@ const Yahtzee: React.FC = () => {
     showScoreButtons,
     scores,
     money,
-    name,
   } = state;
 
-  const { topSum, bottomSum, finalTopSum, finish } =
-    useRecoilValue(sumsYahtzeeSelector);
+  const { topSum, bottomSum, finalTopSum, finish, name } =
+    useRecoilValue(yahtzeeReadOnlyState);
 
   const handleDiceRoll = (): void => {
     if (finish) {
