@@ -36,7 +36,7 @@ export const types = [
   { name: "grass", color: green[500] },
   { name: "electric", color: yellow[600], inverted: true },
   { name: "psychic", color: pink[300] },
-  { name: "ice", color: cyan[500] },
+  { name: "ice", color: cyan[500], inverted: true },
   { name: "dragon", color: indigo.A700 },
   { name: "dark", color: grey[800] },
   { name: "fairy", color: pink[100], inverted: true },
