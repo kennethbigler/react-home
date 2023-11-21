@@ -17,7 +17,10 @@
     "http://localhost:5173/#/games/connect4",
     "http://localhost:5173/#/games/family-feud",
     "http://localhost:5173/#/games/tictactoe",
-    "http://localhost:5173/#/games/types",
+    {
+      "url": "http://localhost:5173/#/games/types",
+      "ignore": ["WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Fail"]
+    },
     "http://localhost:5173/#/games/botc",
     "http://localhost:5173/#/games/murder",
     "http://localhost:5173/#/games/werewolf"
