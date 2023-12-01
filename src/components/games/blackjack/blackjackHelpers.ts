@@ -119,7 +119,12 @@ export const banking = (players: DBPlayer[]): DBPlayer[] => {
 };
 
 /** function that takes a hand of duplicates and makes 2 hands */
-export const splitBotHelper = async (hand: DBHand): Promise<DBHand[]> => {
+export const splitHelper = async (
+  player: DBPlayer,
+  handTurn: number,
+): Promise<DBHand[]> => {
+  const { hands } = player;
+  const hand = hands[handTurn];
   // get new cards
   const newCards = await Deck.deal(2);
   // create 2 hands
@@ -130,18 +135,6 @@ export const splitBotHelper = async (hand: DBHand): Promise<DBHand[]> => {
   // update hand weights
   Object.assign(hand1, weighHand(hand1.cards));
   Object.assign(hand2, weighHand(hand2.cards));
-  // update global hands
-  return [hand1, hand2];
-};
-
-/** function that takes a hand of duplicates and makes 2 hands */
-export const splitHelper = async (
-  player: DBPlayer,
-  handTurn: number,
-): Promise<DBHand[]> => {
-  const { hands } = player;
-  const hand = hands[handTurn];
-  const [hand1, hand2] = await splitBotHelper(hand);
   // update global hands
   const newHands = hands.map((item, i) => (i !== handTurn ? item : hand2));
   newHands.splice(handTurn, 0, hand1);
