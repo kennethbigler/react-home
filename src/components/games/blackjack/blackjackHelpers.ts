@@ -5,6 +5,7 @@ import { TurnState } from "../../../recoil/turn-atom";
 
 // Dealer constant
 export const DEALER = 0;
+const D_H_TURN = 0;
 
 export interface PlayerStats {
   house: number;
@@ -157,6 +158,25 @@ export const hitHelper = async (
   return newHands;
 };
 
+/** dealer recursive function */
+const playDealer = async (dealer: DBPlayer): Promise<DBPlayer> => {
+  const { weight: pW, soft: pS } = weighHand(dealer.hands[D_H_TURN].cards);
+
+  // Dealer hits on 16 or less and soft 17
+  if (pW <= 16 || (pW === 17 && pS)) {
+    // get state values
+    const { hands } = dealer;
+    // logic to hit
+    const drawnCards = await Deck.deal(1);
+    const cards = [...hands[D_H_TURN].cards, ...drawnCards];
+    const { weight, soft } = weighHand(cards);
+    const newHands = [{ cards, weight, soft }];
+    // recursion
+    return playDealer({ ...dealer, hands: newHands });
+  }
+  return dealer;
+};
+
 /* eslint-disable no-await-in-loop */
 /** Function to play all AI players
  * AI: https://www.blackjackinfo.com/blackjack-basic-strategy-engine/
@@ -295,37 +315,15 @@ export const playBots = async (
   };
 
   const DEALER_IDX = players.length - 1;
-  const HAND_TURN = 0;
 
   // TODO: needs to be async
   while (players[turn.player].id !== DEALER) {
     const hand = players[turn.player].hands[turn.hand];
-    const dealer = players[DEALER_IDX].hands[HAND_TURN];
+    const dealer = players[DEALER_IDX].hands[D_H_TURN];
 
     // validate hand exists
     await playBot(hand, dealer);
   }
-
-  /** dealer recursive function */
-  const playDealer = async (dealer: DBPlayer): Promise<DBPlayer> => {
-    const { weight: prevW, soft: prevS } = weighHand(
-      dealer.hands[HAND_TURN].cards,
-    );
-
-    // Dealer hits on 16 or less and soft 17
-    if (prevW <= 16 || (prevW === 17 && prevS)) {
-      // get state values
-      const { hands } = dealer;
-      // logic to hit
-      const drawnCards = await Deck.deal(1);
-      const cards = [...hands[HAND_TURN].cards, ...drawnCards];
-      const { weight, soft } = weighHand(cards);
-      const newHands = [{ cards, weight, soft }];
-      // recursion
-      return playDealer({ ...dealer, hands: newHands });
-    }
-    return dealer;
-  };
 
   // play dealer
   const dealer = players[DEALER_IDX];
