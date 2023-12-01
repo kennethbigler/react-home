@@ -9,15 +9,16 @@ import { useRecoilState } from "recoil";
 import asyncForEach from "../../../helpers/asyncForEach";
 import {
   weighHand,
-  playBot,
-  banking,
+  playBots,
   DEALER,
   getGameFunctions,
+  hitHelper,
+  splitHelper,
 } from "./blackjackHelpers";
 import Header from "./Header";
 import GameTable from "../game-table";
 import Deck from "../../../apis/Deck";
-import { DBHand, DBPlayer } from "../../../recoil/player-atom";
+import { DBPlayer } from "../../../recoil/player-atom";
 import blackjackState, {
   GameFunctions,
   newBlackjackGame,
@@ -35,36 +36,14 @@ const BlackJack: React.FC = () => {
 
   /** function that takes a hand of duplicates and makes 2 hands */
   const split = async (): Promise<void> => {
-    // get state values
-    const { hands } = players[turn.player];
-
-    const newCards = await Deck.deal(2);
-
-    const hand = hands[turn.hand];
-    // split the hands into 2
-    const hand1: DBHand = { cards: [hand.cards[0]] };
-    const hand2: DBHand = { cards: [hand.cards[1]] };
-
-    hand1.cards.push(newCards[0]);
-    hand2.cards.push(newCards[1]);
-
-    // update the weights
-    Object.assign(hand1, weighHand(hand1.cards));
-    Object.assign(hand2, weighHand(hand2.cards));
-    // update global hands
-    const newHands = hands.map((item, i) => (i !== turn.hand ? item : hand2));
-    newHands.splice(turn.hand, 0, hand1);
-
+    const newHands = await splitHelper(players[turn.player], turn.hand);
+    // set players
     const newPlayers = [...players];
     newPlayers[turn.player] = { ...players[turn.player], hands: newHands };
-
-    let newGameFunctions: GameFunctions[] = [];
-    if (!newPlayers[turn.player].isBot) {
-      newGameFunctions = getGameFunctions(
-        newPlayers[turn.player].hands[turn.hand],
-      );
-    }
-
+    // set gameFunctions
+    const newGameFunctions: GameFunctions[] = getGameFunctions(
+      newPlayers[turn.player].hands[turn.hand],
+    );
     // update game state
     setState({
       turn,
@@ -81,13 +60,9 @@ const BlackJack: React.FC = () => {
       turn.hand < numHands
         ? { ...turn, hand: turn.hand + 1 }
         : { player: turn.player + 1, hand: 0 };
-    let newGameFunctions: GameFunctions[] = [];
-    if (!players[newTurn.player].isBot) {
-      newGameFunctions = getGameFunctions(
-        players[newTurn.player].hands[newTurn.hand],
-      );
-    }
-    // check if the player has more than 1 hand
+    const newGameFunctions: GameFunctions[] = getGameFunctions(
+      players[newTurn.player].hands[newTurn.hand],
+    );
     setState({
       turn: newTurn,
       players,
@@ -97,35 +72,28 @@ const BlackJack: React.FC = () => {
 
   /** function that doubles your bet, but you only get 1 card */
   const double = async (): Promise<void> => {
-    const { hands } = players[turn.player];
-
-    // Draw Card
-    const drawnCards = await Deck.deal(1);
-    const cards = [...hands[turn.hand].cards, ...drawnCards];
-    const { weight, soft } = weighHand(cards);
-    const newHands = hands.map((item, i) =>
-      i !== turn.hand ? item : { cards, weight, soft },
-    );
-    // create new players object
+    const newHands = await hitHelper(players[turn.player], turn.hand);
+    // set players
     const newPlayers = [...players];
     newPlayers[turn.player] = {
       ...players[turn.player],
       hands: newHands,
       bet: players[turn.player].bet * 2,
     };
-    // get state values
+    // set turn
     const lastHand = players[turn.player].hands.length - 1;
     const newTurn =
       turn.hand < lastHand
         ? { ...turn, hand: turn.hand + 1 }
         : { player: turn.player + 1, hand: 0 };
+    // set gameFunctions
     let newGameFunctions: GameFunctions[] = [];
     if (!newPlayers[newTurn.player].isBot) {
       newGameFunctions = getGameFunctions(
         newPlayers[newTurn.player].hands[newTurn.hand],
       );
     }
-    // check if the player has more than 1 hand
+    // update state
     setState({
       turn: newTurn,
       players: newPlayers,
@@ -135,26 +103,14 @@ const BlackJack: React.FC = () => {
 
   /** function to get a new card */
   const hit = async (): Promise<void> => {
-    // get state values
-    const { hands } = players[turn.player];
-
-    // logic to hit
-    const drawnCards = await Deck.deal(1);
-    const cards = [...hands[turn.hand].cards, ...drawnCards];
-    const { weight, soft } = weighHand(cards);
-    const newHands = hands.map((item, i) =>
-      i !== turn.hand ? item : { cards, weight, soft },
-    );
-    // create new players object
+    const newHands = await hitHelper(players[turn.player], turn.hand);
+    // set players
     const newPlayers = [...players];
     newPlayers[turn.player] = { ...players[turn.player], hands: newHands };
-    // get new game functions
-    let newGameFunctions: GameFunctions[] = [];
-    if (!newPlayers[turn.player].isBot) {
-      newGameFunctions = getGameFunctions(
-        newPlayers[turn.player].hands[turn.hand],
-      );
-    }
+    // set gameFunctions
+    const newGameFunctions: GameFunctions[] = getGameFunctions(
+      newPlayers[turn.player].hands[turn.hand],
+    );
     // update state
     setState({
       turn,
@@ -198,12 +154,9 @@ const BlackJack: React.FC = () => {
       });
     });
     // get game functions
-    let newGameFunctions: GameFunctions[] = [];
-    if (!newPlayers[turn.player].isBot) {
-      newGameFunctions = getGameFunctions(
-        newPlayers[turn.player].hands[turn.hand],
-      );
-    }
+    const newGameFunctions: GameFunctions[] = getGameFunctions(
+      newPlayers[turn.player].hands[turn.hand],
+    );
     // update game state
     setState({
       turn,
@@ -212,57 +165,14 @@ const BlackJack: React.FC = () => {
     });
   };
 
-  /** function to execute dealer logic */
-  const playDealer = async (): Promise<void> => {
-    const dealer = players.filter((p) => p.id === DEALER)[0];
-    const { weight: tempW, soft: tempS } = weighHand(dealer.hands[0].cards);
-
-    // Dealer hits on 16 or less and soft 17
-    if (tempW <= 16 || (tempW === 17 && tempS)) {
-      // get state values
-      const { hands } = players.filter((p) => p.id === DEALER)[0];
-      // logic to hit
-      const drawnCards = await Deck.deal(1);
-      const cards = [...hands[turn.hand].cards, ...drawnCards];
-      const { weight, soft } = weighHand(cards);
-      const newHands = hands.map((item, i) =>
-        i !== turn.hand ? item : { cards, weight, soft },
-      );
-      // create new players object
-      const newPlayers = [...players];
-      newPlayers[players.length - 1] = {
-        ...players[players.length - 1],
-        hands: newHands,
-      };
-      // update state
-      setState({
-        bj: { gameFunctions, hideHands },
-        turn,
-        players: newPlayers,
-      });
-    } else {
-      const newPlayers = banking(players);
-      // update game functions
-      setState({
-        turn,
-        players: newPlayers,
-        bj: { gameFunctions: [GameFunctions.NEW_GAME], hideHands },
-      });
-    }
-  };
-
   const checkUpdate = async (): Promise<void> => {
-    const player = players[turn.player];
-    if (!player.isBot || hideHands) {
-      return;
-    }
-
-    if (player.id !== DEALER) {
-      const hand = players[turn.player].hands[turn.hand];
-      const dealer = players[players.length - 1].hands[0];
-      await playBot(hand, dealer, double, hit, split, stay);
-    } else if (!gameFunctions.includes(GameFunctions.NEW_GAME)) {
-      await playDealer();
+    if (!hideHands && gameFunctions[0] !== (GameFunctions.NEW_GAME as string)) {
+      const player = players[turn.player];
+      if (!player.isBot) {
+        return;
+      }
+      const newState = await playBots(players, turn);
+      setState(newState);
     }
   };
 
@@ -273,7 +183,6 @@ const BlackJack: React.FC = () => {
     handNo: number,
     cardNo: number,
   ): void => {
-    // eslint-disable-next-line no-console
     console.log(players[playerNo].hands[handNo].cards[cardNo]);
   };
 
@@ -310,7 +219,6 @@ const BlackJack: React.FC = () => {
         split().catch((e) => console.log(e));
         break;
       default:
-        // eslint-disable-next-line no-console
         console.error("Unknown Game Function: ", type);
     }
   };
