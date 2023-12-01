@@ -1,4 +1,5 @@
 import Deck, { DBCard } from "../../../apis/Deck";
+import asyncForEach from "../../../helpers/asyncForEach";
 import { BlackjackState, GameFunctions } from "../../../recoil/blackjack-state";
 import { DBHand, DBPlayer } from "../../../recoil/player-atom";
 import { TurnState } from "../../../recoil/turn-atom";
@@ -118,13 +119,7 @@ export const banking = (players: DBPlayer[]): DBPlayer[] => {
 };
 
 /** function that takes a hand of duplicates and makes 2 hands */
-export const splitHelper = async (
-  player: DBPlayer,
-  handTurn: number,
-): Promise<DBHand[]> => {
-  // get current hand
-  const { hands } = player;
-  const hand = hands[handTurn];
+export const splitBotHelper = async (hand: DBHand): Promise<DBHand[]> => {
   // get new cards
   const newCards = await Deck.deal(2);
   // create 2 hands
@@ -135,6 +130,18 @@ export const splitHelper = async (
   // update hand weights
   Object.assign(hand1, weighHand(hand1.cards));
   Object.assign(hand2, weighHand(hand2.cards));
+  // update global hands
+  return [hand1, hand2];
+};
+
+/** function that takes a hand of duplicates and makes 2 hands */
+export const splitHelper = async (
+  player: DBPlayer,
+  handTurn: number,
+): Promise<DBHand[]> => {
+  const { hands } = player;
+  const hand = hands[handTurn];
+  const [hand1, hand2] = await splitBotHelper(hand);
   // update global hands
   const newHands = hands.map((item, i) => (i !== handTurn ? item : hand2));
   newHands.splice(handTurn, 0, hand1);
@@ -316,14 +323,14 @@ export const playBots = async (
 
   const DEALER_IDX = players.length - 1;
 
-  // TODO: needs to be async
-  while (players[turn.player].id !== DEALER) {
+  const bots = players.slice(turn.player, DEALER_IDX);
+  await asyncForEach(bots, async () => {
     const hand = players[turn.player].hands[turn.hand];
     const dealer = players[DEALER_IDX].hands[D_H_TURN];
 
     // validate hand exists
     await playBot(hand, dealer);
-  }
+  });
 
   // play dealer
   const dealer = players[DEALER_IDX];
