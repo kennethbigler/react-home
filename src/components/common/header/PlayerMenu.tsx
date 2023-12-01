@@ -21,10 +21,19 @@ const PlayerMenu: React.FC = () => {
   const handleToggle = (id: number, isChecked: boolean): void => {
     const pi = players.findIndex((p) => p.id === id);
     if (pi !== -1) {
-      const newPlayers = [...players];
-      const newPlayer = { ...newPlayers[pi], isBot: isChecked };
-      newPlayers[pi] = newPlayer;
-      setPlayers(newPlayers);
+      if (isChecked) {
+        const newPlayers = [...players];
+        for (let i = pi; i < players.length - 1; i += 1) {
+          const newPlayer = { ...newPlayers[i], isBot: isChecked };
+          newPlayers[i] = newPlayer;
+        }
+        setPlayers(newPlayers);
+      } else {
+        const newPlayers = [...players];
+        const newPlayer = { ...newPlayers[pi], isBot: isChecked };
+        newPlayers[pi] = newPlayer;
+        setPlayers(newPlayers);
+      }
     }
   };
 
@@ -64,12 +73,14 @@ const PlayerMenu: React.FC = () => {
                 />
               </Grid>
               <Grid item xs={3}>
-                <Switch
-                  checked={players[i].isBot}
-                  value={players[i].isBot}
-                  onChange={(_e, isC): void => handleToggle(p.id, isC)}
-                  title={`isBot-switch-${i}`}
-                />
+                {(i === 0 || !players[i].isBot || !players[i - 1].isBot) && (
+                  <Switch
+                    checked={players[i].isBot}
+                    value={players[i].isBot}
+                    onChange={(_e, isC): void => handleToggle(p.id, isC)}
+                    title={`isBot-switch-${i}`}
+                  />
+                )}
               </Grid>
             </Grid>
           ) : (
