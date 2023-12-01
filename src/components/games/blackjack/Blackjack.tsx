@@ -7,14 +7,8 @@
 import * as React from "react";
 import { useRecoilState } from "recoil";
 import asyncForEach from "../../../helpers/asyncForEach";
-import {
-  weighHand,
-  playBots,
-  DEALER,
-  getGameFunctions,
-  hitHelper,
-  splitHelper,
-} from "./blackjackHelpers";
+import { getGameFunctions, hitHelper, splitHelper } from "./blackjackHelpers";
+import { DEALER, weighHand, playBots } from "./blackjackAI";
 import Header from "./Header";
 import GameTable from "../game-table";
 import Deck from "../../../apis/Deck";
