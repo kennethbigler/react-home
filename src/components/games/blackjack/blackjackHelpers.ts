@@ -177,7 +177,6 @@ const playDealer = async (dealer: DBPlayer): Promise<DBPlayer> => {
   return dealer;
 };
 
-/* eslint-disable no-await-in-loop */
 /** Function to play all AI players
  * AI: https://www.blackjackinfo.com/blackjack-basic-strategy-engine/
  */
@@ -337,7 +336,6 @@ export const playBots = async (
     bj: { gameFunctions: [GameFunctions.NEW_GAME], hideHands: false },
   };
 };
-/* eslint-enable no-await-in-loop */
 
 /** get the game functions for the present hand */
 export const getGameFunctions = (hand: DBHand): GameFunctions[] => {
