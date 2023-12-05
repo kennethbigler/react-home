@@ -5,10 +5,10 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import { ReactNode } from "react";
-import { BotCPlayer, BotCRole } from "../../../recoil/botc-atom";
-import { tb, snv, bmr } from "../../../constants/botc";
+import { BotCPlayer, BotCRole } from "../../../../recoil/botc-atom";
+import { tb, snv, bmr } from "../../../../constants/botc";
 import RoleButton from "./RoleButton";
-import { MuiColors } from "../../common/types";
+import { MuiColors } from "../../../common/types";
 
 interface RoleDialogProps {
   script: number;

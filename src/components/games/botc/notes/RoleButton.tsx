@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import { BotCRole } from "../../../recoil/botc-atom";
+import { BotCRole } from "../../../../recoil/botc-atom";
 
 interface RoleButtonProps {
   role: BotCRole;

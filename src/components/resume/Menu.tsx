@@ -37,7 +37,7 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
         { name: "Cars", route: "cars" },
         { name: "Travel Map", route: "travel" },
         { divider: true },
-        { name: "React Games", route: "games" },
+        { name: "Games", route: "games" },
       ].map((item, index) =>
         item.divider ? (
           <Divider key={index} />

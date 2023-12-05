@@ -13,7 +13,7 @@ describe("resume | Menu", () => {
     expect(screen.getByText("Hackathons & Education")).toBeInTheDocument();
     expect(screen.getByText("Cars")).toBeInTheDocument();
     expect(screen.getByText("Travel Map")).toBeInTheDocument();
-    expect(screen.getByText("React Games")).toBeInTheDocument();
+    expect(screen.getByText("Games")).toBeInTheDocument();
     expect(screen.getByText("GitHub")).toBeInTheDocument();
     expect(screen.getByText("LinkedIn")).toBeInTheDocument();
     expect(
