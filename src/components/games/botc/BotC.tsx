@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useRecoilState } from "recoil";
-import BotCHeader from "./Header";
+import BotCHeader from "./header/BotCHeader";
 import botcAtom, {
   BotCPlayer,
   BotCRole,
   botcPlayerShell,
 } from "../../../recoil/botc-atom";
-import PlayerNotes from "./PlayerNotes";
+import PlayerNotes from "./notes/PlayerNotes";
 
 const BotC: React.FC = React.memo(() => {
   const [{ script, numPlayers, numTravelers, botcPlayers }, setState] =

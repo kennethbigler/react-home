@@ -1,8 +1,8 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import PlayerCard from "./PlayerCard";
-import { BotCPlayer, BotCRole } from "../../../recoil/botc-atom";
-import { playerDist } from "../../../constants/botc";
+import { BotCPlayer, BotCRole } from "../../../../recoil/botc-atom";
+import { playerDist } from "../../../../constants/botc";
 
 interface PlayerNotesProps {
   script: number;

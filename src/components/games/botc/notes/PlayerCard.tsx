@@ -2,8 +2,8 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
-import { BotCPlayer, BotCRole } from "../../../recoil/botc-atom";
-import InfoPopup from "../../common/info-popover/InfoPopup";
+import { BotCPlayer, BotCRole } from "../../../../recoil/botc-atom";
+import InfoPopup from "../../../common/info-popover/InfoPopup";
 import RoleDialog from "./RoleDialog";
 
 interface PlayerCardProps {
