@@ -21,56 +21,26 @@ const BotC: React.FC = React.memo(() => {
   const updateNumPlayers = (_e: Event, value: number | number[]) => {
     // new values
     const newNumPlayers = Array.isArray(value) ? value[0] : value;
-    const newTotal = numTravelers + newNumPlayers;
-    // check if not enough players
-    if (botcPlayers.length < newTotal) {
-      const newPlayers = [...botcPlayers];
-      for (let i = botcPlayers.length; i < newTotal; i += 1) {
-        newPlayers.push(botcPlayerShell);
-      }
-      setState({
-        script,
-        numTravelers,
-        botcPlayers: newPlayers,
-        numPlayers: newNumPlayers,
-      });
-    } else {
-      // otherwise just update count
-      setState({
-        script,
-        numTravelers,
-        botcPlayers,
-        numPlayers: newNumPlayers,
-      });
-    }
+    // update global state
+    setState({
+      script,
+      numTravelers,
+      botcPlayers,
+      numPlayers: newNumPlayers,
+    });
   };
 
   /** update number of players */
   const updateNumTravelers = (_e: Event, value: number | number[]) => {
     // new values
     const newNumTravelers = Array.isArray(value) ? value[0] : value;
-    const newTotal = numPlayers + newNumTravelers;
-    // check if not enough players
-    if (botcPlayers.length < newTotal) {
-      const newPlayers = [...botcPlayers];
-      for (let i = botcPlayers.length; i < newTotal; i += 1) {
-        newPlayers.push(botcPlayerShell);
-      }
-      setState({
-        script,
-        numPlayers,
-        botcPlayers: newPlayers,
-        numTravelers: newNumTravelers,
-      });
-    } else {
-      // otherwise just update count
-      setState({
-        script,
-        numPlayers,
-        botcPlayers,
-        numTravelers: newNumTravelers,
-      });
-    }
+    // update global state
+    setState({
+      script,
+      numPlayers,
+      botcPlayers,
+      numTravelers: newNumTravelers,
+    });
   };
 
   /** update player name onBlur */
@@ -83,11 +53,21 @@ const BotC: React.FC = React.memo(() => {
       setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
 
+  /** move player in array */
+  const updatePlayerOrder = (i: number, dir: number) => () => {
+    const newPlayers = [...botcPlayers];
+    const playerA = newPlayers[i];
+    const playerB = newPlayers[i + dir];
+    newPlayers[i] = { ...playerB };
+    newPlayers[i + dir] = { ...playerA };
+    setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
+  };
+
   /** set a new game */
   const newBotCGame = () => {
     const newPlayers: BotCPlayer[] = [];
     botcPlayers.forEach((player) =>
-      newPlayers.push({ ...botcPlayerShell, name: player.name }),
+      newPlayers.push({ ...botcPlayerShell, name: player.name, id: player.id }),
     );
     setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
   };
@@ -143,6 +123,7 @@ const BotC: React.FC = React.memo(() => {
         updateNumPlayers={updateNumPlayers}
         updateNumTravelers={updateNumTravelers}
         updateNamesOnBlur={updateNamesOnBlur}
+        updatePlayerOrder={updatePlayerOrder}
       />
       <PlayerNotes
         script={script}

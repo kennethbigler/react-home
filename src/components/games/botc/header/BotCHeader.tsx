@@ -6,7 +6,7 @@ import Alert from "@mui/material/Alert";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import { BotCPlayer } from "../../../../recoil/botc-atom";
 import DialogControls from "./DialogControls";
-import DialogPlayers from "./DialogPlayers";
+import EditPlayer from "./EditPlayer";
 
 interface BotCHeaderProps {
   script: number;
@@ -20,6 +20,7 @@ interface BotCHeaderProps {
   updateNamesOnBlur: (
     i: number,
   ) => (e: React.FocusEvent<HTMLInputElement>) => void;
+  updatePlayerOrder: (i: number, dir: number) => () => void;
 }
 
 const BotCHeader = ({
@@ -32,6 +33,7 @@ const BotCHeader = ({
   updateNumPlayers,
   updateNumTravelers,
   updateNamesOnBlur,
+  updatePlayerOrder,
 }: BotCHeaderProps) => {
   const [hasToast, setHasToast] = React.useState(false);
   /** close the toast message */
@@ -58,12 +60,20 @@ const BotCHeader = ({
             updateNumTravelers={updateNumTravelers}
             handleReset={handleReset}
           />
-          <DialogPlayers
-            numPlayers={numPlayers}
-            numTravelers={numTravelers}
-            botcPlayers={botcPlayers}
-            updateNamesOnBlur={updateNamesOnBlur}
-          />
+          {botcPlayers.map((player, i) =>
+            i < numPlayers + numTravelers ? (
+              <EditPlayer
+                key={`player${player.id}`}
+                first={i === 0}
+                last={i === numPlayers + numTravelers - 1}
+                name={player.name}
+                moveUp={updatePlayerOrder(i, -1)}
+                moveDown={updatePlayerOrder(i, 1)}
+                title={`player ${player.id} name`}
+                onBlur={updateNamesOnBlur(i)}
+              />
+            ) : null,
+          )}
         </Grid>
       </InfoPopup>
       <Snackbar open={hasToast} autoHideDuration={3000} onClose={handleClose}>
