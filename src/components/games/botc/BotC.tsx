@@ -20,27 +20,17 @@ const BotC: React.FC = React.memo(() => {
   /** update number of players */
   const updateNumPlayers = (_e: Event, value: number | number[]) => {
     // new values
-    const newNumPlayers = Array.isArray(value) ? value[0] : value;
+    const newNum = Array.isArray(value) ? value[0] : value;
     // update global state
-    setState({
-      script,
-      numTravelers,
-      botcPlayers,
-      numPlayers: newNumPlayers,
-    });
+    setState({ script, numTravelers, botcPlayers, numPlayers: newNum });
   };
 
   /** update number of players */
   const updateNumTravelers = (_e: Event, value: number | number[]) => {
     // new values
-    const newNumTravelers = Array.isArray(value) ? value[0] : value;
+    const newNum = Array.isArray(value) ? value[0] : value;
     // update global state
-    setState({
-      script,
-      numPlayers,
-      botcPlayers,
-      numTravelers: newNumTravelers,
-    });
+    setState({ script, numPlayers, botcPlayers, numTravelers: newNum });
   };
 
   /** update player name onBlur */
