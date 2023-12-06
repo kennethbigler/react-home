@@ -14,13 +14,11 @@ interface BotCHeaderProps {
   numTravelers: number;
   botcPlayers: BotCPlayer[];
   newBotCGame: () => void;
-  updateScript: (i: number) => () => void;
+  updateNames: (i: number) => (e: React.FocusEvent<HTMLInputElement>) => void;
   updateNumPlayers: (_e: Event, value: number | number[]) => void;
   updateNumTravelers: (_e: Event, value: number | number[]) => void;
-  updateNamesOnBlur: (
-    i: number,
-  ) => (e: React.FocusEvent<HTMLInputElement>) => void;
   updatePlayerOrder: (i: number, dir: number) => () => void;
+  updateScript: (i: number) => () => void;
 }
 
 const BotCHeader = ({
@@ -29,11 +27,11 @@ const BotCHeader = ({
   numTravelers,
   botcPlayers,
   newBotCGame,
-  updateScript,
+  updateNames,
   updateNumPlayers,
   updateNumTravelers,
-  updateNamesOnBlur,
   updatePlayerOrder,
+  updateScript,
 }: BotCHeaderProps) => {
   const [hasToast, setHasToast] = React.useState(false);
   /** close the toast message */
@@ -63,14 +61,13 @@ const BotCHeader = ({
           {botcPlayers.map((player, i) =>
             i < numPlayers + numTravelers ? (
               <EditPlayer
-                key={`player${player.id}`}
+                key={`player${i}-${player.name}`}
                 first={i === 0}
                 last={i === numPlayers + numTravelers - 1}
                 name={player.name}
                 moveUp={updatePlayerOrder(i, -1)}
                 moveDown={updatePlayerOrder(i, 1)}
-                title={`player ${player.id} name`}
-                onBlur={updateNamesOnBlur(i)}
+                onBlur={updateNames(i)}
               />
             ) : null,
           )}

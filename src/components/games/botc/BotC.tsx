@@ -30,7 +30,7 @@ const BotC: React.FC = React.memo(() => {
   };
 
   /** update player name onBlur */
-  const updateNamesOnBlur =
+  const updateNames =
     (i: number) =>
     (e: React.FocusEvent<HTMLInputElement>): void => {
       const newPlayers = [...botcPlayers];
@@ -52,12 +52,8 @@ const BotC: React.FC = React.memo(() => {
   /** set a new game */
   const newBotCGame = () => {
     const newPlayers: BotCPlayer[] = [];
-    botcPlayers.forEach((player, i) =>
-      newPlayers.push({
-        ...botcPlayerShell,
-        name: player.name,
-        id: player.id === undefined ? i : player.id,
-      }),
+    botcPlayers.forEach((player) =>
+      newPlayers.push({ ...botcPlayerShell, name: player.name }),
     );
     setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
   };
@@ -65,7 +61,8 @@ const BotC: React.FC = React.memo(() => {
   /* ----------     Notes Functions     ---------- */
   /** handle checkboxes checked for player stat updates */
   const updateStats =
-    (i: number, key: "liar" | "dead" | "used") =>
+    (i: number) =>
+    (key: "liar" | "dead" | "used") =>
     (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i] };
@@ -76,22 +73,20 @@ const BotC: React.FC = React.memo(() => {
 
   /** handle role selections */
   const updateRoles =
-    (i: number, role: BotCRole, selected: boolean) => (): void => {
+    (i: number) => (role: BotCRole, selected: boolean) => (): void => {
       // set up immutability for new player
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i] };
       // if selected remove, if not add
-      if (selected) {
-        newPlayer.roles = newPlayer.roles.filter((r) => r.name !== role.name);
-      } else {
-        newPlayer.roles = [...newPlayer.roles, role];
-      }
+      newPlayer.roles = selected
+        ? newPlayer.roles.filter((r) => r.name !== role.name)
+        : [...newPlayer.roles, role];
       newPlayers[i] = newPlayer;
       setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
 
   /** update player notes onBlur */
-  const updateNotesOnBlur =
+  const updateNotes =
     (i: number) =>
     (e: React.FocusEvent<HTMLInputElement>): void => {
       const newPlayers = [...botcPlayers];
@@ -112,7 +107,7 @@ const BotC: React.FC = React.memo(() => {
         updateScript={updateScript}
         updateNumPlayers={updateNumPlayers}
         updateNumTravelers={updateNumTravelers}
-        updateNamesOnBlur={updateNamesOnBlur}
+        updateNames={updateNames}
         updatePlayerOrder={updatePlayerOrder}
       />
       <PlayerNotes
@@ -122,7 +117,7 @@ const BotC: React.FC = React.memo(() => {
         botcPlayers={botcPlayers}
         updateStats={updateStats}
         updateRoles={updateRoles}
-        updateNotesOnBlur={updateNotesOnBlur}
+        updateNotes={updateNotes}
       />
     </>
   );
