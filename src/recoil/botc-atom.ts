@@ -6,15 +6,6 @@ export interface BotCRole {
   alignment: MuiColors;
 }
 
-interface BotCPlayerShell {
-  name: string;
-  roles: BotCRole[];
-  notes: string;
-  liar: boolean;
-  dead: boolean;
-  used: boolean;
-}
-
 export interface BotCPlayer {
   name: string;
   roles: BotCRole[];
@@ -22,7 +13,6 @@ export interface BotCPlayer {
   liar: boolean;
   dead: boolean;
   used: boolean;
-  id: number;
 }
 
 export const BOTC_MIN_PLAYERS = 5;
@@ -36,7 +26,7 @@ export interface BotCState {
   botcPlayers: BotCPlayer[];
 }
 
-export const botcPlayerShell: BotCPlayerShell = {
+export const botcPlayerShell: BotCPlayer = {
   name: "Ken",
   roles: [],
   notes: "",
@@ -47,7 +37,7 @@ export const botcPlayerShell: BotCPlayerShell = {
 
 const initBotCPlayers: BotCPlayer[] = [];
 for (let i = 0; i < BOTC_MAX_PLAYERS + BOTC_MAX_TRAVELERS; i += 1) {
-  initBotCPlayers.push({ ...botcPlayerShell, id: i });
+  initBotCPlayers.push({ ...botcPlayerShell });
 }
 
 const newBotCGame = () => ({

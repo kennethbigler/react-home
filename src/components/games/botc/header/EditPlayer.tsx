@@ -10,7 +10,6 @@ interface EditPlayerProps {
   first: boolean;
   last: boolean;
   name: string;
-  title: string;
   onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   moveUp: () => void;
   moveDown: () => void;
@@ -20,7 +19,6 @@ const EditPlayer = ({
   first,
   last,
   name,
-  title,
   onBlur,
   moveUp,
   moveDown,
@@ -34,12 +32,7 @@ const EditPlayer = ({
         <ArrowDropDownIcon />
       </Button>
     </ButtonGroup>
-    <TextField
-      defaultValue={name}
-      placeholder="Enter Player Name"
-      title={title}
-      onBlur={onBlur}
-    />
+    <TextField defaultValue={name} placeholder="Player Name" onBlur={onBlur} />
   </Grid>
 );
 

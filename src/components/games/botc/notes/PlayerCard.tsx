@@ -8,38 +8,32 @@ import RoleDialog from "./RoleDialog";
 
 interface PlayerCardProps {
   script: number;
-  playerNo: number;
   player: BotCPlayer;
   updateStats: (
-    i: number,
     key: "liar" | "dead" | "used",
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  updateRoles: (i: number, role: BotCRole, selected: boolean) => () => void;
-  updateNotesOnBlur: (
-    i: number,
-  ) => (e: React.FocusEvent<HTMLInputElement>) => void;
+  updateRoles: (role: BotCRole, selected: boolean) => () => void;
+  updateNotes: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const chipStyle = { marginRight: "5px", marginTop: "5px" };
 
 const PlayerCard = ({
   script,
-  playerNo,
   player,
   updateStats,
   updateRoles,
-  updateNotesOnBlur,
+  updateNotes,
 }: PlayerCardProps) => (
   <Grid item xs={6} sm={4} md={3} lg={2} xl={1}>
     <Card sx={{ padding: "5px", textAlign: "center" }}>
       <InfoPopup buttonText={player.name} title={`Roles - ${player.name}`}>
         <RoleDialog
           script={script}
-          playerNo={playerNo}
           player={player}
           updateStats={updateStats}
           updateRoles={updateRoles}
-          updateNotesOnBlur={updateNotesOnBlur}
+          updateNotes={updateNotes}
         />
       </InfoPopup>
       <Typography>
@@ -54,7 +48,7 @@ const PlayerCard = ({
           key={role.name}
           label={role.name}
           color={role.alignment}
-          onDelete={updateRoles(playerNo, role, true)}
+          onDelete={updateRoles(role, true)}
           sx={chipStyle}
         />
       ))}

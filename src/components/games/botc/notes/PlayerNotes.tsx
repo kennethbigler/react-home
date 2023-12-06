@@ -11,12 +11,11 @@ interface PlayerNotesProps {
   botcPlayers: BotCPlayer[];
   updateStats: (
     i: number,
+  ) => (
     key: "liar" | "dead" | "used",
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  updateRoles: (i: number, role: BotCRole, selected: boolean) => () => void;
-  updateNotesOnBlur: (
-    i: number,
-  ) => (e: React.FocusEvent<HTMLInputElement>) => void;
+  updateRoles: (i: number) => (role: BotCRole, selected: boolean) => () => void;
+  updateNotes: (i: number) => (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const PlayerNotes = ({
@@ -26,35 +25,28 @@ const PlayerNotes = ({
   botcPlayers,
   updateStats,
   updateRoles,
-  updateNotesOnBlur,
-}: PlayerNotesProps) => {
-  // set player Buttons
-  const playerButtons = [];
-  for (let i = 0; i < numPlayers + numTravelers; i += 1) {
-    playerButtons.push(
-      <PlayerCard
-        script={script}
-        playerNo={i}
-        player={botcPlayers[i]}
-        updateStats={updateStats}
-        updateRoles={updateRoles}
-        updateNotesOnBlur={updateNotesOnBlur}
-        key={`playerNo${i}`}
-      />,
-    );
-  }
-
-  return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Typography>
-          Dist: {playerDist[numPlayers]}
-          {numTravelers ? ` +${numTravelers}` : ""}
-        </Typography>
-      </Grid>
-      {playerButtons}
+  updateNotes,
+}: PlayerNotesProps) => (
+  <Grid container spacing={2}>
+    <Grid item xs={12}>
+      <Typography>
+        Dist: {playerDist[numPlayers]}
+        {numTravelers ? ` +${numTravelers}` : ""}
+      </Typography>
     </Grid>
-  );
-};
+    {botcPlayers.map((player, i) =>
+      i < numPlayers + numTravelers ? (
+        <PlayerCard
+          key={`player${i}-${player.name}`}
+          script={script}
+          player={player}
+          updateStats={updateStats(i)}
+          updateRoles={updateRoles(i)}
+          updateNotes={updateNotes(i)}
+        />
+      ) : null,
+    )}
+  </Grid>
+);
 
 export default PlayerNotes;
