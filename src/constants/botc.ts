@@ -72,6 +72,30 @@ export const bmr: BotCScript = {
   travelers: ["Apprentice", "Matron", "Judge", "Voudon", "Bishop"],
 };
 
+export const dtb: BotCScript = {
+  townsfolk: [
+    "Washerwoman",
+    "Librarian",
+    "Investigator",
+    "Chef",
+    "Slayer",
+    "Empath",
+    "Fortune Teller",
+    "Cannibal",
+    "Monk",
+    "Ravenkeeper",
+    "Virgin",
+    "Mayor",
+    "Amnesiac",
+    "Pixie",
+    "Huntsman",
+  ],
+  outsiders: ["Damsel", "Drunk", "Recluse", "Saint"],
+  minions: ["Poisoner", "Spy", "Scarlet Woman", "Baron", "Cerenovus", "Harpy"],
+  demons: ["Imp"],
+  travelers: [],
+};
+
 export const playerDist = [
   "",
   "",

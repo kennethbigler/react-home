@@ -28,9 +28,7 @@ const DialogHeader = ({
         onBlur={updateNotes}
       />
     </Grid>
-    <Grid item xs={12}>
-      <hr />
-    </Grid>
+
     <Grid item xs={12}>
       <FormGroup row sx={{ display: "block", textAlign: "center" }}>
         <FormControlLabel

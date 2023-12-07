@@ -51,6 +51,12 @@ const DialogControls = ({
           >
             BMR
           </Button>
+          <Button
+            variant={script === 3 ? "contained" : "outlined"}
+            onClick={updateScript(3)}
+          >
+            DTB
+          </Button>
         </ButtonGroup>
         <Button variant="contained" color="error" onClick={handleReset}>
           Reset
