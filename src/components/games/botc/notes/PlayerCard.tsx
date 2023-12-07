@@ -25,7 +25,7 @@ const PlayerCard = ({
   updateRoles,
   updateNotes,
 }: PlayerCardProps) => (
-  <Grid item xs={6} sm={4} md={3} lg={2} xl={1}>
+  <Grid item xs={6} sm={4} lg={3} xl={2}>
     <Card sx={{ padding: "5px", textAlign: "center" }}>
       <InfoPopup buttonText={player.name} title={`Roles - ${player.name}`}>
         <RoleDialog
