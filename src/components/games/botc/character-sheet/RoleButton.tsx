@@ -5,7 +5,7 @@ import { BotCRole } from "../../../../recoil/botc-atom";
 interface RoleButtonProps {
   role: BotCRole;
   selected: boolean;
-  updateRoles: (role: BotCRole, selected: boolean) => () => void;
+  updateRoles?: (role: BotCRole, selected: boolean) => () => void;
 }
 
 const RoleButton = ({ role, selected, updateRoles }: RoleButtonProps) => (
@@ -14,7 +14,7 @@ const RoleButton = ({ role, selected, updateRoles }: RoleButtonProps) => (
       variant={selected ? "contained" : "outlined"}
       color={role.alignment}
       sx={{ padding: "6px", width: "100%" }}
-      onClick={updateRoles(role, selected)}
+      onClick={updateRoles && updateRoles(role, selected)}
     >
       {role.name}
     </Button>

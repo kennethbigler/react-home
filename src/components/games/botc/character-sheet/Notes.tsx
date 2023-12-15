@@ -3,21 +3,21 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
-import { BotCPlayer } from "../../../../recoil/botc-atom";
+import { BotCPlayer, BotCPlayerStatus } from "../../../../recoil/botc-atom";
 
-interface DialogHeaderProps {
+interface NotesProps {
   player: BotCPlayer;
   updateStats: (
-    key: "liar" | "dead" | "used",
+    key: BotCPlayerStatus,
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   updateNotes: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-const DialogHeader = ({
+const Notes = ({
   player: { notes, liar, dead, used },
   updateStats,
   updateNotes,
-}: DialogHeaderProps) => (
+}: NotesProps) => (
   <>
     <Grid item xs={12}>
       <TextField
@@ -48,4 +48,4 @@ const DialogHeader = ({
   </>
 );
 
-export default DialogHeader;
+export default Notes;

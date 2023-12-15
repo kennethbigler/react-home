@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import BotCHeader from "./header/BotCHeader";
 import botcAtom, {
   BotCPlayer,
+  BotCPlayerStatus,
   BotCRole,
   botcPlayerShell,
 } from "../../../recoil/botc-atom";
@@ -62,7 +63,7 @@ const BotC: React.FC = React.memo(() => {
   /** handle checkboxes checked for player stat updates */
   const updateStats =
     (i: number) =>
-    (key: "liar" | "dead" | "used") =>
+    (key: BotCPlayerStatus) =>
     (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i] };
