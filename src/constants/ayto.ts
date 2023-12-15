@@ -217,6 +217,32 @@ export const aytoSeasons = [
       "Will",
     ],
   },
+  {
+    ladies: [
+      "Libby",
+      "Olivia",
+      "Robyn",
+      "Sapphia",
+      "Shae",
+      "Taofiqah",
+      "Tasha",
+      "Thea",
+      "Therese",
+      "Vic",
+    ],
+    gents: [
+      "Cacherel",
+      "Charlie",
+      "Ismail",
+      "Jack",
+      "Jacob",
+      "Jordan",
+      "Josh",
+      "Joshy",
+      "Juan",
+      "Theo",
+    ],
+  },
 ];
 
 export const seasons = [
@@ -228,6 +254,7 @@ export const seasons = [
   "Season 6",
   "Season 7",
   "Season 9",
+  "UK 1",
 ];
 
 export const options = [

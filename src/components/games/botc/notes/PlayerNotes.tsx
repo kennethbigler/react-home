@@ -1,7 +1,11 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import PlayerCard from "./PlayerCard";
-import { BotCPlayer, BotCRole } from "../../../../recoil/botc-atom";
+import {
+  BotCPlayer,
+  BotCPlayerStatus,
+  BotCRole,
+} from "../../../../recoil/botc-atom";
 import { playerDist } from "../../../../constants/botc";
 
 interface PlayerNotesProps {
@@ -12,7 +16,7 @@ interface PlayerNotesProps {
   updateStats: (
     i: number,
   ) => (
-    key: "liar" | "dead" | "used",
+    key: BotCPlayerStatus,
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   updateRoles: (i: number) => (role: BotCRole, selected: boolean) => () => void;
   updateNotes: (i: number) => (e: React.FocusEvent<HTMLInputElement>) => void;

@@ -2,15 +2,19 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
-import { BotCPlayer, BotCRole } from "../../../../recoil/botc-atom";
+import {
+  BotCPlayer,
+  BotCPlayerStatus,
+  BotCRole,
+} from "../../../../recoil/botc-atom";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
-import RoleDialog from "./RoleDialog";
+import CharacterSheet from "../character-sheet/CharacterSheet";
 
 interface PlayerCardProps {
   script: number;
   player: BotCPlayer;
   updateStats: (
-    key: "liar" | "dead" | "used",
+    key: BotCPlayerStatus,
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   updateRoles: (role: BotCRole, selected: boolean) => () => void;
   updateNotes: (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -28,7 +32,7 @@ const PlayerCard = ({
   <Grid item xs={6} sm={4} lg={3} xl={2}>
     <Card sx={{ padding: "5px", textAlign: "center" }}>
       <InfoPopup buttonText={player.name} title={`Roles - ${player.name}`}>
-        <RoleDialog
+        <CharacterSheet
           script={script}
           player={player}
           updateStats={updateStats}

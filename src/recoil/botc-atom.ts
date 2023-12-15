@@ -1,6 +1,8 @@
 import { atom } from "recoil";
 import { MuiColors } from "../components/common/types";
 
+export type BotCPlayerStatus = "liar" | "dead" | "used";
+
 export interface BotCRole {
   name: string;
   alignment: MuiColors;

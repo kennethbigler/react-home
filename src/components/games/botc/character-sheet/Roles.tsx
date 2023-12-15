@@ -4,13 +4,13 @@ import { BotCRole } from "../../../../recoil/botc-atom";
 import { tb, snv, bmr, dtb } from "../../../../constants/botc";
 import RoleButton from "./RoleButton";
 
-interface DialogBodyProps {
+interface RolesProps {
   script: number;
   roles: BotCRole[];
-  updateRoles: (role: BotCRole, selected: boolean) => () => void;
+  updateRoles?: (role: BotCRole, selected: boolean) => () => void;
 }
 
-const DialogBody = ({ script, roles, updateRoles }: DialogBodyProps) => {
+const Roles = ({ script, roles, updateRoles }: RolesProps) => {
   let scripts = { active: tb, travelers: [...snv.travelers, ...bmr.travelers] };
   switch (script) {
     case 1:
@@ -116,4 +116,4 @@ const DialogBody = ({ script, roles, updateRoles }: DialogBodyProps) => {
   );
 };
 
-export default DialogBody;
+export default Roles;
