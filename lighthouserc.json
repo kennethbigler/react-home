@@ -15,6 +15,7 @@
         "non-composited-animations": "warn",
         "preload-lcp-image": "warn",
         "prioritize-lcp-image": "warn",
+        "total-byte-weight": "warn",
         "service-worker": "warn",
         "unsized-images": "warn",
         "unused-javascript": "warn",
