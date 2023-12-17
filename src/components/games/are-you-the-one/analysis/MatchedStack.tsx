@@ -39,30 +39,24 @@ const MatchedStack: React.FC<MatchedStackProps> = ({
     if (li < 0 || gi < 0 || li === undefined || gi === undefined) {
       return;
     }
-
-    const isRepeat = hist[li][gi].rounds.length > 1;
-    let color: ChipColorOptions = isRepeat ? "primary" : "default";
-
-    if (!showAll) {
-      // hide matches and noMatches
-      if (noMatch[li][gi] || matches[li] === gi) {
-        return;
-      }
-    } else {
-      // no match chip
-      if (noMatch[li][gi]) {
-        color = "error";
-      }
-      // match chip
-      if (matches[li] === gi) {
-        color = "success";
-      }
+    // if not show all, hide matches and noMatches
+    if (!showAll && (noMatch[li][gi] || matches[li] === gi)) {
+      return;
     }
 
+    const isRepeat = hist[li][gi].rounds.length > 1;
+    // get color
+    let color: ChipColorOptions = isRepeat ? "primary" : "default";
+    if (noMatch[li][gi]) {
+      color = "error"; // no match chip
+    } else if (matches[li] === gi) {
+      color = "success"; // match chip
+    }
+    // get labels
     const label = `${ladies[li]}-${gents[gi]}${
       isRepeat ? ` ${hist[li][gi].rounds.length}` : ""
     } - ${hist[li][gi].odds}%`;
-
+    // get chip
     const chip = (
       <Chip key={`match-r${ri}-l${li}-g${gi}`} label={label} color={color} />
     );
