@@ -44,9 +44,7 @@ const Analysis: React.FC<AnalysisProps> = ({
       <Stack direction="row" justifyContent="space-between">
         <h1>Analysis</h1>
         <FormControlLabel
-          control={
-            <Switch checked={showAll} onChange={handleSwitch} name="show-all" />
-          }
+          control={<Switch checked={showAll} onChange={handleSwitch} />}
           label="Show All Couples"
         />
       </Stack>
