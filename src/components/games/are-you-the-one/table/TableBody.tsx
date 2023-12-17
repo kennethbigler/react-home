@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { RoundPairing } from "../../../../recoil/are-you-the-one-atom";
 import TBDialog from "./TBDialog";
 import { AYTOHist } from "../analysis/useHist";
-import { MuiColors } from "../../../common/types";
+import getButtonValues from "./getButtonValues";
 
 export interface AYTOTableProps {
   gents: string[];
@@ -25,20 +25,19 @@ export interface AYTOTableProps {
   updatePairs: (ri: number, li: number, gi: number) => void;
 }
 
-const AYTOTableBody = (props: AYTOTableProps) => {
-  const {
-    gents,
-    hist,
-    ladies,
-    matches,
-    noMatch,
-    options,
-    roundNumber: ri,
-    roundPairings,
-    updateMatch,
-    updateNoMatch,
-    updatePairs,
-  } = props;
+const AYTOTableBody: React.FC<AYTOTableProps> = ({
+  gents,
+  hist,
+  ladies,
+  matches,
+  noMatch,
+  options,
+  roundNumber: ri,
+  roundPairings,
+  updateMatch,
+  updateNoMatch,
+  updatePairs,
+}) => {
   const isTB = options.length === ri + 2;
   const isConsolidated = options.length === ri + 1;
 
@@ -93,35 +92,14 @@ const AYTOTableBody = (props: AYTOTableProps) => {
             {lName}
           </TableCell>
           {gents.map((gName, gi) => {
-            // variables
-            let variant: "outlined" | "contained" = "outlined";
-            let color: MuiColors = "primary";
-
-            // logic
-            if (isTB) {
-              // if has data about match or no match
-              if ((noMatch[li] && noMatch[li][gi]) || matches[li] === gi) {
-                variant = "contained";
-              }
-            } else if (roundPairings[ri]?.pairs[li] === gi) {
-              // if paired this round
-              variant = "contained";
-            }
-
-            if (noMatch[li] && noMatch[li][gi]) {
-              color = "error";
-            }
-
-            // if match
-            if (matches[li] === gi) {
-              color = "success";
-            }
-
-            const histValue = (hist[li] && hist[li][gi]?.rounds?.length) || 0;
-            // if consolidated
-            if (isConsolidated && histValue > 0) {
-              variant = "contained";
-            }
+            const { variant, color, histValue } = getButtonValues(
+              isTB,
+              noMatch[li] && noMatch[li][gi],
+              matches[li] === gi,
+              roundPairings[ri]?.pairs[li] === gi,
+              isConsolidated,
+              (hist[li] && hist[li][gi]?.rounds?.length) || 0,
+            );
 
             // render
             return (

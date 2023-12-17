@@ -23,16 +23,14 @@ interface ControlsProps {
 const getScore = (value: number) => (isNaN(value) ? -1 : value);
 
 /** Controls component for Are You The One */
-const Controls = (props: ControlsProps) => {
-  const {
-    options,
-    onSelect,
-    roundNumber,
-    roundPairings,
-    onBlackout,
-    updateScore,
-  } = props;
-
+const Controls: React.FC<ControlsProps> = ({
+  options,
+  onSelect,
+  roundNumber,
+  roundPairings,
+  onBlackout,
+  updateScore,
+}) => {
   // hooks/state
   const [season, setSeason] = useRecoilState(aytoSeasonSelector);
   const [score, setScore] = React.useState(
