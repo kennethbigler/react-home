@@ -61,8 +61,13 @@ const Controls: React.FC<ControlsProps> = ({
   return (
     <div style={ctrlStyles}>
       <FormControl>
-        <InputLabel>Season</InputLabel>
-        <Select label="Season" value={season} onChange={selectSeason}>
+        <InputLabel id="season-select">Season</InputLabel>
+        <Select
+          labelId="season-select"
+          label="Season"
+          value={season}
+          onChange={selectSeason}
+        >
           {seasons.map((option, i) => (
             <MenuItem key={option} value={i}>
               {option}
@@ -71,8 +76,13 @@ const Controls: React.FC<ControlsProps> = ({
         </Select>
       </FormControl>
       <FormControl>
-        <InputLabel>Matchup</InputLabel>
-        <Select label="Matchup" value={roundNumber} onChange={selectMatchup}>
+        <InputLabel id="matchup-select">Matchup</InputLabel>
+        <Select
+          labelId="matchup-select"
+          label="Matchup"
+          value={roundNumber}
+          onChange={selectMatchup}
+        >
           {options.map((option, i) => (
             <MenuItem key={option} value={i}>
               {option}
