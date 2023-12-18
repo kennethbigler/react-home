@@ -5,7 +5,7 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import { RoundPairing } from "../../../../recoil/are-you-the-one-atom";
 import TBDialog from "./TBDialog";
-import { AYTOHist } from "../analysis/useHist";
+import { AYTOHist } from "../histogram/useHist";
 import getButtonValues from "./getButtonValues";
 
 export interface AYTOTableProps {
@@ -92,13 +92,22 @@ const AYTOTableBody: React.FC<AYTOTableProps> = ({
             {lName}
           </TableCell>
           {gents.map((gName, gi) => {
-            const { variant, color, histValue } = getButtonValues(
+            let histValue = 0;
+            let histOdds = 0;
+            if (hist[li] && hist[li][gi]) {
+              histValue = hist[li][gi].rounds.length;
+              histOdds = hist[li][gi].odds;
+            } else if (!noMatch[li][gi]) {
+              const num = noMatch.reduce((s, nm) => (nm[gi] ? s : s + 1), 0);
+              histOdds = Math.floor((1 / num) * 100);
+            }
+            const { variant, color } = getButtonValues(
               isTB,
               noMatch[li] && noMatch[li][gi],
               matches[li] === gi,
               roundPairings[ri]?.pairs[li] === gi,
               isConsolidated,
-              (hist[li] && hist[li][gi]?.rounds?.length) || 0,
+              histValue,
             );
 
             // render
@@ -109,7 +118,7 @@ const AYTOTableBody: React.FC<AYTOTableProps> = ({
                   color={color}
                   onClick={handleClick(ri, li, gi)}
                 >
-                  {isConsolidated ? histValue : `${lName[0]}-${gName[0]}`}
+                  {isConsolidated ? `${histOdds}%` : `${lName[0]}-${gName[0]}`}
                 </Button>
               </TableCell>
             );

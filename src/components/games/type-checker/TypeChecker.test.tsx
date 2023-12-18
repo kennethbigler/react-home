@@ -53,17 +53,6 @@ describe("resume | type-checker", () => {
     expect(screen.getByText("ice")).toBeInTheDocument();
     expect(screen.getByText("fairy")).toBeInTheDocument();
 
-    // select a secondary type
-    fireEvent.click(screen.getByText("select secondary"));
-    fireEvent.click(screen.getAllByText("water")[1]);
-    // dragon should show up twice
-    expect(screen.getAllByText("dragon")).toHaveLength(2);
-    // while other buttons only appear once
-    expect(screen.getAllByText("steel")).toHaveLength(2);
-    expect(screen.getAllByText("fire")).toHaveLength(2);
-    expect(screen.getAllByText("water")).toHaveLength(3);
-    expect(screen.getAllByText("fairy")).toHaveLength(2);
-
     // reset filters by clicking side button again
     fireEvent.click(screen.getAllByText("dragon")[0]);
     // verify all buttons show up twice

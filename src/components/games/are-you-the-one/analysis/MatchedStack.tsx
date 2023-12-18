@@ -2,7 +2,7 @@ import * as React from "react";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import { ChipColorOptions } from "../types";
-import { AYTOHist } from "./useHist";
+import { AYTOHist } from "../histogram/useHist";
 
 export interface MatchedStackProps {
   gents: string[];

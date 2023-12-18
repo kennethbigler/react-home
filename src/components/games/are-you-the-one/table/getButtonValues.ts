@@ -12,7 +12,7 @@ const getButtonValues = (
   let variant: "outlined" | "contained" = "outlined";
   let color: MuiColors = "primary";
 
-  if (isTB && (noMatch || match)) {
+  if ((isTB || isConsolidated) && (noMatch || match)) {
     // if has data about match or no match
     variant = "contained";
   } else if (isPaired) {

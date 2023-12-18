@@ -1,13 +1,19 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import { useRecoilState } from "recoil";
+import {
+  Button,
+  ButtonGroup,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import {
   aytoSeasonSelector,
   RoundPairing,
 } from "../../../recoil/are-you-the-one-atom";
 import { seasons } from "../../../constants/ayto";
-import Dropdown from "../../common/dropdown/Dropdown";
 
 interface ControlsProps {
   onSelect: (index: number) => void;
@@ -22,6 +28,14 @@ interface ControlsProps {
 // eslint-disable-next-line no-restricted-globals
 const getScore = (value: number) => (isNaN(value) ? -1 : value);
 
+const ctrlStyles: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "space-between",
+  flexWrap: "wrap",
+  gap: "1em",
+  alignItems: "center",
+};
+
 /** Controls component for Are You The One */
 const Controls: React.FC<ControlsProps> = ({
   options,
@@ -33,52 +47,49 @@ const Controls: React.FC<ControlsProps> = ({
 }) => {
   // hooks/state
   const [season, setSeason] = useRecoilState(aytoSeasonSelector);
-  const [score, setScore] = React.useState(
-    getScore(roundPairings[roundNumber]?.score),
-  );
+  const score = getScore(roundPairings[roundNumber]?.score);
 
   // handlers
-  const handleSeasonSelect = (newSeason: number) => setSeason(newSeason);
-  const handleMatchupSelect = (index: number) => {
-    setScore(getScore(roundPairings[index]?.score));
-    onSelect(index);
-  };
-
-  const handleBlackout = () => {
-    onBlackout(roundPairings[roundNumber].pairs);
-    setScore(0);
-  };
-
-  const incrScore = () => {
-    setScore(score + 1);
-    updateScore(score + 1);
-  };
-  const decrScore = () => {
-    setScore(score - 1);
-    updateScore(score - 1);
-  };
+  const selectSeason = (e: SelectChangeEvent<number>) =>
+    setSeason(Number(e.target.value));
+  const selectMatchup = (e: SelectChangeEvent<number>) =>
+    onSelect(Number(e.target.value));
+  const handleBlackout = () => onBlackout(roundPairings[roundNumber].pairs);
+  const incrScore = () => updateScore(score + 1);
+  const decrScore = () => updateScore(score - 1);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        flexWrap: "wrap",
-        gap: "1em",
-      }}
-    >
-      <Dropdown
-        ariaLabel="select season"
-        value={season}
-        options={seasons}
-        onSelect={handleSeasonSelect}
-      />
-      <Dropdown
-        ariaLabel="select matchup"
-        value={roundNumber}
-        options={options}
-        onSelect={handleMatchupSelect}
-      />
+    <div style={ctrlStyles}>
+      <FormControl>
+        <InputLabel id="season-select">Season</InputLabel>
+        <Select
+          labelId="season-select"
+          label="Season"
+          value={season}
+          onChange={selectSeason}
+        >
+          {seasons.map((option, i) => (
+            <MenuItem key={option} value={i}>
+              {option}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <FormControl>
+        <InputLabel id="matchup-select">Matchup</InputLabel>
+        <Select
+          labelId="matchup-select"
+          label="Matchup"
+          value={roundNumber}
+          onChange={selectMatchup}
+        >
+          {options.map((option, i) => (
+            <MenuItem key={option} value={i}>
+              {option}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       {roundNumber < options.length - 2 && (
         <>
           <Button variant="outlined" color="secondary" onClick={handleBlackout}>

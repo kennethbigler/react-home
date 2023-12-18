@@ -1,7 +1,7 @@
 import * as React from "react";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
-import { AYTOHist } from "./useHist";
+import { AYTOHist } from "../histogram/useHist";
 
 export interface CalculatedStackProps {
   gents: string[];

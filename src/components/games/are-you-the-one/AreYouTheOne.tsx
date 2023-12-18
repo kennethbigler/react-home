@@ -6,9 +6,8 @@ import Analysis from "./analysis/Analysis";
 import aYTOAtom, {
   aytoPlayerSelector,
 } from "../../../recoil/are-you-the-one-atom";
-import useHist from "./analysis/useHist";
+import useHist from "./histogram/useHist";
 
-/** TODO: replace Dropdown with MUI Dropdown when available */
 const AreYouTheOne = () => {
   const [{ matches, noMatch, roundPairings }, setState] =
     useRecoilState(aYTOAtom);
@@ -51,16 +50,19 @@ const AreYouTheOne = () => {
   const handleBlackout = (pairs: number[]) => {
     // create immutable copy for storage
     const newNoMatches = noMatch.map((gentArray: boolean[]) => [...gentArray]);
+    let newScore = 0;
     // no match for all pairs
     pairs.forEach((gi, li) => {
-      if (matches[li] !== gi && !noMatch[li][gi]) {
+      if (matches[li] === gi) {
+        newScore += 1;
+      } else if (!noMatch[li][gi]) {
         // if array for lady doesn't exist yet, create skeleton one
         !newNoMatches[li] && (newNoMatches[li] = []);
         // assign no match
         newNoMatches[li][gi] = true;
       }
     });
-    const newRoundPairing = { ...roundPairings[roundNumber], score: 0 };
+    const newRoundPairing = { ...roundPairings[roundNumber], score: newScore };
     const newRoundPairings = [...roundPairings];
     newRoundPairings[roundNumber] = newRoundPairing;
     // update state
