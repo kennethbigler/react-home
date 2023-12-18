@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { RoundPairing } from "../../../../recoil/are-you-the-one-atom";
-import { AYTOHist } from "./useHist";
+import { AYTOHist } from "../histogram/useHist";
 import MatchedStack from "./MatchedStack";
 import CalculatedStack from "./CalculatedStack";
 
@@ -48,7 +48,12 @@ const Analysis: React.FC<AnalysisProps> = ({
           label="Show All Couples"
         />
       </Stack>
-      <Stack spacing={1} direction="row" flexWrap="wrap">
+      <Stack
+        spacing={1}
+        direction="row-reverse"
+        flexWrap="wrap-reverse"
+        justifyContent="flex-end"
+      >
         {roundPairings.map(({ pairs, score }, ri) => (
           <MatchedStack
             key={`matched-stack-${ri}`}

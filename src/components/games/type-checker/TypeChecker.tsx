@@ -1,20 +1,26 @@
 import * as React from "react";
-import Typography from "@mui/material/Typography";
-import Table from "@mui/material/Table";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  SelectChangeEvent,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import {
   types,
   Types,
   effectiveness,
   Effectiveness,
 } from "../../../constants/type-checker";
-import Dropdown from "../../common/dropdown";
 import EffectiveRow from "./EffectiveRow";
 
 const ddOptions = types.reduce(
@@ -91,7 +97,9 @@ const TypeChecker = () => {
     setEffColTypes(newEffTypes);
   };
 
-  const handleSelect = (secIdx: number) => {
+  const handleSelect = (e: SelectChangeEvent<number>) => {
+    const secIdx = Number(e.target.value);
+
     if (secIdx === 0) {
       resetState();
       return;
@@ -121,12 +129,20 @@ const TypeChecker = () => {
         Type Checker
       </Typography>
       {defPrimary !== -1 && (
-        <Dropdown
-          ariaLabel="Secondary Type"
-          options={ddOptions}
-          value={defSecondary}
-          onSelect={handleSelect}
-        />
+        <FormControl>
+          <InputLabel>Secondary Type</InputLabel>
+          <Select
+            label="Secondary Type"
+            value={defSecondary}
+            onChange={handleSelect}
+          >
+            {ddOptions.map((option, i) => (
+              <MenuItem key={option} value={i}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       )}
       <TableContainer component={Paper}>
         <Table aria-label="are you the one data entry table">
