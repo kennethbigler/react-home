@@ -11,7 +11,7 @@ const year = {
   ],
 };
 
-describe("resume | education | Year", () => {
+describe("common | edu-cards | Year", () => {
   it("renders as expected", () => {
     render(<Year year={year} len={1} />);
 

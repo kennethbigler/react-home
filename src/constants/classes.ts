@@ -1,7 +1,6 @@
 import { red, indigo, blue, pink } from "@mui/material/colors";
 
 import dateObj, { DateObj } from "../apis/DateHelper";
-import { DataEntry } from "../components/common/timeline-card/timeline-consts";
 
 // --------------------     Types     -------------------- //
 enum QTR {
@@ -27,7 +26,6 @@ interface Year {
 export interface School {
   color?: string;
   degree: string;
-  gpa?: number;
   honors?: string;
   location?: string;
   major?: string;
@@ -69,67 +67,15 @@ export const getEnd = (quarter: QTR, yy: number): DateObj => {
 };
 
 // --------------------     Constants     -------------------- //
-const schools: School[] = [
-  {
-    color: blue[900],
-    degree: "Hackathons",
-    subtitle: "",
-    years: [
-      {
-        year: "GigNow - Hacking the Gig Economy Now",
-        quarters: [
-          {
-            quarter: "GraphHoppers",
-            classes: [
-              {
-                catalog: "Date",
-                name: "Nov. 16, 2018",
-              },
-              {
-                catalog: "Prizes",
-                name: "1st Place",
-              },
-              {
-                catalog: "Project",
-                name: "initial implementation of GraphQL to replace GigNow APIs",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        year: "Accenture Hackathon Games",
-        quarters: [
-          {
-            quarter: "Feedbat",
-            classes: [
-              {
-                catalog: "Date",
-                name: "Oct. 18 - 19, 2014",
-              },
-              {
-                catalog: "Prizes",
-                name: "Best Use of the PubNub API, Best Use of the Amazon Store API",
-              },
-              {
-                catalog: "Project",
-                name: "“feedbat”, an image-sharing web application for mobile devices to get anonymous feedback on various images (likes / dislikes / comments)",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
+export const schools: School[] = [
   {
     school: QTR.SCU,
     color: pink[900],
     location: "Santa Clara, CA",
     degree: "Master of Science",
     major: "Computer Engineering",
-    minor: "with an Emphasis in Software Engineering",
+    minor: "Emphasis in Software Engineering",
     honors: "Tau Beta Pi, Upsilon Pi Epsilon, Dean’s List",
-    gpa: 3.7,
     years: [
       {
         year: "Year 2",
@@ -229,9 +175,8 @@ const schools: School[] = [
     location: "Santa Clara, CA",
     degree: "Bachelor of Science",
     major: "Computer Science & Engineering",
-    minor: "with a Minor in Mathematics",
+    minor: "Minor in Mathematics",
     honors: "Tau Beta Pi, Upsilon Pi Epsilon, Dean’s List",
-    gpa: 3.7,
     years: [
       {
         year: "Senior Year",
@@ -524,7 +469,6 @@ const schools: School[] = [
     location: "Stanford, CA",
     degree:
       "Stanford Continuing Studies & Undergrad High School Summer Visitor",
-    gpa: 3.8,
     years: [
       {
         year: "Stanford Continuing Studies",
@@ -576,7 +520,6 @@ const schools: School[] = [
     degree: "High School Diploma",
     honors:
       "National Honors Society, California Scholarship Federation, Principal’s Honor Roll",
-    gpa: 4.16,
     years: [
       {
         year: "Senior Year",
@@ -698,30 +641,124 @@ const schools: School[] = [
   },
 ];
 
-interface TimelineEntry extends DataEntry {
-  course?: string;
-}
-const timeline: TimelineEntry[] = [];
-
-schools.forEach((school: School): void => {
-  school.years.forEach((year: Year): void => {
-    year.quarters.forEach((quarter: Quarter): void => {
-      quarter.classes.forEach((course: Class): void => {
-        quarter.start &&
-          timeline.push({
-            start: quarter.start,
-            end: quarter.end || dateObj(),
-            title: course.name,
-            color: red[900],
-            course: course.catalog,
-          });
-      });
-    });
-  });
-});
-
-export const classTimeline = timeline.sort((a, b) =>
-  a.start.diff(b.start, "months"),
-);
+export const presentations: School[] = [
+  {
+    color: red.A700,
+    degree: "CSUN Assistive Technology Conference",
+    subtitle: "",
+    years: [
+      {
+        year: "2024",
+        quarters: [
+          {
+            quarter: "Developing Accessible Experiences on iOS",
+            classes: [
+              {
+                catalog: "Description",
+                name: "We will take you on a journey through Intuit's development process, from the initial round of requirements gathering, through the design and development stages, and ultimately to customer testing. We will demonstrate the process we follow at Intuit for our iOS app, and call out some key differences between the iOS development process as compared to web. We will cover some of the technical approaches and solutions for mobile, and cover mobile specific topics like gestures, accessibility actions, visual, auditory, and vibrational notifications, as well as creating an intuitive interface. Finally, we will highlight some accessibility features and resources specific to iOS that enable developers to create a more inclusive experience.",
+              },
+            ],
+          },
+          {
+            quarter:
+              "Automating Accessibility: Tying A11Y to your Build Pipeline",
+            classes: [
+              {
+                catalog: "Description",
+                name: "Attendees will see an end to end solution for including WCAG and other accessibility requirements in existing Security dashboards and automated ticketing of gaps via Jira. This is a production solution at Intuit, and we will share the entire process, from generation of the business case and risk metric, to incorporation into our build pipeline, harvesting the data from our data lake and consuming it in our Compliance Portal. Along the way, we will talk about key business partners, changes we made to ease onboarding to Lighthouse, and how this work has improved our compliance with WCAG 2.2.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        year: "2023",
+        quarters: [
+          {
+            quarter: "Design System Accessibility",
+            classes: [
+              {
+                catalog: "Description",
+                name: "What is wrong with Design Systems today? Accessibility is often an afterthought, with many available design systems having numerous errors. What are Design Systems? A design system is a collection of components which work like building blocks to build a web application. Why is it important for a Design System to be Accessible? Because Design Systems are the building blocks of an application, they are used in all facets of all Intuit products. Given their prevalence throughout the applications, it is critical that they meet the highest standards of accessibility. If my Design System is Accessible, am I done worrying about accessibility? Yes, while building a strong foundation is essential, it is not enough to ensure that the components are used correctly, or that other custom elements are built correctly. What design system do we have here at Intuit? We have 1 design system: a component library that follows a set of standards compiled by designers, product managers, and us, the accessibility team. We also have 8 different products to design for. We solve for this by making our design system dynamic, so that certain elements can change while the base component remains the same. What special accessibility considerations have been made for Intuit? Accessibility is a part of the design process, and is taken into consideration before implementation has even begun. On top of this, I am currently adding automation testing for accessibility all throughout the design system.",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    color: blue[900],
+    degree: "External Company Presentations",
+    subtitle: "",
+    years: [
+      {
+        year: "Intuit India Accessibility Summit",
+        quarters: [
+          {
+            quarter: "Master of Ceremonies",
+            classes: [
+              {
+                catalog: "Date",
+                name: "November 9, 2022",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    color: blue[900],
+    degree: "Hackathons",
+    subtitle: "",
+    years: [
+      {
+        year: "GigNow - Hacking the Gig Economy Now",
+        quarters: [
+          {
+            quarter: "GraphHoppers",
+            classes: [
+              {
+                catalog: "Date",
+                name: "Nov. 16, 2018",
+              },
+              {
+                catalog: "Prizes",
+                name: "1st Place",
+              },
+              {
+                catalog: "Project",
+                name: "initial implementation of GraphQL to replace GigNow APIs",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        year: "Accenture Hackathon Games",
+        quarters: [
+          {
+            quarter: "Feedbat",
+            classes: [
+              {
+                catalog: "Date",
+                name: "Oct. 18 - 19, 2014",
+              },
+              {
+                catalog: "Prizes",
+                name: "Best Use of the PubNub API, Best Use of the Amazon Store API",
+              },
+              {
+                catalog: "Project",
+                name: "“feedbat”, an image-sharing web application for mobile devices to get anonymous feedback on various images (likes / dislikes / comments)",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
 
 export default schools;

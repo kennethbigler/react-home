@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import Class from "../Class";
 
-describe("resume | education | Class", () => {
+describe("common | edu-cards | Class", () => {
   it("renders with catalog", () => {
     render(<Class name="ClassName" catalog="CLSS 101" />);
 
