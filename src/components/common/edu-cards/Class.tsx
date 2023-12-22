@@ -6,7 +6,7 @@ export interface ClassProps {
   catalog?: string;
 }
 
-/** Education  ->  Degree  -> Year  ->  Quarter  ->  Class */
+/** Degree  -> Year  ->  Quarter  ->  Class */
 const Class: React.FC<ClassProps> = React.memo(
   ({ name, catalog }: ClassProps) => (
     <li>

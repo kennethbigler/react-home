@@ -5,6 +5,7 @@ import Menu from "./Menu";
 import Summary from "./summary";
 import Work from "./work";
 import Education from "./education";
+import Presentations from "./presentations";
 import TravelMap from "./travel-map";
 import Resume from "./resume";
 import GitTools from "./git-tools";
@@ -26,6 +27,7 @@ const ResumeRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
       <Route path="cars/*" element={<Cars />} />
       <Route path="education/*" element={<Education />} />
       <Route path="git-tools/*" element={<GitTools />} />
+      <Route path="presentations/*" element={<Presentations />} />
       <Route path="resume/*" element={<Resume />} />
       <Route path="travel/*" element={<TravelMap />} />
       <Route path="work/*" element={<Work />} />

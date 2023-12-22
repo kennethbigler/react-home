@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import { School } from "../../../constants/classes";
 
 const EducationSeg: React.FC<School> = React.memo(
-  ({ degree, gpa, honors, location, major, minor, school }: School) => (
+  ({ degree, honors, location, major, minor, school }: School) => (
     <div>
       <Typography variant="h4" component="h2">{`${school || ""}, ${
         location || ""
@@ -20,11 +20,6 @@ const EducationSeg: React.FC<School> = React.memo(
         {honors && (
           <li>
             <Typography>{honors}</Typography>
-          </li>
-        )}
-        {gpa && (
-          <li>
-            <Typography>{`GPA: ${gpa}`}</Typography>
           </li>
         )}
       </ul>

@@ -16,7 +16,7 @@ const degree: DegreeType = {
   ],
 };
 
-describe("resume | education | Degree", () => {
+describe("common | edu-cards | Degree", () => {
   it("renders as expected with minimal props", () => {
     render(<Degree degree={degree} />);
 
@@ -35,7 +35,6 @@ describe("resume | education | Degree", () => {
       school: "SchoolName",
       major: "MajorName",
       minor: "MinorName",
-      gpa: "3.97",
       subtitle: "SubTitle",
       color: "#0067C5",
     };
@@ -44,7 +43,7 @@ describe("resume | education | Degree", () => {
 
     expect(
       screen.getByText(
-        `${localDegree.school} - ${localDegree.degree} in ${localDegree.major} ${localDegree.minor}`,
+        `${localDegree.school} - ${localDegree.degree} in ${localDegree.major}, ${localDegree.minor}`,
       ),
     ).toBeInTheDocument();
     expect(screen.getByText(localDegree.subtitle)).toBeInTheDocument();
@@ -55,23 +54,5 @@ describe("resume | education | Degree", () => {
     expect(container.querySelector(".MuiCardHeader-root")).toHaveStyle(
       "background-color: rgb(0, 103, 197);",
     );
-
-    expect(screen.queryByText(`GPA: ${localDegree.gpa}`)).toBeNull();
-  });
-
-  it("renders gpa as expected without subtitle props", () => {
-    const localDegree = {
-      ...degree,
-      gpa: "3.97",
-    };
-
-    render(<Degree degree={localDegree} />);
-
-    expect(screen.getByText(localDegree.degree)).toBeInTheDocument();
-    expect(screen.getByText(`GPA: ${localDegree.gpa}`)).toBeInTheDocument();
-    expect(screen.getByText("YearName")).toBeInTheDocument();
-    expect(screen.getByText("QuarterName")).toBeInTheDocument();
-    expect(screen.getByText("CLSS 101 -")).toBeInTheDocument();
-    expect(screen.getByText("ClassName")).toBeInTheDocument();
   });
 });

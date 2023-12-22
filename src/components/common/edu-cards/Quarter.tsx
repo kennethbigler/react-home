@@ -10,7 +10,7 @@ interface QuarterProps {
   quarter: QuarterType;
 }
 
-/** Education  ->  Degree  -> Year  ->  Quarter  ->  Class */
+/** Degree  -> Year  ->  Quarter  ->  Class */
 const Quarter: React.FC<QuarterProps> = ({ quarter }: QuarterProps) => (
   <>
     <Typography variant="h5" component="h3">

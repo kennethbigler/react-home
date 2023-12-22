@@ -32,7 +32,8 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
         { name: "Work", route: "work" },
         { name: "Resume", route: "resume" },
         { name: "Git Tools", route: "git-tools" },
-        { name: "Hackathons & Education", route: "education" },
+        { name: "Education", route: "education" },
+        { name: "Presentations", route: "presentations" },
         { divider: true },
         { name: "Cars", route: "cars" },
         { name: "Travel Map", route: "travel" },
@@ -71,7 +72,7 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
       </MenuItem>
       <Divider />
       <br />
-      <MenuItem onClick={stackOverflow}>
+      <MenuItem onClick={stackOverflow} sx={{ padding: "6px" }}>
         <img
           alt="profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
           id="stackOverflow"
@@ -80,7 +81,7 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
             display: "block",
             margin: "auto",
             cursor: "pointer",
-            width: 208,
+            width: 142,
           }}
         />
       </MenuItem>

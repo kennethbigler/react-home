@@ -6,7 +6,7 @@ const quarter = {
   classes: [{ name: "ClassName", catalog: "CLSS 101" }],
 };
 
-describe("resume | education | Quarter", () => {
+describe("common | edu-cards | Quarter", () => {
   it("renders as expected", () => {
     render(<Quarter quarter={quarter} />);
 

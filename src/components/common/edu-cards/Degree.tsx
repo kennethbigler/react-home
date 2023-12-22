@@ -1,13 +1,12 @@
 import * as React from "react";
 import Year, { YearType } from "./Year";
-import ExpandableCard from "../../common/expandable-card";
+import ExpandableCard from "../expandable-card";
 
 export interface DegreeType {
   school?: string;
   major?: string;
   minor?: string;
   degree: string;
-  gpa?: string | number;
   subtitle?: string;
   color?: string;
   years: YearType[];
@@ -19,15 +18,14 @@ interface DegreeProps {
 const getTitles = (degree: DegreeType): { title: string; subtitle: string } => {
   const school = degree.school ? `${degree.school} - ` : "";
   const major = degree.major ? ` in ${degree.major}` : "";
-  const minor = degree.minor ? ` ${degree.minor}` : "";
+  const minor = degree.minor ? `, ${degree.minor}` : "";
   const title = `${school}${degree.degree}${major}${minor}`;
-  const gpa = degree.gpa && `GPA: ${degree.gpa}`;
-  const subtitle = degree.subtitle || `${gpa || ""}`;
+  const subtitle = degree.subtitle || "";
 
   return { title, subtitle };
 };
 
-/** Education  ->  Degree  -> Year  ->  Quarter  ->  Class */
+/** Degree  -> Year  ->  Quarter  ->  Class */
 const Degree: React.FC<DegreeProps> = (props: DegreeProps) => {
   const { degree } = props;
   const { title, subtitle } = getTitles(degree);
