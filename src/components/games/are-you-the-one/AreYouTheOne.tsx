@@ -107,7 +107,7 @@ const AreYouTheOne = () => {
 
     // update round pairings
     const newRoundPairings = [...roundPairings];
-    for (let ri = 0; ri < options.length - 2; ri += 1) {
+    for (let ri = 0; ri < options.length - 1; ri += 1) {
       const { pairs, score } = roundPairings[ri] || {
         pairs: [],
         score: numMatches,

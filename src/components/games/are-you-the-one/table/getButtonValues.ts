@@ -5,20 +5,19 @@ const getButtonValues = (
   noMatch: boolean,
   match: boolean,
   isPaired: boolean,
-  isConsolidated: boolean,
   histValue: number,
 ) => {
   // variables
   let variant: "outlined" | "contained" = "outlined";
   let color: MuiColors = "primary";
 
-  if ((isTB || isConsolidated) && (noMatch || match)) {
+  if (isTB && (noMatch || match)) {
     // if has data about match or no match
     variant = "contained";
   } else if (isPaired) {
     // if paired this round
     variant = "contained";
-  } else if (isConsolidated && histValue > 0) {
+  } else if (isTB && histValue > 0) {
     // if consolidated
     variant = "contained";
   }
