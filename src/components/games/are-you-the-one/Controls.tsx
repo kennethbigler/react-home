@@ -16,13 +16,16 @@ import {
 import { seasons } from "../../../constants/ayto";
 
 interface ControlsProps {
-  onSelect: (index: number) => void;
+  /** round options, last is Truth Booth (TB) */
   options: string[];
+  /** frequently referred to as ri */
   roundNumber: number;
   /** [round-i: RoundPairing] */
   roundPairings: RoundPairing[];
-  updateScore: (score: number) => void;
+  // functions
   onBlackout: (pairs: number[]) => void;
+  onSelect: (index: number) => void;
+  updateScore: (score: number) => void;
 }
 
 // eslint-disable-next-line no-restricted-globals
@@ -90,7 +93,7 @@ const Controls: React.FC<ControlsProps> = ({
           ))}
         </Select>
       </FormControl>
-      {roundNumber < options.length - 2 && (
+      {roundNumber < options.length - 1 && (
         <>
           <Button variant="outlined" color="secondary" onClick={handleBlackout}>
             Blackout
