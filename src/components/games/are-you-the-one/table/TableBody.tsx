@@ -8,7 +8,7 @@ import AYTOTableRow from "./TableRow";
 export interface AYTOTableProps {
   /** gents names */
   gents: string[];
-  /** tracks odds */
+  /** [lady-i: [gent-i: { odds, rounds together }]] */
   hist: AYTOHist[][];
   /** ladies names */
   ladies: string[];
@@ -18,8 +18,7 @@ export interface AYTOTableProps {
   noMatch: boolean[][];
   /** round options, last is Truth Booth (TB) */
   options: string[];
-  /** frequently referred to as ri */
-  roundNumber: number;
+  ri: number;
   /** [round-i: RoundPairing] */
   roundPairings: RoundPairing[];
   updateMatch: (li: number, gi: number) => void;
@@ -34,7 +33,7 @@ const AYTOTableBody: React.FC<AYTOTableProps> = ({
   matches,
   noMatch,
   options,
-  roundNumber: ri,
+  ri,
   roundPairings,
   updateMatch,
   updateNoMatch,

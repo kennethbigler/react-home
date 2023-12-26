@@ -4,11 +4,16 @@ import Chip from "@mui/material/Chip";
 import { AYTOHist } from "../histogram/useHist";
 
 export interface CalculatedStackProps {
+  /** gents names */
   gents: string[];
+  /** [lady-i: [gent-i: { odds, rounds together }]] */
   hist: AYTOHist[][];
+  /** ladies names */
   ladies: string[];
-  cei: number;
+  /** couples paired together, [lady-i: gent-i] */
   pairs: number[];
+  // simple variables
+  cei: number;
   score: number;
 }
 

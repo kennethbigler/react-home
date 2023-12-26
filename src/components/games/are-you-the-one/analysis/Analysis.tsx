@@ -8,9 +8,13 @@ import MatchedStack from "./MatchedStack";
 import CalculatedStack from "./CalculatedStack";
 
 export interface AnalysisProps {
+  /** [i: { pairs, score }] */
   calculatedEquations: RoundPairing[];
+  /** gents names */
   gents: string[];
+  /** [lady-i: [gent-i: { odds, rounds together }]] */
   hist: AYTOHist[][];
+  /** ladies names */
   ladies: string[];
   /** [lady-i: (gent-i | -1), -1, -1, ...] */
   matches: number[];
@@ -18,6 +22,7 @@ export interface AnalysisProps {
   noMatch: boolean[][];
   /** [round-i: RoundPairing] */
   roundPairings: RoundPairing[];
+  /** [round-i: number of confirmed matches] */
   tempScore: number[];
 }
 

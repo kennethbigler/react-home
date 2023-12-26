@@ -14,7 +14,7 @@ const AreYouTheOne = () => {
   const { ladies, gents, options } = useRecoilValue(aytoPlayerSelector);
 
   // state
-  const [roundNumber, setRoundNumber] = React.useState(0);
+  const [ri, setRi] = React.useState(0);
   const { hist, tempScore, calculatedEquations } = useHist(
     ladies.length,
     matches,
@@ -24,16 +24,16 @@ const AreYouTheOne = () => {
 
   // handlers
   const handleSelect = (selected: number) => {
-    setRoundNumber(selected);
+    setRi(selected);
   };
 
   const handleUpdateScore = (score: number) => {
-    const newRoundPairing = !roundPairings[roundNumber]
+    const newRoundPairing = !roundPairings[ri]
       ? { pairs: [], score: 0 }
-      : { ...roundPairings[roundNumber] };
+      : { ...roundPairings[ri] };
     newRoundPairing.score = score;
     const newRoundPairings = [...roundPairings];
-    newRoundPairings[roundNumber] = newRoundPairing;
+    newRoundPairings[ri] = newRoundPairing;
     setState({ matches, noMatch, roundPairings: newRoundPairings });
   };
 
@@ -62,9 +62,9 @@ const AreYouTheOne = () => {
         newNoMatches[li][gi] = true;
       }
     });
-    const newRoundPairing = { ...roundPairings[roundNumber], score: newScore };
+    const newRoundPairing = { ...roundPairings[ri], score: newScore };
     const newRoundPairings = [...roundPairings];
-    newRoundPairings[roundNumber] = newRoundPairing;
+    newRoundPairings[ri] = newRoundPairing;
     // update state
     setState({
       matches,
@@ -73,13 +73,13 @@ const AreYouTheOne = () => {
     });
   };
 
-  const handleUpdatePairs = (ri: number, li: number, gi: number) => {
-    const newRoundPairing = !roundPairings[ri]
+  const handleUpdatePairs = (rn: number, li: number, gi: number) => {
+    const newRoundPairing = !roundPairings[rn]
       ? { pairs: [], score: 0 }
-      : { ...roundPairings[ri], pairs: [...roundPairings[ri].pairs] };
+      : { ...roundPairings[rn], pairs: [...roundPairings[rn].pairs] };
     newRoundPairing.pairs[li] = gi;
     const newRoundPairings = [...roundPairings];
-    newRoundPairings[roundNumber] = newRoundPairing;
+    newRoundPairings[ri] = newRoundPairing;
     setState({ matches, noMatch, roundPairings: newRoundPairings });
   };
 
@@ -107,18 +107,18 @@ const AreYouTheOne = () => {
 
     // update round pairings
     const newRoundPairings = [...roundPairings];
-    for (let ri = 0; ri < options.length - 1; ri += 1) {
-      const { pairs, score } = roundPairings[ri] || {
+    for (let rn = 0; rn < options.length - 1; rn += 1) {
+      const { pairs, score } = roundPairings[rn] || {
         pairs: [],
         score: numMatches,
       };
-      if (!roundPairings[ri] || pairs[li] < 0 || pairs[li] === undefined) {
+      if (!roundPairings[rn] || pairs[li] < 0 || pairs[li] === undefined) {
         const newRoundPairing = {
           pairs: [...pairs],
           score: Math.max(score, numMatches),
         };
         newRoundPairing.pairs[li] = gi;
-        newRoundPairings[ri] = newRoundPairing;
+        newRoundPairings[rn] = newRoundPairing;
       }
     }
 
@@ -136,7 +136,7 @@ const AreYouTheOne = () => {
       <Controls
         onSelect={handleSelect}
         options={options}
-        roundNumber={roundNumber}
+        ri={ri}
         roundPairings={roundPairings}
         onBlackout={handleBlackout}
         updateScore={handleUpdateScore}
@@ -149,7 +149,7 @@ const AreYouTheOne = () => {
         matches={matches}
         noMatch={noMatch}
         options={options}
-        roundNumber={roundNumber}
+        ri={ri}
         roundPairings={roundPairings}
         updateMatch={handleUpdateMatch}
         updateNoMatch={handleUpdateNoMatch}

@@ -5,18 +5,24 @@ import { ChipColorOptions } from "../types";
 import { AYTOHist } from "../histogram/useHist";
 
 export interface MatchedStackProps {
+  /** gents names */
   gents: string[];
+  /** [lady-i: [gent-i: { odds, rounds together }]] */
   hist: AYTOHist[][];
+  /** ladies names */
   ladies: string[];
   /** [lady-i: (gent-i | -1), -1, -1, ...] */
   matches: number[];
   /** [lady-i: [gent-i: bool]] */
   noMatch: boolean[][];
-  tempScore: number[];
-  showAll: boolean;
+  /** couples paired together, [lady-i: gent-i] */
   pairs: number[];
-  score: number;
+  /** [ri: number of confirmed matches] */
+  tempScore: number[];
+  // simple variables
   ri: number;
+  score: number;
+  showAll: boolean;
 }
 
 const MatchedStack: React.FC<MatchedStackProps> = ({

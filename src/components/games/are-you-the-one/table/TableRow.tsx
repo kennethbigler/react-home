@@ -6,7 +6,7 @@ import { AYTOHist } from "../histogram/useHist";
 import getButtonValues from "./getButtonValues";
 
 export interface AYTOTableRowProps {
-  /** all gents */
+  /** gents names */
   gents: string[];
   /** tracks odds */
   histLi: AYTOHist[];

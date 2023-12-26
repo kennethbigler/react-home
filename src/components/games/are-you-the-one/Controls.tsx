@@ -18,8 +18,7 @@ import { seasons } from "../../../constants/ayto";
 interface ControlsProps {
   /** round options, last is Truth Booth (TB) */
   options: string[];
-  /** frequently referred to as ri */
-  roundNumber: number;
+  ri: number;
   /** [round-i: RoundPairing] */
   roundPairings: RoundPairing[];
   // functions
@@ -43,21 +42,21 @@ const ctrlStyles: React.CSSProperties = {
 const Controls: React.FC<ControlsProps> = ({
   options,
   onSelect,
-  roundNumber,
+  ri,
   roundPairings,
   onBlackout,
   updateScore,
 }) => {
   // hooks/state
   const [season, setSeason] = useRecoilState(aytoSeasonSelector);
-  const score = getScore(roundPairings[roundNumber]?.score);
+  const score = getScore(roundPairings[ri]?.score);
 
   // handlers
   const selectSeason = (e: SelectChangeEvent<number>) =>
     setSeason(Number(e.target.value));
   const selectMatchup = (e: SelectChangeEvent<number>) =>
     onSelect(Number(e.target.value));
-  const handleBlackout = () => onBlackout(roundPairings[roundNumber].pairs);
+  const handleBlackout = () => onBlackout(roundPairings[ri].pairs);
   const incrScore = () => updateScore(score + 1);
   const decrScore = () => updateScore(score - 1);
 
@@ -83,7 +82,7 @@ const Controls: React.FC<ControlsProps> = ({
         <Select
           labelId="matchup-select"
           label="Matchup"
-          value={roundNumber}
+          value={ri}
           onChange={selectMatchup}
         >
           {options.map((option, i) => (
@@ -93,7 +92,7 @@ const Controls: React.FC<ControlsProps> = ({
           ))}
         </Select>
       </FormControl>
-      {roundNumber < options.length - 1 && (
+      {ri < options.length - 1 && (
         <>
           <Button variant="outlined" color="secondary" onClick={handleBlackout}>
             Blackout

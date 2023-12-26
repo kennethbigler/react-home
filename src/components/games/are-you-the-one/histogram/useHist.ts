@@ -15,9 +15,16 @@ export interface AYTODict {
   [key: string]: AYTODictObj;
 }
 
-/** [lady-i: (gent-i | -1), -1, -1, ...] */
-/** [lady-i: [gent-i: bool]] */
-/** [round-i: RoundPairing] */
+/** function to get game logic
+ * @param {number} len
+ * @param {number[]} matches [lady-i: (gent-i | -1), -1, -1, ...]
+ * @param {boolean[][]} noMatch [lady-i: [gent-i: bool]]
+ * @param {Object[]} roundPairings [round-i: RoundPairing]
+ * @returns {Object} {
+ *   hist: [lady-i: [gent-i: { odds, rounds together }]]
+ *   tempScore: [round-i: number of confirmed matches]
+ *   calculatedEquations: [i: { pairs, score }]
+ * } */
 const useHist = (
   len: number,
   matches: number[],
