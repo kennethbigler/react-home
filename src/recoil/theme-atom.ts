@@ -22,11 +22,13 @@ export const lightTheme: ThemeState = {
   secondary: green,
 };
 
+const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+
 const themeAtom = atom({
   key: "themeAtom",
   default:
     (JSON.parse(localStorage.getItem("theme-atom") || "null") as ThemeState) ||
-    darkTheme,
+    (prefersLight ? lightTheme : darkTheme),
   effects: [
     ({ onSet }) => {
       onSet((state) => {
