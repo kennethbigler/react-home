@@ -13,7 +13,6 @@ export default defineConfig({
     coverage: {
       reporter: ['text', 'html', 'json'],
       include: ['src/**'],
-      exclude: ['src/setupTests.ts'],
       statements: 90,
       branches: 85,
       lines: 90,

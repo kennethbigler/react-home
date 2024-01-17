@@ -11,7 +11,6 @@ import dndState, {
 } from "../../../recoil/deal-or-no-deal-state";
 import PlayerMenu from "../../common/header/PlayerMenu";
 
-// TODO: add rules to page
 /* DealOrNoDeal  ->  Header
  *              |->  Board  ->  Case
  *              |->  Modal  ->  Money */

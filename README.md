@@ -1,4 +1,4 @@
-# Home
+# Ken's Resume Website
 
 ![CI](https://github.com/kennethbigler/react-home/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/kennethbigler/react-home/branch/main/graph/badge.svg?token=MEHKW2MF4N)](https://codecov.io/gh/kennethbigler/react-home)
@@ -10,7 +10,11 @@ This is a website created by me to represent my resume, as well as for me to pra
 
 View the site at [kennethbigler.com](http://www.kennethbigler.com/)
 
-## Setup
+## Usage
+
+This website was made to learn, and demonstrate information about Ken Bigler. Most of my users are here for the [Blood on the Clocktower tool](https://www.kennethbigler.com/#/games/botc).
+
+## Local Development
 
 For development you need to be on Node.js 18+ (a requirement of vite@5).
 
@@ -20,3 +24,22 @@ To run this code locally:
 npm install
 npm run start
 ```
+
+## Contributing
+
+Check out the [issues tab](https://github.com/kennethbigler/react-home/issues) for some fun ideas to contribute!
+
+## Technologies Used
+
+* [React](https://react.dev/)
+* [Material UI](https://mui.com/material-ui/)
+* [React Router](https://reactrouter.com/en/main)
+* [Recharts](https://recharts.org/en-US/)
+* [Recoil](https://recoiljs.org/)
+* [react-simple-maps](https://www.react-simple-maps.io/)
+* [localforage](https://github.com/localForage/localForage)
+* [react-newline-to-break](https://github.com/Stychen/React-Newline-to-Break)
+
+## Deployments
+
+To deploy the code, run `npm run deploy`. This will build the website and put your compiled code in the correct folder for github pages. Once your PR is merged, the code will be deployed.
