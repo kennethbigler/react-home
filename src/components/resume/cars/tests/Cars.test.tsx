@@ -1,26 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { vi } from "vitest";
 import Cars from "../Cars";
 import cars from "../../../../constants/cars";
 
 const demoCar = cars[cars.length - 3];
-
-const { ResizeObserver } = window;
-
-beforeEach(() => {
-  // @ts-expect-error: TODO: overwriting to get rid of recharts error, remove later
-  delete window.ResizeObserver;
-  window.ResizeObserver = vi.fn().mockImplementation(() => ({
-    observe: vi.fn(),
-    unobserve: vi.fn(),
-    disconnect: vi.fn(),
-  }));
-});
-
-afterEach(() => {
-  window.ResizeObserver = ResizeObserver;
-  vi.restoreAllMocks();
-});
 
 describe("resume | cars | Cars", () => {
   it("renders as expected", () => {
