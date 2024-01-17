@@ -28,12 +28,12 @@ interface TopBarProps {
 
 const TopBar = (props: TopBarProps): React.ReactElement => {
   const [theme, setTheme] = useRecoilState(themeAtom);
-  const [checked, setChecked] = React.useState(theme.mode !== "dark");
+  const [isLight, setIsLight] = React.useState(theme.mode !== "dark");
 
   /** function toggle between site's light and dark theme */
   const toggleTheme = (): void => {
-    checked ? setTheme(darkTheme) : setTheme(lightTheme);
-    setChecked(!checked);
+    isLight ? setTheme(darkTheme) : setTheme(lightTheme);
+    setIsLight(!isLight);
   };
 
   const { toggleOpen, textColor } = props;
@@ -59,8 +59,8 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
           </div>
           <div style={flexRightStyles}>
             <Switch
-              checked={checked}
-              value={checked}
+              checked={isLight}
+              value={isLight}
               onChange={toggleTheme}
               title={label.inputProps["aria-label"]}
               {...label}

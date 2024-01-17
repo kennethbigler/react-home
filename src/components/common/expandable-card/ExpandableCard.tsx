@@ -46,13 +46,11 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
   } else {
     delete headerStyle.boxShadow;
   }
-  if (inverted) {
-    headerStyle.color = "black";
-  }
+  headerStyle.color = inverted ? "black" : "white";
   const expandedHeaderStyle = { ...headerStyle, marginBottom: -20 };
 
   const subtitleJSX = (
-    <Typography style={inverted ? { color: "black" } : {}} variant="body1">
+    <Typography style={{ color: inverted ? "black" : "white" }} variant="body1">
       {subtitle}
     </Typography>
   );

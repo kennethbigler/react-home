@@ -22,11 +22,15 @@ export const lightTheme: ThemeState = {
   secondary: green,
 };
 
+// matchMedia checks if that setting matches, then returns true or false
+// prefers-color-scheme could be either light or dark, here we check for light
+const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+
 const themeAtom = atom({
   key: "themeAtom",
   default:
     (JSON.parse(localStorage.getItem("theme-atom") || "null") as ThemeState) ||
-    darkTheme,
+    (prefersLight ? lightTheme : darkTheme),
   effects: [
     ({ onSet }) => {
       onSet((state) => {
