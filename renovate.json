@@ -6,12 +6,20 @@
   "schedule": "on Friday",
   "packageRules": [
     {
-      "matchPackagePatterns": ["eslint", "prettier"],
+      "matchPackagePatterns": ["eslint", "prettier", "gts"],
       "groupName": "lint"
     },
     {
       "matchPackageNames": ["@emotion/react", "@emotion/styled", "@mui/material", "@mui/icons-material"],
       "groupName": "mui"
+    },
+    {
+      "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"],
+      "groupName": "react"
+    },
+    {
+      "matchPackageNames": ["vite", "vitest", "@vitest/coverage-v8", "@vitejs/plugin-react", "jsdom"],
+      "groupName": "vite"
     }
   ]
 }
