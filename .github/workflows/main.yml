@@ -53,7 +53,7 @@ jobs:
         run: npm run test:coverage
 
       - name: Codecov
-        uses: codecov/codecov-action@v3.1.5
+        uses: codecov/codecov-action@v3.1.6
 
       - name: Run lighthouse
         run: npx @lhci/cli autorun --githubToken="$LHCI_GITHUB_TOKEN" --githubAppToken="$LHCI_GITHUB_APP_TOKEN"
