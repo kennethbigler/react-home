@@ -63,6 +63,7 @@ const Info: React.FC = React.memo(() => (
                 <p>
                   CPR, AED, &amp; First Aid Certified (Adult, Child, &amp; Baby)
                 </p>
+                <p>Golden Shellback</p>
               </TableCell>
               <TableCell>
                 <p>Ordained Minister</p>
