@@ -64,7 +64,7 @@
     "pa11y-ci": "3.1.0",
     "prettier": "3.2.5",
     "source-map-explorer": "2.5.3",
-    "typescript": "5.4.2",
+    "typescript": "5.4.3",
     "vite": "5.2.3",
     "vitest": "1.4.0"
   },
