@@ -361,6 +361,22 @@ export const cruises: Cruise[] = [
     concierge: true,
   },
   {
+    departure: dateObj("2024-05"),
+    nights: 3,
+    name: "Bahamas",
+    ship: ships[4],
+    line: lines[0],
+    concierge: false,
+  },
+  {
+    departure: dateObj("2024-09"),
+    nights: 10,
+    name: "Vancouver to Honolulu",
+    ship: ships[1],
+    line: lines[0],
+    concierge: true,
+  },
+  {
     departure: dateObj("2024-12"),
     nights: 7,
     name: "Maiden Voyage (Caribbean)",
