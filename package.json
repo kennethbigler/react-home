@@ -28,6 +28,7 @@
     "@emotion/styled": "11.11.5",
     "@mui/icons-material": "5.15.18",
     "@mui/material": "5.15.18",
+    "@vitejs/plugin-react": "4.2.1",
     "localforage": "1.10.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -35,7 +36,8 @@
     "react-router-dom": "6.23.1",
     "react-simple-maps": "3.0.0",
     "recharts": "2.12.7",
-    "recoil": "0.7.7"
+    "recoil": "0.7.7",
+    "vite": "5.2.11"
   },
   "devDependencies": {
     "@lhci/cli": "0.13.0",
@@ -46,7 +48,6 @@
     "@types/react-simple-maps": "3.0.4",
     "@typescript-eslint/eslint-plugin": "7.9.0",
     "@typescript-eslint/parser": "7.9.0",
-    "@vitejs/plugin-react": "4.2.1",
     "@vitest/coverage-v8": "1.6.0",
     "eslint": "8.57.0",
     "eslint-config-airbnb": "19.0.4",
@@ -65,7 +66,6 @@
     "prettier": "3.2.5",
     "source-map-explorer": "2.5.3",
     "typescript": "5.4.5",
-    "vite": "5.2.11",
     "vitest": "1.6.0"
   },
   "keywords": [

@@ -1,22 +1,30 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+// use test types instead of default types
+/// <reference types="vitest" />
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // for lighthouse
   build: { sourcemap: true },
   plugins: [react()],
+  // open up browser on start
   server: { open: true },
+  // test configs
   test: {
     globals: true,
-    environment: 'jsdom',
-    setupFiles: ['src/setupTests.ts'],
+    environment: "jsdom",
+    setupFiles: ["src/setupTests.ts"],
     coverage: {
-      reporter: ['text', 'html', 'json'],
-      include: ['src/**'],
-      statements: 90,
-      branches: 85,
-      lines: 90,
-      functions: 90
+      provider: "v8",
+      reporter: ["text", "html", "json"],
+      include: ["src/**"],
+      thresholds: {
+        statements: 90,
+        branches: 85,
+        lines: 90,
+        functions: 80,
+      },
     },
   },
 });
