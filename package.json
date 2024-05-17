@@ -65,7 +65,8 @@
     "pa11y-ci": "3.1.0",
     "prettier": "3.2.5",
     "source-map-explorer": "2.5.3",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "vitest": "1.6.0"
   },
   "keywords": [
     "Ken",
