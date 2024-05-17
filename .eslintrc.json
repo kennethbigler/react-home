@@ -77,7 +77,7 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
-      "parserOptions": { "project": ["./tsconfig.json"]}
+      "parserOptions": { "project": ["./tsconfig.json", "./tsconfig.node.json"]}
     }, {
       "files": ["*.test.ts", "*.test.tsx", "recoil-test-render.tsx"],
       "rules": {
