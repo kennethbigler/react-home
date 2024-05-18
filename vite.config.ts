@@ -8,8 +8,6 @@ export default defineConfig({
   // for lighthouse
   build: { sourcemap: true },
   plugins: [react()],
-  // open up browser on start
-  server: { open: true },
   // test configs
   test: {
     globals: true,
