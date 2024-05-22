@@ -16,20 +16,10 @@ const data: CarStats[] = [
 
 describe("resume | cars | CarChart", () => {
   it("renders as expected", () => {
-    const { container } = render(
-      <CarChart hide={{}} showAnimation vw={435} vh={900} data={data} />,
-    );
-    expect(
-      container.querySelector(".recharts-responsive-container"),
-    ).toHaveStyle({ width: "100%", height: "664px" });
+    render(<CarChart hide={{}} showAnimation vw={435} vh={900} data={data} />);
   });
 
   it("renders with lower height", () => {
-    const { container } = render(
-      <CarChart hide={{}} showAnimation vw={435} vh={480} data={data} />,
-    );
-    expect(
-      container.querySelector(".recharts-responsive-container"),
-    ).toHaveStyle({ width: "100%", height: "400px" });
+    render(<CarChart hide={{}} showAnimation vw={435} vh={480} data={data} />);
   });
 });

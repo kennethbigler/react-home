@@ -1,4 +1,13 @@
-import { indigo, grey, red, lime, yellow, teal } from "@mui/material/colors";
+import {
+  indigo,
+  grey,
+  red,
+  lime,
+  yellow,
+  teal,
+  blue,
+  orange,
+} from "@mui/material/colors";
 import dateObj from "../apis/DateHelper";
 
 import prius07 from "../images/07_toyota_prius.png";
@@ -517,40 +526,52 @@ export { kensCars, familyCars };
 
 export const carSankeyData = {
   nodes: [
-    { name: "🏎️" },
+    { id: "🏎️" },
     // level 1
-    { name: "🇺🇸" },
-    { name: "🇯🇵" },
-    { name: "🇩🇪" },
-    { name: "🇬🇧" },
+    { id: "🇯🇵", color: red[500] },
+    { id: "🇺🇸", color: blue[500] },
+    { id: "🇩🇪", color: orange[500] },
+    { id: "🇬🇧", color: grey[300] },
     // level 2
-    { name: "GM" }, // US 5
-    { name: "Plymouth" },
-    { name: "Ford" },
-    { name: "Tesla" },
-    { name: "Toyota" }, // Japan 9
-    { name: "Honda" },
-    { name: "Porsche" }, // Germany 11
-    { name: "Jaguar" }, // UK 12
+    { id: "GM", offset: 70, color: blue[500] },
+    { id: "Fiat Chrysler Auto", offset: 70, color: blue[500] },
+    { id: "Volkswagen", offset: 70, color: orange[500] },
+    { id: "TATA", offset: 70, color: grey[300] },
+    // level 3
+    { id: "Chevrolet", color: yellow[700] },
+    { id: "Pontiac", color: red[500] },
+    { id: "Plymouth", color: "black" },
+    { id: "Ford", column: 3, color: blue[500] },
+    { id: "Tesla", column: 3, color: red[500] },
+    { id: "Honda", column: 3, color: red[500] },
+    { id: "Toyota", column: 3, color: red[500] },
+    { id: "Porsche", color: yellow[700] },
+    { id: "Jaguar", color: grey[300] },
   ],
-  links: [
+  data: [
     // level 1
-    { source: 0, target: 1, value: 9 }, // US
-    { source: 0, target: 2, value: 2 }, // Japan
-    { source: 0, target: 3, value: 2 }, // UK
-    { source: 0, target: 4, value: 2 }, // Germany
+    ["🏎️", "🇯🇵", 2],
+    ["🏎️", "🇺🇸", 9],
+    ["🏎️", "🇩🇪", 2],
+    ["🏎️", "🇬🇧", 2],
     // level 2
-    //     US
-    { source: 1, target: 5, value: 4 }, // GM
-    { source: 1, target: 6, value: 1 }, // Chrysler
-    { source: 1, target: 7, value: 3 }, // Ford
-    { source: 1, target: 8, value: 1 }, // Tesla
     //     Japan
-    { source: 2, target: 9, value: 1 }, // Toyota
-    { source: 2, target: 10, value: 1 }, // Honda
+    ["🇯🇵", "Honda", 1],
+    ["🇯🇵", "Toyota", 1],
+    //     US
+    ["🇺🇸", "Ford", 3],
+    ["🇺🇸", "Tesla", 1],
+    ["🇺🇸", "GM", 4],
+    ["🇺🇸", "Fiat Chrysler Auto", 1],
     //     Other
-    { source: 3, target: 11, value: 2 }, // VW
-    { source: 4, target: 12, value: 2 }, // JLR
+    ["🇩🇪", "Volkswagen", 2],
+    ["🇬🇧", "TATA", 2],
+    // level 3
+    ["GM", "Chevrolet", 3],
+    ["GM", "Pontiac", 1],
+    ["Fiat Chrysler Auto", "Plymouth", 1],
+    ["Volkswagen", "Porsche", 2],
+    ["TATA", "Jaguar", 2],
   ],
 };
 

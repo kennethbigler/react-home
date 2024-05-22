@@ -422,35 +422,35 @@ const totalDisney = numDisney.reduce((acc, num) => acc + num, 0);
 
 export const cruiseData = {
   nodes: [
-    { name: "🛳" },
+    { id: "🛳" },
     // lines
-    { name: lines[0] }, // 1
-    { name: lines[1] }, // 2
-    { name: lines[2] }, // 3
+    { id: lines[0] },
+    { id: lines[1] },
+    { id: lines[2] },
     // ships
-    { name: ships[0] },
-    { name: ships[1] },
-    { name: ships[2] },
-    { name: ships[3] },
-    { name: ships[4] },
-    { name: ships[5] },
-    { name: "Navigator" }, // 10
-    { name: ships[7] }, // 11
+    { id: ships[0] },
+    { id: ships[1] },
+    { id: ships[2] },
+    { id: ships[3] },
+    { id: ships[4] },
+    { id: ships[5] },
+    { id: "Navigator" },
+    { id: ships[7] },
   ],
-  links: [
+  data: [
     // level 1
-    { source: 0, target: 1, value: totalDisney },
-    { source: 0, target: 2, value: numRC[0] },
-    { source: 0, target: 3, value: numPrincess[0] },
+    ["🛳", lines[0], totalDisney],
+    ["🛳", lines[1], numRC[0]],
+    ["🛳", lines[2], numPrincess[0]],
     // level 2
-    { source: 1, target: 4, value: numDisney[0] }, // Magic
-    { source: 1, target: 5, value: numDisney[1] }, // Wonder
-    { source: 1, target: 6, value: numDisney[2] }, // Dream
-    { source: 1, target: 7, value: numDisney[3] }, // Fantasy
-    { source: 1, target: 8, value: numDisney[4] }, // Wish
-    { source: 1, target: 9, value: numDisney[5] }, // Treasure
-    { source: 2, target: 10, value: numRC[0] }, // Navigator
-    { source: 3, target: 11, value: numPrincess[0] }, // Discovery
+    [lines[0], ships[0], numDisney[0]], // Magic
+    [lines[0], ships[1], numDisney[1]], // Wonder
+    [lines[0], ships[2], numDisney[2]], // Dream
+    [lines[0], ships[3], numDisney[3]], // Fantasy
+    [lines[0], ships[4], numDisney[4]], // Wish
+    [lines[0], ships[5], numDisney[5]], // Treasure
+    [lines[1], "Navigator", numRC[0]], // Navigator
+    [lines[2], ships[7], numPrincess[0]], // Discovery
   ],
 };
 

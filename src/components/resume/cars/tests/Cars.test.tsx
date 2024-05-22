@@ -6,7 +6,7 @@ const demoCar = cars[cars.length - 3];
 
 describe("resume | cars | Cars", () => {
   it("renders as expected", () => {
-    const { container } = render(<Cars />);
+    render(<Cars />);
 
     expect(screen.getAllByText("Ken's Cars")).toHaveLength(3);
     expect(screen.getByText(`(${demoCar.owned})`)).toBeInTheDocument();
@@ -23,10 +23,6 @@ describe("resume | cars | Cars", () => {
       "src",
       demoCar.src,
     );
-
-    expect(
-      container.querySelector(".recharts-responsive-container"),
-    ).toBeInTheDocument();
   });
 
   it("selects and deselects buttons", () => {
@@ -40,16 +36,12 @@ describe("resume | cars | Cars", () => {
   });
 
   it("re-enables animations", () => {
-    const { container } = render(<Cars />);
+    render(<Cars />);
 
     fireEvent.click(screen.getByText("MPG"));
     fireEvent.click(screen.getByText("Horsepower"));
     fireEvent.click(screen.getByText("Weight"));
     fireEvent.click(screen.getByText("Power-to-Weight"));
-
-    expect(
-      container.querySelector(".recharts-responsive-container"),
-    ).toBeInTheDocument();
   });
 
   it("hides family cars", () => {
