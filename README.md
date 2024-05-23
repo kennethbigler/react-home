@@ -38,7 +38,6 @@ Check out the [issues tab](https://github.com/kennethbigler/react-home/issues) f
 * [React Router](https://reactrouter.com/en/main)
 * [Highcharts](https://www.highcharts.com/)
 * [Recoil](https://recoiljs.org/)
-* [react-simple-maps](https://www.react-simple-maps.io/)
 * [localforage](https://github.com/localForage/localForage)
 * [react-newline-to-break](https://github.com/Stychen/React-Newline-to-Break)
 
