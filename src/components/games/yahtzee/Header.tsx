@@ -1,16 +1,17 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import ScoreGraph from "./ScoreGraph";
 import PlayerMenu from "../../common/header/PlayerMenu";
 
 interface HeaderProps {
-  scores: number[];
+  bestScore: number;
+  lastScore: number;
   money: number;
   name: string;
 }
 
 const Header: React.FC<HeaderProps> = ({
-  scores,
+  bestScore,
+  lastScore,
   money,
   name,
 }: HeaderProps) => (
@@ -25,7 +26,8 @@ const Header: React.FC<HeaderProps> = ({
       <Typography variant="h4" component="h2">
         {name}: ${money}
       </Typography>
-      <ScoreGraph scores={scores} />
+      <Typography variant="h4">{`Best: ${bestScore}`}</Typography>
+      <Typography variant="h4">{`Last: ${lastScore}`}</Typography>
     </div>
   </>
 );
