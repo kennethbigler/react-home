@@ -1,100 +1,56 @@
-import {
-  amber,
-  blue,
-  brown,
-  cyan,
-  deepOrange,
-  deepPurple,
-  green,
-  indigo,
-  lightBlue,
-  lightGreen,
-  lime,
-  orange,
-  pink,
-  purple,
-  red,
-  teal,
-  yellow,
-} from "@mui/material/colors/";
 import dateObj, { DateObj } from "../apis/DateHelper";
 
-const colors = [
-  amber[500],
-  blue[500],
-  brown[500],
-  cyan[500],
-  deepOrange[500],
-  deepPurple[500],
-  green[500],
-  indigo[500],
-  lightBlue[500],
-  lightGreen[500],
-  lime[500],
-  orange[500],
-  pink[500],
-  purple[500],
-  red[500],
-  teal[500],
-  yellow[500],
-];
-
 interface Country {
+  name: string;
   continent: string;
   flag: string;
-  code: string;
-  color?: string;
 }
-export type Countries = Record<string, Country>;
 
-const countries: Countries = {
-  "American Samoa": { continent: "AS", flag: "🇦🇸", code: "as" },
-  Australia: { continent: "AU", flag: "🇦🇺", code: "au" },
-  Austria: { continent: "EU", flag: "🇦🇹", code: "at" },
-  Bahamas: { continent: "NA", flag: "🇧🇸", code: "bs" },
-  "British Virgin Islands": { continent: "NA", flag: "🇻🇬", code: "vg" },
-  Canada: { continent: "NA", flag: "🇨🇦", code: "ca" },
-  "Cayman Islands": { continent: "NA", flag: "🇰🇾", code: "ky" },
-  China: { continent: "AS", flag: "🇨🇳", code: "cn" },
-  Denmark: { continent: "EU", flag: "🇩🇰", code: "dk" },
-  Egypt: { continent: "AF", flag: "🇪🇬", code: "eg" },
-  Estonia: { continent: "EU", flag: "🇪🇪", code: "ee" },
-  Fiji: { continent: "AS", flag: "🇫🇯", code: "fj" },
-  Finland: { continent: "EU", flag: "🇫🇮", code: "fi" },
-  France: { continent: "EU", flag: "🇫🇷", code: "fr" },
-  Germany: { continent: "EU", flag: "🇩🇪", code: "de" },
-  Gibraltar: { continent: "EU", flag: "🇬🇮", code: "gi" },
-  Greece: { continent: "EU", flag: "🇬🇷", code: "gr" },
-  "Hong Kong": { continent: "AS", flag: "🇭🇰", code: "hk" },
-  Iceland: { continent: "EU", flag: "🇮🇸", code: "is" },
-  India: { continent: "AS", flag: "🇮🇳", code: "in" },
-  Ireland: { continent: "EU", flag: "🇮🇪", code: "ie" },
-  Italy: { continent: "EU", flag: "🇮🇹", code: "it" },
-  Jamaica: { continent: "NA", flag: "🇯🇲", code: "jm" },
-  Japan: { continent: "AS", flag: "🇯🇵", code: "jp" },
-  Malta: { continent: "EU", flag: "🇲🇹", code: "mt" },
-  Mexico: { continent: "NA", flag: "🇲🇽", code: "mx" },
-  Monaco: { continent: "EU", flag: "🇲🇨", code: "mc" },
-  Netherlands: { continent: "EU", flag: "🇳🇱", code: "nl" },
-  "New Caledonia": { continent: "AS", flag: "🇳🇨", code: "nc" },
-  Norway: { continent: "EU", flag: "🇳🇴", code: "no" },
-  Poland: { continent: "EU", flag: "🇵🇱", code: "pl" },
-  Portugal: { continent: "EU", flag: "🇵🇹", code: "pt" },
-  Russia: { continent: "EU", flag: "🇷🇺", code: "ru" },
-  Spain: { continent: "EU", flag: "🇪🇸", code: "es" },
-  Sweden: { continent: "EU", flag: "🇸🇪", code: "se" },
-  Switzerland: { continent: "EU", flag: "🇨🇭", code: "ch" },
-  Turkey: { continent: "EU", flag: "🇹🇷", code: "tr" },
-  "United Arab Emirates": { continent: "AF", flag: "🇦🇪", code: "ae" },
-  "United Kingdom": { continent: "EU", flag: "🇬🇧", code: "gb" },
-  "United States of America": { continent: "NA", flag: "🇺🇸", code: "us" },
-  "U.S. Virgin Islands": { continent: "NA", flag: "🇻🇮", code: "vi" },
-  Vatican: { continent: "EU", flag: "🇻🇦", code: "va" },
-};
-
-Object.keys(countries).forEach((country, i) => {
-  countries[country].color = colors[i % colors.length];
-});
+/** name is a unique key, verify it on https://unpkg.com/world-atlas@2.0.2/countries-110m.json */
+const countries: Country[] = [
+  { name: "American Samoa", continent: "AS", flag: "🇦🇸" },
+  { name: "Australia", continent: "AU", flag: "🇦🇺" },
+  { name: "Austria", continent: "EU", flag: "🇦🇹" },
+  { name: "Bahamas", continent: "NA", flag: "🇧🇸" },
+  { name: "British Virgin Islands", continent: "NA", flag: "🇻🇬" },
+  { name: "Canada", continent: "NA", flag: "🇨🇦" },
+  { name: "Cayman Islands", continent: "NA", flag: "🇰🇾" },
+  { name: "China", continent: "AS", flag: "🇨🇳" },
+  { name: "Denmark", continent: "EU", flag: "🇩🇰" },
+  { name: "Egypt", continent: "AF", flag: "🇪🇬" },
+  { name: "Estonia", continent: "EU", flag: "🇪🇪" },
+  { name: "Fiji", continent: "AS", flag: "🇫🇯" },
+  { name: "Finland", continent: "EU", flag: "🇫🇮" },
+  { name: "France", continent: "EU", flag: "🇫🇷" },
+  { name: "Germany", continent: "EU", flag: "🇩🇪" },
+  { name: "Gibraltar", continent: "EU", flag: "🇬🇮" },
+  { name: "Greece", continent: "EU", flag: "🇬🇷" },
+  { name: "Hong Kong", continent: "AS", flag: "🇭🇰" },
+  { name: "Iceland", continent: "EU", flag: "🇮🇸" },
+  { name: "India", continent: "AS", flag: "🇮🇳" },
+  { name: "Ireland", continent: "EU", flag: "🇮🇪" },
+  { name: "Italy", continent: "EU", flag: "🇮🇹" },
+  { name: "Jamaica", continent: "NA", flag: "🇯🇲" },
+  { name: "Japan", continent: "AS", flag: "🇯🇵" },
+  { name: "Malta", continent: "EU", flag: "🇲🇹" },
+  { name: "Mexico", continent: "NA", flag: "🇲🇽" },
+  { name: "Monaco", continent: "EU", flag: "🇲🇨" },
+  { name: "Netherlands", continent: "EU", flag: "🇳🇱" },
+  { name: "New Caledonia", continent: "AS", flag: "🇳🇨" },
+  { name: "Norway", continent: "EU", flag: "🇳🇴" },
+  { name: "Poland", continent: "EU", flag: "🇵🇱" },
+  { name: "Portugal", continent: "EU", flag: "🇵🇹" },
+  { name: "Russia", continent: "EU", flag: "🇷🇺" },
+  { name: "Spain", continent: "EU", flag: "🇪🇸" },
+  { name: "Sweden", continent: "EU", flag: "🇸🇪" },
+  { name: "Switzerland", continent: "EU", flag: "🇨🇭" },
+  { name: "Turkey", continent: "EU", flag: "🇹🇷" },
+  { name: "United Arab Emirates", continent: "AF", flag: "🇦🇪" },
+  { name: "United Kingdom", continent: "EU", flag: "🇬🇧" },
+  { name: "United States of America", continent: "NA", flag: "🇺🇸" },
+  { name: "U.S. Virgin Islands", continent: "NA", flag: "🇻🇮" },
+  { name: "Vatican", continent: "EU", flag: "🇻🇦" },
+];
 
 export const disneyLoyalty = [
   { num: 1, status: "Silver" },
@@ -422,35 +378,35 @@ const totalDisney = numDisney.reduce((acc, num) => acc + num, 0);
 
 export const cruiseData = {
   nodes: [
-    { name: "🛳" },
+    { id: "🛳" },
     // lines
-    { name: lines[0] }, // 1
-    { name: lines[1] }, // 2
-    { name: lines[2] }, // 3
+    { id: lines[0] },
+    { id: lines[1] },
+    { id: lines[2] },
     // ships
-    { name: ships[0] },
-    { name: ships[1] },
-    { name: ships[2] },
-    { name: ships[3] },
-    { name: ships[4] },
-    { name: ships[5] },
-    { name: "Navigator" }, // 10
-    { name: ships[7] }, // 11
+    { id: ships[0] },
+    { id: ships[1] },
+    { id: ships[2] },
+    { id: ships[3] },
+    { id: ships[4] },
+    { id: ships[5] },
+    { id: "Navigator" },
+    { id: ships[7] },
   ],
-  links: [
+  data: [
     // level 1
-    { source: 0, target: 1, value: totalDisney },
-    { source: 0, target: 2, value: numRC[0] },
-    { source: 0, target: 3, value: numPrincess[0] },
+    ["🛳", lines[0], totalDisney],
+    ["🛳", lines[1], numRC[0]],
+    ["🛳", lines[2], numPrincess[0]],
     // level 2
-    { source: 1, target: 4, value: numDisney[0] }, // Magic
-    { source: 1, target: 5, value: numDisney[1] }, // Wonder
-    { source: 1, target: 6, value: numDisney[2] }, // Dream
-    { source: 1, target: 7, value: numDisney[3] }, // Fantasy
-    { source: 1, target: 8, value: numDisney[4] }, // Wish
-    { source: 1, target: 9, value: numDisney[5] }, // Treasure
-    { source: 2, target: 10, value: numRC[0] }, // Navigator
-    { source: 3, target: 11, value: numPrincess[0] }, // Discovery
+    [lines[0], ships[0], numDisney[0]], // Magic
+    [lines[0], ships[1], numDisney[1]], // Wonder
+    [lines[0], ships[2], numDisney[2]], // Dream
+    [lines[0], ships[3], numDisney[3]], // Fantasy
+    [lines[0], ships[4], numDisney[4]], // Wish
+    [lines[0], ships[5], numDisney[5]], // Treasure
+    [lines[1], "Navigator", numRC[0]], // Navigator
+    [lines[2], ships[7], numPrincess[0]], // Discovery
   ],
 };
 
@@ -458,19 +414,19 @@ export const americas: string[] = [];
 export const euNaf: string[] = [];
 export const asNau: string[] = [];
 
-Object.entries(countries).forEach(([name, country]): void => {
-  switch (country.continent) {
+countries.forEach(({ continent, name, flag }): void => {
+  switch (continent) {
     case "NA":
-      americas.push(`${name} ${country.flag}`);
+      americas.push(`${name} ${flag}`);
       break;
     case "EU":
     case "AF":
-      euNaf.push(`${name} ${country.flag}`);
+      euNaf.push(`${name} ${flag}`);
       break;
     case "AS":
     case "AU":
     default:
-      asNau.push(`${name} ${country.flag}`);
+      asNau.push(`${name} ${flag}`);
   }
 });
 

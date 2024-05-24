@@ -7,7 +7,8 @@ const useYahtzeeState = () => {
   const newGame = (score: number) =>
     setState({
       ...newYahtzee(),
-      scores: [...state.scores, score],
+      lastScore: score,
+      bestScore: score > state.bestScore ? score : state.bestScore,
       money: state.money + Math.ceil(score / 10),
     });
   const diceClick = (values: Dice[], saved: Dice[]) =>

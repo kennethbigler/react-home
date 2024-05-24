@@ -1,12 +1,13 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
 import Cars from "../Cars";
 import cars from "../../../../constants/cars";
+import render from "../../../../recoil-test-render";
 
 const demoCar = cars[cars.length - 3];
 
 describe("resume | cars | Cars", () => {
   it("renders as expected", () => {
-    const { container } = render(<Cars />);
+    render(<Cars />);
 
     expect(screen.getAllByText("Ken's Cars")).toHaveLength(3);
     expect(screen.getByText(`(${demoCar.owned})`)).toBeInTheDocument();
@@ -23,40 +24,23 @@ describe("resume | cars | Cars", () => {
       "src",
       demoCar.src,
     );
-
-    expect(
-      container.querySelector(".recharts-responsive-container"),
-    ).toBeInTheDocument();
   });
 
   it("selects and deselects buttons", () => {
     const { container } = render(<Cars />);
 
     expect(container.querySelector(".MuiButton-contained")).toBeNull();
-    fireEvent.click(screen.getByText("Horsepower"));
+    fireEvent.click(screen.getByText("Hide Ken"));
     expect(container.querySelector(".MuiButton-contained")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Horsepower"));
+    fireEvent.click(screen.getByText("Hide Ken"));
     expect(container.querySelector(".MuiButton-contained")).toBeNull();
-  });
-
-  it("re-enables animations", () => {
-    const { container } = render(<Cars />);
-
-    fireEvent.click(screen.getByText("MPG"));
-    fireEvent.click(screen.getByText("Horsepower"));
-    fireEvent.click(screen.getByText("Weight"));
-    fireEvent.click(screen.getByText("Power-to-Weight"));
-
-    expect(
-      container.querySelector(".recharts-responsive-container"),
-    ).toBeInTheDocument();
   });
 
   it("hides family cars", () => {
     render(<Cars />);
 
     expect(screen.getByTitle("Toyota Prius (2007)")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Hide Family's"));
+    fireEvent.click(screen.getByText("Hide Family"));
     expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
   });
 
@@ -66,7 +50,7 @@ describe("resume | cars | Cars", () => {
     expect(
       screen.getByTitle("Ford Bronco Badlands (2021)"),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Hide Ken's"));
+    fireEvent.click(screen.getByText("Hide Ken"));
     expect(screen.queryByTitle("Ford Bronco Badlands (2021)")).toBeNull();
   });
 
@@ -77,12 +61,12 @@ describe("resume | cars | Cars", () => {
     expect(
       screen.getByTitle("Ford Bronco Badlands (2021)"),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Hide Family's"));
+    fireEvent.click(screen.getByText("Hide Family"));
     expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
     expect(
       screen.getByTitle("Ford Bronco Badlands (2021)"),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Hide Ken's"));
+    fireEvent.click(screen.getByText("Hide Ken"));
     expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
     expect(screen.queryByTitle("Ford Bronco Badlands (2021)")).toBeNull();
   });

@@ -1,4 +1,13 @@
-import { indigo, grey, red, lime, yellow, teal } from "@mui/material/colors";
+import {
+  indigo,
+  grey,
+  red,
+  lime,
+  yellow,
+  teal,
+  blue,
+  orange,
+} from "@mui/material/colors";
 import dateObj from "../apis/DateHelper";
 
 import prius07 from "../images/07_toyota_prius.png";
@@ -437,15 +446,30 @@ export interface CarStats {
   torque: number;
   weight: number;
 }
-export interface GraphData extends CarStats {
-  powerToWeight: number;
+type HighChartsData = [string, number];
+interface GraphData {
+  xAxis: string[];
+  displacement: HighChartsData[];
+  horsepower: HighChartsData[];
+  MPG: HighChartsData[];
+  torque: HighChartsData[];
+  weight: HighChartsData[];
+  powerToWeight: HighChartsData[];
 }
 
-const kWeight = 245;
+export const processData = (data: CarStats[]): GraphData => {
+  const ret: GraphData = {
+    xAxis: [],
+    displacement: [],
+    horsepower: [],
+    MPG: [],
+    torque: [],
+    weight: [],
+    powerToWeight: [],
+  };
 
-export const processData = (data: CarStats[]): GraphData[] => {
   if (data.length === 0) {
-    return [];
+    return ret;
   }
 
   const max = {
@@ -453,21 +477,14 @@ export const processData = (data: CarStats[]): GraphData[] => {
     horsepower: data[0].horsepower,
     MPG: data[0].MPG,
     torque: data[0].torque,
-    weight: data[0].weight + kWeight,
-    powerToWeight: data[0].horsepower / (data[0].weight + kWeight),
+    weight: data[0].weight,
+    powerToWeight: data[0].horsepower / data[0].weight,
   };
   const min = { ...max };
 
   // find the min and max values in the array
   for (let i = 1; i < data.length; i += 1) {
-    const {
-      horsepower,
-      displacement,
-      MPG,
-      torque,
-      weight: dryWeight,
-    } = data[i];
-    const weight = dryWeight + kWeight;
+    const { horsepower, displacement, MPG, torque, weight } = data[i];
     const powerToWeight = horsepower / weight;
 
     (displacement > max.displacement && (max.displacement = displacement)) ||
@@ -485,26 +502,39 @@ export const processData = (data: CarStats[]): GraphData[] => {
         (min.powerToWeight = powerToWeight));
   }
 
-  const ret: GraphData[] = [];
-
   // normalize the data to all fit on the same graph (0-1)
   data.forEach((car: CarStats) => {
     const powerToWeight = car.horsepower / car.weight;
-    ret.push({
-      displacement:
-        (car.displacement - min.displacement) /
-        (max.displacement - min.displacement),
-      horsepower:
-        (car.horsepower - min.horsepower) / (max.horsepower - min.horsepower),
-      MPG: (car.MPG - min.MPG) / (max.MPG - min.MPG),
-      car: car.car,
-      char: car.char,
-      torque: (car.torque - min.torque) / (max.torque - min.torque),
-      weight: (car.weight - min.weight) / (max.weight - min.weight),
-      powerToWeight:
-        (powerToWeight - min.powerToWeight) /
-        (max.powerToWeight - min.powerToWeight),
-    });
+    ret.xAxis.push(car.char);
+    ret.displacement.push([
+      `${car.car} Displacement`,
+      100 *
+        ((car.displacement - min.displacement) /
+          (max.displacement - min.displacement)),
+    ]);
+    ret.horsepower.push([
+      `${car.car} Horsepower`,
+      100 *
+        ((car.horsepower - min.horsepower) / (max.horsepower - min.horsepower)),
+    ]);
+    ret.MPG.push([
+      `${car.car} MPG`,
+      100 * ((car.MPG - min.MPG) / (max.MPG - min.MPG)),
+    ]);
+    ret.torque.push([
+      `${car.car} Torque`,
+      100 * ((car.torque - min.torque) / (max.torque - min.torque)),
+    ]);
+    ret.weight.push([
+      `${car.car} Weight`,
+      100 * ((car.weight - min.weight) / (max.weight - min.weight)),
+    ]);
+    ret.powerToWeight.push([
+      `${car.car} Power-To-Weight`,
+      100 *
+        ((powerToWeight - min.powerToWeight) /
+          (max.powerToWeight - min.powerToWeight)),
+    ]);
   });
 
   return ret;
@@ -517,40 +547,52 @@ export { kensCars, familyCars };
 
 export const carSankeyData = {
   nodes: [
-    { name: "🏎️" },
+    { id: "🏎️", color: grey[200] },
     // level 1
-    { name: "🇺🇸" },
-    { name: "🇯🇵" },
-    { name: "🇩🇪" },
-    { name: "🇬🇧" },
+    { id: "🇯🇵", color: red[500], column: 2 },
+    { id: "🇺🇸", color: blue[500], column: 2 },
+    { id: "🇩🇪", color: orange[500], column: 2 },
+    { id: "🇬🇧", color: grey[300], column: 2 },
     // level 2
-    { name: "GM" }, // US 5
-    { name: "Plymouth" },
-    { name: "Ford" },
-    { name: "Tesla" },
-    { name: "Toyota" }, // Japan 9
-    { name: "Honda" },
-    { name: "Porsche" }, // Germany 11
-    { name: "Jaguar" }, // UK 12
+    { id: "GM", color: blue[500], offset: 70 },
+    { id: "Fiat Chrysler Auto", color: blue[500], offset: 70 },
+    { id: "Volkswagen", color: orange[500], offset: 70 },
+    { id: "TATA", color: grey[300], offset: 70 },
+    // level 3
+    { id: "Chevrolet", color: yellow[700] },
+    { id: "Pontiac", color: red[500] },
+    { id: "Plymouth", color: "black" },
+    { id: "Ford", color: blue[500] },
+    { id: "Tesla", color: red[500] },
+    { id: "Honda", color: red[500] },
+    { id: "Toyota", color: red[500] },
+    { id: "Porsche", color: yellow[700] },
+    { id: "Jaguar", color: grey[300] },
   ],
-  links: [
+  data: [
     // level 1
-    { source: 0, target: 1, value: 9 }, // US
-    { source: 0, target: 2, value: 2 }, // Japan
-    { source: 0, target: 3, value: 2 }, // UK
-    { source: 0, target: 4, value: 2 }, // Germany
-    // level 2
-    //     US
-    { source: 1, target: 5, value: 4 }, // GM
-    { source: 1, target: 6, value: 1 }, // Chrysler
-    { source: 1, target: 7, value: 3 }, // Ford
-    { source: 1, target: 8, value: 1 }, // Tesla
     //     Japan
-    { source: 2, target: 9, value: 1 }, // Toyota
-    { source: 2, target: 10, value: 1 }, // Honda
+    ["Honda", "🇯🇵", 1],
+    ["Toyota", "🇯🇵", 1],
+    //     US
+    ["Ford", "🇺🇸", 3],
+    ["Tesla", "🇺🇸", 1],
+    ["Chevrolet", "GM", 3],
+    ["Pontiac", "GM", 1],
+    ["Plymouth", "Fiat Chrysler Auto", 1],
     //     Other
-    { source: 3, target: 11, value: 2 }, // VW
-    { source: 4, target: 12, value: 2 }, // JLR
+    ["Porsche", "Volkswagen", 2],
+    ["Jaguar", "TATA", 2],
+    // level 2
+    ["GM", "🇺🇸", 4],
+    ["Fiat Chrysler Auto", "🇺🇸", 1],
+    ["Volkswagen", "🇩🇪", 2],
+    ["TATA", "🇬🇧", 2],
+    // level 3
+    ["🇯🇵", "🏎️", 2],
+    ["🇺🇸", "🏎️", 9],
+    ["🇩🇪", "🏎️", 2],
+    ["🇬🇧", "🏎️", 2],
   ],
 };
 

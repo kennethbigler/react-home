@@ -8,10 +8,9 @@ describe("games | yahtzee | Yahtzee", () => {
 
     expect(screen.getAllByText("Yahtzee")).toHaveLength(2);
     // button 0
-    expect(screen.getByText("Score History")).toBeInTheDocument();
     expect(screen.getByText("Roll #0/3")).toBeInTheDocument();
     // button 1-5 are game dice
-    expect(screen.getAllByRole("button")).toHaveLength(8);
+    expect(screen.getAllByRole("button")).toHaveLength(7);
     // button 6
     expect(screen.getByText("First Roll")).toBeInTheDocument();
     expect(screen.getByText("Total: 0")).toBeInTheDocument();
@@ -45,7 +44,7 @@ describe("games | yahtzee | Yahtzee", () => {
     ).toHaveLength(5);
     expect(
       container.querySelectorAll(".MuiButton-containedPrimary"),
-    ).toHaveLength(3);
+    ).toHaveLength(2);
 
     // it doesn't save if dice aren't ready
     fireEvent.click(screen.getAllByRole("button")[2]);
@@ -54,7 +53,7 @@ describe("games | yahtzee | Yahtzee", () => {
     ).toHaveLength(5);
     expect(
       container.querySelectorAll(".MuiButton-containedPrimary"),
-    ).toHaveLength(3);
+    ).toHaveLength(2);
 
     // roll the dice
     fireEvent.click(screen.getByText("First Roll"));
@@ -63,7 +62,7 @@ describe("games | yahtzee | Yahtzee", () => {
     ).toHaveLength(18);
     expect(
       container.querySelectorAll(".MuiButton-containedPrimary"),
-    ).toHaveLength(3);
+    ).toHaveLength(2);
 
     // save the first button
     fireEvent.click(screen.getAllByRole("button")[2]);
@@ -72,16 +71,16 @@ describe("games | yahtzee | Yahtzee", () => {
     ).toHaveLength(17);
     expect(
       container.querySelectorAll(".MuiButton-containedPrimary"),
-    ).toHaveLength(4);
+    ).toHaveLength(3);
 
     // un-save the first button
     fireEvent.click(screen.getAllByRole("button")[2]);
     expect(
       container.querySelectorAll(".MuiButton-outlinedSecondary"),
-    ).toHaveLength(18);
+    ).toHaveLength(16);
     expect(
       container.querySelectorAll(".MuiButton-containedPrimary"),
-    ).toHaveLength(3);
+    ).toHaveLength(4);
 
     // --------------------     saves to the top half scores     -------------------- //
     // do the next 2 rolls, then try to do the 4th

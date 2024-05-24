@@ -38,7 +38,8 @@ const Yahtzee: React.FC = () => {
     saved,
     roll,
     showScoreButtons,
-    scores,
+    bestScore,
+    lastScore,
     money,
   } = state;
 
@@ -131,7 +132,12 @@ const Yahtzee: React.FC = () => {
 
   return (
     <>
-      <Header scores={scores} money={money} name={name} />
+      <Header
+        bestScore={bestScore}
+        lastScore={lastScore}
+        money={money}
+        name={name}
+      />
       <hr />
       <TableHeader
         values={values}

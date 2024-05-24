@@ -12,10 +12,6 @@ describe("resume | work | Work", () => {
     expect(screen.getByText("Santa Clara University BS")).toBeInTheDocument();
     expect(screen.getByText("Intuit")).toBeInTheDocument();
 
-    expect(
-      screen.getByText("Programming Language Timeline (Professional Use)"),
-    ).toBeInTheDocument();
-
     expect(screen.getByText("work Experience")).toBeInTheDocument();
     expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
     expect(

@@ -1,44 +1,40 @@
-import React from "react";
-import { Sankey, Tooltip } from "recharts";
+import * as React from "react";
+import * as Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import highchartsMore from "highcharts/highcharts-more";
+import sankey from "highcharts/modules/sankey";
 import { carSankeyData } from "../../../constants/cars";
-import SankeyNode from "./SankeyNode";
 
-const CarSankeyGraph = () => {
-  const sankeyRef = React.useRef<HTMLDivElement>(null);
-  const [sankeyWidth, setCruiseWidth] = React.useState(0);
+sankey(Highcharts); // initiate specific module
+highchartsMore(Highcharts); // if you module is not in node_modules folder
 
-  React.useEffect(() => {
-    const getDimensions = () => sankeyRef.current?.offsetWidth || 0;
+interface CarSankeyGraphProps {
+  color: string;
+}
 
-    if (sankeyRef) {
-      setCruiseWidth(getDimensions());
-    }
-
-    const handleResize = () => {
-      setCruiseWidth(getDimensions());
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [sankeyRef]);
+const CarSankeyGraph = React.memo(({ color }: CarSankeyGraphProps) => {
+  const options: Highcharts.Options = {
+    title: {
+      text: "Cars",
+      style: { color },
+    },
+    chart: { backgroundColor: "transparent" },
+    series: [
+      {
+        name: "Cars",
+        type: "sankey",
+        keys: ["from", "to", "weight"],
+        nodes: [...carSankeyData.nodes],
+        data: [...carSankeyData.data],
+      },
+    ],
+  };
 
   return (
-    <div style={{ width: "100%" }} ref={sankeyRef}>
-      <Sankey
-        width={sankeyWidth}
-        height={450}
-        data={carSankeyData}
-        node={SankeyNode}
-        nodePadding={25}
-        margin={{ top: 20, bottom: 20 }}
-      >
-        <Tooltip />
-      </Sankey>
+    <div style={{ width: "100%" }}>
+      <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );
-};
+});
 
 export default CarSankeyGraph;

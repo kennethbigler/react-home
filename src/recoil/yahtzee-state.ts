@@ -11,10 +11,14 @@ export interface YahtzeeState {
   showScoreButtons: boolean;
   topScores: number[];
   bottomScores: number[];
-  scores: number[];
+  bestScore: number;
+  lastScore: number;
 }
 
-export const newYahtzee = (): Omit<YahtzeeState, "scores"> => ({
+export const newYahtzee = (): Omit<
+  YahtzeeState,
+  "bestScore" | "lastScore"
+> => ({
   roll: 0,
   values: [0, 0, 0, 0, 0],
   saved: [],
@@ -28,7 +32,7 @@ export const yahtzeeAtom = atom({
   key: "yahtzeeAtom",
   default: (JSON.parse(
     localStorage.getItem("yahtzee-atom") || "null",
-  ) as YahtzeeState) || { ...newYahtzee(), scores: [] },
+  ) as YahtzeeState) || { ...newYahtzee(), bestScore: 0, lastScore: 0 },
   effects: [
     ({ onSet }) => {
       onSet((newState) => {

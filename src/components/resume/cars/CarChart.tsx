@@ -1,97 +1,47 @@
 import * as React from "react";
-import {
-  ResponsiveContainer,
-  LineChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Line,
-  Legend,
-} from "recharts";
-import { red, orange, green, blue } from "@mui/material/colors/";
+import * as Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 import { processData, CarStats } from "../../../constants/cars";
 
-export interface HideObject {
-  MPG?: boolean;
-  horsepower?: boolean;
-  weight?: boolean;
-  powerToWeight?: boolean;
-  family?: boolean;
-  ken?: boolean;
-}
-
 export interface CarChartProps {
-  showAnimation: boolean;
-  hide: HideObject;
-  vw: number;
-  vh: number;
   data: CarStats[];
+  color: string;
 }
 
-const CarChart = React.memo(
-  ({ data, showAnimation, hide, vw, vh }: CarChartProps) => {
-    const processedData = processData(data);
+const CarChart = React.memo(({ data, color }: CarChartProps) => {
+  const { horsepower, MPG, weight, powerToWeight, xAxis } = processData(data);
 
-    return (
-      <ResponsiveContainer width="100%" height={vh <= 744 ? vh - 80 : 664}>
-        <LineChart data={processedData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey={vw >= 930 ? "car" : "char"}
-            interval="preserveStartEnd"
-            reversed
-          />
-          <YAxis
-            domain={["dataMin", "dataMax"]}
-            tickCount={6}
-            width={28}
-            hide
-          />
-          {!hide.MPG && (
-            <Line
-              strokeWidth={2}
-              type="monotone"
-              dot={false}
-              isAnimationActive={showAnimation}
-              dataKey="MPG"
-              stroke={green[500]}
-            />
-          )}
-          {!hide.horsepower && (
-            <Line
-              strokeWidth={2}
-              type="monotone"
-              dot={false}
-              isAnimationActive={showAnimation}
-              dataKey="horsepower"
-              stroke={red[500]}
-            />
-          )}
-          {!hide.weight && (
-            <Line
-              strokeWidth={2}
-              type="monotone"
-              dot={false}
-              isAnimationActive={showAnimation}
-              dataKey="weight"
-              stroke={blue[500]}
-            />
-          )}
-          {!hide.powerToWeight && (
-            <Line
-              strokeWidth={2}
-              type="monotone"
-              dot={false}
-              isAnimationActive={showAnimation}
-              dataKey="powerToWeight"
-              stroke={orange[500]}
-            />
-          )}
-          <Legend verticalAlign="top" />
-        </LineChart>
-      </ResponsiveContainer>
-    );
-  },
-);
+  const options = {
+    chart: { type: "spline", backgroundColor: "transparent" },
+    title: { text: "Car Data", style: { color } },
+    plotOptions: {
+      series: {
+        marker: { enabled: false },
+        lineWidth: 2,
+      },
+    },
+    tooltip: { valueDecimals: 0, valueSuffix: "%" },
+    yAxis: {
+      floor: 0,
+      ceiling: 100,
+      gridLineDashStyle: "Dot",
+      labels: { enabled: false },
+      title: { text: undefined },
+    },
+    xAxis: { categories: xAxis },
+    series: [
+      { data: horsepower, showInLegend: false, name: "Horsepower" },
+      { data: MPG, showInLegend: false, name: "MPG" },
+      { data: weight, showInLegend: false, name: "Weight" },
+      { data: powerToWeight, showInLegend: false, name: "Power-to-Weight" },
+    ],
+  };
+
+  return (
+    <div style={{ width: "100%" }}>
+      <HighchartsReact highcharts={Highcharts} options={options} />
+    </div>
+  );
+});
 
 export default CarChart;
