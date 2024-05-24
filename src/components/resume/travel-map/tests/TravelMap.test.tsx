@@ -4,8 +4,13 @@ import render from "../../../../recoil-test-render";
 
 describe("resume | travel-map | TravelMap", () => {
   it("renders as expected", () => {
-    render(<TravelMap />);
+    const windowFetch = window.fetch;
+    window.fetch = vi
+      .fn()
+      .mockImplementation(() => Promise.resolve({ ok: true, json: {} }));
 
+    // render
+    render(<TravelMap />);
     // Verify World Map
     expect(screen.getByText("Loading World Map...")).toBeInTheDocument();
     // Verify Travel Table
@@ -17,5 +22,7 @@ describe("resume | travel-map | TravelMap", () => {
     expect(screen.getByText("Magic")).toBeInTheDocument();
     // Verify Table
     expect(screen.getByText("Ship 🚢")).toBeInTheDocument();
+
+    window.fetch = windowFetch;
   });
 });
