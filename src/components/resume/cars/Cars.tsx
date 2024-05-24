@@ -1,46 +1,38 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { useRecoilState } from "recoil";
 import TimelineCard from "../../common/timeline-card";
 import dateObj from "../../../apis/DateHelper";
 import cars, { kensCars, familyCars } from "../../../constants/cars";
 import CarCard from "./CarCard";
-import CarChart, { HideObject } from "./CarChart";
+import CarChart from "./CarChart";
 import CarSankeyGraph from "./CarSankeyGraph";
-import CarChartControls, { ShowKey } from "./CarChartControls";
+import CarChartControls from "./CarChartControls";
 import ExpandableCard from "../../common/expandable-card";
+import themeAtom from "../../../recoil/theme-atom";
 
 const Cars = () => {
-  const [showAnimation, setShowAnimation] = React.useState(true);
-  const [hide, setHide] = React.useState<HideObject>({});
+  const [theme] = useRecoilState(themeAtom);
+  const [hideFamily, setHideFamily] = React.useState(false);
+  const [hideKen, setHideKen] = React.useState(false);
 
-  const { clientWidth, clientHeight } = document.documentElement;
-  const { innerWidth, innerHeight } = window;
-  const vw = Math.max(clientWidth, innerWidth, 0);
-  const vh = Math.max(clientHeight, innerHeight, 0);
+  const color = theme.mode === "light" ? "black" : "white";
 
-  const handleClick = (key: ShowKey) => () => {
-    if (key === "ken" || key === "family") {
-      setShowAnimation(true);
+  const handleClick = (key: string) => () => {
+    if (key === "ken") {
+      setHideKen(!hideKen);
     } else {
-      setShowAnimation(
-        (hide.horsepower && hide.MPG && hide.weight && hide.powerToWeight) ||
-          false,
-      );
-    }
-    if (hide[key]) {
-      setHide({ ...hide, [key]: false });
-    } else {
-      setHide({ ...hide, [key]: true });
+      setHideFamily(!hideFamily);
     }
   };
 
   let data = cars;
-  if (hide.ken && hide.family) {
+  if (hideKen && hideFamily) {
     data = [];
-  } else if (hide.ken) {
+  } else if (hideKen) {
     data = familyCars;
-  } else if (hide.family) {
+  } else if (hideFamily) {
     data = kensCars;
   }
 
@@ -58,18 +50,16 @@ const Cars = () => {
         title="Ken's Cars"
         yearMarkerFrequency={3}
       />
-      <CarSankeyGraph />
-      <CarChartControls onClick={handleClick} hide={hide} vw={vw} />
-      <CarChart
-        showAnimation={showAnimation}
-        data={data}
-        hide={hide}
-        vw={vw}
-        vh={vh}
+      <CarSankeyGraph color={color} />
+      <CarChartControls
+        onClick={handleClick}
+        hideKen={hideKen}
+        hideFamily={hideFamily}
       />
+      <CarChart data={data} color={color} />
       <Grid container spacing={2}>
-        {!hide.ken && (
-          <Grid item sm={12} md={hide.family ? 12 : 6}>
+        {!hideKen && (
+          <Grid item sm={12} md={hideFamily ? 12 : 6}>
             <ExpandableCard title="Ken's Cars">
               {kensCars.map((car, i) => (
                 <CarCard car={car} key={`k-${car.title}-${i}`} />
@@ -77,8 +67,8 @@ const Cars = () => {
             </ExpandableCard>
           </Grid>
         )}
-        {!hide.family && (
-          <Grid item sm={12} md={hide.ken ? 12 : 6}>
+        {!hideFamily && (
+          <Grid item sm={12} md={hideKen ? 12 : 6}>
             <ExpandableCard title="Family Cars">
               {familyCars.map((car, i) => (
                 <CarCard car={car} key={`f-${car.title}-${i}`} />

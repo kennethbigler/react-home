@@ -30,26 +30,17 @@ describe("resume | cars | Cars", () => {
     const { container } = render(<Cars />);
 
     expect(container.querySelector(".MuiButton-contained")).toBeNull();
-    fireEvent.click(screen.getByText("Horsepower"));
+    fireEvent.click(screen.getByText("Hide Ken"));
     expect(container.querySelector(".MuiButton-contained")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Horsepower"));
+    fireEvent.click(screen.getByText("Hide Ken"));
     expect(container.querySelector(".MuiButton-contained")).toBeNull();
-  });
-
-  it("re-enables animations", () => {
-    render(<Cars />);
-
-    fireEvent.click(screen.getByText("MPG"));
-    fireEvent.click(screen.getByText("Horsepower"));
-    fireEvent.click(screen.getByText("Weight"));
-    fireEvent.click(screen.getByText("Power-to-Weight"));
   });
 
   it("hides family cars", () => {
     render(<Cars />);
 
     expect(screen.getByTitle("Toyota Prius (2007)")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Hide Family's"));
+    fireEvent.click(screen.getByText("Hide Family"));
     expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
   });
 
@@ -59,7 +50,7 @@ describe("resume | cars | Cars", () => {
     expect(
       screen.getByTitle("Ford Bronco Badlands (2021)"),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Hide Ken's"));
+    fireEvent.click(screen.getByText("Hide Ken"));
     expect(screen.queryByTitle("Ford Bronco Badlands (2021)")).toBeNull();
   });
 
@@ -70,12 +61,12 @@ describe("resume | cars | Cars", () => {
     expect(
       screen.getByTitle("Ford Bronco Badlands (2021)"),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Hide Family's"));
+    fireEvent.click(screen.getByText("Hide Family"));
     expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
     expect(
       screen.getByTitle("Ford Bronco Badlands (2021)"),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Hide Ken's"));
+    fireEvent.click(screen.getByText("Hide Ken"));
     expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
     expect(screen.queryByTitle("Ford Bronco Badlands (2021)")).toBeNull();
   });

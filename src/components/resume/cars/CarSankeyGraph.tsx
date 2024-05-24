@@ -1,18 +1,18 @@
+import * as React from "react";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import highchartsMore from "highcharts/highcharts-more";
 import sankey from "highcharts/modules/sankey";
-import { useRecoilState } from "recoil";
-import themeAtom from "../../../recoil/theme-atom";
 import { carSankeyData } from "../../../constants/cars";
 
 sankey(Highcharts); // initiate specific module
 highchartsMore(Highcharts); // if you module is not in node_modules folder
 
-const CarSankeyGraph = () => {
-  const [theme] = useRecoilState(themeAtom);
-  const color = theme.mode === "light" ? "black" : "white";
+interface CarSankeyGraphProps {
+  color: string;
+}
 
+const CarSankeyGraph = React.memo(({ color }: CarSankeyGraphProps) => {
   const options: Highcharts.Options = {
     title: {
       text: "Cars",
@@ -35,6 +35,6 @@ const CarSankeyGraph = () => {
       <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );
-};
+});
 
 export default CarSankeyGraph;
