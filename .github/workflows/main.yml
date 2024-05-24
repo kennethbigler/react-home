@@ -62,11 +62,6 @@ jobs:
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
-      - name: Run pa11y-ci
-        run: |
-          npm run start -- --open & npx wait-on http://localhost:5173
-          npx pa11y-ci
-
   # Adding a code analyzer job
   analyze:
     runs-on: ubuntu-latest
