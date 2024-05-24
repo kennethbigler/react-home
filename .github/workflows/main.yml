@@ -54,6 +54,8 @@ jobs:
 
       - name: Codecov
         uses: codecov/codecov-action@v4.4.0
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Run lighthouse
         run: npx @lhci/cli autorun --githubToken="$LHCI_GITHUB_TOKEN" --githubAppToken="$LHCI_GITHUB_APP_TOKEN"
