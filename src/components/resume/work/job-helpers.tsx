@@ -1,6 +1,5 @@
 import * as React from "react";
 import Chip from "@mui/material/Chip";
-import { Payload } from "recharts/types/component/DefaultTooltipContent";
 import dateObj, { DateObj } from "../../../apis/DateHelper";
 import { FORMAT } from "../../common/timeline-card/timeline-consts";
 
@@ -24,25 +23,4 @@ export const showRange = (s: DateObj, e: DateObj, notes = ""): string => {
 
   // return string for output
   return `${start} - ${end} (${range}) ${notes}`;
-};
-
-type Months = string | number;
-
-interface TooltipPayload extends Payload<string, string> {
-  payload?: { name: string };
-}
-
-export const tooltipFormatter = (
-  months: Months,
-  _name: string,
-  entry: TooltipPayload,
-): [string, string] => {
-  const displayMonths = (months as number) % 12;
-  const years = Math.floor((months as number) / 12);
-
-  const label = entry.payload?.name || "";
-  const value =
-    (years ? `${years}y ` : "") + (displayMonths ? `${displayMonths}m` : "");
-
-  return [value, label];
 };
