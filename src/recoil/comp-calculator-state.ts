@@ -22,7 +22,7 @@ import { DateObj } from "../apis/DateHelper";
  * Grant Now - calculated
  */
 export interface CompEntry {
-  date: DateObj;
+  entryDate: DateObj;
   salary: number;
   bonus: number;
   priceNow: number;
