@@ -1,10 +1,9 @@
 import { atom, selector } from "recoil";
-import { DateObj } from "../apis/DateHelper";
 
 /** Compensation Calculator
  *
  * -----     SALARY     -----
- * Date {DateObj}
+ * Date {string}
  * Salary {number}
  * Bonus {number}
  * Stock (Adj) {number} - calculated
@@ -22,7 +21,7 @@ import { DateObj } from "../apis/DateHelper";
  * Grant Now - calculated
  */
 export interface CompEntry {
-  entryDate: DateObj;
+  entryDate: string;
   salary: number;
   bonus: number;
   priceNow: number;
@@ -64,24 +63,36 @@ export const compCalcReadOnlyState = selector({
     // access state
     const compEntries = get(compCalcAtom);
 
-    const compCalcEntries: CompCalcEntry[] = compEntries.map(
-      ({ salary, bonus, priceNow, priceThen, grantDuration, grantQty }, i) => {
-        const stock = (priceThen * grantQty) / grantDuration;
-        const stockAdj = (priceNow * grantQty) / grantDuration;
-        const total = salary + bonus + stock;
-        const totalAdj = salary + bonus + stockAdj;
-        const netDiff = totalAdj - compCalcEntries[i - 1].totalAdj;
-        const grantThen = priceThen * grantQty;
-        const grantNow = priceNow * grantQty;
+    const compCalcEntriesNoNet: Omit<CompCalcEntry, "netDiff">[] =
+      compEntries.map(
+        ({ salary, bonus, priceNow, priceThen, grantDuration, grantQty }) => {
+          const stock = (priceThen * grantQty) / grantDuration;
+          const stockAdj = (priceNow * grantQty) / grantDuration;
+          const total = salary + bonus + stock;
+          const totalAdj = salary + bonus + stockAdj;
+          const grantThen = priceThen * grantQty;
+          const grantNow = priceNow * grantQty;
+
+          return {
+            stock,
+            stockAdj,
+            total,
+            totalAdj,
+            grantThen,
+            grantNow,
+          };
+        },
+      );
+
+    const compCalcEntries: CompCalcEntry[] = compCalcEntriesNoNet.map(
+      ({ totalAdj, ...rest }, i) => {
+        const netDiff =
+          i === 0 ? 0 : totalAdj - compCalcEntriesNoNet[i - 1].totalAdj;
 
         return {
-          stock,
-          stockAdj,
-          total,
           totalAdj,
           netDiff,
-          grantThen,
-          grantNow,
+          ...rest,
         };
       },
     );

@@ -15,6 +15,7 @@ import {
   TextFieldProps,
 } from "@mui/material";
 import { months } from "../../../apis/DateHelper";
+import { CompEntry } from "../../../recoil/comp-calculator-state";
 
 const tfProps: TextFieldProps = {
   variant: "standard",
@@ -32,13 +33,15 @@ years.reverse();
 interface CompEntryDialogProps {
   open: boolean;
   handleClose: () => void;
+  submitCompEntry: (n: CompEntry) => void;
 }
 
 const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
   open,
   handleClose,
+  submitCompEntry,
 }) => {
-  const [entryDateMonth, setEntryDateMonth] = React.useState(months[0]);
+  const [entryDateMonth, setEntryDateMonth] = React.useState("1");
   const [entryDateYear, setEntryDateYear] = React.useState(years[0].toString());
   const [salary, setSalary] = React.useState(0);
   const [bonus, setBonus] = React.useState(0);
@@ -48,16 +51,24 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
   const [grantQty, setGrantQty] = React.useState(0);
 
   const handleChange =
-    (func: (n: number) => void) => (e: React.ChangeEvent) => {
-      // @ts-expect-error: value will exist
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      func(e.target.value);
-    };
-
+    (func: (n: number) => void) => (e: React.ChangeEvent<HTMLInputElement>) =>
+      func(parseInt(e.target.value, 10));
   const handleSelectMonth = (e: SelectChangeEvent<string>) =>
     setEntryDateMonth(e.target.value);
   const handleSelectYear = (e: SelectChangeEvent<string>) =>
     setEntryDateYear(e.target.value);
+
+  const handleSubmit = () => {
+    submitCompEntry({
+      entryDate: `${entryDateYear}-${entryDateMonth.length < 2 ? "0" : ""}${entryDateMonth}`,
+      salary,
+      bonus,
+      priceNow,
+      priceThen,
+      grantDuration,
+      grantQty,
+    });
+  };
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -101,12 +112,14 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
           label="Salary"
           value={salary}
           onChange={handleChange(setSalary)}
+          InputProps={{ startAdornment: "$" }}
           {...tfProps}
         />
         <TextField
           label="Bonus"
           value={bonus}
           onChange={handleChange(setBonus)}
+          InputProps={{ startAdornment: "$" }}
           {...tfProps}
         />
         <DialogContentText variant="h6" component="h4" sx={{ marginTop: 7 }}>
@@ -128,18 +141,22 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
           label="Grant Value Then"
           value={priceThen}
           onChange={handleChange(setPriceThen)}
+          InputProps={{ startAdornment: "$" }}
           {...tfProps}
         />
         <TextField
           label="Grant Value Now"
           value={priceNow}
           onChange={handleChange(setPriceNow)}
+          InputProps={{ startAdornment: "$" }}
           {...tfProps}
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button type="submit">Add</Button>
+        <Button type="submit" onClick={handleSubmit}>
+          Add
+        </Button>
       </DialogActions>
     </Dialog>
   );
