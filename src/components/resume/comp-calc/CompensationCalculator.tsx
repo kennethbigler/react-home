@@ -1,7 +1,10 @@
 import * as React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { Button, Typography } from "@mui/material";
-import compCalcState from "../../../recoil/comp-calculator-state";
+import compCalcState, {
+  CompEntry,
+  compCalcReadOnlyState,
+} from "../../../recoil/comp-calculator-state";
 import CompDisplay from "./CompDisplay";
 import CompEntryDialog from "./CompEntryDialog";
 
@@ -25,12 +28,14 @@ import CompEntryDialog from "./CompEntryDialog";
  */
 const CompensationCalculator = () => {
   const [compEntries, setCompEntries] = useRecoilState(compCalcState);
+  const compCalcEntries = useRecoilValue(compCalcReadOnlyState);
   const [open, setOpen] = React.useState(false);
 
   const openEntryModal = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const submitCompEntry = () => {
+  const submitCompEntry = (newCompEntry: CompEntry) => {
+    setCompEntries([...compEntries, newCompEntry]);
     handleClose();
   };
 
@@ -40,10 +45,17 @@ const CompensationCalculator = () => {
         Comp Calculator
       </Typography>
 
-      <CompDisplay compEntries={compEntries} />
+      <CompDisplay
+        compEntries={compEntries}
+        compCalcEntries={compCalcEntries}
+      />
 
       <Button onClick={openEntryModal}>New Entry</Button>
-      <CompEntryDialog open={open} handleClose={handleClose} />
+      <CompEntryDialog
+        open={open}
+        handleClose={handleClose}
+        submitCompEntry={submitCompEntry}
+      />
     </>
   );
 };
