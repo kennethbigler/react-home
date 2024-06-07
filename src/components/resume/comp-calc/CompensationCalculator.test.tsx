@@ -6,6 +6,6 @@ describe("resume | comp-calc | CompensationCalculator", () => {
   it("renders as expected", () => {
     render(<CompensationCalculator />);
 
-    expect(screen.getByText("Compensation Calculator")).toBeInTheDocument();
+    expect(screen.getByText("Comp Calculator")).toBeInTheDocument();
   });
 });
