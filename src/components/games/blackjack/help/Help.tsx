@@ -67,7 +67,7 @@ const Help: React.FC = React.memo(() => {
       <BlackjackTable data={hardTtl} title="Hard Totals" />
       <BlackjackTable data={softTtl} title="Soft Totals" />
       <BlackjackTable data={pairs} title="Pairs" />
-      <Table>
+      <Table aria-label="Key for above: H means Hit, S means Stand, P means Split, D means Double or Hit, DS means Double or Split">
         <TableHead>
           <TableRow>
             <TableCell colSpan={11}>Key</TableCell>

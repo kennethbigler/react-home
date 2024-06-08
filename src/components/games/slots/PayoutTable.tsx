@@ -23,7 +23,7 @@ const payoutTable = [
 ];
 
 const PayoutTable: React.FC = React.memo(() => (
-  <Table>
+  <Table aria-label="payout reference table for slot game">
     <TableHead>
       <TableRow>
         <TableCell>Slot Roll</TableCell>
@@ -33,7 +33,9 @@ const PayoutTable: React.FC = React.memo(() => (
     <TableBody>
       {payoutTable.map((row, i) => (
         <TableRow key={i}>
-          <TableCell>{row.symbol}</TableCell>
+          <TableCell component="th" scope="row">
+            {row.symbol}
+          </TableCell>
           <TableCell>{`${row.payout} : 1`}</TableCell>
         </TableRow>
       ))}

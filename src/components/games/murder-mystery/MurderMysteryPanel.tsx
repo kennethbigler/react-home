@@ -57,24 +57,32 @@ const MurderMysteryPanel: React.FC<MurderMysteryPanelProps> = React.memo(
           </div>
         </AccordionSummary>
         <AccordionDetails>
-          <Table>
+          <Table aria-label={`role information for ${role}`}>
             <TableBody>
               <TableRow>
-                <TableCell>Gender</TableCell>
+                <TableCell component="th" scope="row">
+                  Gender
+                </TableCell>
                 <TableCell>{gender}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Description</TableCell>
+                <TableCell component="th" scope="row">
+                  Description
+                </TableCell>
                 <TableCell>{nl2br(description)}</TableCell>
               </TableRow>
               {hint && (
                 <TableRow>
-                  <TableCell>Hint</TableCell>
+                  <TableCell component="th" scope="row">
+                    Hint
+                  </TableCell>
                   <TableCell>{nl2br(hint)}</TableCell>
                 </TableRow>
               )}
               <TableRow>
-                <TableCell>Clue</TableCell>
+                <TableCell component="th" scope="row">
+                  Clue
+                </TableCell>
                 <TableCell>{nl2br(clue)}</TableCell>
               </TableRow>
             </TableBody>

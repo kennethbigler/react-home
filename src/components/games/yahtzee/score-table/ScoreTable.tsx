@@ -71,7 +71,7 @@ const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
   );
 
   return (
-    <Table size="small">
+    <Table size="small" aria-label="yahtzee game table">
       <Header sx={centerStyle} />
       <TableBody>
         <TopTable

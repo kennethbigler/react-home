@@ -12,15 +12,21 @@ const BottomScores: React.FC<BottomScoresProps> = React.memo(
   ({ finalTopSum, bottomSum, sx }: BottomScoresProps) => (
     <>
       <TableRow sx={{ borderTop: 2 }}>
-        <TableCell colSpan={2}>Lower Half Total</TableCell>
+        <TableCell colSpan={2} component="th" scope="row">
+          Lower Half Total
+        </TableCell>
         <TableCell sx={sx}>{bottomSum}</TableCell>
       </TableRow>
       <TableRow>
-        <TableCell colSpan={2}>Upper Half Total</TableCell>
+        <TableCell colSpan={2} component="th" scope="row">
+          Upper Half Total
+        </TableCell>
         <TableCell sx={sx}>{finalTopSum}</TableCell>
       </TableRow>
       <TableRow sx={{ borderBottom: 2 }}>
-        <TableCell colSpan={2}>Grand Total</TableCell>
+        <TableCell colSpan={2} component="th" scope="row">
+          Grand Total
+        </TableCell>
         <TableCell sx={sx}>{finalTopSum + bottomSum}</TableCell>
       </TableRow>
     </>

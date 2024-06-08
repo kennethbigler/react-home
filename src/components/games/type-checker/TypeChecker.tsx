@@ -145,7 +145,7 @@ const TypeChecker = () => {
         </FormControl>
       )}
       <TableContainer component={Paper}>
-        <Table aria-label="are you the one data entry table">
+        <Table aria-label="pokemon type checker">
           <TableHead>
             <TableRow>
               <TableCell>-</TableCell>

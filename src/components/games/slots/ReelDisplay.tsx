@@ -43,7 +43,7 @@ const ReelDisplay: React.FC<ReelDisplayProps> = (props: ReelDisplayProps) => {
   }, [reel]);
 
   return (
-    <Table>
+    <Table aria-label="slots displayed in a 3 by 3 grid">
       <TableBody>{getSlots()}</TableBody>
     </Table>
   );

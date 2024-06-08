@@ -36,22 +36,28 @@ const Info: React.FC = React.memo(() => (
     </Grid>
     <Grid item md={8} xs={12}>
       <ExpandableCard title={getJob(workExp[0])}>
-        <Table>
+        <Table aria-label="general information about Ken Bigler">
           <TableBody>
             <TableRow>
-              <TableCell>Location</TableCell>
+              <TableCell component="th" scope="row">
+                Location
+              </TableCell>
               <TableCell>Mountain View, CA</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Role</TableCell>
+              <TableCell component="th" scope="row">
+                Role
+              </TableCell>
               <TableCell>Accessibility Engineer Leader</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Volunteer Work</TableCell>
+              <TableCell component="th" scope="row">
+                Volunteer Work
+              </TableCell>
               <TableCell>Second Harvest Food Bank</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell colSpan={2} align="center">
+              <TableCell colSpan={2} align="center" component="th">
                 Licenses
               </TableCell>
             </TableRow>

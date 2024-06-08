@@ -13,7 +13,7 @@ interface MoneyTableProps {
 
 const MoneyTable: React.FC<MoneyTableProps> = React.memo(
   ({ name, money, houseMoney }: MoneyTableProps) => (
-    <Table>
+    <Table aria-label="current slot game monetary status">
       <TableHead>
         <TableRow>
           <TableCell>Player</TableCell>
@@ -22,11 +22,15 @@ const MoneyTable: React.FC<MoneyTableProps> = React.memo(
       </TableHead>
       <TableBody>
         <TableRow>
-          <TableCell>{name}</TableCell>
+          <TableCell component="th" scope="row">
+            {name}
+          </TableCell>
           <TableCell>{`$${money}`}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell>House</TableCell>
+          <TableCell component="th" scope="row">
+            House
+          </TableCell>
           <TableCell>{`$${houseMoney}`}</TableCell>
         </TableRow>
       </TableBody>

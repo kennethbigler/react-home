@@ -72,7 +72,10 @@ const TopTable: React.FC<TopTableProps> = (props: TopTableProps) => {
 
         return (
           <TableRow key={name}>
-            <TableCell>{`${name}: ${d},${d},${d} = ${d * 3}`}</TableCell>
+            <TableCell
+              component="th"
+              scope="row"
+            >{`${name}: ${d},${d},${d} = ${d * 3}`}</TableCell>
             <TableCell>{`Add Only ${name}`}</TableCell>
             <TableCell sx={sx}>
               {getTopTableButtons(score, showButton, sum, i)}
