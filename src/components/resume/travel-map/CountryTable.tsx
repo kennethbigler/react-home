@@ -74,7 +74,7 @@ const TravelMap: React.FC = React.memo(() => (
         americas.length + euNaf.length + asNau.length
       } countries:`}
     </Typography>
-    <Table>
+    <Table aria-label="Countries I have visited">
       <TableHead>
         <TableRow>
           <TableCell style={{ ...cellStyles, ...separatorStyles }}>

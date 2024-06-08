@@ -47,7 +47,7 @@ const Board: React.FC<BoardProps> = (props: BoardProps) => {
   }
 
   return (
-    <Table>
+    <Table aria-label="game of Tik Tac Toe in a 3 by 3 grid">
       <TableBody>{cells}</TableBody>
     </Table>
   );

@@ -16,13 +16,11 @@ const cards: string[] = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "A"];
 const cellStyle: React.CSSProperties = { width: 60 };
 
 const BlackjackTable: React.FC<BlackjackTableProps> = ({ title, data }) => (
-  <Table>
+  <Table aria-label={`ideal play strategy for ${title}`}>
     <TableHead>
       <TableRow>
         <TableCell colSpan={11}>{title}</TableCell>
       </TableRow>
-    </TableHead>
-    <TableBody>
       <TableRow>
         <Cell rowSpan={2} style={cellStyle} text="Hand" />
         <Cell colSpan={10} text="Dealer" />
@@ -32,6 +30,8 @@ const BlackjackTable: React.FC<BlackjackTableProps> = ({ title, data }) => (
           <Cell key={c} text={c} />
         ))}
       </TableRow>
+    </TableHead>
+    <TableBody>
       {data.map((obj) => (
         <Row key={obj.name} name={obj.name} data={obj.data} />
       ))}

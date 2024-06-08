@@ -30,7 +30,7 @@ const EffectiveRow: React.FC<EffectiveRowProps> = ({
   onClick,
 }) => (
   <TableRow>
-    <TableCell padding="none">
+    <TableCell padding="none" component="th" scope="row">
       <Button
         variant="contained"
         fullWidth

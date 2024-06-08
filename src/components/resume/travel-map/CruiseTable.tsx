@@ -109,7 +109,7 @@ princessLoyalty.forEach(({ num, nights, status }, i) => {
 // --------------------     Render     -------------------- //
 const TravelMap: React.FC = React.memo(() => (
   <>
-    <Table>
+    <Table aria-label="cruises I have been on">
       <TableHead>
         <TableRow>
           {/* Disney */}

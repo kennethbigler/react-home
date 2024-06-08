@@ -89,7 +89,9 @@ const BottomTable: React.FC<BottomTableProps> = (props: BottomTableProps) => {
 
       return (
         <TableRow key={name}>
-          <TableCell>{name}</TableCell>
+          <TableCell component="th" scope="row">
+            {name}
+          </TableCell>
           <TableCell>{hint}</TableCell>
           <TableCell sx={sx}>
             {getBottomTableButtons(score, parsedPoints, hasYahtzee, i)}

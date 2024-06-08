@@ -12,16 +12,22 @@ const TopScores: React.FC<TopScoresProps> = React.memo(
   ({ topSum, finalTopSum, sx }: TopScoresProps) => (
     <>
       <TableRow sx={{ borderTop: 2 }}>
-        <TableCell colSpan={2}>Total == 63</TableCell>
+        <TableCell colSpan={2} component="th" scope="row">
+          Total == 63
+        </TableCell>
         <TableCell sx={sx}>{topSum}</TableCell>
       </TableRow>
       <TableRow>
-        <TableCell>Bonus if &gt;= 63</TableCell>
+        <TableCell component="th" scope="row">
+          Bonus if &gt;= 63
+        </TableCell>
         <TableCell>Score 35</TableCell>
         <TableCell sx={sx}>{topSum % 100 >= 63 ? 35 : 0}</TableCell>
       </TableRow>
       <TableRow sx={{ borderBottom: 2 }}>
-        <TableCell colSpan={2}>Upper Half Total</TableCell>
+        <TableCell colSpan={2} component="th" scope="row">
+          Upper Half Total
+        </TableCell>
         <TableCell sx={sx}>{finalTopSum}</TableCell>
       </TableRow>
     </>

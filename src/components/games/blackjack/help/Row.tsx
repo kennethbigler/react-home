@@ -12,7 +12,9 @@ const tableCellStyle: React.CSSProperties = { textAlign: "center", padding: 0 };
 
 const Row: React.FC<RowProps> = ({ name, data }: RowProps) => (
   <TableRow>
-    <TableCell style={tableCellStyle}>{name}</TableCell>
+    <TableCell style={tableCellStyle} component="th" scope="row">
+      {name}
+    </TableCell>
     {data.map((text, i) => (
       <Cell key={i} {...text} />
     ))}

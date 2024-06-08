@@ -4,6 +4,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Grid from "@mui/material/Grid";
+import { TableHead } from "@mui/material";
 import ExpandableCard from "../../common/expandable-card";
 import photo from "../../../images/ken.webp";
 import workExp, { Job } from "../../../constants/work";
@@ -36,25 +37,37 @@ const Info: React.FC = React.memo(() => (
     </Grid>
     <Grid item md={8} xs={12}>
       <ExpandableCard title={getJob(workExp[0])}>
-        <Table>
+        <Table aria-label="general information about Ken Bigler">
           <TableBody>
             <TableRow>
-              <TableCell>Location</TableCell>
+              <TableCell component="th" scope="row">
+                Location
+              </TableCell>
               <TableCell>Mountain View, CA</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Role</TableCell>
+              <TableCell component="th" scope="row">
+                Role
+              </TableCell>
               <TableCell>Accessibility Engineer Leader</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Volunteer Work</TableCell>
+              <TableCell component="th" scope="row">
+                Volunteer Work
+              </TableCell>
               <TableCell>Second Harvest Food Bank</TableCell>
             </TableRow>
+          </TableBody>
+        </Table>
+        <Table aria-label="Ken Bigler's licenses">
+          <TableHead>
             <TableRow>
               <TableCell colSpan={2} align="center">
                 Licenses
               </TableCell>
             </TableRow>
+          </TableHead>
+          <TableBody>
             <TableRow>
               <TableCell>
                 <p>Driver License (C &amp; M1)</p>
