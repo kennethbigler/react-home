@@ -4,7 +4,6 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Grid from "@mui/material/Grid";
-import { TableHead } from "@mui/material";
 import ExpandableCard from "../../common/expandable-card";
 import photo from "../../../images/ken.webp";
 import workExp, { Job } from "../../../constants/work";
@@ -57,17 +56,11 @@ const Info: React.FC = React.memo(() => (
               </TableCell>
               <TableCell>Second Harvest Food Bank</TableCell>
             </TableRow>
-          </TableBody>
-        </Table>
-        <Table aria-label="Ken Bigler's licenses">
-          <TableHead>
             <TableRow>
-              <TableCell colSpan={2} align="center">
+              <TableCell colSpan={2} align="center" component="th">
                 Licenses
               </TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
             <TableRow>
               <TableCell>
                 <p>Driver License (C &amp; M1)</p>

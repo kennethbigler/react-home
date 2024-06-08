@@ -53,21 +53,23 @@ const Rules: React.FC = React.memo(() => (
     <br />
     <Typography variant="h5">Other Rules:</Typography>
     <ul>
-      <Typography>
-        <li>Dealer hits on 16 or less and soft 17</li>
-      </Typography>
-      <Typography>
-        <li>Minimum bet is $5</li>
-      </Typography>
+      <li>
+        <Typography>Dealer hits on 16 or less and soft 17</Typography>
+      </li>
+      <li>
+        <Typography>Minimum bet is $5</Typography>
+      </li>
     </ul>
     <Typography variant="h5">AI Algorithm:</Typography>
     <ul>
-      <Typography>
-        <li>House Rules: 6 decks, H17, DAS, No Surrender, Peek</li>
-      </Typography>
-      <Typography>
-        <li>Estimated casino edge for these rules: 0.66%</li>
-      </Typography>
+      <li>
+        <Typography>
+          House Rules: 6 decks, H17, DAS, No Surrender, Peek
+        </Typography>
+      </li>
+      <li>
+        <Typography>Estimated casino edge for these rules: 0.66%</Typography>
+      </li>
     </ul>
   </>
 ));
