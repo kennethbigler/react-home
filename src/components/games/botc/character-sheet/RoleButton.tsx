@@ -13,9 +13,18 @@ const RoleButton = ({ role, selected, updateRoles }: RoleButtonProps) => (
     <Button
       variant={selected ? "contained" : "outlined"}
       color={role.alignment}
-      sx={{ padding: "6px", width: "100%" }}
+      sx={{
+        padding: "6px",
+        width: "100%",
+        fontFamily: '"EB Garamond", Barlow, serif;',
+      }}
       onClick={updateRoles && updateRoles(role, selected)}
     >
+      <img
+        src={role.icon}
+        alt=""
+        style={{ width: "24px", marginRight: "10px" }}
+      />
       {role.name}
     </Button>
   </Grid>

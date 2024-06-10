@@ -33,14 +33,14 @@ import {
   SQL,
   JEST,
 } from "./tech";
-import ciscoLogo from "../images/cisco_logo.gif";
-import gigNowLogo from "../images/gignow_logo.png";
-import SHFBLogo from "../images/SHFB_logo.jpg";
-import netappLogo from "../images/netapp_logo.svg.png";
-import vengefulLogo from "../images/vengefulgames_logo.png";
-import teslaLogo from "../images/tesla_motors_logo.svg.png";
-import hoverboardLogo from "../images/hoverboard_logo.png";
-import intuitLogo from "../images/intuit_logo.png";
+import ciscoLogo from "../images/companies/cisco_logo.gif";
+import gigNowLogo from "../images/companies/gignow_logo.png";
+import SHFBLogo from "../images/companies/SHFB_logo.jpg";
+import netappLogo from "../images/companies/netapp_logo.svg.png";
+import vengefulLogo from "../images/companies/vengefulgames_logo.png";
+import teslaLogo from "../images/companies/tesla_motors_logo.svg.png";
+import hoverboardLogo from "../images/companies/hoverboard_logo.png";
+import intuitLogo from "../images/companies/intuit_logo.png";
 
 export const WORK = "work";
 export const VOLUNTEER = "volunteer";
