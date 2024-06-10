@@ -20,7 +20,11 @@ interface PlayerCardProps {
   updateNotes: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-const chipStyle = { marginRight: "5px", marginTop: "5px" };
+const chipStyle = {
+  marginRight: "5px",
+  marginTop: "5px",
+  fontFamily: '"EB Garamond", Barlow, serif;',
+};
 
 const PlayerCard = ({
   script,
@@ -52,8 +56,10 @@ const PlayerCard = ({
           key={role.name}
           label={role.name}
           color={role.alignment}
+          variant="outlined"
           onDelete={updateRoles(role, true)}
           sx={chipStyle}
+          icon={<img src={role.icon} alt="" style={{ width: "20px" }} />}
         />
       ))}
     </Card>

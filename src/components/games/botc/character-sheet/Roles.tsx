@@ -35,11 +35,11 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         <hr />
         <Typography>Townsfolk</Typography>
       </Grid>
-      {scripts.active.townsfolk.map((name: string) => (
+      {scripts.active.townsfolk.map((role: BotCRole) => (
         <RoleButton
-          key={name}
-          role={{ name, alignment: "info" }}
-          selected={name in roleKey}
+          key={role.name}
+          role={role}
+          selected={role.name in roleKey}
           updateRoles={updateRoles}
         />
       ))}
@@ -48,11 +48,11 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         <hr />
         <Typography>Outsiders</Typography>
       </Grid>
-      {scripts.active.outsiders.map((name: string) => (
+      {scripts.active.outsiders.map((role: BotCRole) => (
         <RoleButton
-          key={name}
-          role={{ name, alignment: "success" }}
-          selected={name in roleKey}
+          key={role.name}
+          role={role}
+          selected={role.name in roleKey}
           updateRoles={updateRoles}
         />
       ))}
@@ -61,11 +61,11 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         <hr />
         <Typography>Minions</Typography>
       </Grid>
-      {scripts.active.minions.map((name: string) => (
+      {scripts.active.minions.map((role: BotCRole) => (
         <RoleButton
-          key={name}
-          role={{ name, alignment: "error" }}
-          selected={name in roleKey}
+          key={role.name}
+          role={role}
+          selected={role.name in roleKey}
           updateRoles={updateRoles}
         />
       ))}
@@ -74,11 +74,11 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         <hr />
         <Typography>Demons</Typography>
       </Grid>
-      {scripts.active.demons.map((name: string) => (
+      {scripts.active.demons.map((role: BotCRole) => (
         <RoleButton
-          key={name}
-          role={{ name, alignment: "error" }}
-          selected={name in roleKey}
+          key={role.name}
+          role={role}
+          selected={role.name in roleKey}
           updateRoles={updateRoles}
         />
       ))}
@@ -89,11 +89,11 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
             <hr />
             <Typography>Travelers</Typography>
           </Grid>
-          {scripts.active.travelers.map((name: string) => (
+          {scripts.active.travelers.map((role: BotCRole) => (
             <RoleButton
-              key={name}
-              role={{ name, alignment: "warning" }}
-              selected={name in roleKey}
+              key={role.name}
+              role={role}
+              selected={role.name in roleKey}
               updateRoles={updateRoles}
             />
           ))}
@@ -104,11 +104,11 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         <hr />
         <Typography>Other Travelers</Typography>
       </Grid>
-      {scripts.travelers.map((name: string) => (
+      {scripts.travelers.map((role: BotCRole) => (
         <RoleButton
-          key={name}
-          role={{ name, alignment: "warning" }}
-          selected={name in roleKey}
+          key={role.name}
+          role={role}
+          selected={role.name in roleKey}
           updateRoles={updateRoles}
         />
       ))}

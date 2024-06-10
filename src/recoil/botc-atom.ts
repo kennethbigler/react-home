@@ -6,6 +6,7 @@ export type BotCPlayerStatus = "liar" | "dead" | "used";
 export interface BotCRole {
   name: string;
   alignment: MuiColors;
+  icon: string;
 }
 
 export interface BotCPlayer {

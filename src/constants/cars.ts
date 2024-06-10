@@ -10,21 +10,21 @@ import {
 } from "@mui/material/colors";
 import dateObj from "../apis/DateHelper";
 
-import prius07 from "../images/07_toyota_prius.png";
-import voyager97 from "../images/97_plymouth_voyager.png";
-import pontiac93 from "../images/93_pontiac_bonneville.webp";
-import impala10 from "../images/10_chevrolet_impala.webp";
-import equinox10 from "../images/10_chevy_equinox.png";
-import mustang15 from "../images/15_mustang_gt_premium.png";
-import tesla16 from "../images/16_tesla_x.webp";
-import xj8l05 from "../images/05_jaguar_xj8l.jpg";
-import corvette18 from "../images/18_corvette_zo6_3lz.png";
-import ftype15 from "../images/15_jaguar_f_type.webp";
-import mustang20 from "../images/20_ford_mustang.png";
-import panamera21 from "../images/21_porsche_panamera.png";
-import bronco21 from "../images/21_ford_bronco.webp";
-import grom22 from "../images/22_honda_grom.webp";
-import porsche19 from "../images/19_porsche_cayenne.webp";
+import prius07 from "../images/cars/07_toyota_prius.png";
+import voyager97 from "../images/cars/97_plymouth_voyager.png";
+import pontiac93 from "../images/cars/93_pontiac_bonneville.webp";
+import impala10 from "../images/cars/10_chevrolet_impala.webp";
+import equinox10 from "../images/cars/10_chevy_equinox.png";
+import mustang15 from "../images/cars/15_mustang_gt_premium.png";
+import tesla16 from "../images/cars/16_tesla_x.webp";
+import xj8l05 from "../images/cars/05_jaguar_xj8l.jpg";
+import corvette18 from "../images/cars/18_corvette_zo6_3lz.png";
+import ftype15 from "../images/cars/15_jaguar_f_type.webp";
+import mustang20 from "../images/cars/20_ford_mustang.png";
+import panamera21 from "../images/cars/21_porsche_panamera.png";
+import bronco21 from "../images/cars/21_ford_bronco.webp";
+import grom22 from "../images/cars/22_honda_grom.webp";
+import porsche19 from "../images/cars/19_porsche_cayenne.webp";
 
 const prius = "Toyota Prius (2007)";
 const voyager = "Plymouth Voyager (1997)";
