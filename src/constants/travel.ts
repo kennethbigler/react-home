@@ -333,6 +333,14 @@ export const cruises: Cruise[] = [
     concierge: true,
   },
   {
+    departure: dateObj("2024-09"),
+    nights: 10,
+    name: "Bahamas",
+    ship: ships[3],
+    line: lines[0],
+    concierge: true,
+  },
+  {
     departure: dateObj("2024-12"),
     nights: 7,
     name: "Maiden Voyage (Caribbean)",
