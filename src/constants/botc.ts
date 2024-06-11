@@ -1,3 +1,4 @@
+// TB
 import baron from "../images/botc/tb/baron.webp";
 import butler from "../images/botc/tb/butler.webp";
 import chef from "../images/botc/tb/chef.webp";
@@ -20,6 +21,7 @@ import spy from "../images/botc/tb/spy.webp";
 import undertaker from "../images/botc/tb/undertaker.webp";
 import virgin from "../images/botc/tb/virgin.webp";
 import washerwoman from "../images/botc/tb/washerwoman.webp";
+// Travelers
 import apprentice from "../images/botc/travellers/apprentice.png";
 import barista from "../images/botc/travellers/barista.png";
 import beggar from "../images/botc/travellers/beggar.png";
@@ -36,12 +38,14 @@ import matron from "../images/botc/travellers/matron.png";
 import scapegoat from "../images/botc/travellers/scapegoat.png";
 import thief from "../images/botc/travellers/thief.png";
 import voudon from "../images/botc/travellers/voudon.png";
+// DTB
 import amnesiac from "../images/botc/dtb/amnesiac.webp";
 import cannibal from "../images/botc/dtb/cannibal.webp";
 import damsel from "../images/botc/dtb/damsel.webp";
 import harpy from "../images/botc/dtb/harpy.webp";
 import huntsman from "../images/botc/dtb/huntsman.webp";
 import pixie from "../images/botc/dtb/pixie.webp";
+// S&V
 import artist from "../images/botc/snv/artist.webp";
 import barber from "../images/botc/snv/barber.webp";
 import cerenovus from "../images/botc/snv/cerenovus.webp";
@@ -67,31 +71,32 @@ import towncrier from "../images/botc/snv/towncrier.webp";
 import vigormortis from "../images/botc/snv/vigormortis.webp";
 import vortox from "../images/botc/snv/vortox.webp";
 import witch from "../images/botc/snv/witch.webp";
-import grandmother from "../images/botc/bmr/assassin.webp";
-import gossip from "../images/botc/bmr/chambermaid.webp";
-import sailor from "../images/botc/bmr/courtier.webp";
-import courtier from "../images/botc/bmr/devilsadvocate.webp";
-import chambermaid from "../images/botc/bmr/exorcist.webp";
-import professor from "../images/botc/bmr/fool.webp";
-import exorcist from "../images/botc/bmr/gambler.webp";
-import minstrel from "../images/botc/bmr/godfather.webp";
-import innkeeper from "../images/botc/bmr/goon.webp";
-import tealady from "../images/botc/bmr/gossip.webp";
-import gambler from "../images/botc/bmr/grandmother.webp";
-import pacifist from "../images/botc/bmr/innkeeper.webp";
-import fool from "../images/botc/bmr/lunatic.webp";
-import goon from "../images/botc/bmr/mastermind.webp";
-import tinker from "../images/botc/bmr/minstrel.webp";
-import lunatic from "../images/botc/bmr/moonchild.webp";
-import moonchild from "../images/botc/bmr/pacifist.webp";
-import godfather from "../images/botc/bmr/po.webp";
-import assassin from "../images/botc/bmr/professor.webp";
-import devilsadvocate from "../images/botc/bmr/pukka.webp";
-import mastermind from "../images/botc/bmr/sailor.webp";
-import zombuul from "../images/botc/bmr/shabaloth.webp";
-import shabaloth from "../images/botc/bmr/tealady.webp";
-import pukka from "../images/botc/bmr/tinker.webp";
-import po from "../images/botc/bmr/zombuul.webp";
+// BMR
+import assassin from "../images/botc/bmr/assassin.webp";
+import chambermaid from "../images/botc/bmr/chambermaid.webp";
+import courtier from "../images/botc/bmr/courtier.webp";
+import devilsadvocate from "../images/botc/bmr/devilsadvocate.webp";
+import exorcist from "../images/botc/bmr/exorcist.webp";
+import fool from "../images/botc/bmr/fool.webp";
+import gambler from "../images/botc/bmr/gambler.webp";
+import godfather from "../images/botc/bmr/godfather.webp";
+import goon from "../images/botc/bmr/goon.webp";
+import gossip from "../images/botc/bmr/gossip.webp";
+import grandmother from "../images/botc/bmr/grandmother.webp";
+import innkeeper from "../images/botc/bmr/innkeeper.webp";
+import lunatic from "../images/botc/bmr/lunatic.webp";
+import mastermind from "../images/botc/bmr/mastermind.webp";
+import minstrel from "../images/botc/bmr/minstrel.webp";
+import moonchild from "../images/botc/bmr/moonchild.webp";
+import pacifist from "../images/botc/bmr/pacifist.webp";
+import po from "../images/botc/bmr/po.webp";
+import professor from "../images/botc/bmr/professor.webp";
+import pukka from "../images/botc/bmr/pukka.webp";
+import sailor from "../images/botc/bmr/sailor.webp";
+import shabaloth from "../images/botc/bmr/shabaloth.webp";
+import tealady from "../images/botc/bmr/tealady.webp";
+import tinker from "../images/botc/bmr/tinker.webp";
+import zombuul from "../images/botc/bmr/zombuul.webp";
 
 import { BotCRole } from "../recoil/botc-atom";
 
