@@ -28,7 +28,7 @@
     "@emotion/styled": "11.11.5",
     "@mui/icons-material": "5.15.19",
     "@mui/material": "5.15.19",
-    "@vitejs/plugin-react": "4.3.0",
+    "@vitejs/plugin-react": "4.3.1",
     "highcharts": "11.4.3",
     "highcharts-react-official": "3.2.1",
     "localforage": "1.10.0",
@@ -37,7 +37,7 @@
     "react-newline-to-break": "1.0.6",
     "react-router-dom": "6.23.1",
     "recoil": "0.7.7",
-    "vite": "5.2.13"
+    "vite": "5.3.1"
   },
   "devDependencies": {
     "@lhci/cli": "0.13.0",
