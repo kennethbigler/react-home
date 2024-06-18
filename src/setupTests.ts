@@ -1,6 +1,5 @@
 // react-testing-library renders your components to document.body,
 // this adds jest-dom's custom assertions
-// eslint-disable-next-line node/no-unpublished-import
 import "@testing-library/jest-dom";
 
 Object.defineProperty(window, "matchMedia", {
