@@ -21,6 +21,7 @@ const tfProps: TextFieldProps = {
   variant: "standard",
   fullWidth: true,
   margin: "dense",
+  type: "number",
 };
 
 const currentYear = new Date().getFullYear() - 2000;
@@ -52,7 +53,7 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
 
   const handleChange =
     (func: (n: number) => void) => (e: React.ChangeEvent<HTMLInputElement>) =>
-      func(parseInt(e.target.value, 10));
+      func(parseFloat(e.target.value));
   const handleSelectMonth = (e: SelectChangeEvent<string>) =>
     setEntryDateMonth(e.target.value);
   const handleSelectYear = (e: SelectChangeEvent<string>) =>
@@ -68,6 +69,15 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
       grantDuration,
       grantQty,
     });
+    // reset state
+    setEntryDateMonth("1");
+    setEntryDateYear(years[0].toString());
+    setSalary(0);
+    setBonus(0);
+    setPriceNow(0);
+    setPriceThen(0);
+    setGrantDuration(4);
+    setGrantQty(0);
   };
 
   return (
