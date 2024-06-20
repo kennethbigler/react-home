@@ -457,6 +457,9 @@ interface GraphData {
   powerToWeight: HighChartsData[];
 }
 
+const smoothData = (cur: number, high: number, low: number) =>
+  Math.floor(100 * ((cur - low) / (high - low)));
+
 export const processData = (data: CarStats[]): GraphData => {
   const ret: GraphData = {
     xAxis: [],
@@ -508,32 +511,24 @@ export const processData = (data: CarStats[]): GraphData => {
     ret.xAxis.push(car.char);
     ret.displacement.push([
       `${car.car} Displacement`,
-      100 *
-        ((car.displacement - min.displacement) /
-          (max.displacement - min.displacement)),
+      smoothData(car.displacement, max.displacement, min.displacement),
     ]);
     ret.horsepower.push([
       `${car.car} Horsepower`,
-      100 *
-        ((car.horsepower - min.horsepower) / (max.horsepower - min.horsepower)),
+      smoothData(car.horsepower, max.horsepower, min.horsepower),
     ]);
-    ret.MPG.push([
-      `${car.car} MPG`,
-      100 * ((car.MPG - min.MPG) / (max.MPG - min.MPG)),
-    ]);
+    ret.MPG.push([`${car.car} MPG`, smoothData(car.MPG, max.MPG, min.MPG)]);
     ret.torque.push([
       `${car.car} Torque`,
-      100 * ((car.torque - min.torque) / (max.torque - min.torque)),
+      smoothData(car.torque, max.torque, min.torque),
     ]);
     ret.weight.push([
       `${car.car} Weight`,
-      100 * ((car.weight - min.weight) / (max.weight - min.weight)),
+      smoothData(car.weight, max.weight, min.weight),
     ]);
     ret.powerToWeight.push([
       `${car.car} Power-To-Weight`,
-      100 *
-        ((powerToWeight - min.powerToWeight) /
-          (max.powerToWeight - min.powerToWeight)),
+      smoothData(powerToWeight, max.powerToWeight, min.powerToWeight),
     ]);
   });
 
