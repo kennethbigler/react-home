@@ -1,7 +1,10 @@
 import * as React from "react";
 import * as Highcharts from "highcharts";
+import highchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import { processData, CarStats } from "../../../constants/cars";
+
+highchartsAccessibility(Highcharts); // initiate accessibility module
 
 export interface CarChartProps {
   data: CarStats[];
@@ -20,7 +23,7 @@ const CarChart = React.memo(({ data, color }: CarChartProps) => {
         lineWidth: 2,
       },
     },
-    tooltip: { valueDecimals: 0, valueSuffix: "%" },
+    tooltip: { valueSuffix: "%" },
     yAxis: {
       floor: 0,
       ceiling: 100,

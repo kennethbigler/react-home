@@ -2,11 +2,14 @@ import * as React from "react";
 // Import Highcharts
 import Highcharts from "highcharts/highmaps";
 import HighchartsReact from "highcharts-react-official";
+import highchartsAccessibility from "highcharts/modules/accessibility";
 // Import to change title color
 import { useRecoilState } from "recoil";
 import { Typography } from "@mui/material";
 import themeAtom from "../../../recoil/theme-atom";
 import countries from "../../../constants/travel";
+
+highchartsAccessibility(Highcharts);
 
 const WorldMap = () => {
   const [topology, setTopology] = React.useState<Highcharts.GeoJSON>();
