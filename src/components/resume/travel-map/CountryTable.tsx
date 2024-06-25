@@ -4,12 +4,10 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
 import { grey } from "@mui/material/colors";
 import { americas, euNaf, asNau } from "../../../constants/travel";
 
 // --------------------     Styles     -------------------- //
-const marginStyles: React.CSSProperties = { marginTop: 24, marginBottom: 16 };
 const separatorStyles: React.CSSProperties = {
   borderRight: `1px solid ${grey[400]}`,
 };
@@ -39,7 +37,8 @@ for (let i = 0; i < len; i += 1) {
       key={`tmc${i}-americas`}
       style={{ ...cellStyles, ...separatorStyles }}
     >
-      {americas[i]}
+      {americas[i]?.name || ""}{" "}
+      {americas[i] && <span aria-hidden>{americas[i].flag}</span>}
     </TableCell>,
   );
   // add EU or AF Countries
@@ -51,14 +50,18 @@ for (let i = 0; i < len; i += 1) {
           j === EURatio - 1 ? { ...cellStyles, ...separatorStyles } : cellStyles
         }
       >
-        {euNaf[EURatio * i + j]}
+        {euNaf[EURatio * i + j]?.name || ""}{" "}
+        {euNaf[EURatio * i + j] && (
+          <span aria-hidden>{euNaf[EURatio * i + j].flag}</span>
+        )}
       </TableCell>,
     );
   }
   // add AS or AU Country
   row.push(
     <TableCell key={`tmc${i}-as-au`} style={cellStyles}>
-      {asNau[i]}
+      {asNau[i]?.name || ""}{" "}
+      {asNau[i] && <span aria-hidden>{asNau[i].flag}</span>}
     </TableCell>,
   );
   // form the row
@@ -68,32 +71,23 @@ for (let i = 0; i < len; i += 1) {
 
 // --------------------     Travel Map     -------------------- //
 const TravelMap: React.FC = React.memo(() => (
-  <>
-    <Typography variant="h3" component="h2" style={marginStyles}>
-      {`I have been to ${
-        americas.length + euNaf.length + asNau.length
-      } countries:`}
-    </Typography>
-    <Table aria-label="Countries I have visited">
-      <TableHead>
-        <TableRow>
-          <TableCell style={{ ...cellStyles, ...separatorStyles }}>
-            The Americas
-          </TableCell>
-          <TableCell
-            colSpan={EURatio}
-            style={{ ...cellStyles, ...separatorStyles }}
-          >
-            Europe &amp; Africa
-          </TableCell>
-          <TableCell colSpan={EURatio} style={cellStyles}>
-            Asia &amp; Australia
-          </TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>{countries}</TableBody>
-    </Table>
-  </>
+  <Table aria-label="Countries I have visited">
+    <TableHead>
+      <TableRow>
+        <TableCell style={{ ...cellStyles, ...separatorStyles }}>
+          The Americas
+        </TableCell>
+        <TableCell
+          colSpan={EURatio}
+          style={{ ...cellStyles, ...separatorStyles }}
+        >
+          Europe &amp; Africa
+        </TableCell>
+        <TableCell style={cellStyles}>Asia &amp; Australia</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>{countries}</TableBody>
+  </Table>
 ));
 
 export default TravelMap;

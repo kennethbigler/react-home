@@ -33,9 +33,9 @@ const CruiseCharts = () => {
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <figure style={{ margin: 0, width: "100%" }}>
       <HighchartsReact highcharts={Highcharts} options={options} />
-    </div>
+    </figure>
   );
 };
 
