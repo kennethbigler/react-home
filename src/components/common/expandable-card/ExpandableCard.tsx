@@ -5,7 +5,6 @@ import {
   CardContent,
   CardActionArea,
   Collapse,
-  Typography,
   Grid,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -31,24 +30,21 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
   const { palette } = useTheme();
   const { inverted, title, subtitle, children, backgroundColor } = props;
 
+  const color = inverted ? "black" : "white";
+
   const headerStyle: React.CSSProperties = {
     backgroundColor: backgroundColor || palette.primary.dark,
+    color,
   };
-  headerStyle.color = inverted ? "black" : "white";
-
-  const subtitleJSX = (
-    <Typography style={{ color: inverted ? "black" : "white" }} variant="body1">
-      {subtitle}
-    </Typography>
-  );
 
   return (
     <Card style={cardStyles}>
       <CardActionArea onClick={toggleExpanded} style={headerStyle}>
         <CardHeader
-          subheader={subtitleJSX}
+          subheader={subtitle}
           title={title}
           titleTypographyProps={{ variant: "h5", component: "h2" }}
+          subheaderTypographyProps={{ variant: "body1", style: { color } }}
         />
       </CardActionArea>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
