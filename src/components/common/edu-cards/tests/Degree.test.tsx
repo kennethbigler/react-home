@@ -51,7 +51,7 @@ describe("common | edu-cards | Degree", () => {
     expect(screen.getByText("QuarterName")).toBeInTheDocument();
     expect(screen.getByText("CLSS 101 -")).toBeInTheDocument();
     expect(screen.getByText("ClassName")).toBeInTheDocument();
-    expect(container.querySelector(".MuiCardHeader-root")).toHaveStyle(
+    expect(container.querySelector(".MuiButtonBase-root")).toHaveStyle(
       "background-color: rgb(0, 103, 197);",
     );
   });
