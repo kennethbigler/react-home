@@ -30,6 +30,13 @@ const CruiseCharts = () => {
         data: [...cruiseData.data],
       },
     ],
+    accessibility: {
+      point: {
+        // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
+        valueDescriptionFormat:
+          "{point.weight} {point.from} cruises have been on {point.to}.",
+      },
+    },
   };
 
   return (
