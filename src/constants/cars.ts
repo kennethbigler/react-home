@@ -510,24 +510,18 @@ export const processData = (data: CarStats[]): GraphData => {
     const powerToWeight = car.horsepower / car.weight;
     ret.xAxis.push(car.char);
     ret.displacement.push([
-      `${car.car} Displacement`,
+      car.car,
       smoothData(car.displacement, max.displacement, min.displacement),
     ]);
     ret.horsepower.push([
-      `${car.car} Horsepower`,
+      car.car,
       smoothData(car.horsepower, max.horsepower, min.horsepower),
     ]);
-    ret.MPG.push([`${car.car} MPG`, smoothData(car.MPG, max.MPG, min.MPG)]);
-    ret.torque.push([
-      `${car.car} Torque`,
-      smoothData(car.torque, max.torque, min.torque),
-    ]);
-    ret.weight.push([
-      `${car.car} Weight`,
-      smoothData(car.weight, max.weight, min.weight),
-    ]);
+    ret.MPG.push([car.car, smoothData(car.MPG, max.MPG, min.MPG)]);
+    ret.torque.push([car.car, smoothData(car.torque, max.torque, min.torque)]);
+    ret.weight.push([car.car, smoothData(car.weight, max.weight, min.weight)]);
     ret.powerToWeight.push([
-      `${car.car} Power-To-Weight`,
+      car.car,
       smoothData(powerToWeight, max.powerToWeight, min.powerToWeight),
     ]);
   });

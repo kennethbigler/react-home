@@ -7,7 +7,7 @@ import highchartsAccessibility from "highcharts/modules/accessibility";
 import { useRecoilState } from "recoil";
 import { Typography } from "@mui/material";
 import themeAtom from "../../../recoil/theme-atom";
-import countries from "../../../constants/travel";
+import countries, { numCountries } from "../../../constants/travel";
 
 highchartsAccessibility(Highcharts);
 
@@ -30,7 +30,7 @@ const WorldMap = () => {
   React.useEffect(() => {
     setOptions({
       title: {
-        text: "Travel Map",
+        text: `Travel Map: ${numCountries} Countries Visited`,
         style: { color },
       },
       chart: {
@@ -57,20 +57,24 @@ const WorldMap = () => {
   }, [color, topology]);
 
   if (error) {
-    return <Typography variant="h3">Map failed to load.</Typography>;
+    return (
+      <Typography variant="h3">
+        Map failed to load. {numCountries} Countries Visited.
+      </Typography>
+    );
   }
   if (!topology) {
     return <Typography variant="h3">Loading World Map...</Typography>;
   }
 
   return (
-    <div style={{ width: "100%" }}>
+    <figure style={{ margin: 0, width: "100%" }}>
       <HighchartsReact
         highcharts={Highcharts}
         constructorType="mapChart"
         options={options}
       />
-    </div>
+    </figure>
   );
 };
 

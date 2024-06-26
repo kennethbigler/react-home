@@ -23,13 +23,13 @@ const CarChartControls = React.memo(
           onClick={onClick("family")}
           variant={hideFamily ? "contained" : "outlined"}
         >
-          Hide Family
+          Hide Family Cars
         </Button>
         <Button
           onClick={onClick("ken")}
           variant={hideKen ? "contained" : "outlined"}
         >
-          Hide Ken
+          Hide Ken&apos;s Cars
         </Button>
       </ButtonGroup>
     </div>

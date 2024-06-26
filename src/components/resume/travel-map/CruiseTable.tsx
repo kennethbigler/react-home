@@ -50,7 +50,12 @@ const cruiseCells = cruises.map((cruise, i) => {
 
   return (
     <TableRow key={`cruise-tr-${i}`}>
-      <TableCell key={`cruise-td-ship-${i}`} style={cellStyles}>
+      <TableCell
+        key={`cruise-td-ship-${i}`}
+        style={cellStyles}
+        component="th"
+        scope="row"
+      >
         {cruise.line} {cruise.ship}
       </TableCell>
       <TableCell key={`cruise-td-description-${i}`} style={cellStyles}>
@@ -139,7 +144,6 @@ const TravelMap: React.FC = React.memo(() => (
         </TableRow>
       </TableBody>
     </Table>
-    <br />
     <Table>
       <TableHead>
         <TableRow>

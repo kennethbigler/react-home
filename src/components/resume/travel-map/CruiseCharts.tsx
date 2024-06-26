@@ -30,12 +30,19 @@ const CruiseCharts = () => {
         data: [...cruiseData.data],
       },
     ],
+    accessibility: {
+      point: {
+        // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
+        valueDescriptionFormat:
+          "{point.weight} {point.from} cruises have been on {point.to}.",
+      },
+    },
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <figure style={{ margin: 0, width: "100%" }}>
       <HighchartsReact highcharts={Highcharts} options={options} />
-    </div>
+    </figure>
   );
 };
 

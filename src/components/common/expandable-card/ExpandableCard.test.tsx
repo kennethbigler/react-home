@@ -29,14 +29,14 @@ describe("common | ExpandableCard", () => {
       it("displays title with white text by default", () => {
         render(<ExpandableCard title="Title" />);
         expect(
-          screen.getByText("Title").parentElement?.parentElement,
+          screen.getByText("Title").parentElement?.parentElement?.parentNode,
         ).toHaveStyle({ backgroundColor: "rgb(21, 101, 192)" });
       });
 
       it("displays title with black text when inverted", () => {
         render(<ExpandableCard title="Title" backgroundColor="#333" />);
         expect(
-          screen.getByText("Title").parentElement?.parentElement,
+          screen.getByText("Title").parentElement?.parentElement?.parentNode,
         ).toHaveStyle({ backgroundColor: "#333" });
       });
     });
@@ -58,7 +58,7 @@ describe("common | ExpandableCard", () => {
       expect(screen.getByText("Body")).toBeInTheDocument();
       expect(screen.getByText("Title")).toHaveStyle({ color: "rgb(0,0,0)" });
       expect(
-        screen.getByText("Title").parentElement?.parentElement,
+        screen.getByText("Title").parentElement?.parentElement?.parentNode,
       ).toHaveStyle({ backgroundColor: "#333" });
     });
   });

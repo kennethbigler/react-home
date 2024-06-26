@@ -333,7 +333,7 @@ export const cruises: Cruise[] = [
     concierge: true,
   },
   {
-    departure: dateObj("2024-09"),
+    departure: dateObj("2024-12"),
     nights: 10,
     name: "Bahamas",
     ship: ships[3],
@@ -345,6 +345,14 @@ export const cruises: Cruise[] = [
     nights: 7,
     name: "Maiden Voyage (Caribbean)",
     ship: ships[5],
+    line: lines[0],
+    concierge: true,
+  },
+  {
+    departure: dateObj("2026-04"),
+    nights: 14,
+    name: "Panama Canal",
+    ship: ships[0],
     line: lines[0],
     concierge: true,
   },
@@ -418,24 +426,26 @@ export const cruiseData = {
   ],
 };
 
-export const americas: string[] = [];
-export const euNaf: string[] = [];
-export const asNau: string[] = [];
+export const americas: Country[] = [];
+export const euNaf: Country[] = [];
+export const asNau: Country[] = [];
 
-countries.forEach(({ continent, name, flag }): void => {
-  switch (continent) {
+countries.forEach((country): void => {
+  switch (country.continent) {
     case "NA":
-      americas.push(`${name} ${flag}`);
+      americas.push(country);
       break;
     case "EU":
     case "AF":
-      euNaf.push(`${name} ${flag}`);
+      euNaf.push(country);
       break;
     case "AS":
     case "AU":
     default:
-      asNau.push(`${name} ${flag}`);
+      asNau.push(country);
   }
 });
+
+export const numCountries = countries.length;
 
 export default countries;

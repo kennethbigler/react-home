@@ -1,23 +1,16 @@
 import * as React from "react";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
-import Collapse from "@mui/material/Collapse";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardActionArea,
+  Collapse,
+  Grid,
+} from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { grey } from "@mui/material/colors";
 import useToggleState from "../../../hooks/useToggle";
 
 const cardStyles: React.CSSProperties = { marginTop: 40, overflow: "visible" };
-const headerStyles: React.CSSProperties = {
-  borderRadius: 3,
-  cursor: "pointer",
-  marginLeft: 15,
-  marginRight: 15,
-  position: "relative",
-  top: -20,
-};
 
 interface ExpandableCardProps {
   /** change the background color of the title bar */
@@ -37,32 +30,23 @@ const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
   const { palette } = useTheme();
   const { inverted, title, subtitle, children, backgroundColor } = props;
 
-  const headerStyle = {
-    ...headerStyles,
-    backgroundColor: backgroundColor || palette.primary.dark,
-  };
-  if (palette.mode !== "dark") {
-    headerStyle.boxShadow = `0px 15px 15px -10px ${grey[400]}`;
-  } else {
-    delete headerStyle.boxShadow;
-  }
-  headerStyle.color = inverted ? "black" : "white";
-  const expandedHeaderStyle = { ...headerStyle, marginBottom: -20 };
+  const color = inverted ? "black" : "white";
 
-  const subtitleJSX = (
-    <Typography style={{ color: inverted ? "black" : "white" }} variant="body1">
-      {subtitle}
-    </Typography>
-  );
+  const headerStyle: React.CSSProperties = {
+    backgroundColor: backgroundColor || palette.primary.dark,
+    color,
+  };
 
   return (
     <Card style={cardStyles}>
-      <CardHeader
-        onClick={toggleExpanded}
-        style={expanded ? expandedHeaderStyle : headerStyle}
-        subheader={subtitleJSX}
-        title={title}
-      />
+      <CardActionArea onClick={toggleExpanded} style={headerStyle}>
+        <CardHeader
+          subheader={subtitle}
+          title={title}
+          titleTypographyProps={{ variant: "h5", component: "h2" }}
+          subheaderTypographyProps={{ variant: "body1", style: { color } }}
+        />
+      </CardActionArea>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Grid container spacing={1} style={{ overflowY: "hidden" }}>

@@ -22,10 +22,5 @@ describe("resume | cars | CarCard", () => {
       screen.getByText(`Transmission: ${demoCar.transmission}`),
     ).toBeInTheDocument();
     expect(screen.getByText(demoCar.story)).toBeInTheDocument();
-    expect(screen.getByAltText(demoCar.title)).toBeInTheDocument();
-    expect(screen.getByAltText(demoCar.title)).toHaveAttribute(
-      "src",
-      demoCar.src,
-    );
   });
 });

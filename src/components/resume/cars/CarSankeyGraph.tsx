@@ -30,12 +30,19 @@ const CarSankeyGraph = React.memo(({ color }: CarSankeyGraphProps) => {
         data: [...carSankeyData.data],
       },
     ],
+    accessibility: {
+      point: {
+        // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
+        valueDescriptionFormat:
+          "{point.to} has {point.weight} from {point.from}.",
+      },
+    },
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <figure style={{ margin: 0, width: "100%" }}>
       <HighchartsReact highcharts={Highcharts} options={options} />
-    </div>
+    </figure>
   );
 });
 
