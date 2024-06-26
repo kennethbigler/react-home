@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { BotCRole } from "../../../../recoil/botc-atom";
-import { tb, snv, bmr, dtb } from "../../../../constants/botc";
+import { tb, snv, bmr, dtb, swpm } from "../../../../constants/botc";
 import RoleButton from "./RoleButton";
 
 interface RolesProps {
@@ -22,6 +22,12 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
     case 3:
       scripts = {
         active: dtb,
+        travelers: [...tb.travelers, ...snv.travelers, ...bmr.travelers],
+      };
+      break;
+    case 4:
+      scripts = {
+        active: swpm,
         travelers: [...tb.travelers, ...snv.travelers, ...bmr.travelers],
       };
       break;

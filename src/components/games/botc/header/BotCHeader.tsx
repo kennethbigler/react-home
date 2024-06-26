@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import { SelectChangeEvent } from "@mui/material";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import { BotCPlayer } from "../../../../recoil/botc-atom";
 import DialogControls from "./DialogControls";
@@ -18,7 +19,7 @@ interface BotCHeaderProps {
   updateNumPlayers: (_e: Event, value: number | number[]) => void;
   updateNumTravelers: (_e: Event, value: number | number[]) => void;
   updatePlayerOrder: (i: number, dir: number) => () => void;
-  updateScript: (i: number) => () => void;
+  updateScript: (i: SelectChangeEvent<number>) => void;
 }
 
 const BotCHeader = ({
