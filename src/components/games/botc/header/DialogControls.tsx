@@ -1,8 +1,14 @@
-import Slider from "@mui/material/Slider";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Grid from "@mui/material/Grid";
+import {
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Slider,
+  Typography,
+} from "@mui/material";
 import {
   BOTC_MAX_PLAYERS,
   BOTC_MAX_TRAVELERS,
@@ -14,7 +20,7 @@ interface DialogControlsProps {
   script: number;
   numPlayers: number;
   numTravelers: number;
-  updateScript: (i: number) => () => void;
+  updateScript: (i: SelectChangeEvent<number>) => void;
   updateNumPlayers: (_e: Event, value: number | number[]) => void;
   updateNumTravelers: (_e: Event, value: number | number[]) => void;
   handleReset: () => void;
@@ -32,32 +38,26 @@ const DialogControls = ({
   <>
     <Grid item xs={12} sx={{ textAlign: "center" }}>
       <div className="flex-container">
-        <ButtonGroup aria-label="Select BotC Game">
-          <Button
-            variant={script === 0 ? "contained" : "outlined"}
-            onClick={updateScript(0)}
+        <FormControl
+          fullWidth
+          sx={{ marginTop: "5px", marginRight: "10px" }}
+          size="small"
+        >
+          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={script}
+            label="Age"
+            onChange={updateScript}
           >
-            TB
-          </Button>
-          <Button
-            variant={script === 1 ? "contained" : "outlined"}
-            onClick={updateScript(1)}
-          >
-            S&V
-          </Button>
-          <Button
-            variant={script === 2 ? "contained" : "outlined"}
-            onClick={updateScript(2)}
-          >
-            BMR
-          </Button>
-          <Button
-            variant={script === 3 ? "contained" : "outlined"}
-            onClick={updateScript(3)}
-          >
-            DTB
-          </Button>
-        </ButtonGroup>
+            <MenuItem value={0}>Trouble Brewing</MenuItem>
+            <MenuItem value={1}>Sects and Violets</MenuItem>
+            <MenuItem value={2}>Bad Moon Rising</MenuItem>
+            <MenuItem value={3}>Dansel&apos;s Trouble Brewing</MenuItem>
+            <MenuItem value={4}>The Spy Who Pinged Me</MenuItem>
+          </Select>
+        </FormControl>
         <Button variant="contained" color="error" onClick={handleReset}>
           Reset
         </Button>

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useRecoilState } from "recoil";
+import { SelectChangeEvent } from "@mui/material";
 import BotCHeader from "./header/BotCHeader";
 import botcAtom, {
   BotCPlayer,
@@ -15,9 +16,13 @@ const BotC: React.FC = React.memo(() => {
 
   /* ----------     Header Functions     ---------- */
   /** update botc script used */
-  const updateScript = (i: number) => () =>
-    setState({ script: i, numPlayers, numTravelers, botcPlayers });
-
+  const updateScript = (e: SelectChangeEvent<number>) =>
+    setState({
+      script: e.target.value as number,
+      numPlayers,
+      numTravelers,
+      botcPlayers,
+    });
   /** update number of players */
   const updateNumPlayers = (_e: Event, value: number | number[]) => {
     const newNum = Array.isArray(value) ? value[0] : value;
