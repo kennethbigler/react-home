@@ -42,7 +42,7 @@ const bronco = "Ford Bronco Badlands (2021)";
 const grom = "Honda Grom (2022)";
 const cayenne = "Porsche Cayenne E-Hybrid (2019)";
 
-const familyCars = [
+const pastFamilyCars = [
   {
     color: grey[50],
     start: dateObj("2008-03"),
@@ -127,6 +127,9 @@ const familyCars = [
     torque: 303,
     weight: 3777,
   },
+];
+
+const currentFamilyCars = [
   {
     color: lime[800],
     inverted: true,
@@ -214,7 +217,7 @@ const familyCars = [
   },
 ];
 
-const kensCars = [
+const pastKensCars = [
   {
     color: grey[800],
     start: dateObj("2008-03"),
@@ -389,6 +392,9 @@ const kensCars = [
     torque: 650,
     weight: 3524,
   },
+];
+
+const currentKensCars = [
   {
     color: grey[900],
     start: dateObj("2022-04"),
@@ -433,9 +439,12 @@ const kensCars = [
   },
 ];
 
-familyCars.reverse();
-kensCars.reverse();
-const cars = [...kensCars, ...familyCars];
+const cars = [
+  ...pastKensCars,
+  ...currentKensCars,
+  ...pastFamilyCars,
+  ...currentFamilyCars,
+];
 
 export interface CarStats {
   displacement: number;
@@ -529,60 +538,101 @@ export const processData = (data: CarStats[]): GraphData => {
   return ret;
 };
 
-export const processedKensCars = processData(kensCars);
-export const processedFamilyCars = processData(familyCars);
-export const processedCars = processData(cars);
-export { kensCars, familyCars };
+export { pastKensCars, currentKensCars, pastFamilyCars, currentFamilyCars };
 
-export const carSankeyData = {
-  nodes: [
-    { id: "🏎️", color: grey[200] },
-    // level 1
-    { id: "🇯🇵", color: red[500], column: 2 },
-    { id: "🇺🇸", color: blue[500], column: 2 },
-    { id: "🇩🇪", color: orange[500], column: 2 },
-    { id: "🇬🇧", color: grey[300], column: 2 },
-    // level 2
-    { id: "GM", color: blue[500], offset: 70 },
-    { id: "Fiat Chrysler Auto", color: blue[500], offset: 70 },
-    { id: "Volkswagen", color: orange[500], offset: 70 },
-    { id: "TATA", color: grey[300], offset: 70 },
-    // level 3
-    { id: "Chevrolet", color: yellow[700] },
-    { id: "Pontiac", color: red[500] },
-    { id: "Plymouth", color: "black" },
-    { id: "Ford", color: blue[500] },
-    { id: "Tesla", color: red[500] },
-    { id: "Honda", color: red[500] },
-    { id: "Toyota", color: red[500] },
-    { id: "Porsche", color: yellow[700] },
-    { id: "Jaguar", color: grey[300] },
-  ],
-  data: [
-    // level 1
-    //     Japan
-    ["Honda", "🇯🇵", 1],
-    ["Toyota", "🇯🇵", 1],
-    //     US
-    ["Ford", "🇺🇸", 3],
-    ["Tesla", "🇺🇸", 1],
-    ["Chevrolet", "GM", 3],
-    ["Pontiac", "GM", 1],
-    ["Plymouth", "Fiat Chrysler Auto", 1],
-    //     Other
-    ["Porsche", "Volkswagen", 2],
-    ["Jaguar", "TATA", 2],
-    // level 2
-    ["GM", "🇺🇸", 4],
-    ["Fiat Chrysler Auto", "🇺🇸", 1],
-    ["Volkswagen", "🇩🇪", 2],
-    ["TATA", "🇬🇧", 2],
-    // level 3
-    ["🇯🇵", "🏎️", 2],
-    ["🇺🇸", "🏎️", 9],
-    ["🇩🇪", "🏎️", 2],
-    ["🇬🇧", "🏎️", 2],
-  ],
-};
+export const carSankeyNodes = [
+  { id: "🏎️", color: grey[200] },
+  // level 1
+  { id: "🇯🇵", color: red[500], column: 2 },
+  { id: "🇺🇸", color: blue[500], column: 2 },
+  { id: "🇩🇪", color: orange[500], column: 2 },
+  { id: "🇬🇧", color: grey[300], column: 2 },
+  // level 2
+  { id: "GM", color: blue[500], offset: 70 },
+  { id: "Fiat Chrysler Auto", color: blue[500], offset: 70 },
+  { id: "Volkswagen", color: orange[500], offset: 70 },
+  { id: "TATA", color: grey[300], offset: 70 },
+  // level 3
+  { id: "Chevrolet", color: yellow[700] },
+  { id: "Pontiac", color: red[500] },
+  { id: "Plymouth", color: "black" },
+  { id: "Ford", color: blue[500] },
+  { id: "Tesla", color: red[500] },
+  { id: "Honda", color: red[500] },
+  { id: "Toyota", color: red[500] },
+  { id: "Porsche", color: yellow[700] },
+  { id: "Jaguar", color: grey[300] },
+];
+
+export const familySankeyData = [
+  // level 1
+  //     Japan
+  ["Toyota", "🇯🇵", 1],
+  //     US
+  ["Tesla", "🇺🇸", 1],
+  ["Chevrolet", "GM", 3],
+  ["Plymouth", "Fiat Chrysler Auto", 1],
+  //     Other
+  ["Porsche", "Volkswagen", 1],
+  ["Jaguar", "TATA", 1],
+  // level 2
+  ["GM", "🇺🇸", 3],
+  ["Fiat Chrysler Auto", "🇺🇸", 1],
+  ["Volkswagen", "🇩🇪", 1],
+  ["TATA", "🇬🇧", 1],
+  // level 3
+  ["🇯🇵", "🏎️", 1],
+  ["🇺🇸", "🏎️", 5],
+  ["🇩🇪", "🏎️", 1],
+  ["🇬🇧", "🏎️", 1],
+];
+
+export const kenSankeyData = [
+  // level 1
+  //     Japan
+  ["Honda", "🇯🇵", 1],
+  //     US
+  ["Ford", "🇺🇸", 3],
+  ["Chevrolet", "GM", 2],
+  ["Pontiac", "GM", 1],
+  //     Other
+  ["Porsche", "Volkswagen", 1],
+  ["Jaguar", "TATA", 1],
+  // level 2
+  ["GM", "🇺🇸", 3],
+  ["Volkswagen", "🇩🇪", 1],
+  ["TATA", "🇬🇧", 1],
+  // level 3
+  ["🇯🇵", "🏎️", 1],
+  ["🇺🇸", "🏎️", 6],
+  ["🇩🇪", "🏎️", 1],
+  ["🇬🇧", "🏎️", 1],
+];
+
+export const carSankeyData = [
+  // level 1
+  //     Japan
+  ["Honda", "🇯🇵", 1],
+  ["Toyota", "🇯🇵", 1],
+  //     US
+  ["Ford", "🇺🇸", 3],
+  ["Tesla", "🇺🇸", 1],
+  ["Chevrolet", "GM", 3],
+  ["Pontiac", "GM", 1],
+  ["Plymouth", "Fiat Chrysler Auto", 1],
+  //     Other
+  ["Porsche", "Volkswagen", 2],
+  ["Jaguar", "TATA", 2],
+  // level 2
+  ["GM", "🇺🇸", 4],
+  ["Fiat Chrysler Auto", "🇺🇸", 1],
+  ["Volkswagen", "🇩🇪", 2],
+  ["TATA", "🇬🇧", 2],
+  // level 3
+  ["🇯🇵", "🏎️", 2],
+  ["🇺🇸", "🏎️", 9],
+  ["🇩🇪", "🏎️", 2],
+  ["🇬🇧", "🏎️", 2],
+];
 
 export default cars;

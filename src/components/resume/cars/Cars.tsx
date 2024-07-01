@@ -4,7 +4,12 @@ import Typography from "@mui/material/Typography";
 import { useRecoilState } from "recoil";
 import TimelineCard from "../../common/timeline-card";
 import dateObj from "../../../apis/DateHelper";
-import cars, { kensCars, familyCars } from "../../../constants/cars";
+import cars, {
+  pastKensCars,
+  currentKensCars,
+  pastFamilyCars,
+  currentFamilyCars,
+} from "../../../constants/cars";
 import CarCard from "./CarCard";
 import CarChart from "./CarChart";
 import CarSankeyGraph from "./CarSankeyGraph";
@@ -12,6 +17,18 @@ import CarChartControls from "./CarChartControls";
 import ExpandableCard from "../../common/expandable-card";
 import themeAtom from "../../../recoil/theme-atom";
 
+const pastKensCarsReversed = pastKensCars.slice().reverse();
+const pastFamilyCarsReversed = pastFamilyCars.slice().reverse();
+const currentKensCarsReversed = currentKensCars.slice().reverse();
+const currentFamilyCarsReversed = currentFamilyCars.slice().reverse();
+
+/**
+ * Cars |-> TimelineCard
+ *      |-> CarSankeyGraph
+ *      |-> CarChartControls
+ *      |-> CarChart
+ *      |-> Grid of CarCards
+ */
 const Cars = () => {
   const [theme] = useRecoilState(themeAtom);
   const [hideFamily, setHideFamily] = React.useState(false);
@@ -31,9 +48,9 @@ const Cars = () => {
   if (hideKen && hideFamily) {
     data = [];
   } else if (hideKen) {
-    data = familyCars;
+    data = [...pastFamilyCars, ...currentFamilyCars];
   } else if (hideFamily) {
-    data = kensCars;
+    data = [...pastKensCars, ...currentKensCars];
   }
 
   return (
@@ -42,7 +59,13 @@ const Cars = () => {
         Ken&apos;s Cars
       </Typography>
       <br />
+      <CarChartControls
+        onClick={handleClick}
+        hideKen={hideKen}
+        hideFamily={hideFamily}
+      />
       <TimelineCard
+        aria-hidden
         enableLongTitles
         data={data}
         selector="car"
@@ -50,19 +73,19 @@ const Cars = () => {
         title="Ken's Cars"
         yearMarkerFrequency={3}
       />
-      <CarSankeyGraph color={color} />
-      <CarChartControls
-        onClick={handleClick}
-        hideKen={hideKen}
-        hideFamily={hideFamily}
-      />
+      <CarSankeyGraph hideKen={hideKen} hideFamily={hideFamily} color={color} />
       <CarChart data={data} color={color} />
       <Grid container spacing={2}>
         {!hideKen && (
           <Grid item sm={12} md={hideFamily ? 12 : 6}>
             <ExpandableCard title="Ken's Cars">
-              {kensCars.map((car, i) => (
-                <CarCard car={car} key={`k-${car.title}-${i}`} />
+              {currentKensCarsReversed.map((car, i) => (
+                <CarCard car={car} key={`k-${car.title}-cur-${i}`} />
+              ))}
+            </ExpandableCard>
+            <ExpandableCard title="Ken's Previous Cars">
+              {pastKensCarsReversed.map((car, i) => (
+                <CarCard car={car} key={`k-${car.title}-past-${i}`} />
               ))}
             </ExpandableCard>
           </Grid>
@@ -70,8 +93,13 @@ const Cars = () => {
         {!hideFamily && (
           <Grid item sm={12} md={hideKen ? 12 : 6}>
             <ExpandableCard title="Family Cars">
-              {familyCars.map((car, i) => (
-                <CarCard car={car} key={`f-${car.title}-${i}`} />
+              {currentFamilyCarsReversed.map((car, i) => (
+                <CarCard car={car} key={`f-${car.title}-cur-${i}`} />
+              ))}
+            </ExpandableCard>
+            <ExpandableCard title="Family's Previous Cars">
+              {pastFamilyCarsReversed.map((car, i) => (
+                <CarCard car={car} key={`f-${car.title}-past-${i}`} />
               ))}
             </ExpandableCard>
           </Grid>

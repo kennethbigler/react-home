@@ -1,7 +1,6 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import Typography from "@mui/material/Typography";
 
 interface CarChartControlsProps {
   hideFamily: boolean;
@@ -9,30 +8,32 @@ interface CarChartControlsProps {
   onClick: (key: string) => () => void;
 }
 
+/**
+ * Cars |-> TimelineCard
+ *      |-> CarSankeyGraph
+ *      |-> CarChartControls
+ *      |-> CarChart
+ *      |-> Grid of CarCards
+ */
 const CarChartControls = React.memo(
   ({ onClick, hideFamily, hideKen }: CarChartControlsProps) => (
-    <div>
-      <Typography variant="h3" component="h2">
-        Hide Data:
-      </Typography>
-      <ButtonGroup
-        color="secondary"
-        aria-label="outlined secondary button group controlling graph"
+    <ButtonGroup
+      color="secondary"
+      aria-label="outlined secondary button group controlling graph"
+    >
+      <Button
+        onClick={onClick("family")}
+        variant={hideFamily ? "contained" : "outlined"}
       >
-        <Button
-          onClick={onClick("family")}
-          variant={hideFamily ? "contained" : "outlined"}
-        >
-          Hide Family Cars
-        </Button>
-        <Button
-          onClick={onClick("ken")}
-          variant={hideKen ? "contained" : "outlined"}
-        >
-          Hide Ken&apos;s Cars
-        </Button>
-      </ButtonGroup>
-    </div>
+        Hide Family Cars
+      </Button>
+      <Button
+        onClick={onClick("ken")}
+        variant={hideKen ? "contained" : "outlined"}
+      >
+        Hide Ken&apos;s Cars
+      </Button>
+    </ButtonGroup>
   ),
 );
 
