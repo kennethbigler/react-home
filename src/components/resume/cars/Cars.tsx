@@ -73,7 +73,7 @@ const Cars = () => {
         title="Ken's Cars"
         yearMarkerFrequency={3}
       />
-      <CarSankeyGraph color={color} />
+      <CarSankeyGraph hideKen={hideKen} hideFamily={hideFamily} color={color} />
       <CarChart data={data} color={color} />
       <Grid container spacing={2}>
         {!hideKen && (
