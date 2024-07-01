@@ -28,6 +28,13 @@ const imgStyles: React.CSSProperties = {
   float: "right",
 };
 
+/**
+ * Cars |-> TimelineCard
+ *      |-> CarSankeyGraph
+ *      |-> CarChartControls
+ *      |-> CarChart
+ *      |-> Grid of CarCards
+ */
 const CarCard: React.FC<CarCardProps> = ({ car }: CarCardProps) => (
   <Card style={containerStyles}>
     <Grid container spacing={1}>

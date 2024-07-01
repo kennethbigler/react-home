@@ -14,6 +14,13 @@ interface CarSankeyGraphProps {
   color: string;
 }
 
+/**
+ * Cars |-> TimelineCard
+ *      |-> CarSankeyGraph
+ *      |-> CarChartControls
+ *      |-> CarChart
+ *      |-> Grid of CarCards
+ */
 const CarSankeyGraph = React.memo(({ color }: CarSankeyGraphProps) => {
   const options: Highcharts.Options = {
     title: {

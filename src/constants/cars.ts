@@ -42,7 +42,7 @@ const bronco = "Ford Bronco Badlands (2021)";
 const grom = "Honda Grom (2022)";
 const cayenne = "Porsche Cayenne E-Hybrid (2019)";
 
-const familyCars = [
+const pastFamilyCars = [
   {
     color: grey[50],
     start: dateObj("2008-03"),
@@ -127,6 +127,9 @@ const familyCars = [
     torque: 303,
     weight: 3777,
   },
+];
+
+const currentFamilyCars = [
   {
     color: lime[800],
     inverted: true,
@@ -214,7 +217,7 @@ const familyCars = [
   },
 ];
 
-const kensCars = [
+const pastKensCars = [
   {
     color: grey[800],
     start: dateObj("2008-03"),
@@ -389,6 +392,9 @@ const kensCars = [
     torque: 650,
     weight: 3524,
   },
+];
+
+const currentKensCars = [
   {
     color: grey[900],
     start: dateObj("2022-04"),
@@ -433,9 +439,12 @@ const kensCars = [
   },
 ];
 
-familyCars.reverse();
-kensCars.reverse();
-const cars = [...kensCars, ...familyCars];
+const cars = [
+  ...pastKensCars,
+  ...currentKensCars,
+  ...pastFamilyCars,
+  ...currentFamilyCars,
+];
 
 export interface CarStats {
   displacement: number;
@@ -529,10 +538,7 @@ export const processData = (data: CarStats[]): GraphData => {
   return ret;
 };
 
-export const processedKensCars = processData(kensCars);
-export const processedFamilyCars = processData(familyCars);
-export const processedCars = processData(cars);
-export { kensCars, familyCars };
+export { pastKensCars, currentKensCars, pastFamilyCars, currentFamilyCars };
 
 export const carSankeyData = {
   nodes: [
