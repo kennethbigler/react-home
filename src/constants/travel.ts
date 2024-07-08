@@ -1,3 +1,4 @@
+import { blue, cyan, indigo, red, yellow } from "@mui/material/colors";
 import dateObj, { DateObj } from "../apis/DateHelper";
 
 interface Country {
@@ -75,7 +76,18 @@ export const princessLoyalty = [
   { num: 15, nights: 150, status: "Elite" },
 ];
 
-export const lines = ["Disney", "Royal Caribbean", "Princess"] as const;
+export const virginLoyalty = [
+  { num: 1, status: "Sailing Club" },
+  { num: 2, status: "Blue Extras" },
+  { num: 4, status: "Deep Blue Extras" },
+];
+
+export const lines = [
+  "Disney",
+  "Royal Caribbean",
+  "Princess",
+  "Virgin Voyages",
+] as const;
 export type Lines = (typeof lines)[number];
 
 export const ships = [
@@ -87,6 +99,7 @@ export const ships = [
   "Treasure",
   "Navigator of the Seas",
   "Discovery",
+  "Resilient Lady",
 ] as const;
 export type Ships = (typeof ships)[number];
 
@@ -334,7 +347,7 @@ export const cruises: Cruise[] = [
   },
   {
     departure: dateObj("2024-12"),
-    nights: 10,
+    nights: 4,
     name: "Bahamas",
     ship: ships[3],
     line: lines[0],
@@ -346,6 +359,14 @@ export const cruises: Cruise[] = [
     name: "Maiden Voyage (Caribbean)",
     ship: ships[5],
     line: lines[0],
+    concierge: true,
+  },
+  {
+    departure: dateObj("2025-02"),
+    nights: 7,
+    name: "Saint Isles & Caribbean",
+    ship: ships[8],
+    line: lines[3],
     concierge: true,
   },
   {
@@ -361,6 +382,7 @@ export const cruises: Cruise[] = [
 const numDisney = [0, 0, 0, 0, 0, 0];
 const numRC = [0];
 const numPrincess = [0];
+const numVirgin = [0];
 
 cruises.forEach((cruise) => {
   switch (cruise.ship) {
@@ -385,8 +407,11 @@ cruises.forEach((cruise) => {
     case ships[6]:
       numRC[0] += 1;
       return;
-    default:
+    case ships[7]:
       numPrincess[0] += 1;
+      return;
+    default:
+      numVirgin[0] += 1;
   }
 });
 
@@ -394,26 +419,29 @@ const totalDisney = numDisney.reduce((acc, num) => acc + num, 0);
 
 export const cruiseData = {
   nodes: [
-    { id: "🛳" },
+    { id: "🛳", color: yellow[900] },
     // lines
-    { id: lines[0] },
-    { id: lines[1] },
-    { id: lines[2] },
+    { id: lines[0], color: cyan[400] },
+    { id: lines[1], color: indigo[900] },
+    { id: lines[2], color: blue[500] },
+    { id: lines[3], color: red[900] },
     // ships
-    { id: ships[0] },
-    { id: ships[1] },
-    { id: ships[2] },
-    { id: ships[3] },
-    { id: ships[4] },
-    { id: ships[5] },
-    { id: "Navigator" },
-    { id: ships[7] },
+    { id: ships[0], color: indigo[900] },
+    { id: ships[1], color: "white" },
+    { id: ships[2], color: yellow[600] },
+    { id: ships[3], color: "white" },
+    { id: ships[4], color: red[600] },
+    { id: ships[5], color: "black" },
+    { id: "Navigator", color: yellow[600] },
+    { id: ships[7], color: "white" },
+    { id: ships[8], color: "black" },
   ],
   data: [
     // level 1
     ["🛳", lines[0], totalDisney],
     ["🛳", lines[1], numRC[0]],
     ["🛳", lines[2], numPrincess[0]],
+    ["🛳", lines[3], numVirgin[0]],
     // level 2
     [lines[0], ships[0], numDisney[0]], // Magic
     [lines[0], ships[1], numDisney[1]], // Wonder
@@ -423,6 +451,7 @@ export const cruiseData = {
     [lines[0], ships[5], numDisney[5]], // Treasure
     [lines[1], "Navigator", numRC[0]], // Navigator
     [lines[2], ships[7], numPrincess[0]], // Discovery
+    [lines[3], ships[8], numVirgin[0]], // Resilient Lady
   ],
 };
 

@@ -4,12 +4,14 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { Typography } from "@mui/material";
 import {
   cruises,
   lines,
   rcLoyalty,
   disneyLoyalty,
   princessLoyalty,
+  virginLoyalty,
 } from "../../../constants/travel";
 
 // --------------------     Styles     -------------------- //
@@ -23,6 +25,7 @@ const cellStyles: React.CSSProperties = {
 // --------------------     Cruise Table     -------------------- //
 let totalNights = 0;
 let disneyCruises = 0;
+let virginCruises = 0;
 let rcNights = 0;
 const princess = [0, 0];
 
@@ -43,6 +46,9 @@ const cruiseCells = cruises.map((cruise, i) => {
     case lines[2]:
       princess[0] += cruise.concierge ? 2 : 1;
       princess[1] += cruise.nights;
+      break;
+    case lines[3]:
+      virginCruises += 1;
       break;
     default:
       break;
@@ -96,6 +102,18 @@ disneyLoyalty.forEach(({ num, status }, i) => {
   }
 });
 
+// Disney
+let virginNextLevel = 0;
+let virginStatus = "N/A";
+
+virginLoyalty.forEach(({ num, status }, i) => {
+  if (virginCruises >= num) {
+    virginStatus = status;
+    virginNextLevel =
+      virginLoyalty[Math.min(i + 1, virginLoyalty.length - 1)].num;
+  }
+});
+
 // Princess
 let princessNextCruises = 0;
 let princessNextNights = 0;
@@ -114,6 +132,7 @@ princessLoyalty.forEach(({ num, nights, status }, i) => {
 // --------------------     Render     -------------------- //
 const TravelMap: React.FC = React.memo(() => (
   <>
+    <Typography variant="h3">Loyalty Programs</Typography>
     <Table aria-label="cruises I have been on">
       <TableHead>
         <TableRow>
@@ -123,6 +142,8 @@ const TravelMap: React.FC = React.memo(() => (
           <TableCell style={cellStyles}>{lines[1]}</TableCell>
           {/* Princess */}
           <TableCell style={cellStyles}>{lines[2]}</TableCell>
+          {/* Virgin */}
+          <TableCell style={cellStyles}>{lines[3]}</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -141,9 +162,17 @@ const TravelMap: React.FC = React.memo(() => (
             🛳&nbsp;{princess[0]}&nbsp;/&nbsp;{princessNextCruises} - 🌙&nbsp;
             {princess[1]}&nbsp;/&nbsp;{princessNextNights} = {princessStatus}
           </TableCell>
+          {/* Virgin */}
+          <TableCell style={cellStyles}>
+            🛳&nbsp;{virginCruises}&nbsp;/&nbsp;{virginNextLevel} ={" "}
+            {virginStatus}
+          </TableCell>
         </TableRow>
       </TableBody>
     </Table>
+    <Typography variant="h3" style={{ marginTop: 20 }}>
+      Cruises
+    </Typography>
     <Table>
       <TableHead>
         <TableRow>
