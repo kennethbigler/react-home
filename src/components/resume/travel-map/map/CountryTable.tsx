@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { grey } from "@mui/material/colors";
-import { americas, euNaf, asNau } from "../../../constants/travel";
+import { americas, euNaf, asNau } from "../../../../constants/travel";
 
 // --------------------     Styles     -------------------- //
 const separatorStyles: React.CSSProperties = {
