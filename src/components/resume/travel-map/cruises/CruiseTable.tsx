@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Typography } from "@mui/material";
-import { cruises } from "../../../../constants/travel";
+import { cruises, totalNights } from "../../../../constants/cruises";
 
 // --------------------     Styles     -------------------- //
 const cellStyles: React.CSSProperties = {
@@ -37,12 +37,8 @@ const cruiseCells = cruises.map((cruise, i) => (
   </TableRow>
 ));
 
-interface TravelMapProps {
-  totalNights: number;
-}
-
 // --------------------     Render     -------------------- //
-const TravelMap: React.FC<TravelMapProps> = React.memo(({ totalNights }) => (
+const CruiseTable = React.memo(() => (
   <>
     <Typography variant="h3" style={{ marginTop: 20 }}>
       Cruises
@@ -63,4 +59,4 @@ const TravelMap: React.FC<TravelMapProps> = React.memo(({ totalNights }) => (
   </>
 ));
 
-export default TravelMap;
+export default CruiseTable;

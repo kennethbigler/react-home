@@ -11,7 +11,7 @@ import LoyaltyCharts from "./cruises/LoyaltyCharts";
 /* TravelMap  ->  WorldMap  ->  Popover
  *           |->  TravelTable
  *           |->  CruiseCharts */
-const TravelMap: React.FC = () => (
+const TravelMap = React.memo(() => (
   <>
     <Typography variant="h2" component="h1">
       Travel
@@ -27,11 +27,11 @@ const TravelMap: React.FC = () => (
       <Grid item sm={12} md={6}>
         <ExpandableCard title="Cruises">
           <CruiseCharts />
-          <CruiseTable totalNights={268} />
+          <CruiseTable />
         </ExpandableCard>
       </Grid>
     </Grid>
   </>
-);
+));
 
 export default TravelMap;
