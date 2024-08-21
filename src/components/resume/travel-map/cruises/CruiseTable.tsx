@@ -4,7 +4,6 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Typography } from "@mui/material";
 import { cruises, totalNights } from "../../../../constants/cruises";
 
 // --------------------     Styles     -------------------- //
@@ -39,24 +38,17 @@ const cruiseCells = cruises.map((cruise, i) => (
 
 // --------------------     Render     -------------------- //
 const CruiseTable = React.memo(() => (
-  <>
-    <Typography variant="h3" style={{ marginTop: 20 }}>
-      Cruises
-    </Typography>
-    <Table aria-label="cruises I have been on">
-      <TableHead>
-        <TableRow>
-          <TableCell style={cellStyles}>Ship&nbsp;🚢</TableCell>
-          <TableCell style={cellStyles}>Description&nbsp;📍</TableCell>
-          <TableCell style={cellStyles}>
-            Nights ({totalNights}&nbsp;🌙)
-          </TableCell>
-          <TableCell style={cellStyles}>Departure&nbsp;🗓</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>{cruiseCells}</TableBody>
-    </Table>
-  </>
+  <Table aria-label="cruises I have been on">
+    <TableHead>
+      <TableRow>
+        <TableCell style={cellStyles}>Ship&nbsp;🚢</TableCell>
+        <TableCell style={cellStyles}>Description&nbsp;📍</TableCell>
+        <TableCell style={cellStyles}>Nights ({totalNights}&nbsp;🌙)</TableCell>
+        <TableCell style={cellStyles}>Departure&nbsp;🗓</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>{cruiseCells}</TableBody>
+  </Table>
 ));
 
 export default CruiseTable;
