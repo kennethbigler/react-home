@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { grey } from "@mui/material/colors";
-import { americas, euNaf, asNau } from "../../../constants/travel";
+import { americas, euNaf, asNau } from "../../../../constants/travel";
 
 // --------------------     Styles     -------------------- //
 const separatorStyles: React.CSSProperties = {
@@ -70,7 +70,7 @@ for (let i = 0; i < len; i += 1) {
 }
 
 // --------------------     Travel Map     -------------------- //
-const TravelMap: React.FC = React.memo(() => (
+const CountryTable = React.memo(() => (
   <Table aria-label="Countries I have visited">
     <TableHead>
       <TableRow>
@@ -90,4 +90,4 @@ const TravelMap: React.FC = React.memo(() => (
   </Table>
 ));
 
-export default TravelMap;
+export default CountryTable;

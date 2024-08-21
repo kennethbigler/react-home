@@ -6,8 +6,8 @@ import highchartsAccessibility from "highcharts/modules/accessibility";
 // Import to change title color
 import { useRecoilState } from "recoil";
 import { Typography } from "@mui/material";
-import themeAtom from "../../../recoil/theme-atom";
-import countries, { numCountries } from "../../../constants/travel";
+import themeAtom from "../../../../recoil/theme-atom";
+import countries, { numCountries } from "../../../../constants/travel";
 
 highchartsAccessibility(Highcharts);
 

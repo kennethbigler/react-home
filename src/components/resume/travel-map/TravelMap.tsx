@@ -1,16 +1,17 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import CountryTable from "./CountryTable";
-import CruiseTable from "./CruiseTable";
-import WorldMap from "./WorldMap";
-import CruiseCharts from "./CruiseCharts";
 import ExpandableCard from "../../common/expandable-card";
+import CountryTable from "./map/CountryTable";
+import WorldMap from "./map/WorldMap";
+import CruiseTable from "./cruises/CruiseTable";
+import CruiseCharts from "./cruises/CruiseCharts";
+import LoyaltyCharts from "./cruises/LoyaltyCharts";
 
 /* TravelMap  ->  WorldMap  ->  Popover
  *           |->  TravelTable
  *           |->  CruiseCharts */
-const TravelMap: React.FC = () => (
+const TravelMap = React.memo(() => (
   <>
     <Typography variant="h2" component="h1">
       Travel
@@ -21,6 +22,7 @@ const TravelMap: React.FC = () => (
           <WorldMap />
           <CountryTable />
         </ExpandableCard>
+        <LoyaltyCharts />
       </Grid>
       <Grid item sm={12} md={6}>
         <ExpandableCard title="Cruises">
@@ -30,6 +32,6 @@ const TravelMap: React.FC = () => (
       </Grid>
     </Grid>
   </>
-);
+));
 
 export default TravelMap;
