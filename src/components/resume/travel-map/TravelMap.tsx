@@ -17,16 +17,20 @@ const TravelMap = React.memo(() => (
       Travel
     </Typography>
     <Grid container spacing={2}>
-      <Grid item sm={12} md={6}>
+      <Grid item sm={12} md={6} xl={4}>
         <ExpandableCard title="Travel Map">
           <WorldMap />
           <CountryTable />
         </ExpandableCard>
-        <LoyaltyCharts />
       </Grid>
-      <Grid item sm={12} md={6}>
-        <ExpandableCard title="Cruises">
+      <Grid item sm={12} md={6} xl={4}>
+        <ExpandableCard title="Cruise Charts">
           <CruiseCharts />
+          <LoyaltyCharts />
+        </ExpandableCard>
+      </Grid>
+      <Grid item sm={12} md={12} xl={4}>
+        <ExpandableCard title="Cruises">
           <CruiseTable />
         </ExpandableCard>
       </Grid>
