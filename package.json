@@ -34,7 +34,6 @@
     "localforage": "1.10.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-newline-to-break": "1.0.6",
     "react-router-dom": "6.26.1",
     "recoil": "0.7.7",
     "vite": "5.4.2"

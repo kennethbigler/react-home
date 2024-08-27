@@ -8,7 +8,6 @@ import Education from "./education";
 import Presentations from "./presentations";
 import TravelMap from "./travel-map";
 import Resume from "./resume";
-import GitTools from "./git-tools";
 import Cars from "./cars";
 
 interface RoutesProps {
@@ -26,7 +25,6 @@ const ResumeRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
       <Route path="/*" element={<Summary />} />
       <Route path="cars/*" element={<Cars />} />
       <Route path="education/*" element={<Education />} />
-      <Route path="git-tools/*" element={<GitTools />} />
       <Route path="presentations/*" element={<Presentations />} />
       <Route path="resume/*" element={<Resume />} />
       <Route path="travel/*" element={<TravelMap />} />

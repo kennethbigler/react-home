@@ -31,7 +31,6 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
         { name: "Summary", route: "" },
         { name: "Work", route: "work" },
         { name: "Resume", route: "resume" },
-        { name: "Git Tools", route: "git-tools" },
         { name: "Education", route: "education" },
         { name: "Presentations", route: "presentations" },
         { divider: true },

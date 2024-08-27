@@ -7,8 +7,8 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import nl2br from "react-newline-to-break";
 import Typography from "@mui/material/Typography";
+import arr2br from "../../../apis/arr2br";
 
 interface MurderMysteryPanelProps {
   expanded?: string;
@@ -19,9 +19,9 @@ interface MurderMysteryPanelProps {
   role: string;
   importance: string;
   gender: string;
-  description: string;
-  hint: string;
-  clue: string;
+  description: string[];
+  hint: string[];
+  clue: string[];
 }
 
 const containerStyles: React.CSSProperties = {
@@ -69,21 +69,21 @@ const MurderMysteryPanel: React.FC<MurderMysteryPanelProps> = React.memo(
                 <TableCell component="th" scope="row">
                   Description
                 </TableCell>
-                <TableCell>{nl2br(description)}</TableCell>
+                <TableCell>{arr2br(description)}</TableCell>
               </TableRow>
               {hint && (
                 <TableRow>
                   <TableCell component="th" scope="row">
                     Hint
                   </TableCell>
-                  <TableCell>{nl2br(hint)}</TableCell>
+                  <TableCell>{arr2br(hint)}</TableCell>
                 </TableRow>
               )}
               <TableRow>
                 <TableCell component="th" scope="row">
                   Clue
                 </TableCell>
-                <TableCell>{nl2br(clue)}</TableCell>
+                <TableCell>{arr2br(clue)}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
