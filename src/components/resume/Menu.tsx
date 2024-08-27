@@ -33,7 +33,6 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
         { name: "Resume", route: "resume" },
         { name: "Education", route: "education" },
         { name: "Presentations", route: "presentations" },
-        { divider: true },
         { name: "Comp Calculator", route: "comp" },
         { divider: true },
         { name: "Cars", route: "cars" },
