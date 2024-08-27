@@ -35,7 +35,6 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
         { name: "Presentations", route: "presentations" },
         { divider: true },
         { name: "Comp Calculator", route: "comp" },
-        { name: "Git Tools", route: "git-tools" },
         { divider: true },
         { name: "Cars", route: "cars" },
         { name: "Travel Map", route: "travel" },
