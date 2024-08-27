@@ -39,7 +39,6 @@ Check out the [issues tab](https://github.com/kennethbigler/react-home/issues) f
 * [Highcharts](https://www.highcharts.com/)
 * [Recoil](https://recoiljs.org/)
 * [localforage](https://github.com/localForage/localForage)
-* [react-newline-to-break](https://github.com/Stychen/React-Newline-to-Break)
 
 ## Deployments
 
