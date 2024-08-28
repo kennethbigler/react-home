@@ -1,3 +1,4 @@
+import Grid from "@mui/material/Grid2";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
@@ -18,7 +19,7 @@ const Notes = ({
   updateNotes,
 }: NotesProps) => (
   <>
-    <div style={{ width: "100%" }}>
+    <Grid size={12}>
       <TextField
         fullWidth
         label="Notes"
@@ -26,9 +27,9 @@ const Notes = ({
         defaultValue={notes}
         onBlur={updateNotes}
       />
-    </div>
+    </Grid>
 
-    <div style={{ width: "100%" }}>
+    <Grid size={12}>
       <FormGroup row sx={{ display: "block", textAlign: "center" }}>
         <FormControlLabel
           control={<Checkbox checked={liar} onChange={updateStats("liar")} />}
@@ -43,7 +44,7 @@ const Notes = ({
           label="❌"
         />
       </FormGroup>
-    </div>
+    </Grid>
   </>
 );
 

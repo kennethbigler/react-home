@@ -1,3 +1,4 @@
+import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import { BotCRole } from "../../../../recoil/botc-atom";
 import { tb, snv, bmr, dtb, swpm } from "../../../../constants/botc";
@@ -36,10 +37,10 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
 
   return (
     <>
-      <div style={{ width: "100%" }}>
+      <Grid size={12}>
         <hr />
         <Typography>Townsfolk</Typography>
-      </div>
+      </Grid>
       {scripts.active.townsfolk.map((role: BotCRole) => (
         <RoleButton
           key={role.name}
@@ -49,10 +50,10 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         />
       ))}
 
-      <div style={{ width: "100%" }}>
+      <Grid size={12}>
         <hr />
         <Typography>Outsiders</Typography>
-      </div>
+      </Grid>
       {scripts.active.outsiders.map((role: BotCRole) => (
         <RoleButton
           key={role.name}
@@ -62,10 +63,10 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         />
       ))}
 
-      <div style={{ width: "100%" }}>
+      <Grid size={12}>
         <hr />
         <Typography>Minions</Typography>
-      </div>
+      </Grid>
       {scripts.active.minions.map((role: BotCRole) => (
         <RoleButton
           key={role.name}
@@ -75,10 +76,10 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         />
       ))}
 
-      <div style={{ width: "100%" }}>
+      <Grid size={12}>
         <hr />
         <Typography>Demons</Typography>
-      </div>
+      </Grid>
       {scripts.active.demons.map((role: BotCRole) => (
         <RoleButton
           key={role.name}
@@ -90,10 +91,10 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
 
       {scripts.active.travelers.length > 0 && (
         <>
-          <div style={{ width: "100%" }}>
+          <Grid size={12}>
             <hr />
             <Typography>Travelers</Typography>
-          </div>
+          </Grid>
           {scripts.active.travelers.map((role: BotCRole) => (
             <RoleButton
               key={role.name}
@@ -105,10 +106,10 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         </>
       )}
 
-      <div style={{ width: "100%" }}>
+      <Grid size={12}>
         <hr />
         <Typography>Other Travelers</Typography>
-      </div>
+      </Grid>
       {scripts.travelers.map((role: BotCRole) => (
         <RoleButton
           key={role.name}
