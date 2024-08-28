@@ -1,5 +1,5 @@
 import * as React from "react";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import ExpandableCard from "../../common/expandable-card";
 import CountryTable from "./map/CountryTable";
@@ -17,19 +17,19 @@ const TravelMap = React.memo(() => (
       Travel
     </Typography>
     <Grid container spacing={2}>
-      <Grid item sm={12} md={6} xl={4}>
+      <Grid size={{ xs: 12, md: 6, xl: 4 }}>
         <ExpandableCard title="Travel Map">
           <WorldMap />
           <CountryTable />
         </ExpandableCard>
       </Grid>
-      <Grid item sm={12} md={6} xl={4}>
+      <Grid size={{ xs: 12, md: 6, xl: 4 }}>
         <ExpandableCard title="Cruise Charts">
           <CruiseCharts />
           <LoyaltyCharts />
         </ExpandableCard>
       </Grid>
-      <Grid item sm={12} md={12} xl={4}>
+      <Grid size={{ xs: 12, xl: 4 }}>
         <ExpandableCard title="Cruises">
           <CruiseTable />
         </ExpandableCard>

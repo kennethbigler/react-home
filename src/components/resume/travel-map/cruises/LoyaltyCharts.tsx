@@ -18,12 +18,13 @@ const LoyaltyCharts = () => {
       inverted: true,
       polar: true,
       backgroundColor: "transparent",
+      style: { marginLeft: "auto", marginRight: "auto" },
     },
     title: { text: "Cruise Loyalty", style: { color } },
     tooltip: {
       valueSuffix: "%",
     },
-    pane: { size: "85%", innerSize: "20%", endAngle: 335 },
+    pane: { innerSize: "20%", endAngle: 335 },
     legend: { itemStyle: { color } },
     xAxis: {
       labels: {

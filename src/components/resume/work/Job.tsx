@@ -1,5 +1,5 @@
 import * as React from "react";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import ExpandableCard from "../../common/expandable-card";
 import { Job as JobType } from "../../../constants/work";
@@ -29,7 +29,7 @@ const Job: React.FC<JobProps> = (props: JobProps) => {
       inverted={job.inverted}
       title={title}
     >
-      <Grid item sm={9} xs={12}>
+      <Grid size={{ xs: 12, sm: 9 }}>
         <Typography>{showRange(job.start, job.end, job.notes)}</Typography>
         {job.expr && (
           <ul>
@@ -56,7 +56,7 @@ const Job: React.FC<JobProps> = (props: JobProps) => {
         )}
       </Grid>
       {job.src && (
-        <Grid item sm={3} xs={12}>
+        <Grid size={{ xs: 12, sm: 3 }}>
           <img alt={job.alt} src={job.src} style={imgStyle} />
         </Grid>
       )}

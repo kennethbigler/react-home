@@ -1,5 +1,5 @@
 import * as React from "react";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -23,7 +23,7 @@ const EditPlayer = ({
   moveUp,
   moveDown,
 }: EditPlayerProps) => (
-  <Grid item xs={6} sm={4} sx={{ display: "flex", alignItems: "center" }}>
+  <Grid size={{ xs: 6, sm: 4 }} sx={{ display: "flex", alignItems: "center" }}>
     <ButtonGroup aria-label="move player" orientation="vertical" variant="text">
       <Button aria-label="up" disabled={first} size="small" onClick={moveUp}>
         <ArrowDropUpIcon />

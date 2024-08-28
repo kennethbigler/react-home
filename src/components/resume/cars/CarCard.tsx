@@ -2,7 +2,7 @@ import * as React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 
 export interface Car {
   owned: string;
@@ -38,7 +38,7 @@ const imgStyles: React.CSSProperties = {
 const CarCard: React.FC<CarCardProps> = ({ car }: CarCardProps) => (
   <Card style={containerStyles}>
     <Grid container spacing={1}>
-      <Grid item sm={8} xs={12}>
+      <Grid size={{ xs: 12, sm: 8 }}>
         <CardContent>
           <Typography variant="h4" component="h3">
             <strong style={{ paddingRight: 20 }}>{`(${car.owned})`}</strong>
@@ -57,7 +57,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }: CarCardProps) => (
           <Typography>{car.story}</Typography>
         </CardContent>
       </Grid>
-      <Grid item sm={4} xs={12}>
+      <Grid size={{ xs: 12, sm: 4 }}>
         <img src={car.src} alt="" style={imgStyles} />
       </Grid>
     </Grid>

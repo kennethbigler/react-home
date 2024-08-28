@@ -1,5 +1,5 @@
 import * as React from "react";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import { useRecoilState } from "recoil";
 import TimelineCard from "../../common/timeline-card";
@@ -73,11 +73,23 @@ const Cars = () => {
         title="Ken's Cars"
         yearMarkerFrequency={3}
       />
-      <CarSankeyGraph hideKen={hideKen} hideFamily={hideFamily} color={color} />
-      <CarChart data={data} color={color} />
       <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <ExpandableCard title="Sankey Breakdown">
+            <CarSankeyGraph
+              hideKen={hideKen}
+              hideFamily={hideFamily}
+              color={color}
+            />
+          </ExpandableCard>
+        </Grid>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <ExpandableCard title="Car Stats">
+            <CarChart data={data} color={color} />
+          </ExpandableCard>
+        </Grid>
         {!hideKen && (
-          <Grid item sm={12} md={hideFamily ? 12 : 6}>
+          <Grid size={{ xs: 12, md: hideFamily ? 12 : 6 }}>
             <ExpandableCard title="Ken's Cars">
               {currentKensCarsReversed.map((car, i) => (
                 <CarCard car={car} key={`k-${car.title}-cur-${i}`} />
@@ -91,7 +103,7 @@ const Cars = () => {
           </Grid>
         )}
         {!hideFamily && (
-          <Grid item sm={12} md={hideKen ? 12 : 6}>
+          <Grid size={{ xs: 12, md: hideKen ? 12 : 6 }}>
             <ExpandableCard title="Family Cars">
               {currentFamilyCarsReversed.map((car, i) => (
                 <CarCard car={car} key={`f-${car.title}-cur-${i}`} />

@@ -3,7 +3,7 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import ExpandableCard from "../../common/expandable-card";
 import photo from "../../../images/ken.webp";
 import workExp, { Job } from "../../../constants/work";
@@ -26,7 +26,7 @@ const handleClick = (): void => {
 
 const Info: React.FC = React.memo(() => (
   <Grid container spacing={1}>
-    <Grid item md={4} xs={12}>
+    <Grid size={{ xs: 12, md: 4 }}>
       <img
         alt="Kenneth Bigler"
         onClick={handleClick}
@@ -34,7 +34,7 @@ const Info: React.FC = React.memo(() => (
         style={imageStyles}
       />
     </Grid>
-    <Grid item md={8} xs={12}>
+    <Grid size={{ xs: 12, md: 8 }}>
       <ExpandableCard title={getJob(workExp[0])}>
         <Table aria-label="general information about Ken Bigler">
           <TableBody>

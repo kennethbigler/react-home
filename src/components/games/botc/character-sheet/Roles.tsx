@@ -1,4 +1,3 @@
-import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { BotCRole } from "../../../../recoil/botc-atom";
 import { tb, snv, bmr, dtb, swpm } from "../../../../constants/botc";
@@ -37,10 +36,10 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
 
   return (
     <>
-      <Grid item xs={12}>
+      <div style={{ width: "100%" }}>
         <hr />
         <Typography>Townsfolk</Typography>
-      </Grid>
+      </div>
       {scripts.active.townsfolk.map((role: BotCRole) => (
         <RoleButton
           key={role.name}
@@ -50,10 +49,10 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         />
       ))}
 
-      <Grid item xs={12}>
+      <div style={{ width: "100%" }}>
         <hr />
         <Typography>Outsiders</Typography>
-      </Grid>
+      </div>
       {scripts.active.outsiders.map((role: BotCRole) => (
         <RoleButton
           key={role.name}
@@ -63,10 +62,10 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         />
       ))}
 
-      <Grid item xs={12}>
+      <div style={{ width: "100%" }}>
         <hr />
         <Typography>Minions</Typography>
-      </Grid>
+      </div>
       {scripts.active.minions.map((role: BotCRole) => (
         <RoleButton
           key={role.name}
@@ -76,10 +75,10 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         />
       ))}
 
-      <Grid item xs={12}>
+      <div style={{ width: "100%" }}>
         <hr />
         <Typography>Demons</Typography>
-      </Grid>
+      </div>
       {scripts.active.demons.map((role: BotCRole) => (
         <RoleButton
           key={role.name}
@@ -91,10 +90,10 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
 
       {scripts.active.travelers.length > 0 && (
         <>
-          <Grid item xs={12}>
+          <div style={{ width: "100%" }}>
             <hr />
             <Typography>Travelers</Typography>
-          </Grid>
+          </div>
           {scripts.active.travelers.map((role: BotCRole) => (
             <RoleButton
               key={role.name}
@@ -106,10 +105,10 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         </>
       )}
 
-      <Grid item xs={12}>
+      <div style={{ width: "100%" }}>
         <hr />
         <Typography>Other Travelers</Typography>
-      </Grid>
+      </div>
       {scripts.travelers.map((role: BotCRole) => (
         <RoleButton
           key={role.name}

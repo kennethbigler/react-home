@@ -1,12 +1,10 @@
 import * as React from "react";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardActionArea,
-  Collapse,
-  Grid,
-} from "@mui/material";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
+import CardActionArea from "@mui/material/CardActionArea";
+import Collapse from "@mui/material/Collapse";
+import Grid from "@mui/material/Grid2";
 import { useTheme } from "@mui/material/styles";
 import useToggleState from "../../../hooks/useToggle";
 
