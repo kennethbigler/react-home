@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import { BotCRole } from "../../../../recoil/botc-atom";
 
 interface RoleButtonProps {
@@ -9,7 +9,7 @@ interface RoleButtonProps {
 }
 
 const RoleButton = ({ role, selected, updateRoles }: RoleButtonProps) => (
-  <Grid item xs={6} sx={{ textAlign: "center" }}>
+  <Grid size={6} sx={{ textAlign: "center" }}>
     <Button
       variant={selected ? "contained" : "outlined"}
       color={role.alignment}

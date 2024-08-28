@@ -1,18 +1,11 @@
 import * as React from "react";
 import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import { useRecoilState } from "recoil";
 import SimplePopover from "./ButtonPopover";
 import playerAtom from "../../../recoil/player-atom";
-
-const namePadStyles: React.CSSProperties = {
-  maxWidth: "420px",
-  width: "100%",
-  display: "block",
-  margin: "auto",
-};
 
 const PlayerMenu: React.FC = () => {
   const [players, setPlayers] = useRecoilState(playerAtom);
@@ -52,19 +45,17 @@ const PlayerMenu: React.FC = () => {
 
   return (
     <SimplePopover buttonText="Players">
-      <div style={namePadStyles}>
-        <Grid container spacing={1}>
-          <Grid item xs={9}>
-            <Typography variant="h5">Edit Player Names</Typography>
-          </Grid>
-          <Grid item xs={3}>
-            <Typography variant="h5">Is Bot?</Typography>
-          </Grid>
+      <Grid container spacing={1} sx={{ maxWidth: 310 }}>
+        <Grid size={8}>
+          <Typography variant="h5">Edit Player Names</Typography>
+        </Grid>
+        <Grid size={4}>
+          <Typography variant="h5">Is Bot?</Typography>
         </Grid>
         {players.map((p, i) =>
           p.id !== 0 ? (
-            <Grid key={`${p.name},${i}`} container spacing={1}>
-              <Grid item xs={9}>
+            <React.Fragment key={`${p.name},${i}`}>
+              <Grid size={9}>
                 <TextField
                   defaultValue={p.name}
                   onBlur={handleBlur(p.id)}
@@ -72,7 +63,7 @@ const PlayerMenu: React.FC = () => {
                   title={`player ${i} name`}
                 />
               </Grid>
-              <Grid item xs={3}>
+              <Grid size={3}>
                 {(i === 0 || !players[i].isBot || !players[i - 1].isBot) && (
                   <Switch
                     checked={players[i].isBot}
@@ -82,19 +73,19 @@ const PlayerMenu: React.FC = () => {
                   />
                 )}
               </Grid>
-            </Grid>
+            </React.Fragment>
           ) : (
-            <Grid key={`${p.name},${i}`} container spacing={1}>
-              <Grid item xs={9}>
+            <React.Fragment key={`${p.name},${i}`}>
+              <Grid size={9}>
                 <Typography variant="h5">{p.name}</Typography>
               </Grid>
-              <Grid item xs={3}>
+              <Grid size={3}>
                 <Switch checked disabled />
               </Grid>
-            </Grid>
+            </React.Fragment>
           ),
         )}
-      </div>
+      </Grid>
     </SimplePopover>
   );
 };

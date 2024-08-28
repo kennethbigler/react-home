@@ -1,9 +1,8 @@
 import * as React from "react";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import Quarter, { QuarterType } from "./Quarter";
 
-type GridSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 export interface YearType {
   year: string;
   quarters: QuarterType[];
@@ -15,7 +14,7 @@ interface YearProps {
 
 /** Degree  -> Year  ->  Quarter  ->  Class */
 const Year: React.FC<YearProps> = ({ year, len }: YearProps) => (
-  <Grid item md={Math.ceil(12 / len) as GridSize} xs={12}>
+  <Grid size={{ xs: 12, md: Math.ceil(12 / len) }}>
     <Typography variant="h4" component="h2">
       {year.year}
     </Typography>

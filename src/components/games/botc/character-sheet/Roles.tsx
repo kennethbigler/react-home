@@ -1,4 +1,4 @@
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import { BotCRole } from "../../../../recoil/botc-atom";
 import { tb, snv, bmr, dtb, swpm } from "../../../../constants/botc";
@@ -37,7 +37,7 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
 
   return (
     <>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <hr />
         <Typography>Townsfolk</Typography>
       </Grid>
@@ -50,7 +50,7 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         />
       ))}
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <hr />
         <Typography>Outsiders</Typography>
       </Grid>
@@ -63,7 +63,7 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         />
       ))}
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <hr />
         <Typography>Minions</Typography>
       </Grid>
@@ -76,7 +76,7 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         />
       ))}
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <hr />
         <Typography>Demons</Typography>
       </Grid>
@@ -91,7 +91,7 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
 
       {scripts.active.travelers.length > 0 && (
         <>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <hr />
             <Typography>Travelers</Typography>
           </Grid>
@@ -106,7 +106,7 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
         </>
       )}
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <hr />
         <Typography>Other Travelers</Typography>
       </Grid>

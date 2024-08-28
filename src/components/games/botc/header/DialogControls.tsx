@@ -1,14 +1,12 @@
-import {
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Slider,
-  Typography,
-} from "@mui/material";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import Grid from "@mui/material/Grid2";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import { SelectChangeEvent } from "@mui/material";
+import Slider from "@mui/material/Slider";
+import Typography from "@mui/material/Typography";
 import {
   BOTC_MAX_PLAYERS,
   BOTC_MAX_TRAVELERS,
@@ -36,7 +34,7 @@ const DialogControls = ({
   handleReset,
 }: DialogControlsProps) => (
   <>
-    <Grid item xs={12} sx={{ textAlign: "center" }}>
+    <Grid size={12} sx={{ textAlign: "center" }}>
       <div className="flex-container">
         <FormControl
           fullWidth
@@ -63,7 +61,7 @@ const DialogControls = ({
         </Button>
       </div>
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={12}>
       <Typography>
         Players: {numPlayers} / Dist: {playerDist[numPlayers]}
       </Typography>
@@ -75,7 +73,7 @@ const DialogControls = ({
         onChange={updateNumPlayers}
       />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={12}>
       <Typography>Travelers: {numTravelers}</Typography>
       <Slider
         aria-label="traveler count"

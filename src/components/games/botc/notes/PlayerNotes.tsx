@@ -1,4 +1,4 @@
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import PlayerCard from "./PlayerCard";
 import {
@@ -32,7 +32,7 @@ const PlayerNotes = ({
   updateNotes,
 }: PlayerNotesProps) => (
   <Grid container spacing={2}>
-    <Grid item xs={12}>
+    <Grid size={12}>
       <Typography>
         Dist: {playerDist[numPlayers]}
         {numTravelers ? ` +${numTravelers}` : ""}

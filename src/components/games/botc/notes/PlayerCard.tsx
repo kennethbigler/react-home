@@ -1,5 +1,5 @@
 import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import {
@@ -32,7 +32,7 @@ const PlayerCard = ({
   updateRoles,
   updateNotes,
 }: PlayerCardProps) => (
-  <Grid item xs={6} sm={4} lg={3} xl={2}>
+  <Grid size={{ xs: 6, sm: 4, lg: 3, xl: 2 }}>
     <Card sx={{ padding: "5px", textAlign: "center" }}>
       <InfoPopup buttonText={player.name} title={`Roles - ${player.name}`}>
         <CharacterSheet

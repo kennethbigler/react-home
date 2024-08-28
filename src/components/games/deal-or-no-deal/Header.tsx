@@ -1,6 +1,6 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import { getMoneyText } from "./helpers";
 import { Briefcase } from "../../../recoil/deal-or-no-deal-state";
@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
 
   return (
     <Grid container spacing={1}>
-      <Grid item sm={6} xs={12}>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <Typography variant="h3" component="h2" gutterBottom>
           {`Your Case: ${pc ? pc.loc : "?"}${
             isOver ? ` - ${getMoneyText(pc && pc.val)}` : ""
@@ -46,7 +46,7 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
           </Button>
         ) : null}
       </Grid>
-      <Grid item sm={6} xs={12}>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <Typography variant="h3" align="right" gutterBottom>
           {`${name}: ${getMoneyText(money)}`}
         </Typography>

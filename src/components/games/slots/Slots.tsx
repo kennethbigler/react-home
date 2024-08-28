@@ -1,6 +1,6 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import { useRecoilState, useRecoilValue } from "recoil";
 import slotsState, { slotsReadOnlyState } from "../../../recoil/slots-state";
@@ -43,9 +43,9 @@ const Slots: React.FC = () => {
         <PlayerMenu />
       </div>
       <Grid container spacing={1} style={{ marginTop: "2em" }}>
-        <Grid item sm={6} xs={12}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <Grid container spacing={1} style={{ marginBottom: "1em" }}>
-            <Grid item sm={3} xs={12}>
+            <Grid size={{ xs: 12, sm: 3 }}>
               <Button
                 onClick={updateSlotMachine}
                 style={{ marginBottom: 15 }}
@@ -59,13 +59,13 @@ const Slots: React.FC = () => {
                 } $${exchange}`}</Typography>
               ) : null}
             </Grid>
-            <Grid item sm={9} xs={12}>
+            <Grid size={{ xs: 12, sm: 9 }}>
               <ReelDisplay reel={reel} />
             </Grid>
           </Grid>
           <MoneyTable money={money} name={name} houseMoney={houseMoney} />
         </Grid>
-        <Grid item sm={6} xs={12}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <PayoutTable />
         </Grid>
       </Grid>

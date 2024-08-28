@@ -1,6 +1,6 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { SelectChangeEvent } from "@mui/material";

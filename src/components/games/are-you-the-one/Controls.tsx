@@ -1,14 +1,12 @@
 import * as React from "react";
 import { useRecoilState } from "recoil";
-import {
-  Button,
-  ButtonGroup,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import { SelectChangeEvent } from "@mui/material";
 import {
   aytoSeasonSelector,
   RoundPairing,
