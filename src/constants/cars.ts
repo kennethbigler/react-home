@@ -127,6 +127,27 @@ const pastFamilyCars = [
     torque: 303,
     weight: 3777,
   },
+  {
+    color: indigo[900],
+    start: dateObj("2020-03"),
+    end: dateObj("2022-10"),
+    car: "MustangB",
+    short: "Mstng",
+    char: "Mb",
+    nickname: "Miranda Jr",
+    title: mustangB,
+
+    owned: "2020 - 2022",
+    story: `I shared a ${mustangB} with the Performance Pack 1 with my roommate!`,
+    src: mustang20,
+    transmission: "Manual",
+
+    displacement: 5.0,
+    horsepower: 460,
+    MPG: 18,
+    torque: 420,
+    weight: 3705,
+  },
 ];
 
 const currentFamilyCars = [
@@ -326,27 +347,6 @@ const pastKensCars = [
     MPG: 18,
     torque: 650,
     weight: 3524,
-  },
-  {
-    color: indigo[900],
-    start: dateObj("2020-03"),
-    end: dateObj("2022-10"),
-    car: "MustangB",
-    short: "Mstng",
-    char: "Mb",
-    nickname: "Miranda Jr",
-    title: mustangB,
-
-    owned: "2020 - 2022",
-    story: `I shared a ${mustangB} with the Performance Pack 1 with my roommate!`,
-    src: mustang20,
-    transmission: "Manual",
-
-    displacement: 5.0,
-    horsepower: 460,
-    MPG: 18,
-    torque: 420,
-    weight: 3705,
   },
   {
     color: teal[100],
@@ -647,6 +647,7 @@ export const familySankeyData = [
   //     Japan
   ["Toyota", "🇯🇵", 1],
   //     US
+  ["Ford", "🇺🇸", 1],
   ["Tesla", "🇺🇸", 1],
   ["Chevrolet", "GM", 3],
   ["Plymouth", "Fiat Chrysler Auto", 1],
@@ -660,7 +661,7 @@ export const familySankeyData = [
   ["TATA", "🇬🇧", 1],
   // level 3
   ["🇯🇵", "🏎️", 1],
-  ["🇺🇸", "🏎️", 5],
+  ["🇺🇸", "🏎️", 6],
   ["🇩🇪", "🏎️", 1],
   ["🇬🇧", "🏎️", 1],
 ];
@@ -670,7 +671,7 @@ export const kenSankeyData = [
   //     Japan
   ["Honda", "🇯🇵", 1],
   //     US
-  ["Ford", "🇺🇸", 3],
+  ["Ford", "🇺🇸", 2],
   ["Chevrolet", "GM", 2],
   ["Pontiac", "GM", 1],
   //     Other
@@ -682,7 +683,7 @@ export const kenSankeyData = [
   ["TATA", "🇬🇧", 1],
   // level 3
   ["🇯🇵", "🏎️", 1],
-  ["🇺🇸", "🏎️", 6],
+  ["🇺🇸", "🏎️", 5],
   ["🇩🇪", "🏎️", 1],
   ["🇬🇧", "🏎️", 1],
 ];

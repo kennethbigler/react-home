@@ -68,23 +68,21 @@ const Cars = () => {
         yearMarkerFrequency={3}
       />
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <ExpandableCard title="Sankey Breakdown">
+        <ExpandableCard title="Car Graphs">
+          <Grid size={{ xs: 12, md: 6 }}>
             <CarSankeyGraph
               hideKen={hideKen}
               hideFamily={hideFamily}
               color={color}
             />
-          </ExpandableCard>
-        </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <ExpandableCard title="Car Stats">
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
             <CarChart data={data} color={color} />
-          </ExpandableCard>
-        </Grid>
-        <Grid size={12}>
-          <CurrentCarStats data={data} color={color} />
-        </Grid>
+          </Grid>
+          <Grid size={12}>
+            <CurrentCarStats data={data} color={color} />
+          </Grid>
+        </ExpandableCard>
         {!hideKen && (
           <Grid size={{ xs: 12, md: hideFamily ? 12 : 6 }}>
             <ExpandableCard title="Ken's Cars">
