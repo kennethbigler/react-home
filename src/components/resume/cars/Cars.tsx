@@ -16,19 +16,13 @@ import CarSankeyGraph from "./CarSankeyGraph";
 import CarChartControls from "./CarChartControls";
 import ExpandableCard from "../../common/expandable-card";
 import themeAtom from "../../../recoil/theme-atom";
+import CurrentCarStats from "./CurrentCarStats";
 
 const pastKensCarsReversed = pastKensCars.slice().reverse();
 const pastFamilyCarsReversed = pastFamilyCars.slice().reverse();
 const currentKensCarsReversed = currentKensCars.slice().reverse();
 const currentFamilyCarsReversed = currentFamilyCars.slice().reverse();
 
-/**
- * Cars |-> TimelineCard
- *      |-> CarSankeyGraph
- *      |-> CarChartControls
- *      |-> CarChart
- *      |-> Grid of CarCards
- */
 const Cars = () => {
   const [theme] = useRecoilState(themeAtom);
   const [hideFamily, setHideFamily] = React.useState(false);
@@ -74,20 +68,21 @@ const Cars = () => {
         yearMarkerFrequency={3}
       />
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <ExpandableCard title="Sankey Breakdown">
+        <ExpandableCard title="Car Graphs">
+          <Grid size={{ xs: 12, md: 6 }}>
             <CarSankeyGraph
               hideKen={hideKen}
               hideFamily={hideFamily}
               color={color}
             />
-          </ExpandableCard>
-        </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <ExpandableCard title="Car Stats">
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
             <CarChart data={data} color={color} />
-          </ExpandableCard>
-        </Grid>
+          </Grid>
+          <Grid size={12}>
+            <CurrentCarStats data={data} color={color} />
+          </Grid>
+        </ExpandableCard>
         {!hideKen && (
           <Grid size={{ xs: 12, md: hideFamily ? 12 : 6 }}>
             <ExpandableCard title="Ken's Cars">

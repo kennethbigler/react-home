@@ -8,13 +8,6 @@ interface CarChartControlsProps {
   onClick: (key: string) => () => void;
 }
 
-/**
- * Cars |-> TimelineCard
- *      |-> CarSankeyGraph
- *      |-> CarChartControls
- *      |-> CarChart
- *      |-> Grid of CarCards
- */
 const CarChartControls = React.memo(
   ({ onClick, hideFamily, hideKen }: CarChartControlsProps) => (
     <ButtonGroup

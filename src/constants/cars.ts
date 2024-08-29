@@ -127,6 +127,27 @@ const pastFamilyCars = [
     torque: 303,
     weight: 3777,
   },
+  {
+    color: indigo[900],
+    start: dateObj("2020-03"),
+    end: dateObj("2022-10"),
+    car: "MustangB",
+    short: "Mstng",
+    char: "Mb",
+    nickname: "Miranda Jr",
+    title: mustangB,
+
+    owned: "2020 - 2022",
+    story: `I shared a ${mustangB} with the Performance Pack 1 with my roommate!`,
+    src: mustang20,
+    transmission: "Manual",
+
+    displacement: 5.0,
+    horsepower: 460,
+    MPG: 18,
+    torque: 420,
+    weight: 3705,
+  },
 ];
 
 const currentFamilyCars = [
@@ -328,27 +349,6 @@ const pastKensCars = [
     weight: 3524,
   },
   {
-    color: indigo[900],
-    start: dateObj("2020-03"),
-    end: dateObj("2022-10"),
-    car: "MustangB",
-    short: "Mstng",
-    char: "Mb",
-    nickname: "Miranda Jr",
-    title: mustangB,
-
-    owned: "2020 - 2022",
-    story: `I shared a ${mustangB} with the Performance Pack 1 with my roommate!`,
-    src: mustang20,
-    transmission: "Manual",
-
-    displacement: 5.0,
-    horsepower: 460,
-    MPG: 18,
-    torque: 420,
-    weight: 3705,
-  },
-  {
     color: teal[100],
     start: dateObj("2021-10"),
     end: dateObj("2023-03"),
@@ -411,7 +411,7 @@ const currentKensCars = [
 
     displacement: 0.124,
     horsepower: parseFloat((9.7 * 1.139).toPrecision(3)),
-    MPG: 97,
+    MPG: 130,
     torque: parseFloat((7.7 * 1.143).toPrecision(3)),
     weight: 230,
   },
@@ -538,6 +538,84 @@ export const processData = (data: CarStats[]): GraphData => {
   return ret;
 };
 
+export interface CurrentCarStatsData {
+  maxVal: number;
+  startYellowVal: number;
+  startRedVal: number;
+  val: number;
+  name: string;
+}
+
+export const processCurrentCarStats = (
+  data: CarStats[],
+  key:
+    | "displacement"
+    | "horsepower"
+    | "MPG"
+    | "torque"
+    | "weight"
+    | "powerToWeight",
+): CurrentCarStatsData => {
+  let currentValue;
+  if (key === "powerToWeight") {
+    currentValue = currentKensCars[1].horsepower / currentKensCars[1].weight;
+  } else {
+    currentValue = currentKensCars[1][key];
+  }
+  if (data.length === 0) {
+    return {
+      maxVal: currentValue, // max
+      startYellowVal: 0, // min
+      startRedVal: currentValue, // 2nd max
+      val: currentValue,
+      name: currentKensCars[1].car,
+    };
+  }
+
+  let max = currentValue;
+  let max2 = 0;
+  let min = currentValue;
+
+  // find the min and max values in the array
+  for (let i = 1; i < data.length; i += 1) {
+    if (
+      data[i].car === "Grom" &&
+      (key === "weight" ||
+        key === "displacement" ||
+        key === "horsepower" ||
+        key === "torque")
+    ) {
+      continue; // eslint-disable-line no-continue
+    }
+    if (data[i].car === "Model X" && key === "displacement") {
+      continue; // eslint-disable-line no-continue
+    }
+
+    const val =
+      key === "powerToWeight"
+        ? data[i].horsepower / data[i].weight
+        : data[i][key];
+
+    if (val > max) {
+      const temp = max;
+      max = val;
+      temp > max2 && (max2 = temp);
+    } else if (val > max2 && val !== max) {
+      max2 = val;
+    } else if (val < min) {
+      min = val;
+    }
+  }
+
+  return {
+    maxVal: max,
+    startYellowVal: min,
+    startRedVal: max2,
+    val: currentValue,
+    name: currentKensCars[1].car,
+  };
+};
+
 export { pastKensCars, currentKensCars, pastFamilyCars, currentFamilyCars };
 
 export const carSankeyNodes = [
@@ -569,6 +647,7 @@ export const familySankeyData = [
   //     Japan
   ["Toyota", "🇯🇵", 1],
   //     US
+  ["Ford", "🇺🇸", 1],
   ["Tesla", "🇺🇸", 1],
   ["Chevrolet", "GM", 3],
   ["Plymouth", "Fiat Chrysler Auto", 1],
@@ -582,7 +661,7 @@ export const familySankeyData = [
   ["TATA", "🇬🇧", 1],
   // level 3
   ["🇯🇵", "🏎️", 1],
-  ["🇺🇸", "🏎️", 5],
+  ["🇺🇸", "🏎️", 6],
   ["🇩🇪", "🏎️", 1],
   ["🇬🇧", "🏎️", 1],
 ];
@@ -592,7 +671,7 @@ export const kenSankeyData = [
   //     Japan
   ["Honda", "🇯🇵", 1],
   //     US
-  ["Ford", "🇺🇸", 3],
+  ["Ford", "🇺🇸", 2],
   ["Chevrolet", "GM", 2],
   ["Pontiac", "GM", 1],
   //     Other
@@ -604,7 +683,7 @@ export const kenSankeyData = [
   ["TATA", "🇬🇧", 1],
   // level 3
   ["🇯🇵", "🏎️", 1],
-  ["🇺🇸", "🏎️", 6],
+  ["🇺🇸", "🏎️", 5],
   ["🇩🇪", "🏎️", 1],
   ["🇬🇧", "🏎️", 1],
 ];

@@ -44,25 +44,21 @@ const Slots: React.FC = () => {
       </div>
       <Grid container spacing={1} style={{ marginTop: "2em" }}>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Grid container spacing={1} style={{ marginBottom: "1em" }}>
-            <Grid size={{ xs: 12, sm: 3 }}>
-              <Button
-                onClick={updateSlotMachine}
-                style={{ marginBottom: 15 }}
-                variant="contained"
-              >
-                Spin
-              </Button>
-              {exchange ? (
-                <Typography variant="h4" component="h2">{`You ${
-                  exchange > 0 ? "won" : "lost"
-                } $${exchange}`}</Typography>
-              ) : null}
-            </Grid>
-            <Grid size={{ xs: 12, sm: 9 }}>
-              <ReelDisplay reel={reel} />
-            </Grid>
-          </Grid>
+          <div>
+            <Button
+              onClick={updateSlotMachine}
+              style={{ marginBottom: 15 }}
+              variant="contained"
+            >
+              Spin
+            </Button>
+            {exchange ? (
+              <Typography variant="h4" component="h2">{`You ${
+                exchange > 0 ? "won" : "lost"
+              } $${exchange}`}</Typography>
+            ) : null}
+          </div>
+          <ReelDisplay reel={reel} />
           <MoneyTable money={money} name={name} houseMoney={houseMoney} />
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
