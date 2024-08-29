@@ -21,13 +21,6 @@ interface CarSankeyGraphProps {
   hideFamily: boolean;
 }
 
-/**
- * Cars |-> TimelineCard
- *      |-> CarSankeyGraph
- *      |-> CarChartControls
- *      |-> CarChart
- *      |-> Grid of CarCards
- */
 const CarSankeyGraph = React.memo(
   ({ color, hideKen, hideFamily }: CarSankeyGraphProps) => {
     let data = carSankeyData;

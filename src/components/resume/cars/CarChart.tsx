@@ -11,13 +11,6 @@ export interface CarChartProps {
   color: string;
 }
 
-/**
- * Cars |-> TimelineCard
- *      |-> CarSankeyGraph
- *      |-> CarChartControls
- *      |-> CarChart
- *      |-> Grid of CarCards
- */
 const CarChart = React.memo(({ data, color }: CarChartProps) => {
   const { horsepower, MPG, weight, powerToWeight, xAxis } = processData(data);
 
