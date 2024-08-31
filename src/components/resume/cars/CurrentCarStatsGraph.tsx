@@ -25,19 +25,21 @@ const CurrentCarStatsGraph = React.memo(
     title,
     name,
   }: CurrentCarStatsGraphProps) => {
+    const min = title === "Weight" ? 2500 : 0;
+    const yellowStart = Math.max(min, startYellowVal);
     const options = {
       chart: { type: "gauge", backgroundColor: null },
       title: { text: `${name} ${title}`, style: { color } },
       pane: { startAngle: -90, endAngle: 90, background: null },
       yAxis: {
-        min: title === "Weight" ? 2500 : 0,
+        min,
         max: maxVal,
         lineWidth: 0,
         labels: { distance: 20, style: { color } },
         plotBands: [
           {
-            from: 0,
-            to: startYellowVal,
+            from: min,
+            to: yellowStart,
             color: green[400],
             thickness: 20,
           },
@@ -48,7 +50,7 @@ const CurrentCarStatsGraph = React.memo(
             thickness: 20,
           },
           {
-            from: startYellowVal,
+            from: yellowStart,
             to: startRedVal,
             color: yellow[500],
             thickness: 20,
