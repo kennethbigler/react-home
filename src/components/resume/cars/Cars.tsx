@@ -58,27 +58,33 @@ const Cars = () => {
         hideKen={hideKen}
         hideFamily={hideFamily}
       />
-      <TimelineCard
-        aria-hidden
-        enableLongTitles
-        data={data}
-        selector="car"
-        start={dateObj("2008-03")}
-        title="Ken's Cars"
-        yearMarkerFrequency={3}
-      />
+      {data.length > 0 && (
+        <TimelineCard
+          aria-hidden
+          enableLongTitles
+          data={data}
+          selector="car"
+          start={dateObj("2008-03")}
+          title="Ken's Cars"
+          yearMarkerFrequency={3}
+        />
+      )}
       <Grid container spacing={2}>
         <ExpandableCard title="Car Graphs">
-          <Grid size={{ xs: 12, md: 6 }}>
-            <CarSankeyGraph
-              hideKen={hideKen}
-              hideFamily={hideFamily}
-              color={color}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <CarChart data={data} color={color} />
-          </Grid>
+          {data.length > 0 && (
+            <>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <CarSankeyGraph
+                  hideKen={hideKen}
+                  hideFamily={hideFamily}
+                  color={color}
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <CarChart data={data} color={color} />
+              </Grid>
+            </>
+          )}
           <Grid size={12}>
             <CurrentCarStats data={data} color={color} />
           </Grid>

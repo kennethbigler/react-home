@@ -42,6 +42,8 @@ const bronco = "Ford Bronco Badlands (2021)";
 const grom = "Honda Grom (2022)";
 const cayenne = "Porsche Cayenne E-Hybrid (2019)";
 
+// --------------------------------------------------     Cars     -------------------------------------------------- //
+
 const pastFamilyCars = [
   {
     color: grey[50],
@@ -446,6 +448,10 @@ const cars = [
   ...currentFamilyCars,
 ];
 
+export default cars;
+
+// --------------------------------------------------     Normalized Graphs     -------------------------------------------------- //
+
 export interface CarStats {
   displacement: number;
   horsepower: number;
@@ -538,6 +544,8 @@ export const processData = (data: CarStats[]): GraphData => {
   return ret;
 };
 
+// --------------------------------------------------     Current Car Ranked     -------------------------------------------------- //
+
 export interface CurrentCarStatsData {
   maxVal: number;
   startYellowVal: number;
@@ -556,12 +564,10 @@ export const processCurrentCarStats = (
     | "weight"
     | "powerToWeight",
 ): CurrentCarStatsData => {
-  let currentValue;
-  if (key === "powerToWeight") {
-    currentValue = currentKensCars[1].horsepower / currentKensCars[1].weight;
-  } else {
-    currentValue = currentKensCars[1][key];
-  }
+  const currentValue =
+    key === "powerToWeight"
+      ? currentKensCars[1].horsepower / currentKensCars[1].weight
+      : currentKensCars[1][key];
   if (data.length === 0) {
     return {
       maxVal: currentValue, // max
@@ -577,24 +583,17 @@ export const processCurrentCarStats = (
   let min = currentValue;
 
   // find the min and max values in the array
-  for (let i = 1; i < data.length; i += 1) {
+  data.forEach((c) => {
     if (
-      data[i].car === "Grom" &&
-      (key === "weight" ||
-        key === "displacement" ||
-        key === "horsepower" ||
-        key === "torque")
+      (key === "displacement" && c.displacement < 1) ||
+      (key === "horsepower" && c.horsepower < 100) ||
+      (key === "torque" && c.torque < 100) ||
+      (key === "weight" && c.weight < 1000)
     ) {
-      continue; // eslint-disable-line no-continue
-    }
-    if (data[i].car === "Model X" && key === "displacement") {
-      continue; // eslint-disable-line no-continue
+      return;
     }
 
-    const val =
-      key === "powerToWeight"
-        ? data[i].horsepower / data[i].weight
-        : data[i][key];
+    const val = key === "powerToWeight" ? c.horsepower / c.weight : c[key];
 
     if (val > max) {
       const temp = max;
@@ -605,7 +604,7 @@ export const processCurrentCarStats = (
     } else if (val < min) {
       min = val;
     }
-  }
+  });
 
   return {
     maxVal: max,
@@ -617,6 +616,8 @@ export const processCurrentCarStats = (
 };
 
 export { pastKensCars, currentKensCars, pastFamilyCars, currentFamilyCars };
+
+// --------------------------------------------------     Sankey     -------------------------------------------------- //
 
 export const carSankeyNodes = [
   { id: "🏎️", color: grey[200] },
@@ -713,5 +714,3 @@ export const carSankeyData = [
   ["🇩🇪", "🏎️", 2],
   ["🇬🇧", "🏎️", 2],
 ];
-
-export default cars;
