@@ -424,7 +424,7 @@ const currentKensCars = [
     car: "Cayenne",
     short: "Cyne",
     char: "C",
-    nickname: "Petunia",
+    nickname: "Cheyenne",
     title: cayenne,
     inverted: true,
 
@@ -548,11 +548,12 @@ export const processData = (data: CarStats[]): GraphData => {
 
 export interface CurrentCarStatsData {
   maxVal: number;
-  startYellowVal: number;
-  startRedVal: number;
   val: number;
   name: string;
 }
+
+const getP2W = (c: CarStats) =>
+  parseFloat((c.horsepower / c.weight).toFixed(3));
 
 export const processCurrentCarStats = (
   data: CarStats[],
@@ -566,50 +567,17 @@ export const processCurrentCarStats = (
 ): CurrentCarStatsData => {
   const currentValue =
     key === "powerToWeight"
-      ? currentKensCars[1].horsepower / currentKensCars[1].weight
+      ? getP2W(currentKensCars[1])
       : currentKensCars[1][key];
-  if (data.length === 0) {
-    return {
-      maxVal: currentValue, // max
-      startYellowVal: 0, // min
-      startRedVal: currentValue, // 2nd max
-      val: currentValue,
-      name: currentKensCars[1].car,
-    };
-  }
 
   let max = currentValue;
-  let max2 = 0;
-  let min = currentValue;
-
-  // find the min and max values in the array
   data.forEach((c) => {
-    if (
-      (key === "displacement" && c.displacement < 1) ||
-      (key === "horsepower" && c.horsepower < 100) ||
-      (key === "torque" && c.torque < 100) ||
-      (key === "weight" && c.weight < 1000)
-    ) {
-      return;
-    }
-
-    const val = key === "powerToWeight" ? c.horsepower / c.weight : c[key];
-
-    if (val > max) {
-      const temp = max;
-      max = val;
-      temp > max2 && (max2 = temp);
-    } else if (val > max2 && val !== max) {
-      max2 = val;
-    } else if (val < min) {
-      min = val;
-    }
+    const val = key === "powerToWeight" ? getP2W(c) : c[key];
+    val > max && (max = val);
   });
 
   return {
     maxVal: max,
-    startYellowVal: min,
-    startRedVal: max2,
     val: currentValue,
     name: currentKensCars[1].car,
   };
