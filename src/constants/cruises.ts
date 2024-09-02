@@ -418,11 +418,11 @@ export const loyaltySeries: SeriesOptionsType[] = [
     name: "None",
     data: [
       Math.floor((disneyLoyalty[0].num / disneyCruises) * 100),
-      Math.floor((rcLoyalty[0].nights / rcLoyalty[1].nights) * 100),
-      Math.floor((princessLoyalty[0].num / princessLoyalty[1].num) * 100),
-      Math.floor((princessLoyalty[0].nights / princessLoyalty[1].nights) * 100),
       // Virgin Cruises Here
       Math.floor((virginCruises / virginLoyalty[1].num) * 100),
+      Math.floor((princessLoyalty[0].num / princessLoyalty[1].num) * 100),
+      Math.floor((princessLoyalty[0].nights / princessLoyalty[1].nights) * 100),
+      Math.floor((rcLoyalty[0].nights / rcLoyalty[1].nights) * 100),
     ],
   },
   {
@@ -445,10 +445,7 @@ export const loyaltySeries: SeriesOptionsType[] = [
       Math.floor(
         ((disneyLoyalty[2].num - disneyLoyalty[1].num) / disneyCruises) * 100,
       ),
-      // Royal Caribbean Here
-      Math.floor(
-        ((rcNights - rcLoyalty[0].nights) / rcLoyalty[1].nights) * 100,
-      ),
+      0,
       // Princess Cruises Here
       Math.floor(
         ((princess[0] - princessLoyalty[0].num) / princessLoyalty[1].num) * 100,
@@ -459,7 +456,10 @@ export const loyaltySeries: SeriesOptionsType[] = [
           princessLoyalty[1].nights) *
           100,
       ),
-      0,
+      // Royal Caribbean Here
+      Math.floor(
+        ((rcNights - rcLoyalty[0].nights) / rcLoyalty[1].nights) * 100,
+      ),
     ],
   },
   {

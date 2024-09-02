@@ -36,10 +36,10 @@ const LoyaltyCharts = () => {
       gridLineWidth: 0,
       categories: [
         "Disney 🛳️",
-        "Royal 🌙",
+        "Virgin 🛳️",
         "Princess 🛳️",
         "Princess 🌙",
-        "Virgin 🛳️",
+        "Royal 🌙",
       ],
     },
     yAxis: {
