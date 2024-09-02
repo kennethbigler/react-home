@@ -20,8 +20,8 @@ const CurrentCarStats = React.memo(({ data, color }: CurrentCarStatsProps) => {
     <Grid container spacing={2}>
       <CurrentCarStatsGraph
         val={displacement.val}
-        startYellowVal={displacement.startYellowVal}
-        startRedVal={displacement.startRedVal}
+        startYellowVal={2}
+        startRedVal={Math.min(5, displacement.maxVal)}
         maxVal={displacement.maxVal}
         label="L"
         title="Displacement"
@@ -30,8 +30,8 @@ const CurrentCarStats = React.memo(({ data, color }: CurrentCarStatsProps) => {
       />
       <CurrentCarStatsGraph
         val={horsepower.val}
-        startYellowVal={horsepower.startYellowVal}
-        startRedVal={horsepower.startRedVal}
+        startYellowVal={250}
+        startRedVal={Math.min(500, horsepower.maxVal)}
         maxVal={horsepower.maxVal}
         label="HP"
         title="Horsepower"
@@ -40,8 +40,8 @@ const CurrentCarStats = React.memo(({ data, color }: CurrentCarStatsProps) => {
       />
       <CurrentCarStatsGraph
         val={mpg.val}
-        startYellowVal={mpg.startYellowVal}
-        startRedVal={mpg.startRedVal}
+        startYellowVal={30}
+        startRedVal={Math.min(100, mpg.maxVal)}
         maxVal={mpg.maxVal}
         label="MPG"
         title="MPG"
@@ -50,8 +50,8 @@ const CurrentCarStats = React.memo(({ data, color }: CurrentCarStatsProps) => {
       />
       <CurrentCarStatsGraph
         val={torque.val}
-        startYellowVal={torque.startYellowVal}
-        startRedVal={torque.startRedVal}
+        startYellowVal={250}
+        startRedVal={Math.min(500, torque.maxVal)}
         maxVal={torque.maxVal}
         label="lb-ft"
         title="Torque"
@@ -60,8 +60,8 @@ const CurrentCarStats = React.memo(({ data, color }: CurrentCarStatsProps) => {
       />
       <CurrentCarStatsGraph
         val={weight.val}
-        startYellowVal={weight.startYellowVal}
-        startRedVal={weight.startRedVal}
+        startYellowVal={3500}
+        startRedVal={Math.min(4600, weight.maxVal)}
         maxVal={weight.maxVal}
         label="lbs"
         title="Weight"
@@ -70,8 +70,8 @@ const CurrentCarStats = React.memo(({ data, color }: CurrentCarStatsProps) => {
       />
       <CurrentCarStatsGraph
         val={powerToWeight.val}
-        startYellowVal={powerToWeight.startYellowVal}
-        startRedVal={powerToWeight.startRedVal}
+        startYellowVal={0.05}
+        startRedVal={Math.min(0.15, powerToWeight.maxVal)}
         maxVal={powerToWeight.maxVal}
         label="Ratio"
         title="Power to Weight"

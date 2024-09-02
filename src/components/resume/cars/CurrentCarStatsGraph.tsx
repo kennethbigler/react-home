@@ -12,6 +12,8 @@ export interface CurrentCarStatsGraphProps extends CurrentCarStatsData {
   label: string;
   title: string;
   color: string;
+  startYellowVal: number;
+  startRedVal: number;
 }
 
 const CurrentCarStatsGraph = React.memo(
