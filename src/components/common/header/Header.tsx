@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 import NavigationClose from "@mui/icons-material/Close";
 import { useTheme } from "@mui/material/styles";
 import TopBar from "./TopBar";
-import useToggleState from "../../../hooks/useToggle";
 import noop from "../../../apis/noop";
 
 type ItemClick = (loc: string) => void;
@@ -24,7 +23,9 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps): React.ReactElement => {
-  const [isOpen, toggleOpen, setIsOpen] = useToggleState();
+  const [isOpen, setIsOpen] = React.useState(false);
+  const toggleOpen = () => setIsOpen(!isOpen);
+
   const {
     palette: { mode },
   } = useTheme();
