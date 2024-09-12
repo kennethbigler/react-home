@@ -6,7 +6,6 @@ import CardActionArea from "@mui/material/CardActionArea";
 import Collapse from "@mui/material/Collapse";
 import Grid from "@mui/material/Grid2";
 import { useTheme } from "@mui/material/styles";
-import useToggleState from "../../../hooks/useToggle";
 
 const cardStyles: React.CSSProperties = { marginTop: 40, overflow: "visible" };
 
@@ -24,7 +23,9 @@ interface ExpandableCardProps {
 }
 
 const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
-  const [expanded, toggleExpanded] = useToggleState(true);
+  const [expanded, setExpanded] = React.useState(true);
+  const toggleExpanded = () => setExpanded(!expanded);
+
   const { palette } = useTheme();
   const { inverted, title, subtitle, children, backgroundColor } = props;
 

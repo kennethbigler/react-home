@@ -4,7 +4,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import useOpenState from "../../../hooks/useOpenState";
 import { MuiColors } from "../types";
 
 interface InfoPopupProps {
@@ -19,8 +18,10 @@ interface InfoPopupProps {
 }
 
 const InfoPopup = (props: InfoPopupProps): React.ReactElement => {
-  const [isOpen, handleOpen, handleClose] = useOpenState();
   const { buttonText, title, children, buttonColor } = props;
+  const [isOpen, setIsOpen] = React.useState(false);
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
 
   return (
     <>
