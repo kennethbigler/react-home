@@ -6,7 +6,7 @@
  */
 import * as React from "react";
 import { useRecoilState } from "recoil";
-import asyncForEach from "../../../helpers/asyncForEach";
+import asyncForEach from "../../../apis/asyncForEach";
 import { getGameFunctions, hitHelper, splitHelper } from "./blackjackHelpers";
 import { DEALER, weighHand, playBots } from "./blackjackAI";
 import Header from "./Header";

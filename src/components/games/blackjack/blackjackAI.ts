@@ -1,5 +1,5 @@
 import Deck, { DBCard } from "../../../apis/Deck";
-import asyncForEach from "../../../helpers/asyncForEach";
+import asyncForEach from "../../../apis/asyncForEach";
 import { BlackjackState, GameFunctions } from "../../../recoil/blackjack-state";
 import { DBHand, DBPlayer } from "../../../recoil/player-atom";
 import { TurnState } from "../../../recoil/turn-atom";
