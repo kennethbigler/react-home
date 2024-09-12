@@ -2,7 +2,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { useRecoilState } from "recoil";
 import GameTable from "../game-table";
-import asyncForEach from "../../../helpers/asyncForEach";
+import asyncForEach from "../../../apis/asyncForEach";
 import Deck from "../../../apis/Deck";
 import { computer, findAndPayWinner } from "./helpers";
 import pokerState, {

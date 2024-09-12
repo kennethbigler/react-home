@@ -1,4 +1,4 @@
-import asyncForEach from "./asyncForEach";
+import asyncForEach from "../asyncForEach";
 
 describe("helpers | asyncForEach", () => {
   it("works as expected", async () => {
