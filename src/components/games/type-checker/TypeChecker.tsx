@@ -13,6 +13,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { SelectChangeEvent } from "@mui/material";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import {
   types,
   Types,
@@ -146,7 +148,14 @@ const TypeChecker = () => {
         <Table aria-label="pokemon type checker">
           <TableHead>
             <TableRow>
-              <TableCell>-</TableCell>
+              <TableCell>
+                <div className="flex-container">
+                  <Typography>A</Typography>
+                  <ArrowDownwardIcon />
+                  <Typography>D</Typography>
+                  <ArrowForwardIcon />
+                </div>
+              </TableCell>
               {defPrimary === -1 ? (
                 effRowTypes.map((t, i) => (
                   <TableCell key={`header-${t.name}`} sx={{ padding: 0 }}>
