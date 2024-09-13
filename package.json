@@ -34,7 +34,7 @@
     "react-dom": "18.3.1",
     "react-router-dom": "6.26.1",
     "recoil": "0.7.7",
-    "vite": "5.4.3"
+    "vite": "5.4.4"
   },
   "devDependencies": {
     "@lhci/cli": "0.14.0",
@@ -44,7 +44,7 @@
     "@types/react-dom": "18.3.0",
     "@typescript-eslint/eslint-plugin": "8.4.0",
     "@typescript-eslint/parser": "8.4.0",
-    "@vitest/coverage-v8": "2.0.5",
+    "@vitest/coverage-v8": "2.1.0",
     "eslint": "8.57.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "9.1.0",
@@ -59,7 +59,7 @@
     "prettier": "3.3.3",
     "source-map-explorer": "2.5.3",
     "typescript": "5.5.4",
-    "vitest": "2.0.5"
+    "vitest": "2.1.0"
   },
   "keywords": [
     "Ken",
