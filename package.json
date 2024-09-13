@@ -24,8 +24,8 @@
     "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet"
   },
   "dependencies": {
-    "@mui/icons-material": "6.0.2",
-    "@mui/material": "6.0.2",
+    "@mui/icons-material": "6.1.0",
+    "@mui/material": "6.1.0",
     "@vitejs/plugin-react": "4.3.1",
     "highcharts": "11.4.8",
     "highcharts-react-official": "3.2.1",
