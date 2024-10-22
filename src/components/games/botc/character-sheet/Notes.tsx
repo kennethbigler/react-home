@@ -14,7 +14,7 @@ interface NotesProps {
 }
 
 const Notes = ({
-  player: { notes, liar, dead, used },
+  player: { notes, liar, used, exec, kill },
   updateStats,
   updateNotes,
 }: NotesProps) => (
@@ -36,12 +36,16 @@ const Notes = ({
           label="😈"
         />
         <FormControlLabel
-          control={<Checkbox checked={dead} onChange={updateStats("dead")} />}
+          control={<Checkbox checked={used} onChange={updateStats("used")} />}
+          label="❌"
+        />
+        <FormControlLabel
+          control={<Checkbox checked={exec} onChange={updateStats("exec")} />}
           label="💀"
         />
         <FormControlLabel
-          control={<Checkbox checked={used} onChange={updateStats("used")} />}
-          label="❌"
+          control={<Checkbox checked={kill} onChange={updateStats("kill")} />}
+          label="🗡️"
         />
       </FormGroup>
     </Grid>

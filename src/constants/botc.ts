@@ -171,15 +171,15 @@ export const dtb: BotCScript = {
 
 export const swpm: BotCScript = {
   townsfolk: [
-    { name: "Investigator", alignment: "info" },
+    { name: "Chef", alignment: "info" },
     { name: "Amnesiac", alignment: "info" },
-    { name: "Librarian", alignment: "info" },
+    { name: "Investigator", alignment: "info" },
     { name: "Seamstress", alignment: "info" },
-    { name: "Pixie", alignment: "info" },
+    { name: "Librarian", alignment: "info" },
     { name: "Philosopher", alignment: "info" },
-    { name: "Dreamer", alignment: "info" },
+    { name: "Pixie", alignment: "info" },
     { name: "Ravenkeeper", alignment: "info" },
-    { name: "Village Idiot", alignment: "info" },
+    { name: "Dreamer", alignment: "info" },
     { name: "Cannibal", alignment: "info" },
     { name: "Snake Charmer", alignment: "info" },
     { name: "Mayor", alignment: "info" },
