@@ -45,9 +45,12 @@ const PlayerCard = ({
       </InfoPopup>
       <Typography>
         {player.liar && "😈"}
-        {player.dead && "💀"}
         {player.used && "❌"}
-        {(player.liar || player.dead || player.used) && player.notes && " - "}
+        {player.exec && "💀"}
+        {player.kill && "🗡️"}
+        {(player.liar || player.exec || player.kill || player.used) &&
+          player.notes &&
+          " - "}
         {player.notes}
       </Typography>
       {player.roles.map((role) => (

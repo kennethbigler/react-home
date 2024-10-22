@@ -7,9 +7,13 @@ interface Country {
 /** name is a unique key, verify it on https://unpkg.com/world-atlas@2.0.2/countries-110m.json */
 const countries: Country[] = [
   { name: "American Samoa", continent: "AS", flag: "🇦🇸" },
+  // { name: "Antarctica", continent: "AQ", flag: "🇦🇶" },
+  { name: "Antigua", continent: "AS", flag: "🇦🇬" },
+  // { name: "Argentina", continent: "AS", flag: "🇦🇷" },
   { name: "Australia", continent: "AU", flag: "🇦🇺" },
   { name: "Austria", continent: "EU", flag: "🇦🇹" },
   { name: "Bahamas", continent: "NA", flag: "🇧🇸" },
+  { name: "Barbados", continent: "NA", flag: "🇧🇧" },
   { name: "British Virgin Islands", continent: "NA", flag: "🇻🇬" },
   { name: "Canada", continent: "NA", flag: "🇨🇦" },
   { name: "Cayman Islands", continent: "NA", flag: "🇰🇾" },
@@ -38,7 +42,10 @@ const countries: Country[] = [
   { name: "Norway", continent: "EU", flag: "🇳🇴" },
   { name: "Poland", continent: "EU", flag: "🇵🇱" },
   { name: "Portugal", continent: "EU", flag: "🇵🇹" },
+  { name: "Puerto Rico", continent: "NA", flag: "🇵🇷" },
   { name: "Russia", continent: "EU", flag: "🇷🇺" },
+  { name: "Saint Lucia", continent: "NA", flag: "🇱🇨" },
+  { name: "Sint Maarten", continent: "NA", flag: "🇸🇽" },
   { name: "Spain", continent: "EU", flag: "🇪🇸" },
   { name: "Sweden", continent: "EU", flag: "🇸🇪" },
   { name: "Switzerland", continent: "EU", flag: "🇨🇭" },
@@ -57,6 +64,7 @@ export const asNau: Country[] = [];
 countries.forEach((country): void => {
   switch (country.continent) {
     case "NA":
+    case "SA":
       americas.push(country);
       break;
     case "EU":
@@ -65,6 +73,7 @@ countries.forEach((country): void => {
       break;
     case "AS":
     case "AU":
+    case "AQ":
     default:
       asNau.push(country);
   }

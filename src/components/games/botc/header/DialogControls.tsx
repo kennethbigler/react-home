@@ -41,12 +41,12 @@ const DialogControls = ({
           sx={{ marginTop: "5px", marginRight: "10px" }}
           size="small"
         >
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <InputLabel id="demo-simple-select-label">Script</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={script}
-            label="Age"
+            label="Script"
             onChange={updateScript}
           >
             <MenuItem value={0}>Trouble Brewing</MenuItem>
@@ -54,6 +54,7 @@ const DialogControls = ({
             <MenuItem value={2}>Bad Moon Rising</MenuItem>
             <MenuItem value={3}>Dansel&apos;s Trouble Brewing</MenuItem>
             <MenuItem value={4}>The Spy Who Pinged Me</MenuItem>
+            <MenuItem value={5}>Other</MenuItem>
           </Select>
         </FormControl>
         <Button variant="contained" color="error" onClick={handleReset}>
