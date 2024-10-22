@@ -41,12 +41,12 @@ const DialogControls = ({
           sx={{ marginTop: "5px", marginRight: "10px" }}
           size="small"
         >
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <InputLabel id="demo-simple-select-label">Script</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={script}
-            label="Age"
+            label="Script"
             onChange={updateScript}
           >
             <MenuItem value={0}>Trouble Brewing</MenuItem>

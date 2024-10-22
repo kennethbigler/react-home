@@ -15,6 +15,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest watch",
+    "test:debug": "DEBUG_PRINT_LIMIT=100000 vitest watch",
     "test:no-watch": "vitest run",
     "test:coverage": "NODE_V8_COVERAGE=codecov_reports vitest run --coverage",
     "deploy": "./scripts/deploy.sh",

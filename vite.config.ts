@@ -24,5 +24,8 @@ export default defineConfig({
         functions: 80,
       },
     },
+    chaiConfig: {
+      truncateThreshold: 0,
+    },
   },
 });
