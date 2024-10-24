@@ -9,6 +9,7 @@ import {
 import { playerDist } from "../../../../constants/botc";
 
 interface PlayerNotesProps {
+  isText: boolean;
   script: number;
   numPlayers: number;
   numTravelers: number;
@@ -23,6 +24,7 @@ interface PlayerNotesProps {
 }
 
 const PlayerNotes = ({
+  isText,
   script,
   numPlayers,
   numTravelers,
@@ -41,6 +43,7 @@ const PlayerNotes = ({
     {botcPlayers.map((player, i) =>
       i < numPlayers + numTravelers ? (
         <PlayerCard
+          isText={isText}
           key={`player${i}-${player.name}`}
           script={script}
           player={player}

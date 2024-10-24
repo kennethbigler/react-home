@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useRecoilState } from "recoil";
 import { SelectChangeEvent } from "@mui/material";
-import BotCHeader from "./header/BotCHeader";
+import EditPlayers from "./edit-players/EditPlayers";
 import botcAtom, {
   BotCPlayer,
   BotCPlayerStatus,
@@ -11,28 +11,56 @@ import botcAtom, {
 import PlayerNotes from "./notes/PlayerNotes";
 
 const BotC: React.FC = React.memo(() => {
-  const [{ script, numPlayers, numTravelers, botcPlayers }, setState] =
+  const [{ script, numPlayers, numTravelers, botcPlayers, isText }, setState] =
     useRecoilState(botcAtom);
 
   /* ----------     Header Functions     ---------- */
   /** update botc script used */
-  const updateScript = (e: SelectChangeEvent<number>) =>
+  const updateScript = (e: SelectChangeEvent<number>) => {
+    const newScript = e.target.value as number;
+    let newText = isText;
+    switch (newScript) {
+      case 0:
+      case 1:
+      case 2:
+        newText = true;
+        break;
+      case 5:
+        newText = false;
+        break;
+      default:
+        newText = isText;
+    }
     setState({
-      script: e.target.value as number,
       numPlayers,
       numTravelers,
       botcPlayers,
+      script: newScript,
+      isText: newText,
     });
+  };
+
   /** update number of players */
   const updateNumPlayers = (_e: Event, value: number | number[]) => {
     const newNum = Array.isArray(value) ? value[0] : value;
-    setState({ script, numTravelers, botcPlayers, numPlayers: newNum });
+    setState({ script, numTravelers, botcPlayers, isText, numPlayers: newNum });
   };
 
   /** update number of players */
   const updateNumTravelers = (_e: Event, value: number | number[]) => {
     const newNum = Array.isArray(value) ? value[0] : value;
-    setState({ script, numPlayers, botcPlayers, numTravelers: newNum });
+    setState({ script, numPlayers, botcPlayers, isText, numTravelers: newNum });
+  };
+
+  /** update player notes onBlur */
+  const updateText = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setState({
+      script,
+      numPlayers,
+      numTravelers,
+      botcPlayers,
+      isText: e.target.checked,
+    });
   };
 
   /** update player name onBlur */
@@ -42,7 +70,13 @@ const BotC: React.FC = React.memo(() => {
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i], name: e.target.value || "" };
       newPlayers[i] = newPlayer;
-      setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
+      setState({
+        script,
+        numPlayers,
+        numTravelers,
+        isText,
+        botcPlayers: newPlayers,
+      });
     };
 
   /** move player in array */
@@ -52,7 +86,13 @@ const BotC: React.FC = React.memo(() => {
     const playerB = newPlayers[i + dir];
     newPlayers[i] = playerB;
     newPlayers[i + dir] = playerA;
-    setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
+    setState({
+      script,
+      numPlayers,
+      numTravelers,
+      isText,
+      botcPlayers: newPlayers,
+    });
   };
 
   /** set a new game */
@@ -61,7 +101,13 @@ const BotC: React.FC = React.memo(() => {
     botcPlayers.forEach((player) =>
       newPlayers.push({ ...botcPlayerShell, name: player.name }),
     );
-    setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
+    setState({
+      script,
+      numPlayers,
+      numTravelers,
+      isText,
+      botcPlayers: newPlayers,
+    });
   };
 
   /* ----------     Notes Functions     ---------- */
@@ -74,7 +120,13 @@ const BotC: React.FC = React.memo(() => {
       const newPlayer = { ...newPlayers[i] };
       newPlayer[key] = checked;
       newPlayers[i] = newPlayer;
-      setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
+      setState({
+        script,
+        numPlayers,
+        numTravelers,
+        isText,
+        botcPlayers: newPlayers,
+      });
     };
 
   /** handle role selections */
@@ -88,7 +140,13 @@ const BotC: React.FC = React.memo(() => {
         ? newPlayer.roles.filter((r) => r.name !== role.name)
         : [...newPlayer.roles, role];
       newPlayers[i] = newPlayer;
-      setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
+      setState({
+        script,
+        numPlayers,
+        numTravelers,
+        isText,
+        botcPlayers: newPlayers,
+      });
     };
 
   /** update player notes onBlur */
@@ -98,13 +156,20 @@ const BotC: React.FC = React.memo(() => {
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i], notes: e.target.value || "" };
       newPlayers[i] = newPlayer;
-      setState({ script, numPlayers, numTravelers, botcPlayers: newPlayers });
+      setState({
+        script,
+        numPlayers,
+        numTravelers,
+        isText,
+        botcPlayers: newPlayers,
+      });
     };
 
   /* ----------     Render     ---------- */
   return (
     <>
-      <BotCHeader
+      <EditPlayers
+        isText={isText}
         script={script}
         numPlayers={numPlayers}
         numTravelers={numTravelers}
@@ -115,8 +180,10 @@ const BotC: React.FC = React.memo(() => {
         updateNumTravelers={updateNumTravelers}
         updateNames={updateNames}
         updatePlayerOrder={updatePlayerOrder}
+        updateText={updateText}
       />
       <PlayerNotes
+        isText={isText}
         script={script}
         numPlayers={numPlayers}
         numTravelers={numTravelers}

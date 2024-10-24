@@ -8,6 +8,7 @@ import Notes from "./Notes";
 import Roles from "./Roles";
 
 interface CharacterSheetProps {
+  isText: boolean;
   script: number;
   player: BotCPlayer;
   updateNotes: (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -18,6 +19,7 @@ interface CharacterSheetProps {
 }
 
 const CharacterSheet = ({
+  isText,
   script,
   player,
   updateNotes,
@@ -30,7 +32,12 @@ const CharacterSheet = ({
       updateNotes={updateNotes}
       updateStats={updateStats}
     />
-    <Roles script={script} roles={player?.roles} updateRoles={updateRoles} />
+    <Roles
+      isText={isText}
+      script={script}
+      roles={player?.roles}
+      updateRoles={updateRoles}
+    />
   </Grid>
 );
 

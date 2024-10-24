@@ -11,6 +11,7 @@ import InfoPopup from "../../../common/info-popover/InfoPopup";
 import CharacterSheet from "../character-sheet/CharacterSheet";
 
 interface PlayerCardProps {
+  isText: boolean;
   script: number;
   player: BotCPlayer;
   updateStats: (
@@ -26,6 +27,7 @@ const chipStyle = {
 };
 
 const PlayerCard = ({
+  isText,
   script,
   player,
   updateStats,
@@ -36,6 +38,7 @@ const PlayerCard = ({
     <Card sx={{ padding: "5px", textAlign: "center" }}>
       <InfoPopup buttonText={player.name} title={`Roles - ${player.name}`}>
         <CharacterSheet
+          isText={isText}
           script={script}
           player={player}
           updateStats={updateStats}

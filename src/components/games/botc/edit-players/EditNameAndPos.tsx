@@ -6,7 +6,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-interface EditPlayerProps {
+interface EditNameAndPosProps {
   first: boolean;
   last: boolean;
   name: string;
@@ -15,14 +15,14 @@ interface EditPlayerProps {
   moveDown: () => void;
 }
 
-const EditPlayer = ({
+const EditNameAndPos = ({
   first,
   last,
   name,
   onBlur,
   moveUp,
   moveDown,
-}: EditPlayerProps) => (
+}: EditNameAndPosProps) => (
   <Grid size={{ xs: 6, sm: 4 }} sx={{ display: "flex", alignItems: "center" }}>
     <ButtonGroup aria-label="move player" orientation="vertical" variant="text">
       <Button aria-label="up" disabled={first} size="small" onClick={moveUp}>
@@ -36,4 +36,4 @@ const EditPlayer = ({
   </Grid>
 );
 
-export default EditPlayer;
+export default EditNameAndPos;
