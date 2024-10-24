@@ -5,6 +5,7 @@ export type BotCPlayerStatus = "liar" | "used" | "exec" | "kill";
 
 export interface BotCRole {
   name: string;
+  icon: string;
   alignment: MuiColors;
 }
 
@@ -27,6 +28,7 @@ export interface BotCState {
   numPlayers: number;
   numTravelers: number;
   botcPlayers: BotCPlayer[];
+  isText: boolean;
 }
 
 export const botcPlayerShell: BotCPlayer = {
@@ -49,6 +51,7 @@ const newBotCGame = () => ({
   numPlayers: 8,
   numTravelers: 0,
   botcPlayers: initBotCPlayers,
+  isText: true,
 });
 
 const botcAtom = atom({

@@ -7,9 +7,10 @@ import { SelectChangeEvent } from "@mui/material";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import { BotCPlayer } from "../../../../recoil/botc-atom";
 import DialogControls from "./DialogControls";
-import EditPlayer from "./EditPlayer";
+import EditNameAndPos from "./EditNameAndPos";
 
-interface BotCHeaderProps {
+interface EditPlayersProps {
+  isText: boolean;
   script: number;
   numPlayers: number;
   numTravelers: number;
@@ -20,9 +21,11 @@ interface BotCHeaderProps {
   updateNumTravelers: (_e: Event, value: number | number[]) => void;
   updatePlayerOrder: (i: number, dir: number) => () => void;
   updateScript: (i: SelectChangeEvent<number>) => void;
+  updateText: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const BotCHeader = ({
+const EditPlayers = ({
+  isText,
   script,
   numPlayers,
   numTravelers,
@@ -33,7 +36,8 @@ const BotCHeader = ({
   updateNumTravelers,
   updatePlayerOrder,
   updateScript,
-}: BotCHeaderProps) => {
+  updateText,
+}: EditPlayersProps) => {
   const [hasToast, setHasToast] = React.useState(false);
   /** close the toast message */
   const handleClose = () => setHasToast(false);
@@ -51,17 +55,19 @@ const BotCHeader = ({
       <InfoPopup title="Players">
         <Grid container spacing={1}>
           <DialogControls
+            isText={isText}
             script={script}
             numPlayers={numPlayers}
             numTravelers={numTravelers}
             updateScript={updateScript}
             updateNumPlayers={updateNumPlayers}
             updateNumTravelers={updateNumTravelers}
+            updateText={updateText}
             handleReset={handleReset}
           />
           {botcPlayers.map((player, i) =>
             i < numPlayers + numTravelers ? (
-              <EditPlayer
+              <EditNameAndPos
                 key={`player${i}-${player.name}`}
                 first={i === 0}
                 last={i === numPlayers + numTravelers - 1}
@@ -83,4 +89,4 @@ const BotCHeader = ({
   );
 };
 
-export default BotCHeader;
+export default EditPlayers;

@@ -5,12 +5,13 @@ import { tb, snv, bmr, dtb, swpm, other } from "../../../../constants/botc";
 import RoleButton from "./RoleButton";
 
 interface RolesProps {
+  isText: boolean;
   script: number;
   roles: BotCRole[];
   updateRoles?: (role: BotCRole, selected: boolean) => () => void;
 }
 
-const Roles = ({ script, roles, updateRoles }: RolesProps) => {
+const Roles = ({ isText, script, roles, updateRoles }: RolesProps) => {
   let scripts = { active: tb, travelers: [...snv.travelers, ...bmr.travelers] };
   switch (script) {
     case 1:
@@ -51,6 +52,7 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
       {scripts.active.townsfolk.map((role: BotCRole) => (
         <Grid size={gridSize} sx={{ textAlign: "center" }} key={role.name}>
           <RoleButton
+            isText={isText}
             role={role}
             selected={role.name in roleKey}
             updateRoles={updateRoles}
@@ -65,6 +67,7 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
       {scripts.active.outsiders.map((role: BotCRole) => (
         <Grid size={gridSize} sx={{ textAlign: "center" }} key={role.name}>
           <RoleButton
+            isText={isText}
             role={role}
             selected={role.name in roleKey}
             updateRoles={updateRoles}
@@ -79,6 +82,7 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
       {scripts.active.minions.map((role: BotCRole) => (
         <Grid size={gridSize} sx={{ textAlign: "center" }} key={role.name}>
           <RoleButton
+            isText={isText}
             role={role}
             selected={role.name in roleKey}
             updateRoles={updateRoles}
@@ -93,6 +97,7 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
       {scripts.active.demons.map((role: BotCRole) => (
         <Grid size={gridSize} sx={{ textAlign: "center" }} key={role.name}>
           <RoleButton
+            isText={isText}
             role={role}
             selected={role.name in roleKey}
             updateRoles={updateRoles}
@@ -109,6 +114,7 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
           {scripts.active.travelers.map((role: BotCRole) => (
             <Grid size={gridSize} sx={{ textAlign: "center" }} key={role.name}>
               <RoleButton
+                isText={isText}
                 role={role}
                 selected={role.name in roleKey}
                 updateRoles={updateRoles}
@@ -127,6 +133,7 @@ const Roles = ({ script, roles, updateRoles }: RolesProps) => {
       {scripts.travelers.map((role: BotCRole) => (
         <Grid size={gridSize} sx={{ textAlign: "center" }} key={role.name}>
           <RoleButton
+            isText={isText}
             role={role}
             selected={role.name in roleKey}
             updateRoles={updateRoles}
