@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import MurderMystery from "./MurderMystery";
+import MurderMystery from ".";
 
 describe("games | murder-mystery", () => {
   it("renders as expected", () => {

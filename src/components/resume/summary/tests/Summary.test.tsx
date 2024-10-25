@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import Summary from "../Summary";
+import Summary from "..";
 
 describe("resume | summary | Summary", () => {
   it("renders as expected", () => {

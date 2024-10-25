@@ -1,6 +1,6 @@
 import { screen, fireEvent } from "@testing-library/react";
 import render from "../../../recoil-test-render";
-import TicTacToe from "./TicTacToe";
+import TicTacToe from ".";
 
 describe("games | tictactoe | TicTacToe", () => {
   it("renders as expected", () => {

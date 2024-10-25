@@ -1,5 +1,5 @@
 import { screen, fireEvent } from "@testing-library/react";
-import Cars from "../Cars";
+import Cars from "..";
 import cars from "../../../../constants/cars";
 import render from "../../../../recoil-test-render";
 

@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import render from "../../../recoil-test-render";
-import AreYouTheOne from "./AreYouTheOne";
+import AreYouTheOne from ".";
 
 describe("games | are-you-the-one | AreYouTheOne", () => {
   it("renders as expected", () => {

@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import FamilyFeud from "./FamilyFeud";
+import FamilyFeud from ".";
 
 describe("games | connect4 | Connect4", () => {
   it("renders as expected", () => {

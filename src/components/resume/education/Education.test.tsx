@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Education from "./Education";
+import Education from ".";
 
 describe("resume | education | Education", () => {
   it("renders as expected", () => {

@@ -1,6 +1,6 @@
 import { screen, fireEvent } from "@testing-library/react";
 import render from "../../../recoil-test-render";
-import Connect4 from "./Connect4";
+import Connect4 from ".";
 
 describe("games | connect4 | Connect4", () => {
   it("renders as expected", () => {

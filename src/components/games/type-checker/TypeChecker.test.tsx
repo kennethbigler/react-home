@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import TypeChecker from "./TypeChecker";
+import TypeChecker from ".";
 
 describe("resume | type-checker", () => {
   it("renders as expected", () => {

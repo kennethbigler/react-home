@@ -13,6 +13,7 @@ interface RolesProps {
 
 const Roles = ({ isText, script, roles, updateRoles }: RolesProps) => {
   let scripts = { active: tb, travelers: [...snv.travelers, ...bmr.travelers] };
+  let isOtherScript = false;
   switch (script) {
     case 1:
       scripts = { active: snv, travelers: [...tb.travelers, ...bmr.travelers] };
@@ -37,11 +38,20 @@ const Roles = ({ isText, script, roles, updateRoles }: RolesProps) => {
         active: other,
         travelers: [],
       };
+      isOtherScript = true;
       break;
     default: // keep initial assignment
   }
   const roleKey = roles.reduce((acc, r) => ({ ...acc, [r.name]: true }), {});
-  const gridSize = script === 5 ? 3 : 6;
+
+  let gridSize = 3;
+  let tfGridSize = 6;
+  if (isText) {
+    gridSize = isOtherScript ? 4 : 6;
+  }
+  if (isOtherScript) {
+    tfGridSize = gridSize;
+  }
 
   return (
     <>
@@ -50,7 +60,7 @@ const Roles = ({ isText, script, roles, updateRoles }: RolesProps) => {
         <Typography>Townsfolk</Typography>
       </Grid>
       {scripts.active.townsfolk.map((role: BotCRole) => (
-        <Grid size={gridSize} sx={{ textAlign: "center" }} key={role.name}>
+        <Grid size={tfGridSize} sx={{ textAlign: "center" }} key={role.name}>
           <RoleButton
             isText={isText}
             role={role}
