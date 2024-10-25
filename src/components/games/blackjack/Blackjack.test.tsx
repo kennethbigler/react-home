@@ -2,7 +2,7 @@ import { screen, fireEvent, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
 import render from "../../../recoil-test-render";
 import Deck from "../../../apis/Deck";
-import Blackjack from "./Blackjack";
+import Blackjack from ".";
 
 const deck = vi.spyOn(Deck, "deal");
 

@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import render from "../../../recoil-test-render";
-import Slots from "./Slots";
+import Slots from ".";
 import SlotMachine, { SlotOption as SO } from "../../../apis/SlotMachine";
 
 const pullHandle = vi.spyOn(SlotMachine, "pullHandle");

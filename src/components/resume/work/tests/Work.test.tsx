@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Work from "../Work";
+import Work from "..";
 
 describe("resume | work | Work", () => {
   it("renders as expected", () => {

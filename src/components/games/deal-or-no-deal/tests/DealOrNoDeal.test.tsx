@@ -1,6 +1,6 @@
 import { screen, fireEvent, waitFor } from "@testing-library/react";
 import render from "../../../../recoil-test-render";
-import DealOrNoDeal from "../DealOrNoDeal";
+import DealOrNoDeal from "..";
 
 describe("games | deal-or-no-deal | DealOrNoDeal", () => {
   it("renders as expected", () => {

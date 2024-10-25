@@ -1,6 +1,6 @@
 import { screen, fireEvent } from "@testing-library/react";
 import render from "../../../../recoil-test-render";
-import Yahtzee from "../Yahtzee";
+import Yahtzee from "..";
 
 describe("games | yahtzee | Yahtzee", () => {
   it("renders as expected", () => {

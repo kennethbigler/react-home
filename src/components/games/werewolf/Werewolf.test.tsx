@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import Werewolf from "./Werewolf";
+import Werewolf from ".";
 
 describe("games | werewolf", () => {
   it("renders as expected", () => {

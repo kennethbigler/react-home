@@ -1,6 +1,6 @@
 import { screen, fireEvent } from "@testing-library/react";
 import render from "../../../recoil-test-render";
-import BotC from "./BotC";
+import BotC from ".";
 
 describe("games | BotC", () => {
   it("renders as expected", () => {
