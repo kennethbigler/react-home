@@ -59,7 +59,8 @@ const PlayerCard = ({
       {player.roles.map((role) => (
         <Chip
           key={role.name}
-          label={role.name}
+          title={role.name}
+          label={isText ? role.name : role.icon}
           color={role.alignment}
           onDelete={updateRoles(role, true)}
           sx={chipStyle}
