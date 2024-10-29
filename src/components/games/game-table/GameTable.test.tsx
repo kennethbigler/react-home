@@ -30,7 +30,7 @@ describe("games | game-table | GameTable", () => {
     expect(screen.getByText("Hand: 0")).toBeInTheDocument();
     expect(screen.getByText("K♠")).toBeInTheDocument();
     expect(screen.getByText("♠")).toBeInTheDocument();
-    expect(screen.getByRole("main")).toBeInTheDocument();
+    expect(screen.getByRole("button")).toBeInTheDocument();
   });
 
   it("hides hands", () => {
@@ -48,7 +48,7 @@ describe("games | game-table | GameTable", () => {
     expect(screen.queryByText("Hand: 0")).toBeNull();
     expect(screen.queryByText("K♠")).toBeNull();
     expect(screen.queryByText("♠")).toBeNull();
-    expect(screen.queryByRole("main")).toBeNull();
+    expect(screen.queryByRole("button")).toBeNull();
   });
 
   it("supports multiple hands", () => {
@@ -67,7 +67,7 @@ describe("games | game-table | GameTable", () => {
     expect(screen.getByText("Ken: $1000")).toBeInTheDocument();
     expect(screen.getByText("Bet: $5")).toBeInTheDocument();
     expect(screen.getAllByText("Hand: 0")).toHaveLength(2);
-    expect(screen.getAllByRole("main")).toHaveLength(2);
+    expect(screen.getAllByRole("button")).toHaveLength(2);
     expect(screen.getByText("K♠")).toBeInTheDocument();
     expect(screen.getByText("♠")).toBeInTheDocument();
     expect(screen.getByText("Q♥")).toBeInTheDocument();
@@ -101,7 +101,7 @@ describe("games | game-table | GameTable", () => {
     );
 
     expect(handleCardClick).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole("main"));
+    fireEvent.click(screen.getByRole("button"));
     expect(handleCardClick).toHaveBeenCalledWith(0, 0, 0);
   });
 

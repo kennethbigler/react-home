@@ -7,6 +7,7 @@ import Grid from "@mui/material/Grid2";
 import ExpandableCard from "../../common/expandable-card";
 import photo from "../../../images/ken.webp";
 import workExp, { Job } from "../../../constants/work";
+import { Link } from "@mui/material";
 
 const imageStyles: React.CSSProperties = {
   width: "95%",
@@ -20,19 +21,12 @@ const getJob = (job: Job): string => {
   return `${job.title}, ${job.company}${parent}`;
 };
 
-const handleClick = (): void => {
-  window.open("https://www.linkedin.com/in/kennethbigler", "linkedIn");
-};
-
 const Info: React.FC = React.memo(() => (
   <Grid container spacing={1}>
     <Grid size={{ xs: 12, md: 4 }}>
-      <img
-        alt="Kenneth Bigler"
-        onClick={handleClick}
-        src={photo}
-        style={imageStyles}
-      />
+      <Link href="https://www.linkedin.com/in/kennethbigler">
+        <img alt="Kenneth Bigler" src={photo} style={imageStyles} />
+      </Link>
     </Grid>
     <Grid size={{ xs: 12, md: 8 }}>
       <ExpandableCard title={getJob(workExp[0])}>

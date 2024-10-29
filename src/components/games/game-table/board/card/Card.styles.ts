@@ -1,4 +1,5 @@
 const cardFace: React.CSSProperties = {
+  border: 0,
   backgroundColor: "white",
   borderRadius: 5,
   cursor: "pointer",
@@ -6,7 +7,7 @@ const cardFace: React.CSSProperties = {
   fontWeight: "bold",
   height: 78,
   margin: 5,
-  padding: 3,
+  padding: "0 3px 12px 3px",
   width: 50,
 };
 

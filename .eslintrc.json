@@ -39,19 +39,9 @@
     "jquery": true
   },
   "rules": {
-    "@typescript-eslint/await-thenable": "off",
-    "no-unused-expressions": "off",
     "@typescript-eslint/no-unused-expressions": "off",
-    "jsx-a11y/click-events-have-key-events": "off",
-    "jsx-a11y/no-noninteractive-element-interactions": "off",
-    "no-param-reassign": "off",
-    "no-restricted-exports": "off",
     "react/display-name": "off",
-    "react/function-component-definition": "off",
-    "react/jsx-props-no-spreading": "off",
-    "react/no-array-index-key": "off",
     "react/react-in-jsx-scope": "off",
-    "react/require-default-props": "off",
 
     "no-alert": "warn",
     "no-console": "warn",
