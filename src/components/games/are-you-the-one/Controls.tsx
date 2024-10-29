@@ -25,7 +25,6 @@ interface ControlsProps {
   updateScore: (score: number) => void;
 }
 
-// eslint-disable-next-line no-restricted-globals
 const getScore = (value: number) => (isNaN(value) ? -1 : value);
 
 const ctrlStyles: React.CSSProperties = {
