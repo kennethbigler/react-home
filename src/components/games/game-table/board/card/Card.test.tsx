@@ -9,7 +9,7 @@ describe("games | game-table | Card", () => {
 
     expect(screen.getByText("KO")).toBeInTheDocument();
     expect(screen.getByText("O")).toBeInTheDocument();
-    expect(screen.getByRole("main")).toHaveStyle({
+    expect(screen.getByRole("button")).toHaveStyle({
       backgroundColor: "rgb(255, 205, 210)",
     });
   });

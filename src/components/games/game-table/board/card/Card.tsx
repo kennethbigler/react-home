@@ -26,16 +26,12 @@ const Card = React.memo((props: CardProps) => {
   };
 
   return (
-    <div
-      style={{ ...styles.cardFace, ...cardColor }}
-      onClick={handleClick}
-      role="main"
-    >
+    <button style={{ ...styles.cardFace, ...cardColor }} onClick={handleClick}>
       <div style={styles.cardTitle}>{name + suit}</div>
       <Typography variant="h4" style={{ ...styles.suit, ...cardColor }}>
         {suit}
       </Typography>
-    </div>
+    </button>
   );
 });
 

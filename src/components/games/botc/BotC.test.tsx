@@ -2,7 +2,7 @@ import { screen, fireEvent } from "@testing-library/react";
 import render from "../../../recoil-test-render";
 import BotC from ".";
 
-describe("games | BotC", async () => {
+describe("games | BotC", () => {
   it("renders as expected", () => {
     render(<BotC />);
 

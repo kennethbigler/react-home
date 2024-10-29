@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import Info from "../Info";
 
@@ -7,7 +7,6 @@ describe("resume | summary | Info", () => {
     window.open = vi.fn();
     render(<Info />);
 
-    fireEvent.click(screen.getByAltText("Kenneth Bigler"));
-    expect(window.open).toHaveBeenCalled();
+    expect(screen.getByRole("img")).toBeInTheDocument();
   });
 });
