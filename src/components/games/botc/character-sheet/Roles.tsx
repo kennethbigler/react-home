@@ -1,7 +1,15 @@
 import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import { BotCRole } from "../../../../recoil/botc-atom";
-import { tb, snv, bmr, dtb, swpm, other } from "../../../../constants/botc";
+import {
+  tb,
+  snv,
+  bmr,
+  dtb,
+  swpm,
+  other,
+  BotCScript,
+} from "../../../../constants/botc";
 import RoleButton from "./RoleButton";
 
 interface RolesProps {
@@ -10,11 +18,18 @@ interface RolesProps {
   roles: BotCRole[];
   updateRoles?: (role: BotCRole, selected: boolean) => () => void;
 }
+interface ActiveBotCScript {
+  active: BotCScript;
+  travelers: BotCRole[];
+}
 
 const Roles = ({ isText, script, roles, updateRoles }: RolesProps) => {
-  let scripts = { active: tb, travelers: [...snv.travelers, ...bmr.travelers] };
+  let scripts: ActiveBotCScript = { active: other, travelers: [] };
   let isOtherScript = false;
   switch (script) {
+    case 0:
+      scripts = { active: tb, travelers: [...snv.travelers, ...bmr.travelers] };
+      break;
     case 1:
       scripts = { active: snv, travelers: [...tb.travelers, ...bmr.travelers] };
       break;
@@ -22,36 +37,22 @@ const Roles = ({ isText, script, roles, updateRoles }: RolesProps) => {
       scripts = { active: bmr, travelers: [...tb.travelers, ...snv.travelers] };
       break;
     case 3:
-      scripts = {
-        active: dtb,
-        travelers: [...tb.travelers, ...snv.travelers, ...bmr.travelers],
-      };
+      scripts = { active: dtb, travelers: [...other.travelers] };
       break;
     case 4:
-      scripts = {
-        active: swpm,
-        travelers: [...tb.travelers, ...snv.travelers, ...bmr.travelers],
-      };
+      scripts = { active: swpm, travelers: [...other.travelers] };
       break;
     case 5:
-      scripts = {
-        active: other,
-        travelers: [],
-      };
-      isOtherScript = true;
-      break;
     default: // keep initial assignment
+      isOtherScript = true;
   }
   const roleKey = roles.reduce((acc, r) => ({ ...acc, [r.name]: true }), {});
 
   let gridSize = 3;
-  let tfGridSize = 6;
-  if (isText) {
-    gridSize = isOtherScript ? 4 : 6;
-  }
-  if (isOtherScript) {
-    tfGridSize = gridSize;
-  }
+  // if text version, then grid size should be 6, or 4 for other script
+  isText && (gridSize = isOtherScript ? 4 : 6);
+  // townsfolk grid size should be 6, except for other script, then it matches above (3 or 4)
+  const tfGridSize = isOtherScript ? gridSize : 6;
 
   return (
     <>
