@@ -18,7 +18,7 @@ const Year: React.FC<YearProps> = ({ year, len }: YearProps) => (
     <Typography variant="h4" component="h2">
       {year.year}
     </Typography>
-    <hr />
+    <hr aria-hidden />
     {year.quarters.map((quarter, i) => (
       <Quarter key={`${quarter.quarter}-${i}`} quarter={quarter} />
     ))}

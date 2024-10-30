@@ -10,7 +10,7 @@ const Education: React.FC = React.memo(() => (
         if (d.school) {
           return (
             <div key={i}>
-              {i !== 0 && <hr />}
+              {i !== 0 && <hr aria-hidden />}
               <EducationSeg {...d} />
             </div>
           );

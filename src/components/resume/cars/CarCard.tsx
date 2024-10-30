@@ -37,7 +37,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }: CarCardProps) => (
             <strong style={{ paddingRight: 20 }}>{`(${car.owned})`}</strong>
             {car.title}
           </Typography>
-          <hr aria-hidden="true" />
+          <hr aria-hidden />
           <Typography
             variant="h5"
             component="h4"
@@ -46,7 +46,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }: CarCardProps) => (
             variant="h5"
             component="h4"
           >{`Transmission: ${car.transmission}`}</Typography>
-          <hr aria-hidden="true" />
+          <hr aria-hidden />
           <Typography>{car.story}</Typography>
         </CardContent>
       </Grid>

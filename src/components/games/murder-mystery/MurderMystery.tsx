@@ -44,15 +44,15 @@ const MurderMystery: React.FC = React.memo(() => {
       <Typography variant="h2" component="h1" gutterBottom>
         Murder Mystery
       </Typography>
-      <hr />
+      <hr aria-hidden />
       <Typography
         variant="h3"
         component="h2"
         gutterBottom
       >{`Murder at ${CASINO}`}</Typography>
-      <hr />
+      <hr aria-hidden />
       <Typography gutterBottom>{intro}</Typography>
-      <hr />
+      <hr aria-hidden />
       {mmProfiles}
     </>
   );

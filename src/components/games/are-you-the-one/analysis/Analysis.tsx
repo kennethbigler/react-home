@@ -75,7 +75,7 @@ const Analysis: React.FC<AnalysisProps> = ({
           />
         ))}
       </Stack>
-      {calculatedEquations.length > 0 && <hr />}
+      {calculatedEquations.length > 0 && <hr aria-hidden />}
       <Stack spacing={1} direction="row" flexWrap="wrap">
         {calculatedEquations.map(({ pairs, score }, cei) => (
           <CalculatedStack

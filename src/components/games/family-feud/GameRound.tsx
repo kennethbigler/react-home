@@ -41,9 +41,9 @@ const GameRound = (props: GameRoundProps) => {
   return (
     <div>
       <i>{question}</i>
-      <hr />
+      <hr aria-hidden />
       <h3 style={{ textAlign: "center" }}>Points: {score * modifier}</h3>
-      <hr />
+      <hr aria-hidden />
       <Stack
         direction="row"
         spacing={2}
@@ -86,7 +86,7 @@ const GameRound = (props: GameRoundProps) => {
         </Stack>
       </Stack>
       <br />
-      <hr />
+      <hr aria-hidden />
       <Stack direction="row" justifyContent="space-around">
         {strikes.map((isStrike, i) => (
           <Button
@@ -99,7 +99,7 @@ const GameRound = (props: GameRoundProps) => {
           </Button>
         ))}
       </Stack>
-      <hr />
+      <hr aria-hidden />
       <h3>Which Team Won?</h3>
       <Stack direction="row" justifyContent="space-around">
         <Button variant="contained" onClick={() => onScore1(score * modifier)}>
