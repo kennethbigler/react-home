@@ -9,29 +9,29 @@ import {
 import { playerDist } from "../../../../constants/botc";
 
 interface PlayerNotesProps {
+  botcPlayers: BotCPlayer[];
   isText: boolean;
-  script: number;
   numPlayers: number;
   numTravelers: number;
-  botcPlayers: BotCPlayer[];
+  script: number;
+  updateNotes: (i: number) => (e: React.FocusEvent<HTMLInputElement>) => void;
+  updateRoles: (i: number) => (role: BotCRole, selected: boolean) => () => void;
   updateStats: (
     i: number,
   ) => (
     key: BotCPlayerStatus,
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  updateRoles: (i: number) => (role: BotCRole, selected: boolean) => () => void;
-  updateNotes: (i: number) => (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const PlayerNotes = ({
+  botcPlayers,
   isText,
-  script,
   numPlayers,
   numTravelers,
-  botcPlayers,
-  updateStats,
-  updateRoles,
+  script,
   updateNotes,
+  updateRoles,
+  updateStats,
 }: PlayerNotesProps) => (
   <Grid container spacing={2}>
     <Grid size={12}>
@@ -40,16 +40,17 @@ const PlayerNotes = ({
         {numTravelers ? ` +${numTravelers}` : ""}
       </Typography>
     </Grid>
+
     {botcPlayers.map((player, i) =>
       i < numPlayers + numTravelers ? (
         <PlayerCard
-          isText={isText}
           key={`player${i}-${player.name}`}
-          script={script}
+          isText={isText}
           player={player}
-          updateStats={updateStats(i)}
-          updateRoles={updateRoles(i)}
+          script={script}
           updateNotes={updateNotes(i)}
+          updateRoles={updateRoles(i)}
+          updateStats={updateStats(i)}
         />
       ) : null,
     )}

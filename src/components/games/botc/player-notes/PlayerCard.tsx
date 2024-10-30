@@ -7,18 +7,17 @@ import {
   BotCPlayerStatus,
   BotCRole,
 } from "../../../../recoil/botc-atom";
-import InfoPopup from "../../../common/info-popover/InfoPopup";
-import CharacterSheet from "../character-sheet/CharacterSheet";
+import CharacterSheet from "./character-sheet/CharacterSheet";
 
 interface PlayerCardProps {
   isText: boolean;
-  script: number;
   player: BotCPlayer;
+  script: number;
+  updateNotes: (e: React.FocusEvent<HTMLInputElement>) => void;
+  updateRoles: (role: BotCRole, selected: boolean) => () => void;
   updateStats: (
     key: BotCPlayerStatus,
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  updateRoles: (role: BotCRole, selected: boolean) => () => void;
-  updateNotes: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const chipStyle = {
@@ -28,24 +27,23 @@ const chipStyle = {
 
 const PlayerCard = ({
   isText,
-  script,
   player,
-  updateStats,
-  updateRoles,
+  script,
   updateNotes,
+  updateRoles,
+  updateStats,
 }: PlayerCardProps) => (
   <Grid size={{ xs: 6, sm: 4, lg: 3, xl: 2 }}>
     <Card sx={{ padding: "5px", textAlign: "center" }}>
-      <InfoPopup buttonText={player.name} title={`Roles - ${player.name}`}>
-        <CharacterSheet
-          isText={isText}
-          script={script}
-          player={player}
-          updateStats={updateStats}
-          updateRoles={updateRoles}
-          updateNotes={updateNotes}
-        />
-      </InfoPopup>
+      <CharacterSheet
+        isText={isText}
+        script={script}
+        player={player}
+        updateStats={updateStats}
+        updateRoles={updateRoles}
+        updateNotes={updateNotes}
+      />
+
       <Typography>
         {player.liar && "😈"}
         {player.used && "❌"}
@@ -56,6 +54,7 @@ const PlayerCard = ({
           " - "}
         {player.notes}
       </Typography>
+
       {player.roles.map((role) => (
         <Chip
           key={role.name}

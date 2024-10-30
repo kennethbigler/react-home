@@ -42,14 +42,14 @@ const Job: React.FC<JobProps> = (props: JobProps) => {
         )}
         {job.tech && job.tech.length !== 0 && (
           <>
-            <hr />
+            <hr aria-hidden />
             <Typography display="inline">Technologies:&nbsp;</Typography>
             {getCSV(job.tech)}
           </>
         )}
         {job.skills && job.skills.length !== 0 && (
           <>
-            <hr />
+            <hr aria-hidden />
             <Typography display="inline">Skills:&nbsp;</Typography>
             {getCSV(job.skills)}
           </>

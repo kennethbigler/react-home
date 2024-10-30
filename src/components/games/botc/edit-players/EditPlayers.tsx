@@ -3,18 +3,26 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid2";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import Slider from "@mui/material/Slider";
 import { SelectChangeEvent } from "@mui/material";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
-import { BotCPlayer } from "../../../../recoil/botc-atom";
-import DialogControls from "./DialogControls";
+import {
+  BotCPlayer,
+  BOTC_MAX_PLAYERS,
+  BOTC_MAX_TRAVELERS,
+  BOTC_MIN_PLAYERS,
+} from "../../../../recoil/botc-atom";
 import EditNameAndPos from "./EditNameAndPos";
+import ScriptSelect from "./ScriptSelect";
+import ScriptControls from "./ScriptControls";
+import { playerDist } from "../../../../constants/botc";
 
 interface EditPlayersProps {
+  botcPlayers: BotCPlayer[];
   isText: boolean;
-  script: number;
   numPlayers: number;
   numTravelers: number;
-  botcPlayers: BotCPlayer[];
+  script: number;
   newBotCGame: () => void;
   updateNames: (i: number) => (e: React.FocusEvent<HTMLInputElement>) => void;
   updateNumPlayers: (_e: Event, value: number | number[]) => void;
@@ -25,11 +33,11 @@ interface EditPlayersProps {
 }
 
 const EditPlayers = ({
+  botcPlayers,
   isText,
-  script,
   numPlayers,
   numTravelers,
-  botcPlayers,
+  script,
   newBotCGame,
   updateNames,
   updateNumPlayers,
@@ -52,19 +60,42 @@ const EditPlayers = ({
       <Typography variant="h2" component="h1" gutterBottom>
         BotC
       </Typography>
+
       <InfoPopup title="Players">
         <Grid container spacing={1}>
-          <DialogControls
-            isText={isText}
-            script={script}
-            numPlayers={numPlayers}
-            numTravelers={numTravelers}
-            updateScript={updateScript}
-            updateNumPlayers={updateNumPlayers}
-            updateNumTravelers={updateNumTravelers}
-            updateText={updateText}
-            handleReset={handleReset}
-          />
+          <Grid size={12} sx={{ textAlign: "center" }}>
+            <ScriptSelect script={script} updateScript={updateScript} />
+            <ScriptControls
+              isText={isText}
+              updateText={updateText}
+              handleReset={handleReset}
+            />
+          </Grid>
+
+          <Grid size={12}>
+            <Typography>
+              Players: {numPlayers} / Dist: {playerDist[numPlayers]}
+            </Typography>
+            <Slider
+              aria-label="player count"
+              min={BOTC_MIN_PLAYERS}
+              max={BOTC_MAX_PLAYERS}
+              value={numPlayers}
+              onChange={updateNumPlayers}
+            />
+          </Grid>
+
+          <Grid size={12}>
+            <Typography>Travelers: {numTravelers}</Typography>
+            <Slider
+              aria-label="traveler count"
+              min={0}
+              max={BOTC_MAX_TRAVELERS}
+              value={numTravelers}
+              onChange={updateNumTravelers}
+            />
+          </Grid>
+
           {botcPlayers.map((player, i) =>
             i < numPlayers + numTravelers ? (
               <EditNameAndPos
@@ -80,6 +111,7 @@ const EditPlayers = ({
           )}
         </Grid>
       </InfoPopup>
+
       <Snackbar open={hasToast} autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
           Game Reset

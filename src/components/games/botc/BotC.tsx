@@ -8,7 +8,7 @@ import botcAtom, {
   BotCRole,
   botcPlayerShell,
 } from "../../../recoil/botc-atom";
-import PlayerNotes from "./notes/PlayerNotes";
+import PlayerNotes from "./player-notes/PlayerNotes";
 
 const BotC: React.FC = React.memo(() => {
   const [{ script, numPlayers, numTravelers, botcPlayers, isText }, setState] =
@@ -29,7 +29,6 @@ const BotC: React.FC = React.memo(() => {
         newText = false;
         break;
       default:
-        newText = isText;
     }
     setState({
       numPlayers,

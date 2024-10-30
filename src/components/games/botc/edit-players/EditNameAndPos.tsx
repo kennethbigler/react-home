@@ -32,6 +32,7 @@ const EditNameAndPos = ({
         <ArrowDropDownIcon />
       </Button>
     </ButtonGroup>
+
     <TextField defaultValue={name} placeholder="Player Name" onBlur={onBlur} />
   </Grid>
 );

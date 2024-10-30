@@ -96,17 +96,17 @@ const Werewolf: React.FC = React.memo(() => {
           sx={{ position: "fixed", bottom: 15, right: 15, zIndex: 1 }}
         />
       )}
-      <hr />
+      <hr aria-hidden />
       <Typography variant="h3" component="h2" gutterBottom>
         Villagers
       </Typography>
       {villagerPanels}
-      <hr />
+      <hr aria-hidden />
       <Typography variant="h3" component="h2" gutterBottom>
         Outsiders
       </Typography>
       {outsiderPanels}
-      <hr />
+      <hr aria-hidden />
       <Typography variant="h3" component="h2" gutterBottom>
         Wolves
       </Typography>

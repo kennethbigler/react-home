@@ -138,7 +138,7 @@ const Yahtzee: React.FC = () => {
         money={money}
         name={name}
       />
-      <hr />
+      <hr aria-hidden />
       <TableHeader
         values={values}
         saved={saved}
@@ -148,7 +148,7 @@ const Yahtzee: React.FC = () => {
         handleDiceRoll={handleDiceRoll}
         getButtonText={getButtonText}
       />
-      <hr />
+      <hr aria-hidden />
       <Typography variant="h4">{`Total: ${
         finalTopSum + bottomSum
       }`}</Typography>
