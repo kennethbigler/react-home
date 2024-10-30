@@ -47,16 +47,10 @@ export default [
         },
         languageOptions: {
             parser: tsParser,
-            ecmaVersion: "latest",
-            sourceType: "module",
-            parserOptions: { 
-                ecmaFeatures: { jsx: true, impliedStrict: true },
-                project: ["./tsconfig.json", "./tsconfig.node.json"],
-            },
+            parserOptions: { ecmaFeatures: { jsx: true, impliedStrict: true } },
         },
         settings: {
             react: { version: "detect" },
-            "import/resolver": { node: { extensions: [".js", ".jsx", ".ts", ".tsx"] } },
         },
         rules: {
             "@typescript-eslint/no-unused-expressions": "off",
