@@ -108,7 +108,9 @@ const deal = (num = 0): Promise<DBCard[]> => {
       // get the cards
       for (let i = 0; i < num; i += 1) {
         const card: DBCard | undefined = deck.pop();
-        card && cards.push(card);
+        if (card) {
+          cards.push(card);
+        }
       }
       return deck;
     })

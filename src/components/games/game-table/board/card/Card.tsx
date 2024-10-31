@@ -17,7 +17,9 @@ const Card = React.memo((props: CardProps) => {
   const { dropped, suit, name, cardHandler, playerNo, handNo, cardNo } = props;
   // handle click to for card
   const handleClick = React.useCallback((): void => {
-    cardHandler && cardHandler(playerNo, handNo, cardNo);
+    if (cardHandler) {
+      cardHandler(playerNo, handNo, cardNo);
+    }
   }, [cardHandler, cardNo, handNo, playerNo]);
   // checking color based off suits: ♣♦♥♠
   const cardColor: React.CSSProperties = {

@@ -32,7 +32,11 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
 
   /** function toggle between site's light and dark theme */
   const toggleTheme = (): void => {
-    isLight ? setTheme(darkTheme) : setTheme(lightTheme);
+    if (isLight) {
+      setTheme(darkTheme);
+    } else {
+      setTheme(lightTheme);
+    }
     setIsLight(!isLight);
   };
 

@@ -63,7 +63,9 @@ export const getHistogram = (hand: DBCard[]): number[] => {
   const hist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   // put hand into the histogram
   hand.forEach((card) => {
-    card && (hist[card.weight - 2] += 1); // 2-14 - 2 = 0-12
+    if (card) {
+      hist[card.weight - 2] += 1; // 2-14 - 2 = 0-12
+    }
   });
   return hist;
 };

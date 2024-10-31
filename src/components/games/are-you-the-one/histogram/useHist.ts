@@ -52,8 +52,12 @@ const useHist = (
         totals[ri] -= 1;
       }
       // verify data obj
-      !hist[li] && (hist[li] = []);
-      !hist[li][gi] && (hist[li][gi] = { odds: 0, oddsWeight: 0, rounds: [] });
+      if (!hist[li]) {
+        hist[li] = [];
+      }
+      if (!hist[li][gi]) {
+        hist[li][gi] = { odds: 0, oddsWeight: 0, rounds: [] };
+      }
       // histogram
       hist[li][gi].rounds.push(ri);
     });
@@ -111,13 +115,17 @@ const useHist = (
       // NOTE: length (l) and 2 are covered, anything in-between is not directly considered (still covered in 2s)
       keys.forEach((key) => {
         // put that in the dictionary
-        !dict[key] && (dict[key] = { couples: [], score });
+        if (!dict[key]) {
+          dict[key] = { couples: [], score };
+        }
         // calculate equations
         let canAdd = true;
         dict[key].couples.forEach(([tli, tgi]) => {
           canAdd = canAdd && tli !== li && tgi !== gi;
         });
-        canAdd && dict[key].couples.push([li, gi]);
+        if (canAdd) {
+          dict[key].couples.push([li, gi]);
+        }
         dict[key].score = Math.min(score - tempScore[ri], dict[key].score);
       });
     });
@@ -168,11 +176,12 @@ const useHist = (
         }
       });
       // Add RP to equations
-      !isRepeat &&
+      if (!isRepeat) {
         calculatedEquations.push({
           pairs: tempPairs,
           score: dict[key].score,
         });
+      }
     }
   });
 

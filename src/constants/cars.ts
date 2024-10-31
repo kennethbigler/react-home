@@ -505,19 +505,36 @@ export const processData = (data: CarStats[]): GraphData => {
     const { horsepower, displacement, MPG, torque, weight } = data[i];
     const powerToWeight = horsepower / weight;
 
-    (displacement > max.displacement && (max.displacement = displacement)) ||
-      (displacement < min.displacement && (min.displacement = displacement));
-    (horsepower > max.horsepower && (max.horsepower = horsepower)) ||
-      (horsepower < min.horsepower && (min.horsepower = horsepower));
-    (MPG > max.MPG && (max.MPG = MPG)) || (MPG < min.MPG && (min.MPG = MPG));
-    (torque > max.torque && (max.torque = torque)) ||
-      (torque < min.torque && (min.torque = torque));
-    (weight > max.weight && (max.weight = weight)) ||
-      (weight < min.weight && (min.weight = weight));
-    (powerToWeight > max.powerToWeight &&
-      (max.powerToWeight = powerToWeight)) ||
-      (powerToWeight < min.powerToWeight &&
-        (min.powerToWeight = powerToWeight));
+    if (displacement > max.displacement) {
+      max.displacement = displacement;
+    } else if (displacement < min.displacement) {
+      min.displacement = displacement;
+    }
+    if (horsepower > max.horsepower) {
+      max.horsepower = horsepower;
+    } else if (horsepower < min.horsepower) {
+      min.horsepower = horsepower;
+    }
+    if (MPG > max.MPG) {
+      max.MPG = MPG;
+    } else if (MPG < min.MPG) {
+      min.MPG = MPG;
+    }
+    if (torque > max.torque) {
+      max.torque = torque;
+    } else if (torque < min.torque) {
+      min.torque = torque;
+    }
+    if (weight > max.weight) {
+      max.weight = weight;
+    } else if (weight < min.weight) {
+      min.weight = weight;
+    }
+    if (powerToWeight > max.powerToWeight) {
+      max.powerToWeight = powerToWeight;
+    } else if (powerToWeight < min.powerToWeight) {
+      min.powerToWeight = powerToWeight;
+    }
   }
 
   // normalize the data to all fit on the same graph (0-1)
@@ -573,7 +590,9 @@ export const processCurrentCarStats = (
   let max = currentValue;
   data.forEach((c) => {
     const val = key === "powerToWeight" ? getP2W(c) : c[key];
-    val > max && (max = val);
+    if (val > max) {
+      max = val;
+    }
   });
 
   return {
