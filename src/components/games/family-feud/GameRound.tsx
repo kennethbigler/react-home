@@ -34,7 +34,11 @@ const GameRound = (props: GameRoundProps) => {
     const isL = answerNum < 4;
     const newAnswers = isL ? [...buttonsL] : [...buttonsR];
     newAnswers[answerNum % 4] = `${answers[answerNum]} - ${scores[answerNum]}`;
-    isL ? setButtonsL(newAnswers) : setButtonsR(newAnswers);
+    if (isL) {
+      setButtonsL(newAnswers);
+    } else {
+      setButtonsR(newAnswers);
+    }
     setScore(score + scores[answerNum]);
   };
 

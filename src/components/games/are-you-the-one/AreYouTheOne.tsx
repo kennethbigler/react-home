@@ -40,7 +40,9 @@ const AreYouTheOne = () => {
   const handleUpdateNoMatch = (li: number, gi: number) => {
     const newMatches = noMatch.map((gentArray: boolean[]) => [...gentArray]);
     // if array for lady doesn't exist yet, create skeleton one
-    !newMatches[li] && (newMatches[li] = []);
+    if (!newMatches[li]) {
+      newMatches[li] = [];
+    }
     // assign no match
     newMatches[li][gi] = !newMatches[li][gi];
     // update state
@@ -57,7 +59,9 @@ const AreYouTheOne = () => {
         newScore += 1;
       } else if (!noMatch[li][gi]) {
         // if array for lady doesn't exist yet, create skeleton one
-        !newNoMatches[li] && (newNoMatches[li] = []);
+        if (!newNoMatches[li]) {
+          newNoMatches[li] = [];
+        }
         // assign no match
         newNoMatches[li][gi] = true;
       }
@@ -87,7 +91,9 @@ const AreYouTheOne = () => {
     const newMatches = [...matches];
     const newNoMatches = noMatch.map((gentArray: boolean[]) => [...gentArray]);
     // if array for lady doesn't exist yet, create skeleton one
-    !newNoMatches[li] && (newNoMatches[li] = []);
+    if (!newNoMatches[li]) {
+      newNoMatches[li] = [];
+    }
     // assign new match
     newMatches[li] = gi;
     // make all gent options no matches
@@ -96,7 +102,9 @@ const AreYouTheOne = () => {
     }
     // make all ladies options no matches
     for (let i = 0; i < ladies.length; i += 1) {
-      !newNoMatches[i] && (newNoMatches[i] = []);
+      if (!newNoMatches[i]) {
+        newNoMatches[i] = [];
+      }
       newNoMatches[i][gi] = i !== li;
     }
 

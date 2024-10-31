@@ -47,7 +47,9 @@ const Roles = ({ isText, script, roleKey, updateRoles }: RolesProps) => {
 
   let gridSize = 3;
   // if text version, then grid size should be 6, or 4 for other script
-  isText && (gridSize = isOtherScript ? 4 : 6);
+  if (isText) {
+    gridSize = isOtherScript ? 4 : 6;
+  }
   // townsfolk grid size should be 6, except for other script, then it matches above (3 or 4)
   const tfGridSize = isOtherScript ? gridSize : 6;
 

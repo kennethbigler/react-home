@@ -203,7 +203,11 @@ const Poker: React.FC = () => {
     // find card
     const i = newCardsToDiscard.indexOf(cardNo);
     // toggle in array
-    i === -1 ? newCardsToDiscard.push(cardNo) : newCardsToDiscard.splice(i, 1);
+    if (i === -1) {
+      newCardsToDiscard.push(cardNo);
+    } else {
+      newCardsToDiscard.splice(i, 1);
+    }
     // update state
     setState({
       poker: {

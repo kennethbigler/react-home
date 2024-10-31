@@ -42,7 +42,9 @@ const History: React.FC<HistoryProps> = (props: HistoryProps) => {
   // move history
   const moves = history.map(getHistoryText);
   // asc vs. desc
-  !ascend && moves.reverse();
+  if (!ascend) {
+    moves.reverse();
+  }
 
   return (
     <>

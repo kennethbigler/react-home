@@ -42,7 +42,9 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
   const step = 5;
   const onSliderChange = React.useCallback(
     (event: Event, value: number | number[]): void => {
-      betHandler && betHandler(player.id, event, value as number);
+      if (betHandler) {
+        betHandler(player.id, event, value as number);
+      }
     },
     [betHandler, player.id],
   );

@@ -53,7 +53,6 @@ export default [
             react: { version: "detect" },
         },
         rules: {
-            "@typescript-eslint/no-unused-expressions": "off",
             "react/react-in-jsx-scope": "off",
 
             "no-alert": "warn",

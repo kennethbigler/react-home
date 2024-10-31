@@ -291,7 +291,9 @@ const getSummary = (key: "tech" | "skills"): string[] =>
   }, []);
 
 export const timelineExp = workExp.reduce((acc: Job[], job: Job) => {
-  job.type !== VOLUNTEER && acc.push(job);
+  if (job.type !== VOLUNTEER) {
+    acc.push(job);
+  }
   return acc;
 }, []);
 
