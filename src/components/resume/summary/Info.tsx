@@ -79,4 +79,6 @@ const Info: React.FC = React.memo(() => (
   </Grid>
 ));
 
+Info.displayName = "Info";
+
 export default Info;

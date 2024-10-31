@@ -96,4 +96,6 @@ const Help: React.FC = React.memo(() => {
   );
 });
 
+Help.displayName = "Help";
+
 export default Help;

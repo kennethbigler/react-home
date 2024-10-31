@@ -19,4 +19,6 @@ const Work: React.FC = React.memo(() => (
   </>
 ));
 
+Work.displayName = "Work";
+
 export default Work;

@@ -18,4 +18,6 @@ const Header: React.FC = React.memo(() => (
   </div>
 ));
 
+Header.displayName = "Header";
+
 export default Header;

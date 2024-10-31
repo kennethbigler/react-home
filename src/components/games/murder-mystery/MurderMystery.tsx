@@ -58,4 +58,6 @@ const MurderMystery: React.FC = React.memo(() => {
   );
 });
 
+MurderMystery.displayName = "MurderMystery";
+
 export default MurderMystery;

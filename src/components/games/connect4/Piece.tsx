@@ -53,4 +53,6 @@ const Piece = React.memo((props: PieceProps): React.ReactElement => {
   );
 });
 
+Piece.displayName = "Piece";
+
 export default Piece;

@@ -38,4 +38,6 @@ const MoneyTable: React.FC<MoneyTableProps> = React.memo(
   ),
 );
 
+MoneyTable.displayName = "MoneyTable";
+
 export default MoneyTable;

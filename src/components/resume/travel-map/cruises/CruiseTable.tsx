@@ -51,4 +51,6 @@ const CruiseTable = React.memo(() => (
   </Table>
 ));
 
+CruiseTable.displayName = "CruiseTable";
+
 export default CruiseTable;

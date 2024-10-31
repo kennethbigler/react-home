@@ -18,4 +18,6 @@ const Class: React.FC<ClassProps> = React.memo(
   ),
 );
 
+Class.displayName = "Class";
+
 export default Class;

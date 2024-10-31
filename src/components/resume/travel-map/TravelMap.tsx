@@ -38,4 +38,6 @@ const TravelMap = React.memo(() => (
   </>
 ));
 
+TravelMap.displayName = "TravelMap";
+
 export default TravelMap;

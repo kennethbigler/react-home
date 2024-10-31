@@ -81,4 +81,6 @@ const CurrentCarStatsGraph = React.memo(
   },
 );
 
+CurrentCarStatsGraph.displayName = "CurrentCarStatsGraph";
+
 export default CurrentCarStatsGraph;

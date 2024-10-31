@@ -19,4 +19,6 @@ const Summary = React.memo(() => (
   </>
 ));
 
+Summary.displayName = "Summary";
+
 export default Summary;

@@ -15,4 +15,6 @@ const Presentations = React.memo(() => (
   </>
 ));
 
+Presentations.displayName = "Presentations";
+
 export default Presentations;

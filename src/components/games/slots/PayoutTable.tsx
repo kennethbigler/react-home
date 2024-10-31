@@ -43,4 +43,6 @@ const PayoutTable: React.FC = React.memo(() => (
   </Table>
 ));
 
+PayoutTable.displayName = "PayoutTable";
+
 export default PayoutTable;

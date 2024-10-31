@@ -68,4 +68,6 @@ const WerewolfPanel: React.FC<WerewolfPanelProps> = React.memo(
   },
 );
 
+WerewolfPanel.displayName = "WerewolfPanel";
+
 export default WerewolfPanel;

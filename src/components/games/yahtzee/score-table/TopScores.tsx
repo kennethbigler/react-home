@@ -34,4 +34,6 @@ const TopScores: React.FC<TopScoresProps> = React.memo(
   ),
 );
 
+TopScores.displayName = "TopScores";
+
 export default TopScores;

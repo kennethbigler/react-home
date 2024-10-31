@@ -15,4 +15,6 @@ const Education = React.memo(() => (
   </>
 ));
 
+Education.displayName = "Education";
+
 export default Education;

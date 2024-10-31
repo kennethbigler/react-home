@@ -115,4 +115,6 @@ const Werewolf: React.FC = React.memo(() => {
   );
 });
 
+Werewolf.displayName = "Werewolf";
+
 export default Werewolf;

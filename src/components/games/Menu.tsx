@@ -30,4 +30,6 @@ const Menu: React.FC<MenuProps> = React.memo(({ onItemClick }: MenuProps) => (
   </MenuList>
 ));
 
+Menu.displayName = "Menu";
+
 export default Menu;

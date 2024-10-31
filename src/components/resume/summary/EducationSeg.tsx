@@ -27,4 +27,6 @@ const EducationSeg: React.FC<School> = React.memo(
   ),
 );
 
+EducationSeg.displayName = "EducationSeg";
+
 export default EducationSeg;

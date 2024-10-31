@@ -64,4 +64,6 @@ const CarSankeyGraph = React.memo(
   },
 );
 
+CarSankeyGraph.displayName = "CarSankeyGraph";
+
 export default CarSankeyGraph;

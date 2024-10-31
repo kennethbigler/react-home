@@ -82,4 +82,6 @@ const CurrentCarStats = React.memo(({ data, color }: CurrentCarStatsProps) => {
   );
 });
 
+CurrentCarStats.displayName = "CurrentCarStats";
+
 export default CurrentCarStats;

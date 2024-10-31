@@ -17,4 +17,6 @@ const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => (
   </TableHead>
 ));
 
+Header.displayName = "Header";
+
 export default Header;

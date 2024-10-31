@@ -88,4 +88,6 @@ const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
   );
 });
 
+Menu.displayName = "Menu";
+
 export default Menu;

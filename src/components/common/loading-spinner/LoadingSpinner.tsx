@@ -15,4 +15,6 @@ const LoadingSpinner = React.memo(() => (
   />
 ));
 
+LoadingSpinner.displayName = "LoadingSpinner";
+
 export default LoadingSpinner;

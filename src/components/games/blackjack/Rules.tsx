@@ -74,4 +74,6 @@ const Rules: React.FC = React.memo(() => (
   </>
 ));
 
+Rules.displayName = "Rules";
+
 export default Rules;

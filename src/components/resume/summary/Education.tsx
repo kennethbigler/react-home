@@ -21,4 +21,6 @@ const Education: React.FC = React.memo(() => (
   </ExpandableCard>
 ));
 
+Education.displayName = "Education";
+
 export default Education;
