@@ -93,4 +93,6 @@ const MurderMysteryPanel: React.FC<MurderMysteryPanelProps> = React.memo(
   },
 );
 
+MurderMysteryPanel.displayName = "MurderMysteryPanel";
+
 export default MurderMysteryPanel;

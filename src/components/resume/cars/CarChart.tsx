@@ -47,4 +47,6 @@ const CarChart = React.memo(({ data, color }: CarChartProps) => {
   );
 });
 
+CarChart.displayName = "CarChart";
+
 export default CarChart;

@@ -54,7 +54,6 @@ export default [
         },
         rules: {
             "@typescript-eslint/no-unused-expressions": "off",
-            "react/display-name": "off",
             "react/react-in-jsx-scope": "off",
 
             "no-alert": "warn",

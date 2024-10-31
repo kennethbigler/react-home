@@ -1,10 +1,8 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import Avatar from "@mui/material/Avatar";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Link from "@mui/material/Link";
-import originalMenuItems, { MenuItem } from "./menu-items";
+import originalMenuItems from "./menu-items";
+import HomeMenuItem from "./HomeMenuItem";
 
 const menuItems = [...originalMenuItems];
 const casinoItems = menuItems.splice(2, 5);
@@ -14,38 +12,6 @@ const socialItems = menuItems.splice(4, menuItems.length);
 interface HomeProps {
   onItemClick?: (loc: string) => void;
 }
-
-const menuWrapperStyles: React.CSSProperties = {
-  display: "flex",
-  justifyContent: "space-around",
-  flexWrap: "wrap",
-};
-const dividerStyles: React.CSSProperties = { marginTop: 40 };
-const subHeaderStyles: React.CSSProperties = {
-  textAlign: "left",
-  marginBottom: 40,
-};
-
-const generateMenuItems =
-  (onItemClick?: (loc: string) => void) =>
-  ({ name, route, icon }: MenuItem) => (
-    <Card
-      sx={{ width: 250, cursor: "pointer", marginBottom: "20px" }}
-      role="link"
-      tabIndex={0}
-      key={name}
-      onClick={(): void => onItemClick && onItemClick(`/games/${route || ""}`)}
-    >
-      <CardContent>
-        <Typography variant="h5" component="h4" textAlign="center">
-          {name}
-        </Typography>
-        <Avatar style={{ margin: "auto", marginTop: 30, color: "white" }}>
-          {icon}
-        </Avatar>
-      </CardContent>
-    </Card>
-  );
 
 const Home: React.FC<HomeProps> = React.memo(({ onItemClick }: HomeProps) => (
   <div style={{ textAlign: "center", marginTop: 20 }}>
@@ -61,28 +27,16 @@ const Home: React.FC<HomeProps> = React.memo(({ onItemClick }: HomeProps) => (
         <code>&lt;source&nbsp;code/&gt;</code>
       </Link>
     </Typography>
-    <hr style={dividerStyles} />
-    <Typography variant="h4" component="h3" style={subHeaderStyles}>
-      Casino
-    </Typography>
-    <div style={menuWrapperStyles}>
-      {casinoItems.map(generateMenuItems(onItemClick))}
-    </div>
-    <hr style={dividerStyles} />
-    <Typography variant="h4" component="h3" style={subHeaderStyles}>
-      Games
-    </Typography>
-    <div style={menuWrapperStyles}>
-      {gameItems.map(generateMenuItems(onItemClick))}
-    </div>
-    <hr style={dividerStyles} />
-    <Typography variant="h4" component="h3" style={subHeaderStyles}>
-      Social Deduction
-    </Typography>
-    <div style={menuWrapperStyles}>
-      {socialItems.map(generateMenuItems(onItemClick))}
-    </div>
+    <HomeMenuItem title="Casino" items={casinoItems} onClick={onItemClick} />
+    <HomeMenuItem title="Games" items={gameItems} onClick={onItemClick} />
+    <HomeMenuItem
+      title="Social Deduction"
+      items={socialItems}
+      onClick={onItemClick}
+    />
   </div>
 ));
+
+Home.displayName = "GamesHome";
 
 export default Home;

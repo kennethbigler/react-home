@@ -30,4 +30,6 @@ const CarChartControls = React.memo(
   ),
 );
 
+CarChartControls.displayName = "CarChartControls";
+
 export default CarChartControls;

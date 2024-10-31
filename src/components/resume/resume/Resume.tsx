@@ -22,4 +22,6 @@ const Resume = React.memo(() => (
   </>
 ));
 
+Resume.displayName = "Resume";
+
 export default Resume;

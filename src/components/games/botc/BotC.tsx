@@ -195,4 +195,6 @@ const BotC: React.FC = React.memo(() => {
   );
 });
 
+BotC.displayName = "BotC";
+
 export default BotC;

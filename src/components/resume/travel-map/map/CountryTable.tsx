@@ -90,4 +90,6 @@ const CountryTable = React.memo(() => (
   </Table>
 ));
 
+CountryTable.displayName = "CountryTable";
+
 export default CountryTable;

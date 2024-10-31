@@ -33,4 +33,6 @@ const BottomScores: React.FC<BottomScoresProps> = React.memo(
   ),
 );
 
+BottomScores.displayName = "BottomScores";
+
 export default BottomScores;

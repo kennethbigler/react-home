@@ -39,4 +39,6 @@ const Segment = React.memo((props: SegmentType): React.ReactElement => {
   );
 });
 
+Segment.displayName = "Segment";
+
 export default Segment;
