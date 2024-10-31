@@ -33,7 +33,7 @@ const avatarStyles: React.CSSProperties = {
 
 const HomeSection = ({ items, title, onClick }: HomeSectionProps) => (
   <>
-    <hr style={{ marginTop: 40 }} />
+    <hr aria-hidden style={{ marginTop: 40 }} />
     <Typography variant="h4" component="h3" style={subHeaderStyles}>
       {title}
     </Typography>
