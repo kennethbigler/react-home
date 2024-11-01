@@ -13,7 +13,7 @@ const imageStyles: React.CSSProperties = {
   width: "95%",
   display: "block",
   margin: "auto",
-  marginBottom: "1em",
+  marginTop: "40px",
 };
 
 const getJob = (job: Job): string => {
