@@ -41,6 +41,7 @@ const panamera = "Porsche Panamera E-Hybrid (2021)";
 const bronco = "Ford Bronco Badlands (2021)";
 const grom = "Honda Grom (2022)";
 const cayenne = "Porsche Cayenne E-Hybrid (2019)";
+// const rivian = "Rivian R1S (2025)";
 
 // --------------------------------------------------     Cars     -------------------------------------------------- //
 
@@ -439,6 +440,27 @@ const currentKensCars = [
     torque: 516,
     weight: 5060,
   },
+  // {
+  //   color: green[900],
+  //   start: dateObj("2025-1"),
+  //   end: dateObj(),
+  //   car: "R1S",
+  //   short: "R1S",
+  //   char: "R",
+  //   nickname: "Rebecca",
+  //   title: rivian,
+
+  //   owned: "2025 - Present",
+  //   story: `I decided after the porsche I wanted to try going all electric, and I loved the styling and practicality of the Rivian R1S.`,
+  //   src: ,
+  //   transmission: "Direct",
+
+  //   displacement: 0,
+  //   horsepower: 850,
+  //   MPG: 76,
+  //   torque: 1103,
+  //   weight: 8532,
+  // },
 ];
 
 const cars = [
@@ -581,11 +603,13 @@ export const processCurrentCarStats = (
     | "torque"
     | "weight"
     | "powerToWeight",
+  isBike?: boolean,
 ): CurrentCarStatsData => {
+  const idx = isBike ? 0 : 1;
   const currentValue =
     key === "powerToWeight"
-      ? getP2W(currentKensCars[1])
-      : currentKensCars[1][key];
+      ? getP2W(currentKensCars[idx])
+      : currentKensCars[idx][key];
 
   let max = currentValue;
   data.forEach((c) => {
@@ -598,7 +622,7 @@ export const processCurrentCarStats = (
   return {
     maxVal: max,
     val: currentValue,
-    name: currentKensCars[1].car,
+    name: currentKensCars[idx].car,
   };
 };
 

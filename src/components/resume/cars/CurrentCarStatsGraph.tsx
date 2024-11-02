@@ -9,6 +9,7 @@ import { CurrentCarStatsData } from "../../../constants/cars";
 highchartsAccessibility(Highcharts); // initiate accessibility module
 
 export interface CurrentCarStatsGraphProps extends CurrentCarStatsData {
+  isBike?: boolean;
   label: string;
   title: string;
   color: string;
@@ -26,8 +27,9 @@ const CurrentCarStatsGraph = React.memo(
     label,
     title,
     name,
+    isBike,
   }: CurrentCarStatsGraphProps) => {
-    const min = title === "Weight" ? 2500 : 0;
+    const min = title === "Weight" && !isBike ? 2500 : 0;
     const yellowStart = Math.max(min, startYellowVal);
     const options = {
       chart: { type: "gauge", backgroundColor: null },
