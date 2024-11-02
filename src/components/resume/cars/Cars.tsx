@@ -87,6 +87,7 @@ const Cars = () => {
           )}
           <Grid size={12}>
             <CurrentCarStats data={data} color={color} />
+            <CurrentCarStats data={data} color={color} isBike />
           </Grid>
         </ExpandableCard>
         {!hideKen && (
