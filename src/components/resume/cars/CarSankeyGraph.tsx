@@ -33,11 +33,16 @@ const CarSankeyGraph = React.memo(
     }
 
     const options: Highcharts.Options = {
-      title: {
-        text: "Cars",
-        style: { color },
-      },
       chart: { backgroundColor: "transparent" },
+      credits: { enabled: false },
+      title: { text: "Cars", style: { color } },
+      accessibility: {
+        point: {
+          // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
+          valueDescriptionFormat:
+            "{point.to} has {point.weight} from {point.from}.",
+        },
+      },
       series: [
         {
           name: "Cars",
@@ -47,13 +52,6 @@ const CarSankeyGraph = React.memo(
           data,
         },
       ],
-      accessibility: {
-        point: {
-          // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
-          valueDescriptionFormat:
-            "{point.to} has {point.weight} from {point.from}.",
-        },
-      },
     };
 
     return (

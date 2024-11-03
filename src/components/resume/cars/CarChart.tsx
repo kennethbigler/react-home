@@ -16,14 +16,11 @@ const CarChart = React.memo(({ data, color }: CarChartProps) => {
 
   const options = {
     chart: { type: "spline", backgroundColor: "transparent" },
+    credits: { enabled: false },
+    plotOptions: { series: { marker: { enabled: false }, lineWidth: 2 } },
     title: { text: "Car Data", style: { color } },
-    plotOptions: {
-      series: {
-        marker: { enabled: false },
-        lineWidth: 2,
-      },
-    },
     tooltip: { valueSuffix: "%" },
+    xAxis: { categories: xAxis },
     yAxis: {
       floor: 0,
       ceiling: 100,
@@ -31,7 +28,6 @@ const CarChart = React.memo(({ data, color }: CarChartProps) => {
       labels: { enabled: false },
       title: { text: undefined },
     },
-    xAxis: { categories: xAxis },
     series: [
       { data: horsepower, showInLegend: false, name: "Horsepower" },
       { data: MPG, showInLegend: false, name: "MPG" },

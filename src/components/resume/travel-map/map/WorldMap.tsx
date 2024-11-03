@@ -29,15 +29,8 @@ const WorldMap = () => {
 
   React.useEffect(() => {
     setOptions({
-      title: {
-        text: `Travel Map: ${numCountries} Countries Visited`,
-        style: { color },
-      },
-      chart: {
-        backgroundColor: "transparent",
-        map: topology,
-        height: "60%",
-      },
+      chart: { backgroundColor: "transparent", map: topology, height: "60%" },
+      credits: { enabled: false },
       series: [
         {
           type: "map",
@@ -53,6 +46,10 @@ const WorldMap = () => {
           tooltip: { pointFormat: "{point.name}: {point.flag}" },
         },
       ],
+      title: {
+        text: `Travel Map: ${numCountries} Countries Visited`,
+        style: { color },
+      },
     });
   }, [color, topology]);
 
