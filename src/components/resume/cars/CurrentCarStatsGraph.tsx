@@ -32,9 +32,25 @@ const CurrentCarStatsGraph = React.memo(
     const min = title === "Weight" && !isBike ? 2500 : 0;
     const yellowStart = Math.max(min, startYellowVal);
     const options = {
-      chart: { type: "gauge", backgroundColor: null },
-      title: { text: `${name} ${title}`, style: { color } },
+      credits: { enabled: false },
       pane: { startAngle: -90, endAngle: 90, background: null },
+      title: { text: `${name} ${title}`, style: { color } },
+      chart: {
+        type: "gauge",
+        backgroundColor: null,
+        height: 220,
+        marginBottom: -60,
+      },
+      series: [
+        {
+          name,
+          data: [val],
+          tooltip: { valueSuffix: ` ${label}` },
+          dataLabels: { format: label, borderWidth: 0, color },
+          dial: { backgroundColor: color },
+          pivot: { backgroundColor: color },
+        },
+      ],
       yAxis: {
         min,
         max: maxVal,
@@ -61,16 +77,6 @@ const CurrentCarStatsGraph = React.memo(
           },
         ],
       },
-      series: [
-        {
-          name,
-          data: [val],
-          tooltip: { valueSuffix: ` ${label}` },
-          dataLabels: { format: label, borderWidth: 0, color },
-          dial: { backgroundColor: color },
-          pivot: { backgroundColor: color },
-        },
-      ],
     };
 
     return (

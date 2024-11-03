@@ -13,6 +13,12 @@ const LoyaltyCharts = () => {
 
   const options: Highcharts.Options = {
     colors: loyaltyColors,
+    credits: { enabled: false },
+    pane: { innerSize: "20%", endAngle: 335 },
+    legend: { itemStyle: { color } },
+    series: loyaltySeries,
+    title: { text: "Cruise Loyalty", style: { color } },
+    tooltip: { valueSuffix: "%" },
     chart: {
       type: "column",
       inverted: true,
@@ -20,12 +26,15 @@ const LoyaltyCharts = () => {
       backgroundColor: "transparent",
       style: { marginLeft: "auto", marginRight: "auto" },
     },
-    title: { text: "Cruise Loyalty", style: { color } },
-    tooltip: {
-      valueSuffix: "%",
+    plotOptions: {
+      column: {
+        stacking: "normal",
+        borderWidth: 0,
+        pointPadding: 0,
+        groupPadding: 0.15,
+        borderRadius: "50%",
+      },
     },
-    pane: { innerSize: "20%", endAngle: 335 },
-    legend: { itemStyle: { color } },
     xAxis: {
       labels: {
         align: "right",
@@ -51,16 +60,6 @@ const LoyaltyCharts = () => {
       gridLineWidth: 0,
       labels: { format: "{text}%", style: { color } },
     },
-    plotOptions: {
-      column: {
-        stacking: "normal",
-        borderWidth: 0,
-        pointPadding: 0,
-        groupPadding: 0.15,
-        borderRadius: "50%",
-      },
-    },
-    series: loyaltySeries,
   };
 
   return (
