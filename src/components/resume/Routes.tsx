@@ -2,13 +2,14 @@ import * as React from "react";
 import { Routes, Route } from "react-router-dom";
 import Header, { NavProps } from "../common/header/Header";
 import Menu from "./Menu";
+// nav elements
 import Summary from "./summary";
-import Work from "./work";
+import Cars from "./cars";
 import Education from "./education";
 import Presentations from "./presentations";
-import TravelMap from "./travel-map";
 import Resume from "./resume";
-import Cars from "./cars";
+import TravelMap from "./travel-map";
+import Work from "./work";
 
 interface RoutesProps {
   handleNav: (loc: string) => void;

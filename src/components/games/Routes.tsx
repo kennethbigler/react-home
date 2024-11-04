@@ -2,6 +2,7 @@ import * as React from "react";
 import { Routes, Route } from "react-router-dom";
 import Header, { NavProps } from "../common/header/Header";
 import Menu from "./Menu";
+// nav elements
 import GameHome from "./Home";
 import AreYouTheOne from "./are-you-the-one";
 import BlackJack from "./blackjack";
