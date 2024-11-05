@@ -1,12 +1,10 @@
 import Grid from "@mui/material/Grid2";
-import Typography from "@mui/material/Typography";
 import PlayerCard from "./PlayerCard";
 import {
   BotCPlayer,
   BotCPlayerStatus,
   BotCRole,
 } from "../../../../recoil/botc-atom";
-import { playerDist } from "../../../../constants/botc";
 
 interface PlayerNotesProps {
   botcPlayers: BotCPlayer[];
@@ -34,13 +32,6 @@ const PlayerNotes = ({
   updateStats,
 }: PlayerNotesProps) => (
   <Grid container spacing={2}>
-    <Grid size={12}>
-      <Typography>
-        Dist: {playerDist[numPlayers]}
-        {numTravelers ? ` +${numTravelers}` : ""}
-      </Typography>
-    </Grid>
-
     {botcPlayers.map((player, i) =>
       i < numPlayers + numTravelers ? (
         <PlayerCard
