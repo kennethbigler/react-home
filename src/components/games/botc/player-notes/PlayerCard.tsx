@@ -47,8 +47,8 @@ const PlayerCard = ({
       <Typography>
         {player.liar && "😈"}
         {player.used && "❌"}
-        {player.exec && "💀"}
-        {player.kill && "🗡️"}
+        {player.kill && "💀"}
+        {player.exec && "✋"}
         {(player.liar || player.exec || player.kill || player.used) &&
           player.notes &&
           " - "}

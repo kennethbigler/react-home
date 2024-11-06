@@ -53,12 +53,12 @@ const CharacterSheet = ({
             label="❌"
           />
           <FormControlLabel
-            control={<Checkbox checked={exec} onChange={updateStats("exec")} />}
+            control={<Checkbox checked={kill} onChange={updateStats("kill")} />}
             label="💀"
           />
           <FormControlLabel
-            control={<Checkbox checked={kill} onChange={updateStats("kill")} />}
-            label="🗡️"
+            control={<Checkbox checked={exec} onChange={updateStats("exec")} />}
+            label="✋"
           />
         </FormGroup>
       </Grid>
