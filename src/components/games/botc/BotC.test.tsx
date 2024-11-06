@@ -47,7 +47,11 @@ describe("games | BotC", () => {
     fireEvent.click(screen.getByText("Close"));
 
     // Press Roles button (for Player Dashboard)
-    // fireEvent.click(screen.getByText("Andrew"));
+    // expect(screen.getByText("Andrew")).toBeInTheDocument();
+  });
+
+  it("can can take notes on players", () => {
+    render(<BotC />);
     fireEvent.click(screen.getAllByText("Ken")[0]);
     expect(screen.getByText("Chef")).toBeInTheDocument();
     expect(screen.getByText("Monk")).toBeInTheDocument();
@@ -61,11 +65,16 @@ describe("games | BotC", () => {
     fireEvent.click(screen.getAllByText("Monk")[1]);
     expect(screen.getAllByText("Monk")).toHaveLength(1);
     expect(screen.getAllByText("Chef")).toHaveLength(2);
+  });
+
+  it("can alter statuses and take notes", () => {
+    render(<BotC />);
+    fireEvent.click(screen.getAllByText("Ken")[0]);
     // set status states
     fireEvent.click(screen.getByLabelText("😈"));
     fireEvent.click(screen.getByLabelText("❌"));
     fireEvent.click(screen.getByLabelText("💀"));
-    fireEvent.click(screen.getByLabelText("🗡️"));
+    fireEvent.click(screen.getByLabelText("✋"));
     // edit notes
     fireEvent.change(screen.getByLabelText("Notes"), {
       target: { value: "Sketchy" },
@@ -75,6 +84,31 @@ describe("games | BotC", () => {
     fireEvent.click(screen.getByLabelText("😈"));
     fireEvent.click(screen.getByLabelText("❌"));
     fireEvent.click(screen.getByLabelText("💀"));
-    fireEvent.click(screen.getByLabelText("🗡️"));
+    fireEvent.click(screen.getByLabelText("✋"));
+  });
+
+  it("can track players over rounds", () => {
+    render(<BotC />);
+    // open tracker
+    fireEvent.click(screen.getByText("Tracker"));
+    expect(screen.getByText("Close")).toBeInTheDocument();
+    // click a first time
+    const kenButton = screen.getAllByText("Ken")[0];
+    // expect(kenButton).toHaveClass(".MuiButton-textPrimary");
+    fireEvent.click(kenButton);
+    // click a second time
+    // kenButton = screen.getAllByText("Ken")[0];
+    expect(kenButton).toHaveClass("MuiButton-containedPrimary");
+    fireEvent.click(kenButton);
+    // click a third time
+    // kenButton = screen.getAllByText("Ken")[0];
+    // expect(kenButton).toHaveClass("MuiButton-containedError");
+    fireEvent.click(kenButton);
+    // test a fourth time
+    // kenButton = screen.getAllByText("Ken")[0];
+    // expect(kenButton).toHaveClass("MuiButton-textPrimary");
+
+    // select a new round number
+    fireEvent.click(screen.getByText(2));
   });
 });

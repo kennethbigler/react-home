@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useRecoilState } from "recoil";
 import { SelectChangeEvent } from "@mui/material";
-import EditPlayers from "./edit-players/EditPlayers";
+import Header from "./header/Header";
 import botcAtom, {
   BotCPlayer,
   BotCPlayerStatus,
@@ -167,7 +167,7 @@ const BotC: React.FC = React.memo(() => {
   /* ----------     Render     ---------- */
   return (
     <>
-      <EditPlayers
+      <Header
         isText={isText}
         script={script}
         numPlayers={numPlayers}
