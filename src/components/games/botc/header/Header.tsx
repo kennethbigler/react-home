@@ -13,12 +13,20 @@ import { playerDist } from "../../../../constants/botc";
 import Tracker from "./Tracker";
 
 interface HeaderProps {
+  // Shared
   botcPlayers: BotCPlayer[];
-  isText: boolean;
   numPlayers: number;
   numTravelers: number;
-  script: number;
+  // Header
   newBotCGame: () => void;
+  // Tracker
+  round: number;
+  tracker: number[][];
+  updateRound: (i: number) => () => void;
+  updateTracker: (i: number) => () => void;
+  // EditPlayers
+  isText: boolean;
+  script: number;
   updateNames: (i: number) => (e: React.FocusEvent<HTMLInputElement>) => void;
   updateNumPlayers: (_e: Event, value: number | number[]) => void;
   updateNumTravelers: (_e: Event, value: number | number[]) => void;
@@ -28,12 +36,20 @@ interface HeaderProps {
 }
 
 const Header = ({
+  // Shared
   botcPlayers,
-  isText,
   numPlayers,
   numTravelers,
-  script,
+  // Header
   newBotCGame,
+  // Tracker
+  round,
+  tracker,
+  updateRound,
+  updateTracker,
+  // EditPlayers
+  isText,
+  script,
   updateNames,
   updateNumPlayers,
   updateNumTravelers,
@@ -66,7 +82,14 @@ const Header = ({
         </Grid>
 
         <InfoPopup title="Tracker">
-          <Tracker botcPlayers={botcPlayers} end={numPlayers + numTravelers} />
+          <Tracker
+            botcPlayers={botcPlayers}
+            end={numPlayers + numTravelers}
+            round={round}
+            tracker={tracker}
+            updateRound={updateRound}
+            updateTracker={updateTracker}
+          />
         </InfoPopup>
 
         <InfoPopup title="Players">
