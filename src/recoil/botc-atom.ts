@@ -24,11 +24,13 @@ export const BOTC_MAX_PLAYERS = 15;
 export const BOTC_MAX_TRAVELERS = 5;
 
 export interface BotCState {
-  script: number;
+  isText: boolean;
   numPlayers: number;
   numTravelers: number;
+  round: number;
+  script: number;
   botcPlayers: BotCPlayer[];
-  isText: boolean;
+  tracker: number[][];
 }
 
 export const botcPlayerShell: BotCPlayer = {
@@ -46,12 +48,18 @@ for (let i = 0; i < BOTC_MAX_PLAYERS + BOTC_MAX_TRAVELERS; i += 1) {
   initBotCPlayers.push({ ...botcPlayerShell });
 }
 
+const numRounds = [0, 1, 2, 3, 4, 5, 6, 7];
+export const newTracker = () =>
+  numRounds.map(() => initBotCPlayers.map(() => 0));
+
 const newBotCGame = () => ({
-  script: 0,
+  isText: true,
   numPlayers: 8,
   numTravelers: 0,
+  round: 0,
+  script: 0,
   botcPlayers: initBotCPlayers,
-  isText: true,
+  tracker: newTracker(),
 });
 
 const botcAtom = atom({
