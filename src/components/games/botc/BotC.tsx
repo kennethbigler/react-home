@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useRecoilState } from "recoil";
 import { SelectChangeEvent } from "@mui/material";
-import Header from "./Header";
+import Header from "./header/Header";
 import botcAtom, {
   BotCPlayer,
   BotCPlayerStatus,

@@ -8,11 +8,11 @@ import {
   BOTC_MAX_PLAYERS,
   BOTC_MAX_TRAVELERS,
   BOTC_MIN_PLAYERS,
-} from "../../../../recoil/botc-atom";
+} from "../../../../../recoil/botc-atom";
 import EditNameAndPos from "./EditNameAndPos";
 import ScriptSelect from "./ScriptSelect";
 import ScriptControls from "./ScriptControls";
-import { playerDist } from "../../../../constants/botc";
+import { playerDist } from "../../../../../constants/botc";
 
 interface EditPlayersProps {
   botcPlayers: BotCPlayer[];
