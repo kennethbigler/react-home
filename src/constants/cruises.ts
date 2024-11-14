@@ -28,7 +28,7 @@ const ships = [
   "Treasure",
   "Navigator of the Seas",
   "Discovery",
-  "Resilient Lady",
+  "Scarlet Lady",
 ] as const;
 type Ships = (typeof ships)[number];
 
@@ -291,12 +291,12 @@ export const cruises: Cruise[] = [
     concierge: true,
   },
   {
-    departure: dateObj("2025-02"),
-    nights: 7,
-    name: "Saint Isles & Caribbean",
+    departure: dateObj("2025-05"),
+    nights: 15,
+    name: "Miami to Casablanca & Barcelona",
     ship: ships[8],
     line: lines[3],
-    concierge: true,
+    concierge: false,
   },
   {
     departure: dateObj("2026-04"),
@@ -526,6 +526,6 @@ export const cruiseData = {
     [lines[0], ships[5], numDisney[5]], // Treasure
     [lines[1], "Navigator", numRC[0]], // Navigator
     [lines[2], ships[7], numPrincess[0]], // Discovery
-    [lines[3], ships[8], numVirgin[0]], // Resilient Lady
+    [lines[3], ships[8], numVirgin[0]], // Scarlet Lady
   ],
 };
