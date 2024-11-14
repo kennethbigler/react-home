@@ -17,7 +17,7 @@ import impala10 from "../images/cars/10_chevrolet_impala.webp";
 import equinox10 from "../images/cars/10_chevy_equinox.png";
 import mustang15 from "../images/cars/15_mustang_gt_premium.png";
 import tesla16 from "../images/cars/16_tesla_x.webp";
-import xj8l05 from "../images/cars/05_jaguar_xj8l.jpg";
+import xj8l05 from "../images/cars/05_jaguar_xj8l.png";
 import corvette18 from "../images/cars/18_corvette_zo6_3lz.png";
 import ftype15 from "../images/cars/15_jaguar_f_type.webp";
 import mustang20 from "../images/cars/20_ford_mustang.png";
