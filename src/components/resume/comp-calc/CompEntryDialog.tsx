@@ -14,7 +14,7 @@ import {
   TextField,
   TextFieldProps,
 } from "@mui/material";
-import { months } from "../../../apis/DateHelper";
+import dateHelper, { months } from "../../../apis/DateHelper";
 import { CompEntry } from "../../../recoil/comp-calculator-state";
 
 const tfProps: TextFieldProps = {
@@ -33,23 +33,32 @@ years.reverse();
 
 interface CompEntryDialogProps {
   open: boolean;
-  handleClose: () => void;
-  submitCompEntry: (n: CompEntry) => void;
+  compEntry?: CompEntry;
+  onClose: () => void;
+  addCompEntry: (n: CompEntry) => void;
 }
 
 const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
   open,
-  handleClose,
-  submitCompEntry,
+  compEntry,
+  onClose,
+  addCompEntry,
 }) => {
-  const [entryDateMonth, setEntryDateMonth] = React.useState("1");
-  const [entryDateYear, setEntryDateYear] = React.useState(years[0].toString());
-  const [salary, setSalary] = React.useState(0);
-  const [bonus, setBonus] = React.useState(0);
-  const [priceNow, setPriceNow] = React.useState(0);
-  const [priceThen, setPriceThen] = React.useState(0);
-  const [grantDuration, setGrantDuration] = React.useState(4);
-  const [grantQty, setGrantQty] = React.useState(0);
+  // TODO: Data isn't loading into edit properly
+  console.log(compEntry);
+  const { month, year } = compEntry?.entryDate
+    ? dateHelper(compEntry?.entryDate)
+    : { month: 1, year: years[0] };
+  const [entryDateMonth, setEntryDateMonth] = React.useState(month.toString());
+  const [entryDateYear, setEntryDateYear] = React.useState(year.toString());
+  const [salary, setSalary] = React.useState(compEntry?.salary || 0);
+  const [bonus, setBonus] = React.useState(compEntry?.bonus || 0);
+  const [priceNow, setPriceNow] = React.useState(compEntry?.priceNow || 0);
+  const [priceThen, setPriceThen] = React.useState(compEntry?.priceThen || 0);
+  const [grantDuration, setGrantDuration] = React.useState(
+    compEntry?.grantDuration || 4,
+  );
+  const [grantQty, setGrantQty] = React.useState(compEntry?.grantQty || 0);
 
   const handleChange =
     (func: (n: number) => void) => (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -60,7 +69,7 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
     setEntryDateYear(e.target.value);
 
   const handleSubmit = () => {
-    submitCompEntry({
+    addCompEntry({
       entryDate: `${entryDateYear}-${entryDateMonth.length < 2 ? "0" : ""}${entryDateMonth}`,
       salary,
       bonus,
@@ -80,8 +89,10 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
     setGrantQty(0);
   };
 
+  console.log(salary, bonus, priceNow, priceThen, grantDuration, grantQty);
+
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>Add New Comp Entry</DialogTitle>
       <DialogContent>
         <div style={{ display: "flex" }}>
@@ -163,7 +174,7 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={onClose}>Cancel</Button>
         <Button type="submit" onClick={handleSubmit}>
           Add
         </Button>

@@ -8,35 +8,33 @@ import compCalcState, {
 import CompDisplay from "./CompDisplay";
 import CompEntryDialog from "./CompEntryDialog";
 
-/** Compensation Calculator
- * -----     SALARY     -----
- * Date {DateObj}
- * Salary {number}
- * Bonus {number}
- * Stock (Adj) {number} - calculated
- * Stock {number} - calculated
- * Total {number} - calculated
- * Total (Adj) {number} - calculated
- * Net {number} - calculated
- * -----     STOCK     -----
- * Price Now {number} - number (V1) - API (V2)
- * Price Then {number} - number (V1) - API (V2)
- * Expires On {number} - YEARS
- * Grant Qty {number} - STOCKS
- * Grant Then - calculated
- * Grant Now - calculated
- */
 const CompensationCalculator = () => {
   const [compEntries, setCompEntries] = useRecoilState(compCalcState);
   const compCalcEntries = useRecoilValue(compCalcReadOnlyState);
   const [open, setOpen] = React.useState(false);
+  const [editIdx, setEditIdx] = React.useState(-1);
 
-  const openEntryModal = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const closeEntryModal = () => setOpen(false);
 
-  const submitCompEntry = (newCompEntry: CompEntry) => {
-    setCompEntries([...compEntries, newCompEntry]);
-    handleClose();
+  const openNewEntry = () => {
+    setEditIdx(-1);
+    setOpen(true);
+  };
+
+  const openEditEntry = (i: number) => () => {
+    setEditIdx(i);
+    setOpen(true);
+  };
+
+  const addCompEntry = (compEntry: CompEntry) => {
+    const newCompEntries = [...compEntries];
+    if (editIdx === -1) {
+      newCompEntries.push(compEntry);
+    } else {
+      newCompEntries[editIdx] = compEntry;
+    }
+    setCompEntries(newCompEntries);
+    closeEntryModal();
   };
 
   return (
@@ -48,13 +46,15 @@ const CompensationCalculator = () => {
       <CompDisplay
         compEntries={compEntries}
         compCalcEntries={compCalcEntries}
+        openEntryModal={openEditEntry}
       />
 
-      <Button onClick={openEntryModal}>New Entry</Button>
+      <Button onClick={openNewEntry}>New Entry</Button>
       <CompEntryDialog
         open={open}
-        handleClose={handleClose}
-        submitCompEntry={submitCompEntry}
+        compEntry={editIdx !== -1 ? compEntries[editIdx] : undefined}
+        onClose={closeEntryModal}
+        addCompEntry={addCompEntry}
       />
     </>
   );
