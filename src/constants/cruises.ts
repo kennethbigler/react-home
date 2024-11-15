@@ -291,6 +291,14 @@ export const cruises: Cruise[] = [
     concierge: true,
   },
   {
+    departure: dateObj("2025-03"),
+    nights: 7,
+    name: "Galveston to San Juan",
+    ship: ships[0],
+    line: lines[0],
+    concierge: false,
+  },
+  {
     departure: dateObj("2025-05"),
     nights: 15,
     name: "Miami to Casablanca & Barcelona",
