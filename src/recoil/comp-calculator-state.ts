@@ -66,6 +66,7 @@ export const compCalcReadOnlyState = selector({
     const compCalcEntriesNoNet: Omit<CompCalcEntry, "netDiff">[] =
       compEntries.map(
         ({ salary, bonus, priceNow, priceThen, grantDuration, grantQty }) => {
+          // TODO: Stocks should last if at same company, may need to add company field
           const stock =
             Math.round(((priceThen * grantQty) / grantDuration) * 100) / 100;
           const stockAdj =

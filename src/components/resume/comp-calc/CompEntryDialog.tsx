@@ -50,6 +50,17 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
   const [grantDuration, setGrantDuration] = React.useState(4);
   const [grantQty, setGrantQty] = React.useState(0);
 
+  const resetState = () => {
+    setEntryDateMonth("1");
+    setEntryDateYear(years[0].toString());
+    setSalary(0);
+    setBonus(0);
+    setPriceNow(0);
+    setPriceThen(0);
+    setGrantDuration(4);
+    setGrantQty(0);
+  };
+
   React.useEffect(() => {
     if (compEntry) {
       const { month, year } = dateHelper(compEntry.entryDate);
@@ -61,8 +72,10 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
       setPriceThen(compEntry.priceThen);
       setGrantDuration(compEntry.grantDuration);
       setGrantQty(compEntry.grantQty);
+    } else {
+      resetState();
     }
-  }, [compEntry]);
+  }, [compEntry, compEntry?.salary]);
 
   const handleChange =
     (func: (n: number) => void) => (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -82,22 +95,13 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
       grantDuration,
       grantQty,
     });
-    // reset state
-    setEntryDateMonth("1");
-    setEntryDateYear(years[0].toString());
-    setSalary(0);
-    setBonus(0);
-    setPriceNow(0);
-    setPriceThen(0);
-    setGrantDuration(4);
-    setGrantQty(0);
   };
 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Add New Comp Entry</DialogTitle>
       <DialogContent>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", marginTop: 5 }}>
           <FormControl fullWidth>
             <InputLabel id="month-select">Month</InputLabel>
             <Select
@@ -133,14 +137,14 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
           label="Salary"
           value={salary}
           onChange={handleChange(setSalary)}
-          InputProps={{ startAdornment: "$" }}
+          slotProps={{ input: { startAdornment: "$" } }}
           {...tfProps}
         />
         <TextField
           label="Bonus"
           value={bonus}
           onChange={handleChange(setBonus)}
-          InputProps={{ startAdornment: "$" }}
+          slotProps={{ input: { startAdornment: "$" } }}
           {...tfProps}
         />
         <DialogContentText variant="h6" component="h4" sx={{ marginTop: 7 }}>
@@ -162,21 +166,21 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
           label="Stock Price Then"
           value={priceThen}
           onChange={handleChange(setPriceThen)}
-          InputProps={{ startAdornment: "$" }}
+          slotProps={{ input: { startAdornment: "$" } }}
           {...tfProps}
         />
         <TextField
           label="Stock Price Now"
           value={priceNow}
           onChange={handleChange(setPriceNow)}
-          InputProps={{ startAdornment: "$" }}
+          slotProps={{ input: { startAdornment: "$" } }}
           {...tfProps}
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
         <Button type="submit" onClick={handleSubmit}>
-          Add
+          {compEntry ? "Update" : "Add"}
         </Button>
       </DialogActions>
     </Dialog>

@@ -40,17 +40,17 @@ const CompensationCalculator = () => {
 
   return (
     <>
-      <Typography variant="h2" component="h1">
-        Comp Calculator
-      </Typography>
-
+      <div className="flex-container">
+        <Typography variant="h2" component="h1">
+          Comp Calculator
+        </Typography>
+        <Button onClick={openNewEntry}>New Entry</Button>
+      </div>
       <CompDisplay
         compEntries={compEntries}
         compCalcEntries={compCalcEntries}
         openEntryModal={openEditEntry}
       />
-
-      <Button onClick={openNewEntry}>New Entry</Button>
       <CompEntryDialog
         open={open}
         compEntry={editIdx !== -1 ? compEntries[editIdx] : undefined}
