@@ -1,15 +1,27 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
-import Header, { NavProps } from "../common/header/Header";
 import Menu from "./Menu";
-// nav elements
-import Summary from "./summary";
-import Cars from "./cars";
-import Education from "./education";
-import Presentations from "./presentations";
-import Resume from "./resume";
-import TravelMap from "./travel-map";
-import Work from "./work";
+import Header, { NavProps } from "../common/header/Header";
+import LoadingSpinner from "../common/loading-spinner";
+
+// lazy load nav elements
+const Summary = React.lazy(
+  () => import(/* webpackChunkName: "summary" */ "./summary"),
+);
+const Cars = React.lazy(() => import(/* webpackChunkName: "cars" */ "./cars"));
+const Education = React.lazy(
+  () => import(/* webpackChunkName: "education" */ "./education"),
+);
+const Presentations = React.lazy(
+  () => import(/* webpackChunkName: "presentations" */ "./presentations"),
+);
+const Resume = React.lazy(
+  () => import(/* webpackChunkName: "resume" */ "./resume"),
+);
+const TravelMap = React.lazy(
+  () => import(/* webpackChunkName: "travel" */ "./travel-map"),
+);
+const Work = React.lazy(() => import(/* webpackChunkName: "work" */ "./work"));
 
 interface RoutesProps {
   handleNav: (loc: string) => void;
@@ -22,15 +34,17 @@ const ResumeRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
         <Menu onItemClick={onItemClick} />
       )}
     </Header>
-    <Routes>
-      <Route path="/*" element={<Summary />} />
-      <Route path="cars/*" element={<Cars />} />
-      <Route path="education/*" element={<Education />} />
-      <Route path="presentations/*" element={<Presentations />} />
-      <Route path="resume/*" element={<Resume />} />
-      <Route path="travel/*" element={<TravelMap />} />
-      <Route path="work/*" element={<Work />} />
-    </Routes>
+    <React.Suspense fallback={<LoadingSpinner />}>
+      <Routes>
+        <Route path="/*" element={<Summary />} />
+        <Route path="cars/*" element={<Cars />} />
+        <Route path="education/*" element={<Education />} />
+        <Route path="presentations/*" element={<Presentations />} />
+        <Route path="resume/*" element={<Resume />} />
+        <Route path="travel/*" element={<TravelMap />} />
+        <Route path="work/*" element={<Work />} />
+      </Routes>
+    </React.Suspense>
   </>
 );
 

@@ -1,22 +1,50 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
-import Header, { NavProps } from "../common/header/Header";
 import Menu from "./Menu";
-// nav elements
-import GameHome from "./Home";
-import AreYouTheOne from "./are-you-the-one";
-import BlackJack from "./blackjack";
-import BotC from "./botc";
-import Connect4 from "./connect4";
-import DealOrNoDeal from "./deal-or-no-deal";
-import FamilyFeud from "./family-feud";
-import MurderMystery from "./murder-mystery";
-import Poker from "./poker";
-import Slots from "./slots";
-import TicTacToe from "./tictactoe";
-import TypeChecker from "./type-checker";
-import Werewolf from "./werewolf";
-import Yahtzee from "./yahtzee";
+import Header, { NavProps } from "../common/header/Header";
+import LoadingSpinner from "../common/loading-spinner";
+
+// lazy load nav elements
+const GameHome = React.lazy(
+  () => import(/* webpackChunkName: "home" */ "./Home"),
+);
+const AreYouTheOne = React.lazy(
+  () => import(/* webpackChunkName: "ayto" */ "./are-you-the-one"),
+);
+const BlackJack = React.lazy(
+  () => import(/* webpackChunkName: "blackjack" */ "./blackjack"),
+);
+const BotC = React.lazy(() => import(/* webpackChunkName: "botc" */ "./botc"));
+const Connect4 = React.lazy(
+  () => import(/* webpackChunkName: "connect4" */ "./connect4"),
+);
+const DealOrNoDeal = React.lazy(
+  () => import(/* webpackChunkName: "deal" */ "./deal-or-no-deal"),
+);
+const FamilyFeud = React.lazy(
+  () => import(/* webpackChunkName: "family-feud" */ "./family-feud"),
+);
+const MurderMystery = React.lazy(
+  () => import(/* webpackChunkName: "murder" */ "./murder-mystery"),
+);
+const Poker = React.lazy(
+  () => import(/* webpackChunkName: "poker" */ "./poker"),
+);
+const Slots = React.lazy(
+  () => import(/* webpackChunkName: "slots" */ "./slots"),
+);
+const TicTacToe = React.lazy(
+  () => import(/* webpackChunkName: "tictactoe" */ "./tictactoe"),
+);
+const TypeChecker = React.lazy(
+  () => import(/* webpackChunkName: "type-checker" */ "./type-checker"),
+);
+const Werewolf = React.lazy(
+  () => import(/* webpackChunkName: "werewolf" */ "./werewolf"),
+);
+const Yahtzee = React.lazy(
+  () => import(/* webpackChunkName: "yahtzee" */ "./yahtzee"),
+);
 
 interface RoutesProps {
   handleNav: (loc: string) => void;
@@ -29,22 +57,24 @@ const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
         <Menu onItemClick={onItemClick} />
       )}
     </Header>
-    <Routes>
-      <Route path="/*" element={<GameHome onItemClick={handleNav} />} />
-      <Route path="are-you-the-one/*" element={<AreYouTheOne />} />
-      <Route path="botc/*" element={<BotC />} />
-      <Route path="blackjack/*" element={<BlackJack />} />
-      <Route path="connect4/*" element={<Connect4 />} />
-      <Route path="deal/*" element={<DealOrNoDeal />} />
-      <Route path="family-feud/*" element={<FamilyFeud />} />
-      <Route path="murder/*" element={<MurderMystery />} />
-      <Route path="poker/*" element={<Poker />} />
-      <Route path="slots/*" element={<Slots />} />
-      <Route path="tictactoe/*" element={<TicTacToe />} />
-      <Route path="types/*" element={<TypeChecker />} />
-      <Route path="werewolf/*" element={<Werewolf />} />
-      <Route path="yahtzee/*" element={<Yahtzee />} />
-    </Routes>
+    <React.Suspense fallback={<LoadingSpinner />}>
+      <Routes>
+        <Route path="/*" element={<GameHome onItemClick={handleNav} />} />
+        <Route path="are-you-the-one/*" element={<AreYouTheOne />} />
+        <Route path="botc/*" element={<BotC />} />
+        <Route path="blackjack/*" element={<BlackJack />} />
+        <Route path="connect4/*" element={<Connect4 />} />
+        <Route path="deal/*" element={<DealOrNoDeal />} />
+        <Route path="family-feud/*" element={<FamilyFeud />} />
+        <Route path="murder/*" element={<MurderMystery />} />
+        <Route path="poker/*" element={<Poker />} />
+        <Route path="slots/*" element={<Slots />} />
+        <Route path="tictactoe/*" element={<TicTacToe />} />
+        <Route path="types/*" element={<TypeChecker />} />
+        <Route path="werewolf/*" element={<Werewolf />} />
+        <Route path="yahtzee/*" element={<Yahtzee />} />
+      </Routes>
+    </React.Suspense>
   </>
 );
 
