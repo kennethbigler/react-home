@@ -11,16 +11,20 @@ import {
   CompEntry,
 } from "../../../recoil/comp-calculator-state";
 import dateObj from "../../../apis/DateHelper";
+import usDollar from "../../../apis/usdFormatter";
+import { StockState } from "../../../recoil/stock-atom";
 
 interface CompEntryProps {
   compEntries: CompEntry[];
   compCalcEntries: CompCalcEntry[];
+  stockEntries: StockState;
   openEntryModal: (i: number) => () => void;
 }
 
 const CompDisplay: React.FC<CompEntryProps> = ({
   compEntries,
   compCalcEntries,
+  stockEntries,
   openEntryModal,
 }) => (
   <Grid container spacing={1}>
@@ -29,7 +33,7 @@ const CompDisplay: React.FC<CompEntryProps> = ({
         entryDate,
         salary,
         bonus,
-        priceNow,
+        stockTick,
         priceThen,
         grantDuration,
         grantQty,
@@ -50,29 +54,44 @@ const CompDisplay: React.FC<CompEntryProps> = ({
                     <Typography>
                       Date - {dateObj(entryDate).format("MMMM Y")}
                     </Typography>
-                    <Typography>Salary: ${salary}</Typography>
-                    <Typography>Bonus: ${bonus}</Typography>
+                    <Typography>Salary: {usDollar.format(salary)}</Typography>
+                    <Typography>Bonus: {usDollar.format(bonus)}</Typography>
                     <Divider aria-hidden />
-                    <Typography>*Stock (Adj): ${stockAdj}</Typography>
-                    <Typography>*Stock: ${stock}</Typography>
+                    <Typography>
+                      *Stock (Adj): {usDollar.format(stockAdj)}
+                    </Typography>
+                    <Typography>*Stock: {usDollar.format(stock)}</Typography>
                     <Divider aria-hidden />
-                    <Typography>*Total: ${total}</Typography>
-                    <Typography>*Total (Adj): ${totalAdj}</Typography>
+                    <Typography>*Total: {usDollar.format(total)}</Typography>
+                    <Typography>
+                      *Total (Adj): {usDollar.format(totalAdj)}
+                    </Typography>
                     <Divider aria-hidden />
-                    <Typography>*Net: ${netDiff}</Typography>
+                    <Typography>*Net: {usDollar.format(netDiff)}</Typography>
                   </CardContent>
                 </Grid>
                 {grantQty > 0 ? (
                   <Grid size={6}>
                     <CardHeader title="Stock" />
                     <CardContent>
-                      <Typography>Price Now: ${priceNow}</Typography>
-                      <Typography>Price Then: ${priceThen}</Typography>
+                      <Typography>Stock Ticker: {stockTick}</Typography>
+                      <Typography>
+                        Price Then: {usDollar.format(priceThen)}
+                      </Typography>
+                      <Typography>
+                        *Price Now:{" "}
+                        {usDollar.format(stockEntries[stockTick]) ||
+                          "Enter Stock"}
+                      </Typography>
                       <Typography>Grant Qty: {grantQty} stocks</Typography>
                       <Typography>Duration: {grantDuration} years</Typography>
                       <Divider aria-hidden />
-                      <Typography>*Grant Then: ${grantThen}</Typography>
-                      <Typography>*Grant Now: ${grantNow}</Typography>
+                      <Typography>
+                        *Grant Then: {usDollar.format(grantThen)}
+                      </Typography>
+                      <Typography>
+                        *Grant Now: {usDollar.format(grantNow)}
+                      </Typography>
                     </CardContent>
                   </Grid>
                 ) : null}

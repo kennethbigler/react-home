@@ -1,4 +1,5 @@
 import { atom, selector } from "recoil";
+import stockAtom from "./stock-atom";
 
 /** Compensation Calculator
  *
@@ -24,7 +25,7 @@ export interface CompEntry {
   entryDate: string;
   salary: number;
   bonus: number;
-  priceNow: number;
+  stockTick: string;
   priceThen: number;
   grantDuration: number; // YEARS
   grantQty: number; // STOCKS
@@ -62,19 +63,19 @@ export const compCalcReadOnlyState = selector({
   get: ({ get }) => {
     // access state
     const compEntries = get(compCalcAtom);
+    const stockEntries = get(stockAtom);
 
     const compCalcEntriesNoNet: Omit<CompCalcEntry, "netDiff">[] =
       compEntries.map(
-        ({ salary, bonus, priceNow, priceThen, grantDuration, grantQty }) => {
+        ({ salary, bonus, stockTick, priceThen, grantDuration, grantQty }) => {
+          const priceNow = stockEntries[stockTick] || 0;
           // TODO: Stocks should last if at same company, may need to add company field
-          const stock =
-            Math.round(((priceThen * grantQty) / grantDuration) * 100) / 100;
-          const stockAdj =
-            Math.round(((priceNow * grantQty) / grantDuration) * 100) / 100;
+          const stock = (priceThen * grantQty) / grantDuration;
+          const stockAdj = (priceNow * grantQty) / grantDuration;
           const total = salary + bonus + stock;
           const totalAdj = salary + bonus + stockAdj;
-          const grantThen = Math.round(priceThen * grantQty * 100) / 100;
-          const grantNow = Math.round(priceNow * grantQty * 100) / 100;
+          const grantThen = priceThen * grantQty;
+          const grantNow = priceNow * grantQty;
 
           return {
             stock,

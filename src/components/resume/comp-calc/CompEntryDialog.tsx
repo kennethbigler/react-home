@@ -18,7 +18,6 @@ const tfProps: TextFieldProps = {
   variant: "standard",
   fullWidth: true,
   margin: "dense",
-  type: "number",
 };
 
 const currentYear = new Date().getFullYear() - 2000;
@@ -45,7 +44,7 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
   const [entryDateYear, setEntryDateYear] = React.useState(years[0].toString());
   const [salary, setSalary] = React.useState(0);
   const [bonus, setBonus] = React.useState(0);
-  const [priceNow, setPriceNow] = React.useState(0);
+  const [stockTick, setStockTick] = React.useState("");
   const [priceThen, setPriceThen] = React.useState(0);
   const [grantDuration, setGrantDuration] = React.useState(4);
   const [grantQty, setGrantQty] = React.useState(0);
@@ -55,7 +54,7 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
     setEntryDateYear(years[0].toString());
     setSalary(0);
     setBonus(0);
-    setPriceNow(0);
+    setStockTick("");
     setPriceThen(0);
     setGrantDuration(4);
     setGrantQty(0);
@@ -68,7 +67,7 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
       setEntryDateYear(year.toString());
       setSalary(compEntry.salary);
       setBonus(compEntry.bonus);
-      setPriceNow(compEntry.priceNow);
+      setStockTick(compEntry.stockTick);
       setPriceThen(compEntry.priceThen);
       setGrantDuration(compEntry.grantDuration);
       setGrantQty(compEntry.grantQty);
@@ -80,6 +79,8 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
   const handleChange =
     (func: (n: number) => void) => (e: React.ChangeEvent<HTMLInputElement>) =>
       func(parseFloat(e.target.value));
+  const handleStockTick = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setStockTick(e.target.value);
   const handleSelectMonth = (e: SelectChangeEvent<string>) =>
     setEntryDateMonth(e.target.value);
   const handleSelectYear = (e: SelectChangeEvent<string>) =>
@@ -90,16 +91,17 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
       entryDate: `${entryDateYear}-${entryDateMonth.length < 2 ? "0" : ""}${entryDateMonth}`,
       salary,
       bonus,
-      priceNow,
+      stockTick,
       priceThen,
       grantDuration,
       grantQty,
     });
+    resetState();
   };
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Add New Comp Entry</DialogTitle>
+      <DialogTitle>{compEntry ? "Edit" : "New"} Comp Entry</DialogTitle>
       <DialogContent>
         <div style={{ display: "flex", marginTop: 5 }}>
           <FormControl fullWidth>
@@ -136,6 +138,7 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
         <TextField
           label="Salary"
           value={salary}
+          type="number"
           onChange={handleChange(setSalary)}
           slotProps={{ input: { startAdornment: "$" } }}
           {...tfProps}
@@ -143,6 +146,7 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
         <TextField
           label="Bonus"
           value={bonus}
+          type="number"
           onChange={handleChange(setBonus)}
           slotProps={{ input: { startAdornment: "$" } }}
           {...tfProps}
@@ -151,28 +155,30 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
           Stock
         </DialogContentText>
         <TextField
+          label="Stock Ticker"
+          value={stockTick}
+          onChange={handleStockTick}
+          {...tfProps}
+        />
+        <TextField
           label="Grant Quantity"
           value={grantQty}
+          type="number"
           onChange={handleChange(setGrantQty)}
           {...tfProps}
         />
         <TextField
           label="Grant Duration"
           value={grantDuration}
+          type="number"
           onChange={handleChange(setGrantDuration)}
           {...tfProps}
         />
         <TextField
           label="Stock Price Then"
           value={priceThen}
+          type="number"
           onChange={handleChange(setPriceThen)}
-          slotProps={{ input: { startAdornment: "$" } }}
-          {...tfProps}
-        />
-        <TextField
-          label="Stock Price Now"
-          value={priceNow}
-          onChange={handleChange(setPriceNow)}
           slotProps={{ input: { startAdornment: "$" } }}
           {...tfProps}
         />
