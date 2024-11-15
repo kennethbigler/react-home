@@ -36,11 +36,11 @@ const CompDisplay: React.FC<CompEntryProps> = ({
       const { stock, stockAdj, total, totalAdj, netDiff, grantThen, grantNow } =
         compCalcEntries[i];
       return (
-        <Grid size={3} key={`comp-calc-entry-${i}`}>
+        <Grid size={4} key={`comp-calc-entry-${i}`}>
           <Card>
             <CardActionArea onClick={openEntryModal(i)}>
               <Grid container>
-                <Grid size={6}>
+                <Grid size={grantQty > 0 ? 6 : 12}>
                   <CardHeader title="Salary" />
                   <CardContent>
                     <Typography>

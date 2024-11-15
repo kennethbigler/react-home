@@ -1,19 +1,16 @@
 import * as React from "react";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TextField,
-  TextFieldProps,
-} from "@mui/material";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import { TextFieldProps, SelectChangeEvent } from "@mui/material";
 import dateHelper, { months } from "../../../apis/DateHelper";
 import { CompEntry } from "../../../recoil/comp-calculator-state";
 
@@ -44,21 +41,28 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
   onClose,
   addCompEntry,
 }) => {
-  // TODO: Data isn't loading into edit properly
-  console.log(compEntry);
-  const { month, year } = compEntry?.entryDate
-    ? dateHelper(compEntry?.entryDate)
-    : { month: 1, year: years[0] };
-  const [entryDateMonth, setEntryDateMonth] = React.useState(month.toString());
-  const [entryDateYear, setEntryDateYear] = React.useState(year.toString());
-  const [salary, setSalary] = React.useState(compEntry?.salary || 0);
-  const [bonus, setBonus] = React.useState(compEntry?.bonus || 0);
-  const [priceNow, setPriceNow] = React.useState(compEntry?.priceNow || 0);
-  const [priceThen, setPriceThen] = React.useState(compEntry?.priceThen || 0);
-  const [grantDuration, setGrantDuration] = React.useState(
-    compEntry?.grantDuration || 4,
-  );
-  const [grantQty, setGrantQty] = React.useState(compEntry?.grantQty || 0);
+  const [entryDateMonth, setEntryDateMonth] = React.useState("1");
+  const [entryDateYear, setEntryDateYear] = React.useState(years[0].toString());
+  const [salary, setSalary] = React.useState(0);
+  const [bonus, setBonus] = React.useState(0);
+  const [priceNow, setPriceNow] = React.useState(0);
+  const [priceThen, setPriceThen] = React.useState(0);
+  const [grantDuration, setGrantDuration] = React.useState(4);
+  const [grantQty, setGrantQty] = React.useState(0);
+
+  React.useEffect(() => {
+    if (compEntry) {
+      const { month, year } = dateHelper(compEntry.entryDate);
+      setEntryDateMonth((month + 1).toString());
+      setEntryDateYear(year.toString());
+      setSalary(compEntry.salary);
+      setBonus(compEntry.bonus);
+      setPriceNow(compEntry.priceNow);
+      setPriceThen(compEntry.priceThen);
+      setGrantDuration(compEntry.grantDuration);
+      setGrantQty(compEntry.grantQty);
+    }
+  }, [compEntry]);
 
   const handleChange =
     (func: (n: number) => void) => (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -89,18 +93,15 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
     setGrantQty(0);
   };
 
-  console.log(salary, bonus, priceNow, priceThen, grantDuration, grantQty);
-
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Add New Comp Entry</DialogTitle>
       <DialogContent>
         <div style={{ display: "flex" }}>
           <FormControl fullWidth>
-            <InputLabel id="month-select-label">Month</InputLabel>
+            <InputLabel id="month-select">Month</InputLabel>
             <Select
-              labelId="month-select-label"
-              id="month-select"
+              labelId="month-select"
               label="Month"
               value={entryDateMonth}
               onChange={handleSelectMonth}
@@ -113,10 +114,9 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
             </Select>
           </FormControl>
           <FormControl fullWidth>
-            <InputLabel id="year-select-label">Year</InputLabel>
+            <InputLabel id="year-select">Year</InputLabel>
             <Select
-              labelId="year-select-label"
-              id="year-select"
+              labelId="year-select"
               label="Year"
               value={entryDateYear}
               onChange={handleSelectYear}
@@ -159,14 +159,14 @@ const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
           {...tfProps}
         />
         <TextField
-          label="Grant Value Then"
+          label="Stock Price Then"
           value={priceThen}
           onChange={handleChange(setPriceThen)}
           InputProps={{ startAdornment: "$" }}
           {...tfProps}
         />
         <TextField
-          label="Grant Value Now"
+          label="Stock Price Now"
           value={priceNow}
           onChange={handleChange(setPriceNow)}
           InputProps={{ startAdornment: "$" }}

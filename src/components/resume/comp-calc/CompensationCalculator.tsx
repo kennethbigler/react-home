@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { Button, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import compCalcState, {
   CompEntry,
   compCalcReadOnlyState,

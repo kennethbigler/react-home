@@ -66,12 +66,14 @@ export const compCalcReadOnlyState = selector({
     const compCalcEntriesNoNet: Omit<CompCalcEntry, "netDiff">[] =
       compEntries.map(
         ({ salary, bonus, priceNow, priceThen, grantDuration, grantQty }) => {
-          const stock = (priceThen * grantQty) / grantDuration;
-          const stockAdj = (priceNow * grantQty) / grantDuration;
+          const stock =
+            Math.round(((priceThen * grantQty) / grantDuration) * 100) / 100;
+          const stockAdj =
+            Math.round(((priceNow * grantQty) / grantDuration) * 100) / 100;
           const total = salary + bonus + stock;
           const totalAdj = salary + bonus + stockAdj;
-          const grantThen = priceThen * grantQty;
-          const grantNow = priceNow * grantQty;
+          const grantThen = Math.round(priceThen * grantQty * 100) / 100;
+          const grantNow = Math.round(priceNow * grantQty * 100) / 100;
 
           return {
             stock,
