@@ -9,13 +9,8 @@
     "assert": {
       "preset": "lighthouse:recommended",
       "assertions": {
-        "bf-cache": "warn",
-        "csp-xss": "warn",
-        "errors-in-console": "warn",
-        "non-composited-animations": "warn",
         "preload-lcp-image": "warn",
         "prioritize-lcp-image": "warn",
-        "total-byte-weight": "warn",
         "service-worker": "warn",
         "unsized-images": "warn",
         "unused-javascript": "warn",
