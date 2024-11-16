@@ -63,17 +63,19 @@ const CompCalculator = () => {
 
   return (
     <>
+      <Typography variant="h2" component="h1">
+        Comp Calculator
+      </Typography>
       <div className="flex-container">
-        <Typography variant="h2" component="h1">
-          Comp Calculator
-        </Typography>
-        <Button onClick={openNewStock}>New Stock</Button>
-        <Button onClick={openNewEntry}>New Entry</Button>
+        <StockDisplay
+          stockEntries={stockEntries}
+          openStockModal={openEditStock}
+        />
+        <div>
+          <Button onClick={openNewStock}>+ Stock</Button>
+          <Button onClick={openNewEntry}>+ Entry</Button>
+        </div>
       </div>
-      <StockDisplay
-        stockEntries={stockEntries}
-        openStockModal={openEditStock}
-      />
       <CompDisplay
         compEntries={compEntries}
         compCalcEntries={compCalcEntries}
