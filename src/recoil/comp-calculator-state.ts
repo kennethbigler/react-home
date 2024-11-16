@@ -139,11 +139,6 @@ export const compCalcReadOnlyState = selector({
   },
 });
 
-interface compChartEntry {
-  name: string;
-  data: number[];
-}
-
 const STOCK = 0;
 const BONUS = 1;
 const SALARY = 2;
@@ -154,16 +149,12 @@ export const compChartReadOnlyState = selector({
     // access state
     const compCalcEntries = get(compCalcReadOnlyState);
     const compEntries = get(compCalcAtom);
-    const compChartData: compChartEntry[] = [
-      { name: "Stock", data: [] },
-      { name: "Bonus", data: [] },
-      { name: "Salary", data: [] },
-    ];
+    const compChartData: number[][] = [[], [], []];
 
     compEntries.forEach((cEntry, i) => {
-      compChartData[STOCK].data.push(compCalcEntries[i].stockAdj);
-      compChartData[BONUS].data.push(cEntry.bonus);
-      compChartData[SALARY].data.push(cEntry.salary);
+      compChartData[STOCK].push(compCalcEntries[i].stockAdj);
+      compChartData[BONUS].push(cEntry.bonus);
+      compChartData[SALARY].push(cEntry.salary);
     });
 
     return compChartData;

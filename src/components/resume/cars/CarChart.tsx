@@ -15,12 +15,13 @@ const CarChart = React.memo(({ data, color }: CarChartProps) => {
   const { horsepower, MPG, weight, powerToWeight, xAxis } = processData(data);
 
   const options = {
-    chart: { type: "spline", backgroundColor: "transparent" },
+    chart: { type: "spline", backgroundColor: null },
     credits: { enabled: false },
+    legend: { enabled: false },
     plotOptions: { series: { marker: { enabled: false }, lineWidth: 2 } },
     title: { text: "Car Data", style: { color } },
     tooltip: { valueSuffix: "%" },
-    xAxis: { categories: xAxis },
+    xAxis: { categories: xAxis, labels: { style: { color } } },
     yAxis: {
       floor: 0,
       ceiling: 100,
@@ -29,10 +30,10 @@ const CarChart = React.memo(({ data, color }: CarChartProps) => {
       title: { text: undefined },
     },
     series: [
-      { data: horsepower, showInLegend: false, name: "Horsepower" },
-      { data: MPG, showInLegend: false, name: "MPG" },
-      { data: weight, showInLegend: false, name: "Weight" },
-      { data: powerToWeight, showInLegend: false, name: "Power-to-Weight" },
+      { data: horsepower, name: "Horsepower" },
+      { data: MPG, name: "MPG" },
+      { data: weight, name: "Weight" },
+      { data: powerToWeight, name: "Power-to-Weight" },
     ],
   };
 
