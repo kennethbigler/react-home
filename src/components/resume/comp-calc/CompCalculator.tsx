@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import compCalcState, {
   CompEntry,
@@ -12,6 +13,7 @@ import StockDialog from "./StockDialog";
 import stockAtom from "../../../recoil/stock-atom";
 import StockDisplay from "./StockDisplay";
 import CompChart from "./CompGraph";
+import BreakdownChart from "./BreakdownGraph";
 
 const CompCalculator = () => {
   const [compEntries, setCompEntries] = useRecoilState(compCalcState);
@@ -87,7 +89,20 @@ const CompCalculator = () => {
           <Button onClick={openNewEntry}>+ Entry</Button>
         </div>
       </div>
-      <CompChart />
+      {compEntries.length > 0 ? (
+        <Grid container>
+          <Grid size={{ xs: 12, md: 6, lg: 8, xl: 9 }}>
+            <CompChart />
+          </Grid>
+          <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+            <BreakdownChart
+              salary={compEntries[compEntries.length - 1].salary}
+              bonus={compEntries[compEntries.length - 1].bonus}
+              stock={compCalcEntries[compCalcEntries.length - 1].stockAdj}
+            />
+          </Grid>
+        </Grid>
+      ) : null}
       <CompDisplay
         compEntries={compEntries}
         compCalcEntries={compCalcEntries}
