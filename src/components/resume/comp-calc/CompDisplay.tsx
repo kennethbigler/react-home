@@ -80,8 +80,9 @@ const CompDisplay: React.FC<CompEntryProps> = ({
                       </Typography>
                       <Typography>
                         *Price Now:{" "}
-                        {usDollar.format(stockEntries[stockTick]) ||
-                          "Enter Stock"}
+                        {stockEntries[stockTick]
+                          ? usDollar.format(stockEntries[stockTick])
+                          : "Enter Stock"}
                       </Typography>
                       <Typography>Grant Qty: {grantQty} stocks</Typography>
                       <Typography>Duration: {grantDuration} years</Typography>

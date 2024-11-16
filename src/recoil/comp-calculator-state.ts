@@ -1,5 +1,6 @@
 import { atom, selector } from "recoil";
 import stockAtom from "./stock-atom";
+import dateHelper, { DateObj } from "../apis/DateHelper";
 
 /** Compensation Calculator
  *
@@ -14,8 +15,8 @@ import stockAtom from "./stock-atom";
  * Net {number} - calculated
  *
  * -----     STOCK     -----
- * Price Now {number} - number (V1) - API (V2)
- * Price Then {number} - number (V1) - API (V2)
+ * Stock Tick {string}
+ * Price Now {number}
  * Grant Qty {number} - STOCKS
  * Grant Duration {number} - YEARS
  * Grant Then - calculated
@@ -39,6 +40,15 @@ export interface CompCalcEntry {
   netDiff: number;
   grantThen: number;
   grantNow: number;
+}
+
+export interface PrevStock {
+  stock: number;
+  stockAdj: number;
+  exp: DateObj;
+}
+export interface PrevStockAcc {
+  [key: string]: PrevStock[];
 }
 
 export type CompCalcState = CompEntry[];
@@ -65,13 +75,48 @@ export const compCalcReadOnlyState = selector({
     const compEntries = get(compCalcAtom);
     const stockEntries = get(stockAtom);
 
+    const prevStockAcc: PrevStockAcc = {};
+
     const compCalcEntriesNoNet: Omit<CompCalcEntry, "netDiff">[] =
       compEntries.map(
-        ({ salary, bonus, stockTick, priceThen, grantDuration, grantQty }) => {
+        ({
+          bonus,
+          entryDate,
+          grantDuration,
+          grantQty,
+          priceThen,
+          salary,
+          stockTick,
+        }) => {
           const priceNow = stockEntries[stockTick] || 0;
-          // TODO: Stocks should last if at same company, may need to add company field
-          const stock = (priceThen * grantQty) / grantDuration;
-          const stockAdj = (priceNow * grantQty) / grantDuration;
+          const curStock = (priceThen * grantQty) / grantDuration;
+          let stock = 0;
+          let stockAdj = 0;
+
+          if (curStock > 0) {
+            const curStockAdj = (priceNow * grantQty) / grantDuration;
+            const exp = dateHelper(entryDate);
+            exp.year += grantDuration;
+
+            const newEntry = {
+              stock: curStock,
+              stockAdj: curStockAdj,
+              exp,
+            };
+
+            if (prevStockAcc[stockTick]) {
+              prevStockAcc[stockTick].push(newEntry);
+            } else {
+              prevStockAcc[stockTick] = [newEntry];
+            }
+            prevStockAcc[stockTick].forEach((s) => {
+              if (dateHelper(entryDate).diff(s.exp, "days") < 0) {
+                stock += s.stock;
+                stockAdj += s.stockAdj;
+              }
+            });
+          }
+
           const total = salary + bonus + stock;
           const totalAdj = salary + bonus + stockAdj;
           const grantThen = priceThen * grantQty;
