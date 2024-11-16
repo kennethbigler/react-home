@@ -12,16 +12,17 @@ const StockDisplay: React.FC<StockEntryProps> = ({
   stockEntries,
   openStockModal,
 }) => (
-  <>
+  <div>
     {Object.keys(stockEntries).map((stockKey, i) => (
       <Chip
         key={`stock-entry-${i}`}
         color="primary"
         label={`${stockKey}: ${usDollar.format(stockEntries[stockKey])}`}
         onClick={openStockModal(stockKey)}
+        sx={{ margin: 0.5 }}
       />
     ))}
-  </>
+  </div>
 );
 
 export default StockDisplay;

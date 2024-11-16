@@ -19,6 +19,7 @@ interface StockDialogProps {
   stock?: string;
   onClose: () => void;
   addStockEntry: (s: string, n: number) => void;
+  removeStockEntry: (s: string) => () => void;
 }
 
 const StockDialog: React.FC<StockDialogProps> = ({
@@ -27,6 +28,7 @@ const StockDialog: React.FC<StockDialogProps> = ({
   stock: exStock,
   onClose,
   addStockEntry,
+  removeStockEntry,
 }) => {
   const [price, setPrice] = React.useState(0);
   const [stock, setStock] = React.useState("");
@@ -78,6 +80,9 @@ const StockDialog: React.FC<StockDialogProps> = ({
         </div>
       </DialogContent>
       <DialogActions>
+        <Button onClick={removeStockEntry(stock)} color="error">
+          Delete
+        </Button>
         <Button onClick={onClose}>Cancel</Button>
         <Button type="submit" onClick={handleSubmit}>
           {exStock ? "Update" : "Add"}

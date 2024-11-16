@@ -43,8 +43,8 @@ export interface CompCalcEntry {
 }
 
 export interface PrevStock {
-  stock: number;
-  stockAdj: number;
+  cs: number;
+  csa: number;
   exp: DateObj;
 }
 export interface PrevStockAcc {
@@ -89,33 +89,26 @@ export const compCalcReadOnlyState = selector({
           stockTick,
         }) => {
           const priceNow = stockEntries[stockTick] || 0;
-          const curStock = (priceThen * grantQty) / grantDuration;
+          const cs = (priceThen * grantQty) / grantDuration;
           let stock = 0;
           let stockAdj = 0;
 
-          if (curStock > 0) {
-            const curStockAdj = (priceNow * grantQty) / grantDuration;
-            const exp = dateHelper(entryDate);
-            exp.year += grantDuration;
+          const csa = (priceNow * grantQty) / grantDuration;
+          const exp = dateHelper(entryDate);
+          exp.year += grantDuration;
 
-            const newEntry = {
-              stock: curStock,
-              stockAdj: curStockAdj,
-              exp,
-            };
-
-            if (prevStockAcc[stockTick]) {
-              prevStockAcc[stockTick].push(newEntry);
-            } else {
-              prevStockAcc[stockTick] = [newEntry];
-            }
-            prevStockAcc[stockTick].forEach((s) => {
-              if (dateHelper(entryDate).diff(s.exp, "days") < 0) {
-                stock += s.stock;
-                stockAdj += s.stockAdj;
-              }
-            });
+          if (!prevStockAcc[stockTick]) {
+            prevStockAcc[stockTick] = [];
           }
+          if (cs > 0) {
+            prevStockAcc[stockTick].push({ cs, csa, exp });
+          }
+          prevStockAcc[stockTick].forEach((s) => {
+            if (dateHelper(entryDate).diff(s.exp, "days") < 0) {
+              stock += s.cs;
+              stockAdj += s.csa;
+            }
+          });
 
           const total = salary + bonus + stock;
           const totalAdj = salary + bonus + stockAdj;
@@ -138,15 +131,42 @@ export const compCalcReadOnlyState = selector({
         const netDiff =
           i === 0 ? 0 : totalAdj - compCalcEntriesNoNet[i - 1].totalAdj;
 
-        return {
-          totalAdj,
-          netDiff,
-          ...rest,
-        };
+        return { totalAdj, netDiff, ...rest };
       },
     );
 
     return compCalcEntries;
+  },
+});
+
+interface compChartEntry {
+  name: string;
+  data: number[];
+}
+
+const STOCK = 0;
+const BONUS = 1;
+const SALARY = 2;
+
+export const compChartReadOnlyState = selector({
+  key: "compChartReadOnlyState",
+  get: ({ get }) => {
+    // access state
+    const compCalcEntries = get(compCalcReadOnlyState);
+    const compEntries = get(compCalcAtom);
+    const compChartData: compChartEntry[] = [
+      { name: "Stock", data: [] },
+      { name: "Bonus", data: [] },
+      { name: "Salary", data: [] },
+    ];
+
+    compEntries.forEach((cEntry, i) => {
+      compChartData[STOCK].data.push(compCalcEntries[i].stockAdj);
+      compChartData[BONUS].data.push(cEntry.bonus);
+      compChartData[SALARY].data.push(cEntry.salary);
+    });
+
+    return compChartData;
   },
 });
 

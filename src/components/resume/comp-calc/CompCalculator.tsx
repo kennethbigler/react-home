@@ -11,6 +11,7 @@ import CompEntryDialog from "./CompEntryDialog";
 import StockDialog from "./StockDialog";
 import stockAtom from "../../../recoil/stock-atom";
 import StockDisplay from "./StockDisplay";
+import CompChart from "./CompGraph";
 
 const CompCalculator = () => {
   const [compEntries, setCompEntries] = useRecoilState(compCalcState);
@@ -61,12 +62,22 @@ const CompCalculator = () => {
     closeStockModal();
   };
 
+  const removeStockEntry = (stock: string) => () => {
+    const newStockEntries = { ...stockEntries };
+    delete newStockEntries[stock];
+    setStockEntries(newStockEntries);
+    closeStockModal();
+  };
+
   return (
     <>
       <Typography variant="h2" component="h1">
         Comp Calculator
       </Typography>
-      <div className="flex-container">
+      <div
+        className="flex-container"
+        style={{ marginTop: 10, marginBottom: 10 }}
+      >
         <StockDisplay
           stockEntries={stockEntries}
           openStockModal={openEditStock}
@@ -76,6 +87,7 @@ const CompCalculator = () => {
           <Button onClick={openNewEntry}>+ Entry</Button>
         </div>
       </div>
+      <CompChart />
       <CompDisplay
         compEntries={compEntries}
         compCalcEntries={compCalcEntries}
@@ -88,6 +100,7 @@ const CompCalculator = () => {
         stock={editStockTick}
         onClose={closeStockModal}
         addStockEntry={addStockEntry}
+        removeStockEntry={removeStockEntry}
       />
       <CompEntryDialog
         open={openEntry}
