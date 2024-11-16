@@ -92,7 +92,10 @@ const CompCalculator = () => {
       {compEntries.length > 0 ? (
         <Grid container>
           <Grid size={{ xs: 12, md: 6, lg: 8, xl: 9 }}>
-            <CompChart />
+            <CompChart
+              compCalcEntries={compCalcEntries}
+              compEntries={compEntries}
+            />
           </Grid>
           <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
             <BreakdownChart
@@ -107,7 +110,7 @@ const CompCalculator = () => {
         compEntries={compEntries}
         compCalcEntries={compCalcEntries}
         stockEntries={stockEntries}
-        openEntryModal={openEditEntry}
+        onClick={openEditEntry}
       />
       <StockDialog
         open={openStock}

@@ -60,7 +60,7 @@ const StockDialog: React.FC<StockDialogProps> = ({
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Add New Stock Entry</DialogTitle>
+      <DialogTitle>{exStock ? "Edit" : "New"} Stock Entry</DialogTitle>
       <DialogContent>
         <div style={{ marginTop: 5 }}>
           <TextField

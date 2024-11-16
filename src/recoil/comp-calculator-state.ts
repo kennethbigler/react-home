@@ -42,16 +42,16 @@ export interface CompCalcEntry {
   grantNow: number;
 }
 
-export interface PrevStock {
+interface PrevStock {
   cs: number;
   csa: number;
   exp: DateObj;
 }
-export interface PrevStockAcc {
+interface PrevStockAcc {
   [key: string]: PrevStock[];
 }
 
-export type CompCalcState = CompEntry[];
+type CompCalcState = CompEntry[];
 
 export const compCalcAtom = atom({
   key: "compCalcAtom",
@@ -136,28 +136,6 @@ export const compCalcReadOnlyState = selector({
     );
 
     return compCalcEntries;
-  },
-});
-
-const STOCK = 0;
-const BONUS = 1;
-const SALARY = 2;
-
-export const compChartReadOnlyState = selector({
-  key: "compChartReadOnlyState",
-  get: ({ get }) => {
-    // access state
-    const compCalcEntries = get(compCalcReadOnlyState);
-    const compEntries = get(compCalcAtom);
-    const compChartData: number[][] = [[], [], []];
-
-    compEntries.forEach((cEntry, i) => {
-      compChartData[STOCK].push(compCalcEntries[i].stockAdj);
-      compChartData[BONUS].push(cEntry.bonus);
-      compChartData[SALARY].push(cEntry.salary);
-    });
-
-    return compChartData;
   },
 });
 
