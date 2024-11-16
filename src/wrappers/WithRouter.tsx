@@ -4,7 +4,7 @@ import Routes from "../components/Routes";
 
 /** App class that wraps higher level components of the application */
 const WithRouter: React.FC = () => (
-  <HashRouter>
+  <HashRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
     <Routes />
   </HashRouter>
 );

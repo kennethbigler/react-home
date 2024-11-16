@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Menu from "./Menu";
 import Header, { NavProps } from "../common/header/Header";
 import LoadingSpinner from "../common/loading-spinner";
@@ -39,14 +39,15 @@ const ResumeRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
     </Header>
     <React.Suspense fallback={<LoadingSpinner />}>
       <Routes>
-        <Route path="/*" element={<Summary />} />
-        <Route path="cars/*" element={<Cars />} />
-        <Route path="comp/*" element={<CompCalculator />} />
-        <Route path="education/*" element={<Education />} />
-        <Route path="presentations/*" element={<Presentations />} />
-        <Route path="resume/*" element={<Resume />} />
-        <Route path="travel/*" element={<TravelMap />} />
-        <Route path="work/*" element={<Work />} />
+        <Route path="" element={<Summary />} />
+        <Route path="cars" element={<Cars />} />
+        <Route path="comp" element={<CompCalculator />} />
+        <Route path="education" element={<Education />} />
+        <Route path="presentations" element={<Presentations />} />
+        <Route path="resume" element={<Resume />} />
+        <Route path="travel" element={<TravelMap />} />
+        <Route path="work" element={<Work />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </React.Suspense>
   </>
