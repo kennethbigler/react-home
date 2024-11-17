@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Menu from "./Menu";
 import Header, { NavProps } from "../common/header/Header";
 import LoadingSpinner from "../common/loading-spinner";
@@ -59,20 +59,21 @@ const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
     </Header>
     <React.Suspense fallback={<LoadingSpinner />}>
       <Routes>
-        <Route path="/*" element={<GameHome onItemClick={handleNav} />} />
-        <Route path="are-you-the-one/*" element={<AreYouTheOne />} />
-        <Route path="botc/*" element={<BotC />} />
-        <Route path="blackjack/*" element={<BlackJack />} />
-        <Route path="connect4/*" element={<Connect4 />} />
-        <Route path="deal/*" element={<DealOrNoDeal />} />
-        <Route path="family-feud/*" element={<FamilyFeud />} />
-        <Route path="murder/*" element={<MurderMystery />} />
-        <Route path="poker/*" element={<Poker />} />
-        <Route path="slots/*" element={<Slots />} />
-        <Route path="tictactoe/*" element={<TicTacToe />} />
-        <Route path="types/*" element={<TypeChecker />} />
-        <Route path="werewolf/*" element={<Werewolf />} />
-        <Route path="yahtzee/*" element={<Yahtzee />} />
+        <Route path="" element={<GameHome onItemClick={handleNav} />} />
+        <Route path="are-you-the-one" element={<AreYouTheOne />} />
+        <Route path="botc" element={<BotC />} />
+        <Route path="blackjack" element={<BlackJack />} />
+        <Route path="connect4" element={<Connect4 />} />
+        <Route path="deal" element={<DealOrNoDeal />} />
+        <Route path="family-feud" element={<FamilyFeud />} />
+        <Route path="murder" element={<MurderMystery />} />
+        <Route path="poker" element={<Poker />} />
+        <Route path="slots" element={<Slots />} />
+        <Route path="tictactoe" element={<TicTacToe />} />
+        <Route path="types" element={<TypeChecker />} />
+        <Route path="werewolf" element={<Werewolf />} />
+        <Route path="yahtzee" element={<Yahtzee />} />
+        <Route path="*" element={<Navigate to="/games" />} />
       </Routes>
     </React.Suspense>
   </>
