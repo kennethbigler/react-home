@@ -29,7 +29,9 @@ const CompChart: React.FC<CompChartProps> = ({
 
   const compChartData: number[][] = [[], [], []];
   compEntries.forEach((cEntry, i) => {
-    compChartData[STOCK].push(compCalcEntries[i].stockAdj);
+    compChartData[STOCK].push(
+      compCalcEntries[i].stockAdj || compCalcEntries[i].stock,
+    );
     compChartData[BONUS].push(cEntry.bonus);
     compChartData[SALARY].push(cEntry.salary);
   });

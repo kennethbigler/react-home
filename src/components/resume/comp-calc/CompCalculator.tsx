@@ -101,7 +101,10 @@ const CompCalculator = () => {
             <BreakdownChart
               salary={compEntries[compEntries.length - 1].salary}
               bonus={compEntries[compEntries.length - 1].bonus}
-              stock={compCalcEntries[compCalcEntries.length - 1].stockAdj}
+              stock={
+                compCalcEntries[compCalcEntries.length - 1].stockAdj ||
+                compCalcEntries[compCalcEntries.length - 1].stock
+              }
             />
           </Grid>
         </Grid>
