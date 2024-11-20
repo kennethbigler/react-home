@@ -8,6 +8,7 @@ import {
   wolves,
 } from "../../../constants/werewolf";
 import WerewolfPanel from "./WerewolfPanel";
+import ExpandableCard from "../../common/expandable-card";
 
 const Werewolf: React.FC = React.memo(() => {
   const [expanded, setExpanded] = React.useState("");
@@ -72,7 +73,7 @@ const Werewolf: React.FC = React.memo(() => {
           description,
           value,
           count,
-          expandedKey: `${i}`,
+          expandedKey: `${name}-${i}`,
           handleChange,
           handleStar,
         }}
@@ -96,21 +97,9 @@ const Werewolf: React.FC = React.memo(() => {
           sx={{ position: "fixed", bottom: 15, right: 15, zIndex: 1 }}
         />
       )}
-      <hr aria-hidden />
-      <Typography variant="h3" component="h2" gutterBottom>
-        Villagers
-      </Typography>
-      {villagerPanels}
-      <hr aria-hidden />
-      <Typography variant="h3" component="h2" gutterBottom>
-        Outsiders
-      </Typography>
-      {outsiderPanels}
-      <hr aria-hidden />
-      <Typography variant="h3" component="h2" gutterBottom>
-        Wolves
-      </Typography>
-      {wolfPanels}
+      <ExpandableCard title="Villagers">{villagerPanels}</ExpandableCard>
+      <ExpandableCard title="Outsiders">{outsiderPanels}</ExpandableCard>
+      <ExpandableCard title="Wolves">{wolfPanels}</ExpandableCard>
     </>
   );
 });

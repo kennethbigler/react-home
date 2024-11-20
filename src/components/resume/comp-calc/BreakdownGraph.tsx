@@ -45,9 +45,9 @@ const BreakdownChart: React.FC<BreakdownChartProps> = ({
     series: [
       {
         data: [
-          { name: "Salary", y: salary },
-          { name: "Bonus", y: bonus },
           { name: "Stock", y: stock },
+          { name: "Bonus", y: bonus },
+          { name: "Salary", y: salary },
         ],
       },
     ],
