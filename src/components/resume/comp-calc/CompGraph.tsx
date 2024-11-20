@@ -53,9 +53,9 @@ const CompChart: React.FC<CompChartProps> = ({
       },
     },
     series: [
-      { name: "Stock", data: [...compChartData[0]] },
-      { name: "Bonus", data: [...compChartData[1]] },
-      { name: "Salary", data: [...compChartData[2]] },
+      { name: "Stock", data: [...compChartData[STOCK]] },
+      { name: "Bonus", data: [...compChartData[BONUS]] },
+      { name: "Salary", data: [...compChartData[SALARY]] },
     ],
   };
 

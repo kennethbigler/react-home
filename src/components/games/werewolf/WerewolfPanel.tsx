@@ -3,8 +3,9 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid2";
 import Rating from "@mui/material/Rating";
+import Typography from "@mui/material/Typography";
 
 interface WerewolfPanelProps {
   expanded?: string;
@@ -42,28 +43,30 @@ const WerewolfPanel: React.FC<WerewolfPanelProps> = React.memo(
     } = props;
 
     return (
-      <Accordion
-        expanded={expanded === expandedKey}
-        onChange={handleChange(expandedKey)}
-      >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Rating
-            max={count || 1}
-            sx={{
-              flexWrap: "wrap",
-              minWidth: Math.min(24 * (count || 1), 24 * 7),
-            }}
-            onChange={(_e, numStars) =>
-              handleStar(numStars ? value : -value, numStars || 0, name)
-            }
-          />
-          <div style={containerStyles}>
-            <Typography>{name}</Typography>
-            <Typography>Cost: {value}</Typography>
-          </div>
-        </AccordionSummary>
-        <AccordionDetails>{description}</AccordionDetails>
-      </Accordion>
+      <Grid size={12}>
+        <Accordion
+          expanded={expanded === expandedKey}
+          onChange={handleChange(expandedKey)}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Rating
+              max={count || 1}
+              sx={{
+                flexWrap: "wrap",
+                minWidth: Math.min(24 * (count || 1), 24 * 7),
+              }}
+              onChange={(_e, numStars) =>
+                handleStar(numStars ? value : -value, numStars || 0, name)
+              }
+            />
+            <div style={containerStyles}>
+              <Typography>{name}</Typography>
+              <Typography>Cost: {value}</Typography>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails>{description}</AccordionDetails>
+        </Accordion>
+      </Grid>
     );
   },
 );

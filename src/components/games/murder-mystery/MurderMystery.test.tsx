@@ -34,9 +34,9 @@ describe("games | murder-mystery", () => {
       screen.getByText("The Professional Poker Player"),
     ).toBeInTheDocument();
 
-    expect(screen.getAllByText("Required")).toHaveLength(6);
-    expect(screen.getAllByText("Recommended")).toHaveLength(3);
-    expect(screen.getAllByText("Optional")).toHaveLength(11);
+    expect(screen.getByText("Required Roles")).toBeInTheDocument();
+    expect(screen.getByText("Recommended Roles")).toBeInTheDocument();
+    expect(screen.getByText("Optional Roles")).toBeInTheDocument();
 
     expect(screen.getAllByText("Gender")).toHaveLength(20);
     expect(screen.getAllByText("Description")).toHaveLength(20);
@@ -51,17 +51,17 @@ describe("games | murder-mystery", () => {
   it("handles accordion open and close", () => {
     render(<MurderMystery />);
 
-    expect(screen.getAllByRole("button")[0]).toHaveAttribute(
+    expect(screen.getAllByRole("button")[2]).toHaveAttribute(
       "aria-expanded",
       "false",
     );
-    fireEvent.click(screen.getAllByRole("button")[0]);
-    expect(screen.getAllByRole("button")[0]).toHaveAttribute(
+    fireEvent.click(screen.getAllByRole("button")[2]);
+    expect(screen.getAllByRole("button")[2]).toHaveAttribute(
       "aria-expanded",
       "true",
     );
-    fireEvent.click(screen.getAllByRole("button")[0]);
-    expect(screen.getAllByRole("button")[0]).toHaveAttribute(
+    fireEvent.click(screen.getAllByRole("button")[2]);
+    expect(screen.getAllByRole("button")[2]).toHaveAttribute(
       "aria-expanded",
       "false",
     );

@@ -13,17 +13,17 @@ describe("games | werewolf", () => {
   it("handles accordion open and close", () => {
     render(<Werewolf />);
 
-    expect(screen.getAllByRole("button")[0]).toHaveAttribute(
+    expect(screen.getAllByRole("button")[1]).toHaveAttribute(
       "aria-expanded",
       "false",
     );
-    fireEvent.click(screen.getAllByRole("button")[0]);
-    expect(screen.getAllByRole("button")[0]).toHaveAttribute(
+    fireEvent.click(screen.getAllByRole("button")[1]);
+    expect(screen.getAllByRole("button")[1]).toHaveAttribute(
       "aria-expanded",
       "true",
     );
-    fireEvent.click(screen.getAllByRole("button")[0]);
-    expect(screen.getAllByRole("button")[0]).toHaveAttribute(
+    fireEvent.click(screen.getAllByRole("button")[1]);
+    expect(screen.getAllByRole("button")[1]).toHaveAttribute(
       "aria-expanded",
       "false",
     );

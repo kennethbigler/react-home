@@ -1,5 +1,5 @@
-const arr2br = (strs: string[]) =>
-  strs.map((str, i) => (
+const arr2br = (strings?: string[]) =>
+  strings?.map((str, i) => (
     <span key={i}>
       {i !== 0 && <br />}
       {str}

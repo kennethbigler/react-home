@@ -4,7 +4,7 @@ enum Gender {
   FEMALE = "F",
   NEUTRAL = "M/F",
 }
-enum Importance {
+export enum Importance {
   I1 = "Required",
   I2 = "Recommended",
   I3 = "Optional",
@@ -13,9 +13,9 @@ interface MurderRole {
   role: string;
   gender: Gender;
   importance: Importance;
-  description: string[];
-  hint: string[];
-  clue: string[];
+  description?: string[];
+  hint?: string[];
+  clue?: string[];
 }
 
 // --------------------     Globals     -------------------- //
@@ -468,8 +468,7 @@ poker = {
   },
 };
 
-// --------------------     Exports     -------------------- //
-export default [
+const roles: MurderRole[] = [
   owner,
   reporter,
   gunNut,
@@ -490,4 +489,7 @@ export default [
   librarian,
   author,
   poker,
-] as MurderRole[];
+];
+
+// --------------------     Exports     -------------------- //
+export default roles;
