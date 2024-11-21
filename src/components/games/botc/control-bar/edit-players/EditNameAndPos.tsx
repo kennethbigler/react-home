@@ -15,6 +15,9 @@ interface EditNameAndPosProps {
   moveDown: () => void;
 }
 
+/** EditPlayers -> ScriptSelect
+ *              -> ScriptControls
+ *              -> players.map(EditNameAndPos) */
 const EditNameAndPos = ({
   first,
   last,

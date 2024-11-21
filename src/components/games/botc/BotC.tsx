@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useRecoilState } from "recoil";
 import { SelectChangeEvent } from "@mui/material";
-import Controls from "./header/Controls";
+import ControlBar from "./control-bar/ControlBar";
 import botcAtom, {
   BotCPlayer,
   BotCPlayerStatus,
@@ -10,7 +10,7 @@ import botcAtom, {
   newTracker,
 } from "../../../recoil/botc-atom";
 import PlayerNotes from "./player-notes/PlayerNotes";
-import Header from "./header/Header";
+import Header from "./Header";
 
 const BotC: React.FC = React.memo(() => {
   const [
@@ -231,12 +231,12 @@ const BotC: React.FC = React.memo(() => {
   return (
     <>
       <Header />
-      <Controls
+      <ControlBar
         // Shared
         botcPlayers={botcPlayers}
         numPlayers={numPlayers}
         numTravelers={numTravelers}
-        // Controls
+        // ControlBar
         newBotCGame={newBotCGame}
         // Tracker
         round={round}
@@ -254,10 +254,12 @@ const BotC: React.FC = React.memo(() => {
         updateText={updateText}
       />
       <PlayerNotes
+        // Shared
         botcPlayers={botcPlayers}
         isText={isText}
-        numPlayers={numPlayers}
-        numTravelers={numTravelers}
+        // PlayerNotes
+        playerCount={numPlayers + numTravelers}
+        // CharacterSheet
         script={script}
         updateNotes={updateNotes}
         updateRoles={updateRoles}

@@ -1,7 +1,4 @@
 import Grid from "@mui/material/Grid2";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import InfoPopup from "../../../../common/info-popover/InfoPopup";
 import Roles from "./Roles";
@@ -10,25 +7,32 @@ import {
   BotCPlayerStatus,
   BotCRole,
 } from "../../../../../recoil/botc-atom";
+import EmojiNotes from "./EmojiNotes";
 
 interface CharacterSheetProps {
+  // Shared
+  player: BotCPlayer;
+  // Roles
   isText: boolean;
   script: number;
-  player: BotCPlayer;
-  updateNotes: (e: React.FocusEvent<HTMLInputElement>) => void;
-  updateStats: (
+  onRoleClick: (role: BotCRole, selected: boolean) => () => void;
+  // CharacterSheet
+  onNotesBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+  // EmojiNotes
+  onStatsToggle: (
     key: BotCPlayerStatus,
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  updateRoles: (role: BotCRole, selected: boolean) => () => void;
 }
 
+/** CharacterSheet -> EmojiNotes
+ *                 -> Roles -> RoleSelection */
 const CharacterSheet = ({
   isText,
   script,
   player: { name, notes, liar, used, exec, kill, roles },
-  updateNotes,
-  updateStats,
-  updateRoles,
+  onNotesBlur,
+  onRoleClick,
+  onStatsToggle,
 }: CharacterSheetProps) => (
   <InfoPopup buttonText={name} title={`Roles - ${name}`}>
     <Grid container spacing={1}>
@@ -38,36 +42,23 @@ const CharacterSheet = ({
           label="Notes"
           variant="standard"
           defaultValue={notes}
-          onBlur={updateNotes}
+          onBlur={onNotesBlur}
         />
       </Grid>
 
-      <Grid size={12}>
-        <FormGroup row sx={{ display: "block", textAlign: "center" }}>
-          <FormControlLabel
-            control={<Checkbox checked={liar} onChange={updateStats("liar")} />}
-            label="😈"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={used} onChange={updateStats("used")} />}
-            label="❌"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={kill} onChange={updateStats("kill")} />}
-            label="💀"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={exec} onChange={updateStats("exec")} />}
-            label="✋"
-          />
-        </FormGroup>
-      </Grid>
+      <EmojiNotes
+        liar={liar}
+        used={used}
+        kill={kill}
+        exec={exec}
+        onToggle={onStatsToggle}
+      />
 
       <Roles
         isText={isText}
         script={script}
         roleKey={roles.reduce((acc, r) => ({ ...acc, [r.name]: true }), {})}
-        updateRoles={updateRoles}
+        onRoleClick={onRoleClick}
       />
     </Grid>
   </InfoPopup>

@@ -14,14 +14,16 @@ interface RolesProps {
   isText: boolean;
   script: number;
   roleKey: RoleKey;
-  updateRoles?: (role: BotCRole, selected: boolean) => () => void;
+  onRoleClick?: (role: BotCRole, selected: boolean) => () => void;
 }
 interface ActiveBotCScript {
   active: BotCScript;
   travelers: BotCRole[];
 }
 
-const Roles = ({ isText, script, roleKey, updateRoles }: RolesProps) => {
+/** CharacterSheet -> EmojiNotes
+ *                 -> Roles -> RoleSelection */
+const Roles = ({ isText, script, roleKey, onRoleClick }: RolesProps) => {
   let scripts: ActiveBotCScript = { active: other, travelers: [] };
   let isOtherScript = false;
   switch (script) {
@@ -61,7 +63,7 @@ const Roles = ({ isText, script, roleKey, updateRoles }: RolesProps) => {
         isText={isText}
         roleKey={roleKey}
         roles={scripts.active.townsfolk}
-        updateRoles={updateRoles}
+        onRoleClick={onRoleClick}
       />
       <RoleSection
         title="Outsiders"
@@ -69,7 +71,7 @@ const Roles = ({ isText, script, roleKey, updateRoles }: RolesProps) => {
         isText={isText}
         roleKey={roleKey}
         roles={scripts.active.outsiders}
-        updateRoles={updateRoles}
+        onRoleClick={onRoleClick}
       />
       <RoleSection
         title="Minions"
@@ -77,7 +79,7 @@ const Roles = ({ isText, script, roleKey, updateRoles }: RolesProps) => {
         isText={isText}
         roleKey={roleKey}
         roles={scripts.active.minions}
-        updateRoles={updateRoles}
+        onRoleClick={onRoleClick}
       />
       <RoleSection
         title="Demons"
@@ -85,7 +87,7 @@ const Roles = ({ isText, script, roleKey, updateRoles }: RolesProps) => {
         isText={isText}
         roleKey={roleKey}
         roles={scripts.active.demons}
-        updateRoles={updateRoles}
+        onRoleClick={onRoleClick}
       />
       {scripts.active.travelers.length > 0 && (
         <RoleSection
@@ -94,7 +96,7 @@ const Roles = ({ isText, script, roleKey, updateRoles }: RolesProps) => {
           isText={isText}
           roleKey={roleKey}
           roles={scripts.active.travelers}
-          updateRoles={updateRoles}
+          onRoleClick={onRoleClick}
         />
       )}
       {scripts.travelers.length > 0 && (
@@ -104,7 +106,7 @@ const Roles = ({ isText, script, roleKey, updateRoles }: RolesProps) => {
           isText={isText}
           roleKey={roleKey}
           roles={scripts.travelers}
-          updateRoles={updateRoles}
+          onRoleClick={onRoleClick}
         />
       )}
     </>

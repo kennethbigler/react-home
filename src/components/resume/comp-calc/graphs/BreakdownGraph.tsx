@@ -3,7 +3,7 @@ import * as Highcharts from "highcharts";
 import highchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import { useRecoilState } from "recoil";
-import themeAtom from "../../../recoil/theme-atom";
+import themeAtom from "../../../../recoil/theme-atom";
 
 highchartsAccessibility(Highcharts); // initiate accessibility module
 

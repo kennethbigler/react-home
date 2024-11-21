@@ -12,12 +12,12 @@ import { BotCPlayer } from "../../../../recoil/botc-atom";
 import { playerDist } from "../../../../constants/botc";
 import Tracker from "./Tracker";
 
-interface ControlsProps {
+interface ControlBarProps {
   // Shared
   botcPlayers: BotCPlayer[];
   numPlayers: number;
   numTravelers: number;
-  // Controls
+  // ControlBar
   newBotCGame: () => void;
   // Tracker
   round: number;
@@ -35,12 +35,12 @@ interface ControlsProps {
   updateText: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Controls = ({
+const ControlBar = ({
   // Shared
   botcPlayers,
   numPlayers,
   numTravelers,
-  // Controls
+  // ControlBar
   newBotCGame,
   // Tracker
   round,
@@ -56,7 +56,7 @@ const Controls = ({
   updatePlayerOrder,
   updateScript,
   updateText,
-}: ControlsProps) => {
+}: ControlBarProps) => {
   const [hasToast, setHasToast] = React.useState(false);
 
   /** close the toast message */
@@ -82,8 +82,8 @@ const Controls = ({
           end={numPlayers + numTravelers}
           round={round}
           tracker={tracker}
-          updateRound={updateRound}
-          updateTracker={updateTracker}
+          onRoundClick={updateRound}
+          onTrackClick={updateTracker}
         />
       </InfoPopup>
 
@@ -113,4 +113,4 @@ const Controls = ({
   );
 };
 
-export default Controls;
+export default ControlBar;

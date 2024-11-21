@@ -6,7 +6,7 @@ import { SelectChangeEvent } from "@mui/material";
 
 interface ScriptSelectProps {
   script: number;
-  updateScript: (i: SelectChangeEvent<number>) => void;
+  onChange: (i: SelectChangeEvent<number>) => void;
 }
 
 const menuItems = [
@@ -18,7 +18,10 @@ const menuItems = [
   "Other",
 ];
 
-const ScriptSelect = ({ script, updateScript }: ScriptSelectProps) => (
+/** EditPlayers -> ScriptSelect
+ *              -> ScriptControls
+ *              -> players.map(EditNameAndPos) */
+const ScriptSelect = ({ script, onChange }: ScriptSelectProps) => (
   <FormControl
     fullWidth
     sx={{ marginTop: "5px", marginRight: "10px" }}
@@ -29,7 +32,7 @@ const ScriptSelect = ({ script, updateScript }: ScriptSelectProps) => (
       label="Script"
       labelId="demo-simple-select-label"
       value={script}
-      onChange={updateScript}
+      onChange={onChange}
     >
       {menuItems.map((item, i) => (
         <MenuItem key={i} value={i}>
