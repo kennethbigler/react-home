@@ -1,7 +1,4 @@
 import Grid from "@mui/material/Grid2";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import InfoPopup from "../../../../common/info-popover/InfoPopup";
 import Roles from "./Roles";
@@ -10,6 +7,7 @@ import {
   BotCPlayerStatus,
   BotCRole,
 } from "../../../../../recoil/botc-atom";
+import EmojiNotes from "./EmojiNotes";
 
 interface CharacterSheetProps {
   isText: boolean;
@@ -42,26 +40,13 @@ const CharacterSheet = ({
         />
       </Grid>
 
-      <Grid size={12}>
-        <FormGroup row sx={{ display: "block", textAlign: "center" }}>
-          <FormControlLabel
-            control={<Checkbox checked={liar} onChange={updateStats("liar")} />}
-            label="😈"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={used} onChange={updateStats("used")} />}
-            label="❌"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={kill} onChange={updateStats("kill")} />}
-            label="💀"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={exec} onChange={updateStats("exec")} />}
-            label="✋"
-          />
-        </FormGroup>
-      </Grid>
+      <EmojiNotes
+        liar={liar}
+        used={used}
+        kill={kill}
+        exec={exec}
+        updateStats={updateStats}
+      />
 
       <Roles
         isText={isText}
