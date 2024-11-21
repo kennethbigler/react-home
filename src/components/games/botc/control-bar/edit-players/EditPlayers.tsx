@@ -80,18 +80,19 @@ const EditPlayers = ({
       />
     </Grid>
 
-    {botcPlayers.map((player, i) =>
-      i < numPlayers + numTravelers ? (
-        <EditNameAndPos
-          key={`player${i}-${player.name}`}
-          first={i === 0}
-          last={i === numPlayers + numTravelers - 1}
-          name={player.name}
-          moveUp={updatePlayerOrder(i, -1)}
-          moveDown={updatePlayerOrder(i, 1)}
-          onBlur={updateNames(i)}
-        />
-      ) : null,
+    {botcPlayers.map(
+      (player, i) =>
+        i < numPlayers + numTravelers && (
+          <EditNameAndPos
+            key={`player${i}-${player.name}`}
+            first={i === 0}
+            last={i === numPlayers + numTravelers - 1}
+            name={player.name}
+            moveUp={updatePlayerOrder(i, -1)}
+            moveDown={updatePlayerOrder(i, 1)}
+            onBlur={updateNames(i)}
+          />
+        ),
     )}
   </Grid>
 );

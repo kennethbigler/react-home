@@ -78,7 +78,7 @@ const CompDisplay: React.FC<CompEntryProps> = ({
                       <Typography>*Net: {usDollar.format(netDiff)}</Typography>
                     </CardContent>
                   </Grid>
-                  {grantQty > 0 ? (
+                  {grantQty > 0 && (
                     <Grid size={6}>
                       <CardHeader title="Stock" />
                       <CardContent>
@@ -103,7 +103,7 @@ const CompDisplay: React.FC<CompEntryProps> = ({
                         </Typography>
                       </CardContent>
                     </Grid>
-                  ) : null}
+                  )}
                 </Grid>
               </CardActionArea>
             </Card>

@@ -40,11 +40,11 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
               ? `You Won ${getMoneyText(isOver)}`
               : `Number of Cases to Open: ${casesToOpen}`)}
         </Typography>
-        {isOver ? (
+        {isOver && (
           <Button onClick={newGame} variant="contained">
             New Game
           </Button>
-        ) : null}
+        )}
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <Typography variant="h3" align="right" gutterBottom>

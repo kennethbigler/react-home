@@ -10,11 +10,15 @@ import {
 import EmojiNotes from "./EmojiNotes";
 
 interface CharacterSheetProps {
+  // Shared
+  player: BotCPlayer;
+  // Roles
   isText: boolean;
   script: number;
-  player: BotCPlayer;
-  onNotesBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onRoleClick: (role: BotCRole, selected: boolean) => () => void;
+  // CharacterSheet
+  onNotesBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+  // EmojiNotes
   onStatsToggle: (
     key: BotCPlayerStatus,
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;

@@ -10,10 +10,12 @@ import {
 import CharacterSheet from "./character-sheet/CharacterSheet";
 
 interface PlayerNotesProps {
+  // Shared
   botcPlayers: BotCPlayer[];
   isText: boolean;
-  numPlayers: number;
-  numTravelers: number;
+  // PlayerNotes
+  playerCount: number;
+  // CharacterSheet
   script: number;
   updateNotes: (i: number) => (e: React.FocusEvent<HTMLInputElement>) => void;
   updateRoles: (i: number) => (role: BotCRole, selected: boolean) => () => void;
@@ -32,54 +34,54 @@ const chipStyle = {
 const PlayerNotes = ({
   botcPlayers,
   isText,
-  numPlayers,
-  numTravelers,
+  playerCount,
   script,
   updateNotes,
   updateRoles,
   updateStats,
 }: PlayerNotesProps) => (
   <Grid container spacing={2}>
-    {botcPlayers.map((player, i) =>
-      i < numPlayers + numTravelers ? (
-        <Grid
-          size={{ xs: 6, sm: 4, lg: 3, xl: 2 }}
-          key={`player${i}-${player.name}`}
-        >
-          <Card sx={{ padding: "5px", textAlign: "center" }}>
-            <CharacterSheet
-              isText={isText}
-              script={script}
-              player={player}
-              onNotesBlur={updateNotes(i)}
-              onRoleClick={updateRoles(i)}
-              onStatsToggle={updateStats(i)}
-            />
-
-            <Typography>
-              {player.liar && "😈"}
-              {player.used && "❌"}
-              {player.kill && "💀"}
-              {player.exec && "✋"}
-              {(player.liar || player.exec || player.kill || player.used) &&
-                player.notes &&
-                " - "}
-              {player.notes}
-            </Typography>
-
-            {player.roles.map((role) => (
-              <Chip
-                key={role.name}
-                title={role.name}
-                label={isText ? role.name : role.icon}
-                color={role.alignment}
-                onDelete={updateRoles(i)(role, true)}
-                sx={chipStyle}
+    {botcPlayers.map(
+      (player, i) =>
+        i < playerCount && (
+          <Grid
+            size={{ xs: 6, sm: 4, lg: 3, xl: 2 }}
+            key={`player${i}-${player.name}`}
+          >
+            <Card sx={{ padding: "5px", textAlign: "center" }}>
+              <CharacterSheet
+                isText={isText}
+                script={script}
+                player={player}
+                onNotesBlur={updateNotes(i)}
+                onRoleClick={updateRoles(i)}
+                onStatsToggle={updateStats(i)}
               />
-            ))}
-          </Card>
-        </Grid>
-      ) : null,
+
+              <Typography>
+                {player.liar && "😈"}
+                {player.used && "❌"}
+                {player.kill && "💀"}
+                {player.exec && "✋"}
+                {(player.liar || player.exec || player.kill || player.used) &&
+                  player.notes &&
+                  " - "}
+                {player.notes}
+              </Typography>
+
+              {player.roles.map((role) => (
+                <Chip
+                  key={role.name}
+                  title={role.name}
+                  label={isText ? role.name : role.icon}
+                  color={role.alignment}
+                  onDelete={updateRoles(i)(role, true)}
+                  sx={chipStyle}
+                />
+              ))}
+            </Card>
+          </Grid>
+        ),
     )}
   </Grid>
 );

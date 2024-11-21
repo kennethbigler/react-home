@@ -254,10 +254,12 @@ const BotC: React.FC = React.memo(() => {
         updateText={updateText}
       />
       <PlayerNotes
+        // Shared
         botcPlayers={botcPlayers}
         isText={isText}
-        numPlayers={numPlayers}
-        numTravelers={numTravelers}
+        // PlayerNotes
+        playerCount={numPlayers + numTravelers}
+        // CharacterSheet
         script={script}
         updateNotes={updateNotes}
         updateRoles={updateRoles}
