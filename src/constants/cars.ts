@@ -57,7 +57,7 @@ const pastFamilyCars = [
     inverted: true,
 
     owned: "1997 - 2010",
-    story: `My Mother had a ${voyager}.`,
+    story: `My Mother's ${voyager}.`,
     src: voyager97,
     transmission: "Automatic",
 
@@ -66,28 +66,6 @@ const pastFamilyCars = [
     MPG: 21,
     torque: 203,
     weight: 3696,
-  },
-  {
-    color: grey[400],
-    start: dateObj("2015-02"),
-    end: dateObj("2015-06"),
-    car: "Impala",
-    short: "Impla",
-    char: "I",
-    nickname: "Irene",
-    title: impala,
-    inverted: true,
-
-    owned: "2010 - 2015",
-    story: `My parents held on to the ${impala} for 4 months for my brother.`,
-    src: impala10,
-    transmission: "Automatic",
-
-    displacement: 3.5,
-    horsepower: 211,
-    MPG: 22,
-    torque: 216,
-    weight: 3555,
   },
   {
     color: indigo[500],
@@ -99,7 +77,7 @@ const pastFamilyCars = [
     title: prius,
 
     owned: "2008 - 2016",
-    story: `I learned to drive with a permit on my Father's ${prius}.`,
+    story: `My Father's ${prius}. I learned to drive with my permit on this car.`,
     src: prius07,
     transmission: "Automatic",
 
@@ -120,7 +98,7 @@ const pastFamilyCars = [
     title: xj8l,
 
     owned: "2017 - 2021",
-    story: `My Family's ${xj8l}.`,
+    story: `My Grandpa's ${xj8l}. He gave it to our family for my Brother.`,
     src: xj8l05,
     transmission: "Automatic",
 
@@ -141,7 +119,7 @@ const pastFamilyCars = [
     title: mustangB,
 
     owned: "2020 - 2022",
-    story: `I shared a ${mustangB} with the Performance Pack 1 with my roommate!`,
+    story: `My Roommate's ${mustangB} with the Performance Pack 1.`,
     src: mustang20,
     transmission: "Manual",
 
@@ -253,7 +231,7 @@ const pastKensCars = [
     title: bonneville,
 
     owned: "2008 - 2010",
-    story: `I got my first car: a ${bonneville}. It was previously my grandfather's and I got it as my first car when I got my license.`,
+    story: `I got my first car: a ${bonneville}. It was previously my Grandfather's and I got it as my first car when I got my license.`,
     src: pontiac93,
     transmission: "Automatic",
 
@@ -266,7 +244,7 @@ const pastKensCars = [
   {
     color: grey[400],
     start: dateObj("2010-12"),
-    end: dateObj("2015-02"),
+    end: dateObj("2015-06"),
     car: "Impala",
     short: "Impla",
     char: "I",
@@ -298,7 +276,7 @@ const pastKensCars = [
     owned: "2015 - 2019",
     story:
       `I purchased my first vehicle, a new ${mustang} with the 50 Years Edition Package. I did some modifications to this car including: ` +
-      "Rear Window Louvers, GT350 start button, metal dead pedal, ergonomic parking break, Borla Ford Racing Sport Catback Exhaust, & Hurst automatic shift lever.",
+      "Rear Window Louvers, GT350 start button, metal pedals, ergonomic parking break, Borla Ford Racing Sport Catback Exhaust, & Hurst automatic shift lever.",
     src: mustang15,
     transmission: "Automatic",
 
@@ -373,28 +351,6 @@ const pastKensCars = [
     torque: 310,
     weight: 4499,
   },
-  {
-    color: yellow[500],
-    start: dateObj("2023-03"),
-    end: dateObj("2023-08"),
-    car: "Corvette",
-    short: "Vette",
-    char: "C",
-    nickname: "Camilla",
-    title: corvette,
-    inverted: true,
-
-    owned: "2023",
-    story: `I borrowed the corvette again for a few months.`,
-    src: corvette18,
-    transmission: "Manual",
-
-    displacement: 6.2,
-    horsepower: 650,
-    MPG: 18,
-    torque: 650,
-    weight: 3524,
-  },
 ];
 
 const currentKensCars = [
@@ -408,7 +364,7 @@ const currentKensCars = [
     title: grom,
 
     owned: "2022 - Present",
-    story: `motorcycle: ${grom}.`,
+    story: `I got my first motorcycle, a ${grom}.`,
     src: grom22,
     transmission: "Sequential",
 
@@ -430,7 +386,7 @@ const currentKensCars = [
     inverted: true,
 
     owned: "2023 - Present",
-    story: `I bought a plug-in hybrid Cayenne as a bit of an upgrade to my old Bronco.`,
+    story: `I bought a plug-in ${cayenne} as a bit of an upgrade to my old Bronco.`,
     src: porsche19,
     transmission: "Automatic",
 
@@ -456,10 +412,10 @@ const currentKensCars = [
   //   transmission: "Direct",
 
   //   displacement: 0,
-  //   horsepower: 850,
-  //   MPG: 76,
-  //   torque: 1103,
-  //   weight: 8532,
+  //   horsepower: 533,
+  //   MPG: 85,
+  //   torque: 610,
+  //   weight: 6462,
   // },
 ];
 
