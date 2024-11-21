@@ -29,6 +29,9 @@ interface EditPlayersProps {
   updateText: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+/** EditPlayers -> ScriptSelect
+ *              -> ScriptControls
+ *              -> players.map(EditNameAndPos) */
 const EditPlayers = ({
   botcPlayers,
   isText,
@@ -45,11 +48,11 @@ const EditPlayers = ({
 }: EditPlayersProps) => (
   <Grid container spacing={1}>
     <Grid size={12} sx={{ textAlign: "center" }}>
-      <ScriptSelect script={script} updateScript={updateScript} />
+      <ScriptSelect script={script} onChange={updateScript} />
       <ScriptControls
         isText={isText}
-        updateText={updateText}
-        handleReset={handleReset}
+        onChange={updateText}
+        onReset={handleReset}
       />
     </Grid>
 

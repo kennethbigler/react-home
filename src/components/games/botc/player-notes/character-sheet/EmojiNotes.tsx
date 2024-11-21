@@ -9,35 +9,31 @@ interface EmojiNotesProps {
   used: boolean;
   exec: boolean;
   kill: boolean;
-  updateStats: (
+  onToggle: (
     key: BotCPlayerStatus,
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
-const EmojiNotes = ({
-  liar,
-  used,
-  exec,
-  kill,
-  updateStats,
-}: EmojiNotesProps) => (
+/** CharacterSheet -> EmojiNotes
+ *                 -> Roles -> RoleSelection */
+const EmojiNotes = ({ liar, used, exec, kill, onToggle }: EmojiNotesProps) => (
   <Grid size={12}>
     <FormGroup row sx={{ display: "block", textAlign: "center" }}>
       <FormControlLabel
-        control={<Checkbox checked={liar} onChange={updateStats("liar")} />}
         label="😈"
+        control={<Checkbox checked={liar} onChange={onToggle("liar")} />}
       />
       <FormControlLabel
-        control={<Checkbox checked={used} onChange={updateStats("used")} />}
         label="❌"
+        control={<Checkbox checked={used} onChange={onToggle("used")} />}
       />
       <FormControlLabel
-        control={<Checkbox checked={kill} onChange={updateStats("kill")} />}
         label="💀"
+        control={<Checkbox checked={kill} onChange={onToggle("kill")} />}
       />
       <FormControlLabel
-        control={<Checkbox checked={exec} onChange={updateStats("exec")} />}
         label="✋"
+        control={<Checkbox checked={exec} onChange={onToggle("exec")} />}
       />
     </FormGroup>
   </Grid>

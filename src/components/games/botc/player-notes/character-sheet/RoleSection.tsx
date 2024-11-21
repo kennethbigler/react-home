@@ -13,16 +13,18 @@ interface RoleSectionProps {
   roleKey: RoleKey;
   roles: BotCRole[];
   title: string;
-  updateRoles?: (role: BotCRole, selected: boolean) => () => void;
+  onRoleClick?: (role: BotCRole, selected: boolean) => () => void;
 }
 
+/** CharacterSheet -> EmojiNotes
+ *                 -> Roles -> RoleSelection */
 const RoleSection = ({
   gridSize,
   isText,
   roleKey,
   roles,
   title,
-  updateRoles,
+  onRoleClick,
 }: RoleSectionProps) => (
   <>
     <Grid size={12}>
@@ -38,7 +40,7 @@ const RoleSection = ({
             variant={selected ? "contained" : "outlined"}
             color={role.alignment}
             sx={{ textTransform: "none", width: "100%" }}
-            onClick={updateRoles && updateRoles(role, selected)}
+            onClick={onRoleClick && onRoleClick(role, selected)}
             title={role.name}
           >
             {isText ? role.name : role.icon}

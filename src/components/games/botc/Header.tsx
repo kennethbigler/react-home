@@ -7,7 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import MobileScreenShareIcon from "@mui/icons-material/MobileScreenShare";
-import botcQRCode from "../../../../images/botc-qr-code.png";
+import botcQRCode from "../../../images/botc-qr-code.png";
 
 const Header: React.FC = React.memo(() => {
   const [open, setOpen] = React.useState(false);

@@ -12,8 +12,8 @@ interface TrackerProps {
   end: number;
   round: number;
   tracker: number[][];
-  updateRound: (i: number) => () => void;
-  updateTracker: (i: number) => () => void;
+  onRoundClick: (i: number) => () => void;
+  onTrackClick: (i: number) => () => void;
 }
 
 const Tracker = ({
@@ -21,8 +21,8 @@ const Tracker = ({
   end,
   round,
   tracker,
-  updateRound,
-  updateTracker,
+  onRoundClick,
+  onTrackClick,
 }: TrackerProps) => (
   <Grid container spacing={1}>
     {botcPlayers.map(({ name }, i) =>
@@ -32,7 +32,7 @@ const Tracker = ({
             fullWidth
             variant={tracker[round][i] > 0 ? "contained" : "text"}
             color={tracker[round][i] !== 2 ? "primary" : "error"}
-            onClick={updateTracker(i)}
+            onClick={onTrackClick(i)}
           >
             {name}
           </Button>
@@ -44,7 +44,7 @@ const Tracker = ({
         {numRounds.map((i) => (
           <Button
             key={i}
-            onClick={updateRound(i)}
+            onClick={onRoundClick(i)}
             variant={i === round ? "contained" : "outlined"}
           >
             {i + 1}

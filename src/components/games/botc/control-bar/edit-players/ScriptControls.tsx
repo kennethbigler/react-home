@@ -5,15 +5,14 @@ import Switch from "@mui/material/Switch";
 
 interface ScriptControlsProps {
   isText: boolean;
-  updateText: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleReset: () => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onReset: () => void;
 }
 
-const ScriptControls = ({
-  isText,
-  updateText,
-  handleReset,
-}: ScriptControlsProps) => (
+/** EditPlayers -> ScriptSelect
+ *              -> ScriptControls
+ *              -> players.map(EditNameAndPos) */
+const ScriptControls = ({ isText, onChange, onReset }: ScriptControlsProps) => (
   <div className="flex-container">
     <FormControl
       sx={{ flexDirection: "row", alignItems: "center", margin: "10px 0" }}
@@ -22,11 +21,11 @@ const ScriptControls = ({
       <Switch
         checked={isText}
         inputProps={{ "aria-label": "toggle text" }}
-        onChange={updateText}
+        onChange={onChange}
       />
       <Typography>Text</Typography>
     </FormControl>
-    <Button variant="contained" color="error" onClick={handleReset}>
+    <Button variant="contained" color="error" onClick={onReset}>
       Reset
     </Button>
   </div>
