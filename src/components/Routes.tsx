@@ -14,9 +14,9 @@ const RootRoutes: React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const handleNav = (loc: string): void => {
+  const handleNav = (loc: string) => {
     if (loc !== pathname) {
-      navigate(loc);
+      navigate(loc)?.catch((reason) => console.log(reason));
     }
   };
 
