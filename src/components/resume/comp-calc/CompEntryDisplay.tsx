@@ -52,6 +52,7 @@ const CompEntryDisplay: React.FC<CompEntryDisplayProps> = ({
               md: 6,
               lg: 4,
               xl: 3,
+              // @ts-expect-error - xxl is custom
               xxl: compEntries.length > 4 ? 2 : undefined,
               xxxl: compEntries.length > 6 ? 1 : undefined,
             }}
