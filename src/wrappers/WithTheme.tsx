@@ -30,6 +30,7 @@ const WithTheme: React.FC = () => {
         md: 900,
         lg: 1200,
         xl: 1536,
+        // @ts-expect-error - adding custom breakpoints
         xxl: 2600,
         xxxl: 4600,
       },

@@ -90,17 +90,13 @@ const CompCalculator = () => {
       {compEntries.length > 0 && (
         <>
           <Graphs compEntries={compEntries} compCalcEntries={compCalcEntries} />
-          <Typography sx={{ marginTop: 1, marginBottom: 1 }}>
-            *value computed from latest stock price above
-          </Typography>
+          <CompEntryDisplay
+            compEntries={compEntries}
+            compCalcEntries={compCalcEntries}
+            onClick={openEditEntry}
+          />
         </>
       )}
-      <CompEntryDisplay
-        compEntries={compEntries}
-        compCalcEntries={compCalcEntries}
-        onClick={openEditEntry}
-      />
-      {/* dialogs */}
       <StockDialog
         open={openStock}
         price={editStockTick ? stockEntries[editStockTick] : undefined}

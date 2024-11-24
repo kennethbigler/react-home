@@ -25,6 +25,9 @@ const CompEntryDisplay: React.FC<CompEntryDisplayProps> = ({
   onClick,
 }) => (
   <Grid container spacing={1}>
+    <Grid size={12}>
+      <Typography>*value computed from latest stock price above</Typography>
+    </Grid>
     {compEntries
       .map((compEntry, i) => {
         const {
@@ -52,7 +55,7 @@ const CompEntryDisplay: React.FC<CompEntryDisplayProps> = ({
               md: 6,
               lg: 4,
               xl: 3,
-              // @ts-expect-error - xxl is custom
+              // @ts-expect-error - custom breakpoints
               xxl: compEntries.length > 4 ? 2 : undefined,
               xxxl: compEntries.length > 6 ? 1 : undefined,
             }}
