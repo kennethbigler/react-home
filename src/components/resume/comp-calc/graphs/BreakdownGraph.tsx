@@ -26,7 +26,7 @@ const BreakdownChart: React.FC<BreakdownChartProps> = ({
     credits: { enabled: false },
     legend: { enabled: false },
     title: { text: "Comp Breakdown", style: { color } },
-    tooltip: { pointFormat: "<b>${point.y}</b>" },
+    tooltip: { pointFormat: "<b>${point.y:,.2f}</b>" },
     plotOptions: {
       series: {
         allowPointSelect: true,

@@ -2,7 +2,6 @@ import * as React from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
-import { SxProps } from "@mui/material";
 import { green, orange, red, yellow } from "@mui/material/colors";
 import { Effectiveness, Types } from "../../../constants/type-checker";
 
@@ -45,7 +44,7 @@ const EffectiveRow: React.FC<EffectiveRowProps> = ({
       </Button>
     </TableCell>
     {data[idx].map((val, j) => {
-      const cellSx: SxProps = { padding: 0 };
+      const cellSx: React.CSSProperties = { padding: 0 };
       if (val !== 1) {
         cellSx.backgroundColor = colors[val];
         cellSx.color = "black";
