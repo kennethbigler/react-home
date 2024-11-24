@@ -6,7 +6,7 @@ import compCalcState, {
   CompEntry,
   compCalcReadOnlyState,
 } from "../../../recoil/comp-calculator-state";
-import CompDisplay from "./CompDisplay";
+import CompEntryDisplay from "./CompEntryDisplay";
 import CompEntryDialog from "./CompEntryDialog";
 import StockDialog from "./StockDialog";
 import stockAtom from "../../../recoil/stock-atom";
@@ -88,14 +88,15 @@ const CompCalculator = () => {
         </div>
       </div>
       {compEntries.length > 0 && (
-        <Graphs compEntries={compEntries} compCalcEntries={compCalcEntries} />
+        <>
+          <Graphs compEntries={compEntries} compCalcEntries={compCalcEntries} />
+          <CompEntryDisplay
+            compEntries={compEntries}
+            compCalcEntries={compCalcEntries}
+            onClick={openEditEntry}
+          />
+        </>
       )}
-      <CompDisplay
-        compEntries={compEntries}
-        compCalcEntries={compCalcEntries}
-        stockEntries={stockEntries}
-        onClick={openEditEntry}
-      />
       <StockDialog
         open={openStock}
         price={editStockTick ? stockEntries[editStockTick] : undefined}

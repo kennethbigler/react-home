@@ -18,11 +18,13 @@ const SALARY = 2;
 interface CompChartProps {
   compCalcEntries: CompCalcEntry[];
   compEntries: CompEntry[];
+  onClick: (e: Highcharts.SeriesClickEventObject) => void;
 }
 
 const CompChart: React.FC<CompChartProps> = ({
   compCalcEntries,
   compEntries,
+  onClick,
 }) => {
   const [theme] = useRecoilState(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
@@ -43,7 +45,13 @@ const CompChart: React.FC<CompChartProps> = ({
     title: { text: "Total Comp", style: { color } },
     xAxis: { visible: false },
     yAxis: { labels: { style: { color } }, title: { enabled: false } },
-    tooltip: { shared: true, headerFormat: "<h3>Compensation</h3><br />" },
+    tooltip: {
+      shared: true,
+      headerFormat: "<h3>Compensation</h3><br />",
+      pointFormat:
+        '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>${point.y:,.2f}</b><br />',
+      footerFormat: "\u25CF Total: $<b>{point.total:,.2f}</b>",
+    },
     plotOptions: {
       area: {
         stacking: "normal",
@@ -51,6 +59,7 @@ const CompChart: React.FC<CompChartProps> = ({
         lineWidth: 1,
         marker: { lineWidth: 1, lineColor: color },
       },
+      series: { cursor: "pointer", events: { click: onClick } },
     },
     series: [
       { name: "Stock", data: [...compChartData[STOCK]] },
