@@ -25,6 +25,7 @@ import panamera21 from "../images/cars/21_porsche_panamera.png";
 import bronco21 from "../images/cars/21_ford_bronco.webp";
 import grom22 from "../images/cars/22_honda_grom.webp";
 import porsche19 from "../images/cars/19_porsche_cayenne.webp";
+import { DataEntry } from "../components/common/timeline-card/timeline-consts";
 
 const prius = "Toyota Prius (2007)";
 const voyager = "Plymouth Voyager (1997)";
@@ -43,9 +44,24 @@ const grom = "Honda Grom (2022)";
 const cayenne = "Porsche Cayenne E-Hybrid (2019)";
 // const rivian = "Rivian R1S (2025)";
 
+export interface CarEntry extends DataEntry {
+  car: string;
+  char: string;
+  nickname?: string;
+  owned: string;
+  story: string;
+  src: string;
+  transmission: string;
+  displacement: number;
+  horsepower: number;
+  MPG: number;
+  torque: number;
+  weight: number;
+}
+
 // --------------------------------------------------     Cars     -------------------------------------------------- //
 
-const pastFamilyCars = [
+const pastFamilyCars: CarEntry[] = [
   {
     color: grey[50],
     start: dateObj("2008-03"),
@@ -131,7 +147,7 @@ const pastFamilyCars = [
   },
 ];
 
-const currentFamilyCars = [
+const currentFamilyCars: CarEntry[] = [
   {
     color: lime[800],
     inverted: true,
@@ -219,7 +235,7 @@ const currentFamilyCars = [
   },
 ];
 
-const pastKensCars = [
+const pastKensCars: CarEntry[] = [
   {
     color: grey[800],
     start: dateObj("2008-03"),
@@ -353,7 +369,7 @@ const pastKensCars = [
   },
 ];
 
-const currentKensCars = [
+const currentKensCars: CarEntry[] = [
   {
     color: grey[900],
     start: dateObj("2022-04"),
@@ -419,7 +435,7 @@ const currentKensCars = [
   // },
 ];
 
-const cars = [
+const cars: CarEntry[] = [
   ...pastKensCars,
   ...currentKensCars,
   ...pastFamilyCars,
@@ -430,15 +446,6 @@ export default cars;
 
 // --------------------------------------------------     Normalized Graphs     -------------------------------------------------- //
 
-export interface CarStats {
-  displacement: number;
-  horsepower: number;
-  MPG: number;
-  car: string;
-  char: string;
-  torque: number;
-  weight: number;
-}
 type HighChartsData = [string, number];
 interface GraphData {
   xAxis: string[];
@@ -453,7 +460,7 @@ interface GraphData {
 const smoothData = (cur: number, high: number, low: number) =>
   Math.floor(100 * ((cur - low) / (high - low)));
 
-export const processData = (data: CarStats[]): GraphData => {
+export const processData = (data: CarEntry[]): GraphData => {
   const ret: GraphData = {
     xAxis: [],
     displacement: [],
@@ -516,7 +523,7 @@ export const processData = (data: CarStats[]): GraphData => {
   }
 
   // normalize the data to all fit on the same graph (0-1)
-  data.forEach((car: CarStats) => {
+  data.forEach((car: CarEntry) => {
     const powerToWeight = car.horsepower / car.weight;
     ret.xAxis.push(car.char);
     ret.displacement.push([
@@ -547,11 +554,11 @@ export interface CurrentCarStatsData {
   name: string;
 }
 
-const getP2W = (c: CarStats) =>
+const getP2W = (c: CarEntry) =>
   parseFloat((c.horsepower / c.weight).toFixed(3));
 
 export const processCurrentCarStats = (
-  data: CarStats[],
+  data: CarEntry[],
   key:
     | "displacement"
     | "horsepower"

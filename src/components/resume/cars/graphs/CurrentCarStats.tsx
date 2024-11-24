@@ -1,10 +1,9 @@
 import * as React from "react";
-import Grid from "@mui/material/Grid2";
-import { CarStats, processCurrentCarStats } from "../../../constants/cars";
+import { CarEntry, processCurrentCarStats } from "../../../../constants/cars";
 import CurrentCarStatsGraph from "./CurrentCarStatsGraph";
 
 export interface CurrentCarStatsProps {
-  data: CarStats[];
+  data: CarEntry[];
   color: string;
   isBike?: boolean;
 }
@@ -19,7 +18,7 @@ const CurrentCarStats = React.memo(
     const powerToWeight = processCurrentCarStats(data, "powerToWeight", isBike);
 
     return (
-      <Grid container spacing={2}>
+      <>
         <CurrentCarStatsGraph
           val={displacement.val}
           startYellowVal={2}
@@ -81,7 +80,7 @@ const CurrentCarStats = React.memo(
           name={powerToWeight.name}
           color={color}
         />
-      </Grid>
+      </>
     );
   },
 );
