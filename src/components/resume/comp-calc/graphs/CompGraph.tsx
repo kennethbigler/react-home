@@ -40,7 +40,6 @@ const CompChart: React.FC<CompChartProps> = ({
 
   const options = {
     chart: { type: "area", backgroundColor: null },
-    lang: { thousandsSep: "\u002C" },
     credits: { enabled: false },
     legend: { enabled: false },
     title: { text: "Total Comp", style: { color } },
@@ -51,6 +50,7 @@ const CompChart: React.FC<CompChartProps> = ({
       headerFormat: "<h3>Compensation</h3><br />",
       pointFormat:
         '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>${point.y:,.2f}</b><br />',
+      footerFormat: "\u25CF Total: $<b>{point.total:,.2f}</b>",
     },
     plotOptions: {
       area: {
