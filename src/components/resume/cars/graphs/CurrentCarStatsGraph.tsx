@@ -4,7 +4,7 @@ import highchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import Grid from "@mui/material/Grid2";
 import { green, red, yellow } from "@mui/material/colors";
-import { CurrentCarStatsData } from "../../../constants/cars";
+import { CurrentCarStatsData } from "../../../../constants/cars";
 
 highchartsAccessibility(Highcharts); // initiate accessibility module
 
@@ -80,7 +80,8 @@ const CurrentCarStatsGraph = React.memo(
     };
 
     return (
-      <Grid size={{ xs: 12, sm: 4, lg: 2 }}>
+      // @ts-expect-error - custom breakpoint
+      <Grid size={{ xs: 12, sm: 4, lg: 2, xxxl: 1 }}>
         <figure style={{ margin: 0, width: "100%" }}>
           <HighchartsReact highcharts={Highcharts} options={options} />
         </figure>

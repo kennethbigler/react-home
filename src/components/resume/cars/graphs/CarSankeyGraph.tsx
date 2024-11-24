@@ -9,7 +9,7 @@ import {
   carSankeyData,
   kenSankeyData,
   familySankeyData,
-} from "../../../constants/cars";
+} from "../../../../constants/cars";
 
 sankey(Highcharts); // initiate sankey module
 highchartsMore(Highcharts); // if you module is not in node_modules folder

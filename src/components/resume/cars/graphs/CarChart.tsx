@@ -2,12 +2,12 @@ import * as React from "react";
 import * as Highcharts from "highcharts";
 import highchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
-import { processData, CarStats } from "../../../constants/cars";
+import { processData, CarEntry } from "../../../../constants/cars";
 
 highchartsAccessibility(Highcharts); // initiate accessibility module
 
 export interface CarChartProps {
-  data: CarStats[];
+  data: CarEntry[];
   color: string;
 }
 
