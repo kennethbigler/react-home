@@ -19,7 +19,7 @@ const StockDisplay: React.FC<StockEntryProps> = ({
         color="primary"
         label={`${stockKey}: ${usDollar.format(stockEntries[stockKey])}`}
         onClick={openStockModal(stockKey)}
-        sx={{ margin: 0.5 }}
+        sx={{ margin: 0.5, fontWeight: "bold" }}
       />
     ))}
   </div>

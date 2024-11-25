@@ -13,7 +13,7 @@ describe("resume | comp-calc | CompCalculator", () => {
     fireEvent.click(screen.getByText("+ Entry"));
     expect(screen.getByText("New Comp Entry")).toBeInTheDocument();
     // enter info
-    expect(screen.queryByText("Ticker: TSLA")).toBeNull();
+    expect(screen.queryByText("TSLA")).toBeNull();
     fireEvent.change(screen.getByLabelText("Salary"), {
       target: { value: 10000 },
     });
@@ -34,7 +34,7 @@ describe("resume | comp-calc | CompCalculator", () => {
     });
     fireEvent.click(screen.getByText("Update"));
     await waitFor(() => expect(screen.queryByText("Update")).toBeNull());
-    expect(screen.getByText("Ticker: TSLA")).toBeInTheDocument();
+    expect(screen.getByText("TSLA")).toBeInTheDocument();
 
     // open stock modal
     expect(screen.queryByText("New Stock Entry")).toBeNull();

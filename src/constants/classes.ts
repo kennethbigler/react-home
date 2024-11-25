@@ -693,6 +693,34 @@ export const presentations: School[] = [
     subtitle: "",
     years: [
       {
+        year: "Bay Area Disability Connect",
+        quarters: [
+          {
+            quarter: "Panel Moderator",
+            classes: [
+              {
+                catalog: "Date",
+                name: "October 30, 2024",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        year: "Accessibility Camp Bay Area",
+        quarters: [
+          {
+            quarter: "Design System Accessibility",
+            classes: [
+              {
+                catalog: "Date",
+                name: "May 31, 2024",
+              },
+            ],
+          },
+        ],
+      },
+      {
         year: "Intuit India Accessibility Summit",
         quarters: [
           {

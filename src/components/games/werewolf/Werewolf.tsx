@@ -9,6 +9,7 @@ import {
 } from "../../../constants/werewolf";
 import WerewolfPanel from "./WerewolfPanel";
 import ExpandableCard from "../../common/expandable-card";
+import Grid from "@mui/material/Grid2";
 
 const Werewolf: React.FC = React.memo(() => {
   const [expanded, setExpanded] = React.useState("");
@@ -97,9 +98,15 @@ const Werewolf: React.FC = React.memo(() => {
           sx={{ position: "fixed", bottom: 15, right: 15, zIndex: 1 }}
         />
       )}
-      <ExpandableCard title="Villagers">{villagerPanels}</ExpandableCard>
-      <ExpandableCard title="Outsiders">{outsiderPanels}</ExpandableCard>
-      <ExpandableCard title="Wolves">{wolfPanels}</ExpandableCard>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, xl: 6 }}>
+          <ExpandableCard title="Villagers">{villagerPanels}</ExpandableCard>
+        </Grid>
+        <Grid size={{ xs: 12, xl: 6 }}>
+          <ExpandableCard title="Outsiders">{outsiderPanels}</ExpandableCard>
+          <ExpandableCard title="Wolves">{wolfPanels}</ExpandableCard>
+        </Grid>
+      </Grid>
     </>
   );
 });
