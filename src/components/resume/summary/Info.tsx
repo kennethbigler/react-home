@@ -23,12 +23,14 @@ const getJob = (job: Job): string => {
 
 const Info: React.FC = React.memo(() => (
   <Grid container spacing={1}>
-    <Grid size={{ xs: 12, md: 4 }}>
+    {/* @ts-expect-error: custom breakpoints */}
+    <Grid size={{ xs: 12, md: 6, xl: 4, xxl: 3, xxxl: 2 }}>
       <Link href="https://www.linkedin.com/in/kennethbigler">
         <img alt="Kenneth Bigler" src={photo} style={imageStyles} />
       </Link>
     </Grid>
-    <Grid size={{ xs: 12, md: 8 }}>
+    {/* @ts-expect-error: custom breakpoints */}
+    <Grid size={{ xs: 12, md: 6, xl: 8, xxl: 9, xxxl: 10 }}>
       <ExpandableCard title={getJob(workExp[0])}>
         <Table aria-label="general information about Ken Bigler">
           <TableBody>

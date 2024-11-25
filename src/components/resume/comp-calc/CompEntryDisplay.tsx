@@ -83,6 +83,7 @@ const CompEntryDisplay: React.FC<CompEntryDisplayProps> = ({
                         *Total:
                       </Typography>
                       <Typography
+                        color="warning"
                         fontWeight="fontWeightBold"
                         sx={{ display: "inline", marginLeft: 1 }}
                       >
@@ -109,7 +110,16 @@ const CompEntryDisplay: React.FC<CompEntryDisplayProps> = ({
                     <Grid size={6}>
                       <CardHeader title="Stock Grant" />
                       <CardContent>
-                        <Typography>Ticker: {stockTick}</Typography>
+                        <Typography sx={{ display: "inline" }}>
+                          Ticker:
+                        </Typography>
+                        <Typography
+                          color="primary"
+                          fontWeight="fontWeightBold"
+                          sx={{ display: "inline", marginLeft: 1 }}
+                        >
+                          {stockTick}
+                        </Typography>
                         {grantQty > 0 && (
                           <>
                             <Typography>

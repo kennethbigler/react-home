@@ -17,19 +17,22 @@ const TravelMap = React.memo(() => (
       Travel
     </Typography>
     <Grid container spacing={2}>
-      <Grid size={{ xs: 12, md: 6, xl: 4 }}>
+      {/* @ts-expect-error - custom breakpoint */}
+      <Grid size={{ xs: 12, md: 6, xxl: 4 }}>
         <ExpandableCard title="Travel Map">
           <WorldMap />
           <CountryTable />
         </ExpandableCard>
       </Grid>
-      <Grid size={{ xs: 12, md: 6, xl: 4 }}>
+      {/* @ts-expect-error - custom breakpoint */}
+      <Grid size={{ xs: 12, md: 6, xxl: 4 }}>
         <ExpandableCard title="Cruise Charts">
           <CruiseCharts />
           <LoyaltyCharts />
         </ExpandableCard>
       </Grid>
-      <Grid size={{ xs: 12, xl: 4 }}>
+      {/* @ts-expect-error - custom breakpoint */}
+      <Grid size={{ xs: 12, xxl: 4 }}>
         <ExpandableCard title="Cruises">
           <CruiseTable />
         </ExpandableCard>
