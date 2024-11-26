@@ -18,7 +18,7 @@ import blackjackState, {
   newBlackjackGame,
 } from "../../../recoil/blackjack-state";
 
-const BlackJack: React.FC = () => {
+const BlackJack = React.memo(() => {
   const [
     {
       turn,
@@ -234,6 +234,8 @@ const BlackJack: React.FC = () => {
       />
     </>
   );
-};
+});
+
+BlackJack.displayName = "BlackJack";
 
 export default BlackJack;

@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil";
 import SimplePopover from "./ButtonPopover";
 import playerAtom from "../../../recoil/player-atom";
 
-const PlayerMenu: React.FC = () => {
+const PlayerMenu = React.memo(() => {
   const [players, setPlayers] = useRecoilState(playerAtom);
 
   /** toggle between bot and human player */
@@ -88,6 +88,8 @@ const PlayerMenu: React.FC = () => {
       </Grid>
     </SimplePopover>
   );
-};
+});
+
+PlayerMenu.displayName = "PlayerMenu";
 
 export default PlayerMenu;

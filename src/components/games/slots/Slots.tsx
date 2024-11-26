@@ -13,7 +13,7 @@ import PlayerMenu from "../../common/header/PlayerMenu";
 /* Slots  ->  ReelDisplay
  *       |->  MoneyTable
  *       |->  PayoutTable */
-const Slots: React.FC = () => {
+const Slots = React.memo(() => {
   const [{ reel, money, houseMoney }, setState] = useRecoilState(slotsState);
   const { bet, name } = useRecoilValue(slotsReadOnlyState);
   const [exchange, setExchange] = React.useState(0);
@@ -67,6 +67,8 @@ const Slots: React.FC = () => {
       </Grid>
     </>
   );
-};
+});
+
+Slots.displayName = "Slots";
 
 export default Slots;

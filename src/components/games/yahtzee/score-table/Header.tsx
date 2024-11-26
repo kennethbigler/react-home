@@ -7,7 +7,7 @@ interface HeaderProps {
   sx: React.CSSProperties;
 }
 
-const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => (
+const Header = React.memo((props: HeaderProps) => (
   <TableHead>
     <TableRow sx={{ borderBottom: 2 }}>
       <TableCell>Minimum Required for Bonus</TableCell>

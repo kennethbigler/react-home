@@ -36,14 +36,14 @@ const ctrlStyles: React.CSSProperties = {
 };
 
 /** Controls component for Are You The One */
-const Controls: React.FC<ControlsProps> = ({
+const Controls = ({
   options,
   onSelect,
   ri,
   roundPairings,
   onBlackout,
   updateScore,
-}) => {
+}: ControlsProps) => {
   // hooks/state
   const [season, setSeason] = useRecoilState(aytoSeasonSelector);
   const score = getScore(roundPairings[ri]?.score);

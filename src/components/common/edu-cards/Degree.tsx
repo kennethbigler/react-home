@@ -1,4 +1,3 @@
-import * as React from "react";
 import Year, { YearType } from "./Year";
 import ExpandableCard from "../expandable-card";
 
@@ -26,8 +25,7 @@ const getTitles = (degree: DegreeType): { title: string; subtitle: string } => {
 };
 
 /** Degree  -> Year  ->  Quarter  ->  Class */
-const Degree: React.FC<DegreeProps> = (props: DegreeProps) => {
-  const { degree } = props;
+const Degree = ({ degree }: DegreeProps) => {
   const { title, subtitle } = getTitles(degree);
 
   return (

@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import MobileScreenShareIcon from "@mui/icons-material/MobileScreenShare";
 import botcQRCode from "../../../images/botc-qr-code.png";
 
-const Header: React.FC = React.memo(() => {
+const Header = React.memo(() => {
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(true);

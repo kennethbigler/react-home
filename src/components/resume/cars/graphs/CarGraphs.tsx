@@ -1,4 +1,3 @@
-import * as React from "react";
 import Grid from "@mui/material/Grid2";
 import { useRecoilState } from "recoil";
 import { CarEntry } from "../../../../constants/cars";
@@ -14,7 +13,7 @@ interface CarGraphsProps {
   hideKen: boolean;
 }
 
-const CarGraphs: React.FC<CarGraphsProps> = ({ data, hideFamily, hideKen }) => {
+const CarGraphs = ({ data, hideFamily, hideKen }: CarGraphsProps) => {
   const [theme] = useRecoilState(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 

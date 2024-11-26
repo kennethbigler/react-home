@@ -25,7 +25,7 @@ export interface MatchedStackProps {
   showAll: boolean;
 }
 
-const MatchedStack: React.FC<MatchedStackProps> = ({
+const MatchedStack = ({
   gents,
   ladies,
   matches,
@@ -36,7 +36,7 @@ const MatchedStack: React.FC<MatchedStackProps> = ({
   hist,
   tempScore,
   showAll,
-}) => {
+}: MatchedStackProps) => {
   const equation: React.ReactNode[] = [];
   let numNoMatches = 0;
   let numMatchAndRepeat = 0;

@@ -27,7 +27,7 @@ const bottomConstants = [
   { name: "Chance", hint: ADD_DICE, points: ADD_DICE },
 ];
 
-const Yahtzee: React.FC = () => {
+const Yahtzee = React.memo(() => {
   const { state, diceClick, newGame, updateTop, updateBottom, updateRoll } =
     useYahtzeeState();
 
@@ -165,6 +165,8 @@ const Yahtzee: React.FC = () => {
       />
     </>
   );
-};
+});
+
+Yahtzee.displayName = "Yahtzee";
 
 export default Yahtzee;

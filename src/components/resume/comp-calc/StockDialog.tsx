@@ -22,74 +22,78 @@ interface StockDialogProps {
   removeStockEntry: (s: string) => () => void;
 }
 
-const StockDialog: React.FC<StockDialogProps> = ({
-  open,
-  price: exPrice,
-  stock: exStock,
-  onClose,
-  addStockEntry,
-  removeStockEntry,
-}) => {
-  const [price, setPrice] = React.useState(0);
-  const [stock, setStock] = React.useState("");
+const StockDialog = React.memo(
+  ({
+    open,
+    price: exPrice,
+    stock: exStock,
+    onClose,
+    addStockEntry,
+    removeStockEntry,
+  }: StockDialogProps) => {
+    const [price, setPrice] = React.useState(0);
+    const [stock, setStock] = React.useState("");
 
-  const resetState = () => {
-    setPrice(0);
-    setStock("");
-  };
+    const resetState = () => {
+      setPrice(0);
+      setStock("");
+    };
 
-  React.useEffect(() => {
-    if (exStock && exPrice !== undefined) {
-      setPrice(exPrice);
-      setStock(exStock);
-    } else {
+    React.useEffect(() => {
+      if (exStock && exPrice !== undefined) {
+        setPrice(exPrice);
+        setStock(exStock);
+      } else {
+        resetState();
+      }
+    }, [exPrice, exStock]);
+
+    const handleStockChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+      setStock(e.target.value);
+
+    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+      setPrice(parseFloat(e.target.value));
+
+    const handleSubmit = () => {
+      addStockEntry(stock, price);
       resetState();
-    }
-  }, [exPrice, exStock]);
+    };
 
-  const handleStockChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setStock(e.target.value);
+    return (
+      <Dialog open={open} onClose={onClose}>
+        <DialogTitle>{exStock ? "Edit" : "New"} Stock Entry</DialogTitle>
+        <DialogContent>
+          <div style={{ marginTop: 5 }}>
+            <TextField
+              label="Stock"
+              value={stock}
+              onChange={handleStockChange}
+              {...tfProps}
+            />
+            <TextField
+              label="Price Now"
+              value={price}
+              type="number"
+              onChange={handlePriceChange}
+              slotProps={{ input: { startAdornment: "$" } }}
+              {...tfProps}
+            />
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={removeStockEntry(stock)} color="error">
+            Delete
+          </Button>
+          <Button onClick={onClose}>Cancel</Button>
+          <Button type="submit" onClick={handleSubmit}>
+            {exStock ? "Update" : "Add"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  },
+);
 
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setPrice(parseFloat(e.target.value));
-
-  const handleSubmit = () => {
-    addStockEntry(stock, price);
-    resetState();
-  };
-
-  return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>{exStock ? "Edit" : "New"} Stock Entry</DialogTitle>
-      <DialogContent>
-        <div style={{ marginTop: 5 }}>
-          <TextField
-            label="Stock"
-            value={stock}
-            onChange={handleStockChange}
-            {...tfProps}
-          />
-          <TextField
-            label="Price Now"
-            value={price}
-            type="number"
-            onChange={handlePriceChange}
-            slotProps={{ input: { startAdornment: "$" } }}
-            {...tfProps}
-          />
-        </div>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={removeStockEntry(stock)} color="error">
-          Delete
-        </Button>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit" onClick={handleSubmit}>
-          {exStock ? "Update" : "Add"}
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
+StockDialog.displayName = "StockDialog";
 
 export default StockDialog;

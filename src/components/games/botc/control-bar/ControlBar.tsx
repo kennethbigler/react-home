@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import Grid from "@mui/material/Grid2";
-import { SelectChangeEvent } from "@mui/material";
 // Custom
 import EditPlayers from "./edit-players/EditPlayers";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
@@ -19,20 +18,6 @@ interface ControlBarProps {
   numTravelers: number;
   // ControlBar
   newBotCGame: () => void;
-  // Tracker
-  round: number;
-  tracker: number[][];
-  updateRound: (i: number) => () => void;
-  updateTracker: (i: number) => () => void;
-  // EditPlayers
-  isText: boolean;
-  script: number;
-  updateNames: (i: number) => (e: React.FocusEvent<HTMLInputElement>) => void;
-  updateNumPlayers: (_e: Event, value: number | number[]) => void;
-  updateNumTravelers: (_e: Event, value: number | number[]) => void;
-  updatePlayerOrder: (i: number, dir: number) => () => void;
-  updateScript: (i: SelectChangeEvent<number>) => void;
-  updateText: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ControlBar = ({
@@ -42,20 +27,6 @@ const ControlBar = ({
   numTravelers,
   // ControlBar
   newBotCGame,
-  // Tracker
-  round,
-  tracker,
-  updateRound,
-  updateTracker,
-  // EditPlayers
-  isText,
-  script,
-  updateNames,
-  updateNumPlayers,
-  updateNumTravelers,
-  updatePlayerOrder,
-  updateScript,
-  updateText,
 }: ControlBarProps) => {
   const [hasToast, setHasToast] = React.useState(false);
 
@@ -77,30 +48,15 @@ const ControlBar = ({
       </Grid>
 
       <InfoPopup title="Tracker">
-        <Tracker
-          botcPlayers={botcPlayers}
-          end={numPlayers + numTravelers}
-          round={round}
-          tracker={tracker}
-          onRoundClick={updateRound}
-          onTrackClick={updateTracker}
-        />
+        <Tracker botcPlayers={botcPlayers} end={numPlayers + numTravelers} />
       </InfoPopup>
 
       <InfoPopup title="Players">
         <EditPlayers
           handleReset={handleReset}
           botcPlayers={botcPlayers}
-          isText={isText}
           numPlayers={numPlayers}
           numTravelers={numTravelers}
-          script={script}
-          updateNames={updateNames}
-          updateNumPlayers={updateNumPlayers}
-          updateNumTravelers={updateNumTravelers}
-          updatePlayerOrder={updatePlayerOrder}
-          updateScript={updateScript}
-          updateText={updateText}
         />
       </InfoPopup>
 

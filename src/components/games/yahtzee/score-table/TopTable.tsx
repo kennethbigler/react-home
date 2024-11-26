@@ -22,18 +22,16 @@ interface TopTableProps {
   values: Dice[];
 }
 
-const TopTable: React.FC<TopTableProps> = (props: TopTableProps) => {
-  const {
-    bottom,
-    values,
-    showScoreButtons,
-    getScoreButton,
-    top,
-    sx,
-    topSum,
-    finalTopSum,
-  } = props;
-
+const TopTable = ({
+  bottom,
+  values,
+  showScoreButtons,
+  getScoreButton,
+  top,
+  sx,
+  topSum,
+  finalTopSum,
+}: TopTableProps) => {
   const getButtonInfo = (d: number): [number, number] =>
     values.reduce(
       (count, val) => {

@@ -1,4 +1,3 @@
-import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Job from "./Job";
 import { Job as JobType } from "../../../constants/work";
@@ -8,10 +7,7 @@ interface WorkCardsProps {
   workTypes: string[];
 }
 
-const WorkCards: React.FC<WorkCardsProps> = ({
-  workExp,
-  workTypes,
-}: WorkCardsProps) => (
+const WorkCards = ({ workExp, workTypes }: WorkCardsProps) => (
   <>
     {workTypes.map((type) => (
       <div key={type} style={{ marginTop: 25 }}>

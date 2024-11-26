@@ -1,4 +1,3 @@
-import * as React from "react";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
@@ -19,11 +18,11 @@ interface CompEntryDisplayProps {
   onClick: (i: number) => () => void;
 }
 
-const CompEntryDisplay: React.FC<CompEntryDisplayProps> = ({
+const CompEntryDisplay = ({
   compEntries,
   compCalcEntries,
   onClick,
-}) => (
+}: CompEntryDisplayProps) => (
   <Grid container spacing={1}>
     <Grid size={12}>
       <Typography>*value computed from latest stock price above</Typography>

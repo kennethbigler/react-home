@@ -16,9 +16,14 @@ const wrapperStyles = {
   maxWidth: 400,
 };
 
-const GameRound = (props: GameRoundProps) => {
-  const { answers, scores, question, onScore1, onScore2, modifier = 1 } = props;
-
+const GameRound = ({
+  answers,
+  scores,
+  question,
+  onScore1,
+  onScore2,
+  modifier = 1,
+}: GameRoundProps) => {
   const [strikes, setStrikes] = React.useState([false, false, false]);
   const [buttonsL, setButtonsL] = React.useState(["1", "2", "3", "4"]);
   const [buttonsR, setButtonsR] = React.useState(["5", "6", "7", "8"]);

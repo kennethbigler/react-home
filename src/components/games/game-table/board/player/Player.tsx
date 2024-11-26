@@ -19,18 +19,16 @@ interface PlayerProps {
   turn: TurnState;
 }
 
-const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
-  // get vars from props
-  const {
-    betHandler,
-    cardHandler,
-    cardsToDiscard,
-    hideHands,
-    isBlackJack,
-    player,
-    playerNo,
-    turn,
-  } = props;
+const Player = ({
+  betHandler,
+  cardHandler,
+  cardsToDiscard,
+  hideHands,
+  isBlackJack,
+  player,
+  playerNo,
+  turn,
+}: PlayerProps) => {
   // set booleans
   const isPlayerTurn: boolean = !!turn && playerNo === turn.player;
   const isMultiHand: boolean = player.hands.length > 1;

@@ -5,7 +5,7 @@ import Rules from "./Rules";
 import Help from "./help";
 import PlayerMenu from "../../common/header/PlayerMenu";
 
-const Header: React.FC = React.memo(() => (
+const Header = React.memo(() => (
   <div className="flex-container">
     <Typography variant="h2" component="h1" gutterBottom>
       Blackjack (21)

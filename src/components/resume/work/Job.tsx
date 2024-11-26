@@ -16,52 +16,45 @@ const imgStyle: React.CSSProperties = {
   float: "right",
 };
 
-const Job: React.FC<JobProps> = (props: JobProps) => {
-  const { job } = props;
-
-  const parent = job.parent ? ` (${job.parent})` : "";
-  const title = `${job.company}${parent}, ${job.location}`;
-
-  return (
-    <ExpandableCard
-      backgroundColor={job.color}
-      subtitle={job.title}
-      inverted={job.inverted}
-      title={title}
-    >
-      <Grid size={{ xs: 12, sm: 9 }}>
-        <Typography>{showRange(job.start, job.end, job.notes)}</Typography>
-        {job.expr && (
-          <ul>
-            {job.expr.map((desc, i) => (
-              <li key={`desc${i}`}>
-                <Typography>{desc}</Typography>
-              </li>
-            ))}
-          </ul>
-        )}
-        {job.tech && job.tech.length !== 0 && (
-          <>
-            <hr aria-hidden />
-            <Typography display="inline">Technologies:&nbsp;</Typography>
-            {getCSV(job.tech)}
-          </>
-        )}
-        {job.skills && job.skills.length !== 0 && (
-          <>
-            <hr aria-hidden />
-            <Typography display="inline">Skills:&nbsp;</Typography>
-            {getCSV(job.skills)}
-          </>
-        )}
-      </Grid>
-      {job.src && (
-        <Grid size={{ xs: 12, sm: 3 }}>
-          <img alt={job.alt} src={job.src} style={imgStyle} />
-        </Grid>
+const Job = ({ job }: JobProps) => (
+  <ExpandableCard
+    backgroundColor={job.color}
+    subtitle={job.title}
+    inverted={job.inverted}
+    title={`${job.company}${job.parent ? ` (${job.parent})` : ""}, ${job.location}`}
+  >
+    <Grid size={{ xs: 12, sm: 9 }}>
+      <Typography>{showRange(job.start, job.end, job.notes)}</Typography>
+      {job.expr && (
+        <ul>
+          {job.expr.map((desc, i) => (
+            <li key={`desc${i}`}>
+              <Typography>{desc}</Typography>
+            </li>
+          ))}
+        </ul>
       )}
-    </ExpandableCard>
-  );
-};
+      {job.tech && job.tech.length !== 0 && (
+        <>
+          <hr aria-hidden />
+          <Typography display="inline">Technologies:&nbsp;</Typography>
+          {getCSV(job.tech)}
+        </>
+      )}
+      {job.skills && job.skills.length !== 0 && (
+        <>
+          <hr aria-hidden />
+          <Typography display="inline">Skills:&nbsp;</Typography>
+          {getCSV(job.skills)}
+        </>
+      )}
+    </Grid>
+    {job.src && (
+      <Grid size={{ xs: 12, sm: 3 }}>
+        <img alt={job.alt} src={job.src} style={imgStyle} />
+      </Grid>
+    )}
+  </ExpandableCard>
+);
 
 export default Job;

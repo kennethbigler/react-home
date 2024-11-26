@@ -13,7 +13,7 @@ interface HomeProps {
   onItemClick?: (loc: string) => void;
 }
 
-const Home: React.FC<HomeProps> = React.memo(({ onItemClick }: HomeProps) => (
+const Home = React.memo(({ onItemClick }: HomeProps) => (
   <div style={{ textAlign: "center", marginTop: 20 }}>
     <Typography variant="h2" component="h1">
       Games

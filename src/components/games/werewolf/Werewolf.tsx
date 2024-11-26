@@ -11,7 +11,7 @@ import WerewolfPanel from "./WerewolfPanel";
 import ExpandableCard from "../../common/expandable-card";
 import Grid from "@mui/material/Grid2";
 
-const Werewolf: React.FC = React.memo(() => {
+const Werewolf = React.memo(() => {
   const [expanded, setExpanded] = React.useState("");
   const [gameTotal, setGameTotal] = React.useState<number | undefined>(
     undefined,

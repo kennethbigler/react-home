@@ -19,20 +19,18 @@ interface GameTableProps {
 
 /* GameTable ->  Board -> Player -> Hand -> Card
  *          |->  Button Group  ->  Button        */
-const GameTable = (props: GameTableProps): React.ReactElement => {
-  const {
-    betHandler,
-    cardClickHandler,
-    cardsToDiscard = [],
-    gameFunctions = [],
-    gameOver = false,
-    hideHands = false,
-    isBlackJack = true,
-    players,
-    turn,
-    onClick,
-  } = props;
-
+const GameTable = ({
+  betHandler,
+  cardClickHandler,
+  cardsToDiscard = [],
+  gameFunctions = [],
+  gameOver = false,
+  hideHands = false,
+  isBlackJack = true,
+  players,
+  turn,
+  onClick,
+}: GameTableProps) => {
   // move game buttons to make turn more obvious and support mobile
   const played: DBPlayer[] = React.useMemo(
     () => players.slice(0, turn.player + 1),

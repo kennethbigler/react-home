@@ -53,8 +53,16 @@ const showButton = (i: number, values: Dice[]): boolean => {
   }
 };
 
-const BottomTable: React.FC<BottomTableProps> = (props: BottomTableProps) => {
-  const { values, showScoreButtons, getScoreButton, top } = props;
+const BottomTable = ({
+  values,
+  showScoreButtons,
+  getScoreButton,
+  top,
+  bottom,
+  sx,
+  finalTopSum,
+  bottomSum,
+}: BottomTableProps) => {
   const getBottomTableButtons = React.useCallback(
     (
       score: number,
@@ -79,7 +87,6 @@ const BottomTable: React.FC<BottomTableProps> = (props: BottomTableProps) => {
     [getScoreButton, showScoreButtons, top, values],
   );
 
-  const { bottom, sx } = props;
   const generateBottomTable = React.useCallback((): React.ReactNode => {
     const hasYahtzee = bottom[5].score > 0;
     return bottom.map((gameScore, i) => {
@@ -100,8 +107,6 @@ const BottomTable: React.FC<BottomTableProps> = (props: BottomTableProps) => {
       );
     });
   }, [bottom, getBottomTableButtons, sx, values]);
-
-  const { finalTopSum, bottomSum } = props;
 
   return (
     <>

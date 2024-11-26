@@ -1,4 +1,3 @@
-import * as React from "react";
 import Chip from "@mui/material/Chip";
 import usDollar from "../../../apis/usdFormatter";
 import { StockState } from "../../../recoil/stock-atom";
@@ -8,10 +7,7 @@ interface StockEntryProps {
   openStockModal: (s: string) => () => void;
 }
 
-const StockDisplay: React.FC<StockEntryProps> = ({
-  stockEntries,
-  openStockModal,
-}) => (
+const StockDisplay = ({ stockEntries, openStockModal }: StockEntryProps) => (
   <div>
     {Object.keys(stockEntries).map((stockKey, i) => (
       <Chip

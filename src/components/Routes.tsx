@@ -10,7 +10,7 @@ const GameRoutes = React.lazy(
   () => import(/* webpackChunkName: "games" */ "./games/Routes"),
 );
 
-const RootRoutes: React.FC = () => {
+const RootRoutes = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 

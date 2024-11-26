@@ -26,7 +26,7 @@ export interface AYTOTableProps {
   updatePairs: (ri: number, li: number, gi: number) => void;
 }
 
-const AYTOTableBody: React.FC<AYTOTableProps> = ({
+const AYTOTableBody = ({
   gents,
   hist,
   ladies,
@@ -38,7 +38,7 @@ const AYTOTableBody: React.FC<AYTOTableProps> = ({
   updateMatch,
   updateNoMatch,
   updatePairs,
-}) => {
+}: AYTOTableProps) => {
   const isTB = options.length === ri + 1;
 
   // state

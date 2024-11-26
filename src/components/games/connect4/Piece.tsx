@@ -30,28 +30,33 @@ const getColor = (piece: number): string | undefined => {
   }
 };
 
-const Piece = React.memo((props: PieceProps): React.ReactElement => {
-  const { ariaLabel, piece, enabled = false, onClick = noop } = props;
+const Piece = React.memo(
+  ({ ariaLabel, piece, enabled = false, onClick = noop }: PieceProps) => {
+    const color = getColor(piece);
+    const style: React.CSSProperties = { backgroundColor: color };
 
-  const color = getColor(piece);
-  const style: React.CSSProperties = { backgroundColor: color };
-
-  return !enabled ? (
-    <Fab disabled size="small" style={style} aria-label="disabled column input">
-      <div />
-    </Fab>
-  ) : (
-    <Fab
-      size="small"
-      onClick={onClick}
-      style={style}
-      role="button"
-      aria-label={ariaLabel}
-    >
-      <ContentAdd style={{ color: "white" }} />
-    </Fab>
-  );
-});
+    return !enabled ? (
+      <Fab
+        disabled
+        size="small"
+        style={style}
+        aria-label="disabled column input"
+      >
+        <div />
+      </Fab>
+    ) : (
+      <Fab
+        size="small"
+        onClick={onClick}
+        style={style}
+        role="button"
+        aria-label={ariaLabel}
+      >
+        <ContentAdd style={{ color: "white" }} />
+      </Fab>
+    );
+  },
+);
 
 Piece.displayName = "Piece";
 

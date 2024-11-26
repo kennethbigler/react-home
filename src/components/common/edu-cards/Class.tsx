@@ -7,16 +7,14 @@ export interface ClassProps {
 }
 
 /** Degree  -> Year  ->  Quarter  ->  Class */
-const Class: React.FC<ClassProps> = React.memo(
-  ({ name, catalog }: ClassProps) => (
-    <li>
-      <Typography>
-        {catalog && <strong>{`${catalog} - `}</strong>}
-        {name}
-      </Typography>
-    </li>
-  ),
-);
+const Class = React.memo(({ name, catalog }: ClassProps) => (
+  <li>
+    <Typography>
+      {catalog && <strong>{`${catalog} - `}</strong>}
+      {name}
+    </Typography>
+  </li>
+));
 
 Class.displayName = "Class";
 

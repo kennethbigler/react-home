@@ -6,17 +6,15 @@ export interface ButtonProps {
   name: string;
 }
 
-const Button: React.FC<ButtonProps> = React.memo(
-  ({ onClick, name }: ButtonProps) => (
-    <MuiButton
-      onClick={(): void => onClick(name)}
-      style={{ margin: 12 }}
-      variant="contained"
-    >
-      {name}
-    </MuiButton>
-  ),
-);
+const Button = React.memo(({ onClick, name }: ButtonProps) => (
+  <MuiButton
+    onClick={(): void => onClick(name)}
+    style={{ margin: 12 }}
+    variant="contained"
+  >
+    {name}
+  </MuiButton>
+));
 
 Button.displayName = "Button";
 

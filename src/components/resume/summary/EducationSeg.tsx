@@ -2,7 +2,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { School } from "../../../constants/classes";
 
-const EducationSeg: React.FC<School> = React.memo(
+const EducationSeg = React.memo(
   ({ degree, honors, location, major, minor, school }: School) => (
     <div>
       <Typography variant="h4" component="h2">{`${school || ""}, ${

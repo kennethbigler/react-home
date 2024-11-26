@@ -13,7 +13,7 @@ interface GraphsProps {
   compEntries: CompEntry[];
 }
 
-const Graphs: React.FC<GraphsProps> = ({ compEntries, compCalcEntries }) => {
+const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
   const { stock, stockAdj } = compCalcEntries[compCalcEntries.length - 1];
   const { bonus, salary } = compEntries[compEntries.length - 1];
 

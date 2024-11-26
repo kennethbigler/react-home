@@ -17,8 +17,12 @@ interface InfoPopupProps {
   buttonColor?: MuiColors;
 }
 
-const InfoPopup = (props: InfoPopupProps): React.ReactElement => {
-  const { buttonText, title, children, buttonColor } = props;
+const InfoPopup = ({
+  buttonText,
+  title,
+  children,
+  buttonColor,
+}: InfoPopupProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);

@@ -11,28 +11,21 @@ interface HeaderProps {
   winner?: number;
 }
 
-const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => {
-  const { winner, turn, newGame } = props;
-  // status text
-  const status = winner ? "Winner:" : "Turn:";
-  const piece = winner || turn;
-
-  return (
-    <Toolbar>
-      <div className="flex-container">
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Typography style={{ marginRight: 10 }} variant="h4" component="h2">
-            {status}
-          </Typography>
-          <Piece piece={piece} />
-        </div>
-        <Button onClick={newGame} variant="contained">
-          Reset Game
-        </Button>
+const Header = React.memo(({ winner, turn, newGame }: HeaderProps) => (
+  <Toolbar>
+    <div className="flex-container">
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Typography style={{ marginRight: 10 }} variant="h4" component="h2">
+          {winner ? "Winner:" : "Turn:"}
+        </Typography>
+        <Piece piece={winner || turn} />
       </div>
-    </Toolbar>
-  );
-});
+      <Button onClick={newGame} variant="contained">
+        Reset Game
+      </Button>
+    </div>
+  </Toolbar>
+));
 
 Header.displayName = "Header";
 

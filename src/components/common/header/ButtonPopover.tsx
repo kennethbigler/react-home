@@ -27,9 +27,8 @@ interface ButtonPopoverProps {
 
 const contentStyle: React.CSSProperties = { padding: 15 };
 
-const ButtonPopover = (props: ButtonPopoverProps): React.ReactElement => {
+const ButtonPopover = ({ children, buttonText }: ButtonPopoverProps) => {
   const { anchorEl, setAnchor, clearAnchor } = useAnchorEl();
-  const { children, buttonText } = props;
   const open = Boolean(anchorEl);
 
   return (

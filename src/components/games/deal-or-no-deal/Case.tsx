@@ -10,8 +10,7 @@ interface CaseProps {
   secondary?: boolean;
 }
 
-const Case: React.FC<CaseProps> = (props: CaseProps) => {
-  const { briefcase: bc, isOver, onClick, secondary } = props;
+const Case = ({ briefcase: bc, isOver, onClick, secondary }: CaseProps) => {
   const color = secondary ? "secondary" : "primary";
   const label = bc.on && !isOver ? bc.loc : getMoneyText(bc.val);
 

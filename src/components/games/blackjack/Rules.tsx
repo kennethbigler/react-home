@@ -1,7 +1,7 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 
-const Rules: React.FC = React.memo(() => (
+const Rules = React.memo(() => (
   <>
     <Typography variant="h5">Objective:</Typography>
     <Typography>

@@ -1,4 +1,3 @@
-import * as React from "react";
 import Player from "./player/Player";
 import { DBPlayer } from "../../../../recoil/player-atom";
 import { TurnState } from "../../../../recoil/turn-atom";
@@ -14,34 +13,30 @@ interface BoardProps {
   turn: TurnState;
 }
 
-const Board: React.FC<BoardProps> = (props: BoardProps) => {
-  const {
-    betHandler,
-    cardHandler,
-    cardsToDiscard,
-    hideHands,
-    isBlackJack,
-    players,
-    turn,
-  } = props;
-
-  return (
-    <>
-      {players.map((player, i) => (
-        <Player
-          key={`player${i}`}
-          betHandler={betHandler}
-          cardHandler={cardHandler}
-          cardsToDiscard={cardsToDiscard}
-          hideHands={hideHands}
-          isBlackJack={isBlackJack}
-          player={player}
-          playerNo={i}
-          turn={turn}
-        />
-      ))}
-    </>
-  );
-};
+const Board = ({
+  betHandler,
+  cardHandler,
+  cardsToDiscard,
+  hideHands,
+  isBlackJack,
+  players,
+  turn,
+}: BoardProps) => (
+  <>
+    {players.map((player, i) => (
+      <Player
+        key={`player${i}`}
+        betHandler={betHandler}
+        cardHandler={cardHandler}
+        cardsToDiscard={cardsToDiscard}
+        hideHands={hideHands}
+        isBlackJack={isBlackJack}
+        player={player}
+        playerNo={i}
+        turn={turn}
+      />
+    ))}
+  </>
+);
 
 export default Board;

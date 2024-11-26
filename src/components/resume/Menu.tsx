@@ -22,8 +22,7 @@ const stackOverflow = (): void => {
   window.open("https://stackoverflow.com/users/4830309/ken-bigler");
 };
 
-const Menu: React.FC<MenuProps> = React.memo((props: MenuProps) => {
-  const { onItemClick } = props;
+const Menu = React.memo(({ onItemClick }: MenuProps) => {
   // internal routes
   const menu = React.useMemo(
     () =>

@@ -9,9 +9,7 @@ export interface CellProps {
   colSpan?: number;
 }
 
-const Cell: React.FC<CellProps> = React.memo((props: CellProps) => {
-  const { color, text, style, ...otherProps } = props;
-
+const Cell = ({ color, text, style, ...otherProps }: CellProps) => {
   const stl: React.CSSProperties = {
     ...style,
     textAlign: "center",
@@ -25,7 +23,7 @@ const Cell: React.FC<CellProps> = React.memo((props: CellProps) => {
       {text}
     </TableCell>
   );
-});
+};
 
 Cell.displayName = "Cell";
 

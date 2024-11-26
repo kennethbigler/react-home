@@ -15,8 +15,7 @@ const cellStyles: React.CSSProperties = {
   fontWeight: 900,
 };
 
-const ReelDisplay: React.FC<ReelDisplayProps> = (props: ReelDisplayProps) => {
-  const { reel } = props;
+const ReelDisplay = ({ reel }: ReelDisplayProps) => {
   /** generate code for slot machine */
   const getSlots = React.useCallback((): React.ReactNode[] => {
     // display for slots

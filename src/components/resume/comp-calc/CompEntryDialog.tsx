@@ -34,12 +34,12 @@ interface CompEntryDialogProps {
   addCompEntry: (n: CompEntry) => void;
 }
 
-const CompEntryDialog: React.FC<CompEntryDialogProps> = ({
+const CompEntryDialog = ({
   open,
   compEntry,
   onClose,
   addCompEntry,
-}) => {
+}: CompEntryDialogProps) => {
   const [entryDateMonth, setEntryDateMonth] = React.useState("1");
   const [entryDateYear, setEntryDateYear] = React.useState(years[0].toString());
   const [salary, setSalary] = React.useState(0);

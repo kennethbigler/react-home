@@ -4,7 +4,7 @@ import roles, { CASINO, Importance, intro } from "../../../constants/murder";
 import MurderMysteryPanel from "./MurderMysteryPanel";
 import ExpandableCard from "../../common/expandable-card";
 
-const MurderMystery: React.FC = React.memo(() => {
+const MurderMystery = React.memo(() => {
   const [expanded, setExpanded] = React.useState("");
 
   const handleChange = React.useCallback(

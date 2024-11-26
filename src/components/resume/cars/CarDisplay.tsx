@@ -19,7 +19,7 @@ interface CarDisplayProps {
   hideKen: boolean;
 }
 
-const CarDisplay: React.FC<CarDisplayProps> = ({ hideFamily, hideKen }) => (
+const CarDisplay = React.memo(({ hideFamily, hideKen }: CarDisplayProps) => (
   <Grid container spacing={2}>
     {!hideKen && (
       <Grid size={{ xs: 12, md: hideFamily ? 12 : 6 }}>
@@ -66,6 +66,8 @@ const CarDisplay: React.FC<CarDisplayProps> = ({ hideFamily, hideKen }) => (
       </Grid>
     )}
   </Grid>
-);
+));
+
+CarDisplay.displayName = "CarDisplay";
 
 export default CarDisplay;

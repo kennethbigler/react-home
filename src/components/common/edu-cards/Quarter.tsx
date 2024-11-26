@@ -1,4 +1,3 @@
-import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Class, { ClassProps } from "./Class";
 
@@ -11,7 +10,7 @@ interface QuarterProps {
 }
 
 /** Degree  -> Year  ->  Quarter  ->  Class */
-const Quarter: React.FC<QuarterProps> = ({ quarter }: QuarterProps) => (
+const Quarter = ({ quarter }: QuarterProps) => (
   <>
     <Typography variant="h5" component="h3">
       {quarter.quarter}

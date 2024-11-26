@@ -22,19 +22,17 @@ interface ScoreTableProps {
 
 const centerStyle: React.CSSProperties = { textAlign: "center" };
 
-const ScoreTable: React.FC<ScoreTableProps> = (props: ScoreTableProps) => {
-  const {
-    bottom,
-    bottomSum,
-    finalTopSum,
-    showScoreButtons,
-    top,
-    topSum,
-    values,
-    onTopScore,
-    onBottomScore,
-  } = props;
-
+const ScoreTable = ({
+  bottom,
+  bottomSum,
+  finalTopSum,
+  showScoreButtons,
+  top,
+  topSum,
+  values,
+  onTopScore,
+  onBottomScore,
+}: ScoreTableProps) => {
   const getScoreButton = React.useCallback(
     (
       showButton: boolean,

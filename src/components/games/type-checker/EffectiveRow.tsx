@@ -22,12 +22,7 @@ interface EffectiveRowProps {
 }
 
 /** dynamic row display */
-const EffectiveRow: React.FC<EffectiveRowProps> = ({
-  data,
-  type,
-  idx,
-  onClick,
-}) => (
+const EffectiveRow = ({ data, type, idx, onClick }: EffectiveRowProps) => (
   <TableRow>
     <TableCell padding="none" component="th" scope="row">
       <Button

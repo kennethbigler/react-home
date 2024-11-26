@@ -22,14 +22,13 @@ interface HeaderProps {
   handleNav?: (loc: string) => void;
 }
 
-const Header = (props: HeaderProps): React.ReactElement => {
+const Header = ({ children, handleNav = noop }: HeaderProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const toggleOpen = () => setIsOpen(!isOpen);
 
   const {
     palette: { mode },
   } = useTheme();
-  const { children, handleNav = noop } = props;
 
   /** close the menu and call the passed callback */
   const handleNavigation = React.useCallback(
