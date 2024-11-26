@@ -50,7 +50,7 @@ interface RoutesProps {
   handleNav: (loc: string) => void;
 }
 
-const GameRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
+const GameRoutes = ({ handleNav }: RoutesProps) => (
   <>
     <Header handleNav={handleNav}>
       {(onItemClick): React.ReactElement<NavProps> => (

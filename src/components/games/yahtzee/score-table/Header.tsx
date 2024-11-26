@@ -7,12 +7,12 @@ interface HeaderProps {
   sx: React.CSSProperties;
 }
 
-const Header: React.FC<HeaderProps> = React.memo((props: HeaderProps) => (
+const Header = React.memo(({ sx }: HeaderProps) => (
   <TableHead>
     <TableRow sx={{ borderBottom: 2 }}>
       <TableCell>Minimum Required for Bonus</TableCell>
       <TableCell>How to Score</TableCell>
-      <TableCell sx={props.sx}>Game Score</TableCell>
+      <TableCell sx={sx}>Game Score</TableCell>
     </TableRow>
   </TableHead>
 ));

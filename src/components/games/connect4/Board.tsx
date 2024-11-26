@@ -18,8 +18,7 @@ const styles: React.CSSProperties = {
   textAlign: "center",
 };
 
-const Board: React.FC<BoardProps> = (props: BoardProps) => {
-  const { board, turn, insert } = props;
+const Board = ({ board, turn, insert }: BoardProps) => {
   // generate code for Connect4 Board
   const gameBoard = board
     .map((arr, i) => {

@@ -8,7 +8,7 @@ interface MenuProps {
   onItemClick?: (loc: string) => void;
 }
 
-const Menu: React.FC<MenuProps> = React.memo(({ onItemClick }: MenuProps) => (
+const Menu = React.memo(({ onItemClick }: MenuProps) => (
   <MenuList>
     <MenuItem onClick={() => onItemClick && onItemClick("/")}>
       Back to Resume

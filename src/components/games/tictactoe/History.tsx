@@ -9,9 +9,8 @@ interface HistoryProps {
   step: number;
 }
 
-const History: React.FC<HistoryProps> = (props: HistoryProps) => {
+const History = ({ history, step, jumpToStep }: HistoryProps) => {
   const [ascend, setAscend] = React.useState(true);
-  const { history, step, jumpToStep } = props;
 
   /** function that generates text for the history tracker */
   const getHistoryText = React.useCallback(

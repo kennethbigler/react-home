@@ -9,9 +9,7 @@ interface FastMoneyProps {
   scores: number[][];
 }
 
-const FastMoney = (props: FastMoneyProps) => {
-  const { questions, answers, scores } = props;
-
+const FastMoney = ({ questions, answers, scores }: FastMoneyProps) => {
   const [scoresL, setScoresL] = React.useState([0, 0, 0, 0, 0]);
   const [scoresR, setScoresR] = React.useState([0, 0, 0, 0, 0]);
   const [answerIndexL, setAnswerIndexL] = React.useState([-2, -2, -2, -2, -2]);

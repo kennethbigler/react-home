@@ -13,9 +13,7 @@ const smMarginTop: React.CSSProperties = { marginTop: 10 };
 const lgMarginTop: React.CSSProperties = { marginTop: 20 };
 const noStyle: React.CSSProperties = { height: 0 };
 
-const Row = (props: RowProps): React.ReactElement => {
-  const { segments, yearMarkers = false, first = false } = props;
-
+const Row = ({ segments, yearMarkers = false, first = false }: RowProps) => {
   let style = smMarginTop;
   if (yearMarkers) {
     style = noStyle;
@@ -27,7 +25,7 @@ const Row = (props: RowProps): React.ReactElement => {
     <div style={style} title="timeline-row">
       {segments.map((data, j) =>
         yearMarkers ? (
-          <YearMarkers key={j} data={data} />
+          <YearMarkers key={j} body={data.body} width={data.width} />
         ) : (
           <Segment key={j} {...data} />
         ),

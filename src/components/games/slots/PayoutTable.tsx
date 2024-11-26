@@ -22,7 +22,7 @@ const payoutTable = [
   { symbol: SO.CHERRY, payout: 3 },
 ];
 
-const PayoutTable: React.FC = React.memo(() => (
+const PayoutTable = React.memo(() => (
   <Table aria-label="payout reference table for slot game">
     <TableHead>
       <TableRow>

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useRecoilState } from "recoil";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
@@ -10,7 +9,7 @@ import themeAtom from "../recoil/theme-atom";
 import WithRouter from "./WithRouter";
 
 /** App class that wraps higher level components of the application */
-const WithTheme: React.FC = () => {
+const WithTheme = () => {
   const [theme] = useRecoilState(themeAtom);
 
   const setTheme = createTheme({

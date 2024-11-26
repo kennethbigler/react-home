@@ -26,7 +26,7 @@ export interface AnalysisProps {
   tempScore: number[];
 }
 
-const Analysis: React.FC<AnalysisProps> = ({
+const Analysis = ({
   gents,
   ladies,
   matches,
@@ -35,7 +35,7 @@ const Analysis: React.FC<AnalysisProps> = ({
   hist,
   tempScore,
   calculatedEquations,
-}) => {
+}: AnalysisProps) => {
   // state
   const [showAll, setShowAll] = React.useState(false);
 

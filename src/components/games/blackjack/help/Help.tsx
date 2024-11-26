@@ -14,7 +14,7 @@ import BlackjackTable from "./BlackjackTable";
 // Parents: blackjack/Header
 
 /* Help  ->  BlackJackTable  ->  Row  -->  Cell */
-const Help: React.FC = React.memo(() => {
+const Help = React.memo(() => {
   // options
   const h: CellProps = { color: green[200], text: "H" };
   const d: CellProps = { color: teal[200], text: "D" };

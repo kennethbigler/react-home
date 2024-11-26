@@ -10,7 +10,7 @@ export interface RowProps {
 
 const tableCellStyle: React.CSSProperties = { textAlign: "center", padding: 0 };
 
-const Row: React.FC<RowProps> = ({ name, data }: RowProps) => (
+const Row = ({ name, data }: RowProps) => (
   <TableRow>
     <TableCell style={tableCellStyle} component="th" scope="row">
       {name}

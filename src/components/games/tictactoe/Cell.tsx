@@ -8,8 +8,7 @@ interface CellProps {
   winner: boolean;
 }
 
-const Cell: React.FC<CellProps> = React.memo((props: CellProps) => {
-  const { value, winner, onClick } = props;
+const Cell = React.memo(({ value, winner, onClick }: CellProps) => {
   const {
     palette: {
       primary: { main },

@@ -2,10 +2,10 @@ import * as React from "react";
 import Paper from "@mui/material/Paper";
 import { amber, grey } from "@mui/material/colors";
 import { getMoneyText } from "./helpers";
-import { Briefcase } from "../../../recoil/deal-or-no-deal-state";
 
 interface MoneyProps {
-  briefcase: Briefcase;
+  on: boolean;
+  val: number;
 }
 
 const paperStyles: React.CSSProperties = {
@@ -18,11 +18,9 @@ const paperStyles: React.CSSProperties = {
   color: "white",
 };
 
-const Money: React.FC<MoneyProps> = (props: MoneyProps) => {
-  const { briefcase: bc } = props;
-
+const Money = React.memo(({ on, val }: MoneyProps) => {
   const color: React.CSSProperties = {
-    backgroundColor: bc.on ? amber[500] : grey[700],
+    backgroundColor: on ? amber[500] : grey[700],
   };
 
   const style: React.CSSProperties = {
@@ -32,9 +30,11 @@ const Money: React.FC<MoneyProps> = (props: MoneyProps) => {
 
   return (
     <Paper style={style}>
-      {bc.on ? getMoneyText(bc.val) : <del>{getMoneyText(bc.val)}</del>}
+      {on ? getMoneyText(val) : <del>{getMoneyText(val)}</del>}
     </Paper>
   );
-};
+});
+
+Money.displayName = "Money";
 
 export default Money;

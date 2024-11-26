@@ -8,7 +8,7 @@ interface BottomScoresProps {
   sx: React.CSSProperties;
 }
 
-const BottomScores: React.FC<BottomScoresProps> = React.memo(
+const BottomScores = React.memo(
   ({ finalTopSum, bottomSum, sx }: BottomScoresProps) => (
     <>
       <TableRow sx={{ borderTop: 2 }}>

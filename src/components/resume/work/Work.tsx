@@ -5,7 +5,7 @@ import workExp, { timelineExp, VOLUNTEER, WORK } from "../../../constants/work";
 import WorkCards from "./WorkCards";
 
 /* Work  ->  WorkCards  ->  Job */
-const Work: React.FC = React.memo(() => (
+const Work = React.memo(() => (
   <>
     <Typography variant="h2" component="h1">
       Experience

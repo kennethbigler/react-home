@@ -22,12 +22,17 @@ interface ExpandableCardProps {
   title?: string | React.ReactNode;
 }
 
-const ExpandableCard = (props: ExpandableCardProps): React.ReactElement => {
+const ExpandableCard = ({
+  inverted,
+  title,
+  subtitle,
+  children,
+  backgroundColor,
+}: ExpandableCardProps) => {
   const [expanded, setExpanded] = React.useState(true);
   const toggleExpanded = () => setExpanded(!expanded);
 
   const { palette } = useTheme();
-  const { inverted, title, subtitle, children, backgroundColor } = props;
 
   const color = inverted ? "black" : "white";
 

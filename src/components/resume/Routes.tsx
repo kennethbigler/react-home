@@ -30,7 +30,7 @@ interface RoutesProps {
   handleNav: (loc: string) => void;
 }
 
-const ResumeRoutes: React.FC<RoutesProps> = ({ handleNav }) => (
+const ResumeRoutes = ({ handleNav }: RoutesProps) => (
   <>
     <Header handleNav={handleNav}>
       {(onItemClick): React.ReactElement<NavProps> => (

@@ -19,12 +19,7 @@ const style: React.CSSProperties = {
   marginTop: 20,
 };
 
-const Board: React.FC<BoardProps> = ({
-  board,
-  isOver,
-  onClick,
-  playerChoice: pc,
-}: BoardProps) => (
+const Board = ({ board, isOver, onClick, playerChoice: pc }: BoardProps) => (
   <Paper elevation={2} style={style}>
     {board.map((bc, i) => (
       <Case

@@ -25,19 +25,17 @@ interface HandProps {
   playerNo: number;
 }
 
-const Hand: React.FC<HandProps> = (props: HandProps) => {
-  const {
-    cardHandler,
-    cardsToDiscard,
-    hand,
-    handNo,
-    isBlackJack,
-    isHandTurn,
-    isMultiHand,
-    isPlayerTurn,
-    playerNo,
-  } = props;
-
+const Hand = ({
+  cardHandler,
+  cardsToDiscard,
+  hand,
+  handNo,
+  isBlackJack,
+  isHandTurn,
+  isMultiHand,
+  isPlayerTurn,
+  playerNo,
+}: HandProps) => {
   const styles = React.useMemo(
     () =>
       isPlayerTurn && (!isMultiHand || (isMultiHand && isHandTurn))

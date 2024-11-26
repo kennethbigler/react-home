@@ -11,7 +11,7 @@ interface MoneyTableProps {
   houseMoney: number;
 }
 
-const MoneyTable: React.FC<MoneyTableProps> = React.memo(
+const MoneyTable = React.memo(
   ({ name, money, houseMoney }: MoneyTableProps) => (
     <Table aria-label="current slot game monetary status">
       <TableHead>

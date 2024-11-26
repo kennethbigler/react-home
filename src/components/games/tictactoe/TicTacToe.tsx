@@ -23,7 +23,7 @@ const paperStyles: React.CSSProperties = {
 /* TicTacToe  ->  Header
  *           |->  Board  ->  Cell
  *           |->  History */
-const TicTacToe: React.FC = () => {
+const TicTacToe = React.memo(() => {
   const [state, setState] = useRecoilState(ticTacToeAtom);
   const { turn, step, history } = state;
 
@@ -82,6 +82,8 @@ const TicTacToe: React.FC = () => {
       <History history={history} jumpToStep={jumpToStep} step={step} />
     </>
   );
-};
+});
+
+TicTacToe.displayName = "TicTacToe";
 
 export default TicTacToe;

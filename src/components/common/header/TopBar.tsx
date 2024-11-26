@@ -26,7 +26,7 @@ interface TopBarProps {
   toggleOpen: React.MouseEventHandler;
 }
 
-const TopBar = (props: TopBarProps): React.ReactElement => {
+const TopBar = ({ toggleOpen, textColor }: TopBarProps) => {
   const [theme, setTheme] = useRecoilState(themeAtom);
   const [isLight, setIsLight] = React.useState(theme.mode !== "dark");
 
@@ -39,8 +39,6 @@ const TopBar = (props: TopBarProps): React.ReactElement => {
     }
     setIsLight(!isLight);
   };
-
-  const { toggleOpen, textColor } = props;
 
   return (
     <AppBar style={spanTopStyles} className={`header-${theme.mode}-theme`}>

@@ -1,4 +1,3 @@
-import * as React from "react";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import { AYTOHist } from "../histogram/useHist";
@@ -17,14 +16,14 @@ export interface CalculatedStackProps {
   score: number;
 }
 
-const CalculatedStack: React.FC<CalculatedStackProps> = ({
+const CalculatedStack = ({
   cei,
   pairs,
   score,
   gents,
   ladies,
   hist,
-}) => (
+}: CalculatedStackProps) => (
   <Stack spacing={1}>
     <h2 style={{ textAlign: "center" }}>Calculated {cei + 1}</h2>
     {pairs.map((gi, li) => (

@@ -32,15 +32,14 @@ const addEmptySegment = (segments: SegmentType[], width: number): void => {
   }
 };
 
-const Timeline = (props: TimelineProps): React.ReactElement => {
-  const {
-    start,
-    end,
-    selector,
-    data: propsData,
-    yearMarkerFrequency,
-    enableLongTitles,
-  } = props;
+const Timeline = ({
+  start,
+  end,
+  selector,
+  data: propsData,
+  yearMarkerFrequency,
+  enableLongTitles,
+}: TimelineProps) => {
   // get immutable data from props and sort by start date
   const data: DataEntry[] = React.useMemo(
     () => [...propsData].sort(MONTH_SORT),

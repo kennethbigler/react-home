@@ -21,7 +21,7 @@ const getJob = (job: Job): string => {
   return `${job.title}, ${job.company}${parent}`;
 };
 
-const Info: React.FC = React.memo(() => (
+const Info = React.memo(() => (
   <Grid container spacing={1}>
     {/* @ts-expect-error: custom breakpoints */}
     <Grid size={{ xs: 12, md: 6, xl: 4, xxl: 3, xxxl: 2 }}>

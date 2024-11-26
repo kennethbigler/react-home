@@ -15,7 +15,7 @@ interface BlackjackTableProps {
 const cards: string[] = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "A"];
 const cellStyle: React.CSSProperties = { width: 60 };
 
-const BlackjackTable: React.FC<BlackjackTableProps> = ({ title, data }) => (
+const BlackjackTable = ({ title, data }: BlackjackTableProps) => (
   <Table aria-label={`ideal play strategy for ${title}`}>
     <TableHead>
       <TableRow>

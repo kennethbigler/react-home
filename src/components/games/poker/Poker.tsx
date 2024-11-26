@@ -12,7 +12,7 @@ import pokerState, {
 import { DBPlayer, defaultWeigh } from "../../../recoil/player-atom";
 import PlayerMenu from "../../common/header/PlayerMenu";
 
-const Poker: React.FC = () => {
+const Poker = React.memo(() => {
   const [{ poker, turn, players }, setState] = useRecoilState(pokerState);
   const { cardsToDiscard, gameFunctions, gameOver, hideHands } = poker;
 
@@ -247,6 +247,8 @@ const Poker: React.FC = () => {
       />
     </>
   );
-};
+});
+
+Poker.displayName = "Poker";
 
 export default Poker;

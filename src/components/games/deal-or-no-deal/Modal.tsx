@@ -28,11 +28,19 @@ const genMoneyCols = (
   start: number,
   stop = arr.length,
 ): React.ReactNode[] =>
-  arr.slice(start, stop).map((bc) => <Money key={bc.loc} briefcase={bc} />);
+  arr
+    .slice(start, stop)
+    .map((bc) => <Money key={bc.loc} on={bc.on} val={bc.val} />);
 
-const Modal: React.FC<ModalProps> = (props: ModalProps) => {
-  const { deal, noDeal, offer, open, swap, numCases, board: imBoard } = props;
-
+const Modal = ({
+  deal,
+  noDeal,
+  offer,
+  open,
+  swap,
+  numCases,
+  board: imBoard,
+}: ModalProps) => {
   const board = [...imBoard].sort((a, b) => a.val - b.val);
 
   // columns displaying money values left

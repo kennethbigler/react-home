@@ -1,4 +1,3 @@
-import * as React from "react";
 import { grey } from "@mui/material/colors";
 import dateObj, { DateObj, FormatOutput } from "../../../apis/DateHelper";
 import ExpandableCard from "../expandable-card";
@@ -30,34 +29,30 @@ const DATE_FORMAT: FormatOutput = "MMMM Y";
 /* TimelineCard  ->  Timeline  ->  Row  ->  Segment
  *                                     |->  YearMarkers */
 /** function to generate timeline card */
-const TimelineCard = (props: TimelineCardProps): React.ReactElement | null => {
-  const {
-    data = workExperience,
-    backgroundColor = grey[800],
-    title = TIMELINE_TITLE,
-    selector = "company",
-    start = dateObj("2011-09"),
-    end = dateObj(),
-    yearMarkerFrequency = 1,
-    enableLongTitles,
-  } = props;
-
-  return (
-    <ExpandableCard
-      backgroundColor={backgroundColor}
-      subtitle={`${start.format(DATE_FORMAT)} - ${end.format(DATE_FORMAT)}`}
-      title={title}
-    >
-      <Timeline
-        data={data}
-        selector={selector}
-        start={start}
-        end={end}
-        yearMarkerFrequency={yearMarkerFrequency}
-        enableLongTitles={enableLongTitles}
-      />
-    </ExpandableCard>
-  );
-};
+const TimelineCard = ({
+  data = workExperience,
+  backgroundColor = grey[800],
+  title = TIMELINE_TITLE,
+  selector = "company",
+  start = dateObj("2011-09"),
+  end = dateObj(),
+  yearMarkerFrequency = 1,
+  enableLongTitles,
+}: TimelineCardProps) => (
+  <ExpandableCard
+    backgroundColor={backgroundColor}
+    subtitle={`${start.format(DATE_FORMAT)} - ${end.format(DATE_FORMAT)}`}
+    title={title}
+  >
+    <Timeline
+      data={data}
+      selector={selector}
+      start={start}
+      end={end}
+      yearMarkerFrequency={yearMarkerFrequency}
+      enableLongTitles={enableLongTitles}
+    />
+  </ExpandableCard>
+);
 
 export default TimelineCard;

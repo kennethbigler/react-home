@@ -28,7 +28,7 @@ const imgStyles: React.CSSProperties = {
   float: "right",
 };
 
-const CarCard: React.FC<CarCardProps> = ({ car }: CarCardProps) => (
+const CarCard = ({ car }: CarCardProps) => (
   <Card style={containerStyles}>
     <Grid container spacing={1}>
       <Grid size={{ xs: 12, sm: 8 }}>

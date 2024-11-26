@@ -1,9 +1,9 @@
 import * as React from "react";
 import { grey } from "@mui/material/colors";
-import { SegmentType } from "./types";
 
 interface YearMarkersProps {
-  data: SegmentType;
+  body?: string;
+  width: number;
 }
 
 const boxStyles: React.CSSProperties = {
@@ -23,11 +23,7 @@ const labelStyles: React.CSSProperties = {
   right: 22,
 };
 
-const YearMarkers = (props: YearMarkersProps): React.ReactElement => {
-  const {
-    data: { body, width },
-  } = props;
-
+const YearMarkers = React.memo(({ body, width }: YearMarkersProps) => {
   // variables for empty segment
   const style: React.CSSProperties = {
     display: "inline-block",
@@ -45,6 +41,8 @@ const YearMarkers = (props: YearMarkersProps): React.ReactElement => {
       </div>
     </div>
   );
-};
+});
+
+YearMarkers.displayName = "YearMarkers";
 
 export default YearMarkers;

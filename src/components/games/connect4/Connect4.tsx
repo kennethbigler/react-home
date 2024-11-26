@@ -12,7 +12,7 @@ import connect4Atom, {
 
 /* Connect4  ->  GameBoard  ->  Header  ->  Piece
  *                         |->  Board   ->  Piece */
-const Connect4: React.FC = () => {
+const Connect4 = React.memo(() => {
   const [{ turn, board, winner }, setState] = useRecoilState(connect4Atom);
 
   /** start a new game, reset the board and helper vars */
@@ -101,6 +101,8 @@ const Connect4: React.FC = () => {
       />
     </>
   );
-};
+});
+
+Connect4.displayName = "Connect4";
 
 export default Connect4;

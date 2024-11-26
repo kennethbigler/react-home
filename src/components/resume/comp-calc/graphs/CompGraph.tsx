@@ -1,4 +1,3 @@
-import * as React from "react";
 import * as Highcharts from "highcharts";
 import highchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
@@ -21,11 +20,11 @@ interface CompChartProps {
   onClick: (e: Highcharts.SeriesClickEventObject) => void;
 }
 
-const CompChart: React.FC<CompChartProps> = ({
+const CompChart = ({
   compCalcEntries,
   compEntries,
   onClick,
-}) => {
+}: CompChartProps) => {
   const [theme] = useRecoilState(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
