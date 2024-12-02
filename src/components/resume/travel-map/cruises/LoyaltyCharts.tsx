@@ -1,14 +1,14 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import highchartsAccessibility from "highcharts/modules/accessibility";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import themeAtom from "../../../../recoil/theme-atom";
 import { loyaltySeries, loyaltyColors } from "../../../../constants/cruises";
 
 highchartsAccessibility(Highcharts); // initiate accessibility module
 
 const LoyaltyCharts = () => {
-  const [theme] = useRecoilState(themeAtom);
+  const theme = useRecoilValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
   const options: Highcharts.Options = {

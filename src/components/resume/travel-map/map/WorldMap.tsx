@@ -4,7 +4,7 @@ import Highcharts from "highcharts/highmaps";
 import HighchartsReact from "highcharts-react-official";
 import highchartsAccessibility from "highcharts/modules/accessibility";
 // Import to change title color
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import Typography from "@mui/material/Typography";
 import themeAtom from "../../../../recoil/theme-atom";
 import countries, { numCountries } from "../../../../constants/travel";
@@ -14,7 +14,7 @@ highchartsAccessibility(Highcharts);
 const WorldMap = () => {
   const [topology, setTopology] = React.useState<Highcharts.GeoJSON>();
   const [error, setError] = React.useState(false);
-  const [theme] = useRecoilState(themeAtom);
+  const theme = useRecoilValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
   // other map: https://code.highcharts.com/mapdata/custom/world.topo.json

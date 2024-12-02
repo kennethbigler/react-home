@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
   ThemeProvider,
@@ -10,7 +10,7 @@ import WithRouter from "./WithRouter";
 
 /** App class that wraps higher level components of the application */
 const WithTheme = () => {
-  const [theme] = useRecoilState(themeAtom);
+  const theme = useRecoilValue(themeAtom);
 
   const setTheme = createTheme({
     palette: {

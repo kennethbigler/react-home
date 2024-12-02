@@ -1,12 +1,12 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid2";
+import { SeriesClickEventObject } from "highcharts";
 import CompChart from "./CompGraph";
 import BreakdownChart from "./BreakdownGraph";
 import {
   CompCalcEntry,
   CompEntry,
 } from "../../../../recoil/comp-calculator-state";
-import { SeriesClickEventObject } from "highcharts";
 
 interface GraphsProps {
   compCalcEntries: CompCalcEntry[];
@@ -17,11 +17,13 @@ const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
   const { stock, stockAdj } = compCalcEntries[compCalcEntries.length - 1];
   const { bonus, salary } = compEntries[compEntries.length - 1];
 
+  const [startIdx, setStartIdx] = React.useState(0);
   const [cStock, setStock] = React.useState(stockAdj || stock);
   const [cBonus, setBonus] = React.useState(bonus);
   const [cSalary, setSalary] = React.useState(salary);
 
   React.useEffect(() => {
+    setStartIdx(0);
     setStock(stockAdj || stock);
     setBonus(bonus);
     setSalary(salary);
@@ -30,6 +32,7 @@ const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
   const handleClick = (e: SeriesClickEventObject) => {
     const { stock, stockAdj } = compCalcEntries[e.point.index];
     const { bonus, salary } = compEntries[e.point.index];
+    setStartIdx(e.point.index);
     setStock(stockAdj || stock);
     setBonus(bonus);
     setSalary(salary);
@@ -39,6 +42,7 @@ const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
     <Grid container>
       <Grid size={{ xs: 12, md: 6, lg: 8, xl: 9 }}>
         <CompChart
+          startIdx={startIdx}
           compCalcEntries={compCalcEntries}
           compEntries={compEntries}
           onClick={handleClick}

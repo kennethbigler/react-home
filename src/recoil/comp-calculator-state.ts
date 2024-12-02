@@ -2,26 +2,6 @@ import { atom, selector } from "recoil";
 import stockAtom from "./stock-atom";
 import dateHelper, { DateObj } from "../apis/DateHelper";
 
-/** Compensation Calculator
- *
- * -----     SALARY     -----
- * Date {string}
- * Salary {number}
- * Bonus {number}
- * Stock (Adj) {number} - calculated
- * Stock {number} - calculated
- * Total {number} - calculated
- * Total (Adj) {number} - calculated
- * Net {number} - calculated
- *
- * -----     STOCK     -----
- * Stock Tick {string}
- * Price Now {number}
- * Grant Qty {number} - STOCKS
- * Grant Duration {number} - YEARS
- * Grant Then - calculated
- * Grant Now - calculated
- */
 export interface CompEntry {
   entryDate: string;
   salary: number;
@@ -43,22 +23,17 @@ export interface CompCalcEntry {
 }
 
 interface PrevStock {
-  cs: number;
-  csa: number;
+  grantQty: number;
+  grantDuration: number;
   exp: DateObj;
 }
-interface PrevStockAcc {
-  [key: string]: PrevStock[];
-}
-
-type CompCalcState = CompEntry[];
 
 export const compCalcAtom = atom({
   key: "compCalcAtom",
   default:
     (JSON.parse(
       localStorage.getItem("comp-calc-atom") || "null",
-    ) as CompCalcState) || [],
+    ) as CompEntry[]) || [],
   effects: [
     ({ onSet }) => {
       onSet((state) => {
@@ -68,6 +43,7 @@ export const compCalcAtom = atom({
   ],
 });
 
+/* --------------------     Comp Calc State     -------------------- */
 export const compCalcReadOnlyState = selector({
   key: "compCalcReadOnlyState",
   get: ({ get }) => {
@@ -75,7 +51,7 @@ export const compCalcReadOnlyState = selector({
     const compEntries = get(compCalcAtom);
     const stockEntries = get(stockAtom);
 
-    const prevStockAcc: PrevStockAcc = {};
+    const prevStockAcc: { [key: string]: PrevStock[] } = {};
 
     const compCalcEntriesNoNet: Omit<CompCalcEntry, "netDiff">[] =
       compEntries.map(
@@ -89,24 +65,22 @@ export const compCalcReadOnlyState = selector({
           stockTick,
         }) => {
           const priceNow = stockEntries[stockTick] || 0;
-          const cs = (priceThen * grantQty) / grantDuration;
           let stock = 0;
           let stockAdj = 0;
 
-          const csa = (priceNow * grantQty) / grantDuration;
           const exp = dateHelper(entryDate);
           exp.year += grantDuration;
 
           if (!prevStockAcc[stockTick]) {
             prevStockAcc[stockTick] = [];
           }
-          if (cs > 0) {
-            prevStockAcc[stockTick].push({ cs, csa, exp });
+          if (grantQty > 0) {
+            prevStockAcc[stockTick].push({ grantQty, grantDuration, exp });
           }
           prevStockAcc[stockTick].forEach((s) => {
             if (dateHelper(entryDate).diff(s.exp, "days") < 0) {
-              stock += s.cs;
-              stockAdj += s.csa;
+              stock += (priceThen * s.grantQty) / s.grantDuration;
+              stockAdj += (priceNow * s.grantQty) / s.grantDuration;
             }
           });
 
