@@ -2,7 +2,7 @@ import * as React from "react";
 import * as Highcharts from "highcharts";
 import highchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import themeAtom from "../../../../recoil/theme-atom";
 
 highchartsAccessibility(Highcharts); // initiate accessibility module
@@ -15,7 +15,7 @@ interface BreakdownChartProps {
 
 const BreakdownChart = React.memo(
   ({ bonus, salary, stock }: BreakdownChartProps) => {
-    const [theme] = useRecoilState(themeAtom);
+    const theme = useRecoilValue(themeAtom);
     const color = theme.mode === "light" ? "black" : "white";
 
     const options = {

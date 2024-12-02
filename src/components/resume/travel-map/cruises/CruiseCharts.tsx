@@ -3,7 +3,7 @@ import HighchartsReact from "highcharts-react-official";
 import highchartsMore from "highcharts/highcharts-more";
 import sankey from "highcharts/modules/sankey";
 import highchartsAccessibility from "highcharts/modules/accessibility";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import themeAtom from "../../../../recoil/theme-atom";
 import { cruiseData } from "../../../../constants/cruises";
 
@@ -12,7 +12,7 @@ highchartsMore(Highcharts); // if your module is not in node_modules folder
 highchartsAccessibility(Highcharts); // initiate accessibility module
 
 const CruiseCharts = () => {
-  const [theme] = useRecoilState(themeAtom);
+  const theme = useRecoilValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
   const options: Highcharts.Options = {

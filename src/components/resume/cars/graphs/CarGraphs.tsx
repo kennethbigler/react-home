@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid2";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { CarEntry } from "../../../../constants/cars";
 import CarChart from "./CarChart";
 import CarSankeyGraph from "./CarSankeyGraph";
@@ -14,7 +14,7 @@ interface CarGraphsProps {
 }
 
 const CarGraphs = ({ data, hideFamily, hideKen }: CarGraphsProps) => {
-  const [theme] = useRecoilState(themeAtom);
+  const theme = useRecoilValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
   return (

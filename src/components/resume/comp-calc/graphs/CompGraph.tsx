@@ -1,42 +1,98 @@
 import * as Highcharts from "highcharts";
 import highchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import themeAtom from "../../../../recoil/theme-atom";
 import {
   CompCalcEntry,
   CompEntry,
 } from "../../../../recoil/comp-calculator-state";
+import dateHelper from "../../../../apis/DateHelper";
 
 highchartsAccessibility(Highcharts); // initiate accessibility module
 
 const STOCK = 0;
 const BONUS = 1;
 const SALARY = 2;
+const TOTAL = 3;
+const INFL = 4;
+
+const inflationKey: { [key: number]: number } = {
+  2000: 1.034,
+  2001: 1.028,
+  2002: 1.016,
+  2003: 1.023,
+  2004: 1.027,
+  2005: 1.034,
+  2006: 1.032,
+  2007: 1.028,
+  2008: 1.038,
+  2009: 0.996,
+  2010: 1.016,
+  2011: 1.032,
+  2012: 1.021,
+  2013: 1.015,
+  2014: 1.016,
+  2015: 1.001,
+  2016: 1.013,
+  2017: 1.021,
+  2018: 1.024,
+  2019: 1.018,
+  2020: 1.012,
+  2021: 1.047,
+  2022: 1.08,
+  2023: 1.041,
+  2024: 1.027,
+};
 
 interface CompChartProps {
+  startIdx: number;
   compCalcEntries: CompCalcEntry[];
   compEntries: CompEntry[];
   onClick: (e: Highcharts.SeriesClickEventObject) => void;
 }
 
 const CompChart = ({
+  startIdx,
   compCalcEntries,
   compEntries,
   onClick,
 }: CompChartProps) => {
-  const [theme] = useRecoilState(themeAtom);
+  // process theme
+  const theme = useRecoilValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
-  const compChartData: number[][] = [[], [], []];
-  compEntries.forEach((cEntry, i) => {
-    compChartData[STOCK].push(
-      compCalcEntries[i].stockAdj || compCalcEntries[i].stock,
-    );
-    compChartData[BONUS].push(cEntry.bonus);
-    compChartData[SALARY].push(cEntry.salary);
-  });
+  // calculate chart data
+  const compChartData: number[][] = [[], [], [], [], []];
+  if (compEntries.length > 0) {
+    // set start basis for inflation calculation
+    let startYear = dateHelper(compEntries[startIdx].entryDate).year;
+    let startTC =
+      compEntries[startIdx].salary +
+      compEntries[startIdx].bonus +
+      (compCalcEntries[startIdx].stockAdj || compCalcEntries[startIdx].stock);
 
+    // calculate chart data
+    compEntries.forEach(({ bonus, salary, entryDate }, i) => {
+      const { stock, stockAdj } = compCalcEntries[i];
+      compChartData[STOCK].push(stockAdj || stock);
+      compChartData[BONUS].push(bonus);
+      compChartData[SALARY].push(salary);
+      compChartData[TOTAL].push(stock + bonus + salary);
+      // calculate inflation rate from first job (or clicked job)
+      const endYear = dateHelper(entryDate).year;
+      if (endYear >= startYear) {
+        for (; startYear < endYear; startYear += 1) {
+          startTC *= inflationKey[startYear];
+        }
+        compChartData[INFL].push(startTC);
+      } else {
+        compChartData[INFL].push(0);
+      }
+    });
+  }
+
+  // set chart options
   const options = {
     chart: { type: "area", backgroundColor: null },
     credits: { enabled: false },
@@ -49,7 +105,7 @@ const CompChart = ({
       headerFormat: "<h3>Compensation</h3><br />",
       pointFormat:
         '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>${point.y:,.2f}</b><br />',
-      footerFormat: "\u25CF Total: $<b>{point.total:,.2f}</b>",
+      footerFormat: "\u25CF *Total: $<b>{point.total:,.2f}</b>",
     },
     plotOptions: {
       area: {
@@ -61,9 +117,11 @@ const CompChart = ({
       series: { cursor: "pointer", events: { click: onClick } },
     },
     series: [
-      { name: "Stock", data: [...compChartData[STOCK]] },
-      { name: "Bonus", data: [...compChartData[BONUS]] },
-      { name: "Salary", data: [...compChartData[SALARY]] },
+      { type: "area", name: "Stock", data: [...compChartData[STOCK]] },
+      { type: "area", name: "Bonus", data: [...compChartData[BONUS]] },
+      { type: "area", name: "Salary", data: [...compChartData[SALARY]] },
+      { type: "spline", name: "Total", data: [...compChartData[TOTAL]] },
+      { type: "spline", name: "Inflation", data: [...compChartData[INFL]] },
     ],
   };
 

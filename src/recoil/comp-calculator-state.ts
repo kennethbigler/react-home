@@ -27,18 +27,13 @@ interface PrevStock {
   grantDuration: number;
   exp: DateObj;
 }
-interface PrevStockAcc {
-  [key: string]: PrevStock[];
-}
-
-type CompCalcState = CompEntry[];
 
 export const compCalcAtom = atom({
   key: "compCalcAtom",
   default:
     (JSON.parse(
       localStorage.getItem("comp-calc-atom") || "null",
-    ) as CompCalcState) || [],
+    ) as CompEntry[]) || [],
   effects: [
     ({ onSet }) => {
       onSet((state) => {
@@ -48,6 +43,7 @@ export const compCalcAtom = atom({
   ],
 });
 
+/* --------------------     Comp Calc State     -------------------- */
 export const compCalcReadOnlyState = selector({
   key: "compCalcReadOnlyState",
   get: ({ get }) => {
@@ -55,7 +51,7 @@ export const compCalcReadOnlyState = selector({
     const compEntries = get(compCalcAtom);
     const stockEntries = get(stockAtom);
 
-    const prevStockAcc: PrevStockAcc = {};
+    const prevStockAcc: { [key: string]: PrevStock[] } = {};
 
     const compCalcEntriesNoNet: Omit<CompCalcEntry, "netDiff">[] =
       compEntries.map(
