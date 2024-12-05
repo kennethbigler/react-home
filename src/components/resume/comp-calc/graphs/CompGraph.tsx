@@ -8,6 +8,7 @@ import {
   CompEntry,
 } from "../../../../recoil/comp-calculator-state";
 import dateHelper from "../../../../apis/DateHelper";
+import colors from "./colors";
 
 highchartsAccessibility(Highcharts); // initiate accessibility module
 
@@ -87,13 +88,14 @@ const CompChart = ({
         }
         compChartData[INFL].push(startTC);
       } else {
-        compChartData[INFL].push(0);
+        compChartData[INFL].push(bonus + salary + (stockAdj || stock));
       }
     });
   }
 
   // set chart options
   const options = {
+    colors: [...colors, color],
     chart: { type: "area", backgroundColor: null },
     credits: { enabled: false },
     legend: { enabled: false },

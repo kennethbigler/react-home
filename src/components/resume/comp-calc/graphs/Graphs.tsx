@@ -29,10 +29,10 @@ const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
     setSalary(salary);
   }, [stockAdj, stock, bonus, salary]);
 
-  const handleClick = (e: SeriesClickEventObject) => {
-    const { stock, stockAdj } = compCalcEntries[e.point.index];
-    const { bonus, salary } = compEntries[e.point.index];
-    setStartIdx(e.point.index);
+  const handleClick = ({ point: { index } }: SeriesClickEventObject) => {
+    const { stock, stockAdj } = compCalcEntries[index];
+    const { bonus, salary } = compEntries[index];
+    setStartIdx(index >= compEntries.length - 1 ? 0 : index);
     setStock(stockAdj || stock);
     setBonus(bonus);
     setSalary(salary);
