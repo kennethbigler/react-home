@@ -1,2 +1,0 @@
-import{A as P,C as S,e as c,E as u}from"./Header-_9woOApa.js";function g(o){var s;const{elementType:t,externalSlotProps:n,ownerState:r,skipResolvingSlotProps:p=!1,...a}=o,e=p?{}:P(n,r),{props:l,internalRef:f}=S({...a,externalSlotProps:e}),i=c(f,e==null?void 0:e.ref,(s=o.additionalProps)==null?void 0:s.ref);return u(t,{...l,ref:i},r)}export{g as u};
-//# sourceMappingURL=useSlotProps-kF76sogf.js.map

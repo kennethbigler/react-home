@@ -4,6 +4,7 @@ import highchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import { useRecoilValue } from "recoil";
 import themeAtom from "../../../../recoil/theme-atom";
+import colors from "./colors";
 
 highchartsAccessibility(Highcharts); // initiate accessibility module
 
@@ -19,6 +20,7 @@ const BreakdownChart = React.memo(
     const color = theme.mode === "light" ? "black" : "white";
 
     const options = {
+      colors,
       chart: { type: "pie", backgroundColor: null },
       credits: { enabled: false },
       legend: { enabled: false },
