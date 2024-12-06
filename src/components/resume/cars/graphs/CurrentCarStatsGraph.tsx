@@ -1,12 +1,10 @@
 import * as React from "react";
 import * as Highcharts from "highcharts";
-import highchartsAccessibility from "highcharts/modules/accessibility";
+import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import Grid from "@mui/material/Grid2";
 import { green, red, yellow } from "@mui/material/colors";
 import { CurrentCarStatsData } from "../../../../constants/cars";
-
-highchartsAccessibility(Highcharts); // initiate accessibility module
 
 export interface CurrentCarStatsGraphProps extends CurrentCarStatsData {
   isBike?: boolean;
