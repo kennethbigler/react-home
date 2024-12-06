@@ -1,12 +1,10 @@
 import * as React from "react";
 import * as Highcharts from "highcharts";
-import highchartsAccessibility from "highcharts/modules/accessibility";
+import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import { useRecoilValue } from "recoil";
 import themeAtom from "../../../../recoil/theme-atom";
 import colors from "./colors";
-
-highchartsAccessibility(Highcharts); // initiate accessibility module
 
 interface BreakdownChartProps {
   bonus: number;

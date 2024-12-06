@@ -1,5 +1,5 @@
 import * as Highcharts from "highcharts";
-import highchartsAccessibility from "highcharts/modules/accessibility";
+import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import { useRecoilValue } from "recoil";
 import themeAtom from "../../../../recoil/theme-atom";
@@ -9,8 +9,6 @@ import {
 } from "../../../../recoil/comp-calculator-state";
 import dateHelper from "../../../../apis/DateHelper";
 import colors from "./colors";
-
-highchartsAccessibility(Highcharts); // initiate accessibility module
 
 const STOCK = 0;
 const BONUS = 1;
