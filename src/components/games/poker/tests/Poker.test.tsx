@@ -1,7 +1,7 @@
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
 import Poker from "..";
-import Deck from "../../../../apis/useDeck";
+import Deck from "../../../../apis/Deck";
 
 const deck = vi.spyOn(Deck, "deal");
 
