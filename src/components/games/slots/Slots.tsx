@@ -7,7 +7,7 @@ import slotsState, { slotsRead } from "../../../jotai/slots-state";
 import PayoutTable from "./PayoutTable";
 import MoneyTable from "./MoneyTable";
 import ReelDisplay from "./ReelDisplay";
-import SlotMachine from "../../../apis/SlotMachine";
+import SlotMachine from "./slotMachine";
 import PlayerMenu from "../../common/header/PlayerMenu";
 
 /* Slots  ->  ReelDisplay
