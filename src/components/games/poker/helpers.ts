@@ -1,4 +1,4 @@
-import { DBCard } from "../../../apis/Deck";
+import { DBCard } from "../../../apis/useDeck";
 import { DBPlayer } from "../../../jotai/player-atom";
 
 /** Rankings:

@@ -1,9 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
-import Deck from "../../../apis/Deck";
+import * as Deck from "../../../apis/useDeck";
 import Blackjack from ".";
-
-const deck = vi.spyOn(Deck, "deal");
 
 const ace = { name: "A", weight: 14, suit: "♣" };
 const king = { name: "K", weight: 13, suit: "♣" };
@@ -37,8 +35,8 @@ describe("games | blackjack | Blackjack", () => {
   });
 
   it("can't HIT on a blackjack", async () => {
-    deck
-      .mockReset()
+    const dealMock = vi
+      .fn()
       .mockResolvedValueOnce([king, ace])
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king, queen])
@@ -47,6 +45,10 @@ describe("games | blackjack | Blackjack", () => {
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king])
       .mockResolvedValue([jack]);
+    vi.spyOn(Deck, "default").mockImplementation(() => ({
+      shuffle: vi.fn().mockResolvedValue(null),
+      deal: dealMock,
+    }));
 
     render(<Blackjack />);
 
@@ -66,8 +68,8 @@ describe("games | blackjack | Blackjack", () => {
   });
 
   it("can HIT on a hand, stay, then start a new game", async () => {
-    deck
-      .mockReset()
+    const dealMock = vi
+      .fn()
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king, queen])
@@ -76,6 +78,10 @@ describe("games | blackjack | Blackjack", () => {
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king])
       .mockResolvedValue([jack]);
+    vi.spyOn(Deck, "default").mockImplementation(() => ({
+      shuffle: vi.fn().mockResolvedValue(null),
+      deal: dealMock,
+    }));
 
     render(<Blackjack />);
 
@@ -92,8 +98,8 @@ describe("games | blackjack | Blackjack", () => {
   });
 
   it("can DOUBLE on a hand, then start a new game", async () => {
-    deck
-      .mockReset()
+    const dealMock = vi
+      .fn()
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king, queen])
@@ -102,6 +108,10 @@ describe("games | blackjack | Blackjack", () => {
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king])
       .mockResolvedValue([jack]);
+    vi.spyOn(Deck, "default").mockImplementation(() => ({
+      shuffle: vi.fn().mockResolvedValue(null),
+      deal: dealMock,
+    }));
 
     render(<Blackjack />);
 
@@ -120,8 +130,8 @@ describe("games | blackjack | Blackjack", () => {
   });
 
   it("can SPLIT on a hand, then start a new game", async () => {
-    deck
-      .mockReset()
+    const dealMock = vi
+      .fn()
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king, queen])
@@ -130,6 +140,10 @@ describe("games | blackjack | Blackjack", () => {
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king])
       .mockResolvedValue([nine, eight]);
+    vi.spyOn(Deck, "default").mockImplementation(() => ({
+      shuffle: vi.fn().mockResolvedValue(null),
+      deal: dealMock,
+    }));
 
     render(<Blackjack />);
 
