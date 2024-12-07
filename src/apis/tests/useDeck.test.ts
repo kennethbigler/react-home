@@ -1,4 +1,4 @@
-import useDeck, { rankSort } from "../useDeck";
+import Deck, { rankSort } from "../useDeck";
 
 const cardNames = [
   "2",
@@ -19,7 +19,7 @@ const cardSuits = ["♣", "♦", "♥", "♠"];
 
 describe("apis | Deck", () => {
   test("shuffle", async () => {
-    await useDeck()
+    await Deck()
       .shuffle()
       .then((deck) => {
         expect(deck).toBeDefined();
@@ -31,7 +31,7 @@ describe("apis | Deck", () => {
   });
 
   test("deal", async () => {
-    await useDeck()
+    await Deck()
       .deal(0)
       .then((deck) => {
         expect(deck).toBeDefined();
@@ -39,7 +39,7 @@ describe("apis | Deck", () => {
         expect(deck).toHaveLength(0);
       });
 
-    await useDeck()
+    await Deck()
       .deal(1)
       .then((deck) => {
         expect(deck).toBeDefined();
@@ -50,7 +50,7 @@ describe("apis | Deck", () => {
         expect(deck).toHaveLength(1);
       });
 
-    await useDeck()
+    await Deck()
       .deal(2)
       .then((deck) => {
         expect(deck).toBeDefined();
