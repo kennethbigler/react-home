@@ -1,4 +1,4 @@
-import { O, X, EMPTY } from "../../../recoil/tic-tac-toe-atom";
+import { O, X, EMPTY } from "../../../jotai/tic-tac-toe-atom";
 
 export const getTurn = (n: number): string => (n % 2 ? O : X);
 

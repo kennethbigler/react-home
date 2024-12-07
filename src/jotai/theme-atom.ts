@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atomWithStorage } from "jotai/utils";
 import { indigo, green, teal } from "@mui/material/colors";
 import { Color } from "@mui/material";
 
@@ -26,18 +26,9 @@ export const lightTheme: ThemeState = {
 // prefers-color-scheme could be either light or dark, here we check for light
 const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
 
-const themeAtom = atom({
-  key: "themeAtom",
-  default:
-    (JSON.parse(localStorage.getItem("theme-atom") || "null") as ThemeState) ||
-    (prefersLight ? lightTheme : darkTheme),
-  effects: [
-    ({ onSet }) => {
-      onSet((state) => {
-        localStorage.setItem("theme-atom", JSON.stringify(state));
-      });
-    },
-  ],
-});
+const themeAtom = atomWithStorage(
+  "themeAtom",
+  prefersLight ? lightTheme : darkTheme,
+);
 
 export default themeAtom;

@@ -1,6 +1,5 @@
-import { screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import TravelMap from "..";
-import render from "../../../../recoil-test-render";
 
 describe("resume | travel-map | TravelMap", () => {
   it("renders as expected", () => {

@@ -6,7 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import Money from "./Money";
 import { getMoneyText } from "./helpers";
-import { Briefcase } from "../../../recoil/deal-or-no-deal-state";
+import { Briefcase } from "../../../jotai/deal-or-no-deal-state";
 
 interface ModalProps {
   board: Briefcase[];
@@ -27,7 +27,7 @@ const genMoneyCols = (
   arr: Briefcase[],
   start: number,
   stop = arr.length,
-): React.ReactNode[] =>
+): React.ReactElement[] =>
   arr
     .slice(start, stop)
     .map((bc) => <Money key={bc.loc} on={bc.on} val={bc.val} />);

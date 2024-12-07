@@ -15,9 +15,9 @@ const MurderMystery = React.memo(() => {
     [setExpanded],
   );
 
-  const requiredRoles: React.ReactNode[] = [];
-  const recRoles: React.ReactNode[] = [];
-  const optionalRoles: React.ReactNode[] = [];
+  const requiredRoles: React.ReactElement[] = [];
+  const recRoles: React.ReactElement[] = [];
+  const optionalRoles: React.ReactElement[] = [];
 
   roles.forEach((r, i) => {
     const { role, gender, description, hint, clue } = r;

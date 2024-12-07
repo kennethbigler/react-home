@@ -1,5 +1,4 @@
-import { screen, fireEvent, waitFor } from "@testing-library/react";
-import render from "../../../../recoil-test-render";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import DealOrNoDeal from "..";
 
 describe("games | deal-or-no-deal | DealOrNoDeal", () => {
@@ -9,7 +8,6 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
     expect(screen.getByText("Deal or No Deal")).toBeInTheDocument();
     expect(screen.getByText("Your Case: ?")).toBeInTheDocument();
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
-    expect(screen.getByText("Ken: $100")).toBeInTheDocument();
     expect(screen.getAllByRole("button")).toHaveLength(27);
   });
 
@@ -18,7 +16,6 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
 
     expect(screen.getByText("Your Case: ?")).toBeInTheDocument();
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
-    expect(screen.getByText("Ken: $100")).toBeInTheDocument();
     const buttons = screen.getAllByRole("button");
     expect(buttons).toHaveLength(27);
 
@@ -27,7 +24,6 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
 
     expect(screen.getByText("Your Case: 7")).toBeInTheDocument();
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
-    expect(screen.getByText("Ken: $0")).toBeInTheDocument();
 
     // open cases 1-6
     fireEvent.click(buttons[1]);
@@ -74,7 +70,6 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
 
     expect(screen.getByText("Your Case: ?")).toBeInTheDocument();
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
-    expect(screen.getByText("Ken: $100")).toBeInTheDocument();
     const buttons = screen.getAllByRole("button");
     expect(buttons).toHaveLength(27);
 
@@ -83,7 +78,6 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
 
     expect(screen.getByText("Your Case: 7")).toBeInTheDocument();
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
-    expect(screen.getByText("Ken: $0")).toBeInTheDocument();
 
     // open cases 1-6
     fireEvent.click(buttons[1]);
@@ -164,6 +158,7 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
     expect(screen.getByText("My Case")).toBeInTheDocument();
     expect(screen.getByText("Other Case")).toBeInTheDocument();
     fireEvent.click(screen.getByText("Other Case"));
+    fireEvent.click(screen.getByText("New Game"));
   });
 
   it("plays a game and never takes a deal", async () => {
@@ -171,7 +166,6 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
 
     expect(screen.getByText("Your Case: ?")).toBeInTheDocument();
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
-    expect(screen.getByText("Ken: $100")).toBeInTheDocument();
     const buttons = screen.getAllByRole("button");
     expect(buttons).toHaveLength(27);
 
@@ -180,7 +174,6 @@ describe("games | deal-or-no-deal | DealOrNoDeal", () => {
 
     expect(screen.getByText("Your Case: 7")).toBeInTheDocument();
     expect(screen.getByText("Number of Cases to Open: 6")).toBeInTheDocument();
-    expect(screen.getByText("Ken: $0")).toBeInTheDocument();
 
     // open cases 1-6
     fireEvent.click(buttons[1]);

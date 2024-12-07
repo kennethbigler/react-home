@@ -1,17 +1,14 @@
 import * as React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useAtom, useAtomValue } from "jotai";
 import Controls from "./Controls";
 import Table from "./table/Table";
 import Analysis from "./analysis/Analysis";
-import aYTOAtom, {
-  aytoPlayerSelector,
-} from "../../../recoil/are-you-the-one-atom";
+import aYTOAtom, { aytoPlayerRead } from "../../../jotai/are-you-the-one-state";
 import useHist from "./histogram/useHist";
 
 const AreYouTheOne = () => {
-  const [{ matches, noMatch, roundPairings }, setState] =
-    useRecoilState(aYTOAtom);
-  const { ladies, gents, options } = useRecoilValue(aytoPlayerSelector);
+  const [{ matches, noMatch, roundPairings }, setState] = useAtom(aYTOAtom);
+  const { ladies, gents, options } = useAtomValue(aytoPlayerRead);
 
   // state
   const [ri, setRi] = React.useState(0);

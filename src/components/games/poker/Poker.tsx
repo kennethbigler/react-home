@@ -1,19 +1,20 @@
 import * as React from "react";
+import { useAtom } from "jotai";
 import Typography from "@mui/material/Typography";
-import { useRecoilState } from "recoil";
 import GameTable from "../game-table";
 import asyncForEach from "../../../apis/asyncForEach";
-import Deck from "../../../apis/Deck";
+import useDeck, { rankSort } from "../../../apis/useDeck";
 import { computer, findAndPayWinner } from "./helpers";
 import pokerState, {
   PokerGameFunctions as PGF,
   newPokerGameState,
-} from "../../../recoil/poker-state";
-import { DBPlayer, defaultWeigh } from "../../../recoil/player-atom";
+} from "../../../jotai/poker-state";
+import { DBPlayer, defaultWeigh } from "../../../jotai/player-atom";
 import PlayerMenu from "../../common/header/PlayerMenu";
 
 const Poker = React.memo(() => {
-  const [{ poker, turn, players }, setState] = useRecoilState(pokerState);
+  const [{ poker, turn, players }, setState] = useAtom(pokerState);
+  const { deal, shuffle } = useDeck();
   const { cardsToDiscard, gameFunctions, gameOver, hideHands } = poker;
 
   // ----------     bot automation handlers     ---------- //
@@ -29,11 +30,11 @@ const Poker = React.memo(() => {
 
     try {
       // Swap Cards
-      const newCards = await Deck.deal(cardsToDiscardInDB.length);
+      const newCards = await deal(cardsToDiscardInDB.length);
       cardsToDiscardInDB.forEach((discardIdx, i) => {
         cards[discardIdx] = newCards[i];
       });
-      cards.sort(Deck.rankSort);
+      cards.sort(rankSort);
       const { weight, soft } = defaultWeigh(cards);
       // Update Hand
       newPlayer.hands = [{ cards, weight, soft }];
@@ -81,14 +82,14 @@ const Poker = React.memo(() => {
   /** function to finish betting and start the game */
   const startGame = async (): Promise<void> => {
     // shuffle the deck
-    await Deck.shuffle()
+    await shuffle()
       .then(async () => {
         const newPlayers = [...players];
         // deal the hands
         await asyncForEach(players, async (player: DBPlayer) => {
           // New Hand
-          const cards = await Deck.deal(5);
-          cards.sort(Deck.rankSort);
+          const cards = await deal(5);
+          cards.sort(rankSort);
           const { weight, soft } = defaultWeigh(cards);
 
           // Create New Hand

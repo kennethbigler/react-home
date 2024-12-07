@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atomWithStorage } from "jotai/utils";
 import { MuiColors } from "../components/common/types";
 
 export type BotCPlayerStatus = "liar" | "used" | "exec" | "kill";
@@ -51,7 +51,7 @@ for (let i = 0; i < BOTC_MAX_PLAYERS + BOTC_MAX_TRAVELERS; i += 1) {
 const numRounds = [0, 1, 2, 3, 4, 5, 6, 7];
 export const newTracker = () => numRounds.map(() => newPlayers.map(() => 0));
 
-const newBotCGame = () => ({
+const newBotCGame = (): BotCState => ({
   isText: true,
   numPlayers: 8,
   numTravelers: 0,
@@ -61,18 +61,6 @@ const newBotCGame = () => ({
   tracker: newTracker(),
 });
 
-const botcAtom = atom({
-  key: "botcAtom",
-  default:
-    (JSON.parse(localStorage.getItem("botc-atom") || "null") as BotCState) ||
-    newBotCGame(),
-  effects: [
-    ({ onSet }) => {
-      onSet((state) => {
-        localStorage.setItem("botc-atom", JSON.stringify(state));
-      });
-    },
-  ],
-});
+const botcAtom = atomWithStorage("botcAtom", newBotCGame());
 
 export default botcAtom;

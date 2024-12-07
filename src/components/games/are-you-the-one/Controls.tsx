@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import FormControl from "@mui/material/FormControl";
@@ -8,9 +8,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { SelectChangeEvent } from "@mui/material";
 import {
-  aytoSeasonSelector,
+  aytoSeasonState,
   RoundPairing,
-} from "../../../recoil/are-you-the-one-atom";
+} from "../../../jotai/are-you-the-one-state";
 import { seasons } from "../../../constants/ayto";
 
 interface ControlsProps {
@@ -45,7 +45,7 @@ const Controls = ({
   updateScore,
 }: ControlsProps) => {
   // hooks/state
-  const [season, setSeason] = useRecoilState(aytoSeasonSelector);
+  const [season, setSeason] = useAtom(aytoSeasonState);
   const score = getScore(roundPairings[ri]?.score);
 
   // handlers

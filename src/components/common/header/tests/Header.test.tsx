@@ -1,7 +1,6 @@
 import * as React from "react";
-import { fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen } from "@testing-library/react";
 import { vi } from "vitest";
-import render from "../../../../recoil-test-render";
 import { NavProps } from "../Header";
 import Header from "..";
 

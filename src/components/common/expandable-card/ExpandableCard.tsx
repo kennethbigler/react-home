@@ -17,9 +17,9 @@ interface ExpandableCardProps {
   /** invert the color of the title and subtitle text */
   inverted?: boolean;
   /** subtitle content */
-  subtitle?: string | React.ReactNode;
+  subtitle?: string | React.ReactElement;
   /** title content */
-  title?: string | React.ReactNode;
+  title?: string | React.ReactElement;
 }
 
 const ExpandableCard = ({

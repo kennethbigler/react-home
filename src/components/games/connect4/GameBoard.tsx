@@ -2,7 +2,7 @@ import * as React from "react";
 import Paper from "@mui/material/Paper";
 import Board from "./Board";
 import Header from "./Header";
-import { C4Turn } from "../../../recoil/connect4-atom";
+import { C4Turn } from "../../../jotai/connect4-atom";
 
 interface GameBoardProps {
   board: number[][];

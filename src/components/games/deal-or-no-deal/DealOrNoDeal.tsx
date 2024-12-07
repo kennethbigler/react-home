@@ -1,22 +1,22 @@
 import * as React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useAtom, useAtomValue } from "jotai";
 import Typography from "@mui/material/Typography";
 import Modal from "./Modal";
 import Board from "./Board";
 import Header from "./Header";
 import dndState, {
-  dndReadOnlyState,
+  dealOrNoDealRead,
   briefcasesToOpen,
   newDNDGame,
-} from "../../../recoil/deal-or-no-deal-state";
+} from "../../../jotai/deal-or-no-deal-state";
 import PlayerMenu from "../../common/header/PlayerMenu";
 
 /* DealOrNoDeal  ->  Header
  *              |->  Board  ->  Case
  *              |->  Modal  ->  Money */
 const DealOrNoDeal = React.memo(() => {
-  const [{ dnd, money, status }, setState] = useRecoilState(dndState);
-  const { numCases, offer, name } = useRecoilValue(dndReadOnlyState);
+  const [{ dnd, money, status }, setState] = useAtom(dndState);
+  const { numCases, offer, name } = useAtomValue(dealOrNoDealRead);
   const { board, dndOpen, isOver, turn, playerChoice, casesToOpen } = dnd;
 
   // --------------------     Header     -------------------- //

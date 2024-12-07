@@ -17,7 +17,7 @@ const cellStyles: React.CSSProperties = {
 
 const ReelDisplay = ({ reel }: ReelDisplayProps) => {
   /** generate code for slot machine */
-  const getSlots = React.useCallback((): React.ReactNode[] => {
+  const getSlots = React.useCallback((): React.ReactElement[] => {
     // display for slots
     const slots = [];
     for (let i = 0; i < 3; i += 1) {

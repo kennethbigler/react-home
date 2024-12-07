@@ -1,12 +1,12 @@
+import { useAtomValue } from "jotai";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
-import { useRecoilValue } from "recoil";
-import themeAtom from "../../../../recoil/theme-atom";
+import themeAtom from "../../../../jotai/theme-atom";
 import {
   CompCalcEntry,
   CompEntry,
-} from "../../../../recoil/comp-calculator-state";
+} from "../../../../jotai/comp-calculator-state";
 import dateHelper from "../../../../apis/DateHelper";
 import colors from "./colors";
 
@@ -58,7 +58,7 @@ const CompChart = ({
   onClick,
 }: CompChartProps) => {
   // process theme
-  const theme = useRecoilValue(themeAtom);
+  const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
   // calculate chart data

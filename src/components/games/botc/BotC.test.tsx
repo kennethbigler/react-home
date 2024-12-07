@@ -1,5 +1,4 @@
-import { screen, fireEvent } from "@testing-library/react";
-import render from "../../../recoil-test-render";
+import { render, screen, fireEvent } from "@testing-library/react";
 import BotC from ".";
 
 describe("games | BotC", () => {

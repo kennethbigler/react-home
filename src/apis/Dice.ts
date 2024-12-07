@@ -1,4 +1,4 @@
-import { Dice } from "../recoil/yahtzee-state";
+import { Dice } from "../jotai/yahtzee-state";
 
 export const diceRoller = (): Dice =>
   (Math.floor(Math.random() * 6) + 1) as Dice;

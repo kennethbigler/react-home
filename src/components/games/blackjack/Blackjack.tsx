@@ -5,18 +5,18 @@
  * buy insurance on dealer's Ace
  */
 import * as React from "react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import asyncForEach from "../../../apis/asyncForEach";
-import { getGameFunctions, hitHelper, splitHelper } from "./blackjackHelpers";
-import { DEALER, weighHand, playBots } from "./blackjackAI";
+import { getGameFunctions } from "./blackjackHelpers";
+import useBlackjackAI, { DEALER, weighHand } from "./useBlackjackAI";
 import Header from "./Header";
 import GameTable from "../game-table";
-import Deck from "../../../apis/Deck";
-import { DBPlayer } from "../../../recoil/player-atom";
+import { rankSort } from "../../../apis/useDeck";
+import { DBPlayer } from "../../../jotai/player-atom";
 import blackjackState, {
   GameFunctions,
   newBlackjackGame,
-} from "../../../recoil/blackjack-state";
+} from "../../../jotai/blackjack-state";
 
 const BlackJack = React.memo(() => {
   const [
@@ -26,7 +26,8 @@ const BlackJack = React.memo(() => {
       bj: { gameFunctions, hideHands },
     },
     setState,
-  ] = useRecoilState(blackjackState);
+  ] = useAtom(blackjackState);
+  const { playBots, hitHelper, splitHelper, shuffle, deal } = useBlackjackAI();
 
   /** function that takes a hand of duplicates and makes 2 hands */
   const split = async (): Promise<void> => {
@@ -137,12 +138,12 @@ const BlackJack = React.memo(() => {
   const finishBetting = async (): Promise<void> => {
     const newPlayers: DBPlayer[] = [];
     // shuffle the deck
-    await Deck.shuffle().then(async () => {
+    await shuffle().then(async () => {
       // deal the hands
       await asyncForEach(players, async (player: DBPlayer) => {
-        const newCards = await Deck.deal(player.id !== DEALER ? 2 : 1);
+        const newCards = await deal(player.id !== DEALER ? 2 : 1);
         const cards = [...newCards];
-        cards.sort(Deck.rankSort);
+        cards.sort(rankSort);
         const { weight, soft } = weighHand(cards);
         newPlayers.push({ ...player, hands: [{ cards, weight, soft }] });
       });

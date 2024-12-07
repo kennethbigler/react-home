@@ -71,7 +71,7 @@ export default [
     },
 
     {
-        files: ["**/*.test.ts", "**/*.test.tsx", "**/recoil-test-render.tsx"],
+        files: ["**/*.test.ts", "**/*.test.tsx"],
         rules: {
             "@typescript-eslint/no-unsafe-call": "off",
             "@typescript-eslint/no-unsafe-return": "off",

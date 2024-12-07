@@ -1,10 +1,10 @@
+import { useAtomValue } from "jotai";
 import Grid from "@mui/material/Grid2";
-import { useRecoilValue } from "recoil";
 import { CarEntry } from "../../../../constants/cars";
 import CarChart from "./CarChart";
 import CarSankeyGraph from "./CarSankeyGraph";
 import ExpandableCard from "../../../common/expandable-card";
-import themeAtom from "../../../../recoil/theme-atom";
+import themeAtom from "../../../../jotai/theme-atom";
 import CurrentCarStats from "./CurrentCarStats";
 
 interface CarGraphsProps {
@@ -14,7 +14,7 @@ interface CarGraphsProps {
 }
 
 const CarGraphs = ({ data, hideFamily, hideKen }: CarGraphsProps) => {
-  const theme = useRecoilValue(themeAtom);
+  const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
   return (

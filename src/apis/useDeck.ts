@@ -6,6 +6,9 @@ export interface DBCard {
   weight: number;
 }
 
+/** sort by card weight */
+export const rankSort = (a: DBCard, b: DBCard): number => a.weight - b.weight;
+
 const NEW_DECK: DBCard[] = [
   { name: "2", weight: 2, suit: "♣" },
   { name: "3", weight: 3, suit: "♣" },
@@ -75,50 +78,51 @@ const getDeck = (): Promise<DBCard[]> =>
 const setDeck = (deck: DBCard[]): Promise<DBCard[] | null> =>
   localForage.setItem("deck", deck).catch(() => null);
 
-/** randomize order of the cards O(N + M) */
-const shuffleDeck = (deck: DBCard[]): DBCard[] => {
-  const shuffledDeck: DBCard[] = [];
-  // create immutable copy of deck
-  deck.map((card) => shuffledDeck.push(card));
-  // shuffle the cards
-  for (let i = 0; i < 100; i += 1) {
-    const j = Math.floor(Math.random() * shuffledDeck.length);
-    const k = Math.floor(Math.random() * shuffledDeck.length);
-    const temp = shuffledDeck[j];
-    shuffledDeck[j] = shuffledDeck[k];
-    shuffledDeck[k] = temp;
-  }
-  // update deck state
-  return shuffledDeck;
-};
+const useDeck = () => {
+  /** randomize order of the cards O(N + M) */
+  const shuffleDeck = (deck: DBCard[]): DBCard[] => {
+    const shuffledDeck: DBCard[] = [];
+    // create immutable copy of deck
+    deck.map((card) => shuffledDeck.push(card));
+    // shuffle the cards
+    for (let i = 0; i < 100; i += 1) {
+      const j = Math.floor(Math.random() * shuffledDeck.length);
+      const k = Math.floor(Math.random() * shuffledDeck.length);
+      const temp = shuffledDeck[j];
+      shuffledDeck[j] = shuffledDeck[k];
+      shuffledDeck[k] = temp;
+    }
+    // update deck state
+    return shuffledDeck;
+  };
 
-/** randomize order of the cards O(N + M) */
-const shuffle = (): Promise<DBCard[] | null> =>
-  setDeck(shuffleDeck(getNewDeck()));
+  /** randomize order of the cards O(N + M) */
+  const shuffle = (): Promise<DBCard[] | null> =>
+    setDeck(shuffleDeck(NEW_DECK));
 
-/** return an array of a specified length O(2N) */
-const deal = (num = 0): Promise<DBCard[]> => {
-  const cards: DBCard[] = [];
-  return getDeck()
-    .then((deck: DBCard[]): DBCard[] => {
-      // verify we have enough cards
-      if (num > deck.length) {
-        return deck;
-      }
-      // get the cards
-      for (let i = 0; i < num; i += 1) {
-        const card: DBCard | undefined = deck.pop();
-        if (card) {
-          cards.push(card);
+  /** return an array of a specified length O(2N) */
+  const deal = (num = 0): Promise<DBCard[]> => {
+    const cards: DBCard[] = [];
+    return getDeck()
+      .then((deck: DBCard[]): DBCard[] => {
+        // verify we have enough cards
+        if (num > deck.length) {
+          return deck;
         }
-      }
-      return deck;
-    })
-    .then((deck: DBCard[]) => setDeck(deck))
-    .then(() => cards);
+        // get the cards
+        for (let i = 0; i < num; i += 1) {
+          const card: DBCard | undefined = deck.pop();
+          if (card) {
+            cards.push(card);
+          }
+        }
+        return deck;
+      })
+      .then((deck: DBCard[]) => setDeck(deck))
+      .then(() => cards);
+  };
+
+  return { shuffle, deal };
 };
 
-/** sort by card weight */
-const rankSort = (a: DBCard, b: DBCard): number => a.weight - b.weight;
-
-export default { shuffle, deal, rankSort };
+export default useDeck;

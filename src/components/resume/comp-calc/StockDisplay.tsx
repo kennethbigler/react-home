@@ -1,6 +1,6 @@
 import Chip from "@mui/material/Chip";
 import usDollar from "../../../apis/usdFormatter";
-import { StockState } from "../../../recoil/stock-atom";
+import { StockState } from "../../../jotai/stock-atom";
 
 interface StockEntryProps {
   stockEntries: StockState;

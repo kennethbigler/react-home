@@ -22,7 +22,7 @@ const cellStyles: React.CSSProperties = {
 // ratio to display on table, 2:1 seemed to look best
 const EURatio = 3;
 // export array of <li> elements for display
-const countries: React.ReactNode[] = [];
+const countries: React.ReactElement[] = [];
 // iterate to the end of the longer list
 const len = Math.max(
   americas.length,

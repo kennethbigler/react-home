@@ -1,9 +1,9 @@
 import * as React from "react";
+import { useAtom, useAtomValue } from "jotai";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
-import { useRecoilState, useRecoilValue } from "recoil";
-import slotsState, { slotsReadOnlyState } from "../../../recoil/slots-state";
+import slotsState, { slotsRead } from "../../../jotai/slots-state";
 import PayoutTable from "./PayoutTable";
 import MoneyTable from "./MoneyTable";
 import ReelDisplay from "./ReelDisplay";
@@ -14,8 +14,8 @@ import PlayerMenu from "../../common/header/PlayerMenu";
  *       |->  MoneyTable
  *       |->  PayoutTable */
 const Slots = React.memo(() => {
-  const [{ reel, money, houseMoney }, setState] = useRecoilState(slotsState);
-  const { bet, name } = useRecoilValue(slotsReadOnlyState);
+  const [{ reel, money, houseMoney }, setState] = useAtom(slotsState);
+  const { bet, name } = useAtomValue(slotsRead);
   const [exchange, setExchange] = React.useState(0);
 
   const updateSlotMachine = () => {

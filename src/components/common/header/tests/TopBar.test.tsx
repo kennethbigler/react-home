@@ -1,6 +1,5 @@
-import { fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen } from "@testing-library/react";
 import { vi } from "vitest";
-import render from "../../../../recoil-test-render";
 import TopBar from "../TopBar";
 
 describe("common | header | TopBar", () => {

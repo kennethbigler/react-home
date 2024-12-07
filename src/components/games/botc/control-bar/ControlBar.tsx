@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid2";
 // Custom
 import EditPlayers from "./edit-players/EditPlayers";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
-import { BotCPlayer } from "../../../../recoil/botc-atom";
+import { BotCPlayer } from "../../../../jotai/botc-atom";
 import { playerDist } from "../../../../constants/botc";
 import Tracker from "./Tracker";
 

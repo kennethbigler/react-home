@@ -2,7 +2,7 @@ import * as React from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { TopGameScore, BottomGameScore, ADD_DICE } from "../types";
-import { Dice } from "../../../../recoil/yahtzee-state";
+import { Dice } from "../../../../jotai/yahtzee-state";
 import {
   hasXDice,
   isFullHouse,
@@ -20,7 +20,7 @@ interface BottomTableProps {
     points: number,
     wasTop: boolean,
     i: number,
-  ) => React.ReactNode;
+  ) => React.ReactElement;
   showScoreButtons: boolean;
   sx: React.CSSProperties;
   top: TopGameScore[];

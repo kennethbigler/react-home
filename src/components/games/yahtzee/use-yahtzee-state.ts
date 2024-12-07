@@ -1,8 +1,8 @@
-import { useRecoilState } from "recoil";
-import yahtzeeState, { newYahtzee, Dice } from "../../../recoil/yahtzee-state";
+import { useAtom } from "jotai";
+import yahtzeeState, { newYahtzee, Dice } from "../../../jotai/yahtzee-state";
 
 const useYahtzeeState = () => {
-  const [state, setState] = useRecoilState(yahtzeeState);
+  const [state, setState] = useAtom(yahtzeeState);
 
   const newGame = (score: number) =>
     setState({

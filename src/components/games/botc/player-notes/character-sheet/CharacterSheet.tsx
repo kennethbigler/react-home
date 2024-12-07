@@ -6,7 +6,7 @@ import {
   BotCPlayer,
   BotCPlayerStatus,
   BotCRole,
-} from "../../../../../recoil/botc-atom";
+} from "../../../../../jotai/botc-atom";
 import EmojiNotes from "./EmojiNotes";
 
 interface CharacterSheetProps {

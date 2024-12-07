@@ -1,12 +1,12 @@
 import * as React from "react";
+import { useAtomValue } from "jotai";
 import Typography from "@mui/material/Typography";
-import { useRecoilValue } from "recoil";
 import DiceAPI from "../../../apis/Dice";
 import ScoreTable from "./score-table/ScoreTable";
 import { ADD_DICE, BottomGameScore } from "./types";
 import Header from "./Header";
 import TableHeader from "./TableHeader";
-import { Dice, yahtzeeReadOnlyState } from "../../../recoil/yahtzee-state";
+import { Dice, yahtzeeRead } from "../../../jotai/yahtzee-state";
 import useYahtzeeState from "./use-yahtzee-state";
 
 const topConstants = [
@@ -44,7 +44,7 @@ const Yahtzee = React.memo(() => {
   } = state;
 
   const { topSum, bottomSum, finalTopSum, finish, name } =
-    useRecoilValue(yahtzeeReadOnlyState);
+    useAtomValue(yahtzeeRead);
 
   const handleDiceRoll = (): void => {
     if (finish) {

@@ -6,7 +6,7 @@ import EducationSeg from "./EducationSeg";
 const Education = React.memo(() => (
   <ExpandableCard title="Education">
     <div style={{ paddingLeft: 20, paddingRight: 20 }}>
-      {classes.map((d: School, i: number): React.ReactNode => {
+      {classes.map((d: School, i: number): React.ReactElement | null => {
         if (d.school) {
           return (
             <div key={i}>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import Typography from "@mui/material/Typography";
 import helpEvalConnect4 from "./eval-connect4";
 import GameBoard from "./GameBoard";
@@ -8,12 +8,12 @@ import connect4Atom, {
   C4Turn,
   immutableBoardCopy,
   newConnect4Game,
-} from "../../../recoil/connect4-atom";
+} from "../../../jotai/connect4-atom";
 
 /* Connect4  ->  GameBoard  ->  Header  ->  Piece
  *                         |->  Board   ->  Piece */
 const Connect4 = React.memo(() => {
-  const [{ turn, board, winner }, setState] = useRecoilState(connect4Atom);
+  const [{ turn, board, winner }, setState] = useAtom(connect4Atom);
 
   /** start a new game, reset the board and helper vars */
   const newGame = (): void => {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { SelectChangeEvent } from "@mui/material";
 import botcAtom, {
   BotCPlayer,
@@ -7,11 +7,11 @@ import botcAtom, {
   BotCPlayerStatus,
   BotCRole,
   newTracker,
-} from "../../../recoil/botc-atom";
+} from "../../../jotai/botc-atom";
 
 /** -------------------- PlayerNotes Specific Functions -------------------- */
 export const usePlayerNotes = () => {
-  const [{ botcPlayers, ...other }, setState] = useRecoilState(botcAtom);
+  const [{ botcPlayers, ...other }, setState] = useAtom(botcAtom);
 
   /** handle checkboxes checked for player stat updates */
   const updateStats =
@@ -60,7 +60,7 @@ export const useEditPlayers = () => {
   const [
     { isText, numPlayers, numTravelers, script, botcPlayers, ...other },
     setState,
-  ] = useRecoilState(botcAtom);
+  ] = useAtom(botcAtom);
 
   /** update player name onBlur */
   const updateNames =
@@ -173,7 +173,7 @@ export const useEditPlayers = () => {
 
 /** -------------------- Tracker Specific Functions -------------------- */
 export const useTracker = () => {
-  const [{ round, tracker, ...other }, setState] = useRecoilState(botcAtom);
+  const [{ round, tracker, ...other }, setState] = useAtom(botcAtom);
 
   const onRoundClick = (i: number) => () =>
     setState({ ...other, tracker, round: i });
@@ -192,7 +192,7 @@ export const useTracker = () => {
 /** -------------------- Home Specific Functions -------------------- */
 const useBotC = () => {
   const [{ isText, numPlayers, numTravelers, script, botcPlayers }, setState] =
-    useRecoilState(botcAtom);
+    useAtom(botcAtom);
 
   /** set a new game */
   const newBotCGame = () => {

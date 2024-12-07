@@ -1,30 +1,6 @@
-import { GameFunctions } from "../../../recoil/blackjack-state";
-import { DBHand, DBPlayer } from "../../../recoil/player-atom";
-import { hitBotHelper, splitBotHelper, weighHand } from "./blackjackAI";
-
-/** function that takes a hand of duplicates and makes 2 hands */
-export const splitHelper = async (
-  player: DBPlayer,
-  handTurn: number,
-): Promise<DBHand[]> => {
-  const { hands } = player;
-  const [hand1, hand2] = await splitBotHelper(hands[handTurn]);
-  // update global hands
-  const newHands = hands.map((item, i) => (i !== handTurn ? item : hand2));
-  newHands.splice(handTurn, 0, hand1);
-  return newHands;
-};
-
-/** function to get a new card */
-export const hitHelper = async (
-  player: DBPlayer,
-  handTurn: number,
-): Promise<DBHand[]> => {
-  const { hands } = player;
-  const newHand = await hitBotHelper(hands[handTurn]);
-  const newHands = hands.map((item, i) => (i !== handTurn ? item : newHand));
-  return newHands;
-};
+import { GameFunctions } from "../../../jotai/blackjack-state";
+import { DBHand } from "../../../jotai/player-atom";
+import { weighHand } from "./useBlackjackAI";
 
 /** get the game functions for the present hand */
 export const getGameFunctions = (hand: DBHand): GameFunctions[] => {
