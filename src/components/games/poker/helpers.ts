@@ -1,4 +1,4 @@
-import { DBCard } from "../../../apis/useDeck";
+import { DBCard } from "../../../jotai/deck-state";
 import { DBPlayer } from "../../../jotai/player-atom";
 
 /** Rankings:
@@ -148,54 +148,45 @@ export const getCardsToDiscard = (
  * if K / A -> draw 4
  * else draw 5
  */
-export const computer = async (
+export const computer = (
   player: DBPlayer,
-  discard: (
-    cardsToDiscardInDB: number[],
-    player: DBPlayer,
-  ) => Promise<DBPlayer>,
-): Promise<DBPlayer> => {
+  discard: (cardsToDiscardInDB: number[], player: DBPlayer) => void,
+) => {
   if (player.hands.length < 1) {
     return player;
   }
-  try {
-    const hand = player.hands[0].cards;
-    const hist = getHistogram(hand);
-    const rank = rankHand(hand, hist);
+  const hand = player.hands[0].cards;
+  const hist = getHistogram(hand);
+  const rank = rankHand(hand, hist);
 
-    switch (rank) {
-      case 0: /* draw 4-5 on high card */ {
-        const nextCardsToDiscard =
-          hist.lastIndexOf(1) >= 11
-            ? getCardsToDiscard(4, hist, hand) // if ace || king draw 4
-            : [0, 1, 2, 3, 4]; // otherwise, draw all 5
-        const newPlayer = await discard(nextCardsToDiscard, player);
-        return newPlayer;
-      }
-      case 1: /* draw 3 on 2 of a kind */ {
-        const nextCardsToDiscard = getCardsToDiscard(3, hist, hand);
-        const newPlayer = await discard(nextCardsToDiscard, player);
-        return newPlayer;
-      }
-      case 2: /* draw 1 on 3 of a kind */
-      case 3: /* draw 1 on 2 Pair */ {
-        const nextCardsToDiscard = getCardsToDiscard(1, hist, hand);
-        const newPlayer = await discard(nextCardsToDiscard, player);
-        return newPlayer;
-      }
-      case 4: // draw 0 on straight
-      case 5: // draw 0 on flush
-      case 6: // draw 0 on full house
-      case 7: // draw 0 on 4 of a kind
-      case 8: // draw 0 on straight flush
-      default:
-        break;
+  switch (rank) {
+    case 0: /* draw 4-5 on high card */ {
+      const nextCardsToDiscard =
+        hist.lastIndexOf(1) >= 11
+          ? getCardsToDiscard(4, hist, hand) // if ace || king draw 4
+          : [0, 1, 2, 3, 4]; // otherwise, draw all 5
+      discard(nextCardsToDiscard, player);
+      break;
     }
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e);
+    case 1: /* draw 3 on 2 of a kind */ {
+      const nextCardsToDiscard = getCardsToDiscard(3, hist, hand);
+      discard(nextCardsToDiscard, player);
+      break;
+    }
+    case 2: /* draw 1 on 3 of a kind */
+    case 3: /* draw 1 on 2 Pair */ {
+      const nextCardsToDiscard = getCardsToDiscard(1, hist, hand);
+      discard(nextCardsToDiscard, player);
+      break;
+    }
+    case 4: // draw 0 on straight
+    case 5: // draw 0 on flush
+    case 6: // draw 0 on full house
+    case 7: // draw 0 on 4 of a kind
+    case 8: // draw 0 on straight flush
+    default:
+      break;
   }
-  return player;
 };
 
 export const findAndPayWinner = (players: DBPlayer[]): void => {
