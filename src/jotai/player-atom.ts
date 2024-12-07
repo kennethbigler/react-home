@@ -1,5 +1,5 @@
 import { atomWithStorage } from "jotai/utils";
-import { DBCard } from "./deck-atom";
+import { DBCard } from "../apis/Deck";
 
 export interface DBHand {
   weight?: number;
