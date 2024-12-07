@@ -1,11 +1,11 @@
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import SlotMachine, {
+import slotMachine, {
   SlotDisplay,
 } from "../components/games/slots/slotMachine";
 import playerAtom from "./player-atom";
 
-export const slotsAtom = atomWithStorage("slotsAtom", SlotMachine.pullHandle());
+export const slotsAtom = atomWithStorage("slotsAtom", slotMachine.pullHandle());
 
 export const slotsRead = atom((get) => {
   const players = get(playerAtom);

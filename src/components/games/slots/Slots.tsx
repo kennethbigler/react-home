@@ -7,7 +7,7 @@ import slotsState, { slotsRead } from "../../../jotai/slots-state";
 import PayoutTable from "./PayoutTable";
 import MoneyTable from "./MoneyTable";
 import ReelDisplay from "./ReelDisplay";
-import SlotMachine from "./slotMachine";
+import slotMachine from "./slotMachine";
 import PlayerMenu from "../../common/header/PlayerMenu";
 
 /* Slots  ->  ReelDisplay
@@ -20,10 +20,10 @@ const Slots = React.memo(() => {
 
   const updateSlotMachine = () => {
     // get rolled reel
-    const newReel = SlotMachine.pullHandle();
+    const newReel = slotMachine.pullHandle();
 
     // determine payout
-    const newExchange = SlotMachine.getPayout(newReel, bet) - bet;
+    const newExchange = slotMachine.getPayout(newReel, bet) - bet;
 
     // exchange money and update state
     setExchange(newExchange);

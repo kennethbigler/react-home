@@ -1,13 +1,13 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import Slots from ".";
-import SlotMachine, {
+import slotMachine, {
   spin,
   SlotDisplay,
   SlotOption as SO,
 } from "./slotMachine";
 
-const pullHandle = vi.spyOn(SlotMachine, "pullHandle");
+const pullHandle = vi.spyOn(slotMachine, "pullHandle");
 
 describe("games | slots | Slots", () => {
   it("renders as expected", () => {
@@ -43,7 +43,7 @@ describe("games | slots | Slots", () => {
     pullHandle.mockRestore();
   });
 
-  describe("apis | SlotMachine", () => {
+  describe("apis | slotMachine", () => {
     test("spin", () => {
       const result = spin();
       expect(result).toHaveLength(3);
@@ -52,7 +52,7 @@ describe("games | slots | Slots", () => {
       expect(Object.values(SO)).toContain(result[2]);
     });
     test("pullHandle", () => {
-      const slotDisplay = SlotMachine.pullHandle();
+      const slotDisplay = slotMachine.pullHandle();
       expect(slotDisplay).toHaveLength(3);
 
       expect(slotDisplay[0]).toHaveLength(3);
@@ -78,7 +78,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.EMPTY, SO.EMPTY],
           [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(0);
       });
 
@@ -88,7 +88,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.CHERRY, SO.EMPTY],
           [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(12);
       });
 
@@ -98,7 +98,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.CHERRY, SO.EMPTY],
           [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 2);
+        const res = slotMachine.getPayout(slotDisplay, 2);
         expect(res).toStrictEqual(24);
       });
 
@@ -108,7 +108,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.BAR, SO.EMPTY],
           [SO.EMPTY, SO.BAR, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(25);
       });
 
@@ -118,7 +118,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
           [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(50);
       });
 
@@ -128,7 +128,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.TRIPLE_BAR, SO.EMPTY],
           [SO.EMPTY, SO.TRIPLE_BAR, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(100);
       });
 
@@ -138,7 +138,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.SEVEN, SO.EMPTY],
           [SO.EMPTY, SO.SEVEN, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(300);
       });
 
@@ -148,7 +148,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.JACKPOT, SO.EMPTY],
           [SO.EMPTY, SO.JACKPOT, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(1666);
       });
 
@@ -158,7 +158,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
           [SO.EMPTY, SO.TRIPLE_BAR, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(12);
       });
 
@@ -168,7 +168,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
           [SO.EMPTY, SO.DOUBLE_BAR, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(12);
       });
 
@@ -178,7 +178,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.CHERRY, SO.EMPTY],
           [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(6);
       });
 
@@ -188,7 +188,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.EMPTY, SO.EMPTY],
           [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(6);
       });
 
@@ -198,7 +198,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.CHERRY, SO.EMPTY],
           [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(6);
       });
 
@@ -208,7 +208,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.EMPTY, SO.EMPTY],
           [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(3);
       });
 
@@ -218,7 +218,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.CHERRY, SO.EMPTY],
           [SO.EMPTY, SO.EMPTY, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(3);
       });
 
@@ -228,7 +228,7 @@ describe("games | slots | Slots", () => {
           [SO.EMPTY, SO.EMPTY, SO.EMPTY],
           [SO.EMPTY, SO.CHERRY, SO.EMPTY],
         ];
-        const res = SlotMachine.getPayout(slotDisplay, 1);
+        const res = slotMachine.getPayout(slotDisplay, 1);
         expect(res).toStrictEqual(3);
       });
     });
