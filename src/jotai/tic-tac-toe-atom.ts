@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atomWithStorage } from "jotai/utils";
 
 export interface HistoryEntry {
   board: string[] | null[];
@@ -19,19 +19,6 @@ export const newTicTacToe = (): TicTacToeState => ({
   step: 0,
 });
 
-const tikTacToeAtom = atom({
-  key: "tikTacToeAtom",
-  default:
-    (JSON.parse(
-      localStorage.getItem("tik-tac-toe-atom") || "null",
-    ) as TicTacToeState) || newTicTacToe(),
-  effects: [
-    ({ onSet }) => {
-      onSet((state) => {
-        localStorage.setItem("tik-tac-toe-atom", JSON.stringify(state));
-      });
-    },
-  ],
-});
+const tikTacToeAtom = atomWithStorage("tikTacToeAtom", newTicTacToe());
 
 export default tikTacToeAtom;

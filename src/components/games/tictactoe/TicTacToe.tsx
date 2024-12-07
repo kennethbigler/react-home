@@ -1,14 +1,14 @@
 import * as React from "react";
+import { useAtom } from "jotai";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { useRecoilState } from "recoil";
 import ticTacToeAtom, {
   TicTacToeState,
   X,
   O,
   EMPTY,
   newTicTacToe,
-} from "../../../recoil/tic-tac-toe-atom";
+} from "../../../jotai/tic-tac-toe-atom";
 import Header from "./Header";
 import History from "./History";
 import Board from "./Board";
@@ -24,8 +24,7 @@ const paperStyles: React.CSSProperties = {
  *           |->  Board  ->  Cell
  *           |->  History */
 const TicTacToe = React.memo(() => {
-  const [state, setState] = useRecoilState(ticTacToeAtom);
-  const { turn, step, history } = state;
+  const [{ turn, step, history }, setState] = useAtom(ticTacToeAtom);
 
   /** function that modifies board with appropriate turn
    * @param location - location of board click (row * 3 + col) */

@@ -1,5 +1,4 @@
-import { screen, fireEvent, waitFor } from "@testing-library/react";
-import render from "../../../../recoil-test-render";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import DealOrNoDeal from "..";
 
 describe("games | deal-or-no-deal | DealOrNoDeal", () => {

@@ -1,18 +1,16 @@
 import * as React from "react";
-// Import Highcharts
+import { useAtomValue } from "jotai";
 import Highcharts from "highcharts/highmaps";
 import HighchartsReact from "highcharts-react-official";
 import "highcharts/modules/accessibility";
-// Import to change title color
-import { useRecoilValue } from "recoil";
 import Typography from "@mui/material/Typography";
-import themeAtom from "../../../../recoil/theme-atom";
+import themeAtom from "../../../../jotai/theme-atom";
 import countries, { numCountries } from "../../../../constants/travel";
 
 const WorldMap = () => {
   const [topology, setTopology] = React.useState<Highcharts.GeoJSON>();
   const [error, setError] = React.useState(false);
-  const theme = useRecoilValue(themeAtom);
+  const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
   // other map: https://code.highcharts.com/mapdata/custom/world.topo.json

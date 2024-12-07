@@ -1,12 +1,12 @@
+import { useAtomValue } from "jotai";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import "highcharts/modules/accessibility";
-import { useRecoilValue } from "recoil";
-import themeAtom from "../../../../recoil/theme-atom";
+import themeAtom from "../../../../jotai/theme-atom";
 import { loyaltySeries, loyaltyColors } from "../../../../constants/cruises";
 
 const LoyaltyCharts = () => {
-  const theme = useRecoilValue(themeAtom);
+  const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
   const options: Highcharts.Options = {

@@ -1,12 +1,12 @@
 import * as React from "react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import Switch from "@mui/material/Switch";
-import themeAtom, { darkTheme, lightTheme } from "../../../recoil/theme-atom";
+import themeAtom, { darkTheme, lightTheme } from "../../../jotai/theme-atom";
 
 const flexLeftStyles: React.CSSProperties = {
   display: "flex",
@@ -27,7 +27,7 @@ interface TopBarProps {
 }
 
 const TopBar = ({ toggleOpen, textColor }: TopBarProps) => {
-  const [theme, setTheme] = useRecoilState(themeAtom);
+  const [theme, setTheme] = useAtom(themeAtom);
   const [isLight, setIsLight] = React.useState(theme.mode !== "dark");
 
   /** function toggle between site's light and dark theme */

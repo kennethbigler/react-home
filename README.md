@@ -37,7 +37,7 @@ Check out the [issues tab](https://github.com/kennethbigler/react-home/issues) f
 * [Material UI](https://mui.com/material-ui/)
 * [React Router](https://reactrouter.com/en/main)
 * [Highcharts](https://www.highcharts.com/)
-* [Recoil](https://recoiljs.org/)
+* [Jōtai](https://jotai.org/)
 * [localforage](https://github.com/localForage/localForage)
 
 ## Deployments

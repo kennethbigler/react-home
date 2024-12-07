@@ -1,8 +1,7 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
-import render from "../../../../recoil-test-render";
 import Poker from "..";
-import Deck from "../../../../apis/Deck";
+import Deck from "../../../../apis/useDeck";
 
 const deck = vi.spyOn(Deck, "deal");
 

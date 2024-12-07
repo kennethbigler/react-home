@@ -1,5 +1,5 @@
-import { atom } from "recoil";
-import { DBCard } from "../apis/Deck";
+import { atomWithStorage } from "jotai/utils";
+import { DBCard } from "./deck-atom";
 
 export interface DBHand {
   weight?: number;
@@ -44,18 +44,6 @@ const initialState: DBPlayer[] = [
   newPlayer(0, "Dealer", true),
 ];
 
-const playerAtom = atom({
-  key: "playerAtom",
-  default:
-    (JSON.parse(localStorage.getItem("player-atom") || "null") as DBPlayer[]) ||
-    initialState,
-  effects: [
-    ({ onSet }) => {
-      onSet((state) => {
-        localStorage.setItem("player-atom", JSON.stringify(state));
-      });
-    },
-  ],
-});
+const playerAtom = atomWithStorage("playerAtom", initialState);
 
 export default playerAtom;

@@ -1,5 +1,4 @@
-import { screen } from "@testing-library/react";
-import render from "../../../recoil-test-render";
+import { render, screen } from "@testing-library/react";
 import LoadingSpinner from "./LoadingSpinner";
 
 describe("common | LoadingSpinner", () => {

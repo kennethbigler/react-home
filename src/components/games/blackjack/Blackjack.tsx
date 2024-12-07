@@ -5,18 +5,18 @@
  * buy insurance on dealer's Ace
  */
 import * as React from "react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import asyncForEach from "../../../apis/asyncForEach";
 import { getGameFunctions, hitHelper, splitHelper } from "./blackjackHelpers";
 import { DEALER, weighHand, playBots } from "./blackjackAI";
 import Header from "./Header";
 import GameTable from "../game-table";
 import Deck from "../../../apis/Deck";
-import { DBPlayer } from "../../../recoil/player-atom";
+import { DBPlayer } from "../../../jotai/player-atom";
 import blackjackState, {
   GameFunctions,
   newBlackjackGame,
-} from "../../../recoil/blackjack-state";
+} from "../../../jotai/blackjack-state";
 
 const BlackJack = React.memo(() => {
   const [
@@ -26,7 +26,7 @@ const BlackJack = React.memo(() => {
       bj: { gameFunctions, hideHands },
     },
     setState,
-  ] = useRecoilState(blackjackState);
+  ] = useAtom(blackjackState);
 
   /** function that takes a hand of duplicates and makes 2 hands */
   const split = async (): Promise<void> => {

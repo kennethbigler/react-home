@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Piece from "./Piece";
-import { C4Turn } from "../../../recoil/connect4-atom";
+import { C4Turn } from "../../../jotai/connect4-atom";
 
 interface BoardProps {
   board: number[][];

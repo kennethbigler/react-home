@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import { getMoneyText } from "./helpers";
-import { Briefcase } from "../../../recoil/deal-or-no-deal-state";
+import { Briefcase } from "../../../jotai/deal-or-no-deal-state";
 
 interface HeaderProps {
   casesToOpen: number;

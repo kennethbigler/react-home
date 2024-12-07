@@ -1,4 +1,4 @@
-import { RoundPairing } from "../../../../recoil/are-you-the-one-atom";
+import { RoundPairing } from "../../../../jotai/are-you-the-one-state";
 
 export interface AYTOHist {
   odds: number;

@@ -1,6 +1,6 @@
 import * as React from "react";
 import TableBody from "@mui/material/TableBody";
-import { RoundPairing } from "../../../../recoil/are-you-the-one-atom";
+import { RoundPairing } from "../../../../jotai/are-you-the-one-state";
 import TBDialog from "./TBDialog";
 import { AYTOHist } from "../histogram/useHist";
 import AYTOTableRow from "./TableRow";

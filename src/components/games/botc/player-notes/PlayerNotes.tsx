@@ -2,7 +2,7 @@ import Card from "@mui/material/Card";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
-import { BotCPlayer } from "../../../../recoil/botc-atom";
+import { BotCPlayer } from "../../../../jotai/botc-atom";
 import CharacterSheet from "./character-sheet/CharacterSheet";
 import { usePlayerNotes } from "../useBotC";
 

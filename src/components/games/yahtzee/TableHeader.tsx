@@ -1,7 +1,7 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Dice } from "../../../recoil/yahtzee-state";
+import { Dice } from "../../../jotai/yahtzee-state";
 
 interface TableHeaderProps {
   roll: Dice;

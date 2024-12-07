@@ -3,7 +3,7 @@ import Chip from "@mui/material/Chip";
 import dateObj, { DateObj } from "../../../apis/DateHelper";
 import { FORMAT } from "../../common/timeline-card/timeline-consts";
 
-export const getCSV = (arr: string[] = []): React.ReactNode[] => {
+export const getCSV = (arr: string[] = []): React.ReactElement[] => {
   const style = { marginRight: 5, marginBottom: 5 };
   return arr.map((item) => <Chip key={item} label={item} style={style} />);
 };

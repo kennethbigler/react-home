@@ -1,14 +1,14 @@
 import * as React from "react";
+import { useAtom } from "jotai";
 import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
-import { useRecoilState } from "recoil";
 import SimplePopover from "./ButtonPopover";
-import playerAtom from "../../../recoil/player-atom";
+import playerAtom from "../../../jotai/player-atom";
 
 const PlayerMenu = React.memo(() => {
-  const [players, setPlayers] = useRecoilState(playerAtom);
+  const [players, setPlayers] = useAtom(playerAtom);
 
   /** toggle between bot and human player */
   const handleToggle = (id: number, isChecked: boolean): void => {

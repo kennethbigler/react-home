@@ -1,6 +1,6 @@
 import * as React from "react";
+import { useAtom } from "jotai";
 import Typography from "@mui/material/Typography";
-import { useRecoilState } from "recoil";
 import GameTable from "../game-table";
 import asyncForEach from "../../../apis/asyncForEach";
 import Deck from "../../../apis/Deck";
@@ -8,12 +8,12 @@ import { computer, findAndPayWinner } from "./helpers";
 import pokerState, {
   PokerGameFunctions as PGF,
   newPokerGameState,
-} from "../../../recoil/poker-state";
-import { DBPlayer, defaultWeigh } from "../../../recoil/player-atom";
+} from "../../../jotai/poker-state";
+import { DBPlayer, defaultWeigh } from "../../../jotai/player-atom";
 import PlayerMenu from "../../common/header/PlayerMenu";
 
 const Poker = React.memo(() => {
-  const [{ poker, turn, players }, setState] = useRecoilState(pokerState);
+  const [{ poker, turn, players }, setState] = useAtom(pokerState);
   const { cardsToDiscard, gameFunctions, gameOver, hideHands } = poker;
 
   // ----------     bot automation handlers     ---------- //

@@ -1,5 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react";
-import render from "../../../../recoil-test-render";
+import { render, fireEvent, screen } from "@testing-library/react";
 import PlayerMenu from "../PlayerMenu";
 
 describe("common | header | PlayerMenu", () => {

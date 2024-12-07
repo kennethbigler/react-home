@@ -1,6 +1,5 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import CompCalculator from "./";
-import render from "../../../recoil-test-render";
 
 describe("resume | comp-calc | CompCalculator", () => {
   it("renders as expected", async () => {

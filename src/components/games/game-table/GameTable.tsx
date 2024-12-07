@@ -1,8 +1,8 @@
 import * as React from "react";
 import Board from "./board/Board";
 import ButtonGroup from "./button-group/ButtonGroup";
-import { DBPlayer } from "../../../recoil/player-atom";
-import { TurnState } from "../../../recoil/turn-atom";
+import { DBPlayer } from "../../../jotai/player-atom";
+import { TurnState } from "../../../jotai/turn-atom";
 
 interface GameTableProps {
   betHandler?: (id: number, event: Event, value: number) => void;

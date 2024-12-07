@@ -1,14 +1,14 @@
+import { useAtomValue } from "jotai";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import "highcharts/highcharts-more";
 import "highcharts/modules/sankey";
 import "highcharts/modules/accessibility";
-import { useRecoilValue } from "recoil";
-import themeAtom from "../../../../recoil/theme-atom";
+import themeAtom from "../../../../jotai/theme-atom";
 import { cruiseData } from "../../../../constants/cruises";
 
 const CruiseCharts = () => {
-  const theme = useRecoilValue(themeAtom);
+  const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
   const options: Highcharts.Options = {

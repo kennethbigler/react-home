@@ -1,5 +1,5 @@
-import { GameFunctions } from "../../../recoil/blackjack-state";
-import { DBHand, DBPlayer } from "../../../recoil/player-atom";
+import { GameFunctions } from "../../../jotai/blackjack-state";
+import { DBHand, DBPlayer } from "../../../jotai/player-atom";
 import { hitBotHelper, splitBotHelper, weighHand } from "./blackjackAI";
 
 /** function that takes a hand of duplicates and makes 2 hands */

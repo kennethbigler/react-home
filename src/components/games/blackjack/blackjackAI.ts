@@ -1,8 +1,8 @@
 import Deck, { DBCard } from "../../../apis/Deck";
 import asyncForEach from "../../../apis/asyncForEach";
-import { BlackjackState, GameFunctions } from "../../../recoil/blackjack-state";
-import { DBHand, DBPlayer } from "../../../recoil/player-atom";
-import { TurnState } from "../../../recoil/turn-atom";
+import { BlackjackState, GameFunctions } from "../../../jotai/blackjack-state";
+import { DBHand, DBPlayer } from "../../../jotai/player-atom";
+import { TurnState } from "../../../jotai/turn-atom";
 
 // Dealer constant
 export const DEALER = 0;

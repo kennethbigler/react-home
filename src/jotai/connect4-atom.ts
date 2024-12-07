@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atomWithStorage } from "jotai/utils";
 
 export const PIECE = 0;
 export const STREAK = 1;
@@ -35,19 +35,6 @@ export const newConnect4Game = (): Connect4State => ({
   turn: C4Turn.RED,
 });
 
-const connect4Atom = atom({
-  key: "connect4Atom",
-  default:
-    (JSON.parse(
-      localStorage.getItem("connect4-atom") || "null",
-    ) as Connect4State) || newConnect4Game(),
-  effects: [
-    ({ onSet }) => {
-      onSet((state) => {
-        localStorage.setItem("connect4-atom", JSON.stringify(state));
-      });
-    },
-  ],
-});
+const connect4Atom = atomWithStorage("connect4Atom", newConnect4Game());
 
 export default connect4Atom;

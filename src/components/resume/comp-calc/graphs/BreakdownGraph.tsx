@@ -1,9 +1,9 @@
 import * as React from "react";
+import { useAtomValue } from "jotai";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
-import { useRecoilValue } from "recoil";
-import themeAtom from "../../../../recoil/theme-atom";
+import themeAtom from "../../../../jotai/theme-atom";
 import colors from "./colors";
 
 interface BreakdownChartProps {
@@ -14,7 +14,7 @@ interface BreakdownChartProps {
 
 const BreakdownChart = React.memo(
   ({ bonus, salary, stock }: BreakdownChartProps) => {
-    const theme = useRecoilValue(themeAtom);
+    const theme = useAtomValue(themeAtom);
     const color = theme.mode === "light" ? "black" : "white";
 
     const options = {

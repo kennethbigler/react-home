@@ -8,7 +8,7 @@ import { MuiColors } from "../types";
 
 interface InfoPopupProps {
   /** popup content */
-  children: React.ReactNode | React.ReactNodeArray;
+  children: React.ReactNode | React.ReactNode[];
   /** title content */
   title: string | React.ReactElement;
   /** button content */

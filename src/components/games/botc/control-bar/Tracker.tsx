@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid2";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 // Custom
-import { BotCPlayer } from "../../../../recoil/botc-atom";
+import { BotCPlayer } from "../../../../jotai/botc-atom";
 import { useTracker } from "../useBotC";
 
 const numRounds = [0, 1, 2, 3, 4, 5, 6, 7];

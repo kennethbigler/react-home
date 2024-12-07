@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import { green, blueGrey, red, grey } from "@mui/material/colors";
 import Hand from "../Hand";
-import { DBPlayer } from "../../../../../recoil/player-atom";
-import { TurnState } from "../../../../../recoil/turn-atom";
+import { DBPlayer } from "../../../../../jotai/player-atom";
+import { TurnState } from "../../../../../jotai/turn-atom";
 import styles from "./Player.styles";
 
 interface PlayerProps {

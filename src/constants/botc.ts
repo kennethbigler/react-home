@@ -1,4 +1,4 @@
-import { BotCRole } from "../recoil/botc-atom";
+import { BotCRole } from "../jotai/botc-atom";
 
 export interface BotCScript {
   townsfolk: BotCRole[];

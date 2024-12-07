@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import {
   CompCalcEntry,
   CompEntry,
-} from "../../../recoil/comp-calculator-state";
+} from "../../../jotai/comp-calculator-state";
 import dateObj from "../../../apis/DateHelper";
 import usDollar from "../../../apis/usdFormatter";
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { purple } from "@mui/material/colors";
 import Card from "./card/Card";
-import { DBHand } from "../../../../recoil/player-atom";
+import { DBHand } from "../../../../jotai/player-atom";
 
 const boldStyle: React.CSSProperties = {
   fontWeight: "bold",

@@ -1,7 +1,7 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import { getTurn } from "./helpers";
-import { HistoryEntry } from "../../../recoil/tic-tac-toe-atom";
+import { HistoryEntry } from "../../../jotai/tic-tac-toe-atom";
 
 interface HistoryProps {
   history: HistoryEntry[];
@@ -13,30 +13,30 @@ const History = ({ history, step, jumpToStep }: HistoryProps) => {
   const [ascend, setAscend] = React.useState(true);
 
   /** function that generates text for the history tracker */
-  const getHistoryText = React.useCallback(
-    (round: HistoryEntry, move: number): React.ReactNode => {
-      const location = round.location || 0;
-      // generate description text
-      const description = !move
-        ? "Game Start (Turn, Col, Row)"
-        : `Move #${move} (${getTurn(move - 1)}, ` +
-          `${Math.floor(location / 3)}, ${location % 3})`;
-      // highlight current turn displayed on board
-      const color = step === move ? "secondary" : "primary";
+  const getHistoryText = (
+    round: HistoryEntry,
+    move: number,
+  ): React.ReactElement => {
+    const location = round.location || 0;
+    // generate description text
+    const description = !move
+      ? "Game Start (Turn, Col, Row)"
+      : `Move #${move} (${getTurn(move - 1)}, ` +
+        `${Math.floor(location / 3)}, ${location % 3})`;
+    // highlight current turn displayed on board
+    const color = step === move ? "secondary" : "primary";
 
-      return (
-        <Button
-          key={move}
-          color={color}
-          onClick={(): void => jumpToStep(move)}
-          style={{ display: "block" }}
-        >
-          {description}
-        </Button>
-      );
-    },
-    [jumpToStep, step],
-  );
+    return (
+      <Button
+        key={move}
+        color={color}
+        onClick={(): void => jumpToStep(move)}
+        style={{ display: "block" }}
+      >
+        {description}
+      </Button>
+    );
+  };
 
   // move history
   const moves = history.map(getHistoryText);

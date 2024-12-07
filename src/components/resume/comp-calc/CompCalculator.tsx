@@ -1,22 +1,22 @@
 import * as React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useAtom, useAtomValue } from "jotai";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import compCalcState, {
   CompEntry,
-  compCalcReadOnlyState,
-} from "../../../recoil/comp-calculator-state";
+  compCalcRead,
+} from "../../../jotai/comp-calculator-state";
 import CompEntryDisplay from "./CompEntryDisplay";
 import CompEntryDialog from "./CompEntryDialog";
 import StockDialog from "./StockDialog";
-import stockAtom from "../../../recoil/stock-atom";
+import stockAtom from "../../../jotai/stock-atom";
 import StockDisplay from "./StockDisplay";
 import Graphs from "./graphs/Graphs";
 
 const CompCalculator = () => {
-  const [compEntries, setCompEntries] = useRecoilState(compCalcState);
-  const compCalcEntries = useRecoilValue(compCalcReadOnlyState);
-  const [stockEntries, setStockEntries] = useRecoilState(stockAtom);
+  const [compEntries, setCompEntries] = useAtom(compCalcState);
+  const compCalcEntries = useAtomValue(compCalcRead);
+  const [stockEntries, setStockEntries] = useAtom(stockAtom);
   const [openEntry, setOpenEntry] = React.useState(false);
   const [openStock, setOpenStock] = React.useState(false);
   const [editEntryIdx, setEditEntryIdx] = React.useState(-1);

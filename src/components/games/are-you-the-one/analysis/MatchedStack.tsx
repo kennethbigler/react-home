@@ -37,7 +37,7 @@ const MatchedStack = ({
   tempScore,
   showAll,
 }: MatchedStackProps) => {
-  const equation: React.ReactNode[] = [];
+  const equation: React.ReactElement[] = [];
   let numNoMatches = 0;
   let numMatchAndRepeat = 0;
   pairs.forEach((gi, li) => {

@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import { TopGameScore, BottomGameScore } from "../types";
-import { Dice } from "../../../../recoil/yahtzee-state";
+import { Dice } from "../../../../jotai/yahtzee-state";
 import Header from "./Header";
 import TopTable from "./TopTable";
 import BottomTable from "./BottomTable";
@@ -39,7 +39,7 @@ const ScoreTable = ({
       points: number,
       wasTop: boolean,
       i: number,
-    ): React.ReactNode =>
+    ): React.ReactElement =>
       showButton ? (
         <Button
           color="secondary"

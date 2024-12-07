@@ -1,16 +1,16 @@
-import { useRecoilValue } from "recoil";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
   ThemeProvider,
   StyledEngineProvider,
   createTheme,
 } from "@mui/material/styles";
-import themeAtom from "../recoil/theme-atom";
+import themeAtom from "../jotai/theme-atom";
 import WithRouter from "./WithRouter";
+import { useAtomValue } from "jotai";
 
 /** App class that wraps higher level components of the application */
 const WithTheme = () => {
-  const theme = useRecoilValue(themeAtom);
+  const theme = useAtomValue(themeAtom);
 
   const setTheme = createTheme({
     palette: {

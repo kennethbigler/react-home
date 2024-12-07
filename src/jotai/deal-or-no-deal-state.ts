@@ -1,4 +1,5 @@
-import { atom, DefaultValue, selector } from "recoil";
+import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 import playerAtom from "./player-atom";
 
 export interface Briefcase {
@@ -79,62 +80,52 @@ export const newDNDGame = (): DNDState => {
   return state;
 };
 
-export const dealOrNoDealAtom = atom({
-  key: "dealOrNoDealAtom",
-  default:
-    (JSON.parse(
-      localStorage.getItem("deal-or-no-deal-atom") || "null",
-    ) as DNDState) || newDNDGame(),
-  effects: [
-    ({ onSet }) => {
-      onSet((state) => {
-        localStorage.setItem("deal-or-no-deal-atom", JSON.stringify(state));
-      });
-    },
-  ],
+export const dealOrNoDealAtom = atomWithStorage(
+  "dealOrNoDealAtom",
+  newDNDGame(),
+);
+
+export const dealOrNoDealRead = atom((get) => {
+  // access state
+  const { board, turn } = get(dealOrNoDealAtom);
+  const { name } = get(playerAtom)[0];
+  // compute iterated variables
+  let numCases = 0;
+  let sum = 0;
+  board.forEach((bc) => {
+    if (bc.on) {
+      numCases += 1;
+      sum += bc.val;
+    }
+  });
+  // get the new offer
+  const offer = Math.round((sum / numCases) * (turn / 10));
+  // return state
+  return { numCases, offer, name };
 });
 
-export const dndReadOnlyState = selector({
-  key: "dndReadOnlyState",
-  get: ({ get }) => {
-    // access state
-    const { board, turn } = get(dealOrNoDealAtom);
-    const { name } = get(playerAtom)[0];
-    // compute iterated variables
-    let numCases = 0;
-    let sum = 0;
-    board.forEach((bc) => {
-      if (bc.on) {
-        numCases += 1;
-        sum += bc.val;
-      }
-    });
-    // get the new offer
-    const offer = Math.round((sum / numCases) * (turn / 10));
-    // return state
-    return { numCases, offer, name };
-  },
-});
+interface DNDGameState {
+  dnd: DNDState;
+  money: number;
+  status: string;
+}
 
-const dealOrNoDealState = selector({
-  key: "dealOrNoDealState",
-  get: ({ get }) => {
+const dealOrNoDealState = atom(
+  (get) => {
     const dnd = get(dealOrNoDealAtom);
     const { money, status } = get(playerAtom)[0];
 
     return { dnd, money, status };
   },
-  set: ({ get, set }, state) => {
-    if (!(state instanceof DefaultValue)) {
-      const { dnd, money, status } = state;
-      set(dealOrNoDealAtom, dnd);
+  (get, set, { dnd, money, status }: DNDGameState) => {
+    set(dealOrNoDealAtom, dnd);
 
-      const players = get(playerAtom);
-      const newPlayers = [...players];
-      newPlayers[0] = { ...players[0], money, status };
-      set(playerAtom, newPlayers);
-    }
+    const players = get(playerAtom);
+    const newPlayers = [...players];
+    newPlayers[0] = { ...players[0], money, status };
+
+    set(playerAtom, newPlayers);
   },
-});
+);
 
 export default dealOrNoDealState;

@@ -12,7 +12,7 @@ import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import { TextFieldProps, SelectChangeEvent } from "@mui/material";
 import dateHelper, { months } from "../../../apis/DateHelper";
-import { CompEntry } from "../../../recoil/comp-calculator-state";
+import { CompEntry } from "../../../jotai/comp-calculator-state";
 
 const tfProps: TextFieldProps = {
   variant: "standard",

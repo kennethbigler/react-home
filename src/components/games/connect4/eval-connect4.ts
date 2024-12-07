@@ -1,4 +1,4 @@
-import { PIECE, STREAK, MAX, C4Turn } from "../../../recoil/connect4-atom";
+import { PIECE, STREAK, MAX, C4Turn } from "../../../jotai/connect4-atom";
 
 /** function to check for match and increment streak / max
  * @param {array} line - dp storage, [PIECE, STREAK, MAX] */

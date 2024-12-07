@@ -2,7 +2,7 @@ import * as React from "react";
 import Stack from "@mui/material/Stack";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { RoundPairing } from "../../../../recoil/are-you-the-one-atom";
+import { RoundPairing } from "../../../../jotai/are-you-the-one-state";
 import { AYTOHist } from "../histogram/useHist";
 import MatchedStack from "./MatchedStack";
 import CalculatedStack from "./CalculatedStack";

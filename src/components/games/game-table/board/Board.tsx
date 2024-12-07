@@ -1,6 +1,6 @@
 import Player from "./player/Player";
-import { DBPlayer } from "../../../../recoil/player-atom";
-import { TurnState } from "../../../../recoil/turn-atom";
+import { DBPlayer } from "../../../../jotai/player-atom";
+import { TurnState } from "../../../../jotai/turn-atom";
 // Parents: GameTable
 
 interface BoardProps {
