@@ -6,7 +6,7 @@ import BreakdownChart from "./BreakdownGraph";
 import {
   CompCalcEntry,
   CompEntry,
-} from "../../../../jotai/comp-calculator-state";
+} from "../../../../jotai/comp-calculator-atom";
 
 interface GraphsProps {
   compCalcEntries: CompCalcEntry[];

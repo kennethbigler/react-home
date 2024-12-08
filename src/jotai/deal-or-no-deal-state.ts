@@ -106,8 +106,8 @@ export const dealOrNoDealRead = atom((get) => {
 
 interface DNDGameState {
   dnd: DNDState;
-  money: number;
-  status: string;
+  money?: number;
+  status?: string;
 }
 
 const dealOrNoDealState = atom(
@@ -120,11 +120,12 @@ const dealOrNoDealState = atom(
   (get, set, { dnd, money, status }: DNDGameState) => {
     set(dealOrNoDealAtom, dnd);
 
-    const players = get(playerAtom);
-    const newPlayers = [...players];
-    newPlayers[0] = { ...players[0], money, status };
-
-    set(playerAtom, newPlayers);
+    if (money !== undefined && status !== undefined) {
+      const players = get(playerAtom);
+      const newPlayers = [...players];
+      newPlayers[0] = { ...players[0], money, status };
+      set(playerAtom, newPlayers);
+    }
   },
 );
 

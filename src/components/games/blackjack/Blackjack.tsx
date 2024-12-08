@@ -41,7 +41,6 @@ const BlackJack = React.memo(() => {
     );
     // update game state
     setState({
-      turn,
       players: newPlayers,
       bj: { gameFunctions: newGameFunctions, hideHands },
     });
@@ -60,7 +59,6 @@ const BlackJack = React.memo(() => {
     );
     setState({
       turn: newTurn,
-      players,
       bj: { gameFunctions: newGameFunctions, hideHands },
     });
   };
@@ -108,7 +106,6 @@ const BlackJack = React.memo(() => {
     );
     // update state
     setState({
-      turn,
       players: newPlayers,
       bj: { gameFunctions: newGameFunctions, hideHands },
     });
@@ -154,7 +151,6 @@ const BlackJack = React.memo(() => {
     );
     // update game state
     setState({
-      turn,
       players: newPlayers,
       bj: { gameFunctions: newGameFunctions, hideHands: false },
     });
@@ -185,7 +181,6 @@ const BlackJack = React.memo(() => {
   const betHandler = (id: number, _event: Event, bet: number): void => {
     setState({
       bj: { gameFunctions, hideHands },
-      turn,
       players: players.map((player) =>
         player.id === id ? { ...player, bet } : player,
       ),
