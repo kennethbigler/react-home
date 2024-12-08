@@ -29,8 +29,8 @@ export const blackjackAtom = atomWithStorage(
 
 interface BlackjackGameState {
   bj: BlackjackState;
-  players: DBPlayer[];
-  turn: TurnState;
+  players?: DBPlayer[];
+  turn?: TurnState;
 }
 
 const blackjackState = atom(
@@ -43,8 +43,13 @@ const blackjackState = atom(
   },
   (_get, set, { bj, turn, players }: BlackjackGameState) => {
     set(blackjackAtom, bj);
-    set(turnAtom, turn);
-    set(playerAtom, players);
+
+    if (turn) {
+      set(turnAtom, turn);
+    }
+    if (players) {
+      set(playerAtom, players);
+    }
   },
 );
 

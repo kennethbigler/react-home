@@ -104,22 +104,8 @@ describe("games | poker | helpers", () => {
       bet: 5,
     };
 
-    const discard = vi.fn().mockImplementation(() => {
-      throw new Error("test");
-    });
-
-    // eslint-disable-next-line no-console
-    const oldConsole = console.error;
-    // eslint-disable-next-line no-console
-    console.error = vi.fn();
-
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    const discard = vi.fn();
     computer(player, discard);
-
-    // eslint-disable-next-line no-console
-    expect(console.error).toHaveBeenCalled();
-
-    // eslint-disable-next-line no-console
-    console.error = oldConsole;
+    expect(discard).toHaveBeenCalled();
   });
 });

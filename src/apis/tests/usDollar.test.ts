@@ -1,4 +1,4 @@
-import usDollar from "../usdFormatter";
+import usDollar from "../usDollar";
 
 describe("apis | usdFormatter", () => {
   it("formats a dollar value", () => {
