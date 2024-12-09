@@ -10,8 +10,6 @@ export interface DBCard {
 
 /** sort by card weight */
 const rankSort = (a: DBCard, b: DBCard): number => a.weight - b.weight;
-type WeighFunc = (cards: DBCard[]) => { weight: number; soft: boolean };
-const defaultWeigh: WeighFunc = () => ({ weight: 0, soft: false });
 
 const newDeck: DBCard[] = [
   { name: "2", weight: 2, suit: "♣" },
@@ -100,8 +98,6 @@ export const dealAtom = atom(
     num: number = 0,
     playerId: number = 0,
     prevCards: DBCard[] = [],
-    hIdx: number = 0,
-    weigh: WeighFunc = defaultWeigh,
   ) => {
     // get deck
     const deck = get(deckAtom);
@@ -128,12 +124,13 @@ export const dealAtom = atom(
     // have player draw cards
     const pIdx = nextPlayers.findIndex((player) => player.id === playerId);
     const nextPlayer = nextPlayers[pIdx];
-    nextPlayer.hands[hIdx] = {
+    nextPlayer.hands[0] = {
       cards: [...prevCards, ...cards],
-      ...weigh([...prevCards, ...cards]),
+      weight: 0,
+      soft: false,
     };
     // sort
-    nextPlayer.hands[hIdx].cards.sort(rankSort);
+    nextPlayer.hands[0].cards.sort(rankSort);
 
     // update state
     set(deckAtom, nextDeck);
