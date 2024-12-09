@@ -3,8 +3,6 @@ import ContentAdd from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
 import { red, lightGreen } from "@mui/material/colors";
 
-import noop from "../../../apis/noop";
-
 interface PieceProps {
   /** aria label */
   ariaLabel?: string;
@@ -31,7 +29,7 @@ const getColor = (piece: number): string | undefined => {
 };
 
 const Piece = React.memo(
-  ({ ariaLabel, piece, enabled = false, onClick = noop }: PieceProps) => {
+  ({ ariaLabel, piece, enabled = false, onClick }: PieceProps) => {
     const color = getColor(piece);
     const style: React.CSSProperties = { backgroundColor: color };
 

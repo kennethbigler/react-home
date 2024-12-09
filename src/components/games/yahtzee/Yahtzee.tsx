@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useAtomValue } from "jotai";
 import Typography from "@mui/material/Typography";
-import DiceAPI from "../../../apis/Dice";
 import ScoreTable from "./score-table/ScoreTable";
 import { ADD_DICE, BottomGameScore } from "./types";
 import Header from "./Header";
@@ -59,7 +58,7 @@ const Yahtzee = React.memo(() => {
     const newSaved = [...saved];
 
     for (let i = 0; i < newValues.length; i += 1) {
-      newValues[i] = DiceAPI.roll();
+      newValues[i] = (Math.floor(Math.random() * 6) + 1) as Dice;
     }
     newValues.sort();
     newSaved.sort();

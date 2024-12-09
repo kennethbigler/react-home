@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 import NavigationClose from "@mui/icons-material/Close";
 import { useTheme } from "@mui/material/styles";
 import TopBar from "./TopBar";
-import noop from "../../../apis/noop";
 
 type ItemClick = (loc: string) => void;
 
@@ -22,7 +21,7 @@ interface HeaderProps {
   handleNav?: (loc: string) => void;
 }
 
-const Header = ({ children, handleNav = noop }: HeaderProps) => {
+const Header = ({ children, handleNav }: HeaderProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const toggleOpen = () => setIsOpen(!isOpen);
 
@@ -34,7 +33,9 @@ const Header = ({ children, handleNav = noop }: HeaderProps) => {
   const handleNavigation = React.useCallback(
     (loc: string): void => {
       setIsOpen(false);
-      handleNav(loc);
+      if (handleNav) {
+        handleNav(loc);
+      }
     },
     [handleNav, setIsOpen],
   );

@@ -5,7 +5,6 @@ import Divider from "@mui/material/Divider";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import noop from "../../apis/noop";
 
 interface MenuProps {
   onItemClick?: (loc: string) => void;
@@ -45,7 +44,7 @@ const Menu = React.memo(({ onItemClick }: MenuProps) => {
           <MenuItem
             key={item.name}
             onClick={(): void =>
-              onItemClick ? onItemClick(`/${item.route || ""}`) : noop()
+              onItemClick && onItemClick(`/${item.route || ""}`)
             }
           >
             {item.name}

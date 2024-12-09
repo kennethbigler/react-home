@@ -1,5 +1,5 @@
 import { atomWithStorage } from "jotai/utils";
-import { DBCard } from "../apis/useDeck";
+import { DBCard } from "./deck-state";
 
 export interface DBHand {
   weight?: number;
@@ -15,10 +15,6 @@ export interface DBPlayer {
   name: string;
   bet: number;
 }
-export type WeighFunc = (cards: DBCard[]) => { weight: number; soft: boolean };
-
-/** card helper */
-export const defaultWeigh: WeighFunc = () => ({ weight: 0, soft: false });
 
 export const newPlayer = (
   id: number,

@@ -22,7 +22,7 @@ const DealOrNoDeal = React.memo(() => {
   // --------------------     Header     -------------------- //
 
   /** called in Header, resets game */
-  const newGame = (): void => setState({ dnd: newDNDGame(), money, status });
+  const newGame = (): void => setState({ dnd: newDNDGame() });
 
   // --------------------     Board     -------------------- //
 
@@ -50,8 +50,6 @@ const DealOrNoDeal = React.memo(() => {
             dndOpen: casesToOpen === 1,
             casesToOpen: casesToOpen - 1,
           },
-          money,
-          status,
         });
       }
     } else {
@@ -112,8 +110,6 @@ const DealOrNoDeal = React.memo(() => {
           casesToOpen:
             turn < briefcasesToOpen - 1 ? briefcasesToOpen - turn : 1,
         },
-        money,
-        status,
       });
     }
   };

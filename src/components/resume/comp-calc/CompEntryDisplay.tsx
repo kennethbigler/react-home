@@ -5,9 +5,9 @@ import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
-import { CompCalcEntry, CompEntry } from "../../../jotai/comp-calculator-state";
+import { CompCalcEntry, CompEntry } from "../../../jotai/comp-calculator-atom";
 import dateObj from "../../../apis/DateHelper";
-import usDollar from "../../../apis/usdFormatter";
+import usDollar from "../../../apis/usDollar";
 
 interface CompEntryDisplayProps {
   compEntries: CompEntry[];

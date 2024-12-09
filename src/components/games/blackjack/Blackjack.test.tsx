@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
-import * as Deck from "../../../apis/useDeck";
+import * as Deck from "./api/useDeck";
 import Blackjack from ".";
 
 const ace = { name: "A", weight: 14, suit: "♣" };
