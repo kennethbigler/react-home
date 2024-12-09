@@ -1,5 +1,5 @@
-import useDeck, { DBCard } from "../../../apis/useDeck";
-import asyncForEach from "../../../apis/asyncForEach";
+import useDeck, { DBCard } from "./api/useDeck";
+import asyncForEach from "./api/asyncForEach";
 import { BlackjackState, GameFunctions } from "../../../jotai/blackjack-state";
 import { DBHand, DBPlayer } from "../../../jotai/player-atom";
 import { TurnState } from "../../../jotai/turn-atom";

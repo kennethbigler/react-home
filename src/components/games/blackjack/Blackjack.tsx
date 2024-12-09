@@ -6,12 +6,12 @@
  */
 import * as React from "react";
 import { useAtom } from "jotai";
-import asyncForEach from "../../../apis/asyncForEach";
+import asyncForEach from "./api/asyncForEach";
 import { getGameFunctions } from "./blackjackHelpers";
 import useBlackjackAI, { DEALER, weighHand } from "./useBlackjackAI";
 import Header from "./Header";
 import GameTable from "../game-table";
-import { rankSort } from "../../../apis/useDeck";
+import { rankSort } from "./api/useDeck";
 import { DBPlayer } from "../../../jotai/player-atom";
 import blackjackState, {
   GameFunctions,

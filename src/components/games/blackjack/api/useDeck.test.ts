@@ -1,4 +1,4 @@
-import Deck, { rankSort } from "../useDeck";
+import Deck, { rankSort } from "./useDeck";
 
 const cardNames = [
   "2",

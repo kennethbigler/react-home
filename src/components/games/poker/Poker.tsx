@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useAtom, useSetAtom } from "jotai";
 import GameTable from "../game-table";
-import { shuffleAtom, dealAtom } from "../../../jotai/deck-state";
+import { shuffleAtom, dealPokerAtom } from "../../../jotai/deck-state";
 import { computer, findAndPayWinner } from "./helpers";
 import pokerState, {
   PokerGameFunctions as PGF,
@@ -13,7 +13,7 @@ import Header from "./Header";
 const Poker = React.memo(() => {
   const [{ poker, turn, players }, setState] = useAtom(pokerState);
   const shuffle = useSetAtom(shuffleAtom);
-  const deal = useSetAtom(dealAtom);
+  const deal = useSetAtom(dealPokerAtom);
   const { cardsToDiscard, gameFunctions, gameOver, hideHands } = poker;
 
   // ----------     bot automation handlers     ---------- //

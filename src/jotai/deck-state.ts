@@ -68,11 +68,10 @@ const newDeck: DBCard[] = [
 
 export const deckAtom = atomWithStorage("deckAtom", newDeck);
 
-/** randomize order of the cards O(N + M) */
-const shuffleDeck = (deck: DBCard[]): DBCard[] => {
+export const shuffleAtom = atom(null, (_get, set) => {
   const shuffledDeck: DBCard[] = [];
   // create immutable copy of deck
-  deck.forEach((card) => shuffledDeck.push(card));
+  newDeck.forEach((card) => shuffledDeck.push(card));
   // shuffle the cards
   for (let i = 0; i < 100; i += 1) {
     const j = Math.floor(Math.random() * shuffledDeck.length);
@@ -82,22 +81,18 @@ const shuffleDeck = (deck: DBCard[]): DBCard[] => {
     shuffledDeck[k] = temp;
   }
   // update deck state
-  return shuffledDeck;
-};
-
-export const shuffleAtom = atom(null, (_get, set) => {
-  set(deckAtom, shuffleDeck(newDeck));
+  set(deckAtom, shuffledDeck);
 });
 
 /** return an array of a specified length O(2N) */
-export const dealAtom = atom(
+export const dealPokerAtom = atom(
   null,
   (
     get,
     set,
-    num: number = 0,
-    playerId: number = 0,
-    prevCards: DBCard[] = [],
+    num: number, // number of cards to draw
+    playerId: number, // for which player
+    prevCards: DBCard[] = [], // any existing cards in their hand (optional)
   ) => {
     // get deck
     const deck = get(deckAtom);
