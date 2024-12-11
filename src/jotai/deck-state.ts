@@ -8,10 +8,12 @@ export interface DBCard {
   weight: number;
 }
 
+// TODO: remove export after removing useDeck
 /** sort by card weight */
-const rankSort = (a: DBCard, b: DBCard): number => a.weight - b.weight;
+export const rankSort = (a: DBCard, b: DBCard): number => a.weight - b.weight;
 
-const newDeck: DBCard[] = [
+// TODO: remove export after removing useDeck
+export const newDeck: DBCard[] = [
   { name: "2", weight: 2, suit: "♣" },
   { name: "3", weight: 3, suit: "♣" },
   { name: "4", weight: 4, suit: "♣" },

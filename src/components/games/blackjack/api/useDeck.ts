@@ -1,71 +1,8 @@
 import localForage from "localforage";
-
-export interface DBCard {
-  name: string;
-  suit: string;
-  weight: number;
-}
-
-/** sort by card weight */
-export const rankSort = (a: DBCard, b: DBCard): number => a.weight - b.weight;
-
-const NEW_DECK: DBCard[] = [
-  { name: "2", weight: 2, suit: "♣" },
-  { name: "3", weight: 3, suit: "♣" },
-  { name: "4", weight: 4, suit: "♣" },
-  { name: "5", weight: 5, suit: "♣" },
-  { name: "6", weight: 6, suit: "♣" },
-  { name: "7", weight: 7, suit: "♣" },
-  { name: "8", weight: 8, suit: "♣" },
-  { name: "9", weight: 9, suit: "♣" },
-  { name: "10", weight: 10, suit: "♣" },
-  { name: "J", weight: 11, suit: "♣" },
-  { name: "Q", weight: 12, suit: "♣" },
-  { name: "K", weight: 13, suit: "♣" },
-  { name: "A", weight: 14, suit: "♣" },
-  { name: "2", weight: 2, suit: "♦" },
-  { name: "3", weight: 3, suit: "♦" },
-  { name: "4", weight: 4, suit: "♦" },
-  { name: "5", weight: 5, suit: "♦" },
-  { name: "6", weight: 6, suit: "♦" },
-  { name: "7", weight: 7, suit: "♦" },
-  { name: "8", weight: 8, suit: "♦" },
-  { name: "9", weight: 9, suit: "♦" },
-  { name: "10", weight: 10, suit: "♦" },
-  { name: "J", weight: 11, suit: "♦" },
-  { name: "Q", weight: 12, suit: "♦" },
-  { name: "K", weight: 13, suit: "♦" },
-  { name: "A", weight: 14, suit: "♦" },
-  { name: "2", weight: 2, suit: "♥" },
-  { name: "3", weight: 3, suit: "♥" },
-  { name: "4", weight: 4, suit: "♥" },
-  { name: "5", weight: 5, suit: "♥" },
-  { name: "6", weight: 6, suit: "♥" },
-  { name: "7", weight: 7, suit: "♥" },
-  { name: "8", weight: 8, suit: "♥" },
-  { name: "9", weight: 9, suit: "♥" },
-  { name: "10", weight: 10, suit: "♥" },
-  { name: "J", weight: 11, suit: "♥" },
-  { name: "Q", weight: 12, suit: "♥" },
-  { name: "K", weight: 13, suit: "♥" },
-  { name: "A", weight: 14, suit: "♥" },
-  { name: "2", weight: 2, suit: "♠" },
-  { name: "3", weight: 3, suit: "♠" },
-  { name: "4", weight: 4, suit: "♠" },
-  { name: "5", weight: 5, suit: "♠" },
-  { name: "6", weight: 6, suit: "♠" },
-  { name: "7", weight: 7, suit: "♠" },
-  { name: "8", weight: 8, suit: "♠" },
-  { name: "9", weight: 9, suit: "♠" },
-  { name: "10", weight: 10, suit: "♠" },
-  { name: "J", weight: 11, suit: "♠" },
-  { name: "Q", weight: 12, suit: "♠" },
-  { name: "K", weight: 13, suit: "♠" },
-  { name: "A", weight: 14, suit: "♠" },
-];
+import { DBCard, newDeck } from "../../../../jotai/deck-state";
 
 /** immutably get a copy of new deck O(N) */
-const getNewDeck = (): DBCard[] => NEW_DECK.map((card) => ({ ...card }));
+const getNewDeck = (): DBCard[] => newDeck.map((card) => ({ ...card }));
 
 /** get immutable copy of deck O(N) */
 const getDeck = (): Promise<DBCard[]> =>
@@ -80,10 +17,10 @@ const setDeck = (deck: DBCard[]): Promise<DBCard[] | null> =>
 
 const useDeck = () => {
   /** randomize order of the cards O(N + M) */
-  const shuffleDeck = (deck: DBCard[]): DBCard[] => {
+  const shuffle = (): Promise<DBCard[] | null> => {
     const shuffledDeck: DBCard[] = [];
     // create immutable copy of deck
-    deck.map((card) => shuffledDeck.push(card));
+    newDeck.map((card) => shuffledDeck.push(card));
     // shuffle the cards
     for (let i = 0; i < 100; i += 1) {
       const j = Math.floor(Math.random() * shuffledDeck.length);
@@ -93,12 +30,8 @@ const useDeck = () => {
       shuffledDeck[k] = temp;
     }
     // update deck state
-    return shuffledDeck;
+    return setDeck(shuffledDeck);
   };
-
-  /** randomize order of the cards O(N + M) */
-  const shuffle = (): Promise<DBCard[] | null> =>
-    setDeck(shuffleDeck(NEW_DECK));
 
   /** return an array of a specified length O(2N) */
   const deal = (num = 0): Promise<DBCard[]> => {

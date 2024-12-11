@@ -11,12 +11,12 @@ import { getGameFunctions } from "./blackjackHelpers";
 import useBlackjackAI, { DEALER, weighHand } from "./useBlackjackAI";
 import Header from "./Header";
 import GameTable from "../game-table";
-import { rankSort } from "./api/useDeck";
 import { DBPlayer } from "../../../jotai/player-atom";
 import blackjackState, {
   GameFunctions,
   newBlackjackGame,
 } from "../../../jotai/blackjack-state";
+import { rankSort } from "../../../jotai/deck-state";
 
 const BlackJack = React.memo(() => {
   const [
