@@ -1,12 +1,18 @@
-import useDeck from "./api/useDeck";
-import asyncForEach from "./api/asyncForEach";
-import { BlackjackState, GameFunctions } from "../../../jotai/blackjack-state";
+import { useAtom } from "jotai";
+import blackjackState, {
+  BlackjackState,
+  GameFunctions,
+  newBlackjackGame,
+} from "../../../jotai/blackjack-state";
 import { DBHand, DBPlayer } from "../../../jotai/player-atom";
 import { TurnState } from "../../../jotai/turn-atom";
-import { DBCard } from "../../../jotai/deck-state";
+import { DBCard, rankSort } from "../../../jotai/deck-state";
+import useDeck from "./api/useDeck";
+import asyncForEach from "./api/asyncForEach";
+import { getGameFunctions } from "./blackjackHelpers";
 
 // Dealer constant
-export const DEALER = 0;
+const DEALER = 0;
 const D_H_TURN = 0;
 
 interface PlayerStats {
@@ -25,6 +31,8 @@ interface PlayBotState {
   hands: DBHand[];
   doubled?: boolean;
 }
+
+/* ------------------------------     Pure Functions     ------------------------------ */
 
 /** calculate the weight of a hand */
 export function weighHand(hand: DBCard[] = []): {
@@ -73,12 +81,12 @@ const banking = (players: DBPlayer[]): DBPlayer[] => {
   // track and find the winners
   const playerStats: PlayerStats = { house: 0, payout: 0, status: "" };
   // helper functions
-  const win = (ps: PlayerStats, bet: number, mul = 1): void => {
+  const win = (ps: PlayerStats, bet: number, mul = 1) => {
     ps.house -= Math.floor(mul * bet);
     ps.payout = Math.floor(mul * bet);
     ps.status = "win";
   };
-  const loss = (ps: PlayerStats, bet: number): void => {
+  const loss = (ps: PlayerStats, bet: number) => {
     ps.house += bet;
     ps.payout = -bet;
     ps.status = "lose";
@@ -124,8 +132,18 @@ const banking = (players: DBPlayer[]): DBPlayer[] => {
   });
 };
 
+/* ------------------------------     Custom Hook     ------------------------------ */
 const useBlackjackAI = () => {
+  const [
+    {
+      turn,
+      players,
+      bj: { gameFunctions, hideHands },
+    },
+    setState,
+  ] = useAtom(blackjackState);
   const { shuffle, deal } = useDeck();
+
   /** function to get a new card */
   const hitBotHelper = async (hand: DBHand): Promise<DBHand> => {
     // draw 1 card
@@ -418,19 +436,6 @@ const useBlackjackAI = () => {
     };
   };
 
-  /** function that takes a hand of duplicates and makes 2 hands */
-  const splitHelper = async (
-    player: DBPlayer,
-    handTurn: number,
-  ): Promise<DBHand[]> => {
-    const { hands } = player;
-    const [hand1, hand2] = await splitBotHelper(hands[handTurn]);
-    // update global hands
-    const newHands = hands.map((item, i) => (i !== handTurn ? item : hand2));
-    newHands.splice(handTurn, 0, hand1);
-    return newHands;
-  };
-
   /** function to get a new card */
   const hitHelper = async (
     player: DBPlayer,
@@ -442,7 +447,198 @@ const useBlackjackAI = () => {
     return newHands;
   };
 
-  return { playBots, hitHelper, splitHelper, shuffle, deal };
+  /* ------------------------------     State Manipulators     ------------------------------ */
+  /** function that takes a hand of duplicates and makes 2 hands */
+  const split = async (): Promise<void> => {
+    // split helper
+    const { hands } = players[turn.player];
+    const [hand1, hand2] = await splitBotHelper(hands[turn.hand]);
+    // update global hands
+    const newHands = hands.map((item, i) => (i !== turn.hand ? item : hand2));
+    newHands.splice(turn.hand, 0, hand1);
+
+    // set players
+    const newPlayers = [...players];
+    newPlayers[turn.player] = { ...players[turn.player], hands: newHands };
+    // set gameFunctions
+    const newGameFunctions: GameFunctions[] = getGameFunctions(
+      newPlayers[turn.player].hands[turn.hand],
+    );
+    // update game state
+    setState({
+      players: newPlayers,
+      bj: { gameFunctions: newGameFunctions, hideHands },
+    });
+  };
+
+  /** function to pass to the next player */
+  const stay = () => {
+    // get state values
+    const numHands = players[turn.player].hands.length - 1;
+    const newTurn =
+      turn.hand < numHands
+        ? { ...turn, hand: turn.hand + 1 }
+        : { player: turn.player + 1, hand: 0 };
+    const newGameFunctions: GameFunctions[] = getGameFunctions(
+      players[newTurn.player].hands[newTurn.hand],
+    );
+    setState({
+      turn: newTurn,
+      bj: { gameFunctions: newGameFunctions, hideHands },
+    });
+  };
+
+  /** function that doubles your bet, but you only get 1 card */
+  const double = async (): Promise<void> => {
+    const newHands = await hitHelper(players[turn.player], turn.hand);
+    // set players
+    const newPlayers = [...players];
+    newPlayers[turn.player] = {
+      ...players[turn.player],
+      hands: newHands,
+      bet: players[turn.player].bet * 2,
+    };
+    // set turn
+    const lastHand = players[turn.player].hands.length - 1;
+    const newTurn =
+      turn.hand < lastHand
+        ? { ...turn, hand: turn.hand + 1 }
+        : { player: turn.player + 1, hand: 0 };
+    // set gameFunctions
+    let newGameFunctions: GameFunctions[] = [];
+    if (!newPlayers[newTurn.player].isBot) {
+      newGameFunctions = getGameFunctions(
+        newPlayers[newTurn.player].hands[newTurn.hand],
+      );
+    }
+    // update state
+    setState({
+      turn: newTurn,
+      players: newPlayers,
+      bj: { gameFunctions: newGameFunctions, hideHands },
+    });
+  };
+
+  /** function to get a new card */
+  const hit = async (): Promise<void> => {
+    const newHands = await hitHelper(players[turn.player], turn.hand);
+    // set players
+    const newPlayers = [...players];
+    newPlayers[turn.player] = { ...players[turn.player], hands: newHands };
+    // set gameFunctions
+    const newGameFunctions: GameFunctions[] = getGameFunctions(
+      newPlayers[turn.player].hands[turn.hand],
+    );
+    // update state
+    setState({
+      players: newPlayers,
+      bj: { gameFunctions: newGameFunctions, hideHands },
+    });
+  };
+
+  /**
+   * Triggered in handleGameFunctionClick
+   * Starts a new game
+   */
+  const newGame = () => {
+    setState({
+      bj: newBlackjackGame(),
+      players: players.map((player) => ({
+        ...player,
+        status: "",
+        hands: [],
+        bet: 5,
+      })),
+      turn: { player: 0, hand: 0 },
+    });
+  };
+
+  /**
+   * Triggered in handleGameFunctionClick
+   * Finish betting and start the game
+   */
+  const finishBetting = async (): Promise<void> => {
+    const newPlayers: DBPlayer[] = [];
+    // shuffle the deck
+    await shuffle().then(async () => {
+      // deal the hands
+      await asyncForEach(players, async (player: DBPlayer) => {
+        const newCards = await deal(player.id !== DEALER ? 2 : 1);
+        const cards = [...newCards];
+        cards.sort(rankSort);
+        const { weight, soft } = weighHand(cards);
+        newPlayers.push({ ...player, hands: [{ cards, weight, soft }] });
+      });
+    });
+    // get game functions
+    const newGameFunctions: GameFunctions[] = getGameFunctions(
+      newPlayers[turn.player].hands[turn.hand],
+    );
+    // update game state
+    setState({
+      players: newPlayers,
+      bj: { gameFunctions: newGameFunctions, hideHands: false },
+    });
+  };
+
+  const checkUpdate = async (): Promise<void> => {
+    if (!hideHands && gameFunctions[0] !== (GameFunctions.NEW_GAME as string)) {
+      const player = players[turn.player];
+      if (!player.isBot) {
+        return;
+      }
+      const newState = await playBots(players, turn);
+      setState(newState);
+    }
+  };
+
+  /** function to be called on card clicks */
+  const betHandler = (id: number, _event: Event, bet: number) => {
+    setState({
+      bj: { gameFunctions, hideHands },
+      players: players.map((player) =>
+        player.id === id ? { ...player, bet } : player,
+      ),
+    });
+  };
+
+  /** function to route click actions */
+  const handleClick = (type: GameFunctions) => {
+    switch (type) {
+      case GameFunctions.NEW_GAME:
+        newGame();
+        break;
+      case GameFunctions.FINISH_BETTING:
+        finishBetting().catch((e) => console.log(e));
+        break;
+      case GameFunctions.STAY:
+        stay();
+        break;
+      case GameFunctions.HIT:
+        hit().catch((e) => console.log(e));
+        break;
+      case GameFunctions.DOUBLE:
+        double().catch((e) => console.log(e));
+        break;
+      case GameFunctions.SPLIT:
+        split().catch((e) => console.log(e));
+        break;
+      default:
+        console.error("Unknown Game Function: ", type);
+    }
+  };
+
+  /* ------------------------------     Return used items     ------------------------------ */
+
+  return {
+    betHandler,
+    checkUpdate,
+    gameFunctions,
+    handleClick,
+    hideHands,
+    players,
+    turn,
+  };
 };
 
 export default useBlackjackAI;
