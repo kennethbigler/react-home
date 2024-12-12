@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import compCalcState, {
   CompEntry,
   compCalcRead,
-} from "../../../jotai/comp-calculator-state";
+} from "../../../jotai/comp-calculator-atom";
 import CompEntryDisplay from "./CompEntryDisplay";
 import CompEntryDialog from "./CompEntryDialog";
 import StockDialog from "./StockDialog";

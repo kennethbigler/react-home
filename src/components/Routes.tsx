@@ -16,6 +16,7 @@ const RootRoutes = () => {
 
   const handleNav = (loc: string) => {
     if (loc !== pathname) {
+      // eslint-disable-next-line no-console
       navigate(loc)?.catch((reason) => console.log(reason));
     }
   };

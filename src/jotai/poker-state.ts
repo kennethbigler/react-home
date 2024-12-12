@@ -28,8 +28,8 @@ export const pokerAtom = atomWithStorage("pokerAtom", newPokerGameState());
 
 interface PokerGameState {
   poker: PokerState;
-  turn: TurnState;
-  players: DBPlayer[];
+  turn?: TurnState;
+  players?: DBPlayer[];
 }
 
 const pokerState = atom(
@@ -41,10 +41,15 @@ const pokerState = atom(
     return { poker, turn, players };
   },
   (get, set, { poker, turn, players }: PokerGameState) => {
-    const dataPlayers = get(playerAtom);
     set(pokerAtom, poker);
-    set(turnAtom, turn);
-    set(playerAtom, [...players, dataPlayers[5], dataPlayers[6]]);
+
+    if (turn) {
+      set(turnAtom, turn);
+    }
+    if (players) {
+      const dataPlayers = get(playerAtom);
+      set(playerAtom, [...players, dataPlayers[5], dataPlayers[6]]);
+    }
   },
 );
 

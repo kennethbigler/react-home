@@ -6,7 +6,7 @@ import themeAtom from "../../../../jotai/theme-atom";
 import {
   CompCalcEntry,
   CompEntry,
-} from "../../../../jotai/comp-calculator-state";
+} from "../../../../jotai/comp-calculator-atom";
 import dateHelper from "../../../../apis/DateHelper";
 import colors from "./colors";
 

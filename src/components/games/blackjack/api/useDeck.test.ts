@@ -1,4 +1,5 @@
-import Deck, { rankSort } from "../useDeck";
+import { rankSort } from "../../../../jotai/deck-state";
+import Deck from "./useDeck";
 
 const cardNames = [
   "2",
