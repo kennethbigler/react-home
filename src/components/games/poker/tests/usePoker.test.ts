@@ -6,7 +6,7 @@ import {
   evaluate,
   getCardsToDiscard,
   computer,
-} from "../helpers";
+} from "../usePoker";
 
 const hand = [
   { name: "K", weight: 13, suit: "♠" },

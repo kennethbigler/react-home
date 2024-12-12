@@ -624,6 +624,7 @@ const useBlackjackAI = () => {
         split().catch((e) => console.log(e));
         break;
       default:
+        // eslint-disable-next-line no-console
         console.error("Unknown Game Function: ", type);
     }
   };
