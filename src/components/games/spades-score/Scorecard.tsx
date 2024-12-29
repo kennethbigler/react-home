@@ -58,13 +58,12 @@ const Scorecard = React.memo(() => {
     }
     // convert made tricks to scores
     const newData = [...data];
-    const { start, bid } = data[data.length - 1];
     const score1 = 0;
     const score2 = 0;
     // TODO: calculate scores
     console.log(mades);
     // update scores in data entry
-    newData[data.length - 1] = { start, bid, score1, score2 };
+    newData[data.length - 1] = { ...data[data.length - 1], score1, score2 };
     setScoreboard({
       first: (first + 1) % 4,
       lastBid: [defaultBid, defaultBid, defaultBid, defaultBid],
