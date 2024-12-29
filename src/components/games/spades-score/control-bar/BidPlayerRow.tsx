@@ -3,9 +3,7 @@ import Slider from "@mui/material/Slider";
 import Switch from "@mui/material/Switch";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-
-const MIN_BID = 0;
-const MAX_BID = 13;
+import { MAX_BID, MIN_BID } from "../../../../jotai/spades-score-atom";
 
 interface BidPlayerRowProps {
   id: string;

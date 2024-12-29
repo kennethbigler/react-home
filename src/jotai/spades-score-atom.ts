@@ -1,5 +1,8 @@
 import { atomWithStorage } from "jotai/utils";
 
+export const MIN_BID = 0;
+export const MAX_BID = 13;
+
 export interface Bid {
   bid: number;
   blind: boolean;
@@ -8,7 +11,7 @@ export interface Bid {
 export type Bids = [Bid, Bid, Bid, Bid];
 
 export interface ScoreRow {
-  first: string;
+  start: string;
   bid: string;
   score1?: number;
   score2?: number;

@@ -28,7 +28,7 @@ const ScoreTable = ({ initials, data }: ScoreTableProps) => {
       <TableBody>
         {data.map((score, i) => (
           <TableRow key={i}>
-            <TableCell>{score.first}</TableCell>
+            <TableCell>{score.start}</TableCell>
             <TableCell>{score.bid}</TableCell>
             <TableCell align="center">{score.score1}</TableCell>
             <TableCell align="center">{score.score2}</TableCell>
