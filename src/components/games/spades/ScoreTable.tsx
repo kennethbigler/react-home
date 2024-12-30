@@ -26,7 +26,10 @@ const ScoreTable = ({ initials, data }: ScoreTableProps) => {
       <TableHead>
         <TableRow>
           <TableCell width={"10%"}>🥇</TableCell>
-          <TableCell>Bid</TableCell>
+          <TableCell>
+            Bid
+            <br />({initials[0] + initials[1] + initials[2] + initials[3]})
+          </TableCell>
           <TableCell>{initials[0] + initials[2]}</TableCell>
           <TableCell>{initials[1] + initials[3]}</TableCell>
         </TableRow>

@@ -12,12 +12,22 @@ const getScore = (
   bags: number,
 ) => {
   // double blind nil
-  if (p1.blind && p2.blind && p1.made === 0 && p2.made === 0) {
-    return { score: score + 80, bags };
+  if (p1.blind && p2.blind) {
+    if (p1.made === 0 && p2.made === 0) {
+      return { score: score + 80, bags };
+    } else {
+      return { score, bags: bags + p1.made + p2.made };
+    }
   }
   // double nil
-  if (p1.bid === 0 && p2.bid === 0 && p1.made === 0 && p2.made === 0) {
-    return { score: score + 40, bags };
+  if (p1.bid === 0 && p2.bid === 0) {
+    if (p1.made === 0 && p2.made === 0) {
+      return { score: score + 40, bags };
+    } else if (p1.made === 0 || p2.made === 0) {
+      return { score, bags: bags + p1.made + p2.made };
+    } else {
+      return { score: score - 20, bags: bags + p1.made + p2.made };
+    }
   }
   let newScore = 0;
   let newBags = 0;
