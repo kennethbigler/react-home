@@ -1,7 +1,9 @@
 import * as React from "react";
-import Slider from "@mui/material/Slider";
-import Typography from "@mui/material/Typography";
+import Add from "@mui/icons-material/Add";
 import Card from "@mui/material/Card";
+import IconButton from "@mui/material/IconButton";
+import Remove from "@mui/icons-material/Remove";
+import Typography from "@mui/material/Typography";
 import { green, blueGrey, red, grey } from "@mui/material/colors";
 import Hand from "../Hand";
 import { DBPlayer } from "../../../../../jotai/player-atom";
@@ -9,7 +11,7 @@ import { TurnState } from "../../../../../jotai/turn-atom";
 import styles from "./Player.styles";
 
 interface PlayerProps {
-  betHandler?: (id: number, event: Event, value: number) => void;
+  betHandler?: (id: number, value: number) => void;
   cardHandler?: (playerNo: number, handNo: number, cardNo: number) => void;
   cardsToDiscard: number[];
   hideHands: boolean;
@@ -32,24 +34,21 @@ const Player = ({
   // set booleans
   const isPlayerTurn: boolean = !!turn && playerNo === turn.player;
   const isMultiHand: boolean = player.hands.length > 1;
-  const showSlider: boolean =
+  const showBetting: boolean =
     !!hideHands && isBlackJack && player.id !== 0 && !player.isBot;
-  // set slider variables
+  // set edge variables
   const minBet: number = Math.max(Math.min(player.money, 5), 0);
   const maxBet: number = Math.max(Math.min(player.money, 100), 10);
-  const step = 5;
-  const onSliderChange = React.useCallback(
-    (event: Event, value: number | number[]): void => {
-      if (betHandler) {
-        betHandler(
-          player.id,
-          event,
-          Array.isArray(value) ? value[value.length - 1] : value,
-        );
-      }
-    },
-    [betHandler, player.id],
-  );
+  const decrBet = () => {
+    if (betHandler) {
+      betHandler(player.id, player.bet - 5);
+    }
+  };
+  const incrBet = () => {
+    if (betHandler) {
+      betHandler(player.id, player.bet + 5);
+    }
+  };
   const weight: React.CSSProperties = {
     fontWeight: isPlayerTurn ? "bold" : "normal",
   };
@@ -70,16 +69,24 @@ const Player = ({
       <Typography variant="h4" component="h2" style={{ ...weight }}>
         {`${player.name}: $${player.money}`}
       </Typography>
-      {showSlider && (
-        <Slider
-          max={maxBet}
-          min={minBet}
-          onChange={onSliderChange}
-          step={step}
-          style={styles.width}
-          value={player.bet}
-          aria-label={`adjust bet for ${player.name}`}
-        />
+      {showBetting && (
+        <IconButton
+          onClick={decrBet}
+          color="primary"
+          disabled={player.bet <= minBet}
+        >
+          <Remove />
+        </IconButton>
+      )}
+      {player.bet}
+      {showBetting && (
+        <IconButton
+          onClick={incrBet}
+          color="primary"
+          disabled={player.bet >= maxBet}
+        >
+          <Add />
+        </IconButton>
       )}
       {isBlackJack && player.id !== 0 && (
         <Typography

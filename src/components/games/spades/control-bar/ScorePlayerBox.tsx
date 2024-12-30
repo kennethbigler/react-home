@@ -1,7 +1,10 @@
 import * as React from "react";
 import { MAX_BID, MIN_BID } from "../../../../jotai/spades-atom";
 import Grid from "@mui/material/Grid2";
-import Slider from "@mui/material/Slider";
+import IconButton from "@mui/material/IconButton";
+import Add from "@mui/icons-material/Add";
+import Remove from "@mui/icons-material/Remove";
+import { Typography } from "@mui/material";
 
 interface ScorePlayerBoxProps {
   initial: string;
@@ -16,25 +19,24 @@ const ScorePlayerBox = ({
   made,
   setMade,
 }: ScorePlayerBoxProps) => {
-  const handleScore = (_e: Event, value: number | number[]) => {
-    const newNum = Array.isArray(value) ? value[value.length - 1] : value;
-    setMade(newNum);
-  };
+  const decrMade = () => setMade(Math.max(made - 1, MIN_BID));
+  const incrMade = () => setMade(Math.min(made + 1, MAX_BID));
 
   return (
     <Grid size={6}>
-      <div>
+      <Typography>
         {initial} Bid: {lastBid}
+      </Typography>
+      <div>
+        Made:
+        <IconButton onClick={decrMade} disabled={made <= MIN_BID}>
+          <Remove />
+        </IconButton>
+        {made}
+        <IconButton onClick={incrMade} disabled={made >= MAX_BID}>
+          <Add />
+        </IconButton>
       </div>
-      <div>Made: {made}</div>
-      <Slider
-        aria-label={`player ${0} made`}
-        min={MIN_BID}
-        max={MAX_BID}
-        value={made}
-        valueLabelDisplay="auto"
-        onChange={handleScore}
-      />
     </Grid>
   );
 };

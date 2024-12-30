@@ -74,13 +74,13 @@ const AddBid = ({ first, initials, onBidSave }: AddBidProps) => {
         <TableHead>
           <TableRow>
             <TableCell width={"20%"}>P</TableCell>
-            <TableCell width={"50%"}>
+            <TableCell width={"40%"} align="center">
               Bid ({bags} Bag{bags !== 1 ? "s" : ""})
             </TableCell>
-            <TableCell width={"15%"} align="center">
+            <TableCell width={"20%"} align="center">
               🦮
             </TableCell>
-            <TableCell width={"15%"} align="center">
+            <TableCell width={"20%"} align="center">
               🚂
             </TableCell>
           </TableRow>

@@ -1,10 +1,13 @@
-import Typography from "@mui/material/Typography";
+import Add from "@mui/icons-material/Add";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import Grid from "@mui/material/Grid2";
-import Slider from "@mui/material/Slider";
+import IconButton from "@mui/material/IconButton";
+import Remove from "@mui/icons-material/Remove";
+import Typography from "@mui/material/Typography";
 import {
   BotCPlayer,
   BOTC_MAX_PLAYERS,
-  BOTC_MAX_TRAVELERS,
   BOTC_MIN_PLAYERS,
 } from "../../../../../jotai/botc-atom";
 import EditNameAndPos from "./EditNameAndPos";
@@ -39,6 +42,11 @@ const EditPlayers = ({
     updateScript,
     updateText,
   } = useEditPlayers();
+
+  const decrPlayers = () => updateNumPlayers(numPlayers - 1);
+  const incrPlayers = () => updateNumPlayers(numPlayers + 1);
+  const handleClick = (n: number) => () => updateNumTravelers(n);
+
   return (
     <Grid container spacing={1}>
       <Grid size={12} sx={{ textAlign: "center" }}>
@@ -51,27 +59,39 @@ const EditPlayers = ({
       </Grid>
 
       <Grid size={12}>
-        <Typography>
+        <IconButton
+          onClick={decrPlayers}
+          disabled={numPlayers <= BOTC_MIN_PLAYERS}
+          aria-label="remove player"
+        >
+          <Remove />
+        </IconButton>
+        <Typography display="inline">
           Players: {numPlayers} / Dist: {playerDist[numPlayers]}
         </Typography>
-        <Slider
-          aria-label="player count"
-          min={BOTC_MIN_PLAYERS}
-          max={BOTC_MAX_PLAYERS}
-          value={numPlayers}
-          onChange={updateNumPlayers}
-        />
+        <IconButton
+          onClick={incrPlayers}
+          disabled={numPlayers >= BOTC_MAX_PLAYERS}
+          aria-label="add player"
+        >
+          <Add />
+        </IconButton>
       </Grid>
 
       <Grid size={12}>
-        <Typography>Travelers: {numTravelers}</Typography>
-        <Slider
-          aria-label="traveler count"
-          min={0}
-          max={BOTC_MAX_TRAVELERS}
-          value={numTravelers}
-          onChange={updateNumTravelers}
-        />
+        <Typography>Travelers</Typography>
+        <ButtonGroup aria-label="select number of travelers">
+          {[0, 1, 2, 3, 4, 5].map((n) => (
+            <Button
+              key={n}
+              variant={numTravelers === n ? "contained" : "outlined"}
+              onClick={handleClick(n)}
+              aria-label={`${n} traveler`}
+            >
+              {n}
+            </Button>
+          ))}
+        </ButtonGroup>
       </Grid>
 
       {botcPlayers.map(

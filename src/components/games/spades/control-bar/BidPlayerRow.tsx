@@ -1,8 +1,10 @@
 import * as React from "react";
-import Slider from "@mui/material/Slider";
+import IconButton from "@mui/material/IconButton";
 import Switch from "@mui/material/Switch";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
+import Add from "@mui/icons-material/Add";
+import Remove from "@mui/icons-material/Remove";
 import { MAX_BID, MIN_BID } from "../../../../jotai/spades-atom";
 
 interface BidPlayerRowProps {
@@ -22,10 +24,8 @@ const BidPlayerRow = ({
   train,
   onBid,
 }: BidPlayerRowProps) => {
-  const handleBid = (_e: Event, value: number | number[]) => {
-    const newNum = Array.isArray(value) ? value[value.length - 1] : value;
-    onBid(newNum, false, false);
-  };
+  const decrBid = () => onBid(Math.max(bid - 1, MIN_BID), false, false);
+  const incrBid = () => onBid(Math.min(bid + 1, MAX_BID), false, false);
 
   const handleBlind = (
     _e: React.ChangeEvent<HTMLInputElement>,
@@ -39,18 +39,15 @@ const BidPlayerRow = ({
 
   return (
     <TableRow>
-      <TableCell>
-        {id} ({bid})
-      </TableCell>
-      <TableCell>
-        <Slider
-          aria-label={`player ${id} bid`}
-          min={MIN_BID}
-          max={MAX_BID}
-          value={bid}
-          valueLabelDisplay="auto"
-          onChange={handleBid}
-        />
+      <TableCell>{id}</TableCell>
+      <TableCell align="center">
+        <IconButton onClick={decrBid} disabled={bid <= MIN_BID}>
+          <Remove />
+        </IconButton>
+        {bid}
+        <IconButton onClick={incrBid} disabled={bid >= MAX_BID}>
+          <Add />
+        </IconButton>
       </TableCell>
       <TableCell align="right">
         <Switch

@@ -5,7 +5,7 @@ import { DBPlayer } from "../../../jotai/player-atom";
 import { TurnState } from "../../../jotai/turn-atom";
 
 interface GameTableProps {
-  betHandler?: (id: number, event: Event, value: number) => void;
+  betHandler?: (id: number, value: number) => void;
   cardClickHandler?: (playerNo: number, handNo: number, cardNo: number) => void;
   cardsToDiscard?: number[];
   gameFunctions?: string[];
