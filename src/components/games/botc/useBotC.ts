@@ -81,7 +81,7 @@ export const useEditPlayers = () => {
 
   /** update number of players */
   const updateNumPlayers = (_e: Event, value: number | number[]) => {
-    const newNum = Array.isArray(value) ? value[0] : value;
+    const newNum = Array.isArray(value) ? value[value.length - 1] : value;
     setState({
       ...other,
       isText,
@@ -94,7 +94,7 @@ export const useEditPlayers = () => {
 
   /** update number of players */
   const updateNumTravelers = (_e: Event, value: number | number[]) => {
-    const newNum = Array.isArray(value) ? value[0] : value;
+    const newNum = Array.isArray(value) ? value[value.length - 1] : value;
     setState({
       ...other,
       isText,

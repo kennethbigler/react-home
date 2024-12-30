@@ -17,7 +17,7 @@ const ScorePlayerBox = ({
   setMade,
 }: ScorePlayerBoxProps) => {
   const handleScore = (_e: Event, value: number | number[]) => {
-    const newNum = Array.isArray(value) ? value[0] : value;
+    const newNum = Array.isArray(value) ? value[value.length - 1] : value;
     setMade(newNum);
   };
 
