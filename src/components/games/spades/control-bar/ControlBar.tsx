@@ -16,17 +16,11 @@ const ControlBar = ({
   lastBid,
   onBidSave,
   onScoreSave,
-}: ControlBarProps) => {
-  return (
-    <div className="flex-container" style={{ margin: "20px 0" }}>
-      <AddBid first={first} initials={initials} onBidSave={onBidSave} />
-      <AddScore
-        initials={initials}
-        lastBid={lastBid}
-        onScoreSave={onScoreSave}
-      />
-    </div>
-  );
-};
+}: ControlBarProps) => (
+  <div className="flex-container" style={{ margin: "20px 0" }}>
+    <AddBid first={first} initials={initials} onBidSave={onBidSave} />
+    <AddScore initials={initials} lastBid={lastBid} onScoreSave={onScoreSave} />
+  </div>
+);
 
 export default ControlBar;

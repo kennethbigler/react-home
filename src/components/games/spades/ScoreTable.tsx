@@ -20,38 +20,36 @@ const getScoreText = (score?: number) => {
   }
 };
 
-const ScoreTable = ({ initials, data }: ScoreTableProps) => {
-  return (
-    <Table aria-label="Bid Table">
-      <TableHead>
-        <TableRow>
-          <TableCell width={"10%"}>🥇</TableCell>
+const ScoreTable = ({ initials, data }: ScoreTableProps) => (
+  <Table aria-label="Bid Table">
+    <TableHead>
+      <TableRow>
+        <TableCell width={"10%"}>🥇</TableCell>
+        <TableCell>
+          Bid
+          <br />({initials[0] + initials[1] + initials[2] + initials[3]})
+        </TableCell>
+        <TableCell>{initials[0] + initials[2]}</TableCell>
+        <TableCell>{initials[1] + initials[3]}</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      {data.map((s, i) => (
+        <TableRow key={i}>
+          <TableCell>{s.start}</TableCell>
+          <TableCell>{s.bid}</TableCell>
           <TableCell>
-            Bid
-            <br />({initials[0] + initials[1] + initials[2] + initials[3]})
+            {getScoreText(s.score1)}
+            {s.bags1}
           </TableCell>
-          <TableCell>{initials[0] + initials[2]}</TableCell>
-          <TableCell>{initials[1] + initials[3]}</TableCell>
+          <TableCell>
+            {getScoreText(s.score2)}
+            {s.bags2}
+          </TableCell>
         </TableRow>
-      </TableHead>
-      <TableBody>
-        {data.map((s, i) => (
-          <TableRow key={i}>
-            <TableCell>{s.start}</TableCell>
-            <TableCell>{s.bid}</TableCell>
-            <TableCell>
-              {getScoreText(s.score1)}
-              {s.bags1}
-            </TableCell>
-            <TableCell>
-              {getScoreText(s.score2)}
-              {s.bags2}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-};
+      ))}
+    </TableBody>
+  </Table>
+);
 
 export default ScoreTable;

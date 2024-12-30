@@ -26,18 +26,16 @@ const BidPlayerRow = ({
     const newNum = Array.isArray(value) ? value[0] : value;
     onBid(newNum, false, false);
   };
+
   const handleBlind = (
     _e: React.ChangeEvent<HTMLInputElement>,
     checked: boolean,
-  ) => {
-    onBid(bid, checked, false);
-  };
+  ) => onBid(bid, checked, false);
+
   const handleTrain = (
     _e: React.ChangeEvent<HTMLInputElement>,
     checked: boolean,
-  ) => {
-    onBid(bid, false, checked);
-  };
+  ) => onBid(bid, false, checked);
 
   return (
     <TableRow>
