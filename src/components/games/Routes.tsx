@@ -30,8 +30,8 @@ const MurderMystery = React.lazy(
 const Poker = React.lazy(
   () => import(/* webpackChunkName: "poker" */ "./poker"),
 );
-const Scorecard = React.lazy(
-  () => import(/* webpackChunkName: "scorecard" */ "./spades-score"),
+const Spades = React.lazy(
+  () => import(/* webpackChunkName: "spades" */ "./spades"),
 );
 const Slots = React.lazy(
   () => import(/* webpackChunkName: "slots" */ "./slots"),
@@ -71,7 +71,7 @@ const GameRoutes = ({ handleNav }: RoutesProps) => (
         <Route path="family-feud" element={<FamilyFeud />} />
         <Route path="murder" element={<MurderMystery />} />
         <Route path="poker" element={<Poker />} />
-        <Route path="scorecard" element={<Scorecard />} />
+        <Route path="spades" element={<Spades />} />
         <Route path="slots" element={<Slots />} />
         <Route path="tictactoe" element={<TicTacToe />} />
         <Route path="types" element={<TypeChecker />} />

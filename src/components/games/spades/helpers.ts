@@ -4,6 +4,7 @@ interface ScoreData {
   train: boolean;
   made: number;
 }
+
 const getScore = (
   p1: ScoreData,
   p2: ScoreData,

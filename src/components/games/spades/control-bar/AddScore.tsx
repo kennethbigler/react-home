@@ -2,7 +2,7 @@ import * as React from "react";
 import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
-import { Bids } from "../../../../jotai/spades-score-atom";
+import { Bids } from "../../../../jotai/spades-atom";
 import ScorePlayerBox from "./ScorePlayerBox";
 
 interface AddScoreProps {
@@ -29,7 +29,7 @@ const AddScore = ({ initials, lastBid, onScoreSave }: AddScoreProps) => {
         align="center"
         marginBottom={1}
       >
-        Tricks: {total}
+        {total !== 13 && "⚠️"} Tricks: {total}
       </Typography>
       <Grid container spacing={2}>
         <ScorePlayerBox

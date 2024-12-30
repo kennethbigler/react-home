@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import ButtonBase from "@mui/material/ButtonBase";
 import { MenuItem } from "./menu-items";
 
-export interface HomeSectionProps {
+export interface HomeMenuItemProps {
   items: MenuItem[];
   title: string;
   onClick?: (loc: string) => void;
@@ -31,7 +31,7 @@ const avatarStyles: React.CSSProperties = {
   color: "white",
 };
 
-const HomeSection = ({ items, title, onClick }: HomeSectionProps) => (
+const HomeMenuItem = ({ items, title, onClick }: HomeMenuItemProps) => (
   <>
     <hr aria-hidden style={{ marginTop: 40 }} />
     <Typography variant="h4" component="h3" style={subHeaderStyles}>
@@ -57,6 +57,6 @@ const HomeSection = ({ items, title, onClick }: HomeSectionProps) => (
   </>
 );
 
-HomeSection.displayName = "HomeSection";
+HomeMenuItem.displayName = "HomeMenuItem";
 
-export default HomeSection;
+export default HomeMenuItem;

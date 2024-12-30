@@ -1,5 +1,5 @@
 import * as React from "react";
-import { MAX_BID, MIN_BID } from "../../../../jotai/spades-score-atom";
+import { MAX_BID, MIN_BID } from "../../../../jotai/spades-atom";
 import Grid from "@mui/material/Grid2";
 import Slider from "@mui/material/Slider";
 

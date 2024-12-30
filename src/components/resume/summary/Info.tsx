@@ -1,13 +1,13 @@
 import * as React from "react";
+import Grid from "@mui/material/Grid2";
+import Link from "@mui/material/Link";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import Grid from "@mui/material/Grid2";
 import ExpandableCard from "../../common/expandable-card";
 import photo from "../../../images/ken.webp";
 import workExp, { Job } from "../../../constants/work";
-import { Link } from "@mui/material";
 
 const imageStyles: React.CSSProperties = {
   width: "95%",

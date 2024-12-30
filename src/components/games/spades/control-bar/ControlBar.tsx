@@ -1,5 +1,4 @@
-import { Button } from "@mui/material";
-import { Bids } from "../../../../jotai/spades-score-atom";
+import { Bids } from "../../../../jotai/spades-atom";
 import AddBid from "./AddBid";
 import AddScore from "./AddScore";
 
@@ -9,7 +8,6 @@ interface ControlBarProps {
   lastBid: Bids;
   onBidSave: (bids: Bids) => void;
   onScoreSave: (mades: [number, number, number, number]) => void;
-  newGame: () => void;
 }
 
 const ControlBar = ({
@@ -18,7 +16,6 @@ const ControlBar = ({
   lastBid,
   onBidSave,
   onScoreSave,
-  newGame,
 }: ControlBarProps) => {
   return (
     <div className="flex-container" style={{ margin: "20px 0" }}>
@@ -28,9 +25,6 @@ const ControlBar = ({
         lastBid={lastBid}
         onScoreSave={onScoreSave}
       />
-      <Button color="error" onClick={newGame} variant="contained">
-        Reset
-      </Button>
     </div>
   );
 };

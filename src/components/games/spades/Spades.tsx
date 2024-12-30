@@ -1,17 +1,15 @@
 import * as React from "react";
 import { useAtom, useAtomValue } from "jotai";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import PlayerMenu from "../../common/header/PlayerMenu";
 import ControlBar from "./control-bar/ControlBar";
-import ScoreTable from "./score-table/ScoreTable";
+import ScoreTable from "./ScoreTable";
 import playerAtom from "../../../jotai/player-atom";
-import scoreboardAtom, {
-  Bid,
-  defaultBid,
-} from "../../../jotai/spades-score-atom";
+import scoreboardAtom, { Bid, defaultBid } from "../../../jotai/spades-atom";
 import getScore from "./helpers";
 
-const Scorecard = React.memo(() => {
+const Spades = React.memo(() => {
   const players = useAtomValue(playerAtom);
   const [{ first, lastBid, data }, setScoreboard] = useAtom(scoreboardAtom);
 
@@ -24,7 +22,7 @@ const Scorecard = React.memo(() => {
 
   /** sets a new data entry with first and bid info of data, updates first */
   const addBid = (bids: [Bid, Bid, Bid, Bid]) => {
-    // can't add bid if bid already exists
+    // can't add bid if bid already exists, or if someone won
     if (data[data.length - 1] && data[data.length - 1]?.score1 === undefined) {
       return;
     }
@@ -39,6 +37,8 @@ const Scorecard = React.memo(() => {
           return acc + "🦮";
         } else if (b.bid === 0) {
           return acc + "🚫";
+        } else if (b.bid >= 10) {
+          return acc + `,${b.bid},`;
         } else {
           return acc + b.bid.toString();
         }
@@ -101,19 +101,32 @@ const Scorecard = React.memo(() => {
         </Typography>
         <PlayerMenu />
       </div>
-      <ControlBar
-        first={first}
-        initials={initials}
-        lastBid={lastBid}
-        onBidSave={addBid}
-        onScoreSave={addScore}
-        newGame={newGame}
-      />
+      {(data[data.length - 1]?.score1 || 0) >= 100 ||
+      (data[data.length - 1]?.score2 || 0) >= 100 ? (
+        <Button
+          fullWidth
+          color="error"
+          onClick={newGame}
+          variant="contained"
+          sx={{ marginTop: 2 }}
+        >
+          Reset
+        </Button>
+      ) : (
+        <ControlBar
+          first={first}
+          initials={initials}
+          lastBid={lastBid}
+          onBidSave={addBid}
+          onScoreSave={addScore}
+        />
+      )}
+
       <ScoreTable initials={initials} data={data} />
     </>
   );
 });
 
-Scorecard.displayName = "Scorecard";
+Spades.displayName = "Spades";
 
-export default Scorecard;
+export default Spades;

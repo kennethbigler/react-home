@@ -6,7 +6,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import BidPlayerRow from "./BidPlayerRow";
-import { Bids, defaultBid } from "../../../../jotai/spades-score-atom";
+import { Bids, defaultBid } from "../../../../jotai/spades-atom";
 
 interface AddBidProps {
   first: number;
@@ -22,14 +22,34 @@ const AddBid = ({ first, initials, onBidSave }: AddBidProps) => {
     defaultBid,
   ]);
 
+  const a = (first + 0) % 4;
+  const b = (first + 1) % 4;
+  const c = (first + 2) % 4;
+  const d = (first + 3) % 4;
+
   const handleBid =
     (n: number) => (bid: number, blind: boolean, train: boolean) => {
       let newBid = { bid, blind, train };
       if (blind) {
         newBid = { bid: 0, blind, train: false };
       } else if (train) {
+        let trainBid = 10;
+        switch (n) {
+          case a:
+            trainBid -= bids[c].bid;
+            break;
+          case b:
+            trainBid -= bids[d].bid;
+            break;
+          case c:
+            trainBid -= bids[a].bid;
+            break;
+          case d:
+          default:
+            trainBid -= bids[b].bid;
+        }
         newBid = {
-          bid: 10 - (n === 2 ? bids[0].bid : bids[1].bid),
+          bid: trainBid,
           blind: false,
           train,
         };
@@ -47,10 +67,6 @@ const AddBid = ({ first, initials, onBidSave }: AddBidProps) => {
   };
 
   const bags = bids.reduce((acc, bid) => acc - bid.bid, 13);
-  const a = (first + 0) % 4;
-  const b = (first + 1) % 4;
-  const c = (first + 2) % 4;
-  const d = (first + 3) % 4;
 
   return (
     <InfoPopup title="+ Bid" onSave={handleSave}>
