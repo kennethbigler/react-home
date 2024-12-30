@@ -80,28 +80,26 @@ export const useEditPlayers = () => {
     };
 
   /** update number of players */
-  const updateNumPlayers = (_e: Event, value: number | number[]) => {
-    const newNum = Array.isArray(value) ? value[value.length - 1] : value;
+  const updateNumPlayers = (value: number) => {
     setState({
       ...other,
       isText,
       numTravelers,
       script,
       botcPlayers,
-      numPlayers: newNum,
+      numPlayers: value,
     });
   };
 
   /** update number of players */
-  const updateNumTravelers = (_e: Event, value: number | number[]) => {
-    const newNum = Array.isArray(value) ? value[value.length - 1] : value;
+  const updateNumTravelers = (value: number) => {
     setState({
       ...other,
       isText,
       numPlayers,
       script,
       botcPlayers,
-      numTravelers: newNum,
+      numTravelers: value,
     });
   };
 

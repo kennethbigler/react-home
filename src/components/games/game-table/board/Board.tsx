@@ -4,7 +4,7 @@ import { TurnState } from "../../../../jotai/turn-atom";
 // Parents: GameTable
 
 interface BoardProps {
-  betHandler?: (id: number, event: Event, value: number) => void;
+  betHandler?: (id: number, value: number) => void;
   cardHandler?: (playerNo: number, handNo: number, cardNo: number) => void;
   cardsToDiscard: number[];
   hideHands: boolean;

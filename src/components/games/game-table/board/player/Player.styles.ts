@@ -5,9 +5,6 @@ const player: React.CSSProperties = {
   padding: 20,
 };
 
-const width: React.CSSProperties = { minWidth: "100px" };
-
 export default {
   player,
-  width,
 };

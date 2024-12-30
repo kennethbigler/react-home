@@ -28,7 +28,7 @@ interface SpadesState {
   data: ScoreRow[];
 }
 
-export const defaultBid: Bid = { bid: 0, blind: false, train: false };
+export const defaultBid: Bid = { bid: 3, blind: false, train: false };
 const initialState: SpadesState = {
   first: 0,
   lastBid: [defaultBid, defaultBid, defaultBid, defaultBid],

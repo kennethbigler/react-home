@@ -593,7 +593,7 @@ const useBlackjackAI = () => {
   };
 
   /** function to be called on card clicks */
-  const betHandler = (id: number, _event: Event, bet: number) => {
+  const betHandler = (id: number, bet: number) => {
     setState({
       bj: { gameFunctions, hideHands },
       players: players.map((player) =>

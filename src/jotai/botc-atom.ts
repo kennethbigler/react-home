@@ -21,7 +21,7 @@ export interface BotCPlayer {
 
 export const BOTC_MIN_PLAYERS = 5;
 export const BOTC_MAX_PLAYERS = 15;
-export const BOTC_MAX_TRAVELERS = 5;
+const BOTC_MAX_TRAVELERS = 5;
 
 export interface BotCState {
   isText: boolean;
