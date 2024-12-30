@@ -23,7 +23,7 @@ const BidPlayerRow = ({
   onBid,
 }: BidPlayerRowProps) => {
   const handleBid = (_e: Event, value: number | number[]) => {
-    const newNum = Array.isArray(value) ? value[0] : value;
+    const newNum = Array.isArray(value) ? value[value.length - 1] : value;
     onBid(newNum, false, false);
   };
 

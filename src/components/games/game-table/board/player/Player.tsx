@@ -41,7 +41,11 @@ const Player = ({
   const onSliderChange = React.useCallback(
     (event: Event, value: number | number[]): void => {
       if (betHandler) {
-        betHandler(player.id, event, value as number);
+        betHandler(
+          player.id,
+          event,
+          Array.isArray(value) ? value[value.length - 1] : value,
+        );
       }
     },
     [betHandler, player.id],
