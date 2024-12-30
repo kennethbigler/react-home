@@ -9,11 +9,12 @@ import BidPlayerRow from "./BidPlayerRow";
 import { Bids, defaultBid } from "../../../../jotai/spades-score-atom";
 
 interface AddBidProps {
+  first: number;
   initials: [string, string, string, string];
   onBidSave: (bids: Bids) => void;
 }
 
-const AddBid = ({ initials, onBidSave }: AddBidProps) => {
+const AddBid = ({ first, initials, onBidSave }: AddBidProps) => {
   const [bids, setBids] = React.useState<Bids>([
     defaultBid,
     defaultBid,
@@ -46,6 +47,10 @@ const AddBid = ({ initials, onBidSave }: AddBidProps) => {
   };
 
   const bags = bids.reduce((acc, bid) => acc - bid.bid, 13);
+  const a = (first + 0) % 4;
+  const b = (first + 1) % 4;
+  const c = (first + 2) % 4;
+  const d = (first + 3) % 4;
 
   return (
     <InfoPopup title="+ Bid" onSave={handleSave}>
@@ -65,19 +70,19 @@ const AddBid = ({ initials, onBidSave }: AddBidProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <BidPlayerRow id={initials[0]} {...bids[0]} onBid={handleBid(0)} />
-          <BidPlayerRow id={initials[1]} {...bids[1]} onBid={handleBid(1)} />
+          <BidPlayerRow id={initials[a]} {...bids[a]} onBid={handleBid(a)} />
+          <BidPlayerRow id={initials[b]} {...bids[b]} onBid={handleBid(b)} />
           <BidPlayerRow
-            canTrain={0 < bids[0].bid && bids[0].bid < 10}
-            id={initials[2]}
-            {...bids[2]}
-            onBid={handleBid(2)}
+            canTrain={0 < bids[a].bid && bids[a].bid < 10}
+            id={initials[c]}
+            {...bids[c]}
+            onBid={handleBid(c)}
           />
           <BidPlayerRow
-            canTrain={0 < bids[1].bid && bids[1].bid < 10}
-            id={initials[3]}
-            {...bids[3]}
-            onBid={handleBid(3)}
+            canTrain={0 < bids[b].bid && bids[b].bid < 10}
+            id={initials[d]}
+            {...bids[d]}
+            onBid={handleBid(d)}
           />
         </TableBody>
       </Table>

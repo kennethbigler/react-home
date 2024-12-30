@@ -14,7 +14,9 @@ export interface ScoreRow {
   start: string;
   bid: string;
   score1?: number;
+  bags1?: number;
   score2?: number;
+  bags2?: number;
 }
 
 interface ScoreboardState {

@@ -10,6 +10,16 @@ interface ScoreTableProps {
   data: ScoreRow[];
 }
 
+const getScoreDisplay = (score?: number) => {
+  if (score === undefined || score === 0) {
+    return "";
+  } else if (score > 0) {
+    return score.toString();
+  } else {
+    return `${score}0 + `;
+  }
+};
+
 const ScoreTable = ({ initials, data }: ScoreTableProps) => {
   return (
     <Table aria-label="Bid Table">
@@ -26,12 +36,18 @@ const ScoreTable = ({ initials, data }: ScoreTableProps) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((score, i) => (
+        {data.map((s, i) => (
           <TableRow key={i}>
-            <TableCell>{score.start}</TableCell>
-            <TableCell>{score.bid}</TableCell>
-            <TableCell align="center">{score.score1}</TableCell>
-            <TableCell align="center">{score.score2}</TableCell>
+            <TableCell>{s.start}</TableCell>
+            <TableCell>{s.bid}</TableCell>
+            <TableCell align="center">
+              {getScoreDisplay(s.score1)}
+              {s.bags1}
+            </TableCell>
+            <TableCell align="center">
+              {getScoreDisplay(s.score2)}
+              {s.bags2}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

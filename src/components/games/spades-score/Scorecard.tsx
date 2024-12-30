@@ -9,6 +9,7 @@ import scoreboardAtom, {
   Bid,
   defaultBid,
 } from "../../../jotai/spades-score-atom";
+import getScore from "./helpers";
 
 const Scorecard = React.memo(() => {
   const players = useAtomValue(playerAtom);
@@ -37,7 +38,7 @@ const Scorecard = React.memo(() => {
         } else if (b.blind) {
           return acc + "🦮";
         } else if (b.bid === 0) {
-          return acc + "-";
+          return acc + "🚫";
         } else {
           return acc + b.bid.toString();
         }
@@ -48,8 +49,6 @@ const Scorecard = React.memo(() => {
     setScoreboard({ first, lastBid: bids, data: newData });
   };
 
-  /** TODO: Enable edit bids */
-
   /** calculates and adds score1 and score2 finishing data entry */
   const addScore = (mades: [number, number, number, number]) => {
     // can't add scores if no bid exists
@@ -58,18 +57,41 @@ const Scorecard = React.memo(() => {
     }
     // convert made tricks to scores
     const newData = [...data];
-    const score1 = 0;
-    const score2 = 0;
-    // TODO: calculate scores
-    console.log(mades);
+    const { score1, bags1, score2, bags2 } = data[data.length - 2] || {};
+    // calculate scores
+    const { score: newScore1, bags: newBags1 } = getScore(
+      { ...lastBid[0], made: mades[0] },
+      { ...lastBid[2], made: mades[2] },
+      score1 || 0,
+      bags1 || 0,
+    );
+    const { score: newScore2, bags: newBags2 } = getScore(
+      { ...lastBid[1], made: mades[1] },
+      { ...lastBid[3], made: mades[3] },
+      score2 || 0,
+      bags2 || 0,
+    );
     // update scores in data entry
-    newData[data.length - 1] = { ...data[data.length - 1], score1, score2 };
+    newData[data.length - 1] = {
+      ...data[data.length - 1],
+      score1: newScore1,
+      bags1: newBags1,
+      score2: newScore2,
+      bags2: newBags2,
+    };
     setScoreboard({
       first: (first + 1) % 4,
       lastBid: [defaultBid, defaultBid, defaultBid, defaultBid],
       data: newData,
     });
   };
+
+  const newGame = () =>
+    setScoreboard({
+      first,
+      lastBid: [defaultBid, defaultBid, defaultBid, defaultBid],
+      data: [],
+    });
 
   return (
     <>
@@ -80,10 +102,12 @@ const Scorecard = React.memo(() => {
         <PlayerMenu />
       </div>
       <ControlBar
+        first={first}
         initials={initials}
         lastBid={lastBid}
         onBidSave={addBid}
         onScoreSave={addScore}
+        newGame={newGame}
       />
       <ScoreTable initials={initials} data={data} />
     </>
