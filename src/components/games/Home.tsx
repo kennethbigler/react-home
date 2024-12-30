@@ -6,7 +6,7 @@ import HomeMenuItem from "./HomeMenuItem";
 
 const menuItems = [...originalMenuItems];
 const casinoItems = menuItems.splice(2, 5);
-const gameItems = menuItems.splice(3, 5);
+const gameItems = menuItems.splice(3, 6);
 const socialItems = menuItems.splice(4, menuItems.length);
 
 interface HomeProps {

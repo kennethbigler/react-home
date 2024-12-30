@@ -15,6 +15,8 @@ interface InfoPopupProps {
   buttonText?: string | React.ReactElement;
   /** set the color of the button */
   buttonColor?: MuiColors;
+  /** set the color of the button */
+  onSave?: () => void;
 }
 
 const InfoPopup = ({
@@ -22,15 +24,23 @@ const InfoPopup = ({
   title,
   children,
   buttonColor,
+  onSave,
 }: InfoPopupProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
 
+  const handleSave = () => {
+    if (onSave) {
+      onSave();
+    }
+    handleClose();
+  };
+
   return (
     <>
       <Button
-        onClick={handleOpen as React.MouseEventHandler}
+        onClick={handleOpen}
         variant="contained"
         color={buttonColor || "primary"}
       >
@@ -38,7 +48,7 @@ const InfoPopup = ({
       </Button>
       <Dialog
         title="info-popup"
-        onClose={handleClose as React.MouseEventHandler}
+        onClose={handleClose}
         open={isOpen}
         maxWidth="md"
         fullWidth
@@ -46,10 +56,12 @@ const InfoPopup = ({
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
         <DialogActions>
-          <Button
-            color="secondary"
-            onClick={handleClose as React.MouseEventHandler}
-          >
+          {onSave && (
+            <Button color="secondary" onClick={handleSave}>
+              Save
+            </Button>
+          )}
+          <Button color="primary" onClick={handleClose}>
             Close
           </Button>
         </DialogActions>
