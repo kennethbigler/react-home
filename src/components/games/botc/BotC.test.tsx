@@ -19,16 +19,12 @@ describe("games | BotC", () => {
     fireEvent.click(screen.getAllByLabelText("down")[0]);
     // swap number of players
     expect(screen.getByText("Players: 8 / Dist: 5,1,1,1"));
-    fireEvent.change(screen.getByLabelText("player count"), {
-      target: { value: 9 },
-    });
+    fireEvent.click(screen.getByLabelText("add player"));
     expect(screen.getByText("Players: 9 / Dist: 5,2,1,1"));
     // swap number of travelers
-    expect(screen.getByText("Travelers: 0"));
-    fireEvent.change(screen.getByLabelText("traveler count"), {
-      target: { value: 1 },
-    });
-    expect(screen.getByText("Travelers: 1"));
+    expect(screen.getByText("Travelers"));
+    fireEvent.click(screen.getByLabelText("1 traveler"));
+    expect(screen.getByText("Travelers"));
 
     // update a name
     // fireEvent.change(screen.getAllByDisplayValue("Ken")[0], {

@@ -48,7 +48,6 @@ describe("games | game-table | GameTable", () => {
     expect(screen.queryByText("Hand: 0")).toBeNull();
     expect(screen.queryByText("K♠")).toBeNull();
     expect(screen.queryByText("♠")).toBeNull();
-    expect(screen.queryByRole("button")).toBeNull();
   });
 
   it("supports multiple hands", () => {

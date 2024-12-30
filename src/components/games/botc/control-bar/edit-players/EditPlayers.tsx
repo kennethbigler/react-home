@@ -62,6 +62,7 @@ const EditPlayers = ({
         <IconButton
           onClick={decrPlayers}
           disabled={numPlayers <= BOTC_MIN_PLAYERS}
+          aria-label="remove player"
         >
           <Remove />
         </IconButton>
@@ -71,6 +72,7 @@ const EditPlayers = ({
         <IconButton
           onClick={incrPlayers}
           disabled={numPlayers >= BOTC_MAX_PLAYERS}
+          aria-label="add player"
         >
           <Add />
         </IconButton>
@@ -84,6 +86,7 @@ const EditPlayers = ({
               key={n}
               variant={numTravelers === n ? "contained" : "outlined"}
               onClick={handleClick(n)}
+              aria-label={`${n} traveler`}
             >
               {n}
             </Button>

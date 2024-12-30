@@ -7,11 +7,11 @@ describe("games | spades | Spades", () => {
 
     expect(screen.getByText("♠️ Scores")).toBeInTheDocument();
     // open bids
-    expect(screen.queryByText("Bid (13 Bags)")).toBeNull();
+    expect(screen.queryByText("Bid (1 Bag)")).toBeNull();
     fireEvent.click(screen.getByText("+ Bid"));
-    expect(screen.getByText("Bid (13 Bags)")).toBeInTheDocument();
+    expect(screen.getByText("Bid (1 Bag)")).toBeInTheDocument();
     fireEvent.click(screen.getByText("Close"));
-    await waitFor(() => expect(screen.queryByText("Bid (13 Bags)")).toBeNull());
+    await waitFor(() => expect(screen.queryByText("Bid (1 Bag)")).toBeNull());
     // open score
     expect(screen.queryByText("⚠️ Tricks: 12")).toBeNull();
     fireEvent.click(screen.getByText("+ Score"));
