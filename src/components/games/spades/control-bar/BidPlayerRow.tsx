@@ -9,6 +9,7 @@ import { MAX_BID, MIN_BID } from "../../../../jotai/spades-atom";
 
 interface BidPlayerRowProps {
   id: string;
+  blindTrade: number;
   canTrain?: boolean;
   bid: number;
   blind: boolean;
@@ -18,6 +19,7 @@ interface BidPlayerRowProps {
 
 const BidPlayerRow = ({
   id,
+  blindTrade,
   canTrain,
   bid,
   blind,
@@ -56,6 +58,7 @@ const BidPlayerRow = ({
           onChange={handleBlind}
           size="small"
         />
+        {blindTrade ? blindTrade : ""}
       </TableCell>
       <TableCell align="right">
         {canTrain ? (

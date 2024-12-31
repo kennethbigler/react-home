@@ -9,12 +9,19 @@ import BidPlayerRow from "./BidPlayerRow";
 import { Bids, defaultBid } from "../../../../jotai/spades-atom";
 
 interface AddBidProps {
+  blindTrade: number;
   first: number;
   initials: [string, string, string, string];
   onBidSave: (bids: Bids) => void;
 }
 
-const AddBid = ({ first, initials, onBidSave }: AddBidProps) => {
+const getBlindTrade = (blindTrade: number, n: number) =>
+  (blindTrade < 0 && (n === 0 || n === 2)) ||
+  (blindTrade > 0 && (n === 2 || n === 3))
+    ? Math.abs(blindTrade)
+    : 0;
+
+const AddBid = ({ blindTrade, first, initials, onBidSave }: AddBidProps) => {
   const [bids, setBids] = React.useState<Bids>([
     defaultBid,
     defaultBid,
@@ -75,7 +82,7 @@ const AddBid = ({ first, initials, onBidSave }: AddBidProps) => {
           <TableRow>
             <TableCell width={"20%"}>P</TableCell>
             <TableCell width={"40%"} align="center">
-              Bid ({bags} Bag{bags !== 1 ? "s" : ""})
+              Bid ({bags} 💰)
             </TableCell>
             <TableCell width={"20%"} align="center">
               🦮
@@ -86,18 +93,30 @@ const AddBid = ({ first, initials, onBidSave }: AddBidProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <BidPlayerRow id={initials[a]} {...bids[a]} onBid={handleBid(a)} />
-          <BidPlayerRow id={initials[b]} {...bids[b]} onBid={handleBid(b)} />
+          <BidPlayerRow
+            id={initials[a]}
+            {...bids[a]}
+            onBid={handleBid(a)}
+            blindTrade={getBlindTrade(blindTrade, a)}
+          />
+          <BidPlayerRow
+            id={initials[b]}
+            {...bids[b]}
+            onBid={handleBid(b)}
+            blindTrade={getBlindTrade(blindTrade, b)}
+          />
           <BidPlayerRow
             canTrain={0 < bids[a].bid && bids[a].bid < 10}
             id={initials[c]}
             {...bids[c]}
+            blindTrade={getBlindTrade(blindTrade, c)}
             onBid={handleBid(c)}
           />
           <BidPlayerRow
             canTrain={0 < bids[b].bid && bids[b].bid < 10}
             id={initials[d]}
             {...bids[d]}
+            blindTrade={getBlindTrade(blindTrade, d)}
             onBid={handleBid(d)}
           />
         </TableBody>

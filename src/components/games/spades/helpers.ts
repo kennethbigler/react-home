@@ -21,6 +21,19 @@ const getScore = (
   }
   // double nil
   if (p1.bid === 0 && p2.bid === 0) {
+    // 1 blind 1 normal
+    if (p1.blind || p2.blind) {
+      if (p1.made === 0 && p2.made === 0) {
+        return { score: score + 60, bags };
+      } else if ((p1.blind && p1.made === 0) || (p2.blind && p2.made === 0)) {
+        return { score: score + 30, bags: bags + p1.made + p2.made };
+      } else if (p1.made === 0 || p2.made === 0) {
+        return { score, bags: bags + p1.made + p2.made };
+      } else {
+        return { score: score - 30, bags: bags + p1.made + p2.made };
+      }
+    }
+    // 2 normal
     if (p1.made === 0 && p2.made === 0) {
       return { score: score + 40, bags };
     } else if (p1.made === 0 || p2.made === 0) {
