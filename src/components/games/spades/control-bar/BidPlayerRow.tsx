@@ -58,7 +58,7 @@ const BidPlayerRow = ({
           onChange={handleBlind}
           size="small"
         />
-        {blindTrade ? blindTrade : ""}
+        {blindTrade || blind ? blindTrade : ""}
       </TableCell>
       <TableCell align="right">
         {canTrain ? (
