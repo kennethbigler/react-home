@@ -3,6 +3,7 @@ import AddBid from "./AddBid";
 import AddScore from "./AddScore";
 
 interface ControlBarProps {
+  blindTrade: number;
   first: number;
   initials: [string, string, string, string];
   lastBid: Bids;
@@ -11,6 +12,7 @@ interface ControlBarProps {
 }
 
 const ControlBar = ({
+  blindTrade,
   first,
   initials,
   lastBid,
@@ -18,7 +20,12 @@ const ControlBar = ({
   onScoreSave,
 }: ControlBarProps) => (
   <div className="flex-container" style={{ margin: "20px 0" }}>
-    <AddBid first={first} initials={initials} onBidSave={onBidSave} />
+    <AddBid
+      blindTrade={blindTrade}
+      first={first}
+      initials={initials}
+      onBidSave={onBidSave}
+    />
     <AddScore initials={initials} lastBid={lastBid} onScoreSave={onScoreSave} />
   </div>
 );

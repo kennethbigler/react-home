@@ -36,7 +36,13 @@ const ScoreTable = ({ initials, data }: ScoreTableProps) => (
     <TableBody>
       {data.map((s, i) => (
         <TableRow key={i}>
-          <TableCell>{s.start}</TableCell>
+          <TableCell
+            padding={i === data.length - 1 ? "none" : undefined}
+            align="center"
+          >
+            {s.start}
+            {i === data.length - 1 && (s.score1 ? "🃏" : "🥇")}
+          </TableCell>
           <TableCell>{s.bid}</TableCell>
           <TableCell>
             {getScoreText(s.score1)}
