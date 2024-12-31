@@ -17,8 +17,8 @@ interface AddBidProps {
 
 const getBlindTrade = (blindTrade: number, n: number) =>
   (blindTrade < 0 && (n === 0 || n === 2)) ||
-  (blindTrade > 0 && (n === 2 || n === 3))
-    ? Math.abs(blindTrade)
+  (blindTrade > 0 && (n === 1 || n === 3))
+    ? Math.min(Math.abs(blindTrade), 3)
     : 0;
 
 const AddBid = ({ blindTrade, first, initials, onBidSave }: AddBidProps) => {
