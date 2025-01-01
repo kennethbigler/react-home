@@ -14,8 +14,11 @@ const Spades = React.memo(() => {
   if (data[i]?.score1 === undefined) {
     i -= 1;
   }
-  const diff = (data[i]?.score1 || 0) - (data[i]?.score2 || 0);
-  const blindTrade = diff > 0 ? Math.floor(diff / 10) : Math.ceil(diff / 10);
+  const diff =
+    (data[i]?.score1 || 0) * 10 +
+    (data[i]?.bags1 || 0) -
+    ((data[i]?.score2 || 0) * 10 + (data[i]?.bags2 || 0));
+  const blindTrade = diff > 0 ? Math.floor(diff / 100) : Math.ceil(diff / 100);
 
   return (
     <>
@@ -46,7 +49,6 @@ const Spades = React.memo(() => {
           onScoreSave={addScore}
         />
       )}
-
       <ScoreTable initials={initials} data={data} />
     </>
   );
