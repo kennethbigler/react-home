@@ -53,13 +53,21 @@ const useSpades = () => {
     const newData = [...data];
     const { score1, bags1, score2, bags2 } = data[data.length - 2] || {};
     // calculate scores
-    const { score: newScore1, bags: newBags1 } = getScore(
+    const {
+      score: newScore1,
+      bags: newBags1,
+      mod: mod1,
+    } = getScore(
       { ...lastBid[0], made: mades[0] },
       { ...lastBid[2], made: mades[2] },
       score1 || 0,
       bags1 || 0,
     );
-    const { score: newScore2, bags: newBags2 } = getScore(
+    const {
+      score: newScore2,
+      bags: newBags2,
+      mod: mod2,
+    } = getScore(
       { ...lastBid[1], made: mades[1] },
       { ...lastBid[3], made: mades[3] },
       score2 || 0,
@@ -70,8 +78,10 @@ const useSpades = () => {
       ...data[data.length - 1],
       score1: newScore1,
       bags1: newBags1,
+      mod1,
       score2: newScore2,
       bags2: newBags2,
+      mod2,
     };
     setScoreboard({
       first: (first + 1) % 4,

@@ -15,8 +15,10 @@ export interface ScoreRow {
   bid: string;
   score1?: number;
   bags1?: number;
+  mod1?: string;
   score2?: number;
   bags2?: number;
+  mod2?: string;
 }
 
 interface SpadesState {

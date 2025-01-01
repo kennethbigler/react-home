@@ -94,7 +94,7 @@ const AddBid = ({ blindTrade, first, initials, onBidSave }: AddBidProps) => {
         </TableHead>
         <TableBody>
           <BidPlayerRow
-            id={initials[a]}
+            id={initials[a] + " 🥇"}
             {...bids[a]}
             onBid={handleBid(a)}
             blindTrade={getBlindTrade(blindTrade, a)}
@@ -114,7 +114,7 @@ const AddBid = ({ blindTrade, first, initials, onBidSave }: AddBidProps) => {
           />
           <BidPlayerRow
             canTrain={0 < bids[b].bid && bids[b].bid < 10}
-            id={initials[d]}
+            id={initials[d] + " 🃏"}
             {...bids[d]}
             blindTrade={getBlindTrade(blindTrade, d)}
             onBid={handleBid(d)}

@@ -10,11 +10,11 @@ interface ScoreTableProps {
   data: ScoreRow[];
 }
 
-const getScoreText = (score?: number) => {
-  if (score === undefined || score === 0) {
+const getScoreText = (score?: number, comp?: number) => {
+  if (score === undefined || comp === undefined || score === 0) {
     return "";
   } else if (score > 0) {
-    return `${score > 100 ? "🎉 " : ""}${score}`;
+    return `${score > 100 && score > comp ? "🎉 " : ""}${score}`;
   } else {
     return `${score}0 + `;
   }
@@ -45,12 +45,14 @@ const ScoreTable = ({ initials, data }: ScoreTableProps) => (
           </TableCell>
           <TableCell>{s.bid}</TableCell>
           <TableCell>
-            {getScoreText(s.score1)}
+            {getScoreText(s.score1, s.score2)}
             {s.bags1}
+            {s.mod1 && ` (${s.mod1})`}
           </TableCell>
           <TableCell>
-            {getScoreText(s.score2)}
+            {getScoreText(s.score2, s.score1)}
             {s.bags2}
+            {s.mod2 && ` (${s.mod2})`}
           </TableCell>
         </TableRow>
       ))}
