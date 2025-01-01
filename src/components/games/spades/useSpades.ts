@@ -43,19 +43,19 @@ const useSpades = () => {
     setScoreboard({ first, lastBid: bids, data: newData });
   };
 
-  const penaltyHelper = (score: number, bags: number, mod: string) => {
+  const penaltyHelper = (s: number, b: number, m?: string) => {
     // add bags
-    let newBags = bags + 3;
-    let newMod = mod + "😈";
-    let newScore = score;
+    let bags = b + 3;
+    let mod = (m || "") + "😈";
+    let score = s;
     // check for bag out
-    if (newBags >= 10) {
-      newScore -= 9;
-      newBags -= 10;
-      newMod += "💰";
+    if (bags >= 10) {
+      score -= 9;
+      bags -= 10;
+      mod += "💰";
     }
     // return;
-    return { newScore, newBags, newMod };
+    return { score, bags, mod };
   };
 
   const addPenalty = (team: number) => () => {
@@ -64,40 +64,28 @@ const useSpades = () => {
       i -= 1;
     }
     if (team === 0) {
+      // verify data
       const { score1, bags1, mod1 } = data[i] || {};
       if (score1 === undefined || bags1 === undefined) {
         return;
       }
-      const { newScore, newBags, newMod } = penaltyHelper(
-        score1,
-        bags1,
-        mod1 || "",
-      );
+      // add 3 bags
+      const { score, bags, mod } = penaltyHelper(score1, bags1, mod1);
+      // update data
       const newData = [...data];
-      newData[i] = {
-        ...data[i],
-        score1: newScore,
-        bags1: newBags,
-        mod1: newMod,
-      };
+      newData[i] = { ...data[i], score1: score, bags1: bags, mod1: mod };
       setScoreboard({ first, lastBid, data: newData });
     } else {
+      // verify data
       const { score2, bags2, mod2 } = data[i] || {};
       if (score2 === undefined || bags2 === undefined) {
         return;
       }
-      const { newScore, newBags, newMod } = penaltyHelper(
-        score2,
-        bags2,
-        mod2 || "",
-      );
+      // add 3 bags
+      const { score, bags, mod } = penaltyHelper(score2, bags2, mod2);
+      // update data
       const newData = [...data];
-      newData[i] = {
-        ...data[i],
-        score2: newScore,
-        bags2: newBags,
-        mod2: newMod,
-      };
+      newData[i] = { ...data[i], score2: score, bags2: bags, mod2: mod };
       setScoreboard({ first, lastBid, data: newData });
     }
   };
