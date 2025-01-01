@@ -7,8 +7,16 @@ import ScoreTable from "./ScoreTable";
 import useSpades from "./useSpades";
 
 const Spades = React.memo(() => {
-  const { first, lastBid, data, initials, addBid, addScore, newGame } =
-    useSpades();
+  const {
+    first,
+    lastBid,
+    data,
+    initials,
+    addBid,
+    addPenalty,
+    addScore,
+    newGame,
+  } = useSpades();
 
   let i = data.length - 1;
   if (data[i]?.score1 === undefined) {
@@ -45,7 +53,9 @@ const Spades = React.memo(() => {
           first={first}
           initials={initials}
           lastBid={lastBid}
+          showPenalty={!(data[i]?.score1 === undefined)}
           onBidSave={addBid}
+          onPenalty={addPenalty}
           onScoreSave={addScore}
         />
       )}

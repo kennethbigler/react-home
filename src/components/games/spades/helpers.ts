@@ -25,9 +25,8 @@ const getScore = (
       newBags = p1.made + p2.made;
       mod = "🚫🚫";
     }
-  }
-  // double nil
-  if (p1.bid === 0 && p2.bid === 0) {
+    // double nil
+  } else if (p1.bid === 0 && p2.bid === 0) {
     // 1 blind 1 normal
     if (p1.blind || p2.blind) {
       if (p1.made === 0 && p2.made === 0) {
@@ -48,9 +47,8 @@ const getScore = (
         newBags = p1.made + p2.made;
         mod = "🚫🚫";
       }
-    }
-    // 2 normal
-    if (p1.made === 0 && p2.made === 0) {
+      // 2 normal
+    } else if (p1.made === 0 && p2.made === 0) {
       // win
       newScore = 40;
     } else if (p1.made === 0 || p2.made === 0) {
@@ -63,9 +61,8 @@ const getScore = (
       newBags = p1.made + p2.made;
       mod = "🚫🚫";
     }
-  }
-  // trains
-  if (p1.train || p2.train) {
+    // trains
+  } else if (p1.train || p2.train) {
     if (p1.made + p2.made >= 10) {
       // win
       newScore = 20;

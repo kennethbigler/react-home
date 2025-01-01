@@ -6,19 +6,19 @@ import Add from "@mui/icons-material/Add";
 import Remove from "@mui/icons-material/Remove";
 import { Typography } from "@mui/material";
 
-interface ScorePlayerBoxProps {
+interface AddScorePlayerProps {
   initial: string;
   lastBid: number;
   made: number;
   setMade: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const ScorePlayerBox = ({
+const AddScorePlayer = ({
   initial,
   lastBid,
   made,
   setMade,
-}: ScorePlayerBoxProps) => {
+}: AddScorePlayerProps) => {
   const decrMade = () => setMade(Math.max(made - 1, MIN_BID));
   const incrMade = () => setMade(Math.min(made + 1, MAX_BID));
 
@@ -41,4 +41,4 @@ const ScorePlayerBox = ({
   );
 };
 
-export default ScorePlayerBox;
+export default AddScorePlayer;

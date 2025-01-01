@@ -43,6 +43,65 @@ const useSpades = () => {
     setScoreboard({ first, lastBid: bids, data: newData });
   };
 
+  const penaltyHelper = (score: number, bags: number, mod: string) => {
+    // add bags
+    let newBags = bags + 3;
+    let newMod = mod + "😈";
+    let newScore = score;
+    // check for bag out
+    if (newBags >= 10) {
+      newScore -= 9;
+      newBags -= 10;
+      newMod += "💰";
+    }
+    // return;
+    return { newScore, newBags, newMod };
+  };
+
+  const addPenalty = (team: number) => () => {
+    let i = data.length - 1;
+    if (data[i]?.score1 === undefined) {
+      i -= 1;
+    }
+    if (team === 0) {
+      const { score1, bags1, mod1 } = data[i] || {};
+      if (score1 === undefined || bags1 === undefined) {
+        return;
+      }
+      const { newScore, newBags, newMod } = penaltyHelper(
+        score1,
+        bags1,
+        mod1 || "",
+      );
+      const newData = [...data];
+      newData[i] = {
+        ...data[i],
+        score1: newScore,
+        bags1: newBags,
+        mod1: newMod,
+      };
+      setScoreboard({ first, lastBid, data: newData });
+    } else {
+      const { score2, bags2, mod2 } = data[i] || {};
+      if (score2 === undefined || bags2 === undefined) {
+        return;
+      }
+      const { newScore, newBags, newMod } = penaltyHelper(
+        score2,
+        bags2,
+        mod2 || "",
+      );
+      const newData = [...data];
+      newData[i] = {
+        ...data[i],
+        score2: newScore,
+        bags2: newBags,
+        mod2: newMod,
+      };
+      setScoreboard({ first, lastBid, data: newData });
+    }
+  };
+
   /** calculates and adds score1 and score2 finishing data entry */
   const addScore = (mades: [number, number, number, number]) => {
     // can't add scores if no bid exists
@@ -103,6 +162,7 @@ const useSpades = () => {
     data,
     initials,
     addBid,
+    addPenalty,
     addScore,
     newGame,
   };

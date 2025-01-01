@@ -7,7 +7,7 @@ import Add from "@mui/icons-material/Add";
 import Remove from "@mui/icons-material/Remove";
 import { MAX_BID, MIN_BID } from "../../../../jotai/spades-atom";
 
-interface BidPlayerRowProps {
+interface AddBidPlayerProps {
   id: string;
   blindTrade: number;
   canTrain?: boolean;
@@ -17,7 +17,7 @@ interface BidPlayerRowProps {
   onBid: (bid: number, blind: boolean, train: boolean) => void;
 }
 
-const BidPlayerRow = ({
+const AddBidPlayer = ({
   id,
   blindTrade,
   canTrain,
@@ -25,7 +25,7 @@ const BidPlayerRow = ({
   blind,
   train,
   onBid,
-}: BidPlayerRowProps) => {
+}: AddBidPlayerProps) => {
   const decrBid = () => onBid(Math.max(bid - 1, MIN_BID), false, false);
   const incrBid = () => onBid(Math.min(bid + 1, MAX_BID), false, false);
 
@@ -74,4 +74,4 @@ const BidPlayerRow = ({
   );
 };
 
-export default BidPlayerRow;
+export default AddBidPlayer;
