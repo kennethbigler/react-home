@@ -1,5 +1,6 @@
 import { Bids } from "../../../../jotai/spades-atom";
 import AddBid from "./AddBid";
+import AddPenalty from "./AddPenalty";
 import AddScore from "./AddScore";
 
 interface ControlBarProps {
@@ -7,7 +8,9 @@ interface ControlBarProps {
   first: number;
   initials: [string, string, string, string];
   lastBid: Bids;
+  showPenalty: boolean;
   onBidSave: (bids: Bids) => void;
+  onPenalty: (team: number) => () => void;
   onScoreSave: (mades: [number, number, number, number]) => void;
 }
 
@@ -16,7 +19,9 @@ const ControlBar = ({
   first,
   initials,
   lastBid,
+  showPenalty,
   onBidSave,
+  onPenalty,
   onScoreSave,
 }: ControlBarProps) => (
   <div className="flex-container" style={{ margin: "20px 0" }}>
@@ -26,6 +31,7 @@ const ControlBar = ({
       initials={initials}
       onBidSave={onBidSave}
     />
+    {showPenalty && <AddPenalty initials={initials} onPenalty={onPenalty} />}
     <AddScore initials={initials} lastBid={lastBid} onScoreSave={onScoreSave} />
   </div>
 );

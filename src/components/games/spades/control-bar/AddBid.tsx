@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
-import BidPlayerRow from "./BidPlayerRow";
+import AddBidPlayer from "./AddBidPlayer";
 import { Bids, defaultBid } from "../../../../jotai/spades-atom";
 
 interface AddBidProps {
@@ -93,26 +93,26 @@ const AddBid = ({ blindTrade, first, initials, onBidSave }: AddBidProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <BidPlayerRow
+          <AddBidPlayer
             id={initials[a] + " 🥇"}
             {...bids[a]}
             onBid={handleBid(a)}
             blindTrade={getBlindTrade(blindTrade, a)}
           />
-          <BidPlayerRow
+          <AddBidPlayer
             id={initials[b]}
             {...bids[b]}
             onBid={handleBid(b)}
             blindTrade={getBlindTrade(blindTrade, b)}
           />
-          <BidPlayerRow
+          <AddBidPlayer
             canTrain={0 < bids[a].bid && bids[a].bid < 10}
             id={initials[c]}
             {...bids[c]}
             blindTrade={getBlindTrade(blindTrade, c)}
             onBid={handleBid(c)}
           />
-          <BidPlayerRow
+          <AddBidPlayer
             canTrain={0 < bids[b].bid && bids[b].bid < 10}
             id={initials[d] + " 🃏"}
             {...bids[d]}

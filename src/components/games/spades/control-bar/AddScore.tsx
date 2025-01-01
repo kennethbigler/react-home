@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import { Bids } from "../../../../jotai/spades-atom";
-import ScorePlayerBox from "./ScorePlayerBox";
+import AddScorePlayer from "./AddScorePlayer";
 
 interface AddScoreProps {
   initials: [string, string, string, string];
@@ -39,25 +39,25 @@ const AddScore = ({ initials, lastBid, onScoreSave }: AddScoreProps) => {
         {total !== 13 && "⚠️"} Tricks: {total}
       </Typography>
       <Grid container spacing={2}>
-        <ScorePlayerBox
+        <AddScorePlayer
           initial={initials[0]}
           lastBid={lastBid[0].bid}
           made={made0}
           setMade={setMade0}
         />
-        <ScorePlayerBox
+        <AddScorePlayer
           initial={initials[1]}
           lastBid={lastBid[1].bid}
           made={made1}
           setMade={setMade1}
         />
-        <ScorePlayerBox
+        <AddScorePlayer
           initial={initials[2]}
           lastBid={lastBid[2].bid}
           made={made2}
           setMade={setMade2}
         />
-        <ScorePlayerBox
+        <AddScorePlayer
           initial={initials[3]}
           lastBid={lastBid[3].bid}
           made={made3}
