@@ -2,7 +2,6 @@ import Add from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Grid from "@mui/material/Grid2";
-import IconButton from "@mui/material/IconButton";
 import Remove from "@mui/icons-material/Remove";
 import Typography from "@mui/material/Typography";
 import {
@@ -58,29 +57,31 @@ const EditPlayers = ({
         />
       </Grid>
 
-      <Grid size={12}>
-        <IconButton
-          onClick={decrPlayers}
-          disabled={numPlayers <= BOTC_MIN_PLAYERS}
+      <Grid size={12} className="flex-container">
+        <Button
           aria-label="remove player"
+          disabled={numPlayers <= BOTC_MIN_PLAYERS}
+          variant="contained"
+          onClick={decrPlayers}
         >
           <Remove />
-        </IconButton>
+        </Button>
         <Typography display="inline">
           Players: {numPlayers} / Dist: {playerDist[numPlayers]}
         </Typography>
-        <IconButton
-          onClick={incrPlayers}
-          disabled={numPlayers >= BOTC_MAX_PLAYERS}
+        <Button
           aria-label="add player"
+          disabled={numPlayers >= BOTC_MAX_PLAYERS}
+          variant="contained"
+          onClick={incrPlayers}
         >
           <Add />
-        </IconButton>
+        </Button>
       </Grid>
 
       <Grid size={12}>
         <Typography>Travelers</Typography>
-        <ButtonGroup aria-label="select number of travelers">
+        <ButtonGroup aria-label="select number of travelers" fullWidth>
           {[0, 1, 2, 3, 4, 5].map((n) => (
             <Button
               key={n}
