@@ -1,23 +1,28 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import PlayerMenu from "../../common/header/PlayerMenu";
 import ControlBar from "./control-bar/ControlBar";
 import ScoreTable from "./ScoreTable";
 import useSpades from "./useSpades";
+import Header from "./Header";
 
 const Spades = React.memo(() => {
   const {
-    first,
-    lastBid,
+    // data
+    bags,
     data,
+    first,
     initials,
+    lastBid,
+    wins1,
+    wins2,
+    // functions
     addBid,
     addPenalty,
     addScore,
     newGame,
   } = useSpades();
 
+  // ControlBar doesn't have access to data, calculate out here
   let i = data.length - 1;
   if (data[i]?.score1 === undefined) {
     i -= 1;
@@ -30,12 +35,7 @@ const Spades = React.memo(() => {
 
   return (
     <>
-      <div className="flex-container">
-        <Typography variant="h2" component="h1">
-          ♠️ Scores
-        </Typography>
-        <PlayerMenu />
-      </div>
+      <Header initials={initials} wins1={wins1} wins2={wins2} bags={bags} />
       {(data[data.length - 1]?.score1 || 0) >= 100 ||
       (data[data.length - 1]?.score2 || 0) >= 100 ? (
         <Button
