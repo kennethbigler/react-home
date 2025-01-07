@@ -1,3 +1,5 @@
+import { Bids } from "../../../jotai/spades-atom";
+
 interface ScoreData {
   bid: number;
   blind: boolean;
@@ -5,7 +7,23 @@ interface ScoreData {
   made: number;
 }
 
-const getScore = (
+/** convert Bids to string for smaller storage */
+export const bidsToString = (bids: Bids): string =>
+  bids.reduce((acc, b) => {
+    if (b.train) {
+      return acc + "🚂";
+    } else if (b.blind) {
+      return acc + "🦮";
+    } else if (b.bid === 0) {
+      return acc + "🚫";
+    } else if (b.bid >= 10) {
+      return acc + `,${b.bid},`;
+    } else {
+      return acc + b.bid.toString();
+    }
+  }, "");
+
+export const getScore = (
   p1: ScoreData,
   p2: ScoreData,
   score: number,
@@ -117,4 +135,18 @@ const getScore = (
   // return
   return { score: score + newScore, bags: bags + newBags, mod };
 };
-export default getScore;
+
+export const penaltyHelper = (s: number, b: number, m?: string) => {
+  // add bags
+  let bags = b + 3;
+  let mod = (m || "") + "😈";
+  let score = s;
+  // check for bag out
+  if (bags >= 10) {
+    score -= 9;
+    bags -= 10;
+    mod += "💰";
+  }
+  // return;
+  return { score, bags, mod };
+};

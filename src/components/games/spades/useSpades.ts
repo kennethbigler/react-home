@@ -1,18 +1,14 @@
 import { useAtom, useAtomValue } from "jotai";
 import playerAtom from "../../../jotai/player-atom";
 import spadesAtom, { Bids, defaultBid } from "../../../jotai/spades-atom";
-import getScore from "./helpers";
+import { bidsToString, getScore, penaltyHelper } from "./helpers";
 
 const useSpades = () => {
   const players = useAtomValue(playerAtom);
   const [spades, setSpades] = useAtom(spadesAtom);
-  const { bags, data, first, lastBid, wins1, wins2 } = spades;
 
-  const initials =
-    players[0].name[0] +
-    players[1].name[0] +
-    players[2].name[0] +
-    players[3].name[0];
+  const { bags, data, first, lastBid, wins1, wins2 } = spades;
+  const initials = players.reduce((a, p, i) => (i < 4 ? a + p.name[0] : a), "");
 
   /** sets a new data entry with first and bid info of data, updates first */
   const addBid = (bids: Bids) => {
@@ -22,40 +18,9 @@ const useSpades = () => {
     }
     // convert bid to storage data format
     const newData = [...data];
-    const newEntry = {
-      start: initials[first],
-      bid: bids.reduce((acc, b) => {
-        if (b.train) {
-          return acc + "🚂";
-        } else if (b.blind) {
-          return acc + "🦮";
-        } else if (b.bid === 0) {
-          return acc + "🚫";
-        } else if (b.bid >= 10) {
-          return acc + `,${b.bid},`;
-        } else {
-          return acc + b.bid.toString();
-        }
-      }, ""),
-    };
-    newData.push(newEntry);
+    newData.push({ start: initials[first], bid: bidsToString(bids) });
     // update first player and add data entry
     setSpades({ ...spades, data: newData, lastBid: bids });
-  };
-
-  const penaltyHelper = (s: number, b: number, m?: string) => {
-    // add bags
-    let bags = b + 3;
-    let mod = (m || "") + "😈";
-    let score = s;
-    // check for bag out
-    if (bags >= 10) {
-      score -= 9;
-      bags -= 10;
-      mod += "💰";
-    }
-    // return;
-    return { score, bags, mod };
   };
 
   const addPenalty = (team: number) => () => {
@@ -131,13 +96,13 @@ const useSpades = () => {
       mod2,
     };
     // underbidding tracker algorithm
-    const newBags = bags.map(
+    const overBids = bags.map(
       (bag, i) => bag + Math.max(mades[i] - lastBid[i].bid, 0),
     ) as [number, number, number, number];
     // update state
     setSpades({
       ...spades,
-      bags: newBags,
+      bags: overBids,
       data: newData,
       first: (first + 1) % 4,
       lastBid: [defaultBid, defaultBid, defaultBid, defaultBid],
