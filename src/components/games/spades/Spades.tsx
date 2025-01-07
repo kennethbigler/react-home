@@ -5,13 +5,19 @@ import PlayerMenu from "../../common/header/PlayerMenu";
 import ControlBar from "./control-bar/ControlBar";
 import ScoreTable from "./ScoreTable";
 import useSpades from "./useSpades";
+import { Avatar, Chip } from "@mui/material";
 
 const Spades = React.memo(() => {
   const {
-    first,
-    lastBid,
+    // data
+    bags,
     data,
+    first,
     initials,
+    lastBid,
+    wins1,
+    wins2,
+    // functions
     addBid,
     addPenalty,
     addScore,
@@ -35,6 +41,23 @@ const Spades = React.memo(() => {
           ♠️ Scores
         </Typography>
         <PlayerMenu />
+      </div>
+      <div className="flex-container">
+        <Chip
+          avatar={<Avatar>{initials[0] + initials[2]}</Avatar>}
+          color={wins1 >= wins2 ? "success" : "error"}
+          label={wins1}
+        />
+        <Chip
+          avatar={<Avatar>💰</Avatar>}
+          color="warning"
+          label={`${initials[0]} ${bags[0]} | ${initials[1]} ${bags[1]} | ${initials[2]} ${bags[2]} | ${initials[3]} ${bags[3]}`}
+        />
+        <Chip
+          avatar={<Avatar>{initials[1] + initials[3]}</Avatar>}
+          color={wins2 >= wins1 ? "success" : "error"}
+          label={wins2}
+        />
       </div>
       {(data[data.length - 1]?.score1 || 0) >= 100 ||
       (data[data.length - 1]?.score2 || 0) >= 100 ? (
