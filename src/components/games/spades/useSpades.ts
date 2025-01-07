@@ -130,9 +130,11 @@ const useSpades = () => {
       bags2: newBags2,
       mod2,
     };
+    // underbidding tracker algorithm
     const newBags = bags.map(
       (bag, i) => bag + Math.max(mades[i] - lastBid[i].bid, 0),
     ) as [number, number, number, number];
+    // update state
     setSpades({
       ...spades,
       bags: newBags,
