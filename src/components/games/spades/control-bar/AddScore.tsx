@@ -6,7 +6,7 @@ import { Bids } from "../../../../jotai/spades-atom";
 import AddScorePlayer from "./AddScorePlayer";
 
 interface AddScoreProps {
-  initials: [string, string, string, string];
+  initials: string;
   lastBid: Bids;
   onScoreSave: (mades: [number, number, number, number]) => void;
 }

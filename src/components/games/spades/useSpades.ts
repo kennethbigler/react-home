@@ -8,12 +8,11 @@ const useSpades = () => {
   const [spades, setSpades] = useAtom(spadesAtom);
   const { bags, data, first, lastBid, wins1, wins2 } = spades;
 
-  const initials: [string, string, string, string] = [
-    players[0].name[0],
-    players[1].name[0],
-    players[2].name[0],
-    players[3].name[0],
-  ];
+  const initials =
+    players[0].name[0] +
+    players[1].name[0] +
+    players[2].name[0] +
+    players[3].name[0];
 
   /** sets a new data entry with first and bid info of data, updates first */
   const addBid = (bids: Bids) => {

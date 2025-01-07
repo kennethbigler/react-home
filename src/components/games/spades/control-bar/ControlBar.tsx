@@ -6,7 +6,7 @@ import AddScore from "./AddScore";
 interface ControlBarProps {
   blindTrade: number;
   first: number;
-  initials: [string, string, string, string];
+  initials: string;
   lastBid: Bids;
   showPenalty: boolean;
   onBidSave: (bids: Bids) => void;

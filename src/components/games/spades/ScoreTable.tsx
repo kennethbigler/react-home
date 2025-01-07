@@ -6,7 +6,7 @@ import TableRow from "@mui/material/TableRow";
 import { ScoreRow } from "../../../jotai/spades-atom";
 
 interface ScoreTableProps {
-  initials: [string, string, string, string];
+  initials: string;
   data: ScoreRow[];
 }
 

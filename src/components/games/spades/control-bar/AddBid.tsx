@@ -11,7 +11,7 @@ import { Bids, defaultBid } from "../../../../jotai/spades-atom";
 interface AddBidProps {
   blindTrade: number;
   first: number;
-  initials: [string, string, string, string];
+  initials: string;
   onBidSave: (bids: Bids) => void;
 }
 

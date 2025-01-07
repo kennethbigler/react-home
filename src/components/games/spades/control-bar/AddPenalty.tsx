@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid2";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 
 interface AddPenaltyProps {
-  initials: [string, string, string, string];
+  initials: string;
   onPenalty: (team: number) => () => void;
 }
 
