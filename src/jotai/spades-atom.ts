@@ -11,13 +11,21 @@ interface Bid {
 export type Bids = [Bid, Bid, Bid, Bid];
 
 export interface ScoreRow {
+  /** initial of who went first */
   start: string;
+  /** Bids converted to a string */
   bid: string;
+  /** team 1's score */
   score1?: number;
+  /** team 1's bags */
   bags1?: number;
+  /** team 1's lost point modifiers */
   mod1?: string;
+  /** team 2's score */
   score2?: number;
+  /** team 2's bags */
   bags2?: number;
+  /** team 2's lost point modifiers */
   mod2?: string;
 }
 
