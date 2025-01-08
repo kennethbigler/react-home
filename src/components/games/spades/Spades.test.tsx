@@ -5,7 +5,7 @@ describe("games | spades | Spades", () => {
   it("renders as expected", async () => {
     render(<Spades />);
 
-    expect(screen.getByText("♠️ Scores")).toBeInTheDocument();
+    expect(screen.getByText("♠️ 🧮")).toBeInTheDocument();
     // open bids
     expect(screen.queryByText("Bid (1 💰)")).toBeNull();
     fireEvent.click(screen.getByText("+ Bid"));
