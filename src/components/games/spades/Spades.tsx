@@ -7,19 +7,21 @@ import Header from "./Header";
 
 const Spades = React.memo(() => {
   const {
-    // data
-    bags,
+    // Shared
     data,
-    first,
     initials,
-    lastBid,
+    // Header
+    overBids,
     wins1,
     wins2,
-    // functions
+    // Reset Button
+    newGame,
+    // ControlBar
+    first,
+    lastBid,
     addBid,
     addPenalty,
     addScore,
-    newGame,
   } = useSpades();
 
   // ControlBar doesn't have access to data, calculate out here
@@ -27,17 +29,24 @@ const Spades = React.memo(() => {
   if (data[i]?.score1 === undefined) {
     i -= 1;
   }
-  const diff =
-    (data[i]?.score1 || 0) * 10 +
-    (data[i]?.bags1 || 0) -
-    ((data[i]?.score2 || 0) * 10 + (data[i]?.bags2 || 0));
+  // set vars
+  const score1 = data[i]?.score1 || 0;
+  const bags1 = data[i]?.bags1 || 0;
+  const score2 = data[i]?.score2 || 0;
+  const bags2 = data[i]?.bags2 || 0;
+  // see if blind trade is possible
+  const diff = score1 * 10 + bags1 - (score2 * 10 + bags2);
   const blindTrade = diff > 0 ? Math.floor(diff / 100) : Math.ceil(diff / 100);
 
   return (
     <>
-      <Header initials={initials} wins1={wins1} wins2={wins2} bags={bags} />
-      {(data[data.length - 1]?.score1 || 0) >= 100 ||
-      (data[data.length - 1]?.score2 || 0) >= 100 ? (
+      <Header
+        initials={initials}
+        overBids={overBids}
+        wins1={wins1}
+        wins2={wins2}
+      />
+      {score1 >= 100 || score2 >= 100 ? (
         <Button
           fullWidth
           color="error"
@@ -53,7 +62,7 @@ const Spades = React.memo(() => {
           first={first}
           initials={initials}
           lastBid={lastBid}
-          showPenalty={!(data[i]?.score1 === undefined)}
+          showPenalty={data[0]?.score1 !== undefined}
           onBidSave={addBid}
           onPenalty={addPenalty}
           onScoreSave={addScore}

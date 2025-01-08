@@ -5,19 +5,20 @@ import PlayerMenu from "../../common/header/PlayerMenu";
 
 interface HeaderProps {
   initials: string;
+  overBids: [number, number, number, number];
   wins1: number;
   wins2: number;
-  bags: [number, number, number, number];
 }
 
-const Header = ({ initials, wins1, wins2, bags }: HeaderProps) => (
+const Header = ({ initials, overBids, wins1, wins2 }: HeaderProps) => (
   <>
     <div className="flex-container">
       <Typography variant="h2" component="h1">
-        ♠️ Scores
+        ♠️&nbsp;🧮
       </Typography>
       <PlayerMenu />
     </div>
+    <br aria-hidden />
     <div className="flex-container">
       <Chip
         avatar={<Avatar>{initials[0] + initials[2]}</Avatar>}
@@ -26,8 +27,7 @@ const Header = ({ initials, wins1, wins2, bags }: HeaderProps) => (
       />
       <Chip
         avatar={<Avatar>💰</Avatar>}
-        color="warning"
-        label={`${initials[0]} ${bags[0]} | ${initials[1]} ${bags[1]} | ${initials[2]} ${bags[2]} | ${initials[3]} ${bags[3]}`}
+        label={`${initials[0]} ${overBids[0]} | ${initials[1]} ${overBids[1]} | ${initials[2]} ${overBids[2]} | ${initials[3]} ${overBids[3]}`}
       />
       <Chip
         avatar={<Avatar>{initials[1] + initials[3]}</Avatar>}
