@@ -36,8 +36,6 @@ interface SpadesState {
   first: number;
   /** recent bids */
   lastBid: Bids;
-  /** successful nil tracker over time */
-  nils: [number, number, number, number];
   /** over bid tracker over time */
   overBids: [number, number, number, number];
   /** team 1 wins */
@@ -51,7 +49,6 @@ const initialState: SpadesState = {
   data: [],
   first: 0,
   lastBid: [defaultBid, defaultBid, defaultBid, defaultBid],
-  nils: [0, 0, 0, 0],
   overBids: [0, 0, 0, 0],
   wins1: 0,
   wins2: 0,

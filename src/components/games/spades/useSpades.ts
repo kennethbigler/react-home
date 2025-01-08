@@ -7,7 +7,7 @@ const useSpades = () => {
   const players = useAtomValue(playerAtom);
   const [spades, setSpades] = useAtom(spadesAtom);
 
-  const { data, first, lastBid, nils, overBids, wins1, wins2 } = spades;
+  const { data, first, lastBid, overBids, wins1, wins2 } = spades;
   const initials = players.reduce((a, p, i) => (i < 4 ? a + p.name[0] : a), "");
 
   /** sets a new data entry with first and bid info of data, updates first */
@@ -97,10 +97,8 @@ const useSpades = () => {
     };
     // underbidding tracker algorithm
     const newOverBids: [number, number, number, number] = [0, 0, 0, 0];
-    const newNils: [number, number, number, number] = [0, 0, 0, 0];
     lastBid.forEach((bid, i) => {
       newOverBids[i] += Math.max(mades[i] - bid.bid, 0);
-      newNils[i] += bid.bid === 0 && mades[i] === 0 ? 1 : 0;
     });
     // update state
     setSpades({
@@ -108,7 +106,6 @@ const useSpades = () => {
       data: newData,
       first: (first + 1) % 4,
       lastBid: [defaultBid, defaultBid, defaultBid, defaultBid],
-      nils: newNils,
       overBids: newOverBids,
     });
   };
@@ -134,7 +131,6 @@ const useSpades = () => {
     first,
     initials,
     lastBid,
-    nils,
     overBids,
     wins1,
     wins2,
