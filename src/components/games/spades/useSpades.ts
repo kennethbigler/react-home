@@ -108,7 +108,7 @@ const useSpades = () => {
       // add the overbid or bags, whatever is lower
       newOverBids[i] += Math.min(
         mades[i] - bid.bid, // if overbid is lower, partner got bags
-        i === 0 || i === 2 ? bags1 || 0 : bags2 || 0, // if bags is lower, player was saving partner
+        i === 0 || i === 2 ? newBags1 || 0 : newBags2 || 0, // if bags is lower, player was saving partner
       );
     });
     // update state
