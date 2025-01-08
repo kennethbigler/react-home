@@ -4,6 +4,7 @@ import ControlBar from "./control-bar/ControlBar";
 import ScoreTable from "./ScoreTable";
 import useSpades from "./useSpades";
 import Header from "./Header";
+import StatsBar from "./StatsBar";
 
 const Spades = React.memo(() => {
   const {
@@ -11,9 +12,11 @@ const Spades = React.memo(() => {
     data,
     initials,
     // Header
-    bags,
     wins1,
     wins2,
+    // StatsBar
+    nils,
+    overBids,
     // Reset Button
     newGame,
     // ControlBar
@@ -40,7 +43,8 @@ const Spades = React.memo(() => {
 
   return (
     <>
-      <Header initials={initials} wins1={wins1} wins2={wins2} bags={bags} />
+      <Header initials={initials} wins1={wins1} wins2={wins2} />
+      <StatsBar initials={initials} overBids={overBids} nils={nils} />
       {score1 >= 100 || score2 >= 100 ? (
         <Button
           fullWidth

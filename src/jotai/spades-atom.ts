@@ -30,14 +30,16 @@ export interface ScoreRow {
 }
 
 interface SpadesState {
-  /** bag tracker over time */
-  bags: [number, number, number, number];
   /** score table, updates on +Score & +Bid, resets over games */
   data: ScoreRow[];
   /** 0, 1, 2, 3, updates on +Score, persists over games */
   first: number;
   /** recent bids */
   lastBid: Bids;
+  /** successful nil tracker over time */
+  nils: [number, number, number, number];
+  /** over bid tracker over time */
+  overBids: [number, number, number, number];
   /** team 1 wins */
   wins1: number;
   /** team 2 wins */
@@ -46,10 +48,11 @@ interface SpadesState {
 
 export const defaultBid: Bid = { bid: 3, blind: false, train: false };
 const initialState: SpadesState = {
-  bags: [0, 0, 0, 0],
   data: [],
   first: 0,
   lastBid: [defaultBid, defaultBid, defaultBid, defaultBid],
+  nils: [0, 0, 0, 0],
+  overBids: [0, 0, 0, 0],
   wins1: 0,
   wins2: 0,
 };

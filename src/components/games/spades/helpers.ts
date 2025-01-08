@@ -23,6 +23,7 @@ export const bidsToString = (bids: Bids): string =>
     }
   }, "");
 
+/** get and update score from Bids and made values */
 export const getScore = (
   p1: ScoreData,
   p2: ScoreData,
@@ -136,6 +137,7 @@ export const getScore = (
   return { score: score + newScore, bags: bags + newBags, mod };
 };
 
+/** add the penalty then handle bag out if needed */
 export const penaltyHelper = (s: number, b: number, m?: string) => {
   // add bags
   let bags = b + 3;
