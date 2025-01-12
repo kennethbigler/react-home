@@ -27,7 +27,7 @@ const PlayerNotes = ({
   const { updateNotes, updateRoles, updateStats } = usePlayerNotes();
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={1}>
       {botcPlayers.map(
         (player, i) =>
           i < playerCount && (
@@ -62,7 +62,11 @@ const PlayerNotes = ({
                     title={role.name}
                     label={isText ? role.name : role.icon}
                     color={role.alignment}
-                    onDelete={updateRoles(i)(role, true)}
+                    onDelete={
+                      player.roles.length > 1
+                        ? updateRoles(i)(role, true)
+                        : undefined
+                    }
                     sx={chipStyle}
                   />
                 ))}
