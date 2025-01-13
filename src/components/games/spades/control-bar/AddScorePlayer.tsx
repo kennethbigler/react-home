@@ -1,10 +1,10 @@
 import * as React from "react";
-import { MAX_BID, MIN_BID } from "../../../../jotai/spades-atom";
+import Add from "@mui/icons-material/Add";
 import Grid from "@mui/material/Grid2";
 import IconButton from "@mui/material/IconButton";
-import Add from "@mui/icons-material/Add";
 import Remove from "@mui/icons-material/Remove";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { MAX_BID, MIN_BID } from "../../../../jotai/spades-atom";
 
 interface AddScorePlayerProps {
   initial: string;

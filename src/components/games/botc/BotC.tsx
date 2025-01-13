@@ -1,9 +1,9 @@
 import * as React from "react";
+import Divider from "@mui/material/Divider";
 import useBotC from "./useBotC";
 import Header from "./Header";
 import ControlBar from "./control-bar/ControlBar";
 import PlayerNotes from "./player-notes/PlayerNotes";
-import { Divider } from "@mui/material";
 
 const BotC = React.memo(() => {
   const { botcPlayers, numPlayers, numTravelers, newBotCGame, isText, script } =
@@ -19,7 +19,7 @@ const BotC = React.memo(() => {
         numTravelers={numTravelers}
         newBotCGame={newBotCGame}
       />
-      <Divider sx={{ marginBottom: 2 }} />
+      <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
       <PlayerNotes
         botcPlayers={botcPlayers}
         isText={isText}

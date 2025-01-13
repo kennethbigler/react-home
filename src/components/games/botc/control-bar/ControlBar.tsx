@@ -3,7 +3,6 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import Grid from "@mui/material/Grid2";
 // Custom
 import EditPlayers from "./edit-players/EditPlayers";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
@@ -39,13 +38,11 @@ const ControlBar = ({
   };
 
   return (
-    <div className="flex-container" style={{ marginBottom: "20px" }}>
-      <Grid size={12}>
-        <Typography>
-          Dist: {playerDist[numPlayers]}
-          {numTravelers ? ` +${numTravelers}` : ""}
-        </Typography>
-      </Grid>
+    <div className="flex-container">
+      <Typography>
+        Dist: {playerDist[numPlayers]}
+        {numTravelers ? ` +${numTravelers}` : ""}
+      </Typography>
 
       <InfoPopup title="Tracker">
         <Tracker botcPlayers={botcPlayers} end={numPlayers + numTravelers} />
