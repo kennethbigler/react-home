@@ -32,10 +32,10 @@ const PlayerNotes = ({
         (player, i) =>
           i < playerCount && (
             <Grid
-              size={{ xs: isText ? 6 : 4, sm: 4, lg: 3, xl: 2 }}
+              size={{ xs: 6, sm: 4, lg: 3, xl: 2 }}
               key={`player${i}-${player.name}`}
             >
-              <Card sx={{ padding: "5px", textAlign: "center" }}>
+              <Card sx={{ padding: 1, textAlign: "center", height: "100%" }}>
                 <CharacterSheet
                   isText={isText}
                   script={script}
