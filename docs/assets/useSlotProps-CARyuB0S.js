@@ -1,2 +1,0 @@
-import{z as P,A as S,f as c,C as u}from"./Header-xXWqeY7H.js";function g(e){var s;const{elementType:t,externalSlotProps:n,ownerState:r,skipResolvingSlotProps:p=!1,...a}=e,o=p?{}:P(n,r),{props:l,internalRef:f}=S({...a,externalSlotProps:o}),i=c(f,o==null?void 0:o.ref,(s=e.additionalProps)==null?void 0:s.ref);return u(t,{...l,ref:i},r)}export{g as u};
-//# sourceMappingURL=useSlotProps-CARyuB0S.js.map
