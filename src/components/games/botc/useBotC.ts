@@ -13,30 +13,17 @@ import botcAtom, {
 export const usePlayerNotes = () => {
   const [{ botcPlayers, ...other }, setState] = useAtom(botcAtom);
 
-  /** handle checkboxes checked for player stat updates */
-  const updateStats =
+  /** update player name onBlur */
+  const updateNames =
     (i: number) =>
-    (key: BotCPlayerStatus) =>
-    (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
+    (e: React.FocusEvent<HTMLInputElement>): void => {
       const newPlayers = [...botcPlayers];
-      const newPlayer = { ...newPlayers[i] };
-      newPlayer[key] = checked;
+      const newPlayer = { ...newPlayers[i], name: e.target.value || "" };
       newPlayers[i] = newPlayer;
-      setState({ ...other, botcPlayers: newPlayers });
-    };
-
-  /** handle role selections */
-  const updateRoles =
-    (i: number) => (role: BotCRole, selected: boolean) => (): void => {
-      // set up immutability for new player
-      const newPlayers = [...botcPlayers];
-      const newPlayer = { ...newPlayers[i] };
-      // if selected remove, if not add
-      newPlayer.roles = selected
-        ? newPlayer.roles.filter((r) => r.name !== role.name)
-        : [...newPlayer.roles, role];
-      newPlayers[i] = newPlayer;
-      setState({ ...other, botcPlayers: newPlayers });
+      setState({
+        ...other,
+        botcPlayers: newPlayers,
+      });
     };
 
   /** update player notes onBlur */
@@ -52,32 +39,58 @@ export const usePlayerNotes = () => {
       });
     };
 
-  return { updateNotes, updateRoles, updateStats };
+  /** move player in array */
+  const updatePlayerOrder = (i: number, dir: number) => () => {
+    const newPlayers = [...botcPlayers];
+    const playerA = newPlayers[i];
+    const playerB = newPlayers[i + dir];
+    newPlayers[i] = playerB;
+    newPlayers[i + dir] = playerA;
+    setState({
+      ...other,
+      botcPlayers: newPlayers,
+    });
+  };
+
+  /** handle role selections */
+  const updateRoles =
+    (i: number) => (role: BotCRole, selected: boolean) => (): void => {
+      // set up immutability for new player
+      const newPlayers = [...botcPlayers];
+      const newPlayer = { ...newPlayers[i] };
+      // if selected remove, if not add
+      newPlayer.roles = selected
+        ? newPlayer.roles.filter((r) => r.name !== role.name)
+        : [...newPlayer.roles, role];
+      newPlayers[i] = newPlayer;
+      setState({ ...other, botcPlayers: newPlayers });
+    };
+
+  /** handle checkboxes checked for player stat updates */
+  const updateStats =
+    (i: number) =>
+    (key: BotCPlayerStatus) =>
+    (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
+      const newPlayers = [...botcPlayers];
+      const newPlayer = { ...newPlayers[i] };
+      newPlayer[key] = checked;
+      newPlayers[i] = newPlayer;
+      setState({ ...other, botcPlayers: newPlayers });
+    };
+
+  return {
+    updateNames,
+    updateNotes,
+    updatePlayerOrder,
+    updateRoles,
+    updateStats,
+  };
 };
 
 /** -------------------- EditPlayers Specific Functions -------------------- */
 export const useEditPlayers = () => {
-  const [
-    { isText, numPlayers, numTravelers, script, botcPlayers, ...other },
-    setState,
-  ] = useAtom(botcAtom);
-
-  /** update player name onBlur */
-  const updateNames =
-    (i: number) =>
-    (e: React.FocusEvent<HTMLInputElement>): void => {
-      const newPlayers = [...botcPlayers];
-      const newPlayer = { ...newPlayers[i], name: e.target.value || "" };
-      newPlayers[i] = newPlayer;
-      setState({
-        ...other,
-        isText,
-        numPlayers,
-        numTravelers,
-        script,
-        botcPlayers: newPlayers,
-      });
-    };
+  const [{ isText, numPlayers, numTravelers, script, ...other }, setState] =
+    useAtom(botcAtom);
 
   /** update number of players */
   const updateNumPlayers = (value: number) => {
@@ -86,7 +99,6 @@ export const useEditPlayers = () => {
       isText,
       numTravelers,
       script,
-      botcPlayers,
       numPlayers: value,
     });
   };
@@ -98,25 +110,7 @@ export const useEditPlayers = () => {
       isText,
       numPlayers,
       script,
-      botcPlayers,
       numTravelers: value,
-    });
-  };
-
-  /** move player in array */
-  const updatePlayerOrder = (i: number, dir: number) => () => {
-    const newPlayers = [...botcPlayers];
-    const playerA = newPlayers[i];
-    const playerB = newPlayers[i + dir];
-    newPlayers[i] = playerB;
-    newPlayers[i + dir] = playerA;
-    setState({
-      ...other,
-      isText,
-      numPlayers,
-      numTravelers,
-      script,
-      botcPlayers: newPlayers,
     });
   };
 
@@ -139,7 +133,6 @@ export const useEditPlayers = () => {
       ...other,
       numPlayers,
       numTravelers,
-      botcPlayers,
       isText: newText,
       script: newScript,
     });
@@ -152,7 +145,6 @@ export const useEditPlayers = () => {
       numPlayers,
       numTravelers,
       script,
-      botcPlayers,
       isText: e.target.checked,
     });
   };
@@ -160,10 +152,8 @@ export const useEditPlayers = () => {
   return {
     isText,
     script,
-    updateNames,
     updateNumPlayers,
     updateNumTravelers,
-    updatePlayerOrder,
     updateScript,
     updateText,
   };

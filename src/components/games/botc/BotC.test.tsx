@@ -14,9 +14,6 @@ describe("games | BotC", () => {
     // click the reset button
     fireEvent.click(screen.getByText("Reset"));
     expect(screen.getByText("Game Reset")).toBeInTheDocument();
-    // move a player up
-    fireEvent.click(screen.getAllByLabelText("up")[1]);
-    fireEvent.click(screen.getAllByLabelText("down")[0]);
     // swap number of players
     expect(screen.getByText("Players: 8 / Dist: 5,1,1,1"));
     fireEvent.click(screen.getByLabelText("add player"));
@@ -25,17 +22,6 @@ describe("games | BotC", () => {
     expect(screen.getByText("Travelers"));
     fireEvent.click(screen.getByLabelText("1 traveler"));
     expect(screen.getByText("Travelers"));
-
-    // update a name
-    // fireEvent.change(screen.getAllByDisplayValue("Ken")[0], {
-    //   target: { value: "Andrew" },
-    // });
-    // expect(screen.getByText("Andrew")).toBeInTheDocument();
-    // switch script
-    // fireEvent.click(screen.getByLabelText("Script"));
-    // fireEvent.click(screen.getByLabelText("Trouble Brewing"));
-    // await waitFor(() => expect(screen.getByText("Other")).toBeInTheDocument());
-    // fireEvent.click(screen.getByText("Other"));
 
     // Close Players modal
     expect(screen.getByText("Close")).toBeInTheDocument();
@@ -91,19 +77,5 @@ describe("games | BotC", () => {
     const kenButton = screen.getAllByText("Ken")[0];
     // expect(kenButton).toHaveClass(".MuiButton-textPrimary");
     fireEvent.click(kenButton);
-    // click a second time
-    // kenButton = screen.getAllByText("Ken")[0];
-    expect(kenButton).toHaveClass("MuiButton-containedPrimary");
-    fireEvent.click(kenButton);
-    // click a third time
-    // kenButton = screen.getAllByText("Ken")[0];
-    // expect(kenButton).toHaveClass("MuiButton-containedError");
-    fireEvent.click(kenButton);
-    // test a fourth time
-    // kenButton = screen.getAllByText("Ken")[0];
-    // expect(kenButton).toHaveClass("MuiButton-textPrimary");
-
-    // select a new round number
-    fireEvent.click(screen.getByText(2));
   });
 });

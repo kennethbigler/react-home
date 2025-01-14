@@ -1,3 +1,4 @@
+import * as React from "react";
 // MUI
 import Grid from "@mui/material/Grid2";
 import Button from "@mui/material/Button";
@@ -5,6 +6,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 // Custom
 import { BotCPlayer } from "../../../../jotai/botc-atom";
 import { useTracker } from "../useBotC";
+import { getGridSize } from "../helpers";
 
 const numRounds = [0, 1, 2, 3, 4, 5, 6, 7];
 
@@ -21,16 +23,19 @@ const Tracker = ({ botcPlayers, end }: TrackerProps) => {
       {botcPlayers.map(
         ({ name }, i) =>
           i < end && (
-            <Grid key={i} size={4}>
-              <Button
-                fullWidth
-                variant={tracker[round][i] > 0 ? "contained" : "text"}
-                color={tracker[round][i] !== 2 ? "primary" : "error"}
-                onClick={onTrackClick(i)}
-              >
-                {name}
-              </Button>
-            </Grid>
+            <React.Fragment key={i}>
+              <Grid size={getGridSize(end, i)}>
+                <Button
+                  fullWidth
+                  variant={tracker[round][i] > 0 ? "contained" : "outlined"}
+                  color={tracker[round][i] !== 2 ? "primary" : "error"}
+                  onClick={onTrackClick(i)}
+                >
+                  {name}
+                </Button>
+              </Grid>
+              {i % 2 === 1 && i >= 3 && i < end - 3 && <Grid size={2} />}
+            </React.Fragment>
           ),
       )}
       <Grid size={12} marginTop={3}>

@@ -7,23 +7,29 @@ import Button from "@mui/material/Button";
 import { MuiColors } from "../types";
 
 interface InfoPopupProps {
-  /** popup content */
-  children: React.ReactNode | React.ReactNode[];
-  /** title content */
-  title: string | React.ReactElement;
-  /** button content */
-  buttonText?: string | React.ReactElement;
+  /** set button variant */
+  buttonVariant?: "text" | "contained" | "outlined";
   /** set the color of the button */
   buttonColor?: MuiColors;
+  /** button content */
+  buttonText?: string | React.ReactElement;
+  /** button full width */
+  fullWidth?: boolean;
+  /** title content */
+  title: string | React.ReactElement;
+  /** popup content */
+  children: React.ReactNode | React.ReactNode[];
   /** set the color of the button */
   onSave?: () => void;
 }
 
 const InfoPopup = ({
+  buttonColor = "primary",
   buttonText,
+  buttonVariant = "contained",
+  fullWidth = false,
   title,
   children,
-  buttonColor,
   onSave,
 }: InfoPopupProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -40,9 +46,10 @@ const InfoPopup = ({
   return (
     <>
       <Button
+        color={buttonColor}
+        fullWidth={fullWidth}
+        variant={buttonVariant}
         onClick={handleOpen}
-        variant="contained"
-        color={buttonColor || "primary"}
       >
         {buttonText || title}
       </Button>

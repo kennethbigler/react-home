@@ -6,18 +6,22 @@ import ControlBar from "./control-bar/ControlBar";
 import PlayerNotes from "./player-notes/PlayerNotes";
 
 const BotC = React.memo(() => {
+  const [showMove, setShowMove] = React.useState(false);
   const { botcPlayers, numPlayers, numTravelers, newBotCGame, isText, script } =
     useBotC();
+  const handleMoveToggle = () => setShowMove(!showMove);
 
   /* ----------     Render     ---------- */
   return (
     <>
-      <Header />
+      <Header numPlayers={numPlayers} numTravelers={numTravelers} />
       <ControlBar
         botcPlayers={botcPlayers}
         numPlayers={numPlayers}
         numTravelers={numTravelers}
+        showMove={showMove}
         newBotCGame={newBotCGame}
+        onMoveToggle={handleMoveToggle}
       />
       <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
       <PlayerNotes
@@ -25,6 +29,7 @@ const BotC = React.memo(() => {
         isText={isText}
         playerCount={numPlayers + numTravelers}
         script={script}
+        showMove={showMove}
       />
     </>
   );
