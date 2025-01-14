@@ -5,18 +5,15 @@ import Grid from "@mui/material/Grid2";
 import Remove from "@mui/icons-material/Remove";
 import Typography from "@mui/material/Typography";
 import {
-  BotCPlayer,
   BOTC_MAX_PLAYERS,
   BOTC_MIN_PLAYERS,
 } from "../../../../../jotai/botc-atom";
-import EditNameAndPos from "./EditNameAndPos";
 import ScriptSelect from "./ScriptSelect";
 import ScriptControls from "./ScriptControls";
 import { playerDist } from "../../../../../constants/botc";
 import { useEditPlayers } from "../../useBotC";
 
 interface EditPlayersProps {
-  botcPlayers: BotCPlayer[];
   numPlayers: number;
   numTravelers: number;
   handleReset: () => void;
@@ -26,7 +23,6 @@ interface EditPlayersProps {
  *              -> ScriptControls
  *              -> players.map(EditNameAndPos) */
 const EditPlayers = ({
-  botcPlayers,
   numPlayers,
   numTravelers,
   handleReset,
@@ -34,10 +30,8 @@ const EditPlayers = ({
   const {
     isText,
     script,
-    updateNames,
     updateNumPlayers,
     updateNumTravelers,
-    updatePlayerOrder,
     updateScript,
     updateText,
   } = useEditPlayers();
@@ -94,21 +88,6 @@ const EditPlayers = ({
           ))}
         </ButtonGroup>
       </Grid>
-
-      {botcPlayers.map(
-        (player, i) =>
-          i < numPlayers + numTravelers && (
-            <EditNameAndPos
-              key={`player${i}-${player.name}`}
-              first={i === 0}
-              last={i === numPlayers + numTravelers - 1}
-              name={player.name}
-              moveUp={updatePlayerOrder(i, -1)}
-              moveDown={updatePlayerOrder(i, 1)}
-              onBlur={updateNames(i)}
-            />
-          ),
-      )}
     </Grid>
   );
 };

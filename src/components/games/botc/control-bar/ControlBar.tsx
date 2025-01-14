@@ -1,23 +1,22 @@
 import * as React from "react";
-// MUI
-import Typography from "@mui/material/Typography";
-import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import Grid from "@mui/material/Grid2";
-// Custom
+import Snackbar from "@mui/material/Snackbar";
+import SwapHoriz from "@mui/icons-material/SwapHoriz";
 import EditPlayers from "./edit-players/EditPlayers";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import { BotCPlayer } from "../../../../jotai/botc-atom";
-import { playerDist } from "../../../../constants/botc";
 import Tracker from "./Tracker";
+import { FormControlLabel, Switch } from "@mui/material";
 
 interface ControlBarProps {
   // Shared
   botcPlayers: BotCPlayer[];
   numPlayers: number;
   numTravelers: number;
+  showMove: boolean;
   // ControlBar
   newBotCGame: () => void;
+  onMoveToggle: () => void;
 }
 
 const ControlBar = ({
@@ -25,8 +24,10 @@ const ControlBar = ({
   botcPlayers,
   numPlayers,
   numTravelers,
+  showMove,
   // ControlBar
   newBotCGame,
+  onMoveToggle,
 }: ControlBarProps) => {
   const [hasToast, setHasToast] = React.useState(false);
 
@@ -39,14 +40,11 @@ const ControlBar = ({
   };
 
   return (
-    <div className="flex-container" style={{ marginBottom: "20px" }}>
-      <Grid size={12}>
-        <Typography>
-          Dist: {playerDist[numPlayers]}
-          {numTravelers ? ` +${numTravelers}` : ""}
-        </Typography>
-      </Grid>
-
+    <div className="flex-container">
+      <FormControlLabel
+        control={<Switch checked={showMove} onChange={onMoveToggle} />}
+        label={<SwapHoriz />}
+      />
       <InfoPopup title="Tracker">
         <Tracker botcPlayers={botcPlayers} end={numPlayers + numTravelers} />
       </InfoPopup>
@@ -54,7 +52,6 @@ const ControlBar = ({
       <InfoPopup title="Players">
         <EditPlayers
           handleReset={handleReset}
-          botcPlayers={botcPlayers}
           numPlayers={numPlayers}
           numTravelers={numTravelers}
         />

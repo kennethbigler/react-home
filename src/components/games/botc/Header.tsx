@@ -1,15 +1,21 @@
 import * as React from "react";
-import Dialog from "@mui/material/Dialog";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import MobileScreenShareIcon from "@mui/icons-material/MobileScreenShare";
+import Typography from "@mui/material/Typography";
+import { playerDist } from "../../../constants/botc";
 import botcQRCode from "../../../images/botc-qr-code.png";
 
-const Header = React.memo(() => {
+interface HeaderProps {
+  numPlayers: number;
+  numTravelers: number;
+}
+
+const Header = React.memo(({ numPlayers, numTravelers }: HeaderProps) => {
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -20,6 +26,10 @@ const Header = React.memo(() => {
     <div className="flex-container">
       <Typography variant="h2" component="h1" gutterBottom>
         BotC
+      </Typography>
+      <Typography>
+        {playerDist[numPlayers]}
+        {numTravelers ? ` +${numTravelers}` : ""}
       </Typography>
       <IconButton aria-label="share" onClick={handleOpen}>
         <MobileScreenShareIcon />

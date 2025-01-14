@@ -10,15 +10,12 @@ import {
 import EmojiNotes from "./EmojiNotes";
 
 interface CharacterSheetProps {
-  // Shared
-  player: BotCPlayer;
-  // Roles
   isText: boolean;
+  player: BotCPlayer;
   script: number;
-  onRoleClick: (role: BotCRole, selected: boolean) => () => void;
-  // CharacterSheet
+  onNameBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onNotesBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
-  // EmojiNotes
+  onRoleClick: (role: BotCRole, selected: boolean) => () => void;
   onStatsToggle: (
     key: BotCPlayerStatus,
   ) => (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
@@ -28,15 +25,30 @@ interface CharacterSheetProps {
  *                 -> Roles -> RoleSelection */
 const CharacterSheet = ({
   isText,
-  script,
   player: { name, notes, liar, used, exec, kill, roles },
+  script,
+  onNameBlur,
   onNotesBlur,
   onRoleClick,
   onStatsToggle,
 }: CharacterSheetProps) => (
-  <InfoPopup buttonText={name} title={`Roles - ${name}`}>
+  <InfoPopup
+    fullWidth
+    buttonText={name}
+    buttonVariant="outlined"
+    title={`Roles - ${name}`}
+  >
     <Grid container spacing={1}>
-      <Grid size={12}>
+      <Grid size={6}>
+        <TextField
+          fullWidth
+          defaultValue={name}
+          label="Player Name"
+          variant="standard"
+          onBlur={onNameBlur}
+        />
+      </Grid>
+      <Grid size={6}>
         <TextField
           fullWidth
           label="Notes"
