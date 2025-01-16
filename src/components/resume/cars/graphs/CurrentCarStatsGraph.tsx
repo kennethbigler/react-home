@@ -28,7 +28,7 @@ const CurrentCarStatsGraph = React.memo(
     isBike,
   }: CurrentCarStatsGraphProps) => {
     const min = title === "Weight" && !isBike ? 2500 : 0;
-    const yellowStart = Math.max(min, endGreenVal);
+    const greenEnd = Math.max(min, endGreenVal);
     const options = {
       credits: { enabled: false },
       pane: { startAngle: -90, endAngle: 90, background: null },
@@ -57,7 +57,7 @@ const CurrentCarStatsGraph = React.memo(
         plotBands: [
           {
             from: min,
-            to: yellowStart,
+            to: greenEnd,
             color: green[400],
             thickness: 20,
           },
@@ -68,7 +68,7 @@ const CurrentCarStatsGraph = React.memo(
             thickness: 20,
           },
           {
-            from: yellowStart,
+            from: greenEnd,
             to: startRedVal,
             color: grey[300],
             thickness: 20,
