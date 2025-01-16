@@ -75,6 +75,7 @@ const PlayerNotes = ({
                       title={role.name}
                       label={isText ? role.name : role.icon}
                       color={role.alignment}
+                      variant="outlined"
                       onDelete={
                         player.roles.length > 1
                           ? updateRoles(i)(role, true)
