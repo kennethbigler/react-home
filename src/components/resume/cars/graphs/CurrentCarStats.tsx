@@ -21,7 +21,7 @@ const CurrentCarStats = React.memo(
       <>
         <CurrentCarStatsGraph
           val={displacement.val}
-          startYellowVal={2}
+          endGreenVal={2}
           startRedVal={Math.min(5, displacement.maxVal)}
           maxVal={displacement.maxVal}
           label="L"
@@ -31,7 +31,7 @@ const CurrentCarStats = React.memo(
         />
         <CurrentCarStatsGraph
           val={horsepower.val}
-          startYellowVal={250}
+          endGreenVal={200}
           startRedVal={Math.min(500, horsepower.maxVal)}
           maxVal={horsepower.maxVal}
           label="HP"
@@ -41,7 +41,7 @@ const CurrentCarStats = React.memo(
         />
         <CurrentCarStatsGraph
           val={mpg.val}
-          startYellowVal={30}
+          endGreenVal={30}
           startRedVal={Math.min(100, mpg.maxVal)}
           maxVal={mpg.maxVal}
           label="MPG"
@@ -51,7 +51,7 @@ const CurrentCarStats = React.memo(
         />
         <CurrentCarStatsGraph
           val={torque.val}
-          startYellowVal={250}
+          endGreenVal={200}
           startRedVal={Math.min(500, torque.maxVal)}
           maxVal={torque.maxVal}
           label="lb-ft"
@@ -62,7 +62,7 @@ const CurrentCarStats = React.memo(
         <CurrentCarStatsGraph
           isBike={isBike}
           val={weight.val}
-          startYellowVal={3000}
+          endGreenVal={isBike ? 1000 : 3000}
           startRedVal={Math.min(4600, weight.maxVal)}
           maxVal={weight.maxVal}
           label="lbs"
@@ -72,7 +72,7 @@ const CurrentCarStats = React.memo(
         />
         <CurrentCarStatsGraph
           val={powerToWeight.val}
-          startYellowVal={0.05}
+          endGreenVal={0.05}
           startRedVal={Math.min(0.15, powerToWeight.maxVal)}
           maxVal={powerToWeight.maxVal}
           label="Ratio"

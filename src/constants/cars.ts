@@ -25,6 +25,7 @@ import panamera21 from "../images/cars/21_porsche_panamera.png";
 import bronco21 from "../images/cars/21_ford_bronco.webp";
 import grom22 from "../images/cars/22_honda_grom.webp";
 import porsche19 from "../images/cars/19_porsche_cayenne.webp";
+import taycan21 from "../images/cars/21_porsche_taycan.png";
 import { DataEntry } from "../components/common/timeline-card/timeline-consts";
 
 const prius = "Toyota Prius (2007)";
@@ -42,6 +43,7 @@ const panamera = "Porsche Panamera E-Hybrid (2021)";
 const bronco = "Ford Bronco Badlands (2021)";
 const grom = "Honda Grom (2022)";
 const cayenne = "Porsche Cayenne E-Hybrid (2019)";
+const taycan = "Porsche Taycan Turbo (2021)";
 
 export interface CarEntry extends DataEntry {
   car: string;
@@ -232,6 +234,28 @@ const currentFamilyCars: CarEntry[] = [
     torque: 650,
     weight: 3524,
   },
+  {
+    color: grey[50],
+    start: dateObj("2025-1"),
+    end: dateObj(),
+    car: "Cayenne",
+    short: "Cyne",
+    char: "C",
+    nickname: "Cheyenne",
+    title: cayenne,
+    inverted: true,
+
+    owned: "2025 - Present",
+    story: `My parents bought my Cayenne and gave the Equinox to my brother.`,
+    src: porsche19,
+    transmission: "Automatic",
+
+    displacement: 3.0,
+    horsepower: 455,
+    MPG: 46,
+    torque: 516,
+    weight: 5060,
+  },
 ];
 
 const pastKensCars: CarEntry[] = [
@@ -366,9 +390,52 @@ const pastKensCars: CarEntry[] = [
     torque: 310,
     weight: 4499,
   },
+  {
+    color: grey[50],
+    start: dateObj("2023-08"),
+    end: dateObj("2025-1"),
+    car: "Cayenne",
+    short: "Cyne",
+    char: "C",
+    nickname: "Cheyenne",
+    title: cayenne,
+    inverted: true,
+
+    owned: "2023 - Present",
+    story: `I bought a plug-in ${cayenne} as a bit of an upgrade to my old Bronco.`,
+    src: porsche19,
+    transmission: "Automatic",
+
+    displacement: 3.0,
+    horsepower: 455,
+    MPG: 46,
+    torque: 516,
+    weight: 5060,
+  },
 ];
 
 const currentKensCars: CarEntry[] = [
+  {
+    color: blue[700],
+    start: dateObj("2025-1"),
+    end: dateObj(),
+    car: "Taycan",
+    short: "Tycn",
+    char: "T",
+    nickname: "Tatiana",
+    title: taycan,
+
+    owned: "2025 - Present",
+    story: `I decided after the porsche I wanted to try going all electric, and I loved the Porsche Taycan.`,
+    src: taycan21,
+    transmission: "Direct",
+
+    displacement: 0,
+    horsepower: 616,
+    MPG: 73,
+    torque: 626,
+    weight: 5119,
+  },
   {
     color: grey[900],
     start: dateObj("2022-04"),
@@ -389,49 +456,6 @@ const currentKensCars: CarEntry[] = [
     torque: parseFloat((7.7 * 1.143).toPrecision(3)),
     weight: 230,
   },
-  {
-    color: grey[50],
-    start: dateObj("2023-08"),
-    end: dateObj(),
-    car: "Cayenne",
-    short: "Cyne",
-    char: "C",
-    nickname: "Cheyenne",
-    title: cayenne,
-    inverted: true,
-
-    owned: "2023 - Present",
-    story: `I bought a plug-in ${cayenne} as a bit of an upgrade to my old Bronco.`,
-    src: porsche19,
-    transmission: "Automatic",
-
-    displacement: 3.0,
-    horsepower: 455,
-    MPG: 46,
-    torque: 516,
-    weight: 5060,
-  },
-  // {
-  //   color: blue[500],
-  //   start: dateObj("2025-1"),
-  //   end: dateObj(),
-  //   car: "Taycan",
-  //   short: "Tycn",
-  //   char: "T",
-  //   nickname: "Rebecca",
-  //   title: ,
-
-  //   owned: "2025 - Present",
-  //   story: `I decided after the porsche I wanted to try going all electric, and I loved the Porsche Taycan.`,
-  //   src: ,
-  //   transmission: "Direct",
-
-  //   displacement: 0,
-  //   horsepower: 616,
-  //   MPG: 73,
-  //   torque: 626,
-  //   weight: 5119,
-  // },
 ];
 
 const cars: CarEntry[] = [
@@ -567,7 +591,7 @@ export const processCurrentCarStats = (
     | "powerToWeight",
   isBike?: boolean,
 ): CurrentCarStatsData => {
-  const idx = isBike ? 0 : 1;
+  const idx = isBike ? 1 : 0;
   const currentValue =
     key === "powerToWeight"
       ? getP2W(currentKensCars[idx])
