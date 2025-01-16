@@ -9,7 +9,58 @@ import botcAtom, {
   newTracker,
 } from "../../../jotai/botc-atom";
 
+const getUpNum = (i: number, pc: number) => {
+  const isFull = pc % 2 === 0;
+  if (i === 0) {
+    return 1;
+  } else if (i === 3 || (isFull && i === pc - 1)) {
+    return -3;
+  } else if (i < 3 || (isFull && i === pc - 2)) {
+    return -1;
+  }
+  return -2;
+};
+
+const getDownNum = (i: number, pc: number) => {
+  const isFull = pc % 2 === 0;
+  if (i === 0 || (isFull && i === pc - 4)) {
+    return 3;
+  } else if (i === 1 || i === pc - 2 || (isFull && i === pc - 3)) {
+    return 1;
+  } else if (i === pc - 1) {
+    return -1;
+  }
+  return 2;
+};
+
 /** -------------------- PlayerNotes Specific Functions -------------------- */
+export const usePlayerAdjControls = () => {
+  const [{ botcPlayers, numPlayers, numTravelers, ...other }, setState] =
+    useAtom(botcAtom);
+
+  /** move player in array */
+  const updatePlayerOrder = (i: number, isUp: boolean) => () => {
+    const mod = isUp
+      ? getUpNum(i, numPlayers + numTravelers)
+      : getDownNum(i, numPlayers + numTravelers);
+
+    const newPlayers = [...botcPlayers];
+    const playerA = newPlayers[i];
+    const playerB = newPlayers[i + mod];
+    newPlayers[i] = playerB;
+    newPlayers[i + mod] = playerA;
+
+    setState({
+      ...other,
+      numPlayers,
+      numTravelers,
+      botcPlayers: newPlayers,
+    });
+  };
+
+  return updatePlayerOrder;
+};
+
 export const usePlayerNotes = () => {
   const [{ botcPlayers, ...other }, setState] = useAtom(botcAtom);
 
@@ -38,19 +89,6 @@ export const usePlayerNotes = () => {
         botcPlayers: newPlayers,
       });
     };
-
-  /** move player in array */
-  const updatePlayerOrder = (i: number, dir: number) => () => {
-    const newPlayers = [...botcPlayers];
-    const playerA = newPlayers[i];
-    const playerB = newPlayers[i + dir];
-    newPlayers[i] = playerB;
-    newPlayers[i + dir] = playerA;
-    setState({
-      ...other,
-      botcPlayers: newPlayers,
-    });
-  };
 
   /** handle role selections */
   const updateRoles =
@@ -81,7 +119,6 @@ export const usePlayerNotes = () => {
   return {
     updateNames,
     updateNotes,
-    updatePlayerOrder,
     updateRoles,
     updateStats,
   };

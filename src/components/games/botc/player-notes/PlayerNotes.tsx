@@ -1,8 +1,4 @@
 import * as React from "react";
-import ArrowLeft from "@mui/icons-material/ArrowLeft";
-import ArrowRight from "@mui/icons-material/ArrowRight";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import Card from "@mui/material/Card";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid2";
@@ -11,6 +7,7 @@ import { BotCPlayer } from "../../../../jotai/botc-atom";
 import CharacterSheet from "./character-sheet/CharacterSheet";
 import { usePlayerNotes } from "../useBotC";
 import { getGridSize } from "../helpers";
+import PlayerAdjControls from "./PlayerAdjControls";
 
 interface PlayerNotesProps {
   botcPlayers: BotCPlayer[];
@@ -32,13 +29,8 @@ const PlayerNotes = ({
   script,
   showMove,
 }: PlayerNotesProps) => {
-  const {
-    updateNames,
-    updateNotes,
-    updatePlayerOrder,
-    updateRoles,
-    updateStats,
-  } = usePlayerNotes();
+  const { updateNames, updateNotes, updateRoles, updateStats } =
+    usePlayerNotes();
 
   return (
     <Grid container spacing={1}>
@@ -50,28 +42,7 @@ const PlayerNotes = ({
                 <Card sx={{ padding: 1, textAlign: "center", height: "100%" }}>
                   <div className="flex-container">
                     {showMove && (
-                      <ButtonGroup
-                        aria-label="move player"
-                        orientation="vertical"
-                        variant="text"
-                      >
-                        <Button
-                          aria-label="up"
-                          disabled={i === 0}
-                          size="small"
-                          onClick={updatePlayerOrder(i, -1)}
-                        >
-                          <ArrowLeft />
-                        </Button>
-                        <Button
-                          aria-label="down"
-                          disabled={i === playerCount - 1}
-                          size="small"
-                          onClick={updatePlayerOrder(i, 1)}
-                        >
-                          <ArrowRight />
-                        </Button>
-                      </ButtonGroup>
+                      <PlayerAdjControls i={i} count={playerCount} />
                     )}
                     <CharacterSheet
                       isText={isText}
