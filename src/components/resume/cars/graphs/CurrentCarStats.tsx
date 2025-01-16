@@ -62,7 +62,7 @@ const CurrentCarStats = React.memo(
         <CurrentCarStatsGraph
           isBike={isBike}
           val={weight.val}
-          startYellowVal={3500}
+          startYellowVal={3000}
           startRedVal={Math.min(4600, weight.maxVal)}
           maxVal={weight.maxVal}
           label="lbs"

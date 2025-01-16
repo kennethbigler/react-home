@@ -42,7 +42,6 @@ const panamera = "Porsche Panamera E-Hybrid (2021)";
 const bronco = "Ford Bronco Badlands (2021)";
 const grom = "Honda Grom (2022)";
 const cayenne = "Porsche Cayenne E-Hybrid (2019)";
-// const rivian = "Rivian R1S (2025)";
 
 export interface CarEntry extends DataEntry {
   car: string;
@@ -413,25 +412,25 @@ const currentKensCars: CarEntry[] = [
     weight: 5060,
   },
   // {
-  //   color: green[900],
+  //   color: blue[500],
   //   start: dateObj("2025-1"),
   //   end: dateObj(),
-  //   car: "R1S",
-  //   short: "R1S",
-  //   char: "R",
+  //   car: "Taycan",
+  //   short: "Tycn",
+  //   char: "T",
   //   nickname: "Rebecca",
-  //   title: rivian,
+  //   title: ,
 
   //   owned: "2025 - Present",
-  //   story: `I decided after the porsche I wanted to try going all electric, and I loved the styling and practicality of the Rivian R1S.`,
+  //   story: `I decided after the porsche I wanted to try going all electric, and I loved the Porsche Taycan.`,
   //   src: ,
   //   transmission: "Direct",
 
   //   displacement: 0,
-  //   horsepower: 533,
-  //   MPG: 85,
-  //   torque: 610,
-  //   weight: 6462,
+  //   horsepower: 616,
+  //   MPG: 73,
+  //   torque: 626,
+  //   weight: 5119,
   // },
 ];
 
