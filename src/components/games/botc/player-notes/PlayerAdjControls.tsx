@@ -13,6 +13,7 @@ interface PlayerAdjControlsProps {
 
 const PlayerAdjControls = ({ i, count }: PlayerAdjControlsProps) => {
   const updateOrder = usePlayerAdjControls();
+
   const isFull = count % 2 === 0;
   const last = count - 1;
   const hasMid = isFull && i === last - 1;
