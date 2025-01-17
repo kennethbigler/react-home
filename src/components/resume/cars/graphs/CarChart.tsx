@@ -10,7 +10,7 @@ export interface CarChartProps {
 }
 
 const CarChart = React.memo(({ data, color }: CarChartProps) => {
-  const { horsepower, MPG, weight, powerToWeight, xAxis } = processData(data);
+  const { horsepower, weight, powerToWeight, zTo60, xAxis } = processData(data);
 
   const options = {
     chart: { type: "spline", backgroundColor: null },
@@ -28,8 +28,8 @@ const CarChart = React.memo(({ data, color }: CarChartProps) => {
       title: { text: undefined },
     },
     series: [
+      { data: zTo60, name: "0-60" },
       { data: horsepower, name: "Horsepower" },
-      { data: MPG, name: "MPG" },
       { data: weight, name: "Weight" },
       { data: powerToWeight, name: "Power-to-Weight" },
     ],

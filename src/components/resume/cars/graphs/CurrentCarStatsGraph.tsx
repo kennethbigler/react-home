@@ -10,7 +10,7 @@ export interface CurrentCarStatsGraphProps extends CurrentCarStatsData {
   isBike?: boolean;
   label: string;
   title: string;
-  color: string;
+  color: "black" | "white";
   endGreenVal: number;
   startRedVal: number;
 }
@@ -70,7 +70,7 @@ const CurrentCarStatsGraph = React.memo(
           {
             from: greenEnd,
             to: startRedVal,
-            color: grey[300],
+            color: color === "white" ? grey[800] : grey[200],
             thickness: 20,
           },
         ],
