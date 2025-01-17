@@ -631,16 +631,16 @@ export const kenSankeyData = [
   ["Chevrolet", "GM", 2],
   ["Pontiac", "GM", 1],
   //     Other
-  ["Porsche", "Volkswagen", 1],
+  ["Porsche", "Volkswagen", 2],
   ["Jaguar", "TATA", 1],
   // level 2
   ["GM", "🇺🇸", 3],
-  ["Volkswagen", "🇩🇪", 1],
+  ["Volkswagen", "🇩🇪", 2],
   ["TATA", "🇬🇧", 1],
   // level 3
   ["🇯🇵", "🏎️", 1],
   ["🇺🇸", "🏎️", 5],
-  ["🇩🇪", "🏎️", 1],
+  ["🇩🇪", "🏎️", 2],
   ["🇬🇧", "🏎️", 1],
 ];
 
@@ -656,16 +656,16 @@ export const carSankeyData = [
   ["Pontiac", "GM", 1],
   ["Plymouth", "Fiat Chrysler Auto", 1],
   //     Other
-  ["Porsche", "Volkswagen", 2],
+  ["Porsche", "Volkswagen", 3],
   ["Jaguar", "TATA", 2],
   // level 2
   ["GM", "🇺🇸", 4],
   ["Fiat Chrysler Auto", "🇺🇸", 1],
-  ["Volkswagen", "🇩🇪", 2],
+  ["Volkswagen", "🇩🇪", 3],
   ["TATA", "🇬🇧", 2],
   // level 3
   ["🇯🇵", "🏎️", 2],
   ["🇺🇸", "🏎️", 9],
-  ["🇩🇪", "🏎️", 2],
+  ["🇩🇪", "🏎️", 3],
   ["🇬🇧", "🏎️", 2],
 ];
