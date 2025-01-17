@@ -137,7 +137,8 @@ const pastFamilyCars: CarEntry[] = [
     title: "Jaguar XJ8-L (2005)",
 
     owned: "2017 - 2021",
-    story: `My Grandpa's 2005 Jaguar XJ8-L. He gave it to our family for my Brother.`,
+    story:
+      "My Grandpa's 2005 Jaguar XJ8-L. He gave it to our family for my Brother.",
     src: xj8l05,
     transmission: "Automatic",
 
@@ -225,7 +226,7 @@ const currentFamilyCars: CarEntry[] = [
     inverted: true,
 
     owned: "2021 - Present",
-    story: `My Mother's 2021 Porsche Panamera 4 E-Hybrid.`,
+    story: "My Mother's 2021 Porsche Panamera 4 E-Hybrid.",
     src: panamera21,
     transmission: "Automatic",
 
@@ -240,14 +241,16 @@ const currentFamilyCars: CarEntry[] = [
     start: dateObj("2021-10"),
     end: dateObj(),
     owned: "2021 - Present",
-    story: `My parents purchased my 2018 Chevrolet Corvette Z06 3LZ with the Z07 Track Package to keep it in the family.`,
+    story:
+      "My parents purchased my 2018 Chevrolet Corvette Z06 3LZ with the Z07 Track Package to keep it in the family.",
   },
   {
     ...cheyenne,
     start: dateObj("2025-1"),
     end: dateObj(),
     owned: "2025 - Present",
-    story: `My parents bought my 2019 Porsche Cayenne E-Hybrid and gave the 2010 Chevrolet Equinox LTZ to my brother.`,
+    story:
+      "My parents bought my 2019 Porsche Cayenne E-Hybrid and gave the 2010 Chevrolet Equinox LTZ to my brother.",
   },
 ];
 
@@ -347,7 +350,8 @@ const pastKensCars: CarEntry[] = [
     start: dateObj("2019-01"),
     end: dateObj("2021-10"),
     owned: "2019 - 2021",
-    story: `To replace my Mustang I purchased a 2018 Chevrolet Corvette Z06 3LZ with the Z07 Track Package used from the Ron Fellows Performance Driving School. I sold it to my parents.`,
+    story:
+      "To replace my Mustang I purchased a 2018 Chevrolet Corvette Z06 3LZ with the Z07 Track Package used from the Ron Fellows Performance Driving School. I sold it to my parents.",
   },
   {
     color: teal[100],
@@ -377,7 +381,8 @@ const pastKensCars: CarEntry[] = [
     start: dateObj("2023-08"),
     end: dateObj("2025-1"),
     owned: "2023 - Present",
-    story: `I bought a plug-in 2019 Porsche Cayenne E-Hybrid as a bit of an upgrade to my old Bronco.`,
+    story:
+      "I bought a plug-in 2019 Porsche Cayenne E-Hybrid as a bit of an upgrade to my old Bronco.",
   },
 ];
 
@@ -393,7 +398,8 @@ const currentKensCars: CarEntry[] = [
     title: "Porsche Taycan Turbo (2021)",
 
     owned: "2025 - Present",
-    story: `I decided after the porsche I wanted to try going all electric, and I loved the 2021 Porsche Taycan Turbo.`,
+    story:
+      "I decided after the porsche I wanted to try going all electric, and I loved the 2021 Porsche Taycan Turbo.",
     src: taycan21,
     transmission: "Direct",
 
