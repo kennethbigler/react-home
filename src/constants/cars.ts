@@ -25,7 +25,7 @@ import panamera21 from "../images/cars/21_porsche_panamera.png";
 import bronco21 from "../images/cars/21_ford_bronco.webp";
 import grom22 from "../images/cars/22_honda_grom.webp";
 import porsche19 from "../images/cars/19_porsche_cayenne.webp";
-import taycan21 from "../images/cars/21_porsche_taycan.png";
+import taycan22 from "../images/cars/22_porsche_taycan.png";
 import { DataEntry } from "../components/common/timeline-card/timeline-consts";
 
 export interface CarEntry extends DataEntry {
@@ -395,19 +395,19 @@ const currentKensCars: CarEntry[] = [
     short: "Tycn",
     char: "T",
     nickname: "Tatiana",
-    title: "Porsche Taycan Turbo (2021)",
+    title: "Porsche Taycan 4 Cross Turismo (2022)",
 
     owned: "2025 - Present",
     story:
-      "I decided after the porsche I wanted to try going all electric, and I loved the 2021 Porsche Taycan Turbo.",
-    src: taycan21,
+      "I decided after the porsche I wanted to try going all electric, and I loved the 2022 Porsche Taycan 4 Cross Turismo.",
+    src: taycan22,
     transmission: "Direct",
 
-    horsepower: 670,
-    MPG: 73,
-    torque: 626,
-    weight: 5119,
-    zTo60: 3.0,
+    horsepower: 469,
+    MPG: 76,
+    torque: 368,
+    weight: 5134,
+    zTo60: 4.8,
   },
   {
     color: grey[900],
