@@ -25,7 +25,6 @@ import panamera21 from "../images/cars/21_porsche_panamera.png";
 import bronco21 from "../images/cars/21_ford_bronco.webp";
 import grom22 from "../images/cars/22_honda_grom.webp";
 import porsche19 from "../images/cars/19_porsche_cayenne.webp";
-import taycan22 from "../images/cars/22_porsche_taycan.png";
 import { DataEntry } from "../components/common/timeline-card/timeline-consts";
 
 export interface CarEntry extends DataEntry {
@@ -79,6 +78,24 @@ const cheyenne = {
   torque: 516,
   weight: 5060,
   zTo60: 4.7,
+};
+
+const tesla = {
+  color: grey[50],
+  car: "Model X",
+  short: "ModlX",
+  char: "X",
+  title: "Tesla Model X 90D (2016)",
+  inverted: true,
+
+  src: tesla16,
+  transmission: "Direct",
+
+  horsepower: 417,
+  MPG: 92,
+  torque: 485,
+  weight: 5271,
+  zTo60: 4.8,
 };
 
 // --------------------------------------------------     Cars     -------------------------------------------------- //
@@ -170,6 +187,13 @@ const pastFamilyCars: CarEntry[] = [
     weight: 3705,
     zTo60: 4.5,
   },
+  {
+    ...tesla,
+    start: dateObj("2016-03"),
+    end: dateObj("2025-01"),
+    owned: "2016 - 2025",
+    story: "My Father's 2016 Tesla Model X 90D.",
+  },
 ];
 
 const currentFamilyCars: CarEntry[] = [
@@ -193,27 +217,6 @@ const currentFamilyCars: CarEntry[] = [
     torque: 172,
     weight: 3838,
     zTo60: 8.7,
-  },
-  {
-    color: grey[50],
-    start: dateObj("2016-03"),
-    end: dateObj(),
-    car: "Model X",
-    short: "ModlX",
-    char: "X",
-    title: "Tesla Model X 90D (2016)",
-    inverted: true,
-
-    owned: "2016 - Present",
-    story: "My Father's 2016 Tesla Model X 90D.",
-    src: tesla16,
-    transmission: "Direct",
-
-    horsepower: 417,
-    MPG: 92,
-    torque: 485,
-    weight: 5271,
-    zTo60: 4.8,
   },
   {
     color: grey[50],
@@ -250,7 +253,7 @@ const currentFamilyCars: CarEntry[] = [
     end: dateObj(),
     owned: "2025 - Present",
     story:
-      "My parents bought my 2019 Porsche Cayenne E-Hybrid and gave the 2010 Chevrolet Equinox LTZ to my brother.",
+      "My dad and I traded cars so I could try all electric and he could try a plug-in hybrid.",
   },
 ];
 
@@ -380,7 +383,7 @@ const pastKensCars: CarEntry[] = [
     ...cheyenne,
     start: dateObj("2023-08"),
     end: dateObj("2025-1"),
-    owned: "2023 - Present",
+    owned: "2023 - 2025",
     story:
       "I bought a plug-in 2019 Porsche Cayenne E-Hybrid as a bit of an upgrade to my old Bronco.",
   },
@@ -388,26 +391,12 @@ const pastKensCars: CarEntry[] = [
 
 const currentKensCars: CarEntry[] = [
   {
-    color: blue[700],
-    start: dateObj("2025-1"),
-    end: dateObj(),
-    car: "Taycan",
-    short: "Tycn",
-    char: "T",
-    nickname: "Tatiana",
-    title: "Porsche Taycan 4 Cross Turismo (2022)",
-
+    ...tesla,
+    start: dateObj("2025-01"),
+    end: dateObj("2025-01"),
     owned: "2025 - Present",
     story:
-      "I decided after the porsche I wanted to try going all electric, and I loved the 2022 Porsche Taycan 4 Cross Turismo.",
-    src: taycan22,
-    transmission: "Direct",
-
-    horsepower: 469,
-    MPG: 76,
-    torque: 368,
-    weight: 5134,
-    zTo60: 4.8,
+      "My dad and I traded cars so I could try all electric and he could try a plug-in hybrid.",
   },
   {
     color: grey[900],
