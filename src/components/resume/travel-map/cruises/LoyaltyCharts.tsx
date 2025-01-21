@@ -12,7 +12,7 @@ const LoyaltyCharts = () => {
   const options: Highcharts.Options = {
     colors: loyaltyColors,
     credits: { enabled: false },
-    pane: { innerSize: "20%", endAngle: 335 },
+    pane: { size: "100%", innerSize: "20%", endAngle: 330 },
     legend: { itemStyle: { color } },
     series: loyaltySeries,
     title: { text: "Cruise Loyalty", style: { color } },
@@ -51,12 +51,9 @@ const LoyaltyCharts = () => {
     },
     yAxis: {
       lineWidth: 0,
-      tickInterval: 5,
       reversedStacks: false,
-      endOnTick: true,
-      showLastLabel: true,
       gridLineWidth: 0,
-      labels: { format: "{text}%", style: { color } },
+      labels: { enabled: false },
     },
   };
 

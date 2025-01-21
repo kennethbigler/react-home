@@ -296,7 +296,7 @@ export const cruises: Cruise[] = [
     name: "Galveston to San Juan",
     ship: ships[0],
     line: lines[0],
-    concierge: false,
+    concierge: true,
   },
   {
     departure: dateObj("2025-05"),

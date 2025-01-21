@@ -3,15 +3,15 @@ import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import Grid from "@mui/material/Grid2";
-import { green, red, yellow } from "@mui/material/colors";
+import { green, grey, red } from "@mui/material/colors";
 import { CurrentCarStatsData } from "../../../../constants/cars";
 
 export interface CurrentCarStatsGraphProps extends CurrentCarStatsData {
   isBike?: boolean;
   label: string;
   title: string;
-  color: string;
-  startYellowVal: number;
+  color: "black" | "white";
+  endGreenVal: number;
   startRedVal: number;
 }
 
@@ -19,7 +19,7 @@ const CurrentCarStatsGraph = React.memo(
   ({
     color,
     maxVal,
-    startYellowVal,
+    endGreenVal,
     startRedVal,
     val,
     label,
@@ -28,7 +28,7 @@ const CurrentCarStatsGraph = React.memo(
     isBike,
   }: CurrentCarStatsGraphProps) => {
     const min = title === "Weight" && !isBike ? 2500 : 0;
-    const yellowStart = Math.max(min, startYellowVal);
+    const greenEnd = Math.max(min, endGreenVal);
     const options = {
       credits: { enabled: false },
       pane: { startAngle: -90, endAngle: 90, background: null },
@@ -57,7 +57,7 @@ const CurrentCarStatsGraph = React.memo(
         plotBands: [
           {
             from: min,
-            to: yellowStart,
+            to: greenEnd,
             color: green[400],
             thickness: 20,
           },
@@ -68,9 +68,9 @@ const CurrentCarStatsGraph = React.memo(
             thickness: 20,
           },
           {
-            from: yellowStart,
+            from: greenEnd,
             to: startRedVal,
-            color: yellow[500],
+            color: color === "white" ? grey[800] : grey[200],
             thickness: 20,
           },
         ],
