@@ -1,3 +1,3 @@
-const ImperialAssault = () => <>Imperial Assualt</>;
+const ImperialAssault = () => <>Imperial Assault</>;
 
 export default ImperialAssault;
