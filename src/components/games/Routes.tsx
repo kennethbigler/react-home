@@ -24,6 +24,9 @@ const DealOrNoDeal = React.lazy(
 const FamilyFeud = React.lazy(
   () => import(/* webpackChunkName: "family-feud" */ "./family-feud"),
 );
+const ImperialAssault = React.lazy(
+  () => import(/* webpackChunkName: "family-feud" */ "./imperial-assault"),
+);
 const MurderMystery = React.lazy(
   () => import(/* webpackChunkName: "murder" */ "./murder-mystery"),
 );
@@ -69,6 +72,7 @@ const GameRoutes = ({ handleNav }: RoutesProps) => (
         <Route path="connect4" element={<Connect4 />} />
         <Route path="deal" element={<DealOrNoDeal />} />
         <Route path="family-feud" element={<FamilyFeud />} />
+        <Route path="imperial-assault" element={<ImperialAssault />} />
         <Route path="murder" element={<MurderMystery />} />
         <Route path="poker" element={<Poker />} />
         <Route path="spades" element={<Spades />} />
