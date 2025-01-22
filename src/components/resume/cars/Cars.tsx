@@ -18,19 +18,23 @@ const Cars = () => {
 
   const handleClick = (key: string) => () => {
     if (key === "ken") {
+      if (!hideKen && hideFamily) {
+        setHideFamily(false);
+      }
       setHideKen(!hideKen);
     } else {
+      if (!hideFamily && hideKen) {
+        setHideKen(false);
+      }
       setHideFamily(!hideFamily);
     }
   };
 
   let data = cars;
-  if (hideKen && hideFamily) {
-    data = [];
+  if (hideFamily) {
+    data = [...pastKensCars, ...currentKensCars];
   } else if (hideKen) {
     data = [...pastFamilyCars, ...currentFamilyCars];
-  } else if (hideFamily) {
-    data = [...pastKensCars, ...currentKensCars];
   }
 
   return (
@@ -38,25 +42,20 @@ const Cars = () => {
       <Typography variant="h2" component="h1">
         Ken&apos;s Cars
       </Typography>
-
       <CarChartControls
         onClick={handleClick}
         hideKen={hideKen}
         hideFamily={hideFamily}
       />
-
-      {data.length > 0 && (
-        <TimelineCard
-          aria-hidden
-          enableLongTitles
-          data={data}
-          selector="car"
-          start={dateObj("2008-03")}
-          title="Ken's Cars"
-          yearMarkerFrequency={3}
-        />
-      )}
-
+      <TimelineCard
+        aria-hidden
+        enableLongTitles
+        data={data}
+        selector="car"
+        start={dateObj("2008-03")}
+        title="Ken's Cars"
+        yearMarkerFrequency={3}
+      />
       <CarGraphs data={data} hideFamily={hideFamily} hideKen={hideKen} />
       <CarDisplay hideFamily={hideFamily} hideKen={hideKen} />
     </>

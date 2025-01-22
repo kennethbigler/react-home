@@ -249,7 +249,7 @@ const currentFamilyCars: CarEntry[] = [
   },
   {
     ...cheyenne,
-    start: dateObj("2025-1"),
+    start: dateObj("2025-01"),
     end: dateObj(),
     owned: "2025 - Present",
     story:
@@ -382,7 +382,7 @@ const pastKensCars: CarEntry[] = [
   {
     ...cheyenne,
     start: dateObj("2023-08"),
-    end: dateObj("2025-1"),
+    end: dateObj("2025-01"),
     owned: "2023 - 2025",
     story:
       "I bought a plug-in 2019 Porsche Cayenne E-Hybrid as a bit of an upgrade to my old Bronco.",
@@ -393,7 +393,7 @@ const currentKensCars: CarEntry[] = [
   {
     ...tesla,
     start: dateObj("2025-01"),
-    end: dateObj("2025-01"),
+    end: dateObj(),
     owned: "2025 - Present",
     story:
       "My dad and I traded cars so I could try all electric and he could try a plug-in hybrid.",
