@@ -48,7 +48,7 @@ describe("resume | cars | Cars", () => {
     expect(screen.queryByTitle("Ford Bronco Badlands (2021)")).toBeNull();
   });
 
-  it("hides all cars", () => {
+  it("hides toggles car visibility", () => {
     render(<Cars />);
 
     expect(screen.getByTitle("Toyota Prius (2007)")).toBeInTheDocument();
@@ -61,7 +61,12 @@ describe("resume | cars | Cars", () => {
       screen.getByTitle("Ford Bronco Badlands (2021)"),
     ).toBeInTheDocument();
     fireEvent.click(screen.getByText("Hide Ken's Cars"));
-    expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
+    expect(screen.getByTitle("Toyota Prius (2007)")).toBeInTheDocument();
     expect(screen.queryByTitle("Ford Bronco Badlands (2021)")).toBeNull();
+    fireEvent.click(screen.getByText("Hide Family Cars"));
+    expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
+    expect(
+      screen.getByTitle("Ford Bronco Badlands (2021)"),
+    ).toBeInTheDocument();
   });
 });
