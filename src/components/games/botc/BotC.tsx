@@ -23,7 +23,7 @@ const BotC = React.memo(() => {
         newBotCGame={newBotCGame}
         onMoveToggle={handleMoveToggle}
       />
-      <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
+      <Divider sx={{ marginTop: 2, marginBottom: 2 }} aria-hidden />
       <PlayerNotes
         botcPlayers={botcPlayers}
         isText={isText}

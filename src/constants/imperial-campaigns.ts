@@ -1,19 +1,33 @@
-interface Mission {
+export interface Mission {
+  /** Is this a side mission or a story mission? */
   isSide: boolean;
-  isDone: boolean;
+  /** Rebels have shopped? */
   rShop: boolean;
+  /** Empire has shopped? */
   eShop: boolean;
+  /** Mission has been completed, 0 for no, 1 for Rebel Victory, 2 for Empire Victory */
+  victory: number;
+  /** What level items can be purchased from the rebel shop */
   shop: string;
+  /** Threat level for Empire in game */
   threat: number;
+  /** Title of selected mission, some are pre-populated */
   title: string;
 }
 const std = {
   isSide: false,
-  isDone: false,
+  victory: 0,
   rShop: false,
   eShop: false,
   title: "",
 };
+
+export const getForcedMission = (threat: number): Mission => ({
+  ...std,
+  isSide: true,
+  threat,
+  shop: "",
+});
 
 export const basic: Mission[] = [
   { ...std, threat: 2, shop: "1", title: "Aftermath" },

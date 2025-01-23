@@ -39,7 +39,7 @@ const Menu = React.memo(({ onItemClick }: MenuProps) => {
         { name: "Games", route: "games" },
       ].map((item, index) =>
         item.divider ? (
-          <Divider key={index} />
+          <Divider key={index} aria-hidden />
         ) : (
           <MenuItem
             key={item.name}
@@ -57,7 +57,7 @@ const Menu = React.memo(({ onItemClick }: MenuProps) => {
   return (
     <MenuList>
       {menu}
-      <Divider />
+      <Divider aria-hidden />
       <MenuItem onClick={github}>
         <GitHubIcon />
         &nbsp;GitHub&nbsp;
@@ -68,7 +68,7 @@ const Menu = React.memo(({ onItemClick }: MenuProps) => {
         &nbsp;LinkedIn&nbsp;
         <OpenInNewIcon fontSize="small" />
       </MenuItem>
-      <Divider />
+      <Divider aria-hidden />
       <br />
       <MenuItem onClick={stackOverflow} sx={{ padding: "6px" }}>
         <img

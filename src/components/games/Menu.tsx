@@ -15,7 +15,7 @@ const Menu = React.memo(({ onItemClick }: MenuProps) => (
     </MenuItem>
     {menuItems.map((item, index) =>
       item.divider ? (
-        <Divider key={index} />
+        <Divider key={index} aria-hidden />
       ) : (
         <MenuItem
           key={item.name}
