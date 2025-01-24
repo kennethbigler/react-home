@@ -15,10 +15,10 @@ const getVictoryColor = (v: number) => {
     case 0:
       return;
     case 1:
-      return "success";
+      return "error";
     case 2:
     default:
-      return "error";
+      return "primary";
   }
 };
 
@@ -40,11 +40,14 @@ const MissionEntry = ({ mission: m, isForced }: MissionProps) => {
   const [victory, setVictory] = React.useState(0);
   const handleVictoryClick = () => setVictory((victory + 1) % 3);
 
+  const storyType = getStoryType(m.isSide, isForced);
+
   return (
     <>
       <Grid size={{ xs: 6, sm: 3 }}>
         <TextField
-          label={`${getStoryType(m.isSide, isForced)} Mission`}
+          label={`${storyType} Mission`}
+          color={storyType === "Forced" ? "error" : undefined}
           variant="outlined"
         />
       </Grid>
@@ -62,7 +65,7 @@ const MissionEntry = ({ mission: m, isForced }: MissionProps) => {
           <Grid size={{ xs: 6, sm: 3 }}>
             <Chip
               label={`Tier ${m.shop} Items, Spend XP`}
-              color={rShop ? "success" : undefined}
+              color={rShop ? "error" : undefined}
               variant={rShop ? undefined : "outlined"}
               onClick={handleRShopClick}
             />
@@ -70,7 +73,7 @@ const MissionEntry = ({ mission: m, isForced }: MissionProps) => {
           <Grid size={{ xs: 6, sm: 3 }}>
             <Chip
               label="Agenda, Spend XP"
-              color={eShop ? "error" : undefined}
+              color={eShop ? "primary" : undefined}
               variant={eShop ? undefined : "outlined"}
               onClick={handleEShopClick}
             />

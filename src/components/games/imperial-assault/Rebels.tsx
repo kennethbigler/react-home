@@ -2,6 +2,7 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Grid from "@mui/material/Grid2";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 const Rebels = () => {
@@ -19,13 +20,22 @@ const Rebels = () => {
         <Typography variant="h3" gutterBottom>
           Rebels
         </Typography>
-        <Typography>Rebel Credit Tracker</Typography>
+        <TextField
+          label="CREDITS"
+          type="number"
+          color="error"
+          slotProps={{ input: { startAdornment: "ᖬ" } }}
+        />
       </div>
       <Grid container spacing={2} marginBottom={3}>
         {[0, 1, 2, 3].map((r) => (
           <Grid size={{ xs: 12, sm: 6 }} key={r}>
             <Typography>Rebel {r + 1}</Typography>
-            <ButtonGroup aria-label={`Rebel ${r}'s experience`} fullWidth>
+            <ButtonGroup
+              aria-label={`Rebel ${r}'s experience`}
+              fullWidth
+              color="error"
+            >
               {[0, 1, 2, 3, 4, 5, 6].map((n) => (
                 <Button
                   key={`${r}-${n}`}
