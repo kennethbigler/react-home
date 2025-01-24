@@ -9,7 +9,6 @@ const players = [0, 1, 2, 3];
 const maxXP = [0, 1, 2, 3, 4, 5, 6];
 
 const Rebels = () => {
-  // TODO: fix issue with credits
   const { rebelXP, credits, handleXPClick, updateCredits } = useRebels();
 
   return (
@@ -22,7 +21,8 @@ const Rebels = () => {
           label="CREDITS"
           color="error"
           slotProps={{ input: { startAdornment: "ᖬ" } }}
-          defaultValue={credits}
+          value={credits}
+          onChange={updateCredits}
           onBlur={updateCredits}
         />
       </div>

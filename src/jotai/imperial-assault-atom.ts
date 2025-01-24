@@ -22,18 +22,14 @@ interface ImpAssState {
   influence: number;
 }
 
-const newCampaignStats: Omit<ImpAssState, "campaign"> = {
+const initialState: ImpAssState = {
+  campaign: basic,
   campaignIdx: "0",
   forcedMissions: [getForcedMission(2)],
   credits: "0",
   rebelXP: [0, 0, 0, 0],
   xp: 0,
   influence: 0,
-};
-
-const initialState: ImpAssState = {
-  campaign: basic,
-  ...newCampaignStats,
 };
 
 const impAssAtom = atomWithStorage("impAssAtom", initialState);

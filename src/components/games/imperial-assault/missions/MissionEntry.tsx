@@ -48,7 +48,8 @@ const MissionEntry = ({
             : undefined
         }
         variant="outlined"
-        defaultValue={m.title}
+        value={m.title}
+        onChange={onNameBlur}
         onBlur={onNameBlur}
       />
     </Grid>

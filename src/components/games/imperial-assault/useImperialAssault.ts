@@ -10,7 +10,6 @@ import {
   tyrantsOfLothal,
   getForcedMission,
 } from "../../../constants/imperial-campaigns";
-import { SelectChangeEvent } from "@mui/material";
 
 const campaigns = [
   basic,
@@ -26,32 +25,31 @@ export const useHeader = () => {
   const [{ campaignIdx }, setState] = useAtom(impAssAtom);
 
   /** handle campaign changes */
-  const handleCampaignChange = (e: SelectChangeEvent) => {
-    const cIdx = e.target.value;
+  const handleCampaignChange = (cIdx: string) => {
     const newCampaign = [...campaigns[parseInt(cIdx)]];
 
-    let credits = "0";
-    let rebelXP = [0, 0, 0, 0];
-    let xp = 0;
+    let newCredits = "0";
+    let newRebelXP = [0, 0, 0, 0];
+    let newXP = 0;
     if (cIdx === "1" || cIdx === "3") {
       // If Twin Shadows || The Bespin Gambit
-      rebelXP = [3, 3, 3, 3];
-      credits = "400";
-      xp = 3;
+      newRebelXP = [3, 3, 3, 3];
+      newCredits = "400";
+      newXP = 3;
     } else if (cIdx === "6") {
       // If Tyrants of Lothal
-      rebelXP = [2, 2, 2, 2];
-      credits = "300";
-      xp = 2;
+      newRebelXP = [2, 2, 2, 2];
+      newCredits = "300";
+      newXP = 2;
     }
 
     setState({
       campaignIdx: cIdx,
       campaign: newCampaign,
       forcedMissions: [getForcedMission(newCampaign[0].threat)],
-      credits,
-      rebelXP,
-      xp,
+      credits: newCredits,
+      rebelXP: newRebelXP,
+      xp: newXP,
       influence: 0,
     });
   };
@@ -68,10 +66,8 @@ export const useRebels = () => {
     setState({ ...other, credits, rebelXP: xp });
   };
 
-  // TODO: fix issue with credits
-  const updateCredits = (e: React.FocusEvent<HTMLInputElement>) => {
+  const updateCredits = (e: React.FocusEvent<HTMLInputElement>) =>
     setState({ ...other, rebelXP, credits: e.target.value || "" });
-  };
 
   return { rebelXP, credits, handleXPClick, updateCredits };
 };
