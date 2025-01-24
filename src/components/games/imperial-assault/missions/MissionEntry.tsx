@@ -7,7 +7,7 @@ import { Mission } from "../../../../constants/imperial-campaigns";
 interface MissionProps {
   mission: Mission;
   onVictoryClick: () => void;
-  onNameChange: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onNameBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onRShopClick?: () => void;
   onEShopClick?: () => void;
 }
@@ -34,7 +34,7 @@ const getStoryType = (isSide: boolean, isForced: boolean) => {
 const MissionEntry = ({
   mission: m,
   onVictoryClick,
-  onNameChange,
+  onNameBlur,
   onRShopClick,
   onEShopClick,
 }: MissionProps) => (
@@ -48,8 +48,8 @@ const MissionEntry = ({
             : undefined
         }
         variant="outlined"
-        value={m.title}
-        onChange={onNameChange}
+        defaultValue={m.title}
+        onBlur={onNameBlur}
       />
     </Grid>
     <Grid size={{ xs: 6, sm: 3 }}>

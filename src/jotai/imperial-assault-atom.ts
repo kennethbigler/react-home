@@ -13,7 +13,7 @@ interface ImpAssState {
   /** only forced missions (often none) */
   forcedMissions: Mission[];
   /** Rebel's credits available to spend */
-  credits: number;
+  credits: string;
   /** Rebel's xp available to spend */
   rebelXP: number[];
   /** Empire's xp available to spend */
@@ -25,7 +25,7 @@ interface ImpAssState {
 const newCampaignStats: Omit<ImpAssState, "campaign"> = {
   campaignIdx: "0",
   forcedMissions: [getForcedMission(2)],
-  credits: 0,
+  credits: "0",
   rebelXP: [0, 0, 0, 0],
   xp: 0,
   influence: 0,

@@ -16,8 +16,8 @@ const ForcedMissions = () => {
           <MissionEntry
             key={i}
             mission={m}
+            onNameBlur={updateMissionName(i)}
             onVictoryClick={handleVictoryClick(i)}
-            onNameChange={updateMissionName(i)}
           />
         ))}
       </Grid>

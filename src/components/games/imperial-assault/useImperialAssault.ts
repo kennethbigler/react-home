@@ -30,18 +30,18 @@ export const useHeader = () => {
     const cIdx = e.target.value;
     const newCampaign = [...campaigns[parseInt(cIdx)]];
 
-    let credits = 0;
+    let credits = "0";
     let rebelXP = [0, 0, 0, 0];
     let xp = 0;
     if (cIdx === "1" || cIdx === "3") {
       // If Twin Shadows || The Bespin Gambit
       rebelXP = [3, 3, 3, 3];
-      credits = 400;
+      credits = "400";
       xp = 3;
     } else if (cIdx === "6") {
       // If Tyrants of Lothal
       rebelXP = [2, 2, 2, 2];
-      credits = 300;
+      credits = "300";
       xp = 2;
     }
 
@@ -57,6 +57,33 @@ export const useHeader = () => {
   };
 
   return { campaignIdx, handleCampaignChange };
+};
+
+export const useRebels = () => {
+  const [{ rebelXP, credits, ...other }, setState] = useAtom(impAssAtom);
+
+  const handleXPClick = (r: number, n: number) => () => {
+    const xp = [...rebelXP];
+    xp[r] = n;
+    setState({ ...other, credits, rebelXP: xp });
+  };
+
+  // TODO: fix issue with credits
+  const updateCredits = (e: React.FocusEvent<HTMLInputElement>) => {
+    setState({ ...other, rebelXP, credits: e.target.value || "" });
+  };
+
+  return { rebelXP, credits, handleXPClick, updateCredits };
+};
+
+export const useEmpire = () => {
+  const [{ xp, influence, ...other }, setState] = useAtom(impAssAtom);
+  const handleXPClick = (n: number) => () =>
+    setState({ ...other, influence, xp: n });
+  const handleInfluenceClick = (n: number) => () =>
+    setState({ ...other, xp, influence: n });
+
+  return { xp, influence, handleXPClick, handleInfluenceClick };
 };
 
 export const useMissions = () => {

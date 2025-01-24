@@ -1,18 +1,16 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Grid from "@mui/material/Grid2";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { useRebels } from "./useImperialAssault";
+
+const players = [0, 1, 2, 3];
+const maxXP = [0, 1, 2, 3, 4, 5, 6];
 
 const Rebels = () => {
-  // TODO: move to jotai
-  const [xp, setXP] = React.useState([0, 0, 0, 0]);
-  const handleXPClick = (r: number, n: number) => () => {
-    const newXP = [...xp];
-    newXP[r] = n;
-    setXP(newXP);
-  };
+  // TODO: fix issue with credits
+  const { rebelXP, credits, handleXPClick, updateCredits } = useRebels();
 
   return (
     <>
@@ -22,13 +20,14 @@ const Rebels = () => {
         </Typography>
         <TextField
           label="CREDITS"
-          type="number"
           color="error"
           slotProps={{ input: { startAdornment: "ᖬ" } }}
+          defaultValue={credits}
+          onBlur={updateCredits}
         />
       </div>
       <Grid container spacing={2} marginBottom={3}>
-        {[0, 1, 2, 3].map((r) => (
+        {players.map((r) => (
           <Grid size={{ xs: 12, sm: 6 }} key={r}>
             <Typography>Rebel {r + 1}</Typography>
             <ButtonGroup
@@ -36,10 +35,10 @@ const Rebels = () => {
               fullWidth
               color="error"
             >
-              {[0, 1, 2, 3, 4, 5, 6].map((n) => (
+              {maxXP.map((n) => (
                 <Button
                   key={`${r}-${n}`}
-                  variant={xp[r] === n ? "contained" : "outlined"}
+                  variant={rebelXP[r] === n ? "contained" : "outlined"}
                   onClick={handleXPClick(r, n)}
                   aria-label={`${n} experience`}
                 >

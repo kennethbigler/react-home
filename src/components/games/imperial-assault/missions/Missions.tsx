@@ -24,8 +24,8 @@ const Missions = () => {
             <MissionEntry
               key={i}
               mission={m}
+              onNameBlur={updateMissionName(i)}
               onVictoryClick={handleVictoryClick(i)}
-              onNameChange={updateMissionName(i)}
               onEShopClick={isFinale ? undefined : handleEShopClick(i)}
               onRShopClick={isFinale ? undefined : handleRShopClick(i)}
             />

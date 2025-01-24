@@ -1,17 +1,13 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
+import { useEmpire } from "./useImperialAssault";
 
 const xpOptions = [0, 1, 2, 3, 4, 5, 6];
 
 const Empire = () => {
-  // TODO: move to jotai
-  const [xp, setXP] = React.useState(0);
-  const handleXPClick = (n: number) => () => setXP(n);
-  const [influence, setInfluence] = React.useState(0);
-  const handleInfluenceClick = (n: number) => () => setInfluence(n);
+  const { xp, influence, handleXPClick, handleInfluenceClick } = useEmpire();
 
   return (
     <>
