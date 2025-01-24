@@ -1,12 +1,13 @@
 import * as React from "react";
 import Alert from "@mui/material/Alert";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import Snackbar from "@mui/material/Snackbar";
 import SwapHoriz from "@mui/icons-material/SwapHoriz";
+import Switch from "@mui/material/Switch";
 import EditPlayers from "./edit-players/EditPlayers";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import { BotCPlayer } from "../../../../jotai/botc-atom";
 import Tracker from "./Tracker";
-import { FormControlLabel, Switch } from "@mui/material";
 
 interface ControlBarProps {
   // Shared

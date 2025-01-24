@@ -1,18 +1,12 @@
-import * as React from "react";
 import Typography from "@mui/material/Typography";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import { useHeader } from "./useImperialAssault";
 
 const Header = () => {
-  const [campaign, setCampaign] = React.useState("0");
-  const handleChange = (e: SelectChangeEvent) => {
-    setCampaign(e.target.value);
-  };
+  const { campaignIdx, handleCampaignChange } = useHeader();
 
   return (
     <div className="flex-container">
@@ -23,9 +17,9 @@ const Header = () => {
         <InputLabel id="campaign-select-label">Campaign</InputLabel>
         <Select
           labelId="campaign-select-label"
-          value={campaign}
+          value={campaignIdx}
           label="Campaign"
-          onChange={handleChange}
+          onChange={handleCampaignChange}
         >
           <MenuItem value="0">Imperial Assault Campaign Log</MenuItem>
           <MenuItem value="1">Twin Shadows Campaign Log</MenuItem>

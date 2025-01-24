@@ -1,4 +1,3 @@
-import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Chip from "@mui/material/Chip";
 import Avatar from "@mui/material/Avatar";
@@ -7,7 +6,10 @@ import { Mission } from "../../../../constants/imperial-campaigns";
 
 interface MissionProps {
   mission: Mission;
-  isForced: boolean;
+  onVictoryClick: () => void;
+  onNameChange: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onRShopClick?: () => void;
+  onEShopClick?: () => void;
 }
 
 const getVictoryColor = (v: number) => {
@@ -29,59 +31,57 @@ const getStoryType = (isSide: boolean, isForced: boolean) => {
   return isSide ? "Forced" : "Finale";
 };
 
-const MissionEntry = ({ mission: m, isForced }: MissionProps) => {
-  // TODO: replace these w/ persistent storage
-  const [rShop, setRShop] = React.useState(false);
-  const handleRShopClick = () => setRShop(!rShop);
-
-  const [eShop, setEShop] = React.useState(false);
-  const handleEShopClick = () => setEShop(!eShop);
-
-  const [victory, setVictory] = React.useState(0);
-  const handleVictoryClick = () => setVictory((victory + 1) % 3);
-
-  const storyType = getStoryType(m.isSide, isForced);
-
-  return (
-    <>
-      <Grid size={{ xs: 6, sm: 3 }}>
-        <TextField
-          label={`${storyType} Mission`}
-          color={storyType === "Forced" ? "error" : undefined}
-          variant="outlined"
-        />
-      </Grid>
-      <Grid size={{ xs: 6, sm: 3 }}>
-        <Chip
-          avatar={<Avatar>{m.threat}</Avatar>}
-          label="Threat"
-          color={getVictoryColor(victory)}
-          variant={victory > 0 ? undefined : "outlined"}
-          onClick={handleVictoryClick}
-        />
-      </Grid>
-      {!isForced && (
-        <>
-          <Grid size={{ xs: 6, sm: 3 }}>
-            <Chip
-              label={`Tier ${m.shop} Items, Spend XP`}
-              color={rShop ? "error" : undefined}
-              variant={rShop ? undefined : "outlined"}
-              onClick={handleRShopClick}
-            />
-          </Grid>
-          <Grid size={{ xs: 6, sm: 3 }}>
-            <Chip
-              label="Agenda, Spend XP"
-              color={eShop ? "primary" : undefined}
-              variant={eShop ? undefined : "outlined"}
-              onClick={handleEShopClick}
-            />
-          </Grid>
-        </>
-      )}
-    </>
-  );
-};
+const MissionEntry = ({
+  mission: m,
+  onVictoryClick,
+  onNameChange,
+  onRShopClick,
+  onEShopClick,
+}: MissionProps) => (
+  <>
+    <Grid size={{ xs: 6, sm: 3 }}>
+      <TextField
+        label={`${getStoryType(m.isSide, !onRShopClick)} Mission`}
+        color={
+          getStoryType(m.isSide, !onRShopClick) === "Forced"
+            ? "error"
+            : undefined
+        }
+        variant="outlined"
+        value={m.title}
+        onChange={onNameChange}
+      />
+    </Grid>
+    <Grid size={{ xs: 6, sm: 3 }}>
+      <Chip
+        avatar={<Avatar>{m.threat}</Avatar>}
+        label="Threat"
+        color={getVictoryColor(m.victory)}
+        variant={m.victory > 0 ? undefined : "outlined"}
+        onClick={onVictoryClick}
+      />
+    </Grid>
+    {onRShopClick !== undefined && (
+      <>
+        <Grid size={{ xs: 6, sm: 3 }}>
+          <Chip
+            label={`Tier ${m.shop} Items, Spend XP`}
+            color={m.rShop ? "error" : undefined}
+            variant={m.rShop ? undefined : "outlined"}
+            onClick={onRShopClick}
+          />
+        </Grid>
+        <Grid size={{ xs: 6, sm: 3 }}>
+          <Chip
+            label="Agenda, Spend XP"
+            color={m.eShop ? "primary" : undefined}
+            variant={m.eShop ? undefined : "outlined"}
+            onClick={onEShopClick}
+          />
+        </Grid>
+      </>
+    )}
+  </>
+);
 
 export default MissionEntry;

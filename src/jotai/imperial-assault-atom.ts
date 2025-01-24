@@ -6,6 +6,8 @@ import {
 } from "../constants/imperial-campaigns";
 
 interface ImpAssState {
+  /** index of campaign to make sure selector matches */
+  campaignIdx: string;
   /** all campaign stats will be recorded here */
   campaign: Mission[];
   /** only forced missions (often none) */
@@ -20,13 +22,8 @@ interface ImpAssState {
   influence: number;
 }
 
-/* TODO:
-If Twin Shadows || The Bespin Gambit
-  rebelXP = [3, 3, 3, 3], credits = 400, xp = 3
-If Tyrants of Lothal
-  rebelXP = [2, 2, 2, 2], credits = 300, xp = 2
-*/
 const newCampaignStats: Omit<ImpAssState, "campaign"> = {
+  campaignIdx: "0",
   forcedMissions: [getForcedMission(2)],
   credits: 0,
   rebelXP: [0, 0, 0, 0],
