@@ -1,13 +1,13 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
-import originalMenuItems from "./menu-items";
+import {
+  socialItems,
+  trackerItems,
+  casinoItems,
+  gameItems,
+} from "./menu-items";
 import HomeMenuItem from "./HomeMenuItem";
-
-const menuItems = [...originalMenuItems];
-const casinoItems = menuItems.splice(2, 5);
-const gameItems = menuItems.splice(3, 6);
-const socialItems = menuItems.splice(4, menuItems.length);
 
 interface HomeProps {
   onItemClick?: (loc: string) => void;
@@ -27,13 +27,10 @@ const Home = React.memo(({ onItemClick }: HomeProps) => (
         <code>&lt;source&nbsp;code/&gt;</code>
       </Link>
     </Typography>
+    <HomeMenuItem title="Deduction" items={socialItems} onClick={onItemClick} />
+    <HomeMenuItem title="Trackers" items={trackerItems} onClick={onItemClick} />
     <HomeMenuItem title="Casino" items={casinoItems} onClick={onItemClick} />
     <HomeMenuItem title="Games" items={gameItems} onClick={onItemClick} />
-    <HomeMenuItem
-      title="Social Deduction"
-      items={socialItems}
-      onClick={onItemClick}
-    />
   </div>
 ));
 
