@@ -87,6 +87,9 @@ export const useMissions = () => {
     useAtom(impAssAtom);
 
   const handleVictoryClick = (i: number) => () => {
+    if (campaign[i].title === "") {
+      return;
+    }
     // update campaign victory
     const newCampaign = [...campaign];
     const newMission = {
@@ -146,9 +149,15 @@ export const useForcedMissions = () => {
   const [{ forcedMissions, ...other }, setState] = useAtom(impAssAtom);
 
   const handleVictoryClick = (i: number) => () => {
+    if (forcedMissions[i].title === "") {
+      return;
+    }
     const newForcedMissions = [...forcedMissions];
     newForcedMissions[i].victory = (forcedMissions[i].victory + 1) % 3;
-
+    // add new forced mission
+    if (i === forcedMissions.length - 1) {
+      newForcedMissions.push(getForcedMission(forcedMissions[i].threat));
+    }
     setState({ ...other, forcedMissions: newForcedMissions });
   };
 

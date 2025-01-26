@@ -12,7 +12,7 @@ const Rebels = () => {
   const { rebelXP, credits, handleXPClick, updateCredits } = useRebels();
 
   return (
-    <>
+    <Grid size={{ xs: 12, md: 8 }}>
       <div className="flex-container">
         <Typography variant="h3" gutterBottom>
           Rebels
@@ -49,7 +49,7 @@ const Rebels = () => {
           </Grid>
         ))}
       </Grid>
-    </>
+    </Grid>
   );
 };
 

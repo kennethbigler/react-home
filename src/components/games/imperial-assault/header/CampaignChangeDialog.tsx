@@ -28,11 +28,11 @@ const CampaignChangeDialog = ({
       {campaignTitles[parseInt(oldC)]} &gt; {campaignTitles[parseInt(newC)]}?
     </DialogContent>
     <DialogActions>
-      <Button color="secondary" onClick={onSave}>
-        Yes
+      <Button color="error" onClick={onSave}>
+        New Campaign
       </Button>
       <Button color="primary" onClick={onClose}>
-        Close
+        Cancel
       </Button>
     </DialogActions>
   </Dialog>
