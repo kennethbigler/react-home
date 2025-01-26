@@ -10,43 +10,37 @@ const Empire = () => {
   const { xp, influence, handleXPClick, handleInfluenceClick } = useEmpire();
 
   return (
-    <>
+    <Grid size={{ xs: 12, md: 4 }}>
       <Typography variant="h3" gutterBottom>
         Empire
       </Typography>
-      <Grid container spacing={2} marginBottom={3}>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <Typography>XP</Typography>
-          <ButtonGroup aria-label="Empire experience level" fullWidth>
-            {xpOptions.map((n) => (
-              <Button
-                key={n}
-                variant={xp === n ? "contained" : "outlined"}
-                onClick={handleXPClick(n)}
-                aria-label={`${n} experience`}
-              >
-                {n}
-              </Button>
-            ))}
-          </ButtonGroup>
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <Typography>Influence</Typography>
-          <ButtonGroup aria-label="Empire influence level" fullWidth>
-            {xpOptions.map((n) => (
-              <Button
-                key={n}
-                variant={influence === n ? "contained" : "outlined"}
-                onClick={handleInfluenceClick(n)}
-                aria-label={`${n} influence`}
-              >
-                {n}
-              </Button>
-            ))}
-          </ButtonGroup>
-        </Grid>
-      </Grid>
-    </>
+      <Typography>XP</Typography>
+      <ButtonGroup aria-label="Empire experience level" fullWidth sx={{marginBottom: 2}}>
+        {xpOptions.map((n) => (
+          <Button
+            key={n}
+            variant={xp === n ? "contained" : "outlined"}
+            onClick={handleXPClick(n)}
+            aria-label={`${n} experience`}
+          >
+            {n}
+          </Button>
+        ))}
+      </ButtonGroup>
+      <Typography>Influence</Typography>
+      <ButtonGroup aria-label="Empire influence level" fullWidth>
+        {xpOptions.map((n) => (
+          <Button
+            key={n}
+            variant={influence === n ? "contained" : "outlined"}
+            onClick={handleInfluenceClick(n)}
+            aria-label={`${n} influence`}
+          >
+            {n}
+          </Button>
+        ))}
+      </ButtonGroup>
+    </Grid>
   );
 };
 
