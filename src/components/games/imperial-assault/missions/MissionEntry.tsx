@@ -66,7 +66,8 @@ const MissionEntry = ({
       <>
         <Grid size={{ xs: 6, sm: 3 }}>
           <Chip
-            label={`Tier ${m.shop} Items, Spend XP`}
+            // TODO: add number of item cards to draw (hard code)
+            label={`Tier ${m.shop} Items (??), Spend XP`}
             color={m.rShop ? "error" : undefined}
             variant={m.rShop ? undefined : "outlined"}
             onClick={onRShopClick}
