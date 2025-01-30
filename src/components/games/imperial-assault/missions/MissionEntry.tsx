@@ -3,6 +3,7 @@ import Chip from "@mui/material/Chip";
 import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid2";
 import { Mission } from "../../../../constants/imperial-campaigns";
+import { Divider } from "@mui/material";
 
 interface MissionProps {
   mission: Mission;
@@ -69,8 +70,7 @@ const MissionEntry = ({
       <>
         <Grid size={{ xs: 6, sm: 3 }}>
           <Chip
-            // TODO: add number of item cards to draw (hard code)
-            label={`Tier ${m.shop} Items (??), Spend XP`}
+            label={`Tier ${m.shop} Items (${m.shop.length > 1 ? "7 & 7" : 14}), Spend XP`}
             color={m.rShop ? "error" : undefined}
             variant={m.rShop ? undefined : "outlined"}
             onClick={onRShopClick}
@@ -83,6 +83,9 @@ const MissionEntry = ({
             variant={m.eShop ? undefined : "outlined"}
             onClick={onEShopClick}
           />
+        </Grid>
+        <Grid size={12}>
+          <Divider aria-hidden />
         </Grid>
       </>
     )}
