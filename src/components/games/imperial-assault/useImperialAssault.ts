@@ -155,7 +155,7 @@ export const useForcedMissions = () => {
     const newForcedMissions = [...forcedMissions];
     newForcedMissions[i].victory = (forcedMissions[i].victory + 1) % 3;
     // add new forced mission
-    if (i === forcedMissions.length - 1 && forcedMissions.length < 3) {
+    if (i === forcedMissions.length - 1) {
       newForcedMissions.push(getForcedMission(forcedMissions[i].threat));
     }
     setState({ ...other, forcedMissions: newForcedMissions });
