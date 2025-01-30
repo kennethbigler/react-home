@@ -24,11 +24,16 @@ const getVictoryColor = (v: number) => {
   }
 };
 
+const STORY = "Story Mission";
+const SIDE = "Side Mission";
+const FINALE = "Finale";
+const FORCED = "Forced Mission (p.31)";
+
 const getStoryType = (isSide: boolean, isForced: boolean) => {
   if (!isForced) {
-    return isSide ? "Side" : "Story";
+    return isSide ? SIDE : STORY;
   }
-  return isSide ? "Forced" : "Finale";
+  return isSide ? FORCED : FINALE;
 };
 
 const MissionEntry = ({
@@ -41,11 +46,9 @@ const MissionEntry = ({
   <>
     <Grid size={{ xs: 6, sm: 3 }}>
       <TextField
-        label={`${getStoryType(m.isSide, !onRShopClick)} Mission`}
+        label={getStoryType(m.isSide, !onRShopClick)}
         color={
-          getStoryType(m.isSide, !onRShopClick) === "Forced"
-            ? "error"
-            : undefined
+          getStoryType(m.isSide, !onRShopClick) === FORCED ? "error" : undefined
         }
         variant="outlined"
         value={m.title}

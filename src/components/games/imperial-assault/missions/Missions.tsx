@@ -14,9 +14,10 @@ const Missions = () => {
 
   return (
     <>
+      <Typography variant="h3">Missions</Typography>
       <Grid container alignItems="center" marginBottom={3} spacing={1}>
         <Grid size={{ xs: 6, sm: 3 }}>
-          <Typography variant="h3">Mission</Typography>
+          <Typography>Mission (p.44, 57)</Typography>
         </Grid>
         <Grid size={{ xs: 6, sm: 3 }}>
           <Typography>Threat Level (p.46)</Typography>
