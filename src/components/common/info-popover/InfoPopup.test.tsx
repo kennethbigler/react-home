@@ -44,4 +44,24 @@ describe("common | InfoPopup", () => {
       opacity: 0,
     });
   });
+
+  it("supports a save button prop", () => {
+    const handleSave = vi.fn();
+    render(
+      <InfoPopup title="Title" buttonText="Button" onSave={handleSave}>
+        Child
+      </InfoPopup>,
+    );
+    expect(screen.getByText("Button")).toBeInTheDocument();
+    // check that it opens
+    expect(screen.queryByText("Title")).toBeNull();
+    expect(screen.queryByText("Child")).toBeNull();
+    fireEvent.click(screen.getByText("Button"));
+    expect(screen.getByText("Title")).toBeInTheDocument();
+    expect(screen.getByText("Child")).toBeInTheDocument();
+    // check that it saves
+    expect(handleSave).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByText("Save"));
+    expect(handleSave).toHaveBeenCalled();
+  });
 });

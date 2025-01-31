@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import LoadingSpinner from "./common/loading-spinner";
 
 // lazy load sub routers
@@ -12,13 +12,10 @@ const GameRoutes = React.lazy(
 
 const RootRoutes = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   const handleNav = (loc: string) => {
-    if (loc !== pathname) {
-      // eslint-disable-next-line no-console
-      navigate(loc)?.catch((reason) => console.log(reason));
-    }
+    // eslint-disable-next-line no-console
+    navigate(loc)?.catch((reason) => console.log(reason));
   };
 
   return (
