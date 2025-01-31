@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { vi } from "vitest";
-import Menu from "../Menu";
+import Menu from "./Menu";
 
 describe("resume | Menu", () => {
   it("renders as expected", () => {
@@ -16,11 +16,6 @@ describe("resume | Menu", () => {
     expect(screen.getByText("Games")).toBeInTheDocument();
     expect(screen.getByText("GitHub")).toBeInTheDocument();
     expect(screen.getByText("LinkedIn")).toBeInTheDocument();
-    expect(
-      screen.getByAltText(
-        "profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers",
-      ),
-    ).toBeInTheDocument();
   });
 
   it("links to internal pages", () => {
@@ -48,16 +43,7 @@ describe("resume | Menu", () => {
       "https://www.linkedin.com/in/kennethbigler",
     );
 
-    fireEvent.click(
-      screen.getByAltText(
-        "profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers",
-      ),
-    );
-    expect(windowOpen).toHaveBeenCalledWith(
-      "https://stackoverflow.com/users/4830309/ken-bigler",
-    );
-
-    expect(windowOpen).toHaveBeenCalledTimes(3);
+    expect(windowOpen).toHaveBeenCalledTimes(2);
 
     window.alert = jsdomOpen;
   });

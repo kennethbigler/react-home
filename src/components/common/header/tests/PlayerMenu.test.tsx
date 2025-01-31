@@ -22,21 +22,21 @@ describe("common | header | PlayerMenu", () => {
     fireEvent.click(screen.getByText("Players"));
 
     // test menu
-    const BotSwitch = screen
+    const BotTog = screen
       .getByTitle("isBot-switch-0")
       .querySelector(".MuiSwitch-input");
 
     // verify it renders properly
-    expect(BotSwitch).toBeInTheDocument();
-    expect(BotSwitch?.attributes?.getNamedItem("value")?.value).toEqual(
-      "false",
-    );
+    expect(BotTog).toBeInTheDocument();
+    expect(BotTog?.attributes?.getNamedItem("value")?.value).toEqual("false");
 
-    // click the expected element
-    fireEvent.click(BotSwitch || screen.getByTitle("isBot-switch-0"));
+    // click the expected element and confirm toggle
+    fireEvent.click(BotTog || screen.getByTitle("isBot-switch-0"));
+    expect(BotTog?.attributes?.getNamedItem("value")?.value).toEqual("true");
 
-    // confirm switch was toggled
-    expect(BotSwitch?.attributes?.getNamedItem("value")?.value).toEqual("true");
+    // confirm it can toggle back to false
+    fireEvent.click(BotTog || screen.getByTitle("isBot-switch-0"));
+    expect(BotTog?.attributes?.getNamedItem("value")?.value).toEqual("false");
   });
 
   it("performs name update onKeyPress", () => {

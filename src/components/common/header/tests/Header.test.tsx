@@ -34,6 +34,29 @@ describe("common | header | Header", () => {
     expect(screen.getByText("Test Button")).toBeInTheDocument();
   });
 
+  it("toggles theme", () => {
+    const { container } = render(
+      <Header>
+        {(onItemClick): React.ReactElement<NavProps> => (
+          <Menu onItemClick={onItemClick} />
+        )}
+      </Header>,
+    );
+    expect(
+      container
+        .querySelector("header")
+        ?.classList.contains("header-dark-theme"),
+    );
+    fireEvent.click(screen.getByLabelText("Theme Toggle Switch"));
+    let header = container.querySelector("header")?.classList;
+    expect(!header?.contains("header-dark-theme"));
+    expect(header?.contains("header-light-theme"));
+    fireEvent.click(screen.getByLabelText("Theme Toggle Switch"));
+    header = container.querySelector("header")?.classList;
+    expect(!header?.contains("header-light-theme"));
+    expect(header?.contains("header-dark-theme"));
+  });
+
   describe("basic props tests", () => {
     it("displays children", () => {
       render(

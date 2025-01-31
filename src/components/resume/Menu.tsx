@@ -17,9 +17,6 @@ const github = (): void => {
 const linkedIn = (): void => {
   window.open("https://www.linkedin.com/in/kennethbigler");
 };
-const stackOverflow = (): void => {
-  window.open("https://stackoverflow.com/users/4830309/ken-bigler");
-};
 
 const Menu = React.memo(({ onItemClick }: MenuProps) => {
   // internal routes
@@ -67,21 +64,6 @@ const Menu = React.memo(({ onItemClick }: MenuProps) => {
         <LinkedInIcon />
         &nbsp;LinkedIn&nbsp;
         <OpenInNewIcon fontSize="small" />
-      </MenuItem>
-      <Divider aria-hidden />
-      <br />
-      <MenuItem onClick={stackOverflow} sx={{ padding: "6px" }}>
-        <img
-          alt="profile for Ken Bigler at Stack Overflow, Q&A for professional and enthusiast programmers"
-          id="stackOverflow"
-          src="https://stackoverflow.com/users/flair/4830309.png?theme=dark"
-          style={{
-            display: "block",
-            margin: "auto",
-            cursor: "pointer",
-            width: 142,
-          }}
-        />
       </MenuItem>
     </MenuList>
   );
