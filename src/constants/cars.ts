@@ -5,7 +5,6 @@ import {
   lime,
   yellow,
   teal,
-  blue,
   orange,
 } from "@mui/material/colors";
 import dateObj from "../apis/DateHelper";
@@ -445,7 +444,27 @@ interface GraphData {
 const smoothData = (cur: number, high: number, low: number) =>
   Math.floor(100 * ((cur - low) / (high - low)));
 
-export const processData = (data: CarEntry[]): GraphData => {
+export const processData = (allData: CarEntry[]): GraphData => {
+  let hasCamilla = false;
+  let hasCheyenne = false;
+  let hasTesla = false;
+  const data = allData
+    .filter((car) => {
+      let isUnique = true;
+      if (car.title === camilla.title) {
+        isUnique = !hasCamilla;
+        hasCamilla = true;
+      } else if (car.title === cheyenne.title) {
+        isUnique = !hasCheyenne;
+        hasCheyenne = true;
+      } else if (car.title === tesla.title) {
+        isUnique = !hasTesla;
+        hasTesla = true;
+      }
+      return isUnique;
+    })
+    .sort((a, b) => a.horsepower / a.weight - b.horsepower / b.weight);
+
   const ret: GraphData = {
     xAxis: [],
     horsepower: [],
@@ -570,27 +589,36 @@ export { pastKensCars, currentKensCars, pastFamilyCars, currentFamilyCars };
 // --------------------------------------------------     Sankey     -------------------------------------------------- //
 
 export const carSankeyNodes = [
-  { id: "🏎️", color: grey[200] },
   // level 1
-  { id: "🇯🇵", color: red[500], column: 2 },
-  { id: "🇺🇸", color: blue[500], column: 2 },
-  { id: "🇩🇪", color: orange[500], column: 2 },
-  { id: "🇬🇧", color: grey[300], column: 2 },
-  // level 2
-  { id: "GM", color: blue[500], offset: 70 },
-  { id: "Fiat Chrysler Auto", color: blue[500], offset: 70 },
-  { id: "Volkswagen", color: orange[500], offset: 70 },
-  { id: "TATA", color: grey[300], offset: 70 },
-  // level 3
+  //     Japan
+  { id: "Honda", color: red[500] },
+  { id: "Toyota", color: indigo[400] },
+  //     US
+  { id: "Ford", color: indigo[900] },
+  { id: "Tesla", color: red[500] },
   { id: "Chevrolet", color: yellow[700] },
   { id: "Pontiac", color: red[500] },
-  { id: "Plymouth", color: "black" },
-  { id: "Ford", color: blue[500] },
-  { id: "Tesla", color: red[500] },
-  { id: "Honda", color: red[500] },
-  { id: "Toyota", color: red[500] },
-  { id: "Porsche", color: yellow[700] },
-  { id: "Jaguar", color: grey[300] },
+  { id: "Plymouth", color: grey[50] },
+  //     Other
+  { id: "Porsche", color: orange[500] },
+  { id: "Jaguar", color: lime[900] },
+
+  // level 2
+  //     US
+  { id: "GM", color: yellow[700], offset: 70 },
+  { id: "Fiat Chrysler Auto", color: grey[50], offset: 70 },
+  //     Other
+  { id: "Volkswagen", color: orange[500], offset: 70 },
+  { id: "TATA", color: lime[900], offset: 70 },
+
+  // level 3
+  { id: "🇯🇵", color: red[500], column: 2 },
+  { id: "🇺🇸", color: indigo[900], column: 2 },
+  { id: "🇩🇪", color: orange[500], column: 2 },
+  { id: "🇬🇧", color: lime[900], column: 2 },
+
+  // level 4
+  { id: "🏎️", color: grey[200] },
 ];
 
 export const familySankeyData = [
@@ -605,11 +633,15 @@ export const familySankeyData = [
   //     Other
   ["Porsche", "Volkswagen", 2],
   ["Jaguar", "TATA", 1],
+
   // level 2
+  //     US
   ["GM", "🇺🇸", 3],
   ["Fiat Chrysler Auto", "🇺🇸", 1],
+  //     Other
   ["Volkswagen", "🇩🇪", 2],
   ["TATA", "🇬🇧", 1],
+
   // level 3
   ["🇯🇵", "🏎️", 1],
   ["🇺🇸", "🏎️", 6],
@@ -629,10 +661,14 @@ export const kenSankeyData = [
   //     Other
   ["Porsche", "Volkswagen", 1],
   ["Jaguar", "TATA", 1],
+
   // level 2
+  //     US
   ["GM", "🇺🇸", 3],
+  //     Other
   ["Volkswagen", "🇩🇪", 1],
   ["TATA", "🇬🇧", 1],
+
   // level 3
   ["🇯🇵", "🏎️", 1],
   ["🇺🇸", "🏎️", 6],
@@ -654,11 +690,15 @@ export const carSankeyData = [
   //     Other
   ["Porsche", "Volkswagen", 2],
   ["Jaguar", "TATA", 2],
+
   // level 2
+  //     US
   ["GM", "🇺🇸", 4],
   ["Fiat Chrysler Auto", "🇺🇸", 1],
+  //     Other
   ["Volkswagen", "🇩🇪", 2],
   ["TATA", "🇬🇧", 2],
+
   // level 3
   ["🇯🇵", "🏎️", 2],
   ["🇺🇸", "🏎️", 9],

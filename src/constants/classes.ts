@@ -689,46 +689,63 @@ export const presentations: School[] = [
   },
   {
     color: blue[900],
-    degree: "External Company Presentations",
+    degree: "Other Public Conference Presentations",
     subtitle: "",
     years: [
       {
-        year: "Bay Area Disability Connect",
+        year: "2025",
         quarters: [
           {
-            quarter: "Panel Moderator",
+            quarter: "Disability-in-Tech",
             classes: [
               {
-                catalog: "Date",
-                name: "October 30, 2024",
+                catalog: "Title",
+                name: "Building your brand - Managing how others see you, when disability clouds their view",
+              },
+              {
+                catalog: "Description",
+                name: "Success in the workforce depends on others recognizing the value you bring to the organization and how they support you when you are not in the room. Your personal brand is how you set their expectations about you, and steer their perception of you and your work, to move your career in a direction you desire. The co-presenters represent both early and late career professionals and will discuss successful strategies for managing your brand when all others see is your disability, as well as discussing the differences and similarities experienced by persons entering the workforce with disabilities vs those who acquire disability mid career.",
               },
             ],
           },
         ],
       },
       {
-        year: "Accessibility Camp Bay Area",
+        year: "2024",
         quarters: [
           {
-            quarter: "Design System Accessibility",
+            quarter: "Bay Area Disability Connect",
             classes: [
               {
-                catalog: "Date",
-                name: "May 31, 2024",
+                catalog: "Role",
+                name: "Panel Moderator",
+              },
+              {
+                catalog: "Topic",
+                name: "Disability In The Workplace",
+              },
+            ],
+          },
+          {
+            quarter: "Accessibility Camp Bay Area",
+            classes: [
+              {
+                catalog: "Topic",
+                name: "Design System Accessibility",
               },
             ],
           },
         ],
       },
       {
-        year: "Intuit India Accessibility Summit",
+        year: "2022",
         quarters: [
           {
-            quarter: "Master of Ceremonies",
+            quarter: "Intuit India Accessibility Summit",
             classes: [
               {
-                catalog: "Date",
-                name: "November 9, 2022",
+                catalog: "Role",
+                name: "Master of Ceremonies",
               },
             ],
           },
