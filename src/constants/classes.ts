@@ -689,7 +689,7 @@ export const presentations: School[] = [
   },
   {
     color: blue[900],
-    degree: "External Company Presentations",
+    degree: "Other Public Conference Presentations",
     subtitle: "",
     years: [
       {
@@ -699,8 +699,11 @@ export const presentations: School[] = [
             quarter: "Disability-in-Tech",
             classes: [
               {
-                catalog:
-                  "Building your brand - Managing how others see you, when disability clouds their view",
+                catalog: "Title",
+                name: "Building your brand - Managing how others see you, when disability clouds their view",
+              },
+              {
+                catalog: "Description",
                 name: "Success in the workforce depends on others recognizing the value you bring to the organization and how they support you when you are not in the room. Your personal brand is how you set their expectations about you, and steer their perception of you and your work, to move your career in a direction you desire. The co-presenters represent both early and late career professionals and will discuss successful strategies for managing your brand when all others see is your disability, as well as discussing the differences and similarities experienced by persons entering the workforce with disabilities vs those who acquire disability mid career.",
               },
             ],
@@ -714,7 +717,11 @@ export const presentations: School[] = [
             quarter: "Bay Area Disability Connect",
             classes: [
               {
-                catalog: "Panel Moderator",
+                catalog: "Role",
+                name: "Panel Moderator",
+              },
+              {
+                catalog: "Topic",
                 name: "Disability In The Workplace",
               },
             ],
@@ -723,8 +730,8 @@ export const presentations: School[] = [
             quarter: "Accessibility Camp Bay Area",
             classes: [
               {
-                catalog: "Design System Accessibility",
-                name: "Interactive version of the CSUN 2022 Presentation",
+                catalog: "Topic",
+                name: "Design System Accessibility",
               },
             ],
           },
@@ -737,8 +744,8 @@ export const presentations: School[] = [
             quarter: "Intuit India Accessibility Summit",
             classes: [
               {
-                catalog: "Master of Ceremonies",
-                name: "Held at the Intuit India campus.",
+                catalog: "Role",
+                name: "Master of Ceremonies",
               },
             ],
           },
