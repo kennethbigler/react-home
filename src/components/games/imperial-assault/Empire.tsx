@@ -15,7 +15,11 @@ const Empire = () => {
         Empire
       </Typography>
       <Typography>XP</Typography>
-      <ButtonGroup aria-label="Empire experience level" fullWidth sx={{marginBottom: 2}}>
+      <ButtonGroup
+        aria-label="Empire experience level"
+        fullWidth
+        sx={{ marginBottom: 2 }}
+      >
         {xpOptions.map((n) => (
           <Button
             key={n}
