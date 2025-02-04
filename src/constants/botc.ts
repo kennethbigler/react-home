@@ -8,6 +8,7 @@ export interface BotCScript {
   travelers: BotCRole[];
 }
 
+// latest characters found here: https://wiki.bloodontheclocktower.com/Changelog
 interface BotCRoleRef {
   [key: string]: BotCRole;
 }
@@ -133,6 +134,8 @@ const minions: BotCRoleRef = {
   vizier: { name: "Vizier", icon: "👑", alignment: "error" },
   widow: { name: "Widow", icon: "🕷️", alignment: "error" },
   witch: { name: "Witch", icon: "🧙‍♀️", alignment: "error" },
+  wizard: { name: "Wizard", icon: "🧙‍♂️", alignment: "error" },
+  xaan: { name: "Xaan", icon: "♾️", alignment: "error" },
 };
 
 const demons: BotCRoleRef = {
@@ -167,6 +170,7 @@ const travelers: BotCRoleRef = {
   butcher: { name: "Butcher", icon: "🔪", alignment: "warning" },
   deviant: { name: "Deviant", icon: "📿", alignment: "warning" },
   gangster: { name: "Gangster", icon: "🕵", alignment: "warning" },
+  gnome: { name: "Gnome", icon: "🧙", alignment: "warning" },
   gunslinger: { name: "Gunslinger", icon: "🔫", alignment: "warning" },
   harlot: { name: "Harlot", icon: "💃🏼", alignment: "warning" },
   judge: { name: "Judge", icon: "👨‍⚖️", alignment: "warning" },
