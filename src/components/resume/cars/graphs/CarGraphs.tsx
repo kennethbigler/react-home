@@ -20,22 +20,18 @@ const CarGraphs = ({ data, hideFamily, hideKen }: CarGraphsProps) => {
   return (
     <ExpandableCard title="Car Graphs">
       <Grid container spacing={2}>
-        {data.length > 0 && (
-          <>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <CarSankeyGraph
-                hideKen={hideKen}
-                hideFamily={hideFamily}
-                color={color}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <CarChart data={data} color={color} />
-            </Grid>
-          </>
-        )}
-        <CurrentCarStats data={data} color={color} />
-        <CurrentCarStats data={data} color={color} isBike />
+        <Grid size={{ xs: 12, md: 6 }}>
+          <CarSankeyGraph
+            hideKen={hideKen}
+            hideFamily={hideFamily}
+            color={color}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <CarChart data={data} color={color} />
+        </Grid>
+        <CurrentCarStats color={color} />
+        <CurrentCarStats color={color} isBike />
       </Grid>
     </ExpandableCard>
   );

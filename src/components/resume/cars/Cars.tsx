@@ -2,12 +2,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import TimelineCard from "../../common/timeline-card";
 import dateObj from "../../../apis/DateHelper";
-import cars, {
-  pastKensCars,
-  currentKensCars,
-  pastFamilyCars,
-  currentFamilyCars,
-} from "../../../constants/cars";
+import { cars, hideFamilyCars, hideKenCars } from "../../../constants/cars";
 import CarChartControls from "./CarChartControls";
 import CarGraphs from "./graphs/CarGraphs";
 import CarDisplay from "./CarDisplay";
@@ -16,8 +11,8 @@ const Cars = () => {
   const [hideFamily, setHideFamily] = React.useState(false);
   const [hideKen, setHideKen] = React.useState(false);
 
-  const handleClick = (key: string) => () => {
-    if (key === "ken") {
+  const handleClick = (isKen: boolean) => () => {
+    if (isKen) {
       if (!hideKen && hideFamily) {
         setHideFamily(false);
       }
@@ -32,9 +27,9 @@ const Cars = () => {
 
   let data = cars;
   if (hideFamily) {
-    data = [...pastKensCars, ...currentKensCars];
+    data = hideFamilyCars;
   } else if (hideKen) {
-    data = [...pastFamilyCars, ...currentFamilyCars];
+    data = hideKenCars;
   }
 
   return (

@@ -5,20 +5,20 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 interface CarChartControlsProps {
   hideFamily: boolean;
   hideKen: boolean;
-  onClick: (key: string) => () => void;
+  onClick: (isKen: boolean) => () => void;
 }
 
 const CarChartControls = React.memo(
   ({ onClick, hideFamily, hideKen }: CarChartControlsProps) => (
-    <ButtonGroup color="secondary" sx={{ marginTop: 3 }}>
+    <ButtonGroup sx={{ marginTop: 3 }}>
       <Button
-        onClick={onClick("family")}
+        onClick={onClick(false)}
         variant={hideFamily ? "contained" : "outlined"}
       >
         Hide Family Cars
       </Button>
       <Button
-        onClick={onClick("ken")}
+        onClick={onClick(true)}
         variant={hideKen ? "contained" : "outlined"}
       >
         Hide Ken&apos;s Cars
