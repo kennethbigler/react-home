@@ -43,6 +43,8 @@ export interface CarEntry extends DataEntry {
 
 const camilla = {
   color: yellow[500],
+  start: dateObj("2019-01"),
+  end: dateObj(),
   car: "Corvette",
   short: "Vette",
   char: "C",
@@ -52,7 +54,7 @@ const camilla = {
 
   owned: "2019 - Present",
   story:
-    "To replace my Mustang I purchased a 2018 Chevrolet Corvette Z06 3LZ with the Z07 Track Package used from the Ron Fellows Performance Driving School. My parents purchased my car to keep it in the family.",
+    "To replace my Mustang I purchased a 2018 Chevrolet Corvette Z06 3LZ with the Z07 Track Package used from the Ron Fellows Performance Driving School. My parents purchased my car in October 2021 to keep it in the family.",
   src: corvette18,
   transmission: "Manual",
 
@@ -65,6 +67,8 @@ const camilla = {
 
 const cheyenne = {
   color: grey[50],
+  start: dateObj("2023-08"),
+  end: dateObj(),
   car: "Cayenne",
   short: "Cyne",
   char: "C",
@@ -74,7 +78,7 @@ const cheyenne = {
 
   owned: "2023 - Present",
   story:
-    "I bought a plug-in 2019 Porsche Cayenne E-Hybrid as a bit of an upgrade to my old Bronco. My dad and I traded cars so I could try all electric and he could try a plug-in hybrid.",
+    "I bought a plug-in 2019 Porsche Cayenne E-Hybrid as a bit of an upgrade to my old Bronco. My dad and I traded cars in January 2025 so I could try all electric and he could try a plug-in hybrid.",
   src: porsche19,
   transmission: "Automatic",
 
@@ -87,6 +91,8 @@ const cheyenne = {
 
 const tesla = {
   color: grey[50],
+  start: dateObj("2016-03"),
+  end: dateObj(),
   car: "Model X",
   short: "ModlX",
   char: "X",
@@ -95,7 +101,7 @@ const tesla = {
 
   owned: "2016 - Present",
   story:
-    "My Father got a 2016 Tesla Model X 90D while I was working at Tesla. My dad and I traded cars so I could try all electric and he could try a plug-in hybrid.",
+    "My Father got a 2016 Tesla Model X 90D while I was working at Tesla. My dad and I traded cars in January 2025 so I could try all electric and he could try a plug-in hybrid.",
   src: tesla16,
   transmission: "Direct",
 
@@ -108,7 +114,7 @@ const tesla = {
 
 // --------------------------------------------------     Cars     -------------------------------------------------- //
 
-const pastFamilyCars: CarEntry[] = [
+const pastFamilyCarsNoRepeats: CarEntry[] = [
   {
     color: grey[50],
     start: dateObj("2008-03"),
@@ -195,7 +201,6 @@ const pastFamilyCars: CarEntry[] = [
     weight: 3705,
     zTo60: 4.5,
   },
-  { ...tesla, start: dateObj("2016-03"), end: dateObj("2025-01") },
 ];
 
 const currentFamilyCars: CarEntry[] = [
@@ -241,11 +246,11 @@ const currentFamilyCars: CarEntry[] = [
     weight: 4967,
     zTo60: 4.3,
   },
-  { ...camilla, start: dateObj("2021-10"), end: dateObj() },
-  { ...cheyenne, start: dateObj("2025-01"), end: dateObj() },
+  camilla,
+  cheyenne,
 ];
 
-const pastKensCars: CarEntry[] = [
+const pastKensCarsNoRepeats: CarEntry[] = [
   {
     color: grey[800],
     start: dateObj("2008-03"),
@@ -336,7 +341,6 @@ const pastKensCars: CarEntry[] = [
     weight: 3558,
     zTo60: 5.1,
   },
-  { ...camilla, start: dateObj("2019-01"), end: dateObj("2021-10") },
   {
     color: teal[100],
     start: dateObj("2021-10"),
@@ -360,11 +364,10 @@ const pastKensCars: CarEntry[] = [
     weight: 4499,
     zTo60: 7.4,
   },
-  { ...cheyenne, start: dateObj("2023-08"), end: dateObj("2025-01") },
 ];
 
 const currentKensCars: CarEntry[] = [
-  { ...tesla, start: dateObj("2025-01"), end: dateObj() },
+  tesla,
   {
     color: grey[900],
     start: dateObj("2022-04"),
@@ -387,14 +390,20 @@ const currentKensCars: CarEntry[] = [
   },
 ];
 
-const cars: CarEntry[] = [
-  ...pastKensCars,
+export const cars: CarEntry[] = [
+  ...pastKensCarsNoRepeats,
   ...currentKensCars,
-  ...pastFamilyCars,
+  ...pastFamilyCarsNoRepeats,
   ...currentFamilyCars,
 ];
 
-export default cars;
+const pastKensCars = [...pastKensCarsNoRepeats, camilla, cheyenne];
+const pastFamilyCars = [...pastFamilyCarsNoRepeats, tesla];
+
+export const hideFamilyCars = [...pastKensCars, ...currentKensCars];
+export const hideKenCars = [...pastFamilyCars, ...currentFamilyCars];
+
+export { pastKensCars, currentKensCars, pastFamilyCars, currentFamilyCars };
 
 // --------------------------------------------------     Normalized Graphs     -------------------------------------------------- //
 
@@ -413,25 +422,9 @@ const smoothData = (cur: number, high: number, low: number) =>
   Math.floor(100 * ((cur - low) / (high - low)));
 
 export const processData = (allData: CarEntry[]): GraphData => {
-  let hasCamilla = false;
-  let hasCheyenne = false;
-  let hasTesla = false;
-  const data = allData
-    .filter((car) => {
-      let isUnique = true;
-      if (car.title === camilla.title) {
-        isUnique = !hasCamilla;
-        hasCamilla = true;
-      } else if (car.title === cheyenne.title) {
-        isUnique = !hasCheyenne;
-        hasCheyenne = true;
-      } else if (car.title === tesla.title) {
-        isUnique = !hasTesla;
-        hasTesla = true;
-      }
-      return isUnique;
-    })
-    .sort((a, b) => a.horsepower / a.weight - b.horsepower / b.weight);
+  const data = allData.sort(
+    (a, b) => a.horsepower / a.weight - b.horsepower / b.weight,
+  );
 
   const ret: GraphData = {
     xAxis: [],
@@ -527,7 +520,6 @@ const getP2W = (c: CarEntry) =>
   parseFloat((c.horsepower / c.weight).toFixed(3));
 
 export const processCurrentCarStats = (
-  data: CarEntry[],
   key: "zTo60" | "horsepower" | "MPG" | "torque" | "weight" | "powerToWeight",
   isBike?: boolean,
 ): CurrentCarStatsData => {
@@ -538,7 +530,7 @@ export const processCurrentCarStats = (
       : currentKensCars[idx][key];
 
   let max = currentValue;
-  data.forEach((c) => {
+  cars.forEach((c) => {
     const val = key === "powerToWeight" ? getP2W(c) : c[key];
     if (val > max) {
       max = val;
@@ -551,8 +543,6 @@ export const processCurrentCarStats = (
     name: currentKensCars[idx].car,
   };
 };
-
-export { pastKensCars, currentKensCars, pastFamilyCars, currentFamilyCars };
 
 // --------------------------------------------------     Sankey     -------------------------------------------------- //
 

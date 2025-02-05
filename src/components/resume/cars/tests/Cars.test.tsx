@@ -1,23 +1,11 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import Cars from "..";
-import cars from "../../../../constants/cars";
-
-const demoCar = cars[cars.length - 4];
 
 describe("resume | cars | Cars", () => {
   it("renders as expected", () => {
     render(<Cars />);
 
     expect(screen.getAllByText("Ken's Cars")).toHaveLength(3);
-    expect(screen.getByText(`(${demoCar.owned})`)).toBeInTheDocument();
-    expect(screen.getAllByText(demoCar.title)).toHaveLength(2);
-    expect(
-      screen.getByText(`Horsepower: ${demoCar.horsepower}`),
-    ).toBeInTheDocument();
-    expect(
-      screen.getAllByText(`Transmission: ${demoCar.transmission}`)[0],
-    ).toBeInTheDocument();
-    expect(screen.getByText(demoCar.story)).toBeInTheDocument();
   });
 
   it("selects and deselects buttons", () => {

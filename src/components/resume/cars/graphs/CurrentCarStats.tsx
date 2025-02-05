@@ -1,21 +1,20 @@
 import * as React from "react";
-import { CarEntry, processCurrentCarStats } from "../../../../constants/cars";
+import { processCurrentCarStats } from "../../../../constants/cars";
 import CurrentCarStatsGraph from "./CurrentCarStatsGraph";
 
 export interface CurrentCarStatsProps {
-  data: CarEntry[];
   color: "black" | "white";
   isBike?: boolean;
 }
 
 const CurrentCarStats = React.memo(
-  ({ data, color, isBike }: CurrentCarStatsProps) => {
-    const zTo60 = processCurrentCarStats(data, "zTo60", isBike);
-    const horsepower = processCurrentCarStats(data, "horsepower", isBike);
-    const mpg = processCurrentCarStats(data, "MPG", isBike);
-    const torque = processCurrentCarStats(data, "torque", isBike);
-    const weight = processCurrentCarStats(data, "weight", isBike);
-    const powerToWeight = processCurrentCarStats(data, "powerToWeight", isBike);
+  ({ color, isBike }: CurrentCarStatsProps) => {
+    const zTo60 = processCurrentCarStats("zTo60", isBike);
+    const horsepower = processCurrentCarStats("horsepower", isBike);
+    const mpg = processCurrentCarStats("MPG", isBike);
+    const torque = processCurrentCarStats("torque", isBike);
+    const weight = processCurrentCarStats("weight", isBike);
+    const powerToWeight = processCurrentCarStats("powerToWeight", isBike);
 
     return (
       <>
