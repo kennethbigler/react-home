@@ -50,6 +50,9 @@ const camilla = {
   title: "Chevrolet Corvette Z06 (2018)",
   inverted: true,
 
+  owned: "2019 - Present",
+  story:
+    "To replace my Mustang I purchased a 2018 Chevrolet Corvette Z06 3LZ with the Z07 Track Package used from the Ron Fellows Performance Driving School. My parents purchased my car to keep it in the family.",
   src: corvette18,
   transmission: "Manual",
 
@@ -69,6 +72,9 @@ const cheyenne = {
   title: "Porsche Cayenne E-Hybrid (2019)",
   inverted: true,
 
+  owned: "2023 - Present",
+  story:
+    "I bought a plug-in 2019 Porsche Cayenne E-Hybrid as a bit of an upgrade to my old Bronco. My dad and I traded cars so I could try all electric and he could try a plug-in hybrid.",
   src: porsche19,
   transmission: "Automatic",
 
@@ -87,6 +93,9 @@ const tesla = {
   title: "Tesla Model X 90D (2016)",
   inverted: true,
 
+  owned: "2016 - Present",
+  story:
+    "My Father got a 2016 Tesla Model X 90D while I was working at Tesla. My dad and I traded cars so I could try all electric and he could try a plug-in hybrid.",
   src: tesla16,
   transmission: "Direct",
 
@@ -186,13 +195,7 @@ const pastFamilyCars: CarEntry[] = [
     weight: 3705,
     zTo60: 4.5,
   },
-  {
-    ...tesla,
-    start: dateObj("2016-03"),
-    end: dateObj("2025-01"),
-    owned: "2016 - 2025",
-    story: "My Father's 2016 Tesla Model X 90D.",
-  },
+  { ...tesla, start: dateObj("2016-03"), end: dateObj("2025-01") },
 ];
 
 const currentFamilyCars: CarEntry[] = [
@@ -238,22 +241,8 @@ const currentFamilyCars: CarEntry[] = [
     weight: 4967,
     zTo60: 4.3,
   },
-  {
-    ...camilla,
-    start: dateObj("2021-10"),
-    end: dateObj(),
-    owned: "2021 - Present",
-    story:
-      "My parents purchased my 2018 Chevrolet Corvette Z06 3LZ with the Z07 Track Package to keep it in the family.",
-  },
-  {
-    ...cheyenne,
-    start: dateObj("2025-01"),
-    end: dateObj(),
-    owned: "2025 - Present",
-    story:
-      "My dad and I traded cars so I could try all electric and he could try a plug-in hybrid.",
-  },
+  { ...camilla, start: dateObj("2021-10"), end: dateObj() },
+  { ...cheyenne, start: dateObj("2025-01"), end: dateObj() },
 ];
 
 const pastKensCars: CarEntry[] = [
@@ -347,14 +336,7 @@ const pastKensCars: CarEntry[] = [
     weight: 3558,
     zTo60: 5.1,
   },
-  {
-    ...camilla,
-    start: dateObj("2019-01"),
-    end: dateObj("2021-10"),
-    owned: "2019 - 2021",
-    story:
-      "To replace my Mustang I purchased a 2018 Chevrolet Corvette Z06 3LZ with the Z07 Track Package used from the Ron Fellows Performance Driving School. I sold it to my parents.",
-  },
+  { ...camilla, start: dateObj("2019-01"), end: dateObj("2021-10") },
   {
     color: teal[100],
     start: dateObj("2021-10"),
@@ -378,25 +360,11 @@ const pastKensCars: CarEntry[] = [
     weight: 4499,
     zTo60: 7.4,
   },
-  {
-    ...cheyenne,
-    start: dateObj("2023-08"),
-    end: dateObj("2025-01"),
-    owned: "2023 - 2025",
-    story:
-      "I bought a plug-in 2019 Porsche Cayenne E-Hybrid as a bit of an upgrade to my old Bronco.",
-  },
+  { ...cheyenne, start: dateObj("2023-08"), end: dateObj("2025-01") },
 ];
 
 const currentKensCars: CarEntry[] = [
-  {
-    ...tesla,
-    start: dateObj("2025-01"),
-    end: dateObj(),
-    owned: "2025 - Present",
-    story:
-      "My dad and I traded cars so I could try all electric and he could try a plug-in hybrid.",
-  },
+  { ...tesla, start: dateObj("2025-01"), end: dateObj() },
   {
     color: grey[900],
     start: dateObj("2022-04"),

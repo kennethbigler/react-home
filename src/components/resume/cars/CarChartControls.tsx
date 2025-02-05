@@ -10,7 +10,7 @@ interface CarChartControlsProps {
 
 const CarChartControls = React.memo(
   ({ onClick, hideFamily, hideKen }: CarChartControlsProps) => (
-    <ButtonGroup color="secondary" sx={{ marginTop: 3 }}>
+    <ButtonGroup sx={{ marginTop: 3 }}>
       <Button
         onClick={onClick("family")}
         variant={hideFamily ? "contained" : "outlined"}
