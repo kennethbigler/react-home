@@ -8,14 +8,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Switch from "@mui/material/Switch";
 import themeAtom, { darkTheme, lightTheme } from "../../../jotai/theme-atom";
 
-const flexLeftStyles: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-};
-const flexRightStyles: React.CSSProperties = {
-  display: "flex",
-  marginRight: 15,
-};
 const spanTopStyles: React.CSSProperties = { left: 0, right: 0, top: 0 };
 const label = { inputProps: { "aria-label": "Theme Toggle Switch" } };
 
@@ -44,7 +36,7 @@ const TopBar = ({ toggleOpen, textColor }: TopBarProps) => {
     <AppBar style={spanTopStyles} className={`header-${theme.mode}-theme`}>
       <Toolbar disableGutters>
         <div className="flex-container">
-          <div style={flexLeftStyles}>
+          <div style={{ alignItems: "center" }}>
             <IconButton
               aria-label="Menu"
               onClick={toggleOpen}
@@ -53,13 +45,12 @@ const TopBar = ({ toggleOpen, textColor }: TopBarProps) => {
               size="large"
             >
               <MenuIcon />
-              &nbsp;
               <Typography variant="h6" color={textColor}>
-                Menu
+                &nbsp;Menu
               </Typography>
             </IconButton>
           </div>
-          <div style={flexRightStyles}>
+          <div style={{ marginRight: 15 }}>
             <Switch
               checked={isLight}
               value={isLight}

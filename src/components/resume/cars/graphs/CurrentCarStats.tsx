@@ -1,6 +1,6 @@
 import * as React from "react";
 import { processCurrentCarStats } from "../../../../constants/cars";
-import CurrentCarStatsGraph from "./CurrentCarStatsGraph";
+import CarSpeedoGraph from "./CarSpeedoGraph";
 
 export interface CurrentCarStatsProps {
   color: "black" | "white";
@@ -18,7 +18,7 @@ const CurrentCarStats = React.memo(
 
     return (
       <>
-        <CurrentCarStatsGraph
+        <CarSpeedoGraph
           val={zTo60.val}
           endGreenVal={4}
           startRedVal={Math.min(10, zTo60.maxVal)}
@@ -28,7 +28,7 @@ const CurrentCarStats = React.memo(
           name={zTo60.name}
           color={color}
         />
-        <CurrentCarStatsGraph
+        <CarSpeedoGraph
           val={horsepower.val}
           endGreenVal={200}
           startRedVal={Math.min(500, horsepower.maxVal)}
@@ -38,7 +38,7 @@ const CurrentCarStats = React.memo(
           name={horsepower.name}
           color={color}
         />
-        <CurrentCarStatsGraph
+        <CarSpeedoGraph
           isBike={isBike}
           val={weight.val}
           endGreenVal={3000}
@@ -49,7 +49,7 @@ const CurrentCarStats = React.memo(
           name={weight.name}
           color={color}
         />
-        <CurrentCarStatsGraph
+        <CarSpeedoGraph
           val={powerToWeight.val}
           endGreenVal={0.05}
           startRedVal={Math.min(0.15, powerToWeight.maxVal)}
@@ -59,7 +59,7 @@ const CurrentCarStats = React.memo(
           name={powerToWeight.name}
           color={color}
         />
-        <CurrentCarStatsGraph
+        <CarSpeedoGraph
           val={torque.val}
           endGreenVal={200}
           startRedVal={Math.min(500, torque.maxVal)}
@@ -69,7 +69,7 @@ const CurrentCarStats = React.memo(
           name={torque.name}
           color={color}
         />
-        <CurrentCarStatsGraph
+        <CarSpeedoGraph
           val={mpg.val}
           endGreenVal={30}
           startRedVal={Math.min(100, mpg.maxVal)}
