@@ -20,7 +20,7 @@ export type DateScale =
   | "months"
   | "days"
   | undefined;
-export type FormatOutput = "YYYY" | "MMMM Y" | "'YY";
+export type FormatOutput = "YYYY" | "MMMM" | "MMMM Y" | "'YY";
 export interface DateObj {
   year: number;
   month: number;
@@ -71,6 +71,8 @@ const dateHelper = (date?: DateObj | string): DateObj => {
     switch (output) {
       case "YYYY":
         return year.toString();
+      case "MMMM":
+        return months[month];
       case "MMMM Y":
         return `${months[month]} ${year}`;
       case "'YY":

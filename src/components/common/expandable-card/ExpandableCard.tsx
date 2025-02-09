@@ -47,8 +47,10 @@ const ExpandableCard = ({
         <CardHeader
           subheader={subtitle}
           title={title}
-          titleTypographyProps={{ variant: "h5", component: "h2" }}
-          subheaderTypographyProps={{ variant: "body1", style: { color } }}
+          slotProps={{
+            title: { variant: "h5", component: "h2" },
+            subheader: { variant: "body1", style: { color } },
+          }}
         />
       </CardActionArea>
       <Collapse in={expanded} timeout="auto" unmountOnExit>

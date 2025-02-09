@@ -364,14 +364,10 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     weight: 4499,
     zTo60: 7.4,
   },
-];
-
-const currentKensCars: CarEntry[] = [
-  tesla,
   {
     color: grey[900],
     start: dateObj("2022-04"),
-    end: dateObj(),
+    end: dateObj("2025-02"),
     car: "Grom",
     short: "Grom",
     char: "G",
@@ -389,6 +385,8 @@ const currentKensCars: CarEntry[] = [
     zTo60: 13,
   },
 ];
+
+const currentKensCars: CarEntry[] = [tesla];
 
 export const cars: CarEntry[] = [
   ...pastKensCarsNoRepeats,
@@ -521,9 +519,8 @@ const getP2W = (c: CarEntry) =>
 
 export const processCurrentCarStats = (
   key: "zTo60" | "horsepower" | "MPG" | "torque" | "weight" | "powerToWeight",
-  isBike?: boolean,
 ): CurrentCarStatsData => {
-  const idx = isBike ? 1 : 0;
+  const idx = 0;
   const currentValue =
     key === "powerToWeight"
       ? getP2W(currentKensCars[idx])

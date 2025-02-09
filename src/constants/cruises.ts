@@ -101,7 +101,7 @@ export const cruises: Cruise[] = [
   {
     departure: dateObj("2015-08"),
     nights: 7,
-    name: "Dover-Barcelona",
+    name: "Dover to Barcelona",
     ship: ships[0],
     line: lines[0],
     concierge: true,
@@ -117,7 +117,7 @@ export const cruises: Cruise[] = [
   {
     departure: dateObj("2016-06"),
     nights: 12,
-    name: "Iceland/Norway",
+    name: "Iceland & Norway",
     ship: ships[0],
     line: lines[0],
     concierge: false,
@@ -133,7 +133,7 @@ export const cruises: Cruise[] = [
   {
     departure: dateObj("2017-05"),
     nights: 15,
-    name: "East Bound Transatlantic",
+    name: "Eastbound Transatlantic",
     ship: ships[0],
     line: lines[0],
     concierge: false,
@@ -149,7 +149,7 @@ export const cruises: Cruise[] = [
   {
     departure: dateObj("2018-05"),
     nights: 13,
-    name: "East Bound Transatlantic",
+    name: "Eastbound Transatlantic",
     ship: ships[0],
     line: lines[0],
     concierge: false,
@@ -173,7 +173,7 @@ export const cruises: Cruise[] = [
   {
     departure: dateObj("2019-09"),
     nights: 10,
-    name: "West Bound Transatlantic",
+    name: "Westbound Transatlantic",
     ship: ships[0],
     line: lines[0],
     concierge: true,
@@ -197,7 +197,7 @@ export const cruises: Cruise[] = [
   {
     departure: dateObj("2022-04"),
     nights: 10,
-    name: "Hawaii: Vancouver-Honolulu",
+    name: "Vancouver to Honolulu",
     ship: ships[1],
     line: lines[0],
     concierge: true,

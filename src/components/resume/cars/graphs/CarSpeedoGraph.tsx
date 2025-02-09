@@ -6,8 +6,7 @@ import Grid from "@mui/material/Grid2";
 import { green, grey, red } from "@mui/material/colors";
 import { CurrentCarStatsData } from "../../../../constants/cars";
 
-export interface CurrentCarStatsGraphProps extends CurrentCarStatsData {
-  isBike?: boolean;
+export interface CarSpeedoGraphProps extends CurrentCarStatsData {
   label: string;
   title: string;
   color: "black" | "white";
@@ -15,7 +14,7 @@ export interface CurrentCarStatsGraphProps extends CurrentCarStatsData {
   startRedVal: number;
 }
 
-const CurrentCarStatsGraph = React.memo(
+const CarSpeedoGraph = React.memo(
   ({
     color,
     maxVal,
@@ -25,20 +24,14 @@ const CurrentCarStatsGraph = React.memo(
     label,
     title,
     name,
-    isBike,
-  }: CurrentCarStatsGraphProps) => {
-    const min = title === "Weight" && !isBike ? 2500 : 0;
+  }: CarSpeedoGraphProps) => {
+    const min = title === "Weight" ? 2500 : 0;
     const greenEnd = Math.max(min, endGreenVal);
     const options = {
       credits: { enabled: false },
-      pane: { startAngle: -90, endAngle: 90, background: null },
+      pane: { startAngle: -135, endAngle: 135, background: null },
       title: { text: `${name} ${title}`, style: { color } },
-      chart: {
-        type: "gauge",
-        backgroundColor: null,
-        height: 220,
-        marginBottom: -60,
-      },
+      chart: { type: "gauge", backgroundColor: null },
       series: [
         {
           name,
@@ -88,6 +81,6 @@ const CurrentCarStatsGraph = React.memo(
   },
 );
 
-CurrentCarStatsGraph.displayName = "CurrentCarStatsGraph";
+CarSpeedoGraph.displayName = "CarSpeedoGraph";
 
-export default CurrentCarStatsGraph;
+export default CarSpeedoGraph;
