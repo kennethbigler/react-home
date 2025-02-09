@@ -7,7 +7,6 @@ import { green, grey, red } from "@mui/material/colors";
 import { CurrentCarStatsData } from "../../../../constants/cars";
 
 export interface CarSpeedoGraphProps extends CurrentCarStatsData {
-  isBike?: boolean;
   label: string;
   title: string;
   color: "black" | "white";
@@ -25,9 +24,8 @@ const CarSpeedoGraph = React.memo(
     label,
     title,
     name,
-    isBike,
   }: CarSpeedoGraphProps) => {
-    const min = title === "Weight" && !isBike ? 2500 : 0;
+    const min = title === "Weight" ? 2500 : 0;
     const greenEnd = Math.max(min, endGreenVal);
     const options = {
       credits: { enabled: false },
