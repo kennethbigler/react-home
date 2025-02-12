@@ -125,7 +125,7 @@ const TierLists = () => (
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
+            <TableRow selected>
               <TableCell colSpan={3} align="center">
                 S-Tier
               </TableCell>
@@ -155,7 +155,7 @@ const TierLists = () => (
               <TableCell></TableCell>
               <TableCell>S-</TableCell>
             </TableRow>
-            <TableRow>
+            <TableRow selected>
               <TableCell colSpan={3} align="center">
                 A-Tier
               </TableCell>
@@ -167,22 +167,22 @@ const TierLists = () => (
             </TableRow>
             <TableRow>
               <TableCell>Drokkatta</TableCell>
-              <TableCell>Nemeses</TableCell>
+              <TableCell></TableCell>
               <TableCell>A+</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Varena Talos</TableCell>
-              <TableCell>Power of the Dark Side</TableCell>
+              <TableCell></TableCell>
               <TableCell>A+</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Gaarkhan</TableCell>
-              <TableCell></TableCell>
+              <TableCell>Nemeses</TableCell>
               <TableCell>A</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Jyn Odan</TableCell>
-              <TableCell></TableCell>
+              <TableCell>Power of the Dark Side</TableCell>
               <TableCell>A</TableCell>
             </TableRow>
             <TableRow>
@@ -215,7 +215,7 @@ const TierLists = () => (
               <TableCell></TableCell>
               <TableCell>A-</TableCell>
             </TableRow>
-            <TableRow>
+            <TableRow selected>
               <TableCell colSpan={3} align="center">
                 B-Tier
               </TableCell>
@@ -240,7 +240,7 @@ const TierLists = () => (
               <TableCell>Precision Training</TableCell>
               <TableCell>B</TableCell>
             </TableRow>
-            <TableRow>
+            <TableRow selected>
               <TableCell colSpan={3} align="center">
                 C-Tier
               </TableCell>
@@ -273,7 +273,7 @@ const TierLists = () => (
           <TableBody>
             {deploymentCards.map((card, i) =>
               card.divider ? (
-                <TableRow key={i}>
+                <TableRow key={i} selected>
                   <TableCell colSpan={5} align="center">
                     {card.name}
                   </TableCell>
