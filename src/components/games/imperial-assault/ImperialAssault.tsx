@@ -5,6 +5,7 @@ import ForcedMissions from "./missions/ForcedMissions";
 import Header from "./header/Header";
 import Rebels from "./Rebels";
 import { Divider } from "@mui/material";
+import TierLists from "./TierLists";
 
 const ImperialAssault = () => (
   <>
@@ -14,10 +15,15 @@ const ImperialAssault = () => (
       <Rebels />
       <Empire />
     </Grid>
+
     <Divider aria-hidden />
 
     <Missions />
     <ForcedMissions />
+
+    <Divider aria-hidden />
+
+    <TierLists />
   </>
 );
 
