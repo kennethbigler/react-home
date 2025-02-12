@@ -162,12 +162,12 @@ const TierLists = () => (
             </TableRow>
             <TableRow>
               <TableCell>Mak Eshka&apos;rey</TableCell>
-              <TableCell>Tech Superiority</TableCell>
+              <TableCell>Reactive Defenses</TableCell>
               <TableCell>A+</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Drokkatta</TableCell>
-              <TableCell></TableCell>
+              <TableCell>Tech Superiority</TableCell>
               <TableCell>A+</TableCell>
             </TableRow>
             <TableRow>
@@ -207,12 +207,12 @@ const TierLists = () => (
             </TableRow>
             <TableRow>
               <TableCell>Jarrod Kelvin</TableCell>
-              <TableCell></TableCell>
+              <TableCell>Imperial Black Ops</TableCell>
               <TableCell>A-</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Davith Elso</TableCell>
-              <TableCell></TableCell>
+              <TableCell>Precision Training</TableCell>
               <TableCell>A-</TableCell>
             </TableRow>
             <TableRow selected>
@@ -222,23 +222,8 @@ const TierLists = () => (
             </TableRow>
             <TableRow>
               <TableCell>Loku Kanoloa</TableCell>
-              <TableCell>Imperial Black Ops</TableCell>
-              <TableCell>B+</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell></TableCell>
               <TableCell>Armored Onslaught</TableCell>
-              <TableCell>B</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell>Reactive Defenses</TableCell>
-              <TableCell>B</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell>Precision Training</TableCell>
-              <TableCell>B</TableCell>
+              <TableCell>B+</TableCell>
             </TableRow>
             <TableRow selected>
               <TableCell colSpan={3} align="center">
