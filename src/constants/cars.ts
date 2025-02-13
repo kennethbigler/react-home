@@ -373,7 +373,7 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     char: "G",
     title: "Honda Grom (2022)",
 
-    owned: "2022 - Present",
+    owned: "2022 - 2025",
     story: "I got my first motorcycle, a 2022 Honda Grom.",
     src: grom22,
     transmission: "Sequential",

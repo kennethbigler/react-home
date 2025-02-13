@@ -10,112 +10,56 @@ interface DeploymentCards {
   name: string;
   reg?: string;
   elite?: string;
-  cost?: string;
-  bh?: boolean;
   divider?: boolean;
 }
 
 const deploymentCards: DeploymentCards[] = [
   { name: "S-Tier", divider: true },
-  { name: "Nexu", reg: "S+", elite: "A", cost: "⬜️ 4 🟥 6", bh: true },
-  { name: "Hired Gun", reg: "S", elite: "A", cost: "⬜️ 4/2 🟥 6/3", bh: true },
+  { name: "Nexu", reg: "S+", elite: "A" },
+  { name: "Hired Gun", reg: "S", elite: "A" },
 
   { name: "A-Tier", divider: true },
-  { name: "Sentry Droid", reg: "C+", elite: "A+", cost: "⬜️ 6/3 🟥 10/5" },
-  { name: "Riot Trooper", reg: "A-", elite: "A+", cost: "⬜️ 5/2 🟥 7/3" },
-  { name: "Jet Trooper", reg: "B+", elite: "A+", cost: "⬜️ 4/2 🟥 7/4" },
-  { name: "Loth-cat", reg: "B+", elite: "A+", cost: "⬜️ 4/2 🟥 6/3", bh: true },
-  { name: "Dewback Rider", reg: "-", elite: "A+", cost: "🟥 5" },
-  { name: "AT-DP", reg: "-", elite: "A+", cost: "🟥 9" },
-  { name: "Death Trooper", reg: "A", elite: "A", cost: "⬜️ 3 🟥 4" },
-  { name: "Stormtrooper", reg: "B", elite: "A", cost: "⬜️ 6/2 🟥 9/3" },
-  {
-    name: "Trandoshan Hunter",
-    reg: "A",
-    elite: "C",
-    cost: "⬜️ 7/3 🟥 10/5",
-    bh: true,
-  },
-  {
-    name: "Jawa Scavenger",
-    reg: "A-",
-    elite: "A-",
-    cost: "⬜️ 2 🟥 3",
-    bh: true,
-  },
-  {
-    name: "Gamorrean Guard",
-    reg: "D-",
-    elite: "A-",
-    cost: "⬜️ 6/3 🟥 8/4",
-    bh: true,
-  },
-  { name: "Heavy Stormtrooper", reg: "C+", elite: "A-", cost: "⬜️ 6/3 🟥 8/4" },
+  { name: "Sentry Droid", reg: "C+", elite: "A+" },
+  { name: "Riot Trooper", reg: "A-", elite: "A+" },
+  { name: "Jet Trooper", reg: "B+", elite: "A+" },
+  { name: "Loth-cat", reg: "B+", elite: "A+" },
+  { name: "Dewback Rider", reg: "-", elite: "A+" },
+  { name: "AT-DP", reg: "-", elite: "A+" },
+  { name: "Death Trooper", reg: "A", elite: "A" },
+  { name: "Stormtrooper", reg: "B", elite: "A" },
+  { name: "Trandoshan Hunter", reg: "A", elite: "C" },
+  { name: "Jawa Scavenger", reg: "A-", elite: "A-" },
+  { name: "Gamorrean Guard", reg: "D-", elite: "A-" },
+  { name: "Heavy Stormtrooper", reg: "C+", elite: "A-" },
 
   { name: "B-Tier", divider: true },
-  { name: "Royal Guard", reg: "B+", elite: "C", cost: "⬜️ 8/4 🟥 12/6" },
-  {
-    name: "Weequay Pirate",
-    reg: "B",
-    elite: "B+",
-    cost: "⬜️ 5/3 🟥 7/4",
-    bh: true,
-  },
-  { name: "ISB Infiltrator", reg: "C+", elite: "B+", cost: "⬜️ 5/3 🟥 7/4" },
-  { name: "Probe Droid", reg: "C+", elite: "B", cost: "⬜️ 3 🟥 5" },
-  {
-    name: "Ugnaught Tinkerer",
-    reg: "C",
-    elite: "B",
-    cost: "⬜️ 3 🟥 5",
-    bh: true,
-  },
-  {
-    name: "HK Assassin Droid",
-    reg: "B",
-    elite: "D",
-    cost: "⬜️ 8/4 🟥 11/6",
-    bh: true,
-  },
-  {
-    name: "Wing Guard",
-    reg: "C+",
-    elite: "B-",
-    cost: "⬜️ 6/2 🟥 9/3",
-    bh: true,
-  },
-  {
-    name: "Clawdite Shapeshifter",
-    reg: "C-",
-    elite: "B-",
-    cost: "⬜️ 4 🟥 6",
-    bh: true,
-  },
-  { name: "SC2-M Repulsor Tank", reg: "-", elite: "B-", cost: "🟥 10" },
-  { name: "E-Web Engineer", reg: "C-", elite: "B-", cost: "⬜️ 6 🟥 8" },
+  { name: "Royal Guard", reg: "B+", elite: "C" },
+  { name: "Weequay Pirate", reg: "B", elite: "B+" },
+  { name: "ISB Infiltrator", reg: "C+", elite: "B+" },
+  { name: "Probe Droid", reg: "C+", elite: "B" },
+  { name: "Ugnaught Tinkerer", reg: "C", elite: "B" },
+  { name: "HK Assassin Droid", reg: "B", elite: "D" },
+  { name: "Wing Guard", reg: "C+", elite: "B-" },
+  { name: "Clawdite Shapeshifter", reg: "C-", elite: "B-" },
+  { name: "SC2-M Repulsor Tank", reg: "-", elite: "B-" },
+  { name: "E-Web Engineer", reg: "C-", elite: "B-" },
 
   { name: "C-Tier", divider: true },
-  {
-    name: "Tusken Raider",
-    reg: "D+",
-    elite: "C",
-    cost: "⬜️ 5/2 🟥 7/3",
-    bh: true,
-  },
-  { name: "Imperial Officer", reg: "C", elite: "D+", cost: "⬜️ 2 🟥 5" },
-  { name: "Bantha Rider", reg: "-", elite: "C-", cost: "🟥 9", bh: true },
-  { name: "Rancor", reg: "-", elite: "C-", cost: "🟥 10", bh: true },
-  { name: "Snowtrooper", reg: "C-", elite: "D", cost: "⬜️ 7/2 🟥 10/3" },
+  { name: "Tusken Raider", reg: "D+", elite: "C" },
+  { name: "Imperial Officer", reg: "C", elite: "D+" },
+  { name: "Bantha Rider", reg: "-", elite: "C-" },
+  { name: "Rancor", reg: "-", elite: "C-" },
+  { name: "Snowtrooper", reg: "C-", elite: "D" },
 
   { name: "D-Tier", divider: true },
-  { name: "Wampa", reg: "D", elite: "D+", cost: "⬜️ 5 🟥 8", bh: true },
-  { name: "AT-ST", reg: "-", elite: "D-", cost: "🟥 14" },
+  { name: "Wampa", reg: "D", elite: "D+" },
+  { name: "AT-ST", reg: "-", elite: "D-" },
 ];
 
 const TierLists = () => (
   <ExpandableCard title="Tier Lists">
     <Grid container spacing={4} size={12}>
-      <Grid size={{ xs: 12, sm: 5 }}>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -244,15 +188,13 @@ const TierLists = () => (
         </Table>
       </Grid>
 
-      <Grid size={{ xs: 12, sm: 7 }}>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Deployment</TableCell>
-              <TableCell aria-label="Regular">⬜️</TableCell>
-              <TableCell aria-label="Elite">🟥</TableCell>
-              <TableCell>Cost</TableCell>
-              <TableCell>🔫</TableCell>
+              <TableCell>Regular</TableCell>
+              <TableCell>Elite</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -268,8 +210,6 @@ const TierLists = () => (
                   <TableCell>{card.name}</TableCell>
                   <TableCell>{card.reg}</TableCell>
                   <TableCell>{card.elite}</TableCell>
-                  <TableCell>{card.cost}</TableCell>
-                  <TableCell>{card.bh && "🔫"}</TableCell>
                 </TableRow>
               ),
             )}
