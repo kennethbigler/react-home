@@ -8,7 +8,7 @@ interface ControlBarProps {
   blindTrade: number;
   first: number;
   initials: string;
-  overBids: [number, number, number, number];
+  overBids: [number, number, number, number, number];
   lastBid: Bids;
   showPenalty: boolean;
   onBidSave: (bids: Bids) => void;

@@ -1,24 +1,22 @@
-import Avatar from "@mui/material/Avatar";
-import Chip from "@mui/material/Chip";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
+import StatsBagsChart from "./StatsBagsChart";
+import { useAtomValue } from "jotai";
+import themeAtom from "../../../../jotai/theme-atom";
 
 interface ShowStatsProps {
   initials: string;
-  overBids: [number, number, number, number];
+  overBids: [number, number, number, number, number];
 }
 
-const ShowStats = ({ initials, overBids }: ShowStatsProps) => (
-  <InfoPopup title="Stats" buttonVariant="outlined" buttonColor="success">
-    <div className="flex-container">
-      {[0, 1, 2, 3].map((i: number) => (
-        <Chip
-          key={i}
-          avatar={<Avatar>{initials[i]}</Avatar>}
-          label={`${overBids[i]}💰`}
-        />
-      ))}
-    </div>
-  </InfoPopup>
-);
+const ShowStats = ({ initials, overBids }: ShowStatsProps) => {
+  const theme = useAtomValue(themeAtom);
+  const color = theme.mode === "light" ? "black" : "white";
+
+  return (
+    <InfoPopup title="Stats" buttonVariant="outlined" buttonColor="success">
+      <StatsBagsChart initials={initials} overBids={overBids} color={color} />
+    </InfoPopup>
+  );
+};
 
 export default ShowStats;
