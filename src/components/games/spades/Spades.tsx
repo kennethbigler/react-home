@@ -40,12 +40,7 @@ const Spades = React.memo(() => {
 
   return (
     <>
-      <Header
-        initials={initials}
-        overBids={overBids}
-        wins1={wins1}
-        wins2={wins2}
-      />
+      <Header initials={initials} wins1={wins1} wins2={wins2} />
       {score1 >= 100 || score2 >= 100 ? (
         <Button
           fullWidth
@@ -61,6 +56,7 @@ const Spades = React.memo(() => {
           blindTrade={blindTrade}
           first={first}
           initials={initials}
+          overBids={overBids}
           lastBid={lastBid}
           showPenalty={data[0]?.score1 !== undefined}
           onBidSave={addBid}

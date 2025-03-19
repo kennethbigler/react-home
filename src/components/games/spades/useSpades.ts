@@ -96,7 +96,7 @@ const useSpades = () => {
       mod2,
     };
     // underbidding tracker algorithm
-    const newOverBids: [number, number, number, number] = [0, 0, 0, 0];
+    const newOverBids: [number, number, number, number] = [...overBids];
     lastBid.forEach((bid, i) => {
       // don't count if 2nd partner was nil
       if (

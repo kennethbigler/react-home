@@ -8,7 +8,7 @@ interface AddPenaltyProps {
 }
 
 const AddPenalty = ({ initials, onPenalty }: AddPenaltyProps) => (
-  <InfoPopup title="Penalty">
+  <InfoPopup title="Penalty" buttonVariant="outlined" buttonColor="error">
     <Grid container spacing={2}>
       <Grid size={6}>
         <Button
