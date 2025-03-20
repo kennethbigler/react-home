@@ -96,7 +96,7 @@ const useSpades = () => {
       mod2,
     };
     // underbidding tracker algorithm
-    const newOverBids: [number, number, number, number] = [0, 0, 0, 0];
+    const newOverBids: [number, number, number, number, number] = [...overBids];
     lastBid.forEach((bid, i) => {
       // don't count if 2nd partner was nil
       if (
@@ -111,6 +111,8 @@ const useSpades = () => {
         i === 0 || i === 2 ? newBags1 || 0 : newBags2 || 0, // if bags is lower, player was saving partner
       );
     });
+    // increment expected bags by 0.25
+    newOverBids[lastBid.length] += 0.25;
     // update state
     setSpades({
       ...spades,
