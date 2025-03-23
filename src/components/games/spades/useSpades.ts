@@ -106,9 +106,13 @@ const useSpades = () => {
         return;
       }
       // add the overbid or bags, whatever is lower
-      newOverBids[i] += Math.min(
-        mades[i] - bid.bid, // if overbid is lower, partner got bags
-        i === 0 || i === 2 ? newBags1 || 0 : newBags2 || 0, // if bags is lower, player was saving partner
+      newOverBids[i] += Math.max(
+        // get bag count
+        Math.min(
+          mades[i] - bid.bid, // if overbid is lower, partner got bags
+          i === 0 || i === 2 ? newBags1 || 0 : newBags2 || 0, // if bags is lower, player was saving partner
+        ),
+        0, // and make sure it's not negative
       );
     });
     // increment expected bags by 0.25
