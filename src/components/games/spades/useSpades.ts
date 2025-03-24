@@ -99,12 +99,17 @@ const useSpades = () => {
       mod2,
     };
     // underbidding tracker algorithm
+    // get order relative to first
+    const a = (first + 0) % 4;
+    const b = (first + 1) % 4;
+    const c = (first + 2) % 4;
+    const d = (first + 3) % 4;
     const newOverBids: [number, number, number, number, number] = [...overBids];
     lastBid.forEach((bid, i) => {
       // don't count if 2nd partner was nil
       if (
-        (i === 0 && lastBid[2].bid === 0) ||
-        (i === 1 && lastBid[3].bid === 0)
+        (i === a && lastBid[c].bid === 0) ||
+        (i === b && lastBid[d].bid === 0)
       ) {
         return;
       }
