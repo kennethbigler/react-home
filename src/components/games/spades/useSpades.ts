@@ -12,8 +12,11 @@ const useSpades = () => {
 
   /** sets a new data entry with first and bid info of data, updates first */
   const addBid = (bids: Bids) => {
-    // can't add bid if bid already exists, or if someone won
+    // edit score if exists
     if (data[data.length - 1] && data[data.length - 1]?.score1 === undefined) {
+      const newData = [...data];
+      newData[data.length - 1].bid = bidsToString(bids);
+      setSpades({ ...spades, data: newData, lastBid: bids });
       return;
     }
     // convert bid to storage data format
