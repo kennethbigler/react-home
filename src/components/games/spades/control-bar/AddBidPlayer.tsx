@@ -54,7 +54,7 @@ const AddBidPlayer = ({
       <TableCell align="right">
         <Switch
           checked={blind}
-          inputProps={{ "aria-label": `P${id} Blind Nil` }}
+          slotProps={{ input: { "aria-label": `P${id} Blind Nil` } }}
           onChange={handleBlind}
           size="small"
         />
@@ -64,7 +64,7 @@ const AddBidPlayer = ({
         {canTrain ? (
           <Switch
             checked={train}
-            inputProps={{ "aria-label": `P${id} Trains` }}
+            slotProps={{ input: { "aria-label": `P${id} Trains` } }}
             onChange={handleTrain}
             size="small"
           />
