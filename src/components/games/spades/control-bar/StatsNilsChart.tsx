@@ -3,29 +3,30 @@ import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 
-export interface StatsBagsChartProps {
-  initials: string;
-  overBids: [number, number, number, number, number];
+export interface StatsNilChartProps {
   color: string;
+  initials: string;
+  nils: [
+    [number, number, number],
+    [number, number, number],
+    [number, number, number],
+    [number, number, number],
+  ];
 }
 
-const StatsBagsChart = React.memo(
-  ({ initials, overBids, color }: StatsBagsChartProps) => {
-    const expBid = Math.round(overBids[overBids.length - 1]);
-
+const StatsNilChart = React.memo(
+  ({ color, initials, nils }: StatsNilChartProps) => {
     const options = {
       chart: {
-        zooming: { type: "xy" },
+        type: "column",
         height: 340,
         backgroundColor: null,
       },
       credits: { enabled: false },
-      legend: { enabled: false },
-      plotOptions: { series: { marker: { enabled: false }, lineWidth: 2 } },
-      title: { text: "Bags", style: { color } },
-      tooltip: { shared: true },
+      legend: { padding: 0, itemStyle: { color } },
+      plotOptions: { column: { stacking: "normal", pointPadding: 0 } },
+      title: { text: "Nils", style: { color } },
       xAxis: {
-        crosshair: true,
         categories: initials.split(""),
         lineColor: color,
         labels: { style: { color } },
@@ -40,16 +41,19 @@ const StatsBagsChart = React.memo(
       },
       series: [
         {
-          name: "Bids",
-          type: "column",
-          data: overBids.slice(0, -1),
+          name: "Bid",
+          data: nils.map((n) => n[0] - n[1]),
+          stack: "Nils",
         },
         {
-          name: "Avg",
-          type: "spline",
-          data: [expBid, expBid, expBid, expBid],
-          color: color,
-          lineWidth: 5,
+          name: "Blind",
+          data: nils.map((n) => n[1]),
+          stack: "Nils",
+        },
+        {
+          name: "Won",
+          data: nils.map((n) => n[2]),
+          stack: "Wins",
         },
       ],
     };
@@ -62,6 +66,6 @@ const StatsBagsChart = React.memo(
   },
 );
 
-StatsBagsChart.displayName = "StatsBagsChart";
+StatsNilChart.displayName = "StatsNilChart";
 
-export default StatsBagsChart;
+export default StatsNilChart;

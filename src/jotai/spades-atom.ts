@@ -53,7 +53,6 @@ interface SpadesState {
     [number, number, number],
     [number, number, number],
   ];
-  // TODO: track trains, penalties (all minus points)
 }
 
 export const defaultBid: Bid = { bid: 3, blind: false, train: false };
