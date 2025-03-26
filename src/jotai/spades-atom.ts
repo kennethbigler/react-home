@@ -42,6 +42,23 @@ interface SpadesState {
   wins1: number;
   /** team 2 wins */
   wins2: number;
+  // TODO: implement
+  /** team 1 running total won points */
+  totalWon1: number;
+  /** team 2 running total won points */
+  totalWon2: number;
+  /** team 1 running total lost points */
+  totalLost1: number;
+  /** team 2 running total lost points */
+  totalLost2: number;
+  /** player nils [bid, blind, won] */
+  nils: [
+    [number, number, number],
+    [number, number, number],
+    [number, number, number],
+    [number, number, number],
+  ];
+  // TODO: track trains, penalties (all minus points)
 }
 
 export const defaultBid: Bid = { bid: 3, blind: false, train: false };
@@ -52,6 +69,17 @@ const initialState: SpadesState = {
   overBids: [0, 0, 0, 0, 0],
   wins1: 0,
   wins2: 0,
+  // TODO: implement
+  totalWon1: 0,
+  totalWon2: 0,
+  totalLost1: 0,
+  totalLost2: 0,
+  nils: [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+  ],
 };
 
 const spadesAtom = atomWithStorage("spadesAtom", initialState);

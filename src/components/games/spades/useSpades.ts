@@ -69,9 +69,10 @@ const useSpades = () => {
     const { score1, bags1, score2, bags2 } = data[data.length - 2] || {};
     // calculate scores
     const {
-      score: newScore1,
-      bags: newBags1,
+      score: scoreA,
+      bags: bagsA,
       mod: mod1,
+      lifeBags: lifeBags1,
     } = getScore(
       { ...lastBid[0], made: mades[0] },
       { ...lastBid[2], made: mades[2] },
@@ -79,9 +80,10 @@ const useSpades = () => {
       bags1 || 0,
     );
     const {
-      score: newScore2,
-      bags: newBags2,
+      score: scoreB,
+      bags: bagsB,
       mod: mod2,
+      lifeBags: lifeBags2,
     } = getScore(
       { ...lastBid[1], made: mades[1] },
       { ...lastBid[3], made: mades[3] },
@@ -91,11 +93,11 @@ const useSpades = () => {
     // update scores in data entry
     newData[data.length - 1] = {
       ...data[data.length - 1],
-      score1: newScore1,
-      bags1: newBags1,
+      score1: scoreA,
+      bags1: bagsA,
       mod1,
-      score2: newScore2,
-      bags2: newBags2,
+      score2: scoreB,
+      bags2: bagsB,
       mod2,
     };
     // underbidding tracker algorithm
@@ -118,7 +120,7 @@ const useSpades = () => {
         // get bag count
         Math.min(
           mades[i] - bid.bid, // if overbid is lower, partner got bags
-          i === 0 || i === 2 ? newBags1 || 0 : newBags2 || 0, // if bags is lower, player was saving partner
+          i === 0 || i === 2 ? lifeBags1 : lifeBags2, // if bags is lower, player was saving partner
         ),
         0, // and make sure it's not negative
       );
