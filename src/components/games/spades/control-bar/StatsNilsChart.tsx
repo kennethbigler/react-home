@@ -19,10 +19,11 @@ const StatsNilChart = React.memo(
     const options = {
       chart: {
         type: "column",
+        height: 340,
         backgroundColor: null,
       },
       credits: { enabled: false },
-      legend: { itemStyle: { color } },
+      legend: { padding: 0, itemStyle: { color } },
       plotOptions: { column: { stacking: "normal", pointPadding: 0 } },
       title: { text: "Nils", style: { color } },
       xAxis: {

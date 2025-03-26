@@ -16,6 +16,7 @@ const StatsBagsChart = React.memo(
     const options = {
       chart: {
         zooming: { type: "xy" },
+        height: 340,
         backgroundColor: null,
       },
       credits: { enabled: false },
