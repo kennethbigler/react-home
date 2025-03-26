@@ -153,3 +153,10 @@ export const penaltyHelper = (s: number, b: number, m?: string) => {
   // return;
   return { score, bags, mod };
 };
+
+export const getChipColor = (a: number, b: number) => {
+  if (a === b) {
+    return "default";
+  }
+  return a > b ? "success" : "error";
+};

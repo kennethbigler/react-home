@@ -7,7 +7,8 @@ const useSpades = () => {
   const players = useAtomValue(playerAtom);
   const [spades, setSpades] = useAtom(spadesAtom);
 
-  const { data, first, lastBid, overBids, wins1, wins2 } = spades;
+  const { data, first, lastBid, overBids, wins1, wins2, total1, total2, nils } =
+    spades;
   const initials = players.reduce((a, p, i) => (i < 4 ? a + p.name[0] : a), "");
 
   /** sets a new data entry with first and bid info of data, updates first */
@@ -67,6 +68,7 @@ const useSpades = () => {
     // convert made tricks to scores
     const newData = [...data];
     const { score1, bags1, score2, bags2 } = data[data.length - 2] || {};
+
     // calculate scores
     const {
       score: scoreA,
@@ -100,6 +102,13 @@ const useSpades = () => {
       bags2: bagsB,
       mod2,
     };
+
+    const newNils: [
+      [number, number, number],
+      [number, number, number],
+      [number, number, number],
+      [number, number, number],
+    ] = [...nils];
     // underbidding tracker algorithm
     // get order relative to first
     const a = (first + 0) % 4;
@@ -107,7 +116,12 @@ const useSpades = () => {
     const c = (first + 2) % 4;
     const d = (first + 3) % 4;
     const newOverBids: [number, number, number, number, number] = [...overBids];
+
     lastBid.forEach((bid, i) => {
+      // add to nil tracker, [bid, blind, won]
+      newNils[i][0] += lastBid[i].bid === 0 ? 1 : 0;
+      newNils[i][1] += lastBid[i].blind ? 1 : 0;
+      newNils[i][2] += mades[i] === 0 ? 1 : 0;
       // don't count if 2nd partner was nil
       if (
         (i === a && lastBid[c].bid === 0) ||
@@ -127,6 +141,7 @@ const useSpades = () => {
     });
     // increment expected bags by 0.25
     newOverBids[lastBid.length] += 0.25;
+
     // update state
     setSpades({
       ...spades,
@@ -134,6 +149,7 @@ const useSpades = () => {
       first: (first + 1) % 4,
       lastBid: [defaultBid, defaultBid, defaultBid, defaultBid],
       overBids: newOverBids,
+      nils: newNils,
     });
   };
 
@@ -149,6 +165,8 @@ const useSpades = () => {
       lastBid: [defaultBid, defaultBid, defaultBid, defaultBid],
       wins1: wins1 + (is1Winner ? 1 : 0),
       wins2: wins2 + (is1Winner ? 0 : 1),
+      total1: total1 + (score1 || 0) * 10 + (bags1 || 0),
+      total2: total2 + (score2 || 0) * 10 + (bags2 || 0),
     });
   };
 
