@@ -125,7 +125,11 @@ const useSpades = () => {
       // don't count if 2nd partner was nil
       if (
         (i === a && lastBid[c].bid === 0) ||
-        (i === b && lastBid[d].bid === 0)
+        (i === b && lastBid[d].bid === 0) ||
+        ((i === a || i === c) &&
+          lastBid[b].bid + lastBid[d].bid > mades[b] + mades[d]) ||
+        ((i === b || i === d) &&
+          lastBid[a].bid + lastBid[c].bid > mades[a] + mades[c])
       ) {
         return;
       }
