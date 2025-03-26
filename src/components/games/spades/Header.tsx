@@ -2,19 +2,13 @@ import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import PlayerMenu from "../../common/header/PlayerMenu";
+import { getChipColor } from "./helpers";
 
 interface HeaderProps {
   initials: string;
   wins1: number;
   wins2: number;
 }
-
-const getChipColor = (a: number, b: number) => {
-  if (a === b) {
-    return "default";
-  }
-  return a > b ? "success" : "error";
-};
 
 const Header = ({ initials, wins1, wins2 }: HeaderProps) => (
   <>
