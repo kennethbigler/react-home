@@ -7,6 +7,7 @@ import StatsBagsChart from "./StatsBagsChart";
 import themeAtom from "../../../../jotai/theme-atom";
 import { getChipColor } from "../helpers";
 import spadesAtom from "../../../../jotai/spades-atom";
+import StatsNilChart from "./StatsNilsChart";
 
 interface ShowStatsProps {
   initials: string;
@@ -21,7 +22,7 @@ const ShowStats = ({ initials, overBids }: ShowStatsProps) => {
   return (
     <InfoPopup title="Stats" buttonVariant="outlined" buttonColor="success">
       <>
-        <div className="flex-container">
+        <div className="flex-container" style={{ paddingBottom: 15 }}>
           <Typography>Totals:</Typography>
           <Chip
             avatar={<Avatar>{initials[0] + initials[2]}</Avatar>}
@@ -34,14 +35,8 @@ const ShowStats = ({ initials, overBids }: ShowStatsProps) => {
             label={total2}
           />
         </div>
-        <StatsBagsChart initials={initials} overBids={overBids} color={color} />
-        <div style={{ textAlign: "center" }}>
-          {nils.map((n, i) => (
-            <Typography key={i}>
-              {`Bid: ${n[0]}, Blind: ${n[1]}, Won: ${n[2]}`}
-            </Typography>
-          ))}
-        </div>
+        <StatsBagsChart color={color} initials={initials} overBids={overBids} />
+        <StatsNilChart color={color} initials={initials} nils={nils} />
       </>
     </InfoPopup>
   );
