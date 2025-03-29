@@ -7,8 +7,18 @@ const useSpades = () => {
   const players = useAtomValue(playerAtom);
   const [spades, setSpades] = useAtom(spadesAtom);
 
-  const { data, first, lastBid, overBids, wins1, wins2, total1, total2, nils } =
-    spades;
+  const {
+    data,
+    first,
+    lastBid,
+    lifeBags,
+    missedBids,
+    wins1,
+    wins2,
+    total1,
+    total2,
+    nils,
+  } = spades;
   const initials = players.reduce((a, p, i) => (i < 4 ? a + p.name[0] : a), "");
 
   /** sets a new data entry with first and bid info of data, updates first */
@@ -109,32 +119,42 @@ const useSpades = () => {
       [number, number, number],
       [number, number, number],
     ] = [...nils];
-    // underbidding tracker algorithm
-    // get order relative to first
-    const a = (first + 0) % 4;
+    // underbidding tracker algorithm, get order relative to first
+    const a = first;
     const b = (first + 1) % 4;
     const c = (first + 2) % 4;
     const d = (first + 3) % 4;
-    const newOverBids: [number, number, number, number, number] = [...overBids];
+    const newLifeBags: [number, number, number, number, number] = [...lifeBags];
 
     lastBid.forEach((bid, i) => {
       // add to nil tracker, [bid, blind, won]
       newNils[i][0] += lastBid[i].bid === 0 ? 1 : 0;
       newNils[i][1] += lastBid[i].blind ? 1 : 0;
-      newNils[i][2] += mades[i] === 0 ? 1 : 0;
-      // don't count if 2nd partner was nil
+      newNils[i][2] += lastBid[i].bid === 0 && mades[i] === 0 ? 1 : 0;
+      // add to missed tracker
+      const p = (i + 2) % 4;
+      if (
+        bid.bid > 2 &&
+        mades[i] + mades[p] < bid.bid + lastBid[p].bid &&
+        mades[i] < bid.bid
+      ) {
+        missedBids[i] += bid.bid - mades[i];
+      }
+      // don't count certain bag situations for bag tracker
       if (
         (i === a && lastBid[c].bid === 0 && !lastBid[c].blind) ||
         (i === b && lastBid[d].bid === 0 && !lastBid[d].blind) ||
         ((i === a || i === c) &&
           lastBid[b].bid + lastBid[d].bid > mades[b] + mades[d]) ||
         ((i === b || i === d) &&
-          lastBid[a].bid + lastBid[c].bid > mades[a] + mades[c])
+          lastBid[a].bid + lastBid[c].bid > mades[a] + mades[c]) ||
+        lastBid[i].train ||
+        lastBid[p].train
       ) {
         return;
       }
       // add the overbid or bags, whatever is lower
-      newOverBids[i] += Math.max(
+      newLifeBags[i] += Math.max(
         // get bag count
         Math.min(
           mades[i] - bid.bid, // if overbid is lower, partner got bags
@@ -144,7 +164,7 @@ const useSpades = () => {
       );
     });
     // increment expected bags by 0.25
-    newOverBids[lastBid.length] += 0.25;
+    newLifeBags[lastBid.length] += 0.25;
 
     // update state
     setSpades({
@@ -152,7 +172,7 @@ const useSpades = () => {
       data: newData,
       first: (first + 1) % 4,
       lastBid: [defaultBid, defaultBid, defaultBid, defaultBid],
-      overBids: newOverBids,
+      lifeBags: newLifeBags,
       nils: newNils,
     });
   };
@@ -180,7 +200,7 @@ const useSpades = () => {
     first,
     initials,
     lastBid,
-    overBids,
+    lifeBags,
     wins1,
     wins2,
     // functions

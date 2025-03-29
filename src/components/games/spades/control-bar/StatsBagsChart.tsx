@@ -5,13 +5,14 @@ import HighchartsReact from "highcharts-react-official";
 
 export interface StatsBagsChartProps {
   initials: string;
-  overBids: [number, number, number, number, number];
+  lifeBags: [number, number, number, number, number];
+  missedBids: [number, number, number, number];
   color: string;
 }
 
 const StatsBagsChart = React.memo(
-  ({ initials, overBids, color }: StatsBagsChartProps) => {
-    const expBid = Math.round(overBids[overBids.length - 1]);
+  ({ initials, lifeBags, missedBids, color }: StatsBagsChartProps) => {
+    const expBid = Math.round(lifeBags[lifeBags.length - 1]);
 
     const options = {
       chart: {
@@ -21,7 +22,10 @@ const StatsBagsChart = React.memo(
       },
       credits: { enabled: false },
       legend: { enabled: false },
-      plotOptions: { series: { marker: { enabled: false }, lineWidth: 2 } },
+      plotOptions: {
+        column: { pointPadding: 0 },
+        series: { marker: { enabled: false }, lineWidth: 2 },
+      },
       title: { text: "Bags", style: { color } },
       tooltip: { shared: true },
       xAxis: {
@@ -40,12 +44,17 @@ const StatsBagsChart = React.memo(
       },
       series: [
         {
-          name: "Bids",
+          name: "💰",
           type: "column",
-          data: overBids.slice(0, -1),
+          data: lifeBags.slice(0, -1),
         },
         {
-          name: "Avg",
+          name: "🎰",
+          type: "column",
+          data: missedBids,
+        },
+        {
+          name: "✅",
           type: "spline",
           data: [expBid, expBid, expBid, expBid],
           color: color,

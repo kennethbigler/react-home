@@ -11,7 +11,6 @@ const Spades = React.memo(() => {
     data,
     initials,
     // Header
-    overBids,
     wins1,
     wins2,
     // Reset Button
@@ -56,7 +55,6 @@ const Spades = React.memo(() => {
           blindTrade={blindTrade}
           first={first}
           initials={initials}
-          overBids={overBids}
           lastBid={lastBid}
           showPenalty={data[0]?.score1 !== undefined}
           onBidSave={addBid}

@@ -41,17 +41,17 @@ const StatsNilChart = React.memo(
       },
       series: [
         {
-          name: "Bid",
+          name: "🚫",
           data: nils.map((n) => n[0] - n[1]),
           stack: "Nils",
         },
         {
-          name: "Blind",
+          name: "🦮",
           data: nils.map((n) => n[1]),
           stack: "Nils",
         },
         {
-          name: "Won",
+          name: "🏅",
           data: nils.map((n) => n[2]),
           stack: "Wins",
         },
