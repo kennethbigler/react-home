@@ -3,7 +3,7 @@ import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { CompCalcEntry, CompEntry } from "../../../jotai/comp-calculator-atom";
 import dateObj from "../../../apis/DateHelper";

@@ -4,7 +4,7 @@ import Info from "./Info";
 import Education from "./Education";
 import Job from "../work/Job";
 import workExp from "../../../constants/work";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 
 /* Summary  ->  Info
  *         |->  Skills

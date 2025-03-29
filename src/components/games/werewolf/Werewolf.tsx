@@ -9,7 +9,7 @@ import {
 } from "../../../constants/werewolf";
 import WerewolfPanel from "./WerewolfPanel";
 import ExpandableCard from "../../common/expandable-card";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 
 const Werewolf = React.memo(() => {
   const [expanded, setExpanded] = React.useState("");

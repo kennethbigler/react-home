@@ -1,4 +1,4 @@
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import InfoPopup from "../../../../common/info-popover/InfoPopup";
 import Roles from "./Roles";
