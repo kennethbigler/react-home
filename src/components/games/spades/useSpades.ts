@@ -121,7 +121,7 @@ const useSpades = () => {
       // add to nil tracker, [bid, blind, won]
       newNils[i][0] += lastBid[i].bid === 0 ? 1 : 0;
       newNils[i][1] += lastBid[i].blind ? 1 : 0;
-      newNils[i][2] += mades[i] === 0 ? 1 : 0;
+      newNils[i][2] += lastBid[i].bid === 0 && mades[i] === 0 ? 1 : 0;
       // don't count if 2nd partner was nil
       if (
         (i === a && lastBid[c].bid === 0 && !lastBid[c].blind) ||
@@ -129,7 +129,9 @@ const useSpades = () => {
         ((i === a || i === c) &&
           lastBid[b].bid + lastBid[d].bid > mades[b] + mades[d]) ||
         ((i === b || i === d) &&
-          lastBid[a].bid + lastBid[c].bid > mades[a] + mades[c])
+          lastBid[a].bid + lastBid[c].bid > mades[a] + mades[c]) ||
+        lastBid[i].train ||
+        lastBid[(i + 2) % 4].train
       ) {
         return;
       }
