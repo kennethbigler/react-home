@@ -84,7 +84,6 @@ const useSpades = () => {
       score: scoreA,
       bags: bagsA,
       mod: mod1,
-      lifeBags: lifeBags1,
     } = getScore(
       { ...lastBid[0], made: mades[0] },
       { ...lastBid[2], made: mades[2] },
@@ -95,7 +94,6 @@ const useSpades = () => {
       score: scoreB,
       bags: bagsB,
       mod: mod2,
-      lifeBags: lifeBags2,
     } = getScore(
       { ...lastBid[1], made: mades[1] },
       { ...lastBid[3], made: mades[3] },
@@ -133,12 +131,10 @@ const useSpades = () => {
       newNils[i][2] += lastBid[i].bid === 0 && mades[i] === 0 ? 1 : 0;
       // add to missed tracker
       const p = (i + 2) % 4;
-      if (
-        bid.bid > 2 &&
-        mades[i] + mades[p] < bid.bid + lastBid[p].bid &&
-        mades[i] < bid.bid
-      ) {
-        missedBids[i] += bid.bid - mades[i];
+      const teamMiss = bid.bid + lastBid[p].bid - (mades[i] + mades[p]);
+      const iMiss = bid.bid - mades[i];
+      if (bid.bid > 2 && teamMiss > 0 && iMiss > 0) {
+        missedBids[i] += Math.min(iMiss, teamMiss);
       }
       // don't count certain bag situations for bag tracker
       if (
@@ -153,13 +149,9 @@ const useSpades = () => {
       ) {
         return;
       }
-      // add the overbid or bags, whatever is lower
+      // add the team or personal bags, whatever is lower
       newLifeBags[i] += Math.max(
-        // get bag count
-        Math.min(
-          mades[i] - bid.bid, // if overbid is lower, partner got bags
-          i === 0 || i === 2 ? lifeBags1 : lifeBags2, // if bags is lower, player was saving partner
-        ),
+        Math.min(-iMiss, -teamMiss), // get bag count
         0, // and make sure it's not negative
       );
     });

@@ -29,7 +29,7 @@ export const getScore = (
   p2: ScoreData,
   score: number,
   bags: number,
-): { score: number; bags: number; mod?: string; lifeBags: number } => {
+): { score: number; bags: number; mod?: string } => {
   let newScore = 0;
   let newBags = 0;
   let mod = "";
@@ -127,7 +127,6 @@ export const getScore = (
       mod += "🎰";
     }
   }
-  const lifeBags = newBags;
   // check for bag out
   while (bags + newBags >= 10) {
     newScore -= 9;
@@ -135,7 +134,7 @@ export const getScore = (
     mod += "💰";
   }
   // return
-  return { score: score + newScore, bags: bags + newBags, mod, lifeBags };
+  return { score: score + newScore, bags: bags + newBags, mod };
 };
 
 /** add the penalty then handle bag out if needed */
