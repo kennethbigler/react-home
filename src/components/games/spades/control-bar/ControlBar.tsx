@@ -8,7 +8,6 @@ interface ControlBarProps {
   blindTrade: number;
   first: number;
   initials: string;
-  overBids: [number, number, number, number, number];
   lastBid: Bids;
   showPenalty: boolean;
   onBidSave: (bids: Bids) => void;
@@ -20,7 +19,6 @@ const ControlBar = ({
   blindTrade,
   first,
   initials,
-  overBids,
   lastBid,
   showPenalty,
   onBidSave,
@@ -35,7 +33,7 @@ const ControlBar = ({
       onBidSave={onBidSave}
     />
     {showPenalty && <AddPenalty initials={initials} onPenalty={onPenalty} />}
-    <ShowStats initials={initials} overBids={overBids} />
+    <ShowStats initials={initials} />
     <AddScore initials={initials} lastBid={lastBid} onScoreSave={onScoreSave} />
   </div>
 );

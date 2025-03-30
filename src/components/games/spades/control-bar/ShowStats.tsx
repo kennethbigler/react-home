@@ -11,12 +11,12 @@ import StatsNilChart from "./StatsNilsChart";
 
 interface ShowStatsProps {
   initials: string;
-  overBids: [number, number, number, number, number];
 }
 
-const ShowStats = ({ initials, overBids }: ShowStatsProps) => {
+const ShowStats = ({ initials }: ShowStatsProps) => {
   const theme = useAtomValue(themeAtom);
-  const { total1, total2, nils } = useAtomValue(spadesAtom);
+  const { total1, total2, nils, lifeBags, missedBids } =
+    useAtomValue(spadesAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
   return (
@@ -35,7 +35,12 @@ const ShowStats = ({ initials, overBids }: ShowStatsProps) => {
             label={total2}
           />
         </div>
-        <StatsBagsChart color={color} initials={initials} overBids={overBids} />
+        <StatsBagsChart
+          color={color}
+          initials={initials}
+          lifeBags={lifeBags}
+          missedBids={missedBids}
+        />
         <StatsNilChart color={color} initials={initials} nils={nils} />
       </>
     </InfoPopup>
