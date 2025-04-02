@@ -111,19 +111,19 @@ const useSpades = () => {
       mod2,
     };
 
+    // Metrics
     const newNils: [
       [number, number, number],
       [number, number, number],
       [number, number, number],
       [number, number, number],
     ] = [...nils];
+    const newLifeBags: [number, number, number, number, number] = [...lifeBags];
     // underbidding tracker algorithm, get order relative to first
     const a = first;
     const b = (first + 1) % 4;
     const c = (first + 2) % 4;
     const d = (first + 3) % 4;
-    const newLifeBags: [number, number, number, number, number] = [...lifeBags];
-
     lastBid.forEach((bid, i) => {
       // add to nil tracker, [bid, blind, won]
       newNils[i][0] += lastBid[i].bid === 0 ? 1 : 0;
@@ -137,13 +137,17 @@ const useSpades = () => {
         missedBids[i] += Math.min(iMiss, teamMiss);
       }
       // don't count certain bag situations for bag tracker
-      if (
+      const partnerNil2nd =
         (i === a && lastBid[c].bid === 0 && !lastBid[c].blind) ||
-        (i === b && lastBid[d].bid === 0 && !lastBid[d].blind) ||
+        (i === b && lastBid[d].bid === 0 && !lastBid[d].blind);
+      const stoppedEnemy =
         ((i === a || i === c) &&
           lastBid[b].bid + lastBid[d].bid > mades[b] + mades[d]) ||
         ((i === b || i === d) &&
-          lastBid[a].bid + lastBid[c].bid > mades[a] + mades[c]) ||
+          lastBid[a].bid + lastBid[c].bid > mades[a] + mades[c]);
+      if (
+        partnerNil2nd ||
+        stoppedEnemy ||
         lastBid[i].train ||
         lastBid[p].train
       ) {
