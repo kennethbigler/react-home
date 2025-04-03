@@ -2,7 +2,7 @@ import * as React from "react";
 import { useAtom } from "jotai";
 import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import SimplePopover from "./ButtonPopover";
 import playerAtom from "../../../jotai/player-atom";

@@ -1,5 +1,5 @@
 import * as React from "react";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import { SeriesClickEventObject } from "highcharts";
 import CompChart from "./CompGraph";
 import BreakdownChart from "./BreakdownGraph";

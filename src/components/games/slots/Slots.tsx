@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useAtom, useAtomValue } from "jotai";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import slotsState, { slotsRead } from "../../../jotai/slots-state";
 import PayoutTable from "./PayoutTable";

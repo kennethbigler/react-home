@@ -4,7 +4,7 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import CardActionArea from "@mui/material/CardActionArea";
 import Collapse from "@mui/material/Collapse";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import { useTheme } from "@mui/material/styles";
 
 const cardStyles: React.CSSProperties = { marginTop: 40, overflow: "visible" };

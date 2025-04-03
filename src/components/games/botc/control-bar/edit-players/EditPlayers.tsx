@@ -1,7 +1,7 @@
 import Add from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import Remove from "@mui/icons-material/Remove";
 import Typography from "@mui/material/Typography";
 import {
