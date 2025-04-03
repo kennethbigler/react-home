@@ -1,5 +1,5 @@
 import { useAtomValue } from "jotai";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import { CarEntry } from "../../../../constants/cars";
 import CarChart from "./CarChart";
 import CarSankeyGraph from "./CarSankeyGraph";

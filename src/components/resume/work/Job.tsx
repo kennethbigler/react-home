@@ -1,5 +1,5 @@
 import * as React from "react";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import ExpandableCard from "../../common/expandable-card";
 import { Job as JobType } from "../../../constants/work";

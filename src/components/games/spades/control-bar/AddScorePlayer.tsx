@@ -1,6 +1,6 @@
 import * as React from "react";
 import Add from "@mui/icons-material/Add";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Remove from "@mui/icons-material/Remove";
 import Typography from "@mui/material/Typography";

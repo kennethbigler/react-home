@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
 import Chip from "@mui/material/Chip";
 import Avatar from "@mui/material/Avatar";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { Mission } from "../../../../constants/imperial-campaigns";
 

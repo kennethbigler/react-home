@@ -1,6 +1,6 @@
 import * as React from "react";
 // MUI
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 // Custom

@@ -10,7 +10,7 @@
       "groupName": "lint"
     },
     {
-      "matchPackageNames": ["@mui/material", "@mui/icons-material"],
+      "matchPackageNames": ["@mui/material", "@mui/icons-material", "@emotion/react", "@emotion/styled"],
       "groupName": "mui"
     },
     {

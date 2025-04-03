@@ -1,7 +1,7 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
 import Chip from "@mui/material/Chip";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { BotCPlayer } from "../../../../jotai/botc-atom";
 import CharacterSheet from "./character-sheet/CharacterSheet";
