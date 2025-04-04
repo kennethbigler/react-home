@@ -8,7 +8,15 @@ interface Bid {
   blind: boolean;
   train: boolean;
 }
+/** each Bid contains bid: number; blind: boolean; train: boolean; */
 export type Bids = [Bid, Bid, Bid, Bid];
+/** player nils [bid, blind, won] */
+export type NilMetrics = [
+  [number, number, number],
+  [number, number, number],
+  [number, number, number],
+  [number, number, number],
+];
 
 export interface ScoreRow {
   /** initial of who went first */
@@ -49,12 +57,7 @@ interface SpadesState {
   /** team 2 running total */
   total2: number;
   /** player nils [bid, blind, won] */
-  nils: [
-    [number, number, number],
-    [number, number, number],
-    [number, number, number],
-    [number, number, number],
-  ];
+  nils: NilMetrics;
 }
 
 export const defaultBid: Bid = { bid: 3, blind: false, train: false };

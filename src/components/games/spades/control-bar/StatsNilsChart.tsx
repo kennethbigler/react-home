@@ -2,16 +2,12 @@ import * as React from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
+import { NilMetrics } from "../../../../jotai/spades-atom";
 
 export interface StatsNilChartProps {
   color: string;
   initials: string;
-  nils: [
-    [number, number, number],
-    [number, number, number],
-    [number, number, number],
-    [number, number, number],
-  ];
+  nils: NilMetrics;
 }
 
 const StatsNilChart = React.memo(
