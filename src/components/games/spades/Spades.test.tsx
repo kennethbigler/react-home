@@ -36,6 +36,7 @@ describe("games | spades | Spades", () => {
     expect(screen.queryByText("Totals:")).toBeNull();
     fireEvent.click(screen.getByText("Stats"));
     expect(screen.getByText("Totals:")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Close")).toBeInTheDocument());
     fireEvent.click(screen.getByText("Close"));
     await waitFor(() => expect(screen.queryByText("Totals:")).toBeNull());
   });
