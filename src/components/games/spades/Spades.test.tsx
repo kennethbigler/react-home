@@ -6,18 +6,32 @@ describe("games | spades | Spades", () => {
     render(<Spades />);
 
     expect(screen.getByText("♠️🧮")).toBeInTheDocument();
-    // open bids
+    // open & close bids
     expect(screen.queryByText("Bid (1 💰)")).toBeNull();
     fireEvent.click(screen.getByText("+ Bid"));
     expect(screen.getByText("Bid (1 💰)")).toBeInTheDocument();
     fireEvent.click(screen.getByText("Close"));
     await waitFor(() => expect(screen.queryByText("Bid (1 💰)")).toBeNull());
-    // open score
+    // save bid
+    expect(screen.queryByText("Bid (1 💰)")).toBeNull();
+    fireEvent.click(screen.getByText("+ Bid"));
+    expect(screen.getByText("Bid (1 💰)")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Save"));
+    await waitFor(() => expect(screen.queryByText("Bid (1 💰)")).toBeNull());
+    // open & close score
     expect(screen.queryByText("⚠️ Tricks: 12")).toBeNull();
     fireEvent.click(screen.getByText("+ Score"));
     expect(screen.getByText("⚠️ Tricks: 12")).toBeInTheDocument();
     fireEvent.click(screen.getByText("Close"));
     await waitFor(() => expect(screen.queryByText("⚠️ Tricks: 12")).toBeNull());
+    // save score
+    expect(screen.queryByText("⚠️ Tricks: 12")).toBeNull();
+    fireEvent.click(screen.getByText("+ Score"));
+    expect(screen.getByText("⚠️ Tricks: 12")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByLabelText("increase")[0]);
+    expect(screen.getByText("Tricks: 13")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Save"));
+    await waitFor(() => expect(screen.queryByText("Tricks: 13")).toBeNull());
     // open metrics
     expect(screen.queryByText("Totals:")).toBeNull();
     fireEvent.click(screen.getByText("Stats"));

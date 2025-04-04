@@ -30,11 +30,11 @@ const AddScorePlayer = ({
       <div>
         Made:
         <IconButton onClick={decrMade} disabled={made <= MIN_BID}>
-          <Remove />
+          <Remove aria-label="decrease" />
         </IconButton>
         {made}
         <IconButton onClick={incrMade} disabled={made >= MAX_BID}>
-          <Add />
+          <Add aria-label="increase" />
         </IconButton>
       </div>
     </Grid>
