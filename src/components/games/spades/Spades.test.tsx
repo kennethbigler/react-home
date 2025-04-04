@@ -18,5 +18,11 @@ describe("games | spades | Spades", () => {
     expect(screen.getByText("⚠️ Tricks: 12")).toBeInTheDocument();
     fireEvent.click(screen.getByText("Close"));
     await waitFor(() => expect(screen.queryByText("⚠️ Tricks: 12")).toBeNull());
+    // open metrics
+    expect(screen.queryByText("Totals:")).toBeNull();
+    fireEvent.click(screen.getByText("Stats"));
+    expect(screen.getByText("Totals:")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Close"));
+    await waitFor(() => expect(screen.queryByText("Totals:")).toBeNull());
   });
 });

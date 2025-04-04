@@ -130,12 +130,14 @@ const useSpades = () => {
     // check if stopped
     const acStopped = lastBid[a].bid + lastBid[c].bid > mades[a] + mades[c];
     const bdStopped = lastBid[b].bid + lastBid[d].bid > mades[b] + mades[d];
-    // iterate over bids
+
+    // Iterate over bids
     lastBid.forEach((bid, i) => {
-      // add to Nil Tracker, [bid, blind, won]
+      // Nil Tracker, [bid, blind, won]
       newNils[i][0] += bid.bid === 0 ? 1 : 0;
       newNils[i][1] += bid.blind ? 1 : 0;
       newNils[i][2] += bid.bid === 0 && mades[i] === 0 ? 1 : 0;
+
       // Missed Bid Tracker
       // partner index
       const p = (i + 2) % 4;
@@ -146,6 +148,7 @@ const useSpades = () => {
       if (bid.bid > 2 && teamMiss > 0 && iMiss > 0) {
         missedBids[i] += Math.min(iMiss, teamMiss);
       }
+
       // Bag Tracker
       const partnerNil2nd = (i === a && cWasNil) || (i === b && dWasNil);
       const stoppedEnemy =
