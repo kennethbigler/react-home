@@ -2,6 +2,7 @@
 // this adds jest-dom's custom assertions
 import "@testing-library/jest-dom";
 
+// for checks on if dark mode is preferred
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation(() => ({ matches: false })),
@@ -12,13 +13,4 @@ vi.stubGlobal("CSS", {
   supports: vi.fn().mockImplementation(() => {
     return true;
   }),
-});
-
-Object.defineProperty(window, "ResizeObserver", {
-  writable: true,
-  value: vi.fn().mockImplementation(() => ({
-    observe: vi.fn(),
-    unobserve: vi.fn(),
-    disconnect: vi.fn(),
-  })),
 });
