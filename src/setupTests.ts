@@ -7,6 +7,13 @@ Object.defineProperty(window, "matchMedia", {
   value: vi.fn().mockImplementation(() => ({ matches: false })),
 });
 
+// highcharts v12.2.0 required adding this
+vi.stubGlobal("CSS", {
+  supports: vi.fn().mockImplementation(() => {
+    return true;
+  }),
+});
+
 Object.defineProperty(window, "ResizeObserver", {
   writable: true,
   value: vi.fn().mockImplementation(() => ({
