@@ -18,6 +18,7 @@ const BreakdownChart = React.memo(
     const color = theme.mode === "light" ? "black" : "white";
 
     const options = {
+      accessibility: { enabled: true },
       colors,
       chart: { type: "pie", backgroundColor: null },
       credits: { enabled: false },

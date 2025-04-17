@@ -10,6 +10,7 @@ const LoyaltyCharts = () => {
   const color = theme.mode === "light" ? "black" : "white";
 
   const options: Highcharts.Options = {
+    accessibility: { enabled: true },
     colors: loyaltyColors,
     credits: { enabled: false },
     pane: { size: "100%", innerSize: "20%", endAngle: 330 },

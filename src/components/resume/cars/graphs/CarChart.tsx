@@ -13,6 +13,7 @@ const CarChart = React.memo(({ data, color }: CarChartProps) => {
   const { horsepower, weight, powerToWeight, zTo60, xAxis } = processData(data);
 
   const options = {
+    accessibility: { enabled: true },
     chart: { type: "spline", backgroundColor: null },
     credits: { enabled: false },
     legend: { enabled: false },

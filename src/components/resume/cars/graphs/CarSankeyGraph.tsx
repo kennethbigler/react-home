@@ -33,6 +33,7 @@ const CarSankeyGraph = React.memo(
       credits: { enabled: false },
       title: { text: "Cars", style: { color } },
       accessibility: {
+        enabled: true,
         point: {
           // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
           valueDescriptionFormat:

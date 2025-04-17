@@ -21,10 +21,13 @@ const WorldMap = () => {
       .catch(() => setError(true));
   }, []);
 
-  const [options, setOptions] = React.useState<Highcharts.Options>({});
+  const [options, setOptions] = React.useState<Highcharts.Options>({
+    accessibility: { enabled: true },
+  });
 
   React.useEffect(() => {
     setOptions({
+      accessibility: { enabled: true },
       chart: { backgroundColor: "transparent", map: topology, height: "60%" },
       credits: { enabled: false },
       series: [
