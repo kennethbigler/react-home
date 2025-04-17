@@ -1,4 +1,5 @@
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { bidsToString, penaltyHelper, getChipColor } from "./helpers";
 import Spades from ".";
 
 describe("games | spades | Spades", () => {
@@ -39,5 +40,30 @@ describe("games | spades | Spades", () => {
     await waitFor(() => expect(screen.getByText("Close")).toBeInTheDocument());
     fireEvent.click(screen.getByText("Close"));
     await waitFor(() => expect(screen.queryByText("Totals:")).toBeNull());
+  });
+
+  test("helpers | bidsToString", () => {
+    expect(
+      bidsToString([
+        { bid: 0, blind: true, train: false },
+        { bid: 0, blind: false, train: false },
+        { bid: 10, blind: false, train: true },
+        { bid: 10, blind: false, train: false },
+      ]),
+    ).toEqual("🦮🚫🚂,10,");
+  });
+
+  test("helpers | penaltyHelper", () => {
+    expect(penaltyHelper(12, 8, "120")).toEqual({
+      score: 3,
+      bags: 1,
+      mod: "120😈💰",
+    });
+  });
+
+  test("helpers | getChipColor", () => {
+    expect(getChipColor(1, 2)).toEqual("error");
+    expect(getChipColor(2, 1)).toEqual("success");
+    expect(getChipColor(2, 2)).toEqual("default");
   });
 });
