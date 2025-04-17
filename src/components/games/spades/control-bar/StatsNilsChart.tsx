@@ -13,6 +13,7 @@ export interface StatsNilChartProps {
 const StatsNilChart = React.memo(
   ({ color, initials, nils }: StatsNilChartProps) => {
     const options = {
+      accessibility: { enabled: true },
       chart: {
         type: "column",
         height: 340,

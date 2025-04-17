@@ -15,6 +15,7 @@ const StatsBagsChart = React.memo(
     const expBid = Math.round(lifeBags[lifeBags.length - 1]);
 
     const options = {
+      accessibility: { enabled: true },
       chart: {
         zooming: { type: "xy" },
         height: 340,

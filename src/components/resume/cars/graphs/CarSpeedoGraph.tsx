@@ -28,6 +28,7 @@ const CarSpeedoGraph = React.memo(
     const min = title === "Weight" ? 2500 : 0;
     const greenEnd = Math.max(min, endGreenVal);
     const options = {
+      accessibility: { enabled: true },
       credits: { enabled: false },
       pane: { startAngle: -135, endAngle: 135, background: null },
       title: { text: `${name} ${title}`, style: { color } },

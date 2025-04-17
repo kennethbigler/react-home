@@ -93,6 +93,7 @@ const CompChart = ({
 
   // set chart options
   const options = {
+    accessibility: { enabled: true },
     colors: [...colors, color],
     chart: { type: "area", backgroundColor: null },
     credits: { enabled: false },

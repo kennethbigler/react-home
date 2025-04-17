@@ -16,6 +16,7 @@ const CruiseCharts = () => {
     credits: { enabled: false },
     title: { text: "Cruises", style: { color } },
     accessibility: {
+      enabled: true,
       point: {
         // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
         valueDescriptionFormat:
