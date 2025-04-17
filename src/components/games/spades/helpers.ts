@@ -1,5 +1,11 @@
 import { Bids } from "../../../jotai/spades-atom";
 
+/** defined in spades-atom
+ * bid: number;
+ * blind: boolean;
+ * train: boolean;
+ * made: number;
+ */
 interface ScoreData {
   bid: number;
   blind: boolean;
