@@ -27,10 +27,11 @@ const useSpades = () => {
 
   /** sets a new data entry with first and bid info of data, updates first */
   const addBid = (bids: Bids) => {
+    const last = data.length - 1;
     // edit score if exists
-    if (data[data.length - 1] && data[data.length - 1]?.score1 === undefined) {
+    if (data[last] && data[last]?.score1 === undefined) {
       const newData = [...data];
-      newData[data.length - 1].bid = bidsToString(bids);
+      newData[last].bid = bidsToString(bids);
       setSpades({ ...spades, data: newData, lastBid: bids });
       return;
     }
@@ -42,13 +43,13 @@ const useSpades = () => {
   };
 
   const addPenalty = (team: number) => () => {
-    let i = data.length - 1;
-    if (data[i]?.score1 === undefined) {
-      i -= 1;
+    let last = data.length - 1;
+    if (data[last]?.score1 === undefined) {
+      last -= 1;
     }
     if (team === 0) {
       // verify data
-      const { score1, bags1, mod1 } = data[i] || {};
+      const { score1, bags1, mod1 } = data[last] || {};
       if (score1 === undefined || bags1 === undefined) {
         return;
       }
@@ -56,11 +57,11 @@ const useSpades = () => {
       const { score, bags, mod } = penaltyHelper(score1, bags1, mod1);
       // update data
       const newData = [...data];
-      newData[i] = { ...data[i], score1: score, bags1: bags, mod1: mod };
+      newData[last] = { ...data[last], score1: score, bags1: bags, mod1: mod };
       setSpades({ ...spades, data: newData });
     } else {
       // verify data
-      const { score2, bags2, mod2 } = data[i] || {};
+      const { score2, bags2, mod2 } = data[last] || {};
       if (score2 === undefined || bags2 === undefined) {
         return;
       }
@@ -68,20 +69,21 @@ const useSpades = () => {
       const { score, bags, mod } = penaltyHelper(score2, bags2, mod2);
       // update data
       const newData = [...data];
-      newData[i] = { ...data[i], score2: score, bags2: bags, mod2: mod };
+      newData[last] = { ...data[last], score2: score, bags2: bags, mod2: mod };
       setSpades({ ...spades, data: newData });
     }
   };
 
   /** calculates and adds score1 and score2 finishing data entry */
   const addScore = (mades: [number, number, number, number]) => {
+    const last = data.length - 1;
     // can't add scores if no bid exists
-    if (data[data.length - 1]?.score1 !== undefined) {
+    if (data[last]?.score1 !== undefined) {
       return;
     }
     // convert made tricks to scores
     const newData = [...data];
-    const { score1, bags1, score2, bags2 } = data[data.length - 2] || {};
+    const { score1, bags1, score2, bags2 } = data[last - 1] || {};
 
     // calculate scores
     const {
@@ -105,8 +107,8 @@ const useSpades = () => {
       bags2 || 0,
     );
     // update scores in data entry
-    newData[data.length - 1] = {
-      ...data[data.length - 1],
+    newData[last] = {
+      ...data[last],
       score1: scoreA,
       bags1: bagsA,
       mod1,
@@ -178,8 +180,7 @@ const useSpades = () => {
   };
 
   const newGame = () => {
-    const { score1, bags1 } = data[data.length - 1];
-    const { score2, bags2 } = data[data.length - 1];
+    const { score1, bags1, score2, bags2 } = data[data.length - 1];
     const is1Winner =
       (score1 === score2 && (bags1 || 0) > (bags2 || 0)) ||
       (score1 || 0) > (score2 || 0);
