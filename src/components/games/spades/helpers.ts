@@ -1,4 +1,4 @@
-import { Bids } from "../../../jotai/spades-atom";
+import { Bids, NilMetrics } from "../../../jotai/spades-atom";
 
 /** defined in spades-atom
  * bid: number;
@@ -164,4 +164,67 @@ export const getChipColor = (a: number, b: number) => {
     return "default";
   }
   return a > b ? "success" : "error";
+};
+
+/** Get Metrics, and return new lifeBags and Nils */
+export const getMetrics = (
+  nils: NilMetrics,
+  lifeBags: [number, number, number, number, number],
+  first: number,
+  lastBid: Bids,
+  mades: [number, number, number, number],
+  missedBids: [number, number, number, number],
+) => {
+  // New variables stored to state
+  const newNils: NilMetrics = [...nils];
+  const newMissedBids: [number, number, number, number] = [...missedBids];
+  const newLifeBags: [number, number, number, number, number] = [...lifeBags];
+  // get order relative to first
+  const a = first;
+  const b = (first + 1) % 4;
+  const c = (first + 2) % 4;
+  const d = (first + 3) % 4;
+  // check if 2nd partner was nil
+  const cWasNil = lastBid[c].bid === 0 && !lastBid[c].blind;
+  const dWasNil = lastBid[d].bid === 0 && !lastBid[d].blind;
+  // check if stopped
+  const acStopped = lastBid[a].bid + lastBid[c].bid > mades[a] + mades[c];
+  const bdStopped = lastBid[b].bid + lastBid[d].bid > mades[b] + mades[d];
+
+  // Iterate over bids
+  lastBid.forEach((bid, i) => {
+    // Nil Tracker, [bid, blind, won]
+    newNils[i][0] += bid.bid === 0 ? 1 : 0;
+    newNils[i][1] += bid.blind ? 1 : 0;
+    newNils[i][2] += bid.bid === 0 && mades[i] === 0 ? 1 : 0;
+
+    // Missed Bid Tracker
+    // partner index
+    const p = (i + 2) % 4;
+    // team bids vs made tricks
+    const teamMiss = bid.bid + lastBid[p].bid - (mades[i] + mades[p]);
+    const iMiss = bid.bid - mades[i];
+    // add to missed bid tracker
+    if (bid.bid > 2 && teamMiss > 0 && iMiss > 0) {
+      newMissedBids[i] += Math.min(iMiss, teamMiss);
+    }
+
+    // Bag Tracker
+    const partnerNil2nd = (i === a && cWasNil) || (i === b && dWasNil);
+    const stoppedEnemy =
+      ((i === a || i === c) && bdStopped) ||
+      ((i === b || i === d) && acStopped);
+    // don't count certain bag situations for bag tracker
+    if (partnerNil2nd || stoppedEnemy || bid.train || lastBid[p].train) {
+      return;
+    }
+    // add the team or personal bags, whatever is lower
+    if (-teamMiss > 0 && -iMiss > 0) {
+      newLifeBags[i] += Math.min(-iMiss, -teamMiss);
+    }
+  });
+  // increment expected bags by 0.25
+  newLifeBags[lastBid.length] += 0.25;
+
+  return { newNils, newMissedBids, newLifeBags };
 };
