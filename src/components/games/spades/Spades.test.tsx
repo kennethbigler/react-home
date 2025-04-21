@@ -247,6 +247,7 @@ describe("games | spades | Spades", () => {
   });
 
   test("helpers | getMetrics", () => {
+    // basic
     expect(
       getMetrics(
         [
@@ -275,6 +276,36 @@ describe("games | spades | Spades", () => {
       ],
       newMissedBids: [0, 0, 0, 0],
       newLifeBags: [0, 0, 0, 1, 0.25],
+    });
+    // missed bid
+    expect(
+      getMetrics(
+        [
+          [0, 0, 0],
+          [0, 0, 0],
+          [0, 0, 0],
+          [0, 0, 0],
+        ], // nils
+        [0, 0, 0, 0, 0], // lifeBags
+        0, // first: number,
+        [
+          { bid: 3, blind: false, train: false },
+          { bid: 3, blind: false, train: false },
+          { bid: 3, blind: false, train: false },
+          { bid: 3, blind: false, train: false },
+        ], // lastBid
+        [2, 3, 2, 6], // mades
+        [0, 0, 0, 0], // missedBids
+      ),
+    ).toEqual({
+      newNils: [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+      ],
+      newMissedBids: [1, 0, 1, 0],
+      newLifeBags: [0, 0, 0, 0, 0.25],
     });
   });
 });
