@@ -1,4 +1,4 @@
-import { weighHand } from "./useBlackjackAI";
+import { weighHand } from "./blackjackHelpers";
 
 describe("games | blackjack | blackjackHelpers", () => {
   test("weighHand", () => {

@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { BotCPlayer } from "../../../../jotai/botc-atom";
 import CharacterSheet from "./character-sheet/CharacterSheet";
 import { usePlayerNotes } from "../useBotC";
-import { getGridSize } from "../helpers";
+import { getGridSize } from "../botcHelpers";
 import PlayerAdjControls from "./PlayerAdjControls";
 
 interface PlayerNotesProps {

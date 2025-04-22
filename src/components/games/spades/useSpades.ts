@@ -1,7 +1,7 @@
 import { useAtom, useAtomValue } from "jotai";
 import playerAtom from "../../../jotai/player-atom";
 import spadesAtom, { Bids, defaultBid } from "../../../jotai/spades-atom";
-import { bidsToString, getMetrics, getScore, penaltyHelper } from "./helpers";
+import { bidsToString, getMetrics, getScore, penaltyHelper } from "./spadesHelpers";
 
 const useSpades = () => {
   const players = useAtomValue(playerAtom);

@@ -5,7 +5,7 @@ import {
   getChipColor,
   getScore,
   getMetrics,
-} from "./helpers";
+} from "./spadesHelpers";
 import Spades from ".";
 
 describe("games | spades | Spades", () => {

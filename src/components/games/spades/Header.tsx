@@ -2,7 +2,7 @@ import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import PlayerMenu from "../../common/header/PlayerMenu";
-import { getChipColor } from "./helpers";
+import { getChipColor } from "./spadesHelpers";
 
 interface HeaderProps {
   initials: string;
