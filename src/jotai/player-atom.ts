@@ -1,11 +1,26 @@
 import { atomWithStorage } from "jotai/utils";
 import { DBCard } from "./deck-state";
 
+/**
+ * weight?: number;
+ * soft?: boolean;
+ * cards: DBCard[];
+ */
 export interface DBHand {
   weight?: number;
   soft?: boolean;
   cards: DBCard[];
 }
+
+/**
+ * hands: DBHand[];
+ * id: number;
+ * isBot: boolean;
+ * money: number;
+ * status: string;
+ * name: string;
+ * bet: number;
+ */
 export interface DBPlayer {
   hands: DBHand[];
   id: number;

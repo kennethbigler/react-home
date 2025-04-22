@@ -6,7 +6,8 @@ import {
   evaluate,
   getCardsToDiscard,
   computer,
-} from "../usePoker";
+  findAndPayWinner,
+} from "../pokerHelpers";
 
 const hand = [
   { name: "K", weight: 13, suit: "♠" },
@@ -14,6 +15,14 @@ const hand = [
   { name: "J", weight: 11, suit: "♠" },
   { name: "10", weight: 10, suit: "♠" },
   { name: "9", weight: 9, suit: "♥" },
+];
+
+const losingHand = [
+  { name: "K", weight: 13, suit: "♠" },
+  { name: "K", weight: 13, suit: "♥" },
+  { name: "Q", weight: 12, suit: "♠" },
+  { name: "J", weight: 11, suit: "♠" },
+  { name: "10", weight: 10, suit: "♠" },
 ];
 
 describe("games | poker | helpers", () => {
@@ -108,4 +117,63 @@ describe("games | poker | helpers", () => {
     computer(player, discard);
     expect(discard).toHaveBeenCalled();
   });
+
+  test("findAndPayWinner", () => {
+    const player1 = {
+      hands: [{ cards: hand }],
+      id: 0,
+      isBot: false,
+      money: 0,
+      status: "",
+      name: "Ken",
+      bet: 5,
+    };
+    const player2 = {
+      hands: [{ cards: losingHand }],
+      id: 1,
+      isBot: false,
+      money: 0,
+      status: "",
+      name: "Andrew",
+      bet: 5,
+    };
+    const players = [player1, player2];
+    findAndPayWinner(players);
+
+    expect(players).toEqual([
+      {
+        hands: [{ cards: hand }],
+        id: 0,
+        isBot: false,
+        money: 20,
+        status: "win",
+        name: "Ken",
+        bet: 5,
+      },
+      {
+        hands: [{ cards: losingHand }],
+        id: 1,
+        isBot: false,
+        money: -5,
+        status: "lose",
+        name: "Andrew",
+        bet: 5,
+      },
+    ]);
+  });
+
+  // test empty player hand case
+  const emptyPlayer = [
+    {
+      hands: [{ cards: [] }],
+      id: 0,
+      isBot: false,
+      money: 0,
+      status: "",
+      name: "Ken",
+      bet: 5,
+    },
+  ];
+  findAndPayWinner(emptyPlayer);
+  expect(emptyPlayer).toEqual(emptyPlayer);
 });

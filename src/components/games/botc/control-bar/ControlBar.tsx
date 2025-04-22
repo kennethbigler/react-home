@@ -44,7 +44,7 @@ const ControlBar = ({
     <div className="flex-container">
       <FormControlLabel
         control={<Switch checked={showMove} onChange={onMoveToggle} />}
-        label={<SwapHoriz />}
+        label={<SwapHoriz titleAccess="move players" />}
       />
       <InfoPopup title="Tracker">
         <Tracker botcPlayers={botcPlayers} end={numPlayers + numTravelers} />

@@ -6,7 +6,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 // Custom
 import { BotCPlayer } from "../../../../jotai/botc-atom";
 import { useTracker } from "../useBotC";
-import { getGridSize } from "../helpers";
+import { getGridSize } from "../botcHelpers";
 
 const numRounds = [0, 1, 2, 3, 4, 5, 6, 7];
 

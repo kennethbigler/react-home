@@ -1,5 +1,5 @@
 import Chip from "@mui/material/Chip";
-import { getCSV, showRange } from "../job-helpers";
+import { getCSV, showRange } from "../jobHelpers";
 import dateObj from "../../../../apis/DateHelper";
 
 describe("resume | work | Job", () => {

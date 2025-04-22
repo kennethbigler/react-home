@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import StatsBagsChart from "./StatsBagsChart";
 import themeAtom from "../../../../jotai/theme-atom";
-import { getChipColor } from "../helpers";
+import { getChipColor } from "../spadesHelpers";
 import spadesAtom from "../../../../jotai/spades-atom";
 import StatsNilChart from "./StatsNilsChart";
 

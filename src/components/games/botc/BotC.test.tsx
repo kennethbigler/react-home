@@ -31,7 +31,15 @@ describe("games | BotC", () => {
     // expect(screen.getByText("Andrew")).toBeInTheDocument();
   });
 
-  it("can can take notes on players", () => {
+  it("can move players", () => {
+    render(<BotC />);
+
+    expect(screen.queryByLabelText("up")).toBeNull();
+    fireEvent.click(screen.getByLabelText("move players"));
+    expect(screen.getAllByLabelText("up")).not.toBeNull();
+  });
+
+  it("can take notes on players", () => {
     render(<BotC />);
     fireEvent.click(screen.getAllByText("Ken")[0]);
     expect(screen.getByText("Chef")).toBeInTheDocument();

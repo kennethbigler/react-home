@@ -2,6 +2,11 @@ import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import playerAtom from "./player-atom";
 
+/**
+ * name: string;
+ * suit: string;
+ * weight: number;
+ */
 export interface DBCard {
   name: string;
   suit: string;
