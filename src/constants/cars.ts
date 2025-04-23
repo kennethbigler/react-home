@@ -24,7 +24,7 @@ import panamera21 from "../images/cars/21_porsche_panamera.png";
 import bronco21 from "../images/cars/21_ford_bronco.webp";
 import grom22 from "../images/cars/22_honda_grom.webp";
 import porsche19 from "../images/cars/19_porsche_cayenne.webp";
-import { DataEntry } from "../components/common/timeline-card/timeline-consts";
+import { DataEntry } from "../components/resume/cars/timeline-card/timeline-consts";
 
 export interface CarEntry extends DataEntry {
   car: string;

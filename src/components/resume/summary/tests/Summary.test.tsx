@@ -6,7 +6,7 @@ describe("resume | summary | Summary", () => {
     render(<Summary />);
 
     expect(
-      screen.getByText("Accessibility Engineering Leader, Intuit"),
+      screen.getByText("Head of Accessibility Engineering, Intuit"),
     ).toBeInTheDocument();
     expect(screen.getByText("Location")).toBeInTheDocument();
     expect(screen.getByText("Mountain View, CA")).toBeInTheDocument();

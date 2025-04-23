@@ -1,6 +1,6 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import TimelineCard from "../../common/timeline-card";
+import TimelineCard from "./timeline-card";
 import dateObj from "../../../apis/DateHelper";
 import { cars, hideFamilyCars, hideKenCars } from "../../../constants/cars";
 import CarChartControls from "./CarChartControls";

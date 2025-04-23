@@ -7,15 +7,15 @@ describe("resume | work | Work", () => {
 
     expect(screen.getByText("Experience")).toBeInTheDocument();
 
-    expect(screen.getByText("Work Timeline")).toBeInTheDocument();
     expect(screen.queryByText("Second Harvest Food Bank")).toBeNull();
-    expect(screen.getByText("Santa Clara University BS")).toBeInTheDocument();
-    expect(screen.getByText("Intuit")).toBeInTheDocument();
+    expect(
+      screen.getByText("Santa Clara University BS, Santa Clara, CA"),
+    ).toBeInTheDocument();
 
     expect(screen.getByText("work Experience")).toBeInTheDocument();
     expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
     expect(
-      screen.getByText("Accessibility Engineering Leader"),
+      screen.getByText("Head of Accessibility Engineering"),
     ).toBeInTheDocument();
     expect(screen.getByText("Frontend Software Engineer")).toBeInTheDocument();
 

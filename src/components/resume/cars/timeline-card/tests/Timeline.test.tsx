@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import Timeline from "../Timeline";
 
-import dateObj from "../../../../apis/DateHelper";
+import dateObj from "../../../../../apis/DateHelper";
 
 const start = dateObj("2019-05");
 const end = dateObj("2020-02");

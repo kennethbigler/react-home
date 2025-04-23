@@ -1,15 +1,14 @@
 import { grey } from "@mui/material/colors";
-import dateObj, { DateObj, FormatOutput } from "../../../apis/DateHelper";
-import ExpandableCard from "../expandable-card";
+import dateObj, { DateObj, FormatOutput } from "../../../../apis/DateHelper";
+import ExpandableCard from "../../../common/expandable-card";
 import Timeline from "./Timeline";
 import { TIMELINE_TITLE, DataEntry } from "./timeline-consts";
-import workExperience from "../../../constants/work";
 
 interface TimelineCardProps {
   /** background color of the expandable card top bar */
   backgroundColor?: string;
   /** reads [selector] from each array entry and creates segments */
-  data?: DataEntry[];
+  data: DataEntry[];
   /** title content */
   title?: string;
   /** key to be used to read data */
@@ -30,7 +29,7 @@ const DATE_FORMAT: FormatOutput = "MMMM Y";
  *                                     |->  YearMarkers */
 /** function to generate timeline card */
 const TimelineCard = ({
-  data = workExperience,
+  data,
   backgroundColor = grey[800],
   title = TIMELINE_TITLE,
   selector = "company",
