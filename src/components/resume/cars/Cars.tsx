@@ -1,7 +1,6 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import TimelineCard from "./timeline-card";
-import dateObj from "../../../apis/DateHelper";
 import { cars, hideFamilyCars, hideKenCars } from "../../../constants/cars";
 import CarChartControls from "./CarChartControls";
 import CarGraphs from "./graphs/CarGraphs";
@@ -42,15 +41,7 @@ const Cars = () => {
         hideKen={hideKen}
         hideFamily={hideFamily}
       />
-      <TimelineCard
-        aria-hidden
-        enableLongTitles
-        data={data}
-        selector="car"
-        start={dateObj("2008-03")}
-        title="Ken's Cars"
-        yearMarkerFrequency={3}
-      />
+      <TimelineCard data={data} />
       <CarGraphs data={data} hideFamily={hideFamily} hideKen={hideKen} />
       <CarDisplay hideFamily={hideFamily} hideKen={hideKen} />
     </>

@@ -1,29 +1,26 @@
 import * as React from "react";
 import dateObj, { DateObj } from "../../../../apis/DateHelper";
 import Row from "./Row";
-import { SegmentType } from "./types";
-import { DataEntry, MONTH_SORT } from "./timeline-consts";
+import { DataEntry, SegmentType } from "./types";
 
 interface TimelineProps {
   /** reads [selector] from each array entry and creates segments */
   data: DataEntry[];
-  /** key to be used to read data */
-  selector: string;
   /** start of the timeline */
   start: DateObj;
   /** end of the timeline */
   end: DateObj;
-  /** reduce year markers */
-  yearMarkerFrequency: number;
-  /** enables title field to be long version */
-  enableLongTitles?: boolean;
 }
 
 const WIDTH = 99;
-const MIN_LONG_WIDTH = 269;
 const MIN_TEXT_WIDTH = 85;
 const MIN_SHORT_WIDTH = 54;
 const YEAR_WIDTH = 0.3;
+const SELECTOR = "car";
+const YEAR_MARK_FREQ = 3;
+
+const monthSort = (a: DataEntry, b: DataEntry): number =>
+  a.start.diff(b.start, "months");
 
 /** function to add empty space between start and elm segment */
 const addEmptySegment = (segments: SegmentType[], width: number): void => {
@@ -32,17 +29,10 @@ const addEmptySegment = (segments: SegmentType[], width: number): void => {
   }
 };
 
-const Timeline = ({
-  start,
-  end,
-  selector,
-  data: propsData,
-  yearMarkerFrequency,
-  enableLongTitles,
-}: TimelineProps) => {
+const Timeline = ({ start, end, data: propsData }: TimelineProps) => {
   // get immutable data from props and sort by start date
   const data: DataEntry[] = React.useMemo(
-    () => [...propsData].sort(MONTH_SORT),
+    () => [...propsData].sort(monthSort),
     [propsData],
   );
   // track elements added already
@@ -61,47 +51,39 @@ const Timeline = ({
   );
 
   /** function to add elm segment */
-  const addSegment = React.useCallback(
-    (
-      segments: SegmentType[],
-      elm: DataEntry,
-      beginning: number,
-      ending: number,
-    ): void => {
-      const { color, inverted, title, short, char } = elm;
-      const width = ending - beginning;
-      const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
-      const payload = {
-        color,
-        inverted,
-        width,
-        title,
-      };
-      // check if name has room
-      if (textWidth < MIN_SHORT_WIDTH) {
-        segments.push({
-          body: char || (elm[selector] as string).substr(0, 1),
-          ...payload,
-        });
-      } else if (textWidth < MIN_TEXT_WIDTH) {
-        segments.push({
-          body: short,
-          ...payload,
-        });
-      } else if (!enableLongTitles || textWidth < MIN_LONG_WIDTH) {
-        segments.push({
-          body: elm[selector] as string,
-          ...payload,
-        });
-      } else {
-        segments.push({
-          body: title,
-          ...payload,
-        });
-      }
-    },
-    [selector, enableLongTitles],
-  );
+  const addSegment = (
+    segments: SegmentType[],
+    elm: DataEntry,
+    beginning: number,
+    ending: number,
+  ): void => {
+    const { color, inverted, title, short, char } = elm;
+    const width = ending - beginning;
+    const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
+    const payload = {
+      color,
+      inverted,
+      width,
+      title,
+    };
+    // check if name has room
+    if (textWidth < MIN_SHORT_WIDTH) {
+      segments.push({
+        body: char || (elm[SELECTOR] as string).substr(0, 1),
+        ...payload,
+      });
+    } else if (textWidth < MIN_TEXT_WIDTH) {
+      segments.push({
+        body: short,
+        ...payload,
+      });
+    } else {
+      segments.push({
+        body: elm[SELECTOR] as string,
+        ...payload,
+      });
+    }
+  };
 
   /** break data up into segments */
   const getSegments = (elm: DataEntry, i: number): SegmentType[] => {
@@ -156,11 +138,7 @@ const Timeline = ({
     const endYear = Number(end.format("YYYY"));
 
     const years = [];
-    for (
-      let year = startYear + 1;
-      year <= endYear;
-      year += yearMarkerFrequency
-    ) {
+    for (let year = startYear + 1; year <= endYear; year += YEAR_MARK_FREQ) {
       years.push(dateObj(`${year}`));
     }
 
@@ -178,7 +156,7 @@ const Timeline = ({
     }
 
     return yearMarkers;
-  }, [end, getTimeFromStart, start, yearMarkerFrequency]);
+  }, [end, getTimeFromStart, start]);
 
   return (
     <div style={{ width: "100%", paddingBottom: 7 }}>

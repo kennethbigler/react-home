@@ -1,56 +1,28 @@
 import { grey } from "@mui/material/colors";
-import dateObj, { DateObj, FormatOutput } from "../../../../apis/DateHelper";
+import dateObj, { FormatOutput } from "../../../../apis/DateHelper";
 import ExpandableCard from "../../../common/expandable-card";
 import Timeline from "./Timeline";
-import { TIMELINE_TITLE, DataEntry } from "./timeline-consts";
+import { DataEntry } from "./types";
 
 interface TimelineCardProps {
-  /** background color of the expandable card top bar */
-  backgroundColor?: string;
   /** reads [selector] from each array entry and creates segments */
   data: DataEntry[];
-  /** title content */
-  title?: string;
-  /** key to be used to read data */
-  selector?: string;
-  /** start of the timeline */
-  start?: DateObj;
-  /** end of the timeline */
-  end?: DateObj;
-  /** reduce year markers */
-  yearMarkerFrequency?: number;
-  /** enables title field to be long version */
-  enableLongTitles?: boolean;
 }
 
+const START = dateObj("2008-03");
+const END = dateObj();
 const DATE_FORMAT: FormatOutput = "MMMM Y";
 
 /* TimelineCard  ->  Timeline  ->  Row  ->  Segment
  *                                     |->  YearMarkers */
 /** function to generate timeline card */
-const TimelineCard = ({
-  data,
-  backgroundColor = grey[800],
-  title = TIMELINE_TITLE,
-  selector = "company",
-  start = dateObj("2011-09"),
-  end = dateObj(),
-  yearMarkerFrequency = 1,
-  enableLongTitles,
-}: TimelineCardProps) => (
+const TimelineCard = ({ data }: TimelineCardProps) => (
   <ExpandableCard
-    backgroundColor={backgroundColor}
-    subtitle={`${start.format(DATE_FORMAT)} - ${end.format(DATE_FORMAT)}`}
-    title={title}
+    backgroundColor={grey[800]}
+    subtitle={`${START.format(DATE_FORMAT)} - ${END.format(DATE_FORMAT)}`}
+    title="Ken's Cars"
   >
-    <Timeline
-      data={data}
-      selector={selector}
-      start={start}
-      end={end}
-      yearMarkerFrequency={yearMarkerFrequency}
-      enableLongTitles={enableLongTitles}
-    />
+    <Timeline data={data} start={START} end={END} />
   </ExpandableCard>
 );
 
