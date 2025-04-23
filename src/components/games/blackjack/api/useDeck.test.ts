@@ -1,5 +1,5 @@
 import { rankSort } from "../../../../jotai/deck-state";
-import Deck from "./useDeck";
+import Deck, { asyncForEach } from "./useDeck";
 
 const cardNames = [
   "2",
@@ -94,5 +94,15 @@ describe("apis | Deck", () => {
       { name: "4", weight: 4, suit: "♠" },
       { name: "K", weight: 13, suit: "♣" },
     ]);
+  });
+
+  test("asyncForEach works as expected", async () => {
+    let x = 1;
+
+    // @ts-expect-error: just testing
+    await asyncForEach([1, 2, 3], (num) => {
+      x += num;
+    });
+    expect(x).toEqual(7);
   });
 });

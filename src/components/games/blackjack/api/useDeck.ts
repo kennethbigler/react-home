@@ -1,6 +1,17 @@
 import localForage from "localforage";
 import { DBCard, shuffle as shuffleAlg } from "../../../../jotai/deck-state";
 
+/** async forEach function */
+type ForEachCallback<T> = (item: T, index: number, array: T[]) => Promise<void>;
+export async function asyncForEach<T>(
+  array: T[],
+  callback: ForEachCallback<T>,
+): Promise<void> {
+  for (let index = 0; index < array.length; index += 1) {
+    await callback(array[index], index, array);
+  }
+}
+
 /** get immutable copy of deck O(N) */
 const getDeck = (): Promise<DBCard[]> =>
   localForage
@@ -14,9 +25,7 @@ const setDeck = (deck: DBCard[]): Promise<DBCard[] | null> =>
 
 const useDeck = () => {
   /** randomize order of the cards O(N + M) */
-  const shuffle = (): Promise<DBCard[] | null> => {
-    return setDeck(shuffleAlg());
-  };
+  const shuffle = (): Promise<DBCard[] | null> => setDeck(shuffleAlg());
 
   /** return an array of a specified length O(2N) */
   const deal = (num = 0): Promise<DBCard[]> => {
