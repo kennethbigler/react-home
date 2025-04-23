@@ -7,8 +7,7 @@ import blackjackState, {
 import { DBHand, DBPlayer } from "../../../jotai/player-atom";
 import { TurnState } from "../../../jotai/turn-atom";
 import { rankSort } from "../../../jotai/deck-state";
-import useDeck from "./api/useDeck";
-import asyncForEach from "./api/asyncForEach";
+import useDeck, { asyncForEach } from "./api/useDeck";
 import {
   banking,
   DEALER,
