@@ -13,12 +13,7 @@ export interface DBCard {
   weight: number;
 }
 
-// TODO: remove export after removing useDeck
-/** sort by card weight */
-export const rankSort = (a: DBCard, b: DBCard): number => a.weight - b.weight;
-
-// TODO: remove export after removing useDeck
-export const newDeck: DBCard[] = [
+const newDeck: DBCard[] = [
   { name: "2", weight: 2, suit: "♣" },
   { name: "3", weight: 3, suit: "♣" },
   { name: "4", weight: 4, suit: "♣" },
@@ -73,9 +68,13 @@ export const newDeck: DBCard[] = [
   { name: "A", weight: 14, suit: "♠" },
 ];
 
-export const deckAtom = atomWithStorage("deckAtom", newDeck);
+// TODO: remove export after removing useDeck
+/** sort by card weight */
+export const rankSort = (a: DBCard, b: DBCard): number => a.weight - b.weight;
 
-export const shuffleAtom = atom(null, (_get, set) => {
+// TODO: remove export after removing useDeck
+/** randomize order of the cards O(N + M) */
+export const shuffle = (): DBCard[] => {
   const shuffledDeck: DBCard[] = [];
   // create immutable copy of deck
   newDeck.forEach((card) => shuffledDeck.push(card));
@@ -88,7 +87,13 @@ export const shuffleAtom = atom(null, (_get, set) => {
     shuffledDeck[k] = temp;
   }
   // update deck state
-  set(deckAtom, shuffledDeck);
+  return shuffledDeck;
+};
+
+export const deckAtom = atomWithStorage("deckAtom", newDeck);
+
+export const shuffleAtom = atom(null, (_get, set) => {
+  set(deckAtom, shuffle());
 });
 
 /** return an array of a specified length O(2N) */
