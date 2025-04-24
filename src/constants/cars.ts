@@ -29,6 +29,8 @@ export interface CarEntry {
   color: string;
   title: string;
   start: DateObj;
+  kStart?: DateObj;
+  fStart?: DateObj;
   end: DateObj;
   inverted?: boolean;
   short?: string;
@@ -46,9 +48,38 @@ export interface CarEntry {
   zTo60: number;
 }
 
+// --------------------------------------------------     Past Shared Cars     -------------------------------------------------- //
+
+const irene = {
+  color: grey[400],
+  start: dateObj("2010-12"),
+  fStart: dateObj("2015-02"),
+  end: dateObj("2015-06"),
+  car: "Impala",
+  short: "Impla",
+  nickname: "Irene",
+  title: "Chevrolet Impala LS (2010)",
+  inverted: true,
+
+  owned: "2010 - 2015",
+  story:
+    "After selling my first car, my parents purchased a 2010 Chevrolet Impala LS for me to drive. It was a used Hertz rental car.",
+  src: impala10,
+  transmission: "Automatic",
+
+  horsepower: 211,
+  MPG: 22,
+  torque: 216,
+  weight: 3555,
+  zTo60: 8.3,
+};
+
+// --------------------------------------------------     Present Shared Cars     -------------------------------------------------- //
+
 const camilla = {
   color: yellow[500],
   start: dateObj("2019-01"),
+  fStart: dateObj("2021-10"),
   end: dateObj(),
   car: "Corvette",
   short: "Vette",
@@ -72,6 +103,7 @@ const camilla = {
 const cheyenne = {
   color: grey[50],
   start: dateObj("2023-08"),
+  fStart: dateObj("2025-01"),
   end: dateObj(),
   car: "Cayenne",
   short: "Cyne",
@@ -95,6 +127,7 @@ const cheyenne = {
 const tesla = {
   color: grey[50],
   start: dateObj("2016-03"),
+  kStart: dateObj("2025-01"),
   end: dateObj(),
   car: "Model X",
   short: "ModlX",
@@ -272,28 +305,7 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     weight: 3607,
     zTo60: 8.5,
   },
-  {
-    color: grey[400],
-    start: dateObj("2010-12"),
-    end: dateObj("2015-06"),
-    car: "Impala",
-    short: "Impla",
-    nickname: "Irene",
-    title: "Chevrolet Impala LS (2010)",
-    inverted: true,
-
-    owned: "2010 - 2015",
-    story:
-      "After selling my first car, my parents purchased a 2010 Chevrolet Impala LS for me to drive. It was a used Hertz rental car.",
-    src: impala10,
-    transmission: "Automatic",
-
-    horsepower: 211,
-    MPG: 22,
-    torque: 216,
-    weight: 3555,
-    zTo60: 8.3,
-  },
+  irene,
   {
     color: red[900],
     start: dateObj("2015-02"),
@@ -381,6 +393,8 @@ const pastKensCarsNoRepeats: CarEntry[] = [
   },
 ];
 
+// --------------------------------------------------     Car Processing     -------------------------------------------------- //
+
 const currentKensCars: CarEntry[] = [tesla];
 
 export const cars: CarEntry[] = [
@@ -391,7 +405,7 @@ export const cars: CarEntry[] = [
 ];
 
 const pastKensCars = [...pastKensCarsNoRepeats, camilla, cheyenne];
-const pastFamilyCars = [...pastFamilyCarsNoRepeats, tesla];
+const pastFamilyCars = [...pastFamilyCarsNoRepeats, irene, tesla];
 
 export const hideFamilyCars = [...pastKensCars, ...currentKensCars];
 export const hideKenCars = [...pastFamilyCars, ...currentFamilyCars];

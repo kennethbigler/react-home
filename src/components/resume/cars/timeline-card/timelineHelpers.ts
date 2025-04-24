@@ -2,7 +2,6 @@ import dateObj, { DateObj } from "../../../../apis/DateHelper";
 import { CarEntry } from "../../../../constants/cars";
 
 /* *************************     Types     ************************* */
-
 export interface SegmentType {
   color?: string;
   body?: string;
@@ -12,7 +11,6 @@ export interface SegmentType {
 }
 
 /* *************************     Constants     ************************* */
-
 export const START = dateObj("2008-03");
 export const END = dateObj();
 
@@ -23,7 +21,6 @@ const YEAR_WIDTH = 0.3;
 const YEAR_MARK_FREQ = 3;
 
 /* *************************     Local Functions     ************************* */
-
 /** function to add empty space between start and elm segment */
 const addEmptySegment = (segments: SegmentType[], width: number): void => {
   if (width > 0) {
@@ -62,11 +59,6 @@ const addSegment = (
 };
 
 /* *************************     Export Functions     ************************* */
-
-/** Sorting function by month */
-export const monthSort = (a: CarEntry, b: CarEntry): number =>
-  a.start.diff(b.start, "months");
-
 /** adds gray lines to indicate years */
 export const getYearMarkers = () => {
   const startYear = Number(START.format("YYYY"));
@@ -93,10 +85,25 @@ export const getYearMarkers = () => {
   return yearMarkers;
 };
 
+const getStart = (data: CarEntry, useKStart: boolean, useFStart: boolean) =>
+  useFStart
+    ? data.fStart || data.start
+    : useKStart
+      ? data.kStart || data.start
+      : data.start;
+const getEnd = (data: CarEntry, useKStart: boolean, useFStart: boolean) =>
+  useFStart
+    ? data.kStart || data.end
+    : useKStart
+      ? data.fStart || data.end
+      : data.end;
+
 /** break data up into segments */
 export const getSegments = (
   data: CarEntry[],
   added: boolean[],
+  useKStart: boolean,
+  useFStart: boolean,
   elm: CarEntry,
   i: number,
 ): SegmentType[] => {
@@ -107,7 +114,9 @@ export const getSegments = (
 
   // local variables
   const segments: SegmentType[] = [];
-  const { start: segStart, end: segEnd } = elm;
+  const segStart: DateObj = getStart(elm, useKStart, useFStart);
+  const segEnd: DateObj = getEnd(elm, useKStart, useFStart);
+
   let beginning = getTimeFromStart(segStart);
   let ending = getTimeFromStart(segEnd);
 
@@ -122,13 +131,13 @@ export const getSegments = (
     // skip if added already
     if (!added[j]) {
       // test segment
-      beginning = getTimeFromStart(entry.start);
+      beginning = getTimeFromStart(getStart(entry, useKStart, useFStart));
       // if start is after end of main segment
       if (beginning >= ending) {
         // add filler in between end/start
         addEmptySegment(segments, beginning - ending);
         // add next segment
-        ending = getTimeFromStart(entry.end);
+        ending = getTimeFromStart(getEnd(entry, useKStart, useFStart));
         addSegment(segments, entry, beginning, ending);
         // mark as already added
         added[j] = true;

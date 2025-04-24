@@ -41,7 +41,7 @@ const Cars = () => {
         hideKen={hideKen}
         hideFamily={hideFamily}
       />
-      <TimelineCard data={data} />
+      <TimelineCard data={data} useKStart={hideFamily} useFStart={hideKen} />
       <CarGraphs data={data} hideFamily={hideFamily} hideKen={hideKen} />
       <CarDisplay hideFamily={hideFamily} hideKen={hideKen} />
     </>
