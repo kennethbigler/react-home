@@ -1,6 +1,8 @@
 import dateObj, { DateObj } from "../../../../apis/DateHelper";
 import { CarEntry } from "../../../../constants/cars";
 
+/* *************************     Types     ************************* */
+
 export interface SegmentType {
   color?: string;
   body?: string;
@@ -9,36 +11,61 @@ export interface SegmentType {
   inverted?: boolean;
 }
 
+/* *************************     Constants     ************************* */
+
 export const START = dateObj("2008-03");
 export const END = dateObj();
-export const WIDTH = 99;
 
+const WIDTH = 99;
 const MIN_TEXT_WIDTH = 85;
 const MIN_SHORT_WIDTH = 54;
 const YEAR_WIDTH = 0.3;
 const YEAR_MARK_FREQ = 3;
 
-export const monthSort = (a: CarEntry, b: CarEntry): number =>
-  a.start.diff(b.start, "months");
+/* *************************     Local Functions     ************************* */
 
 /** function to add empty space between start and elm segment */
-export const addEmptySegment = (
-  segments: SegmentType[],
-  width: number,
-): void => {
+const addEmptySegment = (segments: SegmentType[], width: number): void => {
   if (width > 0) {
     segments.push({ width });
   }
 };
 
 /** Get the width from the beginning of the graph to this bar */
-export const getTimeFromStart = (val: DateObj): number => {
+const getTimeFromStart = (val: DateObj): number => {
   // get max length
   const totalDuration = END.diff(START, "months");
   const timeFromStart = val.diff(START, "months");
   const width = Math.floor((timeFromStart / totalDuration) * WIDTH);
   return width > 0 ? width : 0;
 };
+
+/** function to add elm segment */
+const addSegment = (
+  segments: SegmentType[],
+  elm: CarEntry,
+  beginning: number,
+  ending: number,
+): void => {
+  const { color, inverted, title, short, char } = elm;
+  const width = ending - beginning;
+  const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
+  const payload = { color, inverted, width, title };
+  // check if name has room
+  if (textWidth < MIN_SHORT_WIDTH) {
+    segments.push({ body: char || elm.car[0], ...payload });
+  } else if (textWidth < MIN_TEXT_WIDTH) {
+    segments.push({ body: short, ...payload });
+  } else {
+    segments.push({ body: elm.car, ...payload });
+  }
+};
+
+/* *************************     Export Functions     ************************* */
+
+/** Sorting function by month */
+export const monthSort = (a: CarEntry, b: CarEntry): number =>
+  a.start.diff(b.start, "months");
 
 /** adds gray lines to indicate years */
 export const getYearMarkers = () => {
@@ -66,23 +93,51 @@ export const getYearMarkers = () => {
   return yearMarkers;
 };
 
-/** function to add elm segment */
-export const addSegment = (
-  segments: SegmentType[],
+/** break data up into segments */
+export const getSegments = (
+  data: CarEntry[],
+  added: boolean[],
   elm: CarEntry,
-  beginning: number,
-  ending: number,
-): void => {
-  const { color, inverted, title, short, char } = elm;
-  const width = ending - beginning;
-  const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
-  const payload = { color, inverted, width, title };
-  // check if name has room
-  if (textWidth < MIN_SHORT_WIDTH) {
-    segments.push({ body: char || elm.car[0], ...payload });
-  } else if (textWidth < MIN_TEXT_WIDTH) {
-    segments.push({ body: short, ...payload });
-  } else {
-    segments.push({ body: elm.car, ...payload });
+  i: number,
+): SegmentType[] => {
+  // skip if added already
+  if (added[i]) {
+    return [];
   }
+
+  // local variables
+  const segments: SegmentType[] = [];
+  const { start: segStart, end: segEnd } = elm;
+  let beginning = getTimeFromStart(segStart);
+  let ending = getTimeFromStart(segEnd);
+
+  // add main segments
+  addEmptySegment(segments, beginning);
+  addSegment(segments, elm, beginning, ending);
+  // track that segments have been added
+  added[i] = true;
+
+  // find any other segments that will fit
+  data.forEach((entry, j) => {
+    // skip if added already
+    if (!added[j]) {
+      // test segment
+      beginning = getTimeFromStart(entry.start);
+      // if start is after end of main segment
+      if (beginning >= ending) {
+        // add filler in between end/start
+        addEmptySegment(segments, beginning - ending);
+        // add next segment
+        ending = getTimeFromStart(entry.end);
+        addSegment(segments, entry, beginning, ending);
+        // mark as already added
+        added[j] = true;
+      }
+    }
+  });
+
+  // get last segment
+  addEmptySegment(segments, WIDTH - ending);
+
+  return [...segments];
 };
