@@ -1,7 +1,7 @@
 import * as React from "react";
 import Segment from "./Segment";
 import YearMarkers from "./YearMarkers";
-import { SegmentType } from "./types";
+import { SegmentType } from "./timelineHelpers";
 
 interface RowProps {
   segments: SegmentType[];

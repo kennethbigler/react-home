@@ -1,16 +1,24 @@
 import dateObj, { DateObj } from "../../../../apis/DateHelper";
-import { DataEntry, SegmentType } from "./types";
+import { CarEntry } from "../../../../constants/cars";
+
+export interface SegmentType {
+  color?: string;
+  body?: string;
+  title?: string;
+  width: number;
+  inverted?: boolean;
+}
 
 export const START = dateObj("2008-03");
 export const END = dateObj();
 export const WIDTH = 99;
+
 const MIN_TEXT_WIDTH = 85;
 const MIN_SHORT_WIDTH = 54;
 const YEAR_WIDTH = 0.3;
-const SELECTOR = "car";
 const YEAR_MARK_FREQ = 3;
 
-export const monthSort = (a: DataEntry, b: DataEntry): number =>
+export const monthSort = (a: CarEntry, b: CarEntry): number =>
   a.start.diff(b.start, "months");
 
 /** function to add empty space between start and elm segment */
@@ -61,34 +69,20 @@ export const getYearMarkers = () => {
 /** function to add elm segment */
 export const addSegment = (
   segments: SegmentType[],
-  elm: DataEntry,
+  elm: CarEntry,
   beginning: number,
   ending: number,
 ): void => {
   const { color, inverted, title, short, char } = elm;
   const width = ending - beginning;
   const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
-  const payload = {
-    color,
-    inverted,
-    width,
-    title,
-  };
+  const payload = { color, inverted, width, title };
   // check if name has room
   if (textWidth < MIN_SHORT_WIDTH) {
-    segments.push({
-      body: char || (elm[SELECTOR] as string).substr(0, 1),
-      ...payload,
-    });
+    segments.push({ body: char || elm.car[0], ...payload });
   } else if (textWidth < MIN_TEXT_WIDTH) {
-    segments.push({
-      body: short,
-      ...payload,
-    });
+    segments.push({ body: short, ...payload });
   } else {
-    segments.push({
-      body: elm[SELECTOR] as string,
-      ...payload,
-    });
+    segments.push({ body: elm.car, ...payload });
   }
 };

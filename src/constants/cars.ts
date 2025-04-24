@@ -7,7 +7,7 @@ import {
   teal,
   orange,
 } from "@mui/material/colors";
-import dateObj from "../apis/DateHelper";
+import dateObj, { DateObj } from "../apis/DateHelper";
 
 import prius07 from "../images/cars/07_toyota_prius.png";
 import voyager97 from "../images/cars/97_plymouth_voyager.png";
@@ -24,11 +24,16 @@ import panamera21 from "../images/cars/21_porsche_panamera.png";
 import bronco21 from "../images/cars/21_ford_bronco.webp";
 import grom22 from "../images/cars/22_honda_grom.webp";
 import porsche19 from "../images/cars/19_porsche_cayenne.webp";
-import { DataEntry } from "../components/resume/cars/timeline-card/types";
 
-export interface CarEntry extends DataEntry {
+export interface CarEntry {
+  color: string;
+  title: string;
+  start: DateObj;
+  end: DateObj;
+  inverted?: boolean;
+  short?: string;
   car: string;
-  char: string;
+  char?: string;
   nickname?: string;
   owned: string;
   story: string;
@@ -47,7 +52,6 @@ const camilla = {
   end: dateObj(),
   car: "Corvette",
   short: "Vette",
-  char: "C",
   nickname: "Camilla",
   title: "Chevrolet Corvette Z06 (2018)",
   inverted: true,
@@ -71,7 +75,6 @@ const cheyenne = {
   end: dateObj(),
   car: "Cayenne",
   short: "Cyne",
-  char: "C",
   nickname: "Cheyenne",
   title: "Porsche Cayenne E-Hybrid (2019)",
   inverted: true,
@@ -121,7 +124,6 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     end: dateObj("2010-02"),
     car: "Voyager",
     short: "Voygr",
-    char: "V",
     title: "Plymouth Voyager (1997)",
     inverted: true,
 
@@ -142,7 +144,6 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     end: dateObj("2016-08"),
     car: "Prius",
     short: "Prius",
-    char: "P",
     title: "Toyota Prius (2007)",
 
     owned: "2008 - 2016",
@@ -164,7 +165,6 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     end: dateObj("2021-08"),
     car: "Jag XJ8-L",
     short: "XJ8-L",
-    char: "J",
     title: "Jaguar XJ8-L (2005)",
 
     owned: "2017 - 2021",
@@ -211,7 +211,6 @@ const currentFamilyCars: CarEntry[] = [
     end: dateObj(),
     car: "Equinox",
     short: "Eqnox",
-    char: "E",
     title: "Chevrolet Equinox LTZ (2010)",
 
     owned: "2010 - Present",
@@ -279,7 +278,6 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     end: dateObj("2015-06"),
     car: "Impala",
     short: "Impla",
-    char: "I",
     nickname: "Irene",
     title: "Chevrolet Impala LS (2010)",
     inverted: true,
@@ -302,7 +300,7 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     end: dateObj("2019-01"),
     car: "Mustang",
     short: "Mstng",
-    char: "M1",
+    char: "Ma",
     nickname: "Miranda",
     title: "Ford Mustang GT Premium (2015)",
 
@@ -325,7 +323,6 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     end: dateObj("2018-08"),
     car: "Jag F-Type",
     short: "FType",
-    char: "J",
     title: "Jaguar F-Type R Convertible (2015)",
     inverted: true,
 
@@ -347,7 +344,6 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     end: dateObj("2023-03"),
     car: "Bronco",
     short: "Brnco",
-    char: "B",
     nickname: "Betty",
     title: "Ford Bronco Badlands (2021)",
     inverted: true,
@@ -370,7 +366,6 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     end: dateObj("2025-02"),
     car: "Grom",
     short: "Grom",
-    char: "G",
     title: "Honda Grom (2022)",
 
     owned: "2022 - 2025",
@@ -488,7 +483,7 @@ export const processData = (allData: CarEntry[]): GraphData => {
   // normalize the data to all fit on the same graph (0-1)
   data.forEach((car: CarEntry) => {
     const powerToWeight = car.horsepower / car.weight;
-    ret.xAxis.push(car.char);
+    ret.xAxis.push(car.char || car.car[0]);
     ret.horsepower.push([
       car.car,
       smoothData(car.horsepower, max.horsepower, min.horsepower),

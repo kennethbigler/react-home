@@ -3,21 +3,25 @@ import { grey } from "@mui/material/colors";
 import { FormatOutput } from "../../../../apis/DateHelper";
 import ExpandableCard from "../../../common/expandable-card";
 import Row from "./Row";
-import { DataEntry, SegmentType } from "./types";
 import {
-  addEmptySegment,
-  addSegment,
+  // types
+  SegmentType,
+  // constants
+  START,
   END,
+  WIDTH,
+  // functions
+  monthSort,
+  addEmptySegment,
   getTimeFromStart,
   getYearMarkers,
-  monthSort,
-  START,
-  WIDTH,
+  addSegment,
 } from "./timelineHelpers";
+import { CarEntry } from "../../../../constants/cars";
 
 interface TimelineCardProps {
   /** reads "car" from each array entry and creates segments */
-  data: DataEntry[];
+  data: CarEntry[];
 }
 
 const DATE_FORMAT: FormatOutput = "MMMM Y";
@@ -27,7 +31,7 @@ const DATE_FORMAT: FormatOutput = "MMMM Y";
 /** function to generate timeline card */
 const TimelineCard = ({ data: propsData }: TimelineCardProps) => {
   // get immutable data from props and sort by start date
-  const data: DataEntry[] = React.useMemo(
+  const data: CarEntry[] = React.useMemo(
     () => [...propsData].sort(monthSort),
     [propsData],
   );
@@ -35,7 +39,7 @@ const TimelineCard = ({ data: propsData }: TimelineCardProps) => {
   const added: boolean[] = [];
 
   /** break data up into segments */
-  const getSegments = (elm: DataEntry, i: number): SegmentType[] => {
+  const getSegments = (elm: CarEntry, i: number): SegmentType[] => {
     // skip if added already
     if (added[i]) {
       return [];

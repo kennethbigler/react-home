@@ -2,9 +2,23 @@ import { render, screen } from "@testing-library/react";
 import TimelineCard from "../TimelineCard";
 
 import dateObj from "../../../../../apis/DateHelper";
+import { CarEntry } from "../../../../../constants/cars";
 
-const data = [
+const carReqs = {
+  owned: "2020",
+  story: "car",
+  src: "somewhere",
+  transmission: "Manual",
+  horsepower: 1,
+  MPG: 2,
+  torque: 3,
+  weight: 4,
+  zTo60: 5,
+};
+
+const data: CarEntry[] = [
   {
+    ...carReqs,
     color: "red",
     title: "Title 1",
     car: "Body 1",
@@ -12,6 +26,7 @@ const data = [
     end: dateObj("2019-09"),
   },
   {
+    ...carReqs,
     color: "blue",
     title: "Title 2",
     car: "Body 2",
@@ -20,6 +35,7 @@ const data = [
     inverted: true,
   },
   {
+    ...carReqs,
     color: "blue",
     title: "Title 3",
     car: "Body 3",
@@ -28,6 +44,7 @@ const data = [
     short: "Short",
   },
   {
+    ...carReqs,
     color: "blue",
     title: "Title 4",
     car: "Body 4",

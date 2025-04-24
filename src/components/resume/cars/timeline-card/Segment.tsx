@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useTheme } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
-import { SegmentType } from "./types";
+import { SegmentType } from "./timelineHelpers";
 
 const bodyStyles: React.CSSProperties = {
   cursor: "default",
