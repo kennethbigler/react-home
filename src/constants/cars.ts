@@ -130,7 +130,7 @@ const tesla = {
   kStart: dateObj("2025-01"),
   end: dateObj(),
   car: "Model X",
-  short: "ModlX",
+  short: "T X",
   char: "X",
   title: "Tesla Model X 90D (2016)",
   inverted: true,

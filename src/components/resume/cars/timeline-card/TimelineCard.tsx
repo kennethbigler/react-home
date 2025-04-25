@@ -1,4 +1,3 @@
-import { grey } from "@mui/material/colors";
 import { FormatOutput } from "../../../../apis/DateHelper";
 import ExpandableCard from "../../../common/expandable-card";
 import Row from "./Row";
@@ -37,9 +36,9 @@ const TimelineCard = ({
 
   return (
     <ExpandableCard
-      backgroundColor={grey[800]}
-      subtitle={`${START.format(DATE_FORMAT)} - ${END.format(DATE_FORMAT)}`}
+      backgroundColor="black"
       title="Ken's Cars"
+      subtitle={`${START.format(DATE_FORMAT)} - ${END.format(DATE_FORMAT)}`}
     >
       <div style={{ width: "100%", paddingBottom: 7 }}>
         <Row key={data.length} segments={getYearMarkers()} yearMarkers />

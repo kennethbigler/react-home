@@ -6,6 +6,7 @@ import CarSankeyGraph from "./CarSankeyGraph";
 import ExpandableCard from "../../../common/expandable-card";
 import themeAtom from "../../../../jotai/theme-atom";
 import CurrentCarStats from "./CurrentCarStats";
+import { red } from "@mui/material/colors";
 
 interface CarGraphsProps {
   data: CarEntry[];
@@ -18,7 +19,7 @@ const CarGraphs = ({ data, hideFamily, hideKen }: CarGraphsProps) => {
   const color = theme.mode === "light" ? "black" : "white";
 
   return (
-    <ExpandableCard title="Car Graphs">
+    <ExpandableCard title="Car Graphs" backgroundColor={red.A700}>
       <Grid container spacing={2}>
         <CurrentCarStats color={color} />
         <Grid size={{ xs: 12, md: 6 }}>

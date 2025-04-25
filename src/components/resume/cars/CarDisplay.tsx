@@ -8,6 +8,7 @@ import {
 } from "../../../constants/cars";
 import CarCard from "./CarCard";
 import ExpandableCard from "../../common/expandable-card";
+import { red } from "@mui/material/colors";
 
 const pastKensCarsReversed = pastKensCars.slice().reverse();
 const pastFamilyCarsReversed = pastFamilyCars.slice().reverse();
@@ -26,7 +27,7 @@ const CarDisplay = React.memo(({ hideFamily, hideKen }: CarDisplayProps) => (
         <Grid container spacing={2} width="100%">
           {/* @ts-expect-error - custom breakpoints */}
           <Grid size={{ xs: 12, md: hideFamily ? 6 : 12, xxl: 6 }}>
-            <ExpandableCard title="Ken's Cars">
+            <ExpandableCard title="Ken's Cars" backgroundColor="black">
               {currentKensCarsReversed.map((car, i) => (
                 <CarCard car={car} key={`k-${car.title}-cur-${i}`} />
               ))}
@@ -34,7 +35,10 @@ const CarDisplay = React.memo(({ hideFamily, hideKen }: CarDisplayProps) => (
           </Grid>
           {/* @ts-expect-error - custom breakpoints */}
           <Grid size={{ xs: 12, md: hideFamily ? 6 : 12, xxl: 6 }}>
-            <ExpandableCard title="Ken's Previous Cars">
+            <ExpandableCard
+              title="Ken's Previous Cars"
+              backgroundColor={red.A700}
+            >
               {pastKensCarsReversed.map((car, i) => (
                 <CarCard car={car} key={`k-${car.title}-past-${i}`} />
               ))}
@@ -48,7 +52,11 @@ const CarDisplay = React.memo(({ hideFamily, hideKen }: CarDisplayProps) => (
         <Grid container spacing={2} width="100%">
           {/* @ts-expect-error - custom breakpoints */}
           <Grid size={{ xs: 12, md: hideKen ? 6 : 12, xxl: 6 }}>
-            <ExpandableCard title="Family Cars">
+            <ExpandableCard
+              title="Family Cars"
+              backgroundColor={red[50]}
+              inverted
+            >
               {currentFamilyCarsReversed.map((car, i) => (
                 <CarCard car={car} key={`f-${car.title}-cur-${i}`} />
               ))}
@@ -56,7 +64,10 @@ const CarDisplay = React.memo(({ hideFamily, hideKen }: CarDisplayProps) => (
           </Grid>
           {/* @ts-expect-error - custom breakpoints */}
           <Grid size={{ xs: 12, md: hideKen ? 6 : 12, xxl: 6 }}>
-            <ExpandableCard title="Family's Previous Cars">
+            <ExpandableCard
+              title="Family's Previous Cars"
+              backgroundColor={red.A700}
+            >
               {pastFamilyCarsReversed.map((car, i) => (
                 <CarCard car={car} key={`f-${car.title}-past-${i}`} />
               ))}
