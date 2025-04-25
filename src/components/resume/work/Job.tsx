@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import ExpandableCard from "../../common/expandable-card";
 import { Job as JobType } from "../../../constants/work";
-import { getCSV, showRange } from "./jobHelpers";
+import { getCSV } from "./jobHelpers";
 
 interface JobProps {
   job: JobType;
@@ -24,7 +24,7 @@ const Job = ({ job }: JobProps) => (
     title={`${job.company}${job.parent ? ` (${job.parent})` : ""}, ${job.location}`}
   >
     <Grid size={{ xs: 12, sm: 9 }}>
-      <Typography>{showRange(job.start, job.end, job.notes)}</Typography>
+      <Typography>{job.time}</Typography>
       {job.expr && (
         <ul>
           {job.expr.map((desc, i) => (
@@ -39,13 +39,6 @@ const Job = ({ job }: JobProps) => (
           <hr aria-hidden />
           <Typography display="inline">Technologies:&nbsp;</Typography>
           {getCSV(job.tech)}
-        </>
-      )}
-      {job.skills && job.skills.length !== 0 && (
-        <>
-          <hr aria-hidden />
-          <Typography display="inline">Skills:&nbsp;</Typography>
-          {getCSV(job.skills)}
         </>
       )}
     </Grid>

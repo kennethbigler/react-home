@@ -16,7 +16,7 @@ const WorkCards = ({ workExp, workTypes }: WorkCardsProps) => (
           component="h2"
           style={{ textTransform: "capitalize" }}
         >
-          {`${type} Experience`}
+          {type}
         </Typography>
         <hr aria-hidden />
         {workExp.map(

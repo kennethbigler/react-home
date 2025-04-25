@@ -1,15 +1,23 @@
 import localForage from "localforage";
-import { DBCard, newDeck } from "../../../../jotai/deck-state";
+import { DBCard, shuffle as shuffleAlg } from "../../../../jotai/deck-state";
 
-/** immutably get a copy of new deck O(N) */
-const getNewDeck = (): DBCard[] => newDeck.map((card) => ({ ...card }));
+/** async forEach function */
+type ForEachCallback<T> = (item: T, index: number, array: T[]) => Promise<void>;
+export async function asyncForEach<T>(
+  array: T[],
+  callback: ForEachCallback<T>,
+): Promise<void> {
+  for (let index = 0; index < array.length; index += 1) {
+    await callback(array[index], index, array);
+  }
+}
 
 /** get immutable copy of deck O(N) */
 const getDeck = (): Promise<DBCard[]> =>
   localForage
     .getItem("deck")
-    .then((data: unknown) => (data as DBCard[]) || getNewDeck())
-    .catch(() => getNewDeck());
+    .then((data: unknown) => (data as DBCard[]) || shuffleAlg())
+    .catch(() => shuffleAlg());
 
 /** immutably update deck O(N) */
 const setDeck = (deck: DBCard[]): Promise<DBCard[] | null> =>
@@ -17,21 +25,7 @@ const setDeck = (deck: DBCard[]): Promise<DBCard[] | null> =>
 
 const useDeck = () => {
   /** randomize order of the cards O(N + M) */
-  const shuffle = (): Promise<DBCard[] | null> => {
-    const shuffledDeck: DBCard[] = [];
-    // create immutable copy of deck
-    newDeck.map((card) => shuffledDeck.push(card));
-    // shuffle the cards
-    for (let i = 0; i < 100; i += 1) {
-      const j = Math.floor(Math.random() * shuffledDeck.length);
-      const k = Math.floor(Math.random() * shuffledDeck.length);
-      const temp = shuffledDeck[j];
-      shuffledDeck[j] = shuffledDeck[k];
-      shuffledDeck[k] = temp;
-    }
-    // update deck state
-    return setDeck(shuffledDeck);
-  };
+  const shuffle = (): Promise<DBCard[] | null> => setDeck(shuffleAlg());
 
   /** return an array of a specified length O(2N) */
   const deal = (num = 0): Promise<DBCard[]> => {

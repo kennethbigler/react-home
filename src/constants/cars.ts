@@ -7,7 +7,7 @@ import {
   teal,
   orange,
 } from "@mui/material/colors";
-import dateObj from "../apis/DateHelper";
+import dateObj, { DateObj } from "../apis/DateHelper";
 
 import prius07 from "../images/cars/07_toyota_prius.png";
 import voyager97 from "../images/cars/97_plymouth_voyager.png";
@@ -24,11 +24,18 @@ import panamera21 from "../images/cars/21_porsche_panamera.png";
 import bronco21 from "../images/cars/21_ford_bronco.webp";
 import grom22 from "../images/cars/22_honda_grom.webp";
 import porsche19 from "../images/cars/19_porsche_cayenne.webp";
-import { DataEntry } from "../components/common/timeline-card/timeline-consts";
 
-export interface CarEntry extends DataEntry {
+export interface CarEntry {
+  color: string;
+  title: string;
+  start: DateObj;
+  kStart?: DateObj;
+  fStart?: DateObj;
+  end: DateObj;
+  inverted?: boolean;
+  short?: string;
   car: string;
-  char: string;
+  char?: string;
   nickname?: string;
   owned: string;
   story: string;
@@ -41,13 +48,41 @@ export interface CarEntry extends DataEntry {
   zTo60: number;
 }
 
+// --------------------------------------------------     Past Shared Cars     -------------------------------------------------- //
+
+const irene = {
+  color: grey[400],
+  start: dateObj("2010-12"),
+  fStart: dateObj("2015-02"),
+  end: dateObj("2015-06"),
+  car: "Impala",
+  short: "Impla",
+  nickname: "Irene",
+  title: "Chevrolet Impala LS (2010)",
+  inverted: true,
+
+  owned: "2010 - 2015",
+  story:
+    "After selling my first car, my parents purchased a 2010 Chevrolet Impala LS for me to drive. It was a used Hertz rental car.",
+  src: impala10,
+  transmission: "Automatic",
+
+  horsepower: 211,
+  MPG: 22,
+  torque: 216,
+  weight: 3555,
+  zTo60: 8.3,
+};
+
+// --------------------------------------------------     Present Shared Cars     -------------------------------------------------- //
+
 const camilla = {
   color: yellow[500],
   start: dateObj("2019-01"),
+  fStart: dateObj("2021-10"),
   end: dateObj(),
   car: "Corvette",
   short: "Vette",
-  char: "C",
   nickname: "Camilla",
   title: "Chevrolet Corvette Z06 (2018)",
   inverted: true,
@@ -68,10 +103,10 @@ const camilla = {
 const cheyenne = {
   color: grey[50],
   start: dateObj("2023-08"),
+  fStart: dateObj("2025-01"),
   end: dateObj(),
   car: "Cayenne",
   short: "Cyne",
-  char: "C",
   nickname: "Cheyenne",
   title: "Porsche Cayenne E-Hybrid (2019)",
   inverted: true,
@@ -92,9 +127,10 @@ const cheyenne = {
 const tesla = {
   color: grey[50],
   start: dateObj("2016-03"),
+  kStart: dateObj("2025-01"),
   end: dateObj(),
   car: "Model X",
-  short: "ModlX",
+  short: "T X",
   char: "X",
   title: "Tesla Model X 90D (2016)",
   inverted: true,
@@ -121,7 +157,6 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     end: dateObj("2010-02"),
     car: "Voyager",
     short: "Voygr",
-    char: "V",
     title: "Plymouth Voyager (1997)",
     inverted: true,
 
@@ -142,7 +177,6 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     end: dateObj("2016-08"),
     car: "Prius",
     short: "Prius",
-    char: "P",
     title: "Toyota Prius (2007)",
 
     owned: "2008 - 2016",
@@ -164,7 +198,6 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     end: dateObj("2021-08"),
     car: "Jag XJ8-L",
     short: "XJ8-L",
-    char: "J",
     title: "Jaguar XJ8-L (2005)",
 
     owned: "2017 - 2021",
@@ -211,7 +244,6 @@ const currentFamilyCars: CarEntry[] = [
     end: dateObj(),
     car: "Equinox",
     short: "Eqnox",
-    char: "E",
     title: "Chevrolet Equinox LTZ (2010)",
 
     owned: "2010 - Present",
@@ -273,36 +305,14 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     weight: 3607,
     zTo60: 8.5,
   },
-  {
-    color: grey[400],
-    start: dateObj("2010-12"),
-    end: dateObj("2015-06"),
-    car: "Impala",
-    short: "Impla",
-    char: "I",
-    nickname: "Irene",
-    title: "Chevrolet Impala LS (2010)",
-    inverted: true,
-
-    owned: "2010 - 2015",
-    story:
-      "After selling my first car, my parents purchased a 2010 Chevrolet Impala LS for me to drive. It was a used Hertz rental car.",
-    src: impala10,
-    transmission: "Automatic",
-
-    horsepower: 211,
-    MPG: 22,
-    torque: 216,
-    weight: 3555,
-    zTo60: 8.3,
-  },
+  irene,
   {
     color: red[900],
     start: dateObj("2015-02"),
     end: dateObj("2019-01"),
     car: "Mustang",
     short: "Mstng",
-    char: "M1",
+    char: "Ma",
     nickname: "Miranda",
     title: "Ford Mustang GT Premium (2015)",
 
@@ -325,7 +335,6 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     end: dateObj("2018-08"),
     car: "Jag F-Type",
     short: "FType",
-    char: "J",
     title: "Jaguar F-Type R Convertible (2015)",
     inverted: true,
 
@@ -347,7 +356,6 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     end: dateObj("2023-03"),
     car: "Bronco",
     short: "Brnco",
-    char: "B",
     nickname: "Betty",
     title: "Ford Bronco Badlands (2021)",
     inverted: true,
@@ -370,7 +378,6 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     end: dateObj("2025-02"),
     car: "Grom",
     short: "Grom",
-    char: "G",
     title: "Honda Grom (2022)",
 
     owned: "2022 - 2025",
@@ -386,6 +393,8 @@ const pastKensCarsNoRepeats: CarEntry[] = [
   },
 ];
 
+// --------------------------------------------------     Car Processing     -------------------------------------------------- //
+
 const currentKensCars: CarEntry[] = [tesla];
 
 export const cars: CarEntry[] = [
@@ -396,7 +405,7 @@ export const cars: CarEntry[] = [
 ];
 
 const pastKensCars = [...pastKensCarsNoRepeats, camilla, cheyenne];
-const pastFamilyCars = [...pastFamilyCarsNoRepeats, tesla];
+const pastFamilyCars = [...pastFamilyCarsNoRepeats, irene, tesla];
 
 export const hideFamilyCars = [...pastKensCars, ...currentKensCars];
 export const hideKenCars = [...pastFamilyCars, ...currentFamilyCars];
@@ -488,7 +497,7 @@ export const processData = (allData: CarEntry[]): GraphData => {
   // normalize the data to all fit on the same graph (0-1)
   data.forEach((car: CarEntry) => {
     const powerToWeight = car.horsepower / car.weight;
-    ret.xAxis.push(car.char);
+    ret.xAxis.push(car.char || car.car[0]);
     ret.horsepower.push([
       car.car,
       smoothData(car.horsepower, max.horsepower, min.horsepower),
