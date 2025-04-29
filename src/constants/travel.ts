@@ -36,7 +36,7 @@ const countries: Country[] = [
   { name: "Malta", continent: "EU", flag: "🇲🇹" },
   { name: "Mexico", continent: "NA", flag: "🇲🇽" },
   { name: "Monaco", continent: "EU", flag: "🇲🇨" },
-  // May '25 - { name: "Morocco", continent: "AF", flag: "🇲🇦" },
+  { name: "Morocco", continent: "AF", flag: "🇲🇦" },
   { name: "Netherlands", continent: "EU", flag: "🇳🇱" },
   { name: "New Caledonia", continent: "AS", flag: "🇳🇨" },
   { name: "Norway", continent: "EU", flag: "🇳🇴" },
