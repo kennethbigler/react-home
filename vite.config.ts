@@ -21,8 +21,8 @@ export default defineConfig({
       thresholds: {
         statements: 90,
         branches: 85,
+        functions: 85,
         lines: 90,
-        functions: 80,
       },
     },
     chaiConfig: {

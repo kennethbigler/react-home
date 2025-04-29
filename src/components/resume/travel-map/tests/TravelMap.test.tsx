@@ -17,7 +17,7 @@ describe("resume | travel-map | TravelMap", () => {
     expect(screen.getByText("Europe & Africa")).toBeInTheDocument();
     expect(screen.getByText("Asia & Australia")).toBeInTheDocument();
     // Verify Sankey Graph
-    expect(screen.getByText("Magic")).toBeInTheDocument();
+    expect(screen.getAllByText("Magic")).toHaveLength(2);
     // Verify Table
     expect(screen.getByText("Ship 🚢")).toBeInTheDocument();
 
