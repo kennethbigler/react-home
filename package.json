@@ -40,14 +40,14 @@
     "vite": "6.3.3"
   },
   "devDependencies": {
-    "@eslint/compat": "1.2.8",
+    "@eslint/compat": "1.2.9",
     "@lhci/cli": "0.14.0",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.3.0",
     "@types/react": "19.1.2",
     "@types/react-dom": "19.1.2",
-    "@typescript-eslint/eslint-plugin": "8.31.0",
-    "@typescript-eslint/parser": "8.31.0",
+    "@typescript-eslint/eslint-plugin": "8.31.1",
+    "@typescript-eslint/parser": "8.31.1",
     "@vitest/coverage-v8": "3.1.2",
     "eslint": "9.25.1",
     "eslint-config-prettier": "10.1.2",
