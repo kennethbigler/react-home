@@ -18,8 +18,6 @@ const Year = ({ year, len }: YearProps) => (
       xs: 12,
       md: len > 1 ? 6 : 12,
       lg: Math.max(Math.ceil(12 / len), 3),
-      // @ts-expect-error - custom breakpoints
-      xxl: Math.max(Math.ceil(12 / len), 2),
     }}
   >
     <Typography variant="h4" component="h2">

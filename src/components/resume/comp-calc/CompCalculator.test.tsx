@@ -14,7 +14,7 @@ describe("resume | comp-calc | CompCalculator", () => {
     // enter info
     expect(screen.queryByText("TSLA")).toBeNull();
     fireEvent.change(screen.getByLabelText("Salary"), {
-      target: { value: 10000 },
+      target: { value: 20000 },
     });
     fireEvent.change(screen.getByLabelText("Stock Ticker"), {
       target: { value: "TSLA" },
