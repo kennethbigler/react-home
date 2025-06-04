@@ -12,9 +12,19 @@ const CruiseCharts = () => {
   const color = theme.mode === "light" ? "black" : "white";
 
   const options: Highcharts.Options = {
-    chart: { backgroundColor: "transparent" },
+    chart: {
+      type: "sankey",
+      height: 600,
+      backgroundColor: "transparent",
+    },
     credits: { enabled: false },
     title: { text: "Cruises", style: { color } },
+    plotOptions: {
+      sankey: {
+        nodePadding: 20, // Increase padding between nodes
+        nodeWidth: 90, // Adjust node width for better spacing
+      },
+    },
     accessibility: {
       enabled: true,
       point: {
