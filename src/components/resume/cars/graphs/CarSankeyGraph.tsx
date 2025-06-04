@@ -29,7 +29,7 @@ const CarSankeyGraph = React.memo(
     }
 
     const options: Highcharts.Options = {
-      chart: { backgroundColor: "transparent" },
+      chart: { type: "sankey", backgroundColor: "transparent" },
       credits: { enabled: false },
       title: { text: "Cars", style: { color } },
       accessibility: {
@@ -38,6 +38,11 @@ const CarSankeyGraph = React.memo(
           // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
           valueDescriptionFormat:
             "{point.to} has {point.weight} from {point.from}.",
+        },
+      },
+      plotOptions: {
+        sankey: {
+          nodeWidth: 70, // Adjust node width for better spacing
         },
       },
       series: [
