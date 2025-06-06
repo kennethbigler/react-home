@@ -570,7 +570,7 @@ export const carSankeyNodes = [
   // level 2
   //     US
   { id: "GM", color: yellow[700], offset: 70 },
-  { id: "Fiat Chrysler Auto", color: grey[50], offset: 70 },
+  { id: "Stellantis", color: grey[50], offset: 70 },
   //     Other
   { id: "Volkswagen", color: orange[500], offset: 70 },
   { id: "TATA", color: lime[900], offset: 70 },
@@ -593,7 +593,7 @@ export const familySankeyData = [
   ["Ford", "🇺🇸", 1],
   ["Tesla", "🇺🇸", 1],
   ["Chevrolet", "GM", 3],
-  ["Plymouth", "Fiat Chrysler Auto", 1],
+  ["Plymouth", "Stellantis", 1],
   //     Other
   ["Porsche", "Volkswagen", 2],
   ["Jaguar", "TATA", 1],
@@ -601,7 +601,7 @@ export const familySankeyData = [
   // level 2
   //     US
   ["GM", "🇺🇸", 3],
-  ["Fiat Chrysler Auto", "🇺🇸", 1],
+  ["Stellantis", "🇺🇸", 1],
   //     Other
   ["Volkswagen", "🇩🇪", 2],
   ["TATA", "🇬🇧", 1],
@@ -650,7 +650,7 @@ export const carSankeyData = [
   ["Tesla", "🇺🇸", 1],
   ["Chevrolet", "GM", 3],
   ["Pontiac", "GM", 1],
-  ["Plymouth", "Fiat Chrysler Auto", 1],
+  ["Plymouth", "Stellantis", 1],
   //     Other
   ["Porsche", "Volkswagen", 2],
   ["Jaguar", "TATA", 2],
@@ -658,7 +658,7 @@ export const carSankeyData = [
   // level 2
   //     US
   ["GM", "🇺🇸", 4],
-  ["Fiat Chrysler Auto", "🇺🇸", 1],
+  ["Stellantis", "🇺🇸", 1],
   //     Other
   ["Volkswagen", "🇩🇪", 2],
   ["TATA", "🇬🇧", 2],

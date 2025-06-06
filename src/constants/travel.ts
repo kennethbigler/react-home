@@ -43,6 +43,7 @@ const countries: Country[] = [
   // Apr '26 - { name: "Panama", continent: "NA", flag: "🇵🇦" },
   { name: "Poland", continent: "EU", flag: "🇵🇱" },
   { name: "Portugal", continent: "EU", flag: "🇵🇹" },
+  { name: "Puerto Rico", continent: "NA", flag: "🇵🇷" },
   { name: "Russia", continent: "EU", flag: "🇷🇺" },
   { name: "Spain", continent: "EU", flag: "🇪🇸" },
   { name: "Sweden", continent: "EU", flag: "🇸🇪" },
