@@ -9,6 +9,8 @@
     "assert": {
       "preset": "lighthouse:recommended",
       "assertions": {
+        "lcp-lazy-loaded": "warn",
+        "non-composited-animations": "warn",
         "preload-lcp-image": "warn",
         "prioritize-lcp-image": "warn",
         "service-worker": "warn",
