@@ -5,7 +5,6 @@ import dateObj from "../../../../../apis/DateHelper";
 import { CarEntry } from "../../../../../constants/cars";
 
 const carReqs = {
-  owned: "2020",
   story: "car",
   src: "somewhere",
   transmission: "Manual",
@@ -41,7 +40,6 @@ const data: CarEntry[] = [
     car: "Body 3",
     start: dateObj("2019-08"),
     end: dateObj("2020-02"),
-    short: "Short",
   },
   {
     ...carReqs,
@@ -51,7 +49,6 @@ const data: CarEntry[] = [
     start: dateObj("2019-09"),
     end: dateObj("2020-02"),
     inverted: true,
-    short: "Short",
   },
 ];
 
