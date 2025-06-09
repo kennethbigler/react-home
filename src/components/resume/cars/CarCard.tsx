@@ -3,17 +3,12 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import { CarEntry } from "../../../constants/cars";
+import { DateObj } from "../../../apis/DateHelper";
 
-export interface Car {
-  owned: string;
-  story: string;
-  src: string;
-  title: string;
-  transmission: string;
-  horsepower: number;
-}
 interface CarCardProps {
-  car: Car;
+  car: CarEntry;
+  isK?: boolean;
 }
 
 const containerStyles: React.CSSProperties = {
@@ -28,13 +23,40 @@ const imgStyles: React.CSSProperties = {
   float: "right",
 };
 
-const CarCard = ({ car }: CarCardProps) => (
+const getStartYear = (
+  isK: boolean,
+  start: DateObj,
+  kStart?: DateObj,
+  fStart?: DateObj,
+) => {
+  const maybeStart = isK ? kStart : fStart;
+  return (maybeStart || start).format("YYYY");
+};
+
+const getEndYear = (
+  isK: boolean,
+  end: DateObj,
+  kStart?: DateObj,
+  fStart?: DateObj,
+) => {
+  const maybeEnd = isK ? fStart : kStart;
+  return (maybeEnd || end).format("YYYY");
+};
+
+const CarCard = ({ car, isK = false }: CarCardProps) => (
   <Card style={containerStyles}>
     <Grid container spacing={1}>
       <Grid size={{ xs: 12, sm: 8 }}>
         <CardContent>
           <Typography variant="h4" component="h3">
-            <strong style={{ paddingRight: 20 }}>{`(${car.owned})`}</strong>
+            <strong style={{ paddingRight: 20 }}>
+              ({getStartYear(isK, car.start, car.kStart, car.fStart)}
+              {getStartYear(isK, car.start, car.kStart, car.fStart) !==
+              getEndYear(isK, car.end, car.kStart, car.fStart)
+                ? ` - ${getEndYear(isK, car.end, car.kStart, car.fStart)}`
+                : ""}
+              )
+            </strong>
             {car.title}
           </Typography>
           <hr aria-hidden />

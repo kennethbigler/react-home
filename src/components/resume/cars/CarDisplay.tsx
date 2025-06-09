@@ -29,7 +29,7 @@ const CarDisplay = React.memo(({ hideFamily, hideKen }: CarDisplayProps) => (
           <Grid size={{ xs: 12, md: hideFamily ? 6 : 12, xxl: 6 }}>
             <ExpandableCard title="Ken's Cars" backgroundColor="black">
               {currentKensCarsReversed.map((car, i) => (
-                <CarCard car={car} key={`k-${car.title}-cur-${i}`} />
+                <CarCard isK car={car} key={`k-${car.title}-cur-${i}`} />
               ))}
             </ExpandableCard>
           </Grid>
@@ -40,7 +40,7 @@ const CarDisplay = React.memo(({ hideFamily, hideKen }: CarDisplayProps) => (
               backgroundColor={red.A700}
             >
               {pastKensCarsReversed.map((car, i) => (
-                <CarCard car={car} key={`k-${car.title}-past-${i}`} />
+                <CarCard isK car={car} key={`k-${car.title}-past-${i}`} />
               ))}
             </ExpandableCard>
           </Grid>
@@ -52,11 +52,7 @@ const CarDisplay = React.memo(({ hideFamily, hideKen }: CarDisplayProps) => (
         <Grid container spacing={2} width="100%">
           {/* @ts-expect-error - custom breakpoints */}
           <Grid size={{ xs: 12, md: hideKen ? 6 : 12, xxl: 6 }}>
-            <ExpandableCard
-              title="Family Cars"
-              backgroundColor={red[50]}
-              inverted
-            >
+            <ExpandableCard title="Family Cars" backgroundColor="black">
               {currentFamilyCarsReversed.map((car, i) => (
                 <CarCard car={car} key={`f-${car.title}-cur-${i}`} />
               ))}

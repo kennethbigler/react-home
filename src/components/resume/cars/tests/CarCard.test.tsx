@@ -1,19 +1,28 @@
 import { render, screen } from "@testing-library/react";
-import CarCard, { Car } from "../CarCard";
+import CarCard from "../CarCard";
+import { CarEntry } from "../../../../constants/cars";
+import dateObj from "../../../../apis/DateHelper";
 
-const demoCar: Car = {
-  owned: "2020",
+const demoCar: CarEntry = {
+  color: "yellow",
+  start: dateObj("2019-01"),
+  end: dateObj(),
+  car: "Corvette",
+  title: "Chevrolet Corvette Z06 (2018)",
+  inverted: true,
   story: "Story",
   src: "pathToImg",
-  title: "2018 Chevrolet Corvette",
   transmission: "Manual",
   horsepower: 650,
+  MPG: 18,
+  torque: 650,
+  weight: 3524,
+  zTo60: 3.1,
 };
 
 describe("resume | cars | CarCard", () => {
   it("renders as expected", () => {
     render(<CarCard car={demoCar} />);
-    expect(screen.getByText(`(${demoCar.owned})`)).toBeInTheDocument();
     expect(screen.getByText(demoCar.title)).toBeInTheDocument();
     expect(
       screen.getByText(`Horsepower: ${demoCar.horsepower}`),

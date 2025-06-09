@@ -44,7 +44,7 @@ const addSegment = (
   beginning: number,
   ending: number,
 ): void => {
-  const { color, inverted, title, short, char } = elm;
+  const { color, inverted, title, car, char } = elm;
   const width = ending - beginning;
   const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
   const payload = { color, inverted, width, title };
@@ -52,7 +52,7 @@ const addSegment = (
   if (textWidth < MIN_SHORT_WIDTH) {
     segments.push({ body: char || elm.car[0], ...payload });
   } else if (textWidth < MIN_TEXT_WIDTH) {
-    segments.push({ body: short, ...payload });
+    segments.push({ body: car.substring(0, 5), ...payload });
   } else {
     segments.push({ body: elm.car, ...payload });
   }

@@ -33,11 +33,9 @@ export interface CarEntry {
   fStart?: DateObj;
   end: DateObj;
   inverted?: boolean;
-  short?: string;
   car: string;
   char?: string;
   nickname?: string;
-  owned: string;
   story: string;
   src: string;
   transmission: string;
@@ -56,12 +54,10 @@ const irene = {
   fStart: dateObj("2015-02"),
   end: dateObj("2015-06"),
   car: "Impala",
-  short: "Impla",
   nickname: "Irene",
   title: "Chevrolet Impala LS (2010)",
   inverted: true,
 
-  owned: "2010 - 2015",
   story:
     "After selling my first car, my parents purchased a 2010 Chevrolet Impala LS for me to drive. It was a used Hertz rental car.",
   src: impala10,
@@ -82,12 +78,10 @@ const camilla = {
   fStart: dateObj("2021-10"),
   end: dateObj(),
   car: "Corvette",
-  short: "Vette",
   nickname: "Camilla",
   title: "Chevrolet Corvette Z06 (2018)",
   inverted: true,
 
-  owned: "2019 - Present",
   story:
     "To replace my Mustang I purchased a 2018 Chevrolet Corvette Z06 3LZ with the Z07 Track Package used from the Ron Fellows Performance Driving School. My parents purchased my car in October 2021 to keep it in the family.",
   src: corvette18,
@@ -106,12 +100,10 @@ const cheyenne = {
   fStart: dateObj("2025-01"),
   end: dateObj(),
   car: "Cayenne",
-  short: "Cyne",
   nickname: "Cheyenne",
   title: "Porsche Cayenne E-Hybrid (2019)",
   inverted: true,
 
-  owned: "2023 - Present",
   story:
     "I bought a plug-in 2019 Porsche Cayenne E-Hybrid as a bit of an upgrade to my old Bronco. My dad and I traded cars in January 2025 so I could try all electric and he could try a plug-in hybrid.",
   src: porsche19,
@@ -130,12 +122,10 @@ const tesla = {
   kStart: dateObj("2025-01"),
   end: dateObj(),
   car: "Model X",
-  short: "T X",
   char: "X",
   title: "Tesla Model X 90D (2016)",
   inverted: true,
 
-  owned: "2016 - Present",
   story:
     "My Father got a 2016 Tesla Model X 90D while I was working at Tesla. My dad and I traded cars in January 2025 so I could try all electric and he could try a plug-in hybrid.",
   src: tesla16,
@@ -156,11 +146,9 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     start: dateObj("2008-03"),
     end: dateObj("2010-02"),
     car: "Voyager",
-    short: "Voygr",
     title: "Plymouth Voyager (1997)",
     inverted: true,
 
-    owned: "1997 - 2010",
     story: "My Mother's 1997 Plymouth Voyager.",
     src: voyager97,
     transmission: "Automatic",
@@ -176,10 +164,8 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     start: dateObj("2008-03"),
     end: dateObj("2016-08"),
     car: "Prius",
-    short: "Prius",
     title: "Toyota Prius (2007)",
 
-    owned: "2008 - 2016",
     story:
       "My Father's 2007 Toyota Prius. I learned to drive with my permit on this car.",
     src: prius07,
@@ -197,10 +183,9 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     start: dateObj("2017-10"),
     end: dateObj("2021-08"),
     car: "Jag XJ8-L",
-    short: "XJ8-L",
+    char: "JX",
     title: "Jaguar XJ8-L (2005)",
 
-    owned: "2017 - 2021",
     story:
       "My Grandpa's 2005 Jaguar XJ8-L. He gave it to our family for my Brother.",
     src: xj8l05,
@@ -217,12 +202,10 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     start: dateObj("2020-03"),
     end: dateObj("2022-10"),
     car: "MustangB",
-    short: "Mstng",
     char: "Mb",
     nickname: "Miranda Jr",
     title: "Ford Mustang GT Premium (2020)",
 
-    owned: "2020 - 2022",
     story:
       "My Roommate's 2020 Ford Mustang GT Premium with the Performance Pack 1.",
     src: mustang20,
@@ -243,10 +226,8 @@ const currentFamilyCars: CarEntry[] = [
     start: dateObj("2010-02"),
     end: dateObj(),
     car: "Equinox",
-    short: "Eqnox",
     title: "Chevrolet Equinox LTZ (2010)",
 
-    owned: "2010 - Present",
     story: "My Mother's 2010 Chevrolet Equinox LTZ.",
     src: equinox10,
     transmission: "Automatic",
@@ -262,12 +243,10 @@ const currentFamilyCars: CarEntry[] = [
     start: dateObj("2021-08"),
     end: dateObj(),
     car: "Panamera",
-    short: "Pnmra",
     char: "PP",
     title: "Porsche Panamera 4 E-Hybrid (2021)",
     inverted: true,
 
-    owned: "2021 - Present",
     story: "My Mother's 2021 Porsche Panamera 4 E-Hybrid.",
     src: panamera21,
     transmission: "Automatic",
@@ -288,12 +267,10 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     start: dateObj("2008-03"),
     end: dateObj("2010-12"),
     car: "Bonneville",
-    short: "Bonne",
-    char: "P",
+    char: "PB",
     nickname: "Petunia",
     title: "Pontiac Bonneville (1993)",
 
-    owned: "2008 - 2010",
     story:
       "I got my first car: a 1993 Pontiac Bonneville. It was previously my Grandfather's and I got it as my first car when I got my license.",
     src: pontiac93,
@@ -311,12 +288,10 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     start: dateObj("2015-02"),
     end: dateObj("2019-01"),
     car: "Mustang",
-    short: "Mstng",
     char: "Ma",
     nickname: "Miranda",
     title: "Ford Mustang GT Premium (2015)",
 
-    owned: "2015 - 2019",
     story:
       "I purchased my first vehicle, a new 2015 Ford Mustang GT Premium with the 50 Years Edition Package. I did some modifications to this car including: " +
       "Rear Window Louvers, GT350 start button, metal pedals, ergonomic parking break, Borla Ford Racing Sport Catback Exhaust, & Hurst automatic shift lever.",
@@ -334,11 +309,9 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     start: dateObj("2018-03"),
     end: dateObj("2018-08"),
     car: "Jag F-Type",
-    short: "FType",
     title: "Jaguar F-Type R Convertible (2015)",
     inverted: true,
 
-    owned: "2018",
     story:
       "I rented a 2015 Jaguar F-Type R Convertible on Turo, which I wouldn't normally include in this list, but I totalled this car, so ended up having my insurance buy it! So I kind of owned it for one day.",
     src: ftype15,
@@ -355,12 +328,10 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     start: dateObj("2021-10"),
     end: dateObj("2023-03"),
     car: "Bronco",
-    short: "Brnco",
     nickname: "Betty",
     title: "Ford Bronco Badlands (2021)",
     inverted: true,
 
-    owned: "2021 - 2023",
     story:
       "In an attempt to get a more practical daily driver, as well as dip my toes into the off-roading community, I purchased a 2021 Ford Bronco Badlands.",
     src: bronco21,
@@ -377,10 +348,8 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     start: dateObj("2022-04"),
     end: dateObj("2025-02"),
     car: "Grom",
-    short: "Grom",
     title: "Honda Grom (2022)",
 
-    owned: "2022 - 2025",
     story: "I got my first motorcycle, a 2022 Honda Grom.",
     src: grom22,
     transmission: "Sequential",
@@ -393,9 +362,9 @@ const pastKensCarsNoRepeats: CarEntry[] = [
   },
 ];
 
-// --------------------------------------------------     Car Processing     -------------------------------------------------- //
-
 const currentKensCars: CarEntry[] = [tesla];
+
+// --------------------------------------------------     Car Processing     -------------------------------------------------- //
 
 export const cars: CarEntry[] = [
   ...pastKensCarsNoRepeats,
@@ -428,25 +397,7 @@ interface GraphData {
 const smoothData = (cur: number, high: number, low: number) =>
   Math.floor(100 * ((cur - low) / (high - low)));
 
-export const processData = (allData: CarEntry[]): GraphData => {
-  const data = allData.sort(
-    (a, b) => a.horsepower / a.weight - b.horsepower / b.weight,
-  );
-
-  const ret: GraphData = {
-    xAxis: [],
-    horsepower: [],
-    MPG: [],
-    torque: [],
-    weight: [],
-    zTo60: [],
-    powerToWeight: [],
-  };
-
-  if (data.length === 0) {
-    return ret;
-  }
-
+const getMinAndMax = (data: CarEntry[]) => {
   const max = {
     horsepower: data[0].horsepower,
     MPG: data[0].MPG,
@@ -459,7 +410,7 @@ export const processData = (allData: CarEntry[]): GraphData => {
 
   // find the min and max values in the array
   for (let i = 1; i < data.length; i += 1) {
-    const { horsepower, zTo60, MPG, torque, weight } = data[i];
+    const { horsepower, MPG, torque, weight, zTo60 } = data[i];
     const powerToWeight = horsepower / weight;
 
     if (horsepower > max.horsepower) {
@@ -493,6 +444,30 @@ export const processData = (allData: CarEntry[]): GraphData => {
       min.powerToWeight = powerToWeight;
     }
   }
+
+  return { min, max };
+};
+
+export const processData = (allData: CarEntry[]): GraphData => {
+  const data = allData.sort(
+    (a, b) => a.horsepower / a.weight - b.horsepower / b.weight,
+  );
+
+  const ret: GraphData = {
+    xAxis: [],
+    horsepower: [],
+    MPG: [],
+    torque: [],
+    weight: [],
+    zTo60: [],
+    powerToWeight: [],
+  };
+
+  if (data.length === 0) {
+    return ret;
+  }
+
+  const { min, max } = getMinAndMax(data);
 
   // normalize the data to all fit on the same graph (0-1)
   data.forEach((car: CarEntry) => {
