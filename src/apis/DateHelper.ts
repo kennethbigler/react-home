@@ -13,6 +13,36 @@ export const months = [
   "December",
 ];
 
+const emojiMonths = [
+  "❄️",
+  "🌹",
+  "🍀",
+  "☔️",
+  "💐",
+  "🌴",
+  "🎉",
+  "📓",
+  "🍁",
+  "🎃",
+  "🦃",
+  "🎄",
+];
+
+const shortMonths = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
 export type DateScale =
   | "year"
   | "years"
@@ -20,7 +50,7 @@ export type DateScale =
   | "months"
   | "days"
   | undefined;
-export type FormatOutput = "YYYY" | "MMMM" | "MMMM Y" | "'YY";
+export type FormatOutput = "YYYY" | "M" | "MM" | "MMMM" | "MMMM Y" | "'YY";
 export interface DateObj {
   year: number;
   month: number;
@@ -71,6 +101,10 @@ const dateHelper = (date?: DateObj | string): DateObj => {
     switch (output) {
       case "YYYY":
         return year.toString();
+      case "M":
+        return emojiMonths[month];
+      case "MM":
+        return shortMonths[month];
       case "MMMM":
         return months[month];
       case "MMMM Y":

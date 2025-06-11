@@ -27,8 +27,8 @@ const CruiseTable = React.memo(() => {
           <TableCell style={cellStyles}>
             Nights ({totalNights}&nbsp;🌙)
           </TableCell>
-          <TableCell style={cellStyles}>1st ⭐️</TableCell>
-          <TableCell style={cellStyles}>Date 🗓</TableCell>
+          <TableCell style={cellStyles}>1st 🥇</TableCell>
+          <TableCell style={cellStyles}>Month 🗓</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -51,10 +51,13 @@ const CruiseTable = React.memo(() => {
                 <TableCell style={cellStyles}>{cruise.name}</TableCell>
                 <TableCell style={cellStyles}>{cruise.nights}</TableCell>
                 <TableCell style={cellStyles}>
-                  {cruise.concierge ? "⭐️" : ""}
+                  {cruise.concierge ? "🥇" : ""}
                 </TableCell>
-                <TableCell style={cellStyles}>
-                  {cruise.departure.format("MMMM")}
+                <TableCell
+                  style={cellStyles}
+                  title={cruise.departure.format("MMMM")}
+                >
+                  {cruise.departure.format("MM")} {cruise.departure.format("M")}
                 </TableCell>
               </TableRow>
             </React.Fragment>
