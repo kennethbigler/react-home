@@ -5,7 +5,6 @@ import dateObj from "../../../../../apis/DateHelper";
 import { CarEntry } from "../../../../../constants/cars";
 
 const carReqs = {
-  story: "car",
   src: "somewhere",
   transmission: "Manual",
   horsepower: 1,

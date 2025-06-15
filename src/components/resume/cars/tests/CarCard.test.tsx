@@ -10,7 +10,6 @@ const demoCar: CarEntry = {
   car: "Corvette",
   title: "Chevrolet Corvette Z06 (2018)",
   inverted: true,
-  story: "Story",
   src: "pathToImg",
   transmission: "Manual",
   horsepower: 650,
@@ -30,6 +29,5 @@ describe("resume | cars | CarCard", () => {
     expect(
       screen.getByText(`Transmission: ${demoCar.transmission}`),
     ).toBeInTheDocument();
-    expect(screen.getByText(demoCar.story)).toBeInTheDocument();
   });
 });

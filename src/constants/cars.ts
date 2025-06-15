@@ -1,4 +1,5 @@
 import {
+  amber,
   indigo,
   grey,
   red,
@@ -24,6 +25,7 @@ import panamera21 from "../images/cars/21_porsche_panamera.png";
 import bronco21 from "../images/cars/21_ford_bronco.webp";
 import grom22 from "../images/cars/22_honda_grom.webp";
 import porsche19 from "../images/cars/19_porsche_cayenne.webp";
+import r1s25 from "../images/cars/25_rivian_r1s.webp";
 
 export interface CarEntry {
   color: string;
@@ -36,7 +38,6 @@ export interface CarEntry {
   car: string;
   char?: string;
   nickname?: string;
-  story: string;
   src: string;
   transmission: string;
   horsepower: number;
@@ -68,6 +69,28 @@ const irene = {
   torque: 216,
   weight: 3555,
   zTo60: 8.3,
+};
+
+const tesla = {
+  color: grey[50],
+  start: dateObj("2016-03"),
+  kStart: dateObj("2025-01"),
+  end: dateObj("2025-06"),
+  car: "Model X",
+  char: "X",
+  title: "Tesla Model X 90D (2016)",
+  inverted: true,
+
+  story:
+    "My Father got a 2016 Tesla Model X 90D while I was working at Tesla. My dad and I traded cars in January 2025 so I could try all electric and he could try a plug-in hybrid.",
+  src: tesla16,
+  transmission: "Direct",
+
+  horsepower: 417,
+  MPG: 92,
+  torque: 485,
+  weight: 5271,
+  zTo60: 4.8,
 };
 
 // --------------------------------------------------     Present Shared Cars     -------------------------------------------------- //
@@ -116,28 +139,6 @@ const cheyenne = {
   zTo60: 4.7,
 };
 
-const tesla = {
-  color: grey[50],
-  start: dateObj("2016-03"),
-  kStart: dateObj("2025-01"),
-  end: dateObj(),
-  car: "Model X",
-  char: "X",
-  title: "Tesla Model X 90D (2016)",
-  inverted: true,
-
-  story:
-    "My Father got a 2016 Tesla Model X 90D while I was working at Tesla. My dad and I traded cars in January 2025 so I could try all electric and he could try a plug-in hybrid.",
-  src: tesla16,
-  transmission: "Direct",
-
-  horsepower: 417,
-  MPG: 92,
-  torque: 485,
-  weight: 5271,
-  zTo60: 4.8,
-};
-
 // --------------------------------------------------     Cars     -------------------------------------------------- //
 
 const pastFamilyCarsNoRepeats: CarEntry[] = [
@@ -148,8 +149,6 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     car: "Voyager",
     title: "Plymouth Voyager (1997)",
     inverted: true,
-
-    story: "My Mother's 1997 Plymouth Voyager.",
     src: voyager97,
     transmission: "Automatic",
 
@@ -165,9 +164,6 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     end: dateObj("2016-08"),
     car: "Prius",
     title: "Toyota Prius (2007)",
-
-    story:
-      "My Father's 2007 Toyota Prius. I learned to drive with my permit on this car.",
     src: prius07,
     transmission: "Automatic",
 
@@ -185,9 +181,6 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     car: "Jag XJ8-L",
     char: "JX",
     title: "Jaguar XJ8-L (2005)",
-
-    story:
-      "My Grandpa's 2005 Jaguar XJ8-L. He gave it to our family for my Brother.",
     src: xj8l05,
     transmission: "Automatic",
 
@@ -205,9 +198,6 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     char: "Mb",
     nickname: "Miranda Jr",
     title: "Ford Mustang GT Premium (2020)",
-
-    story:
-      "My Roommate's 2020 Ford Mustang GT Premium with the Performance Pack 1.",
     src: mustang20,
     transmission: "Manual",
 
@@ -227,8 +217,6 @@ const currentFamilyCars: CarEntry[] = [
     end: dateObj(),
     car: "Equinox",
     title: "Chevrolet Equinox LTZ (2010)",
-
-    story: "My Mother's 2010 Chevrolet Equinox LTZ.",
     src: equinox10,
     transmission: "Automatic",
 
@@ -246,8 +234,6 @@ const currentFamilyCars: CarEntry[] = [
     char: "PP",
     title: "Porsche Panamera 4 E-Hybrid (2021)",
     inverted: true,
-
-    story: "My Mother's 2021 Porsche Panamera 4 E-Hybrid.",
     src: panamera21,
     transmission: "Automatic",
 
@@ -270,9 +256,6 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     char: "PB",
     nickname: "Petunia",
     title: "Pontiac Bonneville (1993)",
-
-    story:
-      "I got my first car: a 1993 Pontiac Bonneville. It was previously my Grandfather's and I got it as my first car when I got my license.",
     src: pontiac93,
     transmission: "Automatic",
 
@@ -291,10 +274,6 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     char: "Ma",
     nickname: "Miranda",
     title: "Ford Mustang GT Premium (2015)",
-
-    story:
-      "I purchased my first vehicle, a new 2015 Ford Mustang GT Premium with the 50 Years Edition Package. I did some modifications to this car including: " +
-      "Rear Window Louvers, GT350 start button, metal pedals, ergonomic parking break, Borla Ford Racing Sport Catback Exhaust, & Hurst automatic shift lever.",
     src: mustang15,
     transmission: "Automatic",
 
@@ -311,9 +290,6 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     car: "Jag F-Type",
     title: "Jaguar F-Type R Convertible (2015)",
     inverted: true,
-
-    story:
-      "I rented a 2015 Jaguar F-Type R Convertible on Turo, which I wouldn't normally include in this list, but I totalled this car, so ended up having my insurance buy it! So I kind of owned it for one day.",
     src: ftype15,
     transmission: "Manual",
 
@@ -331,9 +307,6 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     nickname: "Betty",
     title: "Ford Bronco Badlands (2021)",
     inverted: true,
-
-    story:
-      "In an attempt to get a more practical daily driver, as well as dip my toes into the off-roading community, I purchased a 2021 Ford Bronco Badlands.",
     src: bronco21,
     transmission: "Manual",
 
@@ -349,8 +322,6 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     end: dateObj("2025-02"),
     car: "Grom",
     title: "Honda Grom (2022)",
-
-    story: "I got my first motorcycle, a 2022 Honda Grom.",
     src: grom22,
     transmission: "Sequential",
 
@@ -360,9 +331,28 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     weight: 230,
     zTo60: 13,
   },
+  tesla,
 ];
 
-const currentKensCars: CarEntry[] = [tesla];
+const currentKensCars: CarEntry[] = [
+  {
+    color: amber.A100,
+    start: dateObj("2025-06"),
+    end: dateObj(),
+    car: "R1S",
+    char: "R",
+    title: "Rivian R1S (2025)",
+    inverted: true,
+    src: r1s25,
+    transmission: "Direct",
+
+    horsepower: 850,
+    MPG: 76,
+    torque: 1103,
+    weight: 6826,
+    zTo60: 2.9,
+  },
+];
 
 // --------------------------------------------------     Car Processing     -------------------------------------------------- //
 
@@ -535,6 +525,7 @@ export const carSankeyNodes = [
   //     US
   { id: "Ford", color: indigo[900] },
   { id: "Tesla", color: red[500] },
+  { id: "Rivian", color: amber[500] },
   { id: "Chevrolet", color: yellow[700] },
   { id: "Pontiac", color: red[500] },
   { id: "Plymouth", color: grey[50] },
@@ -594,6 +585,7 @@ export const kenSankeyData = [
   ["Honda", "🇯🇵", 1],
   //     US
   ["Ford", "🇺🇸", 2],
+  ["Rivian", "🇺🇸", 1],
   ["Tesla", "🇺🇸", 1],
   ["Chevrolet", "GM", 2],
   ["Pontiac", "GM", 1],
@@ -610,7 +602,7 @@ export const kenSankeyData = [
 
   // level 3
   ["🇯🇵", "🏎️", 1],
-  ["🇺🇸", "🏎️", 6],
+  ["🇺🇸", "🏎️", 7],
   ["🇩🇪", "🏎️", 1],
   ["🇬🇧", "🏎️", 1],
 ];
@@ -622,6 +614,7 @@ export const carSankeyData = [
   ["Toyota", "🇯🇵", 1],
   //     US
   ["Ford", "🇺🇸", 3],
+  ["Rivian", "🇺🇸", 1],
   ["Tesla", "🇺🇸", 1],
   ["Chevrolet", "GM", 3],
   ["Pontiac", "GM", 1],
@@ -640,7 +633,7 @@ export const carSankeyData = [
 
   // level 3
   ["🇯🇵", "🏎️", 2],
-  ["🇺🇸", "🏎️", 9],
+  ["🇺🇸", "🏎️", 10],
   ["🇩🇪", "🏎️", 2],
   ["🇬🇧", "🏎️", 2],
 ];
