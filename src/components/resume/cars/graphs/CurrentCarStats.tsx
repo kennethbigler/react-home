@@ -29,7 +29,7 @@ const CurrentCarStats = React.memo(({ color }: CurrentCarStatsProps) => {
       <CarSpeedoGraph
         val={horsepower.val}
         endGreenVal={200}
-        startRedVal={Math.min(500, horsepower.maxVal)}
+        startRedVal={Math.min(650, horsepower.maxVal)}
         maxVal={horsepower.maxVal}
         label="HP"
         title="Horsepower"
@@ -39,7 +39,7 @@ const CurrentCarStats = React.memo(({ color }: CurrentCarStatsProps) => {
       <CarSpeedoGraph
         val={weight.val}
         endGreenVal={3000}
-        startRedVal={Math.min(4600, weight.maxVal)}
+        startRedVal={Math.min(5000, weight.maxVal)}
         maxVal={weight.maxVal}
         label="lbs"
         title="Weight"
@@ -59,7 +59,7 @@ const CurrentCarStats = React.memo(({ color }: CurrentCarStatsProps) => {
       <CarSpeedoGraph
         val={torque.val}
         endGreenVal={200}
-        startRedVal={Math.min(500, torque.maxVal)}
+        startRedVal={Math.min(650, torque.maxVal)}
         maxVal={torque.maxVal}
         label="lb-ft"
         title="Torque"

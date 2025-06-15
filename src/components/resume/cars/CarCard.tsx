@@ -68,8 +68,6 @@ const CarCard = ({ car, isK = false }: CarCardProps) => (
             variant="h5"
             component="h4"
           >{`Transmission: ${car.transmission}`}</Typography>
-          <hr aria-hidden />
-          <Typography>{car.story}</Typography>
         </CardContent>
       </Grid>
       <Grid size={{ xs: 12, sm: 4 }}>
