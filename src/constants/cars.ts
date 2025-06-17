@@ -3,7 +3,6 @@ import {
   indigo,
   grey,
   red,
-  lime,
   yellow,
   teal,
   orange,
@@ -174,7 +173,7 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     zTo60: 10.4,
   },
   {
-    color: lime[800],
+    color: amber[200],
     inverted: true,
     start: dateObj("2017-10"),
     end: dateObj("2021-08"),
@@ -211,7 +210,7 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
 
 const currentFamilyCars: CarEntry[] = [
   {
-    color: lime[800],
+    color: yellow[200],
     inverted: true,
     start: dateObj("2010-02"),
     end: dateObj(),
@@ -363,13 +362,38 @@ export const cars: CarEntry[] = [
   ...currentFamilyCars,
 ];
 
-const pastKensCars = [...pastKensCarsNoRepeats, camilla, cheyenne];
-const pastFamilyCars = [...pastFamilyCarsNoRepeats, irene, tesla];
+const dateSort = (a: DateObj, b: DateObj) => {
+  let diff = a.year - b.year;
+  if (diff === 0) {
+    diff = a.month - b.month;
+  }
+  return diff;
+};
+const carSort = (isK?: boolean) => (a: CarEntry, b: CarEntry) => {
+  return isK
+    ? dateSort(a.kStart || a.start, b.kStart || b.start)
+    : dateSort(a.fStart || a.start, b.fStart || b.start);
+};
 
-export const hideFamilyCars = [...pastKensCars, ...currentKensCars];
-export const hideKenCars = [...pastFamilyCars, ...currentFamilyCars];
+const pastKensCars = [...pastKensCarsNoRepeats, camilla, cheyenne].sort(
+  carSort(true),
+);
+const pastFamilyCars = [...pastFamilyCarsNoRepeats, irene, tesla].sort(
+  carSort(),
+);
+const hideFamilyCars = [...pastKensCars, ...currentKensCars].sort(
+  carSort(true),
+);
+const hideKenCars = [...pastFamilyCars, ...currentFamilyCars].sort(carSort());
 
-export { pastKensCars, currentKensCars, pastFamilyCars, currentFamilyCars };
+export {
+  pastKensCars,
+  currentKensCars,
+  pastFamilyCars,
+  currentFamilyCars,
+  hideFamilyCars,
+  hideKenCars,
+};
 
 // --------------------------------------------------     Normalized Graphs     -------------------------------------------------- //
 
@@ -531,7 +555,7 @@ export const carSankeyNodes = [
   { id: "Plymouth", color: grey[50] },
   //     Other
   { id: "Porsche", color: orange[500] },
-  { id: "Jaguar", color: lime[900] },
+  { id: "Jaguar", color: red[900] },
 
   // level 2
   //     US
@@ -539,13 +563,13 @@ export const carSankeyNodes = [
   { id: "Stellantis", color: grey[50], offset: 70 },
   //     Other
   { id: "Volkswagen", color: orange[500], offset: 70 },
-  { id: "TATA", color: lime[900], offset: 70 },
+  { id: "TATA", color: indigo[500], offset: 70 },
 
   // level 3
   { id: "🇯🇵", color: red[500], column: 2 },
   { id: "🇺🇸", color: indigo[900], column: 2 },
   { id: "🇩🇪", color: orange[500], column: 2 },
-  { id: "🇬🇧", color: lime[900], column: 2 },
+  { id: "🇬🇧", color: "white", column: 2 },
 
   // level 4
   { id: "🏎️", color: grey[200] },
