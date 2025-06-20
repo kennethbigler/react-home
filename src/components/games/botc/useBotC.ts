@@ -153,7 +153,7 @@ export const useEditPlayers = () => {
 
   /** update botc script used */
   const updateScript = (e: SelectChangeEvent<number>) => {
-    const newScript = e.target.value as number;
+    const newScript = e.target.value;
     let newText = isText;
     switch (newScript) {
       case 0:

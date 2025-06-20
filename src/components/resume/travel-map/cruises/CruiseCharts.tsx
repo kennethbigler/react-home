@@ -22,7 +22,7 @@ const CruiseCharts = () => {
     plotOptions: {
       sankey: {
         nodePadding: 20, // Increase padding between nodes
-        nodeWidth: 90, // Adjust node width for better spacing
+        nodeWidth: 70, // Adjust node width for better spacing
       },
     },
     accessibility: {
