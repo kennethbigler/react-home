@@ -371,8 +371,8 @@ const dateSort = (a: DateObj, b: DateObj) => {
 };
 const carSort = (isK?: boolean) => (a: CarEntry, b: CarEntry) => {
   return isK
-    ? dateSort(a.kStart || a.start, b.kStart || b.start)
-    : dateSort(a.fStart || a.start, b.fStart || b.start);
+    ? dateSort(a.fStart || a.end, b.fStart || b.end)
+    : dateSort(a.kStart || a.end, b.kStart || b.end);
 };
 
 const pastKensCars = [...pastKensCarsNoRepeats, camilla, cheyenne].sort(

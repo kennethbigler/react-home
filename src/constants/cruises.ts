@@ -31,307 +31,333 @@ enum Ships {
   Scarlet = "Scarlet Lady",
 }
 
+enum Regions {
+  Caribbean = "Caribbean",
+  Europe = "Europe",
+  Pacific = "Pacific",
+  West = "America",
+}
+
 interface Cruise {
+  concierge?: boolean;
   departure: DateObj;
-  nights: number;
-  name: string;
-  ship: Ships;
   line: Lines;
-  concierge: boolean;
+  name: string;
+  nights: number;
+  ship: Ships;
+  region: Regions;
 }
 
 export const cruises: Cruise[] = [
   {
     departure: dateObj("2004-04"),
-    nights: 3,
-    name: "Bahamas",
-    ship: Ships.Wonder,
     line: Lines.Disney,
-    concierge: false,
+    name: "Bahamas",
+    nights: 3,
+    ship: Ships.Wonder,
+    region: Regions.Caribbean,
   },
   {
     departure: dateObj("2005-06"),
-    nights: 7,
-    name: "Mexican Riviera",
-    ship: Ships.Magic,
     line: Lines.Disney,
-    concierge: false,
+    name: "Mexican Riviera",
+    nights: 7,
+    ship: Ships.Magic,
+    region: Regions.West,
   },
   {
-    departure: dateObj("2011-06"),
-    nights: 11,
-    name: "Mediterranean",
-    ship: Ships.Magic,
-    line: Lines.Disney,
     concierge: true,
+    departure: dateObj("2011-06"),
+    line: Lines.Disney,
+    name: "Mediterranean",
+    nights: 11,
+    ship: Ships.Magic,
+    region: Regions.Europe,
   },
   {
     departure: dateObj("2012-06"),
-    nights: 7,
-    name: "Alaska",
-    ship: Ships.Wonder,
     line: Lines.Disney,
-    concierge: false,
+    name: "Alaska",
+    nights: 7,
+    ship: Ships.Wonder,
+    region: Regions.West,
   },
   {
-    departure: dateObj("2013-07"),
-    nights: 12,
-    name: "Mediterranean",
-    ship: Ships.Magic,
-    line: Lines.Disney,
     concierge: true,
+    departure: dateObj("2013-07"),
+    line: Lines.Disney,
+    name: "Mediterranean",
+    nights: 12,
+    ship: Ships.Magic,
+    region: Regions.Europe,
   },
   {
     departure: dateObj("2014-07"),
-    nights: 7,
+    line: Lines.Disney,
     name: "Alaska",
-    ship: Ships.Wonder,
-    line: Lines.Disney,
-    concierge: false,
-  },
-  {
-    departure: dateObj("2015-07"),
-    nights: 14,
-    name: "Northern EU Capitals",
-    ship: Ships.Magic,
-    line: Lines.Disney,
-    concierge: true,
-  },
-  {
-    departure: dateObj("2015-08"),
     nights: 7,
-    name: "Dover to Barcelona",
-    ship: Ships.Magic,
-    line: Lines.Disney,
+    ship: Ships.Wonder,
+    region: Regions.West,
+  },
+  {
     concierge: true,
+    departure: dateObj("2015-07"),
+    line: Lines.Disney,
+    name: "Northern EU Capitals",
+    nights: 14,
+    ship: Ships.Magic,
+    region: Regions.Europe,
+  },
+  {
+    concierge: true,
+    departure: dateObj("2015-08"),
+    line: Lines.Disney,
+    name: "Dover to Barcelona",
+    nights: 7,
+    ship: Ships.Magic,
+    region: Regions.Europe,
   },
   {
     departure: dateObj("2015-12"),
-    nights: 4,
-    name: "Bahamas",
-    ship: Ships.Dream,
     line: Lines.Disney,
-    concierge: false,
+    name: "Bahamas",
+    nights: 4,
+    ship: Ships.Dream,
+    region: Regions.Caribbean,
   },
   {
     departure: dateObj("2016-06"),
-    nights: 12,
-    name: "Iceland & Norway",
-    ship: Ships.Magic,
     line: Lines.Disney,
-    concierge: false,
+    name: "Iceland & Norway",
+    nights: 12,
+    ship: Ships.Magic,
+    region: Regions.Europe,
   },
   {
     departure: dateObj("2016-12"),
-    nights: 7,
-    name: "Eastern Caribbean",
-    ship: Ships.Fantasy,
     line: Lines.Disney,
-    concierge: false,
+    name: "Eastern Caribbean",
+    nights: 7,
+    ship: Ships.Fantasy,
+    region: Regions.Caribbean,
   },
   {
     departure: dateObj("2017-05"),
-    nights: 15,
-    name: "Eastbound Transatlantic",
-    ship: Ships.Magic,
     line: Lines.Disney,
-    concierge: false,
+    name: "Eastbound Transatlantic",
+    nights: 15,
+    ship: Ships.Magic,
+    region: Regions.Europe,
   },
   {
     departure: dateObj("2017-12"),
-    nights: 7,
-    name: "Western Caribbean",
-    ship: Ships.Fantasy,
     line: Lines.Disney,
-    concierge: false,
+    name: "Western Caribbean",
+    nights: 7,
+    ship: Ships.Fantasy,
+    region: Regions.Caribbean,
   },
   {
     departure: dateObj("2018-05"),
-    nights: 13,
-    name: "Eastbound Transatlantic",
-    ship: Ships.Magic,
     line: Lines.Disney,
-    concierge: false,
+    name: "Eastbound Transatlantic",
+    nights: 13,
+    ship: Ships.Magic,
+    region: Regions.Europe,
   },
   {
     departure: dateObj("2018-07"),
-    nights: 10,
-    name: "Mediterranean",
-    ship: Ships.Magic,
     line: Lines.Disney,
-    concierge: false,
+    name: "Mediterranean",
+    nights: 10,
+    ship: Ships.Magic,
+    region: Regions.Europe,
   },
   {
     departure: dateObj("2018-11"),
-    nights: 7,
+    line: Lines.Disney,
     name: "East Coast NY-FL-NY",
+    nights: 7,
     ship: Ships.Magic,
-    line: Lines.Disney,
-    concierge: false,
+    region: Regions.West,
   },
   {
+    concierge: true,
     departure: dateObj("2019-09"),
-    nights: 10,
+    line: Lines.Disney,
     name: "Westbound Transatlantic",
-    ship: Ships.Magic,
-    line: Lines.Disney,
-    concierge: true,
-  },
-  {
-    departure: dateObj("2019-11"),
-    nights: 7,
-    name: "Western Caribbean",
-    ship: Ships.Fantasy,
-    line: Lines.Disney,
-    concierge: true,
-  },
-  {
-    departure: dateObj("2021-12"),
-    nights: 7,
-    name: "Eastern Caribbean",
-    ship: Ships.Fantasy,
-    line: Lines.Disney,
-    concierge: true,
-  },
-  {
-    departure: dateObj("2022-04"),
     nights: 10,
-    name: "Vancouver to Honolulu",
-    ship: Ships.Wonder,
-    line: Lines.Disney,
+    ship: Ships.Magic,
+    region: Regions.Europe,
+  },
+  {
     concierge: true,
+    departure: dateObj("2019-11"),
+    line: Lines.Disney,
+    name: "Western Caribbean",
+    nights: 7,
+    ship: Ships.Fantasy,
+    region: Regions.Caribbean,
+  },
+  {
+    concierge: true,
+    departure: dateObj("2021-12"),
+    line: Lines.Disney,
+    name: "Eastern Caribbean",
+    nights: 7,
+    ship: Ships.Fantasy,
+    region: Regions.Caribbean,
+  },
+  {
+    concierge: true,
+    departure: dateObj("2022-04"),
+    line: Lines.Disney,
+    name: "Vancouver to Honolulu",
+    nights: 10,
+    ship: Ships.Wonder,
+    region: Regions.Pacific,
   },
   {
     departure: dateObj("2022-08"),
-    nights: 4,
-    name: "Catalina & Ensenada",
-    ship: Ships.Navigator,
     line: Lines.RC,
-    concierge: false,
-  },
-  {
-    departure: dateObj("2022-12"),
+    name: "Catalina & Ensenada",
     nights: 4,
-    name: "Bahamas",
-    ship: Ships.Wish,
-    line: Lines.Disney,
-    concierge: false,
+    ship: Ships.Navigator,
+    region: Regions.West,
   },
   {
     departure: dateObj("2022-12"),
-    nights: 3,
-    name: "Bahamas",
-    ship: Ships.Wish,
     line: Lines.Disney,
+    name: "Bahamas",
+    nights: 4,
+    ship: Ships.Wish,
+    region: Regions.Caribbean,
+  },
+  {
     concierge: true,
+    departure: dateObj("2022-12"),
+    line: Lines.Disney,
+    name: "Bahamas",
+    nights: 3,
+    ship: Ships.Wish,
+    region: Regions.Caribbean,
   },
   {
     departure: dateObj("2023-02"),
-    nights: 4,
-    name: "San Diego & Ensenada",
-    ship: Ships.Discovery,
     line: Lines.Princess,
-    concierge: false,
+    name: "San Diego & Ensenada",
+    nights: 4,
+    ship: Ships.Discovery,
+    region: Regions.West,
   },
   {
+    concierge: true,
     departure: dateObj("2023-05"),
-    nights: 3,
+    line: Lines.Disney,
     name: "Bahamas",
+    nights: 3,
     ship: Ships.Dream,
-    line: Lines.Disney,
-    concierge: true,
+    region: Regions.Caribbean,
   },
   {
+    concierge: true,
     departure: dateObj("2023-05"),
-    nights: 13,
-    name: "Eastbound Transatlantic",
-    ship: Ships.Dream,
     line: Lines.Disney,
-    concierge: true,
+    name: "Eastbound Transatlantic",
+    nights: 13,
+    ship: Ships.Dream,
+    region: Regions.Europe,
   },
   {
-    departure: dateObj("2024-03"),
-    nights: 15,
-    name: "Sydney to Honolulu",
-    ship: Ships.Wonder,
-    line: Lines.Disney,
     concierge: true,
+    departure: dateObj("2024-03"),
+    line: Lines.Disney,
+    name: "Sydney to Honolulu",
+    nights: 15,
+    ship: Ships.Wonder,
+    region: Regions.Pacific,
   },
   {
     departure: dateObj("2024-05"),
+    line: Lines.Disney,
+    name: "Bahamas",
     nights: 3,
-    name: "Bahamas",
     ship: Ships.Wish,
-    line: Lines.Disney,
-    concierge: false,
+    region: Regions.Caribbean,
   },
   {
+    concierge: true,
     departure: dateObj("2024-09"),
-    nights: 10,
+    line: Lines.Disney,
     name: "Vancouver to Honolulu",
+    nights: 10,
     ship: Ships.Wonder,
-    line: Lines.Disney,
-    concierge: true,
+    region: Regions.Pacific,
   },
   {
+    concierge: true,
     departure: dateObj("2024-12"),
-    nights: 4,
+    line: Lines.Disney,
     name: "Bahamas",
+    nights: 4,
     ship: Ships.Fantasy,
-    line: Lines.Disney,
-    concierge: true,
+    region: Regions.Caribbean,
   },
   {
+    concierge: true,
     departure: dateObj("2024-12"),
-    nights: 7,
-    name: "Maiden Voyage (Caribbean)",
-    ship: Ships.Treasure,
     line: Lines.Disney,
-    concierge: true,
+    name: "Maiden Voyage (Caribbean)",
+    nights: 7,
+    ship: Ships.Treasure,
+    region: Regions.Caribbean,
   },
   {
-    departure: dateObj("2025-03"),
-    nights: 7,
-    name: "Galveston to San Juan",
-    ship: Ships.Magic,
-    line: Lines.Disney,
     concierge: true,
+    departure: dateObj("2025-03"),
+    line: Lines.Disney,
+    name: "Galveston to San Juan",
+    nights: 7,
+    ship: Ships.Magic,
+    region: Regions.Caribbean,
   },
   {
     departure: dateObj("2025-05"),
-    nights: 15,
-    name: "Miami to Casablanca & Barcelona",
-    ship: Ships.Scarlet,
     line: Lines.Virgin,
-    concierge: false,
+    name: "Miami to Casablanca & Barcelona",
+    nights: 15,
+    ship: Ships.Scarlet,
+    region: Regions.Europe,
   },
   {
-    departure: dateObj("2025-10"),
-    nights: 4,
-    name: "Bahamas",
-    ship: Ships.Dream,
-    line: Lines.Disney,
     concierge: true,
+    departure: dateObj("2025-10"),
+    line: Lines.Disney,
+    name: "Bahamas",
+    nights: 4,
+    ship: Ships.Dream,
+    region: Regions.Caribbean,
   },
   {
     departure: dateObj("2025-11"),
-    nights: 4,
-    name: "Bahamas",
-    ship: Ships.Destiny,
     line: Lines.Disney,
-    concierge: false,
+    name: "Maiden Voyage (Bahamas)",
+    nights: 4,
+    ship: Ships.Destiny,
+    region: Regions.Caribbean,
   },
   {
-    departure: dateObj("2026-04"),
-    nights: 14,
-    name: "Panama Canal",
-    ship: Ships.Magic,
-    line: Lines.Disney,
     concierge: true,
+    departure: dateObj("2026-04"),
+    line: Lines.Disney,
+    name: "Panama Canal",
+    nights: 14,
+    ship: Ships.Magic,
+    region: Regions.West,
   },
 ];
 
-// -------------------------     Loyalty     ------------------------- //
+// -------------------------     Loyalty & Regions     ------------------------- //
 
 const disneyLoyalty = [
   { num: 1, status: "Silver" },
@@ -362,6 +388,7 @@ const virginLoyalty = [
   { num: 4, status: "Deep Blue Extras" },
 ];
 
+const regions = [0, 0, 0, 0];
 const numDisney = [0, 0, 0, 0, 0, 0, 0];
 const numRC = [0];
 const numPrincess = [0];
@@ -420,6 +447,23 @@ cruises.forEach((cruise) => {
       break;
     case Lines.Virgin:
       virginCruises += 1;
+      break;
+    default:
+      break;
+  }
+
+  switch (cruise.region) {
+    case Regions.Caribbean:
+      regions[0] += 1;
+      break;
+    case Regions.Europe:
+      regions[1] += 1;
+      break;
+    case Regions.Pacific:
+      regions[2] += 1;
+      break;
+    case Regions.West:
+      regions[3] += 1;
       break;
     default:
       break;
@@ -520,12 +564,18 @@ export const loyaltySeries: SeriesOptionsType[] = [
 
 export const cruiseData = {
   nodes: [
+    // regions
+    { id: Regions.Caribbean, color: indigo[800] },
+    { id: Regions.Europe, color: "white" },
+    { id: Regions.Pacific, color: yellow[600] },
+    { id: Regions.West, color: red[600] },
+    // center
     { id: "🛳", color: cyan[400] },
     // lines
     { id: Lines.Disney, color: indigo[800] },
-    { id: Lines.RC, color: cyan[400] },
+    { id: "Royal C", color: cyan[400] },
     { id: Lines.Princess, color: blue[500] },
-    { id: Lines.Virgin, color: red[900] },
+    { id: "Virgin", color: red[900] },
     // ships
     { id: Ships.Magic, color: indigo[900] },
     { id: Ships.Wonder, color: "white" },
@@ -539,11 +589,16 @@ export const cruiseData = {
     { id: Ships.Scarlet, color: "black" },
   ],
   data: [
+    // level 0
+    [Regions.Caribbean, "🛳", regions[0]],
+    [Regions.Europe, "🛳", regions[1]],
+    [Regions.Pacific, "🛳", regions[2]],
+    [Regions.West, "🛳", regions[3]],
     // level 1
     ["🛳", Lines.Disney, disneyCruises],
-    ["🛳", Lines.RC, numRC[0]],
+    ["🛳", "Royal C", numRC[0]],
     ["🛳", Lines.Princess, numPrincess[0]],
-    ["🛳", Lines.Virgin, numVirgin[0]],
+    ["🛳", "Virgin", numVirgin[0]],
     // level 2
     [Lines.Disney, Ships.Magic, numDisney[0]], // Magic
     [Lines.Disney, Ships.Wonder, numDisney[1]], // Wonder
@@ -552,8 +607,8 @@ export const cruiseData = {
     [Lines.Disney, Ships.Wish, numDisney[4]], // Wish
     [Lines.Disney, Ships.Treasure, numDisney[5]], // Treasure
     [Lines.Disney, Ships.Destiny, numDisney[6]], // Destiny
-    [Lines.RC, "Navigator", numRC[0]], // Navigator
+    ["Royal C", "Navigator", numRC[0]], // Navigator
     [Lines.Princess, Ships.Discovery, numPrincess[0]], // Discovery
-    [Lines.Virgin, Ships.Scarlet, numVirgin[0]], // Scarlet Lady
+    ["Virgin", Ships.Scarlet, numVirgin[0]], // Scarlet Lady
   ],
 };
