@@ -53,7 +53,14 @@ const data: CarEntry[] = [
 
 describe("common | timeline-card | TimelineCard", () => {
   it("renders as expected", () => {
-    render(<TimelineCard data={data} useFStart={false} useKStart={false} />);
+    render(
+      <TimelineCard
+        data={data}
+        useFStart={false}
+        useKStart={false}
+        onClick={() => () => {}}
+      />,
+    );
 
     // verify ExpandableCard
     expect(screen.getByText("Ken's Cars")).toBeInTheDocument();

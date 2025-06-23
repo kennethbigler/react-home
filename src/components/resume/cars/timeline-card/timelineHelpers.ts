@@ -8,6 +8,7 @@ export interface SegmentType {
   title?: string;
   width: number;
   inverted?: boolean;
+  onClick?: (title: string) => void;
 }
 
 /* *************************     Constants     ************************* */

@@ -355,25 +355,19 @@ const currentKensCars: CarEntry[] = [
 
 // --------------------------------------------------     Car Processing     -------------------------------------------------- //
 
-export const cars: CarEntry[] = [
-  ...pastKensCarsNoRepeats,
-  ...currentKensCars,
-  ...pastFamilyCarsNoRepeats,
-  ...currentFamilyCars,
-];
-
-const dateSort = (a: DateObj, b: DateObj) => {
-  let diff = a.year - b.year;
-  if (diff === 0) {
-    diff = a.month - b.month;
-  }
-  return diff;
-};
+const dateSort = (a: DateObj, b: DateObj) => a.diff(b, "months");
 const carSort = (isK?: boolean) => (a: CarEntry, b: CarEntry) => {
   return isK
     ? dateSort(a.fStart || a.end, b.fStart || b.end)
     : dateSort(a.kStart || a.end, b.kStart || b.end);
 };
+
+export const cars: CarEntry[] = [
+  ...pastKensCarsNoRepeats,
+  ...currentKensCars,
+  ...pastFamilyCarsNoRepeats,
+  ...currentFamilyCars,
+].sort((a: CarEntry, b: CarEntry) => dateSort(a.end, b.end));
 
 const pastKensCars = [...pastKensCarsNoRepeats, camilla, cheyenne].sort(
   carSort(true),
@@ -502,41 +496,6 @@ export const processData = (allData: CarEntry[]): GraphData => {
   });
 
   return ret;
-};
-
-// --------------------------------------------------     Current Car Ranked     -------------------------------------------------- //
-
-export interface CurrentCarStatsData {
-  maxVal: number;
-  val: number;
-  name: string;
-}
-
-const getP2W = (c: CarEntry) =>
-  parseFloat((c.horsepower / c.weight).toFixed(3));
-
-export const processCurrentCarStats = (
-  key: "zTo60" | "horsepower" | "MPG" | "torque" | "weight" | "powerToWeight",
-): CurrentCarStatsData => {
-  const idx = 0;
-  const currentValue =
-    key === "powerToWeight"
-      ? getP2W(currentKensCars[idx])
-      : currentKensCars[idx][key];
-
-  let max = currentValue;
-  cars.forEach((c) => {
-    const val = key === "powerToWeight" ? getP2W(c) : c[key];
-    if (val > max) {
-      max = val;
-    }
-  });
-
-  return {
-    maxVal: max,
-    val: currentValue,
-    name: currentKensCars[idx].car,
-  };
 };
 
 // --------------------------------------------------     Sankey     -------------------------------------------------- //

@@ -1,7 +1,12 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import TimelineCard from "./timeline-card";
-import { cars, hideFamilyCars, hideKenCars } from "../../../constants/cars";
+import {
+  cars,
+  currentKensCars,
+  hideFamilyCars,
+  hideKenCars,
+} from "../../../constants/cars";
 import CarChartControls from "./CarChartControls";
 import CarGraphs from "./graphs/CarGraphs";
 import CarDisplay from "./CarDisplay";
@@ -9,8 +14,12 @@ import CarDisplay from "./CarDisplay";
 const Cars = () => {
   const [hideFamily, setHideFamily] = React.useState(false);
   const [hideKen, setHideKen] = React.useState(false);
+  const [active, setActive] = React.useState(currentKensCars[0]);
 
-  const handleClick = (isKen: boolean) => () => {
+  const handleSegmentClick = (title: string) =>
+    cars.forEach((car) => car.title === title && setActive(car));
+
+  const handleHideClick = (isKen: boolean) => () => {
     if (isKen) {
       if (!hideKen && hideFamily) {
         setHideFamily(false);
@@ -37,12 +46,22 @@ const Cars = () => {
         Ken&apos;s Cars
       </Typography>
       <CarChartControls
-        onClick={handleClick}
+        onClick={handleHideClick}
         hideKen={hideKen}
         hideFamily={hideFamily}
       />
-      <TimelineCard data={data} useKStart={hideFamily} useFStart={hideKen} />
-      <CarGraphs data={data} hideFamily={hideFamily} hideKen={hideKen} />
+      <TimelineCard
+        data={data}
+        useKStart={hideFamily}
+        useFStart={hideKen}
+        onClick={handleSegmentClick}
+      />
+      <CarGraphs
+        active={active}
+        data={data}
+        hideFamily={hideFamily}
+        hideKen={hideKen}
+      />
       <CarDisplay hideFamily={hideFamily} hideKen={hideKen} />
     </>
   );

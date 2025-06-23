@@ -4,9 +4,11 @@ import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import Grid from "@mui/material/Grid";
 import { green, grey, red } from "@mui/material/colors";
-import { CurrentCarStatsData } from "../../../../constants/cars";
 
-export interface CarSpeedoGraphProps extends CurrentCarStatsData {
+export interface CarSpeedoGraphProps {
+  val: number;
+  name: string;
+  maxVal: number;
   label: string;
   title: string;
   color: "black" | "white";
@@ -25,7 +27,7 @@ const CarSpeedoGraph = React.memo(
     title,
     name,
   }: CarSpeedoGraphProps) => {
-    const min = title === "Weight" ? 2500 : 0;
+    const min = 0;
     const greenEnd = Math.max(min, endGreenVal);
     const options = {
       accessibility: { enabled: true },

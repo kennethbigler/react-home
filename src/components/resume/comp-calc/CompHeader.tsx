@@ -10,11 +10,11 @@ import StockDisplay from "./StockDisplay";
 
 interface CompHeaderProps {
   compEntries: CompEntry[];
-  setCompEntries: (c: CompEntry[]) => void;
-  openEntry: boolean;
-  setOpenEntry: React.Dispatch<React.SetStateAction<boolean>>;
   editEntryIdx: number;
+  openEntry: boolean;
+  setCompEntries: (c: CompEntry[]) => void;
   setEditEntryIdx: React.Dispatch<React.SetStateAction<number>>;
+  setOpenEntry: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CompHeader = ({
