@@ -9,19 +9,29 @@ import CurrentCarStats from "./CurrentCarStats";
 import { red } from "@mui/material/colors";
 
 interface CarGraphsProps {
+  active: CarEntry;
   data: CarEntry[];
   hideFamily: boolean;
   hideKen: boolean;
 }
 
-const CarGraphs = ({ data, hideFamily, hideKen }: CarGraphsProps) => {
+const CarGraphs = ({ data, active, hideFamily, hideKen }: CarGraphsProps) => {
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
   return (
     <ExpandableCard title="Car Graphs" backgroundColor={red.A700}>
       <Grid container spacing={2}>
-        <CurrentCarStats color={color} />
+        <CurrentCarStats
+          color={color}
+          name={active.car}
+          zTo60={active.zTo60}
+          horsepower={active.horsepower}
+          mpg={active.MPG}
+          torque={active.torque}
+          weight={active.weight}
+          powerToWeight={active.horsepower / active.weight}
+        />
         <Grid size={{ xs: 12, md: 6 }}>
           <CarSankeyGraph
             hideKen={hideKen}

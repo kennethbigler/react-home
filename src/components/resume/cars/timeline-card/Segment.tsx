@@ -4,15 +4,25 @@ import { grey } from "@mui/material/colors";
 import { SegmentType } from "./timelineHelpers";
 
 const bodyStyles: React.CSSProperties = {
-  cursor: "default",
-  paddingTop: "5px",
-  paddingBottom: "5px",
+  cursor: "pointer",
+  paddingTop: "0.5em",
+  paddingBottom: "0.5em",
   textAlign: "center",
   borderRadius: 2,
+  border: 0,
+  fontFamily: "Montserrat, sans-serif",
+  fontSize: "1em",
 };
 
 const Segment = React.memo(
-  ({ body, width, color, title, inverted }: SegmentType) => {
+  ({
+    body,
+    width,
+    color,
+    title,
+    inverted,
+    onClick = () => {},
+  }: SegmentType) => {
     const {
       palette: { mode },
     } = useTheme();
@@ -32,9 +42,13 @@ const Segment = React.memo(
       };
     }
 
-    return (
-      <div style={style} title={title}>
+    return body ? (
+      <button style={style} title={title} onClick={() => onClick(title || "")}>
         {body || <br />}
+      </button>
+    ) : (
+      <div style={style}>
+        <br />
       </div>
     );
   },

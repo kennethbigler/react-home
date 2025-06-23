@@ -21,34 +21,6 @@ describe("common | timeline-card | Segment", () => {
       });
     });
 
-    it("with title", () => {
-      render(<Segment title="Title" width={100} />);
-      // title
-      expect(screen.getByTitle("Title")).toBeInTheDocument();
-      // width
-      expect(screen.getByTitle("Title")).toHaveStyle({ width: "100%" });
-      // inverted
-      expect(screen.getByTitle("Title")).toHaveStyle({
-        color: "rgb(250, 250, 250)",
-      });
-    });
-
-    it("with color, w/o body", () => {
-      render(<Segment color="#FFF" title="Title" width={100} />);
-      // color
-      expect(screen.getByTitle("Title")).not.toHaveStyle({
-        backgroundColor: "rgb(255, 255, 255)",
-      });
-      // title
-      expect(screen.getByTitle("Title")).toBeInTheDocument();
-      // width
-      expect(screen.getByTitle("Title")).toHaveStyle({ width: "100%" });
-      // inverted
-      expect(screen.getByTitle("Title")).toHaveStyle({
-        color: "rgb(250, 250, 250)",
-      });
-    });
-
     it("with color, with body", () => {
       render(<Segment color="#FFF" body="Body" title="Title" width={100} />);
       // color
@@ -82,7 +54,9 @@ describe("common | timeline-card | Segment", () => {
     });
 
     it("with inverted being false", () => {
-      render(<Segment title="Title" width={100} inverted={false} />);
+      render(
+        <Segment body="Body" title="Title" width={100} inverted={false} />,
+      );
       // title
       expect(screen.getByTitle("Title")).toBeInTheDocument();
       // width
@@ -94,7 +68,7 @@ describe("common | timeline-card | Segment", () => {
     });
 
     it("with inverted being true", () => {
-      render(<Segment title="Title" width={100} inverted />);
+      render(<Segment body="Body" title="Title" width={100} inverted />);
       // title
       expect(screen.getByTitle("Title")).toBeInTheDocument();
       // width

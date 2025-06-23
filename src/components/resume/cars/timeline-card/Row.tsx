@@ -7,13 +7,19 @@ interface RowProps {
   segments: SegmentType[];
   yearMarkers?: boolean;
   first?: boolean;
+  onClick?: (title: string) => void;
 }
 
 const smMarginTop: React.CSSProperties = { marginTop: 10 };
 const lgMarginTop: React.CSSProperties = { marginTop: 20 };
 const noStyle: React.CSSProperties = { height: 0 };
 
-const Row = ({ segments, yearMarkers = false, first = false }: RowProps) => {
+const Row = ({
+  segments,
+  onClick,
+  yearMarkers = false,
+  first = false,
+}: RowProps) => {
   let style = smMarginTop;
   if (yearMarkers) {
     style = noStyle;
@@ -22,12 +28,12 @@ const Row = ({ segments, yearMarkers = false, first = false }: RowProps) => {
   }
 
   return (
-    <div style={style} title="timeline-row">
+    <div style={style}>
       {segments.map((data, j) =>
         yearMarkers ? (
           <YearMarkers key={j} body={data.body} width={data.width} />
         ) : (
-          <Segment key={j} {...data} />
+          <Segment key={j} {...data} onClick={onClick} />
         ),
       )}
     </div>
