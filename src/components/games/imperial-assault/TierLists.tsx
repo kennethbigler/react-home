@@ -65,123 +65,143 @@ const TierLists = () => (
             <TableRow>
               <TableCell>Rebel Hero</TableCell>
               <TableCell>Imperial Class Deck</TableCell>
+              <TableCell>Agenda Card Sets</TableCell>
               <TableCell>Rank</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <TableRow selected>
-              <TableCell colSpan={3} align="center">
+              <TableCell colSpan={4} align="center">
                 S-Tier
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Gideon Argus</TableCell>
               <TableCell>Subversive Tactics</TableCell>
+              <TableCell>Crimson Empire</TableCell>
               <TableCell>S+</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Fenn Signis</TableCell>
               <TableCell>Military Might</TableCell>
+              <TableCell>For the Right Price</TableCell>
               <TableCell>S</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Diala Passil</TableCell>
               <TableCell>Hutt Mercenaries</TableCell>
+              <TableCell>Imperial Discipline</TableCell>
               <TableCell>S</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Shyla Varad</TableCell>
               <TableCell></TableCell>
+              <TableCell>Imperial Industry</TableCell>
               <TableCell>S</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Vinto Hreeda</TableCell>
               <TableCell></TableCell>
+              <TableCell>Retaliation</TableCell>
               <TableCell>S-</TableCell>
             </TableRow>
             <TableRow selected>
-              <TableCell colSpan={3} align="center">
+              <TableCell colSpan={4} align="center">
                 A-Tier
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Mak Eshka&apos;rey</TableCell>
               <TableCell>Reactive Defenses</TableCell>
+              <TableCell>Nefarious Dealings</TableCell>
               <TableCell>A+</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Drokkatta</TableCell>
               <TableCell>Tech Superiority</TableCell>
+              <TableCell>Weapons Division</TableCell>
               <TableCell>A+</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Varena Talos</TableCell>
               <TableCell></TableCell>
+              <TableCell>Defensive Tactics</TableCell>
               <TableCell>A+</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Gaarkhan</TableCell>
               <TableCell>Nemeses</TableCell>
+              <TableCell>The Empire&apos;s Reach</TableCell>
               <TableCell>A</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Jyn Odan</TableCell>
               <TableCell>Power of the Dark Side</TableCell>
+              <TableCell>Enhanced Interrogation</TableCell>
               <TableCell>A</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>MDH-19</TableCell>
               <TableCell></TableCell>
+              <TableCell>Natural Warfare</TableCell>
               <TableCell>A</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Ko-Tun Feralo</TableCell>
+              <TableCell></TableCell>
               <TableCell></TableCell>
               <TableCell>A</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Onar Koma</TableCell>
               <TableCell></TableCell>
+              <TableCell></TableCell>
               <TableCell>A</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Murne Rin</TableCell>
+              <TableCell></TableCell>
               <TableCell></TableCell>
               <TableCell>A</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Jarrod Kelvin</TableCell>
               <TableCell>Imperial Black Ops</TableCell>
+              <TableCell></TableCell>
               <TableCell>A-</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Davith Elso</TableCell>
               <TableCell>Precision Training</TableCell>
+              <TableCell></TableCell>
               <TableCell>A-</TableCell>
             </TableRow>
             <TableRow selected>
-              <TableCell colSpan={3} align="center">
+              <TableCell colSpan={4} align="center">
                 B-Tier
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Loku Kanoloa</TableCell>
               <TableCell>Armored Onslaught</TableCell>
+              <TableCell></TableCell>
               <TableCell>B+</TableCell>
             </TableRow>
             <TableRow selected>
-              <TableCell colSpan={3} align="center">
+              <TableCell colSpan={4} align="center">
                 C-Tier
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Saska Teft</TableCell>
               <TableCell>Inspiring Leadership</TableCell>
+              <TableCell></TableCell>
               <TableCell>C+</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Biv Bodhrik</TableCell>
               <TableCell>Overwhelming Oppression</TableCell>
+              <TableCell></TableCell>
               <TableCell>C+</TableCell>
             </TableRow>
           </TableBody>
@@ -201,7 +221,7 @@ const TierLists = () => (
             {deploymentCards.map((card, i) =>
               card.divider ? (
                 <TableRow key={i} selected>
-                  <TableCell colSpan={5} align="center">
+                  <TableCell colSpan={3} align="center">
                     {card.name}
                   </TableCell>
                 </TableRow>
