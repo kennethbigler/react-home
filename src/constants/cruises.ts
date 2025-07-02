@@ -14,12 +14,13 @@ import dateObj, { DateObj } from "../apis/DateHelper";
 enum Lines {
   Disney = "Disney",
   NG = "National Geographic",
-  RC = "Royal Caribbean",
   Princess = "Princess",
+  RC = "Royal Caribbean",
   Virgin = "Virgin Voyages",
 }
 
 enum Ships {
+  // Disney
   Magic = "Magic",
   Wonder = "Wonder",
   Dream = "Dream",
@@ -27,9 +28,14 @@ enum Ships {
   Wish = "Wish",
   Treasure = "Treasure",
   Destiny = "Destiny",
+  // Nat Geo
+  IcelandAir = "747",
   Endurance = "Endurance",
-  Navigator = "Navigator of the Seas",
+  // Princess
   Discovery = "Discovery",
+  // Royal Caribbean
+  Navigator = "Navigator of the Seas",
+  // Virgin
   Scarlet = "Scarlet Lady",
 }
 
@@ -271,6 +277,14 @@ export const cruises: Cruise[] = [
     region: Regions.Europe,
   },
   {
+    departure: dateObj("2023-07"),
+    line: Lines.NG,
+    name: "🥇-🇺🇸🇯🇵🇨🇳🇭🇰🇮🇳🇪🇬🇫🇷🇨🇦",
+    nights: 23,
+    ship: Ships.IcelandAir,
+    region: Regions.Europe,
+  },
+  {
     concierge: true,
     departure: dateObj("2024-03"),
     line: Lines.Disney,
@@ -376,6 +390,13 @@ const disneyLoyalty = [
   { num: 25, status: "Pearl" },
 ];
 
+const princessLoyalty = [
+  { num: 1, nights: 1, status: "Gold" },
+  { num: 3, nights: 30, status: "Ruby" },
+  { num: 5, nights: 50, status: "Platinum" },
+  { num: 15, nights: 150, status: "Elite" },
+];
+
 const rcLoyalty = [
   { nights: 3, status: "Gold" },
   { nights: 30, status: "Platinum" },
@@ -385,13 +406,6 @@ const rcLoyalty = [
   { nights: 700, status: "Pinnacle Club" },
 ];
 
-const princessLoyalty = [
-  { num: 1, nights: 1, status: "Gold" },
-  { num: 3, nights: 30, status: "Ruby" },
-  { num: 5, nights: 50, status: "Platinum" },
-  { num: 15, nights: 150, status: "Elite" },
-];
-
 const virginLoyalty = [
   { num: 1, status: "Sailing Club" },
   { num: 2, status: "Blue Extras" },
@@ -399,17 +413,21 @@ const virginLoyalty = [
 ];
 
 const regions = [0, 0, 0, 0];
+// lines, add index per ship
 const numDisney = [0, 0, 0, 0, 0, 0, 0];
-const numRC = [0];
+const numNatGeo = [0, 0];
 const numPrincess = [0];
+const numRC = [0];
 const numVirgin = [0];
-const numNatGeo = [0];
+// loyalty counts
 let totalNightsCalc = 0;
 let disneyCruises = 0;
-let virginCruises = 0;
 let natGeoCruises = 0;
-let rcNights = 0;
 const princess: [number, number] = [0, 0];
+let princessCruises = 0;
+let rcCruises = 0;
+let rcNights = 0;
+let virginCruises = 0;
 
 cruises.forEach((cruise) => {
   totalNightsCalc += cruise.nights;
@@ -436,17 +454,20 @@ cruises.forEach((cruise) => {
     case Ships.Destiny:
       numDisney[6] += 1;
       break;
-    case Ships.Navigator:
-      numRC[0] += 1;
+    case Ships.IcelandAir:
+      numNatGeo[1] += 1;
+      break;
+    case Ships.Endurance:
+      numNatGeo[0] += 1;
       break;
     case Ships.Discovery:
       numPrincess[0] += 1;
       break;
+    case Ships.Navigator:
+      numRC[0] += 1;
+      break;
     case Ships.Scarlet:
       numVirgin[0] += 1;
-      break;
-    case Ships.Endurance:
-      numNatGeo[0] += 1;
       break;
     default:
       break;
@@ -456,18 +477,20 @@ cruises.forEach((cruise) => {
     case Lines.Disney:
       disneyCruises += 1;
       break;
-    case Lines.RC:
-      rcNights += cruise.nights * (cruise.concierge ? 2 : 1);
+    case Lines.NG:
+      natGeoCruises += 1;
       break;
     case Lines.Princess:
+      princessCruises += 1;
       princess[0] += cruise.concierge ? 2 : 1;
       princess[1] += cruise.nights;
       break;
+    case Lines.RC:
+      rcCruises += 1;
+      rcNights += cruise.nights * (cruise.concierge ? 2 : 1);
+      break;
     case Lines.Virgin:
       virginCruises += 1;
-      break;
-    case Lines.NG:
-      natGeoCruises += 1;
       break;
     default:
       break;
@@ -599,8 +622,8 @@ export const cruiseData = {
     // lines
     { id: Lines.Disney, color: indigo[800] },
     { id: "NatGeo", color: yellow[600] },
-    { id: "Royal C", color: cyan[400] },
     { id: Lines.Princess, color: blue[500] },
+    { id: "Royal C", color: cyan[400] },
     { id: "Virgin", color: red[900] },
     // ships
     { id: Ships.Magic, color: indigo[900] },
@@ -611,8 +634,9 @@ export const cruiseData = {
     { id: Ships.Treasure, color: indigo[900] },
     { id: Ships.Destiny, color: "white" },
     { id: Ships.Endurance, color: yellow[600] },
-    { id: "Navigator", color: red[600] },
-    { id: Ships.Discovery, color: "black" },
+    { id: Ships.IcelandAir, color: yellow[600] },
+    { id: Ships.Discovery, color: red[600] },
+    { id: "Navigator", color: "black" },
     { id: Ships.Scarlet, color: indigo[900] },
   ],
   data: [
@@ -624,8 +648,8 @@ export const cruiseData = {
     // center - lines
     ["🛳", Lines.Disney, disneyCruises],
     ["🛳", "NatGeo", natGeoCruises],
-    ["🛳", "Royal C", numRC[0]],
-    ["🛳", Lines.Princess, numPrincess[0]],
+    ["🛳", Lines.Princess, princessCruises],
+    ["🛳", "Royal C", rcCruises],
     ["🛳", "Virgin", virginCruises],
     // lines - ships
     [Lines.Disney, Ships.Magic, numDisney[0]],
@@ -636,8 +660,9 @@ export const cruiseData = {
     [Lines.Disney, Ships.Treasure, numDisney[5]],
     [Lines.Disney, Ships.Destiny, numDisney[6]],
     ["NatGeo", Ships.Endurance, numNatGeo[0]],
-    ["Royal C", "Navigator", numRC[0]],
+    ["NatGeo", Ships.IcelandAir, numNatGeo[1]],
     [Lines.Princess, Ships.Discovery, numPrincess[0]],
+    ["Royal C", "Navigator", numRC[0]],
     ["Virgin", Ships.Scarlet, numVirgin[0]],
   ],
 };
