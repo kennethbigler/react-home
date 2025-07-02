@@ -3,7 +3,11 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import "highcharts/modules/accessibility";
 import themeAtom from "../../../../jotai/theme-atom";
-import { loyaltySeries, loyaltyColors } from "../../../../constants/cruises";
+import {
+  loyaltySeries,
+  loyaltyColors,
+  loyaltyNames,
+} from "../../../../constants/cruises";
 
 const LoyaltyCharts = () => {
   const theme = useAtomValue(themeAtom);
@@ -42,13 +46,7 @@ const LoyaltyCharts = () => {
         style: { color },
       },
       gridLineWidth: 0,
-      categories: [
-        "Disney 🛳️",
-        "Virgin 🛳️",
-        "Princess 🛳️",
-        "Princess 🌙",
-        "Royal 🌙",
-      ],
+      categories: loyaltyNames,
     },
     yAxis: {
       lineWidth: 0,
