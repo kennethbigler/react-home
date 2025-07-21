@@ -16,8 +16,8 @@ export const START = dateObj("2008-03");
 export const END = dateObj();
 
 const WIDTH = 99;
-const MIN_TEXT_WIDTH = 85;
-const MIN_SHORT_WIDTH = 54;
+const MIN_TEXT_WIDTH = 86;
+const MIN_SHORT_WIDTH = 56;
 const YEAR_WIDTH = 0.3;
 const YEAR_MARK_FREQ = 3;
 
