@@ -455,10 +455,10 @@ cruises.forEach((cruise) => {
       numDisney[6] += 1;
       break;
     case Ships.IcelandAir:
-      numNatGeo[1] += 1;
+      numNatGeo[0] += 1;
       break;
     case Ships.Endurance:
-      numNatGeo[0] += 1;
+      numNatGeo[1] += 1;
       break;
     case Ships.Discovery:
       numPrincess[0] += 1;
@@ -633,8 +633,8 @@ export const cruiseData = {
     { id: Ships.Wish, color: "black" },
     { id: Ships.Treasure, color: indigo[900] },
     { id: Ships.Destiny, color: "white" },
-    { id: Ships.Endurance, color: yellow[600] },
     { id: Ships.IcelandAir, color: yellow[600] },
+    { id: Ships.Endurance, color: yellow[600] },
     { id: Ships.Discovery, color: red[600] },
     { id: "Navigator", color: "black" },
     { id: Ships.Scarlet, color: indigo[900] },
@@ -659,8 +659,8 @@ export const cruiseData = {
     [Lines.Disney, Ships.Wish, numDisney[4]],
     [Lines.Disney, Ships.Treasure, numDisney[5]],
     [Lines.Disney, Ships.Destiny, numDisney[6]],
-    ["NatGeo", Ships.Endurance, numNatGeo[0]],
-    ["NatGeo", Ships.IcelandAir, numNatGeo[1]],
+    ["NatGeo", Ships.IcelandAir, numNatGeo[0]],
+    ["NatGeo", Ships.Endurance, numNatGeo[1]],
     [Lines.Princess, Ships.Discovery, numPrincess[0]],
     ["Royal C", "Navigator", numRC[0]],
     ["Virgin", Ships.Scarlet, numVirgin[0]],
