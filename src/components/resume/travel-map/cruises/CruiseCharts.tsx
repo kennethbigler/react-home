@@ -14,15 +14,15 @@ const CruiseCharts = () => {
   const options: Highcharts.Options = {
     chart: {
       type: "sankey",
-      height: 600,
+      height: 800,
       backgroundColor: "transparent",
     },
     credits: { enabled: false },
     title: { text: "Cruises", style: { color } },
     plotOptions: {
       sankey: {
-        nodePadding: 20, // Increase padding between nodes
-        nodeWidth: 70, // Adjust node width for better spacing
+        nodePadding: 16, // Increase padding between nodes
+        nodeWidth: 68, // Adjust node width for better spacing
       },
     },
     accessibility: {

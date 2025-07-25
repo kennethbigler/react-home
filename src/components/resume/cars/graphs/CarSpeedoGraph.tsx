@@ -31,10 +31,10 @@ const CarSpeedoGraph = React.memo(
     const greenEnd = Math.max(min, endGreenVal);
     const options = {
       accessibility: { enabled: true },
-      credits: { enabled: false },
-      pane: { startAngle: -135, endAngle: 135, background: null },
-      title: { text: `${name} ${title}`, style: { color } },
       chart: { type: "gauge", backgroundColor: null },
+      credits: { enabled: false },
+      pane: { startAngle: -150, endAngle: 150, background: null },
+      title: { text: `${name} ${title}`, style: { color } },
       series: [
         {
           name,
@@ -48,26 +48,14 @@ const CarSpeedoGraph = React.memo(
       yAxis: {
         min,
         max: maxVal,
-        lineWidth: 0,
-        labels: { distance: 20, style: { color } },
+        labels: { distance: -28, style: { color } },
         plotBands: [
-          {
-            from: min,
-            to: greenEnd,
-            color: green[400],
-            thickness: 20,
-          },
-          {
-            from: startRedVal,
-            to: maxVal,
-            color: red[500],
-            thickness: 20,
-          },
+          { from: min, to: greenEnd, color: green[400] },
+          { from: startRedVal, to: maxVal, color: red[500] },
           {
             from: greenEnd,
             to: startRedVal,
             color: color === "white" ? grey[800] : grey[200],
-            thickness: 20,
           },
         ],
       },
