@@ -708,40 +708,84 @@ export const presentations: School[] = [
               },
             ],
           },
+          {
+            quarter: "Disability:IN",
+            classes: [
+              {
+                catalog: "Title",
+                name: "AI & Accessibility: Transforming Work for All Employees",
+              },
+              {
+                catalog: "Description",
+                name: "Artificial intelligence (AI) is rapidly transforming the workplace, and its potential to support employees with disabilities is immense. This session explores how AI tools can be leveraged to create a more inclusive and accessible work environment, from streamlining recruitment and onboarding to providing personalized accommodations / adjustments. We'll delve into practical applications of AI while addressing important considerations around privacy, and ensuring these technologies are used ethically and responsibly.",
+              },
+              {
+                catalog: "Learning Objectives",
+                name: "1. Identify AI Applications: Participants will be able to recognize and describe various ways AI can be used to enhance accessibility and inclusion for qualified employees with disabilities across different aspects of the employment lifecycle, including recruitment, onboarding, training, performance management, and career development. 2. Tailored Accommodations/Adjustments: Explore how AI-powered tools can personalize accommodations/adjustments to meet the specific needs of employees with disabilities, enhancing their productivity and job satisfaction. 3. Ethical Considerations: Understand the ethical implications of using AI to support employees with disabilities, including issues of privacy, data security, algorithmic bias, and ensuring human oversight.",
+              },
+              {
+                catalog: "Ken Bigler",
+                name: "Head of Accessibility Engineering at Intuit, Moderator",
+              },
+              {
+                catalog: "Laurie Allen",
+                name: "Sr. Accessibility Tech Evangelist at Microsoft",
+              },
+              {
+                catalog: "Samantha Estoesta",
+                name: "Product Owner, Apply & Screen, Colleague Journey at TD Bank",
+              },
+              {
+                catalog: "Kent Hulett",
+                name: "Senior Learning Consultant at T-Mobile",
+              },
+              {
+                catalog: "Jonathan Moore",
+                name: "Managing Director at Deloitte",
+              },
+            ],
+          },
         ],
       },
       {
-        year: "2024",
+        year: "2022 & 2024",
         quarters: [
           {
-            quarter: "Bay Area Disability Connect",
+            quarter: "2024: Bay Area Disability Connect",
             classes: [
               {
-                catalog: "Role",
-                name: "Panel Moderator",
+                catalog: "Title",
+                name: "Disability In The Workplace",
               },
               {
-                catalog: "Topic",
-                name: "Disability In The Workplace",
+                catalog: "Description",
+                name: "Join us for an exciting evening with a “Disability In The Workplace” panel and networking with other industry professionals. Don’t miss the chance to be part of the conversation and innovation shaping our community!",
+              },
+              {
+                catalog: "Ken Bigler",
+                name: "Head of Accessibility Engineering at Intuit, Moderator",
+              },
+              {
+                catalog: "Kathy Martinez",
+                name: "Former VP, Disability Inclusion, Expedia",
+              },
+              {
+                catalog: "Becca Chambers",
+                name: "Chief Communications Officer, ControlUp",
               },
             ],
           },
           {
-            quarter: "Accessibility Camp Bay Area",
+            quarter: "2024: Accessibility Camp Bay Area",
             classes: [
               {
-                catalog: "Topic",
+                catalog: "Title",
                 name: "Design System Accessibility",
               },
             ],
           },
-        ],
-      },
-      {
-        year: "2022",
-        quarters: [
           {
-            quarter: "Intuit India Accessibility Summit",
+            quarter: "2022: Intuit India Accessibility Summit",
             classes: [
               {
                 catalog: "Role",
