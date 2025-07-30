@@ -48,7 +48,7 @@ const CarSpeedoGraph = React.memo(
       yAxis: {
         min,
         max: maxVal,
-        labels: { distance: -28, style: { color } },
+        labels: { distance: -26, style: { color } },
         plotBands: [
           { from: min, to: greenEnd, color: green[400] },
           { from: startRedVal, to: maxVal, color: red[500] },
