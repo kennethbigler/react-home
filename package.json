@@ -29,7 +29,7 @@
     "@emotion/styled": "11.14.1",
     "@mui/icons-material": "7.2.0",
     "@mui/material": "7.2.0",
-    "@vitejs/plugin-react": "4.7.0",
+    "@vitejs/plugin-react": "5.0.0",
     "highcharts": "12.3.0",
     "highcharts-react-official": "3.2.2",
     "jotai": "2.12.5",
