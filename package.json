@@ -32,7 +32,7 @@
     "@vitejs/plugin-react": "5.0.0",
     "highcharts": "12.3.0",
     "highcharts-react-official": "3.2.2",
-    "jotai": "2.12.5",
+    "jotai": "2.13.0",
     "localforage": "1.10.0",
     "react": "19.1.1",
     "react-dom": "19.1.1",
