@@ -65,6 +65,7 @@ const townsfolk: BotCRoleRef = {
   pixie: { name: "Pixie", icon: "🧸", alignment: "info" },
   poppygrower: { name: "Poppy Grower", icon: "🌺", alignment: "info" },
   preacher: { name: "Preacher", icon: "📖", alignment: "info" },
+  princess: { name: "Princess", icon: "👸", alignment: "info" },
   professor: { name: "Professor", icon: "⚛️", alignment: "info" },
   ravenkeeper: { name: "Ravenkeeper", icon: "🐦‍⬛", alignment: "info" },
   sage: { name: "Sage", icon: "🕯️", alignment: "info" },
@@ -93,6 +94,7 @@ const outsiders: BotCRoleRef = {
   goon: { name: "Goon", icon: "🎭", alignment: "success" },
   hatter: { name: "Hatter", icon: "🎩", alignment: "success" },
   heretic: { name: "Heretic", icon: "☦️", alignment: "success" },
+  hermit: { name: "Hermit", icon: "🗼", alignment: "success" },
   klutz: { name: "Klutz", icon: "🍌", alignment: "success" },
   lunatic: { name: "Lunatic", icon: "🌀", alignment: "success" },
   moonchild: { name: "Moonchild", icon: "🌙", alignment: "success" },
@@ -135,6 +137,7 @@ const minions: BotCRoleRef = {
   widow: { name: "Widow", icon: "🕷️", alignment: "error" },
   witch: { name: "Witch", icon: "🧙‍♀️", alignment: "error" },
   wizard: { name: "Wizard", icon: "🧙‍♂️", alignment: "error" },
+  wraith: { name: "Wraith", icon: "👻", alignment: "error" },
   xaan: { name: "Xaan", icon: "♾️", alignment: "error" },
 };
 
@@ -168,6 +171,7 @@ const travelers: BotCRoleRef = {
   boneCollector: { name: "Bone Collector", icon: "🦴", alignment: "warning" },
   bureaucrat: { name: "Bureaucrat", icon: "📜", alignment: "warning" },
   butcher: { name: "Butcher", icon: "🔪", alignment: "warning" },
+  cacklejack: { name: "Cacklejack", icon: "💡", alignment: "warning" },
   deviant: { name: "Deviant", icon: "📿", alignment: "warning" },
   gangster: { name: "Gangster", icon: "🕵", alignment: "warning" },
   gnome: { name: "Gnome", icon: "🧙", alignment: "warning" },
