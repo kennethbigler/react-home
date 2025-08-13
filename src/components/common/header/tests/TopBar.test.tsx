@@ -34,9 +34,7 @@ describe("common | header | TopBar", () => {
       const { container } = render(
         <TopBar textColor="primary" toggleOpen={handleOpen} />,
       );
-      const ThemeToggle = screen
-        .getByTitle("Theme Toggle Switch")
-        .querySelector(".MuiSwitch-input");
+      const ThemeToggle = screen.getByLabelText("Theme Toggle Switch");
 
       expect(ThemeToggle?.attributes?.getNamedItem("value")?.value).toEqual(
         "false",
@@ -44,7 +42,9 @@ describe("common | header | TopBar", () => {
       expect(container.querySelector(".header-light-theme")).toBeNull();
       expect(container.querySelector(".header-dark-theme")).toBeInTheDocument();
 
-      fireEvent.click(ThemeToggle || screen.getByTitle("Theme Toggle Switch"));
+      fireEvent.click(
+        ThemeToggle || screen.getByLabelText("Theme Toggle Switch"),
+      );
 
       expect(ThemeToggle?.attributes?.getNamedItem("value")?.value).toEqual(
         "true",
