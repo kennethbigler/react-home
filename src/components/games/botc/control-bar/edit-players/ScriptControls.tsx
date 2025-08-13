@@ -20,7 +20,7 @@ const ScriptControls = ({ isText, onChange, onReset }: ScriptControlsProps) => (
       <Typography>🐙</Typography>
       <Switch
         checked={isText}
-        inputProps={{ "aria-label": "toggle text" }}
+        slotProps={{ input: { "aria-label": "toggle text" } }}
         onChange={onChange}
       />
       <Typography>Text</Typography>

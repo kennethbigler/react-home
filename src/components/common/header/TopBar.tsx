@@ -9,7 +9,6 @@ import Switch from "@mui/material/Switch";
 import themeAtom, { darkTheme, lightTheme } from "../../../jotai/theme-atom";
 
 const spanTopStyles: React.CSSProperties = { left: 0, right: 0, top: 0 };
-const label = { inputProps: { "aria-label": "Theme Toggle Switch" } };
 
 interface TopBarProps {
   /** change the color scheme of the icon */
@@ -55,8 +54,7 @@ const TopBar = ({ toggleOpen, textColor }: TopBarProps) => {
               checked={isLight}
               value={isLight}
               onChange={toggleTheme}
-              title={label.inputProps["aria-label"]}
-              {...label}
+              slotProps={{ input: { "aria-label": "Theme Toggle Switch" } }}
               color="secondary"
             />
           </div>
