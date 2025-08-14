@@ -53,7 +53,7 @@ const numRounds = [0, 1, 2, 3, 4, 5, 6, 7];
 export const newRoundNotes = () => numRounds.map(() => "");
 export const newTracker = () => numRounds.map(() => newPlayers.map(() => 0));
 
-const newBotCGame = (): BotCState => ({
+export const newBotCGame = (): BotCState => ({
   isText: true,
   numPlayers: 8,
   numTravelers: 0,
