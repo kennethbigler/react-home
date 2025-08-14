@@ -30,6 +30,7 @@ export interface BotCState {
   round: number;
   script: number;
   botcPlayers: BotCPlayer[];
+  roundNotes: string[];
   tracker: number[][];
 }
 
@@ -49,15 +50,17 @@ for (let i = 0; i < BOTC_MAX_PLAYERS + BOTC_MAX_TRAVELERS; i += 1) {
 }
 
 const numRounds = [0, 1, 2, 3, 4, 5, 6, 7];
+export const newRoundNotes = () => numRounds.map(() => "");
 export const newTracker = () => numRounds.map(() => newPlayers.map(() => 0));
 
-const newBotCGame = (): BotCState => ({
+export const newBotCGame = (): BotCState => ({
   isText: true,
   numPlayers: 8,
   numTravelers: 0,
   round: 0,
   script: 0,
   botcPlayers: newPlayers,
+  roundNotes: newRoundNotes(),
   tracker: newTracker(),
 });
 
