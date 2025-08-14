@@ -7,6 +7,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import { BotCPlayer } from "../../../../jotai/botc-atom";
 import { useTracker } from "../useBotC";
 import { getGridSize } from "../botcHelpers";
+import { TextField } from "@mui/material";
 
 const numRounds = [0, 1, 2, 3, 4, 5, 6, 7];
 
@@ -16,10 +17,24 @@ interface TrackerProps {
 }
 
 const Tracker = ({ botcPlayers, end }: TrackerProps) => {
-  const { round, tracker, onRoundClick, onTrackClick } = useTracker();
+  const {
+    round,
+    roundNotes,
+    tracker,
+    onNotesChange,
+    onRoundClick,
+    onTrackClick,
+  } = useTracker();
 
   return (
     <Grid container spacing={1}>
+      <TextField
+        fullWidth
+        value={roundNotes[round]}
+        label="Notes"
+        variant="standard"
+        onChange={onNotesChange}
+      />
       {botcPlayers.map(
         ({ name }, i) =>
           i < end && (

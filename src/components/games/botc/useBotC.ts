@@ -6,6 +6,7 @@ import botcAtom, {
   botcPlayerShell,
   BotCPlayerStatus,
   BotCRole,
+  newRoundNotes,
   newTracker,
 } from "../../../jotai/botc-atom";
 
@@ -198,20 +199,37 @@ export const useEditPlayers = () => {
 
 /** -------------------- Tracker Specific Functions -------------------- */
 export const useTracker = () => {
-  const [{ round, tracker, ...other }, setState] = useAtom(botcAtom);
+  const [{ round, roundNotes, tracker, ...other }, setState] =
+    useAtom(botcAtom);
 
   const onRoundClick = (i: number) => () =>
-    setState({ ...other, tracker, round: i });
+    setState({ ...other, roundNotes, tracker, round: i });
 
   const onTrackClick = (i: number) => () => {
     const tempTracker = [...tracker[round]];
     tempTracker[i] = (tracker[round][i] + 1) % 3;
     const newTracker = [...tracker];
     newTracker[round] = tempTracker;
-    setState({ ...other, round, tracker: newTracker });
+    setState({ ...other, round, roundNotes, tracker: newTracker });
   };
 
-  return { round, tracker, onRoundClick, onTrackClick };
+  /** update round notes onBlur */
+  const onNotesChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (e): void => {
+    const newRoundNotes = [...roundNotes];
+    newRoundNotes[round] = e.target.value || "";
+    setState({ ...other, round, tracker, roundNotes: newRoundNotes });
+  };
+
+  return {
+    round,
+    roundNotes,
+    tracker,
+    onNotesChange,
+    onRoundClick,
+    onTrackClick,
+  };
 };
 
 /** -------------------- Home Specific Functions -------------------- */
@@ -232,6 +250,7 @@ const useBotC = () => {
       script,
       round: 0,
       botcPlayers: newPlayers,
+      roundNotes: newRoundNotes(),
       tracker: newTracker(),
     });
   };
