@@ -2,7 +2,6 @@ import {
   cyan,
   lightBlue,
   green,
-  blue,
   blueGrey,
   red,
   indigo,
@@ -11,15 +10,11 @@ import {
 import ciscoLogo from "../images/companies/cisco_logo.gif";
 import gigNowLogo from "../images/companies/gignow_logo.png";
 import SHFBLogo from "../images/companies/SHFB_logo.jpg";
-import netappLogo from "../images/companies/netapp_logo.svg.png";
+import netappLogo from "../images/companies/netapp_logo.svg";
 import vengefulLogo from "../images/companies/vengefulgames_logo.png";
-import teslaLogo from "../images/companies/tesla_motors_logo.svg.png";
+import teslaLogo from "../images/companies/tesla_logo.png";
 import hoverboardLogo from "../images/companies/hoverboard_logo.png";
 import intuitLogo from "../images/companies/intuit_logo.png";
-
-export const WORK = "work";
-export const VOLUNTEER = "volunteer";
-export const SCHOOL = "school";
 
 // tech constants
 export const REACT = "React.js";
@@ -31,8 +26,6 @@ export const RUBY = "Ruby on Rails 5";
 export const JAVA = "Java 8";
 export const ANGULAR = "Angular.js 1.X";
 export const ASP2 = "ASP.NET 2.0 MVC";
-
-export type WorkType = "work" | "volunteer" | "school";
 
 export interface Job {
   alt?: string;
@@ -46,12 +39,10 @@ export interface Job {
   tech?: string[];
   time: string;
   title: string;
-  type: WorkType;
 }
 
-const workExp: Job[] = [
+export const work: Job[] = [
   {
-    type: WORK,
     color: indigo.A400,
     company: "Intuit",
     location: "Mountain View, CA",
@@ -70,7 +61,6 @@ const workExp: Job[] = [
     tech: [REACT, TS, JS, CSS, HTML],
   },
   {
-    type: WORK,
     color: yellow[600],
     inverted: true,
     company: "GigNow",
@@ -88,21 +78,6 @@ const workExp: Job[] = [
     tech: [REACT, JS, CSS, HTML, RUBY],
   },
   {
-    type: VOLUNTEER,
-    color: green[800],
-    company: "Second Harvest Food Bank",
-    location: "Santa Clara, CA",
-    title: "Volunteer Team Leader",
-    time: "2009 - 2016",
-    src: SHFBLogo,
-    alt: "Second Harvest Food Bank Logo",
-    expr: [
-      "Instruct and supervise between 10 and 40 volunteers regarding food sorting, packaging and distribution",
-      "Food is then distributed to smaller organizations that help the homeless and disadvantaged",
-    ],
-  },
-  {
-    type: WORK,
     color: lightBlue[700],
     inverted: true,
     company: "Cisco Systems",
@@ -119,7 +94,6 @@ const workExp: Job[] = [
     tech: [REACT, JS, CSS, HTML, JAVA],
   },
   {
-    type: WORK,
     color: cyan[900],
     company: "Hoverboard Technologies",
     parent: "Equalia",
@@ -136,7 +110,6 @@ const workExp: Job[] = [
     tech: [ANGULAR, JS, CSS, HTML],
   },
   {
-    type: WORK,
     color: red[700],
     company: "Tesla, Inc.",
     location: "Fremont, CA",
@@ -152,7 +125,25 @@ const workExp: Job[] = [
     tech: [ANGULAR, JS, CSS, HTML, ASP2],
   },
   {
-    type: VOLUNTEER,
+    color: "black",
+    company: "NetApp",
+    location: "Sunnyvale, CA",
+    title:
+      "Frontend Web Developer (Contractor), HRSolutions and Process Enablement Team",
+    time: "2012 - 2015",
+    src: netappLogo,
+    alt: "NetApp Logo",
+    expr: [
+      "Developed web applications to enable various processes and managed task assignment on web projects",
+      "Presented status of projects with upper management and provided solutions on how to resolve roadblocks",
+      "Migrated between CMS’s, supported new WordPress Intranet, and generated graphics in Photoshop",
+    ],
+    tech: [ANGULAR, JS, CSS, HTML],
+  },
+];
+
+export const volunteer: Job[] = [
+  {
     color: blueGrey[900],
     company: "Midnight Game Club",
     location: "Sunnyvale, CA",
@@ -168,36 +159,22 @@ const workExp: Job[] = [
     tech: [JS, CSS, HTML],
   },
   {
-    type: WORK,
-    color: blue[800],
-    company: "NetApp",
-    location: "Sunnyvale, CA",
-    title:
-      "Frontend Web Developer (Contractor), HRSolutions and Process Enablement Team",
-    time: "2012 - 2015",
-    src: netappLogo,
-    alt: "NetApp Logo",
-    expr: [
-      "Developed web applications to enable various processes and managed task assignment on web projects",
-      "Presented status of projects with upper management and provided solutions on how to resolve roadblocks",
-      "Migrated between CMS’s, supported new WordPress Intranet, and generated graphics in Photoshop",
-    ],
-    tech: [ANGULAR, JS, CSS, HTML],
-  },
-  {
-    type: SCHOOL,
-    color: red[900],
-    company: "Santa Clara University BS",
+    color: green[800],
+    company: "Second Harvest Food Bank",
     location: "Santa Clara, CA",
-    title: "Undergrad Student",
-    time: "2011 - 2015",
+    title: "Volunteer Team Leader",
+    time: "2009 - 2016",
+    src: SHFBLogo,
+    alt: "Second Harvest Food Bank Logo",
     expr: [
-      "Major: Computer Science and Engineering, Minor: Mathematics",
-      "GPA: 3.7",
+      "Instruct and supervise between 10 and 40 volunteers regarding food sorting, packaging and distribution",
+      "Food is then distributed to smaller organizations that help the homeless and disadvantaged",
     ],
   },
+];
+
+export const school: Job[] = [
   {
-    type: SCHOOL,
     color: red[900],
     company: "SCU MS",
     location: "Santa Clara, CA",
@@ -208,6 +185,15 @@ const workExp: Job[] = [
       "GPA: 3.7",
     ],
   },
+  {
+    color: red[900],
+    company: "Santa Clara University BS",
+    location: "Santa Clara, CA",
+    title: "Undergrad Student",
+    time: "2011 - 2015",
+    expr: [
+      "Major: Computer Science and Engineering, Minor: Mathematics",
+      "GPA: 3.7",
+    ],
+  },
 ];
-
-export default workExp;

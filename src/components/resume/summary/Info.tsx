@@ -7,7 +7,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import ExpandableCard from "../../common/expandable-card";
 import photo from "../../../images/ken.webp";
-import workExp, { Job } from "../../../constants/work";
+import { work, Job } from "../../../constants/work";
 
 const imageStyles: React.CSSProperties = {
   width: "95%",
@@ -31,7 +31,7 @@ const Info = React.memo(() => (
     </Grid>
     {/* @ts-expect-error: custom breakpoints */}
     <Grid size={{ xs: 12, md: 6, xl: 8, xxl: 9, xxxl: 10 }}>
-      <ExpandableCard title={getJob(workExp[0])}>
+      <ExpandableCard title={getJob(work[0])}>
         <Table aria-label="general information about Ken Bigler">
           <TableBody>
             <TableRow>
