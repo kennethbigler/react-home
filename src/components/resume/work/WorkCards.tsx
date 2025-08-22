@@ -1,30 +1,29 @@
 import Typography from "@mui/material/Typography";
 import Job from "./Job";
 import { Job as JobType } from "../../../constants/work";
+import Grid from "@mui/material/Grid";
 
 interface WorkCardsProps {
-  workExp: JobType[];
-  workTypes: string[];
+  title: string;
+  jobs: JobType[];
 }
 
-const WorkCards = ({ workExp, workTypes }: WorkCardsProps) => (
-  <>
-    {workTypes.map((type) => (
-      <div key={type} style={{ marginTop: 25 }}>
-        <Typography
-          variant="h3"
-          component="h2"
-          style={{ textTransform: "capitalize" }}
-        >
-          {type}
-        </Typography>
-        <hr aria-hidden />
-        {workExp.map(
-          (job) => job.type === type && <Job key={job.company} job={job} />,
-        )}
-      </div>
-    ))}
-  </>
+const WorkCards = ({ title, jobs }: WorkCardsProps) => (
+  <div style={{ marginTop: 25 }}>
+    <Typography
+      variant="h3"
+      component="h2"
+      style={{ textTransform: "capitalize" }}
+    >
+      {title}
+    </Typography>
+    <hr aria-hidden />
+    <Grid container spacing={2}>
+      {jobs.map((job) => (
+        <Job key={job.company} job={job} triple={jobs.length >= 3} />
+      ))}
+    </Grid>
+  </div>
 );
 
 export default WorkCards;
