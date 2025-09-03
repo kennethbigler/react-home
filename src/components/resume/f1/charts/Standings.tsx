@@ -24,24 +24,38 @@ const Standings = React.memo(({ color }: StandingsProps) => {
       },
     },
     xAxis: {
-      title: { text: "Year", style: { color } },
       labels: {
         style: { color },
-        formatter: function (): number {
-          // @ts-expect-error: this value exists
-          return standingsXAxisNames[this.value]; // eslint-disable-line @typescript-eslint/no-unsafe-member-access
+        formatter: function (this: Highcharts.Point): number {
+          return standingsXAxisNames[this.value || 0];
         },
       },
     },
     yAxis: {
-      min: 1,
-      floor: 1,
-      ceiling: 10,
       tickPositions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       reversed: true,
-      gridLineDashStyle: "Dot",
-      title: { text: "Position", style: { color } },
+      title: { text: undefined },
       labels: { style: { color } },
+    },
+    tooltip: {
+      shared: true,
+      useHTML: true,
+      formatter: function (this: Highcharts.Point): string {
+        let tooltip = "Year: <b>" + standingsXAxisNames[this.x] + "</b><br/>";
+        const tooltipHist = ["", "", "", "", "", "", "", "", "", ""];
+        (this.points || []).forEach((point: Highcharts.Point) => {
+          const i = point.y ? point.y - 1 : 0;
+          if (tooltipHist[i] === "") {
+            tooltipHist[i] += point.y + ": <b>" + point.series.name + "</b>";
+          } else {
+            tooltipHist[i] += " <b>(" + point.series.name + ")</b>";
+          }
+        });
+        tooltipHist.forEach((hist) => {
+          tooltip += hist + "<br/>";
+        });
+        return tooltip;
+      },
     },
     series: chartStandings,
   };

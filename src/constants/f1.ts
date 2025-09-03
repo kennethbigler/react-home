@@ -92,13 +92,3 @@ export const chartStandings: { data: (number | null)[]; name: string }[] =
     name: team.name,
     color: team.color,
   }));
-
-// interface NameChanges {
-//   [key: number]: string[];
-// }
-
-// const nameChanges: NameChanges = {
-//   2019: ["Force India > Racing Point", "Sauber > Alfa Romeo"],
-//   2020: ["Toro Rosso > AlphaTauri"],
-//   2021: ["Renault > Alpine", "Racing Point > Aston Martin"],
-// };

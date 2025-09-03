@@ -62,7 +62,6 @@ const CarSpeedoGraph = React.memo(
     };
 
     return (
-      // @ts-expect-error - custom breakpoint
       <Grid size={{ xs: 12, sm: 4, lg: 2, xxxl: 1 }}>
         <figure style={{ margin: 0, width: "100%" }}>
           <HighchartsReact highcharts={Highcharts} options={options} />
