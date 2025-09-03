@@ -1,4 +1,18 @@
-const teams = [
+interface Team {
+  id: number;
+  name: string;
+  color: string;
+}
+
+interface NameChanges {
+  [key: number]: string[];
+}
+
+interface Standings {
+  [key: number]: number[];
+}
+
+export const teams: Team[] = [
   {
     id: 0,
     name: "Mercedes",
@@ -76,13 +90,13 @@ const teams = [
   },
 ];
 
-const nameChanges = {
+export const nameChanges: NameChanges = {
   2019: ["Force India > Racing Point", "Sauber > Alfa Romeo"],
   2020: ["Toro Rosso > AlphaTauri"],
   2021: ["Renault > Alpine", "Racing Point > Aston Martin"],
 };
 
-const standings = {
+export const standings: Standings = {
   2018: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
   2019: [1, 2, 3, 6, 4, 8, 7, 8, 5, 10],
   2020: [1, 3, 6, 7, 4, 2, 9, 8, 5, 10],
