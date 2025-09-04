@@ -46,9 +46,13 @@ const Standings = React.memo(({ color }: StandingsProps) => {
         (this.points || []).forEach((point: Highcharts.Point) => {
           const i = point.y ? point.y - 1 : 0;
           if (tooltipHist[i] === "") {
-            tooltipHist[i] += point.y + ": <b>" + point.series.name + "</b>";
+            tooltipHist[i] +=
+              // eslint-disable-next-line @typescript-eslint/no-base-to-string
+              `${point.y}: <span style="color: ${point.series.color?.toString()};">&#11044;</span> <b>${point.series.name}</b>`;
           } else {
-            tooltipHist[i] += " <b>(" + point.series.name + ")</b>";
+            tooltipHist[i] +=
+              // eslint-disable-next-line @typescript-eslint/no-base-to-string
+              ` <b>(<span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name})</b>`;
           }
         });
         tooltipHist.forEach((hist) => {
