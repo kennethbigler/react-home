@@ -4,11 +4,11 @@ import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import { chartStandings, standingsXAxisNames } from "../../../../constants/f1";
 
-export interface StandingsProps {
+export interface StandingsLineProps {
   color: string;
 }
 
-const Standings = React.memo(({ color }: StandingsProps) => {
+const StandingsLine = React.memo(({ color }: StandingsLineProps) => {
   const options = {
     accessibility: { enabled: true },
     chart: { type: "line", backgroundColor: null },
@@ -36,6 +36,7 @@ const Standings = React.memo(({ color }: StandingsProps) => {
       reversed: true,
       title: { text: undefined },
       labels: { style: { color } },
+      gridLineDashStyle: "Dot",
     },
     tooltip: {
       shared: true,
@@ -71,6 +72,6 @@ const Standings = React.memo(({ color }: StandingsProps) => {
   );
 });
 
-Standings.displayName = "Standings";
+StandingsLine.displayName = "Standings";
 
-export default Standings;
+export default StandingsLine;

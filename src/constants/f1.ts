@@ -1,3 +1,5 @@
+import { lightGreen, red } from "@mui/material/colors";
+
 interface Team {
   name: string;
   color: string;
@@ -92,3 +94,83 @@ export const chartStandings: { data: (number | null)[]; name: string }[] =
     name: team.name,
     color: team.color,
   }));
+
+/* Engine 50% / R&D 8.8% / Manufacturing 7.5% / Capital Expenses 6.3% / Race Team 6.3% / Drivers 5% / Test Team 5% / Hydraulics 3.8% / Rent Bills, etc. 3.8% /Sponsor Chasing 3.8% */
+export const budgetData = {
+  nodes: [
+    // income, $158M est
+    { id: "Prize Money", color: lightGreen[300] },
+    { id: "Title Sponsors", color: lightGreen[300] },
+    { id: "Parent Co", color: lightGreen[300] },
+    { id: "Principal Partners", color: lightGreen[300] },
+    { id: "Suppliers", color: lightGreen[300] },
+    { id: "Merchandising", color: lightGreen[300] },
+    // center
+    { id: "🏎️", color: red[200] },
+    // big categories ($158M)
+    { id: "R&D", color: red[200] },
+    { id: "Salaries", color: red[200] },
+    { id: "Production", color: red[200] },
+    { id: "Operations", color: red[200] },
+    // R&D ($41M)
+    { id: "Wind-tunnel", color: red[200] },
+    { id: "Track Testing", color: red[200] },
+    { id: "Other", color: red[200] },
+    // Salaries ($42M)
+    { id: "Team", color: red[200] },
+    { id: "Drivers", color: red[200] },
+    { id: "Directors", color: red[200] },
+    // Production ($39M)
+    { id: "Manufacturing", color: red[200] },
+    { id: "Engine", color: red[200] },
+    { id: "Components", color: red[200] },
+    // Operations ($36M)
+    { id: "Logistic", color: red[200] },
+    { id: "Entertainment", color: red[200] },
+    { id: "Freight", color: red[200] },
+    { id: "IT", color: red[200] },
+    { id: "Factory", color: red[200] },
+    { id: "Services", color: red[200] },
+    { id: "Fuel", color: red[200] },
+  ],
+  data: [
+    // income, $158M est
+    // Prize Money $60-140M
+    ["Prize Money", "🏎️", 60],
+    // Title Sponsors $40-60M
+    ["Title Sponsors", "🏎️", 40],
+    // Manufacturer Funding and Parent Companies $100-300M
+    ["Parent Co", "🏎️", 30],
+    // Principal Partners $20-40M
+    ["Principal Partners", "🏎️", 20],
+    // Official Suppliers / Supporters $1-10M
+    ["Suppliers", "🏎️", 5],
+    // Merchandising and Licensing $0-20M
+    ["Merchandising", "🏎️", 3],
+    // big categories ($158M)
+    ["🏎️", "R&D", 41],
+    ["🏎️", "Salaries", 42],
+    ["🏎️", "Production", 39],
+    ["🏎️", "Operations", 36],
+    // R&D ($41M)
+    ["R&D", "Wind-tunnel", 16],
+    ["R&D", "Track Testing", 10],
+    ["R&D", "Other", 15],
+    // Salaries ($42M)
+    ["Salaries", "Team", 26],
+    ["Salaries", "Drivers", 13],
+    ["Salaries", "Directors", 3],
+    // Production ($39M)
+    ["Production", "Manufacturing", 13],
+    ["Production", "Engine", 20],
+    ["Production", "Components", 6],
+    // Operations ($36M)
+    ["Operations", "Logistic", 13],
+    ["Operations", "Entertainment", 10],
+    ["Operations", "Freight", 5],
+    ["Operations", "IT", 3],
+    ["Operations", "Factory", 2],
+    ["Operations", "Services", 2],
+    ["Operations", "Fuel", 1],
+  ],
+};
