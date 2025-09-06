@@ -3,8 +3,8 @@ import StandingsLine from "./charts/StandingsLine";
 import { useAtomValue } from "jotai";
 import themeAtom from "../../../jotai/theme-atom";
 import BudgetSankey from "./charts/BudgetSankey";
-import f1ImgSrc from "../../../images/f1-cost-breakdown.jpg";
 import PointsLine from "./charts/PointsLine";
+import ExpandableCard from "../../common/expandable-card";
 
 const F1 = () => {
   const theme = useAtomValue(themeAtom);
@@ -15,10 +15,13 @@ const F1 = () => {
       <Typography variant="h2" component="h1">
         F1
       </Typography>
-      <StandingsLine color={color} />
-      <PointsLine color={color} />
+
+      <ExpandableCard title="F1 Standings" backgroundColor="#DC0000">
+        <StandingsLine color={color} />
+        <PointsLine color={color} />
+      </ExpandableCard>
+
       <BudgetSankey color={color} />
-      <img src={f1ImgSrc} alt="F1 Cost Breakdown" />
     </>
   );
 };

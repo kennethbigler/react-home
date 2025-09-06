@@ -8,6 +8,25 @@ export interface StandingsLineProps {
   color: string;
 }
 
+const tooltipFormatter = function (this: Highcharts.Point): string {
+  let tooltip = "Year: <b>" + xAxisYears[this.x] + "</b><br/>";
+  const tooltipHist = ["", "", "", "", "", "", "", "", "", ""];
+
+  (this.points || []).forEach((point: Highcharts.Point) => {
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    const team = `<span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name}`;
+    const i = point.y ? point.y - 1 : 0;
+    tooltipHist[i] +=
+      tooltipHist[i] === "" ? `<b>${point.y}</b>: ${team}` : ` (${team})`;
+  });
+
+  tooltipHist.forEach((hist) => {
+    tooltip += hist + "<br/>";
+  });
+
+  return tooltip;
+};
+
 const StandingsLine = React.memo(({ color }: StandingsLineProps) => {
   const options = {
     accessibility: { enabled: true },
@@ -17,6 +36,8 @@ const StandingsLine = React.memo(({ color }: StandingsLineProps) => {
     title: { text: "F1 Standings", style: { color } },
     plotOptions: {
       series: {
+        lineWidth: 4,
+        marker: { radius: 7 },
         dataLabels: {
           enabled: true, // Enable data labels for all series
           format: "{point.name}", // Customize the format if needed
@@ -41,26 +62,7 @@ const StandingsLine = React.memo(({ color }: StandingsLineProps) => {
     tooltip: {
       shared: true,
       useHTML: true,
-      formatter: function (this: Highcharts.Point): string {
-        let tooltip = "Year: <b>" + xAxisYears[this.x] + "</b><br/>";
-        const tooltipHist = ["", "", "", "", "", "", "", "", "", ""];
-        (this.points || []).forEach((point: Highcharts.Point) => {
-          const i = point.y ? point.y - 1 : 0;
-          if (tooltipHist[i] === "") {
-            tooltipHist[i] +=
-              // eslint-disable-next-line @typescript-eslint/no-base-to-string
-              `${point.y}: <span style="color: ${point.series.color?.toString()};">&#11044;</span> <b>${point.series.name}</b>`;
-          } else {
-            tooltipHist[i] +=
-              // eslint-disable-next-line @typescript-eslint/no-base-to-string
-              ` <b>(<span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name})</b>`;
-          }
-        });
-        tooltipHist.forEach((hist) => {
-          tooltip += hist + "<br/>";
-        });
-        return tooltip;
-      },
+      formatter: tooltipFormatter,
     },
     series: chartStandings,
   };

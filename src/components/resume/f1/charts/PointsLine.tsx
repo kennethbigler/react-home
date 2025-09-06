@@ -8,6 +8,31 @@ export interface PointsLineProps {
   color: string;
 }
 
+const tooltipFormatter = function (this: Highcharts.Point): string {
+  let tooltip = "Year: <b>" + xAxisYears[this.x] + "</b><br/>";
+  const tooltipHist: Record<number, string> = {};
+
+  (this.points || []).forEach((point: Highcharts.Point) => {
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    const team = `<span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name}`;
+    const i = point.y || 0;
+
+    if (tooltipHist[i] === undefined) {
+      tooltipHist[i] = `<b>${point.y}</b>: ${team}`;
+    } else {
+      tooltipHist[i] += ` (${team})`;
+    }
+  });
+
+  Object.keys(tooltipHist)
+    .sort((a, b) => Number(b) - Number(a))
+    .forEach((key) => {
+      tooltip += tooltipHist[Number(key)] + "<br/>";
+    });
+
+  return tooltip;
+};
+
 const PointsLine = React.memo(({ color }: PointsLineProps) => {
   const options = {
     accessibility: { enabled: true },
@@ -17,6 +42,8 @@ const PointsLine = React.memo(({ color }: PointsLineProps) => {
     title: { text: "F1 Points", style: { color } },
     plotOptions: {
       series: {
+        lineWidth: 4,
+        marker: { radius: 7 },
         dataLabels: {
           enabled: true, // Enable data labels for all series
           format: "{point.name}", // Customize the format if needed
@@ -39,28 +66,7 @@ const PointsLine = React.memo(({ color }: PointsLineProps) => {
     tooltip: {
       shared: true,
       useHTML: true,
-      formatter: function (this: Highcharts.Point): string {
-        let tooltip = "Year: <b>" + xAxisYears[this.x] + "</b><br/>";
-        const tooltipHist: Record<number, string> = {};
-        (this.points || []).forEach((point: Highcharts.Point) => {
-          const i = point.y ? point.y - 1 : 0;
-          if (tooltipHist[i] === undefined) {
-            tooltipHist[i] =
-              // eslint-disable-next-line @typescript-eslint/no-base-to-string
-              `${point.y}: <span style="color: ${point.series.color?.toString()};">&#11044;</span> <b>${point.series.name}</b>`;
-          } else {
-            tooltipHist[i] +=
-              // eslint-disable-next-line @typescript-eslint/no-base-to-string
-              ` <b>(<span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name})</b>`;
-          }
-        });
-        Object.keys(tooltipHist)
-          .sort((a, b) => Number(b) - Number(a))
-          .forEach((key) => {
-            tooltip += tooltipHist[Number(key)] + "<br/>";
-          });
-        return tooltip;
-      },
+      formatter: tooltipFormatter,
     },
     series: chartPoints,
   };
