@@ -2,19 +2,19 @@ import * as React from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
-import { chartStandings, xAxisYears } from "../../../../constants/f1";
+import { chartPoints, xAxisYears } from "../../../../constants/f1";
 
-export interface StandingsLineProps {
+export interface PointsLineProps {
   color: string;
 }
 
-const StandingsLine = React.memo(({ color }: StandingsLineProps) => {
+const PointsLine = React.memo(({ color }: PointsLineProps) => {
   const options = {
     accessibility: { enabled: true },
     chart: { type: "line", backgroundColor: null },
     credits: { enabled: false },
     legend: { enabled: false },
-    title: { text: "F1 Standings", style: { color } },
+    title: { text: "F1 Points", style: { color } },
     plotOptions: {
       series: {
         dataLabels: {
@@ -32,8 +32,6 @@ const StandingsLine = React.memo(({ color }: StandingsLineProps) => {
       },
     },
     yAxis: {
-      tickPositions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      reversed: true,
       title: { text: undefined },
       labels: { style: { color } },
       gridLineDashStyle: "Dot",
@@ -43,11 +41,11 @@ const StandingsLine = React.memo(({ color }: StandingsLineProps) => {
       useHTML: true,
       formatter: function (this: Highcharts.Point): string {
         let tooltip = "Year: <b>" + xAxisYears[this.x] + "</b><br/>";
-        const tooltipHist = ["", "", "", "", "", "", "", "", "", ""];
+        const tooltipHist: Record<number, string> = {};
         (this.points || []).forEach((point: Highcharts.Point) => {
           const i = point.y ? point.y - 1 : 0;
-          if (tooltipHist[i] === "") {
-            tooltipHist[i] +=
+          if (tooltipHist[i] === undefined) {
+            tooltipHist[i] =
               // eslint-disable-next-line @typescript-eslint/no-base-to-string
               `${point.y}: <span style="color: ${point.series.color?.toString()};">&#11044;</span> <b>${point.series.name}</b>`;
           } else {
@@ -56,13 +54,15 @@ const StandingsLine = React.memo(({ color }: StandingsLineProps) => {
               ` <b>(<span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name})</b>`;
           }
         });
-        tooltipHist.forEach((hist) => {
-          tooltip += hist + "<br/>";
-        });
+        Object.keys(tooltipHist)
+          .sort((a, b) => Number(b) - Number(a))
+          .forEach((key) => {
+            tooltip += tooltipHist[Number(key)] + "<br/>";
+          });
         return tooltip;
       },
     },
-    series: chartStandings,
+    series: chartPoints,
   };
 
   return (
@@ -72,6 +72,6 @@ const StandingsLine = React.memo(({ color }: StandingsLineProps) => {
   );
 });
 
-StandingsLine.displayName = "Standings";
+PointsLine.displayName = "Points";
 
-export default StandingsLine;
+export default PointsLine;
