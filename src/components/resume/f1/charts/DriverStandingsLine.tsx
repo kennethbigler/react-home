@@ -2,39 +2,34 @@ import * as React from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
-import { constructorStandingsData, xAxisYears } from "../../../../constants/f1";
+import { driverStandingsData, xAxisYears } from "../../../../constants/f1";
 
-export interface ConstructorStandingsLineProps {
+export interface DriverStandingsLineProps {
   color: string;
 }
 
 const tooltipFormatter = function (this: Highcharts.Point): string {
   let tooltip = "Year: <b>" + xAxisYears[this.x] + "</b><br/>";
-  const tooltipHist = ["", "", "", "", "", "", "", "", "", ""];
 
-  (this.points || []).forEach((point: Highcharts.Point) => {
-    // eslint-disable-next-line @typescript-eslint/no-base-to-string
-    const team = `<span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name}`;
-    const i = point.y ? point.y - 1 : 0;
-    tooltipHist[i] +=
-      tooltipHist[i] === "" ? `<b>${point.y}</b>: ${team}` : ` (${team})`;
-  });
-
-  tooltipHist.forEach((hist) => {
-    tooltip += hist + "<br/>";
-  });
+  (this.points || [])
+    .sort((a, b) => Number(a.y) - Number(b.y))
+    .forEach((point: Highcharts.Point) => {
+      tooltip +=
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
+        `<b>${point.y}</b>: <span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name}<br/>`;
+    });
 
   return tooltip;
 };
 
-const ConstructorStandingsLine = React.memo(
-  ({ color }: ConstructorStandingsLineProps) => {
+const DriverStandingsLine = React.memo(
+  ({ color }: DriverStandingsLineProps) => {
     const options = {
       accessibility: { enabled: true },
       chart: { type: "line", backgroundColor: null },
       credits: { enabled: false },
       legend: { enabled: false },
-      title: { text: "F1 Constructors Standings", style: { color } },
+      title: { text: "F1 Drivers Standings", style: { color } },
       plotOptions: {
         series: {
           lineWidth: 4,
@@ -54,7 +49,7 @@ const ConstructorStandingsLine = React.memo(
         },
       },
       yAxis: {
-        tickPositions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        tickPositions: [1, 5, 10, 15, 20, 22],
         reversed: true,
         title: { text: undefined },
         labels: { style: { color } },
@@ -65,7 +60,7 @@ const ConstructorStandingsLine = React.memo(
         useHTML: true,
         formatter: tooltipFormatter,
       },
-      series: constructorStandingsData,
+      series: driverStandingsData,
     };
 
     return (
@@ -76,6 +71,6 @@ const ConstructorStandingsLine = React.memo(
   },
 );
 
-ConstructorStandingsLine.displayName = "Constructor Standings";
+DriverStandingsLine.displayName = "Driver Standings";
 
-export default ConstructorStandingsLine;
+export default DriverStandingsLine;

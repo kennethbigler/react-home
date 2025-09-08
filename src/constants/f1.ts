@@ -151,6 +151,220 @@ constructors.forEach((team) => {
 export { constructorStandingsData, constructorPointsData };
 
 // --------------------------------------------------     Driver Data     -------------------------------------------------- //
+interface Driver {
+  name: string;
+  nationality: string;
+  color: string;
+  points: (number | null)[];
+  standings: (number | null)[];
+}
+
+const drivers: Driver[] = [
+  {
+    name: "Max Verstappen",
+    nationality: "NED",
+    color: constructors[2].color,
+    points: [null, null, null, 395.5, 454],
+    standings: [null, null, null, 1, 1],
+  },
+  {
+    name: "Charles Leclerc",
+    nationality: "MON",
+    color: constructors[1].color,
+    points: [null, null, null, 159, 308],
+    standings: [null, null, null, 7, 2],
+  },
+  {
+    name: "Sergio Perez",
+    nationality: "MEX",
+    color: constructors[2].color,
+    points: [null, null, null, 190, 305],
+    standings: [null, null, null, 4, 3],
+  },
+  {
+    name: "George Russell",
+    nationality: "GBR",
+    color: constructors[0].color,
+    points: [null, null, null, 16, 275],
+    standings: [null, null, null, 15, 4],
+  },
+  {
+    name: "Carlos Sainz",
+    nationality: "ESP",
+    color: constructors[1].color,
+    points: [null, null, null, 164.5, 246],
+    standings: [null, null, null, 5, 5],
+  },
+  {
+    name: "Lewis Hamilton",
+    nationality: "GBR",
+    color: constructors[0].color,
+    points: [null, null, null, 387.5, 240],
+    standings: [null, null, null, 2, 6],
+  },
+  {
+    name: "Lando Norris",
+    nationality: "GBR",
+    color: constructors[5].color,
+    points: [null, null, null, 160, 122],
+    standings: [null, null, null, 6, 7],
+  },
+  {
+    name: "Esteban Ocon",
+    nationality: "FRA",
+    color: constructors[3].color,
+    points: [null, null, null, 74, 92],
+    standings: [null, null, null, 11, 8],
+  },
+  {
+    name: "Fernando Alonso",
+    nationality: "ESP",
+    color: constructors[3].color,
+    points: [null, null, null, 81, 81],
+    standings: [null, null, null, 10, 9],
+  },
+  {
+    name: "Valtteri Bottas",
+    nationality: "FIN",
+    color: constructors[7].color,
+    points: [null, null, null, 226, 49],
+    standings: [null, null, null, 3, 10],
+  },
+  {
+    name: "Daniel Ricciardo",
+    nationality: "AUS",
+    color: constructors[5].color,
+    points: [null, null, null, 115, 37],
+    standings: [null, null, null, 8, 11],
+  },
+  {
+    name: "Sebastian Vettel",
+    nationality: "GER",
+    color: constructors[6].color,
+    points: [null, null, null, 43, 37],
+    standings: [null, null, null, 12, 12],
+  },
+  {
+    name: "Kevin Magnussen",
+    nationality: "DEN",
+    color: constructors[4].color,
+    points: [null, null, null, null, 25],
+    standings: [null, null, null, null, 13],
+  },
+  {
+    name: "Pierre Gasly",
+    nationality: "FRA",
+    color: constructors[9].color,
+    points: [null, null, null, 110, 23],
+    standings: [null, null, null, 9, 14],
+  },
+  {
+    name: "Lance Stroll",
+    nationality: "CAN",
+    color: constructors[6].color,
+    points: [null, null, null, 34, 18],
+    standings: [null, null, null, 13, 15],
+  },
+  {
+    name: "Mick Schumacher",
+    nationality: "GER",
+    color: constructors[4].color,
+    points: [null, null, null, 0, 12],
+    standings: [null, null, null, 19, 16],
+  },
+  {
+    name: "Yuki Tsunoda",
+    nationality: "JPN",
+    color: constructors[9].color,
+    points: [null, null, null, 32, 12],
+    standings: [null, null, null, 14, 17],
+  },
+  {
+    name: "Zhou Guanyu",
+    nationality: "CHN",
+    color: constructors[8].color,
+    points: [null, null, null, null, 6],
+    standings: [null, null, null, null, 18],
+  },
+  {
+    name: "Alexander Albon",
+    nationality: "THA",
+    color: constructors[10].color,
+    points: [null, null, null, null, 4],
+    standings: [null, null, null, null, 19],
+  },
+  {
+    name: "Nicholas Latifi",
+    nationality: "CAN",
+    color: constructors[10].color,
+    points: [null, null, null, 7, 2],
+    standings: [null, null, null, 17, 20],
+  },
+  {
+    name: "Nyck De Vries",
+    nationality: "NED",
+    color: constructors[10].color,
+    points: [null, null, null, null, 2],
+    standings: [null, null, null, null, 21],
+  },
+  {
+    name: "Nico Hulkenberg",
+    nationality: "GER",
+    color: constructors[6].color,
+    points: [null, null, null, null, 0],
+    standings: [null, null, null, null, 22],
+  },
+  {
+    name: "Kimi Räikkönen",
+    nationality: "FIN",
+    color: constructors[7].color,
+    points: [null, null, null, 10, null],
+    standings: [null, null, null, 16, null],
+  },
+  {
+    name: "Antonio Giovinazzi",
+    nationality: "ITA",
+    color: constructors[7].color,
+    points: [null, null, null, 3, null],
+    standings: [null, null, null, 18, null],
+  },
+  {
+    name: "Robert Kubica",
+    nationality: "POL",
+    color: constructors[7].color,
+    points: [null, null, null, 0, null],
+    standings: [null, null, null, 20, null],
+  },
+  {
+    name: "Nikita Mazepin",
+    nationality: "RAF",
+    color: constructors[4].color,
+    points: [null, null, null, 0, null],
+    standings: [null, null, null, 21, null],
+  },
+];
+
+const driverStandingsData: ChartEntry[] = [];
+const driverPointsData: ChartEntry[] = [];
+
+drivers.forEach((driver) => {
+  driverStandingsData.push({
+    data: driver.standings,
+    name: driver.name,
+    color: driver.color,
+    marker: { symbol: "circle" },
+  });
+});
+drivers.forEach((driver) => {
+  driverPointsData.push({
+    data: driver.points,
+    name: driver.name,
+    color: driver.color,
+    marker: { symbol: "circle" },
+  });
+});
+
+export { driverStandingsData, driverPointsData };
 
 // --------------------------------------------------     Budget Data     -------------------------------------------------- //
 /* Engine 50% / R&D 8.8% / Manufacturing 7.5% / Capital Expenses 6.3% / Race Team 6.3% / Drivers 5% / Test Team 5% / Hydraulics 3.8% / Rent Bills, etc. 3.8% /Sponsor Chasing 3.8% */

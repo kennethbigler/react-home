@@ -80,6 +80,6 @@ const ConstructorPointsLine = React.memo(
   },
 );
 
-ConstructorPointsLine.displayName = "Points";
+ConstructorPointsLine.displayName = "Constructor Points";
 
 export default ConstructorPointsLine;

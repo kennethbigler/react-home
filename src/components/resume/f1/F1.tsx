@@ -7,6 +7,8 @@ import ConstructorStandingsLine from "./charts/ConstructorStandingsLine";
 import ExpandableCard from "../../common/expandable-card";
 import themeAtom from "../../../jotai/theme-atom";
 import { constructors } from "../../../constants/f1";
+import DriverPointsLine from "./charts/DriverPointsLine";
+import DriverStandingsLine from "./charts/DriverStandingsLine";
 
 const F1 = () => {
   const theme = useAtomValue(themeAtom);
@@ -32,7 +34,6 @@ const F1 = () => {
         </Grid>
       </ExpandableCard>
 
-      {/* // TODO: Add driver data */}
       <ExpandableCard
         inverted
         title="Drivers"
@@ -40,10 +41,10 @@ const F1 = () => {
       >
         <Grid container spacing={2} width="100%">
           <Grid size={{ xs: 12, md: 6 }}>
-            <ConstructorPointsLine color={color} />
+            <DriverPointsLine color={color} />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <ConstructorStandingsLine color={color} />
+            <DriverStandingsLine color={color} />
           </Grid>
         </Grid>
       </ExpandableCard>
