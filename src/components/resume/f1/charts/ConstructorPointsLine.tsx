@@ -2,7 +2,7 @@ import * as React from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
-import { chartPoints, xAxisYears } from "../../../../constants/f1";
+import { constructorPointsData, xAxisYears } from "../../../../constants/f1";
 
 export interface ConstructorPointsLineProps {
   color: string;
@@ -69,7 +69,7 @@ const ConstructorPointsLine = React.memo(
         useHTML: true,
         formatter: tooltipFormatter,
       },
-      series: chartPoints,
+      series: constructorPointsData,
     };
 
     return (

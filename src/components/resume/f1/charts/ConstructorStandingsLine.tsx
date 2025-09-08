@@ -2,7 +2,7 @@ import * as React from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
-import { chartStandings, xAxisYears } from "../../../../constants/f1";
+import { constructorStandingsData, xAxisYears } from "../../../../constants/f1";
 
 export interface ConstructorStandingsLineProps {
   color: string;
@@ -65,7 +65,7 @@ const ConstructorStandingsLine = React.memo(
         useHTML: true,
         formatter: tooltipFormatter,
       },
-      series: chartStandings,
+      series: constructorStandingsData,
     };
 
     return (

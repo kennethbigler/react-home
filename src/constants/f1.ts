@@ -1,6 +1,7 @@
 import { lightGreen, red } from "@mui/material/colors";
 
-interface Team {
+// --------------------------------------------------     Constructor Data     -------------------------------------------------- //
+interface Constructor {
   name: string;
   color: string;
   symbol: "circle" | "diamond" | "square" | "triangle" | "triangle-down";
@@ -8,7 +9,7 @@ interface Team {
   points: (number | null)[];
 }
 
-export const teams: Team[] = [
+export const constructors: Constructor[] = [
   {
     name: "Mercedes",
     color: "#00D7B6",
@@ -126,20 +127,20 @@ interface ChartEntry {
   data: (number | null)[];
   name: string;
   color: string;
-  marker: { symbol: Team["symbol"] };
+  marker: { symbol: Constructor["symbol"] };
 }
 
-const chartStandings: ChartEntry[] = [];
-const chartPoints: ChartEntry[] = [];
+const constructorStandingsData: ChartEntry[] = [];
+const constructorPointsData: ChartEntry[] = [];
 
-teams.forEach((team) => {
-  chartStandings.push({
+constructors.forEach((team) => {
+  constructorStandingsData.push({
     data: team.standings,
     name: team.name,
     color: team.color,
     marker: { symbol: team.symbol },
   });
-  chartPoints.push({
+  constructorPointsData.push({
     data: team.points,
     name: team.name,
     color: team.color,
@@ -147,8 +148,11 @@ teams.forEach((team) => {
   });
 });
 
-export { chartStandings, chartPoints };
+export { constructorStandingsData, constructorPointsData };
 
+// --------------------------------------------------     Driver Data     -------------------------------------------------- //
+
+// --------------------------------------------------     Budget Data     -------------------------------------------------- //
 /* Engine 50% / R&D 8.8% / Manufacturing 7.5% / Capital Expenses 6.3% / Race Team 6.3% / Drivers 5% / Test Team 5% / Hydraulics 3.8% / Rent Bills, etc. 3.8% /Sponsor Chasing 3.8% */
 export const budgetData = {
   nodes: [
@@ -188,20 +192,20 @@ export const budgetData = {
     { id: "Fuel", color: red[200] },
   ],
   data: [
-    // income, $158M est
-    // Prize Money $60-140M
+    // income ($158M est)
+    // Prize Money ($60-140M)
     ["Prize Money", "🏎️", 60],
-    // Title Sponsors $40-60M
+    // Title Sponsors ($40-60M)
     ["Title Sponsors", "🏎️", 40],
-    // Manufacturer Funding and Parent Companies $100-300M
+    // Manufacturer Funding and Parent Companies ($100-300M)
     ["Parent Co", "🏎️", 30],
-    // Principal Partners $20-40M
+    // Principal Partners ($20-40M)
     ["Principal Partners", "🏎️", 20],
-    // Official Suppliers / Supporters $1-10M
+    // Official Suppliers / Supporters ($1-10M)
     ["Suppliers", "🏎️", 5],
-    // Merchandising and Licensing $0-20M
+    // Merchandising and Licensing ($0-20M)
     ["Merchandising", "🏎️", 3],
-    // big categories ($158M)
+    // big categories ($158M est)
     ["🏎️", "R&D", 41],
     ["🏎️", "Salaries", 42],
     ["🏎️", "Production", 39],
