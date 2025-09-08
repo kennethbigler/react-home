@@ -39,7 +39,7 @@ const PointsLine = React.memo(({ color }: PointsLineProps) => {
     chart: { type: "line", backgroundColor: null },
     credits: { enabled: false },
     legend: { enabled: false },
-    title: { text: "F1 Points", style: { color } },
+    title: { text: "F1 Constructors Points", style: { color } },
     plotOptions: {
       series: {
         lineWidth: 4,

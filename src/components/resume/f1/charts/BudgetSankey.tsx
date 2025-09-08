@@ -17,7 +17,7 @@ const BudgetSankey = ({ color }: BudgetSankeyProps) => {
       backgroundColor: "transparent",
     },
     credits: { enabled: false },
-    title: { text: "F1 Budgets (est)", style: { color } },
+    title: { text: "F1 Budget", style: { color } },
     plotOptions: {
       sankey: {
         nodeWidth: 80, // Adjust node width for better spacing

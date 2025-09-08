@@ -33,7 +33,7 @@ const StandingsLine = React.memo(({ color }: StandingsLineProps) => {
     chart: { type: "line", backgroundColor: null },
     credits: { enabled: false },
     legend: { enabled: false },
-    title: { text: "F1 Standings", style: { color } },
+    title: { text: "F1 Constructors Standings", style: { color } },
     plotOptions: {
       series: {
         lineWidth: 4,

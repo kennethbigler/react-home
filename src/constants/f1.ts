@@ -8,77 +8,79 @@ interface Team {
   points: (number | null)[];
 }
 
-const teams: Team[] = [
+export const teams: Team[] = [
   {
     name: "Mercedes",
-    color: "#00D2BE",
+    color: "#00D7B6",
     symbol: "square",
     standings: [1, 1, 1, 1, 3],
     points: [655, 739, 573, 613.5, 515],
   },
   {
     name: "Ferrari",
-    color: "#DC0000",
+    color: "#ED1131",
     symbol: "diamond",
     standings: [2, 2, 6, 3, 2],
     points: [571, 504, 131, 323.5, 554],
   },
   {
     name: "Red Bull Racing",
-    color: "#1E41FF",
+    color: "#4781D7",
     symbol: "triangle",
     standings: [3, 3, 2, 2, 1],
     points: [419, 417, 319, 585.5, 759],
   },
   {
     name: "Alpine",
-    color: "#0090FF",
+    color: "#00A1E8",
     symbol: "circle",
     standings: [4, 5, 5, 5, 4],
     points: [122, 91, 181, 155, 173],
   },
   {
     name: "Haas",
-    color: "#FFFFFF",
+    color: "#9C9FA2",
     symbol: "square",
     standings: [5, 9, 9, 10, 8],
     points: [93, 28, 3, 0, 37],
   },
   {
     name: "McLaren",
-    color: "#FF8700",
+    color: "#F47600",
     symbol: "triangle",
     standings: [6, 4, 3, 4, 5],
     points: [62, 145, 202, 275, 159],
   },
   {
     name: "Aston Martin",
-    color: "#006F62",
+    color: "#229971",
     symbol: "circle",
     standings: [7, 7, 4, 7, 7],
     points: [52, 73, 195, 77, 55],
   },
   {
     name: "Alfa Romeo",
-    color: "#900000",
+    color: "#C92D4B",
     symbol: "circle",
     standings: [8, 8, 8, 9, 6],
     points: [48, 57, 8, 13, 55],
   },
   {
     name: "AlphaTauri",
-    color: "#2B4562",
+    color: "#5E8FAA",
     symbol: "circle",
     standings: [9, 6, 7, 6, 9],
     points: [33, 85, 107, 142, 35],
   },
   {
     name: "Williams",
-    color: "#005AFF",
+    color: "#1868DB",
     symbol: "triangle-down",
     standings: [10, 10, 10, 8, 10],
     points: [7, 1, 0, 23, 8],
   },
+  // 2025 - Kick Sauber	#01C00E
+  // 2025 - Racing Bulls	#6C98FF
   // ----------     2nd Replacement     ---------- //
   {
     name: "Racing Point",
@@ -104,7 +106,7 @@ const teams: Team[] = [
   },
   {
     name: "Toro Rosso",
-    color: "#4E7C9B",
+    color: "#0032FF",
     symbol: "circle",
     standings: [9, 6, null, null, null],
     points: [33, 85, null, null, null],
