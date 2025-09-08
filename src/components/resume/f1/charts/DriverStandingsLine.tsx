@@ -49,7 +49,7 @@ const DriverStandingsLine = React.memo(
         },
       },
       yAxis: {
-        tickPositions: [1, 5, 10, 15, 20, 22],
+        tickPositions: [1, 5, 10, 15, 20, 23],
         reversed: true,
         title: { text: undefined },
         labels: { style: { color } },
