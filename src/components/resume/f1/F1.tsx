@@ -1,11 +1,11 @@
 import Typography from "@mui/material/Typography";
-import StandingsLine from "./charts/StandingsLine";
 import { useAtomValue } from "jotai";
-import themeAtom from "../../../jotai/theme-atom";
-import BudgetSankey from "./charts/BudgetSankey";
-import PointsLine from "./charts/PointsLine";
-import ExpandableCard from "../../common/expandable-card";
 import Grid from "@mui/material/Grid";
+import BudgetSankey from "./charts/BudgetSankey";
+import ConstructorPointsLine from "./charts/ConstructorPointsLine";
+import ConstructorStandingsLine from "./charts/ConstructorStandingsLine";
+import ExpandableCard from "../../common/expandable-card";
+import themeAtom from "../../../jotai/theme-atom";
 import { teams } from "../../../constants/f1";
 
 const F1 = () => {
@@ -21,10 +21,10 @@ const F1 = () => {
       <ExpandableCard title="F1 Constructors" backgroundColor={teams[1].color}>
         <Grid container spacing={2} width="100%">
           <Grid size={{ xs: 12, md: 6 }}>
-            <PointsLine color={color} />
+            <ConstructorPointsLine color={color} />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <StandingsLine color={color} />
+            <ConstructorStandingsLine color={color} />
           </Grid>
         </Grid>
       </ExpandableCard>
@@ -37,10 +37,10 @@ const F1 = () => {
       >
         <Grid container spacing={2} width="100%">
           <Grid size={{ xs: 12, md: 6 }}>
-            <PointsLine color={color} />
+            <ConstructorPointsLine color={color} />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <StandingsLine color={color} />
+            <ConstructorStandingsLine color={color} />
           </Grid>
         </Grid>
       </ExpandableCard>
