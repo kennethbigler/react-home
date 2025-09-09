@@ -30,6 +30,7 @@ const Menu = React.memo(({ onItemClick }: MenuProps) => {
         { name: "Presentations", route: "presentations" },
         { name: "Comp Calculator", route: "comp" },
         { divider: true },
+        { name: "F1", route: "f1" },
         { name: "Cars", route: "cars" },
         { name: "Travel Map", route: "travel" },
         { divider: true },

@@ -5,9 +5,6 @@ import Header, { NavProps } from "../common/header/Header";
 import LoadingSpinner from "../common/loading-spinner";
 
 // lazy load nav elements
-const Summary = React.lazy(
-  () => import(/* webpackChunkName: "summary" */ "./summary"),
-);
 const Cars = React.lazy(() => import(/* webpackChunkName: "cars" */ "./cars"));
 const CompCalculator = React.lazy(
   () => import(/* webpackChunkName: "comp" */ "./comp-calc"),
@@ -15,11 +12,15 @@ const CompCalculator = React.lazy(
 const Education = React.lazy(
   () => import(/* webpackChunkName: "education" */ "./education"),
 );
+const F1 = React.lazy(() => import(/* webpackChunkName: "f1" */ "./f1"));
 const Presentations = React.lazy(
   () => import(/* webpackChunkName: "presentations" */ "./presentations"),
 );
 const Resume = React.lazy(
   () => import(/* webpackChunkName: "resume" */ "./resume"),
+);
+const Summary = React.lazy(
+  () => import(/* webpackChunkName: "summary" */ "./summary"),
 );
 const TravelMap = React.lazy(
   () => import(/* webpackChunkName: "travel" */ "./travel-map"),
@@ -43,6 +44,7 @@ const ResumeRoutes = ({ handleNav }: RoutesProps) => (
         <Route path="cars" element={<Cars />} />
         <Route path="comp" element={<CompCalculator />} />
         <Route path="education" element={<Education />} />
+        <Route path="f1" element={<F1 />} />
         <Route path="presentations" element={<Presentations />} />
         <Route path="resume" element={<Resume />} />
         <Route path="travel" element={<TravelMap />} />

@@ -44,7 +44,6 @@ const CompEntryCard = ({
       md: 6,
       lg: 4,
       xl: 3,
-      // @ts-expect-error - custom breakpoints
       xxl: compEntryCount > 4 ? 2 : undefined,
       xxxl: compEntryCount > 6 ? 1 : undefined,
     }}

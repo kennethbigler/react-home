@@ -25,7 +25,6 @@ const CarDisplay = React.memo(({ hideFamily, hideKen }: CarDisplayProps) => (
     {!hideKen && (
       <Grid size={{ xs: 12, md: hideFamily ? 12 : 6 }}>
         <Grid container spacing={2} width="100%">
-          {/* @ts-expect-error - custom breakpoints */}
           <Grid size={{ xs: 12, md: hideFamily ? 6 : 12, xxl: 6 }}>
             <ExpandableCard title="Ken's Cars" backgroundColor="black">
               {currentKensCarsReversed.map((car, i) => (
@@ -33,7 +32,6 @@ const CarDisplay = React.memo(({ hideFamily, hideKen }: CarDisplayProps) => (
               ))}
             </ExpandableCard>
           </Grid>
-          {/* @ts-expect-error - custom breakpoints */}
           <Grid size={{ xs: 12, md: hideFamily ? 6 : 12, xxl: 6 }}>
             <ExpandableCard
               title="Ken's Previous Cars"
@@ -50,7 +48,6 @@ const CarDisplay = React.memo(({ hideFamily, hideKen }: CarDisplayProps) => (
     {!hideFamily && (
       <Grid size={{ xs: 12, md: hideKen ? 12 : 6 }}>
         <Grid container spacing={2} width="100%">
-          {/* @ts-expect-error - custom breakpoints */}
           <Grid size={{ xs: 12, md: hideKen ? 6 : 12, xxl: 6 }}>
             <ExpandableCard title="Family Cars" backgroundColor="black">
               {currentFamilyCarsReversed.map((car, i) => (
@@ -58,7 +55,6 @@ const CarDisplay = React.memo(({ hideFamily, hideKen }: CarDisplayProps) => (
               ))}
             </ExpandableCard>
           </Grid>
-          {/* @ts-expect-error - custom breakpoints */}
           <Grid size={{ xs: 12, md: hideKen ? 6 : 12, xxl: 6 }}>
             <ExpandableCard
               title="Family's Previous Cars"

@@ -19,7 +19,6 @@ const imgStyle: React.CSSProperties = {
 };
 
 const Job = ({ job, fullWidth, triple }: JobProps) => (
-  // @ts-expect-error - xxl is a valid grid size
   <Grid size={{ xs: 12, lg: fullWidth ? 12 : 6, xxl: triple ? 4 : undefined }}>
     <ExpandableCard
       backgroundColor={job.color}

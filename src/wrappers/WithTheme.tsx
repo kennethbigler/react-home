@@ -8,6 +8,13 @@ import themeAtom from "../jotai/theme-atom";
 import WithRouter from "./WithRouter";
 import { useAtomValue } from "jotai";
 
+declare module "@mui/material/styles" {
+  interface BreakpointOverrides {
+    xxl: true;
+    xxxl: true;
+  }
+}
+
 /** App class that wraps higher level components of the application */
 const WithTheme = () => {
   const theme = useAtomValue(themeAtom);
@@ -29,7 +36,6 @@ const WithTheme = () => {
         md: 900,
         lg: 1200,
         xl: 1536,
-        // @ts-expect-error - adding custom breakpoints
         xxl: 2600,
         xxxl: 4600,
       },
