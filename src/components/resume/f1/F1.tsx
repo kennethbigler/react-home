@@ -6,7 +6,7 @@ import ConstructorPointsLine from "./charts/ConstructorPointsLine";
 import ConstructorStandingsLine from "./charts/ConstructorStandingsLine";
 import ExpandableCard from "../../common/expandable-card";
 import themeAtom from "../../../jotai/theme-atom";
-import { RED_BULL_HEX, FERRARI_HEX, ASTON_HEX } from "../../../constants/f1";
+import { RED_BULL_HEX, MCLAREN_HEX, ASTON_HEX } from "../../../constants/f1";
 import DriverPointsLine from "./charts/DriverPointsLine";
 import DriverStandingsLine from "./charts/DriverStandingsLine";
 
@@ -22,7 +22,7 @@ const F1 = () => {
 
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, lg: 6 }}>
-          <ExpandableCard title="Constructors" backgroundColor={FERRARI_HEX}>
+          <ExpandableCard title="Constructors" backgroundColor={MCLAREN_HEX}>
             <ConstructorPointsLine color={color} />
             <ConstructorStandingsLine color={color} />
           </ExpandableCard>

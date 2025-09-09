@@ -9,15 +9,17 @@ export interface DriverStandingsLineProps {
 }
 
 const tooltipFormatter = function (this: Highcharts.Point): string {
-  let tooltip = `Year: <b>${xAxisYears[this.x]}</b><br/><b>`;
+  let tooltip = `Year: <b>${xAxisYears[this.x]}</b><br/>`;
 
   (this.series.data || []).forEach((point: Highcharts.Point, i: number) => {
+    tooltip += point.x === this.x ? "<b>" : "";
     tooltip += !point.y ? "-" : point.y;
+    tooltip += point.x === this.x ? "</b>" : "";
     tooltip += i < this.series.data.length - 1 ? ", " : ": ";
   });
 
   // eslint-disable-next-line @typescript-eslint/no-base-to-string
-  tooltip += `</b><span style="color: ${this.color?.toString()};">&#11044;</span> ${this.series.name}<br/>`;
+  tooltip += `<span style="color: ${this.color?.toString()};">&#11044;</span> ${this.series.name}<br/>`;
 
   return tooltip;
 };

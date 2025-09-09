@@ -60,6 +60,7 @@ const ConstructorPointsLine = React.memo(
         },
       },
       yAxis: {
+        tickPositions: [0, 150, 300, 450, 600, 750, 900],
         title: { text: undefined },
         labels: { style: { color } },
         gridLineDashStyle: "Dot",
