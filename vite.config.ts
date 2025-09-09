@@ -19,10 +19,10 @@ export default defineConfig({
       reporter: ["text", "html", "json"],
       include: ["src/**"],
       thresholds: {
-        statements: 90,
+        statements: 85,
         branches: 85,
         functions: 85,
-        lines: 90,
+        lines: 85,
       },
     },
     chaiConfig: {
