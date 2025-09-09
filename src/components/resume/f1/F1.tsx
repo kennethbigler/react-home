@@ -6,7 +6,7 @@ import ConstructorPointsLine from "./charts/ConstructorPointsLine";
 import ConstructorStandingsLine from "./charts/ConstructorStandingsLine";
 import ExpandableCard from "../../common/expandable-card";
 import themeAtom from "../../../jotai/theme-atom";
-import { constructors } from "../../../constants/f1";
+import { RED_BULL_HEX, FERRARI_HEX, ASTON_HEX } from "../../../constants/f1";
 import DriverPointsLine from "./charts/DriverPointsLine";
 import DriverStandingsLine from "./charts/DriverStandingsLine";
 
@@ -20,38 +20,25 @@ const F1 = () => {
         F1
       </Typography>
 
-      <ExpandableCard
-        title="Constructors"
-        backgroundColor={constructors[1].color}
-      >
-        <Grid container spacing={2} width="100%">
-          <Grid size={{ xs: 12, md: 6 }}>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, lg: 6 }}>
+          <ExpandableCard title="Constructors" backgroundColor={FERRARI_HEX}>
             <ConstructorPointsLine color={color} />
-          </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
             <ConstructorStandingsLine color={color} />
-          </Grid>
+          </ExpandableCard>
         </Grid>
-      </ExpandableCard>
 
-      <ExpandableCard
-        inverted
-        title="Drivers"
-        backgroundColor={constructors[0].color}
-      >
-        <Grid container spacing={2} width="100%">
-          <Grid size={{ xs: 12, md: 6 }}>
+        <Grid size={{ xs: 12, lg: 6 }}>
+          <ExpandableCard title="Drivers" backgroundColor={RED_BULL_HEX}>
             <DriverPointsLine color={color} />
-          </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
             <DriverStandingsLine color={color} />
-          </Grid>
+          </ExpandableCard>
         </Grid>
-      </ExpandableCard>
+      </Grid>
 
       <ExpandableCard
         title="Constructor Budgets (Estimated)"
-        backgroundColor={constructors[6].color}
+        backgroundColor={ASTON_HEX}
       >
         <BudgetSankey color={color} />
       </ExpandableCard>

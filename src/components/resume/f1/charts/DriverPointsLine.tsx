@@ -59,6 +59,7 @@ const DriverPointsLine = React.memo(({ color }: DriverPointsLineProps) => {
       },
     },
     yAxis: {
+      max: 600,
       title: { text: undefined },
       labels: { style: { color } },
       gridLineDashStyle: "Dot",

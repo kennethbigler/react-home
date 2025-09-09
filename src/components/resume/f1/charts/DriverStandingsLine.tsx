@@ -9,15 +9,15 @@ export interface DriverStandingsLineProps {
 }
 
 const tooltipFormatter = function (this: Highcharts.Point): string {
-  let tooltip = "Year: <b>" + xAxisYears[this.x] + "</b><br/>";
+  let tooltip = `Year: <b>${xAxisYears[this.x]}</b><br/><b>`;
 
-  (this.points || [])
-    .sort((a, b) => Number(a.y) - Number(b.y))
-    .forEach((point: Highcharts.Point) => {
-      tooltip +=
-        // eslint-disable-next-line @typescript-eslint/no-base-to-string
-        `<b>${point.y}</b>: <span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name}<br/>`;
-    });
+  (this.series.data || []).forEach((point: Highcharts.Point, i: number) => {
+    tooltip += !point.y ? "-" : point.y;
+    tooltip += i < this.series.data.length - 1 ? ", " : ": ";
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-base-to-string
+  tooltip += `</b><span style="color: ${this.color?.toString()};">&#11044;</span> ${this.series.name}<br/>`;
 
   return tooltip;
 };
@@ -49,14 +49,13 @@ const DriverStandingsLine = React.memo(
         },
       },
       yAxis: {
-        tickPositions: [1, 5, 10, 15, 20, 23],
+        tickPositions: [1, 5, 10, 15, 20, 24],
         reversed: true,
         title: { text: undefined },
         labels: { style: { color } },
         gridLineDashStyle: "Dot",
       },
       tooltip: {
-        shared: true,
         useHTML: true,
         formatter: tooltipFormatter,
       },
