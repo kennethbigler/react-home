@@ -34,9 +34,20 @@ const ConstructorStandingsLine = React.memo(
       chart: { type: "line", backgroundColor: null },
       credits: { enabled: false },
       legend: { enabled: false },
-      plotOptions: { series: { lineWidth: 5, marker: { radius: 10 } } },
       title: { text: "F1 Constructors Standings", style: { color } },
       tooltip: { shared: true, useHTML: true, formatter: tooltipFormatter },
+      plotOptions: {
+        series: {
+          lineWidth: 5,
+          marker: { radius: 10, symbol: "circle" },
+          dataLabels: {
+            enabled: true,
+            format: "{y}",
+            align: "center",
+            verticalAlign: "middle",
+          },
+        },
+      },
       xAxis: {
         labels: {
           style: { color },

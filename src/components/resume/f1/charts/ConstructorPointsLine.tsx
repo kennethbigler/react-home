@@ -40,6 +40,7 @@ const ConstructorPointsLine = React.memo(
       chart: { type: "line", backgroundColor: null },
       credits: { enabled: false },
       legend: { enabled: false },
+      plotOptions: { series: { marker: { symbol: "circle" } } },
       title: { text: "F1 Constructors Points", style: { color } },
       tooltip: { shared: true, useHTML: true, formatter: tooltipFormatter },
       xAxis: {

@@ -39,6 +39,7 @@ const DriverPointsLine = React.memo(({ color }: DriverPointsLineProps) => {
     chart: { type: "line", backgroundColor: null },
     credits: { enabled: false },
     legend: { enabled: false },
+    plotOptions: { series: { marker: { symbol: "circle" } } },
     title: { text: "F1 Drivers Points", style: { color } },
     tooltip: { shared: true, useHTML: true, formatter: tooltipFormatter },
     xAxis: {

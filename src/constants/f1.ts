@@ -134,43 +134,23 @@ export const constructors: Constructor[] = [
   },
 ];
 
-export const xAxisYears = [2018, 2019, 2020, 2021, 2022, 2023, 2024];
+export const xAxisYears = [
+  2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026,
+];
 
 interface ChartEntry {
   data: (number | null)[];
   name: string;
   color: string;
-  marker: { symbol: string };
-  dataLabels?: {
-    enabled?: boolean; // Enable data labels
-    format?: string; // Show the y value
-    align?: string; // Center the label horizontally
-    verticalAlign?: string; // Center the label vertically
-  };
 }
 
 const constructorStandingsData: ChartEntry[] = [];
 const constructorPointsData: ChartEntry[] = [];
 
-constructors.forEach((team) => {
-  constructorStandingsData.push({
-    data: team.standings,
-    name: team.name,
-    color: team.color,
-    marker: { symbol: "circle" },
-    dataLabels: {
-      enabled: true,
-      format: "{y}",
-      align: "center",
-      verticalAlign: "middle",
-    },
-  });
-  constructorPointsData.push({
-    data: team.points,
-    name: team.name,
-    color: team.color,
-    marker: { symbol: "circle" },
-  });
+constructors.forEach((constructor) => {
+  const { name, color, standings, points } = constructor;
+  constructorStandingsData.push({ data: standings, name, color });
+  constructorPointsData.push({ data: points, name, color });
 });
 
 export { constructorStandingsData, constructorPointsData };
@@ -471,20 +451,9 @@ const driverStandingsData: ChartEntry[] = [];
 const driverPointsData: ChartEntry[] = [];
 
 drivers.forEach((driver) => {
-  driverStandingsData.push({
-    data: driver.standings,
-    name: driver.name,
-    color: driver.color,
-    marker: { symbol: "circle" },
-  });
-});
-drivers.forEach((driver) => {
-  driverPointsData.push({
-    data: driver.points,
-    name: driver.name,
-    color: driver.color,
-    marker: { symbol: "circle" },
-  });
+  const { name, color, standings, points } = driver;
+  driverStandingsData.push({ data: standings, name, color });
+  driverPointsData.push({ data: points, name, color });
 });
 
 export { driverStandingsData, driverPointsData };
