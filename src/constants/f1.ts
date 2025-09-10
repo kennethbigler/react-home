@@ -1,11 +1,10 @@
 import { lightGreen, red } from "@mui/material/colors";
 
-// --------------------------------------------------     Constructor Data     -------------------------------------------------- //
-interface Constructor {
+// --------------------------------------------------     Shared     -------------------------------------------------- //
+interface ChartEntry {
+  data: (number | null)[];
   name: string;
   color: string;
-  standings: (number | null)[];
-  points: (number | null)[];
 }
 
 export const MERCEDES_HEX = "#00D7B6";
@@ -27,133 +26,142 @@ const SAUBER_HEX = "#9B0000";
 const TR_HEX = "#0032FF";
 const RENAULT_HEX = "#FFF500";
 
+export const xAxisYears = [
+  2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026,
+];
+
+// --------------------------------------------------     Constructor Data     -------------------------------------------------- //
+interface Constructor {
+  name: string;
+  color: string;
+  points: (number | null)[];
+  standings: (number | null)[];
+}
+
 export const constructors: Constructor[] = [
   {
     name: "Mercedes",
     color: MERCEDES_HEX,
-    standings: [1, 1, 1, 1, 3, 2, 4],
     points: [655, 739, 573, 613.5, 515, 409, 468],
+    standings: [1, 1, 1, 1, 3, 2, 4],
   },
   {
     name: "Red Bull Racing",
     color: RED_BULL_HEX,
-    standings: [3, 3, 2, 2, 1, 1, 3],
     points: [419, 417, 319, 585.5, 759, 860, 589],
+    standings: [3, 3, 2, 2, 1, 1, 3],
   },
   {
     name: "Ferrari",
     color: FERRARI_HEX,
-    standings: [2, 2, 6, 3, 2, 3, 2],
     points: [571, 504, 131, 323.5, 554, 406, 652],
+    standings: [2, 2, 6, 3, 2, 3, 2],
   },
   {
     name: "McLaren",
     color: MCLAREN_HEX,
-    standings: [6, 4, 3, 4, 5, 4, 1],
     points: [62, 145, 202, 275, 159, 302, 666],
+    standings: [6, 4, 3, 4, 5, 4, 1],
   },
   {
     name: "Alpine",
     color: ALPINE_HEX,
-    standings: [4, 5, 5, 5, 4, 6, 6],
     points: [122, 91, 181, 155, 173, 120, 65],
+    standings: [4, 5, 5, 5, 4, 6, 6],
   },
   {
     name: "Racing Bulls",
     color: RB_HEX,
-    standings: [9, 6, 7, 6, 9, 8, 8],
     points: [33, 85, 107, 142, 35, 25, 46],
+    standings: [9, 6, 7, 6, 9, 8, 8],
   },
   {
     name: "Aston Martin",
     color: ASTON_HEX,
-    standings: [7, 7, 4, 7, 7, 5, 5],
     points: [52, 73, 195, 77, 55, 280, 94],
+    standings: [7, 7, 4, 7, 7, 5, 5],
   },
   {
     name: "Williams",
     color: WILLIAMS_HEX,
-    standings: [10, 10, 10, 8, 10, 7, 9],
     points: [7, 1, 0, 23, 8, 28, 17],
+    standings: [10, 10, 10, 8, 10, 7, 9],
   },
   {
     name: "Haas",
     color: HAAS_HEX,
-    standings: [5, 9, 9, 10, 8, 10, 7],
     points: [93, 28, 3, 0, 37, 12, 58],
+    standings: [5, 9, 9, 10, 8, 10, 7],
   },
   {
     name: "Kick Sauber",
     color: K_SAUBER_HEX,
-    standings: [8, 8, 8, 9, 6, 9, 10],
     points: [48, 57, 8, 13, 55, 16, 4],
+    standings: [8, 8, 8, 9, 6, 9, 10],
   },
   // ----------     2nd Replacement     ---------- //
   {
     name: "Racing Point",
     color: RP_HEX,
-    standings: [7, 7, 4],
     points: [52, 73, 195],
+    standings: [7, 7, 4],
   },
   {
     name: "AlphaTauri",
     color: AT_HEX,
-    standings: [9, 6, 7, 6, 9, 8],
     points: [33, 85, 107, 142, 35, 25],
+    standings: [9, 6, 7, 6, 9, 8],
   },
   {
     name: "Alfa Romeo",
     color: AR_HEX,
-    standings: [8, 8, 8, 9, 6, 9],
     points: [48, 57, 8, 13, 55, 16],
+    standings: [8, 8, 8, 9, 6, 9],
   },
   // ----------     1st Replacement     ---------- //
   {
     name: "Force India",
     color: FI_HEX,
-    standings: [7],
     points: [52],
+    standings: [7],
   },
   {
     name: "Sauber",
     color: SAUBER_HEX,
-    standings: [8],
     points: [48],
+    standings: [8],
   },
   {
     name: "Toro Rosso",
     color: TR_HEX,
-    standings: [9, 6],
     points: [33, 85],
+    standings: [9, 6],
   },
   {
     name: "Renault",
     color: RENAULT_HEX,
-    standings: [4, 5, 5],
     points: [122, 91, 181],
+    standings: [4, 5, 5],
   },
 ];
 
-export const xAxisYears = [
-  2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026,
-];
-
-interface ChartEntry {
-  data: (number | null)[];
-  name: string;
-  color: string;
-}
-
-const constructorStandingsData: ChartEntry[] = [];
 const constructorPointsData: ChartEntry[] = [];
+const constructorStandingsData: ChartEntry[] = [];
 
 constructors.forEach((constructor) => {
-  const { name, color, standings, points } = constructor;
-  constructorStandingsData.push({ data: standings, name, color });
+  const { name, color, points, standings } = constructor;
   constructorPointsData.push({ data: points, name, color });
+  constructorStandingsData.push({ data: standings, name, color });
 });
 
-export { constructorStandingsData, constructorPointsData };
+constructorPointsData.sort(
+  (a, b) => (a.data[a.data.length - 1] || 0) - (b.data[b.data.length - 1] || 0),
+);
+constructorStandingsData.sort(
+  (a, b) => (b.data[b.data.length - 1] || 0) - (a.data[a.data.length - 1] || 0),
+);
+
+export { constructorPointsData, constructorStandingsData };
 
 // --------------------------------------------------     Driver Data     -------------------------------------------------- //
 interface Driver {
@@ -447,16 +455,23 @@ const drivers: Driver[] = [
   },
 ];
 
-const driverStandingsData: ChartEntry[] = [];
 const driverPointsData: ChartEntry[] = [];
+const driverStandingsData: ChartEntry[] = [];
 
 drivers.forEach((driver) => {
-  const { name, color, standings, points } = driver;
-  driverStandingsData.push({ data: standings, name, color });
+  const { name, color, points, standings } = driver;
   driverPointsData.push({ data: points, name, color });
+  driverStandingsData.push({ data: standings, name, color });
 });
 
-export { driverStandingsData, driverPointsData };
+driverPointsData.sort(
+  (a, b) => (a.data[a.data.length - 1] || 0) - (b.data[b.data.length - 1] || 0),
+);
+driverStandingsData.sort(
+  (a, b) => (b.data[b.data.length - 1] || 0) - (a.data[a.data.length - 1] || 0),
+);
+
+export { driverPointsData, driverStandingsData };
 
 // --------------------------------------------------     Budget Data     -------------------------------------------------- //
 /* Engine 50% / R&D 8.8% / Manufacturing 7.5% / Capital Expenses 6.3% / Race Team 6.3% / Drivers 5% / Test Team 5% / Hydraulics 3.8% / Rent Bills, etc. 3.8% /Sponsor Chasing 3.8% */

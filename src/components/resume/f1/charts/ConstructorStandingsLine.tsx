@@ -3,29 +3,11 @@ import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import { constructorStandingsData, xAxisYears } from "../../../../constants/f1";
+import { standingsTTFormatter } from "./helpers";
 
 export interface ConstructorStandingsLineProps {
   color: string;
 }
-
-const tooltipFormatter = function (this: Highcharts.Point): string {
-  let tooltip = "Year: <b>" + xAxisYears[this.x] + "</b><br/>";
-  const tooltipHist = ["", "", "", "", "", "", "", "", "", ""];
-
-  (this.points || []).forEach((point: Highcharts.Point) => {
-    // eslint-disable-next-line @typescript-eslint/no-base-to-string
-    const team = `<span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name}`;
-    const i = point.y ? point.y - 1 : 0;
-    tooltipHist[i] +=
-      tooltipHist[i] === "" ? `<b>${point.y}</b>: ${team}` : ` (${team})`;
-  });
-
-  tooltipHist.forEach((hist) => {
-    tooltip += hist + "<br/>";
-  });
-
-  return tooltip;
-};
 
 const ConstructorStandingsLine = React.memo(
   ({ color }: ConstructorStandingsLineProps) => {
@@ -35,7 +17,7 @@ const ConstructorStandingsLine = React.memo(
       credits: { enabled: false },
       legend: { enabled: false },
       title: { text: "F1 Constructors Standings", style: { color } },
-      tooltip: { shared: true, useHTML: true, formatter: tooltipFormatter },
+      tooltip: { useHTML: true, formatter: standingsTTFormatter },
       plotOptions: {
         series: {
           lineWidth: 5,
