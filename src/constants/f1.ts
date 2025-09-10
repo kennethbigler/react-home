@@ -30,6 +30,11 @@ export const xAxisYears = [
   2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026,
 ];
 
+const pointSort = (a: ChartEntry, b: ChartEntry) =>
+  (a.data[a.data.length - 1] || 0) - (b.data[b.data.length - 1] || 0);
+const standingSort = (a: ChartEntry, b: ChartEntry) =>
+  (b.data[b.data.length - 1] || 0) - (a.data[a.data.length - 1] || 0);
+
 // --------------------------------------------------     Constructor Data     -------------------------------------------------- //
 interface Constructor {
   name: string;
@@ -154,12 +159,8 @@ constructors.forEach((constructor) => {
   constructorStandingsData.push({ data: standings, name, color });
 });
 
-constructorPointsData.sort(
-  (a, b) => (a.data[a.data.length - 1] || 0) - (b.data[b.data.length - 1] || 0),
-);
-constructorStandingsData.sort(
-  (a, b) => (b.data[b.data.length - 1] || 0) - (a.data[a.data.length - 1] || 0),
-);
+constructorPointsData.sort(pointSort);
+constructorStandingsData.sort(standingSort);
 
 export { constructorPointsData, constructorStandingsData };
 
@@ -464,12 +465,8 @@ drivers.forEach((driver) => {
   driverStandingsData.push({ data: standings, name, color });
 });
 
-driverPointsData.sort(
-  (a, b) => (a.data[a.data.length - 1] || 0) - (b.data[b.data.length - 1] || 0),
-);
-driverStandingsData.sort(
-  (a, b) => (b.data[b.data.length - 1] || 0) - (a.data[a.data.length - 1] || 0),
-);
+driverPointsData.sort(pointSort);
+driverStandingsData.sort(standingSort);
 
 export { driverPointsData, driverStandingsData };
 
