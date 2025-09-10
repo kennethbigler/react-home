@@ -27,7 +27,7 @@ const TR_HEX = "#0032FF";
 const RENAULT_HEX = "#FFF500";
 
 export const xAxisYears = [
-  2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026,
+  2018, 2019, 2020, 2021, 2022, 2023, 2024, 9.2025, 0.2026,
 ];
 
 const pointSort = (a: ChartEntry, b: ChartEntry) =>
@@ -47,106 +47,119 @@ export const constructors: Constructor[] = [
   {
     name: "Mercedes",
     color: MERCEDES_HEX,
-    points: [655, 739, 573, 613.5, 515, 409, 468],
-    standings: [1, 1, 1, 1, 3, 2, 4],
+    points: [655, 739, 573, 613.5, 515, 409, 468, 260, 400],
+    standings: [1, 1, 1, 1, 3, 2, 4, 3, 3],
   },
   {
     name: "Red Bull Racing",
     color: RED_BULL_HEX,
-    points: [419, 417, 319, 585.5, 759, 860, 589],
-    standings: [3, 3, 2, 2, 1, 1, 3],
+    points: [419, 417, 319, 585.5, 759, 860, 589, 239, 350],
+    standings: [3, 3, 2, 2, 1, 1, 3, 4, 4],
   },
   {
     name: "Ferrari",
     color: FERRARI_HEX,
-    points: [571, 504, 131, 323.5, 554, 406, 652],
-    standings: [2, 2, 6, 3, 2, 3, 2],
+    points: [571, 504, 131, 323.5, 554, 406, 652, 280, 500],
+    standings: [2, 2, 6, 3, 2, 3, 2, 2, 2],
   },
   {
     name: "McLaren",
     color: MCLAREN_HEX,
-    points: [62, 145, 202, 275, 159, 302, 666],
-    standings: [6, 4, 3, 4, 5, 4, 1],
+    points: [62, 145, 202, 275, 159, 302, 666, 617, 600],
+    standings: [6, 4, 3, 4, 5, 4, 1, 1, 1],
   },
   {
     name: "Alpine",
     color: ALPINE_HEX,
-    points: [122, 91, 181, 155, 173, 120, 65],
-    standings: [4, 5, 5, 5, 4, 6, 6],
+    points: [122, 91, 181, 155, 173, 120, 65, 20, 50],
+    standings: [4, 5, 5, 5, 4, 6, 6, 10, 10],
   },
   {
     name: "Racing Bulls",
     color: RB_HEX,
-    points: [33, 85, 107, 142, 35, 25, 46],
-    standings: [9, 6, 7, 6, 9, 8, 8],
+    points: [33, 85, 107, 142, 35, 25, 46, 61, 200],
+    standings: [9, 6, 7, 6, 9, 8, 8, 7, 7],
   },
   {
     name: "Aston Martin",
     color: ASTON_HEX,
-    points: [52, 73, 195, 77, 55, 280, 94],
-    standings: [7, 7, 4, 7, 7, 5, 5],
+    points: [52, 73, 195, 77, 55, 280, 94, 62, 250],
+    standings: [7, 7, 4, 7, 7, 5, 5, 6, 6],
   },
   {
     name: "Williams",
     color: WILLIAMS_HEX,
-    points: [7, 1, 0, 23, 8, 28, 17],
-    standings: [10, 10, 10, 8, 10, 7, 9],
+    points: [7, 1, 0, 23, 8, 28, 17, 86, 300],
+    standings: [10, 10, 10, 8, 10, 7, 9, 5, 5],
   },
   {
     name: "Haas",
     color: HAAS_HEX,
-    points: [93, 28, 3, 0, 37, 12, 58],
-    standings: [5, 9, 9, 10, 8, 10, 7],
+    points: [93, 28, 3, 0, 37, 12, 58, 44, 100],
+    standings: [5, 9, 9, 10, 8, 10, 7, 9, 9],
   },
+  {
+    name: "Audi",
+    color: K_SAUBER_HEX,
+    points: [48, 57, 8, 13, 55, 16, 4, 55, 150],
+    standings: [8, 8, 8, 9, 6, 9, 10, 8, 8],
+  },
+  {
+    name: "Cadillac",
+    color: K_SAUBER_HEX,
+    points: [null, null, null, null, null, null, null, null, 0],
+    standings: [null, null, null, null, null, null, null, null, 11],
+  },
+  // ----------     3nd Replacement     ---------- //
   {
     name: "Kick Sauber",
     color: K_SAUBER_HEX,
-    points: [48, 57, 8, 13, 55, 16, 4],
-    standings: [8, 8, 8, 9, 6, 9, 10],
+    points: [48, 57, 8, 13, 55, 16, 4, 55],
+    standings: [8, 8, 8, 9, 6, 9, 10, 8, null],
   },
   // ----------     2nd Replacement     ---------- //
   {
     name: "Racing Point",
     color: RP_HEX,
     points: [52, 73, 195],
-    standings: [7, 7, 4],
+    standings: [7, 7, 4, null],
   },
   {
     name: "AlphaTauri",
     color: AT_HEX,
     points: [33, 85, 107, 142, 35, 25],
-    standings: [9, 6, 7, 6, 9, 8],
+    standings: [9, 6, 7, 6, 9, 8, null],
   },
   {
     name: "Alfa Romeo",
     color: AR_HEX,
     points: [48, 57, 8, 13, 55, 16],
-    standings: [8, 8, 8, 9, 6, 9],
+    standings: [8, 8, 8, 9, 6, 9, null],
   },
   // ----------     1st Replacement     ---------- //
   {
     name: "Force India",
     color: FI_HEX,
     points: [52],
-    standings: [7],
+    standings: [7, null],
   },
   {
     name: "Sauber",
     color: SAUBER_HEX,
     points: [48],
-    standings: [8],
+    standings: [8, null],
   },
   {
     name: "Toro Rosso",
     color: TR_HEX,
     points: [33, 85],
-    standings: [9, 6],
+    standings: [9, 6, null],
   },
   {
     name: "Renault",
     color: RENAULT_HEX,
     points: [122, 91, 181],
-    standings: [4, 5, 5],
+    standings: [4, 5, 5, null],
   },
 ];
 
