@@ -4,7 +4,6 @@ import { lightGreen, red } from "@mui/material/colors";
 interface Constructor {
   name: string;
   color: string;
-  symbol: "circle" | "diamond" | "square" | "triangle" | "triangle-down";
   standings: (number | null)[];
   points: (number | null)[];
 }
@@ -32,70 +31,60 @@ export const constructors: Constructor[] = [
   {
     name: "Mercedes",
     color: MERCEDES_HEX,
-    symbol: "square",
     standings: [1, 1, 1, 1, 3, 2, 4],
     points: [655, 739, 573, 613.5, 515, 409, 468],
   },
   {
     name: "Red Bull Racing",
     color: RED_BULL_HEX,
-    symbol: "triangle",
     standings: [3, 3, 2, 2, 1, 1, 3],
     points: [419, 417, 319, 585.5, 759, 860, 589],
   },
   {
     name: "Ferrari",
     color: FERRARI_HEX,
-    symbol: "diamond",
     standings: [2, 2, 6, 3, 2, 3, 2],
     points: [571, 504, 131, 323.5, 554, 406, 652],
   },
   {
     name: "McLaren",
     color: MCLAREN_HEX,
-    symbol: "triangle",
     standings: [6, 4, 3, 4, 5, 4, 1],
     points: [62, 145, 202, 275, 159, 302, 666],
   },
   {
     name: "Alpine",
     color: ALPINE_HEX,
-    symbol: "circle",
     standings: [4, 5, 5, 5, 4, 6, 6],
     points: [122, 91, 181, 155, 173, 120, 65],
   },
   {
     name: "Racing Bulls",
     color: RB_HEX,
-    symbol: "circle",
     standings: [9, 6, 7, 6, 9, 8, 8],
     points: [33, 85, 107, 142, 35, 25, 46],
   },
   {
     name: "Aston Martin",
     color: ASTON_HEX,
-    symbol: "circle",
     standings: [7, 7, 4, 7, 7, 5, 5],
     points: [52, 73, 195, 77, 55, 280, 94],
   },
   {
     name: "Williams",
     color: WILLIAMS_HEX,
-    symbol: "triangle-down",
     standings: [10, 10, 10, 8, 10, 7, 9],
     points: [7, 1, 0, 23, 8, 28, 17],
   },
   {
     name: "Haas",
     color: HAAS_HEX,
-    symbol: "square",
     standings: [5, 9, 9, 10, 8, 10, 7],
     points: [93, 28, 3, 0, 37, 12, 58],
   },
   {
     name: "Kick Sauber",
     color: K_SAUBER_HEX,
-    symbol: "circle",
     standings: [8, 8, 8, 9, 6, 9, 10],
     points: [48, 57, 8, 13, 55, 16, 4],
   },
@@ -103,21 +92,18 @@ export const constructors: Constructor[] = [
   {
     name: "Racing Point",
     color: RP_HEX,
-    symbol: "circle",
     standings: [7, 7, 4],
     points: [52, 73, 195],
   },
   {
     name: "AlphaTauri",
     color: AT_HEX,
-    symbol: "circle",
     standings: [9, 6, 7, 6, 9, 8],
     points: [33, 85, 107, 142, 35, 25],
   },
   {
     name: "Alfa Romeo",
     color: AR_HEX,
-    symbol: "circle",
     standings: [8, 8, 8, 9, 6, 9],
     points: [48, 57, 8, 13, 55, 16],
   },
@@ -125,28 +111,24 @@ export const constructors: Constructor[] = [
   {
     name: "Force India",
     color: FI_HEX,
-    symbol: "circle",
     standings: [7],
     points: [52],
   },
   {
     name: "Sauber",
     color: SAUBER_HEX,
-    symbol: "circle",
     standings: [8],
     points: [48],
   },
   {
     name: "Toro Rosso",
     color: TR_HEX,
-    symbol: "circle",
     standings: [9, 6],
     points: [33, 85],
   },
   {
     name: "Renault",
     color: RENAULT_HEX,
-    symbol: "circle",
     standings: [4, 5, 5],
     points: [122, 91, 181],
   },
@@ -158,7 +140,13 @@ interface ChartEntry {
   data: (number | null)[];
   name: string;
   color: string;
-  marker: { symbol: Constructor["symbol"] };
+  marker: { symbol: string };
+  dataLabels?: {
+    enabled?: boolean; // Enable data labels
+    format?: string; // Show the y value
+    align?: string; // Center the label horizontally
+    verticalAlign?: string; // Center the label vertically
+  };
 }
 
 const constructorStandingsData: ChartEntry[] = [];
@@ -169,13 +157,19 @@ constructors.forEach((team) => {
     data: team.standings,
     name: team.name,
     color: team.color,
-    marker: { symbol: team.symbol },
+    marker: { symbol: "circle" },
+    dataLabels: {
+      enabled: true,
+      format: "{y}",
+      align: "center",
+      verticalAlign: "middle",
+    },
   });
   constructorPointsData.push({
     data: team.points,
     name: team.name,
     color: team.color,
-    marker: { symbol: team.symbol },
+    marker: { symbol: "circle" },
   });
 });
 

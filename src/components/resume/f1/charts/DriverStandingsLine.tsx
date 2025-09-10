@@ -32,16 +32,7 @@ const DriverStandingsLine = React.memo(
       credits: { enabled: false },
       legend: { enabled: false },
       title: { text: "F1 Drivers Standings", style: { color } },
-      plotOptions: {
-        series: {
-          lineWidth: 4,
-          marker: { radius: 7 },
-          dataLabels: {
-            enabled: true, // Enable data labels for all series
-            format: "{point.name}", // Customize the format if needed
-          },
-        },
-      },
+      tooltip: { useHTML: true, formatter: tooltipFormatter },
       xAxis: {
         labels: {
           style: { color },
@@ -56,10 +47,6 @@ const DriverStandingsLine = React.memo(
         title: { text: undefined },
         labels: { style: { color } },
         gridLineDashStyle: "Dot",
-      },
-      tooltip: {
-        useHTML: true,
-        formatter: tooltipFormatter,
       },
       series: driverStandingsData,
     };

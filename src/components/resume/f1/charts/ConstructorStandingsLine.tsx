@@ -34,17 +34,9 @@ const ConstructorStandingsLine = React.memo(
       chart: { type: "line", backgroundColor: null },
       credits: { enabled: false },
       legend: { enabled: false },
+      plotOptions: { series: { lineWidth: 5, marker: { radius: 10 } } },
       title: { text: "F1 Constructors Standings", style: { color } },
-      plotOptions: {
-        series: {
-          lineWidth: 4,
-          marker: { radius: 7 },
-          dataLabels: {
-            enabled: true, // Enable data labels for all series
-            format: "{point.name}", // Customize the format if needed
-          },
-        },
-      },
+      tooltip: { shared: true, useHTML: true, formatter: tooltipFormatter },
       xAxis: {
         labels: {
           style: { color },
@@ -54,16 +46,13 @@ const ConstructorStandingsLine = React.memo(
         },
       },
       yAxis: {
-        tickPositions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        tickPositions: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        endOnTick: false,
+        startOnTick: false,
         reversed: true,
         title: { text: undefined },
         labels: { style: { color } },
         gridLineDashStyle: "Dot",
-      },
-      tooltip: {
-        shared: true,
-        useHTML: true,
-        formatter: tooltipFormatter,
       },
       series: constructorStandingsData,
     };

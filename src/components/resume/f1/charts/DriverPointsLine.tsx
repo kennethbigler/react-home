@@ -40,16 +40,7 @@ const DriverPointsLine = React.memo(({ color }: DriverPointsLineProps) => {
     credits: { enabled: false },
     legend: { enabled: false },
     title: { text: "F1 Drivers Points", style: { color } },
-    plotOptions: {
-      series: {
-        lineWidth: 4,
-        marker: { radius: 7 },
-        dataLabels: {
-          enabled: true, // Enable data labels for all series
-          format: "{point.name}", // Customize the format if needed
-        },
-      },
-    },
+    tooltip: { shared: true, useHTML: true, formatter: tooltipFormatter },
     xAxis: {
       labels: {
         style: { color },
@@ -63,11 +54,6 @@ const DriverPointsLine = React.memo(({ color }: DriverPointsLineProps) => {
       title: { text: undefined },
       labels: { style: { color } },
       gridLineDashStyle: "Dot",
-    },
-    tooltip: {
-      shared: true,
-      useHTML: true,
-      formatter: tooltipFormatter,
     },
     series: driverPointsData,
   };
