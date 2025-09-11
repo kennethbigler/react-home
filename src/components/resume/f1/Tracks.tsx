@@ -23,251 +23,251 @@ import brazilSrc from "../../../images/tracks/Brazil_Circuit.avif";
 import lasVegasSrc from "../../../images/tracks/Las_Vegas_Circuit.avif";
 import qatarSrc from "../../../images/tracks/Qatar_Circuit.avif";
 import abuDhabiSrc from "../../../images/tracks/Abu_Dhabi_Circuit.avif";
-import TrackStats from "./TrackStats";
+import Track from "./Track";
 
 const Tracks = () => (
   <Grid container spacing={3} width="100%">
-    <TrackStats
+    <Track
       circuitName="Albert Park Circuit, Melbourne, Australia"
       imgSrc={australiaSrc}
-      circuitLength={5.278}
-      firstGrandPrix={1996}
-      numberOfLaps={58}
-      fastestLapTime="1:19.813"
-      fastestLapDriver="Charles Leclerc (2024)"
-      raceDistance={306.124}
+      circuitLen={5.278}
+      firstGP={1996}
+      numLaps={58}
+      fastLapTime="1:19.813"
+      fastLapDriver="Charles Leclerc (2024)"
+      raceLen={306.124}
     />
-    <TrackStats
+    <Track
       circuitName="Shanghai International Circuit, China"
       imgSrc={chinaSrc}
-      circuitLength={5.451}
-      firstGrandPrix={2004}
-      numberOfLaps={56}
-      fastestLapTime="1:34.742"
-      fastestLapDriver="Pierre Gasly (2019)"
-      raceDistance={305.066}
+      circuitLen={5.451}
+      firstGP={2004}
+      numLaps={56}
+      fastLapTime="1:34.742"
+      fastLapDriver="Pierre Gasly (2019)"
+      raceLen={305.066}
     />
-    <TrackStats
+    <Track
       circuitName="Suzuka Circuit, Japan"
       imgSrc={japanSrc}
-      circuitLength={5.807}
-      firstGrandPrix={1987}
-      numberOfLaps={53}
-      fastestLapTime="1:30.965"
-      fastestLapDriver="Kimi Antonelli (2025)"
-      raceDistance={307.471}
+      circuitLen={5.807}
+      firstGP={1987}
+      numLaps={53}
+      fastLapTime="1:30.965"
+      fastLapDriver="Kimi Antonelli (2025)"
+      raceLen={307.471}
     />
-    <TrackStats
+    <Track
       circuitName="Bahrain International Circuit"
       imgSrc={bahrainSrc}
-      circuitLength={5.412}
-      firstGrandPrix={2004}
-      numberOfLaps={57}
-      fastestLapTime="1:32.014"
-      fastestLapDriver="Max Verstappen (2020)"
-      raceDistance={308.238}
+      circuitLen={5.412}
+      firstGP={2004}
+      numLaps={57}
+      fastLapTime="1:32.014"
+      fastLapDriver="Max Verstappen (2020)"
+      raceLen={308.238}
     />
-    <TrackStats
+    <Track
       circuitName="Saudi Arabia Circuit"
       imgSrc={saudiSrc}
-      circuitLength={6.174}
-      firstGrandPrix={2021}
-      numberOfLaps={50}
-      fastestLapTime="1:30.734"
-      fastestLapDriver="Lewis Hamilton (2021)"
-      raceDistance={308.45}
+      circuitLen={6.174}
+      firstGP={2021}
+      numLaps={50}
+      fastLapTime="1:30.734"
+      fastLapDriver="Lewis Hamilton (2021)"
+      raceLen={308.45}
     />
-    <TrackStats
+    <Track
       circuitName="Miami International Autodrome, USA"
       imgSrc={miamiSrc}
-      circuitLength={5.412}
-      firstGrandPrix={2021}
-      numberOfLaps={57}
-      fastestLapTime="1:29.708"
-      fastestLapDriver="Max Verstappen (2023)"
-      raceDistance={308.326}
+      circuitLen={5.412}
+      firstGP={2021}
+      numLaps={57}
+      fastLapTime="1:29.708"
+      fastLapDriver="Max Verstappen (2023)"
+      raceLen={308.326}
     />
-    <TrackStats
+    <Track
       circuitName="Imola, Emilia-Romagna, Italy"
       circuitSubName="Autodromo Internazionale Enzo e Dino Ferrari"
       imgSrc={emiliaSrc}
-      circuitLength={4.909}
-      firstGrandPrix={1980}
-      numberOfLaps={63}
-      fastestLapTime="1:15.484"
-      fastestLapDriver="Lewis Hamilton (2020)"
-      raceDistance={309.049}
+      circuitLen={4.909}
+      firstGP={1980}
+      numLaps={63}
+      fastLapTime="1:15.484"
+      fastLapDriver="Lewis Hamilton (2020)"
+      raceLen={309.049}
     />
-    <TrackStats
+    <Track
       circuitName="Circuit de Monaco"
       imgSrc={monacoSrc}
-      circuitLength={3.337}
-      firstGrandPrix={1950}
-      numberOfLaps={78}
-      fastestLapTime="1:12.909"
-      fastestLapDriver="Lewis Hamilton (2021)"
-      raceDistance={260.286}
+      circuitLen={3.337}
+      firstGP={1950}
+      numLaps={78}
+      fastLapTime="1:12.909"
+      fastLapDriver="Lewis Hamilton (2021)"
+      raceLen={260.286}
     />
-    <TrackStats
+    <Track
       circuitName="Circuit de Barcelona-Catalunya, Spain"
       imgSrc={spainSrc}
-      circuitLength={4.361}
-      firstGrandPrix={1978}
-      numberOfLaps={70}
-      fastestLapTime="1:13.078"
-      fastestLapDriver="Valtteri Bottas (2019)"
-      raceDistance={305.27}
+      circuitLen={4.361}
+      firstGP={1978}
+      numLaps={70}
+      fastLapTime="1:13.078"
+      fastLapDriver="Valtteri Bottas (2019)"
+      raceLen={305.27}
     />
-    <TrackStats
+    <Track
       circuitName="Circuit Gilles-Villeneuve, Montreal, Canada"
       imgSrc={canadaSrc}
-      circuitLength={4.361}
-      firstGrandPrix={1978}
-      numberOfLaps={70}
-      fastestLapTime="1:13.078"
-      fastestLapDriver="Valtteri Bottas (2019)"
-      raceDistance={305.27}
+      circuitLen={4.361}
+      firstGP={1978}
+      numLaps={70}
+      fastLapTime="1:13.078"
+      fastLapDriver="Valtteri Bottas (2019)"
+      raceLen={305.27}
     />
-    <TrackStats
+    <Track
       circuitName="Red Bull Ring, Austria"
       imgSrc={austriaSrc}
-      circuitLength={4.326}
-      firstGrandPrix={1970}
-      numberOfLaps={71}
-      fastestLapTime="1:07.924"
-      fastestLapDriver="Oscar Piastri (2025)"
-      raceDistance={307.018}
+      circuitLen={4.326}
+      firstGP={1970}
+      numLaps={71}
+      fastLapTime="1:07.924"
+      fastLapDriver="Oscar Piastri (2025)"
+      raceLen={307.018}
     />
-    <TrackStats
+    <Track
       circuitName="Silverstone Circuit, Great Britain"
       imgSrc={gbSrc}
-      circuitLength={5.891}
-      firstGrandPrix={1950}
-      numberOfLaps={52}
-      fastestLapTime="1:27.097"
-      fastestLapDriver="Max Verstappen (2020)"
-      raceDistance={306.198}
+      circuitLen={5.891}
+      firstGP={1950}
+      numLaps={52}
+      fastLapTime="1:27.097"
+      fastLapDriver="Max Verstappen (2020)"
+      raceLen={306.198}
     />
-    <TrackStats
+    <Track
       circuitName="Circuit de Spa-Francorchamps, Belgium"
       imgSrc={belgiumSrc}
-      circuitLength={7.004}
-      firstGrandPrix={1950}
-      numberOfLaps={44}
-      fastestLapTime="1:44.701"
-      fastestLapDriver="Sergio Perez (2024)"
-      raceDistance={308.052}
+      circuitLen={7.004}
+      firstGP={1950}
+      numLaps={44}
+      fastLapTime="1:44.701"
+      fastLapDriver="Sergio Perez (2024)"
+      raceLen={308.052}
     />
-    <TrackStats
+    <Track
       circuitName="Hungaroring, Hungary"
       imgSrc={hungarySrc}
-      circuitLength={4.381}
-      firstGrandPrix={1986}
-      numberOfLaps={70}
-      fastestLapTime="1:16.627"
-      fastestLapDriver="Lewis Hamilton (2020)"
-      raceDistance={306.63}
+      circuitLen={4.381}
+      firstGP={1986}
+      numLaps={70}
+      fastLapTime="1:16.627"
+      fastLapDriver="Lewis Hamilton (2020)"
+      raceLen={306.63}
     />
-    <TrackStats
+    <Track
       circuitName="Circuit Zandvoort, Netherlands"
       imgSrc={netherlandsSrc}
-      circuitLength={4.259}
-      firstGrandPrix={1952}
-      numberOfLaps={72}
-      fastestLapTime="1:11.097"
-      fastestLapDriver="Lewis Hamilton (2021)"
-      raceDistance={306.587}
+      circuitLen={4.259}
+      firstGP={1952}
+      numLaps={72}
+      fastLapTime="1:11.097"
+      fastLapDriver="Lewis Hamilton (2021)"
+      raceLen={306.587}
     />
-    <TrackStats
+    <Track
       circuitName="Autodromo Nazionale Monza, Italy"
       imgSrc={italySrc}
-      circuitLength={5.793}
-      firstGrandPrix={1950}
-      numberOfLaps={53}
-      fastestLapTime="1:20.901"
-      fastestLapDriver="Lando Norris (2025)"
-      raceDistance={306.72}
+      circuitLen={5.793}
+      firstGP={1950}
+      numLaps={53}
+      fastLapTime="1:20.901"
+      fastLapDriver="Lando Norris (2025)"
+      raceLen={306.72}
     />
-    <TrackStats
+    <Track
       circuitName="Baku City Circuit, Azerbaijan"
       imgSrc={bakuSrc}
-      circuitLength={6.003}
-      firstGrandPrix={2016}
-      numberOfLaps={51}
-      fastestLapTime="1:43.009"
-      fastestLapDriver="Charles Leclerc (2019)"
-      raceDistance={306.049}
+      circuitLen={6.003}
+      firstGP={2016}
+      numLaps={51}
+      fastLapTime="1:43.009"
+      fastLapDriver="Charles Leclerc (2019)"
+      raceLen={306.049}
     />
-    <TrackStats
+    <Track
       circuitName="Marina Bay Street Circuit, Singapore"
       imgSrc={singaporeSrc}
-      circuitLength={4.94}
-      firstGrandPrix={2008}
-      numberOfLaps={62}
-      fastestLapTime="1:34.486"
-      fastestLapDriver="Daniel Ricciardo (2024)"
-      raceDistance={306.143}
+      circuitLen={4.94}
+      firstGP={2008}
+      numLaps={62}
+      fastLapTime="1:34.486"
+      fastLapDriver="Daniel Ricciardo (2024)"
+      raceLen={306.143}
     />
-    <TrackStats
+    <Track
       circuitName="Circuit of The Americas, Austin, USA"
       imgSrc={usaSrc}
-      circuitLength={5.513}
-      firstGrandPrix={2012}
-      numberOfLaps={56}
-      fastestLapTime="1:36.169"
-      fastestLapDriver="Charles Leclerc (2019)"
-      raceDistance={308.405}
+      circuitLen={5.513}
+      firstGP={2012}
+      numLaps={56}
+      fastLapTime="1:36.169"
+      fastLapDriver="Charles Leclerc (2019)"
+      raceLen={308.405}
     />
-    <TrackStats
+    <Track
       circuitName="Autódromo Hermanos Rodríguez, Mexico City, Mexico"
       imgSrc={mexicoSrc}
-      circuitLength={4.304}
-      firstGrandPrix={1963}
-      numberOfLaps={71}
-      fastestLapTime="1:17.774"
-      fastestLapDriver="Valtteri Bottas (2021)"
-      raceDistance={305.354}
+      circuitLen={4.304}
+      firstGP={1963}
+      numLaps={71}
+      fastLapTime="1:17.774"
+      fastLapDriver="Valtteri Bottas (2021)"
+      raceLen={305.354}
     />
-    <TrackStats
+    <Track
       circuitName="Interlagos, São Paulo, Brazil"
       circuitSubName="Autodromo Jose Carlos Pace"
       imgSrc={brazilSrc}
-      circuitLength={4.309}
-      firstGrandPrix={1973}
-      numberOfLaps={71}
-      fastestLapTime="1:11.010"
-      fastestLapDriver="Sergio Perez (2021)"
-      raceDistance={305.879}
+      circuitLen={4.309}
+      firstGP={1973}
+      numLaps={71}
+      fastLapTime="1:11.010"
+      fastLapDriver="Sergio Perez (2021)"
+      raceLen={305.879}
     />
-    <TrackStats
+    <Track
       circuitName="Las Vegas Strip Circuit, USA"
       imgSrc={lasVegasSrc}
-      circuitLength={6.201}
-      firstGrandPrix={2023}
-      numberOfLaps={50}
-      fastestLapTime="1:34.876"
-      fastestLapDriver="Lando Norris (2024)"
-      raceDistance={309.958}
+      circuitLen={6.201}
+      firstGP={2023}
+      numLaps={50}
+      fastLapTime="1:34.876"
+      fastLapDriver="Lando Norris (2024)"
+      raceLen={309.958}
     />
-    <TrackStats
+    <Track
       circuitName="Lusail International Circuit, Doha, Qatar"
       imgSrc={qatarSrc}
-      circuitLength={5.419}
-      firstGrandPrix={2021}
-      numberOfLaps={57}
-      fastestLapTime="1:22.384"
-      fastestLapDriver="Lando Norris (2024)"
-      raceDistance={308.611}
+      circuitLen={5.419}
+      firstGP={2021}
+      numLaps={57}
+      fastLapTime="1:22.384"
+      fastLapDriver="Lando Norris (2024)"
+      raceLen={308.611}
     />
-    <TrackStats
+    <Track
       circuitName="Yas Marina Circuit, Abu Dhabi"
       imgSrc={abuDhabiSrc}
-      circuitLength={5.281}
-      firstGrandPrix={2009}
-      numberOfLaps={58}
-      fastestLapTime="1:25.637"
-      fastestLapDriver="Kevin Magnussen (2024)"
-      raceDistance={306.183}
+      circuitLen={5.281}
+      firstGP={2009}
+      numLaps={58}
+      fastLapTime="1:25.637"
+      fastLapDriver="Kevin Magnussen (2024)"
+      raceLen={306.183}
     />
   </Grid>
 );

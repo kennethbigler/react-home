@@ -2,16 +2,16 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
-interface TrackStatsProps {
+interface TrackProps {
+  circuitLen: number;
   circuitName: string;
-  imgSrc: string;
   circuitSubName?: string;
-  circuitLength: number;
-  firstGrandPrix: number;
-  numberOfLaps: number;
-  fastestLapTime: string;
-  fastestLapDriver: string;
-  raceDistance: number;
+  fastLapDriver: string;
+  fastLapTime: string;
+  firstGP: number;
+  imgSrc: string;
+  numLaps: number;
+  raceLen: number;
 }
 
 const txtStyles: React.CSSProperties = {
@@ -23,18 +23,18 @@ const imgSize = { xs: 12, sm: 6, md: 4, lg: 3, xl: 2, xxl: 1 };
 
 // TODO: maybe add on click to expand the track to 12? Or add way to choose size
 
-const TrackStats = React.memo(
+const Track = React.memo(
   ({
+    circuitLen,
     circuitName,
-    imgSrc,
     circuitSubName,
-    circuitLength,
-    firstGrandPrix,
-    numberOfLaps,
-    fastestLapTime,
-    fastestLapDriver,
-    raceDistance,
-  }: TrackStatsProps) => (
+    fastLapDriver,
+    fastLapTime,
+    firstGP,
+    imgSrc,
+    numLaps,
+    raceLen,
+  }: TrackProps) => (
     <Grid size={imgSize}>
       <Typography variant="h6" sx={txtStyles}>
         {circuitName}
@@ -44,22 +44,22 @@ const TrackStats = React.memo(
       )}
       <img src={imgSrc} alt="" width="100%" />
       <Typography>
-        Circuit Length: <b>{circuitLength}km</b>
+        Circuit Length: <b>{circuitLen}km</b>
         <br />
-        First Grand Prix: <b>{firstGrandPrix}</b>
+        First Grand Prix: <b>{firstGP}</b>
         <br />
-        Number of Laps: <b>{numberOfLaps}</b>
+        Number of Laps: <b>{numLaps}</b>
         <br />
-        Fastest lap time: <b>{fastestLapTime}</b>
+        Fastest lap time: <b>{fastLapTime}</b>
         <br />
-        &nbsp;&nbsp;- {fastestLapDriver}
+        &nbsp;&nbsp;- {fastLapDriver}
         <br />
-        Race Distance: <b>{raceDistance}km</b>
+        Race Distance: <b>{raceLen}km</b>
       </Typography>
     </Grid>
   ),
 );
 
-TrackStats.displayName = "TrackStats";
+Track.displayName = "Track";
 
-export default TrackStats;
+export default Track;
