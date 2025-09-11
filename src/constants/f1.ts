@@ -15,9 +15,11 @@ export const ALPINE_HEX = "#00A1E8";
 export const RB_HEX = "#6C98FF";
 export const ASTON_HEX = "#229971";
 export const WILLIAMS_HEX = "#1868DB";
-export const K_SAUBER_HEX = "#01C00E";
+export const AUDI_HEX = "#9B0000";
 export const HAAS_HEX = "#9C9FA2";
+export const CADILLAC_HEX = "black";
 // ----------     OLD     ---------- //
+const K_SAUBER_HEX = "#01C00E";
 const AR_HEX = "#C92D4B";
 const AT_HEX = "#5E8FAA";
 const RP_HEX = "#F596C8";
@@ -47,19 +49,19 @@ export const constructors: Constructor[] = [
   {
     name: "Mercedes",
     color: MERCEDES_HEX,
-    points: [655, 739, 573, 613.5, 515, 409, 468, 260, 400],
+    points: [655, 739, 573, 613.5, 515, 409, 468, 260, 260],
     standings: [1, 1, 1, 1, 3, 2, 4, 3, 3],
   },
   {
     name: "Red Bull Racing",
     color: RED_BULL_HEX,
-    points: [419, 417, 319, 585.5, 759, 860, 589, 239, 350],
+    points: [419, 417, 319, 585.5, 759, 860, 589, 239, 240],
     standings: [3, 3, 2, 2, 1, 1, 3, 4, 4],
   },
   {
     name: "Ferrari",
     color: FERRARI_HEX,
-    points: [571, 504, 131, 323.5, 554, 406, 652, 280, 500],
+    points: [571, 504, 131, 323.5, 554, 406, 652, 280, 280],
     standings: [2, 2, 6, 3, 2, 3, 2, 2, 2],
   },
   {
@@ -71,42 +73,42 @@ export const constructors: Constructor[] = [
   {
     name: "Alpine",
     color: ALPINE_HEX,
-    points: [122, 91, 181, 155, 173, 120, 65, 20, 50],
+    points: [122, 91, 181, 155, 173, 120, 65, 20, 20],
     standings: [4, 5, 5, 5, 4, 6, 6, 10, 10],
   },
   {
     name: "Racing Bulls",
     color: RB_HEX,
-    points: [33, 85, 107, 142, 35, 25, 46, 61, 200],
+    points: [33, 85, 107, 142, 35, 25, 46, 61, 80],
     standings: [9, 6, 7, 6, 9, 8, 8, 7, 7],
   },
   {
     name: "Aston Martin",
     color: ASTON_HEX,
-    points: [52, 73, 195, 77, 55, 280, 94, 62, 250],
+    points: [52, 73, 195, 77, 55, 280, 94, 62, 100],
     standings: [7, 7, 4, 7, 7, 5, 5, 6, 6],
   },
   {
     name: "Williams",
     color: WILLIAMS_HEX,
-    points: [7, 1, 0, 23, 8, 28, 17, 86, 300],
+    points: [7, 1, 0, 23, 8, 28, 17, 86, 120],
     standings: [10, 10, 10, 8, 10, 7, 9, 5, 5],
   },
   {
     name: "Haas",
     color: HAAS_HEX,
-    points: [93, 28, 3, 0, 37, 12, 58, 44, 100],
+    points: [93, 28, 3, 0, 37, 12, 58, 44, 40],
     standings: [5, 9, 9, 10, 8, 10, 7, 9, 9],
   },
   {
     name: "Audi",
-    color: K_SAUBER_HEX,
-    points: [48, 57, 8, 13, 55, 16, 4, 55, 150],
+    color: AUDI_HEX,
+    points: [48, 57, 8, 13, 55, 16, 4, 55, 60],
     standings: [8, 8, 8, 9, 6, 9, 10, 8, 8],
   },
   {
     name: "Cadillac",
-    color: K_SAUBER_HEX,
+    color: CADILLAC_HEX,
     points: [null, null, null, null, null, null, null, null, 0],
     standings: [null, null, null, null, null, null, null, null, 11],
   },

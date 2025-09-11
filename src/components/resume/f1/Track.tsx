@@ -19,9 +19,8 @@ const txtStyles: React.CSSProperties = {
   margin: "auto",
   textAlign: "center",
 };
-const imgSize = { xs: 12, sm: 6, md: 4, lg: 3, xl: 2, xxl: 1 };
-
-// TODO: maybe add on click to expand the track to 12? Or add way to choose size
+const bold: React.CSSProperties = { fontWeight: "bold" };
+const imgSize = { xs: 12, md: 6, lg: 4, xl: 3, xxl: 2, xxxl: 1 };
 
 const Track = React.memo(
   ({
@@ -36,26 +35,38 @@ const Track = React.memo(
     raceLen,
   }: TrackProps) => (
     <Grid size={imgSize}>
-      <Typography variant="h6" sx={txtStyles}>
+      <Typography variant="h5" sx={txtStyles}>
         {circuitName}
       </Typography>
       {circuitSubName && (
-        <Typography sx={txtStyles}>{circuitSubName}</Typography>
+        <Typography variant="body2" sx={txtStyles}>
+          {circuitSubName}
+        </Typography>
       )}
       <img src={imgSrc} alt="" width="100%" />
-      <Typography>
-        Circuit Length: <b>{circuitLen}km</b>
-        <br />
-        First Grand Prix: <b>{firstGP}</b>
-        <br />
-        Number of Laps: <b>{numLaps}</b>
-        <br />
-        Fastest lap time: <b>{fastLapTime}</b>
-        <br />
-        &nbsp;&nbsp;- {fastLapDriver}
-        <br />
-        Race Distance: <b>{raceLen}km</b>
-      </Typography>
+      <Grid container>
+        <Grid size={6}>
+          <Typography variant="body2">
+            Circuit Length
+            <Typography sx={bold}>{circuitLen}km</Typography>
+            First Grand Prix
+            <Typography sx={bold}>{firstGP}</Typography>
+            Number of Laps
+            <Typography sx={bold}>{numLaps}</Typography>
+          </Typography>
+        </Grid>
+        <Grid size={6}>
+          <Typography variant="body2">
+            Fastest lap time
+            <Typography sx={bold}>{fastLapTime}</Typography>
+            {fastLapDriver}
+            <br />
+            <br />
+            Race Distance
+            <Typography sx={bold}>{raceLen}km</Typography>
+          </Typography>
+        </Grid>
+      </Grid>
     </Grid>
   ),
 );

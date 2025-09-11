@@ -25,6 +25,8 @@ import qatarSrc from "../../../images/tracks/Qatar_Circuit.avif";
 import abuDhabiSrc from "../../../images/tracks/Abu_Dhabi_Circuit.avif";
 import Track from "./Track";
 
+// TODO: maybe add on click to expand the track to 12? Or add way to choose size
+
 const Tracks = () => (
   <Grid container spacing={3} width="100%">
     <Track
