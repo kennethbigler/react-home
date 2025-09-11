@@ -1,17 +1,20 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
 
 interface TrackProps {
   circuitLen: number;
   circuitName: string;
   circuitSubName?: string;
+  expanded: boolean;
   fastLapDriver: string;
   fastLapTime: string;
   firstGP: number;
   imgSrc: string;
   numLaps: number;
   raceLen: number;
+  onClick: (circuitName: string) => () => void;
 }
 
 const txtStyles: React.CSSProperties = {
@@ -27,44 +30,56 @@ const Track = React.memo(
     circuitLen,
     circuitName,
     circuitSubName,
+    expanded,
     fastLapDriver,
     fastLapTime,
     firstGP,
     imgSrc,
     numLaps,
     raceLen,
+    onClick,
   }: TrackProps) => (
-    <Grid size={imgSize}>
-      <Typography variant="h5" sx={txtStyles}>
+    <Grid
+      size={expanded ? 12 : imgSize}
+      sx={expanded ? { textAlign: "center" } : {}}
+    >
+      <Typography variant={expanded ? "h3" : "h5"} sx={txtStyles}>
         {circuitName}
       </Typography>
       {circuitSubName && (
-        <Typography variant="body2" sx={txtStyles}>
+        <Typography variant={expanded ? "h4" : "body2"} sx={txtStyles}>
           {circuitSubName}
         </Typography>
       )}
-      <img src={imgSrc} alt="" width="100%" />
+      <IconButton onClick={onClick(circuitName)}>
+        <img src={imgSrc} alt="" width="100%" />
+      </IconButton>
       <Grid container>
         <Grid size={6}>
-          <Typography variant="body2">
+          <Typography variant={expanded ? "h5" : "body2"}>
             Circuit Length
-            <Typography sx={bold}>{circuitLen}km</Typography>
-            First Grand Prix
-            <Typography sx={bold}>{firstGP}</Typography>
-            Number of Laps
-            <Typography sx={bold}>{numLaps}</Typography>
           </Typography>
+          <Typography sx={bold}>{circuitLen}km</Typography>
+          <Typography variant={expanded ? "h5" : "body2"}>
+            First Grand Prix
+          </Typography>
+          <Typography sx={bold}>{firstGP}</Typography>
+          <Typography variant={expanded ? "h5" : "body2"}>
+            Number of Laps
+          </Typography>
+          <Typography sx={bold}>{numLaps}</Typography>
         </Grid>
         <Grid size={6}>
-          <Typography variant="body2">
+          <Typography variant={expanded ? "h5" : "body2"}>
             Fastest lap time
-            <Typography sx={bold}>{fastLapTime}</Typography>
-            {fastLapDriver}
-            <br />
-            <br />
-            Race Distance
-            <Typography sx={bold}>{raceLen}km</Typography>
           </Typography>
+          <Typography sx={bold}>{fastLapTime}</Typography>
+          <Typography variant="body2">{fastLapDriver}</Typography>
+          <br />
+          <Typography variant={expanded ? "h5" : "body2"}>
+            Race Distance
+          </Typography>
+          <Typography sx={bold}>{raceLen}km</Typography>
         </Grid>
       </Grid>
     </Grid>
