@@ -40,17 +40,9 @@ const ConstructorPointsLine = React.memo(
       chart: { type: "line", backgroundColor: null },
       credits: { enabled: false },
       legend: { enabled: false },
+      plotOptions: { series: { marker: { symbol: "circle" } } },
       title: { text: "F1 Constructors Points", style: { color } },
-      plotOptions: {
-        series: {
-          lineWidth: 4,
-          marker: { radius: 7 },
-          dataLabels: {
-            enabled: true, // Enable data labels for all series
-            format: "{point.name}", // Customize the format if needed
-          },
-        },
-      },
+      tooltip: { shared: true, useHTML: true, formatter: tooltipFormatter },
       xAxis: {
         labels: {
           style: { color },
@@ -64,11 +56,6 @@ const ConstructorPointsLine = React.memo(
         title: { text: undefined },
         labels: { style: { color } },
         gridLineDashStyle: "Dot",
-      },
-      tooltip: {
-        shared: true,
-        useHTML: true,
-        formatter: tooltipFormatter,
       },
       series: constructorPointsData,
     };
