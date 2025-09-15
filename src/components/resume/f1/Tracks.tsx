@@ -51,7 +51,7 @@ const Tracks = () => {
         <Typography variant="h2">2025 Tracks</Typography>
       </Grid>
       <Track
-        expanded={expanded === "Albert Park Circuit, Melbourne, Australia"}
+        expanded={expanded}
         circuitName="Albert Park Circuit, Melbourne, Australia"
         imgSrc={australiaSrc}
         circuitLen={5.278}
@@ -63,7 +63,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Shanghai International Circuit, China"}
+        expanded={expanded}
         circuitName="Shanghai International Circuit, China"
         imgSrc={chinaSrc}
         circuitLen={5.451}
@@ -75,7 +75,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Suzuka Circuit, Japan"}
+        expanded={expanded}
         circuitName="Suzuka Circuit, Japan"
         imgSrc={japanSrc}
         circuitLen={5.807}
@@ -87,7 +87,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Bahrain International Circuit, Sakhir"}
+        expanded={expanded}
         circuitName="Bahrain International Circuit, Sakhir"
         imgSrc={bahrainSrc}
         circuitLen={5.412}
@@ -99,7 +99,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Saudi Arabia Circuit, Jeddah"}
+        expanded={expanded}
         circuitName="Saudi Arabia Circuit, Jeddah"
         imgSrc={saudiSrc}
         circuitLen={6.174}
@@ -111,7 +111,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Miami International Autodrome, USA"}
+        expanded={expanded}
         circuitName="Miami International Autodrome, USA"
         imgSrc={miamiSrc}
         circuitLen={5.412}
@@ -123,7 +123,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Imola, Emilia-Romagna, Italy - 2025"}
+        expanded={expanded}
         circuitName="Imola, Emilia-Romagna, Italy - 2025"
         circuitSubName="Autodromo Internazionale Enzo e Dino Ferrari"
         imgSrc={emiliaSrc}
@@ -136,7 +136,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Circuit de Monaco"}
+        expanded={expanded}
         circuitName="Circuit de Monaco"
         imgSrc={monacoSrc}
         circuitLen={3.337}
@@ -148,7 +148,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Circuit de Barcelona-Catalunya, Spain"}
+        expanded={expanded}
         circuitName="Circuit de Barcelona-Catalunya, Spain"
         imgSrc={spainSrc}
         circuitLen={4.361}
@@ -160,7 +160,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Circuit Gilles-Villeneuve, Montreal, Canada"}
+        expanded={expanded}
         circuitName="Circuit Gilles-Villeneuve, Montreal, Canada"
         imgSrc={canadaSrc}
         circuitLen={4.361}
@@ -172,7 +172,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Red Bull Ring, Spielberg, Austria"}
+        expanded={expanded}
         circuitName="Red Bull Ring, Spielberg, Austria"
         imgSrc={austriaSrc}
         circuitLen={4.326}
@@ -184,7 +184,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Silverstone Circuit, Great Britain"}
+        expanded={expanded}
         circuitName="Silverstone Circuit, Great Britain"
         imgSrc={gbSrc}
         circuitLen={5.891}
@@ -196,7 +196,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Circuit de Spa-Francorchamps, Belgium"}
+        expanded={expanded}
         circuitName="Circuit de Spa-Francorchamps, Belgium"
         imgSrc={belgiumSrc}
         circuitLen={7.004}
@@ -208,7 +208,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Hungaroring, Budapest, Hungary"}
+        expanded={expanded}
         circuitName="Hungaroring, Budapest, Hungary"
         imgSrc={hungarySrc}
         circuitLen={4.381}
@@ -220,7 +220,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Circuit Zandvoort, Netherlands"}
+        expanded={expanded}
         circuitName="Circuit Zandvoort, Netherlands"
         imgSrc={netherlandsSrc}
         circuitLen={4.259}
@@ -232,7 +232,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Autodromo Nazionale Monza, Italy"}
+        expanded={expanded}
         circuitName="Autodromo Nazionale Monza, Italy"
         imgSrc={italySrc}
         circuitLen={5.793}
@@ -244,7 +244,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Baku City Circuit, Azerbaijan"}
+        expanded={expanded}
         circuitName="Baku City Circuit, Azerbaijan"
         imgSrc={bakuSrc}
         circuitLen={6.003}
@@ -256,7 +256,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Marina Bay Street Circuit, Singapore"}
+        expanded={expanded}
         circuitName="Marina Bay Street Circuit, Singapore"
         imgSrc={singaporeSrc}
         circuitLen={4.94}
@@ -268,7 +268,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Circuit of The Americas, Austin, USA"}
+        expanded={expanded}
         circuitName="Circuit of The Americas, Austin, USA"
         imgSrc={usaSrc}
         circuitLen={5.513}
@@ -280,9 +280,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={
-          expanded === "Autódromo Hermanos Rodríguez, Mexico City, Mexico"
-        }
+        expanded={expanded}
         circuitName="Autódromo Hermanos Rodríguez, Mexico City, Mexico"
         imgSrc={mexicoSrc}
         circuitLen={4.304}
@@ -294,7 +292,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Interlagos, São Paulo, Brazil"}
+        expanded={expanded}
         circuitName="Interlagos, São Paulo, Brazil"
         circuitSubName="Autodromo Jose Carlos Pace"
         imgSrc={brazilSrc}
@@ -307,7 +305,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Las Vegas Strip Circuit, USA"}
+        expanded={expanded}
         circuitName="Las Vegas Strip Circuit, USA"
         imgSrc={lasVegasSrc}
         circuitLen={6.201}
@@ -319,7 +317,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Lusail International Circuit, Doha, Qatar"}
+        expanded={expanded}
         circuitName="Lusail International Circuit, Doha, Qatar"
         imgSrc={qatarSrc}
         circuitLen={5.419}
@@ -331,7 +329,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Yas Marina Circuit, Abu Dhabi"}
+        expanded={expanded}
         circuitName="Yas Marina Circuit, Abu Dhabi"
         imgSrc={abuDhabiSrc}
         circuitLen={5.281}
@@ -347,7 +345,7 @@ const Tracks = () => {
         <Typography variant="h2">Past Tracks</Typography>
       </Grid>
       <Track
-        expanded={expanded === "Circuit Paul Ricard, France, 2022"}
+        expanded={expanded}
         circuitName="Circuit Paul Ricard, France, 2022"
         imgSrc={franceSrc}
         circuitLen={5.842}
@@ -359,7 +357,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Portimao, Portugal, 2021"}
+        expanded={expanded}
         circuitName="Portimao, Portugal, 2021"
         circuitSubName="Autodromo Internacional do Algarve"
         imgSrc={portugalSrc}
@@ -372,7 +370,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Sochi Autodrom, Russia, 2021"}
+        expanded={expanded}
         circuitName="Sochi Autodrom, Russia, 2021"
         imgSrc={russiaSrc}
         circuitLen={5.848}
@@ -384,7 +382,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Turkish Circuit, Akfirat, Turkey, 2021"}
+        expanded={expanded}
         circuitName="Turkish Circuit, Akfirat, Turkey, 2021"
         imgSrc={turkeySrc}
         circuitLen={5.338}
@@ -396,7 +394,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Mugello Circuit, Tuscany, Italy, 2020"}
+        expanded={expanded}
         circuitName="Mugello Circuit, Tuscany, Italy, 2020"
         imgSrc={tuscanySrc}
         circuitLen={5.245}
@@ -408,7 +406,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Nurburgring, Germany, 2020"}
+        expanded={expanded}
         circuitName="Nurburgring, Germany, 2020"
         imgSrc={germanySrc}
         circuitLen={5.148}
@@ -420,7 +418,7 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Hockenheim, Germany, 2019"}
+        expanded={expanded}
         circuitName="Hockenheim, Germany, 2019"
         imgSrc={germanyHSrc}
         circuitLen={4.574}
