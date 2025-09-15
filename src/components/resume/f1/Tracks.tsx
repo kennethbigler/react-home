@@ -24,7 +24,15 @@ import brazilSrc from "../../../images/tracks/Brazil_Circuit.avif";
 import lasVegasSrc from "../../../images/tracks/Las_Vegas_Circuit.avif";
 import qatarSrc from "../../../images/tracks/Qatar_Circuit.avif";
 import abuDhabiSrc from "../../../images/tracks/Abu_Dhabi_Circuit.avif";
+import franceSrc from "../../../images/tracks/France_Circuit.avif";
+import portugalSrc from "../../../images/tracks/Portugal_Circuit.avif";
+import russiaSrc from "../../../images/tracks/Russia_Circuit.avif";
+import turkeySrc from "../../../images/tracks/Turkey_Circuit.avif";
+import tuscanySrc from "../../../images/tracks/Tuscany_Circuit.avif";
+import germanySrc from "../../../images/tracks/Germany_Circuit.avif";
+import germanyHSrc from "../../../images/tracks/Germany_Circuit_Hockenheim.avif";
 import Track from "./Track";
+import { Typography } from "@mui/material";
 
 const Tracks = () => {
   const [expanded, setExpanded] = React.useState("");
@@ -33,8 +41,15 @@ const Tracks = () => {
     setExpanded(circuitName === expanded ? "" : circuitName);
   };
 
+  // TODO: Update track fastLapTime from Azerbaijan onward
+  // TODO: remove Imola for 2026
+  // TODO: Add Madrid for 2026
+
   return (
     <Grid container spacing={3} width="100%">
+      <Grid size={12}>
+        <Typography variant="h2">2025 Tracks</Typography>
+      </Grid>
       <Track
         expanded={expanded === "Albert Park Circuit, Melbourne, Australia"}
         circuitName="Albert Park Circuit, Melbourne, Australia"
@@ -72,8 +87,8 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Bahrain International Circuit"}
-        circuitName="Bahrain International Circuit"
+        expanded={expanded === "Bahrain International Circuit, Sakhir"}
+        circuitName="Bahrain International Circuit, Sakhir"
         imgSrc={bahrainSrc}
         circuitLen={5.412}
         firstGP={2004}
@@ -84,8 +99,8 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Saudi Arabia Circuit"}
-        circuitName="Saudi Arabia Circuit"
+        expanded={expanded === "Saudi Arabia Circuit, Jeddah"}
+        circuitName="Saudi Arabia Circuit, Jeddah"
         imgSrc={saudiSrc}
         circuitLen={6.174}
         firstGP={2021}
@@ -108,8 +123,8 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Imola, Emilia-Romagna, Italy"}
-        circuitName="Imola, Emilia-Romagna, Italy"
+        expanded={expanded === "Imola, Emilia-Romagna, Italy - 2025"}
+        circuitName="Imola, Emilia-Romagna, Italy - 2025"
         circuitSubName="Autodromo Internazionale Enzo e Dino Ferrari"
         imgSrc={emiliaSrc}
         circuitLen={4.909}
@@ -157,8 +172,8 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Red Bull Ring, Austria"}
-        circuitName="Red Bull Ring, Austria"
+        expanded={expanded === "Red Bull Ring, Spielberg, Austria"}
+        circuitName="Red Bull Ring, Spielberg, Austria"
         imgSrc={austriaSrc}
         circuitLen={4.326}
         firstGP={1970}
@@ -193,8 +208,8 @@ const Tracks = () => {
         onClick={toggleExpanded}
       />
       <Track
-        expanded={expanded === "Hungaroring, Hungary"}
-        circuitName="Hungaroring, Hungary"
+        expanded={expanded === "Hungaroring, Budapest, Hungary"}
+        circuitName="Hungaroring, Budapest, Hungary"
         imgSrc={hungarySrc}
         circuitLen={4.381}
         firstGP={1986}
@@ -325,6 +340,95 @@ const Tracks = () => {
         fastLapTime="1:25.637"
         fastLapDriver="Kevin Magnussen (2024)"
         raceLen={306.183}
+        onClick={toggleExpanded}
+      />
+      <Grid size={12}>
+        <hr />
+        <Typography variant="h2">Past Tracks</Typography>
+      </Grid>
+      <Track
+        expanded={expanded === "Circuit Paul Ricard, France, 2022"}
+        circuitName="Circuit Paul Ricard, France, 2022"
+        imgSrc={franceSrc}
+        circuitLen={5.842}
+        firstGP={1971}
+        numLaps={53}
+        fastLapTime="1:32.740"
+        fastLapDriver="Sebastian Vettel (2019)"
+        raceLen={309.69}
+        onClick={toggleExpanded}
+      />
+      <Track
+        expanded={expanded === "Portimao, Portugal, 2021"}
+        circuitName="Portimao, Portugal, 2021"
+        circuitSubName="Autodromo Internacional do Algarve"
+        imgSrc={portugalSrc}
+        circuitLen={4.653}
+        firstGP={2020}
+        numLaps={66}
+        fastLapTime="1:18.750"
+        fastLapDriver="Lewis Hamilton (2020)"
+        raceLen={306.826}
+        onClick={toggleExpanded}
+      />
+      <Track
+        expanded={expanded === "Sochi Autodrom, Russia, 2021"}
+        circuitName="Sochi Autodrom, Russia, 2021"
+        imgSrc={russiaSrc}
+        circuitLen={5.848}
+        firstGP={2014}
+        numLaps={53}
+        fastLapTime="1:35.761"
+        fastLapDriver="Lewis Hamilton (2019)"
+        raceLen={309.745}
+        onClick={toggleExpanded}
+      />
+      <Track
+        expanded={expanded === "Turkish Circuit, Akfirat, Turkey, 2021"}
+        circuitName="Turkish Circuit, Akfirat, Turkey, 2021"
+        imgSrc={turkeySrc}
+        circuitLen={5.338}
+        firstGP={2005}
+        numLaps={58}
+        fastLapTime="1:24.770"
+        fastLapDriver="Juan Pablo Montoya (2005)"
+        raceLen={309.396}
+        onClick={toggleExpanded}
+      />
+      <Track
+        expanded={expanded === "Mugello Circuit, Tuscany, Italy, 2020"}
+        circuitName="Mugello Circuit, Tuscany, Italy, 2020"
+        imgSrc={tuscanySrc}
+        circuitLen={5.245}
+        firstGP={2020}
+        numLaps={59}
+        fastLapTime="1:18.833"
+        fastLapDriver="Lewis Hamilton (2020)"
+        raceLen={309.497}
+        onClick={toggleExpanded}
+      />
+      <Track
+        expanded={expanded === "Nurburgring, Germany, 2020"}
+        circuitName="Nurburgring, Germany, 2020"
+        imgSrc={germanySrc}
+        circuitLen={5.148}
+        firstGP={1951}
+        numLaps={60}
+        fastLapTime="1:28.139"
+        fastLapDriver="Max Verstappen (2020)"
+        raceLen={308.617}
+        onClick={toggleExpanded}
+      />
+      <Track
+        expanded={expanded === "Hockenheim, Germany, 2019"}
+        circuitName="Hockenheim, Germany, 2019"
+        imgSrc={germanyHSrc}
+        circuitLen={4.574}
+        firstGP={1970}
+        numLaps={67}
+        fastLapTime="1:13.780"
+        fastLapDriver="Kimi Räikkönen (2004)"
+        raceLen={306.458}
         onClick={toggleExpanded}
       />
     </Grid>
