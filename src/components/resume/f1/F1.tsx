@@ -6,12 +6,7 @@ import ConstructorPointsLine from "./charts/ConstructorPointsLine";
 import ConstructorStandingsLine from "./charts/ConstructorStandingsLine";
 import ExpandableCard from "../../common/expandable-card";
 import themeAtom from "../../../jotai/theme-atom";
-import {
-  RED_BULL_HEX,
-  MCLAREN_HEX,
-  ASTON_HEX,
-  FERRARI_HEX,
-} from "../../../constants/f1";
+import { RED_BULL_HEX, MCLAREN_HEX, ASTON_HEX } from "../../../constants/f1";
 import DriverPointsLine from "./charts/DriverPointsLine";
 import DriverStandingsLine from "./charts/DriverStandingsLine";
 import Tracks from "./Tracks";
@@ -42,9 +37,7 @@ const F1 = () => {
         </Grid>
       </Grid>
 
-      <ExpandableCard title="Tracks" backgroundColor={FERRARI_HEX}>
-        <Tracks />
-      </ExpandableCard>
+      <Tracks />
 
       <ExpandableCard
         title="Constructor Budgets (Estimated)"

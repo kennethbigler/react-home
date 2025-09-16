@@ -23,7 +23,6 @@ const txtStyles: React.CSSProperties = {
   textAlign: "center",
 };
 const bold: React.CSSProperties = { fontWeight: "bold" };
-const imgSize = { xs: 12, md: 6, lg: 4, xl: 3, xxl: 2, xxxl: 1 };
 
 const Track = React.memo(
   ({
@@ -42,7 +41,11 @@ const Track = React.memo(
     const isExpanded = expanded === circuitName;
     return (
       <Grid
-        size={isExpanded ? 12 : imgSize}
+        size={
+          isExpanded
+            ? { xs: 12, xxl: 6, xxxl: 3 }
+            : { xs: 12, md: 6, lg: 4, xl: 3, xxl: 2, xxxl: 1 }
+        }
         sx={isExpanded ? { textAlign: "center" } : {}}
       >
         <Typography variant={isExpanded ? "h3" : "h5"} sx={txtStyles}>

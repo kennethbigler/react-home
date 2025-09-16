@@ -7,6 +7,9 @@ interface ChartEntry {
   color: string;
 }
 
+// TODO: Dec 7, 2025 - add driver stats for 2025 & Update team numbers
+// TODO: Mar 6, 2026 - Update team hex codes
+
 export const MERCEDES_HEX = "#00D7B6";
 export const RED_BULL_HEX = "#4781D7";
 export const FERRARI_HEX = "#ED1131";
