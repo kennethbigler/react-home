@@ -7,7 +7,7 @@ interface TrackProps {
   circuitLen: number;
   circuitName: string;
   circuitSubName?: string;
-  expanded: boolean;
+  expanded: string;
   fastLapDriver: string;
   fastLapTime: string;
   firstGP: number;
@@ -23,7 +23,6 @@ const txtStyles: React.CSSProperties = {
   textAlign: "center",
 };
 const bold: React.CSSProperties = { fontWeight: "bold" };
-const imgSize = { xs: 12, md: 6, lg: 4, xl: 3, xxl: 2, xxxl: 1 };
 
 const Track = React.memo(
   ({
@@ -38,52 +37,59 @@ const Track = React.memo(
     numLaps,
     raceLen,
     onClick,
-  }: TrackProps) => (
-    <Grid
-      size={expanded ? 12 : imgSize}
-      sx={expanded ? { textAlign: "center" } : {}}
-    >
-      <Typography variant={expanded ? "h3" : "h5"} sx={txtStyles}>
-        {circuitName}
-      </Typography>
-      {circuitSubName && (
-        <Typography variant={expanded ? "h4" : "body2"} sx={txtStyles}>
-          {circuitSubName}
+  }: TrackProps) => {
+    const isExpanded = expanded === circuitName;
+    return (
+      <Grid
+        size={
+          isExpanded
+            ? { xs: 12, xxl: 6, xxxl: 3 }
+            : { xs: 12, md: 6, lg: 4, xl: 3, xxl: 2, xxxl: 1 }
+        }
+        sx={isExpanded ? { textAlign: "center" } : {}}
+      >
+        <Typography variant={isExpanded ? "h3" : "h5"} sx={txtStyles}>
+          {circuitName}
         </Typography>
-      )}
-      <IconButton onClick={onClick(circuitName)}>
-        <img src={imgSrc} alt="" width="100%" />
-      </IconButton>
-      <Grid container>
-        <Grid size={6}>
-          <Typography variant={expanded ? "h5" : "body2"}>
-            Circuit Length
+        {circuitSubName && (
+          <Typography variant={isExpanded ? "h4" : "body2"} sx={txtStyles}>
+            {circuitSubName}
           </Typography>
-          <Typography sx={bold}>{circuitLen}km</Typography>
-          <Typography variant={expanded ? "h5" : "body2"}>
-            First Grand Prix
-          </Typography>
-          <Typography sx={bold}>{firstGP}</Typography>
-          <Typography variant={expanded ? "h5" : "body2"}>
-            Number of Laps
-          </Typography>
-          <Typography sx={bold}>{numLaps}</Typography>
-        </Grid>
-        <Grid size={6}>
-          <Typography variant={expanded ? "h5" : "body2"}>
-            Fastest lap time
-          </Typography>
-          <Typography sx={bold}>{fastLapTime}</Typography>
-          <Typography variant="body2">{fastLapDriver}</Typography>
-          <br />
-          <Typography variant={expanded ? "h5" : "body2"}>
-            Race Distance
-          </Typography>
-          <Typography sx={bold}>{raceLen}km</Typography>
+        )}
+        <IconButton onClick={onClick(circuitName)}>
+          <img src={imgSrc} alt="" width="100%" />
+        </IconButton>
+        <Grid container>
+          <Grid size={6}>
+            <Typography variant={isExpanded ? "h5" : "body2"}>
+              Circuit Length
+            </Typography>
+            <Typography sx={bold}>{circuitLen}km</Typography>
+            <Typography variant={isExpanded ? "h5" : "body2"}>
+              First Grand Prix
+            </Typography>
+            <Typography sx={bold}>{firstGP}</Typography>
+            <Typography variant={isExpanded ? "h5" : "body2"}>
+              Number of Laps
+            </Typography>
+            <Typography sx={bold}>{numLaps}</Typography>
+          </Grid>
+          <Grid size={6}>
+            <Typography variant={isExpanded ? "h5" : "body2"}>
+              Fastest lap time
+            </Typography>
+            <Typography sx={bold}>{fastLapTime}</Typography>
+            <Typography variant="body2">{fastLapDriver}</Typography>
+            <br />
+            <Typography variant={isExpanded ? "h5" : "body2"}>
+              Race Distance
+            </Typography>
+            <Typography sx={bold}>{raceLen}km</Typography>
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
-  ),
+    );
+  },
 );
 
 Track.displayName = "Track";
