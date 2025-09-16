@@ -379,6 +379,15 @@ export const cruises: Cruise[] = [
     ship: Ships.Magic,
     region: Regions.West,
   },
+  {
+    concierge: false,
+    departure: dateObj("2026-09"),
+    line: Lines.Disney,
+    name: "🇪🇸🇵🇹🇺🇸",
+    nights: 13,
+    ship: Ships.Dream,
+    region: Regions.Europe,
+  },
 ];
 
 // -------------------------     Loyalty & Regions     ------------------------- //
