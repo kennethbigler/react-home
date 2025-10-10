@@ -52,31 +52,31 @@ export const constructors: Constructor[] = [
   {
     name: "McLaren",
     color: MCLAREN_HEX,
-    points: [62, 145, 202, 275, 159, 302, 666, 623, 600],
+    points: [62, 145, 202, 275, 159, 302, 666, 650, 650],
     standings: [6, 4, 3, 4, 5, 4, 1, 1, 1],
   },
   {
     name: "Mercedes",
     color: MERCEDES_HEX,
-    points: [655, 739, 573, 613.5, 515, 409, 468, 290, 300],
+    points: [655, 739, 573, 613.5, 515, 409, 468, 325, 330],
     standings: [1, 1, 1, 1, 3, 2, 4, 2, 2],
   },
   {
     name: "Ferrari",
     color: FERRARI_HEX,
-    points: [571, 504, 131, 323.5, 554, 406, 652, 286, 280],
+    points: [571, 504, 131, 323.5, 554, 406, 652, 298, 305],
     standings: [2, 2, 6, 3, 2, 3, 2, 3, 3],
   },
   {
     name: "Red Bull Racing",
     color: RED_BULL_HEX,
-    points: [419, 417, 319, 585.5, 759, 860, 589, 272, 260],
+    points: [419, 417, 319, 585.5, 759, 860, 589, 290, 280],
     standings: [3, 3, 2, 2, 1, 1, 3, 4, 4],
   },
   {
     name: "Williams",
     color: WILLIAMS_HEX,
-    points: [7, 1, 0, 23, 8, 28, 17, 101, 120],
+    points: [7, 1, 0, 23, 8, 28, 17, 102, 120],
     standings: [10, 10, 10, 8, 10, 7, 9, 5, 5],
   },
   {
@@ -88,7 +88,7 @@ export const constructors: Constructor[] = [
   {
     name: "Aston Martin",
     color: ASTON_HEX,
-    points: [52, 73, 195, 77, 55, 280, 94, 62, 80],
+    points: [52, 73, 195, 77, 55, 280, 94, 68, 80],
     standings: [7, 7, 4, 7, 7, 5, 5, 7, 7],
   },
   {
@@ -100,7 +100,7 @@ export const constructors: Constructor[] = [
   {
     name: "Haas",
     color: HAAS_HEX,
-    points: [93, 28, 3, 0, 37, 12, 58, 44, 40],
+    points: [93, 28, 3, 0, 37, 12, 58, 46, 40],
     standings: [5, 9, 9, 10, 8, 10, 7, 9, 9],
   },
   {
