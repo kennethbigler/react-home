@@ -37,14 +37,14 @@ const F1 = () => {
         </Grid>
       </Grid>
 
-      <Tracks />
-
       <ExpandableCard
         title="Constructor Budgets (Estimated)"
         backgroundColor={ASTON_HEX}
       >
         <BudgetSankey color={color} />
       </ExpandableCard>
+
+      <Tracks />
     </>
   );
 };

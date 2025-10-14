@@ -22,8 +22,8 @@ const DriverStandingsLine = React.memo(
       xAxis: {
         labels: {
           style: { color },
-          formatter: function (this: Highcharts.Point): number {
-            return xAxisYears[this.value || 0];
+          formatter: function (point: Highcharts.Point): number {
+            return xAxisYears[point.value || 0];
           },
         },
       },
