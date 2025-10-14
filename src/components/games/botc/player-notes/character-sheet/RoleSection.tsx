@@ -16,7 +16,7 @@ interface RoleSectionProps {
   onRoleClick?: (role: BotCRole, selected: boolean) => () => void;
 }
 
-const buttonStyles: React.CSSProperties = {
+const staticButtonStyles: React.CSSProperties = {
   textTransform: "none",
   width: "100%",
   wordBreak: "break-word",
@@ -34,6 +34,7 @@ const RoleSection = ({
   title,
   onRoleClick,
 }: RoleSectionProps) => {
+  const buttonStyles = { ...staticButtonStyles };
   if (isText && roles.length >= 18) {
     buttonStyles.fontSize = "0.7rem";
   } else {
