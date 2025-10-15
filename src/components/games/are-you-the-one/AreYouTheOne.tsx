@@ -5,6 +5,7 @@ import Table from "./table/Table";
 import Analysis from "./analysis/Analysis";
 import aYTOAtom, { aytoPlayerRead } from "../../../jotai/are-you-the-one-state";
 import useHist from "./histogram/useHist";
+import { Typography } from "@mui/material";
 
 const AreYouTheOne = () => {
   const [{ matches, noMatch, roundPairings }, setState] = useAtom(aYTOAtom);
@@ -137,7 +138,9 @@ const AreYouTheOne = () => {
 
   return (
     <>
-      <h1>Are You The One?</h1>
+      <Typography variant="h2" component="h1">
+        Are You The One?
+      </Typography>
       <Controls
         onSelect={handleSelect}
         options={options}

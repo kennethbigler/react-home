@@ -1,6 +1,10 @@
+import Typography from "@mui/material/Typography";
+
 const Bridge = () => (
   <div>
-    <h2>🌉</h2>
+    <Typography variant="h2" component="h1">
+      🌉
+    </Typography>
   </div>
 );
 
