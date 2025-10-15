@@ -15,6 +15,9 @@ const BlackJack = React.lazy(
   () => import(/* webpackChunkName: "blackjack" */ "./blackjack"),
 );
 const BotC = React.lazy(() => import(/* webpackChunkName: "botc" */ "./botc"));
+const Bridge = React.lazy(
+  () => import(/* webpackChunkName: "bridge" */ "./bridge"),
+);
 const Connect4 = React.lazy(
   () => import(/* webpackChunkName: "connect4" */ "./connect4"),
 );
@@ -68,6 +71,7 @@ const GameRoutes = ({ handleNav }: RoutesProps) => (
         <Route path="" element={<GameHome onItemClick={handleNav} />} />
         <Route path="are-you-the-one" element={<AreYouTheOne />} />
         <Route path="botc" element={<BotC />} />
+        <Route path="bridge" element={<Bridge />} />
         <Route path="blackjack" element={<BlackJack />} />
         <Route path="connect4" element={<Connect4 />} />
         <Route path="deal" element={<DealOrNoDeal />} />
