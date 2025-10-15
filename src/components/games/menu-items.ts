@@ -12,6 +12,7 @@ export const socialItems: MenuItem[] = [
 ];
 export const trackerItems: MenuItem[] = [
   { name: "Are You The One", route: "are-you-the-one", icon: "🤷‍♂️" },
+  { name: "Bridge", route: "bridge", icon: "🌉" },
   { name: "Imperial Assault", route: "imperial-assault", icon: "🪐" },
   { name: "Spades", route: "spades", icon: "♠️" },
   { name: "Type Checker", route: "types", icon: "🧪" },
