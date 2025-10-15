@@ -6,6 +6,7 @@ import a11yProps from "../../common/tab-panel/tab-panel-helper";
 import TeamDisplay from "./TeamsDisplay";
 import GameRound from "./GameRound";
 import FastMoney from "./FastMoney";
+import { Typography } from "@mui/material";
 
 const FamilyFeud = () => {
   const [value, setValue] = React.useState(0);
@@ -29,7 +30,9 @@ const FamilyFeud = () => {
 
   return (
     <>
-      <h1>Family Feud!</h1>
+      <Typography variant="h2" component="h1">
+        Family Feud!
+      </Typography>
       <TeamDisplay score1={score1} score2={score2} />
       <br />
       <Tabs
