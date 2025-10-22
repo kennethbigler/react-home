@@ -6,6 +6,7 @@ import { RoundPairing } from "../../../../jotai/are-you-the-one-state";
 import { AYTOHist } from "../histogram/useHist";
 import MatchedStack from "./MatchedStack";
 import CalculatedStack from "./CalculatedStack";
+import { Typography } from "@mui/material";
 
 export interface AnalysisProps {
   /** [i: { pairs, score }] */
@@ -47,7 +48,9 @@ const Analysis = ({
   return (
     <div>
       <Stack direction="row" justifyContent="space-between">
-        <h1>Analysis</h1>
+        <Typography variant="h2" component="h1">
+          Analysis
+        </Typography>
         <FormControlLabel
           control={<Switch checked={showAll} onChange={handleSwitch} />}
           label="Show All Couples"
