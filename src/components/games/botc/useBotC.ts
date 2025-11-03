@@ -63,7 +63,22 @@ export const usePlayerAdjControls = () => {
 };
 
 export const usePlayerNotes = () => {
-  const [{ botcPlayers, ...other }, setState] = useAtom(botcAtom);
+  const [{ botcPlayers, numPlayers, numTravelers, ...other }, setState] =
+    useAtom(botcAtom);
+  const [randomPlayer, setRandomPlayer] = React.useState<number | null>(null);
+
+  const getRandomPlayer = () => {
+    const alivePlayers: number[] = [];
+    for (let i = 1; i < numPlayers + numTravelers; i += 1) {
+      if (!botcPlayers[i].exec && !botcPlayers[i].kill) {
+        alivePlayers.push(i);
+      }
+    }
+
+    setRandomPlayer(
+      alivePlayers[Math.floor(Math.random() * alivePlayers.length)],
+    );
+  };
 
   /** update player name onBlur */
   const updateNames =
@@ -72,10 +87,7 @@ export const usePlayerNotes = () => {
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i], name: e.target.value || "" };
       newPlayers[i] = newPlayer;
-      setState({
-        ...other,
-        botcPlayers: newPlayers,
-      });
+      setState({ ...other, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
 
   /** update player notes onBlur */
@@ -85,10 +97,7 @@ export const usePlayerNotes = () => {
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i], notes: e.target.value || "" };
       newPlayers[i] = newPlayer;
-      setState({
-        ...other,
-        botcPlayers: newPlayers,
-      });
+      setState({ ...other, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
 
   /** handle role selections */
@@ -102,7 +111,7 @@ export const usePlayerNotes = () => {
         ? newPlayer.roles.filter((r) => r.name !== role.name)
         : [...newPlayer.roles, role];
       newPlayers[i] = newPlayer;
-      setState({ ...other, botcPlayers: newPlayers });
+      setState({ ...other, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
 
   /** handle checkboxes checked for player stat updates */
@@ -114,10 +123,15 @@ export const usePlayerNotes = () => {
       const newPlayer = { ...newPlayers[i] };
       newPlayer[key] = checked;
       newPlayers[i] = newPlayer;
-      setState({ ...other, botcPlayers: newPlayers });
+      if ((key === "exec" || key === "kill") && checked) {
+        setRandomPlayer(null);
+      }
+      setState({ ...other, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
 
   return {
+    getRandomPlayer,
+    randomPlayer,
     updateNames,
     updateNotes,
     updateRoles,

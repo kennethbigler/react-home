@@ -1,4 +1,5 @@
 import * as React from "react";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
@@ -22,6 +23,12 @@ const chipStyle = {
   marginTop: "5px",
 };
 
+const cardStyle = {
+  padding: 1,
+  textAlign: "center",
+  height: "100%",
+};
+
 const PlayerNotes = ({
   botcPlayers,
   isText,
@@ -29,8 +36,14 @@ const PlayerNotes = ({
   script,
   showMove,
 }: PlayerNotesProps) => {
-  const { updateNames, updateNotes, updateRoles, updateStats } =
-    usePlayerNotes();
+  const {
+    getRandomPlayer,
+    randomPlayer,
+    updateNames,
+    updateNotes,
+    updateRoles,
+    updateStats,
+  } = usePlayerNotes();
 
   return (
     <Grid container spacing={1}>
@@ -39,7 +52,12 @@ const PlayerNotes = ({
           i < playerCount && (
             <React.Fragment key={`player${i}-${player.name}`}>
               <Grid size={getGridSize(playerCount, i)}>
-                <Card sx={{ padding: 1, textAlign: "center", height: "100%" }}>
+                <Card
+                  sx={{
+                    ...cardStyle,
+                    border: randomPlayer === i ? "3px solid red" : "none",
+                  }}
+                >
                   <div className="flex-container">
                     {showMove && (
                       <PlayerAdjControls i={i} count={playerCount} />
@@ -92,6 +110,14 @@ const PlayerNotes = ({
             </React.Fragment>
           ),
       )}
+      <Button
+        fullWidth
+        color="error"
+        variant="outlined"
+        onClick={getRandomPlayer}
+      >
+        Random 🔪
+      </Button>
     </Grid>
   );
 };
