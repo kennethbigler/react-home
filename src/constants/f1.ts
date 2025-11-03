@@ -52,25 +52,25 @@ export const constructors: Constructor[] = [
   {
     name: "McLaren",
     color: MCLAREN_HEX,
-    points: [62, 145, 202, 275, 159, 302, 666, 678, 680],
+    points: [62, 145, 202, 275, 159, 302, 666, 713, 700],
     standings: [6, 4, 3, 4, 5, 4, 1, 1, 1],
-  },
-  {
-    name: "Mercedes",
-    color: MERCEDES_HEX,
-    points: [655, 739, 573, 613.5, 515, 409, 468, 341, 340],
-    standings: [1, 1, 1, 1, 3, 2, 4, 2, 2],
   },
   {
     name: "Ferrari",
     color: FERRARI_HEX,
-    points: [571, 504, 131, 323.5, 554, 406, 652, 334, 320],
-    standings: [2, 2, 6, 3, 2, 3, 2, 3, 3],
+    points: [571, 504, 131, 323.5, 554, 406, 652, 356, 360],
+    standings: [2, 2, 6, 3, 2, 3, 2, 2, 2],
+  },
+  {
+    name: "Mercedes",
+    color: MERCEDES_HEX,
+    points: [655, 739, 573, 613.5, 515, 409, 468, 355, 340],
+    standings: [1, 1, 1, 1, 3, 2, 4, 3, 3],
   },
   {
     name: "Red Bull Racing",
     color: RED_BULL_HEX,
-    points: [419, 417, 319, 585.5, 759, 860, 589, 331, 300],
+    points: [419, 417, 319, 585.5, 759, 860, 589, 346, 320],
     standings: [3, 3, 2, 2, 1, 1, 3, 4, 4],
   },
   {
@@ -92,16 +92,16 @@ export const constructors: Constructor[] = [
     standings: [7, 7, 4, 7, 7, 5, 5, 7, 7],
   },
   {
-    name: "Audi",
-    color: AUDI_HEX,
-    points: [48, 57, 8, 13, 55, 16, 4, 59, 60],
-    standings: [8, 8, 8, 9, 6, 9, 10, 8, 8],
-  },
-  {
     name: "Haas",
     color: HAAS_HEX,
-    points: [93, 28, 3, 0, 37, 12, 58, 48, 40],
-    standings: [5, 9, 9, 10, 8, 10, 7, 9, 9],
+    points: [93, 28, 3, 0, 37, 12, 58, 62, 60],
+    standings: [5, 9, 9, 10, 8, 10, 7, 8, 8],
+  },
+  {
+    name: "Audi",
+    color: AUDI_HEX,
+    points: [48, 57, 8, 13, 55, 16, 4, 60, 40],
+    standings: [8, 8, 8, 9, 6, 9, 10, 9, 9],
   },
   {
     name: "Alpine",
@@ -119,8 +119,8 @@ export const constructors: Constructor[] = [
   {
     name: "Kick Sauber",
     color: K_SAUBER_HEX,
-    points: [48, 57, 8, 13, 55, 16, 4, 59],
-    standings: [8, 8, 8, 9, 6, 9, 10, 8, null],
+    points: [48, 57, 8, 13, 55, 16, 4, 60],
+    standings: [8, 8, 8, 9, 6, 9, 10, 9, null],
   },
   // ----------     2nd Replacement     ---------- //
   {
