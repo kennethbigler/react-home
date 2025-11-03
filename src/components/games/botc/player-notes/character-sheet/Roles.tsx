@@ -3,7 +3,6 @@ import {
   tb,
   snv,
   bmr,
-  dtb,
   swpm,
   other,
   BotCScript,
@@ -37,12 +36,9 @@ const Roles = ({ isText, script, roleKey, onRoleClick }: RolesProps) => {
       scripts = { active: bmr, travelers: [...tb.travelers, ...snv.travelers] };
       break;
     case 3:
-      scripts = { active: dtb, travelers: [...other.travelers] };
-      break;
-    case 4:
       scripts = { active: swpm, travelers: [...other.travelers] };
       break;
-    case 5:
+    case 4:
     default: // keep initial assignment
       isOtherScript = true;
   }

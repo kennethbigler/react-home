@@ -289,39 +289,6 @@ export const bmr: BotCScript = {
   ],
 };
 
-export const dtb: BotCScript = {
-  townsfolk: [
-    townsfolk.librarian,
-    townsfolk.monk,
-    townsfolk.investigator,
-    townsfolk.ravenkeeper,
-    townsfolk.chef,
-    townsfolk.virgin,
-    townsfolk.slayer,
-    townsfolk.mayor,
-    townsfolk.empath,
-    townsfolk.amnesiac,
-    townsfolk.fortuneteller,
-    townsfolk.pixie,
-    townsfolk.undertaker,
-  ],
-  outsiders: [
-    outsiders.damsel,
-    outsiders.drunk,
-    outsiders.recluse,
-    outsiders.saint,
-  ],
-  minions: [
-    minions.poisoner,
-    minions.spy,
-    minions.scarletWoman,
-    minions.baron,
-    minions.boffin,
-  ],
-  demons: [demons.imp],
-  travelers: [],
-};
-
 export const swpm: BotCScript = {
   townsfolk: [
     townsfolk.chef,

@@ -13,7 +13,6 @@ const menuItems = [
   "Trouble Brewing",
   "Sects and Violets",
   "Bad Moon Rising",
-  "Dansel's Trouble Brewing",
   "The Spy Who Pinged Me",
   "Other",
 ];
