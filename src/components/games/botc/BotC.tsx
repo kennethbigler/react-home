@@ -4,6 +4,7 @@ import useBotC from "./useBotC";
 import Header from "./Header";
 import ControlBar from "./control-bar/ControlBar";
 import PlayerNotes from "./player-notes/PlayerNotes";
+import LiePie from "./LiePie";
 
 const BotC = React.memo(() => {
   const [showMove, setShowMove] = React.useState(false);
@@ -30,6 +31,11 @@ const BotC = React.memo(() => {
         playerCount={numPlayers + numTravelers}
         script={script}
         showMove={showMove}
+      />
+      <LiePie
+        numPlayers={numPlayers}
+        numTravelers={numTravelers}
+        script={script}
       />
     </>
   );
