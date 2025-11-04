@@ -21,6 +21,8 @@ describe("BotC Header", () => {
   const defaultProps = {
     numPlayers: 5,
     numTravelers: 0,
+    newBotCGame: vi.fn(),
+    botcPlayers: [],
   };
 
   it("should render the header with correct title", () => {
