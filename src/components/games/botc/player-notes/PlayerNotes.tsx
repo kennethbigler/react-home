@@ -4,6 +4,9 @@ import Card from "@mui/material/Card";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import SwapHoriz from "@mui/icons-material/SwapHoriz";
+import Switch from "@mui/material/Switch";
 import { BotCPlayer } from "../../../../jotai/botc-atom";
 import CharacterSheet from "./character-sheet/CharacterSheet";
 import { usePlayerNotes } from "../useBotC";
@@ -15,7 +18,6 @@ interface PlayerNotesProps {
   isText: boolean;
   playerCount: number;
   script: number;
-  showMove: boolean;
 }
 
 const chipStyle = {
@@ -34,8 +36,9 @@ const PlayerNotes = ({
   isText,
   playerCount,
   script,
-  showMove,
 }: PlayerNotesProps) => {
+  const [showMove, setShowMove] = React.useState(false);
+
   const {
     getRandomPlayer,
     randomPlayer,
@@ -44,6 +47,8 @@ const PlayerNotes = ({
     updateRoles,
     updateStats,
   } = usePlayerNotes();
+
+  const handleMoveToggle = () => setShowMove(!showMove);
 
   return (
     <Grid container spacing={1}>
@@ -110,15 +115,23 @@ const PlayerNotes = ({
             </React.Fragment>
           ),
       )}
-      <Button
-        fullWidth
-        color="error"
-        variant="outlined"
-        onClick={getRandomPlayer}
+      <div
+        className="flex-container"
         style={{ marginTop: 15, marginBottom: 30 }}
       >
-        Random 🔪
-      </Button>
+        <FormControlLabel
+          control={<Switch checked={showMove} onChange={handleMoveToggle} />}
+          label={<SwapHoriz titleAccess="move players" />}
+        />
+        <Button
+          fullWidth
+          color="error"
+          variant="outlined"
+          onClick={getRandomPlayer}
+        >
+          Random 🔪
+        </Button>
+      </div>
     </Grid>
   );
 };

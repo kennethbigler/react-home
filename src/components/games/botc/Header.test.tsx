@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import Header from "./Header";
+import Header from "./header/Header";
 
 // Mock the constants import
 vi.mock("../../../constants/botc", () => ({
@@ -38,14 +38,14 @@ describe("BotC Header", () => {
   it("should display traveler count when present", () => {
     render(<Header {...defaultProps} numTravelers={2} />);
 
-    expect(screen.getByText("5 players +2")).toBeInTheDocument();
+    expect(screen.getByText("5 players + 2")).toBeInTheDocument();
   });
 
   it("should not display traveler count when zero", () => {
     render(<Header {...defaultProps} numTravelers={0} />);
 
     expect(screen.getByText("5 players")).toBeInTheDocument();
-    expect(screen.queryByText("+0")).not.toBeInTheDocument();
+    expect(screen.queryByText("+ 0")).not.toBeInTheDocument();
   });
 
   it("should render share button", () => {
@@ -85,6 +85,6 @@ describe("BotC Header", () => {
   it("should handle large traveler counts", () => {
     render(<Header {...defaultProps} numTravelers={10} />);
 
-    expect(screen.getByText("5 players +10")).toBeInTheDocument();
+    expect(screen.getByText("5 players + 10")).toBeInTheDocument();
   });
 });
