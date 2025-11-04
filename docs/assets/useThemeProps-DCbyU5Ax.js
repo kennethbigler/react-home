@@ -1,2 +1,0 @@
-import{ah as r,ag as p,u as a}from"./index-D-p8dcBW.js";const c=r();function m(n){const{theme:e,name:o,props:s}=n;return!e||!e.components||!e.components[o]||!e.components[o].defaultProps?s:p(e.components[o].defaultProps,s)}function f({props:n,name:e,defaultTheme:o,themeId:s}){let t=a(o);return s&&(t=t[s]||t),m({theme:t,name:e,props:n})}export{c as s,f as u};
-//# sourceMappingURL=useThemeProps-DCbyU5Ax.js.map

@@ -4,6 +4,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Snackbar from "@mui/material/Snackbar";
 import SwapHoriz from "@mui/icons-material/SwapHoriz";
 import Switch from "@mui/material/Switch";
+import SettingsIcon from "@mui/icons-material/Settings";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import EditPlayers from "./edit-players/EditPlayers";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import { BotCPlayer } from "../../../../jotai/botc-atom";
@@ -46,11 +48,17 @@ const ControlBar = ({
         control={<Switch checked={showMove} onChange={onMoveToggle} />}
         label={<SwapHoriz titleAccess="move players" />}
       />
-      <InfoPopup title="Tracker">
+      <InfoPopup
+        title={<EditNoteIcon aria-label="track players" />}
+        buttonVariant="text"
+      >
         <Tracker botcPlayers={botcPlayers} end={numPlayers + numTravelers} />
       </InfoPopup>
 
-      <InfoPopup title="Players">
+      <InfoPopup
+        title={<SettingsIcon aria-label="settings" />}
+        buttonVariant="text"
+      >
         <EditPlayers
           handleReset={handleReset}
           numPlayers={numPlayers}

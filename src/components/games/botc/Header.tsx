@@ -31,7 +31,7 @@ const Header = React.memo(({ numPlayers, numTravelers }: HeaderProps) => {
         {playerDist[numPlayers]}
         {numTravelers ? ` +${numTravelers}` : ""}
       </Typography>
-      <IconButton aria-label="share" onClick={handleOpen}>
+      <IconButton aria-label="share" onClick={handleOpen} color="primary">
         <MobileScreenShareIcon />
       </IconButton>
       <Dialog
