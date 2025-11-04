@@ -115,6 +115,7 @@ const PlayerNotes = ({
         color="error"
         variant="outlined"
         onClick={getRandomPlayer}
+        style={{ marginTop: 15, marginBottom: 30 }}
       >
         Random 🔪
       </Button>

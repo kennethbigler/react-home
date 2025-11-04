@@ -28,7 +28,7 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
       style: { marginLeft: "auto", marginRight: "auto" },
     },
     credits: { enabled: false },
-    title: { text: "Do I Trust?", style: { color } },
+    title: { text: "Who is lying?", style: { color } },
     plotOptions: {
       pie: {
         dataLabels: [
@@ -51,7 +51,7 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
     series: [
       {
         type: "pie",
-        name: "Do I Trust?",
+        name: "⛽️🔥❓",
         data: lieSeries,
       },
     ],
