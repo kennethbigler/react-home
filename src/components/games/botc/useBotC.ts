@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { SelectChangeEvent } from "@mui/material";
 import botcAtom, {
   BotCPlayer,
@@ -275,8 +275,8 @@ export const useTracker = () => {
 
 /** -------------------- Home Specific Functions -------------------- */
 const useBotC = () => {
-  const [{ isText, numPlayers, numTravelers, script }] = useAtom(botcAtom);
-  return { numPlayers, numTravelers, isText, script };
+  const { isText, numPlayers, numTravelers, script } = useAtomValue(botcAtom);
+  return { isText, numPlayers, numTravelers, script };
 };
 
 export default useBotC;
