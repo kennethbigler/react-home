@@ -6,19 +6,14 @@ import PlayerNotes from "./player-notes/PlayerNotes";
 import LiePie from "./LiePie";
 
 const BotC = React.memo(() => {
-  const { botcPlayers, numPlayers, numTravelers, isText, script } = useBotC();
+  const { numPlayers, numTravelers, isText, script } = useBotC();
 
   /* ----------     Render     ---------- */
   return (
     <>
-      <Header
-        botcPlayers={botcPlayers}
-        numPlayers={numPlayers}
-        numTravelers={numTravelers}
-      />
+      <Header numPlayers={numPlayers} numTravelers={numTravelers} />
       <Divider sx={{ marginTop: 2, marginBottom: 2 }} aria-hidden />
       <PlayerNotes
-        botcPlayers={botcPlayers}
         isText={isText}
         playerCount={numPlayers + numTravelers}
         script={script}

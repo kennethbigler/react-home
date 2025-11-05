@@ -7,14 +7,12 @@ import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import SwapHoriz from "@mui/icons-material/SwapHoriz";
 import Switch from "@mui/material/Switch";
-import { BotCPlayer } from "../../../../jotai/botc-atom";
 import CharacterSheet from "./character-sheet/CharacterSheet";
 import { usePlayerNotes } from "../useBotC";
 import { getGridSize } from "../botcHelpers";
 import PlayerAdjControls from "./PlayerAdjControls";
 
 interface PlayerNotesProps {
-  botcPlayers: BotCPlayer[];
   isText: boolean;
   playerCount: number;
   script: number;
@@ -31,15 +29,11 @@ const cardStyle = {
   height: "100%",
 };
 
-const PlayerNotes = ({
-  botcPlayers,
-  isText,
-  playerCount,
-  script,
-}: PlayerNotesProps) => {
+const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
   const [showMove, setShowMove] = React.useState(false);
 
   const {
+    botcPlayers,
     getRandomPlayer,
     randomPlayer,
     updateNames,

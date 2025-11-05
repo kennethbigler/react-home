@@ -26,9 +26,85 @@ const mockTracker = [
   [0, 0, 0, 0, 0, 0, 0, 0], // Round 7
 ];
 
+const mockBotcPlayers: BotCPlayer[] = [
+  {
+    name: "Player1",
+    roles: [],
+    notes: "",
+    liar: false,
+    used: false,
+    exec: false,
+    kill: false,
+  },
+  {
+    name: "Player2",
+    roles: [],
+    notes: "",
+    liar: false,
+    used: false,
+    exec: false,
+    kill: false,
+  },
+  {
+    name: "Player3",
+    roles: [],
+    notes: "",
+    liar: false,
+    used: false,
+    exec: false,
+    kill: false,
+  },
+  {
+    name: "Player4",
+    roles: [],
+    notes: "",
+    liar: false,
+    used: false,
+    exec: false,
+    kill: false,
+  },
+  {
+    name: "Player5",
+    roles: [],
+    notes: "",
+    liar: false,
+    used: false,
+    exec: false,
+    kill: false,
+  },
+  {
+    name: "Player6",
+    roles: [],
+    notes: "",
+    liar: false,
+    used: false,
+    exec: false,
+    kill: false,
+  },
+  {
+    name: "Player7",
+    roles: [],
+    notes: "",
+    liar: false,
+    used: false,
+    exec: false,
+    kill: false,
+  },
+  {
+    name: "Player8",
+    roles: [],
+    notes: "",
+    liar: false,
+    used: false,
+    exec: false,
+    kill: false,
+  },
+];
+
 // Mock the useTracker hook
 vi.mock("../useBotC", () => ({
   useTracker: vi.fn(() => ({
+    botcPlayers: mockBotcPlayers,
     round: 0,
     roundNotes: mockRoundNotes,
     tracker: mockTracker,
@@ -51,87 +127,12 @@ vi.mock("../botcHelpers", () => ({
 }));
 
 describe("Tracker", () => {
-  const mockBotcPlayers: BotCPlayer[] = [
-    {
-      name: "Player1",
-      roles: [],
-      notes: "",
-      liar: false,
-      used: false,
-      exec: false,
-      kill: false,
-    },
-    {
-      name: "Player2",
-      roles: [],
-      notes: "",
-      liar: false,
-      used: false,
-      exec: false,
-      kill: false,
-    },
-    {
-      name: "Player3",
-      roles: [],
-      notes: "",
-      liar: false,
-      used: false,
-      exec: false,
-      kill: false,
-    },
-    {
-      name: "Player4",
-      roles: [],
-      notes: "",
-      liar: false,
-      used: false,
-      exec: false,
-      kill: false,
-    },
-    {
-      name: "Player5",
-      roles: [],
-      notes: "",
-      liar: false,
-      used: false,
-      exec: false,
-      kill: false,
-    },
-    {
-      name: "Player6",
-      roles: [],
-      notes: "",
-      liar: false,
-      used: false,
-      exec: false,
-      kill: false,
-    },
-    {
-      name: "Player7",
-      roles: [],
-      notes: "",
-      liar: false,
-      used: false,
-      exec: false,
-      kill: false,
-    },
-    {
-      name: "Player8",
-      roles: [],
-      notes: "",
-      liar: false,
-      used: false,
-      exec: false,
-      kill: false,
-    },
-  ];
-
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("should render the notes text field", () => {
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     const notesField = screen.getByLabelText("Notes");
     expect(notesField).toBeInTheDocument();
@@ -140,6 +141,7 @@ describe("Tracker", () => {
 
   it("should display current round notes in the text field", () => {
     vi.mocked(useBotCHooks.useTracker).mockReturnValue({
+      botcPlayers: mockBotcPlayers,
       round: 1,
       roundNotes: mockRoundNotes,
       tracker: mockTracker,
@@ -148,14 +150,14 @@ describe("Tracker", () => {
       onTrackClick: vi.fn(() => () => vi.fn()),
     });
 
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     const notesField = screen.getByLabelText("Notes");
     expect(notesField).toHaveAttribute("value", "Round 1 notes");
   });
 
   it("should render player buttons for the specified number of players", () => {
-    render(<Tracker botcPlayers={mockBotcPlayers} end={5} />);
+    render(<Tracker end={5} />);
 
     expect(screen.getByText("Player1")).toBeInTheDocument();
     expect(screen.getByText("Player2")).toBeInTheDocument();
@@ -166,7 +168,7 @@ describe("Tracker", () => {
   });
 
   it("should render all players when end equals total players", () => {
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     for (let i = 1; i <= 8; i++) {
       expect(screen.getByText(`Player${i}`)).toBeInTheDocument();
@@ -175,6 +177,7 @@ describe("Tracker", () => {
 
   it("should apply correct button variants based on tracker values", () => {
     vi.mocked(useBotCHooks.useTracker).mockReturnValue({
+      botcPlayers: mockBotcPlayers,
       round: 1,
       roundNotes: mockRoundNotes,
       tracker: mockTracker,
@@ -183,7 +186,7 @@ describe("Tracker", () => {
       onTrackClick: vi.fn(() => () => vi.fn()),
     });
 
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     // Player1: tracker[1][0] = 1 (contained, primary)
     const player1Button = screen.getByText("Player1");
@@ -202,7 +205,7 @@ describe("Tracker", () => {
   });
 
   it("should render round selection buttons", () => {
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     // Should render buttons for rounds 1-8
     for (let i = 1; i <= 8; i++) {
@@ -212,6 +215,7 @@ describe("Tracker", () => {
 
   it("should highlight the current round button", () => {
     vi.mocked(useBotCHooks.useTracker).mockReturnValue({
+      botcPlayers: mockBotcPlayers,
       round: 2,
       roundNotes: mockRoundNotes,
       tracker: mockTracker,
@@ -220,7 +224,7 @@ describe("Tracker", () => {
       onTrackClick: vi.fn(() => () => vi.fn()),
     });
 
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     // Round 3 button should be contained (current round)
     const round3Button = screen.getByText("3");
@@ -234,6 +238,7 @@ describe("Tracker", () => {
   it("should call onNotesChange when notes field is modified", () => {
     const mockOnNotesChange = vi.fn();
     vi.mocked(useBotCHooks.useTracker).mockReturnValue({
+      botcPlayers: mockBotcPlayers,
       round: 0,
       roundNotes: mockRoundNotes,
       tracker: mockTracker,
@@ -242,7 +247,7 @@ describe("Tracker", () => {
       onTrackClick: vi.fn(() => () => vi.fn()),
     });
 
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     const notesField = screen.getByLabelText("Notes");
     fireEvent.change(notesField, { target: { value: "New notes" } });
@@ -253,6 +258,7 @@ describe("Tracker", () => {
   it("should call onRoundClick when round buttons are clicked", () => {
     const mockOnRoundClick = vi.fn(() => () => vi.fn());
     vi.mocked(useBotCHooks.useTracker).mockReturnValue({
+      botcPlayers: mockBotcPlayers,
       round: 0,
       roundNotes: mockRoundNotes,
       tracker: mockTracker,
@@ -261,7 +267,7 @@ describe("Tracker", () => {
       onTrackClick: vi.fn(() => () => vi.fn()),
     });
 
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     const round5Button = screen.getByText("5");
     fireEvent.click(round5Button);
@@ -272,6 +278,7 @@ describe("Tracker", () => {
   it("should call onTrackClick when player buttons are clicked", () => {
     const mockOnTrackClick = vi.fn(() => () => vi.fn());
     vi.mocked(useBotCHooks.useTracker).mockReturnValue({
+      botcPlayers: mockBotcPlayers,
       round: 0,
       roundNotes: mockRoundNotes,
       tracker: mockTracker,
@@ -280,7 +287,7 @@ describe("Tracker", () => {
       onTrackClick: mockOnTrackClick,
     });
 
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     const player3Button = screen.getByText("Player3");
     fireEvent.click(player3Button);
@@ -289,7 +296,7 @@ describe("Tracker", () => {
   });
 
   it("should handle edge case with minimum players", () => {
-    render(<Tracker botcPlayers={mockBotcPlayers} end={5} />);
+    render(<Tracker end={5} />);
 
     // Should only render 5 players
     expect(screen.getByText("Player1")).toBeInTheDocument();
@@ -298,7 +305,7 @@ describe("Tracker", () => {
   });
 
   it("should handle edge case with maximum players", () => {
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     // Should render all 8 players
     for (let i = 1; i <= 8; i++) {
@@ -307,7 +314,7 @@ describe("Tracker", () => {
   });
 
   it("should render notes field with correct MUI props", () => {
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     const notesField = screen.getByLabelText("Notes");
     // Check that the TextField is rendered with the correct classes
@@ -316,7 +323,7 @@ describe("Tracker", () => {
   });
 
   it("should render round buttons with correct accessibility label", () => {
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     const buttonGroup = screen.getByLabelText("Pick Round");
     expect(buttonGroup).toBeInTheDocument();
@@ -326,6 +333,7 @@ describe("Tracker", () => {
   it("should handle empty round notes gracefully", () => {
     const emptyRoundNotes = ["", "", "", "", "", "", "", ""];
     vi.mocked(useBotCHooks.useTracker).mockReturnValue({
+      botcPlayers: mockBotcPlayers,
       round: 0,
       roundNotes: emptyRoundNotes,
       tracker: mockTracker,
@@ -334,7 +342,7 @@ describe("Tracker", () => {
       onTrackClick: vi.fn(() => () => vi.fn()),
     });
 
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     const notesField = screen.getByLabelText("Notes");
     expect(notesField).toHaveAttribute("value", "");
@@ -347,6 +355,7 @@ describe("Tracker", () => {
     ];
 
     vi.mocked(useBotCHooks.useTracker).mockReturnValue({
+      botcPlayers: mockBotcPlayers,
       round: 0,
       roundNotes: mockRoundNotes,
       tracker: testTracker,
@@ -355,7 +364,7 @@ describe("Tracker", () => {
       onTrackClick: vi.fn(() => () => vi.fn()),
     });
 
-    render(<Tracker botcPlayers={mockBotcPlayers} end={8} />);
+    render(<Tracker end={8} />);
 
     // Player1: tracker[0][0] = 0 (outlined, primary)
     const player1Button = screen.getByText("Player1");

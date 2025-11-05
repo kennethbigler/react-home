@@ -130,6 +130,7 @@ export const usePlayerNotes = () => {
     };
 
   return {
+    botcPlayers,
     getRandomPlayer,
     randomPlayer,
     updateNames,
@@ -262,6 +263,7 @@ export const useTracker = () => {
   };
 
   return {
+    botcPlayers: other.botcPlayers,
     round,
     roundNotes,
     tracker,
@@ -273,10 +275,8 @@ export const useTracker = () => {
 
 /** -------------------- Home Specific Functions -------------------- */
 const useBotC = () => {
-  const [{ isText, numPlayers, numTravelers, script, botcPlayers }] =
-    useAtom(botcAtom);
-
-  return { botcPlayers, numPlayers, numTravelers, isText, script };
+  const [{ isText, numPlayers, numTravelers, script }] = useAtom(botcAtom);
+  return { numPlayers, numTravelers, isText, script };
 };
 
 export default useBotC;

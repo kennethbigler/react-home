@@ -1,11 +1,9 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { playerDist } from "../../../../constants/botc";
-import { BotCPlayer } from "../../../../jotai/botc-atom";
 import Controls from "./Controls";
 
 interface HeaderProps {
-  botcPlayers: BotCPlayer[];
   numPlayers: number;
   numTravelers: number;
 }
@@ -17,7 +15,7 @@ const headerStyle: React.CSSProperties = {
   marginLeft: 40,
 };
 
-const Header = ({ botcPlayers, numPlayers, numTravelers }: HeaderProps) => (
+const Header = ({ numPlayers, numTravelers }: HeaderProps) => (
   <div className="flex-container">
     <Typography variant="h2" component="h1">
       BotC
@@ -31,11 +29,7 @@ const Header = ({ botcPlayers, numPlayers, numTravelers }: HeaderProps) => (
         </Typography>
       </div>
 
-      <Controls
-        botcPlayers={botcPlayers}
-        numPlayers={numPlayers}
-        numTravelers={numTravelers}
-      />
+      <Controls numPlayers={numPlayers} numTravelers={numTravelers} />
     </div>
   </div>
 );

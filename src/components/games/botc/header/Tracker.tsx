@@ -4,7 +4,6 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 // Custom
-import { BotCPlayer } from "../../../../jotai/botc-atom";
 import { useTracker } from "../useBotC";
 import { getGridSize } from "../botcHelpers";
 import { TextField } from "@mui/material";
@@ -12,12 +11,12 @@ import { TextField } from "@mui/material";
 const numRounds = [0, 1, 2, 3, 4, 5, 6, 7];
 
 interface TrackerProps {
-  botcPlayers: BotCPlayer[];
   end: number;
 }
 
-const Tracker = ({ botcPlayers, end }: TrackerProps) => {
+const Tracker = ({ end }: TrackerProps) => {
   const {
+    botcPlayers,
     round,
     roundNotes,
     tracker,
