@@ -16,7 +16,7 @@ import { useEditPlayers } from "../../useBotC";
 interface EditPlayersProps {
   numPlayers: number;
   numTravelers: number;
-  handleReset: () => void;
+  openToast: () => void;
 }
 
 /** EditPlayers -> ScriptSelect
@@ -25,7 +25,7 @@ interface EditPlayersProps {
 const EditPlayers = ({
   numPlayers,
   numTravelers,
-  handleReset,
+  openToast,
 }: EditPlayersProps) => {
   const {
     isText,
@@ -34,11 +34,16 @@ const EditPlayers = ({
     updateNumTravelers,
     updateScript,
     updateText,
+    newBotCGame,
   } = useEditPlayers();
 
   const decrPlayers = () => updateNumPlayers(numPlayers - 1);
   const incrPlayers = () => updateNumPlayers(numPlayers + 1);
   const handleClick = (n: number) => () => updateNumTravelers(n);
+  const handleReset = () => {
+    newBotCGame();
+    openToast();
+  };
 
   return (
     <Grid container spacing={1}>

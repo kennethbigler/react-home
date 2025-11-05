@@ -141,13 +141,16 @@ export const usePlayerNotes = () => {
 
 /** -------------------- EditPlayers Specific Functions -------------------- */
 export const useEditPlayers = () => {
-  const [{ isText, numPlayers, numTravelers, script, ...other }, setState] =
-    useAtom(botcAtom);
+  const [
+    { isText, numPlayers, numTravelers, script, botcPlayers, ...other },
+    setState,
+  ] = useAtom(botcAtom);
 
   /** update number of players */
   const updateNumPlayers = (value: number) => {
     setState({
       ...other,
+      botcPlayers,
       isText,
       numTravelers,
       script,
@@ -159,6 +162,7 @@ export const useEditPlayers = () => {
   const updateNumTravelers = (value: number) => {
     setState({
       ...other,
+      botcPlayers,
       isText,
       numPlayers,
       script,
@@ -183,6 +187,7 @@ export const useEditPlayers = () => {
     }
     setState({
       ...other,
+      botcPlayers,
       numPlayers,
       numTravelers,
       isText: newText,
@@ -194,10 +199,29 @@ export const useEditPlayers = () => {
   const updateText = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setState({
       ...other,
+      botcPlayers,
       numPlayers,
       numTravelers,
       script,
       isText: e.target.checked,
+    });
+  };
+
+  /** set a new game */
+  const newBotCGame = () => {
+    const newPlayers: BotCPlayer[] = [];
+    botcPlayers.forEach((player) =>
+      newPlayers.push({ ...botcPlayerShell, name: player.name }),
+    );
+    setState({
+      isText,
+      numPlayers,
+      numTravelers,
+      script,
+      round: 0,
+      botcPlayers: newPlayers,
+      roundNotes: newRoundNotes(),
+      tracker: newTracker(),
     });
   };
 
@@ -208,6 +232,7 @@ export const useEditPlayers = () => {
     updateNumTravelers,
     updateScript,
     updateText,
+    newBotCGame,
   };
 };
 
@@ -248,28 +273,10 @@ export const useTracker = () => {
 
 /** -------------------- Home Specific Functions -------------------- */
 const useBotC = () => {
-  const [{ isText, numPlayers, numTravelers, script, botcPlayers }, setState] =
+  const [{ isText, numPlayers, numTravelers, script, botcPlayers }] =
     useAtom(botcAtom);
 
-  /** set a new game */
-  const newBotCGame = () => {
-    const newPlayers: BotCPlayer[] = [];
-    botcPlayers.forEach((player) =>
-      newPlayers.push({ ...botcPlayerShell, name: player.name }),
-    );
-    setState({
-      isText,
-      numPlayers,
-      numTravelers,
-      script,
-      round: 0,
-      botcPlayers: newPlayers,
-      roundNotes: newRoundNotes(),
-      tracker: newTracker(),
-    });
-  };
-
-  return { botcPlayers, numPlayers, numTravelers, newBotCGame, isText, script };
+  return { botcPlayers, numPlayers, numTravelers, isText, script };
 };
 
 export default useBotC;

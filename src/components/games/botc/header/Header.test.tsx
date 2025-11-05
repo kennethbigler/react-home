@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import Header from "./header/Header";
+import Header from "./Header";
 
 // Mock the constants import
 vi.mock("../../../constants/botc", () => ({
@@ -13,7 +13,7 @@ vi.mock("../../../constants/botc", () => ({
 }));
 
 // Mock the image import
-vi.mock("../../../images/botc-qr-code.png", () => ({
+vi.mock("../../../../images/botc-qr-code.png", () => ({
   default: "mocked-qr-code.png",
 }));
 
@@ -34,19 +34,19 @@ describe("BotC Header", () => {
   it("should display player distribution text", () => {
     render(<Header {...defaultProps} />);
 
-    expect(screen.getByText("5 players")).toBeInTheDocument();
+    expect(screen.getByText("3, 0, 1, 1")).toBeInTheDocument();
   });
 
   it("should display traveler count when present", () => {
     render(<Header {...defaultProps} numTravelers={2} />);
 
-    expect(screen.getByText("5 players + 2")).toBeInTheDocument();
+    expect(screen.getByText("3, 0, 1, 1 + 2")).toBeInTheDocument();
   });
 
   it("should not display traveler count when zero", () => {
     render(<Header {...defaultProps} numTravelers={0} />);
 
-    expect(screen.getByText("5 players")).toBeInTheDocument();
+    expect(screen.getByText("3, 0, 1, 1")).toBeInTheDocument();
     expect(screen.queryByText("+ 0")).not.toBeInTheDocument();
   });
 
@@ -81,12 +81,12 @@ describe("BotC Header", () => {
   it("should handle different player counts", () => {
     render(<Header {...defaultProps} numPlayers={8} />);
 
-    expect(screen.getByText("8 players")).toBeInTheDocument();
+    expect(screen.getByText("5, 1, 1, 1")).toBeInTheDocument();
   });
 
   it("should handle large traveler counts", () => {
     render(<Header {...defaultProps} numTravelers={10} />);
 
-    expect(screen.getByText("5 players + 10")).toBeInTheDocument();
+    expect(screen.getByText("3, 0, 1, 1 + 10")).toBeInTheDocument();
   });
 });

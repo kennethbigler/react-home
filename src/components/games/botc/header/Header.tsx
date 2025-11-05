@@ -8,7 +8,6 @@ interface HeaderProps {
   botcPlayers: BotCPlayer[];
   numPlayers: number;
   numTravelers: number;
-  newBotCGame: () => void;
 }
 
 const headerStyle: React.CSSProperties = {
@@ -18,34 +17,27 @@ const headerStyle: React.CSSProperties = {
   marginLeft: 40,
 };
 
-const Header = React.memo(
-  ({ botcPlayers, numPlayers, numTravelers, newBotCGame }: HeaderProps) => {
-    /* ----------     Render     ---------- */
-    return (
-      <div className="flex-container">
-        <Typography variant="h2" component="h1">
-          BotC
+const Header = ({ botcPlayers, numPlayers, numTravelers }: HeaderProps) => (
+  <div className="flex-container">
+    <Typography variant="h2" component="h1">
+      BotC
+    </Typography>
+
+    <div style={headerStyle}>
+      <div style={{ textAlign: "center" }}>
+        <Typography>
+          {playerDist[numPlayers]}
+          {numTravelers ? ` + ${numTravelers}` : ""}
         </Typography>
-
-        <div style={headerStyle}>
-          <div style={{ textAlign: "center" }}>
-            <Typography>
-              {playerDist[numPlayers]}
-              {numTravelers ? ` + ${numTravelers}` : ""}
-            </Typography>
-          </div>
-          <Controls
-            botcPlayers={botcPlayers}
-            numPlayers={numPlayers}
-            numTravelers={numTravelers}
-            newBotCGame={newBotCGame}
-          />
-        </div>
       </div>
-    );
-  },
-);
 
-Header.displayName = "Header";
+      <Controls
+        botcPlayers={botcPlayers}
+        numPlayers={numPlayers}
+        numTravelers={numTravelers}
+      />
+    </div>
+  </div>
+);
 
 export default Header;

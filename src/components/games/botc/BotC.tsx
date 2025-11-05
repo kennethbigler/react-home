@@ -6,8 +6,7 @@ import PlayerNotes from "./player-notes/PlayerNotes";
 import LiePie from "./LiePie";
 
 const BotC = React.memo(() => {
-  const { botcPlayers, numPlayers, numTravelers, newBotCGame, isText, script } =
-    useBotC();
+  const { botcPlayers, numPlayers, numTravelers, isText, script } = useBotC();
 
   /* ----------     Render     ---------- */
   return (
@@ -16,7 +15,6 @@ const BotC = React.memo(() => {
         botcPlayers={botcPlayers}
         numPlayers={numPlayers}
         numTravelers={numTravelers}
-        newBotCGame={newBotCGame}
       />
       <Divider sx={{ marginTop: 2, marginBottom: 2 }} aria-hidden />
       <PlayerNotes
