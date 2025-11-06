@@ -48,9 +48,7 @@ const Analysis = ({
   return (
     <div>
       <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h2" component="h1">
-          Analysis
-        </Typography>
+        <Typography variant="h2">Analysis</Typography>
         <FormControlLabel
           control={<Switch checked={showAll} onChange={handleSwitch} />}
           label="Show All Couples"

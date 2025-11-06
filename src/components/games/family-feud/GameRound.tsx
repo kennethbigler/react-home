@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 interface GameRoundProps {
   answers: string[];
@@ -52,9 +53,13 @@ const GameRound = ({
 
   return (
     <div>
-      <i>{question}</i>
+      <Typography variant="body1" fontStyle="italic">
+        {question}
+      </Typography>
       <hr aria-hidden />
-      <h3 style={{ textAlign: "center" }}>Points: {score * modifier}</h3>
+      <Typography variant="h4" component="h3" align="center">
+        Points: {score * modifier}
+      </Typography>
       <hr aria-hidden />
       <Stack
         direction="row"
@@ -112,7 +117,9 @@ const GameRound = ({
         ))}
       </Stack>
       <hr aria-hidden />
-      <h3>Which Team Won?</h3>
+      <Typography variant="h4" component="h3">
+        Which Team Won?
+      </Typography>
       <Stack direction="row" justifyContent="space-around">
         <Button variant="contained" onClick={handleTeam1Click}>
           Team 1

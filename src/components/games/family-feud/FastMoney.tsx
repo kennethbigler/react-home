@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import FastMoneyTable from "./FastMoneyTable";
 import { sum } from "./helpers";
 
@@ -68,9 +69,9 @@ const FastMoney = ({ questions, answers, scores }: FastMoneyProps) => {
           />
         </Stack>
       </Stack>
-      <h3 style={{ textAlign: "center" }}>
+      <Typography variant="h4" component="h3" style={{ textAlign: "center" }}>
         Total: {scoresR.reduce(sum, scoresL.reduce(sum, 0))}
-      </h3>
+      </Typography>
     </div>
   );
 };
