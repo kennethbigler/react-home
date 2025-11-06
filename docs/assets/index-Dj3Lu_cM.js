@@ -1,2 +1,0 @@
-import{r as s,j as e}from"./index-BkOwoG0C.js";import{T as t}from"./Header-DzwoKapO.js";const r="/assets/kenneth_bigler_resume-BPvkQlsI.png",a={maxWidth:1275,width:"100%",display:"block",margin:"auto"},m=s.memo(()=>e.jsxs(e.Fragment,{children:[e.jsx(t,{variant:"h2",component:"h1",children:"Resume"}),e.jsx("img",{src:r,alt:"Kenneth Bigler Software Engineer Resume",style:a})]}));m.displayName="Resume";export{m as default};
-//# sourceMappingURL=index-Dj3Lu_cM.js.map

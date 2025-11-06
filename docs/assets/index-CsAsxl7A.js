@@ -1,2 +1,0 @@
-import{j as r}from"./index-BkOwoG0C.js";import{I as o}from"./InfoPopup-DjJCEGhD.js";import{T as i}from"./Header-DzwoKapO.js";import"./Button-DA8luku2.js";import"./DialogTitle-lgq-E8j_.js";const a=()=>r.jsxs("div",{className:"flex-container",children:[r.jsx(i,{variant:"h2",component:"h1",children:"🌉"}),r.jsx(o,{title:"Bid",children:"Bid"}),r.jsx(o,{title:"Score",children:"Score"})]});export{a as default};
-//# sourceMappingURL=index-CsAsxl7A.js.map
