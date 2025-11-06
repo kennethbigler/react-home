@@ -22,25 +22,6 @@
     <meta name="author" content="Kenneth Bigler" />
     <meta name="theme-color" content="#009688"/>
     <!-- Social -->
-    <meta
-      itemprop="name"
-      name="twitter:title"
-      property="og:title"
-      content="Ken Bigler's Website"
-    />
-    <meta
-      itemprop="image"
-      name="twitter:image"
-      property="og:image"
-      content="../src/images/ken.webp"
-    />
-    <meta name="twitter:card" property="og:site_name" content="resume" />
-    <meta name="twitter:site" content="@KennethBigler" />
-    <meta
-      name="twitter:description"
-      content="Resume website for Ken Bigler, Software Engineer at Intuit"
-    />
-    <meta name="twitter:creator" content="@KennethBigler" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="http://www.kennethbigler.com/" />
 
@@ -52,34 +33,30 @@
     />
     <link rel="manifest" href="/manifest.json" />
 
-    <!-- Apple -->
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!-- PWA -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Ken's Resume">
+    <meta name="msapplication-TileColor" content="#009688">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Ken's Site">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link
-      rel="apple-touch-startup-image"
-      href="/apple-touch-icon.png"
-    />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="apple-touch-startup-image" href="/apple-touch-icon.png">
 
     <!-- preconnect -->
-    <link rel="preconnect" href="https://www.google.com">
-    <link rel="preconnect" href="https://stats.g.doubleclick.net">
-    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://www.google.com" crossorigin>
+    <link rel="preconnect" href="https://stats.g.doubleclick.net" crossorigin>
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=UA-54229318-1"
-    ></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0F5M2TLM6"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-      gtag("config", "UA-54229318-1");
+      gtag('config', 'G-T0F5M2TLM6');
     </script>
     <!-- ___ ___                       _____
         /  //  /                    __/ /_ /

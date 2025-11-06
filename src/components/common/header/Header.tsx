@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useCallback, ReactElement } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Drawer from "@mui/material/Drawer";
@@ -16,13 +16,13 @@ export interface NavProps {
 
 interface HeaderProps {
   /** content of the header bar via render props */
-  children: (onItemClick: ItemClick) => React.ReactElement<NavProps>;
+  children: (onItemClick: ItemClick) => ReactElement<NavProps>;
   /** callback function, wrapped with logic, then passed as onItemClick to children */
   handleNav?: (loc: string) => void;
 }
 
 const Header = ({ children, handleNav }: HeaderProps) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const toggleOpen = () => setIsOpen(!isOpen);
 
   const {
@@ -30,7 +30,7 @@ const Header = ({ children, handleNav }: HeaderProps) => {
   } = useTheme();
 
   /** close the menu and call the passed callback */
-  const handleNavigation = React.useCallback(
+  const handleNavigation = useCallback(
     (loc: string): void => {
       setIsOpen(false);
       if (handleNav) {

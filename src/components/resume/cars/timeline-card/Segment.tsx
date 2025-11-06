@@ -1,9 +1,9 @@
-import * as React from "react";
+import { memo, CSSProperties } from "react";
 import { useTheme } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 import { SegmentType } from "./timelineHelpers";
 
-const bodyStyles: React.CSSProperties = {
+const bodyStyles: CSSProperties = {
   cursor: "pointer",
   paddingTop: "0.5em",
   paddingBottom: "0.5em",
@@ -14,7 +14,7 @@ const bodyStyles: React.CSSProperties = {
   fontSize: "1em",
 };
 
-const Segment = React.memo(
+const Segment = memo(
   ({
     body,
     width,
@@ -28,7 +28,7 @@ const Segment = React.memo(
     } = useTheme();
 
     // variables for empty segment
-    let style: React.CSSProperties = {
+    let style: CSSProperties = {
       display: "inline-block",
       width: `${width}%`,
       color: inverted ? "black" : grey[50],

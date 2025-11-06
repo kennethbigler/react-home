@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
@@ -33,7 +33,7 @@ const tooltipFormatter = function (this: Highcharts.Point): string {
   return tooltip;
 };
 
-const DriverPointsLine = React.memo(({ color }: DriverPointsLineProps) => {
+const DriverPointsLine = memo(({ color }: DriverPointsLineProps) => {
   const options = {
     accessibility: { enabled: true },
     chart: { type: "line", backgroundColor: null },

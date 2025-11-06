@@ -1,4 +1,4 @@
-import * as React from "react";
+import { CSSProperties } from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
@@ -39,7 +39,7 @@ const EffectiveRow = ({ data, type, idx, onClick }: EffectiveRowProps) => (
       </Button>
     </TableCell>
     {data[idx].map((val, j) => {
-      const cellSx: React.CSSProperties = { padding: 0 };
+      const cellSx: CSSProperties = { padding: 0 };
       if (val !== 1) {
         cellSx.backgroundColor = colors[val];
         cellSx.color = "black";

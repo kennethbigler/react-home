@@ -1,4 +1,4 @@
-import * as React from "react";
+import { MouseEventHandler, memo } from "react";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -6,12 +6,12 @@ import Piece from "./Piece";
 import { C4Turn } from "../../../jotai/connect4-atom";
 
 interface HeaderProps {
-  newGame: React.MouseEventHandler;
+  newGame: MouseEventHandler;
   turn: C4Turn;
   winner?: number;
 }
 
-const Header = React.memo(({ winner, turn, newGame }: HeaderProps) => (
+const Header = memo(({ winner, turn, newGame }: HeaderProps) => (
   <Toolbar>
     <div className="flex-container">
       <div style={{ display: "flex", alignItems: "center" }}>

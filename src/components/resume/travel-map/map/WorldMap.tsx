@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { useAtomValue } from "jotai";
 import Highcharts from "highcharts/highmaps";
 import HighchartsReact from "highcharts-react-official";
@@ -8,24 +8,27 @@ import themeAtom from "../../../../jotai/theme-atom";
 import countries, { numCountries } from "../../../../constants/travel";
 
 const WorldMap = () => {
-  const [topology, setTopology] = React.useState<Highcharts.GeoJSON>();
-  const [error, setError] = React.useState(false);
+  const [topology, setTopology] = useState<Highcharts.GeoJSON>();
+  const [error, setError] = useState(false);
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
   // other map: https://code.highcharts.com/mapdata/custom/world.topo.json
-  React.useEffect(() => {
+  useEffect(() => {
     fetch("https://unpkg.com/world-atlas@2.0.2/countries-110m.json")
       .then((response) => response.json())
       .then((data) => setTopology(data as Highcharts.GeoJSON))
       .catch(() => setError(true));
   }, []);
 
-  const [options, setOptions] = React.useState<Highcharts.Options>({
+  const [options, setOptions] = useState<Highcharts.Options>({
     accessibility: { enabled: true },
   });
 
-  React.useEffect(() => {
+  if (
+    options?.title?.style?.color !== color ||
+    options?.chart?.map !== topology
+  ) {
     setOptions({
       accessibility: { enabled: true },
       chart: { backgroundColor: "transparent", map: topology, height: "60%" },
@@ -50,7 +53,7 @@ const WorldMap = () => {
         style: { color },
       },
     });
-  }, [color, topology]);
+  }
 
   if (error) {
     return (

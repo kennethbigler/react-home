@@ -1,4 +1,4 @@
-import * as React from "react";
+import { ReactElement } from "react";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import { ChipColorOptions } from "../types";
@@ -37,7 +37,7 @@ const MatchedStack = ({
   tempScore,
   showAll,
 }: MatchedStackProps) => {
-  const equation: React.ReactElement[] = [];
+  const equation: ReactElement[] = [];
   let numNoMatches = 0;
   let numMatchAndRepeat = 0;
   pairs.forEach((gi, li) => {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { MouseEventHandler, memo, CSSProperties } from "react";
 import ContentAdd from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
 import { red, lightGreen } from "@mui/material/colors";
@@ -9,7 +9,7 @@ interface PieceProps {
   /** can the piece be clicked? */
   enabled?: boolean;
   /** callback onClick of piece */
-  onClick?: React.MouseEventHandler;
+  onClick?: MouseEventHandler;
   /** type of piece */
   piece: number;
 }
@@ -28,10 +28,10 @@ const getColor = (piece: number): string | undefined => {
   }
 };
 
-const Piece = React.memo(
+const Piece = memo(
   ({ ariaLabel, piece, enabled = false, onClick }: PieceProps) => {
     const color = getColor(piece);
-    const style: React.CSSProperties = { backgroundColor: color };
+    const style: CSSProperties = { backgroundColor: color };
 
     return !enabled ? (
       <Fab

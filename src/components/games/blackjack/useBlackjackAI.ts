@@ -505,19 +505,19 @@ const useBlackjackAI = () => {
         newGame();
         break;
       case GameFunctions.FINISH_BETTING:
-        finishBetting().catch((e) => console.log(e));
+        finishBetting().catch((e) => console.error(e));
         break;
       case GameFunctions.STAY:
         stay();
         break;
       case GameFunctions.HIT:
-        hit().catch((e) => console.log(e));
+        hit().catch((e) => console.error(e));
         break;
       case GameFunctions.DOUBLE:
-        double().catch((e) => console.log(e));
+        double().catch((e) => console.error(e));
         break;
       case GameFunctions.SPLIT:
-        split().catch((e) => console.log(e));
+        split().catch((e) => console.error(e));
         break;
       default:
         // eslint-disable-next-line no-console

@@ -4,12 +4,12 @@
  * get second card for dealer and hide it
  * buy insurance on dealer's Ace
  */
-import * as React from "react";
+import { memo } from "react";
 import useBlackjackAI from "./useBlackjackAI";
 import Header from "./Header";
 import GameTable from "../game-table";
 
-const BlackJack = React.memo(() => {
+const BlackJack = memo(() => {
   const {
     betHandler,
     checkUpdate,
@@ -20,7 +20,7 @@ const BlackJack = React.memo(() => {
     turn,
   } = useBlackjackAI();
 
-  checkUpdate().catch((e) => console.log(e));
+  checkUpdate().catch((e) => console.error(e));
 
   return (
     <>

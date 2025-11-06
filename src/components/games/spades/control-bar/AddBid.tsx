@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -22,7 +22,7 @@ const getBlindTrade = (blindTrade: number, n: number) =>
     : 0;
 
 const AddBid = ({ blindTrade, first, initials, onBidSave }: AddBidProps) => {
-  const [bids, setBids] = React.useState<Bids>([
+  const [bids, setBids] = useState<Bids>([
     defaultBid,
     defaultBid,
     defaultBid,

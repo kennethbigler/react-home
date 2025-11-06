@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Dispatch, SetStateAction } from "react";
 import Add from "@mui/icons-material/Add";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
@@ -10,7 +10,7 @@ interface AddScorePlayerProps {
   initial: string;
   lastBid: number;
   made: number;
-  setMade: React.Dispatch<React.SetStateAction<number>>;
+  setMade: Dispatch<SetStateAction<number>>;
 }
 
 const AddScorePlayer = ({

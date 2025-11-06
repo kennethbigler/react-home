@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import CarSpeedoGraph from "./CarSpeedoGraph";
 
 export interface CurrentCarStatsProps {
@@ -12,7 +12,7 @@ export interface CurrentCarStatsProps {
   powerToWeight: number;
 }
 
-const CurrentCarStats = React.memo(
+const CurrentCarStats = memo(
   ({
     color,
     name,

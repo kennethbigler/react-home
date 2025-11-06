@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, Fragment, FocusEvent } from "react";
 import { useAtom } from "jotai";
 import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import SimplePopover from "./ButtonPopover";
 import playerAtom from "../../../jotai/player-atom";
 
-const PlayerMenu = React.memo(() => {
+const PlayerMenu = memo(() => {
   const [players, setPlayers] = useAtom(playerAtom);
 
   /** toggle between bot and human player */
@@ -33,7 +33,7 @@ const PlayerMenu = React.memo(() => {
   /** update player name onBlur */
   const handleBlur =
     (id: number) =>
-    (e: React.FocusEvent<HTMLInputElement>): void => {
+    (e: FocusEvent<HTMLInputElement>): void => {
       const pi = players.findIndex((p) => p.id === id);
       if (pi !== -1) {
         const newPlayers = [...players];
@@ -54,7 +54,7 @@ const PlayerMenu = React.memo(() => {
         </Grid>
         {players.map((p, i) =>
           p.id !== 0 ? (
-            <React.Fragment key={`${p.name},${i}`}>
+            <Fragment key={`${p.name},${i}`}>
               <Grid size={9}>
                 <TextField
                   defaultValue={p.name}
@@ -73,16 +73,16 @@ const PlayerMenu = React.memo(() => {
                   />
                 )}
               </Grid>
-            </React.Fragment>
+            </Fragment>
           ) : (
-            <React.Fragment key={`${p.name},${i}`}>
+            <Fragment key={`${p.name},${i}`}>
               <Grid size={9}>
                 <Typography variant="h5">{p.name}</Typography>
               </Grid>
               <Grid size={3}>
                 <Switch checked disabled />
               </Grid>
-            </React.Fragment>
+            </Fragment>
           ),
         )}
       </Grid>

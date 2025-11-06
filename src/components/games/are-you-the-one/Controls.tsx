@@ -1,4 +1,4 @@
-import * as React from "react";
+import { CSSProperties } from "react";
 import { useAtom } from "jotai";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -27,7 +27,7 @@ interface ControlsProps {
 
 const getScore = (value: number) => (isNaN(value) ? -1 : value);
 
-const ctrlStyles: React.CSSProperties = {
+const ctrlStyles: CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   flexWrap: "wrap",

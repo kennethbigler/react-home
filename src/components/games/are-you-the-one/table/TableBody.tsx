@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import TableBody from "@mui/material/TableBody";
 import { RoundPairing } from "../../../../jotai/are-you-the-one-state";
 import TBDialog from "./TBDialog";
@@ -42,8 +42,8 @@ const AYTOTableBody = ({
   const isTB = options.length === ri + 1;
 
   // state
-  const [open, setOpen] = React.useState(false);
-  const [tbi, setTBI] = React.useState([-1, -1]);
+  const [open, setOpen] = useState(false);
+  const [tbi, setTBI] = useState([-1, -1]);
 
   // Handlers
   const handleClick =

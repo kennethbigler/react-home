@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -13,10 +13,10 @@ import PlayerMenu from "../../common/header/PlayerMenu";
 /* Slots  ->  ReelDisplay
  *       |->  MoneyTable
  *       |->  PayoutTable */
-const Slots = React.memo(() => {
+const Slots = memo(() => {
   const [{ reel, money, houseMoney }, setState] = useAtom(slotsState);
   const { bet, name } = useAtomValue(slotsRead);
-  const [exchange, setExchange] = React.useState(0);
+  const [exchange, setExchange] = useState(0);
 
   const updateSlotMachine = () => {
     // get rolled reel

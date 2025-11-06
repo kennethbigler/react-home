@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import TimelineCard from "./timeline-card";
 import {
@@ -12,9 +12,9 @@ import CarGraphs from "./graphs/CarGraphs";
 import CarDisplay from "./CarDisplay";
 
 const Cars = () => {
-  const [hideFamily, setHideFamily] = React.useState(false);
-  const [hideKen, setHideKen] = React.useState(false);
-  const [active, setActive] = React.useState(currentKensCars[0]);
+  const [hideFamily, setHideFamily] = useState(false);
+  const [hideKen, setHideKen] = useState(false);
+  const [active, setActive] = useState(currentKensCars[0]);
 
   const handleSegmentClick = (title: string) =>
     cars.forEach((car) => car.title === title && setActive(car));

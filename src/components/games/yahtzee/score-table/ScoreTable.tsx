@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useCallback, ReactElement, CSSProperties } from "react";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -20,7 +20,7 @@ interface ScoreTableProps {
   values: Dice[];
 }
 
-const centerStyle: React.CSSProperties = { textAlign: "center" };
+const centerStyle: CSSProperties = { textAlign: "center" };
 
 const ScoreTable = ({
   bottom,
@@ -33,13 +33,13 @@ const ScoreTable = ({
   onTopScore,
   onBottomScore,
 }: ScoreTableProps) => {
-  const getScoreButton = React.useCallback(
+  const getScoreButton = useCallback(
     (
       showButton: boolean,
       points: number,
       wasTop: boolean,
       i: number,
-    ): React.ReactElement =>
+    ): ReactElement =>
       showButton ? (
         <Button
           color="secondary"

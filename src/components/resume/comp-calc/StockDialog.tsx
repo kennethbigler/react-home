@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, useState, ChangeEvent } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -22,7 +22,7 @@ interface StockDialogProps {
   removeStockEntry: (s: string) => () => void;
 }
 
-const StockDialog = React.memo(
+const StockDialog = memo(
   ({
     open,
     price: exPrice,
@@ -31,27 +31,18 @@ const StockDialog = React.memo(
     addStockEntry,
     removeStockEntry,
   }: StockDialogProps) => {
-    const [price, setPrice] = React.useState(0);
-    const [stock, setStock] = React.useState("");
+    const [price, setPrice] = useState(exPrice || 0);
+    const [stock, setStock] = useState(exStock || "");
 
     const resetState = () => {
       setPrice(0);
       setStock("");
     };
 
-    React.useEffect(() => {
-      if (exStock && exPrice !== undefined) {
-        setPrice(exPrice);
-        setStock(exStock);
-      } else {
-        resetState();
-      }
-    }, [exPrice, exStock]);
-
-    const handleStockChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    const handleStockChange = (e: ChangeEvent<HTMLInputElement>) =>
       setStock(e.target.value);
 
-    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) =>
       setPrice(parseFloat(e.target.value));
 
     const handleSubmit = () => {

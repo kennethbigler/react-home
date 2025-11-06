@@ -1,4 +1,4 @@
-import * as React from "react";
+import { CSSProperties, useState } from "react";
 import Alert from "@mui/material/Alert";
 import Grid from "@mui/material/Grid";
 import Snackbar from "@mui/material/Snackbar";
@@ -15,13 +15,13 @@ interface ControlsProps {
   numTravelers: number;
 }
 
-const qrCodeStyle: React.CSSProperties = {
+const qrCodeStyle: CSSProperties = {
   display: "block",
   margin: "auto",
 };
 
 const Controls = ({ numPlayers, numTravelers }: ControlsProps) => {
-  const [hasToast, setHasToast] = React.useState(false);
+  const [hasToast, setHasToast] = useState(false);
   const handleOpenToast = () => setHasToast(true);
   const handleCloseToast = () => setHasToast(false);
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Grid from "@mui/material/Grid";
 import { SeriesClickEventObject } from "highcharts";
 import CompChart from "./CompGraph";
@@ -17,17 +17,10 @@ const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
   const { stock, stockAdj } = compCalcEntries[compCalcEntries.length - 1];
   const { bonus, salary } = compEntries[compEntries.length - 1];
 
-  const [startIdx, setStartIdx] = React.useState(0);
-  const [cStock, setStock] = React.useState(stockAdj || stock);
-  const [cBonus, setBonus] = React.useState(bonus);
-  const [cSalary, setSalary] = React.useState(salary);
-
-  React.useEffect(() => {
-    setStartIdx(0);
-    setStock(stockAdj || stock);
-    setBonus(bonus);
-    setSalary(salary);
-  }, [stockAdj, stock, bonus, salary]);
+  const [startIdx, setStartIdx] = useState(0);
+  const [cStock, setStock] = useState(stockAdj || stock);
+  const [cBonus, setBonus] = useState(bonus);
+  const [cSalary, setSalary] = useState(salary);
 
   const handleClick = ({ point: { index } }: SeriesClickEventObject) => {
     const { stock, stockAdj } = compCalcEntries[index];

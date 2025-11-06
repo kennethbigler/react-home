@@ -1,13 +1,13 @@
-import * as React from "react";
+import { memo, CSSProperties } from "react";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 interface HeaderProps {
-  sx: React.CSSProperties;
+  sx: CSSProperties;
 }
 
-const Header = React.memo(({ sx }: HeaderProps) => (
+const Header = memo(({ sx }: HeaderProps) => (
   <TableHead>
     <TableRow sx={{ borderBottom: 2 }}>
       <TableCell>Minimum Required for Bonus</TableCell>

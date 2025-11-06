@@ -1,17 +1,23 @@
-import * as React from "react";
+import {
+  useState,
+  MouseEventHandler,
+  MouseEvent,
+  CSSProperties,
+  ReactElement,
+} from "react";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 
 interface AnchorElHook {
   anchorEl: null | HTMLElement;
-  setAnchor: React.MouseEventHandler;
-  clearAnchor: React.MouseEventHandler;
+  setAnchor: MouseEventHandler;
+  clearAnchor: MouseEventHandler;
 }
 
 const useAnchorEl = (): AnchorElHook => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const setAnchor = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const setAnchor = (e: MouseEvent<HTMLButtonElement>): void => {
     setAnchorEl(e.currentTarget);
   };
   const clearAnchor = (): void => {
@@ -21,11 +27,11 @@ const useAnchorEl = (): AnchorElHook => {
 };
 
 interface ButtonPopoverProps {
-  children: React.ReactElement;
+  children: ReactElement;
   buttonText: string;
 }
 
-const contentStyle: React.CSSProperties = { padding: 15 };
+const contentStyle: CSSProperties = { padding: 15 };
 
 const ButtonPopover = ({ children, buttonText }: ButtonPopoverProps) => {
   const { anchorEl, setAnchor, clearAnchor } = useAnchorEl();

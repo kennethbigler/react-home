@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, useState, useCallback, SyntheticEvent } from "react";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import {
@@ -11,19 +11,17 @@ import WerewolfPanel from "./WerewolfPanel";
 import ExpandableCard from "../../common/expandable-card";
 import Grid from "@mui/material/Grid";
 
-const Werewolf = React.memo(() => {
-  const [expanded, setExpanded] = React.useState("");
-  const [gameTotal, setGameTotal] = React.useState<number | undefined>(
-    undefined,
-  );
-  const [masonCount, setMasonCount] = React.useState(0);
-  const [villagerCount, setVillagerCount] = React.useState(0);
-  const [vampireCount, setVampireCount] = React.useState(0);
-  const [wolfCount, setWolfCount] = React.useState(0);
+const Werewolf = memo(() => {
+  const [expanded, setExpanded] = useState("");
+  const [gameTotal, setGameTotal] = useState<number | undefined>(undefined);
+  const [masonCount, setMasonCount] = useState(0);
+  const [villagerCount, setVillagerCount] = useState(0);
+  const [vampireCount, setVampireCount] = useState(0);
+  const [wolfCount, setWolfCount] = useState(0);
 
-  const handleChange = React.useCallback(
+  const handleChange = useCallback(
     (panel: string) =>
-      (_event: React.SyntheticEvent<Element, Event>, exp?: boolean): void => {
+      (_event: SyntheticEvent<Element, Event>, exp?: boolean): void => {
         setExpanded(exp ? panel : "");
       },
     [setExpanded],

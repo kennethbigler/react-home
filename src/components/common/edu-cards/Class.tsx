@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import Typography from "@mui/material/Typography";
 
 export interface ClassProps {
@@ -7,7 +7,7 @@ export interface ClassProps {
 }
 
 /** Degree  -> Year  ->  Quarter  ->  Class */
-const Class = React.memo(({ name, catalog }: ClassProps) => (
+const Class = memo(({ name, catalog }: ClassProps) => (
   <li>
     <Typography>
       {catalog && <strong>{`${catalog} - `}</strong>}

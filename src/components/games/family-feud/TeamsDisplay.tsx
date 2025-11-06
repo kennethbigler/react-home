@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import Chip from "@mui/material/Chip";
 
 interface TeamsDisplayProps {
@@ -6,7 +6,7 @@ interface TeamsDisplayProps {
   score2: number;
 }
 
-const TeamsDisplay = React.memo(({ score1, score2 }: TeamsDisplayProps) => (
+const TeamsDisplay = memo(({ score1, score2 }: TeamsDisplayProps) => (
   <div
     style={{
       display: "flex",

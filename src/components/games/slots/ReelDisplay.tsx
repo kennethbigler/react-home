@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useCallback, CSSProperties, ReactElement } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,14 +10,14 @@ interface ReelDisplayProps {
   reel: SlotDisplay[];
 }
 
-const cellStyles: React.CSSProperties = {
+const cellStyles: CSSProperties = {
   minHeight: 39,
   fontWeight: 900,
 };
 
 const ReelDisplay = ({ reel }: ReelDisplayProps) => {
   /** generate code for slot machine */
-  const getSlots = React.useCallback((): React.ReactElement[] => {
+  const getSlots = useCallback((): ReactElement[] => {
     // display for slots
     const slots = [];
     for (let i = 0; i < 3; i += 1) {

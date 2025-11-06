@@ -1,4 +1,4 @@
-import * as React from "react";
+import { ReactElement, ReactNode, CSSProperties } from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { BottomGameScore, TopGameScore } from "../types";
@@ -13,9 +13,9 @@ interface TopTableProps {
     points: number,
     wasTop: boolean,
     i: number,
-  ) => React.ReactElement;
+  ) => ReactElement;
   showScoreButtons: boolean;
-  sx: React.CSSProperties;
+  sx: CSSProperties;
   top: TopGameScore[];
   bottom: BottomGameScore[];
   topSum: number;
@@ -52,7 +52,7 @@ const TopTable = ({
     showButton: boolean,
     sum: number,
     i: number,
-  ): React.ReactNode | null => {
+  ): ReactNode | null => {
     if (score >= 0) {
       return score;
     }

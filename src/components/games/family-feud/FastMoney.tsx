@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Stack from "@mui/material/Stack";
 import FastMoneyTable from "./FastMoneyTable";
 import { sum } from "./helpers";
@@ -10,10 +10,10 @@ interface FastMoneyProps {
 }
 
 const FastMoney = ({ questions, answers, scores }: FastMoneyProps) => {
-  const [scoresL, setScoresL] = React.useState([0, 0, 0, 0, 0]);
-  const [scoresR, setScoresR] = React.useState([0, 0, 0, 0, 0]);
-  const [answerIndexL, setAnswerIndexL] = React.useState([-2, -2, -2, -2, -2]);
-  const [answerIndexR, setAnswerIndexR] = React.useState([-2, -2, -2, -2, -2]);
+  const [scoresL, setScoresL] = useState([0, 0, 0, 0, 0]);
+  const [scoresR, setScoresR] = useState([0, 0, 0, 0, 0]);
+  const [answerIndexL, setAnswerIndexL] = useState([-2, -2, -2, -2, -2]);
+  const [answerIndexR, setAnswerIndexR] = useState([-2, -2, -2, -2, -2]);
 
   const handleClickL = (questionIdx: number, answerIdx: number) => () => {
     // set answer index

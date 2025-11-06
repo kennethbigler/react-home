@@ -1,4 +1,4 @@
-import * as React from "react";
+import { CSSProperties } from "react";
 import Paper from "@mui/material/Paper";
 import Case from "./Case";
 import { Briefcase } from "../../../jotai/deal-or-no-deal-state";
@@ -10,7 +10,7 @@ interface BoardProps {
   playerChoice?: Briefcase;
 }
 
-const style: React.CSSProperties = {
+const style: CSSProperties = {
   maxWidth: 796,
   padding: 9,
   textAlign: "center",

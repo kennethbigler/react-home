@@ -1,4 +1,4 @@
-import * as React from "react";
+import { CSSProperties } from "react";
 import Typography from "@mui/material/Typography";
 import { playerDist } from "../../../../constants/botc";
 import Controls from "./Controls";
@@ -8,7 +8,7 @@ interface HeaderProps {
   numTravelers: number;
 }
 
-const headerStyle: React.CSSProperties = {
+const headerStyle: CSSProperties = {
   display: "flex",
   flexDirection: "column",
   width: "100%",

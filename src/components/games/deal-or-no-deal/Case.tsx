@@ -1,4 +1,4 @@
-import * as React from "react";
+import { MouseEventHandler } from "react";
 import Button from "@mui/material/Button";
 import { getMoneyText } from "./helpers";
 import { Briefcase } from "../../../jotai/deal-or-no-deal-state";
@@ -6,7 +6,7 @@ import { Briefcase } from "../../../jotai/deal-or-no-deal-state";
 interface CaseProps {
   briefcase: Briefcase;
   isOver: boolean;
-  onClick: React.MouseEventHandler;
+  onClick: MouseEventHandler;
   secondary?: boolean;
 }
 

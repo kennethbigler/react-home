@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, SyntheticEvent } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabPanel from "../../common/tab-panel/tab-panel";
@@ -9,12 +9,12 @@ import FastMoney from "./FastMoney";
 import { Typography } from "@mui/material";
 
 const FamilyFeud = () => {
-  const [value, setValue] = React.useState(0);
-  const [score1, setScore1] = React.useState(0);
-  const [score2, setScore2] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [score1, setScore1] = useState(0);
+  const [score2, setScore2] = useState(0);
 
   const handleChange = (
-    _: React.SyntheticEvent<Element, Event>,
+    _: SyntheticEvent<Element, Event>,
     tabValue: number,
   ) => {
     setValue(tabValue);

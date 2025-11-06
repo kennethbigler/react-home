@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
@@ -16,7 +16,7 @@ export interface CarSpeedoGraphProps {
   startRedVal: number;
 }
 
-const CarSpeedoGraph = React.memo(
+const CarSpeedoGraph = memo(
   ({
     color,
     maxVal,

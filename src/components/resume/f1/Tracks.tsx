@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, useState } from "react";
 import Grid from "@mui/material/Grid";
 import australiaSrc from "../../../images/tracks/Australia_Circuit.avif";
 import chinaSrc from "../../../images/tracks/China_Circuit.avif";
@@ -35,8 +35,8 @@ import Track from "./Track";
 import ExpandableCard from "../../common/expandable-card";
 import { FERRARI_HEX } from "../../../constants/f1";
 
-const Tracks = React.memo(() => {
-  const [expanded, setExpanded] = React.useState("");
+const Tracks = memo(() => {
+  const [expanded, setExpanded] = useState("");
 
   const toggleExpanded = (circuitName: string) => () => {
     setExpanded(circuitName === expanded ? "" : circuitName);

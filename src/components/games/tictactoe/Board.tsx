@@ -1,4 +1,4 @@
-import * as React from "react";
+import { CSSProperties } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,7 +12,7 @@ interface BoardProps {
   winRow: [number?, number?, number?];
 }
 
-const tableCellStyle: React.CSSProperties = {
+const tableCellStyle: CSSProperties = {
   padding: 0,
   textAlign: "center",
   border: `1px solid ${grey[400]}`,

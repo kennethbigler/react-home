@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, ChangeEvent, FocusEvent, ChangeEventHandler } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import { SelectChangeEvent } from "@mui/material";
 import botcAtom, {
@@ -65,7 +65,7 @@ export const usePlayerAdjControls = () => {
 export const usePlayerNotes = () => {
   const [{ botcPlayers, numPlayers, numTravelers, ...other }, setState] =
     useAtom(botcAtom);
-  const [randomPlayer, setRandomPlayer] = React.useState<number | null>(null);
+  const [randomPlayer, setRandomPlayer] = useState<number | null>(null);
 
   const getRandomPlayer = () => {
     const alivePlayers: number[] = [];
@@ -83,7 +83,7 @@ export const usePlayerNotes = () => {
   /** update player name onBlur */
   const updateNames =
     (i: number) =>
-    (e: React.FocusEvent<HTMLInputElement>): void => {
+    (e: FocusEvent<HTMLInputElement>): void => {
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i], name: e.target.value || "" };
       newPlayers[i] = newPlayer;
@@ -93,7 +93,7 @@ export const usePlayerNotes = () => {
   /** update player notes onBlur */
   const updateNotes =
     (i: number) =>
-    (e: React.FocusEvent<HTMLInputElement>): void => {
+    (e: FocusEvent<HTMLInputElement>): void => {
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i], notes: e.target.value || "" };
       newPlayers[i] = newPlayer;
@@ -118,7 +118,7 @@ export const usePlayerNotes = () => {
   const updateStats =
     (i: number) =>
     (key: BotCPlayerStatus) =>
-    (_e: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
+    (_e: ChangeEvent<HTMLInputElement>, checked: boolean): void => {
       const newPlayers = [...botcPlayers];
       const newPlayer = { ...newPlayers[i] };
       newPlayer[key] = checked;
@@ -197,7 +197,7 @@ export const useEditPlayers = () => {
   };
 
   /** update player notes onBlur */
-  const updateText = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const updateText = (e: ChangeEvent<HTMLInputElement>): void => {
     setState({
       ...other,
       botcPlayers,
@@ -254,7 +254,7 @@ export const useTracker = () => {
   };
 
   /** update round notes onBlur */
-  const onNotesChange: React.ChangeEventHandler<
+  const onNotesChange: ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = (e): void => {
     const newRoundNotes = [...roundNotes];

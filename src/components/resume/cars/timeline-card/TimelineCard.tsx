@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import { FormatOutput } from "../../../../apis/DateHelper";
 import ExpandableCard from "../../../common/expandable-card";
 import Row from "./Row";
@@ -39,7 +39,7 @@ const fMonthSort = (a: CarEntry, b: CarEntry): number => {
 
 /** TimelineCard  ->  Timeline  ->  Row  ->  Segment
  **                                     |->  YearMarkers */
-const TimelineCard = React.memo(
+const TimelineCard = memo(
   ({ data: propsData, useFStart, useKStart, onClick }: TimelineCardProps) => {
     // get immutable data from props and sort by start date
     const data: CarEntry[] = [...propsData].sort(

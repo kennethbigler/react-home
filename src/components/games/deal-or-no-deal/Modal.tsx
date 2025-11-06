@@ -1,4 +1,4 @@
-import * as React from "react";
+import { MouseEventHandler, CSSProperties, ReactElement } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -10,15 +10,15 @@ import { Briefcase } from "../../../jotai/deal-or-no-deal-state";
 
 interface ModalProps {
   board: Briefcase[];
-  deal: React.MouseEventHandler;
-  noDeal: React.MouseEventHandler;
+  deal: MouseEventHandler;
+  noDeal: MouseEventHandler;
   numCases: number;
   offer: number;
   open: boolean;
-  swap: React.MouseEventHandler;
+  swap: MouseEventHandler;
 }
 
-const colStyles: React.CSSProperties = {
+const colStyles: CSSProperties = {
   width: "50%",
   display: "inline-block",
 };
@@ -27,7 +27,7 @@ const genMoneyCols = (
   arr: Briefcase[],
   start: number,
   stop = arr.length,
-): React.ReactElement[] =>
+): ReactElement[] =>
   arr
     .slice(start, stop)
     .map((bc) => <Money key={bc.loc} on={bc.on} val={bc.val} />);

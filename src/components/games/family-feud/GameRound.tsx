@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
@@ -24,10 +24,10 @@ const GameRound = ({
   onScore2,
   modifier = 1,
 }: GameRoundProps) => {
-  const [strikes, setStrikes] = React.useState([false, false, false]);
-  const [buttonsL, setButtonsL] = React.useState(["1", "2", "3", "4"]);
-  const [buttonsR, setButtonsR] = React.useState(["5", "6", "7", "8"]);
-  const [score, setScore] = React.useState(0);
+  const [strikes, setStrikes] = useState([false, false, false]);
+  const [buttonsL, setButtonsL] = useState(["1", "2", "3", "4"]);
+  const [buttonsR, setButtonsR] = useState(["5", "6", "7", "8"]);
+  const [score, setScore] = useState(0);
 
   const handleStrikeClick = (strikeNum: number) => () => {
     const newStrikes = [...strikes];
@@ -46,6 +46,9 @@ const GameRound = ({
     }
     setScore(score + scores[answerNum]);
   };
+
+  const handleTeam1Click = () => onScore1(score * modifier);
+  const handleTeam2Click = () => onScore2(score * modifier);
 
   return (
     <div>
@@ -111,10 +114,10 @@ const GameRound = ({
       <hr aria-hidden />
       <h3>Which Team Won?</h3>
       <Stack direction="row" justifyContent="space-around">
-        <Button variant="contained" onClick={() => onScore1(score * modifier)}>
+        <Button variant="contained" onClick={handleTeam1Click}>
           Team 1
         </Button>
-        <Button variant="contained" onClick={() => onScore2(score * modifier)}>
+        <Button variant="contained" onClick={handleTeam2Click}>
           Team 2
         </Button>
       </Stack>

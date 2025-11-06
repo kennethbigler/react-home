@@ -1,8 +1,8 @@
-import * as React from "react";
+import { ReactNode } from "react";
 import Box from "@mui/material/Box";
 
 interface TabPanelProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
   index: number;
   value: number;
 }

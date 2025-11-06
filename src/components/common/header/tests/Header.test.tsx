@@ -1,11 +1,11 @@
-import * as React from "react";
+import { ReactElement } from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import { NavProps } from "../Header";
 import Header from "..";
 
 /** This is just used for testing purposes */
-const Menu = ({ onItemClick }: NavProps): React.ReactElement<NavProps> => (
+const Menu = ({ onItemClick }: NavProps): ReactElement<NavProps> => (
   <button onClick={(): void => onItemClick("button")} type="button">
     Test Button
   </button>
@@ -15,7 +15,7 @@ describe("common | header | Header", () => {
   it("renders with basic elements", () => {
     render(
       <Header>
-        {(onItemClick): React.ReactElement<NavProps> => (
+        {(onItemClick): ReactElement<NavProps> => (
           <Menu onItemClick={onItemClick} />
         )}
       </Header>,
@@ -37,7 +37,7 @@ describe("common | header | Header", () => {
   it("toggles theme", () => {
     const { container } = render(
       <Header>
-        {(onItemClick): React.ReactElement<NavProps> => (
+        {(onItemClick): ReactElement<NavProps> => (
           <Menu onItemClick={onItemClick} />
         )}
       </Header>,
@@ -61,7 +61,7 @@ describe("common | header | Header", () => {
     it("displays children", () => {
       render(
         <Header>
-          {(onItemClick): React.ReactElement<NavProps> => (
+          {(onItemClick): ReactElement<NavProps> => (
             <Menu onItemClick={onItemClick} />
           )}
         </Header>,
@@ -77,7 +77,7 @@ describe("common | header | Header", () => {
 
       render(
         <Header handleNav={handleNav}>
-          {(onItemClick): React.ReactElement<NavProps> => (
+          {(onItemClick): ReactElement<NavProps> => (
             <Menu onItemClick={onItemClick} />
           )}
         </Header>,

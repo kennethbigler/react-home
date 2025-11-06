@@ -1,11 +1,11 @@
-import * as React from "react";
+import { memo } from "react";
 import Button from "@mui/material/Button";
 import ControlBar from "./control-bar/ControlBar";
 import ScoreTable from "./ScoreTable";
 import useSpades from "./useSpades";
 import Header from "./Header";
 
-const Spades = React.memo(() => {
+const Spades = memo(() => {
   const {
     // Shared
     data,

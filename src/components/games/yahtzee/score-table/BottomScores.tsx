@@ -1,14 +1,14 @@
-import * as React from "react";
+import { memo, CSSProperties } from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 
 interface BottomScoresProps {
   bottomSum: number;
   finalTopSum: number;
-  sx: React.CSSProperties;
+  sx: CSSProperties;
 }
 
-const BottomScores = React.memo(
+const BottomScores = memo(
   ({ finalTopSum, bottomSum, sx }: BottomScoresProps) => (
     <>
       <TableRow sx={{ borderTop: 2 }}>

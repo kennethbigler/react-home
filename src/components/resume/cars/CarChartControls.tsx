@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 
@@ -8,7 +8,7 @@ interface CarChartControlsProps {
   onClick: (isKen: boolean) => () => void;
 }
 
-const CarChartControls = React.memo(
+const CarChartControls = memo(
   ({ onClick, hideFamily, hideKen }: CarChartControlsProps) => (
     <ButtonGroup sx={{ marginTop: 3 }}>
       <Button

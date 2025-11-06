@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, useCallback } from "react";
 import { useAtomValue } from "jotai";
 import Typography from "@mui/material/Typography";
 import ScoreTable from "./score-table/ScoreTable";
@@ -26,7 +26,7 @@ const bottomConstants = [
   { name: "Chance", hint: ADD_DICE, points: ADD_DICE },
 ];
 
-const Yahtzee = React.memo(() => {
+const Yahtzee = memo(() => {
   const { state, diceClick, newGame, updateTop, updateBottom, updateRoll } =
     useYahtzeeState();
 
@@ -89,7 +89,7 @@ const Yahtzee = React.memo(() => {
     diceClick(newValues, newSaved);
   };
 
-  const getButtonText = React.useCallback(
+  const getButtonText = useCallback(
     (rollNum: Dice): string => {
       if (finish) {
         return "New Game";

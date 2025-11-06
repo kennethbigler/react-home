@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -32,12 +32,12 @@ const buttonStyles = { padding: "4px 2px" };
 
 /** type checking tool */
 const TypeChecker = () => {
-  const [atkPrimary, setAtkPrimary] = React.useState(-1);
-  const [defPrimary, setDefPrimary] = React.useState(-1);
-  const [defSecondary, setDefSecondary] = React.useState(0);
-  const [effChart, setEffChart] = React.useState([...effectiveness]);
-  const [effRowTypes, setEffRowTypes] = React.useState<Types[]>([...types]);
-  const [effColTypes, setEffColTypes] = React.useState<Types[]>([...types]);
+  const [atkPrimary, setAtkPrimary] = useState(-1);
+  const [defPrimary, setDefPrimary] = useState(-1);
+  const [defSecondary, setDefSecondary] = useState(0);
+  const [effChart, setEffChart] = useState([...effectiveness]);
+  const [effRowTypes, setEffRowTypes] = useState<Types[]>([...types]);
+  const [effColTypes, setEffColTypes] = useState<Types[]>([...types]);
 
   const resetState = () => {
     setAtkPrimary(-1);

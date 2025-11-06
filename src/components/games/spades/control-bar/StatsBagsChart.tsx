@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
@@ -10,7 +10,7 @@ export interface StatsBagsChartProps {
   color: string;
 }
 
-const StatsBagsChart = React.memo(
+const StatsBagsChart = memo(
   ({ initials, lifeBags, missedBids, color }: StatsBagsChartProps) => {
     const expBid = Math.round(lifeBags[lifeBags.length - 1]);
 

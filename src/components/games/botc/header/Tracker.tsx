@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 // MUI
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -37,7 +37,7 @@ const Tracker = ({ end }: TrackerProps) => {
       {botcPlayers.map(
         ({ name }, i) =>
           i < end && (
-            <React.Fragment key={i}>
+            <Fragment key={i}>
               <Grid size={getGridSize(end, i)}>
                 <Button
                   fullWidth
@@ -49,7 +49,7 @@ const Tracker = ({ end }: TrackerProps) => {
                 </Button>
               </Grid>
               {i % 2 === 1 && i >= 3 && i < end - 3 && <Grid size={2} />}
-            </React.Fragment>
+            </Fragment>
           ),
       )}
       <Grid size={12} marginTop={3}>

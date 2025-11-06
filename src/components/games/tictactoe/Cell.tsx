@@ -1,21 +1,21 @@
-import * as React from "react";
+import { memo, MouseEventHandler, CSSProperties } from "react";
 import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
 
 interface CellProps {
-  onClick: React.MouseEventHandler;
+  onClick: MouseEventHandler;
   value: string | null;
   winner: boolean;
 }
 
-const Cell = React.memo(({ value, winner, onClick }: CellProps) => {
+const Cell = memo(({ value, winner, onClick }: CellProps) => {
   const {
     palette: {
       primary: { main },
     },
   } = useTheme();
   // add attributes if cell is a winner
-  const attr: React.CSSProperties = winner
+  const attr: CSSProperties = winner
     ? { color: "white", backgroundColor: main }
     : {};
 

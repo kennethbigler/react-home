@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import Typography from "@mui/material/Typography";
 import Modal from "./Modal";
@@ -14,7 +14,7 @@ import PlayerMenu from "../../common/header/PlayerMenu";
 /* DealOrNoDeal  ->  Header
  *              |->  Board  ->  Case
  *              |->  Modal  ->  Money */
-const DealOrNoDeal = React.memo(() => {
+const DealOrNoDeal = memo(() => {
   const [{ dnd, money, status }, setState] = useAtom(dndState);
   const { numCases, offer, name } = useAtomValue(dealOrNoDealRead);
   const { board, dndOpen, isOver, turn, playerChoice, casesToOpen } = dnd;

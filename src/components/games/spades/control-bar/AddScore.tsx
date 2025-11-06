@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
@@ -12,10 +12,10 @@ interface AddScoreProps {
 }
 
 const AddScore = ({ initials, lastBid, onScoreSave }: AddScoreProps) => {
-  const [made0, setMade0] = React.useState(3);
-  const [made1, setMade1] = React.useState(3);
-  const [made2, setMade2] = React.useState(3);
-  const [made3, setMade3] = React.useState(3);
+  const [made0, setMade0] = useState(3);
+  const [made1, setMade1] = useState(3);
+  const [made2, setMade2] = useState(3);
+  const [made3, setMade3] = useState(3);
 
   const total = made0 + made1 + made2 + made3;
 

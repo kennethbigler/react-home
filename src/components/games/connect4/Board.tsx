@@ -1,4 +1,4 @@
-import * as React from "react";
+import { CSSProperties } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,7 +13,7 @@ interface BoardProps {
   turn: C4Turn;
 }
 
-const styles: React.CSSProperties = {
+const styles: CSSProperties = {
   padding: 1,
   textAlign: "center",
 };

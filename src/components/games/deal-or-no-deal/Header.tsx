@@ -1,4 +1,4 @@
-import * as React from "react";
+import { MouseEventHandler } from "react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -8,7 +8,7 @@ import { Briefcase } from "../../../jotai/deal-or-no-deal-state";
 interface HeaderProps {
   casesToOpen: number;
   isOver: number;
-  newGame: React.MouseEventHandler;
+  newGame: MouseEventHandler;
   name: string;
   money: number;
   playerChoice?: Briefcase;

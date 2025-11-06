@@ -1,4 +1,4 @@
-import * as React from "react";
+import { MouseEventHandler } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -14,10 +14,7 @@ interface FastMoneyProps {
   scores: number[];
   questions?: string[];
   takenAnswerIndex?: number[];
-  onClick: (
-    questionIndex: number,
-    answerIndex: number,
-  ) => React.MouseEventHandler;
+  onClick: (questionIndex: number, answerIndex: number) => MouseEventHandler;
 }
 
 const FastMoney = ({

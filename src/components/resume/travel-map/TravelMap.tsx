@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import ExpandableCard from "../../common/expandable-card";
@@ -11,7 +11,7 @@ import LoyaltyCharts from "./cruises/LoyaltyCharts";
 /* TravelMap  ->  WorldMap  ->  Popover
  *           |->  TravelTable
  *           |->  CruiseCharts */
-const TravelMap = React.memo(() => (
+const TravelMap = memo(() => (
   <>
     <Typography variant="h2" component="h1">
       Travel

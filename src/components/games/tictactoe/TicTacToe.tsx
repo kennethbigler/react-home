@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, CSSProperties } from "react";
 import { useAtom } from "jotai";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -14,7 +14,7 @@ import History from "./History";
 import Board from "./Board";
 import { getTurn, calculateWinner } from "./helpers";
 
-const paperStyles: React.CSSProperties = {
+const paperStyles: CSSProperties = {
   width: 343,
   display: "block",
   margin: "auto",
@@ -23,7 +23,7 @@ const paperStyles: React.CSSProperties = {
 /* TicTacToe  ->  Header
  *           |->  Board  ->  Cell
  *           |->  History */
-const TicTacToe = React.memo(() => {
+const TicTacToe = memo(() => {
   const [{ turn, step, history }, setState] = useAtom(ticTacToeAtom);
 
   /** function that modifies board with appropriate turn

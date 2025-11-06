@@ -1,4 +1,4 @@
-import * as React from "react";
+import { CSSProperties } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -11,13 +11,13 @@ interface CarCardProps {
   isK?: boolean;
 }
 
-const containerStyles: React.CSSProperties = {
+const containerStyles: CSSProperties = {
   maxWidth: 1488,
   margin: "auto",
   marginTop: 20,
   width: "100%",
 };
-const imgStyles: React.CSSProperties = {
+const imgStyles: CSSProperties = {
   width: "100%",
   maxWidth: "30em",
   float: "right",
@@ -71,7 +71,7 @@ const CarCard = ({ car, isK = false }: CarCardProps) => (
         </CardContent>
       </Grid>
       <Grid size={{ xs: 12, sm: 4 }}>
-        <img src={car.src} alt="" style={imgStyles} />
+        <img src={car.src} alt={car.title} style={imgStyles} />
       </Grid>
     </Grid>
   </Card>
