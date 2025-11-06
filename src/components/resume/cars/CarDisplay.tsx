@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import Grid from "@mui/material/Grid";
 import {
   pastKensCars,
@@ -20,7 +20,7 @@ interface CarDisplayProps {
   hideKen: boolean;
 }
 
-const CarDisplay = React.memo(({ hideFamily, hideKen }: CarDisplayProps) => (
+const CarDisplay = memo(({ hideFamily, hideKen }: CarDisplayProps) => (
   <Grid container spacing={2}>
     {!hideKen && (
       <Grid size={{ xs: 12, md: hideFamily ? 12 : 6 }}>

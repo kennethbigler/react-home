@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
@@ -9,7 +9,7 @@ export interface CarChartProps {
   color: string;
 }
 
-const CarChart = React.memo(({ data, color }: CarChartProps) => {
+const CarChart = memo(({ data, color }: CarChartProps) => {
   const { horsepower, weight, powerToWeight, zTo60, xAxis } = processData(data);
 
   const options = {

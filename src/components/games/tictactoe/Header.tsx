@@ -1,15 +1,15 @@
-import * as React from "react";
+import { memo, MouseEventHandler } from "react";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
 interface HeaderProps {
-  newGame: React.MouseEventHandler;
+  newGame: MouseEventHandler;
   turn: string;
   winner: string | null;
 }
 
-const Header = React.memo(({ winner, turn, newGame }: HeaderProps) => (
+const Header = memo(({ winner, turn, newGame }: HeaderProps) => (
   <Toolbar>
     <Typography style={{ flex: 1 }} variant="h4" component="h2">
       {winner ? `Winner: ${winner}` : `Turn: ${turn}`}

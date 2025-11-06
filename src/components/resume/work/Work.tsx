@@ -1,10 +1,10 @@
-import * as React from "react";
+import { memo } from "react";
 import Typography from "@mui/material/Typography";
 import { work, volunteer, school } from "../../../constants/work";
 import WorkCards from "./WorkCards";
 
 /* Work  ->  WorkCards  ->  Job */
-const Work = React.memo(() => (
+const Work = memo(() => (
   <>
     <Typography variant="h2" component="h1">
       Experience

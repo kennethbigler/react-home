@@ -1,10 +1,10 @@
-import * as React from "react";
+import { memo } from "react";
 import Typography from "@mui/material/Typography";
 import Degree from "../../common/edu-cards/Degree";
 import { presentations } from "../../../constants/classes";
 
 /** Presentations  ->  Degree */
-const Presentations = React.memo(() => (
+const Presentations = memo(() => (
   <>
     <Typography variant="h2" component="h1">
       Presentations &amp; Hackathons

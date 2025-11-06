@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useMemo } from "react";
 import Board from "./board/Board";
 import ButtonGroup from "./button-group/ButtonGroup";
 import { DBPlayer } from "../../../jotai/player-atom";
@@ -32,15 +32,15 @@ const GameTable = ({
   onClick,
 }: GameTableProps) => {
   // move game buttons to make turn more obvious and support mobile
-  const played: DBPlayer[] = React.useMemo(
+  const played: DBPlayer[] = useMemo(
     () => players.slice(0, turn.player + 1),
     [players, turn.player],
   );
-  const future: DBPlayer[] = React.useMemo(
+  const future: DBPlayer[] = useMemo(
     () => players.slice(turn.player + 1),
     [players, turn.player],
   );
-  const playersToDisplay: DBPlayer[] = React.useMemo(
+  const playersToDisplay: DBPlayer[] = useMemo(
     () =>
       !hideHands && gameOver === false
         ? players.slice(turn.player, turn.player + 1)

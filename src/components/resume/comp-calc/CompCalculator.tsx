@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import compCalcState, {
   compCalcRead,
@@ -11,8 +11,8 @@ const CompCalculator = () => {
   const [compEntries, setCompEntries] = useAtom(compCalcState);
   const compCalcEntries = useAtomValue(compCalcRead);
 
-  const [openEntry, setOpenEntry] = React.useState(false);
-  const [editEntryIdx, setEditEntryIdx] = React.useState(-1);
+  const [openEntry, setOpenEntry] = useState(false);
+  const [editEntryIdx, setEditEntryIdx] = useState(-1);
 
   // entry open/closers
   const openEditEntry = (i: number) => () => {

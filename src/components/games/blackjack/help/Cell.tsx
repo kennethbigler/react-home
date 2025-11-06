@@ -1,16 +1,16 @@
-import * as React from "react";
+import { CSSProperties } from "react";
 import TableCell from "@mui/material/TableCell";
 
 export interface CellProps {
   color?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   text: string;
   rowSpan?: number;
   colSpan?: number;
 }
 
 const Cell = ({ color, text, style, ...otherProps }: CellProps) => {
-  const stl: React.CSSProperties = {
+  const stl: CSSProperties = {
     ...style,
     textAlign: "center",
     paddingLeft: 0,

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -22,7 +22,7 @@ const payoutTable = [
   { symbol: SO.CHERRY, payout: 3 },
 ];
 
-const PayoutTable = React.memo(() => (
+const PayoutTable = memo(() => (
   <Table aria-label="payout reference table for slot game">
     <TableHead>
       <TableRow>

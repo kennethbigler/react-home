@@ -1,5 +1,6 @@
-import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { AYTOHist } from "../histogram/useHist";
 
 export interface CalculatedStackProps {
@@ -25,7 +26,9 @@ const CalculatedStack = ({
   hist,
 }: CalculatedStackProps) => (
   <Stack spacing={1}>
-    <h2 style={{ textAlign: "center" }}>Calculated {cei + 1}</h2>
+    <Typography variant="h4" component="h3" style={{ textAlign: "center" }}>
+      Calculated {cei + 1}
+    </Typography>
     {pairs.map((gi, li) => (
       <Chip
         key={`calc-l${li}-g${gi}`}

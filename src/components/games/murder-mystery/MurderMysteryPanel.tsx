@@ -1,4 +1,4 @@
-import * as React from "react";
+import { SyntheticEvent } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -16,7 +16,7 @@ interface MurderMysteryPanelProps {
   expandedKey: string;
   handleChange: (
     panel: string,
-  ) => (_event: React.SyntheticEvent<Element, Event>, exp?: boolean) => void;
+  ) => (_event: SyntheticEvent<Element, Event>, exp?: boolean) => void;
   role: string;
   gender: string;
   description?: string[];

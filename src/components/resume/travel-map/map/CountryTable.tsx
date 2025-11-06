@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, CSSProperties, ReactElement } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,10 +8,10 @@ import { grey } from "@mui/material/colors";
 import { americas, euNaf, asNau } from "../../../../constants/travel";
 
 // --------------------     Styles     -------------------- //
-const separatorStyles: React.CSSProperties = {
+const separatorStyles: CSSProperties = {
   borderRight: `1px solid ${grey[400]}`,
 };
-const cellStyles: React.CSSProperties = {
+const cellStyles: CSSProperties = {
   padding: "5px 1px",
   textAlign: "center",
   whiteSpace: "normal",
@@ -22,7 +22,7 @@ const cellStyles: React.CSSProperties = {
 // ratio to display on table, 2:1 seemed to look best
 const EURatio = 3;
 // export array of <li> elements for display
-const countries: React.ReactElement[] = [];
+const countries: ReactElement[] = [];
 // iterate to the end of the longer list
 const len = Math.max(
   americas.length,
@@ -70,7 +70,7 @@ for (let i = 0; i < len; i += 1) {
 }
 
 // --------------------     Travel Map     -------------------- //
-const CountryTable = React.memo(() => (
+const CountryTable = memo(() => (
   <Table aria-label="Countries I have visited">
     <TableHead>
       <TableRow>

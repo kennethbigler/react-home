@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import "highcharts/highcharts-more";
@@ -17,7 +17,7 @@ interface CarSankeyGraphProps {
   hideFamily: boolean;
 }
 
-const CarSankeyGraph = React.memo(
+const CarSankeyGraph = memo(
   ({ color, hideKen, hideFamily }: CarSankeyGraphProps) => {
     let data = carSankeyData;
     if (hideKen && hideFamily) {

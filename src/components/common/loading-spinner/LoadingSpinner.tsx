@@ -1,13 +1,13 @@
-import * as React from "react";
+import { memo, CSSProperties } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const containerStyles: React.CSSProperties = {
+const containerStyles: CSSProperties = {
   display: "block",
   margin: "auto",
   marginTop: 40,
 };
 
-const LoadingSpinner = React.memo(() => (
+const LoadingSpinner = memo(() => (
   <CircularProgress
     size={100}
     style={containerStyles}

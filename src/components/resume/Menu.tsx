@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, useMemo } from "react";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
@@ -18,9 +18,9 @@ const linkedIn = (): void => {
   window.open("https://www.linkedin.com/in/kennethbigler");
 };
 
-const Menu = React.memo(({ onItemClick }: MenuProps) => {
+const Menu = memo(({ onItemClick }: MenuProps) => {
   // internal routes
-  const menu = React.useMemo(
+  const menu = useMemo(
     () =>
       [
         { name: "Summary", route: "" },

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, ChangeEvent } from "react";
 import Stack from "@mui/material/Stack";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
@@ -38,19 +38,17 @@ const Analysis = ({
   calculatedEquations,
 }: AnalysisProps) => {
   // state
-  const [showAll, setShowAll] = React.useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   // handlers
-  const handleSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSwitch = (event: ChangeEvent<HTMLInputElement>) => {
     setShowAll(event.target.checked);
   };
 
   return (
     <div>
       <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h2" component="h1">
-          Analysis
-        </Typography>
+        <Typography variant="h2">Analysis</Typography>
         <FormControlLabel
           control={<Switch checked={showAll} onChange={handleSwitch} />}
           label="Show All Couples"

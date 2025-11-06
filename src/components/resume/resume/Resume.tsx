@@ -1,15 +1,15 @@
-import * as React from "react";
+import { memo, CSSProperties } from "react";
 import Typography from "@mui/material/Typography";
 import resume from "../../../images/kenneth_bigler_resume.png";
 
-const imageStyles: React.CSSProperties = {
+const imageStyles: CSSProperties = {
   maxWidth: 1275,
   width: "100%",
   display: "block",
   margin: "auto",
 };
 
-const Resume = React.memo(() => (
+const Resume = memo(() => (
   <>
     <Typography variant="h2" component="h1">
       Resume

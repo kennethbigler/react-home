@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import { useAtom } from "jotai";
 import Typography from "@mui/material/Typography";
 import helpEvalConnect4 from "./eval-connect4";
@@ -12,7 +12,7 @@ import connect4Atom, {
 
 /* Connect4  ->  GameBoard  ->  Header  ->  Piece
  *                         |->  Board   ->  Piece */
-const Connect4 = React.memo(() => {
+const Connect4 = memo(() => {
   const [{ turn, board, winner }, setState] = useAtom(connect4Atom);
 
   /** start a new game, reset the board and helper vars */

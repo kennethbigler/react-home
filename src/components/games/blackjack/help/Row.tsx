@@ -1,4 +1,4 @@
-import * as React from "react";
+import { CSSProperties } from "react";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Cell, { CellProps } from "./Cell";
@@ -8,7 +8,7 @@ export interface RowProps {
   name: string;
 }
 
-const tableCellStyle: React.CSSProperties = { textAlign: "center", padding: 0 };
+const tableCellStyle: CSSProperties = { textAlign: "center", padding: 0 };
 
 const Row = ({ name, data }: RowProps) => (
   <TableRow>

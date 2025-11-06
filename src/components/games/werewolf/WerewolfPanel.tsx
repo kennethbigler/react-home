@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, SyntheticEvent, CSSProperties } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -12,7 +12,7 @@ interface WerewolfPanelProps {
   expandedKey: string;
   handleChange: (
     panel: string,
-  ) => (_event: React.SyntheticEvent<Element, Event>, exp?: boolean) => void;
+  ) => (_event: SyntheticEvent<Element, Event>, exp?: boolean) => void;
   handleStar: (value: number, count: number, role: string) => void;
   name: string;
   description: string;
@@ -20,7 +20,7 @@ interface WerewolfPanelProps {
   count?: number;
 }
 
-const containerStyles: React.CSSProperties = {
+const containerStyles: CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
@@ -29,7 +29,7 @@ const containerStyles: React.CSSProperties = {
   marginRight: 10,
 };
 
-const WerewolfPanel = React.memo(
+const WerewolfPanel = memo(
   ({
     expanded,
     expandedKey,

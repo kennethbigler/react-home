@@ -1,4 +1,4 @@
-import * as React from "react";
+import { CSSProperties, memo } from "react";
 import Paper from "@mui/material/Paper";
 import { amber, grey } from "@mui/material/colors";
 import { getMoneyText } from "./helpers";
@@ -8,7 +8,7 @@ interface MoneyProps {
   val: number;
 }
 
-const paperStyles: React.CSSProperties = {
+const paperStyles: CSSProperties = {
   width: "90%",
   marginLeft: "5%",
   marginRight: "5%",
@@ -18,12 +18,12 @@ const paperStyles: React.CSSProperties = {
   color: "white",
 };
 
-const Money = React.memo(({ on, val }: MoneyProps) => {
-  const color: React.CSSProperties = {
+const Money = memo(({ on, val }: MoneyProps) => {
+  const color: CSSProperties = {
     backgroundColor: on ? amber[500] : grey[700],
   };
 
-  const style: React.CSSProperties = {
+  const style: CSSProperties = {
     ...paperStyles,
     ...color,
   };

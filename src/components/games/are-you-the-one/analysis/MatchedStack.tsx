@@ -1,6 +1,7 @@
-import * as React from "react";
-import Stack from "@mui/material/Stack";
+import { ReactElement } from "react";
 import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { ChipColorOptions } from "../types";
 import { AYTOHist } from "../histogram/useHist";
 
@@ -37,7 +38,7 @@ const MatchedStack = ({
   tempScore,
   showAll,
 }: MatchedStackProps) => {
-  const equation: React.ReactElement[] = [];
+  const equation: ReactElement[] = [];
   let numNoMatches = 0;
   let numMatchAndRepeat = 0;
   pairs.forEach((gi, li) => {
@@ -89,7 +90,9 @@ const MatchedStack = ({
   // return each equation stack
   return !equation.every((e) => e === null) ? (
     <Stack spacing={1}>
-      <h2 style={{ textAlign: "center" }}>Matchup {ri + 1}</h2>
+      <Typography variant="h4" component="h3" style={{ textAlign: "center" }}>
+        Matchup {ri + 1}
+      </Typography>
       {equation}
       <Chip label={showAll ? score : score - tempScore[ri]} color="warning" />
     </Stack>

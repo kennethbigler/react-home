@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, CSSProperties } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
@@ -17,14 +17,14 @@ interface TrackProps {
   onClick: (circuitName: string) => () => void;
 }
 
-const txtStyles: React.CSSProperties = {
+const txtStyles: CSSProperties = {
   display: "block",
   margin: "auto",
   textAlign: "center",
 };
-const bold: React.CSSProperties = { fontWeight: "bold" };
+const bold: CSSProperties = { fontWeight: "bold" };
 
-const Track = React.memo(
+const Track = memo(
   ({
     circuitLen,
     circuitName,
@@ -57,7 +57,7 @@ const Track = React.memo(
           </Typography>
         )}
         <IconButton onClick={onClick(circuitName)}>
-          <img src={imgSrc} alt="" width="100%" />
+          <img src={imgSrc} alt={`${circuitName} track layout`} width="100%" />
         </IconButton>
         <Grid container>
           <Grid size={6}>

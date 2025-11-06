@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, CSSProperties, Fragment } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,7 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import { cruises, totalNights } from "../../../../constants/cruises";
 
 // --------------------     Styles     -------------------- //
-const cellStyles: React.CSSProperties = {
+const cellStyles: CSSProperties = {
   padding: 5,
   textAlign: "center",
   whiteSpace: "normal",
@@ -15,7 +15,7 @@ const cellStyles: React.CSSProperties = {
 };
 
 // --------------------     Render     -------------------- //
-const CruiseTable = React.memo(() => (
+const CruiseTable = memo(() => (
   <Table aria-label="cruises I have been on">
     <TableHead>
       <TableRow>
@@ -28,7 +28,7 @@ const CruiseTable = React.memo(() => (
     </TableHead>
     <TableBody>
       {cruises.map((cruise, i) => (
-        <React.Fragment key={`cruise-tr-${i}`}>
+        <Fragment key={`cruise-tr-${i}`}>
           {(i === 0 ||
             cruise.departure.year > cruises[i - 1].departure.year) && (
             <TableRow>
@@ -53,7 +53,7 @@ const CruiseTable = React.memo(() => (
               {cruise.departure.format("MM")} {cruise.departure.format("M")}
             </TableCell>
           </TableRow>
-        </React.Fragment>
+        </Fragment>
       ))}
     </TableBody>
   </Table>

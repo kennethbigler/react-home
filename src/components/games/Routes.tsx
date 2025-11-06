@@ -1,57 +1,47 @@
-import * as React from "react";
+import { lazy, Suspense, ReactElement } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Menu from "./Menu";
 import Header, { NavProps } from "../common/header/Header";
 import LoadingSpinner from "../common/loading-spinner";
 
 // lazy load nav elements
-const GameHome = React.lazy(
-  () => import(/* webpackChunkName: "home" */ "./Home"),
-);
-const AreYouTheOne = React.lazy(
+const GameHome = lazy(() => import(/* webpackChunkName: "home" */ "./Home"));
+const AreYouTheOne = lazy(
   () => import(/* webpackChunkName: "ayto" */ "./are-you-the-one"),
 );
-const BlackJack = React.lazy(
+const BlackJack = lazy(
   () => import(/* webpackChunkName: "blackjack" */ "./blackjack"),
 );
-const BotC = React.lazy(() => import(/* webpackChunkName: "botc" */ "./botc"));
-const Bridge = React.lazy(
-  () => import(/* webpackChunkName: "bridge" */ "./bridge"),
-);
-const Connect4 = React.lazy(
+const BotC = lazy(() => import(/* webpackChunkName: "botc" */ "./botc"));
+const Bridge = lazy(() => import(/* webpackChunkName: "bridge" */ "./bridge"));
+const Connect4 = lazy(
   () => import(/* webpackChunkName: "connect4" */ "./connect4"),
 );
-const DealOrNoDeal = React.lazy(
+const DealOrNoDeal = lazy(
   () => import(/* webpackChunkName: "deal" */ "./deal-or-no-deal"),
 );
-const FamilyFeud = React.lazy(
+const FamilyFeud = lazy(
   () => import(/* webpackChunkName: "family-feud" */ "./family-feud"),
 );
-const ImperialAssault = React.lazy(
+const ImperialAssault = lazy(
   () => import(/* webpackChunkName: "family-feud" */ "./imperial-assault"),
 );
-const MurderMystery = React.lazy(
+const MurderMystery = lazy(
   () => import(/* webpackChunkName: "murder" */ "./murder-mystery"),
 );
-const Poker = React.lazy(
-  () => import(/* webpackChunkName: "poker" */ "./poker"),
-);
-const Spades = React.lazy(
-  () => import(/* webpackChunkName: "spades" */ "./spades"),
-);
-const Slots = React.lazy(
-  () => import(/* webpackChunkName: "slots" */ "./slots"),
-);
-const TicTacToe = React.lazy(
+const Poker = lazy(() => import(/* webpackChunkName: "poker" */ "./poker"));
+const Spades = lazy(() => import(/* webpackChunkName: "spades" */ "./spades"));
+const Slots = lazy(() => import(/* webpackChunkName: "slots" */ "./slots"));
+const TicTacToe = lazy(
   () => import(/* webpackChunkName: "tictactoe" */ "./tictactoe"),
 );
-const TypeChecker = React.lazy(
+const TypeChecker = lazy(
   () => import(/* webpackChunkName: "type-checker" */ "./type-checker"),
 );
-const Werewolf = React.lazy(
+const Werewolf = lazy(
   () => import(/* webpackChunkName: "werewolf" */ "./werewolf"),
 );
-const Yahtzee = React.lazy(
+const Yahtzee = lazy(
   () => import(/* webpackChunkName: "yahtzee" */ "./yahtzee"),
 );
 
@@ -62,11 +52,11 @@ interface RoutesProps {
 const GameRoutes = ({ handleNav }: RoutesProps) => (
   <>
     <Header handleNav={handleNav}>
-      {(onItemClick): React.ReactElement<NavProps> => (
+      {(onItemClick): ReactElement<NavProps> => (
         <Menu onItemClick={onItemClick} />
       )}
     </Header>
-    <React.Suspense fallback={<LoadingSpinner />}>
+    <Suspense fallback={<LoadingSpinner />}>
       <Routes>
         <Route path="" element={<GameHome onItemClick={handleNav} />} />
         <Route path="are-you-the-one" element={<AreYouTheOne />} />
@@ -87,7 +77,7 @@ const GameRoutes = ({ handleNav }: RoutesProps) => (
         <Route path="yahtzee" element={<Yahtzee />} />
         <Route path="*" element={<Navigate to="/games" />} />
       </Routes>
-    </React.Suspense>
+    </Suspense>
   </>
 );
 

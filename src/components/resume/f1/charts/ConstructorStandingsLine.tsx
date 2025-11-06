@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
@@ -9,7 +9,7 @@ export interface ConstructorStandingsLineProps {
   color: string;
 }
 
-const ConstructorStandingsLine = React.memo(
+const ConstructorStandingsLine = memo(
   ({ color }: ConstructorStandingsLineProps) => {
     const options = {
       accessibility: { enabled: true },

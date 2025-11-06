@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, ReactElement } from "react";
 import Button from "@mui/material/Button";
 import { getTurn } from "./helpers";
 import { HistoryEntry } from "../../../jotai/tic-tac-toe-atom";
@@ -10,13 +10,10 @@ interface HistoryProps {
 }
 
 const History = ({ history, step, jumpToStep }: HistoryProps) => {
-  const [ascend, setAscend] = React.useState(true);
+  const [ascend, setAscend] = useState(true);
 
   /** function that generates text for the history tracker */
-  const getHistoryText = (
-    round: HistoryEntry,
-    move: number,
-  ): React.ReactElement => {
+  const getHistoryText = (round: HistoryEntry, move: number): ReactElement => {
     const location = round.location || 0;
     // generate description text
     const description = !move

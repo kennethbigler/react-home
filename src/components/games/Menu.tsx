@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
@@ -8,7 +8,7 @@ interface MenuProps {
   onItemClick?: (loc: string) => void;
 }
 
-const Menu = React.memo(({ onItemClick }: MenuProps) => (
+const Menu = memo(({ onItemClick }: MenuProps) => (
   <MenuList>
     <MenuItem onClick={() => onItemClick && onItemClick("/")}>
       Back to Resume

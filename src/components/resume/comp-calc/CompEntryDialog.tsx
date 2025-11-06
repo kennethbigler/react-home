@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, ChangeEvent } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -40,14 +40,22 @@ const CompEntryDialog = ({
   onClose,
   addCompEntry,
 }: CompEntryDialogProps) => {
-  const [entryDateMonth, setEntryDateMonth] = React.useState("1");
-  const [entryDateYear, setEntryDateYear] = React.useState(years[0].toString());
-  const [salary, setSalary] = React.useState(0);
-  const [bonus, setBonus] = React.useState(0);
-  const [stockTick, setStockTick] = React.useState("");
-  const [priceThen, setPriceThen] = React.useState(0);
-  const [grantDuration, setGrantDuration] = React.useState(4);
-  const [grantQty, setGrantQty] = React.useState(0);
+  const [entryDateMonth, setEntryDateMonth] = useState(
+    (compEntry && (dateHelper(compEntry.entryDate).month + 1).toString()) ||
+      "1",
+  );
+  const [entryDateYear, setEntryDateYear] = useState(
+    (compEntry && dateHelper(compEntry.entryDate).year.toString()) ||
+      years[0].toString(),
+  );
+  const [salary, setSalary] = useState(compEntry?.salary || 0);
+  const [bonus, setBonus] = useState(compEntry?.bonus || 0);
+  const [stockTick, setStockTick] = useState(compEntry?.stockTick || "");
+  const [priceThen, setPriceThen] = useState(compEntry?.priceThen || 0);
+  const [grantDuration, setGrantDuration] = useState(
+    compEntry?.grantDuration || 4,
+  );
+  const [grantQty, setGrantQty] = useState(compEntry?.grantQty || 0);
 
   const resetState = () => {
     setEntryDateMonth("1");
@@ -60,26 +68,10 @@ const CompEntryDialog = ({
     setGrantQty(0);
   };
 
-  React.useEffect(() => {
-    if (compEntry) {
-      const { month, year } = dateHelper(compEntry.entryDate);
-      setEntryDateMonth((month + 1).toString());
-      setEntryDateYear(year.toString());
-      setSalary(compEntry.salary);
-      setBonus(compEntry.bonus);
-      setStockTick(compEntry.stockTick);
-      setPriceThen(compEntry.priceThen);
-      setGrantDuration(compEntry.grantDuration);
-      setGrantQty(compEntry.grantQty);
-    } else {
-      resetState();
-    }
-  }, [compEntry, compEntry?.salary]);
-
   const handleChange =
-    (func: (n: number) => void) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    (func: (n: number) => void) => (e: ChangeEvent<HTMLInputElement>) =>
       func(parseFloat(e.target.value));
-  const handleStockTick = (e: React.ChangeEvent<HTMLInputElement>) =>
+  const handleStockTick = (e: ChangeEvent<HTMLInputElement>) =>
     setStockTick(e.target.value);
   const handleSelectMonth = (e: SelectChangeEvent<string>) =>
     setEntryDateMonth(e.target.value);

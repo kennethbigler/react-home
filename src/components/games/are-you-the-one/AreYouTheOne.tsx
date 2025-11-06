@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import Controls from "./Controls";
 import Table from "./table/Table";
@@ -12,7 +12,7 @@ const AreYouTheOne = () => {
   const { ladies, gents, options } = useAtomValue(aytoPlayerRead);
 
   // state
-  const [ri, setRi] = React.useState(0);
+  const [ri, setRi] = useState(0);
   const { hist, tempScore, calculatedEquations } = useHist(
     ladies.length,
     matches,

@@ -1,14 +1,14 @@
-import * as React from "react";
+import { useMemo, CSSProperties } from "react";
 import Typography from "@mui/material/Typography";
 import { purple } from "@mui/material/colors";
 import Card from "./card/Card";
 import { DBHand } from "../../../../jotai/player-atom";
 
-const boldStyle: React.CSSProperties = {
+const boldStyle: CSSProperties = {
   fontWeight: "bold",
   marginTop: "0.5em",
 };
-const normalStyle: React.CSSProperties = {
+const normalStyle: CSSProperties = {
   fontWeight: "normal",
   marginTop: "0.5em",
 };
@@ -36,7 +36,7 @@ const Hand = ({
   isPlayerTurn,
   playerNo,
 }: HandProps) => {
-  const styles = React.useMemo(
+  const styles = useMemo(
     () =>
       isPlayerTurn && (!isMultiHand || (isMultiHand && isHandTurn))
         ? { ...boldStyle, color: purple[700] }

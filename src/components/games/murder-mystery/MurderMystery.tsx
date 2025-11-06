@@ -1,23 +1,29 @@
-import * as React from "react";
+import {
+  useState,
+  SyntheticEvent,
+  useCallback,
+  memo,
+  ReactElement,
+} from "react";
 import Typography from "@mui/material/Typography";
 import roles, { CASINO, Importance, intro } from "../../../constants/murder";
 import MurderMysteryPanel from "./MurderMysteryPanel";
 import ExpandableCard from "../../common/expandable-card";
 
-const MurderMystery = React.memo(() => {
-  const [expanded, setExpanded] = React.useState("");
+const MurderMystery = memo(() => {
+  const [expanded, setExpanded] = useState("");
 
-  const handleChange = React.useCallback(
+  const handleChange = useCallback(
     (panel: string) =>
-      (_event: React.SyntheticEvent<Element, Event>, exp?: boolean): void => {
+      (_event: SyntheticEvent<Element, Event>, exp?: boolean): void => {
         setExpanded(exp ? panel : "");
       },
     [setExpanded],
   );
 
-  const requiredRoles: React.ReactElement[] = [];
-  const recRoles: React.ReactElement[] = [];
-  const optionalRoles: React.ReactElement[] = [];
+  const requiredRoles: ReactElement[] = [];
+  const recRoles: ReactElement[] = [];
+  const optionalRoles: ReactElement[] = [];
 
   roles.forEach((r, i) => {
     const { role, gender, description, hint, clue } = r;

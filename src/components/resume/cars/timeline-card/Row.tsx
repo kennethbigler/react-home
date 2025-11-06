@@ -1,4 +1,4 @@
-import * as React from "react";
+import { CSSProperties } from "react";
 import Segment from "./Segment";
 import YearMarkers from "./YearMarkers";
 import { SegmentType } from "./timelineHelpers";
@@ -10,9 +10,9 @@ interface RowProps {
   onClick?: (title: string) => void;
 }
 
-const smMarginTop: React.CSSProperties = { marginTop: 10 };
-const lgMarginTop: React.CSSProperties = { marginTop: 20 };
-const noStyle: React.CSSProperties = { height: 0 };
+const smMarginTop: CSSProperties = { marginTop: 10 };
+const lgMarginTop: CSSProperties = { marginTop: 20 };
+const noStyle: CSSProperties = { height: 0 };
 
 const Row = ({
   segments,

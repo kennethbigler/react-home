@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, Fragment } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Chip from "@mui/material/Chip";
@@ -30,7 +30,7 @@ const cardStyle = {
 };
 
 const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
-  const [showMove, setShowMove] = React.useState(false);
+  const [showMove, setShowMove] = useState(false);
 
   const {
     botcPlayers,
@@ -49,7 +49,7 @@ const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
       {botcPlayers.map(
         (player, i) =>
           i < playerCount && (
-            <React.Fragment key={`player${i}-${player.name}`}>
+            <Fragment key={`player${i}-${player.name}`}>
               <Grid size={getGridSize(playerCount, i)}>
                 <Card
                   sx={{
@@ -106,7 +106,7 @@ const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
               {i % 2 === 1 && i >= 3 && i < playerCount - 3 && (
                 <Grid size={2} />
               )}
-            </React.Fragment>
+            </Fragment>
           ),
       )}
       <div

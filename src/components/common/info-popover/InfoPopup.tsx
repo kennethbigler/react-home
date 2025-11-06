@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, ReactElement, ReactNode } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -12,13 +12,13 @@ interface InfoPopupProps {
   /** set the color of the button */
   buttonColor?: MuiColors;
   /** button content */
-  buttonText?: string | React.ReactElement;
+  buttonText?: string | ReactElement;
   /** button full width */
   fullWidth?: boolean;
   /** title content */
-  title: string | React.ReactElement;
+  title: string | ReactElement;
   /** popup content */
-  children: React.ReactNode | React.ReactNode[];
+  children: ReactNode | ReactNode[];
   /** set the color of the button */
   onSave?: () => void;
 }
@@ -32,7 +32,7 @@ const InfoPopup = ({
   children,
   onSave,
 }: InfoPopupProps) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
 

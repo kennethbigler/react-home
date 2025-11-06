@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, useCallback, CSSProperties } from "react";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import styles from "./Card.styles";
@@ -13,7 +13,7 @@ interface CardProps {
   suit: string;
 }
 
-const Card = React.memo(
+const Card = memo(
   ({
     dropped,
     suit,
@@ -24,13 +24,13 @@ const Card = React.memo(
     cardNo,
   }: CardProps) => {
     // handle click to for card
-    const handleClick = React.useCallback((): void => {
+    const handleClick = useCallback((): void => {
       if (cardHandler) {
         cardHandler(playerNo, handNo, cardNo);
       }
     }, [cardHandler, cardNo, handNo, playerNo]);
     // checking color based off suits: ♣♦♥♠
-    const cardColor: React.CSSProperties = {
+    const cardColor: CSSProperties = {
       color: suit === "♣" || suit === "♠" ? "black" : red[500],
       backgroundColor: dropped ? red[100] : "white",
     };

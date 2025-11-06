@@ -1,4 +1,4 @@
-import * as React from "react";
+import { CSSProperties } from "react";
 import Add from "@mui/icons-material/Add";
 import Card from "@mui/material/Card";
 import IconButton from "@mui/material/IconButton";
@@ -49,11 +49,11 @@ const Player = ({
       betHandler(player.id, player.bet + 5);
     }
   };
-  const weight: React.CSSProperties = {
+  const weight: CSSProperties = {
     fontWeight: isPlayerTurn ? "bold" : "normal",
   };
   // set colors
-  let color: React.CSSProperties = { background: grey[900], color: "white" };
+  let color: CSSProperties = { background: grey[900], color: "white" };
   if (player.status === "win") {
     color = { background: green[300], color: "white" };
   } else if (player.status === "draw") {

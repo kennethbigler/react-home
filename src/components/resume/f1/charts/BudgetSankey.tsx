@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import "highcharts/highcharts-more";
@@ -10,7 +10,7 @@ interface BudgetSankeyProps {
   color: string;
 }
 
-const BudgetSankey = React.memo(({ color }: BudgetSankeyProps) => {
+const BudgetSankey = memo(({ color }: BudgetSankeyProps) => {
   const options: Highcharts.Options = {
     chart: {
       type: "sankey",

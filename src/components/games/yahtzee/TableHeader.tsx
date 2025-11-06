@@ -1,4 +1,4 @@
-import * as React from "react";
+import { MouseEventHandler, CSSProperties } from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Dice } from "../../../jotai/yahtzee-state";
@@ -9,11 +9,11 @@ interface TableHeaderProps {
   saved: Dice[];
   handleUnsave: (i: number) => void;
   handleSave: (i: number) => void;
-  handleDiceRoll: React.MouseEventHandler;
+  handleDiceRoll: MouseEventHandler;
   getButtonText: (roll: Dice) => string;
 }
 
-const wrapperStyles: React.CSSProperties = {
+const wrapperStyles: CSSProperties = {
   display: "block",
   margin: "auto",
   width: 320,

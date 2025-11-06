@@ -1,4 +1,4 @@
-import * as React from "react";
+import { ChangeEvent } from "react";
 import IconButton from "@mui/material/IconButton";
 import Switch from "@mui/material/Switch";
 import TableCell from "@mui/material/TableCell";
@@ -29,15 +29,11 @@ const AddBidPlayer = ({
   const decrBid = () => onBid(Math.max(bid - 1, MIN_BID), false, false);
   const incrBid = () => onBid(Math.min(bid + 1, MAX_BID), false, false);
 
-  const handleBlind = (
-    _e: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean,
-  ) => onBid(bid, checked, false);
+  const handleBlind = (_e: ChangeEvent<HTMLInputElement>, checked: boolean) =>
+    onBid(bid, checked, false);
 
-  const handleTrain = (
-    _e: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean,
-  ) => onBid(bid, false, checked);
+  const handleTrain = (_e: ChangeEvent<HTMLInputElement>, checked: boolean) =>
+    onBid(bid, false, checked);
 
   return (
     <TableRow>

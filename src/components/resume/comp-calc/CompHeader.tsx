@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useAtom } from "jotai";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -13,8 +13,8 @@ interface CompHeaderProps {
   editEntryIdx: number;
   openEntry: boolean;
   setCompEntries: (c: CompEntry[]) => void;
-  setEditEntryIdx: React.Dispatch<React.SetStateAction<number>>;
-  setOpenEntry: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditEntryIdx: Dispatch<SetStateAction<number>>;
+  setOpenEntry: Dispatch<SetStateAction<boolean>>;
 }
 
 const CompHeader = ({
@@ -26,8 +26,8 @@ const CompHeader = ({
   setEditEntryIdx,
 }: CompHeaderProps) => {
   const [stockEntries, setStockEntries] = useAtom(stockAtom);
-  const [openStock, setOpenStock] = React.useState(false);
-  const [editStockTick, setEditStockTick] = React.useState("");
+  const [openStock, setOpenStock] = useState(false);
+  const [editStockTick, setEditStockTick] = useState("");
 
   // entry open/closers
   const closeEntryModal = () => setOpenEntry(false);
@@ -90,20 +90,26 @@ const CompHeader = ({
           <Button onClick={openNewEntry}>+ Entry</Button>
         </div>
       </div>
-      <StockDialog
-        open={openStock}
-        price={editStockTick ? stockEntries[editStockTick] : undefined}
-        stock={editStockTick}
-        onClose={closeStockModal}
-        addStockEntry={addStockEntry}
-        removeStockEntry={removeStockEntry}
-      />
-      <CompEntryDialog
-        open={openEntry}
-        compEntry={editEntryIdx !== -1 ? compEntries[editEntryIdx] : undefined}
-        onClose={closeEntryModal}
-        addCompEntry={addCompEntry}
-      />
+      {openStock && (
+        <StockDialog
+          open={openStock}
+          price={editStockTick ? stockEntries[editStockTick] : undefined}
+          stock={editStockTick}
+          onClose={closeStockModal}
+          addStockEntry={addStockEntry}
+          removeStockEntry={removeStockEntry}
+        />
+      )}
+      {openEntry && (
+        <CompEntryDialog
+          open={openEntry}
+          compEntry={
+            editEntryIdx !== -1 ? compEntries[editEntryIdx] : undefined
+          }
+          onClose={closeEntryModal}
+          addCompEntry={addCompEntry}
+        />
+      )}
     </>
   );
 };

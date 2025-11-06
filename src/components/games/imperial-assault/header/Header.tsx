@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -11,8 +11,8 @@ import CampaignChangeDialog from "./CampaignChangeDialog";
 
 const Header = () => {
   const { campaignIdx, handleCampaignChange } = useHeader();
-  const [newCIdx, setNewCIdx] = React.useState(campaignIdx);
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [newCIdx, setNewCIdx] = useState(campaignIdx);
+  const [isOpen, setIsOpen] = useState(false);
   const handleClose = () => setIsOpen(false);
 
   const handleSave = () => {

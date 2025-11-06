@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import Typography from "@mui/material/Typography";
 import Info from "./Info";
 import Education from "./Education";
@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 /* Summary  ->  Info
  *         |->  Skills
  *         |->  Education */
-const Summary = React.memo(() => (
+const Summary = memo(() => (
   <>
     <Typography variant="h2" component="h1" gutterBottom>
       Summary

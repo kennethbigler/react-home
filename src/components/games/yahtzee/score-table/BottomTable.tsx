@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useCallback, ReactElement, ReactNode, CSSProperties } from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { TopGameScore, BottomGameScore, ADD_DICE } from "../types";
@@ -20,9 +20,9 @@ interface BottomTableProps {
     points: number,
     wasTop: boolean,
     i: number,
-  ) => React.ReactElement;
+  ) => ReactElement;
   showScoreButtons: boolean;
-  sx: React.CSSProperties;
+  sx: CSSProperties;
   top: TopGameScore[];
   values: Dice[];
 }
@@ -63,13 +63,13 @@ const BottomTable = ({
   finalTopSum,
   bottomSum,
 }: BottomTableProps) => {
-  const getBottomTableButtons = React.useCallback(
+  const getBottomTableButtons = useCallback(
     (
       score: number,
       points: number,
       hasYahtzee: boolean,
       i: number,
-    ): React.ReactNode | null => {
+    ): ReactNode | null => {
       if (score >= 0) {
         return score;
       }
@@ -87,7 +87,7 @@ const BottomTable = ({
     [getScoreButton, showScoreButtons, top, values],
   );
 
-  const generateBottomTable = React.useCallback((): React.ReactNode => {
+  const generateBottomTable = useCallback((): ReactNode => {
     const hasYahtzee = bottom[5].score > 0;
     return bottom.map((gameScore, i) => {
       const { name, hint, points, score } = gameScore;

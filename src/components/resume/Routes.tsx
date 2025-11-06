@@ -1,31 +1,29 @@
-import * as React from "react";
+import { lazy, Suspense, ReactElement } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Menu from "./Menu";
 import Header, { NavProps } from "../common/header/Header";
 import LoadingSpinner from "../common/loading-spinner";
 
 // lazy load nav elements
-const Cars = React.lazy(() => import(/* webpackChunkName: "cars" */ "./cars"));
-const CompCalculator = React.lazy(
+const Cars = lazy(() => import(/* webpackChunkName: "cars" */ "./cars"));
+const CompCalculator = lazy(
   () => import(/* webpackChunkName: "comp" */ "./comp-calc"),
 );
-const Education = React.lazy(
+const Education = lazy(
   () => import(/* webpackChunkName: "education" */ "./education"),
 );
-const F1 = React.lazy(() => import(/* webpackChunkName: "f1" */ "./f1"));
-const Presentations = React.lazy(
+const F1 = lazy(() => import(/* webpackChunkName: "f1" */ "./f1"));
+const Presentations = lazy(
   () => import(/* webpackChunkName: "presentations" */ "./presentations"),
 );
-const Resume = React.lazy(
-  () => import(/* webpackChunkName: "resume" */ "./resume"),
-);
-const Summary = React.lazy(
+const Resume = lazy(() => import(/* webpackChunkName: "resume" */ "./resume"));
+const Summary = lazy(
   () => import(/* webpackChunkName: "summary" */ "./summary"),
 );
-const TravelMap = React.lazy(
+const TravelMap = lazy(
   () => import(/* webpackChunkName: "travel" */ "./travel-map"),
 );
-const Work = React.lazy(() => import(/* webpackChunkName: "work" */ "./work"));
+const Work = lazy(() => import(/* webpackChunkName: "work" */ "./work"));
 
 interface RoutesProps {
   handleNav: (loc: string) => void;
@@ -34,11 +32,11 @@ interface RoutesProps {
 const ResumeRoutes = ({ handleNav }: RoutesProps) => (
   <>
     <Header handleNav={handleNav}>
-      {(onItemClick): React.ReactElement<NavProps> => (
+      {(onItemClick): ReactElement<NavProps> => (
         <Menu onItemClick={onItemClick} />
       )}
     </Header>
-    <React.Suspense fallback={<LoadingSpinner />}>
+    <Suspense fallback={<LoadingSpinner />}>
       <Routes>
         <Route path="" element={<Summary />} />
         <Route path="cars" element={<Cars />} />
@@ -51,7 +49,7 @@ const ResumeRoutes = ({ handleNav }: RoutesProps) => (
         <Route path="work" element={<Work />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-    </React.Suspense>
+    </Suspense>
   </>
 );
 

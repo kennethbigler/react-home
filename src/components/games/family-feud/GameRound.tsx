@@ -1,6 +1,7 @@
-import * as React from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 interface GameRoundProps {
   answers: string[];
@@ -24,10 +25,10 @@ const GameRound = ({
   onScore2,
   modifier = 1,
 }: GameRoundProps) => {
-  const [strikes, setStrikes] = React.useState([false, false, false]);
-  const [buttonsL, setButtonsL] = React.useState(["1", "2", "3", "4"]);
-  const [buttonsR, setButtonsR] = React.useState(["5", "6", "7", "8"]);
-  const [score, setScore] = React.useState(0);
+  const [strikes, setStrikes] = useState([false, false, false]);
+  const [buttonsL, setButtonsL] = useState(["1", "2", "3", "4"]);
+  const [buttonsR, setButtonsR] = useState(["5", "6", "7", "8"]);
+  const [score, setScore] = useState(0);
 
   const handleStrikeClick = (strikeNum: number) => () => {
     const newStrikes = [...strikes];
@@ -47,11 +48,18 @@ const GameRound = ({
     setScore(score + scores[answerNum]);
   };
 
+  const handleTeam1Click = () => onScore1(score * modifier);
+  const handleTeam2Click = () => onScore2(score * modifier);
+
   return (
     <div>
-      <i>{question}</i>
+      <Typography variant="body1" fontStyle="italic">
+        {question}
+      </Typography>
       <hr aria-hidden />
-      <h3 style={{ textAlign: "center" }}>Points: {score * modifier}</h3>
+      <Typography variant="h4" component="h3" align="center">
+        Points: {score * modifier}
+      </Typography>
       <hr aria-hidden />
       <Stack
         direction="row"
@@ -109,12 +117,14 @@ const GameRound = ({
         ))}
       </Stack>
       <hr aria-hidden />
-      <h3>Which Team Won?</h3>
+      <Typography variant="h4" component="h3">
+        Which Team Won?
+      </Typography>
       <Stack direction="row" justifyContent="space-around">
-        <Button variant="contained" onClick={() => onScore1(score * modifier)}>
+        <Button variant="contained" onClick={handleTeam1Click}>
           Team 1
         </Button>
-        <Button variant="contained" onClick={() => onScore2(score * modifier)}>
+        <Button variant="contained" onClick={handleTeam2Click}>
           Team 2
         </Button>
       </Stack>

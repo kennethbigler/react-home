@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
   ThemeProvider,
@@ -19,28 +20,32 @@ declare module "@mui/material/styles" {
 const WithTheme = () => {
   const theme = useAtomValue(themeAtom);
 
-  const setTheme = createTheme({
-    palette: {
-      mode: theme.mode,
-      primary: theme.primary,
-      secondary: theme.secondary,
-      contrastThreshold: 4.5, // this might have to be updated in a few years with WCAG 3.0
-    },
-    typography: {
-      fontFamily: ["Montserrat", "sans-serif"].join(","),
-    },
-    breakpoints: {
-      values: {
-        xs: 0,
-        sm: 600,
-        md: 900,
-        lg: 1200,
-        xl: 1536,
-        xxl: 2600,
-        xxxl: 4600,
-      },
-    },
-  });
+  const setTheme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: theme.mode,
+          primary: theme.primary,
+          secondary: theme.secondary,
+          contrastThreshold: 4.5, // this might have to be updated in a few years with WCAG 3.0
+        },
+        typography: {
+          fontFamily: ["Montserrat", "sans-serif"].join(","),
+        },
+        breakpoints: {
+          values: {
+            xs: 0,
+            sm: 600,
+            md: 900,
+            lg: 1200,
+            xl: 1536,
+            xxl: 2600,
+            xxxl: 4600,
+          },
+        },
+      }),
+    [theme.mode, theme.primary, theme.secondary],
+  );
 
   return (
     <StyledEngineProvider injectFirst>

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { CSSProperties } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import ExpandableCard from "../../common/expandable-card";
@@ -11,7 +11,7 @@ interface JobProps {
   triple?: boolean;
 }
 
-const imgStyle: React.CSSProperties = {
+const imgStyle: CSSProperties = {
   width: "100%",
   maxWidth: "12em",
   height: "auto",

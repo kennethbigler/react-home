@@ -1,14 +1,14 @@
-import * as React from "react";
+import { memo, CSSProperties } from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 
 interface TopScoresProps {
   finalTopSum: number;
   topSum: number;
-  sx: React.CSSProperties;
+  sx: CSSProperties;
 }
 
-const TopScores = React.memo(({ topSum, finalTopSum, sx }: TopScoresProps) => (
+const TopScores = memo(({ topSum, finalTopSum, sx }: TopScoresProps) => (
   <>
     <TableRow sx={{ borderTop: 2 }}>
       <TableCell colSpan={2} component="th" scope="row">

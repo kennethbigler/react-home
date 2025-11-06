@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, CSSProperties, ReactNode, ReactElement } from "react";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
@@ -7,19 +7,19 @@ import Collapse from "@mui/material/Collapse";
 import Grid from "@mui/material/Grid";
 import { useTheme } from "@mui/material/styles";
 
-const cardStyles: React.CSSProperties = { marginTop: 40, overflow: "visible" };
+const cardStyles: CSSProperties = { marginTop: 40, overflow: "visible" };
 
 interface ExpandableCardProps {
   /** change the background color of the title bar */
   backgroundColor?: string;
   /** content to be displayed in the main section of the card */
-  children?: React.ReactNode;
+  children?: ReactNode;
   /** invert the color of the title and subtitle text */
   inverted?: boolean;
   /** subtitle content */
-  subtitle?: string | React.ReactElement;
+  subtitle?: string | ReactElement;
   /** title content */
-  title?: string | React.ReactElement;
+  title?: string | ReactElement;
 }
 
 const ExpandableCard = ({
@@ -29,14 +29,14 @@ const ExpandableCard = ({
   children,
   backgroundColor,
 }: ExpandableCardProps) => {
-  const [expanded, setExpanded] = React.useState(true);
+  const [expanded, setExpanded] = useState(true);
   const toggleExpanded = () => setExpanded(!expanded);
 
   const { palette } = useTheme();
 
   const color = inverted ? "black" : "white";
 
-  const headerStyle: React.CSSProperties = {
+  const headerStyle: CSSProperties = {
     backgroundColor: backgroundColor || palette.primary.dark,
     color,
   };

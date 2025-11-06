@@ -1,9 +1,9 @@
-import * as React from "react";
+import { memo } from "react";
 import GameTable from "../game-table";
 import usePoker from "./usePoker";
 import Header from "./Header";
 
-const Poker = React.memo(() => {
+const Poker = memo(() => {
   const {
     checkUpdate,
     cardClickHandler,

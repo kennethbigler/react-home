@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, CSSProperties } from "react";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Table from "@mui/material/Table";
@@ -9,7 +9,7 @@ import ExpandableCard from "../../common/expandable-card";
 import photo from "../../../images/ken.webp";
 import { work, Job } from "../../../constants/work";
 
-const imageStyles: React.CSSProperties = {
+const imageStyles: CSSProperties = {
   width: "95%",
   display: "block",
   margin: "auto",
@@ -21,7 +21,7 @@ const getJob = (job: Job): string => {
   return `${job.title}, ${job.company}${parent}`;
 };
 
-const Info = React.memo(() => (
+const Info = memo(() => (
   <Grid container spacing={1}>
     <Grid size={{ xs: 12, md: 6, xl: 4, xxl: 3, xxxl: 2 }}>
       <Link href="https://www.linkedin.com/in/kennethbigler">

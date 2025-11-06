@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo, CSSProperties } from "react";
 import { grey } from "@mui/material/colors";
 
 interface YearMarkersProps {
@@ -6,26 +6,26 @@ interface YearMarkersProps {
   width: number;
 }
 
-const boxStyles: React.CSSProperties = {
+const boxStyles: CSSProperties = {
   cursor: "default",
   height: 500,
   marginBottom: -500,
   minWidth: 1,
 };
-const markerStyles: React.CSSProperties = {
+const markerStyles: CSSProperties = {
   ...boxStyles,
   backgroundColor: grey[200],
   width: "100%",
   maxWidth: 2.5,
 };
-const labelStyles: React.CSSProperties = {
+const labelStyles: CSSProperties = {
   position: "relative",
   right: 22,
 };
 
-const YearMarkers = React.memo(({ body, width }: YearMarkersProps) => {
+const YearMarkers = memo(({ body, width }: YearMarkersProps) => {
   // variables for empty segment
-  const style: React.CSSProperties = {
+  const style: CSSProperties = {
     display: "inline-block",
     width: `${width}%`,
   };
