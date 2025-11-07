@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Bridge from "./Bridge";
+import Bridge from ".";
 
 describe("common | Bridge", () => {
   it("renders as expected", () => {

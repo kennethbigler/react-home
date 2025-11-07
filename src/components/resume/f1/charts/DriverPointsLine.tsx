@@ -8,7 +8,7 @@ export interface DriverPointsLineProps {
   color: string;
 }
 
-const tooltipFormatter = function (this: Highcharts.Point): string {
+export const tooltipFormatter = function (this: Highcharts.Point): string {
   let tooltip = "Year: <b>" + xAxisYears[this.x] + "</b><br/>";
   const tooltipHist: Record<number, string> = {};
 

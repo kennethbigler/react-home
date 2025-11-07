@@ -84,4 +84,65 @@ describe("games | connect4 | Connect4", () => {
     fireEvent.click(screen.getAllByTitle("Wrong")[4]);
     expect(screen.queryByTitle("Basketball")).toBeNull();
   });
+
+  it("plays round 3 with 2x modifier", () => {
+    render(<FamilyFeud />);
+
+    fireEvent.click(screen.getByText("Round 3"));
+
+    // Answer a question worth 45 points with 2x modifier = 90 points
+    fireEvent.click(screen.getByText("1")); // Phone - 45 points
+    fireEvent.click(screen.getAllByText("Team 1")[1]);
+
+    // Score should be 90 (45 * 2)
+    expect(screen.getByText("90")).toBeInTheDocument();
+  });
+
+  it("plays round 4 with 3x modifier", () => {
+    render(<FamilyFeud />);
+
+    fireEvent.click(screen.getByText("Round 4"));
+
+    // Answer a question worth 43 points with 3x modifier = 129 points
+    fireEvent.click(screen.getByText("1")); // Walk/Hike - 43 points
+    fireEvent.click(screen.getAllByText("Team 2")[1]);
+
+    // Score should be 129 (43 * 3)
+    expect(screen.getByText("129")).toBeInTheDocument();
+  });
+
+  it("plays sudden death with 300x modifier", () => {
+    render(<FamilyFeud />);
+
+    fireEvent.click(screen.getByText("Sudden Death"));
+
+    // Answer a question worth 37 points with 300x modifier = 11100 points
+    fireEvent.click(screen.getByText("1")); // Coffee - 37 points
+    fireEvent.click(screen.getAllByText("Team 1")[1]);
+
+    // Score should be 11100 (37 * 300)
+    expect(screen.getByText("11100")).toBeInTheDocument();
+  });
+
+  it("accumulates scores across multiple rounds", () => {
+    render(<FamilyFeud />);
+
+    // Round 1: Add 48 points to Team 1
+    fireEvent.click(screen.getByText("1")); // Food/Drink - 48
+    fireEvent.click(screen.getAllByText("Team 1")[1]);
+    expect(screen.getByText("48")).toBeInTheDocument();
+
+    // Round 2: Add 46 points to Team 1
+    fireEvent.click(screen.getByText("Round 2"));
+    fireEvent.click(screen.getByText("1")); // Xray/Special Vision - 46
+    fireEvent.click(screen.getAllByText("Team 1")[1]);
+    expect(screen.getByText("94")).toBeInTheDocument(); // 48 + 46
+
+    // Round 3: Add 90 points to Team 2 (45 * 2)
+    fireEvent.click(screen.getByText("Round 3"));
+    fireEvent.click(screen.getByText("1")); // Phone - 45 with 2x modifier
+    fireEvent.click(screen.getAllByText("Team 2")[1]);
+    expect(screen.getByText("94")).toBeInTheDocument(); // Team 1 still 94
+    expect(screen.getByText("90")).toBeInTheDocument(); // Team 2 now 90
+  });
 });
