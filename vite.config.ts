@@ -18,6 +18,7 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "html", "json"],
       include: ["src/**"],
+      exclude: ["src/images/**"],
       thresholds: {
         statements: 85,
         branches: 85,
