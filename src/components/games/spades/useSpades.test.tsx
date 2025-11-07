@@ -338,10 +338,10 @@ describe("useSpades", () => {
       // Add a bid
       act(() => {
         result.current.addBid([
-          { bid: 3, nil: false },
-          { bid: 3, nil: false },
-          { bid: 3, nil: false },
-          { bid: 3, nil: false },
+          { bid: 3, blind: false, train: false },
+          { bid: 3, blind: false, train: false },
+          { bid: 3, blind: false, train: false },
+          { bid: 3, blind: false, train: false },
         ]);
       });
 

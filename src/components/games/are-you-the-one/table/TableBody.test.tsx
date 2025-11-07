@@ -14,19 +14,19 @@ describe("AYTOTableBody", () => {
   ];
   const mockHist = [
     [
-      { odds: 50, rounds: [] },
-      { odds: 30, rounds: [] },
-      { odds: 20, rounds: [] },
+      { odds: 50, oddsWeight: 0, rounds: [] },
+      { odds: 30, oddsWeight: 0, rounds: [] },
+      { odds: 20, oddsWeight: 0, rounds: [] },
     ],
     [
-      { odds: 40, rounds: [] },
-      { odds: 40, rounds: [] },
-      { odds: 20, rounds: [] },
+      { odds: 40, oddsWeight: 0, rounds: [] },
+      { odds: 40, oddsWeight: 0, rounds: [] },
+      { odds: 20, oddsWeight: 0, rounds: [] },
     ],
     [
-      { odds: 30, rounds: [] },
-      { odds: 30, rounds: [] },
-      { odds: 40, rounds: [] },
+      { odds: 30, oddsWeight: 0, rounds: [] },
+      { odds: 30, oddsWeight: 0, rounds: [] },
+      { odds: 40, oddsWeight: 0, rounds: [] },
     ],
   ];
   const mockOptions = ["Round 1", "Round 2", "Truth Booth"];

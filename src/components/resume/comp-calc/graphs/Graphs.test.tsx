@@ -8,19 +8,62 @@ import {
 
 describe("Graphs", () => {
   const mockCompEntries: CompEntry[] = [
-    { company: "Company A", date: "2020-01", salary: 100000, bonus: 10000 },
-    { company: "Company B", date: "2021-01", salary: 120000, bonus: 15000 },
-    { company: "Company C", date: "2022-01", salary: 140000, bonus: 20000 },
+    {
+      entryDate: "2020-01",
+      salary: 100000,
+      bonus: 10000,
+      stockTick: "AAPL",
+      priceThen: 100,
+      grantDuration: 4,
+      grantQty: 1000,
+    },
+    {
+      entryDate: "2021-01",
+      salary: 120000,
+      bonus: 15000,
+      stockTick: "AAPL",
+      priceThen: 120,
+      grantDuration: 4,
+      grantQty: 1000,
+    },
+    {
+      entryDate: "2022-01",
+      salary: 140000,
+      bonus: 20000,
+      stockTick: "AAPL",
+      priceThen: 140,
+      grantDuration: 4,
+      grantQty: 1000,
+    },
   ];
 
   const mockCompCalcEntries: CompCalcEntry[] = [
-    { company: "Company A", date: "2020-01", stock: 50000, stockAdj: 55000 },
-    { company: "Company B", date: "2021-01", stock: 60000, stockAdj: 65000 },
     {
-      company: "Company C",
-      date: "2022-01",
+      stock: 50000,
+      stockAdj: 55000,
+      total: 160000,
+      totalAdj: 165000,
+      netDiff: 5000,
+      grantThen: 100000,
+      grantNow: 105000,
+    },
+    {
+      stock: 60000,
+      stockAdj: 65000,
+      total: 195000,
+      totalAdj: 200000,
+      netDiff: 5000,
+      grantThen: 120000,
+      grantNow: 125000,
+    },
+    {
       stock: 70000,
-      stockAdj: undefined,
+      stockAdj: 0,
+      total: 230000,
+      totalAdj: 230000,
+      netDiff: 0,
+      grantThen: 140000,
+      grantNow: 140000,
     },
   ];
 
@@ -38,8 +81,24 @@ describe("Graphs", () => {
 
   it("initializes with last entry values when stockAdj is available", () => {
     const entriesWithStockAdj: CompCalcEntry[] = [
-      { company: "Company A", date: "2020-01", stock: 50000, stockAdj: 55000 },
-      { company: "Company B", date: "2021-01", stock: 60000, stockAdj: 65000 },
+      {
+        stock: 50000,
+        stockAdj: 55000,
+        total: 160000,
+        totalAdj: 165000,
+        netDiff: 5000,
+        grantThen: 100000,
+        grantNow: 105000,
+      },
+      {
+        stock: 60000,
+        stockAdj: 65000,
+        total: 195000,
+        totalAdj: 200000,
+        netDiff: 5000,
+        grantThen: 120000,
+        grantNow: 125000,
+      },
     ];
 
     render(
@@ -55,16 +114,22 @@ describe("Graphs", () => {
   it("initializes with stock value when stockAdj is undefined", () => {
     const entriesWithoutStockAdj: CompCalcEntry[] = [
       {
-        company: "Company A",
-        date: "2020-01",
         stock: 50000,
-        stockAdj: undefined,
+        stockAdj: 0,
+        total: 150000,
+        totalAdj: 150000,
+        netDiff: 0,
+        grantThen: 100000,
+        grantNow: 100000,
       },
       {
-        company: "Company B",
-        date: "2021-01",
         stock: 60000,
-        stockAdj: undefined,
+        stockAdj: 0,
+        total: 180000,
+        totalAdj: 180000,
+        netDiff: 0,
+        grantThen: 120000,
+        grantNow: 120000,
       },
     ];
 
@@ -74,7 +139,7 @@ describe("Graphs", () => {
         compCalcEntries={entriesWithoutStockAdj}
       />,
     );
-    // Should initialize with stock value (60000) from last entry when stockAdj is undefined
+    // Should initialize with stock value (60000) from last entry when stockAdj is 0
     expect(screen.getAllByRole("img").length).toBeGreaterThan(0);
   });
 
@@ -105,7 +170,15 @@ describe("Graphs", () => {
 
   it("uses stockAdj over stock when both are available during click", () => {
     const entriesWithBoth: CompCalcEntry[] = [
-      { company: "Company A", date: "2020-01", stock: 50000, stockAdj: 55000 },
+      {
+        stock: 50000,
+        stockAdj: 55000,
+        total: 160000,
+        totalAdj: 165000,
+        netDiff: 5000,
+        grantThen: 100000,
+        grantNow: 105000,
+      },
     ];
 
     render(

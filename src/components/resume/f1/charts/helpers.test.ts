@@ -35,9 +35,9 @@ describe("resume | f1 | charts | helpers", () => {
         series: {
           name: "Another Team",
           data: [
-            { x: 0, y: 1 } as Highcharts.Point,
-            { x: 1, y: null } as Highcharts.Point,
-            { x: 2, y: 4 } as Highcharts.Point,
+            { x: 0, y: 1 } as unknown as Highcharts.Point,
+            { x: 1, y: null } as unknown as Highcharts.Point,
+            { x: 2, y: 4 } as unknown as Highcharts.Point,
           ],
         } as Highcharts.Series,
       };
