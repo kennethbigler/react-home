@@ -3,7 +3,6 @@ import { renderHook, act } from "@testing-library/react";
 import { Provider } from "jotai";
 import useBlackjackAI from "./useBlackjackAI";
 import { GameFunctions } from "../../../jotai/blackjack-state";
-import * as blackjackHelpers from "./blackjackHelpers";
 
 // Mock useDeck to return predictable cards
 vi.mock("./api/useDeck", () => ({
@@ -17,7 +16,10 @@ vi.mock("./api/useDeck", () => ({
       return Promise.resolve(cards);
     }),
   }),
-  asyncForEach: async (array: any[], callback: Function) => {
+  asyncForEach: async <T,>(
+    array: T[],
+    callback: (item: T, index: number, array: T[]) => Promise<void>,
+  ) => {
     for (let i = 0; i < array.length; i++) {
       await callback(array[i], i, array);
     }
@@ -69,7 +71,9 @@ describe("useBlackjackAI", () => {
 
   it("handles unknown game function", () => {
     const { result } = renderHook(() => useBlackjackAI(), { wrapper });
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
     act(() => {
       result.current.handleClick("UNKNOWN" as GameFunctions);
@@ -77,7 +81,7 @@ describe("useBlackjackAI", () => {
 
     expect(consoleError).toHaveBeenCalledWith(
       "Unknown Game Function: ",
-      "UNKNOWN"
+      "UNKNOWN",
     );
 
     consoleError.mockRestore();
@@ -155,7 +159,7 @@ describe("useBlackjackAI", () => {
 
     const player0 = result.current.players.find((p) => p.id === 0);
     const player1 = result.current.players.find((p) => p.id === 1);
-    
+
     expect(player0?.bet).toBe(20);
     expect(player1?.bet).toBe(15);
   });
@@ -170,10 +174,10 @@ describe("useBlackjackAI", () => {
   it("initializes turn state correctly", () => {
     const { result } = renderHook(() => useBlackjackAI(), { wrapper });
 
-    expect(result.current.turn).toHaveProperty('player');
-    expect(result.current.turn).toHaveProperty('hand');
-    expect(typeof result.current.turn.player).toBe('number');
-    expect(typeof result.current.turn.hand).toBe('number');
+    expect(result.current.turn).toHaveProperty("player");
+    expect(result.current.turn).toHaveProperty("hand");
+    expect(typeof result.current.turn.player).toBe("number");
+    expect(typeof result.current.turn.hand).toBe("number");
   });
 
   it("handles multiple NEW_GAME calls", () => {
@@ -182,8 +186,6 @@ describe("useBlackjackAI", () => {
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
     });
-
-    const turn1 = result.current.turn;
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -214,7 +216,7 @@ describe("useBlackjackAI", () => {
       result.current.handleClick(GameFunctions.NEW_GAME);
     });
 
-    result.current.players.forEach(player => {
+    result.current.players.forEach((player) => {
       expect(player.hands).toEqual([]);
     });
   });
@@ -256,29 +258,22 @@ describe("useBlackjackAI", () => {
   it("exposes all required hook methods", () => {
     const { result } = renderHook(() => useBlackjackAI(), { wrapper });
 
-    expect(typeof result.current.betHandler).toBe('function');
-    expect(typeof result.current.checkUpdate).toBe('function');
-    expect(typeof result.current.handleClick).toBe('function');
+    expect(typeof result.current.betHandler).toBe("function");
+    expect(typeof result.current.checkUpdate).toBe("function");
+    expect(typeof result.current.handleClick).toBe("function");
     expect(Array.isArray(result.current.gameFunctions)).toBe(true);
-    expect(typeof result.current.hideHands).toBe('boolean');
+    expect(typeof result.current.hideHands).toBe("boolean");
     expect(Array.isArray(result.current.players)).toBe(true);
-    expect(typeof result.current.turn).toBe('object');
+    expect(typeof result.current.turn).toBe("object");
   });
 
   // Test branches in the double function
-  it("double function when turn.hand < lastHand (advances hand)", async () => {
+  it("double function when turn.hand < lastHand (advances hand)", () => {
     const { result } = renderHook(() => useBlackjackAI(), { wrapper });
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
     });
-
-    // Mock a player with multiple hands after split
-    const multiHandPlayers = result.current.players.map((p, idx) => 
-      idx === 0 
-        ? { ...p, hands: [{ cards: [], weight: 0, soft: false }, { cards: [], weight: 0, soft: false }] }
-        : p
-    );
 
     // This would test the branch: turn.hand < lastHand
     // But we can't easily mock internal state without exposing it
@@ -286,7 +281,7 @@ describe("useBlackjackAI", () => {
     expect(result.current.turn.hand).toBe(0);
   });
 
-  it("double function when next player is a bot (line 405 branch)", async () => {
+  it("double function when next player is a bot (line 405 branch)", () => {
     const { result } = renderHook(() => useBlackjackAI(), { wrapper });
 
     act(() => {
@@ -323,8 +318,6 @@ describe("useBlackjackAI", () => {
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
     });
-
-    const initialPlayer = result.current.turn.player;
 
     act(() => {
       result.current.handleClick(GameFunctions.STAY);
@@ -401,7 +394,7 @@ describe("useBlackjackAI", () => {
     });
 
     // Get initial bets
-    const initialBets = result.current.players.map(p => p.bet);
+    const initialBets = result.current.players.map((p) => p.bet);
 
     // Update only player 0
     act(() => {
@@ -424,14 +417,15 @@ describe("useBlackjackAI", () => {
     });
 
     await act(async () => {
-      await result.current.handleClick(GameFunctions.FINISH_BETTING);
+      await Promise.resolve();
+      result.current.handleClick(GameFunctions.FINISH_BETTING);
     });
 
     // After finish betting, hideHands should be false
     expect(result.current.hideHands).toBe(false);
   });
 
-  it("handles HIT game function (switch case)", async () => {
+  it("handles HIT game function (switch case)", () => {
     const { result } = renderHook(() => useBlackjackAI(), { wrapper });
 
     // Need to set up a game state where HIT is valid
@@ -443,7 +437,7 @@ describe("useBlackjackAI", () => {
     expect(result.current.players).toBeDefined();
   });
 
-  it("handles DOUBLE game function (switch case)", async () => {
+  it("handles DOUBLE game function (switch case)", () => {
     const { result } = renderHook(() => useBlackjackAI(), { wrapper });
 
     act(() => {
@@ -454,7 +448,7 @@ describe("useBlackjackAI", () => {
     expect(result.current.players).toBeDefined();
   });
 
-  it("handles SPLIT game function (switch case)", async () => {
+  it("handles SPLIT game function (switch case)", () => {
     const { result } = renderHook(() => useBlackjackAI(), { wrapper });
 
     act(() => {
@@ -499,13 +493,13 @@ describe("useBlackjackAI", () => {
     });
 
     // Verify reset
-    result.current.players.forEach(player => {
+    result.current.players.forEach((player) => {
       expect(player.hands).toEqual([]);
       expect(player.status).toBe("");
-      if (player.id !== 2) { // Not dealer
+      if (player.id !== 2) {
+        // Not dealer
         expect(player.bet).toBe(5);
       }
     });
   });
 });
-

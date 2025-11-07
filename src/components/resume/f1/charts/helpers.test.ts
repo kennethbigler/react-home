@@ -19,9 +19,7 @@ describe("resume | f1 | charts | helpers", () => {
         } as Highcharts.Series,
       };
 
-      const result = standingsTTFormatter.call(
-        mockPoint as Highcharts.Point,
-      );
+      const result = standingsTTFormatter.call(mockPoint as Highcharts.Point);
 
       expect(result).toContain(`Year: <b>${xAxisYears[1]}</b>`);
       expect(result).toContain("<b>5</b>");
@@ -44,9 +42,7 @@ describe("resume | f1 | charts | helpers", () => {
         } as Highcharts.Series,
       };
 
-      const result = standingsTTFormatter.call(
-        mockPoint as Highcharts.Point,
-      );
+      const result = standingsTTFormatter.call(mockPoint as Highcharts.Point);
 
       expect(result).toContain(`Year: <b>${xAxisYears[0]}</b>`);
       expect(result).toContain("-");
@@ -68,9 +64,7 @@ describe("resume | f1 | charts | helpers", () => {
         } as Highcharts.Series,
       };
 
-      const result = standingsTTFormatter.call(
-        mockPoint as Highcharts.Point,
-      );
+      const result = standingsTTFormatter.call(mockPoint as Highcharts.Point);
 
       expect(result).toContain("8");
       expect(result).toContain("9");
@@ -79,4 +73,3 @@ describe("resume | f1 | charts | helpers", () => {
     });
   });
 });
-

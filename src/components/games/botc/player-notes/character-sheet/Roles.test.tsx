@@ -9,9 +9,7 @@ describe("Roles", () => {
   };
 
   it("renders Trouble Brewing script (script 0)", () => {
-    render(
-      <Roles isText={true} script={0} roleKey={mockRoleKey} />,
-    );
+    render(<Roles isText={true} script={0} roleKey={mockRoleKey} />);
 
     expect(screen.getByText("Townsfolk")).toBeInTheDocument();
     expect(screen.getByText("Outsiders")).toBeInTheDocument();
@@ -20,9 +18,7 @@ describe("Roles", () => {
   });
 
   it("renders Sects & Violets script (script 1)", () => {
-    render(
-      <Roles isText={true} script={1} roleKey={mockRoleKey} />,
-    );
+    render(<Roles isText={true} script={1} roleKey={mockRoleKey} />);
 
     expect(screen.getByText("Townsfolk")).toBeInTheDocument();
     expect(screen.getByText("Outsiders")).toBeInTheDocument();
@@ -31,9 +27,7 @@ describe("Roles", () => {
   });
 
   it("renders Bad Moon Rising script (script 2)", () => {
-    render(
-      <Roles isText={true} script={2} roleKey={mockRoleKey} />,
-    );
+    render(<Roles isText={true} script={2} roleKey={mockRoleKey} />);
 
     expect(screen.getByText("Townsfolk")).toBeInTheDocument();
     expect(screen.getByText("Outsiders")).toBeInTheDocument();
@@ -42,9 +36,7 @@ describe("Roles", () => {
   });
 
   it("renders Sects & Whispers + Murmurs script (script 3)", () => {
-    render(
-      <Roles isText={true} script={3} roleKey={mockRoleKey} />,
-    );
+    render(<Roles isText={true} script={3} roleKey={mockRoleKey} />);
 
     expect(screen.getByText("Townsfolk")).toBeInTheDocument();
     expect(screen.getByText("Outsiders")).toBeInTheDocument();
@@ -53,9 +45,7 @@ describe("Roles", () => {
   });
 
   it("renders Other script (script 4)", () => {
-    render(
-      <Roles isText={true} script={4} roleKey={mockRoleKey} />,
-    );
+    render(<Roles isText={true} script={4} roleKey={mockRoleKey} />);
 
     expect(screen.getByText("Townsfolk")).toBeInTheDocument();
     expect(screen.getByText("Outsiders")).toBeInTheDocument();
@@ -64,9 +54,7 @@ describe("Roles", () => {
   });
 
   it("renders Other script for default case", () => {
-    render(
-      <Roles isText={true} script={99} roleKey={mockRoleKey} />,
-    );
+    render(<Roles isText={true} script={99} roleKey={mockRoleKey} />);
 
     expect(screen.getByText("Townsfolk")).toBeInTheDocument();
     expect(screen.getByText("Outsiders")).toBeInTheDocument();
@@ -75,9 +63,7 @@ describe("Roles", () => {
   });
 
   it("renders with emoji icons when isText is false", () => {
-    render(
-      <Roles isText={false} script={0} roleKey={mockRoleKey} />,
-    );
+    render(<Roles isText={false} script={0} roleKey={mockRoleKey} />);
 
     expect(screen.getByText("Townsfolk")).toBeInTheDocument();
     expect(screen.getByText("Outsiders")).toBeInTheDocument();
@@ -113,30 +99,23 @@ describe("Roles", () => {
   });
 
   it("renders Travelers section when script has travelers", () => {
-    render(
-      <Roles isText={true} script={0} roleKey={mockRoleKey} />,
-    );
+    render(<Roles isText={true} script={0} roleKey={mockRoleKey} />);
 
     // TB script should have Travelers section
     expect(screen.getByText("Travelers")).toBeInTheDocument();
   });
 
   it("renders Other Travelers section when other travelers exist", () => {
-    render(
-      <Roles isText={true} script={0} roleKey={mockRoleKey} />,
-    );
+    render(<Roles isText={true} script={0} roleKey={mockRoleKey} />);
 
     // TB script should have Other Travelers from SNV and BMR
     expect(screen.getByText("Other Travelers")).toBeInTheDocument();
   });
 
   it("does not render Travelers section when script has no travelers", () => {
-    render(
-      <Roles isText={true} script={4} roleKey={mockRoleKey} />,
-    );
+    render(<Roles isText={true} script={4} roleKey={mockRoleKey} />);
 
     // Other script should not have Travelers section if it doesn't have any
     // (this depends on the actual data in constants/botc)
   });
 });
-

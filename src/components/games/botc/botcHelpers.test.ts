@@ -84,7 +84,7 @@ describe("botcHelpers", () => {
 
       // With 3+ travelers, should have 2 more evil
       expect(resultManyTravelers[0].y).toBeGreaterThanOrEqual(
-        resultNoTravelers[0].y + 2
+        resultNoTravelers[0].y + 2,
       );
     });
 
@@ -94,7 +94,7 @@ describe("botcHelpers", () => {
 
       // With 1-2 travelers, should have 1 more evil
       expect(resultOneTraveler[0].y).toBeGreaterThanOrEqual(
-        resultNoTravelers[0].y + 1
+        resultNoTravelers[0].y + 1,
       );
     });
 
@@ -133,10 +133,9 @@ describe("botcHelpers", () => {
       const result = getLieSeries(numPlayers, numTravelers, 0);
 
       const total = result.reduce((sum, item) => sum + item.y, 0);
-      
+
       // Total should equal numPlayers + numTravelers - 1 (storyteller)
       expect(total).toBe(numPlayers + numTravelers - 1);
     });
   });
 });
-

@@ -183,16 +183,17 @@ describe("useSpades", () => {
         result.current.addScore([13, 4, 12, 3]);
       });
 
-      const scoreBeforePenalty = result.current.data[result.current.data.length - 1].score1;
-      const bagsBeforePenalty = result.current.data[result.current.data.length - 1].bags1;
+      const bagsBeforePenalty =
+        result.current.data[result.current.data.length - 1].bags1;
 
       // Add penalty to team 0 - adds 3 bags
       act(() => {
         result.current.addPenalty(0)();
       });
 
-      const bagsAfterPenalty = result.current.data[result.current.data.length - 1].bags1;
-      
+      const bagsAfterPenalty =
+        result.current.data[result.current.data.length - 1].bags1;
+
       // Bags should increase by 3, and if >= 10, score decreases and bags reduce by 10
       expect(bagsAfterPenalty).not.toBe(bagsBeforePenalty);
     });
@@ -215,15 +216,17 @@ describe("useSpades", () => {
         result.current.addScore([3, 13, 3, 12]);
       });
 
-      const bagsBeforePenalty = result.current.data[result.current.data.length - 1].bags2;
+      const bagsBeforePenalty =
+        result.current.data[result.current.data.length - 1].bags2;
 
       // Add penalty to team 1
       act(() => {
         result.current.addPenalty(1)();
       });
 
-      const bagsAfterPenalty = result.current.data[result.current.data.length - 1].bags2;
-      
+      const bagsAfterPenalty =
+        result.current.data[result.current.data.length - 1].bags2;
+
       // Bags should increase
       expect(bagsAfterPenalty).not.toBe(bagsBeforePenalty);
     });
@@ -278,7 +281,8 @@ describe("useSpades", () => {
 
       // Verify which team won based on scores
       const is1Winner =
-        (lastEntry.score1 === lastEntry.score2 && (lastEntry.bags1 || 0) > (lastEntry.bags2 || 0)) ||
+        (lastEntry.score1 === lastEntry.score2 &&
+          (lastEntry.bags1 || 0) > (lastEntry.bags2 || 0)) ||
         (lastEntry.score1 || 0) > (lastEntry.score2 || 0);
 
       // Start new game
@@ -438,4 +442,3 @@ describe("useSpades", () => {
     });
   });
 });
-

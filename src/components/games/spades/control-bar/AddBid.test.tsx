@@ -42,7 +42,7 @@ describe("AddBid", () => {
     it("returns blindTrade for player 0 when blindTrade < 0", () => {
       render(<AddBid {...defaultProps} blindTrade={-2} />);
       fireEvent.click(screen.getByText("+ Bid"));
-      
+
       // Player A (position 0) should see blind trade value
       expect(screen.getByText("A 🥇")).toBeInTheDocument();
     });
@@ -50,28 +50,28 @@ describe("AddBid", () => {
     it("returns blindTrade for player 2 when blindTrade < 0", () => {
       render(<AddBid {...defaultProps} blindTrade={-2} first={2} />);
       fireEvent.click(screen.getByText("+ Bid"));
-      
+
       expect(screen.getByText("C 🥇")).toBeInTheDocument();
     });
 
     it("returns blindTrade for player 1 when blindTrade > 0", () => {
       render(<AddBid {...defaultProps} blindTrade={2} first={1} />);
       fireEvent.click(screen.getByText("+ Bid"));
-      
+
       expect(screen.getByText("B 🥇")).toBeInTheDocument();
     });
 
     it("returns blindTrade for player 3 when blindTrade > 0", () => {
       render(<AddBid {...defaultProps} blindTrade={2} first={3} />);
       fireEvent.click(screen.getByText("+ Bid"));
-      
+
       expect(screen.getByText("D 🥇")).toBeInTheDocument();
     });
 
     it("limits blind trade to maximum of 3", () => {
       render(<AddBid {...defaultProps} blindTrade={-5} />);
       fireEvent.click(screen.getByText("+ Bid"));
-      
+
       // Should cap at 3
       expect(screen.getByText("A 🥇")).toBeInTheDocument();
     });
@@ -79,7 +79,7 @@ describe("AddBid", () => {
     it("returns 0 when blindTrade doesn't match player position", () => {
       render(<AddBid {...defaultProps} blindTrade={-2} first={1} />);
       fireEvent.click(screen.getByText("+ Bid"));
-      
+
       // Player B (position 1) shouldn't get blind trade when negative
       expect(screen.getByText("B 🥇")).toBeInTheDocument();
     });
@@ -222,7 +222,7 @@ describe("AddBid", () => {
     fireEvent.click(saveButton);
 
     expect(mockOnBidSave).toHaveBeenCalled();
-    
+
     // Reopen to check reset
     const buttons = screen.getAllByText("+ Bid");
     fireEvent.click(buttons[0]);
@@ -269,4 +269,3 @@ describe("AddBid", () => {
     expect(screen.getByText(/💰/)).toBeInTheDocument();
   });
 });
-

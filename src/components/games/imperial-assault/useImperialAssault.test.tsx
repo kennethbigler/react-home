@@ -224,7 +224,9 @@ describe("useImperialAssault", () => {
           result.current.handleVictoryClick(0)();
         });
 
-        expect(result.current.campaign[0].victory).toBe((initialVictory + 1) % 3);
+        expect(result.current.campaign[0].victory).toBe(
+          (initialVictory + 1) % 3,
+        );
       }
     });
 
@@ -383,7 +385,9 @@ describe("useImperialAssault", () => {
         result.current.handleVictoryClick(0)();
       });
 
-      expect(result.current.forcedMissions[0].victory).toBe((initialVictory + 1) % 3);
+      expect(result.current.forcedMissions[0].victory).toBe(
+        (initialVictory + 1) % 3,
+      );
     });
 
     it("does not handle victory click when forced mission title is empty (line 152 branch)", () => {
@@ -396,7 +400,9 @@ describe("useImperialAssault", () => {
       });
 
       // Should not have changed since title is empty
-      expect(result.current.forcedMissions[0]).toEqual(forcedMissionsBeforeClick);
+      expect(result.current.forcedMissions[0]).toEqual(
+        forcedMissionsBeforeClick,
+      );
     });
 
     it("adds new forced mission when clicking victory on last mission (line 158 branch)", () => {
@@ -451,7 +457,9 @@ describe("useImperialAssault", () => {
       });
 
       // Should not have added a new forced mission
-      expect(result.current.forcedMissions.length).toBe(lengthAfterAddingSecond);
+      expect(result.current.forcedMissions.length).toBe(
+        lengthAfterAddingSecond,
+      );
     });
 
     it("updates forced mission name", () => {
@@ -463,7 +471,9 @@ describe("useImperialAssault", () => {
         } as React.FocusEvent<HTMLInputElement>);
       });
 
-      expect(result.current.forcedMissions[0].title).toBe("Test Forced Mission");
+      expect(result.current.forcedMissions[0].title).toBe(
+        "Test Forced Mission",
+      );
     });
 
     it("updates forced mission name with empty value", () => {
@@ -479,4 +489,3 @@ describe("useImperialAssault", () => {
     });
   });
 });
-

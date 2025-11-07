@@ -24,11 +24,13 @@ describe("resume | f1 | F1", () => {
     // Find a track card and click it
     const trackCards = screen.getAllByRole("img");
     if (trackCards.length > 0) {
-      const firstTrack = trackCards[0].closest("div[role='button']") || trackCards[0].closest("button");
+      const firstTrack =
+        trackCards[0].closest("div[role='button']") ||
+        trackCards[0].closest("button");
       if (firstTrack) {
         // Click to expand
         fireEvent.click(firstTrack);
-        
+
         // Click again to collapse
         fireEvent.click(firstTrack);
       }

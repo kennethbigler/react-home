@@ -1,8 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { Provider } from "jotai";
-import { usePlayerAdjControls, usePlayerNotes, useEditPlayers, useTracker } from "./useBotC";
-import useBotC from "./useBotC";
+import useBotC, {
+  usePlayerAdjControls,
+  usePlayerNotes,
+  useEditPlayers,
+  useTracker,
+} from "./useBotC";
+import { SelectChangeEvent } from "@mui/material";
+import { BotCRole } from "../../../jotai/botc-atom";
 
 describe("useBotC", () => {
   const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -180,7 +186,11 @@ describe("useBotC", () => {
     it("adds role when not selected", () => {
       const { result } = renderHook(() => usePlayerNotes(), { wrapper });
 
-      const mockRole = { name: "Imp", type: "demon" };
+      const mockRole: BotCRole = {
+        name: "Imp",
+        icon: "👹",
+        alignment: "error",
+      };
 
       act(() => {
         const updateFn = result.current.updateRoles(0)(mockRole, false);
@@ -193,7 +203,11 @@ describe("useBotC", () => {
     it("removes role when selected", () => {
       const { result } = renderHook(() => usePlayerNotes(), { wrapper });
 
-      const mockRole = { name: "Imp", type: "demon" };
+      const mockRole: BotCRole = {
+        name: "Imp",
+        icon: "👹",
+        alignment: "error",
+      };
 
       act(() => {
         const updateFn = result.current.updateRoles(0)(mockRole, true);
@@ -271,7 +285,7 @@ describe("useBotC", () => {
       const mockEvent = {} as React.ChangeEvent<HTMLInputElement>;
 
       act(() => {
-        const updateFn = result.current.updateStats(0)("pois");
+        const updateFn = result.current.updateStats(0)("liar");
         updateFn(mockEvent, true);
       });
 
@@ -316,11 +330,11 @@ describe("useBotC", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
       const mockEvent = {
-        target: { value: 0 },
-      } as any;
+        target: { value: 0, name: "script" },
+      };
 
       act(() => {
-        result.current.updateScript(mockEvent);
+        result.current.updateScript(mockEvent as SelectChangeEvent<number>);
       });
 
       expect(result.current.isText).toBe(true);
@@ -330,8 +344,8 @@ describe("useBotC", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
       const mockEvent = {
-        target: { value: 1 },
-      } as any;
+        target: { value: 1, name: "script" },
+      } as unknown as SelectChangeEvent<number>;
 
       act(() => {
         result.current.updateScript(mockEvent);
@@ -344,8 +358,8 @@ describe("useBotC", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
       const mockEvent = {
-        target: { value: 2 },
-      } as any;
+        target: { value: 2, name: "script" },
+      } as unknown as SelectChangeEvent<number>;
 
       act(() => {
         result.current.updateScript(mockEvent);
@@ -358,8 +372,8 @@ describe("useBotC", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
       const mockEvent = {
-        target: { value: 5 },
-      } as any;
+        target: { value: 5, name: "script" },
+      } as unknown as SelectChangeEvent<number>;
 
       act(() => {
         result.current.updateScript(mockEvent);
@@ -372,8 +386,8 @@ describe("useBotC", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
       const mockEvent = {
-        target: { value: 3 },
-      } as any;
+        target: { value: 3, name: "script" },
+      } as unknown as SelectChangeEvent<number>;
 
       act(() => {
         result.current.updateScript(mockEvent);
@@ -434,8 +448,6 @@ describe("useBotC", () => {
     it("cycles tracker value through 0, 1, 2", () => {
       const { result } = renderHook(() => useTracker(), { wrapper });
 
-      const initialValue = result.current.tracker[result.current.round]?.[0] || 0;
-
       act(() => {
         const clickFn = result.current.onTrackClick(0);
         clickFn();
@@ -456,7 +468,9 @@ describe("useBotC", () => {
         result.current.onNotesChange(mockEvent);
       });
 
-      expect(result.current.roundNotes[result.current.round]).toBe("Night 1 notes");
+      expect(result.current.roundNotes[result.current.round]).toBe(
+        "Night 1 notes",
+      );
     });
 
     it("updates round notes with empty value", () => {
@@ -474,4 +488,3 @@ describe("useBotC", () => {
     });
   });
 });
-
