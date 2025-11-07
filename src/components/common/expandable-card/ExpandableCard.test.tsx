@@ -1,5 +1,5 @@
 import { render, fireEvent, screen } from "@testing-library/react";
-import ExpandableCard from "./ExpandableCard";
+import ExpandableCard from ".";
 
 describe("common | ExpandableCard", () => {
   describe("Basic props tests", () => {

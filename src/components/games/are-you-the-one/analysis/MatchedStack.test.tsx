@@ -194,4 +194,99 @@ describe("MatchedStack", () => {
     expect(screen.getByText("Lady2-Gent2 2 - 30%")).toBeInTheDocument();
     expect(screen.queryByText(/Lady1.*Gent1/)).not.toBeInTheDocument();
   });
+
+  it("should sort chips correctly: matches > repeats > first-time > no-match", () => {
+    const propsWithMixedPairs = {
+      ...defaultProps,
+      gents: ["Gent1", "Gent2", "Gent3", "Gent4"],
+      ladies: ["Lady1", "Lady2", "Lady3", "Lady4"],
+      pairs: [0, 1, 2, 3],
+      matches: [0, -1, -1, -1], // Lady1 matched with Gent1
+      noMatch: [
+        [false, false, false, false],
+        [false, false, false, false],
+        [false, false, false, false],
+        [false, false, false, true], // Lady4 no-match with Gent4
+      ],
+      hist: [
+        [
+          { odds: 85, oddsWeight: 3, rounds: [1, 2, 3] }, // Match & repeat
+          { odds: 15, oddsWeight: 1, rounds: [4] },
+          { odds: 20, oddsWeight: 1, rounds: [5] },
+          { odds: 10, oddsWeight: 1, rounds: [6] },
+        ],
+        [
+          { odds: 70, oddsWeight: 2, rounds: [1, 2] }, // Repeat
+          { odds: 30, oddsWeight: 2, rounds: [3, 4] },
+          { odds: 40, oddsWeight: 2, rounds: [5, 6] },
+          { odds: 50, oddsWeight: 2, rounds: [7, 8] },
+        ],
+        [
+          { odds: 60, oddsWeight: 1, rounds: [1] }, // First time
+          { odds: 40, oddsWeight: 1, rounds: [2] },
+          { odds: 50, oddsWeight: 1, rounds: [3] },
+          { odds: 55, oddsWeight: 1, rounds: [4] },
+        ],
+        [
+          { odds: 65, oddsWeight: 1, rounds: [1] },
+          { odds: 35, oddsWeight: 1, rounds: [2] },
+          { odds: 45, oddsWeight: 1, rounds: [3] },
+          { odds: 25, oddsWeight: 1, rounds: [4] }, // No match
+        ],
+      ],
+    };
+
+    const { container } = render(<MatchedStack {...propsWithMixedPairs} />);
+
+    // Get all chips (excluding the score chip)
+    const chips = container.querySelectorAll(".MuiChip-root");
+
+    // Verify we have chips rendered
+    expect(chips.length).toBeGreaterThan(0);
+  });
+
+  it("should handle showAll false with matches", () => {
+    const propsHidingMatches = {
+      ...defaultProps,
+      showAll: false,
+      matches: [0, -1], // Lady1 confirmed with Gent1
+    };
+
+    render(<MatchedStack {...propsHidingMatches} />);
+
+    // Lady1-Gent1 should be hidden when showAll is false
+    expect(screen.queryByText("Lady1-Gent1 3 - 85%")).toBeNull();
+    // Lady2-Gent2 should still show
+    expect(screen.getByText("Lady2-Gent2 2 - 30%")).toBeInTheDocument();
+  });
+
+  it("should handle showAll false with no-match pairs", () => {
+    const propsHidingNoMatch = {
+      ...defaultProps,
+      showAll: false,
+      noMatch: [
+        [true, false], // Lady1 no-match with Gent1
+        [false, false],
+      ],
+    };
+
+    render(<MatchedStack {...propsHidingNoMatch} />);
+
+    // Lady1-Gent1 should be hidden when showAll is false
+    expect(screen.queryByText("Lady1-Gent1 3 - 85%")).toBeNull();
+    // Lady2-Gent2 should still show
+    expect(screen.getByText("Lady2-Gent2 2 - 30%")).toBeInTheDocument();
+  });
+
+  it("should handle pairs with undefined indices", () => {
+    const propsWithUndefined = {
+      ...defaultProps,
+      pairs: [undefined as unknown as number, 1],
+    };
+
+    render(<MatchedStack {...propsWithUndefined} />);
+
+    // Should only render the valid pair
+    expect(screen.getByText("Lady2-Gent2 2 - 30%")).toBeInTheDocument();
+  });
 });

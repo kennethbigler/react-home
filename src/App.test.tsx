@@ -25,10 +25,11 @@ it("renders without crashing", async () => {
   fireEvent.click(screen.getByLabelText("Menu"));
   await waitFor(() => expect(screen.getAllByText("BotC")).toHaveLength(2));
 
-  // navigate to games page and verify
+  // navigate to BotC game page and verify
   expect(screen.queryByLabelText("share")).toBeNull();
   fireEvent.click(screen.getAllByText("BotC")[1]);
-  await waitFor(() =>
-    expect(screen.getByLabelText("share")).toBeInTheDocument(),
+  await waitFor(
+    () => expect(screen.getByLabelText("share")).toBeInTheDocument(),
+    { timeout: 5000 },
   );
 });

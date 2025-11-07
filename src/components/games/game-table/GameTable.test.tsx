@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { vi } from "vitest";
-import GameTable from "./GameTable";
+import GameTable from ".";
 
 const ken = {
   id: 1,

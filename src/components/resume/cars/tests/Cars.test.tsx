@@ -57,4 +57,36 @@ describe("resume | cars | Cars", () => {
       screen.getByTitle("Ford Bronco Badlands (2021)"),
     ).toBeInTheDocument();
   });
+
+  it("automatically untoggles family when hiding Ken's cars while family is already hidden", () => {
+    render(<Cars />);
+
+    // First hide family cars
+    fireEvent.click(screen.getByText("Hide Family Cars"));
+    expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
+    expect(
+      screen.getByTitle("Ford Bronco Badlands (2021)"),
+    ).toBeInTheDocument();
+
+    // Then hide Ken's cars - should show family cars again
+    fireEvent.click(screen.getByText("Hide Ken's Cars"));
+    expect(screen.getByTitle("Toyota Prius (2007)")).toBeInTheDocument();
+    expect(screen.queryByTitle("Ford Bronco Badlands (2021)")).toBeNull();
+  });
+
+  it("automatically untoggles Ken when hiding family cars while Ken is already hidden", () => {
+    render(<Cars />);
+
+    // First hide Ken's cars
+    fireEvent.click(screen.getByText("Hide Ken's Cars"));
+    expect(screen.getByTitle("Toyota Prius (2007)")).toBeInTheDocument();
+    expect(screen.queryByTitle("Ford Bronco Badlands (2021)")).toBeNull();
+
+    // Then hide family cars - should show Ken's cars again
+    fireEvent.click(screen.getByText("Hide Family Cars"));
+    expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
+    expect(
+      screen.getByTitle("Ford Bronco Badlands (2021)"),
+    ).toBeInTheDocument();
+  });
 });
