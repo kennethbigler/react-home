@@ -16,67 +16,67 @@ component_management:
       paths:
         - src/components/games/**
     - component_id: module_games_are_you_the_one
-      name: Are You the One?
+      name: - Are You the One?
       paths:
         - src/components/games/are-you-the-one/**
     - component_id: module_games_blackjack
-      name: Blackjack
+      name: - Blackjack
       paths:
         - src/components/games/blackjack/**
     - component_id: module_games_botc
-      name: BotC
+      name: - BotC
       paths:
         - src/components/games/botc/**
     - component_id: module_games_bridge
-      name: Bridge
+      name: - Bridge
       paths:
         - src/components/games/bridge/**
     - component_id: module_games_connect4
-      name: Connect4
+      name: - Connect4
       paths:
         - src/components/games/connect4/**
     - component_id: module_games_deal
-      name: Deal or No Deal
+      name: - Deal or No Deal
       paths:
         - src/components/games/deal-or-no-deal/**
     - component_id: module_games_family_feud
-      name: Family Feud
+      name: - Family Feud
       paths:
         - src/components/games/family-feud/**
     - component_id: module_games_imperial_assault
-      name: Imperial Assault
+      name: - Imperial Assault
       paths:
         - src/components/games/imperial-assault/**
     - component_id: module_games_murder_mystery
-      name: Murder Mystery
+      name: - Murder Mystery
       paths:
         - src/components/games/murder-mystery/**
     - component_id: module_games_poker
-      name: Poker
+      name: - Poker
       paths:
         - src/components/games/poker/**
     - component_id: module_games_slots
-      name: Slots
+      name: - Slots
       paths:
         - src/components/games/slots/**
     - component_id: module_games_spades
-      name: Spades
+      name: - Spades
       paths:
         - src/components/games/spades/**
     - component_id: module_games_tictactoe
-      name: Tic Tac Toe
+      name: - Tic Tac Toe
       paths:
         - src/components/games/tictactoe/**
     - component_id: module_games_type_checker
-      name: Type Checker
+      name: - Type Checker
       paths:
         - src/components/games/type-checker/**
     - component_id: module_games_werewolf
-      name: Werewolf
+      name: - Werewolf
       paths:
         - src/components/games/werewolf/**
     - component_id: module_games_yahtzee
-      name: Yahtzee
+      name: - Yahtzee
       paths:
         - src/components/games/yahtzee/**
     - component_id: module_resume  # ⚠️ ID, do not change
@@ -84,38 +84,38 @@ component_management:
       paths:
         - src/components/resume/**
     - component_id: module_resume_cars
-      name: Cars
+      name: - Cars
       paths:
         - src/components/resume/cars/**
     - component_id: module_resume_comp_calc
-      name: Comp Calculator
+      name: - Comp Calculator
       paths:
         - src/components/resume/comp-calc/**
     - component_id: module_resume_education
-      name: Education
+      name: - Education
       paths:
         - src/components/resume/education/**
     - component_id: module_resume_f1
-      name: F1
+      name: - F1
       paths:
         - src/components/resume/f1/**
     - component_id: module_resume_presentations
-      name: Presentations
+      name: - Presentations
       paths:
         - src/components/resume/presentations/**
     - component_id: module_resume_resume
-      name: Resume
+      name: - Resume
       paths:
         - src/components/resume/resume/**
     - component_id: module_resume_summary
-      name: Summary
+      name: - Summary
       paths:
         - src/components/resume/summary/**
     - component_id: module_resume_travel
-      name: Travel
+      name: - Travel
       paths:
         - src/components/resume/travel-map/**
     - component_id: module_resume_work
-      name: Work
+      name: - Work
       paths:
         - src/components/resume/work/**
