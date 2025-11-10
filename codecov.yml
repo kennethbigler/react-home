@@ -1,0 +1,113 @@
+# ... previous config options...
+
+comment:
+  layout: "header, diff, flags, components"  # show component info in the PR comment
+  
+component_management:
+  default_rules:  # default rules that will be inherited by all components
+    statuses:
+      - type: project # in this case every component that doesn't have a status defined will have a project type one
+        target: auto
+        branches:
+          - "!main"
+  individual_components:
+    - component_id: module_resume_cars  # ⚠️ ID, do not change
+      name: Cars  # display name, change freely
+      paths:
+        - src/components/resume/cars/**
+    - component_id: module_resume_comp_calc
+      name: Comp Calculator
+      paths:
+        - src/components/resume/comp-calc/**
+    - component_id: module_resume_education
+      name: Education
+      paths:
+        - src/components/resume/education/**
+    - component_id: module_resume_f1
+      name: F1
+      paths:
+        - src/components/resume/f1/**
+    - component_id: module_resume_presentations
+      name: Presentations
+      paths:
+        - src/components/resume/presentations/**
+    - component_id: module_resume_resume
+      name: Resume
+      paths:
+        - src/components/resume/resume/**
+    - component_id: module_resume_summary
+      name: Summary
+      paths:
+        - src/components/resume/summary/**
+    - component_id: module_resume_travel
+      name: Travel
+      paths:
+        - src/components/resume/travel-map/**
+    - component_id: module_resume_work
+      name: Work
+      paths:
+        - src/components/resume/work/**
+    - component_id: module_games_are_you_the_one
+      name: Are You the One?
+      paths:
+        - src/components/games/are-you-the-one/**
+    - component_id: module_games_blackjack
+      name: Blackjack
+      paths:
+        - src/components/games/blackjack/**
+    - component_id: module_games_botc
+      name: BotC
+      paths:
+        - src/components/games/botc/**
+    - component_id: module_games_bridge
+      name: Bridge
+      paths:
+        - src/components/games/bridge/**
+    - component_id: module_games_connect4
+      name: Connect4
+      paths:
+        - src/components/games/connect4/**
+    - component_id: module_games_deal
+      name: Deal or No Deal
+      paths:
+        - src/components/games/deal-or-no-deal/**
+    - component_id: module_games_family_feud
+      name: Family Feud
+      paths:
+        - src/components/games/family-feud/**
+    - component_id: module_games_imperial_assault
+      name: Imperial Assault
+      paths:
+        - src/components/games/imperial-assault/**
+    - component_id: module_games_murder_mystery
+      name: Murder Mystery
+      paths:
+        - src/components/games/murder-mystery/**
+    - component_id: module_games_poker
+      name: Poker
+      paths:
+        - src/components/games/poker/**
+    - component_id: module_games_spades
+      name: Spades
+      paths:
+        - src/components/games/spades/**
+    - component_id: module_games_slots
+      name: Slots
+      paths:
+        - src/components/games/slots/**
+    - component_id: module_games_tictactoe
+      name: Tic Tac Toe
+      paths:
+        - src/components/games/tictactoe/**
+    - component_id: module_games_types
+      name: Types
+      paths:
+        - src/components/games/types/**
+    - component_id: module_games_werewolf
+      name: Werewolf
+      paths:
+        - src/components/games/werewolf/**
+    - component_id: module_games_yahtzee
+      name: Yahtzee
+      paths:
+        - src/components/games/yahtzee/**
