@@ -11,42 +11,10 @@ component_management:
         branches:
           - "!main"
   individual_components:
-    - component_id: module_resume_cars  # ⚠️ ID, do not change
-      name: Cars  # display name, change freely
+    - component_id: module_games  # ⚠️ ID, do not change
+      name: Games  # display name, change freely
       paths:
-        - src/components/resume/cars/**
-    - component_id: module_resume_comp_calc
-      name: Comp Calculator
-      paths:
-        - src/components/resume/comp-calc/**
-    - component_id: module_resume_education
-      name: Education
-      paths:
-        - src/components/resume/education/**
-    - component_id: module_resume_f1
-      name: F1
-      paths:
-        - src/components/resume/f1/**
-    - component_id: module_resume_presentations
-      name: Presentations
-      paths:
-        - src/components/resume/presentations/**
-    - component_id: module_resume_resume
-      name: Resume
-      paths:
-        - src/components/resume/resume/**
-    - component_id: module_resume_summary
-      name: Summary
-      paths:
-        - src/components/resume/summary/**
-    - component_id: module_resume_travel
-      name: Travel
-      paths:
-        - src/components/resume/travel-map/**
-    - component_id: module_resume_work
-      name: Work
-      paths:
-        - src/components/resume/work/**
+        - src/components/games/**
     - component_id: module_games_are_you_the_one
       name: Are You the One?
       paths:
@@ -87,22 +55,22 @@ component_management:
       name: Poker
       paths:
         - src/components/games/poker/**
-    - component_id: module_games_spades
-      name: Spades
-      paths:
-        - src/components/games/spades/**
     - component_id: module_games_slots
       name: Slots
       paths:
         - src/components/games/slots/**
+    - component_id: module_games_spades
+      name: Spades
+      paths:
+        - src/components/games/spades/**
     - component_id: module_games_tictactoe
       name: Tic Tac Toe
       paths:
         - src/components/games/tictactoe/**
-    - component_id: module_games_types
-      name: Types
+    - component_id: module_games_type_checker
+      name: Type Checker
       paths:
-        - src/components/games/types/**
+        - src/components/games/type-checker/**
     - component_id: module_games_werewolf
       name: Werewolf
       paths:
@@ -111,3 +79,43 @@ component_management:
       name: Yahtzee
       paths:
         - src/components/games/yahtzee/**
+    - component_id: module_resume  # ⚠️ ID, do not change
+      name: Resume  # display name, change freely
+      paths:
+        - src/components/resume/**
+    - component_id: module_resume_cars
+      name: Cars
+      paths:
+        - src/components/resume/cars/**
+    - component_id: module_resume_comp_calc
+      name: Comp Calculator
+      paths:
+        - src/components/resume/comp-calc/**
+    - component_id: module_resume_education
+      name: Education
+      paths:
+        - src/components/resume/education/**
+    - component_id: module_resume_f1
+      name: F1
+      paths:
+        - src/components/resume/f1/**
+    - component_id: module_resume_presentations
+      name: Presentations
+      paths:
+        - src/components/resume/presentations/**
+    - component_id: module_resume_resume
+      name: Resume
+      paths:
+        - src/components/resume/resume/**
+    - component_id: module_resume_summary
+      name: Summary
+      paths:
+        - src/components/resume/summary/**
+    - component_id: module_resume_travel
+      name: Travel
+      paths:
+        - src/components/resume/travel-map/**
+    - component_id: module_resume_work
+      name: Work
+      paths:
+        - src/components/resume/work/**
