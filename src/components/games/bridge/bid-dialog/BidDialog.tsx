@@ -1,5 +1,5 @@
 const BidDialog = () => {
-  return <div>Bid</div>;
+  return <div>Bid Dialog</div>;
 };
 
 export default BidDialog;
