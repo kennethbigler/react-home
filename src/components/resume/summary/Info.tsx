@@ -1,10 +1,12 @@
 import { memo, CSSProperties } from "react";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
+import {
+  Grid,
+  Link,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@mui/material";
 import ExpandableCard from "../../common/expandable-card";
 import photo from "../../../images/ken.webp";
 import { work, Job } from "../../../constants/work";

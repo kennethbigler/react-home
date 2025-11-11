@@ -1,6 +1,5 @@
 import { CSSProperties } from "react";
-import TableCell from "@mui/material/TableCell";
-
+import { TableCell } from "@mui/material";
 export interface CellProps {
   color?: string;
   style?: CSSProperties;

@@ -1,6 +1,5 @@
 import { memo, CSSProperties } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
-
+import { CircularProgress } from "@mui/material";
 const containerStyles: CSSProperties = {
   display: "block",
   margin: "auto",

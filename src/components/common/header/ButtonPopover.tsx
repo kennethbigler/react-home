@@ -5,8 +5,7 @@ import {
   CSSProperties,
   ReactElement,
 } from "react";
-import Button from "@mui/material/Button";
-import Popover from "@mui/material/Popover";
+import { Button, Popover } from "@mui/material";
 
 interface AnchorElHook {
   anchorEl: null | HTMLElement;

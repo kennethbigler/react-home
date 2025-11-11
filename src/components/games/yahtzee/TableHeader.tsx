@@ -1,7 +1,6 @@
 import { MouseEventHandler, CSSProperties } from "react";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { Dice } from "../../../jotai/yahtzee-state";
+import { Button, Typography } from "@mui/material";
 
 interface TableHeaderProps {
   roll: Dice;

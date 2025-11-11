@@ -1,8 +1,5 @@
 import { memo, MouseEventHandler } from "react";
-import Button from "@mui/material/Button";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-
+import { Button, Toolbar, Typography } from "@mui/material";
 interface HeaderProps {
   newGame: MouseEventHandler;
   turn: string;

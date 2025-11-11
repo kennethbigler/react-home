@@ -1,11 +1,10 @@
-import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
 import Missions from "./missions/Missions";
 import Empire from "./Empire";
 import ForcedMissions from "./missions/ForcedMissions";
 import Header from "./header/Header";
 import Rebels from "./Rebels";
 import TierLists from "./TierLists";
+import { Grid, Divider } from "@mui/material";
 
 const ImperialAssault = () => (
   <>

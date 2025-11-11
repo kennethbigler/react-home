@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
-import Paper from "@mui/material/Paper";
 import Case from "./Case";
 import { Briefcase } from "../../../jotai/deal-or-no-deal-state";
+import { Paper } from "@mui/material";
 
 interface BoardProps {
   board: Briefcase[];

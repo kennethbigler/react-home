@@ -1,12 +1,14 @@
 import { MouseEventHandler, CSSProperties, ReactElement } from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
 import Money from "./Money";
 import { getMoneyText } from "./helpers";
 import { Briefcase } from "../../../jotai/deal-or-no-deal-state";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+} from "@mui/material";
 
 interface ModalProps {
   board: Briefcase[];

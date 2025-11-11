@@ -1,11 +1,13 @@
 import { CSSProperties } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import Cell from "./Cell";
 import Row, { RowProps } from "./Row";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 interface BlackjackTableProps {
   data: RowProps[];

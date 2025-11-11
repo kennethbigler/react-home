@@ -1,12 +1,8 @@
 import { CSSProperties, MouseEventHandler, ChangeEvent } from "react";
 import { useAtom } from "jotai";
-import AppBar from "@mui/material/AppBar";
-import IconButton from "@mui/material/IconButton";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import Switch from "@mui/material/Switch";
 import themeAtom, { darkTheme, lightTheme } from "../../../jotai/theme-atom";
+import { AppBar, IconButton, Toolbar, Typography, Switch } from "@mui/material";
 
 const spanTopStyles: CSSProperties = { left: 0, right: 0, top: 0 };
 

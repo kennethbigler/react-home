@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
-import Typography from "@mui/material/Typography";
 import { playerDist } from "../../../../constants/botc";
 import Controls from "./Controls";
+import { Typography } from "@mui/material";
 
 interface HeaderProps {
   numPlayers: number;

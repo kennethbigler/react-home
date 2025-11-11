@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { useAtom } from "jotai";
-import Typography from "@mui/material/Typography";
 import helpEvalConnect4 from "./eval-connect4";
 import GameBoard from "./GameBoard";
+import { Typography } from "@mui/material";
 import connect4Atom, {
   MAX,
   C4Turn,

@@ -1,9 +1,5 @@
-import TextField from "@mui/material/TextField";
-import Chip from "@mui/material/Chip";
-import Avatar from "@mui/material/Avatar";
-import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
 import { Mission } from "../../../../constants/imperial-campaigns";
+import { TextField, Chip, Avatar, Grid, Divider } from "@mui/material";
 
 interface MissionProps {
   mission: Mission;

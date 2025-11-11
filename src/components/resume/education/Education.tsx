@@ -1,5 +1,5 @@
 import { memo } from "react";
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import Degree from "../../common/edu-cards/Degree";
 import classes from "../../../constants/classes";
 

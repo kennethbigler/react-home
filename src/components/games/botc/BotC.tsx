@@ -1,9 +1,9 @@
 import { memo } from "react";
-import Divider from "@mui/material/Divider";
 import useBotC from "./useBotC";
 import Header from "./header/Header";
 import PlayerNotes from "./player-notes/PlayerNotes";
 import LiePie from "./LiePie";
+import { Divider } from "@mui/material";
 
 const BotC = memo(() => {
   const { numPlayers, numTravelers, isText, script } = useBotC();

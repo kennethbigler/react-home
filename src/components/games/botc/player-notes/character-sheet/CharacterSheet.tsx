@@ -1,5 +1,3 @@
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import InfoPopup from "../../../../common/info-popover/InfoPopup";
 import Roles from "./Roles";
 import {
@@ -8,6 +6,7 @@ import {
   BotCRole,
 } from "../../../../../jotai/botc-atom";
 import EmojiNotes from "./EmojiNotes";
+import { Grid, TextField } from "@mui/material";
 
 interface CharacterSheetProps {
   isText: boolean;

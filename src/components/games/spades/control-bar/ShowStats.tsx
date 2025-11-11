@@ -1,13 +1,11 @@
 import { useAtomValue } from "jotai";
-import Avatar from "@mui/material/Avatar";
-import Chip from "@mui/material/Chip";
-import Typography from "@mui/material/Typography";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import StatsBagsChart from "./StatsBagsChart";
 import themeAtom from "../../../../jotai/theme-atom";
 import { getChipColor } from "../spadesHelpers";
 import spadesAtom from "../../../../jotai/spades-atom";
 import StatsNilChart from "./StatsNilsChart";
+import { Avatar, Chip, Typography } from "@mui/material";
 
 interface ShowStatsProps {
   initials: string;

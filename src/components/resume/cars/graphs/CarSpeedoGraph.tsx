@@ -2,8 +2,8 @@ import { memo } from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
-import Grid from "@mui/material/Grid";
 import { green, grey, red } from "@mui/material/colors";
+import { Grid } from "@mui/material";
 
 export interface CarSpeedoGraphProps {
   val: number;

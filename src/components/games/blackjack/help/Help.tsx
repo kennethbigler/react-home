@@ -1,16 +1,18 @@
 // react
 import { memo } from "react";
 // material-ui
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import { green, teal, red, orange, deepPurple } from "@mui/material/colors";
 // components
 import Cell, { CellProps } from "./Cell";
 import { RowProps } from "./Row";
 import BlackjackTable from "./BlackjackTable";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 // Parents: blackjack/Header
 
 /* Help  ->  BlackJackTable  ->  Row  -->  Cell */

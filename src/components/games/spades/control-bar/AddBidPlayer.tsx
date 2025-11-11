@@ -1,11 +1,8 @@
 import { ChangeEvent } from "react";
-import IconButton from "@mui/material/IconButton";
-import Switch from "@mui/material/Switch";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
 import Add from "@mui/icons-material/Add";
 import Remove from "@mui/icons-material/Remove";
 import { MAX_BID, MIN_BID } from "../../../../jotai/spades-atom";
+import { IconButton, Switch, TableCell, TableRow } from "@mui/material";
 
 interface AddBidPlayerProps {
   id: string;

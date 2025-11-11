@@ -1,8 +1,8 @@
 import { MouseEventHandler } from "react";
-import Paper from "@mui/material/Paper";
 import Board from "./Board";
 import Header from "./Header";
 import { C4Turn } from "../../../jotai/connect4-atom";
+import { Paper } from "@mui/material";
 
 interface GameBoardProps {
   board: number[][];

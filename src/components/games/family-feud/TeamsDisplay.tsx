@@ -1,7 +1,5 @@
 import { memo } from "react";
-import Chip from "@mui/material/Chip";
-import Typography from "@mui/material/Typography";
-
+import { Chip, Typography } from "@mui/material";
 interface TeamsDisplayProps {
   score1: number;
   score2: number;

@@ -1,4 +1,4 @@
-import Chip from "@mui/material/Chip";
+import { Chip } from "@mui/material";
 import usDollar from "../../../apis/usDollar";
 import { StockState } from "../../../jotai/stock-atom";
 

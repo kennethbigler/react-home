@@ -1,7 +1,5 @@
 import { memo, CSSProperties } from "react";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
+import { Grid, Typography, IconButton } from "@mui/material";
 
 interface TrackProps {
   circuitLen: number;

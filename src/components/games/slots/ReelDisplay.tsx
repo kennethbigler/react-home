@@ -1,10 +1,12 @@
 import { useCallback, CSSProperties, ReactElement } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
 import { SlotDisplay } from "./slotMachine";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Typography,
+} from "@mui/material";
 
 interface ReelDisplayProps {
   reel: SlotDisplay[];

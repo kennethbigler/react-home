@@ -1,9 +1,7 @@
 import { MouseEventHandler } from "react";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import { getMoneyText } from "./helpers";
 import { Briefcase } from "../../../jotai/deal-or-no-deal-state";
+import { Button, Grid, Typography } from "@mui/material";
 
 interface HeaderProps {
   casesToOpen: number;

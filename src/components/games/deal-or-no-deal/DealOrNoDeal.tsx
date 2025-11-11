@@ -1,6 +1,5 @@
 import { memo } from "react";
 import { useAtom, useAtomValue } from "jotai";
-import Typography from "@mui/material/Typography";
 import Modal from "./Modal";
 import Board from "./Board";
 import Header from "./Header";
@@ -10,6 +9,7 @@ import dndState, {
   newDNDGame,
 } from "../../../jotai/deal-or-no-deal-state";
 import PlayerMenu from "../../common/header/PlayerMenu";
+import { Typography } from "@mui/material";
 
 /* DealOrNoDeal  ->  Header
  *              |->  Board  ->  Case

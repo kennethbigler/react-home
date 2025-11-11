@@ -1,5 +1,5 @@
 import { memo } from "react";
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import { School } from "../../../constants/classes";
 
 const EducationSeg = memo(

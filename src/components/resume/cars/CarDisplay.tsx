@@ -1,5 +1,4 @@
 import { memo } from "react";
-import Grid from "@mui/material/Grid";
 import {
   pastKensCars,
   currentKensCars,
@@ -9,6 +8,7 @@ import {
 import CarCard from "./CarCard";
 import ExpandableCard from "../../common/expandable-card";
 import { red } from "@mui/material/colors";
+import { Grid } from "@mui/material";
 
 const pastKensCarsReversed = pastKensCars.slice().reverse();
 const pastFamilyCarsReversed = pastFamilyCars.slice().reverse();

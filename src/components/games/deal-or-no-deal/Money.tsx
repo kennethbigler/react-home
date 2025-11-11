@@ -1,7 +1,7 @@
 import { CSSProperties, memo } from "react";
-import Paper from "@mui/material/Paper";
 import { amber, grey } from "@mui/material/colors";
 import { getMoneyText } from "./helpers";
+import { Paper } from "@mui/material";
 
 interface MoneyProps {
   on: boolean;

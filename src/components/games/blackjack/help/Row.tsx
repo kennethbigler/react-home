@@ -1,7 +1,6 @@
 import { CSSProperties } from "react";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
 import Cell, { CellProps } from "./Cell";
+import { TableRow, TableCell } from "@mui/material";
 
 export interface RowProps {
   data: CellProps[];

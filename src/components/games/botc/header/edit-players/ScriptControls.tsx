@@ -1,7 +1,4 @@
-import Button from "@mui/material/Button";
-import FormControl from "@mui/material/FormControl";
-import Typography from "@mui/material/Typography";
-import Switch from "@mui/material/Switch";
+import { Button, FormControl, Switch, Typography } from "@mui/material";
 
 interface ScriptControlsProps {
   isText: boolean;

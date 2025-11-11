@@ -5,10 +5,10 @@ import {
   memo,
   ReactElement,
 } from "react";
-import Typography from "@mui/material/Typography";
 import roles, { CASINO, Importance, intro } from "../../../constants/murder";
 import MurderMysteryPanel from "./MurderMysteryPanel";
 import ExpandableCard from "../../common/expandable-card";
+import { Typography } from "@mui/material";
 
 const MurderMystery = memo(() => {
   const [expanded, setExpanded] = useState("");

@@ -1,13 +1,10 @@
 import { useState, SyntheticEvent } from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import TabPanel from "../../common/tab-panel/tab-panel";
 import a11yProps from "../../common/tab-panel/tab-panel-helper";
 import TeamDisplay from "./TeamsDisplay";
 import GameRound from "./GameRound";
 import FastMoney from "./FastMoney";
-import { Typography } from "@mui/material";
-
+import { Typography, Tabs, Tab } from "@mui/material";
 const FamilyFeud = () => {
   const [value, setValue] = useState(0);
   const [score1, setScore1] = useState(0);

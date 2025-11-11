@@ -1,7 +1,7 @@
 import { MouseEventHandler, memo, CSSProperties } from "react";
 import ContentAdd from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
 import { red, lightGreen } from "@mui/material/colors";
+import { Fab } from "@mui/material";
 
 interface PieceProps {
   /** aria label */

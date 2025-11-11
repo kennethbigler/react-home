@@ -1,9 +1,7 @@
 import { CSSProperties } from "react";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-import Button from "@mui/material/Button";
 import { green, orange, red, yellow } from "@mui/material/colors";
 import { Effectiveness, Types } from "../../../constants/type-checker";
+import { TableCell, TableRow, Button } from "@mui/material";
 
 const buttonStyles = { padding: "4px 2px" };
 const colors = {

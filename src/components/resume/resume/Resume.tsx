@@ -1,5 +1,5 @@
 import { memo, CSSProperties } from "react";
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import resume from "../../../images/kenneth_bigler_resume.png";
 
 const imageStyles: CSSProperties = {

@@ -1,6 +1,5 @@
 import { memo } from "react";
-import MuiButton from "@mui/material/Button";
-
+import { Button as MuiButton } from "@mui/material";
 export interface ButtonProps {
   onClick: (name: string) => void;
   name: string;

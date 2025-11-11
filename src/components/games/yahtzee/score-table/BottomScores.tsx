@@ -1,7 +1,5 @@
 import { memo, CSSProperties } from "react";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-
+import { TableCell, TableRow } from "@mui/material";
 interface BottomScoresProps {
   bottomSum: number;
   finalTopSum: number;

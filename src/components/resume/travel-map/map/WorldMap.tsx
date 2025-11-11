@@ -3,7 +3,7 @@ import { useAtomValue } from "jotai";
 import Highcharts from "highcharts/highmaps";
 import HighchartsReact from "highcharts-react-official";
 import "highcharts/modules/accessibility";
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import themeAtom from "../../../../jotai/theme-atom";
 import countries, { numCountries } from "../../../../constants/travel";
 

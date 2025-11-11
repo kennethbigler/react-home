@@ -1,14 +1,12 @@
 import { CSSProperties } from "react";
 import Add from "@mui/icons-material/Add";
-import Card from "@mui/material/Card";
-import IconButton from "@mui/material/IconButton";
 import Remove from "@mui/icons-material/Remove";
-import Typography from "@mui/material/Typography";
 import { green, blueGrey, red, grey } from "@mui/material/colors";
 import Hand from "../Hand";
 import { DBPlayer } from "../../../../../jotai/player-atom";
 import { TurnState } from "../../../../../jotai/turn-atom";
 import styles from "./Player.styles";
+import { Card, IconButton, Typography } from "@mui/material";
 
 interface PlayerProps {
   betHandler?: (id: number, value: number) => void;

@@ -1,8 +1,7 @@
 import { useState } from "react";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 import FastMoneyTable from "./FastMoneyTable";
 import { sum } from "./helpers";
+import { Stack, Typography } from "@mui/material";
 
 interface FastMoneyProps {
   questions: string[];

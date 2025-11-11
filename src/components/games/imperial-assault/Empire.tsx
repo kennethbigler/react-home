@@ -1,8 +1,5 @@
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import { useEmpire } from "./useImperialAssault";
+import { Button, ButtonGroup, Grid, Typography } from "@mui/material";
 
 const xpOptions = [0, 1, 2, 3, 4, 5, 6];
 

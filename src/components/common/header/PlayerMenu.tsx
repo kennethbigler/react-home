@@ -1,11 +1,8 @@
 import { memo, Fragment, FocusEvent } from "react";
 import { useAtom } from "jotai";
-import Switch from "@mui/material/Switch";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import SimplePopover from "./ButtonPopover";
 import playerAtom from "../../../jotai/player-atom";
+import { Switch, TextField, Grid, Typography } from "@mui/material";
 
 const PlayerMenu = memo(() => {
   const [players, setPlayers] = useAtom(playerAtom);

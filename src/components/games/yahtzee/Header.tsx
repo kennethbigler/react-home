@@ -1,6 +1,6 @@
 import { memo } from "react";
-import Typography from "@mui/material/Typography";
 import PlayerMenu from "../../common/header/PlayerMenu";
+import { Typography } from "@mui/material";
 
 interface HeaderProps {
   bestScore: number;

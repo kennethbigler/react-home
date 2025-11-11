@@ -1,7 +1,5 @@
 import { memo, CSSProperties } from "react";
 import { useAtom } from "jotai";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
 import ticTacToeAtom, {
   TicTacToeState,
   X,
@@ -13,6 +11,7 @@ import Header from "./Header";
 import History from "./History";
 import Board from "./Board";
 import { getTurn, calculateWinner } from "./helpers";
+import { Paper, Typography } from "@mui/material";
 
 const paperStyles: CSSProperties = {
   width: 343,

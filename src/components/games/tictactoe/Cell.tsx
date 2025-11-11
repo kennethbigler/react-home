@@ -1,6 +1,6 @@
 import { memo, MouseEventHandler, CSSProperties } from "react";
-import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
+import { Button } from "@mui/material";
 
 interface CellProps {
   onClick: MouseEventHandler;

@@ -1,6 +1,4 @@
 import { memo, useState, useCallback, SyntheticEvent } from "react";
-import Typography from "@mui/material/Typography";
-import Chip from "@mui/material/Chip";
 import {
   Role,
   villagers,
@@ -9,8 +7,7 @@ import {
 } from "../../../constants/werewolf";
 import WerewolfPanel from "./WerewolfPanel";
 import ExpandableCard from "../../common/expandable-card";
-import Grid from "@mui/material/Grid";
-
+import { Typography, Chip, Grid } from "@mui/material";
 const Werewolf = memo(() => {
   const [expanded, setExpanded] = useState("");
   const [gameTotal, setGameTotal] = useState<number | undefined>(undefined);

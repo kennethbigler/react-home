@@ -1,7 +1,6 @@
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import MissionEntry from "./MissionEntry";
 import { useForcedMissions } from "../useImperialAssault";
+import { Grid, Typography } from "@mui/material";
 
 const ForcedMissions = () => {
   const { forcedMissions, handleVictoryClick, updateMissionName } =

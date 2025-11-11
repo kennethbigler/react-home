@@ -1,13 +1,9 @@
 import { useState, ChangeEvent } from "react";
-import Stack from "@mui/material/Stack";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import { RoundPairing } from "../../../../jotai/are-you-the-one-state";
 import { AYTOHist } from "../histogram/useHist";
 import MatchedStack from "./MatchedStack";
 import CalculatedStack from "./CalculatedStack";
-import { Typography } from "@mui/material";
-
+import { Typography, Stack, FormControlLabel, Switch } from "@mui/material";
 export interface AnalysisProps {
   /** [i: { pairs, score }] */
   calculatedEquations: RoundPairing[];

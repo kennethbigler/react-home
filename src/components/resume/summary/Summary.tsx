@@ -1,10 +1,9 @@
 import { memo } from "react";
-import Typography from "@mui/material/Typography";
+import { Typography, Grid } from "@mui/material";
 import Info from "./Info";
 import Education from "./Education";
 import Job from "../work/Job";
 import { work } from "../../../constants/work";
-import Grid from "@mui/material/Grid";
 
 /* Summary  ->  Info
  *         |->  Skills

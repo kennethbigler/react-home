@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Typography from "@mui/material/Typography";
 import TimelineCard from "./timeline-card";
 import {
   cars,
@@ -10,6 +9,7 @@ import {
 import CarChartControls from "./CarChartControls";
 import CarGraphs from "./graphs/CarGraphs";
 import CarDisplay from "./CarDisplay";
+import { Typography } from "@mui/material";
 
 const Cars = () => {
   const [hideFamily, setHideFamily] = useState(false);

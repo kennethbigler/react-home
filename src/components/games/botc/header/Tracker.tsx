@@ -1,13 +1,9 @@
 import { Fragment } from "react";
 // MUI
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
 // Custom
 import { useTracker } from "../useBotC";
 import { getGridSize } from "../botcHelpers";
-import { TextField } from "@mui/material";
-
+import { TextField, Grid, Button, ButtonGroup } from "@mui/material";
 const numRounds = [0, 1, 2, 3, 4, 5, 6, 7];
 
 interface TrackerProps {

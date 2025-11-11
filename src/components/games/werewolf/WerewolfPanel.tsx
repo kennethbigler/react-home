@@ -1,12 +1,13 @@
 import { memo, SyntheticEvent, CSSProperties } from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Grid from "@mui/material/Grid";
-import Rating from "@mui/material/Rating";
-import Typography from "@mui/material/Typography";
-
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Grid,
+  Rating,
+  Typography,
+} from "@mui/material";
 interface WerewolfPanelProps {
   expanded?: string;
   expandedKey: string;
