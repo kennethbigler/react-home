@@ -5,12 +5,14 @@ import {
   TableHead,
   TableCell,
   Typography,
+  Divider,
 } from "@mui/material";
 import { memo } from "react";
 
 const ScoringTable = memo(() => {
   return (
     <>
+      <Divider />
       <Table aria-labelledby="contracts-trick-values">
         <TableHead>
           <TableRow>
