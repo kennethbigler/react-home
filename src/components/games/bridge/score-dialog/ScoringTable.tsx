@@ -15,7 +15,7 @@ const ScoringTable = memo(() => {
         <TableHead>
           <TableRow>
             <TableCell colSpan={2} align="center">
-              <Typography variant="h4" component="h3">
+              <Typography variant="h5" component="h3">
                 Scoring Table
               </Typography>
             </TableCell>
@@ -25,7 +25,7 @@ const ScoringTable = memo(() => {
           <TableRow>
             <TableCell colSpan={2} align="center">
               <Typography
-                variant="h5"
+                variant="h6"
                 component="h4"
                 id="contracts-trick-values"
               >
@@ -58,7 +58,7 @@ const ScoringTable = memo(() => {
         <TableHead>
           <TableRow>
             <TableCell colSpan={2} align="center">
-              <Typography variant="h5" component="h4" id="bridge-rubbers">
+              <Typography variant="h6" component="h4" id="bridge-rubbers">
                 Rubbers
               </Typography>
             </TableCell>
@@ -73,15 +73,17 @@ const ScoringTable = memo(() => {
             <TableCell>2 Game Rubber Won</TableCell>
             <TableCell>700</TableCell>
           </TableRow>
+        </TableBody>
+        <TableHead>
           <TableRow>
-            <TableCell colSpan={2}>
-              <Typography variant="h6" component="h5">
-                Unfinished Rubbers
-              </Typography>
+            <TableCell colSpan={2} sx={{ fontWeight: "bold" }}>
+              Unfinished Rubbers
             </TableCell>
           </TableRow>
+        </TableHead>
+        <TableBody>
           <TableRow>
-            <TableCell>Only part score in an unfinished game</TableCell>
+            <TableCell>Only partial score - no finished game</TableCell>
             <TableCell>100</TableCell>
           </TableRow>
           <TableRow>
@@ -95,7 +97,7 @@ const ScoringTable = memo(() => {
         <TableHead>
           <TableRow>
             <TableCell colSpan={3} align="center">
-              <Typography variant="h5" component="h4" id="bridge-slams">
+              <Typography variant="h6" component="h4" id="bridge-slams">
                 Slams
               </Typography>
             </TableCell>
@@ -124,7 +126,7 @@ const ScoringTable = memo(() => {
         <TableHead>
           <TableRow>
             <TableCell colSpan={3} align="center">
-              <Typography variant="h5" component="h4" id="bridge-overtricks">
+              <Typography variant="h6" component="h4" id="bridge-overtricks">
                 Overtricks
               </Typography>
             </TableCell>
@@ -159,7 +161,7 @@ const ScoringTable = memo(() => {
         <TableHead>
           <TableRow>
             <TableCell colSpan={5} align="center">
-              <Typography variant="h5" component="h4" id="bridge-undertricks">
+              <Typography variant="h6" component="h4" id="bridge-undertricks">
                 Undertricks
               </Typography>
             </TableCell>
@@ -224,7 +226,7 @@ const ScoringTable = memo(() => {
         <TableHead>
           <TableRow>
             <TableCell colSpan={2} align="center">
-              <Typography variant="h5" component="h4" id="extra-bonuses">
+              <Typography variant="h6" component="h4" id="extra-bonuses">
                 Extra Bonuses
               </Typography>
             </TableCell>
