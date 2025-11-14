@@ -10,8 +10,10 @@ describe("common | Bridge", () => {
     fireEvent.click(screen.getByText("Score"));
     expect(screen.getByText("Scoring Table")).toBeInTheDocument();
 
-    expect(screen.queryByText("Bid Dialog")).toBeNull();
+    expect(screen.queryByText("Bridge Bidding Cheat Sheet Page 1")).toBeNull();
     fireEvent.click(screen.getByText("Bid"));
-    expect(screen.getByText("Bid Dialog")).toBeInTheDocument();
+    expect(
+      screen.getByAltText("Bridge Bidding Cheat Sheet Page 1"),
+    ).toBeInTheDocument();
   });
 });
