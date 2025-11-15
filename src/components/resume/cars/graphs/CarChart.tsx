@@ -1,4 +1,3 @@
-import { memo } from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
@@ -9,30 +8,35 @@ export interface CarChartProps {
   color: string;
 }
 
-const CarChart = memo(({ data, color }: CarChartProps) => {
+const staticOptions: Highcharts.Options = {
+  accessibility: { enabled: true },
+  chart: { type: "spline", backgroundColor: "transparent" },
+  credits: { enabled: false },
+  legend: { enabled: false },
+  plotOptions: { series: { marker: { enabled: false }, lineWidth: 2 } },
+  title: { text: "Car Data" },
+  tooltip: { valueSuffix: "%" },
+  yAxis: {
+    floor: 0,
+    ceiling: 100,
+    gridLineDashStyle: "Dot",
+    labels: { enabled: false },
+    title: { text: undefined },
+  },
+};
+
+const CarChart = ({ data, color }: CarChartProps) => {
   const { horsepower, weight, powerToWeight, zTo60, xAxis } = processData(data);
 
-  const options = {
-    accessibility: { enabled: true },
-    chart: { type: "spline", backgroundColor: null },
-    credits: { enabled: false },
-    legend: { enabled: false },
-    plotOptions: { series: { marker: { enabled: false }, lineWidth: 2 } },
-    title: { text: "Car Data", style: { color } },
-    tooltip: { valueSuffix: "%" },
+  const options: Highcharts.Options = {
+    ...staticOptions,
+    title: { ...staticOptions.title, style: { color } },
     xAxis: { categories: xAxis, labels: { style: { color } } },
-    yAxis: {
-      floor: 0,
-      ceiling: 100,
-      gridLineDashStyle: "Dot",
-      labels: { enabled: false },
-      title: { text: undefined },
-    },
     series: [
-      { data: zTo60, name: "0-60" },
-      { data: horsepower, name: "Horsepower" },
-      { data: weight, name: "Weight" },
-      { data: powerToWeight, name: "Power-to-Weight" },
+      { data: zTo60, name: "0-60", type: "spline" },
+      { data: horsepower, name: "Horsepower", type: "spline" },
+      { data: weight, name: "Weight", type: "spline" },
+      { data: powerToWeight, name: "Power-to-Weight", type: "spline" },
     ],
   };
 
@@ -41,8 +45,6 @@ const CarChart = memo(({ data, color }: CarChartProps) => {
       <HighchartsReact highcharts={Highcharts} options={options} />
     </figure>
   );
-});
-
-CarChart.displayName = "CarChart";
+};
 
 export default CarChart;

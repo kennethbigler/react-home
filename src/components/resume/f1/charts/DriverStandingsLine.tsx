@@ -9,15 +9,29 @@ export interface DriverStandingsLineProps {
   color: string;
 }
 
+const staticOptions: Highcharts.Options = {
+  accessibility: { enabled: true },
+  chart: { type: "line", backgroundColor: "transparent" },
+  credits: { enabled: false },
+  legend: { enabled: false },
+  plotOptions: { series: { marker: { symbol: "circle" } } },
+  title: { text: "F1 Drivers Standings" },
+  tooltip: { useHTML: true, formatter: standingsTTFormatter },
+  yAxis: {
+    tickPositions: [1, 5, 10, 15, 20, 24],
+    reversed: true,
+    title: { text: undefined },
+    gridLineDashStyle: "Dot",
+  },
+  series: driverStandingsData,
+};
+
 const DriverStandingsLine = memo(({ color }: DriverStandingsLineProps) => {
-  const options = {
-    accessibility: { enabled: true },
-    chart: { type: "line", backgroundColor: null },
-    credits: { enabled: false },
-    legend: { enabled: false },
-    plotOptions: { series: { marker: { symbol: "circle" } } },
-    title: { text: "F1 Drivers Standings", style: { color } },
+  const options: Highcharts.Options = {
+    ...staticOptions,
+    title: { ...staticOptions.title, style: { color } },
     tooltip: { useHTML: true, formatter: standingsTTFormatter },
+    // @ts-expect-error: types are wrong in highcharts-react-official
     xAxis: {
       labels: {
         style: { color },
@@ -26,14 +40,7 @@ const DriverStandingsLine = memo(({ color }: DriverStandingsLineProps) => {
         },
       },
     },
-    yAxis: {
-      tickPositions: [1, 5, 10, 15, 20, 24],
-      reversed: true,
-      title: { text: undefined },
-      labels: { style: { color } },
-      gridLineDashStyle: "Dot",
-    },
-    series: driverStandingsData,
+    yAxis: { ...staticOptions.yAxis, labels: { style: { color } } },
   };
 
   return (

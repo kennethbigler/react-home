@@ -9,15 +9,27 @@ export interface ConstructorPointsLineProps {
   color: string;
 }
 
+const staticOptions: Highcharts.Options = {
+  accessibility: { enabled: true },
+  chart: { type: "line", backgroundColor: "transparent" },
+  credits: { enabled: false },
+  legend: { enabled: false },
+  plotOptions: { series: { marker: { symbol: "circle" } } },
+  title: { text: "F1 Constructors Points" },
+  tooltip: { shared: true, useHTML: true, formatter: tooltipFormatter },
+  yAxis: {
+    tickPositions: [0, 150, 300, 450, 600, 750, 860],
+    title: { text: undefined },
+    gridLineDashStyle: "Dot",
+  },
+  series: constructorPointsData,
+};
+
 const ConstructorPointsLine = memo(({ color }: ConstructorPointsLineProps) => {
-  const options = {
-    accessibility: { enabled: true },
-    chart: { type: "line", backgroundColor: null },
-    credits: { enabled: false },
-    legend: { enabled: false },
-    plotOptions: { series: { marker: { symbol: "circle" } } },
-    title: { text: "F1 Constructors Points", style: { color } },
-    tooltip: { shared: true, useHTML: true, formatter: tooltipFormatter },
+  const options: Highcharts.Options = {
+    ...staticOptions,
+    title: { ...staticOptions.title, style: { color } },
+    // @ts-expect-error: types are wrong in highcharts-react-official
     xAxis: {
       labels: {
         style: { color },
@@ -26,13 +38,7 @@ const ConstructorPointsLine = memo(({ color }: ConstructorPointsLineProps) => {
         },
       },
     },
-    yAxis: {
-      tickPositions: [0, 150, 300, 450, 600, 750, 860],
-      title: { text: undefined },
-      labels: { style: { color } },
-      gridLineDashStyle: "Dot",
-    },
-    series: constructorPointsData,
+    yAxis: { ...staticOptions.yAxis, labels: { style: { color } } },
   };
 
   return (

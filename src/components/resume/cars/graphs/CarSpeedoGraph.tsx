@@ -16,6 +16,13 @@ export interface CarSpeedoGraphProps {
   startRedVal: number;
 }
 
+const staticOptions: Highcharts.Options = {
+  accessibility: { enabled: true },
+  chart: { type: "gauge", backgroundColor: "transparent" },
+  credits: { enabled: false },
+  pane: { startAngle: -150, endAngle: 150, background: undefined },
+};
+
 const CarSpeedoGraph = memo(
   ({
     color,
@@ -29,22 +36,9 @@ const CarSpeedoGraph = memo(
   }: CarSpeedoGraphProps) => {
     const min = 0;
     const greenEnd = Math.max(min, endGreenVal);
-    const options = {
-      accessibility: { enabled: true },
-      chart: { type: "gauge", backgroundColor: null },
-      credits: { enabled: false },
-      pane: { startAngle: -150, endAngle: 150, background: null },
+    const options: Highcharts.Options = {
+      ...staticOptions,
       title: { text: `${name} ${title}`, style: { color } },
-      series: [
-        {
-          name,
-          data: [val],
-          tooltip: { valueSuffix: ` ${label}` },
-          dataLabels: { format: label, borderWidth: 0, color },
-          dial: { backgroundColor: color },
-          pivot: { backgroundColor: color },
-        },
-      ],
       yAxis: {
         min,
         max: maxVal,
@@ -59,6 +53,17 @@ const CarSpeedoGraph = memo(
           },
         ],
       },
+      series: [
+        {
+          name,
+          data: [val],
+          tooltip: { valueSuffix: ` ${label}` },
+          dataLabels: { format: label, borderWidth: 0, color },
+          dial: { backgroundColor: color },
+          pivot: { backgroundColor: color },
+          type: "gauge",
+        },
+      ],
     };
 
     return (

@@ -9,15 +9,27 @@ export interface DriverPointsLineProps {
   color: string;
 }
 
+const staticOptions: Highcharts.Options = {
+  accessibility: { enabled: true },
+  chart: { type: "line", backgroundColor: "transparent" },
+  credits: { enabled: false },
+  legend: { enabled: false },
+  plotOptions: { series: { marker: { symbol: "circle" } } },
+  title: { text: "F1 Drivers Points" },
+  tooltip: { shared: true, useHTML: true, formatter: tooltipFormatter },
+  yAxis: {
+    max: 600,
+    title: { text: undefined },
+    gridLineDashStyle: "Dot",
+  },
+  series: driverPointsData,
+};
+
 const DriverPointsLine = memo(({ color }: DriverPointsLineProps) => {
-  const options = {
-    accessibility: { enabled: true },
-    chart: { type: "line", backgroundColor: null },
-    credits: { enabled: false },
-    legend: { enabled: false },
-    plotOptions: { series: { marker: { symbol: "circle" } } },
-    title: { text: "F1 Drivers Points", style: { color } },
-    tooltip: { shared: true, useHTML: true, formatter: tooltipFormatter },
+  const options: Highcharts.Options = {
+    ...staticOptions,
+    title: { ...staticOptions.title, style: { color } },
+    // @ts-expect-error: types are wrong in highcharts-react-official
     xAxis: {
       labels: {
         style: { color },
@@ -27,12 +39,9 @@ const DriverPointsLine = memo(({ color }: DriverPointsLineProps) => {
       },
     },
     yAxis: {
-      max: 600,
-      title: { text: undefined },
+      ...staticOptions.yAxis,
       labels: { style: { color } },
-      gridLineDashStyle: "Dot",
     },
-    series: driverPointsData,
   };
 
   return (
