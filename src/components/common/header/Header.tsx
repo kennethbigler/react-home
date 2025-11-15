@@ -1,12 +1,8 @@
 import { useState, useCallback, ReactElement } from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import NavigationClose from "@mui/icons-material/Close";
 import { useTheme } from "@mui/material/styles";
 import TopBar from "./TopBar";
+import { AppBar, Toolbar, Drawer, IconButton, Typography } from "@mui/material";
 
 type ItemClick = (loc: string) => void;
 

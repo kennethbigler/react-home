@@ -1,8 +1,5 @@
-import Grid from "@mui/material/Grid";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
 import { BotCPlayerStatus } from "../../../../../jotai/botc-atom";
+import { Grid, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 
 interface EmojiNotesProps {
   liar: boolean;

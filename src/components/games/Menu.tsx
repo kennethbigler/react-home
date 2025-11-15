@@ -1,8 +1,6 @@
 import { memo } from "react";
-import MenuList from "@mui/material/MenuList";
-import MenuItem from "@mui/material/MenuItem";
-import Divider from "@mui/material/Divider";
 import menuItems from "./menu-items";
+import { MenuList, MenuItem, Divider } from "@mui/material";
 
 interface MenuProps {
   onItemClick?: (loc: string) => void;

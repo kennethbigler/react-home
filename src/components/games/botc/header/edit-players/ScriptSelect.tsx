@@ -1,9 +1,10 @@
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import { SelectChangeEvent } from "@mui/material";
-
+import {
+  SelectChangeEvent,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 interface ScriptSelectProps {
   script: number;
   onChange: (i: SelectChangeEvent<number>) => void;

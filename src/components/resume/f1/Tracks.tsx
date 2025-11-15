@@ -1,5 +1,5 @@
 import { memo, useState } from "react";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import australiaSrc from "../../../images/tracks/Australia_Circuit.avif";
 import chinaSrc from "../../../images/tracks/China_Circuit.avif";
 import japanSrc from "../../../images/tracks/Japan_Circuit.avif";

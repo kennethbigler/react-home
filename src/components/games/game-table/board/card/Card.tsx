@@ -1,7 +1,7 @@
 import { memo, useCallback, CSSProperties } from "react";
-import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import styles from "./Card.styles";
+import { Typography } from "@mui/material";
 
 interface CardProps {
   cardHandler?: (playerNo: number, handNo: number, cardNo: number) => void;

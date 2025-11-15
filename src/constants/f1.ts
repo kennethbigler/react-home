@@ -5,6 +5,7 @@ interface ChartEntry {
   data: (number | null)[];
   name: string;
   color: string;
+  type: "line";
 }
 
 // TODO: Dec 7, 2025 - add driver stats for 2025 & Update team numbers
@@ -173,8 +174,8 @@ const constructorStandingsData: ChartEntry[] = [];
 
 constructors.forEach((constructor) => {
   const { name, color, points, standings } = constructor;
-  constructorPointsData.push({ data: points, name, color });
-  constructorStandingsData.push({ data: standings, name, color });
+  constructorPointsData.push({ data: points, name, color, type: "line" });
+  constructorStandingsData.push({ data: standings, name, color, type: "line" });
 });
 
 constructorPointsData.sort(pointSort);
@@ -500,8 +501,8 @@ const driverStandingsData: ChartEntry[] = [];
 
 drivers.forEach((driver) => {
   const { name, color, points, standings } = driver;
-  driverPointsData.push({ data: points, name, color });
-  driverStandingsData.push({ data: standings, name, color });
+  driverPointsData.push({ data: points, name, color, type: "line" });
+  driverStandingsData.push({ data: standings, name, color, type: "line" });
 });
 
 driverPointsData.sort(pointSort);

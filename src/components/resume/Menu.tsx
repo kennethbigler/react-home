@@ -1,10 +1,8 @@
 import { memo, useMemo } from "react";
-import MenuList from "@mui/material/MenuList";
-import MenuItem from "@mui/material/MenuItem";
-import Divider from "@mui/material/Divider";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { MenuList, MenuItem, Divider } from "@mui/material";
 
 interface MenuProps {
   onItemClick?: (loc: string) => void;

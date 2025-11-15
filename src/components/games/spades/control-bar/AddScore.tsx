@@ -1,9 +1,8 @@
 import { useState } from "react";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import { Bids } from "../../../../jotai/spades-atom";
 import AddScorePlayer from "./AddScorePlayer";
+import { Grid, Typography } from "@mui/material";
 
 interface AddScoreProps {
   initials: string;

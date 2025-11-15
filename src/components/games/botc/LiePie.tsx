@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useAtomValue } from "jotai";
 import { useTheme } from "@mui/material/styles";
 import * as Highcharts from "highcharts";
@@ -12,7 +13,32 @@ interface LiePieProps {
   script: number;
 }
 
-const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
+const staticOptions: Highcharts.Options = {
+  accessibility: { enabled: true },
+  chart: {
+    type: "pie",
+    inverted: true,
+    backgroundColor: "transparent",
+    style: { marginLeft: "auto", marginRight: "auto" },
+  },
+  credits: { enabled: false },
+  title: { text: "Who is lying?" },
+  plotOptions: {
+    pie: {
+      dataLabels: [
+        { enabled: true, distance: 20, style: { fontSize: "1.2em" } },
+        {
+          enabled: true,
+          distance: -40,
+          format: "{point.percentage:.1f}%",
+          style: { fontSize: "1.2em" },
+        },
+      ],
+    },
+  },
+};
+
+const LiePie = memo(({ numPlayers, numTravelers, script }: LiePieProps) => {
   const muiTheme = useTheme();
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
@@ -20,41 +46,15 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
   const lieSeries = getLieSeries(numPlayers, numTravelers, script);
 
   const options: Highcharts.Options = {
-    accessibility: { enabled: true },
-    chart: {
-      type: "pie",
-      inverted: true,
-      backgroundColor: "transparent",
-      style: { marginLeft: "auto", marginRight: "auto" },
-    },
-    credits: { enabled: false },
-    title: { text: "Who is lying?", style: { color } },
-    plotOptions: {
-      pie: {
-        dataLabels: [
-          { enabled: true, distance: 20, style: { fontSize: "1.2em" } },
-          {
-            enabled: true,
-            distance: -40,
-            format: "{point.percentage:.1f}%",
-            style: { fontSize: "1.2em" },
-          },
-        ],
-      },
-    },
+    ...staticOptions,
+    title: { ...staticOptions.title, style: { color } },
     colors: [
       muiTheme.palette.error.main,
       muiTheme.palette.warning.main,
       muiTheme.palette.info.main,
       muiTheme.palette.success.main,
     ],
-    series: [
-      {
-        type: "pie",
-        name: "⛽️🔥❓",
-        data: lieSeries,
-      },
-    ],
+    series: [{ type: "pie", name: "⛽️🔥❓", data: lieSeries }],
   };
 
   return (
@@ -62,6 +62,8 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
       <HighchartsReact highcharts={Highcharts} options={options} />
     </figure>
   );
-};
+});
+
+LiePie.displayName = "LiePie";
 
 export default LiePie;

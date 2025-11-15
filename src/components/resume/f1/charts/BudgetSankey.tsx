@@ -10,34 +10,40 @@ interface BudgetSankeyProps {
   color: string;
 }
 
+const staticOptions: Highcharts.Options = {
+  accessibility: { enabled: true },
+  chart: {
+    type: "sankey",
+    height: 800,
+    backgroundColor: "transparent",
+  },
+  credits: { enabled: false },
+  title: { text: "Budget" },
+  plotOptions: {
+    sankey: {
+      nodeWidth: 80, // Adjust node width for better spacing
+      tooltip: {
+        pointFormat:
+          "<b>${point.weight}m</b>: {point.fromNode.name} → {point.toNode.name}",
+        nodeFormat: "<b>${point.sum}m</b>: {point.name}",
+      },
+    },
+  },
+  series: [
+    {
+      name: "Budget",
+      type: "sankey",
+      keys: ["from", "to", "weight"],
+      nodes: [...budgetData.nodes],
+      data: [...budgetData.data],
+    },
+  ],
+};
+
 const BudgetSankey = memo(({ color }: BudgetSankeyProps) => {
   const options: Highcharts.Options = {
-    chart: {
-      type: "sankey",
-      height: 800,
-      backgroundColor: "transparent",
-    },
-    credits: { enabled: false },
-    title: { text: "Budget", style: { color } },
-    plotOptions: {
-      sankey: {
-        nodeWidth: 80, // Adjust node width for better spacing
-        tooltip: {
-          pointFormat:
-            "<b>${point.weight}m</b>: {point.fromNode.name} → {point.toNode.name}",
-          nodeFormat: "<b>${point.sum}m</b>: {point.name}",
-        },
-      },
-    },
-    series: [
-      {
-        name: "Budget",
-        type: "sankey",
-        keys: ["from", "to", "weight"],
-        nodes: [...budgetData.nodes],
-        data: [...budgetData.data],
-      },
-    ],
+    ...staticOptions,
+    title: { ...staticOptions.title, style: { color } },
   };
 
   return (

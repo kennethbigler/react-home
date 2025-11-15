@@ -1,7 +1,4 @@
 import { CSSProperties, useState } from "react";
-import Alert from "@mui/material/Alert";
-import Grid from "@mui/material/Grid";
-import Snackbar from "@mui/material/Snackbar";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import MobileScreenShareIcon from "@mui/icons-material/MobileScreenShare";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -9,6 +6,7 @@ import botcQRCode from "../../../../images/botc-qr-code.png";
 import EditPlayers from "./edit-players/EditPlayers";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import Tracker from "./Tracker";
+import { Alert, Grid, Snackbar } from "@mui/material";
 
 interface ControlsProps {
   numPlayers: number;

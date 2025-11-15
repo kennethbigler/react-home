@@ -1,13 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { useAtomValue } from "jotai";
 import Highcharts from "highcharts/highmaps";
 import HighchartsReact from "highcharts-react-official";
 import "highcharts/modules/accessibility";
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import themeAtom from "../../../../jotai/theme-atom";
 import countries, { numCountries } from "../../../../constants/travel";
 
-const WorldMap = () => {
+const staticOptions: Highcharts.Options = {
+  accessibility: { enabled: true },
+  chart: { backgroundColor: "transparent", height: "60%" },
+  credits: { enabled: false },
+  series: [
+    {
+      type: "map",
+      name: "Visited",
+      states: {
+        hover: {
+          color: "#BADA55",
+        },
+      },
+      joinBy: ["name", "name"],
+      data: countries,
+      showInLegend: false,
+      tooltip: { pointFormat: "{point.name}: {point.flag}" },
+    },
+  ],
+  title: {
+    text: `Travel Map: ${numCountries} Countries Visited`,
+  },
+};
+
+const WorldMap = memo(() => {
   const [topology, setTopology] = useState<Highcharts.GeoJSON>();
   const [error, setError] = useState(false);
   const theme = useAtomValue(themeAtom);
@@ -22,7 +46,9 @@ const WorldMap = () => {
   }, []);
 
   const [options, setOptions] = useState<Highcharts.Options>({
-    accessibility: { enabled: true },
+    ...staticOptions,
+    chart: { ...staticOptions.chart, map: topology },
+    title: { ...staticOptions.title, style: { color } },
   });
 
   if (
@@ -30,28 +56,9 @@ const WorldMap = () => {
     options?.chart?.map !== topology
   ) {
     setOptions({
-      accessibility: { enabled: true },
-      chart: { backgroundColor: "transparent", map: topology, height: "60%" },
-      credits: { enabled: false },
-      series: [
-        {
-          type: "map",
-          name: "Visited",
-          states: {
-            hover: {
-              color: "#BADA55",
-            },
-          },
-          joinBy: ["name", "name"],
-          data: countries,
-          showInLegend: false,
-          tooltip: { pointFormat: "{point.name}: {point.flag}" },
-        },
-      ],
-      title: {
-        text: `Travel Map: ${numCountries} Countries Visited`,
-        style: { color },
-      },
+      ...staticOptions,
+      chart: { ...staticOptions.chart, map: topology },
+      title: { ...staticOptions.title, style: { color } },
     });
   }
 
@@ -75,6 +82,8 @@ const WorldMap = () => {
       />
     </figure>
   );
-};
+});
+
+WorldMap.displayName = "WorldMap";
 
 export default WorldMap;

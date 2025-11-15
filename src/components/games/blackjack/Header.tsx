@@ -1,9 +1,9 @@
 import { memo } from "react";
-import Typography from "@mui/material/Typography";
 import InfoPopup from "../../common/info-popover/InfoPopup";
 import Rules from "./Rules";
 import Help from "./help";
 import PlayerMenu from "../../common/header/PlayerMenu";
+import { Typography } from "@mui/material";
 
 const Header = memo(() => (
   <div className="flex-container">

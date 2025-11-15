@@ -44,6 +44,24 @@ const inflationKey: { [key: number]: number } = {
   2024: 1.027,
 };
 
+const staticOptions: Highcharts.Options = {
+  accessibility: { enabled: true },
+  chart: { type: "area", backgroundColor: "transparent" },
+  credits: { enabled: false },
+  legend: { enabled: false },
+  title: { text: "Total Comp" },
+  xAxis: { visible: false },
+  // @ts-expect-error: types are wrong in highcharts-react-official
+  yAxis: { title: { enabled: false } },
+  tooltip: {
+    shared: true,
+    headerFormat: "<h3>Compensation</h3><br />",
+    pointFormat:
+      '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>${point.y:,.2f}</b><br />',
+    footerFormat: "\u25CF *Total: $<b>{point.total:,.2f}</b>",
+  },
+};
+
 interface CompChartProps {
   startIdx: number;
   compCalcEntries: CompCalcEntry[];
@@ -92,22 +110,11 @@ const CompChart = ({
   }
 
   // set chart options
-  const options = {
-    accessibility: { enabled: true },
+  const options: Highcharts.Options = {
+    ...staticOptions,
     colors: [...colors, color],
-    chart: { type: "area", backgroundColor: null },
-    credits: { enabled: false },
-    legend: { enabled: false },
-    title: { text: "Total Comp", style: { color } },
-    xAxis: { visible: false },
-    yAxis: { labels: { style: { color } }, title: { enabled: false } },
-    tooltip: {
-      shared: true,
-      headerFormat: "<h3>Compensation</h3><br />",
-      pointFormat:
-        '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>${point.y:,.2f}</b><br />',
-      footerFormat: "\u25CF *Total: $<b>{point.total:,.2f}</b>",
-    },
+    title: { ...staticOptions.title, style: { color } },
+    yAxis: { ...staticOptions.yAxis, labels: { style: { color } } },
     plotOptions: {
       area: {
         stacking: "normal",

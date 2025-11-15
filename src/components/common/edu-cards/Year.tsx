@@ -1,6 +1,5 @@
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import Quarter, { QuarterType } from "./Quarter";
+import { Grid, Typography } from "@mui/material";
 
 export interface YearType {
   year: string;

@@ -1,15 +1,17 @@
 import { SyntheticEvent } from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Grid from "@mui/material/Grid";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
 import arr2br from "../../../apis/arr2br";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Typography,
+} from "@mui/material";
 
 interface MurderMysteryPanelProps {
   expanded?: string;

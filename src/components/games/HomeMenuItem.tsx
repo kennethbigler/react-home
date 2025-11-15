@@ -1,9 +1,11 @@
-import Typography from "@mui/material/Typography";
-import Avatar from "@mui/material/Avatar";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import ButtonBase from "@mui/material/ButtonBase";
 import { MenuItem } from "./menu-items";
+import {
+  Typography,
+  Avatar,
+  Card,
+  CardContent,
+  ButtonBase,
+} from "@mui/material";
 
 export interface HomeMenuItemProps {
   items: MenuItem[];

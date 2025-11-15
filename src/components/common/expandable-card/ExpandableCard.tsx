@@ -1,11 +1,13 @@
 import { useState, CSSProperties, ReactNode, ReactElement } from "react";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
-import CardActionArea from "@mui/material/CardActionArea";
-import Collapse from "@mui/material/Collapse";
-import Grid from "@mui/material/Grid";
 import { useTheme } from "@mui/material/styles";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardActionArea,
+  Collapse,
+  Grid,
+} from "@mui/material";
 
 const cardStyles: CSSProperties = { marginTop: 40, overflow: "visible" };
 

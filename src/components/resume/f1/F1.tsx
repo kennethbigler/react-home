@@ -1,6 +1,5 @@
-import Typography from "@mui/material/Typography";
+import { Typography, Grid } from "@mui/material";
 import { useAtomValue } from "jotai";
-import Grid from "@mui/material/Grid";
 import BudgetSankey from "./charts/BudgetSankey";
 import ConstructorPointsLine from "./charts/ConstructorPointsLine";
 import ConstructorStandingsLine from "./charts/ConstructorStandingsLine";

@@ -1,10 +1,12 @@
 import { useState } from "react";
-import Typography from "@mui/material/Typography";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import { SelectChangeEvent } from "@mui/material";
+import {
+  SelectChangeEvent,
+  Typography,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import { useHeader } from "../useImperialAssault";
 import { campaignTitles } from "./constants";
 import CampaignChangeDialog from "./CampaignChangeDialog";

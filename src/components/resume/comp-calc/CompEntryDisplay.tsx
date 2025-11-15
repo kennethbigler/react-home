@@ -1,5 +1,4 @@
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import { Grid, Typography } from "@mui/material";
 import { CompCalcEntry, CompEntry } from "../../../jotai/comp-calculator-atom";
 import CompEntryCard from "./CompEntryCard";
 

@@ -1,5 +1,5 @@
 import { memo } from "react";
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import { work, volunteer, school } from "../../../constants/work";
 import WorkCards from "./WorkCards";
 

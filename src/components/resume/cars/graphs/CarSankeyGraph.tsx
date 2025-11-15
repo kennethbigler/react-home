@@ -17,6 +17,21 @@ interface CarSankeyGraphProps {
   hideFamily: boolean;
 }
 
+const staticOptions: Highcharts.Options = {
+  chart: { type: "sankey", backgroundColor: "transparent" },
+  credits: { enabled: false },
+  title: { text: "Cars" },
+  accessibility: {
+    enabled: true,
+    point: {
+      // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
+      valueDescriptionFormat:
+        "{point.to} has {point.weight} from {point.from}.",
+    },
+  },
+  plotOptions: { sankey: { nodeWidth: 70 } }, // Adjust node width for better spacing
+};
+
 const CarSankeyGraph = memo(
   ({ color, hideKen, hideFamily }: CarSankeyGraphProps) => {
     let data = carSankeyData;
@@ -29,22 +44,8 @@ const CarSankeyGraph = memo(
     }
 
     const options: Highcharts.Options = {
-      chart: { type: "sankey", backgroundColor: "transparent" },
-      credits: { enabled: false },
-      title: { text: "Cars", style: { color } },
-      accessibility: {
-        enabled: true,
-        point: {
-          // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
-          valueDescriptionFormat:
-            "{point.to} has {point.weight} from {point.from}.",
-        },
-      },
-      plotOptions: {
-        sankey: {
-          nodeWidth: 70, // Adjust node width for better spacing
-        },
-      },
+      ...staticOptions,
+      title: { ...staticOptions.title, style: { color } },
       series: [
         {
           name: "Cars",

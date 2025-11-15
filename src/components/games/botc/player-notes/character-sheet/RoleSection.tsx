@@ -1,7 +1,5 @@
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import { BotCRole } from "../../../../../jotai/botc-atom";
+import { Grid, Typography, Button } from "@mui/material";
 
 export interface RoleKey {
   [key: string]: boolean;

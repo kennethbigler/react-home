@@ -1,10 +1,12 @@
-import Grid from "@mui/material/Grid";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import ExpandableCard from "../../common/expandable-card";
+import {
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 interface DeploymentCards {
   name: string;

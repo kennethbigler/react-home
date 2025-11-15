@@ -1,8 +1,6 @@
-import Avatar from "@mui/material/Avatar";
-import Chip from "@mui/material/Chip";
-import Typography from "@mui/material/Typography";
 import PlayerMenu from "../../common/header/PlayerMenu";
 import { getChipColor } from "./spadesHelpers";
+import { Avatar, Chip, Typography } from "@mui/material";
 
 interface HeaderProps {
   initials: string;

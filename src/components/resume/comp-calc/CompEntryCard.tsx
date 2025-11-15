@@ -1,10 +1,12 @@
-import Card from "@mui/material/Card";
-import CardActionArea from "@mui/material/CardActionArea";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { CompCalcEntry, CompEntry } from "../../../jotai/comp-calculator-atom";
 import dateObj from "../../../apis/DateHelper";
 import usDollar from "../../../apis/usDollar";

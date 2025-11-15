@@ -1,8 +1,6 @@
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-import Button from "@mui/material/Button";
 import { AYTOHist } from "../histogram/useHist";
 import getButtonValues from "./getButtonValues";
+import { TableCell, TableRow, Button } from "@mui/material";
 
 export interface AYTOTableRowProps {
   /** gents names */

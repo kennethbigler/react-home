@@ -1,9 +1,7 @@
 import { MouseEventHandler, memo } from "react";
-import Button from "@mui/material/Button";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Piece from "./Piece";
 import { C4Turn } from "../../../jotai/connect4-atom";
+import { Button, Toolbar, Typography } from "@mui/material";
 
 interface HeaderProps {
   newGame: MouseEventHandler;

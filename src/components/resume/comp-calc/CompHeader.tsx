@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { useAtom } from "jotai";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { Button, Typography } from "@mui/material";
 import { CompEntry } from "../../../jotai/comp-calculator-atom";
 import CompEntryDialog from "./CompEntryDialog";
 import StockDialog from "./StockDialog";

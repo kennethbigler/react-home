@@ -2,9 +2,8 @@ import ArrowDown from "@mui/icons-material/ArrowDropDown";
 import ArrowUp from "@mui/icons-material/ArrowDropUp";
 import ArrowLeft from "@mui/icons-material/ArrowLeft";
 import ArrowRight from "@mui/icons-material/ArrowRight";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import { usePlayerAdjControls } from "../useBotC";
+import { Button, ButtonGroup } from "@mui/material";
 
 interface PlayerAdjControlsProps {
   i: number;

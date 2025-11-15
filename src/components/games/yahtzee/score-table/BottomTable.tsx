@@ -1,6 +1,4 @@
 import { useCallback, ReactElement, ReactNode, CSSProperties } from "react";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
 import { TopGameScore, BottomGameScore, ADD_DICE } from "../types";
 import { Dice } from "../../../../jotai/yahtzee-state";
 import {
@@ -10,6 +8,7 @@ import {
   canYahtzeeBonus,
 } from "./scoreTableHelper";
 import BottomScores from "./BottomScores";
+import { TableCell, TableRow } from "@mui/material";
 
 interface BottomTableProps {
   bottom: BottomGameScore[];

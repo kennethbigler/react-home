@@ -1,16 +1,18 @@
 import { useState, Fragment } from "react";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import Chip from "@mui/material/Chip";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import SwapHoriz from "@mui/icons-material/SwapHoriz";
-import Switch from "@mui/material/Switch";
 import CharacterSheet from "./character-sheet/CharacterSheet";
 import { usePlayerNotes } from "../useBotC";
 import { getGridSize } from "../botcHelpers";
 import PlayerAdjControls from "./PlayerAdjControls";
+import {
+  Button,
+  Card,
+  Chip,
+  Grid,
+  Typography,
+  FormControlLabel,
+  Switch,
+} from "@mui/material";
 
 interface PlayerNotesProps {
   isText: boolean;

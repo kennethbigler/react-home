@@ -1,4 +1,3 @@
-import { memo } from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
@@ -10,28 +9,38 @@ export interface StatsNilChartProps {
   nils: NilMetrics;
 }
 
-const StatsNilChart = memo(({ color, initials, nils }: StatsNilChartProps) => {
-  const options = {
-    accessibility: { enabled: true },
-    chart: {
-      type: "column",
-      height: 340,
-      backgroundColor: null,
-    },
-    credits: { enabled: false },
-    legend: { padding: 0, itemStyle: { color } },
-    plotOptions: { column: { stacking: "normal", pointPadding: 0 } },
-    title: { text: "Nils", style: { color } },
+const staticOptions: Highcharts.Options = {
+  accessibility: { enabled: true },
+  chart: {
+    type: "column",
+    height: 340,
+    backgroundColor: "transparent",
+  },
+  credits: { enabled: false },
+  legend: { padding: 0 },
+  plotOptions: { column: { stacking: "normal", pointPadding: 0 } },
+  title: { text: "Nils" },
+  yAxis: {
+    floor: 0,
+    gridLineDashStyle: "Dot",
+    allowDecimals: false,
+    title: { text: undefined },
+  },
+};
+
+const StatsNilChart = ({ color, initials, nils }: StatsNilChartProps) => {
+  const options: Highcharts.Options = {
+    ...staticOptions,
+    legend: { ...staticOptions.legend, itemStyle: { color } },
+    title: { ...staticOptions.title, style: { color } },
     xAxis: {
+      ...staticOptions.xAxis,
       categories: initials.split(""),
       lineColor: color,
       labels: { style: { color } },
     },
     yAxis: {
-      floor: 0,
-      gridLineDashStyle: "Dot",
-      allowDecimals: false,
-      title: { text: undefined },
+      ...staticOptions.yAxis,
       lineColor: color,
       labels: { style: { color } },
     },
@@ -40,16 +49,19 @@ const StatsNilChart = memo(({ color, initials, nils }: StatsNilChartProps) => {
         name: "🚫",
         data: nils.map((n) => n[0] - n[1]),
         stack: "Nils",
+        type: "column",
       },
       {
         name: "🦮",
         data: nils.map((n) => n[1]),
         stack: "Nils",
+        type: "column",
       },
       {
         name: "🏅",
         data: nils.map((n) => n[2]),
         stack: "Wins",
+        type: "column",
       },
     ],
   };
@@ -59,8 +71,6 @@ const StatsNilChart = memo(({ color, initials, nils }: StatsNilChartProps) => {
       <HighchartsReact highcharts={Highcharts} options={options} />
     </figure>
   );
-});
-
-StatsNilChart.displayName = "StatsNilChart";
+};
 
 export default StatsNilChart;

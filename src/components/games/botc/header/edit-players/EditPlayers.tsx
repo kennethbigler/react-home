@@ -1,9 +1,5 @@
 import Add from "@mui/icons-material/Add";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Grid from "@mui/material/Grid";
 import Remove from "@mui/icons-material/Remove";
-import Typography from "@mui/material/Typography";
 import {
   BOTC_MAX_PLAYERS,
   BOTC_MIN_PLAYERS,
@@ -12,6 +8,7 @@ import ScriptSelect from "./ScriptSelect";
 import ScriptControls from "./ScriptControls";
 import { playerDist } from "../../../../../constants/botc";
 import { useEditPlayers } from "../../useBotC";
+import { Button, ButtonGroup, Grid, Typography } from "@mui/material";
 
 interface EditPlayersProps {
   numPlayers: number;

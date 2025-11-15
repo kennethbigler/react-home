@@ -1,9 +1,9 @@
 import { memo } from "react";
-import Button from "@mui/material/Button";
 import ControlBar from "./control-bar/ControlBar";
 import ScoreTable from "./ScoreTable";
 import useSpades from "./useSpades";
 import Header from "./Header";
+import { Button } from "@mui/material";
 
 const Spades = memo(() => {
   const {

@@ -2,8 +2,8 @@ import { memo } from "react";
 import * as Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
-import Grid from "@mui/material/Grid";
 import { green, grey, red } from "@mui/material/colors";
+import { Grid } from "@mui/material";
 
 export interface CarSpeedoGraphProps {
   val: number;
@@ -15,6 +15,13 @@ export interface CarSpeedoGraphProps {
   endGreenVal: number;
   startRedVal: number;
 }
+
+const staticOptions: Highcharts.Options = {
+  accessibility: { enabled: true },
+  chart: { type: "gauge", backgroundColor: "transparent" },
+  credits: { enabled: false },
+  pane: { startAngle: -150, endAngle: 150, background: undefined },
+};
 
 const CarSpeedoGraph = memo(
   ({
@@ -29,22 +36,9 @@ const CarSpeedoGraph = memo(
   }: CarSpeedoGraphProps) => {
     const min = 0;
     const greenEnd = Math.max(min, endGreenVal);
-    const options = {
-      accessibility: { enabled: true },
-      chart: { type: "gauge", backgroundColor: null },
-      credits: { enabled: false },
-      pane: { startAngle: -150, endAngle: 150, background: null },
+    const options: Highcharts.Options = {
+      ...staticOptions,
       title: { text: `${name} ${title}`, style: { color } },
-      series: [
-        {
-          name,
-          data: [val],
-          tooltip: { valueSuffix: ` ${label}` },
-          dataLabels: { format: label, borderWidth: 0, color },
-          dial: { backgroundColor: color },
-          pivot: { backgroundColor: color },
-        },
-      ],
       yAxis: {
         min,
         max: maxVal,
@@ -59,6 +53,17 @@ const CarSpeedoGraph = memo(
           },
         ],
       },
+      series: [
+        {
+          name,
+          data: [val],
+          tooltip: { valueSuffix: ` ${label}` },
+          dataLabels: { format: label, borderWidth: 0, color },
+          dial: { backgroundColor: color },
+          pivot: { backgroundColor: color },
+          type: "gauge",
+        },
+      ],
     };
 
     return (

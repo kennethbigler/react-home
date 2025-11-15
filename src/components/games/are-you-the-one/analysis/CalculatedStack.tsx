@@ -1,7 +1,5 @@
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 import { AYTOHist } from "../histogram/useHist";
+import { Chip, Stack, Typography } from "@mui/material";
 
 export interface CalculatedStackProps {
   /** gents names */

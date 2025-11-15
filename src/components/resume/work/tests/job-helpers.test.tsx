@@ -1,5 +1,5 @@
-import Chip from "@mui/material/Chip";
 import { getCSV } from "../jobHelpers";
+import { Chip } from "@mui/material";
 
 describe("resume | work | Job", () => {
   test("getCSV", () => {

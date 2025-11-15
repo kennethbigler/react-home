@@ -1,10 +1,12 @@
 import { useState, ReactElement, ReactNode } from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
 import { MuiColors } from "../types";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
 
 interface InfoPopupProps {
   /** set button variant */

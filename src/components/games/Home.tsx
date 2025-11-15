@@ -1,6 +1,4 @@
 import { memo } from "react";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
 import {
   socialItems,
   trackerItems,
@@ -8,6 +6,7 @@ import {
   gameItems,
 } from "./menu-items";
 import HomeMenuItem from "./HomeMenuItem";
+import { Typography, Link } from "@mui/material";
 
 interface HomeProps {
   onItemClick?: (loc: string) => void;

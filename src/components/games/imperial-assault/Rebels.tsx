@@ -1,9 +1,11 @@
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import { useRebels } from "./useImperialAssault";
+import {
+  Button,
+  ButtonGroup,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const players = [0, 1, 2, 3];
 const maxXP = [0, 1, 2, 3, 4, 5, 6];

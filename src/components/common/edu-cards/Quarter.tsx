@@ -1,5 +1,5 @@
-import Typography from "@mui/material/Typography";
 import Class, { ClassProps } from "./Class";
+import { Typography } from "@mui/material";
 
 export interface QuarterType {
   classes: ClassProps[];

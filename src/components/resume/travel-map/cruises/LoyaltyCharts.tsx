@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useAtomValue } from "jotai";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -9,35 +10,46 @@ import {
   loyaltyNames,
 } from "../../../../constants/cruises";
 
-const LoyaltyCharts = () => {
+const staticOptions: Highcharts.Options = {
+  accessibility: { enabled: true },
+  colors: loyaltyColors,
+  credits: { enabled: false },
+  pane: { size: "100%", innerSize: "20%", endAngle: 330 },
+  series: loyaltySeries,
+  title: { text: "Cruise Loyalty" },
+  tooltip: { valueSuffix: "%" },
+  chart: {
+    type: "column",
+    inverted: true,
+    polar: true,
+    backgroundColor: "transparent",
+    style: { marginLeft: "auto", marginRight: "auto" },
+  },
+  plotOptions: {
+    column: {
+      stacking: "normal",
+      borderWidth: 0,
+      pointPadding: 0,
+      groupPadding: 0.15,
+      borderRadius: "50%",
+    },
+  },
+  yAxis: {
+    lineWidth: 0,
+    reversedStacks: false,
+    gridLineWidth: 0,
+    labels: { enabled: false },
+  },
+};
+
+const LoyaltyCharts = memo(() => {
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
   const options: Highcharts.Options = {
-    accessibility: { enabled: true },
-    colors: loyaltyColors,
-    credits: { enabled: false },
-    pane: { size: "100%", innerSize: "20%", endAngle: 330 },
+    ...staticOptions,
     legend: { itemStyle: { color } },
-    series: loyaltySeries,
-    title: { text: "Cruise Loyalty", style: { color } },
-    tooltip: { valueSuffix: "%" },
-    chart: {
-      type: "column",
-      inverted: true,
-      polar: true,
-      backgroundColor: "transparent",
-      style: { marginLeft: "auto", marginRight: "auto" },
-    },
-    plotOptions: {
-      column: {
-        stacking: "normal",
-        borderWidth: 0,
-        pointPadding: 0,
-        groupPadding: 0.15,
-        borderRadius: "50%",
-      },
-    },
+    title: { ...staticOptions.title, style: { color } },
     xAxis: {
       labels: {
         align: "right",
@@ -48,12 +60,6 @@ const LoyaltyCharts = () => {
       gridLineWidth: 0,
       categories: loyaltyNames,
     },
-    yAxis: {
-      lineWidth: 0,
-      reversedStacks: false,
-      gridLineWidth: 0,
-      labels: { enabled: false },
-    },
   };
 
   return (
@@ -61,6 +67,8 @@ const LoyaltyCharts = () => {
       <HighchartsReact highcharts={Highcharts} options={options} />
     </figure>
   );
-};
+});
+
+LoyaltyCharts.displayName = "LoyaltyCharts";
 
 export default LoyaltyCharts;

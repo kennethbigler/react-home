@@ -1,8 +1,8 @@
 import { useMemo, CSSProperties } from "react";
-import Typography from "@mui/material/Typography";
 import { purple } from "@mui/material/colors";
 import Card from "./card/Card";
 import { DBHand } from "../../../../jotai/player-atom";
+import { Typography } from "@mui/material";
 
 const boldStyle: CSSProperties = {
   fontWeight: "bold",

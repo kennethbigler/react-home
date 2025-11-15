@@ -1,10 +1,7 @@
 import { CSSProperties } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
 import { grey } from "@mui/material/colors";
 import Cell from "./Cell";
+import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 
 interface BoardProps {
   board: string[] | null[];
