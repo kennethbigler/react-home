@@ -10,15 +10,11 @@
       "preset": "lighthouse:recommended",
       "assertions": {
         "errors-in-console": "warn",
-        "third-party-cookies": "warn",
         "inspector-issues": "warn",
         "image-delivery-insight": "warn",
         "lcp-discovery-insight": "warn",
         "network-dependency-tree-insight": "warn",
         "prioritize-lcp-image": "warn",
-        "unsized-images": "warn",
-        "unused-javascript": "warn",
-        "uses-responsive-images": "warn"
       }
     }
   }
