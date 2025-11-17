@@ -36,13 +36,29 @@
     <meta name="twitter:description" content="Resume website for Ken Bigler, Software Engineer at Intuit" />
     <meta name="twitter:image" content="http://www.kennethbigler.com/ken.webp" />
 
-    <!-- Styles and external JS -->
+    <!-- Preconnect for fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Font with optimal display strategy -->
     <link
       type="text/css"
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
+      media="print" 
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        type="text/css"
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
+      />
+    </noscript>
     <link rel="manifest" href="/manifest.json" />
+
+    <!-- Preload critical images -->
+    <link rel="preload" as="image" href="/ken.webp" type="image/webp">
 
     <!-- PWA -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -60,17 +76,28 @@
     <link rel="preconnect" href="https://stats.g.doubleclick.net" crossorigin>
     <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0F5M2TLM6"></script>
+    <!-- Google Ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5704722916686757" crossorigin="anonymous"></script>
-    <meta name="google-adsense-account" content="ca-pub-5704722916686757">
+    <!-- Google tag (gtag.js) with consent mode -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      
+      // Set default consent mode
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied'
+      });
+      
       gtag('js', new Date());
-
-      gtag('config', 'G-T0F5M2TLM6');
+      gtag('config', 'G-T0F5M2TLM6', {
+        'anonymize_ip': true,
+        'cookie_flags': 'SameSite=None;Secure'
+      });
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0F5M2TLM6"></script>
     <!-- ___ ___                       _____
         /  //  /                    __/ /_ /
        /  //  /___  ____  ____  ___/_  __//__

@@ -12,9 +12,7 @@
         "image-delivery-insight": "warn",
         "lcp-discovery-insight": "warn",
         "network-dependency-tree-insight": "warn",
-        "preload-lcp-image": "warn",
         "prioritize-lcp-image": "warn",
-        "service-worker": "warn",
         "unsized-images": "warn",
         "unused-javascript": "warn",
         "uses-responsive-images": "warn"
