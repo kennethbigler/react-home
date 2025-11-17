@@ -9,6 +9,7 @@
     "assert": {
       "preset": "lighthouse:recommended",
       "assertions": {
+        "errors-in-console": "warn",
         "third-party-cookies": "warn",
         "inspector-issues": "warn",
         "image-delivery-insight": "warn",
