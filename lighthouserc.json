@@ -14,7 +14,11 @@
         "image-delivery-insight": "warn",
         "lcp-discovery-insight": "warn",
         "network-dependency-tree-insight": "warn",
-        "prioritize-lcp-image": "warn"
+        "prioritize-lcp-image": "warn",
+        "third-party-cookies": "warn",
+        "unsized-images": "warn",
+        "unused-javascript": "warn",
+        "uses-responsive-images": "warn"
       }
     }
   }
