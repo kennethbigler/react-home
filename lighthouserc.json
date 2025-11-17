@@ -14,7 +14,7 @@
         "image-delivery-insight": "warn",
         "lcp-discovery-insight": "warn",
         "network-dependency-tree-insight": "warn",
-        "prioritize-lcp-image": "warn",
+        "prioritize-lcp-image": "warn"
       }
     }
   }
