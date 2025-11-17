@@ -9,6 +9,8 @@
     "assert": {
       "preset": "lighthouse:recommended",
       "assertions": {
+        "third-party-cookies": "warn",
+        "inspector-issues": "warn",
         "image-delivery-insight": "warn",
         "lcp-discovery-insight": "warn",
         "network-dependency-tree-insight": "warn",
