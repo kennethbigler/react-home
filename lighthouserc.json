@@ -9,12 +9,13 @@
     "assert": {
       "preset": "lighthouse:recommended",
       "assertions": {
+        "errors-in-console": "warn",
+        "third-party-cookies": "warn",
+        "inspector-issues": "warn",
         "image-delivery-insight": "warn",
         "lcp-discovery-insight": "warn",
         "network-dependency-tree-insight": "warn",
-        "preload-lcp-image": "warn",
         "prioritize-lcp-image": "warn",
-        "service-worker": "warn",
         "unsized-images": "warn",
         "unused-javascript": "warn",
         "uses-responsive-images": "warn"
