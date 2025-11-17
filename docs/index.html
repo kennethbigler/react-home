@@ -36,13 +36,29 @@
     <meta name="twitter:description" content="Resume website for Ken Bigler, Software Engineer at Intuit" />
     <meta name="twitter:image" content="http://www.kennethbigler.com/ken.webp" />
 
-    <!-- Styles and external JS -->
+    <!-- Preconnect for fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Font with optimal display strategy -->
     <link
       type="text/css"
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
+      media="print" 
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        type="text/css"
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
+      />
+    </noscript>
     <link rel="manifest" href="/manifest.json" />
+
+    <!-- Preload critical images -->
+    <link rel="preload" as="image" href="/ken.webp" type="image/webp">
 
     <!-- PWA -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -66,9 +82,12 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-T0F5M2TLM6');
     </script>
+
+    <!-- Google Ads -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5704722916686757" crossorigin="anonymous"></script>
+
     <!-- ___ ___                       _____
         /  //  /                    __/ /_ /
        /  //  /___  ____  ____  ___/_  __//__
@@ -82,7 +101,9 @@
      /  /__/  / / /_/ / / ___/  /
     /________/_/\__  /_/\___/__/
                /____/           -->
-    <script type="module" crossorigin src="/assets/index-YjvXMwAe.js"></script>
+    <script type="module" crossorigin src="/assets/index-CCegoXLu.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-BmItGCZH.js">
+    <link rel="modulepreload" crossorigin href="/assets/mui-vendor-DwHfRDFJ.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BvveWbzk.css">
   </head>
 
