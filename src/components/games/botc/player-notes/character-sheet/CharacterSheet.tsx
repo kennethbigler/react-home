@@ -34,7 +34,8 @@ const CharacterSheet = ({
   <InfoPopup
     fullWidth
     buttonText={name}
-    buttonVariant="outlined"
+    buttonVariant={exec || kill ? "contained" : "outlined"}
+    buttonColor={exec || kill ? "error" : "primary"}
     title={`Roles - ${name}`}
   >
     <Grid container spacing={1}>
