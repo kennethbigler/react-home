@@ -27,13 +27,28 @@ const Roles = ({ isText, script, roleKey, onRoleClick }: RolesProps) => {
   let isOtherScript = false;
   switch (script) {
     case 0:
-      scripts = { active: tb, travelers: [...snv.travelers, ...bmr.travelers] };
+      scripts = {
+        active: tb,
+        travelers: [
+          ...other.travelers.filter((x) => !tb.travelers.includes(x)),
+        ],
+      };
       break;
     case 1:
-      scripts = { active: snv, travelers: [...tb.travelers, ...bmr.travelers] };
+      scripts = {
+        active: snv,
+        travelers: [
+          ...other.travelers.filter((x) => !snv.travelers.includes(x)),
+        ],
+      };
       break;
     case 2:
-      scripts = { active: bmr, travelers: [...tb.travelers, ...snv.travelers] };
+      scripts = {
+        active: bmr,
+        travelers: [
+          ...other.travelers.filter((x) => !bmr.travelers.includes(x)),
+        ],
+      };
       break;
     case 3:
       scripts = { active: swpm, travelers: [...other.travelers] };
