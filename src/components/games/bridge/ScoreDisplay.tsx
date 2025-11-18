@@ -1,3 +1,4 @@
+import { useAtomValue } from "jotai";
 import {
   Table,
   TableBody,
@@ -7,42 +8,22 @@ import {
   Typography,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
-
-type AboveScores = [
-  [number[], number[]],
-  [number[], number[]],
-  [number[], number[]],
-];
-// TODO: replace with connected data at some point
-const aboveScores: AboveScores = [
-  [[40, 20, 40], []],
-  [
-    [30, 50],
-    [20, 40],
-  ],
-  [[], []],
-];
-const weBelow = [60, 80];
-const theyBelow = [80, 60];
+import bridgeAtom, { bridgeRead } from "../../../jotai/bridge-atom";
 
 const border = `4px solid ${grey[700]}`;
 
 const ScoreDisplay = () => {
-  const weVulnerable =
-    aboveScores[0][0].reduce((acc, n) => acc + n, 0) >= 100 ||
-    aboveScores[1][0].reduce((acc, n) => acc + n, 0) >= 100;
-  const theyVulnerable =
-    aboveScores[0][1].reduce((acc, n) => acc + n, 0) >= 100 ||
-    aboveScores[1][1].reduce((acc, n) => acc + n, 0) >= 100;
+  const { aboveScores, weBelow, theyBelow } = useAtomValue(bridgeAtom);
+  const { weVulnerable, theyVulnerable } = useAtomValue(bridgeRead);
 
   return (
     <Table aria-label="Bridge Scores" sx={{ border }}>
       <TableHead>
         <TableRow sx={{ borderBottom: border }}>
           <TableCell align="center" sx={{ borderRight: border }}>
-            We {weVulnerable && "⚠️"}
+            We {weVulnerable && "🥇"}
           </TableCell>
-          <TableCell align="center">They {theyVulnerable && "⚠️"}</TableCell>
+          <TableCell align="center">They {theyVulnerable && "🥇"}</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
