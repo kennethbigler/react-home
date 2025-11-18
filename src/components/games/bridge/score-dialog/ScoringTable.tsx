@@ -105,7 +105,7 @@ const ScoringTable = memo(() => {
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Per Overtrick</TableCell>
+            <TableCell />
             <TableCell sx={{ textDecoration: "underline" }}>Not Vul</TableCell>
             <TableCell sx={{ textDecoration: "underline" }}>Vul</TableCell>
           </TableRow>

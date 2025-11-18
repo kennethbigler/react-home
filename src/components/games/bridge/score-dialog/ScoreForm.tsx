@@ -37,18 +37,28 @@ const ScoreForm = () => {
     setContractSuit(e.target.value);
   const handleContractTricksChange = (e: SelectChangeEvent<number>) =>
     setContractTricks(e.target.value);
-  const handleBidWinnerToggle = (_e: eIn, checked: boolean) => setIsWe(checked);
   const handleDeclarerTricksChange = (e: SelectChangeEvent<number>) =>
     setDeclarerTricks(e.target.value);
+  const handleBidWinnerToggle = (_e: eIn, checked: boolean) => setIsWe(checked);
+  // double handlers
+  const handleRedoubleToggle = (_e: eIn, checked: boolean) => {
+    if (checked) {
+      setIsDouble(true);
+    }
+    setIsRedouble(checked);
+  };
   const handleDoubleToggle = (_e: eIn, checked: boolean) =>
     setIsDouble(checked);
-  const handleRedoubleToggle = (_e: eIn, checked: boolean) =>
-    setIsRedouble(checked);
+  // honours handlers
+  const handle4AcesToggle = (_e: eIn, checked: boolean) => setIs4Aces(checked);
+  const handle5HonoursToggle = (_e: eIn, checked: boolean) => {
+    if (checked) {
+      setIsDouble(true);
+    }
+    setIs5Honours(checked);
+  };
   const handle4HonoursToggle = (_e: eIn, checked: boolean) =>
     setIs4Honours(checked);
-  const handle5HonoursToggle = (_e: eIn, checked: boolean) =>
-    setIs5Honours(checked);
-  const handle4AcesToggle = (_e: eIn, checked: boolean) => setIs4Aces(checked);
 
   const madeBid = declarerTricks >= contractTricks + 6;
 
@@ -70,7 +80,57 @@ const ScoreForm = () => {
     }
   }
 
-  const belowTheLine = "🏗️";
+  let belowTheLine = 0;
+  const isVulnerable = false;
+  if (madeBid) {
+    // check for slams
+    const slamMultiplier = 1 * (isDouble ? 2 : 1) * (isRedouble ? 2 : 1);
+    if (contractTricks === 6) {
+      belowTheLine += slamMultiplier * (isVulnerable ? 500 : 750);
+    } else if (contractTricks === 7) {
+      belowTheLine += slamMultiplier * (isVulnerable ? 1000 : 1500);
+    }
+
+    // check for overtricks
+    if (declarerTricks > contractTricks + 6) {
+      const overtricks = declarerTricks - contractTricks - 6;
+      if (!isDouble) {
+        belowTheLine += overtricks * (contractSuit === "minor" ? 20 : 30);
+      } else {
+        const multiplier = 1 * (isVulnerable ? 2 : 1) * (isRedouble ? 2 : 1);
+        belowTheLine += overtricks * 100 * multiplier;
+      }
+    }
+
+    // check for honours
+    if (contractSuit === "nt" && is4Aces) {
+      belowTheLine += 150;
+    } else if (contractSuit !== "nt") {
+      if (is5Honours) {
+        belowTheLine += 150;
+      } else if (is4Honours) {
+        belowTheLine += 100;
+      }
+    }
+    if (isRedouble) {
+      belowTheLine += 100;
+    } else if (isDouble) {
+      belowTheLine += 50;
+    }
+  } else {
+    // check for undertricks
+    const undertricks = contractTricks + 6 - declarerTricks - 1; // -1 for 0 indexing
+    const lookupIdx = 0 + (isVulnerable ? 1 : 0) + (isDouble ? 2 : 0);
+    const multiplier = isRedouble ? 2 : 1;
+    const undertrickTable = [
+      [50, 100, 100, 200],
+      [100, 200, 300, 500],
+      [150, 300, 500, 800],
+      [200, 400, 800, 1100],
+      [250, 500, 1100, 1400],
+    ];
+    belowTheLine += undertrickTable[undertricks][lookupIdx] * multiplier;
+  }
 
   return (
     <>
