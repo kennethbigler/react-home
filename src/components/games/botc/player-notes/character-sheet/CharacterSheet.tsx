@@ -51,6 +51,7 @@ const CharacterSheet = ({
       <Grid size={6}>
         <TextField
           fullWidth
+          multiline
           label="Notes"
           variant="standard"
           defaultValue={notes}
