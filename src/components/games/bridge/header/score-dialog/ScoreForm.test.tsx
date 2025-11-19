@@ -166,7 +166,7 @@ describe("ScoreForm Component", () => {
 
     const switches = screen.getAllByRole("switch", { name: /doubled/i });
     // One for "doubled" and possibly one for "redoubled" - check the correct one
-    expect(switches.some((sw) => sw.checked)).toBe(true);
+    expect(switches.some((sw) => (sw as HTMLInputElement).checked)).toBe(true);
   });
 
   it("shows redoubled switch", () => {
