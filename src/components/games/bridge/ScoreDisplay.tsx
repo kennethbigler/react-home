@@ -13,8 +13,10 @@ import bridgeAtom, { bridgeRead } from "../../../jotai/bridge-atom";
 const border = `4px solid ${grey[700]}`;
 
 const ScoreDisplay = () => {
-  const { aboveScores, weBelow, theyBelow } = useAtomValue(bridgeAtom);
-  const { weVulnerable, theyVulnerable } = useAtomValue(bridgeRead);
+  const { aboveScores, weBelow, theyBelow, weRubbers, theyRubbers } =
+    useAtomValue(bridgeAtom);
+  const { weVulnerable, theyVulnerable, weSum, theySum } =
+    useAtomValue(bridgeRead);
 
   return (
     <Table aria-label="Bridge Scores" sx={{ border }}>
@@ -29,10 +31,11 @@ const ScoreDisplay = () => {
       <TableBody>
         {aboveScores
           .slice()
-          .reverse()
           .map(
             ([we, they], i) =>
-              (we.length > 0 || they.length > 0) && (
+              (we.length > 0 ||
+                they.length > 0 ||
+                (we.length === 0 && they.length === 0 && i === 0)) && (
                 <TableRow key={`game-${i}`}>
                   <TableCell align="center" sx={{ borderRight: border }}>
                     {we.map((score, i) => (
@@ -50,7 +53,8 @@ const ScoreDisplay = () => {
                   </TableCell>
                 </TableRow>
               ),
-          )}
+          )
+          .reverse()}
         <TableRow sx={{ borderTop: border }}>
           <TableCell align="center" sx={{ borderRight: border }}>
             {weBelow.map((score, i) => (
@@ -65,6 +69,22 @@ const ScoreDisplay = () => {
                 {score}
               </Typography>
             ))}
+          </TableCell>
+        </TableRow>
+        <TableRow sx={{ borderBottom: border }}>
+          <TableCell align="center" sx={{ border }}>
+            Total: {weSum}
+          </TableCell>
+          <TableCell align="center" sx={{ border }}>
+            Total: {theySum}
+          </TableCell>
+        </TableRow>
+        <TableRow sx={{ borderBottom: border }}>
+          <TableCell align="center" sx={{ border }}>
+            Wins: {weRubbers}
+          </TableCell>
+          <TableCell align="center" sx={{ border }}>
+            Wins: {theyRubbers}
           </TableCell>
         </TableRow>
       </TableBody>
