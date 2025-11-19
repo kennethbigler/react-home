@@ -88,7 +88,7 @@ const ScoreForm = ({
               name="contract-suit-name"
               onChange={onContractSuitChange}
             >
-              <MenuItem value="nt">No Trump (NT)</MenuItem>
+              <MenuItem value="nt">No Trump</MenuItem>
               <MenuItem value="major">Major ♥️♠️</MenuItem>
               <MenuItem value="minor">Minor ♣️♦️</MenuItem>
             </Select>
@@ -179,10 +179,6 @@ const ScoreForm = ({
         </Grid>
 
         <Grid size={12}>
-          <Divider />
-        </Grid>
-
-        <Grid size={12}>
           <Typography variant="h6">Honours</Typography>
         </Grid>
         {contractSuit === "nt" ? (
@@ -231,7 +227,7 @@ const ScoreForm = ({
 
     <Divider />
 
-    <div style={{ marginTop: 10, marginBottom: 20 }}>
+    <div style={{ marginTop: 10 }}>
       <Typography variant="h6">Score</Typography>
       {madeBid ? (
         <Typography>Declarer ({winner}) won the hand!</Typography>

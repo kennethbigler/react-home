@@ -2,13 +2,13 @@ import { memo, useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import ScoringTable from "./ScoringTable";
 import ScoreForm, { eIn } from "./ScoreForm";
-import InfoPopup from "../../../common/info-popover/InfoPopup";
+import InfoPopup from "../../../../common/info-popover/InfoPopup";
 import { SelectChangeEvent } from "@mui/material";
 import useBridgeScorer from "./score-helper";
 import bridgeAtom, {
   AboveScores,
   bridgeRead,
-} from "../../../../jotai/bridge-atom";
+} from "../../../../../jotai/bridge-atom";
 
 const ScoreDialog = memo(() => {
   const [{ aboveScores, weBelow, theyBelow, ...other }, setBridgeState] =

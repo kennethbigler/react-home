@@ -1,3 +1,19 @@
+export const undertrickTable = [
+  [50, 100, 100, 200],
+  [100, 200, 300, 500],
+  [150, 300, 500, 800],
+  [200, 400, 800, 1100],
+  [250, 500, 1100, 1400],
+  [350, 600, 1200, 1700],
+  [400, 700, 1400, 2000],
+  [450, 800, 1600, 2300],
+  [500, 900, 1800, 2700],
+  [550, 1000, 2000, 3000],
+  [600, 1100, 2200, 3300],
+  [650, 1200, 2400, 3600],
+  [700, 1300, 2600, 3900],
+];
+
 const useBridgeScorer = (
   declarerTricks: number,
   contractTricks: number,
@@ -9,8 +25,8 @@ const useBridgeScorer = (
   is4Honours: boolean,
   is5Honours: boolean,
 ) => {
+  // --------------------     Winning Team     -------------------- //
   const madeBid = declarerTricks >= contractTricks + 6;
-
   let winner: "we" | "they";
   if (madeBid) {
     winner = isWe ? "we" : "they";
@@ -18,6 +34,7 @@ const useBridgeScorer = (
     winner = !isWe ? "we" : "they";
   }
 
+  // --------------------     Above the Line     -------------------- //
   let aboveTheLine: number = 0;
   if (madeBid) {
     if (contractSuit === "minor") {
@@ -29,6 +46,7 @@ const useBridgeScorer = (
     }
   }
 
+  // --------------------     Below the Line     -------------------- //
   let belowTheLine: number = 0;
   const isVulnerable = false;
   if (madeBid) {
@@ -71,24 +89,10 @@ const useBridgeScorer = (
     const undertricks = contractTricks + 6 - declarerTricks - 1; // -1 for 0 indexing
     const lookupIdx = 0 + (isVulnerable ? 1 : 0) + (isDouble ? 2 : 0);
     const multiplier = isRedouble ? 2 : 1;
-    const undertrickTable = [
-      [50, 100, 100, 200],
-      [100, 200, 300, 500],
-      [150, 300, 500, 800],
-      [200, 400, 800, 1100],
-      [250, 500, 1100, 1400],
-      [350, 600, 1200, 1700],
-      [400, 700, 1400, 2000],
-      [450, 800, 1600, 2300],
-      [500, 900, 1800, 2700],
-      [550, 1000, 2000, 3000],
-      [600, 1100, 2200, 3300],
-      [650, 1200, 2400, 3600],
-      [700, 1300, 2600, 3900],
-    ];
     belowTheLine += undertrickTable[undertricks][lookupIdx] * multiplier;
   }
 
+  // --------------------     Returns     -------------------- //
   return {
     winner,
     madeBid,

@@ -1,7 +1,7 @@
-import InfoPopup from "../../../common/info-popover/InfoPopup";
-import bidPage1 from "../../../../images/bridge_bidding_cheat_sheet_1.jpg";
-import bidPage2 from "../../../../images/bridge_bidding_cheat_sheet_2.jpg";
-import bidPageK from "../../../../images/ken_bridge_betting.jpg";
+import InfoPopup from "../../../../common/info-popover/InfoPopup";
+import bidPage1 from "../../../../../images/bridge_bidding_cheat_sheet_1.jpg";
+import bidPage2 from "../../../../../images/bridge_bidding_cheat_sheet_2.jpg";
+import bidPageK from "../../../../../images/ken_bridge_betting.jpg";
 
 const BidDialog = () => (
   <InfoPopup title="Bid">

@@ -8,11 +8,12 @@ import {
   Divider,
 } from "@mui/material";
 import { memo } from "react";
+import { undertrickTable } from "./score-helper";
 
 const ScoringTable = memo(() => {
   return (
     <>
-      <Divider />
+      <Divider sx={{ marginTop: 7, marginBottom: 5 }} />
       <Table aria-labelledby="contracts-trick-values">
         <TableHead>
           <TableRow>
@@ -186,41 +187,15 @@ const ScoringTable = memo(() => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            <TableCell>1</TableCell>
-            <TableCell>50</TableCell>
-            <TableCell>100</TableCell>
-            <TableCell>100</TableCell>
-            <TableCell>200</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>2</TableCell>
-            <TableCell>100</TableCell>
-            <TableCell>200</TableCell>
-            <TableCell>300</TableCell>
-            <TableCell>500</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>3</TableCell>
-            <TableCell>150</TableCell>
-            <TableCell>300</TableCell>
-            <TableCell>500</TableCell>
-            <TableCell>800</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>4</TableCell>
-            <TableCell>200</TableCell>
-            <TableCell>400</TableCell>
-            <TableCell>800</TableCell>
-            <TableCell>1100</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>5</TableCell>
-            <TableCell>250</TableCell>
-            <TableCell>500</TableCell>
-            <TableCell>1100</TableCell>
-            <TableCell>1400</TableCell>
-          </TableRow>
+          {undertrickTable.map((underTrickRow, i) => (
+            <TableRow key={`${i}-undertricks`}>
+              <TableCell>{i + 1}</TableCell>
+              <TableCell>{underTrickRow[0]}</TableCell>
+              <TableCell>{underTrickRow[1]}</TableCell>
+              <TableCell>{underTrickRow[2]}</TableCell>
+              <TableCell>{underTrickRow[3]}</TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
 
