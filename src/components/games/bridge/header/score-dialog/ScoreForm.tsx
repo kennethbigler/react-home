@@ -140,23 +140,25 @@ const ScoreForm = ({
           />
         </Grid>
 
-        <Grid size={12}>
-          <Typography>Who won the bid?</Typography>
+        <Grid size={6}>
+          <FormControl
+            sx={{
+              flexDirection: "row",
+              alignItems: "center",
+              margin: "10px 0",
+            }}
+          >
+            <Typography>Bid: </Typography>
+            <Switch
+              checked={isWe}
+              onChange={onBidWinnerToggle}
+              name="bid-winner"
+              slotProps={{ input: { "aria-label": "Bid Winner is we" } }}
+            />
+            <Typography>{isWe ? "We" : "They"}</Typography>
+          </FormControl>
         </Grid>
-        <Grid size={4}>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={isWe}
-                onChange={onBidWinnerToggle}
-                name="bid-winner"
-                aria-label="Bid Winner is We"
-              />
-            }
-            label={isWe ? "We" : "They"}
-          />
-        </Grid>
-        <Grid size={8}>
+        <Grid size={6}>
           <FormControl fullWidth>
             <InputLabel id="declarer-tricks-label">
               {DECLARER_TRICKS}
@@ -178,54 +180,58 @@ const ScoreForm = ({
           </FormControl>
         </Grid>
 
-        <Grid size={12}>
-          <Typography variant="h6">Honours</Typography>
-        </Grid>
-        {contractSuit === "nt" ? (
-          <Grid size={12}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={is4Aces}
-                  onChange={on4AcesToggle}
-                  name="4-aces"
-                />
-              }
-              label="4 Aces in 1 hand?"
-            />
-          </Grid>
-        ) : (
+        {madeBid && (
           <>
-            <Grid size={6}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={is4Honours}
-                    onChange={on4HonoursToggle}
-                    name="4-honours"
-                  />
-                }
-                label="4 Honours in 1 hand?"
-              />
+            <Grid size={12}>
+              <Typography variant="h6">Honours</Typography>
             </Grid>
-            <Grid size={6}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={is5Honours}
-                    onChange={on5HonoursToggle}
-                    name="5-honours"
+            {contractSuit === "nt" ? (
+              <Grid size={12}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={is4Aces}
+                      onChange={on4AcesToggle}
+                      name="4-aces"
+                    />
+                  }
+                  label="4 Aces in 1 hand?"
+                />
+              </Grid>
+            ) : (
+              <>
+                <Grid size={6}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={is4Honours}
+                        onChange={on4HonoursToggle}
+                        name="4-honours"
+                      />
+                    }
+                    label="4 Honours in 1 hand?"
                   />
-                }
-                label="5 Honours in 1 hand?"
-              />
-            </Grid>
+                </Grid>
+                <Grid size={6}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={is5Honours}
+                        onChange={on5HonoursToggle}
+                        name="5-honours"
+                      />
+                    }
+                    label="5 Honours in 1 hand?"
+                  />
+                </Grid>
+              </>
+            )}
           </>
         )}
       </Grid>
     </FormGroup>
 
-    <Divider />
+    <Divider sx={{ marginTop: 2 }} />
 
     <div style={{ marginTop: 10 }}>
       <Typography variant="h6">Score</Typography>

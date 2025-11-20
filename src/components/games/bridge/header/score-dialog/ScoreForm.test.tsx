@@ -141,10 +141,12 @@ describe("ScoreForm Component", () => {
     ).toBeInTheDocument();
   });
 
-  it("displays question about bid winner", () => {
+  it("displays bid winner selector", () => {
     render(<ScoreForm {...defaultProps} />);
 
-    expect(screen.getByText("Who won the bid?")).toBeInTheDocument();
+    // Should show "Bid: " label and the current team
+    expect(screen.getByText("Bid:")).toBeInTheDocument();
+    expect(screen.getByText("We")).toBeInTheDocument();
   });
 
   it("renders with different contract tricks values", () => {
@@ -195,5 +197,51 @@ describe("ScoreForm Component", () => {
     );
 
     expect(screen.getByRole("switch", { name: /5 honours/i })).toBeChecked();
+  });
+
+  it("renders contract suit select with current value", () => {
+    render(<ScoreForm {...defaultProps} contractSuit="major" />);
+
+    const suitSelect = screen.getByRole("combobox", {
+      name: /contract suit/i,
+    });
+    expect(suitSelect).toHaveTextContent("Major");
+  });
+
+  it("renders bid winner label and current team", () => {
+    render(<ScoreForm {...defaultProps} isWe={true} />);
+
+    // Check the text label and team name are displayed
+    expect(screen.getByText("Bid:")).toBeInTheDocument();
+    expect(screen.getByText("We")).toBeInTheDocument();
+  });
+
+  it("renders doubled and redoubled switches", () => {
+    render(<ScoreForm {...defaultProps} />);
+
+    // Both switches should be present - use exact names to avoid regex overlap
+    expect(
+      screen.getByRole("switch", { name: "Doubled?" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("switch", { name: "Redoubled?" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders all dropdown options", () => {
+    render(<ScoreForm {...defaultProps} />);
+
+    // All three dropdowns should be present
+    expect(screen.getByLabelText("Contract Suit")).toBeInTheDocument();
+    expect(screen.getByLabelText("Contract Tricks")).toBeInTheDocument();
+    expect(screen.getByLabelText("Declarer Team Tricks")).toBeInTheDocument();
+  });
+
+  it("does not show honours section when bid is not made", () => {
+    render(<ScoreForm {...defaultProps} madeBid={false} />);
+
+    expect(screen.queryByText("Honours")).not.toBeInTheDocument();
+    expect(screen.queryByText("4 Aces in 1 hand?")).not.toBeInTheDocument();
+    expect(screen.queryByText("4 Honours in 1 hand?")).not.toBeInTheDocument();
   });
 });
