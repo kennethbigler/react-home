@@ -1,0 +1,315 @@
+---
+description: Project directory structure and important files reference
+globs:
+alwaysApply: true
+---
+# Project Structure
+
+This React portfolio/personal website is built with Vite, TypeScript, Material-UI, and Jotai for state management.
+
+## Technology Stack
+
+- **Framework**: React 19.X with TypeScript
+- **Build Tool**: Vite 7.X
+- **UI Library**: Material-UI (MUI) 7.X
+- **State Management**: Jotai 2.X
+- **Routing**: React Router DOM 7.X
+- **Testing**: Vitest 4.X + @testing-library/react
+- **Linting**: ESLint 9.X
+- **Styling**: Emotion (@emotion/react, @emotion/styled)
+
+## Root Directory Structure
+
+```
+react-home/
+├── .cursor/              # Cursor IDE rules and configuration
+│   └── rules/            # Project-specific Cursor rules
+├── public/               # Static assets (favicons, manifest, robots.txt)
+├── src/                  # Source code (see detailed structure below)
+├── scripts/              # Build and deployment scripts
+├── docs/                 # Built/deployed production site
+├── coverage/             # Test coverage reports (generated)
+├── codecov_reports/      # Code coverage data (generated)
+├── node_modules/         # Dependencies (not committed)
+├── index.html            # HTML entry point
+├── vite.config.ts        # Vite build configuration
+├── tsconfig.json         # TypeScript configuration
+├── tsconfig.node.json    # TypeScript config for Node scripts
+├── eslint.config.js      # ESLint configuration
+├── lighthouserc.json     # Lighthouse CI configuration
+├── package.json          # Project dependencies and scripts
+└── README.md             # Project documentation
+```
+
+## Source Directory Structure (`src/`)
+
+### Core Application Files
+
+```
+src/
+├── main.tsx              # Application entry point
+├── main.test.tsx         # Tests for main entry
+├── setupTests.ts         # Vitest setup configuration
+├── index.css             # Global styles
+├── vite-env.d.ts         # Vite environment types
+└── @types/               # Custom TypeScript definitions
+```
+
+### Components (`src/components/`)
+
+The components directory is organized into three main categories:
+
+#### 1. Common Components (`src/components/common/`)
+
+Reusable UI components used throughout the application:
+
+- **edu-cards/** - Education card components (Class, Degree, Quarter, Year)
+- **expandable-card/** - Collapsible card component
+- **header/** - Site header/navigation components
+- **info-popover/** - Information popup component
+- **loading-spinner/** - Loading state component
+- **tab-panel/** - Tab navigation component
+- **types.ts** - Shared TypeScript types for common components
+
+#### 2. Games Components (`src/components/games/`)
+
+Interactive game implementations:
+
+- **are-you-the-one/** - Reality TV matching game
+- **blackjack/** - Card game implementation
+- **botc/** - Blood on the Clocktower game
+- **bridge/** - Bridge card game
+- **connect4/** - Connect Four game
+- **deal-or-no-deal/** - Game show simulation
+- **family-feud/** - Family Feud game
+- **game-table/** - Shared game table UI
+- **imperial-assault/** - Star Wars Imperial Assault companion
+- **murder-mystery/** - Murder mystery game
+- **poker/** - Poker game implementation
+- **slots/** - Slot machine game
+- **spades/** - Spades card game
+- **tictactoe/** - Tic-tac-toe game
+- **type-checker/** - Type matching game
+- **werewolf/** - Werewolf/Mafia game
+- **yahtzee/** - Yahtzee dice game
+- **Home.tsx** - Games home page
+- **Menu.tsx** - Games menu navigation
+- **Routes.tsx** - Games routing configuration
+- **menu-items.ts** - Games menu configuration
+
+#### 3. Resume Components (`src/components/resume/`)
+
+Professional portfolio sections:
+
+- **cars/** - Personal vehicle history
+- **comp-calc/** - Compensation calculator
+- **education/** - Educational background
+- **f1/** - Formula 1 interest section
+- **presentations/** - Speaking engagements
+- **resume/** - Professional resume
+- **summary/** - Professional summary
+- **travel-map/** - Travel history visualization
+- **work/** - Work experience
+- **Menu.tsx** - Resume menu navigation
+- **Routes.tsx** - Resume routing configuration
+
+#### Top-Level Routing
+
+- **Routes.tsx** - Main application routing
+
+### State Management (`src/jotai/`)
+
+Jotai atoms for application state management:
+
+```
+jotai/
+├── are-you-the-one-state.ts
+├── blackjack-state.ts
+├── botc-atom.ts (+ test)
+├── bridge-atom.ts (+ test)
+├── comp-calculator-atom.ts
+├── connect4-atom.ts
+├── deal-or-no-deal-state.ts
+├── deck-state.ts
+├── imperial-assault-atom.ts
+├── player-atom.ts
+├── poker-state.ts
+├── slots-state.ts
+├── spades-atom.ts
+├── stock-atom.ts
+├── theme-atom.ts
+├── tic-tac-toe-atom.ts
+├── turn-atom.ts
+└── yahtzee-state.ts
+```
+
+**Convention**:
+
+- Files ending in `-atom.ts` contain Jotai atom definitions
+- Files ending in `-state.ts` contain state logic and derived atoms
+- Some critical atoms have corresponding test files
+
+### Constants (`src/constants/`)
+
+Application data and configuration:
+
+```
+constants/
+├── ayto.ts                    # Are You The One data
+├── botc.ts                    # Blood on the Clocktower data
+├── cars.ts                    # Personal vehicle data
+├── classes.ts                 # Education course data
+├── cruises.ts                 # Cruise travel data
+├── f1.ts                      # Formula 1 data
+├── imperial-campaigns.ts      # Imperial Assault campaigns
+├── murder.ts                  # Murder mystery data
+├── travel.ts                  # Travel history data
+├── type-checker.ts            # Type checker game data
+├── werewolf.ts                # Werewolf game data
+├── work.ts                    # Work experience data
+└── tests/                     # Tests for constants
+```
+
+### Utility APIs (`src/apis/`)
+
+Helper functions and utilities:
+
+```
+apis/
+├── arr2br.tsx           # Array to <br/> conversion utility
+├── DateHelper.ts        # Date formatting and manipulation
+├── usDollar.tsx         # Currency formatting utility
+└── tests/               # Tests for utility functions
+```
+
+### Images (`src/images/`)
+
+Static image assets organized by category:
+
+```
+images/
+├── cars/                # Vehicle photos (16 files: .png, .webp)
+├── companies/           # Company logos (9 files: .png, .gif, .jpg, .svg)
+├── tracks/              # F1 circuit images (31 .avif files)
+├── ken.webp             # Profile photo
+├── ken-original.jpg     # Original profile photo
+├── kenneth_bigler_resume.png
+├── botc-qr-code.png
+└── bridge_bidding_cheat_sheet_*.jpg
+```
+
+**Image Format Conventions**:
+
+- Modern formats (.webp, .avif) for optimized loading
+- Legacy formats (.png, .jpg) for compatibility
+- Company logos in various formats as provided by brands
+
+### Wrappers (`src/wrappers/`)
+
+Higher-order components and context providers:
+
+```
+wrappers/
+├── WithRouter.tsx       # React Router wrapper
+└── WithTheme.tsx        # Material-UI theme wrapper
+```
+
+## Important Configuration Files
+
+### Build & Development
+
+- **vite.config.ts** - Vite configuration (plugins, build settings, aliases)
+- **tsconfig.json** - TypeScript compiler options for application code
+- **tsconfig.node.json** - TypeScript config for build scripts and tooling
+
+### Code Quality
+
+- **eslint.config.js** - ESLint rules and parser configuration
+- **lighthouserc.json** - Lighthouse performance testing configuration
+- **codecov.yml** - Code coverage reporting configuration
+
+### Deployment
+
+- **index.html** - Main HTML template
+- **public/** - Static assets copied directly to build output
+- **docs/** - Production build output directory (GitHub Pages)
+
+## Testing Structure
+
+Tests are co-located with source files:
+
+- Component tests: `ComponentName.test.tsx`
+- Utility tests: Located in `tests/` subdirectories
+- State tests: `atom-name.test.ts` (for critical atoms)
+
+**Test Commands**:
+
+- `npm test` - Run tests in watch mode
+- `npm run test:no-watch` - Run tests once
+- `npm run test:coverage` - Generate coverage reports
+
+## Scripts
+
+Available npm scripts:
+
+- `npm start` - Start development server
+- `npm run build` - Build production bundle
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint with auto-fix
+- `npm run lint:q` - Run ESLint quietly (errors only)
+- `npm run deploy` - Deploy to production (GitHub Pages)
+- `npm run analyze` - Analyze bundle size
+
+## Naming Conventions
+
+1. **Components**: PascalCase (e.g., `MyComponent.tsx`)
+2. **Utilities/APIs**: camelCase (e.g., `dateHelper.ts`)
+3. **Constants**: kebab-case files, UPPER_SNAKE_CASE exports (e.g., `work.ts`)
+4. **State/Atoms**: kebab-case with `-atom` or `-state` suffix
+5. **Tests**: Same name as source file with `.test.ts(x)` extension
+6. **Types**: PascalCase for interfaces/types, in `types.ts` files
+
+## File Organization Principles
+
+1. **Feature-based**: Components grouped by feature/section (games, resume)
+2. **Co-location**: Tests live next to source files
+3. **Separation of Concerns**:
+   - Components for UI
+   - Jotai atoms for state
+   - Constants for data
+   - APIs for utilities
+4. **Atomic Design**: Common components are reusable across features
+
+## When Working With This Codebase
+
+1. **Adding New Games**:
+   - Create folder in `src/components/games/[game-name]/`
+   - Add state atom in `src/jotai/[game-name]-state.ts`
+   - Update `src/components/games/menu-items.ts`
+   - Add route in `src/components/games/Routes.tsx`
+
+2. **Adding Resume Sections**:
+   - Create folder in `src/components/resume/[section-name]/`
+   - Add data constants in `src/constants/[section-name].ts`
+   - Update `src/components/resume/Routes.tsx`
+
+3. **Adding Common Components**:
+   - Place in `src/components/common/[component-name]/`
+   - Include types in component folder or `types.ts`
+   - Add tests for reusable components
+
+4. **Adding Images**:
+   - Place in appropriate `src/images/` subdirectory
+   - Prefer modern formats (.webp, .avif) for new images
+   - Ensure types are declared in `src/@types/images.d.ts`
+
+5. **State Management**:
+   - Use Jotai atoms for global state
+   - Local component state for UI-only concerns
+   - Derive state when possible rather than duplicating
+
+## Build Output
+
+- **Development**: Vite dev server on default port (typically 5173)
+- **Production**: Static files in `docs/` directory
+- **Deployment**: GitHub Pages serves from `docs/` directory

@@ -1,0 +1,287 @@
+---
+description: Test generation standards and verification requirements
+globs:
+alwaysApply: true
+---
+# Testing Standards
+
+## Test Generation Requirements
+
+When generating tests, you must ensure:
+
+1. **Tests Pass** - All tests must pass before completion
+2. **ESLint Passes** - No linting errors introduced
+3. **Build Succeeds** - `tsc && vite build` must complete successfully
+4. **Coverage Maintained** - Meet or exceed coverage thresholds
+
+## Coverage Thresholds
+
+Tests must meet these minimum coverage requirements:
+
+- **Statements**: 85%
+- **Branches**: 81%
+- **Functions**: 85%
+- **Lines**: 85%
+
+## Verification Workflow
+
+After generating tests, always verify in this order:
+
+```bash
+# 1. Run tests
+npm run test:no-watch
+
+# 2. Check coverage
+npm run test:coverage
+
+# 3. Verify ESLint
+npm run lint
+
+# 4. Verify build
+npm run build
+```
+
+## Testing Stack
+
+- **Test Runner**: Vitest 4.X
+- **Component Testing**: @testing-library/react 16.X
+- **Assertions**: Vitest (Jest-compatible)
+- **Mocking**: vi from vitest
+- **Environment**: jsdom
+
+## Test File Conventions
+
+### Location
+- Co-locate tests with source files
+- Use `ComponentName.test.tsx` for components
+- Use `helperName.test.ts` for utilities
+- Group related tests in `tests/` subdirectories when needed
+
+### Structure
+
+```typescript
+import { render, screen, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
+import ComponentName from "./ComponentName";
+
+describe("category | ComponentName", () => {
+  it("renders as expected", () => {
+    render(<ComponentName />);
+    expect(screen.getByText("Expected Text")).toBeInTheDocument();
+  });
+
+  it("handles user interaction", () => {
+    const handleClick = vi.fn();
+    render(<ComponentName onClick={handleClick} />);
+    fireEvent.click(screen.getByRole("button"));
+    expect(handleClick).toHaveBeenCalled();
+  });
+});
+```
+
+## Best Practices
+
+### Component Tests
+
+```typescript
+// ✅ GOOD: Test user-visible behavior
+it("displays error message when validation fails", () => {
+  render(<Form />);
+  fireEvent.click(screen.getByRole("button", { name: /submit/i }));
+  expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
+});
+
+// ❌ BAD: Testing implementation details
+it("sets error state to true", () => {
+  const { result } = renderHook(() => useForm());
+  result.current.validate();
+  expect(result.current.hasError).toBe(true);
+});
+```
+
+### Query Priorities
+
+Use queries in this priority order:
+
+1. **getByRole** - Most accessible query
+2. **getByLabelText** - Form elements
+3. **getByPlaceholderText** - Last resort for inputs
+4. **getByText** - Non-interactive content
+5. **getByTestId** - Only when semantics don't work
+
+```typescript
+// ✅ GOOD: Semantic queries
+screen.getByRole("button", { name: /submit/i });
+screen.getByLabelText(/email address/i);
+screen.getByText(/welcome/i);
+
+// ❌ BAD: Avoid test IDs when possible
+screen.getByTestId("submit-button");
+```
+
+### Async Testing
+
+```typescript
+// ✅ GOOD: Wait for async operations
+it("loads data on mount", async () => {
+  render(<DataComponent />);
+  expect(screen.getByText(/loading/i)).toBeInTheDocument();
+  
+  await screen.findByText(/data loaded/i);
+  expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
+});
+```
+
+### Mocking
+
+```typescript
+// ✅ GOOD: Mock external dependencies
+const mockFetch = vi.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve({ data: "test" }),
+  })
+);
+global.fetch = mockFetch;
+
+// ✅ GOOD: Mock user interactions
+const handleClick = vi.fn();
+render(<Button onClick={handleClick}>Click</Button>);
+fireEvent.click(screen.getByRole("button"));
+expect(handleClick).toHaveBeenCalledTimes(1);
+```
+
+## Test Coverage Guidelines
+
+### What to Test
+
+**Always test:**
+- User interactions (clicks, form submissions, keyboard events)
+- Conditional rendering (different states)
+- Error handling and validation
+- Props impact on component output
+- Accessible behavior (keyboard navigation, ARIA)
+
+**Don't test:**
+- Implementation details (state variable names, internal functions)
+- Third-party libraries (React, MUI, etc.)
+- Static content that never changes
+- Trivial getters/setters
+
+### Coverage Strategies
+
+```typescript
+// Test all branches
+describe("conditional rendering", () => {
+  it("shows loading state", () => {
+    render(<Component isLoading={true} />);
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+  });
+
+  it("shows data when loaded", () => {
+    render(<Component isLoading={false} data="test" />);
+    expect(screen.getByText("test")).toBeInTheDocument();
+  });
+
+  it("shows error state", () => {
+    render(<Component error="Failed" />);
+    expect(screen.getByText(/failed/i)).toBeInTheDocument();
+  });
+});
+```
+
+## Common Test Patterns
+
+### Testing Jotai Atoms
+
+```typescript
+import { renderHook, act } from "@testing-library/react";
+import { useAtom } from "jotai";
+import { myAtom } from "./myAtom";
+
+describe("jotai | myAtom", () => {
+  it("initializes with default value", () => {
+    const { result } = renderHook(() => useAtom(myAtom));
+    expect(result.current[0]).toEqual(defaultValue);
+  });
+
+  it("updates value", () => {
+    const { result } = renderHook(() => useAtom(myAtom));
+    act(() => {
+      result.current[1](newValue);
+    });
+    expect(result.current[0]).toEqual(newValue);
+  });
+});
+```
+
+### Testing Custom Hooks
+
+```typescript
+import { renderHook, act } from "@testing-library/react";
+import { useCustomHook } from "./useCustomHook";
+
+describe("hooks | useCustomHook", () => {
+  it("returns expected values", () => {
+    const { result } = renderHook(() => useCustomHook());
+    expect(result.current.value).toBeDefined();
+  });
+
+  it("handles updates", () => {
+    const { result } = renderHook(() => useCustomHook());
+    act(() => {
+      result.current.update("new value");
+    });
+    expect(result.current.value).toBe("new value");
+  });
+});
+```
+
+### Testing Error Boundaries
+
+```typescript
+it("handles errors gracefully", () => {
+  const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+  
+  render(
+    <ErrorBoundary>
+      <ComponentThatThrows />
+    </ErrorBoundary>
+  );
+  
+  expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
+  consoleError.mockRestore();
+});
+```
+
+## Verification Checklist
+
+Before marking test generation as complete:
+
+- [ ] All new tests pass
+- [ ] Existing tests still pass
+- [ ] Coverage meets thresholds (85% statements/functions/lines, 81% branches)
+- [ ] ESLint passes with no new errors
+- [ ] TypeScript compiles (`tsc`)
+- [ ] Vite build succeeds
+- [ ] Tests use semantic queries (getByRole, getByLabelText)
+- [ ] Tests verify user-visible behavior, not implementation
+- [ ] Async operations properly awaited
+- [ ] Mock functions cleaned up after tests
+
+## Excluded from Coverage
+
+These files/patterns are excluded from coverage requirements:
+
+- `src/images/**` - Image assets
+- `src/index.css` - Global styles
+- `src/vite-env.d.ts` - Vite type definitions
+- `src/@types/**` - TypeScript declarations
+- `**/types.ts` - Type definition files
+- `**/index.ts` - Re-export barrel files
+
+## Resources
+
+- **Vitest Docs**: https://vitest.dev/
+- **Testing Library**: https://testing-library.com/docs/react-testing-library/intro/
+- **Testing Library Queries**: https://testing-library.com/docs/queries/about
+- **Common Mistakes**: https://kentcdodds.com/blog/common-mistakes-with-react-testing-library
