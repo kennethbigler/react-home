@@ -39,6 +39,7 @@ Check out the [issues tab](https://github.com/kennethbigler/react-home/issues) f
 * [Highcharts](https://www.highcharts.com/)
 * [Jōtai](https://jotai.org/)
 * [localforage](https://github.com/localForage/localForage)
+* [A11y MCP](https://github.com/ronantakizawa/a11ymcp)
 
 ## Deployments
 
