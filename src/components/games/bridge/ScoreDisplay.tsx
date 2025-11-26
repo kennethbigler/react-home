@@ -13,7 +13,7 @@ import bridgeAtom, { bridgeRead } from "../../../jotai/bridge-atom";
 const border = `4px solid ${grey[700]}`;
 
 const ScoreDisplay = () => {
-  const { aboveScores, weBelow, theyBelow, weRubbers, theyRubbers } =
+  const { aboveScores, weBelow, theyBelow, weRubbers, theyRubbers, bids } =
     useAtomValue(bridgeAtom);
   const { weVulnerable, theyVulnerable, weSum, theySum } =
     useAtomValue(bridgeRead);
@@ -42,7 +42,7 @@ const ScoreDisplay = () => {
                       (score, i) =>
                         score !== 0 && (
                           <Typography key={`we-above-${i}`} component="div">
-                            {score}
+                            {`${score} (${bids[i]})`}
                           </Typography>
                         ),
                     )}
@@ -52,7 +52,7 @@ const ScoreDisplay = () => {
                       (score, i) =>
                         score !== 0 && (
                           <Typography key={`they-above-${i}`} component="div">
-                            {score}
+                            {`${score} (${bids[i]})`}
                           </Typography>
                         ),
                     )}
@@ -67,7 +67,7 @@ const ScoreDisplay = () => {
               (score, i) =>
                 score !== 0 && (
                   <Typography key={`we-below-${i}`} component="div">
-                    {score}
+                    {`${score} (${bids[i]})`}
                   </Typography>
                 ),
             )}
@@ -77,7 +77,7 @@ const ScoreDisplay = () => {
               (score, i) =>
                 score !== 0 && (
                   <Typography key={`they-below-${i}`} component="div">
-                    {score}
+                    {`${score} (${bids[i]})`}
                   </Typography>
                 ),
             )}

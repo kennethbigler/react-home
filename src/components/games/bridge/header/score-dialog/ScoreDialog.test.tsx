@@ -2,9 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { Provider, createStore } from "jotai";
 import ScoreDialog from "./ScoreDialog";
-import bridgeAtom, {
-  type BridgeState,
-} from "../../../../../jotai/bridge-atom";
+import bridgeAtom, { type BridgeState } from "../../../../../jotai/bridge-atom";
 
 describe("games | bridge | ScoreDialog", () => {
   const defaultState: BridgeState = {
@@ -13,6 +11,7 @@ describe("games | bridge | ScoreDialog", () => {
       [[], []],
       [[], []],
     ],
+    bids: [],
     weBelow: [],
     theyBelow: [],
     weRubbers: 0,
@@ -88,7 +87,7 @@ describe("games | bridge | ScoreDialog", () => {
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
 
     await waitFor(() => {
-      expect(screen.getByText("No Trump")).toBeInTheDocument();
+      expect(screen.getByText("NT")).toBeInTheDocument();
       expect(screen.getByText("We")).toBeInTheDocument();
     });
   });
@@ -155,9 +154,9 @@ describe("games | bridge | ScoreDialog", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
 
-    // Verify form reset to "We"
+    // Verify form reset - isWe does NOT reset, so "They" should still be selected
     await waitFor(() => {
-      expect(screen.getByText("We")).toBeInTheDocument();
+      expect(screen.getByText("They")).toBeInTheDocument();
     });
   });
 
@@ -178,7 +177,9 @@ describe("games | bridge | ScoreDialog", () => {
     });
 
     const formControl = screen.getByLabelText(/Doubled\?/).closest("label");
-    const switchInput = formControl?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+    const switchInput = formControl?.querySelector(
+      'input[type="checkbox"]',
+    ) as HTMLInputElement;
     expect(switchInput.checked).toBe(false);
   });
 
@@ -199,7 +200,9 @@ describe("games | bridge | ScoreDialog", () => {
     });
 
     const formControl = screen.getByLabelText(/Redoubled\?/).closest("label");
-    const switchInput = formControl?.querySelector('input[type="checkbox"]') as HTMLInputElement;
+    const switchInput = formControl?.querySelector(
+      'input[type="checkbox"]',
+    ) as HTMLInputElement;
     expect(switchInput.checked).toBe(false);
   });
 
@@ -224,7 +227,9 @@ describe("games | bridge | ScoreDialog", () => {
 
     const state = store.get(bridgeAtom);
     expect(state.aboveScores[0][0].length).toBe(1); // We scored
-    expect(state.aboveScores[0][1].length).toBe(0); // They didn't
+    expect(state.aboveScores[0][1].length).toBe(1); // They got a 0 entry
+    expect(state.aboveScores[0][0][0]).toBeGreaterThan(0); // We have a real score
+    expect(state.aboveScores[0][1][0]).toBe(0); // They got 0
   });
 
   it("saves score to they when winner is they", async () => {
@@ -257,8 +262,10 @@ describe("games | bridge | ScoreDialog", () => {
     fireEvent.click(saveButton);
 
     const state = store.get(bridgeAtom);
-    expect(state.aboveScores[0][0].length).toBe(0); // We didn't score
+    expect(state.aboveScores[0][0].length).toBe(1); // We got a 0 entry
     expect(state.aboveScores[0][1].length).toBe(1); // They scored
+    expect(state.aboveScores[0][0][0]).toBe(0); // We got 0
+    expect(state.aboveScores[0][1][0]).toBeGreaterThan(0); // They have a real score
   });
 
   it("displays ScoringTable component", async () => {

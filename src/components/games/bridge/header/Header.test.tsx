@@ -37,6 +37,7 @@ describe("Header Component", () => {
         [[], [120]],
         [[120], []],
       ],
+      bids: [],
       weBelow: [],
       theyBelow: [],
       weRubbers: 0,
@@ -64,6 +65,7 @@ describe("Header Component", () => {
         [[120], []],
         [[], []],
       ],
+      bids: [],
       weBelow: [],
       theyBelow: [],
       weRubbers: 0,
@@ -89,6 +91,7 @@ describe("Header Component", () => {
         [[], [120]],
         [[], []],
       ],
+      bids: [],
       weBelow: [],
       theyBelow: [],
       weRubbers: 0,
@@ -114,6 +117,7 @@ describe("Header Component", () => {
         [[120], [50]], // We win game 2 (rubber complete with 2 wins)
         [[], []],
       ],
+      bids: [],
       weBelow: [100],
       theyBelow: [50],
       weRubbers: 0,
@@ -141,6 +145,7 @@ describe("Header Component", () => {
         [[50], [120]], // They win game 2 (rubber complete with 2 wins)
         [[], []],
       ],
+      bids: [],
       weBelow: [50],
       theyBelow: [100],
       weRubbers: 0,
@@ -168,6 +173,7 @@ describe("Header Component", () => {
         [[110], [70]], // We win game 2 (rubber complete)
         [[], []],
       ],
+      bids: [],
       weBelow: [],
       theyBelow: [10], // Total score tied at 230 each
       weRubbers: 0,
@@ -194,6 +200,7 @@ describe("Header Component", () => {
         [[70], [110]], // They win game 2 (rubber complete)
         [[], []],
       ],
+      bids: [],
       weBelow: [10], // Total score tied at 230 each
       theyBelow: [],
       weRubbers: 0,
@@ -220,6 +227,7 @@ describe("Header Component", () => {
         [[50], [110]], // They win game 2
         [[100], [80]], // We win game 3 (gameIdx > 2, button shows)
       ],
+      bids: [],
       weBelow: [],
       theyBelow: [],
       weRubbers: 0,
@@ -248,6 +256,7 @@ describe("Header Component", () => {
         [[120], [60]], // We win game 2 (rubber complete)
         [[], []],
       ],
+      bids: [],
       weBelow: [50],
       theyBelow: [25],
       weRubbers: 0,
@@ -280,6 +289,7 @@ describe("Header Component", () => {
         [[120], [60]], // We win game 2 (rubber complete)
         [[], []],
       ],
+      bids: [],
       weBelow: [100],
       theyBelow: [50],
       weRubbers: 2,

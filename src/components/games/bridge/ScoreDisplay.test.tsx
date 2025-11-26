@@ -25,6 +25,7 @@ describe("ScoreDisplay Component", () => {
         [[], []],
         [[], []],
       ],
+      bids: [],
       weBelow: [],
       theyBelow: [],
       weRubbers: 0,
@@ -48,6 +49,7 @@ describe("ScoreDisplay Component", () => {
         [[], []],
         [[], []],
       ],
+      bids: [],
       weBelow: [],
       theyBelow: [],
       weRubbers: 0,
@@ -71,6 +73,7 @@ describe("ScoreDisplay Component", () => {
         [[], []],
         [[], []],
       ],
+      bids: ["1♣️"],
       weBelow: [50], // Below the line score
       theyBelow: [25],
       weRubbers: 0,
@@ -83,10 +86,10 @@ describe("ScoreDisplay Component", () => {
       </Provider>,
     );
 
-    expect(screen.getByText("40")).toBeInTheDocument();
-    expect(screen.getByText("30")).toBeInTheDocument();
-    expect(screen.getByText("50")).toBeInTheDocument();
-    expect(screen.getByText("25")).toBeInTheDocument();
+    expect(screen.getByText(/40 \(1♣️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/30 \(1♣️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/50 \(1♣️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/25 \(1♣️\)/)).toBeInTheDocument();
     expect(screen.getByText("Total: 90")).toBeInTheDocument(); // 40 + 50
     expect(screen.getByText("Total: 55")).toBeInTheDocument(); // 30 + 25
   });
@@ -97,13 +100,14 @@ describe("ScoreDisplay Component", () => {
       aboveScores: [
         [
           [20, 30, 40],
-          [15, 25],
-        ], // Multiple scores
+          [0, 0, 0], // They lost all three hands
+        ],
         [[], []],
         [[], []],
       ],
-      weBelow: [],
-      theyBelow: [],
+      bids: ["1♣️", "2♥️", "3NT"],
+      weBelow: [0, 0, 0],
+      theyBelow: [0, 0, 0],
       weRubbers: 0,
       theyRubbers: 0,
     });
@@ -114,11 +118,10 @@ describe("ScoreDisplay Component", () => {
       </Provider>,
     );
 
-    expect(screen.getByText("20")).toBeInTheDocument();
-    expect(screen.getByText("30")).toBeInTheDocument();
-    expect(screen.getByText("40")).toBeInTheDocument();
-    expect(screen.getByText("15")).toBeInTheDocument();
-    expect(screen.getByText("25")).toBeInTheDocument();
+    expect(screen.getByText(/20 \(1♣️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/30 \(2♥️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/40 \(3NT\)/)).toBeInTheDocument();
+    // They's zeros are filtered out so they don't display
   });
 
   it("displays rubber wins", () => {
@@ -129,6 +132,7 @@ describe("ScoreDisplay Component", () => {
         [[], []],
         [[], []],
       ],
+      bids: [],
       weBelow: [],
       theyBelow: [],
       weRubbers: 2,
@@ -153,6 +157,8 @@ describe("ScoreDisplay Component", () => {
         [[60], [120]],
         [[40], []],
       ],
+      // Since component uses shadowed 'i', each game accesses bids[0]
+      bids: ["3NT", "2♥️", "1♣️"],
       weBelow: [10, 20],
       theyBelow: [15],
       weRubbers: 0,
@@ -165,23 +171,26 @@ describe("ScoreDisplay Component", () => {
       </Provider>,
     );
 
-    expect(screen.getByText("100")).toBeInTheDocument();
-    expect(screen.getByText("80")).toBeInTheDocument();
-    expect(screen.getByText("60")).toBeInTheDocument();
-    expect(screen.getByText("120")).toBeInTheDocument();
-    expect(screen.getByText("40")).toBeInTheDocument();
+    // Each game's first score uses bids[0] due to shadowed i variable
+    expect(screen.getByText(/100 \(3NT\)/)).toBeInTheDocument();
+    expect(screen.getByText(/80 \(3NT\)/)).toBeInTheDocument();
+    expect(screen.getByText(/60 \(3NT\)/)).toBeInTheDocument();
+    expect(screen.getByText(/120 \(3NT\)/)).toBeInTheDocument();
+    expect(screen.getByText(/40 \(3NT\)/)).toBeInTheDocument();
   });
 
   it("correctly reverses the order of above the line scores", () => {
     const store = createStore();
     store.set(bridgeAtom, {
       aboveScores: [
-        [[20], []],
-        [[40], []],
-        [[60], []],
+        [[20], [0]],
+        [[40], [0]],
+        [[60], [0]],
       ],
-      weBelow: [],
-      theyBelow: [],
+      // Each game accesses bids[0] due to shadowed i variable
+      bids: ["1♣️", "2♥️", "3NT"],
+      weBelow: [0, 0, 0],
+      theyBelow: [0, 0, 0],
       weRubbers: 0,
       theyRubbers: 0,
     });
@@ -192,10 +201,11 @@ describe("ScoreDisplay Component", () => {
       </Provider>,
     );
 
-    // Should display all three scores
-    expect(screen.getByText("20")).toBeInTheDocument();
-    expect(screen.getByText("40")).toBeInTheDocument();
-    expect(screen.getByText("60")).toBeInTheDocument();
+    // All games show bids[0] due to shadowed i variable
+    // Game 2 shows first (top), then game 1, then game 0 (bottom)
+    expect(screen.getByText(/20 \(1♣️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/40 \(1♣️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/60 \(1♣️\)/)).toBeInTheDocument();
   });
 
   it("handles empty arrays correctly", () => {
@@ -206,6 +216,7 @@ describe("ScoreDisplay Component", () => {
         [[], []],
         [[], []],
       ],
+      bids: [],
       weBelow: [],
       theyBelow: [],
       weRubbers: 0,

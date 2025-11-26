@@ -40,6 +40,7 @@ const CONTRACT_SUIT = "Contract Suit";
 const CONTRACT_TRICKS = "Contract Tricks";
 const DECLARER_TRICKS = "Declarer Team Tricks";
 
+const suitOptions = ["♣️", "♦️", "♥️", "♠️", "NT"];
 const bidOptions = [1, 2, 3, 4, 5, 6, 7];
 const trickOptions = [
   0,
@@ -95,9 +96,11 @@ const ScoreForm = ({
             name="contract-suit-name"
             onChange={onContractSuitChange}
           >
-            <MenuItem value="nt">No Trump</MenuItem>
-            <MenuItem value="major">Major ♥️♠️</MenuItem>
-            <MenuItem value="minor">Minor ♣️♦️</MenuItem>
+            {suitOptions.map((suit) => (
+              <MenuItem key={suit} value={suit}>
+                {suit}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Grid>
@@ -188,7 +191,7 @@ const ScoreForm = ({
           <Grid size={12}>
             <Typography variant="h6">Honours</Typography>
           </Grid>
-          {contractSuit === "nt" ? (
+          {contractSuit === "NT" ? (
             <Grid size={12}>
               <FormControlLabel
                 control={
