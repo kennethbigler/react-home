@@ -10,7 +10,6 @@ import {
   FormGroup,
   Typography,
   Grid,
-  Divider,
 } from "@mui/material";
 
 export type eIn = ChangeEvent<HTMLInputElement>;
@@ -25,10 +24,7 @@ interface ScoreFormProps {
   is4Honours: boolean;
   is5Honours: boolean;
   is4Aces: boolean;
-  winner: "we" | "they";
   madeBid: boolean;
-  aboveTheLine: number;
-  belowTheLine: number;
   onContractSuitChange: (e: SelectChangeEvent<string>) => void;
   onContractTricksChange: (e: SelectChangeEvent<number>) => void;
   onDeclarerTricksChange: (e: SelectChangeEvent<number>) => void;
@@ -44,8 +40,24 @@ const CONTRACT_SUIT = "Contract Suit";
 const CONTRACT_TRICKS = "Contract Tricks";
 const DECLARER_TRICKS = "Declarer Team Tricks";
 
+const suitOptions = ["♣️", "♦️", "♥️", "♠️", "NT"];
 const bidOptions = [1, 2, 3, 4, 5, 6, 7];
-const trickOptions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+const trickOptions = [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  "7 (1)",
+  "8 (2)",
+  "9 (3)",
+  "10 (4)",
+  "11 (5)",
+  "12 (6)",
+  "13 (7)",
+];
 
 const ScoreForm = ({
   contractSuit,
@@ -57,10 +69,7 @@ const ScoreForm = ({
   is4Honours,
   is5Honours,
   is4Aces,
-  winner,
   madeBid,
-  aboveTheLine,
-  belowTheLine,
   onContractSuitChange,
   onContractTricksChange,
   onDeclarerTricksChange,
@@ -71,179 +80,162 @@ const ScoreForm = ({
   on5HonoursToggle,
   on4HonoursToggle,
 }: ScoreFormProps) => (
-  <>
-    <FormGroup>
-      <Grid container spacing={1}>
-        <Grid size={12}>
-          <Typography variant="h6">Contract</Typography>
-        </Grid>
-        <Grid size={6}>
-          <FormControl fullWidth>
-            <InputLabel id="contract-suit-label">{CONTRACT_SUIT}</InputLabel>
-            <Select
-              labelId="contract-suit-label"
-              id="contract-suit-select"
-              value={contractSuit}
-              label={CONTRACT_SUIT}
-              name="contract-suit-name"
-              onChange={onContractSuitChange}
-            >
-              <MenuItem value="nt">No Trump</MenuItem>
-              <MenuItem value="major">Major ♥️♠️</MenuItem>
-              <MenuItem value="minor">Minor ♣️♦️</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid size={6}>
-          <FormControl fullWidth>
-            <InputLabel id="contract-tricks-label">
-              {CONTRACT_TRICKS}
-            </InputLabel>
-            <Select
-              labelId="contract-tricks-label"
-              id="contract-tricks-select"
-              value={contractTricks}
-              label={CONTRACT_TRICKS}
-              name="contract-tricks-name"
-              onChange={onContractTricksChange}
-            >
-              {bidOptions.map((n) => (
-                <MenuItem key={n} value={n}>
-                  {n}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid size={6}>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={isDouble}
-                onChange={onDoubleToggle}
-                name="doubled"
-              />
-            }
-            label="Doubled?"
-          />
-        </Grid>
-        <Grid size={6}>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={isRedouble}
-                onChange={onRedoubleToggle}
-                name="redoubled"
-              />
-            }
-            label="Redoubled?"
-          />
-        </Grid>
-
-        <Grid size={6}>
-          <FormControl
-            sx={{
-              flexDirection: "row",
-              alignItems: "center",
-              margin: "10px 0",
-            }}
+  <FormGroup>
+    <Grid container spacing={1}>
+      <Grid size={12}>
+        <Typography variant="h6">Contract</Typography>
+      </Grid>
+      <Grid size={6}>
+        <FormControl fullWidth>
+          <InputLabel id="contract-suit-label">{CONTRACT_SUIT}</InputLabel>
+          <Select
+            labelId="contract-suit-label"
+            id="contract-suit-select"
+            value={contractSuit}
+            label={CONTRACT_SUIT}
+            name="contract-suit-name"
+            onChange={onContractSuitChange}
           >
-            <Typography>Bid: </Typography>
+            {suitOptions.map((suit) => (
+              <MenuItem key={suit} value={suit}>
+                {suit}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid size={6}>
+        <FormControl fullWidth>
+          <InputLabel id="contract-tricks-label">{CONTRACT_TRICKS}</InputLabel>
+          <Select
+            labelId="contract-tricks-label"
+            id="contract-tricks-select"
+            value={contractTricks}
+            label={CONTRACT_TRICKS}
+            name="contract-tricks-name"
+            onChange={onContractTricksChange}
+          >
+            {bidOptions.map((n) => (
+              <MenuItem key={n} value={n}>
+                {n}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid size={6}>
+        <FormControlLabel
+          control={
             <Switch
-              checked={isWe}
-              onChange={onBidWinnerToggle}
-              name="bid-winner"
-              slotProps={{ input: { "aria-label": "Bid Winner is we" } }}
+              checked={isDouble}
+              onChange={onDoubleToggle}
+              name="doubled"
             />
-            <Typography>{isWe ? "We" : "They"}</Typography>
-          </FormControl>
-        </Grid>
-        <Grid size={6}>
-          <FormControl fullWidth>
-            <InputLabel id="declarer-tricks-label">
-              {DECLARER_TRICKS}
-            </InputLabel>
-            <Select
-              labelId="declarer-tricks-label"
-              id="declarer-tricks-select"
-              value={declarerTricks}
-              label={DECLARER_TRICKS}
-              name="declarer-tricks-name"
-              onChange={onDeclarerTricksChange}
-            >
-              {trickOptions.map((n) => (
-                <MenuItem key={n} value={n}>
-                  {n}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
+          }
+          label="Doubled?"
+        />
+      </Grid>
+      <Grid size={6}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={isRedouble}
+              onChange={onRedoubleToggle}
+              name="redoubled"
+            />
+          }
+          label="Redoubled?"
+        />
+      </Grid>
 
-        {madeBid && (
-          <>
+      <Grid size={6}>
+        <FormControl
+          sx={{
+            flexDirection: "row",
+            alignItems: "center",
+            margin: "10px 0",
+          }}
+        >
+          <Typography>Bid: </Typography>
+          <Switch
+            checked={isWe}
+            onChange={onBidWinnerToggle}
+            name="bid-winner"
+            slotProps={{ input: { "aria-label": "Bid Winner is we" } }}
+          />
+          <Typography>{isWe ? "We" : "They"}</Typography>
+        </FormControl>
+      </Grid>
+      <Grid size={6}>
+        <FormControl fullWidth>
+          <InputLabel id="declarer-tricks-label">{DECLARER_TRICKS}</InputLabel>
+          <Select
+            labelId="declarer-tricks-label"
+            id="declarer-tricks-select"
+            value={declarerTricks}
+            label={DECLARER_TRICKS}
+            name="declarer-tricks-name"
+            onChange={onDeclarerTricksChange}
+          >
+            {trickOptions.map((n, i) => (
+              <MenuItem key={n} value={i}>
+                {n}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+
+      {madeBid && (
+        <>
+          <Grid size={12}>
+            <Typography variant="h6">Honours</Typography>
+          </Grid>
+          {contractSuit === "NT" ? (
             <Grid size={12}>
-              <Typography variant="h6">Honours</Typography>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={is4Aces}
+                    onChange={on4AcesToggle}
+                    name="4-aces"
+                  />
+                }
+                label="4 Aces in 1 hand?"
+              />
             </Grid>
-            {contractSuit === "nt" ? (
-              <Grid size={12}>
+          ) : (
+            <>
+              <Grid size={6}>
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={is4Aces}
-                      onChange={on4AcesToggle}
-                      name="4-aces"
+                      checked={is4Honours}
+                      onChange={on4HonoursToggle}
+                      name="4-honours"
                     />
                   }
-                  label="4 Aces in 1 hand?"
+                  label="4 Honours in 1 hand?"
                 />
               </Grid>
-            ) : (
-              <>
-                <Grid size={6}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={is4Honours}
-                        onChange={on4HonoursToggle}
-                        name="4-honours"
-                      />
-                    }
-                    label="4 Honours in 1 hand?"
-                  />
-                </Grid>
-                <Grid size={6}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={is5Honours}
-                        onChange={on5HonoursToggle}
-                        name="5-honours"
-                      />
-                    }
-                    label="5 Honours in 1 hand?"
-                  />
-                </Grid>
-              </>
-            )}
-          </>
-        )}
-      </Grid>
-    </FormGroup>
-
-    <Divider sx={{ marginTop: 2 }} />
-
-    <div style={{ marginTop: 10 }}>
-      <Typography variant="h6">Score</Typography>
-      {madeBid ? (
-        <Typography>Declarer ({winner}) won the hand!</Typography>
-      ) : (
-        <Typography>Defender ({winner}) successfully defended!</Typography>
+              <Grid size={6}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={is5Honours}
+                      onChange={on5HonoursToggle}
+                      name="5-honours"
+                    />
+                  }
+                  label="5 Honours in 1 hand?"
+                />
+              </Grid>
+            </>
+          )}
+        </>
       )}
-      {madeBid && <Typography>Above the line: {aboveTheLine}</Typography>}
-      <Typography>Below the line: {belowTheLine}</Typography>
-    </div>
-  </>
+    </Grid>
+  </FormGroup>
 );
 
 export default ScoreForm;

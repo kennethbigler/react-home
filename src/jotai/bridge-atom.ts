@@ -9,6 +9,7 @@ export type AboveScores = [
 
 export interface BridgeState {
   aboveScores: AboveScores;
+  bids: string[];
   weBelow: number[];
   theyBelow: number[];
   weRubbers: number;
@@ -24,6 +25,7 @@ export const newBridgeGame: () => Omit<
     [[], []],
     [[], []],
   ],
+  bids: [],
   weBelow: [],
   theyBelow: [],
 });
@@ -34,7 +36,7 @@ const bridgeAtom = atomWithStorage<BridgeState>("bridgeAtom", {
   theyRubbers: 0,
 });
 
-const sum = (scores: number[]) => scores.reduce((acc, n) => acc + n, 0);
+export const sum = (scores: number[]) => scores.reduce((acc, n) => acc + n, 0);
 
 export const bridgeRead = atom((get) => {
   // access state

@@ -37,11 +37,11 @@ const useBridgeScorer = (
   // --------------------     Above the Line     -------------------- //
   let aboveTheLine: number = 0;
   if (madeBid) {
-    if (contractSuit === "minor") {
+    if (contractSuit === "♣️" || contractSuit === "♦️") {
       aboveTheLine = contractTricks * 20;
-    } else if (contractSuit === "major") {
+    } else if (contractSuit === "♥️" || contractSuit === "♠️") {
       aboveTheLine = contractTricks * 30;
-    } else {
+    } else if (contractSuit === "NT") {
       aboveTheLine = 40 + (contractTricks - 1) * 30;
     }
   }
@@ -62,7 +62,9 @@ const useBridgeScorer = (
     if (declarerTricks > contractTricks + 6) {
       const overtricks = declarerTricks - contractTricks - 6;
       if (!isDouble) {
-        belowTheLine += overtricks * (contractSuit === "minor" ? 20 : 30);
+        belowTheLine +=
+          overtricks *
+          (contractSuit === "♣️" || contractSuit === "♦️" ? 20 : 30);
       } else {
         const multiplier = 1 * (isVulnerable ? 2 : 1) * (isRedouble ? 2 : 1);
         belowTheLine += overtricks * 100 * multiplier;
@@ -70,9 +72,9 @@ const useBridgeScorer = (
     }
 
     // check for honours
-    if (contractSuit === "nt" && is4Aces) {
+    if (contractSuit === "NT" && is4Aces) {
       belowTheLine += 150;
-    } else if (contractSuit !== "nt") {
+    } else if (contractSuit !== "NT") {
       if (is5Honours) {
         belowTheLine += 150;
       } else if (is4Honours) {

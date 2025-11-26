@@ -10,7 +10,7 @@ describe("Bridge Score Helper", () => {
           7, // declarerTricks
           1, // contractTricks
           true, // isWe
-          "minor", // contractSuit
+          "♣️", // contractSuit (minor)
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -29,7 +29,7 @@ describe("Bridge Score Helper", () => {
           8, // declarerTricks (2 tricks)
           2, // contractTricks
           true, // isWe
-          "major", // contractSuit
+          "♥️", // contractSuit (major)
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -48,7 +48,7 @@ describe("Bridge Score Helper", () => {
           9, // declarerTricks (3 tricks)
           3, // contractTricks
           true, // isWe
-          "nt", // contractSuit
+          "NT", // contractSuit
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -67,7 +67,7 @@ describe("Bridge Score Helper", () => {
           12, // declarerTricks (6 tricks = small slam)
           6, // contractTricks
           true, // isWe
-          "nt", // contractSuit
+          "NT", // contractSuit
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -85,7 +85,7 @@ describe("Bridge Score Helper", () => {
           13, // declarerTricks (7 tricks = grand slam)
           7, // contractTricks
           true, // isWe
-          "major", // contractSuit
+          "♠️", // contractSuit (major)
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -103,7 +103,7 @@ describe("Bridge Score Helper", () => {
           9, // declarerTricks (2 overtricks)
           1, // contractTricks
           true, // isWe
-          "minor", // contractSuit
+          "♦️", // contractSuit (minor)
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -122,7 +122,7 @@ describe("Bridge Score Helper", () => {
           9, // declarerTricks (2 overtricks)
           1, // contractTricks
           true, // isWe
-          "major", // contractSuit
+          "♥️", // contractSuit (major)
           true, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -140,7 +140,7 @@ describe("Bridge Score Helper", () => {
           9, // declarerTricks (2 overtricks)
           1, // contractTricks
           true, // isWe
-          "major", // contractSuit
+          "♠️", // contractSuit (major)
           true, // isDouble
           true, // isRedouble
           false, // is4Aces
@@ -158,7 +158,7 @@ describe("Bridge Score Helper", () => {
           9, // declarerTricks
           3, // contractTricks
           true, // isWe
-          "nt", // contractSuit
+          "NT", // contractSuit
           false, // isDouble
           false, // isRedouble
           true, // is4Aces
@@ -176,7 +176,7 @@ describe("Bridge Score Helper", () => {
           8, // declarerTricks
           2, // contractTricks
           true, // isWe
-          "major", // contractSuit
+          "♥️", // contractSuit (major)
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -194,7 +194,7 @@ describe("Bridge Score Helper", () => {
           8, // declarerTricks
           2, // contractTricks
           true, // isWe
-          "major", // contractSuit
+          "♠️", // contractSuit (major)
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -212,7 +212,7 @@ describe("Bridge Score Helper", () => {
           7, // declarerTricks
           1, // contractTricks
           true, // isWe
-          "minor", // contractSuit
+          "♣️", // contractSuit (minor)
           true, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -230,7 +230,7 @@ describe("Bridge Score Helper", () => {
           7, // declarerTricks
           1, // contractTricks
           true, // isWe
-          "minor", // contractSuit
+          "♦️", // contractSuit (minor)
           true, // isDouble
           true, // isRedouble
           false, // is4Aces
@@ -248,7 +248,7 @@ describe("Bridge Score Helper", () => {
           10, // declarerTricks (3 overtricks)
           1, // contractTricks
           true, // isWe
-          "major", // contractSuit
+          "♥️", // contractSuit (major)
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -270,7 +270,7 @@ describe("Bridge Score Helper", () => {
           6, // declarerTricks (1 undertrick)
           1, // contractTricks
           true, // isWe
-          "minor", // contractSuit
+          "♣️", // contractSuit (minor)
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -289,7 +289,7 @@ describe("Bridge Score Helper", () => {
           5, // declarerTricks (2 undertricks)
           1, // contractTricks
           true, // isWe
-          "minor", // contractSuit
+          "♦️", // contractSuit (minor)
           true, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -307,7 +307,7 @@ describe("Bridge Score Helper", () => {
           4, // declarerTricks (3 undertricks)
           1, // contractTricks
           true, // isWe
-          "minor", // contractSuit
+          "♣️", // contractSuit (minor)
           true, // isDouble
           true, // isRedouble
           false, // is4Aces
@@ -325,7 +325,7 @@ describe("Bridge Score Helper", () => {
           2, // declarerTricks (5 undertricks)
           1, // contractTricks
           true, // isWe
-          "major", // contractSuit
+          "♠️", // contractSuit (major)
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -346,7 +346,7 @@ describe("Bridge Score Helper", () => {
           7, // declarerTricks
           1, // contractTricks
           false, // isWe (they won bid)
-          "minor", // contractSuit
+          "♣️", // contractSuit (minor)
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -363,7 +363,7 @@ describe("Bridge Score Helper", () => {
           6, // declarerTricks (failed)
           1, // contractTricks
           true, // isWe (we won bid but failed)
-          "minor", // contractSuit
+          "♦️", // contractSuit (minor)
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -380,7 +380,7 @@ describe("Bridge Score Helper", () => {
           6, // declarerTricks (failed)
           1, // contractTricks
           false, // isWe (they won bid but failed)
-          "minor", // contractSuit
+          "♣️", // contractSuit (minor)
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -400,7 +400,7 @@ describe("Bridge Score Helper", () => {
           7, // declarerTricks (exactly 7)
           1, // contractTricks (1 + 6 = 7)
           true, // isWe
-          "minor", // contractSuit
+          "♣️", // contractSuit (minor)
           false, // isDouble
           false, // isRedouble
           false, // is4Aces
@@ -418,7 +418,7 @@ describe("Bridge Score Helper", () => {
           13, // declarerTricks (all 13 tricks)
           1, // contractTricks
           true, // isWe
-          "nt", // contractSuit
+          "NT", // contractSuit
           false, // isDouble
           false, // isRedouble
           false, // is4Aces

@@ -4,7 +4,7 @@ import { vi } from "vitest";
 
 describe("ScoreForm Component", () => {
   const defaultProps = {
-    contractSuit: "nt",
+    contractSuit: "NT",
     contractTricks: 1,
     declarerTricks: 7,
     isWe: true,
@@ -33,7 +33,6 @@ describe("ScoreForm Component", () => {
 
     expect(screen.getByText("Contract")).toBeInTheDocument();
     expect(screen.getByText("Honours")).toBeInTheDocument();
-    expect(screen.getByText("Score")).toBeInTheDocument();
   });
 
   it("displays contract suit dropdown", () => {
@@ -54,46 +53,15 @@ describe("ScoreForm Component", () => {
     expect(screen.getByLabelText("Declarer Team Tricks")).toBeInTheDocument();
   });
 
-  it("displays winner message when bid is made", () => {
-    render(<ScoreForm {...defaultProps} madeBid={true} winner="we" />);
-
-    expect(screen.getByText("Declarer (we) won the hand!")).toBeInTheDocument();
-  });
-
-  it("displays defender message when bid fails", () => {
-    render(<ScoreForm {...defaultProps} madeBid={false} winner="they" />);
-
-    expect(
-      screen.getByText("Defender (they) successfully defended!"),
-    ).toBeInTheDocument();
-  });
-
-  it("shows above the line score only when bid is made", () => {
-    const { rerender } = render(
-      <ScoreForm {...defaultProps} madeBid={true} aboveTheLine={40} />,
-    );
-
-    expect(screen.getByText("Above the line: 40")).toBeInTheDocument();
-
-    rerender(<ScoreForm {...defaultProps} madeBid={false} aboveTheLine={0} />);
-    expect(screen.queryByText(/Above the line/)).not.toBeInTheDocument();
-  });
-
-  it("always shows below the line score", () => {
-    render(<ScoreForm {...defaultProps} belowTheLine={150} />);
-
-    expect(screen.getByText("Below the line: 150")).toBeInTheDocument();
-  });
-
   it("shows 4 aces option for no trump", () => {
-    render(<ScoreForm {...defaultProps} contractSuit="nt" />);
+    render(<ScoreForm {...defaultProps} contractSuit="NT" />);
 
     expect(screen.getByText("4 Aces in 1 hand?")).toBeInTheDocument();
     expect(screen.queryByText("4 Honours in 1 hand?")).not.toBeInTheDocument();
   });
 
   it("shows 4/5 honours options for major suits", () => {
-    render(<ScoreForm {...defaultProps} contractSuit="major" />);
+    render(<ScoreForm {...defaultProps} contractSuit="♥️" />);
 
     expect(screen.getByText("4 Honours in 1 hand?")).toBeInTheDocument();
     expect(screen.getByText("5 Honours in 1 hand?")).toBeInTheDocument();
@@ -101,7 +69,7 @@ describe("ScoreForm Component", () => {
   });
 
   it("shows 4/5 honours options for minor suits", () => {
-    render(<ScoreForm {...defaultProps} contractSuit="minor" />);
+    render(<ScoreForm {...defaultProps} contractSuit="♣️" />);
 
     expect(screen.getByText("4 Honours in 1 hand?")).toBeInTheDocument();
     expect(screen.getByText("5 Honours in 1 hand?")).toBeInTheDocument();
@@ -123,22 +91,6 @@ describe("ScoreForm Component", () => {
 
     expect(screen.getByText("Doubled?")).toBeInTheDocument();
     expect(screen.getByText("Redoubled?")).toBeInTheDocument();
-  });
-
-  it("displays correct winner message for 'they' declarer win", () => {
-    render(<ScoreForm {...defaultProps} madeBid={true} winner="they" />);
-
-    expect(
-      screen.getByText("Declarer (they) won the hand!"),
-    ).toBeInTheDocument();
-  });
-
-  it("displays correct defender message for 'we' defense win", () => {
-    render(<ScoreForm {...defaultProps} madeBid={false} winner="we" />);
-
-    expect(
-      screen.getByText("Defender (we) successfully defended!"),
-    ).toBeInTheDocument();
   });
 
   it("displays bid winner selector", () => {
@@ -178,34 +130,30 @@ describe("ScoreForm Component", () => {
   });
 
   it("shows 4 aces switch for no trump", () => {
-    render(<ScoreForm {...defaultProps} contractSuit="nt" is4Aces={true} />);
+    render(<ScoreForm {...defaultProps} contractSuit="NT" is4Aces={true} />);
 
     expect(screen.getByRole("switch", { name: /4 aces/i })).toBeChecked();
   });
 
   it("shows 4 honours switch for trump suits", () => {
-    render(
-      <ScoreForm {...defaultProps} contractSuit="major" is4Honours={true} />,
-    );
+    render(<ScoreForm {...defaultProps} contractSuit="♥️" is4Honours={true} />);
 
     expect(screen.getByRole("switch", { name: /4 honours/i })).toBeChecked();
   });
 
   it("shows 5 honours switch for trump suits", () => {
-    render(
-      <ScoreForm {...defaultProps} contractSuit="major" is5Honours={true} />,
-    );
+    render(<ScoreForm {...defaultProps} contractSuit="♠️" is5Honours={true} />);
 
     expect(screen.getByRole("switch", { name: /5 honours/i })).toBeChecked();
   });
 
   it("renders contract suit select with current value", () => {
-    render(<ScoreForm {...defaultProps} contractSuit="major" />);
+    render(<ScoreForm {...defaultProps} contractSuit="♥️" />);
 
     const suitSelect = screen.getByRole("combobox", {
       name: /contract suit/i,
     });
-    expect(suitSelect).toHaveTextContent("Major");
+    expect(suitSelect).toHaveTextContent("♥️");
   });
 
   it("renders bid winner label and current team", () => {
