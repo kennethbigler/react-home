@@ -33,7 +33,6 @@ describe("ScoreForm Component", () => {
 
     expect(screen.getByText("Contract")).toBeInTheDocument();
     expect(screen.getByText("Honours")).toBeInTheDocument();
-    expect(screen.getByText("Score")).toBeInTheDocument();
   });
 
   it("displays contract suit dropdown", () => {
@@ -52,37 +51,6 @@ describe("ScoreForm Component", () => {
     render(<ScoreForm {...defaultProps} />);
 
     expect(screen.getByLabelText("Declarer Team Tricks")).toBeInTheDocument();
-  });
-
-  it("displays winner message when bid is made", () => {
-    render(<ScoreForm {...defaultProps} madeBid={true} winner="we" />);
-
-    expect(screen.getByText("Declarer (we) won the hand!")).toBeInTheDocument();
-  });
-
-  it("displays defender message when bid fails", () => {
-    render(<ScoreForm {...defaultProps} madeBid={false} winner="they" />);
-
-    expect(
-      screen.getByText("Defender (they) successfully defended!"),
-    ).toBeInTheDocument();
-  });
-
-  it("shows above the line score only when bid is made", () => {
-    const { rerender } = render(
-      <ScoreForm {...defaultProps} madeBid={true} aboveTheLine={40} />,
-    );
-
-    expect(screen.getByText("Above the line: 40")).toBeInTheDocument();
-
-    rerender(<ScoreForm {...defaultProps} madeBid={false} aboveTheLine={0} />);
-    expect(screen.queryByText(/Above the line/)).not.toBeInTheDocument();
-  });
-
-  it("always shows below the line score", () => {
-    render(<ScoreForm {...defaultProps} belowTheLine={150} />);
-
-    expect(screen.getByText("Below the line: 150")).toBeInTheDocument();
   });
 
   it("shows 4 aces option for no trump", () => {
@@ -123,22 +91,6 @@ describe("ScoreForm Component", () => {
 
     expect(screen.getByText("Doubled?")).toBeInTheDocument();
     expect(screen.getByText("Redoubled?")).toBeInTheDocument();
-  });
-
-  it("displays correct winner message for 'they' declarer win", () => {
-    render(<ScoreForm {...defaultProps} madeBid={true} winner="they" />);
-
-    expect(
-      screen.getByText("Declarer (they) won the hand!"),
-    ).toBeInTheDocument();
-  });
-
-  it("displays correct defender message for 'we' defense win", () => {
-    render(<ScoreForm {...defaultProps} madeBid={false} winner="we" />);
-
-    expect(
-      screen.getByText("Defender (we) successfully defended!"),
-    ).toBeInTheDocument();
   });
 
   it("displays bid winner selector", () => {

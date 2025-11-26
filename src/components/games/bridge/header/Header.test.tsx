@@ -52,9 +52,8 @@ describe("Header Component", () => {
     expect(
       screen.getByRole("button", { name: /new game/i }),
     ).toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: /score/i }),
-    ).not.toBeInTheDocument();
+    // Score dialog is still available after 3 games
+    expect(screen.getByRole("button", { name: /score/i })).toBeInTheDocument();
   });
 
   it("shows New Game button when we have 2 wins", () => {
