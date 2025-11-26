@@ -38,18 +38,24 @@ const ScoreDisplay = () => {
                 (we.length === 0 && they.length === 0 && i === 0)) && (
                 <TableRow key={`game-${i}`}>
                   <TableCell align="center" sx={{ borderRight: border }}>
-                    {we.map((score, i) => (
-                      <Typography key={`we-above-${i}`} component="div">
-                        {score}
-                      </Typography>
-                    ))}
+                    {we.map(
+                      (score, i) =>
+                        score !== 0 && (
+                          <Typography key={`we-above-${i}`} component="div">
+                            {score}
+                          </Typography>
+                        ),
+                    )}
                   </TableCell>
                   <TableCell align="center">
-                    {they.map((score, i) => (
-                      <Typography key={`they-above-${i}`} component="div">
-                        {score}
-                      </Typography>
-                    ))}
+                    {they.map(
+                      (score, i) =>
+                        score !== 0 && (
+                          <Typography key={`they-above-${i}`} component="div">
+                            {score}
+                          </Typography>
+                        ),
+                    )}
                   </TableCell>
                 </TableRow>
               ),
@@ -57,18 +63,24 @@ const ScoreDisplay = () => {
           .reverse()}
         <TableRow sx={{ borderTop: border }}>
           <TableCell align="center" sx={{ borderRight: border }}>
-            {weBelow.map((score, i) => (
-              <Typography key={`we-below-${i}`} component="div">
-                {score}
-              </Typography>
-            ))}
+            {weBelow.map(
+              (score, i) =>
+                score !== 0 && (
+                  <Typography key={`we-below-${i}`} component="div">
+                    {score}
+                  </Typography>
+                ),
+            )}
           </TableCell>
           <TableCell align="center">
-            {theyBelow.map((score, i) => (
-              <Typography key={`they-below-${i}`} component="div">
-                {score}
-              </Typography>
-            ))}
+            {theyBelow.map(
+              (score, i) =>
+                score !== 0 && (
+                  <Typography key={`they-below-${i}`} component="div">
+                    {score}
+                  </Typography>
+                ),
+            )}
           </TableCell>
         </TableRow>
         <TableRow sx={{ borderBottom: border }}>

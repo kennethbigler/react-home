@@ -3,12 +3,13 @@ import { useAtom, useAtomValue } from "jotai";
 import ScoringTable from "./ScoringTable";
 import ScoreForm, { eIn } from "./ScoreForm";
 import InfoPopup from "../../../../common/info-popover/InfoPopup";
-import { SelectChangeEvent } from "@mui/material";
+import { Divider, SelectChangeEvent } from "@mui/material";
 import useBridgeScorer from "./score-helper";
 import bridgeAtom, {
   AboveScores,
   bridgeRead,
 } from "../../../../../jotai/bridge-atom";
+import ScoreSummary from "./ScoreSummary";
 
 const ScoreDialog = memo(() => {
   const [{ aboveScores, weBelow, theyBelow, ...other }, setBridgeState] =
@@ -71,19 +72,11 @@ const ScoreDialog = memo(() => {
     const newTheyBelow: number[] = [...theyBelow];
 
     if (winner === "we") {
-      if (aboveTheLine !== 0) {
-        newWe.push(aboveTheLine);
-      }
-      if (belowTheLine !== 0) {
-        newWeBelow.push(belowTheLine);
-      }
+      newWe.push(aboveTheLine);
+      newWeBelow.push(belowTheLine);
     } else {
-      if (aboveTheLine !== 0) {
-        newThey.push(aboveTheLine);
-      }
-      if (belowTheLine !== 0) {
-        newTheyBelow.push(belowTheLine);
-      }
+      newThey.push(aboveTheLine);
+      newTheyBelow.push(belowTheLine);
     }
 
     const newAboveScores: AboveScores = [...aboveScores];
@@ -119,10 +112,7 @@ const ScoreDialog = memo(() => {
         is4Honours={is4Honours}
         is5Honours={is5Honours}
         is4Aces={is4Aces}
-        winner={winner}
         madeBid={madeBid}
-        aboveTheLine={aboveTheLine}
-        belowTheLine={belowTheLine}
         onContractSuitChange={handleContractSuitChange}
         onContractTricksChange={handleContractTricksChange}
         onDeclarerTricksChange={handleDeclarerTricksChange}
@@ -132,6 +122,13 @@ const ScoreDialog = memo(() => {
         on4AcesToggle={handle4AcesToggle}
         on5HonoursToggle={handle5HonoursToggle}
         on4HonoursToggle={handle4HonoursToggle}
+      />
+      <Divider sx={{ marginTop: 2 }} />
+      <ScoreSummary
+        winner={winner}
+        madeBid={madeBid}
+        aboveTheLine={aboveTheLine}
+        belowTheLine={belowTheLine}
       />
       <ScoringTable />
     </InfoPopup>

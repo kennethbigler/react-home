@@ -16,12 +16,21 @@ const Header = memo(() => {
   const handleNewGame = () => {
     let newWeRubbers = weRubbers;
     let newTheyRubbers = theyRubbers;
-    if (weSum > theySum) {
+    const weWon = weWins >= theyWins;
+    let weTotal = weSum;
+    let theyTotal = theySum;
+    if (weWon) {
+      weTotal += theyWins === 0 ? 700 : 500;
+    } else {
+      theyTotal += weWins === 0 ? 700 : 500;
+    }
+
+    if (weTotal > theyTotal) {
       newWeRubbers += 1;
-    } else if (theySum > weSum) {
+    } else if (theyTotal > weTotal) {
       newTheyRubbers += 1;
     } else {
-      if (weWins >= theyWins) {
+      if (weWon) {
         newWeRubbers += 1;
       } else {
         newTheyRubbers += 1;
@@ -40,13 +49,12 @@ const Header = memo(() => {
         🌉
       </Typography>
       <BidDialog />
-      {gameIdx > 2 || weWins >= 2 || theyWins >= 2 ? (
-        <Button variant="contained" onClick={handleNewGame}>
+      {(gameIdx > 2 || weWins >= 2 || theyWins >= 2) && (
+        <Button variant="contained" color="warning" onClick={handleNewGame}>
           New Game
         </Button>
-      ) : (
-        <ScoreDialog />
       )}
+      <ScoreDialog />
     </div>
   );
 });
