@@ -10,6 +10,10 @@
   "description": "This is a site about Kenneth Bigler, Software Engineer at Intuit, including his work, interests, and resume",
   "author": "Ken Bigler <kennethbigler@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=24.11.0",
+    "npm": ">=11.6.1"
+  },
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
@@ -58,7 +62,7 @@
     "eslint-plugin-react-hooks": "7.0.1",
     "eslint-plugin-react-refresh": "0.4.24",
     "gts": "6.0.2",
-    "jsdom": "26.1.0",
+    "jsdom": "27.2.0",
     "prettier": "3.7.2",
     "source-map-explorer": "2.5.3",
     "typescript": "5.9.3",

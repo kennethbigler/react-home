@@ -16,7 +16,7 @@ This website was made to learn, and demonstrate information about Ken Bigler. Mo
 
 ## Local Development
 
-For development you need to be on [Node.js 18+](https://nodejs.org/docs/latest-v18.x/api/index.html) (a requirement of [vite@5](https://vitejs.dev/)).
+For development you need to be on [Node.js 24+](https://nodejs.org/docs/latest-v24.x/api/index.html).
 
 To run this code locally:
 
