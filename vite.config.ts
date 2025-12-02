@@ -25,7 +25,7 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: ["src/setupTests.ts"],
-    testTimeout: 30000,
+    testTimeout: 45000, // Increased to 45s for CI with Highcharts-heavy components
     coverage: {
       provider: "v8",
       reporter: ["text", "html", "json"],
