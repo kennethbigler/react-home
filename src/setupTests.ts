@@ -27,7 +27,7 @@ beforeEach(() => {
     width = 0;
     height = 0;
 
-    constructor(_width?: number, _height?: number) {
+    constructor() {
       // Trigger onload asynchronously to prevent waiting
       queueMicrotask(() => {
         if (this.onload) {
