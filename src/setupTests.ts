@@ -16,25 +16,41 @@ vi.stubGlobal("CSS", {
 });
 
 // Mock image loading to prevent timeouts in CI
-// Images in jsdom don't trigger onload events automatically, which can cause
-// tests with many images to hang or timeout
+// Images in jsdom don't trigger onload events automatically
 beforeEach(() => {
-  // Store the original Image constructor
-  const OriginalImage = window.Image;
+  // Override Image constructor to simulate instant loading
+  const MockImage = class {
+    onload: ((this: GlobalEventHandlers, ev: Event) => unknown) | null = null;
+    onerror: ((this: GlobalEventHandlers, ev: Event) => unknown) | null = null;
+    src = "";
+    alt = "";
+    width = 0;
+    height = 0;
 
-  // Mock the Image constructor to immediately trigger onload
-  class MockImage extends OriginalImage {
-    constructor(width?: number, height?: number) {
-      super(width, height);
-      // Simulate successful image load asynchronously
-      // This prevents tests from waiting for real image loading
-      setTimeout(() => {
+    constructor(_width?: number, _height?: number) {
+      // Trigger onload asynchronously to prevent waiting
+      queueMicrotask(() => {
         if (this.onload) {
-          this.onload(new Event("load"));
+          // Call without 'this' binding to avoid type issues
+          const event = new Event("load");
+          (this.onload as (ev: Event) => unknown)(event);
         }
-      }, 0);
+      });
     }
-  }
 
-  window.Image = MockImage as typeof Image;
+    get complete() {
+      return true;
+    }
+
+    get naturalWidth() {
+      return this.width || 100;
+    }
+
+    get naturalHeight() {
+      return this.height || 100;
+    }
+  };
+
+  // @ts-expect-error - Mocking Image for testing
+  window.Image = MockImage;
 });
