@@ -37,7 +37,7 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-router-dom": "7.9.6",
-    "vite": "7.2.4"
+    "vite": "7.2.6"
   },
   "devDependencies": {
     "@eslint/compat": "2.0.0",
@@ -48,7 +48,7 @@
     "@types/react-dom": "19.2.3",
     "@typescript-eslint/eslint-plugin": "8.48.0",
     "@typescript-eslint/parser": "8.48.0",
-    "@vitest/coverage-v8": "4.0.13",
+    "@vitest/coverage-v8": "4.0.15",
     "eslint": "9.39.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-import": "2.32.0",
@@ -62,7 +62,7 @@
     "prettier": "3.7.2",
     "source-map-explorer": "2.5.3",
     "typescript": "5.9.3",
-    "vitest": "4.0.13"
+    "vitest": "4.0.15"
   },
   "keywords": [
     "Ken",
