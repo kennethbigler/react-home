@@ -4,6 +4,14 @@
   "labels": ["dependencies"],
   "reviewers": ["kennethbigler"],
   "schedule": "on Friday",
+  "constraints": {
+    "npm": "11.x",
+    "node": "24.x"
+  },
+  "lockfileMaintenance": {
+    "enabled": true,
+    "schedule": "on Friday"
+  },
   "packageRules": [
     {
       "matchPackagePatterns": ["eslint", "prettier", "gts"],
