@@ -1,21 +1,36 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Cars from "..";
 
 describe("resume | cars | Cars", () => {
-  it("renders as expected", () => {
+  it("renders as expected", async () => {
     render(<Cars />);
 
-    expect(screen.getAllByText("Ken's Cars")).toHaveLength(3);
+    await waitFor(() => {
+      expect(screen.getAllByText("Ken's Cars")).toHaveLength(3);
+    });
   });
 
-  it("selects and deselects buttons", () => {
+  it("selects and deselects buttons", async () => {
     const { container } = render(<Cars />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Hide Ken's Cars")).toBeInTheDocument();
+    });
 
     expect(container.querySelector(".MuiButton-contained")).toBeNull();
     fireEvent.click(screen.getByText("Hide Ken's Cars"));
-    expect(container.querySelector(".MuiButton-contained")).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(
+        container.querySelector(".MuiButton-contained"),
+      ).toBeInTheDocument();
+    });
+
     fireEvent.click(screen.getByText("Hide Ken's Cars"));
-    expect(container.querySelector(".MuiButton-contained")).toBeNull();
+
+    await waitFor(() => {
+      expect(container.querySelector(".MuiButton-contained")).toBeNull();
+    });
   });
 
   it("hides family cars", () => {
@@ -36,23 +51,41 @@ describe("resume | cars | Cars", () => {
     expect(screen.queryByTitle("Ford Bronco Badlands (2021)")).toBeNull();
   });
 
-  it("hides toggles car visibility", () => {
+  it("hides toggles car visibility", async () => {
     render(<Cars />);
 
-    expect(screen.getByTitle("Toyota Prius (2007)")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTitle("Toyota Prius (2007)")).toBeInTheDocument();
+    });
+
     expect(
       screen.getByTitle("Ford Bronco Badlands (2021)"),
     ).toBeInTheDocument();
+
     fireEvent.click(screen.getByText("Hide Family Cars"));
-    expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
+
+    await waitFor(() => {
+      expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
+    });
+
     expect(
       screen.getByTitle("Ford Bronco Badlands (2021)"),
     ).toBeInTheDocument();
+
     fireEvent.click(screen.getByText("Hide Ken's Cars"));
-    expect(screen.getByTitle("Toyota Prius (2007)")).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(screen.getByTitle("Toyota Prius (2007)")).toBeInTheDocument();
+    });
+
     expect(screen.queryByTitle("Ford Bronco Badlands (2021)")).toBeNull();
+
     fireEvent.click(screen.getByText("Hide Family Cars"));
-    expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
+
+    await waitFor(() => {
+      expect(screen.queryByTitle("Toyota Prius (2007)")).toBeNull();
+    });
+
     expect(
       screen.getByTitle("Ford Bronco Badlands (2021)"),
     ).toBeInTheDocument();

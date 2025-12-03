@@ -1,11 +1,15 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import F1 from ".";
 
 describe("resume | f1 | F1", () => {
-  it("renders as expected", () => {
+  it("renders as expected", async () => {
     render(<F1 />);
 
-    expect(screen.getByText("F1")).toBeInTheDocument();
+    // Wait for key elements to be present
+    await waitFor(() => {
+      expect(screen.getByText("F1")).toBeInTheDocument();
+    });
+
     expect(
       screen.getByText("Constructor Budgets (Estimated)"),
     ).toBeInTheDocument();
