@@ -4,10 +4,6 @@
   "labels": ["dependencies"],
   "reviewers": ["kennethbigler"],
   "schedule": "on Friday",
-  "lockfileMaintenance": {
-    "enabled": true,
-    "schedule": "on Friday"
-  },
   "packageRules": [
     {
       "matchPackagePatterns": ["eslint", "prettier", "gts"],
