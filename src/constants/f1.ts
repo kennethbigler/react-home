@@ -53,55 +53,55 @@ export const constructors: Constructor[] = [
   {
     name: "McLaren",
     color: MCLAREN_HEX,
-    points: [62, 145, 202, 275, 159, 302, 666, 756, 750],
+    points: [62, 145, 202, 275, 159, 302, 666, 800, 800],
     standings: [6, 4, 3, 4, 5, 4, 1, 1, 1],
   },
   {
     name: "Mercedes",
     color: MERCEDES_HEX,
-    points: [655, 739, 573, 613.5, 515, 409, 468, 398, 400],
+    points: [655, 739, 573, 613.5, 515, 409, 468, 459, 460],
     standings: [1, 1, 1, 1, 3, 2, 4, 2, 2],
   },
   {
     name: "Red Bull Racing",
     color: RED_BULL_HEX,
-    points: [419, 417, 319, 585.5, 759, 860, 589, 366, 380],
+    points: [419, 417, 319, 585.5, 759, 860, 589, 426, 430],
     standings: [3, 3, 2, 2, 1, 1, 3, 3, 3],
   },
   {
     name: "Ferrari",
     color: FERRARI_HEX,
-    points: [571, 504, 131, 323.5, 554, 406, 652, 362, 360],
+    points: [571, 504, 131, 323.5, 554, 406, 652, 382, 380],
     standings: [2, 2, 6, 3, 2, 3, 2, 4, 4],
   },
   {
     name: "Williams",
     color: WILLIAMS_HEX,
-    points: [7, 1, 0, 23, 8, 28, 17, 111, 120],
+    points: [7, 1, 0, 23, 8, 28, 17, 137, 140],
     standings: [10, 10, 10, 8, 10, 7, 9, 5, 5],
   },
   {
     name: "Racing Bulls",
     color: RB_HEX,
-    points: [33, 85, 107, 142, 35, 25, 46, 82, 100],
+    points: [33, 85, 107, 142, 35, 25, 46, 92, 100],
     standings: [9, 6, 7, 6, 9, 8, 8, 6, 6],
   },
   {
     name: "Aston Martin",
     color: ASTON_HEX,
-    points: [52, 73, 195, 77, 55, 280, 94, 72, 80],
+    points: [52, 73, 195, 77, 55, 280, 94, 80, 80],
     standings: [7, 7, 4, 7, 7, 5, 5, 7, 7],
   },
   {
     name: "Haas",
     color: HAAS_HEX,
-    points: [93, 28, 3, 0, 37, 12, 58, 70, 60],
+    points: [93, 28, 3, 0, 37, 12, 58, 73, 60],
     standings: [5, 9, 9, 10, 8, 10, 7, 8, 8],
   },
   {
     name: "Audi",
     color: AUDI_HEX,
-    points: [48, 57, 8, 13, 55, 16, 4, 62, 40],
+    points: [48, 57, 8, 13, 55, 16, 4, 68, 40],
     standings: [8, 8, 8, 9, 6, 9, 10, 9, 9],
   },
   {
@@ -120,7 +120,7 @@ export const constructors: Constructor[] = [
   {
     name: "Kick Sauber",
     color: K_SAUBER_HEX,
-    points: [48, 57, 8, 13, 55, 16, 4, 60],
+    points: [48, 57, 8, 13, 55, 16, 4, 68],
     standings: [8, 8, 8, 9, 6, 9, 10, 9, null],
   },
   // ----------     2nd Replacement     ---------- //

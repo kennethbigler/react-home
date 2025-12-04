@@ -16,6 +16,7 @@ import belgiumSrc from "../../../images/tracks/Belgium_Circuit.avif";
 import hungarySrc from "../../../images/tracks/Hungary_Circuit.avif";
 import netherlandsSrc from "../../../images/tracks/Netherlands_Circuit.avif";
 import italySrc from "../../../images/tracks/Italy_Circuit.avif";
+import madridSrc from "../../../images/tracks/Madrid_Circuit.avif";
 import bakuSrc from "../../../images/tracks/Baku_Circuit.avif";
 import singaporeSrc from "../../../images/tracks/Singapore_Circuit.avif";
 import usaSrc from "../../../images/tracks/USA_Circuit.avif";
@@ -42,14 +43,9 @@ const Tracks = memo(() => {
     setExpanded(circuitName === expanded ? "" : circuitName);
   };
 
-  // TODO: Update track fastLapTime from Azerbaijan onward for 2025
-  // TODO: Update track title from 2025 to 2026
-  // TODO: remove Imola for 2026
-  // TODO: Add Madrid for 2026
-
   return (
     <>
-      <ExpandableCard title="2025 Tracks" backgroundColor={FERRARI_HEX}>
+      <ExpandableCard title="2026 Tracks" backgroundColor={FERRARI_HEX}>
         <Grid container spacing={3} width="100%">
           <Track
             expanded={expanded}
@@ -58,8 +54,6 @@ const Tracks = memo(() => {
             circuitLen={5.278}
             firstGP={1996}
             numLaps={58}
-            fastLapTime="1:19.813"
-            fastLapDriver="Charles Leclerc (2024)"
             raceLen={306.124}
             onClick={toggleExpanded}
           />
@@ -70,8 +64,6 @@ const Tracks = memo(() => {
             circuitLen={5.451}
             firstGP={2004}
             numLaps={56}
-            fastLapTime="1:34.742"
-            fastLapDriver="Pierre Gasly (2019)"
             raceLen={305.066}
             onClick={toggleExpanded}
           />
@@ -82,8 +74,6 @@ const Tracks = memo(() => {
             circuitLen={5.807}
             firstGP={1987}
             numLaps={53}
-            fastLapTime="1:30.965"
-            fastLapDriver="Kimi Antonelli (2025)"
             raceLen={307.471}
             onClick={toggleExpanded}
           />
@@ -94,8 +84,6 @@ const Tracks = memo(() => {
             circuitLen={5.412}
             firstGP={2004}
             numLaps={57}
-            fastLapTime="1:32.014"
-            fastLapDriver="Max Verstappen (2020)"
             raceLen={308.238}
             onClick={toggleExpanded}
           />
@@ -106,8 +94,6 @@ const Tracks = memo(() => {
             circuitLen={6.174}
             firstGP={2021}
             numLaps={50}
-            fastLapTime="1:30.734"
-            fastLapDriver="Lewis Hamilton (2021)"
             raceLen={308.45}
             onClick={toggleExpanded}
           />
@@ -118,22 +104,17 @@ const Tracks = memo(() => {
             circuitLen={5.412}
             firstGP={2021}
             numLaps={57}
-            fastLapTime="1:29.708"
-            fastLapDriver="Max Verstappen (2023)"
             raceLen={308.326}
             onClick={toggleExpanded}
           />
           <Track
             expanded={expanded}
-            circuitName="Imola, Emilia-Romagna, Italy - 2025"
-            circuitSubName="Autodromo Internazionale Enzo e Dino Ferrari"
-            imgSrc={emiliaSrc}
-            circuitLen={4.909}
-            firstGP={1980}
-            numLaps={63}
-            fastLapTime="1:15.484"
-            fastLapDriver="Lewis Hamilton (2020)"
-            raceLen={309.049}
+            circuitName="Circuit Gilles-Villeneuve, Montreal, Canada"
+            imgSrc={canadaSrc}
+            circuitLen={4.361}
+            firstGP={1978}
+            numLaps={70}
+            raceLen={305.27}
             onClick={toggleExpanded}
           />
           <Track
@@ -143,8 +124,6 @@ const Tracks = memo(() => {
             circuitLen={3.337}
             firstGP={1950}
             numLaps={78}
-            fastLapTime="1:12.909"
-            fastLapDriver="Lewis Hamilton (2021)"
             raceLen={260.286}
             onClick={toggleExpanded}
           />
@@ -155,20 +134,6 @@ const Tracks = memo(() => {
             circuitLen={4.361}
             firstGP={1978}
             numLaps={70}
-            fastLapTime="1:13.078"
-            fastLapDriver="Valtteri Bottas (2019)"
-            raceLen={305.27}
-            onClick={toggleExpanded}
-          />
-          <Track
-            expanded={expanded}
-            circuitName="Circuit Gilles-Villeneuve, Montreal, Canada"
-            imgSrc={canadaSrc}
-            circuitLen={4.361}
-            firstGP={1978}
-            numLaps={70}
-            fastLapTime="1:13.078"
-            fastLapDriver="Valtteri Bottas (2019)"
             raceLen={305.27}
             onClick={toggleExpanded}
           />
@@ -179,8 +144,6 @@ const Tracks = memo(() => {
             circuitLen={4.326}
             firstGP={1970}
             numLaps={71}
-            fastLapTime="1:07.924"
-            fastLapDriver="Oscar Piastri (2025)"
             raceLen={307.018}
             onClick={toggleExpanded}
           />
@@ -191,8 +154,6 @@ const Tracks = memo(() => {
             circuitLen={5.891}
             firstGP={1950}
             numLaps={52}
-            fastLapTime="1:27.097"
-            fastLapDriver="Max Verstappen (2020)"
             raceLen={306.198}
             onClick={toggleExpanded}
           />
@@ -203,8 +164,6 @@ const Tracks = memo(() => {
             circuitLen={7.004}
             firstGP={1950}
             numLaps={44}
-            fastLapTime="1:44.701"
-            fastLapDriver="Sergio Perez (2024)"
             raceLen={308.052}
             onClick={toggleExpanded}
           />
@@ -215,8 +174,6 @@ const Tracks = memo(() => {
             circuitLen={4.381}
             firstGP={1986}
             numLaps={70}
-            fastLapTime="1:16.627"
-            fastLapDriver="Lewis Hamilton (2020)"
             raceLen={306.63}
             onClick={toggleExpanded}
           />
@@ -227,8 +184,6 @@ const Tracks = memo(() => {
             circuitLen={4.259}
             firstGP={1952}
             numLaps={72}
-            fastLapTime="1:11.097"
-            fastLapDriver="Lewis Hamilton (2021)"
             raceLen={306.587}
             onClick={toggleExpanded}
           />
@@ -239,9 +194,17 @@ const Tracks = memo(() => {
             circuitLen={5.793}
             firstGP={1950}
             numLaps={53}
-            fastLapTime="1:20.901"
-            fastLapDriver="Lando Norris (2025)"
             raceLen={306.72}
+            onClick={toggleExpanded}
+          />
+          <Track
+            expanded={expanded}
+            circuitName="Madring, Madrid, Spain"
+            imgSrc={madridSrc}
+            circuitLen={0}
+            firstGP={2026}
+            numLaps={0}
+            raceLen={0}
             onClick={toggleExpanded}
           />
           <Track
@@ -251,8 +214,6 @@ const Tracks = memo(() => {
             circuitLen={6.003}
             firstGP={2016}
             numLaps={51}
-            fastLapTime="1:43.009"
-            fastLapDriver="Charles Leclerc (2019)"
             raceLen={306.049}
             onClick={toggleExpanded}
           />
@@ -263,8 +224,6 @@ const Tracks = memo(() => {
             circuitLen={4.94}
             firstGP={2008}
             numLaps={62}
-            fastLapTime="1:34.486"
-            fastLapDriver="Daniel Ricciardo (2024)"
             raceLen={306.143}
             onClick={toggleExpanded}
           />
@@ -275,8 +234,6 @@ const Tracks = memo(() => {
             circuitLen={5.513}
             firstGP={2012}
             numLaps={56}
-            fastLapTime="1:36.169"
-            fastLapDriver="Charles Leclerc (2019)"
             raceLen={308.405}
             onClick={toggleExpanded}
           />
@@ -287,8 +244,6 @@ const Tracks = memo(() => {
             circuitLen={4.304}
             firstGP={1963}
             numLaps={71}
-            fastLapTime="1:17.774"
-            fastLapDriver="Valtteri Bottas (2021)"
             raceLen={305.354}
             onClick={toggleExpanded}
           />
@@ -300,8 +255,6 @@ const Tracks = memo(() => {
             circuitLen={4.309}
             firstGP={1973}
             numLaps={71}
-            fastLapTime="1:11.010"
-            fastLapDriver="Sergio Perez (2021)"
             raceLen={305.879}
             onClick={toggleExpanded}
           />
@@ -312,8 +265,6 @@ const Tracks = memo(() => {
             circuitLen={6.201}
             firstGP={2023}
             numLaps={50}
-            fastLapTime="1:34.876"
-            fastLapDriver="Lando Norris (2024)"
             raceLen={309.958}
             onClick={toggleExpanded}
           />
@@ -324,8 +275,6 @@ const Tracks = memo(() => {
             circuitLen={5.419}
             firstGP={2021}
             numLaps={57}
-            fastLapTime="1:22.384"
-            fastLapDriver="Lando Norris (2024)"
             raceLen={308.611}
             onClick={toggleExpanded}
           />
@@ -336,8 +285,6 @@ const Tracks = memo(() => {
             circuitLen={5.281}
             firstGP={2009}
             numLaps={58}
-            fastLapTime="1:25.637"
-            fastLapDriver="Kevin Magnussen (2024)"
             raceLen={306.183}
             onClick={toggleExpanded}
           />
@@ -347,13 +294,22 @@ const Tracks = memo(() => {
         <Grid container spacing={3} width="100%">
           <Track
             expanded={expanded}
+            circuitName="Imola, Emilia-Romagna, Italy - 2025"
+            circuitSubName="Autodromo Internazionale Enzo e Dino Ferrari"
+            imgSrc={emiliaSrc}
+            circuitLen={4.909}
+            firstGP={1980}
+            numLaps={63}
+            raceLen={309.049}
+            onClick={toggleExpanded}
+          />
+          <Track
+            expanded={expanded}
             circuitName="Circuit Paul Ricard, France, 2022"
             imgSrc={franceSrc}
             circuitLen={5.842}
             firstGP={1971}
             numLaps={53}
-            fastLapTime="1:32.740"
-            fastLapDriver="Sebastian Vettel (2019)"
             raceLen={309.69}
             onClick={toggleExpanded}
           />
@@ -365,8 +321,6 @@ const Tracks = memo(() => {
             circuitLen={4.653}
             firstGP={2020}
             numLaps={66}
-            fastLapTime="1:18.750"
-            fastLapDriver="Lewis Hamilton (2020)"
             raceLen={306.826}
             onClick={toggleExpanded}
           />
@@ -377,8 +331,6 @@ const Tracks = memo(() => {
             circuitLen={5.848}
             firstGP={2014}
             numLaps={53}
-            fastLapTime="1:35.761"
-            fastLapDriver="Lewis Hamilton (2019)"
             raceLen={309.745}
             onClick={toggleExpanded}
           />
@@ -389,8 +341,6 @@ const Tracks = memo(() => {
             circuitLen={5.338}
             firstGP={2005}
             numLaps={58}
-            fastLapTime="1:24.770"
-            fastLapDriver="Juan Pablo Montoya (2005)"
             raceLen={309.396}
             onClick={toggleExpanded}
           />
@@ -401,8 +351,6 @@ const Tracks = memo(() => {
             circuitLen={5.245}
             firstGP={2020}
             numLaps={59}
-            fastLapTime="1:18.833"
-            fastLapDriver="Lewis Hamilton (2020)"
             raceLen={309.497}
             onClick={toggleExpanded}
           />
@@ -413,8 +361,6 @@ const Tracks = memo(() => {
             circuitLen={5.148}
             firstGP={1951}
             numLaps={60}
-            fastLapTime="1:28.139"
-            fastLapDriver="Max Verstappen (2020)"
             raceLen={308.617}
             onClick={toggleExpanded}
           />
@@ -425,8 +371,6 @@ const Tracks = memo(() => {
             circuitLen={4.574}
             firstGP={1970}
             numLaps={67}
-            fastLapTime="1:13.780"
-            fastLapDriver="Kimi Räikkönen (2004)"
             raceLen={306.458}
             onClick={toggleExpanded}
           />
