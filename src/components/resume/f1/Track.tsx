@@ -6,8 +6,6 @@ interface TrackProps {
   circuitName: string;
   circuitSubName?: string;
   expanded: string;
-  fastLapDriver: string;
-  fastLapTime: string;
   firstGP: number;
   imgSrc: string;
   numLaps: number;
@@ -28,8 +26,6 @@ const Track = memo(
     circuitName,
     circuitSubName,
     expanded,
-    fastLapDriver,
-    fastLapTime,
     firstGP,
     imgSrc,
     numLaps,
@@ -60,10 +56,6 @@ const Track = memo(
         <Grid container>
           <Grid size={6}>
             <Typography variant={isExpanded ? "h5" : "body2"}>
-              Circuit Length
-            </Typography>
-            <Typography sx={bold}>{circuitLen}km</Typography>
-            <Typography variant={isExpanded ? "h5" : "body2"}>
               First Grand Prix
             </Typography>
             <Typography sx={bold}>{firstGP}</Typography>
@@ -74,11 +66,9 @@ const Track = memo(
           </Grid>
           <Grid size={6}>
             <Typography variant={isExpanded ? "h5" : "body2"}>
-              Fastest lap time
+              Circuit Length
             </Typography>
-            <Typography sx={bold}>{fastLapTime}</Typography>
-            <Typography variant="body2">{fastLapDriver}</Typography>
-            <br />
+            <Typography sx={bold}>{circuitLen}km</Typography>
             <Typography variant={isExpanded ? "h5" : "body2"}>
               Race Distance
             </Typography>
