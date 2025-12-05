@@ -38,8 +38,8 @@
     "highcharts-react-official": "3.2.3",
     "jotai": "2.15.1",
     "localforage": "1.10.0",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
     "react-router-dom": "7.9.6",
     "vite": "7.2.6"
   },
