@@ -19,7 +19,7 @@ describe("resume | f1 | F1", () => {
     render(<F1 />);
 
     // Find track cards via the circuit names
-    const tracksHeading = screen.getByText("2025 Tracks");
+    const tracksHeading = screen.getByText("2026 Tracks");
     expect(tracksHeading).toBeInTheDocument();
 
     // Click to expand tracks section
