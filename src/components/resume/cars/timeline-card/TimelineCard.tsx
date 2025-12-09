@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { FormatOutput } from "../../../../apis/DateHelper";
 import ExpandableCard from "../../../common/expandable-card";
-import Row from "./Row";
+import Row from "../../../common/timeline-parts/Row";
 import { START, END, getYearMarkers, getSegments } from "./timelineHelpers";
 import { CarEntry } from "../../../../constants/cars";
 
@@ -37,8 +37,8 @@ const fMonthSort = (a: CarEntry, b: CarEntry): number => {
   return diff;
 };
 
-/** TimelineCard  ->  Timeline  ->  Row  ->  Segment
- **                                     |->  YearMarkers */
+/** TimelineCard  ->  Row  ->  Segment
+ **                       |->  YearMarkers */
 const TimelineCard = memo(
   ({ data: propsData, useFStart, useKStart, onClick }: TimelineCardProps) => {
     // get immutable data from props and sort by start date

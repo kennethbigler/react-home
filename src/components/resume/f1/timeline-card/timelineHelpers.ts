@@ -1,16 +1,16 @@
 import dateObj, { DateObj } from "../../../../apis/DateHelper";
-import { CarEntry } from "../../../../constants/cars";
+import { ContractData } from "../../../../constants/f1";
 import { SegmentType } from "../../../common/timeline-parts/Segment";
 
 /* *************************     Constants     ************************* */
-export const START = dateObj("2008-03");
-export const END = dateObj();
+export const START = dateObj("2012");
+export const END = dateObj("2030");
 
 const WIDTH = 99;
 const MIN_TEXT_WIDTH = 86;
 const MIN_SHORT_WIDTH = 56;
 const YEAR_WIDTH = 0.3;
-const YEAR_MARK_FREQ = 3;
+const YEAR_MARK_FREQ = 2;
 
 /* *************************     Local Functions     ************************* */
 /** function to add empty space between start and elm segment */
@@ -32,21 +32,21 @@ const getTimeFromStart = (val: DateObj): number => {
 /** function to add elm segment */
 const addSegment = (
   segments: SegmentType[],
-  elm: CarEntry,
+  elm: ContractData,
   beginning: number,
   ending: number,
 ): void => {
-  const { color, inverted, title, car, char } = elm;
+  const { color, inverted, team } = elm;
   const width = ending - beginning;
   const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
-  const payload = { color, inverted, width, title };
+  const payload = { color, inverted, width };
   // check if name has room
   if (textWidth < MIN_SHORT_WIDTH) {
-    segments.push({ body: char || elm.car[0], ...payload });
+    segments.push({ body: elm.team[0], ...payload });
   } else if (textWidth < MIN_TEXT_WIDTH) {
-    segments.push({ body: car.substring(0, 5), ...payload });
+    segments.push({ body: team.substring(0, 5), ...payload });
   } else {
-    segments.push({ body: elm.car, ...payload });
+    segments.push({ body: elm.team, ...payload });
   }
 };
 
@@ -77,26 +77,11 @@ export const getYearMarkers = () => {
   return yearMarkers;
 };
 
-const getStart = (data: CarEntry, useKStart: boolean, useFStart: boolean) =>
-  useFStart
-    ? data.fStart || data.start
-    : useKStart
-      ? data.kStart || data.start
-      : data.start;
-const getEnd = (data: CarEntry, useKStart: boolean, useFStart: boolean) =>
-  useFStart
-    ? data.kStart || data.end
-    : useKStart
-      ? data.fStart || data.end
-      : data.end;
-
 /** break data up into segments */
 export const getSegments = (
-  data: CarEntry[],
+  data: ContractData[],
   added: boolean[],
-  useKStart: boolean,
-  useFStart: boolean,
-  elm: CarEntry,
+  elm: ContractData,
   i: number,
 ): SegmentType[] => {
   // skip if added already
@@ -106,11 +91,9 @@ export const getSegments = (
 
   // local variables
   const segments: SegmentType[] = [];
-  const segStart: DateObj = getStart(elm, useKStart, useFStart);
-  const segEnd: DateObj = getEnd(elm, useKStart, useFStart);
 
-  let beginning = getTimeFromStart(segStart);
-  let ending = getTimeFromStart(segEnd);
+  let beginning = getTimeFromStart(elm.start);
+  let ending = getTimeFromStart(elm.end);
 
   // add main segments
   addEmptySegment(segments, beginning);
@@ -123,13 +106,13 @@ export const getSegments = (
     // skip if added already
     if (!added[j]) {
       // test segment
-      beginning = getTimeFromStart(getStart(entry, useKStart, useFStart));
+      beginning = getTimeFromStart(entry.start);
       // if start is after end of main segment
       if (beginning >= ending) {
         // add filler in between end/start
         addEmptySegment(segments, beginning - ending);
         // add next segment
-        ending = getTimeFromStart(getEnd(entry, useKStart, useFStart));
+        ending = getTimeFromStart(entry.end);
         addSegment(segments, entry, beginning, ending);
         // mark as already added
         added[j] = true;

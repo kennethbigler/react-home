@@ -1,7 +1,6 @@
 import { CSSProperties } from "react";
-import Segment from "./Segment";
+import Segment, { SegmentType } from "./Segment";
 import YearMarkers from "./YearMarkers";
-import { SegmentType } from "./timelineHelpers";
 
 interface RowProps {
   segments: SegmentType[];

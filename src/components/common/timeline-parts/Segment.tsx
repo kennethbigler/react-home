@@ -1,7 +1,15 @@
 import { memo, CSSProperties } from "react";
 import { useTheme } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
-import { SegmentType } from "./timelineHelpers";
+
+export interface SegmentType {
+  color?: string;
+  body?: string;
+  title?: string;
+  width: number;
+  inverted?: boolean;
+  onClick?: (title: string) => void;
+}
 
 const bodyStyles: CSSProperties = {
   cursor: "pointer",

@@ -1,4 +1,5 @@
 import { lightGreen, red } from "@mui/material/colors";
+import dateObj, { DateObj } from "../apis/DateHelper";
 
 // --------------------------------------------------     Shared     -------------------------------------------------- //
 interface ChartEntry {
@@ -470,6 +471,96 @@ driverPointsData.sort(pointSort);
 driverStandingsData.sort(standingSort);
 
 export { driverPointsData, driverStandingsData };
+
+// --------------------------------------------------     Contract Data     -------------------------------------------------- //
+export interface ContractData {
+  color: string;
+  start: DateObj;
+  end: DateObj;
+  inverted?: boolean;
+  team: string;
+}
+
+export const contractData: ContractData[] = [
+  {
+    color: MCLAREN_HEX,
+    team: "McLaren - Norris",
+    start: dateObj("2019"),
+    end: dateObj("2027-12"),
+    inverted: true,
+  },
+  {
+    color: TR_HEX,
+    team: "Torro Rosso",
+    start: dateObj("2015"),
+    end: dateObj("2016-05"),
+  },
+  {
+    color: RED_BULL_HEX,
+    team: "Red Bull - Verstappen",
+    start: dateObj("2016-05"),
+    end: dateObj("2028-12"),
+  },
+  {
+    color: MCLAREN_HEX,
+    team: "McLaren - Piastri",
+    start: dateObj("2023"),
+    end: dateObj("2028-12"),
+    inverted: true,
+  },
+  {
+    color: WILLIAMS_HEX,
+    team: "Williams - Russell",
+    start: dateObj("2019"),
+    end: dateObj("2022"), // full 2021 Season
+  },
+  {
+    color: MERCEDES_HEX,
+    team: "Mercedes - Russell",
+    start: dateObj("2022"),
+    end: dateObj("2027-12"),
+    inverted: true,
+  },
+  {
+    color: SAUBER_HEX,
+    team: "Sauber",
+    start: dateObj("2018"),
+    end: dateObj("2019"), // full 2018 Season
+  },
+  {
+    color: FERRARI_HEX,
+    team: "Ferrari - Leclerc",
+    start: dateObj("2019"),
+    end: dateObj("2029-12"),
+  },
+  {
+    color: MCLAREN_HEX,
+    team: "07-12 McLaren",
+    start: dateObj("2012"), // actually 2007, shorten for better display
+    end: dateObj("2013"), // full 2012 Season
+    inverted: true,
+  },
+  {
+    color: MERCEDES_HEX,
+    team: "Mercedes - Hamilton",
+    start: dateObj("2013"),
+    end: dateObj("2025"), // full 2024 Season
+    inverted: true,
+  },
+  {
+    color: FERRARI_HEX,
+    team: "Ferrari - Hamilton",
+    start: dateObj("2025"),
+    end: dateObj("2026-12"),
+  },
+  {
+    color: MERCEDES_HEX,
+    team: "Mercedes - Antonelli",
+    start: dateObj("2025"),
+    end: dateObj("2026-12"),
+    inverted: true,
+  },
+];
 
 // --------------------------------------------------     Budget Data     -------------------------------------------------- //
 /* Engine 50% / R&D 8.8% / Manufacturing 7.5% / Capital Expenses 6.3% / Race Team 6.3% / Drivers 5% / Test Team 5% / Hydraulics 3.8% / Rent Bills, etc. 3.8% /Sponsor Chasing 3.8% */
