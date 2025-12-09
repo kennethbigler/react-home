@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TimelineCard from "./timeline-card";
+import TimelineCard from "./timeline-card/TimelineCard";
 import {
   cars,
   currentKensCars,
