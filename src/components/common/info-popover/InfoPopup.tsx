@@ -19,6 +19,8 @@ interface InfoPopupProps {
   fullWidth?: boolean;
   /** title content */
   title: string | ReactElement;
+  /** max width of the popup */
+  maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false;
   /** popup content */
   children: ReactNode | ReactNode[];
   /** set the color of the button */
@@ -31,6 +33,7 @@ const InfoPopup = ({
   buttonVariant = "contained",
   fullWidth = false,
   title,
+  maxWidth = "md",
   children,
   onSave,
 }: InfoPopupProps) => {
@@ -59,7 +62,7 @@ const InfoPopup = ({
         title="info-popup"
         onClose={handleClose}
         open={isOpen}
-        maxWidth="md"
+        maxWidth={maxWidth}
         fullWidth
       >
         <DialogTitle>{title}</DialogTitle>

@@ -27,11 +27,9 @@ describe("Bridge Game Component", () => {
     fireEvent.click(screen.getByText("Score"));
     expect(screen.getByText("Scoring Table")).toBeInTheDocument();
 
-    expect(screen.queryByText("Bridge Bidding Cheat Sheet Page 1")).toBeNull();
+    expect(screen.queryByText("Opening Bids")).toBeNull();
     fireEvent.click(screen.getByText("Bid"));
-    expect(
-      screen.getByAltText("Bridge Bidding Cheat Sheet Page 1"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Opening Bids")).toBeInTheDocument();
   });
 
   it("opens and closes scoring dialog", () => {
@@ -54,14 +52,10 @@ describe("Bridge Game Component", () => {
       </Provider>,
     );
 
-    expect(
-      screen.queryByAltText("Bridge Bidding Cheat Sheet Page 1"),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText("Opening Bids")).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: /bid/i }));
-    expect(
-      screen.getByAltText("Bridge Bidding Cheat Sheet Page 1"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Opening Bids")).toBeInTheDocument();
   });
 
   it("displays initial score table", () => {
