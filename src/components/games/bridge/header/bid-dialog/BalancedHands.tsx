@@ -31,6 +31,9 @@ const BalancedHands = memo(() => (
     </TableHead>
     <TableBody>
       <TableRow>
+        <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
+      </TableRow>
+      <TableRow>
         <TableCell colSpan={2} align="center">
           <Typography variant="h6" component="h4">
             <span style={{ fontWeight: "bold" }}>Balanced Hands</span> (Point

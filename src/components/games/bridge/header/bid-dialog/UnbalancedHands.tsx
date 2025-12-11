@@ -24,6 +24,9 @@ const UnbalancedHands = memo(() => (
     </TableHead>
     <TableBody>
       <TableRow>
+        <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
+      </TableRow>
+      <TableRow>
         <TableCell rowSpan={14}>13-21</TableCell>
         <TableCell sx={{ fontWeight: "bold" }}>
           Opening Bids of 1 of a Suit
@@ -175,6 +178,115 @@ const UnbalancedHands = memo(() => (
       <TableRow>
         <TableCell>*</TableCell>
         <TableCell>*See note overleaf about 2NT and 3NT responses.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
+      </TableRow>
+      <TableRow>
+        <TableCell rowSpan={4}>5-10 HCP</TableCell>
+        <TableCell rowSpan={4}>
+          <span style={{ fontWeight: "bold" }}>
+            Opening Bids of 2♦️, 2❤️, or 2♠️ (&quot;Weak 2s&quot;):
+          </span>
+          <br />
+          Needs 6 card suit with good suit quality and a hand with less than 13
+          total points.
+          <br />
+          Should have no outside 4 card major.
+        </TableCell>
+        <TableCell>0-14</TableCell>
+        <TableCell>
+          Raise to the 3 level with 3 card support
+          <br />
+          Raise to the 4 level with 4 card support or if game is certain
+          opposite a minimum hand.
+        </TableCell>
+        <TableCell />
+        <TableCell>
+          Raises are pre-emptive and not invitational so pass if partner raises.
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell rowSpan={3}>15+</TableCell>
+        <TableCell rowSpan={3}>
+          Bid 2NT to find out more from partner or bid a new suit (forcing).
+          <br />
+          Bid 3NT to play if game is certain.
+        </TableCell>
+        <TableCell sx={{ fontWeight: "bold" }} colSpan={2}>
+          After a 2NT response:
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>5-7</TableCell>
+        <TableCell>Bid 3 of own suit with minimum hand.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>8-10</TableCell>
+        <TableCell>
+          Bid a suit containing an Ace or King or bid 3NT with 2 of the top 3
+          honors in trumps
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
+      </TableRow>
+      <TableRow>
+        <TableCell rowSpan={2}>22+</TableCell>
+        <TableCell rowSpan={2}>
+          <span style={{ fontWeight: "bold" }}>Opening Bid of 2♣️</span>
+          <br />
+          22+ total points unbalanced or 22+ HCP balanced
+        </TableCell>
+        <TableCell>0-7</TableCell>
+        <TableCell>Bid 2♦️ (negative response).</TableCell>
+        <TableCell />
+        <TableCell>
+          Over 2♦️ bid 2NT with 22-24 balanced (not forcing).
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>8+</TableCell>
+        <TableCell>
+          or with any 1 Ace and 1 King make a positive response.
+        </TableCell>
+        <TableCell />
+        <TableCell>Any other rebid is forcing to game.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
+      </TableRow>
+      <TableRow>
+        <TableCell rowSpan={2}>5-10 HCP</TableCell>
+        <TableCell rowSpan={2}>
+          <span style={{ fontWeight: "bold" }}>
+            Pre-Emptive Opening Bids of 3 of a Suit
+          </span>
+          <br />
+          7 card suit with good suit quality and no 4 card major.
+          <br />
+          Less than 13 total points.
+          <br />
+          With 8 cards, open 4 of the suit.
+        </TableCell>
+        <TableCell>0-15</TableCell>
+        <TableCell>
+          Less than 3 card support, PASS.
+          <br />
+          3+ support, raise 1 level.
+        </TableCell>
+        <TableCell rowSpan={2} />
+        <TableCell rowSpan={2}>
+          Don&apos;t bid again unless responder bid a new suit (forcing).
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>16+</TableCell>
+        <TableCell>
+          Bid game in opener&apos;s suit or bid a new suit (forcing).
+          <br />
+          Be cautious about bidding 3NT as opener will have few entries.
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
