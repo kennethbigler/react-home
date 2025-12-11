@@ -4,6 +4,7 @@ import { memo } from "react";
 import BalancedHands from "./BalancedHands";
 import UnbalancedHands from "./UnbalancedHands";
 import Overcalls from "./Overcalls";
+import Overleaf from "./Overleaf";
 
 const BiddingTable = memo(() => (
   <Table
@@ -19,6 +20,7 @@ const BiddingTable = memo(() => (
     <BalancedHands />
     <UnbalancedHands />
     <Overcalls />
+    <Overleaf />
   </Table>
 ));
 
