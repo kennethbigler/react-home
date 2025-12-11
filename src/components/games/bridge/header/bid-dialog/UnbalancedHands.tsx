@@ -14,10 +14,9 @@ const UnbalancedHands = memo(() => (
       <TableRow>
         <TableCell colSpan={6}>
           <Typography variant="h6" component="h4">
-            <span style={{ fontWeight: "bold" }}>Unbalanced Hands</span> (Point
-            counts shown below are Total Points except where shown. When raising
-            partner&apos;s suit, add Short Suit Points instead of Long Suit
-            Points.)
+            <span style={{ fontWeight: "bold" }}>Unbalanced Hands</span> (Points
+            shown are Total Points. Raising partner&apos;s suit: add Short Suit
+            Points instead of Long Suit Points.)
           </Typography>
         </TableCell>
       </TableRow>
@@ -27,7 +26,7 @@ const UnbalancedHands = memo(() => (
         <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
       </TableRow>
       <TableRow>
-        <TableCell rowSpan={14}>13-21</TableCell>
+        <TableCell rowSpan={13}>13-21</TableCell>
         <TableCell sx={{ fontWeight: "bold" }}>
           Opening Bids of 1 of a Suit
         </TableCell>
@@ -88,9 +87,9 @@ const UnbalancedHands = memo(() => (
           <br />
           Bid the longer minor (may be only 3 cards).
           <br />
-          Bid 1♦️ with 4 clubs and 4 diamonds
+          Bid 1♦️ with 4 ♣️s &amp; 4 ♦️s
           <br />
-          Bid 1♣️ with 3 clubs and 3 diamonds
+          Bid 1♣️ with 3 ♣️s &amp; 3 ♦️s
         </TableCell>
         <TableCell sx={{ fontWeight: "bold" }} colSpan={2}>
           Bid a new suit (forcing)
@@ -136,7 +135,7 @@ const UnbalancedHands = memo(() => (
         <TableCell>Jump bid in a new suit. Must be 5+ card suit.</TableCell>
       </TableRow>
       <TableRow>
-        <TableCell rowSpan={5}>
+        <TableCell rowSpan={4}>
           <span style={{ fontWeight: "bold" }}>Rule of 20:</span>
           <br />
           With 12 Total Points do the &apos;Rule of 20&apos; test.
@@ -174,21 +173,17 @@ const UnbalancedHands = memo(() => (
       </TableRow>
       <TableRow>
         <TableCell>11-12</TableCell>
-        <TableCell>Bid 2NT* with balanced hand.</TableCell>
+        <TableCell>Bid 2NT with balanced hand.</TableCell>
       </TableRow>
       <TableRow>
         <TableCell>13-15</TableCell>
-        <TableCell>Bid 3NT* with balanced hand.</TableCell>
-        <TableCell rowSpan={2}>19-21</TableCell>
-        <TableCell rowSpan={2}>
+        <TableCell>Bid 3NT with balanced hand.</TableCell>
+        <TableCell>19-21</TableCell>
+        <TableCell>
           Bid game in partner&apos;s major suit with 4+ cards.
           <br />
           Otherwise jump bid in a new suit or bid game in own suit or 3NT.
         </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell>*</TableCell>
-        <TableCell>*See note overleaf about 2NT and 3NT responses.</TableCell>
       </TableRow>
       <TableRow>
         <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
@@ -200,8 +195,8 @@ const UnbalancedHands = memo(() => (
             Opening Bids of 2♦️, 2❤️, or 2♠️ (&quot;Weak 2s&quot;):
           </span>
           <br />
-          Needs 6 card suit with good suit quality and a hand with less than 13
-          total points.
+          Needs 6 card suit with good suit quality &amp; a hand with less than
+          13 total points.
           <br />
           Should have no outside 4 card major.
         </TableCell>
@@ -214,7 +209,8 @@ const UnbalancedHands = memo(() => (
         </TableCell>
         <TableCell />
         <TableCell>
-          Raises are pre-emptive and not invitational so pass if partner raises.
+          Raises are pre-emptive &amp; not invitational so pass if partner
+          raises.
         </TableCell>
       </TableRow>
       <TableRow>
@@ -259,7 +255,7 @@ const UnbalancedHands = memo(() => (
       <TableRow>
         <TableCell>8+</TableCell>
         <TableCell>
-          or with any 1 Ace and 1 King make a positive response.
+          or with any 1 Ace &amp; 1 King make a positive response.
         </TableCell>
         <TableCell />
         <TableCell>Any other rebid is forcing to game.</TableCell>
@@ -274,7 +270,7 @@ const UnbalancedHands = memo(() => (
             Pre-Emptive Opening Bids of 3 of a Suit
           </span>
           <br />
-          7 card suit with good suit quality and no 4 card major.
+          7 card suit with good suit quality &amp; no 4 card major.
           <br />
           Less than 13 total points.
           <br />

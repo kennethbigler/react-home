@@ -36,11 +36,19 @@ const BalancedHands = memo(() => (
       <TableRow>
         <TableCell colSpan={2} align="center">
           <Typography variant="h6" component="h4">
-            <span style={{ fontWeight: "bold" }}>Balanced Hands</span> (Point
-            Counts Shown are High Card Points)
+            <span style={{ fontWeight: "bold" }}>Balanced Hands</span> (Points
+            shown are HCP)
           </Typography>
         </TableCell>
-        <TableCell rowSpan={2} />
+        <TableCell rowSpan={2}>
+          High
+          <br />
+          Card
+          <br />
+          Points
+          <br />
+          (HCP)
+        </TableCell>
         <TableCell rowSpan={2}>
           See responses to opening bids of 1 of a suit
         </TableCell>
@@ -129,10 +137,9 @@ const BalancedHands = memo(() => (
         </TableCell>
         <TableCell />
         <TableCell>
-          Convert partner&apos;s NT bid (in a transfer sequence) to major suit
-          contract
+          Convert partner&apos;s NT bid (in a transfer sequence) to
           <br />
-          when holding 3+ cards in the major.
+          major suit contract when holding 3+ cards in the major.
         </TableCell>
       </TableRow>
       <TableRow>
@@ -179,10 +186,9 @@ const BalancedHands = memo(() => (
           Bid 3♠️ when partner bids 3❤️.
           <br />
           <br />
-          Convert partner&apos;s NT bid (in a transfer sequence) to major suit
-          contract
+          Convert partner&apos;s NT bid (in a transfer sequence) to
           <br />
-          when holding 3+ cards in the major.
+          major suit contract when holding 3+ cards in the major.
         </TableCell>
       </TableRow>
       <TableRow>
