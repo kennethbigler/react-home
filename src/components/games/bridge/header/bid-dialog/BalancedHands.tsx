@@ -48,8 +48,11 @@ const BalancedHands = memo(() => (
         <TableCell rowSpan={2}>
           Give a single raise with 4 card support for responder&apos;s suit.
           <br />
-          Show a 4 card major at the 1 level. Otherwise rebid NT at the lowest
-          level. Pass if the response was 1NT.
+          Show a 4 card major at the 1 level.
+          <br />
+          Otherwise rebid NT at the lowest level.
+          <br />
+          Pass if the response was 1NT.
         </TableCell>
       </TableRow>
       <TableRow>
@@ -86,8 +89,9 @@ const BalancedHands = memo(() => (
       <TableRow>
         <TableCell>0-7</TableCell>
         <TableCell>
-          Unbalanced: Transfer (see overleaf) then Pass (2♣️ is reserved for
-          &apos;Stayman&apos; convention - see overleaf)
+          Unbalanced: Transfer (see overleaf) then Pass
+          <br />
+          (2♣️ is reserved for &apos;Stayman&apos; convention - see overleaf)
         </TableCell>
         <TableCell rowSpan={2} />
         <TableCell rowSpan={2}>
@@ -126,7 +130,9 @@ const BalancedHands = memo(() => (
         <TableCell />
         <TableCell>
           Convert partner&apos;s NT bid (in a transfer sequence) to major suit
-          contract when holding 3+ cards in the major.
+          contract
+          <br />
+          when holding 3+ cards in the major.
         </TableCell>
       </TableRow>
       <TableRow>
@@ -150,8 +156,8 @@ const BalancedHands = memo(() => (
         <TableCell rowSpan={3}>Open 2NT</TableCell>
         <TableCell>0-3</TableCell>
         <TableCell>Pass</TableCell>
-        <TableCell rowSpan={3} />
-        <TableCell>Raise 4NT to 6NT with 21 points, otherwise Pass.</TableCell>
+        <TableCell>Pass?</TableCell>
+        <TableCell>Pass</TableCell>
       </TableRow>
       <TableRow>
         <TableCell>4-11</TableCell>
@@ -164,19 +170,26 @@ const BalancedHands = memo(() => (
           <br />
           With 4 card major suit bid 3♣️ (Stayman)
         </TableCell>
+        <TableCell />
         <TableCell>
           Transfers (see overleaf):
           <br />
-          Bid 3❤️ when partner bids 3♦️. Bid 3♠️ when partner bids 3❤️
+          Bid 3❤️ when partner bids 3♦️.
+          <br />
+          Bid 3♠️ when partner bids 3❤️.
+          <br />
+          <br />
+          Convert partner&apos;s NT bid (in a transfer sequence) to major suit
+          contract
+          <br />
+          when holding 3+ cards in the major.
         </TableCell>
       </TableRow>
       <TableRow>
         <TableCell>12</TableCell>
         <TableCell>Balanced: 4NT invitational to 6NT</TableCell>
-        <TableCell>
-          Convert partner&apos;s NT bid (in a transfer sequence) to major suit
-          contract when holding 3+ cards in the major.
-        </TableCell>
+        <TableCell>4NT?</TableCell>
+        <TableCell>21 points? Raise 4NT to 6NT, otherwise Pass.</TableCell>
       </TableRow>
       <TableRow>
         <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
