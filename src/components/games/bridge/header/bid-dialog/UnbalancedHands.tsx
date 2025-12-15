@@ -55,11 +55,11 @@ const UnbalancedHands = memo(() => (
         <TableCell rowSpan={3}>
           If max combined points below game, pass.
           <br />
-          If game possible if partner max, raise 1 level to invite game.
+          Game possible at partner max? raise 1 level (invite game).
           <br />
-          If game is certain even if partner minimum, bid game.
+          Game is certain at partner min? bid game.
           <br />
-          If partner raised to 2 of minor, bid 3NT with 19-21.
+          If partner raised 2 of minor, bid 3NT with 19-21.
         </TableCell>
       </TableRow>
       <TableRow>
@@ -77,7 +77,7 @@ const UnbalancedHands = memo(() => (
       </TableRow>
       <TableRow>
         <TableCell>13+</TableCell>
-        <TableCell>Bid a new suit</TableCell>
+        <TableCell>Bid a new suit, then rebid open</TableCell>
       </TableRow>
       <TableRow>
         <TableCell rowSpan={4}>
@@ -109,25 +109,21 @@ const UnbalancedHands = memo(() => (
           <br />
           Bid a new lower ranking suit at the 2 level.
           <br />
-          Rebid your own suit (usually 6+ cards but sometimes 5)
+          Rebid your suit (w/ 6+ cards or 5 with 2 honors)
           <br />
-          If responder bid 1NT, pass with less than 6 card suit.
+          If responder bid 1NT, pass with &lt;6 card suit.
         </TableCell>
       </TableRow>
       <TableRow>
         <TableCell>11-18</TableCell>
         <TableCell>
-          Bid a new suit at the 2 level with 5+ card major suit or 4+ card minor
-          suit
+          Bid a 4 card major at the 1 level
           <br />
-          <span style={{ textDecoration: "underline" }}>
-            but only if you can&apos;t bid at the 1 level
-          </span>
-          .
+          Balanced? Consider NT below
           <br />
-          (With less than 12 HCP bid 4 card major at the 1 level
+          Bid a 5 card minor at the 2 level
           <br />
-          in preference to bidding longer minor suit at the 2 level)
+          Bid a 4 card ♦️ at the 1 level
         </TableCell>
       </TableRow>
       <TableRow>
@@ -149,8 +145,7 @@ const UnbalancedHands = memo(() => (
           If not, pass.
         </TableCell>
         <TableCell colSpan={2} sx={{ fontWeight: "bold" }}>
-          If none of the above are possible, raise partner&apos;s minor suit or
-          bid No Trump
+          If nothing above is possible, bid NT
         </TableCell>
         <TableCell rowSpan={3}>16-18</TableCell>
         <TableCell rowSpan={3}>

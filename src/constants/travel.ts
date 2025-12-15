@@ -7,8 +7,8 @@ interface Country {
 /** name is a unique key, verify it on https://unpkg.com/world-atlas@2.0.2/countries-110m.json */
 const countries: Country[] = [
   { name: "American Samoa", continent: "AS", flag: "🇦🇸" },
-  // Dec '25 - { name: "Antarctica", continent: "AQ", flag: "🇦🇶" },
-  // Dec '25 - { name: "Argentina", continent: "SA", flag: "🇦🇷" },
+  { name: "Antarctica", continent: "AQ", flag: "🇦🇶" },
+  { name: "Argentina", continent: "SA", flag: "🇦🇷" },
   { name: "Australia", continent: "AU", flag: "🇦🇺" },
   { name: "Austria", continent: "EU", flag: "🇦🇹" },
   { name: "Bahamas", continent: "NA", flag: "🇧🇸" },
@@ -53,7 +53,7 @@ const countries: Country[] = [
   { name: "United Arab Emirates", continent: "AF", flag: "🇦🇪" },
   { name: "United Kingdom", continent: "EU", flag: "🇬🇧" },
   { name: "United States of America", continent: "NA", flag: "🇺🇸" },
-  // Dec '25 - { name: "Uruguay", continent: "SA", flag: "🇺🇾" },
+  { name: "Uruguay", continent: "SA", flag: "🇺🇾" },
   { name: "U.S. Virgin Islands", continent: "NA", flag: "🇻🇮" },
   { name: "Vatican", continent: "EU", flag: "🇻🇦" },
 ];

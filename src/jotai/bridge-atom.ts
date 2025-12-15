@@ -65,6 +65,16 @@ export const bridgeRead = atom((get) => {
   const weVulnerable = weWins > 0;
   const theyVulnerable = theyWins > 0;
 
+  if (weWins === 2 && theyWins === 0) {
+    weSum += 700;
+  } else if (weWins === 2 && theyWins === 1) {
+    weSum += 500;
+  } else if (theyWins === 2 && weWins === 0) {
+    theySum += 700;
+  } else if (theyWins === 2 && weWins === 1) {
+    theySum += 500;
+  }
+
   return {
     gameIdx,
     weSum,

@@ -16,6 +16,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -35,6 +37,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -54,6 +58,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -73,6 +79,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -91,6 +99,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -109,6 +119,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -128,6 +140,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -146,6 +160,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -164,6 +180,8 @@ describe("Bridge Score Helper", () => {
           true, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -182,6 +200,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           true, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -200,6 +220,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           true, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -218,6 +240,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -236,6 +260,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -254,6 +280,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -276,6 +304,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("they");
@@ -295,6 +325,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("they");
@@ -313,6 +345,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("they");
@@ -331,6 +365,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("they");
@@ -352,6 +388,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("they");
@@ -369,6 +407,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("they");
@@ -386,6 +426,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -406,6 +448,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");
@@ -424,6 +468,8 @@ describe("Bridge Score Helper", () => {
           false, // is4Aces
           false, // is4Honours
           false, // is5Honours
+          false, // weVulnerable
+          false, // theyVulnerable
         );
 
         expect(result.winner).toBe("we");

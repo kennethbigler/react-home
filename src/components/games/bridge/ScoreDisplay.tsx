@@ -39,9 +39,9 @@ const ScoreDisplay = () => {
                 <TableRow key={`game-${i}`}>
                   <TableCell align="center" sx={{ borderRight: border }}>
                     {we.map(
-                      (score, i) =>
+                      (score, j) =>
                         score !== 0 && (
-                          <Typography key={`we-above-${i}`} component="div">
+                          <Typography key={`we-above-${j}`} component="div">
                             {`${score} (${bids[i]})`}
                           </Typography>
                         ),
@@ -49,9 +49,9 @@ const ScoreDisplay = () => {
                   </TableCell>
                   <TableCell align="center">
                     {they.map(
-                      (score, i) =>
+                      (score, j) =>
                         score !== 0 && (
-                          <Typography key={`they-above-${i}`} component="div">
+                          <Typography key={`they-above-${j}`} component="div">
                             {`${score} (${bids[i]})`}
                           </Typography>
                         ),

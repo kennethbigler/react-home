@@ -25,8 +25,15 @@ const ScoreDialog = memo(() => {
     { aboveScores, weBelow, theyBelow, weRubbers, theyRubbers, bids, ...other },
     setBridgeState,
   ] = useAtom(bridgeAtom);
-  const { gameIdx, weWins, theyWins, weSum, theySum } =
-    useAtomValue(bridgeRead);
+  const {
+    gameIdx,
+    weWins,
+    theyWins,
+    weSum,
+    theySum,
+    weVulnerable,
+    theyVulnerable,
+  } = useAtomValue(bridgeRead);
   // modal state
   const [isOpen, setIsOpen] = useState(false);
   // form state
@@ -93,6 +100,8 @@ const ScoreDialog = memo(() => {
     is4Aces,
     is4Honours,
     is5Honours,
+    weVulnerable,
+    theyVulnerable,
   );
 
   const handleSave = () => {
@@ -123,7 +132,10 @@ const ScoreDialog = memo(() => {
       theyBelow: newTheyBelow,
       weRubbers,
       theyRubbers,
-      bids: [...bids, `${contractTricks}${contractSuit}${madeBid ? "" : "❌"}`],
+      bids: [
+        ...bids,
+        `${contractTricks}${contractSuit}${madeBid ? "" : "❌"}${isDouble ? "❗️" : ""}${isRedouble ? "❗️" : ""}`,
+      ],
       ...other,
     });
 
