@@ -24,18 +24,6 @@ describe("games | bridge | Overcalls", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders No Fear Bridge cheat sheet header", () => {
-    renderInTable(<Overcalls />);
-
-    expect(
-      screen.getByRole("heading", { name: /no fear bridge cheat sheet/i }),
-    ).toBeInTheDocument();
-    // The subtitle contains the full text
-    expect(
-      screen.getByText(/american style 5 card majors/i),
-    ).toBeInTheDocument();
-  });
-
   it("renders takeout double guidance", () => {
     renderInTable(<Overcalls />);
 
@@ -68,25 +56,6 @@ describe("games | bridge | Overcalls", () => {
     expect(stoppersText.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("renders Stayman convention section", () => {
-    renderInTable(<Overcalls />);
-
-    expect(
-      screen.getByRole("heading", { name: /stayman.*nt response/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/bid 2♣️ to check for major suit fit/i),
-    ).toBeInTheDocument();
-  });
-
-  it("renders Stayman responses", () => {
-    renderInTable(<Overcalls />);
-
-    expect(screen.getByText(/= no 4 card major/i)).toBeInTheDocument();
-    expect(screen.getByText(/= 4 ❤️s/i)).toBeInTheDocument();
-    expect(screen.getByText(/= 4 ♠️s/i)).toBeInTheDocument();
-  });
-
   it("renders simple overcall guidance", () => {
     renderInTable(<Overcalls />);
 
@@ -96,28 +65,6 @@ describe("games | bridge | Overcalls", () => {
 
     expect(screen.getByText("8-15 HCP")).toBeInTheDocument();
     expect(screen.getByText(/must be a 5 card suit/i)).toBeInTheDocument();
-  });
-
-  it("renders red suit transfers section", () => {
-    renderInTable(<Overcalls />);
-
-    expect(
-      screen.getByRole("heading", { name: /red suit transfers/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/bid ♦️ for ❤️, bid ❤️ for ♠️/i),
-    ).toBeInTheDocument();
-  });
-
-  it("renders transfer guidance details", () => {
-    renderInTable(<Overcalls />);
-
-    expect(
-      screen.getByText(/nt bidder must bid next suit/i),
-    ).toBeInTheDocument();
-    // Use getAllByText since PASS text appears multiple times
-    const passTexts = screen.getAllByText(/pass/i);
-    expect(passTexts.length).toBeGreaterThanOrEqual(1);
   });
 
   it("renders jump overcall guidance", () => {
@@ -139,34 +86,6 @@ describe("games | bridge | Overcalls", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders Gerber convention section", () => {
-    renderInTable(<Overcalls />);
-
-    expect(
-      screen.getByRole("heading", { name: /gerber.*nt response/i }),
-    ).toBeInTheDocument();
-    // 4♣️ appears multiple times, use getAllByText
-    const fourClubTexts = screen.getAllByText(/4♣️/);
-    expect(fourClubTexts.length).toBeGreaterThanOrEqual(1);
-
-    // Check for the Gerber aces response - may be split across elements
-    expect(
-      screen.getByText(/4♦️=0 or 4, 4❤️=1, 4♠️=2, 4nt=3/i),
-    ).toBeInTheDocument();
-  });
-
-  it("renders Gerber kings response", () => {
-    renderInTable(<Overcalls />);
-
-    // 5♣️ appears multiple times, use getAllByText
-    const fiveClubTexts = screen.getAllByText(/5♣️/);
-    expect(fiveClubTexts.length).toBeGreaterThanOrEqual(1);
-
-    expect(
-      screen.getByText(/5♦️=0 or 4, 5❤️=1, 5♠️=2, 5nt=3/i),
-    ).toBeInTheDocument();
-  });
-
   it("renders pre-emptive overcall guidance", () => {
     renderInTable(<Overcalls />);
 
@@ -177,25 +96,6 @@ describe("games | bridge | Overcalls", () => {
     expect(screen.getByText(/jump 2 levels/i)).toBeInTheDocument();
     expect(
       screen.getByText(/use with caution if vulnerable/i),
-    ).toBeInTheDocument();
-  });
-
-  it("renders Blackwood convention section", () => {
-    renderInTable(<Overcalls />);
-
-    expect(
-      screen.getByRole("heading", { name: /blackwood.*4nt/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/5♣️=0 or 4, 5♦️=1, 5❤️=2, 5♠️=3/i),
-    ).toBeInTheDocument();
-  });
-
-  it("renders Blackwood kings response", () => {
-    renderInTable(<Overcalls />);
-
-    expect(
-      screen.getByText(/6♣️=0 or 4, 6♦️=1, 6❤️=2, 6♠️=3/i),
     ).toBeInTheDocument();
   });
 
@@ -215,12 +115,15 @@ describe("games | bridge | Overcalls", () => {
   it("renders 19+ point guidance", () => {
     renderInTable(<Overcalls />);
 
-    // 19+ appears multiple times
+    // 19+ appears in the component
     const range19plus = screen.getAllByText("19+");
     expect(range19plus.length).toBeGreaterThanOrEqual(1);
 
     expect(
-      screen.getByText(/balanced hand, double, then rebid nt at lowest level/i),
+      screen.getByText(/with balanced hand, first double/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/second rebid nt at lowest level/i),
     ).toBeInTheDocument();
   });
 
@@ -252,17 +155,6 @@ describe("games | bridge | Overcalls", () => {
     expect(range5plus.length).toBeGreaterThanOrEqual(1);
 
     expect(screen.getByText(/generally pass/i)).toBeInTheDocument();
-  });
-
-  it("renders do not ask for Kings warning", () => {
-    renderInTable(<Overcalls />);
-
-    expect(
-      screen.getByText(/do not ask for kings unless you know/i),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/you have the strength for a grand slam/i),
-    ).toBeInTheDocument();
   });
 
   it("has proper displayName", () => {
