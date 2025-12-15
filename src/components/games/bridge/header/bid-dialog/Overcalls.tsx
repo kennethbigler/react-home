@@ -22,19 +22,11 @@ const Overcalls = memo(() => (
             Responding to Overcalls
           </Typography>
         </TableCell>
-        <TableCell colSpan={2} align="center" sx={{ fontWeight: "bold" }}>
-          <Typography variant="h5" component="h3">
-            No Fear Bridge Cheat Sheet
-          </Typography>
-          <Typography variant="h6" component="h4">
-            American Style 5 Card Majors &amp; String 1NT (15-17)
-          </Typography>
-        </TableCell>
       </TableRow>
     </TableHead>
     <TableBody>
       <TableRow>
-        <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
+        <TableCell colSpan={4} sx={{ backgroundColor: grey[800] }} />
       </TableRow>
       <TableRow>
         <TableCell rowSpan={5}>
@@ -59,30 +51,18 @@ const Overcalls = memo(() => (
         <TableCell>
           1NT Balanced with 1 stopper in opponent&apos;s suit.
         </TableCell>
-        <TableCell colSpan={2} sx={{ fontWeight: "bold" }} align="center">
-          <Typography variant="h6" component="h4">
-            Stayman (NT Response)
-          </Typography>
-        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell>11-12</TableCell>
         <TableCell>
           2NT Balanced with 1 stopper in opponent&apos;s suit.
         </TableCell>
-        <TableCell>
-          1NT
-          <br />
-          Open?
-        </TableCell>
-        <TableCell>Bid 2♣️ to check for major suit fit.</TableCell>
       </TableRow>
       <TableRow>
         <TableCell>13-15</TableCell>
         <TableCell>
           3NT Balanced with 1 stopper in opponent&apos;s suit.
         </TableCell>
-        <TableCell colSpan={2}>Partner&apos;s responses are:</TableCell>
       </TableRow>
       <TableRow>
         <TableCell>0-8</TableCell>
@@ -94,41 +74,58 @@ const Overcalls = memo(() => (
           With few points &amp; no other suit than the opponent&apos;s suit bid
           your cheapest 3 card suit.
         </TableCell>
-        <TableCell>
-          2♦️
-          <br />
-          2❤️
-          <br />
-          2♠️
-        </TableCell>
-        <TableCell>
-          = no 4 card major
-          <br /> = 4 ❤️s
-          <br />= 4 ♠️s
-        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell>9-12</TableCell>
         <TableCell>Jump bid in your longest suit.</TableCell>
-        <TableCell>0-7</TableCell>
-        <TableCell>
-          If 4-5 or 5-4 in majors, bid a major after 2♦️ reply.
-        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell>16+</TableCell>
         <TableCell>
-          With 6 card suit, first double, then rebid 6 card suit.
+          With 6 card suit, first double.
+          <br />
+          Second rebid 6 card suit.
         </TableCell>
         <TableCell>13+</TableCell>
         <TableCell>Jump bid in your longest suit.</TableCell>
-        <TableCell>8+</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>19+</TableCell>
         <TableCell>
-          If partner bids 2♦️, &amp; no 4 card major available, bid 2NT.
+          With balanced hand, first double.
+          <br />
+          Second rebid NT at lowest level.
+        </TableCell>
+        <TableCell />
+        <TableCell>
+          After double, bid like above.
+          <br />
+          After NT bid like 1NT response.
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
+        <TableCell colSpan={4} sx={{ backgroundColor: grey[800] }} />
+      </TableRow>
+      <TableRow>
+        <TableCell rowSpan={2} sx={{ fontWeight: "bold" }}>
+          <span style={{ fontWeight: "bold" }}>
+            Double
+            <br />
+            of 1NT
+          </span>
+          <br />
+          16+
+        </TableCell>
+        <TableCell rowSpan={2}>This is always a penalty double.</TableCell>
+        <TableCell>0-4</TableCell>
+        <TableCell>If very unbalanced, bid your longest suit.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>5+</TableCell>
+        <TableCell>Generally pass.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell colSpan={4} sx={{ backgroundColor: grey[800] }} />
       </TableRow>
       <TableRow>
         <TableCell rowSpan={9}>
@@ -150,52 +147,11 @@ const Overcalls = memo(() => (
         <TableCell colSpan={2} sx={{ fontWeight: "bold" }}>
           After an overcall at the 1 level with support:
         </TableCell>
-        <TableCell colSpan={2} sx={{ fontWeight: "bold" }} align="center">
-          <Typography variant="h6" component="h4">
-            Red Suit Transfers
-          </Typography>
-        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell>0-9</TableCell>
         <TableCell>
           With 3+ card support raise to the level of the fit.
-        </TableCell>
-        <TableCell colSpan={2} rowSpan={10}>
-          Respond to 1NT opening or overcall, &amp; 2NT opening
-          <br />
-          when you have a 5+ card major suit
-          <br />
-          Bid ♦️ for ❤️, bid ❤️ for ♠️.
-          <br />
-          NT bidder must bid next suit:
-          <br />
-          e.g. 1NT, pass, 2♦️, pass, 2❤️
-          <br />
-          With no chance of game: transfer &amp; then PASS.
-          <br />
-          <br />
-          Game hand &amp; 6+ cards: transfer then bid major game.
-          <br />
-          Game hand &amp; 5 cards: transfer then bid 3NT.
-          <br />
-          <br />
-          Partner: convert to game in major w/ 3 card support.
-          <br />
-          Invitational hand &amp; 6+ cards: transfer then bid 3 major.
-          <br />
-          Invitational hand &amp; 5 cards: transfer then bid 2NT.
-          <br />
-          <br />
-          <span style={{ fontWeight: "bold" }}>
-            Transferring to ♣️s or ♦️s:
-          </span>
-          <br />
-          With a weak hand &amp; a 6+ card minor suit bid 2♠️.
-          <br />
-          1NT bidder must bid 3♣️.
-          <br />
-          Responder passes or converts to 3♦️.
         </TableCell>
       </TableRow>
       <TableRow>
@@ -244,14 +200,12 @@ const Overcalls = memo(() => (
       </TableRow>
       <TableRow>
         <TableCell>16+</TableCell>
-        <TableCell>
-          If you have a 6 card suit, first double, then rebid the suit.
-        </TableCell>
+        <TableCell>See Takeout Double above.</TableCell>
         <TableCell />
-        <TableCell>Same as if partner opened bidding</TableCell>
+        <TableCell>See Takeout Double above.</TableCell>
       </TableRow>
       <TableRow>
-        <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
+        <TableCell colSpan={4} sx={{ backgroundColor: grey[800] }} />
       </TableRow>
       <TableRow>
         <TableCell rowSpan={3}>
@@ -272,11 +226,6 @@ const Overcalls = memo(() => (
           <br />
           Without support, pass, DO NOT BID OWN SUIT.
         </TableCell>
-        <TableCell colSpan={2} sx={{ fontWeight: "bold" }} align="center">
-          <Typography variant="h6" component="h4">
-            Gerber (NT Response)
-          </Typography>
-        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell rowSpan={2}>
@@ -284,25 +233,13 @@ const Overcalls = memo(() => (
         </TableCell>
         <TableCell>11-12</TableCell>
         <TableCell>Bid game with a fit or 2NT.</TableCell>
-        <TableCell>
-          4♣️
-          <br />
-          Aces?
-        </TableCell>
-        <TableCell>4♦️=0 or 4, 4❤️=1, 4♠️=2, 4NT=3</TableCell>
       </TableRow>
       <TableRow>
         <TableCell>13+</TableCell>
         <TableCell>Bid game with a fit or 3NT.</TableCell>
-        <TableCell>
-          5♣️
-          <br />
-          Kings?
-        </TableCell>
-        <TableCell>5♦️=0 or 4, 5❤️=1, 5♠️=2, 5NT=3</TableCell>
       </TableRow>
       <TableRow>
-        <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
+        <TableCell colSpan={4} sx={{ backgroundColor: grey[800] }} />
       </TableRow>
       <TableRow>
         <TableCell>
@@ -327,15 +264,9 @@ const Overcalls = memo(() => (
         <TableCell>
           Respond in the same way as an opening pre-emptive bid.
         </TableCell>
-        <TableCell colSpan={2} sx={{ fontWeight: "bold" }} align="center">
-          <Typography variant="h6" component="h4">
-            Blackwood (4NT)
-          </Typography>
-        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell colSpan={4} sx={{ backgroundColor: grey[800] }} />
-        <TableCell colSpan={2} />
       </TableRow>
       <TableRow>
         <TableCell>
@@ -350,66 +281,11 @@ const Overcalls = memo(() => (
         <TableCell>
           1NT - balanced hand w/ stopper in opponent&apos;s suit.
         </TableCell>
-        <TableCell rowSpan={2} />
-        <TableCell rowSpan={2}>
-          Respond in the same way as an opening bid of 1NT.
-        </TableCell>
-        <TableCell>
-          4NT
-          <br />
-          Aces?
-        </TableCell>
-        <TableCell>
-          5♣️=0 or 4, 5♦️=1, 5❤️=2, 5♠️=3
-          <br />
-          No points for slam? Bid 5 of unbid suit.
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell>19+</TableCell>
-        <TableCell>
-          Balanced hand, double, then rebid NT at lowest level.
-        </TableCell>
-        <TableCell>
-          5NT
-          <br />
-          Kings?
-        </TableCell>
-        <TableCell>
-          6♣️=0 or 4, 6♦️=1, 6❤️=2, 6♠️=3
-          <br />
-          No points for slam? Pass.
-        </TableCell>
+        <TableCell />
+        <TableCell>Response same as to 1NT open.</TableCell>
       </TableRow>
       <TableRow>
         <TableCell colSpan={4} sx={{ backgroundColor: grey[800] }} />
-        <TableCell colSpan={2} />
-      </TableRow>
-      <TableRow>
-        <TableCell rowSpan={2}>
-          <span style={{ fontWeight: "bold" }}>
-            Double
-            <br />
-            of 1NT
-          </span>
-          <br />
-          16+
-        </TableCell>
-        <TableCell rowSpan={2}>This is always a penalty double.</TableCell>
-        <TableCell>0-4</TableCell>
-        <TableCell>If very unbalanced, bid your longest suit.</TableCell>
-        <TableCell rowSpan={2} colSpan={2}>
-          Do not ask for Kings unless you know
-          <br />
-          you have the strength for a grand slam.
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell>5+</TableCell>
-        <TableCell>Generally pass.</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
       </TableRow>
     </TableBody>
   </>

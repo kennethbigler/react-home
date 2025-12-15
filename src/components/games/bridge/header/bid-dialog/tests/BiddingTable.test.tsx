@@ -3,10 +3,12 @@ import { render, screen } from "@testing-library/react";
 import BiddingTable from "../BiddingTable";
 
 describe("games | bridge | BiddingTable", () => {
-  it("renders a table element", () => {
+  it("renders table elements", () => {
     render(<BiddingTable />);
 
-    expect(screen.getByRole("table")).toBeInTheDocument();
+    // BiddingTable renders two tables: one for BalancedHands/UnbalancedHands, one for Overcalls/Overleaf
+    const tables = screen.getAllByRole("table");
+    expect(tables.length).toBe(2);
   });
 
   it("renders all three bidding sections", () => {
@@ -58,12 +60,14 @@ describe("games | bridge | BiddingTable", () => {
     expect(columnHeaders.length).toBeGreaterThan(0);
   });
 
-  it("applies correct styling to the table", () => {
+  it("applies correct styling to the tables", () => {
     render(<BiddingTable />);
 
-    const table = screen.getByRole("table");
-    // Table should have MUI Table class
-    expect(table).toHaveClass("MuiTable-root");
+    const tables = screen.getAllByRole("table");
+    // All tables should have MUI Table class
+    tables.forEach((table) => {
+      expect(table).toHaveClass("MuiTable-root");
+    });
   });
 
   it("renders point ranges for balanced hands", () => {

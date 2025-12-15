@@ -31,8 +31,9 @@ describe("games | bridge | BidDialog", () => {
     fireEvent.click(screen.getByRole("button", { name: /bid/i }));
 
     await waitFor(() => {
-      // Check for main table structure and key headers
-      expect(screen.getByRole("table")).toBeInTheDocument();
+      // Check for main table structure - BiddingTable renders two tables
+      const tables = screen.getAllByRole("table");
+      expect(tables.length).toBe(2);
 
       // Check for main section headers from all three sub-components
       const openingBidsHeadings = screen.getAllByRole("heading", {

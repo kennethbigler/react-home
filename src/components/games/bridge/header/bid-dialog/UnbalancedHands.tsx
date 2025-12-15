@@ -32,8 +32,9 @@ const UnbalancedHands = memo(() => (
         </TableCell>
         <TableCell>0-5</TableCell>
         <TableCell>Pass</TableCell>
-        <TableCell />
-        <TableCell />
+        <TableCell sx={{ fontWeight: "bold" }} colSpan={2} rowSpan={2}>
+          After same suit response
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell rowSpan={2}>
@@ -43,9 +44,6 @@ const UnbalancedHands = memo(() => (
         </TableCell>
         <TableCell sx={{ fontWeight: "bold" }} colSpan={2}>
           3 or more cards in openers major suit
-        </TableCell>
-        <TableCell sx={{ fontWeight: "bold" }} colSpan={2}>
-          After same suit response
         </TableCell>
       </TableRow>
       <TableRow>
