@@ -1,0 +1,2 @@
+import{j as e,f as t}from"./mui-vendor-BMBlDOcZ.js";import{r as s}from"./react-vendor-BtzsouiL.js";import{D as o}from"./Degree-BbNLMueu.js";import{p as a}from"./classes-6eodwRRe.js";import"./ExpandableCard-BR69FUVv.js";import"./DateHelper-hKADhxz5.js";const m=s.memo(()=>e.jsxs(e.Fragment,{children:[e.jsx(t,{variant:"h2",component:"h1",children:"Presentations & Hackathons"}),a.map(r=>e.jsx(o,{degree:r},r.degree))]}));m.displayName="Presentations";export{m as default};
+//# sourceMappingURL=index-CWVtyrmx.js.map
