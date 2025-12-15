@@ -73,22 +73,24 @@ const BalancedHands = memo(() => (
         <TableCell colSpan={6} sx={{ backgroundColor: grey[800] }} />
       </TableRow>
       <TableRow>
-        <TableCell rowSpan={7}>15-17</TableCell>
-        <TableCell rowSpan={7}>Open 1NT</TableCell>
+        <TableCell rowSpan={8}>15-17</TableCell>
+        <TableCell rowSpan={8}>Open 1NT</TableCell>
         <TableCell>0-7</TableCell>
         <TableCell>Balanced: Pass</TableCell>
-        <TableCell rowSpan={3} />
-        <TableCell rowSpan={3}>
+        <TableCell rowSpan={4} />
+        <TableCell rowSpan={4}>
           Raise 2NT to 3NT with 17 points, otherwise Pass.
           <br />
           Raise 4NT to 6NT with 17 points, otherwise Pass.
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell>8-15</TableCell>
-        <TableCell>
-          Balanced (or unbalanced 5+ minor): 8-9&nbsp;2NT, 10-15&nbsp;3NT
-        </TableCell>
+        <TableCell>8-9</TableCell>
+        <TableCell>Balanced (or unbalanced 5+ minor): 2NT</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>10-15</TableCell>
+        <TableCell>Balanced (or unbalanced 5+ minor): 3NT</TableCell>
       </TableRow>
       <TableRow>
         <TableCell>16-17</TableCell>

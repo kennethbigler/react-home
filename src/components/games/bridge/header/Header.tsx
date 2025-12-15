@@ -16,21 +16,13 @@ const Header = memo(() => {
   const handleNewGame = () => {
     let newWeRubbers = weRubbers;
     let newTheyRubbers = theyRubbers;
-    const weWon = weWins >= theyWins;
-    let weTotal = weSum;
-    let theyTotal = theySum;
-    if (weWon) {
-      weTotal += theyWins === 0 ? 700 : 500;
-    } else {
-      theyTotal += weWins === 0 ? 700 : 500;
-    }
 
-    if (weTotal > theyTotal) {
+    if (weSum > theySum) {
       newWeRubbers += 1;
-    } else if (theyTotal > weTotal) {
+    } else if (theySum > weSum) {
       newTheyRubbers += 1;
     } else {
-      if (weWon) {
+      if (weWins >= theyWins) {
         newWeRubbers += 1;
       } else {
         newTheyRubbers += 1;

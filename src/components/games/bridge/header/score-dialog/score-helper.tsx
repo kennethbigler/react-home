@@ -24,14 +24,19 @@ const useBridgeScorer = (
   is4Aces: boolean,
   is4Honours: boolean,
   is5Honours: boolean,
+  weVulnerable: boolean,
+  theyVulnerable: boolean,
 ) => {
   // --------------------     Winning Team     -------------------- //
   const madeBid = declarerTricks >= contractTricks + 6;
   let winner: "we" | "they";
+  let isVulnerable = false;
   if (madeBid) {
     winner = isWe ? "we" : "they";
+    isVulnerable = isWe ? weVulnerable : theyVulnerable;
   } else {
     winner = !isWe ? "we" : "they";
+    isVulnerable = isWe ? theyVulnerable : weVulnerable;
   }
 
   // --------------------     Above the Line     -------------------- //
@@ -48,7 +53,6 @@ const useBridgeScorer = (
 
   // --------------------     Below the Line     -------------------- //
   let belowTheLine: number = 0;
-  const isVulnerable = false;
   if (madeBid) {
     // check for slams
     const slamMultiplier = 1 * (isDouble ? 2 : 1) * (isRedouble ? 2 : 1);
