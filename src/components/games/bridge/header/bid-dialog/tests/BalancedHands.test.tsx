@@ -52,8 +52,11 @@ describe("games | bridge | BalancedHands", () => {
     const range07 = screen.getAllByText("0-7");
     expect(range07.length).toBeGreaterThanOrEqual(1);
 
-    const range815 = screen.getAllByText("8-15");
-    expect(range815.length).toBeGreaterThanOrEqual(1);
+    const range89 = screen.getAllByText("8-9");
+    expect(range89.length).toBeGreaterThanOrEqual(1);
+
+    const range1015 = screen.getAllByText("10-15");
+    expect(range1015.length).toBeGreaterThanOrEqual(1);
 
     const range1617 = screen.getAllByText("16-17");
     expect(range1617.length).toBeGreaterThanOrEqual(1);

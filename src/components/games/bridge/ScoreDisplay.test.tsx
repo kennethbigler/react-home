@@ -118,9 +118,10 @@ describe("ScoreDisplay Component", () => {
       </Provider>,
     );
 
+    // All scores in game 0 use bids[0] (the game's bid)
     expect(screen.getByText(/20 \(1♣️\)/)).toBeInTheDocument();
-    expect(screen.getByText(/30 \(2♥️\)/)).toBeInTheDocument();
-    expect(screen.getByText(/40 \(3NT\)/)).toBeInTheDocument();
+    expect(screen.getByText(/30 \(1♣️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/40 \(1♣️\)/)).toBeInTheDocument();
     // They's zeros are filtered out so they don't display
   });
 
@@ -157,7 +158,6 @@ describe("ScoreDisplay Component", () => {
         [[60], [120]],
         [[40], []],
       ],
-      // Since component uses shadowed 'i', each game accesses bids[0]
       bids: ["3NT", "2♥️", "1♣️"],
       weBelow: [10, 20],
       theyBelow: [15],
@@ -171,12 +171,12 @@ describe("ScoreDisplay Component", () => {
       </Provider>,
     );
 
-    // Each game's first score uses bids[0] due to shadowed i variable
+    // Each game uses its corresponding bid from the bids array
     expect(screen.getByText(/100 \(3NT\)/)).toBeInTheDocument();
     expect(screen.getByText(/80 \(3NT\)/)).toBeInTheDocument();
-    expect(screen.getByText(/60 \(3NT\)/)).toBeInTheDocument();
-    expect(screen.getByText(/120 \(3NT\)/)).toBeInTheDocument();
-    expect(screen.getByText(/40 \(3NT\)/)).toBeInTheDocument();
+    expect(screen.getByText(/60 \(2♥️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/120 \(2♥️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/40 \(1♣️\)/)).toBeInTheDocument();
   });
 
   it("correctly reverses the order of above the line scores", () => {
@@ -187,7 +187,6 @@ describe("ScoreDisplay Component", () => {
         [[40], [0]],
         [[60], [0]],
       ],
-      // Each game accesses bids[0] due to shadowed i variable
       bids: ["1♣️", "2♥️", "3NT"],
       weBelow: [0, 0, 0],
       theyBelow: [0, 0, 0],
@@ -201,11 +200,11 @@ describe("ScoreDisplay Component", () => {
       </Provider>,
     );
 
-    // All games show bids[0] due to shadowed i variable
-    // Game 2 shows first (top), then game 1, then game 0 (bottom)
+    // Each game uses its corresponding bid from the bids array
+    // Game 2 shows first (top), then game 1, then game 0 (bottom) due to .reverse()
     expect(screen.getByText(/20 \(1♣️\)/)).toBeInTheDocument();
-    expect(screen.getByText(/40 \(1♣️\)/)).toBeInTheDocument();
-    expect(screen.getByText(/60 \(1♣️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/40 \(2♥️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/60 \(3NT\)/)).toBeInTheDocument();
   });
 
   it("handles empty arrays correctly", () => {
