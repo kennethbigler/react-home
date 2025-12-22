@@ -1,7 +1,7 @@
 import { memo, CSSProperties } from "react";
 import { grey } from "@mui/material/colors";
 
-interface YearMarkersProps {
+interface YearMarkerProps {
   body?: string;
   width: number;
 }
@@ -23,7 +23,7 @@ const labelStyles: CSSProperties = {
   right: 22,
 };
 
-const YearMarkers = memo(({ body, width }: YearMarkersProps) => {
+const YearMarker = memo(({ body, width }: YearMarkerProps) => {
   // variables for empty segment
   const style: CSSProperties = {
     display: "inline-block",
@@ -43,6 +43,6 @@ const YearMarkers = memo(({ body, width }: YearMarkersProps) => {
   );
 });
 
-YearMarkers.displayName = "YearMarkers";
+YearMarker.displayName = "YearMarker";
 
-export default YearMarkers;
+export default YearMarker;

@@ -38,7 +38,7 @@ const fMonthSort = (a: CarEntry, b: CarEntry): number => {
 };
 
 /** TimelineCard  ->  Row  ->  Segment
- **                       |->  YearMarkers */
+ **                       |->  YearMarker */
 const TimelineCard = memo(
   ({ data: propsData, useFStart, useKStart, onClick }: TimelineCardProps) => {
     // get immutable data from props and sort by start date

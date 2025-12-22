@@ -1,6 +1,6 @@
 import { CSSProperties } from "react";
 import Segment, { SegmentType } from "./Segment";
-import YearMarkers from "./YearMarkers";
+import YearMarker from "./YearMarker";
 
 interface RowProps {
   segments: SegmentType[];
@@ -30,7 +30,7 @@ const Row = ({
     <div style={style}>
       {segments.map((data, j) =>
         yearMarkers ? (
-          <YearMarkers key={j} body={data.body} width={data.width} />
+          <YearMarker key={j} body={data.body} width={data.width} />
         ) : (
           <Segment key={j} {...data} onClick={onClick} />
         ),
