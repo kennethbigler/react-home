@@ -12,6 +12,12 @@ const MIN_SHORT_WIDTH = 56;
 const YEAR_WIDTH = 0.3;
 const YEAR_MARK_FREQ = 2;
 
+interface YearMarkerType {
+  width: number;
+  body?: string;
+  color?: string;
+}
+
 /* *************************     Local Functions     ************************* */
 /** function to add empty space between start and elm segment */
 const addEmptySegment = (segments: SegmentType[], width: number): void => {
@@ -56,13 +62,21 @@ export const getYearMarkers = () => {
   const startYear = Number(START.format("YYYY"));
   const endYear = Number(END.format("YYYY"));
 
+  const currentYear = dateObj().year;
+  let hasCurrentYear = false;
   const years = [];
   for (let year = startYear + 1; year <= endYear; year += YEAR_MARK_FREQ) {
+    if (year === currentYear) {
+      hasCurrentYear = true;
+    } else if (year > currentYear && !hasCurrentYear) {
+      years.push(dateObj(`${currentYear}`));
+      hasCurrentYear = true;
+    }
     years.push(dateObj(`${year}`));
   }
 
   const marker = { width: YEAR_WIDTH, body: years[0].format("'YY") };
-  const yearMarkers = [
+  const yearMarkers: YearMarkerType[] = [
     { width: getTimeFromStart(years[0]) - YEAR_WIDTH },
     marker,
   ];
@@ -71,7 +85,11 @@ export const getYearMarkers = () => {
     const previousYear = getTimeFromStart(years[i - 1]);
     const thisYear = getTimeFromStart(years[i]);
     yearMarkers.push({ width: thisYear - previousYear - YEAR_WIDTH });
-    yearMarkers.push({ width: YEAR_WIDTH, body: years[i].format("'YY") });
+    yearMarkers.push({
+      width: YEAR_WIDTH,
+      body: years[i].format("'YY"),
+      color: years[i].year === currentYear ? "red" : undefined,
+    });
   }
 
   return yearMarkers;

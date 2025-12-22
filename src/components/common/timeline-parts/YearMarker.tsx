@@ -3,6 +3,7 @@ import { grey } from "@mui/material/colors";
 
 interface YearMarkerProps {
   body?: string;
+  color?: string;
   width: number;
 }
 
@@ -14,7 +15,6 @@ const boxStyles: CSSProperties = {
 };
 const markerStyles: CSSProperties = {
   ...boxStyles,
-  backgroundColor: grey[200],
   width: "100%",
   maxWidth: 2.5,
 };
@@ -23,11 +23,17 @@ const labelStyles: CSSProperties = {
   right: 22,
 };
 
-const YearMarker = memo(({ body, width }: YearMarkerProps) => {
+const YearMarker = memo(({ body, color, width }: YearMarkerProps) => {
   // variables for empty segment
   const style: CSSProperties = {
     display: "inline-block",
     width: `${width}%`,
+    color: color || undefined,
+  };
+
+  const markerStyle = {
+    ...markerStyles,
+    backgroundColor: color || grey[200],
   };
 
   return !body ? (
@@ -36,7 +42,7 @@ const YearMarker = memo(({ body, width }: YearMarkerProps) => {
     </div>
   ) : (
     <div style={{ ...style, ...boxStyles }} title={body}>
-      <div style={markerStyles} title="year-marker">
+      <div style={markerStyle} title="year-marker">
         <div style={labelStyles}>{body}</div>
       </div>
     </div>

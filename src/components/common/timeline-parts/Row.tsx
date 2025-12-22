@@ -30,7 +30,12 @@ const Row = ({
     <div style={style}>
       {segments.map((data, j) =>
         yearMarkers ? (
-          <YearMarker key={j} body={data.body} width={data.width} />
+          <YearMarker
+            key={j}
+            width={data.width}
+            body={data?.body || undefined}
+            color={data.color || undefined}
+          />
         ) : (
           <Segment key={j} {...data} onClick={onClick} />
         ),
