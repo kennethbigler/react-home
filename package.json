@@ -62,7 +62,7 @@
     "eslint-plugin-react-hooks": "7.0.1",
     "eslint-plugin-react-refresh": "0.4.26",
     "gts": "6.0.2",
-    "jsdom": "27.3.0",
+    "jsdom": "27.4.0",
     "prettier": "3.7.4",
     "source-map-explorer": "2.5.3",
     "typescript": "5.9.3",
