@@ -5,6 +5,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { americas, euNaf, asNau } from "../../../../constants/travel";
@@ -22,7 +23,7 @@ const cellStyles: CSSProperties = {
 
 // --------------------     Countries Table     -------------------- //
 // ratio to display on table, 2:1 seemed to look best
-const EURatio = 3;
+const EURatio = 2;
 // export array of <li> elements for display
 const countries: ReactElement[] = [];
 // iterate to the end of the longer list
@@ -77,15 +78,17 @@ const CountryTable = memo(() => (
     <TableHead>
       <TableRow>
         <TableCell style={{ ...cellStyles, ...separatorStyles }}>
-          The Americas
+          <Typography variant="h6">The Americas</Typography>
         </TableCell>
         <TableCell
           colSpan={EURatio}
           style={{ ...cellStyles, ...separatorStyles }}
         >
-          Europe &amp; Africa
+          <Typography variant="h6">Europe &amp; Africa</Typography>
         </TableCell>
-        <TableCell style={cellStyles}>Asia &amp; Australia</TableCell>
+        <TableCell style={cellStyles}>
+          <Typography variant="h6">Asia &amp; Australia</Typography>
+        </TableCell>
       </TableRow>
     </TableHead>
     <TableBody>{countries}</TableBody>

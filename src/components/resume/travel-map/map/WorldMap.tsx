@@ -6,6 +6,7 @@ import "highcharts/modules/accessibility";
 import { Typography } from "@mui/material";
 import themeAtom from "../../../../jotai/theme-atom";
 import countries, { numCountries } from "../../../../constants/travel";
+import { blue } from "@mui/material/colors";
 
 const staticOptions: Highcharts.Options = {
   accessibility: { enabled: true },
@@ -17,13 +18,15 @@ const staticOptions: Highcharts.Options = {
       name: "Visited",
       states: {
         hover: {
-          color: "#BADA55",
+          color: blue[500],
         },
       },
       joinBy: ["name", "name"],
       data: countries,
       showInLegend: false,
       tooltip: { pointFormat: "{point.name}: {point.flag}" },
+      // colorByPoint: true,
+      // colors: [],
     },
   ],
   title: {
