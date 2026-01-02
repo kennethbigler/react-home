@@ -365,7 +365,7 @@ export const cruises: Cruise[] = [
   {
     departure: dateObj("2025-12"),
     line: Lines.NG,
-    name: "🇦🇷🇦🇶",
+    name: "🇦🇷🇨🇱🇦🇶🇧🇷",
     nights: 11,
     ship: Ships.Endurance,
     region: Regions.West,
