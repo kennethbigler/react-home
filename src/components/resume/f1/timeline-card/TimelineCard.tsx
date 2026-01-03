@@ -10,7 +10,7 @@ interface TimelineCardProps {
 }
 
 /** TimelineCard  ->  Row  ->  Segment
- **                       |->  YearMarkers */
+ **                       |->  YearMarker */
 const TimelineCard = memo(({ data }: TimelineCardProps) => {
   // track elements added already
   const added: boolean[] = [];

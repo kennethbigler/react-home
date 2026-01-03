@@ -65,7 +65,7 @@ const Info = memo(() => (
                 <p>
                   CPR, AED, &amp; First Aid Certified (Adult, Child, &amp; Baby)
                 </p>
-                <p>Golden Shellback</p>
+                <p>Golden Shellback/Polaris</p>
               </TableCell>
               <TableCell>
                 <p>Ordained Minister</p>
