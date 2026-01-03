@@ -25,8 +25,6 @@ const staticOptions: Highcharts.Options = {
       data: countries,
       showInLegend: false,
       tooltip: { pointFormat: "{point.name}: {point.flag}" },
-      // colorByPoint: true,
-      // colors: [],
     },
   ],
   title: {
