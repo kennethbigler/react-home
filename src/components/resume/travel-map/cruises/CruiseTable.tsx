@@ -5,8 +5,10 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { cruises, totalNights } from "../../../../constants/cruises";
+import { grey } from "@mui/material/colors";
 
 // --------------------     Styles     -------------------- //
 const cellStyles: CSSProperties = {
@@ -33,9 +35,9 @@ const CruiseTable = memo(() => (
         <Fragment key={`cruise-tr-${i}`}>
           {(i === 0 ||
             cruise.departure.year > cruises[i - 1].departure.year) && (
-            <TableRow>
+            <TableRow sx={{ borderTop: `2px solid ${grey[400]}` }}>
               <TableCell style={cellStyles} colSpan={5}>
-                {cruise.departure.year}
+                <Typography variant="h6">{cruise.departure.year}</Typography>
               </TableCell>
             </TableRow>
           )}
