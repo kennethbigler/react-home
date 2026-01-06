@@ -380,7 +380,7 @@ export const cruises: Cruise[] = [
     region: Regions.West,
   },
   {
-    concierge: false,
+    concierge: true,
     departure: dateObj("2026-09"),
     line: Lines.Disney,
     name: "🇪🇸🇵🇹🇺🇸",

@@ -484,7 +484,7 @@ export interface ContractData {
 export const contractData: ContractData[] = [
   {
     color: MCLAREN_HEX,
-    team: "McLaren - Norris",
+    team: "McLaren - Norris 🥇",
     start: dateObj("2019"),
     end: dateObj("2027-12"),
     inverted: true,
@@ -497,7 +497,7 @@ export const contractData: ContractData[] = [
   },
   {
     color: RED_BULL_HEX,
-    team: "Red Bull - Verstappen",
+    team: "Red Bull - Verstappen 🥇🥇🥇🥇",
     start: dateObj("2016-05"),
     end: dateObj("2028-12"),
   },
@@ -535,14 +535,14 @@ export const contractData: ContractData[] = [
   },
   {
     color: MCLAREN_HEX,
-    team: "07-12 McLaren",
+    team: "07-12 McLaren 🥇",
     start: dateObj("2012"), // actually 2007, shorten for better display
     end: dateObj("2013"), // full 2012 Season
     inverted: true,
   },
   {
     color: MERCEDES_HEX,
-    team: "Mercedes - Hamilton",
+    team: "Mercedes - Hamilton 🥇🥇🥇🥇🥇🥇",
     start: dateObj("2013"),
     end: dateObj("2025"), // full 2024 Season
     inverted: true,
