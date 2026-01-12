@@ -105,4 +105,27 @@ countries.forEach((country): void => {
 
 export const numCountries = countries.length;
 
+interface TravelDay {
+  year: number;
+  vacation: number;
+  work: number;
+}
+
+const travelDays: TravelDay[] = [
+  { year: 2020, vacation: 4, work: 0 },
+  { year: 2021, vacation: 47, work: 0 },
+  { year: 2022, vacation: 41, work: 33 },
+  { year: 2023, vacation: 66, work: 11 },
+  { year: 2024, vacation: 84, work: 23 },
+  { year: 2025, vacation: 78, work: 34 },
+  {
+    year: 2026,
+    vacation: 3,
+    work: 0,
+  },
+];
+
+export const vacationDays: number[] = travelDays.map((day) => day.vacation);
+export const workDays: number[] = travelDays.map((day) => day.work);
+
 export default countries;
