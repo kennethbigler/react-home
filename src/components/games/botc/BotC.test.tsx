@@ -15,9 +15,9 @@ describe("games | BotC", () => {
     fireEvent.click(screen.getByText("Reset"));
     expect(screen.getByText("Game Reset")).toBeInTheDocument();
     // swap number of players
-    expect(screen.getByText("Players: 8 / Dist: 5, 1, 1, 1"));
+    expect(screen.getByText("Players: 8 (5, 1, 1, 1)"));
     fireEvent.click(screen.getByLabelText("add player"));
-    expect(screen.getByText("Players: 9 / Dist: 5, 2, 1, 1"));
+    expect(screen.getByText("Players: 9 (5, 2, 1, 1)"));
     // swap number of travelers
     expect(screen.getByText("Travelers"));
     fireEvent.click(screen.getByLabelText("1 traveler"));

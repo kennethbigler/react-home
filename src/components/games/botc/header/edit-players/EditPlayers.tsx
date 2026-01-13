@@ -63,7 +63,7 @@ const EditPlayers = ({
           <Remove />
         </Button>
         <Typography display="inline">
-          Players: {numPlayers} / Dist: {playerDist[numPlayers]}
+          Players: {numPlayers} ({playerDist[numPlayers]})
         </Typography>
         <Button
           aria-label="add player"
