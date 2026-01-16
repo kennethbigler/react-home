@@ -34,7 +34,7 @@
     "@mui/icons-material": "7.3.7",
     "@mui/material": "7.3.7",
     "@vitejs/plugin-react": "5.1.2",
-    "highcharts": "12.4.0",
+    "highcharts": "12.5.0",
     "highcharts-react-official": "3.2.3",
     "jotai": "2.16.1",
     "localforage": "1.10.0",
