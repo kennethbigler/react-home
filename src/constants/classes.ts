@@ -648,6 +648,40 @@ export const presentations: School[] = [
     subtitle: "",
     years: [
       {
+        year: "2026",
+        quarters: [
+          {
+            quarter:
+              "Setting Up AI-Integrated IDEs for Accessible Code by Default",
+            classes: [
+              {
+                catalog: "Description",
+                name: "This workshop is designed to empower developers to use AI-integrated IDEs, such as Cursor, to generate accessible code. As artificial intelligence increasingly assists in coding tasks, there is both an opportunity & a responsibility to ensure that the outputs of these tools align with accessibility & inclusive design principles. We will open with a discussion of common accessibility shortcomings in AI-generated code, such as missing semantic elements, improper ARIA attributes, inadequate color contrast, or inaccessible form structures. Participants will explore how to configure IDE environments & AI assistants to mitigate these issues, shifting accessibility from a corrective task to a proactive default. Through guided demonstrations & hands-on exercises, attendees will learn practical methods to influence AI code generation, including writing prompts, applying custom rulesets, and integrating automated accessibility checkers directly into the development workflow. Participants will also examine how extensions, linters, and team-level standards can reinforce accessible coding practices. The workshop will be interactive & solution-oriented, blending technical configuration with real-world scenarios.",
+              },
+            ],
+          },
+          {
+            quarter:
+              "AI for Accessibility: Real-World Innovations Empowering All",
+            classes: [
+              {
+                catalog: "Description",
+                name: "Discover real-world examples of AI driving accessibility, from sign language translation to voice banking, navigation, and assistive robotics. Learn how these innovations empower independence, improve communication, and shape inclusive futures across education, healthcare, and daily life.",
+              },
+            ],
+          },
+          {
+            quarter: "Disabled Buttons and Inclusive Design - Not Again!",
+            classes: [
+              {
+                catalog: "Description",
+                name: "Learn why disabled buttons, and controls, can hurt more than help. This session shows when to use them, when not to, and what to do instead. You'll leave with tips you can use right away—whether you're a designer, developer, or PM—to make better, more helpful user experiences.",
+              },
+            ],
+          },
+        ],
+      },
+      {
         year: "2024",
         quarters: [
           {
