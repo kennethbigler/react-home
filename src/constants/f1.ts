@@ -49,6 +49,27 @@ interface Constructor {
   standings: (number | null)[];
 }
 
+// Audi History
+const sauberPoints = [48];
+const sauberStandings = [8];
+const alphaRomeoPoints = [...sauberPoints, 57, 8, 13, 55, 16];
+const alphaRomeoStandings = [...sauberStandings, 8, 8, 9, 6, 9];
+const kickSauberPoints = [...alphaRomeoPoints, 4, 70];
+const kickSauberStandings = [...alphaRomeoStandings, 10, 9];
+// Aston Martin History
+const forceIndiaPoints = [52];
+const forceIndiaStandings = [7];
+const racingPointPoints = [...forceIndiaPoints, 73, 195];
+const racingPointStandings = [...forceIndiaStandings, 7, 4];
+// Racing Bulls History
+const toroRossoPoints = [33, 85];
+const toroRossoStandings = [9, 6];
+const alphaTauriPoints = [...toroRossoPoints, 107, 142, 35, 25];
+const alphaTauriStandings = [...toroRossoStandings, 7, 6, 9, 8];
+// Alpine History
+const renaultPoints = [122, 91, 181];
+const renaultStandings = [4, 5, 5];
+
 export const constructors: Constructor[] = [
   {
     name: "McLaren",
@@ -83,14 +104,14 @@ export const constructors: Constructor[] = [
   {
     name: "Racing Bulls",
     color: RB_HEX,
-    points: [33, 85, 107, 142, 35, 25, 46, 92, 5],
-    standings: [9, 6, 7, 6, 9, 8, 8, 6, 6],
+    points: [...alphaTauriPoints, 46, 92, 5],
+    standings: [...alphaTauriStandings, 8, 6, 6],
   },
   {
     name: "Aston Martin",
     color: ASTON_HEX,
-    points: [52, 73, 195, 77, 55, 280, 94, 89, 4],
-    standings: [7, 7, 4, 7, 7, 5, 5, 7, 7],
+    points: [...racingPointPoints, 77, 55, 280, 94, 89, 4],
+    standings: [...racingPointStandings, 7, 7, 5, 5, 7, 7],
   },
   {
     name: "Haas",
@@ -101,14 +122,14 @@ export const constructors: Constructor[] = [
   {
     name: "Audi",
     color: AUDI_HEX,
-    points: [48, 57, 8, 13, 55, 16, 4, 70, 2],
-    standings: [8, 8, 8, 9, 6, 9, 10, 9, 9],
+    points: [...kickSauberPoints, 2],
+    standings: [...kickSauberStandings, 9],
   },
   {
     name: "Alpine",
     color: ALPINE_HEX,
-    points: [122, 91, 181, 155, 173, 120, 65, 22, 1],
-    standings: [4, 5, 5, 5, 4, 6, 6, 10, 10],
+    points: [...renaultPoints, 155, 173, 120, 65, 22, 1],
+    standings: [...renaultStandings, 5, 4, 6, 6, 10, 10],
   },
   {
     name: "Cadillac",
@@ -120,52 +141,52 @@ export const constructors: Constructor[] = [
   {
     name: "Kick Sauber",
     color: K_SAUBER_HEX,
-    points: [48, 57, 8, 13, 55, 16, 4, 70],
-    standings: [8, 8, 8, 9, 6, 9, 10, 9, null],
+    points: kickSauberPoints,
+    standings: kickSauberStandings,
   },
   // ----------     2nd Replacement     ---------- //
   {
     name: "AlphaTauri",
     color: AT_HEX,
-    points: [33, 85, 107, 142, 35, 25],
-    standings: [9, 6, 7, 6, 9, 8, null],
+    points: alphaTauriPoints,
+    standings: alphaTauriStandings,
   },
   {
     name: "Alfa Romeo",
     color: AR_HEX,
-    points: [48, 57, 8, 13, 55, 16],
-    standings: [8, 8, 8, 9, 6, 9, null],
+    points: alphaRomeoPoints,
+    standings: alphaRomeoStandings,
   },
   {
     name: "Racing Point",
     color: RP_HEX,
-    points: [52, 73, 195],
-    standings: [7, 7, 4, null],
+    points: racingPointPoints,
+    standings: racingPointStandings,
   },
   // ----------     1st Replacement     ---------- //
   {
     name: "Renault",
     color: RENAULT_HEX,
-    points: [122, 91, 181],
-    standings: [4, 5, 5, null],
+    points: renaultPoints,
+    standings: renaultStandings,
   },
   {
     name: "Toro Rosso",
     color: TR_HEX,
-    points: [33, 85],
-    standings: [9, 6, null],
+    points: toroRossoPoints,
+    standings: toroRossoStandings,
   },
   {
     name: "Force India",
     color: FI_HEX,
-    points: [52],
-    standings: [7, null],
+    points: forceIndiaPoints,
+    standings: forceIndiaStandings,
   },
   {
     name: "Sauber",
     color: SAUBER_HEX,
-    points: [48],
-    standings: [8, null],
+    points: sauberPoints,
+    standings: sauberStandings,
   },
 ];
 

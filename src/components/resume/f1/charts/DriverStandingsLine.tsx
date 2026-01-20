@@ -39,6 +39,7 @@ const DriverStandingsLine = memo(({ color }: DriverStandingsLineProps) => {
           return xAxisYears[point.value || 0];
         },
       },
+      max: 7, // TODO: March 8th - remove after first points
     },
     yAxis: { ...staticOptions.yAxis, labels: { style: { color } } },
   };
