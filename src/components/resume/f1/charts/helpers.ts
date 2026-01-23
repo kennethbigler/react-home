@@ -13,7 +13,6 @@ export const standingsTTFormatter = function (this: Highcharts.Point): string {
     tooltip += i < this.series.data.length - 1 ? ", " : ": ";
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-base-to-string
   tooltip += `<span style="color: ${this.color?.toString()};">&#11044;</span> <b>${this.series.name}</b><br/>`;
 
   return tooltip;
@@ -26,7 +25,6 @@ export const constructorPointsTooltipFormatter = function (
   const tooltipHist: Record<number, string> = {};
 
   (this.points || []).forEach((point: Highcharts.Point) => {
-    // eslint-disable-next-line @typescript-eslint/no-base-to-string
     const team = `<span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name}`;
     const i = point.y || 0;
 
@@ -53,7 +51,6 @@ export const driverPointsTooltipFormatter = function (
   const tooltipHist: Record<number, string> = {};
 
   (this.points || []).forEach((point: Highcharts.Point) => {
-    // eslint-disable-next-line @typescript-eslint/no-base-to-string
     const team = `<span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name}`;
     const i = point.y || 0;
 
