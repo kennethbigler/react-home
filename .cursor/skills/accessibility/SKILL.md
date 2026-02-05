@@ -1,8 +1,7 @@
 ---
+name: accessibility
 description: WCAG 2.2 Level AA accessibility standards for React components. Ensures semantic HTML, keyboard navigation, ARIA usage, color contrast, form labels, and screen reader support.
-alwaysApply: true
 ---
-
 # Web Accessibility Standards
 
 ## Core Principles (WCAG 2.2)
