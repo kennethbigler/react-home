@@ -8,7 +8,7 @@ import saudiSrc from "../../../images/tracks/Saudi_Arabia_Circuit.avif";
 import miamiSrc from "../../../images/tracks/Miami_Circuit.avif";
 import emiliaSrc from "../../../images/tracks/Emilia_Romagna_Circuit.avif";
 import monacoSrc from "../../../images/tracks/Monaco_Circuit.avif";
-import spainSrc from "../../../images/tracks/Spain_Circuit.avif";
+import barcelonaSrc from "../../../images/tracks/Barcelona_Circuit.avif";
 import canadaSrc from "../../../images/tracks/Canada_Circuit.avif";
 import austriaSrc from "../../../images/tracks/Austria_Circuit.avif";
 import gbSrc from "../../../images/tracks/Great_Britain_Circuit.avif";
@@ -130,7 +130,7 @@ const Tracks = memo(() => {
           <Track
             expanded={expanded}
             circuitName="Circuit de Barcelona-Catalunya, Spain"
-            imgSrc={spainSrc}
+            imgSrc={barcelonaSrc}
             circuitLen={4.361}
             firstGP={1978}
             numLaps={70}
@@ -280,7 +280,7 @@ const Tracks = memo(() => {
           />
           <Track
             expanded={expanded}
-            circuitName="Yas Marina Circuit, Abu Dhabi"
+            circuitName="Yas Marina Circuit, Abu Dhabi, UAE"
             imgSrc={abuDhabiSrc}
             circuitLen={5.281}
             firstGP={2009}
