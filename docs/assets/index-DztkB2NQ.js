@@ -1,2 +1,0 @@
-import{j as o,f as e}from"./mui-vendor-BaWEqana.js";import{r as t}from"./react-vendor-DdXbj7Lh.js";import{D as a}from"./Degree-CaJFzjPJ.js";import{s}from"./classes-DaoO4RLX.js";import"./ExpandableCard-kAbiSEcC.js";import"./DateHelper-hKADhxz5.js";const m=t.memo(()=>o.jsxs(o.Fragment,{children:[o.jsx(e,{variant:"h2",component:"h1",children:"Education"}),s.map(r=>o.jsx(a,{degree:r},r.degree))]}));m.displayName="Education";export{m as default};
-//# sourceMappingURL=index-DztkB2NQ.js.map
