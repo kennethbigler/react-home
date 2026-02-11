@@ -26,30 +26,32 @@ const F1 = () => {
         F1
       </Typography>
 
+      <TimelineCard data={contractData} />
+
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, lg: 6 }}>
+        <Grid size={{ xs: 12, lg: 6, xxl: 4 }}>
           <ExpandableCard title="Constructors" backgroundColor={MCLAREN_HEX}>
             <ConstructorPointsLine color={color} />
             <ConstructorStandingsLine color={color} />
           </ExpandableCard>
         </Grid>
 
-        <Grid size={{ xs: 12, lg: 6 }}>
+        <Grid size={{ xs: 12, lg: 6, xxl: 4 }}>
           <ExpandableCard title="Drivers" backgroundColor={RED_BULL_HEX}>
             <DriverPointsLine color={color} />
             <DriverStandingsLine color={color} />
           </ExpandableCard>
         </Grid>
+
+        <Grid size={{ xs: 12, xxl: 4 }}>
+          <ExpandableCard
+            title="Constructor Budgets (Estimated)"
+            backgroundColor={ASTON_HEX}
+          >
+            <BudgetSankey color={color} />
+          </ExpandableCard>
+        </Grid>
       </Grid>
-
-      <TimelineCard data={contractData} />
-
-      <ExpandableCard
-        title="Constructor Budgets (Estimated)"
-        backgroundColor={ASTON_HEX}
-      >
-        <BudgetSankey color={color} />
-      </ExpandableCard>
 
       <Tracks />
     </>
