@@ -12,24 +12,23 @@ import {FlatCompat} from "@eslint/eslintrc";
 import gtsConfig from "gts/build/src/index.js";
 
 /**
- * ESLint Flat Config with Compatibility Layer
+ * ESLint Flat Config (ESLint 10+)
  *
- * This config uses @eslint/compat utilities to bridge the gap between
- * ESLint's old config system and the new flat config system.
+ * Compatibility layer (can remove when plugins ship native flat config):
  *
- * Why we still use compatibility shims:
- * - fixupConfigRules: Converts old "extends" configs to flat format
- * - fixupPluginRules: Wraps plugins that don't support flat config yet
- * - FlatCompat: Allows using "extends" syntax in flat config
+ * - FlatCompat: Translates legacy "extends" (e.g. "plugin:react/recommended")
+ *   into flat config objects. Used for import, react, and react-hooks presets.
  *
- * These can be removed once all plugins natively support ESLint flat config.
- * Track progress:
- * - eslint-plugin-react: Partial flat config support, needs better TS integration
- * - eslint-plugin-import: Needs updated TypeScript resolver
- * - eslint-plugin-jsx-a11y: Working on flat config support
- * - eslint-plugin-react-hooks: Has flat config but compat provides better defaults
+ * - fixupConfigRules: Converts those translated configs so they work with the
+ *   current config (e.g. plugin references, rule keys).
  *
- * Reference: https://eslint.org/docs/latest/use/configure/migration-guide
+ * - fixupPluginRules: Wraps plugin rules that still use deprecated context API
+ *   (e.g. getSourceCode) so they work with ESLint 9/10 (sourceCode, etc.).
+ *
+ * Native flat config:
+ * - jsx-a11y: Uses plugin's flatConfigs.recommended (no compat needed).
+ * - react-refresh: Already flat-config compatible.
+ * - GTS: Exports flat config (TypeScript, Prettier, Node).
  */
 
 const __filename = fileURLToPath(import.meta.url);
@@ -44,14 +43,16 @@ export default [
   // GTS base config (includes TypeScript ESLint, Prettier, Node plugin)
   ...gtsConfig,
 
-  // Use compat to extend plugin configs (maintains environment globals, settings, etc.)
+  // jsx-a11y: native flat config (no FlatCompat)
+  jsxA11Y.flatConfigs.recommended,
+
+  // Legacy "extends" → flat via FlatCompat (import, react, react-hooks only)
   ...fixupConfigRules(
     compat.extends(
       "plugin:import/recommended",
       "plugin:import/typescript",
       "plugin:react/recommended",
       "plugin:react-hooks/recommended",
-      "plugin:jsx-a11y/recommended",
     ),
   ),
 
@@ -60,7 +61,6 @@ export default [
     ignores: ["docs/*"],
     plugins: {
       import: fixupPluginRules(_import),
-      "jsx-a11y": fixupPluginRules(jsxA11Y),
       react: fixupPluginRules(react),
       "react-hooks": fixupPluginRules(reactHooks),
       "react-refresh": reactRefresh,
