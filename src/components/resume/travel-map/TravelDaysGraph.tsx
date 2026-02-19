@@ -7,22 +7,22 @@ import themeAtom from "../../../jotai/theme-atom";
 import { vacationDays, workDays } from "../../../constants/travel";
 
 const staticOptions: Highcharts.Options = {
-  chart: { type: "area", backgroundColor: "transparent" },
+  chart: { type: "areaspline", backgroundColor: "transparent" },
   credits: { enabled: false },
   title: { text: "Travel Days" },
   accessibility: { enabled: true },
   legend: { enabled: false },
   plotOptions: {
     series: { pointStart: 2020 },
-    area: { stacking: "normal" },
+    areaspline: { stacking: "normal" },
   },
   tooltip: {
     shared: true,
     headerFormat: "<b>{point.key}</b><br>",
   },
   series: [
-    { name: "Vacation", data: vacationDays, type: "area" },
-    { name: "Work", data: workDays, type: "area" },
+    { name: "Vacation", data: vacationDays, type: "areaspline" },
+    { name: "Work", data: workDays, type: "areaspline" },
   ],
 };
 
