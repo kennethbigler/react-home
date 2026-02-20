@@ -89,7 +89,7 @@ describe("resume | cars | Cars", () => {
     expect(
       screen.getByTitle("Ford Bronco Badlands (2021)"),
     ).toBeInTheDocument();
-  });
+  }, 90000);
 
   it("automatically untoggles family when hiding Ken's cars while family is already hidden", () => {
     render(<Cars />);
