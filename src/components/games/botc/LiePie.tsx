@@ -1,12 +1,20 @@
 import { memo } from "react";
 import { useAtomValue } from "jotai";
 import { useTheme } from "@mui/material/styles";
-import * as Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import {
+  Chart,
+  Credits,
+  Series,
+  setHighcharts,
+  Title,
+} from "@highcharts/react";
+import { Accessibility } from "@highcharts/react/options/Accessibility";
+import Highcharts from "highcharts/highcharts.src";
 import "highcharts/modules/accessibility";
 import themeAtom from "../../../jotai/theme-atom";
 import { getLieSeries } from "./botcHelpers";
 
+setHighcharts(Highcharts);
 interface LiePieProps {
   numPlayers: number;
   numTravelers: number;
@@ -14,15 +22,12 @@ interface LiePieProps {
 }
 
 const staticOptions: Highcharts.Options = {
-  accessibility: { enabled: true },
   chart: {
     type: "pie",
     inverted: true,
     backgroundColor: "transparent",
     style: { marginLeft: "auto", marginRight: "auto" },
   },
-  credits: { enabled: false },
-  title: { text: "Who is lying?" },
   plotOptions: {
     pie: {
       dataLabels: [
@@ -47,19 +52,22 @@ const LiePie = memo(({ numPlayers, numTravelers, script }: LiePieProps) => {
 
   const options: Highcharts.Options = {
     ...staticOptions,
-    title: { ...staticOptions.title, style: { color } },
     colors: [
       muiTheme.palette.error.main,
       muiTheme.palette.warning.main,
       muiTheme.palette.info.main,
       muiTheme.palette.success.main,
     ],
-    series: [{ type: "pie", name: "⛽️🔥❓", data: lieSeries }],
   };
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      <Chart highcharts={Highcharts} options={options}>
+        <Accessibility enabled={true} />
+        <Credits enabled={false} />
+        <Title style={{ color }}>Who is lying?</Title>
+        <Series type="pie" options={{ name: "⛽️🔥❓" }} data={lieSeries} />
+      </Chart>
     </figure>
   );
 });

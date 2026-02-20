@@ -6,7 +6,6 @@ interface ChartEntry {
   data: (number | null)[];
   name: string;
   color: string;
-  type: "line";
 }
 
 export const MCLAREN_HEX = "#ff8000";
@@ -194,8 +193,8 @@ const constructorStandingsData: ChartEntry[] = [];
 
 constructors.forEach((constructor) => {
   const { name, color, points, standings } = constructor;
-  constructorPointsData.push({ data: points, name, color, type: "line" });
-  constructorStandingsData.push({ data: standings, name, color, type: "line" });
+  constructorPointsData.push({ data: points, name, color });
+  constructorStandingsData.push({ data: standings, name, color });
 });
 
 constructorPointsData.sort(pointSort);
@@ -483,8 +482,8 @@ const driverStandingsData: ChartEntry[] = [];
 
 drivers.forEach((driver) => {
   const { name, color, points, standings } = driver;
-  driverPointsData.push({ data: points, name, color, type: "line" });
-  driverStandingsData.push({ data: standings, name, color, type: "line" });
+  driverPointsData.push({ data: points, name, color });
+  driverStandingsData.push({ data: standings, name, color });
 });
 
 driverPointsData.sort(pointSort);

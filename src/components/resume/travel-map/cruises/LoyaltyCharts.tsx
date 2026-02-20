@@ -1,7 +1,18 @@
 import { memo } from "react";
 import { useAtomValue } from "jotai";
-import * as Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import {
+  Chart,
+  Credits,
+  Legend,
+  Series,
+  setHighcharts,
+  Title,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "@highcharts/react";
+import { Accessibility } from "@highcharts/react/options/Accessibility";
+import Highcharts from "highcharts/highcharts.src";
 import "highcharts/modules/accessibility";
 import themeAtom from "../../../../jotai/theme-atom";
 import {
@@ -10,14 +21,11 @@ import {
   loyaltyNames,
 } from "../../../../constants/cruises";
 
-const staticOptions: Highcharts.Options = {
-  accessibility: { enabled: true },
+setHighcharts(Highcharts);
+
+const options: Highcharts.Options = {
   colors: loyaltyColors,
-  credits: { enabled: false },
   pane: { size: "100%", innerSize: "20%", endAngle: 330 },
-  series: loyaltySeries,
-  title: { text: "Cruise Loyalty" },
-  tooltip: { valueSuffix: "%" },
   chart: {
     type: "column",
     inverted: true,
@@ -34,37 +42,41 @@ const staticOptions: Highcharts.Options = {
       borderRadius: "50%",
     },
   },
-  yAxis: {
-    lineWidth: 0,
-    reversedStacks: false,
-    gridLineWidth: 0,
-    labels: { enabled: false },
-  },
 };
 
 const LoyaltyCharts = memo(() => {
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
-  const options: Highcharts.Options = {
-    ...staticOptions,
-    legend: { itemStyle: { color } },
-    title: { ...staticOptions.title, style: { color } },
-    xAxis: {
-      labels: {
-        align: "right",
-        step: 1,
-        y: 3,
-        style: { color },
-      },
-      gridLineWidth: 0,
-      categories: loyaltyNames,
-    },
-  };
-
   return (
     <figure style={{ margin: 0, width: "100%" }}>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      <Chart highcharts={Highcharts} options={options}>
+        <Accessibility enabled={true} />
+        <Credits enabled={false} />
+        <Legend itemStyle={{ color }} />
+        <Tooltip valueSuffix="%" />
+        <Title style={{ color }}>Cruise Loyalty</Title>
+        <XAxis
+          labels={{
+            align: "right",
+            step: 1,
+            y: 3,
+            // @ts-expect-error: types are wrong in @highcharts/react
+            style: { color },
+          }}
+          gridLineWidth={0}
+          categories={loyaltyNames}
+        />
+        <YAxis
+          lineWidth={0}
+          reversedStacks={false}
+          gridLineWidth={0}
+          labels={{ enabled: false }}
+        />
+        {loyaltySeries.map((s) => (
+          <Series key={s.name} {...s} options={{ name: s.name }} />
+        ))}
+      </Chart>
     </figure>
   );
 });

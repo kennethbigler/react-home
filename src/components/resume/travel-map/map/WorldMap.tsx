@@ -1,35 +1,19 @@
 import { useState, useEffect, memo } from "react";
 import { useAtomValue } from "jotai";
-import Highcharts from "highcharts/highmaps";
-import HighchartsReact from "highcharts-react-official";
+import { MapsChart, MapsSeries } from "@highcharts/react/Maps";
+import { Credits, setHighcharts, Title } from "@highcharts/react";
+import { Accessibility } from "@highcharts/react/options/Accessibility";
+import Highcharts from "highcharts/highmaps.src";
 import "highcharts/modules/accessibility";
 import { Typography } from "@mui/material";
 import themeAtom from "../../../../jotai/theme-atom";
 import countries, { numCountries } from "../../../../constants/travel";
 import { blue } from "@mui/material/colors";
 
+setHighcharts(Highcharts);
+
 const staticOptions: Highcharts.Options = {
-  accessibility: { enabled: true },
   chart: { backgroundColor: "transparent", height: "60%" },
-  credits: { enabled: false },
-  series: [
-    {
-      type: "map",
-      name: "Visited",
-      states: {
-        hover: {
-          color: blue[500],
-        },
-      },
-      joinBy: ["name", "name"],
-      data: countries,
-      showInLegend: false,
-      tooltip: { pointFormat: "{point.name}: {point.flag}" },
-    },
-  ],
-  title: {
-    text: `Travel Map: ${numCountries} Countries Visited`,
-  },
 };
 
 const WorldMap = memo(() => {
@@ -49,17 +33,12 @@ const WorldMap = memo(() => {
   const [options, setOptions] = useState<Highcharts.Options>({
     ...staticOptions,
     chart: { ...staticOptions.chart, map: topology },
-    title: { ...staticOptions.title, style: { color } },
   });
 
-  if (
-    options?.title?.style?.color !== color ||
-    options?.chart?.map !== topology
-  ) {
+  if (options?.chart?.map !== topology) {
     setOptions({
       ...staticOptions,
       chart: { ...staticOptions.chart, map: topology },
-      title: { ...staticOptions.title, style: { color } },
     });
   }
 
@@ -76,11 +55,28 @@ const WorldMap = memo(() => {
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>
-      <HighchartsReact
-        highcharts={Highcharts}
-        constructorType="mapChart"
-        options={options}
-      />
+      <MapsChart highcharts={Highcharts} options={options}>
+        <Accessibility enabled={true} />
+        <Credits enabled={false} />
+        <Title style={{ color }}>
+          Travel Map: {numCountries} Countries Visited
+        </Title>
+        <MapsSeries
+          type="map"
+          options={{
+            name: "Visited",
+            states: {
+              hover: {
+                color: blue[500],
+              },
+            },
+            joinBy: ["name", "name"],
+            showInLegend: false,
+            tooltip: { pointFormat: "{point.name}: {point.flag}" },
+          }}
+          data={countries}
+        />
+      </MapsChart>
     </figure>
   );
 });

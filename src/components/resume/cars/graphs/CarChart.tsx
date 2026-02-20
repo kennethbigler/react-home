@@ -1,48 +1,68 @@
-import * as Highcharts from "highcharts";
+import {
+  Chart,
+  Credits,
+  Legend,
+  PlotOptions,
+  Series,
+  setHighcharts,
+  Title,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "@highcharts/react";
+import { Accessibility } from "@highcharts/react/options/Accessibility";
+import Highcharts from "highcharts/highcharts.src";
 import "highcharts/modules/accessibility";
-import HighchartsReact from "highcharts-react-official";
 import { processData, CarEntry } from "../../../../constants/cars";
+
+setHighcharts(Highcharts);
 
 export interface CarChartProps {
   data: CarEntry[];
   color: string;
 }
 
-const staticOptions: Highcharts.Options = {
-  accessibility: { enabled: true },
+const options: Highcharts.Options = {
   chart: { type: "spline", backgroundColor: "transparent" },
-  credits: { enabled: false },
-  legend: { enabled: false },
-  plotOptions: { series: { marker: { enabled: false }, lineWidth: 2 } },
-  title: { text: "Car Data" },
-  tooltip: { valueSuffix: "%" },
-  yAxis: {
-    floor: 0,
-    ceiling: 100,
-    gridLineDashStyle: "Dot",
-    labels: { enabled: false },
-    title: { text: undefined },
-  },
 };
 
 const CarChart = ({ data, color }: CarChartProps) => {
   const { horsepower, weight, powerToWeight, zTo60, xAxis } = processData(data);
 
-  const options: Highcharts.Options = {
-    ...staticOptions,
-    title: { ...staticOptions.title, style: { color } },
-    xAxis: { categories: xAxis, labels: { style: { color } } },
-    series: [
-      { data: zTo60, name: "0-60", type: "spline" },
-      { data: horsepower, name: "Horsepower", type: "spline" },
-      { data: weight, name: "Weight", type: "spline" },
-      { data: powerToWeight, name: "Power-to-Weight", type: "spline" },
-    ],
-  };
-
   return (
     <figure style={{ margin: 0, width: "100%" }}>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      <Chart highcharts={Highcharts} options={options}>
+        <Accessibility enabled={true} />
+        <Credits enabled={false} />
+        <Legend enabled={false} />
+        <Tooltip valueSuffix="%" />
+        <Title style={{ color }}>Car Data</Title>
+        <XAxis
+          categories={xAxis}
+          // @ts-expect-error: types are wrong in @highcharts/react
+          labels={{ style: { color } }}
+        />
+        <YAxis
+          title={{ text: undefined }}
+          floor={0}
+          ceiling={100}
+          gridLineDashStyle="Dot"
+          labels={{ enabled: false }}
+        />
+        <PlotOptions series={{ marker: { enabled: false }, lineWidth: 2 }} />
+        <Series type="spline" options={{ name: "0-60" }} data={zTo60} />
+        <Series
+          type="spline"
+          options={{ name: "Horsepower" }}
+          data={horsepower}
+        />
+        <Series type="spline" options={{ name: "Weight" }} data={weight} />
+        <Series
+          type="spline"
+          options={{ name: "Power-to-Weight" }}
+          data={powerToWeight}
+        />
+      </Chart>
     </figure>
   );
 };

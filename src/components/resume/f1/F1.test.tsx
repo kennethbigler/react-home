@@ -12,7 +12,7 @@ describe("resume | f1 | F1", () => {
     expect(
       screen.getByText("Constructor Budgets (Estimated)"),
     ).toBeInTheDocument();
-  }, 90000);
+  });
 
   it("expands and collapses track cards", () => {
     render(<F1 />);
@@ -32,5 +32,5 @@ describe("resume | f1 | F1", () => {
         fireEvent.click(firstTrack);
       }
     }
-  }, 90000);
+  });
 });

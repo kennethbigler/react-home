@@ -1,7 +1,19 @@
 import { useAtomValue } from "jotai";
-import * as Highcharts from "highcharts";
+import {
+  Chart,
+  Credits,
+  Legend,
+  PlotOptions,
+  Series,
+  setHighcharts,
+  Title,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "@highcharts/react";
+import { Accessibility } from "@highcharts/react/options/Accessibility";
+import Highcharts from "highcharts/highcharts.src";
 import "highcharts/modules/accessibility";
-import HighchartsReact from "highcharts-react-official";
 import themeAtom from "../../../../jotai/theme-atom";
 import {
   CompCalcEntry,
@@ -9,6 +21,9 @@ import {
 } from "../../../../jotai/comp-calculator-atom";
 import dateHelper from "../../../../apis/DateHelper";
 import colors from "./colors";
+import { SeriesClickCallbackFunction } from "highcharts";
+
+setHighcharts(Highcharts);
 
 const STOCK = 0;
 const BONUS = 1;
@@ -42,31 +57,18 @@ const inflationKey: { [key: number]: number } = {
   2022: 1.08,
   2023: 1.041,
   2024: 1.027,
+  2025: 1.027,
 };
 
 const staticOptions: Highcharts.Options = {
-  accessibility: { enabled: true },
   chart: { type: "area", backgroundColor: "transparent" },
-  credits: { enabled: false },
-  legend: { enabled: false },
-  title: { text: "Total Comp" },
-  xAxis: { visible: false },
-  // @ts-expect-error: types are wrong in highcharts-react-official
-  yAxis: { title: { enabled: false } },
-  tooltip: {
-    shared: true,
-    headerFormat: "<h3>Compensation</h3><br />",
-    pointFormat:
-      '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>${point.y:,.2f}</b><br />',
-    footerFormat: "\u25CF *Total: $<b>{point.total:,.2f}</b>",
-  },
 };
 
 interface CompChartProps {
   startIdx: number;
   compCalcEntries: CompCalcEntry[];
   compEntries: CompEntry[];
-  onClick: (e: Highcharts.SeriesClickEventObject) => void;
+  onClick: SeriesClickCallbackFunction;
 }
 
 const CompChart = ({
@@ -113,8 +115,6 @@ const CompChart = ({
   const options: Highcharts.Options = {
     ...staticOptions,
     colors: [...colors, color],
-    title: { ...staticOptions.title, style: { color } },
-    yAxis: { ...staticOptions.yAxis, labels: { style: { color } } },
     plotOptions: {
       area: {
         stacking: "normal",
@@ -122,20 +122,59 @@ const CompChart = ({
         lineWidth: 1,
         marker: { lineWidth: 1, lineColor: color },
       },
-      series: { cursor: "pointer", events: { click: onClick } },
     },
-    series: [
-      { type: "area", name: "Stock", data: [...compChartData[STOCK]] },
-      { type: "area", name: "Bonus", data: [...compChartData[BONUS]] },
-      { type: "area", name: "Salary", data: [...compChartData[SALARY]] },
-      { type: "spline", name: "Total", data: [...compChartData[TOTAL]] },
-      { type: "spline", name: "Inflation", data: [...compChartData[INFL]] },
-    ],
   };
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      <Chart highcharts={Highcharts} options={options}>
+        <Accessibility enabled={true} />
+        <Credits enabled={false} />
+        <Legend enabled={false} />
+        <Title style={{ color }}>Total Comp</Title>
+        <XAxis visible={false} />
+        <YAxis
+          title={{ text: undefined }}
+          // @ts-expect-error: types are wrong in @highcharts/react
+          labels={{ style: { color } }}
+        />
+        <Tooltip
+          shared={true}
+          headerFormat={"<h3>Compensation</h3><br />"}
+          pointFormat={
+            '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>${point.y:,.2f}</b><br />'
+          }
+          footerFormat={"\u25CF *Total: $<b>{point.total:,.2f}</b>"}
+        />
+        <PlotOptions
+          series={{ cursor: "pointer", events: { click: onClick } }}
+        />
+        <Series
+          type="area"
+          options={{ name: "Stock" }}
+          data={compChartData[STOCK]}
+        />
+        <Series
+          type="area"
+          options={{ name: "Bonus" }}
+          data={compChartData[BONUS]}
+        />
+        <Series
+          type="area"
+          options={{ name: "Salary" }}
+          data={compChartData[SALARY]}
+        />
+        <Series
+          type="spline"
+          options={{ name: "Total" }}
+          data={compChartData[TOTAL]}
+        />
+        <Series
+          type="spline"
+          options={{ name: "Inflation" }}
+          data={compChartData[INFL]}
+        />
+      </Chart>
     </figure>
   );
 };

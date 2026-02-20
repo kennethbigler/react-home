@@ -1,52 +1,60 @@
 import { memo } from "react";
 import { useAtomValue } from "jotai";
-import * as Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import {
+  Chart,
+  Credits,
+  Legend,
+  PlotOptions,
+  Series,
+  setHighcharts,
+  Title,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "@highcharts/react";
+import { Accessibility } from "@highcharts/react/options/Accessibility";
+import Highcharts from "highcharts/highcharts.src";
 import "highcharts/modules/accessibility";
 import themeAtom from "../../../jotai/theme-atom";
 import { vacationDays, workDays } from "../../../constants/travel";
 
-const staticOptions: Highcharts.Options = {
+setHighcharts(Highcharts);
+
+const options: Highcharts.Options = {
   chart: { type: "areaspline", backgroundColor: "transparent" },
-  credits: { enabled: false },
-  title: { text: "Travel Days" },
-  accessibility: { enabled: true },
-  legend: { enabled: false },
-  plotOptions: {
-    series: { pointStart: 2020 },
-    areaspline: { stacking: "normal" },
-  },
-  tooltip: {
-    shared: true,
-    headerFormat: "<b>{point.key}</b><br>",
-  },
-  series: [
-    { name: "Vacation", data: vacationDays, type: "areaspline" },
-    { name: "Work", data: workDays, type: "areaspline" },
-  ],
+  plotOptions: { areaspline: { stacking: "normal" } },
 };
 
 const TravelDaysGraph = memo(() => {
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
-  const options: Highcharts.Options = {
-    ...staticOptions,
-    title: { ...staticOptions.title, style: { color } },
-    xAxis: {
-      ...staticOptions.xAxis,
-      labels: { style: { color } },
-    },
-    yAxis: {
-      ...staticOptions.yAxis,
-      title: { text: "Days", style: { color } },
-      labels: { style: { color } },
-    },
-  };
-
   return (
     <figure style={{ margin: 0, width: "100%" }}>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      <Chart highcharts={Highcharts} options={options}>
+        <Accessibility enabled={true} />
+        <Credits enabled={false} />
+        <Legend enabled={false} />
+        <Tooltip shared={true} headerFormat="<b>{point.key}</b><br>" />
+        <Title style={{ color }}>Travel Days</Title>
+        <PlotOptions series={{ pointStart: 2020 }} />
+        {/* @ts-expect-error: types are wrong in @highcharts/react */}
+        <XAxis labels={{ style: { color } }} />
+        <YAxis
+          // @ts-expect-error: types are wrong in @highcharts/react
+          labels={{ style: { color } }}
+          // @ts-expect-error: types are wrong in @highcharts/react
+          title={{ style: { color } }}
+        >
+          Days
+        </YAxis>
+        <Series
+          type="areaspline"
+          options={{ name: "Vacation" }}
+          data={vacationDays}
+        />
+        <Series type="areaspline" options={{ name: "Work" }} data={workDays} />
+      </Chart>
     </figure>
   );
 });

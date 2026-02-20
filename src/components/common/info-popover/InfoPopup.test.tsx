@@ -1,4 +1,4 @@
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import InfoPopup from "./InfoPopup";
 
 describe("common | InfoPopup", () => {
@@ -22,7 +22,7 @@ describe("common | InfoPopup", () => {
     expect(screen.getByText("Title")).toBeInTheDocument();
   });
 
-  it("opens and closes as expected", () => {
+  it("opens and closes as expected", async () => {
     render(
       <InfoPopup title="Title" buttonText="Button">
         Child
@@ -35,13 +35,11 @@ describe("common | InfoPopup", () => {
     fireEvent.click(screen.getByText("Button"));
     expect(screen.getByText("Title")).toBeInTheDocument();
     expect(screen.getByText("Child")).toBeInTheDocument();
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
     // check that it closes
-    expect(screen.getByTitle("info-popup").firstChild).toHaveStyle({
-      opacity: 1,
-    });
     fireEvent.click(screen.getByText("Close"));
-    expect(screen.getByTitle("info-popup").firstChild).toHaveStyle({
-      opacity: 0,
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
   });
 

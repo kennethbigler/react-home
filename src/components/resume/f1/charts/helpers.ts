@@ -1,5 +1,10 @@
-import * as Highcharts from "highcharts";
+import Highcharts from "highcharts/highcharts.src";
 import { xAxisYears } from "../../../../constants/f1";
+
+export const xAxisLabelFormatter: Highcharts.AxisLabelsFormatterCallbackFunction =
+  function (point) {
+    return xAxisYears[(point.value as number) || 0].toString();
+  };
 
 export const standingsTTFormatter = function (this: Highcharts.Point): string {
   let tooltip = `Year: <b>${xAxisYears[this.x]}</b><br/>`;

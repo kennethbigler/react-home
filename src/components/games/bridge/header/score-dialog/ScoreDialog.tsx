@@ -204,13 +204,7 @@ const ScoreDialog = memo(() => {
         Score
       </Button>
 
-      <Dialog
-        title="info-popup"
-        onClose={handleClose}
-        open={isOpen}
-        maxWidth="md"
-        fullWidth
-      >
+      <Dialog onClose={handleClose} open={isOpen} maxWidth="md" fullWidth>
         <DialogTitle>Score</DialogTitle>
 
         <DialogContent>
