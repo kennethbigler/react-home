@@ -58,13 +58,7 @@ const InfoPopup = ({
       >
         {buttonText || title}
       </Button>
-      <Dialog
-        title="info-popup"
-        onClose={handleClose}
-        open={isOpen}
-        maxWidth={maxWidth}
-        fullWidth
-      >
+      <Dialog onClose={handleClose} open={isOpen} maxWidth={maxWidth} fullWidth>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
         <DialogActions>

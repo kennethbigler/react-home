@@ -1,4 +1,4 @@
-import * as Highcharts from "highcharts";
+import Highcharts from "highcharts/highcharts.src";
 import { standingsTTFormatter } from "./helpers";
 import { xAxisYears } from "../../../../constants/f1";
 

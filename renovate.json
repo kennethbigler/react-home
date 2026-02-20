@@ -14,7 +14,7 @@
       "groupName": "mui"
     },
     {
-      "matchPackageNames": ["highcharts", "highcharts-react-official"],
+      "matchPackageNames": ["highcharts", "@highcharts/react"],
       "groupName": "highcharts"
     },
     {

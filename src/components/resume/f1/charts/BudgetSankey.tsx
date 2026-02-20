@@ -1,24 +1,30 @@
 import { memo } from "react";
-import * as Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import {
+  Chart,
+  Credits,
+  Series,
+  setHighcharts,
+  Title,
+} from "@highcharts/react";
+import { Accessibility } from "@highcharts/react/options/Accessibility";
+import Highcharts from "highcharts/highcharts.src";
 import "highcharts/highcharts-more";
 import "highcharts/modules/sankey";
 import "highcharts/modules/accessibility";
 import { budgetData } from "../../../../constants/f1";
 
+setHighcharts(Highcharts);
+
 interface BudgetSankeyProps {
   color: string;
 }
 
-const staticOptions: Highcharts.Options = {
-  accessibility: { enabled: true },
+const options: Highcharts.Options = {
   chart: {
     type: "sankey",
     height: 800,
     backgroundColor: "transparent",
   },
-  credits: { enabled: false },
-  title: { text: "Budget" },
   plotOptions: {
     sankey: {
       nodeWidth: 80, // Adjust node width for better spacing
@@ -29,29 +35,26 @@ const staticOptions: Highcharts.Options = {
       },
     },
   },
-  series: [
-    {
-      name: "Budget",
-      type: "sankey",
-      keys: ["from", "to", "weight"],
-      nodes: [...budgetData.nodes],
-      data: [...budgetData.data],
-    },
-  ],
 };
 
-const BudgetSankey = memo(({ color }: BudgetSankeyProps) => {
-  const options: Highcharts.Options = {
-    ...staticOptions,
-    title: { ...staticOptions.title, style: { color } },
-  };
-
-  return (
-    <figure style={{ margin: 0, width: "100%" }}>
-      <HighchartsReact highcharts={Highcharts} options={options} />
-    </figure>
-  );
-});
+const BudgetSankey = memo(({ color }: BudgetSankeyProps) => (
+  <figure style={{ margin: 0, width: "100%" }}>
+    <Chart highcharts={Highcharts} options={options}>
+      <Accessibility enabled={true} />
+      <Credits enabled={false} />
+      <Title style={{ color }}>Budget</Title>
+      <Series
+        options={{
+          name: "Budget",
+          keys: ["from", "to", "weight"],
+          nodes: budgetData.nodes,
+        }}
+        data={budgetData.data}
+        type="sankey"
+      />
+    </Chart>
+  </figure>
+));
 
 BudgetSankey.displayName = "BudgetSankey";
 

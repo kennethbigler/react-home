@@ -22,7 +22,7 @@ const CampaignChangeDialog = ({
   onClose,
   onSave,
 }: CampaignChangeDialogProps) => (
-  <Dialog title="info-popup" onClose={onClose} open={open}>
+  <Dialog onClose={onClose} open={open}>
     <DialogTitle>New Campaign</DialogTitle>
     <DialogContent>
       Are you sure you want to switch from:

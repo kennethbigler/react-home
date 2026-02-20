@@ -14,7 +14,7 @@ export default defineConfig({
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'mui-vendor': ['@mui/material', '@mui/icons-material'],
-          'charts': ['highcharts', 'highcharts-react-official'],
+          'charts': ['highcharts', '@highcharts/react'],
         },
       },
     },

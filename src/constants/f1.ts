@@ -6,22 +6,20 @@ interface ChartEntry {
   data: (number | null)[];
   name: string;
   color: string;
-  type: "line";
 }
 
-// TODO: Mar 6, 2026 - Update team hex codes
-
-export const MCLAREN_HEX = "#F47600";
-export const MERCEDES_HEX = "#00D7B6";
-export const FERRARI_HEX = "#ED1131";
-export const RED_BULL_HEX = "#4781D7";
-export const WILLIAMS_HEX = "#1868DB";
-export const RB_HEX = "#6C98FF";
+export const MCLAREN_HEX = "#ff8000";
+export const MERCEDES_HEX = "#27f4d2";
+export const FERRARI_HEX = "#e8002d";
+export const RED_BULL_HEX = "#3671c6";
+export const WILLIAMS_HEX = "#1868db";
+export const RB_HEX = "#6692ff";
 export const ASTON_HEX = "#229971";
-export const AUDI_HEX = "#9B0000";
-export const HAAS_HEX = "#9C9FA2";
-export const ALPINE_HEX = "#00A1E8";
-export const CADILLAC_HEX = "black";
+export const AUDI_HEX = "#ff2d00";
+export const HAAS_HEX = "#dee1e2";
+export const ALPINE_HEX = "#00a1e8";
+export const CADILLAC_HEX = "#aaaaad";
+
 // ----------     OLD     ---------- //
 const K_SAUBER_HEX = "#01C00E";
 const AT_HEX = "#5E8FAA";
@@ -195,8 +193,8 @@ const constructorStandingsData: ChartEntry[] = [];
 
 constructors.forEach((constructor) => {
   const { name, color, points, standings } = constructor;
-  constructorPointsData.push({ data: points, name, color, type: "line" });
-  constructorStandingsData.push({ data: standings, name, color, type: "line" });
+  constructorPointsData.push({ data: points, name, color });
+  constructorStandingsData.push({ data: standings, name, color });
 });
 
 constructorPointsData.sort(pointSort);
@@ -484,8 +482,8 @@ const driverStandingsData: ChartEntry[] = [];
 
 drivers.forEach((driver) => {
   const { name, color, points, standings } = driver;
-  driverPointsData.push({ data: points, name, color, type: "line" });
-  driverStandingsData.push({ data: standings, name, color, type: "line" });
+  driverPointsData.push({ data: points, name, color });
+  driverStandingsData.push({ data: standings, name, color });
 });
 
 driverPointsData.sort(pointSort);

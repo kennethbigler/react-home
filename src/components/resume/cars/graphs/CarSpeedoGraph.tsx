@@ -1,9 +1,20 @@
 import { memo } from "react";
-import * as Highcharts from "highcharts";
+import {
+  Chart,
+  Credits,
+  Series,
+  setHighcharts,
+  Title,
+  Tooltip,
+  YAxis,
+} from "@highcharts/react";
+import { Accessibility } from "@highcharts/react/options/Accessibility";
+import Highcharts from "highcharts/highcharts.src";
 import "highcharts/modules/accessibility";
-import HighchartsReact from "highcharts-react-official";
 import { green, grey, red } from "@mui/material/colors";
 import { Grid } from "@mui/material";
+
+setHighcharts(Highcharts);
 
 export interface CarSpeedoGraphProps {
   val: number;
@@ -17,9 +28,7 @@ export interface CarSpeedoGraphProps {
 }
 
 const staticOptions: Highcharts.Options = {
-  accessibility: { enabled: true },
   chart: { type: "gauge", backgroundColor: "transparent" },
-  credits: { enabled: false },
   pane: { startAngle: -150, endAngle: 150, background: undefined },
 };
 
@@ -38,21 +47,6 @@ const CarSpeedoGraph = memo(
     const greenEnd = Math.max(min, endGreenVal);
     const options: Highcharts.Options = {
       ...staticOptions,
-      title: { text: `${name} ${title}`, style: { color } },
-      yAxis: {
-        min,
-        max: maxVal,
-        labels: { distance: -26, style: { color } },
-        plotBands: [
-          { from: min, to: greenEnd, color: green[400] },
-          { from: startRedVal, to: maxVal, color: red[500] },
-          {
-            from: greenEnd,
-            to: startRedVal,
-            color: color === "white" ? grey[800] : grey[200],
-          },
-        ],
-      },
       series: [
         {
           name,
@@ -69,7 +63,41 @@ const CarSpeedoGraph = memo(
     return (
       <Grid size={{ xs: 12, sm: 4, lg: 2, xxxl: 1 }}>
         <figure style={{ margin: 0, width: "100%" }}>
-          <HighchartsReact highcharts={Highcharts} options={options} />
+          <Chart highcharts={Highcharts} options={options}>
+            <Accessibility enabled={true} />
+            <Credits enabled={false} />
+            <Tooltip valueSuffix={` ${label}`} />
+            <Title style={{ color }}>
+              {name} {title}
+            </Title>
+            <YAxis
+              min={min}
+              max={maxVal}
+              // @ts-expect-error: types are wrong in @highcharts/react
+              labels={{ distance: -26, style: { color } }}
+              // @ts-expect-error: types are wrong in @highcharts/react
+              plotBands={[
+                { from: min, to: greenEnd, color: green[400] },
+                { from: startRedVal, to: maxVal, color: red[500] },
+                {
+                  from: greenEnd,
+                  to: startRedVal,
+                  color: color === "white" ? grey[800] : grey[200],
+                },
+              ]}
+            />
+            <Series
+              options={{
+                name,
+                tooltip: { valueSuffix: ` ${label}` },
+                dataLabels: { format: label, borderWidth: 0, color },
+                dial: { backgroundColor: color },
+                pivot: { backgroundColor: color },
+              }}
+              data={[val]}
+              type="gauge"
+            />
+          </Chart>
         </figure>
       </Grid>
     );

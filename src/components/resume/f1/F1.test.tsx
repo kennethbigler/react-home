@@ -32,5 +32,5 @@ describe("resume | f1 | F1", () => {
         fireEvent.click(firstTrack);
       }
     }
-  }, 90000);
+  });
 });

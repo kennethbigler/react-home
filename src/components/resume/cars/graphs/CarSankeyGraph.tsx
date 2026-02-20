@@ -1,6 +1,15 @@
 import { memo } from "react";
-import * as Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import {
+  Chart,
+  Credits,
+  Series,
+  setHighcharts,
+  Title,
+  XAxis,
+  YAxis,
+} from "@highcharts/react";
+import { Accessibility } from "@highcharts/react/options/Accessibility";
+import Highcharts from "highcharts/highcharts.src";
 import "highcharts/highcharts-more";
 import "highcharts/modules/sankey";
 import "highcharts/modules/accessibility";
@@ -11,24 +20,16 @@ import {
   familySankeyData,
 } from "../../../../constants/cars";
 
+setHighcharts(Highcharts);
+
 interface CarSankeyGraphProps {
   color: string;
   hideKen: boolean;
   hideFamily: boolean;
 }
 
-const staticOptions: Highcharts.Options = {
+const options: Highcharts.Options = {
   chart: { type: "sankey", backgroundColor: "transparent" },
-  credits: { enabled: false },
-  title: { text: "Cars" },
-  accessibility: {
-    enabled: true,
-    point: {
-      // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
-      valueDescriptionFormat:
-        "{point.to} has {point.weight} from {point.from}.",
-    },
-  },
   plotOptions: { sankey: { nodeWidth: 70 } }, // Adjust node width for better spacing
 };
 
@@ -43,23 +44,31 @@ const CarSankeyGraph = memo(
       data = kenSankeyData;
     }
 
-    const options: Highcharts.Options = {
-      ...staticOptions,
-      title: { ...staticOptions.title, style: { color } },
-      series: [
-        {
-          name: "Cars",
-          type: "sankey",
-          keys: ["from", "to", "weight"],
-          nodes: carSankeyNodes,
-          data,
-        },
-      ],
-    };
-
     return (
       <figure style={{ margin: 0, width: "100%" }}>
-        <HighchartsReact highcharts={Highcharts} options={options} />
+        <Chart highcharts={Highcharts} options={options}>
+          <Accessibility
+            enabled={true}
+            point={{
+              // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
+              valueDescriptionFormat:
+                "{point.to} has {point.weight} from {point.from}.",
+            }}
+          />
+          <Credits enabled={false} />
+          <Title style={{ color }}>Cars</Title>
+          <XAxis visible={false} />
+          <YAxis visible={false} />
+          <Series
+            options={{
+              name: "Cars",
+              keys: ["from", "to", "weight"],
+              nodes: carSankeyNodes,
+            }}
+            data={data}
+            type="sankey"
+          />
+        </Chart>
       </figure>
     );
   },
