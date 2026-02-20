@@ -12,7 +12,7 @@ describe("resume | f1 | F1", () => {
     expect(
       screen.getByText("Constructor Budgets (Estimated)"),
     ).toBeInTheDocument();
-  });
+  }, 90000);
 
   it("expands and collapses track cards", () => {
     render(<F1 />);

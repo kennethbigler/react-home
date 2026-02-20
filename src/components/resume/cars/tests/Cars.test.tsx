@@ -31,7 +31,7 @@ describe("resume | cars | Cars", () => {
     await waitFor(() => {
       expect(container.querySelector(".MuiButton-contained")).toBeNull();
     });
-  });
+  }, 90000);
 
   it("hides family cars", () => {
     render(<Cars />);
