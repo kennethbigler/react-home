@@ -21,7 +21,6 @@ import {
 } from "../../../../jotai/comp-calculator-atom";
 import dateHelper from "../../../../apis/DateHelper";
 import colors from "./colors";
-import { SeriesClickCallbackFunction } from "highcharts";
 
 setHighcharts(Highcharts);
 
@@ -68,7 +67,7 @@ interface CompChartProps {
   startIdx: number;
   compCalcEntries: CompCalcEntry[];
   compEntries: CompEntry[];
-  onClick: SeriesClickCallbackFunction;
+  onClick: Highcharts.SeriesClickCallbackFunction;
 }
 
 const CompChart = ({

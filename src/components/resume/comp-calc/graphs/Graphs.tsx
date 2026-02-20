@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Grid } from "@mui/material";
-import { SeriesClickEventObject } from "highcharts";
+import { SeriesClickEventObject } from "highcharts/highcharts.src";
 import CompChart from "./CompGraph";
 import BreakdownChart from "./BreakdownGraph";
 import {
