@@ -14,9 +14,14 @@ const staticOptions: Highcharts.Options = {
   chart: { type: "line", backgroundColor: "transparent" },
   credits: { enabled: false },
   legend: { enabled: false },
-  plotOptions: { series: { marker: { symbol: "circle" } } },
   title: { text: "F1 Drivers Standings" },
   tooltip: { useHTML: true, formatter: standingsTTFormatter },
+  plotOptions: {
+    series: {
+      lineWidth: 4,
+      marker: { radius: 5, symbol: "circle" },
+    },
+  },
   yAxis: {
     tickPositions: [1, 5, 10, 15, 20, 24],
     reversed: true,

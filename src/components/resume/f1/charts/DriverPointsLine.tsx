@@ -14,9 +14,14 @@ const staticOptions: Highcharts.Options = {
   chart: { type: "line", backgroundColor: "transparent" },
   credits: { enabled: false },
   legend: { enabled: false },
-  plotOptions: { series: { marker: { symbol: "circle" } } },
   title: { text: "F1 Drivers Points" },
   tooltip: { shared: true, useHTML: true, formatter: tooltipFormatter },
+  plotOptions: {
+    series: {
+      lineWidth: 3,
+      marker: { symbol: "circle" },
+    },
+  },
   yAxis: {
     max: 600,
     title: { text: undefined },

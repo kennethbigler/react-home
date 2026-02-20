@@ -14,9 +14,14 @@ const staticOptions: Highcharts.Options = {
   chart: { type: "line", backgroundColor: "transparent" },
   credits: { enabled: false },
   legend: { enabled: false },
-  plotOptions: { series: { marker: { symbol: "circle" } } },
   title: { text: "F1 Constructors Points" },
   tooltip: { shared: true, useHTML: true, formatter: tooltipFormatter },
+  plotOptions: {
+    series: {
+      lineWidth: 4,
+      marker: { radius: 5, symbol: "circle" },
+    },
+  },
   yAxis: {
     tickPositions: [0, 150, 300, 450, 600, 750, 860],
     title: { text: undefined },
