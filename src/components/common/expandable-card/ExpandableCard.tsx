@@ -40,6 +40,7 @@ const ExpandableCard = ({
 
   const headerStyle: CSSProperties = {
     backgroundColor: backgroundColor || palette.primary.dark,
+    outline: "revert",
     color,
   };
 
