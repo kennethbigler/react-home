@@ -4,26 +4,18 @@ import { Provider } from "jotai";
 import useBlackjackAI from "./useBlackjackAI";
 import { GameFunctions } from "../../../jotai/blackjack-state";
 
-// Mock useDeck to return predictable cards
-vi.mock("./api/useDeck", () => ({
+// Mock useBlackjackDeck to return predictable cards
+vi.mock("./useBlackjackDeck", () => ({
   default: () => ({
     shuffle: vi.fn().mockResolvedValue(undefined),
     deal: vi.fn().mockImplementation((count: number) => {
       const cards = [];
       for (let i = 0; i < count; i++) {
-        cards.push({ rank: "5", suit: "Hearts" });
+        cards.push({ name: "5", weight: 5, suit: "♥" });
       }
       return Promise.resolve(cards);
     }),
   }),
-  asyncForEach: async <T,>(
-    array: T[],
-    callback: (item: T, index: number, array: T[]) => Promise<void>,
-  ) => {
-    for (let i = 0; i < array.length; i++) {
-      await callback(array[i], i, array);
-    }
-  },
 }));
 
 describe("useBlackjackAI", () => {

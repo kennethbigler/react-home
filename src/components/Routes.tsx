@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import LoadingSpinner from "./common/loading-spinner";
+import { catchErr } from "../apis/catchErr";
 
 // lazy load sub routers
 const ResumeRoutes = lazy(
@@ -14,8 +15,7 @@ const RootRoutes = () => {
   const navigate = useNavigate();
 
   const handleNav = (loc: string) => {
-    // eslint-disable-next-line no-console
-    navigate(loc)?.catch((reason) => console.error(reason));
+    navigate(loc)?.catch(catchErr);
   };
 
   return (

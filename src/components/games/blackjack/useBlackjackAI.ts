@@ -6,14 +6,16 @@ import blackjackState, {
 } from "../../../jotai/blackjack-state";
 import { DBHand, DBPlayer } from "../../../jotai/player-atom";
 import { TurnState } from "../../../jotai/turn-atom";
+import { asyncForEach } from "../../../apis/asyncForEach";
 import { rankSort } from "../../../jotai/deck-state";
-import useDeck, { asyncForEach } from "./api/useDeck";
+import useBlackjackDeck from "./useBlackjackDeck";
 import {
   banking,
   DEALER,
   getGameFunctions,
   weighHand,
 } from "./blackjackHelpers";
+import { catchErr } from "../../../apis/catchErr";
 
 const D_H_TURN = 0;
 
@@ -38,7 +40,7 @@ const useBlackjackAI = () => {
     },
     setState,
   ] = useAtom(blackjackState);
-  const { shuffle, deal } = useDeck();
+  const { shuffle, deal } = useBlackjackDeck();
 
   /** function to get a new card */
   const hitBotHelper = async (hand: DBHand): Promise<DBHand> => {
@@ -505,19 +507,19 @@ const useBlackjackAI = () => {
         newGame();
         break;
       case GameFunctions.FINISH_BETTING:
-        finishBetting().catch((e) => console.error(e));
+        finishBetting().catch(catchErr);
         break;
       case GameFunctions.STAY:
         stay();
         break;
       case GameFunctions.HIT:
-        hit().catch((e) => console.error(e));
+        hit().catch(catchErr);
         break;
       case GameFunctions.DOUBLE:
-        double().catch((e) => console.error(e));
+        double().catch(catchErr);
         break;
       case GameFunctions.SPLIT:
-        split().catch((e) => console.error(e));
+        split().catch(catchErr);
         break;
       default:
         // eslint-disable-next-line no-console
