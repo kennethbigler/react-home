@@ -68,11 +68,9 @@ const newDeck: DBCard[] = [
   { name: "A", weight: 14, suit: "♠" },
 ];
 
-// TODO: remove export after removing useDeck
 /** sort by card weight */
 export const rankSort = (a: DBCard, b: DBCard): number => a.weight - b.weight;
 
-// TODO: remove export after removing useDeck
 /** randomize order of the cards O(N + M) */
 export const shuffle = (): DBCard[] => {
   const shuffledDeck: DBCard[] = [];
@@ -92,8 +90,25 @@ export const shuffle = (): DBCard[] => {
 
 export const deckAtom = atomWithStorage("deckAtom", newDeck);
 
+/** Last dealt cards (used by Blackjack); set by dealCardsAtom. */
+export const lastDealtCardsAtom = atom<DBCard[]>([]);
+
 export const shuffleAtom = atom(null, (_get, set) => {
   set(deckAtom, shuffle());
+});
+
+/** Deal n cards from deck; updates deckAtom and lastDealtCardsAtom. Used by Blackjack. */
+export const dealCardsAtom = atom(null, (get, set, num: number) => {
+  const deck = get(deckAtom);
+  const nextDeck: DBCard[] = [...deck];
+  const cards: DBCard[] = [];
+  const toDraw = Math.min(num, nextDeck.length);
+  for (let i = 0; i < toDraw; i += 1) {
+    const card = nextDeck.pop();
+    if (card) cards.push(card);
+  }
+  set(deckAtom, nextDeck);
+  set(lastDealtCardsAtom, cards);
 });
 
 /** return an array of a specified length O(2N) */

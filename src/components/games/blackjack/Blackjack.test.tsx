@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
-import * as Deck from "./api/useDeck";
 import Blackjack from ".";
+import * as useBlackjackDeckModule from "./useBlackjackDeck";
 
 const ace = { name: "A", weight: 14, suit: "♣" };
 const king = { name: "K", weight: 13, suit: "♣" };
@@ -45,7 +45,7 @@ describe("games | blackjack | Blackjack", () => {
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king])
       .mockResolvedValue([jack]);
-    vi.spyOn(Deck, "default").mockImplementation(() => ({
+    vi.spyOn(useBlackjackDeckModule, "default").mockImplementation(() => ({
       shuffle: vi.fn().mockResolvedValue(null),
       deal: dealMock,
     }));
@@ -78,7 +78,7 @@ describe("games | blackjack | Blackjack", () => {
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king])
       .mockResolvedValue([jack]);
-    vi.spyOn(Deck, "default").mockImplementation(() => ({
+    vi.spyOn(useBlackjackDeckModule, "default").mockImplementation(() => ({
       shuffle: vi.fn().mockResolvedValue(null),
       deal: dealMock,
     }));
@@ -108,7 +108,7 @@ describe("games | blackjack | Blackjack", () => {
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king])
       .mockResolvedValue([jack]);
-    vi.spyOn(Deck, "default").mockImplementation(() => ({
+    vi.spyOn(useBlackjackDeckModule, "default").mockImplementation(() => ({
       shuffle: vi.fn().mockResolvedValue(null),
       deal: dealMock,
     }));
@@ -140,7 +140,7 @@ describe("games | blackjack | Blackjack", () => {
       .mockResolvedValueOnce([king, queen])
       .mockResolvedValueOnce([king])
       .mockResolvedValue([nine, eight]);
-    vi.spyOn(Deck, "default").mockImplementation(() => ({
+    vi.spyOn(useBlackjackDeckModule, "default").mockImplementation(() => ({
       shuffle: vi.fn().mockResolvedValue(null),
       deal: dealMock,
     }));

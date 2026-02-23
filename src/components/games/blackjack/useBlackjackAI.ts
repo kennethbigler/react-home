@@ -6,8 +6,9 @@ import blackjackState, {
 } from "../../../jotai/blackjack-state";
 import { DBHand, DBPlayer } from "../../../jotai/player-atom";
 import { TurnState } from "../../../jotai/turn-atom";
+import { asyncForEach } from "../../../apis/asyncForEach";
 import { rankSort } from "../../../jotai/deck-state";
-import useDeck, { asyncForEach } from "./api/useDeck";
+import useBlackjackDeck from "./useBlackjackDeck";
 import {
   banking,
   DEALER,
@@ -38,7 +39,7 @@ const useBlackjackAI = () => {
     },
     setState,
   ] = useAtom(blackjackState);
-  const { shuffle, deal } = useDeck();
+  const { shuffle, deal } = useBlackjackDeck();
 
   /** function to get a new card */
   const hitBotHelper = async (hand: DBHand): Promise<DBHand> => {
