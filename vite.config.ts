@@ -6,15 +6,33 @@ import react from "@vitejs/plugin-react";
 // https://vitejs.dev/config/
 export default defineConfig({
   // for lighthouse
-  build: { 
+  build: {
     sourcemap: true,
-    target: 'es2020',
+    target: "es2020",
+    // Charts chunk is large but loaded only when visiting F1/Cars/Travel/Comp/Spades/BotC
+    chunkSizeWarningLimit: 600000,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'mui-vendor': ['@mui/material', '@mui/icons-material'],
-          'charts': ['highcharts', '@highcharts/react'],
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            // All Highcharts: core, highmaps, modules (accessibility, sankey, etc.), and React wrapper
+            if (
+              id.includes("/highcharts/") ||
+              id.includes("/@highcharts/react")
+            ) {
+              return "charts";
+            }
+            if (
+              id.includes("/react/") ||
+              id.includes("/react-dom/") ||
+              id.includes("/react-router")
+            ) {
+              return "react-vendor";
+            }
+            if (id.includes("/@mui/")) {
+              return "mui-vendor";
+            }
+          }
         },
       },
     },
