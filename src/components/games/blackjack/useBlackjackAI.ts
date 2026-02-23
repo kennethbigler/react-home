@@ -15,6 +15,7 @@ import {
   getGameFunctions,
   weighHand,
 } from "./blackjackHelpers";
+import { catchErr } from "../../../apis/catchErr";
 
 const D_H_TURN = 0;
 
@@ -506,19 +507,19 @@ const useBlackjackAI = () => {
         newGame();
         break;
       case GameFunctions.FINISH_BETTING:
-        finishBetting().catch((e) => console.error(e));
+        finishBetting().catch(catchErr);
         break;
       case GameFunctions.STAY:
         stay();
         break;
       case GameFunctions.HIT:
-        hit().catch((e) => console.error(e));
+        hit().catch(catchErr);
         break;
       case GameFunctions.DOUBLE:
-        double().catch((e) => console.error(e));
+        double().catch(catchErr);
         break;
       case GameFunctions.SPLIT:
-        split().catch((e) => console.error(e));
+        split().catch(catchErr);
         break;
       default:
         // eslint-disable-next-line no-console

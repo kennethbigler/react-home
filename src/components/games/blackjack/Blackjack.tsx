@@ -8,6 +8,7 @@ import { memo } from "react";
 import useBlackjackAI from "./useBlackjackAI";
 import Header from "./Header";
 import GameTable from "../game-table";
+import { catchErr } from "../../../apis/catchErr";
 
 const BlackJack = memo(() => {
   const {
@@ -20,7 +21,7 @@ const BlackJack = memo(() => {
     turn,
   } = useBlackjackAI();
 
-  checkUpdate().catch((e) => console.error(e));
+  checkUpdate().catch(catchErr);
 
   return (
     <>
