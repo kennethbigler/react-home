@@ -10,6 +10,7 @@ const LoadingSpinner = memo(() => (
   <CircularProgress
     size={100}
     style={containerStyles}
+    aria-label="Loading"
     title="Loading Spinner"
   />
 ));
