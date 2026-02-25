@@ -11,9 +11,7 @@ interface JobProps {
 }
 
 const imgStyle: CSSProperties = {
-  width: "100%",
   maxWidth: "12em",
-  height: "auto",
   float: "right",
 };
 
@@ -46,7 +44,7 @@ const Job = ({ job, fullWidth, triple }: JobProps) => (
       </Grid>
       {job.src && (
         <Grid size={{ xs: 12, sm: 3 }}>
-          <img alt={job.alt} src={job.src} style={imgStyle} />
+          <img alt={job.alt} src={job.src} width="100%" style={imgStyle} />
         </Grid>
       )}
     </ExpandableCard>

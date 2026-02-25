@@ -8,11 +8,9 @@ import {
   TableRow,
 } from "@mui/material";
 import ExpandableCard from "../../common/expandable-card";
-import photo from "../../../images/ken.webp";
 import { work, Job } from "../../../constants/work";
 
 const imageStyles: CSSProperties = {
-  width: "95%",
   display: "block",
   margin: "auto",
   marginTop: "40px",
@@ -27,7 +25,13 @@ const Info = memo(() => (
   <Grid container spacing={1}>
     <Grid size={{ xs: 12, md: 6, xl: 4, xxl: 3, xxxl: 2 }}>
       <Link href="https://www.linkedin.com/in/kennethbigler">
-        <img alt="Kenneth Bigler" src={photo} style={imageStyles} />
+        <img
+          alt="Kenneth Bigler"
+          src="/ken.webp"
+          width="95%"
+          fetchPriority="high"
+          style={imageStyles}
+        />
       </Link>
     </Grid>
     <Grid size={{ xs: 12, md: 6, xl: 8, xxl: 9, xxxl: 10 }}>

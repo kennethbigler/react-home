@@ -1,7 +1,30 @@
 // use test types instead of default types
 /// <reference types="vitest" />
+import { readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import type { Plugin } from "vite";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+
+/** Make main stylesheet non-render-blocking (Lighthouse: eliminate render-blocking resources). */
+function deferStylesheetPlugin(): Plugin {
+  return {
+    name: "defer-stylesheet",
+    apply: "build",
+    closeBundle() {
+      const outDir = "dist";
+      const htmlPath = join(outDir, "index.html");
+      let html = readFileSync(htmlPath, "utf-8");
+      // Match Vite-injected stylesheet: <link rel="stylesheet" ... href="/assets/...css" ...>
+      const linkRegex =
+        /<link\s+rel="stylesheet"[^>]+href="(\/assets\/[^"]+\.css)"[^>]*\/?>/g;
+      html = html.replace(linkRegex, (_match, href) => {
+        return `<link rel="stylesheet" href="${href}" crossorigin media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="${href}" crossorigin></noscript>`;
+      });
+      writeFileSync(htmlPath, html);
+    },
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,11 +38,9 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            // All Highcharts: core, highmaps, modules (accessibility, sankey, etc.), and React wrapper
-            if (
-              id.includes("/highcharts/") ||
-              id.includes("/@highcharts/react")
-            ) {
+            // Highcharts core only; keep @highcharts/react in main bundle so it shares the same
+            // React instance (avoids "Cannot read properties of undefined (reading 'forwardRef')" in CI).
+            if (id.includes("/highcharts/") && !id.includes("/@highcharts/react")) {
               return "charts";
             }
             if (
@@ -29,16 +50,12 @@ export default defineConfig({
             ) {
               return "react-vendor";
             }
-            if (id.includes("/@mui/")) {
-              return "mui-vendor";
-            }
           }
-        },
-      },
-    },
+        }
+      }
+    }
   },
-  plugins: [react()],
-  // test configs
+  plugins: [react(), deferStylesheetPlugin()],
   test: {
     globals: true,
     environment: "jsdom",

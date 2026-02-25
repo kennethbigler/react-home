@@ -4,7 +4,6 @@ import resume from "../../../images/kenneth_bigler_resume.png";
 
 const imageStyles: CSSProperties = {
   maxWidth: 1275,
-  width: "100%",
   display: "block",
   margin: "auto",
 };
@@ -17,6 +16,7 @@ const Resume = memo(() => (
     <img
       src={resume}
       alt="Kenneth Bigler Software Engineer Resume"
+      width="100%"
       style={imageStyles}
     />
   </>

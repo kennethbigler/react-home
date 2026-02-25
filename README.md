@@ -4,11 +4,11 @@
 [![codecov](https://codecov.io/gh/kennethbigler/react-home/branch/main/graph/badge.svg?token=MEHKW2MF4N)](https://codecov.io/gh/kennethbigler/react-home)
 ![License](https://img.shields.io/github/license/kennethbigler/react-home)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/kennethbigler/react-home/graphs/commit-activity)
-[![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](http://kennethbigler.com)
+[![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://kennethbigler.com)
 
 This is a website created by me to represent my resume, as well as for me to practice new technologies.
 
-View the site at [kennethbigler.com](http://www.kennethbigler.com/)
+View the site at [kennethbigler.com](https://www.kennethbigler.com/)
 
 ## Usage
 
