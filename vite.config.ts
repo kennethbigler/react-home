@@ -15,11 +15,9 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            // All Highcharts: core, highmaps, modules (accessibility, sankey, etc.), and React wrapper
-            if (
-              id.includes("/highcharts/") ||
-              id.includes("/@highcharts/react")
-            ) {
+            // Highcharts core only; keep @highcharts/react in main bundle so it shares the same
+            // React instance (avoids "Cannot read properties of undefined (reading 'forwardRef')" in CI).
+            if (id.includes("/highcharts/") && !id.includes("/@highcharts/react")) {
               return "charts";
             }
             if (
