@@ -3,7 +3,7 @@
   "private": true,
   "version": "5.0.0",
   "type": "module",
-  "homepage": "http://kennethbigler.com/",
+  "homepage": "https://kennethbigler.com/",
   "bugs": {
     "url": "https://github.com/kennethbigler/react-home/issues"
   },
@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "node scripts/copy-ken-webp.cjs && tsc && vite build",
     "preview": "vite preview",
     "test": "vitest watch",
     "test:debug": "DEBUG_PRINT_LIMIT=100000 vitest watch",
