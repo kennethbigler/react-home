@@ -27,16 +27,12 @@ export default defineConfig({
             ) {
               return "react-vendor";
             }
-            if (id.includes("/@mui/")) {
-              return "mui-vendor";
-            }
           }
-        },
-      },
-    },
+        }
+      }
+    }
   },
   plugins: [react()],
-  // test configs
   test: {
     globals: true,
     environment: "jsdom",

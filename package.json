@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "node scripts/copy-ken-webp.cjs && tsc && vite build",
+    "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest watch",
     "test:debug": "DEBUG_PRINT_LIMIT=100000 vitest watch",

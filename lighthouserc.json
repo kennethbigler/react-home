@@ -11,7 +11,6 @@
       "assertions": {
         "deprecations": "warn",
         "errors-in-console": "warn",
-        "inspector-issues": "warn",
         "network-dependency-tree-insight": "warn",
         "third-party-cookies": "warn",
         "unused-javascript": "warn"
