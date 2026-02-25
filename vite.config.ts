@@ -21,11 +21,6 @@ function deferStylesheetPlugin(): Plugin {
       html = html.replace(linkRegex, (_match, href) => {
         return `<link rel="stylesheet" href="${href}" crossorigin media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="${href}" crossorigin></noscript>`;
       });
-      // Remove charts chunk modulepreload so it loads only when F1/Cars/Travel/Spades/BotC are visited
-      html = html.replace(
-        /<link\s+rel="modulepreload"[^>]+href="\/assets\/charts-[^"]+"[^>]*>\n?\s*/g,
-        "",
-      );
       writeFileSync(htmlPath, html);
     },
   };
@@ -39,11 +34,6 @@ export default defineConfig({
     target: "es2020",
     // Charts chunk is large but loaded only when visiting F1/Cars/Travel/Comp/Spades/BotC
     chunkSizeWarningLimit: 600000,
-    // Don't preload the charts chunk on initial load (Lighthouse: reduce unused JavaScript)
-    modulePreload: {
-      resolveDependencies: (_filename, deps) =>
-        deps.filter((dep) => !dep.includes("charts-")),
-    },
     rollupOptions: {
       output: {
         manualChunks(id) {
