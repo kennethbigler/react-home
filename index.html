@@ -55,7 +55,7 @@
         href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
       />
     </noscript>
-    <link rel="manifest" href="/manifest.json" />
+    <!-- Manifest deferred to avoid critical path (Lighthouse: network-dependency-tree) -->
 
     <!-- Preload LCP image so it's discoverable early (prioritize-lcp-image, lcp-discovery-insight) -->
     <link rel="preload" as="image" href="/ken.webp" type="image/webp" fetchpriority="high">
@@ -101,6 +101,17 @@
       <div aria-live="polite" aria-label="Loading" style="display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;">Loading…</div>
     </div>
     <script type="module" src="src/main.tsx"></script>
+    <!-- Defer manifest to reduce critical request chain (Lighthouse: network-dependency-tree) -->
+    <script>
+      function addManifest() {
+        var l = document.createElement('link');
+        l.rel = 'manifest';
+        l.href = '/manifest.json';
+        document.head.appendChild(l);
+      }
+      if (document.readyState === 'complete') addManifest();
+      else window.addEventListener('load', addManifest);
+    </script>
     <!-- gtag config deferred to avoid render-blocking (Lighthouse) -->
     <script>
       window.dataLayer = window.dataLayer || [];
