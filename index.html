@@ -57,8 +57,8 @@
     </noscript>
     <link rel="manifest" href="/manifest.json" />
 
-    <!-- Preload critical images -->
-    <link rel="preload" as="image" href="/ken.webp" type="image/webp">
+    <!-- Preload LCP image so it's discoverable early (prioritize-lcp-image, lcp-discovery-insight) -->
+    <link rel="preload" as="image" href="/ken.webp" type="image/webp" fetchpriority="high">
 
     <!-- PWA -->
     <meta name="mobile-web-app-capable" content="yes">

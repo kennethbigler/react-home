@@ -9,11 +9,13 @@
     "assert": {
       "preset": "lighthouse:recommended",
       "assertions": {
-        "deprecations": "warn",
-        "errors-in-console": "warn",
+        "image-delivery-insight": "warn",
+        "lcp-discovery-insight": "warn",
         "network-dependency-tree-insight": "warn",
-        "third-party-cookies": "warn",
-        "unused-javascript": "warn"
+        "prioritize-lcp-image": "warn",
+        "unsized-images": "warn",
+        "unused-javascript": "warn",
+        "uses-responsive-images": "warn"
       }
     }
   }

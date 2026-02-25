@@ -15,7 +15,6 @@ const containerStyles: CSSProperties = {
   width: "100%",
 };
 const imgStyles: CSSProperties = {
-  width: "100%",
   maxWidth: "30em",
   float: "right",
 };
@@ -68,7 +67,7 @@ const CarCard = ({ car, isK = false }: CarCardProps) => (
         </CardContent>
       </Grid>
       <Grid size={{ xs: 12, sm: 4 }}>
-        <img src={car.src} alt={car.title} style={imgStyles} />
+        <img src={car.src} alt={car.title} width="100%" style={imgStyles} />
       </Grid>
     </Grid>
   </Card>
