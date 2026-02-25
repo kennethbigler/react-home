@@ -1,7 +1,30 @@
 // use test types instead of default types
 /// <reference types="vitest" />
+import { readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import type { Plugin } from "vite";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+
+/** Make main stylesheet non-render-blocking (Lighthouse: eliminate render-blocking resources). */
+function deferStylesheetPlugin(): Plugin {
+  return {
+    name: "defer-stylesheet",
+    apply: "build",
+    closeBundle() {
+      const outDir = "dist";
+      const htmlPath = join(outDir, "index.html");
+      let html = readFileSync(htmlPath, "utf-8");
+      // Match Vite-injected stylesheet: <link rel="stylesheet" ... href="/assets/...css" ...>
+      const linkRegex =
+        /<link\s+rel="stylesheet"[^>]+href="(\/assets\/[^"]+\.css)"[^>]*\/?>/g;
+      html = html.replace(linkRegex, (_match, href) => {
+        return `<link rel="stylesheet" href="${href}" crossorigin media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="${href}" crossorigin></noscript>`;
+      });
+      writeFileSync(htmlPath, html);
+    },
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -32,7 +55,7 @@ export default defineConfig({
       }
     }
   },
-  plugins: [react()],
+  plugins: [react(), deferStylesheetPlugin()],
   test: {
     globals: true,
     environment: "jsdom",
