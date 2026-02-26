@@ -679,6 +679,15 @@ export const presentations: School[] = [
               },
             ],
           },
+          {
+            quarter: "Birds of a Feather: Accessibility & AI",
+            classes: [
+              {
+                catalog: "Description",
+                name: "Join colleagues, innovators, and advocates for an open networking session focused on the rapidly evolving intersection of accessibility and artificial intelligence. This Birds of a Feather meetup provides a space to share experiences, explore challenges, spark collaborations, and discuss the future of inclusive AI. Whether you're developing AI tools, researching impacts, or championing accessibility in your organization, this informal gathering is a chance to connect with others who share your passion. Hosts: Ken Bigler and Ted Drake.",
+              },
+            ],
+          },
         ],
       },
       {
