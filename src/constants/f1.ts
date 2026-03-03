@@ -45,6 +45,7 @@ interface Constructor {
   color: string;
   points: (number | null)[];
   standings: (number | null)[];
+  thisYear?: number[];
 }
 
 // Audi History
@@ -74,66 +75,77 @@ export const constructors: Constructor[] = [
     color: MCLAREN_HEX,
     points: [62, 145, 202, 275, 159, 302, 666, 833, 10],
     standings: [6, 4, 3, 4, 5, 4, 1, 1, 1],
+    thisYear: [],
   },
   {
     name: "Mercedes",
     color: MERCEDES_HEX,
     points: [655, 739, 573, 613.5, 515, 409, 468, 469, 9],
     standings: [1, 1, 1, 1, 3, 2, 4, 2, 2],
+    thisYear: [],
   },
   {
     name: "Red Bull Racing",
     color: RED_BULL_HEX,
     points: [419, 417, 319, 585.5, 759, 860, 589, 451, 8],
     standings: [3, 3, 2, 2, 1, 1, 3, 3, 3],
+    thisYear: [],
   },
   {
     name: "Ferrari",
     color: FERRARI_HEX,
     points: [571, 504, 131, 323.5, 554, 406, 652, 398, 7],
     standings: [2, 2, 6, 3, 2, 3, 2, 4, 4],
+    thisYear: [],
   },
   {
     name: "Williams",
     color: WILLIAMS_HEX,
     points: [7, 1, 0, 23, 8, 28, 17, 137, 6],
     standings: [10, 10, 10, 8, 10, 7, 9, 5, 5],
+    thisYear: [],
   },
   {
     name: "Racing Bulls",
     color: RB_HEX,
     points: [...alphaTauriPoints, 46, 92, 5],
     standings: [...alphaTauriStandings, 8, 6, 6],
+    thisYear: [],
   },
   {
     name: "Aston Martin",
     color: ASTON_HEX,
     points: [...racingPointPoints, 77, 55, 280, 94, 89, 4],
     standings: [...racingPointStandings, 7, 7, 5, 5, 7, 7],
+    thisYear: [],
   },
   {
     name: "Haas",
     color: HAAS_HEX,
     points: [93, 28, 3, 0, 37, 12, 58, 79, 3],
     standings: [5, 9, 9, 10, 8, 10, 7, 8, 8],
+    thisYear: [],
   },
   {
     name: "Audi",
     color: AUDI_HEX,
     points: [...kickSauberPoints, 2],
     standings: [...kickSauberStandings, 9],
+    thisYear: [],
   },
   {
     name: "Alpine",
     color: ALPINE_HEX,
     points: [...renaultPoints, 155, 173, 120, 65, 22, 1],
     standings: [...renaultStandings, 5, 4, 6, 6, 10, 10],
+    thisYear: [],
   },
   {
     name: "Cadillac",
     color: CADILLAC_HEX,
     points: [null, null, null, null, null, null, null, null, 0],
     standings: [null, null, null, null, null, null, null, null, 11],
+    thisYear: [],
   },
   // ----------     3nd Replacement     ---------- //
   {
@@ -208,6 +220,7 @@ interface Driver {
   color: string;
   points: (number | null)[];
   standings: (number | null)[];
+  thisYear?: number[];
 }
 
 const drivers: Driver[] = [
