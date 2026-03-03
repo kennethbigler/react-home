@@ -202,17 +202,26 @@ export const constructors: Constructor[] = [
 
 const constructorPointsData: ChartEntry[] = [];
 const constructorStandingsData: ChartEntry[] = [];
+const constructorCurrentData: ChartEntry[] = [];
 
 constructors.forEach((constructor) => {
-  const { name, color, points, standings } = constructor;
+  const { name, color, points, standings, thisYear } = constructor;
   constructorPointsData.push({ data: points, name, color });
   constructorStandingsData.push({ data: standings, name, color });
+  if (thisYear) {
+    constructorCurrentData.push({ data: thisYear, name, color });
+  }
 });
 
 constructorPointsData.sort(pointSort);
 constructorStandingsData.sort(standingSort);
+constructorCurrentData.sort(pointSort);
 
-export { constructorPointsData, constructorStandingsData };
+export {
+  constructorPointsData,
+  constructorStandingsData,
+  constructorCurrentData,
+};
 
 // --------------------------------------------------     Driver Data     -------------------------------------------------- //
 interface Driver {
@@ -492,17 +501,22 @@ const drivers: Driver[] = [
 
 const driverPointsData: ChartEntry[] = [];
 const driverStandingsData: ChartEntry[] = [];
+const driverCurrentData: ChartEntry[] = [];
 
 drivers.forEach((driver) => {
-  const { name, color, points, standings } = driver;
+  const { name, color, points, standings, thisYear } = driver;
   driverPointsData.push({ data: points, name, color });
   driverStandingsData.push({ data: standings, name, color });
+  if (thisYear) {
+    driverCurrentData.push({ data: thisYear, name, color });
+  }
 });
 
 driverPointsData.sort(pointSort);
 driverStandingsData.sort(standingSort);
+driverCurrentData.sort(pointSort);
 
-export { driverPointsData, driverStandingsData };
+export { driverPointsData, driverStandingsData, driverCurrentData };
 
 // --------------------------------------------------     Contract Data     -------------------------------------------------- //
 export interface ContractData {
