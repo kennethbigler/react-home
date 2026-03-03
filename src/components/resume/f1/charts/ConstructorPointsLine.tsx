@@ -39,7 +39,6 @@ const ConstructorPointsLine = memo(({ color }: ConstructorPointsLineProps) => (
       <Tooltip shared={true} useHTML={true} formatter={tooltipFormatter} />
       <Title style={{ color }}>F1 Constructors Points</Title>
       <XAxis
-        max={7} // TODO: March 8th - remove after first points
         labels={{
           // @ts-expect-error: types are wrong in @highcharts/react
           style: { color },
