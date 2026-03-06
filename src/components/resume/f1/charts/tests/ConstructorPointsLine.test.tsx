@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import ConstructorPointsLine from "../ConstructorPointsLine";
-import { constructorPointsTooltipFormatter } from "../helpers";
+import { pointsTTFormatter } from "../helpers";
 
 // Mock Highcharts Point context for testing
 interface MockHighchartsContext {
@@ -57,7 +57,7 @@ describe("ConstructorPointsLine", () => {
     expect(container.querySelector("figure")).toBeInTheDocument();
   });
 
-  describe("constructorPointsTooltipFormatter", () => {
+  describe("pointsTTFormatter (constructor style)", () => {
     it("formats tooltip with single point", () => {
       const mockContext: MockHighchartsContext = {
         x: 0,
@@ -72,9 +72,7 @@ describe("ConstructorPointsLine", () => {
         ],
       };
 
-      const result = constructorPointsTooltipFormatter.call(
-        mockContext as never,
-      );
+      const result = pointsTTFormatter(mockContext as never, " (", ")");
       expect(result).toContain("Year:");
       expect(result).toContain("<b>100</b>: <span");
       expect(result).toContain("Team A");
@@ -101,9 +99,7 @@ describe("ConstructorPointsLine", () => {
         ],
       };
 
-      const result = constructorPointsTooltipFormatter.call(
-        mockContext as never,
-      );
+      const result = pointsTTFormatter(mockContext as never, " (", ")");
       expect(result).toContain("Team A");
       expect(result).toContain("Team B");
       expect(result).toContain(" ("); // Constructor uses parentheses
@@ -130,9 +126,7 @@ describe("ConstructorPointsLine", () => {
         ],
       };
 
-      const result = constructorPointsTooltipFormatter.call(
-        mockContext as never,
-      );
+      const result = pointsTTFormatter(mockContext as never, " (", ")");
       expect(result).toContain("150");
       expect(result).toContain("100");
       // Should be sorted in descending order
@@ -145,9 +139,7 @@ describe("ConstructorPointsLine", () => {
         points: [],
       };
 
-      const result = constructorPointsTooltipFormatter.call(
-        mockContext as never,
-      );
+      const result = pointsTTFormatter(mockContext as never, " (", ")");
       expect(result).toContain("Year:");
     });
 
@@ -157,9 +149,7 @@ describe("ConstructorPointsLine", () => {
         points: undefined,
       };
 
-      const result = constructorPointsTooltipFormatter.call(
-        mockContext as never,
-      );
+      const result = pointsTTFormatter(mockContext as never, " (", ")");
       expect(result).toContain("Year:");
     });
 
@@ -177,9 +167,7 @@ describe("ConstructorPointsLine", () => {
         ],
       };
 
-      const result = constructorPointsTooltipFormatter.call(
-        mockContext as never,
-      );
+      const result = pointsTTFormatter(mockContext as never, " (", ")");
       expect(result).toContain("0");
     });
 
@@ -197,9 +185,7 @@ describe("ConstructorPointsLine", () => {
         ],
       };
 
-      const result = constructorPointsTooltipFormatter.call(
-        mockContext as never,
-      );
+      const result = pointsTTFormatter(mockContext as never, " (", ")");
       expect(result).toContain("Team A");
     });
   });

@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import DriverPointsLine from "../DriverPointsLine";
-import { driverPointsTooltipFormatter } from "../helpers";
+import { pointsTTFormatter } from "../helpers";
 
 // Mock Highcharts Point context for testing
 interface MockHighchartsContext {
@@ -57,7 +57,7 @@ describe("DriverPointsLine", () => {
     expect(container.querySelector("figure")).toBeInTheDocument();
   });
 
-  describe("driverPointsTooltipFormatter", () => {
+  describe("pointsTTFormatter (driver style)", () => {
     it("formats tooltip with single point", () => {
       const mockContext: MockHighchartsContext = {
         x: 0,
@@ -72,7 +72,7 @@ describe("DriverPointsLine", () => {
         ],
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
+      const result = pointsTTFormatter(mockContext as never, " / ", "");
       expect(result).toContain("Year:");
       expect(result).toContain("<b>100</b>: <span");
       expect(result).toContain("Driver A");
@@ -99,7 +99,7 @@ describe("DriverPointsLine", () => {
         ],
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
+      const result = pointsTTFormatter(mockContext as never, " / ", "");
       expect(result).toContain("Driver A");
       expect(result).toContain("Driver B");
       expect(result).toContain(" / "); // Driver uses slash
@@ -126,7 +126,7 @@ describe("DriverPointsLine", () => {
         ],
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
+      const result = pointsTTFormatter(mockContext as never, " / ", "");
       expect(result).toContain("150");
       expect(result).toContain("100");
       // Should be sorted in descending order
@@ -139,7 +139,7 @@ describe("DriverPointsLine", () => {
         points: [],
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
+      const result = pointsTTFormatter(mockContext as never, " / ", "");
       expect(result).toContain("Year:");
     });
 
@@ -149,7 +149,7 @@ describe("DriverPointsLine", () => {
         points: undefined,
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
+      const result = pointsTTFormatter(mockContext as never, " / ", "");
       expect(result).toContain("Year:");
     });
 
@@ -167,7 +167,7 @@ describe("DriverPointsLine", () => {
         ],
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
+      const result = pointsTTFormatter(mockContext as never, " / ", "");
       expect(result).toContain("0");
     });
 
@@ -185,7 +185,7 @@ describe("DriverPointsLine", () => {
         ],
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
+      const result = pointsTTFormatter(mockContext as never, " / ", "");
       expect(result).toContain("Driver A");
     });
   });
