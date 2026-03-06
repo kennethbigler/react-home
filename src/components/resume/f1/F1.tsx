@@ -1,6 +1,7 @@
 import { Typography, Grid } from "@mui/material";
 import { useAtomValue } from "jotai";
 import BudgetSankey from "./charts/BudgetSankey";
+import ConstructorCurrentLine from "./charts/ConstructorCurrentLine";
 import ConstructorPointsLine from "./charts/ConstructorPointsLine";
 import ConstructorStandingsLine from "./charts/ConstructorStandingsLine";
 import ExpandableCard from "../../common/expandable-card";
@@ -11,6 +12,7 @@ import {
   ASTON_HEX,
   contractData,
 } from "../../../constants/f1";
+import DriverCurrentLine from "./charts/DriverCurrentLine";
 import DriverPointsLine from "./charts/DriverPointsLine";
 import DriverStandingsLine from "./charts/DriverStandingsLine";
 import Tracks from "./Tracks";
@@ -31,6 +33,7 @@ const F1 = () => {
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, lg: 6, xxl: 4 }}>
           <ExpandableCard title="Constructors" backgroundColor={MCLAREN_HEX}>
+            <ConstructorCurrentLine color={color} />
             <ConstructorPointsLine color={color} />
             <ConstructorStandingsLine color={color} />
           </ExpandableCard>
@@ -38,6 +41,7 @@ const F1 = () => {
 
         <Grid size={{ xs: 12, lg: 6, xxl: 4 }}>
           <ExpandableCard title="Drivers" backgroundColor={RED_BULL_HEX}>
+            <DriverCurrentLine color={color} />
             <DriverPointsLine color={color} />
             <DriverStandingsLine color={color} />
           </ExpandableCard>

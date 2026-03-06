@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import DriverPointsLine from "./DriverPointsLine";
-import { driverPointsTooltipFormatter } from "./helpers";
+import ConstructorPointsLine from "../ConstructorPointsLine";
+import { constructorPointsTooltipFormatter } from "../helpers";
 
 // Mock Highcharts Point context for testing
 interface MockHighchartsContext {
@@ -15,49 +15,49 @@ interface MockHighchartsContext {
   }>;
 }
 
-describe("DriverPointsLine", () => {
+describe("ConstructorPointsLine", () => {
   it("renders without crashing", () => {
-    render(<DriverPointsLine color="#ffffff" />);
-    expect(screen.getAllByText("F1 Drivers Points")[0]).toBeInTheDocument();
+    render(<ConstructorPointsLine color="#ffffff" />);
+    expect(
+      screen.getAllByText("F1 Constructors Points")[0],
+    ).toBeInTheDocument();
   });
 
   it("renders with custom color", () => {
-    render(<DriverPointsLine color="#ff0000" />);
-    expect(screen.getAllByText("F1 Drivers Points")[0]).toBeInTheDocument();
+    render(<ConstructorPointsLine color="#ff0000" />);
+    expect(
+      screen.getAllByText("F1 Constructors Points")[0],
+    ).toBeInTheDocument();
   });
 
   it("applies color to title", () => {
-    const { container } = render(<DriverPointsLine color="#00ff00" />);
+    const { container } = render(<ConstructorPointsLine color="#00ff00" />);
     expect(container).toBeInTheDocument();
   });
 
   it("renders figure element", () => {
-    const { container } = render(<DriverPointsLine color="#ffffff" />);
+    const { container } = render(<ConstructorPointsLine color="#ffffff" />);
     expect(container.querySelector("figure")).toBeInTheDocument();
   });
 
   it("has correct display name", () => {
-    expect(DriverPointsLine.displayName).toBe("Driver Points");
+    expect(ConstructorPointsLine.displayName).toBe("Constructor Points");
   });
 
   it("memoizes the component", () => {
-    const { rerender } = render(<DriverPointsLine color="#ffffff" />);
-    rerender(<DriverPointsLine color="#ffffff" />);
-    expect(screen.getAllByText("F1 Drivers Points").length).toBeGreaterThan(0);
-  });
-
-  it("renders figure with correct styling", () => {
-    const { container } = render(<DriverPointsLine color="#ffffff" />);
-    const figure = container.querySelector("figure");
-    expect(figure).toHaveStyle({ margin: "0", width: "100%" });
+    const { rerender } = render(<ConstructorPointsLine color="#ffffff" />);
+    rerender(<ConstructorPointsLine color="#ffffff" />);
+    expect(
+      screen.getAllByText("F1 Constructors Points").length,
+    ).toBeGreaterThan(0);
   });
 
   it("uses correct chart type", () => {
-    const { container } = render(<DriverPointsLine color="#ffffff" />);
+    const { container } = render(<ConstructorPointsLine color="#ffffff" />);
     expect(container.querySelector("figure")).toBeInTheDocument();
   });
 
-  describe("driverPointsTooltipFormatter", () => {
+  describe("constructorPointsTooltipFormatter", () => {
     it("formats tooltip with single point", () => {
       const mockContext: MockHighchartsContext = {
         x: 0,
@@ -65,44 +65,48 @@ describe("DriverPointsLine", () => {
           {
             y: 100,
             series: {
-              name: "Driver A",
+              name: "Team A",
               color: "#ff0000",
             },
           },
         ],
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
+      const result = constructorPointsTooltipFormatter.call(
+        mockContext as never,
+      );
       expect(result).toContain("Year:");
       expect(result).toContain("<b>100</b>: <span");
-      expect(result).toContain("Driver A");
+      expect(result).toContain("Team A");
     });
 
-    it("formats tooltip with multiple points at same value (uses slash)", () => {
+    it("formats tooltip with multiple points at same value (uses parentheses)", () => {
       const mockContext: MockHighchartsContext = {
         x: 0,
         points: [
           {
             y: 100,
             series: {
-              name: "Driver A",
+              name: "Team A",
               color: "#ff0000",
             },
           },
           {
             y: 100,
             series: {
-              name: "Driver B",
+              name: "Team B",
               color: "#00ff00",
             },
           },
         ],
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
-      expect(result).toContain("Driver A");
-      expect(result).toContain("Driver B");
-      expect(result).toContain(" / "); // Driver uses slash
+      const result = constructorPointsTooltipFormatter.call(
+        mockContext as never,
+      );
+      expect(result).toContain("Team A");
+      expect(result).toContain("Team B");
+      expect(result).toContain(" ("); // Constructor uses parentheses
     });
 
     it("formats tooltip with multiple points at different values", () => {
@@ -112,21 +116,23 @@ describe("DriverPointsLine", () => {
           {
             y: 150,
             series: {
-              name: "Driver A",
+              name: "Team A",
               color: "#ff0000",
             },
           },
           {
             y: 100,
             series: {
-              name: "Driver B",
+              name: "Team B",
               color: "#00ff00",
             },
           },
         ],
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
+      const result = constructorPointsTooltipFormatter.call(
+        mockContext as never,
+      );
       expect(result).toContain("150");
       expect(result).toContain("100");
       // Should be sorted in descending order
@@ -139,7 +145,9 @@ describe("DriverPointsLine", () => {
         points: [],
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
+      const result = constructorPointsTooltipFormatter.call(
+        mockContext as never,
+      );
       expect(result).toContain("Year:");
     });
 
@@ -149,7 +157,9 @@ describe("DriverPointsLine", () => {
         points: undefined,
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
+      const result = constructorPointsTooltipFormatter.call(
+        mockContext as never,
+      );
       expect(result).toContain("Year:");
     });
 
@@ -160,14 +170,16 @@ describe("DriverPointsLine", () => {
           {
             y: 0,
             series: {
-              name: "Driver A",
+              name: "Team A",
               color: "#ff0000",
             },
           },
         ],
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
+      const result = constructorPointsTooltipFormatter.call(
+        mockContext as never,
+      );
       expect(result).toContain("0");
     });
 
@@ -178,15 +190,17 @@ describe("DriverPointsLine", () => {
           {
             y: undefined,
             series: {
-              name: "Driver A",
+              name: "Team A",
               color: "#ff0000",
             },
           },
         ],
       };
 
-      const result = driverPointsTooltipFormatter.call(mockContext as never);
-      expect(result).toContain("Driver A");
+      const result = constructorPointsTooltipFormatter.call(
+        mockContext as never,
+      );
+      expect(result).toContain("Team A");
     });
   });
 });

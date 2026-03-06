@@ -1,6 +1,6 @@
 import Highcharts from "highcharts/highcharts.src";
-import { standingsTTFormatter } from "./helpers";
-import { xAxisYears } from "../../../../constants/f1";
+import { standingsTTFormatter } from "../helpers";
+import { xAxisYears } from "../../../../../constants/f1";
 
 describe("resume | f1 | charts | helpers", () => {
   describe("standingsTTFormatter", () => {
