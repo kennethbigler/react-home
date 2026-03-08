@@ -23,20 +23,25 @@ export const standingsTTFormatter = function (this: Highcharts.Point): string {
   return tooltip;
 };
 
-export const constructorPointsTooltipFormatter = function (
-  this: Highcharts.Point,
+export function pointsTTFormatter(
+  point: Highcharts.Point,
+  sameValuePrefix: string,
+  sameValueSuffix: string,
+  includeYearLine = true,
 ): string {
-  let tooltip = "Year: <b>" + xAxisYears[this.x] + "</b><br/>";
+  let tooltip = includeYearLine
+    ? "Year: <b>" + xAxisYears[point.x] + "</b><br/>"
+    : "";
   const tooltipHist: Record<number, string> = {};
 
-  (this.points || []).forEach((point: Highcharts.Point) => {
-    const team = `<span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name}`;
-    const i = point.y || 0;
+  (point.points || []).forEach((p: Highcharts.Point) => {
+    const team = `<span style="color: ${p.series.color?.toString()};">&#11044;</span> ${p.series.name}`;
+    const i = p.y || 0;
 
     if (tooltipHist[i] === undefined) {
-      tooltipHist[i] = `<b>${point.y}</b>: ${team}`;
+      tooltipHist[i] = `<b>${p.y}</b>: ${team}`;
     } else {
-      tooltipHist[i] += ` (${team})`;
+      tooltipHist[i] += sameValuePrefix + team + sameValueSuffix;
     }
   });
 
@@ -47,30 +52,22 @@ export const constructorPointsTooltipFormatter = function (
     });
 
   return tooltip;
+}
+
+export const constructorPointsTTFormatter = function (
+  this: Highcharts.Point,
+): string {
+  return pointsTTFormatter(this, " (", ")");
 };
 
-export const driverPointsTooltipFormatter = function (
+export const driverPointsTTFormatter = function (
   this: Highcharts.Point,
 ): string {
-  let tooltip = "Year: <b>" + xAxisYears[this.x] + "</b><br/>";
-  const tooltipHist: Record<number, string> = {};
+  return pointsTTFormatter(this, " / ", "");
+};
 
-  (this.points || []).forEach((point: Highcharts.Point) => {
-    const team = `<span style="color: ${point.series.color?.toString()};">&#11044;</span> ${point.series.name}`;
-    const i = point.y || 0;
-
-    if (tooltipHist[i] === undefined) {
-      tooltipHist[i] = `<b>${point.y}</b>: ${team}`;
-    } else {
-      tooltipHist[i] += ` / ${team}`;
-    }
-  });
-
-  Object.keys(tooltipHist)
-    .sort((a, b) => Number(b) - Number(a))
-    .forEach((key) => {
-      tooltip += tooltipHist[Number(key)] + "<br/>";
-    });
-
-  return tooltip;
+export const currentPointsTTFormatter = function (
+  this: Highcharts.Point,
+): string {
+  return pointsTTFormatter(this, " / ", "", false);
 };

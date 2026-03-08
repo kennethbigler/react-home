@@ -16,7 +16,7 @@ import Highcharts from "highcharts/highcharts.src";
 import "highcharts/modules/accessibility";
 import { constructorPointsData } from "../../../../constants/f1";
 import {
-  constructorPointsTooltipFormatter as tooltipFormatter,
+  constructorPointsTTFormatter as ttFormatter,
   xAxisLabelFormatter,
 } from "./helpers";
 
@@ -36,10 +36,9 @@ const ConstructorPointsLine = memo(({ color }: ConstructorPointsLineProps) => (
       <Accessibility enabled={true} />
       <Credits enabled={false} />
       <Legend enabled={false} />
-      <Tooltip shared={true} useHTML={true} formatter={tooltipFormatter} />
+      <Tooltip shared={true} useHTML={true} formatter={ttFormatter} />
       <Title style={{ color }}>F1 Constructors Points</Title>
       <XAxis
-        max={7} // TODO: March 8th - remove after first points
         labels={{
           // @ts-expect-error: types are wrong in @highcharts/react
           style: { color },

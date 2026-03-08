@@ -36,7 +36,6 @@ const DriverStandingsLine = memo(({ color }: DriverStandingsLineProps) => (
       <Tooltip useHTML={true} formatter={standingsTTFormatter} />
       <Title style={{ color }}>F1 Drivers Standings</Title>
       <XAxis
-        max={7} // TODO: March 8th - remove after first points
         labels={{
           // @ts-expect-error: types are wrong in @highcharts/react
           style: { color },
