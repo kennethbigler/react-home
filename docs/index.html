@@ -55,7 +55,7 @@
         href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
       />
     </noscript>
-    <link rel="manifest" href="/manifest.json" />
+    <!-- Manifest deferred to avoid critical path (Lighthouse: network-dependency-tree) -->
 
     <!-- Preload LCP image so it's discoverable early (prioritize-lcp-image, lcp-discovery-insight) -->
     <link rel="preload" as="image" href="/ken.webp" type="image/webp" fetchpriority="high">
@@ -92,9 +92,9 @@
      /  /__/  / / /_/ / / ___/  /
     /________/_/\__  /_/\___/__/
                /____/           -->
-    <script type="module" crossorigin src="/assets/index-D5zf6_xY.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/charts-JJaqLqT5.js">
-    <link rel="modulepreload" crossorigin href="/assets/react-vendor-D4KJUVPH.js">
+    <script type="module" crossorigin src="/assets/index-CKLkj-cO.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/charts-BpAXXgUs.js">
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-B_L3rN6O.js">
     <link rel="stylesheet" href="/assets/index-BvveWbzk.css" crossorigin media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="/assets/index-BvveWbzk.css" crossorigin></noscript>
   </head>
 
@@ -104,6 +104,17 @@
       <!-- Initial content for immediate FCP (Lighthouse/CI); replaced when React mounts -->
       <div aria-live="polite" aria-label="Loading" style="display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;">Loading…</div>
     </div>
+    <!-- Defer manifest to reduce critical request chain (Lighthouse: network-dependency-tree) -->
+    <script>
+      function addManifest() {
+        var l = document.createElement('link');
+        l.rel = 'manifest';
+        l.href = '/manifest.json';
+        document.head.appendChild(l);
+      }
+      if (document.readyState === 'complete') addManifest();
+      else window.addEventListener('load', addManifest);
+    </script>
     <!-- gtag config deferred to avoid render-blocking (Lighthouse) -->
     <script>
       window.dataLayer = window.dataLayer || [];
