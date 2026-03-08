@@ -263,12 +263,14 @@ const drivers: Driver[] = [
     color: HAAS_HEX,
     points: [null, null, null, null, null, null, 7, 41, 6],
     standings: [null, null, null, null, null, null, 18, 13, 7],
+    thisYear: [0, 6],
   },
   {
     name: "Gabriel Bortoleto",
     color: AUDI_HEX,
     points: [null, null, null, null, null, null, null, 19, 2],
     standings: [null, null, null, null, null, null, null, 19, 9],
+    thisYear: [0, 2],
   },
   {
     name: "Valtteri Bottas",
@@ -311,6 +313,7 @@ const drivers: Driver[] = [
     color: ALPINE_HEX,
     points: [29, 95, 75, 110, 23, 62, 42, 22, 1],
     standings: [15, 7, 10, 9, 14, 11, 10, 18, 10],
+    thisYear: [0, 1],
   },
   {
     name: "Antonio Giovinazzi",
@@ -391,6 +394,7 @@ const drivers: Driver[] = [
     color: RB_HEX,
     points: [null, null, null, null, null, null, null, null, 4],
     standings: [null, null, null, null, null, null, null, null, 8],
+    thisYear: [0, 4],
   },
   {
     name: "Kevin Magnussen",

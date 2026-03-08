@@ -6,14 +6,14 @@ describe("ConstructorCurrentLine", () => {
   it("renders without crashing", () => {
     render(<ConstructorCurrentLine color="#ffffff" />);
     expect(
-      screen.getAllByText("F1 Constructors Points")[0],
+      screen.getAllByText(/F1 \d{4} Constructors Points/)[0],
     ).toBeInTheDocument();
   });
 
   it("renders with custom color", () => {
     render(<ConstructorCurrentLine color="#ff0000" />);
     expect(
-      screen.getAllByText("F1 Constructors Points")[0],
+      screen.getAllByText(/F1 \d{4} Constructors Points/)[0],
     ).toBeInTheDocument();
   });
 
@@ -30,7 +30,7 @@ describe("ConstructorCurrentLine", () => {
     const { rerender } = render(<ConstructorCurrentLine color="#ffffff" />);
     rerender(<ConstructorCurrentLine color="#ffffff" />);
     expect(
-      screen.getAllByText("F1 Constructors Points").length,
+      screen.getAllByText(/F1 \d{4} Constructors Points/).length,
     ).toBeGreaterThan(0);
   });
 });

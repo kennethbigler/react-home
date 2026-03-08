@@ -35,7 +35,7 @@ const ConstructorCurrentLine = memo(
         <Credits enabled={false} />
         <Legend enabled={false} />
         <Tooltip shared={true} useHTML={true} formatter={ttFormatter} />
-        <Title style={{ color }}>F1 Constructors Points</Title>
+        <Title style={{ color }}>F1 2026 Constructors Points</Title>
         <XAxis
           // @ts-expect-error: types are wrong in @highcharts/react
           labels={{ style: { color } }}

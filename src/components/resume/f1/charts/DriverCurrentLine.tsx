@@ -34,7 +34,7 @@ const DriverCurrentLine = memo(({ color }: DriverCurrentLineProps) => (
       <Credits enabled={false} />
       <Legend enabled={false} />
       <Tooltip shared={true} useHTML={true} formatter={ttFormatter} />
-      <Title style={{ color }}>F1 Drivers Points</Title>
+      <Title style={{ color }}>F1 2026 Drivers Points</Title>
       <XAxis
         // @ts-expect-error: types are wrong in @highcharts/react
         labels={{ style: { color } }}
@@ -45,9 +45,7 @@ const DriverCurrentLine = memo(({ color }: DriverCurrentLineProps) => (
         title={{ text: undefined }}
         gridLineDashStyle="Dot"
       />
-      <PlotOptions
-        series={{ lineWidth: 4, marker: { radius: 5, symbol: "circle" } }}
-      />
+      <PlotOptions series={{ lineWidth: 3, marker: { symbol: "circle" } }} />
       {driverCurrentData.map((s) => (
         <Series
           key={s.name}
