@@ -46,7 +46,12 @@ const ConstructorCurrentSpline = memo(
           title={{ text: undefined }}
           gridLineDashStyle="Dot"
         />
-        <PlotOptions series={{ lineWidth: 4, marker: { enabled: false } }} />
+        <PlotOptions
+          series={{
+            lineWidth: 4,
+            marker: { enabled: false, symbol: "circle", radius: 3 },
+          }}
+        />
         {constructorCurrentData.map((s) => (
           <Series
             key={s.name}

@@ -45,7 +45,12 @@ const DriverCurrentSpline = memo(({ color }: DriverCurrentSplineProps) => (
         title={{ text: undefined }}
         gridLineDashStyle="Dot"
       />
-      <PlotOptions series={{ lineWidth: 3, marker: { enabled: false } }} />
+      <PlotOptions
+        series={{
+          lineWidth: 3,
+          marker: { enabled: false, symbol: "circle", radius: 3 },
+        }}
+      />
       {driverCurrentData.map((s) => (
         <Series
           key={s.name}
