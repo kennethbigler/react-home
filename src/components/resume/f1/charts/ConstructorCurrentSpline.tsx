@@ -19,16 +19,16 @@ import { currentPointsTTFormatter as ttFormatter } from "./helpers";
 
 setHighcharts(Highcharts);
 
-export interface ConstructorCurrentLineProps {
+export interface ConstructorCurrentSplineProps {
   color: string;
 }
 
 const options: Highcharts.Options = {
-  chart: { type: "line", backgroundColor: "transparent" },
+  chart: { type: "spline", backgroundColor: "transparent" },
 };
 
-const ConstructorCurrentLine = memo(
-  ({ color }: ConstructorCurrentLineProps) => (
+const ConstructorCurrentSpline = memo(
+  ({ color }: ConstructorCurrentSplineProps) => (
     <figure style={{ margin: 0, width: "100%" }}>
       <Chart highcharts={Highcharts} options={options}>
         <Accessibility enabled={true} />
@@ -46,14 +46,13 @@ const ConstructorCurrentLine = memo(
           title={{ text: undefined }}
           gridLineDashStyle="Dot"
         />
-        <PlotOptions
-          series={{ lineWidth: 4, marker: { radius: 5, symbol: "circle" } }}
-        />
+        <PlotOptions series={{ lineWidth: 4, marker: { enabled: false } }} />
         {constructorCurrentData.map((s) => (
           <Series
             key={s.name}
             options={{ name: s.name, color: s.color }}
             data={s.data}
+            type="spline"
           />
         ))}
       </Chart>
@@ -61,6 +60,6 @@ const ConstructorCurrentLine = memo(
   ),
 );
 
-ConstructorCurrentLine.displayName = "Constructor Points";
+ConstructorCurrentSpline.displayName = "Constructor Points";
 
-export default ConstructorCurrentLine;
+export default ConstructorCurrentSpline;

@@ -19,15 +19,15 @@ import { currentPointsTTFormatter as ttFormatter } from "./helpers";
 
 setHighcharts(Highcharts);
 
-export interface DriverCurrentLineProps {
+export interface DriverCurrentSplineProps {
   color: string;
 }
 
 const options: Highcharts.Options = {
-  chart: { type: "line", backgroundColor: "transparent" },
+  chart: { type: "spline", backgroundColor: "transparent" },
 };
 
-const DriverCurrentLine = memo(({ color }: DriverCurrentLineProps) => (
+const DriverCurrentSpline = memo(({ color }: DriverCurrentSplineProps) => (
   <figure style={{ margin: 0, width: "100%" }}>
     <Chart highcharts={Highcharts} options={options}>
       <Accessibility enabled={true} />
@@ -45,18 +45,19 @@ const DriverCurrentLine = memo(({ color }: DriverCurrentLineProps) => (
         title={{ text: undefined }}
         gridLineDashStyle="Dot"
       />
-      <PlotOptions series={{ lineWidth: 3, marker: { symbol: "circle" } }} />
+      <PlotOptions series={{ lineWidth: 3, marker: { enabled: false } }} />
       {driverCurrentData.map((s) => (
         <Series
           key={s.name}
           options={{ name: s.name, color: s.color }}
           data={s.data}
+          type="spline"
         />
       ))}
     </Chart>
   </figure>
 ));
 
-DriverCurrentLine.displayName = "Driver Points";
+DriverCurrentSpline.displayName = "Driver Points";
 
-export default DriverCurrentLine;
+export default DriverCurrentSpline;
