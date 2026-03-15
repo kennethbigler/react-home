@@ -34,13 +34,13 @@
     "@highcharts/react": "4.2.1",
     "@mui/icons-material": "7.3.9",
     "@mui/material": "7.3.9",
-    "@vitejs/plugin-react": "5.1.4",
+    "@vitejs/plugin-react": "6.0.1",
     "highcharts": "12.5.0",
     "jotai": "2.18.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-router-dom": "7.13.1",
-    "vite": "7.3.1"
+    "vite": "8.0.0"
   },
   "devDependencies": {
     "@eslint/compat": "2.0.2",
@@ -59,7 +59,7 @@
     "eslint-plugin-react-hooks": "7.0.1",
     "eslint-plugin-react-refresh": "0.5.2",
     "gts": "7.0.0",
-    "jsdom": "28.1.0",
+    "jsdom": "29.0.0",
     "prettier": "3.8.1",
     "source-map-explorer": "2.5.3",
     "typescript": "5.9.3",
