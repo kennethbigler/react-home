@@ -5,6 +5,13 @@ import { catchErr } from "../apis/catchErr";
 
 const BASE_TITLE = "Ken Bigler's Website";
 
+const toTitleCase = (str: string) => {
+  return str.replace(
+    /\w\S*/g,
+    (text) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase(),
+  );
+};
+
 /** Map path segments to page titles for WCAG 2.4.2 (Page Titled) */
 const getPageTitle = (pathname: string): string => {
   const segment = pathname.replace(/^#\/?/, "").split("/").filter(Boolean)[0];
@@ -19,7 +26,7 @@ const getPageTitle = (pathname: string): string => {
     resume: "Resume",
     travel: "Travel Map",
     work: "Work",
-    games: sub ? `${sub.replace(/-/g, " ")} | Games` : "Games",
+    games: sub ? `${toTitleCase(sub.replace(/-/g, " "))} | Game` : "Games",
   };
   const page = titles[segment ?? ""] ?? segment ?? "Summary";
   return page === BASE_TITLE ? BASE_TITLE : `${page} | ${BASE_TITLE}`;
