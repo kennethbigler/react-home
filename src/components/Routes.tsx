@@ -16,19 +16,14 @@ const toTitleCase = (str: string) => {
 const getPageTitle = (pathname: string): string => {
   const segment = pathname.replace(/^#\/?/, "").split("/").filter(Boolean)[0];
   const sub = pathname.replace(/^#\/?/, "").split("/").filter(Boolean)[1];
-  const titles: Record<string, string> = {
-    "": "Summary",
-    cars: "Cars",
-    comp: "Comp Calculator",
-    education: "Education",
-    f1: "F1",
-    presentations: "Presentations",
-    resume: "Resume",
-    travel: "Travel Map",
-    work: "Work",
-    games: sub ? `${toTitleCase(sub.replace(/-/g, " "))} | Game` : "Games",
-  };
-  const page = titles[segment ?? ""] ?? segment ?? "Summary";
+  let page: string;
+  if (!segment) {
+    page = BASE_TITLE;
+  } else if (segment === "games") {
+    page = sub ? `${toTitleCase(sub.replace(/-/g, " "))} | Game` : "Games";
+  } else {
+    page = toTitleCase(segment.replace(/-/g, " "));
+  }
   return page === BASE_TITLE ? BASE_TITLE : `${page} | ${BASE_TITLE}`;
 };
 
