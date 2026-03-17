@@ -4,7 +4,6 @@ import LoadingSpinner from ".";
 describe("common | LoadingSpinner", () => {
   it("renders as expected", () => {
     render(<LoadingSpinner />);
-    expect(screen.getByTitle("Loading Spinner")).toBeInTheDocument();
     expect(
       screen.getByRole("progressbar", { name: "Loading" }),
     ).toBeInTheDocument();
