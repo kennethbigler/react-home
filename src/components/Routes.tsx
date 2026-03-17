@@ -1,7 +1,8 @@
-import { lazy, Suspense } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import LoadingSpinner from "./common/loading-spinner";
 import { catchErr } from "../apis/catchErr";
+import { getPageTitle } from "./routeTitleUtils";
 
 // lazy load sub routers
 const ResumeRoutes = lazy(
@@ -13,6 +14,12 @@ const GameRoutes = lazy(
 
 const RootRoutes = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const pathname = location.pathname || "/";
+    document.title = getPageTitle(pathname);
+  }, [location.pathname]);
 
   const handleNav = (loc: string) => {
     navigate(loc)?.catch(catchErr);

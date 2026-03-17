@@ -3,7 +3,9 @@ import App from "./wrappers/WithTheme";
 
 it("renders without crashing", async () => {
   render(<App />);
-  expect(screen.getByTitle("Loading Spinner")).toBeInTheDocument();
+  expect(
+    screen.getByRole("progressbar", { name: "Loading" }),
+  ).toBeInTheDocument();
   await waitFor(() =>
     expect(screen.getByLabelText("Menu")).toBeInTheDocument(),
   );
