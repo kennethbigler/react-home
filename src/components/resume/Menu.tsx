@@ -54,15 +54,15 @@ const Menu = memo(({ onItemClick }: MenuProps) => {
     <MenuList>
       {menu}
       <Divider aria-hidden />
-      <MenuItem onClick={github}>
-        <GitHubIcon />
+      <MenuItem onClick={github} aria-label="GitHub (opens in new tab)">
+        <GitHubIcon aria-hidden />
         &nbsp;GitHub&nbsp;
-        <OpenInNewIcon fontSize="small" />
+        <OpenInNewIcon fontSize="small" aria-hidden />
       </MenuItem>
-      <MenuItem onClick={linkedIn}>
-        <LinkedInIcon />
+      <MenuItem onClick={linkedIn} aria-label="LinkedIn (opens in new tab)">
+        <LinkedInIcon aria-hidden />
         &nbsp;LinkedIn&nbsp;
-        <OpenInNewIcon fontSize="small" />
+        <OpenInNewIcon fontSize="small" aria-hidden />
       </MenuItem>
     </MenuList>
   );

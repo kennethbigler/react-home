@@ -7,12 +7,9 @@ const containerStyles: CSSProperties = {
 };
 
 const LoadingSpinner = memo(() => (
-  <CircularProgress
-    size={100}
-    style={containerStyles}
-    aria-label="Loading"
-    title="Loading Spinner"
-  />
+  <div role="status" aria-live="polite" aria-label="Loading page content">
+    <CircularProgress size={100} style={containerStyles} aria-label="Loading" />
+  </div>
 ));
 
 LoadingSpinner.displayName = "LoadingSpinner";

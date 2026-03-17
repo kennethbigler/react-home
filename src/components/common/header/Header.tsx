@@ -41,7 +41,11 @@ const Header = ({ children, handleNav }: HeaderProps) => {
   return (
     <>
       <TopBar toggleOpen={toggleOpen} textColor={textColor} />
-      <Drawer onClose={toggleOpen} open={isOpen}>
+      <Drawer
+        onClose={toggleOpen}
+        open={isOpen}
+        aria-label="Site navigation menu"
+      >
         <AppBar position="sticky">
           <Toolbar disableGutters>
             <IconButton

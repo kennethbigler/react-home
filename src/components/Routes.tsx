@@ -1,7 +1,29 @@
-import { lazy, Suspense } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import LoadingSpinner from "./common/loading-spinner";
 import { catchErr } from "../apis/catchErr";
+
+const BASE_TITLE = "Ken Bigler's Website";
+
+/** Map path segments to page titles for WCAG 2.4.2 (Page Titled) */
+const getPageTitle = (pathname: string): string => {
+  const segment = pathname.replace(/^#\/?/, "").split("/").filter(Boolean)[0];
+  const sub = pathname.replace(/^#\/?/, "").split("/").filter(Boolean)[1];
+  const titles: Record<string, string> = {
+    "": "Summary",
+    cars: "Cars",
+    comp: "Comp Calculator",
+    education: "Education",
+    f1: "F1",
+    presentations: "Presentations",
+    resume: "Resume",
+    travel: "Travel Map",
+    work: "Work",
+    games: sub ? `${sub.replace(/-/g, " ")} | Games` : "Games",
+  };
+  const page = titles[segment ?? ""] ?? segment ?? "Summary";
+  return page === BASE_TITLE ? BASE_TITLE : `${page} | ${BASE_TITLE}`;
+};
 
 // lazy load sub routers
 const ResumeRoutes = lazy(
@@ -13,6 +35,12 @@ const GameRoutes = lazy(
 
 const RootRoutes = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const pathname = location.pathname || "/";
+    document.title = getPageTitle(pathname);
+  }, [location.pathname]);
 
   const handleNav = (loc: string) => {
     navigate(loc)?.catch(catchErr);
