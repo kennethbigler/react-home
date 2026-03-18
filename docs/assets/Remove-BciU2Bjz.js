@@ -1,0 +1,2 @@
+import{x as e}from"./react-vendor-Dw3DYIRm.js";import{t}from"./createSvgIcon-CfJ-ouA9.js";var n=t((0,e().jsx)(`path`,{d:`M19 13H5v-2h14z`}),`Remove`);export{n as t};
+//# sourceMappingURL=Remove-BciU2Bjz.js.map
