@@ -78,6 +78,7 @@ const Tracks = memo(() => {
             onClick={toggleExpanded}
           />
           <Track
+            skipped
             expanded={expanded}
             circuitName="Bahrain International Circuit, Sakhir"
             imgSrc={bahrainSrc}
@@ -88,6 +89,7 @@ const Tracks = memo(() => {
             onClick={toggleExpanded}
           />
           <Track
+            skipped
             expanded={expanded}
             circuitName="Saudi Arabia Circuit, Jeddah"
             imgSrc={saudiSrc}

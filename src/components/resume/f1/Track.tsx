@@ -10,6 +10,7 @@ interface TrackProps {
   imgSrc: string;
   numLaps: number;
   raceLen: number;
+  skipped?: boolean;
   onClick: (circuitName: string) => () => void;
 }
 
@@ -30,9 +31,20 @@ const Track = memo(
     imgSrc,
     numLaps,
     raceLen,
+    skipped,
     onClick,
   }: TrackProps) => {
     const isExpanded = expanded === circuitName;
+
+    const gridStyles: CSSProperties = {};
+    if (isExpanded) {
+      gridStyles.textAlign = "center";
+    }
+    if (skipped) {
+      gridStyles.border = "2px solid red";
+      gridStyles.padding = "2px";
+    }
+
     return (
       <Grid
         size={
@@ -40,7 +52,7 @@ const Track = memo(
             ? { xs: 12, xxl: 6, xxxl: 3 }
             : { xs: 12, md: 6, lg: 4, xl: 3, xxl: 2, xxxl: 1 }
         }
-        sx={isExpanded ? { textAlign: "center" } : {}}
+        sx={gridStyles}
       >
         <Typography variant={isExpanded ? "h3" : "h5"} sx={txtStyles}>
           {circuitName}
