@@ -10,7 +10,7 @@ const defaultProps = {
   imgSrc: "/monaco.avif",
   numLaps: 78,
   raceLen: 260,
-  onClick: (name: string) => () => {},
+  onClick: () => () => {},
 };
 
 describe("resume | f1 | Track", () => {
@@ -30,13 +30,21 @@ describe("resume | f1 | Track", () => {
   });
 
   it("calls onClick with circuit name when the track image button is clicked", () => {
-    const onClick = vi.fn<[string], () => void>(() => () => {});
-    render(<Track {...defaultProps} onClick={onClick} />);
+    const onClick = vi.fn((circuitName: string) => {
+      void circuitName;
+      return () => {};
+    });
+    render(
+      <Track
+        {...defaultProps}
+        onClick={onClick as (n: string) => () => void}
+      />,
+    );
 
     fireEvent.click(
-      screen.getByRole("img", { name: "Monaco track layout" }).closest(
-        "button",
-      )!,
+      screen
+        .getByRole("img", { name: "Monaco track layout" })
+        .closest("button")!,
     );
 
     expect(onClick).toHaveBeenCalledWith("Monaco");
