@@ -1,0 +1,2 @@
+import{n as e}from"./rolldown-runtime-DF2fYuay.js";import{z as t}from"./react-vendor-Dw3DYIRm.js";var n=e(t());function r(e,t){return n.isValidElement(e)&&t.indexOf(e.type.muiName??e.type?._payload?.value?.muiName)!==-1}export{r as t};
+//# sourceMappingURL=isMuiElement-Dr7E1PV5.js.map
