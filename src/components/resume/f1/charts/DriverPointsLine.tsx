@@ -5,22 +5,18 @@ import {
   Legend,
   PlotOptions,
   Series,
-  setHighcharts,
   Title,
   Tooltip,
   XAxis,
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/options/Accessibility";
-import Highcharts from "highcharts/highcharts.src";
-import "highcharts/modules/accessibility";
+import Highcharts from "./f1Highcharts";
 import { driverPointsData } from "../../../../constants/f1";
 import {
   driverPointsTTFormatter as ttFormatter,
   xAxisLabelFormatter,
 } from "./helpers";
-
-setHighcharts(Highcharts);
 
 export interface DriverPointsLineProps {
   color: string;

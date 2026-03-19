@@ -3,17 +3,13 @@ import {
   Credits,
   Legend,
   Series,
-  setHighcharts,
   Title,
   XAxis,
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/options/Accessibility";
-import Highcharts from "highcharts/highcharts.src";
-import "highcharts/modules/accessibility";
+import Highcharts from "./spadesHighcharts";
 import { NilMetrics } from "../../../../jotai/spades-atom";
-
-setHighcharts(Highcharts);
 export interface StatsNilChartProps {
   color: string;
   initials: string;

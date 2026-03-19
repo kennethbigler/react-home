@@ -3,18 +3,14 @@ import {
   Chart,
   Credits,
   Series,
-  setHighcharts,
   Title,
   Tooltip,
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/options/Accessibility";
-import Highcharts from "highcharts/highcharts.src";
-import "highcharts/modules/accessibility";
+import Highcharts from "./carsHighcharts";
 import { green, grey, red } from "@mui/material/colors";
 import { Grid } from "@mui/material";
-
-setHighcharts(Highcharts);
 
 export interface CarSpeedoGraphProps {
   val: number;

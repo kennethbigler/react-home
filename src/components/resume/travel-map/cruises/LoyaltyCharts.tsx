@@ -5,23 +5,19 @@ import {
   Credits,
   Legend,
   Series,
-  setHighcharts,
   Title,
   Tooltip,
   XAxis,
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/options/Accessibility";
-import Highcharts from "highcharts/highcharts.src";
-import "highcharts/modules/accessibility";
+import Highcharts from "../travelMapHighcharts";
 import themeAtom from "../../../../jotai/theme-atom";
 import {
   loyaltySeries,
   loyaltyColors,
   loyaltyNames,
 } from "../../../../constants/cruises";
-
-setHighcharts(Highcharts);
 
 const options: Highcharts.Options = {
   colors: loyaltyColors,

@@ -1,0 +1,2 @@
+import{c as e}from"./index-DoxpbBtu.js";function t(e,t=166){let n;function r(...r){clearTimeout(n),n=setTimeout(()=>{e.apply(this,r)},t)}return r.clear=()=>{clearTimeout(n)},r}var n=t;function r(e){return e&&e.ownerDocument||document}var i=r;function a(e){return r(e).defaultView||window}var o=a,s=e;function c(e){let t=e.activeElement;for(;t?.shadowRoot?.activeElement!=null;)t=t.shadowRoot.activeElement;return t}var l=c;export{i as a,t as c,a as i,s as n,r as o,o as r,n as s,l as t};
+//# sourceMappingURL=getActiveElement-XNp6Tcfo.js.map

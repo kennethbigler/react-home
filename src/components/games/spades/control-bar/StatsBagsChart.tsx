@@ -4,17 +4,13 @@ import {
   Legend,
   PlotOptions,
   Series,
-  setHighcharts,
   Title,
   Tooltip,
   XAxis,
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/options/Accessibility";
-import Highcharts from "highcharts/highcharts.src";
-import "highcharts/modules/accessibility";
-
-setHighcharts(Highcharts);
+import Highcharts from "./spadesHighcharts";
 
 export interface StatsBagsChartProps {
   initials: string;

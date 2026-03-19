@@ -5,19 +5,15 @@ import {
   Legend,
   PlotOptions,
   Series,
-  setHighcharts,
   Title,
   Tooltip,
   XAxis,
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/options/Accessibility";
-import Highcharts from "highcharts/highcharts.src";
-import "highcharts/modules/accessibility";
+import Highcharts from "./f1Highcharts";
 import { constructorStandingsData } from "../../../../constants/f1";
 import { standingsTTFormatter, xAxisLabelFormatter } from "./helpers";
-
-setHighcharts(Highcharts);
 
 export interface ConstructorStandingsLineProps {
   color: string;
