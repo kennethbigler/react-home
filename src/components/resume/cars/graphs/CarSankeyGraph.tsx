@@ -1,26 +1,13 @@
 import { memo } from "react";
-import {
-  Chart,
-  Credits,
-  Series,
-  setHighcharts,
-  Title,
-  XAxis,
-  YAxis,
-} from "@highcharts/react";
+import { Chart, Credits, Series, Title, XAxis, YAxis } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/options/Accessibility";
-import Highcharts from "highcharts/highcharts.src";
-import "highcharts/highcharts-more";
-import "highcharts/modules/sankey";
-import "highcharts/modules/accessibility";
+import Highcharts from "./carsHighcharts";
 import {
   carSankeyNodes,
   carSankeyData,
   kenSankeyData,
   familySankeyData,
 } from "../../../../constants/cars";
-
-setHighcharts(Highcharts);
 
 interface CarSankeyGraphProps {
   color: string;

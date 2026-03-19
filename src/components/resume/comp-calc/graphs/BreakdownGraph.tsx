@@ -6,17 +6,13 @@ import {
   Legend,
   PlotOptions,
   Series,
-  setHighcharts,
   Title,
   Tooltip,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/options/Accessibility";
-import Highcharts from "highcharts/highcharts.src";
-import "highcharts/modules/accessibility";
+import Highcharts from "./compCalcHighcharts";
 import themeAtom from "../../../../jotai/theme-atom";
 import colors from "./colors";
-
-setHighcharts(Highcharts);
 
 interface BreakdownChartProps {
   bonus: number;

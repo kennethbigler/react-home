@@ -1,4 +1,4 @@
-import Highcharts from "highcharts/highcharts.src";
+import type Highcharts from "highcharts/highcharts.src";
 import {
   constructorPointsTTFormatter,
   currentPointsTTFormatter,

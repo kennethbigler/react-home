@@ -4,18 +4,14 @@ import {
   Legend,
   PlotOptions,
   Series,
-  setHighcharts,
   Title,
   Tooltip,
   XAxis,
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/options/Accessibility";
-import Highcharts from "highcharts/highcharts.src";
-import "highcharts/modules/accessibility";
+import Highcharts from "./carsHighcharts";
 import { processData, CarEntry } from "../../../../constants/cars";
-
-setHighcharts(Highcharts);
 
 export interface CarChartProps {
   data: CarEntry[];
