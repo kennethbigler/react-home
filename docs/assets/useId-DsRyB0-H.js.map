@@ -1,1 +1,0 @@
-{"version":3,"file":"useId-DsRyB0-H.js","names":[],"sources":["../../node_modules/@mui/material/esm/utils/useId.js"],"sourcesContent":["'use client';\n\nimport useId from '@mui/utils/useId';\nexport default useId;"],"x_google_ignoreList":[0],"mappings":"wCAGA,IAAA,EAAe"}

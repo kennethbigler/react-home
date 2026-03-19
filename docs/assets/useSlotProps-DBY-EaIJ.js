@@ -1,2 +1,0 @@
-import{l as e}from"./ButtonBase-Dzh-nQPi.js";import{a as t,i as n,n as r}from"./useSlot-BpCpOsJJ.js";function i(i){let{elementType:a,externalSlotProps:o,ownerState:s,skipResolvingSlotProps:c=!1,...l}=i,u=c?{}:n(o,s),{props:d,internalRef:f}=r({...l,externalSlotProps:u}),p=e(f,u?.ref,i.additionalProps?.ref);return t(a,{...d,ref:p},s)}export{i as t};
-//# sourceMappingURL=useSlotProps-DBY-EaIJ.js.map
