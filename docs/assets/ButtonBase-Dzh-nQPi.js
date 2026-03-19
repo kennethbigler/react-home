@@ -1,0 +1,75 @@
+import{n as e}from"./rolldown-runtime-DF2fYuay.js";import{I as t,w as n,x as r,z as i}from"./react-vendor-Dw3DYIRm.js";import{C as a,S as o,_ as s,f as c,h as l,n as u,r as d,s as f,u as p,w as m}from"./createSimplePaletteValueFilter-Ddzt0NOA.js";import{c as h}from"./index-CB566B8f.js";var g=e(i());function _(e){let t=g.useRef(e);return h(()=>{t.current=e}),g.useRef((...e)=>(0,t.current)(...e)).current}var v=_;function y(...e){let t=g.useRef(void 0),n=g.useCallback(t=>{let n=e.map(e=>{if(e==null)return null;if(typeof e==`function`){let n=e,r=n(t);return typeof r==`function`?r:()=>{n(null)}}return e.current=t,()=>{e.current=null}});return()=>{n.forEach(e=>e?.())}},e);return g.useMemo(()=>e.every(e=>e==null)?null:e=>{t.current&&(t.current(),t.current=void 0),e!=null&&(t.current=n(e))},e)}var b=y;function x(e,t){if(e==null)return{};var n={};for(var r in e)if({}.hasOwnProperty.call(e,r)){if(t.indexOf(r)!==-1)continue;n[r]=e[r]}return n}function S(e,t){return S=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(e,t){return e.__proto__=t,e},S(e,t)}function C(e,t){e.prototype=Object.create(t.prototype),e.prototype.constructor=e,S(e,t)}var w=g.createContext(null);function T(e){if(e===void 0)throw ReferenceError(`this hasn't been initialised - super() hasn't been called`);return e}function E(e,t){var n=function(e){return t&&(0,g.isValidElement)(e)?t(e):e},r=Object.create(null);return e&&g.Children.map(e,function(e){return e}).forEach(function(e){r[e.key]=n(e)}),r}function ee(e,t){e=e||{},t=t||{};function n(n){return n in t?t[n]:e[n]}var r=Object.create(null),i=[];for(var a in e)a in t?i.length&&(r[a]=i,i=[]):i.push(a);var o,s={};for(var c in t){if(r[c])for(o=0;o<r[c].length;o++){var l=r[c][o];s[r[c][o]]=n(l)}s[c]=n(c)}for(o=0;o<i.length;o++)s[i[o]]=n(i[o]);return s}function D(e,t,n){return n[t]==null?e.props[t]:n[t]}function O(e,t){return E(e.children,function(n){return(0,g.cloneElement)(n,{onExited:t.bind(null,n),in:!0,appear:D(n,`appear`,e),enter:D(n,`enter`,e),exit:D(n,`exit`,e)})})}function te(e,t,n){var r=E(e.children),i=ee(t,r);return Object.keys(i).forEach(function(a){var o=i[a];if((0,g.isValidElement)(o)){var s=a in t,c=a in r,l=t[a],u=(0,g.isValidElement)(l)&&!l.props.in;c&&(!s||u)?i[a]=(0,g.cloneElement)(o,{onExited:n.bind(null,o),in:!0,exit:D(o,`exit`,e),enter:D(o,`enter`,e)}):!c&&s&&!u?i[a]=(0,g.cloneElement)(o,{in:!1}):c&&s&&(0,g.isValidElement)(l)&&(i[a]=(0,g.cloneElement)(o,{onExited:n.bind(null,o),in:l.props.in,exit:D(o,`exit`,e),enter:D(o,`enter`,e)}))}}),i}var ne=Object.values||function(e){return Object.keys(e).map(function(t){return e[t]})},k={component:`div`,childFactory:function(e){return e}},A=function(e){C(n,e);function n(t,n){var r=e.call(this,t,n)||this;return r.state={contextValue:{isMounting:!0},handleExited:r.handleExited.bind(T(r)),firstRender:!0},r}var r=n.prototype;return r.componentDidMount=function(){this.mounted=!0,this.setState({contextValue:{isMounting:!1}})},r.componentWillUnmount=function(){this.mounted=!1},n.getDerivedStateFromProps=function(e,t){var n=t.children,r=t.handleExited;return{children:t.firstRender?O(e,r):te(e,n,r),firstRender:!1}},r.handleExited=function(e,n){var r=E(this.props.children);e.key in r||(e.props.onExited&&e.props.onExited(n),this.mounted&&this.setState(function(n){var r=t({},n.children);return delete r[e.key],{children:r}}))},r.render=function(){var e=this.props,t=e.component,n=e.childFactory,r=x(e,[`component`,`childFactory`]),i=this.state.contextValue,a=ne(this.state.children).map(n);return delete r.appear,delete r.enter,delete r.exit,t===null?g.createElement(w.Provider,{value:i},a):g.createElement(w.Provider,{value:i},g.createElement(t,r,a))},n}(g.Component);A.propTypes={},A.defaultProps=k;var j={};function M(e,t){let n=g.useRef(j);return n.current===j&&(n.current=e(t)),n}var N=[];function P(e){g.useEffect(e,N)}function F(e){"@babel/helpers - typeof";return F=typeof Symbol==`function`&&typeof Symbol.iterator==`symbol`?function(e){return typeof e}:function(e){return e&&typeof Symbol==`function`&&e.constructor===Symbol&&e!==Symbol.prototype?`symbol`:typeof e},F(e)}function I(e,t){if(F(e)!=`object`||!e)return e;var n=e[Symbol.toPrimitive];if(n!==void 0){var r=n.call(e,t||`default`);if(F(r)!=`object`)return r;throw TypeError(`@@toPrimitive must return a primitive value.`)}return(t===`string`?String:Number)(e)}function L(e){var t=I(e,`string`);return F(t)==`symbol`?t:t+``}function R(e,t,n){return(t=L(t))in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var z=class e{constructor(){R(this,`currentId`,null),R(this,`clear`,()=>{this.currentId!==null&&(clearTimeout(this.currentId),this.currentId=null)}),R(this,`disposeEffect`,()=>this.clear)}static create(){return new e}start(e,t){this.clear(),this.currentId=setTimeout(()=>{this.currentId=null,t()},e)}};function B(){let e=M(z.create).current;return P(e.disposeEffect),e}function re(e){return a(`MuiPaper`,e)}o(`MuiPaper`,`root.rounded.outlined.elevation.elevation0.elevation1.elevation2.elevation3.elevation4.elevation5.elevation6.elevation7.elevation8.elevation9.elevation10.elevation11.elevation12.elevation13.elevation14.elevation15.elevation16.elevation17.elevation18.elevation19.elevation20.elevation21.elevation22.elevation23.elevation24`.split(`.`));var V=r(),ie=e=>{let{square:t,elevation:n,variant:r,classes:i}=e;return l({root:[`root`,r,!t&&`rounded`,r===`elevation`&&`elevation${n}`]},re,i)},ae=f(`div`,{name:`MuiPaper`,slot:`Root`,overridesResolver:(e,t)=>{let{ownerState:n}=e;return[t.root,t[n.variant],!n.square&&t.rounded,n.variant===`elevation`&&t[`elevation${n.elevation}`]]}})(d(({theme:e})=>({backgroundColor:(e.vars||e).palette.background.paper,color:(e.vars||e).palette.text.primary,transition:e.transitions.create(`box-shadow`),variants:[{props:({ownerState:e})=>!e.square,style:{borderRadius:e.shape.borderRadius}},{props:{variant:`outlined`},style:{border:`1px solid ${(e.vars||e).palette.divider}`}},{props:{variant:`elevation`},style:{boxShadow:`var(--Paper-shadow)`,backgroundImage:`var(--Paper-overlay)`}}]}))),H=g.forwardRef(function(e,t){let n=u({props:e,name:`MuiPaper`}),r=p(),{className:i,component:a=`div`,elevation:o=1,square:l=!1,variant:d=`elevation`,...f}=n,h={...n,component:a,elevation:o,square:l,variant:d};return(0,V.jsx)(ae,{as:a,ownerState:h,className:m(ie(h).root,i),ref:t,...f,style:{...d===`elevation`&&{"--Paper-shadow":(r.vars||r).shadows[o],...r.vars&&{"--Paper-overlay":r.vars.overlays?.[o]},...!r.vars&&r.palette.mode===`dark`&&{"--Paper-overlay":`linear-gradient(${s(`#fff`,c(o))}, ${s(`#fff`,c(o))})`}},...f.style}})});function U(e){try{return e.matches(`:focus-visible`)}catch{}return!1}var W=class e{static create(){return new e}static use(){let t=M(e.create).current,[n,r]=g.useState(!1);return t.shouldMount=n,t.setShouldMount=r,g.useEffect(t.mountEffect,[n]),t}constructor(){R(this,`mountEffect`,()=>{this.shouldMount&&!this.didMount&&this.ref.current!==null&&(this.didMount=!0,this.mounted.resolve())}),this.ref={current:null},this.mounted=null,this.didMount=!1,this.shouldMount=!1,this.setShouldMount=null}mount(){return this.mounted||(this.mounted=G(),this.shouldMount=!0,this.setShouldMount(this.shouldMount)),this.mounted}start(...e){this.mount().then(()=>this.ref.current?.start(...e))}stop(...e){this.mount().then(()=>this.ref.current?.stop(...e))}pulsate(...e){this.mount().then(()=>this.ref.current?.pulsate(...e))}};function oe(){return W.use()}function G(){let e,t,n=new Promise((n,r)=>{e=n,t=r});return n.resolve=e,n.reject=t,n}function K(e){let{className:t,classes:n,pulsate:r=!1,rippleX:i,rippleY:a,rippleSize:o,in:s,onExited:c,timeout:l}=e,[u,d]=g.useState(!1),f=m(t,n.ripple,n.rippleVisible,r&&n.ripplePulsate),p={width:o,height:o,top:-(o/2)+a,left:-(o/2)+i},h=m(n.child,u&&n.childLeaving,r&&n.childPulsate);return!s&&!u&&d(!0),g.useEffect(()=>{if(!s&&c!=null){let e=setTimeout(c,l);return()=>{clearTimeout(e)}}},[c,s,l]),(0,V.jsx)(`span`,{className:f,style:p,children:(0,V.jsx)(`span`,{className:h})})}var q=o(`MuiTouchRipple`,[`root`,`ripple`,`rippleVisible`,`ripplePulsate`,`child`,`childLeaving`,`childPulsate`]),J=550,se=n`
+  0% {
+    transform: scale(0);
+    opacity: 0.1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+`,Y=n`
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+`,ce=n`
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.92);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+`,le=f(`span`,{name:`MuiTouchRipple`,slot:`Root`})({overflow:`hidden`,pointerEvents:`none`,position:`absolute`,zIndex:0,top:0,right:0,bottom:0,left:0,borderRadius:`inherit`}),X=f(K,{name:`MuiTouchRipple`,slot:`Ripple`})`
+  opacity: 0;
+  position: absolute;
+
+  &.${q.rippleVisible} {
+    opacity: 0.3;
+    transform: scale(1);
+    animation-name: ${se};
+    animation-duration: ${J}ms;
+    animation-timing-function: ${({theme:e})=>e.transitions.easing.easeInOut};
+  }
+
+  &.${q.ripplePulsate} {
+    animation-duration: ${({theme:e})=>e.transitions.duration.shorter}ms;
+  }
+
+  & .${q.child} {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+
+  & .${q.childLeaving} {
+    opacity: 0;
+    animation-name: ${Y};
+    animation-duration: ${J}ms;
+    animation-timing-function: ${({theme:e})=>e.transitions.easing.easeInOut};
+  }
+
+  & .${q.childPulsate} {
+    position: absolute;
+    /* @noflip */
+    left: 0px;
+    top: 0;
+    animation-name: ${ce};
+    animation-duration: 2500ms;
+    animation-timing-function: ${({theme:e})=>e.transitions.easing.easeInOut};
+    animation-iteration-count: infinite;
+    animation-delay: 200ms;
+  }
+`,ue=g.forwardRef(function(e,t){let{center:n=!1,classes:r={},className:i,...a}=u({props:e,name:`MuiTouchRipple`}),[o,s]=g.useState([]),c=g.useRef(0),l=g.useRef(null);g.useEffect(()=>{l.current&&(l.current(),l.current=null)},[o]);let d=g.useRef(!1),f=B(),p=g.useRef(null),h=g.useRef(null),_=g.useCallback(e=>{let{pulsate:t,rippleX:n,rippleY:i,rippleSize:a,cb:o}=e;s(e=>[...e,(0,V.jsx)(X,{classes:{ripple:m(r.ripple,q.ripple),rippleVisible:m(r.rippleVisible,q.rippleVisible),ripplePulsate:m(r.ripplePulsate,q.ripplePulsate),child:m(r.child,q.child),childLeaving:m(r.childLeaving,q.childLeaving),childPulsate:m(r.childPulsate,q.childPulsate)},timeout:J,pulsate:t,rippleX:n,rippleY:i,rippleSize:a},c.current)]),c.current+=1,l.current=o},[r]),v=g.useCallback((e={},t={},r=()=>{})=>{let{pulsate:i=!1,center:a=n||t.pulsate,fakeElement:o=!1}=t;if(e?.type===`mousedown`&&d.current){d.current=!1;return}e?.type===`touchstart`&&(d.current=!0);let s=o?null:h.current,c=s?s.getBoundingClientRect():{width:0,height:0,left:0,top:0},l,u,m;if(a||e===void 0||e.clientX===0&&e.clientY===0||!e.clientX&&!e.touches)l=Math.round(c.width/2),u=Math.round(c.height/2);else{let{clientX:t,clientY:n}=e.touches&&e.touches.length>0?e.touches[0]:e;l=Math.round(t-c.left),u=Math.round(n-c.top)}if(a)m=Math.sqrt((2*c.width**2+c.height**2)/3),m%2==0&&(m+=1);else{let e=Math.max(Math.abs((s?s.clientWidth:0)-l),l)*2+2,t=Math.max(Math.abs((s?s.clientHeight:0)-u),u)*2+2;m=Math.sqrt(e**2+t**2)}e?.touches?p.current===null&&(p.current=()=>{_({pulsate:i,rippleX:l,rippleY:u,rippleSize:m,cb:r})},f.start(80,()=>{p.current&&(p.current(),p.current=null)})):_({pulsate:i,rippleX:l,rippleY:u,rippleSize:m,cb:r})},[n,_,f]),y=g.useCallback(()=>{v({},{pulsate:!0})},[v]),b=g.useCallback((e,t)=>{if(f.clear(),e?.type===`touchend`&&p.current){p.current(),p.current=null,f.start(0,()=>{b(e,t)});return}p.current=null,s(e=>e.length>0?e.slice(1):e),l.current=t},[f]);return g.useImperativeHandle(t,()=>({pulsate:y,start:v,stop:b}),[y,v,b]),(0,V.jsx)(le,{className:m(q.root,r.root,i),ref:h,...a,children:(0,V.jsx)(A,{component:null,exit:!0,children:o})})});function Z(e){return a(`MuiButtonBase`,e)}var de=o(`MuiButtonBase`,[`root`,`disabled`,`focusVisible`]),fe=e=>{let{disabled:t,focusVisible:n,focusVisibleClassName:r,classes:i}=e,a=l({root:[`root`,t&&`disabled`,n&&`focusVisible`]},Z,i);return n&&r&&(a.root+=` ${r}`),a},pe=f(`button`,{name:`MuiButtonBase`,slot:`Root`})({display:`inline-flex`,alignItems:`center`,justifyContent:`center`,position:`relative`,boxSizing:`border-box`,WebkitTapHighlightColor:`transparent`,backgroundColor:`transparent`,outline:0,border:0,margin:0,borderRadius:0,padding:0,cursor:`pointer`,userSelect:`none`,verticalAlign:`middle`,MozAppearance:`none`,WebkitAppearance:`none`,textDecoration:`none`,color:`inherit`,"&::-moz-focus-inner":{borderStyle:`none`},[`&.${de.disabled}`]:{pointerEvents:`none`,cursor:`default`},"@media print":{colorAdjust:`exact`}}),Q=g.forwardRef(function(e,t){let n=u({props:e,name:`MuiButtonBase`}),{action:r,centerRipple:i=!1,children:a,className:o,component:s=`button`,disabled:c=!1,disableRipple:l=!1,disableTouchRipple:d=!1,focusRipple:f=!1,focusVisibleClassName:p,LinkComponent:h=`a`,onBlur:_,onClick:y,onContextMenu:x,onDragLeave:S,onFocus:C,onFocusVisible:w,onKeyDown:T,onKeyUp:E,onMouseDown:ee,onMouseLeave:D,onMouseUp:O,onTouchEnd:te,onTouchMove:ne,onTouchStart:k,tabIndex:A=0,TouchRippleProps:j,touchRippleRef:M,type:N,...P}=n,F=g.useRef(null),I=oe(),L=b(I.ref,M),[R,z]=g.useState(!1);c&&R&&z(!1),g.useImperativeHandle(r,()=>({focusVisible:()=>{z(!0),F.current.focus()}}),[]);let B=I.shouldMount&&!l&&!c;g.useEffect(()=>{R&&f&&!l&&I.pulsate()},[l,f,R,I]);let re=$(I,`start`,ee,d),ie=$(I,`stop`,x,d),ae=$(I,`stop`,S,d),H=$(I,`stop`,O,d),W=$(I,`stop`,e=>{R&&e.preventDefault(),D&&D(e)},d),G=$(I,`start`,k,d),K=$(I,`stop`,te,d),q=$(I,`stop`,ne,d),J=$(I,`stop`,e=>{U(e.target)||z(!1),_&&_(e)},!1),se=v(e=>{F.current||(F.current=e.currentTarget),U(e.target)&&(z(!0),w&&w(e)),C&&C(e)}),Y=()=>{let e=F.current;return s&&s!==`button`&&!(e.tagName===`A`&&e.href)},ce=v(e=>{f&&!e.repeat&&R&&e.key===` `&&I.stop(e,()=>{I.start(e)}),e.target===e.currentTarget&&Y()&&e.key===` `&&e.preventDefault(),T&&T(e),e.target===e.currentTarget&&Y()&&e.key===`Enter`&&!c&&(e.preventDefault(),y&&y(e))}),le=v(e=>{f&&e.key===` `&&R&&!e.defaultPrevented&&I.stop(e,()=>{I.pulsate(e)}),E&&E(e),y&&e.target===e.currentTarget&&Y()&&e.key===` `&&!e.defaultPrevented&&y(e)}),X=s;X===`button`&&(P.href||P.to)&&(X=h);let Z={};if(X===`button`){let e=!!P.formAction;Z.type=N===void 0&&!e?`button`:N,Z.disabled=c}else !P.href&&!P.to&&(Z.role=`button`),c&&(Z[`aria-disabled`]=c);let de=b(t,F),Q={...n,centerRipple:i,component:s,disabled:c,disableRipple:l,disableTouchRipple:d,focusRipple:f,tabIndex:A,focusVisible:R},me=fe(Q);return(0,V.jsxs)(pe,{as:X,className:m(me.root,o),ownerState:Q,onBlur:J,onClick:y,onContextMenu:ie,onFocus:se,onKeyDown:ce,onKeyUp:le,onMouseDown:re,onMouseLeave:W,onMouseUp:H,onDragLeave:ae,onTouchEnd:K,onTouchMove:q,onTouchStart:G,ref:de,tabIndex:c?-1:A,type:N,...Z,...P,children:[a,B?(0,V.jsx)(ue,{ref:L,center:i,...j}):null]})});function $(e,t,n,r=!1){return v(i=>(n&&n(i),r||e[t](i),!0))}export{w as a,b as c,_ as d,B as i,y as l,U as n,C as o,H as r,x as s,Q as t,v as u};
+//# sourceMappingURL=ButtonBase-Dzh-nQPi.js.map

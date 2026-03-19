@@ -27,7 +27,7 @@ export interface CarSpeedoGraphProps {
   startRedVal: number;
 }
 
-const staticOptions: Highcharts.Options = {
+const options: Highcharts.Options = {
   chart: { type: "gauge", backgroundColor: "transparent" },
   pane: { startAngle: -150, endAngle: 150, background: undefined },
 };
@@ -45,20 +45,6 @@ const CarSpeedoGraph = memo(
   }: CarSpeedoGraphProps) => {
     const min = 0;
     const greenEnd = Math.max(min, endGreenVal);
-    const options: Highcharts.Options = {
-      ...staticOptions,
-      series: [
-        {
-          name,
-          data: [val],
-          tooltip: { valueSuffix: ` ${label}` },
-          dataLabels: { format: label, borderWidth: 0, color },
-          dial: { backgroundColor: color },
-          pivot: { backgroundColor: color },
-          type: "gauge",
-        },
-      ],
-    };
 
     return (
       <Grid size={{ xs: 12, sm: 4, lg: 2, xxxl: 1 }}>

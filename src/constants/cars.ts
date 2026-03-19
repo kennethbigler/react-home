@@ -402,8 +402,20 @@ interface GraphData {
   powerToWeight: HighChartsData[];
 }
 
-const smoothData = (cur: number, high: number, low: number) =>
-  Math.floor(100 * ((cur - low) / (high - low)));
+/** Normalize to 0–100; avoids NaN when high === low (breaks Highcharts SVG). */
+const smoothData = (cur: number, high: number, low: number): number => {
+  if (
+    !Number.isFinite(cur) ||
+    !Number.isFinite(high) ||
+    !Number.isFinite(low)
+  ) {
+    return 0;
+  }
+  if (high === low) {
+    return 50;
+  }
+  return Math.floor(100 * ((cur - low) / (high - low)));
+};
 
 const getMinAndMax = (data: CarEntry[]) => {
   const max = {
