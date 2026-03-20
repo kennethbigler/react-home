@@ -1,5 +1,5 @@
 import { memo, CSSProperties } from "react";
-import { Grid, Typography, IconButton } from "@mui/material";
+import { Grid, Typography, IconButton, useTheme } from "@mui/material";
 
 interface TrackProps {
   circuitLen: number;
@@ -14,11 +14,6 @@ interface TrackProps {
   onClick: (circuitName: string) => () => void;
 }
 
-const txtStyles: CSSProperties = {
-  display: "block",
-  margin: "auto",
-  textAlign: "center",
-};
 const bold: CSSProperties = { fontWeight: "bold" };
 
 const Track = memo(
@@ -34,15 +29,24 @@ const Track = memo(
     skipped,
     onClick,
   }: TrackProps) => {
+    const muiTheme = useTheme();
     const isExpanded = expanded === circuitName;
 
     const gridStyles: CSSProperties = {};
+    const headingStyles: CSSProperties = {
+      display: "block",
+      margin: "auto",
+      textAlign: "center",
+    };
+    const txtStyles: CSSProperties = {};
     if (isExpanded) {
       gridStyles.textAlign = "center";
     }
     if (skipped) {
-      gridStyles.border = "2px solid red";
+      gridStyles.border = `2px solid ${muiTheme.palette.error.main}`;
       gridStyles.padding = "2px";
+      headingStyles.color = muiTheme.palette.error.main;
+      txtStyles.color = muiTheme.palette.error.main;
     }
 
     return (
@@ -54,11 +58,11 @@ const Track = memo(
         }
         sx={gridStyles}
       >
-        <Typography variant={isExpanded ? "h3" : "h5"} sx={txtStyles}>
+        <Typography variant={isExpanded ? "h3" : "h5"} sx={headingStyles}>
           {circuitName}
         </Typography>
         {circuitSubName && (
-          <Typography variant={isExpanded ? "h4" : "body2"} sx={txtStyles}>
+          <Typography variant={isExpanded ? "h4" : "body2"} sx={headingStyles}>
             {circuitSubName}
           </Typography>
         )}
@@ -67,24 +71,26 @@ const Track = memo(
         </IconButton>
         <Grid container>
           <Grid size={6}>
-            <Typography variant={isExpanded ? "h5" : "body2"}>
+            <Typography variant={isExpanded ? "h5" : "body2"} sx={txtStyles}>
               First Grand Prix
             </Typography>
-            <Typography sx={bold}>{firstGP}</Typography>
-            <Typography variant={isExpanded ? "h5" : "body2"}>
+            <Typography sx={{ ...bold, ...txtStyles }}>{firstGP}</Typography>
+            <Typography variant={isExpanded ? "h5" : "body2"} sx={txtStyles}>
               Number of Laps
             </Typography>
-            <Typography sx={bold}>{numLaps}</Typography>
+            <Typography sx={{ ...bold, ...txtStyles }}>{numLaps}</Typography>
           </Grid>
           <Grid size={6}>
-            <Typography variant={isExpanded ? "h5" : "body2"}>
+            <Typography variant={isExpanded ? "h5" : "body2"} sx={txtStyles}>
               Circuit Length
             </Typography>
-            <Typography sx={bold}>{circuitLen}km</Typography>
-            <Typography variant={isExpanded ? "h5" : "body2"}>
+            <Typography sx={{ ...bold, ...txtStyles }}>
+              {circuitLen}km
+            </Typography>
+            <Typography variant={isExpanded ? "h5" : "body2"} sx={txtStyles}>
               Race Distance
             </Typography>
-            <Typography sx={bold}>{raceLen}km</Typography>
+            <Typography sx={{ ...bold, ...txtStyles }}>{raceLen}km</Typography>
           </Grid>
         </Grid>
       </Grid>

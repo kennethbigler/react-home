@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { useTheme } from "@mui/material/styles";
 import ExpandableCard from "../../../common/expandable-card";
 import Row from "../../../common/timeline-parts/Row";
 import { getYearMarkers, getSegments } from "./timelineHelpers";
@@ -12,6 +13,7 @@ interface TimelineCardProps {
 /** TimelineCard  ->  Row  ->  Segment
  **                       |->  YearMarker */
 const TimelineCard = memo(({ data }: TimelineCardProps) => {
+  const theme = useTheme();
   // track elements added already
   const added: boolean[] = [];
 
@@ -23,7 +25,11 @@ const TimelineCard = memo(({ data }: TimelineCardProps) => {
       inverted
     >
       <div style={{ width: "100%", paddingBottom: 7 }}>
-        <Row key={data.length} segments={getYearMarkers()} yearMarkers />
+        <Row
+          key={data.length}
+          segments={getYearMarkers(theme.palette.error.main)}
+          yearMarkers
+        />
         {data.map((elm, i) => {
           const segments = getSegments(data, added, elm, i);
           return segments.length ? (

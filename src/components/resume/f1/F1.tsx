@@ -32,7 +32,11 @@ const F1 = () => {
 
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, lg: 6, xxl: 4 }}>
-          <ExpandableCard title="Constructors" backgroundColor={MCLAREN_HEX}>
+          <ExpandableCard
+            title="Constructors"
+            backgroundColor={MCLAREN_HEX}
+            inverted
+          >
             <ConstructorCurrentSpline color={color} />
             <ConstructorPointsLine color={color} />
             <ConstructorStandingsLine color={color} />
