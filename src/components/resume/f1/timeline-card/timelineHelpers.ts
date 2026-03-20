@@ -57,8 +57,11 @@ const addSegment = (
 };
 
 /* *************************     Export Functions     ************************* */
-/** adds gray lines to indicate years */
-export const getYearMarkers = () => {
+/**
+ * Gray year markers on the timeline; highlights the current year when given.
+ * @param currentYearColor e.g. `theme.palette.error.main` — plain helpers cannot read MUI theme.
+ */
+export const getYearMarkers = (currentYearColor?: string) => {
   const startYear = Number(START.format("YYYY"));
   const endYear = Number(END.format("YYYY"));
 
@@ -88,7 +91,7 @@ export const getYearMarkers = () => {
     yearMarkers.push({
       width: YEAR_WIDTH,
       body: years[i].format("'YY"),
-      color: years[i].year === currentYear ? "red" : undefined,
+      color: years[i].year === currentYear ? currentYearColor : undefined,
     });
   }
 
