@@ -25,7 +25,7 @@ export interface AYTODict {
  *   tempScore: [round-i: number of confirmed matches]
  *   calculatedEquations: [i: { pairs, score }]
  * } */
-const useHist = (
+const calcHist = (
   len: number,
   matches: number[],
   noMatch: boolean[][],
@@ -104,10 +104,8 @@ const useHist = (
       if (histObj.rounds.length < 2) {
         return;
       }
-      // create key from round combination (length)
-      const keys = [
-        histObj.rounds.reduce((acc, val) => acc + val.toString(), ""),
-      ];
+      // create delimited key from full round combination to avoid ambiguous concatenation
+      const keys = [histObj.rounds.join("")];
       // add every pair of 2 rounds as keys
       for (let i = ri + 1; i < histObj.rounds.length; i += 1) {
         keys.push(`${histObj.rounds[ri]}${histObj.rounds[i]}`);
@@ -192,4 +190,4 @@ const useHist = (
   };
 };
 
-export default useHist;
+export default calcHist;

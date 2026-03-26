@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useAtomValue } from "jotai";
 import {
   Chart,
@@ -76,49 +77,50 @@ const CompChart = ({
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
-  // calculate chart data
-  const compChartData: number[][] = [[], [], [], [], []];
-  if (compEntries.length > 0) {
-    // set start basis for inflation calculation
-    let startYear = dateHelper(compEntries[startIdx].entryDate).year;
-    let startTC =
-      compEntries[startIdx].salary +
-      compEntries[startIdx].bonus +
-      (compCalcEntries[startIdx].stockAdj || compCalcEntries[startIdx].stock);
+  const { compChartData, options } = useMemo(() => {
+    const chartData: number[][] = [[], [], [], [], []];
+    if (compEntries.length > 0) {
+      // set start basis for inflation calculation
+      let startYear = dateHelper(compEntries[startIdx].entryDate).year;
+      let startTC =
+        compEntries[startIdx].salary +
+        compEntries[startIdx].bonus +
+        (compCalcEntries[startIdx].stockAdj || compCalcEntries[startIdx].stock);
 
-    // calculate chart data
-    compEntries.forEach(({ bonus, salary, entryDate }, i) => {
-      const { stock, stockAdj } = compCalcEntries[i];
-      compChartData[STOCK].push(stockAdj || stock);
-      compChartData[BONUS].push(bonus);
-      compChartData[SALARY].push(salary);
-      compChartData[TOTAL].push(stock + bonus + salary);
-      // calculate inflation rate from first job (or clicked job)
-      const endYear = dateHelper(entryDate).year;
-      if (endYear >= startYear) {
-        for (; startYear < endYear; startYear += 1) {
-          startTC *= inflationKey[startYear];
+      compEntries.forEach(({ bonus, salary, entryDate }, i) => {
+        const { stock, stockAdj } = compCalcEntries[i];
+        chartData[STOCK].push(stockAdj || stock);
+        chartData[BONUS].push(bonus);
+        chartData[SALARY].push(salary);
+        chartData[TOTAL].push(stock + bonus + salary);
+        // calculate inflation rate from first job (or clicked job)
+        const endYear = dateHelper(entryDate).year;
+        if (endYear >= startYear) {
+          for (; startYear < endYear; startYear += 1) {
+            startTC *= inflationKey[startYear];
+          }
+          chartData[INFL].push(startTC);
+        } else {
+          chartData[INFL].push(bonus + salary + (stockAdj || stock));
         }
-        compChartData[INFL].push(startTC);
-      } else {
-        compChartData[INFL].push(bonus + salary + (stockAdj || stock));
-      }
-    });
-  }
+      });
+    }
 
-  // set chart options
-  const options: Highcharts.Options = {
-    ...staticOptions,
-    colors: [...colors, color],
-    plotOptions: {
-      area: {
-        stacking: "normal",
-        lineColor: color,
-        lineWidth: 1,
-        marker: { lineWidth: 1, lineColor: color },
+    const chartOptions: Highcharts.Options = {
+      ...staticOptions,
+      colors: [...colors, color],
+      plotOptions: {
+        area: {
+          stacking: "normal",
+          lineColor: color,
+          lineWidth: 1,
+          marker: { lineWidth: 1, lineColor: color },
+        },
       },
-    },
-  };
+    };
+
+    return { compChartData: chartData, options: chartOptions };
+  }, [compEntries, compCalcEntries, startIdx, color]);
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>

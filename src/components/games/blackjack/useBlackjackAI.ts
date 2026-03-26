@@ -480,7 +480,7 @@ const useBlackjackAI = () => {
   };
 
   const checkUpdate = async (): Promise<void> => {
-    if (!hideHands && gameFunctions[0] !== (GameFunctions.NEW_GAME as string)) {
+    if (!hideHands && gameFunctions[0] !== GameFunctions.NEW_GAME) {
       const player = players[turn.player];
       if (!player.isBot) {
         return;

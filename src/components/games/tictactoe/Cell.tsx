@@ -1,14 +1,15 @@
-import { memo, MouseEventHandler, CSSProperties } from "react";
+import { memo, CSSProperties } from "react";
 import { useTheme } from "@mui/material/styles";
 import { Button } from "@mui/material";
 
 interface CellProps {
-  onClick: MouseEventHandler;
+  cellIndex: number;
+  onClick: (cellIndex: number) => void;
   value: string | null;
   winner: boolean;
 }
 
-const Cell = memo(({ value, winner, onClick }: CellProps) => {
+const Cell = memo(({ cellIndex, value, winner, onClick }: CellProps) => {
   const {
     palette: {
       primary: { main },
@@ -21,7 +22,7 @@ const Cell = memo(({ value, winner, onClick }: CellProps) => {
 
   return (
     <Button
-      onClick={onClick}
+      onClick={() => onClick(cellIndex)}
       style={attr}
       aria-label={`Tic Tac Toe Play Button ${
         value ? `${value} selected` : "available"

@@ -1,4 +1,4 @@
-import useHist from "./useHist";
+import calcHist from "./calcHist";
 
 // 84,138-160
 /** params
@@ -22,10 +22,10 @@ import useHist from "./useHist";
  *    score: number;
  *  }[]
  */
-describe("games | are-you-the-one | analysis | useHist", () => {
-  test("useHist", () => {
+describe("games | are-you-the-one | analysis | calcHist", () => {
+  test("calcHist", () => {
     expect(
-      useHist(
+      calcHist(
         11,
         [0],
         [

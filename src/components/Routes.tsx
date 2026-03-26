@@ -1,7 +1,6 @@
 import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import LoadingSpinner from "./common/loading-spinner";
-import { catchErr } from "../apis/catchErr";
 import { getPageTitle } from "./routeTitleUtils";
 
 // lazy load sub routers
@@ -22,7 +21,7 @@ const RootRoutes = () => {
   }, [location.pathname]);
 
   const handleNav = (loc: string) => {
-    navigate(loc)?.catch(catchErr);
+    void navigate(loc);
   };
 
   return (

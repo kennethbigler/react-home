@@ -1,4 +1,4 @@
-import { AYTOHist } from "../histogram/useHist";
+import { AYTOHist } from "../histogram/calcHist";
 import getButtonValues from "./getButtonValues";
 import { TableCell, TableRow, Button } from "@mui/material";
 

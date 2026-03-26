@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { ChipColorOptions } from "../types";
-import { AYTOHist } from "../histogram/useHist";
+import { AYTOHist } from "../histogram/calcHist";
 import { Chip, Stack, Typography } from "@mui/material";
 
 export interface MatchedStackProps {

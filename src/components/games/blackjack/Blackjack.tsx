@@ -4,11 +4,12 @@
  * get second card for dealer and hide it
  * buy insurance on dealer's Ace
  */
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import useBlackjackAI from "./useBlackjackAI";
 import Header from "./Header";
 import GameTable from "../game-table";
 import { catchErr } from "../../../apis/catchErr";
+import { GameFunctions } from "../../../jotai/blackjack-state";
 
 const BlackJack = memo(() => {
   const {
@@ -21,7 +22,12 @@ const BlackJack = memo(() => {
     turn,
   } = useBlackjackAI();
 
-  checkUpdate().catch(catchErr);
+  // Adapt GameFunctions enum to the generic string-based GameTable interface
+  const onGameTableClick = (type: string) => handleClick(type as GameFunctions);
+  useEffect(() => {
+    checkUpdate().catch(catchErr);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [turn.player, turn.hand, hideHands]);
 
   return (
     <>
@@ -29,7 +35,7 @@ const BlackJack = memo(() => {
       <GameTable
         betHandler={betHandler}
         gameFunctions={gameFunctions}
-        onClick={handleClick as (type: string) => void}
+        onClick={onGameTableClick}
         hideHands={hideHands}
         players={players}
         turn={turn}

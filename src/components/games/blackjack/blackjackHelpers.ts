@@ -4,12 +4,6 @@ import { DBHand, DBPlayer } from "../../../jotai/player-atom";
 
 export const DEALER = 0;
 
-interface PlayerStats {
-  house: number;
-  payout: number;
-  status: string;
-}
-
 /** calculate the weight of a hand */
 export function weighHand(hand: DBCard[] = []): {
   weight: number;
@@ -50,61 +44,61 @@ export function weighHand(hand: DBCard[] = []): {
 
 /** finish the game and check for a winner */
 export const banking = (players: DBPlayer[]): DBPlayer[] => {
-  // state variables
-  const dealer = players.filter((p) => p.id === DEALER)[0];
-  const dWeight = dealer.hands[0].weight || 0;
-  const dLength = dealer.hands[0].cards.length;
-  // track and find the winners
-  const playerStats: PlayerStats = { house: 0, payout: 0, status: "" };
-  // helper functions
-  const win = (ps: PlayerStats, bet: number, mul = 1) => {
-    ps.house -= Math.floor(mul * bet);
-    ps.payout = Math.floor(mul * bet);
-    ps.status = "win";
-  };
-  const loss = (ps: PlayerStats, bet: number) => {
-    ps.house += bet;
-    ps.payout = -bet;
-    ps.status = "lose";
-  };
-  return players.map((player) => {
-    const { id, bet } = player;
-    if (id === DEALER) {
-      if (playerStats.house > 0) {
-        playerStats.status = "win";
-      } else if (playerStats.house < 0) {
-        playerStats.status = "lose";
-      } else {
-        playerStats.status = "push";
-      }
-      return {
-        ...player,
-        status: playerStats.status,
-        money: player.money + playerStats.house,
-      };
-    }
+  const dealer = players.find((p) => p.id === DEALER);
+  const dWeight = dealer?.hands[0].weight || 0;
+  const dLength = dealer?.hands[0].cards.length || 0;
+
+  // Accumulate house winnings across all non-dealer players
+  let houseTotal = 0;
+
+  // Settle each non-dealer player independently, tracking per-hand payouts
+  const settledPlayers = players.map((player) => {
+    if (player.id === DEALER) return player; // update dealer below
+
+    const { bet } = player;
+    let playerPayout = 0;
+
     player.hands.forEach((hand) => {
       const { weight = 0, cards } = hand;
       if (dWeight === 21 && dLength === 2) {
-        // dealer BlackJack
-        loss(playerStats, bet);
+        // dealer Blackjack beats everyone
+        houseTotal += bet;
+        playerPayout -= bet;
       } else if (weight === 21 && cards.length === 2) {
-        // player BlackJack
-        win(playerStats, bet, 6 / 5);
+        // player Blackjack pays 6:5
+        const winAmount = Math.floor((6 / 5) * bet);
+        houseTotal -= winAmount;
+        playerPayout += winAmount;
       } else if (weight <= 21 && (weight > dWeight || dWeight > 21)) {
-        win(playerStats, bet);
+        // player wins
+        houseTotal -= bet;
+        playerPayout += bet;
       } else if (weight <= 21 && weight === dWeight) {
-        playerStats.payout = 0;
-        playerStats.status = "push";
+        // push — no money changes hands
       } else {
-        loss(playerStats, bet);
+        // player loses
+        houseTotal += bet;
+        playerPayout -= bet;
       }
     });
-    return {
-      ...player,
-      status: playerStats.status,
-      money: player.money + playerStats.payout,
-    };
+
+    const status =
+      playerPayout > 0 ? "win" : playerPayout < 0 ? "lose" : "push";
+    return { ...player, status, money: player.money + playerPayout };
+  });
+
+  // Update dealer using the fully accumulated house total
+  const dealerStatus =
+    houseTotal > 0 ? "win" : houseTotal < 0 ? "lose" : "push";
+  return settledPlayers.map((player) => {
+    if (player.id === DEALER) {
+      return {
+        ...player,
+        status: dealerStatus,
+        money: player.money + houseTotal,
+      };
+    }
+    return player;
   });
 };
 

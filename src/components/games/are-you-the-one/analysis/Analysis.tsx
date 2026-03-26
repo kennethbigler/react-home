@@ -1,6 +1,6 @@
 import { useState, ChangeEvent } from "react";
 import { RoundPairing } from "../../../../jotai/are-you-the-one-state";
-import { AYTOHist } from "../histogram/useHist";
+import { AYTOHist } from "../histogram/calcHist";
 import MatchedStack from "./MatchedStack";
 import CalculatedStack from "./CalculatedStack";
 import { Typography, Stack, FormControlLabel, Switch } from "@mui/material";
