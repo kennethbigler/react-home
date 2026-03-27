@@ -248,6 +248,72 @@ describe("Header Component", () => {
     expect(state.weRubbers).toBe(1);
   });
 
+  // Tiebreaker branch (weSum === theySum): weWins >= theyWins → we win
+  it("tiebreaker: exact score tie — we win rubber because we have more wins", () => {
+    const store = createStore();
+    // weWins=2, theyWins=0 → weSum gets +700 rubber bonus.
+    // weAbove=400, weBelow=0, +700 = 1100
+    // theyAbove=0, theyBelow=1100 = 1100  → perfect tie
+    store.set(bridgeAtom, {
+      aboveScores: [
+        [[200], [0]], // we win game 1 (200 > 0, >= 100): weWins=1
+        [[200], [0]], // we win game 2: weWins=2 → button shows
+        [[], []],
+      ],
+      bids: [],
+      weBelow: [],
+      theyBelow: [1100],
+      weRubbers: 0,
+      theyRubbers: 0,
+    });
+
+    render(
+      <Provider store={store}>
+        <Header />
+      </Provider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /new game/i }));
+
+    const state = store.get(bridgeAtom);
+    // weSum === theySum (both 1100), weWins(2) >= theyWins(0) → we win rubber
+    expect(state.weRubbers).toBe(1);
+    expect(state.theyRubbers).toBe(0);
+  });
+
+  // Tiebreaker branch (weSum === theySum): weWins < theyWins → they win
+  it("tiebreaker: exact score tie — they win rubber because they have more wins", () => {
+    const store = createStore();
+    // theyWins=2, weWins=0 → theySum gets +700 rubber bonus.
+    // theyAbove=400, theyBelow=0, +700 = 1100
+    // weAbove=0, weBelow=1100 = 1100 → perfect tie
+    store.set(bridgeAtom, {
+      aboveScores: [
+        [[0], [200]], // they win game 1: theyWins=1
+        [[0], [200]], // they win game 2: theyWins=2 → button shows
+        [[], []],
+      ],
+      bids: [],
+      weBelow: [1100],
+      theyBelow: [],
+      weRubbers: 0,
+      theyRubbers: 0,
+    });
+
+    render(
+      <Provider store={store}>
+        <Header />
+      </Provider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /new game/i }));
+
+    const state = store.get(bridgeAtom);
+    // weSum === theySum (both 1100), weWins(0) < theyWins(2) → they win rubber
+    expect(state.weRubbers).toBe(0);
+    expect(state.theyRubbers).toBe(1);
+  });
+
   it("resets game state on new game", () => {
     const store = createStore();
     store.set(bridgeAtom, {

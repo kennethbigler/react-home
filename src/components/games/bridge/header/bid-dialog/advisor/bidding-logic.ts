@@ -2071,9 +2071,18 @@ function getOvercall(
       handAnalysis: analysis,
       whatYourBidTellsPartner: `${hcp} HCP, ${best.count}-card ${best.name} suit. Preemptive — not a strong hand.`,
       expectedResponses: [
-        { partnerBid: `Raise to ${parseInt(jumpBid[0]) + 1}${suitSym}`, meaning: "Fit + values — push the preempt higher" },
-        { partnerBid: "Pass", meaning: "No fit or minimal values — trust the preempt" },
-        { partnerBid: `${parseInt(jumpBid[0]) + 2}${suitSym} or game`, meaning: "Strong fit — bid game or slam" },
+        {
+          partnerBid: `Raise to ${parseInt(jumpBid[0]) + 1}${suitSym}`,
+          meaning: "Fit + values — push the preempt higher",
+        },
+        {
+          partnerBid: "Pass",
+          meaning: "No fit or minimal values — trust the preempt",
+        },
+        {
+          partnerBid: `${parseInt(jumpBid[0]) + 2}${suitSym} or game`,
+          meaning: "Strong fit — bid game or slam",
+        },
       ],
       confidence: "high",
       note: isTwoClubs
