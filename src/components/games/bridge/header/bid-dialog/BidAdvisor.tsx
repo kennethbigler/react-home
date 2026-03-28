@@ -50,6 +50,16 @@ export default function BidAdvisor() {
     return getRecommendation(hand, context);
   }, [hand, auctionState, handIsValid, vulnerability]);
 
+  const auctionContext = useMemo(
+    () => deriveSituation(auctionState, vulnerability),
+    [auctionState, vulnerability],
+  );
+  const isBlackwoodAsk =
+    auctionContext.situation === "blackwood-ace-response" ||
+    auctionContext.situation === "blackwood-response";
+  const isBlackwoodKings =
+    auctionContext.situation === "blackwood-kings-response";
+
   const handleNewGame = () => {
     setHand(DEFAULT_HAND);
     setAuctionState(DEFAULT_STATE);
@@ -81,7 +91,12 @@ export default function BidAdvisor() {
         {/* ── Left column: hand + context ─────────────────────────────── */}
         <Grid size={{ xs: 12, md: 5 }}>
           <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
-            <HandInput hand={hand} onChange={setHand} />
+            <HandInput
+              hand={hand}
+              onChange={setHand}
+              showAcesInput={isBlackwoodAsk}
+              showKingsInput={isBlackwoodKings}
+            />
           </Paper>
           <Paper variant="outlined" sx={{ p: 2 }}>
             <AuctionContextInput
