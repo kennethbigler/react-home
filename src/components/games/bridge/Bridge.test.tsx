@@ -29,6 +29,8 @@ describe("Bridge Game Component", () => {
 
     expect(screen.queryByText("Opening Bids")).toBeNull();
     fireEvent.click(screen.getByText("Bid"));
+    // Opening Bids is in the Cheat Sheet tab (tab 1); click it first
+    fireEvent.click(screen.getByRole("tab", { name: /cheat sheet/i }));
     expect(screen.getByText("Opening Bids")).toBeInTheDocument();
   });
 
@@ -55,6 +57,8 @@ describe("Bridge Game Component", () => {
     expect(screen.queryByText("Opening Bids")).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: /bid/i }));
+    // Opening Bids is in the Cheat Sheet tab (tab 1); switch to it first
+    fireEvent.click(screen.getByRole("tab", { name: /cheat sheet/i }));
     expect(screen.getByText("Opening Bids")).toBeInTheDocument();
   });
 

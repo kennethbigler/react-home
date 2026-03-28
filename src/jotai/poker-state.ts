@@ -32,11 +32,16 @@ interface PokerGameState {
   players?: DBPlayer[];
 }
 
+/** Number of human/bot players at the poker table (excludes non-poker slots) */
+const POKER_PLAYER_COUNT = 5;
+/** Total slots in the shared playerAtom used by the poker table + extra slots */
+const POKER_TOTAL_PLAYER_SLOTS = 7;
+
 const pokerState = atom(
   (get) => {
     const poker = get(pokerAtom);
     const turn = get(turnAtom);
-    const players = get(playerAtom).slice(0, 5);
+    const players = get(playerAtom).slice(0, POKER_PLAYER_COUNT);
 
     return { poker, turn, players };
   },
@@ -48,7 +53,10 @@ const pokerState = atom(
     }
     if (players) {
       const dataPlayers = get(playerAtom);
-      set(playerAtom, [...players, dataPlayers[5], dataPlayers[6]]);
+      set(playerAtom, [
+        ...players,
+        ...dataPlayers.slice(POKER_PLAYER_COUNT, POKER_TOTAL_PLAYER_SLOTS),
+      ]);
     }
   },
 );

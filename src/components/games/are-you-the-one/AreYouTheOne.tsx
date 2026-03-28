@@ -4,7 +4,7 @@ import Controls from "./Controls";
 import Table from "./table/Table";
 import Analysis from "./analysis/Analysis";
 import aYTOAtom, { aytoPlayerRead } from "../../../jotai/are-you-the-one-state";
-import useHist from "./histogram/useHist";
+import calcHist from "./histogram/calcHist";
 import { Typography } from "@mui/material";
 
 const AreYouTheOne = () => {
@@ -13,7 +13,7 @@ const AreYouTheOne = () => {
 
   // state
   const [ri, setRi] = useState(0);
-  const { hist, tempScore, calculatedEquations } = useHist(
+  const { hist, tempScore, calculatedEquations } = calcHist(
     ladies.length,
     matches,
     noMatch,

@@ -31,6 +31,12 @@ describe("games | bridge | BidDialog", () => {
     fireEvent.click(screen.getByRole("button", { name: /bid/i }));
 
     await waitFor(() => {
+      // Switch to the Cheat Sheet tab (tab index 1)
+      const cheatSheetTab = screen.getByRole("tab", { name: /cheat sheet/i });
+      fireEvent.click(cheatSheetTab);
+    });
+
+    await waitFor(() => {
       // Check for main table structure - BiddingTable renders two tables
       const tables = screen.getAllByRole("table");
       expect(tables.length).toBe(2);
@@ -54,6 +60,10 @@ describe("games | bridge | BidDialog", () => {
     fireEvent.click(screen.getByRole("button", { name: /bid/i }));
 
     await waitFor(() => {
+      fireEvent.click(screen.getByRole("tab", { name: /cheat sheet/i }));
+    });
+
+    await waitFor(() => {
       // Balanced Hands section content - appears multiple places, use getAllByText
       const balancedTexts = screen.getAllByText(/balanced hands/i);
       expect(balancedTexts.length).toBeGreaterThanOrEqual(1);
@@ -69,6 +79,10 @@ describe("games | bridge | BidDialog", () => {
     fireEvent.click(screen.getByRole("button", { name: /bid/i }));
 
     await waitFor(() => {
+      fireEvent.click(screen.getByRole("tab", { name: /cheat sheet/i }));
+    });
+
+    await waitFor(() => {
       // Unbalanced Hands section content
       expect(screen.getByText(/unbalanced hands/i)).toBeInTheDocument();
     });
@@ -78,6 +92,10 @@ describe("games | bridge | BidDialog", () => {
     render(<BidDialog />);
 
     fireEvent.click(screen.getByRole("button", { name: /bid/i }));
+
+    await waitFor(() => {
+      fireEvent.click(screen.getByRole("tab", { name: /cheat sheet/i }));
+    });
 
     await waitFor(() => {
       // Overcalls section content
@@ -93,11 +111,55 @@ describe("games | bridge | BidDialog", () => {
     fireEvent.click(screen.getByRole("button", { name: /bid/i }));
 
     await waitFor(() => {
+      fireEvent.click(screen.getByRole("tab", { name: /cheat sheet/i }));
+    });
+
+    await waitFor(() => {
       const link = screen.getByRole("link", { name: /nofearbridge\.com/i });
       expect(link).toBeInTheDocument();
       expect(link).toHaveAttribute("href", "https://www.nofearbridge.com");
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
+  });
+
+  it("Cheat Sheet tab is directly accessible from the tab bar", async () => {
+    render(<BidDialog />);
+
+    // Open the dialog
+    fireEvent.click(screen.getByRole("button", { name: /bid/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+    });
+
+    // Bid Advisor tab is shown by default
+    expect(screen.getByRole("tab", { name: /bid advisor/i })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+
+    // Click Cheat Sheet tab directly
+    fireEvent.click(screen.getByRole("tab", { name: /cheat sheet/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("tab", { name: /cheat sheet/i })).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
+    });
+  });
+
+  it("does NOT show a View Cheat Sheet button inside the Bid Advisor", async () => {
+    render(<BidDialog />);
+    fireEvent.click(screen.getByRole("button", { name: /bid/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+    });
+
+    expect(
+      screen.queryByRole("button", { name: /view cheat sheet/i }),
+    ).not.toBeInTheDocument();
   });
 });

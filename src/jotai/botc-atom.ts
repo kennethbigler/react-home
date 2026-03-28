@@ -44,25 +44,29 @@ export const botcPlayerShell: BotCPlayer = {
   kill: false,
 };
 
-const newPlayers: BotCPlayer[] = [];
-for (let i = 0; i < BOTC_MAX_PLAYERS + BOTC_MAX_TRAVELERS; i += 1) {
-  newPlayers.push({ ...botcPlayerShell });
-}
+const BOTC_TOTAL_SLOTS = BOTC_MAX_PLAYERS + BOTC_MAX_TRAVELERS;
 
 const numRounds = [0, 1, 2, 3, 4, 5, 6, 7];
 export const newRoundNotes = () => numRounds.map(() => "");
-export const newTracker = () => numRounds.map(() => newPlayers.map(() => 0));
+export const newTracker = () =>
+  numRounds.map(() => Array<number>(BOTC_TOTAL_SLOTS).fill(0));
 
-export const newBotCGame = (): BotCState => ({
-  isText: true,
-  numPlayers: 8,
-  numTravelers: 0,
-  round: 0,
-  script: 0,
-  botcPlayers: newPlayers,
-  roundNotes: newRoundNotes(),
-  tracker: newTracker(),
-});
+export const newBotCGame = (): BotCState => {
+  const botcPlayers: BotCPlayer[] = [];
+  for (let i = 0; i < BOTC_TOTAL_SLOTS; i += 1) {
+    botcPlayers.push({ ...botcPlayerShell });
+  }
+  return {
+    isText: true,
+    numPlayers: 8,
+    numTravelers: 0,
+    round: 0,
+    script: 0,
+    botcPlayers,
+    roundNotes: newRoundNotes(),
+    tracker: newTracker(),
+  };
+};
 
 const botcAtom = atomWithStorage("botcAtom", newBotCGame());
 

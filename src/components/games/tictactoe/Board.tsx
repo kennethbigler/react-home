@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { useCallback, CSSProperties } from "react";
 import { grey } from "@mui/material/colors";
 import Cell from "./Cell";
 import { Table, TableBody, TableCell, TableRow } from "@mui/material";
@@ -16,6 +16,11 @@ const tableCellStyle: CSSProperties = {
 };
 
 const Board = ({ board, onClick, winRow }: BoardProps) => {
+  const handleCellClick = useCallback(
+    (cellIndex: number) => onClick(cellIndex),
+    [onClick],
+  );
+
   const cells = [];
   // create 3 rows
   for (let i = 0; i < 3; i += 1) {
@@ -28,7 +33,8 @@ const Board = ({ board, onClick, winRow }: BoardProps) => {
       row.push(
         <TableCell key={`${i},${j}`} style={tableCellStyle}>
           <Cell
-            onClick={(): void => onClick(c)}
+            cellIndex={c}
+            onClick={handleCellClick}
             value={board[c]}
             winner={winner}
           />

@@ -146,13 +146,14 @@ export const dealPokerAtom = atom(
     // have player draw cards
     const pIdx = nextPlayers.findIndex((player) => player.id === playerId);
     const nextPlayer = nextPlayers[pIdx];
-    nextPlayer.hands[0] = {
+    const newHands = [...nextPlayer.hands];
+    newHands[0] = {
       cards: [...prevCards, ...cards],
       weight: 0,
       soft: false,
     };
-    // sort
-    nextPlayer.hands[0].cards.sort(rankSort);
+    newHands[0].cards.sort(rankSort);
+    nextPlayers[pIdx] = { ...nextPlayer, hands: newHands };
 
     // update state
     set(deckAtom, nextDeck);

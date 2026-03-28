@@ -13,7 +13,7 @@ export enum GameFunctions {
 }
 
 export interface BlackjackState {
-  gameFunctions: string[];
+  gameFunctions: GameFunctions[];
   hideHands: boolean;
 }
 

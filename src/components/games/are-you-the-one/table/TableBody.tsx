@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { RoundPairing } from "../../../../jotai/are-you-the-one-state";
 import TBDialog from "./TBDialog";
-import { AYTOHist } from "../histogram/useHist";
+import { AYTOHist } from "../histogram/calcHist";
 import AYTOTableRow from "./TableRow";
 import { TableBody } from "@mui/material";
 

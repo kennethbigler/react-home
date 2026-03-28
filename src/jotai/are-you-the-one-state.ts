@@ -55,7 +55,7 @@ export const aytoPlayerRead = atom((get) => {
     newOptions.splice(9, 1);
   }
 
-  return { ...aytoSeasons[season], options };
+  return { ...aytoSeasons[season], options: newOptions };
 });
 
 export default areYouTheOneAtom;

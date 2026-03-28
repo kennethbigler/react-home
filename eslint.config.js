@@ -97,6 +97,7 @@ export default [
       "no-console": "warn",
       "no-lone-blocks": "error",
       "prefer-destructuring": ["error", {array: false, object: true}],
+      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
 
       // Override GTS's single quote preference with double quotes
       "quotes": ["warn", "double", {avoidEscape: true}],

@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import CalculatedStack from "./CalculatedStack";
-import type { AYTOHist } from "../histogram/useHist";
+import type { AYTOHist } from "../histogram/calcHist";
 
 describe("CalculatedStack", () => {
   const mockHist: AYTOHist[][] = [
