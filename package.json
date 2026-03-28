@@ -62,7 +62,7 @@
     "jsdom": "29.0.1",
     "prettier": "3.8.1",
     "source-map-explorer": "2.5.3",
-    "typescript": "5.9.3",
+    "typescript": "6.0.2",
     "vitest": "4.1.0"
   },
   "keywords": [
