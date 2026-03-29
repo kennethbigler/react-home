@@ -4199,7 +4199,7 @@ function getRebidAfterSuit(
       const rebidBid = `2${suitSymbol(myOpenSuit)}`;
       return {
         bid: rebidBid,
-        category: `Rebid Own Suit After Partner's Double`,
+        category: "Rebid Own Suit After Partner's Double",
         reasoning: `Partner doubled (or made a non-suit bid). With ${myOpenSuitLen} ${myOpenSuit} and an unbalanced hand, rebid ${rebidBid} to show your suit length.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner: `${myOpenSuitLen}-card ${myOpenSuit}, continuing to show my suit.`,
@@ -4210,7 +4210,8 @@ function getRebidAfterSuit(
     return {
       bid: "Pass",
       category: "Pass After Partner's Double",
-      reasoning: `Partner doubled an opponent's bid (or made a non-suit bid). Without a clear rebid, pass to let partner's action stand — you've already described your hand with the opening bid.`,
+      reasoning:
+        "Partner doubled an opponent's bid (or made a non-suit bid). Without a clear rebid, pass to let partner's action stand — you've already described your hand with the opening bid.",
       handAnalysis: analysis,
       whatYourBidTellsPartner:
         "Minimum opener with no clear rebid — supporting partner's action.",
@@ -4541,7 +4542,7 @@ function getRespondingToSuitAfterDouble(
     category: "Bid New Suit After Double",
     reasoning: `With ${tp} pts but no fit for partner's ${suit}, bid your longest suit (${longestName}) at the ${tp >= 9 ? "2" : "1"}-level.`,
     handAnalysis: analysis,
-    whatYourBidTellsPartner: `No fit for your suit — showing my longest suit.`,
+    whatYourBidTellsPartner: "No fit for your suit — showing my longest suit.",
     expectedResponses: [],
     confidence: "medium",
   };
