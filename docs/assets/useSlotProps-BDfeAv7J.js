@@ -1,2 +1,0 @@
-import{u as e}from"./ButtonBase-9kweA-BC.js";import{a as t,i as n,n as r}from"./useSlot-0q8zPWOy.js";function i(i){let{elementType:a,externalSlotProps:o,ownerState:s,skipResolvingSlotProps:c=!1,...l}=i,u=c?{}:n(o,s),{props:d,internalRef:f}=r({...l,externalSlotProps:u}),p=e(f,u?.ref,i.additionalProps?.ref);return t(a,{...d,ref:p},s)}export{i as t};
-//# sourceMappingURL=useSlotProps-BDfeAv7J.js.map
