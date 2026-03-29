@@ -12,10 +12,14 @@ import type { Hand } from "./bidding-logic";
 interface HandInputProps {
   hand: Hand;
   onChange: (hand: Hand) => void;
+  /** Show the optional "Aces in hand" field — appears when partner bids 4NT (Blackwood). */
+  showAcesInput?: boolean;
+  /** Show the optional "Kings in hand" field — appears when partner bids 5NT (kings ask). */
+  showKingsInput?: boolean;
 }
 
 const SUIT_LABELS: {
-  key: keyof Omit<Hand, "hcp">;
+  key: keyof Omit<Hand, "hcp" | "aces" | "kings">;
   label: string;
   symbol: string;
 }[] = [
@@ -25,7 +29,12 @@ const SUIT_LABELS: {
   { key: "diamonds", label: "Diamonds", symbol: "♦" },
 ];
 
-export default function HandInput({ hand, onChange }: HandInputProps) {
+export default function HandInput({
+  hand,
+  onChange,
+  showAcesInput = false,
+  showKingsInput = false,
+}: HandInputProps) {
   const totalCards = hand.spades + hand.hearts + hand.diamonds + hand.clubs;
   const cardCountError =
     totalCards !== 13
@@ -38,9 +47,22 @@ export default function HandInput({ hand, onChange }: HandInputProps) {
     onChange({ ...hand, hcp: clamped });
   };
 
-  const handleSuitChange = (key: keyof Omit<Hand, "hcp">, value: number) => {
+  const handleSuitChange = (
+    key: keyof Omit<Hand, "hcp" | "aces" | "kings">,
+    value: number,
+  ) => {
     const clamped = Math.max(0, Math.min(13, value));
     onChange({ ...hand, [key]: clamped });
+  };
+
+  const handleAcesChange = (value: number) => {
+    const clamped = Math.max(0, Math.min(4, value));
+    onChange({ ...hand, aces: clamped });
+  };
+
+  const handleKingsChange = (value: number) => {
+    const clamped = Math.max(0, Math.min(4, value));
+    onChange({ ...hand, kings: clamped });
   };
 
   return (
@@ -126,6 +148,72 @@ export default function HandInput({ hand, onChange }: HandInputProps) {
           </Typography>
         )}
       </Box>
+
+      {/* Blackwood: Aces input (shown only when partner bids 4NT) */}
+      {showAcesInput && (
+        <Box
+          mb={2}
+          sx={{
+            border: "1px solid",
+            borderColor: "info.main",
+            borderRadius: 1,
+            p: 1.5,
+          }}
+        >
+          <Typography
+            variant="caption"
+            color="info.main"
+            display="block"
+            mb={1}
+          >
+            Partner bid 4NT (Blackwood) — how many aces do you hold?
+          </Typography>
+          <TextField
+            label="Aces in hand (0-4)"
+            type="number"
+            value={hand.aces ?? ""}
+            inputProps={{ min: 0, max: 4, "aria-label": "Aces count" }}
+            onChange={(e) =>
+              handleAcesChange(parseInt(e.target.value, 10) || 0)
+            }
+            size="small"
+            sx={{ width: 160 }}
+          />
+        </Box>
+      )}
+
+      {/* Blackwood: Kings input (shown only when partner bids 5NT kings ask) */}
+      {showKingsInput && (
+        <Box
+          mb={2}
+          sx={{
+            border: "1px solid",
+            borderColor: "info.main",
+            borderRadius: 1,
+            p: 1.5,
+          }}
+        >
+          <Typography
+            variant="caption"
+            color="info.main"
+            display="block"
+            mb={1}
+          >
+            Partner bid 5NT (kings ask) — how many kings do you hold?
+          </Typography>
+          <TextField
+            label="Kings in hand (0-4)"
+            type="number"
+            value={hand.kings ?? ""}
+            inputProps={{ min: 0, max: 4, "aria-label": "Kings count" }}
+            onChange={(e) =>
+              handleKingsChange(parseInt(e.target.value, 10) || 0)
+            }
+            size="small"
+            sx={{ width: 160 }}
+          />
+        </Box>
+      )}
 
       {/* TP display */}
       <Box

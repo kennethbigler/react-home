@@ -1583,19 +1583,43 @@ describe("bidding-logic | rebid-after-suit", () => {
     expect(rec.bid).not.toBe("Continue auction");
   });
 
-  it("minimum opener (TP=12), no 4-card fit but 5-card suit → rebid own suit", () => {
-    // 11 HCP, 3 spades (no 4-card fit), 5 diamonds → rebid 2♦
+  it("minimum opener (TP=14, 13 HCP), no 4-card fit but 5-card suit → simple rebid 2♦", () => {
+    // 13 HCP, 3 spades (no 4-card fit), 5 diamonds, TP=14 → minimum opener → simple non-forcing 2♦
+    // (does NOT jump to 3♦ — opener must not invite game with bare minimum strength)
     const rec = getRecommendation(
-      mkHand(11, 3, 2, 5, 3),
+      mkHand(13, 3, 2, 5, 3),
       ctx("rebid-after-suit", { myPreviousBid: "1♦", partnerBid: "1♠" }),
     );
     expect(rec.bid).toBe("2♦");
     expect(rec.bid).not.toBe("Continue auction");
   });
 
+  it("responder invitational (10 HCP, 5 hearts, TP=11) after 1♦-1♥-2♦ → invitational jump 3♥", () => {
+    // Bug report: tool was saying '3 hearts' is a 'natural non-forcing rebid' with wrong explanation.
+    // 3♥ IS the correct bid (invitational jump past 2♥), but the category should say invitational.
+    const rec = getRecommendation(
+      mkHand(10, 3, 5, 3, 2),
+      ctx("rebid-after-suit", { myPreviousBid: "1♥", partnerBid: "2♦" }),
+    );
+    expect(rec.bid).toBe("3♥");
+    expect(rec.category).toContain("Invitational");
+    expect(rec.reasoning).toContain("invitational");
+  });
+
+  it("responder minimum (8 HCP, 5 hearts, TP=9) after 1♦-1♥-2♦ → simple rebid 2♥, NOT jump", () => {
+    // With only 9 TP (below invitational threshold), responder should rebid 2♥ (simple non-forcing)
+    // rather than jumping to 3♥
+    const rec = getRecommendation(
+      mkHand(8, 3, 5, 3, 2),
+      ctx("rebid-after-suit", { myPreviousBid: "1♥", partnerBid: "2♦" }),
+    );
+    expect(rec.bid).toBe("2♥");
+    expect(rec.bid).not.toBe("3♥");
+  });
+
   it("partner bid new suit, balanced, minimum → 1NT/2NT rebid", () => {
     const rec = getRecommendation(
-      mkHand(14, 4, 3, 3, 3),
+      mkHand(14, 3, 3, 3, 4), // 4-card clubs is opening suit, no 4-card suit above hearts → 1NT
       ctx("rebid-after-suit", { myPreviousBid: "1♣", partnerBid: "1♥" }),
     );
     expect(rec.bid).toContain("NT");
@@ -1659,6 +1683,145 @@ describe("bidding-logic | rebid-after-suit", () => {
       ctx("rebid-after-suit", { myPreviousBid: "1♣", partnerBid: "3NT" }),
     );
     expect(rec.bid).toBe("Pass");
+  });
+});
+
+// ─── respond-to-partner-invitation ────────────────────────────────────────────
+describe("bidding-logic | respond-to-partner-invitation", () => {
+  // Bug report: after 1♦-1♥-2♦-3♥, the tool was recommending 4♦ (wrong!).
+  // Partner's 3♥ is an invitational jump rebid in their own suit — opener should
+  // Pass with a minimum hand (not rebid diamonds a third time).
+  it("user bug: 12 HCP, 2♥ support, TP=13 → Pass (decline invitation)", () => {
+    const rec = getRecommendation(
+      mkHand(12, 2, 2, 5, 4),
+      ctx("respond-to-partner-invitation", {
+        myPreviousBid: "2♦",
+        partnerBid: "3♥",
+      }),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toContain("Decline");
+    expect(rec.reasoning).toContain("minimum");
+  });
+
+  it("minimum opener (13 TP, 2-card heart support) → Pass", () => {
+    const rec = getRecommendation(
+      mkHand(13, 3, 2, 5, 3),
+      ctx("respond-to-partner-invitation", {
+        myPreviousBid: "2♦",
+        partnerBid: "3♥",
+      }),
+    );
+    expect(rec.bid).toBe("Pass");
+  });
+
+  it("maximum opener (16 TP) → accept: bid 4♥", () => {
+    const rec = getRecommendation(
+      mkHand(16, 2, 2, 5, 4),
+      ctx("respond-to-partner-invitation", {
+        myPreviousBid: "2♦",
+        partnerBid: "3♥",
+      }),
+    );
+    expect(rec.bid).toBe("4♥");
+    expect(rec.category).toContain("Accept");
+  });
+
+  it("mid-range (14 TP) with 3-card heart support → accept: bid 4♥", () => {
+    const rec = getRecommendation(
+      mkHand(14, 2, 3, 5, 3),
+      ctx("respond-to-partner-invitation", {
+        myPreviousBid: "2♦",
+        partnerBid: "3♥",
+      }),
+    );
+    expect(rec.bid).toBe("4♥");
+    expect(rec.category).toContain("Accept");
+  });
+
+  it("no major fit (2 hearts) + balanced + 14 HCP → offer 3NT", () => {
+    const rec = getRecommendation(
+      mkHand(14, 3, 2, 4, 4),
+      ctx("respond-to-partner-invitation", {
+        myPreviousBid: "2♦",
+        partnerBid: "3♥",
+      }),
+    );
+    expect(rec.bid).toBe("3NT");
+  });
+
+  it("spade invitation: 3♠ after 1♠ response → max opener accepts 4♠", () => {
+    const rec = getRecommendation(
+      mkHand(16, 2, 3, 4, 4),
+      ctx("respond-to-partner-invitation", {
+        myPreviousBid: "2♦",
+        partnerBid: "3♠",
+      }),
+    );
+    expect(rec.bid).toBe("4♠");
+  });
+
+  it("minor invitation: 3♦ after 1♦ response → minimum opener passes", () => {
+    const rec = getRecommendation(
+      mkHand(13, 3, 3, 2, 5),
+      ctx("respond-to-partner-invitation", {
+        myPreviousBid: "2♣",
+        partnerBid: "3♦",
+      }),
+    );
+    expect(rec.bid).toBe("Pass");
+  });
+});
+
+// ─── deriveSituation: respond-to-partner-invitation detection ─────────────────
+describe("bidding-logic | deriveSituation — respond-to-partner-invitation", () => {
+  it("1♦-1♥-2♦-3♥ routes to respond-to-partner-invitation (not rebid-after-suit)", () => {
+    // The user's bug: opener had 12 HCP, 2♥, 5♦ and got 4♦ recommended
+    const s = deriveSituation(
+      {
+        completedRounds: [
+          { 1: "1♦", 2: "Pass", 3: "1♥", 4: "Pass" },
+          { 1: "2♦", 2: "Pass", 3: "3♥", 4: "Pass" },
+        ],
+        currentRound: {},
+        myPosition: 1,
+      },
+      "none",
+    );
+    expect(s.situation).toBe("respond-to-partner-invitation");
+    expect(s.partnerBid).toBe("3♥");
+  });
+
+  it("1♦-1♥-2♦-2♥ does NOT route to respond-to-partner-invitation (2♥ is simple preference, not a jump)", () => {
+    const s = deriveSituation(
+      {
+        completedRounds: [
+          { 1: "1♦", 2: "Pass", 3: "1♥", 4: "Pass" },
+          { 1: "2♦", 2: "Pass", 3: "2♥", 4: "Pass" },
+        ],
+        currentRound: {},
+        myPosition: 1,
+      },
+      "none",
+    );
+    expect(s.situation).toBe("rebid-after-suit");
+  });
+
+  it("genuinely new suit (partner never bid hearts before) does NOT route to respond-to-partner-invitation", () => {
+    // Opener bid 1♦, partner bid 1♠, opener rebid 2♦, partner now bids 3♥ (new suit)
+    const s = deriveSituation(
+      {
+        completedRounds: [
+          { 1: "1♦", 2: "Pass", 3: "1♠", 4: "Pass" },
+          { 1: "2♦", 2: "Pass", 3: "3♥", 4: "Pass" },
+        ],
+        currentRound: {},
+        myPosition: 1,
+      },
+      "none",
+    );
+    // 3♥ is a new suit here (partner never bid hearts), so rebid-after-suit
+    expect(s.situation).toBe("rebid-after-suit");
   });
 });
 
@@ -3595,5 +3758,970 @@ describe("bidding-logic | getBidMeaning — prevHighBid context", () => {
   it("2♦ with no context → weak 2 bid", () => {
     const m = getBidMeaning("2♦", "partner");
     expect(m.toLowerCase()).toContain("weak");
+  });
+});
+
+// ─── Bug-fix regression tests ─────────────────────────────────────────────────
+
+describe("bidding-logic | bug1 — 7-card suit preempt no outside major", () => {
+  it("7-card spades (major) → 3♠ preempt even without checking outside majors", () => {
+    // Before fix: noOutsideMajor was FALSE for 7-card spades, so preempt never fired
+    const rec = getRecommendation(mkHand(8, 7, 2, 3, 1), ctx("opening"));
+    expect(rec.bid).toBe("3♠");
+    expect(rec.category).toContain("Pre-emptive 3");
+  });
+
+  it("7-card hearts (major) → 3♥ preempt", () => {
+    const rec = getRecommendation(mkHand(7, 2, 7, 3, 1), ctx("opening"));
+    expect(rec.bid).toBe("3♥");
+    expect(rec.category).toContain("Pre-emptive 3");
+  });
+
+  it("7-card diamonds + 4-card spades → open 1♠ not 3♦ (outside major takes priority)", () => {
+    const rec = getRecommendation(mkHand(10, 4, 2, 7, 0), ctx("opening"));
+    // Should open 1♠ because 4-card spades + Rule of 20 qualifies
+    expect(rec.bid).not.toBe("3♦");
+  });
+
+  it("7-card clubs + no 4-card major → 3♣ preempt", () => {
+    const rec = getRecommendation(mkHand(8, 3, 3, 0, 7), ctx("opening"));
+    expect(rec.bid).toBe("3♣");
+  });
+});
+
+describe("bidding-logic | bug2 — medium/strong opener rebid in getRebidAfterSuit", () => {
+  it("16-18 TP, 5-card suit, partner bid new suit → jump rebid (medium)", () => {
+    // Opener: 15 HCP + 1 long suit pt (5 diamonds) = 16 TP, 5 diamonds, partner bid 1♠
+    const rec = getRecommendation(
+      mkHand(15, 2, 3, 5, 3),
+      ctx("rebid-after-suit", {
+        myPreviousBid: "1♦",
+        partnerBid: "1♠",
+      }),
+    );
+    expect(rec.category).toContain("Jump Rebid");
+    expect(rec.bid).toMatch(/^3/); // Jump to 3-level
+  });
+
+  it("19+ TP, 4-card fit for partner's suit → direct game bid", () => {
+    // Opener: 18 HCP + 1 long suit pt (5 diamonds) = 19 TP, 4 spades, partner bid 1♠
+    const rec = getRecommendation(
+      mkHand(18, 4, 3, 5, 1),
+      ctx("rebid-after-suit", {
+        myPreviousBid: "1♦",
+        partnerBid: "1♠",
+      }),
+    );
+    expect(rec.bid).toBe("4♠");
+    expect(rec.category).toContain("Game Raise");
+  });
+});
+
+describe("bidding-logic | bug3 — 1NT rebid label 12-14 HCP (not 15-17)", () => {
+  it("balanced 12-14 HCP opener rebids 1NT after partner's 1♠ response", () => {
+    const rec = getRecommendation(
+      mkHand(13, 2, 3, 4, 4),
+      ctx("rebid-after-suit", {
+        myPreviousBid: "1♦",
+        partnerBid: "1♠",
+      }),
+    );
+    expect(rec.bid).toBe("1NT");
+    expect(rec.category).toContain("12-14 HCP");
+  });
+
+  it("balanced 18-19 HCP opener rebids 2NT", () => {
+    const rec = getRecommendation(
+      mkHand(18, 2, 3, 4, 4),
+      ctx("rebid-after-suit", {
+        myPreviousBid: "1♦",
+        partnerBid: "1♠",
+      }),
+    );
+    expect(rec.bid).toBe("2NT");
+    expect(rec.category).toContain("18-19 HCP");
+  });
+});
+
+describe("bidding-logic | bug4 — 5-card suit overcall checked before takeout double", () => {
+  it("12 HCP, 5-card spades over 1♥ → 1♠ overcall (not takeout double)", () => {
+    const rec = getRecommendation(
+      mkHand(12, 5, 2, 3, 3),
+      ctx("overcalling", { rhoBid: "1♥" }),
+    );
+    // Should bid 1♠ suit overcall, NOT double (5-card suit is more descriptive)
+    expect(rec.bid).toBe("1♠");
+  });
+
+  it("14 HCP, 5-card clubs over 1♦ → 2♣ overcall (not takeout double)", () => {
+    const rec = getRecommendation(
+      mkHand(14, 3, 2, 1, 7),
+      ctx("overcalling", { rhoBid: "1♦" }),
+    );
+    expect(rec.bid).toBe("2♣");
+    expect(rec.category).toContain("Overcall");
+  });
+});
+
+describe("bidding-logic | bug5 — Blackwood ace/king response uses actual values", () => {
+  it("responds with 5♥ (2 aces) when aces=2 provided", () => {
+    const hand: Hand = {
+      hcp: 12,
+      spades: 3,
+      hearts: 3,
+      diamonds: 4,
+      clubs: 3,
+      aces: 2,
+    };
+    const rec = getRecommendation(hand, ctx("blackwood-ace-response"));
+    expect(rec.bid).toBe("5♥");
+    expect(rec.confidence).toBe("high");
+  });
+
+  it("responds with 5♣ (0 aces) when aces=0 provided", () => {
+    const hand: Hand = {
+      hcp: 10,
+      spades: 3,
+      hearts: 3,
+      diamonds: 4,
+      clubs: 3,
+      aces: 0,
+    };
+    const rec = getRecommendation(hand, ctx("blackwood-ace-response"));
+    expect(rec.bid).toBe("5♣");
+  });
+
+  it("responds with 5♦ (1 ace) when aces=1 provided", () => {
+    const hand: Hand = {
+      hcp: 8,
+      spades: 2,
+      hearts: 3,
+      diamonds: 5,
+      clubs: 3,
+      aces: 1,
+    };
+    const rec = getRecommendation(hand, ctx("blackwood-ace-response"));
+    expect(rec.bid).toBe("5♦");
+  });
+
+  it("without aces field, falls back to HCP estimate with medium confidence", () => {
+    const hand: Hand = { hcp: 10, spades: 3, hearts: 3, diamonds: 4, clubs: 3 };
+    const rec = getRecommendation(hand, ctx("blackwood-ace-response"));
+    expect(rec.confidence).toBe("medium");
+    expect(rec.note).toContain("Tip:");
+  });
+
+  it("kings response uses kings=1 when provided → 6♦", () => {
+    const hand: Hand = {
+      hcp: 10,
+      spades: 3,
+      hearts: 3,
+      diamonds: 4,
+      clubs: 3,
+      kings: 1,
+    };
+    const rec = getRecommendation(hand, ctx("blackwood-kings-response"));
+    expect(rec.bid).toBe("6♦");
+    expect(rec.confidence).toBe("high");
+  });
+});
+
+describe("bidding-logic | bug6 — takeout double requires shape in unbid suits", () => {
+  it("4-4-4-1 distribution (1 club in opponent suit) → takeout double over 1♣", () => {
+    // Before fix: check required 3+ clubs, but opponent opened clubs
+    const rec = getRecommendation(
+      mkHand(13, 4, 4, 4, 1),
+      ctx("overcalling", { rhoBid: "1♣" }),
+    );
+    expect(rec.bid).toBe("Double");
+    expect(rec.category).toContain("Takeout");
+  });
+
+  it("4-3-3-3 balanced (3 clubs) with 12 HCP over 1♣ → NOT takeout double (balanced, no shape)", () => {
+    // Balanced 4-3-3-3 doesn't have ideal takeout double shape for clubs opening
+    // Should get 1NT overcall instead (if qualified) or pass
+    const rec = getRecommendation(
+      mkHand(12, 4, 3, 3, 3),
+      ctx("overcalling", { rhoBid: "1♣" }),
+    );
+    // Should NOT be a simple takeout double since 3 clubs is not shortness
+    // (Could be 1NT overcall or 1♠ overcall instead)
+    expect(rec.bid).not.toBe("Double");
+  });
+
+  it("4-4-4-1 distribution (1 heart in opponent suit) → takeout double over 1♥", () => {
+    const rec = getRecommendation(
+      mkHand(13, 4, 1, 4, 4),
+      ctx("overcalling", { rhoBid: "1♥" }),
+    );
+    expect(rec.bid).toBe("Double");
+    expect(rec.category).toContain("Takeout");
+  });
+});
+
+describe("bidding-logic | bug7 — reverse bid in getRebidAfterSuit", () => {
+  it("16+ TP, 4-card spades after opening 1♦, partner bids 1♥ → reverse 2♠", () => {
+    // Classic reverse: 1♦ - 1♥ - 2♠ (opener shows 4+ spades ranking higher than diamonds)
+    // 15 HCP + 1 long suit (5 diamonds) = 16 TP
+    const rec = getRecommendation(
+      mkHand(15, 4, 2, 5, 2),
+      ctx("rebid-after-suit", {
+        myPreviousBid: "1♦",
+        partnerBid: "1♥",
+      }),
+    );
+    expect(rec.bid).toBe("2♠");
+    expect(rec.category).toContain("Reverse");
+  });
+
+  it("16+ TP, 4-card hearts after opening 1♣, partner bids 1♦ → reverse 2♥", () => {
+    // Classic reverse: 1♣ - 1♦ - 2♥
+    // 15 HCP + 1 long suit (5 clubs) = 16 TP
+    const rec = getRecommendation(
+      mkHand(15, 3, 4, 2, 5),
+      ctx("rebid-after-suit", {
+        myPreviousBid: "1♣",
+        partnerBid: "1♦",
+      }),
+    );
+    expect(rec.bid).toBe("2♥");
+    expect(rec.category).toContain("Reverse");
+  });
+
+  it("15 TP (below reverse threshold) does NOT make reverse bid", () => {
+    // With only 15 TP (and no long suit pts to push to 16), should NOT reverse
+    const rec = getRecommendation(
+      mkHand(13, 4, 2, 4, 4),
+      ctx("rebid-after-suit", {
+        myPreviousBid: "1♣",
+        partnerBid: "1♦",
+      }),
+    );
+    expect(rec.bid).not.toContain("Reverse");
+    expect(rec.category).not.toContain("Reverse");
+  });
+});
+
+// ─── Sample Deal End-to-End Integration Tests ─────────────────────────────────
+// Each deal traces a complete auction verifying SAYC bid recommendations at every step.
+// SAYC reference: https://www.bridgebum.com/ and ACBL SAYC booklet.
+
+describe("bidding-logic | deal 1 — 1♠ opening, limit raise, game", () => {
+  // North (P1): 14 HCP, 5♠3♥3♦2♣ → TP=15  opens 1♠
+  // South (P3): 11 HCP, 4♠3♥3♦3♣ → limit raise 3♠
+  const northHand = mkHand(14, 5, 3, 3, 2);
+  const southHand = mkHand(11, 4, 3, 3, 3);
+
+  it("North (P1) opening with 5 spades, 15 TP → 1♠", () => {
+    const rec = getRecommendation(northHand, ctx("opening"));
+    expect(rec.bid).toBe("1♠");
+  });
+
+  it("South (P3) with 4-card spade support, 11 HCP, partner opened 1♠ → limit raise 3♠", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♠", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(southHand, auction);
+    expect(rec.bid).toBe("3♠");
+  });
+
+  it("North (P1) after partner's 3♠ limit raise, 15 TP → accept invitation 4♠", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♠", 2: "Pass", 3: "3♠", 4: "Pass" }],
+      currentRound: {},
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(northHand, auction);
+    expect(rec.bid).toBe("4♠");
+  });
+});
+
+describe("bidding-logic | deal 2 — 1NT opening, Stayman, 4-4 heart fit, game", () => {
+  // North (P1): 15 HCP, 3♠4♥3♦3♣ → opens 1NT (15-17 HCP balanced)
+  // South (P3): 10 HCP, 3♠4♥3♦3♣ → Stayman 2♣ → then 4♥ game
+  const northHand = mkHand(15, 3, 4, 3, 3);
+  const southHand = mkHand(10, 3, 4, 3, 3);
+
+  it("North (P1) balanced 15 HCP → 1NT", () => {
+    const rec = getRecommendation(northHand, ctx("opening"));
+    expect(rec.bid).toBe("1NT");
+  });
+
+  it("South (P3) with 4 hearts, 10 HCP, partner opened 1NT → 2♣ Stayman", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1NT", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(southHand, auction);
+    expect(rec.bid).toBe("2♣");
+    expect(rec.category.toLowerCase()).toContain("stayman");
+  });
+
+  it("North (P1) with 4 hearts, partner bid 2♣ Stayman → 2♥", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2♣", 4: "Pass" }],
+      currentRound: {},
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(northHand, auction);
+    expect(rec.bid).toBe("2♥");
+  });
+
+  it("South (P3) after partner shows 4 hearts via 2♥ → 4♥ game", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2♣", 4: "Pass" }],
+      currentRound: { 1: "2♥", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(southHand, auction);
+    expect(rec.bid).toBe("4♥");
+  });
+});
+
+describe("bidding-logic | deal 3 — 1♦ opening, 1-over-1 response, reverse bid", () => {
+  // North (P1): 15 HCP, 4♠2♥5♦2♣ → TP=16, opens 1♦
+  // South (P3): 9 HCP, 3♠4♥3♦3♣ → responds 1♥
+  const northHand = mkHand(15, 4, 2, 5, 2);
+  const southHand = mkHand(9, 3, 4, 3, 3);
+
+  it("North (P1) 5-card diamonds, 16 TP → 1♦", () => {
+    const rec = getRecommendation(northHand, ctx("opening"));
+    expect(rec.bid).toBe("1♦");
+  });
+
+  it("South (P3) with 4 hearts, 9 HCP, partner opened 1♦ → 1♥", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♦", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(southHand, auction);
+    expect(rec.bid).toBe("1♥");
+  });
+
+  it("North (P1) with 4 spades, 16 TP, after partner's 1♥ → reverse 2♠", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♦", 2: "Pass", 3: "1♥", 4: "Pass" }],
+      currentRound: {},
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(northHand, auction);
+    expect(rec.bid).toBe("2♠");
+    expect(rec.category).toContain("Reverse");
+  });
+});
+
+describe("bidding-logic | deal 4 — 1♥ opening, overcall, negative double", () => {
+  // North (P1): 14 HCP, 3♠5♥3♦2♣ → opens 1♥
+  // East  (P2): 12 HCP, 5♠2♥3♦3♣ → overcalls 1♠
+  // South (P3): 9 HCP, 2♠3♥5♦3♣ → negative double or 2♦
+  const northHand = mkHand(14, 3, 5, 3, 2);
+  const eastHand = mkHand(12, 5, 2, 3, 3);
+  const southHand = mkHand(9, 2, 3, 5, 3);
+
+  it("North (P1) 5-card hearts, 14 HCP → 1♥", () => {
+    const rec = getRecommendation(northHand, ctx("opening"));
+    expect(rec.bid).toBe("1♥");
+  });
+
+  it("East (P2) with 5 spades, 12 HCP, after 1♥ → 1♠ overcall", () => {
+    const state: AuctionState = {
+      myPosition: 2,
+      completedRounds: [],
+      currentRound: { 1: "1♥" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(eastHand, auction);
+    expect(rec.bid).toBe("1♠");
+  });
+
+  it("South (P3) with 5 diamonds, 9 HCP, after 1♥-1♠ → negative double or 2♦", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♥", 2: "1♠" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(southHand, auction);
+    // SAYC: after 1♥-1♠, with diamonds → negative double or 2♦ are both valid
+    expect(["Double", "2♦"]).toContain(rec.bid);
+  });
+});
+
+describe("bidding-logic | deal 5 — preempt 3♣ opening, response to preempt", () => {
+  // North (P1): 8 HCP, 2♠2♥3♦6♣ → preempt 3♣
+  // South (P3): 15 HCP, 5♠4♥2♦2♣ → responds to preempt
+  const northHand = mkHand(8, 2, 2, 3, 6);
+  const southHand = mkHand(15, 5, 4, 2, 2);
+
+  it("North (P1) with 6-card clubs, 8 HCP → 3♣ preempt", () => {
+    const rec = getRecommendation(northHand, ctx("opening"));
+    expect(rec.bid).toBe("3♣");
+    expect(rec.category).toContain("Pre-emptive");
+  });
+
+  it("South (P3) with 15 HCP, 5 spades, partner preempted 3♣ → 3♠ or 3NT", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "3♣", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(southHand, auction);
+    // SAYC: 15 HCP with 5 spades over partner's 3♣ preempt → 3♠ (new suit forcing) or 3NT
+    expect(["3♠", "3NT", "4♠"]).toContain(rec.bid);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Comprehensive Audit Deals A–J (and isInvitational HCP fix)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("bidding-logic | deal A — 1♣ opening, 1♥ overcall, negative double", () => {
+  // P1: 14 HCP, 3♠2♥3♦5♣ → opens 1♣ (5 clubs, TP=15)
+  // P2: 10 HCP, 3♠5♥2♦3♣ → overcalls 1♥ (5 hearts)
+  // P3:  9 HCP, 4♠3♥4♦2♣ → Negative Double (4+ spades)
+  const p1Hand = mkHand(14, 3, 2, 3, 5);
+  const p2Hand = mkHand(10, 3, 5, 2, 3);
+  const p3Hand = mkHand(9, 4, 3, 4, 2);
+
+  it("P1 with 5 clubs, 14 HCP → opens 1♣", () => {
+    const rec = getRecommendation(p1Hand, ctx("opening"));
+    expect(rec.bid).toBe("1♣");
+  });
+
+  it("P2 with 5 hearts, 10 HCP, after 1♣ → overcalls 1♥", () => {
+    const state: AuctionState = {
+      myPosition: 2,
+      completedRounds: [],
+      currentRound: { 1: "1♣" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p2Hand, auction);
+    expect(rec.bid).toBe("1♥");
+  });
+
+  it("P3 with 4 spades, 9 HCP, after 1♣–1♥ → Negative Double", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♣", 2: "1♥" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3Hand, auction);
+    expect(rec.bid).toBe("Double");
+  });
+
+  it("P1 responds to Negative Double — 3 spades, balanced → bid 1♠ or 1NT (both valid SAYC options)", () => {
+    // P1 is 5-3-3-2 balanced. Balanced hand → 1NT (stopper in overcalled suit).
+    // Showing 3-card spade support (1♠) is also valid. Accept both.
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♣", 2: "1♥", 3: "Double", 4: "Pass" }],
+      currentRound: {},
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p1Hand, auction);
+    expect(["1♠", "1NT", "2♣"]).toContain(rec.bid);
+  });
+});
+
+describe("bidding-logic | deal B — 1♥ opening, 1NT response, opener shows 2nd suit", () => {
+  // P1: 14 HCP, 3♠5♥4♦1♣ → opens 1♥ (5 hearts, TP=15)
+  // P3:  8 HCP, 3♠2♥4♦4♣ → responds 1NT (no major, minimum)
+  // Bug A fix: after 1NT, opener with 5♥+4♦ should bid 2♦ (not Pass)
+  const p1Hand = mkHand(14, 3, 5, 4, 1);
+  const p3Hand = mkHand(8, 3, 2, 4, 4);
+
+  it("P1 with 5 hearts, 14 HCP → opens 1♥", () => {
+    const rec = getRecommendation(p1Hand, ctx("opening"));
+    expect(rec.bid).toBe("1♥");
+  });
+
+  it("P3 with no 4-card major, 8 HCP, after 1♥ → responds 1NT", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♥", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3Hand, auction);
+    expect(rec.bid).toBe("1NT");
+  });
+
+  it("P1 after 1♥–1NT with 5♥+4♦ (Bug A fix) → bids 2♦ to show second suit", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♥", 2: "Pass", 3: "1NT", 4: "Pass" }],
+      currentRound: {},
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p1Hand, auction);
+    // Bug A fix: opener with 5♥+4♦ should show diamond suit after 1NT response
+    expect(rec.bid).toBe("2♦");
+  });
+});
+
+describe("bidding-logic | deal C — 1NT opening, Jacoby transfer to spades", () => {
+  // P1: 16 HCP, 4♠3♥3♦3♣ → opens 1NT (balanced, 15-17 HCP)
+  // P3:  9 HCP, 6♠2♥3♦2♣ → 2♥ (Jacoby transfer to spades), then 3♠ (invitational)
+  // P1 with 16 HCP + 4 spades = max 1NT → accepts with 4♠
+  const p1Hand = mkHand(16, 4, 3, 3, 3);
+  const p3Hand = mkHand(9, 6, 2, 3, 2);
+
+  it("P1 with balanced 16 HCP → opens 1NT", () => {
+    const rec = getRecommendation(p1Hand, ctx("opening"));
+    expect(rec.bid).toBe("1NT");
+  });
+
+  it("P3 with 6 spades, 9 HCP, after 1NT → bids 2♥ (Jacoby transfer to spades)", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1NT", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3Hand, auction);
+    expect(rec.bid).toBe("2♥");
+    expect(rec.category.toLowerCase()).toContain("transfer");
+  });
+
+  it("P1 after 2♥ transfer → completes with 2♠", () => {
+    // Round 1 is complete; P1 needs to rebid in round 2
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2♥", 4: "Pass" }],
+      currentRound: {},
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p1Hand, auction);
+    expect(rec.bid).toBe("2♠");
+  });
+
+  it("P3 after 1NT–2♥–2♠, 6 spades + 9 HCP → bids 3♠ (invitational with 6-card major)", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2♥", 4: "Pass" }],
+      currentRound: { 1: "2♠", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3Hand, auction);
+    // 6 spades + 8-9 HCP → invitational 3♠ (or game directly with 10+ HCP)
+    expect(["3♠", "4♠"]).toContain(rec.bid);
+  });
+
+  it("P1 after 3♠ invitation with 4 spades and max NT (16 HCP) → accepts 4♠", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [
+        { 1: "1NT", 2: "Pass", 3: "2♥", 4: "Pass" },
+        { 1: "2♠", 2: "Pass", 3: "3♠", 4: "Pass" },
+      ],
+      currentRound: {},
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p1Hand, auction);
+    expect(rec.bid).toBe("4♠");
+  });
+});
+
+describe("bidding-logic | deal D — 2♥ weak two, 14 HCP game response", () => {
+  // P1:  8 HCP, 1♠6♥3♦3♣ → opens 2♥ (6 hearts, 5-10 HCP, weak two)
+  // P3: 14 HCP, 4♠3♥3♦3♣ → responds to 2♥ (game raise per bug-fix)
+  const p1Hand = mkHand(8, 1, 6, 3, 3);
+  const p3Hand = mkHand(14, 4, 3, 3, 3);
+
+  it("P1 with 6 hearts, 8 HCP → opens 2♥ (weak two)", () => {
+    const rec = getRecommendation(p1Hand, ctx("opening"));
+    expect(rec.bid).toBe("2♥");
+  });
+
+  it("P3 with 14 HCP and 3-card heart support after 2♥ → game raise 4♥ (Bug D fix)", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "2♥", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3Hand, auction);
+    // Bug D fix: 13-14 HCP with 3+ support → game raise, not pre-emptive 3♥
+    expect(["4♥", "3NT"]).toContain(rec.bid);
+  });
+});
+
+describe("bidding-logic | deal E — 1♦ opening, 1♥ response, opener bids 1♠", () => {
+  // P1: 14 HCP, 4♠2♥5♦2♣ → opens 1♦ (5 diamonds, TP=15)
+  // P3: 10 HCP, 3♠5♥3♦2♣ → responds 1♥ (5 hearts, forcing)
+  // Bug B fix: after 1♦–1♥, opener with 4♠ and TP<16 should bid 1♠ (not require 16+ TP)
+  const p1Hand = mkHand(14, 4, 2, 5, 2);
+  const p3Hand = mkHand(10, 3, 5, 3, 2);
+
+  it("P1 with 5 diamonds, 14 HCP → opens 1♦", () => {
+    const rec = getRecommendation(p1Hand, ctx("opening"));
+    expect(rec.bid).toBe("1♦");
+  });
+
+  it("P3 with 5 hearts, 10 HCP, after 1♦ → responds 1♥", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♦", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3Hand, auction);
+    expect(rec.bid).toBe("1♥");
+  });
+
+  it("P1 after 1♦–1♥, has 4 spades and TP=15 (Bug B fix) → bids 1♠ (not 2♦)", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♦", 2: "Pass", 3: "1♥", 4: "Pass" }],
+      currentRound: {},
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p1Hand, auction);
+    // Bug B fix: should bid 1♠ to show 4-card spades at 1-level, not require reverse strength
+    expect(rec.bid).toBe("1♠");
+  });
+});
+
+describe("bidding-logic | deal F — 1♠ opening, Jacoby 2NT, singleton diamond response", () => {
+  // P1: 15 HCP, 5♠4♥1♦3♣ → opens 1♠ (5 spades, singleton diamond, TP=16)
+  // P3: 13 HCP, 4♠3♥3♦3♣ → Jacoby 2NT (4+ spades, 13+ HCP, game-forcing)
+  const p1Hand = mkHand(15, 5, 4, 1, 3);
+  const p3Hand = mkHand(13, 4, 3, 3, 3);
+
+  it("P1 with 5 spades, 15 HCP → opens 1♠", () => {
+    const rec = getRecommendation(p1Hand, ctx("opening"));
+    expect(rec.bid).toBe("1♠");
+  });
+
+  it("P3 with 4 spades, 13 HCP, after 1♠ → Jacoby 2NT", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♠", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3Hand, auction);
+    expect(rec.bid).toBe("2NT");
+    expect(rec.category.toLowerCase()).toContain("jacoby");
+  });
+
+  it("P1 after Jacoby 2NT — singleton diamond → bids 3♦ (showing shortness)", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♠", 2: "Pass", 3: "2NT", 4: "Pass" }],
+      currentRound: {},
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p1Hand, auction);
+    // Jacoby 2NT: singleton → bid 3♦ to show diamond shortness
+    expect(rec.bid).toBe("3♦");
+    expect(rec.category.toLowerCase()).toContain("jacoby");
+  });
+});
+
+describe("bidding-logic | deal G — 1♣ opening, 2NT natural game-force, 3NT accept", () => {
+  // P1: 13 HCP, 3♠2♥3♦5♣ → opens 1♣ (5 clubs, 14 TP; 13 HCP < 15 → NOT 1NT)
+  // P3: 14 HCP, 3♠3♥3♦4♣ → responds 2NT (natural balanced, 13-15 HCP; no 4-card major)
+  const p1Hand = mkHand(13, 3, 2, 3, 5);
+  const p3Hand = mkHand(14, 3, 3, 3, 4);
+
+  it("P1 with 5 clubs, 13 HCP → opens 1♣ (not 1NT — below 15 HCP threshold)", () => {
+    const rec = getRecommendation(p1Hand, ctx("opening"));
+    expect(rec.bid).toBe("1♣");
+  });
+
+  it("P3 with balanced 14 HCP, no 4-card major, after 1♣ → bids 2NT (13-15 HCP natural)", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♣", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3Hand, auction);
+    expect(rec.bid).toBe("2NT");
+  });
+
+  it("P1 after 1♣–2NT with no 4-card major and 5 clubs → accepts game with 3NT", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♣", 2: "Pass", 3: "2NT", 4: "Pass" }],
+      currentRound: {},
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p1Hand, auction);
+    // No 4-card major (3♠, 2♥), no 6-card minor → accept game with 3NT
+    expect(rec.bid).toBe("3NT");
+  });
+});
+
+describe("bidding-logic | deal H — 1♥ opening, limit raise 3♥, opener accepts", () => {
+  // P1: 14 HCP, 2♠5♥4♦2♣ → opens 1♥ (unbalanced 5-4-2-2 → NOT 1NT, TP=15)
+  // P3: 11 HCP, 2♠4♥4♦3♣ → limit raise 3♥ (4 hearts, 10-12 HCP)
+  const p1Hand = mkHand(14, 2, 5, 4, 2);
+  const p3Hand = mkHand(11, 2, 4, 4, 3);
+
+  it("P1 with 5 hearts, 14 HCP, unbalanced → opens 1♥ (not 1NT)", () => {
+    const rec = getRecommendation(p1Hand, ctx("opening"));
+    expect(rec.bid).toBe("1♥");
+  });
+
+  it("P3 with 4 hearts, 11 HCP, after 1♥ → limit raise 3♥", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♥", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3Hand, auction);
+    expect(rec.bid).toBe("3♥");
+  });
+
+  it("P1 after 3♥ limit raise, 15 TP → accepts invitation with 4♥", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♥", 2: "Pass", 3: "3♥", 4: "Pass" }],
+      currentRound: {},
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p1Hand, auction);
+    expect(rec.bid).toBe("4♥");
+  });
+});
+
+describe("bidding-logic | deal I — isInvitational HCP fix (9 HCP → 2♥, not 3♥)", () => {
+  // P1: 13 HCP, 4♠3♥5♦1♣ → opens 1♦ (5 diamonds, TP=14)
+  // P3:  9 HCP, 3♠5♥2♦3♣ → responds 1♥ (5 hearts, 6+ HCP, forcing)
+  // After P1 rebids 2♦, P3 with 9 HCP should rebid 2♥ (minimum), NOT 3♥ (invitational)
+  const p1Hand = mkHand(13, 4, 3, 5, 1);
+  const p3Hand = mkHand(9, 3, 5, 2, 3);
+
+  it("P1 with 5 diamonds, 13 HCP → opens 1♦", () => {
+    const rec = getRecommendation(p1Hand, ctx("opening"));
+    expect(rec.bid).toBe("1♦");
+  });
+
+  it("P3 with 5 hearts, 9 HCP, after 1♦ → responds 1♥", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♦", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3Hand, auction);
+    expect(rec.bid).toBe("1♥");
+  });
+
+  it("P3 after 1♦–1♥–2♦, has 9 HCP + 1 length = TP 10 (isInvitational HCP fix) → bids 2♥ minimum", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "1♦", 2: "Pass", 3: "1♥", 4: "Pass" }],
+      currentRound: { 1: "2♦", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3Hand, auction);
+    // isInvitational now uses hand.hcp >= 10 (was tp >= 10).
+    // 9 HCP < 10 → simple rebid 2♥ (not invitational jump 3♥)
+    expect(rec.bid).toBe("2♥");
+  });
+
+  it("P3 with 10 HCP, 5 hearts after 1♦–1♥–2♦ → bids 3♥ (invitational)", () => {
+    // Contrast: 10 HCP should still trigger the invitational 3♥
+    const p3HandInv = mkHand(10, 3, 5, 2, 3);
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "1♦", 2: "Pass", 3: "1♥", 4: "Pass" }],
+      currentRound: { 1: "2♦", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3HandInv, auction);
+    expect(rec.bid).toBe("3♥");
+    expect(rec.category).toContain("Invitational");
+  });
+});
+
+describe("bidding-logic | deal J — 1♠ opening, Jacoby 2NT slam exploration", () => {
+  // P1: 17 HCP, 5♠4♥2♦2♣ → opens 1♠ (unbalanced 5-4-2-2 → NOT 1NT, TP=18)
+  // P3: 14 HCP, 4♠3♥3♦3♣ → Jacoby 2NT (4+ spades, 14 HCP, game-forcing)
+  const p1Hand = mkHand(17, 5, 4, 2, 2);
+  const p3Hand = mkHand(14, 4, 3, 3, 3);
+
+  it("P1 with 5 spades, 17 HCP, unbalanced → opens 1♠ (not 1NT)", () => {
+    const rec = getRecommendation(p1Hand, ctx("opening"));
+    expect(rec.bid).toBe("1♠");
+  });
+
+  it("P3 with 4 spades, 14 HCP, after 1♠ → Jacoby 2NT", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♠", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3Hand, auction);
+    expect(rec.bid).toBe("2NT");
+    expect(rec.category.toLowerCase()).toContain("jacoby");
+  });
+
+  it("P1 after Jacoby 2NT, 17 HCP (TP=18), no shortness, no side suit → 3♠ (slam interest)", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♠", 2: "Pass", 3: "2NT", 4: "Pass" }],
+      currentRound: {},
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p1Hand, auction);
+    // Jacoby 2NT: 16+ TP and no shortness → bid 3♠ showing slam interest
+    expect(rec.bid).toBe("3♠");
+    expect(rec.category.toLowerCase()).toContain("slam interest");
+  });
+
+  it("P3 after 3♠ slam interest with 14 HCP → evaluates (4♠, 4NT, or Pass are valid)", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "1♠", 2: "Pass", 3: "2NT", 4: "Pass" }],
+      currentRound: { 1: "3♠", 2: "Pass" },
+    };
+    const auction = deriveSituation(state, "none");
+    const rec = getRecommendation(p3Hand, auction);
+    // Combined 31 HCP (14+17): marginal for slam. 4♠ (game) or 4NT (Blackwood) or Pass are valid.
+    expect(["4♠", "4NT", "Pass"]).toContain(rec.bid);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 3 Consecutive Error-Free Games (Clean Deal Validation K, L, M)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("bidding-logic | clean game K — balanced NT game, Stayman + 4-4 major", () => {
+  // P1: 16 HCP, 4♠3♥4♦2♣ → opens 1NT (balanced 15-17)
+  // P3: 11 HCP, 4♠4♥2♦3♣ → Stayman, finds 4-4 spade fit → 4♠
+  const p1Hand = mkHand(16, 4, 3, 4, 2);
+  const p3Hand = mkHand(11, 4, 4, 2, 3);
+
+  it("P1 balanced 16 HCP → 1NT", () => {
+    expect(getRecommendation(p1Hand, ctx("opening")).bid).toBe("1NT");
+  });
+
+  it("P3 with 4-4 majors, 11 HCP, after 1NT → Stayman 2♣", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1NT", 2: "Pass" },
+    };
+    const rec = getRecommendation(p3Hand, deriveSituation(state, "none"));
+    expect(rec.bid).toBe("2♣");
+  });
+
+  it("P1 with 4 spades after Stayman → bids 2♠ or 2♥", () => {
+    // Use completedRounds for the completed first round
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2♣", 4: "Pass" }],
+      currentRound: {},
+    };
+    const rec = getRecommendation(p1Hand, deriveSituation(state, "none"));
+    // P1 has 4♠ and 3♥; Stayman response should be 2♠ (or 2♥ if hearts were 4+)
+    expect(["2♠", "2♥"]).toContain(rec.bid);
+  });
+
+  it("P3 with 4 spades after partner bids 2♠ → bids 4♠ (game)", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2♣", 4: "Pass" }],
+      currentRound: { 1: "2♠", 2: "Pass" },
+    };
+    const rec = getRecommendation(p3Hand, deriveSituation(state, "none"));
+    expect(rec.bid).toBe("4♠");
+  });
+});
+
+describe("bidding-logic | clean game L — 1♠ opening, simple raise, pass", () => {
+  // P1: 13 HCP, 5♠3♥3♦2♣ → opens 1♠ (5 spades, TP=14)
+  // P3:  9 HCP, 3♠4♥3♦3♣ → simple raise 2♠ (3-card support, 6-9 HCP)
+  const p1Hand = mkHand(13, 5, 3, 3, 2);
+  const p3Hand = mkHand(9, 3, 4, 3, 3);
+
+  it("P1 with 5 spades, 13 HCP → opens 1♠", () => {
+    expect(getRecommendation(p1Hand, ctx("opening")).bid).toBe("1♠");
+  });
+
+  it("P3 with 3 spades, 9 HCP, after 1♠ → simple raise 2♠", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♠", 2: "Pass" },
+    };
+    const rec = getRecommendation(p3Hand, deriveSituation(state, "none"));
+    expect(rec.bid).toBe("2♠");
+  });
+
+  it("P1 after 2♠ simple raise, 13 HCP (TP=14) → Pass (below threshold for game)", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♠", 2: "Pass", 3: "2♠", 4: "Pass" }],
+      currentRound: {},
+    };
+    const rec = getRecommendation(p1Hand, deriveSituation(state, "none"));
+    // With only 14 TP and simple raise (6-9 from partner), pass — game needs ~25 combined
+    expect(rec.bid).toBe("Pass");
+  });
+});
+
+describe("bidding-logic | clean game M — competitive hand, overcall, game try", () => {
+  // P1: 14 HCP, 3♠5♥3♦2♣ → opens 1♥ (5 hearts, TP=15)
+  // P2:  9 HCP, 5♠3♥2♦3♣ → overcalls 1♠ (5 spades)
+  // P3: 12 HCP, 2♠4♥4♦3♣ → raises 3♥ (competitive, 4 hearts)
+  // P4 passes; P1 accepts with 4♥
+  const p1Hand = mkHand(14, 3, 5, 3, 2);
+  const p2Hand = mkHand(9, 5, 3, 2, 3);
+  const p3Hand = mkHand(12, 2, 4, 4, 3);
+
+  it("P1 with 5 hearts, 14 HCP → opens 1♥", () => {
+    expect(getRecommendation(p1Hand, ctx("opening")).bid).toBe("1♥");
+  });
+
+  it("P2 with 5 spades, 9 HCP, after 1♥ → overcalls 1♠", () => {
+    const state: AuctionState = {
+      myPosition: 2,
+      completedRounds: [],
+      currentRound: { 1: "1♥" },
+    };
+    const rec = getRecommendation(p2Hand, deriveSituation(state, "none"));
+    expect(rec.bid).toBe("1♠");
+  });
+
+  it("P3 with 4 hearts, 12 HCP, after 1♥–1♠ → competitive raise or limit raise", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♥", 2: "1♠" },
+    };
+    const rec = getRecommendation(p3Hand, deriveSituation(state, "none"));
+    // With 4 hearts and 12 HCP in competition: 2♥, 3♥, or Double are all valid
+    expect(["2♥", "3♥", "Double"]).toContain(rec.bid);
+  });
+
+  it("P1 after 3♥ limit raise in competition, 15 TP → accepts 4♥", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♥", 2: "1♠", 3: "3♥", 4: "Pass" }],
+      currentRound: {},
+    };
+    const rec = getRecommendation(p1Hand, deriveSituation(state, "none"));
+    // P1 with 15 TP: accepts the limit raise → 4♥
+    expect(rec.bid).toBe("4♥");
   });
 });

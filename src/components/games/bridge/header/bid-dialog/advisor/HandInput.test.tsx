@@ -213,4 +213,96 @@ describe("games | bridge | HandInput", () => {
       "Diamonds count",
     ]);
   });
+
+  it("does NOT show aces input by default", () => {
+    renderHandInput();
+    expect(screen.queryByLabelText("Aces count")).not.toBeInTheDocument();
+  });
+
+  it("does NOT show kings input by default", () => {
+    renderHandInput();
+    expect(screen.queryByLabelText("Kings count")).not.toBeInTheDocument();
+  });
+
+  it("shows aces input when showAcesInput=true", () => {
+    render(
+      <HandInput hand={defaultHand} onChange={vi.fn()} showAcesInput={true} />,
+    );
+    expect(screen.getByLabelText("Aces count")).toBeInTheDocument();
+    expect(
+      screen.getByText(/Partner bid 4NT \(Blackwood\)/),
+    ).toBeInTheDocument();
+  });
+
+  it("shows kings input when showKingsInput=true", () => {
+    render(
+      <HandInput hand={defaultHand} onChange={vi.fn()} showKingsInput={true} />,
+    );
+    expect(screen.getByLabelText("Kings count")).toBeInTheDocument();
+    expect(screen.getByText(/Partner bid 5NT/)).toBeInTheDocument();
+  });
+
+  it("calls onChange with aces value when aces input changes", () => {
+    const onChange = vi.fn();
+    render(
+      <HandInput hand={defaultHand} onChange={onChange} showAcesInput={true} />,
+    );
+    const acesInput = screen.getByLabelText("Aces count");
+    fireEvent.change(acesInput, { target: { value: "2" } });
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ aces: 2 }));
+  });
+
+  it("calls onChange with kings value when kings input changes", () => {
+    const onChange = vi.fn();
+    render(
+      <HandInput
+        hand={defaultHand}
+        onChange={onChange}
+        showKingsInput={true}
+      />,
+    );
+    const kingsInput = screen.getByLabelText("Kings count");
+    fireEvent.change(kingsInput, { target: { value: "1" } });
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({ kings: 1 }),
+    );
+  });
+
+  it("clamps aces input to max 4", () => {
+    const onChange = vi.fn();
+    render(
+      <HandInput hand={defaultHand} onChange={onChange} showAcesInput={true} />,
+    );
+    const acesInput = screen.getByLabelText("Aces count");
+    fireEvent.change(acesInput, { target: { value: "6" } });
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ aces: 4 }));
+  });
+
+  it("clamps kings input to min 0", () => {
+    const onChange = vi.fn();
+    render(
+      <HandInput
+        hand={defaultHand}
+        onChange={onChange}
+        showKingsInput={true}
+      />,
+    );
+    const kingsInput = screen.getByLabelText("Kings count");
+    fireEvent.change(kingsInput, { target: { value: "-2" } });
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({ kings: 0 }),
+    );
+  });
+
+  it("displays existing aces value from hand prop", () => {
+    const handWithAces: Hand = {
+      ...defaultHand,
+      aces: 2,
+    };
+    render(
+      <HandInput hand={handWithAces} onChange={vi.fn()} showAcesInput={true} />,
+    );
+    const acesInput = screen.getByLabelText("Aces count") as HTMLInputElement;
+    expect(acesInput.value).toBe("2");
+  });
 });
