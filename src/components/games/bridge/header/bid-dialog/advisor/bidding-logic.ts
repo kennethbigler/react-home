@@ -7133,7 +7133,13 @@ function deriveSituationCore(
 
     // 1NT (or 2NT) opener continuing after a Stayman/Transfer response they already made.
     // e.g. 1NT → 2♣(Stayman) → opener bid 2♥ → partner bid 2NT → opener needs to act.
-    if (myFirstBid?.endsWith("NT") && myBids.length >= 2) {
+    // Exclude Blackwood / Gerber / slam-ask NT bids (4NT, 5NT) — they are NOT NT openings.
+    if (
+      myFirstBid?.endsWith("NT") &&
+      myFirstBid !== "4NT" &&
+      myFirstBid !== "5NT" &&
+      myBids.length >= 2
+    ) {
       // Detect whether the opener's second bid was a transfer completion.
       // Find what partner bid in the round where opener made their second bid — if it
       // was a transfer bid (2♦ → hearts, 2♥ → spades) then flag it so the handler
