@@ -127,9 +127,10 @@ export default function BidRecommendation({
             mb: 2,
             bgcolor: "warning.light",
             borderColor: "warning.main",
+            color: "black",
           }}
         >
-          <Typography variant="body2" role="note">
+          <Typography variant="body2" role="note" sx={{ color: "black" }}>
             ⚠️ {note}
           </Typography>
         </Paper>

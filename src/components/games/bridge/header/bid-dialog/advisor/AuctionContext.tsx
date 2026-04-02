@@ -67,6 +67,30 @@ function lastSignificantBid(
   return last;
 }
 
+/** Like lastSignificantBid but skips Double/Redouble — returns only suit/NT bids.
+ *  Used to compute the floor for valid suit bids after a Double or Redouble. */
+function lastSuitBid(
+  completedRounds: BidRound[],
+  currentRound: BidRound,
+  upToPositionExclusive: BiddingPosition,
+  slotPositions: BiddingPosition[],
+): string | undefined {
+  let last: string | undefined;
+  for (const round of completedRounds) {
+    for (const pos of [1, 2, 3, 4] as BiddingPosition[]) {
+      const b = round[pos];
+      if (b && b !== "Pass" && b !== "Double" && b !== "Redouble") last = b;
+    }
+  }
+  for (const pos of slotPositions) {
+    if (pos >= upToPositionExclusive) break;
+    const b = currentRound[pos];
+    if (!b) continue;
+    if (b !== "Pass" && b !== "Double" && b !== "Redouble") last = b;
+  }
+  return last;
+}
+
 // ─── Relationship label helpers ───────────────────────────────────────────────
 
 type Relationship = "partner" | "lho" | "rho";
@@ -375,6 +399,23 @@ export default function AuctionContextInput({
     return undefined;
   })();
 
+  // ── Last suit/NT bid before my turn (floor for suit bids after Double/Redouble) ─
+  const lastSuitBidBeforeNextRound = (() => {
+    let last: string | undefined;
+    for (const pos of positionsBefore) {
+      const b = currentRound[pos];
+      if (b && b !== "Pass" && b !== "Double" && b !== "Redouble") last = b;
+    }
+    if (last) return last;
+    for (let i = completedRounds.length - 1; i >= 0; i--) {
+      for (const pos of [4, 3, 2, 1] as BiddingPosition[]) {
+        const b = completedRounds[i][pos];
+        if (b && b !== "Pass" && b !== "Double" && b !== "Redouble") return b;
+      }
+    }
+    return undefined;
+  })();
+
   // ── "My bid" value and recommendation helper ──────────────────────────────────
   const myBidCurrent = nextRoundBids[myPosition] ?? recommendedBid ?? "Pass";
   const showUseRecommendation =
@@ -504,13 +545,20 @@ export default function AuctionContextInput({
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
               {positionsBefore.map((pos, slotIdx) => {
                 const rel = getRelationship(pos, myPosition);
+                const priorSlots = positionsBefore.slice(0, slotIdx);
                 const lastBid = lastSignificantBid(
                   completedRounds,
                   currentRound,
                   pos,
-                  positionsBefore.slice(0, slotIdx),
+                  priorSlots,
                 );
-                const options = getValidBidsAfter(lastBid);
+                const lastSuit = lastSuitBid(
+                  completedRounds,
+                  currentRound,
+                  pos,
+                  priorSlots,
+                );
+                const options = getValidBidsAfter(lastBid, lastSuit);
                 const value = currentRound[pos] ?? "Pass";
                 const slotLabel = getRelationshipLabel(pos, myPosition);
 
@@ -559,7 +607,10 @@ export default function AuctionContextInput({
                 slotLabel="My bid"
                 relationship="me"
                 value={myBidCurrent}
-                options={getValidBidsAfter(lastBidBeforeNextRound)}
+                options={getValidBidsAfter(
+                  lastBidBeforeNextRound,
+                  lastSuitBidBeforeNextRound,
+                )}
                 onChange={(val) =>
                   setNextRoundBids((prev) => ({ ...prev, [myPosition]: val }))
                 }
@@ -597,7 +648,14 @@ export default function AuctionContextInput({
                 lastSignificant !== "Pass"
                   ? lastSignificant
                   : lastBidBeforeNextRound;
-              const opts = getValidBidsAfter(effectiveLast);
+              const lastSignificantSuit = [...prevBids]
+                .reverse()
+                .find(
+                  (b) => b !== "Pass" && b !== "Double" && b !== "Redouble",
+                );
+              const effectiveLastSuit =
+                lastSignificantSuit ?? lastSuitBidBeforeNextRound;
+              const opts = getValidBidsAfter(effectiveLast, effectiveLastSuit);
               const val = nextRoundBids[pos] ?? "Pass";
               const rel = getRelationship(pos, myPosition);
               const label = getRelationshipLabel(pos, myPosition);

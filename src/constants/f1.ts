@@ -39,190 +39,6 @@ const pointSort = (a: ChartEntry, b: ChartEntry) =>
 const standingSort = (a: ChartEntry, b: ChartEntry) =>
   (b.data[b.data.length - 1] || 0) - (a.data[a.data.length - 1] || 0);
 
-// --------------------------------------------------     Constructor Data     -------------------------------------------------- //
-interface Constructor {
-  name: string;
-  color: string;
-  points: (number | null)[];
-  standings: (number | null)[];
-  thisYear?: number[];
-}
-
-// Audi History
-const sauberPoints = [48];
-const sauberStandings = [8];
-const alphaRomeoPoints = [...sauberPoints, 57, 8, 13, 55, 16];
-const alphaRomeoStandings = [...sauberStandings, 8, 8, 9, 6, 9];
-const kickSauberPoints = [...alphaRomeoPoints, 4, 70];
-const kickSauberStandings = [...alphaRomeoStandings, 10, 9];
-// Aston Martin History
-const forceIndiaPoints = [52];
-const forceIndiaStandings = [7];
-const racingPointPoints = [...forceIndiaPoints, 73, 195];
-const racingPointStandings = [...forceIndiaStandings, 7, 4];
-// Racing Bulls History
-const toroRossoPoints = [33, 85];
-const toroRossoStandings = [9, 6];
-const alphaTauriPoints = [...toroRossoPoints, 107, 142, 35, 25];
-const alphaTauriStandings = [...toroRossoStandings, 7, 6, 9, 8];
-// Alpine History
-const renaultPoints = [122, 91, 181];
-const renaultStandings = [4, 5, 5];
-
-export const constructors: Constructor[] = [
-  {
-    name: "McLaren",
-    color: MCLAREN_HEX,
-    points: [62, 145, 202, 275, 159, 302, 666, 833, 46],
-    standings: [6, 4, 3, 4, 5, 4, 1, 1, 3],
-    thisYear: [0, 10, 18, 46],
-  },
-  {
-    name: "Mercedes",
-    color: MERCEDES_HEX,
-    points: [655, 739, 573, 613.5, 515, 409, 468, 469, 135],
-    standings: [1, 1, 1, 1, 3, 2, 4, 2, 1],
-    thisYear: [0, 43, 98, 135],
-  },
-  {
-    name: "Red Bull Racing",
-    color: RED_BULL_HEX,
-    points: [419, 417, 319, 585.5, 759, 860, 589, 451, 16],
-    standings: [3, 3, 2, 2, 1, 1, 3, 3, 6],
-    thisYear: [0, 8, 12, 16],
-  },
-  {
-    name: "Ferrari",
-    color: FERRARI_HEX,
-    points: [571, 504, 131, 323.5, 554, 406, 652, 398, 90],
-    standings: [2, 2, 6, 3, 2, 3, 2, 4, 2],
-    thisYear: [0, 27, 67, 90],
-  },
-  {
-    name: "Williams",
-    color: WILLIAMS_HEX,
-    points: [7, 1, 0, 23, 8, 28, 17, 137, 2],
-    standings: [10, 10, 10, 8, 10, 7, 9, 5, 9],
-    thisYear: [0, 0, 2, 2],
-  },
-  {
-    name: "Racing Bulls",
-    color: RB_HEX,
-    points: [...alphaTauriPoints, 46, 92, 14],
-    standings: [...alphaTauriStandings, 8, 6, 7],
-    thisYear: [0, 4, 12, 14],
-  },
-  {
-    name: "Aston Martin",
-    color: ASTON_HEX,
-    points: [...racingPointPoints, 77, 55, 280, 94, 89, 0],
-    standings: [...racingPointStandings, 7, 7, 5, 5, 7, 11],
-    thisYear: [0, 0, 0, 0],
-  },
-  {
-    name: "Haas",
-    color: HAAS_HEX,
-    points: [93, 28, 3, 0, 37, 12, 58, 79, 18],
-    standings: [5, 9, 9, 10, 8, 10, 7, 8, 4],
-    thisYear: [0, 6, 17, 18],
-  },
-  {
-    name: "Audi",
-    color: AUDI_HEX,
-    points: [...kickSauberPoints, 2],
-    standings: [...kickSauberStandings, 8],
-    thisYear: [0, 2, 2, 2],
-  },
-  {
-    name: "Alpine",
-    color: ALPINE_HEX,
-    points: [...renaultPoints, 155, 173, 120, 65, 22, 16],
-    standings: [...renaultStandings, 5, 4, 6, 6, 10, 5],
-    thisYear: [0, 1, 10, 16],
-  },
-  {
-    name: "Cadillac",
-    color: CADILLAC_HEX,
-    points: [null, null, null, null, null, null, null, null, 0],
-    standings: [null, null, null, null, null, null, null, null, 10],
-    thisYear: [0, 0, 0, 0],
-  },
-  // ----------     3nd Replacement     ---------- //
-  {
-    name: "Kick Sauber",
-    color: K_SAUBER_HEX,
-    points: kickSauberPoints,
-    standings: kickSauberStandings,
-  },
-  // ----------     2nd Replacement     ---------- //
-  {
-    name: "AlphaTauri",
-    color: AT_HEX,
-    points: alphaTauriPoints,
-    standings: alphaTauriStandings,
-  },
-  {
-    name: "Alfa Romeo",
-    color: AR_HEX,
-    points: alphaRomeoPoints,
-    standings: alphaRomeoStandings,
-  },
-  {
-    name: "Racing Point",
-    color: RP_HEX,
-    points: racingPointPoints,
-    standings: racingPointStandings,
-  },
-  // ----------     1st Replacement     ---------- //
-  {
-    name: "Renault",
-    color: RENAULT_HEX,
-    points: renaultPoints,
-    standings: renaultStandings,
-  },
-  {
-    name: "Toro Rosso",
-    color: TR_HEX,
-    points: toroRossoPoints,
-    standings: toroRossoStandings,
-  },
-  {
-    name: "Force India",
-    color: FI_HEX,
-    points: forceIndiaPoints,
-    standings: forceIndiaStandings,
-  },
-  {
-    name: "Sauber",
-    color: SAUBER_HEX,
-    points: sauberPoints,
-    standings: sauberStandings,
-  },
-];
-
-const constructorPointsData: ChartEntry[] = [];
-const constructorStandingsData: ChartEntry[] = [];
-const constructorCurrentData: ChartEntry[] = [];
-
-constructors.forEach((constructor) => {
-  const { name, color, points, standings, thisYear } = constructor;
-  constructorPointsData.push({ data: points, name, color });
-  constructorStandingsData.push({ data: standings, name, color });
-  if (thisYear) {
-    constructorCurrentData.push({ data: thisYear, name, color });
-  }
-});
-
-constructorPointsData.sort(pointSort);
-constructorStandingsData.sort(standingSort);
-constructorCurrentData.sort(pointSort);
-
-export {
-  constructorPointsData,
-  constructorStandingsData,
-  constructorCurrentData,
-};
-
 // --------------------------------------------------     Driver Data     -------------------------------------------------- //
 interface Driver {
   name: string;
@@ -533,6 +349,326 @@ driverStandingsData.sort(standingSort);
 driverCurrentData.sort(pointSort);
 
 export { driverPointsData, driverStandingsData, driverCurrentData };
+
+// --------------------------------------------------     Constructor Data     -------------------------------------------------- //
+interface Constructor {
+  name: string;
+  color: string;
+  points: (number | null)[];
+  standings: (number | null)[];
+  thisYear?: number[];
+}
+
+// Audi History
+const sauberPoints = [48];
+const sauberStandings = [8];
+const alphaRomeoPoints = [...sauberPoints, 57, 8, 13, 55, 16];
+const alphaRomeoStandings = [...sauberStandings, 8, 8, 9, 6, 9];
+const kickSauberPoints = [...alphaRomeoPoints, 4, 70];
+const kickSauberStandings = [...alphaRomeoStandings, 10, 9];
+// Aston Martin History
+const forceIndiaPoints = [52];
+const forceIndiaStandings = [7];
+const racingPointPoints = [...forceIndiaPoints, 73, 195];
+const racingPointStandings = [...forceIndiaStandings, 7, 4];
+// Racing Bulls History
+const toroRossoPoints = [33, 85];
+const toroRossoStandings = [9, 6];
+const alphaTauriPoints = [...toroRossoPoints, 107, 142, 35, 25];
+const alphaTauriStandings = [...toroRossoStandings, 7, 6, 9, 8];
+// Alpine History
+const renaultPoints = [122, 91, 181];
+const renaultStandings = [4, 5, 5];
+
+// helper function
+const filterDriver = (name: string) =>
+  drivers.filter((driver) => driver.name === name);
+
+// McLaren
+const landoNorris = filterDriver("Lando Norris")[0].thisYear || [];
+const oscarPiastri = filterDriver("Oscar Piastri")[0].thisYear || [];
+// Mercedes
+const georgeRussell = filterDriver("George Russell")[0].thisYear || [];
+const kimiAntonelli = filterDriver("Kimi Antonelli")[0].thisYear || [];
+// Red Bull
+const maxVerstappen = filterDriver("Max Verstappen")[0].thisYear || [];
+const isackHadjar = filterDriver("Isack Hadjar")[0].thisYear || [];
+// Ferrari
+const charlesLeclerc = filterDriver("Charles Leclerc")[0].thisYear || [];
+const lewisHamilton = filterDriver("Lewis Hamilton")[0].thisYear || [];
+// Williams
+const carlosSainz = filterDriver("Carlos Sainz")[0].thisYear || [];
+const alexanderAlbon = filterDriver("Alexander Albon")[0].thisYear || [];
+// Racing Bulls
+const liamLawson = filterDriver("Liam Lawson")[0].thisYear || [];
+const arvidLindblad = filterDriver("Arvid Lindblad")[0].thisYear || [];
+// Aston Martin
+const fernandoAlonso = filterDriver("Fernando Alonso")[0].thisYear || [];
+const lanceStroll = filterDriver("Lance Stroll")[0].thisYear || [];
+// Haas
+const oliverBearman = filterDriver("Oliver Bearman")[0].thisYear || [];
+const estebanOcon = filterDriver("Esteban Ocon")[0].thisYear || [];
+// Audi
+const gabrielBortoleto = filterDriver("Gabriel Bortoleto")[0].thisYear || [];
+const nicoHulkenberg = filterDriver("Nico Hulkenberg")[0].thisYear || [];
+// Alpine
+const pierreGasly = filterDriver("Pierre Gasly")[0].thisYear || [];
+const francoColapinto = filterDriver("Franco Colapinto")[0].thisYear || [];
+// Cadillac
+const valtteriBottas = filterDriver("Valtteri Bottas")[0].thisYear || [];
+const sergioPerez = filterDriver("Sergio Perez")[0].thisYear || [];
+
+const numRaces = landoNorris.length - 1;
+const getTotal = (d1: number[], d2: number[]) =>
+  (d1[numRaces] || 0) + (d2[numRaces] || 0);
+
+export const constructors: Constructor[] = [
+  {
+    name: "McLaren",
+    color: MCLAREN_HEX,
+    points: [
+      62,
+      145,
+      202,
+      275,
+      159,
+      302,
+      666,
+      833,
+      getTotal(landoNorris, oscarPiastri),
+    ],
+    standings: [6, 4, 3, 4, 5, 4, 1, 1, 3],
+    thisYear: landoNorris?.map((points, i) => points + (oscarPiastri[i] || 0)),
+  },
+  {
+    name: "Mercedes",
+    color: MERCEDES_HEX,
+    points: [
+      655,
+      739,
+      573,
+      613.5,
+      515,
+      409,
+      468,
+      469,
+      getTotal(kimiAntonelli, georgeRussell),
+    ],
+    standings: [1, 1, 1, 1, 3, 2, 4, 2, 1],
+    thisYear: kimiAntonelli.map(
+      (points, i) => points + (georgeRussell[i] || 0),
+    ),
+  },
+  {
+    name: "Red Bull Racing",
+    color: RED_BULL_HEX,
+    points: [
+      419,
+      417,
+      319,
+      585.5,
+      759,
+      860,
+      589,
+      451,
+      getTotal(maxVerstappen, isackHadjar),
+    ],
+    standings: [3, 3, 2, 2, 1, 1, 3, 3, 6],
+    thisYear: maxVerstappen.map((points, i) => points + (isackHadjar[i] || 0)),
+  },
+  {
+    name: "Ferrari",
+    color: FERRARI_HEX,
+    points: [
+      571,
+      504,
+      131,
+      323.5,
+      554,
+      406,
+      652,
+      398,
+      getTotal(charlesLeclerc, lewisHamilton),
+    ],
+    standings: [2, 2, 6, 3, 2, 3, 2, 4, 2],
+    thisYear: charlesLeclerc.map(
+      (points, i) => points + (lewisHamilton[i] || 0),
+    ),
+  },
+  {
+    name: "Williams",
+    color: WILLIAMS_HEX,
+    points: [
+      7,
+      1,
+      0,
+      23,
+      8,
+      28,
+      17,
+      137,
+      getTotal(carlosSainz, alexanderAlbon),
+    ],
+    standings: [10, 10, 10, 8, 10, 7, 9, 5, 9],
+    thisYear: carlosSainz.map((points, i) => points + (alexanderAlbon[i] || 0)),
+  },
+  {
+    name: "Racing Bulls",
+    color: RB_HEX,
+    points: [...alphaTauriPoints, 46, 92, getTotal(liamLawson, arvidLindblad)],
+    standings: [...alphaTauriStandings, 8, 6, 7],
+    thisYear: liamLawson.map((points, i) => points + (arvidLindblad[i] || 0)),
+  },
+  {
+    name: "Aston Martin",
+    color: ASTON_HEX,
+    points: [
+      ...racingPointPoints,
+      77,
+      55,
+      280,
+      94,
+      89,
+      getTotal(fernandoAlonso, lanceStroll),
+    ],
+    standings: [...racingPointStandings, 7, 7, 5, 5, 7, 11],
+    thisYear: fernandoAlonso.map((points, i) => points + (lanceStroll[i] || 0)),
+  },
+  {
+    name: "Haas",
+    color: HAAS_HEX,
+    points: [
+      93,
+      28,
+      3,
+      0,
+      37,
+      12,
+      58,
+      79,
+      getTotal(oliverBearman, estebanOcon),
+    ],
+    standings: [5, 9, 9, 10, 8, 10, 7, 8, 4],
+    thisYear: oliverBearman.map((points, i) => points + (estebanOcon[i] || 0)),
+  },
+  {
+    name: "Audi",
+    color: AUDI_HEX,
+    points: [...kickSauberPoints, getTotal(gabrielBortoleto, nicoHulkenberg)],
+    standings: [...kickSauberStandings, 8],
+    thisYear: gabrielBortoleto.map(
+      (points, i) => points + (nicoHulkenberg[i] || 0),
+    ),
+  },
+  {
+    name: "Alpine",
+    color: ALPINE_HEX,
+    points: [
+      ...renaultPoints,
+      155,
+      173,
+      120,
+      65,
+      22,
+      getTotal(pierreGasly, francoColapinto),
+    ],
+    standings: [...renaultStandings, 5, 4, 6, 6, 10, 5],
+    thisYear: pierreGasly.map(
+      (points, i) => points + (francoColapinto[i] || 0),
+    ),
+  },
+  {
+    name: "Cadillac",
+    color: CADILLAC_HEX,
+    points: [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      getTotal(valtteriBottas, sergioPerez),
+    ],
+    standings: [null, null, null, null, null, null, null, null, 10],
+    thisYear: valtteriBottas.map((points, i) => points + (sergioPerez[i] || 0)),
+  },
+  // ----------     3nd Replacement     ---------- //
+  {
+    name: "Kick Sauber",
+    color: K_SAUBER_HEX,
+    points: kickSauberPoints,
+    standings: kickSauberStandings,
+  },
+  // ----------     2nd Replacement     ---------- //
+  {
+    name: "AlphaTauri",
+    color: AT_HEX,
+    points: alphaTauriPoints,
+    standings: alphaTauriStandings,
+  },
+  {
+    name: "Alfa Romeo",
+    color: AR_HEX,
+    points: alphaRomeoPoints,
+    standings: alphaRomeoStandings,
+  },
+  {
+    name: "Racing Point",
+    color: RP_HEX,
+    points: racingPointPoints,
+    standings: racingPointStandings,
+  },
+  // ----------     1st Replacement     ---------- //
+  {
+    name: "Renault",
+    color: RENAULT_HEX,
+    points: renaultPoints,
+    standings: renaultStandings,
+  },
+  {
+    name: "Toro Rosso",
+    color: TR_HEX,
+    points: toroRossoPoints,
+    standings: toroRossoStandings,
+  },
+  {
+    name: "Force India",
+    color: FI_HEX,
+    points: forceIndiaPoints,
+    standings: forceIndiaStandings,
+  },
+  {
+    name: "Sauber",
+    color: SAUBER_HEX,
+    points: sauberPoints,
+    standings: sauberStandings,
+  },
+];
+
+const constructorPointsData: ChartEntry[] = [];
+const constructorStandingsData: ChartEntry[] = [];
+const constructorCurrentData: ChartEntry[] = [];
+
+constructors.forEach((constructor) => {
+  const { name, color, points, standings, thisYear } = constructor;
+  constructorPointsData.push({ data: points, name, color });
+  constructorStandingsData.push({ data: standings, name, color });
+  if (thisYear) {
+    constructorCurrentData.push({ data: thisYear, name, color });
+  }
+});
+
+constructorPointsData.sort(pointSort);
+constructorStandingsData.sort(standingSort);
+constructorCurrentData.sort(pointSort);
+
+export {
+  constructorPointsData,
+  constructorStandingsData,
+  constructorCurrentData,
+};
 
 // --------------------------------------------------     Contract Data     -------------------------------------------------- //
 export interface ContractData {
