@@ -1,5 +1,7 @@
 import {
   Box,
+  Checkbox,
+  FormControlLabel,
   Grid,
   InputAdornment,
   Slider,
@@ -16,6 +18,12 @@ interface HandInputProps {
   showAcesInput?: boolean;
   /** Show the optional "Kings in hand" field — appears when partner bids 5NT (kings ask). */
   showKingsInput?: boolean;
+  /**
+   * Show the stopper question — appears when the opponent has bid a suit.
+   * Pass the opponent's suit name (e.g. "spades") so we can label it correctly.
+   */
+  showStopperInput?: boolean;
+  opponentSuitLabel?: string;
 }
 
 const SUIT_LABELS: {
@@ -34,6 +42,8 @@ export default function HandInput({
   onChange,
   showAcesInput = false,
   showKingsInput = false,
+  showStopperInput = false,
+  opponentSuitLabel = "the opponent's suit",
 }: HandInputProps) {
   const totalCards = hand.spades + hand.hearts + hand.diamonds + hand.clubs;
   const cardCountError =
@@ -211,6 +221,56 @@ export default function HandInput({
             }
             size="small"
             sx={{ width: 160 }}
+          />
+        </Box>
+      )}
+
+      {/* Stopper question (shown when opponent has bid a suit) */}
+      {showStopperInput && (
+        <Box
+          mb={2}
+          sx={{
+            border: "1px solid",
+            borderColor: "warning.main",
+            borderRadius: 1,
+            p: 1.5,
+          }}
+        >
+          <Typography
+            variant="caption"
+            color="warning.main"
+            display="block"
+            mb={0.5}
+          >
+            Opponent bid {opponentSuitLabel} — do you have a stopper in their suit?
+          </Typography>
+          <Typography variant="caption" color="text.secondary" display="block" mb={1}>
+            A <strong>stopper</strong> is a card (or cards) that can win a trick in the
+            opponent&apos;s suit:{" "}
+            <strong>Ace</strong> (always stops it),{" "}
+            <strong>King + one other card</strong> (Kx),{" "}
+            <strong>Queen + two others</strong> (Qxx), or{" "}
+            <strong>Jack + three others</strong> (Jxxx).
+            Without a stopper, the opponents can run that suit against a NT contract.
+          </Typography>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={hand.hasStopperInOpponentSuit ?? false}
+                indeterminate={hand.hasStopperInOpponentSuit === undefined}
+                onChange={(e) =>
+                  onChange({ ...hand, hasStopperInOpponentSuit: e.target.checked })
+                }
+                inputProps={{ "aria-label": "Has stopper in opponent's suit" }}
+              />
+            }
+            label={
+              hand.hasStopperInOpponentSuit === undefined
+                ? "Unknown — please check your hand"
+                : hand.hasStopperInOpponentSuit
+                  ? "Yes, I have a stopper"
+                  : "No stopper in their suit"
+            }
           />
         </Box>
       )}
