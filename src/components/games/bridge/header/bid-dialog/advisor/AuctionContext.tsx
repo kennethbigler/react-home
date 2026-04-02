@@ -607,7 +607,10 @@ export default function AuctionContextInput({
                 slotLabel="My bid"
                 relationship="me"
                 value={myBidCurrent}
-                options={getValidBidsAfter(lastBidBeforeNextRound, lastSuitBidBeforeNextRound)}
+                options={getValidBidsAfter(
+                  lastBidBeforeNextRound,
+                  lastSuitBidBeforeNextRound,
+                )}
                 onChange={(val) =>
                   setNextRoundBids((prev) => ({ ...prev, [myPosition]: val }))
                 }
@@ -647,7 +650,9 @@ export default function AuctionContextInput({
                   : lastBidBeforeNextRound;
               const lastSignificantSuit = [...prevBids]
                 .reverse()
-                .find((b) => b !== "Pass" && b !== "Double" && b !== "Redouble");
+                .find(
+                  (b) => b !== "Pass" && b !== "Double" && b !== "Redouble",
+                );
               const effectiveLastSuit =
                 lastSignificantSuit ?? lastSuitBidBeforeNextRound;
               const opts = getValidBidsAfter(effectiveLast, effectiveLastSuit);

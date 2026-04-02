@@ -2991,6 +2991,79 @@ describe("bidding-logic | blackwood-kings", () => {
   });
 });
 
+describe("bidding-logic | deriveSituation — coverage for uncovered branches", () => {
+  // Line 7152: wasTransferCompletion = false when mySecondBid is not found in
+  // completedRounds (it's in currentRound instead), so the for-loop exits without
+  // returning and falls through to `return false`.
+  it("opener (pos 1) after Stayman: second bid in currentRound → wasTransferCompletion false", () => {
+    // Pos 1 opened 1NT, pos 3 bid 2♣ Stayman. Now pos 1 bids 2♥ (currentRound).
+    // Partner (pos 3) hasn't replied yet — but we simulate the next call where
+    // pos 1 has bid 1NT + 2♥ and pos 3 bids 3NT. The second bid (2♥) IS in
+    // completedRounds[1] here, but let's construct a case where myBids[1] isn't found:
+    // Use myPosition=1, give myBids = ["1NT", "2♥"] where "2♥" is only in currentRound.
+    const s = deriveSituation({
+      myPosition: 1,
+      completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2♣", 4: "Pass" }],
+      currentRound: { 1: "2♥", 3: "3NT" }, // pos 1's second bid is in currentRound
+    });
+    // stayman-opener-rebid with wasTransferCompletion = false (loop didn't find 2♥ in completedRounds)
+    expect(s.situation).toBe("stayman-opener-rebid");
+    expect(s.wasTransferCompletion).toBe(false);
+  });
+
+  // Line 7192: blackwood-kings sign-off — I responded to partner's 5NT kings ask
+  // with 6♦ (my kings response), and now partner signs off in 6♠.
+  // myLastBid must be the kings response (6♦), and partner's bid is 6♠.
+  it("deriveSituation: I gave kings response 6♦ (myLastBid), partner signs off 6♠ → blackwood-kings", () => {
+    // myPosition=3. Auction: partner opened 1♠, I bid 4NT (Blackwood),
+    // partner replied 5♣ (0/4 aces), I asked kings with 5NT, partner replied 6♦ (kings).
+    // Wait — I need MY last bid to be 6♦. So I responded to partner's 5NT kings ask.
+    // Auction: me=3, partner=1.
+    // Round 1: 1♠(p1), Pass, 4NT(me), Pass
+    // Round 2: 5♣(p1 aces), Pass, 5NT(me kings ask), Pass
+    // Round 3: 6♦(p1? No — p1 asked kings, me responds)
+    // Actually: partner asks kings with 5NT, I respond with 6♦. Then partner signs off 6♠.
+    // So my rounds: 4NT → 5NT(wait, that's the kings ask from partner)
+    // Correct: partner bids 5NT (kings ask), I respond 6♦. myLastBid="6♦". partnerBid="6♠".
+    const s = deriveSituation(
+      mkState({
+        myPosition: 3,
+        completedRounds: [
+          { 1: "1♠", 2: "Pass", 3: "4NT", 4: "Pass" },
+          { 1: "5♣", 2: "Pass", 3: "5NT", 4: "Pass" },
+          // Partner asked kings (5NT was my bid — so I asked; partner then replied 6♦)
+          // Wait, 5NT here is ME asking. Partner replies 6♦.
+          // Then I pass. Partner signs off 6♠ in next round.
+          // But for myLastBid to be 6♦, I need to have BID 6♦ (replied to partner's 5NT ask).
+          // Restructure: partner asks 4NT, I reply 5♣ (aces). Partner asks 5NT, I reply 6♦.
+          { 1: "4NT", 2: "Pass", 3: "5♣", 4: "Pass" },
+          { 1: "5NT", 2: "Pass", 3: "6♦", 4: "Pass" },
+        ],
+        currentRound: { 1: "6♠" },
+      }),
+    );
+    expect(s.situation).toBe("blackwood-kings");
+    expect(s.myPreviousBid).toBe("6♦");
+    expect(s.partnerBid).toBe("6♠");
+  });
+
+  // Line 7478: partner doubled Stayman (1NT-Pass-2♣-Dbl), we respond.
+  // deriveSituation for seat 2 should route to overcalling with partnerBid:"Double".
+  it("deriveSituation: pos 2, 1NT-Pass-2♣-Dbl-2♦-Pass, partner doubled Stayman → overcalling", () => {
+    // Seat 4 doubled 2♣ (our partner from seat 2's view). Seat 1 bid 2♦. Now seat 2 bids.
+    // myPosition=2, partner=4, lho=3, rho=1
+    const s = deriveSituation(
+      mkState({
+        myPosition: 2,
+        completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2♣", 4: "Double" }],
+        currentRound: { 1: "2♦", 3: "Pass" },
+      }),
+    );
+    expect(s.situation).toBe("overcalling");
+    expect(s.partnerBid).toBe("Double");
+  });
+});
+
 describe("bidding-logic | grand-slam-force", () => {
   it("shows GSF bid details and note", () => {
     const rec = getRecommendation(
@@ -6023,18 +6096,12 @@ describe("bidding-logic | partner-passes — comprehensive full-AuctionState val
 describe("Bug Fix Regression Tests", () => {
   // Bug 1: 2♣ response — 7 HCP should bid 2♦ (waiting), not a positive response
   it("BF-1a: respond to 2♣ with 7 HCP → 2♦ (waiting, not positive)", () => {
-    const rec = getRecommendation(
-      mkHand(7, 3, 3, 4, 3),
-      ctx("responding-2c"),
-    );
+    const rec = getRecommendation(mkHand(7, 3, 3, 4, 3), ctx("responding-2c"));
     expect(rec.bid).toBe("2♦");
   });
 
   it("BF-1b: respond to 2♣ with 8 HCP → positive response (2NT balanced)", () => {
-    const rec = getRecommendation(
-      mkHand(8, 3, 3, 4, 3),
-      ctx("responding-2c"),
-    );
+    const rec = getRecommendation(mkHand(8, 3, 3, 4, 3), ctx("responding-2c"));
     expect(rec.bid).toBe("2NT");
   });
 
@@ -6163,7 +6230,10 @@ describe("Bug Fix Regression Tests", () => {
       completedRounds: [{ 1: "1♠", 2: "Pass", 3: "Pass", 4: "Pass" }],
       currentRound: {},
     };
-    const rec = getRecommendation(mkHand(13, 5, 3, 3, 2), deriveSituation(state));
+    const rec = getRecommendation(
+      mkHand(13, 5, 3, 3, 2),
+      deriveSituation(state),
+    );
     expect(rec.bid).toBe("Pass");
     expect(rec.reasoning).not.toContain("doubled");
     expect(rec.reasoning).not.toContain("double");
@@ -6173,7 +6243,10 @@ describe("Bug Fix Regression Tests", () => {
   it("BF-11b: responder bid 2NT, opener passes → Pass with correct reasoning", () => {
     const rec = getRecommendation(
       mkHand(13, 3, 3, 4, 3),
-      ctx("responder-nt-rebid", { myPreviousBid: "2NT", partnerBid: undefined }),
+      ctx("responder-nt-rebid", {
+        myPreviousBid: "2NT",
+        partnerBid: undefined,
+      }),
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.reasoning).not.toContain("doubled");
@@ -6183,7 +6256,10 @@ describe("Bug Fix Regression Tests", () => {
   it("BF-11c: respond-to-partner-invitation with no actual invite (partner passed) → Pass", () => {
     const rec = getRecommendation(
       mkHand(14, 4, 3, 3, 3),
-      ctx("respond-to-partner-invitation", { myPreviousBid: "1♠", partnerBid: undefined }),
+      ctx("respond-to-partner-invitation", {
+        myPreviousBid: "1♠",
+        partnerBid: undefined,
+      }),
     );
     expect(rec.bid).toBe("Pass");
     // Should NOT recommend accepting a suit game (which is what the bug caused)
@@ -6199,7 +6275,10 @@ describe("Bug Fix Regression Tests", () => {
       completedRounds: [{ 1: "1NT", 2: "Double", 3: "Pass", 4: "2♠" }],
       currentRound: {},
     };
-    const rec = getRecommendation(mkHand(15, 3, 4, 2, 4), deriveSituation(state));
+    const rec = getRecommendation(
+      mkHand(15, 3, 4, 2, 4),
+      deriveSituation(state),
+    );
     expect(rec.bid).toBe("Pass");
     expect(rec.reasoning).not.toContain("invited game");
     expect(rec.reasoning).not.toContain("2NT");

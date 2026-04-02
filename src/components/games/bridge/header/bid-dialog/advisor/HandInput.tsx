@@ -242,16 +242,21 @@ export default function HandInput({
             display="block"
             mb={0.5}
           >
-            Opponent bid {opponentSuitLabel} — do you have a stopper in their suit?
+            Opponent bid {opponentSuitLabel} — do you have a stopper in their
+            suit?
           </Typography>
-          <Typography variant="caption" color="text.secondary" display="block" mb={1}>
-            A <strong>stopper</strong> is a card (or cards) that can win a trick in the
-            opponent&apos;s suit:{" "}
-            <strong>Ace</strong> (always stops it),{" "}
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            display="block"
+            mb={1}
+          >
+            A <strong>stopper</strong> is a card (or cards) that can win a trick
+            in the opponent&apos;s suit: <strong>Ace</strong> (always stops it),{" "}
             <strong>King + one other card</strong> (Kx),{" "}
             <strong>Queen + two others</strong> (Qxx), or{" "}
-            <strong>Jack + three others</strong> (Jxxx).
-            Without a stopper, the opponents can run that suit against a NT contract.
+            <strong>Jack + three others</strong> (Jxxx). Without a stopper, the
+            opponents can run that suit against a NT contract.
           </Typography>
           <FormControlLabel
             control={
@@ -259,7 +264,10 @@ export default function HandInput({
                 checked={hand.hasStopperInOpponentSuit ?? false}
                 indeterminate={hand.hasStopperInOpponentSuit === undefined}
                 onChange={(e) =>
-                  onChange({ ...hand, hasStopperInOpponentSuit: e.target.checked })
+                  onChange({
+                    ...hand,
+                    hasStopperInOpponentSuit: e.target.checked,
+                  })
                 }
                 inputProps={{ "aria-label": "Has stopper in opponent's suit" }}
               />

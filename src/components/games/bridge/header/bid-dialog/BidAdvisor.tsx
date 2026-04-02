@@ -64,14 +64,16 @@ export default function BidAdvisor() {
   const isConventional2C = (bid: string) =>
     bid === "2♣" && (lhoIsNT || rhoIsNT);
   const opponentSuitBid =
-    (auctionContext.rhoBid?.match(/[♠♥♦♣]/) && !isConventional2C(auctionContext.rhoBid)
+    (auctionContext.rhoBid?.match(/[♠♥♦♣]/) &&
+    !isConventional2C(auctionContext.rhoBid)
       ? auctionContext.rhoBid
       : null) ??
-    (auctionContext.lhoBid?.match(/[♠♥♦♣]/) && !isConventional2C(auctionContext.lhoBid)
+    (auctionContext.lhoBid?.match(/[♠♥♦♣]/) &&
+    !isConventional2C(auctionContext.lhoBid)
       ? auctionContext.lhoBid
       : null);
   const isOpponentSuitBid =
-    opponentSuitBid != null && !opponentSuitBid.endsWith("NT");
+    opponentSuitBid !== null && !opponentSuitBid.endsWith("NT");
   const opponentSuitName = isOpponentSuitBid
     ? opponentSuitBid!.includes("♠")
       ? "spades"
@@ -82,18 +84,18 @@ export default function BidAdvisor() {
           : "clubs"
     : null;
   const opponentSuitSymbol = opponentSuitName
-    ? opponentSuitBid!.match(/[♠♥♦♣]/)?.[0] ?? ""
+    ? (opponentSuitBid!.match(/[♠♥♦♣]/)?.[0] ?? "")
     : "";
 
   // Only show stopper input in situations where NT bids require a stopper
   const stopperSituations: string[] = [
-    "responding-1nt",           // responding to partner's 1NT with opponent interference
-    "responding-to-simple-oc",  // responding to partner's overcall
+    "responding-1nt", // responding to partner's 1NT with opponent interference
+    "responding-to-simple-oc", // responding to partner's overcall
     "responding-to-jump-oc",
-    "responding-to-double",     // responding to partner's takeout double
-    "overcalling",              // we are overcalling an opponent's bid
+    "responding-to-double", // responding to partner's takeout double
+    "overcalling", // we are overcalling an opponent's bid
     "rebid-after-negative-double", // opener rebids after partner's negative double
-    "responding-weak2",         // responding to partner's weak 2 with interference
+    "responding-weak2", // responding to partner's weak 2 with interference
   ];
   // Also require at least 6 HCP — below that, Pass is certain regardless of stoppers,
   // so asking the stopper question is pointless noise.
