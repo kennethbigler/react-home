@@ -56,6 +56,7 @@ export type Situation =
   // Responding to partner's opening after opponent interference
   | "responding-suit-after-double"
   | "responding-1nt-doubled"
+  | "after-own-double"
   // Convention follow-ups
   | "stayman-response"
   | "transfer-response"
@@ -87,6 +88,13 @@ export interface AuctionContext {
    * `partnerContinuation` = "2NT" (partner's second bid declining the invitation).
    */
   partnerContinuation?: string;
+  /**
+   * True when the current player is in the balancing (protective) seat — i.e. they
+   * already passed once earlier in the auction and are now getting a second chance
+   * after an opponent has opened.  Standards for overcalling are slightly relaxed
+   * in this seat (you are "protecting" partner who may have been trapped with values).
+   */
+  balancing?: boolean;
 }
 
 export interface ExpectedResponse {
@@ -2120,6 +2128,7 @@ function getOvercall(
   vul: Vulnerability,
   lhoBid?: string,
   partnerBid?: string,
+  balancing?: boolean,
 ): BidRecommendation {
   const analysis = analyzeHand(hand);
   const { hcp } = hand;
@@ -2562,12 +2571,16 @@ function getOvercall(
           : overcallLevel === 2
             ? "2-Level"
             : `${overcallLevel}-Level`;
+      const balancingPrefix = balancing ? "Balancing " : "";
+      const balancingNote = balancing
+        ? ` You already passed earlier, so you are in the balancing (protective) seat — the last chance to keep the auction alive. Partner may have been "trapped" with values but no clear bid. In this seat SAYC allows you to compete with slightly less than a direct overcall would require.`
+        : "";
       return {
         bid: overcallBid,
-        category: `${levelName} Overcall (${hcp} HCP, ${best.count}-Card ${best.name.charAt(0).toUpperCase() + best.name.slice(1)})`,
-        reasoning: `With ${hcp} HCP and ${best.count} ${best.name}, overcall ${overcallBid}. A ${levelName.toLowerCase()} overcall shows a good ${best.count}-card suit and ${overcallLevel === 1 ? "8-15" : "10-15"} HCP.${honorNote}${vulNote}`,
+        category: `${balancingPrefix}${levelName} Overcall (${hcp} HCP, ${best.count}-Card ${best.name.charAt(0).toUpperCase() + best.name.slice(1)})`,
+        reasoning: `With ${hcp} HCP and ${best.count} ${best.name}, overcall ${overcallBid}. A ${levelName.toLowerCase()} overcall shows a good ${best.count}-card suit and ${overcallLevel === 1 ? "8-15" : "10-15"} HCP.${balancingNote}${honorNote}${vulNote}`,
         handAnalysis: analysis,
-        whatYourBidTellsPartner: `${hcp} HCP, ${best.count}-card ${best.name} suit. ${overcallLevel >= 2 ? "10-15 HCP minimum for 2-level or higher." : ""}`,
+        whatYourBidTellsPartner: `${hcp} HCP, ${best.count}-card ${best.name} suit. ${overcallLevel >= 2 ? "10-15 HCP minimum for 2-level or higher." : ""}${balancing ? " (Balancing seat — may have slightly fewer values than a direct overcall.)" : ""}`,
         expectedResponses: [
           {
             partnerBid: "Raise (support + values)",
@@ -5332,6 +5345,67 @@ function getResponseTo1NTDoubled(hand: Hand): BidRecommendation {
   };
 }
 
+// ─── After own Double: doubler gets a second turn ────────────────────────────
+// When a player already doubled in a prior round and gets another chance to
+// bid, the double has already described their hand.  The main decision is
+// whether to accept partner's response (Pass) or invite/bid game with extras.
+function getAfterOwnDouble(
+  hand: Hand,
+  partnerBid: string | undefined,
+  opponentBid: string | undefined,
+): BidRecommendation {
+  const analysis = analyzeHand(hand);
+  const { hcp } = hand;
+  const { tp } = analysis;
+
+  const partnerSuitName = !partnerBid
+    ? undefined
+    : partnerBid.includes("♠")
+      ? "spades"
+      : partnerBid.includes("♥")
+        ? "hearts"
+        : partnerBid.includes("♦")
+          ? "diamonds"
+          : partnerBid.includes("♣")
+            ? "clubs"
+            : undefined;
+
+  const partnerLevel = partnerBid ? parseInt(partnerBid[0]) : undefined;
+
+  // With 19+ HCP / exceptional extras: partner's response + my strength = possible game
+  if (tp >= 19 && partnerSuitName && partnerLevel) {
+    const gameBid = `${partnerLevel + 2}${suitSymbol(partnerSuitName)}`;
+    return {
+      bid: gameBid,
+      category: "Raise to Game After Own Double (19+ TP)",
+      reasoning: `You already doubled (showing 12+ HCP). With ${tp} TP and partner responding ${partnerBid}, you have enough combined strength to invite or bid game. Partner's ${partnerBid} response to your double shows at least their best suit — raise to ${gameBid}.`,
+      handAnalysis: analysis,
+      whatYourBidTellsPartner: `Extra values beyond minimum double (19+ TP). Accepting their suit and bidding game.`,
+      expectedResponses: [
+        { partnerBid: "Pass", meaning: "Minimum hand — content at game level" },
+      ],
+      confidence: "medium",
+    };
+  }
+
+  // Standard: Pass and accept partner's response — the double has already spoken
+  const partnerBidDesc = partnerBid ?? "their suit";
+  const opponentNote = opponentBid
+    ? ` Opponent bid ${opponentBid} but that is manageable.`
+    : "";
+  return {
+    bid: "Pass",
+    category: "Pass After Own Double (Partner Responded)",
+    reasoning: `You already doubled (showing 12+ HCP and support for unbid suits). With ${hcp} HCP (${tp} TP), your double has described your hand. Partner bid ${partnerBidDesc}, which is their best suit in response to your double.${opponentNote} Pass and let partner play in their chosen contract — bidding again would show 19+ points which you do not have.`,
+    handAnalysis: analysis,
+    whatYourBidTellsPartner:
+      "I have a minimum double (12–18 TP) — I am satisfied with your response.",
+    expectedResponses: [],
+    confidence: "high",
+    note: "To bid again after doubling, you typically need 19+ TP.  Bidding again with fewer values is a sign-off error.",
+  };
+}
+
 function getRespondingToSuitAfterDouble(
   hand: Hand,
   partnerSuit: string,
@@ -6321,6 +6395,7 @@ function getRecommendationRaw(
         vul,
         context.lhoBid,
         context.partnerBid,
+        context.balancing,
       );
 
     case "negative-double":
@@ -6406,6 +6481,9 @@ function getRecommendationRaw(
 
     case "responding-1nt-doubled":
       return getResponseTo1NTDoubled(hand);
+
+    case "after-own-double":
+      return getAfterOwnDouble(hand, context.partnerBid, context.rhoBid);
 
     case "stayman-response":
       return getStaymanFollowUp(
@@ -6961,6 +7039,23 @@ function deriveSituationCore(
   const myBids = completedRounds.map((r) => r[myPosition]).filter(isRealBid);
   const myLastBid = myBids[myBids.length - 1];
 
+  // Track any non-pass action by myPosition, including Double/Redouble.
+  // isRealBid excludes these, so myBids misses them — but we still need to know
+  // whether I've already acted (e.g. doubled) so we don't re-route to a first-bid
+  // situation and accidentally recommend doubling my own partner.
+  const myLastNonPassAction: string | undefined = (() => {
+    // Walk backwards through completed rounds + currentRound
+    const allRounds = [
+      ...completedRounds,
+      currentRound as { [k: number]: string | undefined },
+    ];
+    for (let i = allRounds.length - 1; i >= 0; i--) {
+      const b = allRounds[i][myPosition];
+      if (b && b !== "Pass") return b;
+    }
+    return undefined;
+  })();
+
   // Most recent bid from each player across all completed rounds + current round
   const latestBid = (pos: BiddingPosition): string | undefined => {
     const current = currentRound[pos];
@@ -7411,6 +7506,21 @@ function deriveSituationCore(
       isRealBid(opponentBid) &&
       ["1♣", "1♦", "1♥", "1♠"].includes(partnerOpenBid)
     ) {
+      // Partner opened 1-of-suit, opponent overcalled → negative double territory.
+      // BUT: if I already made a Double/Redouble in a prior round, I am NOT in
+      // the negative-double seat.  I already showed my hand; the current bid is
+      // partner's response to my earlier action.  Pass unless I have extra values.
+      if (
+        myLastNonPassAction === "Double" ||
+        myLastNonPassAction === "Redouble"
+      ) {
+        return {
+          situation: "after-own-double",
+          partnerBid: partnerBid ?? undefined,
+          rhoBid: opponentBid,
+          vulnerability: vul,
+        };
+      }
       // Partner opened 1-of-suit, opponent overcalled → negative double territory
       return {
         situation: "negative-double",
@@ -7463,11 +7573,20 @@ function deriveSituationCore(
       // (e.g. 2♣ Stayman when LHO opened 1NT)
       const lhoBidForContext =
         firstOpenerSeat === lho ? opponentOpenBid : lhoBid;
+
+      // Detect balancing (protective) seat: I passed in an earlier round but never
+      // made a real bid.  In this seat, standards for overcalling are slightly
+      // relaxed — you are protecting partner who may have been trapped with values.
+      const hadPassedEarlier =
+        !myLastBid &&
+        completedRounds.some((round) => round[myPosition] === "Pass");
+
       return {
         situation: "overcalling",
         rhoBid: effectiveRhoBid,
         lhoBid: lhoBidForContext,
         vulnerability: vul,
+        ...(hadPassedEarlier && { balancing: true }),
       };
     }
 

@@ -375,16 +375,16 @@ describe("games | bridge | AuctionContext", () => {
       currentRound: { 1: "1NT" },
     };
     renderAuctionContext(stateWithBid);
-    expect(screen.getByLabelText("Info about 1NT")).toBeInTheDocument();
+    expect(screen.getByLabelText("Show info about 1NT")).toBeInTheDocument();
   });
 
   it("shows ⓘ icon even when bid is Pass (Pass has a tooltip)", () => {
     renderAuctionContext();
     // Position 3 with default state: Partner (1st) and RHO (2nd) both default to Pass
     // Both should show the info icon now
-    expect(screen.getAllByLabelText("Info about Pass").length).toBeGreaterThan(
-      0,
-    );
+    expect(
+      screen.getAllByLabelText("Show info about Pass").length,
+    ).toBeGreaterThan(0);
   });
 
   // ── Bidding complete banner ───────────────────────────────────────────────────

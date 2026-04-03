@@ -1023,6 +1023,94 @@ describe("bidding-logic | overcalling", () => {
   });
 });
 
+describe("bidding-logic | balancing seat overcall", () => {
+  // User-reported scenario: Pass-Pass-Pass-1♠, then pos1 (who passed) gets a
+  // second chance.  The engine should know they are in the balancing seat.
+
+  it("deriveSituation: pos1 passed in round 1, now RHO bid 1♠ → balancing=true", () => {
+    const s = deriveSituation(
+      mkState({
+        completedRounds: [{ 1: "Pass", 2: "Pass", 3: "Pass", 4: "1♠" }],
+        currentRound: {},
+        myPosition: 1,
+      }),
+    );
+    expect(s.situation).toBe("overcalling");
+    expect((s as { balancing?: boolean }).balancing).toBe(true);
+  });
+
+  it("pos1 (10 HCP, 5♦) in balancing seat after 1♠ → 2♦ with balancing mention", () => {
+    // Exact hand from user report: 10 HCP, 1♠4♥5♦3♣
+    const rec = getRecommendation(
+      mkHand(10, 1, 4, 5, 3),
+      ctx("overcalling", { rhoBid: "1♠", balancing: true }),
+    );
+    expect(rec.bid).toBe("2♦");
+    expect(rec.category).toMatch(/balancing/i);
+    expect(rec.reasoning).toMatch(/balancing|protective|already passed/i);
+  });
+
+  it("non-balancing seat (first chance to bid): no balancing label", () => {
+    // Same hand but without a prior pass — direct overcall seat
+    const rec = getRecommendation(
+      mkHand(10, 1, 4, 5, 3),
+      ctx("overcalling", { rhoBid: "1♠" }),
+    );
+    expect(rec.bid).toBe("2♦");
+    expect(rec.category).not.toMatch(/balancing/i);
+  });
+});
+
+describe("bidding-logic | after-own-double", () => {
+  // User-reported bug: after 1♠–2♦–Double–Pass–2♠–Pass, pos2 (the doubler)
+  // was told to double again, which would double their own partner's 2♠.
+
+  it("deriveSituation: pos2 doubled round2, partner bid 2♠ round2, now round3 → after-own-double", () => {
+    const s = deriveSituation(
+      mkState({
+        myPosition: 2,
+        completedRounds: [
+          { 1: "Pass", 2: "Pass", 3: "Pass", 4: "1♠" },
+          { 1: "2♦", 2: "Double", 3: "Pass", 4: "2♠" },
+        ],
+        currentRound: { 1: "Pass" },
+      }),
+    );
+    expect(s.situation).toBe("after-own-double");
+    expect(s.situation).not.toBe("negative-double");
+  });
+
+  it("pos2 (13 HCP) after own double with partner showing 2♠ → Pass, not Double", () => {
+    const hand2 = { hcp: 13, spades: 1, hearts: 4, clubs: 4, diamonds: 4 };
+    const rec = getRecommendation(
+      hand2,
+      ctx("after-own-double", { partnerBid: "2♠", rhoBid: "2♦" }),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.bid).not.toBe("Double");
+    expect(rec.reasoning).toMatch(/already doubled/i);
+  });
+
+  it("pos1 (10 HCP, 5♦) after balancing 2♦ overcall with partner only passing → Pass", () => {
+    // Full auction: Pass-Pass-Pass-1♠ / 2♦-Double-Pass-2♠ / now pos1
+    // Partner (pos3) has only passed throughout — engine should recommend Pass
+    const hand1 = { hcp: 10, spades: 1, hearts: 4, diamonds: 5, clubs: 3 };
+    const s = deriveSituation(
+      mkState({
+        myPosition: 1,
+        completedRounds: [
+          { 1: "Pass", 2: "Pass", 3: "Pass", 4: "1♠" },
+          { 1: "2♦", 2: "Double", 3: "Pass", 4: "2♠" },
+        ],
+        currentRound: {},
+      }),
+    );
+    const rec = getRecommendation(hand1, s);
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).not.toMatch(/invitational jump rebid/i);
+  });
+});
+
 describe("bidding-logic | overcalling over 2NT (opponent bid 2NT)", () => {
   // User's exact hand from bug report: 9 HCP, 8 clubs, 3 spades, 1 heart, 1 diamond.
   // LHO opened 1♦, partner passed, RHO bid 2NT. Should NOT recommend Pass.
