@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { useAtomValue } from "jotai";
 import { describe, expect, it, vi } from "vitest";
 import BidAdvisor from "./BidAdvisor";
@@ -202,5 +202,124 @@ describe("games | bridge | BidAdvisor", () => {
     render(<BidAdvisor />);
     fireEvent.click(screen.getByLabelText("Position 2nd"));
     expect(screen.getByLabelText(/RHO \(1st\)/i)).toBeInTheDocument();
+  });
+
+  it("shows stopper input when opponent has bid a suit (HCP >= 6)", () => {
+    render(<BidAdvisor />);
+    // Position 2 so RHO (pos 1) is visible in current round
+    fireEvent.click(screen.getByLabelText("Position 2nd"));
+    // Set HCP to 10 (>= 6 required for stopper to show)
+    const hcpInput = screen.getByLabelText("HCP value");
+    fireEvent.change(hcpInput, { target: { value: "10" } });
+    // Open the RHO dropdown and pick 1♠
+    const rhoSelect = screen.getByLabelText(/RHO \(1st\)/i);
+    fireEvent.mouseDown(rhoSelect);
+    const listbox = screen.getByRole("listbox");
+    fireEvent.click(within(listbox).getAllByText("1♠")[0]);
+    // Stopper question should now be visible
+    expect(
+      screen.getByLabelText("Has stopper in opponent's suit"),
+    ).toBeInTheDocument();
+  });
+
+  it("does NOT show stopper input when HCP < 6 even with opponent suit bid", () => {
+    render(<BidAdvisor />);
+    fireEvent.click(screen.getByLabelText("Position 2nd"));
+    // Keep HCP at 0 (default)
+    const rhoSelect = screen.getByLabelText(/RHO \(1st\)/i);
+    fireEvent.mouseDown(rhoSelect);
+    const listbox = screen.getByRole("listbox");
+    fireEvent.click(within(listbox).getAllByText("1♠")[0]);
+    // Stopper question should NOT show (HCP = 0 < 6)
+    expect(
+      screen.queryByLabelText("Has stopper in opponent's suit"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("does NOT show stopper input when opponent bid a conventional 2♣ (lhoIsNT=true)", () => {
+    render(<BidAdvisor />);
+    // Position 4: LHO(1st), Partner(2nd), RHO(3rd) visible in current round
+    fireEvent.click(screen.getByLabelText("Position 4th"));
+    // Set HCP to 10
+    const hcpInput = screen.getByLabelText("HCP value");
+    fireEvent.change(hcpInput, { target: { value: "10" } });
+    // LHO opens 1NT
+    fireEvent.mouseDown(screen.getByLabelText(/LHO \(1st\)/i));
+    let listbox = screen.getByRole("listbox");
+    fireEvent.click(within(listbox).getAllByText("1NT")[0]);
+    // RHO bids 2♣ (Stayman — conventional, not a suit bid)
+    fireEvent.mouseDown(screen.getByLabelText(/RHO \(3rd\)/i));
+    listbox = screen.getByRole("listbox");
+    fireEvent.click(within(listbox).getAllByText("2♣")[0]);
+    // Since 2♣ is conventional when lhoBid ends with NT, stopper input should NOT appear
+    expect(
+      screen.queryByLabelText("Has stopper in opponent's suit"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows stopper input when opponent bid a natural suit (not conventional 2♣)", () => {
+    render(<BidAdvisor />);
+    fireEvent.click(screen.getByLabelText("Position 4th"));
+    const hcpInput = screen.getByLabelText("HCP value");
+    fireEvent.change(hcpInput, { target: { value: "10" } });
+    // RHO bids 1♥ (a natural suit bid, no NT opened before it)
+    fireEvent.mouseDown(screen.getByLabelText(/RHO \(3rd\)/i));
+    const listbox = screen.getByRole("listbox");
+    fireEvent.click(within(listbox).getAllByText("1♥")[0]);
+    // Stopper question should appear for the heart suit
+    expect(
+      screen.getByLabelText("Has stopper in opponent's suit"),
+    ).toBeInTheDocument();
+  });
+
+  it("does NOT show stopper when RHO opened NT and LHO bid conventional 2♣ (rhoIsNT branch)", () => {
+    render(<BidAdvisor />);
+    // Position 4: LHO(1st), Partner(2nd), RHO(3rd)
+    fireEvent.click(screen.getByLabelText("Position 4th"));
+    const hcpInput = screen.getByLabelText("HCP value");
+    fireEvent.change(hcpInput, { target: { value: "10" } });
+    // RHO opens 1NT → rhoIsNT = true
+    fireEvent.mouseDown(screen.getByLabelText(/RHO \(3rd\)/i));
+    let listbox = screen.getByRole("listbox");
+    fireEvent.click(within(listbox).getAllByText("1NT")[0]);
+    // LHO bids 2♣ — conventional (Landy/DONT) because rhoIsNT
+    fireEvent.mouseDown(screen.getByLabelText(/LHO \(1st\)/i));
+    listbox = screen.getByRole("listbox");
+    fireEvent.click(within(listbox).getAllByText("2♣")[0]);
+    // 2♣ is conventional here → stopper input should NOT appear
+    expect(
+      screen.queryByLabelText("Has stopper in opponent's suit"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows stopper input when LHO bid a natural club (lhoBid suit path, clubs)", () => {
+    render(<BidAdvisor />);
+    // Position 4: LHO(1st) bids, no RHO suit bid
+    fireEvent.click(screen.getByLabelText("Position 4th"));
+    const hcpInput = screen.getByLabelText("HCP value");
+    fireEvent.change(hcpInput, { target: { value: "10" } });
+    // LHO opens 1♣ (natural suit — no NT opened, so not conventional)
+    fireEvent.mouseDown(screen.getByLabelText(/LHO \(1st\)/i));
+    const listbox = screen.getByRole("listbox");
+    fireEvent.click(within(listbox).getAllByText("1♣")[0]);
+    // opponentSuitBid comes from lhoBid path → "clubs" suit name
+    expect(
+      screen.getByLabelText("Has stopper in opponent's suit"),
+    ).toBeInTheDocument();
+  });
+
+  it("shows stopper input when RHO bid 1♦ (diamonds suit name)", () => {
+    render(<BidAdvisor />);
+    // Position 4: RHO(3rd) bids 1♦ before me
+    fireEvent.click(screen.getByLabelText("Position 4th"));
+    const hcpInput = screen.getByLabelText("HCP value");
+    fireEvent.change(hcpInput, { target: { value: "10" } });
+    fireEvent.mouseDown(screen.getByLabelText(/RHO \(3rd\)/i));
+    const listbox = screen.getByRole("listbox");
+    fireEvent.click(within(listbox).getAllByText("1♦")[0]);
+    // opponentSuitName = "diamonds"
+    expect(
+      screen.getByLabelText("Has stopper in opponent's suit"),
+    ).toBeInTheDocument();
   });
 });

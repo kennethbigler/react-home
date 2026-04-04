@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Chip,
+  ClickAwayListener,
   Divider,
   FormControl,
   IconButton,
@@ -125,21 +126,35 @@ interface BidInfoIconProps {
 }
 
 function BidInfoIcon({ bid, relationship, prevHighBid }: BidInfoIconProps) {
+  const [open, setOpen] = useState(false);
   if (!bid) return null;
   return (
-    <Tooltip
-      title={getBidMeaning(bid, relationship, prevHighBid)}
-      placement="right"
-      arrow
-    >
-      <IconButton
-        size="small"
-        sx={{ p: 0.25, color: "text.secondary" }}
-        aria-label={`Info about ${bid}`}
+    <ClickAwayListener onClickAway={() => setOpen(false)}>
+      <Tooltip
+        title={getBidMeaning(bid, relationship, prevHighBid)}
+        placement="right"
+        arrow
+        open={open}
+        disableHoverListener
+        disableFocusListener
+        disableTouchListener
+        PopperProps={{ disablePortal: true }}
       >
-        <InfoOutlinedIcon fontSize="inherit" />
-      </IconButton>
-    </Tooltip>
+        <IconButton
+          size="small"
+          sx={{
+            p: 0.25,
+            color: open ? "primary.main" : "text.secondary",
+            transition: "color 0.15s",
+          }}
+          aria-label={`${open ? "Hide" : "Show"} info about ${bid}`}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <InfoOutlinedIcon fontSize="inherit" />
+        </IconButton>
+      </Tooltip>
+    </ClickAwayListener>
   );
 }
 
@@ -193,62 +208,62 @@ function BidSlot({
   );
 }
 
+// ─── Single bid chip with tap-to-toggle tooltip ───────────────────────────────
+
+interface BidChipProps {
+  chipLabel: string;
+  tooltipTitle: string;
+  isMe: boolean;
+}
+
+function BidChip({ chipLabel, tooltipTitle, isMe }: BidChipProps) {
+  const [open, setOpen] = useState(false);
+  return (
+    <ClickAwayListener onClickAway={() => setOpen(false)}>
+      <Tooltip
+        title={tooltipTitle}
+        placement="top"
+        arrow
+        open={open}
+        disableHoverListener
+        disableFocusListener
+        disableTouchListener
+        PopperProps={{ disablePortal: true }}
+      >
+        <Chip
+          label={chipLabel}
+          size="small"
+          variant={isMe ? "filled" : "outlined"}
+          color={isMe ? "primary" : "default"}
+          sx={{
+            fontSize: "0.7rem",
+            cursor: "pointer",
+            outline: open ? "2px solid" : "none",
+            outlineColor: "primary.main",
+            outlineOffset: "2px",
+          }}
+          aria-expanded={open}
+          aria-label={`${chipLabel} — tap to ${open ? "hide" : "show"} meaning`}
+          onClick={() => setOpen((v) => !v)}
+        />
+      </Tooltip>
+    </ClickAwayListener>
+  );
+}
+
 // ─── Completed round row (read-only chips with tooltips) ──────────────────────
 
 interface CompletedRoundRowProps {
   round: BidRound;
   roundIndex: number;
   myPosition: BiddingPosition;
-  onChange: (idx: number, updated: BidRound) => void;
   allCompletedRounds: BidRound[];
 }
-
-const ALL_BIDS = [
-  "Pass",
-  "1♣",
-  "1♦",
-  "1♥",
-  "1♠",
-  "1NT",
-  "2♣",
-  "2♦",
-  "2♥",
-  "2♠",
-  "2NT",
-  "3♣",
-  "3♦",
-  "3♥",
-  "3♠",
-  "3NT",
-  "4♣",
-  "4♦",
-  "4♥",
-  "4♠",
-  "4NT",
-  "5♣",
-  "5♦",
-  "5♥",
-  "5♠",
-  "5NT",
-  "6♣",
-  "6♦",
-  "6♥",
-  "6♠",
-  "6NT",
-  "7♣",
-  "7♦",
-  "7♥",
-  "7♠",
-  "7NT",
-  "Double",
-  "Redouble",
-];
 
 function CompletedRoundRow({
   round,
   roundIndex,
   myPosition,
-  onChange,
   allCompletedRounds,
 }: CompletedRoundRowProps) {
   return (
@@ -293,20 +308,12 @@ function CompletedRoundRow({
         );
 
         return (
-          <Tooltip key={pos} title={tooltipTitle} placement="top" arrow>
-            <Chip
-              label={chipLabel}
-              size="small"
-              variant={isMe ? "filled" : "outlined"}
-              color={isMe ? "primary" : "default"}
-              sx={{ fontSize: "0.7rem", cursor: "help" }}
-              onClick={() => {
-                const idx = ALL_BIDS.indexOf(bid);
-                const next = ALL_BIDS[(idx + 1) % ALL_BIDS.length];
-                onChange(roundIndex, { ...round, [pos]: next });
-              }}
-            />
-          </Tooltip>
+          <BidChip
+            key={pos}
+            chipLabel={chipLabel}
+            tooltipTitle={tooltipTitle}
+            isMe={isMe}
+          />
         );
       })}
     </Box>
@@ -331,11 +338,6 @@ export default function AuctionContextInput({
 
   const updateCurrentRound = (pos: BiddingPosition, bid: string) => {
     update({ currentRound: { ...currentRound, [pos]: bid || "Pass" } });
-  };
-
-  const updateCompletedRound = (idx: number, updated: BidRound) => {
-    const newRounds = completedRounds.map((r, i) => (i === idx ? updated : r));
-    update({ completedRounds: newRounds });
   };
 
   const confirmNextRound = () => {
@@ -511,7 +513,6 @@ export default function AuctionContextInput({
                 round={round}
                 roundIndex={idx}
                 myPosition={myPosition}
-                onChange={updateCompletedRound}
                 allCompletedRounds={completedRounds}
               />
             ))}

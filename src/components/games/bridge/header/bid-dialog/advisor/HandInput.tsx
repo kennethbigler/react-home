@@ -3,7 +3,6 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
-  InputAdornment,
   Slider,
   TextField,
   Typography,
@@ -30,11 +29,12 @@ const SUIT_LABELS: {
   key: keyof Omit<Hand, "hcp" | "aces" | "kings">;
   label: string;
   symbol: string;
+  color: string;
 }[] = [
-  { key: "spades", label: "Spades", symbol: "♠" },
-  { key: "hearts", label: "Hearts", symbol: "♥" },
-  { key: "clubs", label: "Clubs", symbol: "♣" },
-  { key: "diamonds", label: "Diamonds", symbol: "♦" },
+  { key: "spades", label: "Spades", symbol: "♠", color: "#1565c0" },
+  { key: "hearts", label: "Hearts", symbol: "♥", color: "#c62828" },
+  { key: "clubs", label: "Clubs", symbol: "♣", color: "#2e7d32" },
+  { key: "diamonds", label: "Diamonds", symbol: "♦", color: "#c62828" },
 ];
 
 export default function HandInput({
@@ -122,31 +122,76 @@ export default function HandInput({
       {/* Suit counts */}
       <Box mb={2}>
         <Typography gutterBottom>
-          Card Count per Suit (must total 13):
+          Card Count per Suit{" "}
+          <Typography
+            component="span"
+            variant="body2"
+            color={totalCards === 13 ? "success.main" : "error"}
+            fontWeight="bold"
+          >
+            ({totalCards}/13)
+          </Typography>
         </Typography>
-        <Grid container spacing={2}>
-          {SUIT_LABELS.map(({ key, label, symbol }) => (
-            <Grid size={{ xs: 6, sm: 3 }} key={key}>
-              <TextField
-                label={`${symbol} ${label}`}
-                type="number"
-                value={hand[key]}
-                inputProps={{ min: 0, max: 13, "aria-label": `${label} count` }}
-                onChange={(e) =>
-                  handleSuitChange(key, parseInt(e.target.value, 10) || 0)
-                }
-                error={!!cardCountError}
-                size="small"
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">{symbol}</InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+          {SUIT_LABELS.map(({ key, label, symbol, color }) => {
+            const othersTotal = totalCards - (hand[key] as number);
+            const maxForSuit = Math.min(
+              13,
+              13 - othersTotal + (hand[key] as number),
+            );
+            const suitLabelId = `suit-label-${key}`;
+            return (
+              <Box key={key}>
+                <Typography id={suitLabelId} variant="body2" gutterBottom>
+                  <span style={{ color }}>{symbol}</span> {label}:{" "}
+                  <strong>{hand[key] as number}</strong>
+                </Typography>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid size="grow">
+                    <Slider
+                      aria-labelledby={suitLabelId}
+                      value={hand[key] as number}
+                      min={0}
+                      max={13}
+                      marks={[
+                        { value: 0 },
+                        { value: 4 },
+                        { value: 8 },
+                        { value: 13 },
+                      ]}
+                      onChange={(_, v) => handleSuitChange(key, v as number)}
+                      data-testid={`${key}-slider`}
+                      sx={{
+                        color,
+                        "& .MuiSlider-thumb": { bgcolor: color },
+                        "& .MuiSlider-track": { bgcolor: color },
+                        "& .MuiSlider-rail": { opacity: 0.3 },
+                      }}
+                    />
+                  </Grid>
+                  <Grid size="auto">
+                    <TextField
+                      label={symbol}
+                      type="number"
+                      value={hand[key] as number}
+                      inputProps={{
+                        min: 0,
+                        max: maxForSuit,
+                        "aria-label": `${label} count`,
+                      }}
+                      onChange={(e) =>
+                        handleSuitChange(key, parseInt(e.target.value, 10) || 0)
+                      }
+                      error={!!cardCountError}
+                      size="small"
+                      sx={{ width: 70 }}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+            );
+          })}
+        </Box>
         {cardCountError && (
           <Typography
             color="error"

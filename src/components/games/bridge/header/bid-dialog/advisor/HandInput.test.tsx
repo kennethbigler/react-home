@@ -56,7 +56,8 @@ describe("games | bridge | HandInput", () => {
 
   it("shows cards/13 count", () => {
     renderHandInput();
-    expect(screen.getByText(/13\/13/)).toBeInTheDocument();
+    // Multiple elements show 13/13 (suit header + TP bar) — check that at least one exists
+    expect(screen.getAllByText(/13\/13/).length).toBeGreaterThanOrEqual(1);
   });
 
   it("shows error when cards do not total 13", () => {
@@ -184,11 +185,18 @@ describe("games | bridge | HandInput", () => {
 
   it("shows suit symbols in labels", () => {
     renderHandInput();
-    // MUI TextField renders labels twice (floating + legend notch) — use getAllByText
-    expect(screen.getAllByText(/♠ Spades/).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText(/♥ Hearts/).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText(/♦ Diamonds/).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText(/♣ Clubs/).length).toBeGreaterThanOrEqual(1);
+    // Suit labels use a colored <span> for the symbol + a text node for the name,
+    // so the text is split across elements. Use a custom matcher on textContent.
+    const byContent = (text: string) =>
+      screen.getAllByText((_, el) => (el?.textContent ?? "").includes(text));
+    expect(byContent("♠").length).toBeGreaterThanOrEqual(1);
+    expect(byContent("♥").length).toBeGreaterThanOrEqual(1);
+    expect(byContent("♦").length).toBeGreaterThanOrEqual(1);
+    expect(byContent("♣").length).toBeGreaterThanOrEqual(1);
+    expect(byContent("Spades").length).toBeGreaterThanOrEqual(1);
+    expect(byContent("Hearts").length).toBeGreaterThanOrEqual(1);
+    expect(byContent("Diamonds").length).toBeGreaterThanOrEqual(1);
+    expect(byContent("Clubs").length).toBeGreaterThanOrEqual(1);
   });
 
   it("renders suits in ♠♥♣♦ order (spades first, diamonds last)", () => {
@@ -304,5 +312,157 @@ describe("games | bridge | HandInput", () => {
     );
     const acesInput = screen.getByLabelText("Aces count") as HTMLInputElement;
     expect(acesInput.value).toBe("2");
+  });
+
+  it("HCP slider onChange calls onChange handler", () => {
+    const onChange = vi.fn();
+    renderHandInput(defaultHand, onChange);
+    // MUI v7 Slider puts role="slider" on the root element (data-testid spans the document)
+    // Find by aria-valuemax=37 (HCP range is 0-37)
+    const allSliders = screen.getAllByRole("slider");
+    const hcpSlider = allSliders.find(
+      (s) => s.getAttribute("aria-valuemax") === "37",
+    );
+    expect(hcpSlider).toBeTruthy();
+    hcpSlider!.focus();
+    fireEvent.keyDown(hcpSlider!, { key: "ArrowRight" });
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ hcp: 16 }));
+  });
+
+  it("suit slider onChange calls onChange handler", () => {
+    const onChange = vi.fn();
+    renderHandInput(defaultHand, onChange);
+    // Suit sliders have aria-valuemax=13 (0-13 card range); first suit = spades
+    const allSliders = screen.getAllByRole("slider");
+    const suitSliders = allSliders.filter(
+      (s) => s.getAttribute("aria-valuemax") === "13",
+    );
+    expect(suitSliders.length).toBeGreaterThan(0);
+    const spadesSlider = suitSliders[0]; // first suit slider = spades (♠♥♣♦ order)
+    spadesSlider.focus();
+    fireEvent.keyDown(spadesSlider, { key: "ArrowRight" });
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({ spades: 5 }),
+    );
+  });
+
+  it("does NOT show stopper input by default", () => {
+    renderHandInput();
+    expect(
+      screen.queryByLabelText("Has stopper in opponent's suit"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows stopper checkbox when showStopperInput=true", () => {
+    render(
+      <HandInput
+        hand={defaultHand}
+        onChange={vi.fn()}
+        showStopperInput={true}
+        opponentSuitLabel="♠ spades"
+      />,
+    );
+    expect(
+      screen.getByLabelText("Has stopper in opponent's suit"),
+    ).toBeInTheDocument();
+  });
+
+  it("stopper checkbox onChange calls onChange with updated stopper value", () => {
+    const onChange = vi.fn();
+    render(
+      <HandInput
+        hand={{ ...defaultHand, hasStopperInOpponentSuit: undefined }}
+        onChange={onChange}
+        showStopperInput={true}
+        opponentSuitLabel="♠ spades"
+      />,
+    );
+    const checkbox = screen.getByLabelText(
+      "Has stopper in opponent's suit",
+    ) as HTMLInputElement;
+    fireEvent.click(checkbox);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({ hasStopperInOpponentSuit: true }),
+    );
+  });
+
+  it("stopper checkbox shows indeterminate state when value is undefined", () => {
+    render(
+      <HandInput
+        hand={{ ...defaultHand, hasStopperInOpponentSuit: undefined }}
+        onChange={vi.fn()}
+        showStopperInput={true}
+        opponentSuitLabel="♦ diamonds"
+      />,
+    );
+    // When hasStopperInOpponentSuit is undefined, the label shows "Unknown — please check your hand"
+    expect(screen.getByText(/Unknown.*please check/i)).toBeInTheDocument();
+  });
+
+  it("stopper checkbox shows checked when hand has stopper", () => {
+    render(
+      <HandInput
+        hand={{ ...defaultHand, hasStopperInOpponentSuit: true }}
+        onChange={vi.fn()}
+        showStopperInput={true}
+        opponentSuitLabel="♥ hearts"
+      />,
+    );
+    const checkbox = screen.getByLabelText(
+      "Has stopper in opponent's suit",
+    ) as HTMLInputElement;
+    expect(checkbox.checked).toBe(true);
+  });
+
+  it("stopper checkbox shows 'No stopper' label when hasStopperInOpponentSuit is false", () => {
+    render(
+      <HandInput
+        hand={{ ...defaultHand, hasStopperInOpponentSuit: false }}
+        onChange={vi.fn()}
+        showStopperInput={true}
+        opponentSuitLabel="♠ spades"
+      />,
+    );
+    expect(screen.getByText(/No stopper in their suit/i)).toBeInTheDocument();
+  });
+
+  it("clamps suit count to 0 when input is empty (|| 0 fallback)", () => {
+    const onChange = vi.fn();
+    renderHandInput(defaultHand, onChange);
+    const input = screen.getByLabelText("Spades count");
+    fireEvent.change(input, { target: { value: "" } });
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({ spades: 0 }),
+    );
+  });
+
+  it("clamps aces count to 0 when input is empty (|| 0 fallback)", () => {
+    const onChange = vi.fn();
+    render(
+      <HandInput
+        hand={{ ...defaultHand, aces: 2 }}
+        onChange={onChange}
+        showAcesInput={true}
+      />,
+    );
+    const acesInput = screen.getByLabelText("Aces count");
+    fireEvent.change(acesInput, { target: { value: "" } });
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ aces: 0 }));
+  });
+
+  it("clamps kings count to 0 when input is empty (|| 0 fallback)", () => {
+    const onChange = vi.fn();
+    render(
+      <HandInput
+        hand={{ ...defaultHand, kings: 2 }}
+        onChange={onChange}
+        showKingsInput={true}
+      />,
+    );
+    const kingsInput = screen.getByLabelText("Kings count");
+    fireEvent.change(kingsInput, { target: { value: "" } });
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({ kings: 0 }),
+    );
   });
 });
