@@ -1,2 +1,0 @@
-import{O as e,b as t,x as n}from"./createSimplePaletteValueFilter-ClioTlp5.js";var r=n();function i(e){let{theme:n,name:r,props:i}=e;return!n||!n.components||!n.components[r]||!n.components[r].defaultProps?i:t(n.components[r].defaultProps,i)}function a({props:t,name:n,defaultTheme:r,themeId:a}){let o=e(r);return a&&(o=o[a]||o),i({theme:o,name:n,props:t})}export{r as n,a as t};
-//# sourceMappingURL=useThemeProps-5lSbM3ws.js.map

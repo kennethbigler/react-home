@@ -3,10 +3,13 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
+  IconButton,
   Slider,
   TextField,
   Typography,
 } from "@mui/material";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
 import { calcTP } from "./bidding-logic";
 import type { Hand } from "./bidding-logic";
 
@@ -29,12 +32,11 @@ const SUIT_LABELS: {
   key: keyof Omit<Hand, "hcp" | "aces" | "kings">;
   label: string;
   symbol: string;
-  color: string;
 }[] = [
-  { key: "spades", label: "Spades", symbol: "♠", color: "#1565c0" },
-  { key: "hearts", label: "Hearts", symbol: "♥", color: "#c62828" },
-  { key: "clubs", label: "Clubs", symbol: "♣", color: "#2e7d32" },
-  { key: "diamonds", label: "Diamonds", symbol: "♦", color: "#c62828" },
+  { key: "spades", label: "Spades", symbol: "♠" },
+  { key: "hearts", label: "Hearts", symbol: "♥" },
+  { key: "clubs", label: "Clubs", symbol: "♣" },
+  { key: "diamonds", label: "Diamonds", symbol: "♦" },
 ];
 
 export default function HandInput({
@@ -132,66 +134,63 @@ export default function HandInput({
             ({totalCards}/13)
           </Typography>
         </Typography>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-          {SUIT_LABELS.map(({ key, label, symbol, color }) => {
-            const othersTotal = totalCards - (hand[key] as number);
-            const maxForSuit = Math.min(
-              13,
-              13 - othersTotal + (hand[key] as number),
-            );
-            const suitLabelId = `suit-label-${key}`;
+        <Grid container>
+          {SUIT_LABELS.map(({ key, label, symbol }, index) => {
+            const current = hand[key] as number;
+            const othersTotal = totalCards - current;
+            const maxForSuit = Math.min(13, 13 - othersTotal + current);
             return (
-              <Box key={key}>
-                <Typography id={suitLabelId} variant="body2" gutterBottom>
-                  <span style={{ color }}>{symbol}</span> {label}:{" "}
-                  <strong>{hand[key] as number}</strong>
+              <Grid
+                key={key}
+                size={{ xs: 6, sm: 3 }}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  py: 0.5,
+                  borderLeft: {
+                    xs: index % 2 !== 0 ? "1px solid" : "none",
+                    sm: index > 0 ? "1px solid" : "none",
+                  },
+                  borderTop: {
+                    xs: index >= 2 ? "1px solid" : "none",
+                    sm: "none",
+                  },
+                  borderColor: "divider",
+                }}
+              >
+                <IconButton
+                  size="small"
+                  aria-label={`Decrease ${label}`}
+                  onClick={() => handleSuitChange(key, current - 1)}
+                  disabled={current <= 0}
+                >
+                  <RemoveIcon fontSize="inherit" />
+                </IconButton>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    minWidth: 28,
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
+                  aria-label={`${label} count`}
+                >
+                  {current}
+                  {symbol}
                 </Typography>
-                <Grid container spacing={2} alignItems="center">
-                  <Grid size="grow">
-                    <Slider
-                      aria-labelledby={suitLabelId}
-                      value={hand[key] as number}
-                      min={0}
-                      max={13}
-                      marks={[
-                        { value: 0 },
-                        { value: 4 },
-                        { value: 8 },
-                        { value: 13 },
-                      ]}
-                      onChange={(_, v) => handleSuitChange(key, v as number)}
-                      data-testid={`${key}-slider`}
-                      sx={{
-                        color,
-                        "& .MuiSlider-thumb": { bgcolor: color },
-                        "& .MuiSlider-track": { bgcolor: color },
-                        "& .MuiSlider-rail": { opacity: 0.3 },
-                      }}
-                    />
-                  </Grid>
-                  <Grid size="auto">
-                    <TextField
-                      label={symbol}
-                      type="number"
-                      value={hand[key] as number}
-                      inputProps={{
-                        min: 0,
-                        max: maxForSuit,
-                        "aria-label": `${label} count`,
-                      }}
-                      onChange={(e) =>
-                        handleSuitChange(key, parseInt(e.target.value, 10) || 0)
-                      }
-                      error={!!cardCountError}
-                      size="small"
-                      sx={{ width: 70 }}
-                    />
-                  </Grid>
-                </Grid>
-              </Box>
+                <IconButton
+                  size="small"
+                  aria-label={`Increase ${label}`}
+                  onClick={() => handleSuitChange(key, current + 1)}
+                  disabled={current >= maxForSuit}
+                >
+                  <AddIcon fontSize="inherit" />
+                </IconButton>
+              </Grid>
             );
           })}
-        </Box>
+        </Grid>
         {cardCountError && (
           <Typography
             color="error"

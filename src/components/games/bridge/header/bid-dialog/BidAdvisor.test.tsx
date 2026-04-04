@@ -89,8 +89,8 @@ describe("games | bridge | BidAdvisor", () => {
 
   it("shows placeholder message when hand is invalid (cards ≠ 13)", () => {
     render(<BidAdvisor />);
-    const spadesInput = screen.getByLabelText("Spades count");
-    fireEvent.change(spadesInput, { target: { value: "5" } });
+    // Click "Increase Spades" to make total > 13, triggering the validation error
+    fireEvent.click(screen.getByRole("button", { name: "Increase Spades" }));
     expect(screen.getByText(/cards must total 13/i)).toBeInTheDocument();
     expect(screen.queryByLabelText("Recommended bid")).not.toBeInTheDocument();
   });
