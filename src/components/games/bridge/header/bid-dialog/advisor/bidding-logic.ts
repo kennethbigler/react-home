@@ -2573,7 +2573,7 @@ function getOvercall(
             : `${overcallLevel}-Level`;
       const balancingPrefix = balancing ? "Balancing " : "";
       const balancingNote = balancing
-        ? ` You already passed earlier, so you are in the balancing (protective) seat — the last chance to keep the auction alive. Partner may have been "trapped" with values but no clear bid. In this seat SAYC allows you to compete with slightly less than a direct overcall would require.`
+        ? ' You already passed earlier, so you are in the balancing (protective) seat — the last chance to keep the auction alive. Partner may have been "trapped" with values but no clear bid. In this seat SAYC allows you to compete with slightly less than a direct overcall would require.'
         : "";
       return {
         bid: overcallBid,
@@ -5380,7 +5380,8 @@ function getAfterOwnDouble(
       category: "Raise to Game After Own Double (19+ TP)",
       reasoning: `You already doubled (showing 12+ HCP). With ${tp} TP and partner responding ${partnerBid}, you have enough combined strength to invite or bid game. Partner's ${partnerBid} response to your double shows at least their best suit — raise to ${gameBid}.`,
       handAnalysis: analysis,
-      whatYourBidTellsPartner: `Extra values beyond minimum double (19+ TP). Accepting their suit and bidding game.`,
+      whatYourBidTellsPartner:
+        "Extra values beyond minimum double (19+ TP). Accepting their suit and bidding game.",
       expectedResponses: [
         { partnerBid: "Pass", meaning: "Minimum hand — content at game level" },
       ],
@@ -7460,6 +7461,16 @@ function deriveSituationCore(
           partnerBid,
           vulnerability: vul,
         };
+
+      // If partner's latest bid differs from their opening bid they have already
+      // rebid once — this is a continuation, NOT a first response to their opener.
+      // Route to responding-suit using the most-recent bid so the player gets
+      // advice that matches the actual auction level.  (This prevents e.g. a 2♣
+      // opener's 2♠ rebid from being treated as a pre-emptive weak 2♠ opener.)
+      if (isRealBid(partnerBid) && partnerBid !== partnerOpenBid) {
+        return { situation: "responding-suit", partnerBid, vulnerability: vul };
+      }
+
       if (partnerOpenBid === "2♣")
         return { situation: "responding-2c", partnerBid, vulnerability: vul };
       if (WEAK2_BIDS.includes(partnerOpenBid))
@@ -7531,6 +7542,11 @@ function deriveSituationCore(
     }
     // Partner opened pre-empt or 2, opponent bid → just respond to partner
     // Pass through the opponent's bid so the UI can ask about stoppers when needed.
+    // First: if partner has REBID (their latest bid ≠ their opening bid), treat as
+    // a continuation and route to responding-suit using the most-recent bid.
+    if (isRealBid(partnerBid) && partnerBid !== partnerOpenBid) {
+      return { situation: "responding-suit", partnerBid, vulnerability: vul };
+    }
     if (partnerOpenBid === "1NT")
       return {
         situation: "responding-1nt",

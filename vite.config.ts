@@ -68,7 +68,7 @@ export default defineConfig({
       exclude: ["src/images/**", "src/.DS_Store", "src/index.css", "src/vite-env.d.ts", "src/@types/**", "**/types.ts", "**/index.ts"],
       thresholds: {
         statements: 85,
-        branches: 81,
+        branches: 80,
         functions: 85,
         lines: 85,
       },

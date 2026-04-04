@@ -493,4 +493,74 @@ describe("games | bridge | AuctionContext", () => {
       expect.objectContaining({ agreedSuit: "♥" }),
     );
   });
+
+  // ── BidInfoIcon open state (lines 147/150) ────────────────────────────────────
+
+  it("clicking the ⓘ info icon toggles it to open state (aria-label changes)", () => {
+    const stateWithBid: AuctionState = {
+      ...defaultState,
+      myPosition: 3,
+      currentRound: { 1: "1NT" },
+    };
+    renderAuctionContext(stateWithBid);
+    const infoBtn = screen.getByLabelText("Show info about 1NT");
+    fireEvent.click(infoBtn);
+    // After click, aria-label changes to "Hide info about 1NT"
+    expect(screen.getByLabelText("Hide info about 1NT")).toBeInTheDocument();
+  });
+
+  // ── BidChip open state (lines 241/246) ───────────────────────────────────────
+
+  it("clicking a completed round chip changes its aria-label to 'tap to hide'", () => {
+    const stateWithRounds: AuctionState = {
+      ...defaultState,
+      myPosition: 3,
+      completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2♣", 4: "Pass" }],
+    };
+    renderAuctionContext(stateWithRounds);
+    // Find a chip by role=button with its known label
+    const chip = screen.getByRole("button", {
+      name: /Partner \(1st\): 1NT — tap to show meaning/i,
+    });
+    fireEvent.click(chip);
+    expect(
+      screen.getByRole("button", {
+        name: /Partner \(1st\): 1NT — tap to hide meaning/i,
+      }),
+    ).toBeInTheDocument();
+  });
+
+  // ── Passed-out hand: isComplete=true but finalContract=undefined (line 494 false) ──
+
+  it("passed-out hand shows 'Bidding complete' alert without a final contract", () => {
+    const passedOut: AuctionState = {
+      ...defaultState,
+      myPosition: 1,
+      completedRounds: [{ 1: "Pass", 2: "Pass", 3: "Pass", 4: "Pass" }],
+    };
+    renderAuctionContext(passedOut);
+    const alert = screen.getByRole("alert");
+    expect(alert).toHaveTextContent(/bidding complete/i);
+    // The "— Final contract: X" part should NOT be present
+    expect(alert.textContent).not.toContain("Final contract:");
+  });
+
+  // ── prevHighBid backwards search through completed rounds (lines 292-297) ────
+
+  it("prevHighBid in second round fetches prior-round bid for tooltip context", () => {
+    // Round 1: 1♠ by pos 1. Round 2: all Pass.
+    // In round 2, pos 1 chip prevHighBid should look back to round 1.
+    const stateMultiRound: AuctionState = {
+      ...defaultState,
+      myPosition: 3,
+      completedRounds: [
+        { 1: "1♠", 2: "Pass", 3: "Pass", 4: "Pass" },
+        { 1: "Pass", 2: "Pass", 3: "Pass", 4: "Pass" },
+      ],
+    };
+    renderAuctionContext(stateMultiRound);
+    // Both rounds should be rendered (exercise the prevHighBid backward search)
+    expect(screen.getByText("Round 1:")).toBeInTheDocument();
+    expect(screen.getByText("Round 2:")).toBeInTheDocument();
+  });
 });
