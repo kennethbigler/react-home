@@ -10,7 +10,7 @@ interface Country {
 /** name is a unique key, verify it on https://unpkg.com/world-atlas@2.0.2/countries-110m.json */
 const countries: Country[] = [
   { name: "American Samoa", continent: "AS", flag: "🇦🇸", color: green[500] },
-  { name: "Antarctica", continent: "SA", flag: "🇦🇶", color: green[500] },
+  { name: "Antarctica", continent: "AS", flag: "🇦🇶", color: green[500] },
   { name: "Argentina", continent: "SA", flag: "🇦🇷", color: green[500] },
   { name: "Australia", continent: "AU", flag: "🇦🇺", color: green[500] },
   { name: "Austria", continent: "EU", flag: "🇦🇹", color: yellow[500] },
@@ -26,7 +26,7 @@ const countries: Country[] = [
   { name: "Cayman Islands", continent: "NA", flag: "🇰🇾", color: green[500] },
   { name: "Chile", continent: "SA", flag: "🇨🇱", color: yellow[500] },
   { name: "China", continent: "AS", flag: "🇨🇳", color: green[500] },
-  // Apr '26 - { name: "Colombia", continent: "SA", flag: "🇨🇴", color: green[500] },
+  { name: "Colombia", continent: "SA", flag: "🇨🇴", color: green[500] },
   { name: "Denmark", continent: "EU", flag: "🇩🇰", color: green[500] },
   { name: "Egypt", continent: "AF", flag: "🇪🇬", color: green[500] },
   { name: "Estonia", continent: "EU", flag: "🇪🇪", color: green[500] },
@@ -50,7 +50,7 @@ const countries: Country[] = [
   { name: "Netherlands", continent: "EU", flag: "🇳🇱", color: green[500] },
   { name: "New Caledonia", continent: "AS", flag: "🇳🇨", color: green[500] },
   { name: "Norway", continent: "EU", flag: "🇳🇴", color: green[500] },
-  // Apr '26 - { name: "Panama", continent: "NA", flag: "🇵🇦", color: yellow[500] },
+  { name: "Panama", continent: "NA", flag: "🇵🇦", color: yellow[500] },
   { name: "Poland", continent: "EU", flag: "🇵🇱", color: green[500] },
   { name: "Portugal", continent: "EU", flag: "🇵🇹", color: green[500] },
   { name: "Puerto Rico", continent: "NA", flag: "🇵🇷", color: green[500] },

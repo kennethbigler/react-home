@@ -1,0 +1,2 @@
+import{x as e}from"./react-vendor-HqBF-KSi.js";import{t}from"./createSvgIcon-BBRGa9WV.js";var n=t((0,e().jsx)(`path`,{d:`M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z`}),`Add`);export{n as t};
+//# sourceMappingURL=Add-C78aR7E4.js.map
