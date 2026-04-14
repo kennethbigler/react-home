@@ -1,0 +1,2 @@
+import{G as e}from"./createSimplePaletteValueFilter-C4uqQZG8.js";import{t}from"./indigo-DB5IViI9.js";import{t as n}from"./teal-Dxj8fkd6.js";import{a as r}from"./react-CuPne-I1.js";var i=[`light`,`dark`],a={mode:i[1],primary:n,secondary:e},o={mode:i[0],primary:t,secondary:e},s=window.matchMedia(`(prefers-color-scheme: light)`).matches,c=r(`themeAtom`,s?o:a);export{o as n,c as r,a as t};
+//# sourceMappingURL=theme-atom-BK4g02v0.js.map
