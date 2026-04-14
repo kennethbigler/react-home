@@ -10,7 +10,7 @@ interface Country {
 /** name is a unique key, verify it on https://unpkg.com/world-atlas@2.0.2/countries-110m.json */
 const countries: Country[] = [
   { name: "American Samoa", continent: "AS", flag: "🇦🇸", color: green[500] },
-  { name: "Antarctica", continent: "SA", flag: "🇦🇶", color: green[500] },
+  { name: "Antarctica", continent: "AS", flag: "🇦🇶", color: green[500] },
   { name: "Argentina", continent: "SA", flag: "🇦🇷", color: green[500] },
   { name: "Australia", continent: "AU", flag: "🇦🇺", color: green[500] },
   { name: "Austria", continent: "EU", flag: "🇦🇹", color: yellow[500] },
