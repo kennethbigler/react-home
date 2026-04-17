@@ -63,7 +63,7 @@
     "prettier": "3.8.2",
     "source-map-explorer": "2.5.3",
     "tsx": "4.21.0",
-    "typescript": "6.0.2",
+    "typescript": "6.0.3",
     "vitest": "4.1.4"
   },
   "keywords": [
