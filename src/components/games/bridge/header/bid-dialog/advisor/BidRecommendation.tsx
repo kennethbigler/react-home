@@ -44,7 +44,6 @@ export default function BidRecommendation({
       <Typography variant="h6" gutterBottom>
         Recommended Bid
       </Typography>
-
       {/* Main bid display */}
       <Paper
         elevation={2}
@@ -60,13 +59,20 @@ export default function BidRecommendation({
         <Typography
           variant="h4"
           component="span"
-          fontWeight="bold"
           aria-label="Recommended bid"
+          sx={{
+            fontWeight: "bold",
+          }}
         >
           {bid}
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-          <Typography variant="subtitle1" color="text.secondary">
+          <Typography
+            variant="subtitle1"
+            sx={{
+              color: "text.secondary",
+            }}
+          >
             {category}
           </Typography>
           <Chip
@@ -77,47 +83,67 @@ export default function BidRecommendation({
           />
         </Box>
       </Paper>
-
       {/* Hand analysis */}
-      <Box mb={2}>
+      <Box
+        sx={{
+          mb: 2,
+        }}
+      >
         <Typography variant="subtitle2" gutterBottom>
           Your Hand Analysis
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          sx={{
+            color: "text.secondary",
+          }}
+        >
           {handAnalysis.description}
         </Typography>
       </Box>
-
       <Divider sx={{ mb: 2 }} />
-
       {/* Why this bid */}
-      <Box mb={2}>
+      <Box
+        sx={{
+          mb: 2,
+        }}
+      >
         <Typography variant="subtitle2" gutterBottom>
           Why This Bid
         </Typography>
         <Typography variant="body2">{reasoning}</Typography>
       </Box>
-
       {/* What it tells partner */}
-      <Box mb={2}>
+      <Box
+        sx={{
+          mb: 2,
+        }}
+      >
         <Typography variant="subtitle2" gutterBottom>
           What It Tells Partner
         </Typography>
-        <Typography variant="body2" color="primary.main">
+        <Typography
+          variant="body2"
+          sx={{
+            color: "primary.main",
+          }}
+        >
           {whatYourBidTellsPartner}
         </Typography>
       </Box>
-
       {/* Alternative bid */}
       {alternativeBid && (
-        <Box mb={2}>
+        <Box
+          sx={{
+            mb: 2,
+          }}
+        >
           <Typography variant="subtitle2" gutterBottom>
             Alternative Bid
           </Typography>
           <Chip label={alternativeBid} variant="outlined" size="small" />
         </Box>
       )}
-
       {/* Note / caveat */}
       {note && (
         <Paper
@@ -135,7 +161,6 @@ export default function BidRecommendation({
           </Typography>
         </Paper>
       )}
-
       {/* Expected partner responses accordion */}
       {expectedResponses.length > 0 && (
         <Accordion>
@@ -157,7 +182,9 @@ export default function BidRecommendation({
                       <Typography
                         variant="body2"
                         component="span"
-                        fontWeight="bold"
+                        sx={{
+                          fontWeight: "bold",
+                        }}
                       >
                         {resp.partnerBid}
                       </Typography>
@@ -171,8 +198,10 @@ export default function BidRecommendation({
                         {resp.yourRebid && (
                           <Typography
                             variant="caption"
-                            display="block"
-                            color="primary.main"
+                            sx={{
+                              display: "block",
+                              color: "primary.main",
+                            }}
                           >
                             Your rebid: {resp.yourRebid}
                           </Typography>

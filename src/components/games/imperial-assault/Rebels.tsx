@@ -28,7 +28,13 @@ const Rebels = () => {
           onBlur={updateCredits}
         />
       </div>
-      <Grid container spacing={2} marginBottom={3}>
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          marginBottom: 3,
+        }}
+      >
         {players.map((r) => (
           <Grid size={{ xs: 12, sm: 6 }} key={r}>
             <Typography>Rebel {r + 1}</Typography>

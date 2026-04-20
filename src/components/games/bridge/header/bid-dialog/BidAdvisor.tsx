@@ -145,7 +145,6 @@ export default function BidAdvisor() {
           New Game
         </Button>
       </Box>
-
       <Grid container spacing={2}>
         {/* ── Left column: hand + context ─────────────────────────────── */}
         <Grid size={{ xs: 12, md: 5 }}>
@@ -190,11 +189,21 @@ export default function BidAdvisor() {
                   color: "text.secondary",
                 }}
               >
-                <Typography variant="h6" color="text.secondary">
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: "text.secondary",
+                  }}
+                >
                   Recommendation
                 </Typography>
                 <Divider sx={{ width: "80%" }} />
-                <Typography variant="body2" textAlign="center">
+                <Typography
+                  variant="body2"
+                  sx={{
+                    textAlign: "center",
+                  }}
+                >
                   Enter your hand above (cards must total 13) to see your bid
                   recommendation.
                 </Typography>

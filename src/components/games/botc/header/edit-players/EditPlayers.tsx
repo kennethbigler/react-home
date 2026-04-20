@@ -52,7 +52,6 @@ const EditPlayers = ({
           onReset={handleReset}
         />
       </Grid>
-
       <Grid size={12} className="flex-container">
         <Button
           aria-label="remove player"
@@ -62,7 +61,11 @@ const EditPlayers = ({
         >
           <Remove />
         </Button>
-        <Typography display="inline">
+        <Typography
+          sx={{
+            display: "inline",
+          }}
+        >
           Players: {numPlayers} ({playerDist[numPlayers]})
         </Typography>
         <Button
@@ -74,7 +77,6 @@ const EditPlayers = ({
           <Add />
         </Button>
       </Grid>
-
       <Grid size={12}>
         <Typography>Travelers</Typography>
         <ButtonGroup aria-label="select number of travelers" fullWidth>

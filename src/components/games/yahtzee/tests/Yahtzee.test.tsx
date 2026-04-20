@@ -39,46 +39,56 @@ describe("games | yahtzee | Yahtzee", () => {
     // --------------------     saves and un-saves a dice     -------------------- //
     // baseline
     expect(
-      container.querySelectorAll(".MuiButton-outlinedSecondary"),
+      container.querySelectorAll(
+        ".MuiButton-outlined.MuiButton-colorSecondary",
+      ),
     ).toHaveLength(5);
     expect(
-      container.querySelectorAll(".MuiButton-containedPrimary"),
+      container.querySelectorAll(".MuiButton-contained.MuiButton-colorPrimary"),
     ).toHaveLength(2);
 
     // it doesn't save if dice aren't ready
     fireEvent.click(screen.getAllByRole("button")[2]);
     expect(
-      container.querySelectorAll(".MuiButton-outlinedSecondary"),
+      container.querySelectorAll(
+        ".MuiButton-outlined.MuiButton-colorSecondary",
+      ),
     ).toHaveLength(5);
     expect(
-      container.querySelectorAll(".MuiButton-containedPrimary"),
+      container.querySelectorAll(".MuiButton-contained.MuiButton-colorPrimary"),
     ).toHaveLength(2);
 
     // roll the dice
     fireEvent.click(screen.getByText("First Roll"));
     expect(
-      container.querySelectorAll(".MuiButton-outlinedSecondary"),
+      container.querySelectorAll(
+        ".MuiButton-outlined.MuiButton-colorSecondary",
+      ),
     ).toHaveLength(18);
     expect(
-      container.querySelectorAll(".MuiButton-containedPrimary"),
+      container.querySelectorAll(".MuiButton-contained.MuiButton-colorPrimary"),
     ).toHaveLength(2);
 
     // save the first button
     fireEvent.click(screen.getAllByRole("button")[2]);
     expect(
-      container.querySelectorAll(".MuiButton-outlinedSecondary"),
+      container.querySelectorAll(
+        ".MuiButton-outlined.MuiButton-colorSecondary",
+      ),
     ).toHaveLength(17);
     expect(
-      container.querySelectorAll(".MuiButton-containedPrimary"),
+      container.querySelectorAll(".MuiButton-contained.MuiButton-colorPrimary"),
     ).toHaveLength(3);
 
     // un-save the first button
     fireEvent.click(screen.getAllByRole("button")[2]);
     expect(
-      container.querySelectorAll(".MuiButton-outlinedSecondary"),
+      container.querySelectorAll(
+        ".MuiButton-outlined.MuiButton-colorSecondary",
+      ),
     ).toHaveLength(16);
     expect(
-      container.querySelectorAll(".MuiButton-containedPrimary"),
+      container.querySelectorAll(".MuiButton-contained.MuiButton-colorPrimary"),
     ).toHaveLength(4);
 
     // --------------------     saves to the top half scores     -------------------- //

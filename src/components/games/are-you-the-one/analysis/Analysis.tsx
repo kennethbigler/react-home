@@ -43,7 +43,12 @@ const Analysis = ({
 
   return (
     <div>
-      <Stack direction="row" justifyContent="space-between">
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: "space-between",
+        }}
+      >
         <Typography variant="h2">Analysis</Typography>
         <FormControlLabel
           control={<Switch checked={showAll} onChange={handleSwitch} />}
@@ -53,8 +58,10 @@ const Analysis = ({
       <Stack
         spacing={1}
         direction="row-reverse"
-        flexWrap="wrap-reverse"
-        justifyContent="flex-end"
+        sx={{
+          flexWrap: "wrap-reverse",
+          justifyContent: "flex-end",
+        }}
       >
         {roundPairings.map(({ pairs, score }, ri) => (
           <MatchedStack
@@ -73,7 +80,13 @@ const Analysis = ({
         ))}
       </Stack>
       {calculatedEquations.length > 0 && <hr aria-hidden />}
-      <Stack spacing={1} direction="row" flexWrap="wrap">
+      <Stack
+        spacing={1}
+        direction="row"
+        sx={{
+          flexWrap: "wrap",
+        }}
+      >
         {calculatedEquations.map(({ pairs, score }, cei) => (
           <CalculatedStack
             key={`calculated-stack-${cei}`}
