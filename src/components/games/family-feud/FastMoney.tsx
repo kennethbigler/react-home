@@ -46,8 +46,10 @@ const FastMoney = ({ questions, answers, scores }: FastMoneyProps) => {
       <Stack
         direction="row"
         spacing={2}
-        justifyContent="center"
-        alignItems="center"
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
         <Stack spacing={2}>
           <FastMoneyTable

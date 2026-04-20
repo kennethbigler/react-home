@@ -69,8 +69,11 @@ const CompEntryCard = ({
               <Typography sx={{ display: "inline" }}>*Total:</Typography>
               <Typography
                 color="warning"
-                fontWeight="fontWeightBold"
-                sx={{ display: "inline", marginLeft: 1 }}
+                sx={{
+                  fontWeight: "fontWeightBold",
+                  display: "inline",
+                  marginLeft: 1,
+                }}
               >
                 {usDollar.format(totalAdj)}
               </Typography>
@@ -80,8 +83,11 @@ const CompEntryCard = ({
                   <Typography sx={{ display: "inline" }}>Net:</Typography>
                   <Typography
                     color={netDiff > 0 ? "success" : "error"}
-                    fontWeight="fontWeightBold"
-                    sx={{ display: "inline", marginLeft: 1 }}
+                    sx={{
+                      fontWeight: "fontWeightBold",
+                      display: "inline",
+                      marginLeft: 1,
+                    }}
                   >
                     {usDollar.format(netDiff)}
                   </Typography>
@@ -96,8 +102,11 @@ const CompEntryCard = ({
                 <Typography sx={{ display: "inline" }}>Ticker:</Typography>
                 <Typography
                   color="primary"
-                  fontWeight="fontWeightBold"
-                  sx={{ display: "inline", marginLeft: 1 }}
+                  sx={{
+                    fontWeight: "fontWeightBold",
+                    display: "inline",
+                    marginLeft: 1,
+                  }}
                 >
                   {stockTick}
                 </Typography>

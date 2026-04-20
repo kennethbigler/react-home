@@ -14,7 +14,14 @@ const Missions = () => {
   return (
     <>
       <Typography variant="h3">Missions</Typography>
-      <Grid container alignItems="center" marginBottom={3} spacing={1}>
+      <Grid
+        container
+        spacing={1}
+        sx={{
+          alignItems: "center",
+          marginBottom: 3,
+        }}
+      >
         <Grid size={{ xs: 6, sm: 3 }}>
           <Typography>Mission (p.44, 57)</Typography>
         </Grid>
@@ -28,7 +35,14 @@ const Missions = () => {
           <Typography>Imperial Upgrade (p.35)</Typography>
         </Grid>
       </Grid>
-      <Grid container alignItems="center" marginBottom={3} spacing={1}>
+      <Grid
+        container
+        spacing={1}
+        sx={{
+          alignItems: "center",
+          marginBottom: 3,
+        }}
+      >
         {campaign.map((m, i) => {
           const isFinale = i >= campaign.length - 1;
           return (

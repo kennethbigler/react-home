@@ -10,7 +10,14 @@ const ForcedMissions = () => {
       <Typography variant="h3" gutterBottom>
         Forced Missions
       </Typography>
-      <Grid container alignItems="center" marginBottom={3} spacing={1}>
+      <Grid
+        container
+        spacing={1}
+        sx={{
+          alignItems: "center",
+          marginBottom: 3,
+        }}
+      >
         {forcedMissions.map((m, i) => (
           <MissionEntry
             key={i}

@@ -48,7 +48,12 @@ const Tracker = ({ end }: TrackerProps) => {
             </Fragment>
           ),
       )}
-      <Grid size={12} marginTop={3}>
+      <Grid
+        size={12}
+        sx={{
+          marginTop: 3,
+        }}
+      >
         <ButtonGroup fullWidth aria-label="Pick Round">
           {numRounds.map((i) => (
             <Button

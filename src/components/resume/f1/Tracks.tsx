@@ -333,12 +333,24 @@ const Tracks = memo(() => {
   return (
     <>
       <ExpandableCard title="2026 Tracks" backgroundColor={FERRARI_HEX}>
-        <Grid container spacing={3} width="100%">
+        <Grid
+          container
+          spacing={3}
+          sx={{
+            width: "100%",
+          }}
+        >
           {CURRENT_TRACKS.map(renderTrack)}
         </Grid>
       </ExpandableCard>
       <ExpandableCard title="Past Tracks" backgroundColor={FERRARI_HEX}>
-        <Grid container spacing={3} width="100%">
+        <Grid
+          container
+          spacing={3}
+          sx={{
+            width: "100%",
+          }}
+        >
           {PAST_TRACKS.map(renderTrack)}
         </Grid>
       </ExpandableCard>

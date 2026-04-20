@@ -138,7 +138,9 @@ function BidInfoIcon({ bid, relationship, prevHighBid }: BidInfoIconProps) {
         disableHoverListener
         disableFocusListener
         disableTouchListener
-        PopperProps={{ disablePortal: true }}
+        slotProps={{
+          popper: { disablePortal: true },
+        }}
       >
         <IconButton
           size="small"
@@ -188,7 +190,7 @@ function BidSlot({
           label={slotLabel}
           value={currentValue}
           onChange={(e) => onChange(e.target.value)}
-          inputProps={{ "aria-label": slotLabel }}
+          slotProps={{ input: { "aria-label": slotLabel } }}
         >
           {options.map((b) => (
             <MenuItem key={b} value={b}>
@@ -228,7 +230,9 @@ function BidChip({ chipLabel, tooltipTitle, isMe }: BidChipProps) {
         disableHoverListener
         disableFocusListener
         disableTouchListener
-        PopperProps={{ disablePortal: true }}
+        slotProps={{
+          popper: { disablePortal: true },
+        }}
       >
         <Chip
           label={chipLabel}
@@ -272,8 +276,10 @@ function CompletedRoundRow({
     >
       <Typography
         variant="caption"
-        color="text.secondary"
-        sx={{ minWidth: 60 }}
+        sx={{
+          color: "text.secondary",
+          minWidth: 60,
+        }}
       >
         Round {roundIndex + 1}:
       </Typography>
@@ -430,14 +436,19 @@ export default function AuctionContextInput({
       <Typography variant="h6" gutterBottom>
         Auction Context
       </Typography>
-
       {/* ── My bidding position ────────────────────────────────────────── */}
-      <Box mb={2}>
+      <Box
+        sx={{
+          mb: 2,
+        }}
+      >
         <Typography
           variant="caption"
-          color="text.secondary"
-          display="block"
           gutterBottom
+          sx={{
+            color: "text.secondary",
+            display: "block",
+          }}
         >
           My bidding position
         </Typography>
@@ -458,14 +469,19 @@ export default function AuctionContextInput({
           ))}
         </Box>
       </Box>
-
       {/* ── Vulnerability (read-only from game state) ─────────────────── */}
-      <Box mb={2}>
+      <Box
+        sx={{
+          mb: 2,
+        }}
+      >
         <Typography
           variant="caption"
-          color="text.secondary"
-          display="block"
           gutterBottom
+          sx={{
+            color: "text.secondary",
+            display: "block",
+          }}
         >
           Vulnerability
         </Typography>
@@ -484,9 +500,7 @@ export default function AuctionContextInput({
           />
         </Box>
       </Box>
-
       <Divider sx={{ mb: 2 }} />
-
       {/* ── Bidding complete banner ────────────────────────────────────── */}
       {isComplete && (
         <Alert severity="info" sx={{ mb: 2 }}>
@@ -494,15 +508,20 @@ export default function AuctionContextInput({
           {finalContract ? ` — Final contract: ${finalContract}` : ""}
         </Alert>
       )}
-
       {/* ── Completed rounds (prior bids) ─────────────────────────────── */}
       {completedRounds.length > 0 && (
-        <Box mb={2}>
+        <Box
+          sx={{
+            mb: 2,
+          }}
+        >
           <Typography
             variant="caption"
-            color="text.secondary"
-            display="block"
             gutterBottom
+            sx={{
+              color: "text.secondary",
+              display: "block",
+            }}
           >
             Prior Rounds
           </Typography>
@@ -520,15 +539,20 @@ export default function AuctionContextInput({
           <Divider sx={{ mt: 1, mb: 2 }} />
         </Box>
       )}
-
       {/* ── Current round: bids before my turn ────────────────────────── */}
       {!isComplete && (
-        <Box mb={2}>
+        <Box
+          sx={{
+            mb: 2,
+          }}
+        >
           <Typography
             variant="caption"
-            color="text.secondary"
-            display="block"
             gutterBottom
+            sx={{
+              color: "text.secondary",
+              display: "block",
+            }}
           >
             {myPosition === 1
               ? "Current round — you bid first"
@@ -537,8 +561,10 @@ export default function AuctionContextInput({
           {myPosition === 1 ? (
             <Typography
               variant="body2"
-              color="text.secondary"
-              sx={{ fontStyle: "italic" }}
+              sx={{
+                color: "text.secondary",
+                fontStyle: "italic",
+              }}
             >
               You are the dealer — no prior bids this round.
             </Typography>
@@ -579,7 +605,6 @@ export default function AuctionContextInput({
           )}
         </Box>
       )}
-
       {/* ── Complete this round (hidden once auction is over) ────────── */}
       {!isComplete && (
         <Box
@@ -593,9 +618,11 @@ export default function AuctionContextInput({
         >
           <Typography
             variant="caption"
-            color="text.secondary"
-            display="block"
             gutterBottom
+            sx={{
+              color: "text.secondary",
+              display: "block",
+            }}
           >
             Complete this round
           </Typography>
@@ -680,10 +707,13 @@ export default function AuctionContextInput({
           </Button>
         </Box>
       )}
-
       {/* ── Agreed trump suit (Blackwood / GSF) ──────────────────────── */}
       {needsAgreedSuit && (
-        <Box mb={1.5}>
+        <Box
+          sx={{
+            mb: 1.5,
+          }}
+        >
           <FormControl fullWidth size="small">
             <InputLabel id="agreed-suit-label">Agreed Trump Suit</InputLabel>
             <Select

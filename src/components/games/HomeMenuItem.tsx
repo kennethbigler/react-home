@@ -48,7 +48,13 @@ const HomeMenuItem = ({ items, title, onClick }: HomeMenuItemProps) => {
           <ButtonBase key={name} onClick={handleClick(route)}>
             <Card sx={cardStyles}>
               <CardContent>
-                <Typography variant="h5" component="h4" textAlign="center">
+                <Typography
+                  variant="h5"
+                  component="h4"
+                  sx={{
+                    textAlign: "center",
+                  }}
+                >
                   {name}
                 </Typography>
                 <Avatar style={avatarStyles}>{icon}</Avatar>

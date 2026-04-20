@@ -33,7 +33,9 @@ const AddScore = ({ initials, lastBid, onScoreSave }: AddScoreProps) => {
       <Typography
         color={total === 13 ? "success" : "warning"}
         align="center"
-        marginBottom={1}
+        sx={{
+          marginBottom: 1,
+        }}
       >
         {total !== 13 && "⚠️"} Tricks: {total}
       </Typography>

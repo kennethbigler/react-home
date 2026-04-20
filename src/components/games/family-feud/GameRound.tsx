@@ -50,7 +50,12 @@ const GameRound = ({
 
   return (
     <div>
-      <Typography variant="body1" fontStyle="italic">
+      <Typography
+        variant="body1"
+        sx={{
+          fontStyle: "italic",
+        }}
+      >
         {question}
       </Typography>
       <hr aria-hidden />
@@ -61,8 +66,10 @@ const GameRound = ({
       <Stack
         direction="row"
         spacing={2}
-        justifyContent="center"
-        alignItems="center"
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
         <Stack spacing={2} style={wrapperStyles}>
           {buttonsL.map((content: string, i: number) =>
@@ -101,7 +108,12 @@ const GameRound = ({
       </Stack>
       <br />
       <hr aria-hidden />
-      <Stack direction="row" justifyContent="space-around">
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: "space-around",
+        }}
+      >
         {strikes.map((isStrike, i) => (
           <Button
             variant="contained"
@@ -117,7 +129,12 @@ const GameRound = ({
       <Typography variant="h4" component="h3">
         Which Team Won?
       </Typography>
-      <Stack direction="row" justifyContent="space-around">
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: "space-around",
+        }}
+      >
         <Button variant="contained" onClick={handleTeam1Click}>
           Team 1
         </Button>

@@ -37,7 +37,13 @@ const Job = ({ job, fullWidth, triple }: JobProps) => (
         {job.tech && job.tech.length !== 0 && (
           <>
             <hr aria-hidden />
-            <Typography display="inline">Technologies:&nbsp;</Typography>
+            <Typography
+              sx={{
+                display: "inline",
+              }}
+            >
+              Technologies:&nbsp;
+            </Typography>
             {getCSV(job.tech)}
           </>
         )}

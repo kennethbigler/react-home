@@ -82,13 +82,22 @@ export default function HandInput({
       <Typography variant="h6" gutterBottom>
         My Hand
       </Typography>
-
       {/* HCP input */}
-      <Box mb={3}>
+      <Box
+        sx={{
+          mb: 3,
+        }}
+      >
         <Typography id="hcp-label" gutterBottom>
           High Card Points (HCP): <strong>{hand.hcp}</strong>
         </Typography>
-        <Grid container spacing={2} alignItems="center">
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            alignItems: "center",
+          }}
+        >
           <Grid size="grow">
             <Slider
               aria-labelledby="hcp-label"
@@ -110,26 +119,33 @@ export default function HandInput({
               label="HCP"
               type="number"
               value={hand.hcp}
-              inputProps={{ min: 0, max: 37, "aria-label": "HCP value" }}
               onChange={(e) =>
                 handleHcpChange(parseInt(e.target.value, 10) || 0)
               }
               size="small"
               sx={{ width: 80 }}
+              slotProps={{
+                htmlInput: { min: 0, max: 37, "aria-label": "HCP value" },
+              }}
             />
           </Grid>
         </Grid>
       </Box>
-
       {/* Suit counts */}
-      <Box mb={2}>
+      <Box
+        sx={{
+          mb: 2,
+        }}
+      >
         <Typography gutterBottom>
           Card Count per Suit{" "}
           <Typography
             component="span"
             variant="body2"
             color={totalCards === 13 ? "success.main" : "error"}
-            fontWeight="bold"
+            sx={{
+              fontWeight: "bold",
+            }}
           >
             ({totalCards}/13)
           </Typography>
@@ -202,12 +218,11 @@ export default function HandInput({
           </Typography>
         )}
       </Box>
-
       {/* Blackwood: Aces input (shown only when partner bids 4NT) */}
       {showAcesInput && (
         <Box
-          mb={2}
           sx={{
+            mb: 2,
             border: "1px solid",
             borderColor: "info.main",
             borderRadius: 1,
@@ -216,9 +231,11 @@ export default function HandInput({
         >
           <Typography
             variant="caption"
-            color="info.main"
-            display="block"
-            mb={1}
+            sx={{
+              color: "info.main",
+              display: "block",
+              mb: 1,
+            }}
           >
             Partner bid 4NT (Blackwood) — how many aces do you hold?
           </Typography>
@@ -226,21 +243,22 @@ export default function HandInput({
             label="Aces in hand (0-4)"
             type="number"
             value={hand.aces ?? ""}
-            inputProps={{ min: 0, max: 4, "aria-label": "Aces count" }}
             onChange={(e) =>
               handleAcesChange(parseInt(e.target.value, 10) || 0)
             }
             size="small"
             sx={{ width: 160 }}
+            slotProps={{
+              htmlInput: { min: 0, max: 4, "aria-label": "Aces count" },
+            }}
           />
         </Box>
       )}
-
       {/* Blackwood: Kings input (shown only when partner bids 5NT kings ask) */}
       {showKingsInput && (
         <Box
-          mb={2}
           sx={{
+            mb: 2,
             border: "1px solid",
             borderColor: "info.main",
             borderRadius: 1,
@@ -249,9 +267,11 @@ export default function HandInput({
         >
           <Typography
             variant="caption"
-            color="info.main"
-            display="block"
-            mb={1}
+            sx={{
+              color: "info.main",
+              display: "block",
+              mb: 1,
+            }}
           >
             Partner bid 5NT (kings ask) — how many kings do you hold?
           </Typography>
@@ -259,21 +279,22 @@ export default function HandInput({
             label="Kings in hand (0-4)"
             type="number"
             value={hand.kings ?? ""}
-            inputProps={{ min: 0, max: 4, "aria-label": "Kings count" }}
             onChange={(e) =>
               handleKingsChange(parseInt(e.target.value, 10) || 0)
             }
             size="small"
             sx={{ width: 160 }}
+            slotProps={{
+              htmlInput: { min: 0, max: 4, "aria-label": "Kings count" },
+            }}
           />
         </Box>
       )}
-
       {/* Stopper question (shown when opponent has bid a suit) */}
       {showStopperInput && (
         <Box
-          mb={2}
           sx={{
+            mb: 2,
             border: "1px solid",
             borderColor: "warning.main",
             borderRadius: 1,
@@ -282,18 +303,22 @@ export default function HandInput({
         >
           <Typography
             variant="caption"
-            color="warning.main"
-            display="block"
-            mb={0.5}
+            sx={{
+              color: "warning.main",
+              display: "block",
+              mb: 0.5,
+            }}
           >
             Opponent bid {opponentSuitLabel} — do you have a stopper in their
             suit?
           </Typography>
           <Typography
             variant="caption"
-            color="text.secondary"
-            display="block"
-            mb={1}
+            sx={{
+              color: "text.secondary",
+              display: "block",
+              mb: 1,
+            }}
           >
             A <strong>stopper</strong> is a card (or cards) that can win a trick
             in the opponent&apos;s suit: <strong>Ace</strong> (always stops it),{" "}
@@ -313,7 +338,9 @@ export default function HandInput({
                     hasStopperInOpponentSuit: e.target.checked,
                   })
                 }
-                inputProps={{ "aria-label": "Has stopper in opponent's suit" }}
+                slotProps={{
+                  input: { "aria-label": "Has stopper in opponent's suit" },
+                }}
               />
             }
             label={
@@ -326,7 +353,6 @@ export default function HandInput({
           />
         </Box>
       )}
-
       {/* TP display */}
       <Box
         sx={{
