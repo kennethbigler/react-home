@@ -1,5 +1,5 @@
 import PlayerMenu from "../../common/header/PlayerMenu";
-import { getChipColor } from "./spadesHelpers";
+import { getChipColor } from "./helpers/getChipColor";
 import { Avatar, Chip, Typography } from "@mui/material";
 
 interface HeaderProps {

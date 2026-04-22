@@ -1,9 +1,10 @@
 import { memo } from "react";
 import ControlBar from "./control-bar/ControlBar";
 import ScoreTable from "./ScoreTable";
-import useSpades from "./useSpades";
+import useSpades from "./helpers/useSpades";
 import Header from "./Header";
 import { Button } from "@mui/material";
+import { getScoreText } from "./helpers/getScoreText";
 
 const Spades = memo(() => {
   const {
@@ -23,7 +24,7 @@ const Spades = memo(() => {
     addScore,
   } = useSpades();
 
-  // ControlBar doesn't have access to data, calculate out here
+  // ControlBar doesn't have access to data, calculate blindTrade here
   let i = data.length - 1;
   if (data[i]?.score1 === undefined) {
     i -= 1;
@@ -33,9 +34,10 @@ const Spades = memo(() => {
   const bags1 = data[i]?.bags1 || 0;
   const score2 = data[i]?.score2 || 0;
   const bags2 = data[i]?.bags2 || 0;
-  // see if blind trade is possible
+  // see if blindTrade is possible
   const diff = score1 * 10 + bags1 - (score2 * 10 + bags2);
   const blindTrade = diff > 0 ? Math.floor(diff / 100) : Math.ceil(diff / 100);
+  const scoreText = `${getScoreText(score1, score2)}${bags1} | ${getScoreText(score2, score1)}${bags2}`;
 
   return (
     <>
@@ -55,6 +57,7 @@ const Spades = memo(() => {
           blindTrade={blindTrade}
           first={first}
           initials={initials}
+          scoreText={scoreText}
           lastBid={lastBid}
           showPenalty={data[0]?.score1 !== undefined}
           onBidSave={addBid}

@@ -2,7 +2,7 @@ import { useAtomValue } from "jotai";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import StatsBagsChart from "./StatsBagsChart";
 import themeAtom from "../../../../jotai/theme-atom";
-import { getChipColor } from "../spadesHelpers";
+import { getChipColor } from "../helpers/getChipColor";
 import spadesAtom from "../../../../jotai/spades-atom";
 import StatsNilChart from "./StatsNilsChart";
 import { Avatar, Chip, Typography } from "@mui/material";

@@ -14,6 +14,7 @@ interface AddBidProps {
   blindTrade: number;
   first: number;
   initials: string;
+  scoreText: string;
   onBidSave: (bids: Bids) => void;
 }
 
@@ -23,7 +24,13 @@ const getBlindTrade = (blindTrade: number, n: number) =>
     ? Math.min(Math.abs(blindTrade), 3)
     : 0;
 
-const AddBid = ({ blindTrade, first, initials, onBidSave }: AddBidProps) => {
+const AddBid = ({
+  blindTrade,
+  first,
+  initials,
+  scoreText,
+  onBidSave,
+}: AddBidProps) => {
   const [bids, setBids] = useState<Bids>([
     defaultBid,
     defaultBid,
@@ -78,7 +85,11 @@ const AddBid = ({ blindTrade, first, initials, onBidSave }: AddBidProps) => {
   const bags = bids.reduce((acc, bid) => acc - bid.bid, 13);
 
   return (
-    <InfoPopup title="+ Bid" onSave={handleSave}>
+    <InfoPopup
+      buttonText="+ Bid"
+      title={`Bid - ${scoreText}`}
+      onSave={handleSave}
+    >
       <Table aria-label="Bid Table" padding="none">
         <TableHead>
           <TableRow>
