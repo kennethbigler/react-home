@@ -1,24 +1,15 @@
 import { useAtom, useAtomValue } from "jotai";
 import playerAtom from "../../../../jotai/player-atom";
 import spadesAtom, {
+  Bid,
   Bids,
   defaultBid,
   NilMetrics,
 } from "../../../../jotai/spades-atom";
 import { getScoreText } from "./getScoreText";
 
-/** defined in spades-atom
- * bid: number;
- * blind: boolean;
- * train: boolean;
- * made: number;
- */
-interface ScoreData {
-  bid: number;
-  blind: boolean;
-  train: boolean;
-  made: number;
-}
+/** Bid extended with the number of tricks made this round */
+type ScoreData = Bid & { made: number };
 
 /** convert Bids to string for smaller storage */
 export const bidsToString = (bids: Bids): string =>
@@ -162,7 +153,6 @@ export const penaltyHelper = (s: number, b: number, m?: string) => {
     bags -= 10;
     mod += "💰";
   }
-  // return;
   return { score, bags, mod };
 };
 
@@ -175,8 +165,8 @@ export const getMetrics = (
   mades: [number, number, number, number],
   missedBids: [number, number, number, number],
 ) => {
-  // New variables stored to state
-  const newNils: NilMetrics = [...nils];
+  // New variables stored to state — deep-copy nils inner arrays to avoid mutating atom state
+  const newNils: NilMetrics = nils.map((n) => [...n]) as NilMetrics;
   const newMissedBids: [number, number, number, number] = [...missedBids];
   const newLifeBags: [number, number, number, number, number] = [...lifeBags];
   // get order relative to first
@@ -250,17 +240,16 @@ const useSpades = () => {
   /** sets a new data entry with first and bid info of data, updates first */
   const addBid = (bids: Bids) => {
     const last = data.length - 1;
-    // edit score if exists
-    if (data[last] && data[last]?.score1 === undefined) {
+    // edit bid if current round not yet scored
+    if (data[last] && data[last].score1 === undefined) {
       const newData = [...data];
-      newData[last].bid = bidsToString(bids);
+      newData[last] = { ...newData[last], bid: bidsToString(bids) };
       setSpades({ ...spades, data: newData, lastBid: bids });
       return;
     }
-    // convert bid to storage data format
+    // add new row for this round
     const newData = [...data];
     newData.push({ start: initials[first], bid: bidsToString(bids) });
-    // update first player and add data entry
     setSpades({ ...spades, data: newData, lastBid: bids });
   };
 

@@ -74,7 +74,7 @@ const AddBid = ({
   return (
     <InfoPopup
       buttonText="+ Bid"
-      title={`Bid - ${scoreText}`}
+      title={`Bid: ${scoreText}`}
       onSave={handleSave}
     >
       <Table aria-label="Bid Table" padding="none">

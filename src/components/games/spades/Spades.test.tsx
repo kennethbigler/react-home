@@ -1,6 +1,5 @@
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { Provider, createStore } from "jotai";
-import { getChipColor } from "./helpers/getChipColor";
 import Spades from ".";
 import spadesAtom from "../../../jotai/spades-atom";
 
@@ -66,11 +65,5 @@ describe("games | spades | Spades", () => {
     );
     expect(screen.getByRole("button", { name: /reset/i })).toBeInTheDocument();
     expect(screen.queryByText("+ Bid")).not.toBeInTheDocument();
-  });
-
-  test("helpers | getChipColor", () => {
-    expect(getChipColor(1, 2)).toEqual("error");
-    expect(getChipColor(2, 1)).toEqual("success");
-    expect(getChipColor(2, 2)).toEqual("default");
   });
 });

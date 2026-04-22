@@ -14,7 +14,7 @@ interface ScoreTableProps {
 }
 
 const ScoreTable = ({ initials, data }: ScoreTableProps) => (
-  <Table aria-label="Bid Table">
+  <Table aria-label="Score Table">
     <TableHead>
       <TableRow>
         <TableCell width={"10%"}>🥇</TableCell>
