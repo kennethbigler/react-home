@@ -5,6 +5,7 @@ import spadesAtom, {
   defaultBid,
   NilMetrics,
 } from "../../../../jotai/spades-atom";
+import { getScoreText } from "./getScoreText";
 
 /** defined in spades-atom
  * bid: number;
@@ -376,6 +377,22 @@ const useSpades = () => {
     });
   };
 
+  // Derive current scores for display (find last completed row)
+  let scoreIdx = data.length - 1;
+  if (data[scoreIdx]?.score1 === undefined) {
+    scoreIdx -= 1;
+  }
+  const curScore1 = data[scoreIdx]?.score1 || 0;
+  const curBags1 = data[scoreIdx]?.bags1 || 0;
+  const curScore2 = data[scoreIdx]?.score2 || 0;
+  const curBags2 = data[scoreIdx]?.bags2 || 0;
+  const scoreDiff = curScore1 * 10 + curBags1 - (curScore2 * 10 + curBags2);
+  const blindTrade =
+    scoreDiff > 0 ? Math.floor(scoreDiff / 100) : Math.ceil(scoreDiff / 100);
+  const scoreText = `${getScoreText(curScore1, curScore2)}${curBags1} | ${getScoreText(curScore2, curScore1)}${curBags2}`;
+  const showPenalty = data[0]?.score1 !== undefined;
+  const showReset = curScore1 >= 100 || curScore2 >= 100;
+
   return {
     // data
     data,
@@ -385,6 +402,11 @@ const useSpades = () => {
     lifeBags,
     wins1,
     wins2,
+    // derived
+    blindTrade,
+    scoreText,
+    showPenalty,
+    showReset,
     // functions
     addBid,
     addPenalty,

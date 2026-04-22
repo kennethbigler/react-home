@@ -1,6 +1,8 @@
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { Provider, createStore } from "jotai";
 import { getChipColor } from "./helpers/getChipColor";
 import Spades from ".";
+import spadesAtom from "../../../jotai/spades-atom";
 
 describe("games | spades | Spades", () => {
   it("renders as expected", async () => {
@@ -40,6 +42,30 @@ describe("games | spades | Spades", () => {
     await waitFor(() => expect(screen.getByText("Close")).toBeInTheDocument());
     fireEvent.click(screen.getByText("Close"));
     await waitFor(() => expect(screen.queryByText("Totals:")).toBeNull());
+  });
+
+  it("shows Reset button when a team's score reaches 100", () => {
+    const store = createStore();
+    store.set(spadesAtom, (prev) => ({
+      ...prev,
+      data: [
+        {
+          start: "A",
+          bid: "9999",
+          score1: 100,
+          bags1: 0,
+          score2: 80,
+          bags2: 2,
+        },
+      ],
+    }));
+    render(
+      <Provider store={store}>
+        <Spades />
+      </Provider>,
+    );
+    expect(screen.getByRole("button", { name: /reset/i })).toBeInTheDocument();
+    expect(screen.queryByText("+ Bid")).not.toBeInTheDocument();
   });
 
   test("helpers | getChipColor", () => {

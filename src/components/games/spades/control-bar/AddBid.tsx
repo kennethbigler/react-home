@@ -38,7 +38,7 @@ const AddBid = ({
     defaultBid,
   ]);
 
-  const a = (first + 0) % 4;
+  const a = first;
   const b = (first + 1) % 4;
   const c = (first + 2) % 4;
   const d = (first + 3) % 4;
@@ -49,21 +49,8 @@ const AddBid = ({
       if (blind) {
         newBid = { bid: 0, blind, train: false };
       } else if (train) {
-        let trainBid = 10;
-        switch (n) {
-          case a:
-            trainBid -= bids[c].bid;
-            break;
-          case b:
-            trainBid -= bids[d].bid;
-            break;
-          case c:
-            trainBid -= bids[a].bid;
-            break;
-          case d:
-          default:
-            trainBid -= bids[b].bid;
-        }
+        // partner index is always (n + 2) % 4
+        const trainBid = 10 - bids[(n + 2) % 4].bid;
         newBid = {
           bid: trainBid,
           blind: false,
