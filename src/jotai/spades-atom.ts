@@ -3,19 +3,19 @@ import { atomWithStorage } from "jotai/utils";
 export const MIN_BID = 0;
 export const MAX_BID = 13;
 
-interface Bid {
+export interface Bid {
   bid: number;
   blind: boolean;
   train: boolean;
 }
-/** each Bid contains bid: number; blind: boolean; train: boolean; */
+/** Tuple of one bid per player, in seat order */
 export type Bids = [Bid, Bid, Bid, Bid];
-/** player nils [bid, blind, won] */
+/** Per-player nil stats: [times bid, times bid blind, times won] */
 export type NilMetrics = [
-  [number, number, number],
-  [number, number, number],
-  [number, number, number],
-  [number, number, number],
+  [bid: number, blind: number, won: number],
+  [bid: number, blind: number, won: number],
+  [bid: number, blind: number, won: number],
+  [bid: number, blind: number, won: number],
 ];
 
 export interface ScoreRow {
@@ -37,17 +37,17 @@ export interface ScoreRow {
   mod2?: string;
 }
 
-interface SpadesState {
+export interface SpadesState {
   /** score table, updates on +Score & +Bid, resets over games */
   data: ScoreRow[];
   /** 0, 1, 2, 3, updates on +Score, persists over games */
   first: number;
   /** recent bids */
   lastBid: Bids;
-  /** over bid tracker over time */
-  lifeBags: [number, number, number, number, number];
-  /** over bid tracker over time */
-  missedBids: [number, number, number, number];
+  /** lifetime under-bid (bag) count per player, plus expected bags accumulator */
+  lifeBags: [p1: number, p2: number, p3: number, p4: number, expected: number];
+  /** lifetime over-bid (missed bid) count per player */
+  missedBids: [p1: number, p2: number, p3: number, p4: number];
   /** team 1 wins */
   wins1: number;
   /** team 2 wins */
@@ -56,11 +56,12 @@ interface SpadesState {
   total1: number;
   /** team 2 running total */
   total2: number;
-  /** player nils [bid, blind, won] */
+  /** per-player nil stats */
   nils: NilMetrics;
 }
 
-export const defaultBid: Bid = { bid: 3, blind: false, train: false };
+/** Default bid used when initializing or resetting bids */
+export const defaultBid: Readonly<Bid> = { bid: 3, blind: false, train: false };
 const initialState: SpadesState = {
   data: [],
   first: 0,

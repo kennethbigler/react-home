@@ -8,8 +8,9 @@ interface ControlBarProps {
   blindTrade: number;
   first: number;
   initials: string;
-  lastBid: Bids;
+  scoreText: string;
   showPenalty: boolean;
+  lastBid: Bids;
   onBidSave: (bids: Bids) => void;
   onPenalty: (team: number) => () => void;
   onScoreSave: (mades: [number, number, number, number]) => void;
@@ -19,8 +20,9 @@ const ControlBar = ({
   blindTrade,
   first,
   initials,
-  lastBid,
+  scoreText,
   showPenalty,
+  lastBid,
   onBidSave,
   onPenalty,
   onScoreSave,
@@ -30,6 +32,7 @@ const ControlBar = ({
       blindTrade={blindTrade}
       first={first}
       initials={initials}
+      scoreText={scoreText}
       onBidSave={onBidSave}
     />
     {showPenalty && <AddPenalty initials={initials} onPenalty={onPenalty} />}

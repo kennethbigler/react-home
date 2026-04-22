@@ -8,6 +8,7 @@ describe("AddBid", () => {
     blindTrade: 0,
     first: 0,
     initials: "ABCD",
+    scoreText: "21 | 13",
     onBidSave: mockOnBidSave,
   };
 
@@ -130,8 +131,8 @@ describe("AddBid", () => {
       render(<AddBid {...defaultProps} first={3} />);
       fireEvent.click(screen.getByText("+ Bid"));
 
-      // When first=3, player B (4th in rotation) can train
-      const trainSwitch = screen.getByLabelText("PB Trains");
+      // When first=3: a=3, b=0, c=1, d=2. Player d = initials[2] = "C 🃏"
+      const trainSwitch = screen.getByLabelText("PC 🃏 Trains");
       fireEvent.click(trainSwitch);
 
       expect(trainSwitch).toBeChecked();
