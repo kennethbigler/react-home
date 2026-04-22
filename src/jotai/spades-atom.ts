@@ -44,9 +44,9 @@ export interface SpadesState {
   first: number;
   /** recent bids */
   lastBid: Bids;
-  /** lifetime over-bid (bag) count per player, plus expected bags accumulator */
+  /** lifetime under-bid (bag) count per player, plus expected bags accumulator */
   lifeBags: [p1: number, p2: number, p3: number, p4: number, expected: number];
-  /** lifetime missed-bid count per player */
+  /** lifetime over-bid (missed bid) count per player */
   missedBids: [p1: number, p2: number, p3: number, p4: number];
   /** team 1 wins */
   wins1: number;
