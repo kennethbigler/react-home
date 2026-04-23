@@ -1,4 +1,4 @@
-import { lightGreen, red } from "@mui/material/colors";
+import { green, teal, red } from "@mui/material/colors";
 import dateObj, { DateObj } from "../apis/DateHelper";
 
 // --------------------------------------------------     Shared     -------------------------------------------------- //
@@ -761,82 +761,163 @@ export const contractData: ContractData[] = [
 ];
 
 // --------------------------------------------------     Budget Data     -------------------------------------------------- //
-/* Engine 50% / R&D 8.8% / Manufacturing 7.5% / Capital Expenses 6.3% / Race Team 6.3% / Drivers 5% / Test Team 5% / Hydraulics 3.8% / Rent Bills, etc. 3.8% /Sponsor Chasing 3.8% */
+/*
+ * Modeled on a competitive midfield-to-front-running team (~$365M total, 2026 season).
+ *
+ * COST CAP (2026): $215M base for a season with ≤24 races (+$1.8M per race above 24).
+ * Up from $135M in 2025 — the increase is described by the FIA as "roughly neutral
+ * overall once changes are taken into account." Key structural changes:
+ *
+ *   NEW IN THE CAP (2026 vs 2024):
+ *   - Infrastructure / Depreciation: The separate $36M/4-yr capex cap was scrapped.
+ *     Annual depreciation of factories, wind tunnels, simulators, and IT is now counted
+ *     inside the main $215M cap.
+ *   - Full staff allocation: Costs must now be 100% F1-attributed if any time is spent
+ *     on F1 projects. Previously teams could split shared-employee costs across F1 and
+ *     non-F1 work. This meaningfully inflates the Staff line.
+ *
+ *   NEWLY EXPLICIT EXCLUSIONS (clarified in 2026 rules):
+ *   - Health & safety costs
+ *   - Catering at team factories and at race weekends
+ *
+ * STILL EXCLUDED FROM COST CAP (per FIA 2026 Financial Regs, confirmed F1.com Apr 2026):
+ * Driver salaries/retainers, the three highest-paid non-driver employees (typically Team
+ * Principal, CTO, Chief Aero), marketing & promotional activities, race-weekend
+ * hospitality, race travel & accommodation costs, legal/HR/finance admin, sustainability
+ * programs, and heritage car programs.
+ *
+ * SEPARATE PU CAP (2026): $190M for power unit manufacturers (up from $95M + inflation
+ * in 2023-2025, for the same reason — capex depreciation folded in). Customer teams pay
+ * a regulated maximum customer price, excluded from the team cost cap.
+ *
+ * REVENUE CONTEXT (2024 baseline, 2026 estimates scaled with F1's growth):
+ * Prize money alone ranged from ~$93M (Williams, 9th) to ~$222M (Ferrari) in 2024.
+ * Total revenues: midfield ~$200-300M, front-runners ~$400-650M+.
+ *
+ * DRIVER SALARIES (2025 estimates, excluded from cap):
+ * Verstappen ~$76M, Hamilton ~$70.5M, Norris ~$57.5M, Piastri ~$37.5M, Leclerc ~$30M.
+ *
+ * Sources: FIA 2026 Financial Regulations (Section D, Issue 04); F1.com (Apr 2026);
+ * FOM prize fund disclosure; sportsorca.com cost cap analysis.
+ * All values are in $M USD.
+ */
 export const budgetData = {
   nodes: [
-    // income, $158M est
-    { id: "Prize Money", color: lightGreen[300] },
-    { id: "Title Sponsors", color: lightGreen[300] },
-    { id: "Parent Co", color: lightGreen[300] },
-    { id: "Principal Partners", color: lightGreen[300] },
-    { id: "Suppliers", color: lightGreen[300] },
-    { id: "Merchandising", color: lightGreen[300] },
-    // center
-    { id: "🏎️", color: red[200] },
-    // big categories ($158M)
-    { id: "R&D", color: red[200] },
-    { id: "Salaries", color: red[200] },
-    { id: "Production", color: red[200] },
-    { id: "Operations", color: red[200] },
-    // R&D ($41M)
-    { id: "Wind-tunnel", color: red[200] },
-    { id: "Track Testing", color: red[200] },
-    { id: "Other", color: red[200] },
-    // Salaries ($42M)
-    { id: "Team", color: red[200] },
-    { id: "Drivers", color: red[200] },
-    { id: "Directors", color: red[200] },
-    // Production ($39M)
-    { id: "Manufacturing", color: red[200] },
-    { id: "Engine", color: red[200] },
-    { id: "Components", color: red[200] },
-    // Operations ($36M)
-    { id: "Logistic", color: red[200] },
-    { id: "Entertainment", color: red[200] },
-    { id: "Freight", color: red[200] },
-    { id: "IT", color: red[200] },
-    { id: "Factory", color: red[200] },
-    { id: "Services", color: red[200] },
-    { id: "Fuel", color: red[200] },
+    // Revenue — ~$365M est. (competitive midfield/upper-midfield team, 2026)
+    { id: "Prize Money", name: "Prize<br>Money", color: green[800] }, // $100-160M midfield; $180-280M front-runner
+    { id: "Title Sponsors", name: "Title<br>Sponsors", color: green[800] }, // $50-100M+ per year for top teams
+    {
+      id: "Principal Partners",
+      name: "Principal<br>Partners",
+      color: green[800],
+    }, // Multiple partners at $15-40M each
+    { id: "Manufacturer", color: green[800] }, // Works team / parent company support
+    { id: "Suppliers", color: green[800] }, // Technical partners (cash + in-kind)
+    {
+      id: "Merch & Licensing",
+      name: "Merch &<br>Licensing",
+      color: green[800],
+      height: 42,
+    }, // $15-25M for competitive teams
+    // Center
+    { id: "🏎️", color: red.A700 },
+    // Cost cap split
+    { id: "Cost Cap", name: "Cost<br>Cap", color: red.A700 }, // $215M, FIA 2026 cap
+    { id: "Cap Exempt", name: "Cap<br>Exempt", color: teal[700] }, // ~$150M, outside FIA cost cap
+    // In Cost Cap — R&D ($50M)
+    { id: "R&D", color: red.A700 },
+    { id: "Wind Tunnel", color: red.A700 },
+    { id: "CFD & Sim", color: red.A700 },
+    { id: "Track Testing", color: red.A700 },
+    // In Cost Cap — Capped Staff ($65M)
+    // Larger than pre-2026 due to 100% allocation rule for shared employees
+    { id: "Staff", color: red.A700 },
+    { id: "Engineers", color: red.A700 },
+    { id: "Mechanics", color: red.A700 },
+    { id: "Strategy & IT", color: red.A700 },
+    // In Cost Cap — Production ($45M)
+    { id: "Production", color: red.A700 },
+    { id: "Chassis", color: red.A700 },
+    { id: "Power Unit", color: red.A700 }, // Customer PU at regulated max price; works teams use PU cap
+    { id: "Components", color: red.A700 },
+    // In Cost Cap — Infrastructure & Capex ($20M) — NEW IN 2026
+    // Previously tracked under a separate $36M/4-yr rolling capex cap; now annual
+    // depreciation of factory assets, simulators, and IT sits inside the main cap.
+    { id: "Infrastructure", color: red.A700 },
+    { id: "Factory & Facilities", color: red.A700 },
+    { id: "Simulators", color: red.A700 },
+    { id: "IT Systems", color: red.A700 },
+    // In Cost Cap — Race Operations ($35M)
+    { id: "Race Ops", name: "Race<br>Ops", color: red.A700 },
+    { id: "Equipment", color: red.A700 },
+    { id: "Freight", color: red.A700 }, // FOM covers a base freight allowance; teams pay overages
+    { id: "Factory Ops", color: red.A700 },
+    { id: "Fuel", color: red.A700 },
+    // Cap Exempt spending (~$150M)
+    // Two intermediate grouping nodes mirror the Cost Cap side's depth
+    { id: "Drivers & Execs", name: "Drivers &<br>Execs", color: teal[700] }, // Exempt salaries group ($77M)
+    { id: "Brand & Travel", name: "Brand &<br>Travel", color: teal[700] }, // Off-track operations group ($73M)
+    { id: "Driver 1", color: teal[700] }, // Midfield #1: ~$15-40M; top teams $30-76M
+    { id: "Driver 2", color: teal[700] }, // Midfield #2: ~$5-20M
+    { id: "Top 3 Execs", color: teal[700] }, // Team Principal + CTO + Chief Aero: ~$10-25M each
+    { id: "Marketing", color: teal[700] }, // Brand, PR, livery deals, social media
+    { id: "Travel", color: teal[700] }, // Race travel explicitly excluded (FIA 2026 Art. 2)
+    { id: "Hospitality", color: teal[700] }, // Paddock motorhome, partner events, Paddock Club
   ],
   data: [
-    // income ($158M est)
-    // Prize Money ($60-140M)
-    ["Prize Money", "🏎️", 60],
-    // Title Sponsors ($40-60M)
-    ["Title Sponsors", "🏎️", 40],
-    // Manufacturer Funding and Parent Companies ($100-300M)
-    ["Parent Co", "🏎️", 30],
-    // Principal Partners ($20-40M)
-    ["Principal Partners", "🏎️", 20],
-    // Official Suppliers / Supporters ($1-10M)
-    ["Suppliers", "🏎️", 5],
-    // Merchandising and Licensing ($0-20M)
-    ["Merchandising", "🏎️", 3],
-    // big categories ($158M est)
-    ["🏎️", "R&D", 41],
-    ["🏎️", "Salaries", 42],
-    ["🏎️", "Production", 39],
-    ["🏎️", "Operations", 36],
-    // R&D ($41M)
-    ["R&D", "Wind-tunnel", 16],
+    // Revenue ($365M est.)
+    ["Prize Money", "🏎️", 150], // Estimated ~5th-7th place finish in 2026 prize pool
+    ["Title Sponsors", "🏎️", 75], // e.g. Oracle/Red Bull, Petronas/Mercedes, HP/Ferrari
+    ["Principal Partners", "🏎️", 60], // Several partners at $15-40M each
+    ["Manufacturer", "🏎️", 40], // Works backing or parent company investment
+    ["Suppliers", "🏎️", 22], // Technical partner cash + in-kind value
+    ["Merch & Licensing", "🏎️", 18], // Team stores, licensing, driver academy revenue
+
+    // Split into cost-cap and exempt spending
+    ["🏎️", "Cost Cap", 215], // FIA 2026 cap: $215M base (capex depreciation now included)
+    ["🏎️", "Cap Exempt", 150], // Drivers, top execs, marketing, travel, hospitality
+
+    // In Cost Cap → big categories ($215M)
+    ["Cost Cap", "R&D", 50],
+    ["Cost Cap", "Staff", 65], // Higher than pre-2026: 100% allocation rule for shared staff
+    ["Cost Cap", "Production", 45],
+    ["Cost Cap", "Infrastructure", 20], // NEW in 2026: annual depreciation replaces old capex cap
+    ["Cost Cap", "Race Ops", 35],
+
+    // R&D ($50M)
+    ["R&D", "Wind Tunnel", 20],
+    ["R&D", "CFD & Sim", 20],
     ["R&D", "Track Testing", 10],
-    ["R&D", "Other", 15],
-    // Salaries ($42M)
-    ["Salaries", "Team", 26],
-    ["Salaries", "Drivers", 13],
-    ["Salaries", "Directors", 3],
-    // Production ($39M)
-    ["Production", "Manufacturing", 13],
-    ["Production", "Engine", 20],
-    ["Production", "Components", 6],
-    // Operations ($36M)
-    ["Operations", "Logistic", 13],
-    ["Operations", "Entertainment", 10],
-    ["Operations", "Freight", 5],
-    ["Operations", "IT", 3],
-    ["Operations", "Factory", 2],
-    ["Operations", "Services", 2],
-    ["Operations", "Fuel", 1],
+
+    // Capped Staff ($65M) — fully allocated per 2026 rules
+    ["Staff", "Engineers", 32],
+    ["Staff", "Mechanics", 22],
+    ["Staff", "Strategy & IT", 11],
+
+    // Production ($45M)
+    ["Production", "Chassis", 18],
+    ["Production", "Power Unit", 18], // Customer PU: ~$15-20M at regulated max price
+    ["Production", "Components", 9],
+
+    // Infrastructure & Capex ($20M) — new 2026 category
+    ["Infrastructure", "Factory & Facilities", 8],
+    ["Infrastructure", "Simulators", 7],
+    ["Infrastructure", "IT Systems", 5],
+
+    // Race Ops ($35M)
+    ["Race Ops", "Equipment", 14],
+    ["Race Ops", "Freight", 12],
+    ["Race Ops", "Factory Ops", 6],
+    ["Race Ops", "Fuel", 3],
+
+    // Cap Exempt ($150M) — two intermediate groups mirror Cost Cap's depth
+    ["Cap Exempt", "Drivers & Execs", 77], // Driver + exec salaries ($40+$15+$22)
+    ["Cap Exempt", "Brand & Travel", 73], // Off-track operations ($30+$23+$20)
+    ["Drivers & Execs", "Driver 1", 40], // Competitive #1 driver; top teams paying $30-76M+
+    ["Drivers & Execs", "Driver 2", 15], // #2 driver; wide range $5-40M depending on team
+    ["Drivers & Execs", "Top 3 Execs", 22], // TP + CTO + Chief Aero; Horner ~$10M, Wolff ~$7.5M
+    ["Brand & Travel", "Marketing", 30], // Promotion, sponsorship activation, social media, PR
+    ["Brand & Travel", "Travel", 23], // 24 races × staff flights & hotels (explicitly excluded 2026)
+    ["Brand & Travel", "Hospitality", 20], // Motorhome build/ops + race-weekend partner entertainment
   ],
 };
