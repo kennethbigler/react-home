@@ -513,14 +513,8 @@ export const processData = (allData: CarEntry[]): GraphData => {
 // --------------------------------------------------     Sankey     -------------------------------------------------- //
 
 export const carSankeyNodes = [
-  // level 1
-  //     Japan
-  { id: "Honda", color: red[500] },
-  { id: "Toyota", color: indigo[400] },
+  // column 0: sub-brands (have a parent company)
   //     US
-  { id: "Ford", color: indigo[900] },
-  { id: "Tesla", color: red[500] },
-  { id: "Rivian", color: amber[500] },
   { id: "Chevrolet", color: yellow[700] },
   { id: "Pontiac", color: red[500] },
   { id: "Plymouth", color: grey[50] },
@@ -528,21 +522,30 @@ export const carSankeyNodes = [
   { id: "Porsche", color: orange[500] },
   { id: "Jaguar", color: red[900] },
 
-  // level 2
+  // column 1: independent brands (own company) — forced so no link skips column 1
+  //     Japan
+  { id: "Honda", color: red[500], column: 1 },
+  { id: "Toyota", color: indigo[400], column: 1 },
   //     US
-  { id: "GM", color: yellow[700], offset: 70 },
-  { id: "Stellantis", color: grey[50], offset: 70 },
-  //     Other
-  { id: "Volkswagen", color: orange[500], offset: 70 },
-  { id: "TATA", color: indigo[500], offset: 70 },
+  { id: "Ford", color: indigo[900], column: 1 },
+  { id: "Rivian", color: amber[500], column: 1 },
+  { id: "Tesla", color: red[500], column: 1 },
 
-  // level 3
+  // column 1: parent companies (auto-placed by layout, but logically same column)
+  //     US
+  { id: "GM", color: yellow[700] },
+  { id: "Stellantis", color: grey[50] },
+  //     Other
+  { id: "Volkswagen", color: orange[500] },
+  { id: "TATA", color: indigo[500] },
+
+  // column 2 (forced)
   { id: "🇯🇵", color: red[500], column: 2 },
   { id: "🇺🇸", color: indigo[900], column: 2 },
   { id: "🇩🇪", color: orange[500], column: 2 },
   { id: "🇬🇧", color: "white", column: 2 },
 
-  // level 4
+  // column 3
   { id: "🏎️", color: grey[200] },
 ];
 
@@ -552,9 +555,9 @@ export const familySankeyData = [
   ["Toyota", "🇯🇵", 1],
   //     US
   ["Ford", "🇺🇸", 1],
-  ["Tesla", "🇺🇸", 1],
   ["Chevrolet", "GM", 3],
   ["Plymouth", "Stellantis", 1],
+  ["Tesla", "🇺🇸", 1],
   //     Other
   ["Porsche", "Volkswagen", 2],
   ["Jaguar", "TATA", 1],

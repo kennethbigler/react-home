@@ -4,13 +4,13 @@ import ExpandableCard from "../../common/expandable-card";
 import CountryTable from "./map/CountryTable";
 import WorldMap from "./map/WorldMap";
 import CruiseTable from "./cruises/CruiseTable";
-import CruiseCharts from "./cruises/CruiseCharts";
+import CruiseSankeyGraph from "./cruises/CruiseSankeyGraph";
 import LoyaltyCharts from "./cruises/LoyaltyCharts";
 import TravelDaysGraph from "./TravelDaysGraph";
 
 /* TravelMap  ->  WorldMap  ->  Popover
  *           |->  TravelTable
- *           |->  CruiseCharts */
+ *           |->  CruiseSankeyGraph */
 const TravelMap = memo(() => (
   <>
     <Typography variant="h2" component="h1">
@@ -26,7 +26,7 @@ const TravelMap = memo(() => (
       </Grid>
       <Grid size={{ xs: 12, md: 6, xxl: 4 }}>
         <ExpandableCard title="Cruise Charts">
-          <CruiseCharts />
+          <CruiseSankeyGraph />
           <LoyaltyCharts />
         </ExpandableCard>
       </Grid>

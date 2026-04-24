@@ -16,8 +16,62 @@ interface CarSankeyGraphProps {
 }
 
 const options: Highcharts.Options = {
-  chart: { type: "sankey", backgroundColor: "transparent" },
-  plotOptions: { sankey: { nodeWidth: 70 } }, // Adjust node width for better spacing
+  chart: {
+    type: "sankey",
+    height: 600,
+    backgroundColor: "transparent",
+    animation: { duration: 900, easing: "easeInOutSine" },
+  },
+  plotOptions: {
+    sankey: {
+      // Nodes
+      nodeWidth: 70,
+      nodePadding: 14,
+      nodeAlignment: "center",
+      borderWidth: 0,
+
+      // Links
+      linkColorMode: "gradient",
+      linkOpacity: 0.45,
+      curveFactor: 0.65,
+      minLinkWidth: 2, // Flows of 1 car would otherwise be a hairline
+
+      // Node labels
+      dataLabels: {
+        nodeFormat:
+          '{point.name}<br/><span style="font-size:10px;font-weight:normal;opacity:0.8">{point.sum} cars</span>',
+        style: {
+          fontSize: "12px",
+          fontWeight: "600",
+          color: "contrast",
+          textOutline: "none",
+        },
+        padding: 4,
+        borderRadius: 2,
+      },
+
+      // Tooltip
+      tooltip: {
+        pointFormat:
+          "<b>{point.weight} car(s)</b>: {point.fromNode.name} → {point.toNode.name}",
+        nodeFormat:
+          "<b>{point.name}</b><br/><span style='font-size:11px'>{point.sum} cars total</span>",
+      },
+    },
+  },
+  // Responsive override: MUI xs breakpoint (0–600px) → narrower nodes
+  responsive: {
+    rules: [
+      {
+        condition: { maxWidth: 600 },
+        chartOptions: {
+          plotOptions: {
+            sankey: { nodeWidth: 50 },
+          },
+        },
+      },
+    ],
+  },
 };
 
 const CarSankeyGraph = memo(
