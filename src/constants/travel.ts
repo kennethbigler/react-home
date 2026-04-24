@@ -112,6 +112,10 @@ interface TravelDay {
 }
 
 const travelDays: TravelDay[] = [
+  { year: 2016, vacation: 45, work: 3 },
+  { year: 2017, vacation: 41, work: 3 },
+  { year: 2018, vacation: 61, work: 6 },
+  { year: 2019, vacation: 61, work: 0 },
   { year: 2020, vacation: 4, work: 0 },
   { year: 2021, vacation: 47, work: 0 },
   { year: 2022, vacation: 41, work: 33 },

@@ -33,7 +33,7 @@ const TravelDaysGraph = memo(() => {
         <Legend enabled={false} />
         <Tooltip shared={true} headerFormat="<b>{point.key}</b><br>" />
         <Title style={{ color }}>Travel Days</Title>
-        <PlotOptions series={{ pointStart: 2020 }} />
+        <PlotOptions series={{ pointStart: 2016 }} />
         {/* @ts-expect-error: types are wrong in @highcharts/react */}
         <XAxis labels={{ style: { color } }} />
         <YAxis

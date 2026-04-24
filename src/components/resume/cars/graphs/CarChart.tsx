@@ -19,7 +19,7 @@ export interface CarChartProps {
 }
 
 const options: Highcharts.Options = {
-  chart: { type: "spline", backgroundColor: "transparent" },
+  chart: { type: "spline", backgroundColor: "transparent", height: 600 },
 };
 
 const CarChart = ({ data, color }: CarChartProps) => {
