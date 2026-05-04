@@ -288,10 +288,6 @@ const useSpades = () => {
   /** calculates and adds score1 and score2 finishing data entry */
   const addScore = (mades: [number, number, number, number]) => {
     const last = data.length - 1;
-    // can't add scores if no bid exists
-    if (data[last]?.score1 !== undefined) {
-      return;
-    }
 
     // convert made tricks to scores
     const newData = [...data];
