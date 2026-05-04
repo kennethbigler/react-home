@@ -1,2 +1,0 @@
-import{n as e}from"./rolldown-runtime-DF2fYuay.js";import{x as t,z as n}from"./react-vendor-HqBF-KSi.js";import{t as r}from"./Typography-dtZqBMwM.js";import{t as i}from"./Degree-C-qX3jnZ.js";import{n as a}from"./classes-ZdQfYYOe.js";var o=e(n(),1),s=t(),c=(0,o.memo)(()=>(0,s.jsxs)(s.Fragment,{children:[(0,s.jsx)(r,{variant:`h2`,component:`h1`,children:`Education`}),a.map(e=>(0,s.jsx)(i,{degree:e},e.degree))]}));c.displayName=`Education`;export{c as default};
-//# sourceMappingURL=education-DVMO4ipt.js.map

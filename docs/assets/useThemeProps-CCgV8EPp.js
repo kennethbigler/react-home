@@ -1,0 +1,2 @@
+import{L as e,M as t,j as n}from"./index-Dk38Qw0e.js";var r=t();function i(e){let{theme:t,name:r,props:i}=e;return!t||!t.components||!t.components[r]||!t.components[r].defaultProps?i:n(t.components[r].defaultProps,i)}function a({props:t,name:n,defaultTheme:r,themeId:a}){let o=e(r);return a&&(o=o[a]||o),i({theme:o,name:n,props:t})}export{r as n,a as t};
+//# sourceMappingURL=useThemeProps-CCgV8EPp.js.map

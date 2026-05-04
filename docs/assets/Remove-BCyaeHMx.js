@@ -1,2 +1,0 @@
-import{x as e}from"./react-vendor-HqBF-KSi.js";import{t}from"./createSvgIcon-BBRGa9WV.js";var n=t((0,e().jsx)(`path`,{d:`M19 13H5v-2h14z`}),`Remove`);export{n as t};
-//# sourceMappingURL=Remove-BCyaeHMx.js.map

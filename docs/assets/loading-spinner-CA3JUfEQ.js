@@ -1,2 +1,0 @@
-import{n as e}from"./rolldown-runtime-DF2fYuay.js";import{x as t,z as n}from"./react-vendor-HqBF-KSi.js";import{t as r}from"./CircularProgress-BVBDdCOb.js";var i=e(n(),1),a=t(),o={display:`block`,margin:`auto`,marginTop:40},s=(0,i.memo)(()=>(0,a.jsx)(`div`,{role:`status`,"aria-live":`polite`,"aria-label":`Loading page content`,children:(0,a.jsx)(r,{size:100,style:o,"aria-label":`Loading`})}));s.displayName=`LoadingSpinner`;export{s as t};
-//# sourceMappingURL=loading-spinner-CA3JUfEQ.js.map
