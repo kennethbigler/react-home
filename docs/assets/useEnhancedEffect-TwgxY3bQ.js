@@ -1,2 +1,0 @@
-import{n as e}from"./rolldown-runtime-DF2fYuay.js";import{z as t}from"./react-vendor-HqBF-KSi.js";var n=e(t()),r=typeof window<`u`?n.useLayoutEffect:n.useEffect;export{r as t};
-//# sourceMappingURL=useEnhancedEffect-TwgxY3bQ.js.map

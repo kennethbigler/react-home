@@ -1,2 +1,0 @@
-import{n as e}from"./rolldown-runtime-DF2fYuay.js";import{x as t,z as n}from"./react-vendor-HqBF-KSi.js";var r=e(n()),i=t(),a=r.createContext();function o({value:e,...t}){return(0,i.jsx)(a.Provider,{value:e??!0,...t})}var s=()=>r.useContext(a)??!1;export{s as n,o as t};
-//# sourceMappingURL=RtlProvider-DuGPPv0j.js.map
