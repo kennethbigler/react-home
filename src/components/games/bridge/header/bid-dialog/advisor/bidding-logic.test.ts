@@ -1172,12 +1172,12 @@ describe("bidding-logic | overcalling over 2NT (opponent bid 2NT)", () => {
     expect(rec.bid).toContain("♥");
   });
 
-  it("10 HCP no long suit over 2NT → Double", () => {
+  it("10 HCP no long suit over 2NT → Pass (need 14+ HCP for penalty double of 2NT)", () => {
     const rec = getRecommendation(
       mkHand(10, 3, 3, 4, 3),
       ctx("overcalling", { rhoBid: "2NT" }),
     );
-    expect(rec.bid).toBe("Double");
+    expect(rec.bid).toBe("Pass");
   });
 
   it("weak hand no long suit over 2NT → Pass", () => {
@@ -2432,12 +2432,12 @@ describe("bidding-logic | stayman-opener-rebid", () => {
     expect(rec.bid).toBe("3NT");
   });
 
-  it("opener denied major (2♦), partner bids 3♥, opener has 1 heart + 15 HCP → Pass (no fit, minimum)", () => {
+  it("opener denied major (2♦), partner bids 3♥, opener has 1 heart + 15 HCP → 3NT (no fit, escalated from 2NT)", () => {
     const rec = getRecommendation(
       mkHand(15, 4, 1, 4, 4),
       ctx("stayman-opener-rebid", { myPreviousBid: "2♦", partnerBid: "3♥" }),
     );
-    expect(rec.bid).toBe("Pass");
+    expect(rec.bid).toBe("3NT");
   });
 
   it("fallback: unusual continuation → 3NT for 17 HCP", () => {
@@ -3868,14 +3868,14 @@ describe("bidding-logic | deriveSituation", () => {
 
   // ── Additional coverage tests ───────────────────────────────────────────────
 
-  it("RHO (2) bid 1♣, partner bid 3♥ (jump overcall) → responding-to-jump-oc", () => {
+  it("RHO (2) bid 1♣, partner bid 3♥ (jump overcall) → responding-to-preempt-oc", () => {
     const s = deriveSituation(mkState({ currentRound: { 2: "1♣", 1: "3♥" } }));
-    expect(s.situation).toBe("responding-to-jump-oc");
+    expect(s.situation).toBe("responding-to-preempt-oc");
   });
 
-  it("RHO (2) bid 2NT, partner bid 3♣ (preempt overcall, not a jump) → responding-to-preempt-oc", () => {
+  it("RHO (2) bid 2NT, partner bid 3♣ (non-jump overcall over NT) → responding-to-simple-oc", () => {
     const s = deriveSituation(mkState({ currentRound: { 2: "2NT", 1: "3♣" } }));
-    expect(s.situation).toBe("responding-to-preempt-oc");
+    expect(s.situation).toBe("responding-to-simple-oc");
   });
 
   it("partner (1) opened 2♣ with LHO bid, returns responding-2c", () => {
