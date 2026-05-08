@@ -1,4 +1,4 @@
-import { green, teal, red } from "@mui/material/colors";
+import { green, deepOrange, red } from "@mui/material/colors";
 import dateObj, { DateObj } from "../apis/DateHelper";
 
 // --------------------------------------------------     Shared     -------------------------------------------------- //
@@ -821,10 +821,10 @@ export const budgetData = {
       height: 42,
     }, // $15-25M for competitive teams
     // Center
-    { id: "🏎️", color: red.A700 },
+    { id: "🏎️", color: green[800] },
     // Cost cap split
     { id: "Cost Cap", name: "Cost<br>Cap", color: red.A700 }, // $215M, FIA 2026 cap
-    { id: "Cap Exempt", name: "Cap<br>Exempt", color: teal[700] }, // ~$150M, outside FIA cost cap
+    { id: "Cap Exempt", name: "Cap<br>Exempt", color: deepOrange[500] }, // ~$150M, outside FIA cost cap
     // In Cost Cap — R&D ($50M)
     { id: "R&D", color: red.A700 },
     { id: "Wind Tunnel", color: red.A700 },
@@ -856,14 +856,18 @@ export const budgetData = {
     { id: "Fuel", color: red.A700 },
     // Cap Exempt spending (~$150M)
     // Two intermediate grouping nodes mirror the Cost Cap side's depth
-    { id: "Drivers & Execs", name: "Drivers &<br>Execs", color: teal[700] }, // Exempt salaries group ($77M)
-    { id: "Brand & Travel", name: "Brand &<br>Travel", color: teal[700] }, // Off-track operations group ($73M)
-    { id: "Driver 1", color: teal[700] }, // Midfield #1: ~$15-40M; top teams $30-76M
-    { id: "Driver 2", color: teal[700] }, // Midfield #2: ~$5-20M
-    { id: "Top 3 Execs", color: teal[700] }, // Team Principal + CTO + Chief Aero: ~$10-25M each
-    { id: "Marketing", color: teal[700] }, // Brand, PR, livery deals, social media
-    { id: "Travel", color: teal[700] }, // Race travel explicitly excluded (FIA 2026 Art. 2)
-    { id: "Hospitality", color: teal[700] }, // Paddock motorhome, partner events, Paddock Club
+    {
+      id: "Drivers & Execs",
+      name: "Drivers &<br>Execs",
+      color: deepOrange[500],
+    }, // Exempt salaries group ($77M)
+    { id: "Brand & Travel", name: "Brand &<br>Travel", color: deepOrange[500] }, // Off-track operations group ($73M)
+    { id: "Driver 1", color: deepOrange[500] }, // Midfield #1: ~$15-40M; top teams $30-76M
+    { id: "Driver 2", color: deepOrange[500] }, // Midfield #2: ~$5-20M
+    { id: "Top 3 Execs", color: deepOrange[500] }, // Team Principal + CTO + Chief Aero: ~$10-25M each
+    { id: "Marketing", color: deepOrange[500] }, // Brand, PR, livery deals, social media
+    { id: "Travel", color: deepOrange[500] }, // Race travel explicitly excluded (FIA 2026 Art. 2)
+    { id: "Hospitality", color: deepOrange[500] }, // Paddock motorhome, partner events, Paddock Club
   ],
   data: [
     // Revenue ($365M est.)

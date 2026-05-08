@@ -140,7 +140,7 @@ describe("games | bridge | ScoreDialog", () => {
     });
 
     // Change bid winner to "They"
-    const bidSwitch = screen.getByRole("checkbox", {
+    const bidSwitch = screen.getByRole("switch", {
       name: /bid winner is we/i,
     });
     fireEvent.click(bidSwitch);
@@ -255,7 +255,7 @@ describe("games | bridge | ScoreDialog", () => {
     });
 
     // Change bid winner to "They"
-    const bidSwitch = screen.getByRole("checkbox", {
+    const bidSwitch = screen.getByRole("switch", {
       name: /bid winner is we/i,
     });
     fireEvent.click(bidSwitch);

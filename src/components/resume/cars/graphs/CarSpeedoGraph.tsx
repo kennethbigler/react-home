@@ -7,7 +7,7 @@ import {
   Tooltip,
   YAxis,
 } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "./carsHighcharts";
 import { green, grey, red } from "@mui/material/colors";
 import { Grid } from "@mui/material";
@@ -55,9 +55,7 @@ const CarSpeedoGraph = memo(
             <YAxis
               min={min}
               max={maxVal}
-              // @ts-expect-error: types are wrong in @highcharts/react
               labels={{ distance: -26, style: { color } }}
-              // @ts-expect-error: types are wrong in @highcharts/react
               plotBands={[
                 { from: min, to: greenEnd, color: green[400] },
                 { from: startRedVal, to: maxVal, color: red[500] },

@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Chart, Credits, Series, Title } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "./f1Highcharts";
 import { budgetData } from "../../../../constants/f1";
 

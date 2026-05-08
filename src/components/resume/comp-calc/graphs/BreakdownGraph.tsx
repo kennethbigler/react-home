@@ -9,7 +9,7 @@ import {
   Title,
   Tooltip,
 } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "./compCalcHighcharts";
 import themeAtom from "../../../../jotai/theme-atom";
 import colors from "./colors";
@@ -41,7 +41,6 @@ const BreakdownChart = memo(({ bonus, salary, stock }: BreakdownChartProps) => {
           series={{
             allowPointSelect: true,
             cursor: "pointer",
-            // @ts-expect-error: types are wrong in @highcharts/react
             dataLabels: [
               { enabled: true, format: "{point.name}", color },
               {
@@ -49,7 +48,7 @@ const BreakdownChart = memo(({ bonus, salary, stock }: BreakdownChartProps) => {
                 distance: -30,
                 format: "{point.percentage:.0f}%",
                 style: { fontSize: "1em", color },
-              },
+              } as unknown as Highcharts.DataLabelsOptions,
             ],
           }}
         />

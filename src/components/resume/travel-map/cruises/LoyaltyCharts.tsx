@@ -10,7 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../travelMapHighcharts";
 import themeAtom from "../../../../jotai/theme-atom";
 import {
@@ -57,7 +57,6 @@ const LoyaltyCharts = memo(() => {
             align: "right",
             step: 1,
             y: 3,
-            // @ts-expect-error: types are wrong in @highcharts/react
             style: { color },
           }}
           gridLineWidth={0}

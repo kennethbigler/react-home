@@ -7,7 +7,7 @@ import {
   XAxis,
   YAxis,
 } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "./spadesHighcharts";
 import { NilMetrics } from "../../../../jotai/spades-atom";
 export interface StatsNilChartProps {
@@ -35,7 +35,6 @@ const StatsNilChart = ({ color, initials, nils }: StatsNilChartProps) => (
       <XAxis
         categories={initials.split("")}
         lineColor={color}
-        // @ts-expect-error: types are wrong in @highcharts/react
         labels={{ style: { color } }}
       />
       <YAxis
@@ -44,7 +43,6 @@ const StatsNilChart = ({ color, initials, nils }: StatsNilChartProps) => (
         allowDecimals={false}
         title={{ text: undefined }}
         lineColor={color}
-        // @ts-expect-error: types are wrong in @highcharts/react
         labels={{ style: { color } }}
       />
       <Series

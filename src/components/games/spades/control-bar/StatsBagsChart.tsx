@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "./spadesHighcharts";
 
 export interface StatsBagsChartProps {
@@ -48,7 +48,6 @@ const StatsBagsChart = ({
         <XAxis
           categories={initials.split("")}
           lineColor={color}
-          // @ts-expect-error: types are wrong in @highcharts/react
           labels={{ style: { color } }}
         />
         <YAxis
@@ -57,7 +56,6 @@ const StatsBagsChart = ({
           allowDecimals={false}
           title={{ text: undefined }}
           lineColor={color}
-          // @ts-expect-error: types are wrong in @highcharts/react
           labels={{ style: { color } }}
         />
         <Series

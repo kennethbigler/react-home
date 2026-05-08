@@ -10,7 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "./f1Highcharts";
 import { constructorCurrentData } from "../../../../constants/f1";
 import { currentPointsTTFormatter as ttFormatter } from "./helpers";
@@ -32,12 +32,8 @@ const ConstructorCurrentSpline = memo(
         <Legend enabled={false} />
         <Tooltip shared={true} useHTML={true} formatter={ttFormatter} />
         <Title style={{ color }}>F1 2026 Constructors Points</Title>
-        <XAxis
-          // @ts-expect-error: types are wrong in @highcharts/react
-          labels={{ style: { color } }}
-        />
+        <XAxis labels={{ style: { color } }} />
         <YAxis
-          // @ts-expect-error: types are wrong in @highcharts/react
           labels={{ style: { color } }}
           title={{ text: undefined }}
           gridLineDashStyle="Dot"

@@ -55,6 +55,11 @@ export default defineConfig({
       }
     }
   },
+  // Prevents esbuild from pre-bundling highcharts in dev, which would break
+  // module initialization order (v5 pure-ESM requirement).
+  optimizeDeps: {
+    exclude: ["highcharts"],
+  },
   plugins: [react(), deferStylesheetPlugin()],
   test: {
     globals: true,

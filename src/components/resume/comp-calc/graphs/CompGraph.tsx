@@ -11,7 +11,7 @@ import {
   XAxis,
   YAxis,
 } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "./compCalcHighcharts";
 import themeAtom from "../../../../jotai/theme-atom";
 import {
@@ -130,11 +130,7 @@ const CompChart = ({
         <Legend enabled={false} />
         <Title style={{ color }}>Total Comp</Title>
         <XAxis visible={false} />
-        <YAxis
-          title={{ text: undefined }}
-          // @ts-expect-error: types are wrong in @highcharts/react
-          labels={{ style: { color } }}
-        />
+        <YAxis title={{ text: undefined }} labels={{ style: { color } }} />
         <Tooltip
           shared={true}
           headerFormat={"<h3>Compensation</h3><br />"}
