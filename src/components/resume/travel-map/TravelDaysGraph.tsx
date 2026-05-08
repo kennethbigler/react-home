@@ -11,7 +11,7 @@ import {
   XAxis,
   YAxis,
 } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "./travelMapHighcharts";
 import themeAtom from "../../../jotai/theme-atom";
 import { vacationDays, workDays } from "../../../constants/travel";
@@ -34,14 +34,8 @@ const TravelDaysGraph = memo(() => {
         <Tooltip shared={true} headerFormat="<b>{point.key}</b><br>" />
         <Title style={{ color }}>Travel Days</Title>
         <PlotOptions series={{ pointStart: 2016 }} />
-        {/* @ts-expect-error: types are wrong in @highcharts/react */}
         <XAxis labels={{ style: { color } }} />
-        <YAxis
-          // @ts-expect-error: types are wrong in @highcharts/react
-          labels={{ style: { color } }}
-          // @ts-expect-error: types are wrong in @highcharts/react
-          title={{ style: { color } }}
-        >
+        <YAxis labels={{ style: { color } }} title={{ style: { color } }}>
           Days
         </YAxis>
         <Series

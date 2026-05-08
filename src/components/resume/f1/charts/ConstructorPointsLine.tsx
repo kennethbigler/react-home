@@ -10,7 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "./f1Highcharts";
 import { constructorPointsData } from "../../../../constants/f1";
 import {
@@ -36,13 +36,11 @@ const ConstructorPointsLine = memo(({ color }: ConstructorPointsLineProps) => (
       <Title style={{ color }}>F1 Constructors Points</Title>
       <XAxis
         labels={{
-          // @ts-expect-error: types are wrong in @highcharts/react
           style: { color },
           formatter: xAxisLabelFormatter,
         }}
       />
       <YAxis
-        // @ts-expect-error: types are wrong in @highcharts/react
         labels={{ style: { color } }}
         tickPositions={[0, 150, 300, 450, 600, 750, 860]}
         title={{ text: undefined }}

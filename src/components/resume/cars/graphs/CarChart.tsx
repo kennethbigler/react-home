@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "./carsHighcharts";
 import { processData, CarEntry } from "../../../../constants/cars";
 
@@ -33,11 +33,7 @@ const CarChart = ({ data, color }: CarChartProps) => {
         <Legend enabled={false} />
         <Tooltip valueSuffix="%" />
         <Title style={{ color }}>Car Data</Title>
-        <XAxis
-          categories={xAxis}
-          // @ts-expect-error: types are wrong in @highcharts/react
-          labels={{ style: { color } }}
-        />
+        <XAxis categories={xAxis} labels={{ style: { color } }} />
         <YAxis
           title={{ text: undefined }}
           floor={0}

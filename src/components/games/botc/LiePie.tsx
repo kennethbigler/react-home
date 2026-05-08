@@ -8,7 +8,7 @@ import {
   setHighcharts,
   Title,
 } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "highcharts/highcharts.src";
 import "highcharts/modules/accessibility";
 import themeAtom from "../../../jotai/theme-atom";

@@ -10,7 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "./f1Highcharts";
 import { constructorStandingsData } from "../../../../constants/f1";
 import { standingsTTFormatter, xAxisLabelFormatter } from "./helpers";
@@ -34,13 +34,11 @@ const ConstructorStandingsLine = memo(
         <Title style={{ color }}>F1 Constructors Standings</Title>
         <XAxis
           labels={{
-            // @ts-expect-error: types are wrong in @highcharts/react
             style: { color },
             formatter: xAxisLabelFormatter,
           }}
         />
         <YAxis
-          // @ts-expect-error: types are wrong in @highcharts/react
           labels={{ style: { color } }}
           tickPositions={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
           endOnTick={false}

@@ -10,7 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "@highcharts/react";
-import { Accessibility } from "@highcharts/react/options/Accessibility";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "./f1Highcharts";
 import { driverStandingsData } from "../../../../constants/f1";
 import { standingsTTFormatter, xAxisLabelFormatter } from "./helpers";
@@ -33,13 +33,11 @@ const DriverStandingsLine = memo(({ color }: DriverStandingsLineProps) => (
       <Title style={{ color }}>F1 Drivers Standings</Title>
       <XAxis
         labels={{
-          // @ts-expect-error: types are wrong in @highcharts/react
           style: { color },
           formatter: xAxisLabelFormatter,
         }}
       />
       <YAxis
-        // @ts-expect-error: types are wrong in @highcharts/react
         labels={{ style: { color } }}
         tickPositions={[1, 5, 10, 15, 20, 24]}
         reversed={true}

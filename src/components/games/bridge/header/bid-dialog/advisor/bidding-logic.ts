@@ -6733,9 +6733,7 @@ export function getRecommendation(
     const bidIdx = BID_ORDER.indexOf(b);
     return bidIdx >= 0 && bidIdx <= floorIdx;
   });
-  const validBids = concreteBids.filter(
-    (b) => BID_ORDER.indexOf(b) > floorIdx,
-  );
+  const validBids = concreteBids.filter((b) => BID_ORDER.indexOf(b) > floorIdx);
 
   // Some options legal — use the lowest legal alternative (the most
   // conservative restatement of the original advice).
@@ -7271,10 +7269,7 @@ function deriveSituationCore(
         for (const seat of POSITIONS) {
           // Stop the moment we see my first real bid — anything later is not
           // "before me" even if it's earlier in seat order in a later round.
-          if (
-            seat === myPosition &&
-            completedRounds[r][seat] === myFirstBid
-          ) {
+          if (seat === myPosition && completedRounds[r][seat] === myFirstBid) {
             return lastPartnerBidSoFar;
           }
           if (seat === partner) {
@@ -7377,12 +7372,10 @@ function deriveSituationCore(
       // Critically, if I was the opener, I am NEVER routed as responder-nt-rebid.
       const partnerOpenedSuitBeforeMyNT =
         !iWasOpener &&
-        completedRounds
-          .slice(0, completedRounds.length - 1)
-          .some((r) => {
-            const b = r[partner];
-            return b && b !== "Pass" && !b.endsWith("NT");
-          });
+        completedRounds.slice(0, completedRounds.length - 1).some((r) => {
+          const b = r[partner];
+          return b && b !== "Pass" && !b.endsWith("NT");
+        });
 
       if (partnerOpenedSuitBeforeMyNT) {
         return {
