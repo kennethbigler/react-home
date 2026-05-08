@@ -78,7 +78,19 @@ export interface AuctionContext {
   partnerBid?: string;
   rhoBid?: string;
   lhoBid?: string;
+  /**
+   * My most recent real (non-pass, non-double) bid in the auction.  Used by
+   * the floor-collision safety net to detect "my last bid is at level X" and
+   * prevent recommending a lower bid.
+   */
   myPreviousBid?: string;
+  /**
+   * My ORIGINAL opening bid — the first real bid I made in the auction.  Used
+   * by rebid handlers that need to know what suit I opened with (e.g. the
+   * weak-2 2NT inquiry must check the original 2♥ opening, NOT a 2♥ rebid by
+   * a 1♥ opener).  Falls back to myPreviousBid when not set.
+   */
+  myFirstBid?: string;
   agreedSuit?: string;
   /** True when the opener's second bid was completing a Jacoby Transfer (not Stayman). */
   wasTransferCompletion?: boolean;
@@ -2336,7 +2348,11 @@ function getOvercall(
       };
     }
 
-    // Penalty double of 1NT requires 16+ HCP (any shape). For 2NT/3NT, 10+ HCP is enough.
+    // Penalty double thresholds.  SAYC convention: opener has shown 15-17
+    // (1NT) or 20-21 (2NT) — so partner has shown nothing yet, and your side
+    // needs serious values to double.  Over 1NT, you need 16+ HCP; over 2NT
+    // or 3NT, the opponents have shown even more, so you need ~14+ HCP plus
+    // additional reason to believe you can defeat the contract.
     if (ntLevel === 1) {
       // Over 1NT: only double with 16+ HCP (penalty double — not already handled above
       // because that branch required balanced shape; this catches unbalanced 16+ HCP hands)
@@ -2374,14 +2390,16 @@ function getOvercall(
       };
     }
 
-    // Strong double (10+ HCP) over 2NT or higher NT
-    if (hcp >= 10) {
+    // Penalty double of 2NT/3NT — requires 14+ HCP (opponents have shown
+    // 20-21 or more; you need real values to expect to defeat).  10 HCP is
+    // far too aggressive: partner has shown nothing yet.
+    if (hcp >= 14) {
       return {
         bid: "Double",
         category: `Penalty Double of ${opponentBid}`,
-        reasoning: `With ${hcp} HCP over opponent's ${opponentBid}, double for penalty. Your combined strength likely exceeds theirs.`,
+        reasoning: `With ${hcp} HCP over opponent's ${opponentBid}, double for penalty. The opponents have shown ~20-22 HCP and partner has shown nothing yet, so you need real values to expect to defeat the contract.`,
         handAnalysis: analysis,
-        whatYourBidTellsPartner: `${hcp} HCP — penalty double. Pass unless very unbalanced.`,
+        whatYourBidTellsPartner: `${hcp} HCP — penalty double of ${opponentBid}. Pass unless very unbalanced.`,
         expectedResponses: [
           { partnerBid: "Pass", meaning: "Willing to defend — penalty" },
           { partnerBid: "Bid a suit", meaning: "Very unbalanced — escape" },
@@ -2872,18 +2890,28 @@ function getResponseToSimpleOC(
       };
     }
 
-    // Law of Total Tricks: partner has ~5 trumps; total = 5 + mySupport
+    // Law of Total Tricks: with N total trumps, your side is "safe" at the
+    // (N − 6)-level (8 trumps → 2-level, 9 trumps → 3-level, 10 → 4-level).
+    // If partner has already bid at or above the safe level, do NOT raise —
+    // raising would put your side past where LoTT says you can make tricks.
     const partnerLevel = parseInt(partnerBid[0]) || 1;
     const suitSym = partnerBid.match(/[♣♦♥♠]/)?.[0] ?? "♠";
     const totalTrumps = 5 + mySupport;
-    const raiseLevel = Math.min(
-      4,
-      totalTrumps <= 8
-        ? partnerLevel + 1
-        : totalTrumps <= 9
-          ? partnerLevel + 2
-          : 4,
-    );
+    const lottSafeLevel = Math.min(4, Math.max(2, totalTrumps - 6));
+
+    if (partnerLevel >= lottSafeLevel) {
+      return {
+        bid: "Pass",
+        category: `Pass (Already At Safe Level — ${mySupport}-card support, 0-9 pts)`,
+        reasoning: `Partner overcalled at the ${partnerLevel}-level.  With ${mySupport}-card support (est. ${totalTrumps} total trumps), the Law of Total Tricks says your side is safe at the ${lottSafeLevel}-level — partner is already there.  Raising further would commit to more tricks than your trump fit can usually take.  Pass and let partner play the contract.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `${mySupport}-card support, 0-9 pts — accepting partner's overcall as the final contract.`,
+        expectedResponses: [],
+        confidence: "high",
+      };
+    }
+
+    const raiseLevel = lottSafeLevel;
     const specificBid = `${raiseLevel}${suitSym}`;
     const lawExplanation =
       mySupport === 3
@@ -6448,7 +6476,10 @@ function getRecommendationRaw(
     case "rebid-after-suit":
       return getRebidAfterSuit(
         hand,
-        context.myPreviousBid ?? "1♠",
+        // Use the ORIGINAL opening bid here, not the latest rebid: handlers
+        // like the weak-2 2NT inquiry must compare against what I OPENED with,
+        // not what I rebid afterwards.
+        context.myFirstBid ?? context.myPreviousBid ?? "1♠",
         context.partnerBid ?? "2♠",
         !!(context.lhoBid || context.rhoBid),
       );
@@ -6456,7 +6487,7 @@ function getRecommendationRaw(
     case "protective-rebid":
       return getProtectiveRebid(
         hand,
-        context.myPreviousBid ?? "1♣",
+        context.myFirstBid ?? context.myPreviousBid ?? "1♣",
         context.lhoBid,
       );
 
@@ -6470,12 +6501,15 @@ function getRecommendationRaw(
     case "rebid-after-negative-double":
       return getRebidAfterNegativeDouble(
         hand,
-        context.myPreviousBid ?? "1♣",
+        context.myFirstBid ?? context.myPreviousBid ?? "1♣",
         context.rhoBid ?? "1♠",
       );
 
     case "jacoby-2nt-opener":
-      return getJacoby2NTOpenerRebid(hand, context.myPreviousBid ?? "1♠");
+      return getJacoby2NTOpenerRebid(
+        hand,
+        context.myFirstBid ?? context.myPreviousBid ?? "1♠",
+      );
 
     case "responding-suit-after-double":
       return getRespondingToSuitAfterDouble(hand, context.partnerBid ?? "1♠");
@@ -6614,6 +6648,68 @@ function getBidFloorFromContext(context: AuctionContext): string | undefined {
   return maxIdx >= 0 ? BID_ORDER[maxIdx] : undefined;
 }
 
+/**
+ * Returns a clean Pass recommendation whose text does not reference any
+ * abandoned/withdrawn earlier suggestion.  Use whenever the safety net needs
+ * to fall back to Pass — never spread a stale recommendation into the result.
+ */
+function cleanPass(
+  hand: Hand,
+  reasoning: string,
+  category = "Pass",
+): BidRecommendation {
+  return {
+    bid: "Pass",
+    category,
+    reasoning,
+    handAnalysis: analyzeHand(hand),
+    whatYourBidTellsPartner: "Pass — no action this round.",
+    expectedResponses: [],
+    confidence: "low",
+  };
+}
+
+/**
+ * Try to escalate a balanced-NT recommendation to the cheapest legal NT bid
+ * above the current auction floor when the original recommendation is no
+ * longer available.  Returns undefined if no sensible escalation is possible
+ * (e.g. recommendation wasn't NT-based, or the cheapest legal NT would be
+ * absurd given the hand).
+ */
+function tryEscalateNT(
+  rec: BidRecommendation,
+  hand: Hand,
+  floorIdx: number,
+): BidRecommendation | undefined {
+  // Only escalate if the original concrete bid was a NT bid (1NT/2NT/3NT).
+  const originalBids = extractAllConcreteBids(rec.bid);
+  const wasNT = originalBids.some((b) => b.endsWith("NT"));
+  if (!wasNT) return undefined;
+
+  // Find cheapest legal NT bid above the floor.
+  const legalNT = BID_ORDER.find(
+    (b, i) => i > floorIdx && b.endsWith("NT") && b !== "4NT" && b !== "5NT",
+  );
+  if (!legalNT) return undefined;
+
+  // Don't escalate beyond 3NT — past that, we'd be guessing at a slam bid.
+  if (BID_ORDER.indexOf(legalNT) > BID_ORDER.indexOf("3NT")) return undefined;
+
+  // Sanity check: do we have enough HCP to support the new level?  Each NT
+  // step roughly needs +6 HCP, but for an escalation from 1NT we accept any
+  // hand that's at least invitational (~10 HCP).
+  const targetLevel = parseInt(legalNT[0]);
+  const minHcpForLevel: Record<number, number> = { 1: 6, 2: 10, 3: 12 };
+  if (hand.hcp < (minHcpForLevel[targetLevel] ?? 99)) return undefined;
+
+  return {
+    ...rec,
+    bid: legalNT,
+    reasoning: `${rec.reasoning} The auction has reached ${BID_ORDER[floorIdx]}, so the suggested low-level NT bid is no longer legal — bid ${legalNT} instead, the cheapest legal NT bid that still describes a balanced hand.`,
+    confidence: "medium" as const,
+  };
+}
+
 export function getRecommendation(
   hand: Hand,
   context: AuctionContext,
@@ -6621,47 +6717,51 @@ export function getRecommendation(
   const rec = getRecommendationRaw(hand, context);
 
   // Safety net: ensure the recommended bid is legal in the current auction.
-  // Only fires when EVERY concrete bid in the recommendation is at or below the
-  // current bid floor — this preserves "2♥ or 3♥" style recommendations where
-  // at least one alternative is still valid.
+  // Only fires when EVERY concrete bid in the recommendation is at or below
+  // the current bid floor — this preserves "2♥ or 3♥" style recommendations
+  // where at least one alternative is still valid.
   const floor = getBidFloorFromContext(context);
-  if (floor) {
-    const floorIdx = BID_ORDER.indexOf(floor);
-    const concreteBids = extractAllConcreteBids(rec.bid).filter(
-      (b) => b !== "Pass" && b !== "Double" && b !== "Redouble",
+  if (!floor) return rec;
+
+  const floorIdx = BID_ORDER.indexOf(floor);
+  const concreteBids = extractAllConcreteBids(rec.bid).filter(
+    (b) => b !== "Pass" && b !== "Double" && b !== "Redouble",
+  );
+  if (concreteBids.length === 0) return rec; // Pass / Double / Redouble — already legal
+
+  const tooLow = concreteBids.filter((b) => {
+    const bidIdx = BID_ORDER.indexOf(b);
+    return bidIdx >= 0 && bidIdx <= floorIdx;
+  });
+  const validBids = concreteBids.filter(
+    (b) => BID_ORDER.indexOf(b) > floorIdx,
+  );
+
+  // Some options legal — use the lowest legal alternative (the most
+  // conservative restatement of the original advice).
+  if (tooLow.length > 0 && validBids.length > 0) {
+    const bestBid = validBids[0];
+    return {
+      ...rec,
+      bid: bestBid,
+      reasoning: `${rec.reasoning} (The auction has progressed past the original bid; ${bestBid} is the cheapest legal alternative from the same recommendation.)`,
+      confidence: "medium" as const,
+    };
+  }
+
+  // All options too low — try a sensible NT escalation first.
+  if (tooLow.length === concreteBids.length) {
+    const escalated = tryEscalateNT(rec, hand, floorIdx);
+    if (escalated) return escalated;
+
+    // No safe escalation — fall back to a CLEAN Pass.  Critically, do NOT
+    // spread the abandoned recommendation: its "tells partner" and
+    // "expected responses" describe a bid we are not making.
+    return cleanPass(
+      hand,
+      `The auction has reached ${floor}, which is past the level where the natural SAYC recommendation for this situation applies. With no clear forced action available, Pass is the safest option — partner can re-evaluate based on the auction so far.`,
+      "Pass — Auction Past Recommended Bid",
     );
-    const tooLow = concreteBids.filter((b) => {
-      const bidIdx = BID_ORDER.indexOf(b);
-      return bidIdx >= 0 && bidIdx <= floorIdx;
-    });
-    const allTooLow =
-      concreteBids.length > 0 && tooLow.length === concreteBids.length;
-
-    if (allTooLow) {
-      return {
-        ...rec,
-        bid: "Pass",
-        category: "Pass — Suggested Bid No Longer Available",
-        reasoning: `The advisor's suggested bid (${rec.bid}) is no longer available because the auction has already reached or passed that level (current floor: ${floor}). This can happen when opponents have used a conventional bid (like Stayman 2♣) that blocks a natural overcall at the same level. Pass is the safest action — the situation may require a judgment call that is beyond the advisor's scope; consult the cheat sheet.`,
-        confidence: "low",
-      };
-    }
-
-    // If SOME options are too low but at least one is valid, simplify to the highest valid bid.
-    if (tooLow.length > 0 && tooLow.length < concreteBids.length) {
-      const validBids = concreteBids.filter(
-        (b) => BID_ORDER.indexOf(b) > floorIdx,
-      );
-      if (validBids.length > 0) {
-        const bestBid = validBids[validBids.length - 1]; // highest valid bid
-        return {
-          ...rec,
-          bid: bestBid,
-          reasoning: `${rec.reasoning} (Note: the original suggestion included lower options that are no longer valid at this auction level; ${bestBid} is the best remaining option.)`,
-          confidence: "medium" as const,
-        };
-      }
-    }
   }
 
   return rec;
@@ -7003,24 +7103,62 @@ function wasTransfer(
 }
 
 /** Returns true if the last bid in BID_ORDER sense is a jump overcall */
-function isJumpOvercall(partnerBid: string, rhoBid: string): boolean {
+/**
+ * Returns true if partnerBid is a JUMP overcall — i.e. partnerBid is at a
+ * level higher than the cheapest legal overcall in that strain at the moment
+ * the bid was made.
+ *
+ * The "auction floor" is the highest suit/NT bid in the auction BEFORE
+ * partner's overcall.  Pass in the actual floor — measuring against just the
+ * original opener's bid is wrong when intervening bids have raised the floor
+ * (e.g. 1♠–Pass–2♠–3♣: 3♣ is the cheapest club bid over 2♠, so it's a SIMPLE
+ * overcall, not a jump, even though it's two levels above the natural
+ * minimum 2♣ over the original 1♠).
+ */
+function isJumpOvercall(partnerBid: string, auctionFloor: string): boolean {
   const pIdx = BID_ORDER.indexOf(partnerBid);
-  const rIdx = BID_ORDER.indexOf(rhoBid);
-  if (pIdx < 0 || rIdx < 0) return false;
+  const fIdx = BID_ORDER.indexOf(auctionFloor);
+  if (pIdx < 0 || fIdx < 0) return false;
 
-  // A jump overcall bids a suit at a level ABOVE its natural minimum.
-  // The natural minimum is the lowest bid with the same suit suffix that
-  // is strictly above rhoBid.  e.g. for "1♥" over "1♣": minimum heart
-  // overcall is "1♥" (index 2); bidding exactly "1♥" is NOT a jump.
-  // For "2♥" over "1♣": min is still "1♥" (index 2); bidding "2♥"
-  // (index 7) IS a jump.
+  // Cheapest legal bid in partner's strain that is strictly above the floor.
   const suitSuffix = partnerBid.slice(1); // "♥", "♠", "♦", "♣", "NT"
   const minOvercallIdx = BID_ORDER.findIndex(
-    (bid, i) => i > rIdx && bid.endsWith(suitSuffix),
+    (bid, i) => i > fIdx && bid.endsWith(suitSuffix),
   );
   if (minOvercallIdx < 0) return false;
 
   return pIdx > minOvercallIdx;
+}
+
+/**
+ * Returns the highest suit/NT bid that occurred in the auction BEFORE the
+ * specified seat's most recent bid.  This is what "auction floor" means at
+ * the moment of that bid.  Returns undefined if no prior suit/NT bid exists.
+ */
+function auctionFloorBeforeSeatBid(
+  completedRounds: BidRound[],
+  currentRound: BidRound,
+  seat: BiddingPosition,
+  seatBid: string,
+): string | undefined {
+  let lastSuitBid: string | undefined;
+  for (let r = 0; r < completedRounds.length; r++) {
+    for (const s of POSITIONS) {
+      if (s === seat && completedRounds[r][s] === seatBid) return lastSuitBid;
+      const b = completedRounds[r][s];
+      if (b && b !== "Pass" && b !== "Double" && b !== "Redouble") {
+        lastSuitBid = b;
+      }
+    }
+  }
+  for (const s of POSITIONS) {
+    if (s === seat && currentRound[s] === seatBid) return lastSuitBid;
+    const b = currentRound[s];
+    if (b && b !== "Pass" && b !== "Double" && b !== "Redouble") {
+      lastSuitBid = b;
+    }
+  }
+  return lastSuitBid;
 }
 
 /**
@@ -7117,31 +7255,49 @@ function deriveSituationCore(
       return { situation: "grand-slam-force", vulnerability: vul };
     }
 
-    // Find what partner opened (their bid before I first responded)
+    // Find what partner opened (their last real bid BEFORE my first real bid).
+    // Walk the auction strictly in seat order (round → seat 1..4) and stop the
+    // moment we reach my first bid; the most recent partner bid before that
+    // point is the answer.  Crucially, if partner sits AFTER me in the same
+    // round as my first bid, their bid in that round came LATER and must NOT
+    // be returned (the previous bug: a weak-2 opener in seat 1 was reading
+    // partner's same-round 2NT as if it had preceded the opening, causing
+    // wasTransfer("2♥","2NT") to fire incorrectly).
     const myFirstBid = myBids[0];
     const partnerBidBeforeMe = (() => {
-      // Find the bid partner made BEFORE my first real bid.
-      // If partner's seat number is lower than mine, they bid before me in the
-      // same round — use the same-round entry.
-      // If partner's seat number is higher, they bid AFTER me in the same round,
-      // so their "preceding" bid is actually from the previous round.
-      for (let i = 0; i < completedRounds.length; i++) {
-        if (completedRounds[i][myPosition] === myFirstBid) {
-          if (partner < myPosition) {
-            return (
-              completedRounds[i][partner] ?? completedRounds[i - 1]?.[partner]
-            );
-          } else {
-            return (
-              completedRounds[i - 1]?.[partner] ?? completedRounds[i][partner]
-            );
+      if (myFirstBid === undefined) return undefined;
+      let lastPartnerBidSoFar: string | undefined;
+      for (let r = 0; r < completedRounds.length; r++) {
+        for (const seat of POSITIONS) {
+          // Stop the moment we see my first real bid — anything later is not
+          // "before me" even if it's earlier in seat order in a later round.
+          if (
+            seat === myPosition &&
+            completedRounds[r][seat] === myFirstBid
+          ) {
+            return lastPartnerBidSoFar;
+          }
+          if (seat === partner) {
+            const b = completedRounds[r][partner];
+            if (b && b !== "Pass") lastPartnerBidSoFar = b;
           }
         }
       }
-      return undefined;
+      return lastPartnerBidSoFar;
     })();
 
-    if (wasStayman(myFirstBid ?? "", partnerBidBeforeMe)) {
+    // Stayman / Transfer follow-ups apply ONLY when my Stayman/transfer bid
+    // is still my MOST RECENT bid (i.e., partner just replied and now it's my
+    // turn).  Once I've already made a follow-up bid (e.g. 2NT inviting after
+    // a Stayman denial), I'm in a normal rebid situation and the Stayman
+    // routing must NOT fire again — otherwise the engine tries to recommend
+    // the same 2NT it already bid, then falls back to Pass with confusing
+    // reasoning.
+    const stillInStaymanFollowUpSeat = myBids.length === 1;
+    if (
+      stillInStaymanFollowUpSeat &&
+      wasStayman(myFirstBid ?? "", partnerBidBeforeMe)
+    ) {
       // Find the original Stayman reply (the first real bid partner made AFTER my 2♣).
       // In seat order: if partner sits before me (e.g. partner=1, me=3), their Stayman
       // reply is in the round AFTER the round containing my 2♣.
@@ -7177,7 +7333,10 @@ function deriveSituationCore(
         vulnerability: vul,
       };
     }
-    if (wasTransfer(myFirstBid ?? "", partnerBidBeforeMe)) {
+    if (
+      stillInStaymanFollowUpSeat &&
+      wasTransfer(myFirstBid ?? "", partnerBidBeforeMe)
+    ) {
       const transferred = myFirstBid === "2♠" ? "minor" : "major";
       if (transferred === "minor") {
         return {
@@ -7193,13 +7352,38 @@ function deriveSituationCore(
     // EXCEPTION: if partner opened a suit *before* my NT response, partner's current
     // bid is a natural suit showing — route to the responder-specific handler.
     if (myLastBid.endsWith("NT")) {
-      // Detect if partner had a prior suit bid (meaning I'm the responder, not opener)
-      const partnerOpenedSuitBeforeMyNT = completedRounds
-        .slice(0, completedRounds.length - 1)
-        .some((r) => {
-          const b = r[partner];
-          return b && b !== "Pass" && !b.endsWith("NT");
-        });
+      // I am the OPENER if my own first bid was a real bid that came before
+      // any partner bid in the auction.  Detect by checking whether partner
+      // made any bid (real or convention) before my first bid in seat order.
+      const iWasOpener = (() => {
+        if (!myFirstBid) return false;
+        for (let r = 0; r < completedRounds.length; r++) {
+          for (const seat of POSITIONS) {
+            if (seat === myPosition && completedRounds[r][seat] === myFirstBid)
+              return true; // reached my first bid before any partner bid
+            if (
+              seat === partner &&
+              completedRounds[r][seat] &&
+              completedRounds[r][seat] !== "Pass"
+            )
+              return false; // partner bid before me — they opened
+          }
+        }
+        return false;
+      })();
+
+      // Detect if partner had a prior suit bid that's a natural showing
+      // (rather than a convention ack like 2♣ Stayman over my 1NT).
+      // Critically, if I was the opener, I am NEVER routed as responder-nt-rebid.
+      const partnerOpenedSuitBeforeMyNT =
+        !iWasOpener &&
+        completedRounds
+          .slice(0, completedRounds.length - 1)
+          .some((r) => {
+            const b = r[partner];
+            return b && b !== "Pass" && !b.endsWith("NT");
+          });
+
       if (partnerOpenedSuitBeforeMyNT) {
         return {
           situation: "responder-nt-rebid",
@@ -7662,19 +7846,43 @@ function deriveSituationCore(
       };
     }
 
-    // Jump or simple overcall?
-    if (isJumpOvercall(partnerBid, effectiveRhoBid)) {
+    // Jump or simple overcall?  Measure jump-ness against the auction floor
+    // at the moment partner overcalled (NOT against RHO's first bid — see
+    // isJumpOvercall doc).
+    //
+    // A 3-level or 4-level bid is a PREEMPT only if it was a JUMP at the
+    // moment partner bid it.  Without this check, e.g. 1♠–Pass–2♠–3♣ would
+    // mis-classify partner's forced simple 3♣ overcall as a pre-empt.
+    const partnerOvercallFloor =
+      auctionFloorBeforeSeatBid(
+        completedRounds,
+        currentRound,
+        partner,
+        partnerBid,
+      ) ?? effectiveRhoBid;
+    const partnerOvercallIsJump = isJumpOvercall(
+      partnerBid,
+      partnerOvercallFloor,
+    );
+    if (partnerOvercallIsJump) {
+      // Route 3-level / 4-level jumps to the preempt handler when level >= 3,
+      // otherwise the standard jump-overcall handler.  Both are jumps, but
+      // preempts get specialized advice.
+      const partnerLevel = parseInt(partnerBid[0]) || 0;
+      if (
+        partnerLevel >= 3 &&
+        ["3♣", "3♦", "3♥", "3♠", "4♣", "4♦", "4♥", "4♠"].includes(partnerBid)
+      ) {
+        return {
+          situation: "responding-to-preempt-oc",
+          partnerBid,
+          vulnerability: vul,
+        };
+      }
       return {
         situation: "responding-to-jump-oc",
         partnerBid,
         rhoBid: effectiveRhoBid,
-        vulnerability: vul,
-      };
-    }
-    if (["3♣", "3♦", "3♥", "3♠", "4♣", "4♦", "4♥", "4♠"].includes(partnerBid)) {
-      return {
-        situation: "responding-to-preempt-oc",
-        partnerBid,
         vulnerability: vul,
       };
     }
@@ -7719,10 +7927,14 @@ export function deriveSituation(
   };
 
   // My own last real bid (needed for floor calculation when context omits myPreviousBid)
-  const myLastBid = completedRounds
+  const myRealBids = completedRounds
     .map((r) => r[myPosition])
-    .filter((b): b is string => !!b && !stdBids.has(b))
-    .slice(-1)[0];
+    .filter((b): b is string => !!b && !stdBids.has(b));
+  const myLastBid = myRealBids.slice(-1)[0];
+  // My ORIGINAL opening bid — the first real bid I made.  Distinct from
+  // myLastBid in any auction with a rebid; rebid handlers must use this to
+  // reason about my opening suit (e.g. weak-2 inquiry detection).
+  const myOriginalOpeningBid = myRealBids[0];
 
   const latestPartnerBid = latestNonPass(partner);
 
@@ -7746,6 +7958,7 @@ export function deriveSituation(
     rhoBid: latestNonPass(rho) ?? ctx.rhoBid,
     lhoBid: latestNonPass(lho) ?? ctx.lhoBid,
     myPreviousBid: ctx.myPreviousBid ?? myLastBid,
+    myFirstBid: ctx.myFirstBid ?? myOriginalOpeningBid,
   };
 }
 
