@@ -500,7 +500,7 @@ export const processData = (allData: CarEntry[]): GraphData => {
     ret.MPG.push([car.car, smoothData(car.MPG, max.MPG, min.MPG)]);
     ret.torque.push([car.car, smoothData(car.torque, max.torque, min.torque)]);
     ret.weight.push([car.car, smoothData(car.weight, max.weight, min.weight)]);
-    ret.zTo60.push([car.car, smoothData(car.zTo60, max.zTo60, min.zTo60)]);
+    ret.zTo60.push([car.car, smoothData(car.zTo60, min.zTo60, max.zTo60)]);
     ret.powerToWeight.push([
       car.car,
       smoothData(powerToWeight, max.powerToWeight, min.powerToWeight),

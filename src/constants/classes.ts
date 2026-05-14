@@ -736,6 +736,32 @@ export const presentations: School[] = [
     subtitle: "",
     years: [
       {
+        year: "2026",
+        quarters: [
+          {
+            quarter: "Disability:IN",
+            classes: [
+              {
+                catalog: "Title",
+                name: "The Trillion-Dollar Consumer Opportunity",
+              },
+              {
+                catalog: "Description",
+                name: "Consumers with disabilities represent one of the largest and potentially most influential market segments in the global economy, yet many brands continue to overlook accessibility and authentic representation as a core driver of growth. From discovery and purchase to loyalty and lifetime value, accessibility and disability inclusion play a critical role in shaping consumer expectations and experiences across industries. When accessibility and representation are embedded into consumer-facing strategies, brands can outperform traditional customer experience benchmarks while building trust, relevance, and long-term engagement. This session unpacks emerging research and real-world examples to illustrate how accessibility and disability representation influence consumer behavior and why it should be a foundational element of modern marketing and brand strategy.",
+              },
+              {
+                catalog: "Learning Objectives",
+                name: "1. Discover the size, influence, and collective expectations of consumers with disabilities along with trends that underscore why this segment represents a significant growth opportunity for consumer brands. 2. Understand how disability representation and accessible consumer experiences impact key performance indicators such as conversion, retention, brand trust, and lifetime value. 3. Explore practical ways brands can integrate accessibility into consumer-facing marketing and experience strategies to outperform traditional customer experience benchmarks.",
+              },
+              {
+                catalog: "Ken Bigler",
+                name: "Head of Accessibility Engineering at Intuit, Moderator",
+              },
+            ],
+          },
+        ],
+      },
+      {
         year: "2025",
         quarters: [
           {
@@ -846,7 +872,29 @@ export const presentations: School[] = [
     subtitle: "",
     years: [
       {
-        year: "GigNow - Hacking the Gig Economy Now",
+        year: "GitHub: Open Source Assistive Technology Hackathon",
+        quarters: [
+          {
+            quarter: "Markup Driven Pronunciation",
+            classes: [
+              {
+                catalog: "Date",
+                name: "May 21 - 22, 2026",
+              },
+              {
+                catalog: "Prizes",
+                name: "TBD",
+              },
+              {
+                catalog: "Project",
+                name: "TBD",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        year: "GigNow: Hacking the Gig Economy Now",
         quarters: [
           {
             quarter: "GraphHoppers",
@@ -868,7 +916,7 @@ export const presentations: School[] = [
         ],
       },
       {
-        year: "Accenture Hackathon Games",
+        year: "Accenture: Hackathon Games",
         quarters: [
           {
             quarter: "Feedbat",
