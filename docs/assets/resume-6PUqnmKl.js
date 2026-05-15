@@ -1,2 +1,0 @@
-import{n as e}from"./rolldown-runtime-jpDsebLB.js";import{x as t,z as n}from"./react-vendor-BJzJkTOv.js";import{t as r}from"./Typography-CkMR3uMw.js";var i=e(n(),1),a=`/assets/kenneth_bigler_resume-BPvkQlsI.png`,o=t(),s={maxWidth:1275,display:`block`,margin:`auto`},c=(0,i.memo)(()=>(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(r,{variant:`h2`,component:`h1`,children:`Resume`}),(0,o.jsx)(`img`,{src:a,alt:`Kenneth Bigler Software Engineer Resume`,width:`100%`,style:s})]}));c.displayName=`Resume`;export{c as default};
-//# sourceMappingURL=resume-6PUqnmKl.js.map
