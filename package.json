@@ -34,13 +34,11 @@
     "@highcharts/react": "5.0.1",
     "@mui/icons-material": "9.0.1",
     "@mui/material": "9.0.1",
-    "@vitejs/plugin-react": "6.0.2",
     "highcharts": "12.6.0",
     "jotai": "2.20.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
-    "react-router-dom": "7.15.1",
-    "vite": "8.0.13"
+    "react-router-dom": "7.15.1"
   },
   "devDependencies": {
     "@eslint/compat": "2.1.0",
@@ -51,6 +49,7 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@typescript-eslint/parser": "8.59.3",
+    "@vitejs/plugin-react": "6.0.2",
     "@vitest/coverage-v8": "4.1.6",
     "eslint": "10.4.0",
     "eslint-plugin-import": "2.32.0",
@@ -60,10 +59,9 @@
     "eslint-plugin-react-refresh": "0.5.2",
     "gts": "7.0.0",
     "jsdom": "29.1.1",
-    "prettier": "3.8.3",
     "source-map-explorer": "2.5.3",
-    "tsx": "4.22.0",
     "typescript": "6.0.3",
+    "vite": "8.0.13",
     "vitest": "4.1.6"
   },
   "keywords": [
