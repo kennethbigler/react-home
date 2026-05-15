@@ -55,7 +55,6 @@ export default defineConfig({
       }
     }
   },
-  optimizeDeps: {},
   plugins: [react(), deferStylesheetPlugin()],
   test: {
     globals: true,
