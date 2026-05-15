@@ -8,8 +8,8 @@ describe("resume | presentations | Presentations", () => {
     expect(screen.getByText("Presentations & Hackathons")).toBeInTheDocument();
     expect(screen.getByText("Hackathons")).toBeInTheDocument();
     expect(
-      screen.getByText("GigNow - Hacking the Gig Economy Now"),
+      screen.getByText("GigNow: Hacking the Gig Economy Now"),
     ).toBeInTheDocument();
-    expect(screen.getByText("Accenture Hackathon Games")).toBeInTheDocument();
+    expect(screen.getByText("Accenture: Hackathon Games")).toBeInTheDocument();
   });
 });
