@@ -1,9 +1,9 @@
-// use test types instead of default types
-/// <reference types="vitest" />
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Plugin } from "vite";
-import { defineConfig } from "vite";
+// eslint-disable-next-line import/no-unresolved
+import { defineConfig } from "vitest/config";
+// eslint-disable-next-line import/no-unresolved
 import react from "@vitejs/plugin-react";
 
 /** Make main stylesheet non-render-blocking (Lighthouse: eliminate render-blocking resources). */
@@ -40,7 +40,10 @@ export default defineConfig({
           if (id.includes("node_modules")) {
             // Highcharts core only; keep @highcharts/react in main bundle so it shares the same
             // React instance (avoids "Cannot read properties of undefined (reading 'forwardRef')" in CI).
-            if (id.includes("/highcharts/") && !id.includes("/@highcharts/react")) {
+            if (
+              id.includes("/highcharts/") &&
+              !id.includes("/@highcharts/react")
+            ) {
               return "charts";
             }
             if (
@@ -51,9 +54,9 @@ export default defineConfig({
               return "react-vendor";
             }
           }
-        }
-      }
-    }
+        },
+      },
+    },
   },
   plugins: [react(), deferStylesheetPlugin()],
   test: {
@@ -65,7 +68,15 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "html", "json"],
       include: ["src/**"],
-      exclude: ["src/images/**", "src/.DS_Store", "src/index.css", "src/vite-env.d.ts", "src/@types/**", "**/types.ts", "**/index.ts"],
+      exclude: [
+        "src/images/**",
+        "src/.DS_Store",
+        "src/index.css",
+        "src/vite-env.d.ts",
+        "src/@types/**",
+        "**/types.ts",
+        "**/index.ts",
+      ],
       thresholds: {
         statements: 85,
         branches: 80,
