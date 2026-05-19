@@ -7,9 +7,3 @@ function throwError() {
   echo $LINE
   exit 1
 }
-
-function buildApp() {
-  echo "Running build scripts..."
-  echo $LINE
-  SOURCEMAPS=false npm run build || throwError "build"
-}
