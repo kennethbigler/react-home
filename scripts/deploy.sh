@@ -1,12 +1,6 @@
 #!/bin/bash
 source ./scripts/common.sh
 
-function buildApp() {
-  echo "Running build scripts..."
-  echo $LINE
-  SOURCEMAPS=false npm run build || throwError "build"
-}
-
 function deployCode() {
   echo "Building react-home"
   rm -rf ./docs/assets &&
@@ -27,7 +21,7 @@ function gitSetup() {
   echo -e "Finish with a:\ngit push\n"
 }
 
-buildApp
+buildApp false
 echo $LINE
 deployCode
 echo $LINE
