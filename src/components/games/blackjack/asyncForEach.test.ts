@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { asyncForEach } from "../asyncForEach";
+import { asyncForEach } from "./asyncForEach";
 
 describe("apis | asyncForEach", () => {
   it("runs callback for each item in order", async () => {

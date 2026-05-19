@@ -11,5 +11,5 @@ function throwError() {
 function buildApp() {
   echo "Running build scripts..."
   echo $LINE
-  npm run build || throwError "build"
+  SOURCEMAPS=false npm run build || throwError "build"
 }

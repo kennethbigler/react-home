@@ -6,7 +6,7 @@ import blackjackState, {
 } from "../../../jotai/blackjack-state";
 import { DBHand, DBPlayer } from "../../../jotai/player-atom";
 import { TurnState } from "../../../jotai/turn-atom";
-import { asyncForEach } from "../../../apis/asyncForEach";
+import { asyncForEach } from "./asyncForEach";
 import { rankSort } from "../../../jotai/deck-state";
 import useBlackjackDeck from "./useBlackjackDeck";
 import {
@@ -15,7 +15,7 @@ import {
   getGameFunctions,
   weighHand,
 } from "./blackjackHelpers";
-import { catchErr } from "../../../apis/catchErr";
+import { catchErr } from "./catchErr";
 
 const D_H_TURN = 0;
 

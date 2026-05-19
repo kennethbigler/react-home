@@ -8,7 +8,7 @@ import { memo, useEffect } from "react";
 import useBlackjackAI from "./useBlackjackAI";
 import Header from "./Header";
 import GameTable from "../game-table";
-import { catchErr } from "../../../apis/catchErr";
+import { catchErr } from "./catchErr";
 import { GameFunctions } from "../../../jotai/blackjack-state";
 
 const BlackJack = memo(() => {

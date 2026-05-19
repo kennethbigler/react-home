@@ -30,8 +30,14 @@ function deferStylesheetPlugin(): Plugin {
 export default defineConfig({
   // for lighthouse
   build: {
-    sourcemap: true,
+    sourcemap: process.env.SOURCEMAPS !== "false",
     target: "es2020",
+    // Prevent Vite from preloading the 1.3MB charts chunk on every page load;
+    // it should only fetch when a chart route is actually visited.
+    modulePreload: {
+      resolveDependencies: (_filename, deps) =>
+        deps.filter((dep) => !dep.includes("charts")),
+    },
     // Charts chunk is large but loaded only when visiting F1/Cars/Travel/Comp/Spades/BotC
     chunkSizeWarningLimit: 600000,
     rollupOptions: {
@@ -52,6 +58,9 @@ export default defineConfig({
               id.includes("/react-router")
             ) {
               return "react-vendor";
+            }
+            if (id.includes("/@mui/") || id.includes("/@emotion/")) {
+              return "mui-vendor";
             }
           }
         },
