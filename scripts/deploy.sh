@@ -21,7 +21,7 @@ function gitSetup() {
   echo -e "Finish with a:\ngit push\n"
 }
 
-buildApp
+buildApp false
 echo $LINE
 deployCode
 echo $LINE

@@ -9,18 +9,18 @@ import {
 } from "@mui/material/colors";
 import dateObj, { DateObj } from "../apis/DateHelper";
 
-import prius07 from "../images/cars/07_toyota_prius.png";
-import voyager97 from "../images/cars/97_plymouth_voyager.png";
+import prius07 from "../images/cars/07_toyota_prius.webp";
+import voyager97 from "../images/cars/97_plymouth_voyager.webp";
 import pontiac93 from "../images/cars/93_pontiac_bonneville.webp";
 import impala10 from "../images/cars/10_chevrolet_impala.webp";
-import equinox10 from "../images/cars/10_chevy_equinox.png";
-import mustang15 from "../images/cars/15_mustang_gt_premium.png";
+import equinox10 from "../images/cars/10_chevy_equinox.webp";
+import mustang15 from "../images/cars/15_mustang_gt_premium.webp";
 import tesla16 from "../images/cars/16_tesla_x.webp";
-import xj8l05 from "../images/cars/05_jaguar_xj8l.png";
-import corvette18 from "../images/cars/18_corvette_zo6_3lz.png";
+import xj8l05 from "../images/cars/05_jaguar_xj8l.webp";
+import corvette18 from "../images/cars/18_corvette_zo6_3lz.webp";
 import ftype15 from "../images/cars/15_jaguar_f_type.webp";
-import mustang20 from "../images/cars/20_ford_mustang.png";
-import panamera21 from "../images/cars/21_porsche_panamera.png";
+import mustang20 from "../images/cars/20_ford_mustang.webp";
+import panamera21 from "../images/cars/21_porsche_panamera.webp";
 import bronco21 from "../images/cars/21_ford_bronco.webp";
 import grom22 from "../images/cars/22_honda_grom.webp";
 import porsche19 from "../images/cars/19_porsche_cayenne.webp";

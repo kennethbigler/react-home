@@ -24,7 +24,7 @@ const FamilyFeud = lazy(
   () => import(/* webpackChunkName: "family-feud" */ "./family-feud"),
 );
 const ImperialAssault = lazy(
-  () => import(/* webpackChunkName: "family-feud" */ "./imperial-assault"),
+  () => import(/* webpackChunkName: "imperial-assault" */ "./imperial-assault"),
 );
 const MurderMystery = lazy(
   () => import(/* webpackChunkName: "murder" */ "./murder-mystery"),

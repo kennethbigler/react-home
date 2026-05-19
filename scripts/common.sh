@@ -9,7 +9,8 @@ function throwError() {
 }
 
 function buildApp() {
+  local sourcemaps="${1:-true}"
   echo "Running build scripts..."
   echo $LINE
-  npm run build || throwError "build"
+  SOURCEMAPS="$sourcemaps" npm run build || throwError "build"
 }

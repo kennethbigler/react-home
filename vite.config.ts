@@ -1,9 +1,9 @@
-// use test types instead of default types
-/// <reference types="vitest" />
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Plugin } from "vite";
-import { defineConfig } from "vite";
+// eslint-disable-next-line import/no-unresolved
+import { defineConfig } from "vitest/config";
+// eslint-disable-next-line import/no-unresolved
 import react from "@vitejs/plugin-react";
 
 /** Make main stylesheet non-render-blocking (Lighthouse: eliminate render-blocking resources). */
@@ -30,8 +30,14 @@ function deferStylesheetPlugin(): Plugin {
 export default defineConfig({
   // for lighthouse
   build: {
-    sourcemap: true,
+    sourcemap: process.env.SOURCEMAPS !== "false",
     target: "es2020",
+    // Prevent Vite from preloading the 1.3MB charts chunk on every page load;
+    // it should only fetch when a chart route is actually visited.
+    modulePreload: {
+      resolveDependencies: (_filename, deps) =>
+        deps.filter((dep) => !dep.includes("charts")),
+    },
     // Charts chunk is large but loaded only when visiting F1/Cars/Travel/Comp/Spades/BotC
     chunkSizeWarningLimit: 600000,
     rollupOptions: {
@@ -40,7 +46,10 @@ export default defineConfig({
           if (id.includes("node_modules")) {
             // Highcharts core only; keep @highcharts/react in main bundle so it shares the same
             // React instance (avoids "Cannot read properties of undefined (reading 'forwardRef')" in CI).
-            if (id.includes("/highcharts/") && !id.includes("/@highcharts/react")) {
+            if (
+              id.includes("/highcharts/") &&
+              !id.includes("/@highcharts/react")
+            ) {
               return "charts";
             }
             if (
@@ -50,10 +59,13 @@ export default defineConfig({
             ) {
               return "react-vendor";
             }
+            if (id.includes("/@mui/") || id.includes("/@emotion/")) {
+              return "mui-vendor";
+            }
           }
-        }
-      }
-    }
+        },
+      },
+    },
   },
   plugins: [react(), deferStylesheetPlugin()],
   test: {
@@ -65,7 +77,15 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "html", "json"],
       include: ["src/**"],
-      exclude: ["src/images/**", "src/.DS_Store", "src/index.css", "src/vite-env.d.ts", "src/@types/**", "**/types.ts", "**/index.ts"],
+      exclude: [
+        "src/images/**",
+        "src/.DS_Store",
+        "src/index.css",
+        "src/vite-env.d.ts",
+        "src/@types/**",
+        "**/types.ts",
+        "**/index.ts",
+      ],
       thresholds: {
         statements: 85,
         branches: 80,
