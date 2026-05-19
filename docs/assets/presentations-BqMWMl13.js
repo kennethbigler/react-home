@@ -1,2 +1,0 @@
-import{n as e}from"./rolldown-runtime-jpDsebLB.js";import{x as t,z as n}from"./react-vendor-DGyxU0xz.js";import{t as r}from"./Typography-dnXS4K53.js";import{t as i}from"./Degree-Ugd2Cigy.js";import{t as a}from"./classes-DzBtOVBm.js";var o=e(n(),1),s=t(),c=(0,o.memo)(()=>(0,s.jsxs)(s.Fragment,{children:[(0,s.jsx)(r,{variant:`h2`,component:`h1`,children:`Presentations & Hackathons`}),a.map(e=>(0,s.jsx)(i,{degree:e},e.degree))]}));c.displayName=`Presentations`;export{c as default};
-//# sourceMappingURL=presentations-BqMWMl13.js.map

@@ -1,2 +1,0 @@
-import{E as e,b as t,y as n}from"./createSimplePaletteValueFilter-irnv2qUH.js";var r=t();function i(e){let{theme:t,name:r,props:i}=e;return!t||!t.components||!t.components[r]||!t.components[r].defaultProps?i:n(t.components[r].defaultProps,i)}function a({props:t,name:n,defaultTheme:r,themeId:a}){let o=e(r);return a&&(o=o[a]||o),i({theme:o,name:n,props:t})}export{r as n,a as t};
-//# sourceMappingURL=useThemeProps-Bj_9PFyG.js.map
