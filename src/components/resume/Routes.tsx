@@ -24,6 +24,9 @@ const TravelMap = lazy(
   () => import(/* webpackChunkName: "travel" */ "./travel-map"),
 );
 const Work = lazy(() => import(/* webpackChunkName: "work" */ "./work"));
+const DataSsmlTest = lazy(
+  () => import(/* webpackChunkName: "data-ssml-test" */ "./data-ssml-test"),
+);
 
 interface RoutesProps {
   handleNav: (loc: string) => void;
@@ -47,6 +50,7 @@ const ResumeRoutes = ({ handleNav }: RoutesProps) => (
         <Route path="resume" element={<Resume />} />
         <Route path="travel" element={<TravelMap />} />
         <Route path="work" element={<Work />} />
+        <Route path="ssml-test" element={<DataSsmlTest />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Suspense>
