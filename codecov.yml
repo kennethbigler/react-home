@@ -1,5 +1,12 @@
 # ... previous config options...
 
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 0.1%  # allow up to 0.1% drop before failing (covers indirect changes from dep updates)
+
 comment:
   layout: "header, diff, flags, components"  # show component info in the PR comment
   
@@ -8,6 +15,7 @@ component_management:
     statuses:
       - type: project # in this case every component that doesn't have a status defined will have a project type one
         target: auto
+        threshold: 0.1%
         branches:
           - "!main"
   individual_components:
