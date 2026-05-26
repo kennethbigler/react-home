@@ -50,7 +50,7 @@
     "@types/react-dom": "19.2.3",
     "@typescript-eslint/parser": "8.60.0",
     "@vitejs/plugin-react": "6.0.2",
-    "@vitest/coverage-v8": "4.1.6",
+    "@vitest/coverage-v8": "4.1.7",
     "eslint": "10.4.0",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
@@ -61,8 +61,8 @@
     "jsdom": "29.1.1",
     "source-map-explorer": "2.5.3",
     "typescript": "6.0.3",
-    "vite": "8.0.13",
-    "vitest": "4.1.6"
+    "vite": "8.0.14",
+    "vitest": "4.1.7"
   },
   "keywords": [
     "Ken",
