@@ -13,12 +13,13 @@ import Highcharts from "highcharts/highcharts.src";
 import "highcharts/modules/accessibility";
 import themeAtom from "../../../jotai/theme-atom";
 import { getLieSeries } from "./botcHelpers";
+import { ActiveScript } from "../../../jotai/botc-atom";
 
 setHighcharts(Highcharts);
 interface LiePieProps {
   numPlayers: number;
   numTravelers: number;
-  script: number;
+  activeScript: ActiveScript;
 }
 
 const staticOptions: Highcharts.Options = {
@@ -43,34 +44,36 @@ const staticOptions: Highcharts.Options = {
   },
 };
 
-const LiePie = memo(({ numPlayers, numTravelers, script }: LiePieProps) => {
-  const muiTheme = useTheme();
-  const theme = useAtomValue(themeAtom);
-  const color = theme.mode === "light" ? "black" : "white";
+const LiePie = memo(
+  ({ numPlayers, numTravelers, activeScript }: LiePieProps) => {
+    const muiTheme = useTheme();
+    const theme = useAtomValue(themeAtom);
+    const color = theme.mode === "light" ? "black" : "white";
 
-  const lieSeries = getLieSeries(numPlayers, numTravelers, script);
+    const lieSeries = getLieSeries(numPlayers, numTravelers, activeScript);
 
-  const options: Highcharts.Options = {
-    ...staticOptions,
-    colors: [
-      muiTheme.palette.error.main,
-      muiTheme.palette.warning.main,
-      muiTheme.palette.info.main,
-      muiTheme.palette.success.main,
-    ],
-  };
+    const options: Highcharts.Options = {
+      ...staticOptions,
+      colors: [
+        muiTheme.palette.error.main,
+        muiTheme.palette.warning.main,
+        muiTheme.palette.info.main,
+        muiTheme.palette.success.main,
+      ],
+    };
 
-  return (
-    <figure style={{ margin: 0, width: "100%" }}>
-      <Chart highcharts={Highcharts} options={options}>
-        <Accessibility enabled={true} />
-        <Credits enabled={false} />
-        <Title style={{ color }}>Who is lying?</Title>
-        <Series type="pie" options={{ name: "⛽️🔥❓" }} data={lieSeries} />
-      </Chart>
-    </figure>
-  );
-});
+    return (
+      <figure style={{ margin: 0, width: "100%" }}>
+        <Chart highcharts={Highcharts} options={options}>
+          <Accessibility enabled={true} />
+          <Credits enabled={false} />
+          <Title style={{ color }}>Who is lying?</Title>
+          <Series type="pie" options={{ name: "⛽️🔥❓" }} data={lieSeries} />
+        </Chart>
+      </figure>
+    );
+  },
+);
 
 LiePie.displayName = "LiePie";
 

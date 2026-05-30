@@ -20,13 +20,17 @@ export interface BotCPlayer {
   kill: boolean;
 }
 
-/** Metadata for a community script selected from botcscripts.com */
-export interface CustomScript {
-  pk: number;
-  title: string;
-  author: string;
-  characters: string[];
-}
+export type BuiltinScriptIndex = 0 | 1 | 2 | 3; // TB=0, SNV=1, BMR=2, Other=3
+
+export type ActiveScript =
+  | { type: "builtin"; index: BuiltinScriptIndex }
+  | {
+      type: "community";
+      pk: number;
+      title: string;
+      author: string;
+      characters: string[];
+    };
 
 export const BOTC_MIN_PLAYERS = 5;
 export const BOTC_MAX_PLAYERS = 15;
@@ -37,10 +41,7 @@ export interface BotCState {
   numPlayers: number;
   numTravelers: number;
   round: number;
-  /** 0=TB, 1=S&V, 2=BMR, 3=Other (all roles), 5=Community script */
-  script: number;
-  /** Populated when script === 5 */
-  customScript: CustomScript | null;
+  activeScript: ActiveScript;
   botcPlayers: BotCPlayer[];
   roundNotes: string[];
   tracker: number[][];
@@ -73,14 +74,13 @@ export const newBotCGame = (): BotCState => {
     numPlayers: 8,
     numTravelers: 0,
     round: 0,
-    script: 0,
-    customScript: null,
+    activeScript: { type: "builtin", index: 0 },
     botcPlayers,
     roundNotes: newRoundNotes(),
     tracker: newTracker(),
   };
 };
 
-const botcAtom = atomWithStorage("botcAtom", newBotCGame());
+const botcAtom = atomWithStorage("botcAtom_v2", newBotCGame());
 
 export default botcAtom;

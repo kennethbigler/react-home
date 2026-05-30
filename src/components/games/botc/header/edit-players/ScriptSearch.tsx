@@ -6,30 +6,30 @@ import {
   ScriptOption,
   CommunityScriptOption,
 } from "../../../../../utils/botc-script-utils";
-import { CustomScript } from "../../../../../jotai/botc-atom";
+import { ActiveScript } from "../../../../../jotai/botc-atom";
 
 interface ScriptSearchProps {
-  script: number;
-  customScript: CustomScript | null;
-  onBuiltinChange: (scriptIndex: number) => void;
+  activeScript: ActiveScript;
+  onBuiltinChange: (
+    index: import("../../../../../jotai/botc-atom").BuiltinScriptIndex,
+  ) => void;
   onCommunityChange: (option: CommunityScriptOption) => void;
 }
 
 /** Derive the currently-selected autocomplete value from state */
 const getSelectedOption = (
-  script: number,
-  customScript: CustomScript | null,
+  activeScript: ActiveScript,
   allOptions: ScriptOption[],
 ): ScriptOption | null => {
-  if (script === 5 && customScript !== null) {
+  if (activeScript.type === "community") {
     return (
       (allOptions.find(
-        (o) => o.type === "community" && o.pk === customScript.pk,
+        (o) => o.type === "community" && o.pk === activeScript.pk,
       ) as CommunityScriptOption | undefined) ?? null
     );
   }
   return (
-    (BUILTIN_SCRIPT_OPTIONS.find((o) => o.scriptIndex === script) as
+    (BUILTIN_SCRIPT_OPTIONS.find((o) => o.index === activeScript.index) as
       | ScriptOption
       | undefined) ?? null
   );
@@ -37,13 +37,12 @@ const getSelectedOption = (
 
 /** EditPlayers → ScriptSearch (replaces ScriptSelect) */
 const ScriptSearch = ({
-  script,
-  customScript,
+  activeScript,
   onBuiltinChange,
   onCommunityChange,
 }: ScriptSearchProps) => {
   const allOptions = useMemo(() => getAllScriptOptions(), []);
-  const selectedOption = getSelectedOption(script, customScript, allOptions);
+  const selectedOption = getSelectedOption(activeScript, allOptions);
 
   const handleChange = (
     _: React.SyntheticEvent,
@@ -51,7 +50,7 @@ const ScriptSearch = ({
   ) => {
     if (!value) return;
     if (value.type === "builtin") {
-      onBuiltinChange(value.scriptIndex);
+      onBuiltinChange(value.index);
     } else {
       onCommunityChange(value);
     }
@@ -75,7 +74,10 @@ const ScriptSearch = ({
         if (option.type === "community" && value.type === "community") {
           return option.pk === value.pk;
         }
-        return option.scriptIndex === value.scriptIndex;
+        if (option.type === "builtin" && value.type === "builtin") {
+          return option.index === value.index;
+        }
+        return false;
       }}
       renderInput={(params) => (
         <TextField
@@ -88,7 +90,7 @@ const ScriptSearch = ({
       renderOption={(props, option) => (
         <li
           {...props}
-          key={option.type === "community" ? option.pk : option.scriptIndex}
+          key={option.type === "community" ? option.pk : option.index}
         >
           <span>
             <strong>{option.label}</strong>

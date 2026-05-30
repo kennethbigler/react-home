@@ -3,7 +3,7 @@
  * via the botc-tools.xyz scripts.json.
  */
 import { BotCScript } from "../constants/botc";
-import { BotCRole } from "../jotai/botc-atom";
+import { BotCRole, BuiltinScriptIndex } from "../jotai/botc-atom";
 import { getRoleBySlug } from "../constants/botc-slug-map";
 import scriptsData from "../data/botc-scripts.json";
 
@@ -19,13 +19,12 @@ export interface CommunityScript {
 export interface BuiltinScriptOption {
   type: "builtin";
   label: string;
-  scriptIndex: number;
+  index: BuiltinScriptIndex;
 }
 
 export interface CommunityScriptOption {
   type: "community";
   label: string;
-  scriptIndex: 5;
   pk: number;
   author: string;
   characters: string[];
@@ -35,10 +34,10 @@ export type ScriptOption = BuiltinScriptOption | CommunityScriptOption;
 
 /** The 4 built-in script options (indices 0–3) */
 export const BUILTIN_SCRIPT_OPTIONS: BuiltinScriptOption[] = [
-  { type: "builtin", label: "Trouble Brewing", scriptIndex: 0 },
-  { type: "builtin", label: "Sects and Violets", scriptIndex: 1 },
-  { type: "builtin", label: "Bad Moon Rising", scriptIndex: 2 },
-  { type: "builtin", label: "Other (All Roles)", scriptIndex: 3 },
+  { type: "builtin", label: "Trouble Brewing", index: 0 },
+  { type: "builtin", label: "Sects and Violets", index: 1 },
+  { type: "builtin", label: "Bad Moon Rising", index: 2 },
+  { type: "builtin", label: "Other (All Roles)", index: 3 },
 ];
 
 /** Return all community scripts from the bundled JSON */
@@ -51,7 +50,6 @@ export const getAllScriptOptions = (): ScriptOption[] => {
     getAllCommunityScripts().map((s) => ({
       type: "community",
       label: s.title,
-      scriptIndex: 5,
       pk: s.pk,
       author: s.author,
       characters: s.characters,
@@ -94,6 +92,6 @@ export const buildScriptFromCharacters = (characters: string[]): BotCScript => {
 };
 
 /** Get the display label for a built-in script index */
-export const getBuiltinScriptLabel = (scriptIndex: number): string =>
-  BUILTIN_SCRIPT_OPTIONS.find((o) => o.scriptIndex === scriptIndex)?.label ??
+export const getBuiltinScriptLabel = (index: BuiltinScriptIndex): string =>
+  BUILTIN_SCRIPT_OPTIONS.find((o) => o.index === index)?.label ??
   "Unknown Script";

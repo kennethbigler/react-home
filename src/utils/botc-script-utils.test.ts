@@ -14,7 +14,7 @@ describe("botc-script-utils", () => {
     });
 
     it("includes Trouble Brewing at index 0", () => {
-      const tb = BUILTIN_SCRIPT_OPTIONS.find((o) => o.scriptIndex === 0);
+      const tb = BUILTIN_SCRIPT_OPTIONS.find((o) => o.index === 0);
       expect(tb?.label).toBe("Trouble Brewing");
     });
 
@@ -53,15 +53,6 @@ describe("botc-script-utils", () => {
       const options = getAllScriptOptions();
       const community = options.filter((o) => o.type === "community");
       expect(community.length).toBeGreaterThan(0);
-    });
-
-    it("community options have scriptIndex of 5", () => {
-      const options = getAllScriptOptions();
-      options
-        .filter((o) => o.type === "community")
-        .forEach((o) => {
-          expect(o.scriptIndex).toBe(5);
-        });
     });
 
     it("community options have pk, author, and characters", () => {
@@ -166,10 +157,6 @@ describe("botc-script-utils", () => {
 
     it("returns correct label for index 3", () => {
       expect(getBuiltinScriptLabel(3)).toBe("Other (All Roles)");
-    });
-
-    it("returns 'Unknown Script' for unrecognised index", () => {
-      expect(getBuiltinScriptLabel(99)).toBe("Unknown Script");
     });
   });
 });

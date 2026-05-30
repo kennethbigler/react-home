@@ -29,8 +29,7 @@ describe("ScriptSearch", () => {
   it("renders the script search input", () => {
     render(
       <ScriptSearch
-        script={0}
-        customScript={null}
+        activeScript={{ type: "builtin", index: 0 }}
         onBuiltinChange={noopBuiltin}
         onCommunityChange={noopCommunity}
       />,
@@ -42,8 +41,7 @@ describe("ScriptSearch", () => {
   it("shows 'Trouble Brewing' as the selected value for script=0", () => {
     render(
       <ScriptSearch
-        script={0}
-        customScript={null}
+        activeScript={{ type: "builtin", index: 0 }}
         onBuiltinChange={noopBuiltin}
         onCommunityChange={noopCommunity}
       />,
@@ -56,8 +54,7 @@ describe("ScriptSearch", () => {
   it("shows 'Sects and Violets' for script=1", () => {
     render(
       <ScriptSearch
-        script={1}
-        customScript={null}
+        activeScript={{ type: "builtin", index: 1 }}
         onBuiltinChange={noopBuiltin}
         onCommunityChange={noopCommunity}
       />,
@@ -70,8 +67,7 @@ describe("ScriptSearch", () => {
   it("shows 'Bad Moon Rising' for script=2", () => {
     render(
       <ScriptSearch
-        script={2}
-        customScript={null}
+        activeScript={{ type: "builtin", index: 2 }}
         onBuiltinChange={noopBuiltin}
         onCommunityChange={noopCommunity}
       />,
@@ -84,8 +80,7 @@ describe("ScriptSearch", () => {
   it("shows 'Other (All Roles)' for script=3", () => {
     render(
       <ScriptSearch
-        script={3}
-        customScript={null}
+        activeScript={{ type: "builtin", index: 3 }}
         onBuiltinChange={noopBuiltin}
         onCommunityChange={noopCommunity}
       />,
@@ -95,18 +90,16 @@ describe("ScriptSearch", () => {
     expect(input.value).toBe("Other (All Roles)");
   });
 
-  it("shows community script title when script=5 and customScript is set", () => {
-    const customScript = {
-      pk: 6506,
-      title: "The Spy Who Pinged Me",
-      author: "Community",
-      characters: ["chef", "imp"],
-    };
-
+  it("shows community script title when activeScript is community type", () => {
     render(
       <ScriptSearch
-        script={5}
-        customScript={customScript}
+        activeScript={{
+          type: "community",
+          pk: 6506,
+          title: "The Spy Who Pinged Me",
+          author: "Community",
+          characters: ["chef", "imp"],
+        }}
         onBuiltinChange={noopBuiltin}
         onCommunityChange={noopCommunity}
       />,
@@ -119,8 +112,7 @@ describe("ScriptSearch", () => {
   it("renders a labeled input", () => {
     render(
       <ScriptSearch
-        script={0}
-        customScript={null}
+        activeScript={{ type: "builtin", index: 0 }}
         onBuiltinChange={noopBuiltin}
         onCommunityChange={noopCommunity}
       />,

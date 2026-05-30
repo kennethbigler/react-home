@@ -36,7 +36,7 @@ describe("botcHelpers", () => {
 
   describe("getLieSeries", () => {
     it("calculates lie series for Trouble Brewing (script 0)", () => {
-      const result = getLieSeries(7, 0, 0);
+      const result = getLieSeries(7, 0, { type: "builtin", index: 0 });
 
       expect(result).toHaveLength(4);
       expect(result[0].name).toBe("😈");
@@ -51,7 +51,7 @@ describe("botcHelpers", () => {
     });
 
     it("calculates lie series for S&V (script 1)", () => {
-      const result = getLieSeries(7, 0, 1);
+      const result = getLieSeries(7, 0, { type: "builtin", index: 1 });
 
       expect(result).toHaveLength(4);
       // For S&V, drunk calculation is different
@@ -61,7 +61,7 @@ describe("botcHelpers", () => {
     });
 
     it("calculates lie series for script 3 (Other)", () => {
-      const result = getLieSeries(7, 0, 3);
+      const result = getLieSeries(7, 0, { type: "builtin", index: 3 });
 
       expect(result).toHaveLength(4);
       result.forEach((item) => {
@@ -69,8 +69,14 @@ describe("botcHelpers", () => {
       });
     });
 
-    it("calculates lie series for script 5 (Community)", () => {
-      const result = getLieSeries(7, 0, 5);
+    it("calculates lie series for a community script", () => {
+      const result = getLieSeries(7, 0, {
+        type: "community",
+        pk: 1,
+        title: "T",
+        author: "A",
+        characters: [],
+      });
 
       expect(result).toHaveLength(4);
       result.forEach((item) => {
@@ -79,8 +85,14 @@ describe("botcHelpers", () => {
     });
 
     it("adds evil travelers when numTravelers >= 3", () => {
-      const resultNoTravelers = getLieSeries(7, 0, 0);
-      const resultManyTravelers = getLieSeries(7, 3, 0);
+      const resultNoTravelers = getLieSeries(7, 0, {
+        type: "builtin",
+        index: 0,
+      });
+      const resultManyTravelers = getLieSeries(7, 3, {
+        type: "builtin",
+        index: 0,
+      });
 
       // With 3+ travelers, should have 2 more evil
       expect(resultManyTravelers[0].y).toBeGreaterThanOrEqual(
@@ -89,8 +101,14 @@ describe("botcHelpers", () => {
     });
 
     it("adds one evil traveler when 0 < numTravelers < 3", () => {
-      const resultNoTravelers = getLieSeries(7, 0, 0);
-      const resultOneTraveler = getLieSeries(7, 1, 0);
+      const resultNoTravelers = getLieSeries(7, 0, {
+        type: "builtin",
+        index: 0,
+      });
+      const resultOneTraveler = getLieSeries(7, 1, {
+        type: "builtin",
+        index: 0,
+      });
 
       // With 1-2 travelers, should have 1 more evil
       expect(resultOneTraveler[0].y).toBeGreaterThanOrEqual(
@@ -99,8 +117,14 @@ describe("botcHelpers", () => {
     });
 
     it("adds drunk when numTravelers >= 4", () => {
-      const resultFewTravelers = getLieSeries(7, 3, 0);
-      const resultManyTravelers = getLieSeries(7, 4, 0);
+      const resultFewTravelers = getLieSeries(7, 3, {
+        type: "builtin",
+        index: 0,
+      });
+      const resultManyTravelers = getLieSeries(7, 4, {
+        type: "builtin",
+        index: 0,
+      });
 
       // With 4+ travelers, should have at least 1 more drunk
       expect(resultManyTravelers[1].y).toBeGreaterThan(resultFewTravelers[1].y);
@@ -108,7 +132,7 @@ describe("botcHelpers", () => {
 
     it("adds evil outsider for non-TB scripts with outsiders", () => {
       // Script 1 (S&V) should add evil outsider
-      const result = getLieSeries(10, 0, 1);
+      const result = getLieSeries(10, 0, { type: "builtin", index: 1 });
 
       expect(result).toHaveLength(4);
       // Just verify it doesn't throw and returns valid data
@@ -117,9 +141,9 @@ describe("botcHelpers", () => {
       });
     });
 
-    it("handles default case in switch statement", () => {
+    it("handles default case (BMR, script 2) — no additional drunk", () => {
       // Script 2 (BMR) should hit default case
-      const result = getLieSeries(7, 0, 2);
+      const result = getLieSeries(7, 0, { type: "builtin", index: 2 });
 
       expect(result).toHaveLength(4);
       result.forEach((item) => {
@@ -130,7 +154,10 @@ describe("botcHelpers", () => {
     it("calculates correct totals (sum equals players + travelers)", () => {
       const numPlayers = 10;
       const numTravelers = 2;
-      const result = getLieSeries(numPlayers, numTravelers, 0);
+      const result = getLieSeries(numPlayers, numTravelers, {
+        type: "builtin",
+        index: 0,
+      });
 
       const total = result.reduce((sum, item) => sum + item.y, 0);
 

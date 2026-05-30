@@ -1,11 +1,12 @@
 import { useState, ChangeEvent, FocusEvent, ChangeEventHandler } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import botcAtom, {
+  ActiveScript,
   BotCPlayer,
   botcPlayerShell,
   BotCPlayerStatus,
   BotCRole,
-  CustomScript,
+  BuiltinScriptIndex,
   newRoundNotes,
   newTracker,
 } from "../../../jotai/botc-atom";
@@ -144,15 +145,7 @@ export const usePlayerNotes = () => {
 /** -------------------- EditPlayers Specific Functions -------------------- */
 export const useEditPlayers = () => {
   const [
-    {
-      isText,
-      numPlayers,
-      numTravelers,
-      script,
-      customScript,
-      botcPlayers,
-      ...other
-    },
+    { isText, numPlayers, numTravelers, activeScript, botcPlayers, ...other },
     setState,
   ] = useAtom(botcAtom);
 
@@ -163,8 +156,7 @@ export const useEditPlayers = () => {
       botcPlayers,
       isText,
       numTravelers,
-      script,
-      customScript,
+      activeScript,
       numPlayers: value,
     });
   };
@@ -176,33 +168,33 @@ export const useEditPlayers = () => {
       botcPlayers,
       isText,
       numPlayers,
-      script,
-      customScript,
+      activeScript,
       numTravelers: value,
     });
   };
 
-  /** Select a built-in script by index (0–4) */
-  const updateScript = (newScript: number) => {
+  /** Select a built-in script by index (0–3) */
+  const updateScript = (index: BuiltinScriptIndex) => {
     let newText = isText;
     // Scripts 0–2 work best with text mode on
-    if (newScript <= 2) {
+    if (index <= 2) {
       newText = true;
     }
+    const newActiveScript: ActiveScript = { type: "builtin", index };
     setState({
       ...other,
       botcPlayers,
       numPlayers,
       numTravelers,
       isText: newText,
-      script: newScript,
-      customScript: null,
+      activeScript: newActiveScript,
     });
   };
 
   /** Select a community script from botcscripts.com */
   const updateCommunityScript = (option: CommunityScriptOption) => {
-    const newCustomScript: CustomScript = {
+    const newActiveScript: ActiveScript = {
+      type: "community",
       pk: option.pk,
       title: option.label,
       author: option.author,
@@ -214,8 +206,7 @@ export const useEditPlayers = () => {
       numPlayers,
       numTravelers,
       isText,
-      script: 5,
-      customScript: newCustomScript,
+      activeScript: newActiveScript,
     });
   };
 
@@ -226,8 +217,7 @@ export const useEditPlayers = () => {
       botcPlayers,
       numPlayers,
       numTravelers,
-      script,
-      customScript,
+      activeScript,
       isText: e.target.checked,
     });
   };
@@ -242,8 +232,7 @@ export const useEditPlayers = () => {
       isText,
       numPlayers,
       numTravelers,
-      script,
-      customScript,
+      activeScript,
       round: 0,
       botcPlayers: newPlayers,
       roundNotes: newRoundNotes(),
@@ -253,8 +242,7 @@ export const useEditPlayers = () => {
 
   return {
     isText,
-    script,
-    customScript,
+    activeScript,
     updateNumPlayers,
     updateNumTravelers,
     updateScript,
@@ -302,9 +290,9 @@ export const useTracker = () => {
 
 /** -------------------- Home Specific Functions -------------------- */
 const useBotC = () => {
-  const { isText, numPlayers, numTravelers, script, customScript } =
+  const { isText, numPlayers, numTravelers, activeScript } =
     useAtomValue(botcAtom);
-  return { isText, numPlayers, numTravelers, script, customScript };
+  return { isText, numPlayers, numTravelers, activeScript };
 };
 
 export default useBotC;

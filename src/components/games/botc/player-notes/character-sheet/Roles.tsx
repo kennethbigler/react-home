@@ -1,12 +1,11 @@
-import { BotCRole, CustomScript } from "../../../../../jotai/botc-atom";
+import { ActiveScript, BotCRole } from "../../../../../jotai/botc-atom";
 import { tb, snv, bmr, other, BotCScript } from "../../../../../constants/botc";
 import { buildScriptFromCharacters } from "../../../../../utils/botc-script-utils";
 import RoleSection, { RoleKey } from "./RoleSection";
 
 interface RolesProps {
   isText: boolean;
-  script: number;
-  customScript?: CustomScript | null;
+  activeScript: ActiveScript;
   roleKey: RoleKey;
   onRoleClick?: (role: BotCRole, selected: boolean) => () => void;
 }
@@ -17,55 +16,47 @@ interface ActiveBotCScript {
 
 /** CharacterSheet -> EmojiNotes
  *                 -> Roles -> RoleSelection */
-const Roles = ({
-  isText,
-  script,
-  customScript,
-  roleKey,
-  onRoleClick,
-}: RolesProps) => {
+const Roles = ({ isText, activeScript, roleKey, onRoleClick }: RolesProps) => {
   let scripts: ActiveBotCScript = { active: other, travelers: [] };
   let isOtherScript = false;
-  switch (script) {
-    case 0:
-      scripts = {
-        active: tb,
-        travelers: [
-          ...other.travelers.filter((x) => !tb.travelers.includes(x)),
-        ],
-      };
-      break;
-    case 1:
-      scripts = {
-        active: snv,
-        travelers: [
-          ...other.travelers.filter((x) => !snv.travelers.includes(x)),
-        ],
-      };
-      break;
-    case 2:
-      scripts = {
-        active: bmr,
-        travelers: [
-          ...other.travelers.filter((x) => !bmr.travelers.includes(x)),
-        ],
-      };
-      break;
-    case 5:
-      // Community script: build from characters array if available, else fall back to "other"
-      if (customScript && customScript.characters.length > 0) {
-        const built = buildScriptFromCharacters(customScript.characters);
-        scripts = {
-          active: built,
-          travelers: [...other.travelers],
-        };
-      } else {
-        isOtherScript = true;
-      }
-      break;
-    case 3:
-    default: // keep initial assignment
+
+  if (activeScript.type === "community") {
+    if (activeScript.characters.length > 0) {
+      const built = buildScriptFromCharacters(activeScript.characters);
+      scripts = { active: built, travelers: [...other.travelers] };
+    } else {
       isOtherScript = true;
+    }
+  } else {
+    switch (activeScript.index) {
+      case 0:
+        scripts = {
+          active: tb,
+          travelers: [
+            ...other.travelers.filter((x) => !tb.travelers.includes(x)),
+          ],
+        };
+        break;
+      case 1:
+        scripts = {
+          active: snv,
+          travelers: [
+            ...other.travelers.filter((x) => !snv.travelers.includes(x)),
+          ],
+        };
+        break;
+      case 2:
+        scripts = {
+          active: bmr,
+          travelers: [
+            ...other.travelers.filter((x) => !bmr.travelers.includes(x)),
+          ],
+        };
+        break;
+      case 3:
+      default:
+        isOtherScript = true;
+    }
   }
 
   let gridSize = 3;

@@ -1,4 +1,5 @@
 import { playerDist } from "../../../constants/botc";
+import { ActiveScript } from "../../../jotai/botc-atom";
 
 export const getGridSize = (pc: number, i: number) => {
   if (i < 3 || (pc % 2 === 0 && i >= pc - 3)) {
@@ -12,7 +13,7 @@ export const getGridSize = (pc: number, i: number) => {
 export const getLieSeries = (
   numPlayers: number,
   numTravelers: number,
-  script: number,
+  activeScript: ActiveScript,
 ) => {
   const dist = playerDist[numPlayers].split(",").map((d) => parseInt(d, 10));
 
@@ -24,30 +25,37 @@ export const getLieSeries = (
     // Evil Traveler
     numEvil += 1;
   }
-  if (script !== 0 && dist[1] > 0) {
+  if (
+    (activeScript.type === "community" || activeScript.index !== 0) &&
+    dist[1] > 0
+  ) {
     // Evil Outsider
     numEvil += 1;
   }
 
   let numDrunk: number = numTravelers >= 4 ? 1 : 0;
-  switch (script) {
-    case 0:
-      // TB
-      numDrunk += Math.min(dist[1], 1); // Outsider 🍺
-      numDrunk += Math.min(dist[2], 1); // Minion 🧪
-      break;
-    case 1:
-      // S&V
-      numDrunk += Math.min(dist[1], 1); // Outsider 🍺😡
-      numDrunk += Math.min(dist[2], 2); // Minion 🧪😡
-      break;
-    case 3: // Other
-    case 5: // Community script — use same generic calculation as Other
-      numDrunk += Math.min(dist[1], 2); // Outsider 🍺😡
-      numDrunk += Math.min(dist[2], 2); // Minion 🧪😡
-      break;
-    default:
-      break;
+  if (activeScript.type === "community") {
+    numDrunk += Math.min(dist[1], 2); // Outsider 🍺😡
+    numDrunk += Math.min(dist[2], 2); // Minion 🧪😡
+  } else {
+    switch (activeScript.index) {
+      case 0:
+        // TB
+        numDrunk += Math.min(dist[1], 1); // Outsider 🍺
+        numDrunk += Math.min(dist[2], 1); // Minion 🧪
+        break;
+      case 1:
+        // S&V
+        numDrunk += Math.min(dist[1], 1); // Outsider 🍺😡
+        numDrunk += Math.min(dist[2], 2); // Minion 🧪😡
+        break;
+      case 3: // Other
+        numDrunk += Math.min(dist[1], 2); // Outsider 🍺😡
+        numDrunk += Math.min(dist[2], 2); // Minion 🧪😡
+        break;
+      default: // BMR (case 2) — no additional drunk
+        break;
+    }
   }
 
   const numLie: number = Math.ceil(

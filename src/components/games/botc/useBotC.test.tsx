@@ -25,8 +25,11 @@ describe("useBotC", () => {
       expect(result.current.isText).toBeDefined();
       expect(result.current.numPlayers).toBeDefined();
       expect(result.current.numTravelers).toBeDefined();
-      expect(result.current.script).toBeDefined();
-      expect(result.current.customScript).toBeNull();
+      expect(result.current.activeScript).toBeDefined();
+      expect(result.current.activeScript).toEqual({
+        type: "builtin",
+        index: 0,
+      });
     });
   });
 
@@ -298,7 +301,7 @@ describe("useBotC", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
       expect(result.current.isText).toBeDefined();
-      expect(result.current.script).toBeDefined();
+      expect(result.current.activeScript).toBeDefined();
       expect(result.current.updateNumPlayers).toBeDefined();
       expect(result.current.updateNumTravelers).toBeDefined();
       expect(result.current.updateScript).toBeDefined();
@@ -334,7 +337,10 @@ describe("useBotC", () => {
       });
 
       expect(result.current.isText).toBe(true);
-      expect(result.current.script).toBe(0);
+      expect(result.current.activeScript).toEqual({
+        type: "builtin",
+        index: 0,
+      });
     });
 
     it("updates script to 1 and sets text to true", () => {
@@ -345,7 +351,10 @@ describe("useBotC", () => {
       });
 
       expect(result.current.isText).toBe(true);
-      expect(result.current.script).toBe(1);
+      expect(result.current.activeScript).toEqual({
+        type: "builtin",
+        index: 1,
+      });
     });
 
     it("updates script to 2 and sets text to true", () => {
@@ -356,7 +365,10 @@ describe("useBotC", () => {
       });
 
       expect(result.current.isText).toBe(true);
-      expect(result.current.script).toBe(2);
+      expect(result.current.activeScript).toEqual({
+        type: "builtin",
+        index: 2,
+      });
     });
 
     it("updates script to 3 (Other) without forcing text mode", () => {
@@ -367,8 +379,10 @@ describe("useBotC", () => {
       });
 
       // script 3 (Other) does not force isText; value stays as-is
-      expect(result.current.script).toBe(3);
-      expect(result.current.customScript).toBeNull();
+      expect(result.current.activeScript).toEqual({
+        type: "builtin",
+        index: 3,
+      });
     });
 
     it("updates text setting", () => {
@@ -395,27 +409,27 @@ describe("useBotC", () => {
       expect(result.current).toBeDefined();
     });
 
-    it("updateCommunityScript sets script to 5 and stores customScript", () => {
+    it("updateCommunityScript sets community activeScript", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
       act(() => {
         result.current.updateCommunityScript({
           type: "community",
           label: "Test Script",
-          scriptIndex: 5,
           pk: 9999,
           author: "Test Author",
           characters: ["chef", "imp"],
         });
       });
 
-      expect(result.current.script).toBe(5);
-      expect(result.current.customScript).not.toBeNull();
-      expect(result.current.customScript?.pk).toBe(9999);
-      expect(result.current.customScript?.author).toBe("Test Author");
+      expect(result.current.activeScript.type).toBe("community");
+      if (result.current.activeScript.type === "community") {
+        expect(result.current.activeScript.pk).toBe(9999);
+        expect(result.current.activeScript.author).toBe("Test Author");
+      }
     });
 
-    it("updateScript clears customScript", () => {
+    it("updateScript sets builtin activeScript, clears community", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
       // First set a community script
@@ -423,22 +437,23 @@ describe("useBotC", () => {
         result.current.updateCommunityScript({
           type: "community",
           label: "Test Script",
-          scriptIndex: 5,
           pk: 9999,
           author: "Test Author",
           characters: ["chef", "imp"],
         });
       });
 
-      expect(result.current.customScript).not.toBeNull();
+      expect(result.current.activeScript.type).toBe("community");
 
       // Then switch back to a built-in script
       act(() => {
         result.current.updateScript(0);
       });
 
-      expect(result.current.script).toBe(0);
-      expect(result.current.customScript).toBeNull();
+      expect(result.current.activeScript).toEqual({
+        type: "builtin",
+        index: 0,
+      });
     });
   });
 
