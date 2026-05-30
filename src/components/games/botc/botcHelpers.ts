@@ -13,7 +13,7 @@ export const getGridSize = (pc: number, i: number) => {
 export const getLieSeries = (
   numPlayers: number,
   numTravelers: number,
-  activeScript: ActiveScript,
+  script: ActiveScript,
 ) => {
   const dist = playerDist[numPlayers].split(",").map((d) => parseInt(d, 10));
 
@@ -25,20 +25,17 @@ export const getLieSeries = (
     // Evil Traveler
     numEvil += 1;
   }
-  if (
-    (activeScript.type === "community" || activeScript.index !== 0) &&
-    dist[1] > 0
-  ) {
+  if ((script.type === "community" || script.index !== 0) && dist[1] > 0) {
     // Evil Outsider
     numEvil += 1;
   }
 
   let numDrunk: number = numTravelers >= 4 ? 1 : 0;
-  if (activeScript.type === "community") {
+  if (script.type === "community") {
     numDrunk += Math.min(dist[1], 2); // Outsider 🍺😡
     numDrunk += Math.min(dist[2], 2); // Minion 🧪😡
   } else {
-    switch (activeScript.index) {
+    switch (script.index) {
       case 0:
         // TB
         numDrunk += Math.min(dist[1], 1); // Outsider 🍺

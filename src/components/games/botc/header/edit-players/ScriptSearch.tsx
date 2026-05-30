@@ -9,7 +9,7 @@ import {
 import { ActiveScript } from "../../../../../jotai/botc-atom";
 
 interface ScriptSearchProps {
-  activeScript: ActiveScript;
+  script: ActiveScript;
   onBuiltinChange: (
     index: import("../../../../../jotai/botc-atom").BuiltinScriptIndex,
   ) => void;
@@ -18,18 +18,18 @@ interface ScriptSearchProps {
 
 /** Derive the currently-selected autocomplete value from state */
 const getSelectedOption = (
-  activeScript: ActiveScript,
+  script: ActiveScript,
   allOptions: ScriptOption[],
 ): ScriptOption | null => {
-  if (activeScript.type === "community") {
+  if (script.type === "community") {
     return (
-      (allOptions.find(
-        (o) => o.type === "community" && o.pk === activeScript.pk,
-      ) as CommunityScriptOption | undefined) ?? null
+      (allOptions.find((o) => o.type === "community" && o.pk === script.pk) as
+        | CommunityScriptOption
+        | undefined) ?? null
     );
   }
   return (
-    (BUILTIN_SCRIPT_OPTIONS.find((o) => o.index === activeScript.index) as
+    (BUILTIN_SCRIPT_OPTIONS.find((o) => o.index === script.index) as
       | ScriptOption
       | undefined) ?? null
   );
@@ -37,12 +37,12 @@ const getSelectedOption = (
 
 /** EditPlayers → ScriptSearch (replaces ScriptSelect) */
 const ScriptSearch = ({
-  activeScript,
+  script,
   onBuiltinChange,
   onCommunityChange,
 }: ScriptSearchProps) => {
   const allOptions = useMemo(() => getAllScriptOptions(), []);
-  const selectedOption = getSelectedOption(activeScript, allOptions);
+  const selectedOption = getSelectedOption(script, allOptions);
 
   const handleChange = (
     _: React.SyntheticEvent,

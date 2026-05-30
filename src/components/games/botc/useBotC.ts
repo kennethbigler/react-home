@@ -145,7 +145,7 @@ export const usePlayerNotes = () => {
 /** -------------------- EditPlayers Specific Functions -------------------- */
 export const useEditPlayers = () => {
   const [
-    { isText, numPlayers, numTravelers, activeScript, botcPlayers, ...other },
+    { isText, numPlayers, numTravelers, script, botcPlayers, ...other },
     setState,
   ] = useAtom(botcAtom);
 
@@ -156,7 +156,7 @@ export const useEditPlayers = () => {
       botcPlayers,
       isText,
       numTravelers,
-      activeScript,
+      script,
       numPlayers: value,
     });
   };
@@ -168,7 +168,7 @@ export const useEditPlayers = () => {
       botcPlayers,
       isText,
       numPlayers,
-      activeScript,
+      script,
       numTravelers: value,
     });
   };
@@ -187,7 +187,7 @@ export const useEditPlayers = () => {
       numPlayers,
       numTravelers,
       isText: newText,
-      activeScript: newActiveScript,
+      script: newActiveScript,
     });
   };
 
@@ -206,7 +206,7 @@ export const useEditPlayers = () => {
       numPlayers,
       numTravelers,
       isText,
-      activeScript: newActiveScript,
+      script: newActiveScript,
     });
   };
 
@@ -217,7 +217,7 @@ export const useEditPlayers = () => {
       botcPlayers,
       numPlayers,
       numTravelers,
-      activeScript,
+      script,
       isText: e.target.checked,
     });
   };
@@ -232,7 +232,7 @@ export const useEditPlayers = () => {
       isText,
       numPlayers,
       numTravelers,
-      activeScript,
+      script,
       round: 0,
       botcPlayers: newPlayers,
       roundNotes: newRoundNotes(),
@@ -242,7 +242,7 @@ export const useEditPlayers = () => {
 
   return {
     isText,
-    activeScript,
+    script,
     updateNumPlayers,
     updateNumTravelers,
     updateScript,
@@ -290,9 +290,8 @@ export const useTracker = () => {
 
 /** -------------------- Home Specific Functions -------------------- */
 const useBotC = () => {
-  const { isText, numPlayers, numTravelers, activeScript } =
-    useAtomValue(botcAtom);
-  return { isText, numPlayers, numTravelers, activeScript };
+  const { isText, numPlayers, numTravelers, script } = useAtomValue(botcAtom);
+  return { isText, numPlayers, numTravelers, script };
 };
 
 export default useBotC;

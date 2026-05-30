@@ -12,7 +12,7 @@ import { Grid, TextField } from "@mui/material";
 interface CharacterSheetProps {
   isText: boolean;
   player: BotCPlayer;
-  activeScript: ActiveScript;
+  script: ActiveScript;
   onNameBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onNotesBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onRoleClick: (role: BotCRole, selected: boolean) => () => void;
@@ -26,7 +26,7 @@ interface CharacterSheetProps {
 const CharacterSheet = ({
   isText,
   player: { name, notes, liar, used, exec, kill, roles },
-  activeScript,
+  script,
   onNameBlur,
   onNotesBlur,
   onRoleClick,
@@ -70,7 +70,7 @@ const CharacterSheet = ({
 
       <Roles
         isText={isText}
-        activeScript={activeScript}
+        script={script}
         roleKey={roles.reduce((acc, r) => ({ ...acc, [r.name]: true }), {})}
         onRoleClick={onRoleClick}
       />

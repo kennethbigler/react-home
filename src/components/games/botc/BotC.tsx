@@ -6,7 +6,7 @@ import LiePie from "./LiePie";
 import { Divider } from "@mui/material";
 
 const BotC = memo(() => {
-  const { numPlayers, numTravelers, isText, activeScript } = useBotC();
+  const { numPlayers, numTravelers, isText, script } = useBotC();
 
   /* ----------     Render     ---------- */
   return (
@@ -16,12 +16,12 @@ const BotC = memo(() => {
       <PlayerNotes
         isText={isText}
         playerCount={numPlayers + numTravelers}
-        activeScript={activeScript}
+        script={script}
       />
       <LiePie
         numPlayers={numPlayers}
         numTravelers={numTravelers}
-        activeScript={activeScript}
+        script={script}
       />
     </>
   );

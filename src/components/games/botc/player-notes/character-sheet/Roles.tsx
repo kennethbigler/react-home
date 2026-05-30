@@ -5,7 +5,7 @@ import RoleSection, { RoleKey } from "./RoleSection";
 
 interface RolesProps {
   isText: boolean;
-  activeScript: ActiveScript;
+  script: ActiveScript;
   roleKey: RoleKey;
   onRoleClick?: (role: BotCRole, selected: boolean) => () => void;
 }
@@ -16,19 +16,19 @@ interface ActiveBotCScript {
 
 /** CharacterSheet -> EmojiNotes
  *                 -> Roles -> RoleSelection */
-const Roles = ({ isText, activeScript, roleKey, onRoleClick }: RolesProps) => {
+const Roles = ({ isText, script, roleKey, onRoleClick }: RolesProps) => {
   let scripts: ActiveBotCScript = { active: other, travelers: [] };
   let isOtherScript = false;
 
-  if (activeScript.type === "community") {
-    if (activeScript.characters.length > 0) {
-      const built = buildScriptFromCharacters(activeScript.characters);
+  if (script.type === "community") {
+    if (script.characters.length > 0) {
+      const built = buildScriptFromCharacters(script.characters);
       scripts = { active: built, travelers: [...other.travelers] };
     } else {
       isOtherScript = true;
     }
   } else {
-    switch (activeScript.index) {
+    switch (script.index) {
       case 0:
         scripts = {
           active: tb,

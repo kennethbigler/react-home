@@ -12,7 +12,7 @@ describe("Roles", () => {
     render(
       <Roles
         isText={true}
-        activeScript={{ type: "builtin", index: 0 }}
+        script={{ type: "builtin", index: 0 }}
         roleKey={mockRoleKey}
       />,
     );
@@ -27,7 +27,7 @@ describe("Roles", () => {
     render(
       <Roles
         isText={true}
-        activeScript={{ type: "builtin", index: 1 }}
+        script={{ type: "builtin", index: 1 }}
         roleKey={mockRoleKey}
       />,
     );
@@ -42,7 +42,7 @@ describe("Roles", () => {
     render(
       <Roles
         isText={true}
-        activeScript={{ type: "builtin", index: 2 }}
+        script={{ type: "builtin", index: 2 }}
         roleKey={mockRoleKey}
       />,
     );
@@ -57,7 +57,7 @@ describe("Roles", () => {
     render(
       <Roles
         isText={true}
-        activeScript={{ type: "builtin", index: 3 }}
+        script={{ type: "builtin", index: 3 }}
         roleKey={mockRoleKey}
       />,
     );
@@ -72,7 +72,7 @@ describe("Roles", () => {
     render(
       <Roles
         isText={true}
-        activeScript={{ type: "builtin", index: 3 }}
+        script={{ type: "builtin", index: 3 }}
         roleKey={mockRoleKey}
       />,
     );
@@ -87,7 +87,7 @@ describe("Roles", () => {
     render(
       <Roles
         isText={false}
-        activeScript={{ type: "builtin", index: 0 }}
+        script={{ type: "builtin", index: 0 }}
         roleKey={mockRoleKey}
       />,
     );
@@ -102,7 +102,7 @@ describe("Roles", () => {
     const { container: otherContainer } = render(
       <Roles
         isText={true}
-        activeScript={{ type: "builtin", index: 3 }}
+        script={{ type: "builtin", index: 3 }}
         roleKey={mockRoleKey}
       />,
     );
@@ -115,7 +115,7 @@ describe("Roles", () => {
     const { container: tbContainer } = render(
       <Roles
         isText={true}
-        activeScript={{ type: "builtin", index: 0 }}
+        script={{ type: "builtin", index: 0 }}
         roleKey={mockRoleKey}
       />,
     );
@@ -128,7 +128,7 @@ describe("Roles", () => {
     const { container } = render(
       <Roles
         isText={false}
-        activeScript={{ type: "builtin", index: 0 }}
+        script={{ type: "builtin", index: 0 }}
         roleKey={mockRoleKey}
       />,
     );
@@ -141,7 +141,7 @@ describe("Roles", () => {
     render(
       <Roles
         isText={true}
-        activeScript={{ type: "builtin", index: 0 }}
+        script={{ type: "builtin", index: 0 }}
         roleKey={mockRoleKey}
       />,
     );
@@ -154,7 +154,7 @@ describe("Roles", () => {
     render(
       <Roles
         isText={true}
-        activeScript={{ type: "builtin", index: 0 }}
+        script={{ type: "builtin", index: 0 }}
         roleKey={mockRoleKey}
       />,
     );
@@ -167,7 +167,7 @@ describe("Roles", () => {
     render(
       <Roles
         isText={true}
-        activeScript={{ type: "builtin", index: 3 }}
+        script={{ type: "builtin", index: 3 }}
         roleKey={mockRoleKey}
       />,
     );
@@ -181,7 +181,7 @@ describe("Roles", () => {
       render(
         <Roles
           isText={true}
-          activeScript={{
+          script={{
             type: "community",
             pk: 12345,
             title: "Test Script",
@@ -208,7 +208,7 @@ describe("Roles", () => {
       render(
         <Roles
           isText={true}
-          activeScript={{
+          script={{
             type: "community",
             pk: 12345,
             title: "Test Script",
@@ -230,7 +230,7 @@ describe("Roles", () => {
       render(
         <Roles
           isText={true}
-          activeScript={{
+          script={{
             type: "community",
             pk: 99,
             title: "T",
@@ -251,7 +251,7 @@ describe("Roles", () => {
       render(
         <Roles
           isText={true}
-          activeScript={{
+          script={{
             type: "community",
             pk: 99999,
             title: "Homebrew",

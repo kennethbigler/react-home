@@ -26,7 +26,7 @@ const EditPlayers = ({
 }: EditPlayersProps) => {
   const {
     isText,
-    activeScript,
+    script,
     updateNumPlayers,
     updateNumTravelers,
     updateScript,
@@ -47,7 +47,7 @@ const EditPlayers = ({
     <Grid container spacing={1}>
       <Grid size={12} sx={{ textAlign: "center" }}>
         <ScriptSearch
-          activeScript={activeScript}
+          script={script}
           onBuiltinChange={updateScript}
           onCommunityChange={updateCommunityScript}
         />

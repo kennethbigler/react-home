@@ -41,7 +41,7 @@ export interface BotCState {
   numPlayers: number;
   numTravelers: number;
   round: number;
-  activeScript: ActiveScript;
+  script: ActiveScript;
   botcPlayers: BotCPlayer[];
   roundNotes: string[];
   tracker: number[][];
@@ -74,7 +74,7 @@ export const newBotCGame = (): BotCState => {
     numPlayers: 8,
     numTravelers: 0,
     round: 0,
-    activeScript: { type: "builtin", index: 0 },
+    script: { type: "builtin", index: 0 },
     botcPlayers,
     roundNotes: newRoundNotes(),
     tracker: newTracker(),

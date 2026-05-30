@@ -25,8 +25,8 @@ describe("useBotC", () => {
       expect(result.current.isText).toBeDefined();
       expect(result.current.numPlayers).toBeDefined();
       expect(result.current.numTravelers).toBeDefined();
-      expect(result.current.activeScript).toBeDefined();
-      expect(result.current.activeScript).toEqual({
+      expect(result.current.script).toBeDefined();
+      expect(result.current.script).toEqual({
         type: "builtin",
         index: 0,
       });
@@ -301,7 +301,7 @@ describe("useBotC", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
       expect(result.current.isText).toBeDefined();
-      expect(result.current.activeScript).toBeDefined();
+      expect(result.current.script).toBeDefined();
       expect(result.current.updateNumPlayers).toBeDefined();
       expect(result.current.updateNumTravelers).toBeDefined();
       expect(result.current.updateScript).toBeDefined();
@@ -337,7 +337,7 @@ describe("useBotC", () => {
       });
 
       expect(result.current.isText).toBe(true);
-      expect(result.current.activeScript).toEqual({
+      expect(result.current.script).toEqual({
         type: "builtin",
         index: 0,
       });
@@ -351,7 +351,7 @@ describe("useBotC", () => {
       });
 
       expect(result.current.isText).toBe(true);
-      expect(result.current.activeScript).toEqual({
+      expect(result.current.script).toEqual({
         type: "builtin",
         index: 1,
       });
@@ -365,7 +365,7 @@ describe("useBotC", () => {
       });
 
       expect(result.current.isText).toBe(true);
-      expect(result.current.activeScript).toEqual({
+      expect(result.current.script).toEqual({
         type: "builtin",
         index: 2,
       });
@@ -379,7 +379,7 @@ describe("useBotC", () => {
       });
 
       // script 3 (Other) does not force isText; value stays as-is
-      expect(result.current.activeScript).toEqual({
+      expect(result.current.script).toEqual({
         type: "builtin",
         index: 3,
       });
@@ -409,7 +409,7 @@ describe("useBotC", () => {
       expect(result.current).toBeDefined();
     });
 
-    it("updateCommunityScript sets community activeScript", () => {
+    it("updateCommunityScript sets community script", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
       act(() => {
@@ -422,14 +422,14 @@ describe("useBotC", () => {
         });
       });
 
-      expect(result.current.activeScript.type).toBe("community");
-      if (result.current.activeScript.type === "community") {
-        expect(result.current.activeScript.pk).toBe(9999);
-        expect(result.current.activeScript.author).toBe("Test Author");
+      expect(result.current.script.type).toBe("community");
+      if (result.current.script.type === "community") {
+        expect(result.current.script.pk).toBe(9999);
+        expect(result.current.script.author).toBe("Test Author");
       }
     });
 
-    it("updateScript sets builtin activeScript, clears community", () => {
+    it("updateScript sets builtin script, clears community", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
       // First set a community script
@@ -443,14 +443,14 @@ describe("useBotC", () => {
         });
       });
 
-      expect(result.current.activeScript.type).toBe("community");
+      expect(result.current.script.type).toBe("community");
 
       // Then switch back to a built-in script
       act(() => {
         result.current.updateScript(0);
       });
 
-      expect(result.current.activeScript).toEqual({
+      expect(result.current.script).toEqual({
         type: "builtin",
         index: 0,
       });

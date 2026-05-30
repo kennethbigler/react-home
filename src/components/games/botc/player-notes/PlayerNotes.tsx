@@ -18,7 +18,7 @@ import {
 interface PlayerNotesProps {
   isText: boolean;
   playerCount: number;
-  activeScript: ActiveScript;
+  script: ActiveScript;
 }
 
 const chipStyle = {
@@ -32,11 +32,7 @@ const cardStyle = {
   height: "100%",
 };
 
-const PlayerNotes = ({
-  isText,
-  playerCount,
-  activeScript,
-}: PlayerNotesProps) => {
+const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
   const [showMove, setShowMove] = useState(false);
 
   const {
@@ -70,7 +66,7 @@ const PlayerNotes = ({
                     )}
                     <CharacterSheet
                       isText={isText}
-                      activeScript={activeScript}
+                      script={script}
                       player={player}
                       onNameBlur={updateNames(i)}
                       onNotesBlur={updateNotes(i)}
