@@ -2,7 +2,7 @@
  * BotC script definitions.
  *
  * Role data lives exclusively in botc-slug-map.ts. This file composes that
- * data into the named scripts (TB, S&V, BMR, SWPM, Other) using slug lookups,
+ * data into the named scripts (TB, S&V, BMR, Other) using slug lookups,
  * so there is no duplication between the two files.
  *
  * latest characters found here: https://wiki.bloodontheclocktower.com/Changelog

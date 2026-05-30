@@ -16,8 +16,6 @@ export interface CommunityScript {
 }
 
 /** A script option shown in the autocomplete selector */
-export type ScriptOptionType = "builtin" | "community";
-
 export interface BuiltinScriptOption {
   type: "builtin";
   label: string;
