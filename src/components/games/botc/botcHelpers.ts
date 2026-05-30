@@ -41,8 +41,8 @@ export const getLieSeries = (
       numDrunk += Math.min(dist[1], 1); // Outsider 🍺😡
       numDrunk += Math.min(dist[2], 2); // Minion 🧪😡
       break;
-    case 3: // Spy
-    case 4: // Other
+    case 3: // Other
+    case 5: // Community script — use same generic calculation as Other
       numDrunk += Math.min(dist[1], 2); // Outsider 🍺😡
       numDrunk += Math.min(dist[2], 2); // Minion 🧪😡
       break;

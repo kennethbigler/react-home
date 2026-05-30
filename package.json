@@ -26,7 +26,8 @@
     "analyze": "source-map-explorer 'docs/assets/*.js' --no-border-checks",
     "analyze:local": "./scripts/analyze.sh",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --report-unused-disable-directives",
-    "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet"
+    "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet",
+    "fetch-botc-scripts": "node scripts/fetch-botc-scripts.mjs"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",

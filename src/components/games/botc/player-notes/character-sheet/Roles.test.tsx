@@ -35,17 +35,8 @@ describe("Roles", () => {
     expect(screen.getByText("Demons")).toBeInTheDocument();
   });
 
-  it("renders Sects & Whispers + Murmurs script (script 3)", () => {
+  it("renders Other script (script 3)", () => {
     render(<Roles isText={true} script={3} roleKey={mockRoleKey} />);
-
-    expect(screen.getByText("Townsfolk")).toBeInTheDocument();
-    expect(screen.getByText("Outsiders")).toBeInTheDocument();
-    expect(screen.getByText("Minions")).toBeInTheDocument();
-    expect(screen.getByText("Demons")).toBeInTheDocument();
-  });
-
-  it("renders Other script (script 4)", () => {
-    render(<Roles isText={true} script={4} roleKey={mockRoleKey} />);
 
     expect(screen.getByText("Townsfolk")).toBeInTheDocument();
     expect(screen.getByText("Outsiders")).toBeInTheDocument();
@@ -73,7 +64,7 @@ describe("Roles", () => {
 
   it("uses different grid size for other script when isText is true", () => {
     const { container: otherContainer } = render(
-      <Roles isText={true} script={4} roleKey={mockRoleKey} />,
+      <Roles isText={true} script={3} roleKey={mockRoleKey} />,
     );
 
     // Other script with isText should use gridSize 4
@@ -113,9 +104,96 @@ describe("Roles", () => {
   });
 
   it("does not render Travelers section when script has no travelers", () => {
-    render(<Roles isText={true} script={4} roleKey={mockRoleKey} />);
+    render(<Roles isText={true} script={3} roleKey={mockRoleKey} />);
 
     // Other script should not have Travelers section if it doesn't have any
     // (this depends on the actual data in constants/botc)
+  });
+
+  describe("community script (script 5)", () => {
+    const communityScript = {
+      pk: 12345,
+      title: "Test Script",
+      author: "Tester",
+      characters: [
+        "chef", // townsfolk
+        "empath", // townsfolk
+        "drunk", // outsider
+        "poisoner", // minion
+        "imp", // demon
+      ],
+    };
+
+    it("renders all four category sections for a community script", () => {
+      render(
+        <Roles
+          isText={true}
+          script={5}
+          customScript={communityScript}
+          roleKey={mockRoleKey}
+        />,
+      );
+
+      expect(screen.getByText("Townsfolk")).toBeInTheDocument();
+      expect(screen.getByText("Outsiders")).toBeInTheDocument();
+      expect(screen.getByText("Minions")).toBeInTheDocument();
+      expect(screen.getByText("Demons")).toBeInTheDocument();
+    });
+
+    it("shows correct roles for a community script", () => {
+      render(
+        <Roles
+          isText={true}
+          script={5}
+          customScript={communityScript}
+          roleKey={mockRoleKey}
+        />,
+      );
+
+      expect(screen.getByText("Chef")).toBeInTheDocument();
+      expect(screen.getByText("Empath")).toBeInTheDocument();
+      expect(screen.getByText("Drunk")).toBeInTheDocument();
+      expect(screen.getByText("Poisoner")).toBeInTheDocument();
+      expect(screen.getByText("Imp")).toBeInTheDocument();
+    });
+
+    it("falls back to 'Other' (all roles) when script=5 but customScript is null", () => {
+      render(
+        <Roles
+          isText={true}
+          script={5}
+          customScript={null}
+          roleKey={mockRoleKey}
+        />,
+      );
+
+      expect(screen.getByText("Townsfolk")).toBeInTheDocument();
+      expect(screen.getByText("Outsiders")).toBeInTheDocument();
+      expect(screen.getByText("Minions")).toBeInTheDocument();
+      expect(screen.getByText("Demons")).toBeInTheDocument();
+    });
+
+    it("shows placeholder for unknown roles in community scripts", () => {
+      const scriptWithUnknown = {
+        pk: 99999,
+        title: "Homebrew",
+        author: "Someone",
+        characters: ["washerwoman", "cook"], // cook is homebrew/unknown
+      };
+
+      render(
+        <Roles
+          isText={true}
+          script={5}
+          customScript={scriptWithUnknown}
+          roleKey={mockRoleKey}
+        />,
+      );
+
+      // Washerwoman is known and should appear
+      expect(screen.getByText("Washerwoman")).toBeInTheDocument();
+      // cook is unknown and should appear as a placeholder in Townsfolk
+      expect(screen.getByText(/Unknown: cook/)).toBeInTheDocument();
+    });
   });
 });

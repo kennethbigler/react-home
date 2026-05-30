@@ -4,6 +4,7 @@ import CharacterSheet from "./character-sheet/CharacterSheet";
 import { usePlayerNotes } from "../useBotC";
 import { getGridSize } from "../botcHelpers";
 import PlayerAdjControls from "./PlayerAdjControls";
+import { CustomScript } from "../../../../jotai/botc-atom";
 import {
   Button,
   Card,
@@ -18,6 +19,7 @@ interface PlayerNotesProps {
   isText: boolean;
   playerCount: number;
   script: number;
+  customScript: CustomScript | null;
 }
 
 const chipStyle = {
@@ -31,7 +33,12 @@ const cardStyle = {
   height: "100%",
 };
 
-const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
+const PlayerNotes = ({
+  isText,
+  playerCount,
+  script,
+  customScript,
+}: PlayerNotesProps) => {
   const [showMove, setShowMove] = useState(false);
 
   const {
@@ -66,6 +73,7 @@ const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
                     <CharacterSheet
                       isText={isText}
                       script={script}
+                      customScript={customScript}
                       player={player}
                       onNameBlur={updateNames(i)}
                       onNotesBlur={updateNotes(i)}

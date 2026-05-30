@@ -7,6 +7,7 @@ export interface BotCRole {
   name: string;
   icon: string;
   alignment: MuiColors;
+  description?: string;
 }
 
 export interface BotCPlayer {
@@ -19,6 +20,14 @@ export interface BotCPlayer {
   kill: boolean;
 }
 
+/** Metadata for a community script selected from botcscripts.com */
+export interface CustomScript {
+  pk: number;
+  title: string;
+  author: string;
+  characters: string[];
+}
+
 export const BOTC_MIN_PLAYERS = 5;
 export const BOTC_MAX_PLAYERS = 15;
 const BOTC_MAX_TRAVELERS = 5;
@@ -28,7 +37,10 @@ export interface BotCState {
   numPlayers: number;
   numTravelers: number;
   round: number;
+  /** 0=TB, 1=S&V, 2=BMR, 3=Other (all roles), 5=Community script */
   script: number;
+  /** Populated when script === 5 */
+  customScript: CustomScript | null;
   botcPlayers: BotCPlayer[];
   roundNotes: string[];
   tracker: number[][];
@@ -62,6 +74,7 @@ export const newBotCGame = (): BotCState => {
     numTravelers: 0,
     round: 0,
     script: 0,
+    customScript: null,
     botcPlayers,
     roundNotes: newRoundNotes(),
     tracker: newTracker(),

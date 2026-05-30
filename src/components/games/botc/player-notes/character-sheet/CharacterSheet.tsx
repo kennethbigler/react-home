@@ -4,6 +4,7 @@ import {
   BotCPlayer,
   BotCPlayerStatus,
   BotCRole,
+  CustomScript,
 } from "../../../../../jotai/botc-atom";
 import EmojiNotes from "./EmojiNotes";
 import { Grid, TextField } from "@mui/material";
@@ -12,6 +13,7 @@ interface CharacterSheetProps {
   isText: boolean;
   player: BotCPlayer;
   script: number;
+  customScript: CustomScript | null;
   onNameBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onNotesBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onRoleClick: (role: BotCRole, selected: boolean) => () => void;
@@ -26,6 +28,7 @@ const CharacterSheet = ({
   isText,
   player: { name, notes, liar, used, exec, kill, roles },
   script,
+  customScript,
   onNameBlur,
   onNotesBlur,
   onRoleClick,
@@ -70,6 +73,7 @@ const CharacterSheet = ({
       <Roles
         isText={isText}
         script={script}
+        customScript={customScript}
         roleKey={roles.reduce((acc, r) => ({ ...acc, [r.name]: true }), {})}
         onRoleClick={onRoleClick}
       />

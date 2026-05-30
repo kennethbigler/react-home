@@ -7,7 +7,6 @@ import useBotC, {
   useEditPlayers,
   useTracker,
 } from "./useBotC";
-import { SelectChangeEvent } from "@mui/material";
 import { BotCRole } from "../../../jotai/botc-atom";
 
 describe("useBotC", () => {
@@ -27,6 +26,7 @@ describe("useBotC", () => {
       expect(result.current.numPlayers).toBeDefined();
       expect(result.current.numTravelers).toBeDefined();
       expect(result.current.script).toBeDefined();
+      expect(result.current.customScript).toBeNull();
     });
   });
 
@@ -329,71 +329,46 @@ describe("useBotC", () => {
     it("updates script to 0 and sets text to true", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
-      const mockEvent = {
-        target: { value: 0, name: "script" },
-      };
-
       act(() => {
-        result.current.updateScript(mockEvent as SelectChangeEvent<number>);
+        result.current.updateScript(0);
       });
 
       expect(result.current.isText).toBe(true);
+      expect(result.current.script).toBe(0);
     });
 
     it("updates script to 1 and sets text to true", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
-      const mockEvent = {
-        target: { value: 1, name: "script" },
-      } as unknown as SelectChangeEvent<number>;
-
       act(() => {
-        result.current.updateScript(mockEvent);
+        result.current.updateScript(1);
       });
 
       expect(result.current.isText).toBe(true);
+      expect(result.current.script).toBe(1);
     });
 
     it("updates script to 2 and sets text to true", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
-      const mockEvent = {
-        target: { value: 2, name: "script" },
-      } as unknown as SelectChangeEvent<number>;
-
       act(() => {
-        result.current.updateScript(mockEvent);
+        result.current.updateScript(2);
       });
 
       expect(result.current.isText).toBe(true);
+      expect(result.current.script).toBe(2);
     });
 
-    it("updates script to 5 and sets text to false", () => {
+    it("updates script to 3 (Other) without forcing text mode", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
-      const mockEvent = {
-        target: { value: 5, name: "script" },
-      } as unknown as SelectChangeEvent<number>;
-
       act(() => {
-        result.current.updateScript(mockEvent);
+        result.current.updateScript(3);
       });
 
-      expect(result.current.isText).toBe(false);
-    });
-
-    it("updates script to default case (3 or 4)", () => {
-      const { result } = renderHook(() => useEditPlayers(), { wrapper });
-
-      const mockEvent = {
-        target: { value: 3, name: "script" },
-      } as unknown as SelectChangeEvent<number>;
-
-      act(() => {
-        result.current.updateScript(mockEvent);
-      });
-
-      expect(result.current).toBeDefined();
+      // script 3 (Other) does not force isText; value stays as-is
+      expect(result.current.script).toBe(3);
+      expect(result.current.customScript).toBeNull();
     });
 
     it("updates text setting", () => {
@@ -418,6 +393,52 @@ describe("useBotC", () => {
       });
 
       expect(result.current).toBeDefined();
+    });
+
+    it("updateCommunityScript sets script to 5 and stores customScript", () => {
+      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+
+      act(() => {
+        result.current.updateCommunityScript({
+          type: "community",
+          label: "Test Script",
+          scriptIndex: 5,
+          pk: 9999,
+          author: "Test Author",
+          characters: ["chef", "imp"],
+        });
+      });
+
+      expect(result.current.script).toBe(5);
+      expect(result.current.customScript).not.toBeNull();
+      expect(result.current.customScript?.pk).toBe(9999);
+      expect(result.current.customScript?.author).toBe("Test Author");
+    });
+
+    it("updateScript clears customScript", () => {
+      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+
+      // First set a community script
+      act(() => {
+        result.current.updateCommunityScript({
+          type: "community",
+          label: "Test Script",
+          scriptIndex: 5,
+          pk: 9999,
+          author: "Test Author",
+          characters: ["chef", "imp"],
+        });
+      });
+
+      expect(result.current.customScript).not.toBeNull();
+
+      // Then switch back to a built-in script
+      act(() => {
+        result.current.updateScript(0);
+      });
+
+      expect(result.current.script).toBe(0);
+      expect(result.current.customScript).toBeNull();
     });
   });
 

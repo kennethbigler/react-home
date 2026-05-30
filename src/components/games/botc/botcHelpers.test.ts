@@ -60,7 +60,7 @@ describe("botcHelpers", () => {
       });
     });
 
-    it("calculates lie series for script 3 (Spy)", () => {
+    it("calculates lie series for script 3 (Other)", () => {
       const result = getLieSeries(7, 0, 3);
 
       expect(result).toHaveLength(4);
@@ -69,8 +69,8 @@ describe("botcHelpers", () => {
       });
     });
 
-    it("calculates lie series for script 4 (Other)", () => {
-      const result = getLieSeries(7, 0, 4);
+    it("calculates lie series for script 5 (Community)", () => {
+      const result = getLieSeries(7, 0, 5);
 
       expect(result).toHaveLength(4);
       result.forEach((item) => {

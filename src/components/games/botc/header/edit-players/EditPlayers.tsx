@@ -4,7 +4,7 @@ import {
   BOTC_MAX_PLAYERS,
   BOTC_MIN_PLAYERS,
 } from "../../../../../jotai/botc-atom";
-import ScriptSelect from "./ScriptSelect";
+import ScriptSearch from "./ScriptSearch";
 import ScriptControls from "./ScriptControls";
 import { playerDist } from "../../../../../constants/botc";
 import { useEditPlayers } from "../../useBotC";
@@ -16,7 +16,7 @@ interface EditPlayersProps {
   openToast: () => void;
 }
 
-/** EditPlayers -> ScriptSelect
+/** EditPlayers -> ScriptSearch
  *              -> ScriptControls
  *              -> players.map(EditNameAndPos) */
 const EditPlayers = ({
@@ -27,9 +27,11 @@ const EditPlayers = ({
   const {
     isText,
     script,
+    customScript,
     updateNumPlayers,
     updateNumTravelers,
     updateScript,
+    updateCommunityScript,
     updateText,
     newBotCGame,
   } = useEditPlayers();
@@ -45,7 +47,12 @@ const EditPlayers = ({
   return (
     <Grid container spacing={1}>
       <Grid size={12} sx={{ textAlign: "center" }}>
-        <ScriptSelect script={script} onChange={updateScript} />
+        <ScriptSearch
+          script={script}
+          customScript={customScript}
+          onBuiltinChange={updateScript}
+          onCommunityChange={updateCommunityScript}
+        />
         <ScriptControls
           isText={isText}
           onChange={updateText}

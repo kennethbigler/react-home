@@ -1,17 +1,12 @@
-import { BotCRole } from "../../../../../jotai/botc-atom";
-import {
-  tb,
-  snv,
-  bmr,
-  swpm,
-  other,
-  BotCScript,
-} from "../../../../../constants/botc";
+import { BotCRole, CustomScript } from "../../../../../jotai/botc-atom";
+import { tb, snv, bmr, other, BotCScript } from "../../../../../constants/botc";
+import { buildScriptFromCharacters } from "../../../../../utils/botc-script-utils";
 import RoleSection, { RoleKey } from "./RoleSection";
 
 interface RolesProps {
   isText: boolean;
   script: number;
+  customScript?: CustomScript | null;
   roleKey: RoleKey;
   onRoleClick?: (role: BotCRole, selected: boolean) => () => void;
 }
@@ -22,7 +17,13 @@ interface ActiveBotCScript {
 
 /** CharacterSheet -> EmojiNotes
  *                 -> Roles -> RoleSelection */
-const Roles = ({ isText, script, roleKey, onRoleClick }: RolesProps) => {
+const Roles = ({
+  isText,
+  script,
+  customScript,
+  roleKey,
+  onRoleClick,
+}: RolesProps) => {
   let scripts: ActiveBotCScript = { active: other, travelers: [] };
   let isOtherScript = false;
   switch (script) {
@@ -50,10 +51,19 @@ const Roles = ({ isText, script, roleKey, onRoleClick }: RolesProps) => {
         ],
       };
       break;
-    case 3:
-      scripts = { active: swpm, travelers: [...other.travelers] };
+    case 5:
+      // Community script: build from characters array if available, else fall back to "other"
+      if (customScript && customScript.characters.length > 0) {
+        const built = buildScriptFromCharacters(customScript.characters);
+        scripts = {
+          active: built,
+          travelers: [...other.travelers],
+        };
+      } else {
+        isOtherScript = true;
+      }
       break;
-    case 4:
+    case 3:
     default: // keep initial assignment
       isOtherScript = true;
   }

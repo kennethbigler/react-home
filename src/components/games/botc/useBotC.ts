@@ -1,14 +1,15 @@
 import { useState, ChangeEvent, FocusEvent, ChangeEventHandler } from "react";
 import { useAtom, useAtomValue } from "jotai";
-import { SelectChangeEvent } from "@mui/material";
 import botcAtom, {
   BotCPlayer,
   botcPlayerShell,
   BotCPlayerStatus,
   BotCRole,
+  CustomScript,
   newRoundNotes,
   newTracker,
 } from "../../../jotai/botc-atom";
+import { CommunityScriptOption } from "../../../utils/botc-script-utils";
 
 const getUpNum = (i: number, pc: number) => {
   const isFull = pc % 2 === 0;
@@ -143,7 +144,15 @@ export const usePlayerNotes = () => {
 /** -------------------- EditPlayers Specific Functions -------------------- */
 export const useEditPlayers = () => {
   const [
-    { isText, numPlayers, numTravelers, script, botcPlayers, ...other },
+    {
+      isText,
+      numPlayers,
+      numTravelers,
+      script,
+      customScript,
+      botcPlayers,
+      ...other
+    },
     setState,
   ] = useAtom(botcAtom);
 
@@ -155,11 +164,12 @@ export const useEditPlayers = () => {
       isText,
       numTravelers,
       script,
+      customScript,
       numPlayers: value,
     });
   };
 
-  /** update number of players */
+  /** update number of travelers */
   const updateNumTravelers = (value: number) => {
     setState({
       ...other,
@@ -167,24 +177,17 @@ export const useEditPlayers = () => {
       isText,
       numPlayers,
       script,
+      customScript,
       numTravelers: value,
     });
   };
 
-  /** update botc script used */
-  const updateScript = (e: SelectChangeEvent<number>) => {
-    const newScript = e.target.value;
+  /** Select a built-in script by index (0–4) */
+  const updateScript = (newScript: number) => {
     let newText = isText;
-    switch (newScript) {
-      case 0:
-      case 1:
-      case 2:
-        newText = true;
-        break;
-      case 5:
-        newText = false;
-        break;
-      default:
+    // Scripts 0–2 work best with text mode on
+    if (newScript <= 2) {
+      newText = true;
     }
     setState({
       ...other,
@@ -193,6 +196,26 @@ export const useEditPlayers = () => {
       numTravelers,
       isText: newText,
       script: newScript,
+      customScript: null,
+    });
+  };
+
+  /** Select a community script from botcscripts.com */
+  const updateCommunityScript = (option: CommunityScriptOption) => {
+    const newCustomScript: CustomScript = {
+      pk: option.pk,
+      title: option.label,
+      author: option.author,
+      characters: option.characters,
+    };
+    setState({
+      ...other,
+      botcPlayers,
+      numPlayers,
+      numTravelers,
+      isText,
+      script: 5,
+      customScript: newCustomScript,
     });
   };
 
@@ -204,11 +227,12 @@ export const useEditPlayers = () => {
       numPlayers,
       numTravelers,
       script,
+      customScript,
       isText: e.target.checked,
     });
   };
 
-  /** set a new game */
+  /** set a new game (resets roles/notes/tracker but keeps player names and script) */
   const newBotCGame = () => {
     const newPlayers: BotCPlayer[] = [];
     botcPlayers.forEach((player) =>
@@ -219,6 +243,7 @@ export const useEditPlayers = () => {
       numPlayers,
       numTravelers,
       script,
+      customScript,
       round: 0,
       botcPlayers: newPlayers,
       roundNotes: newRoundNotes(),
@@ -229,9 +254,11 @@ export const useEditPlayers = () => {
   return {
     isText,
     script,
+    customScript,
     updateNumPlayers,
     updateNumTravelers,
     updateScript,
+    updateCommunityScript,
     updateText,
     newBotCGame,
   };
@@ -275,8 +302,9 @@ export const useTracker = () => {
 
 /** -------------------- Home Specific Functions -------------------- */
 const useBotC = () => {
-  const { isText, numPlayers, numTravelers, script } = useAtomValue(botcAtom);
-  return { isText, numPlayers, numTravelers, script };
+  const { isText, numPlayers, numTravelers, script, customScript } =
+    useAtomValue(botcAtom);
+  return { isText, numPlayers, numTravelers, script, customScript };
 };
 
 export default useBotC;
