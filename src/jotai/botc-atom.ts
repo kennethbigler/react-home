@@ -7,7 +7,6 @@ export interface BotCRole {
   name: string;
   icon: string;
   alignment: MuiColors;
-  description?: string;
 }
 
 export interface BotCPlayer {

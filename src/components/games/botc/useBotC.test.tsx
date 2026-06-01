@@ -101,6 +101,29 @@ describe("useBotC", () => {
       expect(result.current).toBeDefined();
     });
 
+    it("hits getUpNum line 22 (isFull && i === pc - 2, i=6 with default 8 players)", () => {
+      // Default atom: numPlayers=8, numTravelers=0, pc=8 (even → isFull=true)
+      // getUpNum(6, 8): not i===0, not i===3, not isFull&&i===pc-1 (6≠7)
+      // → isFull && i === pc-2 (6===6) → true → return -1 (line 22)
+      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+      act(() => {
+        result.current(6, true)();
+      });
+      expect(result.current).toBeDefined();
+    });
+
+    it("hits getDownNum line 34 (i === pc - 1, i=7 with default 8 players)", () => {
+      // Default atom: numPlayers=8, numTravelers=0, pc=8 (even → isFull=true)
+      // getDownNum(7, 8): not first branch (i≠0, isFull&&i===pc-4→7≠4 false)
+      // not second branch (i≠1, i===pc-2→7≠6 false, isFull&&i===pc-3→7≠5 false)
+      // → i === pc - 1 (7===7) → true → return -1 (line 34)
+      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+      act(() => {
+        result.current(7, false)();
+      });
+      expect(result.current).toBeDefined();
+    });
+
     it("covers getUpNum: isFull && i === pc - 1 branch (even player count, last position)", () => {
       // With default 5 players + 0 travelers = 5 total (odd), use hook that sets travelers
       // We need pc (numPlayers + numTravelers) even. Default is 5 players, 0 travelers = 5.

@@ -26,7 +26,7 @@ export const getLieSeries = (
     // Evil Traveler
     numEvil += 1;
   }
-  if ((script.type === "community" || script.index !== 0) && outsiders > 0) {
+  if ((script.type === "community" || script.index === 3) && outsiders > 0) {
     // Evil Outsider
     numEvil += 1;
   }
@@ -48,15 +48,18 @@ export const getLieSeries = (
         numDrunk += Math.min(minions, 2); // Minion 🧪😡
         break;
       case 2:
-        // BMR
-        numEvil += Math.min(outsiders, 1); // Lunatic/Goon
-        numEvil += Math.min(minions, 1); // Godfather adds outsider
+        // BMR - +1 Outsider for Godfather
+        if (outsiders >= 0) {
+          numDrunk += 1; // Lunatic 😡
+          if (outsiders >= 1) {
+            numEvil += 1; // Goon 😈
+          }
+        }
         break;
       case 3: // Other
+      default:
         numDrunk += Math.min(outsiders, 2); // Outsider 🍺😡
         numDrunk += Math.min(minions, 2); // Minion 🧪😡
-        break;
-      default: // BMR (case 2) — no additional drunk
         break;
     }
   }

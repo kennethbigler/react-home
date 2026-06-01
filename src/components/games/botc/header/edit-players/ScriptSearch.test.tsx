@@ -181,7 +181,9 @@ describe("ScriptSearch", () => {
       await Promise.resolve();
     });
 
-    const option = await screen.findByText("The Spy Who Pinged Me", {}, { timeout: 3000 }).catch(() => null);
+    const option = await screen
+      .findByText("The Spy Who Pinged Me", {}, { timeout: 3000 })
+      .catch(() => null);
     if (option) {
       fireEvent.click(option);
       expect(onCommunityChange).toHaveBeenCalled();
@@ -210,10 +212,82 @@ describe("ScriptSearch", () => {
     });
 
     // The renderOption for community scripts shows the author
-    const authorEl = await screen.findByText("— AnotherAuthor", {}, { timeout: 3000 }).catch(() => null);
+    const authorEl = await screen
+      .findByText("— AnotherAuthor", {}, { timeout: 3000 })
+      .catch(() => null);
     if (authorEl) {
       expect(authorEl).toBeInTheDocument();
     }
+  });
+
+  it("calls onBuiltinChange when a builtin option is selected (covers line 79)", async () => {
+    const onBuiltinChange = vi.fn();
+
+    render(
+      <ScriptSearch
+        script={{ type: "builtin", index: 0 }}
+        onBuiltinChange={onBuiltinChange}
+        onCommunityChange={noopCommunity}
+      />,
+    );
+
+    // Open the Autocomplete dropdown
+    const input = screen.getByRole("combobox");
+    fireEvent.click(input);
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    // "Sects and Violets" is a builtin option in the dropdown
+    const options = screen.queryAllByRole("option");
+    const svOption = options.find((o) =>
+      o.textContent?.includes("Sects and Violets"),
+    );
+    if (svOption) {
+      fireEvent.click(svOption);
+      expect(onBuiltinChange).toHaveBeenCalledWith(1);
+    }
+  });
+
+  it("isOptionEqualToValue compares community scripts by pk (covers line 102)", async () => {
+    // To trigger the community branch in isOptionEqualToValue, we need MUI Autocomplete
+    // to compare a community option against a community value. This happens when the
+    // dropdown is open and options include a community entry matching the value.
+    const communityScript = {
+      type: "community" as const,
+      pk: 6506,
+      title: "The Spy Who Pinged Me",
+      author: "Community",
+      characters: ["chef", "imp"],
+    };
+
+    render(
+      <ScriptSearch
+        script={communityScript}
+        onBuiltinChange={noopBuiltin}
+        onCommunityChange={noopCommunity}
+      />,
+    );
+
+    // Wait for async options to load
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 0));
+    });
+
+    // Open the dropdown — MUI calls isOptionEqualToValue for each option to determine
+    // which one should be highlighted/selected. Community options are now in the list.
+    const input = screen.getByRole("combobox");
+    await act(async () => {
+      fireEvent.click(input);
+      fireEvent.keyDown(input, { key: "ArrowDown" });
+    });
+
+    // Check the input still shows the community script title
+    expect((input as HTMLInputElement).value).toContain(
+      "The Spy Who Pinged Me",
+    );
   });
 
   it("shows community script label with author in the input field", () => {

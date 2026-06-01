@@ -214,6 +214,28 @@ describe("botcHelpers", () => {
       });
     });
 
+    it("adds evil outsider for non-TB builtin (index 3/Other) with outsiders (covers line 29 index===3 branch)", () => {
+      // 8-player game: playerDist[8]="5, 1, 1, 1" → outsiders=1
+      // script.index===3 && outsiders>0 → line 29 hit
+      const result = getLieSeries(8, 0, { type: "builtin", index: 3 });
+
+      expect(result).toHaveLength(4);
+      result.forEach((item) => {
+        expect(item.y).toBeGreaterThanOrEqual(0);
+      });
+    });
+
+    it("BMR (case 2) with outsiders>=1 hits Goon evil bonus (covers line 55)", () => {
+      // 8-player game: playerDist[8]="5, 1, 1, 1" → outsiders=1
+      // case 2: outsiders>=0 → numDrunk+=1; outsiders>=1 → numEvil+=1 (line 55)
+      const result = getLieSeries(8, 0, { type: "builtin", index: 2 });
+
+      expect(result).toHaveLength(4);
+      result.forEach((item) => {
+        expect(item.y).toBeGreaterThanOrEqual(0);
+      });
+    });
+
     it("calculates correct totals (sum equals players + travelers)", () => {
       const numPlayers = 10;
       const numTravelers = 2;

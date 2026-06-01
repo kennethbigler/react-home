@@ -72,6 +72,12 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: ["src/setupTests.ts"],
+    exclude: [
+      "**/.claude/**",
+      "**/.cursor/**",
+      "**/.github/**",
+      "**/node_modules/**",
+    ],
     testTimeout: 45000, // Increased to 45s for CI with Highcharts-heavy components
     coverage: {
       provider: "v8",
