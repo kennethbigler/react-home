@@ -6,7 +6,8 @@ import botcAtom, {
   botcPlayerShell,
   BotCPlayerStatus,
   BotCRole,
-  BuiltinScriptIndex,
+  BaseScript,
+  BaseScriptIndex,
   newRoundNotes,
   newTracker,
 } from "../../../jotai/botc-atom";
@@ -173,14 +174,14 @@ export const useEditPlayers = () => {
     });
   };
 
-  /** Select a built-in script by index (0–3) */
-  const updateScript = (index: BuiltinScriptIndex) => {
+  /** Select a base script by index (0–3) */
+  const updateScript = (index: BaseScriptIndex) => {
     let newText = isText;
-    // Scripts 0–2 work best with text mode on
-    if (index <= 2) {
+    // TB / S&V / BMR work best with text mode on
+    if (index !== BaseScript.Other) {
       newText = true;
     }
-    const newActiveScript: ActiveScript = { type: "builtin", index };
+    const newActiveScript: ActiveScript = { type: "base", index };
     setState({
       ...other,
       botcPlayers,

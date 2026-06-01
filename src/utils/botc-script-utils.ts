@@ -6,7 +6,7 @@
  * improves first-load performance.
  */
 import { BotCScript } from "../constants/botc";
-import { BotCRole, BuiltinScriptIndex } from "../jotai/botc-atom";
+import { BotCRole, BaseScript, BaseScriptIndex } from "../jotai/botc-atom";
 import { getRoleBySlug } from "../constants/botc-slug-map";
 
 /** A community script entry as stored in botc-scripts.json */
@@ -18,10 +18,10 @@ export interface CommunityScript {
 }
 
 /** A script option shown in the autocomplete selector */
-export interface BuiltinScriptOption {
-  type: "builtin";
+export interface BaseScriptOption {
+  type: "base";
   label: string;
-  index: BuiltinScriptIndex;
+  index: BaseScriptIndex;
 }
 
 export interface CommunityScriptOption {
@@ -32,21 +32,33 @@ export interface CommunityScriptOption {
   characters: string[];
 }
 
-export type ScriptOption = BuiltinScriptOption | CommunityScriptOption;
+export type ScriptOption = BaseScriptOption | CommunityScriptOption;
 
-/** The 4 built-in script options (indices 0–3) */
-export const BUILTIN_SCRIPT_OPTIONS: BuiltinScriptOption[] = [
-  { type: "builtin", label: "Trouble Brewing", index: 0 },
-  { type: "builtin", label: "Sects and Violets", index: 1 },
-  { type: "builtin", label: "Bad Moon Rising", index: 2 },
-  { type: "builtin", label: "Other (All Roles)", index: 3 },
+/** The 4 base script options */
+export const BASE_SCRIPT_OPTIONS: BaseScriptOption[] = [
+  {
+    type: "base",
+    label: "Trouble Brewing",
+    index: BaseScript.TB,
+  },
+  {
+    type: "base",
+    label: "Sects and Violets",
+    index: BaseScript.SNV,
+  },
+  {
+    type: "base",
+    label: "Bad Moon Rising",
+    index: BaseScript.BMR,
+  },
+  { type: "base", label: "Other (All Roles)", index: BaseScript.Other },
 ];
 
 /** Cached result so we only parse the JSON once per session */
 let cachedOptions: ScriptOption[] | null = null;
 
 /**
- * Lazily load all script options (builtin + community) for the autocomplete.
+ * Lazily load all script options (base + community) for the autocomplete.
  * The community scripts JSON is fetched as a separate bundle chunk on first call
  * and cached in memory thereafter.
  */
@@ -64,7 +76,7 @@ export const loadAllScriptOptions = async (): Promise<ScriptOption[]> => {
     characters: s.characters,
   }));
 
-  cachedOptions = [...BUILTIN_SCRIPT_OPTIONS, ...communityOptions];
+  cachedOptions = [...BASE_SCRIPT_OPTIONS, ...communityOptions];
   return cachedOptions;
 };
 
@@ -102,7 +114,6 @@ export const buildScriptFromCharacters = (characters: string[]): BotCScript => {
   return script;
 };
 
-/** Get the display label for a built-in script index */
-export const getBuiltinScriptLabel = (index: BuiltinScriptIndex): string =>
-  BUILTIN_SCRIPT_OPTIONS.find((o) => o.index === index)?.label ??
-  "Unknown Script";
+/** Get the display label for a base script index */
+export const getBaseScriptLabel = (index: BaseScriptIndex): string =>
+  BASE_SCRIPT_OPTIONS.find((o) => o.index === index)?.label ?? "Unknown Script";

@@ -1,4 +1,8 @@
-import { ActiveScript, BotCRole } from "../../../../../jotai/botc-atom";
+import {
+  ActiveScript,
+  BotCRole,
+  BaseScript,
+} from "../../../../../jotai/botc-atom";
 import { tb, snv, bmr, other, BotCScript } from "../../../../../constants/botc";
 import { buildScriptFromCharacters } from "../../../../../utils/botc-script-utils";
 import RoleSection, { RoleKey } from "./RoleSection";
@@ -29,7 +33,7 @@ const Roles = ({ isText, script, roleKey, onRoleClick }: RolesProps) => {
     }
   } else {
     switch (script.index) {
-      case 0:
+      case BaseScript.TB:
         scripts = {
           active: tb,
           travelers: [
@@ -37,7 +41,7 @@ const Roles = ({ isText, script, roleKey, onRoleClick }: RolesProps) => {
           ],
         };
         break;
-      case 1:
+      case BaseScript.SNV:
         scripts = {
           active: snv,
           travelers: [
@@ -45,7 +49,7 @@ const Roles = ({ isText, script, roleKey, onRoleClick }: RolesProps) => {
           ],
         };
         break;
-      case 2:
+      case BaseScript.BMR:
         scripts = {
           active: bmr,
           travelers: [
@@ -53,9 +57,9 @@ const Roles = ({ isText, script, roleKey, onRoleClick }: RolesProps) => {
           ],
         };
         break;
-      case 3:
-      default:
+      case BaseScript.Other:
         isOtherScript = true;
+        break;
     }
   }
 

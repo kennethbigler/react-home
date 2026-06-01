@@ -27,7 +27,7 @@ describe("useBotC", () => {
       expect(result.current.numTravelers).toBeDefined();
       expect(result.current.script).toBeDefined();
       expect(result.current.script).toEqual({
-        type: "builtin",
+        type: "base",
         index: 0,
       });
     });
@@ -388,7 +388,7 @@ describe("useBotC", () => {
 
       expect(result.current.isText).toBe(true);
       expect(result.current.script).toEqual({
-        type: "builtin",
+        type: "base",
         index: 0,
       });
     });
@@ -402,7 +402,7 @@ describe("useBotC", () => {
 
       expect(result.current.isText).toBe(true);
       expect(result.current.script).toEqual({
-        type: "builtin",
+        type: "base",
         index: 1,
       });
     });
@@ -416,7 +416,7 @@ describe("useBotC", () => {
 
       expect(result.current.isText).toBe(true);
       expect(result.current.script).toEqual({
-        type: "builtin",
+        type: "base",
         index: 2,
       });
     });
@@ -430,7 +430,7 @@ describe("useBotC", () => {
 
       // script 3 (Other) does not force isText; value stays as-is
       expect(result.current.script).toEqual({
-        type: "builtin",
+        type: "base",
         index: 3,
       });
     });
@@ -479,7 +479,7 @@ describe("useBotC", () => {
       }
     });
 
-    it("updateScript sets builtin script, clears community", () => {
+    it("updateScript sets base script, clears community", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
       // First set a community script
@@ -495,13 +495,13 @@ describe("useBotC", () => {
 
       expect(result.current.script.type).toBe("community");
 
-      // Then switch back to a built-in script
+      // Then switch back to a base script
       act(() => {
         result.current.updateScript(0);
       });
 
       expect(result.current.script).toEqual({
-        type: "builtin",
+        type: "base",
         index: 0,
       });
     });

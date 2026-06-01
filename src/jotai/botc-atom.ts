@@ -19,10 +19,17 @@ export interface BotCPlayer {
   kill: boolean;
 }
 
-export type BuiltinScriptIndex = 0 | 1 | 2 | 3; // TB=0, SNV=1, BMR=2, Other=3
+export const BaseScript = {
+  TB: 0,
+  SNV: 1,
+  BMR: 2,
+  Other: 3,
+} as const;
+
+export type BaseScriptIndex = (typeof BaseScript)[keyof typeof BaseScript];
 
 export type ActiveScript =
-  | { type: "builtin"; index: BuiltinScriptIndex }
+  | { type: "base"; index: BaseScriptIndex }
   | {
       type: "community";
       pk: number;
@@ -73,7 +80,7 @@ export const newBotCGame = (): BotCState => {
     numPlayers: 8,
     numTravelers: 0,
     round: 0,
-    script: { type: "builtin", index: 0 },
+    script: { type: "base", index: 0 },
     botcPlayers,
     roundNotes: newRoundNotes(),
     tracker: newTracker(),

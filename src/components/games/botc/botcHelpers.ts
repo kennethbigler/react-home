@@ -1,5 +1,5 @@
 import { playerDist } from "../../../constants/botc";
-import { ActiveScript } from "../../../jotai/botc-atom";
+import { ActiveScript, BaseScript } from "../../../jotai/botc-atom";
 
 export const getGridSize = (pc: number, i: number) => {
   if (i < 3 || (pc % 2 === 0 && i >= pc - 3)) {
@@ -34,28 +34,22 @@ export const getLieSeries = (
     numEvil += Math.min(outsiders, 1); // Evil Outsider 😈
   } else {
     switch (script.index) {
-      case 0:
-        // TB
+      case BaseScript.TB:
         numDrunk += Math.min(outsiders, 1); // Outsider 🍺
         numDrunk += Math.min(minions, 1); // Minion 🧪
         break;
-      case 1:
-        // S&V
+      case BaseScript.SNV:
         numDrunk += Math.min(outsiders, 1); // Outsider 🍺😡
         numDrunk += Math.min(minions, 2); // Minion 🧪😡
         numEvil += Math.min(outsiders, 1); // Evil Outsider 😈
         break;
-      case 2:
-        // BMR - +1 Outsider for Godfather
-        if (outsiders >= 0) {
-          numDrunk += 1; // Lunatic 😡
-          if (outsiders >= 1) {
-            numEvil += 1; // Goon 😈
-          }
+      case BaseScript.BMR:
+        numDrunk += 1; // Lunatic 😡
+        if (outsiders >= 1) {
+          numEvil += 1; // Goon 😈
         }
         break;
-      case 3: // Other
-      default:
+      case BaseScript.Other:
         numDrunk += Math.min(outsiders, 2); // Outsider 🍺😡
         numDrunk += Math.min(minions, 2); // Minion 🧪😡
         numEvil += Math.min(outsiders, 1); // Evil Outsider 😈

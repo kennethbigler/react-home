@@ -48,7 +48,7 @@ describe("LiePie", () => {
         <LiePie
           numPlayers={8}
           numTravelers={0}
-          script={{ type: "builtin", index: 0 }}
+          script={{ type: "base", index: 0 }}
         />
       </Provider>,
     );
@@ -69,7 +69,7 @@ describe("LiePie", () => {
         <LiePie
           numPlayers={8}
           numTravelers={0}
-          script={{ type: "builtin", index: 0 }}
+          script={{ type: "base", index: 0 }}
         />
       </Provider>,
     );

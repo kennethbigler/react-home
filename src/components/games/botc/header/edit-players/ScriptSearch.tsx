@@ -2,18 +2,15 @@ import { useState, useEffect } from "react";
 import { Autocomplete, TextField } from "@mui/material";
 import {
   loadAllScriptOptions,
-  BUILTIN_SCRIPT_OPTIONS,
+  BASE_SCRIPT_OPTIONS,
   ScriptOption,
   CommunityScriptOption,
 } from "../../../../../utils/botc-script-utils";
-import {
-  ActiveScript,
-  BuiltinScriptIndex,
-} from "../../../../../jotai/botc-atom";
+import { ActiveScript, BaseScriptIndex } from "../../../../../jotai/botc-atom";
 
 interface ScriptSearchProps {
   script: ActiveScript;
-  onBuiltinChange: (index: BuiltinScriptIndex) => void;
+  onBaseScriptChange: (index: BaseScriptIndex) => void;
   onCommunityChange: (option: CommunityScriptOption) => void;
 }
 
@@ -43,7 +40,7 @@ const getSelectedOption = (
     );
   }
   return (
-    (BUILTIN_SCRIPT_OPTIONS.find((o) => o.index === script.index) as
+    (BASE_SCRIPT_OPTIONS.find((o) => o.index === script.index) as
       | ScriptOption
       | undefined) ?? null
   );
@@ -52,12 +49,12 @@ const getSelectedOption = (
 /** EditPlayers → ScriptSearch (replaces ScriptSelect) */
 const ScriptSearch = ({
   script,
-  onBuiltinChange,
+  onBaseScriptChange,
   onCommunityChange,
 }: ScriptSearchProps) => {
-  // Start with just the 4 builtin options; community scripts load asynchronously
+  // Start with just the 4 base options; community scripts load asynchronously
   const [allOptions, setAllOptions] = useState<ScriptOption[]>([
-    ...BUILTIN_SCRIPT_OPTIONS,
+    ...BASE_SCRIPT_OPTIONS,
   ]);
   const [loading, setLoading] = useState(true);
 
@@ -75,8 +72,8 @@ const ScriptSearch = ({
     value: ScriptOption | null,
   ) => {
     if (!value) return;
-    if (value.type === "builtin") {
-      onBuiltinChange(value.index);
+    if (value.type === "base") {
+      onBaseScriptChange(value.index);
     } else {
       onCommunityChange(value);
     }
@@ -89,7 +86,7 @@ const ScriptSearch = ({
       onChange={handleChange}
       loading={loading}
       groupBy={(option) =>
-        option.type === "builtin" ? "Official Scripts" : "Community Scripts"
+        option.type === "base" ? "Official Scripts" : "Community Scripts"
       }
       getOptionLabel={(option) =>
         option.type === "community"
@@ -101,7 +98,7 @@ const ScriptSearch = ({
         if (option.type === "community" && value.type === "community") {
           return option.pk === value.pk;
         }
-        if (option.type === "builtin" && value.type === "builtin") {
+        if (option.type === "base" && value.type === "base") {
           return option.index === value.index;
         }
         return false;

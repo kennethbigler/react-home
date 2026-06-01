@@ -48,7 +48,7 @@ const EditPlayers = ({
       <Grid size={12} sx={{ textAlign: "center" }}>
         <ScriptSearch
           script={script}
-          onBuiltinChange={updateScript}
+          onBaseScriptChange={updateScript}
           onCommunityChange={updateCommunityScript}
         />
         <ScriptControls

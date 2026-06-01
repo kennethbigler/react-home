@@ -24,14 +24,14 @@ vi.mock("../../../../../data/botc-scripts.json", () => ({
 }));
 
 describe("ScriptSearch", () => {
-  const noopBuiltin = vi.fn();
+  const noopBase = vi.fn();
   const noopCommunity = vi.fn();
 
   it("renders the script search input", () => {
     render(
       <ScriptSearch
-        script={{ type: "builtin", index: 0 }}
-        onBuiltinChange={noopBuiltin}
+        script={{ type: "base", index: 0 }}
+        onBaseScriptChange={noopBase}
         onCommunityChange={noopCommunity}
       />,
     );
@@ -42,8 +42,8 @@ describe("ScriptSearch", () => {
   it("shows 'Trouble Brewing' as the selected value for script=0", () => {
     render(
       <ScriptSearch
-        script={{ type: "builtin", index: 0 }}
-        onBuiltinChange={noopBuiltin}
+        script={{ type: "base", index: 0 }}
+        onBaseScriptChange={noopBase}
         onCommunityChange={noopCommunity}
       />,
     );
@@ -55,8 +55,8 @@ describe("ScriptSearch", () => {
   it("shows 'Sects and Violets' for script=1", () => {
     render(
       <ScriptSearch
-        script={{ type: "builtin", index: 1 }}
-        onBuiltinChange={noopBuiltin}
+        script={{ type: "base", index: 1 }}
+        onBaseScriptChange={noopBase}
         onCommunityChange={noopCommunity}
       />,
     );
@@ -68,8 +68,8 @@ describe("ScriptSearch", () => {
   it("shows 'Bad Moon Rising' for script=2", () => {
     render(
       <ScriptSearch
-        script={{ type: "builtin", index: 2 }}
-        onBuiltinChange={noopBuiltin}
+        script={{ type: "base", index: 2 }}
+        onBaseScriptChange={noopBase}
         onCommunityChange={noopCommunity}
       />,
     );
@@ -81,8 +81,8 @@ describe("ScriptSearch", () => {
   it("shows 'Other (All Roles)' for script=3", () => {
     render(
       <ScriptSearch
-        script={{ type: "builtin", index: 3 }}
-        onBuiltinChange={noopBuiltin}
+        script={{ type: "base", index: 3 }}
+        onBaseScriptChange={noopBase}
         onCommunityChange={noopCommunity}
       />,
     );
@@ -101,7 +101,7 @@ describe("ScriptSearch", () => {
           author: "Community",
           characters: ["chef", "imp"],
         }}
-        onBuiltinChange={noopBuiltin}
+        onBaseScriptChange={noopBase}
         onCommunityChange={noopCommunity}
       />,
     );
@@ -113,8 +113,8 @@ describe("ScriptSearch", () => {
   it("renders a labeled input", () => {
     render(
       <ScriptSearch
-        script={{ type: "builtin", index: 0 }}
-        onBuiltinChange={noopBuiltin}
+        script={{ type: "base", index: 0 }}
+        onBaseScriptChange={noopBase}
         onCommunityChange={noopCommunity}
       />,
     );
@@ -125,8 +125,8 @@ describe("ScriptSearch", () => {
   it("loads community scripts asynchronously and updates options", async () => {
     render(
       <ScriptSearch
-        script={{ type: "builtin", index: 0 }}
-        onBuiltinChange={noopBuiltin}
+        script={{ type: "base", index: 0 }}
+        onBaseScriptChange={noopBase}
         onCommunityChange={noopCommunity}
       />,
     );
@@ -136,18 +136,18 @@ describe("ScriptSearch", () => {
       await Promise.resolve();
     });
 
-    // Input still shows the correct builtin label after options load
+    // Input still shows the correct base label after options load
     const input = screen.getByRole("combobox") as HTMLInputElement;
     expect(input.value).toBe("Trouble Brewing");
   });
 
   it("does not call handlers when autocomplete value is cleared (null)", () => {
-    const onBuiltinChange = vi.fn();
+    const onBaseScriptChange = vi.fn();
 
     render(
       <ScriptSearch
-        script={{ type: "builtin", index: 1 }}
-        onBuiltinChange={onBuiltinChange}
+        script={{ type: "base", index: 1 }}
+        onBaseScriptChange={onBaseScriptChange}
         onCommunityChange={noopCommunity}
       />,
     );
@@ -155,7 +155,7 @@ describe("ScriptSearch", () => {
     // Clicking the Clear button calls onChange with null — handleChange should return early
     fireEvent.click(screen.getByTitle("Clear"));
 
-    expect(onBuiltinChange).not.toHaveBeenCalled();
+    expect(onBaseScriptChange).not.toHaveBeenCalled();
   });
 
   it("calls onCommunityChange when a community option is selected", async () => {
@@ -163,8 +163,8 @@ describe("ScriptSearch", () => {
 
     render(
       <ScriptSearch
-        script={{ type: "builtin", index: 0 }}
-        onBuiltinChange={noopBuiltin}
+        script={{ type: "base", index: 0 }}
+        onBaseScriptChange={noopBase}
         onCommunityChange={onCommunityChange}
       />,
     );
@@ -193,8 +193,8 @@ describe("ScriptSearch", () => {
   it("renders community script option with author in the dropdown", async () => {
     render(
       <ScriptSearch
-        script={{ type: "builtin", index: 0 }}
-        onBuiltinChange={noopBuiltin}
+        script={{ type: "base", index: 0 }}
+        onBaseScriptChange={noopBase}
         onCommunityChange={noopCommunity}
       />,
     );
@@ -220,13 +220,13 @@ describe("ScriptSearch", () => {
     }
   });
 
-  it("calls onBuiltinChange when a builtin option is selected (covers line 79)", async () => {
-    const onBuiltinChange = vi.fn();
+  it("calls onBaseScriptChange when a base option is selected (covers line 79)", async () => {
+    const onBaseScriptChange = vi.fn();
 
     render(
       <ScriptSearch
-        script={{ type: "builtin", index: 0 }}
-        onBuiltinChange={onBuiltinChange}
+        script={{ type: "base", index: 0 }}
+        onBaseScriptChange={onBaseScriptChange}
         onCommunityChange={noopCommunity}
       />,
     );
@@ -240,14 +240,14 @@ describe("ScriptSearch", () => {
       await Promise.resolve();
     });
 
-    // "Sects and Violets" is a builtin option in the dropdown
+    // "Sects and Violets" is a base option in the dropdown
     const options = screen.queryAllByRole("option");
     const svOption = options.find((o) =>
       o.textContent?.includes("Sects and Violets"),
     );
     if (svOption) {
       fireEvent.click(svOption);
-      expect(onBuiltinChange).toHaveBeenCalledWith(1);
+      expect(onBaseScriptChange).toHaveBeenCalledWith(1);
     }
   });
 
@@ -266,7 +266,7 @@ describe("ScriptSearch", () => {
     render(
       <ScriptSearch
         script={communityScript}
-        onBuiltinChange={noopBuiltin}
+        onBaseScriptChange={noopBase}
         onCommunityChange={noopCommunity}
       />,
     );
@@ -300,7 +300,7 @@ describe("ScriptSearch", () => {
           author: "AnotherAuthor",
           characters: [],
         }}
-        onBuiltinChange={noopBuiltin}
+        onBaseScriptChange={noopBase}
         onCommunityChange={noopCommunity}
       />,
     );

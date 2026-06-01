@@ -2,33 +2,33 @@ import { describe, it, expect } from "vitest";
 import {
   buildScriptFromCharacters,
   loadAllScriptOptions,
-  BUILTIN_SCRIPT_OPTIONS,
-  getBuiltinScriptLabel,
+  BASE_SCRIPT_OPTIONS,
+  getBaseScriptLabel,
 } from "./botc-script-utils";
 
 describe("botc-script-utils", () => {
-  describe("BUILTIN_SCRIPT_OPTIONS", () => {
+  describe("BASE_SCRIPT_OPTIONS", () => {
     it("has 4 entries", () => {
-      expect(BUILTIN_SCRIPT_OPTIONS).toHaveLength(4);
+      expect(BASE_SCRIPT_OPTIONS).toHaveLength(4);
     });
 
     it("includes Trouble Brewing at index 0", () => {
-      const tb = BUILTIN_SCRIPT_OPTIONS.find((o) => o.index === 0);
+      const tb = BASE_SCRIPT_OPTIONS.find((o) => o.index === 0);
       expect(tb?.label).toBe("Trouble Brewing");
     });
 
-    it("all have type 'builtin'", () => {
-      BUILTIN_SCRIPT_OPTIONS.forEach((o) => {
-        expect(o.type).toBe("builtin");
+    it("all have type 'base'", () => {
+      BASE_SCRIPT_OPTIONS.forEach((o) => {
+        expect(o.type).toBe("base");
       });
     });
   });
 
   describe("loadAllScriptOptions (async)", () => {
-    it("starts with the 4 builtin options", async () => {
+    it("starts with the 4 base options", async () => {
       const options = await loadAllScriptOptions();
-      const builtins = options.filter((o) => o.type === "builtin");
-      expect(builtins).toHaveLength(4);
+      const bases = options.filter((o) => o.type === "base");
+      expect(bases).toHaveLength(4);
     });
 
     it("includes community script options", async () => {
@@ -138,21 +138,19 @@ describe("botc-script-utils", () => {
     });
   });
 
-  describe("getBuiltinScriptLabel", () => {
+  describe("getBaseScriptLabel", () => {
     it("returns correct label for index 0", () => {
-      expect(getBuiltinScriptLabel(0)).toBe("Trouble Brewing");
+      expect(getBaseScriptLabel(0)).toBe("Trouble Brewing");
     });
 
     it("returns correct label for index 3", () => {
-      expect(getBuiltinScriptLabel(3)).toBe("Other (All Roles)");
+      expect(getBaseScriptLabel(3)).toBe("Other (All Roles)");
     });
 
     it("returns 'Unknown Script' for an out-of-range index", () => {
       // Cast to bypass type safety — tests the ?? fallback branch
       expect(
-        getBuiltinScriptLabel(
-          99 as Parameters<typeof getBuiltinScriptLabel>[0],
-        ),
+        getBaseScriptLabel(99 as Parameters<typeof getBaseScriptLabel>[0]),
       ).toBe("Unknown Script");
     });
   });
