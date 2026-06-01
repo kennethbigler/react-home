@@ -2,11 +2,10 @@
  * Utilities for encoding/decoding BotC game state as URL search parameters.
  *
  * URL format:
- *   ?script=base:0          (base script by index)
- *   ?script=community:12345 (community script by pk)
+ *   ?script=base:0            (base script by index)
+ *   ?script=community:12345   (community script by pk)
  *   &players=8
- *   &travelers=1
- *   &names=Alice,Bob,Carol  (comma-separated, URL-encoded)
+ *   &names=Alice|Bob|Carol    (pipe-separated; numTravelers = names.length - players)
  */
 import { ActiveScript, BotCPlayer, BaseScriptIndex } from "../jotai/botc-atom";
 import {
@@ -15,6 +14,7 @@ import {
 } from "./botc-script-utils";
 
 const BASE_URL = "https://www.kennethbigler.com/#/games/botc";
+const NAMES_DELIMITER = "_";
 
 export interface SharedState {
   script: ActiveScript;
@@ -39,11 +39,10 @@ export const buildShareUrl = (
   }
 
   params.set("players", String(numPlayers));
-  params.set("travelers", String(numTravelers));
 
   const totalSlots = numPlayers + numTravelers;
   const names = botcPlayers.slice(0, totalSlots).map((p) => p.name);
-  params.set("names", names.join(","));
+  params.set("names", names.join(NAMES_DELIMITER));
 
   return `${BASE_URL}?${params.toString()}`;
 };
@@ -56,18 +55,17 @@ export const parseShareParams = async (
 
   const scriptParam = params.get("script");
   const playersParam = params.get("players");
-  const travelersParam = params.get("travelers");
   const namesParam = params.get("names");
 
-  if (!scriptParam || !playersParam || !travelersParam || !namesParam) {
+  if (!scriptParam || !playersParam || !namesParam) {
     return null;
   }
 
   const numPlayers = parseInt(playersParam, 10);
-  const numTravelers = parseInt(travelersParam, 10);
-  const names = namesParam.split(",");
+  if (isNaN(numPlayers)) return null;
 
-  if (isNaN(numPlayers) || isNaN(numTravelers)) return null;
+  const names = namesParam.split(NAMES_DELIMITER);
+  const numTravelers = names.length - numPlayers;
 
   let script: ActiveScript;
 
