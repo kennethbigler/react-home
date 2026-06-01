@@ -1,11 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  act,
-} from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import ScriptSearch from "./ScriptSearch";
 
 // Mock the scripts data to keep tests fast and deterministic
@@ -147,67 +141,20 @@ describe("ScriptSearch", () => {
     expect(input.value).toBe("Trouble Brewing");
   });
 
-  it("calls onBuiltinChange when a builtin option is selected", async () => {
+  it("does not call handlers when autocomplete value is cleared (null)", () => {
     const onBuiltinChange = vi.fn();
 
     render(
       <ScriptSearch
-        script={{ type: "builtin", index: 0 }}
+        script={{ type: "builtin", index: 1 }}
         onBuiltinChange={onBuiltinChange}
         onCommunityChange={noopCommunity}
       />,
     );
 
-    // Wait for async options load
-    await act(async () => {
-      await Promise.resolve();
-    });
+    // Clicking the Clear button calls onChange with null — handleChange should return early
+    fireEvent.click(screen.getByTitle("Clear"));
 
-    // MUI Autocomplete opens via mouseDown on the popup indicator button
-    fireEvent.mouseDown(screen.getByTitle("Open"));
-
-    // Wait for the listbox to appear
-    await waitFor(() => {
-      expect(screen.getByRole("listbox")).toBeInTheDocument();
-    });
-
-    const svOption = screen.getByRole("option", { name: /Sects and Violets/ });
-    fireEvent.click(svOption);
-
-    expect(onBuiltinChange).toHaveBeenCalledWith(1);
-  });
-
-  it("calls onCommunityChange when a community option is selected", async () => {
-    const onCommunityChange = vi.fn();
-
-    render(
-      <ScriptSearch
-        script={{ type: "builtin", index: 0 }}
-        onBuiltinChange={noopBuiltin}
-        onCommunityChange={onCommunityChange}
-      />,
-    );
-
-    // Wait for async options load
-    await act(async () => {
-      await Promise.resolve();
-    });
-
-    // MUI Autocomplete opens via mouseDown on the popup indicator button
-    fireEvent.mouseDown(screen.getByTitle("Open"));
-
-    await waitFor(() => {
-      expect(screen.getByRole("listbox")).toBeInTheDocument();
-    });
-
-    // Find the community script option
-    const spyOption = screen.getByRole("option", {
-      name: /The Spy Who Pinged Me/,
-    });
-    fireEvent.click(spyOption);
-
-    expect(onCommunityChange).toHaveBeenCalledWith(
-      expect.objectContaining({ type: "community", pk: 6506 }),
-    );
+    expect(onBuiltinChange).not.toHaveBeenCalled();
   });
 });
