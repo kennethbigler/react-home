@@ -1,10 +1,9 @@
 import { Fragment } from "react";
-// MUI
-// Custom
 import { useTracker } from "../useBotC";
 import { getGridSize } from "../botcHelpers";
 import { TextField, Grid, Button, ButtonGroup } from "@mui/material";
-const numRounds = [0, 1, 2, 3, 4, 5, 6, 7];
+
+const ROUND_INDICES = Array.from({ length: 8 }, (_, i) => i);
 
 interface TrackerProps {
   end: number;
@@ -55,7 +54,7 @@ const Tracker = ({ end }: TrackerProps) => {
         }}
       >
         <ButtonGroup fullWidth aria-label="Pick Round">
-          {numRounds.map((i) => (
+          {ROUND_INDICES.map((i) => (
             <Button
               key={i}
               onClick={onRoundClick(i)}

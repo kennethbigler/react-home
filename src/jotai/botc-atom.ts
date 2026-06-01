@@ -19,16 +19,35 @@ export interface BotCPlayer {
   kill: boolean;
 }
 
+export const BaseScript = {
+  TB: 0,
+  SNV: 1,
+  BMR: 2,
+  Other: 3,
+} as const;
+
+export type BaseScriptIndex = (typeof BaseScript)[keyof typeof BaseScript];
+
+export type ActiveScript =
+  | { type: "base"; index: BaseScriptIndex }
+  | {
+      type: "community";
+      pk: number;
+      title: string;
+      author: string;
+      characters: string[];
+    };
+
 export const BOTC_MIN_PLAYERS = 5;
 export const BOTC_MAX_PLAYERS = 15;
-const BOTC_MAX_TRAVELERS = 5;
+export const BOTC_MAX_TRAVELERS = 5;
 
 export interface BotCState {
   isText: boolean;
   numPlayers: number;
   numTravelers: number;
   round: number;
-  script: number;
+  script: ActiveScript;
   botcPlayers: BotCPlayer[];
   roundNotes: string[];
   tracker: number[][];
@@ -45,29 +64,27 @@ export const botcPlayerShell: BotCPlayer = {
 };
 
 const BOTC_TOTAL_SLOTS = BOTC_MAX_PLAYERS + BOTC_MAX_TRAVELERS;
+const NUM_ROUNDS = 8;
 
-const numRounds = [0, 1, 2, 3, 4, 5, 6, 7];
-export const newRoundNotes = () => numRounds.map(() => "");
+export const newRoundNotes = () => new Array<string>(NUM_ROUNDS).fill("");
 export const newTracker = () =>
-  numRounds.map(() => Array<number>(BOTC_TOTAL_SLOTS).fill(0));
+  Array.from({ length: NUM_ROUNDS }, () =>
+    Array<number>(BOTC_TOTAL_SLOTS).fill(0),
+  );
 
-export const newBotCGame = (): BotCState => {
-  const botcPlayers: BotCPlayer[] = [];
-  for (let i = 0; i < BOTC_TOTAL_SLOTS; i += 1) {
-    botcPlayers.push({ ...botcPlayerShell });
-  }
-  return {
-    isText: true,
-    numPlayers: 8,
-    numTravelers: 0,
-    round: 0,
-    script: 0,
-    botcPlayers,
-    roundNotes: newRoundNotes(),
-    tracker: newTracker(),
-  };
-};
+export const newBotCGame = (): BotCState => ({
+  isText: true,
+  numPlayers: 8,
+  numTravelers: 0,
+  round: 0,
+  script: { type: "base", index: BaseScript.TB },
+  botcPlayers: Array.from({ length: BOTC_TOTAL_SLOTS }, () => ({
+    ...botcPlayerShell,
+  })),
+  roundNotes: newRoundNotes(),
+  tracker: newTracker(),
+});
 
-const botcAtom = atomWithStorage("botcAtom", newBotCGame());
+const botcAtom = atomWithStorage("botcAtom_v2", newBotCGame());
 
 export default botcAtom;

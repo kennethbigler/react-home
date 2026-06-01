@@ -1,9 +1,8 @@
+import { useMemo } from "react";
 import { BotCRole } from "../../../../../jotai/botc-atom";
 import { Grid, Typography, Button } from "@mui/material";
 
-export interface RoleKey {
-  [key: string]: boolean;
-}
+export type RoleKey = Record<string, boolean>;
 
 interface RoleSectionProps {
   gridSize: number;
@@ -14,7 +13,7 @@ interface RoleSectionProps {
   onRoleClick?: (role: BotCRole, selected: boolean) => () => void;
 }
 
-const staticButtonStyles: React.CSSProperties = {
+const BASE_BUTTON_STYLES: React.CSSProperties = {
   textTransform: "none",
   width: "100%",
   wordBreak: "break-word",
@@ -32,12 +31,13 @@ const RoleSection = ({
   title,
   onRoleClick,
 }: RoleSectionProps) => {
-  const buttonStyles = { ...staticButtonStyles };
-  if (isText && roles.length >= 18) {
-    buttonStyles.fontSize = "0.7rem";
-  } else {
-    delete buttonStyles.fontSize;
-  }
+  const buttonStyles = useMemo<React.CSSProperties>(
+    () =>
+      isText && roles.length >= 18
+        ? { ...BASE_BUTTON_STYLES, fontSize: "0.7rem" }
+        : BASE_BUTTON_STYLES,
+    [isText, roles.length],
+  );
 
   return (
     <>
@@ -54,6 +54,7 @@ const RoleSection = ({
               variant={selected ? "contained" : "outlined"}
               color={role.alignment}
               sx={buttonStyles}
+              // onRoleClick is curried: calling it during render returns the click handler
               onClick={onRoleClick && onRoleClick(role, selected)}
               title={role.name}
             >

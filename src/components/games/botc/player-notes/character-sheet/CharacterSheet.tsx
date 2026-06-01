@@ -1,6 +1,8 @@
+import { useMemo } from "react";
 import InfoPopup from "../../../../common/info-popover/InfoPopup";
 import Roles from "./Roles";
 import {
+  ActiveScript,
   BotCPlayer,
   BotCPlayerStatus,
   BotCRole,
@@ -11,7 +13,7 @@ import { Grid, TextField } from "@mui/material";
 interface CharacterSheetProps {
   isText: boolean;
   player: BotCPlayer;
-  script: number;
+  script: ActiveScript;
   onNameBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onNotesBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onRoleClick: (role: BotCRole, selected: boolean) => () => void;
@@ -30,51 +32,58 @@ const CharacterSheet = ({
   onNotesBlur,
   onRoleClick,
   onStatsToggle,
-}: CharacterSheetProps) => (
-  <InfoPopup
-    fullWidth
-    buttonText={name}
-    buttonVariant={exec || kill ? "contained" : "outlined"}
-    buttonColor={exec || kill ? "error" : "primary"}
-    title={`Roles - ${name}`}
-  >
-    <Grid container spacing={1}>
-      <Grid size={6}>
-        <TextField
-          fullWidth
-          defaultValue={name}
-          label="Player Name"
-          variant="standard"
-          onBlur={onNameBlur}
+}: CharacterSheetProps) => {
+  const roleKey = useMemo(
+    () => Object.fromEntries(roles.map((r) => [r.name, true])),
+    [roles],
+  );
+
+  return (
+    <InfoPopup
+      fullWidth
+      buttonText={name}
+      buttonVariant={exec || kill ? "contained" : "outlined"}
+      buttonColor={exec || kill ? "error" : "primary"}
+      title={`Roles - ${name}`}
+    >
+      <Grid container spacing={1}>
+        <Grid size={6}>
+          <TextField
+            fullWidth
+            defaultValue={name}
+            label="Player Name"
+            variant="standard"
+            onBlur={onNameBlur}
+          />
+        </Grid>
+        <Grid size={6}>
+          <TextField
+            fullWidth
+            multiline
+            label="Notes"
+            variant="standard"
+            defaultValue={notes}
+            onBlur={onNotesBlur}
+          />
+        </Grid>
+
+        <EmojiNotes
+          liar={liar}
+          used={used}
+          kill={kill}
+          exec={exec}
+          onToggle={onStatsToggle}
+        />
+
+        <Roles
+          isText={isText}
+          script={script}
+          roleKey={roleKey}
+          onRoleClick={onRoleClick}
         />
       </Grid>
-      <Grid size={6}>
-        <TextField
-          fullWidth
-          multiline
-          label="Notes"
-          variant="standard"
-          defaultValue={notes}
-          onBlur={onNotesBlur}
-        />
-      </Grid>
-
-      <EmojiNotes
-        liar={liar}
-        used={used}
-        kill={kill}
-        exec={exec}
-        onToggle={onStatsToggle}
-      />
-
-      <Roles
-        isText={isText}
-        script={script}
-        roleKey={roles.reduce((acc, r) => ({ ...acc, [r.name]: true }), {})}
-        onRoleClick={onRoleClick}
-      />
-    </Grid>
-  </InfoPopup>
-);
+    </InfoPopup>
+  );
+};
 
 export default CharacterSheet;

@@ -21,6 +21,9 @@ function gitSetup() {
   echo -e "Finish with a:\ngit push\n"
 }
 
+echo "Fetching latest BotC community scripts..."
+node scripts/fetch-botc-scripts.mjs || throwError "fetch-botc-scripts"
+echo $LINE
 buildApp false
 echo $LINE
 deployCode

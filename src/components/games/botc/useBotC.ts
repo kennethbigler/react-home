@@ -1,14 +1,16 @@
 import { useState, ChangeEvent, FocusEvent, ChangeEventHandler } from "react";
 import { useAtom, useAtomValue } from "jotai";
-import { SelectChangeEvent } from "@mui/material";
 import botcAtom, {
-  BotCPlayer,
+  ActiveScript,
   botcPlayerShell,
   BotCPlayerStatus,
   BotCRole,
+  BaseScript,
+  BaseScriptIndex,
   newRoundNotes,
   newTracker,
 } from "../../../jotai/botc-atom";
+import { CommunityScriptOption } from "../../../utils/botc-script-utils";
 
 const getUpNum = (i: number, pc: number) => {
   const isFull = pc % 2 === 0;
@@ -46,17 +48,9 @@ export const usePlayerAdjControls = () => {
       : getDownNum(i, numPlayers + numTravelers);
 
     const newPlayers = [...botcPlayers];
-    const playerA = newPlayers[i];
-    const playerB = newPlayers[i + mod];
-    newPlayers[i] = playerB;
-    newPlayers[i + mod] = playerA;
+    [newPlayers[i], newPlayers[i + mod]] = [newPlayers[i + mod], newPlayers[i]];
 
-    setState({
-      ...other,
-      numPlayers,
-      numTravelers,
-      botcPlayers: newPlayers,
-    });
+    setState({ ...other, numPlayers, numTravelers, botcPlayers: newPlayers });
   };
 
   return updatePlayerOrder;
@@ -80,25 +74,17 @@ export const usePlayerNotes = () => {
     );
   };
 
-  /** update player name onBlur */
-  const updateNames =
-    (i: number) =>
+  /** Shared helper: update a single string field on a player onBlur */
+  const updatePlayerTextField =
+    (i: number, field: "name" | "notes") =>
     (e: FocusEvent<HTMLInputElement>): void => {
       const newPlayers = [...botcPlayers];
-      const newPlayer = { ...newPlayers[i], name: e.target.value || "" };
-      newPlayers[i] = newPlayer;
+      newPlayers[i] = { ...newPlayers[i], [field]: e.target.value || "" };
       setState({ ...other, numPlayers, numTravelers, botcPlayers: newPlayers });
     };
 
-  /** update player notes onBlur */
-  const updateNotes =
-    (i: number) =>
-    (e: FocusEvent<HTMLInputElement>): void => {
-      const newPlayers = [...botcPlayers];
-      const newPlayer = { ...newPlayers[i], notes: e.target.value || "" };
-      newPlayers[i] = newPlayer;
-      setState({ ...other, numPlayers, numTravelers, botcPlayers: newPlayers });
-    };
+  const updateNames = (i: number) => updatePlayerTextField(i, "name");
+  const updateNotes = (i: number) => updatePlayerTextField(i, "notes");
 
   /** handle role selections */
   const updateRoles =
@@ -159,7 +145,7 @@ export const useEditPlayers = () => {
     });
   };
 
-  /** update number of players */
+  /** update number of travelers */
   const updateNumTravelers = (value: number) => {
     setState({
       ...other,
@@ -171,32 +157,44 @@ export const useEditPlayers = () => {
     });
   };
 
-  /** update botc script used */
-  const updateScript = (e: SelectChangeEvent<number>) => {
-    const newScript = e.target.value;
+  /** Select a base script by index (0–3) */
+  const updateScript = (index: BaseScriptIndex) => {
     let newText = isText;
-    switch (newScript) {
-      case 0:
-      case 1:
-      case 2:
-        newText = true;
-        break;
-      case 5:
-        newText = false;
-        break;
-      default:
+    // TB / S&V / BMR work best with text mode on
+    if (index !== BaseScript.Other) {
+      newText = true;
     }
+    const newActiveScript: ActiveScript = { type: "base", index };
     setState({
       ...other,
       botcPlayers,
       numPlayers,
       numTravelers,
       isText: newText,
-      script: newScript,
+      script: newActiveScript,
     });
   };
 
-  /** update player notes onBlur */
+  /** Select a community script from botcscripts.com */
+  const updateCommunityScript = (option: CommunityScriptOption) => {
+    const newActiveScript: ActiveScript = {
+      type: "community",
+      pk: option.pk,
+      title: option.label,
+      author: option.author,
+      characters: option.characters,
+    };
+    setState({
+      ...other,
+      botcPlayers,
+      numPlayers,
+      numTravelers,
+      isText,
+      script: newActiveScript,
+    });
+  };
+
+  /** toggle icon/text display mode */
   const updateText = (e: ChangeEvent<HTMLInputElement>): void => {
     setState({
       ...other,
@@ -208,19 +206,18 @@ export const useEditPlayers = () => {
     });
   };
 
-  /** set a new game */
+  /** set a new game (resets roles/notes/tracker but keeps player names and script) */
   const newBotCGame = () => {
-    const newPlayers: BotCPlayer[] = [];
-    botcPlayers.forEach((player) =>
-      newPlayers.push({ ...botcPlayerShell, name: player.name }),
-    );
     setState({
       isText,
       numPlayers,
       numTravelers,
       script,
       round: 0,
-      botcPlayers: newPlayers,
+      botcPlayers: botcPlayers.map(({ name }) => ({
+        ...botcPlayerShell,
+        name,
+      })),
       roundNotes: newRoundNotes(),
       tracker: newTracker(),
     });
@@ -232,6 +229,7 @@ export const useEditPlayers = () => {
     updateNumPlayers,
     updateNumTravelers,
     updateScript,
+    updateCommunityScript,
     updateText,
     newBotCGame,
   };
@@ -246,20 +244,20 @@ export const useTracker = () => {
     setState({ ...other, roundNotes, tracker, round: i });
 
   const onTrackClick = (i: number) => () => {
-    const tempTracker = [...tracker[round]];
-    tempTracker[i] = (tracker[round][i] + 1) % 3;
-    const newTracker = [...tracker];
-    newTracker[round] = tempTracker;
-    setState({ ...other, round, roundNotes, tracker: newTracker });
+    const updatedRound = [...tracker[round]];
+    updatedRound[i] = (tracker[round][i] + 1) % 3;
+    const updatedTracker = [...tracker];
+    updatedTracker[round] = updatedRound;
+    setState({ ...other, round, roundNotes, tracker: updatedTracker });
   };
 
   /** update round notes onBlur */
   const onNotesChange: ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = (e): void => {
-    const newRoundNotes = [...roundNotes];
-    newRoundNotes[round] = e.target.value || "";
-    setState({ ...other, round, tracker, roundNotes: newRoundNotes });
+    const updatedRoundNotes = [...roundNotes];
+    updatedRoundNotes[round] = e.target.value || "";
+    setState({ ...other, round, tracker, roundNotes: updatedRoundNotes });
   };
 
   return {

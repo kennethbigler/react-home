@@ -1,5 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import { Provider } from "jotai";
+import { useHydrateAtoms } from "jotai/utils";
 import BotC from ".";
+import themeAtom, { lightTheme } from "../../../jotai/theme-atom";
 
 describe("games | BotC", () => {
   it("renders as expected", () => {
@@ -74,6 +77,57 @@ describe("games | BotC", () => {
     fireEvent.click(screen.getByLabelText("❌"));
     fireEvent.click(screen.getByLabelText("💀"));
     fireEvent.click(screen.getByLabelText("✋"));
+  });
+
+  it("renders LiePie in light mode (covers theme.mode === 'light' branch)", () => {
+    // useHydrateAtoms forces the atom to lightTheme for this render tree,
+    // bypassing atomWithStorage's module-level cache.
+    const HydrateLight = ({ children }: { children: React.ReactNode }) => {
+      useHydrateAtoms([[themeAtom, lightTheme]]);
+      return <>{children}</>;
+    };
+    render(
+      <Provider>
+        <HydrateLight>
+          <BotC />
+        </HydrateLight>
+      </Provider>,
+    );
+    expect(screen.getByText("BotC")).toBeInTheDocument();
+  });
+
+  it("shows separator and notes when player has both a status flag and notes", () => {
+    render(<BotC />);
+    // Open character sheet for player 0
+    fireEvent.click(screen.getAllByText("Ken")[0]);
+    // Set liar status
+    fireEvent.click(screen.getByLabelText("😈"));
+    // Add notes via blur event
+    const notesInput = screen.getByLabelText("Notes");
+    fireEvent.change(notesInput, { target: { value: "Has info" } });
+    fireEvent.blur(notesInput);
+    // The " - " separator and notes text render (covers lines 83-89 true branch)
+    expect(screen.getByDisplayValue("Has info")).toBeInTheDocument();
+    // Reset
+    fireEvent.click(screen.getByLabelText("😈"));
+  });
+
+  it("highlights random player and covers exec/kill skip in getRandomPlayer", () => {
+    render(
+      <Provider>
+        <BotC />
+      </Provider>,
+    );
+    // Mark player index 1 (second card) as exec'd so getRandomPlayer skips them
+    // (covers useBotC line 75: !exec && !kill false branch)
+    const playerCards = screen.getAllByText("Ken");
+    fireEvent.click(playerCards[1]);
+    fireEvent.click(screen.getByLabelText("✋"));
+    fireEvent.keyDown(document, { key: "Escape" });
+    // Click Random — picks from remaining alive players, setting randomPlayer
+    // (covers PlayerNotes line 60: randomPlayer === i ? "3px solid red" : "none" true branch)
+    fireEvent.click(screen.getByText("Random 🔪"));
+    expect(screen.getByText("BotC")).toBeInTheDocument();
   });
 
   it("can track players over rounds", () => {

@@ -6,9 +6,8 @@ interface ScriptControlsProps {
   onReset: () => void;
 }
 
-/** EditPlayers -> ScriptSelect
- *              -> ScriptControls
- *              -> players.map(EditNameAndPos) */
+/** EditPlayers -> ScriptSearch
+ *              -> ScriptControls */
 const ScriptControls = ({ isText, onChange, onReset }: ScriptControlsProps) => (
   <div className="flex-container">
     <FormControl

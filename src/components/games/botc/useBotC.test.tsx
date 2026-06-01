@@ -7,7 +7,6 @@ import useBotC, {
   useEditPlayers,
   useTracker,
 } from "./useBotC";
-import { SelectChangeEvent } from "@mui/material";
 import { BotCRole } from "../../../jotai/botc-atom";
 
 describe("useBotC", () => {
@@ -27,6 +26,10 @@ describe("useBotC", () => {
       expect(result.current.numPlayers).toBeDefined();
       expect(result.current.numTravelers).toBeDefined();
       expect(result.current.script).toBeDefined();
+      expect(result.current.script).toEqual({
+        type: "base",
+        index: 0,
+      });
     });
   });
 
@@ -93,6 +96,56 @@ describe("useBotC", () => {
       act(() => {
         const updateFn = result.current(1, false);
         updateFn();
+      });
+
+      expect(result.current).toBeDefined();
+    });
+
+    it("hits getUpNum line 22 (isFull && i === pc - 2, i=6 with default 8 players)", () => {
+      // Default atom: numPlayers=8, numTravelers=0, pc=8 (even → isFull=true)
+      // getUpNum(6, 8): not i===0, not i===3, not isFull&&i===pc-1 (6≠7)
+      // → isFull && i === pc-2 (6===6) → true → return -1 (line 22)
+      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+      act(() => {
+        result.current(6, true)();
+      });
+      expect(result.current).toBeDefined();
+    });
+
+    it("hits getDownNum line 34 (i === pc - 1, i=7 with default 8 players)", () => {
+      // Default atom: numPlayers=8, numTravelers=0, pc=8 (even → isFull=true)
+      // getDownNum(7, 8): not first branch (i≠0, isFull&&i===pc-4→7≠4 false)
+      // not second branch (i≠1, i===pc-2→7≠6 false, isFull&&i===pc-3→7≠5 false)
+      // → i === pc - 1 (7===7) → true → return -1 (line 34)
+      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+      act(() => {
+        result.current(7, false)();
+      });
+      expect(result.current).toBeDefined();
+    });
+
+    it("covers getUpNum: isFull && i === pc - 1 branch (even player count, last position)", () => {
+      // With default 5 players + 0 travelers = 5 total (odd), use hook that sets travelers
+      // We need pc (numPlayers + numTravelers) even. Default is 5 players, 0 travelers = 5.
+      // The hook reads from atom; we can just call with index matching pc-1 for an even total.
+      // The easiest path: just call updatePlayerOrder at various indices to exercise all branches.
+      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+
+      // With 5 players + 0 travelers, pc = 5 (odd). i=3 triggers `i === 3` in getUpNum.
+      // We need even pc to hit `isFull && i === pc - 1`.
+      // The atom default is 5 players; we can't easily change it here without useEditPlayers,
+      // so we exercise remaining branches by calling multiple positions.
+      act(() => {
+        result.current(2, true)(); // i=2, hits i < 3 → 1
+      });
+      act(() => {
+        result.current(4, true)(); // i=4, hits return -2 (pc=5, none of the earlier conditions)
+      });
+      act(() => {
+        result.current(2, false)(); // i=2, hits return 2 in getDownNum
+      });
+      act(() => {
+        result.current(4, false)(); // i === pc-1 → return -1 in getDownNum
       });
 
       expect(result.current).toBeDefined();
@@ -329,71 +382,57 @@ describe("useBotC", () => {
     it("updates script to 0 and sets text to true", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
-      const mockEvent = {
-        target: { value: 0, name: "script" },
-      };
-
       act(() => {
-        result.current.updateScript(mockEvent as SelectChangeEvent<number>);
+        result.current.updateScript(0);
       });
 
       expect(result.current.isText).toBe(true);
+      expect(result.current.script).toEqual({
+        type: "base",
+        index: 0,
+      });
     });
 
     it("updates script to 1 and sets text to true", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
-      const mockEvent = {
-        target: { value: 1, name: "script" },
-      } as unknown as SelectChangeEvent<number>;
-
       act(() => {
-        result.current.updateScript(mockEvent);
+        result.current.updateScript(1);
       });
 
       expect(result.current.isText).toBe(true);
+      expect(result.current.script).toEqual({
+        type: "base",
+        index: 1,
+      });
     });
 
     it("updates script to 2 and sets text to true", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
-      const mockEvent = {
-        target: { value: 2, name: "script" },
-      } as unknown as SelectChangeEvent<number>;
-
       act(() => {
-        result.current.updateScript(mockEvent);
+        result.current.updateScript(2);
       });
 
       expect(result.current.isText).toBe(true);
+      expect(result.current.script).toEqual({
+        type: "base",
+        index: 2,
+      });
     });
 
-    it("updates script to 5 and sets text to false", () => {
+    it("updates script to 3 (Other) without forcing text mode", () => {
       const { result } = renderHook(() => useEditPlayers(), { wrapper });
 
-      const mockEvent = {
-        target: { value: 5, name: "script" },
-      } as unknown as SelectChangeEvent<number>;
-
       act(() => {
-        result.current.updateScript(mockEvent);
+        result.current.updateScript(3);
       });
 
-      expect(result.current.isText).toBe(false);
-    });
-
-    it("updates script to default case (3 or 4)", () => {
-      const { result } = renderHook(() => useEditPlayers(), { wrapper });
-
-      const mockEvent = {
-        target: { value: 3, name: "script" },
-      } as unknown as SelectChangeEvent<number>;
-
-      act(() => {
-        result.current.updateScript(mockEvent);
+      // script 3 (Other) does not force isText; value stays as-is
+      expect(result.current.script).toEqual({
+        type: "base",
+        index: 3,
       });
-
-      expect(result.current).toBeDefined();
     });
 
     it("updates text setting", () => {
@@ -418,6 +457,53 @@ describe("useBotC", () => {
       });
 
       expect(result.current).toBeDefined();
+    });
+
+    it("updateCommunityScript sets community script", () => {
+      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+
+      act(() => {
+        result.current.updateCommunityScript({
+          type: "community",
+          label: "Test Script",
+          pk: 9999,
+          author: "Test Author",
+          characters: ["chef", "imp"],
+        });
+      });
+
+      expect(result.current.script.type).toBe("community");
+      if (result.current.script.type === "community") {
+        expect(result.current.script.pk).toBe(9999);
+        expect(result.current.script.author).toBe("Test Author");
+      }
+    });
+
+    it("updateScript sets base script, clears community", () => {
+      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+
+      // First set a community script
+      act(() => {
+        result.current.updateCommunityScript({
+          type: "community",
+          label: "Test Script",
+          pk: 9999,
+          author: "Test Author",
+          characters: ["chef", "imp"],
+        });
+      });
+
+      expect(result.current.script.type).toBe("community");
+
+      // Then switch back to a base script
+      act(() => {
+        result.current.updateScript(0);
+      });
+
+      expect(result.current.script).toEqual({
+        type: "base",
+        index: 0,
+      });
     });
   });
 

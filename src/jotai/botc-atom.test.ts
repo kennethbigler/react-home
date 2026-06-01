@@ -47,7 +47,7 @@ describe("botc-atom", () => {
       expect(result.numPlayers).toBe(8);
       expect(result.numTravelers).toBe(0);
       expect(result.round).toBe(0);
-      expect(result.script).toBe(0);
+      expect(result.script).toEqual({ type: "base", index: 0 });
       expect(result.botcPlayers).toHaveLength(20);
       expect(result.roundNotes).toHaveLength(8);
       expect(result.tracker).toHaveLength(8);

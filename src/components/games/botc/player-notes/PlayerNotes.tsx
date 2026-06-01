@@ -4,6 +4,7 @@ import CharacterSheet from "./character-sheet/CharacterSheet";
 import { usePlayerNotes } from "../useBotC";
 import { getGridSize } from "../botcHelpers";
 import PlayerAdjControls from "./PlayerAdjControls";
+import { ActiveScript } from "../../../../jotai/botc-atom";
 import {
   Button,
   Card,
@@ -17,7 +18,7 @@ import {
 interface PlayerNotesProps {
   isText: boolean;
   playerCount: number;
-  script: number;
+  script: ActiveScript;
 }
 
 const chipStyle = {
@@ -44,7 +45,7 @@ const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
     updateStats,
   } = usePlayerNotes();
 
-  const handleMoveToggle = () => setShowMove(!showMove);
+  const handleMoveToggle = () => setShowMove((prev) => !prev);
 
   return (
     <Grid container spacing={1}>
