@@ -26,15 +26,12 @@ export const getLieSeries = (
     // Evil Traveler
     numEvil += 1;
   }
-  if ((script.type === "community" || script.index === 3) && outsiders > 0) {
-    // Evil Outsider
-    numEvil += 1;
-  }
 
   let numDrunk: number = numTravelers >= 4 ? 1 : 0;
   if (script.type === "community") {
     numDrunk += Math.min(outsiders, 2); // Outsider 🍺😡
     numDrunk += Math.min(minions, 2); // Minion 🧪😡
+    numEvil += Math.min(outsiders, 1); // Evil Outsider 😈
   } else {
     switch (script.index) {
       case 0:
@@ -46,6 +43,7 @@ export const getLieSeries = (
         // S&V
         numDrunk += Math.min(outsiders, 1); // Outsider 🍺😡
         numDrunk += Math.min(minions, 2); // Minion 🧪😡
+        numEvil += Math.min(outsiders, 1); // Evil Outsider 😈
         break;
       case 2:
         // BMR - +1 Outsider for Godfather
@@ -60,6 +58,7 @@ export const getLieSeries = (
       default:
         numDrunk += Math.min(outsiders, 2); // Outsider 🍺😡
         numDrunk += Math.min(minions, 2); // Minion 🧪😡
+        numEvil += Math.min(outsiders, 1); // Evil Outsider 😈
         break;
     }
   }
