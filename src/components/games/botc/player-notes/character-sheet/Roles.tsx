@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   ActiveScript,
   BotCRole,
@@ -18,57 +19,42 @@ interface ActiveBotCScript {
   travelers: BotCRole[];
 }
 
+/** Extra travelers from `other` that are not already in `scriptTravelers` */
+const extraTravelers = (scriptTravelers: BotCRole[]): BotCRole[] =>
+  other.travelers.filter((x) => !scriptTravelers.includes(x));
+
 /** CharacterSheet -> EmojiNotes
  *                 -> Roles -> RoleSelection */
 const Roles = ({ isText, script, roleKey, onRoleClick }: RolesProps) => {
-  let scripts: ActiveBotCScript = { active: other, travelers: [] };
-  let isOtherScript = false;
-
-  if (script.type === "community") {
-    if (script.characters.length > 0) {
-      const built = buildScriptFromCharacters(script.characters);
-      scripts = { active: built, travelers: [...other.travelers] };
-    } else {
-      isOtherScript = true;
+  const scripts = useMemo<ActiveBotCScript>(() => {
+    if (script.type === "community") {
+      return script.characters.length > 0
+        ? {
+            active: buildScriptFromCharacters(script.characters),
+            travelers: [...other.travelers],
+          }
+        : { active: other, travelers: [] };
     }
-  } else {
     switch (script.index) {
       case BaseScript.TB:
-        scripts = {
-          active: tb,
-          travelers: [
-            ...other.travelers.filter((x) => !tb.travelers.includes(x)),
-          ],
-        };
-        break;
+        return { active: tb, travelers: extraTravelers(tb.travelers) };
       case BaseScript.SNV:
-        scripts = {
-          active: snv,
-          travelers: [
-            ...other.travelers.filter((x) => !snv.travelers.includes(x)),
-          ],
-        };
-        break;
+        return { active: snv, travelers: extraTravelers(snv.travelers) };
       case BaseScript.BMR:
-        scripts = {
-          active: bmr,
-          travelers: [
-            ...other.travelers.filter((x) => !bmr.travelers.includes(x)),
-          ],
-        };
-        break;
-      case BaseScript.Other:
-        isOtherScript = true;
-        break;
+        return { active: bmr, travelers: extraTravelers(bmr.travelers) };
+      default:
+        return { active: other, travelers: [] };
     }
-  }
+  }, [script]);
 
-  let gridSize = 3;
-  // if text version, then grid size should be 6, or 4 for other script
-  if (isText) {
-    gridSize = isOtherScript ? 4 : 6;
-  }
-  // townsfolk grid size should be 6, except for other script, then it matches above (3 or 4)
+  const isOtherScript =
+    script.type === "community"
+      ? script.characters.length === 0
+      : script.index === BaseScript.Other;
+
+  // icon mode → 3 cols; text + other → 4 cols; text + named script → 6 cols
+  const gridSize = isText ? (isOtherScript ? 4 : 6) : 3;
+  // townsfolk always 6 cols on named scripts (more room for long names)
   const tfGridSize = isOtherScript ? gridSize : 6;
 
   return (

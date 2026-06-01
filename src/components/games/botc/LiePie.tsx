@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { useAtomValue } from "jotai";
 import { useTheme } from "@mui/material/styles";
 import {
@@ -51,15 +51,18 @@ const LiePie = memo(({ numPlayers, numTravelers, script }: LiePieProps) => {
 
   const lieSeries = getLieSeries(numPlayers, numTravelers, script);
 
-  const options: Highcharts.Options = {
-    ...staticOptions,
-    colors: [
-      muiTheme.palette.error.main,
-      muiTheme.palette.warning.main,
-      muiTheme.palette.info.main,
-      muiTheme.palette.success.main,
-    ],
-  };
+  const options = useMemo<Highcharts.Options>(
+    () => ({
+      ...staticOptions,
+      colors: [
+        muiTheme.palette.error.main,
+        muiTheme.palette.warning.main,
+        muiTheme.palette.info.main,
+        muiTheme.palette.success.main,
+      ],
+    }),
+    [muiTheme],
+  );
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>

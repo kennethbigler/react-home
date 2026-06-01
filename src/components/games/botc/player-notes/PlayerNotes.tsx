@@ -45,7 +45,7 @@ const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
     updateStats,
   } = usePlayerNotes();
 
-  const handleMoveToggle = () => setShowMove(!showMove);
+  const handleMoveToggle = () => setShowMove((prev) => !prev);
 
   return (
     <Grid container spacing={1}>

@@ -20,14 +20,6 @@ interface EncodedScript {
   c: number[];
 }
 
-/** A community script entry after decoding */
-export interface CommunityScript {
-  pk: number;
-  title: string;
-  author: string;
-  characters: string[];
-}
-
 /** A script option shown in the autocomplete selector */
 export interface BaseScriptOption {
   type: "base";
@@ -67,6 +59,11 @@ export const BASE_SCRIPT_OPTIONS: BaseScriptOption[] = [
 
 /** Cached result so we only parse the JSON once per session */
 let cachedOptions: ScriptOption[] | null = null;
+
+/** Reset the cache — intended for use in tests only */
+export const resetScriptOptionsCache = () => {
+  cachedOptions = null;
+};
 
 /**
  * Lazily load all script options (base + community) for the autocomplete.
@@ -128,6 +125,11 @@ export const buildScriptFromCharacters = (characters: string[]): BotCScript => {
   return script;
 };
 
+/** O(1) lookup map from BaseScriptIndex → display label */
+const BASE_SCRIPT_LABELS: Record<BaseScriptIndex, string> = Object.fromEntries(
+  BASE_SCRIPT_OPTIONS.map((o) => [o.index, o.label]),
+) as Record<BaseScriptIndex, string>;
+
 /** Get the display label for a base script index */
 export const getBaseScriptLabel = (index: BaseScriptIndex): string =>
-  BASE_SCRIPT_OPTIONS.find((o) => o.index === index)?.label ?? "Unknown Script";
+  BASE_SCRIPT_LABELS[index] ?? "Unknown Script";

@@ -20,8 +20,6 @@ const qrCodeStyle: CSSProperties = {
 
 const Controls = ({ numPlayers, numTravelers }: ControlsProps) => {
   const [hasToast, setHasToast] = useState(false);
-  const handleOpenToast = () => setHasToast(true);
-  const handleCloseToast = () => setHasToast(false);
 
   return (
     <Grid size={12}>
@@ -40,7 +38,7 @@ const Controls = ({ numPlayers, numTravelers }: ControlsProps) => {
           buttonVariant="text"
         >
           <EditPlayers
-            openToast={handleOpenToast}
+            openToast={() => setHasToast(true)}
             numPlayers={numPlayers}
             numTravelers={numTravelers}
           />
@@ -48,10 +46,10 @@ const Controls = ({ numPlayers, numTravelers }: ControlsProps) => {
         <Snackbar
           open={hasToast}
           autoHideDuration={3000}
-          onClose={handleCloseToast}
+          onClose={() => setHasToast(false)}
         >
           <Alert
-            onClose={handleCloseToast}
+            onClose={() => setHasToast(false)}
             severity="success"
             sx={{ width: "100%" }}
           >

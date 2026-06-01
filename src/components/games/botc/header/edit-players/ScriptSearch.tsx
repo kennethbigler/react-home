@@ -95,12 +95,10 @@ const ScriptSearch = ({
       }
       isOptionEqualToValue={(option, value) => {
         if (option.type !== value.type) return false;
-        if (option.type === "community" && value.type === "community") {
+        if (option.type === "community" && value.type === "community")
           return option.pk === value.pk;
-        }
-        if (option.type === "base" && value.type === "base") {
+        if (option.type === "base" && value.type === "base")
           return option.index === value.index;
-        }
         return false;
       }}
       renderInput={(params) => (
