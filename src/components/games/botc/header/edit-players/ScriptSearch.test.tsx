@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import ScriptSearch from "./ScriptSearch";
 
 // Mock the scripts data to keep tests fast and deterministic
+// The JSON is lazy-loaded via dynamic import; Vitest intercepts it the same way
 vi.mock("../../../../../data/botc-scripts.json", () => ({
   default: {
     scripts: [

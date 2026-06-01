@@ -1,31 +1,45 @@
-import { useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Autocomplete, TextField } from "@mui/material";
 import {
-  getAllScriptOptions,
+  loadAllScriptOptions,
   BUILTIN_SCRIPT_OPTIONS,
   ScriptOption,
   CommunityScriptOption,
 } from "../../../../../utils/botc-script-utils";
-import { ActiveScript } from "../../../../../jotai/botc-atom";
+import {
+  ActiveScript,
+  BuiltinScriptIndex,
+} from "../../../../../jotai/botc-atom";
 
 interface ScriptSearchProps {
   script: ActiveScript;
-  onBuiltinChange: (
-    index: import("../../../../../jotai/botc-atom").BuiltinScriptIndex,
-  ) => void;
+  onBuiltinChange: (index: BuiltinScriptIndex) => void;
   onCommunityChange: (option: CommunityScriptOption) => void;
 }
 
-/** Derive the currently-selected autocomplete value from state */
+/** Derive the currently-selected autocomplete value from state.
+ *
+ * For community scripts we construct the option directly from the stored script
+ * data so the input shows the correct label even before the async options load
+ * completes. */
 const getSelectedOption = (
   script: ActiveScript,
   allOptions: ScriptOption[],
 ): ScriptOption | null => {
   if (script.type === "community") {
+    // Prefer the loaded option (has the full list entry) but fall back to
+    // synthesising one from the stored script so the label is never blank.
+    const found = allOptions.find(
+      (o) => o.type === "community" && o.pk === script.pk,
+    ) as CommunityScriptOption | undefined;
     return (
-      (allOptions.find((o) => o.type === "community" && o.pk === script.pk) as
-        | CommunityScriptOption
-        | undefined) ?? null
+      found ?? {
+        type: "community",
+        label: script.title,
+        pk: script.pk,
+        author: script.author,
+        characters: script.characters,
+      }
     );
   }
   return (
@@ -41,7 +55,19 @@ const ScriptSearch = ({
   onBuiltinChange,
   onCommunityChange,
 }: ScriptSearchProps) => {
-  const allOptions = useMemo(() => getAllScriptOptions(), []);
+  // Start with just the 4 builtin options; community scripts load asynchronously
+  const [allOptions, setAllOptions] = useState<ScriptOption[]>([
+    ...BUILTIN_SCRIPT_OPTIONS,
+  ]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    void loadAllScriptOptions().then((options) => {
+      setAllOptions(options);
+      setLoading(false);
+    });
+  }, []);
+
   const selectedOption = getSelectedOption(script, allOptions);
 
   const handleChange = (
@@ -61,6 +87,7 @@ const ScriptSearch = ({
       options={allOptions}
       value={selectedOption}
       onChange={handleChange}
+      loading={loading}
       groupBy={(option) =>
         option.type === "builtin" ? "Official Scripts" : "Community Scripts"
       }

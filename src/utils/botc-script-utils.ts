@@ -1,11 +1,13 @@
 /**
- * Utilities for working with BotC community scripts sourced from botcscripts.com
- * via the botc-tools.xyz scripts.json.
+ * Utilities for working with BotC community scripts sourced from botcscripts.com.
+ *
+ * The scripts JSON is loaded lazily (dynamic import) so it stays out of the
+ * initial bundle. At 3+ MB it is large enough that deferring it noticeably
+ * improves first-load performance.
  */
 import { BotCScript } from "../constants/botc";
 import { BotCRole, BuiltinScriptIndex } from "../jotai/botc-atom";
 import { getRoleBySlug } from "../constants/botc-slug-map";
-import scriptsData from "../data/botc-scripts.json";
 
 /** A community script entry as stored in botc-scripts.json */
 export interface CommunityScript {
@@ -40,21 +42,30 @@ export const BUILTIN_SCRIPT_OPTIONS: BuiltinScriptOption[] = [
   { type: "builtin", label: "Other (All Roles)", index: 3 },
 ];
 
-/** Return all community scripts from the bundled JSON */
-export const getAllCommunityScripts = (): CommunityScript[] =>
-  (scriptsData as { scripts: CommunityScript[] }).scripts;
+/** Cached result so we only parse the JSON once per session */
+let cachedOptions: ScriptOption[] | null = null;
 
-/** Return all script options (builtin + community) for the autocomplete */
-export const getAllScriptOptions = (): ScriptOption[] => {
-  const communityOptions: CommunityScriptOption[] =
-    getAllCommunityScripts().map((s) => ({
-      type: "community",
-      label: s.title,
-      pk: s.pk,
-      author: s.author,
-      characters: s.characters,
-    }));
-  return [...BUILTIN_SCRIPT_OPTIONS, ...communityOptions];
+/**
+ * Lazily load all script options (builtin + community) for the autocomplete.
+ * The community scripts JSON is fetched as a separate bundle chunk on first call
+ * and cached in memory thereafter.
+ */
+export const loadAllScriptOptions = async (): Promise<ScriptOption[]> => {
+  if (cachedOptions) return cachedOptions;
+
+  const { default: data } = await import("../data/botc-scripts.json");
+  const { scripts } = data as { scripts: CommunityScript[] };
+
+  const communityOptions: CommunityScriptOption[] = scripts.map((s) => ({
+    type: "community",
+    label: s.title,
+    pk: s.pk,
+    author: s.author,
+    characters: s.characters,
+  }));
+
+  cachedOptions = [...BUILTIN_SCRIPT_OPTIONS, ...communityOptions];
+  return cachedOptions;
 };
 
 /**

@@ -1,8 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   buildScriptFromCharacters,
-  getAllCommunityScripts,
-  getAllScriptOptions,
+  loadAllScriptOptions,
   BUILTIN_SCRIPT_OPTIONS,
   getBuiltinScriptLabel,
 } from "./botc-script-utils";
@@ -25,38 +24,21 @@ describe("botc-script-utils", () => {
     });
   });
 
-  describe("getAllCommunityScripts", () => {
-    it("returns a non-empty array", () => {
-      const scripts = getAllCommunityScripts();
-      expect(scripts.length).toBeGreaterThan(0);
-    });
-
-    it("each script has required fields", () => {
-      const scripts = getAllCommunityScripts();
-      scripts.forEach((s) => {
-        expect(typeof s.pk).toBe("number");
-        expect(typeof s.title).toBe("string");
-        expect(typeof s.author).toBe("string");
-        expect(Array.isArray(s.characters)).toBe(true);
-      });
-    });
-  });
-
-  describe("getAllScriptOptions", () => {
-    it("starts with the 4 builtin options", () => {
-      const options = getAllScriptOptions();
+  describe("loadAllScriptOptions (async)", () => {
+    it("starts with the 4 builtin options", async () => {
+      const options = await loadAllScriptOptions();
       const builtins = options.filter((o) => o.type === "builtin");
       expect(builtins).toHaveLength(4);
     });
 
-    it("includes community script options", () => {
-      const options = getAllScriptOptions();
+    it("includes community script options", async () => {
+      const options = await loadAllScriptOptions();
       const community = options.filter((o) => o.type === "community");
       expect(community.length).toBeGreaterThan(0);
     });
 
-    it("community options have pk, author, and characters", () => {
-      const options = getAllScriptOptions();
+    it("community options have pk, author, and characters", async () => {
+      const options = await loadAllScriptOptions();
       const communityOptions = options.filter((o) => o.type === "community");
       communityOptions.forEach((o) => {
         if (o.type === "community") {
@@ -65,6 +47,12 @@ describe("botc-script-utils", () => {
           expect(Array.isArray(o.characters)).toBe(true);
         }
       });
+    });
+
+    it("returns the same cached array on subsequent calls", async () => {
+      const first = await loadAllScriptOptions();
+      const second = await loadAllScriptOptions();
+      expect(first).toBe(second); // reference equality — same object
     });
   });
 

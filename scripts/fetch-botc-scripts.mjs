@@ -28,11 +28,11 @@ function parseScript(raw) {
     .map((c) => c.id.toLowerCase())
     .filter((id) => id !== "_meta");
 
+  // score is intentionally omitted — we don't use it and excluding it keeps the file smaller
   return {
     pk: raw.pk,
     title: raw.name ?? "",
     author: raw.author ?? "",
-    score: raw.score ?? 0,
     characters,
   };
 }
