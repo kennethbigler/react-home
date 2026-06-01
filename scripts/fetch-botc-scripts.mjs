@@ -18,7 +18,7 @@ const OUTPUT_PATH = join(__dirname, "../src/data/botc-scripts.json");
 const API_BASE = "https://botcscripts.com/api/scripts/";
 
 /**
- * Parse a botcscripts.com ScriptInstanceResp into the shape we store.
+ * Parse a botcscripts.com ScriptInstanceResp into a raw script object.
  * Each script's content array contains rows like:
  *   { "id": "washerwoman" }        ← a character
  *   { "id": "_meta", "name": ..., "author": ... } ← metadata (skip)
@@ -35,6 +35,30 @@ function parseScript(raw) {
     author: raw.author ?? "",
     characters,
   };
+}
+
+/**
+ * Encode scripts into a compact format:
+ * - Build a sorted slug dictionary (slugs array, index = integer id)
+ * - Replace each script's characters string[] with an integer id[]
+ * - Shorten key names: pk→p, title→t, author→a, characters→c
+ *
+ * This cuts the file size by ~65% — the characters arrays dominate the payload
+ * and average slug length is ~8 chars vs ~2 chars for a 2-digit integer.
+ */
+function encodeCompact(scripts) {
+  const slugSet = new Set(scripts.flatMap((s) => s.characters));
+  const slugs = [...slugSet].sort();
+  const slugToId = Object.fromEntries(slugs.map((slug, i) => [slug, i]));
+
+  const encoded = scripts.map(({ pk, title, author, characters }) => ({
+    p: pk,
+    t: title,
+    a: author,
+    c: characters.map((slug) => slugToId[slug]),
+  }));
+
+  return { slugs, scripts: encoded };
 }
 
 async function fetchPage(page) {
@@ -85,9 +109,9 @@ console.log(`Fetching all BotC scripts from botcscripts.com...`);
 
 try {
   const scripts = await fetchAllScripts();
-  const output = { scripts };
+  const output = encodeCompact(scripts);
   writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 0), "utf-8");
-  console.log(`✓ Saved ${scripts.length} scripts to src/data/botc-scripts.json`);
+  console.log(`✓ Saved ${scripts.length} scripts to src/data/botc-scripts.json (${output.slugs.length} unique slugs)`);
   // Confirm SWPM is present
   const swpm = scripts.find((s) => s.pk === 6506);
   if (swpm) {

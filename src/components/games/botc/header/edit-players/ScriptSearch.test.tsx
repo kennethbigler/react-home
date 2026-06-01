@@ -2,23 +2,14 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import ScriptSearch from "./ScriptSearch";
 
-// Mock the scripts data to keep tests fast and deterministic
-// The JSON is lazy-loaded via dynamic import; Vitest intercepts it the same way
+// Mock the scripts data to keep tests fast and deterministic.
+// Uses the compact encoded format: slugs dict + {p,t,a,c} entries.
 vi.mock("../../../../../data/botc-scripts.json", () => ({
   default: {
+    slugs: ["chef", "drunk", "imp", "poisoner", "washerwoman"],
     scripts: [
-      {
-        pk: 6506,
-        title: "The Spy Who Pinged Me",
-        author: "Community",
-        characters: ["chef", "imp"],
-      },
-      {
-        pk: 1002,
-        title: "Another Script",
-        author: "AnotherAuthor",
-        characters: ["washerwoman", "drunk", "poisoner", "imp"],
-      },
+      { p: 6506, t: "The Spy Who Pinged Me", a: "Community", c: [0, 2] },
+      { p: 1002, t: "Another Script", a: "AnotherAuthor", c: [4, 1, 3, 2] },
     ],
   },
 }));

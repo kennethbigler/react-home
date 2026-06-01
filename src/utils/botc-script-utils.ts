@@ -2,14 +2,25 @@
  * Utilities for working with BotC community scripts sourced from botcscripts.com.
  *
  * The scripts JSON is loaded lazily (dynamic import) so it stays out of the
- * initial bundle. At 3+ MB it is large enough that deferring it noticeably
- * improves first-load performance.
+ * initial bundle. It is stored in a compact encoded format:
+ *   - `slugs`: sorted string[] dictionary (index = integer id)
+ *   - `scripts[].c`: character ids (integers) instead of slug strings
+ *   - Short key names: p=pk, t=title, a=author, c=characters
+ * Decoding happens once in loadAllScriptOptions and is cached.
  */
 import { BotCScript } from "../constants/botc";
 import { BotCRole, BaseScript, BaseScriptIndex } from "../jotai/botc-atom";
 import { getRoleBySlug } from "../constants/botc-slug-map";
 
-/** A community script entry as stored in botc-scripts.json */
+/** Compact encoded entry as stored in botc-scripts.json */
+interface EncodedScript {
+  p: number;
+  t: string;
+  a: string;
+  c: number[];
+}
+
+/** A community script entry after decoding */
 export interface CommunityScript {
   pk: number;
   title: string;
@@ -66,14 +77,17 @@ export const loadAllScriptOptions = async (): Promise<ScriptOption[]> => {
   if (cachedOptions) return cachedOptions;
 
   const { default: data } = await import("../data/botc-scripts.json");
-  const { scripts } = data as { scripts: CommunityScript[] };
+  const { slugs, scripts } = data as {
+    slugs: string[];
+    scripts: EncodedScript[];
+  };
 
   const communityOptions: CommunityScriptOption[] = scripts.map((s) => ({
     type: "community",
-    label: s.title,
-    pk: s.pk,
-    author: s.author,
-    characters: s.characters,
+    label: s.t,
+    pk: s.p,
+    author: s.a,
+    characters: s.c.map((id) => slugs[id]),
   }));
 
   cachedOptions = [...BASE_SCRIPT_OPTIONS, ...communityOptions];
