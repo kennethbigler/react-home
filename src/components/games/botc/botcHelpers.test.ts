@@ -151,6 +151,52 @@ describe("botcHelpers", () => {
       });
     });
 
+    it("adds evil outsider for community script when outsiders exist", () => {
+      // 8-player game has 1 outsider (playerDist[8] = "5, 1, 1, 1")
+      const resultTB = getLieSeries(8, 0, { type: "builtin", index: 0 });
+      const resultCommunity = getLieSeries(8, 0, {
+        type: "community",
+        pk: 1,
+        title: "T",
+        author: "A",
+        characters: [],
+      });
+
+      // TB doesn't add evil outsider; community does (when dist[1] > 0)
+      expect(resultCommunity[0].y).toBeGreaterThan(resultTB[0].y);
+    });
+
+    it("calculates TB drunk with outsiders present (8-player game)", () => {
+      // playerDist[8] = "5, 1, 1, 1" — 1 outsider, so Math.min(1,1) = 1 drunk
+      const result = getLieSeries(8, 0, { type: "builtin", index: 0 });
+
+      expect(result).toHaveLength(4);
+      result.forEach((item) => {
+        expect(item.y).toBeGreaterThanOrEqual(0);
+      });
+    });
+
+    it("calculates S&V drunk with outsiders and minions present (9-player game)", () => {
+      // playerDist[9] = "5, 2, 1, 1" — 2 outsiders, 1 minion
+      // S&V: Math.min(2, 1) = 1 outsider drunk, Math.min(1, 2) = 1 minion drunk
+      const result = getLieSeries(9, 0, { type: "builtin", index: 1 });
+
+      expect(result).toHaveLength(4);
+      result.forEach((item) => {
+        expect(item.y).toBeGreaterThanOrEqual(0);
+      });
+    });
+
+    it("calculates Other script drunk with outsiders present (8-player game)", () => {
+      // playerDist[8] = "5, 1, 1, 1" — Other: Math.min(1,2)=1 outsider drunk
+      const result = getLieSeries(8, 0, { type: "builtin", index: 3 });
+
+      expect(result).toHaveLength(4);
+      result.forEach((item) => {
+        expect(item.y).toBeGreaterThanOrEqual(0);
+      });
+    });
+
     it("calculates correct totals (sum equals players + travelers)", () => {
       const numPlayers = 10;
       const numTravelers = 2;

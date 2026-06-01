@@ -1,5 +1,11 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import ScriptSearch from "./ScriptSearch";
 
 // Mock the scripts data to keep tests fast and deterministic
@@ -120,5 +126,90 @@ describe("ScriptSearch", () => {
     );
 
     expect(screen.getByLabelText("Script")).toBeInTheDocument();
+  });
+
+  it("loads community scripts asynchronously and updates options", async () => {
+    render(
+      <ScriptSearch
+        script={{ type: "builtin", index: 0 }}
+        onBuiltinChange={noopBuiltin}
+        onCommunityChange={noopCommunity}
+      />,
+    );
+
+    // Flush the async loadAllScriptOptions promise
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    // Input still shows the correct builtin label after options load
+    const input = screen.getByRole("combobox") as HTMLInputElement;
+    expect(input.value).toBe("Trouble Brewing");
+  });
+
+  it("calls onBuiltinChange when a builtin option is selected", async () => {
+    const onBuiltinChange = vi.fn();
+
+    render(
+      <ScriptSearch
+        script={{ type: "builtin", index: 0 }}
+        onBuiltinChange={onBuiltinChange}
+        onCommunityChange={noopCommunity}
+      />,
+    );
+
+    // Wait for async options load
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    // Open the dropdown
+    const input = screen.getByRole("combobox");
+    fireEvent.click(input);
+
+    // Wait for the listbox to appear and find a builtin option
+    await waitFor(() => {
+      expect(screen.getByRole("listbox")).toBeInTheDocument();
+    });
+
+    const svOption = screen.getByRole("option", { name: /Sects and Violets/ });
+    fireEvent.click(svOption);
+
+    expect(onBuiltinChange).toHaveBeenCalledWith(1);
+  });
+
+  it("calls onCommunityChange when a community option is selected", async () => {
+    const onCommunityChange = vi.fn();
+
+    render(
+      <ScriptSearch
+        script={{ type: "builtin", index: 0 }}
+        onBuiltinChange={noopBuiltin}
+        onCommunityChange={onCommunityChange}
+      />,
+    );
+
+    // Wait for async options load
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    // Open the dropdown
+    const input = screen.getByRole("combobox");
+    fireEvent.click(input);
+
+    await waitFor(() => {
+      expect(screen.getByRole("listbox")).toBeInTheDocument();
+    });
+
+    // Find the community script option
+    const spyOption = screen.getByRole("option", {
+      name: /The Spy Who Pinged Me/,
+    });
+    fireEvent.click(spyOption);
+
+    expect(onCommunityChange).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "community", pk: 6506 }),
+    );
   });
 });
