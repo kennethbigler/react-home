@@ -163,11 +163,10 @@ describe("ScriptSearch", () => {
       await Promise.resolve();
     });
 
-    // Open the dropdown
-    const input = screen.getByRole("combobox");
-    fireEvent.click(input);
+    // MUI Autocomplete opens via mouseDown on the popup indicator button
+    fireEvent.mouseDown(screen.getByTitle("Open"));
 
-    // Wait for the listbox to appear and find a builtin option
+    // Wait for the listbox to appear
     await waitFor(() => {
       expect(screen.getByRole("listbox")).toBeInTheDocument();
     });
@@ -194,9 +193,8 @@ describe("ScriptSearch", () => {
       await Promise.resolve();
     });
 
-    // Open the dropdown
-    const input = screen.getByRole("combobox");
-    fireEvent.click(input);
+    // MUI Autocomplete opens via mouseDown on the popup indicator button
+    fireEvent.mouseDown(screen.getByTitle("Open"));
 
     await waitFor(() => {
       expect(screen.getByRole("listbox")).toBeInTheDocument();
