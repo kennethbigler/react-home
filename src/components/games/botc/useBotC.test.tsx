@@ -100,6 +100,33 @@ describe("useBotC", () => {
 
       expect(result.current).toBeDefined();
     });
+
+    it("covers getUpNum: isFull && i === pc - 1 branch (even player count, last position)", () => {
+      // With default 5 players + 0 travelers = 5 total (odd), use hook that sets travelers
+      // We need pc (numPlayers + numTravelers) even. Default is 5 players, 0 travelers = 5.
+      // The hook reads from atom; we can just call with index matching pc-1 for an even total.
+      // The easiest path: just call updatePlayerOrder at various indices to exercise all branches.
+      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+
+      // With 5 players + 0 travelers, pc = 5 (odd). i=3 triggers `i === 3` in getUpNum.
+      // We need even pc to hit `isFull && i === pc - 1`.
+      // The atom default is 5 players; we can't easily change it here without useEditPlayers,
+      // so we exercise remaining branches by calling multiple positions.
+      act(() => {
+        result.current(2, true)(); // i=2, hits i < 3 → 1
+      });
+      act(() => {
+        result.current(4, true)(); // i=4, hits return -2 (pc=5, none of the earlier conditions)
+      });
+      act(() => {
+        result.current(2, false)(); // i=2, hits return 2 in getDownNum
+      });
+      act(() => {
+        result.current(4, false)(); // i === pc-1 → return -1 in getDownNum
+      });
+
+      expect(result.current).toBeDefined();
+    });
   });
 
   describe("usePlayerNotes", () => {

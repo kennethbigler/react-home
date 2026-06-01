@@ -146,5 +146,12 @@ describe("botc-script-utils", () => {
     it("returns correct label for index 3", () => {
       expect(getBuiltinScriptLabel(3)).toBe("Other (All Roles)");
     });
+
+    it("returns 'Unknown Script' for an out-of-range index", () => {
+      // Cast to bypass type safety — tests the ?? fallback branch
+      expect(getBuiltinScriptLabel(99 as Parameters<typeof getBuiltinScriptLabel>[0])).toBe(
+        "Unknown Script",
+      );
+    });
   });
 });

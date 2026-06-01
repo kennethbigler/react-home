@@ -166,6 +166,23 @@ describe("botcHelpers", () => {
       expect(resultCommunity[0].y).toBeGreaterThan(resultTB[0].y);
     });
 
+    it("adds evil outsider for community script with 1-2 travelers", () => {
+      // Covers line 29 branch: community script + numTravelers in (0,3) + outsiders > 0
+      // 8-player game: 1 outsider; 1 traveler hits the `else if (numTravelers > 0)` path
+      const result = getLieSeries(8, 1, {
+        type: "community",
+        pk: 1,
+        title: "T",
+        author: "A",
+        characters: [],
+      });
+
+      expect(result).toHaveLength(4);
+      result.forEach((item) => {
+        expect(item.y).toBeGreaterThanOrEqual(0);
+      });
+    });
+
     it("calculates TB drunk with outsiders present (8-player game)", () => {
       // playerDist[8] = "5, 1, 1, 1" — 1 outsider, so Math.min(1,1) = 1 drunk
       const result = getLieSeries(8, 0, { type: "builtin", index: 0 });
