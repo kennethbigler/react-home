@@ -13,9 +13,6 @@ vi.mock("../../../constants/botc", () => ({
 }));
 
 // Mock the image import
-vi.mock("../../../../images/botc-qr-code.png", () => ({
-  default: "mocked-qr-code.png",
-}));
 
 describe("BotC Header", () => {
   const defaultProps = {
@@ -71,9 +68,8 @@ describe("BotC Header", () => {
     const shareButton = screen.getByLabelText("share");
     fireEvent.click(shareButton);
 
-    const qrCode = screen.getByAltText("sharable QR code");
+    const qrCode = document.querySelector("svg");
     expect(qrCode).toBeInTheDocument();
-    expect(qrCode).toHaveAttribute("src", "mocked-qr-code.png");
   });
 
   it("should handle different player counts", () => {

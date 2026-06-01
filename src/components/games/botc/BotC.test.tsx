@@ -1,8 +1,20 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import { Provider } from "jotai";
 import { useHydrateAtoms } from "jotai/utils";
 import BotC from ".";
 import themeAtom, { lightTheme } from "../../../jotai/theme-atom";
+import { resetScriptOptionsCache } from "../../../utils/botc-script-utils";
+
+vi.mock("../../../data/botc-scripts.json", () => ({
+  default: {
+    slugs: ["chef", "monk"],
+    scripts: [{ p: 42, t: "Test Script", a: "Author", c: [0, 1] }],
+  },
+}));
+
+beforeEach(() => {
+  resetScriptOptionsCache();
+});
 
 describe("games | BotC", () => {
   it("renders as expected", () => {
@@ -139,5 +151,115 @@ describe("games | BotC", () => {
     const kenButton = screen.getAllByText("Ken")[0];
     // expect(kenButton).toHaveClass(".MuiButton-textPrimary");
     fireEvent.click(kenButton);
+  });
+});
+
+describe("games | BotC — URL hydration", () => {
+  const originalHash = window.location.hash;
+  const originalReplaceState = window.history.replaceState.bind(window.history);
+
+  afterEach(() => {
+    window.history.replaceState(null, "", window.location.pathname);
+    Object.defineProperty(window, "location", {
+      value: { ...window.location, hash: originalHash },
+      configurable: true,
+    });
+    window.history.replaceState = originalReplaceState;
+    resetScriptOptionsCache();
+  });
+
+  it("hydrates state from valid share params in the URL hash", async () => {
+    Object.defineProperty(window, "location", {
+      value: {
+        ...window.location,
+        hash: "#/games/botc?script=base%3A0&players=3&names=Alice_Bob_Carol",
+      },
+      configurable: true,
+    });
+
+    await act(async () => {
+      render(
+        <Provider>
+          <BotC />
+        </Provider>,
+      );
+    });
+
+    expect(screen.getAllByText("Alice").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Bob").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Carol").length).toBeGreaterThan(0);
+  });
+
+  it("strips share params from the URL after hydration", async () => {
+    Object.defineProperty(window, "location", {
+      value: {
+        ...window.location,
+        hash: "#/games/botc?script=base%3A0&players=2&names=Alice_Bob",
+      },
+      configurable: true,
+    });
+
+    const replaceSpy = vi.fn();
+    window.history.replaceState = replaceSpy;
+
+    await act(async () => {
+      render(
+        <Provider>
+          <BotC />
+        </Provider>,
+      );
+    });
+
+    expect(replaceSpy).toHaveBeenCalledWith(
+      null,
+      "",
+      expect.stringContaining("#/games/botc"),
+    );
+    const calledWith = replaceSpy.mock.calls[0][2] as string;
+    expect(calledWith).not.toContain("?");
+  });
+
+  it("does nothing when there are no share params", async () => {
+    Object.defineProperty(window, "location", {
+      value: { ...window.location, hash: "#/games/botc" },
+      configurable: true,
+    });
+
+    const replaceSpy = vi.fn();
+    window.history.replaceState = replaceSpy;
+
+    await act(async () => {
+      render(
+        <Provider>
+          <BotC />
+        </Provider>,
+      );
+    });
+
+    expect(replaceSpy).not.toHaveBeenCalled();
+    expect(screen.getByText("BotC")).toBeInTheDocument();
+  });
+
+  it("does nothing when share params are invalid", async () => {
+    Object.defineProperty(window, "location", {
+      value: {
+        ...window.location,
+        hash: "#/games/botc?script=garbage&players=abc&names=x",
+      },
+      configurable: true,
+    });
+
+    const replaceSpy = vi.fn();
+    window.history.replaceState = replaceSpy;
+
+    await act(async () => {
+      render(
+        <Provider>
+          <BotC />
+        </Provider>,
+      );
+    });
+
+    expect(replaceSpy).not.toHaveBeenCalled();
   });
 });
