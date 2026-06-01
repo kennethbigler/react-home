@@ -3,10 +3,6 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import { Provider } from "jotai";
 import Controls from "./Controls";
 
-vi.mock("../../../../images/botc-qr-code.png", () => ({
-  default: "mocked-qr-code.png",
-}));
-
 vi.mock("../../../../data/botc-scripts.json", () => ({
   default: {
     scripts: [],

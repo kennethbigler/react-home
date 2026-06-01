@@ -1,25 +1,29 @@
-import { CSSProperties, useState } from "react";
+import { useMemo, useState } from "react";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import MobileScreenShareIcon from "@mui/icons-material/MobileScreenShare";
 import SettingsIcon from "@mui/icons-material/Settings";
-import botcQRCode from "../../../../images/botc-qr-code.png";
+import { QRCodeSVG } from "qrcode.react";
+import { useAtomValue } from "jotai";
 import EditPlayers from "./edit-players/EditPlayers";
 import InfoPopup from "../../../common/info-popover/InfoPopup";
 import Tracker from "./Tracker";
 import { Alert, Grid, Snackbar } from "@mui/material";
+import botcAtom from "../../../../jotai/botc-atom";
+import { buildShareUrl } from "../../../../utils/botc-share-utils";
 
 interface ControlsProps {
   numPlayers: number;
   numTravelers: number;
 }
 
-const qrCodeStyle: CSSProperties = {
-  display: "block",
-  margin: "auto",
-};
-
 const Controls = ({ numPlayers, numTravelers }: ControlsProps) => {
   const [hasToast, setHasToast] = useState(false);
+  const { script, botcPlayers } = useAtomValue(botcAtom);
+
+  const shareUrl = useMemo(
+    () => buildShareUrl(script, numPlayers, numTravelers, botcPlayers),
+    [script, numPlayers, numTravelers, botcPlayers],
+  );
 
   return (
     <Grid size={12}>
@@ -62,7 +66,11 @@ const Controls = ({ numPlayers, numTravelers }: ControlsProps) => {
           buttonText={<MobileScreenShareIcon aria-label="share" />}
           buttonVariant="text"
         >
-          <img src={botcQRCode} alt="sharable QR code" style={qrCodeStyle} />
+          <QRCodeSVG
+            value={shareUrl}
+            size={200}
+            style={{ display: "block", margin: "auto" }}
+          />
         </InfoPopup>
       </div>
     </Grid>
