@@ -21,8 +21,12 @@ function gitSetup() {
   echo -e "Finish with a:\ngit push\n"
 }
 
-echo "Fetching latest BotC community scripts..."
-node scripts/fetch-botc-scripts.mjs || throwError "fetch-botc-scripts"
+if [ "${SKIP_BOTC_FETCH}" != "1" ]; then
+  echo "Fetching latest BotC community scripts..."
+  node scripts/fetch-botc-scripts.mjs || throwError "fetch-botc-scripts"
+else
+  echo "Skipping BotC community scripts fetch"
+fi
 echo $LINE
 buildApp false
 echo $LINE

@@ -23,6 +23,7 @@
     "test:no-watch": "vitest run",
     "test:coverage": "NODE_V8_COVERAGE=codecov_reports vitest run --coverage",
     "deploy": "./scripts/deploy.sh",
+    "deploy:no-fetch": "SKIP_BOTC_FETCH=1 ./scripts/deploy.sh",
     "analyze": "./scripts/analyze.sh",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --report-unused-disable-directives",
     "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet",
