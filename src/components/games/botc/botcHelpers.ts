@@ -17,7 +17,8 @@ export const getLieSeries = (
 ) => {
   const dist = playerDist[numPlayers].split(",").map((d) => parseInt(d, 10));
 
-  let numEvil: number = dist[2] + dist[3];
+  const [_townsfolk, outsiders, minions, demons] = dist;
+  let numEvil: number = minions + demons;
   if (numTravelers >= 3) {
     // Evil Travelers
     numEvil += 2;
@@ -25,30 +26,35 @@ export const getLieSeries = (
     // Evil Traveler
     numEvil += 1;
   }
-  if ((script.type === "community" || script.index !== 0) && dist[1] > 0) {
+  if ((script.type === "community" || script.index !== 0) && outsiders > 0) {
     // Evil Outsider
     numEvil += 1;
   }
 
   let numDrunk: number = numTravelers >= 4 ? 1 : 0;
   if (script.type === "community") {
-    numDrunk += Math.min(dist[1], 2); // Outsider 🍺😡
-    numDrunk += Math.min(dist[2], 2); // Minion 🧪😡
+    numDrunk += Math.min(outsiders, 2); // Outsider 🍺😡
+    numDrunk += Math.min(minions, 2); // Minion 🧪😡
   } else {
     switch (script.index) {
       case 0:
         // TB
-        numDrunk += Math.min(dist[1], 1); // Outsider 🍺
-        numDrunk += Math.min(dist[2], 1); // Minion 🧪
+        numDrunk += Math.min(outsiders, 1); // Outsider 🍺
+        numDrunk += Math.min(minions, 1); // Minion 🧪
         break;
       case 1:
         // S&V
-        numDrunk += Math.min(dist[1], 1); // Outsider 🍺😡
-        numDrunk += Math.min(dist[2], 2); // Minion 🧪😡
+        numDrunk += Math.min(outsiders, 1); // Outsider 🍺😡
+        numDrunk += Math.min(minions, 2); // Minion 🧪😡
+        break;
+      case 2:
+        // BMR
+        numEvil += Math.min(outsiders, 1); // Lunatic/Goon
+        numEvil += Math.min(minions, 1); // Godfather adds outsider
         break;
       case 3: // Other
-        numDrunk += Math.min(dist[1], 2); // Outsider 🍺😡
-        numDrunk += Math.min(dist[2], 2); // Minion 🧪😡
+        numDrunk += Math.min(outsiders, 2); // Outsider 🍺😡
+        numDrunk += Math.min(minions, 2); // Minion 🧪😡
         break;
       default: // BMR (case 2) — no additional drunk
         break;
