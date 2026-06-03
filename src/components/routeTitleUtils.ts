@@ -1,3 +1,6 @@
+import { gameRouteLabels } from "./games/menu-items";
+import { resumeRouteLabels } from "./resume/menu-items";
+
 export const BASE_TITLE = "Ken Bigler's Website";
 
 export const toTitleCase = (str: string) => {
@@ -15,9 +18,12 @@ export const getPageTitle = (pathname: string): string => {
   if (!segment) {
     page = BASE_TITLE;
   } else if (segment === "games") {
-    page = sub ? `${toTitleCase(sub.replace(/-/g, " "))} | Game` : "Games";
+    page = sub
+      ? `${gameRouteLabels.get(sub) || toTitleCase(sub.replace(/-/g, " "))} | Game`
+      : "Games";
   } else {
-    page = toTitleCase(segment.replace(/-/g, " "));
+    page =
+      resumeRouteLabels.get(segment) || toTitleCase(segment.replace(/-/g, " "));
   }
   return page === BASE_TITLE ? BASE_TITLE : `${page} | ${BASE_TITLE}`;
 };

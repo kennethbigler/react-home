@@ -1,10 +1,18 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { vi } from "vitest";
+import { MemoryRouter } from "react-router-dom";
 import Menu from "./Menu";
 
 describe("resume | Menu", () => {
+  const renderMenu = (onItemClick?: (loc: string) => void) =>
+    render(
+      <MemoryRouter>
+        <Menu onItemClick={onItemClick} />
+      </MemoryRouter>,
+    );
+
   it("renders as expected", () => {
-    render(<Menu />);
+    renderMenu();
 
     expect(screen.getByText("Summary")).toBeInTheDocument();
     expect(screen.getByText("Work")).toBeInTheDocument();
@@ -20,31 +28,22 @@ describe("resume | Menu", () => {
 
   it("links to internal pages", () => {
     const handleItemClick = vi.fn();
-    render(<Menu onItemClick={handleItemClick} />);
+    renderMenu(handleItemClick);
 
-    fireEvent.click(screen.getByText("Resume"));
+    const resumeLink = screen.getByRole("menuitem", { name: "Resume" });
+    expect(resumeLink).toHaveAttribute("href", "/resume");
+    fireEvent.click(resumeLink);
     expect(handleItemClick).toHaveBeenCalledWith("/resume");
   });
 
   it("links to external sites", () => {
-    const jsdomOpen = window.open;
-    const windowOpen = vi.fn();
-    window.open = windowOpen;
+    renderMenu();
 
-    render(<Menu />);
-
-    fireEvent.click(screen.getByText("GitHub"));
-    expect(windowOpen).toHaveBeenCalledWith(
-      "https://github.com/kennethbigler/react-home",
-    );
-
-    fireEvent.click(screen.getByText("LinkedIn"));
-    expect(windowOpen).toHaveBeenCalledWith(
-      "https://www.linkedin.com/in/kennethbigler",
-    );
-
-    expect(windowOpen).toHaveBeenCalledTimes(2);
-
-    window.alert = jsdomOpen;
+    expect(
+      screen.getByRole("menuitem", { name: "GitHub (opens in new tab)" }),
+    ).toHaveAttribute("href", "https://github.com/kennethbigler/react-home");
+    expect(
+      screen.getByRole("menuitem", { name: "LinkedIn (opens in new tab)" }),
+    ).toHaveAttribute("href", "https://www.linkedin.com/in/kennethbigler");
   });
 });

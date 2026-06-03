@@ -1,10 +1,18 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { vi } from "vitest";
+import { MemoryRouter } from "react-router-dom";
 import Menu from "../Menu";
 
 describe("games | Menu", () => {
+  const renderMenu = (onItemClick?: (loc: string) => void) =>
+    render(
+      <MemoryRouter>
+        <Menu onItemClick={onItemClick} />
+      </MemoryRouter>,
+    );
+
   it("renders as expected", () => {
-    render(<Menu />);
+    renderMenu();
 
     expect(screen.getByText("Back to Resume")).toBeInTheDocument();
     expect(screen.getByText("Home - Games")).toBeInTheDocument();
@@ -28,17 +36,21 @@ describe("games | Menu", () => {
 
   it("links to internal pages", () => {
     const handleItemClick = vi.fn();
-    render(<Menu onItemClick={handleItemClick} />);
+    renderMenu(handleItemClick);
 
-    fireEvent.click(screen.getByText("BlackJack"));
+    const blackjackLink = screen.getByRole("menuitem", { name: "BlackJack" });
+    expect(blackjackLink).toHaveAttribute("href", "/games/blackjack");
+    fireEvent.click(blackjackLink);
     expect(handleItemClick).toHaveBeenCalledWith("/games/blackjack");
   });
 
   it("links back to the resume half", () => {
     const handleItemClick = vi.fn();
-    render(<Menu onItemClick={handleItemClick} />);
+    renderMenu(handleItemClick);
 
-    fireEvent.click(screen.getByText("Back to Resume"));
+    const resumeLink = screen.getByRole("menuitem", { name: "Back to Resume" });
+    expect(resumeLink).toHaveAttribute("href", "/");
+    fireEvent.click(resumeLink);
     expect(handleItemClick).toHaveBeenCalledWith("/");
   });
 });

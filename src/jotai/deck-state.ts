@@ -71,20 +71,13 @@ const newDeck: DBCard[] = [
 /** sort by card weight */
 export const rankSort = (a: DBCard, b: DBCard): number => a.weight - b.weight;
 
-/** randomize order of the cards O(N + M) */
+/** randomize order of the cards with Fisher-Yates */
 export const shuffle = (): DBCard[] => {
-  const shuffledDeck: DBCard[] = [];
-  // create immutable copy of deck
-  newDeck.forEach((card) => shuffledDeck.push(card));
-  // shuffle the cards
-  for (let i = 0; i < 100; i += 1) {
-    const j = Math.floor(Math.random() * shuffledDeck.length);
-    const k = Math.floor(Math.random() * shuffledDeck.length);
-    const temp = shuffledDeck[j];
-    shuffledDeck[j] = shuffledDeck[k];
-    shuffledDeck[k] = temp;
+  const shuffledDeck = [...newDeck];
+  for (let i = shuffledDeck.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledDeck[i], shuffledDeck[j]] = [shuffledDeck[j], shuffledDeck[i]];
   }
-  // update deck state
   return shuffledDeck;
 };
 

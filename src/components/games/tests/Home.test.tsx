@@ -1,9 +1,17 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import Home from "../Home";
 
 describe("games | Home", () => {
+  const renderHome = (onItemClick?: (loc: string) => void) =>
+    render(
+      <MemoryRouter>
+        <Home onItemClick={onItemClick} />
+      </MemoryRouter>,
+    );
+
   it("renders as expected", () => {
-    render(<Home />);
+    renderHome();
 
     expect(screen.getAllByText("Games")).toHaveLength(2);
     expect(
@@ -14,14 +22,15 @@ describe("games | Home", () => {
 
   it("calls onClick handler when menu item is clicked", () => {
     const mockOnClick = vi.fn();
-    render(<Home onItemClick={mockOnClick} />);
+    renderHome(mockOnClick);
 
     // Find cards/buttons
-    const buttons = screen.getAllByRole("button");
+    const links = screen.getAllByRole("link", { name: /open/i });
 
     // Click one of the game cards
-    if (buttons.length > 0) {
-      fireEvent.click(buttons[0]);
+    if (links.length > 0) {
+      expect(links[0]).toHaveAttribute("href");
+      fireEvent.click(links[0]);
       expect(mockOnClick).toHaveBeenCalled();
     }
   });

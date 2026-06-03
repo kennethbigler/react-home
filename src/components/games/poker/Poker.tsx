@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import GameTable from "../game-table";
 import usePoker from "./usePoker";
 import Header from "./Header";
@@ -16,7 +16,10 @@ const Poker = memo(() => {
     turn,
   } = usePoker();
 
-  checkUpdate();
+  useEffect(() => {
+    checkUpdate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [turn.player, turn.hand, hideHands, gameOver]);
 
   return (
     <>

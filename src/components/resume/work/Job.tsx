@@ -50,7 +50,13 @@ const Job = ({ job, fullWidth, triple }: JobProps) => (
       </Grid>
       {job.src && (
         <Grid size={{ xs: 12, sm: 3 }}>
-          <img alt={job.alt} src={job.src} width="100%" style={imgStyle} />
+          <img
+            alt={job.alt}
+            src={job.src}
+            loading="lazy"
+            decoding="async"
+            style={{ ...imgStyle, width: "100%", height: "auto" }}
+          />
         </Grid>
       )}
     </ExpandableCard>

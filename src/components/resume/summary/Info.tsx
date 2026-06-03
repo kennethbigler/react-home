@@ -8,12 +8,15 @@ import {
   TableRow,
 } from "@mui/material";
 import ExpandableCard from "../../common/expandable-card";
-import { work, Job } from "../../../constants/work";
+import type { Job } from "../../../constants/work";
+import { summaryJob } from "../../../constants/summary";
 
 const imageStyles: CSSProperties = {
   display: "block",
+  height: "auto",
   margin: "auto",
   marginTop: "40px",
+  width: "95%",
 };
 
 const getJob = (job: Job): string => {
@@ -28,14 +31,13 @@ const Info = memo(() => (
         <img
           alt="Kenneth Bigler"
           src="/ken.webp"
-          width="95%"
           fetchPriority="high"
           style={imageStyles}
         />
       </Link>
     </Grid>
     <Grid size={{ xs: 12, md: 6, xl: 8, xxl: 9, xxxl: 10 }}>
-      <ExpandableCard title={getJob(work[0])}>
+      <ExpandableCard title={getJob(summaryJob)}>
         <Table aria-label="general information about Ken Bigler">
           <TableBody>
             <TableRow>

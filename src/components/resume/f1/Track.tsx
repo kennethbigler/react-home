@@ -58,16 +58,34 @@ const Track = memo(
         }
         sx={gridStyles}
       >
-        <Typography variant={isExpanded ? "h3" : "h5"} sx={headingStyles}>
+        <Typography
+          component="h2"
+          variant={isExpanded ? "h3" : "h5"}
+          sx={headingStyles}
+        >
           {circuitName}
         </Typography>
         {circuitSubName && (
-          <Typography variant={isExpanded ? "h4" : "body2"} sx={headingStyles}>
+          <Typography
+            component="h3"
+            variant={isExpanded ? "h4" : "body2"}
+            sx={headingStyles}
+          >
             {circuitSubName}
           </Typography>
         )}
-        <IconButton onClick={onClick(circuitName)}>
-          <img src={imgSrc} alt={`${circuitName} track layout`} width="100%" />
+        <IconButton
+          aria-expanded={isExpanded}
+          aria-label={`${isExpanded ? "Collapse" : "Expand"} ${circuitName} circuit details`}
+          onClick={onClick(circuitName)}
+        >
+          <img
+            src={imgSrc}
+            alt={`${circuitName} track layout`}
+            loading="lazy"
+            decoding="async"
+            style={{ width: "100%", height: "auto" }}
+          />
         </IconButton>
         <Grid container>
           <Grid size={6}>

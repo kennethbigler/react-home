@@ -4,3 +4,18 @@
   align-items: center;
   width: 100%;
 }
+
+.skip-link {
+  background: white;
+  color: black;
+  left: 0.5rem;
+  padding: 0.5rem;
+  position: fixed;
+  top: 0.5rem;
+  transform: translateY(-200%);
+  z-index: 2000;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
