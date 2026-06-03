@@ -48,6 +48,30 @@
     <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
     <!-- Google tag (gtag.js) - async script only in head; config deferred to end of body -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0F5M2TLM6"></script>
+    <!-- Restore GitHub Pages SPA fallback URLs and legacy hash routes before React Router mounts. -->
+    <script>
+      (function () {
+        var location = window.location;
+        if (location.search[1] === '/') {
+          var decoded = location.search
+            .slice(1)
+            .split('&')
+            .map(function (segment) {
+              return segment.replace(/~and~/g, '&');
+            })
+            .join('?');
+          window.history.replaceState(
+            null,
+            '',
+            location.pathname.slice(0, -1) + decoded + location.hash
+          );
+        }
+
+        if (location.hash.indexOf('#/') === 0) {
+          window.history.replaceState(null, '', location.hash.slice(1));
+        }
+      })();
+    </script>
     <!-- ___ ___                       _____
         /  //  /                    __/ /_ /
        /  //  /___  ____  ____  ___/_  __//__
@@ -61,10 +85,10 @@
      /  /__/  / / /_/ / / ___/  /
     /________/_/\__  /_/\___/__/
                /____/           -->
-    <script type="module" crossorigin src="/assets/index-8Nz-HZiP.js"></script>
+    <script type="module" crossorigin src="/assets/index-qKm3Z_Q4.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime-Bh1tDfsg.js">
     <link rel="modulepreload" crossorigin href="/assets/mui-vendor-BHIs_1_I.js">
-    <link rel="modulepreload" crossorigin href="/assets/react-vendor-DIr_VuCw.js">
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-CLmtXYKE.js">
     <link rel="stylesheet" href="/assets/index-DlyoXXGf.css" crossorigin media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="/assets/index-DlyoXXGf.css" crossorigin></noscript>
   </head>
 

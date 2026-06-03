@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Ken Bigler's Website</title>
+    <script>
+      (function () {
+        var pathSegmentsToKeep = 0;
+        var location = window.location;
+        var path = location.pathname
+          .slice(1)
+          .split('/')
+          .slice(pathSegmentsToKeep)
+          .join('/')
+          .replace(/&/g, '~and~');
+        var search = location.search
+          ? '&' + location.search.slice(1).replace(/&/g, '~and~')
+          : '';
+
+        location.replace(
+          location.protocol +
+            '//' +
+            location.hostname +
+            (location.port ? ':' + location.port : '') +
+            '/?/' +
+            path +
+            search +
+            location.hash
+        );
+      })();
+    </script>
+  </head>
+  <body>
+    <noscript>
+      This site needs JavaScript to load deep links on GitHub Pages.
+      <a href="/">Go to the home page</a>.
+    </noscript>
+  </body>
+</html>
