@@ -34,6 +34,7 @@ describe("buildShareUrl", () => {
       makePlayers(["Alice", "Bob", "Carol", "unused"]),
     );
 
+    expect(url).toMatch(/^https:\/\/www\.kennethbigler\.com\/games\/botc\?/);
     expect(url).toContain("script=base%3A0");
     expect(url).toContain("players=3");
     expect(url).toContain("names=Alice_Bob_Carol");

@@ -11,14 +11,24 @@ import botcAtom, {
 } from "../../../jotai/botc-atom";
 import { parseShareParams } from "../../../utils/botc-share-utils";
 
+const getShareSearch = () => {
+  if (window.location.search) return window.location.search;
+
+  const hashQueryIndex = window.location.hash.indexOf("?");
+  return hashQueryIndex >= 0 ? window.location.hash.slice(hashQueryIndex) : "";
+};
+
+const getCleanShareUrl = () => {
+  const cleanHash = window.location.hash.split("?")[0];
+  return `${window.location.pathname}${cleanHash}`;
+};
+
 const BotC = memo(() => {
   const { numPlayers, numTravelers, isText, script } = useBotC();
   const setState = useSetAtom(botcAtom);
 
   useEffect(() => {
-    const search = window.location.hash.includes("?")
-      ? window.location.hash.slice(window.location.hash.indexOf("?"))
-      : "";
+    const search = getShareSearch();
     if (!search) return;
 
     void parseShareParams(search).then((shared) => {
@@ -38,12 +48,7 @@ const BotC = memo(() => {
         botcPlayers: newPlayers,
       });
       // Remove share params from URL without reloading
-      const cleanHash = window.location.hash.split("?")[0];
-      window.history.replaceState(
-        null,
-        "",
-        window.location.pathname + cleanHash,
-      );
+      window.history.replaceState(null, "", getCleanShareUrl());
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

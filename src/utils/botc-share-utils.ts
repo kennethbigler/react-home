@@ -13,7 +13,7 @@ import {
   loadAllScriptOptions,
 } from "./botc-script-utils";
 
-const BASE_URL = "https://www.kennethbigler.com/#/games/botc";
+const BASE_URL = "https://www.kennethbigler.com/games/botc";
 const NAMES_DELIMITER = "_";
 
 export interface SharedState {
