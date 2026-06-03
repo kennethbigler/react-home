@@ -9,6 +9,7 @@ import { Typography } from "@mui/material";
 import themeAtom from "../../../../jotai/theme-atom";
 import countries, { numCountries } from "../../../../constants/travel";
 import { blue } from "@mui/material/colors";
+import LoadingSpinner from "../../../common/loading-spinner";
 
 setHighcharts(Highcharts);
 
@@ -63,7 +64,7 @@ const WorldMap = memo(() => {
     );
   }
   if (!topology) {
-    return <Typography variant="h3">Loading World Map...</Typography>;
+    return <LoadingSpinner />;
   }
 
   return (

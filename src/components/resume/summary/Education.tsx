@@ -1,7 +1,7 @@
 import { memo, ReactElement } from "react";
 import ExpandableCard from "../../common/expandable-card";
 import type { School } from "../../../constants/classes";
-import { summarySchools } from "../../../constants/summary";
+import { summarySchools } from "../../../constants/education-summary";
 import EducationSeg from "./EducationSeg";
 
 const Education = memo(() => (

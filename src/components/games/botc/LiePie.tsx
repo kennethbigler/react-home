@@ -1,21 +1,13 @@
 import { memo, useMemo } from "react";
 import { useAtomValue } from "jotai";
 import { useTheme } from "@mui/material/styles";
-import {
-  Chart,
-  Credits,
-  Series,
-  setHighcharts,
-  Title,
-} from "@highcharts/react";
+import { Chart, Credits, Series, Title } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "highcharts/highcharts.src";
-import "highcharts/modules/accessibility";
+import Highcharts from "../../common/highcharts/coreHighcharts";
 import themeAtom from "../../../jotai/theme-atom";
 import { getLieSeries } from "./botcHelpers";
 import { ActiveScript } from "../../../jotai/botc-atom";
 
-setHighcharts(Highcharts);
 interface LiePieProps {
   numPlayers: number;
   numTravelers: number;

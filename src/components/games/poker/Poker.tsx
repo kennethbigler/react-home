@@ -28,7 +28,7 @@ const Poker = memo(() => {
         cardClickHandler={cardClickHandler}
         cardsToDiscard={cardsToDiscard}
         gameFunctions={gameFunctions}
-        onClick={handleGameFunctionClick as (name: string) => void}
+        onClick={handleGameFunctionClick}
         gameOver={gameOver}
         hideHands={hideHands}
         isBlackJack={false}
