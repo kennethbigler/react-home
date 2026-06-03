@@ -12,7 +12,7 @@ View the site at [kennethbigler.com](https://www.kennethbigler.com/)
 
 ## Usage
 
-This website was made to learn, and demonstrate information about Ken Bigler. Most of my users are here for the [Blood on the Clocktower tool](https://www.kennethbigler.com/#/games/botc).
+This website was made to learn, and demonstrate information about Ken Bigler. Most of my users are here for the [Blood on the Clocktower tool](https://www.kennethbigler.com/games/botc).
 
 ## Local Development
 

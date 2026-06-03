@@ -155,27 +155,21 @@ describe("games | BotC", () => {
 });
 
 describe("games | BotC — URL hydration", () => {
-  const originalHash = window.location.hash;
+  const originalUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
   const originalReplaceState = window.history.replaceState.bind(window.history);
 
   afterEach(() => {
-    window.history.replaceState(null, "", window.location.pathname);
-    Object.defineProperty(window, "location", {
-      value: { ...window.location, hash: originalHash },
-      configurable: true,
-    });
+    originalReplaceState(null, "", originalUrl);
     window.history.replaceState = originalReplaceState;
     resetScriptOptionsCache();
   });
 
-  it("hydrates state from valid share params in the URL hash", async () => {
-    Object.defineProperty(window, "location", {
-      value: {
-        ...window.location,
-        hash: "#/games/botc?script=base%3A0&players=3&names=Alice_Bob_Carol",
-      },
-      configurable: true,
-    });
+  it("hydrates state from valid share params in the URL search", async () => {
+    originalReplaceState(
+      null,
+      "",
+      "/games/botc?script=base%3A0&players=3&names=Alice_Bob_Carol",
+    );
 
     await act(async () => {
       render(
@@ -191,13 +185,11 @@ describe("games | BotC — URL hydration", () => {
   });
 
   it("strips share params from the URL after hydration", async () => {
-    Object.defineProperty(window, "location", {
-      value: {
-        ...window.location,
-        hash: "#/games/botc?script=base%3A0&players=2&names=Alice_Bob",
-      },
-      configurable: true,
-    });
+    originalReplaceState(
+      null,
+      "",
+      "/games/botc?script=base%3A0&players=2&names=Alice_Bob",
+    );
 
     const replaceSpy = vi.fn();
     window.history.replaceState = replaceSpy;
@@ -213,17 +205,14 @@ describe("games | BotC — URL hydration", () => {
     expect(replaceSpy).toHaveBeenCalledWith(
       null,
       "",
-      expect.stringContaining("#/games/botc"),
+      expect.stringContaining("/games/botc"),
     );
     const calledWith = replaceSpy.mock.calls[0][2] as string;
     expect(calledWith).not.toContain("?");
   });
 
   it("does nothing when there are no share params", async () => {
-    Object.defineProperty(window, "location", {
-      value: { ...window.location, hash: "#/games/botc" },
-      configurable: true,
-    });
+    originalReplaceState(null, "", "/games/botc");
 
     const replaceSpy = vi.fn();
     window.history.replaceState = replaceSpy;
@@ -241,13 +230,11 @@ describe("games | BotC — URL hydration", () => {
   });
 
   it("does nothing when share params are invalid", async () => {
-    Object.defineProperty(window, "location", {
-      value: {
-        ...window.location,
-        hash: "#/games/botc?script=garbage&players=abc&names=x",
-      },
-      configurable: true,
-    });
+    originalReplaceState(
+      null,
+      "",
+      "/games/botc?script=garbage&players=abc&names=x",
+    );
 
     const replaceSpy = vi.fn();
     window.history.replaceState = replaceSpy;
@@ -261,5 +248,24 @@ describe("games | BotC — URL hydration", () => {
     });
 
     expect(replaceSpy).not.toHaveBeenCalled();
+  });
+
+  it("still hydrates state from legacy hash share params", async () => {
+    originalReplaceState(
+      null,
+      "",
+      "/#/games/botc?script=base%3A0&players=2&names=Alice_Bob",
+    );
+
+    await act(async () => {
+      render(
+        <Provider>
+          <BotC />
+        </Provider>,
+      );
+    });
+
+    expect(screen.getAllByText("Alice").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Bob").length).toBeGreaterThan(0);
   });
 });

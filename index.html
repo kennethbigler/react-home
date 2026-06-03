@@ -48,6 +48,30 @@
     <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
     <!-- Google tag (gtag.js) - async script only in head; config deferred to end of body -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-T0F5M2TLM6"></script>
+    <!-- Restore GitHub Pages SPA fallback URLs and legacy hash routes before React Router mounts. -->
+    <script>
+      (function () {
+        var location = window.location;
+        if (location.search[1] === '/') {
+          var decoded = location.search
+            .slice(1)
+            .split('&')
+            .map(function (segment) {
+              return segment.replace(/~and~/g, '&');
+            })
+            .join('?');
+          window.history.replaceState(
+            null,
+            '',
+            location.pathname.slice(0, -1) + decoded + location.hash
+          );
+        }
+
+        if (location.hash.indexOf('#/') === 0) {
+          window.history.replaceState(null, '', location.hash.slice(1));
+        }
+      })();
+    </script>
     <!-- ___ ___                       _____
         /  //  /                    __/ /_ /
        /  //  /___  ____  ____  ___/_  __//__
