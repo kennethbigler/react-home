@@ -52,6 +52,7 @@ npm run build
 ## Test File Conventions
 
 ### Location
+
 - Co-locate tests with source files
 - Use `ComponentName.test.tsx` for components
 - Use `helperName.test.ts` for utilities
@@ -155,6 +156,7 @@ expect(handleClick).toHaveBeenCalledTimes(1);
 ### What to Test
 
 **Always test:**
+
 - User interactions (clicks, form submissions, keyboard events)
 - Conditional rendering (different states)
 - Error handling and validation
@@ -162,6 +164,7 @@ expect(handleClick).toHaveBeenCalledTimes(1);
 - Accessible behavior (keyboard navigation, ARIA)
 
 **Don't test:**
+
 - Implementation details (state variable names, internal functions)
 - Third-party libraries (React, MUI, etc.)
 - Static content that never changes
@@ -281,7 +284,7 @@ These files/patterns are excluded from coverage requirements:
 
 ## Resources
 
-- **Vitest Docs**: https://vitest.dev/
-- **Testing Library**: https://testing-library.com/docs/react-testing-library/intro/
-- **Testing Library Queries**: https://testing-library.com/docs/queries/about
-- **Common Mistakes**: https://kentcdodds.com/blog/common-mistakes-with-react-testing-library
+- [Vitest Docs](https://vitest.dev/)
+- [Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+- [Testing Library Queries](https://testing-library.com/docs/queries/about)
+- [Common Mistakes](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)

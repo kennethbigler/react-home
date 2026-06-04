@@ -6,9 +6,16 @@ alwaysApply: false
 
 # React Maintenance
 
-- Centralize repeated third-party setup in `src/components/common/` instead of re-registering modules in feature components.
-- Avoid one-line feature re-export files unless they document a real feature boundary or add behavior.
-- Prefer canonical constants for resume/profile facts; do not duplicate titles, locations, schools, or other stable facts in components.
-- Give custom clickable elements and icon-only controls accessible names with `aria-label` or visible text.
-- Keep render-time objects and lookups stable when they are reused in maps or memoized children, for example hoist sentinel objects and use `Set` for repeated membership checks.
-- When cleaning redundancy, favor small shared helpers that match existing patterns over broad rewrites.
+- Centralize repeated third-party setup in `src/components/common/` instead of
+  re-registering modules in feature components.
+- Avoid one-line feature re-export files unless they document a real feature
+  boundary or add behavior.
+- Prefer canonical constants for resume/profile facts; do not duplicate titles,
+  locations, schools, or other stable facts in components.
+- Give custom clickable elements and icon-only controls accessible names with
+  `aria-label` or visible text.
+- Keep render-time objects and lookups stable when they are reused in maps or
+  memoized children. For example, hoist sentinel objects and use `Set` for
+  repeated membership checks.
+- When cleaning redundancy, favor small shared helpers that match existing
+  patterns over broad rewrites.
