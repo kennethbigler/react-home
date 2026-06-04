@@ -25,6 +25,7 @@
     "deploy": "./scripts/deploy.sh",
     "deploy:no-fetch": "SKIP_BOTC_FETCH=1 ./scripts/deploy.sh",
     "analyze": "./scripts/analyze.sh",
+    "dead-code": "npx -y knip",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --report-unused-disable-directives",
     "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet",
     "fetch-botc-scripts": "node scripts/fetch-botc-scripts.mjs"
@@ -44,6 +45,8 @@
   },
   "devDependencies": {
     "@eslint/compat": "2.1.0",
+    "@eslint/eslintrc": "3.3.5",
+    "@eslint/js": "10.0.1",
     "@lhci/cli": "0.15.1",
     "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "6.9.1",

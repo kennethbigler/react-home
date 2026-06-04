@@ -11,5 +11,3 @@ export interface BottomGameScore {
   hint: string;
   points: number | AddDice;
 }
-
-export default ADD_DICE;

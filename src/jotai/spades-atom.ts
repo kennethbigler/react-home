@@ -37,7 +37,7 @@ export interface ScoreRow {
   mod2?: string;
 }
 
-export interface SpadesState {
+interface SpadesState {
   /** score table, updates on +Score & +Bid, resets over games */
   data: ScoreRow[];
   /** 0, 1, 2, 3, updates on +Score, persists over games */

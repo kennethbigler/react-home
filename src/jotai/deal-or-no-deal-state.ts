@@ -80,10 +80,7 @@ export const newDNDGame = (): DNDState => {
   return state;
 };
 
-export const dealOrNoDealAtom = atomWithStorage(
-  "dealOrNoDealAtom",
-  newDNDGame(),
-);
+const dealOrNoDealAtom = atomWithStorage("dealOrNoDealAtom", newDNDGame());
 
 export const dealOrNoDealRead = atom((get) => {
   // access state

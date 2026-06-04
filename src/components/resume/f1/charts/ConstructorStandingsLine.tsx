@@ -15,7 +15,7 @@ import Highcharts from "../../../common/highcharts/sankeyHighcharts";
 import { constructorStandingsData } from "../../../../constants/f1";
 import { standingsTTFormatter, xAxisLabelFormatter } from "./helpers";
 
-export interface ConstructorStandingsLineProps {
+interface ConstructorStandingsLineProps {
   color: string;
 }
 

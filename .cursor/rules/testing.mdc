@@ -12,7 +12,9 @@ When generating tests, you must ensure:
 1. **Tests Pass** - All tests must pass before completion
 2. **ESLint Passes** - No linting errors introduced
 3. **Build Succeeds** - `tsc && vite build` must complete successfully
-4. **Coverage Maintained** - Meet or exceed coverage thresholds
+4. **Dead Code Check Passes** - Knip reports no unused files, exports, or
+   dependency drift
+5. **Coverage Maintained** - Meet or exceed coverage thresholds
 
 ## Coverage Thresholds
 
@@ -25,7 +27,8 @@ Tests must meet these minimum coverage requirements:
 
 ## Verification Workflow
 
-After generating tests, always verify in this order:
+After coding work, verify in this order unless the user explicitly asks for a
+smaller check:
 
 ```bash
 # 1. Run tests
@@ -39,6 +42,9 @@ npm run lint
 
 # 4. Verify build
 npm run build
+
+# 5. Verify dead code
+npm run dead-code
 ```
 
 ## Testing Stack
@@ -264,6 +270,7 @@ Before marking test generation as complete:
 - [ ] Existing tests still pass
 - [ ] Coverage meets thresholds (85% statements/functions/lines, 81% branches)
 - [ ] ESLint passes with no new errors
+- [ ] Dead-code scan passes (`npm run dead-code`)
 - [ ] TypeScript compiles (`tsc`)
 - [ ] Vite build succeeds
 - [ ] Tests use semantic queries (getByRole, getByLabelText)

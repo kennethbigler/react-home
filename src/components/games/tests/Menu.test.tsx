@@ -23,9 +23,7 @@ describe("games | Menu", () => {
     expect(screen.getByText("Slot Machine")).toBeInTheDocument();
     expect(screen.getByText("Yahtzee")).toBeInTheDocument();
     // Games
-    expect(screen.getByText("Are You The One")).toBeInTheDocument();
     expect(screen.getByText("Connect4")).toBeInTheDocument();
-    expect(screen.getByText("Family Feud")).toBeInTheDocument();
     expect(screen.getByText("Tic-Tac-Toe")).toBeInTheDocument();
     expect(screen.getByText("Type Checker")).toBeInTheDocument();
     // Social

@@ -8,7 +8,7 @@ import {
   ButtonBase,
 } from "@mui/material";
 
-export interface HomeMenuItemProps {
+interface HomeMenuItemProps {
   items: MenuItem[];
   title: string;
   onClick?: (loc: string) => void;

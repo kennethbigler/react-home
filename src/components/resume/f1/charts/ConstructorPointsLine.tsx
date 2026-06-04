@@ -18,7 +18,7 @@ import {
   xAxisLabelFormatter,
 } from "./helpers";
 
-export interface ConstructorPointsLineProps {
+interface ConstructorPointsLineProps {
   color: string;
 }
 

@@ -29,7 +29,7 @@ interface PrevStock {
   exp: DateObj;
 }
 
-export const compCalcAtom = atomWithStorage<CompEntry[]>("compCalcAtom", []);
+const compCalcAtom = atomWithStorage<CompEntry[]>("compCalcAtom", []);
 
 /* --------------------     Comp Calc State     -------------------- */
 export const compCalcRead = atom((get) => {

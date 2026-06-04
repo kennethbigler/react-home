@@ -15,7 +15,7 @@ import Highcharts from "../../../common/highcharts/sankeyHighcharts";
 import { driverStandingsData } from "../../../../constants/f1";
 import { standingsTTFormatter, xAxisLabelFormatter } from "./helpers";
 
-export interface DriverStandingsLineProps {
+interface DriverStandingsLineProps {
   color: string;
 }
 

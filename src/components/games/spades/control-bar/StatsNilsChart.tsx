@@ -10,7 +10,7 @@ import {
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../../common/highcharts/coreHighcharts";
 import { NilMetrics } from "../../../../jotai/spades-atom";
-export interface StatsNilChartProps {
+interface StatsNilChartProps {
   color: string;
   initials: string;
   nils: NilMetrics;

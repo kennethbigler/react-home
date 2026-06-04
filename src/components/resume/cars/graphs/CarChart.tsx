@@ -13,7 +13,7 @@ import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../../common/highcharts/sankeyHighcharts";
 import { processData, CarEntry } from "../../../../constants/cars";
 
-export interface CarChartProps {
+interface CarChartProps {
   data: CarEntry[];
   color: string;
 }

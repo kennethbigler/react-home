@@ -15,7 +15,7 @@ import Highcharts from "../../../common/highcharts/sankeyHighcharts";
 import { constructorCurrentData } from "../../../../constants/f1";
 import { currentPointsTTFormatter as ttFormatter } from "./helpers";
 
-export interface ConstructorCurrentSplineProps {
+interface ConstructorCurrentSplineProps {
   color: string;
 }
 

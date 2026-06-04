@@ -3,8 +3,8 @@ import { ContractData } from "../../../../constants/f1";
 import { SegmentType } from "../../../common/timeline-parts/Segment";
 
 /* *************************     Constants     ************************* */
-export const START = dateObj("2012");
-export const END = dateObj("2030");
+const START = dateObj("2012");
+const END = dateObj("2030");
 
 const WIDTH = 99;
 const MIN_TEXT_WIDTH = 86;

@@ -15,7 +15,7 @@ import Highcharts from "../../../common/highcharts/sankeyHighcharts";
 import { driverCurrentData } from "../../../../constants/f1";
 import { currentPointsTTFormatter as ttFormatter } from "./helpers";
 
-export interface DriverCurrentSplineProps {
+interface DriverCurrentSplineProps {
   color: string;
 }
 

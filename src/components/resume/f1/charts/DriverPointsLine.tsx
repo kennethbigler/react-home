@@ -18,7 +18,7 @@ import {
   xAxisLabelFormatter,
 } from "./helpers";
 
-export interface DriverPointsLineProps {
+interface DriverPointsLineProps {
   color: string;
 }
 

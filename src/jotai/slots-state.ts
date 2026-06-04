@@ -5,7 +5,7 @@ import slotMachine, {
 } from "../components/games/slots/slotMachine";
 import playerAtom from "./player-atom";
 
-export const slotsAtom = atomWithStorage("slotsAtom", slotMachine.pullHandle());
+const slotsAtom = atomWithStorage("slotsAtom", slotMachine.pullHandle());
 
 export const slotsRead = atom((get) => {
   const players = get(playerAtom);

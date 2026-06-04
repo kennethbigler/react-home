@@ -73,7 +73,7 @@ export const getEnd = (quarter: QTR, yy: number): DateObj => {
 };
 
 // --------------------     Constants     -------------------- //
-export const schools: School[] = [
+const schools: School[] = [
   {
     ...scuMasters,
     color: pink[900],

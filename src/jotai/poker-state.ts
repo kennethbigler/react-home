@@ -24,7 +24,7 @@ export const newPokerGameState = (): PokerState => ({
   gameOver: false,
 });
 
-export const pokerAtom = atomWithStorage("pokerAtom", newPokerGameState());
+const pokerAtom = atomWithStorage("pokerAtom", newPokerGameState());
 
 interface PokerGameState {
   poker: PokerState;

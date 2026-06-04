@@ -60,9 +60,6 @@ describe("components | routeTitleUtils", () => {
       expect(getPageTitle("/games/yahtzee")).toBe(
         `Yahtzee | Game | ${BASE_TITLE}`,
       );
-      expect(getPageTitle("/games/are-you-the-one")).toBe(
-        `Are You The One | Game | ${BASE_TITLE}`,
-      );
       expect(getPageTitle("/games/deal")).toBe(
         `Deal or No Deal | Game | ${BASE_TITLE}`,
       );

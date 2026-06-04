@@ -1,7 +1,7 @@
 import { memo } from "react";
 import CarSpeedoGraph from "./CarSpeedoGraph";
 
-export interface CurrentCarStatsProps {
+interface CurrentCarStatsProps {
   color: "black" | "white";
   name: string;
   zTo60: number;

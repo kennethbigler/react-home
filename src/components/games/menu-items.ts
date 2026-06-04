@@ -7,7 +7,7 @@ export interface MenuItem {
   icon?: string;
 }
 
-export const gameHomeRoute = {
+const gameHomeRoute = {
   name: "Home - Games",
   route: "",
   Component: lazy(() => import("./Home")),
@@ -34,12 +34,6 @@ export const socialItems = [
   },
 ];
 export const trackerItems = [
-  {
-    name: "Are You The One",
-    route: "are-you-the-one",
-    icon: "🤷‍♂️",
-    Component: lazy(() => import("./are-you-the-one")),
-  },
   {
     name: "Bridge",
     route: "bridge",
@@ -103,12 +97,6 @@ export const gameItems = [
     route: "connect4",
     icon: "🔴",
     Component: lazy(() => import("./connect4")),
-  },
-  {
-    name: "Family Feud",
-    route: "family-feud",
-    icon: "👨‍👩‍👧‍👦",
-    Component: lazy(() => import("./family-feud")),
   },
   {
     name: "Tic-Tac-Toe",

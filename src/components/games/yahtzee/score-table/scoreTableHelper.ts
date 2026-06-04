@@ -11,7 +11,7 @@ interface DiceHistogram {
   6: number;
 }
 
-export const getHistogram =
+const getHistogram =
   () =>
   (hist: DiceHistogram, val: Dice): DiceHistogram => {
     if (!hist[val]) {

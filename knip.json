@@ -1,0 +1,5 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "ignore": ["docs/**"],
+  "ignoreDependencies": ["source-map-explorer"]
+}

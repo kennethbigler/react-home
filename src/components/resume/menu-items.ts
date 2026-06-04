@@ -6,61 +6,61 @@ export interface MenuItem {
   route?: string;
 }
 
-export const summaryRoute = {
+const summaryRoute = {
   name: "Summary",
   route: "",
   Component: lazy(() => import("./summary")),
 };
 
-export const workRoute = {
+const workRoute = {
   name: "Work",
   route: "work",
   Component: lazy(() => import("./work")),
 };
 
-export const resumeRoute = {
+const resumeRoute = {
   name: "Resume",
   route: "resume",
   Component: lazy(() => import("./resume")),
 };
 
-export const educationRoute = {
+const educationRoute = {
   name: "Education",
   route: "education",
   Component: lazy(() => import("./education")),
 };
 
-export const presentationsRoute = {
+const presentationsRoute = {
   name: "Presentations",
   route: "presentations",
   Component: lazy(() => import("./presentations")),
 };
 
-export const compCalculatorRoute = {
+const compCalculatorRoute = {
   name: "Comp Calculator",
   route: "comp",
   Component: lazy(() => import("./comp-calc")),
 };
 
-export const f1Route = {
+const f1Route = {
   name: "F1",
   route: "f1",
   Component: lazy(() => import("./f1")),
 };
 
-export const carsRoute = {
+const carsRoute = {
   name: "Cars",
   route: "cars",
   Component: lazy(() => import("./cars")),
 };
 
-export const travelMapRoute = {
+const travelMapRoute = {
   name: "Travel Map",
   route: "travel",
   Component: lazy(() => import("./travel-map")),
 };
 
-export const gamesRoute = {
+const gamesRoute = {
   name: "Games",
   route: "games",
 };

@@ -19,3 +19,12 @@ alwaysApply: false
   repeated membership checks.
 - When cleaning redundancy, favor small shared helpers that match existing
   patterns over broad rewrites.
+- When removing a feature, remove its route/menu entry, colocated tests,
+  feature constants/state, and coverage metadata in the same cleanup.
+- Treat generated deployment output as outside normal maintenance; do not touch
+  `docs/` while cleaning source code.
+- Use named exports only for cross-file APIs. Convert local-only helpers,
+  constants, and prop types to non-exported declarations instead of leaving a
+  broad public surface.
+- Run the dead-code check after removals and export cleanup so stale files,
+  unused exports, and dependency drift are caught before finishing.

@@ -32,5 +32,3 @@ export function calculateWinner(board: string[] | null[]): {
   }
   return { winner: null, winRow: [] };
 }
-
-export default getTurn;

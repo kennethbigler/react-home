@@ -1,6 +1,6 @@
 import Button from "./Button";
 
-export interface ButtonGroupProps<T extends string> {
+interface ButtonGroupProps<T extends string> {
   gameFunctions: T[];
   onClick: (name: T) => void;
 }

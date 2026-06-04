@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Button as MuiButton } from "@mui/material";
-export interface ButtonProps<T extends string> {
+interface ButtonProps<T extends string> {
   onClick: (name: T) => void;
   name: T;
 }
