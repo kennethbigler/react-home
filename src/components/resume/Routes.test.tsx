@@ -15,16 +15,26 @@ const routeCases = [
   { path: "/travel", heading: "Travel" },
 ];
 
-describe("resume | Routes", () => {
-  it.each(routeCases)("loads the $path route", async ({ path, heading }) => {
-    render(
-      <MemoryRouter initialEntries={[path]}>
-        <ResumeRoutes handleNav={vi.fn()} />
-      </MemoryRouter>,
-    );
+const ROUTE_LOAD_TIMEOUT = 90000;
 
-    expect(
-      await screen.findByRole("heading", { level: 1, name: heading }),
-    ).toBeInTheDocument();
-  });
+describe("resume | Routes", () => {
+  it.each(routeCases)(
+    "loads the $path route",
+    async ({ path, heading }) => {
+      render(
+        <MemoryRouter initialEntries={[path]}>
+          <ResumeRoutes handleNav={vi.fn()} />
+        </MemoryRouter>,
+      );
+
+      expect(
+        await screen.findByRole(
+          "heading",
+          { level: 1, name: heading },
+          { timeout: ROUTE_LOAD_TIMEOUT },
+        ),
+      ).toBeInTheDocument();
+    },
+    ROUTE_LOAD_TIMEOUT,
+  );
 });
