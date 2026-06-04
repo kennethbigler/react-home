@@ -207,6 +207,20 @@ describe("Graphs", () => {
     expect(tooltip).not.toContain("Inflation: <b>$190,000.00</b>");
   });
 
+  it("formats missing tooltip values with defaults", () => {
+    const tooltip = formatCompTooltip([
+      { y: undefined, series: { color: undefined, name: "Stock" } },
+      { y: 25000, series: { color: "orange", name: "Bonus" } },
+      { y: 100000, series: { color: "blue", name: "Salary" } },
+      { y: undefined, series: { color: "black", name: "Inflation" } },
+    ]);
+
+    expect(tooltip).toContain('style="color:inherit"');
+    expect(tooltip).toContain("Stock: <b>$0.00</b>");
+    expect(tooltip).toContain("Inflation: <b>$0.00</b>");
+    expect(tooltip).toContain("*Total: <b>$125,000.00</b>");
+  });
+
   it("matches inflation to total for every point when the last point starts inflation", () => {
     const chartData = buildCompChartData(
       mockCompEntries.length - 1,
@@ -215,5 +229,24 @@ describe("Graphs", () => {
     );
 
     expect(chartData[4]).toEqual(chartData[3]);
+  });
+
+  it("uses actual compensation for entries before the selected inflation start", () => {
+    const chartData = buildCompChartData(
+      1,
+      mockCompCalcEntries,
+      mockCompEntries,
+    );
+
+    expect(chartData[4][0]).toBe(
+      mockCompEntries[0].salary +
+        mockCompEntries[0].bonus +
+        mockCompCalcEntries[0].stockAdj,
+    );
+    expect(chartData[4][1]).toBeGreaterThan(chartData[4][0]);
+  });
+
+  it("returns empty chart series without compensation entries", () => {
+    expect(buildCompChartData(0, [], [])).toEqual([[], [], [], [], []]);
   });
 });
