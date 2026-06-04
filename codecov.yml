@@ -23,10 +23,6 @@ component_management:
       name: 🕹️ Games  # display name, change freely
       paths:
         - src/components/games/**
-    - component_id: module_games_are_you_the_one
-      name: Are You the One?
-      paths:
-        - src/components/games/are-you-the-one/**
     - component_id: module_games_blackjack
       name: Blackjack
       paths:
@@ -47,10 +43,6 @@ component_management:
       name: Deal or No Deal
       paths:
         - src/components/games/deal-or-no-deal/**
-    - component_id: module_games_family_feud
-      name: Family Feud
-      paths:
-        - src/components/games/family-feud/**
     - component_id: module_games_imperial_assault
       name: Imperial Assault
       paths:

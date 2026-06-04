@@ -12,7 +12,9 @@ When generating tests, you must ensure:
 1. **Tests Pass** - All tests must pass before completion
 2. **ESLint Passes** - No linting errors introduced
 3. **Build Succeeds** - `tsc && vite build` must complete successfully
-4. **Coverage Maintained** - Meet or exceed coverage thresholds
+4. **Dead Code Check Passes** - Knip reports no unused files, exports, or
+   dependency drift
+5. **Coverage Maintained** - Meet or exceed coverage thresholds
 
 ## Coverage Thresholds
 
@@ -25,7 +27,8 @@ Tests must meet these minimum coverage requirements:
 
 ## Verification Workflow
 
-After generating tests, always verify in this order:
+After coding work, verify in this order unless the user explicitly asks for a
+smaller check:
 
 ```bash
 # 1. Run tests
@@ -39,6 +42,9 @@ npm run lint
 
 # 4. Verify build
 npm run build
+
+# 5. Verify dead code
+npm run dead-code
 ```
 
 ## Testing Stack
@@ -52,6 +58,7 @@ npm run build
 ## Test File Conventions
 
 ### Location
+
 - Co-locate tests with source files
 - Use `ComponentName.test.tsx` for components
 - Use `helperName.test.ts` for utilities
@@ -155,6 +162,7 @@ expect(handleClick).toHaveBeenCalledTimes(1);
 ### What to Test
 
 **Always test:**
+
 - User interactions (clicks, form submissions, keyboard events)
 - Conditional rendering (different states)
 - Error handling and validation
@@ -162,6 +170,7 @@ expect(handleClick).toHaveBeenCalledTimes(1);
 - Accessible behavior (keyboard navigation, ARIA)
 
 **Don't test:**
+
 - Implementation details (state variable names, internal functions)
 - Third-party libraries (React, MUI, etc.)
 - Static content that never changes
@@ -261,6 +270,7 @@ Before marking test generation as complete:
 - [ ] Existing tests still pass
 - [ ] Coverage meets thresholds (85% statements/functions/lines, 81% branches)
 - [ ] ESLint passes with no new errors
+- [ ] Dead-code scan passes (`npm run dead-code`)
 - [ ] TypeScript compiles (`tsc`)
 - [ ] Vite build succeeds
 - [ ] Tests use semantic queries (getByRole, getByLabelText)
@@ -281,7 +291,7 @@ These files/patterns are excluded from coverage requirements:
 
 ## Resources
 
-- **Vitest Docs**: https://vitest.dev/
-- **Testing Library**: https://testing-library.com/docs/react-testing-library/intro/
-- **Testing Library Queries**: https://testing-library.com/docs/queries/about
-- **Common Mistakes**: https://kentcdodds.com/blog/common-mistakes-with-react-testing-library
+- [Vitest Docs](https://vitest.dev/)
+- [Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+- [Testing Library Queries](https://testing-library.com/docs/queries/about)
+- [Common Mistakes](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)

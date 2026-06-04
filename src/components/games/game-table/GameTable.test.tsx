@@ -30,7 +30,9 @@ describe("games | game-table | GameTable", () => {
     expect(screen.getByText("Hand: 0")).toBeInTheDocument();
     expect(screen.getByText("K♠")).toBeInTheDocument();
     expect(screen.getByText("♠")).toBeInTheDocument();
-    expect(screen.getByRole("button")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Select K♠" }),
+    ).toBeInTheDocument();
   });
 
   it("hides hands", () => {
@@ -100,7 +102,7 @@ describe("games | game-table | GameTable", () => {
     );
 
     expect(handleCardClick).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(screen.getByRole("button", { name: "Select K♠" }));
     expect(handleCardClick).toHaveBeenCalledWith(0, 0, 0);
   });
 

@@ -9,7 +9,7 @@ buildApp
 echo $LINE
 echo "Running source-map-explorer..."
 echo $LINE
-npx source-map-explorer $(ls dist/assets/*.js | grep -v rolldown-runtime) --no-border-checks || throwError "source-map"
+npx -y source-map-explorer $(ls dist/assets/*.js | grep -v rolldown-runtime) --no-border-checks || throwError "source-map"
 echo $LINE
 echo "Cleaning up files..."
 rm -rf dist || throwError "cleanup"

@@ -9,7 +9,6 @@ import useBlackjackAI from "./useBlackjackAI";
 import Header from "./Header";
 import GameTable from "../game-table";
 import { catchErr } from "./catchErr";
-import { GameFunctions } from "../../../jotai/blackjack-state";
 
 const BlackJack = memo(() => {
   const {
@@ -22,8 +21,6 @@ const BlackJack = memo(() => {
     turn,
   } = useBlackjackAI();
 
-  // Adapt GameFunctions enum to the generic string-based GameTable interface
-  const onGameTableClick = (type: string) => handleClick(type as GameFunctions);
   useEffect(() => {
     checkUpdate().catch(catchErr);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -35,7 +32,7 @@ const BlackJack = memo(() => {
       <GameTable
         betHandler={betHandler}
         gameFunctions={gameFunctions}
-        onClick={onGameTableClick}
+        onClick={handleClick}
         hideHands={hideHands}
         players={players}
         turn={turn}

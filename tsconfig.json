@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["vitest/globals"],
+    "types": ["vitest/globals", "node"],
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",

@@ -31,11 +31,7 @@ export interface DBPlayer {
   bet: number;
 }
 
-export const newPlayer = (
-  id: number,
-  name = `Bot-${id}`,
-  isBot = true,
-): DBPlayer => ({
+const newPlayer = (id: number, name = `Bot-${id}`, isBot = true): DBPlayer => ({
   id,
   name,
   isBot,

@@ -8,5 +8,3 @@ export const getMoneyText = (n = 0): string => {
   txt.splice(e, 0, "$");
   return txt.join("");
 };
-
-export default getMoneyText;

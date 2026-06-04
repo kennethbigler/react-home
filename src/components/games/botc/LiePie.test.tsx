@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
+import { green, indigo } from "@mui/material/colors";
 import LiePie from "./LiePie";
 
 vi.mock("highcharts/highcharts.src", () => ({
@@ -60,8 +61,6 @@ describe("LiePie", () => {
     // Override to lightTheme — LiePie reads this and evaluates
     // `theme.mode === "light" ? "black" : "white"` → "black"
     const store = createStore();
-    const { indigo, green } =
-      require("@mui/material/colors") as typeof import("@mui/material/colors");
     store.set(themeAtom, { mode: "light", primary: indigo, secondary: green });
 
     render(

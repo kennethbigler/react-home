@@ -58,7 +58,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Run lighthouse
-        run: npx @lhci/cli autorun
+        run: npx -y @lhci/cli autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 

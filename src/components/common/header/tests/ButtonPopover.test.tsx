@@ -10,8 +10,12 @@ describe("common | header | ButtonPopover", () => {
     );
     expect(screen.getByText("Button Text")).toBeInTheDocument();
     expect(screen.queryByText("Children Text")).toBeNull();
+    const button = screen.getByRole("button", { name: "Button Text" });
+    expect(button).toHaveAttribute("aria-expanded", "false");
     // click to open
-    fireEvent.click(screen.getByText("Button Text"));
+    fireEvent.click(button);
+    expect(button).toHaveAttribute("aria-expanded", "true");
+    expect(button).toHaveAttribute("aria-controls");
     expect(screen.getByText("Children Text")).toBeInTheDocument();
   });
 

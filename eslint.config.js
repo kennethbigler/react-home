@@ -88,7 +88,11 @@ export default [
       "import/no-extraneous-dependencies": [
         "error",
         {
-          devDependencies: ["**/*.test.{ts,tsx}", "src/setupTests.ts"],
+          devDependencies: [
+            "**/*.test.{ts,tsx}",
+            "src/setupTests.ts",
+            "src/test-utils/**",
+          ],
         },
       ],
 

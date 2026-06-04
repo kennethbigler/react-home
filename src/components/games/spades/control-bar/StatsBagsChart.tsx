@@ -10,9 +10,9 @@ import {
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "./spadesHighcharts";
+import Highcharts from "../../../common/highcharts/coreHighcharts";
 
-export interface StatsBagsChartProps {
+interface StatsBagsChartProps {
   initials: string;
   lifeBags: [number, number, number, number, number];
   missedBids: [number, number, number, number];

@@ -16,8 +16,9 @@ const Resume = memo(() => (
     <img
       src={resume}
       alt="Kenneth Bigler Software Engineer Resume"
-      width="100%"
-      style={imageStyles}
+      loading="lazy"
+      decoding="async"
+      style={{ ...imageStyles, width: "100%", height: "auto" }}
     />
   </>
 ));

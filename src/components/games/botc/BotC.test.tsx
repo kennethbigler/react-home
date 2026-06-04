@@ -1,9 +1,9 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import { Provider } from "jotai";
-import { useHydrateAtoms } from "jotai/utils";
 import BotC from ".";
 import themeAtom, { lightTheme } from "../../../jotai/theme-atom";
 import { resetScriptOptionsCache } from "../../../utils/botc-script-utils";
+import { renderWithHydratedAtoms } from "../../../test-utils/renderWithHydratedAtoms";
 
 vi.mock("../../../data/botc-scripts.json", () => ({
   default: {
@@ -92,19 +92,7 @@ describe("games | BotC", () => {
   });
 
   it("renders LiePie in light mode (covers theme.mode === 'light' branch)", () => {
-    // useHydrateAtoms forces the atom to lightTheme for this render tree,
-    // bypassing atomWithStorage's module-level cache.
-    const HydrateLight = ({ children }: { children: React.ReactNode }) => {
-      useHydrateAtoms([[themeAtom, lightTheme]]);
-      return <>{children}</>;
-    };
-    render(
-      <Provider>
-        <HydrateLight>
-          <BotC />
-        </HydrateLight>
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<BotC />, [[themeAtom, lightTheme] as const]);
     expect(screen.getByText("BotC")).toBeInTheDocument();
   });
 

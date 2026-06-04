@@ -1,3 +1,4 @@
+import { Link as RouterLink } from "react-router-dom";
 import { MenuItem } from "./menu-items";
 import {
   Typography,
@@ -7,7 +8,7 @@ import {
   ButtonBase,
 } from "@mui/material";
 
-export interface HomeMenuItemProps {
+interface HomeMenuItemProps {
   items: MenuItem[];
   title: string;
   onClick?: (loc: string) => void;
@@ -34,8 +35,9 @@ const avatarStyles: React.CSSProperties = {
 };
 
 const HomeMenuItem = ({ items, title, onClick }: HomeMenuItemProps) => {
+  const getPath = (route: string | undefined) => `/games/${route || ""}`;
   const handleClick = (route: string | undefined) => () =>
-    onClick && onClick(`/games/${route || ""}`);
+    onClick && onClick(getPath(route));
 
   return (
     <>
@@ -45,7 +47,13 @@ const HomeMenuItem = ({ items, title, onClick }: HomeMenuItemProps) => {
       </Typography>
       <div style={menuWrapperStyles}>
         {items.map(({ name, route, icon }: MenuItem) => (
-          <ButtonBase key={name} onClick={handleClick(route)}>
+          <ButtonBase
+            aria-label={`Open ${name}`}
+            component={RouterLink}
+            key={name}
+            onClick={handleClick(route)}
+            to={getPath(route)}
+          >
             <Card sx={cardStyles}>
               <CardContent>
                 <Typography

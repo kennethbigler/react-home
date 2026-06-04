@@ -30,4 +30,37 @@ describe("resume | cars | CarCard", () => {
       screen.getByText(`Transmission: ${demoCar.transmission}`),
     ).toBeInTheDocument();
   });
+
+  it("uses owner-specific dates for Ken's ownership window", () => {
+    render(
+      <CarCard
+        car={{
+          ...demoCar,
+          start: dateObj("2016-01"),
+          end: dateObj("2024-01"),
+          kStart: dateObj("2019-01"),
+          fStart: dateObj("2021-01"),
+        }}
+        isK
+      />,
+    );
+
+    expect(screen.getByText("(2019 - 2021)")).toBeInTheDocument();
+  });
+
+  it("uses family-specific dates for the non-Ken ownership window", () => {
+    render(
+      <CarCard
+        car={{
+          ...demoCar,
+          start: dateObj("2016-01"),
+          end: dateObj("2024-01"),
+          kStart: dateObj("2019-01"),
+          fStart: dateObj("2021-01"),
+        }}
+      />,
+    );
+
+    expect(screen.getByText("(2021 - 2019)")).toBeInTheDocument();
+  });
 });

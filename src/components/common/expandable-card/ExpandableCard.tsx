@@ -1,4 +1,4 @@
-import { useState, CSSProperties, ReactNode, ReactElement } from "react";
+import { useId, useState, CSSProperties, ReactNode, ReactElement } from "react";
 import { useTheme } from "@mui/material/styles";
 import {
   Card,
@@ -32,6 +32,7 @@ const ExpandableCard = ({
   backgroundColor,
 }: ExpandableCardProps) => {
   const [expanded, setExpanded] = useState(true);
+  const contentId = useId();
   const toggleExpanded = () => setExpanded(!expanded);
 
   const { palette } = useTheme();
@@ -46,7 +47,12 @@ const ExpandableCard = ({
 
   return (
     <Card style={cardStyles}>
-      <CardActionArea onClick={toggleExpanded} style={headerStyle}>
+      <CardActionArea
+        aria-controls={contentId}
+        aria-expanded={expanded}
+        onClick={toggleExpanded}
+        style={headerStyle}
+      >
         <CardHeader
           subheader={subtitle}
           title={title}
@@ -56,7 +62,7 @@ const ExpandableCard = ({
           }}
         />
       </CardActionArea>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse id={contentId} in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Grid container spacing={1} style={{ overflowY: "hidden" }}>
             {children}

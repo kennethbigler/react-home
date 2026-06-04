@@ -36,7 +36,7 @@ describe("components | routeTitleUtils", () => {
 
     it("returns segment title with base for resume sections", () => {
       expect(getPageTitle("/cars")).toBe(`Cars | ${BASE_TITLE}`);
-      expect(getPageTitle("/comp")).toBe(`Comp | ${BASE_TITLE}`);
+      expect(getPageTitle("/comp")).toBe(`Comp Calculator | ${BASE_TITLE}`);
       expect(getPageTitle("/education")).toBe(`Education | ${BASE_TITLE}`);
       expect(getPageTitle("/f1")).toBe(`F1 | ${BASE_TITLE}`);
       expect(getPageTitle("/presentations")).toBe(
@@ -47,7 +47,9 @@ describe("components | routeTitleUtils", () => {
     });
 
     it("title-cases hyphenated path segments", () => {
-      expect(getPageTitle("/travel")).toBe(`Travel | ${BASE_TITLE}`);
+      expect(getPageTitle("/unknown-route")).toBe(
+        `Unknown Route | ${BASE_TITLE}`,
+      );
     });
 
     it("returns Games with base when on games index", () => {
@@ -58,8 +60,11 @@ describe("components | routeTitleUtils", () => {
       expect(getPageTitle("/games/yahtzee")).toBe(
         `Yahtzee | Game | ${BASE_TITLE}`,
       );
-      expect(getPageTitle("/games/are-you-the-one")).toBe(
-        `Are You The One | Game | ${BASE_TITLE}`,
+      expect(getPageTitle("/games/deal")).toBe(
+        `Deal or No Deal | Game | ${BASE_TITLE}`,
+      );
+      expect(getPageTitle("/games/types")).toBe(
+        `Type Checker | Game | ${BASE_TITLE}`,
       );
     });
 

@@ -1,6 +1,12 @@
 import { red, indigo, blue, pink } from "@mui/material/colors";
 
 import dateObj, { DateObj } from "../apis/DateHelper";
+import {
+  kingsAcademy,
+  scuBachelors,
+  scuMasters,
+  stanford,
+} from "./education-summary";
 
 // --------------------     Types     -------------------- //
 enum QTR {
@@ -67,15 +73,10 @@ export const getEnd = (quarter: QTR, yy: number): DateObj => {
 };
 
 // --------------------     Constants     -------------------- //
-export const schools: School[] = [
+const schools: School[] = [
   {
-    school: QTR.SCU,
+    ...scuMasters,
     color: pink[900],
-    location: "Santa Clara, CA",
-    degree: "Master of Science",
-    major: "Computer Engineering",
-    minor: "Emphasis in Software Engineering",
-    honors: "Tau Beta Pi, Upsilon Pi Epsilon, Dean’s List",
     years: [
       {
         year: "Year 2",
@@ -170,13 +171,8 @@ export const schools: School[] = [
     ],
   },
   {
-    school: QTR.SCU,
+    ...scuBachelors,
     color: pink[900],
-    location: "Santa Clara, CA",
-    degree: "Bachelor of Science",
-    major: "Computer Science & Engineering",
-    minor: "Minor in Mathematics",
-    honors: "Tau Beta Pi, Upsilon Pi Epsilon, Dean’s List",
     years: [
       {
         year: "Senior Year",
@@ -464,11 +460,8 @@ export const schools: School[] = [
     ],
   },
   {
-    school: "Stanford University",
+    ...stanford,
     color: red.A700,
-    location: "Stanford, CA",
-    degree:
-      "Stanford Continuing Studies & Undergrad High School Summer Visitor",
     years: [
       {
         year: "Stanford Continuing Studies",
@@ -514,12 +507,8 @@ export const schools: School[] = [
     ],
   },
   {
-    school: "The King's Academy",
+    ...kingsAcademy,
     color: indigo[500],
-    location: "Sunnyvale, CA",
-    degree: "High School Diploma",
-    honors:
-      "National Honors Society, California Scholarship Federation, Principal’s Honor Roll",
     years: [
       {
         year: "Senior Year",

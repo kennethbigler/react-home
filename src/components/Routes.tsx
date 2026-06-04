@@ -1,15 +1,11 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, useLayoutEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import LoadingSpinner from "./common/loading-spinner";
 import { getPageTitle } from "./routeTitleUtils";
 
 // lazy load sub routers
-const ResumeRoutes = lazy(
-  () => import(/* webpackChunkName: "resume" */ "./resume/Routes"),
-);
-const GameRoutes = lazy(
-  () => import(/* webpackChunkName: "games" */ "./games/Routes"),
-);
+const ResumeRoutes = lazy(() => import("./resume/Routes"));
+const GameRoutes = lazy(() => import("./games/Routes"));
 
 const RootRoutes = () => {
   const navigate = useNavigate();
@@ -20,22 +16,40 @@ const RootRoutes = () => {
     document.title = getPageTitle(pathname);
   }, [location.pathname]);
 
+  useLayoutEffect(() => {
+    try {
+      window.scrollTo({ left: 0, top: 0, behavior: "auto" });
+    } catch {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
+  }, [location.pathname]);
+
   const handleNav = (loc: string) => {
     void navigate(loc);
   };
 
   return (
-    <main style={{ padding: "1em", paddingTop: "5em" }}>
-      <Suspense fallback={<LoadingSpinner />}>
-        <Routes>
-          <Route
-            path="games/*"
-            element={<GameRoutes handleNav={handleNav} />}
-          />
-          <Route path="/*" element={<ResumeRoutes handleNav={handleNav} />} />
-        </Routes>
-      </Suspense>
-    </main>
+    <>
+      <a className="skip-link" href="#main-content">
+        Skip to main content
+      </a>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={{ padding: "1em", paddingTop: "5em" }}
+      >
+        <Suspense fallback={<LoadingSpinner />}>
+          <Routes>
+            <Route
+              path="games/*"
+              element={<GameRoutes handleNav={handleNav} />}
+            />
+            <Route path="/*" element={<ResumeRoutes handleNav={handleNav} />} />
+          </Routes>
+        </Suspense>
+      </main>
+    </>
   );
 };
 

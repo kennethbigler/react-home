@@ -1,16 +1,14 @@
 import { useState, useEffect, useMemo, memo } from "react";
 import { useAtomValue } from "jotai";
 import { MapsChart, MapsSeries } from "@highcharts/react/Maps";
-import { Credits, setHighcharts, Title } from "@highcharts/react";
+import { Credits, Title } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "highcharts/highmaps.src";
-import "highcharts/modules/accessibility";
 import { Typography } from "@mui/material";
 import themeAtom from "../../../../jotai/theme-atom";
 import countries, { numCountries } from "../../../../constants/travel";
 import { blue } from "@mui/material/colors";
-
-setHighcharts(Highcharts);
+import LoadingSpinner from "../../../common/loading-spinner";
+import Highcharts from "../../../common/highcharts/mapsHighcharts";
 
 const staticOptions: Highcharts.Options = {
   chart: { backgroundColor: "transparent", height: "60%" },
@@ -63,7 +61,7 @@ const WorldMap = memo(() => {
     );
   }
   if (!topology) {
-    return <Typography variant="h3">Loading World Map...</Typography>;
+    return <LoadingSpinner />;
   }
 
   return (

@@ -11,11 +11,11 @@ import {
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "./f1Highcharts";
+import Highcharts from "../../../common/highcharts/sankeyHighcharts";
 import { driverCurrentData } from "../../../../constants/f1";
 import { currentPointsTTFormatter as ttFormatter } from "./helpers";
 
-export interface DriverCurrentSplineProps {
+interface DriverCurrentSplineProps {
   color: string;
 }
 

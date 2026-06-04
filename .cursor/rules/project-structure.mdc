@@ -5,7 +5,8 @@ alwaysApply: true
 ---
 # Project Structure
 
-This React portfolio/personal website is built with Vite, TypeScript, Material-UI, and Jotai for state management.
+This React portfolio/personal website is built with Vite, TypeScript,
+Material-UI, and Jotai for state management.
 
 ## Technology Stack
 
@@ -20,7 +21,7 @@ This React portfolio/personal website is built with Vite, TypeScript, Material-U
 
 ## Root Directory Structure
 
-```
+```text
 react-home/
 ├── .cursor/              # Cursor IDE rules and configuration
 │   └── rules/            # Project-specific Cursor rules
@@ -45,7 +46,7 @@ react-home/
 
 ### Core Application Files
 
-```
+```text
 src/
 ├── main.tsx              # Application entry point
 ├── main.test.tsx         # Tests for main entry
@@ -75,13 +76,11 @@ Reusable UI components used throughout the application:
 
 Interactive game implementations:
 
-- **are-you-the-one/** - Reality TV matching game
 - **blackjack/** - Card game implementation
 - **botc/** - Blood on the Clocktower game
 - **bridge/** - Bridge card game
 - **connect4/** - Connect Four game
 - **deal-or-no-deal/** - Game show simulation
-- **family-feud/** - Family Feud game
 - **game-table/** - Shared game table UI
 - **imperial-assault/** - Star Wars Imperial Assault companion
 - **murder-mystery/** - Murder mystery game
@@ -121,9 +120,8 @@ Professional portfolio sections:
 
 Jotai atoms for application state management:
 
-```
+```text
 jotai/
-├── are-you-the-one-state.ts
 ├── blackjack-state.ts
 ├── botc-atom.ts (+ test)
 ├── bridge-atom.ts (+ test)
@@ -153,9 +151,8 @@ jotai/
 
 Application data and configuration:
 
-```
+```text
 constants/
-├── ayto.ts                    # Are You The One data
 ├── botc.ts                    # Blood on the Clocktower data
 ├── cars.ts                    # Personal vehicle data
 ├── classes.ts                 # Education course data
@@ -174,7 +171,7 @@ constants/
 
 Helper functions and utilities:
 
-```
+```text
 apis/
 ├── arr2br.tsx           # Array to <br/> conversion utility
 ├── DateHelper.ts        # Date formatting and manipulation
@@ -186,7 +183,7 @@ apis/
 
 Static image assets organized by category:
 
-```
+```text
 images/
 ├── cars/                # Vehicle photos (16 files: .png, .webp)
 ├── companies/           # Company logos (9 files: .png, .gif, .jpg, .svg)
@@ -208,7 +205,7 @@ images/
 
 Higher-order components and context providers:
 
-```
+```text
 wrappers/
 ├── WithRouter.tsx       # React Router wrapper
 └── WithTheme.tsx        # Material-UI theme wrapper
@@ -313,3 +310,12 @@ Available npm scripts:
 - **Development**: Vite dev server on default port (typically 5173)
 - **Production**: Static files in `docs/` directory
 - **Deployment**: GitHub Pages serves from `docs/` directory
+
+## Protected Deployment Output
+
+- Do not edit, delete, regenerate, clean, lint-fix, or otherwise modify
+  `docs/`.
+- Do not run `npm run deploy`, `npm run deploy:no-fetch`, or
+  `./scripts/deploy.sh`.
+- The only acceptable way for `docs/` to change is when the user personally
+  runs the deploy script outside the agent workflow.

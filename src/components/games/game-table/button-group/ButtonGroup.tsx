@@ -1,11 +1,14 @@
 import Button from "./Button";
 
-export interface ButtonGroupProps {
-  gameFunctions: string[];
-  onClick: (name: string) => void;
+interface ButtonGroupProps<T extends string> {
+  gameFunctions: T[];
+  onClick: (name: T) => void;
 }
 
-const ButtonGroup = ({ gameFunctions, onClick }: ButtonGroupProps) => (
+const ButtonGroup = <T extends string>({
+  gameFunctions,
+  onClick,
+}: ButtonGroupProps<T>) => (
   <div>
     {gameFunctions.map((key) => (
       <Button key={key} onClick={onClick} name={key} />

@@ -12,13 +12,13 @@ export const MCLAREN_HEX = "#ff8000";
 export const MERCEDES_HEX = "#27f4d2";
 export const FERRARI_HEX = "#e8002d";
 export const RED_BULL_HEX = "#3671c6";
-export const WILLIAMS_HEX = "#1868db";
-export const RB_HEX = "#6692ff";
+const WILLIAMS_HEX = "#1868db";
+const RB_HEX = "#6692ff";
 export const ASTON_HEX = "#229971";
-export const AUDI_HEX = "#ff2d00";
-export const HAAS_HEX = "#dee1e2";
-export const ALPINE_HEX = "#00a1e8";
-export const CADILLAC_HEX = "#aaaaad";
+const AUDI_HEX = "#ff2d00";
+const HAAS_HEX = "#dee1e2";
+const ALPINE_HEX = "#00a1e8";
+const CADILLAC_HEX = "#aaaaad";
 
 // ----------     OLD     ---------- //
 const K_SAUBER_HEX = "#01C00E";
@@ -423,7 +423,7 @@ const numRaces = landoNorris.length - 1;
 const getTotal = (d1: number[], d2: number[]) =>
   (d1[numRaces] || 0) + (d2[numRaces] || 0);
 
-export const constructors: Constructor[] = [
+const constructors: Constructor[] = [
   {
     name: "McLaren",
     color: MCLAREN_HEX,

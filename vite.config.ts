@@ -18,7 +18,7 @@ function deferStylesheetPlugin(): Plugin {
       // Match Vite-injected stylesheet: <link rel="stylesheet" ... href="/assets/...css" ...>
       const linkRegex =
         /<link\s+rel="stylesheet"[^>]+href="(\/assets\/[^"]+\.css)"[^>]*\/?>/g;
-      html = html.replace(linkRegex, (_match, href) => {
+      html = html.replace(linkRegex, (_match: string, href: string) => {
         return `<link rel="stylesheet" href="${href}" crossorigin media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="${href}" crossorigin></noscript>`;
       });
       writeFileSync(htmlPath, html);

@@ -9,12 +9,7 @@
  */
 import { BotCRole } from "../jotai/botc-atom";
 
-export type RoleType =
-  | "townsfolk"
-  | "outsiders"
-  | "minions"
-  | "demons"
-  | "travelers";
+type RoleType = "townsfolk" | "outsiders" | "minions" | "demons" | "travelers";
 
 export interface RoleCatalogEntry {
   role: BotCRole;

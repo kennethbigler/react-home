@@ -35,7 +35,7 @@ describe("common | InfoPopup", () => {
     fireEvent.click(screen.getByText("Button"));
     expect(screen.getByText("Title")).toBeInTheDocument();
     expect(screen.getByText("Child")).toBeInTheDocument();
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Title" })).toBeInTheDocument();
     // check that it closes
     fireEvent.click(screen.getByText("Close"));
     await waitFor(() => {

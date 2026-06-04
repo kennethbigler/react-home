@@ -1,4 +1,5 @@
 import {
+  useId,
   useState,
   MouseEventHandler,
   MouseEvent,
@@ -35,10 +36,13 @@ const contentStyle: CSSProperties = { padding: 15 };
 const ButtonPopover = ({ children, buttonText }: ButtonPopoverProps) => {
   const { anchorEl, setAnchor, clearAnchor } = useAnchorEl();
   const open = Boolean(anchorEl);
+  const popoverId = useId();
 
   return (
     <>
       <Button
+        aria-controls={open ? popoverId : undefined}
+        aria-expanded={open}
         aria-haspopup="true"
         variant="contained"
         component="button"
@@ -47,7 +51,7 @@ const ButtonPopover = ({ children, buttonText }: ButtonPopoverProps) => {
         {buttonText}
       </Button>
       <Popover
-        id="player-popover"
+        id={popoverId}
         open={open}
         anchorEl={anchorEl}
         onClose={clearAnchor}

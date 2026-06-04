@@ -1,3 +1,5 @@
+import { lazy } from "react";
+
 export interface MenuItem {
   name?: string;
   route?: string;
@@ -5,33 +7,107 @@ export interface MenuItem {
   icon?: string;
 }
 
-export const socialItems: MenuItem[] = [
-  { name: "BotC", route: "botc", icon: "⏱️" },
-  { name: "Murder Mystery", route: "murder", icon: "🔎" },
-  { name: "Werewolf", route: "werewolf", icon: "🐺" },
+const gameHomeRoute = {
+  name: "Home - Games",
+  route: "",
+  Component: lazy(() => import("./Home")),
+};
+
+export const socialItems = [
+  {
+    name: "BotC",
+    route: "botc",
+    icon: "⏱️",
+    Component: lazy(() => import("./botc")),
+  },
+  {
+    name: "Murder Mystery",
+    route: "murder",
+    icon: "🔎",
+    Component: lazy(() => import("./murder-mystery")),
+  },
+  {
+    name: "Werewolf",
+    route: "werewolf",
+    icon: "🐺",
+    Component: lazy(() => import("./werewolf")),
+  },
 ];
-export const trackerItems: MenuItem[] = [
-  { name: "Are You The One", route: "are-you-the-one", icon: "🤷‍♂️" },
-  { name: "Bridge", route: "bridge", icon: "🌉" },
-  { name: "Imperial Assault", route: "imperial-assault", icon: "🪐" },
-  { name: "Spades", route: "spades", icon: "♠️" },
-  { name: "Type Checker", route: "types", icon: "🧪" },
+export const trackerItems = [
+  {
+    name: "Bridge",
+    route: "bridge",
+    icon: "🌉",
+    Component: lazy(() => import("./bridge")),
+  },
+  {
+    name: "Imperial Assault",
+    route: "imperial-assault",
+    icon: "🪐",
+    Component: lazy(() => import("./imperial-assault")),
+  },
+  {
+    name: "Spades",
+    route: "spades",
+    icon: "♠️",
+    Component: lazy(() => import("./spades")),
+  },
+  {
+    name: "Type Checker",
+    route: "types",
+    icon: "🧪",
+    Component: lazy(() => import("./type-checker")),
+  },
 ];
-export const casinoItems: MenuItem[] = [
-  { name: "BlackJack", route: "blackjack", icon: "🃏" },
-  { name: "Deal or No Deal", route: "deal", icon: "💼" },
-  { name: "Poker", route: "poker", icon: "🍀" },
-  { name: "Slot Machine", route: "slots", icon: "🎰" },
-  { name: "Yahtzee", route: "yahtzee", icon: "🎲" },
+export const casinoItems = [
+  {
+    name: "BlackJack",
+    route: "blackjack",
+    icon: "🃏",
+    Component: lazy(() => import("./blackjack")),
+  },
+  {
+    name: "Deal or No Deal",
+    route: "deal",
+    icon: "💼",
+    Component: lazy(() => import("./deal-or-no-deal")),
+  },
+  {
+    name: "Poker",
+    route: "poker",
+    icon: "🍀",
+    Component: lazy(() => import("./poker")),
+  },
+  {
+    name: "Slot Machine",
+    route: "slots",
+    icon: "🎰",
+    Component: lazy(() => import("./slots")),
+  },
+  {
+    name: "Yahtzee",
+    route: "yahtzee",
+    icon: "🎲",
+    Component: lazy(() => import("./yahtzee")),
+  },
 ];
-export const gameItems: MenuItem[] = [
-  { name: "Connect4", route: "connect4", icon: "🔴" },
-  { name: "Family Feud", route: "family-feud", icon: "👨‍👩‍👧‍👦" },
-  { name: "Tic-Tac-Toe", route: "tictactoe", icon: "❌" },
+export const gameItems = [
+  {
+    name: "Connect4",
+    route: "connect4",
+    icon: "🔴",
+    Component: lazy(() => import("./connect4")),
+  },
+  {
+    name: "Tic-Tac-Toe",
+    route: "tictactoe",
+    icon: "❌",
+    Component: lazy(() => import("./tictactoe")),
+  },
 ];
 
 const menuItems: MenuItem[] = [
-  { name: "Home - Games", route: "" },
+  gameHomeRoute,
   { divider: true },
   ...socialItems,
   { divider: true },
@@ -41,5 +117,21 @@ const menuItems: MenuItem[] = [
   { divider: true },
   ...gameItems,
 ];
+
+export const gameRoutes = [
+  gameHomeRoute,
+  ...socialItems,
+  ...trackerItems,
+  ...casinoItems,
+  ...gameItems,
+];
+
+export const gameRouteLabels = new Map(
+  menuItems
+    .filter((item): item is Required<Pick<MenuItem, "name" | "route">> =>
+      Boolean(item.name && item.route !== undefined),
+    )
+    .map(({ name, route }) => [route, name]),
+);
 
 export default menuItems;

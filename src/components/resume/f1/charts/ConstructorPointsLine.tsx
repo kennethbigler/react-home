@@ -11,14 +11,14 @@ import {
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "./f1Highcharts";
+import Highcharts from "../../../common/highcharts/sankeyHighcharts";
 import { constructorPointsData } from "../../../../constants/f1";
 import {
   constructorPointsTTFormatter as ttFormatter,
   xAxisLabelFormatter,
 } from "./helpers";
 
-export interface ConstructorPointsLineProps {
+interface ConstructorPointsLineProps {
   color: string;
 }
 

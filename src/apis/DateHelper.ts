@@ -43,13 +43,7 @@ const shortMonths = [
   "Dec",
 ];
 
-export type DateScale =
-  | "year"
-  | "years"
-  | "month"
-  | "months"
-  | "days"
-  | undefined;
+type DateScale = "year" | "years" | "month" | "months" | "days" | undefined;
 export type FormatOutput = "YYYY" | "M" | "MM" | "MMMM" | "MMMM Y" | "'YY";
 export interface DateObj {
   year: number;

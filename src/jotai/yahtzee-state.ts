@@ -2,8 +2,7 @@ import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import playerAtom from "./player-atom";
 
-export const dice = [0, 1, 2, 3, 4, 5, 6] as const;
-export type Dice = (typeof dice)[number];
+export type Dice = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export interface YahtzeeState {
   roll: Dice;
   values: Dice[];
@@ -29,7 +28,7 @@ export const newYahtzee = (): Omit<
   bottomScores: [-1, -1, -1, -1, -1, -1, -1],
 });
 
-export const yahtzeeAtom = atomWithStorage<YahtzeeState>("yahtzeeAtom", {
+const yahtzeeAtom = atomWithStorage<YahtzeeState>("yahtzeeAtom", {
   ...newYahtzee(),
   bestScore: 0,
   lastScore: 0,

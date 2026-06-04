@@ -25,7 +25,7 @@ export interface Hand {
 
 export type Vulnerability = "none" | "we-only" | "they-only" | "both";
 
-export type Situation =
+type Situation =
   // Opening
   | "opening"
   // Responding to partner's opening (no interference)
@@ -109,7 +109,7 @@ export interface AuctionContext {
   balancing?: boolean;
 }
 
-export interface ExpectedResponse {
+interface ExpectedResponse {
   partnerBid: string;
   meaning: string;
   yourRebid?: string;

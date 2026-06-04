@@ -4,22 +4,24 @@ import ButtonGroup from "./button-group/ButtonGroup";
 import { DBPlayer } from "../../../jotai/player-atom";
 import { TurnState } from "../../../jotai/turn-atom";
 
-interface GameTableProps {
+interface GameTableProps<T extends string> {
   betHandler?: (id: number, value: number) => void;
   cardClickHandler?: (playerNo: number, handNo: number, cardNo: number) => void;
   cardsToDiscard?: number[];
-  gameFunctions?: string[];
+  gameFunctions?: T[];
   gameOver?: boolean;
   hideHands?: boolean;
   isBlackJack?: boolean;
-  onClick: (name: string) => void;
+  onClick: (name: T) => void;
   players: DBPlayer[];
   turn: TurnState;
 }
 
+const INACTIVE_TURN: TurnState = { player: -1, hand: -1 };
+
 /* GameTable ->  Board -> Player -> Hand -> Card
  *          |->  Button Group  ->  Button        */
-const GameTable = ({
+const GameTable = <T extends string>({
   betHandler,
   cardClickHandler,
   cardsToDiscard = [],
@@ -30,7 +32,7 @@ const GameTable = ({
   players,
   turn,
   onClick,
-}: GameTableProps) => {
+}: GameTableProps<T>) => {
   // move game buttons to make turn more obvious and support mobile
   const played: DBPlayer[] = useMemo(
     () => players.slice(0, turn.player + 1),
@@ -67,7 +69,7 @@ const GameTable = ({
         cardsToDiscard={cardsToDiscard}
         hideHands={hideHands}
         isBlackJack={isBlackJack}
-        turn={{ player: -1, hand: -1 }}
+        turn={INACTIVE_TURN}
       />
     </>
   ) : (

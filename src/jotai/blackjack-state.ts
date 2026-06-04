@@ -22,10 +22,7 @@ export const newBlackjackGame = (): BlackjackState => ({
   hideHands: true,
 });
 
-export const blackjackAtom = atomWithStorage(
-  "blackjackAtom",
-  newBlackjackGame(),
-);
+const blackjackAtom = atomWithStorage("blackjackAtom", newBlackjackGame());
 
 interface BlackjackGameState {
   bj: BlackjackState;

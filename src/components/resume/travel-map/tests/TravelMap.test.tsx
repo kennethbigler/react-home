@@ -24,7 +24,9 @@ describe("resume | travel-map | TravelMap", () => {
     // render
     render(<TravelMap />);
     // Verify World Map
-    expect(screen.getByText("Loading World Map...")).toBeInTheDocument();
+    expect(
+      screen.getByRole("status", { name: "Loading page content" }),
+    ).toBeInTheDocument();
     // Verify Travel Table
     expect(screen.getByText("The Americas")).toBeInTheDocument();
     expect(screen.getByText("Europe & Africa")).toBeInTheDocument();

@@ -2,7 +2,7 @@ import { memo } from "react";
 import { useAtomValue } from "jotai";
 import { Chart, Credits, Series, Title } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../travelMapHighcharts";
+import Highcharts from "../../../common/highcharts/sankeyHighcharts";
 import themeAtom from "../../../../jotai/theme-atom";
 import { cruiseData } from "../../../../constants/cruises";
 

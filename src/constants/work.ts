@@ -4,7 +4,6 @@ import {
   green,
   blueGrey,
   red,
-  indigo,
   yellow,
 } from "@mui/material/colors";
 import ciscoLogo from "../images/companies/cisco_logo.gif";
@@ -14,52 +13,25 @@ import netappLogo from "../images/companies/netapp_logo.svg";
 import vengefulLogo from "../images/companies/vengefulgames_logo.png";
 import teslaLogo from "../images/companies/tesla_logo.png";
 import hoverboardLogo from "../images/companies/hoverboard_logo.png";
-import intuitLogo from "../images/companies/intuit_logo.png";
+import {
+  ANGULAR,
+  ASP2,
+  CSS,
+  currentJob,
+  HTML,
+  JAVA,
+  JS,
+  REACT,
+  RUBY,
+  TS,
+  type Job,
+} from "./work-summary";
 
-// tech constants
-export const REACT = "React.js";
-export const TS = "TypeScript";
-export const JS = "JavaScript";
-export const CSS = "CSS3";
-export const HTML = "HTML5";
-export const RUBY = "Ruby on Rails 5";
-export const JAVA = "Java 8";
-export const ANGULAR = "Angular.js 1.X";
-export const ASP2 = "ASP.NET 2.0 MVC";
-
-export interface Job {
-  alt?: string;
-  color: string;
-  company: string;
-  expr?: string[];
-  inverted?: boolean;
-  location: string;
-  parent?: string;
-  src?: string;
-  tech?: string[];
-  time: string;
-  title: string;
-}
+export { ANGULAR, ASP2, CSS, HTML, JAVA, JS, REACT, RUBY, TS };
+export type { Job };
 
 export const work: Job[] = [
-  {
-    color: indigo.A400,
-    company: "Intuit",
-    location: "Mountain View, CA",
-    title: "Head of Accessibility Engineering",
-    time: "2019 - Present",
-    src: intuitLogo,
-    alt: "Intuit Logo",
-    expr: [
-      "Improving accessibility across all of Intuit (with a focus on engineering). Consult with teams on adding automation testing and improving processes.",
-      "Working as a part of the Intuit Design Systems team to create reusable, accessible, well-tested TypeScript components that are used across many of Intuit's products.",
-      "Titles:",
-      " - Frontend Stars - Train new engineers joining Intuit on our Frontend practices",
-      " - Chair for the Next Generation Network",
-      " - Chair for the Intuit Abilities Network",
-    ],
-    tech: [REACT, TS, JS, CSS, HTML],
-  },
+  currentJob,
   {
     color: yellow[600],
     inverted: true,

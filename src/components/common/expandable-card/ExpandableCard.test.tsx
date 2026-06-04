@@ -1,4 +1,4 @@
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import ExpandableCard from ".";
 
 describe("common | ExpandableCard", () => {
@@ -63,15 +63,27 @@ describe("common | ExpandableCard", () => {
     });
   });
 
-  it("expands as expected with Title and SubTitle", () => {
-    render(<ExpandableCard title="Title" subtitle="Subtitle" />);
+  it("exposes expanded state to assistive technology", async () => {
+    render(
+      <ExpandableCard title="Title" subtitle="Subtitle">
+        Body
+      </ExpandableCard>,
+    );
+
+    const button = screen.getByRole("button", { name: /title/i });
 
     expect(screen.queryByText("Title")).toBeInTheDocument();
     expect(screen.queryByText("Subtitle")).toBeInTheDocument();
-    expect(screen.queryByText("Body")).toBeNull();
-    fireEvent.click(screen.getByText("Title"));
-    expect(screen.queryByText("Body")).toBeNull();
-    fireEvent.click(screen.getByText("Title"));
-    expect(screen.queryByText("Body")).toBeNull();
+    expect(button).toHaveAttribute("aria-expanded", "true");
+    expect(button).toHaveAttribute("aria-controls");
+    expect(screen.queryByText("Body")).toBeInTheDocument();
+
+    fireEvent.click(button);
+    expect(button).toHaveAttribute("aria-expanded", "false");
+    await waitFor(() => expect(screen.queryByText("Body")).toBeNull());
+
+    fireEvent.click(button);
+    expect(button).toHaveAttribute("aria-expanded", "true");
+    expect(screen.queryByText("Body")).toBeInTheDocument();
   });
 });
