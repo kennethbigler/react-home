@@ -25,7 +25,7 @@ const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
   const handleClick = ({ point: { index } }: SeriesClickEventObject) => {
     const { stock, stockAdj } = compCalcEntries[index];
     const { bonus, salary } = compEntries[index];
-    setStartIdx(index >= compEntries.length - 1 ? 0 : index);
+    setStartIdx(index);
     setStock(stockAdj || stock);
     setBonus(bonus);
     setSalary(salary);
