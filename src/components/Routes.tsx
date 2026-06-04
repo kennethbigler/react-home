@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, useLayoutEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import LoadingSpinner from "./common/loading-spinner";
 import { getPageTitle } from "./routeTitleUtils";
@@ -14,6 +14,15 @@ const RootRoutes = () => {
   useEffect(() => {
     const pathname = location.pathname || "/";
     document.title = getPageTitle(pathname);
+  }, [location.pathname]);
+
+  useLayoutEffect(() => {
+    try {
+      window.scrollTo({ left: 0, top: 0, behavior: "auto" });
+    } catch {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
   }, [location.pathname]);
 
   const handleNav = (loc: string) => {

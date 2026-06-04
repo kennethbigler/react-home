@@ -21,7 +21,7 @@ const CarGraphs = ({ data, active, hideFamily, hideKen }: CarGraphsProps) => {
 
   return (
     <ExpandableCard title="Car Graphs" backgroundColor={red.A700}>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} size={{ xs: 12 }} sx={{ minWidth: 0 }}>
         <CurrentCarStats
           color={color}
           name={active.car}
