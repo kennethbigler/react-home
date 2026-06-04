@@ -12,7 +12,7 @@ import {
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "./compCalcHighcharts";
+import Highcharts from "../../../common/highcharts/coreHighcharts";
 import themeAtom from "../../../../jotai/theme-atom";
 import {
   CompCalcEntry,

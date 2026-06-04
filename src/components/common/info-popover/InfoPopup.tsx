@@ -1,4 +1,4 @@
-import { useState, ReactElement, ReactNode } from "react";
+import { useId, useState, ReactElement, ReactNode } from "react";
 import { MuiColors } from "../types";
 import {
   Dialog,
@@ -37,6 +37,7 @@ const InfoPopup = ({
   children,
   onSave,
 }: InfoPopupProps) => {
+  const titleId = useId();
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
@@ -58,8 +59,14 @@ const InfoPopup = ({
       >
         {buttonText || title}
       </Button>
-      <Dialog onClose={handleClose} open={isOpen} maxWidth={maxWidth} fullWidth>
-        <DialogTitle>{title}</DialogTitle>
+      <Dialog
+        aria-labelledby={titleId}
+        onClose={handleClose}
+        open={isOpen}
+        maxWidth={maxWidth}
+        fullWidth
+      >
+        <DialogTitle id={titleId}>{title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
         <DialogActions>
           {onSave && (

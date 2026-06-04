@@ -17,6 +17,8 @@ interface GameTableProps<T extends string> {
   turn: TurnState;
 }
 
+const INACTIVE_TURN: TurnState = { player: -1, hand: -1 };
+
 /* GameTable ->  Board -> Player -> Hand -> Card
  *          |->  Button Group  ->  Button        */
 const GameTable = <T extends string>({
@@ -67,7 +69,7 @@ const GameTable = <T extends string>({
         cardsToDiscard={cardsToDiscard}
         hideHands={hideHands}
         isBlackJack={isBlackJack}
-        turn={{ player: -1, hand: -1 }}
+        turn={INACTIVE_TURN}
       />
     </>
   ) : (

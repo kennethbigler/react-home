@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Chart, Credits, Series, Title, XAxis, YAxis } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "./carsHighcharts";
+import Highcharts from "../../../common/highcharts/sankeyHighcharts";
 import {
   carSankeyNodes,
   carSankeyData,

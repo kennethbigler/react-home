@@ -11,7 +11,7 @@ import {
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "./f1Highcharts";
+import Highcharts from "../../../common/highcharts/sankeyHighcharts";
 import { driverPointsData } from "../../../../constants/f1";
 import {
   driverPointsTTFormatter as ttFormatter,

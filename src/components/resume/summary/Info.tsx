@@ -8,8 +8,7 @@ import {
   TableRow,
 } from "@mui/material";
 import ExpandableCard from "../../common/expandable-card";
-import type { Job } from "../../../constants/work";
-import { summaryJob } from "../../../constants/summary";
+import { currentJob, type Job } from "../../../constants/work-summary";
 
 const imageStyles: CSSProperties = {
   display: "block",
@@ -37,20 +36,20 @@ const Info = memo(() => (
       </Link>
     </Grid>
     <Grid size={{ xs: 12, md: 6, xl: 8, xxl: 9, xxxl: 10 }}>
-      <ExpandableCard title={getJob(summaryJob)}>
+      <ExpandableCard title={getJob(currentJob)}>
         <Table aria-label="general information about Ken Bigler">
           <TableBody>
             <TableRow>
               <TableCell component="th" scope="row">
                 Location
               </TableCell>
-              <TableCell>Mountain View, CA</TableCell>
+              <TableCell>{currentJob.location}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
                 Role
               </TableCell>
-              <TableCell>Accessibility Engineer Leader</TableCell>
+              <TableCell>{currentJob.title}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">

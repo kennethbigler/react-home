@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties, useCallback } from "react";
 import Add from "@mui/icons-material/Add";
 import Remove from "@mui/icons-material/Remove";
 import { green, blueGrey, red, grey } from "@mui/material/colors";
@@ -37,16 +37,16 @@ const Player = ({
   // set edge variables
   const minBet: number = Math.max(Math.min(player.money, 5), 0);
   const maxBet: number = Math.max(Math.min(player.money, 100), 10);
-  const decrBet = () => {
+  const decrBet = useCallback(() => {
     if (betHandler) {
       betHandler(player.id, player.bet - 5);
     }
-  };
-  const incrBet = () => {
+  }, [betHandler, player.bet, player.id]);
+  const incrBet = useCallback(() => {
     if (betHandler) {
       betHandler(player.id, player.bet + 5);
     }
-  };
+  }, [betHandler, player.bet, player.id]);
   const weight: CSSProperties = {
     fontWeight: isPlayerTurn ? "bold" : "normal",
   };
@@ -69,6 +69,7 @@ const Player = ({
       </Typography>
       {showBetting && (
         <IconButton
+          aria-label={`Decrease ${player.name} bet`}
           onClick={decrBet}
           color="primary"
           disabled={player.bet <= minBet}
@@ -79,6 +80,7 @@ const Player = ({
       {player.bet}
       {showBetting && (
         <IconButton
+          aria-label={`Increase ${player.name} bet`}
           onClick={incrBet}
           color="primary"
           disabled={player.bet >= maxBet}

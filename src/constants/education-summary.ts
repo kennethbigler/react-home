@@ -5,7 +5,6 @@ export interface SummarySchool {
   major?: string;
   minor?: string;
   school: string;
-  years: [];
 }
 
 export const scuMasters: SummarySchool = {
@@ -15,7 +14,6 @@ export const scuMasters: SummarySchool = {
   major: "Computer Engineering",
   minor: "Emphasis in Software Engineering",
   honors: "Tau Beta Pi, Upsilon Pi Epsilon, Dean’s List",
-  years: [],
 };
 
 export const scuBachelors: SummarySchool = {
@@ -25,14 +23,12 @@ export const scuBachelors: SummarySchool = {
   major: "Computer Science & Engineering",
   minor: "Minor in Mathematics",
   honors: "Tau Beta Pi, Upsilon Pi Epsilon, Dean’s List",
-  years: [],
 };
 
 export const stanford: SummarySchool = {
   school: "Stanford University",
   location: "Stanford, CA",
   degree: "Stanford Continuing Studies & Undergrad High School Summer Visitor",
-  years: [],
 };
 
 export const kingsAcademy: SummarySchool = {
@@ -41,10 +37,9 @@ export const kingsAcademy: SummarySchool = {
   degree: "High School Diploma",
   honors:
     "National Honors Society, California Scholarship Federation, Principal’s Honor Roll",
-  years: [],
 };
 
-export const summarySchools = [
+export const summarySchools: SummarySchool[] = [
   scuMasters,
   scuBachelors,
   stanford,

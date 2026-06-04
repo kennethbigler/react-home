@@ -18,11 +18,11 @@ const FamilyFeud = () => {
   };
 
   const handleScore1 = (score: number) => {
-    setScore1(score1 + score);
+    setScore1((currentScore) => currentScore + score);
   };
 
   const handleScore2 = (score: number) => {
-    setScore2(score2 + score);
+    setScore2((currentScore) => currentScore + score);
   };
 
   return (
@@ -37,7 +37,7 @@ const FamilyFeud = () => {
         indicatorColor="secondary"
         textColor="secondary"
         onChange={handleChange}
-        aria-label="disabled tabs example"
+        aria-label="Family Feud rounds"
       >
         <Tab label="Round 1" {...a11yProps(0)} />
         <Tab label="Round 2" {...a11yProps(1)} />

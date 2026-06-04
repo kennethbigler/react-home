@@ -8,7 +8,7 @@ import {
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "./carsHighcharts";
+import Highcharts from "../../../common/highcharts/sankeyHighcharts";
 import { green, grey, red } from "@mui/material/colors";
 import { Grid } from "@mui/material";
 

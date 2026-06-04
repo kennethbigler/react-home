@@ -1,9 +1,9 @@
 import { memo } from "react";
 import { Typography } from "@mui/material";
-import { School } from "../../../constants/classes";
+import { SummarySchool } from "../../../constants/education-summary";
 
 const EducationSeg = memo(
-  ({ degree, honors, location, major, minor, school }: School) => (
+  ({ degree, honors, location, major, minor, school }: SummarySchool) => (
     <div>
       <Typography variant="h4" component="h2">{`${school || ""}, ${
         location || ""

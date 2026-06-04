@@ -43,6 +43,10 @@ const Hand = ({
         : normalStyle,
     [isPlayerTurn, isMultiHand, isHandTurn],
   );
+  const cardsToDiscardSet = useMemo(
+    () => new Set(cardsToDiscard),
+    [cardsToDiscard],
+  );
   const handWeight = hand.weight || 0;
 
   return (
@@ -51,7 +55,7 @@ const Hand = ({
         {isBlackJack && `${handWeight > 21 ? "Bust" : "Hand"}: ${handWeight}`}
       </Typography>
       {hand.cards.map((card, i) => {
-        const dropped: boolean = cardsToDiscard.includes(i);
+        const dropped: boolean = cardsToDiscardSet.has(i);
         return card ? (
           <Card
             key={card.name + card.suit}

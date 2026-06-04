@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import FamilyFeud from ".";
 
-describe("games | connect4 | Connect4", () => {
+describe("games | family-feud | FamilyFeud", () => {
   it("renders as expected", () => {
     render(<FamilyFeud />);
 

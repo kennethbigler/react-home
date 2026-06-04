@@ -37,6 +37,7 @@ const Card = memo(
 
     return (
       <button
+        aria-label={`Select ${name}${suit}`}
         style={{ ...styles.cardFace, ...cardColor }}
         onClick={handleClick}
       >
