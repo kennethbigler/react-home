@@ -475,7 +475,7 @@ const constructors: Constructor[] = [
       451,
       getTotal(maxVerstappen, isackHadjar),
     ],
-    standings: [3, 3, 2, 2, 1, 1, 3, 3, 6],
+    standings: [3, 3, 2, 2, 1, 1, 3, 3, 4],
     thisYear: maxVerstappen.map((points, i) => points + (isackHadjar[i] || 0)),
   },
   {
@@ -511,14 +511,14 @@ const constructors: Constructor[] = [
       137,
       getTotal(carlosSainz, alexanderAlbon),
     ],
-    standings: [10, 10, 10, 8, 10, 7, 9, 5, 9],
+    standings: [10, 10, 10, 8, 10, 7, 9, 5, 8],
     thisYear: carlosSainz.map((points, i) => points + (alexanderAlbon[i] || 0)),
   },
   {
     name: "Racing Bulls",
     color: RB_HEX,
     points: [...alphaTauriPoints, 46, 92, getTotal(liamLawson, arvidLindblad)],
-    standings: [...alphaTauriStandings, 8, 6, 7],
+    standings: [...alphaTauriStandings, 8, 6, 6],
     thisYear: liamLawson.map((points, i) => points + (arvidLindblad[i] || 0)),
   },
   {
@@ -533,7 +533,7 @@ const constructors: Constructor[] = [
       89,
       getTotal(fernandoAlonso, lanceStroll),
     ],
-    standings: [...racingPointStandings, 7, 7, 5, 5, 7, 11],
+    standings: [...racingPointStandings, 7, 7, 5, 5, 7, 10],
     thisYear: fernandoAlonso.map((points, i) => points + (lanceStroll[i] || 0)),
   },
   {
@@ -550,14 +550,14 @@ const constructors: Constructor[] = [
       79,
       getTotal(oliverBearman, estebanOcon),
     ],
-    standings: [5, 9, 9, 10, 8, 10, 7, 8, 4],
+    standings: [5, 9, 9, 10, 8, 10, 7, 8, 7],
     thisYear: oliverBearman.map((points, i) => points + (estebanOcon[i] || 0)),
   },
   {
     name: "Audi",
     color: AUDI_HEX,
     points: [...kickSauberPoints, getTotal(gabrielBortoleto, nicoHulkenberg)],
-    standings: [...kickSauberStandings, 8],
+    standings: [...kickSauberStandings, 9],
     thisYear: gabrielBortoleto.map(
       (points, i) => points + (nicoHulkenberg[i] || 0),
     ),
@@ -593,7 +593,7 @@ const constructors: Constructor[] = [
       null,
       getTotal(valtteriBottas, sergioPerez),
     ],
-    standings: [null, null, null, null, null, null, null, null, 10],
+    standings: [null, null, null, null, null, null, null, null, 11],
     thisYear: valtteriBottas.map((points, i) => points + (sergioPerez[i] || 0)),
   },
   // ----------     3nd Replacement     ---------- //
