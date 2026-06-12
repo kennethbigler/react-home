@@ -37,7 +37,7 @@ const options: Highcharts.Options = {
           color: "contrast",
           textOutline: "none",
         },
-        padding: 4,
+        padding: [4],
         borderRadius: 2,
       },
 
