@@ -4032,15 +4032,18 @@ describe("bidding-logic | getFinalContractInfo", () => {
 // ─── Regression: bug where 2NT rebid fell through to rebid-after-suit ────────
 
 describe("bidding-logic | deriveSituation — NT rebid routing", () => {
-  it("myLastBid=2NT is routed to rebid-after-nt (not rebid-after-suit)", () => {
-    // myPosition=4, partner=2, partner opened 1♦, I bid 2NT, partner bid 3NT
+  it("myLastBid=2NT after PARTNER opened → responder-nt-rebid (not rebid-after-suit)", () => {
+    // myPosition=4, partner=2, partner opened 1♦, I bid 2NT, partner bid 3NT.
+    // Partner opened the auction, so my NT rebid is a RESPONDER's rebid —
+    // the role-aware router classifies it as responder-nt-rebid (the original
+    // regression here was falling through to rebid-after-suit).
     const state: AuctionState = {
       myPosition: 4,
       completedRounds: [{ 1: "Pass", 2: "1♦", 3: "Pass", 4: "2NT" }],
       currentRound: { 2: "3NT" },
     };
     const s = deriveSituation(state);
-    expect(s.situation).toBe("rebid-after-nt");
+    expect(s.situation).toBe("responder-nt-rebid");
   });
 
   it("myLastBid=3NT is routed to rebid-after-nt", () => {
