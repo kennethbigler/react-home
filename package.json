@@ -36,7 +36,7 @@
     "@highcharts/react": "5.1.0",
     "@mui/icons-material": "9.0.1",
     "@mui/material": "9.0.1",
-    "highcharts": "12.6.0",
+    "highcharts": "13.0.0",
     "jotai": "2.20.1",
     "qrcode.react": "4.2.0",
     "react": "19.2.7",

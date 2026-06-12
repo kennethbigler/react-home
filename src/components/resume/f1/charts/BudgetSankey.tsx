@@ -42,7 +42,7 @@ const options: Highcharts.Options = {
           // Remove Highcharts' default white text-halo; it looks muddy on colored nodes
           textOutline: "none",
         },
-        padding: 4,
+        padding: [4],
         borderRadius: 2,
       },
 
