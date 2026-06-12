@@ -79,6 +79,11 @@ export default defineConfig({
       "**/node_modules/**",
     ],
     testTimeout: 45000, // Increased to 45s for CI with Highcharts-heavy components
+    server: {
+      deps: {
+        inline: [/highcharts/],
+      },
+    },
     coverage: {
       provider: "v8",
       reporter: ["text", "html", "json"],
