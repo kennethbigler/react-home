@@ -92,6 +92,60 @@ function lastSuitBid(
   return last;
 }
 
+// ─── Bidder-history helper ─────────────────────────────────────────────────────
+
+/**
+ * The seat's most recent REAL bid within `rounds` (and optionally `extra`,
+ * e.g. the in-progress round).  Used so tooltips can distinguish an opening
+ * (e.g. "weak 2♠") from a rebid of a suit the player already showed.
+ */
+function lastRealBidBySeat(
+  rounds: BidRound[],
+  extra: BidRound | undefined,
+  pos: BiddingPosition,
+): string | undefined {
+  let out: string | undefined;
+  for (const r of rounds) {
+    const b = r[pos];
+    if (b && b !== "Pass" && b !== "Double" && b !== "Redouble") out = b;
+  }
+  const e = extra?.[pos];
+  if (e && e !== "Pass" && e !== "Double" && e !== "Redouble") out = e;
+  return out;
+}
+
+/** Like lastRealBidBySeat, but a Double/Redouble also counts as the seat's
+ *  last action — a takeout double is the context an advance responds to. */
+function lastActionBySeat(
+  rounds: BidRound[],
+  extra: BidRound | undefined,
+  pos: BiddingPosition,
+): string | undefined {
+  let out: string | undefined;
+  for (const r of rounds) {
+    const b = r[pos];
+    if (b && b !== "Pass") out = b;
+  }
+  const e = extra?.[pos];
+  if (e && e !== "Pass") out = e;
+  return out;
+}
+
+/** The first real bid of the auction (bid values are unique, so equality
+ *  against this identifies openings exactly). */
+function auctionOpeningBidOf(
+  rounds: BidRound[],
+  extra?: BidRound,
+): string | undefined {
+  for (const r of [...rounds, extra ?? {}]) {
+    for (const p of [1, 2, 3, 4] as BiddingPosition[]) {
+      const b = r[p];
+      if (b && b !== "Pass" && b !== "Double" && b !== "Redouble") return b;
+    }
+  }
+  return undefined;
+}
+
 // ─── Relationship label helpers ───────────────────────────────────────────────
 
 type Relationship = "partner" | "lho" | "rho";
@@ -123,15 +177,32 @@ interface BidInfoIconProps {
   bid: string;
   relationship: Relationship;
   prevHighBid?: string;
+  bidderPreviousBid?: string;
+  bidderPartnerPreviousBid?: string;
+  auctionOpeningBid?: string;
 }
 
-function BidInfoIcon({ bid, relationship, prevHighBid }: BidInfoIconProps) {
+function BidInfoIcon({
+  bid,
+  relationship,
+  prevHighBid,
+  bidderPreviousBid,
+  bidderPartnerPreviousBid,
+  auctionOpeningBid,
+}: BidInfoIconProps) {
   const [open, setOpen] = useState(false);
   if (!bid) return null;
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
       <Tooltip
-        title={getBidMeaning(bid, relationship, prevHighBid)}
+        title={getBidMeaning(
+          bid,
+          relationship,
+          prevHighBid,
+          bidderPreviousBid,
+          bidderPartnerPreviousBid,
+          auctionOpeningBid,
+        )}
         placement="right"
         arrow
         open={open}
@@ -169,6 +240,9 @@ interface BidSlotProps {
   options: string[];
   onChange: (val: string) => void;
   prevHighBid?: string;
+  bidderPreviousBid?: string;
+  bidderPartnerPreviousBid?: string;
+  auctionOpeningBid?: string;
 }
 
 function BidSlot({
@@ -178,6 +252,9 @@ function BidSlot({
   options,
   onChange,
   prevHighBid,
+  bidderPreviousBid,
+  bidderPartnerPreviousBid,
+  auctionOpeningBid,
 }: BidSlotProps) {
   const currentValue = value || "Pass";
   const labelId = `bid-label-${slotLabel.replace(/[\s()]+/g, "-").toLowerCase()}`;
@@ -204,6 +281,9 @@ function BidSlot({
           bid={currentValue}
           relationship={relationship as Relationship}
           prevHighBid={prevHighBid}
+          bidderPreviousBid={bidderPreviousBid}
+          bidderPartnerPreviousBid={bidderPartnerPreviousBid}
+          auctionOpeningBid={auctionOpeningBid}
         />
       )}
     </Box>
@@ -307,10 +387,26 @@ function CompletedRoundRow({
         })();
 
         const chipLabel = `${isMe ? "Me" : getRelationshipLabel(pos, myPosition)}: ${bid}`;
+        // The seat's own previous real bid (earlier rounds only) — lets the
+        // tooltip describe a REBID instead of mislabeling it as an opening.
+        const bidderPreviousBid = lastRealBidBySeat(
+          allCompletedRounds.slice(0, roundIndex),
+          undefined,
+          pos,
+        );
+        const bidderPartnerPreviousBid =
+          lastActionBySeat(
+            allCompletedRounds.slice(0, roundIndex),
+            undefined,
+            getRelatives(pos).partner,
+          ) ?? "none"; // "none" = known to have no previous action
         const tooltipTitle = getBidMeaning(
           bid,
           rel as Relationship,
           prevHighBid,
+          bidderPreviousBid,
+          bidderPartnerPreviousBid,
+          auctionOpeningBidOf(allCompletedRounds),
         );
 
         return (
@@ -598,6 +694,22 @@ export default function AuctionContextInput({
                     options={options}
                     onChange={(val) => updateCurrentRound(pos, val)}
                     prevHighBid={lastBid}
+                    bidderPreviousBid={lastRealBidBySeat(
+                      completedRounds,
+                      undefined,
+                      pos,
+                    )}
+                    bidderPartnerPreviousBid={
+                      lastActionBySeat(
+                        completedRounds,
+                        undefined,
+                        getRelatives(pos).partner,
+                      ) ?? "none"
+                    }
+                    auctionOpeningBid={auctionOpeningBidOf(
+                      completedRounds,
+                      currentRound,
+                    )}
                   />
                 );
               })}
@@ -698,6 +810,22 @@ export default function AuctionContextInput({
                     setNextRoundBids((prev) => ({ ...prev, [pos]: v }))
                   }
                   prevHighBid={effectiveLast}
+                  bidderPreviousBid={lastRealBidBySeat(
+                    completedRounds,
+                    currentRound,
+                    pos,
+                  )}
+                  bidderPartnerPreviousBid={
+                    lastActionBySeat(
+                      completedRounds,
+                      currentRound,
+                      getRelatives(pos).partner,
+                    ) ?? "none"
+                  }
+                  auctionOpeningBid={auctionOpeningBidOf(
+                    completedRounds,
+                    currentRound,
+                  )}
                 />
               );
             })}
