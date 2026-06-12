@@ -1734,7 +1734,9 @@ describe("bidding-logic | rebid-after-suit", () => {
       currentRound: { 1: "Pass", 2: "2♠", 3: "Pass" },
     };
     const s = deriveSituation(state);
-    expect(s.situation).toBe("rebid-after-suit");
+    // Partner (seat 2) OPENED 1♦ and raised my 1♠ response — I am the
+    // responder, so the role-aware router classifies this as responder-rebid.
+    expect(s.situation).toBe("responder-rebid");
     expect(s.partnerBid).toBe("2♠"); // must be the RAISE, not the original opening
     expect(s.partnerBid).not.toBe("1♦");
   });
@@ -4062,12 +4064,15 @@ describe("bidding-logic | rebid-after-nt — 3NT partner response", () => {
     expect(rec.confidence).toBe("high");
   });
 
-  it("partner bid 3NT: 17 HCP → 4NT (slam exploration)", () => {
+  it("partner bid 3NT: 17 HCP → Pass (3NT is a sign-off in SAYC)", () => {
+    // SAYC: responder's 3NT places the contract knowing opener's NT range.
+    // Opener's hand is fully described — slam tries come from RESPONDER
+    // (4NT quantitative), never from opener after a 3NT sign-off.
     const rec = getRecommendation(
       mkHand(17, 4, 3, 3, 3),
       ctx("rebid-after-nt", { partnerBid: "3NT", myPreviousBid: "2NT" }),
     );
-    expect(rec.bid).toBe("4NT");
+    expect(rec.bid).toBe("Pass");
     expect(rec.confidence).toBe("high");
   });
 });
@@ -5061,13 +5066,17 @@ describe("bidding-logic | deal I — isInvitational HCP fix (9 HCP → 2♥, not
     };
     const auction = deriveSituation(state, "none");
     const rec = getRecommendation(p3Hand, auction);
-    // isInvitational now uses hand.hcp >= 10 (was tp >= 10).
-    // 9 HCP < 10 → simple rebid 2♥ (not invitational jump 3♥)
-    expect(rec.bid).toBe("2♥");
+    // SAYC: rebidding 2♥ here would promise SIX hearts — this hand has five.
+    // With a minimum (9 HCP) and partner showing 5-6+ diamonds (2♦ rebid),
+    // the standard action is Pass: 2♦ is a playable partscore and game is
+    // out of reach opposite a minimum opener.
+    expect(rec.bid).toBe("Pass");
   });
 
-  it("P3 with 10 HCP, 5 hearts after 1♦–1♥–2♦ → bids 3♥ (invitational)", () => {
-    // Contrast: 10 HCP should still trigger the invitational 3♥
+  it("P3 with 10 HCP, 5 hearts after 1♦–1♥–2♦ → bids 2NT (invitational)", () => {
+    // Contrast: 10-11 pts is invitational, but a jump to 3♥ would promise
+    // SIX hearts in SAYC.  With five hearts and no diamond fit, the standard
+    // invitation is 2NT (11-12 balanced-ish, no fit).
     const p3HandInv = mkHand(10, 3, 5, 2, 3);
     const state: AuctionState = {
       myPosition: 3,
@@ -5076,7 +5085,7 @@ describe("bidding-logic | deal I — isInvitational HCP fix (9 HCP → 2♥, not
     };
     const auction = deriveSituation(state, "none");
     const rec = getRecommendation(p3HandInv, auction);
-    expect(rec.bid).toBe("3♥");
+    expect(rec.bid).toBe("2NT");
     expect(rec.category).toContain("Invitational");
   });
 });
@@ -7396,13 +7405,16 @@ describe("bidding-logic | rebid-after-suit Weak 2 opener + partner 2NT inquiry (
 });
 
 describe("bidding-logic | rebid-after-suit game jump → Blackwood (line 4259)", () => {
-  it("opener 1♠, partner jumps to 4♠, tp >= 16 (major) → 4NT Blackwood (lines 4259/4260)", () => {
+  it("opener 1♠, partner jumps to 4♠ → Pass (SAYC game jump raise is PREEMPTIVE)", () => {
     const rec = getRecommendation(
       mkHand(16, 6, 2, 3, 2),
       ctx("rebid-after-suit", { myPreviousBid: "1♠", partnerBid: "4♠" }),
     );
-    expect(rec.bid).toBe("4NT");
-    expect(rec.category).toContain("Slam Exploration");
+    // SAYC: a direct jump to game in opener's major is a PREEMPTIVE raise
+    // (5+ trumps, under 10 HCP, shapely).  Partner has DENIED the values a
+    // slam needs — opener must pass, not launch Blackwood.
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toContain("Preemptive");
   });
 });
 

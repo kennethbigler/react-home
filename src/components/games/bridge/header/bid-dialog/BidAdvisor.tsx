@@ -48,9 +48,13 @@ export default function BidAdvisor() {
     () => deriveSituation(auctionState, vulnerability),
     [auctionState, vulnerability],
   );
+  // Keep the aces input visible through the ENTIRE Blackwood sequence — the
+  // kings follow-up needs the ace count to veto a grand slam with an ace
+  // missing.
   const isBlackwoodAsk =
     auctionContext.situation === "blackwood-ace-response" ||
-    auctionContext.situation === "blackwood-response";
+    auctionContext.situation === "blackwood-response" ||
+    auctionContext.situation === "blackwood-kings";
   const isBlackwoodKings =
     auctionContext.situation === "blackwood-kings-response" ||
     auctionContext.situation === "blackwood-kings";
