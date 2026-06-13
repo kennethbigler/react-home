@@ -7737,3 +7737,86 @@ describe("bidding-logic | blackwood-kings accept signed-off grand slam (line 625
     expect(rec.reasoning).toMatch(/grand slam/i);
   });
 });
+
+describe("bidding-logic | advancer-rebid situation (line 9460)", () => {
+  it("opponent opened, partner overcalled, I advanced, now partner rebids simply → advancer-rebid", () => {
+    // pos4 (LHO) opened 1♣, pos1 (partner) overcalled 1♠, pos2 passed, I (pos3) advanced 2♠
+    // Round 2: pos4 passes, pos1 (partner) rebid 3♠ at game level — not an invitation jump
+    // partnerGameLvl for ♠ is 4, partnerBid 3♠ < 4 → would be invitation IF it's a jump
+    // But use 4♠ (game level) to bypass invitation check (partnerBidLevel >= partnerGameLvl)
+    const s = deriveSituation(
+      mkState({
+        myPosition: 3,
+        completedRounds: [
+          { 4: "1♣", 1: "1♠", 2: "Pass", 3: "2♠" },
+          { 4: "Pass", 1: "4♠", 2: "Pass" },
+        ],
+        currentRound: {},
+      }),
+    );
+    expect(s.situation).toBe("advancer-rebid");
+  });
+});
+
+describe("bidding-logic | overcaller-rebid situation (line 9478)", () => {
+  it("opponent opened, I overcalled, partner advanced → overcaller-rebid", () => {
+    // pos4 (LHO) opened 1♣, I (pos3) overcalled 1♠, pos2 passed, pos1 (partner) advanced 2♠
+    // Now I (pos3) need to rebid
+    const s = deriveSituation(
+      mkState({
+        myPosition: 3,
+        completedRounds: [
+          { 4: "1♣", 3: "1♠", 2: "Pass", 1: "2♠" },
+        ],
+        currentRound: { 4: "Pass", 3: undefined, 2: "Pass" },
+      }),
+    );
+    expect(s.situation).toBe("overcaller-rebid");
+  });
+});
+
+describe("bidding-logic | after-own-double via suit-opening opponent-double path (line 9703)", () => {
+  it("partner opened 1♠, I doubled in round1, RHO now doubles → after-own-double (not negative-double)", () => {
+    // pos3 (me) doubled in round 1 after partner opened.
+    // In round 2, RHO (pos2) doubles again.
+    // deriveSituationCore should detect myLastNonPassAction=Double → after-own-double.
+    const s = deriveSituation(
+      mkState({
+        myPosition: 3,
+        completedRounds: [
+          { 1: "1♠", 2: "Pass", 3: "Double", 4: "Pass" },
+        ],
+        currentRound: { 1: "Pass", 2: "Double" },
+      }),
+    );
+    expect(s.situation).toBe("after-own-double");
+  });
+});
+
+describe("bidding-logic | after-own-double via opponent-opened path (line 9808)", () => {
+  it("LHO opened 1♣, I doubled in round1, partner passed, LHO rebids → after-own-double", () => {
+    // pos3 (me): lho=pos4, rho=pos2, partner=pos1
+    // I doubled in round1 when LHO opened. Partner passed throughout.
+    // Now in round2, LHO rebids — I should re-route to after-own-double.
+    const s = deriveSituation(
+      mkState({
+        myPosition: 3,
+        completedRounds: [
+          { 4: "1♣", 3: "Double", 2: "Pass", 1: "Pass" },
+        ],
+        currentRound: { 4: "2♣" },
+      }),
+    );
+    expect(s.situation).toBe("after-own-double");
+  });
+});
+
+describe("bidding-logic | responding-to-jump-oc level-2 jump (line 9914 false branch)", () => {
+  it("RHO bid 1♣, partner jumped to 2♥ (level-2 jump overcall) → responding-to-jump-oc", () => {
+    // 2♥ over 1♣ is a jump (skips 1♦,1♥,1♠) but level 2 < 3 → not a preempt
+    const s = deriveSituation(
+      mkState({ currentRound: { 2: "1♣", 1: "2♥" } }),
+    );
+    expect(s.situation).toBe("responding-to-jump-oc");
+  });
+});
