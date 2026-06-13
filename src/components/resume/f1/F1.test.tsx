@@ -1,4 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { Provider, createStore } from "jotai";
+import themeAtom, { lightTheme } from "../../../jotai/theme-atom";
 import F1 from ".";
 
 describe("resume | f1 | F1", () => {
@@ -32,5 +34,18 @@ describe("resume | f1 | F1", () => {
         fireEvent.click(firstTrack);
       }
     }
+  }, 90000);
+
+  it("renders in light mode (covers light-theme color branch)", async () => {
+    const store = createStore();
+    store.set(themeAtom, lightTheme);
+    render(
+      <Provider store={store}>
+        <F1 />
+      </Provider>,
+    );
+    await waitFor(() => {
+      expect(screen.getByText("F1")).toBeInTheDocument();
+    });
   }, 90000);
 });

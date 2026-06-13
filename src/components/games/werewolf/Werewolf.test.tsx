@@ -1,5 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
 import Werewolf from ".";
+import WerewolfPanel from "./WerewolfPanel";
 
 describe("games | werewolf", () => {
   it("renders as expected", () => {
@@ -116,105 +118,191 @@ describe("games | werewolf", () => {
     );
   });
 
-  it("handles Mason role count changes", () => {
+  it("handles Mason role count changes (count > 0 and count = 0 branches)", () => {
     render(<Werewolf />);
-
-    // Find and expand the panel with Mason
     fireEvent.click(screen.getAllByRole("button")[1]);
 
-    // Mason should be present in the villagers
-    const masonPanel = screen.getByText("Mason");
-    expect(masonPanel).toBeInTheDocument();
+    const masonText = screen.getByText("Mason");
+    const masonSummary = masonText.closest(".MuiAccordionSummary-root")!;
+    const labels = masonSummary.querySelectorAll("label");
 
-    // Find star ratings for Mason and interact with them
-    const starInputs = screen.getAllByRole("radio");
+    // Click star label (count > 0 branch)
+    fireEvent.click(labels[0]);
+    expect(screen.queryByText(/Total:/)).toBeInTheDocument();
 
-    // Click a star to add masons
-    if (starInputs.length > 0) {
-      // Find the Mason stars (it should have count of 3)
-      fireEvent.click(starInputs[0]);
-      expect(screen.queryByText(/Total:/)).toBeInTheDocument();
-
-      // Change the count
-      fireEvent.click(starInputs[1]);
-      expect(screen.queryByText(/Total:/)).toBeInTheDocument();
-    }
+    // Click deselect label (count = 0 branch)
+    fireEvent.click(labels[labels.length - 1]);
+    expect(screen.queryByText(/Total:/)).toBeInTheDocument();
   });
 
-  it("handles Villager role count changes", () => {
+  it("handles Villager role count changes (count > 0 and count = 0 branches)", () => {
     render(<Werewolf />);
-
-    // Find and expand the panel with Villager
     fireEvent.click(screen.getAllByRole("button")[1]);
 
-    // Villager should be present in the villagers
-    const villagerPanel = screen.getByText("Villager");
-    expect(villagerPanel).toBeInTheDocument();
+    const villagerText = screen.getByText("Villager");
+    const villagerSummary = villagerText.closest(".MuiAccordionSummary-root")!;
+    const labels = villagerSummary.querySelectorAll("label");
 
-    // Find star ratings for Villager and interact with them
-    const starInputs = screen.getAllByRole("radio");
+    fireEvent.click(labels[0]);
+    expect(screen.queryByText(/Total:/)).toBeInTheDocument();
 
-    if (starInputs.length > 0) {
-      // Villager has a count of 14, so it should have many star options
-      fireEvent.click(starInputs[0]);
-      expect(screen.queryByText(/Total:/)).toBeInTheDocument();
-    }
+    fireEvent.click(labels[labels.length - 1]);
+    expect(screen.queryByText(/Total:/)).toBeInTheDocument();
   });
 
-  it("handles Vampire role count changes", () => {
+  it("handles Vampire role count changes (count > 0 and count = 0 branches)", () => {
     render(<Werewolf />);
-
-    // Find and expand the outsiders panel with Vampire
     fireEvent.click(screen.getAllByRole("button")[2]);
 
-    // Vampire should be present in the outsiders
-    const vampirePanel = screen.getByText("Vampire");
-    expect(vampirePanel).toBeInTheDocument();
+    const vampireText = screen.getByText("Vampire");
+    const vampireSummary = vampireText.closest(".MuiAccordionSummary-root")!;
+    const labels = vampireSummary.querySelectorAll("label");
 
-    // Find star ratings for Vampire and interact with them
-    const starInputs = screen.getAllByRole("radio");
+    fireEvent.click(labels[0]);
+    expect(screen.queryByText(/Total:/)).toBeInTheDocument();
 
-    if (starInputs.length > 0) {
-      fireEvent.click(starInputs[0]);
-      expect(screen.queryByText(/Total:/)).toBeInTheDocument();
-    }
+    fireEvent.click(labels[labels.length - 1]);
+    expect(screen.queryByText(/Total:/)).toBeInTheDocument();
   });
 
-  it("handles Werewolf role count changes", () => {
+  it("handles Werewolf role count changes (count > 0 and count = 0 branches)", () => {
     render(<Werewolf />);
-
-    // Find and expand the wolves panel with Werewolf
     fireEvent.click(screen.getAllByRole("button")[3]);
 
-    // Werewolf should be present in the wolves - use getAllByText since it appears multiple times
-    const werewolfPanels = screen.getAllByText("Werewolf");
-    expect(werewolfPanels.length).toBeGreaterThan(0);
+    // "Werewolf" appears as both page h2 and role name; find the one in an accordion summary
+    const werewolfTexts = screen.getAllByText("Werewolf");
+    const werewolfText = werewolfTexts.find(
+      (el) => el.closest(".MuiAccordionSummary-root") !== null,
+    )!;
+    const werewolfSummary = werewolfText.closest(".MuiAccordionSummary-root")!;
+    const labels = werewolfSummary.querySelectorAll("label");
 
-    // Find star ratings for Werewolf and interact with them
-    const starInputs = screen.getAllByRole("radio");
+    fireEvent.click(labels[0]);
+    expect(screen.queryByText(/Total:/)).toBeInTheDocument();
 
-    if (starInputs.length > 0) {
-      fireEvent.click(starInputs[0]);
-      expect(screen.queryByText(/Total:/)).toBeInTheDocument();
-    }
+    fireEvent.click(labels[labels.length - 1]);
+    expect(screen.queryByText(/Total:/)).toBeInTheDocument();
   });
 
   it("handles default role (non-countable) changes", () => {
     render(<Werewolf />);
-
-    // Find and expand the villagers panel
     fireEvent.click(screen.getAllByRole("button")[1]);
 
-    // Seer is a non-countable role (no count property)
-    const seerPanel = screen.getByText("Seer");
-    expect(seerPanel).toBeInTheDocument();
+    const seerText = screen.getByText("Seer");
+    expect(seerText).toBeInTheDocument();
 
-    // Find star ratings and interact
-    const starInputs = screen.getAllByRole("radio");
+    const seerSummary = seerText.closest(".MuiAccordionSummary-root")!;
+    const labels = seerSummary.querySelectorAll("label");
 
-    if (starInputs.length > 0) {
-      fireEvent.click(starInputs[0]);
-      expect(screen.queryByText(/Total:/)).toBeInTheDocument();
-    }
+    fireEvent.click(labels[0]);
+    expect(screen.queryByText(/Total:/)).toBeInTheDocument();
+  });
+});
+
+describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
+  const handleChange = vi.fn(() => vi.fn());
+
+  it("Mason: count > 0 branch (star click) and count = 0 branch (deselect)", () => {
+    const handleStar = vi.fn();
+    const { container } = render(
+      <WerewolfPanel
+        expanded=""
+        expandedKey="mason-0"
+        handleChange={handleChange}
+        handleStar={handleStar}
+        name="Mason"
+        description="test"
+        value={2}
+        count={3}
+      />,
+    );
+    const labels = container.querySelectorAll("label");
+    // Click star 1 (count = 1, true branch)
+    fireEvent.click(labels[0]);
+    expect(handleStar).toHaveBeenCalledWith(2, 1, "Mason");
+    // Click deselect label (count = 0, false branch)
+    fireEvent.click(labels[labels.length - 1]);
+    expect(handleStar).toHaveBeenCalledWith(-2, 0, "Mason");
+  });
+
+  it("Villager: count > 0 branch and count = 0 branch", () => {
+    const handleStar = vi.fn();
+    const { container } = render(
+      <WerewolfPanel
+        expanded=""
+        expandedKey="villager-0"
+        handleChange={handleChange}
+        handleStar={handleStar}
+        name="Villager"
+        description="test"
+        value={1}
+        count={5}
+      />,
+    );
+    const labels = container.querySelectorAll("label");
+    fireEvent.click(labels[0]);
+    expect(handleStar).toHaveBeenCalledWith(1, 1, "Villager");
+    fireEvent.click(labels[labels.length - 1]);
+    expect(handleStar).toHaveBeenCalledWith(-1, 0, "Villager");
+  });
+
+  it("Vampire: count > 0 branch and count = 0 branch", () => {
+    const handleStar = vi.fn();
+    const { container } = render(
+      <WerewolfPanel
+        expanded=""
+        expandedKey="vampire-0"
+        handleChange={handleChange}
+        handleStar={handleStar}
+        name="Vampire"
+        description="test"
+        value={-7}
+        count={8}
+      />,
+    );
+    const labels = container.querySelectorAll("label");
+    fireEvent.click(labels[0]);
+    expect(handleStar).toHaveBeenCalledWith(-7, 1, "Vampire");
+    fireEvent.click(labels[labels.length - 1]);
+    expect(handleStar).toHaveBeenCalledWith(7, 0, "Vampire");
+  });
+
+  it("Werewolf: count > 0 branch and count = 0 branch", () => {
+    const handleStar = vi.fn();
+    const { container } = render(
+      <WerewolfPanel
+        expanded=""
+        expandedKey="werewolf-0"
+        handleChange={handleChange}
+        handleStar={handleStar}
+        name="Werewolf"
+        description="test"
+        value={-6}
+        count={12}
+      />,
+    );
+    const labels = container.querySelectorAll("label");
+    fireEvent.click(labels[0]);
+    expect(handleStar).toHaveBeenCalledWith(-6, 1, "Werewolf");
+    fireEvent.click(labels[labels.length - 1]);
+    expect(handleStar).toHaveBeenCalledWith(6, 0, "Werewolf");
+  });
+
+  it("default role (no count): triggers default branch", () => {
+    const handleStar = vi.fn();
+    const { container } = render(
+      <WerewolfPanel
+        expanded=""
+        expandedKey="seer-0"
+        handleChange={handleChange}
+        handleStar={handleStar}
+        name="Seer"
+        description="test"
+        value={7}
+      />,
+    );
+    const labels = container.querySelectorAll("label");
+    fireEvent.click(labels[0]);
+    expect(handleStar).toHaveBeenCalledWith(7, 1, "Seer");
   });
 });

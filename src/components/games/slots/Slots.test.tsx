@@ -37,10 +37,25 @@ describe("games | slots | Slots", () => {
     expect(screen.getAllByText("12 : 1")).toHaveLength(2);
     expect(screen.getByText("6 : 1")).toBeInTheDocument();
     expect(screen.getByText("3 : 1")).toBeInTheDocument();
-    // spin the button
+    // spin the button — no winning combo, so exchange is negative ("lost")
     fireEvent.click(screen.getByText("Spin"));
     expect(screen.getByText("You ", { exact: false })).toBeInTheDocument();
+    expect(screen.getByText(/lost/)).toBeInTheDocument();
     pullHandle.mockRestore();
+  });
+
+  it("shows 'won' message when payout exceeds bet", () => {
+    // Three jackpots in the middle row = large payout, positive exchange
+    vi.spyOn(slotMachine, "pullHandle").mockImplementation(() => [
+      [SO.EMPTY, SO.JACKPOT, SO.EMPTY],
+      [SO.EMPTY, SO.JACKPOT, SO.EMPTY],
+      [SO.EMPTY, SO.JACKPOT, SO.EMPTY],
+    ]);
+    render(<Slots />);
+
+    fireEvent.click(screen.getByText("Spin"));
+    expect(screen.getByText(/won/)).toBeInTheDocument();
+    vi.restoreAllMocks();
   });
 
   describe("apis | slotMachine", () => {
