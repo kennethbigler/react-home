@@ -39,7 +39,7 @@ describe("jotai | yahtzee-state", () => {
       const base = store.get(yahtzeeState);
       store.set(yahtzeeState, {
         ...base,
-        topScores: [3, 6, 9, 12, 15, 18],       // 6 scores
+        topScores: [3, 6, 9, 12, 15, 18], // 6 scores
         bottomScores: [25, 30, 40, 50, 0, 0, 10], // 7 scores → total 13
         money: 100,
       });

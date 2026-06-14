@@ -131,7 +131,7 @@ describe("games | yahtzee | Yahtzee", () => {
     // Fill all 13 score slots so finish=true
     store.set(yahtzeeState, {
       ...base,
-      topScores: [3, 6, 9, 12, 15, 18],       // 6 scores
+      topScores: [3, 6, 9, 12, 15, 18], // 6 scores
       bottomScores: [25, 30, 40, 50, 0, 0, 10], // 7 scores → 13 total
       roll: 0,
       showScoreButtons: false,

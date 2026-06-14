@@ -18,7 +18,15 @@ describe("games | game-table | Card", () => {
   it("calls cardHandler with correct args when clicked (line 28 true branch)", () => {
     const handler = vi.fn();
     render(
-      <Card cardNo={2} dropped={false} handNo={1} name="A" playerNo={0} suit="♠" cardHandler={handler} />,
+      <Card
+        cardNo={2}
+        dropped={false}
+        handNo={1}
+        name="A"
+        playerNo={0}
+        suit="♠"
+        cardHandler={handler}
+      />,
     );
     fireEvent.click(screen.getByRole("button"));
     expect(handler).toHaveBeenCalledWith(0, 1, 2);
@@ -26,7 +34,14 @@ describe("games | game-table | Card", () => {
 
   it("does not throw when clicked without cardHandler (line 28 false branch)", () => {
     render(
-      <Card cardNo={0} dropped={false} handNo={0} name="2" playerNo={1} suit="♣" />,
+      <Card
+        cardNo={0}
+        dropped={false}
+        handNo={0}
+        name="2"
+        playerNo={1}
+        suit="♣"
+      />,
     );
     expect(() => fireEvent.click(screen.getByRole("button"))).not.toThrow();
   });

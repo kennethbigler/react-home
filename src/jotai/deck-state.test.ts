@@ -154,7 +154,9 @@ describe("jotai | deck-state", () => {
       const updatedPlayers = store.get(playerAtom);
       const player = updatedPlayers.find((p) => p.id === playerId)!;
       expect(player.hands[0].cards.length).toBeGreaterThanOrEqual(1);
-      expect(player.hands[0].cards.some((c) => c.name === "K" && c.suit === "♠")).toBe(true);
+      expect(
+        player.hands[0].cards.some((c) => c.name === "K" && c.suit === "♠"),
+      ).toBe(true);
     });
   });
 });
