@@ -502,7 +502,9 @@ describe("Bridge Score Helper", () => {
         "♥️", // major
         true, // isDouble
         false, // isRedouble
-        false, false, false,
+        false,
+        false,
+        false,
         true, // weVulnerable → isVulnerable=true (made bid, isWe)
         false,
       );
@@ -520,7 +522,9 @@ describe("Bridge Score Helper", () => {
         "♠️",
         true, // isDouble
         true, // isRedouble
-        false, false, false,
+        false,
+        false,
+        false,
         true, // weVulnerable
         false,
       );
@@ -531,7 +535,15 @@ describe("Bridge Score Helper", () => {
 
     it("small slam bonus when vulnerable (line 60 isVulnerable true branch)", () => {
       const result = useBridgeScorer(
-        12, 6, true, "♠️", false, false, false, false, false,
+        12,
+        6,
+        true,
+        "♠️",
+        false,
+        false,
+        false,
+        false,
+        false,
         true, // weVulnerable
         false,
       );
@@ -541,7 +553,15 @@ describe("Bridge Score Helper", () => {
 
     it("grand slam bonus when vulnerable (line 62 isVulnerable true branch)", () => {
       const result = useBridgeScorer(
-        13, 7, true, "♠️", false, false, false, false, false,
+        13,
+        7,
+        true,
+        "♠️",
+        false,
+        false,
+        false,
+        false,
+        false,
         true, // weVulnerable
         false,
       );
@@ -562,7 +582,9 @@ describe("Bridge Score Helper", () => {
         "♣️",
         false, // isDouble
         true, // isRedouble
-        false, false, false,
+        false,
+        false,
+        false,
         false,
         true, // theyVulnerable → isVulnerable=true for failed isWe bid
       );

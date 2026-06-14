@@ -16,7 +16,7 @@ interface PlayerProps {
   isBlackJack: boolean;
   player: DBPlayer;
   playerNo: number;
-  turn: TurnState;
+  turn: TurnState | null;
 }
 
 const Player = ({

@@ -23,7 +23,10 @@ describe("games | game-table | Hand", () => {
   });
 
   it("renders null for null cards in hand (line 59 false branch)", () => {
-    const hand: DBHand = { cards: [null as unknown as typeof card, card], weight: 14 };
+    const hand: DBHand = {
+      cards: [null as unknown as typeof card, card],
+      weight: 14,
+    };
     render(
       <Hand
         cardsToDiscard={[]}
