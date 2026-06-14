@@ -491,4 +491,84 @@ describe("Bridge Score Helper", () => {
       });
     });
   });
+
+  describe("Vulnerable branches", () => {
+    it("overtricks with doubled contract when vulnerable (line 73 isVulnerable true branch)", () => {
+      // isDouble=true, isVulnerable=true → multiplier = 1*2*1 = 2
+      const result = useBridgeScorer(
+        9, // declarerTricks (2 overtricks above 1+6=7)
+        1, // contractTricks
+        true, // isWe
+        "♥️", // major
+        true, // isDouble
+        false, // isRedouble
+        false, false, false,
+        true, // weVulnerable → isVulnerable=true (made bid, isWe)
+        false,
+      );
+      expect(result.madeBid).toBe(true);
+      // 2 overtricks * 100 * 2 (vulnerable) + 50 (doubled bonus) = 450
+      expect(result.belowTheLine).toBe(450);
+    });
+
+    it("overtricks with redoubled contract when vulnerable (line 73 both true)", () => {
+      // isDouble=true, isRedouble=true, isVulnerable=true → multiplier = 1*2*2 = 4
+      const result = useBridgeScorer(
+        9, // 2 overtricks
+        1,
+        true,
+        "♠️",
+        true, // isDouble
+        true, // isRedouble
+        false, false, false,
+        true, // weVulnerable
+        false,
+      );
+      expect(result.madeBid).toBe(true);
+      // 2 overtricks * 100 * 4 + 100 (redoubled bonus) = 900
+      expect(result.belowTheLine).toBe(900);
+    });
+
+    it("small slam bonus when vulnerable (line 60 isVulnerable true branch)", () => {
+      const result = useBridgeScorer(
+        12, 6, true, "♠️", false, false, false, false, false,
+        true, // weVulnerable
+        false,
+      );
+      expect(result.madeBid).toBe(true);
+      expect(result.belowTheLine).toBe(500);
+    });
+
+    it("grand slam bonus when vulnerable (line 62 isVulnerable true branch)", () => {
+      const result = useBridgeScorer(
+        13, 7, true, "♠️", false, false, false, false, false,
+        true, // weVulnerable
+        false,
+      );
+      expect(result.madeBid).toBe(true);
+      expect(result.belowTheLine).toBe(1000);
+    });
+
+    it("undertricks with vulnerable + redouble (line 96 lookupIdx=1, multiplier=2)", () => {
+      // failed bid: isWe=true, theyVulnerable is irrelevant; winner=they, isVulnerable=theyVulnerable=false
+      // To get vulnerable=true on failed bid: isWe=false (they bid), theyVulnerable=true
+      // winner=we, isVulnerable = isWe ? theyVulnerable : weVulnerable = false ? theyVulnerable : false
+      // Actually: failed bid → winner = !isWe ? "we" : "they"; isVulnerable = isWe ? theyVulnerable : weVulnerable
+      // isWe=true, failed → isVulnerable = theyVulnerable
+      const result = useBridgeScorer(
+        6, // 1 undertrick (needs 7)
+        1,
+        true, // isWe
+        "♣️",
+        false, // isDouble
+        true, // isRedouble
+        false, false, false,
+        false,
+        true, // theyVulnerable → isVulnerable=true for failed isWe bid
+      );
+      expect(result.madeBid).toBe(false);
+      // undertricks=0, lookupIdx = 0 + 1 (vulnerable) + 0 (not doubled) = 1, multiplier=2
+      expect(result.belowTheLine).toBe(undertrickTable[0][1] * 2); // 100 * 2 = 200
+    });
+  });
 });

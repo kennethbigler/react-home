@@ -879,4 +879,39 @@ describe("games | bridge | ScoreDialog", () => {
       expect(redoubleInput.checked).toBe(false);
     });
   });
+
+  it("handleSave with redoubled bid appends two ❗️ to bids string (line 137 both isDouble and isRedouble true)", async () => {
+    const store = createStore();
+    store.set(bridgeAtom, defaultState);
+
+    render(
+      <Provider store={store}>
+        <ScoreDialog />
+      </Provider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /score/i }));
+    await waitFor(() => {
+      expect(screen.getByText("Contract")).toBeInTheDocument();
+    });
+
+    // Check Redoubled (auto-enables Double too)
+    const redoubleLabel = screen.getByText(/^Redoubled\?/).closest("label");
+    const redoubleInput = redoubleLabel?.querySelector(
+      'input[type="checkbox"]',
+    ) as HTMLInputElement;
+    fireEvent.click(redoubleInput);
+
+    await waitFor(() => {
+      expect(redoubleInput.checked).toBe(true);
+    });
+
+    const saveButton = screen.getByRole("button", { name: /save/i });
+    fireEvent.click(saveButton);
+
+    const state = store.get(bridgeAtom);
+    expect(state.bids.length).toBeGreaterThan(0);
+    // Both isDouble and isRedouble true → two ❗️ appended
+    expect(state.bids[0]).toContain("❗️❗️");
+  });
 });

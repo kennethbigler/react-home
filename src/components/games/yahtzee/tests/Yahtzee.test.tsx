@@ -1,5 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import { Provider, createStore } from "jotai";
 import Yahtzee from "..";
+import yahtzeeState from "../../../../jotai/yahtzee-state";
 
 describe("games | yahtzee | Yahtzee", () => {
   it("renders as expected", () => {
@@ -121,5 +123,32 @@ describe("games | yahtzee | Yahtzee", () => {
     ];
     const submittedValue = parseInt(textContent[4] + textContent[5], 10);
     expect(screen.getAllByText(`${submittedValue}`)).toHaveLength(3);
+  });
+
+  it("shows 'New Game' button when game is finished (lines 95, 49-51 true branch)", () => {
+    const store = createStore();
+    const base = store.get(yahtzeeState);
+    // Fill all 13 score slots so finish=true
+    store.set(yahtzeeState, {
+      ...base,
+      topScores: [3, 6, 9, 12, 15, 18],       // 6 scores
+      bottomScores: [25, 30, 40, 50, 0, 0, 10], // 7 scores → 13 total
+      roll: 0,
+      showScoreButtons: false,
+      values: [0, 0, 0, 0, 0],
+      saved: [],
+      money: 100,
+    });
+
+    render(
+      <Provider store={store}>
+        <Yahtzee />
+      </Provider>,
+    );
+
+    // finish=true → getButtonText returns "New Game"
+    expect(screen.getByText("New Game")).toBeInTheDocument();
+    // Clicking calls newGame (line 49-51 true branch) — no throw expected
+    expect(() => fireEvent.click(screen.getByText("New Game"))).not.toThrow();
   });
 });

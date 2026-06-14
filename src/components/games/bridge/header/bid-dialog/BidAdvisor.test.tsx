@@ -322,4 +322,20 @@ describe("games | bridge | BidAdvisor", () => {
       screen.getByLabelText("Has stopper in opponent's suit"),
     ).toBeInTheDocument();
   });
+
+  it("opponentSuitSymbol is empty when opponent bids NT (line 91 null path)", () => {
+    render(<BidAdvisor />);
+    // Position 2: RHO(1st) bids 1NT — not a suit bid so opponentSuitName=null
+    fireEvent.click(screen.getByLabelText("Position 2nd"));
+    const hcpInput = screen.getByLabelText("HCP value");
+    fireEvent.change(hcpInput, { target: { value: "8" } });
+    fireEvent.mouseDown(screen.getByLabelText(/RHO \(1st\)/i));
+    const listbox = screen.getByRole("listbox");
+    fireEvent.click(within(listbox).getAllByText("1NT")[0]);
+    // isOpponentSuitBid=false → opponentSuitName=null → opponentSuitSymbol=""
+    // No stopper input shown since opponent bid NT not a suit
+    expect(
+      screen.queryByLabelText("Has stopper in opponent's suit"),
+    ).not.toBeInTheDocument();
+  });
 });

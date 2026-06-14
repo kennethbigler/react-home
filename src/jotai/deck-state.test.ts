@@ -6,8 +6,10 @@ import {
   deckAtom,
   lastDealtCardsAtom,
   dealCardsAtom,
+  dealPokerAtom,
   shuffleAtom,
 } from "./deck-state";
+import playerAtom from "./player-atom";
 
 const cardNames = [
   "2",
@@ -113,6 +115,46 @@ describe("jotai | deck-state", () => {
       store.set(dealCardsAtom, 1);
       const second = store.get(lastDealtCardsAtom)[0];
       expect(first).not.toEqual(second);
+    });
+  });
+
+  describe("dealPokerAtom", () => {
+    let store: ReturnType<typeof createStore>;
+
+    beforeEach(() => {
+      store = createStore();
+      store.set(shuffleAtom);
+    });
+
+    it("deals cards to player when deck has enough (lines 125-132 true branch)", () => {
+      const players = store.get(playerAtom);
+      const playerId = players[0].id;
+      store.set(dealPokerAtom, 2, playerId, []);
+      const updatedPlayers = store.get(playerAtom);
+      const player = updatedPlayers.find((p) => p.id === playerId)!;
+      expect(player.hands[0].cards).toHaveLength(2);
+    });
+
+    it("does not deal when deck is empty (lines 125-132 false branch)", () => {
+      const players = store.get(playerAtom);
+      const playerId = players[0].id;
+      // Empty the deck
+      store.set(deckAtom, []);
+      store.set(dealPokerAtom, 5, playerId, []);
+      const updatedPlayers = store.get(playerAtom);
+      const player = updatedPlayers.find((p) => p.id === playerId)!;
+      expect(player.hands[0].cards).toHaveLength(0);
+    });
+
+    it("preserves prevCards when dealing (dealPokerAtom with prevCards)", () => {
+      const players = store.get(playerAtom);
+      const playerId = players[0].id;
+      const prevCard = { name: "K", suit: "♠", weight: 13 };
+      store.set(dealPokerAtom, 1, playerId, [prevCard]);
+      const updatedPlayers = store.get(playerAtom);
+      const player = updatedPlayers.find((p) => p.id === playerId)!;
+      expect(player.hands[0].cards.length).toBeGreaterThanOrEqual(1);
+      expect(player.hands[0].cards.some((c) => c.name === "K" && c.suit === "♠")).toBe(true);
     });
   });
 });

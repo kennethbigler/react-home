@@ -1,16 +1,20 @@
 import { memo, CSSProperties } from "react";
 import { Grid, Typography, IconButton, useTheme } from "@mui/material";
 
-interface TrackProps {
+export interface TrackData {
   circuitLen: number;
   circuitName: string;
   circuitSubName?: string;
-  expanded: string;
   firstGP: number;
   imgSrc: string;
+  next?: boolean;
   numLaps: number;
   raceLen: number;
   skipped?: boolean;
+}
+
+interface TrackProps extends TrackData {
+  expanded: string;
   onClick: (circuitName: string) => () => void;
 }
 
@@ -24,6 +28,7 @@ const Track = memo(
     expanded,
     firstGP,
     imgSrc,
+    next,
     numLaps,
     raceLen,
     skipped,
@@ -42,11 +47,14 @@ const Track = memo(
     if (isExpanded) {
       gridStyles.textAlign = "center";
     }
-    if (skipped) {
-      gridStyles.border = `2px solid ${muiTheme.palette.error.main}`;
+    if (skipped || next) {
+      const highlightColor = skipped
+        ? muiTheme.palette.error.main
+        : muiTheme.palette.info.main;
+      gridStyles.border = `2px solid ${highlightColor}`;
       gridStyles.padding = "2px";
-      headingStyles.color = muiTheme.palette.error.main;
-      txtStyles.color = muiTheme.palette.error.main;
+      headingStyles.color = highlightColor;
+      txtStyles.color = highlightColor;
     }
 
     return (

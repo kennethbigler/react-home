@@ -530,6 +530,38 @@ describe("games | bridge | AuctionContext", () => {
     ).toBeInTheDocument();
   });
 
+  // ── BidChip close toggle (line 304 — click again to close) ──────────────────
+
+  it("clicking an open chip again toggles it back to closed ('tap to show')", () => {
+    const stateWithRounds: AuctionState = {
+      ...defaultState,
+      myPosition: 3,
+      completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2♣", 4: "Pass" }],
+    };
+    renderAuctionContext(stateWithRounds);
+    const chip = screen.getByRole("button", {
+      name: /Partner \(1st\): 1NT — tap to show meaning/i,
+    });
+    // Open it
+    fireEvent.click(chip);
+    expect(
+      screen.getByRole("button", {
+        name: /Partner \(1st\): 1NT — tap to hide meaning/i,
+      }),
+    ).toBeInTheDocument();
+    // Close it again (false branch of setOpen toggle)
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: /Partner \(1st\): 1NT — tap to hide meaning/i,
+      }),
+    );
+    expect(
+      screen.getByRole("button", {
+        name: /Partner \(1st\): 1NT — tap to show meaning/i,
+      }),
+    ).toBeInTheDocument();
+  });
+
   // ── Passed-out hand: isComplete=true but finalContract=undefined (line 494 false) ──
 
   it("passed-out hand shows 'Bidding complete' alert without a final contract", () => {
