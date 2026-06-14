@@ -32,20 +32,9 @@ import turkeySrc from "../../../images/tracks/Turkey_Circuit.avif";
 import tuscanySrc from "../../../images/tracks/Tuscany_Circuit.avif";
 import germanySrc from "../../../images/tracks/Germany_Circuit.avif";
 import germanyHSrc from "../../../images/tracks/Germany_Circuit_Hockenheim.avif";
-import Track from "./Track";
+import Track, { TrackData } from "./Track";
 import ExpandableCard from "../../common/expandable-card";
 import { FERRARI_HEX } from "../../../constants/f1";
-
-interface TrackData {
-  circuitName: string;
-  circuitSubName?: string;
-  imgSrc: string;
-  circuitLen: number;
-  firstGP: number;
-  numLaps: number;
-  raceLen: number;
-  skipped?: boolean;
-}
 
 const CURRENT_TRACKS: TrackData[] = [
   {
@@ -129,6 +118,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1970,
     numLaps: 71,
     raceLen: 307.018,
+    next: true,
   },
   {
     circuitName: "Silverstone Circuit, Great Britain",

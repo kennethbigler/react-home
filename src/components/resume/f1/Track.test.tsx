@@ -72,4 +72,27 @@ describe("resume | f1 | Track", () => {
 
     expect(screen.getByText("Monaco")).toBeInTheDocument();
   });
+
+  it("renders all content when next is true", () => {
+    render(<Track {...defaultProps} next={true} />);
+
+    expect(screen.getByText("Monaco")).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: "Monaco track layout" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("First Grand Prix")).toBeInTheDocument();
+    expect(screen.getByText("1950")).toBeInTheDocument();
+  });
+
+  it("renders when next is false", () => {
+    render(<Track {...defaultProps} next={false} />);
+
+    expect(screen.getByText("Monaco")).toBeInTheDocument();
+  });
+
+  it("renders when next is omitted", () => {
+    render(<Track {...defaultProps} />);
+
+    expect(screen.getByText("Monaco")).toBeInTheDocument();
+  });
 });
