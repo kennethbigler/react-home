@@ -3,6 +3,12 @@ import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
 import ResumeRoutes from "./Routes";
 
+// Keep this route smoke test focused on routing. The Cars page has dedicated
+// tests, and rendering several Highcharts instances makes jsdom cleanup flaky.
+vi.mock("./cars/graphs/CarGraphs", () => ({
+  default: () => <div data-testid="car-graphs" />,
+}));
+
 const routeCases = [
   { path: "/", heading: "Summary" },
   { path: "/work", heading: "Experience" },
