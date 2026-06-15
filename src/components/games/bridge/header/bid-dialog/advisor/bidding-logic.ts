@@ -2718,6 +2718,26 @@ function getOvercall(
     }
   }
 
+  // Takeout / optional doubles are a LOW-LEVEL tool.  Over a freely-bid game
+  // (the opponents at the 4-level or higher), a double is PENALTY — it shows
+  // defensive tricks (trump length/strength), NOT shortness asking partner to
+  // bid.  Do not recommend an automatic takeout double here; with a hand that
+  // is short in their suit (no penalty double) and a partner who has shown
+  // nothing, the sound action is to pass.
+  const opponentLevel = parseInt(opponentBid[0]) || 0;
+  if (opponentLevel >= 4) {
+    return {
+      bid: "Pass",
+      category: "Pass (Double Would Be Penalty at the Game Level)",
+      reasoning: `The opponents have bid to ${opponentBid}, a game-level contract. A takeout double only applies at low levels — a double of a freely-bid game is PENALTY, showing defensive tricks (length and strength in their trump suit), not shortness. With ${hcp} HCP and ${inOpponentSuit} card${inOpponentSuit === 1 ? "" : "s"} in their ${suitOpponent} suit, you do not have a penalty double, and your partner has not shown values. Pass and defend.`,
+      handAnalysis: analysis,
+      whatYourBidTellsPartner:
+        "No penalty double of their game and partner has shown nothing — passing to defend.",
+      expectedResponses: [],
+      confidence: "high",
+    };
+  }
+
   // Takeout Double (12-15 HCP, short in opponent's suit, good shape — 3+ cards in each unbid suit)
   // Requires hasGoodShape: a takeout double promises support for all unbid suits.
   // Only check the three suits NOT bid by the opponent.
@@ -3216,6 +3236,27 @@ function getResponseToSimpleOC(
         };
       }
       // No sensible cue available — fall through to the raise logic below.
+    }
+
+    // A single raise of partner's overcall promises real support values —
+    // about 6-10 support points (HCP + shortness).  With only 3-card support
+    // (an 8-card fit, where LoTT caps the side at the 2-level anyway) and a
+    // near-bust, pass: raising on a flat minimum overstates the hand and can
+    // push partner past a safe contract.  With 4+ trumps the extra trump and
+    // shape justify a preemptive raise, so this floor only applies to a bare
+    // 3-card raise.
+    const supportPts = calcTPWithFit(hand);
+    if (mySupport === 3 && supportPts < 6) {
+      return {
+        bid: "Pass",
+        category: "Pass (Too Weak to Raise — 3-card support, under 6 pts)",
+        reasoning: `You have 3-card support for partner's ${partnerBid} overcall, but only ${supportPts} support points (${hcp} HCP, no offsetting shortness). A single raise of an overcall shows about 6-10 support points; with a flat minimum this weak, raising overstates your hand and can push partner too high. Pass — partner's overcall is limited and you have no extra trumps or shape to bid on.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner:
+          "Fewer than 6 support points with only 3 trumps — no raise; defending or awaiting developments.",
+        expectedResponses: [],
+        confidence: "high",
+      };
     }
 
     // Law of Total Tricks: with N total trumps, your side is "safe" at the

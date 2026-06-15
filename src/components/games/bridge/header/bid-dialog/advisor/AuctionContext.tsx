@@ -131,6 +131,20 @@ function lastActionBySeat(
   return out;
 }
 
+/** The slice of a round containing only the seats that bid BEFORE `pos`.
+ *  Threaded into the history helpers as the in-progress round so a bid is
+ *  read in the context of earlier seats in its OWN round — not just prior
+ *  completed rounds.  Without this, partner's same-round bid is invisible and
+ *  a raise reads as a "second suit" / a response reads as an "overcall". */
+function roundBefore(round: BidRound, pos: BiddingPosition): BidRound {
+  const out: BidRound = {};
+  for (let p = 1; p < pos; p++) {
+    const b = round[p as BiddingPosition];
+    if (b !== undefined) out[p as BiddingPosition] = b;
+  }
+  return out;
+}
+
 /** The first real bid of the auction (bid values are unique, so equality
  *  against this identifies openings exactly). */
 function auctionOpeningBidOf(
@@ -387,17 +401,23 @@ function CompletedRoundRow({
         })();
 
         const chipLabel = `${isMe ? "Me" : getRelationshipLabel(pos, myPosition)}: ${bid}`;
-        // The seat's own previous real bid (earlier rounds only) — lets the
-        // tooltip describe a REBID instead of mislabeling it as an opening.
+        // History before this seat's turn = all prior completed rounds PLUS the
+        // earlier seats in THIS round.  Threading the same-round earlier bids is
+        // what lets the tooltip see partner's bid made earlier this round (so a
+        // raise is not mislabeled a "second suit", nor a response an "overcall").
+        const priorRounds = allCompletedRounds.slice(0, roundIndex);
+        const thisRoundBefore = roundBefore(round, pos);
+        // The seat's own previous real bid — lets the tooltip describe a REBID
+        // instead of mislabeling it as an opening.
         const bidderPreviousBid = lastRealBidBySeat(
-          allCompletedRounds.slice(0, roundIndex),
-          undefined,
+          priorRounds,
+          thisRoundBefore,
           pos,
         );
         const bidderPartnerPreviousBid =
           lastActionBySeat(
-            allCompletedRounds.slice(0, roundIndex),
-            undefined,
+            priorRounds,
+            thisRoundBefore,
             getRelatives(pos).partner,
           ) ?? "none"; // "none" = known to have no previous action
         const tooltipTitle = getBidMeaning(
@@ -696,13 +716,13 @@ export default function AuctionContextInput({
                     prevHighBid={lastBid}
                     bidderPreviousBid={lastRealBidBySeat(
                       completedRounds,
-                      undefined,
+                      roundBefore(currentRound, pos),
                       pos,
                     )}
                     bidderPartnerPreviousBid={
                       lastActionBySeat(
                         completedRounds,
-                        undefined,
+                        roundBefore(currentRound, pos),
                         getRelatives(pos).partner,
                       ) ?? "none"
                     }
@@ -799,6 +819,18 @@ export default function AuctionContextInput({
               const val = nextRoundBids[pos] ?? "Pass";
               const rel = getRelationship(pos, myPosition);
               const label = getRelationshipLabel(pos, myPosition);
+              // The in-progress round as seen from `pos`: the seats before me
+              // (currentRound), then my bid, then the after-me seats that act
+              // before `pos`.  Threading this lets a seat see partner's bid made
+              // earlier in the same round (e.g. my bid, when partner = me-side).
+              const roundSoFar: BidRound = {
+                ...currentRound,
+                [myPosition]: myBidCurrent,
+              };
+              for (const earlier of positionsAfter.slice(0, idx)) {
+                roundSoFar[earlier] = nextRoundBids[earlier] ?? "Pass";
+              }
+              const thisRoundBefore = roundBefore(roundSoFar, pos);
               return (
                 <BidSlot
                   key={pos}
@@ -812,19 +844,19 @@ export default function AuctionContextInput({
                   prevHighBid={effectiveLast}
                   bidderPreviousBid={lastRealBidBySeat(
                     completedRounds,
-                    currentRound,
+                    thisRoundBefore,
                     pos,
                   )}
                   bidderPartnerPreviousBid={
                     lastActionBySeat(
                       completedRounds,
-                      currentRound,
+                      thisRoundBefore,
                       getRelatives(pos).partner,
                     ) ?? "none"
                   }
                   auctionOpeningBid={auctionOpeningBidOf(
                     completedRounds,
-                    currentRound,
+                    roundSoFar,
                   )}
                 />
               );

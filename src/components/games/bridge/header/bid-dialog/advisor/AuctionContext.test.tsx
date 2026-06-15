@@ -366,6 +366,42 @@ describe("games | bridge | AuctionContext", () => {
     expect(screen.getAllByText(/Pass/).length).toBeGreaterThan(0);
   });
 
+  it("completed-round hover threads same-round partner bid: 4♥ raising opener's 2♥ reads as a RAISE (manual Test 2 pt1)", () => {
+    // Auction 1♠-1NT-2♥-4♥: partner (seat 1) showed hearts with the 2♥ rebid
+    // EARLIER IN ROUND 2, then seat 3's 4♥ raises it.  Viewing as seat 1, the
+    // chip for seat 3's 4♥ must read as a raise of partner's suit, not a
+    // "second suit" of seat 3's own.
+    const state: AuctionState = {
+      myPosition: 1,
+      currentRound: {},
+      completedRounds: [
+        { 1: "1♠", 2: "Pass", 3: "1NT", 4: "Pass" },
+        { 1: "2♥", 2: "Pass", 3: "4♥", 4: "Double" },
+      ],
+    };
+    renderAuctionContext(state);
+    fireEvent.click(screen.getByText("Partner (3rd): 4♥"));
+    expect(
+      screen.getByText(/RAISE of their partner's 2♥/i),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/second suit/i)).not.toBeInTheDocument();
+  });
+
+  it("completed-round hover threads same-round partner bid: opener's-partner 1♥ reads as a RESPONSE, not overcall (manual Test 3)", () => {
+    // Auction P-1♣-P-1♥: seat 4's partner (seat 2) opened 1♣ earlier the SAME
+    // round.  Viewing as seat 1, the chip for seat 4's 1♥ must read as a
+    // response to partner's 1♣, never an overcall.
+    const state: AuctionState = {
+      myPosition: 1,
+      currentRound: {},
+      completedRounds: [{ 1: "Pass", 2: "1♣", 3: "Pass", 4: "1♥" }],
+    };
+    renderAuctionContext(state);
+    fireEvent.click(screen.getByText("RHO (4th): 1♥"));
+    expect(screen.getByText(/response/i)).toBeInTheDocument();
+    expect(screen.queryByText(/overcall/i)).not.toBeInTheDocument();
+  });
+
   // ── Info icons on dropdowns ───────────────────────────────────────────────────
 
   it("shows ⓘ icon next to dropdown when a non-Pass bid is selected", () => {
