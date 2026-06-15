@@ -924,6 +924,29 @@ describe("bidding-logic | overcalling", () => {
     expect(rec.category).toContain("Takeout");
   });
 
+  it("12-15 HCP shapely but opponents at game (4♥) → Pass, not a takeout double", () => {
+    // Regression (manual Test 2): facing opponents who freely bid to 4♥, a
+    // double is PENALTY, not takeout.  A 12 HCP hand short in hearts has no
+    // penalty double, so the engine must pass — it must NOT label this takeout.
+    const rec = getRecommendation(
+      mkHand(12, 3, 1, 5, 4),
+      ctx("overcalling", { rhoBid: "4♥" }),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).not.toContain("Takeout");
+    expect(rec.reasoning.toLowerCase()).toContain("penalty");
+  });
+
+  it("3-level takeout double still allowed (over a 3♣ preempt)", () => {
+    // Guard the cap: takeout doubles remain valid through the 3-level.
+    const rec = getRecommendation(
+      mkHand(14, 4, 4, 4, 1),
+      ctx("overcalling", { rhoBid: "3♣" }),
+    );
+    expect(rec.bid).toBe("Double");
+    expect(rec.category).toContain("Takeout");
+  });
+
   it("8-15 HCP, 5-card suit → specific overcall bid (e.g. 1♠ over 1♥)", () => {
     const rec = getRecommendation(
       mkHand(12, 5, 4, 3, 1),
@@ -1338,6 +1361,37 @@ describe("bidding-logic | responding-to-simple-oc", () => {
     );
     expect(rec.bid).toBe("2♥");
     expect(rec.reasoning).toContain("Law of Total Tricks");
+  });
+
+  it("3-card support but flat near-bust (4 HCP) → Pass, not a raise", () => {
+    // Regression (manual Test 1): partner overcalled 1♦, we hold a flat
+    // S4 H3 C3 D3 with 4 HCP and 3-card support.  A single raise promises
+    // ~6+ support points; this hand is too weak — it must pass, not raise to 2♦.
+    const rec = getRecommendation(
+      mkHand(4, 4, 3, 3, 3),
+      ctx("responding-to-simple-oc", { partnerBid: "1♦" }),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toContain("Too Weak to Raise");
+  });
+
+  it("3-card support with 6 support points → still raises (floor boundary)", () => {
+    // S3 H3 D4 C3, 6 HCP, 3-card heart support → 6 support pts ≥ floor → raise.
+    const rec = getRecommendation(
+      mkHand(6, 3, 3, 4, 3),
+      ctx("responding-to-simple-oc", { partnerBid: "1♥" }),
+    );
+    expect(rec.bid).toBe("2♥");
+    expect(rec.reasoning).toContain("Law of Total Tricks");
+  });
+
+  it("3-card support, weak HCP but a singleton (shape) → raises on support points", () => {
+    // S3 H3 D6 C1, 4 HCP: singleton club adds 3 support pts → 7 ≥ floor → raise.
+    const rec = getRecommendation(
+      mkHand(4, 3, 3, 6, 1),
+      ctx("responding-to-simple-oc", { partnerBid: "1♥" }),
+    );
+    expect(rec.bid).toBe("2♥");
   });
 
   it("4-card support, 0-9 pts → preemptive raise to 3-level (3♥)", () => {
@@ -3549,6 +3603,40 @@ describe("bidding-logic | getBidMeaning", () => {
   it("Double from partner after 1NT → Penalty/Takeout note", () => {
     const meaning = getBidMeaning("Double", "partner", "1NT");
     expect(meaning).toBeTruthy();
+  });
+
+  it("raise of partner's second suit reads as a RAISE, not a 'second suit' (manual Test 2 pt1)", () => {
+    // Auction 1♠-1NT-2♥-... : partner (opener) showed hearts as a second suit
+    // with 2♥; responder's 4♥ supports it.  With partner's last action threaded
+    // in as 2♥, the meaning must call this a RAISE of partner's suit — not a new
+    // "second suit" of the bidder's own.
+    const meaning = getBidMeaning(
+      "4♥",
+      "partner",
+      /* prevHighBid */ "1NT",
+      /* bidderPreviousBid */ "1NT",
+      /* bidderPartnerPreviousBid */ "2♥",
+      /* auctionOpeningBid */ "1♠",
+    );
+    expect(meaning.toLowerCase()).toContain("raise");
+    expect(meaning).toContain("2♥");
+    expect(meaning.toLowerCase()).not.toContain("second suit");
+  });
+
+  it("new suit by opener's partner reads as a RESPONSE, not an overcall (manual Test 3)", () => {
+    // Auction P-1♣-P-1♥ : the 1♥ bidder's partner opened 1♣ earlier the SAME
+    // round.  With partner's 1♣ threaded in, 1♥ must read as a response, never
+    // an overcall.
+    const meaning = getBidMeaning(
+      "1♥",
+      "rho",
+      /* prevHighBid */ "1♣",
+      /* bidderPreviousBid */ undefined,
+      /* bidderPartnerPreviousBid */ "1♣",
+      /* auctionOpeningBid */ "1♣",
+    );
+    expect(meaning.toLowerCase()).toContain("response");
+    expect(meaning.toLowerCase()).not.toContain("overcall");
   });
 
   it("unknown bid returns a non-empty fallback string", () => {
