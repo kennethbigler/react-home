@@ -184,6 +184,27 @@ describe("games | bridge | AuctionContext", () => {
     fireEvent.keyDown(listbox, { key: "Escape" });
   });
 
+  it("manual Bug 2: an after-me slot stays capped at the floor when MY bid is Pass", () => {
+    // myPosition 3; before me pos2 bid 2NT; my own bid defaults to Pass.
+    // The after-me LHO (pos 4) dropdown must only offer bids above 2NT — not
+    // reset to every bid (the old `.find` returned undefined → "all bids").
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "Pass", 2: "1♣", 3: "Pass", 4: "1♥" }],
+      currentRound: { 1: "Pass", 2: "2NT" },
+    };
+    renderAuctionContext(state);
+    const lhoSelect = screen.getByRole("combobox", { name: /LHO \(4th\)/i });
+    fireEvent.mouseDown(lhoSelect);
+    const listbox = screen.getByRole("listbox");
+    expect(within(listbox).queryByText("1♣")).not.toBeInTheDocument();
+    expect(within(listbox).queryByText("2♠")).not.toBeInTheDocument();
+    expect(within(listbox).queryByText("2NT")).not.toBeInTheDocument();
+    expect(within(listbox).getAllByText("3♣").length).toBeGreaterThan(0);
+    expect(within(listbox).getAllByText("3NT").length).toBeGreaterThan(0);
+    fireEvent.keyDown(listbox, { key: "Escape" });
+  });
+
   // ── Complete this round form (always visible) ─────────────────────────────────
 
   it("renders the 'Complete this round' section without requiring a button click", () => {

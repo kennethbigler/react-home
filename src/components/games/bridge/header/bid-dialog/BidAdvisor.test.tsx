@@ -28,13 +28,10 @@ describe("games | bridge | BidAdvisor", () => {
     expect(screen.getByText("Bid Advisor")).toBeInTheDocument();
   });
 
-  it("renders New Game button (not 'Start Over')", () => {
+  it("does NOT render its own New Game button (it lives in the dialog top bar)", () => {
     render(<BidAdvisor />);
     expect(
-      screen.getByRole("button", { name: /new game/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: /start over/i }),
+      screen.queryByRole("button", { name: /new game/i }),
     ).not.toBeInTheDocument();
   });
 
@@ -105,22 +102,6 @@ describe("games | bridge | BidAdvisor", () => {
     const hcpInput = screen.getByLabelText("HCP value");
     fireEvent.change(hcpInput, { target: { value: "15" } });
     expect(screen.getByLabelText("Recommended bid")).toBeInTheDocument();
-  });
-
-  it("New Game button resets hand back to defaults", () => {
-    render(<BidAdvisor />);
-    const hcpInput = screen.getByLabelText("HCP value");
-    fireEvent.change(hcpInput, { target: { value: "20" } });
-    fireEvent.click(screen.getByRole("button", { name: /new game/i }));
-    expect(hcpInput).toHaveValue(0);
-  });
-
-  it("New Game button resets position back to 1st (default)", () => {
-    render(<BidAdvisor />);
-    fireEvent.click(screen.getByLabelText("Position 2nd"));
-    fireEvent.click(screen.getByRole("button", { name: /new game/i }));
-    const pos1 = screen.getByLabelText("Position 1st");
-    expect(pos1.closest(".MuiChip-filled")).toBeTruthy();
   });
 
   it("shows confidence badge on recommendation", () => {
@@ -238,6 +219,46 @@ describe("games | bridge | BidAdvisor", () => {
     expect(
       screen.queryByLabelText("Has stopper in opponent's suit"),
     ).not.toBeInTheDocument();
+  });
+
+  it("manual Test 1: 9 HCP balanced over RHO's 1♣ → no stopper checkbox (Pass either way)", () => {
+    render(<BidAdvisor />);
+    fireEvent.click(screen.getByLabelText("Position 2nd"));
+    const hcpInput = screen.getByLabelText("HCP value");
+    fireEvent.change(hcpInput, { target: { value: "9" } });
+    fireEvent.mouseDown(screen.getByLabelText(/RHO \(1st\)/i));
+    const listbox = screen.getByRole("listbox");
+    fireEvent.click(within(listbox).getAllByText("1♣")[0]);
+    expect(
+      screen.queryByLabelText("Has stopper in opponent's suit"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("manual Test 2: once bidding is complete, shows the final contract (not a Pass recommendation)", () => {
+    render(<BidAdvisor />);
+    // Dealer opens 1NT; everyone else passes → 1NT is the final contract.
+    fireEvent.mouseDown(screen.getByRole("combobox", { name: "My bid" }));
+    const listbox = screen.getByRole("listbox");
+    fireEvent.click(within(listbox).getAllByText("1NT")[0]);
+    fireEvent.click(screen.getByRole("button", { name: /confirm round/i }));
+
+    expect(screen.getByText("Bidding Complete")).toBeInTheDocument();
+    expect(screen.getByLabelText("Final contract")).toHaveTextContent("1NT");
+    // No bid recommendation card and no stopper question once the auction is over.
+    expect(screen.queryByLabelText("Recommended bid")).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText("Has stopper in opponent's suit"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("manual Test 2: a passed-out deal shows 'Passed Out' as the result", () => {
+    render(<BidAdvisor />);
+    // Dealer (default 0 HCP hand) passes, everyone passes → passed out.
+    fireEvent.click(screen.getByRole("button", { name: /confirm round/i }));
+    expect(screen.getByText("Bidding Complete")).toBeInTheDocument();
+    expect(screen.getByLabelText("Final contract")).toHaveTextContent(
+      "Passed Out",
+    );
   });
 
   it("does NOT show stopper input when opponent bid a conventional 2♣ (lhoIsNT=true)", () => {

@@ -675,36 +675,47 @@ describe("bidding-logic | responding-2nt", () => {
 // ─── Responding to 3NT Opening ───────────────────────────────────────────────
 
 describe("bidding-logic | responding-3nt-opening", () => {
-  it("4-card major → Stayman 4♣", () => {
+  // SAYC has no transfers/Stayman over a 3NT OPENING (opener cannot complete
+  // them), so responses are natural — a 5-card major is offered as a game.
+  it("only a 4-card major, weak → Pass (cannot find a 4-4 fit; 3NT is game)", () => {
     const rec = getRecommendation(
       mkHand(6, 4, 3, 3, 3),
       ctx("responding-3nt-opening"),
     ); // 4 spades (no 5-card major)
-    expect(rec.bid).toContain("4♣");
+    expect(rec.bid).toBe("Pass");
   });
 
-  it("5+ hearts → Transfer 4♦", () => {
+  it("5+ hearts → 4♥ natural game (opener can pass it)", () => {
     const rec = getRecommendation(
       mkHand(6, 3, 5, 3, 2),
       ctx("responding-3nt-opening"),
     ); // 5 hearts
-    expect(rec.bid).toContain("4♦");
+    expect(rec.bid).toBe("4♥");
   });
 
-  it("5+ spades → Transfer 4♥", () => {
+  it("5+ spades → 4♠ natural game", () => {
     const rec = getRecommendation(
       mkHand(6, 5, 3, 3, 2),
       ctx("responding-3nt-opening"),
     ); // 5 spades
-    expect(rec.bid).toContain("4♥");
+    expect(rec.bid).toBe("4♠");
   });
 
-  it("no major → Pass", () => {
+  it("no major, weak → Pass", () => {
     const rec = getRecommendation(
       mkHand(6, 3, 3, 4, 3),
       ctx("responding-3nt-opening"),
     ); // no 4-card major
     expect(rec.bid).toBe("Pass");
+  });
+
+  it("8+ HCP, no 5-card major → 4NT quantitative slam invite (not a broken transfer)", () => {
+    const rec = getRecommendation(
+      mkHand(9, 3, 3, 4, 3),
+      ctx("responding-3nt-opening"),
+    );
+    expect(rec.bid).toBe("4NT");
+    expect(rec.category).toContain("Quantitative");
   });
 });
 
@@ -1913,14 +1924,15 @@ describe("bidding-logic | rebid-after-suit", () => {
     expect(rec.bid).toBe("Pass");
   });
 
-  it("partner bid new suit, with 4-card support, 13-15 TP → raise", () => {
+  it("partner bid new suit 2♥ (2/1), 4-card support + singleton → jump to game 4♥", () => {
+    // ♠AKxxx ♥xxxx ♦xxx ♣x: 14 HCP + singleton club = 17 support points opposite
+    // a 10+ 2-over-1 → a jump in support reaches game (4♥).
     const rec = getRecommendation(
       mkHand(14, 5, 4, 3, 1),
       ctx("rebid-after-suit", { myPreviousBid: "1♠", partnerBid: "2♥" }),
     );
-    // partnerBid is "2♥" so raise = 3♥
-    expect(rec.bid).toBe("3♥");
-    expect(rec.category).toContain("Raise");
+    expect(rec.bid).toBe("4♥");
+    expect(rec.category).toContain("Support");
   });
 
   it("user's exact bug: 11 HCP, 5♦, 4♠ opened 1♦, partner bid 1♠ → raise to 2♠", () => {
@@ -1954,16 +1966,24 @@ describe("bidding-logic | rebid-after-suit", () => {
     expect(rec.bid).not.toBe("Continue auction");
   });
 
-  it("responder invitational (10 HCP, 5 hearts, TP=11) after 1♦-1♥-2♦ → invitational jump 3♥", () => {
-    // Bug report: tool was saying '3 hearts' is a 'natural non-forcing rebid' with wrong explanation.
-    // 3♥ IS the correct bid (invitational jump past 2♥), but the category should say invitational.
+  it("minimum opener (13 HCP, 6 hearts, TP=15) after 1♥-2♦ → simple rebid 2♥, never a jump", () => {
+    // A minimum opener must NOT jump-rebid its suit (a jump shows 16-18). With a
+    // 6-card suit and only 15 total points, rebid 2♥ at the cheapest level.
     const rec = getRecommendation(
-      mkHand(10, 3, 5, 3, 2),
+      mkHand(13, 2, 6, 3, 2),
+      ctx("rebid-after-suit", { myPreviousBid: "1♥", partnerBid: "2♦" }),
+    );
+    expect(rec.bid).toBe("2♥");
+    expect(rec.category).not.toMatch(/jump/i);
+  });
+
+  it("medium opener (15 HCP, 6 hearts, TP=17) after 1♥-2♦ → jump rebid 3♥ (16-18)", () => {
+    const rec = getRecommendation(
+      mkHand(15, 2, 6, 3, 2),
       ctx("rebid-after-suit", { myPreviousBid: "1♥", partnerBid: "2♦" }),
     );
     expect(rec.bid).toBe("3♥");
-    expect(rec.category).toContain("Invitational");
-    expect(rec.reasoning).toContain("invitational");
+    expect(rec.category).toContain("Jump Rebid");
   });
 
   it("responder minimum (8 HCP, 5 hearts, TP=9) after 1♦-1♥-2♦ → simple rebid 2♥, NOT jump", () => {
@@ -2021,12 +2041,44 @@ describe("bidding-logic | rebid-after-suit", () => {
     expect(rec.bid).toBe("3NT");
   });
 
-  it("partner bid 3NT, minimum opener with 6-card minor → correct to 5♣", () => {
+  it("partner bid 3NT, 6-card minor but NO shortness (6-3-2-2) → Pass, not 5♣", () => {
+    // Semi-balanced: opener almost always passes 3NT. The long minor supplies
+    // tricks in notrump too, and 5♣ needs two more tricks.
     const rec = getRecommendation(
       mkHand(13, 2, 3, 2, 6),
       ctx("rebid-after-suit", { myPreviousBid: "1♣", partnerBid: "3NT" }),
     );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toContain("Pass");
+    // 3NT over a rebid is not necessarily a jump — the wording must not claim it.
+    expect(rec.reasoning.toLowerCase()).not.toContain("jump");
+  });
+
+  it("manual report: 1♦-1♥-3♦-3NT, opener 3=2=2=6 11 HCP → Pass (not 5♦)", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [
+        { 1: "1♦", 2: "Pass", 3: "1♥", 4: "Pass" },
+        { 1: "3♦", 2: "Pass", 3: "3NT", 4: "Pass" },
+      ],
+      currentRound: {},
+    };
+    const rec = getRecommendation(
+      { hcp: 11, spades: 3, hearts: 2, clubs: 2, diamonds: 6 },
+      deriveSituation(state, "none"),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.reasoning.toLowerCase()).not.toContain("jump");
+  });
+
+  it("partner bid 3NT, distributional opener (6-card minor + singleton) → correct to 5m", () => {
+    // 1=3=3=6 with a singleton spade: notrump is at risk, the minor game is safer.
+    const rec = getRecommendation(
+      mkHand(12, 1, 3, 3, 6),
+      ctx("rebid-after-suit", { myPreviousBid: "1♣", partnerBid: "3NT" }),
+    );
     expect(rec.bid).toBe("5♣");
+    expect(rec.category).toContain("Distributional");
   });
 
   it("partner bid 3NT, strong opener (20+ TP) → 4NT Blackwood", () => {
@@ -2043,6 +2095,111 @@ describe("bidding-logic | rebid-after-suit", () => {
       ctx("rebid-after-suit", { myPreviousBid: "1♣", partnerBid: "3NT" }),
     );
     expect(rec.bid).toBe("Pass");
+  });
+});
+
+// ─── Deep-dive: short-suit revaluation + forcing-bid handling ────────────────
+describe("bidding-logic | deep-dive SAYC fixes", () => {
+  // Opener SUPPORTING responder's suit re-values with short-suit points.
+  it("opener 13 HCP + 4-card support + singleton → jump support 3♠ (16 support pts)", () => {
+    const rec = getRecommendation(
+      mkHand(13, 4, 1, 5, 3),
+      ctx("rebid-after-suit", { myPreviousBid: "1♦", partnerBid: "1♠" }),
+    );
+    expect(rec.bid).toBe("3♠");
+    expect(rec.category).toContain("Jump Support");
+  });
+
+  it("opener 16 HCP + 4-card support + singleton → game raise 4♠ (19 support pts)", () => {
+    const rec = getRecommendation(
+      mkHand(16, 4, 1, 5, 3),
+      ctx("rebid-after-suit", { myPreviousBid: "1♦", partnerBid: "1♠" }),
+    );
+    expect(rec.bid).toBe("4♠");
+    expect(rec.category).toContain("Game Raise");
+  });
+
+  it("opener 17 HCP + 4-card support but only doubletons (4-5-2-2) → INVITE 3♠, not game", () => {
+    // Two soft doubletons should not commit to game opposite a promised 6+ —
+    // bridgedoctor.com L5-H5 (♠KJ43 ♥KJ1076 ♦A6 ♣AJ): bid 3♠.
+    const rec = getRecommendation(
+      mkHand(17, 4, 5, 2, 2),
+      ctx("rebid-after-suit", { myPreviousBid: "1♥", partnerBid: "1♠" }),
+    );
+    expect(rec.bid).toBe("3♠");
+    expect(rec.category).toContain("Jump Support");
+  });
+
+  it("opener 13 HCP flat 4-card support (no shortness) → simple raise 2♠", () => {
+    const rec = getRecommendation(
+      mkHand(13, 4, 3, 3, 3),
+      ctx("rebid-after-suit", { myPreviousBid: "1♦", partnerBid: "1♠" }),
+    );
+    expect(rec.bid).toBe("2♠");
+    expect(rec.category).toContain("Raise Partner's Suit");
+  });
+
+  // Responder may NOT pass opener's forcing reverse / jump shift.
+  it("responder does NOT pass opener's reverse (1♣-1♥-2♠), rebids 6-card suit 3♥", () => {
+    const rec = getRecommendation(
+      mkHand(8, 2, 6, 3, 2),
+      ctx("responder-rebid", {
+        myPreviousBid: "1♥",
+        partnerFirstBid: "1♣",
+        partnerBid: "2♠",
+      }),
+    );
+    expect(rec.bid).not.toBe("Pass");
+    expect(rec.bid).toBe("3♥");
+  });
+
+  it("responder does NOT pass opener's jump shift (1♦-1♠-3♣), rebids spades 3♠", () => {
+    const rec = getRecommendation(
+      mkHand(7, 5, 3, 2, 3),
+      ctx("responder-rebid", {
+        myPreviousBid: "1♠",
+        partnerFirstBid: "1♦",
+        partnerBid: "3♣",
+      }),
+    );
+    expect(rec.bid).not.toBe("Pass");
+    expect(rec.bid).toBe("3♠");
+  });
+
+  // Opener must NOT pass partner's forcing 2-over-1 response.
+  it("opener does not pass a forcing 2/1 (1♠-2♥), makes a legal rebid", () => {
+    const rec = getRecommendation(
+      mkHand(15, 5, 3, 1, 4),
+      ctx("rebid-after-suit", { myPreviousBid: "1♠", partnerBid: "2♥" }),
+    );
+    expect(rec.bid).not.toBe("Pass");
+  });
+
+  it("opener does not pass a forcing 2/1 (1♦-2♣), makes a legal rebid", () => {
+    const rec = getRecommendation(
+      mkHand(14, 4, 2, 5, 2),
+      ctx("rebid-after-suit", { myPreviousBid: "1♦", partnerBid: "2♣" }),
+    );
+    expect(rec.bid).not.toBe("Pass");
+  });
+
+  it("opener still shows a LEGAL lower second suit (1♥-1♠ → 2♣)", () => {
+    const rec = getRecommendation(
+      mkHand(13, 2, 5, 2, 4),
+      ctx("rebid-after-suit", { myPreviousBid: "1♥", partnerBid: "1♠" }),
+    );
+    expect(rec.bid).toBe("2♣");
+    expect(rec.category).toContain("Second Suit");
+  });
+
+  // Opener does not jump-rebid its own suit with a minimum (R4).
+  it("opener 12 HCP, balanced 5-card minor → does NOT jump-rebid (2♦ / 1NT, never 3♦)", () => {
+    const rec = getRecommendation(
+      mkHand(12, 2, 3, 5, 3),
+      ctx("rebid-after-suit", { myPreviousBid: "1♦", partnerBid: "1♠" }),
+    );
+    expect(rec.bid).not.toBe("3♦");
+    expect(["2♦", "1NT"]).toContain(rec.bid);
   });
 });
 
@@ -5882,7 +6039,7 @@ describe("bidding-logic | internet examples — responses to partner's 1-level s
       ctx("responding-suit", { partnerBid: "1♥" }),
     );
     expect(rec.bid).toBe("2♥");
-    expect(rec.category).toBe("Simple Raise (6-9 TP)");
+    expect(rec.category).toBe("Simple Raise (6-9 support pts)");
   });
 
   // Simple raise to partner's 1♠: 3-card support, 6 HCP
@@ -5892,7 +6049,7 @@ describe("bidding-logic | internet examples — responses to partner's 1-level s
       ctx("responding-suit", { partnerBid: "1♠" }),
     );
     expect(rec.bid).toBe("2♠");
-    expect(rec.category).toBe("Simple Raise (6-9 TP)");
+    expect(rec.category).toBe("Simple Raise (6-9 support pts)");
   });
 
   // Limit raise to partner's 1♠: 3-card support, 11 HCP (10-12 TP range)
@@ -5902,7 +6059,43 @@ describe("bidding-logic | internet examples — responses to partner's 1-level s
       ctx("responding-suit", { partnerBid: "1♠" }),
     );
     expect(rec.bid).toBe("3♠");
-    expect(rec.category).toBe("Limit Raise (10-12 TP)");
+    expect(rec.category).toBe("Limit Raise (10-12 support pts)");
+  });
+
+  // ── SHORT-suit points govern the raise level when raising partner ──────────
+  // (manual report: once a trump fit exists, use short-suit modifiers instead
+  //  of long-suit points — void=5, singleton=3, doubleton=1.)
+  it("shortness UPGRADES a raise: 4-card support + singleton, 8 HCP after 1♠ → limit raise 3♠, not simple 2♠", () => {
+    // ♠Qxxx ♥x ♦Kxxx ♣Kxx: 8 HCP, no 5-card suit (long points 0 → 8 TP), but a
+    // 4-card spade fit + singleton heart = 8 + 3 = 11 support points → limit raise.
+    const rec = getRecommendation(
+      mkHand(8, 4, 1, 4, 4),
+      ctx("responding-suit", { partnerBid: "1♠" }),
+    );
+    expect(rec.bid).toBe("3♠");
+    expect(rec.category).toContain("Limit Raise");
+  });
+
+  it("a VOID, not a long side suit, drives the raise: 7 HCP after 1♠ → 3♠ (12 support pts)", () => {
+    // ♠Kxxx ♥void ♦Axxxx ♣xxxx: long-suit count gives only 8 TP (5-card
+    // diamonds), but raising spades we count the heart VOID (5) → 12 support pts.
+    const rec = getRecommendation(
+      mkHand(7, 4, 0, 5, 4),
+      ctx("responding-suit", { partnerBid: "1♠" }),
+    );
+    expect(rec.bid).toBe("3♠");
+    expect(rec.category).toContain("Limit Raise");
+  });
+
+  it("a light shapely hand can still raise: 5 HCP + singleton, 4-card support after 1♥ → 2♥ (not Pass)", () => {
+    // ♠x ♥Kxxx ♦Qxxx ♣xxxx: only 5 HCP (long count would Pass), but the
+    // singleton spade gives 5 + 3 = 8 support points → simple raise.
+    const rec = getRecommendation(
+      mkHand(5, 1, 4, 4, 4),
+      ctx("responding-suit", { partnerBid: "1♥" }),
+    );
+    expect(rec.bid).toBe("2♥");
+    expect(rec.category).toContain("Simple Raise");
   });
 
   // Simple raise to partner's 1♥: 4-card heart support, 7 HCP
