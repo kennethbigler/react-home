@@ -101,12 +101,25 @@ export default function BidAdvisor() {
     "rebid-after-negative-double", // opener rebids after partner's negative double
     "responding-weak2", // responding to partner's weak 2 with interference
   ];
-  // Also require at least 6 HCP — below that, Pass is certain regardless of stoppers,
-  // so asking the stopper question is pointless noise.
-  const showStopperInput =
-    isOpponentSuitBid &&
-    stopperSituations.includes(auctionContext.situation) &&
-    hand.hcp >= 6;
+  // Only ask about the stopper when it would actually CHANGE the recommended
+  // bid.  Compute the recommendation both with and without a stopper; if the
+  // bid is the same either way (e.g. a weak hand that passes regardless), the
+  // question is pointless noise, so suppress it.
+  const stopperCouldMatter =
+    isOpponentSuitBid && stopperSituations.includes(auctionContext.situation);
+  const stopperChangesBid = useMemo(() => {
+    if (!stopperCouldMatter || !handIsValid) return false;
+    const withStopper = getRecommendation(
+      { ...hand, hasStopperInOpponentSuit: true },
+      auctionContext,
+    );
+    const withoutStopper = getRecommendation(
+      { ...hand, hasStopperInOpponentSuit: false },
+      auctionContext,
+    );
+    return withStopper.bid !== withoutStopper.bid;
+  }, [hand, auctionContext, stopperCouldMatter, handIsValid]);
+  const showStopperInput = stopperCouldMatter && stopperChangesBid;
 
   const opponentSuitLabel = opponentSuitName
     ? `${opponentSuitSymbol} ${opponentSuitName}`

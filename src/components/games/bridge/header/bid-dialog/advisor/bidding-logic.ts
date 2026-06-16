@@ -2515,6 +2515,36 @@ function getOvercall(
     };
   }
 
+  // Balancing 1NT (protective seat over a 1-level opening): about 11-14 HCP
+  // balanced with a stopper in their suit — a full king lighter than the direct
+  // 15-18 overcall.  The opponents stopped low, so partner is marked with
+  // values; reopen with 1NT rather than sell out.  Without a stopper, fall
+  // through to Pass — which is exactly why the stopper is asked for here.
+  if (
+    balancing &&
+    hcp >= 11 &&
+    hcp <= 14 &&
+    analysis.isBalanced &&
+    hand.hasStopperInOpponentSuit !== false &&
+    parseInt(opponentBid[0]) === 1
+  ) {
+    return {
+      bid: "1NT",
+      category: `Balancing 1NT (${hcp} HCP, Protective Seat)`,
+      reasoning: `In the balancing (pass-out) seat over their ${opponentBid}, 1NT shows about 11-14 HCP balanced with a stopper in their suit — a king lighter than a direct 1NT overcall (which needs 15-18). The opponents found a fit and stopped low, so your partner is marked with values: reopen with 1NT rather than sell out. Pass instead if you have no stopper in their suit.`,
+      handAnalysis: analysis,
+      whatYourBidTellsPartner:
+        "11-14 HCP balanced with a stopper in their suit (balancing 1NT — a king lighter than a direct 1NT overcall). Stayman and transfers apply.",
+      expectedResponses: [
+        { partnerBid: "2♣", meaning: "Stayman" },
+        { partnerBid: "2♦", meaning: "Transfer to hearts" },
+        { partnerBid: "2♥", meaning: "Transfer to spades" },
+      ],
+      confidence: "high",
+      note: "You must have a stopper (A, Kx, Qxx, or Jxxx) in the opponent's suit to bid NT. Without one, pass and defend.",
+    };
+  }
+
   // Build suit lists for overcall checks (Michaels, jump overcall, simple overcall)
   const suits = [
     { name: "spades", count: hand.spades },
@@ -4899,6 +4929,22 @@ function getResponderRebid(
             { partnerBid: "Pass", meaning: "Minimum opener" },
             { partnerBid: "Game", meaning: "Extra values (14+)" },
           ],
+          confidence: "medium",
+        };
+      }
+      // No room to invite below game: partner already used the invitational
+      // space (e.g. a jump raise to 3 of our major), so the cheapest raise in
+      // the fit IS game.  Partner's jump already INVITED — accept with the top
+      // of your range (combined ≥ 24, i.e. ~8+ opposite a 16+ invitation),
+      // rather than passing out a making game.
+      if (inv && parseInt(inv[0]) === 4 && fitIsMajor && combined >= 24) {
+        return {
+          bid: inv,
+          category: "Accept Game After Opener's Invitational Jump Raise",
+          reasoning: `Partner jumped to ${partnerLatest}, an invitational raise showing about ${openerMin}-18 points and a fit. With your ${tp} TP (near the top of the range you have shown), the combined ${combined}+ is enough — accept by bidding game (${inv}). Passing here would sell out below a making game.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: `Accepting your game invitation with a maximum and a ${fitSuit} fit.`,
+          expectedResponses: [],
           confidence: "medium",
         };
       }
@@ -8623,9 +8669,22 @@ export function getBidMeaning(
   ) {
     const suitSym2 = bid.slice(1);
     if (!prevHighBid!.endsWith("NT") && prevHighBid!.slice(1) === suitSym2) {
+      // Name the exact two-suiter Michaels shows for the cued suit:
+      //   cue a MINOR → both majors (5-5); cue a MAJOR → the OTHER major + an
+      //   unspecified 5+ card minor.
+      const michaelsShows =
+        suitSym2 === "♣" || suitSym2 === "♦"
+          ? "BOTH MAJORS — at least 5 hearts and 5 spades"
+          : suitSym2 === "♥"
+            ? "5+ spades and 5+ of an unspecified minor (clubs or diamonds)"
+            : "5+ hearts and 5+ of an unspecified minor (clubs or diamonds)";
+      const advanceTip =
+        suitSym2 === "♣" || suitSym2 === "♦"
+          ? "Pick the major you prefer; jump with a fit and extra values."
+          : `Bid ${suitSym2 === "♥" ? "spades" : "hearts"} with a fit, or bid 2NT to ask which minor they hold.`;
       return isPartner
-        ? `${bid}: a CUEBID of the suit just bid by the opponents — artificial. Directly over an opening this is usually Michaels (a 5-5 two-suiter); later in the auction it shows a strong raise. It does NOT promise this suit.`
-        : `${bid} from opponent: a cuebid of the last-bid suit — artificial (often Michaels, showing a two-suiter), not natural.`;
+        ? `${bid}: a MICHAELS CUEBID of the opponents' suit — artificial, NOT natural in ${suitSym2}. It shows a two-suiter: ${michaelsShows}. Strength is either weak-competitive (~6-11 pts) or strong (16+) — rarely in between. ${advanceTip} (Later in the auction a cuebid instead shows a strong raise.)`
+        : `${bid} from opponent: a Michaels cuebid — artificial two-suiter showing ${michaelsShows}, not natural.`;
     }
     if (prevHighBid!.endsWith("NT")) {
       return isPartner
@@ -9833,12 +9892,34 @@ function deriveSituationCore(
       const lhoBidForContext =
         firstOpenerSeat === lho ? opponentOpenBid : lhoBid;
 
-      // Detect balancing (protective) seat: I passed in an earlier round but never
-      // made a real bid.  In this seat, standards for overcalling are slightly
-      // relaxed — you are protecting partner who may have been trapped with values.
+      // Detect balancing (protective) seat.  Two ways to be here:
+      //   1. I passed in an earlier round but never made a real bid.
+      //   2. I am in the pass-out seat RIGHT NOW: the only calls before my turn
+      //      are the opening (and any later bids) followed by exactly two
+      //      passes, so a pass by me would end the auction (e.g. 1♠-P-P-?).
+      // In this seat the standards for competing are relaxed by about a king —
+      // partner may have been trapped with values, so I "borrow a king" to
+      // reopen rather than sell out cheaply.
+      const callsBeforeMe: string[] = [];
+      for (const round of completedRounds) {
+        for (const p of POSITIONS) callsBeforeMe.push(round[p] ?? "Pass");
+      }
+      for (const p of POSITIONS) {
+        if (p < myPosition) callsBeforeMe.push(currentRound[p] ?? "Pass");
+      }
+      let trailingPasses = 0;
+      for (let i = callsBeforeMe.length - 1; i >= 0; i--) {
+        if (callsBeforeMe[i] === "Pass") trailingPasses++;
+        else break;
+      }
+      const anyRealBidBeforeMe = callsBeforeMe.some(
+        (c) => c !== "Pass" && c !== "Double" && c !== "Redouble",
+      );
+      const inPassOutSeat = anyRealBidBeforeMe && trailingPasses === 2;
       const hadPassedEarlier =
-        !myLastBid &&
-        completedRounds.some((round) => round[myPosition] === "Pass");
+        (!myLastBid &&
+          completedRounds.some((round) => round[myPosition] === "Pass")) ||
+        inPassOutSeat;
 
       // If I already doubled, I have shown my hand — re-routing to
       // "overcalling" would recommend doubling again forever.
@@ -9888,14 +9969,30 @@ function deriveSituationCore(
       };
     }
 
-    // Detect Michaels (partner cuebid opponent's suit)
+    // Detect Michaels (partner cuebid the opponents' suit).  You never overcall
+    // the opponents' own suit naturally, so a 2-level bid by partner IN a suit
+    // an opponent has bid is an artificial two-suiter (Michaels) — NOT a natural
+    // overcall.  Classic Michaels cues the OPENING suit; a cue of the
+    // responder's suit (e.g. 1♦-1♠ … 2♠) is the same idea.  Pass the cued suit
+    // to the handler so it infers the right two-suiter (cue a minor → both
+    // majors; cue a major → the other major + an unspecified minor).
+    const oppSuitChars = new Set(
+      [opponentOpenBid, rhoBid, lhoBid]
+        .filter((b): b is string => isRealBid(b) && !b.endsWith("NT"))
+        .map((b) => b.slice(1)),
+    );
+    const partnerCueSuitChar =
+      isRealBid(partnerBid) && !partnerBid.endsWith("NT")
+        ? partnerBid.slice(1)
+        : undefined;
     if (
-      partnerBid === opponentOpenBid ||
-      partnerBid === `2${opponentOpenBid.slice(1)}`
+      partnerCueSuitChar !== undefined &&
+      oppSuitChars.has(partnerCueSuitChar) &&
+      parseInt(partnerBid[0]) === 2
     ) {
       return {
         situation: "responding-to-michaels",
-        lhoBid: opponentOpenBid,
+        lhoBid: partnerBid, // the cued suit carries the info the handler needs
         partnerBid,
         vulnerability: vul,
       };

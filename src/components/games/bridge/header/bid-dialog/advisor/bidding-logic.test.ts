@@ -924,6 +924,116 @@ describe("bidding-logic | overcalling", () => {
     expect(rec.category).toContain("Takeout");
   });
 
+  it("partner's cuebid of the RESPONDER's suit routes to Michaels, not a natural overcall (manual confusion 3)", () => {
+    // 1♦-Pass-1♠ … partner cuebids 2♠ (the responder's suit).  This is a
+    // Michaels two-suiter, NOT a natural spade overcall — so I must not be told
+    // I have "spade support", and the auction's 3♠ must be acknowledged.
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "Pass", 2: "1♦", 3: "Pass", 4: "1♠" }],
+      currentRound: { 1: "2♠", 2: "3♠" },
+    };
+    const s = deriveSituation(state, "none");
+    expect(s.situation).toBe("responding-to-michaels");
+    const rec = getRecommendation(
+      { hcp: 7, spades: 3, hearts: 4, clubs: 5, diamonds: 1 },
+      s,
+    );
+    // Whatever the final call, it must NOT claim spade support nor that partner
+    // is "playing" 2♠ — the opponents bid 3♠ over it.
+    expect(rec.reasoning).not.toContain("3-card support");
+    expect(rec.reasoning).not.toMatch(/let partner play/i);
+  });
+
+  it("classic Michaels (cue of opener's suit) still routes to Michaels", () => {
+    // LHO opens 1♦, partner cuebids 2♦ (classic Michaels = both majors).
+    const state: AuctionState = {
+      myPosition: 4,
+      completedRounds: [],
+      currentRound: { 1: "1♦", 2: "2♦", 3: "Pass" },
+    };
+    const s = deriveSituation(state, "none");
+    expect(s.situation).toBe("responding-to-michaels");
+  });
+
+  it("responder accepts game over opener's invitational jump raise with a maximum (manual confusion 4)", () => {
+    // 1♦-(P)-1♠-(2♠ cue)-3♠ : opener's jump raise to 3♠ invites game (16-18).
+    // Responder with 8 TP (top of the 6-9 response) and 4 trumps should ACCEPT
+    // by bidding 4♠ — not pass out a making game.
+    const state: AuctionState = {
+      myPosition: 4,
+      completedRounds: [{ 1: "Pass", 2: "1♦", 3: "Pass", 4: "1♠" }],
+      currentRound: { 1: "2♠", 2: "3♠", 3: "Pass" },
+    };
+    const s = deriveSituation(state, "none");
+    const rec = getRecommendation(
+      { hcp: 8, spades: 4, hearts: 3, clubs: 3, diamonds: 3 },
+      s,
+    );
+    expect(rec.bid).toBe("4♠");
+    expect(rec.category).toContain("Accept Game");
+  });
+
+  it("responder declines opener's invitational jump raise with a minimum (6 TP → Pass)", () => {
+    const state: AuctionState = {
+      myPosition: 4,
+      completedRounds: [{ 1: "Pass", 2: "1♦", 3: "Pass", 4: "1♠" }],
+      currentRound: { 1: "2♠", 2: "3♠", 3: "Pass" },
+    };
+    const s = deriveSituation(state, "none");
+    const rec = getRecommendation(
+      { hcp: 6, spades: 4, hearts: 3, clubs: 3, diamonds: 3 },
+      s,
+    );
+    expect(rec.bid).toBe("Pass");
+  });
+
+  it("pass-out seat (1♠-P-P-?) is detected as the balancing seat", () => {
+    // Manual report: Hand 4 in 4th seat over 1♠-Pass-Pass.  A pass ends the
+    // auction, so this IS the protective/balancing seat even though Hand 4
+    // never passed in an earlier round.
+    const state: AuctionState = {
+      myPosition: 4,
+      completedRounds: [],
+      currentRound: { 1: "1♠", 2: "Pass", 3: "Pass" },
+    };
+    const s = deriveSituation(state, "none");
+    expect(s.situation).toBe("overcalling");
+    expect(s.balancing).toBe(true);
+  });
+
+  it("balancing seat, 13 HCP balanced WITH stopper → Balancing 1NT (manual stopper report)", () => {
+    // S4 H3 D3 C3, 13 HCP, spade stopper (Ace).  In the balancing seat the
+    // stopper MUST matter: with it, reopen with a balancing 1NT (11-14).
+    const rec = getRecommendation(
+      mkHand(13, 4, 3, 3, 3),
+      ctx("overcalling", {
+        balancing: true,
+        rhoBid: "1♠",
+        lhoBid: "1♠",
+      }),
+    );
+    expect(rec.bid).toBe("1NT");
+    expect(rec.category).toContain("Balancing 1NT");
+  });
+
+  it("balancing seat, 13 HCP balanced WITHOUT stopper → Pass (stopper is decisive)", () => {
+    const rec = getRecommendation(
+      { ...mkHand(13, 4, 3, 3, 3), hasStopperInOpponentSuit: false },
+      ctx("overcalling", { balancing: true, rhoBid: "1♠", lhoBid: "1♠" }),
+    );
+    expect(rec.bid).toBe("Pass");
+  });
+
+  it("DIRECT seat (not balancing), 13 HCP balanced with stopper → Pass (needs 15-18 for 1NT)", () => {
+    // Same hand in the direct seat must NOT bid a balancing 1NT.
+    const rec = getRecommendation(
+      mkHand(13, 4, 3, 3, 3),
+      ctx("overcalling", { rhoBid: "1♠", lhoBid: "1♠" }),
+    );
+    expect(rec.bid).toBe("Pass");
+  });
+
   it("12-15 HCP shapely but opponents at game (4♥) → Pass, not a takeout double", () => {
     // Regression (manual Test 2): facing opponents who freely bid to 4♥, a
     // double is PENALTY, not takeout.  A 12 HCP hand short in hearts has no
@@ -3637,6 +3747,36 @@ describe("bidding-logic | getBidMeaning", () => {
     );
     expect(meaning.toLowerCase()).toContain("response");
     expect(meaning.toLowerCase()).not.toContain("overcall");
+  });
+
+  it("Michaels cuebid hover names the two-suiter (manual report: cue of a major)", () => {
+    // Partner cuebids 2♠ over the opponents' spades: Michaels showing hearts +
+    // an unspecified minor.  The hover must NAME the suits, not just say "Michaels".
+    const meaning = getBidMeaning(
+      "2♠",
+      "partner",
+      "1♠",
+      undefined,
+      "none",
+      "1♦",
+    );
+    expect(meaning.toLowerCase()).toContain("michaels");
+    expect(meaning.toLowerCase()).toContain("hearts");
+    expect(meaning.toLowerCase()).toContain("minor");
+  });
+
+  it("Michaels cuebid hover of a minor names BOTH majors", () => {
+    const meaning = getBidMeaning(
+      "2♦",
+      "partner",
+      "1♦",
+      undefined,
+      "none",
+      "1♦",
+    );
+    expect(meaning.toLowerCase()).toContain("michaels");
+    expect(meaning.toLowerCase()).toContain("hearts");
+    expect(meaning.toLowerCase()).toContain("spades");
   });
 
   it("unknown bid returns a non-empty fallback string", () => {
