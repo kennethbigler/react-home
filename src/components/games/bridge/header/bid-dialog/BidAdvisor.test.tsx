@@ -204,13 +204,14 @@ describe("games | bridge | BidAdvisor", () => {
     expect(screen.getByLabelText(/RHO \(1st\)/i)).toBeInTheDocument();
   });
 
-  it("shows stopper input when opponent has bid a suit (HCP >= 6)", () => {
+  it("shows stopper input when it would change the bid (15-18 balanced → 1NT overcall)", () => {
     render(<BidAdvisor />);
     // Position 2 so RHO (pos 1) is visible in current round
     fireEvent.click(screen.getByLabelText("Position 2nd"));
-    // Set HCP to 10 (>= 6 required for stopper to show)
+    // 16 HCP balanced: with a stopper this is a 1NT overcall, without it a Pass
+    // — so the stopper decides the bid and the question must be shown.
     const hcpInput = screen.getByLabelText("HCP value");
-    fireEvent.change(hcpInput, { target: { value: "10" } });
+    fireEvent.change(hcpInput, { target: { value: "16" } });
     // Open the RHO dropdown and pick 1♠
     const rhoSelect = screen.getByLabelText(/RHO \(1st\)/i);
     fireEvent.mouseDown(rhoSelect);
@@ -222,15 +223,18 @@ describe("games | bridge | BidAdvisor", () => {
     ).toBeInTheDocument();
   });
 
-  it("does NOT show stopper input when HCP < 6 even with opponent suit bid", () => {
+  it("does NOT show stopper input when the bid is Pass regardless (stopper can't matter)", () => {
     render(<BidAdvisor />);
     fireEvent.click(screen.getByLabelText("Position 2nd"));
-    // Keep HCP at 0 (default)
+    // Weak balanced hand: passes whether or not it holds a stopper, so the
+    // question is pointless noise and must be suppressed.
+    const hcpInput = screen.getByLabelText("HCP value");
+    fireEvent.change(hcpInput, { target: { value: "7" } });
     const rhoSelect = screen.getByLabelText(/RHO \(1st\)/i);
     fireEvent.mouseDown(rhoSelect);
     const listbox = screen.getByRole("listbox");
     fireEvent.click(within(listbox).getAllByText("1♠")[0]);
-    // Stopper question should NOT show (HCP = 0 < 6)
+    // Stopper question should NOT show — it would not change the bid
     expect(
       screen.queryByLabelText("Has stopper in opponent's suit"),
     ).not.toBeInTheDocument();
@@ -260,8 +264,9 @@ describe("games | bridge | BidAdvisor", () => {
   it("shows stopper input when opponent bid a natural suit (not conventional 2♣)", () => {
     render(<BidAdvisor />);
     fireEvent.click(screen.getByLabelText("Position 4th"));
+    // 16 HCP balanced → the stopper decides a 1NT overcall vs Pass.
     const hcpInput = screen.getByLabelText("HCP value");
-    fireEvent.change(hcpInput, { target: { value: "10" } });
+    fireEvent.change(hcpInput, { target: { value: "16" } });
     // RHO bids 1♥ (a natural suit bid, no NT opened before it)
     fireEvent.mouseDown(screen.getByLabelText(/RHO \(3rd\)/i));
     const listbox = screen.getByRole("listbox");
@@ -296,8 +301,9 @@ describe("games | bridge | BidAdvisor", () => {
     render(<BidAdvisor />);
     // Position 4: LHO(1st) bids, no RHO suit bid
     fireEvent.click(screen.getByLabelText("Position 4th"));
+    // 16 HCP balanced → the stopper decides a 1NT overcall vs Pass.
     const hcpInput = screen.getByLabelText("HCP value");
-    fireEvent.change(hcpInput, { target: { value: "10" } });
+    fireEvent.change(hcpInput, { target: { value: "16" } });
     // LHO opens 1♣ (natural suit — no NT opened, so not conventional)
     fireEvent.mouseDown(screen.getByLabelText(/LHO \(1st\)/i));
     const listbox = screen.getByRole("listbox");
@@ -312,8 +318,9 @@ describe("games | bridge | BidAdvisor", () => {
     render(<BidAdvisor />);
     // Position 4: RHO(3rd) bids 1♦ before me
     fireEvent.click(screen.getByLabelText("Position 4th"));
+    // 16 HCP balanced → the stopper decides a 1NT overcall vs Pass.
     const hcpInput = screen.getByLabelText("HCP value");
-    fireEvent.change(hcpInput, { target: { value: "10" } });
+    fireEvent.change(hcpInput, { target: { value: "16" } });
     fireEvent.mouseDown(screen.getByLabelText(/RHO \(3rd\)/i));
     const listbox = screen.getByRole("listbox");
     fireEvent.click(within(listbox).getAllByText("1♦")[0]);
