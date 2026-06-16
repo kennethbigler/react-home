@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Button, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import InfoPopup from "../../../../common/info-popover/InfoPopup";
 import BidAdvisor from "./BidAdvisor";
@@ -25,6 +25,9 @@ function TabPanel({ children, value, index }: TabPanelProps) {
 
 const BidDialog = () => {
   const [activeTab, setActiveTab] = useState(0);
+  // Bumping this key remounts BidAdvisor, resetting its hand + auction state
+  // back to the defaults — i.e. a "New Game" from the always-visible top bar.
+  const [resetKey, setResetKey] = useState(0);
 
   return (
     <InfoPopup title="Bid" maxWidth={false}>
@@ -36,6 +39,11 @@ const BidDialog = () => {
           zIndex: 1,
           borderBottom: 1,
           borderColor: "divider",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 1,
+          pr: 1,
         }}
       >
         <Tabs
@@ -54,10 +62,19 @@ const BidDialog = () => {
             aria-controls="bid-dialog-tabpanel-1"
           />
         </Tabs>
+        <Button
+          onClick={() => setResetKey((k) => k + 1)}
+          variant="outlined"
+          size="small"
+          color="secondary"
+          sx={{ flexShrink: 0 }}
+        >
+          New Game
+        </Button>
       </Box>
 
       <TabPanel value={activeTab} index={0}>
-        <BidAdvisor />
+        <BidAdvisor key={resetKey} />
       </TabPanel>
 
       <TabPanel value={activeTab} index={1}>

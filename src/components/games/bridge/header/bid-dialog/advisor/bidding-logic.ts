@@ -1455,53 +1455,61 @@ function getResponseToTwoNT(hand: Hand): BidRecommendation {
 function getResponseTo3NTOpening(hand: Hand): BidRecommendation {
   const analysis = analyzeHand(hand);
 
-  // 5+ major → Transfer BEFORE Stayman (Stayman catches 4-card majors too)
-  if (hand.hearts >= 5) {
+  // A 3NT opening shows a balanced 25-27 — opener has game in hand, so with a
+  // weak hand responder just places the contract.  Keep this NATURAL: a 5+
+  // card major is offered as a game directly (opener passes), since SAYC does
+  // not define transfers/Stayman over a 3NT OPENING and opener cannot complete
+  // them.  Prefer the longer major if 5-5.
+  if (hand.hearts >= 5 && hand.hearts >= hand.spades) {
     return {
-      bid: "4♦",
-      category: "Transfer to Hearts over 3NT",
-      reasoning: "With 5+ hearts, transfer to hearts with 4♦.",
+      bid: "4♥",
+      category: "Bid 4♥ Game over 3NT (Natural)",
+      reasoning:
+        "With a 5+ card heart suit opposite a balanced 25-27, offer the heart game directly. 4♥ is natural and to play — a major-suit game often plays better than 3NT when you hold a long suit.",
       handAnalysis: analysis,
-      whatYourBidTellsPartner: "5+ hearts.",
-      expectedResponses: [{ partnerBid: "4♥", meaning: "Transfer complete" }],
+      whatYourBidTellsPartner: "5+ hearts — choosing the heart game over 3NT.",
+      expectedResponses: [{ partnerBid: "Pass", meaning: "Accepting 4♥" }],
       confidence: "high",
     };
   }
   if (hand.spades >= 5) {
     return {
-      bid: "4♥",
-      category: "Transfer to Spades over 3NT",
-      reasoning: "With 5+ spades, transfer to spades with 4♥.",
+      bid: "4♠",
+      category: "Bid 4♠ Game over 3NT (Natural)",
+      reasoning:
+        "With a 5+ card spade suit opposite a balanced 25-27, offer the spade game directly. 4♠ is natural and to play.",
       handAnalysis: analysis,
-      whatYourBidTellsPartner: "5+ spades.",
-      expectedResponses: [{ partnerBid: "4♠", meaning: "Transfer complete" }],
+      whatYourBidTellsPartner: "5+ spades — choosing the spade game over 3NT.",
+      expectedResponses: [{ partnerBid: "Pass", meaning: "Accepting 4♠" }],
       confidence: "high",
     };
   }
-
-  if (hand.hearts >= 4 || hand.spades >= 4) {
+  // Slam interest: opener has 25-27, so ~8+ HCP opposite reaches the 33-point
+  // small-slam zone — raise quantitatively to 4NT (opener passes with a
+  // minimum, bids 6NT with a maximum).
+  if (hand.hcp >= 8) {
     return {
-      bid: "4♣",
-      category: "Stayman over 3NT Opening",
-      reasoning:
-        "With a 4-card major, use Stayman (4♣) to look for a major fit.",
+      bid: "4NT",
+      category: "Quantitative Raise of 3NT (Slam Invite)",
+      reasoning: `With ${hand.hcp} HCP opposite a balanced 25-27, the combined total is near the 33-point slam zone. Raise to 4NT as a quantitative invitation — partner passes with a minimum (25) and bids 6NT with a maximum (27).`,
       handAnalysis: analysis,
-      whatYourBidTellsPartner: "Looking for a 4-card major fit.",
+      whatYourBidTellsPartner:
+        "Balanced slam invitation — pass with 25, bid 6NT with 27.",
       expectedResponses: [
-        { partnerBid: "4♦", meaning: "No 4-card major" },
-        { partnerBid: "4♥", meaning: "4+ hearts" },
-        { partnerBid: "4♠", meaning: "4+ spades" },
+        { partnerBid: "Pass", meaning: "Minimum (25) — 4NT is enough" },
+        { partnerBid: "6NT", meaning: "Maximum (26-27) — accepting slam" },
       ],
-      confidence: "high",
+      confidence: "medium",
     };
   }
   return {
     bid: "Pass",
     category: "Pass (Satisfied with 3NT)",
     reasoning:
-      "With no 4-card major and no long major to transfer, pass and play 3NT.",
+      "With a weak hand and no 5-card major to offer, pass and play 3NT — opener's 25-27 has game in hand.",
     handAnalysis: analysis,
-    whatYourBidTellsPartner: "No major suit interest. 3NT is the contract.",
+    whatYourBidTellsPartner:
+      "No long major and not enough for slam — 3NT is the contract.",
     expectedResponses: [],
     confidence: "high",
   };
@@ -1510,6 +1518,11 @@ function getResponseTo3NTOpening(hand: Hand): BidRecommendation {
 function getResponseToSuit(hand: Hand, partnerBid: string): BidRecommendation {
   const analysis = analyzeHand(hand);
   const { tp } = analysis;
+  // When RAISING partner's suit you have a trump fit, so SAYC values the hand
+  // with SHORT-suit (ruffing) points INSTEAD of long-suit points — void=5,
+  // singleton=3, doubleton=1, added to HCP.  Use this for every raise decision;
+  // keep the long-suit `tp` for new-suit and notrump responses (no fit).
+  const supportTP = calcTPWithFit(hand);
   const isPartnerMajor = partnerBid === "1♥" || partnerBid === "1♠";
   const partnerSuit =
     partnerBid === "1♠"
@@ -1520,13 +1533,17 @@ function getResponseToSuit(hand: Hand, partnerBid: string): BidRecommendation {
           ? "diamonds"
           : "clubs";
   const mySupport = hand[partnerSuit as keyof Hand] as number;
+  const haveFit = mySupport >= 3;
+  // Strength gauge: support points with a fit, total (long-suit) points without.
+  const responseValue = haveFit ? supportTP : tp;
 
-  if (tp <= 5) {
+  if (responseValue <= 5) {
     return {
       bid: "Pass",
       category: "Pass (Too Weak)",
-      reasoning:
-        "With 0-5 total points, pass. You need at least 6 points to respond.",
+      reasoning: haveFit
+        ? `With only ${responseValue} support points (${hand.hcp} HCP plus short-suit points for your ${partnerSuit} fit), pass. You need at least 6 to respond.`
+        : "With 0-5 total points, pass. You need at least 6 points to respond.",
       handAnalysis: analysis,
       whatYourBidTellsPartner: "0-5 pts — too weak to respond.",
       expectedResponses: [],
@@ -1534,14 +1551,14 @@ function getResponseToSuit(hand: Hand, partnerBid: string): BidRecommendation {
     };
   }
 
-  // Jacoby 2NT (game-forcing raise of major with 13+ pts, 4+ card support)
-  if (isPartnerMajor && mySupport >= 4 && tp >= 13) {
+  // Jacoby 2NT (game-forcing raise of major with 13+ support pts, 4+ card support)
+  if (isPartnerMajor && mySupport >= 4 && supportTP >= 13) {
     return {
       bid: "2NT",
       category: "Jacoby 2NT (Game-Forcing Raise)",
-      reasoning: `With 4+ card support for partner's ${partnerSuit} and 13+ HCP, bid Jacoby 2NT. This is a game-forcing raise that asks opener to describe shortness or extra strength for slam evaluation. NOT a natural NT bid.`,
+      reasoning: `With 4+ card support for partner's ${partnerSuit} and ${supportTP} support points (${hand.hcp} HCP plus short-suit points for the fit, 13+), bid Jacoby 2NT. This is a game-forcing raise that asks opener to describe shortness or extra strength for slam evaluation. NOT a natural NT bid.`,
       handAnalysis: analysis,
-      whatYourBidTellsPartner: `4+ card ${partnerSuit} support, 13+ pts (at least 11 HCP). Game force — slam is possible.`,
+      whatYourBidTellsPartner: `4+ card ${partnerSuit} support, 13+ support points. Game force — slam is possible.`,
       expectedResponses: [
         {
           partnerBid: "3♣/3♦/3♥/3♠",
@@ -1566,14 +1583,14 @@ function getResponseToSuit(hand: Hand, partnerBid: string): BidRecommendation {
     };
   }
 
-  // Limit raise (10-12 TP, 3+ card support)
-  if (isPartnerMajor && mySupport >= 3 && tp >= 10 && tp <= 12) {
+  // Limit raise (10-12 support points, 3+ card support)
+  if (isPartnerMajor && mySupport >= 3 && supportTP >= 10 && supportTP <= 12) {
     return {
       bid: `3${suitSymbol(partnerSuit)}`,
-      category: "Limit Raise (10-12 TP)",
-      reasoning: `With 10-12 total points and 3+ card ${partnerSuit} support, jump to 3${suitSymbol(partnerSuit)} as a limit raise. This is invitational — opener accepts with maximum, passes with minimum.`,
+      category: "Limit Raise (10-12 support pts)",
+      reasoning: `With ${supportTP} support points (${hand.hcp} HCP plus short-suit points for your ${partnerSuit} fit) and 3+ card support, jump to 3${suitSymbol(partnerSuit)} as a limit raise. This is invitational — opener accepts with maximum, passes with minimum.`,
       handAnalysis: analysis,
-      whatYourBidTellsPartner: `10-12 TP, 3+ card ${partnerSuit} support. Invitational — will you accept?`,
+      whatYourBidTellsPartner: `10-12 support points, 3+ card ${partnerSuit} support. Invitational — will you accept?`,
       expectedResponses: [
         {
           partnerBid: `Pass/4${suitSymbol(partnerSuit)}`,
@@ -1584,8 +1601,8 @@ function getResponseToSuit(hand: Hand, partnerBid: string): BidRecommendation {
     };
   }
 
-  // Simple raise (6-9 TP, 3+ card support) — only for MAJOR, or minor when no 4-card major available
-  if (mySupport >= 3 && tp >= 6 && tp <= 9) {
+  // Simple raise (6-9 support points, 3+ card support) — only for MAJOR, or minor when no 4-card major available
+  if (mySupport >= 3 && supportTP >= 6 && supportTP <= 9) {
     // When partner opened a minor, prefer bidding a 4-card major before raising
     if (!isPartnerMajor) {
       const unbidMajors = [];
@@ -1613,10 +1630,10 @@ function getResponseToSuit(hand: Hand, partnerBid: string): BidRecommendation {
     }
     return {
       bid: `2${suitSymbol(partnerSuit)}`,
-      category: "Simple Raise (6-9 TP)",
-      reasoning: `With 6-9 total points and 3+ card ${partnerSuit} support, make a simple raise to 2${suitSymbol(partnerSuit)}.`,
+      category: "Simple Raise (6-9 support pts)",
+      reasoning: `With ${supportTP} support points (${hand.hcp} HCP plus short-suit points for your ${partnerSuit} fit) and 3+ card support, make a simple raise to 2${suitSymbol(partnerSuit)}.`,
       handAnalysis: analysis,
-      whatYourBidTellsPartner: `6-9 TP, 3+ card ${partnerSuit} support.`,
+      whatYourBidTellsPartner: `6-9 support points, 3+ card ${partnerSuit} support.`,
       expectedResponses: [
         {
           partnerBid: "Pass",
@@ -5006,6 +5023,93 @@ function getResponderRebid(
       };
     }
   }
+  // ── Partner's rebid was FORCING — responder may NOT pass ──────────────────
+  // A REVERSE (new higher-ranking suit at the 2-level, e.g. 1♣-1♥-2♠) is
+  // forcing for one round; a JUMP SHIFT (new suit one level higher than
+  // necessary, e.g. 1♦-1♠-3♣) is game-forcing.  Make the cheapest descriptive
+  // bid instead of passing: rebid a 5+ card suit, else give preference to
+  // opener's first suit, else bid the cheapest NT.
+  {
+    const SUIT_RANK_RR: Record<string, number> = {
+      clubs: 0,
+      diamonds: 1,
+      hearts: 2,
+      spades: 3,
+    };
+    const openerNewSuit =
+      !!pLatestSuit &&
+      !!pFirstSuit &&
+      !!partnerLatest &&
+      !partnerLatest.endsWith("NT") &&
+      pLatestSuit !== pFirstSuit &&
+      pLatestSuit !== mySuit;
+    const pLatestLvl = partnerLatest ? parseInt(partnerLatest[0]) || 0 : 0;
+    const pFirstLvl = partnerFirst ? parseInt(partnerFirst[0]) || 0 : 0;
+    const isReverse =
+      openerNewSuit &&
+      pFirstLvl === 1 &&
+      pLatestLvl === 2 &&
+      SUIT_RANK_RR[pLatestSuit!] > SUIT_RANK_RR[pFirstSuit!];
+    const isOpenerJumpShift = (() => {
+      if (!openerNewSuit || !myBid || !partnerLatest) return false;
+      const floor = BID_ORDER.indexOf(myBid);
+      const cheapest = BID_ORDER.find(
+        (b, i) => i > floor && b.endsWith(suitSymbol(pLatestSuit!)),
+      );
+      return (
+        !!cheapest &&
+        BID_ORDER.indexOf(partnerLatest) > BID_ORDER.indexOf(cheapest)
+      );
+    })();
+    if (isReverse || isOpenerJumpShift) {
+      const forcingKind = isOpenerJumpShift
+        ? "a jump shift (game-forcing)"
+        : "a reverse (forcing for one round)";
+      // Rebid own 5+ card suit
+      if (mySuit && myLenIn(mySuit) >= 5) {
+        const mine = cheapestIn(suitSymbol(mySuit));
+        if (mine) {
+          return {
+            bid: mine,
+            category: "Forced Rebid of Own Suit",
+            reasoning: `Partner's ${partnerLatest} was ${forcingKind}, so you cannot pass. Rebid your ${myLenIn(mySuit)}-card ${mySuit} suit (${mine}) to describe your hand and keep the auction going.`,
+            handAnalysis: analysis,
+            whatYourBidTellsPartner: `5+ ${mySuit}; responding to your forcing bid (no extra strength promised).`,
+            expectedResponses: [],
+            confidence: "medium",
+          };
+        }
+      }
+      // Preference to opener's first suit
+      const pref = pFirstSuit ? cheapestIn(suitSymbol(pFirstSuit)) : undefined;
+      if (pref) {
+        return {
+          bid: pref,
+          category: "Forced Preference to Opener's First Suit",
+          reasoning: `Partner's ${partnerLatest} was ${forcingKind}, so you cannot pass. Give preference to opener's first suit (${pref}) — this promises no extra strength but keeps the forcing auction alive.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: `Preference for ${pFirstSuit}; no extra strength.`,
+          expectedResponses: [],
+          confidence: "medium",
+        };
+      }
+      // Cheapest NT
+      const nt = cheapestIn("NT");
+      if (nt) {
+        return {
+          bid: nt,
+          category: "Forced NT Bid",
+          reasoning: `Partner's ${partnerLatest} was ${forcingKind}, so you cannot pass. With no suit to show or support, bid ${nt}.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner:
+            "Minimum, balanced-ish; responding to your forcing bid.",
+          expectedResponses: [],
+          confidence: "low",
+        };
+      }
+    }
+  }
+
   return {
     bid: "Pass",
     category: "Pass (Minimum Response, Contract Playable)",
@@ -5338,6 +5442,20 @@ function getRebidAfterSuit(
 ): BidRecommendation {
   const analysis = analyzeHand(hand);
   const { tp } = analysis;
+  // When opener SUPPORTS partner's suit (a fit is established), opener becomes
+  // the raising hand and re-values with SHORT-suit (ruffing) points instead of
+  // long-suit points — SAYC: void=5, singleton=3, doubleton=1 added to HCP.
+  // Used only in the raise-of-partner branches below; other rebids keep `tp`.
+  const supportTP = calcTPWithFit(hand);
+  // A doubleton is a "soft" ruffing value: it counts toward the raise, but a
+  // semi-balanced hand (no singleton/void) should INVITE rather than commit to
+  // game on doubletons alone — committing to game opposite partner's promised
+  // minimum needs real shortness or genuine extra high-card strength.
+  const hasRealShortness =
+    hasVoid(hand) ||
+    [hand.spades, hand.hearts, hand.diamonds, hand.clubs].some((c) => c === 1);
+  const canCommitGameFromSupport =
+    supportTP >= 19 && (hasRealShortness || hand.hcp >= 18);
 
   // ── Strong 2♣ opener's rebid ────────────────────────────────────────────────
   // After 2♣ (artificial, 22+), partner's 2♦ is WAITING (not diamonds!) and
@@ -5345,9 +5463,22 @@ function getRebidAfterSuit(
   // (systems on), 3NT = 25-27 balanced, otherwise bid the real suit naturally
   // (game-forcing).
   if (myOpeningBid === "2♣") {
+    // Partner may have made a POSITIVE response (e.g. 2♥/2♠/3♦) rather than the
+    // 2♦ waiting bid, which raises the floor.  Every rebid below must clear
+    // partner's call — the 2♣ auction is forcing to game, so we never pass.
+    const twoCFloorIdx = partnerResponse
+      ? BID_ORDER.indexOf(partnerResponse)
+      : -1;
+    const clearFloor2c = (bid: string): string => {
+      if (BID_ORDER.indexOf(bid) > twoCFloorIdx) return bid;
+      const sym = bid.endsWith("NT") ? "NT" : bid.slice(1);
+      return (
+        BID_ORDER.find((b, i) => i > twoCFloorIdx && b.endsWith(sym)) ?? bid
+      );
+    };
     if (analysis.isBalanced && hand.hcp <= 24) {
       return {
-        bid: "2NT",
+        bid: clearFloor2c("2NT"),
         category: "2NT Rebid After 2♣ (22-24 Balanced)",
         reasoning:
           "Your 2♣ opening was artificial. With a balanced 22-24 HCP, rebid 2NT — partner may pass only with a hopeless hand; Stayman (3♣) and transfers apply.",
@@ -5365,7 +5496,7 @@ function getRebidAfterSuit(
     }
     if (analysis.isBalanced) {
       return {
-        bid: "3NT",
+        bid: clearFloor2c("3NT"),
         category: "3NT Rebid After 2♣ (25-27 Balanced)",
         reasoning:
           "Your 2♣ opening was artificial. With a balanced 25+ HCP, rebid 3NT to show the maximum balanced range.",
@@ -5376,9 +5507,11 @@ function getRebidAfterSuit(
       };
     }
     const longest2c = longestSuitInfo(hand);
-    const naturalBid = suitBidLevel(
-      longest2c.name,
-      longest2c.name === "clubs" || longest2c.name === "diamonds" ? 3 : 2,
+    const naturalBid = clearFloor2c(
+      suitBidLevel(
+        longest2c.name,
+        longest2c.name === "clubs" || longest2c.name === "diamonds" ? 3 : 2,
+      ),
     );
     return {
       bid: naturalBid,
@@ -5650,16 +5783,15 @@ function getRebidAfterSuit(
     // After a major opening, Jacoby 2NT is routed separately — so here it's a natural 2NT.
     const partnerMinHCP = partnerLevel === 3 ? 16 : 13;
     const partnerMaxHCP = partnerLevel === 3 ? 18 : 15;
-    const combinedMin = analysis.hcp + partnerMinHCP;
-    const combinedMax = analysis.hcp + partnerMaxHCP;
 
-    // If partner already jumped to 3NT (game), consider slam only with extra strength
+    // Partner bid 3NT (game).  Consider slam only with extra strength;
+    // otherwise PASS — opener almost always passes 3NT.
     if (partnerResponse === "3NT") {
       if (tp >= 20) {
         return {
           bid: "4NT",
           category: "Slam Interest After Partner's 3NT",
-          reasoning: `Partner jumped to 3NT (${partnerMinHCP}-${partnerMaxHCP} HCP, balanced). With your ${tp} TP, combined is ${combinedMin}-${combinedMax} — slam territory. Bid 4NT (Blackwood) to explore.`,
+          reasoning: `Partner bid 3NT. With your ${tp} TP the combined total is in slam territory. Bid 4NT (Blackwood) to explore.`,
           handAnalysis: analysis,
           whatYourBidTellsPartner: "Asking for aces — we may have slam.",
           expectedResponses: [
@@ -5671,14 +5803,23 @@ function getRebidAfterSuit(
           confidence: "high",
         };
       }
-      if (myOpenSuitLen >= 6) {
+      // Only PULL 3NT to a minor-suit game with a genuinely distributional hand
+      // — a singleton or void that makes notrump risky.  A balanced or
+      // semi-balanced hand (even with a long minor, e.g. 6-3-2-2) belongs in
+      // 3NT: the long suit supplies tricks there too, and 5m needs two more.
+      const hasShortness =
+        hasVoid(hand) ||
+        [hand.spades, hand.hearts, hand.diamonds, hand.clubs].some(
+          (c) => c === 1,
+        );
+      if (myOpenSuitLen >= 6 && hasShortness) {
         const minorGame = `5${suitSymbol(myOpenSuit)}`;
         return {
           bid: minorGame,
-          category: "Correct to Minor Game After 3NT",
-          reasoning: `Partner jumped to 3NT. With your ${myOpenSuitLen}-card ${myOpenSuit} suit, consider correcting to ${minorGame} — it may be a safer contract if your hand is distributional.`,
+          category: "Correct to Minor Game After 3NT (Distributional)",
+          reasoning: `Partner bid 3NT to play. Your hand is distributional (a ${myOpenSuitLen}-card ${myOpenSuit} suit with a singleton or void), so notrump may be at risk — consider correcting to ${minorGame}, where ruffing values make the minor game safer. With a balanced hand you would simply pass 3NT.`,
           handAnalysis: analysis,
-          whatYourBidTellsPartner: `Long ${myOpenSuit} — prefer the minor game.`,
+          whatYourBidTellsPartner: `Long ${myOpenSuit} and a distributional hand — suggesting the minor game over 3NT.`,
           expectedResponses: [
             { partnerBid: "Pass", meaning: "Accepts minor game" },
           ],
@@ -5687,10 +5828,10 @@ function getRebidAfterSuit(
       }
       return {
         bid: "Pass",
-        category: "Accept Partner's 3NT",
-        reasoning: `Partner jumped to 3NT (${partnerMinHCP}-${partnerMaxHCP} HCP, balanced). With your ${tp} TP, combined is ${combinedMin}-${combinedMax} — game is the limit. Accept and pass.`,
+        category: "Pass Partner's 3NT",
+        reasoning: `Partner bid 3NT to play. With your ${tp} TP and a reasonably balanced hand, 3NT is the right game — opener almost always passes here. Even with a long ${myOpenSuit} suit, pass: notrump needs only 9 tricks while a minor game needs 11, and your long suit provides tricks in notrump too. (Pull to a minor game only with a distributional hand — a singleton or void.)`,
         handAnalysis: analysis,
-        whatYourBidTellsPartner: "Accepting game.",
+        whatYourBidTellsPartner: "Accepting game — passing 3NT.",
         expectedResponses: [],
         confidence: "high",
       };
@@ -5893,14 +6034,14 @@ function getRebidAfterSuit(
       };
     }
 
-    // ── STRONG: game bid with 4-card fit (19+ TP) ─────────────────────────────
-    if (partnerSuitLen >= 4 && tp >= 19) {
+    // ── STRONG: game bid with 4-card fit (19+ support pts AND real values) ────
+    if (partnerSuitLen >= 4 && canCommitGameFromSupport) {
       return {
         bid: partnerGameBid,
-        category: `Game Raise (${tp} TP — Strong Opener)`,
-        reasoning: `With 4+ card support for partner's ${partnerSuit} and ${tp} TP (strong opener), bid game directly — ${partnerGameBid}. There is enough combined strength (opener 19+ + responder 6+) to make game.`,
+        category: `Game Raise (${supportTP} support pts — Strong Opener)`,
+        reasoning: `With 4+ card support for partner's ${partnerSuit} and ${supportTP} support points (HCP plus short-suit ruffing points for the fit, 19+), bid game directly — ${partnerGameBid}. There is enough combined strength (opener 19+ + responder 6+) to make game.`,
         handAnalysis: analysis,
-        whatYourBidTellsPartner: `4+ card ${partnerSuit} support, strong opener (19+ TP). This is a game-level bid.`,
+        whatYourBidTellsPartner: `4+ card ${partnerSuit} support, ${supportTP} support points (19+). This is a game-level bid.`,
         expectedResponses: [
           { partnerBid: "Pass", meaning: "Minimum responder — game is enough" },
           { partnerBid: "4NT", meaning: "Slam interest — Blackwood" },
@@ -5909,15 +6050,16 @@ function getRebidAfterSuit(
       };
     }
 
-    // ── Jump support (16-18 TP) ───────────────────────────────────────────────
-    if (partnerSuitLen >= 4 && tp >= 16 && tp <= 18) {
+    // ── Jump support (invitational): 16-18 support points, or 19 without the
+    //    real shortness/strength needed to commit straight to game. ───────────
+    if (partnerSuitLen >= 4 && supportTP >= 16) {
       const jumpSupportBid = `${raiseLvl + 1}${suitSymbol(partnerSuit)}`;
       return {
         bid: jumpSupportBid,
-        category: "Jump Support (16-18 TP)",
-        reasoning: `With 4+ card support for partner's ${partnerSuit} and ${tp} TP (medium opener), jump to ${jumpSupportBid} — an invitational jump raise showing 16-18 TP. This invites partner to bid game with 9+ HCP.`,
+        category: "Jump Support (16-18 support pts)",
+        reasoning: `With 4+ card support for partner's ${partnerSuit} and ${supportTP} support points (HCP plus short-suit ruffing points, 16-18), jump to ${jumpSupportBid} — an invitational jump raise. This invites partner to bid game with 9+ HCP.`,
         handAnalysis: analysis,
-        whatYourBidTellsPartner: `4+ card ${partnerSuit} support, 16-18 TP — strong opener. Bid game with 9+ HCP.`,
+        whatYourBidTellsPartner: `4+ card ${partnerSuit} support, 16-18 support points — strong opener. Bid game with 9+ HCP.`,
         expectedResponses: [
           {
             partnerBid: partnerGameBid,
@@ -5929,15 +6071,14 @@ function getRebidAfterSuit(
       };
     }
 
-    // ── 4-card support: raise partner's suit (13-15 TP) ──────────────────────
-    if (partnerSuitLen >= 4 && tp <= 15) {
-      const isMinimum = tp <= 12;
+    // ── 4-card support: simple raise of partner's suit (13-15 support pts) ────
+    if (partnerSuitLen >= 4 && supportTP <= 15) {
       return {
         bid: raiseBid,
-        category: `Raise Partner's ${isMinimum ? "New" : ""} Suit (${isMinimum ? "10-12" : "13-15"} TP)`,
-        reasoning: `Partner bid a new ${partnerSuit} suit (forcing). With 4-card support and ${isMinimum ? "a minimum opener (10-12 TP, likely Rule of 20)" : "13-15 TP"}, raise to ${raiseBid}. This shows 3-4 card support and a ${isMinimum ? "minimum" : "non-forcing"} hand.`,
+        category: "Raise Partner's Suit (13-15 support pts)",
+        reasoning: `Partner bid a new ${partnerSuit} suit (forcing). With 4-card support and ${supportTP} support points (HCP plus short-suit ruffing points, a minimum opener), raise to ${raiseBid}. This shows 4-card support and a non-forcing minimum.`,
         handAnalysis: analysis,
-        whatYourBidTellsPartner: `4-card ${partnerSuit} support, ${isMinimum ? "minimum" : "non-forcing"} opener.`,
+        whatYourBidTellsPartner: `4-card ${partnerSuit} support, minimum opener (13-15 support points).`,
         expectedResponses: [
           {
             partnerBid: `4${suitSymbol(partnerSuit)}`,
@@ -6090,10 +6231,20 @@ function getRebidAfterSuit(
           (SUIT_RANK[s] ?? 0) < mySuitRank &&
           (hand[s as keyof Hand] as number) >= 4,
       );
-      if (lowerSuit) {
-        const lowerSuitBid = `${simpleLevel}${suitSymbol(lowerSuit)}`;
+      const lowerSuitBid = lowerSuit
+        ? `${simpleLevel}${suitSymbol(lowerSuit)}`
+        : undefined;
+      // Only show the lower second suit if it is LEGAL over partner's response
+      // (strictly higher).  After a 2-over-1 in a higher suit (e.g. 1♠-2♥) a
+      // lower second suit at the 2-level would be insufficient — fall through to
+      // rebidding our own suit / NT instead of bidding below partner.
+      const secondSuitLegal =
+        !!lowerSuitBid &&
+        !!partnerResponse &&
+        BID_ORDER.indexOf(lowerSuitBid) > BID_ORDER.indexOf(partnerResponse);
+      if (lowerSuit && secondSuitLegal) {
         return {
-          bid: lowerSuitBid,
+          bid: lowerSuitBid!,
           category: `Show Second Suit (${lowerSuitBid})`,
           reasoning: `With 4+ ${lowerSuit} and a ${myOpenSuitLen}-card ${myOpenSuit} opening, bid ${lowerSuitBid} to show your second suit. This is not a reverse — ${lowerSuit} ranks lower than ${myOpenSuit}, so partner can prefer ${myOpenSuit} at the 2-level. No extra strength required.`,
           handAnalysis: analysis,
@@ -6167,42 +6318,16 @@ function getRebidAfterSuit(
       };
     }
 
-    // ── Rebid own suit (5+ cards, tp ≤ 15) ────────────────────────────────────
+    // ── Rebid own suit at the SIMPLE level (minimum opener, ≤15 TP) ───────────
+    // A minimum opener NEVER jumps — a jump rebid shows 16-18 and is handled by
+    // the branches above.  With a minimum, rebid the 5+ card suit at the
+    // cheapest level (non-forcing), no jump.
     if (myOpenSuitLen >= 5 && tp <= 15) {
-      // hcp 10–12: invitational range — jump rebid to invite game.
-      // hcp ≤ 9: minimum — simple rebid.
-      // tp 13–15: minimum opener — simple rebid.
-      // SAYC invitational ranges are defined in HCP not TP. Using TP here would
-      // incorrectly upgrade a 9 HCP + 1 length-point (TP=10) hand to invitational.
-      const isInvitational = hand.hcp >= 10 && hand.hcp <= 12;
-      const rebidLevel = isInvitational ? jumpLevel : simpleLevel;
-      const rebidBid = `${rebidLevel}${suitSymbol(myOpenSuit)}`;
-
-      if (isInvitational && myOpenSuitLen < 6) {
-        return {
-          bid: rebidBid,
-          category: `Invitational Jump Rebid (${myOpenSuitLen}-Card ${myOpenSuit.charAt(0).toUpperCase() + myOpenSuit.slice(1)})`,
-          reasoning: `With ${myOpenSuitLen} ${myOpenSuit} and ${hand.hcp} HCP (invitational range), bid ${rebidBid} — an invitational jump, skipping the simple ${partnerBidLevel}${suitSymbol(myOpenSuit)} rebid. This tells partner "I have values and a good suit; please bid game if you have a maximum." Partner bids game with maximum, passes with minimum.`,
-          handAnalysis: analysis,
-          whatYourBidTellsPartner: `${myOpenSuitLen}-card ${myOpenSuit}, invitational strength (10–12 HCP). Bid game with a maximum; pass with a minimum.`,
-          expectedResponses: [
-            {
-              partnerBid: `4${suitSymbol(myOpenSuit)}`,
-              meaning: "Maximum — accepting the invitation",
-            },
-            {
-              partnerBid: "Pass",
-              meaning: "Minimum — declining the invitation",
-            },
-          ],
-          confidence: "high",
-        };
-      }
-
+      const rebidBid = `${simpleLevel}${suitSymbol(myOpenSuit)}`;
       return {
         bid: rebidBid,
-        category: `Rebid Own Suit (${myOpenSuitLen}+ cards, ${tp <= 9 ? "Minimum" : "13–15 TP"})`,
-        reasoning: `With a ${myOpenSuitLen}-card ${myOpenSuit} suit and no 4-card fit for partner's ${partnerSuit}, rebid ${rebidBid} — a simple, non-forcing rebid at the same level as partner. This shows your suit without jumping (no extra values to show).`,
+        category: `Rebid Own Suit (${myOpenSuitLen}+ cards, ${tp <= 12 ? "Minimum" : "13–15 TP"})`,
+        reasoning: `With a ${myOpenSuitLen}-card ${myOpenSuit} suit and no 4-card fit for partner's ${partnerSuit}, rebid ${rebidBid} — a simple, non-forcing minimum rebid at the cheapest level. A jump here would show 16-18; with a minimum you do not jump.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner: `${myOpenSuitLen}-card ${myOpenSuit}, no ${partnerSuit} fit, minimum values.`,
         expectedResponses: [

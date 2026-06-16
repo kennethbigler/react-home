@@ -162,4 +162,54 @@ describe("games | bridge | BidDialog", () => {
       screen.queryByRole("button", { name: /view cheat sheet/i }),
     ).not.toBeInTheDocument();
   });
+
+  it("shows the New Game button in the always-visible top bar", async () => {
+    render(<BidDialog />);
+    fireEvent.click(screen.getByRole("button", { name: /bid/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+    });
+
+    expect(
+      screen.getByRole("button", { name: /new game/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("New Game (top bar) resets the Bid Advisor hand to defaults", async () => {
+    render(<BidDialog />);
+    fireEvent.click(screen.getByRole("button", { name: /bid/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+    });
+
+    const hcpInput = screen.getByLabelText("HCP value");
+    fireEvent.change(hcpInput, { target: { value: "20" } });
+    expect(hcpInput).toHaveValue(20);
+
+    fireEvent.click(screen.getByRole("button", { name: /new game/i }));
+
+    await waitFor(() => {
+      // Remounted BidAdvisor → HCP back to the default 0
+      expect(screen.getByLabelText("HCP value")).toHaveValue(0);
+    });
+  });
+
+  it("New Game (top bar) resets the Bid Advisor position to 1st", async () => {
+    render(<BidDialog />);
+    fireEvent.click(screen.getByRole("button", { name: /bid/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByLabelText("Position 2nd"));
+    fireEvent.click(screen.getByRole("button", { name: /new game/i }));
+
+    await waitFor(() => {
+      const pos1 = screen.getByLabelText("Position 1st");
+      expect(pos1.closest(".MuiChip-filled")).toBeTruthy();
+    });
+  });
 });

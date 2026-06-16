@@ -1,8 +1,12 @@
-import { Box, Button, Divider, Grid, Paper, Typography } from "@mui/material";
+import { Box, Chip, Divider, Grid, Paper, Typography } from "@mui/material";
 import { useAtomValue } from "jotai";
 import { useMemo, useState } from "react";
 import { bridgeRead } from "../../../../../jotai/bridge-atom";
-import { deriveSituation, getRecommendation } from "./advisor/bidding-logic";
+import {
+  deriveSituation,
+  getFinalContractInfo,
+  getRecommendation,
+} from "./advisor/bidding-logic";
 import type {
   AuctionState,
   BidRecommendation as BidRecommendationType,
@@ -43,6 +47,15 @@ export default function BidAdvisor() {
 
   const totalCards = hand.spades + hand.hearts + hand.diamonds + hand.clubs;
   const handIsValid = totalCards === 13;
+
+  // Bidding is over once three passes follow a bid (or the deal is passed out).
+  // When complete there is nothing left to advise — we show the final contract
+  // instead of a bid, and never ask about stoppers.
+  const { isComplete: biddingComplete, finalContract } = getFinalContractInfo(
+    auctionState.completedRounds,
+    auctionState.currentRound,
+    auctionState.myPosition,
+  );
 
   const auctionContext = useMemo(
     () => deriveSituation(auctionState, vulnerability),
@@ -119,7 +132,8 @@ export default function BidAdvisor() {
     );
     return withStopper.bid !== withoutStopper.bid;
   }, [hand, auctionContext, stopperCouldMatter, handIsValid]);
-  const showStopperInput = stopperCouldMatter && stopperChangesBid;
+  const showStopperInput =
+    stopperCouldMatter && stopperChangesBid && !biddingComplete;
 
   const opponentSuitLabel = opponentSuitName
     ? `${opponentSuitSymbol} ${opponentSuitName}`
@@ -136,32 +150,12 @@ export default function BidAdvisor() {
     return getRecommendation(effectiveHand, context);
   }, [hand, auctionState, handIsValid, vulnerability, showStopperInput]);
 
-  const handleNewGame = () => {
-    setHand(DEFAULT_HAND);
-    setAuctionState(DEFAULT_STATE);
-  };
-
   return (
     <Box>
-      {/* Header row */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-        }}
-      >
-        <Typography variant="h5">Bid Advisor</Typography>
-        <Button
-          onClick={handleNewGame}
-          variant="outlined"
-          size="small"
-          color="secondary"
-        >
-          New Game
-        </Button>
-      </Box>
+      {/* Header (the "New Game" reset lives in the dialog's top bar) */}
+      <Typography variant="h5" sx={{ mb: 2 }}>
+        Bid Advisor
+      </Typography>
       <Grid container spacing={2}>
         {/* ── Left column: hand + context ─────────────────────────────── */}
         <Grid size={{ xs: 12, md: 5 }}>
@@ -192,7 +186,50 @@ export default function BidAdvisor() {
             variant="outlined"
             sx={{ p: 2, minHeight: 200, position: "sticky", top: 0 }}
           >
-            {recommendation ? (
+            {biddingComplete ? (
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Bidding Complete
+                </Typography>
+                <Paper
+                  elevation={2}
+                  sx={{
+                    p: 2,
+                    mb: 2,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <Typography
+                    variant="h4"
+                    component="span"
+                    aria-label="Final contract"
+                    sx={{ fontWeight: "bold" }}
+                  >
+                    {finalContract ?? "Passed Out"}
+                  </Typography>
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}
+                  >
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ color: "text.secondary" }}
+                    >
+                      {finalContract
+                        ? "Final contract"
+                        : "No contract — all four players passed"}
+                    </Typography>
+                    <Chip label="Auction over" color="info" size="small" />
+                  </Box>
+                </Paper>
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  Three passes have ended the auction, so there are no more bids
+                  to make. Use New Game (top bar) to advise another hand.
+                </Typography>
+              </Box>
+            ) : recommendation ? (
               <BidRecommendation recommendation={recommendation} />
             ) : (
               <Box

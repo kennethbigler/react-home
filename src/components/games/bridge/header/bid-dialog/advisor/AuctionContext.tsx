@@ -804,10 +804,11 @@ export default function AuctionContextInput({
               const lastSignificant = [...prevBids]
                 .reverse()
                 .find((b) => b !== "Pass");
-              const effectiveLast =
-                lastSignificant !== "Pass"
-                  ? lastSignificant
-                  : lastBidBeforeNextRound;
+              // `.find` returns undefined when every prior bid this round is a
+              // Pass (e.g. my own bid is Pass) — fall back to the auction floor
+              // BEFORE my turn so the dropdown is still capped at the highest
+              // bid so far, not reset to "all bids".
+              const effectiveLast = lastSignificant ?? lastBidBeforeNextRound;
               const lastSignificantSuit = [...prevBids]
                 .reverse()
                 .find(
