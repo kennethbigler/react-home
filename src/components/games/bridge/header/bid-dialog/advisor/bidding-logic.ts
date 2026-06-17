@@ -53,6 +53,8 @@ type Situation =
   | "rebid-after-negative-double"
   | "jacoby-2nt-opener"
   | "protective-rebid"
+  // My own bid was passed out — the auction is over in my contract
+  | "auction-passed-out"
   // Responding to partner's opening after opponent interference
   | "responding-suit-after-double"
   | "responding-1nt-doubled"
@@ -8002,6 +8004,17 @@ function getRecommendationRaw(
         !!(context.lhoBid || context.rhoBid),
       );
 
+    case "auction-passed-out":
+      return {
+        bid: "Pass",
+        category: "Pass (Auction Complete)",
+        reasoning: `Your ${context.myPreviousBid} was passed out — the other three players all passed. The auction is over; pass and proceed to play in ${context.myPreviousBid}.`,
+        handAnalysis: analyzeHand(hand),
+        whatYourBidTellsPartner: "Auction is over — no further action needed.",
+        expectedResponses: [],
+        confidence: "high",
+      };
+
     case "protective-rebid":
       return getProtectiveRebid(
         hand,
@@ -9743,18 +9756,48 @@ function deriveSituationCore(
     // (RHO just bid), this is ordinary competition — reopening-double standards
     // do NOT apply, so the handler must know which seat it is in.
     if (!partnerBid) {
-      // Flatten all calls made so far, in seat order, to find the two calls
-      // immediately preceding this turn.
-      const flatCalls: string[] = [];
+      // ── Passed out in MY contract ──────────────────────────────────────────
+      // If my own previous bid is the highest live bid and every call since has
+      // been a Pass, the auction has come back to me having been passed out — I
+      // am about to play my own contract.  This is NOT a protective/balancing
+      // seat (there is nothing to reopen — our side holds the contract); the
+      // correct call is Pass.  Build the ordered timeline of calls up to (but
+      // not including) my current turn and check the tail.
+      const orderedCalls: { pos: BiddingPosition; bid: string }[] = [];
       for (const r of completedRounds) {
-        for (const p of POSITIONS) flatCalls.push(r[p] ?? "Pass");
+        for (const p of POSITIONS)
+          orderedCalls.push({ pos: p, bid: r[p] ?? "Pass" });
       }
       for (const p of POSITIONS) {
         if (p < myPosition) {
           const b = currentRound[p];
-          if (b !== undefined) flatCalls.push(b);
+          if (b !== undefined) orderedCalls.push({ pos: p, bid: b });
         }
       }
+      const lastRealCall = [...orderedCalls]
+        .reverse()
+        .find((c) => isRealBid(c.bid));
+      const everyCallAfterMineIsPass = lastRealCall
+        ? orderedCalls
+            .slice(orderedCalls.lastIndexOf(lastRealCall) + 1)
+            .every((c) => c.bid === "Pass")
+        : false;
+      if (
+        lastRealCall &&
+        lastRealCall.pos === myPosition &&
+        lastRealCall.bid === myLastBid &&
+        everyCallAfterMineIsPass
+      ) {
+        return {
+          situation: "auction-passed-out",
+          myPreviousBid: myLastBid,
+          vulnerability: vul,
+        };
+      }
+
+      // Flatten all calls made so far, in seat order, to find the two calls
+      // immediately preceding this turn.
+      const flatCalls: string[] = orderedCalls.map((c) => c.bid);
       const lastTwo = flatCalls.slice(-2);
       const inBalancingSeat =
         lastTwo.length === 2 && lastTwo.every((b) => b === "Pass");

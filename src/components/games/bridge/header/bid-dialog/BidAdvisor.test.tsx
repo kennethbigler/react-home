@@ -3,6 +3,9 @@ import { useAtomValue } from "jotai";
 import { describe, expect, it, vi } from "vitest";
 import BidAdvisor from "./BidAdvisor";
 
+const byTextContent = (text: string) => (_: string, el: Element | null) =>
+  el?.textContent === text;
+
 // Mock jotai's useAtomValue to provide bridge game state
 vi.mock("jotai", async (importOriginal) => {
   const actual = await importOriginal<typeof import("jotai")>();
@@ -291,7 +294,7 @@ describe("games | bridge | BidAdvisor", () => {
     // RHO bids 1♥ (a natural suit bid, no NT opened before it)
     fireEvent.mouseDown(screen.getByLabelText(/RHO \(3rd\)/i));
     const listbox = screen.getByRole("listbox");
-    fireEvent.click(within(listbox).getAllByText("1♥")[0]);
+    fireEvent.click(within(listbox).getAllByText(byTextContent("1♥"))[0]);
     // Stopper question should appear for the heart suit
     expect(
       screen.getByLabelText("Has stopper in opponent's suit"),
@@ -344,7 +347,7 @@ describe("games | bridge | BidAdvisor", () => {
     fireEvent.change(hcpInput, { target: { value: "16" } });
     fireEvent.mouseDown(screen.getByLabelText(/RHO \(3rd\)/i));
     const listbox = screen.getByRole("listbox");
-    fireEvent.click(within(listbox).getAllByText("1♦")[0]);
+    fireEvent.click(within(listbox).getAllByText(byTextContent("1♦"))[0]);
     // opponentSuitName = "diamonds"
     expect(
       screen.getByLabelText("Has stopper in opponent's suit"),

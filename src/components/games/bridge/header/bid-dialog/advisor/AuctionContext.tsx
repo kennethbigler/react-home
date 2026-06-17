@@ -14,6 +14,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { alpha, type Theme } from "@mui/material/styles";
 import { useState } from "react";
 import type { AuctionState, BidRound, BiddingPosition } from "./bidding-logic";
 import {
@@ -22,6 +23,7 @@ import {
   getRelatives,
   getValidBidsAfter,
 } from "./bidding-logic";
+import { colorSuits } from "../../../suitColor";
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -185,6 +187,32 @@ function getRelationship(
   return "rho";
 }
 
+// ─── Partnership (side) helpers ────────────────────────────────────────────────
+// Seats pair up as {1,3} and {2,4}.  "us" = me + my partner, "them" = the two
+// opponents.  Coloring seats by side makes it easy to see where my bid and my
+// partner's bid sit, versus the opponents'.
+
+type Side = "us" | "them";
+
+function getSide(pos: BiddingPosition, myPosition: BiddingPosition): Side {
+  const { partner } = getRelatives(myPosition);
+  return pos === myPosition || pos === partner ? "us" : "them";
+}
+
+/** sx fragment that tints a seat by partnership side. Uses alpha over the
+ *  primary color so it reads correctly in both light and dark themes. */
+function sideSx(side: Side) {
+  return side === "us"
+    ? {
+        backgroundColor: (t: Theme) => alpha(t.palette.primary.main, 0.12),
+        borderColor: "primary.main",
+      }
+    : {
+        backgroundColor: "action.hover",
+        borderColor: "divider",
+      };
+}
+
 // ─── Info icon with tooltip ────────────────────────────────────────────────────
 
 interface BidInfoIconProps {
@@ -272,8 +300,29 @@ function BidSlot({
 }: BidSlotProps) {
   const currentValue = value || "Pass";
   const labelId = `bid-label-${slotLabel.replace(/[\s()]+/g, "-").toLowerCase()}`;
+  // "me" and "partner" are on your side; "lho"/"rho" are opponents.  A colored
+  // left edge ties each slot to its partnership, and the partner/you slots get
+  // a ↔ cue so the pairing is obvious.
+  const side: Side =
+    relationship === "me" || relationship === "partner" ? "us" : "them";
+  const cue =
+    relationship === "me"
+      ? "you"
+      : relationship === "partner"
+        ? "↔ your partner"
+        : undefined;
   return (
-    <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 0.5,
+        pl: 1,
+        borderLeft: "3px solid",
+        borderLeftColor: side === "us" ? "primary.main" : "divider",
+        borderRadius: 0.5,
+      }}
+    >
       <FormControl sx={{ flex: 1 }} size="small">
         <InputLabel id={labelId}>{slotLabel}</InputLabel>
         <Select
@@ -285,11 +334,23 @@ function BidSlot({
         >
           {options.map((b) => (
             <MenuItem key={b} value={b}>
-              {b}
+              {colorSuits(b)}
             </MenuItem>
           ))}
         </Select>
       </FormControl>
+      {cue && (
+        <Typography
+          variant="caption"
+          sx={{
+            color: side === "us" ? "primary.main" : "text.secondary",
+            whiteSpace: "nowrap",
+            fontWeight: relationship === "me" ? 600 : 400,
+          }}
+        >
+          {cue}
+        </Typography>
+      )}
       {relationship !== "me" && (
         <BidInfoIcon
           bid={currentValue}
@@ -310,9 +371,10 @@ interface BidChipProps {
   chipLabel: string;
   tooltipTitle: string;
   isMe: boolean;
+  side: Side;
 }
 
-function BidChip({ chipLabel, tooltipTitle, isMe }: BidChipProps) {
+function BidChip({ chipLabel, tooltipTitle, isMe, side }: BidChipProps) {
   const [open, setOpen] = useState(false);
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
@@ -329,13 +391,16 @@ function BidChip({ chipLabel, tooltipTitle, isMe }: BidChipProps) {
         }}
       >
         <Chip
-          label={chipLabel}
+          label={colorSuits(chipLabel)}
           size="small"
           variant={isMe ? "filled" : "outlined"}
           color={isMe ? "primary" : "default"}
           sx={{
             fontSize: "0.7rem",
             cursor: "pointer",
+            // Tint by partnership side so your side's bids stand apart from the
+            // opponents'.  "Me" stays filled-primary and is left untouched.
+            ...(isMe ? {} : sideSx(side)),
             outline: open ? "2px solid" : "none",
             outlineColor: "primary.main",
             outlineOffset: "2px",
@@ -435,6 +500,7 @@ function CompletedRoundRow({
             chipLabel={chipLabel}
             tooltipTitle={tooltipTitle}
             isMe={isMe}
+            side={getSide(pos, myPosition)}
           />
         );
       })}
@@ -547,6 +613,88 @@ export default function AuctionContextInput({
     nextRoundBids[myPosition] !== undefined &&
     nextRoundBids[myPosition] !== recommendedBid;
 
+  // ── Visible slots in "Complete this round" ────────────────────────────────────
+  // Round 1 (no completed rounds yet): all 4 positions always show.
+  // Round 2+: show only enough slots to allow up to 3 consecutive passes
+  // counting from the last non-pass bid anywhere in the auction (spanning the
+  // tail of the previous round and the current round's slots in seat order).
+  //
+  // Slots: [...positionsBefore, myPosition, ...positionsAfter] in seat order.
+  // A slot with a non-Pass default (recommendedBid for myPosition) counts as
+  // a bid, resetting the consecutive-pass counter.
+  const visibleAfterPositions = (() => {
+    if (completedRounds.length === 0) return positionsAfter; // round 1: show all
+
+    // Count trailing passes at the end of the most recent completed round.
+    const lastRound = completedRounds[completedRounds.length - 1];
+    let trailingPasses = 0;
+    for (let p = 4; p >= 1; p--) {
+      const b = lastRound[p as BiddingPosition] ?? "Pass";
+      if (b === "Pass") trailingPasses++;
+      else break;
+    }
+
+    // Walk through all current-round slots in seat order, maintaining the
+    // running consecutive-pass count.  Stop adding visible slots once we've
+    // reached 3 in a row.
+    const allSlots: BiddingPosition[] = [
+      ...positionsBefore,
+      myPosition,
+      ...positionsAfter,
+    ];
+
+    // Determine the effective bid for each slot:
+    // - positionsBefore: currentRound value (already entered)
+    // - myPosition: myBidCurrent (may be recommendedBid)
+    // - positionsAfter: nextRoundBids value if set, else "Pass" (unknown = Pass)
+    const slotBid = (pos: BiddingPosition): string => {
+      if (pos < myPosition) return currentRound[pos] ?? "Pass";
+      if (pos === myPosition) return myBidCurrent;
+      return nextRoundBids[pos] ?? "Pass";
+    };
+
+    let consecutivePasses = trailingPasses;
+    const visible = new Set<BiddingPosition>();
+
+    for (const pos of allSlots) {
+      if (consecutivePasses >= 3) break; // already at limit — don't add more
+      const bid = slotBid(pos);
+      if (pos >= myPosition) {
+        // This is a slot in "Complete this round" — it should be visible
+        visible.add(pos);
+      }
+      if (bid === "Pass") {
+        consecutivePasses++;
+      } else {
+        consecutivePasses = 0;
+      }
+    }
+
+    return positionsAfter.filter((p) => visible.has(p));
+  })();
+
+  // Whether "My bid" slot itself is visible.  It's always visible in round 1;
+  // in later rounds it's visible as long as we haven't already hit 3 passes
+  // from the tail of the previous round before reaching myPosition.
+  const myBidVisible = (() => {
+    if (completedRounds.length === 0) return true;
+    const lastRound = completedRounds[completedRounds.length - 1];
+    let trailingPasses = 0;
+    for (let p = 4; p >= 1; p--) {
+      const b = lastRound[p as BiddingPosition] ?? "Pass";
+      if (b === "Pass") trailingPasses++;
+      else break;
+    }
+    // Count passes from positionsBefore in this round
+    let consecutivePasses = trailingPasses;
+    for (const pos of positionsBefore) {
+      const b = currentRound[pos] ?? "Pass";
+      if (b === "Pass") consecutivePasses++;
+      else consecutivePasses = 0;
+    }
+    return consecutivePasses < 3;
+  })();
+
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
@@ -568,20 +716,89 @@ export default function AuctionContextInput({
         >
           My bidding position
         </Typography>
-        <Box sx={{ display: "flex", gap: 1 }}>
-          {([1, 2, 3, 4] as BiddingPosition[]).map((p) => (
-            <Chip
-              key={p}
-              label={POSITION_LABELS[p]}
-              size="small"
-              clickable
-              variant={myPosition === p ? "filled" : "outlined"}
-              color={myPosition === p ? "primary" : "default"}
-              onClick={() =>
-                update({ myPosition: p, currentRound: {}, completedRounds: [] })
-              }
-              aria-label={`Position ${POSITION_LABELS[p]}`}
-            />
+        {/* Seats grouped by partnership so it's clear who is on your side
+            (you + partner) versus the opponents.  Each pair shows a ↔ link. */}
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+          {(
+            [
+              {
+                side: "us" as Side,
+                label: "You & Partner",
+                seats: [myPosition, getRelatives(myPosition).partner].sort(
+                  (a, b) => a - b,
+                ) as BiddingPosition[],
+              },
+              {
+                side: "them" as Side,
+                label: "Opponents",
+                seats: [
+                  getRelatives(myPosition).lho,
+                  getRelatives(myPosition).rho,
+                ].sort((a, b) => a - b) as BiddingPosition[],
+              },
+            ] as const
+          ).map((group) => (
+            <Box
+              key={group.side}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+                px: 1,
+                py: 0.5,
+                borderRadius: 1,
+                border: "1px solid",
+                ...sideSx(group.side),
+              }}
+            >
+              <Typography
+                variant="caption"
+                sx={{ color: "text.secondary", mr: 0.25 }}
+              >
+                {group.label}:
+              </Typography>
+              {group.seats.map((p, idx) => (
+                <Box
+                  key={p}
+                  sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                >
+                  {idx > 0 && (
+                    <Typography
+                      variant="caption"
+                      aria-hidden
+                      sx={{ color: "text.secondary" }}
+                    >
+                      ↔
+                    </Typography>
+                  )}
+                  <Chip
+                    label={
+                      myPosition === p
+                        ? `${POSITION_LABELS[p]} (you)`
+                        : POSITION_LABELS[p]
+                    }
+                    size="small"
+                    clickable
+                    variant={myPosition === p ? "filled" : "outlined"}
+                    color={
+                      group.side === "us"
+                        ? "primary"
+                        : myPosition === p
+                          ? "primary"
+                          : "default"
+                    }
+                    onClick={() =>
+                      update({
+                        myPosition: p,
+                        currentRound: {},
+                        completedRounds: [],
+                      })
+                    }
+                    aria-label={`Position ${POSITION_LABELS[p]}`}
+                  />
+                </Box>
+              ))}
+            </Box>
           ))}
         </Box>
       </Box>
@@ -762,43 +979,46 @@ export default function AuctionContextInput({
             sx={{ display: "flex", flexDirection: "column", gap: 1.5, mb: 1.5 }}
           >
             {/* My bid */}
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-              <BidSlot
-                slotLabel="My bid"
-                relationship="me"
-                value={myBidCurrent}
-                options={getValidBidsAfter(
-                  lastBidBeforeNextRound,
-                  lastSuitBidBeforeNextRound,
-                )}
-                onChange={(val) =>
-                  setNextRoundBids((prev) => ({ ...prev, [myPosition]: val }))
-                }
-              />
-              {showUseRecommendation && (
-                <Chip
-                  label={`↩ Use recommendation: ${recommendedBid}`}
-                  size="small"
-                  clickable
-                  variant="outlined"
-                  color="secondary"
-                  aria-label={`Use recommendation: ${recommendedBid}`}
-                  onClick={() =>
-                    setNextRoundBids((prev) => ({
-                      ...prev,
-                      [myPosition]: recommendedBid!,
-                    }))
+            {myBidVisible && (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+                <BidSlot
+                  slotLabel="My bid"
+                  relationship="me"
+                  value={myBidCurrent}
+                  options={getValidBidsAfter(
+                    lastBidBeforeNextRound,
+                    lastSuitBidBeforeNextRound,
+                  )}
+                  onChange={(val) =>
+                    setNextRoundBids((prev) => ({ ...prev, [myPosition]: val }))
                   }
-                  sx={{ alignSelf: "flex-start" }}
                 />
-              )}
-            </Box>
+                {showUseRecommendation && (
+                  <Chip
+                    label={`↩ Use recommendation: ${recommendedBid}`}
+                    size="small"
+                    clickable
+                    variant="outlined"
+                    color="secondary"
+                    aria-label={`Use recommendation: ${recommendedBid}`}
+                    onClick={() =>
+                      setNextRoundBids((prev) => ({
+                        ...prev,
+                        [myPosition]: recommendedBid!,
+                      }))
+                    }
+                    sx={{ alignSelf: "flex-start" }}
+                  />
+                )}
+              </Box>
+            )}
             {/* Positions after me */}
-            {positionsAfter.map((pos, idx) => {
+            {visibleAfterPositions.map((pos) => {
+              const afterIdx = positionsAfter.indexOf(pos);
               const prevBids = [
                 myBidCurrent,
                 ...positionsAfter
-                  .slice(0, idx)
+                  .slice(0, afterIdx)
                   .map((p) => nextRoundBids[p] ?? "Pass"),
               ];
               const lastSignificant = [...prevBids]
@@ -828,7 +1048,7 @@ export default function AuctionContextInput({
                 ...currentRound,
                 [myPosition]: myBidCurrent,
               };
-              for (const earlier of positionsAfter.slice(0, idx)) {
+              for (const earlier of positionsAfter.slice(0, afterIdx)) {
                 roundSoFar[earlier] = nextRoundBids[earlier] ?? "Pass";
               }
               const thisRoundBefore = roundBefore(roundSoFar, pos);
@@ -885,7 +1105,7 @@ export default function AuctionContextInput({
             >
               {AGREED_SUIT_OPTIONS.map((s) => (
                 <MenuItem key={s} value={s}>
-                  {s}
+                  {colorSuits(s)}
                 </MenuItem>
               ))}
             </Select>

@@ -3,6 +3,12 @@ import { describe, expect, it, vi } from "vitest";
 import AuctionContextInput from "./AuctionContext";
 import type { AuctionState } from "./bidding-logic";
 
+// Suit symbols (♥, ♦) are wrapped in <span> nodes by colorSuits(), so
+// getByText("1♥") won't find them as a single text node.  Use this matcher
+// whenever looking for text that may contain those characters.
+const byTextContent = (text: string) => (_: string, el: Element | null) =>
+  el?.textContent === text;
+
 // myPosition: 3 → partner=1, rho=2, lho=4
 const defaultState: AuctionState = {
   myPosition: 3,
@@ -62,6 +68,28 @@ describe("games | bridge | AuctionContext", () => {
         completedRounds: [],
       }),
     );
+  });
+
+  // ── Partnership emphasis ──────────────────────────────────────────────────────
+
+  it("groups seats into 'You & Partner' and 'Opponents'", () => {
+    renderAuctionContext({ ...defaultState, myPosition: 2 });
+    expect(screen.getByText("You & Partner:")).toBeInTheDocument();
+    expect(screen.getByText("Opponents:")).toBeInTheDocument();
+  });
+
+  it("marks the selected seat with a '(you)' cue", () => {
+    // myPosition 2 → label shows "2nd (you)".
+    renderAuctionContext({ ...defaultState, myPosition: 2 });
+    expect(
+      screen.getAllByText((_, el) => el?.textContent === "2nd (you)").length,
+    ).toBeGreaterThan(0);
+  });
+
+  it("shows a '↔ your partner' cue on the partner's bid slot", () => {
+    // myPosition 4 → seats 1,2,3 bid before me; partner (2nd) is among them.
+    renderAuctionContext({ ...defaultState, myPosition: 4 });
+    expect(screen.getByText("↔ your partner")).toBeInTheDocument();
   });
 
   // ── Vulnerability display (read-only) ─────────────────────────────────────────
@@ -145,7 +173,7 @@ describe("games | bridge | AuctionContext", () => {
     const rhoSelect = screen.getByLabelText("RHO (1st)");
     fireEvent.mouseDown(rhoSelect);
     const listbox = screen.getByRole("listbox");
-    fireEvent.click(within(listbox).getAllByText("1♥")[0]);
+    fireEvent.click(within(listbox).getAllByText(byTextContent("1♥"))[0]);
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         currentRound: expect.objectContaining({ 1: "1♥" }),
@@ -180,7 +208,9 @@ describe("games | bridge | AuctionContext", () => {
     const rhoSelect = screen.getByLabelText("RHO (2nd)");
     fireEvent.mouseDown(rhoSelect);
     const listbox = screen.getByRole("listbox");
-    expect(within(listbox).getAllByText("2♦").length).toBeGreaterThan(0);
+    expect(
+      within(listbox).getAllByText(byTextContent("2♦")).length,
+    ).toBeGreaterThan(0);
     fireEvent.keyDown(listbox, { key: "Escape" });
   });
 
@@ -401,7 +431,7 @@ describe("games | bridge | AuctionContext", () => {
       ],
     };
     renderAuctionContext(state);
-    fireEvent.click(screen.getByText("Partner (3rd): 4♥"));
+    fireEvent.click(screen.getAllByText(byTextContent("Partner (3rd): 4♥"))[0]);
     expect(
       screen.getByText(/RAISE of their partner's 2♥/i),
     ).toBeInTheDocument();
@@ -418,7 +448,7 @@ describe("games | bridge | AuctionContext", () => {
       completedRounds: [{ 1: "Pass", 2: "1♣", 3: "Pass", 4: "1♥" }],
     };
     renderAuctionContext(state);
-    fireEvent.click(screen.getByText("RHO (4th): 1♥"));
+    fireEvent.click(screen.getAllByText(byTextContent("RHO (4th): 1♥"))[0]);
     expect(screen.getByText(/response/i)).toBeInTheDocument();
     expect(screen.queryByText(/overcall/i)).not.toBeInTheDocument();
   });
