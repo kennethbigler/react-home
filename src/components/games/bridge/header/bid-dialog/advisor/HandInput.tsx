@@ -12,6 +12,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { calcTP } from "./bidding-logic";
 import type { Hand } from "./bidding-logic";
+import { colorSuits } from "../../../suitColor";
 
 interface HandInputProps {
   hand: Hand;
@@ -193,7 +194,7 @@ export default function HandInput({
                   aria-label={`${label} count`}
                 >
                   {current}
-                  {symbol}
+                  {colorSuits(symbol)}
                 </Typography>
                 <IconButton
                   size="small"

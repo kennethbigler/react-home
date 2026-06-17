@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import type { BidRecommendation as BidRecommendationType } from "./bidding-logic";
+import { colorSuits } from "../../../suitColor";
 
 interface BidRecommendationProps {
   recommendation: BidRecommendationType;
@@ -64,7 +65,7 @@ export default function BidRecommendation({
             fontWeight: "bold",
           }}
         >
-          {bid}
+          {colorSuits(bid)}
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
           <Typography
@@ -73,7 +74,7 @@ export default function BidRecommendation({
               color: "text.secondary",
             }}
           >
-            {category}
+            {colorSuits(category)}
           </Typography>
           <Chip
             label={`Confidence: ${confidence.charAt(0).toUpperCase() + confidence.slice(1)}`}
@@ -111,7 +112,7 @@ export default function BidRecommendation({
         <Typography variant="subtitle2" gutterBottom>
           Why This Bid
         </Typography>
-        <Typography variant="body2">{reasoning}</Typography>
+        <Typography variant="body2">{colorSuits(reasoning)}</Typography>
       </Box>
       {/* What it tells partner */}
       <Box
@@ -128,7 +129,7 @@ export default function BidRecommendation({
             color: "primary.main",
           }}
         >
-          {whatYourBidTellsPartner}
+          {colorSuits(whatYourBidTellsPartner)}
         </Typography>
       </Box>
       {/* Alternative bid */}
@@ -141,7 +142,7 @@ export default function BidRecommendation({
           <Typography variant="subtitle2" gutterBottom>
             Alternative Bid
           </Typography>
-          <Chip label={alternativeBid} variant="outlined" size="small" />
+          <Chip label={colorSuits(alternativeBid)} variant="outlined" size="small" />
         </Box>
       )}
       {/* Note / caveat */}
@@ -186,14 +187,14 @@ export default function BidRecommendation({
                           fontWeight: "bold",
                         }}
                       >
-                        {resp.partnerBid}
+                        {colorSuits(resp.partnerBid)}
                       </Typography>
                     }
                     secondary={
                       <>
                         <Typography variant="body2" component="span">
                           {" "}
-                          {resp.meaning}
+                          {colorSuits(resp.meaning)}
                         </Typography>
                         {resp.yourRebid && (
                           <Typography
@@ -203,7 +204,7 @@ export default function BidRecommendation({
                               color: "primary.main",
                             }}
                           >
-                            Your rebid: {resp.yourRebid}
+                            Your rebid: {colorSuits(resp.yourRebid)}
                           </Typography>
                         )}
                       </>

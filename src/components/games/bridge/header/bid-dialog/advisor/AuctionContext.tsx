@@ -22,6 +22,7 @@ import {
   getRelatives,
   getValidBidsAfter,
 } from "./bidding-logic";
+import { colorSuits } from "../../../suitColor";
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -285,7 +286,7 @@ function BidSlot({
         >
           {options.map((b) => (
             <MenuItem key={b} value={b}>
-              {b}
+              {colorSuits(b)}
             </MenuItem>
           ))}
         </Select>
@@ -329,7 +330,7 @@ function BidChip({ chipLabel, tooltipTitle, isMe }: BidChipProps) {
         }}
       >
         <Chip
-          label={chipLabel}
+          label={colorSuits(chipLabel)}
           size="small"
           variant={isMe ? "filled" : "outlined"}
           color={isMe ? "primary" : "default"}
@@ -547,6 +548,88 @@ export default function AuctionContextInput({
     nextRoundBids[myPosition] !== undefined &&
     nextRoundBids[myPosition] !== recommendedBid;
 
+  // ── Visible slots in "Complete this round" ────────────────────────────────────
+  // Round 1 (no completed rounds yet): all 4 positions always show.
+  // Round 2+: show only enough slots to allow up to 3 consecutive passes
+  // counting from the last non-pass bid anywhere in the auction (spanning the
+  // tail of the previous round and the current round's slots in seat order).
+  //
+  // Slots: [...positionsBefore, myPosition, ...positionsAfter] in seat order.
+  // A slot with a non-Pass default (recommendedBid for myPosition) counts as
+  // a bid, resetting the consecutive-pass counter.
+  const visibleAfterPositions = (() => {
+    if (completedRounds.length === 0) return positionsAfter; // round 1: show all
+
+    // Count trailing passes at the end of the most recent completed round.
+    const lastRound = completedRounds[completedRounds.length - 1];
+    let trailingPasses = 0;
+    for (let p = 4; p >= 1; p--) {
+      const b = lastRound[p as BiddingPosition] ?? "Pass";
+      if (b === "Pass") trailingPasses++;
+      else break;
+    }
+
+    // Walk through all current-round slots in seat order, maintaining the
+    // running consecutive-pass count.  Stop adding visible slots once we've
+    // reached 3 in a row.
+    const allSlots: BiddingPosition[] = [
+      ...positionsBefore,
+      myPosition,
+      ...positionsAfter,
+    ];
+
+    // Determine the effective bid for each slot:
+    // - positionsBefore: currentRound value (already entered)
+    // - myPosition: myBidCurrent (may be recommendedBid)
+    // - positionsAfter: nextRoundBids value if set, else "Pass" (unknown = Pass)
+    const slotBid = (pos: BiddingPosition): string => {
+      if (pos < myPosition) return currentRound[pos] ?? "Pass";
+      if (pos === myPosition) return myBidCurrent;
+      return nextRoundBids[pos] ?? "Pass";
+    };
+
+    let consecutivePasses = trailingPasses;
+    const visible = new Set<BiddingPosition>();
+
+    for (const pos of allSlots) {
+      if (consecutivePasses >= 3) break; // already at limit — don't add more
+      const bid = slotBid(pos);
+      if (pos >= myPosition) {
+        // This is a slot in "Complete this round" — it should be visible
+        visible.add(pos);
+      }
+      if (bid === "Pass") {
+        consecutivePasses++;
+      } else {
+        consecutivePasses = 0;
+      }
+    }
+
+    return positionsAfter.filter((p) => visible.has(p));
+  })();
+
+  // Whether "My bid" slot itself is visible.  It's always visible in round 1;
+  // in later rounds it's visible as long as we haven't already hit 3 passes
+  // from the tail of the previous round before reaching myPosition.
+  const myBidVisible = (() => {
+    if (completedRounds.length === 0) return true;
+    const lastRound = completedRounds[completedRounds.length - 1];
+    let trailingPasses = 0;
+    for (let p = 4; p >= 1; p--) {
+      const b = lastRound[p as BiddingPosition] ?? "Pass";
+      if (b === "Pass") trailingPasses++;
+      else break;
+    }
+    // Count passes from positionsBefore in this round
+    let consecutivePasses = trailingPasses;
+    for (const pos of positionsBefore) {
+      const b = currentRound[pos] ?? "Pass";
+      if (b === "Pass") consecutivePasses++;
+      else consecutivePasses = 0;
+    }
+    return consecutivePasses < 3;
+  })();
+
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
@@ -762,43 +845,46 @@ export default function AuctionContextInput({
             sx={{ display: "flex", flexDirection: "column", gap: 1.5, mb: 1.5 }}
           >
             {/* My bid */}
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-              <BidSlot
-                slotLabel="My bid"
-                relationship="me"
-                value={myBidCurrent}
-                options={getValidBidsAfter(
-                  lastBidBeforeNextRound,
-                  lastSuitBidBeforeNextRound,
-                )}
-                onChange={(val) =>
-                  setNextRoundBids((prev) => ({ ...prev, [myPosition]: val }))
-                }
-              />
-              {showUseRecommendation && (
-                <Chip
-                  label={`↩ Use recommendation: ${recommendedBid}`}
-                  size="small"
-                  clickable
-                  variant="outlined"
-                  color="secondary"
-                  aria-label={`Use recommendation: ${recommendedBid}`}
-                  onClick={() =>
-                    setNextRoundBids((prev) => ({
-                      ...prev,
-                      [myPosition]: recommendedBid!,
-                    }))
+            {myBidVisible && (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+                <BidSlot
+                  slotLabel="My bid"
+                  relationship="me"
+                  value={myBidCurrent}
+                  options={getValidBidsAfter(
+                    lastBidBeforeNextRound,
+                    lastSuitBidBeforeNextRound,
+                  )}
+                  onChange={(val) =>
+                    setNextRoundBids((prev) => ({ ...prev, [myPosition]: val }))
                   }
-                  sx={{ alignSelf: "flex-start" }}
                 />
-              )}
-            </Box>
+                {showUseRecommendation && (
+                  <Chip
+                    label={`↩ Use recommendation: ${recommendedBid}`}
+                    size="small"
+                    clickable
+                    variant="outlined"
+                    color="secondary"
+                    aria-label={`Use recommendation: ${recommendedBid}`}
+                    onClick={() =>
+                      setNextRoundBids((prev) => ({
+                        ...prev,
+                        [myPosition]: recommendedBid!,
+                      }))
+                    }
+                    sx={{ alignSelf: "flex-start" }}
+                  />
+                )}
+              </Box>
+            )}
             {/* Positions after me */}
-            {positionsAfter.map((pos, idx) => {
+            {visibleAfterPositions.map((pos) => {
+              const afterIdx = positionsAfter.indexOf(pos);
               const prevBids = [
                 myBidCurrent,
                 ...positionsAfter
-                  .slice(0, idx)
+                  .slice(0, afterIdx)
                   .map((p) => nextRoundBids[p] ?? "Pass"),
               ];
               const lastSignificant = [...prevBids]
@@ -828,7 +914,7 @@ export default function AuctionContextInput({
                 ...currentRound,
                 [myPosition]: myBidCurrent,
               };
-              for (const earlier of positionsAfter.slice(0, idx)) {
+              for (const earlier of positionsAfter.slice(0, afterIdx)) {
                 roundSoFar[earlier] = nextRoundBids[earlier] ?? "Pass";
               }
               const thisRoundBefore = roundBefore(roundSoFar, pos);
@@ -885,7 +971,7 @@ export default function AuctionContextInput({
             >
               {AGREED_SUIT_OPTIONS.map((s) => (
                 <MenuItem key={s} value={s}>
-                  {s}
+                  {colorSuits(s)}
                 </MenuItem>
               ))}
             </Select>
