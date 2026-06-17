@@ -142,7 +142,11 @@ export default function BidRecommendation({
           <Typography variant="subtitle2" gutterBottom>
             Alternative Bid
           </Typography>
-          <Chip label={colorSuits(alternativeBid)} variant="outlined" size="small" />
+          <Chip
+            label={colorSuits(alternativeBid)}
+            variant="outlined"
+            size="small"
+          />
         </Box>
       )}
       {/* Note / caveat */}

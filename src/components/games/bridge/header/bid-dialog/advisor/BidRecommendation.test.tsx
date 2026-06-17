@@ -3,6 +3,11 @@ import { describe, expect, it } from "vitest";
 import BidRecommendation from "./BidRecommendation";
 import type { BidRecommendation as BidRecommendationType } from "./bidding-logic";
 
+// colorSuits() splits ♥/♦ into <span> nodes; match by textContent instead.
+const byTextContent =
+  (text: string) => (_: string, el: Element | null) =>
+    el?.textContent === text;
+
 const baseRec: BidRecommendationType = {
   bid: "1NT",
   category: "Opening 1NT (15-17 HCP)",
@@ -107,7 +112,9 @@ describe("games | bridge | BidRecommendation", () => {
       name: /Expected Partner Responses/i,
     });
     fireEvent.click(accordionHeader);
-    expect(screen.getByText(/Reply with major or 2♦/)).toBeInTheDocument();
+    expect(
+      screen.getByText(byTextContent("Your rebid: Reply with major or 2♦")),
+    ).toBeInTheDocument();
   });
 
   it("does NOT render note section when note is absent", () => {

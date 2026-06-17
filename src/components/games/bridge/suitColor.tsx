@@ -19,7 +19,7 @@ export function colorSuits(text: string): React.ReactNode {
           </span>
         ) : (
           part
-        )
+        ),
       )}
     </>
   );
