@@ -4,9 +4,8 @@ import BidRecommendation from "./BidRecommendation";
 import type { BidRecommendation as BidRecommendationType } from "./bidding-logic";
 
 // colorSuits() splits ♥/♦ into <span> nodes; match by textContent instead.
-const byTextContent =
-  (text: string) => (_: string, el: Element | null) =>
-    el?.textContent === text;
+const byTextContent = (text: string) => (_: string, el: Element | null) =>
+  el?.textContent === text;
 
 const baseRec: BidRecommendationType = {
   bid: "1NT",

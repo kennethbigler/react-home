@@ -6,9 +6,8 @@ import type { AuctionState } from "./bidding-logic";
 // Suit symbols (♥, ♦) are wrapped in <span> nodes by colorSuits(), so
 // getByText("1♥") won't find them as a single text node.  Use this matcher
 // whenever looking for text that may contain those characters.
-const byTextContent =
-  (text: string) => (_: string, el: Element | null) =>
-    el?.textContent === text;
+const byTextContent = (text: string) => (_: string, el: Element | null) =>
+  el?.textContent === text;
 
 // myPosition: 3 → partner=1, rho=2, lho=4
 const defaultState: AuctionState = {
@@ -69,6 +68,28 @@ describe("games | bridge | AuctionContext", () => {
         completedRounds: [],
       }),
     );
+  });
+
+  // ── Partnership emphasis ──────────────────────────────────────────────────────
+
+  it("groups seats into 'You & Partner' and 'Opponents'", () => {
+    renderAuctionContext({ ...defaultState, myPosition: 2 });
+    expect(screen.getByText("You & Partner:")).toBeInTheDocument();
+    expect(screen.getByText("Opponents:")).toBeInTheDocument();
+  });
+
+  it("marks the selected seat with a '(you)' cue", () => {
+    // myPosition 2 → label shows "2nd (you)".
+    renderAuctionContext({ ...defaultState, myPosition: 2 });
+    expect(
+      screen.getAllByText((_, el) => el?.textContent === "2nd (you)").length,
+    ).toBeGreaterThan(0);
+  });
+
+  it("shows a '↔ your partner' cue on the partner's bid slot", () => {
+    // myPosition 4 → seats 1,2,3 bid before me; partner (2nd) is among them.
+    renderAuctionContext({ ...defaultState, myPosition: 4 });
+    expect(screen.getByText("↔ your partner")).toBeInTheDocument();
   });
 
   // ── Vulnerability display (read-only) ─────────────────────────────────────────
@@ -187,7 +208,9 @@ describe("games | bridge | AuctionContext", () => {
     const rhoSelect = screen.getByLabelText("RHO (2nd)");
     fireEvent.mouseDown(rhoSelect);
     const listbox = screen.getByRole("listbox");
-    expect(within(listbox).getAllByText(byTextContent("2♦")).length).toBeGreaterThan(0);
+    expect(
+      within(listbox).getAllByText(byTextContent("2♦")).length,
+    ).toBeGreaterThan(0);
     fireEvent.keyDown(listbox, { key: "Escape" });
   });
 

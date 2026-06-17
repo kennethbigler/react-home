@@ -9411,3 +9411,56 @@ describe("bidding-logic | responder-rebid — combined strength game/invite", ()
     expect(["2NT", "3♣", "3♦", "3♥", "3♠", "Pass"]).toContain(rec.bid);
   });
 });
+
+describe("bidding-logic | my own bid passed out (auction-passed-out)", () => {
+  it("1♦(opp)-1NT(me)-P-P, back to me → Pass, not a protective double", () => {
+    // RHO opened 1♦, I overcalled 1NT, LHO + partner passed; RHO passed again.
+    // My 1NT is the standing contract — the auction is over.  Must NOT recommend
+    // a (phantom) protective/reopening double of my own contract.
+    const state: AuctionState = {
+      myPosition: 2,
+      completedRounds: [{ 1: "1♦", 2: "1NT", 3: "Pass", 4: "Pass" }],
+      currentRound: { 1: "Pass" },
+    };
+    const s = deriveSituation(state, "none");
+    expect(s.situation).toBe("auction-passed-out");
+    const rec = getRecommendation(mkHand(16, 4, 3, 3, 3), s);
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toContain("Auction Complete");
+  });
+
+  it("1♦(opp)-1NT(me)-P-P with empty current round → Pass", () => {
+    const state: AuctionState = {
+      myPosition: 2,
+      completedRounds: [{ 1: "1♦", 2: "1NT", 3: "Pass", 4: "Pass" }],
+      currentRound: {},
+    };
+    const s = deriveSituation(state, "none");
+    expect(s.situation).toBe("auction-passed-out");
+    expect(getRecommendation(mkHand(16, 4, 3, 3, 3), s).bid).toBe("Pass");
+  });
+
+  it("1♣(opp)-1♠(me)-P-P, back to me → Pass (suit-overcall variant)", () => {
+    // Same passed-out logic for a natural suit overcall of mine.
+    const state: AuctionState = {
+      myPosition: 2,
+      completedRounds: [{ 1: "1♣", 2: "1♠", 3: "Pass", 4: "Pass" }],
+      currentRound: { 1: "Pass" },
+    };
+    const s = deriveSituation(state, "none");
+    expect(s.situation).toBe("auction-passed-out");
+    expect(getRecommendation(mkHand(12, 5, 3, 3, 2), s).bid).toBe("Pass");
+  });
+
+  it("still a protective seat when an OPPONENT holds the standing bid", () => {
+    // 1♦(RHO)-P(me)-P-P back to me: I never bid; RHO's 1♦ stands.  This IS the
+    // balancing/reopening seat — must NOT be swallowed by auction-passed-out.
+    const state: AuctionState = {
+      myPosition: 2,
+      completedRounds: [{ 1: "1♦", 2: "Pass", 3: "Pass", 4: "Pass" }],
+      currentRound: { 1: "Pass" },
+    };
+    const s = deriveSituation(state, "none");
+    expect(s.situation).not.toBe("auction-passed-out");
+  });
+});

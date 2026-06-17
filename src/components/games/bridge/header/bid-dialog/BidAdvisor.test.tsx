@@ -3,9 +3,8 @@ import { useAtomValue } from "jotai";
 import { describe, expect, it, vi } from "vitest";
 import BidAdvisor from "./BidAdvisor";
 
-const byTextContent =
-  (text: string) => (_: string, el: Element | null) =>
-    el?.textContent === text;
+const byTextContent = (text: string) => (_: string, el: Element | null) =>
+  el?.textContent === text;
 
 // Mock jotai's useAtomValue to provide bridge game state
 vi.mock("jotai", async (importOriginal) => {

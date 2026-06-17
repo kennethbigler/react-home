@@ -14,6 +14,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { alpha, type Theme } from "@mui/material/styles";
 import { useState } from "react";
 import type { AuctionState, BidRound, BiddingPosition } from "./bidding-logic";
 import {
@@ -186,6 +187,32 @@ function getRelationship(
   return "rho";
 }
 
+// ─── Partnership (side) helpers ────────────────────────────────────────────────
+// Seats pair up as {1,3} and {2,4}.  "us" = me + my partner, "them" = the two
+// opponents.  Coloring seats by side makes it easy to see where my bid and my
+// partner's bid sit, versus the opponents'.
+
+type Side = "us" | "them";
+
+function getSide(pos: BiddingPosition, myPosition: BiddingPosition): Side {
+  const { partner } = getRelatives(myPosition);
+  return pos === myPosition || pos === partner ? "us" : "them";
+}
+
+/** sx fragment that tints a seat by partnership side. Uses alpha over the
+ *  primary color so it reads correctly in both light and dark themes. */
+function sideSx(side: Side) {
+  return side === "us"
+    ? {
+        backgroundColor: (t: Theme) => alpha(t.palette.primary.main, 0.12),
+        borderColor: "primary.main",
+      }
+    : {
+        backgroundColor: "action.hover",
+        borderColor: "divider",
+      };
+}
+
 // ─── Info icon with tooltip ────────────────────────────────────────────────────
 
 interface BidInfoIconProps {
@@ -273,8 +300,29 @@ function BidSlot({
 }: BidSlotProps) {
   const currentValue = value || "Pass";
   const labelId = `bid-label-${slotLabel.replace(/[\s()]+/g, "-").toLowerCase()}`;
+  // "me" and "partner" are on your side; "lho"/"rho" are opponents.  A colored
+  // left edge ties each slot to its partnership, and the partner/you slots get
+  // a ↔ cue so the pairing is obvious.
+  const side: Side =
+    relationship === "me" || relationship === "partner" ? "us" : "them";
+  const cue =
+    relationship === "me"
+      ? "you"
+      : relationship === "partner"
+        ? "↔ your partner"
+        : undefined;
   return (
-    <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 0.5,
+        pl: 1,
+        borderLeft: "3px solid",
+        borderLeftColor: side === "us" ? "primary.main" : "divider",
+        borderRadius: 0.5,
+      }}
+    >
       <FormControl sx={{ flex: 1 }} size="small">
         <InputLabel id={labelId}>{slotLabel}</InputLabel>
         <Select
@@ -291,6 +339,18 @@ function BidSlot({
           ))}
         </Select>
       </FormControl>
+      {cue && (
+        <Typography
+          variant="caption"
+          sx={{
+            color: side === "us" ? "primary.main" : "text.secondary",
+            whiteSpace: "nowrap",
+            fontWeight: relationship === "me" ? 600 : 400,
+          }}
+        >
+          {cue}
+        </Typography>
+      )}
       {relationship !== "me" && (
         <BidInfoIcon
           bid={currentValue}
@@ -311,9 +371,10 @@ interface BidChipProps {
   chipLabel: string;
   tooltipTitle: string;
   isMe: boolean;
+  side: Side;
 }
 
-function BidChip({ chipLabel, tooltipTitle, isMe }: BidChipProps) {
+function BidChip({ chipLabel, tooltipTitle, isMe, side }: BidChipProps) {
   const [open, setOpen] = useState(false);
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
@@ -337,6 +398,9 @@ function BidChip({ chipLabel, tooltipTitle, isMe }: BidChipProps) {
           sx={{
             fontSize: "0.7rem",
             cursor: "pointer",
+            // Tint by partnership side so your side's bids stand apart from the
+            // opponents'.  "Me" stays filled-primary and is left untouched.
+            ...(isMe ? {} : sideSx(side)),
             outline: open ? "2px solid" : "none",
             outlineColor: "primary.main",
             outlineOffset: "2px",
@@ -436,6 +500,7 @@ function CompletedRoundRow({
             chipLabel={chipLabel}
             tooltipTitle={tooltipTitle}
             isMe={isMe}
+            side={getSide(pos, myPosition)}
           />
         );
       })}
@@ -651,20 +716,89 @@ export default function AuctionContextInput({
         >
           My bidding position
         </Typography>
-        <Box sx={{ display: "flex", gap: 1 }}>
-          {([1, 2, 3, 4] as BiddingPosition[]).map((p) => (
-            <Chip
-              key={p}
-              label={POSITION_LABELS[p]}
-              size="small"
-              clickable
-              variant={myPosition === p ? "filled" : "outlined"}
-              color={myPosition === p ? "primary" : "default"}
-              onClick={() =>
-                update({ myPosition: p, currentRound: {}, completedRounds: [] })
-              }
-              aria-label={`Position ${POSITION_LABELS[p]}`}
-            />
+        {/* Seats grouped by partnership so it's clear who is on your side
+            (you + partner) versus the opponents.  Each pair shows a ↔ link. */}
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+          {(
+            [
+              {
+                side: "us" as Side,
+                label: "You & Partner",
+                seats: [myPosition, getRelatives(myPosition).partner].sort(
+                  (a, b) => a - b,
+                ) as BiddingPosition[],
+              },
+              {
+                side: "them" as Side,
+                label: "Opponents",
+                seats: [
+                  getRelatives(myPosition).lho,
+                  getRelatives(myPosition).rho,
+                ].sort((a, b) => a - b) as BiddingPosition[],
+              },
+            ] as const
+          ).map((group) => (
+            <Box
+              key={group.side}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+                px: 1,
+                py: 0.5,
+                borderRadius: 1,
+                border: "1px solid",
+                ...sideSx(group.side),
+              }}
+            >
+              <Typography
+                variant="caption"
+                sx={{ color: "text.secondary", mr: 0.25 }}
+              >
+                {group.label}:
+              </Typography>
+              {group.seats.map((p, idx) => (
+                <Box
+                  key={p}
+                  sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                >
+                  {idx > 0 && (
+                    <Typography
+                      variant="caption"
+                      aria-hidden
+                      sx={{ color: "text.secondary" }}
+                    >
+                      ↔
+                    </Typography>
+                  )}
+                  <Chip
+                    label={
+                      myPosition === p
+                        ? `${POSITION_LABELS[p]} (you)`
+                        : POSITION_LABELS[p]
+                    }
+                    size="small"
+                    clickable
+                    variant={myPosition === p ? "filled" : "outlined"}
+                    color={
+                      group.side === "us"
+                        ? "primary"
+                        : myPosition === p
+                          ? "primary"
+                          : "default"
+                    }
+                    onClick={() =>
+                      update({
+                        myPosition: p,
+                        currentRound: {},
+                        completedRounds: [],
+                      })
+                    }
+                    aria-label={`Position ${POSITION_LABELS[p]}`}
+                  />
+                </Box>
+              ))}
+            </Box>
           ))}
         </Box>
       </Box>
