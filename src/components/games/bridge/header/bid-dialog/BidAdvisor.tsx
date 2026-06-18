@@ -1,11 +1,14 @@
 import { Box, Chip, Divider, Grid, Paper, Typography } from "@mui/material";
-import { useAtomValue } from "jotai";
-import { useMemo, useState } from "react";
-import { bridgeRead } from "../../../../../jotai/bridge-atom";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useEffect, useMemo, useState } from "react";
+import bridgeAtom, { bridgeRead } from "../../../../../jotai/bridge-atom";
+import type { PendingContract } from "../../../../../jotai/bridge-atom";
 import {
   deriveSituation,
+  getFinalContractDeclarerSeat,
   getFinalContractInfo,
   getRecommendation,
+  getRelatives,
 } from "./advisor/bidding-logic";
 import type {
   AuctionState,
@@ -30,6 +33,28 @@ const DEFAULT_STATE: AuctionState = {
   completedRounds: [],
   currentRound: {},
 };
+
+// Maps a contract bid's plain suit symbol to the emoji variant the Score form
+// uses for its dropdown options.  NT passes through unchanged.
+const CONTRACT_SUIT_TO_FORM: Record<string, string> = {
+  "♠": "♠️",
+  "♥": "♥️",
+  "♦": "♦️",
+  "♣": "♣️",
+};
+
+/** Parse a final-contract string (e.g. "3♠", "1NT") into the Score form's
+ *  suit option + trick level.  Returns null if it can't be parsed. */
+function parseContract(
+  contract: string,
+): { suit: string; tricks: number } | null {
+  const tricks = parseInt(contract[0], 10);
+  if (!tricks) return null;
+  const rest = contract.slice(1);
+  if (rest === "NT") return { suit: "NT", tricks };
+  const suit = CONTRACT_SUIT_TO_FORM[rest];
+  return suit ? { suit, tricks } : null;
+}
 
 export default function BidAdvisor() {
   const [hand, setHand] = useState<Hand>(DEFAULT_HAND);
@@ -150,16 +175,33 @@ export default function BidAdvisor() {
     return getRecommendation(effectiveHand, context);
   }, [hand, auctionState, handIsValid, vulnerability, showStopperInput]);
 
+  // When the auction settles on a contract, hand it off to the Score modal so it
+  // can pre-fill the contract suit, level, and declaring side.  The Score modal
+  // consumes (and clears) this when it opens; it stays fully editable there.
+  const setBridgeState = useSetAtom(bridgeAtom);
+  useEffect(() => {
+    if (!biddingComplete || !finalContract) return;
+    const parsed = parseContract(finalContract);
+    if (!parsed) return;
+    const declarerSeat = getFinalContractDeclarerSeat(
+      auctionState.completedRounds,
+      auctionState.currentRound,
+      auctionState.myPosition,
+    );
+    const { partner } = getRelatives(auctionState.myPosition);
+    const isWe =
+      declarerSeat === auctionState.myPosition || declarerSeat === partner;
+    const pendingContract: PendingContract = { ...parsed, isWe };
+    setBridgeState((prev) => ({ ...prev, pendingContract }));
+  }, [biddingComplete, finalContract, auctionState, setBridgeState]);
+
   return (
     <Box>
-      {/* Header (the "New Game" reset lives in the dialog's top bar) */}
-      <Typography variant="h5" sx={{ mb: 2 }}>
-        Bid Advisor
-      </Typography>
+      {/* The "New Game" reset lives in the dialog's top bar. */}
       <Grid container spacing={2}>
-        {/* ── Left column: hand + context ─────────────────────────────── */}
-        <Grid size={{ xs: 12, md: 5 }}>
-          <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+        {/* ── Column 1: hand ──────────────────────────────────────────── */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Paper variant="outlined" sx={{ p: 2 }}>
             <HandInput
               hand={hand}
               onChange={setHand}
@@ -169,6 +211,10 @@ export default function BidAdvisor() {
               opponentSuitLabel={opponentSuitLabel}
             />
           </Paper>
+        </Grid>
+
+        {/* ── Column 2: auction context ───────────────────────────────── */}
+        <Grid size={{ xs: 12, md: 4 }}>
           <Paper variant="outlined" sx={{ p: 2 }}>
             <AuctionContextInput
               state={auctionState}
@@ -180,8 +226,8 @@ export default function BidAdvisor() {
           </Paper>
         </Grid>
 
-        {/* ── Right column: recommendation ────────────────────────────── */}
-        <Grid size={{ xs: 12, md: 7 }}>
+        {/* ── Column 3: recommendation ────────────────────────────────── */}
+        <Grid size={{ xs: 12, md: 4 }}>
           <Paper
             variant="outlined"
             sx={{ p: 2, minHeight: 200, position: "sticky", top: 0 }}

@@ -914,4 +914,56 @@ describe("games | bridge | ScoreDialog", () => {
     // Both isDouble and isRedouble true → two ❗️ appended
     expect(state.bids[0]).toContain("❗️❗️");
   });
+
+  // ── Pre-fill from a Bid Advisor contract ────────────────────────────────────
+
+  it("pre-fills the form from a pendingContract when opened", async () => {
+    const store = createStore();
+    store.set(bridgeAtom, {
+      ...defaultState,
+      pendingContract: { suit: "♥️", tricks: 4, isWe: false },
+    });
+
+    render(
+      <Provider store={store}>
+        <ScoreDialog />
+      </Provider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /score/i }));
+    await waitFor(() => {
+      expect(screen.getByText("Contract")).toBeInTheDocument();
+    });
+
+    // Suit + level pre-selected from the handoff.
+    expect(
+      screen.getByRole("combobox", { name: /Contract Suit/i }),
+    ).toHaveTextContent("♥️");
+    expect(
+      screen.getByRole("combobox", { name: /Contract Tricks/i }),
+    ).toHaveTextContent("4");
+    // isWe=false → the Bid toggle shows "They".
+    expect(screen.getByText("They")).toBeInTheDocument();
+  });
+
+  it("clears pendingContract once consumed so it only seeds once", async () => {
+    const store = createStore();
+    store.set(bridgeAtom, {
+      ...defaultState,
+      pendingContract: { suit: "♠️", tricks: 3, isWe: true },
+    });
+
+    render(
+      <Provider store={store}>
+        <ScoreDialog />
+      </Provider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /score/i }));
+    await waitFor(() => {
+      expect(screen.getByText("Contract")).toBeInTheDocument();
+    });
+
+    expect(store.get(bridgeAtom).pendingContract).toBeNull();
+  });
 });

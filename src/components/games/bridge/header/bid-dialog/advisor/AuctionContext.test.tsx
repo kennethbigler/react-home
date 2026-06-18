@@ -86,10 +86,17 @@ describe("games | bridge | AuctionContext", () => {
     ).toBeGreaterThan(0);
   });
 
-  it("shows a '↔ your partner' cue on the partner's bid slot", () => {
-    // myPosition 4 → seats 1,2,3 bid before me; partner (2nd) is among them.
+  it("labels my own bid slot with 'you' and no partner cue", () => {
+    // myPosition 4 → seats 1,2,3 bid before me; my slot shows the "you" cue,
+    // and the "↔ your partner" cue has been removed.
     renderAuctionContext({ ...defaultState, myPosition: 4 });
-    expect(screen.getByText("↔ your partner")).toBeInTheDocument();
+    expect(screen.getByText("you")).toBeInTheDocument();
+    expect(screen.queryByText("↔ your partner")).not.toBeInTheDocument();
+  });
+
+  it("does not render the ↔ separator in the position picker", () => {
+    renderAuctionContext({ ...defaultState, myPosition: 2 });
+    expect(screen.queryByText("↔")).not.toBeInTheDocument();
   });
 
   // ── Vulnerability display (read-only) ─────────────────────────────────────────
@@ -291,6 +298,83 @@ describe("games | bridge | AuctionContext", () => {
     expect(round[2]).toBe("Pass");
     expect(round[3]).toBe("Pass");
     expect(round[4]).toBe("Pass");
+  });
+
+  it("Confirm Round trims trailing seats once 3 passes end the auction", () => {
+    // Prior round had 1 trailing pass (seat 3 opened 1♠, seat 4 passed).  This
+    // round, myPosition 1: my Pass (seat 1) makes 2 consecutive, seat 2's Pass
+    // makes 3 → the auction ends and seats 3-4 never act.  The committed round
+    // must store only seats 1-2, not phantom Pass calls for 3-4.
+    const onChange = vi.fn();
+    const state: AuctionState = {
+      ...defaultState,
+      myPosition: 1,
+      completedRounds: [{ 1: "Pass", 2: "Pass", 3: "1♠", 4: "Pass" }],
+      currentRound: {},
+    };
+    renderAuctionContext(state, onChange);
+    fireEvent.click(screen.getByRole("button", { name: /confirm round/i }));
+    const round = onChange.mock.calls[0][0].completedRounds[1] as Record<
+      number,
+      string
+    >;
+    expect(round[1]).toBe("Pass");
+    expect(round[2]).toBe("Pass");
+    expect(round[3]).toBeUndefined();
+    expect(round[4]).toBeUndefined();
+  });
+
+  it("Confirm Round keeps a 4th-seat opening after 3 opening passes", () => {
+    // Round 1, myPosition 2: seats 1-3 all pass (3 in a row) but seat 4 OPENS
+    // 2NT.  Opening passes do NOT end the auction, so the 2NT must be stored —
+    // the trim only applies once a real bid is already on the table.
+    const onChange = vi.fn();
+    const state: AuctionState = {
+      ...defaultState,
+      myPosition: 2,
+      completedRounds: [],
+      currentRound: { 1: "Pass" },
+    };
+    // Render with no recommendation so My bid defaults to Pass; set seat 4 via
+    // the after-me dropdown to 2NT.
+    renderAuctionContext(state, onChange);
+    const partnerSelect = screen.getByRole("combobox", {
+      name: /Partner \(4th\)/i,
+    });
+    fireEvent.mouseDown(partnerSelect);
+    const listbox = screen.getByRole("listbox");
+    fireEvent.click(within(listbox).getAllByText("2NT")[0]);
+    fireEvent.click(screen.getByRole("button", { name: /confirm round/i }));
+    const round = onChange.mock.calls.at(-1)![0].completedRounds[0] as Record<
+      number,
+      string
+    >;
+    expect(round[1]).toBe("Pass");
+    expect(round[2]).toBe("Pass");
+    expect(round[3]).toBe("Pass");
+    expect(round[4]).toBe("2NT"); // 4th seat's opening is NOT dropped
+  });
+
+  it("Prior Rounds shows only the chips for seats that acted", () => {
+    // Round 2 was committed with just seats 1-2 (the auction ended).  Its row
+    // should render two chips, not four.
+    const state: AuctionState = {
+      ...defaultState,
+      myPosition: 1,
+      completedRounds: [
+        { 1: "Pass", 2: "Pass", 3: "1♠", 4: "Pass" },
+        { 1: "Pass", 2: "Pass" },
+      ],
+      currentRound: {},
+    };
+    const { container } = renderAuctionContext(state);
+    // All Pass chips across both rounds: round 1 has 3 (seats 1,2,4),
+    // round 2 has 2 (seats 1,2) → 5 total.  If round 2 were not trimmed it
+    // would render 4 chips (2 phantom Pass for seats 3-4) → 7 total.
+    const passChips = [...container.querySelectorAll(".MuiChip-label")].filter(
+      (el) => /^(Me|Partner|LHO|RHO).*: Pass$/.test(el.textContent ?? ""),
+    );
+    expect(passChips.length).toBe(5);
   });
 
   it("position 4 has no post-round slots after My bid (last bidder in round)", () => {

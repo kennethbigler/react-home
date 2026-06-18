@@ -177,11 +177,20 @@ const ScoreForm = ({
             name="declarer-tricks-name"
             onChange={onDeclarerTricksChange}
           >
-            {trickOptions.map((n, i) => (
-              <MenuItem key={n} value={i}>
-                {n}
-              </MenuItem>
-            ))}
+            {trickOptions.map((n, i) => {
+              // Show the contract suit only inside the over-book parens, e.g.
+              // "7 (1)" → "7 (1 NT)".  Bare counts (0-6, at or below book) get
+              // no suit since there is no contract level to qualify.
+              const label =
+                typeof n === "string"
+                  ? n.replace(/\)$/, ` ${contractSuit})`)
+                  : n;
+              return (
+                <MenuItem key={n} value={i}>
+                  {label}
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
       </Grid>

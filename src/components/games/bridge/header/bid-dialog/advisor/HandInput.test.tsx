@@ -180,8 +180,7 @@ describe("games | bridge | HandInput", () => {
     expect(decreaseBtn).toBeDisabled();
   });
 
-  it("Increase button is disabled when suit count is at max (13 - others)", () => {
-    // All cards in spades: 13 spades, 0 in other suits → maxForSuit=13, plus btn disabled
+  it("Increase button is disabled only when a single suit reaches 13", () => {
     renderHandInput({
       ...defaultHand,
       spades: 13,
@@ -191,6 +190,27 @@ describe("games | bridge | HandInput", () => {
     });
     const increaseBtn = screen.getByRole("button", { name: "Increase Spades" });
     expect(increaseBtn).toBeDisabled();
+  });
+
+  it("Increase buttons stay enabled even when the total exceeds 13", () => {
+    // Bug fix: bumping one suit over the 13-card total must NOT disable the
+    // other suits' + buttons.  Total here is 16, but no single suit is at 13.
+    renderHandInput({
+      ...defaultHand,
+      spades: 5,
+      hearts: 5,
+      diamonds: 3,
+      clubs: 3,
+    });
+    expect(
+      screen.getByRole("button", { name: "Increase Hearts" }),
+    ).not.toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Increase Diamonds" }),
+    ).not.toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Increase Clubs" }),
+    ).not.toBeDisabled();
   });
 
   it("shows long-suit bonus in total points", () => {

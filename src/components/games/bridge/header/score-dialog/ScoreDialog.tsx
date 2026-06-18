@@ -22,7 +22,16 @@ import ScoreSummary from "./ScoreSummary";
 
 const ScoreDialog = memo(() => {
   const [
-    { aboveScores, weBelow, theyBelow, weRubbers, theyRubbers, bids, ...other },
+    {
+      aboveScores,
+      weBelow,
+      theyBelow,
+      weRubbers,
+      theyRubbers,
+      bids,
+      pendingContract,
+      ...other
+    },
     setBridgeState,
   ] = useAtom(bridgeAtom);
   const {
@@ -48,7 +57,17 @@ const ScoreDialog = memo(() => {
   const [is4Aces, setIs4Aces] = useState(false);
 
   // modal handlers
-  const handleOpen = () => setIsOpen(true);
+  const handleOpen = () => {
+    // Pre-fill the form from a contract handed off by the Bid Advisor, then
+    // clear it so it only seeds once.  Values stay fully editable here.
+    if (pendingContract) {
+      setContractSuit(pendingContract.suit);
+      setContractTricks(pendingContract.tricks);
+      setIsWe(pendingContract.isWe);
+      setBridgeState((prev) => ({ ...prev, pendingContract: null }));
+    }
+    setIsOpen(true);
+  };
   const handleClose = () => setIsOpen(false);
   // form handlers
   const handleContractSuitChange = (e: SelectChangeEvent<string>) =>

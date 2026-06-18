@@ -301,16 +301,10 @@ function BidSlot({
   const currentValue = value || "Pass";
   const labelId = `bid-label-${slotLabel.replace(/[\s()]+/g, "-").toLowerCase()}`;
   // "me" and "partner" are on your side; "lho"/"rho" are opponents.  A colored
-  // left edge ties each slot to its partnership, and the partner/you slots get
-  // a ↔ cue so the pairing is obvious.
+  // left edge ties each slot to its partnership; the "you" slot is also labeled.
   const side: Side =
     relationship === "me" || relationship === "partner" ? "us" : "them";
-  const cue =
-    relationship === "me"
-      ? "you"
-      : relationship === "partner"
-        ? "↔ your partner"
-        : undefined;
+  const cue = relationship === "me" ? "you" : undefined;
   return (
     <Box
       sx={{
@@ -442,68 +436,73 @@ function CompletedRoundRow({
       >
         Round {roundIndex + 1}:
       </Typography>
-      {([1, 2, 3, 4] as BiddingPosition[]).map((pos) => {
-        const isMe = pos === myPosition;
-        const bid = round[pos] ?? "Pass";
-        const rel = isMe ? "partner" : getRelationship(pos, myPosition);
+      {/* Only show seats that actually acted this round.  A round that ended
+          the auction may hold fewer than 4 calls (bidding stops after the 3rd
+          consecutive pass), so iterate the seats present rather than 1-4. */}
+      {([1, 2, 3, 4] as BiddingPosition[])
+        .filter((pos) => round[pos] !== undefined)
+        .map((pos) => {
+          const isMe = pos === myPosition;
+          const bid = round[pos] ?? "Pass";
+          const rel = isMe ? "partner" : getRelationship(pos, myPosition);
 
-        // Compute the last real bid before this position for context-aware tooltips
-        const prevHighBid = (() => {
-          for (let p = pos - 1; p >= 1; p--) {
-            const b = round[p as BiddingPosition];
-            if (b && b !== "Pass" && b !== "Double" && b !== "Redouble")
-              return b;
-          }
-          for (let r = roundIndex - 1; r >= 0; r--) {
-            const pr = allCompletedRounds[r];
-            for (let p = 4; p >= 1; p--) {
-              const b = pr[p as BiddingPosition];
+          // Compute the last real bid before this position for context-aware tooltips
+          const prevHighBid = (() => {
+            for (let p = pos - 1; p >= 1; p--) {
+              const b = round[p as BiddingPosition];
               if (b && b !== "Pass" && b !== "Double" && b !== "Redouble")
                 return b;
             }
-          }
-          return undefined;
-        })();
+            for (let r = roundIndex - 1; r >= 0; r--) {
+              const pr = allCompletedRounds[r];
+              for (let p = 4; p >= 1; p--) {
+                const b = pr[p as BiddingPosition];
+                if (b && b !== "Pass" && b !== "Double" && b !== "Redouble")
+                  return b;
+              }
+            }
+            return undefined;
+          })();
 
-        const chipLabel = `${isMe ? "Me" : getRelationshipLabel(pos, myPosition)}: ${bid}`;
-        // History before this seat's turn = all prior completed rounds PLUS the
-        // earlier seats in THIS round.  Threading the same-round earlier bids is
-        // what lets the tooltip see partner's bid made earlier this round (so a
-        // raise is not mislabeled a "second suit", nor a response an "overcall").
-        const priorRounds = allCompletedRounds.slice(0, roundIndex);
-        const thisRoundBefore = roundBefore(round, pos);
-        // The seat's own previous real bid — lets the tooltip describe a REBID
-        // instead of mislabeling it as an opening.
-        const bidderPreviousBid = lastRealBidBySeat(
-          priorRounds,
-          thisRoundBefore,
-          pos,
-        );
-        const bidderPartnerPreviousBid =
-          lastActionBySeat(
+          const chipLabel = `${isMe ? "Me" : getRelationshipLabel(pos, myPosition)}: ${bid}`;
+          // History before this seat's turn = all prior completed rounds PLUS the
+          // earlier seats in THIS round.  Threading the same-round earlier bids is
+          // what lets the tooltip see partner's bid made earlier this round (so a
+          // raise is not mislabeled a "second suit", nor a response an "overcall").
+          const priorRounds = allCompletedRounds.slice(0, roundIndex);
+          const thisRoundBefore = roundBefore(round, pos);
+          // The seat's own previous real bid — lets the tooltip describe a REBID
+          // instead of mislabeling it as an opening.
+          const bidderPreviousBid = lastRealBidBySeat(
             priorRounds,
             thisRoundBefore,
-            getRelatives(pos).partner,
-          ) ?? "none"; // "none" = known to have no previous action
-        const tooltipTitle = getBidMeaning(
-          bid,
-          rel as Relationship,
-          prevHighBid,
-          bidderPreviousBid,
-          bidderPartnerPreviousBid,
-          auctionOpeningBidOf(allCompletedRounds),
-        );
+            pos,
+          );
+          const bidderPartnerPreviousBid =
+            lastActionBySeat(
+              priorRounds,
+              thisRoundBefore,
+              getRelatives(pos).partner,
+            ) ?? "none"; // "none" = known to have no previous action
+          const tooltipTitle = getBidMeaning(
+            bid,
+            rel as Relationship,
+            prevHighBid,
+            bidderPreviousBid,
+            bidderPartnerPreviousBid,
+            auctionOpeningBidOf(allCompletedRounds),
+          );
 
-        return (
-          <BidChip
-            key={pos}
-            chipLabel={chipLabel}
-            tooltipTitle={tooltipTitle}
-            isMe={isMe}
-            side={getSide(pos, myPosition)}
-          />
-        );
-      })}
+          return (
+            <BidChip
+              key={pos}
+              chipLabel={chipLabel}
+              tooltipTitle={tooltipTitle}
+              isMe={isMe}
+              side={getSide(pos, myPosition)}
+            />
+          );
+        })}
     </Box>
   );
 }
@@ -529,18 +528,48 @@ export default function AuctionContextInput({
   };
 
   const confirmNextRound = () => {
+    // Effective call for each seat this round, in seat order.
+    const callFor = (p: BiddingPosition): string =>
+      p < myPosition
+        ? (currentRound[p] ?? "Pass")
+        : (nextRoundBids[p] ??
+          (p === myPosition ? recommendedBid : undefined) ??
+          "Pass");
+
+    // Trailing passes carried over from the end of the previous round — they
+    // count toward the 3-pass auction-ending streak.
+    let consecutivePasses = 0;
+    const prev = completedRounds[completedRounds.length - 1];
+    if (prev) {
+      for (let p = 4; p >= 1; p--) {
+        if ((prev[p as BiddingPosition] ?? "Pass") === "Pass")
+          consecutivePasses++;
+        else break;
+      }
+    }
+    // Has any real (suit/NT) bid happened yet?  3 consecutive passes only END
+    // the auction once a contract is on the table — opening passes do not, so
+    // a 4th seat can still open.  Without this guard, an auction that starts
+    // Pass-Pass-Pass would wrongly drop the 4th seat's opening bid.
+    const isRealCall = (b: string | undefined) =>
+      !!b && b !== "Pass" && b !== "Double" && b !== "Redouble";
+    let bidSeen = completedRounds.some((r) =>
+      ([1, 2, 3, 4] as BiddingPosition[]).some((p) => isRealCall(r[p])),
+    );
+
+    // Store seats in order, stopping once 3 consecutive passes have ended the
+    // auction — so a round that closes the bidding holds only the calls that
+    // actually happened (not phantom Pass chips for seats that never acted).
     const completed: BidRound = {};
-    for (let p = 1; p < myPosition; p++) {
+    for (let p = 1; p <= 4; p++) {
+      if (bidSeen && consecutivePasses >= 3) break;
       const pos = p as BiddingPosition;
-      completed[pos] = currentRound[pos] ?? "Pass";
+      const call = callFor(pos);
+      completed[pos] = call;
+      if (isRealCall(call)) bidSeen = true;
+      consecutivePasses = call === "Pass" ? consecutivePasses + 1 : 0;
     }
-    for (let p = myPosition; p <= 4; p++) {
-      const pos = p as BiddingPosition;
-      completed[pos] =
-        nextRoundBids[pos] ??
-        (p === myPosition ? recommendedBid : undefined) ??
-        "Pass";
-    }
+
     update({
       completedRounds: [...completedRounds, completed],
       currentRound: {},
@@ -757,46 +786,33 @@ export default function AuctionContextInput({
               >
                 {group.label}:
               </Typography>
-              {group.seats.map((p, idx) => (
-                <Box
+              {group.seats.map((p) => (
+                <Chip
                   key={p}
-                  sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
-                >
-                  {idx > 0 && (
-                    <Typography
-                      variant="caption"
-                      aria-hidden
-                      sx={{ color: "text.secondary" }}
-                    >
-                      ↔
-                    </Typography>
-                  )}
-                  <Chip
-                    label={
-                      myPosition === p
-                        ? `${POSITION_LABELS[p]} (you)`
-                        : POSITION_LABELS[p]
-                    }
-                    size="small"
-                    clickable
-                    variant={myPosition === p ? "filled" : "outlined"}
-                    color={
-                      group.side === "us"
+                  label={
+                    myPosition === p
+                      ? `${POSITION_LABELS[p]} (you)`
+                      : POSITION_LABELS[p]
+                  }
+                  size="small"
+                  clickable
+                  variant={myPosition === p ? "filled" : "outlined"}
+                  color={
+                    group.side === "us"
+                      ? "primary"
+                      : myPosition === p
                         ? "primary"
-                        : myPosition === p
-                          ? "primary"
-                          : "default"
-                    }
-                    onClick={() =>
-                      update({
-                        myPosition: p,
-                        currentRound: {},
-                        completedRounds: [],
-                      })
-                    }
-                    aria-label={`Position ${POSITION_LABELS[p]}`}
-                  />
-                </Box>
+                        : "default"
+                  }
+                  onClick={() =>
+                    update({
+                      myPosition: p,
+                      currentRound: {},
+                      completedRounds: [],
+                    })
+                  }
+                  aria-label={`Position ${POSITION_LABELS[p]}`}
+                />
               ))}
             </Box>
           ))}
