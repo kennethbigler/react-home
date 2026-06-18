@@ -26,9 +26,14 @@ vi.mock("jotai", async (importOriginal) => {
 const mockAtomValue = vi.mocked(useAtomValue);
 
 describe("games | bridge | BidAdvisor", () => {
-  it("renders the Bid Advisor heading", () => {
+  it("does NOT render an in-panel 'Bid Advisor' heading", () => {
+    // The heading was removed; the tab label in the dialog top bar is the only
+    // "Bid Advisor" text, and that lives outside this component.
     render(<BidAdvisor />);
-    expect(screen.getByText("Bid Advisor")).toBeInTheDocument();
+    expect(screen.queryByText("Bid Advisor")).not.toBeInTheDocument();
+    // The three sections still render.
+    expect(screen.getByText("My Hand")).toBeInTheDocument();
+    expect(screen.getByText("Auction Context")).toBeInTheDocument();
   });
 
   it("does NOT render its own New Game button (it lives in the dialog top bar)", () => {

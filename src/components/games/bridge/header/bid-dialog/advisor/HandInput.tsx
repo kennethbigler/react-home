@@ -157,19 +157,24 @@ export default function HandInput({
             return (
               <Grid
                 key={key}
-                size={{ xs: 6, sm: 3 }}
+                // 2x2 by default; a single row of four from lg up, once this
+                // 1/3-width column is wide enough to fit four [-] n [+] controls
+                // without the buttons overlapping.
+                size={{ xs: 6, lg: 3 }}
                 sx={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   py: 0.5,
+                  // Borders divide the 2x2 grid (left between the pair, top on
+                  // the second row).  In the single-row lg layout, no borders.
                   borderLeft: {
                     xs: index % 2 !== 0 ? "1px solid" : "none",
-                    sm: index > 0 ? "1px solid" : "none",
+                    lg: "none",
                   },
                   borderTop: {
                     xs: index >= 2 ? "1px solid" : "none",
-                    sm: "none",
+                    lg: "none",
                   },
                   borderColor: "divider",
                 }}

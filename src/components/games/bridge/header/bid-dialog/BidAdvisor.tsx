@@ -197,14 +197,11 @@ export default function BidAdvisor() {
 
   return (
     <Box>
-      {/* Header (the "New Game" reset lives in the dialog's top bar) */}
-      <Typography variant="h5" sx={{ mb: 2 }}>
-        Bid Advisor
-      </Typography>
+      {/* The "New Game" reset lives in the dialog's top bar. */}
       <Grid container spacing={2}>
-        {/* ── Left column: hand + context ─────────────────────────────── */}
-        <Grid size={{ xs: 12, md: 5 }}>
-          <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+        {/* ── Column 1: hand ──────────────────────────────────────────── */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Paper variant="outlined" sx={{ p: 2 }}>
             <HandInput
               hand={hand}
               onChange={setHand}
@@ -214,6 +211,10 @@ export default function BidAdvisor() {
               opponentSuitLabel={opponentSuitLabel}
             />
           </Paper>
+        </Grid>
+
+        {/* ── Column 2: auction context ───────────────────────────────── */}
+        <Grid size={{ xs: 12, md: 4 }}>
           <Paper variant="outlined" sx={{ p: 2 }}>
             <AuctionContextInput
               state={auctionState}
@@ -225,8 +226,8 @@ export default function BidAdvisor() {
           </Paper>
         </Grid>
 
-        {/* ── Right column: recommendation ────────────────────────────── */}
-        <Grid size={{ xs: 12, md: 7 }}>
+        {/* ── Column 3: recommendation ────────────────────────────────── */}
+        <Grid size={{ xs: 12, md: 4 }}>
           <Paper
             variant="outlined"
             sx={{ p: 2, minHeight: 200, position: "sticky", top: 0 }}
