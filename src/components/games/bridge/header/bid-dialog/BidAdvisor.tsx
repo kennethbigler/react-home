@@ -1,11 +1,14 @@
 import { Box, Chip, Divider, Grid, Paper, Typography } from "@mui/material";
-import { useAtomValue } from "jotai";
-import { useMemo, useState } from "react";
-import { bridgeRead } from "../../../../../jotai/bridge-atom";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useEffect, useMemo, useState } from "react";
+import bridgeAtom, { bridgeRead } from "../../../../../jotai/bridge-atom";
+import type { PendingContract } from "../../../../../jotai/bridge-atom";
 import {
   deriveSituation,
+  getFinalContractDeclarerSeat,
   getFinalContractInfo,
   getRecommendation,
+  getRelatives,
 } from "./advisor/bidding-logic";
 import type {
   AuctionState,
@@ -30,6 +33,28 @@ const DEFAULT_STATE: AuctionState = {
   completedRounds: [],
   currentRound: {},
 };
+
+// Maps a contract bid's plain suit symbol to the emoji variant the Score form
+// uses for its dropdown options.  NT passes through unchanged.
+const CONTRACT_SUIT_TO_FORM: Record<string, string> = {
+  "♠": "♠️",
+  "♥": "♥️",
+  "♦": "♦️",
+  "♣": "♣️",
+};
+
+/** Parse a final-contract string (e.g. "3♠", "1NT") into the Score form's
+ *  suit option + trick level.  Returns null if it can't be parsed. */
+function parseContract(
+  contract: string,
+): { suit: string; tricks: number } | null {
+  const tricks = parseInt(contract[0], 10);
+  if (!tricks) return null;
+  const rest = contract.slice(1);
+  if (rest === "NT") return { suit: "NT", tricks };
+  const suit = CONTRACT_SUIT_TO_FORM[rest];
+  return suit ? { suit, tricks } : null;
+}
 
 export default function BidAdvisor() {
   const [hand, setHand] = useState<Hand>(DEFAULT_HAND);
@@ -149,6 +174,26 @@ export default function BidAdvisor() {
       : { ...hand, hasStopperInOpponentSuit: undefined };
     return getRecommendation(effectiveHand, context);
   }, [hand, auctionState, handIsValid, vulnerability, showStopperInput]);
+
+  // When the auction settles on a contract, hand it off to the Score modal so it
+  // can pre-fill the contract suit, level, and declaring side.  The Score modal
+  // consumes (and clears) this when it opens; it stays fully editable there.
+  const setBridgeState = useSetAtom(bridgeAtom);
+  useEffect(() => {
+    if (!biddingComplete || !finalContract) return;
+    const parsed = parseContract(finalContract);
+    if (!parsed) return;
+    const declarerSeat = getFinalContractDeclarerSeat(
+      auctionState.completedRounds,
+      auctionState.currentRound,
+      auctionState.myPosition,
+    );
+    const { partner } = getRelatives(auctionState.myPosition);
+    const isWe =
+      declarerSeat === auctionState.myPosition || declarerSeat === partner;
+    const pendingContract: PendingContract = { ...parsed, isWe };
+    setBridgeState((prev) => ({ ...prev, pendingContract }));
+  }, [biddingComplete, finalContract, auctionState, setBridgeState]);
 
   return (
     <Box>

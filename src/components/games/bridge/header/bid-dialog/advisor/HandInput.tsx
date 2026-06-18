@@ -154,8 +154,6 @@ export default function HandInput({
         <Grid container>
           {SUIT_LABELS.map(({ key, label, symbol }, index) => {
             const current = hand[key] as number;
-            const othersTotal = totalCards - current;
-            const maxForSuit = Math.min(13, 13 - othersTotal + current);
             return (
               <Grid
                 key={key}
@@ -200,7 +198,7 @@ export default function HandInput({
                   size="small"
                   aria-label={`Increase ${label}`}
                   onClick={() => handleSuitChange(key, current + 1)}
-                  disabled={current >= maxForSuit}
+                  disabled={current >= 13}
                 >
                   <AddIcon fontSize="inherit" />
                 </IconButton>

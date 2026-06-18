@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import ScoreForm from "./ScoreForm";
 import { vi } from "vitest";
 
@@ -51,6 +51,17 @@ describe("ScoreForm Component", () => {
     render(<ScoreForm {...defaultProps} />);
 
     expect(screen.getByLabelText("Declarer Team Tricks")).toBeInTheDocument();
+  });
+
+  it("shows the contract suit only inside the over-book trick parens", () => {
+    render(<ScoreForm {...defaultProps} contractSuit="NT" />);
+    fireEvent.mouseDown(screen.getByLabelText("Declarer Team Tricks"));
+    const listbox = screen.getByRole("listbox");
+    // Over-book option carries the suit inside the parens; bare counts do not.
+    expect(within(listbox).getByText("7 (1 NT)")).toBeInTheDocument();
+    expect(within(listbox).getByText("6")).toBeInTheDocument();
+    expect(within(listbox).queryByText("6 NT")).not.toBeInTheDocument();
+    fireEvent.keyDown(listbox, { key: "Escape" });
   });
 
   it("shows 4 aces option for no trump", () => {

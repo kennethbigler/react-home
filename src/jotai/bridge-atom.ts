@@ -7,6 +7,15 @@ export type AboveScores = [
   [number[], number[]],
 ];
 
+/** A contract handed off from the Bid Advisor to pre-fill the Score modal.
+ *  `suit` is one of the ScoreForm suit options (e.g. "♠️", "NT").  Cleared
+ *  (set to null) once the Score modal has consumed it. */
+export interface PendingContract {
+  suit: string;
+  tricks: number;
+  isWe: boolean;
+}
+
 export interface BridgeState {
   aboveScores: AboveScores;
   bids: string[];
@@ -14,6 +23,7 @@ export interface BridgeState {
   theyBelow: number[];
   weRubbers: number;
   theyRubbers: number;
+  pendingContract?: PendingContract | null;
 }
 
 export const newBridgeGame: () => Omit<
@@ -28,6 +38,7 @@ export const newBridgeGame: () => Omit<
   bids: [],
   weBelow: [],
   theyBelow: [],
+  pendingContract: null,
 });
 
 const bridgeAtom = atomWithStorage<BridgeState>("bridgeAtom", {

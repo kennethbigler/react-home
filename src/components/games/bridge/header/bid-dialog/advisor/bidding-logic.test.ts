@@ -21,6 +21,7 @@ import {
   getBidMeaning,
   deriveSituation,
   getFinalContractInfo,
+  getFinalContractDeclarerSeat,
   type Hand,
   type AuctionContext,
   type AuctionState,
@@ -4336,6 +4337,44 @@ describe("bidding-logic | deriveSituation", () => {
   });
 });
 
+// ─── getFinalContractDeclarerSeat ─────────────────────────────────────────────
+
+describe("bidding-logic | getFinalContractDeclarerSeat", () => {
+  it("returns the seat that made the last real bid", () => {
+    // 1♦(1)-1NT(2)-Pass-Pass: seat 2 made the final bid.
+    const seat = getFinalContractDeclarerSeat(
+      [{ 1: "1♦", 2: "1NT", 3: "Pass", 4: "Pass" }],
+      {},
+      1,
+    );
+    expect(seat).toBe(2);
+  });
+
+  it("ignores trailing passes / doubles when finding the declarer", () => {
+    // 1♠(1)-Pass-2♥(3)-Double(4): the last suit/NT bid was 2♥ by seat 3.
+    const seat = getFinalContractDeclarerSeat(
+      [{ 1: "1♠", 2: "Pass", 3: "2♥", 4: "Double" }],
+      {},
+      1,
+    );
+    expect(seat).toBe(3);
+  });
+
+  it("returns undefined when the deal is passed out", () => {
+    const seat = getFinalContractDeclarerSeat(
+      [{ 1: "Pass", 2: "Pass", 3: "Pass", 4: "Pass" }],
+      {},
+      1,
+    );
+    expect(seat).toBeUndefined();
+  });
+
+  it("reads current-round bids before my turn", () => {
+    const seat = getFinalContractDeclarerSeat([], { 1: "1♣", 2: "Pass" }, 3);
+    expect(seat).toBe(1);
+  });
+});
+
 // ─── getFinalContractInfo ─────────────────────────────────────────────────────
 
 describe("bidding-logic | getFinalContractInfo", () => {
@@ -4674,6 +4713,34 @@ describe("bidding-logic | getBidMeaning — prevHighBid context", () => {
   it("2♣ from opponent after 1NT → Stayman context note", () => {
     const m = getBidMeaning("2♣", "rho", "1NT");
     expect(m.toLowerCase()).toContain("stayman");
+  });
+
+  // ── 3-level responses to a 2NT opening are conventional, not slam tries ──────
+  // (Manual bug: 3♦ over partner's 2NT was labeled "6+ suit with slam interest"
+  //  when it is a Jacoby transfer to hearts.)  Full history is threaded so the
+  //  "response to partner's NT opening" branch is exercised.
+  it("3♦ after partner's 2NT → Jacoby transfer to hearts (not a slam try)", () => {
+    const m = getBidMeaning("3♦", "partner", "2NT", "Pass", "2NT", "2NT");
+    expect(m.toLowerCase()).toContain("transfer");
+    expect(m.toLowerCase()).toContain("heart");
+    expect(m.toLowerCase()).not.toContain("slam interest");
+  });
+
+  it("3♥ after partner's 2NT → Jacoby transfer to spades", () => {
+    const m = getBidMeaning("3♥", "partner", "2NT", "Pass", "2NT", "2NT");
+    expect(m.toLowerCase()).toContain("transfer");
+    expect(m.toLowerCase()).toContain("spade");
+  });
+
+  it("3♣ after partner's 2NT → Stayman", () => {
+    const m = getBidMeaning("3♣", "partner", "2NT", "Pass", "2NT", "2NT");
+    expect(m.toLowerCase()).toContain("stayman");
+  });
+
+  it("3♦ after partner's 1NT → still a natural slam try (unchanged)", () => {
+    // Over 1NT, transfers are at the 2-level, so a 3-level bid IS a slam try.
+    const m = getBidMeaning("3♦", "partner", "1NT", "Pass", "1NT", "1NT");
+    expect(m.toLowerCase()).toContain("slam interest");
   });
 
   it("2♦ with no context → weak 2 bid", () => {

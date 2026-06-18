@@ -8647,6 +8647,27 @@ export function getBidMeaning(
           ? `${bid}: a forced PREFERENCE between the two suits your Unusual 2NT showed — says nothing about strength (can be 0 points).`
           : `${bid} from opponent: forced preference for one of the two suits shown by their partner's Unusual 2NT — no strength implied.`;
       }
+      // Over a 2NT opening, transfers live at the 3-level (3♣ Stayman, 3♦→♥,
+      // 3♥→♠), so a 3-level suit bid is conventional, NOT a natural slam try.
+      if (uncontested && bidderPartnerPreviousBid === "2NT") {
+        if (bid === "3♣") {
+          return isPartner
+            ? "3♣ over your 2NT: STAYMAN — asks for a 4-card major (game-forcing values). Not natural clubs."
+            : "3♣ from opponent over their partner's 2NT: Stayman, asking for a 4-card major.";
+        }
+        if (bid === "3♦") {
+          return isPartner
+            ? "3♦ over your 2NT: JACOBY TRANSFER to hearts — shows 5+ hearts. Partner bids 3♥; you then clarify strength. Not natural diamonds."
+            : "3♦ from opponent over their partner's 2NT: Jacoby transfer to hearts (5+ hearts).";
+        }
+        if (bid === "3♥") {
+          return isPartner
+            ? "3♥ over your 2NT: JACOBY TRANSFER to spades — shows 5+ spades. Partner bids 3♠. Not natural hearts."
+            : "3♥ from opponent over their partner's 2NT: Jacoby transfer to spades (5+ spades).";
+        }
+        // 3♠ has no standard transfer/Stayman meaning over 2NT — leave it to
+        // the natural reading below.
+      }
       if (uncontested && /^3[♠♥♦♣]$/.test(bid)) {
         return isPartner
           ? `${bid} over your NT: natural and FORCING — a 6+ card suit with slam interest (game-forcing). Raise with 3-card support, otherwise bid 3NT.`
@@ -10359,4 +10380,31 @@ export function getFinalContractInfo(
     (finalContract !== undefined || allBids.length >= 4);
 
   return { isComplete, finalContract };
+}
+
+/**
+ * The seat (1-4) that made the final contract bid, or undefined if the deal was
+ * passed out.  Used to decide which side declares when handing the contract off
+ * to the score sheet.  Mirrors getFinalContractInfo's bid-flattening order.
+ */
+export function getFinalContractDeclarerSeat(
+  completedRounds: BidRound[],
+  currentRound: BidRound,
+  myPosition: BiddingPosition,
+): BiddingPosition | undefined {
+  const seq: { seat: BiddingPosition; bid: string }[] = [];
+  for (const round of completedRounds) {
+    for (const pos of POSITIONS) {
+      seq.push({ seat: pos, bid: round[pos] ?? "Pass" });
+    }
+  }
+  for (let p = 1; p < myPosition; p++) {
+    const bid = currentRound[p as BiddingPosition];
+    if (bid !== undefined) seq.push({ seat: p as BiddingPosition, bid });
+  }
+  for (let i = seq.length - 1; i >= 0; i--) {
+    const { seat, bid } = seq[i];
+    if (bid !== "Pass" && bid !== "Double" && bid !== "Redouble") return seat;
+  }
+  return undefined;
 }
