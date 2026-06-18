@@ -72,10 +72,10 @@ describe("games | bridge | AuctionContext", () => {
 
   // ── Partnership emphasis ──────────────────────────────────────────────────────
 
-  it("groups seats into 'You & Partner' and 'Opponents'", () => {
+  it("groups seats into 'You' and 'Opps'", () => {
     renderAuctionContext({ ...defaultState, myPosition: 2 });
-    expect(screen.getByText("You & Partner:")).toBeInTheDocument();
-    expect(screen.getByText("Opponents:")).toBeInTheDocument();
+    expect(screen.getByText("You:")).toBeInTheDocument();
+    expect(screen.getByText("Opps:")).toBeInTheDocument();
   });
 
   it("marks the selected seat with a '(you)' cue", () => {
@@ -244,9 +244,8 @@ describe("games | bridge | AuctionContext", () => {
 
   // ── Complete this round form (always visible) ─────────────────────────────────
 
-  it("renders the 'Complete this round' section without requiring a button click", () => {
+  it("renders the round-completion controls without requiring a button click", () => {
     renderAuctionContext();
-    expect(screen.getByText(/complete this round/i)).toBeInTheDocument();
     expect(screen.getByLabelText("My bid")).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /confirm round/i }),
@@ -580,8 +579,7 @@ describe("games | bridge | AuctionContext", () => {
       completedRounds: [{ 1: "1♥", 2: "Pass", 3: "Pass", 4: "Pass" }],
     };
     renderAuctionContext(stateComplete);
-    // Bidding is over — "Complete this round" form should be gone
-    expect(screen.queryByText(/complete this round/i)).not.toBeInTheDocument();
+    // Bidding is over — the round-completion form (Confirm Round) should be gone
     expect(
       screen.queryByRole("button", { name: /confirm round/i }),
     ).not.toBeInTheDocument();
@@ -594,10 +592,10 @@ describe("games | bridge | AuctionContext", () => {
       completedRounds: [{ 1: "1♥", 2: "Pass", 3: "Pass", 4: "Pass" }],
     };
     renderAuctionContext(stateComplete);
-    // "Current round — bids before my turn" should be hidden
-    expect(
-      screen.queryByText(/current round — bids before my turn/i),
-    ).not.toBeInTheDocument();
+    // No bid dropdowns at all once the auction is over (the bids-before-me
+    // slots and the My bid slot are both gone).
+    expect(screen.queryByLabelText("My bid")).not.toBeInTheDocument();
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
     // Prior rounds are still visible
     expect(screen.getByText(/round 1/i)).toBeInTheDocument();
   });
@@ -609,7 +607,6 @@ describe("games | bridge | AuctionContext", () => {
       myPosition: 3,
       currentRound: { 1: "1♥", 2: "2♠" },
     });
-    expect(screen.getByText(/complete this round/i)).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /confirm round/i }),
     ).toBeInTheDocument();

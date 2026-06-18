@@ -1,4 +1,4 @@
-import { Box, Chip, Divider, Grid, Paper, Typography } from "@mui/material";
+import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 import bridgeAtom, { bridgeRead } from "../../../../../jotai/bridge-atom";
@@ -214,7 +214,9 @@ export default function BidAdvisor() {
         </Grid>
 
         {/* ── Column 2: auction context ───────────────────────────────── */}
-        <Grid size={{ xs: 12, md: 4 }}>
+        {/* Once bidding is complete there is no recommendation to show, so the
+            recommendation column is hidden and this one widens to fill it. */}
+        <Grid size={{ xs: 12, md: biddingComplete ? 8 : 4 }}>
           <Paper variant="outlined" sx={{ p: 2 }}>
             <AuctionContextInput
               state={auctionState}
@@ -226,91 +228,50 @@ export default function BidAdvisor() {
           </Paper>
         </Grid>
 
-        {/* ── Column 3: recommendation ────────────────────────────────── */}
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Paper
-            variant="outlined"
-            sx={{ p: 2, minHeight: 200, position: "sticky", top: 0 }}
-          >
-            {biddingComplete ? (
-              <Box>
-                <Typography variant="h6" gutterBottom>
-                  Bidding Complete
-                </Typography>
-                <Paper
-                  elevation={2}
+        {/* ── Column 3: recommendation (hidden when bidding is complete) ── */}
+        {!biddingComplete && (
+          <Grid size={{ xs: 12, md: 4 }}>
+            <Paper
+              variant="outlined"
+              sx={{ p: 2, minHeight: 200, position: "sticky", top: 0 }}
+            >
+              {recommendation ? (
+                <BidRecommendation recommendation={recommendation} />
+              ) : (
+                <Box
                   sx={{
-                    p: 2,
-                    mb: 2,
                     display: "flex",
+                    flexDirection: "column",
                     alignItems: "center",
-                    gap: 2,
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    component="span"
-                    aria-label="Final contract"
-                    sx={{ fontWeight: "bold" }}
-                  >
-                    {finalContract ?? "Passed Out"}
-                  </Typography>
-                  <Box
-                    sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}
-                  >
-                    <Typography
-                      variant="subtitle1"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      {finalContract
-                        ? "Final contract"
-                        : "No contract — all four players passed"}
-                    </Typography>
-                    <Chip label="Auction over" color="info" size="small" />
-                  </Box>
-                </Paper>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  Three passes have ended the auction, so there are no more bids
-                  to make. Use New Game (top bar) to advise another hand.
-                </Typography>
-              </Box>
-            ) : recommendation ? (
-              <BidRecommendation recommendation={recommendation} />
-            ) : (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  minHeight: 200,
-                  gap: 1,
-                  color: "text.secondary",
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  sx={{
+                    justifyContent: "center",
+                    minHeight: 200,
+                    gap: 1,
                     color: "text.secondary",
                   }}
                 >
-                  Recommendation
-                </Typography>
-                <Divider sx={{ width: "80%" }} />
-                <Typography
-                  variant="body2"
-                  sx={{
-                    textAlign: "center",
-                  }}
-                >
-                  Enter your hand above (cards must total 13) to see your bid
-                  recommendation.
-                </Typography>
-              </Box>
-            )}
-          </Paper>
-        </Grid>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: "text.secondary",
+                    }}
+                  >
+                    Recommendation
+                  </Typography>
+                  <Divider sx={{ width: "80%" }} />
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      textAlign: "center",
+                    }}
+                  >
+                    Enter your hand above (cards must total 13) to see your bid
+                    recommendation.
+                  </Typography>
+                </Box>
+              )}
+            </Paper>
+          </Grid>
+        )}
       </Grid>
     </Box>
   );

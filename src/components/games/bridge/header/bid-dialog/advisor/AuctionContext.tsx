@@ -752,14 +752,14 @@ export default function AuctionContextInput({
             [
               {
                 side: "us" as Side,
-                label: "You & Partner",
+                label: "You",
                 seats: [myPosition, getRelatives(myPosition).partner].sort(
                   (a, b) => a - b,
                 ) as BiddingPosition[],
               },
               {
                 side: "them" as Side,
-                label: "Opponents",
+                label: "Opps",
                 seats: [
                   getRelatives(myPosition).lho,
                   getRelatives(myPosition).rho,
@@ -818,6 +818,7 @@ export default function AuctionContextInput({
           ))}
         </Box>
       </Box>
+      <Divider sx={{ mb: 2 }} />
       {/* ── Vulnerability (read-only from game state) ─────────────────── */}
       <Box
         sx={{
@@ -849,7 +850,6 @@ export default function AuctionContextInput({
           />
         </Box>
       </Box>
-      <Divider sx={{ mb: 2 }} />
       {/* ── Bidding complete banner ────────────────────────────────────── */}
       {isComplete && (
         <Alert severity="info" sx={{ mb: 2 }}>
@@ -895,18 +895,6 @@ export default function AuctionContextInput({
             mb: 2,
           }}
         >
-          <Typography
-            variant="caption"
-            gutterBottom
-            sx={{
-              color: "text.secondary",
-              display: "block",
-            }}
-          >
-            {myPosition === 1
-              ? "Current round — you bid first"
-              : "Current round — bids before my turn"}
-          </Typography>
           {myPosition === 1 ? (
             <Typography
               variant="body2"
@@ -981,16 +969,6 @@ export default function AuctionContextInput({
             mb: 2,
           }}
         >
-          <Typography
-            variant="caption"
-            gutterBottom
-            sx={{
-              color: "text.secondary",
-              display: "block",
-            }}
-          >
-            Complete this round
-          </Typography>
           <Box
             sx={{ display: "flex", flexDirection: "column", gap: 1.5, mb: 1.5 }}
           >

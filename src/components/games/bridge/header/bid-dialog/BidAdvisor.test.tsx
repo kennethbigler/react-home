@@ -250,23 +250,22 @@ describe("games | bridge | BidAdvisor", () => {
     fireEvent.click(within(listbox).getAllByText("1NT")[0]);
     fireEvent.click(screen.getByRole("button", { name: /confirm round/i }));
 
-    expect(screen.getByText("Bidding Complete")).toBeInTheDocument();
-    expect(screen.getByLabelText("Final contract")).toHaveTextContent("1NT");
-    // No bid recommendation card and no stopper question once the auction is over.
+    // The Auction Context banner reports the completed contract; the separate
+    // recommendation column is hidden once bidding is over.
+    expect(
+      screen.getByText(/Bidding complete — Final contract: 1NT/i),
+    ).toBeInTheDocument();
     expect(screen.queryByLabelText("Recommended bid")).not.toBeInTheDocument();
     expect(
       screen.queryByLabelText("Has stopper in opponent's suit"),
     ).not.toBeInTheDocument();
   });
 
-  it("manual Test 2: a passed-out deal shows 'Passed Out' as the result", () => {
+  it("manual Test 2: a passed-out deal shows the completion banner", () => {
     render(<BidAdvisor />);
     // Dealer (default 0 HCP hand) passes, everyone passes → passed out.
     fireEvent.click(screen.getByRole("button", { name: /confirm round/i }));
-    expect(screen.getByText("Bidding Complete")).toBeInTheDocument();
-    expect(screen.getByLabelText("Final contract")).toHaveTextContent(
-      "Passed Out",
-    );
+    expect(screen.getByText(/Bidding complete/i)).toBeInTheDocument();
   });
 
   it("does NOT show stopper input when opponent bid a conventional 2♣ (lhoIsNT=true)", () => {
