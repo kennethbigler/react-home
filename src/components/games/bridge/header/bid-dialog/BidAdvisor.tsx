@@ -175,24 +175,41 @@ export default function BidAdvisor() {
     return getRecommendation(effectiveHand, context);
   }, [hand, auctionState, handIsValid, vulnerability, showStopperInput]);
 
-  // When the auction settles on a contract, hand it off to the Score modal so it
-  // can pre-fill the contract suit, level, and declaring side.  The Score modal
-  // consumes (and clears) this when it opens; it stays fully editable there.
+  // Hand the CURRENTLY DISPLAYED auction's contract to the Score modal so it can
+  // pre-fill suit/level/side.  This must track the live auction in both
+  // directions: set it when the auction is complete, and CLEAR it when it is not
+  // — otherwise a contract from a previous (now-abandoned) auction lingers in
+  // the atom and the Score modal pre-fills a stale bid (e.g. an old 3♦ showing
+  // up after a 1NT auction or a New Game reset).
   const setBridgeState = useSetAtom(bridgeAtom);
   useEffect(() => {
-    if (!biddingComplete || !finalContract) return;
-    const parsed = parseContract(finalContract);
-    if (!parsed) return;
-    const declarerSeat = getFinalContractDeclarerSeat(
-      auctionState.completedRounds,
-      auctionState.currentRound,
-      auctionState.myPosition,
-    );
-    const { partner } = getRelatives(auctionState.myPosition);
-    const isWe =
-      declarerSeat === auctionState.myPosition || declarerSeat === partner;
-    const pendingContract: PendingContract = { ...parsed, isWe };
-    setBridgeState((prev) => ({ ...prev, pendingContract }));
+    let pendingContract: PendingContract | null = null;
+    if (biddingComplete && finalContract) {
+      const parsed = parseContract(finalContract);
+      if (parsed) {
+        const declarerSeat = getFinalContractDeclarerSeat(
+          auctionState.completedRounds,
+          auctionState.currentRound,
+          auctionState.myPosition,
+        );
+        const { partner } = getRelatives(auctionState.myPosition);
+        const isWe =
+          declarerSeat === auctionState.myPosition || declarerSeat === partner;
+        pendingContract = { ...parsed, isWe };
+      }
+    }
+    // Only write when the value actually changes, to avoid an update loop.
+    setBridgeState((prev) => {
+      const a = prev.pendingContract ?? null;
+      const same =
+        a === pendingContract ||
+        (!!a &&
+          !!pendingContract &&
+          a.suit === pendingContract.suit &&
+          a.tricks === pendingContract.tricks &&
+          a.isWe === pendingContract.isWe);
+      return same ? prev : { ...prev, pendingContract };
+    });
   }, [biddingComplete, finalContract, auctionState, setBridgeState]);
 
   return (

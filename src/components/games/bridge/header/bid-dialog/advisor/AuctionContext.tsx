@@ -962,10 +962,6 @@ export default function AuctionContextInput({
       {!isComplete && (
         <Box
           sx={{
-            border: "1px solid",
-            borderColor: "divider",
-            borderRadius: 1,
-            p: 1.5,
             mb: 2,
           }}
         >

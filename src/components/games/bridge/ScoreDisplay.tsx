@@ -18,6 +18,13 @@ const ScoreDisplay = () => {
   const { weVulnerable, theyVulnerable, weSum, theySum } =
     useAtomValue(bridgeRead);
 
+  // `bids` is a single flat list with one entry appended per saved hand, in the
+  // same order as the weBelow/theyBelow arrays.  Above-the-line scores, however,
+  // are grouped by game, so to label a hand in game `i` we need its index into
+  // the flat list = (hands in all earlier games) + position within this game.
+  const gameBidOffset = (gameIndex: number): number =>
+    aboveScores.slice(0, gameIndex).reduce((sum, [we]) => sum + we.length, 0);
+
   return (
     <Table aria-label="Bridge Scores" sx={{ border }}>
       <TableHead>
@@ -42,7 +49,7 @@ const ScoreDisplay = () => {
                       (score, j) =>
                         score !== 0 && (
                           <Typography key={`we-above-${j}`} component="div">
-                            {`${score} (${bids[i]})`}
+                            {`${score} (${bids[gameBidOffset(i) + j]})`}
                           </Typography>
                         ),
                     )}
@@ -52,7 +59,7 @@ const ScoreDisplay = () => {
                       (score, j) =>
                         score !== 0 && (
                           <Typography key={`they-above-${j}`} component="div">
-                            {`${score} (${bids[i]})`}
+                            {`${score} (${bids[gameBidOffset(i) + j]})`}
                           </Typography>
                         ),
                     )}
