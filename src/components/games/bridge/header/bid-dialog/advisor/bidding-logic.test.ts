@@ -1551,6 +1551,46 @@ describe("bidding-logic | responding-to-simple-oc", () => {
     expect(rec.bid).toContain("1NT");
   });
 
+  it("no fit but own 5-card suit biddable at the 1-level → new-suit advance", () => {
+    // Manual bug: P-P-1♦(opp)-1♥(partner overcall), advancer holds 5♠ 1♥ 4♣ 3♦,
+    // 8 HCP.  Singleton in partner's hearts (no fit) but a 5-card spade suit that
+    // bids cheaply at the 1-level.  Was wrongly Pass; should advance 1♠.
+    const state: AuctionState = {
+      myPosition: 2,
+      completedRounds: [{ 1: "Pass", 2: "Pass", 3: "1♦", 4: "1♥" }],
+      currentRound: { 1: "Pass" },
+    };
+    const s = deriveSituation(state, "none");
+    const rec = getRecommendation(mkHand(8, 5, 1, 3, 4), s);
+    expect(rec.bid).toBe("1♠");
+    expect(rec.bid).not.toBe("Pass");
+    expect(rec.category).toContain("New Suit Advance");
+  });
+
+  it("no fit, flat 5-4-2-2 with a 5-card minor → 1NT, not a 2-level new suit", () => {
+    // Guard: a balanced-ish hand should advance 1NT rather than push a minor to
+    // the 2-level (the new-suit advance is gated to distributional hands there).
+    const rec = getRecommendation(
+      mkHand(10, 2, 2, 4, 5),
+      ctx("responding-to-simple-oc", { partnerBid: "1♠" }),
+    );
+    expect(rec.bid).toBe("1NT");
+  });
+
+  it("no fit, 5-card suit + singleton, 11 HCP → 2-level new-suit advance", () => {
+    // A distributional hand (singleton) with 11 HCP shows its 5-card suit even
+    // when that requires the 2-level.
+    const state: AuctionState = {
+      myPosition: 2,
+      completedRounds: [{ 1: "Pass", 2: "Pass", 3: "1♦", 4: "1♠" }],
+      currentRound: { 1: "Pass" },
+    };
+    const s = deriveSituation(state, "none");
+    const rec = getRecommendation(mkHand(11, 1, 5, 3, 4), s);
+    expect(rec.bid).toBe("2♥");
+    expect(rec.category).toContain("New Suit Advance");
+  });
+
   it("no support, 15+ pts → 3NT", () => {
     const rec = getRecommendation(
       mkHand(15, 2, 3, 4, 4),
@@ -1867,12 +1907,25 @@ describe("bidding-logic | rebid-after-suit", () => {
     expect(rec.bid).toBe("Pass");
   });
 
-  it("partner raised our suit, 16-18 TP → game try", () => {
+  it("partner raised our suit, 16-18 support pts → game try", () => {
+    // 15 HCP + a doubleton (1 short-suit pt) = 16 support pts → game try (3♠).
+    // (Balanced-ish hand: no big ruffing value, so it stays in the try band.)
+    const rec = getRecommendation(
+      mkHand(15, 5, 3, 3, 2),
+      ctx("rebid-after-suit", { myPreviousBid: "1♠", partnerBid: "2♠" }),
+    );
+    expect(rec.bid).toContain("3♠");
+  });
+
+  it("partner raised our suit, shapely 16 HCP + singleton → bid game (support pts ≥19)", () => {
+    // 16 HCP + singleton club (3 ruffing pts) = 19 support points opposite a
+    // simple raise → bid game directly; the old long-suit TP undercounted the
+    // singleton and only offered a game try.
     const rec = getRecommendation(
       mkHand(16, 5, 4, 3, 1),
       ctx("rebid-after-suit", { myPreviousBid: "1♠", partnerBid: "2♠" }),
     );
-    expect(rec.bid).toContain("3♠");
+    expect(rec.bid).toBe("4♠");
   });
 
   it("partner raised, 19+ TP → game", () => {
@@ -1965,6 +2018,50 @@ describe("bidding-logic | rebid-after-suit", () => {
     );
     expect(rec.bid).toBe("2♦");
     expect(rec.bid).not.toBe("Continue auction");
+  });
+
+  it("opener rebids own suit at the level forced by interference (1♠-2♦-2♥-3♦ → 3♠)", () => {
+    // Manual bug: opener (5♠ 1♥ 5♣ 2D, 10 HCP) with a singleton in partner's
+    // hearts and a 5-card spade suit was recommended Pass after 1♠-2♦-2♥-3♦.
+    // The rebid-level math ignored the 3♦ overcall and computed an illegal 2♠,
+    // which collapsed to a phantom Pass.  The correct SAYC rebid is 3♠.
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♠", 2: "2♦", 3: "2♥", 4: "3♦" }],
+      currentRound: {},
+    };
+    const s = deriveSituation(state, "none");
+    const rec = getRecommendation(mkHand(10, 5, 1, 2, 5), s);
+    expect(rec.bid).toBe("3♠");
+    expect(rec.bid).not.toBe("Pass");
+    expect(rec.category).toContain("Rebid Own Suit");
+  });
+
+  it("does not introduce a second suit above the 3-level under interference (1♠-2♦-2♥-3♦)", () => {
+    // Same auction: clubs (the second suit) would have to be bid at 4♣ to clear
+    // 3♦ — too high for a minimum opener.  Must rebid 3♠, not 4♣.
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♠", 2: "2♦", 3: "2♥", 4: "3♦" }],
+      currentRound: {},
+    };
+    const s = deriveSituation(state, "none");
+    const rec = getRecommendation(mkHand(10, 5, 1, 2, 5), s);
+    expect(rec.bid).not.toBe("4♣");
+  });
+
+  it("uncontested second-suit rebid is unchanged (1♥-1♠ with 5♥/4♣ → 2♣)", () => {
+    // Guard: the interference fix must not break normal uncontested second-suit
+    // bids — opener still shows clubs at 2♣ over partner's 1♠.
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♥", 2: "Pass", 3: "1♠", 4: "Pass" }],
+      currentRound: {},
+    };
+    const s = deriveSituation(state, "none");
+    const rec = getRecommendation(mkHand(12, 2, 5, 2, 4), s);
+    expect(rec.bid).toBe("2♣");
+    expect(rec.category).toContain("Second Suit");
   });
 
   it("minimum opener (13 HCP, 6 hearts, TP=15) after 1♥-2♦ → simple rebid 2♥, never a jump", () => {
@@ -5303,8 +5400,10 @@ describe("bidding-logic | deal C — 1NT opening, Jacoby transfer to spades", ()
     };
     const auction = deriveSituation(state, "none");
     const rec = getRecommendation(p3Hand, auction);
-    // 6 spades + 8-9 HCP → invitational 3♠ (or game directly with 10+ HCP)
-    expect(["3♠", "4♠"]).toContain(rec.bid);
+    // 6 spades + exactly 9 HCP (no distributional lift) is squarely INVITATIONAL
+    // → 3♠.  4♠ would be a game overbid on invitational values, so it must NOT
+    // be in the acceptable set.
+    expect(rec.bid).toBe("3♠");
   });
 
   it("P1 after 3♠ invitation with 4 spades and max NT (16 HCP) → accepts 4♠", () => {
@@ -5696,15 +5795,19 @@ describe("bidding-logic | clean game M — competitive hand, overcall, game try"
     expect(rec.bid).toBe("1♠");
   });
 
-  it("P3 with 4 hearts, 12 HCP, after 1♥–1♠ → competitive raise or limit raise", () => {
+  it("P3 with 4 hearts, 12 HCP + doubleton, after 1♥–1♠ → game-forcing cuebid", () => {
     const state: AuctionState = {
       myPosition: 3,
       completedRounds: [],
       currentRound: { 1: "1♥", 2: "1♠" },
     };
     const rec = getRecommendation(p3Hand, deriveSituation(state, "none"));
-    // With 4 hearts and 12 HCP in competition: 2♥, 3♥, or Double are all valid
-    expect(["2♥", "3♥", "Double"]).toContain(rec.bid);
+    // p3Hand = 2♠ 4♥ 4♦ 3♣, 12 HCP.  4-card heart support + doubleton spades =
+    // 13 SUPPORT points → game-forcing.  In competition the cuebid of the
+    // opponent's suit (2♠) is THE forcing raise.  3♥ (a limit raise) underbids a
+    // game-force, and Double is wrong with a 4-card heart fit and no unbid major,
+    // so neither belongs in the acceptable set.
+    expect(rec.bid).toBe("2♠");
   });
 
   it("P1 after 3♥ limit raise in competition, 15 TP → accepts 4♥", () => {
@@ -6875,18 +6978,35 @@ describe("Bug Fix Regression Tests", () => {
   });
 
   // Bug 6: Opener rebid after partner's 2NT invite — use TP not HCP
-  it("BF-6a: 1NT opener (15 HCP, 16 TP due to 5-card suit) accepts 2NT invite → 3NT", () => {
-    // 5-card suit gives +1 TP, so 15 HCP = 16 TP → should accept partner's 2NT invite
+  it("BF-6a: 1NT opener accepts a 2NT invite by HCP (16 HCP → 3NT)", () => {
+    // A 1NT opener accepts an invitation on HCP — NOT on distributional points.
+    // (A NOTRUMP decision never counts length/shortness points.)  16 HCP is a
+    // maximum, so accept; 15 declines (BF-6b).
     const state: AuctionState = {
       myPosition: 1,
       completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2NT", 4: "Pass" }],
       currentRound: {},
     };
     const rec = getRecommendation(
-      mkHand(15, 3, 5, 2, 3), // 15 HCP + 1 (5-card hearts) = 16 TP
+      mkHand(16, 3, 5, 2, 3), // 16 HCP maximum → accept
       deriveSituation(state),
     );
     expect(rec.bid).toBe("3NT");
+  });
+
+  it("BF-6a2: 1NT opener with 15 HCP + 5-card suit declines (no distributional upgrade in NT)", () => {
+    // The old engine counted the 5-card suit as +1 TP and wrongly accepted with
+    // 15 HCP.  In notrump, 15 HCP is a minimum → decline.
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2NT", 4: "Pass" }],
+      currentRound: {},
+    };
+    const rec = getRecommendation(
+      mkHand(15, 3, 5, 2, 3),
+      deriveSituation(state),
+    );
+    expect(rec.bid).toBe("Pass");
   });
 
   it("BF-6b: 1NT opener (15 HCP, 15 TP balanced) declines 2NT invite → Pass", () => {
@@ -8921,7 +9041,9 @@ describe("bidding-logic | responding-to-simple-oc — no stopper branches", () =
       hand,
       ctx("responding-to-simple-oc", { partnerBid: "1♠", rhoBid: "2♣" }),
     );
-    expect(["2♥", "2♦"]).toContain(rec.bid);
+    // 2♠ 5♥ 4♦ 2♣ — the LONGEST suit is hearts (5), so the no-stopper bid is 2♥.
+    // 2♦ (the shorter 4-card suit) is not SAYC-justified and must not pass.
+    expect(rec.bid).toBe("2♥");
     expect(rec.category).toContain("No Stopper");
   });
 
@@ -9529,5 +9651,128 @@ describe("bidding-logic | my own bid passed out (auction-passed-out)", () => {
     };
     const s = deriveSituation(state, "none");
     expect(s.situation).not.toBe("auction-passed-out");
+  });
+
+  it("my 1NT RESPONSE passed out → Pass, not a phantom minor-suit raise (1♦-P-1NT-P-P-P)", () => {
+    // Manual bug: partner opened 1♦, I responded 1NT (6-10), all passed.  The
+    // responder-nt-rebid handler misread partner's stale 1♦ opening as a fresh
+    // diamond suit to support and recommended 5♦.  The auction is passed out in
+    // my 1NT — the correct call is Pass.
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "1♦", 2: "Pass", 3: "1NT", 4: "Pass" }],
+      currentRound: { 1: "Pass", 2: "Pass" },
+    };
+    const s = deriveSituation(state, "none");
+    expect(s.situation).toBe("auction-passed-out");
+    const rec = getRecommendation(mkHand(9, 3, 2, 4, 4), s);
+    expect(rec.bid).toBe("Pass");
+    expect(rec.bid).not.toBe("5♦");
+  });
+
+  it("does not pass out a 1NT response while it is still partner's turn to act", () => {
+    // Guard: 1♦-P-1NT then only partner(opener) has yet to act again — this is a
+    // forcing-ish standstill, not a pass-out.  Must NOT be auction-passed-out.
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "1♦", 2: "Pass", 3: "1NT", 4: "Pass" }],
+      currentRound: {},
+    };
+    const s = deriveSituation(state, "none");
+    // Auction is not formally complete (opener seat 1 has not passed in round 2).
+    expect(s.situation).not.toBe("auction-passed-out");
+  });
+});
+
+// ─── SAYC point-valuation audit regressions ──────────────────────────────────
+// These lock in the correct measure for each decision class:
+//   • Raising a KNOWN trump fit  → SHORT-suit support points (calcTPWithFit)
+//   • A NOTRUMP decision/range   → HCP only (no distributional points)
+//   • A no-fit, suit-length hand → long-suit TP (length is a source of tricks)
+// Each case is chosen so the measures actually diverge and flip the bid.
+describe("bidding-logic | SAYC valuation regressions", () => {
+  // ── Fit raises use short-suit (ruffing) points, not long-suit TP ────────────
+
+  it("getNegativeDouble: 12 HCP + doubleton, 4-card fit → game-forcing cuebid (support pts ≥13)", () => {
+    // 2♠ 4♥ 4♦ 3♣, 12 HCP.  long-suit TP = 12 (no 5+ suit) → only a limit raise;
+    // support pts = 12 + doubleton(1) = 13 → game-forcing cuebid of opp's suit.
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [],
+      currentRound: { 1: "1♥", 2: "1♠" },
+    };
+    const rec = getRecommendation(
+      mkHand(12, 2, 4, 4, 3),
+      deriveSituation(state, "none"),
+    );
+    expect(rec.bid).toBe("2♠"); // cuebid of the overcalled suit
+    expect(rec.category).toContain("Cuebid Raise");
+  });
+
+  it("getRebidAfterSuit: opener 16 HCP + singleton, partner simple-raised → game (support pts ≥19)", () => {
+    // 5♠ 4♥ 3♦ 1♣, 16 HCP.  long-suit TP = 17 → only a game try; support pts =
+    // 16 + singleton(3) = 19 → bid game directly.
+    const rec = getRecommendation(
+      mkHand(16, 5, 4, 3, 1),
+      ctx("rebid-after-suit", { myPreviousBid: "1♠", partnerBid: "2♠" }),
+    );
+    expect(rec.bid).toBe("4♠");
+  });
+
+  it("getRespondingToSuitAfterDouble: 9 HCP + singleton, 4-card fit → Jordan limit raise (support pts ≥10)", () => {
+    // 4♠ 4♥ 4♦ 1♣, 9 HCP.  long-suit TP = 9 → would be a weak/preemptive raise;
+    // support pts = 9 + singleton(3) = 12 → Jordan 2NT (limit raise).
+    const rec = getRecommendation(
+      mkHand(9, 1, 4, 4, 4),
+      ctx("responding-suit-after-double", { partnerBid: "1♥" }),
+    );
+    expect(rec.bid).toBe("2NT");
+    expect(rec.category).toContain("Jordan");
+  });
+
+  // ── Notrump decisions use HCP only (no distributional upgrade) ──────────────
+
+  it("getRebidAfterNT: 1NT opener with 15 HCP + 5-card suit declines a 2NT invite (HCP, not TP)", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2NT", 4: "Pass" }],
+      currentRound: {},
+    };
+    const rec = getRecommendation(
+      mkHand(15, 3, 5, 2, 3), // long-suit TP=16 but only 15 HCP → decline in NT
+      deriveSituation(state, "none"),
+    );
+    expect(rec.bid).toBe("Pass");
+  });
+
+  it("getRebidAfterNT: 1NT opener with 16 HCP accepts a 2NT invite", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1NT", 2: "Pass", 3: "2NT", 4: "Pass" }],
+      currentRound: {},
+    };
+    const rec = getRecommendation(
+      mkHand(16, 3, 3, 4, 3),
+      deriveSituation(state, "none"),
+    );
+    expect(rec.bid).toBe("3NT");
+  });
+
+  // ── No fit, long side suit: long-suit TP (length is a trick source in NT) ────
+
+  it("getResponderRebid: 10 HCP + 5-card suit, no fit → invitational 2NT (long-suit TP)", () => {
+    // 3♠ 5♥ 2♦ 3♣, 10 HCP; partner 1♦–2♦ rebid, no diamond fit, 5 hearts.
+    // long-suit TP = 11 keeps it in the invitational band → 2NT (not Pass).
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "1♦", 2: "Pass", 3: "1♥", 4: "Pass" }],
+      currentRound: { 1: "2♦", 2: "Pass" },
+    };
+    const rec = getRecommendation(
+      mkHand(10, 3, 5, 2, 3),
+      deriveSituation(state, "none"),
+    );
+    expect(rec.bid).toBe("2NT");
+    expect(rec.category).toContain("Invitational");
   });
 });

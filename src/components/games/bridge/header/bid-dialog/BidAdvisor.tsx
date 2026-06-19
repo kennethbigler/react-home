@@ -1,4 +1,4 @@
-import { Box, Chip, Divider, Grid, Paper, Typography } from "@mui/material";
+import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 import bridgeAtom, { bridgeRead } from "../../../../../jotai/bridge-atom";
@@ -175,24 +175,41 @@ export default function BidAdvisor() {
     return getRecommendation(effectiveHand, context);
   }, [hand, auctionState, handIsValid, vulnerability, showStopperInput]);
 
-  // When the auction settles on a contract, hand it off to the Score modal so it
-  // can pre-fill the contract suit, level, and declaring side.  The Score modal
-  // consumes (and clears) this when it opens; it stays fully editable there.
+  // Hand the CURRENTLY DISPLAYED auction's contract to the Score modal so it can
+  // pre-fill suit/level/side.  This must track the live auction in both
+  // directions: set it when the auction is complete, and CLEAR it when it is not
+  // — otherwise a contract from a previous (now-abandoned) auction lingers in
+  // the atom and the Score modal pre-fills a stale bid (e.g. an old 3♦ showing
+  // up after a 1NT auction or a New Game reset).
   const setBridgeState = useSetAtom(bridgeAtom);
   useEffect(() => {
-    if (!biddingComplete || !finalContract) return;
-    const parsed = parseContract(finalContract);
-    if (!parsed) return;
-    const declarerSeat = getFinalContractDeclarerSeat(
-      auctionState.completedRounds,
-      auctionState.currentRound,
-      auctionState.myPosition,
-    );
-    const { partner } = getRelatives(auctionState.myPosition);
-    const isWe =
-      declarerSeat === auctionState.myPosition || declarerSeat === partner;
-    const pendingContract: PendingContract = { ...parsed, isWe };
-    setBridgeState((prev) => ({ ...prev, pendingContract }));
+    let pendingContract: PendingContract | null = null;
+    if (biddingComplete && finalContract) {
+      const parsed = parseContract(finalContract);
+      if (parsed) {
+        const declarerSeat = getFinalContractDeclarerSeat(
+          auctionState.completedRounds,
+          auctionState.currentRound,
+          auctionState.myPosition,
+        );
+        const { partner } = getRelatives(auctionState.myPosition);
+        const isWe =
+          declarerSeat === auctionState.myPosition || declarerSeat === partner;
+        pendingContract = { ...parsed, isWe };
+      }
+    }
+    // Only write when the value actually changes, to avoid an update loop.
+    setBridgeState((prev) => {
+      const a = prev.pendingContract ?? null;
+      const same =
+        a === pendingContract ||
+        (!!a &&
+          !!pendingContract &&
+          a.suit === pendingContract.suit &&
+          a.tricks === pendingContract.tricks &&
+          a.isWe === pendingContract.isWe);
+      return same ? prev : { ...prev, pendingContract };
+    });
   }, [biddingComplete, finalContract, auctionState, setBridgeState]);
 
   return (
@@ -214,7 +231,9 @@ export default function BidAdvisor() {
         </Grid>
 
         {/* ── Column 2: auction context ───────────────────────────────── */}
-        <Grid size={{ xs: 12, md: 4 }}>
+        {/* Once bidding is complete there is no recommendation to show, so the
+            recommendation column is hidden and this one widens to fill it. */}
+        <Grid size={{ xs: 12, md: biddingComplete ? 8 : 4 }}>
           <Paper variant="outlined" sx={{ p: 2 }}>
             <AuctionContextInput
               state={auctionState}
@@ -226,91 +245,50 @@ export default function BidAdvisor() {
           </Paper>
         </Grid>
 
-        {/* ── Column 3: recommendation ────────────────────────────────── */}
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Paper
-            variant="outlined"
-            sx={{ p: 2, minHeight: 200, position: "sticky", top: 0 }}
-          >
-            {biddingComplete ? (
-              <Box>
-                <Typography variant="h6" gutterBottom>
-                  Bidding Complete
-                </Typography>
-                <Paper
-                  elevation={2}
+        {/* ── Column 3: recommendation (hidden when bidding is complete) ── */}
+        {!biddingComplete && (
+          <Grid size={{ xs: 12, md: 4 }}>
+            <Paper
+              variant="outlined"
+              sx={{ p: 2, minHeight: 200, position: "sticky", top: 0 }}
+            >
+              {recommendation ? (
+                <BidRecommendation recommendation={recommendation} />
+              ) : (
+                <Box
                   sx={{
-                    p: 2,
-                    mb: 2,
                     display: "flex",
+                    flexDirection: "column",
                     alignItems: "center",
-                    gap: 2,
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    component="span"
-                    aria-label="Final contract"
-                    sx={{ fontWeight: "bold" }}
-                  >
-                    {finalContract ?? "Passed Out"}
-                  </Typography>
-                  <Box
-                    sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}
-                  >
-                    <Typography
-                      variant="subtitle1"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      {finalContract
-                        ? "Final contract"
-                        : "No contract — all four players passed"}
-                    </Typography>
-                    <Chip label="Auction over" color="info" size="small" />
-                  </Box>
-                </Paper>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  Three passes have ended the auction, so there are no more bids
-                  to make. Use New Game (top bar) to advise another hand.
-                </Typography>
-              </Box>
-            ) : recommendation ? (
-              <BidRecommendation recommendation={recommendation} />
-            ) : (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  minHeight: 200,
-                  gap: 1,
-                  color: "text.secondary",
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  sx={{
+                    justifyContent: "center",
+                    minHeight: 200,
+                    gap: 1,
                     color: "text.secondary",
                   }}
                 >
-                  Recommendation
-                </Typography>
-                <Divider sx={{ width: "80%" }} />
-                <Typography
-                  variant="body2"
-                  sx={{
-                    textAlign: "center",
-                  }}
-                >
-                  Enter your hand above (cards must total 13) to see your bid
-                  recommendation.
-                </Typography>
-              </Box>
-            )}
-          </Paper>
-        </Grid>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: "text.secondary",
+                    }}
+                  >
+                    Recommendation
+                  </Typography>
+                  <Divider sx={{ width: "80%" }} />
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      textAlign: "center",
+                    }}
+                  >
+                    Enter your hand above (cards must total 13) to see your bid
+                    recommendation.
+                  </Typography>
+                </Box>
+              )}
+            </Paper>
+          </Grid>
+        )}
       </Grid>
     </Box>
   );

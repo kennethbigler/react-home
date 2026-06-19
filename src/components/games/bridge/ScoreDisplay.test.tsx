@@ -118,11 +118,44 @@ describe("ScoreDisplay Component", () => {
       </Provider>,
     );
 
-    // All scores in game 0 use bids[0] (the game's bid)
+    // Each hand in game 0 shows its OWN bid (flat bids list, indexed per hand):
+    // hand 0 → bids[0], hand 1 → bids[1], hand 2 → bids[2].
     expect(screen.getByText(/20 \(1♣️\)/)).toBeInTheDocument();
-    expect(screen.getByText(/30 \(1♣️\)/)).toBeInTheDocument();
-    expect(screen.getByText(/40 \(1♣️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/30 \(2♥️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/40 \(3NT\)/)).toBeInTheDocument();
     // They's zeros are filtered out so they don't display
+  });
+
+  it("labels above-the-line hands across multiple games with the correct bid", () => {
+    const store = createStore();
+    store.set(bridgeAtom, {
+      // Game 0: 2 hands (we 40, they 30).  Game 1: 1 hand (we 50).
+      aboveScores: [
+        [
+          [40, 0],
+          [0, 30],
+        ],
+        [[50], [0]],
+        [[], []],
+      ],
+      // Flat bids list, one per hand in save order across all games.
+      bids: ["1♣️", "2♥️", "3♠️"],
+      weBelow: [0, 0, 0],
+      theyBelow: [0, 0, 0],
+      weRubbers: 0,
+      theyRubbers: 0,
+    });
+
+    render(
+      <Provider store={store}>
+        <ScoreDisplay />
+      </Provider>,
+    );
+
+    // Game 0 hand 0 → bids[0], game 0 hand 1 → bids[1], game 1 hand 0 → bids[2].
+    expect(screen.getByText(/40 \(1♣️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/30 \(2♥️\)/)).toBeInTheDocument();
+    expect(screen.getByText(/50 \(3♠️\)/)).toBeInTheDocument();
   });
 
   it("displays rubber wins", () => {
