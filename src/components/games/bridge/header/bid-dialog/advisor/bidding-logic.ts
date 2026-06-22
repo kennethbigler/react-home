@@ -3430,14 +3430,82 @@ function getResponseToSimpleOC(
   }
   const noFitNote = `You have only ${mySupport} ${partnerSuit} (need 3+ to support), so there is no trump fit with partner.`;
 
+  // The opponents' suit (oppSuitName, computed above) and partner's suit are NOT
+  // biddable as a "longest suit" — bidding into the enemy suit is a cuebid, not
+  // natural.  Longest suit I can actually bid (not partner's, not opponents'):
+  const myBiddableSuit = (["spades", "hearts", "diamonds", "clubs"] as const)
+    .filter((s) => s !== partnerSuit && s !== oppSuitName)
+    .sort((a, b) => (hand[b] as number) - (hand[a] as number))[0];
+  const myBiddableLen = myBiddableSuit ? (hand[myBiddableSuit] as number) : 0;
+  // Floor = the highest live call so far (partner's overcall and any opp bid).
+  const advanceFloorIdx = Math.max(
+    BID_ORDER.indexOf(partnerBid),
+    opponentBid && isRealBid(opponentBid) ? BID_ORDER.indexOf(opponentBid) : -1,
+  );
+  // Cheapest legal natural bid of my biddable suit above that floor.
+  const cheapestMySuit = myBiddableSuit
+    ? BID_ORDER.find(
+        (b, i) => i > advanceFloorIdx && b.endsWith(suitSymbol(myBiddableSuit)),
+      )
+    : undefined;
+
+  // When NT is unavailable (no stopper) and I have no SAFE suit to introduce,
+  // there is nothing to do — pass — rather than bid into the opponents' suit.
+  // A suit needs 4+ cards to show at the 2/3 level, but introducing a new suit
+  // at the 4-level needs a real 5+ card suit.
+  const cheapestMySuitLevel = cheapestMySuit ? parseInt(cheapestMySuit[0]) : 99;
+  const noSafeSuitBid =
+    !cheapestMySuit ||
+    cheapestMySuitLevel > 4 ||
+    (cheapestMySuitLevel === 4 ? myBiddableLen < 5 : myBiddableLen < 4);
+
+  // High-level advance: partner overcalled at the 3-level (or the auction is
+  // otherwise past 2NT).  The natural 1NT/2NT response rungs below are no longer
+  // available, so a balanced game-going hand WITH a stopper bids 3NT directly
+  // (preferred over forcing a 4-level minor) rather than falling through to a
+  // phantom "auction past" pass.  Without a stopper, the no-stopper branches
+  // above/below handle it (safe suit or pass).
+  const cheapestNTIdx = BID_ORDER.findIndex(
+    (b, i) => i > advanceFloorIdx && b.endsWith("NT"),
+  );
+  const cheapestNT = cheapestNTIdx >= 0 ? BID_ORDER[cheapestNTIdx] : undefined;
+  if (
+    cheapestNT === "3NT" &&
+    hcp >= 11 &&
+    hand.hasStopperInOpponentSuit !== false
+  ) {
+    return {
+      bid: "3NT",
+      category: "3NT Advance Over High-Level Overcall",
+      reasoning: `Partner overcalled at a high level (${partnerBid}), showing a long suit and values. With ${hcp} HCP, a stopper in the opponents' suit, and no fit for partner, bid 3NT — the natural game. ${noFitNote}`,
+      handAnalysis: analysis,
+      whatYourBidTellsPartner:
+        "Game values with a stopper, no fit — choosing notrump game.",
+      expectedResponses: [],
+      confidence: "medium",
+    };
+  }
+
   if (hcp >= 9 && hcp <= 12) {
     if (opponentBidSuit && hand.hasStopperInOpponentSuit === false) {
-      // No stopper in opponent's suit — cannot bid NT safely; bid longest suit instead
-      const { name: longestName } = longestSuitInfo(hand);
+      // No stopper in opponent's suit — cannot bid NT safely.  Bid my longest
+      // BIDDABLE suit (never the opponents' suit) at the cheapest legal level;
+      // if there is none, pass.
+      if (noSafeSuitBid) {
+        return {
+          bid: "Pass",
+          category: "Pass (No Stopper, No Biddable Suit)",
+          reasoning: `With 9-12 pts but no stopper in the opponents' ${opponentBid} suit and no good unbid suit of your own to show, there is no safe action. ${noFitNote} Pass.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: "No stopper, no fit, no suit to show.",
+          expectedResponses: [],
+          confidence: "medium",
+        };
+      }
       return {
-        bid: `2${suitSymbol(longestName)}`,
+        bid: cheapestMySuit!,
         category: "Bid Longest Suit (No Stopper, 9-12 pts)",
-        reasoning: `With 9-12 pts and no stopper in the opponent's ${opponentBid} suit, bidding NT is not safe. ${noFitNote} Bid your longest suit to show values.`,
+        reasoning: `With 9-12 pts and no stopper in the opponent's ${opponentBid} suit, bidding NT is not safe. ${noFitNote} Bid your longest unbid suit (${cheapestMySuit}) to show values.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner: "9-12 pts, no stopper — showing longest suit.",
         expectedResponses: [],
@@ -3461,11 +3529,21 @@ function getResponseToSimpleOC(
   }
   if (hcp >= 13 && hcp <= 14) {
     if (opponentBidSuit && hand.hasStopperInOpponentSuit === false) {
-      const { name: longestName } = longestSuitInfo(hand);
+      if (noSafeSuitBid) {
+        return {
+          bid: "Pass",
+          category: "Pass (No Stopper, No Biddable Suit)",
+          reasoning: `With 13-14 pts but no stopper in the opponents' ${opponentBid} suit and no good unbid suit of your own to show, there is no safe action. ${noFitNote} Pass.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: "No stopper, no fit, no suit to show.",
+          expectedResponses: [],
+          confidence: "medium",
+        };
+      }
       return {
-        bid: `3${suitSymbol(longestName)}`,
+        bid: cheapestMySuit!,
         category: "Bid Longest Suit (No Stopper, 13-14 pts)",
-        reasoning: `With 13-14 pts and no stopper in the opponent's ${opponentBid} suit, you cannot safely bid 2NT. ${noFitNote} Bid your longest suit to show your values.`,
+        reasoning: `With 13-14 pts and no stopper in the opponent's ${opponentBid} suit, you cannot safely bid 2NT. ${noFitNote} Bid your longest unbid suit (${cheapestMySuit}) to show your values.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner:
           "13-14 pts, no stopper — showing longest suit.",
@@ -3489,11 +3567,21 @@ function getResponseToSimpleOC(
     };
   }
   if (opponentBidSuit && hand.hasStopperInOpponentSuit === false) {
-    const { name: longestName } = longestSuitInfo(hand);
+    if (noSafeSuitBid) {
+      return {
+        bid: "Pass",
+        category: "Pass (No Stopper, No Biddable Suit)",
+        reasoning: `With 15+ pts but no stopper in the opponents' ${opponentBid} suit and no good unbid suit of your own to show, there is no safe game contract. ${noFitNote} Pass.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: "No stopper, no fit, no suit to show.",
+        expectedResponses: [],
+        confidence: "low",
+      };
+    }
     return {
-      bid: `3${suitSymbol(longestName)}`,
+      bid: cheapestMySuit!,
       category: "Bid Longest Suit (No Stopper, 15+ pts)",
-      reasoning: `With 15+ pts and no stopper in the opponent's ${opponentBid} suit, you cannot safely bid 3NT. ${noFitNote} Bid your longest suit to force game.`,
+      reasoning: `With 15+ pts and no stopper in the opponent's ${opponentBid} suit, you cannot safely bid 3NT. ${noFitNote} Bid your longest unbid suit (${cheapestMySuit}) to force game.`,
       handAnalysis: analysis,
       whatYourBidTellsPartner: "15+ pts, no stopper — forcing in longest suit.",
       expectedResponses: [],
@@ -5539,6 +5627,13 @@ function getRebidAfterSuit(
    * illegal call (e.g. 2♠ over 3♦), which then collapses to a phantom Pass.
    */
   interferenceBid?: string,
+  /**
+   * Partner's FIRST real bid.  When it differs from partnerResponse, a current
+   * bid that matches opener's suit is a PREFERENCE back to it (after partner
+   * showed another suit), NOT a fresh limit/jump raise — so it must not be
+   * treated as invitational.
+   */
+  partnerFirstBid?: string,
 ): BidRecommendation {
   const analysis = analyzeHand(hand);
   const { tp } = analysis;
@@ -5760,15 +5855,64 @@ function getRebidAfterSuit(
   // Partner raised our suit
   if (partnerSuit === myOpenSuit) {
     const partnerBidLvl = parseInt(partnerResponse[0]) || 2;
+    // PREFERENCE, not a raise: if partner FIRST bid a different suit and is now
+    // returning to opener's suit (e.g. 1♦-2♥-2♠-3♦, partner's 3♦ = preference
+    // back to diamonds), it shows simple preference (~6-10), NOT a limit/jump
+    // raise.  Opener must not treat it as invitational and leap to game.
+    const partnerFirstSuit = partnerFirstBid
+      ? partnerFirstBid.includes("♠")
+        ? "spades"
+        : partnerFirstBid.includes("♥")
+          ? "hearts"
+          : partnerFirstBid.includes("♦")
+            ? "diamonds"
+            : partnerFirstBid.includes("♣")
+              ? "clubs"
+              : null
+      : null;
+    const isMerePreference =
+      !!partnerFirstSuit &&
+      partnerFirstSuit !== myOpenSuit &&
+      partnerBidLvl <= 3;
+    if (isMerePreference && supportTP < 19) {
+      return {
+        bid: "Pass",
+        category: "Pass Over Partner's Preference (Not a Raise)",
+        reasoning: `Partner first bid ${partnerFirstBid}, then returned to your ${myOpenSuit} with ${partnerResponse} — that is a simple PREFERENCE (about 6-10 pts), not a limit or jump raise. With ${supportTP} support points you lack the extra values to drive past the partscore. Pass.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `Minimum-to-medium opener — accepting the ${partnerResponse} partscore after your preference.`,
+        expectedResponses: [],
+        confidence: "high",
+      };
+    }
     // A limit raise (partner bids at EXACTLY the 3-level, e.g. 3♠ over 1♠) shows 10-12 HCP.
     // A game jump (4-level, e.g. 4♠ over 1♠) shows opener had 19+ TP and is forcing game.
     // A simple raise (2-level) shows only 6-9 pts — need 19+ TP to commit to game.
-    const isLimitRaise = partnerBidLvl === 3;
+    // BUT in a CONTESTED auction (an opponent doubled or overcalled), a jump
+    // raise to the 3-level is PREEMPTIVE (weak, ~6-9), not a limit raise — so it
+    // must not be treated as invitational.
+    const isLimitRaise = partnerBidLvl === 3 && !contested;
+    const isPreemptiveJumpRaise = partnerBidLvl === 3 && contested;
     const isGameJump = partnerBidLvl >= 4;
     const isMajorSuit = myOpenSuit === "hearts" || myOpenSuit === "spades";
     const gameLevelBid = isMajorSuit
       ? `4${suitSymbol(myOpenSuit)}`
       : `5${suitSymbol(myOpenSuit)}`;
+
+    // Contested 3-level jump = preemptive raise (weak).  Opener passes unless a
+    // genuine game-forcing hand (the 22+ slam branch and 19+ acceptance below
+    // still apply via supportTP, but a routine opener has nothing extra to do).
+    if (isPreemptiveJumpRaise && supportTP < 19) {
+      return {
+        bid: "Pass",
+        category: "Pass Over Partner's Preemptive Raise (Competitive)",
+        reasoning: `An opponent had acted, so partner's jump to ${partnerResponse} is a PREEMPTIVE raise — weak (about 6-9 pts) with extra trumps, made to crowd the opponents, NOT an invitation. With ${supportTP} support points you lack the values to drive to game opposite a weak raise. Pass.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `Accepting the ${partnerResponse} partscore — no game opposite a preemptive raise.`,
+        expectedResponses: [],
+        confidence: "high",
+      };
+    }
 
     // Partner jumped directly to game (e.g. 1♠ → 4♠).  In SAYC this raise is
     // PREEMPTIVE: 5+ trump support with a weak hand (fewer than 10 HCP) and
@@ -6981,18 +7125,65 @@ function getAfterOwnDouble(
     };
   }
 
-  // Standard: Pass and accept partner's response — the double has already spoken
-  const partnerBidDesc = partnerBid ?? "their suit";
+  const partnerResponded =
+    !!partnerBid &&
+    partnerBid !== "Pass" &&
+    partnerBid !== "Double" &&
+    partnerBid !== "Redouble";
+
+  // Strong balanced doubler (19-21 HCP, stopper): the "double then bid NT"
+  // sequence shows a hand too strong for a direct 1NT overcall.  Show it by
+  // bidding notrump — BUT only when a natural NT bid is still available at the
+  // 1NT/2NT/3NT level.  Once the auction is at the 3-level or higher, the
+  // cheapest NT would be 4NT/5NT, which are CONVENTIONAL (Blackwood / Grand
+  // Slam Force), not a range-showing natural bid — so this must not fire there.
+  // (A full-auction simulation caught the engine bidding a phantom 5NT/grand
+  // slam when this branch ran too high.)
+  if (
+    analysis.isBalanced &&
+    hand.hcp >= 19 &&
+    hand.hcp <= 21 &&
+    hand.hasStopperInOpponentSuit !== false
+  ) {
+    const floorIdx = Math.max(
+      opponentBid && isRealBid(opponentBid)
+        ? BID_ORDER.indexOf(opponentBid)
+        : -1,
+      partnerResponded ? BID_ORDER.indexOf(partnerBid!) : -1,
+    );
+    const ntBid = BID_ORDER.find((b, i) => i > floorIdx && b.endsWith("NT"));
+    const ntLevel = ntBid ? parseInt(ntBid[0]) : 99;
+    if (ntBid && ntLevel <= 3) {
+      return {
+        bid: ntBid,
+        category: `Notrump After Own Double (${hand.hcp} HCP Balanced)`,
+        reasoning: `Your double of the opponents' bid, planning to bid notrump, shows a balanced hand too strong (19-21 HCP) for a direct 1NT overcall. With ${hand.hcp} HCP and a stopper in their suit, bid ${ntBid} now to show that range.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner:
+          '19-21 HCP balanced with a stopper — the strong "double then notrump" hand. Raise toward game with values.',
+        expectedResponses: [],
+        confidence: "high",
+      };
+    }
+    // NT no longer available below the 4-level — fall through to pass.
+  }
+
+  // Otherwise pass — the double has already described a minimum (12-18) hand.
   const opponentNote = opponentBid
     ? ` Opponent bid ${opponentBid} but that is manageable.`
     : "";
+  const partnerNote = partnerResponded
+    ? ` Partner bid ${partnerBid}, their best suit in response to your double.`
+    : " Partner has not been able to show values.";
   return {
     bid: "Pass",
-    category: "Pass After Own Double (Partner Responded)",
-    reasoning: `You already doubled (showing 12+ HCP and support for unbid suits). With ${hcp} HCP (${supportTP} support pts), your double has described your hand. Partner bid ${partnerBidDesc}, which is their best suit in response to your double.${opponentNote} Pass and let partner play in their chosen contract — bidding again would show 19+ points which you do not have.`,
+    category: partnerResponded
+      ? "Pass After Own Double (Partner Responded)"
+      : "Pass After Own Double (Minimum)",
+    reasoning: `You already doubled (showing 12+ HCP and support for unbid suits). With ${hcp} HCP (${supportTP} support pts), your double has described your hand.${partnerNote}${opponentNote} Pass — bidding again would show 19+ points, which you do not have.`,
     handAnalysis: analysis,
     whatYourBidTellsPartner:
-      "I have a minimum double (12–18 TP) — I am satisfied with your response.",
+      "I have a minimum double (12–18 TP) — I am satisfied to defend or play here.",
     expectedResponses: [],
     confidence: "high",
     note: "To bid again after doubling, you typically need 19+ TP.  Bidding again with fewer values is a sign-off error.",
@@ -8154,6 +8345,7 @@ function getRecommendationRaw(
         context.partnerBid ?? "2♠",
         !!(context.lhoBid || context.rhoBid),
         interferenceBid,
+        context.partnerFirstBid,
       );
     }
 
@@ -9213,16 +9405,45 @@ export function getBidMeaning(
     case "Double": {
       const prevIsSuit = !!prevHighBid && !prevHighBid.includes("NT");
       const prevLevel = prevHighBid ? parseInt(prevHighBid[0]) || 1 : 0;
-      if (isPartner && prevIsSuit && prevLevel <= 2) {
-        return "Negative Double (Sputnik): after an opponent overcalls a suit, this shows the unbid suits — often both majors when a minor was overcalled. NOT a penalty double. Shows 6+ pts and asks you to bid your best unbid suit.";
-      }
-      if (isPartner) {
-        return "Takeout Double: partner is short in the opponent's bid suit (12+ pts) and asks you to bid your best unbid suit. With 16+, they may double then rebid their suit.";
-      }
+      const who = isPartner ? "Partner's" : "The opponent's";
+      // A NEGATIVE double requires that the DOUBLER'S OWN SIDE opened the
+      // auction and an opponent then overcalled — i.e. the doubler's partner
+      // already made a real bid.  A double of an opponent's OPENING (the
+      // doubler's side has not bid) is a TAKEOUT double.  We can only tell the
+      // two apart when the caller threads the doubler's partner's prior action:
+      //   "none"        → partner is known silent → takeout
+      //   a real bid    → partner opened → negative
+      //   undefined     → unknown context → describe both possibilities
+      const dpb = bidderPartnerPreviousBid;
+      const doublerSideOpened =
+        !!dpb &&
+        dpb !== "none" &&
+        dpb !== "Pass" &&
+        dpb !== "Double" &&
+        dpb !== "Redouble";
+      const doublerPartnerKnownSilent = dpb === "none";
+      const takeoutText = `${who} Takeout Double: a double of the opponents' bid showing opening values (12+) with shortness in that suit and support for the unbid suits — asking partner to bid their best unbid suit. (With 19+ balanced, the doubler plans to bid notrump next.)`;
+      const negativeText = `${who} Negative Double (Sputnik): their side opened and an opponent overcalled, so this double shows the UNBID suit(s) (often the unbid major[s]) — NOT penalty. About 6+ pts, asking partner to bid a best unbid suit.`;
+
       if (prevIsSuit && prevLevel <= 2) {
-        return "Likely a Takeout or Negative Double: after a low-level natural suit bid, this typically shows the unbid suits rather than penalty values. The doubler is asking their partner to pick the best unbid suit.";
+        if (doublerSideOpened) return negativeText;
+        if (doublerPartnerKnownSilent) return takeoutText;
+        // Unknown who-opened context: describe both, leaning takeout.
+        return "Likely a Takeout or Negative Double: after a low-level suit bid this shows the unbid suits, not penalty. If the doubler's side opened it is a negative double (~6+ pts); if the opponents opened it is a takeout double (12+ pts). Either way, bid your best unbid suit.";
       }
-      if (prevHighBid?.includes("NT")) {
+      // A higher-level suit double from PARTNER is treated as takeout (modern
+      // style doubles of suit contracts through ~4 of a minor are takeout-ish).
+      if (isPartner && prevIsSuit) {
+        return takeoutText;
+      }
+      // No suit context at all: a bare double from partner reads as takeout by
+      // default; from an opponent it reads as penalty.
+      if (!prevHighBid) {
+        return isPartner
+          ? takeoutText
+          : "Penalty Double: opponent believes they can defeat the contract — shows strong holdings in the bid suit.";
+      }
+      if (prevHighBid.includes("NT")) {
         return "Penalty Double of NT: opponent believes they can defeat the notrump contract — shows 14+ HCP with strong holdings. Generally, pass and collect the penalty.";
       }
       return "Penalty Double: opponent believes they can defeat the contract — shows strong holdings in the bid suit. Could also be lead-directing in slam auctions.";
@@ -10027,10 +10248,28 @@ function deriveSituationCore(
       };
     }
 
+    // Partner's FIRST real bid (so the rebid handler can tell a genuine raise of
+    // opener's suit from a mere PREFERENCE back to it after partner showed a
+    // different suit first — e.g. 1♦-2♥-2♠-3♦, where 3♦ is preference, not a
+    // limit raise).
+    let rebidPartnerFirstBid: string | undefined;
+    for (const r of completedRounds) {
+      const b = r[partner];
+      if (isRealBid(b)) {
+        rebidPartnerFirstBid = b;
+        break;
+      }
+    }
     return {
       situation: "rebid-after-suit",
       myPreviousBid: myLastBid,
       partnerBid,
+      partnerFirstBid: rebidPartnerFirstBid,
+      // Forward opponent interference so the rebid handler knows the auction was
+      // contested (e.g. a jump raise after a double is preemptive, not a limit
+      // raise) and so its level math clears the opponents' bids.
+      lhoBid,
+      rhoBid,
       vulnerability: vul,
     };
   }

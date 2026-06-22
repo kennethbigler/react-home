@@ -3941,11 +3941,25 @@ describe("bidding-logic | getBidMeaning", () => {
     expect(meaning.toLowerCase()).toContain("penalty");
   });
 
-  it("Double from partner after low suit bid → Negative Double", () => {
-    const meaning = getBidMeaning("Double", "partner", "1♠");
-    expect(meaning.toLowerCase()).toContain("negative");
-    // Message should clarify it is NOT a penalty double
-    expect(meaning.toLowerCase()).toContain("not a penalty");
+  it("Double after low suit → Negative ONLY when the doubler's side opened", () => {
+    // Negative double requires our side to have opened.  Thread the doubler's
+    // partner's opening bid (here partner opened 1♦, opp overcalled 1♠).
+    const neg = getBidMeaning("Double", "partner", "1♠", undefined, "1♦", "1♦");
+    expect(neg.toLowerCase()).toContain("negative");
+    expect(neg.toLowerCase()).toContain("not penalty");
+
+    // A double of an OPPONENT'S OPENING (partner known silent) is TAKEOUT, not
+    // negative — this was the real-play bug (1♦ doubled, mislabeled negative).
+    const takeout = getBidMeaning(
+      "Double",
+      "partner",
+      "1♦",
+      undefined,
+      "none",
+      "1♦",
+    );
+    expect(takeout.toLowerCase()).toContain("takeout");
+    expect(takeout.toLowerCase()).not.toContain("negative");
   });
 
   it("Double from opponent after low suit bid → Takeout/competitive, not Penalty", () => {
@@ -5810,15 +5824,19 @@ describe("bidding-logic | clean game M — competitive hand, overcall, game try"
     expect(rec.bid).toBe("2♠");
   });
 
-  it("P1 after 3♥ limit raise in competition, 15 TP → accepts 4♥", () => {
+  it("P1 after partner's PREEMPTIVE jump raise in competition, 15 TP → Pass", () => {
+    // 1♥-(1♠)-3♥: an opponent overcalled, so partner's jump raise is PREEMPTIVE
+    // (weak, ~6-9 with extra trumps) in SAYC — the cuebid would show a real
+    // limit-raise-or-better.  With a routine 15-TP opener there is no game
+    // opposite a weak raise, so Pass (not 4♥).  (Previously the engine read this
+    // as an invitational limit raise and overbid to game.)
     const state: AuctionState = {
       myPosition: 1,
       completedRounds: [{ 1: "1♥", 2: "1♠", 3: "3♥", 4: "Pass" }],
       currentRound: {},
     };
     const rec = getRecommendation(p1Hand, deriveSituation(state, "none"));
-    // P1 with 15 TP: accepts the limit raise → 4♥
-    expect(rec.bid).toBe("4♥");
+    expect(rec.bid).toBe("Pass");
   });
 });
 
@@ -9774,5 +9792,202 @@ describe("bidding-logic | SAYC valuation regressions", () => {
     );
     expect(rec.bid).toBe("2NT");
     expect(rec.category).toContain("Invitational");
+  });
+});
+
+// ─── Real-play bug regressions (live-session reports) ─────────────────────────
+describe("bidding-logic | real-play bug regressions", () => {
+  // T1B1: a double of an opponent's OPENING is a TAKEOUT double, not negative,
+  // and every observer's tooltip must agree.
+  it("double of an opening 1♦ reads as TAKEOUT for all observers (not negative)", () => {
+    const asPartner = getBidMeaning(
+      "Double",
+      "partner",
+      "1♦",
+      undefined,
+      "none",
+      "1♦",
+    );
+    const asLho = getBidMeaning("Double", "lho", "1♦", undefined, "none", "1♦");
+    const asRho = getBidMeaning("Double", "rho", "1♦", undefined, "none", "1♦");
+    for (const m of [asPartner, asLho, asRho]) {
+      expect(m.toLowerCase()).toContain("takeout");
+      expect(m.toLowerCase()).not.toContain("negative");
+    }
+  });
+
+  it("a true negative double (our side opened) still reads as negative", () => {
+    // Partner opened 1♦, RHO overcalled 1♠, I double → negative.
+    const m = getBidMeaning("Double", "partner", "1♠", undefined, "1♦", "1♦");
+    expect(m.toLowerCase()).toContain("negative");
+  });
+
+  // T1B2: a 19-21 balanced takeout-doubler shows the range by bidding notrump,
+  // capped at 3NT — it must NEVER bid 4NT/5NT (Blackwood/GSF) as a "range" bid.
+  it("19-21 balanced doubler bids NT to show range (1♦-X-2♦-P → 2NT)", () => {
+    const state: AuctionState = {
+      myPosition: 2,
+      completedRounds: [{ 1: "1♦", 2: "Double", 3: "2♦", 4: "Pass" }],
+      currentRound: { 1: "Pass" },
+    };
+    const rec = getRecommendation(
+      {
+        hcp: 20,
+        spades: 3,
+        hearts: 4,
+        diamonds: 3,
+        clubs: 3,
+        hasStopperInOpponentSuit: true,
+      },
+      deriveSituation(state, "none"),
+    );
+    expect(rec.bid).toBe("2NT");
+  });
+
+  it("strong-double NT range bid never becomes conventional 4NT/5NT at high levels", () => {
+    // Auction already at 5♦: the cheapest NT (5NT) is the Grand Slam Force, NOT a
+    // range bid, so the strong doubler must Pass instead (caught by simulation).
+    const state: AuctionState = {
+      myPosition: 2,
+      completedRounds: [
+        { 1: "1♦", 2: "Double", 3: "3♦", 4: "Pass" },
+        { 1: "5♦", 2: "Pass", 3: "Pass", 4: "Pass" },
+      ],
+      currentRound: {},
+    };
+    const rec = getRecommendation(
+      {
+        hcp: 20,
+        spades: 3,
+        hearts: 4,
+        diamonds: 3,
+        clubs: 3,
+        hasStopperInOpponentSuit: true,
+      },
+      deriveSituation(state, "none"),
+    );
+    expect(rec.bid).not.toBe("5NT");
+    expect(rec.bid).not.toBe("4NT");
+  });
+
+  // Preemptive jump raise in competition: opener must not read it as a limit
+  // raise and overbid.  (1♦-X-3♦ and 1♥-(1♠)-3♥ are both preemptive.)
+  it("opener passes over partner's preemptive jump raise after a double (1♦-X-3♦)", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♦", 2: "Double", 3: "3♦", 4: "Pass" }],
+      currentRound: {},
+    };
+    const rec = getRecommendation(
+      mkHand(13, 3, 2, 5, 3),
+      deriveSituation(state, "none"),
+    );
+    expect(rec.bid).toBe("Pass");
+  });
+
+  it("uncontested 3-level raise is STILL a limit raise (opener accepts with extras)", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♦", 2: "Pass", 3: "3♦", 4: "Pass" }],
+      currentRound: {},
+    };
+    const rec = getRecommendation(
+      mkHand(15, 2, 2, 6, 3),
+      deriveSituation(state, "none"),
+    );
+    expect(rec.bid).toBe("5♦");
+  });
+});
+
+// ─── Real-play bug regressions, round 2 (T3 Hand 2, T4 Issue 1) ───────────────
+describe("bidding-logic | real-play bug regressions (advance + preference)", () => {
+  // T3 Hand 2: advancing partner's high-level (3♥) overcall.  Must never bid
+  // into the opponents' suit, and should offer 3NT with a stopper + values
+  // rather than a phantom "auction past" pass.
+  const t3State: AuctionState = {
+    myPosition: 2,
+    completedRounds: [{ 1: "1♠", 2: "Pass", 3: "2♠", 4: "3♥" }],
+    currentRound: { 1: "Pass" },
+  };
+  it("advance 3♥ overcall, 13 HCP + stopper, no fit → 3NT (not pass)", () => {
+    const rec = getRecommendation(
+      {
+        hcp: 13,
+        spades: 4,
+        hearts: 2,
+        diamonds: 3,
+        clubs: 4,
+        hasStopperInOpponentSuit: true,
+      },
+      deriveSituation(t3State, "none"),
+    );
+    expect(rec.bid).toBe("3NT");
+  });
+  it("advance 3♥ overcall, no stopper, only a 4-card minor → Pass (never bid the opponents' suit)", () => {
+    const rec = getRecommendation(
+      {
+        hcp: 13,
+        spades: 4,
+        hearts: 2,
+        diamonds: 3,
+        clubs: 4,
+        hasStopperInOpponentSuit: false,
+      },
+      deriveSituation(t3State, "none"),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.bid).not.toBe("3♠"); // 3♠ would be bidding into the opponents' suit
+  });
+  it("advance 3♥ overcall, no stopper but a real 5-card club suit → 4♣", () => {
+    const rec = getRecommendation(
+      {
+        hcp: 13,
+        spades: 2,
+        hearts: 2,
+        diamonds: 4,
+        clubs: 5,
+        hasStopperInOpponentSuit: false,
+      },
+      deriveSituation(t3State, "none"),
+    );
+    expect(rec.bid).toBe("4♣");
+  });
+
+  // T4 Issue 1: partner's return to opener's suit after bidding another suit is
+  // a PREFERENCE, not a limit raise — opener must not leap to game.
+  it("opener passes partner's preference (1♦-2♥-2♠-3♦), 15 HCP → not 5♦", () => {
+    const state: AuctionState = {
+      myPosition: 4,
+      completedRounds: [
+        { 1: "Pass", 2: "Pass", 3: "Pass", 4: "1♦" },
+        { 1: "Pass", 2: "2♥", 3: "Pass", 4: "2♠" },
+      ],
+      currentRound: { 1: "Pass", 2: "3♦", 3: "Pass" },
+    };
+    const rec = getRecommendation(
+      {
+        hcp: 15,
+        spades: 4,
+        hearts: 2,
+        diamonds: 2,
+        clubs: 5,
+        hasStopperInOpponentSuit: true,
+      },
+      deriveSituation(state, "none"),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.bid).not.toBe("5♦");
+  });
+  it("a GENUINE limit raise (partner's only bid is 3♦) is still accepted with extras → 5♦", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♦", 2: "Pass", 3: "3♦", 4: "Pass" }],
+      currentRound: {},
+    };
+    const rec = getRecommendation(
+      mkHand(15, 2, 2, 6, 3),
+      deriveSituation(state, "none"),
+    );
+    expect(rec.bid).toBe("5♦");
   });
 });
