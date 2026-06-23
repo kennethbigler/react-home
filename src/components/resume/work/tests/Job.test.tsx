@@ -1,6 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import Job from "../Job";
 import { work, volunteer, school } from "../../../../constants/work";
+import type { Job as JobType } from "../../../../constants/work";
 
 describe("resume | work | Job", () => {
   const mockJob = work[0]; // Intuit job
@@ -8,14 +9,25 @@ describe("resume | work | Job", () => {
   const volunteerJob = volunteer[0]; // Midnight Game Club
   const schoolJob = school[0]; // SCU MS
 
+  const baseJob: JobType = {
+    company: "Test Co",
+    location: "Test City",
+    title: "Engineer",
+    time: "2020 - 2021",
+    color: "blue",
+  };
+
+  const getTopLevelLists = () =>
+    screen.getAllByRole("list").filter((list) => !list.closest("li"));
+
   describe("rendering", () => {
     it("renders job information correctly", () => {
       render(<Job job={mockJob} />);
 
       expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
       expect(
-        screen.getByText("Head of Accessibility Engineering"),
-      ).toBeInTheDocument();
+        screen.getAllByText("Head of Accessibility Engineering").length,
+      ).toBeGreaterThanOrEqual(1);
       expect(screen.getByText("2019 - Present")).toBeInTheDocument();
     });
 
@@ -40,9 +52,11 @@ describe("resume | work | Job", () => {
     it("renders job descriptions when present", () => {
       render(<Job job={mockJob} />);
 
-      expect(screen.getByRole("list")).toBeInTheDocument();
+      expect(screen.getAllByRole("list").length).toBeGreaterThan(0);
       expect(
-        screen.getByText(/Improving accessibility across all of Intuit/),
+        screen.getByText(
+          /Lead accessibility engineering across Intuit's product portfolio/,
+        ),
       ).toBeInTheDocument();
     });
 
@@ -50,9 +64,11 @@ describe("resume | work | Job", () => {
     it("renders job descriptions section", () => {
       render(<Job job={mockJob} />);
 
-      expect(screen.getByRole("list")).toBeInTheDocument();
+      expect(screen.getAllByRole("list").length).toBeGreaterThan(0);
       expect(
-        screen.getByText(/Improving accessibility across all of Intuit/),
+        screen.getByText(
+          /Lead accessibility engineering across Intuit's product portfolio/,
+        ),
       ).toBeInTheDocument();
     });
   });
@@ -106,6 +122,120 @@ describe("resume | work | Job", () => {
 
       const image = screen.getByRole("img");
       expect(image).toHaveAttribute("alt", "Intuit Logo");
+    });
+
+    it("positions the company logo in the top-right corner", () => {
+      render(<Job job={mockJob} />);
+
+      const image = screen.getByRole("img");
+      expect(image).toHaveStyle({
+        float: "right",
+        maxWidth: "7em",
+        maxHeight: "4.5em",
+        objectFit: "contain",
+      });
+    });
+
+    it("does not render a logo when src is omitted", () => {
+      render(<Job job={{ ...baseJob, expr: ["Detail"] }} />);
+
+      expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("expr formatting", () => {
+    it("splits expr into separate lists on empty strings", () => {
+      render(
+        <Job
+          job={{
+            ...baseJob,
+            expr: [
+              "First section",
+              "Item one",
+              "",
+              "Second section",
+              "Item two",
+            ],
+          }}
+        />,
+      );
+
+      expect(getTopLevelLists()).toHaveLength(2);
+      expect(screen.getByText("First section")).toBeInTheDocument();
+      expect(screen.getByText("Second section")).toBeInTheDocument();
+    });
+
+    it("does not render empty bullet points for empty strings", () => {
+      render(
+        <Job
+          job={{
+            ...baseJob,
+            expr: ["Visible item", "", "Another item"],
+          }}
+        />,
+      );
+
+      expect(screen.getAllByRole("listitem")).toHaveLength(2);
+      screen.getAllByRole("listitem").forEach((item) => {
+        expect(item.textContent?.trim()).not.toBe("");
+      });
+    });
+
+    it("renders lines prefixed with * as nested sub-bullets", () => {
+      render(
+        <Job
+          job={{
+            ...baseJob,
+            expr: ["Section header", "* Sub detail one", "* Sub detail two"],
+          }}
+        />,
+      );
+
+      expect(screen.getByText("Section header")).toBeInTheDocument();
+      expect(screen.queryByText("* Sub detail one")).not.toBeInTheDocument();
+      expect(screen.getByText("Sub detail one")).toBeInTheDocument();
+      expect(screen.getByText("Sub detail two")).toBeInTheDocument();
+
+      const [outerList] = screen.getAllByRole("list");
+      const nestedList = within(outerList).getByRole("list");
+      expect(nestedList.querySelectorAll("li")).toHaveLength(2);
+    });
+
+    it("renders multiple role sections with nested bullets", () => {
+      render(
+        <Job
+          job={{
+            ...baseJob,
+            expr: [
+              "Role one",
+              "2020 - 2022",
+              "* Detail A",
+              "",
+              "Role two",
+              "2022 - 2024",
+              "* Detail B",
+            ],
+          }}
+        />,
+      );
+
+      expect(getTopLevelLists()).toHaveLength(2);
+      expect(screen.getByText("Role one")).toBeInTheDocument();
+      expect(screen.getByText("Role two")).toBeInTheDocument();
+      expect(screen.getByText("Detail A")).toBeInTheDocument();
+      expect(screen.getByText("Detail B")).toBeInTheDocument();
+    });
+
+    it("renders current job with two role sections and nested accomplishments", () => {
+      render(<Job job={mockJob} />);
+
+      expect(getTopLevelLists().length).toBeGreaterThanOrEqual(2);
+      expect(
+        screen.getByText("Senior Software Engineer (Intuit Design System)"),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(/Built and scaled the Intuit Design System/),
+      ).toBeInTheDocument();
     });
   });
 
@@ -182,7 +312,9 @@ describe("resume | work | Job", () => {
 
       expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
       expect(
-        screen.getByText(/Improving accessibility across all of Intuit/),
+        screen.getByText(
+          /Lead accessibility engineering across Intuit's product portfolio/,
+        ),
       ).toBeInTheDocument();
       expect(screen.getByText("React.js")).toBeInTheDocument();
       expect(screen.getByAltText("Intuit Logo")).toBeInTheDocument();
@@ -195,8 +327,8 @@ describe("resume | work | Job", () => {
 
       expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
       expect(
-        screen.getByText("Head of Accessibility Engineering"),
-      ).toBeInTheDocument();
+        screen.getAllByText("Head of Accessibility Engineering").length,
+      ).toBeGreaterThanOrEqual(1);
     });
 
     it("renders volunteer job correctly", () => {

@@ -9,10 +9,11 @@ import {
 import ciscoLogo from "../images/companies/cisco_logo.gif";
 import gigNowLogo from "../images/companies/gignow_logo.png";
 import SHFBLogo from "../images/companies/SHFB_logo.jpg";
-import netappLogo from "../images/companies/netapp_logo.svg";
+import netappLogo from "../images/companies/netapp_logo.svg.png";
 import vengefulLogo from "../images/companies/vengefulgames_logo.png";
 import teslaLogo from "../images/companies/tesla_logo.png";
 import hoverboardLogo from "../images/companies/hoverboard_logo.png";
+import scuLogo from "../images/companies/scu_logo.svg.png";
 import {
   ANGULAR,
   ASP2,
@@ -151,6 +152,7 @@ export const school: Job[] = [
     company: "SCU MS",
     location: "Santa Clara, CA",
     title: "Grad Student",
+    src: scuLogo,
     time: "2015 - 2016",
     expr: [
       "Major: Computer Science and Engineering, Emphasis: Software Engineering",
@@ -162,6 +164,7 @@ export const school: Job[] = [
     company: "Santa Clara University BS",
     location: "Santa Clara, CA",
     title: "Undergrad Student",
+    src: scuLogo,
     time: "2011 - 2015",
     expr: [
       "Major: Computer Science and Engineering, Minor: Mathematics",

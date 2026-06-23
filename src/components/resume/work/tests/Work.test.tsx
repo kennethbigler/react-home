@@ -26,8 +26,8 @@ describe("resume | work | Work", () => {
       expect(screen.getByText("Work")).toBeInTheDocument();
       expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
       expect(
-        screen.getByText("Head of Accessibility Engineering"),
-      ).toBeInTheDocument();
+        screen.getAllByText("Head of Accessibility Engineering").length,
+      ).toBeGreaterThanOrEqual(1);
       expect(
         screen.getByText("Frontend Software Engineer"),
       ).toBeInTheDocument();
@@ -63,8 +63,8 @@ describe("resume | work | Work", () => {
       // Check specific work entries
       expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
       expect(
-        screen.getByText("Head of Accessibility Engineering"),
-      ).toBeInTheDocument();
+        screen.getAllByText("Head of Accessibility Engineering").length,
+      ).toBeGreaterThanOrEqual(1);
       expect(screen.getByText("2019 - Present")).toBeInTheDocument();
 
       expect(
@@ -181,8 +181,8 @@ describe("resume | work | Work", () => {
       // Check that key information is present for major entries
       expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
       expect(
-        screen.getByText("Head of Accessibility Engineering"),
-      ).toBeInTheDocument();
+        screen.getAllByText("Head of Accessibility Engineering").length,
+      ).toBeGreaterThanOrEqual(1);
       expect(screen.getByText("2019 - Present")).toBeInTheDocument();
 
       expect(screen.getByText("Tesla, Inc., Fremont, CA")).toBeInTheDocument();
@@ -212,7 +212,9 @@ describe("resume | work | Work", () => {
 
       // Check that some job descriptions are displayed
       expect(
-        screen.getByText(/Improving accessibility across all of Intuit/),
+        screen.getByText(
+          /Lead accessibility engineering across Intuit's product portfolio/,
+        ),
       ).toBeInTheDocument();
       expect(
         screen.getByText(/Help build startup ventures within EY/),

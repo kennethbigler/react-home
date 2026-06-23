@@ -13,6 +13,15 @@ describe("resume | summary | Summary", () => {
 
     expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
 
+    expect(
+      screen.getByText(
+        /Lead accessibility engineering across Intuit's product portfolio/,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Senior Software Engineer (Intuit Design System)"),
+    ).toBeInTheDocument();
+
     expect(screen.getByText("Technologies:")).toBeInTheDocument();
     expect(screen.getByText("React.js")).toBeInTheDocument();
 
