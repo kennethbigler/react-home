@@ -3,7 +3,9 @@
 import "@testing-library/jest-dom";
 
 const isBrokenStorage = (storage: unknown): boolean =>
-  storage == null || typeof (storage as Storage).setItem !== "function";
+  storage === null ||
+  storage === undefined ||
+  typeof (storage as Storage).setItem !== "function";
 
 const createStorage = (): Storage => {
   let store: Record<string, string> = {};
