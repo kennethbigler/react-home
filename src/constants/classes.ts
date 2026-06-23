@@ -746,6 +746,22 @@ export const presentations: School[] = [
                 catalog: "Ken Bigler",
                 name: "Head of Accessibility Engineering at Intuit, Moderator",
               },
+              {
+                catalog: "Wade Balmer",
+                name: "Senior Manager, Internal Communications & Community at The North Face",
+              },
+              {
+                catalog: "Kathleen Murphy",
+                name: "Managing Researcher at American Institutes for Research",
+              },
+              {
+                catalog: "Bulbul Khera",
+                name: "Global Sr Business Director (GM) Purpose at Nike",
+              },
+              {
+                catalog: "Jennifer Overman",
+                name: "Lead, DEI Partnerships at Nike",
+              },
             ],
           },
         ],
