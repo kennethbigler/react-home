@@ -2,6 +2,65 @@
 // this adds jest-dom's custom assertions
 import "@testing-library/jest-dom";
 
+const isBrokenStorage = (storage: unknown): boolean =>
+  storage == null || typeof (storage as Storage).setItem !== "function";
+
+const createStorage = (): Storage => {
+  let store: Record<string, string> = {};
+
+  return {
+    get length() {
+      return Object.keys(store).length;
+    },
+    clear: () => {
+      store = {};
+    },
+    getItem: (key: string) => (key in store ? store[key] : null),
+    key: (index: number) => Object.keys(store)[index] ?? null,
+    removeItem: (key: string) => {
+      delete store[key];
+    },
+    setItem: (key: string, value: string) => {
+      store[key] = String(value);
+    },
+  };
+};
+
+// Node 25+ exposes a broken global localStorage stub that prevents jsdom from
+// installing a working Storage implementation (breaks jotai atomWithStorage).
+if (isBrokenStorage(globalThis.localStorage)) {
+  const storage = createStorage();
+  Object.defineProperty(globalThis, "localStorage", {
+    value: storage,
+    writable: true,
+    configurable: true,
+  });
+  Object.defineProperty(window, "localStorage", {
+    value: storage,
+    writable: true,
+    configurable: true,
+  });
+}
+
+if (isBrokenStorage(globalThis.sessionStorage)) {
+  const storage = createStorage();
+  Object.defineProperty(globalThis, "sessionStorage", {
+    value: storage,
+    writable: true,
+    configurable: true,
+  });
+  Object.defineProperty(window, "sessionStorage", {
+    value: storage,
+    writable: true,
+    configurable: true,
+  });
+}
+
+beforeEach(() => {
+  localStorage.clear();
+  sessionStorage.clear();
+});
+
 // for checks on if dark mode is preferred
 Object.defineProperty(window, "matchMedia", {
   writable: true,
