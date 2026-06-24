@@ -98,7 +98,7 @@ describe("resume | work | Job", () => {
       const image = screen.getByAltText("Intuit Logo");
       expect(image).toBeInTheDocument();
       expect(image.getAttribute("src")).toMatch(
-        /\/src\/images\/companies\/intuit_logo\.png$/,
+        /\/src\/images\/companies\/intuit_logo\.webp$/,
       );
     });
 
