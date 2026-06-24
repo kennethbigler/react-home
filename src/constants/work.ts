@@ -6,14 +6,14 @@ import {
   red,
   yellow,
 } from "@mui/material/colors";
-import ciscoLogo from "../images/companies/cisco_logo.gif";
-import gigNowLogo from "../images/companies/gignow_logo.png";
-import SHFBLogo from "../images/companies/SHFB_logo.jpg";
-import netappLogo from "../images/companies/netapp_logo.svg.png";
-import vengefulLogo from "../images/companies/vengefulgames_logo.png";
-import teslaLogo from "../images/companies/tesla_logo.png";
-import hoverboardLogo from "../images/companies/hoverboard_logo.png";
-import scuLogo from "../images/companies/scu_logo.svg.png";
+import ciscoLogo from "../images/companies/cisco_logo.webp";
+import gigNowLogo from "../images/companies/gignow_logo.webp";
+import SHFBLogo from "../images/companies/SHFB_logo.webp";
+import netappLogo from "../images/companies/netapp_logo.webp";
+import vengefulLogo from "../images/companies/vengefulgames_logo.webp";
+import teslaLogo from "../images/companies/tesla_logo.webp";
+import hoverboardLogo from "../images/companies/hoverboard_logo.webp";
+import scuLogo from "../images/companies/scu_logo.webp";
 import {
   ANGULAR,
   ASP2,

@@ -1,5 +1,5 @@
 import { indigo } from "@mui/material/colors";
-import intuitLogo from "../images/companies/intuit_logo.png";
+import intuitLogo from "../images/companies/intuit_logo.webp";
 
 export const REACT = "React.js";
 export const TS = "TypeScript";
