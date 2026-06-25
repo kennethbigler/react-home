@@ -44,7 +44,7 @@ npm run lint
 npm run build
 
 # 5. Verify dead code
-npm run dead-code
+npm run knip
 ```
 
 ## Testing Stack
@@ -270,7 +270,7 @@ Before marking test generation as complete:
 - [ ] Existing tests still pass
 - [ ] Coverage meets thresholds (85% statements/functions/lines, 81% branches)
 - [ ] ESLint passes with no new errors
-- [ ] Dead-code scan passes (`npm run dead-code`)
+- [ ] Knip scan passes (`npm run knip`)
 - [ ] TypeScript compiles (`tsc`)
 - [ ] Vite build succeeds
 - [ ] Tests use semantic queries (getByRole, getByLabelText)

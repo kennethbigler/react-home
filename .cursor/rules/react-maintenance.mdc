@@ -26,5 +26,5 @@ alwaysApply: false
 - Use named exports only for cross-file APIs. Convert local-only helpers,
   constants, and prop types to non-exported declarations instead of leaving a
   broad public surface.
-- Run the dead-code check after removals and export cleanup so stale files,
+- Run the knip check after removals and export cleanup so stale files,
   unused exports, and dependency drift are caught before finishing.
