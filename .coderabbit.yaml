@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: en-US
+reviews:
+  profile: chill
+  review_status: true
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - "main"
+    ignore_usernames:
+      - "dependabot[bot]"
+      - "renovate[bot]"
+  path_instructions:
+    - path: "src/**/*.{ts,tsx}"
+      instructions: |
+        Prioritize accessibility (WCAG 2.2), React correctness, and test coverage.
+    - path: "src/components/games/**"
+      instructions: |
+        Game UIs often have complex state and keyboard interaction. Flag focus management,
+        aria-live updates, and interactive controls that are not reachable by keyboard.
