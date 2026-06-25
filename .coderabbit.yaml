@@ -10,7 +10,6 @@ reviews:
       - "main"
     ignore_usernames:
       - "dependabot[bot]"
-      - "renovate[bot]"
   path_instructions:
     - path: "src/**/*.{ts,tsx}"
       instructions: |
