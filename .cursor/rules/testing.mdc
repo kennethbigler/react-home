@@ -12,7 +12,7 @@ When generating tests, you must ensure:
 1. **Tests Pass** - All tests must pass before completion
 2. **ESLint Passes** - No linting errors introduced
 3. **Build Succeeds** - `tsc && vite build` must complete successfully
-4. **Dead Code Check Passes** - Knip reports no unused files, exports, or
+4. **Knip Check Passes** - Knip reports no unused files, exports, or
    dependency drift
 5. **Coverage Maintained** - Meet or exceed coverage thresholds
 
@@ -43,7 +43,7 @@ npm run lint
 # 4. Verify build
 npm run build
 
-# 5. Verify dead code
+# 5. Verify knip (dead code)
 npm run knip
 ```
 
