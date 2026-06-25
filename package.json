@@ -106,5 +106,8 @@
     "Mint",
     "Credit Karma",
     "Mailchimp"
-  ]
+  ],
+  "allowScripts": {
+    "fsevents@2.3.3": true
+  }
 }
