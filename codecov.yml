@@ -6,23 +6,27 @@ coverage:
       default:
         target: auto
         threshold: 0.1%  # allow up to 0.1% drop before failing (covers indirect changes from dep updates)
+    patch:
+      default:
+        target: auto
 
 comment:
   layout: "header, diff, flags, components"  # show component info in the PR comment
-  
+
 component_management:
-  default_rules:  # default rules that will be inherited by all components
-    statuses:
-      - type: project # in this case every component that doesn't have a status defined will have a project type one
-        target: auto
-        threshold: 0.1%
-        branches:
-          - "!main"
+  default_rules:
+    statuses: []  # sub-components stay in PR comment/UI only; no GitHub checks
   individual_components:
     - component_id: module_games  # ⚠️ ID, do not change
       name: 🕹️ Games  # display name, change freely
       paths:
         - src/components/games/**
+      statuses:
+        - type: project
+          target: auto
+          threshold: 0.1%
+          branches:
+            - "!main"
     - component_id: module_games_blackjack
       name: Blackjack
       paths:
@@ -83,6 +87,12 @@ component_management:
       name: 📑 Resume  # display name, change freely
       paths:
         - src/components/resume/**
+      statuses:
+        - type: project
+          target: auto
+          threshold: 0.1%
+          branches:
+            - "!main"
     - component_id: module_resume_cars
       name: Cars
       paths:
