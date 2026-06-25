@@ -25,7 +25,8 @@
     "deploy": "./scripts/deploy.sh",
     "deploy:no-fetch": "SKIP_BOTC_FETCH=1 ./scripts/deploy.sh",
     "analyze": "./scripts/analyze.sh",
-    "dead-code": "npx -y knip",
+    "lhci": "lhci autorun",
+    "knip": "knip",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --report-unused-disable-directives",
     "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet",
     "fetch-botc-scripts": "node scripts/fetch-botc-scripts.mjs"
@@ -47,6 +48,7 @@
     "@eslint/compat": "2.1.0",
     "@eslint/eslintrc": "3.3.5",
     "@eslint/js": "10.0.1",
+    "@lhci/cli": "0.15.1",
     "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
@@ -64,6 +66,7 @@
     "eslint-plugin-react-refresh": "0.5.3",
     "gts": "7.0.0",
     "jsdom": "29.1.1",
+    "knip": "6.20.0",
     "typescript": "6.0.3",
     "vite": "8.0.16",
     "vitest": "4.1.9"
@@ -106,5 +109,8 @@
     "Mint",
     "Credit Karma",
     "Mailchimp"
-  ]
+  ],
+  "allowScripts": {
+    "fsevents@2.3.3": true
+  }
 }

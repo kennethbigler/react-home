@@ -59,9 +59,11 @@ jobs:
         uses: codecov/codecov-action@v7.0.0
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - name: Run knip
+        run: npm run knip -- --reporter github-actions --cache
 
       - name: Run lighthouse
-        run: npx -y @lhci/cli autorun
+        run: npm run lhci
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.event.pull_request.head.sha || github.sha }}
