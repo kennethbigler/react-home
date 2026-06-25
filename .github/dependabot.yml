@@ -1,0 +1,48 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: friday
+    assignees:
+      - kennethbigler
+    labels:
+      - dependencies
+    groups:
+      lint:
+        patterns:
+          - eslint*
+          - prettier*
+          - gts
+      mui:
+        patterns:
+          - "@mui/*"
+          - "@emotion/*"
+      highcharts:
+        patterns:
+          - highcharts
+          - "@highcharts/*"
+      react:
+        patterns:
+          - react
+          - react-dom
+          - "@types/react"
+          - "@types/react-dom"
+      vite:
+        patterns:
+          - vite
+          - vitest
+          - "@vitest/*"
+          - "@vitejs/*"
+          - jsdom
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: friday
+    assignees:
+      - kennethbigler
+    labels:
+      - dependencies
