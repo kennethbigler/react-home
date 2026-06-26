@@ -12,8 +12,9 @@ updates:
     groups:
       lint:
         patterns:
+          - "@eslint/*"
+          - "@typescript-eslint/*"
           - eslint*
-          - prettier*
           - gts
       mui:
         patterns:
@@ -29,13 +30,18 @@ updates:
           - react-dom
           - "@types/react"
           - "@types/react-dom"
+          - "@testing-library/*"
       vite:
         patterns:
           - vite
           - vitest
-          - "@vitest/*"
-          - "@vitejs/*"
+          - "@vitejs/plugin-react"
+          - "@vitest/coverage-v8"
           - jsdom
+      cicd:
+        patterns:
+          - knip
+          - "@lhci/cli"
 
   - package-ecosystem: github-actions
     directory: /
