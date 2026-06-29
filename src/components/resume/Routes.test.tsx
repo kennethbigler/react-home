@@ -13,6 +13,10 @@ vi.mock("./f1", () => ({
   default: () => <h1>F1</h1>,
 }));
 
+vi.mock("./travel-map", () => ({
+  default: () => <h1>Travel</h1>,
+}));
+
 const routeCases = [
   { path: "/", heading: "Summary" },
   { path: "/work", heading: "Experience" },
