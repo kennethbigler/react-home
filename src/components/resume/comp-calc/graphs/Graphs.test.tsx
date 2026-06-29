@@ -200,12 +200,59 @@ describe("Graphs", () => {
     });
   });
 
-  it("falls back to stock when stockAdj is zero for the selected point", () => {
-    renderGraphs();
+  it("falls back to stock when stockAdj is zero for the selected point", async () => {
+    const entriesWithZeroStockAdj: CompCalcEntry[] = [
+      {
+        stock: 50000,
+        stockAdj: 0,
+        total: 160000,
+        totalAdj: 160000,
+        netDiff: 0,
+        grantThen: 100000,
+        grantNow: 105000,
+      },
+      {
+        stock: 60000,
+        stockAdj: 65000,
+        total: 195000,
+        totalAdj: 200000,
+        netDiff: 5000,
+        grantThen: 120000,
+        grantNow: 125000,
+      },
+      {
+        stock: 70000,
+        stockAdj: 75000,
+        total: 230000,
+        totalAdj: 235000,
+        netDiff: 5000,
+        grantThen: 140000,
+        grantNow: 145000,
+      },
+    ];
 
-    selectChartPoint(2);
+    render(
+      <Provider>
+        <Graphs
+          compEntries={mockCompEntries}
+          compCalcEntries={entriesWithZeroStockAdj}
+        />
+      </Provider>,
+    );
 
-    expect(getBreakdownSeriesData()?.[0]).toEqual({ name: "Stock", y: 70000 });
+    expect(getBreakdownSeriesData()?.[0]).toEqual({
+      name: "Stock",
+      y: 75000,
+    });
+
+    selectChartPoint(0);
+
+    await waitFor(() => {
+      expect(getBreakdownSeriesData()?.[0]).toEqual({
+        name: "Stock",
+        y: 50000,
+      });
+    });
   });
 
   it("uses the final inflation value in the compensation tooltip", () => {

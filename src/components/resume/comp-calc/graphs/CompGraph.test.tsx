@@ -110,12 +110,12 @@ describe("CompGraph", () => {
     expect(onPointSelect).toHaveBeenCalledWith(1);
   });
 
-  it("forwards the absolute entry index when startIdx is not zero", () => {
+  it("forwards the clicked point index without applying startIdx offset", () => {
     const { onPointSelect } = renderChart({ startIdx: 1 });
 
-    selectChartPoint(2);
+    selectChartPoint(0);
 
-    expect(onPointSelect).toHaveBeenCalledWith(2);
+    expect(onPointSelect).toHaveBeenCalledWith(0);
   });
 
   it("ignores point clicks without an index", () => {
