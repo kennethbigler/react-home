@@ -3,6 +3,8 @@ description: >-
   Audits and fixes web accessibility against WCAG 2.2 AA. Use when conducting
   a11y audits, fixing WCAG violations, implementing accessible components,
   reviewing UI for ADA/Section 508/EAA compliance, or writing accessibility reports.
+globs: src/**/*.{ts,tsx}
+alwaysApply: false
 ---
 # Accessibility Project Checklist
 

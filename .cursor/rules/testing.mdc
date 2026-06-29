@@ -1,6 +1,6 @@
 ---
 description: Test generation standards and verification requirements
-globs:
+globs: **/*
 alwaysApply: true
 ---
 # Testing Standards
