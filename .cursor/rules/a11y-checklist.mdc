@@ -309,8 +309,8 @@ Media includes content such as pre-recorded and live audio and video.
   - For example, an audio mute button should have a pressed toggle state when active, or a volume slider should use `<input type="range">`.
   - 1.3.1 Info and Relationships
 - [] Check to see that all media can be paused.
-  - Provide a global pause function on any media element. If the device has a keyboard, ensure the Space key can pause playback without interfering with its ability to scroll the page.
-  - 2.1.1 Keyboard
+  - Provide a pause or stop control on any media element. Autoplaying audio must also meet 1.4.2 Audio Control above. If the device has a keyboard, ensure the Space key can pause playback without interfering with its ability to scroll the page.
+  - 2.2.2 Pause, Stop, Hide
 
 ## Video
 
@@ -396,8 +396,8 @@ When writing code, flag any hardcoded color value (`#hex`, `rgb()`, `hsl()`, nam
   - Interactive elements must be at least 24×24 CSS pixels, or have sufficient spacing around smaller targets. This supports users with motor control issues and touch screen users.
   - 2.5.8 Target Size (Minimum) (WCAG 2.2)
 - [] Ensure sufficient space between interactive items in order to provide a scroll area.
-  - Users with motor control issues such as hand tremors may have difficulty scrolling past interactive items that have zero spacing.
-  - 2.4.1 Bypass Blocks
+  - Leave enough spacing between adjacent interactive targets that users can scroll past them without accidental activation. Users with hand tremors may struggle when controls have zero spacing between them.
+  - 2.5.8 Target Size (Minimum) (WCAG 2.2)
 
 ---
 
