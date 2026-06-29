@@ -1,7 +1,15 @@
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import "./tests/highchartsMocks";
+import { beforeEach, describe, expect, it } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
+import { Provider } from "jotai";
 import Graphs from "./Graphs";
 import { buildCompChartData, formatCompTooltip } from "./compGraphHelpers";
+import {
+  getBreakdownSeriesData,
+  getSeriesByName,
+  resetCapturedCompChartConfig,
+  selectChartPoint,
+} from "./tests/highchartsMocks";
 import {
   CompCalcEntry,
   CompEntry,
@@ -68,19 +76,90 @@ describe("Graphs", () => {
     },
   ];
 
-  it("renders both CompChart and BreakdownChart", () => {
+  const renderGraphs = () =>
     render(
-      <Graphs
-        compEntries={mockCompEntries}
-        compCalcEntries={mockCompCalcEntries}
-      />,
+      <Provider>
+        <Graphs
+          compEntries={mockCompEntries}
+          compCalcEntries={mockCompCalcEntries}
+        />
+      </Provider>,
     );
 
-    // CompChart and BreakdownChart should be rendered
-    expect(screen.getAllByRole("img").length).toBeGreaterThan(0);
+  beforeEach(() => {
+    resetCapturedCompChartConfig();
   });
 
-  it("initializes with last entry values when stockAdj is available", () => {
+  it("renders both CompChart and BreakdownChart", () => {
+    renderGraphs();
+
+    expect(screen.getByText("Total Comp")).toBeInTheDocument();
+    expect(screen.getByText("Comp Breakdown")).toBeInTheDocument();
+    expect(screen.getAllByTestId("highcharts-chart").length).toBe(2);
+  });
+
+  it("initializes the breakdown chart with the last entry values", () => {
+    renderGraphs();
+
+    expect(getBreakdownSeriesData()).toEqual([
+      { name: "Stock", y: 70000 },
+      { name: "Bonus", y: 20000 },
+      { name: "Salary", y: 140000 },
+    ]);
+  });
+
+  it("updates the breakdown chart when an earlier point is selected", async () => {
+    renderGraphs();
+
+    selectChartPoint(1);
+
+    await waitFor(() => {
+      expect(getBreakdownSeriesData()).toEqual([
+        { name: "Stock", y: 65000 },
+        { name: "Bonus", y: 15000 },
+        { name: "Salary", y: 120000 },
+      ]);
+    });
+  });
+
+  it("recalculates the inflation line when an earlier point is selected", async () => {
+    renderGraphs();
+
+    const initialInflation = getSeriesByName("Inflation")?.data;
+
+    selectChartPoint(1);
+
+    await waitFor(() => {
+      const updatedInflation = getSeriesByName("Inflation")?.data;
+      expect(updatedInflation).not.toEqual(initialInflation);
+    });
+  });
+
+  it("targets the correct entry on consecutive point selections", async () => {
+    renderGraphs();
+
+    selectChartPoint(1);
+
+    await waitFor(() => {
+      expect(getBreakdownSeriesData()).toEqual([
+        { name: "Stock", y: 65000 },
+        { name: "Bonus", y: 15000 },
+        { name: "Salary", y: 120000 },
+      ]);
+    });
+
+    selectChartPoint(2);
+
+    await waitFor(() => {
+      expect(getBreakdownSeriesData()).toEqual([
+        { name: "Stock", y: 70000 },
+        { name: "Bonus", y: 20000 },
+        { name: "Salary", y: 140000 },
+      ]);
+    });
+  });
+
+  it("uses stockAdj over stock when an earlier point is selected", async () => {
     const entriesWithStockAdj: CompCalcEntry[] = [
       {
         stock: 50000,
@@ -103,92 +182,30 @@ describe("Graphs", () => {
     ];
 
     render(
-      <Graphs
-        compEntries={mockCompEntries.slice(0, 2)}
-        compCalcEntries={entriesWithStockAdj}
-      />,
+      <Provider>
+        <Graphs
+          compEntries={mockCompEntries.slice(0, 2)}
+          compCalcEntries={entriesWithStockAdj}
+        />
+      </Provider>,
     );
-    // Should initialize with stockAdj value (65000) from last entry
-    expect(screen.getAllByRole("img").length).toBeGreaterThan(0);
+
+    selectChartPoint(0);
+
+    await waitFor(() => {
+      expect(getBreakdownSeriesData()?.[0]).toEqual({
+        name: "Stock",
+        y: 55000,
+      });
+    });
   });
 
-  it("initializes with stock value when stockAdj is undefined", () => {
-    const entriesWithoutStockAdj: CompCalcEntry[] = [
-      {
-        stock: 50000,
-        stockAdj: 0,
-        total: 150000,
-        totalAdj: 150000,
-        netDiff: 0,
-        grantThen: 100000,
-        grantNow: 100000,
-      },
-      {
-        stock: 60000,
-        stockAdj: 0,
-        total: 180000,
-        totalAdj: 180000,
-        netDiff: 0,
-        grantThen: 120000,
-        grantNow: 120000,
-      },
-    ];
+  it("falls back to stock when stockAdj is zero for the selected point", () => {
+    renderGraphs();
 
-    render(
-      <Graphs
-        compEntries={mockCompEntries.slice(0, 2)}
-        compCalcEntries={entriesWithoutStockAdj}
-      />,
-    );
-    // Should initialize with stock value (60000) from last entry when stockAdj is 0
-    expect(screen.getAllByRole("img").length).toBeGreaterThan(0);
-  });
+    selectChartPoint(2);
 
-  it("handles click to set index less than length - 1", () => {
-    render(
-      <Graphs
-        compEntries={mockCompEntries}
-        compCalcEntries={mockCompCalcEntries}
-      />,
-    );
-
-    // This would be triggered by clicking on a point in the chart
-    // The actual click simulation would depend on how CompChart handles clicks
-    expect(screen.getAllByRole("img").length).toBeGreaterThan(0);
-  });
-
-  it("renders when the last point can be selected", () => {
-    render(
-      <Graphs
-        compEntries={mockCompEntries}
-        compCalcEntries={mockCompCalcEntries}
-      />,
-    );
-
-    expect(screen.getAllByRole("img").length).toBeGreaterThan(0);
-  });
-
-  it("uses stockAdj over stock when both are available during click", () => {
-    const entriesWithBoth: CompCalcEntry[] = [
-      {
-        stock: 50000,
-        stockAdj: 55000,
-        total: 160000,
-        totalAdj: 165000,
-        netDiff: 5000,
-        grantThen: 100000,
-        grantNow: 105000,
-      },
-    ];
-
-    render(
-      <Graphs
-        compEntries={mockCompEntries.slice(0, 1)}
-        compCalcEntries={entriesWithBoth}
-      />,
-    );
-    // Should prefer stockAdj (55000) over stock (50000)
-    expect(screen.getAllByRole("img").length).toBeGreaterThan(0);
+    expect(getBreakdownSeriesData()?.[0]).toEqual({ name: "Stock", y: 70000 });
   });
 
   it("uses the final inflation value in the compensation tooltip", () => {
