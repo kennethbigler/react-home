@@ -887,12 +887,8 @@ export const presentations: School[] = [
                 name: "May 21 - 22, 2026",
               },
               {
-                catalog: "Prizes",
-                name: "TBD",
-              },
-              {
                 catalog: "Project",
-                name: "TBD",
+                name: "“Markup Driven Pronunciation“: This project aims to enhance screen reader pronunciation for complex or ambiguous words such as names, acronyms, numbers, and technical terms by enabling NVDA to use standardized SSML data-ssml metadata. Content authors can provide precise pronunciation cues, improving accessibility for users who rely on assistive technology and reducing confusion in educational and assessment settings. The initiative leverages open standards and collaboration to address ongoing accessibility challenges.",
               },
             ],
           },
@@ -936,7 +932,7 @@ export const presentations: School[] = [
               },
               {
                 catalog: "Project",
-                name: "“feedbat”, an image-sharing web application for mobile devices to get anonymous feedback on various images (likes / dislikes / comments)",
+                name: "“feedbat”: an image-sharing web application for mobile devices to get anonymous feedback on various images (likes / dislikes / comments)",
               },
             ],
           },
