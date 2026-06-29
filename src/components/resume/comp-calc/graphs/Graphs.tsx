@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Grid } from "@mui/material";
-import { SeriesClickEventObject } from "highcharts/highcharts.src";
 import CompChart from "./CompGraph";
 import BreakdownChart from "./BreakdownGraph";
 import {
@@ -22,7 +21,7 @@ const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
   const [cBonus, setBonus] = useState(bonus);
   const [cSalary, setSalary] = useState(salary);
 
-  const handleClick = ({ point: { index } }: SeriesClickEventObject) => {
+  const handlePointSelect = (index: number) => {
     const { stock, stockAdj } = compCalcEntries[index];
     const { bonus, salary } = compEntries[index];
     setStartIdx(index);
@@ -38,7 +37,7 @@ const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
           startIdx={startIdx}
           compCalcEntries={compCalcEntries}
           compEntries={compEntries}
-          onClick={handleClick}
+          onPointSelect={handlePointSelect}
         />
       </Grid>
       <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>

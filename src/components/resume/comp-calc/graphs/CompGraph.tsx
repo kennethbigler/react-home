@@ -37,14 +37,14 @@ interface CompChartProps {
   startIdx: number;
   compCalcEntries: CompCalcEntry[];
   compEntries: CompEntry[];
-  onClick: Highcharts.SeriesClickCallbackFunction;
+  onPointSelect: (index: number) => void;
 }
 
 const CompChart = ({
   startIdx,
   compCalcEntries,
   compEntries,
-  onClick,
+  onPointSelect,
 }: CompChartProps) => {
   // process theme
   const theme = useAtomValue(themeAtom);
@@ -66,6 +66,8 @@ const CompChart = ({
           lineColor: color,
           lineWidth: 1,
           marker: { lineWidth: 1, lineColor: color },
+          // Expand hit target to the filled area so taps register on touch devices.
+          trackByArea: true,
         },
       },
     };
@@ -81,6 +83,13 @@ const CompChart = ({
     };
   }, [compChartData]);
 
+  const handlePointClick: Highcharts.PointClickCallbackFunction = function () {
+    const { index } = this;
+    if (index !== undefined) {
+      onPointSelect(index);
+    }
+  };
+
   return (
     <figure style={{ margin: 0, width: "100%" }}>
       <Chart highcharts={Highcharts} options={options}>
@@ -90,9 +99,17 @@ const CompChart = ({
         <Title style={{ color }}>Total Comp</Title>
         <XAxis visible={false} />
         <YAxis title={{ text: undefined }} labels={{ style: { color } }} />
-        <Tooltip shared={true} useHTML={true} formatter={tooltipFormatter} />
+        <Tooltip
+          shared={true}
+          useHTML={true}
+          followTouchMove={false}
+          formatter={tooltipFormatter}
+        />
         <PlotOptions
-          series={{ cursor: "pointer", events: { click: onClick } }}
+          series={{
+            cursor: "pointer",
+            point: { events: { click: handlePointClick } },
+          }}
         />
         <Series
           type="area"
