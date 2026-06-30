@@ -2009,15 +2009,16 @@ describe("bidding-logic | rebid-after-suit", () => {
     expect(rec.bid).not.toBe("Continue auction");
   });
 
-  it("minimum opener (TP=14, 13 HCP), no 4-card fit but 5-card suit → simple rebid 2♦", () => {
-    // 13 HCP, 3 spades (no 4-card fit), 5 diamonds, TP=14 → minimum opener → simple non-forcing 2♦
-    // (does NOT jump to 3♦ — opener must not invite game with bare minimum strength)
+  it("minimum opener (TP=14, 13 HCP), balanced 5-3-3-2 → rebid 1NT (not the 5-card suit)", () => {
+    // 13 HCP, 3 spades (no 4-card fit), 5 diamonds, balanced 3-2-5-3 → the SAYC
+    // minimum rebid is 1NT (12-14), NOT 2♦ (which would promise a 6th diamond).
     const rec = getRecommendation(
       mkHand(13, 3, 2, 5, 3),
       ctx("rebid-after-suit", { myPreviousBid: "1♦", partnerBid: "1♠" }),
     );
-    expect(rec.bid).toBe("2♦");
-    expect(rec.bid).not.toBe("Continue auction");
+    expect(rec.bid).toBe("1NT");
+    // Still a minimum: it must NOT jump.
+    expect(rec.bid).not.toBe("3♦");
   });
 
   it("opener rebids own suit at the level forced by interference (1♠-2♦-2♥-3♦ → 3♠)", () => {
@@ -5950,15 +5951,17 @@ describe("bidding-logic | regression | Bug 4 — 2♥ response over partner's 1�
     expect(rec.bid).toBe("2♥");
   });
 
-  it("14 HCP 3♠4♥3♦3♣ (TP≈14, only 4 hearts) after partner 1♠ → 2NT; reasoning says 13-14 TP not 11-12 TP", () => {
+  it("14 HCP 3♠4♥3♦3♣ after partner 1♠ → 4♠ (3-card support, game values; 2NT here would be Jacoby)", () => {
+    // Over a 1-major, a 2NT response is Jacoby (4+ trumps), NOT a natural raise.
+    // With 3-card spade support and game values, bid the known 8-card major game.
     const hand = mkHand(14, 3, 4, 3, 3);
     const rec = getRecommendation(
       hand,
       ctx("responding-suit", { partnerBid: "1♠" }),
     );
-    expect(rec.bid).toBe("2NT");
-    expect(rec.reasoning).not.toContain("11-12 TP");
-    expect(rec.category).not.toContain("11-12");
+    expect(rec.bid).toBe("4♠");
+    // Must NOT be a natural 2NT (that bid is Jacoby over a major).
+    expect(rec.bid).not.toBe("2NT");
   });
 
   it("response to partner 1♠ with 5+ hearts at 11 TP → 2♥ (2-over-1, one-round force)", () => {
@@ -9989,5 +9992,82 @@ describe("bidding-logic | real-play bug regressions (advance + preference)", () 
       deriveSituation(state, "none"),
     );
     expect(rec.bid).toBe("5♦");
+  });
+});
+
+// ─── Suit-quality flag (weak-2 / preempt openings) ───────────────────────────
+describe("bidding-logic | goodSuitQuality flag", () => {
+  it("opens a weak 2 with a 6-card suit when quality is good or unspecified", () => {
+    const base = mkHand(7, 3, 6, 2, 2);
+    expect(getRecommendation(base, ctx("opening")).bid).toBe("2♥");
+    expect(
+      getRecommendation({ ...base, goodSuitQuality: true }, ctx("opening")).bid,
+    ).toBe("2♥");
+  });
+
+  it("does NOT open a weak 2 on a ragged 6-card suit (goodSuitQuality false)", () => {
+    const rec = getRecommendation(
+      { ...mkHand(7, 3, 6, 2, 2), goodSuitQuality: false },
+      ctx("opening"),
+    );
+    expect(rec.bid).toBe("Pass");
+  });
+
+  it("does NOT open a 3-level preempt on a ragged 7-card suit", () => {
+    const rec = getRecommendation(
+      { ...mkHand(8, 2, 7, 2, 2), goodSuitQuality: false },
+      ctx("opening"),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(
+      getRecommendation(
+        { ...mkHand(8, 2, 7, 2, 2), goodSuitQuality: true },
+        ctx("opening"),
+      ).bid,
+    ).toBe("3♥");
+  });
+
+  it("undefined quality is treated as good (no behavior change for legacy callers)", () => {
+    const base = mkHand(8, 2, 7, 2, 2);
+    expect(getRecommendation(base, ctx("opening")).bid).toBe(
+      getRecommendation({ ...base, goodSuitQuality: true }, ctx("opening")).bid,
+    );
+  });
+});
+
+// ─── Regression tests for the SAYC audit fixes ───────────────────────────────
+describe("bidding-logic | audit fixes", () => {
+  it("B1: a 19+ HCP hand makes a takeout/strong double over a 1-level opening (never passes)", () => {
+    const c = ctx("overcalling", { rhoBid: "1♠" });
+    // 20 HCP, perfect takeout shape (1-4-4-4)
+    expect(getRecommendation(mkHand(20, 1, 4, 4, 4), c).bid).toBe("Double");
+    // 19 balanced with length in their suit → strength-showing double, not pass
+    expect(getRecommendation(mkHand(19, 4, 3, 3, 3), c).bid).toBe("Double");
+  });
+
+  it("B2: 1♥–2NT is never recommended as a natural response (2NT is Jacoby)", () => {
+    const c = ctx("responding-suit", { partnerBid: "1♥" });
+    // 11-12 balanced, <3 hearts, no 4-card spade → forcing 1NT, not natural 2NT
+    expect(getRecommendation(mkHand(11, 3, 2, 4, 4), c).bid).toBe("1NT");
+    // 13-14 balanced 2-card heart support, no major → not a natural 2NT
+    expect(getRecommendation(mkHand(13, 3, 2, 4, 4), c).bid).not.toBe("2NT");
+  });
+
+  it("B4: 1♥–3NT prefers the 8-card major game with 3-card support", () => {
+    const c = ctx("responding-suit", { partnerBid: "1♥" });
+    // 14 TP, 3-card heart support, no 4-card spade → 4♥ (known fit), not 3NT
+    expect(getRecommendation(mkHand(14, 2, 3, 4, 4), c).bid).toBe("4♥");
+  });
+
+  it("B9: with two 5-card majors, respond 1♠ (higher) over a minor opening", () => {
+    const c = ctx("responding-suit", { partnerBid: "1♣" });
+    expect(getRecommendation(mkHand(8, 5, 5, 2, 1), c).bid).toBe("1♠");
+  });
+
+  it("B7: a Rule-of-20 two-suiter opens at the 1-level, not a weak 2", () => {
+    // 10 HCP, 6-5 (Rule of 20 = 21) → open 1♥, not 2♥
+    expect(getRecommendation(mkHand(10, 1, 6, 1, 5), ctx("opening")).bid).toBe(
+      "1♥",
+    );
   });
 });

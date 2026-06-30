@@ -27,6 +27,13 @@ interface HandInputProps {
    */
   showStopperInput?: boolean;
   opponentSuitLabel?: string;
+  /**
+   * Show the suit-quality question — appears for a weak-2 / preempt opening
+   * where suit quality (not just length + HCP) decides the bid.
+   */
+  showSuitQualityInput?: boolean;
+  /** The player's longest suit name (e.g. "hearts") for labeling the question. */
+  longSuitLabel?: string;
 }
 
 const SUIT_LABELS: {
@@ -47,6 +54,8 @@ export default function HandInput({
   showKingsInput = false,
   showStopperInput = false,
   opponentSuitLabel = "the opponent's suit",
+  showSuitQualityInput = false,
+  longSuitLabel = "your long suit",
 }: HandInputProps) {
   const totalCards = hand.spades + hand.hearts + hand.diamonds + hand.clubs;
   const cardCountError =
@@ -353,6 +362,68 @@ export default function HandInput({
                 : hand.hasStopperInOpponentSuit
                   ? "Yes, I have a stopper"
                   : "No stopper in their suit"
+            }
+          />
+        </Box>
+      )}
+      {/* Suit-quality question (shown for a weak-2 / preempt opening) */}
+      {showSuitQualityInput && (
+        <Box
+          sx={{
+            mb: 2,
+            border: "1px solid",
+            borderColor: "warning.main",
+            borderRadius: 1,
+            p: 1.5,
+          }}
+        >
+          <Typography
+            variant="caption"
+            sx={{
+              color: "warning.main",
+              display: "block",
+              mb: 0.5,
+            }}
+          >
+            Is your {longSuitLabel} suit a <strong>good</strong> suit for a
+            preempt?
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+              display: "block",
+              mb: 1,
+            }}
+          >
+            A weak-2 or preempt promises a <strong>good</strong> suit: at least
+            two of the top three honors (<strong>AK</strong>,{" "}
+            <strong>AQ</strong>, or <strong>KQ</strong>) or three of the top
+            five (e.g. <strong>QJT</strong>). Without it, preempting on a ragged
+            suit can cost a big penalty — so the recommendation changes.
+          </Typography>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={hand.goodSuitQuality ?? false}
+                indeterminate={hand.goodSuitQuality === undefined}
+                onChange={(e) =>
+                  onChange({
+                    ...hand,
+                    goodSuitQuality: e.target.checked,
+                  })
+                }
+                slotProps={{
+                  input: { "aria-label": "Long suit is a good suit" },
+                }}
+              />
+            }
+            label={
+              hand.goodSuitQuality === undefined
+                ? "Unknown — please check your suit"
+                : hand.goodSuitQuality
+                  ? "Yes, it's a good suit"
+                  : "No, it's a ragged suit"
             }
           />
         </Box>

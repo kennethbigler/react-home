@@ -164,16 +164,68 @@ export default function BidAdvisor() {
     ? `${opponentSuitSymbol} ${opponentSuitName}`
     : "the opponent's suit";
 
+  // ── Suit-quality question (weak-2 / preempt openings) ────────────────────────
+  // SAYC preempts require a GOOD suit, but the tool only knows length + HCP.
+  // Ask about suit quality ONLY in the preempt zone (an opening bid, a 6+ card
+  // longest suit, 5–10 HCP) and ONLY when the answer would change the bid —
+  // same compute-both-ways gating used for the stopper question above.
+  const longestSuitLength = Math.max(
+    hand.spades,
+    hand.hearts,
+    hand.diamonds,
+    hand.clubs,
+  );
+  const qualityCouldMatter =
+    auctionContext.situation === "opening" &&
+    longestSuitLength >= 6 &&
+    hand.hcp >= 5 &&
+    hand.hcp <= 10;
+  const qualityChangesBid = useMemo(() => {
+    if (!qualityCouldMatter || !handIsValid) return false;
+    const good = getRecommendation(
+      { ...hand, goodSuitQuality: true },
+      auctionContext,
+    );
+    const poor = getRecommendation(
+      { ...hand, goodSuitQuality: false },
+      auctionContext,
+    );
+    return good.bid !== poor.bid;
+  }, [hand, auctionContext, qualityCouldMatter, handIsValid]);
+  const showSuitQualityInput =
+    qualityCouldMatter && qualityChangesBid && !biddingComplete;
+  const longestSuitName =
+    longestSuitLength === hand.spades
+      ? "spades"
+      : longestSuitLength === hand.hearts
+        ? "hearts"
+        : longestSuitLength === hand.diamonds
+          ? "diamonds"
+          : "clubs";
+
   const recommendation = useMemo<BidRecommendationType | null>(() => {
     if (!handIsValid) return null;
     const context = deriveSituation(auctionState, vulnerability);
     // Strip hasStopperInOpponentSuit when the stopper question is not shown so
     // stale data from a previous auction state doesn't skew the recommendation.
-    const effectiveHand: Hand = showStopperInput
-      ? hand
-      : { ...hand, hasStopperInOpponentSuit: undefined };
+    const effectiveHand: Hand = {
+      ...hand,
+      // Strip each conditional input when its question is not shown, so stale
+      // data from a previous auction state can't skew the recommendation.
+      hasStopperInOpponentSuit: showStopperInput
+        ? hand.hasStopperInOpponentSuit
+        : undefined,
+      goodSuitQuality: showSuitQualityInput ? hand.goodSuitQuality : undefined,
+    };
     return getRecommendation(effectiveHand, context);
-  }, [hand, auctionState, handIsValid, vulnerability, showStopperInput]);
+  }, [
+    hand,
+    auctionState,
+    handIsValid,
+    vulnerability,
+    showStopperInput,
+    showSuitQualityInput,
+  ]);
 
   // Hand the CURRENTLY DISPLAYED auction's contract to the Score modal so it can
   // pre-fill suit/level/side.  This must track the live auction in both
@@ -226,6 +278,8 @@ export default function BidAdvisor() {
               showKingsInput={isBlackwoodKings}
               showStopperInput={showStopperInput}
               opponentSuitLabel={opponentSuitLabel}
+              showSuitQualityInput={showSuitQualityInput}
+              longSuitLabel={longestSuitName}
             />
           </Paper>
         </Grid>
