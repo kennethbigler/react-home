@@ -1,0 +1,103 @@
+{
+  "skill_name": "sayc-bridge",
+  "evals": [
+    {
+      "id": 0,
+      "name": "opening-bid-balanced-16",
+      "prompt": "Playing SAYC, I'm the dealer and hold: ♠ A Q 7 4  ♥ K J 3  ♦ A 9 8  ♣ K 5 2. What's my opening bid and why?",
+      "expected_output": "Open 1NT. 16 HCP, balanced (4-3-3-3), in the 15-17 1NT range. Should NOT open 1 of a suit. Brief reasoning about NT range.",
+      "files": [],
+      "assertions": [
+        "Recommends opening 1NT",
+        "States the 1NT opening range is 15-17 HCP",
+        "Counts the hand as 16 HCP",
+        "Identifies the hand as balanced (e.g. 4-3-3-3)",
+        "Does NOT recommend opening one of a suit instead of 1NT"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "respond-1NT-with-5-spades-game",
+      "prompt": "My partner opened 1NT (15-17). I hold ♠ K Q 10 7 4  ♥ A 8 3  ♦ Q 9 2  ♣ J 6 — about 11 points with a 5-card spade suit. What do I bid and what happens next?",
+      "expected_output": "Transfer with 2♥ (Jacoby transfer to spades); opener bids 2♠; responder then bids 3NT to offer a choice of games, opener passes 3NT with 2 spades or bids 4♠ with 3. Should identify it as a Jacoby transfer and the game-going follow-up.",
+      "files": [],
+      "assertions": [
+        "Recommends bidding 2♥ as a Jacoby transfer to spades",
+        "States opener completes the transfer by bidding 2♠",
+        "Shows a game-going follow-up (3NT or equivalent offering choice of game) rather than stopping in partscore",
+        "Does NOT recommend Stayman (2♣) for this 5-card-major hand"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "rkc-blackwood-1430-response",
+      "prompt": "We've agreed hearts as trumps and I'm the captain. I bid 4NT as Roman Key Card Blackwood (1430). Partner responds 5♦. How many key cards does that show, and what are the 5 key cards?",
+      "expected_output": "5♦ in RKCB 1430 shows 0 or 3 key cards. The 5 key cards are the 4 aces plus the king of the trump suit (hearts). Should correctly state 0-or-3 (not 1-or-4, which is 0314 or the 5♣ step).",
+      "files": [],
+      "assertions": [
+        "States 5♦ in 1430 shows 0 or 3 key cards",
+        "Does NOT say 5♦ shows 1 or 4 (that would be 0314 or the 5♣ step)",
+        "Lists the 5 key cards as the four aces plus the king of trumps (hearts)"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "negative-double-after-overcall",
+      "prompt": "I opened 1♣ and my left-hand opponent overcalled 1♠. My partner doubles. What does partner's double mean in SAYC?",
+      "expected_output": "It's a negative double, showing values (~6+) and 4+ hearts (the unbid major), takeout-flavored, not penalty. Should identify 'negative double' and that it shows the unbid major(s)/hearts.",
+      "files": [],
+      "assertions": [
+        "Identifies the double as a negative double",
+        "States it shows the unbid major / 4+ hearts",
+        "States it is takeout-flavored / shows values, NOT penalty"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "strong-2C-meaning-and-response",
+      "prompt": "Partner opens 2♣ in SAYC. What does it mean and what should I respond with a weak hand like ♠ 9 6 3  ♥ J 7 4 2  ♦ 8 5  ♣ 10 6 4 3?",
+      "expected_output": "2♣ is strong, artificial, game-forcing (22+ balanced or ~9+ playing tricks), says nothing about clubs. With a weak hand respond 2♦ (waiting). Should identify game-forcing and 2♦ waiting as the response.",
+      "files": [],
+      "assertions": [
+        "States 2♣ is strong, artificial, and game-forcing",
+        "States 2♣ says nothing about clubs / shows 22+ balanced or ~9+ playing tricks",
+        "Recommends responding 2♦ (waiting) with the weak hand"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "limit-raise-vs-jacoby-shape",
+      "prompt": "Partner opened 1♥. I hold ♠ 6 3  ♥ K Q 7 4  ♦ A J 9 5  ♣ K 8 2 — 13 HCP and 4-card heart support, balanced. In SAYC what's the best bid and why not just bid 3♥?",
+      "expected_output": "Bid Jacoby 2NT (game-forcing raise with 4+ trumps and 13+, balanced, no shortness). 3♥ would only be a limit raise (10-12, invitational) and would undersell the hand. Should choose Jacoby 2NT and explain it's game-forcing vs the invitational limit raise.",
+      "files": [],
+      "assertions": [
+        "Recommends Jacoby 2NT (bidding 2NT)",
+        "States Jacoby 2NT is a game-forcing raise showing 4+ trumps and ~13+ points",
+        "Explains 3♥ is only an invitational limit raise (~10-12) and would undersell the hand"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "opener-1NT-rebid-range",
+      "prompt": "I opened 1♦, partner responded 1♠, and I want to rebid 1NT. What point range does my 1NT rebid show in SAYC? I have a balanced hand.",
+      "expected_output": "12-14 HCP balanced (because 15-17 balanced would have opened 1NT). Should give 12-14, and ideally note this differs from a 1NT opening's 15-17.",
+      "files": [],
+      "assertions": [
+        "States the 1NT rebid shows 12-14 HCP",
+        "Explains it differs from a 1NT opening (15-17) because 15-17 balanced would have opened 1NT"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "michaels-cue-bid-over-1H",
+      "prompt": "My right-hand opponent opens 1♥ and I bid 2♥ (a cue-bid of their suit). What two-suiter am I showing in SAYC/Michaels?",
+      "expected_output": "Michaels cue bid: a cue of a major (1♥) shows the other major (spades) plus an unspecified minor, 5-5. Partner can bid 2NT to ask which minor. Should say spades + a minor, 5-5.",
+      "files": [],
+      "assertions": [
+        "Identifies the bid as a Michaels cue bid",
+        "States it shows spades (the other major) plus an unspecified minor",
+        "States the shape is at least 5-5"
+      ]
+    }
+  ]
+}

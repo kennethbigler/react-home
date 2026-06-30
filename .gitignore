@@ -21,6 +21,7 @@ dist-ssr
 
 # Editor directories and files
 .claude/*
+!.claude/skills/
 .vscode/*
 !.vscode/extensions.json
 .idea
