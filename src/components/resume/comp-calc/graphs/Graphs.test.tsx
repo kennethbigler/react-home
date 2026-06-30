@@ -1,15 +1,14 @@
-import "./tests/highchartsMocks";
-import { beforeEach, describe, expect, it } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
-import { Provider } from "jotai";
-import Graphs from "./Graphs";
-import { buildCompChartData, formatCompTooltip } from "./compGraphHelpers";
 import {
   getBreakdownSeriesData,
   getSeriesByName,
   resetCapturedCompChartConfig,
   selectChartPoint,
 } from "./tests/highchartsMocks";
+import { beforeEach, describe, expect, it } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
+import { Provider } from "jotai";
+import Graphs from "./Graphs";
+import { buildCompChartData, formatCompTooltip } from "./compGraphHelpers";
 import {
   CompCalcEntry,
   CompEntry,

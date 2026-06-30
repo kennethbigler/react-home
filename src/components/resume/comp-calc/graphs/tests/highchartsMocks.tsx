@@ -23,10 +23,8 @@ export const getChartOptions = () => chartTestState.chartOptions;
 export const getTooltipFollowTouchMove = () =>
   chartTestState.tooltipFollowTouchMove;
 
-export const getPointClickHandler = () => chartTestState.pointClickHandler;
-
 export const selectChartPoint = (index: number | undefined) => {
-  getPointClickHandler()?.call(
+  chartTestState.pointClickHandler?.call(
     { index } as Highcharts.Point,
     {} as Highcharts.PointClickEventObject,
   );

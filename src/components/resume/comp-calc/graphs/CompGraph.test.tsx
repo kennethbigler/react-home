@@ -1,9 +1,4 @@
 import type { ComponentProps } from "react";
-import "./tests/highchartsMocks";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { Provider } from "jotai";
-import CompChart from "./CompGraph";
 import {
   getChartOptions,
   getSeriesByName,
@@ -11,6 +6,10 @@ import {
   resetCapturedCompChartConfig,
   selectChartPoint,
 } from "./tests/highchartsMocks";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { Provider } from "jotai";
+import CompChart from "./CompGraph";
 import {
   CompCalcEntry,
   CompEntry,
