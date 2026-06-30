@@ -373,4 +373,47 @@ describe("games | bridge | BidAdvisor", () => {
       screen.queryByLabelText("Has stopper in opponent's suit"),
     ).not.toBeInTheDocument();
   });
+
+  // ── Suit-quality question gating ────────────────────────────────────────────
+  // Shape the default hand (3♠3♥4♦3♣) into a weak-2 zone opener (2♠6♥3♦2♣, 7 HCP)
+  // so the suit-quality question becomes relevant and changes the bid.
+  const makeWeakTwoHand = () => {
+    fireEvent.change(screen.getByLabelText("HCP value"), {
+      target: { value: "7" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Increase Hearts" })); // 3→4
+    fireEvent.click(screen.getByRole("button", { name: "Increase Hearts" })); // 4→5
+    fireEvent.click(screen.getByRole("button", { name: "Increase Hearts" })); // 5→6
+    fireEvent.click(screen.getByRole("button", { name: "Decrease Spades" })); // 3→2
+    fireEvent.click(screen.getByRole("button", { name: "Decrease Diamonds" })); // 4→3
+    fireEvent.click(screen.getByRole("button", { name: "Decrease Clubs" })); // 3→2
+  };
+
+  it("does NOT show the suit-quality question for the default 15-17 balanced hand", () => {
+    render(<BidAdvisor />);
+    fireEvent.change(screen.getByLabelText("HCP value"), {
+      target: { value: "16" },
+    });
+    expect(
+      screen.queryByLabelText("Long suit is a good suit"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows the suit-quality question for a weak-2-zone opening hand", () => {
+    render(<BidAdvisor />);
+    makeWeakTwoHand();
+    expect(
+      screen.getByLabelText("Long suit is a good suit"),
+    ).toBeInTheDocument();
+  });
+
+  it("answering the suit-quality question keeps a valid recommendation", () => {
+    render(<BidAdvisor />);
+    makeWeakTwoHand();
+    const checkbox = screen.getByLabelText(
+      "Long suit is a good suit",
+    ) as HTMLInputElement;
+    fireEvent.click(checkbox); // mark the suit good
+    expect(screen.getByLabelText("Recommended bid")).toBeInTheDocument();
+  });
 });

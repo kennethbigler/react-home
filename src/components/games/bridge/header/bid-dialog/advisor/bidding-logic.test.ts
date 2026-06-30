@@ -10071,3 +10071,172 @@ describe("bidding-logic | audit fixes", () => {
     );
   });
 });
+
+// ─── Coverage for new branches introduced by the audit fixes ─────────────────
+describe("bidding-logic | audit fixes — branch coverage", () => {
+  it("1♥ response, 18 TP balanced, no fit/major → forcing 2/1 (slam interest)", () => {
+    const rec = getRecommendation(
+      mkHand(18, 2, 3, 4, 4),
+      ctx("responding-suit", { partnerBid: "1♥" }),
+    );
+    expect(rec.category).toContain("Two-Over-One");
+    expect(rec.bid).toBe("2♦");
+  });
+
+  it("1♥ response, 14 TP balanced, no fit/major → 3NT (13-16)", () => {
+    const rec = getRecommendation(
+      mkHand(14, 3, 2, 4, 4),
+      ctx("responding-suit", { partnerBid: "1♥" }),
+    );
+    expect(rec.bid).toBe("3NT");
+    expect(rec.category).toContain("13-16");
+  });
+
+  it("1♦ response, 13 TP unbalanced, no major → forcing 2/1 in longest", () => {
+    const rec = getRecommendation(
+      mkHand(13, 2, 3, 2, 6),
+      ctx("responding-suit", { partnerBid: "1♦" }),
+    );
+    expect(rec.bid).toBe("2♣");
+    expect(rec.category).toContain("Two-Over-One");
+  });
+
+  it("weak-2 response is natural under interference: 2♥-(2♠), 13 HCP + fit → 4♥", () => {
+    const rec = getRecommendation(
+      mkHand(13, 3, 3, 4, 3),
+      ctx("responding-weak2", { partnerBid: "2♥", rhoBid: "2♠" }),
+    );
+    expect(rec.bid).toBe("4♥");
+    expect(rec.category).toContain("Contested");
+  });
+
+  it("16-18 HCP over a 1-level opening → strong takeout double", () => {
+    const rec = getRecommendation(
+      mkHand(17, 1, 4, 4, 4),
+      ctx("overcalling", { rhoBid: "1♠" }),
+    );
+    expect(rec.bid).toBe("Double");
+    expect(rec.category).toContain("16-18");
+  });
+
+  it("negative-double seat with a 4-card major over a 1-level overcall → bid it", () => {
+    const rec = getRecommendation(
+      mkHand(8, 4, 3, 3, 3),
+      ctx("negative-double", { myPreviousBid: "1♣", rhoBid: "1♦" }),
+    );
+    expect(rec.bid).toBe("1♠");
+  });
+
+  it("advancing partner's takeout double over a 2-level bid clears the floor", () => {
+    // 5 hearts, must advance above 2♠ → 3♥ (takeout double is forcing on advancer)
+    const rec = getRecommendation(
+      mkHand(6, 2, 5, 3, 3),
+      ctx("responding-to-double", { rhoBid: "2♠" }),
+    );
+    expect(rec.bid).toBe("3♥");
+  });
+
+  it("a 2NT that was NOT the first bid is treated as natural, not Jacoby", () => {
+    // I responded 1♠, then bid 2NT (natural invite); partner's 3♥ is natural.
+    const rec = getRecommendation(
+      mkHand(11, 5, 3, 3, 2),
+      ctx("responder-nt-rebid", {
+        myPreviousBid: "2NT",
+        partnerBid: "3♥",
+        partnerFirstBid: "1♥",
+        myFirstBid: "1♠",
+      }),
+    );
+    expect(rec.category).not.toContain("Jacoby");
+  });
+
+  it("opener passes partner's Jacoby-2NT game signoff (not a weak preempt)", () => {
+    const rec = getRecommendation(
+      mkHand(14, 3, 5, 3, 2),
+      ctx("rebid-after-suit", {
+        myFirstBid: "1♥",
+        myPreviousBid: "3♥",
+        partnerBid: "4♥",
+        partnerFirstBid: "2NT",
+      }),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toContain("Jacoby");
+  });
+
+  it("opener competes (does not pass) over partner's negative double — NT", () => {
+    const rec = getRecommendation(
+      mkHand(14, 2, 3, 3, 5),
+      ctx("rebid-after-negative-double", { myPreviousBid: "1♣", rhoBid: "2♥" }),
+    );
+    expect(rec.bid).not.toBe("Pass");
+    expect(rec.bid).toBe("2NT");
+  });
+
+  it("opener supports partner's negative-double major, level forced by overcall", () => {
+    const rec = getRecommendation(
+      mkHand(13, 6, 3, 2, 2),
+      ctx("rebid-after-negative-double", { myPreviousBid: "1♠", rhoBid: "2♦" }),
+    );
+    expect(rec.bid).toBe("2♥");
+  });
+
+  it("after (1m)–double, shows a 5-card major instead of raising the minor", () => {
+    const rec = getRecommendation(
+      mkHand(7, 3, 5, 3, 2),
+      ctx("responding-suit-after-double", { partnerBid: "1♦" }),
+    );
+    expect(rec.bid).toBe("1♥");
+    expect(rec.category).toContain("5-card major");
+  });
+
+  it("after (1m)–double, 3-card minor support makes a simple raise (not a jump)", () => {
+    const rec = getRecommendation(
+      mkHand(8, 3, 3, 3, 4),
+      ctx("responding-suit-after-double", { partnerBid: "1♦" }),
+    );
+    expect(rec.bid).toBe("2♦");
+    expect(rec.category).toContain("Simple Raise");
+  });
+
+  it("no takeout double when short in an unbid suit — explains why (not 'stranded')", () => {
+    // (1♥)-(3♥) reached: 15 HCP, 2-2-4-5, but only 2 spades → can't double for
+    // takeout (promises 3+ in every unbid suit), and 2♣ is below 3♥ → Pass.
+    const rec = getRecommendation(
+      mkHand(15, 2, 2, 4, 5),
+      ctx("overcalling", { lhoBid: "1♥", rhoBid: "3♥" }),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.reasoning).toContain("3+ cards in every unbid suit");
+  });
+
+  it("derives 'responding-to-double' when partner reopens with a double (2♣-(2♠)-P-(P)-X)", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [
+        { 1: "Pass", 2: "Pass", 3: "2♣", 4: "2♠" },
+        { 1: "Pass", 2: "Pass", 3: "Double", 4: "Pass" },
+      ],
+      currentRound: {},
+    };
+    const context = deriveSituation(state, "none");
+    expect(context.situation).toBe("responding-to-double");
+    // 5 hearts → advance the double above 2♠ → 3♥.
+    expect(getRecommendation(mkHand(6, 2, 5, 3, 3), context).bid).toBe("3♥");
+  });
+
+  it("opener competes over partner's negative double when the overcall was by LHO", () => {
+    // 1♣ (me) - 2♥ (LHO) - X (partner negative) - P (RHO): the overcall is LHO's,
+    // and the seat-geometry fix must still route to a competing rebid (not pass).
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♣", 2: "2♥", 3: "Double", 4: "Pass" }],
+      currentRound: {},
+    };
+    const context = deriveSituation(state, "none");
+    expect(context.situation).toBe("rebid-after-negative-double");
+    expect(getRecommendation(mkHand(14, 2, 3, 3, 5), context).bid).not.toBe(
+      "Pass",
+    );
+  });
+});
