@@ -461,4 +461,71 @@ describe("games | bridge | HandInput", () => {
       expect.objectContaining({ kings: 0 }),
     );
   });
+
+  it("does NOT show suit-quality input by default", () => {
+    renderHandInput();
+    expect(
+      screen.queryByLabelText("Long suit is a good suit"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows suit-quality checkbox when showSuitQualityInput=true", () => {
+    render(
+      <HandInput
+        hand={defaultHand}
+        onChange={vi.fn()}
+        showSuitQualityInput={true}
+        longSuitLabel="hearts"
+      />,
+    );
+    expect(
+      screen.getByLabelText("Long suit is a good suit"),
+    ).toBeInTheDocument();
+    // "good" is wrapped in <strong>, so match a contiguous text node.
+    expect(screen.getByText(/suit for a preempt/i)).toBeInTheDocument();
+  });
+
+  it("suit-quality checkbox onChange reports goodSuitQuality", () => {
+    const onChange = vi.fn();
+    render(
+      <HandInput
+        hand={{ ...defaultHand, goodSuitQuality: undefined }}
+        onChange={onChange}
+        showSuitQualityInput={true}
+        longSuitLabel="hearts"
+      />,
+    );
+    const checkbox = screen.getByLabelText(
+      "Long suit is a good suit",
+    ) as HTMLInputElement;
+    fireEvent.click(checkbox);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({ goodSuitQuality: true }),
+    );
+  });
+
+  it("suit-quality checkbox shows indeterminate prompt when undefined", () => {
+    render(
+      <HandInput
+        hand={{ ...defaultHand, goodSuitQuality: undefined }}
+        onChange={vi.fn()}
+        showSuitQualityInput={true}
+        longSuitLabel="hearts"
+      />,
+    );
+    expect(screen.getByText(/Unknown.*check your suit/i)).toBeInTheDocument();
+  });
+
+  it("suit-quality checkbox shows 'ragged suit' label when false", () => {
+    render(
+      <HandInput
+        hand={{ ...defaultHand, goodSuitQuality: false }}
+        onChange={vi.fn()}
+        showSuitQualityInput={true}
+        longSuitLabel="hearts"
+      />,
+    );
+    // Match the full label text (the explanation paragraph also says "ragged suit").
+    expect(screen.getByText(/No, it's a ragged suit/i)).toBeInTheDocument();
+  });
 });

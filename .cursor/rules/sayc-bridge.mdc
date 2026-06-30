@@ -1,0 +1,23 @@
+---
+description: >-
+  Comprehensive reference for the Standard American Yellow Card (SAYC) contract
+  bridge bidding system: hand evaluation, openings, responses, rebids, slam
+  bidding, competitive auctions, conventions (Stayman, transfers, Blackwood/RKC,
+  Jacoby 2NT, Michaels, unusual 2NT, negative doubles, Bergen, splinters),
+  defense to conventions, opening leads and signals. Use whenever the user asks
+  anything about bridge bidding, what to bid, what a bid/auction means, how a
+  convention works, opening leads, defensive signals, or hand evaluation — even
+  if they do not say "SAYC".
+globs: ''
+alwaysApply: false
+---
+# SAYC Bridge (shared skill)
+
+The authoritative content for this rule lives in the Claude Code skill so that
+Cursor and Claude Code stay in sync from a single source. Read the skill file
+and the `references/` files it points to (relative to that file's directory):
+
+@.claude/skills/sayc-bridge/SKILL.md
+
+Treat `.claude/skills/sayc-bridge/references/*.md` as authoritative for this
+domain. Answer from those files rather than from memory or the web.

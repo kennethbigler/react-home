@@ -21,6 +21,16 @@ export interface Hand {
    * When undefined, the engine cannot recommend NT bids that require a stopper.
    */
   hasStopperInOpponentSuit?: boolean;
+  /**
+   * Optional: is the player's LONGEST suit a "good" suit for a preemptive
+   * opening — i.e. at least 2 of the top 3 honors (AK, AQ, KQ) or 3 of the top
+   * 5 (e.g. QJT)?  SAYC weak-2 and 3-level preempt openings require a good
+   * suit; length and HCP alone do not tell us whether the suit is biddable.
+   * Shown in HandInput only when the answer would change the recommendation.
+   * When undefined the engine assumes the suit is good (legacy behavior), so a
+   * caller that never sets it sees the same advice as before.
+   */
+  goodSuitQuality?: boolean;
 }
 
 export type Vulnerability = "none" | "we-only" | "they-only" | "both";
@@ -517,9 +527,17 @@ function getOpeningBid(hand: Hand, vul: Vulnerability): BidRecommendation {
       };
     }
 
-    // Pre-emptive 3-level (7-card suit, no 4-card major outside)
+    // Pre-emptive 3-level (7-card suit, no 4-card major outside).
+    // Requires a GOOD suit — skip when the player tells us the suit is weak
+    // (goodSuitQuality === false); undefined/true keep the legacy behavior.
+    // A two-suiter that satisfies the Rule of 20 is a 1-level OPENING, not a
+    // preempt — opening 1-of-a-suit shows the values and keeps both suits live.
     const sevenCardSuit = suits.find((s) => s.count >= 7);
-    if (sevenCardSuit) {
+    if (
+      sevenCardSuit &&
+      hand.goodSuitQuality !== false &&
+      !(ruleOf20(hand) && calcTP(hand) >= 13)
+    ) {
       // A major can always preempt at the 3-level with 7 cards.
       // A minor can preempt only if there is no outside 4-card major (open 1♥/1♠ instead).
       const noOutsideMajor =
@@ -565,7 +583,12 @@ function getOpeningBid(hand: Hand, vul: Vulnerability): BidRecommendation {
 
     // Weak 2 (6-card suit, no outside 4-card major) — EXCLUDES clubs (2♣ is reserved)
     const sixCardSuit = suits.find((s) => s.count >= 6 && s.name !== "clubs");
-    if (sixCardSuit && sixCardSuit.count === 6) {
+    if (
+      sixCardSuit &&
+      sixCardSuit.count === 6 &&
+      hand.goodSuitQuality !== false &&
+      !(ruleOf20(hand) && calcTP(hand) >= 13)
+    ) {
       const noOutsideFourMajor =
         (sixCardSuit.name === "spades" || hand.spades < 4) &&
         (sixCardSuit.name === "hearts" || hand.hearts < 4);
@@ -619,7 +642,11 @@ function getOpeningBid(hand: Hand, vul: Vulnerability): BidRecommendation {
       return {
         bid: suitBidLevel(major, 1),
         category: `Opening 1${suitSymbol(major)}`,
-        reasoning: `With 13-21 TP and a 5+ card ${major} suit, open 1${suitSymbol(major)}. With two equal-length majors, bid the higher-ranking one (spades) first.`,
+        reasoning: `With 13-21 TP and a 5+ card ${major} suit, open 1${suitSymbol(major)}.${
+          hand.spades >= 5 && hand.hearts >= 5
+            ? " With two 5-card majors, open the higher-ranking one (spades) first so you can rebid hearts cheaply."
+            : ""
+        }`,
         handAnalysis: analysis,
         whatYourBidTellsPartner: `5+ card ${major} suit with 12-21 total pts. A game-forcing auction is possible if partner has 13+ pts.`,
         expectedResponses: [
@@ -1553,6 +1580,28 @@ function getResponseToSuit(hand: Hand, partnerBid: string): BidRecommendation {
     };
   }
 
+  // Two 5-card majors over a MINOR opening: bid the higher-ranking (spades)
+  // first so you can show both suits economically (then rebid/raise hearts).
+  if (!isPartnerMajor && hand.spades >= 5 && hand.hearts >= 5 && tp >= 6) {
+    return {
+      bid: "1♠",
+      category: "New Suit — 5-5 Majors (bid spades first)",
+      reasoning:
+        "With two 5-card majors, bid the higher-ranking suit (1♠) first, then bid hearts on the next round. This lets partner give preference and uses the least bidding space.",
+      handAnalysis: analysis,
+      whatYourBidTellsPartner:
+        "5+ spades (and a second suit to come), 6+ pts. Forcing one round.",
+      expectedResponses: [
+        { partnerBid: "2♠", meaning: "3+ spade support" },
+        {
+          partnerBid: "1NT/2♣/2♦",
+          meaning: "No spade fit — you bid hearts next",
+        },
+      ],
+      confidence: "high",
+    };
+  }
+
   // Jacoby 2NT (game-forcing raise of major with 13+ support pts, 4+ card support)
   if (isPartnerMajor && mySupport >= 4 && supportTP >= 13) {
     return {
@@ -1751,7 +1800,64 @@ function getResponseToSuit(hand: Hand, partnerBid: string): BidRecommendation {
         confidence: "high",
       };
     }
-    if (tp >= 15) {
+    // No 4-card major to show.  The right call depends on whether partner
+    // opened a MAJOR (2NT would be Jacoby, not natural) or a MINOR.
+    if (isPartnerMajor) {
+      const minor = longerMinor(hand);
+      // 3-card support = a known 8-card major fit.  With game values (and not a
+      // slam-ish hand) SAYC bids the major-suit game over 3NT.
+      if (mySupport >= 3 && tp <= 16) {
+        return {
+          bid: `4${suitSymbol(partnerSuit)}`,
+          category: "Raise to Game (3-card support, game values)",
+          reasoning: `With ${tp} TP and 3-card ${partnerSuit} support you have a known 8-card major fit. SAYC bids the major-suit game over 3NT when an 8-card fit is known — bid 4${suitSymbol(partnerSuit)}.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: `Game values with 3-card ${partnerSuit} support — to play.`,
+          expectedResponses: [
+            { partnerBid: "Pass", meaning: "Minimum opener — game is enough" },
+            {
+              partnerBid: "Slam try",
+              meaning: "Big hand — cue bid / Blackwood",
+            },
+          ],
+          confidence: "high",
+        };
+      }
+      // 17+ TP (with or without a fit): too strong to sign off — bid a forcing
+      // 2-over-1 to keep the auction open below game and explore slam.
+      if (tp >= 17) {
+        return {
+          bid: `2${suitSymbol(minor)}`,
+          category: "Two-Over-One (17+ TP, slam interest)",
+          reasoning: `With ${tp} TP and no 4-card major to show, bid a forcing 2-over-1 in your ${minor} suit rather than jumping to 3NT. This keeps the auction below game so you can explore slam${mySupport >= 3 ? ` and support partner's ${partnerSuit} next` : ""}.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner:
+            "17+ TP, forcing — game is certain and slam is possible.",
+          expectedResponses: [
+            {
+              partnerBid: "Rebid",
+              meaning: "Describes shape/strength; you drive on",
+            },
+          ],
+          confidence: "high",
+        };
+      }
+      // 13-16 balanced, no fit: 3NT is the natural game (2NT here = Jacoby).
+      return {
+        bid: "3NT",
+        category: "3NT Response (13-16 TP, balanced)",
+        reasoning: `With ${tp} TP balanced, no 4-card major, and no 3-card support for partner's ${partnerSuit}, bid 3NT — the standard balanced game response. (A 2NT response here would be Jacoby, not natural.)`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: "13-16 TP, balanced, no major fit. To play.",
+        expectedResponses: [
+          { partnerBid: "Pass", meaning: "Accepts 3NT as final contract" },
+          { partnerBid: "4♣/4♦", meaning: "Strong minor suit, slam interest" },
+        ],
+        confidence: "high",
+      };
+    }
+    // Partner opened a MINOR — the natural notrump ladder applies.
+    if (tp >= 15 && isBalanced(hand)) {
       return {
         bid: "3NT",
         category: "3NT Response (15+ TP, Game Force)",
@@ -1764,6 +1870,24 @@ function getResponseToSuit(hand: Hand, partnerBid: string): BidRecommendation {
         ],
         confidence: "high",
       };
+    }
+    // 13+ but unbalanced (or 13-14 balanced): bid a forcing 2-over-1 in the
+    // longer minor / longest suit rather than misdescribing a flat 2NT/3NT.
+    if (!isBalanced(hand)) {
+      const longest = longestSuitInfo(hand);
+      if (longest.name !== partnerSuit && longest.length >= 4) {
+        return {
+          bid: `2${suitSymbol(longest.name)}`,
+          category: "Two-Over-One (13+ TP, unbalanced)",
+          reasoning: `With ${tp} TP, an unbalanced hand, and no 4-card major, bid a forcing 2-over-1 in your ${longest.name} suit. 3NT would misrepresent your distribution.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: `13+ TP, ${longest.length}+ ${longest.name}, forcing.`,
+          expectedResponses: [
+            { partnerBid: "Rebid", meaning: "Describes hand; game is assured" },
+          ],
+          confidence: "high",
+        };
+      }
     }
     return {
       bid: "2NT",
@@ -1824,6 +1948,31 @@ function getResponseToSuit(hand: Hand, partnerBid: string): BidRecommendation {
         expectedResponses: [
           { partnerBid: "2♠", meaning: "4-card support, minimum" },
           { partnerBid: "1NT", meaning: "15-17 balanced, no spade fit" },
+        ],
+        confidence: "high",
+      };
+    }
+    // Over a 1-MAJOR a 2NT response is Jacoby (artificial 4-card GF raise), so
+    // an 11-12 balanced hand WITHOUT 4-card support cannot bid a natural 2NT.
+    // Respond a forcing 1NT and show the invitational values on the next round.
+    if (isPartnerMajor) {
+      return {
+        bid: "1NT",
+        category: "Forcing 1NT (11-12 TP, no fit)",
+        reasoning:
+          "With 11-12 TP, no 4-card major to show, and fewer than 3-card support, respond a (semi-)forcing 1NT — a natural 2NT here would be Jacoby. Invite game by bidding 2NT on your next turn.",
+        handAnalysis: analysis,
+        whatYourBidTellsPartner:
+          "6-12 pts, no fit, no biddable major — forcing one round; an invite follows.",
+        expectedResponses: [
+          {
+            partnerBid: "2 of a suit",
+            meaning: "Minimum rebid — you can invite",
+          },
+          {
+            partnerBid: "Jump/strong rebid",
+            meaning: "Extras — drive to game",
+          },
         ],
         confidence: "high",
       };
@@ -1913,7 +2062,11 @@ function getResponseToTwoClub(hand: Hand): BidRecommendation {
   };
 }
 
-function getResponseToWeak2(hand: Hand, partnerBid: string): BidRecommendation {
+function getResponseToWeak2(
+  hand: Hand,
+  partnerBid: string,
+  contested = false,
+): BidRecommendation {
   const analysis = analyzeHand(hand);
   const { hcp } = hand;
   const { tp } = analysis;
@@ -2000,10 +2153,25 @@ function getResponseToWeak2(hand: Hand, partnerBid: string): BidRecommendation {
     }
   }
 
+  // When an opponent has overcalled, the 2NT feature-inquiry is OFF (2NT would
+  // be natural).  With game values and a fit, raise partner's major to game;
+  // otherwise fall through to a natural raise / pass.
+  if (contested && hcp >= 13 && mySupport >= 3 && partnerSuit !== "diamonds") {
+    return {
+      bid: `4${partnerSuitSym}`,
+      category: "Raise Weak 2 to Game (Contested)",
+      reasoning: `An opponent overcalled, so the 2NT inquiry is off. With ${hcp} HCP and ${mySupport}-card support for partner's weak 2${partnerSuitSym}, raise straight to game — you have the values and a known 8+ card fit.`,
+      handAnalysis: analysis,
+      whatYourBidTellsPartner: `Game values with a ${partnerSuit} fit — to play.`,
+      expectedResponses: [{ partnerBid: "Pass", meaning: "Accepting game" }],
+      confidence: "high",
+    };
+  }
+
   // ── 2NT forcing inquiry: 13+ HCP, want more info before committing to game ─
   // Bridgedoctor: "2NT: A FORCING inquiry as to partner's strength"
-  // 13-14 HCP is game-going but uncertain without knowing partner's strength range.
-  if (hcp >= 13) {
+  // (OFF when an opponent has overcalled — then 2NT is natural.)
+  if (hcp >= 13 && !contested) {
     return {
       bid: "2NT",
       category: "2NT Inquiry over Weak 2",
@@ -2787,6 +2955,25 @@ function getOvercall(
     };
   }
 
+  // 19+ HCP balanced is too strong for a direct 1NT/2NT overcall.  Double first
+  // (planning to rebid NT) — this is a STRENGTH-showing double, not takeout, so
+  // it applies even with length in the opponent's suit.  A 19-count must never
+  // pass an opponent's opening.
+  if (hcp >= 19 && analysis.isBalanced && !opponentIsNT) {
+    return {
+      bid: "Double",
+      category: "High-Strength Double (19+ HCP Balanced)",
+      reasoning:
+        "With 19+ HCP balanced you are too strong for a direct 1NT/2NT overcall. Double first; on your next turn rebid NT at the lowest level to show this powerhouse. (This is a strength-showing double — not takeout — so your length in their suit does not matter.)",
+      handAnalysis: analysis,
+      whatYourBidTellsPartner:
+        "19+ HCP balanced — very strong; NT rebid to follow.",
+      expectedResponses: [],
+      confidence: "high",
+      note: "After partner responds, rebid the lowest available NT to show 19+ balanced.",
+    };
+  }
+
   // Takeout Double (12-15 HCP, short in opponent's suit, good shape — 3+ cards in each unbid suit)
   // Requires hasGoodShape: a takeout double promises support for all unbid suits.
   // Only check the three suits NOT bid by the opponent.
@@ -2824,33 +3011,35 @@ function getOvercall(
     };
   }
 
-  // High-strength double (16+) then rebid
-  if (hcp >= 16 && hcp <= 18 && inOpponentSuit <= 2) {
+  // Strong double (16+ HCP) then rebid.  Any hand too strong for a simple
+  // overcall doubles first, regardless of balance — shortness in the opponent's
+  // suit (inOpponentSuit <= 2) is exactly what a takeout double wants.  This
+  // also catches the 19-21 powerhouses that must NOT pass an opening.
+  if (hcp >= 16 && inOpponentSuit <= 2) {
+    if (hcp >= 19 && analysis.isBalanced) {
+      return {
+        bid: "Double",
+        category: "High-Strength Double (19+ HCP Balanced)",
+        reasoning:
+          "With 19+ HCP balanced, double first. On the next round, rebid NT at the lowest available level to show 19+ balanced — too strong for an immediate 1NT/2NT overcall.",
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: "19+ HCP balanced — very strong hand.",
+        expectedResponses: [],
+        confidence: "high",
+        note: "After partner responds, rebid the lowest available NT to show 19+ balanced.",
+      };
+    }
+    const strongLabel = hcp >= 19 ? "19+" : "16-18";
     return {
       bid: "Double",
-      category: "High-Strength Takeout Double (16-18 HCP)",
-      reasoning:
-        "With 16-18 HCP, double first to show a strong hand. On the next round, bid your long suit (or NT if balanced) to reveal extra strength beyond a normal overcall.",
+      category: `High-Strength Takeout Double (${strongLabel} HCP)`,
+      reasoning: `With ${hcp} HCP, double first to show a strong hand. On the next round, bid your long suit (jump with 19+) to reveal extra strength beyond a normal overcall. A double is correct here — being short in the opponent's ${suitOpponent} is ideal for takeout.`,
       handAnalysis: analysis,
       whatYourBidTellsPartner:
-        "Strong hand — double first reveals extra strength beyond 12-15.",
+        "Strong hand (16+ HCP) — double first reveals extra strength beyond a simple overcall.",
       expectedResponses: [],
       confidence: "high",
-      note: "After partner responds, rebid your long suit or NT to show 16-18 HCP.",
-    };
-  }
-
-  if (hcp >= 19 && analysis.isBalanced) {
-    return {
-      bid: "Double",
-      category: "High-Strength Double (19+ HCP Balanced)",
-      reasoning:
-        "With 19+ HCP balanced, double first. On the next round, rebid NT at the lowest available level to show 19+ balanced — too strong for an immediate 1NT/2NT overcall.",
-      handAnalysis: analysis,
-      whatYourBidTellsPartner: "19+ HCP balanced — very strong hand.",
-      expectedResponses: [],
-      confidence: "high",
-      note: "After partner responds, rebid the lowest available NT to show 19+ balanced.",
+      note: `After partner responds, ${hcp >= 19 ? "jump in" : "bid"} your long suit (or NT if balanced) to show ${strongLabel} HCP.`,
     };
   }
 
@@ -2906,15 +3095,19 @@ function getOvercall(
           `A takeout double requires shortness (0–2 cards) in the opponent's suit, but you hold ${inOpponentSuit} ${suitOpponent}.`,
         );
       }
-      const minorHeart =
-        hand.hearts <= 2 || hand.spades <= 2
-          ? "With only " +
-            (hand.hearts <= 2
-              ? `${hand.hearts} heart${hand.hearts === 1 ? "" : "s"}`
-              : `${hand.spades} spade${hand.spades === 1 ? "" : "s"}`) +
-            ", doubling could leave partner stranded in a short major."
-          : "";
-      if (minorHeart) parts.push(minorHeart);
+      // Explain the REAL reason a takeout double is unavailable: you lack 3-card
+      // support for one or more unbid suits.  (Being short in the opponent's
+      // suit is good for a double, so it is never the reason to pass.)
+      const shortUnbid = unOpenedSuits.filter(
+        (s) => (hand[s as keyof Hand] as number) < 3,
+      );
+      if (hcp >= 12 && inOpponentSuit <= 2 && shortUnbid.length > 0) {
+        parts.push(
+          `A takeout double promises 3+ cards in every unbid suit, but you hold only ${shortUnbid
+            .map((s) => `${hand[s as keyof Hand]} ${s}`)
+            .join(" and ")} — so double is not available.`,
+        );
+      }
       const longestUnbid = suits.reduce(
         (best, s) => (s.count > best.count ? s : best),
         { name: "", count: 0 },
@@ -3175,6 +3368,39 @@ function getNegativeDouble(
           confidence: "high",
         };
       }
+    }
+
+    // Before passing: a 4+ card unbid major biddable at the 1-level is a natural,
+    // forcing response — show it rather than passing with values.  (A negative
+    // double would promise BOTH majors; with a single major you bid it.)
+    const floorIdxND = Math.max(
+      BID_ORDER.indexOf(openerBid),
+      isRealBid(overcall) ? BID_ORDER.indexOf(overcall) : -1,
+    );
+    const oneLevelMajor: { name: string; bid: string } | null =
+      spadesUnbid && hand.spades >= 4 && BID_ORDER.indexOf("1♠") > floorIdxND
+        ? { name: "spades", bid: "1♠" }
+        : heartsUnbid &&
+            hand.hearts >= 4 &&
+            BID_ORDER.indexOf("1♥") > floorIdxND
+          ? { name: "hearts", bid: "1♥" }
+          : null;
+    if (oneLevelMajor && hcp >= 6) {
+      return {
+        bid: oneLevelMajor.bid,
+        category: "New Suit at 1 Level After Overcall (4+ major)",
+        reasoning: `After partner's ${openerBid} and the ${overcall} overcall, bid your 4+ card ${oneLevelMajor.name} suit at the 1-level. A new suit by responder is natural and forcing — show the major rather than passing or making a negative double (which would promise both majors).`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `4+ ${oneLevelMajor.name}, 6+ HCP. Forcing one round.`,
+        expectedResponses: [
+          {
+            partnerBid: "Raise",
+            meaning: `3+ card ${oneLevelMajor.name} support`,
+          },
+          { partnerBid: "Rebid", meaning: "Describes opener's hand" },
+        ],
+        confidence: "high",
+      };
     }
 
     return {
@@ -3659,12 +3885,17 @@ function getResponseToJumpOC(
 
 function getResponseToDouble(
   hand: Hand,
-  _opponentBid: string,
+  opponentBid: string,
 ): BidRecommendation {
   const analysis = analyzeHand(hand);
   const { hcp } = hand;
+  // The opponent's bid is the floor an advance must clear.  In a REOPENING
+  // double (e.g. 2♣-(2♠)-P-(P)-X) the floor can be at the 2-level, so a natural
+  // 1NT/1-level suit advance is illegal — bids must be lifted above it.
+  const oppIdx = isRealBid(opponentBid) ? BID_ORDER.indexOf(opponentBid) : -1;
+  const clears = (bid: string) => BID_ORDER.indexOf(bid) > oppIdx;
 
-  if (analysis.isBalanced && hcp >= 6 && hcp <= 10) {
+  if (analysis.isBalanced && hcp >= 6 && hcp <= 10 && clears("1NT")) {
     if (hand.hasStopperInOpponentSuit === false) {
       // No stopper — fall through to bid longest suit
     } else {
@@ -3680,7 +3911,7 @@ function getResponseToDouble(
       };
     }
   }
-  if (analysis.isBalanced && hcp >= 11 && hcp <= 12) {
+  if (analysis.isBalanced && hcp >= 11 && hcp <= 12 && clears("2NT")) {
     if (hand.hasStopperInOpponentSuit === false) {
       // No stopper — fall through to bid longest suit
     } else {
@@ -3711,13 +3942,18 @@ function getResponseToDouble(
     }
   }
 
-  // Bid longest suit
+  // Bid longest suit — at the cheapest level that CLEARS the opponent's bid.
+  // (A takeout double is forcing on the advancer: you must bid even with a weak
+  // hand, so a reopening double over a 2-level overcall pushes you to 3.)
   const { name: longestName } = longestSuitInfo(hand);
-  const level = hcp >= 9 ? 2 : 1;
+  const sym = suitSymbol(longestName);
+  let level = hcp >= 9 ? 2 : 1;
+  while (level < 7 && !clears(`${level}${sym}`)) level++;
+  const forced = level > (hcp >= 9 ? 2 : 1);
   return {
-    bid: `${level}${suitSymbol(longestName)}`,
+    bid: `${level}${sym}`,
     category: "Bid Longest Suit (Responding to Double)",
-    reasoning: `With ${hcp} HCP, bid your longest suit at the ${level === 1 ? "1" : "2"} level. Prefer a 4+ card major over a longer minor.${hcp >= 9 ? " Bidding at the 2 level shows 9-12 pts and invites partner to bid game with extra values." : ""}`,
+    reasoning: `With ${hcp} HCP, bid your longest suit (${longestName}) at the ${level} level${forced ? ` — the cheapest level that clears the opponents' ${opponentBid}. A takeout double is forcing, so you must bid your best suit even with a weak hand` : ". Prefer a 4+ card major over a longer minor"}.${hcp >= 9 && !forced ? " Bidding at the 2 level shows 9-12 pts and invites partner to bid game with extra values." : ""}`,
     handAnalysis: analysis,
     whatYourBidTellsPartner: `${hcp <= 8 ? "0-8 pts" : "9-12 pts"} — showing your best suit.`,
     expectedResponses: [],
@@ -3858,6 +4094,8 @@ function getResponderNTRebid(
   myNTBid: string,
   partnerNaturalBid: string,
   partnerFirstBid?: string,
+  /** My OWN first real bid — a 2NT is only Jacoby if it was my first (direct) call. */
+  myFirstBid?: string,
 ): BidRecommendation {
   const analysis = analyzeHand(hand);
   const { hcp } = hand;
@@ -3872,6 +4110,9 @@ function getResponderNTRebid(
   // auction may NOT die below game in the major.
   if (
     myNTBid === "2NT" &&
+    // My 2NT is only Jacoby if it was my FIRST (direct) response to the major.
+    // If I bid a suit first and 2NT later, that 2NT was a natural invitation.
+    (myFirstBid === undefined || myFirstBid === "2NT") &&
     (partnerFirstBid === "1♥" || partnerFirstBid === "1♠") &&
     partnerNaturalBid &&
     partnerNaturalBid !== "Pass"
@@ -5736,16 +5977,11 @@ function getRebidAfterSuit(
   // (showing values, to play). In that case we should pass.
   if (["2♦", "2♥", "2♠"].includes(myOpeningBid) && partnerResponse === "2NT") {
     if (contested) {
-      // Partner's 2NT is natural (values, no fit) — we have a weak overcall, pass.
-      const weakSuit = myOpeningBid.includes("♠")
-        ? "spades"
-        : myOpeningBid.includes("♥")
-          ? "hearts"
-          : "diamonds";
+      // Partner's 2NT is natural (values, no fit) after the interference — pass.
       return {
         bid: "Pass",
         category: "Pass — Partner's 2NT Is Natural (Contested Auction)",
-        reasoning: `You made a competitive overcall of ${myOpeningBid} over the opponent's opening. Partner's 2NT is natural, showing values and no fit for your ${weakSuit}. With a weak hand (${hand.hcp} HCP), pass and let partner play 2NT. The combined ${hand.hcp + 13}–${hand.hcp + 14} HCP should be enough for 2NT.`,
+        reasoning: `You opened a weak ${myOpeningBid} and an opponent overcalled, so partner's 2NT is NATURAL (showing values, to play) — the 2NT feature-inquiry is OFF once an opponent has bid. With a minimum weak 2 (${hand.hcp} HCP), pass and let partner play 2NT.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner: "Weak overcall — accepting partner's 2NT.",
         expectedResponses: [],
@@ -5914,6 +6150,23 @@ function getRebidAfterSuit(
       };
     }
 
+    // Partner used Jacoby 2NT first, then signed off in game (e.g. 1♥-2NT-3♥-4♥).
+    // That 4M is a GAME-FORCING raise (13+ support pts, 4+ trumps) declining
+    // slam — NOT a weak preemptive jump.  Opener has already described its hand
+    // with the 3-level reply; pass (partner placed the contract and denied slam).
+    if (isGameJump && partnerFirstBid === "2NT") {
+      return {
+        bid: "Pass",
+        category: "Pass — Partner's Jacoby 2NT Signoff at Game",
+        reasoning: `Partner started with Jacoby 2NT (a game-forcing raise, 13+ support points and 4+ trumps), then signed off in ${partnerResponse} after your description. That declines slam — it is NOT a weak preemptive raise. You have already shown your hand, so pass and play game.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner:
+          "Respecting partner's game signoff after the Jacoby 2NT auction.",
+        expectedResponses: [],
+        confidence: "high",
+      };
+    }
+
     // Partner jumped directly to game (e.g. 1♠ → 4♠).  In SAYC this raise is
     // PREEMPTIVE: 5+ trump support with a weak hand (fewer than 10 HCP) and
     // shape — strong raises go through a limit raise, 2/1, or Jacoby 2NT
@@ -6057,6 +6310,9 @@ function getRebidAfterSuit(
       // — a singleton or void that makes notrump risky.  A balanced or
       // semi-balanced hand (even with a long minor, e.g. 6-3-2-2) belongs in
       // 3NT: the long suit supplies tricks there too, and 5m needs two more.
+      // Pull a 3NT signoff to the minor game only with a distributional hand —
+      // a singleton or void — where notrump may be at risk.  A balanced hand
+      // passes (the long suit supplies tricks in NT too).
       const hasShortness =
         hasVoid(hand) ||
         [hand.spades, hand.hearts, hand.diamonds, hand.clubs].some(
@@ -6564,7 +6820,32 @@ function getRebidAfterSuit(
       };
     }
 
-    // ── MEDIUM: jump rebid own suit (16-18 TP, 5-card suit) ──────────────────
+    // ── Balanced 12-14 minimum with a 5-card suit and partner responded at the
+    // 1-level: rebid 1NT (the descriptive minimum), NOT a 5-card suit (which
+    // promises 6).  Only when 1NT is still available (partner bid at the 1-level)
+    // and the hand can't afford a 2NT — i.e. a true minimum.
+    if (
+      analysis.isBalanced &&
+      myOpenSuitLen === 5 &&
+      tp <= 15 &&
+      parseInt(partnerResponse[0]) === 1 &&
+      BID_ORDER.indexOf("1NT") > BID_ORDER.indexOf(partnerResponse)
+    ) {
+      return {
+        bid: "1NT",
+        category: "1NT Rebid (Balanced, 12-14 HCP)",
+        reasoning: `With a balanced minimum (${hand.hcp} HCP) and only a 5-card ${myOpenSuit} suit, rebid 1NT — the descriptive minimum rebid. Rebidding the suit would promise 6.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: "Balanced 12-14 HCP, only 5 cards in my suit.",
+        expectedResponses: [
+          { partnerBid: "2♣", meaning: "Stayman / checkback" },
+          { partnerBid: "Pass", meaning: "Minimum — content" },
+        ],
+        confidence: "high",
+      };
+    }
+
+    // ── MEDIUM: jump rebid own suit (16-18 TP, 5+ card suit) ──────────────────
     if (myOpenSuitLen >= 5 && tp >= 16 && tp <= 18) {
       const jumpRebidBid = `${jumpLevel}${suitSymbol(myOpenSuit)}`;
       return {
@@ -6595,6 +6876,8 @@ function getRebidAfterSuit(
     // A minimum opener NEVER jumps — a jump rebid shows 16-18 and is handled by
     // the branches above.  With a minimum, rebid the 5+ card suit at the
     // cheapest level (non-forcing), no jump.
+    // Rebid own suit at the simple level (minimum opener, ≤15 TP).  Balanced
+    // 5-card-suit minimums that should rebid 1NT were diverted above.
     if (myOpenSuitLen >= 5 && tp <= 15) {
       const rebidBid = `${simpleLevel}${suitSymbol(myOpenSuit)}`;
       return {
@@ -6832,6 +7115,15 @@ function getRebidAfterNegativeDouble(
         ? "diamonds"
         : "clubs";
 
+  // Opener MUST act over partner's (forcing) negative double — bids must clear
+  // the overcall.  Lift a strain to the cheapest legal level above the overcall.
+  const ndOvercallIdx = isRealBid(overcall) ? BID_ORDER.indexOf(overcall) : -1;
+  const liftStrain = (minLevel: number, strainSym: string): string => {
+    let l = Math.max(1, minLevel);
+    while (l < 7 && BID_ORDER.indexOf(`${l}${strainSym}`) <= ndOvercallIdx) l++;
+    return `${l}${strainSym}`;
+  };
+
   // Guard: if the "overcall" we were handed is NT or a cuebid of our own
   // suit (e.g. partner doubled a Michaels cuebid), the negative-double
   // framework does not apply — partner's double shows values, not majors.
@@ -6871,12 +7163,16 @@ function getRebidAfterNegativeDouble(
     // An NT rebid is a notrump decision: judge by HCP and require a balanced
     // hand.  Distributional points must not push a shapely hand into NT.
     const ntRebidOK = hasStoppers && analysis.isBalanced && hand.hcp >= 15;
-    const rebidLevel = tp >= 18 ? 2 : 1;
-    const rebidBid = ntRebidOK ? "1NT" : `${rebidLevel}${suitSymbol(openSuit)}`;
+    // Partner's double showed the minors — prefer supporting opener's longer
+    // minor (cleared above the overcall) over rebidding the major.
+    const myMinor = longerMinor(hand);
+    const rebidBid = ntRebidOK
+      ? liftStrain(hand.hcp >= 18 ? 2 : 1, "NT")
+      : liftStrain(tp >= 18 ? 2 : 1, suitSymbol(myMinor));
     return {
       bid: rebidBid,
       category: "Rebid After Negative Double",
-      reasoning: `Partner's negative double indicates both minors (or an unusual hand). ${ntRebidOK ? "With a balanced minimum and stoppers in both majors, bid 1NT." : `Rebid your ${openSuit} to show a minimum opener with no clear fit.`}`,
+      reasoning: `Partner's negative double indicates both minors (or an unusual hand). ${ntRebidOK ? `With a balanced minimum and stoppers in both majors, bid ${rebidBid}.` : `Bid your ${myMinor} (partner's implied suit) at ${rebidBid} — opener must act over the negative double.`}`,
       handAnalysis: analysis,
       whatYourBidTellsPartner: ntRebidOK
         ? "Balanced minimum opener, stoppers in both majors."
@@ -6943,10 +7239,11 @@ function getRebidAfterNegativeDouble(
   // No fit — bid NT with stopper or rebid own suit.  NT level is an HCP
   // decision (the hand is already balanced here).
   if (analysis.isBalanced && hand.hasStopperInOpponentSuit !== false) {
+    const ntBid = liftStrain(hand.hcp >= 18 ? 2 : 1, "NT");
     return {
-      bid: hand.hcp >= 18 ? "2NT" : "1NT",
+      bid: ntBid,
       category: "NT Rebid After Negative Double",
-      reasoning: `No 4-card fit for partner's shown suit. With a balanced hand and stopper in the overcalled suit, bid ${hand.hcp >= 18 ? "2NT" : "1NT"}.`,
+      reasoning: `No 4-card fit for partner's shown suit. With a balanced hand and stopper in the overcalled suit, bid ${ntBid}.`,
       handAnalysis: analysis,
       whatYourBidTellsPartner: `${hand.hcp >= 18 ? "18-19" : "12-14"} HCP balanced, stopper in their suit. (With 15-17 balanced you would have opened 1NT.)`,
       expectedResponses: [],
@@ -6958,8 +7255,7 @@ function getRebidAfterNegativeDouble(
   // Per SAYC / bridgebum.com: "Bid partner's shown suit with only 3 cards (last resort)."
   // Showing 3-card support is preferred over rebidding a 5-card minor.
   if (myFitLen === 3) {
-    const threeCardBid =
-      tp >= 17 ? `2${suitSymbol(shownSuit)}` : `1${suitSymbol(shownSuit)}`;
+    const threeCardBid = liftStrain(tp >= 17 ? 2 : 1, suitSymbol(shownSuit));
     return {
       bid: threeCardBid,
       category: `3-Card ${shownSuit.charAt(0).toUpperCase() + shownSuit.slice(1)} Support After Negative Double`,
@@ -6979,7 +7275,7 @@ function getRebidAfterNegativeDouble(
 
   const myOpenLen = hand[openSuit as keyof Hand] as number;
   return {
-    bid: suitBidLevel(openSuit, 2),
+    bid: liftStrain(2, suitSymbol(openSuit)),
     category: "Rebid Own Suit After Negative Double",
     reasoning: `No fit for partner's shown suit. Rebid your ${openSuit} suit (${myOpenLen} cards).`,
     handAnalysis: analysis,
@@ -7221,6 +7517,28 @@ function getRespondingToSuitAfterDouble(
     };
   }
 
+  // With a 5-card major and only partial support for partner's MINOR, show the
+  // major (natural, non-forcing after the double) rather than burying it in a
+  // minor raise.  A new suit here is to-play, not forcing.
+  const partnerOpenedMinor = suit === "diamonds" || suit === "clubs";
+  const my5Major =
+    hand.spades >= 5 ? "spades" : hand.hearts >= 5 ? "hearts" : null;
+  if (partnerOpenedMinor && my5Major && mySupport < 4 && tp >= 6 && tp <= 12) {
+    // Both majors outrank a 1-minor, so the major is available at the 1-level.
+    return {
+      bid: `1${suitSymbol(my5Major)}`,
+      category: "New Suit After Opponent's Double (5-card major)",
+      reasoning: `After partner opens 1${suitSymbol(suit)} and an opponent doubles, bid your 5-card ${my5Major} suit. A new suit by responder over a takeout double is natural and non-forcing — showing the major is better than raising the minor on ${mySupport}-card support.`,
+      handAnalysis: analysis,
+      whatYourBidTellsPartner: `5+ ${my5Major}, about 6-12 pts. Natural, non-forcing.`,
+      expectedResponses: [
+        { partnerBid: "Raise", meaning: `3-card ${my5Major} support` },
+        { partnerBid: "Rebid", meaning: "No fit — describes opener's hand" },
+      ],
+      confidence: "high",
+    };
+  }
+
   if (mySupport >= 3 && supportTP >= 10) {
     return {
       bid: "2NT",
@@ -7240,14 +7558,36 @@ function getRespondingToSuitAfterDouble(
     };
   }
 
-  if (mySupport >= 3 && supportTP >= 6 && supportTP <= 9) {
+  // Pre-emptive jump raise.  For a MAJOR fit, 3-card support is enough (a common
+  // obstructive treatment).  For a MINOR, require 4+ trumps (Law of Total Tricks:
+  // 3-card support = 8 trumps belongs at the 2-level), so 3-card minor support
+  // makes a simple raise instead (below).
+  const suitIsMajor = suit === "hearts" || suit === "spades";
+  if (
+    (mySupport >= 4 || (mySupport >= 3 && suitIsMajor)) &&
+    supportTP >= 6 &&
+    supportTP <= 9
+  ) {
     return {
       bid: `3${suitSymbol(suit)}`,
       category: "Pre-emptive Raise After Opponent's Double",
-      reasoning: `After partner opens and an opponent doubles, a jump raise is PRE-EMPTIVE (not invitational). With 3+ ${suit} support and 6-9 pts, raise to 3${suitSymbol(suit)} to make things difficult for the opponents.`,
+      reasoning: `After partner opens and an opponent doubles, a jump raise is PRE-EMPTIVE (not invitational). With ${mySupport}-card ${suit} support and 6-9 pts, raise to 3${suitSymbol(suit)} to make things difficult for the opponents.`,
       handAnalysis: analysis,
       whatYourBidTellsPartner:
-        "3+ card support, 6-9 pts. Pre-emptive raise — not invitational.",
+        "Pre-emptive raise (3+ support for a major, 4+ for a minor), 6-9 pts — not invitational.",
+      expectedResponses: [],
+      confidence: "high",
+    };
+  }
+
+  // 3-card MINOR support, 6-9 pts: a simple (non-jump) competitive raise.
+  if (mySupport >= 3 && supportTP >= 6 && supportTP <= 9) {
+    return {
+      bid: `2${suitSymbol(suit)}`,
+      category: "Simple Raise After Opponent's Double (3-card support)",
+      reasoning: `After partner opens 1${suitSymbol(suit)} and an opponent doubles, with ${supportTP} support points and 3-card ${suit} support, make a simple raise to 2${suitSymbol(suit)} — a jump would promise 4+ trumps.`,
+      handAnalysis: analysis,
+      whatYourBidTellsPartner: `3-card ${suit} support, 6-9 pts. Competitive raise.`,
       expectedResponses: [],
       confidence: "high",
     };
@@ -8254,7 +8594,11 @@ function getRecommendationRaw(
       return getResponseToTwoClub(hand);
 
     case "responding-weak2":
-      return getResponseToWeak2(hand, context.partnerBid ?? "2♥");
+      return getResponseToWeak2(
+        hand,
+        context.partnerBid ?? "2♥",
+        isRealBid(context.rhoBid) || isRealBid(context.lhoBid),
+      );
 
     case "responding-preempt":
       return getResponseToPreempt(hand, context.partnerBid ?? "3♥");
@@ -8322,6 +8666,7 @@ function getRecommendationRaw(
         context.myPreviousBid ?? "2NT",
         context.partnerBid ?? "Pass",
         context.partnerFirstBid,
+        context.myFirstBid,
       );
 
     case "rebid-after-suit": {
@@ -9991,7 +10336,18 @@ function deriveSituationCore(
       };
     }
     if (prevPartnerBid === "Double" || prevPartnerResponse === "Double") {
-      const overcall = rhoBid;
+      // The overcaller is whichever opponent made a real suit bid (usually
+      // opener's LHO — the seat between opener and the doubling partner).  Use
+      // the higher of the two opponents' real bids as the floor.
+      const oppRealBids = [lhoBid, rhoBid].filter((b): b is string =>
+        isRealBid(b),
+      );
+      const overcall =
+        oppRealBids.length > 0
+          ? oppRealBids.sort(
+              (a, b) => BID_ORDER.indexOf(b) - BID_ORDER.indexOf(a),
+            )[0]
+          : rhoBid;
       return {
         situation: "rebid-after-negative-double",
         myPreviousBid: myLastBid,
@@ -10463,6 +10819,18 @@ function deriveSituationCore(
         vulnerability: vul,
       };
     }
+    // Partner REOPENED with a double after the opponent's overcall (e.g.
+    // 2♣-(2♠)-P-(P)-Double).  That double is takeout/cards asking me to bid —
+    // advance it (bid my best suit), do NOT fall back to "respond to the
+    // opening", which would ignore the double and pass below the contract.
+    if (partnerBid === "Double") {
+      return {
+        situation: "responding-to-double",
+        rhoBid: opponentBid,
+        vulnerability: vul,
+      };
+    }
+
     // Partner opened pre-empt or 2, opponent bid → just respond to partner
     // Pass through the opponent's bid so the UI can ask about stoppers when needed.
     // First: if partner has REBID (their latest bid ≠ their opening bid), treat as

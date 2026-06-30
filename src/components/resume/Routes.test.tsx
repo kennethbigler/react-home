@@ -3,10 +3,18 @@ import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
 import ResumeRoutes from "./Routes";
 
-// Keep this route smoke test focused on routing. The Cars page has dedicated
-// tests, and rendering several Highcharts instances makes jsdom cleanup flaky.
+// Keep route smoke tests focused on routing. Heavy chart pages have dedicated
+// tests, and rendering many Highcharts instances makes jsdom cleanup flaky.
 vi.mock("./cars/graphs/CarGraphs", () => ({
   default: () => <div data-testid="car-graphs" />,
+}));
+
+vi.mock("./f1", () => ({
+  default: () => <h1>F1</h1>,
+}));
+
+vi.mock("./travel-map", () => ({
+  default: () => <h1>Travel</h1>,
 }));
 
 const routeCases = [
@@ -21,7 +29,7 @@ const routeCases = [
   { path: "/travel", heading: "Travel" },
 ];
 
-const ROUTE_LOAD_TIMEOUT = 90000;
+const ROUTE_LOAD_TIMEOUT = 15000;
 
 describe("resume | Routes", () => {
   it.each(routeCases)(

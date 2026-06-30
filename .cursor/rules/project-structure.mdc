@@ -1,6 +1,6 @@
 ---
 description: Project directory structure and important files reference
-globs:
+globs: **/*
 alwaysApply: true
 ---
 # Project Structure
