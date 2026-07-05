@@ -1,13 +1,6 @@
 import { lazy } from "react";
 import { type MenuItem, isNavMenuItem } from "../common/menu-types";
 
-export type {
-  MenuItem,
-  MenuLink,
-  NavMenuItem,
-  RouteMenuItem,
-} from "../common/menu-types";
-
 const summaryRoute = {
   name: "Summary",
   route: "",

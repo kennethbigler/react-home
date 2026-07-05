@@ -1,15 +1,15 @@
 import type { ComponentType, LazyExoticComponent } from "react";
 
-export interface RouteComponentProps {
+interface RouteComponentProps {
   onItemClick?: (loc: string) => void;
 }
 
-export type LazyRouteComponent = LazyExoticComponent<
+type LazyRouteComponent = LazyExoticComponent<
   ComponentType<RouteComponentProps>
 >;
 
 /** Visual separator in a navigation menu. */
-export type MenuDivider = { divider: true };
+type MenuDivider = { divider: true };
 
 /** A menu entry that registers a lazy-loaded route in this section's router. */
 export type RouteMenuItem = {
@@ -23,13 +23,13 @@ export type RouteMenuItem = {
  * A menu link to another section (e.g. resume menu → /games).
  * Routed by a different router; no Component registered here.
  */
-export type MenuLink = {
+type MenuLink = {
   link: true;
   name: string;
   route: string;
 };
 
-export type NavMenuItem = RouteMenuItem | MenuLink;
+type NavMenuItem = RouteMenuItem | MenuLink;
 
 export type MenuItem = MenuDivider | NavMenuItem;
 

@@ -215,7 +215,7 @@ const drivers: Driver[] = [
   {
     name: "Arvid Lindblad",
     color: RB_HEX,
-    points: [null, null, null, null, null, null, null, null, 12],
+    points: [null, null, null, null, null, null, null, null, 20],
     standings: [null, null, null, null, null, null, null, null, 11],
     thisYear: [0, 4, 4, 4, 4, 5, 13, 12, 14, 20],
   },

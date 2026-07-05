@@ -5,13 +5,6 @@ import {
   isRouteMenuItem,
 } from "../common/menu-types";
 
-export type {
-  MenuItem,
-  MenuLink,
-  NavMenuItem,
-  RouteMenuItem,
-} from "../common/menu-types";
-
 const gameHomeRoute = {
   name: "Home - Games",
   route: "",
