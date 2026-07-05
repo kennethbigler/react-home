@@ -1,11 +1,16 @@
 import { lazy } from "react";
+import {
+  type MenuItem,
+  isNavMenuItem,
+  isRouteMenuItem,
+} from "../common/menu-types";
 
-export interface MenuItem {
-  name?: string;
-  route?: string;
-  divider?: boolean;
-  icon?: string;
-}
+export type {
+  MenuItem,
+  MenuLink,
+  NavMenuItem,
+  RouteMenuItem,
+} from "../common/menu-types";
 
 const gameHomeRoute = {
   name: "Home - Games",
@@ -118,20 +123,10 @@ const menuItems: MenuItem[] = [
   ...gameItems,
 ];
 
-export const gameRoutes = [
-  gameHomeRoute,
-  ...socialItems,
-  ...trackerItems,
-  ...casinoItems,
-  ...gameItems,
-];
+export const gameRoutes = menuItems.filter(isRouteMenuItem);
 
 export const gameRouteLabels = new Map(
-  menuItems
-    .filter((item): item is Required<Pick<MenuItem, "name" | "route">> =>
-      Boolean(item.name && item.route !== undefined),
-    )
-    .map(({ name, route }) => [route, name]),
+  menuItems.filter(isNavMenuItem).map(({ name, route }) => [route, name]),
 );
 
 export default menuItems;

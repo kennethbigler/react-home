@@ -1,5 +1,5 @@
 import { Link as RouterLink } from "react-router-dom";
-import { MenuItem } from "./menu-items";
+import { RouteMenuItem } from "../common/menu-types";
 import {
   Typography,
   Avatar,
@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 interface HomeMenuItemProps {
-  items: MenuItem[];
+  items: RouteMenuItem[];
   title: string;
   onClick?: (loc: string) => void;
 }
@@ -46,7 +46,7 @@ const HomeMenuItem = ({ items, title, onClick }: HomeMenuItemProps) => {
         {title}
       </Typography>
       <div style={menuWrapperStyles}>
-        {items.map(({ name, route, icon }: MenuItem) => (
+        {items.map(({ name, route, icon }) => (
           <ButtonBase
             aria-label={`Open ${name}`}
             component={RouterLink}

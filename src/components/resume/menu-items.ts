@@ -1,10 +1,12 @@
 import { lazy } from "react";
+import { type MenuItem, isNavMenuItem } from "../common/menu-types";
 
-export interface MenuItem {
-  divider?: boolean;
-  name?: string;
-  route?: string;
-}
+export type {
+  MenuItem,
+  MenuLink,
+  NavMenuItem,
+  RouteMenuItem,
+} from "../common/menu-types";
 
 const summaryRoute = {
   name: "Summary",
@@ -36,6 +38,12 @@ const presentationsRoute = {
   Component: lazy(() => import("./presentations")),
 };
 
+const a11yPracticeRoute = {
+  name: "A11y Practice",
+  route: "a11y",
+  Component: lazy(() => import("./a11y-practice")),
+};
+
 const compCalculatorRoute = {
   name: "Comp Calculator",
   route: "comp",
@@ -60,10 +68,12 @@ const travelMapRoute = {
   Component: lazy(() => import("./travel-map")),
 };
 
-const gamesRoute = {
+/** Links to /games, which is handled by the root games router (GamesHome). */
+const gamesLink = {
+  link: true,
   name: "Games",
   route: "games",
-};
+} as const;
 
 export const resumeRoutes = [
   summaryRoute,
@@ -71,6 +81,7 @@ export const resumeRoutes = [
   resumeRoute,
   educationRoute,
   presentationsRoute,
+  a11yPracticeRoute,
   compCalculatorRoute,
   f1Route,
   carsRoute,
@@ -83,21 +94,19 @@ const menuItems: MenuItem[] = [
   resumeRoute,
   educationRoute,
   presentationsRoute,
+  { divider: true },
+  a11yPracticeRoute,
   compCalculatorRoute,
   { divider: true },
   f1Route,
   carsRoute,
   travelMapRoute,
   { divider: true },
-  gamesRoute,
+  gamesLink,
 ];
 
 export const resumeRouteLabels = new Map(
-  menuItems
-    .filter((item): item is Required<Pick<MenuItem, "name" | "route">> =>
-      Boolean(item.name && item.route !== undefined),
-    )
-    .map(({ name, route }) => [route, name]),
+  menuItems.filter(isNavMenuItem).map(({ name, route }) => [route, name]),
 );
 
 export default menuItems;
