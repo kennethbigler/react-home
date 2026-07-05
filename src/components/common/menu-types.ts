@@ -33,8 +33,10 @@ type NavMenuItem = RouteMenuItem | MenuLink;
 
 export type MenuItem = MenuDivider | NavMenuItem;
 
+export const interleaveDividers = (groups: RouteMenuItem[][]): MenuItem[] =>
+  groups.flatMap((group, index) =>
+    index === 0 ? group : [{ divider: true }, ...group],
+  );
+
 export const isNavMenuItem = (item: MenuItem): item is NavMenuItem =>
   !("divider" in item);
-
-export const isRouteMenuItem = (item: MenuItem): item is RouteMenuItem =>
-  isNavMenuItem(item) && !("link" in item);
