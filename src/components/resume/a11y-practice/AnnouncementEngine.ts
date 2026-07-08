@@ -71,10 +71,8 @@ class AnnouncementEngine {
       // This gives you a "heartbeat" of announcements that feels responsive without flooding.
       // You can combine both strategies: flush on sentence boundary or on timer, whichever comes first.
       // Race resolved because debounceMs passed with no new token
-      if (buffer && lastTokenAt && Date.now() - lastTokenAt >= debounceMs) {
-        const text = flush();
-        if (text) yield { type: "announcement", value: text };
-      }
+      const text = flush();
+      if (text) yield { type: "announcement", value: text };
 
       // v1 (no debounce)
       // for await (const token of tokenStream) {

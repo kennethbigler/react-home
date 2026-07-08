@@ -32,7 +32,8 @@ const A11yPractice = () => {
             setStreamContent((prev) => prev + event.value);
           } else {
             // audibly update SR user on sentence boundaries or debounce time
-            setAnnouncement(event.value);
+            setAnnouncement("");
+            requestAnimationFrame(() => setAnnouncement(event.value));
           }
         }
 
@@ -72,7 +73,7 @@ const A11yPractice = () => {
         {isStreaming ? "Streaming…" : "Start stream"}
       </Button>
       <Typography sx={{ whiteSpace: "pre-line" }}>{streamContent}</Typography>
-      <p className="sr-only" role="status">
+      <p className="sr-only" role="status" aria-atomic="true">
         {announcement}
       </p>
     </div>
