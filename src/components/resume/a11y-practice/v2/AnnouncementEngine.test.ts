@@ -165,4 +165,33 @@ describe("resume | a11y-practice | AnnouncementEngine", () => {
     expect(announcements[1]).toBe("More text.");
     expect(announcements[1]).not.toContain("Hello world.");
   });
+
+  it("flushes on ellipsis boundary", async () => {
+    const engine = new AnnouncementEngine({
+      debounceMs: 500,
+      flushOnSentenceBoundary: true,
+    });
+
+    const eventsPromise = collect(
+      engine.process(streamFromTokens(["Wait.. ", "More text."])),
+    );
+    await vi.runAllTimersAsync();
+    const events = await eventsPromise;
+
+    expect(announcementsFrom(events)).toEqual(["Wait.. ", "More text."]);
+  });
+
+  it("does not emit duplicate announcements when debounce timer fires on empty buffer", async () => {
+    const engine = new AnnouncementEngine({
+      debounceMs: 100,
+      flushOnSentenceBoundary: true,
+    });
+
+    const eventsPromise = collect(engine.process(streamFromTokens(["Done."])));
+    await vi.runAllTimersAsync();
+    const events = await eventsPromise;
+
+    expect(announcementsFrom(events)).toEqual(["Done."]);
+    expect(tokensFrom(events)).toEqual(["Done."]);
+  });
 });

@@ -1,67 +1,21 @@
-import { useEffect, useState } from "react";
-import AnnouncementEngine from "./AnnouncementEngine";
-import mockTokenStream from "./mockTokenStream";
-import starWarsIntros from "./starWarsIntros";
-import { Button, Typography } from "@mui/material";
+import { useState } from "react";
+import { Box, Tab, Tabs, Typography } from "@mui/material";
+import CustomTabPanel from "./CustomTabPanel";
+import StreamExampleV1 from "./v1/StreamExample";
+import AnnouncementV2 from "./v2/StreamExample";
+
+function a11yProps(index: number) {
+  return {
+    id: `ally-practice-tab-${index}`,
+    "aria-controls": `ally-practice-tabpanel-${index}`,
+  };
+}
 
 const A11yPractice = () => {
-  const [streamContent, setStreamContent] = useState("");
-  const [announcement, setAnnouncement] = useState("");
-  const [isStreaming, setIsStreaming] = useState(false);
+  const [value, setValue] = useState(0);
 
-  useEffect(() => {
-    if (!isStreaming) return;
-
-    let cancelled = false;
-
-    async function runStream() {
-      try {
-        // initiate engine
-        const engine = new AnnouncementEngine({
-          debounceMs: 500,
-          flushOnSentenceBoundary: true,
-        });
-
-        // run engine on mock tokens coming in
-        for await (const event of engine.process(
-          mockTokenStream(starWarsIntros),
-        )) {
-          if (cancelled) return;
-          // visually update UI each time a token is received
-          if (event.type === "token") {
-            setStreamContent((prev) => prev + event.value);
-          } else {
-            // audibly update SR user on sentence boundaries or debounce time
-            setAnnouncement("");
-            requestAnimationFrame(() => setAnnouncement(event.value));
-          }
-        }
-
-        // The "Done" Signal
-        // One often-overlooked thing: when streaming completes, the user should get a clear signal.
-        // Something like a polite announcement of "Response complete" or a focus shift to the response lets AT users know they can now navigate and explore the full text.
-        // Without it, they're left wondering if more is coming.
-        if (!cancelled) {
-          setAnnouncement("Response complete");
-        }
-      } finally {
-        if (!cancelled) {
-          setIsStreaming(false);
-        }
-      }
-    }
-
-    void runStream();
-    // ensure stream doesn't continue to update on close
-    return () => {
-      cancelled = true;
-    };
-  }, [isStreaming]);
-
-  const handleStart = () => {
-    setStreamContent("");
-    setAnnouncement("");
-    setIsStreaming(true);
+  const handleChange = (_e: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
   };
 
   return (
@@ -69,13 +23,26 @@ const A11yPractice = () => {
       <Typography variant="h2" component="h1">
         A11y Practice
       </Typography>
-      <Button onClick={handleStart} disabled={isStreaming}>
-        {isStreaming ? "Streaming…" : "Start stream"}
-      </Button>
-      <Typography sx={{ whiteSpace: "pre-line" }}>{streamContent}</Typography>
-      <p className="sr-only" role="status" aria-atomic="true">
-        {announcement}
-      </p>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="a11y practice tab examples"
+        >
+          <Tab label="Chunking" {...a11yProps(0)} />
+          <Tab label="Chunking + Debounce" {...a11yProps(1)} />
+          <Tab label="TBD" {...a11yProps(2)} />
+        </Tabs>
+      </Box>
+      <CustomTabPanel value={value} index={0}>
+        <StreamExampleV1 />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <AnnouncementV2 />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <h2>TBD</h2>
+      </CustomTabPanel>
     </div>
   );
 };

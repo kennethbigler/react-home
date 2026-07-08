@@ -1,163 +1,62 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 import A11yPractice from "./A11yPractice";
 
-vi.mock("./starWarsIntros", () => ({
-  default: "Hello world. How are you?",
-}));
-
-vi.mock("./mockTokenStream", () => ({
-  default: vi.fn(),
-}));
-
-import mockTokenStream from "./mockTokenStream";
-
-const mockedTokenStream = vi.mocked(mockTokenStream);
-
-function streamFromTokens(tokens: string[]): AsyncIterable<string> {
-  return {
-    async *[Symbol.asyncIterator]() {
-      for (const token of tokens) yield token;
-    },
-  };
-}
-
-function delayedStreamFromTokens(
-  tokens: string[],
-  pauseAfterIndex: number,
-  pauseMs: number,
-): AsyncIterable<string> {
-  return {
-    async *[Symbol.asyncIterator]() {
-      for (let i = 0; i < tokens.length; i += 1) {
-        yield tokens[i];
-        if (i === pauseAfterIndex) {
-          await new Promise((resolve) => setTimeout(resolve, pauseMs));
-        }
-      }
-    },
-  };
-}
-
-const clickStartStream = () => {
-  fireEvent.click(screen.getByRole("button", { name: /start stream/i }));
-};
-
 describe("resume | a11y-practice | A11yPractice", () => {
-  beforeEach(() => {
-    mockedTokenStream.mockImplementation((text: string) =>
-      streamFromTokens(text.match(/\S+\s*/g) ?? []),
-    );
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it("renders the page heading, start button, and empty screen-reader status", () => {
+  it("renders the page heading and tab list", () => {
     render(<A11yPractice />);
 
     expect(
       screen.getByRole("heading", { level: 1, name: "A11y Practice" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /start stream/i })).toBeEnabled();
-
-    const status = screen.getByRole("status");
-    expect(status).toHaveClass("sr-only");
-    expect(status).toHaveTextContent("");
+    expect(
+      screen.getByRole("tablist", { name: /a11y practice tab examples/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("tab", { name: "Chunking", selected: true }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("tab", { name: "Chunking + Debounce" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "TBD" })).toBeInTheDocument();
   });
 
-  it("does not start streaming until the button is clicked", async () => {
+  it("shows the v1 stream example on the default tab", () => {
     render(<A11yPractice />);
 
-    expect(screen.getByRole("status")).toHaveTextContent("");
-    expect(mockedTokenStream).not.toHaveBeenCalled();
-
-    clickStartStream();
-
-    await waitFor(() => {
-      expect(mockedTokenStream).toHaveBeenCalled();
-    });
+    expect(
+      screen.getByRole("button", { name: /start stream/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveClass("sr-only");
   });
 
-  it("disables the button while streaming and re-enables it when complete", async () => {
+  it("switches to the debounce tab when selected", () => {
     render(<A11yPractice />);
 
-    clickStartStream();
+    fireEvent.click(screen.getByRole("tab", { name: "Chunking + Debounce" }));
 
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: /streaming/i })).toBeDisabled();
-    });
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: /start stream/i }),
-      ).toBeEnabled();
-    });
+    expect(
+      screen.getByRole("tab", { name: "Chunking + Debounce", selected: true }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /start stream/i }),
+    ).toBeInTheDocument();
   });
 
-  it("announcement node receives chunk, not full accumulated text", async () => {
-    mockedTokenStream.mockReturnValue(
-      delayedStreamFromTokens(
-        ["Hello ", "world. ", "How ", "are ", "you?"],
-        1,
-        500,
-      ),
-    );
-
+  it("shows placeholder content on the TBD tab", () => {
     render(<A11yPractice />);
-    clickStartStream();
 
-    await waitFor(() => {
-      expect(screen.getByRole("status")).toHaveTextContent("Hello world.");
-    });
+    fireEvent.click(screen.getByRole("tab", { name: "TBD" }));
 
-    expect(screen.getByRole("status")).not.toHaveTextContent("How are you?");
-    expect(screen.getByRole("status")).not.toHaveTextContent(
-      "Response complete",
-    );
+    expect(
+      screen.getByRole("heading", { level: 2, name: "TBD" }),
+    ).toBeVisible();
   });
 
-  it("announces completion signal when stream ends", async () => {
+  it("hides inactive tab panels", () => {
     render(<A11yPractice />);
-    clickStartStream();
 
-    await waitFor(() => {
-      expect(screen.getByRole("status")).toHaveTextContent("Response complete");
-    });
-  });
-
-  it("visible content and announced content stay in sync", async () => {
-    mockedTokenStream.mockReturnValue(
-      delayedStreamFromTokens(
-        ["Hello ", "world. ", "How ", "are ", "you?"],
-        1,
-        500,
-      ),
-    );
-
-    render(<A11yPractice />);
-    clickStartStream();
-
-    await waitFor(() => {
-      expect(screen.getByRole("status")).toHaveTextContent("Hello world.");
-    });
-
-    const visibleAtFirstBoundary = screen
-      .getAllByText(/Hello world\./)
-      .find((node) => !node.classList.contains("sr-only"));
-    expect(visibleAtFirstBoundary).toBeInTheDocument();
-    expect(screen.getByRole("status")).not.toHaveTextContent("How are you?");
-
-    await waitFor(() => {
-      const visibleWhenComplete = screen
-        .getAllByText(/Hello world\. How are you\?/)
-        .find((node) => !node.classList.contains("sr-only"));
-      expect(visibleWhenComplete).toBeInTheDocument();
-    });
-
-    await waitFor(() => {
-      expect(screen.getByRole("status")).toHaveTextContent("Response complete");
-    });
+    const panels = screen.getAllByRole("tabpanel", { hidden: true });
+    expect(panels.length).toBeGreaterThan(0);
   });
 });

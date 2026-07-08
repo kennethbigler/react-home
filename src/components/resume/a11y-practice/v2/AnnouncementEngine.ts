@@ -4,6 +4,8 @@ export type StreamEvent =
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+export const streamRegEx = /(?:[.?!]|\.{2,}|\n)\s*$/;
+
 // Fully pure, fully testable
 class AnnouncementEngine {
   constructor(
@@ -59,7 +61,7 @@ class AnnouncementEngine {
         // Rough idea — accumulate tokens, flush on sentence boundary
         // The tricky part is that LLMs don't always produce clean sentence boundaries,
         // and you don't want a screen reader user waiting 10 seconds for a long sentence to finish before hearing anything.
-        if (flushOnSentenceBoundary && /(?:[.?!]|\.{2,}|\n)\s*$/.test(buffer)) {
+        if (flushOnSentenceBoundary && streamRegEx.test(buffer)) {
           const text = flush();
           if (text) yield { type: "announcement", value: text };
         }
@@ -73,16 +75,6 @@ class AnnouncementEngine {
       // Race resolved because debounceMs passed with no new token
       const text = flush();
       if (text) yield { type: "announcement", value: text };
-
-      // v1 (no debounce)
-      // for await (const token of tokenStream) {
-      //   yield { type: "token", value: token };
-      //   buffer += token;
-      //   if (/(?:[.?!]|\.{2,}|\n)\s*$/.test(buffer)) {
-      //     yield { type: "announcement", value: buffer };
-      //     buffer = "";
-      //   }
-      // }
     }
 
     // ensure the last portion of tokens are provided if not on a clean boundary
