@@ -10,6 +10,12 @@ const PLAYER_DIST_PARSED: [number, number, number, number][] = playerDist.map(
   },
 );
 
+/** Split column-major script order into left/right columns for 2-col layout */
+export const splitScriptColumns = <T>(items: T[]): [T[], T[]] => {
+  const mid = Math.ceil(items.length / 2);
+  return [items.slice(0, mid), items.slice(mid)];
+};
+
 export const getGridSize = (pc: number, i: number) => {
   if (i < 3 || (pc % 2 === 0 && i >= pc - 3)) {
     return 4;
