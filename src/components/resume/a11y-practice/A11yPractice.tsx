@@ -4,10 +4,12 @@ import CustomTabPanel from "./CustomTabPanel";
 import StreamExampleV1 from "./v1/StreamExample";
 import AnnouncementV2 from "./v2/StreamExample";
 
+const tabPrefix = "ally-practice-tab";
+
 function a11yProps(index: number) {
   return {
-    id: `ally-practice-tab-${index}`,
-    "aria-controls": `ally-practice-tabpanel-${index}`,
+    id: `${tabPrefix}-${index}`,
+    "aria-controls": `${tabPrefix}panel-${index}`,
   };
 }
 

@@ -34,7 +34,7 @@ describe("resume | a11y-practice | CustomTabPanel", () => {
     );
 
     const panel = screen.getByRole("tabpanel");
-    expect(panel).toHaveAttribute("id", "simple-tabpanel-2");
-    expect(panel).toHaveAttribute("aria-labelledby", "simple-tab-2");
+    expect(panel).toHaveAttribute("id", "ally-practice-tabpanel-2");
+    expect(panel).toHaveAttribute("aria-labelledby", "ally-practice-tab-2");
   });
 });
