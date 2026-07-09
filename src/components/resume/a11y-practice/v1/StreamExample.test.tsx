@@ -44,13 +44,23 @@ const clickStartStream = () => {
 };
 
 describe("resume | a11y-practice | v1 StreamExample", () => {
+  let requestAnimationFrameSpy: ReturnType<typeof vi.spyOn>;
+
   beforeEach(() => {
+    requestAnimationFrameSpy = vi
+      .spyOn(globalThis, "requestAnimationFrame")
+      .mockImplementation((callback) => {
+        callback(0);
+        return 0;
+      });
+
     mockedTokenStream.mockImplementation((text: string) =>
       streamFromTokens(text.match(/\S+\s*/g) ?? []),
     );
   });
 
   afterEach(() => {
+    requestAnimationFrameSpy.mockRestore();
     vi.clearAllMocks();
   });
 
@@ -166,7 +176,14 @@ describe("resume | a11y-practice | v1 StreamExample", () => {
       expect(screen.getByRole("status")).toHaveTextContent("Response complete");
     });
 
+    expect(screen.getByText("Hello world. How are you?")).toBeInTheDocument();
+
     clickStartStream();
+
+    expect(
+      screen.queryByText("Hello world. How are you?"),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("");
 
     await waitFor(() => {
       expect(screen.getByRole("status")).toHaveTextContent("Response complete");
