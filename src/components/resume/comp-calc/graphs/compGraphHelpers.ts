@@ -59,11 +59,39 @@ type TooltipPoint = Pick<Highcharts.Point, "y"> & {
   series: Pick<Highcharts.Series, "color" | "name">;
 };
 
+export interface CompTooltipOptions {
+  finalInflationValue?: number | null;
+  hoveredPointIndex?: number;
+  selectedPointIndex?: number;
+}
+
 const stackedSeriesNames = new Set(["Stock", "Bonus", "Salary"]);
+
+const getInflationTooltipValue = (
+  point: TooltipPoint,
+  {
+    finalInflationValue,
+    hoveredPointIndex,
+    selectedPointIndex,
+  }: CompTooltipOptions,
+) => {
+  if (point.series.name !== "Inflation") {
+    return point.y;
+  }
+
+  const showFinalInflation =
+    finalInflationValue !== undefined &&
+    finalInflationValue !== null &&
+    hoveredPointIndex !== undefined &&
+    selectedPointIndex !== undefined &&
+    hoveredPointIndex === selectedPointIndex;
+
+  return showFinalInflation ? finalInflationValue : point.y;
+};
 
 export const formatCompTooltip = (
   points: TooltipPoint[],
-  finalInflationValue?: number | null,
+  options: CompTooltipOptions = {},
 ) => {
   const adjustedTotal = points.reduce((total, point) => {
     return stackedSeriesNames.has(point.series.name)
@@ -72,8 +100,7 @@ export const formatCompTooltip = (
   }, 0);
 
   const rows = points.map((point) => {
-    const value =
-      point.series.name === "Inflation" ? finalInflationValue : point.y;
+    const value = getInflationTooltipValue(point, options);
 
     return [
       `<span style="color:${point.series.color?.toString() || "inherit"}">&#9679;</span>`,
