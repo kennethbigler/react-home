@@ -4,12 +4,11 @@ interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+  tabPrefix: string;
 }
 
-const tabPrefix = "ally-practice-tab";
-
-const CustomTabPanel = (props: TabPanelProps) => {
-  const { children, value, index, ...other } = props;
+const TabPanel = (props: TabPanelProps) => {
+  const { children, value, index, tabPrefix, ...other } = props;
 
   return (
     <div
@@ -19,9 +18,9 @@ const CustomTabPanel = (props: TabPanelProps) => {
       aria-labelledby={`${tabPrefix}-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ pt: 2 }}>{children}</Box>}
     </div>
   );
 };
 
-export default CustomTabPanel;
+export default TabPanel;

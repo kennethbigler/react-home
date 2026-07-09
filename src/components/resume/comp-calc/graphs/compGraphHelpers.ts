@@ -11,6 +11,13 @@ export const SALARY = 2;
 export const TOTAL = 3;
 export const INFL = 4;
 
+export type CompChartPoint = [number, number];
+
+const entryDateToTimestamp = (entryDate: string): number => {
+  const { year, month, day } = dateHelper(entryDate);
+  return Date.UTC(year, month, day);
+};
+
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -85,8 +92,8 @@ export const buildCompChartData = (
   startIdx: number,
   compCalcEntries: CompCalcEntry[],
   compEntries: CompEntry[],
-) => {
-  const chartData: number[][] = [[], [], [], [], []];
+): CompChartPoint[][] => {
+  const chartData: CompChartPoint[][] = [[], [], [], [], []];
   if (compEntries.length > 0) {
     // set start basis for inflation calculation
     let startYear = dateHelper(compEntries[startIdx].entryDate).year;
@@ -99,13 +106,14 @@ export const buildCompChartData = (
     compEntries.forEach(({ bonus, salary, entryDate }, i) => {
       const { stock, stockAdj } = compCalcEntries[i];
       const total = stock + bonus + salary;
-      chartData[STOCK].push(stockAdj || stock);
-      chartData[BONUS].push(bonus);
-      chartData[SALARY].push(salary);
-      chartData[TOTAL].push(total);
+      const x = entryDateToTimestamp(entryDate);
+      chartData[STOCK].push([x, stockAdj || stock]);
+      chartData[BONUS].push([x, bonus]);
+      chartData[SALARY].push([x, salary]);
+      chartData[TOTAL].push([x, total]);
 
       if (startIsLastEntry) {
-        chartData[INFL].push(total);
+        chartData[INFL].push([x, total]);
         return;
       }
 
@@ -115,9 +123,9 @@ export const buildCompChartData = (
         for (; startYear < endYear; startYear += 1) {
           startTC *= inflationKey[startYear];
         }
-        chartData[INFL].push(startTC);
+        chartData[INFL].push([x, startTC]);
       } else {
-        chartData[INFL].push(bonus + salary + (stockAdj || stock));
+        chartData[INFL].push([x, bonus + salary + (stockAdj || stock)]);
       }
     });
   }

@@ -301,15 +301,31 @@ describe("Graphs", () => {
       mockCompEntries,
     );
 
-    expect(chartData[4][0]).toBe(
+    expect(chartData[4][0][1]).toBe(
       mockCompEntries[0].salary +
         mockCompEntries[0].bonus +
         mockCompCalcEntries[0].stockAdj,
     );
-    expect(chartData[4][1]).toBeGreaterThan(chartData[4][0]);
+    expect(chartData[4][1][1]).toBeGreaterThan(chartData[4][0][1]);
   });
 
   it("returns empty chart series without compensation entries", () => {
     expect(buildCompChartData(0, [], [])).toEqual([[], [], [], [], []]);
+  });
+
+  it("uses entry dates as x-axis timestamps", () => {
+    const chartData = buildCompChartData(
+      0,
+      mockCompCalcEntries,
+      mockCompEntries,
+    );
+
+    expect(chartData[0].map(([x]) => x)).toEqual([
+      Date.UTC(2020, 0, 1),
+      Date.UTC(2021, 0, 1),
+      Date.UTC(2022, 0, 1),
+    ]);
+    expect(chartData[0][1][0]).toBeGreaterThan(chartData[0][0][0]);
+    expect(chartData[0][2][0]).toBeGreaterThan(chartData[0][1][0]);
   });
 });

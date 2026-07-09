@@ -76,7 +76,7 @@ const CompChart = ({
   }, [compEntries, compCalcEntries, startIdx, color]);
 
   const tooltipFormatter = useMemo(() => {
-    const finalInflationValue = compChartData[INFL].at(-1);
+    const finalInflationValue = compChartData[INFL].at(-1)?.[1];
 
     return function (this: Highcharts.Point) {
       return formatCompTooltip(this.points || [this], finalInflationValue);
@@ -97,7 +97,7 @@ const CompChart = ({
         <Credits enabled={false} />
         <Legend enabled={false} />
         <Title style={{ color }}>Total Comp</Title>
-        <XAxis visible={false} />
+        <XAxis type="datetime" visible={false} />
         <YAxis title={{ text: undefined }} labels={{ style: { color } }} />
         <Tooltip
           shared={true}

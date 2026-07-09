@@ -1,13 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import CustomTabPanel from "./CustomTabPanel";
+import TabPanel from "./TabPanel";
 
-describe("resume | a11y-practice | CustomTabPanel", () => {
+const tabPrefix = "test-tab";
+
+describe("common | tab-panel | TabPanel", () => {
   it("renders children when value matches index", () => {
     render(
-      <CustomTabPanel value={0} index={0}>
+      <TabPanel value={0} index={0} tabPrefix={tabPrefix}>
         <p>Panel content</p>
-      </CustomTabPanel>,
+      </TabPanel>,
     );
 
     expect(screen.getByText("Panel content")).toBeVisible();
@@ -16,9 +18,9 @@ describe("resume | a11y-practice | CustomTabPanel", () => {
 
   it("hides panel and omits children when value does not match index", () => {
     render(
-      <CustomTabPanel value={0} index={1}>
+      <TabPanel value={0} index={1} tabPrefix={tabPrefix}>
         <p>Hidden panel</p>
-      </CustomTabPanel>,
+      </TabPanel>,
     );
 
     const panel = screen.getByRole("tabpanel", { hidden: true });
@@ -26,15 +28,15 @@ describe("resume | a11y-practice | CustomTabPanel", () => {
     expect(screen.queryByText("Hidden panel")).not.toBeInTheDocument();
   });
 
-  it("sets tabpanel id and aria-labelledby from index", () => {
+  it("sets tabpanel id and aria-labelledby from tabPrefix and index", () => {
     render(
-      <CustomTabPanel value={2} index={2}>
+      <TabPanel value={2} index={2} tabPrefix={tabPrefix}>
         <p>Third panel</p>
-      </CustomTabPanel>,
+      </TabPanel>,
     );
 
     const panel = screen.getByRole("tabpanel");
-    expect(panel).toHaveAttribute("id", "ally-practice-tabpanel-2");
-    expect(panel).toHaveAttribute("aria-labelledby", "ally-practice-tab-2");
+    expect(panel).toHaveAttribute("id", "test-tabpanel-2");
+    expect(panel).toHaveAttribute("aria-labelledby", "test-tab-2");
   });
 });
