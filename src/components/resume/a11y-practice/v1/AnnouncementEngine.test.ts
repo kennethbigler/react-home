@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import AnnouncementEngine from "./AnnouncementEngine";
+import { announceFromTokenStream } from "./AnnouncementEngine";
 
 async function collect(iterable: AsyncIterable<string>): Promise<string[]> {
   const results: string[] = [];
@@ -15,11 +15,10 @@ function streamFromTokens(tokens: string[]): AsyncIterable<string> {
   };
 }
 
-describe("resume | a11y-practice | v1 AnnouncementEngine", () => {
+describe("resume | a11y-practice | v1 announceFromTokenStream", () => {
   it("flushes on sentence boundary", async () => {
-    const engine = new AnnouncementEngine();
     const announcements = await collect(
-      engine.process(
+      announceFromTokenStream(
         streamFromTokens(["Hello ", "world. ", "How ", "are ", "you?"]),
       ),
     );
@@ -28,26 +27,27 @@ describe("resume | a11y-practice | v1 AnnouncementEngine", () => {
   });
 
   it("flushes on newline boundary", async () => {
-    const engine = new AnnouncementEngine();
     const announcements = await collect(
-      engine.process(streamFromTokens(["Episode I\n", "THE PHANTOM MENACE\n"])),
+      announceFromTokenStream(
+        streamFromTokens(["Episode I\n", "THE PHANTOM MENACE\n"]),
+      ),
     );
 
     expect(announcements).toEqual(["Episode I\n", "THE PHANTOM MENACE\n"]);
   });
 
   it("flushes trailing buffer when stream ends without a boundary", async () => {
-    const engine = new AnnouncementEngine();
     const announcements = await collect(
-      engine.process(streamFromTokens(["no boundary here"])),
+      announceFromTokenStream(streamFromTokens(["no boundary here"])),
     );
 
     expect(announcements).toEqual(["no boundary here"]);
   });
 
   it("yields nothing for an empty stream", async () => {
-    const engine = new AnnouncementEngine();
-    const announcements = await collect(engine.process(streamFromTokens([])));
+    const announcements = await collect(
+      announceFromTokenStream(streamFromTokens([])),
+    );
 
     expect(announcements).toEqual([]);
   });

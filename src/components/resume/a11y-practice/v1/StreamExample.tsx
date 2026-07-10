@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AnnouncementEngine from "./AnnouncementEngine";
+import { announceFromTokenStream } from "./AnnouncementEngine";
 import mockTokenStream from "../stream-helpers/mockTokenStream";
 import starWarsIntros from "../stream-helpers/starWarsIntros";
 import { Button, Typography } from "@mui/material";
@@ -16,10 +16,8 @@ const StreamExample = () => {
 
     async function runStream() {
       try {
-        // initiate engine
-        const engine = new AnnouncementEngine();
         // run engine on mock tokens coming in
-        for await (const token of engine.process(
+        for await (const token of announceFromTokenStream(
           mockTokenStream(starWarsIntros),
         )) {
           if (cancelled) return;

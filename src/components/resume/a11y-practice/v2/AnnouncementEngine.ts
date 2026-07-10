@@ -25,35 +25,42 @@ class AnnouncementEngine {
     const { debounceMs, flushOnSentenceBoundary } = this.options;
     const iterator = tokenStream[Symbol.asyncIterator]();
     let buffer = "";
-    let lastTokenAt: number | null = null;
+    let debounceDeadline: number | null = null;
 
     const flush = (): string | null => {
       if (!buffer) return null;
       const text = buffer;
       buffer = "";
-      lastTokenAt = null;
+      debounceDeadline = null;
       return text;
     };
 
+    let pendingNext = iterator.next();
+
     while (true) {
       const msUntilDebounce =
-        buffer && lastTokenAt
-          ? Math.max(0, debounceMs - (Date.now() - lastTokenAt))
+        // if no buffer, or no deadline, set to infinity, otherwise ms value
+        buffer.length > 0 && debounceDeadline !== null
+          ? Math.max(0, debounceDeadline - Date.now())
           : Infinity;
-      // v2 KEY: whatever comes first, debounce timeout or next token
-      const outcome = await Promise.race([
-        iterator.next().then((result) => ({ kind: "token" as const, result })),
+
+      const outcome =
+        // no buffer or deadline, just wait for next token
         msUntilDebounce === Infinity
-          ? new Promise<never>(() => {})
-          : sleep(msUntilDebounce).then(() => ({ kind: "timer" as const })),
-      ]);
+          ? { kind: "token", result: await pendingNext }
+          : await Promise.race([
+              // v2 KEY: whatever comes first, debounce timeout or next token
+              pendingNext.then((result) => ({ kind: "token", result })),
+              sleep(msUntilDebounce).then(() => ({ kind: "timer" as const })),
+            ]);
 
       if (outcome.kind === "token") {
+        pendingNext = iterator.next(); // only advance after consuming
         if (outcome.result.done) break; // stream finished
         const token = outcome.result.value;
         yield { type: "token", value: token };
         buffer += token;
-        lastTokenAt = Date.now();
+        debounceDeadline = Date.now() + debounceMs;
 
         // Chunking
         // The idea is to buffer the incoming tokens and only push content to the live region when you have a meaningful unit — typically a sentence or clause boundary.
@@ -78,9 +85,8 @@ class AnnouncementEngine {
     }
 
     // ensure the last portion of tokens are provided if not on a clean boundary
-    if (buffer.length > 0) {
-      yield { type: "announcement", value: buffer };
-    }
+    const text = flush();
+    if (text) yield { type: "announcement", value: text };
   }
 }
 
