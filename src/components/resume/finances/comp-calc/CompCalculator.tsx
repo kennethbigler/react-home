@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import compCalcState, {
   compCalcRead,
-} from "../../../jotai/comp-calculator-atom";
+} from "../../../../jotai/comp-calculator-atom";
 import CompHeader from "./CompHeader";
 import Graphs from "./graphs/Graphs";
 import CompEntryDisplay from "./CompEntryDisplay";

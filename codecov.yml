@@ -100,7 +100,7 @@ component_management:
     - component_id: module_resume_comp_calc
       name: Comp Calculator
       paths:
-        - src/components/resume/comp-calc/**
+        - src/components/resume/finances/**
     - component_id: module_resume_education
       name: Education
       paths:

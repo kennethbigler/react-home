@@ -41,9 +41,9 @@ const resumeRouteGroups = [
       Component: lazy(() => import("./a11y-practice")),
     },
     {
-      name: "Comp Calculator",
-      route: "comp",
-      Component: lazy(() => import("./comp-calc")),
+      name: "Finances",
+      route: "finances",
+      Component: lazy(() => import("./finances")),
     },
   ],
   [

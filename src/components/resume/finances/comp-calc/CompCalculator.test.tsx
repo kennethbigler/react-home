@@ -1,11 +1,12 @@
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
-import CompCalculator from ".";
+import CompCalculator from "./CompCalculator";
 
 describe("resume | comp-calc | CompCalculator", () => {
   it("renders as expected", async () => {
     render(<CompCalculator />);
 
-    expect(screen.getByText("Comp Calculator")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "+ Entry" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "+ Stock" })).toBeInTheDocument();
 
     // open entry modal
     expect(screen.queryByText("New Comp Entry")).toBeNull();

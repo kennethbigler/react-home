@@ -13,7 +13,7 @@ import CompChart from "./CompGraph";
 import {
   CompCalcEntry,
   CompEntry,
-} from "../../../../jotai/comp-calculator-atom";
+} from "../../../../../jotai/comp-calculator-atom";
 
 describe("CompGraph", () => {
   const mockCompEntries: CompEntry[] = [

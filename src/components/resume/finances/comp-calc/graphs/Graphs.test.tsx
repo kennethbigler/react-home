@@ -12,7 +12,7 @@ import { buildCompChartData, formatCompTooltip } from "./compGraphHelpers";
 import {
   CompCalcEntry,
   CompEntry,
-} from "../../../../jotai/comp-calculator-atom";
+} from "../../../../../jotai/comp-calculator-atom";
 
 describe("Graphs", () => {
   const mockCompEntries: CompEntry[] = [

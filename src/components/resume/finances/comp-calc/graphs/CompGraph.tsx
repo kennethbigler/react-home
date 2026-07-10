@@ -12,12 +12,12 @@ import {
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../../../common/highcharts/coreHighcharts";
-import themeAtom from "../../../../jotai/theme-atom";
+import Highcharts from "../../../../common/highcharts/coreHighcharts";
+import themeAtom from "../../../../../jotai/theme-atom";
 import {
   CompCalcEntry,
   CompEntry,
-} from "../../../../jotai/comp-calculator-atom";
+} from "../../../../../jotai/comp-calculator-atom";
 import colors from "./colors";
 import {
   BONUS,

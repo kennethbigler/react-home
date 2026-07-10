@@ -7,9 +7,12 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { CompCalcEntry, CompEntry } from "../../../jotai/comp-calculator-atom";
-import dateObj from "../../../apis/DateHelper";
-import usDollar from "../../../apis/usDollar";
+import {
+  CompCalcEntry,
+  CompEntry,
+} from "../../../../jotai/comp-calculator-atom";
+import dateObj from "../../../../apis/DateHelper";
+import usDollar from "../../../../apis/usDollar";
 
 interface CompEntryCardProps {
   compEntry: CompEntry;
