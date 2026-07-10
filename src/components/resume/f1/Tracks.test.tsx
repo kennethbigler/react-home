@@ -13,7 +13,7 @@ describe("resume | f1 | Tracks", () => {
     render(<Tracks />);
 
     expect(
-      screen.getByText("Red Bull Ring, Spielberg, Austria"),
+      screen.getByText("Circuit de Spa-Francorchamps, Belgium"),
     ).toBeInTheDocument();
   });
 

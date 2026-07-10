@@ -23,6 +23,53 @@ describe("Roles", () => {
     expect(screen.getByText("Demons")).toBeInTheDocument();
   });
 
+  it("renders TB townsfolk in column-major script-card order", () => {
+    render(
+      <Roles
+        isText={true}
+        script={{ type: "base", index: 0 }}
+        roleKey={mockRoleKey}
+      />,
+    );
+
+    const townsfolkButtons = screen
+      .getAllByRole("button")
+      .map((button) => button.textContent)
+      .filter((name) =>
+        [
+          "Washerwoman",
+          "Librarian",
+          "Investigator",
+          "Chef",
+          "Empath",
+          "Fortune Teller",
+          "Undertaker",
+          "Monk",
+          "Ravenkeeper",
+          "Virgin",
+          "Slayer",
+          "Soldier",
+          "Mayor",
+        ].includes(name ?? ""),
+      );
+
+    expect(townsfolkButtons).toEqual([
+      "Washerwoman",
+      "Librarian",
+      "Investigator",
+      "Chef",
+      "Empath",
+      "Fortune Teller",
+      "Undertaker",
+      "Monk",
+      "Ravenkeeper",
+      "Virgin",
+      "Slayer",
+      "Soldier",
+      "Mayor",
+    ]);
+  });
+
   it("renders Sects & Violets script (script 1)", () => {
     render(
       <Roles

@@ -3,25 +3,10 @@ import { useState } from "react";
 import InfoPopup from "../../../../common/info-popover/InfoPopup";
 import BidAdvisor from "./BidAdvisor";
 import BiddingTable from "./BiddingTable";
+import TabPanel from "../../../../common/tab-panel/TabPanel";
+import a11yTabProps from "../../../../common/tab-panel/a11y-tab-props";
 
-interface TabPanelProps {
-  children: React.ReactNode;
-  value: number;
-  index: number;
-}
-
-function TabPanel({ children, value, index }: TabPanelProps) {
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`bid-dialog-tabpanel-${index}`}
-      aria-labelledby={`bid-dialog-tab-${index}`}
-    >
-      <Box sx={{ pt: 2 }}>{children}</Box>
-    </div>
-  );
-}
+const tabPrefix = "bid-dialog-tab";
 
 const BidDialog = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -51,16 +36,8 @@ const BidDialog = () => {
           onChange={(_, v: number) => setActiveTab(v)}
           aria-label="Bid dialog tabs"
         >
-          <Tab
-            label="Bid Advisor"
-            id="bid-dialog-tab-0"
-            aria-controls="bid-dialog-tabpanel-0"
-          />
-          <Tab
-            label="Cheat Sheet"
-            id="bid-dialog-tab-1"
-            aria-controls="bid-dialog-tabpanel-1"
-          />
+          <Tab label="Bid Advisor" {...a11yTabProps(tabPrefix, 0)} />
+          <Tab label="Cheat Sheet" {...a11yTabProps(tabPrefix, 1)} />
         </Tabs>
         <Button
           onClick={() => setResetKey((k) => k + 1)}
@@ -73,11 +50,11 @@ const BidDialog = () => {
         </Button>
       </Box>
 
-      <TabPanel value={activeTab} index={0}>
+      <TabPanel value={activeTab} index={0} tabPrefix={tabPrefix}>
         <BidAdvisor key={resetKey} />
       </TabPanel>
 
-      <TabPanel value={activeTab} index={1}>
+      <TabPanel value={activeTab} index={1} tabPrefix={tabPrefix}>
         <BiddingTable />
       </TabPanel>
     </InfoPopup>

@@ -11,6 +11,13 @@ export const SALARY = 2;
 export const TOTAL = 3;
 export const INFL = 4;
 
+export type CompChartPoint = [number, number];
+
+const entryDateToTimestamp = (entryDate: string): number => {
+  const { year, month, day } = dateHelper(entryDate);
+  return Date.UTC(year, month, day);
+};
+
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -52,11 +59,39 @@ type TooltipPoint = Pick<Highcharts.Point, "y"> & {
   series: Pick<Highcharts.Series, "color" | "name">;
 };
 
+export interface CompTooltipOptions {
+  finalInflationValue?: number | null;
+  hoveredPointIndex?: number;
+  selectedPointIndex?: number;
+}
+
 const stackedSeriesNames = new Set(["Stock", "Bonus", "Salary"]);
+
+const getInflationTooltipValue = (
+  point: TooltipPoint,
+  {
+    finalInflationValue,
+    hoveredPointIndex,
+    selectedPointIndex,
+  }: CompTooltipOptions,
+) => {
+  if (point.series.name !== "Inflation") {
+    return point.y;
+  }
+
+  const showFinalInflation =
+    finalInflationValue !== undefined &&
+    finalInflationValue !== null &&
+    hoveredPointIndex !== undefined &&
+    selectedPointIndex !== undefined &&
+    hoveredPointIndex === selectedPointIndex;
+
+  return showFinalInflation ? finalInflationValue : point.y;
+};
 
 export const formatCompTooltip = (
   points: TooltipPoint[],
-  finalInflationValue?: number | null,
+  options: CompTooltipOptions = {},
 ) => {
   const adjustedTotal = points.reduce((total, point) => {
     return stackedSeriesNames.has(point.series.name)
@@ -65,8 +100,7 @@ export const formatCompTooltip = (
   }, 0);
 
   const rows = points.map((point) => {
-    const value =
-      point.series.name === "Inflation" ? finalInflationValue : point.y;
+    const value = getInflationTooltipValue(point, options);
 
     return [
       `<span style="color:${point.series.color?.toString() || "inherit"}">&#9679;</span>`,
@@ -85,8 +119,8 @@ export const buildCompChartData = (
   startIdx: number,
   compCalcEntries: CompCalcEntry[],
   compEntries: CompEntry[],
-) => {
-  const chartData: number[][] = [[], [], [], [], []];
+): CompChartPoint[][] => {
+  const chartData: CompChartPoint[][] = [[], [], [], [], []];
   if (compEntries.length > 0) {
     // set start basis for inflation calculation
     let startYear = dateHelper(compEntries[startIdx].entryDate).year;
@@ -99,13 +133,14 @@ export const buildCompChartData = (
     compEntries.forEach(({ bonus, salary, entryDate }, i) => {
       const { stock, stockAdj } = compCalcEntries[i];
       const total = stock + bonus + salary;
-      chartData[STOCK].push(stockAdj || stock);
-      chartData[BONUS].push(bonus);
-      chartData[SALARY].push(salary);
-      chartData[TOTAL].push(total);
+      const x = entryDateToTimestamp(entryDate);
+      chartData[STOCK].push([x, stockAdj || stock]);
+      chartData[BONUS].push([x, bonus]);
+      chartData[SALARY].push([x, salary]);
+      chartData[TOTAL].push([x, total]);
 
       if (startIsLastEntry) {
-        chartData[INFL].push(total);
+        chartData[INFL].push([x, total]);
         return;
       }
 
@@ -115,9 +150,9 @@ export const buildCompChartData = (
         for (; startYear < endYear; startYear += 1) {
           startTC *= inflationKey[startYear];
         }
-        chartData[INFL].push(startTC);
+        chartData[INFL].push([x, startTC]);
       } else {
-        chartData[INFL].push(bonus + salary + (stockAdj || stock));
+        chartData[INFL].push([x, bonus + salary + (stockAdj || stock)]);
       }
     });
   }

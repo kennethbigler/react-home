@@ -136,14 +136,53 @@ describe("RoleSection", () => {
       />,
     );
 
-    // Check that the grid size is applied to role containers
     const roleContainers = screen.getAllByText(
       /Villager|Werewolf|Seer|Doctor|Hunter|Tanner/,
     );
     roleContainers.forEach((button) => {
       const gridContainer = button.closest(".MuiGrid-root");
-      expect(gridContainer).toHaveClass("MuiGrid-grid-xs-6");
+      expect(gridContainer).toHaveClass("MuiGrid-grid-xs-12");
     });
+  });
+
+  it("renders column-major roles in left-then-right columns when gridSize is 6", () => {
+    const columnMajorRoles: BotCRole[] = [
+      { name: "A", icon: "A", alignment: "primary" },
+      { name: "B", icon: "B", alignment: "primary" },
+      { name: "C", icon: "C", alignment: "primary" },
+      { name: "D", icon: "D", alignment: "primary" },
+      { name: "E", icon: "E", alignment: "primary" },
+      { name: "F", icon: "F", alignment: "primary" },
+    ];
+
+    render(
+      <RoleSection
+        gridSize={6}
+        isText={true}
+        roleKey={{}}
+        roles={columnMajorRoles}
+        title="Script Roles"
+      />,
+    );
+
+    const buttons = screen.getAllByRole("button");
+    expect(buttons.map((button) => button.textContent)).toEqual([
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+    ]);
+
+    const leftColumn = buttons[0].closest(".MuiGrid-grid-xs-6");
+    const rightColumn = buttons[3].closest(".MuiGrid-grid-xs-6");
+    expect(leftColumn).toContainElement(buttons[0]);
+    expect(leftColumn).toContainElement(buttons[1]);
+    expect(leftColumn).toContainElement(buttons[2]);
+    expect(rightColumn).toContainElement(buttons[3]);
+    expect(rightColumn).toContainElement(buttons[4]);
+    expect(rightColumn).toContainElement(buttons[5]);
   });
 
   it("should center align role buttons", () => {

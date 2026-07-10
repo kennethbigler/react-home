@@ -23,6 +23,7 @@ const routeCases = [
   { path: "/resume", heading: "Resume" },
   { path: "/education", heading: "Education" },
   { path: "/presentations", heading: "Presentations & Hackathons" },
+  { path: "/a11y", heading: "A11y Practice" },
   { path: "/comp", heading: "Comp Calculator" },
   { path: "/f1", heading: "F1" },
   { path: "/cars", heading: "Ken's Cars" },

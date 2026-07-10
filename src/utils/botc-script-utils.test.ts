@@ -136,6 +136,50 @@ describe("botc-script-utils", () => {
       expect(script.minions.length).toBeGreaterThan(0);
       expect(script.demons.length).toBeGreaterThan(0);
     });
+
+    it("preserves column-major townsfolk order from botcscripts.com", () => {
+      const characters = [
+        "washerwoman",
+        "librarian",
+        "investigator",
+        "chef",
+        "empath",
+        "fortune_teller",
+        "undertaker",
+        "monk",
+        "ravenkeeper",
+        "virgin",
+        "slayer",
+        "soldier",
+        "mayor",
+        "butler",
+        "drunk",
+        "recluse",
+        "saint",
+        "poisoner",
+        "spy",
+        "scarletwoman",
+        "baron",
+        "imp",
+      ];
+      const script = buildScriptFromCharacters(characters);
+
+      expect(script.townsfolk.map((role) => role.name)).toEqual([
+        "Washerwoman",
+        "Librarian",
+        "Investigator",
+        "Chef",
+        "Empath",
+        "Fortune Teller",
+        "Undertaker",
+        "Monk",
+        "Ravenkeeper",
+        "Virgin",
+        "Slayer",
+        "Soldier",
+        "Mayor",
+      ]);
+    });
   });
 
   describe("getBaseScriptLabel", () => {

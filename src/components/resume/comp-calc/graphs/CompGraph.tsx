@@ -75,13 +75,20 @@ const CompChart = ({
     return { compChartData: chartData, options: chartOptions };
   }, [compEntries, compCalcEntries, startIdx, color]);
 
-  const tooltipFormatter = useMemo(() => {
-    const finalInflationValue = compChartData[INFL].at(-1);
+  const tooltipFormatter =
+    useMemo((): Highcharts.TooltipFormatterCallbackFunction => {
+      const finalInflationValue = compChartData[INFL].at(-1)?.[1];
 
-    return function (this: Highcharts.Point) {
-      return formatCompTooltip(this.points || [this], finalInflationValue);
-    };
-  }, [compChartData]);
+      return function (this: Highcharts.Point) {
+        const hoveredPointIndex = this.points?.[0]?.index ?? this.index;
+
+        return formatCompTooltip(this.points ?? [this], {
+          finalInflationValue,
+          hoveredPointIndex,
+          selectedPointIndex: startIdx,
+        });
+      };
+    }, [compChartData, startIdx]);
 
   const handlePointClick: Highcharts.PointClickCallbackFunction = function () {
     const { index } = this;
@@ -97,7 +104,7 @@ const CompChart = ({
         <Credits enabled={false} />
         <Legend enabled={false} />
         <Title style={{ color }}>Total Comp</Title>
-        <XAxis visible={false} />
+        <XAxis type="datetime" visible={false} />
         <YAxis title={{ text: undefined }} labels={{ style: { color } }} />
         <Tooltip
           shared={true}

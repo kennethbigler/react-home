@@ -118,7 +118,6 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1970,
     numLaps: 71,
     raceLen: 307.018,
-    next: true,
   },
   {
     circuitName: "Silverstone Circuit, Great Britain",
@@ -135,6 +134,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1950,
     numLaps: 44,
     raceLen: 308.052,
+    next: true,
   },
   {
     circuitName: "Hungaroring, Budapest, Hungary",

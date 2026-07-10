@@ -254,7 +254,7 @@ describe("Graphs", () => {
     });
   });
 
-  it("uses the final inflation value in the compensation tooltip", () => {
+  it("shows the final inflation value when hovering the selected point", () => {
     const tooltip = formatCompTooltip(
       [
         { y: 100000, series: { color: "green", name: "Stock" } },
@@ -263,11 +263,29 @@ describe("Graphs", () => {
         { y: 230000, series: { color: "brown", name: "Total" } },
         { y: 190000, series: { color: "black", name: "Inflation" } },
       ],
-      250000,
+      {
+        finalInflationValue: 250000,
+        hoveredPointIndex: 1,
+        selectedPointIndex: 1,
+      },
     );
 
     expect(tooltip).toContain("Inflation: <b>$250,000.00</b>");
     expect(tooltip).not.toContain("Inflation: <b>$190,000.00</b>");
+  });
+
+  it("shows the step inflation value when hovering a non-selected point", () => {
+    const tooltip = formatCompTooltip(
+      [{ y: 190000, series: { color: "black", name: "Inflation" } }],
+      {
+        finalInflationValue: 250000,
+        hoveredPointIndex: 0,
+        selectedPointIndex: 1,
+      },
+    );
+
+    expect(tooltip).toContain("Inflation: <b>$190,000.00</b>");
+    expect(tooltip).not.toContain("Inflation: <b>$250,000.00</b>");
   });
 
   it("formats missing tooltip values with defaults", () => {
@@ -301,15 +319,31 @@ describe("Graphs", () => {
       mockCompEntries,
     );
 
-    expect(chartData[4][0]).toBe(
+    expect(chartData[4][0][1]).toBe(
       mockCompEntries[0].salary +
         mockCompEntries[0].bonus +
         mockCompCalcEntries[0].stockAdj,
     );
-    expect(chartData[4][1]).toBeGreaterThan(chartData[4][0]);
+    expect(chartData[4][1][1]).toBeGreaterThan(chartData[4][0][1]);
   });
 
   it("returns empty chart series without compensation entries", () => {
     expect(buildCompChartData(0, [], [])).toEqual([[], [], [], [], []]);
+  });
+
+  it("uses entry dates as x-axis timestamps", () => {
+    const chartData = buildCompChartData(
+      0,
+      mockCompCalcEntries,
+      mockCompEntries,
+    );
+
+    expect(chartData[0].map(([x]) => x)).toEqual([
+      Date.UTC(2020, 0, 1),
+      Date.UTC(2021, 0, 1),
+      Date.UTC(2022, 0, 1),
+    ]);
+    expect(chartData[0][1][0]).toBeGreaterThan(chartData[0][0][0]);
+    expect(chartData[0][2][0]).toBeGreaterThan(chartData[0][1][0]);
   });
 });

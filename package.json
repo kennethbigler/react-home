@@ -27,8 +27,10 @@
     "analyze": "./scripts/analyze.sh",
     "lhci": "lhci autorun",
     "knip": "knip",
+    "tsc": "tsc",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --report-unused-disable-directives",
     "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet",
+    "verify": "npm run tsc && npm run knip && npm run lint && npm run test:coverage",
     "fetch-botc-scripts": "node scripts/fetch-botc-scripts.mjs"
   },
   "dependencies": {

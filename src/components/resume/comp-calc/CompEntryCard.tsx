@@ -110,9 +110,11 @@ const CompEntryCard = ({
                 >
                   {stockTick}
                 </Typography>
+                {priceThen > 0 && (
+                  <Typography>Price: {usDollar.format(priceThen)}</Typography>
+                )}
                 {grantQty > 0 && (
                   <>
-                    <Typography>Price: {usDollar.format(priceThen)}</Typography>
                     <Typography>Grant Qty: {grantQty}</Typography>
                     <Typography>Duration: {grantDuration} years</Typography>
                     <Divider aria-hidden />

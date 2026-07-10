@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { BotCRole } from "../../../../../jotai/botc-atom";
 import { Grid, Typography, Button } from "@mui/material";
+import { splitScriptColumns } from "../../botcHelpers";
 
 export type RoleKey = Record<string, boolean>;
 
@@ -39,6 +40,29 @@ const RoleSection = ({
     [isText, roles.length],
   );
 
+  const [leftColumn, rightColumn] = useMemo(
+    () => (gridSize === 6 ? splitScriptColumns(roles) : [[], []]),
+    [gridSize, roles],
+  );
+
+  const renderRoleButton = (role: BotCRole) => {
+    const selected = role.name in roleKey;
+    return (
+      <Grid key={role.name} size={12} sx={{ textAlign: "center" }}>
+        <Button
+          variant={selected ? "contained" : "outlined"}
+          color={role.alignment}
+          sx={buttonStyles}
+          // onRoleClick is curried: calling it during render returns the click handler
+          onClick={onRoleClick && onRoleClick(role, selected)}
+          title={role.name}
+        >
+          {isText ? role.name : role.icon}
+        </Button>
+      </Grid>
+    );
+  };
+
   return (
     <>
       <Grid size={12}>
@@ -46,23 +70,29 @@ const RoleSection = ({
         <Typography>{title}</Typography>
       </Grid>
 
-      {roles.map((role: BotCRole) => {
-        const selected = role.name in roleKey;
-        return (
-          <Grid key={role.name} size={gridSize} sx={{ textAlign: "center" }}>
-            <Button
-              variant={selected ? "contained" : "outlined"}
-              color={role.alignment}
-              sx={buttonStyles}
-              // onRoleClick is curried: calling it during render returns the click handler
-              onClick={onRoleClick && onRoleClick(role, selected)}
-              title={role.name}
-            >
-              {isText ? role.name : role.icon}
-            </Button>
-          </Grid>
-        );
-      })}
+      {gridSize === 6 ? (
+        <>
+          <Grid size={6}>{leftColumn.map(renderRoleButton)}</Grid>
+          <Grid size={6}>{rightColumn.map(renderRoleButton)}</Grid>
+        </>
+      ) : (
+        roles.map((role: BotCRole) => {
+          const selected = role.name in roleKey;
+          return (
+            <Grid key={role.name} size={gridSize} sx={{ textAlign: "center" }}>
+              <Button
+                variant={selected ? "contained" : "outlined"}
+                color={role.alignment}
+                sx={buttonStyles}
+                onClick={onRoleClick && onRoleClick(role, selected)}
+                title={role.name}
+              >
+                {isText ? role.name : role.icon}
+              </Button>
+            </Grid>
+          );
+        })
+      )}
     </>
   );
 };

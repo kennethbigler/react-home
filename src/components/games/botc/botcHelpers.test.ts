@@ -1,7 +1,31 @@
 import { describe, it, expect } from "vitest";
-import { getGridSize, getLieSeries } from "./botcHelpers";
+import { getGridSize, getLieSeries, splitScriptColumns } from "./botcHelpers";
 
 describe("botcHelpers", () => {
+  describe("splitScriptColumns", () => {
+    it("returns empty columns for an empty array", () => {
+      expect(splitScriptColumns([])).toEqual([[], []]);
+    });
+
+    it("puts a single item in the left column", () => {
+      expect(splitScriptColumns(["A"])).toEqual([["A"], []]);
+    });
+
+    it("splits even counts evenly", () => {
+      expect(splitScriptColumns(["A", "B", "C", "D"])).toEqual([
+        ["A", "B"],
+        ["C", "D"],
+      ]);
+    });
+
+    it("puts the extra item in the left column for odd counts", () => {
+      expect(splitScriptColumns(["A", "B", "C", "D", "E"])).toEqual([
+        ["A", "B", "C"],
+        ["D", "E"],
+      ]);
+    });
+  });
+
   describe("getGridSize", () => {
     it("returns 4 for early positions (i < 3)", () => {
       expect(getGridSize(10, 0)).toBe(4);
