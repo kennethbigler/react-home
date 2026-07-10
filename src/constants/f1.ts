@@ -103,7 +103,7 @@ const drivers: Driver[] = [
     color: ALPINE_HEX,
     points: [null, null, null, null, null, null, 5, 0, 18],
     standings: [null, null, null, null, null, null, 19, 20, 13],
-    thisYear: [0, 0, 1, 1, 7, 15, 15, 19, 16, 18],
+    thisYear: [0, 0, 1, 1, 7, 15, 15, 16, 16, 18],
   },
   {
     name: "Nyck De Vries",
@@ -217,7 +217,7 @@ const drivers: Driver[] = [
     color: RB_HEX,
     points: [null, null, null, null, null, null, null, null, 20],
     standings: [null, null, null, null, null, null, null, null, 11],
-    thisYear: [0, 4, 4, 4, 4, 5, 13, 12, 14, 20],
+    thisYear: [0, 4, 4, 4, 4, 5, 13, 13, 14, 20],
   },
   {
     name: "Kevin Magnussen",

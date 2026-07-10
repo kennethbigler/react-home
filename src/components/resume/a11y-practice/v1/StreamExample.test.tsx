@@ -62,6 +62,7 @@ describe("resume | a11y-practice | v1 StreamExample", () => {
   afterEach(() => {
     requestAnimationFrameSpy.mockRestore();
     vi.clearAllMocks();
+    vi.useRealTimers();
   });
 
   it("renders start button and empty screen-reader status", () => {

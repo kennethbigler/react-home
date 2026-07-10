@@ -46,6 +46,6 @@ describe("resume | a11y-practice | A11yPractice", () => {
     render(<A11yPractice />);
 
     const panels = screen.getAllByRole("tabpanel", { hidden: true });
-    expect(panels.length).toBeGreaterThan(0);
+    expect(panels.length).toBe(2);
   });
 });

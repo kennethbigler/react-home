@@ -6,15 +6,15 @@ import {
   isNavMenuItem,
 } from "../common/menu-types";
 
-const gameRouteGroups = [
-  [
+const gameRouteGroups = {
+  home: [
     {
       name: "Home - Games",
       route: "",
       Component: lazy(() => import("./Home")),
     },
   ],
-  [
+  social: [
     {
       name: "BotC",
       route: "botc",
@@ -34,7 +34,7 @@ const gameRouteGroups = [
       Component: lazy(() => import("./werewolf")),
     },
   ],
-  [
+  tracker: [
     {
       name: "Bridge",
       route: "bridge",
@@ -60,7 +60,7 @@ const gameRouteGroups = [
       Component: lazy(() => import("./type-checker")),
     },
   ],
-  [
+  casino: [
     {
       name: "BlackJack",
       route: "blackjack",
@@ -92,7 +92,7 @@ const gameRouteGroups = [
       Component: lazy(() => import("./yahtzee")),
     },
   ],
-  [
+  games: [
     {
       name: "Connect4",
       route: "connect4",
@@ -106,16 +106,18 @@ const gameRouteGroups = [
       Component: lazy(() => import("./tictactoe")),
     },
   ],
-] satisfies RouteMenuItem[][];
+} satisfies Record<string, RouteMenuItem[]>;
 
-export const socialItems = gameRouteGroups[1];
-export const trackerItems = gameRouteGroups[2];
-export const casinoItems = gameRouteGroups[3];
-export const gameItems = gameRouteGroups[4];
+export const socialItems = gameRouteGroups.social;
+export const trackerItems = gameRouteGroups.tracker;
+export const casinoItems = gameRouteGroups.casino;
+export const gameItems = gameRouteGroups.games;
 
-export const gameRoutes = gameRouteGroups.flat();
+export const gameRoutes = Object.values(gameRouteGroups).flat();
 
-const menuItems: MenuItem[] = interleaveDividers(gameRouteGroups);
+const menuItems: MenuItem[] = interleaveDividers(
+  Object.values(gameRouteGroups),
+);
 
 export const gameRouteLabels = new Map(
   menuItems.filter(isNavMenuItem).map(({ name, route }) => [route, name]),
