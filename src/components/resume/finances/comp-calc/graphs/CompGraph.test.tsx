@@ -3,17 +3,19 @@ import {
   getChartOptions,
   getSeriesByName,
   getTooltipFollowTouchMove,
+  getTooltipFormatter,
   resetCapturedCompChartConfig,
   selectChartPoint,
 } from "./tests/highchartsMocks";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { Provider } from "jotai";
+import { createStore, Provider } from "jotai";
 import CompChart from "./CompGraph";
-import {
-  CompCalcEntry,
-  CompEntry,
-} from "../../../../../jotai/comp-calculator-atom";
+import { CompCalcEntry, CompEntry } from "../../../../../jotai/finances-atom";
+import themeAtom, {
+  darkTheme,
+  lightTheme,
+} from "../../../../../jotai/theme-atom";
 
 describe("CompGraph", () => {
   const mockCompEntries: CompEntry[] = [
@@ -117,14 +119,6 @@ describe("CompGraph", () => {
     expect(onPointSelect).toHaveBeenCalledWith(0);
   });
 
-  it("ignores point clicks without an index", () => {
-    const { onPointSelect } = renderChart();
-
-    selectChartPoint(undefined);
-
-    expect(onPointSelect).not.toHaveBeenCalled();
-  });
-
   it("recalculates inflation series data when startIdx changes", () => {
     const { rerender } = render(
       <Provider>
@@ -153,5 +147,78 @@ describe("CompGraph", () => {
     const updatedInflation = getSeriesByName("Inflation")?.data;
 
     expect(initialInflation).not.toEqual(updatedInflation);
+  });
+
+  it("ignores point clicks without an index", () => {
+    const { onPointSelect } = renderChart();
+
+    selectChartPoint(undefined);
+
+    expect(onPointSelect).not.toHaveBeenCalled();
+  });
+
+  it("uses dark theme colors when theme mode is dark", () => {
+    const store = createStore();
+    store.set(themeAtom, darkTheme);
+
+    render(
+      <Provider store={store}>
+        <CompChart
+          startIdx={0}
+          compEntries={mockCompEntries}
+          compCalcEntries={mockCompCalcEntries}
+          onPointSelect={vi.fn()}
+        />
+      </Provider>,
+    );
+
+    expect(getChartOptions().colors?.at(-1)).toBe("white");
+  });
+
+  it("uses light theme colors when theme mode is light", () => {
+    const store = createStore();
+    store.set(themeAtom, lightTheme);
+
+    render(
+      <Provider store={store}>
+        <CompChart
+          startIdx={0}
+          compEntries={mockCompEntries}
+          compCalcEntries={mockCompCalcEntries}
+          onPointSelect={vi.fn()}
+        />
+      </Provider>,
+    );
+
+    expect(getChartOptions().colors?.at(-1)).toBe("black");
+  });
+
+  it("formats tooltip content for shared and single-point hovers", () => {
+    renderChart({ startIdx: 1 });
+
+    const formatter = getTooltipFormatter();
+    expect(formatter).toBeTruthy();
+
+    const tooltipPoint = {
+      index: 0,
+      y: 50000,
+      series: { name: "Stock", color: "#111111" },
+    } as Highcharts.Point;
+
+    const sharedTooltip = formatter?.call({
+      points: [
+        tooltipPoint,
+        {
+          index: 0,
+          y: 100000,
+          series: { name: "Salary", color: "#222222" },
+        } as Highcharts.Point,
+      ],
+    } as Highcharts.Point);
+    const singlePointTooltip = formatter?.call(tooltipPoint);
+
+    expect(sharedTooltip).toContain("Compensation");
+    expect(sharedTooltip).toContain("*Total:");
+    expect(singlePointTooltip).toContain("Stock:");
   });
 });

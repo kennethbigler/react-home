@@ -15,7 +15,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import dateHelper, { months } from "../../../../apis/DateHelper";
-import { CompEntry } from "../../../../jotai/comp-calculator-atom";
+import { CompEntry } from "../../../../jotai/finances-atom";
 
 const tfProps: TextFieldProps = {
   variant: "standard",

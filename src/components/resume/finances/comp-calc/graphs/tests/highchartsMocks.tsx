@@ -8,6 +8,7 @@ const chartTestState = vi.hoisted(() => ({
     data?: unknown;
   }>,
   tooltipFollowTouchMove: undefined as boolean | undefined,
+  tooltipFormatter: null as Highcharts.TooltipFormatterCallbackFunction | null,
   pointClickHandler: null as Highcharts.PointClickCallbackFunction | null,
 }));
 
@@ -15,6 +16,7 @@ export const resetCapturedCompChartConfig = () => {
   chartTestState.chartOptions = {};
   chartTestState.series = [];
   chartTestState.tooltipFollowTouchMove = undefined;
+  chartTestState.tooltipFormatter = null;
   chartTestState.pointClickHandler = null;
 };
 
@@ -22,6 +24,8 @@ export const getChartOptions = () => chartTestState.chartOptions;
 
 export const getTooltipFollowTouchMove = () =>
   chartTestState.tooltipFollowTouchMove;
+
+export const getTooltipFormatter = () => chartTestState.tooltipFormatter;
 
 export const selectChartPoint = (index: number | undefined) => {
   chartTestState.pointClickHandler?.call(
@@ -111,8 +115,15 @@ vi.mock("@highcharts/react", () => ({
     );
   },
   Title: ({ children }: { children?: ReactNode }) => <span>{children}</span>,
-  Tooltip: ({ followTouchMove }: { followTouchMove?: boolean }) => {
+  Tooltip: ({
+    followTouchMove,
+    formatter,
+  }: {
+    followTouchMove?: boolean;
+    formatter?: Highcharts.TooltipFormatterCallbackFunction;
+  }) => {
     chartTestState.tooltipFollowTouchMove = followTouchMove;
+    chartTestState.tooltipFormatter = formatter ?? null;
     return null;
   },
   XAxis: () => null,

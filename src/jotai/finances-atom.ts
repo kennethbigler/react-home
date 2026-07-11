@@ -29,7 +29,14 @@ interface PrevStock {
   exp: DateObj;
 }
 
+export interface ExpenseEntry {
+  name: string;
+  category: string;
+  value: number;
+}
+
 const compCalcAtom = atomWithStorage<CompEntry[]>("compCalcAtom", []);
+export const budgetAtom = atomWithStorage<ExpenseEntry[]>("budgetAtom", []);
 
 /* --------------------     Comp Calc State     -------------------- */
 export const compCalcRead = atom((get) => {

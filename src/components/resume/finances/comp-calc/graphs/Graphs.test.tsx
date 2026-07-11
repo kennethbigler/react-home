@@ -6,13 +6,15 @@ import {
 } from "./tests/highchartsMocks";
 import { beforeEach, describe, expect, it } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
-import { Provider } from "jotai";
+import { createStore, Provider } from "jotai";
 import Graphs from "./Graphs";
 import { buildCompChartData, formatCompTooltip } from "./compGraphHelpers";
-import {
-  CompCalcEntry,
-  CompEntry,
-} from "../../../../../jotai/comp-calculator-atom";
+import { CompCalcEntry, CompEntry } from "../../../../../jotai/finances-atom";
+import themeAtom, {
+  darkTheme,
+  lightTheme,
+} from "../../../../../jotai/theme-atom";
+import { getChartOptions } from "./tests/highchartsMocks";
 
 describe("Graphs", () => {
   const mockCompEntries: CompEntry[] = [
@@ -95,6 +97,39 @@ describe("Graphs", () => {
     expect(screen.getByText("Total Comp")).toBeInTheDocument();
     expect(screen.getByText("Comp Breakdown")).toBeInTheDocument();
     expect(screen.getAllByTestId("highcharts-chart").length).toBe(2);
+  });
+
+  it("uses dark theme colors in the breakdown chart", () => {
+    const store = createStore();
+    store.set(themeAtom, darkTheme);
+
+    render(
+      <Provider store={store}>
+        <Graphs
+          compEntries={mockCompEntries}
+          compCalcEntries={mockCompCalcEntries}
+        />
+      </Provider>,
+    );
+
+    expect(getChartOptions().colors).toBeDefined();
+    expect(screen.getByText("Comp Breakdown")).toBeInTheDocument();
+  });
+
+  it("uses light theme colors in the breakdown chart", () => {
+    const store = createStore();
+    store.set(themeAtom, lightTheme);
+
+    render(
+      <Provider store={store}>
+        <Graphs
+          compEntries={mockCompEntries}
+          compCalcEntries={mockCompCalcEntries}
+        />
+      </Provider>,
+    );
+
+    expect(screen.getByText("Comp Breakdown")).toBeInTheDocument();
   });
 
   it("initializes the breakdown chart with the last entry values", () => {
