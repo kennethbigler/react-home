@@ -27,6 +27,9 @@ export const getTooltipFollowTouchMove = () =>
 
 export const getTooltipFormatter = () => chartTestState.tooltipFormatter;
 
+export const formatTooltip = (context: Highcharts.Point) =>
+  chartTestState.tooltipFormatter?.call(context, {} as Highcharts.Tooltip);
+
 export const selectChartPoint = (index: number | undefined) => {
   chartTestState.pointClickHandler?.call(
     { index } as Highcharts.Point,

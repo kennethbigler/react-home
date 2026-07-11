@@ -47,7 +47,11 @@ const ExpenseEntryDialog = ({
     setValue(parseFloat(e.target.value));
 
   const handleSubmit = () => {
-    addExpenseEntry({ name, category, value });
+    addExpenseEntry({
+      name,
+      category,
+      value,
+    });
     resetState();
   };
 

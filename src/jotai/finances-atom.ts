@@ -29,14 +29,34 @@ interface PrevStock {
   exp: DateObj;
 }
 
+export const expenseEntryColors = [
+  "success",
+  "info",
+  "warning",
+  "error",
+  "primary",
+  "secondary",
+] as const;
+
+export type ExpenseEntryColor = (typeof expenseEntryColors)[number];
+
+export type BudgetCategoryColors = Partial<Record<string, ExpenseEntryColor>>;
+
 export interface ExpenseEntry {
   name: string;
   category: string;
   value: number;
 }
 
+export const normalizeBudgetCategoryKey = (category: string) =>
+  category.trim().toLowerCase();
+
 const compCalcAtom = atomWithStorage<CompEntry[]>("compCalcAtom", []);
 export const budgetAtom = atomWithStorage<ExpenseEntry[]>("budgetAtom", []);
+export const budgetCategoryColorsAtom = atomWithStorage<BudgetCategoryColors>(
+  "budgetCategoryColorsAtom",
+  {},
+);
 
 /* --------------------     Comp Calc State     -------------------- */
 export const compCalcRead = atom((get) => {

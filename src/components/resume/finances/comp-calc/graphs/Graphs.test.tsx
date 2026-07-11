@@ -3,6 +3,7 @@ import {
   getSeriesByName,
   resetCapturedCompChartConfig,
   selectChartPoint,
+  getChartOptions,
 } from "./tests/highchartsMocks";
 import { beforeEach, describe, expect, it } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
@@ -14,7 +15,6 @@ import themeAtom, {
   darkTheme,
   lightTheme,
 } from "../../../../../jotai/theme-atom";
-import { getChartOptions } from "./tests/highchartsMocks";
 
 describe("Graphs", () => {
   const mockCompEntries: CompEntry[] = [

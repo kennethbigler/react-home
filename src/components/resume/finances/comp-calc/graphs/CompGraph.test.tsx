@@ -4,6 +4,7 @@ import {
   getSeriesByName,
   getTooltipFollowTouchMove,
   getTooltipFormatter,
+  formatTooltip,
   resetCapturedCompChartConfig,
   selectChartPoint,
 } from "./tests/highchartsMocks";
@@ -205,7 +206,7 @@ describe("CompGraph", () => {
       series: { name: "Stock", color: "#111111" },
     } as Highcharts.Point;
 
-    const sharedTooltip = formatter?.call({
+    const sharedTooltip = formatTooltip({
       points: [
         tooltipPoint,
         {
@@ -215,7 +216,7 @@ describe("CompGraph", () => {
         } as Highcharts.Point,
       ],
     } as Highcharts.Point);
-    const singlePointTooltip = formatter?.call(tooltipPoint);
+    const singlePointTooltip = formatTooltip(tooltipPoint);
 
     expect(sharedTooltip).toContain("Compensation");
     expect(sharedTooltip).toContain("*Total:");
