@@ -20,12 +20,9 @@ describe("resume | finances | budgeting | ExpenseEntryCard", () => {
       />,
     );
 
-    expect(screen.getByText("Name: Rent")).toBeInTheDocument();
-    expect(screen.getByText("Category: Housing")).toBeInTheDocument();
-    expect(screen.getByText("Amount:")).toBeInTheDocument();
-    expect(screen.getByText("$2,000.00")).toBeInTheDocument();
+    expect(screen.getByText("Rent: $2,000.00")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText("Name: Rent"));
+    fireEvent.click(screen.getByRole("button", { name: "Rent: $2,000.00" }));
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
@@ -44,8 +41,9 @@ describe("resume | finances | budgeting | ExpenseEntryCard", () => {
       />,
     );
 
-    expect(screen.getByText("Allocation: 9% of salary")).toBeInTheDocument();
-    expect(screen.getByText("$750.00")).toBeInTheDocument();
+    expect(
+      screen.getByText("401k: $750.00 (9% of salary)"),
+    ).toBeInTheDocument();
   });
 
   it("renders multiple percent income sources", () => {
@@ -64,7 +62,7 @@ describe("resume | finances | budgeting | ExpenseEntryCard", () => {
     );
 
     expect(
-      screen.getByText("Allocation: 9% of salary + bonus"),
+      screen.getByText("401k: $900.00 (9% of salary + bonus)"),
     ).toBeInTheDocument();
   });
 
@@ -83,7 +81,9 @@ describe("resume | finances | budgeting | ExpenseEntryCard", () => {
       />,
     );
 
-    expect(screen.getByText("Allocation: 5% of stock adj")).toBeInTheDocument();
+    expect(
+      screen.getByText("Invest: $100.00 (5% of stock adj)"),
+    ).toBeInTheDocument();
   });
 
   it("renders optional color styling", () => {
@@ -96,6 +96,6 @@ describe("resume | finances | budgeting | ExpenseEntryCard", () => {
       />,
     );
 
-    expect(screen.getByText("$2,000.00")).toBeInTheDocument();
+    expect(screen.getByText("Rent: $2,000.00")).toBeInTheDocument();
   });
 });

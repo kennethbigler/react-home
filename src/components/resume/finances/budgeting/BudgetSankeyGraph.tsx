@@ -9,12 +9,13 @@ import usDollar from "../../../../apis/usDollar";
 import type { BudgetFlow } from "./helpers";
 import {
   buildBudgetSankeyData,
-  FEDERAL_TAX_LABEL,
+  BUDGET_WITHHOLDING_NODE_LABELS,
   getSankeyNodeSum,
   GROSS_INCOME_NODE,
   INCOME_NODE_LABELS,
   isCategorySankeyNode,
-  STATE_TAX_LABEL,
+  isPayrollSankeyNode,
+  PAYROLL_CATEGORY_KEY,
   UNALLOCATED_NODE,
 } from "./helpers";
 import { getBudgetSankeyNodeColors } from "./chartColors";
@@ -88,8 +89,9 @@ const BudgetSankeyGraph = memo(
                   const nodeId = node.id ?? "";
 
                   if (
-                    nodeId === FEDERAL_TAX_LABEL ||
-                    nodeId === STATE_TAX_LABEL ||
+                    BUDGET_WITHHOLDING_NODE_LABELS.includes(
+                      nodeId as (typeof BUDGET_WITHHOLDING_NODE_LABELS)[number],
+                    ) ||
                     nodeId === GROSS_INCOME_NODE ||
                     nodeId === UNALLOCATED_NODE ||
                     nodeId === INCOME_NODE_LABELS.salary ||
@@ -97,6 +99,11 @@ const BudgetSankeyGraph = memo(
                     nodeId === INCOME_NODE_LABELS.stockAdj
                   ) {
                     onCategorySelect(null);
+                    return;
+                  }
+
+                  if (isPayrollSankeyNode(nodeId)) {
+                    onCategorySelect(PAYROLL_CATEGORY_KEY);
                     return;
                   }
 
@@ -146,7 +153,9 @@ const BudgetSankeyGraph = memo(
             sumFormatted: formatCurrency(nodeSum),
             className:
               flow.categories.find(({ heading }) => heading === node.id)
-                ?.categoryKey === selectedCategoryKey
+                ?.categoryKey === selectedCategoryKey ||
+              (selectedCategoryKey === PAYROLL_CATEGORY_KEY &&
+                isPayrollSankeyNode(node.id))
                 ? "budget-sankey-selected"
                 : undefined,
           };

@@ -28,17 +28,14 @@ describe("resume | finances | budgeting | Budgeting", () => {
     await waitFor(() =>
       expect(screen.queryByText("New Expense Entry")).toBeNull(),
     );
-    expect(screen.getByText("Name: Groceries")).toBeInTheDocument();
+    expect(screen.getByText("Groceries: $250.00")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: "FOOD ($250.00)" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Category: Food")).toBeInTheDocument();
-    expect(screen.getByText("Amount:")).toBeInTheDocument();
-    expect(screen.getByText("$250.00")).toBeInTheDocument();
 
     // open edit entry modal with pre-filled values
     expect(screen.queryByText("Edit Expense Entry")).toBeNull();
-    fireEvent.click(screen.getByText("Name: Groceries"));
+    fireEvent.click(screen.getByRole("button", { name: "Groceries: $250.00" }));
     expect(screen.getByText("Edit Expense Entry")).toBeInTheDocument();
     expect(screen.getByLabelText("Name")).toHaveValue("Groceries");
     expect(screen.getByLabelText("Category")).toHaveValue("Food");
@@ -51,7 +48,7 @@ describe("resume | finances | budgeting | Budgeting", () => {
     await waitFor(() =>
       expect(screen.queryByText("Edit Expense Entry")).toBeNull(),
     );
-    expect(screen.getByText("$275.00")).toBeInTheDocument();
+    expect(screen.getByText("Groceries: $275.00")).toBeInTheDocument();
 
     // cancel closes dialog without saving
     fireEvent.click(screen.getByRole("button", { name: "+ Expense" }));
@@ -64,5 +61,6 @@ describe("resume | finances | budgeting | Budgeting", () => {
       expect(screen.queryByText("New Expense Entry")).toBeNull(),
     );
     expect(screen.queryByText("Name: Draft")).toBeNull();
+    expect(screen.queryByText("Draft:")).toBeNull();
   });
 });

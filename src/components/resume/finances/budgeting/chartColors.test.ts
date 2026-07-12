@@ -4,9 +4,13 @@ import {
   buildCategoryColorShades,
   colorizeBreakdownPieData,
   colorizeCategoryPieData,
+  colorizeIncomeOverviewPieData,
   getBudgetSankeyNodeColors,
   mixHexColors,
 } from "./chartColors";
+import { buildBudgetFlow, getLatestBudgetIncome } from "./helpers";
+import { FEDERAL_TAX_LABEL } from "../../../../constants/federalTaxBrackets";
+import { PAYROLL_NODE_LABEL } from "../../../../constants/payrollDeductions";
 
 const theme = createTheme();
 
@@ -30,10 +34,10 @@ describe("budgeting | chartColors", () => {
     ]);
   });
 
-  it("defaults to error palette when no category color is provided", () => {
+  it("defaults to grey shades when no category color is provided", () => {
     expect(buildCategoryColorShades(theme, undefined, 2)).toEqual([
-      theme.palette.error.light,
-      theme.palette.error.dark,
+      theme.palette.grey[300],
+      theme.palette.grey[700],
     ]);
   });
 
@@ -64,14 +68,39 @@ describe("budgeting | chartColors", () => {
     expect(data[0]?.color).toBe(theme.palette.success.main);
   });
 
-  it("falls back to error when a category color is missing", () => {
+  it("falls back to grey when a category color is missing", () => {
     const data = colorizeCategoryPieData(
       theme,
       [],
       [{ name: "UNKNOWN", y: 100 }],
     );
 
+    expect(data[0]?.color).toBe(theme.palette.grey[500]);
+  });
+
+  it("applies fixed colors for taxes, payroll, and unallocated in the overview pie", () => {
+    const flow = buildBudgetFlow(getLatestBudgetIncome(100_000, 0, 0, 0), [
+      { name: "Rent", category: "Housing", value: 2000 },
+    ]);
+    const data = colorizeIncomeOverviewPieData(theme, flow.categories, [
+      { name: FEDERAL_TAX_LABEL, y: flow.federalTax },
+      { name: PAYROLL_NODE_LABEL, y: flow.totalPayrollDeductions },
+      { name: "HOUSING", y: 24_000 },
+    ]);
+
     expect(data[0]?.color).toBe(theme.palette.error.main);
+    expect(data[1]?.color).toBe(theme.palette.error.main);
+    expect(data[2]?.color).toBe(theme.palette.grey[500]);
+  });
+
+  it("uses grey shades for an uncolored category breakdown", () => {
+    const data = colorizeBreakdownPieData(theme, undefined, [
+      { name: "401k", y: 900 },
+      { name: "IRA", y: 300 },
+    ]);
+
+    expect(data[0]?.color).toBe(theme.palette.grey[300]);
+    expect(data[1]?.color).toBe(theme.palette.grey[700]);
   });
 
   it("applies shades for a selected category breakdown", () => {

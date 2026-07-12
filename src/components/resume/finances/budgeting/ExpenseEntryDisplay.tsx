@@ -12,13 +12,15 @@ import CategoryColorSelect from "./CategoryColorSelect";
 import ExpenseEntryCard from "./ExpenseEntryCard";
 import {
   colorizeBreakdownPieData,
-  colorizeCategoryPieData,
+  colorizeIncomeOverviewPieData,
 } from "./chartColors";
 import {
-  buildCategoryPieData,
   buildExpensePieData,
   buildCategoryTotals,
+  buildIncomeOverviewPieData,
+  buildPayrollPieData,
   getLatestBudgetIncome,
+  PAYROLL_CATEGORY_KEY,
   type BudgetFlow,
   type CategoryTotal,
 } from "./helpers";
@@ -47,6 +49,13 @@ const getPieContent = (
   categoryColors: Partial<Record<string, ExpenseEntryColor>>,
   theme: Theme,
 ) => {
+  if (selectedCategoryKey === PAYROLL_CATEGORY_KEY) {
+    return {
+      title: "Payroll Breakdown",
+      data: colorizeBreakdownPieData(theme, "error", buildPayrollPieData(flow)),
+    };
+  }
+
   if (selectedCategoryKey) {
     const selectedCategory = categories.find(
       ({ categoryKey }) => categoryKey === selectedCategoryKey,
@@ -70,11 +79,11 @@ const getPieContent = (
   }
 
   return {
-    title: "By Category",
-    data: colorizeCategoryPieData(
+    title: "Income Overview",
+    data: colorizeIncomeOverviewPieData(
       theme,
       categories,
-      buildCategoryPieData(categories),
+      buildIncomeOverviewPieData(flow),
     ),
   };
 };
@@ -98,17 +107,16 @@ const ExpenseEntryDisplay = ({
         )
       : [];
   const categories = flow?.categories ?? fallbackCategories;
-  const pieContent =
-    flow && categories.length > 0
-      ? getPieContent(
-          flow,
-          categories,
-          selectedCategoryKey,
-          expenseEntries,
-          categoryColors,
-          muiTheme,
-        )
-      : { title: "By Category", data: [] };
+  const pieContent = flow
+    ? getPieContent(
+        flow,
+        categories,
+        selectedCategoryKey,
+        expenseEntries,
+        categoryColors,
+        muiTheme,
+      )
+    : { title: "Income Overview", data: [] };
 
   const handleCategoryColorChange = (
     categoryKey: string,

@@ -56,16 +56,18 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
     renderExpenseEntryDisplay({}, onClick);
 
     expect(screen.getByTestId("budget-sankey")).toBeInTheDocument();
-    expect(screen.getByTestId("category-pie")).toHaveTextContent("By Category");
+    expect(screen.getByTestId("category-pie")).toHaveTextContent(
+      "Income Overview",
+    );
     expect(
       screen.getByRole("heading", { name: "FOOD ($350.00)" }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: "HOUSING ($2,000.00)" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Name: Groceries")).toBeInTheDocument();
-    expect(screen.getByText("Name: Dining Out")).toBeInTheDocument();
-    expect(screen.getByText("Name: Rent")).toBeInTheDocument();
+    expect(screen.getByText("Groceries: $250.00")).toBeInTheDocument();
+    expect(screen.getByText("Dining Out: $100.00")).toBeInTheDocument();
+    expect(screen.getByText("Rent: $2,000.00")).toBeInTheDocument();
   });
 
   it("preserves entry index when opening an expense", () => {
@@ -85,7 +87,7 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
       onClick,
     );
 
-    fireEvent.click(screen.getByText("Name: Rent"));
+    fireEvent.click(screen.getByRole("button", { name: "Rent: $2,000.00" }));
     expect(onClick).toHaveBeenCalledWith(1);
   });
 
@@ -128,15 +130,25 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
     );
   });
 
-  it("prompts for expenses when comp data exists but pie data is empty", () => {
+  it("shows payroll breakdown when payroll is selected", () => {
+    renderExpenseEntryDisplay({
+      selectedCategoryKey: "payroll",
+    });
+
+    expect(screen.getByTestId("category-pie")).toHaveTextContent(
+      "Payroll Breakdown",
+    );
+  });
+
+  it("shows income overview when there are no expense categories", () => {
     renderExpenseEntryDisplay({
       expenseEntries: [],
       flow: buildBudgetFlow(getLatestBudgetIncome(100_000, 0, 0, 0), []),
     });
 
-    expect(
-      screen.getByText("Add expenses to see category breakdown."),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("category-pie")).toHaveTextContent(
+      "Income Overview",
+    );
   });
 
   it("updates and clears category colors", () => {

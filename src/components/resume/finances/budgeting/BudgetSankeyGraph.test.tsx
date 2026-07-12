@@ -2,15 +2,16 @@ import { clickSankeyNode } from "./tests/highchartsMocks";
 import { render, screen } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import { describe, expect, it, vi } from "vitest";
-import { lightTheme } from "../../../../jotai/theme-atom";
-import themeAtom from "../../../../jotai/theme-atom";
+import themeAtom, { lightTheme } from "../../../../jotai/theme-atom";
 import BudgetSankeyGraph from "./BudgetSankeyGraph";
 import {
   buildBudgetFlow,
   getLatestBudgetIncome,
   GROSS_INCOME_NODE,
   INCOME_NODE_LABELS,
+  PAYROLL_CATEGORY_KEY,
 } from "./helpers";
+import { PAYROLL_NODE_LABEL } from "../../../../constants/payrollDeductions";
 
 const sampleFlow = buildBudgetFlow(
   getLatestBudgetIncome(100_000, 10_000, 0, 0),
@@ -64,6 +65,23 @@ describe("resume | finances | budgeting | BudgetSankeyGraph", () => {
     clickSankeyNode({ id: "Fed Tax" });
 
     expect(onCategorySelect).toHaveBeenCalledWith(null);
+  });
+
+  it("forwards payroll node clicks to onCategorySelect", () => {
+    const onCategorySelect = vi.fn();
+
+    render(
+      <Provider>
+        <BudgetSankeyGraph
+          flow={sampleFlow}
+          onCategorySelect={onCategorySelect}
+        />
+      </Provider>,
+    );
+
+    clickSankeyNode({ id: PAYROLL_NODE_LABEL });
+
+    expect(onCategorySelect).toHaveBeenCalledWith(PAYROLL_CATEGORY_KEY);
   });
 
   it("ignores non-node sankey clicks", () => {

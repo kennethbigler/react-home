@@ -5,6 +5,8 @@ import {
   buildCategoryPieData,
   buildCategoryTotals,
   buildExpensePieData,
+  buildIncomeOverviewPieData,
+  buildPayrollPieData,
   computeCaliforniaTax,
   computeFederalTax,
   computeTotalTax,
@@ -15,14 +17,33 @@ import {
   GROSS_INCOME_NODE,
   INCOME_NODE_LABELS,
   isCategorySankeyNode,
+  isPayrollSankeyNode,
   resolveExpenseAmount,
   UNALLOCATED_NODE,
 } from "./helpers";
 import { FEDERAL_TAX_LABEL } from "../../../../constants/federalTaxBrackets";
 import { STATE_TAX_LABEL } from "../../../../constants/caStateTaxBrackets";
+import {
+  CA_DISABILITY_LABEL,
+  MEDICARE_LABEL,
+  PAYROLL_NODE_LABEL,
+  SOCIAL_SECURITY_LABEL,
+} from "../../../../constants/payrollDeductions";
 import type { ExpenseEntry } from "../../../../jotai/finances-atom";
 
 const sampleIncome = getLatestBudgetIncome(100_000, 20_000, 1_000, 2_000);
+
+const sankeyNodeColors = {
+  salary: "#a",
+  bonus: "#b",
+  stockAdj: "#c",
+  gross: "#d",
+  federalTax: "#e",
+  stateTax: "#f",
+  payroll: "#i",
+  unallocated: "#g",
+  category: () => "#h",
+};
 
 describe("budgeting | helpers", () => {
   describe("computeFederalTax", () => {
@@ -119,16 +140,7 @@ describe("budgeting | helpers", () => {
       };
       const monthly = resolveExpenseAmount(entry, income);
       const flow = buildBudgetFlow(income, [entry]);
-      const { data } = buildBudgetSankeyData(flow, {
-        salary: "#a",
-        bonus: "#b",
-        stockAdj: "#c",
-        gross: "#d",
-        federalTax: "#e",
-        stateTax: "#f",
-        unallocated: "#g",
-        category: () => "#h",
-      });
+      const { data } = buildBudgetSankeyData(flow, sankeyNodeColors);
 
       expect(monthly).toBeCloseTo((0.09 * (282_000 + 50_000)) / 12, 2);
       expect(data.find((link) => link.to === "RETIREMENT")?.weight).toBeCloseTo(
@@ -163,14 +175,30 @@ describe("budgeting | helpers", () => {
   });
 
   describe("buildBudgetFlow", () => {
-    it("computes unallocated net after taxes and expenses", () => {
+    it("computes unallocated net after withholdings and expenses", () => {
       const flow = buildBudgetFlow(sampleIncome, [
         { name: "Rent", category: "Housing", value: 3000 },
       ]);
 
-      expect(flow.net).toBe(sampleIncome.gross - flow.totalTax);
+      expect(flow.totalWithholdings).toBeCloseTo(
+        flow.totalTax + flow.totalPayrollDeductions,
+        2,
+      );
+      expect(flow.net).toBe(sampleIncome.gross - flow.totalWithholdings);
       expect(flow.unallocated).toBeCloseTo(flow.net - 3000, 2);
       expect(flow.isOverAllocated).toBe(false);
+    });
+
+    it("includes payroll deductions on gross wages", () => {
+      const flow = buildBudgetFlow(sampleIncome, []);
+
+      expect(flow.socialSecurity).toBeGreaterThan(0);
+      expect(flow.medicare).toBeGreaterThan(0);
+      expect(flow.caDisability).toBeGreaterThan(0);
+      expect(flow.totalPayrollDeductions).toBeCloseTo(
+        flow.socialSecurity + flow.medicare + flow.caDisability,
+        2,
+      );
     });
 
     it("flags over-allocation when expenses exceed net", () => {
@@ -184,34 +212,37 @@ describe("budgeting | helpers", () => {
   });
 
   describe("buildBudgetSankeyData", () => {
-    const nodeColors = {
-      salary: "#a",
-      bonus: "#b",
-      stockAdj: "#c",
-      gross: "#d",
-      federalTax: "#e",
-      stateTax: "#f",
-      unallocated: "#g",
-      category: () => "#h",
-    };
-
-    it("includes federal and state tax nodes with correct labels", () => {
+    it("includes tax and grouped payroll nodes with correct labels", () => {
       const flow = buildBudgetFlow(sampleIncome, [
         { name: "Rent", category: "Housing", value: 3000 },
       ]);
-      const { nodes, data } = buildBudgetSankeyData(flow, nodeColors);
+      const { nodes, data } = buildBudgetSankeyData(flow, sankeyNodeColors);
 
       expect(nodes.map((node) => node.id)).toEqual(
-        expect.arrayContaining([FEDERAL_TAX_LABEL, STATE_TAX_LABEL]),
+        expect.arrayContaining([
+          FEDERAL_TAX_LABEL,
+          STATE_TAX_LABEL,
+          PAYROLL_NODE_LABEL,
+        ]),
       );
       expect(data.some((link) => link.to === FEDERAL_TAX_LABEL)).toBe(true);
       expect(data.some((link) => link.to === STATE_TAX_LABEL)).toBe(true);
+      expect(data.some((link) => link.to === PAYROLL_NODE_LABEL)).toBe(true);
+      expect(data.some((link) => link.to === SOCIAL_SECURITY_LABEL)).toBe(
+        false,
+      );
+      expect(data.some((link) => link.to === MEDICARE_LABEL)).toBe(false);
+      expect(data.some((link) => link.to === CA_DISABILITY_LABEL)).toBe(false);
+      expect(getSankeyNodeSum(PAYROLL_NODE_LABEL, data)).toBeCloseTo(
+        flow.totalPayrollDeductions,
+        2,
+      );
       expect(data.some((link) => link.to === GROSS_INCOME_NODE)).toBe(true);
     });
 
     it("sums income source nodes from outgoing links", () => {
       const flow = buildBudgetFlow(sampleIncome, []);
-      const { data } = buildBudgetSankeyData(flow, nodeColors);
+      const { data } = buildBudgetSankeyData(flow, sankeyNodeColors);
 
       expect(getSankeyNodeSum(INCOME_NODE_LABELS.salary, data)).toBe(100_000);
       expect(getSankeyNodeSum(INCOME_NODE_LABELS.bonus, data)).toBe(20_000);
@@ -223,14 +254,14 @@ describe("budgeting | helpers", () => {
       const flow = buildBudgetFlow(sampleIncome, [
         { name: "Rent", category: "Housing", value: 3000 },
       ]);
-      const { data } = buildBudgetSankeyData(flow, nodeColors);
+      const { data } = buildBudgetSankeyData(flow, sankeyNodeColors);
 
       expect(data.find((link) => link.to === "HOUSING")?.weight).toBe(36_000);
     });
 
     it("includes unallocated when net exceeds allocated expenses", () => {
       const flow = buildBudgetFlow(sampleIncome, []);
-      const { data } = buildBudgetSankeyData(flow, nodeColors);
+      const { data } = buildBudgetSankeyData(flow, sankeyNodeColors);
 
       expect(data.some((link) => link.to === UNALLOCATED_NODE)).toBe(true);
     });
@@ -240,7 +271,7 @@ describe("budgeting | helpers", () => {
       const flow = buildBudgetFlow(income, [
         { name: "Empty", category: "Spend", value: 0 },
       ]);
-      const { data } = buildBudgetSankeyData(flow, nodeColors);
+      const { data } = buildBudgetSankeyData(flow, sankeyNodeColors);
 
       expect(data.some((link) => link.from === INCOME_NODE_LABELS.bonus)).toBe(
         false,
@@ -263,9 +294,110 @@ describe("budgeting | helpers", () => {
           value: probeFlow.net / 12,
         },
       ]);
-      const { data } = buildBudgetSankeyData(flow, nodeColors);
+      const { data } = buildBudgetSankeyData(flow, sankeyNodeColors);
 
       expect(data.some((link) => link.to === UNALLOCATED_NODE)).toBe(false);
+    });
+
+    it("omits salary link when salary is zero", () => {
+      const income = getLatestBudgetIncome(0, 50_000, 10_000, 0);
+      const flow = buildBudgetFlow(income, []);
+      const { data } = buildBudgetSankeyData(flow, sankeyNodeColors);
+
+      expect(data.some((link) => link.from === INCOME_NODE_LABELS.salary)).toBe(
+        false,
+      );
+      expect(data.some((link) => link.from === INCOME_NODE_LABELS.bonus)).toBe(
+        true,
+      );
+    });
+
+    it("omits payroll link when gross income is zero", () => {
+      const income = getLatestBudgetIncome(0, 0, 0, 0);
+      const flow = buildBudgetFlow(income, []);
+      const { data } = buildBudgetSankeyData(flow, sankeyNodeColors);
+
+      expect(data.some((link) => link.to === PAYROLL_NODE_LABEL)).toBe(false);
+    });
+  });
+
+  describe("buildIncomeOverviewPieData", () => {
+    it("includes taxes, payroll, categories, and unallocated on annual scale", () => {
+      const flow = buildBudgetFlow(sampleIncome, [
+        { name: "Rent", category: "Housing", value: 2000 },
+      ]);
+      const pie = buildIncomeOverviewPieData(flow);
+
+      expect(pie.map(({ name }) => name)).toEqual(
+        expect.arrayContaining([
+          FEDERAL_TAX_LABEL,
+          STATE_TAX_LABEL,
+          PAYROLL_NODE_LABEL,
+          "HOUSING",
+          UNALLOCATED_NODE,
+        ]),
+      );
+      expect(pie.find(({ name }) => name === "HOUSING")?.y).toBe(24_000);
+    });
+
+    it("includes withholdings even when there are no expense categories", () => {
+      const flow = buildBudgetFlow(sampleIncome, []);
+      const pie = buildIncomeOverviewPieData(flow);
+
+      expect(pie.map(({ name }) => name)).toEqual(
+        expect.arrayContaining([
+          FEDERAL_TAX_LABEL,
+          STATE_TAX_LABEL,
+          PAYROLL_NODE_LABEL,
+          UNALLOCATED_NODE,
+        ]),
+      );
+    });
+
+    it("omits taxes, payroll, zero categories, and unallocated when not applicable", () => {
+      const zeroIncome = getLatestBudgetIncome(0, 0, 0, 0);
+      const flow = buildBudgetFlow(zeroIncome, [
+        { name: "Empty", category: "Spend", value: 0 },
+      ]);
+      const pie = buildIncomeOverviewPieData(flow);
+
+      expect(pie).toEqual([]);
+    });
+
+    it("omits unallocated when expenses consume all net income", () => {
+      const income = getLatestBudgetIncome(100_000, 0, 0, 0);
+      const probeFlow = buildBudgetFlow(income, []);
+      const flow = buildBudgetFlow(income, [
+        {
+          name: "Everything",
+          category: "Spend",
+          value: probeFlow.net / 12,
+        },
+      ]);
+      const pie = buildIncomeOverviewPieData(flow);
+
+      expect(pie.map(({ name }) => name)).not.toContain(UNALLOCATED_NODE);
+      expect(pie.some(({ name }) => name === "SPEND")).toBe(true);
+    });
+  });
+
+  describe("buildPayrollPieData", () => {
+    it("returns payroll deduction slices for the pie breakdown", () => {
+      const flow = buildBudgetFlow(sampleIncome, []);
+      const pie = buildPayrollPieData(flow);
+
+      expect(pie).toEqual([
+        { name: SOCIAL_SECURITY_LABEL, y: flow.socialSecurity },
+        { name: MEDICARE_LABEL, y: flow.medicare },
+        { name: CA_DISABILITY_LABEL, y: flow.caDisability },
+      ]);
+    });
+  });
+
+  describe("isPayrollSankeyNode", () => {
+    it("matches the grouped payroll sankey node", () => {
+      expect(isPayrollSankeyNode(PAYROLL_NODE_LABEL)).toBe(true);
+      expect(isPayrollSankeyNode(SOCIAL_SECURITY_LABEL)).toBe(false);
     });
   });
 

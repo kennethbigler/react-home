@@ -1,14 +1,29 @@
 import type { Theme } from "@mui/material/styles";
+import { STATE_TAX_LABEL } from "../../../../constants/caStateTaxBrackets";
+import { FEDERAL_TAX_LABEL } from "../../../../constants/federalTaxBrackets";
+import { PAYROLL_NODE_LABEL } from "../../../../constants/payrollDeductions";
 import compColors from "../comp-calc/graphs/colors";
 import type { ExpenseEntryColor } from "../../../../jotai/finances-atom";
 import type { CategoryTotal, PiePoint } from "./helpers";
+import { UNALLOCATED_NODE } from "./helpers";
 
-const getCategoryPaletteColor = (
+const getSankeyCategoryColor = (
   theme: Theme,
   color?: ExpenseEntryColor,
 ): string => {
   if (!color) {
     return theme.palette.error.main;
+  }
+
+  return theme.palette[color].main;
+};
+
+const getCategoryPieColor = (
+  theme: Theme,
+  color?: ExpenseEntryColor,
+): string => {
+  if (!color) {
+    return theme.palette.grey[500];
   }
 
   return theme.palette[color].main;
@@ -51,8 +66,21 @@ export const buildCategoryColorShades = (
     return [];
   }
 
-  const paletteColor = color ?? "error";
-  const { light, main, dark } = theme.palette[paletteColor];
+  if (!color) {
+    const { 300: light, 500: main, 700: dark } = theme.palette.grey;
+
+    if (count === 1) {
+      return [main];
+    }
+
+    return Array.from({ length: count }, (_, index) => {
+      const ratio = index / (count - 1);
+
+      return mixHexColors(light, dark, ratio);
+    });
+  }
+
+  const { light, main, dark } = theme.palette[color];
 
   if (count === 1) {
     return [main];
@@ -73,13 +101,41 @@ export const colorizeCategoryPieData = (
   const colorByHeading = new Map(
     categories.map(({ heading, color }) => [
       heading,
-      getCategoryPaletteColor(theme, color),
+      getCategoryPieColor(theme, color),
     ]),
   );
 
   return data.map((point) => ({
     ...point,
-    color: colorByHeading.get(point.name) ?? theme.palette.error.main,
+    color: colorByHeading.get(point.name) ?? theme.palette.grey[500],
+  }));
+};
+
+export const colorizeIncomeOverviewPieData = (
+  theme: Theme,
+  categories: CategoryTotal[],
+  data: PiePoint[],
+): PiePoint[] => {
+  const colorByHeading = new Map(
+    categories.map(({ heading, color }) => [
+      heading,
+      getCategoryPieColor(theme, color),
+    ]),
+  );
+
+  const fixedColors: Record<string, string> = {
+    [FEDERAL_TAX_LABEL]: theme.palette.error.main,
+    [STATE_TAX_LABEL]: theme.palette.error.main,
+    [PAYROLL_NODE_LABEL]: theme.palette.error.main,
+    [UNALLOCATED_NODE]: theme.palette.grey[500],
+  };
+
+  return data.map((point) => ({
+    ...point,
+    color:
+      fixedColors[point.name] ??
+      colorByHeading.get(point.name) ??
+      theme.palette.grey[500],
   }));
 };
 
@@ -103,7 +159,8 @@ export const getBudgetSankeyNodeColors = (theme: Theme) => ({
   gross: theme.palette.primary.main,
   federalTax: theme.palette.error.main,
   stateTax: theme.palette.error.main,
+  payroll: theme.palette.error.main,
   unallocated: theme.palette.grey[500],
   category: (_categoryKey: string, color?: ExpenseEntryColor) =>
-    getCategoryPaletteColor(theme, color),
+    getSankeyCategoryColor(theme, color),
 });

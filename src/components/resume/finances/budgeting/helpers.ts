@@ -9,6 +9,13 @@ import {
   FEDERAL_TAX_LABEL,
   federalTaxBrackets,
 } from "../../../../constants/federalTaxBrackets";
+import {
+  CA_DISABILITY_LABEL,
+  computeTotalPayrollDeductions,
+  MEDICARE_LABEL,
+  PAYROLL_NODE_LABEL,
+  SOCIAL_SECURITY_LABEL,
+} from "../../../../constants/payrollDeductions";
 import { computeProgressiveTax } from "../../../../constants/taxHelpers";
 import type {
   BudgetCategoryColors,
@@ -17,8 +24,12 @@ import type {
   ExpensePercentSource,
 } from "../../../../jotai/finances-atom";
 
-export { FEDERAL_TAX_LABEL } from "../../../../constants/federalTaxBrackets";
-export { STATE_TAX_LABEL } from "../../../../constants/caStateTaxBrackets";
+export const PAYROLL_CATEGORY_KEY = "payroll";
+
+export const BUDGET_WITHHOLDING_NODE_LABELS = [
+  FEDERAL_TAX_LABEL,
+  STATE_TAX_LABEL,
+] as const;
 
 export const GROSS_INCOME_NODE = "Income";
 export const UNALLOCATED_NODE = "Unallocated";
@@ -57,7 +68,12 @@ export interface BudgetFlow {
   income: BudgetIncome;
   federalTax: number;
   stateTax: number;
+  socialSecurity: number;
+  medicare: number;
+  caDisability: number;
   totalTax: number;
+  totalPayrollDeductions: number;
+  totalWithholdings: number;
   net: number;
   categories: CategoryTotal[];
   totalAllocated: number;
@@ -187,7 +203,14 @@ export const buildBudgetFlow = (
   expenseEntries: ExpenseEntry[],
   categoryColors: BudgetCategoryColors = {},
 ): BudgetFlow => {
-  const { federal, state, total } = computeTotalTax(income.gross);
+  const { federal, state, total: totalTax } = computeTotalTax(income.gross);
+  const {
+    socialSecurity,
+    medicare,
+    caDisability,
+    total: totalPayrollDeductions,
+  } = computeTotalPayrollDeductions(income.gross);
+  const totalWithholdings = totalTax + totalPayrollDeductions;
   const categories = buildCategoryTotals(
     expenseEntries,
     income,
@@ -197,14 +220,19 @@ export const buildBudgetFlow = (
     (sum, category) => sum + category.total,
     0,
   );
-  const net = income.gross - total;
+  const net = income.gross - totalWithholdings;
   const unallocated = net - totalAllocated;
 
   return {
     income,
     federalTax: federal,
     stateTax: state,
-    totalTax: total,
+    socialSecurity,
+    medicare,
+    caDisability,
+    totalTax,
+    totalPayrollDeductions,
+    totalWithholdings,
     net,
     categories,
     totalAllocated,
@@ -236,11 +264,20 @@ export const buildBudgetSankeyData = (
     gross: string;
     federalTax: string;
     stateTax: string;
+    payroll: string;
     unallocated: string;
     category: (categoryKey: string, color?: ExpenseEntryColor) => string;
   },
 ): BudgetSankeyData => {
-  const { income, federalTax, stateTax, categories } = flow;
+  const {
+    income,
+    federalTax,
+    stateTax,
+    socialSecurity,
+    medicare,
+    caDisability,
+    categories,
+  } = flow;
   const annualTotalAllocated = flow.totalAllocated * BUDGET_MONTHS_PER_YEAR;
   const annualUnallocated = flow.net - annualTotalAllocated;
   const data: SankeyLink[] = [];
@@ -267,18 +304,27 @@ export const buildBudgetSankeyData = (
     });
   }
 
-  if (federalTax > 0) {
+  const incomeTaxWithholdings: Array<{ amount: number; label: string }> = [
+    { amount: federalTax, label: FEDERAL_TAX_LABEL },
+    { amount: stateTax, label: STATE_TAX_LABEL },
+  ];
+
+  incomeTaxWithholdings.forEach(({ amount, label }) => {
+    if (amount > 0) {
+      data.push({
+        from: GROSS_INCOME_NODE,
+        to: label,
+        weight: amount,
+      });
+    }
+  });
+
+  const payrollTotal = socialSecurity + medicare + caDisability;
+  if (payrollTotal > 0) {
     data.push({
       from: GROSS_INCOME_NODE,
-      to: FEDERAL_TAX_LABEL,
-      weight: federalTax,
-    });
-  }
-  if (stateTax > 0) {
-    data.push({
-      from: GROSS_INCOME_NODE,
-      to: STATE_TAX_LABEL,
-      weight: stateTax,
+      to: PAYROLL_NODE_LABEL,
+      weight: payrollTotal,
     });
   }
 
@@ -334,6 +380,11 @@ export const buildBudgetSankeyData = (
       column: 2,
       color: nodeColors.stateTax,
     },
+    {
+      id: PAYROLL_NODE_LABEL,
+      column: 2,
+      color: nodeColors.payroll,
+    },
     ...categories.map(({ heading, categoryKey, color }) => ({
       id: heading,
       column: 2,
@@ -348,6 +399,48 @@ export const buildBudgetSankeyData = (
 
   return { nodes, data };
 };
+
+export const buildPayrollPieData = (flow: BudgetFlow): PiePoint[] =>
+  [
+    { name: SOCIAL_SECURITY_LABEL, y: flow.socialSecurity },
+    { name: MEDICARE_LABEL, y: flow.medicare },
+    { name: CA_DISABILITY_LABEL, y: flow.caDisability },
+  ].filter(({ y }) => y > 0);
+
+export const buildIncomeOverviewPieData = (flow: BudgetFlow): PiePoint[] => {
+  const slices: PiePoint[] = [];
+
+  if (flow.federalTax > 0) {
+    slices.push({ name: FEDERAL_TAX_LABEL, y: flow.federalTax });
+  }
+  if (flow.stateTax > 0) {
+    slices.push({ name: STATE_TAX_LABEL, y: flow.stateTax });
+  }
+  if (flow.totalPayrollDeductions > 0) {
+    slices.push({ name: PAYROLL_NODE_LABEL, y: flow.totalPayrollDeductions });
+  }
+
+  flow.categories.forEach(({ heading, total }) => {
+    const annualTotal = total * BUDGET_MONTHS_PER_YEAR;
+
+    if (annualTotal > 0) {
+      slices.push({ name: heading, y: annualTotal });
+    }
+  });
+
+  const annualUnallocated =
+    flow.net - flow.totalAllocated * BUDGET_MONTHS_PER_YEAR;
+  const unallocated = Math.max(0, annualUnallocated);
+
+  if (unallocated > 0) {
+    slices.push({ name: UNALLOCATED_NODE, y: unallocated });
+  }
+
+  return slices;
+};
+
+export const isPayrollSankeyNode = (nodeId: string) =>
+  nodeId === PAYROLL_NODE_LABEL;
 
 export const buildCategoryPieData = (categories: CategoryTotal[]): PiePoint[] =>
   categories

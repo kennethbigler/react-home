@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardHeader,
-  Typography,
-} from "@mui/material";
+import { Chip } from "@mui/material";
 import usDollar from "../../../../apis/usDollar";
 import {
   ExpenseEntry,
@@ -25,7 +19,7 @@ const ExpenseEntryCard = ({
   color,
   onClick,
 }: ExpenseEntryCardProps) => {
-  const { name, category, value, valueMode } = expenseEntry;
+  const { name, value, valueMode } = expenseEntry;
   const sources =
     valueMode === "percent" ? getPercentSources(expenseEntry) : [];
   const allocationLabel =
@@ -34,27 +28,11 @@ const ExpenseEntryCard = ({
       : null;
 
   return (
-    <Card>
-      <CardActionArea onClick={onClick}>
-        <CardHeader title="Expense" />
-        <CardContent>
-          <Typography>Name: {name}</Typography>
-          <Typography>Category: {category}</Typography>
-          {allocationLabel && (
-            <Typography variant="body2" color="text.secondary">
-              Allocation: {allocationLabel}
-            </Typography>
-          )}
-          <Typography sx={{ display: "inline" }}>Amount: </Typography>
-          <Typography
-            sx={{ display: "inline", fontWeight: "bold" }}
-            color={color}
-          >
-            {usDollar.format(resolvedAmount)}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+    <Chip
+      label={`${name}: ${usDollar.format(resolvedAmount)}${allocationLabel ? ` (${allocationLabel})` : ""}`}
+      color={color}
+      onClick={onClick}
+    />
   );
 };
 
