@@ -24,7 +24,7 @@ const Finances = () => {
         <Tabs
           value={value}
           onChange={handleChange}
-          aria-label="a11y practice tab examples"
+          aria-label="Finances sections"
         >
           <Tab label="Comp Calculator" {...a11yTabProps(tabPrefix, 0)} />
           <Tab label="Budgeting" {...a11yTabProps(tabPrefix, 1)} />

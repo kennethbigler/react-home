@@ -48,7 +48,7 @@ describe("resume | finances | comp-calc | CompEntryDialog", () => {
     fireEvent.click(screen.getByRole("button", { name: "Add" }));
 
     expect(addCompEntry).toHaveBeenCalledWith({
-      entryDate: "2020-6",
+      entryDate: "2020-06",
       salary: 90000,
       bonus: 5000,
       stockTick: "MSFT",

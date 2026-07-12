@@ -96,6 +96,8 @@ describe("resume | finances | budgeting | ExpenseEntryCard", () => {
       />,
     );
 
-    expect(screen.getByText("Rent: $2,000.00")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Rent: $2,000.00" })).toHaveClass(
+      "MuiChip-colorSuccess",
+    );
   });
 });

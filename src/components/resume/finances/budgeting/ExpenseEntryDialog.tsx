@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
+  FormHelperText,
   InputLabel,
   ListItemText,
   MenuItem,
@@ -17,7 +18,6 @@ import {
   TextFieldProps,
   ToggleButton,
   ToggleButtonGroup,
-  Typography,
 } from "@mui/material";
 import {
   ExpenseEntry,
@@ -112,7 +112,9 @@ const ExpenseEntryDialog = ({
     valueMode !== "percent" || (value >= 0 && value <= 100);
   const hasPercentSources =
     valueMode !== "percent" || percentSources.length > 0;
-  const canSubmit = isPercentInRange && hasPercentSources;
+  const hasRequiredFields =
+    name.trim().length > 0 && category.trim().length > 0;
+  const canSubmit = hasRequiredFields && isPercentInRange && hasPercentSources;
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -168,7 +170,12 @@ const ExpenseEntryDialog = ({
           </ToggleButtonGroup>
         </Stack>
         {valueMode === "percent" && (
-          <FormControl fullWidth margin="dense" variant="standard">
+          <FormControl
+            fullWidth
+            margin="dense"
+            variant="standard"
+            error={!hasPercentSources}
+          >
             <InputLabel id="percent-sources-label">Income Sources</InputLabel>
             <Select
               labelId="percent-sources-label"
@@ -176,6 +183,9 @@ const ExpenseEntryDialog = ({
               value={percentSources}
               label="Income Sources"
               onChange={handlePercentSourcesChange}
+              aria-describedby={
+                !hasPercentSources ? "percent-sources-error" : undefined
+              }
               renderValue={(selected) =>
                 selected
                   .map(
@@ -194,9 +204,9 @@ const ExpenseEntryDialog = ({
               ))}
             </Select>
             {!hasPercentSources && (
-              <Typography color="error" variant="caption">
+              <FormHelperText id="percent-sources-error">
                 Select at least one income source.
-              </Typography>
+              </FormHelperText>
             )}
           </FormControl>
         )}

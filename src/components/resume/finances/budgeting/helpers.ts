@@ -220,8 +220,9 @@ export const buildBudgetFlow = (
     (sum, category) => sum + category.total,
     0,
   );
+  const annualTotalAllocated = totalAllocated * BUDGET_MONTHS_PER_YEAR;
   const net = income.gross - totalWithholdings;
-  const unallocated = net - totalAllocated;
+  const unallocated = net - annualTotalAllocated;
 
   return {
     income,

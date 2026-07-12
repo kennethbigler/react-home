@@ -22,7 +22,7 @@ import { getBudgetSankeyNodeColors } from "./chartColors";
 
 interface BudgetSankeyGraphProps {
   flow: BudgetFlow;
-  selectedCategoryKey?: string;
+  selectedCategoryKey?: string | null;
   onCategorySelect: (categoryKey: string | null) => void;
 }
 
@@ -152,10 +152,11 @@ const BudgetSankeyGraph = memo(
             ...node,
             sumFormatted: formatCurrency(nodeSum),
             className:
-              flow.categories.find(({ heading }) => heading === node.id)
+              selectedCategoryKey &&
+              (flow.categories.find(({ heading }) => heading === node.id)
                 ?.categoryKey === selectedCategoryKey ||
-              (selectedCategoryKey === PAYROLL_CATEGORY_KEY &&
-                isPayrollSankeyNode(node.id))
+                (selectedCategoryKey === PAYROLL_CATEGORY_KEY &&
+                  isPayrollSankeyNode(node.id)))
                 ? "budget-sankey-selected"
                 : undefined,
           };

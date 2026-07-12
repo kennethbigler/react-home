@@ -83,7 +83,7 @@ const CompEntryDialog = ({
 
   const handleSubmit = () => {
     addCompEntry({
-      entryDate: `${entryDateYear}-${entryDateMonth.length < 2 ? "0" : ""}${entryDateMonth}`,
+      entryDate: `${entryDateYear}-${String(entryDateMonth).padStart(2, "0")}`,
       salary,
       bonus,
       stockTick,
@@ -108,7 +108,7 @@ const CompEntryDialog = ({
               onChange={handleSelectMonth}
             >
               {months.map((month, i) => (
-                <MenuItem value={i + 1} key={i}>
+                <MenuItem value={String(i + 1)} key={i}>
                   {month}
                 </MenuItem>
               ))}

@@ -1,4 +1,4 @@
-/** 2025 US payroll withholdings — employee (visualization approximation). */
+/** 2026 US payroll withholdings — employee (visualization approximation). */
 
 export const PAYROLL_NODE_LABEL = "Payroll";
 
@@ -18,7 +18,7 @@ const ADDITIONAL_MEDICARE_RATE = 0.009;
 const ADDITIONAL_MEDICARE_THRESHOLD = 200_000;
 
 /** CA SDI/PFL employee withholding — no wage cap since 2024. */
-const CA_SDI_RATE = 0.012;
+const CA_SDI_RATE = 0.013;
 
 export const computeSocialSecurity = (wages: number): number =>
   Math.min(Math.max(0, wages), SOCIAL_SECURITY_WAGE_BASE) *

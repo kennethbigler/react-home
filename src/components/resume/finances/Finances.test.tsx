@@ -10,7 +10,7 @@ describe("resume | finances | Finances", () => {
       screen.getByRole("heading", { level: 1, name: "Finances" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("tablist", { name: /a11y practice tab examples/i }),
+      screen.getByRole("tablist", { name: /finances sections/i }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("tab", { name: "Comp Calculator", selected: true }),

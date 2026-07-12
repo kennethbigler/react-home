@@ -185,7 +185,7 @@ describe("budgeting | helpers", () => {
         2,
       );
       expect(flow.net).toBe(sampleIncome.gross - flow.totalWithholdings);
-      expect(flow.unallocated).toBeCloseTo(flow.net - 3000, 2);
+      expect(flow.unallocated).toBeCloseTo(flow.net - 3000 * 12, 2);
       expect(flow.isOverAllocated).toBe(false);
     });
 

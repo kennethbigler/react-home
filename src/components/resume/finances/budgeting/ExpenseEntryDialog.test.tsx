@@ -173,4 +173,66 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });
+
+  it("blocks submit when name or category is blank", () => {
+    render(
+      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
+    );
+
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: "   " },
+    });
+    fireEvent.change(screen.getByLabelText("Category"), {
+      target: { value: "Food" },
+    });
+    fireEvent.change(screen.getByLabelText("Value"), {
+      target: { value: "100" },
+    });
+
+    expect(screen.getByRole("button", { name: "Add" })).toBeDisabled();
+  });
+
+  it("resynchronizes form state when expenseEntry changes", () => {
+    const { rerender } = render(
+      <ExpenseEntryDialog
+        key="rent"
+        open
+        expenseEntry={{
+          name: "Rent",
+          category: "Housing",
+          value: 2000,
+          valueMode: "dollar",
+        }}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByLabelText("Name")).toHaveValue("Rent");
+    expect(screen.getByLabelText("Category")).toHaveValue("Housing");
+    expect(screen.getByLabelText("Value")).toHaveValue(2000);
+
+    rerender(
+      <ExpenseEntryDialog
+        key="401k"
+        open
+        expenseEntry={{
+          name: "401k",
+          category: "Retirement",
+          value: 9,
+          valueMode: "percent",
+          percentSources: ["salary", "bonus"],
+        }}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByLabelText("Name")).toHaveValue("401k");
+    expect(screen.getByLabelText("Category")).toHaveValue("Retirement");
+    expect(screen.getByLabelText("Value")).toHaveValue(9);
+    expect(screen.getByLabelText("Income Sources")).toHaveTextContent(
+      "Salary, Bonus",
+    );
+  });
 });

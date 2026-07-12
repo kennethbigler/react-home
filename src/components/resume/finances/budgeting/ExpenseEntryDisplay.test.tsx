@@ -60,10 +60,10 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
       "Income Overview",
     );
     expect(
-      screen.getByRole("heading", { name: "FOOD ($350.00)" }),
+      screen.getByRole("button", { name: "FOOD ($350.00)" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "HOUSING ($2,000.00)" }),
+      screen.getByRole("button", { name: "HOUSING ($2,000.00)" }),
     ).toBeInTheDocument();
     expect(screen.getByText("Groceries: $250.00")).toBeInTheDocument();
     expect(screen.getByText("Dining Out: $100.00")).toBeInTheDocument();
@@ -116,7 +116,7 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
       screen.getByText("Category breakdown requires comp calculator data."),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "HOUSING ($2,000.00)" }),
+      screen.getByRole("button", { name: "HOUSING ($2,000.00)" }),
     ).toBeInTheDocument();
   });
 
@@ -151,6 +151,16 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
     );
   });
 
+  it("selects a category when its heading is clicked", () => {
+    const onCategorySelect = vi.fn();
+
+    renderExpenseEntryDisplay({ onCategorySelect });
+
+    fireEvent.click(screen.getByRole("button", { name: "FOOD ($350.00)" }));
+
+    expect(onCategorySelect).toHaveBeenCalledWith("food");
+  });
+
   it("updates and clears category colors", () => {
     const { store } = renderExpenseEntryDisplay({
       expenseEntries: [{ name: "Electric", category: "Utilities", value: 120 }],
@@ -170,7 +180,7 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
     });
 
     fireEvent.click(
-      screen.getByRole("heading", { name: "UTILITIES ($120.00)" }),
+      screen.getByRole("button", { name: "UTILITIES ($120.00)" }),
     );
     fireEvent.mouseDown(colorSelect);
     fireEvent.click(screen.getByRole("option", { name: "Default (None)" }));

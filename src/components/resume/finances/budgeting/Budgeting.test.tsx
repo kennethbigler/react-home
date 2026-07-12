@@ -30,7 +30,7 @@ describe("resume | finances | budgeting | Budgeting", () => {
     );
     expect(screen.getByText("Groceries: $250.00")).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "FOOD ($250.00)" }),
+      screen.getByRole("button", { name: "FOOD ($250.00)" }),
     ).toBeInTheDocument();
 
     // open edit entry modal with pre-filled values
@@ -60,7 +60,8 @@ describe("resume | finances | budgeting | Budgeting", () => {
     await waitFor(() =>
       expect(screen.queryByText("New Expense Entry")).toBeNull(),
     );
-    expect(screen.queryByText("Name: Draft")).toBeNull();
-    expect(screen.queryByText("Draft:")).toBeNull();
+    expect(
+      screen.queryByRole("button", { name: /Draft:/i }),
+    ).not.toBeInTheDocument();
   });
 });

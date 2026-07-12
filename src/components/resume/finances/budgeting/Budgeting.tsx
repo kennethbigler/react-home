@@ -54,6 +54,7 @@ const Budgeting = () => {
       />
       {openEntry && (
         <ExpenseEntryDialog
+          key={editEntryIdx === -1 ? "new" : editEntryIdx}
           open={openEntry}
           onClose={handleClose}
           addExpenseEntry={addExpenseEntry}

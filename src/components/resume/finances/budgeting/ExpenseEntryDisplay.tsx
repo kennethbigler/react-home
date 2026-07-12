@@ -4,6 +4,7 @@ import { useAtom } from "jotai";
 import usDollar from "../../../../apis/usDollar";
 import {
   budgetCategoryColorsAtom,
+  ExpenseEntry,
   ExpenseEntryColor,
 } from "../../../../jotai/finances-atom";
 import BudgetSankeyGraph from "./BudgetSankeyGraph";
@@ -28,14 +29,7 @@ import {
 interface ExpenseEntryDisplayProps {
   hasCompData: boolean;
   flow: BudgetFlow | null;
-  expenseEntries: Array<{
-    name: string;
-    category: string;
-    value: number;
-    valueMode?: "dollar" | "percent";
-    percentSource?: "salary" | "bonus" | "stockAdj";
-    percentSources?: Array<"salary" | "bonus" | "stockAdj">;
-  }>;
+  expenseEntries: ExpenseEntry[];
   selectedCategoryKey: string | null;
   onCategorySelect: (categoryKey: string | null) => void;
   onClick: (i: number) => () => void;
@@ -140,7 +134,7 @@ const ExpenseEntryDisplay = ({
           {hasCompData && flow ? (
             <BudgetSankeyGraph
               flow={flow}
-              selectedCategoryKey={selectedCategoryKey ?? undefined}
+              selectedCategoryKey={selectedCategoryKey}
               onCategorySelect={onCategorySelect}
             />
           ) : (
@@ -186,10 +180,21 @@ const ExpenseEntryDisplay = ({
             >
               <Typography
                 variant="h6"
-                component="h2"
+                component="button"
+                type="button"
                 gutterBottom
                 color={categoryColor}
+                onClick={() =>
+                  onCategorySelect(isSelected ? null : categoryKey)
+                }
                 sx={{
+                  display: "block",
+                  width: "100%",
+                  textAlign: "left",
+                  border: "none",
+                  background: "none",
+                  cursor: "pointer",
+                  font: "inherit",
                   outline: isSelected ? "2px solid" : undefined,
                   outlineColor: isSelected ? "primary.main" : undefined,
                   borderRadius: 1,

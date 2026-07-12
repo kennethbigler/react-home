@@ -45,7 +45,7 @@ const StockDialog = memo(
       setStock(e.target.value);
 
     const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) =>
-      setPrice(parseFloat(e.target.value));
+      setPrice(parseFloat(e.target.value) || 0);
 
     const handleSubmit = () => {
       addStockEntry(stock, price);
@@ -74,9 +74,11 @@ const StockDialog = memo(
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={removeStockEntry(stock)} color="error">
-            Delete
-          </Button>
+          {exStock ? (
+            <Button onClick={removeStockEntry(stock)} color="error">
+              Delete
+            </Button>
+          ) : null}
           <Button onClick={onClose}>Cancel</Button>
           <Button type="submit" onClick={handleSubmit}>
             {exStock ? "Update" : "Add"}

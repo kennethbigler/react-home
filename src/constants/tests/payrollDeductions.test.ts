@@ -24,15 +24,12 @@ describe("constants | payrollDeductions", () => {
   });
 
   it("withholds CA disability on all wages", () => {
-    expect(computeCaDisability(300_000)).toBeCloseTo(300_000 * 0.012, 2);
+    expect(computeCaDisability(300_000)).toBeCloseTo(300_000 * 0.013, 2);
   });
 
   it("sums payroll deductions", () => {
     const deductions = computeTotalPayrollDeductions(150_000);
 
-    expect(deductions.total).toBeCloseTo(
-      deductions.socialSecurity + deductions.medicare + deductions.caDisability,
-      2,
-    );
+    expect(deductions.total).toBeCloseTo(13_425, 2);
   });
 });

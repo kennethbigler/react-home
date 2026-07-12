@@ -125,7 +125,7 @@ jotai/
 ├── blackjack-state.ts
 ├── botc-atom.ts (+ test)
 ├── bridge-atom.ts (+ test)
-├── comp-calculator-atom.ts
+├── finances-atom.ts
 ├── connect4-atom.ts
 ├── deal-or-no-deal-state.ts
 ├── deck-state.ts
