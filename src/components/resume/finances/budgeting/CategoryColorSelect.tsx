@@ -42,11 +42,11 @@ const CategoryColorSelect = ({
 
   return (
     <FormControl size="small" fullWidth sx={{ mb: 1 }}>
-      <InputLabel id={labelId}>Color</InputLabel>
+      <InputLabel id={labelId}>Color (Optional)</InputLabel>
       <Select
         labelId={labelId}
         value={value ?? ""}
-        label="Color"
+        label="Color (Optional)"
         onChange={handleChange}
         onClick={(event) => event.stopPropagation()}
       >

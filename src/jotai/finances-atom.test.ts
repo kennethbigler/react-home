@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { createStore } from "jotai";
-import compCalcAtom, { budgetAtom, compCalcRead } from "./finances-atom";
+import compCalcAtom, {
+  budgetAtom,
+  budgetFlowRead,
+  compCalcRead,
+} from "./finances-atom";
 import stockAtom from "./stock-atom";
 
 describe("jotai | finances-atom", () => {
@@ -206,6 +210,54 @@ describe("jotai | finances-atom", () => {
           grantNow: 0,
         },
       ]);
+    });
+  });
+
+  describe("budgetFlowRead", () => {
+    it("returns hasCompData false when there are no comp entries", () => {
+      const store = createStore();
+
+      expect(store.get(budgetFlowRead)).toEqual({
+        hasCompData: false,
+        flow: null,
+        expenseEntries: [],
+        categoryColors: {},
+      });
+    });
+
+    it("builds budget flow from the latest comp entry and expenses", () => {
+      const store = createStore();
+
+      store.set(compCalcAtom, [
+        {
+          entryDate: "2020-01",
+          salary: 100_000,
+          bonus: 10_000,
+          stockTick: "AAPL",
+          priceThen: 100,
+          grantDuration: 4,
+          grantQty: 0,
+        },
+      ]);
+      store.set(budgetAtom, [
+        { name: "Rent", category: "Housing", value: 2000 },
+        {
+          name: "401k",
+          category: "Retirement",
+          value: 9,
+          valueMode: "percent",
+          percentSources: ["salary"],
+        },
+      ]);
+
+      const result = store.get(budgetFlowRead);
+
+      expect(result.hasCompData).toBe(true);
+      expect(result.flow?.income.gross).toBe(110_000);
+      expect(result.flow?.categories).toHaveLength(2);
+      expect(
+        result.flow?.categories.find((c) => c.heading === "RETIREMENT")?.total,
+      ).toBe(750);
     });
   });
 });

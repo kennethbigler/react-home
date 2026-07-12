@@ -1,20 +1,45 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, MouseEvent } from "react";
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
   TextField,
   TextFieldProps,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
 } from "@mui/material";
-import { ExpenseEntry } from "../../../../jotai/finances-atom";
+import {
+  ExpenseEntry,
+  ExpensePercentSource,
+  ExpenseValueMode,
+} from "../../../../jotai/finances-atom";
+import { getPercentSources } from "./helpers";
 
 const tfProps: TextFieldProps = {
   variant: "standard",
   fullWidth: true,
   margin: "dense",
 };
+
+const percentSourceOptions: Array<{
+  value: ExpensePercentSource;
+  label: string;
+}> = [
+  { value: "salary", label: "Salary" },
+  { value: "bonus", label: "Bonus" },
+  { value: "stockAdj", label: "Stock Adj" },
+];
 
 interface ExpenseEntryDialogProps {
   open: boolean;
@@ -31,11 +56,19 @@ const ExpenseEntryDialog = ({
 }: ExpenseEntryDialogProps) => {
   const [name, setName] = useState(expenseEntry?.name || "");
   const [category, setCategory] = useState(expenseEntry?.category || "");
+  const [valueMode, setValueMode] = useState<ExpenseValueMode>(
+    expenseEntry?.valueMode ?? "dollar",
+  );
+  const [percentSources, setPercentSources] = useState<ExpensePercentSource[]>(
+    () => getPercentSources(expenseEntry ?? {}),
+  );
   const [value, setValue] = useState(expenseEntry?.value || 0);
 
   const resetState = () => {
     setName("");
     setCategory("");
+    setValueMode("dollar");
+    setPercentSources(["salary"]);
     setValue(0);
   };
 
@@ -44,16 +77,42 @@ const ExpenseEntryDialog = ({
   const handleCategoryChange = (e: ChangeEvent<HTMLInputElement>) =>
     setCategory(e.target.value);
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setValue(parseFloat(e.target.value));
+    setValue(parseFloat(e.target.value) || 0);
+  const handlePercentSourcesChange = (e: SelectChangeEvent<string[]>) => {
+    const nextValue = e.target.value;
+
+    setPercentSources(
+      typeof nextValue === "string"
+        ? (nextValue.split(",") as ExpensePercentSource[])
+        : (nextValue as ExpensePercentSource[]),
+    );
+  };
+  const handleValueModeChange = (
+    _event: MouseEvent<HTMLElement>,
+    nextMode: ExpenseValueMode | null,
+  ) => {
+    if (nextMode) {
+      setValueMode(nextMode);
+    }
+  };
 
   const handleSubmit = () => {
     addExpenseEntry({
       name,
       category,
       value,
+      ...(valueMode === "percent"
+        ? { valueMode, percentSources }
+        : { valueMode: "dollar" }),
     });
     resetState();
   };
+
+  const isPercentInRange =
+    valueMode !== "percent" || (value >= 0 && value <= 100);
+  const hasPercentSources =
+    valueMode !== "percent" || percentSources.length > 0;
+  const canSubmit = isPercentInRange && hasPercentSources;
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -71,17 +130,80 @@ const ExpenseEntryDialog = ({
           onChange={handleCategoryChange}
           {...tfProps}
         />
-        <TextField
-          label="Amount"
-          value={value}
-          type="number"
-          onChange={handleValueChange}
-          {...tfProps}
-        />
+        <Stack direction="row" spacing={1} sx={{ alignItems: "flex-end" }}>
+          <TextField
+            {...tfProps}
+            sx={{ flex: 1, mb: 0 }}
+            label="Value"
+            value={value}
+            type="number"
+            onChange={handleValueChange}
+            slotProps={{
+              htmlInput:
+                valueMode === "percent"
+                  ? { min: 0, max: 100, step: 0.1 }
+                  : undefined,
+            }}
+            error={!isPercentInRange}
+            helperText={
+              !isPercentInRange
+                ? "Percent must be between 0 and 100."
+                : undefined
+            }
+          />
+          <ToggleButtonGroup
+            exclusive
+            value={valueMode}
+            onChange={handleValueModeChange}
+            size="small"
+            aria-label="Allocation type"
+            sx={{ mb: 1 }}
+          >
+            <ToggleButton value="dollar" aria-label="Dollar amount">
+              $
+            </ToggleButton>
+            <ToggleButton value="percent" aria-label="Percent of income">
+              %
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Stack>
+        {valueMode === "percent" && (
+          <FormControl fullWidth margin="dense" variant="standard">
+            <InputLabel id="percent-sources-label">Income Sources</InputLabel>
+            <Select
+              labelId="percent-sources-label"
+              multiple
+              value={percentSources}
+              label="Income Sources"
+              onChange={handlePercentSourcesChange}
+              renderValue={(selected) =>
+                selected
+                  .map(
+                    (source) =>
+                      percentSourceOptions.find(({ value }) => value === source)
+                        ?.label ?? source,
+                  )
+                  .join(", ")
+              }
+            >
+              {percentSourceOptions.map(({ value: optionValue, label }) => (
+                <MenuItem key={optionValue} value={optionValue}>
+                  <Checkbox checked={percentSources.includes(optionValue)} />
+                  <ListItemText primary={label} />
+                </MenuItem>
+              ))}
+            </Select>
+            {!hasPercentSources && (
+              <Typography color="error" variant="caption">
+                Select at least one income source.
+              </Typography>
+            )}
+          </FormControl>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit" onClick={handleSubmit}>
+        <Button type="submit" onClick={handleSubmit} disabled={!canSubmit}>
           {expenseEntry ? "Update" : "Add"}
         </Button>
       </DialogActions>

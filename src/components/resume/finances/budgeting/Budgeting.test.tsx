@@ -21,7 +21,7 @@ describe("resume | finances | budgeting | Budgeting", () => {
     fireEvent.change(screen.getByLabelText("Category"), {
       target: { value: "Food" },
     });
-    fireEvent.change(screen.getByLabelText("Amount"), {
+    fireEvent.change(screen.getByLabelText("Value"), {
       target: { value: 250 },
     });
     fireEvent.click(screen.getByRole("button", { name: "Add" }));
@@ -42,9 +42,9 @@ describe("resume | finances | budgeting | Budgeting", () => {
     expect(screen.getByText("Edit Expense Entry")).toBeInTheDocument();
     expect(screen.getByLabelText("Name")).toHaveValue("Groceries");
     expect(screen.getByLabelText("Category")).toHaveValue("Food");
-    expect(screen.getByLabelText("Amount")).toHaveValue(250);
+    expect(screen.getByLabelText("Value")).toHaveValue(250);
 
-    fireEvent.change(screen.getByLabelText("Amount"), {
+    fireEvent.change(screen.getByLabelText("Value"), {
       target: { value: 275 },
     });
     fireEvent.click(screen.getByRole("button", { name: "Update" }));

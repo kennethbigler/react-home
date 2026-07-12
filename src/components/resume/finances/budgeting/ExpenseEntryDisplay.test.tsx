@@ -1,31 +1,62 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { Provider } from "jotai";
+import { createStore, Provider } from "jotai";
+import type { ComponentProps } from "react";
 import { describe, expect, it, vi } from "vitest";
+import { budgetCategoryColorsAtom } from "../../../../jotai/finances-atom";
 import ExpenseEntryDisplay from "./ExpenseEntryDisplay";
+import { buildBudgetFlow, getLatestBudgetIncome } from "./helpers";
+
+vi.mock("./BudgetSankeyGraph", () => ({
+  default: () => <div data-testid="budget-sankey">Sankey</div>,
+}));
+
+vi.mock("./CategoryBreakdownPie", () => ({
+  default: ({ title }: { title: string }) => (
+    <div data-testid="category-pie">{title}</div>
+  ),
+}));
+
+const sampleFlow = buildBudgetFlow(getLatestBudgetIncome(100_000, 0, 0, 0), [
+  { name: "Groceries", category: "Food", value: 250 },
+  { name: "Dining Out", category: "food", value: 100 },
+  { name: "Rent", category: "Housing", value: 2000 },
+]);
 
 const renderExpenseEntryDisplay = (
-  expenseEntries: Parameters<typeof ExpenseEntryDisplay>[0]["expenseEntries"],
+  props: Partial<ComponentProps<typeof ExpenseEntryDisplay>> = {},
   onClick = vi.fn((index: number) => () => index),
-) =>
-  render(
-    <Provider>
-      <ExpenseEntryDisplay expenseEntries={expenseEntries} onClick={onClick} />
+  store = createStore(),
+) => {
+  const view = render(
+    <Provider store={store}>
+      <ExpenseEntryDisplay
+        hasCompData={props.hasCompData ?? true}
+        flow={props.flow ?? sampleFlow}
+        expenseEntries={
+          props.expenseEntries ?? [
+            { name: "Groceries", category: "Food", value: 250 },
+            { name: "Dining Out", category: "food", value: 100 },
+            { name: "Rent", category: "Housing", value: 2000 },
+          ]
+        }
+        selectedCategoryKey={props.selectedCategoryKey ?? null}
+        onCategorySelect={props.onCategorySelect ?? vi.fn()}
+        onClick={onClick}
+      />
     </Provider>,
   );
 
+  return { ...view, store };
+};
+
 describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
-  it("groups expenses into category columns with all-caps headings", () => {
+  it("groups expenses into category columns with resolved totals", () => {
     const onClick = vi.fn((index: number) => () => index);
 
-    renderExpenseEntryDisplay(
-      [
-        { name: "Groceries", category: "Food", value: 250 },
-        { name: "Dining Out", category: "food", value: 100 },
-        { name: "Rent", category: "Housing", value: 2000 },
-      ],
-      onClick,
-    );
+    renderExpenseEntryDisplay({}, onClick);
 
+    expect(screen.getByTestId("budget-sankey")).toBeInTheDocument();
+    expect(screen.getByTestId("category-pie")).toHaveTextContent("By Category");
     expect(
       screen.getByRole("heading", { name: "FOOD ($350.00)" }),
     ).toBeInTheDocument();
@@ -41,10 +72,16 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
     const onClick = vi.fn((index: number) => () => index);
 
     renderExpenseEntryDisplay(
-      [
-        { name: "Groceries", category: "Food", value: 250 },
-        { name: "Rent", category: "Housing", value: 2000 },
-      ],
+      {
+        expenseEntries: [
+          { name: "Groceries", category: "Food", value: 250 },
+          { name: "Rent", category: "Housing", value: 2000 },
+        ],
+        flow: buildBudgetFlow(getLatestBudgetIncome(100_000, 0, 0, 0), [
+          { name: "Groceries", category: "Food", value: 250 },
+          { name: "Rent", category: "Housing", value: 2000 },
+        ]),
+      },
       onClick,
     );
 
@@ -53,10 +90,78 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
   });
 
   it("renders a category color select below each heading", () => {
-    renderExpenseEntryDisplay([
-      { name: "Electric", category: "Utilities", value: 120 },
-    ]);
+    renderExpenseEntryDisplay({
+      expenseEntries: [{ name: "Electric", category: "Utilities", value: 120 }],
+      flow: buildBudgetFlow(getLatestBudgetIncome(100_000, 0, 0, 0), [
+        { name: "Electric", category: "Utilities", value: 120 },
+      ]),
+    });
 
-    expect(screen.getByLabelText("Color")).toBeInTheDocument();
+    expect(screen.getByLabelText("Color (Optional)")).toBeInTheDocument();
+  });
+
+  it("shows comp calculator alert when comp data is missing", () => {
+    renderExpenseEntryDisplay({
+      hasCompData: false,
+      flow: null,
+      expenseEntries: [{ name: "Rent", category: "Housing", value: 2000 }],
+    });
+
+    expect(
+      screen.getByText(/Add a comp entry in Comp Calculator/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Category breakdown requires comp calculator data."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "HOUSING ($2,000.00)" }),
+    ).toBeInTheDocument();
+  });
+
+  it("shows category breakdown when a category is selected", () => {
+    renderExpenseEntryDisplay({
+      selectedCategoryKey: "food",
+    });
+
+    expect(screen.getByTestId("category-pie")).toHaveTextContent(
+      "FOOD Breakdown",
+    );
+  });
+
+  it("prompts for expenses when comp data exists but pie data is empty", () => {
+    renderExpenseEntryDisplay({
+      expenseEntries: [],
+      flow: buildBudgetFlow(getLatestBudgetIncome(100_000, 0, 0, 0), []),
+    });
+
+    expect(
+      screen.getByText("Add expenses to see category breakdown."),
+    ).toBeInTheDocument();
+  });
+
+  it("updates and clears category colors", () => {
+    const { store } = renderExpenseEntryDisplay({
+      expenseEntries: [{ name: "Electric", category: "Utilities", value: 120 }],
+      flow: buildBudgetFlow(getLatestBudgetIncome(100_000, 0, 0, 0), [
+        { name: "Electric", category: "Utilities", value: 120 },
+      ]),
+    });
+
+    const colorSelect = screen.getByRole("combobox", {
+      name: "Color (Optional)",
+    });
+
+    fireEvent.mouseDown(colorSelect);
+    fireEvent.click(screen.getByRole("option", { name: "Success" }));
+    expect(store.get(budgetCategoryColorsAtom)).toEqual({
+      utilities: "success",
+    });
+
+    fireEvent.click(
+      screen.getByRole("heading", { name: "UTILITIES ($120.00)" }),
+    );
+    fireEvent.mouseDown(colorSelect);
+    fireEvent.click(screen.getByRole("option", { name: "Default (None)" }));
+    expect(store.get(budgetCategoryColorsAtom)).toEqual({});
   });
 });

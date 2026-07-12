@@ -1,22 +1,28 @@
 import { useState } from "react";
 import ExpenseEntryDialog from "./ExpenseEntryDialog";
 import ExpenseEntryDisplay from "./ExpenseEntryDisplay";
-import { budgetAtom, ExpenseEntry } from "../../../../jotai/finances-atom";
-import { useAtom } from "jotai";
+import {
+  budgetAtom,
+  budgetFlowRead,
+  ExpenseEntry,
+} from "../../../../jotai/finances-atom";
+import { useAtom, useAtomValue } from "jotai";
 import { Button } from "@mui/material";
 
 const Budgeting = () => {
   const [expenseEntries, setExpenseEntries] = useAtom(budgetAtom);
+  const budgetState = useAtomValue(budgetFlowRead);
   const [openEntry, setOpenEntry] = useState(false);
   const [editEntryIdx, setEditEntryIdx] = useState(-1);
+  const [selectedCategoryKey, setSelectedCategoryKey] = useState<string | null>(
+    null,
+  );
 
-  // entry open/closers
   const openNewEntry = () => {
     setEditEntryIdx(-1);
     setOpenEntry(true);
   };
 
-  // entry open/closers
   const openEditEntry = (i: number) => () => {
     setEditEntryIdx(i);
     setOpenEntry(true);
@@ -39,7 +45,11 @@ const Budgeting = () => {
     <div>
       <Button onClick={openNewEntry}>+ Expense</Button>
       <ExpenseEntryDisplay
-        expenseEntries={expenseEntries}
+        hasCompData={budgetState.hasCompData}
+        flow={budgetState.flow}
+        expenseEntries={budgetState.expenseEntries}
+        selectedCategoryKey={selectedCategoryKey}
+        onCategorySelect={setSelectedCategoryKey}
         onClick={openEditEntry}
       />
       {openEntry && (

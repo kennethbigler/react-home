@@ -2,6 +2,12 @@ import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import stockAtom from "./stock-atom";
 import dateHelper, { DateObj } from "../apis/DateHelper";
+import {
+  buildBudgetFlow,
+  getLatestBudgetIncome,
+} from "../components/resume/finances/budgeting/helpers";
+
+/* --------------------     Types and constants     -------------------- */
 
 export interface CompEntry {
   entryDate: string;
@@ -42,14 +48,20 @@ export type ExpenseEntryColor = (typeof expenseEntryColors)[number];
 
 export type BudgetCategoryColors = Partial<Record<string, ExpenseEntryColor>>;
 
+export type ExpenseValueMode = "dollar" | "percent";
+export type ExpensePercentSource = "salary" | "bonus" | "stockAdj";
+
 export interface ExpenseEntry {
   name: string;
   category: string;
   value: number;
+  valueMode?: ExpenseValueMode;
+  /** @deprecated use percentSources */
+  percentSource?: ExpensePercentSource;
+  percentSources?: ExpensePercentSource[];
 }
 
-export const normalizeBudgetCategoryKey = (category: string) =>
-  category.trim().toLowerCase();
+/* --------------------     Atoms     -------------------- */
 
 const compCalcAtom = atomWithStorage<CompEntry[]>("compCalcAtom", []);
 export const budgetAtom = atomWithStorage<ExpenseEntry[]>("budgetAtom", []);
@@ -124,5 +136,41 @@ export const compCalcRead = atom((get) => {
 
   return compCalcEntries;
 });
+
+/* --------------------     Budget Flow State     -------------------- */
+export const budgetFlowRead = atom((get) => {
+  const compCalcEntries = get(compCalcRead);
+  const compEntries = get(compCalcAtom);
+  const expenseEntries = get(budgetAtom);
+  const categoryColors = get(budgetCategoryColorsAtom);
+
+  if (compEntries.length === 0 || compCalcEntries.length === 0) {
+    return {
+      hasCompData: false as const,
+      flow: null,
+      expenseEntries,
+      categoryColors,
+    };
+  }
+
+  const latestCompEntry = compEntries[compEntries.length - 1];
+  const latestCompCalcEntry = compCalcEntries[compCalcEntries.length - 1];
+  const income = getLatestBudgetIncome(
+    latestCompEntry.salary,
+    latestCompEntry.bonus,
+    latestCompCalcEntry.stock,
+    latestCompCalcEntry.stockAdj,
+  );
+  const flow = buildBudgetFlow(income, expenseEntries, categoryColors);
+
+  return {
+    hasCompData: true as const,
+    flow,
+    expenseEntries,
+    categoryColors,
+  };
+});
+
+/* --------------------     Export     -------------------- */
 
 export default compCalcAtom;
