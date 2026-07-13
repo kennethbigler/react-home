@@ -2,7 +2,10 @@ import { getPieSeriesData } from "./tests/highchartsMocks";
 import { render, screen } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import { describe, expect, it } from "vitest";
-import themeAtom, { darkTheme, lightTheme } from "../../../../jotai/theme-atom";
+import themeAtom, {
+  darkTheme,
+  lightTheme,
+} from "../../../../../jotai/theme-atom";
 import CategoryBreakdownPie from "./CategoryBreakdownPie";
 
 describe("resume | finances | budgeting | CategoryBreakdownPie", () => {

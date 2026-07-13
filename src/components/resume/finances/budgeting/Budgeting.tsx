@@ -3,14 +3,18 @@ import ExpenseEntryDialog from "./ExpenseEntryDialog";
 import ExpenseEntryDisplay from "./ExpenseEntryDisplay";
 import {
   budgetAtom,
+  budgetCategoryColorsAtom,
   budgetFlowRead,
   ExpenseEntry,
 } from "../../../../jotai/finances-atom";
 import { useAtom, useAtomValue } from "jotai";
 import { Button } from "@mui/material";
 
+import { normalizeCategoryKey } from "./helpers";
+
 const Budgeting = () => {
   const [expenseEntries, setExpenseEntries] = useAtom(budgetAtom);
+  const [, setCategoryColors] = useAtom(budgetCategoryColorsAtom);
   const budgetState = useAtomValue(budgetFlowRead);
   const [openEntry, setOpenEntry] = useState(false);
   const [editEntryIdx, setEditEntryIdx] = useState(-1);
@@ -41,6 +45,34 @@ const Budgeting = () => {
     handleClose();
   };
 
+  const removeExpenseEntry = () => {
+    const deletedCategoryKey = normalizeCategoryKey(
+      expenseEntries[editEntryIdx]?.category ?? "",
+    );
+    const newExpenseEntries = expenseEntries.filter(
+      (_, index) => index !== editEntryIdx,
+    );
+    const categoryStillExists = newExpenseEntries.some(
+      (entry) => normalizeCategoryKey(entry.category) === deletedCategoryKey,
+    );
+
+    setExpenseEntries(newExpenseEntries);
+
+    if (!categoryStillExists) {
+      if (selectedCategoryKey === deletedCategoryKey) {
+        setSelectedCategoryKey(null);
+      }
+
+      setCategoryColors((currentColors) => {
+        const { [deletedCategoryKey]: _removedColor, ...remainingColors } =
+          currentColors;
+        return remainingColors;
+      });
+    }
+
+    handleClose();
+  };
+
   return (
     <div>
       <Button onClick={openNewEntry}>+ Expense</Button>
@@ -58,6 +90,7 @@ const Budgeting = () => {
           open={openEntry}
           onClose={handleClose}
           addExpenseEntry={addExpenseEntry}
+          onDelete={editEntryIdx !== -1 ? removeExpenseEntry : undefined}
           expenseEntry={
             editEntryIdx !== -1 ? expenseEntries[editEntryIdx] : undefined
           }

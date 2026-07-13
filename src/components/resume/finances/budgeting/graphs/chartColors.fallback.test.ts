@@ -1,7 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("../comp-calc/graphs/colors", () => ({
+vi.mock("../../comp-calc/graphs/colors", () => ({
   default: [],
 }));
 

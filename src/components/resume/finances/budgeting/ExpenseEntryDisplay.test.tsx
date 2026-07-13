@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { createStore, Provider } from "jotai";
 import type { ComponentProps } from "react";
 import { describe, expect, it, vi } from "vitest";
@@ -6,11 +7,11 @@ import { budgetCategoryColorsAtom } from "../../../../jotai/finances-atom";
 import ExpenseEntryDisplay from "./ExpenseEntryDisplay";
 import { buildBudgetFlow, getLatestBudgetIncome } from "./helpers";
 
-vi.mock("./BudgetSankeyGraph", () => ({
+vi.mock("./graphs/BudgetSankeyGraph", () => ({
   default: () => <div data-testid="budget-sankey">Sankey</div>,
 }));
 
-vi.mock("./CategoryBreakdownPie", () => ({
+vi.mock("./graphs/CategoryBreakdownPie", () => ({
   default: ({ title }: { title: string }) => (
     <div data-testid="category-pie">{title}</div>
   ),
@@ -60,10 +61,10 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
       "Income Overview",
     );
     expect(
-      screen.getByRole("button", { name: "FOOD ($350.00)" }),
+      screen.getByRole("button", { name: "Food ($350.00)" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "HOUSING ($2,000.00)" }),
+      screen.getByRole("button", { name: "Housing ($2,000.00)" }),
     ).toBeInTheDocument();
     expect(screen.getByText("Groceries: $250.00")).toBeInTheDocument();
     expect(screen.getByText("Dining Out: $100.00")).toBeInTheDocument();
@@ -116,7 +117,7 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
       screen.getByText("Category breakdown requires comp calculator data."),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "HOUSING ($2,000.00)" }),
+      screen.getByRole("button", { name: "Housing ($2,000.00)" }),
     ).toBeInTheDocument();
   });
 
@@ -126,7 +127,7 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
     });
 
     expect(screen.getByTestId("category-pie")).toHaveTextContent(
-      "FOOD Breakdown",
+      "Food Breakdown",
     );
   });
 
@@ -156,9 +157,35 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
 
     renderExpenseEntryDisplay({ onCategorySelect });
 
-    fireEvent.click(screen.getByRole("button", { name: "FOOD ($350.00)" }));
+    fireEvent.click(screen.getByRole("button", { name: "Food ($350.00)" }));
 
     expect(onCategorySelect).toHaveBeenCalledWith("food");
+  });
+
+  it("uses theme text color for category headings without a color", () => {
+    const darkTheme = createTheme({ palette: { mode: "dark" } });
+    const store = createStore();
+
+    render(
+      <ThemeProvider theme={darkTheme}>
+        <Provider store={store}>
+          <ExpenseEntryDisplay
+            hasCompData
+            flow={buildBudgetFlow(getLatestBudgetIncome(100_000, 0, 0, 0), [
+              { name: "Tickets", category: "Fun", value: 50 },
+            ])}
+            expenseEntries={[{ name: "Tickets", category: "Fun", value: 50 }]}
+            selectedCategoryKey={null}
+            onCategorySelect={vi.fn()}
+            onClick={vi.fn(() => () => undefined)}
+          />
+        </Provider>
+      </ThemeProvider>,
+    );
+
+    const heading = screen.getByRole("button", { name: "Fun ($50.00)" });
+
+    expect(heading).toHaveStyle({ color: darkTheme.palette.text.primary });
   });
 
   it("updates and clears category colors", () => {
@@ -180,7 +207,7 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
     });
 
     fireEvent.click(
-      screen.getByRole("button", { name: "UTILITIES ($120.00)" }),
+      screen.getByRole("button", { name: "Utilities ($120.00)" }),
     );
     fireEvent.mouseDown(colorSelect);
     fireEvent.click(screen.getByRole("option", { name: "Default (None)" }));

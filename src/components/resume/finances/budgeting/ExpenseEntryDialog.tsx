@@ -24,7 +24,7 @@ import {
   ExpensePercentSource,
   ExpenseValueMode,
 } from "../../../../jotai/finances-atom";
-import { getPercentSources } from "./helpers";
+import { getPercentSources, formatCategoryName } from "./helpers";
 
 const tfProps: TextFieldProps = {
   variant: "standard",
@@ -38,7 +38,7 @@ const percentSourceOptions: Array<{
 }> = [
   { value: "salary", label: "Salary" },
   { value: "bonus", label: "Bonus" },
-  { value: "stockAdj", label: "Stock Adj" },
+  { value: "stockAdj", label: "Stock" },
 ];
 
 interface ExpenseEntryDialogProps {
@@ -46,6 +46,7 @@ interface ExpenseEntryDialogProps {
   expenseEntry?: ExpenseEntry;
   onClose: () => void;
   addExpenseEntry: (n: ExpenseEntry) => void;
+  onDelete?: () => void;
 }
 
 const ExpenseEntryDialog = ({
@@ -53,6 +54,7 @@ const ExpenseEntryDialog = ({
   expenseEntry,
   onClose,
   addExpenseEntry,
+  onDelete,
 }: ExpenseEntryDialogProps) => {
   const [name, setName] = useState(expenseEntry?.name || "");
   const [category, setCategory] = useState(expenseEntry?.category || "");
@@ -98,8 +100,8 @@ const ExpenseEntryDialog = ({
 
   const handleSubmit = () => {
     addExpenseEntry({
-      name,
-      category,
+      name: name.trim(),
+      category: formatCategoryName(category),
       value,
       ...(valueMode === "percent"
         ? { valueMode, percentSources }
@@ -212,6 +214,11 @@ const ExpenseEntryDialog = ({
         )}
       </DialogContent>
       <DialogActions>
+        {expenseEntry && onDelete ? (
+          <Button onClick={onDelete} color="error">
+            Delete
+          </Button>
+        ) : null}
         <Button onClick={onClose}>Cancel</Button>
         <Button type="submit" onClick={handleSubmit} disabled={!canSubmit}>
           {expenseEntry ? "Update" : "Add"}

@@ -1,11 +1,14 @@
 import type { Theme } from "@mui/material/styles";
-import { STATE_TAX_LABEL } from "../../../../constants/caStateTaxBrackets";
-import { FEDERAL_TAX_LABEL } from "../../../../constants/federalTaxBrackets";
-import { PAYROLL_NODE_LABEL } from "../../../../constants/payrollDeductions";
-import compColors from "../comp-calc/graphs/colors";
-import type { ExpenseEntryColor } from "../../../../jotai/finances-atom";
-import type { CategoryTotal, PiePoint } from "./helpers";
-import { UNALLOCATED_NODE } from "./helpers";
+import { STATE_TAX_LABEL } from "../../../../../constants/caStateTaxBrackets";
+import { FEDERAL_TAX_LABEL } from "../../../../../constants/federalTaxBrackets";
+import { PAYROLL_NODE_LABEL } from "../../../../../constants/payrollDeductions";
+import type {
+  CategoryTotal,
+  ExpenseEntryColor,
+} from "../../../../../apis/budget";
+import compColors from "../../comp-calc/graphs/colors";
+import type { PiePoint } from "./types";
+import { UNALLOCATED_NODE } from "./types";
 
 const getSankeyCategoryColor = (
   theme: Theme,

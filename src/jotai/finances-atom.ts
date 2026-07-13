@@ -5,9 +5,25 @@ import dateHelper, { DateObj } from "../apis/DateHelper";
 import {
   buildBudgetFlow,
   getLatestBudgetIncome,
-} from "../components/resume/finances/budgeting/helpers";
+  type BudgetCategoryColors,
+  type ExpenseEntry,
+  type ExpenseEntryColor,
+  type ExpensePercentSource,
+  type ExpenseValueMode,
+  expenseEntryColors,
+} from "../apis/budget";
 
 /* --------------------     Types and constants     -------------------- */
+
+export type {
+  BudgetCategoryColors,
+  ExpenseEntry,
+  ExpenseEntryColor,
+  ExpensePercentSource,
+  ExpenseValueMode,
+};
+
+export { expenseEntryColors };
 
 export interface CompEntry {
   entryDate: string;
@@ -33,32 +49,6 @@ interface PrevStock {
   grantQty: number;
   grantDuration: number;
   exp: DateObj;
-}
-
-export const expenseEntryColors = [
-  "success",
-  "info",
-  "warning",
-  "error",
-  "primary",
-  "secondary",
-] as const;
-
-export type ExpenseEntryColor = (typeof expenseEntryColors)[number];
-
-export type BudgetCategoryColors = Partial<Record<string, ExpenseEntryColor>>;
-
-export type ExpenseValueMode = "dollar" | "percent";
-export type ExpensePercentSource = "salary" | "bonus" | "stockAdj";
-
-export interface ExpenseEntry {
-  name: string;
-  category: string;
-  value: number;
-  valueMode?: ExpenseValueMode;
-  /** @deprecated use percentSources */
-  percentSource?: ExpensePercentSource;
-  percentSources?: ExpensePercentSource[];
 }
 
 /* --------------------     Atoms     -------------------- */

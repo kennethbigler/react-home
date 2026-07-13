@@ -35,6 +35,33 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     expect(screen.getByLabelText("Name")).toHaveValue("");
   });
 
+  it("title-cases the category when submitting", () => {
+    const addExpenseEntry = vi.fn();
+
+    render(
+      <ExpenseEntryDialog
+        open
+        addExpenseEntry={addExpenseEntry}
+        onClose={vi.fn()}
+      />,
+    );
+
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: "Tickets" },
+    });
+    fireEvent.change(screen.getByLabelText("Category"), {
+      target: { value: "fun" },
+    });
+    fireEvent.change(screen.getByLabelText("Value"), {
+      target: { value: "50" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+
+    expect(addExpenseEntry).toHaveBeenCalledWith(
+      expect.objectContaining({ category: "Fun" }),
+    );
+  });
+
   it("submits a percent expense with default salary source", () => {
     const addExpenseEntry = vi.fn();
 
@@ -172,6 +199,43 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("shows delete when editing and calls onDelete", () => {
+    const onDelete = vi.fn();
+
+    render(
+      <ExpenseEntryDialog
+        open
+        expenseEntry={{
+          name: "Rent",
+          category: "Housing",
+          value: 2000,
+        }}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+        onDelete={onDelete}
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Add" }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+
+    expect(onDelete).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not show delete when creating a new expense", () => {
+    render(
+      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Delete" }),
+    ).not.toBeInTheDocument();
   });
 
   it("blocks submit when name or category is blank", () => {

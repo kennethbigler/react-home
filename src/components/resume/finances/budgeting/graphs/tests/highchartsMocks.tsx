@@ -14,11 +14,11 @@ export const clickSankeyNode = (node: { id: string; isNode?: boolean }) => {
 
 export const getPieSeriesData = () => chartTestState.pieSeriesData;
 
-vi.mock("../../../../common/highcharts/sankeyHighcharts", () => ({
+vi.mock("../../../../../common/highcharts/sankeyHighcharts", () => ({
   default: {},
 }));
 
-vi.mock("../../../../common/highcharts/coreHighcharts", () => ({
+vi.mock("../../../../../common/highcharts/coreHighcharts", () => ({
   default: {},
 }));
 

@@ -1,29 +1,19 @@
-import { Alert, Grid, Stack, Typography } from "@mui/material";
-import { useTheme, type Theme } from "@mui/material/styles";
+import { Alert, Grid, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { useAtom } from "jotai";
-import usDollar from "../../../../apis/usDollar";
 import {
   budgetCategoryColorsAtom,
   ExpenseEntry,
   ExpenseEntryColor,
 } from "../../../../jotai/finances-atom";
-import BudgetSankeyGraph from "./BudgetSankeyGraph";
-import CategoryBreakdownPie from "./CategoryBreakdownPie";
-import CategoryColorSelect from "./CategoryColorSelect";
-import ExpenseEntryCard from "./ExpenseEntryCard";
+import BudgetCategorySection from "./BudgetCategorySection";
+import BudgetSankeyGraph from "./graphs/BudgetSankeyGraph";
+import CategoryBreakdownPie from "./graphs/CategoryBreakdownPie";
+import { getBudgetPieContent } from "./getBudgetPieContent";
 import {
-  colorizeBreakdownPieData,
-  colorizeIncomeOverviewPieData,
-} from "./chartColors";
-import {
-  buildExpensePieData,
   buildCategoryTotals,
-  buildIncomeOverviewPieData,
-  buildPayrollPieData,
   getLatestBudgetIncome,
-  PAYROLL_CATEGORY_KEY,
   type BudgetFlow,
-  type CategoryTotal,
 } from "./helpers";
 
 interface ExpenseEntryDisplayProps {
@@ -34,53 +24,6 @@ interface ExpenseEntryDisplayProps {
   onCategorySelect: (categoryKey: string | null) => void;
   onClick: (i: number) => () => void;
 }
-
-const getPieContent = (
-  flow: BudgetFlow,
-  categories: CategoryTotal[],
-  selectedCategoryKey: string | null,
-  expenseEntries: ExpenseEntryDisplayProps["expenseEntries"],
-  categoryColors: Partial<Record<string, ExpenseEntryColor>>,
-  theme: Theme,
-) => {
-  if (selectedCategoryKey === PAYROLL_CATEGORY_KEY) {
-    return {
-      title: "Payroll Breakdown",
-      data: colorizeBreakdownPieData(theme, "error", buildPayrollPieData(flow)),
-    };
-  }
-
-  if (selectedCategoryKey) {
-    const selectedCategory = categories.find(
-      ({ categoryKey }) => categoryKey === selectedCategoryKey,
-    );
-    const data = buildExpensePieData(
-      selectedCategoryKey,
-      expenseEntries,
-      flow.income,
-    );
-
-    return {
-      title: selectedCategory
-        ? `${selectedCategory.heading} Breakdown`
-        : "Category Breakdown",
-      data: colorizeBreakdownPieData(
-        theme,
-        selectedCategory?.color ?? categoryColors[selectedCategoryKey],
-        data,
-      ),
-    };
-  }
-
-  return {
-    title: "Income Overview",
-    data: colorizeIncomeOverviewPieData(
-      theme,
-      categories,
-      buildIncomeOverviewPieData(flow),
-    ),
-  };
-};
 
 const ExpenseEntryDisplay = ({
   hasCompData,
@@ -102,7 +45,7 @@ const ExpenseEntryDisplay = ({
       : [];
   const categories = flow?.categories ?? fallbackCategories;
   const pieContent = flow
-    ? getPieContent(
+    ? getBudgetPieContent(
         flow,
         categories,
         selectedCategoryKey,
@@ -164,64 +107,20 @@ const ExpenseEntryDisplay = ({
       </Grid>
 
       <Grid container spacing={2}>
-        {categories.map(({ categoryKey, heading, total, items, color }) => {
-          const categoryColor = color ?? categoryColors[categoryKey];
-          const isSelected = selectedCategoryKey === categoryKey;
-
-          return (
-            <Grid
-              key={categoryKey}
-              size={{
-                xs: 12,
-                sm: categories.length > 1 ? 6 : 12,
-                md: categories.length > 2 ? 4 : undefined,
-                lg: categories.length > 3 ? 3 : undefined,
-              }}
-            >
-              <Typography
-                variant="h6"
-                component="button"
-                type="button"
-                gutterBottom
-                color={categoryColor}
-                onClick={() =>
-                  onCategorySelect(isSelected ? null : categoryKey)
-                }
-                sx={{
-                  display: "block",
-                  width: "100%",
-                  textAlign: "left",
-                  border: "none",
-                  background: "none",
-                  cursor: "pointer",
-                  font: "inherit",
-                  outline: isSelected ? "2px solid" : undefined,
-                  outlineColor: isSelected ? "primary.main" : undefined,
-                  borderRadius: 1,
-                  px: isSelected ? 0.5 : 0,
-                }}
-              >
-                {`${heading} (${usDollar.format(total)})`}
-              </Typography>
-              <CategoryColorSelect
-                categoryKey={categoryKey}
-                value={categoryColor}
-                onChange={handleCategoryColorChange}
-              />
-              <Stack spacing={1}>
-                {items.map(({ expenseEntry, index, resolvedAmount }) => (
-                  <ExpenseEntryCard
-                    expenseEntry={expenseEntry}
-                    resolvedAmount={resolvedAmount}
-                    color={categoryColor}
-                    onClick={onClick(index)}
-                    key={`expense-entry-${index}`}
-                  />
-                ))}
-              </Stack>
-            </Grid>
-          );
-        })}
+        {categories.map((category) => (
+          <BudgetCategorySection
+            key={category.categoryKey}
+            category={category}
+            categoryCount={categories.length}
+            categoryColor={
+              category.color ?? categoryColors[category.categoryKey]
+            }
+            isSelected={selectedCategoryKey === category.categoryKey}
+            onCategorySelect={onCategorySelect}
+            onExpenseClick={onClick}
+            onCategoryColorChange={handleCategoryColorChange}
+          />
+        ))}
       </Grid>
     </>
   );

@@ -10,10 +10,10 @@ import {
   Tooltip,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../../../common/highcharts/coreHighcharts";
-import themeAtom from "../../../../jotai/theme-atom";
-import usDollar from "../../../../apis/usDollar";
-import type { PiePoint } from "./helpers";
+import Highcharts from "../../../../common/highcharts/coreHighcharts";
+import themeAtom from "../../../../../jotai/theme-atom";
+import usDollar from "../../../../../apis/usDollar";
+import type { PiePoint } from "./types";
 
 interface CategoryBreakdownPieProps {
   data: PiePoint[];

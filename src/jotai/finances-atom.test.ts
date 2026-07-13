@@ -256,7 +256,7 @@ describe("jotai | finances-atom", () => {
       expect(result.flow?.income.gross).toBe(110_000);
       expect(result.flow?.categories).toHaveLength(2);
       expect(
-        result.flow?.categories.find((c) => c.heading === "RETIREMENT")?.total,
+        result.flow?.categories.find((c) => c.heading === "Retirement")?.total,
       ).toBe(750);
     });
   });

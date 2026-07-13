@@ -66,7 +66,7 @@ describe("resume | finances | budgeting | ExpenseEntryCard", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders stock adj in percent allocation details", () => {
+  it("renders stock in percent allocation details", () => {
     render(
       <ExpenseEntryCard
         expenseEntry={{
@@ -82,7 +82,7 @@ describe("resume | finances | budgeting | ExpenseEntryCard", () => {
     );
 
     expect(
-      screen.getByText("Invest: $100.00 (5% of stock adj)"),
+      screen.getByText("Invest: $100.00 (5% of stock)"),
     ).toBeInTheDocument();
   });
 

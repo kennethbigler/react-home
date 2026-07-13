@@ -3,13 +3,14 @@ import { useAtomValue } from "jotai";
 import { useTheme } from "@mui/material/styles";
 import { Chart, Credits, Series, Title, XAxis, YAxis } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../../../common/highcharts/sankeyHighcharts";
-import themeAtom from "../../../../jotai/theme-atom";
-import usDollar from "../../../../apis/usDollar";
-import type { BudgetFlow } from "./helpers";
+import Highcharts from "../../../../common/highcharts/sankeyHighcharts";
+import themeAtom from "../../../../../jotai/theme-atom";
+import usDollar from "../../../../../apis/usDollar";
+import type { BudgetFlow } from "../../../../../apis/budget";
 import {
   buildBudgetSankeyData,
   BUDGET_WITHHOLDING_NODE_LABELS,
+  getSankeyNodeClassName,
   getSankeyNodeSum,
   GROSS_INCOME_NODE,
   INCOME_NODE_LABELS,
@@ -17,7 +18,7 @@ import {
   isPayrollSankeyNode,
   PAYROLL_CATEGORY_KEY,
   UNALLOCATED_NODE,
-} from "./helpers";
+} from "./chartData";
 import { getBudgetSankeyNodeColors } from "./chartColors";
 
 interface BudgetSankeyGraphProps {
@@ -49,7 +50,7 @@ const BudgetSankeyGraph = memo(
         },
         plotOptions: {
           sankey: {
-            nodeWidth: 72,
+            nodeWidth: 80,
             nodePadding: 14,
             borderWidth: 0,
             linkColorMode: "gradient",
@@ -151,14 +152,11 @@ const BudgetSankeyGraph = memo(
           return {
             ...node,
             sumFormatted: formatCurrency(nodeSum),
-            className:
-              selectedCategoryKey &&
-              (flow.categories.find(({ heading }) => heading === node.id)
-                ?.categoryKey === selectedCategoryKey ||
-                (selectedCategoryKey === PAYROLL_CATEGORY_KEY &&
-                  isPayrollSankeyNode(node.id)))
-                ? "budget-sankey-selected"
-                : undefined,
+            className: getSankeyNodeClassName(
+              node.id,
+              flow.categories,
+              selectedCategoryKey,
+            ),
           };
         }),
       [data, flow.categories, nodes, selectedCategoryKey],
