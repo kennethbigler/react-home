@@ -1,0 +1,1 @@
+var e=e=>e.filter(e=>e.length>0).flatMap((e,t)=>t===0?e:[{divider:!0},...e]),t=e=>!(`divider`in e);export{t as n,e as t};
