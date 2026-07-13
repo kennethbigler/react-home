@@ -97,10 +97,10 @@ component_management:
       name: Cars
       paths:
         - src/components/resume/cars/**
-    - component_id: module_resume_comp_calc
-      name: Comp Calculator
+    - component_id: module_resume_finances
+      name: Finances
       paths:
-        - src/components/resume/comp-calc/**
+        - src/components/resume/finances/**
     - component_id: module_resume_education
       name: Education
       paths:

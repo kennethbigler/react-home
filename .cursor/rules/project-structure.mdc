@@ -101,7 +101,7 @@ Interactive game implementations:
 Professional portfolio sections:
 
 - **cars/** - Personal vehicle history
-- **comp-calc/** - Compensation calculator
+- **finances/** - Finances including Compensation calculator and Budgeting
 - **education/** - Educational background
 - **f1/** - Formula 1 interest section
 - **presentations/** - Speaking engagements
@@ -125,7 +125,7 @@ jotai/
 ├── blackjack-state.ts
 ├── botc-atom.ts (+ test)
 ├── bridge-atom.ts (+ test)
-├── comp-calculator-atom.ts
+├── finances-atom.ts
 ├── connect4-atom.ts
 ├── deal-or-no-deal-state.ts
 ├── deck-state.ts

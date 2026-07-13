@@ -1,0 +1,148 @@
+import { useMemo } from "react";
+import { useAtomValue } from "jotai";
+import {
+  Chart,
+  Credits,
+  Legend,
+  PlotOptions,
+  Series,
+  Title,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "@highcharts/react";
+import { Accessibility } from "@highcharts/react/modules/Accessibility";
+import Highcharts from "../../../../common/highcharts/coreHighcharts";
+import themeAtom from "../../../../../jotai/theme-atom";
+import { CompCalcEntry, CompEntry } from "../../../../../jotai/finances-atom";
+import colors from "./colors";
+import {
+  BONUS,
+  INFL,
+  SALARY,
+  STOCK,
+  TOTAL,
+  buildCompChartData,
+  formatCompTooltip,
+} from "./compGraphHelpers";
+
+const staticOptions: Highcharts.Options = {
+  chart: { type: "area", backgroundColor: "transparent" },
+};
+
+interface CompChartProps {
+  startIdx: number;
+  compCalcEntries: CompCalcEntry[];
+  compEntries: CompEntry[];
+  onPointSelect: (index: number) => void;
+}
+
+const CompChart = ({
+  startIdx,
+  compCalcEntries,
+  compEntries,
+  onPointSelect,
+}: CompChartProps) => {
+  // process theme
+  const theme = useAtomValue(themeAtom);
+  const color = theme.mode === "light" ? "black" : "white";
+
+  const { compChartData, options } = useMemo(() => {
+    const chartData = buildCompChartData(
+      startIdx,
+      compCalcEntries,
+      compEntries,
+    );
+
+    const chartOptions: Highcharts.Options = {
+      ...staticOptions,
+      colors: [...colors, color],
+      plotOptions: {
+        area: {
+          stacking: "normal",
+          lineColor: color,
+          lineWidth: 1,
+          marker: { lineWidth: 1, lineColor: color },
+          // Expand hit target to the filled area so taps register on touch devices.
+          trackByArea: true,
+        },
+      },
+    };
+
+    return { compChartData: chartData, options: chartOptions };
+  }, [compEntries, compCalcEntries, startIdx, color]);
+
+  const tooltipFormatter =
+    useMemo((): Highcharts.TooltipFormatterCallbackFunction => {
+      const finalInflationValue = compChartData[INFL].at(-1)?.[1];
+
+      return function (this: Highcharts.Point) {
+        const hoveredPointIndex = this.points?.[0]?.index ?? this.index;
+
+        return formatCompTooltip(this.points ?? [this], {
+          finalInflationValue,
+          hoveredPointIndex,
+          selectedPointIndex: startIdx,
+        });
+      };
+    }, [compChartData, startIdx]);
+
+  const handlePointClick: Highcharts.PointClickCallbackFunction = function () {
+    const { index } = this;
+    if (index !== undefined) {
+      onPointSelect(index);
+    }
+  };
+
+  return (
+    <figure style={{ margin: 0, width: "100%" }}>
+      <Chart highcharts={Highcharts} options={options}>
+        <Accessibility enabled={true} />
+        <Credits enabled={false} />
+        <Legend enabled={false} />
+        <Title style={{ color }}>Total Comp</Title>
+        <XAxis type="datetime" visible={false} />
+        <YAxis title={{ text: undefined }} labels={{ style: { color } }} />
+        <Tooltip
+          shared={true}
+          useHTML={true}
+          followTouchMove={false}
+          formatter={tooltipFormatter}
+        />
+        <PlotOptions
+          series={{
+            cursor: "pointer",
+            point: { events: { click: handlePointClick } },
+          }}
+        />
+        <Series
+          type="area"
+          options={{ name: "Stock" }}
+          data={compChartData[STOCK]}
+        />
+        <Series
+          type="area"
+          options={{ name: "Bonus" }}
+          data={compChartData[BONUS]}
+        />
+        <Series
+          type="area"
+          options={{ name: "Salary" }}
+          data={compChartData[SALARY]}
+        />
+        <Series
+          type="spline"
+          options={{ name: "Total" }}
+          data={compChartData[TOTAL]}
+        />
+        <Series
+          type="spline"
+          options={{ name: "Inflation" }}
+          data={compChartData[INFL]}
+        />
+      </Chart>
+    </figure>
+  );
+};
+
+export default CompChart;
