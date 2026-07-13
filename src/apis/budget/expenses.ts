@@ -5,6 +5,7 @@ import {
   type CategoryTotal,
   type ExpenseEntry,
   type ExpensePercentSource,
+  type ExpenseTaxBasis,
   type ResolvedExpense,
 } from "./types";
 
@@ -25,6 +26,10 @@ export const formatCategoryName = (category: string): string => {
     .join(" ");
 };
 
+export const getTaxBasis = (
+  entry: Pick<ExpenseEntry, "taxBasis">,
+): ExpenseTaxBasis => entry.taxBasis ?? "posttax";
+
 export const getPercentSources = (
   entry: Pick<ExpenseEntry, "percentSource" | "percentSources">,
 ): ExpensePercentSource[] => {
@@ -42,6 +47,7 @@ export const getPercentSources = (
 export const resolveExpenseAmount = (
   entry: ExpenseEntry,
   income: BudgetIncome,
+  netIncome?: number,
 ): number => {
   const valueMode = entry.valueMode ?? "dollar";
 
@@ -50,10 +56,15 @@ export const resolveExpenseAmount = (
   }
 
   const sources = getPercentSources(entry);
-  const annualBaseIncome = sources.reduce(
+  const annualGrossBase = sources.reduce(
     (sum, source) => sum + income[source],
     0,
   );
+  const taxBasis = getTaxBasis(entry);
+  const annualBaseIncome =
+    taxBasis === "posttax" && netIncome !== undefined && income.gross > 0
+      ? annualGrossBase * (netIncome / income.gross)
+      : annualGrossBase;
 
   // Comp income is annual; budget entries are monthly (9% of salary = 9% of annual / 12 per month).
   return (entry.value / 100) * (annualBaseIncome / BUDGET_MONTHS_PER_YEAR);
@@ -63,12 +74,17 @@ export const buildCategoryTotals = (
   expenseEntries: ExpenseEntry[],
   income: BudgetIncome,
   categoryColors: BudgetCategoryColors = {},
+  netIncome?: number,
 ): CategoryTotal[] => {
   const groups = new Map<string, CategoryTotal>();
 
   expenseEntries.forEach((expenseEntry, index) => {
     const categoryKey = normalizeCategoryKey(expenseEntry.category);
-    const resolvedAmount = resolveExpenseAmount(expenseEntry, income);
+    const resolvedAmount = resolveExpenseAmount(
+      expenseEntry,
+      income,
+      netIncome,
+    );
     const item: ResolvedExpense = { expenseEntry, index, resolvedAmount };
     const existingGroup = groups.get(categoryKey);
 
@@ -89,6 +105,9 @@ export const buildCategoryTotals = (
 
   return [...groups.values()];
 };
+
+export const formatTaxBasis = (taxBasis: ExpenseTaxBasis): string =>
+  taxBasis === "pretax" ? "pre-tax" : "post-tax";
 
 export const formatPercentSources = (sources: ExpensePercentSource[]): string =>
   sources

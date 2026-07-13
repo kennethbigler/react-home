@@ -46,6 +46,7 @@ export const getBudgetPieContent = (
       selectedCategoryKey,
       expenseEntries,
       flow.income,
+      flow.net,
     );
 
     return {

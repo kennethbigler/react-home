@@ -1,4 +1,13 @@
-import { Alert, Grid, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  FormControlLabel,
+  Grid,
+  Stack,
+  Switch,
+  Typography,
+} from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useAtom } from "jotai";
 import {
@@ -22,6 +31,8 @@ interface ExpenseEntryDisplayProps {
   expenseEntries: ExpenseEntry[];
   selectedCategoryKey: string | null;
   hideTaxes?: boolean;
+  onHideTaxesChange?: (hideTaxes: boolean) => void;
+  onAddExpense: () => void;
   onCategorySelect: (categoryKey: string | null) => void;
   onClick: (i: number) => () => void;
 }
@@ -32,6 +43,8 @@ const ExpenseEntryDisplay = ({
   expenseEntries,
   selectedCategoryKey,
   hideTaxes = false,
+  onHideTaxesChange,
+  onAddExpense,
   onCategorySelect,
   onClick,
 }: ExpenseEntryDisplayProps) => {
@@ -90,24 +103,52 @@ const ExpenseEntryDisplay = ({
           )}
         </Grid>
         <Grid size={{ xs: 12, lg: 4 }}>
-          {hasCompData && flow ? (
-            pieContent.data.length > 0 ? (
-              <CategoryBreakdownPie
-                title={pieContent.title}
-                data={pieContent.data}
-              />
+          <Box sx={{ position: "relative", minHeight: "100%" }}>
+            {hasCompData && flow ? (
+              pieContent.data.length > 0 ? (
+                <CategoryBreakdownPie
+                  title={pieContent.title}
+                  data={pieContent.data}
+                />
+              ) : (
+                <Typography sx={{ p: 2 }}>
+                  Add expenses to see category breakdown.
+                </Typography>
+              )
             ) : (
               <Typography sx={{ p: 2 }}>
-                Add expenses to see category breakdown.
+                Category breakdown requires comp calculator data.
               </Typography>
-            )
-          ) : (
-            <Typography sx={{ p: 2 }}>
-              Category breakdown requires comp calculator data.
-            </Typography>
-          )}
+            )}
+            {hasCompData && flow && onHideTaxesChange ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  mt: 1,
+                }}
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={hideTaxes}
+                      onChange={(event) =>
+                        onHideTaxesChange(event.target.checked)
+                      }
+                      slotProps={{ input: { "aria-label": "Hide taxes" } }}
+                    />
+                  }
+                  label="Hide taxes"
+                />
+              </Box>
+            ) : null}
+          </Box>
         </Grid>
       </Grid>
+
+      <Stack direction="row" sx={{ mb: 2 }}>
+        <Button onClick={onAddExpense}>+ Expense</Button>
+      </Stack>
 
       <Grid container spacing={2}>
         {categories.map((category) => (

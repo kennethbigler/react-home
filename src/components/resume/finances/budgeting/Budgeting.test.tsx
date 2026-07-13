@@ -1,5 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { createStore, Provider } from "jotai";
 import { describe, expect, it } from "vitest";
+import compCalcAtom from "../../../../jotai/finances-atom";
 import Budgeting from "./Budgeting";
 
 describe("resume | finances | budgeting | Budgeting", () => {
@@ -66,7 +68,24 @@ describe("resume | finances | budgeting | Budgeting", () => {
   });
 
   it("toggles hide taxes for the income overview pie chart", () => {
-    render(<Budgeting />);
+    const store = createStore();
+    store.set(compCalcAtom, [
+      {
+        entryDate: "2020-01",
+        salary: 100_000,
+        bonus: 0,
+        stockTick: "AAPL",
+        priceThen: 100,
+        grantDuration: 4,
+        grantQty: 0,
+      },
+    ]);
+
+    render(
+      <Provider store={store}>
+        <Budgeting />
+      </Provider>,
+    );
 
     const hideTaxesSwitch = screen.getByRole("switch", {
       name: "Hide taxes",

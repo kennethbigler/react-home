@@ -13,6 +13,7 @@ export type BudgetCategoryColors = Partial<Record<string, ExpenseEntryColor>>;
 
 export type ExpenseValueMode = "dollar" | "percent";
 export type ExpensePercentSource = "salary" | "bonus" | "stockAdj";
+export type ExpenseTaxBasis = "pretax" | "posttax";
 
 export interface ExpenseEntry {
   name: string;
@@ -22,6 +23,8 @@ export interface ExpenseEntry {
   /** @deprecated use percentSources */
   percentSource?: ExpensePercentSource;
   percentSources?: ExpensePercentSource[];
+  /** Defaults to post-tax; pre-tax percent uses gross income sources. */
+  taxBasis?: ExpenseTaxBasis;
 }
 
 /** Budget expenses are monthly; comp calculator income and taxes are annual. */

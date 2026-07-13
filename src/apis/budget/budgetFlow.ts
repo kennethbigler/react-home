@@ -38,17 +38,18 @@ export const buildBudgetFlow = (
     total: totalPayrollDeductions,
   } = computeTotalPayrollDeductions(income.gross);
   const totalWithholdings = totalTax + totalPayrollDeductions;
+  const net = income.gross - totalWithholdings;
   const categories = buildCategoryTotals(
     expenseEntries,
     income,
     categoryColors,
+    net,
   );
   const totalAllocated = categories.reduce(
     (sum, category) => sum + category.total,
     0,
   );
   const annualTotalAllocated = totalAllocated * BUDGET_MONTHS_PER_YEAR;
-  const net = income.gross - totalWithholdings;
   const unallocated = net - annualTotalAllocated;
 
   return {

@@ -18,13 +18,15 @@ import {
   TextFieldProps,
   ToggleButton,
   ToggleButtonGroup,
+  Typography,
 } from "@mui/material";
 import {
   ExpenseEntry,
   ExpensePercentSource,
+  ExpenseTaxBasis,
   ExpenseValueMode,
 } from "../../../../jotai/finances-atom";
-import { getPercentSources, formatCategoryName } from "./helpers";
+import { getPercentSources, formatCategoryName, getTaxBasis } from "./helpers";
 
 const tfProps: TextFieldProps = {
   variant: "standard",
@@ -64,6 +66,9 @@ const ExpenseEntryDialog = ({
   const [percentSources, setPercentSources] = useState<ExpensePercentSource[]>(
     () => getPercentSources(expenseEntry ?? {}),
   );
+  const [taxBasis, setTaxBasis] = useState<ExpenseTaxBasis>(() =>
+    getTaxBasis(expenseEntry ?? {}),
+  );
   const [value, setValue] = useState(expenseEntry?.value || 0);
 
   const resetState = () => {
@@ -71,6 +76,7 @@ const ExpenseEntryDialog = ({
     setCategory("");
     setValueMode("dollar");
     setPercentSources(["salary"]);
+    setTaxBasis("posttax");
     setValue(0);
   };
 
@@ -97,6 +103,14 @@ const ExpenseEntryDialog = ({
       setValueMode(nextMode);
     }
   };
+  const handleTaxBasisChange = (
+    _event: MouseEvent<HTMLElement>,
+    nextBasis: ExpenseTaxBasis | null,
+  ) => {
+    if (nextBasis) {
+      setTaxBasis(nextBasis);
+    }
+  };
 
   const handleSubmit = () => {
     addExpenseEntry({
@@ -104,7 +118,7 @@ const ExpenseEntryDialog = ({
       category: formatCategoryName(category),
       value,
       ...(valueMode === "percent"
-        ? { valueMode, percentSources }
+        ? { valueMode, percentSources, taxBasis }
         : { valueMode: "dollar" }),
     });
     resetState();
@@ -218,6 +232,31 @@ const ExpenseEntryDialog = ({
               </FormHelperText>
             )}
           </FormControl>
+        )}
+        {valueMode === "percent" && (
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ mt: 1, alignItems: "center" }}
+          >
+            <Typography variant="body2" component="span">
+              Tax basis
+            </Typography>
+            <ToggleButtonGroup
+              exclusive
+              value={taxBasis}
+              onChange={handleTaxBasisChange}
+              size="small"
+              aria-label="Tax basis"
+            >
+              <ToggleButton value="pretax" aria-label="Pre-tax">
+                Pre-tax
+              </ToggleButton>
+              <ToggleButton value="posttax" aria-label="Post-tax">
+                Post-tax
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Stack>
         )}
       </DialogContent>
       <DialogActions>

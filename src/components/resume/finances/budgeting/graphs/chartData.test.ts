@@ -44,7 +44,7 @@ const sankeyNodeColors = {
 };
 
 describe("resume | finances | budgeting | graphs | chartData", () => {
-  it("annualizes percent expenses in the sankey", () => {
+  it("annualizes pre-tax percent expenses in the sankey", () => {
     const income = getLatestBudgetIncome(282_000, 50_000, 0, 32_281.78);
     const entry: ExpenseEntry = {
       name: "401k",
@@ -52,6 +52,7 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
       value: 9,
       valueMode: "percent",
       percentSources: ["salary", "bonus"],
+      taxBasis: "pretax",
     };
     const monthly = resolveExpenseAmount(entry, income);
     const flow = buildBudgetFlow(income, [entry]);
@@ -60,6 +61,28 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
     expect(monthly).toBeCloseTo((0.09 * (282_000 + 50_000)) / 12, 2);
     expect(data.find((link) => link.to === "Retirement")?.weight).toBeCloseTo(
       0.09 * (282_000 + 50_000),
+      2,
+    );
+  });
+
+  it("annualizes post-tax percent expenses using net income", () => {
+    const income = getLatestBudgetIncome(282_000, 50_000, 0, 32_281.78);
+    const entry: ExpenseEntry = {
+      name: "Invest",
+      category: "Investing",
+      value: 100,
+      valueMode: "percent",
+      percentSources: ["stockAdj"],
+      taxBasis: "posttax",
+    };
+    const flow = buildBudgetFlow(income, [entry]);
+    const monthly = resolveExpenseAmount(entry, income, flow.net);
+    const { data } = buildBudgetSankeyData(flow, sankeyNodeColors);
+    const expectedAnnual = (32_281.78 * flow.net) / income.gross;
+
+    expect(monthly).toBeCloseTo(expectedAnnual / 12, 2);
+    expect(data.find((link) => link.to === "Investing")?.weight).toBeCloseTo(
+      expectedAnnual,
       2,
     );
   });
