@@ -53,6 +53,8 @@ const renderExpenseEntryDisplay = (
         }
         selectedCategoryKey={props.selectedCategoryKey ?? null}
         hideTaxes={props.hideTaxes}
+        onHideTaxesChange={props.onHideTaxesChange ?? vi.fn()}
+        onAddExpense={props.onAddExpense ?? vi.fn()}
         onCategorySelect={props.onCategorySelect ?? vi.fn()}
         onClick={onClick}
       />
@@ -185,6 +187,38 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
     expect(screen.getByText("Payroll")).toBeInTheDocument();
   });
 
+  it("calls onAddExpense when the add button is clicked", () => {
+    const onAddExpense = vi.fn();
+
+    renderExpenseEntryDisplay({ onAddExpense });
+
+    fireEvent.click(screen.getByRole("button", { name: "+ Expense" }));
+    expect(onAddExpense).toHaveBeenCalledTimes(1);
+  });
+
+  it("calls onHideTaxesChange when the hide taxes switch is toggled", () => {
+    const onHideTaxesChange = vi.fn();
+
+    renderExpenseEntryDisplay({ onHideTaxesChange });
+
+    fireEvent.click(screen.getByRole("switch", { name: "Hide taxes" }));
+    expect(onHideTaxesChange).toHaveBeenCalledWith(true);
+  });
+
+  it("shows a placeholder when a selected category has no pie data", () => {
+    renderExpenseEntryDisplay({
+      selectedCategoryKey: "fun",
+      expenseEntries: [{ name: "Rent", category: "Housing", value: 2000 }],
+      flow: buildBudgetFlow(getLatestBudgetIncome(100_000, 0, 0, 0), [
+        { name: "Rent", category: "Housing", value: 2000 },
+      ]),
+    });
+
+    expect(
+      screen.getByText("Add expenses to see category breakdown."),
+    ).toBeInTheDocument();
+  });
+
   it("selects a category when its heading is clicked", () => {
     const onCategorySelect = vi.fn();
 
@@ -209,6 +243,7 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
             ])}
             expenseEntries={[{ name: "Tickets", category: "Fun", value: 50 }]}
             selectedCategoryKey={null}
+            onAddExpense={vi.fn()}
             onCategorySelect={vi.fn()}
             onClick={vi.fn(() => () => undefined)}
           />

@@ -31,6 +31,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
       category: "Food",
       value: 250,
       valueMode: "dollar",
+      taxBasis: "posttax",
     });
     expect(screen.getByLabelText("Name")).toHaveValue("");
   });
@@ -91,6 +92,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
       value: 9,
       valueMode: "percent",
       percentSources: ["salary"],
+      taxBasis: "posttax",
     });
   });
 
@@ -120,7 +122,76 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
       value: 9,
       valueMode: "percent",
       percentSources: ["salary", "bonus"],
+      taxBasis: "posttax",
     });
+  });
+
+  it("submits pre-tax percent expenses when selected", () => {
+    const addExpenseEntry = vi.fn();
+
+    render(
+      <ExpenseEntryDialog
+        open
+        addExpenseEntry={addExpenseEntry}
+        onClose={vi.fn()}
+      />,
+    );
+
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: "401k" },
+    });
+    fireEvent.change(screen.getByLabelText("Category"), {
+      target: { value: "Retirement" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /Percent of income/i }));
+    fireEvent.change(screen.getByLabelText("Value"), {
+      target: { value: "9" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Pre-tax" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+
+    expect(addExpenseEntry).toHaveBeenCalledWith({
+      name: "401k",
+      category: "Retirement",
+      value: 9,
+      valueMode: "percent",
+      percentSources: ["salary"],
+      taxBasis: "pretax",
+    });
+  });
+
+  it("defaults tax basis to post-tax", () => {
+    render(
+      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
+    );
+
+    expect(screen.getByRole("button", { name: "Post-tax" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+  });
+
+  it("prefills pre-tax tax basis when editing", () => {
+    render(
+      <ExpenseEntryDialog
+        open
+        expenseEntry={{
+          name: "401k",
+          category: "Retirement",
+          value: 9,
+          valueMode: "percent",
+          percentSources: ["salary"],
+          taxBasis: "pretax",
+        }}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Pre-tax" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
   });
 
   it("shows income sources when percent mode is selected", () => {

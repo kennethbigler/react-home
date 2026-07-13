@@ -247,6 +247,7 @@ describe("jotai | finances-atom", () => {
           value: 9,
           valueMode: "percent",
           percentSources: ["salary"],
+          taxBasis: "pretax",
         },
       ]);
 

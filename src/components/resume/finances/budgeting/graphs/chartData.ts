@@ -240,6 +240,7 @@ export const buildExpensePieData = (
   categoryKey: string,
   expenseEntries: ExpenseEntry[],
   income: BudgetFlow["income"],
+  netIncome?: number,
 ): PiePoint[] => {
   const normalizedKey = normalizeCategoryKey(categoryKey);
 
@@ -247,7 +248,7 @@ export const buildExpensePieData = (
     .map((expenseEntry, index) => ({
       expenseEntry,
       index,
-      resolvedAmount: resolveExpenseAmount(expenseEntry, income),
+      resolvedAmount: resolveExpenseAmount(expenseEntry, income, netIncome),
     }))
     .filter(
       ({ expenseEntry }) =>

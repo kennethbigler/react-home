@@ -8,8 +8,10 @@ import {
   computeTotalTax,
   formatCategoryName,
   formatPercentSources,
+  formatTaxBasis,
   getLatestBudgetIncome,
   getPercentSources,
+  getTaxBasis,
   resolveExpenseAmount,
   type ExpenseEntry,
 } from "./index";
@@ -80,9 +82,26 @@ describe("apis | budget", () => {
         value: 9,
         valueMode: "percent",
         percentSources: ["salary"],
+        taxBasis: "pretax",
       };
 
       expect(resolveExpenseAmount(entry, sampleIncome)).toBe(750);
+    });
+
+    it("resolves post-tax percent using net income when provided", () => {
+      const entry: ExpenseEntry = {
+        name: "Invest",
+        category: "Investing",
+        value: 100,
+        valueMode: "percent",
+        percentSources: ["stockAdj"],
+      };
+      const flow = buildBudgetFlow(sampleIncome, []);
+
+      expect(resolveExpenseAmount(entry, sampleIncome, flow.net)).toBeCloseTo(
+        ((100 / 100) * ((2_000 * flow.net) / sampleIncome.gross)) / 12,
+        2,
+      );
     });
 
     it("resolves percent of stock", () => {
@@ -92,6 +111,7 @@ describe("apis | budget", () => {
         value: 100,
         valueMode: "percent",
         percentSources: ["stockAdj"],
+        taxBasis: "pretax",
       };
 
       expect(resolveExpenseAmount(entry, sampleIncome)).toBeCloseTo(
@@ -107,9 +127,35 @@ describe("apis | budget", () => {
         value: 9,
         valueMode: "percent",
         percentSources: ["salary", "bonus"],
+        taxBasis: "pretax",
       };
 
       expect(resolveExpenseAmount(entry, sampleIncome)).toBe(900);
+    });
+
+    it("uses gross base for post-tax percent when net income is omitted", () => {
+      const entry: ExpenseEntry = {
+        name: "Invest",
+        category: "Investing",
+        value: 10,
+        valueMode: "percent",
+        percentSources: ["salary"],
+      };
+
+      expect(resolveExpenseAmount(entry, sampleIncome)).toBeCloseTo(833.33, 2);
+    });
+
+    it("uses gross base when income is zero", () => {
+      const zeroIncome = getLatestBudgetIncome(0, 0, 0, 0);
+      const entry: ExpenseEntry = {
+        name: "Invest",
+        category: "Investing",
+        value: 10,
+        valueMode: "percent",
+        percentSources: ["salary"],
+      };
+
+      expect(resolveExpenseAmount(entry, zeroIncome, 0)).toBe(0);
     });
 
     it("annualizes to the correct annual percent in the sankey", () => {
@@ -120,6 +166,7 @@ describe("apis | budget", () => {
         value: 9,
         valueMode: "percent",
         percentSources: ["salary", "bonus"],
+        taxBasis: "pretax",
       };
       const monthly = resolveExpenseAmount(entry, income);
       const flow = buildBudgetFlow(income, [entry]);
@@ -251,6 +298,23 @@ describe("apis | budget", () => {
       expect(formatPercentSources(["salary", "bonus", "stockAdj"])).toBe(
         "salary + bonus + stock",
       );
+    });
+  });
+
+  describe("getTaxBasis", () => {
+    it("defaults to post-tax when taxBasis is omitted", () => {
+      expect(getTaxBasis({})).toBe("posttax");
+    });
+
+    it("returns the stored tax basis", () => {
+      expect(getTaxBasis({ taxBasis: "pretax" })).toBe("pretax");
+    });
+  });
+
+  describe("formatTaxBasis", () => {
+    it("formats tax basis labels", () => {
+      expect(formatTaxBasis("pretax")).toBe("pre-tax");
+      expect(formatTaxBasis("posttax")).toBe("post-tax");
     });
   });
 });

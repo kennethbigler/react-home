@@ -75,4 +75,18 @@ describe("resume | finances | budgeting | getBudgetPieContent", () => {
       expect.arrayContaining([expect.objectContaining({ name: "Groceries" })]),
     );
   });
+
+  it("falls back to a generic title when the selected category is missing", () => {
+    const content = getBudgetPieContent(
+      flow,
+      flow.categories,
+      "missing",
+      expenseEntries,
+      {},
+      theme,
+    );
+
+    expect(content.title).toBe("Category Breakdown");
+    expect(content.data).toEqual([]);
+  });
 });

@@ -9,6 +9,7 @@ import {
   type ExpenseEntry,
   type ExpenseEntryColor,
   type ExpensePercentSource,
+  type ExpenseTaxBasis,
   type ExpenseValueMode,
   expenseEntryColors,
 } from "../apis/budget";
@@ -20,6 +21,7 @@ export type {
   ExpenseEntry,
   ExpenseEntryColor,
   ExpensePercentSource,
+  ExpenseTaxBasis,
   ExpenseValueMode,
 };
 
