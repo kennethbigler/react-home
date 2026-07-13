@@ -31,7 +31,6 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
       category: "Food",
       value: 250,
       valueMode: "dollar",
-      taxBasis: "posttax",
     });
     expect(screen.getByLabelText("Name")).toHaveValue("");
   });
@@ -160,10 +159,16 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     });
   });
 
-  it("defaults tax basis to post-tax", () => {
+  it("defaults tax basis to post-tax in percent mode", () => {
     render(
       <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
     );
+
+    expect(
+      screen.queryByRole("button", { name: "Post-tax" }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /Percent of income/i }));
 
     expect(screen.getByRole("button", { name: "Post-tax" })).toHaveAttribute(
       "aria-pressed",

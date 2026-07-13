@@ -117,9 +117,8 @@ const ExpenseEntryDialog = ({
       name: name.trim(),
       category: formatCategoryName(category),
       value,
-      taxBasis,
       ...(valueMode === "percent"
-        ? { valueMode, percentSources }
+        ? { valueMode, percentSources, taxBasis }
         : { valueMode: "dollar" }),
     });
     resetState();
@@ -234,25 +233,31 @@ const ExpenseEntryDialog = ({
             )}
           </FormControl>
         )}
-        <Stack direction="row" spacing={1} sx={{ mt: 1, alignItems: "center" }}>
-          <Typography variant="body2" component="span">
-            Tax basis
-          </Typography>
-          <ToggleButtonGroup
-            exclusive
-            value={taxBasis}
-            onChange={handleTaxBasisChange}
-            size="small"
-            aria-label="Tax basis"
+        {valueMode === "percent" && (
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ mt: 1, alignItems: "center" }}
           >
-            <ToggleButton value="pretax" aria-label="Pre-tax">
-              Pre-tax
-            </ToggleButton>
-            <ToggleButton value="posttax" aria-label="Post-tax">
-              Post-tax
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Stack>
+            <Typography variant="body2" component="span">
+              Tax basis
+            </Typography>
+            <ToggleButtonGroup
+              exclusive
+              value={taxBasis}
+              onChange={handleTaxBasisChange}
+              size="small"
+              aria-label="Tax basis"
+            >
+              <ToggleButton value="pretax" aria-label="Pre-tax">
+                Pre-tax
+              </ToggleButton>
+              <ToggleButton value="posttax" aria-label="Post-tax">
+                Post-tax
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Stack>
+        )}
       </DialogContent>
       <DialogActions>
         {expenseEntry && onDelete ? (
