@@ -112,11 +112,16 @@ const ExpenseEntryDialog = ({
 
   const isPercentInRange =
     valueMode !== "percent" || (value >= 0 && value <= 100);
+  const isDollarNonNegative = valueMode !== "dollar" || value >= 0;
   const hasPercentSources =
     valueMode !== "percent" || percentSources.length > 0;
   const hasRequiredFields =
     name.trim().length > 0 && category.trim().length > 0;
-  const canSubmit = hasRequiredFields && isPercentInRange && hasPercentSources;
+  const canSubmit =
+    hasRequiredFields &&
+    isPercentInRange &&
+    isDollarNonNegative &&
+    hasPercentSources;
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -146,13 +151,15 @@ const ExpenseEntryDialog = ({
               htmlInput:
                 valueMode === "percent"
                   ? { min: 0, max: 100, step: 0.1 }
-                  : undefined,
+                  : { min: 0 },
             }}
-            error={!isPercentInRange}
+            error={!isPercentInRange || !isDollarNonNegative}
             helperText={
               !isPercentInRange
                 ? "Percent must be between 0 and 100."
-                : undefined
+                : !isDollarNonNegative
+                  ? "Amount must be zero or greater."
+                  : undefined
             }
           />
           <ToggleButtonGroup

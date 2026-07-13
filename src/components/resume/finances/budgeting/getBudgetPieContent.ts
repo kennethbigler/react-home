@@ -29,6 +29,7 @@ export const getBudgetPieContent = (
   expenseEntries: ExpenseEntry[],
   categoryColors: Partial<Record<string, ExpenseEntryColor>>,
   theme: Theme,
+  hideTaxes = false,
 ): BudgetPieContent => {
   if (selectedCategoryKey === PAYROLL_CATEGORY_KEY) {
     return {
@@ -64,7 +65,7 @@ export const getBudgetPieContent = (
     data: colorizeIncomeOverviewPieData(
       theme,
       categories,
-      buildIncomeOverviewPieData(flow),
+      buildIncomeOverviewPieData(flow, { hideTaxes }),
     ),
   };
 };

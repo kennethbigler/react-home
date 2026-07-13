@@ -26,6 +26,26 @@ describe("resume | finances | budgeting | getBudgetPieContent", () => {
     expect(content.data.length).toBeGreaterThan(0);
   });
 
+  it("omits taxes from income overview when hideTaxes is true", () => {
+    const content = getBudgetPieContent(
+      flow,
+      flow.categories,
+      null,
+      expenseEntries,
+      {},
+      theme,
+      true,
+    );
+
+    expect(content.title).toBe("Income Overview");
+    expect(content.data.map(({ name }) => name)).not.toContain("Fed Tax");
+    expect(content.data.map(({ name }) => name)).not.toContain("CA Tax");
+    expect(content.data.map(({ name }) => name)).not.toContain("Payroll");
+    expect(content.data.map(({ name }) => name)).toEqual(
+      expect.arrayContaining(["Food", "Housing"]),
+    );
+  });
+
   it("returns payroll breakdown when payroll is selected", () => {
     const content = getBudgetPieContent(
       flow,

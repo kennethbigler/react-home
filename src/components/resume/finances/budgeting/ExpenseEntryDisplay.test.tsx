@@ -12,8 +12,19 @@ vi.mock("./graphs/BudgetSankeyGraph", () => ({
 }));
 
 vi.mock("./graphs/CategoryBreakdownPie", () => ({
-  default: ({ title }: { title: string }) => (
-    <div data-testid="category-pie">{title}</div>
+  default: ({
+    title,
+    data,
+  }: {
+    title: string;
+    data: Array<{ name: string }>;
+  }) => (
+    <div data-testid="category-pie">
+      <span>{title}</span>
+      {data.map((point) => (
+        <span key={point.name}>{point.name}</span>
+      ))}
+    </div>
   ),
 }));
 
@@ -41,6 +52,7 @@ const renderExpenseEntryDisplay = (
           ]
         }
         selectedCategoryKey={props.selectedCategoryKey ?? null}
+        hideTaxes={props.hideTaxes}
         onCategorySelect={props.onCategorySelect ?? vi.fn()}
         onClick={onClick}
       />
@@ -150,6 +162,27 @@ describe("resume | finances | budgeting | ExpenseEntryDisplay", () => {
     expect(screen.getByTestId("category-pie")).toHaveTextContent(
       "Income Overview",
     );
+  });
+
+  it("hides tax and payroll slices from income overview when hideTaxes is true", () => {
+    renderExpenseEntryDisplay({ hideTaxes: true });
+
+    expect(screen.getByTestId("category-pie")).toHaveTextContent(
+      "Income Overview",
+    );
+    expect(screen.queryByText("Fed Tax")).not.toBeInTheDocument();
+    expect(screen.queryByText("CA Tax")).not.toBeInTheDocument();
+    expect(screen.queryByText("Payroll")).not.toBeInTheDocument();
+    expect(screen.getByText("Food")).toBeInTheDocument();
+    expect(screen.getByText("Housing")).toBeInTheDocument();
+  });
+
+  it("shows tax and payroll slices in income overview by default", () => {
+    renderExpenseEntryDisplay();
+
+    expect(screen.getByText("Fed Tax")).toBeInTheDocument();
+    expect(screen.getByText("CA Tax")).toBeInTheDocument();
+    expect(screen.getByText("Payroll")).toBeInTheDocument();
   });
 
   it("selects a category when its heading is clicked", () => {

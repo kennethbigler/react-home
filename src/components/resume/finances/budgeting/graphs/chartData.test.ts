@@ -207,6 +207,20 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
       );
     });
 
+    it("omits taxes and payroll when hideTaxes is true", () => {
+      const flow = buildBudgetFlow(sampleIncome, [
+        { name: "Rent", category: "Housing", value: 2000 },
+      ]);
+      const pie = buildIncomeOverviewPieData(flow, { hideTaxes: true });
+
+      expect(pie.map(({ name }) => name)).not.toContain(FEDERAL_TAX_LABEL);
+      expect(pie.map(({ name }) => name)).not.toContain(STATE_TAX_LABEL);
+      expect(pie.map(({ name }) => name)).not.toContain(PAYROLL_NODE_LABEL);
+      expect(pie.map(({ name }) => name)).toEqual(
+        expect.arrayContaining(["Housing", UNALLOCATED_NODE]),
+      );
+    });
+
     it("omits taxes, payroll, zero categories, and unallocated when not applicable", () => {
       const zeroIncome = getLatestBudgetIncome(0, 0, 0, 0);
       const flow = buildBudgetFlow(zeroIncome, [

@@ -65,6 +65,21 @@ describe("resume | finances | budgeting | Budgeting", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("toggles hide taxes for the income overview pie chart", () => {
+    render(<Budgeting />);
+
+    const hideTaxesSwitch = screen.getByRole("switch", {
+      name: "Hide taxes",
+    });
+    expect(hideTaxesSwitch).not.toBeChecked();
+
+    fireEvent.click(hideTaxesSwitch);
+    expect(hideTaxesSwitch).toBeChecked();
+
+    fireEvent.click(hideTaxesSwitch);
+    expect(hideTaxesSwitch).not.toBeChecked();
+  });
+
   it("deletes an expense and removes its category when it was the last one", async () => {
     render(<Budgeting />);
 
@@ -108,6 +123,9 @@ describe("resume | finances | budgeting | Budgeting", () => {
       target: { value: 2000 },
     });
     fireEvent.click(screen.getByRole("button", { name: "Add" }));
+    await waitFor(() =>
+      expect(screen.queryByText("New Expense Entry")).toBeNull(),
+    );
 
     fireEvent.click(screen.getByRole("button", { name: "+ Expense" }));
     fireEvent.change(screen.getByLabelText("Name"), {
@@ -147,6 +165,9 @@ describe("resume | finances | budgeting | Budgeting", () => {
       target: { value: 250 },
     });
     fireEvent.click(screen.getByRole("button", { name: "Add" }));
+    await waitFor(() =>
+      expect(screen.queryByText("New Expense Entry")).toBeNull(),
+    );
 
     fireEvent.click(screen.getByRole("button", { name: "Food ($250.00)" }));
     fireEvent.click(screen.getByRole("button", { name: "Groceries: $250.00" }));

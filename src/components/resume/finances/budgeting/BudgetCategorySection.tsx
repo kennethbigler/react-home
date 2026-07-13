@@ -44,6 +44,7 @@ const BudgetCategorySection = ({
         variant="h6"
         component="button"
         type="button"
+        aria-pressed={isSelected}
         gutterBottom
         {...(categoryColor ? { color: categoryColor } : {})}
         onClick={() => onCategorySelect(isSelected ? null : categoryKey)}

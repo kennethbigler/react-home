@@ -156,6 +156,21 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     expect(screen.getByLabelText("Income Sources")).toHaveTextContent("Bonus");
   });
 
+  it("blocks submit when dollar amount is negative", () => {
+    render(
+      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
+    );
+
+    fireEvent.change(screen.getByLabelText("Value"), {
+      target: { value: "-50" },
+    });
+
+    expect(
+      screen.getByText("Amount must be zero or greater."),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Add" })).toBeDisabled();
+  });
+
   it("blocks submit when percent is outside 0 to 100", () => {
     render(
       <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,

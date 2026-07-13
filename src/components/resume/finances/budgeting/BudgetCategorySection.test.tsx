@@ -62,7 +62,10 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Food ($350.00)" }));
+    const heading = screen.getByRole("button", { name: "Food ($350.00)" });
+    expect(heading).toHaveAttribute("aria-pressed", "false");
+
+    fireEvent.click(heading);
     expect(onCategorySelect).toHaveBeenCalledWith("food");
 
     rerender(
@@ -76,7 +79,12 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Food ($350.00)" }));
+    const selectedHeading = screen.getByRole("button", {
+      name: "Food ($350.00)",
+    });
+    expect(selectedHeading).toHaveAttribute("aria-pressed", "true");
+
+    fireEvent.click(selectedHeading);
     expect(onCategorySelect).toHaveBeenCalledWith(null);
   });
 
@@ -97,33 +105,5 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
 
     const heading = screen.getByRole("button", { name: "Food ($350.00)" });
     expect(heading).toHaveStyle({ color: theme.palette.success.main });
-  });
-
-  it("uses responsive grid sizes for multiple categories", () => {
-    const { container, rerender } = render(
-      <BudgetCategorySection
-        category={sampleCategory}
-        categoryCount={6}
-        isSelected={false}
-        onCategorySelect={vi.fn()}
-        onExpenseClick={vi.fn(() => vi.fn())}
-        onCategoryColorChange={vi.fn()}
-      />,
-    );
-
-    expect(container.querySelector(".MuiGrid-root")).toBeInTheDocument();
-
-    rerender(
-      <BudgetCategorySection
-        category={sampleCategory}
-        categoryCount={12}
-        isSelected={false}
-        onCategorySelect={vi.fn()}
-        onExpenseClick={vi.fn(() => vi.fn())}
-        onCategoryColorChange={vi.fn()}
-      />,
-    );
-
-    expect(container.querySelector(".MuiGrid-root")).toBeInTheDocument();
   });
 });

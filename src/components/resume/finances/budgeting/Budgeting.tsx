@@ -8,7 +8,7 @@ import {
   ExpenseEntry,
 } from "../../../../jotai/finances-atom";
 import { useAtom, useAtomValue } from "jotai";
-import { Button } from "@mui/material";
+import { Button, FormControlLabel, Stack, Switch } from "@mui/material";
 
 import { normalizeCategoryKey } from "./helpers";
 
@@ -21,6 +21,7 @@ const Budgeting = () => {
   const [selectedCategoryKey, setSelectedCategoryKey] = useState<string | null>(
     null,
   );
+  const [hideTaxes, setHideTaxes] = useState(false);
 
   const openNewEntry = () => {
     setEditEntryIdx(-1);
@@ -75,12 +76,25 @@ const Budgeting = () => {
 
   return (
     <div>
-      <Button onClick={openNewEntry}>+ Expense</Button>
+      <Stack direction="row" spacing={2} sx={{ mb: 2, alignItems: "center" }}>
+        <Button onClick={openNewEntry}>+ Expense</Button>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={hideTaxes}
+              onChange={(event) => setHideTaxes(event.target.checked)}
+              slotProps={{ input: { "aria-label": "Hide taxes" } }}
+            />
+          }
+          label="Hide taxes"
+        />
+      </Stack>
       <ExpenseEntryDisplay
         hasCompData={budgetState.hasCompData}
         flow={budgetState.flow}
         expenseEntries={budgetState.expenseEntries}
         selectedCategoryKey={selectedCategoryKey}
+        hideTaxes={hideTaxes}
         onCategorySelect={setSelectedCategoryKey}
         onClick={openEditEntry}
       />

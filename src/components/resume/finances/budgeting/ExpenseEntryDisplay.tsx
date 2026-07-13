@@ -21,6 +21,7 @@ interface ExpenseEntryDisplayProps {
   flow: BudgetFlow | null;
   expenseEntries: ExpenseEntry[];
   selectedCategoryKey: string | null;
+  hideTaxes?: boolean;
   onCategorySelect: (categoryKey: string | null) => void;
   onClick: (i: number) => () => void;
 }
@@ -30,6 +31,7 @@ const ExpenseEntryDisplay = ({
   flow,
   expenseEntries,
   selectedCategoryKey,
+  hideTaxes = false,
   onCategorySelect,
   onClick,
 }: ExpenseEntryDisplayProps) => {
@@ -52,6 +54,7 @@ const ExpenseEntryDisplay = ({
         expenseEntries,
         categoryColors,
         muiTheme,
+        hideTaxes,
       )
     : { title: "Income Overview", data: [] };
 

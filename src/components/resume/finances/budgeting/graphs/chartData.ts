@@ -37,6 +37,9 @@ export type {
   PiePoint,
 } from "./types";
 
+const getAnnualUnallocated = (flow: BudgetFlow): number =>
+  Math.max(0, flow.net - flow.totalAllocated * BUDGET_MONTHS_PER_YEAR);
+
 export const getSankeyNodeSum = (
   nodeId: string,
   data: Array<{ from: string; to: string; weight: number }>,
@@ -64,8 +67,6 @@ export const buildBudgetSankeyData = (
     caDisability,
     categories,
   } = flow;
-  const annualTotalAllocated = flow.totalAllocated * BUDGET_MONTHS_PER_YEAR;
-  const annualUnallocated = flow.net - annualTotalAllocated;
   const data: BudgetSankeyData["data"] = [];
 
   if (income.salary > 0) {
@@ -126,7 +127,7 @@ export const buildBudgetSankeyData = (
     }
   });
 
-  const unallocatedWeight = Math.max(0, annualUnallocated);
+  const unallocatedWeight = getAnnualUnallocated(flow);
   if (unallocatedWeight > 0) {
     data.push({
       from: GROSS_INCOME_NODE,
@@ -193,16 +194,20 @@ export const buildPayrollPieData = (flow: BudgetFlow): PiePoint[] =>
     { name: CA_DISABILITY_LABEL, y: flow.caDisability },
   ].filter(({ y }) => y > 0);
 
-export const buildIncomeOverviewPieData = (flow: BudgetFlow): PiePoint[] => {
+export const buildIncomeOverviewPieData = (
+  flow: BudgetFlow,
+  options?: { hideTaxes?: boolean },
+): PiePoint[] => {
+  const hideTaxes = options?.hideTaxes ?? false;
   const slices: PiePoint[] = [];
 
-  if (flow.federalTax > 0) {
+  if (!hideTaxes && flow.federalTax > 0) {
     slices.push({ name: FEDERAL_TAX_LABEL, y: flow.federalTax });
   }
-  if (flow.stateTax > 0) {
+  if (!hideTaxes && flow.stateTax > 0) {
     slices.push({ name: STATE_TAX_LABEL, y: flow.stateTax });
   }
-  if (flow.totalPayrollDeductions > 0) {
+  if (!hideTaxes && flow.totalPayrollDeductions > 0) {
     slices.push({ name: PAYROLL_NODE_LABEL, y: flow.totalPayrollDeductions });
   }
 
@@ -214,9 +219,7 @@ export const buildIncomeOverviewPieData = (flow: BudgetFlow): PiePoint[] => {
     }
   });
 
-  const annualUnallocated =
-    flow.net - flow.totalAllocated * BUDGET_MONTHS_PER_YEAR;
-  const unallocated = Math.max(0, annualUnallocated);
+  const unallocated = getAnnualUnallocated(flow);
 
   if (unallocated > 0) {
     slices.push({ name: UNALLOCATED_NODE, y: unallocated });
