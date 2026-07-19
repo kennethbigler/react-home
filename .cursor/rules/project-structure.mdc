@@ -69,7 +69,7 @@ Reusable UI components used throughout the application:
 - **header/** - Site header/navigation components
 - **info-popover/** - Information popup component
 - **loading-spinner/** - Loading state component
-- **tab-panel/** - Tab navigation component
+- **tab-group/** - Accessible tab navigation component
 - **types.ts** - Shared TypeScript types for common components
 
 #### 2. Games Components (`src/components/games/`)
