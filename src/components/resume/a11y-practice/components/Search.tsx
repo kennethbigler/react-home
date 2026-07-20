@@ -92,6 +92,8 @@ const Search = ({ data }: SearchProps) => {
         setAnnouncement("");
         setTimeout(() => setAnnouncement(message), 100);
       }, 500);
+    } else {
+      debounceTimer.current = null;
     }
   };
 
@@ -116,6 +118,7 @@ const Search = ({ data }: SearchProps) => {
               <li
                 key={id}
                 style={{ listStyle: selected === id ? "inherit" : "none" }}
+                aria-current={selected === id}
               >
                 <button
                   style={{

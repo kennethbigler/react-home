@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useId, useState } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
 import TabPanel from "./TabPanel";
@@ -34,7 +34,8 @@ const TabGroup = ({
   tabBarSx,
 }: TabGroupProps) => {
   const [value, setValue] = useState(defaultIndex);
-  const tabPrefix = slugifyTabPrefix(label);
+  const reactId = useId();
+  const tabPrefix = `${slugifyTabPrefix(label)}-${slugifyTabPrefix(reactId)}`;
 
   const handleChange = (_e: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);

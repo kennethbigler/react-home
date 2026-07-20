@@ -35,21 +35,19 @@ describe("common | tab-group | TabGroup", () => {
     );
   });
 
-  it("derives stable slug-based tab and panel ids from label", () => {
+  it("derives slug-based tab and panel ids from label plus a unique useId", () => {
     render(<TabGroup label="Example tabs" tabs={tabs} />);
 
-    expect(screen.getByRole("tab", { name: "First" })).toHaveAttribute(
+    const tab = screen.getByRole("tab", { name: "First" });
+    const panel = screen.getByRole("tabpanel");
+    const tabId = tab.getAttribute("id");
+
+    expect(tabId).toMatch(/^example-tabs-.+-0$/);
+    expect(panel).toHaveAttribute(
       "id",
-      "example-tabs-0",
+      expect.stringMatching(/^example-tabs-.+panel-0$/),
     );
-    expect(screen.getByRole("tabpanel")).toHaveAttribute(
-      "id",
-      "example-tabspanel-0",
-    );
-    expect(screen.getByRole("tabpanel")).toHaveAttribute(
-      "aria-labelledby",
-      "example-tabs-0",
-    );
+    expect(panel).toHaveAttribute("aria-labelledby", tabId);
   });
 
   it("renders endAdornment beside the tabs", () => {

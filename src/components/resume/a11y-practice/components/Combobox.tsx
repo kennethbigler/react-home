@@ -92,6 +92,7 @@ const Combobox = ({ options }: ComboboxProps) => {
       e.preventDefault();
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
+        debounceTimer.current = null;
         setAnnouncement("");
       }
       if (!open) {
@@ -115,6 +116,7 @@ const Combobox = ({ options }: ComboboxProps) => {
       e.preventDefault();
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
+        debounceTimer.current = null;
         setAnnouncement("");
       }
       if (!open) {
