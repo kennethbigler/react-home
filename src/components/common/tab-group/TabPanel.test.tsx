@@ -4,7 +4,7 @@ import TabPanel from "./TabPanel";
 
 const tabPrefix = "test-tab";
 
-describe("common | tab-panel | TabPanel", () => {
+describe("common | tab-group | TabPanel", () => {
   it("renders children when value matches index", () => {
     render(
       <TabPanel value={0} index={0} tabPrefix={tabPrefix}>

@@ -15,9 +15,7 @@ describe("resume | a11y-practice | A11yPractice", () => {
     expect(
       screen.getByRole("tab", { name: "Chunking", selected: true }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("tab", { name: "Chunking & Debounce" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "+ Debounce" })).toBeInTheDocument();
   });
 
   it("shows the v1 stream example on the default tab", () => {
@@ -32,10 +30,10 @@ describe("resume | a11y-practice | A11yPractice", () => {
   it("switches to the debounce tab when selected", () => {
     render(<A11yPractice />);
 
-    fireEvent.click(screen.getByRole("tab", { name: "Chunking & Debounce" }));
+    fireEvent.click(screen.getByRole("tab", { name: "+ Debounce" }));
 
     expect(
-      screen.getByRole("tab", { name: "Chunking & Debounce", selected: true }),
+      screen.getByRole("tab", { name: "+ Debounce", selected: true }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /start stream/i }),
@@ -46,6 +44,6 @@ describe("resume | a11y-practice | A11yPractice", () => {
     render(<A11yPractice />);
 
     const panels = screen.getAllByRole("tabpanel", { hidden: true });
-    expect(panels.length).toBe(2);
+    expect(panels.length).toBe(10);
   });
 });
