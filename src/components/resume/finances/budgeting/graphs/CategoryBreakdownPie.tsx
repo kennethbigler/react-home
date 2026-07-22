@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { useAtomValue } from "jotai";
 import {
   Chart,
@@ -28,14 +27,10 @@ const CategoryBreakdownPie = ({ data, title }: CategoryBreakdownPieProps) => {
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
-  const seriesData = useMemo(
-    () =>
-      data.map((point) => ({
-        ...point,
-        yFormatted: usDollar.format(point.y),
-      })),
-    [data],
-  );
+  const seriesData = data.map((point) => ({
+    ...point,
+    yFormatted: usDollar.format(point.y),
+  }));
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>
@@ -50,13 +45,12 @@ const CategoryBreakdownPie = ({ data, title }: CategoryBreakdownPieProps) => {
             allowPointSelect: true,
             cursor: "pointer",
             dataLabels: [
-              { enabled: true, format: "{point.name}", color },
+              { format: "{point.name}", color },
               {
-                enabled: true,
                 distance: -30,
                 format: "{point.percentage:.0f}%",
                 style: { fontSize: "1em", color },
-              } as unknown as Highcharts.DataLabelsOptions,
+              },
             ],
           }}
         />
