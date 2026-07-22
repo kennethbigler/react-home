@@ -1,16 +1,14 @@
 import { Grid, Stack, Typography } from "@mui/material";
-import usDollar from "../../../../apis/usDollar";
-import type { ExpenseEntryColor } from "../../../../jotai/finances-atom";
+import type { CategoryTotal } from "../../../../../apis/budget";
+import usDollar from "../../../../../apis/usDollar";
+import type { ExpenseEntryColor } from "../../../../../jotai/finances-atom";
 import CategoryColorSelect from "./CategoryColorSelect";
 import ExpenseEntryCard from "./ExpenseEntryCard";
-import type { CategoryTotal } from "./helpers";
 
 interface BudgetCategorySectionProps {
   category: CategoryTotal;
   categoryCount: number;
   categoryColor?: ExpenseEntryColor;
-  isSelected: boolean;
-  onCategorySelect: (categoryKey: string | null) => void;
   onExpenseClick: (index: number) => () => void;
   onCategoryColorChange: (
     categoryKey: string,
@@ -22,8 +20,6 @@ const BudgetCategorySection = ({
   category,
   categoryCount,
   categoryColor,
-  isSelected,
-  onCategorySelect,
   onExpenseClick,
   onCategoryColorChange,
 }: BudgetCategorySectionProps) => {
@@ -42,27 +38,9 @@ const BudgetCategorySection = ({
     >
       <Typography
         variant="h6"
-        component="button"
-        type="button"
-        aria-pressed={isSelected}
         gutterBottom
         {...(categoryColor ? { color: categoryColor } : {})}
-        onClick={() => onCategorySelect(isSelected ? null : categoryKey)}
-        sx={{
-          display: "block",
-          width: "100%",
-          textAlign: "left",
-          border: "none",
-          background: "none",
-          cursor: "pointer",
-          font: "inherit",
-          textTransform: "uppercase",
-          ...(categoryColor ? {} : { color: "text.primary" }),
-          outline: isSelected ? "2px solid" : undefined,
-          outlineColor: isSelected ? "primary.main" : undefined,
-          borderRadius: 1,
-          px: isSelected ? 0.5 : 0,
-        }}
+        sx={{ textTransform: "uppercase" }}
       >
         {`${heading} (${usDollar.format(total)})`}
       </Typography>

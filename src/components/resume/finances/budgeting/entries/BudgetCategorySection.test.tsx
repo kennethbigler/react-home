@@ -2,7 +2,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import BudgetCategorySection from "./BudgetCategorySection";
-import type { CategoryTotal } from "./helpers";
+import type { CategoryTotal } from "../../../../../apis/budget";
 
 const theme = createTheme();
 
@@ -33,59 +33,36 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
       <BudgetCategorySection
         category={sampleCategory}
         categoryCount={3}
-        isSelected={false}
-        onCategorySelect={vi.fn()}
         onExpenseClick={onExpenseClick}
         onCategoryColorChange={vi.fn()}
       />,
     );
 
     expect(
-      screen.getByRole("button", { name: "Food ($350.00)" }),
+      screen.getByRole("heading", { name: "Food ($350.00)" }),
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Food ($350.00)" }),
+    ).not.toBeInTheDocument();
     expect(screen.getByLabelText("Color (Optional)")).toBeInTheDocument();
     expect(screen.getByText("Groceries: $250.00")).toBeInTheDocument();
     expect(screen.getByText("Dining Out: $100.00")).toBeInTheDocument();
   });
 
-  it("selects and deselects the category when the heading is clicked", () => {
-    const onCategorySelect = vi.fn();
+  it("opens an expense when its card is clicked", () => {
+    const onExpenseClick = vi.fn(() => vi.fn());
 
-    const { rerender } = render(
+    render(
       <BudgetCategorySection
         category={sampleCategory}
         categoryCount={1}
-        isSelected={false}
-        onCategorySelect={onCategorySelect}
-        onExpenseClick={vi.fn(() => vi.fn())}
+        onExpenseClick={onExpenseClick}
         onCategoryColorChange={vi.fn()}
       />,
     );
 
-    const heading = screen.getByRole("button", { name: "Food ($350.00)" });
-    expect(heading).toHaveAttribute("aria-pressed", "false");
-
-    fireEvent.click(heading);
-    expect(onCategorySelect).toHaveBeenCalledWith("food");
-
-    rerender(
-      <BudgetCategorySection
-        category={sampleCategory}
-        categoryCount={1}
-        isSelected
-        onCategorySelect={onCategorySelect}
-        onExpenseClick={vi.fn(() => vi.fn())}
-        onCategoryColorChange={vi.fn()}
-      />,
-    );
-
-    const selectedHeading = screen.getByRole("button", {
-      name: "Food ($350.00)",
-    });
-    expect(selectedHeading).toHaveAttribute("aria-pressed", "true");
-
-    fireEvent.click(selectedHeading);
-    expect(onCategorySelect).toHaveBeenCalledWith(null);
+    fireEvent.click(screen.getByRole("button", { name: "Groceries: $250.00" }));
+    expect(onExpenseClick).toHaveBeenCalledWith(0);
   });
 
   it("applies category color to the heading when provided", () => {
@@ -95,15 +72,13 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
           category={sampleCategory}
           categoryCount={2}
           categoryColor="success"
-          isSelected
-          onCategorySelect={vi.fn()}
           onExpenseClick={vi.fn(() => vi.fn())}
           onCategoryColorChange={vi.fn()}
         />
       </ThemeProvider>,
     );
 
-    const heading = screen.getByRole("button", { name: "Food ($350.00)" });
+    const heading = screen.getByRole("heading", { name: "Food ($350.00)" });
     expect(heading).toHaveStyle({ color: theme.palette.success.main });
   });
 });

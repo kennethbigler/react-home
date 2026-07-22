@@ -1,21 +1,21 @@
 import type { Theme } from "@mui/material/styles";
 import type {
+  BudgetFlow,
+  CategoryTotal,
   ExpenseEntry,
   ExpenseEntryColor,
-} from "../../../../jotai/finances-atom";
+} from "../../../../../apis/budget";
 import {
   colorizeBreakdownPieData,
   colorizeIncomeOverviewPieData,
-} from "./graphs/chartColors";
+} from "./chartColors";
 import {
   buildExpensePieData,
   buildIncomeOverviewPieData,
   buildPayrollPieData,
   PAYROLL_CATEGORY_KEY,
-  type BudgetFlow,
-  type CategoryTotal,
   type PiePoint,
-} from "./helpers";
+} from "./chartData";
 
 export interface BudgetPieContent {
   title: string;

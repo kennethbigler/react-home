@@ -9,7 +9,7 @@ import {
 import {
   ExpenseEntryColor,
   expenseEntryColors,
-} from "../../../../jotai/finances-atom";
+} from "../../../../../jotai/finances-atom";
 
 const categoryColorOptions: ReadonlyArray<{
   value: ExpenseEntryColor | "";

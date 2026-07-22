@@ -1,7 +1,10 @@
 import { createTheme } from "@mui/material/styles";
 import { describe, expect, it } from "vitest";
 import { getBudgetPieContent } from "./getBudgetPieContent";
-import { buildBudgetFlow, getLatestBudgetIncome } from "./helpers";
+import {
+  buildBudgetFlow,
+  getLatestBudgetIncome,
+} from "../../../../../apis/budget";
 
 const theme = createTheme();
 const income = getLatestBudgetIncome(100_000, 10_000, 0, 0);
