@@ -163,14 +163,16 @@ describe("resume | finances | net-worth | NetWorth", () => {
     const amountFields = dialog.querySelectorAll('input[type="number"]');
     expect(amountFields[0]).toHaveAttribute("id");
     expect(
-      screen.getByLabelText("Investments").compareDocumentPosition(
-        screen.getByLabelText("Home"),
-      ) & Node.DOCUMENT_POSITION_FOLLOWING,
+      screen
+        .getByLabelText("Investments")
+        .compareDocumentPosition(screen.getByLabelText("Home")) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
     expect(
-      screen.getByLabelText("Home").compareDocumentPosition(
-        screen.getByLabelText("Cash"),
-      ) & Node.DOCUMENT_POSITION_FOLLOWING,
+      screen
+        .getByLabelText("Home")
+        .compareDocumentPosition(screen.getByLabelText("Cash")) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
   });
 });

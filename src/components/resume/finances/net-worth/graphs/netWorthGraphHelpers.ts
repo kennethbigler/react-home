@@ -88,9 +88,7 @@ export const formatNetWorthTooltip = (
 ) => {
   const categoryNames = new Set(options.categoryNames);
   const total = points.reduce((sum, point) => {
-    return categoryNames.has(point.series.name)
-      ? sum + (point.y || 0)
-      : sum;
+    return categoryNames.has(point.series.name) ? sum + (point.y || 0) : sum;
   }, 0);
 
   const categoryRows = points

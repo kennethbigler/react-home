@@ -186,7 +186,11 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
       expect(screen.getByText("Rent: $2,100.00")).toBeInTheDocument(),
     );
     expect(store.get(budgetAtom)).toEqual([
-      expect.objectContaining({ name: "Rent", category: "Housing", value: 2100 }),
+      expect.objectContaining({
+        name: "Rent",
+        category: "Housing",
+        value: 2100,
+      }),
     ]);
   });
 

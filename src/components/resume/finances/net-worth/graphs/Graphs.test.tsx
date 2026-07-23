@@ -399,7 +399,7 @@ describe("netWorthGraphHelpers", () => {
 
   it("omits the inflation row when inflation is not in the points", () => {
     const html = formatNetWorthTooltip(
-      [{ y: null, series: { name: "Cash", color: "#abc" } }],
+      [{ y: undefined, series: { name: "Cash", color: "#abc" } }],
       { categoryNames: ["Cash"] },
     );
 

@@ -9,8 +9,6 @@ export const sortCategoriesByFinalEntry = (
     return [...categories];
   }
 
-  const amounts = entries[entries.length - 1].amounts;
-  return [...categories].sort(
-    (a, b) => (amounts[b] ?? 0) - (amounts[a] ?? 0),
-  );
+  const { amounts } = entries[entries.length - 1];
+  return [...categories].sort((a, b) => (amounts[b] ?? 0) - (amounts[a] ?? 0));
 };

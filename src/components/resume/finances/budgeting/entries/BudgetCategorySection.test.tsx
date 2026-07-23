@@ -82,15 +82,8 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
     expect(heading).toHaveStyle({ color: theme.palette.success.main });
   });
 
-  it.each([
-    [1, "single category full width"],
-    [2, "two category half width"],
-    [3, "three category third width"],
-    [4, "four category quarter width"],
-    [6, "six category xl width"],
-    [12, "twelve category xxl width"],
-  ] as const)(
-    "supports responsive sizing for categoryCount=%s (%s)",
+  it.each([1, 2, 3, 4, 6, 12] as const)(
+    "supports responsive sizing for categoryCount=%s",
     (categoryCount) => {
       const { container } = render(
         <BudgetCategorySection
