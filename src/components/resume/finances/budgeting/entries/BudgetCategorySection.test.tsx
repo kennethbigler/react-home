@@ -50,7 +50,8 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
   });
 
   it("opens an expense when its card is clicked", () => {
-    const onExpenseClick = vi.fn(() => vi.fn());
+    const openExpense = vi.fn();
+    const onExpenseClick = vi.fn(() => openExpense);
 
     render(
       <BudgetCategorySection
@@ -61,8 +62,11 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Groceries: $250.00" }));
     expect(onExpenseClick).toHaveBeenCalledWith(0);
+    expect(openExpense).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole("button", { name: "Groceries: $250.00" }));
+    expect(openExpense).toHaveBeenCalledTimes(1);
   });
 
   it("applies category color to the heading when provided", () => {

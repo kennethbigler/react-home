@@ -19,6 +19,15 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
 });
 
+/** Escape user-editable text before interpolating into Highcharts HTML tooltips. */
+const escapeHtml = (text: string) =>
+  text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
 const inflationKey: { [key: number]: number } = {
   2000: 1.034,
   2001: 1.028,
@@ -98,7 +107,7 @@ export const formatNetWorthTooltip = (
 
       return [
         `<span style="color:${point.series.color?.toString() || "inherit"}">&#9679;</span>`,
-        `${point.series.name}: <b>${currencyFormatter.format(value || 0)}</b>`,
+        `${escapeHtml(point.series.name)}: <b>${currencyFormatter.format(value || 0)}</b>`,
       ].join(" ");
     });
 
@@ -108,7 +117,7 @@ export const formatNetWorthTooltip = (
   const inflationRow = inflationPoint
     ? [
         `<span style="color:${inflationPoint.series.color?.toString() || "inherit"}">&#9679;</span>`,
-        `Inflation: <b>${currencyFormatter.format(getInflationTooltipValue(inflationPoint, options) || 0)}</b>`,
+        `${escapeHtml("Inflation")}: <b>${currencyFormatter.format(getInflationTooltipValue(inflationPoint, options) || 0)}</b>`,
       ].join(" ")
     : null;
 

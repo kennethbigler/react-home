@@ -160,9 +160,9 @@ describe("resume | finances | net-worth | CategoriesDialog", () => {
       target: { value: "   " },
     });
     fireEvent.click(screen.getByRole("button", { name: "Save" }));
-    expect(
-      screen.getByText("Category names cannot be empty."),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Category names cannot be empty.",
+    );
     expect(onSave).not.toHaveBeenCalled();
 
     fireEvent.change(screen.getByLabelText("Category 1"), {
@@ -173,9 +173,9 @@ describe("resume | finances | net-worth | CategoriesDialog", () => {
       target: { value: "Cash" },
     });
     fireEvent.click(screen.getByRole("button", { name: "Save" }));
-    expect(
-      screen.getByText("Category names must be unique."),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Category names must be unique.",
+    );
     expect(onSave).not.toHaveBeenCalled();
   });
 

@@ -27,6 +27,7 @@ import {
   CA_DISABILITY_LABEL,
   MEDICARE_LABEL,
   PAYROLL_NODE_LABEL,
+  PAYROLL_WITHHOLDINGS_LABEL,
   SOCIAL_SECURITY_LABEL,
 } from "../../../../../constants/payrollDeductions";
 
@@ -277,7 +278,7 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
         expect.arrayContaining([
           FEDERAL_TAX_LABEL,
           STATE_TAX_LABEL,
-          PAYROLL_NODE_LABEL,
+          PAYROLL_WITHHOLDINGS_LABEL,
           "Housing",
           UNALLOCATED_NODE,
         ]),
@@ -292,11 +293,8 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
         { name: "401k", category: "Payroll", value: 500 },
       ]);
       const pieNames = buildIncomeOverviewPieData(flow).map(({ name }) => name);
-      const withholdingsPayroll = pieNames.indexOf(PAYROLL_NODE_LABEL);
-      const categoryPayroll = pieNames.indexOf(
-        PAYROLL_NODE_LABEL,
-        withholdingsPayroll + 1,
-      );
+      const withholdingsPayroll = pieNames.indexOf(PAYROLL_WITHHOLDINGS_LABEL);
+      const categoryPayroll = pieNames.indexOf("Payroll");
 
       expect(pieNames.indexOf(FEDERAL_TAX_LABEL)).toBeLessThan(
         pieNames.indexOf(STATE_TAX_LABEL),
@@ -308,8 +306,9 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
       expect(pieNames.indexOf("Housing")).toBeLessThan(categoryPayroll);
       expect(categoryPayroll).toBeLessThan(pieNames.indexOf("Food"));
       expect(
-        pieNames.filter((name) => name === PAYROLL_NODE_LABEL),
-      ).toHaveLength(2);
+        pieNames.filter((name) => name === PAYROLL_WITHHOLDINGS_LABEL),
+      ).toHaveLength(1);
+      expect(pieNames.filter((name) => name === "Payroll")).toHaveLength(1);
     });
 
     it("includes withholdings even when there are no expense categories", () => {
@@ -320,7 +319,7 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
         expect.arrayContaining([
           FEDERAL_TAX_LABEL,
           STATE_TAX_LABEL,
-          PAYROLL_NODE_LABEL,
+          PAYROLL_WITHHOLDINGS_LABEL,
           UNALLOCATED_NODE,
         ]),
       );
@@ -334,7 +333,9 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
 
       expect(pie.map(({ name }) => name)).not.toContain(FEDERAL_TAX_LABEL);
       expect(pie.map(({ name }) => name)).not.toContain(STATE_TAX_LABEL);
-      expect(pie.map(({ name }) => name)).not.toContain(PAYROLL_NODE_LABEL);
+      expect(pie.map(({ name }) => name)).not.toContain(
+        PAYROLL_WITHHOLDINGS_LABEL,
+      );
       expect(pie.map(({ name }) => name)).toEqual(
         expect.arrayContaining(["Housing", UNALLOCATED_NODE]),
       );

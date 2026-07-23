@@ -14,23 +14,35 @@ import themeAtom from "../../../../../jotai/theme-atom";
 import usDollar from "../../../../../apis/usDollar";
 import type { PiePoint } from "./types";
 
-const options = {
-  chart: { type: "pie", backgroundColor: "transparent" },
-};
-
 interface CategoryBreakdownPieProps {
   data: PiePoint[];
   title: string;
 }
 
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 const CategoryBreakdownPie = ({ data, title }: CategoryBreakdownPieProps) => {
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
+  const allowAnimation = !prefersReducedMotion();
 
   const seriesData = data.map((point) => ({
     ...point,
     yFormatted: usDollar.format(point.y),
   }));
+
+  const options = {
+    chart: {
+      type: "pie",
+      backgroundColor: "transparent",
+      animation: allowAnimation,
+    },
+    plotOptions: {
+      pie: { animation: allowAnimation },
+    },
+  };
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>

@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import type Highcharts from "highcharts/highcharts.src";
 
 const chartTestState = vi.hoisted(() => ({
   chartOptions: {} as Highcharts.Options,
@@ -109,7 +110,13 @@ vi.mock("@highcharts/react", () => ({
       />
     );
   },
-  Title: ({ children }: { children?: ReactNode }) => <span>{children}</span>,
+  Title: ({
+    children,
+    style,
+  }: {
+    children?: ReactNode;
+    style?: CSSProperties;
+  }) => <span style={style}>{children}</span>,
   Tooltip: ({
     followTouchMove,
     formatter,

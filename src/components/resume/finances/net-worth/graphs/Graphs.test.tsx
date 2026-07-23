@@ -201,7 +201,9 @@ describe("resume | finances | net-worth | Graphs", () => {
       </Provider>,
     );
 
-    expect(screen.getByText("Net Worth Breakdown")).toBeInTheDocument();
+    expect(screen.getByText("Net Worth Breakdown")).toHaveStyle({
+      color: "rgb(255, 255, 255)",
+    });
   });
 
   it("uses light theme title color on the breakdown pie", () => {
@@ -214,7 +216,9 @@ describe("resume | finances | net-worth | Graphs", () => {
       </Provider>,
     );
 
-    expect(screen.getByText("Net Worth Breakdown")).toBeInTheDocument();
+    expect(screen.getByText("Net Worth Breakdown")).toHaveStyle({
+      color: "rgb(0, 0, 0)",
+    });
   });
 });
 
@@ -443,6 +447,21 @@ describe("netWorthGraphHelpers", () => {
     expect(html).not.toContain("*Total:");
     expect(html).toContain("$10.00");
     expect(html.indexOf("Total:")).toBeLessThan(html.indexOf("Inflation:"));
+  });
+
+  it("escapes user-editable series names in tooltip HTML", () => {
+    const html = formatNetWorthTooltip(
+      [
+        {
+          y: 10,
+          series: { name: '<Cash & "Bonds">', color: "#0f0" },
+        },
+      ],
+      { categoryNames: ['<Cash & "Bonds">'] },
+    );
+
+    expect(html).toContain("&lt;Cash &amp; &quot;Bonds&quot;&gt;:");
+    expect(html).not.toContain('<Cash & "Bonds">:');
   });
 
   it("shows the final inflation value when hovering the selected point", () => {

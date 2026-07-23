@@ -56,7 +56,7 @@ const BreakdownChart = memo(({ categories, amounts }: BreakdownChartProps) => {
                 distance: -30,
                 format: "{point.percentage:.0f}%",
                 style: { fontSize: "1em", color },
-              } as unknown as Highcharts.DataLabelsOptions,
+              },
             ],
           }}
         />

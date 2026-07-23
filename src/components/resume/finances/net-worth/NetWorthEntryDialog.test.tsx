@@ -82,9 +82,9 @@ describe("resume | finances | net-worth | NetWorthEntryDialog", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Add" }));
 
-    expect(
-      screen.getByText("Amounts must be zero or greater."),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Amounts must be zero or greater.",
+    );
     expect(addEntry).not.toHaveBeenCalled();
   });
 

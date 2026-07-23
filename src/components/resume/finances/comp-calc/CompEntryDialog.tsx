@@ -97,6 +97,15 @@ const CompEntryDialog = ({
     resetState();
   };
 
+  const handleDelete = () => {
+    if (
+      onDelete &&
+      window.confirm("Delete this compensation entry? This cannot be undone.")
+    ) {
+      onDelete();
+    }
+  };
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>{compEntry ? "Edit" : "New"} Comp Entry</DialogTitle>
@@ -183,7 +192,7 @@ const CompEntryDialog = ({
       </DialogContent>
       <DialogActions>
         {compEntry && onDelete ? (
-          <Button onClick={onDelete} color="error">
+          <Button onClick={handleDelete} color="error">
             Delete
           </Button>
         ) : null}

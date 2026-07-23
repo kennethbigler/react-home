@@ -19,6 +19,10 @@ const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
     setSelectedIdx(index);
   };
 
+  if (compEntries.length === 0 || compCalcEntries.length === 0) {
+    return null;
+  }
+
   const lastIdx = compEntries.length - 1;
   const safeStartIdx = Math.min(startIdx, lastIdx);
   const pieIdx = Math.min(selectedIdx ?? lastIdx, lastIdx);

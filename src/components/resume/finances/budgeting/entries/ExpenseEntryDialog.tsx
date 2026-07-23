@@ -73,7 +73,7 @@ const ExpenseEntryDialog = ({
   const [taxBasis, setTaxBasis] = useState<ExpenseTaxBasis>(() =>
     getTaxBasis(expenseEntry ?? {}),
   );
-  const [value, setValue] = useState(expenseEntry?.value || 0);
+  const [value, setValue] = useState<number | "">(expenseEntry?.value || 0);
 
   const resetState = () => {
     setName("");
@@ -88,8 +88,15 @@ const ExpenseEntryDialog = ({
     setName(e.target.value);
   const handleCategoryChange = (e: ChangeEvent<HTMLInputElement>) =>
     setCategory(e.target.value);
-  const handleValueChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setValue(parseFloat(e.target.value));
+  const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value: next } = e.target;
+    if (next === "") {
+      setValue("");
+      return;
+    }
+    const parsed = parseFloat(next);
+    setValue(Number.isFinite(parsed) ? parsed : "");
+  };
   const handlePercentSourcesChange = (e: SelectChangeEvent<string[]>) => {
     const nextValue = e.target.value;
 
@@ -120,7 +127,7 @@ const ExpenseEntryDialog = ({
     addExpenseEntry({
       name: name.trim(),
       category: formatCategoryName(category),
-      value: Number.isFinite(value) ? value : 0,
+      value: typeof value === "number" ? value : 0,
       ...(valueMode === "percent"
         ? { valueMode, percentSources, taxBasis }
         : { valueMode: "dollar" }),
@@ -128,12 +135,13 @@ const ExpenseEntryDialog = ({
     resetState();
   };
 
+  const numericValue = typeof value === "number" ? value : Number.NaN;
   const isPercentInRange =
     valueMode !== "percent" ||
-    Number.isNaN(value) ||
-    (value >= 0 && value <= 100);
+    Number.isNaN(numericValue) ||
+    (numericValue >= 0 && numericValue <= 100);
   const isDollarNonNegative =
-    valueMode !== "dollar" || Number.isNaN(value) || value >= 0;
+    valueMode !== "dollar" || Number.isNaN(numericValue) || numericValue >= 0;
   const hasPercentSources =
     valueMode !== "percent" || percentSources.length > 0;
   const hasRequiredFields =

@@ -1,6 +1,8 @@
 import { ChangeEvent, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
+  Alert,
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -15,7 +17,6 @@ import {
   SelectChangeEvent,
   TextField,
   TextFieldProps,
-  Typography,
 } from "@mui/material";
 import {
   resolveCategoryMerges,
@@ -29,6 +30,8 @@ const tfProps: TextFieldProps = {
   fullWidth: true,
   margin: "dense",
 };
+
+const VALIDATION_ERROR_ID = "categories-dialog-validation-error";
 
 interface CategoryRow {
   id: string;
@@ -85,6 +88,12 @@ const CategoriesDialog = ({
     null,
   );
   const [error, setError] = useState("");
+  const [invalidIds, setInvalidIds] = useState<string[]>([]);
+
+  const clearValidation = () => {
+    setError("");
+    setInvalidIds([]);
+  };
 
   const handleNameChange =
     (id: string) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -92,18 +101,18 @@ const CategoriesDialog = ({
       setRows((prev) =>
         prev.map((row) => (row.id === id ? { ...row, name: value } : row)),
       );
-      setError("");
+      clearValidation();
     };
 
   const addRow = () => {
     setRows((prev) => [...prev, { id: nextId(), name: "" }]);
-    setError("");
+    clearValidation();
   };
 
   const dropRow = (id: string) => {
     setRows((prev) => prev.filter((row) => row.id !== id));
     setMerges((prev) => prev.filter((merge) => merge.intoRowId !== id));
-    setError("");
+    clearValidation();
   };
 
   const removeRow = (id: string) => () => {
@@ -161,13 +170,29 @@ const CategoriesDialog = ({
       name: row.name.trim(),
     }));
 
-    if (trimmed.some((row) => !row.name)) {
+    const emptyIds = trimmed.filter((row) => !row.name).map((row) => row.id);
+    if (emptyIds.length > 0) {
+      setInvalidIds(emptyIds);
       setError("Category names cannot be empty.");
       return;
     }
 
     const names = trimmed.map((row) => row.name);
     if (new Set(names).size !== names.length) {
+      const seen = new Map<string, string>();
+      const duplicateIds: string[] = [];
+      trimmed.forEach((row) => {
+        const firstId = seen.get(row.name);
+        if (firstId) {
+          duplicateIds.push(row.id);
+          if (!duplicateIds.includes(firstId)) {
+            duplicateIds.push(firstId);
+          }
+        } else {
+          seen.set(row.name, row.id);
+        }
+      });
+      setInvalidIds(duplicateIds);
       setError("Category names must be unique.");
       return;
     }
@@ -188,32 +213,49 @@ const CategoriesDialog = ({
       <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
         <DialogTitle>Set Categories</DialogTitle>
         <DialogContent>
-          {rows.map((row, index) => (
-            <div
-              key={row.id}
-              style={{ display: "flex", alignItems: "center", gap: 8 }}
-            >
-              <TextField
-                label={`Category ${index + 1}`}
-                value={row.name}
-                onChange={handleNameChange(row.id)}
-                {...tfProps}
-              />
-              <IconButton
-                aria-label="remove category"
-                onClick={removeRow(row.id)}
+          {rows.map((row, index) => {
+            const isInvalid = invalidIds.includes(row.id);
+
+            return (
+              <Box
+                key={row.id}
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
               >
-                <DeleteIcon />
-              </IconButton>
-            </div>
-          ))}
+                <TextField
+                  label={`Category ${index + 1}`}
+                  value={row.name}
+                  onChange={handleNameChange(row.id)}
+                  error={isInvalid}
+                  slotProps={{
+                    htmlInput: {
+                      "aria-invalid": isInvalid || undefined,
+                      "aria-describedby": isInvalid
+                        ? VALIDATION_ERROR_ID
+                        : undefined,
+                    },
+                  }}
+                  {...tfProps}
+                />
+                <IconButton
+                  aria-label="remove category"
+                  onClick={removeRow(row.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
+            );
+          })}
           <Button onClick={addRow} sx={{ marginTop: 1 }}>
             Add Category
           </Button>
           {error ? (
-            <Typography color="error" sx={{ marginTop: 1 }}>
+            <Alert
+              id={VALIDATION_ERROR_ID}
+              severity="error"
+              sx={{ marginTop: 1 }}
+            >
               {error}
-            </Typography>
+            </Alert>
           ) : null}
         </DialogContent>
         <DialogActions>

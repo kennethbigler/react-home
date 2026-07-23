@@ -1,5 +1,6 @@
 import { useState, ChangeEvent } from "react";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -9,10 +10,10 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Stack,
   TextField,
   TextFieldProps,
   SelectChangeEvent,
-  Typography,
 } from "@mui/material";
 import dateHelper, { months } from "../../../../apis/DateHelper";
 import { NetWorthEntry } from "../../../../jotai/finances-atom";
@@ -22,6 +23,8 @@ const tfProps: TextFieldProps = {
   fullWidth: true,
   margin: "dense",
 };
+
+const VALIDATION_ERROR_ID = "net-worth-entry-validation-error";
 
 const currentYear = new Date().getFullYear() - 2000;
 const years: number[] = [];
@@ -39,6 +42,8 @@ interface NetWorthEntryDialogProps {
   onDelete?: () => void;
 }
 
+type AmountValue = number | "";
+
 const NetWorthEntryDialog = ({
   open,
   entry,
@@ -54,14 +59,20 @@ const NetWorthEntryDialog = ({
     (entry && dateHelper(entry.entryDate).year.toString()) ||
       years[0].toString(),
   );
-  const [amounts, setAmounts] = useState<Record<string, number>>(() => {
-    const initial: Record<string, number> = {};
+  const [amounts, setAmounts] = useState<Record<string, AmountValue>>(() => {
+    const initial: Record<string, AmountValue> = {};
     categories.forEach((category) => {
       initial[category] = entry?.amounts[category] ?? 0;
     });
     return initial;
   });
   const [error, setError] = useState("");
+  const [invalidCategories, setInvalidCategories] = useState<string[]>([]);
+
+  const clearValidation = () => {
+    setError("");
+    setInvalidCategories([]);
+  };
 
   const handleSelectMonth = (e: SelectChangeEvent<string>) =>
     setEntryDateMonth(e.target.value);
@@ -70,19 +81,26 @@ const NetWorthEntryDialog = ({
 
   const handleAmountChange =
     (category: string) => (e: ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      let next: AmountValue = "";
+      if (value !== "") {
+        const parsed = parseFloat(value);
+        next = Number.isFinite(parsed) ? parsed : "";
+      }
       setAmounts((prev) => ({
         ...prev,
-        [category]: parseFloat(e.target.value),
+        [category]: next,
       }));
-      setError("");
+      clearValidation();
     };
 
   const handleSubmit = () => {
-    const hasInvalid = categories.some((category) => {
+    const negativeCategories = categories.filter((category) => {
       const value = amounts[category];
-      return Number.isFinite(value) && value < 0;
+      return typeof value === "number" && value < 0;
     });
-    if (hasInvalid) {
+    if (negativeCategories.length > 0) {
+      setInvalidCategories(negativeCategories);
       setError("Amounts must be zero or greater.");
       return;
     }
@@ -90,7 +108,7 @@ const NetWorthEntryDialog = ({
     const nextAmounts: Record<string, number> = {};
     categories.forEach((category) => {
       const value = amounts[category];
-      nextAmounts[category] = Number.isFinite(value) ? value : 0;
+      nextAmounts[category] = typeof value === "number" ? value : 0;
     });
 
     addEntry({
@@ -103,7 +121,7 @@ const NetWorthEntryDialog = ({
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>{entry ? "Edit" : "New"} Net Worth Entry</DialogTitle>
       <DialogContent>
-        <div style={{ display: "flex", marginTop: 5 }}>
+        <Stack direction="row" sx={{ marginTop: 0.625 }}>
           <FormControl fullWidth>
             <InputLabel id="net-worth-month-select">Month</InputLabel>
             <Select
@@ -134,22 +152,39 @@ const NetWorthEntryDialog = ({
               ))}
             </Select>
           </FormControl>
-        </div>
-        {categories.map((category) => (
-          <TextField
-            key={category}
-            label={category}
-            value={amounts[category]}
-            type="number"
-            onChange={handleAmountChange(category)}
-            slotProps={{ input: { startAdornment: "$" } }}
-            {...tfProps}
-          />
-        ))}
+        </Stack>
+        {categories.map((category) => {
+          const isInvalid = invalidCategories.includes(category);
+
+          return (
+            <TextField
+              key={category}
+              label={category}
+              value={amounts[category]}
+              type="number"
+              onChange={handleAmountChange(category)}
+              error={isInvalid}
+              slotProps={{
+                input: { startAdornment: "$" },
+                htmlInput: {
+                  "aria-invalid": isInvalid || undefined,
+                  "aria-describedby": isInvalid
+                    ? VALIDATION_ERROR_ID
+                    : undefined,
+                },
+              }}
+              {...tfProps}
+            />
+          );
+        })}
         {error ? (
-          <Typography color="error" sx={{ marginTop: 1 }}>
+          <Alert
+            id={VALIDATION_ERROR_ID}
+            severity="error"
+            sx={{ marginTop: 1 }}
+          >
             {error}
-          </Typography>
+          </Alert>
         ) : null}
       </DialogContent>
       <DialogActions>

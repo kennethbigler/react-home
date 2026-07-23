@@ -118,6 +118,16 @@ describe("Graphs", () => {
     expect(screen.getAllByTestId("highcharts-chart").length).toBe(2);
   });
 
+  it("renders nothing when both entry arrays are empty", () => {
+    const { container } = render(
+      <Provider>
+        <Graphs compEntries={[]} compCalcEntries={[]} />
+      </Provider>,
+    );
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
   it("uses dark theme colors in the breakdown chart", () => {
     const store = createStore();
     store.set(themeAtom, darkTheme);

@@ -2,6 +2,9 @@
 
 export const PAYROLL_NODE_LABEL = "Payroll";
 
+/** Distinct pie-slice label for statutory withholdings (vs user Payroll category). */
+export const PAYROLL_WITHHOLDINGS_LABEL = "Payroll Withholdings";
+
 export const SOCIAL_SECURITY_LABEL = "Social Security";
 export const MEDICARE_LABEL = "Medicare";
 export const CA_DISABILITY_LABEL = "CA Disability";

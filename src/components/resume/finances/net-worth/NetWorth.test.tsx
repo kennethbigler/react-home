@@ -77,9 +77,9 @@ describe("resume | finances | net-worth | NetWorth", () => {
       target: { value: "Investments" },
     });
     fireEvent.click(screen.getByRole("button", { name: "Save" }));
-    await waitFor(() =>
-      expect(screen.getByRole("button", { name: "+ Entry" })).toBeEnabled(),
-    );
+    expect(
+      await screen.findByRole("button", { name: "+ Entry" }),
+    ).toBeEnabled();
 
     fireEvent.click(screen.getByRole("button", { name: "+ Entry" }));
     expect(screen.getByText("New Net Worth Entry")).toBeInTheDocument();
@@ -94,9 +94,7 @@ describe("resume | finances | net-worth | NetWorth", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Add" }));
 
-    await waitFor(() =>
-      expect(screen.getByText("Cash: $10,000.00")).toBeInTheDocument(),
-    );
+    expect(await screen.findByText("Cash: $10,000.00")).toBeInTheDocument();
     expect(screen.getByText("January 2020")).toBeInTheDocument();
     expect(screen.getByText("Investments: $40,000.00")).toBeInTheDocument();
     expect(screen.getByText("$50,000.00")).toBeInTheDocument();
@@ -108,9 +106,7 @@ describe("resume | finances | net-worth | NetWorth", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Update" }));
 
-    await waitFor(() =>
-      expect(screen.getByText("Cash: $12,000.00")).toBeInTheDocument(),
-    );
+    expect(await screen.findByText("Cash: $12,000.00")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("Cash: $12,000.00"));
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
@@ -186,9 +182,7 @@ describe("resume | finances | net-worth | NetWorth", () => {
       ],
     );
 
-    await waitFor(() => {
-      expect(screen.getByText("January 2022")).toBeInTheDocument();
-    });
+    expect(await screen.findByText("January 2022")).toBeInTheDocument();
 
     const dates = screen
       .getAllByText(/January 202\d/)

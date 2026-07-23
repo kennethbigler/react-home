@@ -57,6 +57,10 @@ const NetWorthChart = ({
     const chartOptions: Highcharts.Options = {
       ...staticOptions,
       colors: [...colors, color],
+      legend: {
+        itemStyle: { color },
+        itemHoverStyle: { color },
+      },
       plotOptions: {
         area: {
           stacking: "normal",
@@ -105,7 +109,7 @@ const NetWorthChart = ({
       >
         <Accessibility enabled={true} />
         <Credits enabled={false} />
-        <Legend enabled={false} />
+        <Legend />
         <Title style={{ color }}>Total Net Worth</Title>
         <XAxis type="datetime" visible={false} />
         <YAxis

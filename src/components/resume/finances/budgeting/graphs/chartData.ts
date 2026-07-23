@@ -4,6 +4,7 @@ import {
   CA_DISABILITY_LABEL,
   MEDICARE_LABEL,
   PAYROLL_NODE_LABEL,
+  PAYROLL_WITHHOLDINGS_LABEL,
   SOCIAL_SECURITY_LABEL,
 } from "../../../../../constants/payrollDeductions";
 import {
@@ -262,7 +263,10 @@ export const buildIncomeOverviewPieData = (
     slices.push({ name: STATE_TAX_LABEL, y: flow.stateTax });
   }
   if (!hideTaxes && flow.totalPayrollDeductions > 0) {
-    slices.push({ name: PAYROLL_NODE_LABEL, y: flow.totalPayrollDeductions });
+    slices.push({
+      name: PAYROLL_WITHHOLDINGS_LABEL,
+      y: flow.totalPayrollDeductions,
+    });
   }
 
   // Categories (including user Payroll) by total — same order as the list below.

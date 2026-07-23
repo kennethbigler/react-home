@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import {
   NetWorthEntry,
   mergeNetWorthCategoryAmounts,
@@ -75,12 +75,12 @@ const NetWorthActions = ({
 
   return (
     <>
-      <div style={{ marginTop: 10, marginBottom: 10 }}>
+      <Box sx={{ marginTop: 1.25, marginBottom: 1.25 }}>
         <Button onClick={openCategoriesModal}>Set Categories</Button>
         <Button onClick={openNewEntry} disabled={categories.length === 0}>
           + Entry
         </Button>
-      </div>
+      </Box>
       {openCategories && (
         <CategoriesDialog
           open={openCategories}

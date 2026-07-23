@@ -84,7 +84,9 @@ const Track = memo(
         )}
         <IconButton
           aria-expanded={isExpanded}
-          aria-label={`${isExpanded ? "Collapse" : "Expand"} ${circuitName} circuit details`}
+          aria-label={`${isExpanded ? "Collapse" : "Expand"} ${circuitName} circuit details${
+            next ? ", next race" : skipped ? ", skipped" : ""
+          }`}
           onClick={onClick(circuitName)}
         >
           <img
