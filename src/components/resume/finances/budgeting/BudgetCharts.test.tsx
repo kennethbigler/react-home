@@ -139,7 +139,7 @@ describe("resume | finances | budgeting | BudgetCharts", () => {
     );
     expect(screen.queryByText("Fed Tax")).not.toBeInTheDocument();
     expect(screen.queryByText("CA Tax")).not.toBeInTheDocument();
-    expect(screen.queryByText("Payroll")).not.toBeInTheDocument();
+    expect(screen.queryByText("Payroll Withholdings")).not.toBeInTheDocument();
     expect(screen.getByText("Food")).toBeInTheDocument();
     expect(screen.getByText("Housing")).toBeInTheDocument();
   });
@@ -149,7 +149,7 @@ describe("resume | finances | budgeting | BudgetCharts", () => {
 
     expect(screen.getByText("Fed Tax")).toBeInTheDocument();
     expect(screen.getByText("CA Tax")).toBeInTheDocument();
-    expect(screen.getByText("Payroll")).toBeInTheDocument();
+    expect(screen.getByText("Payroll Withholdings")).toBeInTheDocument();
   });
 
   it("toggles the hide taxes switch", () => {

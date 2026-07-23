@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useAtomValue } from "jotai";
 import {
   Chart,
@@ -28,21 +29,28 @@ const CategoryBreakdownPie = ({ data, title }: CategoryBreakdownPieProps) => {
   const color = theme.mode === "light" ? "black" : "white";
   const allowAnimation = !prefersReducedMotion();
 
-  const seriesData = data.map((point) => ({
-    ...point,
-    yFormatted: usDollar.format(point.y),
-  }));
+  const seriesData = useMemo(
+    () =>
+      data.map((point) => ({
+        ...point,
+        yFormatted: usDollar.format(point.y),
+      })),
+    [data],
+  );
 
-  const options = {
-    chart: {
-      type: "pie",
-      backgroundColor: "transparent",
-      animation: allowAnimation,
-    },
-    plotOptions: {
-      pie: { animation: allowAnimation },
-    },
-  };
+  const options = useMemo(
+    () => ({
+      chart: {
+        type: "pie",
+        backgroundColor: "transparent",
+        animation: allowAnimation,
+      },
+      plotOptions: {
+        pie: { animation: allowAnimation },
+      },
+    }),
+    [allowAnimation],
+  );
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>

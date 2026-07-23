@@ -31,7 +31,9 @@ describe("resume | f1 | Tracks", () => {
     render(<Tracks />);
 
     expect(
-      screen.getByText("Bahrain International Circuit, Sakhir"),
+      screen.getByRole("button", {
+        name: /Bahrain International Circuit, Sakhir circuit details, skipped/i,
+      }),
     ).toBeInTheDocument();
   });
 });
