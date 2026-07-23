@@ -12,6 +12,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import Graphs from "./Graphs";
+import BreakdownChart from "./BreakdownGraph";
+import { buildNetWorthBreakdownPieData } from "./buildNetWorthBreakdownPieData";
 import NetWorthChart from "./NetWorthGraph";
 import {
   buildNetWorthChartData,
@@ -166,6 +168,70 @@ describe("resume | finances | net-worth | Graphs", () => {
     );
 
     expect(getBreakdownSeriesData()).toEqual([]);
+  });
+
+  it("omits zero-value and missing category amounts from the breakdown pie", () => {
+    render(
+      <Provider>
+        <Graphs
+          entries={[
+            {
+              entryDate: "2022-01",
+              amounts: { Investments: 60000 },
+            },
+          ]}
+          calcEntries={[{ total: 60000, netDiff: 0 }]}
+          categories={["Investments", "Cash"]}
+        />
+      </Provider>,
+    );
+
+    expect(getBreakdownSeriesData()).toEqual([
+      expect.objectContaining({ name: "Investments", y: 60000 }),
+    ]);
+  });
+
+  it("uses dark theme title color on the breakdown pie", () => {
+    const store = createStore();
+    store.set(themeAtom, darkTheme);
+
+    render(
+      <Provider store={store}>
+        <BreakdownChart categories={["Cash"]} amounts={{ Cash: 1000 }} />
+      </Provider>,
+    );
+
+    expect(screen.getByText("Net Worth Breakdown")).toBeInTheDocument();
+  });
+
+  it("uses light theme title color on the breakdown pie", () => {
+    const store = createStore();
+    store.set(themeAtom, lightTheme);
+
+    render(
+      <Provider store={store}>
+        <BreakdownChart categories={["Cash"]} amounts={{ Cash: 1000 }} />
+      </Provider>,
+    );
+
+    expect(screen.getByText("Net Worth Breakdown")).toBeInTheDocument();
+  });
+});
+
+describe("resume | finances | net-worth | buildNetWorthBreakdownPieData", () => {
+  it("keeps positive amounts and drops missing or zero categories", () => {
+    expect(
+      buildNetWorthBreakdownPieData(["Investments", "Cash", "Home"], {
+        Investments: 60000,
+        Cash: 0,
+      }),
+    ).toEqual([
+      {
+        name: "Investments",
+        y: 60000,
+        color: getCategoryColor(0),
+      },
+    ]);
   });
 });
 

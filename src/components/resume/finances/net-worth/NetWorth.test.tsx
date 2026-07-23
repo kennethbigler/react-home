@@ -175,4 +175,24 @@ describe("resume | finances | net-worth | NetWorth", () => {
         Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
   });
+
+  it("displays entries by date, not insertion order", async () => {
+    renderNetWorth(
+      ["Cash"],
+      [
+        { entryDate: "2022-01", amounts: { Cash: 3000 } },
+        { entryDate: "2020-01", amounts: { Cash: 1000 } },
+        { entryDate: "2021-01", amounts: { Cash: 2000 } },
+      ],
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("January 2022")).toBeInTheDocument();
+    });
+
+    const dates = screen
+      .getAllByText(/January 202\d/)
+      .map((node) => node.textContent);
+    expect(dates).toEqual(["January 2022", "January 2021", "January 2020"]);
+  });
 });

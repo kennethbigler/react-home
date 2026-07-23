@@ -1,6 +1,6 @@
 import { NetWorthEntry } from "../../../../jotai/finances-atom";
 
-/** Largest final-entry amounts first (zeros / new categories sink to the bottom). */
+/** Largest amounts in the latest-dated entry first (zeros sink to the bottom). */
 export const sortCategoriesByFinalEntry = (
   categories: string[],
   entries: NetWorthEntry[],
@@ -9,6 +9,8 @@ export const sortCategoriesByFinalEntry = (
     return [...categories];
   }
 
-  const { amounts } = entries[entries.length - 1];
+  const { amounts } = entries.reduce((latest, entry) =>
+    entry.entryDate >= latest.entryDate ? entry : latest,
+  );
   return [...categories].sort((a, b) => (amounts[b] ?? 0) - (amounts[a] ?? 0));
 };

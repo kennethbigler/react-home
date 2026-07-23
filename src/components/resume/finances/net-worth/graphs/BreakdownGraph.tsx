@@ -12,7 +12,8 @@ import {
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../../../common/highcharts/coreHighcharts";
 import themeAtom from "../../../../../jotai/theme-atom";
-import colors, { getCategoryColor } from "./colors";
+import colors from "./colors";
+import { buildNetWorthBreakdownPieData } from "./buildNetWorthBreakdownPieData";
 
 interface BreakdownChartProps {
   categories: string[];
@@ -23,20 +24,6 @@ const options: Highcharts.Options = {
   colors,
   chart: { type: "pie", backgroundColor: "transparent" },
 };
-
-const buildNetWorthBreakdownPieData = (
-  categories: string[],
-  amounts: Record<string, number>,
-) =>
-  categories
-    .map((name, i) => ({
-      name,
-      y: amounts[name] ?? 0,
-      // Color by full sorted-category index so it matches the area chart
-      // even when zero-value slices are omitted from the pie.
-      color: getCategoryColor(i),
-    }))
-    .filter(({ y }) => y > 0);
 
 const BreakdownChart = memo(({ categories, amounts }: BreakdownChartProps) => {
   const theme = useAtomValue(themeAtom);

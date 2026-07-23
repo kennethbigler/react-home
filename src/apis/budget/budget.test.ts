@@ -214,6 +214,23 @@ describe("apis | budget", () => {
 
       expect(totals[0]?.heading).toBe("Uncategorized");
     });
+
+    it("sorts categories by total descending", () => {
+      const totals = buildCategoryTotals(
+        [
+          { name: "Groceries", category: "Food", value: 400 },
+          { name: "401k", category: "Payroll", value: 500 },
+          { name: "Rent", category: "Housing", value: 3000 },
+        ],
+        sampleIncome,
+      );
+
+      expect(totals.map(({ heading }) => heading)).toEqual([
+        "Housing",
+        "Payroll",
+        "Food",
+      ]);
+    });
   });
 
   describe("buildBudgetFlow", () => {

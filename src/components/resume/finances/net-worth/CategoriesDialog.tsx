@@ -17,6 +17,12 @@ import {
   TextFieldProps,
   Typography,
 } from "@mui/material";
+import {
+  resolveCategoryMerges,
+  type CategoryMerge,
+} from "./resolveCategoryMerges";
+
+export type { CategoryMerge } from "./resolveCategoryMerges";
 
 const tfProps: TextFieldProps = {
   variant: "standard",
@@ -40,11 +46,6 @@ interface PendingRemoval {
   sourceKey: string;
   label: string;
   targetId: string;
-}
-
-export interface CategoryMerge {
-  from: string;
-  into: string;
 }
 
 interface CategoriesDialogProps {
@@ -106,11 +107,7 @@ const CategoriesDialog = ({
   };
 
   const removeRow = (id: string) => () => {
-    const row = rows.find((r) => r.id === id);
-    if (!row) {
-      return;
-    }
-
+    const row = rows.find((r) => r.id === id)!;
     const remaining = rows.filter((r) => r.id !== id);
     const sourceKey = row.previousName;
 
@@ -132,28 +129,25 @@ const CategoriesDialog = ({
   };
 
   const confirmMergeNo = () => {
-    if (!pendingRemoval) {
-      return;
-    }
-    dropRow(pendingRemoval.rowId);
+    dropRow(pendingRemoval!.rowId);
     closeMergePrompt();
   };
 
   const confirmMergeYes = () => {
-    if (!pendingRemoval?.targetId) {
-      return;
-    }
     setMerges((prev) => [
       ...prev,
-      { from: pendingRemoval.sourceKey, intoRowId: pendingRemoval.targetId },
+      {
+        from: pendingRemoval!.sourceKey,
+        intoRowId: pendingRemoval!.targetId,
+      },
     ]);
-    dropRow(pendingRemoval.rowId);
+    dropRow(pendingRemoval!.rowId);
     closeMergePrompt();
   };
 
   const handleMergeTargetChange = (e: SelectChangeEvent<string>) => {
     const { value } = e.target;
-    setPendingRemoval((prev) => (prev ? { ...prev, targetId: value } : prev));
+    setPendingRemoval((prev) => ({ ...prev!, targetId: value }));
   };
 
   const handleSave = () => {
@@ -178,20 +172,10 @@ const CategoriesDialog = ({
       return;
     }
 
-    const resolvedMerges: CategoryMerge[] = [];
-    merges.forEach(({ from, intoRowId }) => {
-      const target = trimmed.find((row) => row.id === intoRowId);
-      if (!target) {
-        return;
-      }
-      const into = target.previousName ?? target.name;
-      resolvedMerges.push({ from, into });
-    });
-
     onSave(
       names,
       trimmed.map(({ name, previousName }) => ({ name, previousName })),
-      resolvedMerges,
+      resolveCategoryMerges(merges, trimmed),
     );
   };
 

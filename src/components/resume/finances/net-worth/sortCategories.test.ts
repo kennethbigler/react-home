@@ -49,4 +49,22 @@ describe("resume | finances | net-worth | sortCategories", () => {
       ),
     ).toEqual(["Investments", "Cash", "Home"]);
   });
+
+  it("uses the latest-dated entry even when it is not last in the array", () => {
+    expect(
+      sortCategoriesByFinalEntry(
+        ["Cash", "Home", "Investments"],
+        [
+          {
+            entryDate: "2021-01",
+            amounts: { Cash: 10, Home: 30, Investments: 90 },
+          },
+          {
+            entryDate: "2020-01",
+            amounts: { Cash: 50, Home: 200, Investments: 100 },
+          },
+        ],
+      ),
+    ).toEqual(["Investments", "Home", "Cash"]);
+  });
 });

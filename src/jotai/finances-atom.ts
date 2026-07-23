@@ -57,6 +57,12 @@ export interface NetWorthCalcEntry {
   netDiff: number;
 }
 
+/** Ascending by entryDate (YYYY-MM); insertion order is ignored. */
+export const sortNetWorthEntriesByDate = (
+  entries: NetWorthEntry[],
+): NetWorthEntry[] =>
+  entries.toSorted((a, b) => a.entryDate.localeCompare(b.entryDate));
+
 interface PrevStock {
   grantQty: number;
   grantDuration: number;
@@ -197,7 +203,7 @@ export const syncNetWorthEntryAmounts = (
   });
 
 export const netWorthRead = atom((get) => {
-  const entries = get(netWorthAtom);
+  const entries = sortNetWorthEntriesByDate(get(netWorthAtom));
   const categories = get(netWorthCategoriesAtom);
 
   const withTotals = entries.map((entry) => ({

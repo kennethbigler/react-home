@@ -8,6 +8,7 @@ import compCalcAtom, {
   netWorthAtom,
   netWorthCategoriesAtom,
   netWorthRead,
+  sortNetWorthEntriesByDate,
   syncNetWorthEntryAmounts,
 } from "./finances-atom";
 import stockAtom from "./stock-atom";
@@ -350,6 +351,35 @@ describe("jotai | finances-atom", () => {
       ]);
 
       expect(store.get(netWorthRead)).toEqual([{ total: 5_000, netDiff: 0 }]);
+    });
+
+    it("computes netDiff in date order even when storage is insertion-ordered", () => {
+      const store = createStore();
+
+      store.set(netWorthCategoriesAtom, ["Cash"]);
+      store.set(netWorthAtom, [
+        { entryDate: "2022-01", amounts: { Cash: 30_000 } },
+        { entryDate: "2020-01", amounts: { Cash: 10_000 } },
+        { entryDate: "2021-01", amounts: { Cash: 20_000 } },
+      ]);
+
+      expect(store.get(netWorthRead)).toEqual([
+        { total: 10_000, netDiff: 0 },
+        { total: 20_000, netDiff: 10_000 },
+        { total: 30_000, netDiff: 10_000 },
+      ]);
+    });
+  });
+
+  describe("sortNetWorthEntriesByDate", () => {
+    it("sorts ascending by entryDate", () => {
+      expect(
+        sortNetWorthEntriesByDate([
+          { entryDate: "2022-01", amounts: { Cash: 3 } },
+          { entryDate: "2020-01", amounts: { Cash: 1 } },
+          { entryDate: "2021-06", amounts: { Cash: 2 } },
+        ]).map(({ entryDate }) => entryDate),
+      ).toEqual(["2020-01", "2021-06", "2022-01"]);
     });
   });
 

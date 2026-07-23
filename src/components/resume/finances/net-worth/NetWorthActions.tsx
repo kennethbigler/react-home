@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import {
   NetWorthEntry,
   mergeNetWorthCategoryAmounts,
+  sortNetWorthEntriesByDate,
   syncNetWorthEntryAmounts,
 } from "../../../../jotai/finances-atom";
 import NetWorthEntryDialog from "./NetWorthEntryDialog";
@@ -41,6 +42,10 @@ const NetWorthActions = ({
   const closeCategoriesModal = () => setOpenCategories(false);
   const openCategoriesModal = () => setOpenCategories(true);
 
+  const persistEntries = (next: NetWorthEntry[]) => {
+    setEntries(sortNetWorthEntriesByDate(next));
+  };
+
   const addEntry = (entry: NetWorthEntry) => {
     const next = [...entries];
     if (editEntryIdx === -1) {
@@ -48,12 +53,12 @@ const NetWorthActions = ({
     } else {
       next[editEntryIdx] = entry;
     }
-    setEntries(next);
+    persistEntries(next);
     closeEntryModal();
   };
 
   const removeEntry = () => {
-    setEntries(entries.filter((_, i) => i !== editEntryIdx));
+    persistEntries(entries.filter((_, i) => i !== editEntryIdx));
     closeEntryModal();
   };
 
@@ -64,7 +69,7 @@ const NetWorthActions = ({
   ) => {
     const merged = mergeNetWorthCategoryAmounts(entries, merges);
     setCategories(nextCategories);
-    setEntries(syncNetWorthEntryAmounts(merged, mappings));
+    persistEntries(syncNetWorthEntryAmounts(merged, mappings));
     closeCategoriesModal();
   };
 

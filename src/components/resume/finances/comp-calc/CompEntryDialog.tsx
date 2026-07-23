@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import dateHelper, { months } from "../../../../apis/DateHelper";
 import { CompEntry } from "../../../../jotai/finances-atom";
+import { finiteOr } from "./compEntryNumbers";
 
 const tfProps: TextFieldProps = {
   variant: "standard",
@@ -86,12 +87,12 @@ const CompEntryDialog = ({
   const handleSubmit = () => {
     addCompEntry({
       entryDate: `${entryDateYear}-${String(entryDateMonth).padStart(2, "0")}`,
-      salary: Number.isFinite(salary) ? salary : 0,
-      bonus: Number.isFinite(bonus) ? bonus : 0,
+      salary: finiteOr(salary),
+      bonus: finiteOr(bonus),
       stockTick,
-      priceThen: Number.isFinite(priceThen) ? priceThen : 0,
-      grantDuration: Number.isFinite(grantDuration) ? grantDuration : 4,
-      grantQty: Number.isFinite(grantQty) ? grantQty : 0,
+      priceThen: finiteOr(priceThen),
+      grantDuration: finiteOr(grantDuration, 4),
+      grantQty: finiteOr(grantQty),
     });
     resetState();
   };

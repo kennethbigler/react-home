@@ -1,8 +1,34 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import CategoriesDialog from "./CategoriesDialog";
+import { resolveCategoryMerges } from "./resolveCategoryMerges";
 
 describe("resume | finances | net-worth | CategoriesDialog", () => {
+  describe("resolveCategoryMerges", () => {
+    it("maps merges onto destination names and skips missing rows", () => {
+      expect(
+        resolveCategoryMerges(
+          [
+            { from: "Cash", intoRowId: "keep" },
+            { from: "Old", intoRowId: "gone" },
+          ],
+          [
+            { id: "keep", name: "Investments", previousName: "Investments" },
+            { id: "new", name: "Home" },
+          ],
+        ),
+      ).toEqual([{ from: "Cash", into: "Investments" }]);
+    });
+
+    it("uses the current name when previousName is absent", () => {
+      expect(
+        resolveCategoryMerges(
+          [{ from: "Cash", intoRowId: "dest" }],
+          [{ id: "dest", name: "Home" }],
+        ),
+      ).toEqual([{ from: "Cash", into: "Home" }]);
+    });
+  });
   it("saves trimmed unique category names with previous-name mappings", () => {
     const onSave = vi.fn();
     const onClose = vi.fn();

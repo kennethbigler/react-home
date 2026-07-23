@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import {
   netWorthAtom,
   netWorthCategoriesAtom,
   netWorthRead,
+  sortNetWorthEntriesByDate,
 } from "../../../../jotai/finances-atom";
 import NetWorthActions from "./NetWorthActions";
 import Graphs from "./graphs/Graphs";
@@ -19,9 +20,22 @@ const NetWorth = () => {
   const [editEntryIdx, setEditEntryIdx] = useState(-1);
   const [openCategories, setOpenCategories] = useState(false);
 
+  // Persist chronological order for legacy insertion-ordered storage.
+  useEffect(() => {
+    const sorted = sortNetWorthEntriesByDate(entries);
+    if (sorted.some((entry, i) => entry.entryDate !== entries[i]?.entryDate)) {
+      setEntries(sorted);
+    }
+  }, [entries, setEntries]);
+
+  const sortedEntries = useMemo(
+    () => sortNetWorthEntriesByDate(entries),
+    [entries],
+  );
+
   const sortedCategories = useMemo(
-    () => sortCategoriesByFinalEntry(categories, entries),
-    [categories, entries],
+    () => sortCategoriesByFinalEntry(categories, sortedEntries),
+    [categories, sortedEntries],
   );
 
   const openEditEntry = (i: number) => () => {
@@ -31,15 +45,15 @@ const NetWorth = () => {
 
   return (
     <>
-      {entries.length > 0 && (
+      {sortedEntries.length > 0 && (
         <Graphs
-          entries={entries}
+          entries={sortedEntries}
           calcEntries={calcEntries}
           categories={sortedCategories}
         />
       )}
       <NetWorthActions
-        entries={entries}
+        entries={sortedEntries}
         setEntries={setEntries}
         categories={sortedCategories}
         setCategories={setCategories}
@@ -50,9 +64,9 @@ const NetWorth = () => {
         openCategories={openCategories}
         setOpenCategories={setOpenCategories}
       />
-      {entries.length > 0 && (
+      {sortedEntries.length > 0 && (
         <NetWorthEntryDisplay
-          entries={entries}
+          entries={sortedEntries}
           calcEntries={calcEntries}
           categories={sortedCategories}
           onClick={openEditEntry}
