@@ -35,6 +35,7 @@ interface CompEntryDialogProps {
   compEntry?: CompEntry;
   onClose: () => void;
   addCompEntry: (n: CompEntry) => void;
+  onDelete?: () => void;
 }
 
 const CompEntryDialog = ({
@@ -42,6 +43,7 @@ const CompEntryDialog = ({
   compEntry,
   onClose,
   addCompEntry,
+  onDelete,
 }: CompEntryDialogProps) => {
   const [entryDateMonth, setEntryDateMonth] = useState(
     (compEntry && (dateHelper(compEntry.entryDate).month + 1).toString()) ||
@@ -84,12 +86,12 @@ const CompEntryDialog = ({
   const handleSubmit = () => {
     addCompEntry({
       entryDate: `${entryDateYear}-${String(entryDateMonth).padStart(2, "0")}`,
-      salary,
-      bonus,
+      salary: Number.isFinite(salary) ? salary : 0,
+      bonus: Number.isFinite(bonus) ? bonus : 0,
       stockTick,
-      priceThen,
-      grantDuration,
-      grantQty,
+      priceThen: Number.isFinite(priceThen) ? priceThen : 0,
+      grantDuration: Number.isFinite(grantDuration) ? grantDuration : 4,
+      grantQty: Number.isFinite(grantQty) ? grantQty : 0,
     });
     resetState();
   };
@@ -179,6 +181,11 @@ const CompEntryDialog = ({
         />
       </DialogContent>
       <DialogActions>
+        {compEntry && onDelete ? (
+          <Button onClick={onDelete} color="error">
+            Delete
+          </Button>
+        ) : null}
         <Button onClick={onClose}>Cancel</Button>
         <Button type="submit" onClick={handleSubmit}>
           {compEntry ? "Update" : "Add"}

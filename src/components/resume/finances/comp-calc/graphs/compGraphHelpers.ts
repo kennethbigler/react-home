@@ -120,12 +120,17 @@ export const buildCompChartData = (
   const chartData: CompChartPoint[][] = [[], [], [], [], []];
   if (compEntries.length > 0) {
     // set start basis for inflation calculation
-    let startYear = dateHelper(compEntries[startIdx].entryDate).year;
+    const safeStartIdx = Math.min(
+      Math.max(startIdx, 0),
+      compEntries.length - 1,
+    );
+    let startYear = dateHelper(compEntries[safeStartIdx].entryDate).year;
     let startTC =
-      compEntries[startIdx].salary +
-      compEntries[startIdx].bonus +
-      (compCalcEntries[startIdx].stockAdj || compCalcEntries[startIdx].stock);
-    const startIsLastEntry = startIdx === compEntries.length - 1;
+      compEntries[safeStartIdx].salary +
+      compEntries[safeStartIdx].bonus +
+      (compCalcEntries[safeStartIdx].stockAdj ||
+        compCalcEntries[safeStartIdx].stock);
+    const startIsLastEntry = safeStartIdx === compEntries.length - 1;
 
     compEntries.forEach(({ bonus, salary, entryDate }, i) => {
       const { stock, stockAdj } = compCalcEntries[i];

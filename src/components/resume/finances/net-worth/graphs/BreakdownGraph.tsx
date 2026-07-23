@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { useAtomValue } from "jotai";
 import {
   Chart,
@@ -12,13 +12,11 @@ import {
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../../../common/highcharts/coreHighcharts";
 import themeAtom from "../../../../../jotai/theme-atom";
-import colors from "./colors";
-import { BONUS, SALARY, STOCK } from "./compGraphHelpers";
+import colors, { getCategoryColor } from "./colors";
 
 interface BreakdownChartProps {
-  bonus: number;
-  salary: number;
-  stock: number;
+  categories: string[];
+  amounts: Record<string, number>;
 }
 
 const options: Highcharts.Options = {
@@ -26,22 +24,39 @@ const options: Highcharts.Options = {
   chart: { type: "pie", backgroundColor: "transparent" },
 };
 
-const BreakdownChart = memo(({ bonus, salary, stock }: BreakdownChartProps) => {
+const buildNetWorthBreakdownPieData = (
+  categories: string[],
+  amounts: Record<string, number>,
+) =>
+  categories
+    .map((name, i) => ({
+      name,
+      y: amounts[name] ?? 0,
+      // Color by full sorted-category index so it matches the area chart
+      // even when zero-value slices are omitted from the pie.
+      color: getCategoryColor(i),
+    }))
+    .filter(({ y }) => y > 0);
+
+const BreakdownChart = memo(({ categories, amounts }: BreakdownChartProps) => {
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
-  const data = [
-    { name: "Stock", y: stock, color: colors[STOCK] },
-    { name: "Bonus", y: bonus, color: colors[BONUS] },
-    { name: "Salary", y: salary, color: colors[SALARY] },
-  ].filter(({ y }) => y > 0);
+  const data = useMemo(
+    () => buildNetWorthBreakdownPieData(categories, amounts),
+    [categories, amounts],
+  );
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>
-      <Chart highcharts={Highcharts} options={options}>
+      <Chart
+        key={JSON.stringify(data)}
+        highcharts={Highcharts}
+        options={options}
+      >
         <Accessibility enabled={true} />
         <Credits enabled={false} />
         <Legend enabled={false} />
-        <Title style={{ color }}>Comp Breakdown</Title>
+        <Title style={{ color }}>Net Worth Breakdown</Title>
         <Tooltip pointFormat="<b>${point.y:,.2f}</b>" />
         <PlotOptions
           series={{

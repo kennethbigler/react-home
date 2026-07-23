@@ -9,12 +9,31 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import Graphs from "./Graphs";
-import { buildCompChartData, formatCompTooltip } from "./compGraphHelpers";
+import {
+  BONUS,
+  SALARY,
+  STOCK,
+  buildCompChartData,
+  formatCompTooltip,
+} from "./compGraphHelpers";
 import { CompCalcEntry, CompEntry } from "../../../../../jotai/finances-atom";
 import themeAtom, {
   darkTheme,
   lightTheme,
 } from "../../../../../jotai/theme-atom";
+import colors from "./colors";
+
+const sliceColors = {
+  Stock: colors[STOCK],
+  Bonus: colors[BONUS],
+  Salary: colors[SALARY],
+} as const;
+
+const breakdownPoint = (name: keyof typeof sliceColors, y: number) => ({
+  name,
+  y,
+  color: sliceColors[name],
+});
 
 describe("Graphs", () => {
   const mockCompEntries: CompEntry[] = [
@@ -136,10 +155,125 @@ describe("Graphs", () => {
     renderGraphs();
 
     expect(getBreakdownSeriesData()).toEqual([
-      { name: "Stock", y: 70000 },
-      { name: "Bonus", y: 20000 },
-      { name: "Salary", y: 140000 },
+      breakdownPoint("Stock", 70000),
+      breakdownPoint("Bonus", 20000),
+      breakdownPoint("Salary", 140000),
     ]);
+  });
+
+  it("updates the breakdown chart when the latest entry data changes", () => {
+    const { rerender } = render(
+      <Provider>
+        <Graphs
+          compEntries={mockCompEntries}
+          compCalcEntries={mockCompCalcEntries}
+        />
+      </Provider>,
+    );
+
+    const updatedEntries = [
+      ...mockCompEntries.slice(0, -1),
+      {
+        ...mockCompEntries[mockCompEntries.length - 1],
+        salary: 150000,
+        bonus: 25000,
+      },
+    ];
+    const updatedCalcEntries = [
+      ...mockCompCalcEntries.slice(0, -1),
+      {
+        ...mockCompCalcEntries[mockCompCalcEntries.length - 1],
+        stock: 80000,
+        stockAdj: 90000,
+      },
+    ];
+
+    rerender(
+      <Provider>
+        <Graphs
+          compEntries={updatedEntries}
+          compCalcEntries={updatedCalcEntries}
+        />
+      </Provider>,
+    );
+
+    expect(getBreakdownSeriesData()).toEqual([
+      breakdownPoint("Stock", 90000),
+      breakdownPoint("Bonus", 25000),
+      breakdownPoint("Salary", 150000),
+    ]);
+  });
+
+  it("omits zero-value slices from the breakdown chart", () => {
+    render(
+      <Provider>
+        <Graphs
+          compEntries={[
+            {
+              entryDate: "2022-01",
+              salary: 140000,
+              bonus: 0,
+              stockTick: "",
+              priceThen: 0,
+              grantDuration: 4,
+              grantQty: 0,
+            },
+          ]}
+          compCalcEntries={[
+            {
+              stock: 0,
+              stockAdj: 0,
+              total: 140000,
+              totalAdj: 140000,
+              netDiff: 0,
+              grantThen: 0,
+              grantNow: 0,
+            },
+          ]}
+        />
+      </Provider>,
+    );
+
+    expect(getBreakdownSeriesData()).toEqual([
+      breakdownPoint("Salary", 140000),
+    ]);
+  });
+
+  it("clamps chart selection when entries are removed after selecting the last point", async () => {
+    const { rerender } = render(
+      <Provider>
+        <Graphs
+          compEntries={mockCompEntries}
+          compCalcEntries={mockCompCalcEntries}
+        />
+      </Provider>,
+    );
+
+    selectChartPoint(2);
+
+    await waitFor(() => {
+      expect(getBreakdownSeriesData()).toEqual([
+        breakdownPoint("Stock", 70000),
+        breakdownPoint("Bonus", 20000),
+        breakdownPoint("Salary", 140000),
+      ]);
+    });
+
+    rerender(
+      <Provider>
+        <Graphs
+          compEntries={mockCompEntries.slice(0, 2)}
+          compCalcEntries={mockCompCalcEntries.slice(0, 2)}
+        />
+      </Provider>,
+    );
+
+    expect(getBreakdownSeriesData()).toEqual([
+      breakdownPoint("Stock", 65000),
+      breakdownPoint("Bonus", 15000),
+      breakdownPoint("Salary", 120000),
+    ]);
+    expect(screen.getByText("Total Comp")).toBeInTheDocument();
   });
 
   it("updates the breakdown chart when an earlier point is selected", async () => {
@@ -149,9 +283,9 @@ describe("Graphs", () => {
 
     await waitFor(() => {
       expect(getBreakdownSeriesData()).toEqual([
-        { name: "Stock", y: 65000 },
-        { name: "Bonus", y: 15000 },
-        { name: "Salary", y: 120000 },
+        breakdownPoint("Stock", 65000),
+        breakdownPoint("Bonus", 15000),
+        breakdownPoint("Salary", 120000),
       ]);
     });
   });
@@ -176,9 +310,9 @@ describe("Graphs", () => {
 
     await waitFor(() => {
       expect(getBreakdownSeriesData()).toEqual([
-        { name: "Stock", y: 65000 },
-        { name: "Bonus", y: 15000 },
-        { name: "Salary", y: 120000 },
+        breakdownPoint("Stock", 65000),
+        breakdownPoint("Bonus", 15000),
+        breakdownPoint("Salary", 120000),
       ]);
     });
 
@@ -186,9 +320,9 @@ describe("Graphs", () => {
 
     await waitFor(() => {
       expect(getBreakdownSeriesData()).toEqual([
-        { name: "Stock", y: 70000 },
-        { name: "Bonus", y: 20000 },
-        { name: "Salary", y: 140000 },
+        breakdownPoint("Stock", 70000),
+        breakdownPoint("Bonus", 20000),
+        breakdownPoint("Salary", 140000),
       ]);
     });
   });
@@ -227,10 +361,9 @@ describe("Graphs", () => {
     selectChartPoint(0);
 
     await waitFor(() => {
-      expect(getBreakdownSeriesData()?.[0]).toEqual({
-        name: "Stock",
-        y: 55000,
-      });
+      expect(getBreakdownSeriesData()?.[0]).toEqual(
+        breakdownPoint("Stock", 55000),
+      );
     });
   });
 
@@ -274,18 +407,16 @@ describe("Graphs", () => {
       </Provider>,
     );
 
-    expect(getBreakdownSeriesData()?.[0]).toEqual({
-      name: "Stock",
-      y: 75000,
-    });
+    expect(getBreakdownSeriesData()?.[0]).toEqual(
+      breakdownPoint("Stock", 75000),
+    );
 
     selectChartPoint(0);
 
     await waitFor(() => {
-      expect(getBreakdownSeriesData()?.[0]).toEqual({
-        name: "Stock",
-        y: 50000,
-      });
+      expect(getBreakdownSeriesData()?.[0]).toEqual(
+        breakdownPoint("Stock", 50000),
+      );
     });
   });
 

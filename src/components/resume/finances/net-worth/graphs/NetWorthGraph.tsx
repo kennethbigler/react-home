@@ -14,44 +14,44 @@ import {
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../../../common/highcharts/coreHighcharts";
 import themeAtom from "../../../../../jotai/theme-atom";
-import { CompCalcEntry, CompEntry } from "../../../../../jotai/finances-atom";
-import colors from "./colors";
 import {
-  BONUS,
-  INFL,
-  SALARY,
-  STOCK,
-  TOTAL,
-  buildCompChartData,
-  formatCompTooltip,
-} from "./compGraphHelpers";
+  NetWorthCalcEntry,
+  NetWorthEntry,
+} from "../../../../../jotai/finances-atom";
+import colors, { getCategoryColor } from "./colors";
+import {
+  buildNetWorthChartData,
+  formatNetWorthTooltip,
+} from "./netWorthGraphHelpers";
 
 const staticOptions: Highcharts.Options = {
   chart: { type: "area", backgroundColor: "transparent" },
 };
 
-interface CompChartProps {
+interface NetWorthChartProps {
   startIdx: number;
-  compCalcEntries: CompCalcEntry[];
-  compEntries: CompEntry[];
+  entries: NetWorthEntry[];
+  calcEntries: NetWorthCalcEntry[];
+  categories: string[];
   onPointSelect: (index: number) => void;
 }
 
-const CompChart = ({
+const NetWorthChart = ({
   startIdx,
-  compCalcEntries,
-  compEntries,
+  entries,
+  calcEntries,
+  categories,
   onPointSelect,
-}: CompChartProps) => {
-  // process theme
+}: NetWorthChartProps) => {
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
-  const { compChartData, options } = useMemo(() => {
-    const chartData = buildCompChartData(
+  const { chartData, options } = useMemo(() => {
+    const data = buildNetWorthChartData(
       startIdx,
-      compCalcEntries,
-      compEntries,
+      entries,
+      calcEntries,
+      categories,
     );
 
     const chartOptions: Highcharts.Options = {
@@ -63,29 +63,29 @@ const CompChart = ({
           lineColor: color,
           lineWidth: 1,
           marker: { lineWidth: 1, lineColor: color },
-          // Expand hit target to the filled area so taps register on touch devices.
           trackByArea: true,
         },
       },
     };
 
-    return { compChartData: chartData, options: chartOptions };
-  }, [compEntries, compCalcEntries, startIdx, color]);
+    return { chartData: data, options: chartOptions };
+  }, [entries, calcEntries, categories, startIdx, color]);
 
   const tooltipFormatter =
     useMemo((): Highcharts.TooltipFormatterCallbackFunction => {
-      const finalInflationValue = compChartData[INFL].at(-1)?.[1];
+      const finalInflationValue = chartData.inflation.at(-1)?.[1];
 
       return function (this: Highcharts.Point) {
         const hoveredPointIndex = this.points?.[0]?.index ?? this.index;
 
-        return formatCompTooltip(this.points ?? [this], {
+        return formatNetWorthTooltip(this.points ?? [this], {
+          categoryNames: categories,
           finalInflationValue,
           hoveredPointIndex,
           selectedPointIndex: startIdx,
         });
       };
-    }, [compChartData, startIdx]);
+    }, [chartData, startIdx, categories]);
 
   const handlePointClick: Highcharts.PointClickCallbackFunction = function () {
     const { index } = this;
@@ -99,16 +99,22 @@ const CompChart = ({
       {/* Remount when entry data/theme changes so markers stay visible.
           Omit startIdx so clicking a point only updates the inflation series. */}
       <Chart
-        key={JSON.stringify([color, compEntries, compCalcEntries])}
+        key={JSON.stringify([color, entries, calcEntries, categories])}
         highcharts={Highcharts}
         options={options}
       >
         <Accessibility enabled={true} />
         <Credits enabled={false} />
         <Legend enabled={false} />
-        <Title style={{ color }}>Total Comp</Title>
+        <Title style={{ color }}>Total Net Worth</Title>
         <XAxis type="datetime" visible={false} />
-        <YAxis title={{ text: undefined }} labels={{ style: { color } }} />
+        <YAxis
+          title={{ text: undefined }}
+          labels={{ style: { color } }}
+          // Keep series order aligned with the pie (largest first) while
+          // placing the first series at the bottom of the stack.
+          reversedStacks={false}
+        />
         <Tooltip
           shared={true}
           useHTML={true}
@@ -121,34 +127,22 @@ const CompChart = ({
             point: { events: { click: handlePointClick } },
           }}
         />
-        <Series
-          type="area"
-          options={{ name: "Stock" }}
-          data={compChartData[STOCK]}
-        />
-        <Series
-          type="area"
-          options={{ name: "Bonus" }}
-          data={compChartData[BONUS]}
-        />
-        <Series
-          type="area"
-          options={{ name: "Salary" }}
-          data={compChartData[SALARY]}
-        />
+        {categories.map((category, i) => (
+          <Series
+            key={category}
+            type="area"
+            options={{ name: category, color: getCategoryColor(i) }}
+            data={chartData.categorySeries[i]}
+          />
+        ))}
         <Series
           type="spline"
-          options={{ name: "Total" }}
-          data={compChartData[TOTAL]}
-        />
-        <Series
-          type="spline"
-          options={{ name: "Inflation" }}
-          data={compChartData[INFL]}
+          options={{ name: "Inflation", color }}
+          data={chartData.inflation}
         />
       </Chart>
     </figure>
   );
 };
 
-export default CompChart;
+export default NetWorthChart;

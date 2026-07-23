@@ -170,4 +170,44 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
     expect(store.get(budgetAtom)).toEqual([]);
     expect(store.get(budgetCategoryColorsAtom)).toEqual({});
   });
+
+  it("updates an existing expense from the edit dialog", async () => {
+    const { store } = renderBudgetExpenses([
+      { name: "Rent", category: "Housing", value: 2000 },
+    ]);
+
+    fireEvent.click(screen.getByRole("button", { name: "Rent: $2,000.00" }));
+    fireEvent.change(screen.getByLabelText("Value"), {
+      target: { value: 2100 },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Update" }));
+
+    await waitFor(() =>
+      expect(screen.getByText("Rent: $2,100.00")).toBeInTheDocument(),
+    );
+    expect(store.get(budgetAtom)).toEqual([
+      expect.objectContaining({ name: "Rent", category: "Housing", value: 2100 }),
+    ]);
+  });
+
+  it("keeps category color when deleting one expense from a multi-item category", async () => {
+    const store = createStore();
+    store.set(budgetCategoryColorsAtom, { food: "success" });
+    renderBudgetExpenses(
+      [
+        { name: "Groceries", category: "Food", value: 250 },
+        { name: "Dining Out", category: "Food", value: 100 },
+      ],
+      store,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Groceries: $250.00" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+
+    await waitFor(() =>
+      expect(screen.queryByText("Groceries: $250.00")).toBeNull(),
+    );
+    expect(screen.getByText("Dining Out: $100.00")).toBeInTheDocument();
+    expect(store.get(budgetCategoryColorsAtom)).toEqual({ food: "success" });
+  });
 });

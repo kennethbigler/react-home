@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import CompCalculator from "./comp-calc/CompCalculator";
 import TabGroup from "../../common/tab-group/TabGroup";
 import Budgeting from "./budgeting/Budgeting";
+import NetWorth from "./net-worth/NetWorth";
 
 const Finances = () => (
   <div>
@@ -14,6 +15,7 @@ const Finances = () => (
       tabs={[
         { label: "Comp Calculator", content: <CompCalculator /> },
         { label: "Budgeting", content: <Budgeting /> },
+        { label: "Net Worth", content: <NetWorth /> },
       ]}
     />
   </div>

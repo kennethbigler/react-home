@@ -89,7 +89,7 @@ const ExpenseEntryDialog = ({
   const handleCategoryChange = (e: ChangeEvent<HTMLInputElement>) =>
     setCategory(e.target.value);
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setValue(parseFloat(e.target.value) || 0);
+    setValue(parseFloat(e.target.value));
   const handlePercentSourcesChange = (e: SelectChangeEvent<string[]>) => {
     const nextValue = e.target.value;
 
@@ -120,7 +120,7 @@ const ExpenseEntryDialog = ({
     addExpenseEntry({
       name: name.trim(),
       category: formatCategoryName(category),
-      value,
+      value: Number.isFinite(value) ? value : 0,
       ...(valueMode === "percent"
         ? { valueMode, percentSources, taxBasis }
         : { valueMode: "dollar" }),
@@ -129,8 +129,11 @@ const ExpenseEntryDialog = ({
   };
 
   const isPercentInRange =
-    valueMode !== "percent" || (value >= 0 && value <= 100);
-  const isDollarNonNegative = valueMode !== "dollar" || value >= 0;
+    valueMode !== "percent" ||
+    Number.isNaN(value) ||
+    (value >= 0 && value <= 100);
+  const isDollarNonNegative =
+    valueMode !== "dollar" || Number.isNaN(value) || value >= 0;
   const hasPercentSources =
     valueMode !== "percent" || percentSources.length > 0;
   const hasRequiredFields =

@@ -35,6 +35,41 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     expect(screen.getByLabelText("Name")).toHaveValue("");
   });
 
+  it("allows clearing the value field and submits empty as 0", () => {
+    const addExpenseEntry = vi.fn();
+
+    render(
+      <ExpenseEntryDialog
+        open
+        addExpenseEntry={addExpenseEntry}
+        onClose={vi.fn()}
+      />,
+    );
+
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: "Rent" },
+    });
+    fireEvent.change(screen.getByLabelText("Category"), {
+      target: { value: "Housing" },
+    });
+    fireEvent.change(screen.getByLabelText("Value"), {
+      target: { value: "2000" },
+    });
+    fireEvent.change(screen.getByLabelText("Value"), {
+      target: { value: "" },
+    });
+    expect(screen.getByLabelText("Value")).toHaveValue(null);
+
+    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+
+    expect(addExpenseEntry).toHaveBeenCalledWith({
+      name: "Rent",
+      category: "Housing",
+      value: 0,
+      valueMode: "dollar",
+    });
+  });
+
   it("title-cases the category when submitting", () => {
     const addExpenseEntry = vi.fn();
 

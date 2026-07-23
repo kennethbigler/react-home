@@ -12,7 +12,7 @@ const chartTestState = vi.hoisted(() => ({
   pointClickHandler: null as Highcharts.PointClickCallbackFunction | null,
 }));
 
-export const resetCapturedCompChartConfig = () => {
+export const resetCapturedNetWorthChartConfig = () => {
   chartTestState.chartOptions = {};
   chartTestState.series = [];
   chartTestState.tooltipFollowTouchMove = undefined;
@@ -22,43 +22,33 @@ export const resetCapturedCompChartConfig = () => {
 
 export const getChartOptions = () => chartTestState.chartOptions;
 
-export const getTooltipFollowTouchMove = () =>
-  chartTestState.tooltipFollowTouchMove;
-
 export const getTooltipFormatter = () => chartTestState.tooltipFormatter;
 
 export const formatTooltip = (context: Highcharts.Point) =>
   chartTestState.tooltipFormatter?.call(context, {} as Highcharts.Tooltip);
+
+export const getSeriesByName = (name: string) =>
+  chartTestState.series.filter((series) => series.name === name).at(-1);
+
+export const getAreaSeriesNamesInOrder = () =>
+  chartTestState.series
+    .filter((series) => series.type === "area")
+    .map((series) => series.name)
+    .filter((name): name is string => Boolean(name));
+
+export const getBreakdownSeriesData = () => {
+  const pieSeries = chartTestState.series
+    .filter((series) => series.type === "pie" && Array.isArray(series.data))
+    .at(-1);
+
+  return pieSeries?.data as Array<{ name: string; y: number }> | undefined;
+};
 
 export const selectChartPoint = (index: number | undefined) => {
   chartTestState.pointClickHandler?.call(
     { index } as Highcharts.Point,
     {} as Highcharts.PointClickEventObject,
   );
-};
-
-export const getSeriesByName = (name: string) =>
-  chartTestState.series.filter((series) => series.name === name).at(-1);
-
-export const getBreakdownSeriesData = () => {
-  const pieSeries = chartTestState.series
-    .filter(
-      (series) =>
-        series.type === "pie" &&
-        Array.isArray(series.data) &&
-        series.data.some(
-          (point) =>
-            typeof point === "object" &&
-            point !== null &&
-            "name" in point &&
-            (point.name === "Stock" ||
-              point.name === "Bonus" ||
-              point.name === "Salary"),
-        ),
-    )
-    .at(-1);
-
-  return pieSeries?.data as Array<{ name: string; y: number }> | undefined;
 };
 
 vi.mock("../../../../common/highcharts/coreHighcharts", () => ({

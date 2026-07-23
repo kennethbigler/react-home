@@ -81,4 +81,30 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
     const heading = screen.getByRole("heading", { name: "Food ($350.00)" });
     expect(heading).toHaveStyle({ color: theme.palette.success.main });
   });
+
+  it.each([
+    [1, "single category full width"],
+    [2, "two category half width"],
+    [3, "three category third width"],
+    [4, "four category quarter width"],
+    [6, "six category xl width"],
+    [12, "twelve category xxl width"],
+  ] as const)(
+    "supports responsive sizing for categoryCount=%s (%s)",
+    (categoryCount) => {
+      const { container } = render(
+        <BudgetCategorySection
+          category={sampleCategory}
+          categoryCount={categoryCount}
+          onExpenseClick={vi.fn(() => vi.fn())}
+          onCategoryColorChange={vi.fn()}
+        />,
+      );
+
+      expect(container.firstChild).toBeTruthy();
+      expect(
+        screen.getByRole("heading", { name: "Food ($350.00)" }),
+      ).toBeInTheDocument();
+    },
+  );
 });

@@ -34,7 +34,12 @@ const CategoryBreakdownPie = ({ data, title }: CategoryBreakdownPieProps) => {
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>
-      <Chart highcharts={Highcharts} options={options}>
+      {/* Remount when selection / hide-taxes changes so the pie re-animates. */}
+      <Chart
+        key={JSON.stringify({ title, data: seriesData })}
+        highcharts={Highcharts}
+        options={options}
+      >
         <Accessibility enabled={true} />
         <Credits enabled={false} />
         <Legend enabled={false} />

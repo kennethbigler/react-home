@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { Grid } from "@mui/material";
-import CompChart from "./CompGraph";
+import NetWorthChart from "./NetWorthGraph";
 import BreakdownChart from "./BreakdownGraph";
-import { CompCalcEntry, CompEntry } from "../../../../../jotai/finances-atom";
+import {
+  NetWorthCalcEntry,
+  NetWorthEntry,
+} from "../../../../../jotai/finances-atom";
 
 interface GraphsProps {
-  compCalcEntries: CompCalcEntry[];
-  compEntries: CompEntry[];
+  entries: NetWorthEntry[];
+  calcEntries: NetWorthCalcEntry[];
+  /** Already sorted by final-entry amounts (largest first). */
+  categories: string[];
 }
 
-const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
+const Graphs = ({ entries, calcEntries, categories }: GraphsProps) => {
   const [startIdx, setStartIdx] = useState(0);
-  // null = follow the latest entry until the user selects a point
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
 
   const handlePointSelect = (index: number) => {
@@ -19,27 +23,25 @@ const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
     setSelectedIdx(index);
   };
 
-  const lastIdx = compEntries.length - 1;
+  const lastIdx = entries.length - 1;
   const safeStartIdx = Math.min(startIdx, lastIdx);
   const pieIdx = Math.min(selectedIdx ?? lastIdx, lastIdx);
-  const { stock, stockAdj } = compCalcEntries[pieIdx];
-  const { bonus, salary } = compEntries[pieIdx];
 
   return (
     <Grid container>
       <Grid size={{ xs: 12, md: 6, lg: 8, xl: 9 }}>
-        <CompChart
+        <NetWorthChart
           startIdx={safeStartIdx}
-          compCalcEntries={compCalcEntries}
-          compEntries={compEntries}
+          entries={entries}
+          calcEntries={calcEntries}
+          categories={categories}
           onPointSelect={handlePointSelect}
         />
       </Grid>
       <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
         <BreakdownChart
-          stock={stockAdj || stock}
-          bonus={bonus}
-          salary={salary}
+          categories={categories}
+          amounts={entries[pieIdx]?.amounts ?? {}}
         />
       </Grid>
     </Grid>

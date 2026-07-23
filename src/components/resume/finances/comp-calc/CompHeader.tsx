@@ -57,6 +57,11 @@ const CompHeader = ({
     closeEntryModal();
   };
 
+  const removeCompEntry = () => {
+    setCompEntries(compEntries.filter((_, i) => i !== editEntryIdx));
+    closeEntryModal();
+  };
+
   const addStockEntry = (stock: string, price: number) => {
     const newStockEntries = { ...stockEntries };
     newStockEntries[stock] = price;
@@ -104,6 +109,7 @@ const CompHeader = ({
           }
           onClose={closeEntryModal}
           addCompEntry={addCompEntry}
+          onDelete={editEntryIdx !== -1 ? removeCompEntry : undefined}
         />
       )}
     </>
