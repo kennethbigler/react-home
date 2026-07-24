@@ -4,12 +4,14 @@ import {
   CA_DISABILITY_LABEL,
   MEDICARE_LABEL,
   PAYROLL_NODE_LABEL,
+  PAYROLL_WITHHOLDINGS_LABEL,
   SOCIAL_SECURITY_LABEL,
 } from "../../../../../constants/payrollDeductions";
 import {
   BUDGET_MONTHS_PER_YEAR,
   normalizeCategoryKey,
   resolveExpenseAmount,
+  sortCategoriesByTotal,
   type BudgetFlow,
   type CategoryTotal,
   type ExpenseEntry,
@@ -40,6 +42,33 @@ export type {
 const getAnnualUnallocated = (flow: BudgetFlow): number =>
   Math.max(0, flow.net - flow.totalAllocated * BUDGET_MONTHS_PER_YEAR);
 
+/**
+ * Payroll category expenses share the Payroll sankey node; remaining categories
+ * sort by total descending (heading as tiebreaker).
+ */
+export const partitionBudgetCategoriesForCharts = (
+  categories: CategoryTotal[],
+): {
+  payrollCategory: CategoryTotal | undefined;
+  otherCategories: CategoryTotal[];
+} => {
+  const payrollCategory = categories.find(
+    ({ categoryKey }) => categoryKey === PAYROLL_CATEGORY_KEY,
+  );
+  const otherCategories = sortCategoriesByTotal(
+    categories.filter(
+      ({ categoryKey }) => categoryKey !== PAYROLL_CATEGORY_KEY,
+    ),
+  );
+
+  return { payrollCategory, otherCategories };
+};
+
+const getPositivePayrollExpenseItems = (payrollCategory?: CategoryTotal) =>
+  (payrollCategory?.items ?? []).filter(
+    ({ resolvedAmount }) => resolvedAmount > 0,
+  );
+
 export const getSankeyNodeSum = (
   nodeId: string,
   data: Array<{ from: string; to: string; weight: number }>,
@@ -67,6 +96,8 @@ export const buildBudgetSankeyData = (
     caDisability,
     categories,
   } = flow;
+  const { payrollCategory, otherCategories } =
+    partitionBudgetCategoriesForCharts(categories);
   const data: BudgetSankeyData["data"] = [];
 
   if (income.salary > 0) {
@@ -115,7 +146,18 @@ export const buildBudgetSankeyData = (
     });
   }
 
-  categories.forEach(({ heading, total }) => {
+  // Second consecutive link into the same Payroll node (user payroll expenses).
+  const payrollExpenseAnnual =
+    (payrollCategory?.total ?? 0) * BUDGET_MONTHS_PER_YEAR;
+  if (payrollExpenseAnnual > 0) {
+    data.push({
+      from: GROSS_INCOME_NODE,
+      to: PAYROLL_NODE_LABEL,
+      weight: payrollExpenseAnnual,
+    });
+  }
+
+  otherCategories.forEach(({ heading, total }) => {
     const annualTotal = total * BUDGET_MONTHS_PER_YEAR;
 
     if (annualTotal > 0) {
@@ -172,7 +214,7 @@ export const buildBudgetSankeyData = (
       column: 2,
       color: nodeColors.payroll,
     },
-    ...categories.map(({ heading, categoryKey, color }) => ({
+    ...otherCategories.map(({ heading, categoryKey, color }) => ({
       id: heading,
       column: 2,
       color: nodeColors.category(categoryKey, color),
@@ -187,12 +229,25 @@ export const buildBudgetSankeyData = (
   return { nodes, data };
 };
 
-export const buildPayrollPieData = (flow: BudgetFlow): PiePoint[] =>
-  [
+export const buildPayrollPieData = (flow: BudgetFlow): PiePoint[] => {
+  const { payrollCategory } = partitionBudgetCategoriesForCharts(
+    flow.categories,
+  );
+  const withholdings = [
     { name: SOCIAL_SECURITY_LABEL, y: flow.socialSecurity },
     { name: MEDICARE_LABEL, y: flow.medicare },
     { name: CA_DISABILITY_LABEL, y: flow.caDisability },
   ].filter(({ y }) => y > 0);
+
+  const payrollExpenses = getPositivePayrollExpenseItems(payrollCategory).map(
+    ({ expenseEntry, resolvedAmount }) => ({
+      name: expenseEntry.name,
+      y: resolvedAmount * BUDGET_MONTHS_PER_YEAR,
+    }),
+  );
+
+  return [...withholdings, ...payrollExpenses];
+};
 
 export const buildIncomeOverviewPieData = (
   flow: BudgetFlow,
@@ -208,10 +263,14 @@ export const buildIncomeOverviewPieData = (
     slices.push({ name: STATE_TAX_LABEL, y: flow.stateTax });
   }
   if (!hideTaxes && flow.totalPayrollDeductions > 0) {
-    slices.push({ name: PAYROLL_NODE_LABEL, y: flow.totalPayrollDeductions });
+    slices.push({
+      name: PAYROLL_WITHHOLDINGS_LABEL,
+      y: flow.totalPayrollDeductions,
+    });
   }
 
-  flow.categories.forEach(({ heading, total }) => {
+  // Categories (including user Payroll) by total — same order as the list below.
+  sortCategoriesByTotal(flow.categories).forEach(({ heading, total }) => {
     const annualTotal = total * BUDGET_MONTHS_PER_YEAR;
 
     if (annualTotal > 0) {
@@ -264,7 +323,11 @@ export const buildExpensePieData = (
 export const isCategorySankeyNode = (
   nodeId: string,
   categories: CategoryTotal[],
-) => categories.some(({ heading }) => heading === nodeId);
+) =>
+  categories.some(
+    ({ heading, categoryKey }) =>
+      heading === nodeId && categoryKey !== PAYROLL_CATEGORY_KEY,
+  );
 
 export const getSankeyNodeClassName = (
   nodeId: string,

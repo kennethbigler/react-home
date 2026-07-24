@@ -93,4 +93,59 @@ describe("resume | finances | comp-calc | CompEntryDialog", () => {
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });
+
+  it("shows delete when editing and calls onDelete", () => {
+    const onDelete = vi.fn();
+    const confirmSpy = vi.spyOn(window, "confirm").mockReturnValue(true);
+
+    render(
+      <CompEntryDialog
+        open
+        compEntry={compEntry}
+        onClose={vi.fn()}
+        addCompEntry={vi.fn()}
+        onDelete={onDelete}
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Add" }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+
+    expect(confirmSpy).toHaveBeenCalled();
+    expect(onDelete).toHaveBeenCalledTimes(1);
+    confirmSpy.mockRestore();
+  });
+
+  it("does not delete when confirmation is cancelled", () => {
+    const onDelete = vi.fn();
+    const confirmSpy = vi.spyOn(window, "confirm").mockReturnValue(false);
+
+    render(
+      <CompEntryDialog
+        open
+        compEntry={compEntry}
+        onClose={vi.fn()}
+        addCompEntry={vi.fn()}
+        onDelete={onDelete}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+
+    expect(confirmSpy).toHaveBeenCalled();
+    expect(onDelete).not.toHaveBeenCalled();
+    confirmSpy.mockRestore();
+  });
+
+  it("does not show delete when creating a new comp entry", () => {
+    render(<CompEntryDialog open onClose={vi.fn()} addCompEntry={vi.fn()} />);
+
+    expect(
+      screen.queryByRole("button", { name: "Delete" }),
+    ).not.toBeInTheDocument();
+  });
 });

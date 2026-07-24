@@ -35,4 +35,22 @@ describe("constants | taxHelpers", () => {
       5,
     );
   });
+
+  it("does not apply surcharge when taxable income is at or below the threshold", () => {
+    const tax = computeProgressiveTax(50_000, 0, sampleBrackets, {
+      threshold: 100_000,
+      rate: 0.01,
+    });
+
+    expect(tax).toBeCloseTo(10_000 * 0.1 + 40_000 * 0.2, 5);
+  });
+
+  it("skips zero-width brackets when walking the schedule", () => {
+    const tax = computeProgressiveTax(5_000, 0, [
+      { upTo: 0, rate: 0.5 },
+      { upTo: 10_000, rate: 0.1 },
+    ]);
+
+    expect(tax).toBeCloseTo(5_000 * 0.1, 5);
+  });
 });

@@ -1,7 +1,10 @@
 import type { Theme } from "@mui/material/styles";
 import { STATE_TAX_LABEL } from "../../../../../constants/caStateTaxBrackets";
 import { FEDERAL_TAX_LABEL } from "../../../../../constants/federalTaxBrackets";
-import { PAYROLL_NODE_LABEL } from "../../../../../constants/payrollDeductions";
+import {
+  PAYROLL_NODE_LABEL,
+  PAYROLL_WITHHOLDINGS_LABEL,
+} from "../../../../../constants/payrollDeductions";
 import type {
   CategoryTotal,
   ExpenseEntryColor,
@@ -130,6 +133,7 @@ export const colorizeIncomeOverviewPieData = (
     [FEDERAL_TAX_LABEL]: theme.palette.error.main,
     [STATE_TAX_LABEL]: theme.palette.error.main,
     [PAYROLL_NODE_LABEL]: theme.palette.error.main,
+    [PAYROLL_WITHHOLDINGS_LABEL]: theme.palette.error.main,
     [UNALLOCATED_NODE]: theme.palette.grey[500],
   };
 

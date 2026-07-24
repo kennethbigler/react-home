@@ -13,7 +13,7 @@ import {
   getLatestBudgetIncome,
 } from "../../../../../apis/budget";
 import { FEDERAL_TAX_LABEL } from "../../../../../constants/federalTaxBrackets";
-import { PAYROLL_NODE_LABEL } from "../../../../../constants/payrollDeductions";
+import { PAYROLL_WITHHOLDINGS_LABEL } from "../../../../../constants/payrollDeductions";
 
 const theme = createTheme();
 
@@ -87,7 +87,7 @@ describe("budgeting | chartColors", () => {
     ]);
     const data = colorizeIncomeOverviewPieData(theme, flow.categories, [
       { name: FEDERAL_TAX_LABEL, y: flow.federalTax },
-      { name: PAYROLL_NODE_LABEL, y: flow.totalPayrollDeductions },
+      { name: PAYROLL_WITHHOLDINGS_LABEL, y: flow.totalPayrollDeductions },
       { name: "Housing", y: 24_000 },
     ]);
 

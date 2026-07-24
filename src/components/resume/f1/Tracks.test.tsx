@@ -13,15 +13,27 @@ describe("resume | f1 | Tracks", () => {
     render(<Tracks />);
 
     expect(
+      screen.getByRole("button", {
+        name: /Hungaroring, Budapest, Hungary circuit details, next race/i,
+      }),
+    ).toBeInTheDocument();
+    expect(
       screen.getByText("Circuit de Spa-Francorchamps, Belgium"),
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", {
+        name: /Circuit de Spa-Francorchamps, Belgium circuit details, next race/i,
+      }),
+    ).not.toBeInTheDocument();
   });
 
   it("renders a track marked as skipped with its circuit name visible", () => {
     render(<Tracks />);
 
     expect(
-      screen.getByText("Bahrain International Circuit, Sakhir"),
+      screen.getByRole("button", {
+        name: /Bahrain International Circuit, Sakhir circuit details, skipped/i,
+      }),
     ).toBeInTheDocument();
   });
 });

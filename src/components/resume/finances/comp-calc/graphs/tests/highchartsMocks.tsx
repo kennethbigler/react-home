@@ -51,7 +51,9 @@ export const getBreakdownSeriesData = () => {
             typeof point === "object" &&
             point !== null &&
             "name" in point &&
-            point.name === "Stock",
+            (point.name === "Stock" ||
+              point.name === "Bonus" ||
+              point.name === "Salary"),
         ),
     )
     .at(-1);

@@ -13,6 +13,7 @@ import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../../../common/highcharts/coreHighcharts";
 import themeAtom from "../../../../../jotai/theme-atom";
 import colors from "./colors";
+import { BONUS, SALARY, STOCK } from "./compGraphHelpers";
 
 interface BreakdownChartProps {
   bonus: number;
@@ -28,6 +29,11 @@ const options: Highcharts.Options = {
 const BreakdownChart = memo(({ bonus, salary, stock }: BreakdownChartProps) => {
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
+  const data = [
+    { name: "Stock", y: stock, color: colors[STOCK] },
+    { name: "Bonus", y: bonus, color: colors[BONUS] },
+    { name: "Salary", y: salary, color: colors[SALARY] },
+  ].filter(({ y }) => y > 0);
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>
@@ -52,14 +58,7 @@ const BreakdownChart = memo(({ bonus, salary, stock }: BreakdownChartProps) => {
             ],
           }}
         />
-        <Series
-          type="pie"
-          data={[
-            { name: "Stock", y: stock },
-            { name: "Bonus", y: bonus },
-            { name: "Salary", y: salary },
-          ]}
-        />
+        <Series type="pie" data={data} />
       </Chart>
     </figure>
   );

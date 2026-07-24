@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import dateHelper, { months } from "../../../../apis/DateHelper";
 import { CompEntry } from "../../../../jotai/finances-atom";
+import { finiteOr } from "./compEntryNumbers";
 
 const tfProps: TextFieldProps = {
   variant: "standard",
@@ -35,6 +36,7 @@ interface CompEntryDialogProps {
   compEntry?: CompEntry;
   onClose: () => void;
   addCompEntry: (n: CompEntry) => void;
+  onDelete?: () => void;
 }
 
 const CompEntryDialog = ({
@@ -42,6 +44,7 @@ const CompEntryDialog = ({
   compEntry,
   onClose,
   addCompEntry,
+  onDelete,
 }: CompEntryDialogProps) => {
   const [entryDateMonth, setEntryDateMonth] = useState(
     (compEntry && (dateHelper(compEntry.entryDate).month + 1).toString()) ||
@@ -84,14 +87,23 @@ const CompEntryDialog = ({
   const handleSubmit = () => {
     addCompEntry({
       entryDate: `${entryDateYear}-${String(entryDateMonth).padStart(2, "0")}`,
-      salary,
-      bonus,
+      salary: finiteOr(salary),
+      bonus: finiteOr(bonus),
       stockTick,
-      priceThen,
-      grantDuration,
-      grantQty,
+      priceThen: finiteOr(priceThen),
+      grantDuration: finiteOr(grantDuration, 4),
+      grantQty: finiteOr(grantQty),
     });
     resetState();
+  };
+
+  const handleDelete = () => {
+    if (
+      onDelete &&
+      window.confirm("Delete this compensation entry? This cannot be undone.")
+    ) {
+      onDelete();
+    }
   };
 
   return (
@@ -179,6 +191,11 @@ const CompEntryDialog = ({
         />
       </DialogContent>
       <DialogActions>
+        {compEntry && onDelete ? (
+          <Button onClick={handleDelete} color="error">
+            Delete
+          </Button>
+        ) : null}
         <Button onClick={onClose}>Cancel</Button>
         <Button type="submit" onClick={handleSubmit}>
           {compEntry ? "Update" : "Add"}

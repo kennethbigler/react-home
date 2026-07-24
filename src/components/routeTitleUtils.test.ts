@@ -42,7 +42,7 @@ describe("components | routeTitleUtils", () => {
       expect(getPageTitle("/presentations")).toBe(
         `Presentations | ${BASE_TITLE}`,
       );
-      expect(getPageTitle("/a11y")).toBe(`A11y Practice | ${BASE_TITLE}`);
+      expect(getPageTitle("/a11y")).toBe(`A11y | ${BASE_TITLE}`);
       expect(getPageTitle("/resume")).toBe(`Resume | ${BASE_TITLE}`);
       expect(getPageTitle("/work")).toBe(`Work | ${BASE_TITLE}`);
     });

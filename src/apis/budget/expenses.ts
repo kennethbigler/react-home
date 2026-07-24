@@ -26,6 +26,14 @@ export const formatCategoryName = (category: string): string => {
     .join(" ");
 };
 
+/** Largest total first; heading as a stable tiebreaker. */
+export const sortCategoriesByTotal = (
+  categories: CategoryTotal[],
+): CategoryTotal[] =>
+  categories.toSorted(
+    (a, b) => b.total - a.total || a.heading.localeCompare(b.heading),
+  );
+
 export const getTaxBasis = (
   entry: Pick<ExpenseEntry, "taxBasis">,
 ): ExpenseTaxBasis => entry.taxBasis ?? "posttax";
@@ -103,7 +111,7 @@ export const buildCategoryTotals = (
     });
   });
 
-  return [...groups.values()];
+  return sortCategoriesByTotal([...groups.values()]);
 };
 
 export const formatTaxBasis = (taxBasis: ExpenseTaxBasis): string =>

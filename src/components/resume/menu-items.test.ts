@@ -4,7 +4,7 @@ describe("resume | menu-items", () => {
   it("flattens route groups into resumeRoutes", () => {
     expect(resumeRoutes).toHaveLength(10);
     expect(resumeRoutes.find((route) => route.route === "a11y")).toMatchObject({
-      name: "A11y Practice",
+      name: "A11y",
     });
     expect(resumeRoutes.every((route) => route.Component)).toBe(true);
   });
@@ -20,7 +20,7 @@ describe("resume | menu-items", () => {
 
   it("maps route segments to labels for page titles", () => {
     expect(resumeRouteLabels.get("")).toBe("Summary");
-    expect(resumeRouteLabels.get("a11y")).toBe("A11y Practice");
+    expect(resumeRouteLabels.get("a11y")).toBe("A11y");
     expect(resumeRouteLabels.get("games")).toBe("Games");
   });
 });

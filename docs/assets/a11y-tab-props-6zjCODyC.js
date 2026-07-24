@@ -1,1 +1,0 @@
-import{It as e,ht as t}from"./mui-vendor-B9z4rlKX.js";var n=e(),r=e=>{let{children:r,value:i,index:a,tabPrefix:o,...s}=e;return(0,n.jsx)(`div`,{role:`tabpanel`,hidden:i!==a,id:`${o}panel-${a}`,"aria-labelledby":`${o}-${a}`,...s,children:i===a&&(0,n.jsx)(t,{sx:{pt:2},children:r})})},i=(e,t)=>({id:`${e}-${t}`,"aria-controls":`${e}panel-${t}`});export{r as n,i as t};

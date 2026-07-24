@@ -10,35 +10,41 @@ interface GraphsProps {
 }
 
 const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
-  const { stock, stockAdj } = compCalcEntries[compCalcEntries.length - 1];
-  const { bonus, salary } = compEntries[compEntries.length - 1];
-
   const [startIdx, setStartIdx] = useState(0);
-  const [cStock, setStock] = useState(stockAdj || stock);
-  const [cBonus, setBonus] = useState(bonus);
-  const [cSalary, setSalary] = useState(salary);
+  // null = follow the latest entry until the user selects a point
+  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
 
   const handlePointSelect = (index: number) => {
-    const { stock, stockAdj } = compCalcEntries[index];
-    const { bonus, salary } = compEntries[index];
     setStartIdx(index);
-    setStock(stockAdj || stock);
-    setBonus(bonus);
-    setSalary(salary);
+    setSelectedIdx(index);
   };
+
+  if (compEntries.length === 0 || compCalcEntries.length === 0) {
+    return null;
+  }
+
+  const lastIdx = compEntries.length - 1;
+  const safeStartIdx = Math.min(startIdx, lastIdx);
+  const pieIdx = Math.min(selectedIdx ?? lastIdx, lastIdx);
+  const { stock, stockAdj } = compCalcEntries[pieIdx];
+  const { bonus, salary } = compEntries[pieIdx];
 
   return (
     <Grid container>
       <Grid size={{ xs: 12, md: 6, lg: 8, xl: 9 }}>
         <CompChart
-          startIdx={startIdx}
+          startIdx={safeStartIdx}
           compCalcEntries={compCalcEntries}
           compEntries={compEntries}
           onPointSelect={handlePointSelect}
         />
       </Grid>
       <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-        <BreakdownChart stock={cStock} bonus={cBonus} salary={cSalary} />
+        <BreakdownChart
+          stock={stockAdj || stock}
+          bonus={bonus}
+          salary={salary}
+        />
       </Grid>
     </Grid>
   );

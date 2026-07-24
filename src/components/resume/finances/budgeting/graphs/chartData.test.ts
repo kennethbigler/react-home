@@ -18,6 +18,7 @@ import {
   INCOME_NODE_LABELS,
   isCategorySankeyNode,
   isPayrollSankeyNode,
+  partitionBudgetCategoriesForCharts,
   UNALLOCATED_NODE,
 } from "./chartData";
 import { FEDERAL_TAX_LABEL } from "../../../../../constants/federalTaxBrackets";
@@ -26,6 +27,7 @@ import {
   CA_DISABILITY_LABEL,
   MEDICARE_LABEL,
   PAYROLL_NODE_LABEL,
+  PAYROLL_WITHHOLDINGS_LABEL,
   SOCIAL_SECURITY_LABEL,
 } from "../../../../../constants/payrollDeductions";
 
@@ -195,6 +197,74 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
 
       expect(data.some((link) => link.to === PAYROLL_NODE_LABEL)).toBe(false);
     });
+
+    it("routes payroll expenses into the Payroll node just below withholdings", () => {
+      const flow = buildBudgetFlow(sampleIncome, [
+        { name: "Groceries", category: "Food", value: 400 },
+        { name: "Rent", category: "Housing", value: 3000 },
+        { name: "401k", category: "Payroll", value: 500 },
+        { name: "Transit", category: "Transport", value: 200 },
+      ]);
+      const { nodes, data } = buildBudgetSankeyData(flow, sankeyNodeColors);
+      const column2NodeIds = nodes
+        .filter((node) => node.column === 2)
+        .map((node) => node.id);
+      const incomeLinkTargets = data
+        .filter((link) => link.from === GROSS_INCOME_NODE)
+        .map((link) => link.to);
+      const payrollLinkIndexes = incomeLinkTargets
+        .map((target, index) => (target === PAYROLL_NODE_LABEL ? index : -1))
+        .filter((index) => index >= 0);
+
+      expect(column2NodeIds.filter((id) => id === PAYROLL_NODE_LABEL)).toEqual([
+        PAYROLL_NODE_LABEL,
+      ]);
+      expect(column2NodeIds.indexOf(FEDERAL_TAX_LABEL)).toBeLessThan(
+        column2NodeIds.indexOf(STATE_TAX_LABEL),
+      );
+      expect(column2NodeIds.indexOf(STATE_TAX_LABEL)).toBeLessThan(
+        column2NodeIds.indexOf(PAYROLL_NODE_LABEL),
+      );
+      expect(column2NodeIds.indexOf(PAYROLL_NODE_LABEL)).toBeLessThan(
+        column2NodeIds.indexOf("Housing"),
+      );
+      expect(column2NodeIds.indexOf("Housing")).toBeLessThan(
+        column2NodeIds.indexOf("Food"),
+      );
+      expect(column2NodeIds.indexOf("Food")).toBeLessThan(
+        column2NodeIds.indexOf("Transport"),
+      );
+      expect(payrollLinkIndexes).toHaveLength(2);
+      expect(payrollLinkIndexes[1]).toBe(payrollLinkIndexes[0]! + 1);
+      expect(incomeLinkTargets.indexOf("Housing")).toBe(
+        payrollLinkIndexes[1]! + 1,
+      );
+      expect(getSankeyNodeSum(PAYROLL_NODE_LABEL, data)).toBeCloseTo(
+        flow.totalPayrollDeductions + 500 * 12,
+        2,
+      );
+    });
+  });
+
+  describe("partitionBudgetCategoriesForCharts", () => {
+    it("pins payroll and sorts other categories by total descending", () => {
+      const categories = buildCategoryTotals(
+        [
+          { name: "Groceries", category: "Food", value: 400 },
+          { name: "401k", category: "Payroll", value: 500 },
+          { name: "Rent", category: "Housing", value: 3000 },
+        ],
+        sampleIncome,
+      );
+      const { payrollCategory, otherCategories } =
+        partitionBudgetCategoriesForCharts(categories);
+
+      expect(payrollCategory?.categoryKey).toBe("payroll");
+      expect(otherCategories.map(({ heading }) => heading)).toEqual([
+        "Housing",
+        "Food",
+      ]);
+    });
   });
 
   describe("buildIncomeOverviewPieData", () => {
@@ -208,12 +278,37 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
         expect.arrayContaining([
           FEDERAL_TAX_LABEL,
           STATE_TAX_LABEL,
-          PAYROLL_NODE_LABEL,
+          PAYROLL_WITHHOLDINGS_LABEL,
           "Housing",
           UNALLOCATED_NODE,
         ]),
       );
       expect(pie.find(({ name }) => name === "Housing")?.y).toBe(24_000);
+    });
+
+    it("orders withholdings, then categories by total including payroll", () => {
+      const flow = buildBudgetFlow(sampleIncome, [
+        { name: "Groceries", category: "Food", value: 400 },
+        { name: "Rent", category: "Housing", value: 3000 },
+        { name: "401k", category: "Payroll", value: 500 },
+      ]);
+      const pieNames = buildIncomeOverviewPieData(flow).map(({ name }) => name);
+      const withholdingsPayroll = pieNames.indexOf(PAYROLL_WITHHOLDINGS_LABEL);
+      const categoryPayroll = pieNames.indexOf("Payroll");
+
+      expect(pieNames.indexOf(FEDERAL_TAX_LABEL)).toBeLessThan(
+        pieNames.indexOf(STATE_TAX_LABEL),
+      );
+      expect(pieNames.indexOf(STATE_TAX_LABEL)).toBeLessThan(
+        withholdingsPayroll,
+      );
+      expect(withholdingsPayroll).toBeLessThan(pieNames.indexOf("Housing"));
+      expect(pieNames.indexOf("Housing")).toBeLessThan(categoryPayroll);
+      expect(categoryPayroll).toBeLessThan(pieNames.indexOf("Food"));
+      expect(
+        pieNames.filter((name) => name === PAYROLL_WITHHOLDINGS_LABEL),
+      ).toHaveLength(1);
+      expect(pieNames.filter((name) => name === "Payroll")).toHaveLength(1);
     });
 
     it("includes withholdings even when there are no expense categories", () => {
@@ -224,7 +319,7 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
         expect.arrayContaining([
           FEDERAL_TAX_LABEL,
           STATE_TAX_LABEL,
-          PAYROLL_NODE_LABEL,
+          PAYROLL_WITHHOLDINGS_LABEL,
           UNALLOCATED_NODE,
         ]),
       );
@@ -238,7 +333,9 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
 
       expect(pie.map(({ name }) => name)).not.toContain(FEDERAL_TAX_LABEL);
       expect(pie.map(({ name }) => name)).not.toContain(STATE_TAX_LABEL);
-      expect(pie.map(({ name }) => name)).not.toContain(PAYROLL_NODE_LABEL);
+      expect(pie.map(({ name }) => name)).not.toContain(
+        PAYROLL_WITHHOLDINGS_LABEL,
+      );
       expect(pie.map(({ name }) => name)).toEqual(
         expect.arrayContaining(["Housing", UNALLOCATED_NODE]),
       );
@@ -281,6 +378,20 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
         { name: MEDICARE_LABEL, y: flow.medicare },
         { name: CA_DISABILITY_LABEL, y: flow.caDisability },
       ]);
+    });
+
+    it("appends user payroll expenses after withholdings", () => {
+      const flow = buildBudgetFlow(sampleIncome, [
+        { name: "401k", category: "Payroll", value: 500 },
+      ]);
+      const pie = buildPayrollPieData(flow);
+
+      expect(pie.slice(0, 3)).toEqual([
+        { name: SOCIAL_SECURITY_LABEL, y: flow.socialSecurity },
+        { name: MEDICARE_LABEL, y: flow.medicare },
+        { name: CA_DISABILITY_LABEL, y: flow.caDisability },
+      ]);
+      expect(pie[3]).toEqual({ name: "401k", y: 6000 });
     });
   });
 
@@ -333,6 +444,15 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
 
       expect(isCategorySankeyNode("Housing", categories)).toBe(true);
       expect(isCategorySankeyNode("Fed Tax", categories)).toBe(false);
+    });
+
+    it("does not treat the payroll category heading as a category node", () => {
+      const categories = buildCategoryTotals(
+        [{ name: "401k", category: "Payroll", value: 500 }],
+        sampleIncome,
+      );
+
+      expect(isCategorySankeyNode("Payroll", categories)).toBe(false);
     });
   });
 

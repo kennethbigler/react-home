@@ -36,7 +36,7 @@ const resumeRouteGroups = [
   ],
   [
     {
-      name: "A11y Practice",
+      name: "A11y",
       route: "a11y",
       Component: lazy(() => import("./a11y-practice")),
     },

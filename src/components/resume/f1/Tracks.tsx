@@ -134,7 +134,6 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1950,
     numLaps: 44,
     raceLen: 308.052,
-    next: true,
   },
   {
     circuitName: "Hungaroring, Budapest, Hungary",
@@ -143,6 +142,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1986,
     numLaps: 70,
     raceLen: 306.63,
+    next: true,
   },
   {
     circuitName: "Circuit Zandvoort, Netherlands",

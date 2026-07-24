@@ -1,7 +1,12 @@
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { afterEach, vi } from "vitest";
 import CompCalculator from "./CompCalculator";
 
 describe("resume | comp-calc | CompCalculator", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("renders as expected", async () => {
     render(<CompCalculator />);
 
@@ -71,5 +76,14 @@ describe("resume | comp-calc | CompCalculator", () => {
     expect(screen.getByText("Edit Stock Entry")).toBeInTheDocument();
     fireEvent.click(screen.getByText("Delete"));
     expect(screen.queryByText("TSLA: $665.00")).toBeNull();
+
+    // delete comp entry
+    fireEvent.click(screen.getByText("Salary: $10,000.00"));
+    expect(screen.getByText("Edit Comp Entry")).toBeInTheDocument();
+    vi.spyOn(window, "confirm").mockReturnValue(true);
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    await waitFor(() =>
+      expect(screen.queryByText("Salary: $10,000.00")).toBeNull(),
+    );
   });
 });

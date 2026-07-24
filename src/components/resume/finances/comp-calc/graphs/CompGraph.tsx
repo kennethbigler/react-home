@@ -96,7 +96,13 @@ const CompChart = ({
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>
-      <Chart highcharts={Highcharts} options={options}>
+      {/* Remount when entry data/theme changes so markers stay visible.
+          Omit startIdx so clicking a point only updates the inflation series. */}
+      <Chart
+        key={JSON.stringify([color, compEntries, compCalcEntries])}
+        highcharts={Highcharts}
+        options={options}
+      >
         <Accessibility enabled={true} />
         <Credits enabled={false} />
         <Legend enabled={false} />

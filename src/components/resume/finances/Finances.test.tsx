@@ -16,6 +16,7 @@ describe("resume | finances | Finances", () => {
       screen.getByRole("tab", { name: "Comp Calculator", selected: true }),
     ).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: "Budgeting" })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "Net Worth" })).toBeInTheDocument();
   });
 
   it("shows the comp calculator on the default tab", () => {
@@ -38,10 +39,24 @@ describe("resume | finances | Finances", () => {
     ).toBeInTheDocument();
   });
 
+  it("switches to the net worth tab when selected", () => {
+    render(<Finances />);
+
+    fireEvent.click(screen.getByRole("tab", { name: "Net Worth" }));
+
+    expect(
+      screen.getByRole("tab", { name: "Net Worth", selected: true }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Set Categories" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "+ Entry" })).toBeDisabled();
+  });
+
   it("hides inactive tab panels", () => {
     render(<Finances />);
 
     const panels = screen.getAllByRole("tabpanel", { hidden: true });
-    expect(panels.length).toBe(2);
+    expect(panels.length).toBe(3);
   });
 });
