@@ -15,7 +15,9 @@ const CompEntryDisplay = ({
 }: CompEntryDisplayProps) => (
   <Grid container spacing={1}>
     <Grid size={12}>
-      <Typography>*value computed from latest stock price above</Typography>
+      <Typography id="adjusted-stock-note">
+        * values use the latest stock price shown above.
+      </Typography>
     </Grid>
     {compEntries
       .map((compEntry, i) => (
@@ -23,6 +25,7 @@ const CompEntryDisplay = ({
           compEntry={compEntry}
           compCalcEntry={compCalcEntries[i]}
           compEntryCount={compEntries.length}
+          adjustedValueDescriptionId="adjusted-stock-note"
           onClick={onClick(i)}
           key={`comp-calc-entry-${i}`}
         />

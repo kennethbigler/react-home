@@ -13,7 +13,6 @@ import {
 } from "../../../../jotai/finances-atom";
 import dateObj from "../../../../apis/DateHelper";
 import usDollar from "../../../../apis/usDollar";
-import { CSSProperties } from "react";
 
 interface NetWorthEntryCardProps {
   entry: NetWorthEntry;
@@ -22,11 +21,11 @@ interface NetWorthEntryCardProps {
   onClick: () => void;
 }
 
-const boldStyle: CSSProperties = {
+const boldStyle = {
   fontWeight: "fontWeightBold",
   display: "inline",
   marginLeft: 1,
-};
+} as const;
 
 const NetWorthEntryCard = ({
   entry: { entryDate, amounts },
@@ -45,7 +44,10 @@ const NetWorthEntryCard = ({
     }}
   >
     <Card>
-      <CardActionArea onClick={onClick}>
+      <CardActionArea
+        onClick={onClick}
+        aria-label={`Edit net worth entry for ${dateObj(entryDate).format("MMMM Y")}`}
+      >
         <CardHeader title={dateObj(entryDate).format("MMMM Y")} />
         <CardContent>
           {categories.map((category) => (

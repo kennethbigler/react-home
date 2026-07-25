@@ -22,7 +22,9 @@ describe("resume | finances | budgeting | ExpenseEntryCard", () => {
 
     expect(screen.getByText("Rent: $2,000.00")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Rent: $2,000.00" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Edit Rent: $2,000.00" }),
+    );
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
@@ -96,8 +98,8 @@ describe("resume | finances | budgeting | ExpenseEntryCard", () => {
       />,
     );
 
-    expect(screen.getByRole("button", { name: "Rent: $2,000.00" })).toHaveClass(
-      "MuiChip-colorSuccess",
-    );
+    expect(
+      screen.getByRole("button", { name: "Edit Rent: $2,000.00" }),
+    ).toHaveClass("MuiChip-colorSuccess");
   });
 });

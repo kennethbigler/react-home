@@ -9,54 +9,80 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useAtomValue } from "jotai";
-import {
-  budgetCategoryColorsAtom,
-  budgetFlowRead,
-} from "../../../../jotai/finances-atom";
+import usDollar from "../../../../apis/usDollar";
+import { budgetFlowRead } from "../../../../jotai/finances-atom";
 import BudgetSankeyGraph from "./graphs/BudgetSankeyGraph";
 import CategoryBreakdownPie from "./graphs/CategoryBreakdownPie";
+import { PAYROLL_CATEGORY_KEY } from "./graphs/chartData";
 import { getBudgetPieContent } from "./graphs/getBudgetPieContent";
+
+const getMissingDataMessage = (
+  hasCompData: boolean,
+  hasBudgetData: boolean,
+): string => {
+  if (!hasCompData && !hasBudgetData) {
+    return "Add a comp entry in Comp Calculator and budget expenses to see budget flow.";
+  }
+  if (!hasCompData) {
+    return "Add a comp entry in Comp Calculator to see budget flow.";
+  }
+  return "Add budget expenses to see budget flow.";
+};
 
 const BudgetCharts = () => {
   const muiTheme = useTheme();
-  const categoryColors = useAtomValue(budgetCategoryColorsAtom);
-  const { hasCompData, flow, expenseEntries } = useAtomValue(budgetFlowRead);
+  const { hasCompData, flow, expenseEntries, categoryColors } =
+    useAtomValue(budgetFlowRead);
   const [selectedCategoryKey, setSelectedCategoryKey] = useState<string | null>(
     null,
   );
   const [hideTaxes, setHideTaxes] = useState(false);
+  const hasBudgetData = expenseEntries.length > 0;
+  const hasCharts = hasCompData && hasBudgetData && flow;
   const categories = flow?.categories ?? [];
-  const pieContent = flow
-    ? getBudgetPieContent(
-        flow,
-        categories,
-        selectedCategoryKey,
-        expenseEntries,
-        categoryColors,
-        muiTheme,
-        hideTaxes,
-      )
-    : { title: "Income Overview", data: [] };
+  const effectiveSelectedCategoryKey =
+    selectedCategoryKey === PAYROLL_CATEGORY_KEY ||
+    categories.some(({ categoryKey }) => categoryKey === selectedCategoryKey)
+      ? selectedCategoryKey
+      : null;
+
+  if (!hasCharts) {
+    return (
+      <Alert severity="warning" sx={{ mb: 2 }}>
+        {getMissingDataMessage(hasCompData, hasBudgetData)}
+      </Alert>
+    );
+  }
+
+  const pieContent = getBudgetPieContent(
+    flow,
+    categories,
+    effectiveSelectedCategoryKey,
+    expenseEntries,
+    categoryColors,
+    muiTheme,
+    hideTaxes,
+  );
 
   return (
-    <Grid container spacing={2} sx={{ mb: 2 }}>
-      <Grid size={{ xs: 12, lg: 8 }}>
-        {hasCompData && flow ? (
+    <>
+      {flow.isOverAllocated ? (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          Budget is over-allocated by {usDollar.format(-flow.unallocated)} per
+          year.
+        </Alert>
+      ) : null}
+      <Grid container spacing={2} sx={{ mb: 2 }}>
+        <Grid size={{ xs: 12, lg: 8 }}>
           <BudgetSankeyGraph
             flow={flow}
-            selectedCategoryKey={selectedCategoryKey}
+            selectedCategoryKey={effectiveSelectedCategoryKey}
             onCategorySelect={setSelectedCategoryKey}
           />
-        ) : (
-          <Alert severity="info">
-            Add a comp entry in Comp Calculator to see budget flow.
-          </Alert>
-        )}
-      </Grid>
-      <Grid size={{ xs: 12, lg: 4 }}>
-        <Box sx={{ position: "relative", minHeight: "100%" }}>
-          {hasCompData && flow ? (
-            pieContent.data.length > 0 ? (
+        </Grid>
+        <Grid size={{ xs: 12, lg: 4 }}>
+          <Box sx={{ position: "relative", minHeight: "100%" }}>
+            {pieContent.data.length > 0 ? (
               <CategoryBreakdownPie
                 title={pieContent.title}
                 data={pieContent.data}
@@ -65,13 +91,7 @@ const BudgetCharts = () => {
               <Typography sx={{ p: 2 }}>
                 Add expenses to see category breakdown.
               </Typography>
-            )
-          ) : (
-            <Typography sx={{ p: 2 }}>
-              Category breakdown requires comp calculator data.
-            </Typography>
-          )}
-          {hasCompData && flow ? (
+            )}
             <Box
               sx={{
                 display: "flex",
@@ -90,10 +110,10 @@ const BudgetCharts = () => {
                 label="Hide taxes"
               />
             </Box>
-          ) : null}
-        </Box>
+          </Box>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 

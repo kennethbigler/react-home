@@ -213,6 +213,28 @@ describe("resume | finances | net-worth | CategoriesDialog", () => {
     expect(onSave).toHaveBeenCalledWith([], [], []);
   });
 
+  it("prevents removing every category while entries contain data", () => {
+    const onSave = vi.fn();
+
+    render(
+      <CategoriesDialog
+        open
+        categories={["Cash"]}
+        hasEntries
+        onClose={vi.fn()}
+        onSave={onSave}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "remove category" }));
+    fireEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Keep at least one category while net worth entries contain data.",
+    );
+    expect(onSave).not.toHaveBeenCalled();
+  });
+
   it("removes a newly added category without a merge prompt", () => {
     const onSave = vi.fn();
 

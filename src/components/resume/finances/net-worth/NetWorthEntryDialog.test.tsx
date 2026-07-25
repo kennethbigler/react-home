@@ -88,6 +88,30 @@ describe("resume | finances | net-worth | NetWorthEntryDialog", () => {
     expect(addEntry).not.toHaveBeenCalled();
   });
 
+  it("rejects a duplicate month", () => {
+    const addEntry = vi.fn();
+    render(
+      <NetWorthEntryDialog
+        open
+        entries={[entry]}
+        categories={["Cash"]}
+        onClose={vi.fn()}
+        addEntry={addEntry}
+      />,
+    );
+
+    fireEvent.mouseDown(screen.getByLabelText("Month"));
+    fireEvent.click(screen.getByText("June"));
+    fireEvent.mouseDown(screen.getByLabelText("Year"));
+    fireEvent.click(screen.getByText("2020"));
+    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "A net worth entry already exists for this month.",
+    );
+    expect(addEntry).not.toHaveBeenCalled();
+  });
+
   it("allows clearing an amount field and submits empty as 0", () => {
     const addEntry = vi.fn();
 

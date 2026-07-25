@@ -87,17 +87,50 @@ describe("resume | finances | budgeting | BudgetCharts", () => {
     );
   });
 
-  it("shows comp calculator alert when comp data is missing", () => {
+  it("shows alert needing both when comp and budget data are missing", () => {
+    renderBudgetCharts({
+      hasCompData: false,
+      expenseEntries: [],
+    });
+
+    expect(
+      screen.getByText(
+        "Add a comp entry in Comp Calculator and budget expenses to see budget flow.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.queryByTestId("budget-sankey")).not.toBeInTheDocument();
+  });
+
+  it("shows comp calculator alert when only budget data exists", () => {
     renderBudgetCharts({
       hasCompData: false,
       expenseEntries: [{ name: "Rent", category: "Housing", value: 2000 }],
     });
 
     expect(
-      screen.getByText(/Add a comp entry in Comp Calculator/i),
+      screen.getByText(
+        "Add a comp entry in Comp Calculator to see budget flow.",
+      ),
     ).toBeInTheDocument();
+    expect(screen.queryByTestId("budget-sankey")).not.toBeInTheDocument();
+  });
+
+  it("shows budget expenses alert when only comp data exists", () => {
+    renderBudgetCharts({ expenseEntries: [] });
+
     expect(
-      screen.getByText("Category breakdown requires comp calculator data."),
+      screen.getByText("Add budget expenses to see budget flow."),
+    ).toBeInTheDocument();
+    expect(screen.queryByTestId("budget-sankey")).not.toBeInTheDocument();
+  });
+
+  it("warns when annual expenses exceed net income", () => {
+    renderBudgetCharts({
+      expenseEntries: [{ name: "Housing", category: "Housing", value: 20_000 }],
+    });
+
+    expect(
+      screen.getByText(/Budget is over-allocated by .* per year\./),
     ).toBeInTheDocument();
   });
 
@@ -118,14 +151,6 @@ describe("resume | finances | budgeting | BudgetCharts", () => {
 
     expect(screen.getByTestId("category-pie")).toHaveTextContent(
       "Payroll Breakdown",
-    );
-  });
-
-  it("shows income overview when there are no expense categories", () => {
-    renderBudgetCharts({ expenseEntries: [] });
-
-    expect(screen.getByTestId("category-pie")).toHaveTextContent(
-      "Income Overview",
     );
   });
 
@@ -164,15 +189,15 @@ describe("resume | finances | budgeting | BudgetCharts", () => {
     expect(hideTaxesSwitch).toBeChecked();
   });
 
-  it("shows a placeholder when a selected category has no pie data", () => {
+  it("resets selection when the selected category no longer exists", () => {
     renderBudgetCharts({
       expenseEntries: [{ name: "Rent", category: "Housing", value: 2000 }],
     });
 
     fireEvent.click(screen.getByRole("button", { name: "Select Fun" }));
 
-    expect(
-      screen.getByText("Add expenses to see category breakdown."),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("category-pie")).toHaveTextContent(
+      "Income Overview",
+    );
   });
 });

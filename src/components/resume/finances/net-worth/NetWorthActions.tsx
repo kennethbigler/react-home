@@ -76,15 +76,16 @@ const NetWorthActions = ({
   return (
     <>
       <Box sx={{ marginTop: 1.25, marginBottom: 1.25 }}>
-        <Button onClick={openCategoriesModal}>Set Categories</Button>
         <Button onClick={openNewEntry} disabled={categories.length === 0}>
           + Entry
         </Button>
+        <Button onClick={openCategoriesModal}>Set Categories</Button>
       </Box>
       {openCategories && (
         <CategoriesDialog
           open={openCategories}
           categories={categories}
+          hasEntries={entries.length > 0}
           onClose={closeCategoriesModal}
           onSave={saveCategories}
         />
@@ -93,6 +94,7 @@ const NetWorthActions = ({
         <NetWorthEntryDialog
           open={openEntry}
           entry={editEntryIdx !== -1 ? entries[editEntryIdx] : undefined}
+          entries={entries}
           categories={categories}
           onClose={closeEntryModal}
           addEntry={addEntry}

@@ -281,7 +281,7 @@ const ExpenseEntryDialog = ({
           </Button>
         ) : null}
         <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit" onClick={handleSubmit} disabled={!canSubmit}>
+        <Button type="button" onClick={handleSubmit} disabled={!canSubmit}>
           {expenseEntry ? "Update" : "Add"}
         </Button>
       </DialogActions>

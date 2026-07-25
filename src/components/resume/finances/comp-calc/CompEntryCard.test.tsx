@@ -42,6 +42,11 @@ describe("resume | finances | comp-calc | CompEntryCard", () => {
     expect(screen.getByText("$5,000.00")).toBeInTheDocument();
     expect(screen.getByText("Price: $100.00")).toBeInTheDocument();
     expect(screen.getByText("Grant Qty: 1000")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: "Edit compensation entry for January 2020",
+      }),
+    ).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("Salary: $100,000.00"));
     expect(onClick).toHaveBeenCalledTimes(1);

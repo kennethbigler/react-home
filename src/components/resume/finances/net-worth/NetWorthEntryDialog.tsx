@@ -36,6 +36,7 @@ years.reverse();
 interface NetWorthEntryDialogProps {
   open: boolean;
   entry?: NetWorthEntry;
+  entries?: NetWorthEntry[];
   categories: string[];
   onClose: () => void;
   addEntry: (n: NetWorthEntry) => void;
@@ -47,6 +48,7 @@ type AmountValue = number | "";
 const NetWorthEntryDialog = ({
   open,
   entry,
+  entries = [],
   categories,
   onClose,
   addEntry,
@@ -74,10 +76,14 @@ const NetWorthEntryDialog = ({
     setInvalidCategories([]);
   };
 
-  const handleSelectMonth = (e: SelectChangeEvent<string>) =>
+  const handleSelectMonth = (e: SelectChangeEvent<string>) => {
     setEntryDateMonth(e.target.value);
-  const handleSelectYear = (e: SelectChangeEvent<string>) =>
+    clearValidation();
+  };
+  const handleSelectYear = (e: SelectChangeEvent<string>) => {
     setEntryDateYear(e.target.value);
+    clearValidation();
+  };
 
   const handleAmountChange =
     (category: string) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -95,6 +101,17 @@ const NetWorthEntryDialog = ({
     };
 
   const handleSubmit = () => {
+    const entryDate = `${entryDateYear}-${String(entryDateMonth).padStart(2, "0")}`;
+    if (
+      entries.some(
+        (existingEntry) =>
+          existingEntry !== entry && existingEntry.entryDate === entryDate,
+      )
+    ) {
+      setError("A net worth entry already exists for this month.");
+      return;
+    }
+
     const negativeCategories = categories.filter((category) => {
       const value = amounts[category];
       return typeof value === "number" && value < 0;
@@ -112,7 +129,7 @@ const NetWorthEntryDialog = ({
     });
 
     addEntry({
-      entryDate: `${entryDateYear}-${String(entryDateMonth).padStart(2, "0")}`,
+      entryDate,
       amounts: nextAmounts,
     });
   };
@@ -194,7 +211,7 @@ const NetWorthEntryDialog = ({
           </Button>
         ) : null}
         <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit" onClick={handleSubmit}>
+        <Button type="button" onClick={handleSubmit}>
           {entry ? "Update" : "Add"}
         </Button>
       </DialogActions>

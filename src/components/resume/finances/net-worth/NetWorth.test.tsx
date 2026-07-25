@@ -63,6 +63,17 @@ describe("resume | finances | net-worth | NetWorth", () => {
     expect(
       screen.getByRole("button", { name: "Set Categories" }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText("Add a net worth entry to see net worth data."),
+    ).toBeInTheDocument();
+  });
+
+  it("shows a warning alert when there are no entries", () => {
+    renderNetWorth(["Cash"]);
+
+    expect(
+      screen.getByText("Add a net worth entry to see net worth data."),
+    ).toBeInTheDocument();
   });
 
   it("creates, edits, and deletes an entry after categories are set", async () => {

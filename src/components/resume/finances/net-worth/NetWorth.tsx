@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Alert } from "@mui/material";
 import { useAtom, useAtomValue } from "jotai";
 import {
   netWorthAtom,
@@ -45,12 +46,16 @@ const NetWorth = () => {
 
   return (
     <>
-      {sortedEntries.length > 0 && (
+      {sortedEntries.length > 0 ? (
         <Graphs
           entries={sortedEntries}
           calcEntries={calcEntries}
           categories={sortedCategories}
         />
+      ) : (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          Add a net worth entry to see net worth data.
+        </Alert>
       )}
       <NetWorthActions
         entries={sortedEntries}

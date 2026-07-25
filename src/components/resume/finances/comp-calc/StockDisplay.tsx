@@ -9,15 +9,19 @@ interface StockEntryProps {
 
 const StockDisplay = ({ stockEntries, openStockModal }: StockEntryProps) => (
   <div>
-    {Object.keys(stockEntries).map((stockKey, i) => (
-      <Chip
-        key={`stock-entry-${i}`}
-        color="primary"
-        label={`${stockKey}: ${usDollar.format(stockEntries[stockKey])}`}
-        onClick={openStockModal(stockKey)}
-        sx={{ margin: 0.5, fontWeight: "bold" }}
-      />
-    ))}
+    {Object.keys(stockEntries).map((stockKey) => {
+      const label = `${stockKey}: ${usDollar.format(stockEntries[stockKey])}`;
+      return (
+        <Chip
+          key={stockKey}
+          color="primary"
+          label={label}
+          aria-label={`Edit ${label}`}
+          onClick={openStockModal(stockKey)}
+          sx={{ margin: 0.5, fontWeight: "bold" }}
+        />
+      );
+    })}
   </div>
 );
 

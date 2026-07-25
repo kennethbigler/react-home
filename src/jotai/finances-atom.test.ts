@@ -38,6 +38,72 @@ describe("jotai | finances-atom", () => {
       expect(store.get(compCalcRead)).toEqual([]);
     });
 
+    it("ignores invalid zero-duration grants without producing non-finite totals", () => {
+      const store = createStore();
+
+      store.set(compCalcAtom, [
+        {
+          entryDate: "2020-01",
+          salary: 100_000,
+          bonus: 0,
+          stockTick: "AAPL",
+          priceThen: 10,
+          grantDuration: 0,
+          grantQty: 100,
+        },
+      ]);
+
+      const [result] = store.get(compCalcRead);
+      expect(result.stock).toBe(0);
+      expect(result.stockAdj).toBe(0);
+      expect(Number.isFinite(result.total)).toBe(true);
+      expect(Number.isFinite(result.totalAdj)).toBe(true);
+    });
+
+    it("calculates entries and net differences in chronological order", () => {
+      const store = createStore();
+
+      store.set(compCalcAtom, [
+        {
+          entryDate: "2022-01",
+          salary: 300_000,
+          bonus: 0,
+          stockTick: "",
+          priceThen: 0,
+          grantDuration: 4,
+          grantQty: 0,
+        },
+        {
+          entryDate: "2020-01",
+          salary: 100_000,
+          bonus: 0,
+          stockTick: "",
+          priceThen: 0,
+          grantDuration: 4,
+          grantQty: 0,
+        },
+        {
+          entryDate: "2021-01",
+          salary: 200_000,
+          bonus: 0,
+          stockTick: "",
+          priceThen: 0,
+          grantDuration: 4,
+          grantQty: 0,
+        },
+      ]);
+
+      expect(
+        store
+          .get(compCalcRead)
+          .map(({ total, netDiff }) => ({ total, netDiff })),
+      ).toEqual([
+        { total: 100_000, netDiff: 0 },
+        { total: 200_000, netDiff: 100_000 },
+        { total: 300_000, netDiff: 100_000 },
+      ]);
+    });
+
     it("calculates salary-only entries without stock vesting", () => {
       const store = createStore();
 
@@ -311,6 +377,33 @@ describe("jotai | finances-atom", () => {
       expect(
         result.flow?.categories.find((c) => c.heading === "Retirement")?.total,
       ).toBe(750);
+    });
+
+    it("uses the latest dated comp entry instead of the last inserted entry", () => {
+      const store = createStore();
+
+      store.set(compCalcAtom, [
+        {
+          entryDate: "2022-01",
+          salary: 200_000,
+          bonus: 20_000,
+          stockTick: "",
+          priceThen: 0,
+          grantDuration: 4,
+          grantQty: 0,
+        },
+        {
+          entryDate: "2020-01",
+          salary: 100_000,
+          bonus: 10_000,
+          stockTick: "",
+          priceThen: 0,
+          grantDuration: 4,
+          grantQty: 0,
+        },
+      ]);
+
+      expect(store.get(budgetFlowRead).flow?.income.gross).toBe(220_000);
     });
   });
 

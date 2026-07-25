@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import CompEntryDialog from "./CompEntryDialog";
 
@@ -84,6 +84,40 @@ describe("resume | finances | comp-calc | CompEntryDialog", () => {
     });
   });
 
+  it("rejects zero grant duration", () => {
+    const addCompEntry = vi.fn();
+    render(
+      <CompEntryDialog open onClose={vi.fn()} addCompEntry={addCompEntry} />,
+    );
+
+    fireEvent.change(screen.getByLabelText("Grant Duration"), {
+      target: { value: 0 },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Grant duration must be greater than zero.",
+    );
+    expect(addCompEntry).not.toHaveBeenCalled();
+  });
+
+  it("requires a ticker when a stock grant is entered", () => {
+    const addCompEntry = vi.fn();
+    render(
+      <CompEntryDialog open onClose={vi.fn()} addCompEntry={addCompEntry} />,
+    );
+
+    fireEvent.change(screen.getByLabelText("Grant Quantity"), {
+      target: { value: 10 },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Enter a stock ticker when grant quantity is greater than zero.",
+    );
+    expect(addCompEntry).not.toHaveBeenCalled();
+  });
+
   it("calls onClose when cancel is clicked", () => {
     const onClose = vi.fn();
 
@@ -96,7 +130,6 @@ describe("resume | finances | comp-calc | CompEntryDialog", () => {
 
   it("shows delete when editing and calls onDelete", () => {
     const onDelete = vi.fn();
-    const confirmSpy = vi.spyOn(window, "confirm").mockReturnValue(true);
 
     render(
       <CompEntryDialog
@@ -114,15 +147,18 @@ describe("resume | finances | comp-calc | CompEntryDialog", () => {
     ).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    const confirmation = screen.getByRole("dialog", {
+      name: "Delete compensation entry?",
+    });
+    fireEvent.click(
+      within(confirmation).getByRole("button", { name: "Delete entry" }),
+    );
 
-    expect(confirmSpy).toHaveBeenCalled();
     expect(onDelete).toHaveBeenCalledTimes(1);
-    confirmSpy.mockRestore();
   });
 
   it("does not delete when confirmation is cancelled", () => {
     const onDelete = vi.fn();
-    const confirmSpy = vi.spyOn(window, "confirm").mockReturnValue(false);
 
     render(
       <CompEntryDialog
@@ -135,10 +171,14 @@ describe("resume | finances | comp-calc | CompEntryDialog", () => {
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    const confirmation = screen.getByRole("dialog", {
+      name: "Delete compensation entry?",
+    });
+    fireEvent.click(
+      within(confirmation).getByRole("button", { name: "Cancel" }),
+    );
 
-    expect(confirmSpy).toHaveBeenCalled();
     expect(onDelete).not.toHaveBeenCalled();
-    confirmSpy.mockRestore();
   });
 
   it("does not show delete when creating a new comp entry", () => {

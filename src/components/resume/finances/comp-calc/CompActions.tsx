@@ -1,29 +1,32 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { useAtom } from "jotai";
-import { Button } from "@mui/material";
-import { CompEntry } from "../../../../jotai/finances-atom";
+import { Box, Button } from "@mui/material";
+import {
+  CompEntry,
+  sortCompEntriesByDate,
+} from "../../../../jotai/finances-atom";
 import CompEntryDialog from "./CompEntryDialog";
 import StockDialog from "./StockDialog";
 import stockAtom from "../../../../jotai/stock-atom";
 import StockDisplay from "./StockDisplay";
 
-interface CompHeaderProps {
+interface CompActionsProps {
   compEntries: CompEntry[];
   editEntryIdx: number;
   openEntry: boolean;
-  setCompEntries: (c: CompEntry[]) => void;
+  setCompEntries: Dispatch<SetStateAction<CompEntry[]>>;
   setEditEntryIdx: Dispatch<SetStateAction<number>>;
   setOpenEntry: Dispatch<SetStateAction<boolean>>;
 }
 
-const CompHeader = ({
+const CompActions = ({
   compEntries,
   setCompEntries,
   openEntry,
   setOpenEntry,
   editEntryIdx,
   setEditEntryIdx,
-}: CompHeaderProps) => {
+}: CompActionsProps) => {
   const [stockEntries, setStockEntries] = useAtom(stockAtom);
   const [openStock, setOpenStock] = useState(false);
   const [editStockTick, setEditStockTick] = useState("");
@@ -53,7 +56,7 @@ const CompHeader = ({
     } else {
       newCompEntries[editEntryIdx] = compEntry;
     }
-    setCompEntries(newCompEntries);
+    setCompEntries(sortCompEntriesByDate(newCompEntries));
     closeEntryModal();
   };
 
@@ -64,6 +67,9 @@ const CompHeader = ({
 
   const addStockEntry = (stock: string, price: number) => {
     const newStockEntries = { ...stockEntries };
+    if (editStockTick && editStockTick !== stock) {
+      delete newStockEntries[editStockTick];
+    }
     newStockEntries[stock] = price;
     setStockEntries(newStockEntries);
     closeStockModal();
@@ -78,19 +84,24 @@ const CompHeader = ({
 
   return (
     <>
-      <div
-        className="flex-container"
-        style={{ marginTop: 10, marginBottom: 10 }}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          my: 1.25,
+        }}
       >
+        <Box>
+          <Button onClick={openNewEntry}>+ Entry</Button>
+          <Button onClick={openNewStock}>+ Stock</Button>
+        </Box>
         <StockDisplay
           stockEntries={stockEntries}
           openStockModal={openEditStock}
         />
-        <div>
-          <Button onClick={openNewStock}>+ Stock</Button>
-          <Button onClick={openNewEntry}>+ Entry</Button>
-        </div>
-      </div>
+      </Box>
       {openStock && (
         <StockDialog
           open={openStock}
@@ -116,4 +127,4 @@ const CompHeader = ({
   );
 };
 
-export default CompHeader;
+export default CompActions;

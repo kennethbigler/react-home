@@ -15,6 +15,7 @@ interface CompEntryCardProps {
   compEntry: CompEntry;
   compCalcEntry: CompCalcEntry;
   compEntryCount: number;
+  adjustedValueDescriptionId?: string;
   onClick: () => void;
 }
 
@@ -38,6 +39,7 @@ const CompEntryCard = ({
     grantNow,
   },
   compEntryCount,
+  adjustedValueDescriptionId,
   onClick,
 }: CompEntryCardProps) => (
   <Grid
@@ -51,7 +53,11 @@ const CompEntryCard = ({
     }}
   >
     <Card>
-      <CardActionArea onClick={onClick}>
+      <CardActionArea
+        onClick={onClick}
+        aria-label={`Edit compensation entry for ${dateObj(entryDate).format("MMMM Y")}`}
+        aria-describedby={adjustedValueDescriptionId}
+      >
         <Grid container>
           <Grid size={stockTick ? 6 : 12}>
             <CardHeader title="Salary" />

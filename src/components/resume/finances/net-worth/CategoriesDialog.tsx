@@ -54,6 +54,7 @@ interface PendingRemoval {
 interface CategoriesDialogProps {
   open: boolean;
   categories: string[];
+  hasEntries?: boolean;
   onClose: () => void;
   onSave: (
     categories: string[],
@@ -71,6 +72,7 @@ const nextId = () => {
 const CategoriesDialog = ({
   open,
   categories,
+  hasEntries = false,
   onClose,
   onSave,
 }: CategoriesDialogProps) => {
@@ -161,6 +163,12 @@ const CategoriesDialog = ({
 
   const handleSave = () => {
     if (rows.length === 0) {
+      if (hasEntries) {
+        setError(
+          "Keep at least one category while net worth entries contain data.",
+        );
+        return;
+      }
       onSave([], [], []);
       return;
     }

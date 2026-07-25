@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Grid, Stack } from "@mui/material";
+import { Alert, Button, Grid, Stack } from "@mui/material";
 import type { ExpenseEntry } from "../../../../../jotai/finances-atom";
 import BudgetCategorySection from "./BudgetCategorySection";
 import ExpenseEntryDialog from "./ExpenseEntryDialog";
@@ -8,6 +8,7 @@ import useBudgetEntries from "./useBudgetEntries";
 const BudgetExpenses = () => {
   const {
     expenseEntries,
+    hasCompData,
     categories,
     categoryColors,
     addExpenseEntry,
@@ -16,6 +17,9 @@ const BudgetExpenses = () => {
   } = useBudgetEntries();
   const [openEntry, setOpenEntry] = useState(false);
   const [editEntryIdx, setEditEntryIdx] = useState(-1);
+  const hasPercentageExpenses = expenseEntries.some(
+    ({ valueMode }) => valueMode === "percent",
+  );
 
   const openNewEntry = () => {
     setEditEntryIdx(-1);
@@ -44,6 +48,12 @@ const BudgetExpenses = () => {
       <Stack direction="row" sx={{ mb: 2 }}>
         <Button onClick={openNewEntry}>+ Expense</Button>
       </Stack>
+
+      {!hasCompData && hasPercentageExpenses ? (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          Add a comp entry to calculate percentage-based expense amounts.
+        </Alert>
+      ) : null}
 
       <Grid container spacing={2}>
         {categories.map((category) => (

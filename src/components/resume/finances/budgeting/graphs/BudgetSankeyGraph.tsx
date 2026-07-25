@@ -168,15 +168,18 @@ const BudgetSankeyGraph = ({
 
   const seriesNodes = nodes.map((node) => {
     const nodeSum = getSankeyNodeSum(node.id, data);
+    const className = getSankeyNodeClassName(
+      node.id,
+      flow.categories,
+      selectedCategoryKey,
+    );
 
     return {
       ...node,
       sumFormatted: formatCurrency(nodeSum),
-      className: getSankeyNodeClassName(
-        node.id,
-        flow.categories,
-        selectedCategoryKey,
-      ),
+      className,
+      borderColor: className ? muiTheme.palette.text.primary : undefined,
+      borderWidth: className ? 3 : undefined,
     };
   });
 

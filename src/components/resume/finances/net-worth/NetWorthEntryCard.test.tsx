@@ -27,7 +27,11 @@ describe("resume | finances | net-worth | NetWorthEntryCard", () => {
     expect(screen.getByText("Net:")).toBeInTheDocument();
     expect(screen.getByText("$1,500.00")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "Edit net worth entry for June 2021",
+      }),
+    );
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
