@@ -66,10 +66,16 @@ const CompEntryCard = ({
                 Date: {dateObj(entryDate).format("MMMM Y")}
               </Typography>
               <Typography>Salary: {usDollar.format(salary)}</Typography>
-              <Typography>Bonus: {usDollar.format(bonus)}</Typography>
-              <Divider aria-hidden />
-              <Typography>Stock: {usDollar.format(stock)}</Typography>
-              <Typography>*Stock: {usDollar.format(stockAdj)}</Typography>
+              {bonus > 0 && (
+                <Typography>Bonus: {usDollar.format(bonus)}</Typography>
+              )}
+              {stock > 0 && (
+                <>
+                  <Divider aria-hidden />
+                  <Typography>Stock: {usDollar.format(stock)}</Typography>
+                  <Typography>*Stock: {usDollar.format(stockAdj)}</Typography>
+                </>
+              )}
               <Divider aria-hidden />
               <Typography>Total: {usDollar.format(total)}</Typography>
               <Typography sx={{ display: "inline" }}>*Total:</Typography>

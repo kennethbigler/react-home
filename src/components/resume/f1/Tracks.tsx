@@ -35,6 +35,7 @@ import germanyHSrc from "../../../images/tracks/Germany_Circuit_Hockenheim.avif"
 import Track, { type TrackData } from "./Track";
 import ExpandableCard from "../../common/expandable-card";
 import { FERRARI_HEX } from "../../../constants/f1";
+import dateObj from "../../../apis/DateHelper";
 
 const CURRENT_TRACKS: TrackData[] = [
   {
@@ -44,6 +45,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1996,
     numLaps: 58,
     raceLen: 306.124,
+    date: dateObj("2026-03-08"),
   },
   {
     circuitName: "Shanghai International Circuit, China",
@@ -52,6 +54,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 2004,
     numLaps: 56,
     raceLen: 305.066,
+    date: dateObj("2026-03-15"),
   },
   {
     circuitName: "Suzuka Circuit, Japan",
@@ -60,6 +63,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1987,
     numLaps: 53,
     raceLen: 307.471,
+    date: dateObj("2026-03-29"),
   },
   {
     circuitName: "Bahrain International Circuit, Sakhir",
@@ -86,6 +90,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 2021,
     numLaps: 57,
     raceLen: 308.326,
+    date: dateObj("2026-05-03"),
   },
   {
     circuitName: "Circuit Gilles-Villeneuve, Montreal, Canada",
@@ -94,6 +99,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1978,
     numLaps: 70,
     raceLen: 305.27,
+    date: dateObj("2026-05-24"),
   },
   {
     circuitName: "Circuit de Monaco",
@@ -102,6 +108,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1950,
     numLaps: 78,
     raceLen: 260.286,
+    date: dateObj("2026-06-07"),
   },
   {
     circuitName: "Circuit de Barcelona-Catalunya, Spain",
@@ -110,6 +117,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1978,
     numLaps: 70,
     raceLen: 305.27,
+    date: dateObj("2026-06-14"),
   },
   {
     circuitName: "Red Bull Ring, Spielberg, Austria",
@@ -118,6 +126,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1970,
     numLaps: 71,
     raceLen: 307.018,
+    date: dateObj("2026-06-28"),
   },
   {
     circuitName: "Silverstone Circuit, Great Britain",
@@ -126,6 +135,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1950,
     numLaps: 52,
     raceLen: 306.198,
+    date: dateObj("2026-07-05"),
   },
   {
     circuitName: "Circuit de Spa-Francorchamps, Belgium",
@@ -134,6 +144,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1950,
     numLaps: 44,
     raceLen: 308.052,
+    date: dateObj("2026-07-19"),
   },
   {
     circuitName: "Hungaroring, Budapest, Hungary",
@@ -142,7 +153,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1986,
     numLaps: 70,
     raceLen: 306.63,
-    next: true,
+    date: dateObj("2026-07-26"),
   },
   {
     circuitName: "Circuit Zandvoort, Netherlands",
@@ -151,6 +162,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1952,
     numLaps: 72,
     raceLen: 306.587,
+    date: dateObj("2026-08-23"),
   },
   {
     circuitName: "Autodromo Nazionale Monza, Italy",
@@ -159,6 +171,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1950,
     numLaps: 53,
     raceLen: 306.72,
+    date: dateObj("2026-09-06"),
   },
   {
     circuitName: "Madring, Madrid, Spain",
@@ -167,6 +180,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 2026,
     numLaps: 0,
     raceLen: 0,
+    date: dateObj("2026-09-13"),
   },
   {
     circuitName: "Baku City Circuit, Azerbaijan",
@@ -175,6 +189,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 2016,
     numLaps: 51,
     raceLen: 306.049,
+    date: dateObj("2026-09-26"),
   },
   {
     circuitName: "Marina Bay Street Circuit, Singapore",
@@ -183,6 +198,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 2008,
     numLaps: 62,
     raceLen: 306.143,
+    date: dateObj("2026-10-11"),
   },
   {
     circuitName: "Circuit of The Americas, Austin, USA",
@@ -191,6 +207,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 2012,
     numLaps: 56,
     raceLen: 308.405,
+    date: dateObj("2026-10-25"),
   },
   {
     circuitName: "Autódromo Hermanos Rodríguez, Mexico City, Mexico",
@@ -199,6 +216,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1963,
     numLaps: 71,
     raceLen: 305.354,
+    date: dateObj("2026-11-01"),
   },
   {
     circuitName: "Interlagos, São Paulo, Brazil",
@@ -208,6 +226,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 1973,
     numLaps: 71,
     raceLen: 305.879,
+    date: dateObj("2026-11-08"),
   },
   {
     circuitName: "Las Vegas Strip Circuit, USA",
@@ -216,6 +235,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 2023,
     numLaps: 50,
     raceLen: 309.958,
+    date: dateObj("2026-11-21"),
   },
   {
     circuitName: "Lusail International Circuit, Doha, Qatar",
@@ -224,6 +244,7 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 2021,
     numLaps: 57,
     raceLen: 308.611,
+    date: dateObj("2026-11-29"),
   },
   {
     circuitName: "Yas Marina Circuit, Abu Dhabi, UAE",
@@ -232,8 +253,16 @@ const CURRENT_TRACKS: TrackData[] = [
     firstGP: 2009,
     numLaps: 58,
     raceLen: 306.183,
+    date: dateObj("2026-12-06"),
   },
 ];
+
+CURRENT_TRACKS.some((track) => {
+  if (track.date && dateObj().diff(track.date) < 0) {
+    track.next = true;
+    return true;
+  }
+});
 
 const PAST_TRACKS: TrackData[] = [
   {

@@ -1,7 +1,8 @@
 import { memo, type CSSProperties } from "react";
 import { Grid, Typography, IconButton, useTheme } from "@mui/material";
+import type { DateObj } from "../../../apis/DateHelper";
 
-export interface TrackData {
+interface TrackDataBase {
   circuitLen: number;
   circuitName: string;
   circuitSubName?: string;
@@ -10,13 +11,18 @@ export interface TrackData {
   next?: boolean;
   numLaps: number;
   raceLen: number;
-  skipped?: boolean;
 }
 
-interface TrackProps extends TrackData {
+/** A track has either `skipped` or `date`, or neither — never both. */
+export type TrackData =
+  | (TrackDataBase & { skipped: true; date?: never })
+  | (TrackDataBase & { date: DateObj; skipped?: never })
+  | (TrackDataBase & { skipped?: never; date?: never });
+
+type TrackProps = TrackData & {
   expanded: string;
   onClick: (circuitName: string) => () => void;
-}
+};
 
 const bold: CSSProperties = { fontWeight: "bold" };
 

@@ -21,7 +21,7 @@ describe("resume | finances | net-worth | NetWorthEntryCard", () => {
     expect(screen.getByText("June 2021")).toBeInTheDocument();
     expect(screen.getByText("Cash: $1,000.00")).toBeInTheDocument();
     expect(screen.getByText("Investments: $5,000.00")).toBeInTheDocument();
-    expect(screen.getByText("Home: $0.00")).toBeInTheDocument();
+    expect(screen.queryByText("Home: $0.00")).not.toBeInTheDocument();
     expect(screen.getByText("Total:")).toBeInTheDocument();
     expect(screen.getByText("$6,000.00")).toBeInTheDocument();
     expect(screen.getByText("Net:")).toBeInTheDocument();

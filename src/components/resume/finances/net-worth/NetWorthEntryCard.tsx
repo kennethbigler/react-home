@@ -50,11 +50,13 @@ const NetWorthEntryCard = ({
       >
         <CardHeader title={dateObj(entryDate).format("MMMM Y")} />
         <CardContent>
-          {categories.map((category) => (
-            <Typography key={category}>
-              {category}: {usDollar.format(amounts[category] ?? 0)}
-            </Typography>
-          ))}
+          {categories.map((category) =>
+            amounts[category] > 0 ? (
+              <Typography key={category}>
+                {category}: {usDollar.format(amounts[category])}
+              </Typography>
+            ) : null,
+          )}
           <Divider aria-hidden />
           <Typography sx={{ display: "inline" }}>Total:</Typography>
           <Typography color="warning" sx={boldStyle}>
