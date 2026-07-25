@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, MouseEvent } from "react";
+import { useState, type ChangeEvent, type MouseEvent } from "react";
 import {
   Button,
   Checkbox,
@@ -12,10 +12,10 @@ import {
   ListItemText,
   MenuItem,
   Select,
-  SelectChangeEvent,
+  type SelectChangeEvent,
   Stack,
   TextField,
-  TextFieldProps,
+  type TextFieldProps,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
@@ -25,7 +25,7 @@ import {
   getPercentSources,
   getTaxBasis,
 } from "../../../../../apis/budget";
-import {
+import type {
   ExpenseEntry,
   ExpensePercentSource,
   ExpenseTaxBasis,
@@ -281,7 +281,7 @@ const ExpenseEntryDialog = ({
           </Button>
         ) : null}
         <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit" onClick={handleSubmit} disabled={!canSubmit}>
+        <Button type="button" onClick={handleSubmit} disabled={!canSubmit}>
           {expenseEntry ? "Update" : "Add"}
         </Button>
       </DialogActions>

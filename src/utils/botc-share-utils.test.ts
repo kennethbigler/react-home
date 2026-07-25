@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { buildShareUrl, parseShareParams } from "./botc-share-utils";
-import { BotCPlayer, BaseScript } from "../jotai/botc-atom";
+import { type BotCPlayer, BaseScript } from "../jotai/botc-atom";
 import { resetScriptOptionsCache } from "./botc-script-utils";
 
 const makePlayers = (names: string[]): BotCPlayer[] =>

@@ -3,8 +3,8 @@ import {
   budgetAtom,
   budgetCategoryColorsAtom,
   budgetFlowRead,
-  ExpenseEntry,
-  ExpenseEntryColor,
+  type ExpenseEntry,
+  type ExpenseEntryColor,
 } from "../../../../../jotai/finances-atom";
 import {
   buildCategoryTotals,
@@ -15,7 +15,7 @@ import {
 const useBudgetEntries = () => {
   const [expenseEntries, setExpenseEntries] = useAtom(budgetAtom);
   const [categoryColors, setCategoryColors] = useAtom(budgetCategoryColorsAtom);
-  const { flow } = useAtomValue(budgetFlowRead);
+  const { flow, hasCompData } = useAtomValue(budgetFlowRead);
 
   const fallbackCategories =
     !flow && expenseEntries.length > 0
@@ -32,12 +32,37 @@ const useBudgetEntries = () => {
     editEntryIdx: number,
   ) => {
     const newExpenseEntries = [...expenseEntries];
+    const previousCategoryKey = normalizeCategoryKey(
+      expenseEntries[editEntryIdx]?.category ?? "",
+    );
+    const nextCategoryKey = normalizeCategoryKey(expenseEntry.category);
     if (editEntryIdx === -1) {
       newExpenseEntries.push(expenseEntry);
     } else {
       newExpenseEntries[editEntryIdx] = expenseEntry;
     }
     setExpenseEntries(newExpenseEntries);
+
+    if (
+      editEntryIdx !== -1 &&
+      previousCategoryKey &&
+      previousCategoryKey !== nextCategoryKey
+    ) {
+      const previousCategoryStillExists = newExpenseEntries.some(
+        (entry) => normalizeCategoryKey(entry.category) === previousCategoryKey,
+      );
+      setCategoryColors((currentColors) => {
+        const nextColors = { ...currentColors };
+        const previousColor = currentColors[previousCategoryKey];
+        if (previousColor && !nextColors[nextCategoryKey]) {
+          nextColors[nextCategoryKey] = previousColor;
+        }
+        if (!previousCategoryStillExists) {
+          delete nextColors[previousCategoryKey];
+        }
+        return nextColors;
+      });
+    }
   };
 
   const removeExpenseEntry = (editEntryIdx: number) => {
@@ -79,6 +104,7 @@ const useBudgetEntries = () => {
 
   return {
     expenseEntries,
+    hasCompData,
     categories,
     categoryColors,
     addExpenseEntry,

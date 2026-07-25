@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  SelectChangeEvent,
+  type SelectChangeEvent,
   Button,
   FormControl,
   InputLabel,
@@ -19,9 +19,9 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import {
   types,
-  Types,
+  type Types,
   effectiveness,
-  Effectiveness,
+  type Effectiveness,
 } from "../../../constants/type-checker";
 import EffectiveRow from "./EffectiveRow";
 

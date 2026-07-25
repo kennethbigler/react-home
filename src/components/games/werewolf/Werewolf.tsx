@@ -1,6 +1,6 @@
-import { memo, useState, useCallback, SyntheticEvent } from "react";
+import { memo, useState, useCallback, type SyntheticEvent } from "react";
 import {
-  Role,
+  type Role,
   villagers,
   outsiders,
   wolves,

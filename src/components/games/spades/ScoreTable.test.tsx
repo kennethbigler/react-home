@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import ScoreTable from "./ScoreTable";
-import { ScoreRow } from "../../../jotai/spades-atom";
+import type { ScoreRow } from "../../../jotai/spades-atom";
 
 describe("games | spades | ScoreTable", () => {
   const initials = "ABCD";

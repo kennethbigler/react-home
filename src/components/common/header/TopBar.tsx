@@ -1,4 +1,4 @@
-import { CSSProperties, MouseEventHandler, ChangeEvent } from "react";
+import type { CSSProperties, MouseEventHandler, ChangeEvent } from "react";
 import { useAtom } from "jotai";
 import MenuIcon from "@mui/icons-material/Menu";
 import themeAtom, { darkTheme, lightTheme } from "../../../jotai/theme-atom";

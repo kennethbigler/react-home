@@ -1,9 +1,8 @@
-import { memo } from "react";
-import { FormatOutput } from "../../../../apis/DateHelper";
+import type { FormatOutput } from "../../../../apis/DateHelper";
 import ExpandableCard from "../../../common/expandable-card";
 import Row from "../../../common/timeline-parts/Row";
 import { START, END, getYearMarkers, getSegments } from "./timelineHelpers";
-import { CarEntry } from "../../../../constants/cars";
+import type { CarEntry } from "../../../../constants/cars";
 
 interface TimelineCardProps {
   /** reads "car" from each array entry and creates segments */
@@ -39,55 +38,48 @@ const fMonthSort = (a: CarEntry, b: CarEntry): number => {
 
 /** TimelineCard  ->  Row  ->  Segment
  **                       |->  YearMarker */
-const TimelineCard = memo(
-  ({ data: propsData, useFStart, useKStart, onClick }: TimelineCardProps) => {
-    // get immutable data from props and sort by start date
-    const data: CarEntry[] = [...propsData].sort(
-      useFStart ? fMonthSort : useKStart ? kMonthSort : monthSort,
-    );
-    // track elements added already
-    const added: boolean[] = [];
+const TimelineCard = ({
+  data: propsData,
+  useFStart,
+  useKStart,
+  onClick,
+}: TimelineCardProps) => {
+  // get immutable data from props and sort by start date
+  const data: CarEntry[] = [...propsData].sort(
+    useFStart ? fMonthSort : useKStart ? kMonthSort : monthSort,
+  );
+  // track elements added already
+  const added: boolean[] = [];
 
-    return (
-      <ExpandableCard
-        backgroundColor="black"
-        title="Ken's Cars"
-        subtitle={`${START.format(DATE_FORMAT)} - ${END.format(DATE_FORMAT)}`}
-      >
-        <div style={{ width: "100%", paddingBottom: 7 }}>
-          <Row key={data.length} segments={getYearMarkers()} yearMarkers />
-          {data.map((elm, i) => {
-            const segments = getSegments(
-              data,
-              added,
-              useKStart,
-              useFStart,
-              elm,
-              i,
-            );
-            return segments.length ? (
-              <Row
-                key={i}
-                segments={segments}
-                first={i === 0}
-                onClick={onClick}
-              />
-            ) : null;
-          })}
-        </div>
-      </ExpandableCard>
-    );
-  },
-  (prevProps, nextProps) => {
-    // Custom comparison logic
-    return (
-      prevProps.useFStart === nextProps.useFStart &&
-      prevProps.useKStart === nextProps.useKStart &&
-      prevProps.data.length === nextProps.data.length
-    );
-  },
-);
-
-TimelineCard.displayName = "TimelineCard";
+  return (
+    <ExpandableCard
+      backgroundColor="black"
+      title="Ken's Cars"
+      subtitle={`${START.format(DATE_FORMAT)} - ${END.format(DATE_FORMAT)}`}
+    >
+      <div style={{ width: "100%", paddingBottom: 7 }}>
+        <Row key={data.length} segments={getYearMarkers()} yearMarkers />
+        {data.map((elm, i) => {
+          const segments = getSegments(
+            data,
+            added,
+            useKStart,
+            useFStart,
+            elm,
+            i,
+          );
+          return segments.length ? (
+            <Row
+              key={i}
+              segments={segments}
+              first={i === 0}
+              onClick={onClick}
+            />
+          ) : null;
+        })}
+      </div>
+    </ExpandableCard>
+  );
+};
 
 export default TimelineCard;

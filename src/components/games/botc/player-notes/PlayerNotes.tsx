@@ -4,7 +4,7 @@ import CharacterSheet from "./character-sheet/CharacterSheet";
 import { usePlayerNotes } from "../useBotC";
 import { getGridSize } from "../botcHelpers";
 import PlayerAdjControls from "./PlayerAdjControls";
-import { ActiveScript } from "../../../../jotai/botc-atom";
+import type { ActiveScript } from "../../../../jotai/botc-atom";
 import {
   Button,
   Card,

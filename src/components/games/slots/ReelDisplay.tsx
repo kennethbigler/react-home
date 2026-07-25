@@ -1,5 +1,5 @@
-import { useCallback, CSSProperties, ReactElement } from "react";
-import { SlotDisplay } from "./slotMachine";
+import { useCallback, type CSSProperties, type ReactElement } from "react";
+import type { SlotDisplay } from "./slotMachine";
 import {
   Table,
   TableBody,

@@ -6,16 +6,17 @@ import {
   budgetAtom,
   budgetCategoryColorsAtom,
 } from "../../../../../jotai/finances-atom";
+import type { ExpenseEntry } from "../../../../../apis/budget";
 import BudgetExpenses from "./BudgetExpenses";
 
-const sampleEntries = [
+const sampleEntries: ExpenseEntry[] = [
   { name: "Groceries", category: "Food", value: 250 },
   { name: "Dining Out", category: "food", value: 100 },
   { name: "Rent", category: "Housing", value: 2000 },
 ];
 
 const renderBudgetExpenses = (
-  entries = sampleEntries,
+  entries: ExpenseEntry[] = sampleEntries,
   store = createStore(),
 ) => {
   store.set(budgetAtom, entries);
@@ -49,7 +50,9 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
       { name: "Rent", category: "Housing", value: 2000 },
     ]);
 
-    fireEvent.click(screen.getByRole("button", { name: "Rent: $2,000.00" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Edit Rent: $2,000.00" }),
+    );
 
     expect(screen.getByText("Edit Expense Entry")).toBeInTheDocument();
     expect(screen.getByLabelText("Name")).toHaveValue("Rent");
@@ -70,6 +73,24 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
 
     expect(
       screen.getByRole("heading", { name: "Housing ($2,000.00)" }),
+    ).toBeInTheDocument();
+  });
+
+  it("warns that percentage expenses require comp data", () => {
+    renderBudgetExpenses([
+      {
+        name: "401k",
+        category: "Retirement",
+        value: 10,
+        valueMode: "percent",
+        percentSources: ["salary"],
+      },
+    ]);
+
+    expect(
+      screen.getByText(
+        "Add a comp entry to calculate percentage-based expense amounts.",
+      ),
     ).toBeInTheDocument();
   });
 
@@ -161,7 +182,9 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
       store,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Groceries: $250.00" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Edit Groceries: $250.00" }),
+    );
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
 
     await waitFor(() =>
@@ -176,7 +199,9 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
       { name: "Rent", category: "Housing", value: 2000 },
     ]);
 
-    fireEvent.click(screen.getByRole("button", { name: "Rent: $2,000.00" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Edit Rent: $2,000.00" }),
+    );
     fireEvent.change(screen.getByLabelText("Value"), {
       target: { value: 2100 },
     });
@@ -194,6 +219,29 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
     ]);
   });
 
+  it("moves a category color when the final expense is renamed", async () => {
+    const store = createStore();
+    store.set(budgetCategoryColorsAtom, { housing: "success" });
+    renderBudgetExpenses(
+      [{ name: "Rent", category: "Housing", value: 2000 }],
+      store,
+    );
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Edit Rent: $2,000.00" }),
+    );
+    fireEvent.change(screen.getByLabelText("Category"), {
+      target: { value: "Utilities" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Update" }));
+
+    await waitFor(() =>
+      expect(store.get(budgetCategoryColorsAtom)).toEqual({
+        utilities: "success",
+      }),
+    );
+  });
+
   it("keeps category color when deleting one expense from a multi-item category", async () => {
     const store = createStore();
     store.set(budgetCategoryColorsAtom, { food: "success" });
@@ -205,7 +253,9 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
       store,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Groceries: $250.00" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Edit Groceries: $250.00" }),
+    );
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
 
     await waitFor(() =>

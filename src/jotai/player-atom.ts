@@ -1,5 +1,5 @@
 import { atomWithStorage } from "jotai/utils";
-import { DBCard } from "./deck-state";
+import type { DBCard } from "./deck-state";
 
 /**
  * weight?: number;

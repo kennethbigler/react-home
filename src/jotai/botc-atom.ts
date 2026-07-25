@@ -1,5 +1,5 @@
 import { atomWithStorage } from "jotai/utils";
-import { MuiColors } from "../components/common/types";
+import type { MuiColors } from "../components/common/types";
 
 export type BotCPlayerStatus = "liar" | "used" | "exec" | "kill";
 

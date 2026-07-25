@@ -1,5 +1,5 @@
 import { playerDist } from "../../../constants/botc";
-import { ActiveScript, BaseScript } from "../../../jotai/botc-atom";
+import { type ActiveScript, BaseScript } from "../../../jotai/botc-atom";
 
 /** Pre-parsed playerDist: [townsfolk, outsiders, minions, demons] per player count */
 const PLAYER_DIST_PARSED: [number, number, number, number][] = playerDist.map(

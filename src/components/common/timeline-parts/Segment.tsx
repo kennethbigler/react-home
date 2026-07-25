@@ -1,4 +1,4 @@
-import { memo, CSSProperties } from "react";
+import { memo, type CSSProperties } from "react";
 import { useTheme } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 

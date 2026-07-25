@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import stockAtom from "./stock-atom";
-import dateHelper, { DateObj } from "../apis/DateHelper";
+import dateHelper, { type DateObj } from "../apis/DateHelper";
 import {
   buildBudgetFlow,
   getLatestBudgetIncome,
@@ -58,6 +58,10 @@ export interface NetWorthCalcEntry {
 }
 
 /** Ascending by entryDate (YYYY-MM); insertion order is ignored. */
+export const sortCompEntriesByDate = (entries: CompEntry[]): CompEntry[] =>
+  entries.toSorted((a, b) => a.entryDate.localeCompare(b.entryDate));
+
+/** Ascending by entryDate (YYYY-MM); insertion order is ignored. */
 export const sortNetWorthEntriesByDate = (
   entries: NetWorthEntry[],
 ): NetWorthEntry[] =>
@@ -89,7 +93,7 @@ export const netWorthAtom = atomWithStorage<NetWorthEntry[]>(
 /* --------------------     Comp Calc State     -------------------- */
 export const compCalcRead = atom((get) => {
   // access state
-  const compEntries = get(compCalcAtom);
+  const compEntries = sortCompEntriesByDate(get(compCalcAtom));
   const stockEntries = get(stockAtom);
 
   const latestPriceByTicker: { [key: string]: number } = {};
@@ -113,20 +117,18 @@ export const compCalcRead = atom((get) => {
         stockTick,
       }) => {
         const priceNow =
-          stockEntries[stockTick] || latestPriceByTicker[stockTick] || 0;
+          stockEntries[stockTick] ?? latestPriceByTicker[stockTick] ?? 0;
         let stock = 0;
         let stockAdj = 0;
 
         const exp = dateHelper(entryDate);
         exp.year += grantDuration;
 
-        if (!prevStockAcc[stockTick]) {
-          prevStockAcc[stockTick] = [];
-        }
-        if (grantQty > 0) {
+        if (stockTick && grantQty > 0 && grantDuration > 0) {
+          prevStockAcc[stockTick] ??= [];
           prevStockAcc[stockTick].push({ grantQty, grantDuration, exp });
         }
-        prevStockAcc[stockTick].forEach((s) => {
+        (prevStockAcc[stockTick] ?? []).forEach((s) => {
           if (dateHelper(entryDate).diff(s.exp, "days") < 0) {
             stock += (priceThen * s.grantQty) / s.grantDuration;
             stockAdj += (priceNow * s.grantQty) / s.grantDuration;
@@ -221,7 +223,7 @@ export const netWorthRead = atom((get) => {
 /* --------------------     Budget Flow State     -------------------- */
 export const budgetFlowRead = atom((get) => {
   const compCalcEntries = get(compCalcRead);
-  const compEntries = get(compCalcAtom);
+  const compEntries = sortCompEntriesByDate(get(compCalcAtom));
   const expenseEntries = get(budgetAtom);
   const categoryColors = get(budgetCategoryColorsAtom);
 

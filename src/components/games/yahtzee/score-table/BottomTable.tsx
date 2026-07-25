@@ -1,6 +1,6 @@
-import { useCallback, ReactElement, ReactNode, CSSProperties } from "react";
-import { TopGameScore, BottomGameScore, ADD_DICE } from "../types";
-import { Dice } from "../../../../jotai/yahtzee-state";
+import { useCallback, type ReactElement, type ReactNode } from "react";
+import { type TopGameScore, type BottomGameScore, ADD_DICE } from "../types";
+import type { Dice } from "../../../../jotai/yahtzee-state";
 import {
   hasXDice,
   isFullHouse,
@@ -9,6 +9,7 @@ import {
 } from "./scoreTableHelper";
 import BottomScores from "./BottomScores";
 import { TableCell, TableRow } from "@mui/material";
+import { centerCellSx } from "./styles";
 
 interface BottomTableProps {
   bottom: BottomGameScore[];
@@ -21,7 +22,6 @@ interface BottomTableProps {
     i: number,
   ) => ReactElement;
   showScoreButtons: boolean;
-  sx: CSSProperties;
   top: TopGameScore[];
   values: Dice[];
 }
@@ -58,7 +58,6 @@ const BottomTable = ({
   getScoreButton,
   top,
   bottom,
-  sx,
   finalTopSum,
   bottomSum,
 }: BottomTableProps) => {
@@ -99,18 +98,18 @@ const BottomTable = ({
             {name}
           </TableCell>
           <TableCell>{hint}</TableCell>
-          <TableCell sx={sx}>
+          <TableCell sx={centerCellSx}>
             {getBottomTableButtons(score, parsedPoints, hasYahtzee, i)}
           </TableCell>
         </TableRow>
       );
     });
-  }, [bottom, getBottomTableButtons, sx, values]);
+  }, [bottom, getBottomTableButtons, values]);
 
   return (
     <>
       {generateBottomTable()}
-      <BottomScores bottomSum={bottomSum} finalTopSum={finalTopSum} sx={sx} />
+      <BottomScores bottomSum={bottomSum} finalTopSum={finalTopSum} />
     </>
   );
 };

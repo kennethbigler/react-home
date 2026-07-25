@@ -7,7 +7,7 @@
  *
  * latest characters found here: https://wiki.bloodontheclocktower.com/Changelog
  */
-import { BotCRole } from "../jotai/botc-atom";
+import type { BotCRole } from "../jotai/botc-atom";
 import ROLE_CATALOG, { getRoleBySlug } from "./botc-slug-map";
 
 export interface BotCScript {

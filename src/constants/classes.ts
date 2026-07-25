@@ -1,6 +1,6 @@
 import { red, indigo, blue, pink } from "@mui/material/colors";
 
-import dateObj, { DateObj } from "../apis/DateHelper";
+import dateObj, { type DateObj } from "../apis/DateHelper";
 import {
   kingsAcademy,
   scuBachelors,

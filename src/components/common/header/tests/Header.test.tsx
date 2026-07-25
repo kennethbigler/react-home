@@ -1,7 +1,7 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import { vi } from "vitest";
-import { NavProps } from "../Header";
+import type { NavProps } from "../Header";
 import Header from "..";
 
 /** This is just used for testing purposes */

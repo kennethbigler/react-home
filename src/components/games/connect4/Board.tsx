@@ -1,6 +1,6 @@
-import { CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import Piece from "./Piece";
-import { C4Turn } from "../../../jotai/connect4-atom";
+import type { C4Turn } from "../../../jotai/connect4-atom";
 import {
   Table,
   TableBody,

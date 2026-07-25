@@ -4,7 +4,7 @@ import {
   getPercentSources,
 } from "../../../../../apis/budget";
 import usDollar from "../../../../../apis/usDollar";
-import {
+import type {
   ExpenseEntry,
   ExpenseEntryColor,
 } from "../../../../../jotai/finances-atom";
@@ -29,10 +29,12 @@ const ExpenseEntryCard = ({
     valueMode === "percent" && sources.length > 0
       ? `${value}% of ${formatPercentSources(sources)}`
       : null;
+  const label = `${name}: ${usDollar.format(resolvedAmount)}${allocationLabel ? ` (${allocationLabel})` : ""}`;
 
   return (
     <Chip
-      label={`${name}: ${usDollar.format(resolvedAmount)}${allocationLabel ? ` (${allocationLabel})` : ""}`}
+      label={label}
+      aria-label={`Edit ${label}`}
       color={color}
       onClick={onClick}
     />

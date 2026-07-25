@@ -3,11 +3,11 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
+  type SelectChangeEvent,
   Typography,
 } from "@mui/material";
 import {
-  ExpenseEntryColor,
+  type ExpenseEntryColor,
   expenseEntryColors,
 } from "../../../../../jotai/finances-atom";
 

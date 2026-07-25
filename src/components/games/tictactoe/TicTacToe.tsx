@@ -1,7 +1,7 @@
-import { memo, CSSProperties } from "react";
+import { memo, type CSSProperties } from "react";
 import { useAtom } from "jotai";
 import ticTacToeAtom, {
-  TicTacToeState,
+  type TicTacToeState,
   X,
   O,
   EMPTY,

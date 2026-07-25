@@ -8,8 +8,8 @@ import {
   grey,
   blueGrey,
 } from "@mui/material/colors";
-import { SeriesOptionsType } from "highcharts/highcharts.src";
-import dateObj, { DateObj } from "../apis/DateHelper";
+import type { SeriesOptionsType } from "highcharts/highcharts.src";
+import dateObj, { type DateObj } from "../apis/DateHelper";
 
 enum Lines {
   Disney = "Disney",
@@ -386,6 +386,22 @@ export const cruises: Cruise[] = [
     name: "🇪🇸🇵🇹🇺🇸",
     nights: 13,
     ship: Ships.Dream,
+    region: Regions.Europe,
+  },
+  {
+    departure: dateObj("2026-12"),
+    line: Lines.Disney,
+    name: "🇧🇸🇺🇸",
+    nights: 7,
+    ship: Ships.Magic,
+    region: Regions.Caribbean,
+  },
+  {
+    departure: dateObj("2027-06"),
+    line: Lines.Disney,
+    name: "🇮🇹🇬🇷🇭🇷",
+    nights: 8,
+    ship: Ships.Wish,
     region: Regions.Europe,
   },
 ];

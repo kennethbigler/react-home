@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import RoleSection from "./RoleSection";
-import { BotCRole } from "../../../../../jotai/botc-atom";
+import type { BotCRole } from "../../../../../jotai/botc-atom";
 
 describe("RoleSection", () => {
   const mockRoles: BotCRole[] = [

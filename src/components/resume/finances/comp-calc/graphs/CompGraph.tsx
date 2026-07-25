@@ -14,7 +14,10 @@ import {
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../../../common/highcharts/coreHighcharts";
 import themeAtom from "../../../../../jotai/theme-atom";
-import { CompCalcEntry, CompEntry } from "../../../../../jotai/finances-atom";
+import type {
+  CompCalcEntry,
+  CompEntry,
+} from "../../../../../jotai/finances-atom";
 import colors from "./colors";
 import {
   BONUS,

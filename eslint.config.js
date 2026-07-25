@@ -80,6 +80,9 @@ export default [
       // React Hooks
       "react-hooks/exhaustive-deps": "warn",
       "react-hooks/rules-of-hooks": "error",
+      // React Compiler companion lints for useMemo correctness
+      "react-hooks/use-memo": "error",
+      "react-hooks/void-use-memo": "error",
 
       // React Refresh (Vite HMR)
       "react-refresh/only-export-components": "warn",
@@ -95,6 +98,17 @@ export default [
           ],
         },
       ],
+
+      // Prefer `import { type Foo }` / `import type` for type-only bindings
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          prefer: "type-imports",
+          fixStyle: "inline-type-imports",
+          disallowTypeAnnotations: false,
+        },
+      ],
+      "@typescript-eslint/no-import-type-side-effects": "error",
 
       // General
       "no-alert": "warn",

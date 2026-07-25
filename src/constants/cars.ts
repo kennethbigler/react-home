@@ -7,7 +7,7 @@ import {
   teal,
   orange,
 } from "@mui/material/colors";
-import dateObj, { DateObj } from "../apis/DateHelper";
+import dateObj, { type DateObj } from "../apis/DateHelper";
 
 import prius07 from "../images/cars/07_toyota_prius.webp";
 import voyager97 from "../images/cars/97_plymouth_voyager.webp";

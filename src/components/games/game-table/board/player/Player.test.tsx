@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { vi } from "vitest";
 import Player from "./Player";
-import { DBPlayer } from "../../../../../jotai/player-atom";
-import { TurnState } from "../../../../../jotai/turn-atom";
+import type { DBPlayer } from "../../../../../jotai/player-atom";
+import type { TurnState } from "../../../../../jotai/turn-atom";
 
 const basePlayer: DBPlayer = {
   id: 1,

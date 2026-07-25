@@ -1,10 +1,10 @@
 import { useAtom, useAtomValue } from "jotai";
 import playerAtom from "../../../../jotai/player-atom";
 import spadesAtom, {
-  Bid,
-  Bids,
+  type Bid,
+  type Bids,
   defaultBid,
-  NilMetrics,
+  type NilMetrics,
 } from "../../../../jotai/spades-atom";
 import { getScoreText } from "./getScoreText";
 

@@ -1,13 +1,13 @@
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { Box, Button } from "@mui/material";
 import {
-  NetWorthEntry,
+  type NetWorthEntry,
   mergeNetWorthCategoryAmounts,
   sortNetWorthEntriesByDate,
   syncNetWorthEntryAmounts,
 } from "../../../../jotai/finances-atom";
 import NetWorthEntryDialog from "./NetWorthEntryDialog";
-import CategoriesDialog, { CategoryMerge } from "./CategoriesDialog";
+import CategoriesDialog, { type CategoryMerge } from "./CategoriesDialog";
 
 interface NetWorthActionsProps {
   entries: NetWorthEntry[];
@@ -76,15 +76,16 @@ const NetWorthActions = ({
   return (
     <>
       <Box sx={{ marginTop: 1.25, marginBottom: 1.25 }}>
-        <Button onClick={openCategoriesModal}>Set Categories</Button>
         <Button onClick={openNewEntry} disabled={categories.length === 0}>
           + Entry
         </Button>
+        <Button onClick={openCategoriesModal}>Set Categories</Button>
       </Box>
       {openCategories && (
         <CategoriesDialog
           open={openCategories}
           categories={categories}
+          hasEntries={entries.length > 0}
           onClose={closeCategoriesModal}
           onSave={saveCategories}
         />
@@ -93,6 +94,7 @@ const NetWorthActions = ({
         <NetWorthEntryDialog
           open={openEntry}
           entry={editEntryIdx !== -1 ? entries[editEntryIdx] : undefined}
+          entries={entries}
           categories={categories}
           onClose={closeEntryModal}
           addEntry={addEntry}

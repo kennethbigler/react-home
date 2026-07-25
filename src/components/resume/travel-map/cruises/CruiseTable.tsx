@@ -1,4 +1,4 @@
-import { memo, CSSProperties, Fragment } from "react";
+import { memo, type CSSProperties, Fragment } from "react";
 import {
   Table,
   TableBody,

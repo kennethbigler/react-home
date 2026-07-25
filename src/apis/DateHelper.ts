@@ -49,7 +49,7 @@ export interface DateObj {
   year: number;
   month: number;
   day: number;
-  diff: (dateObj: DateObj, scale: DateScale) => number;
+  diff: (dateObj: DateObj, scale?: DateScale) => number;
   format: (output: FormatOutput) => string;
 }
 

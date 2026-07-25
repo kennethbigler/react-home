@@ -1,4 +1,4 @@
-import { memo, useCallback, CSSProperties } from "react";
+import { memo, useCallback, type CSSProperties } from "react";
 import { red } from "@mui/material/colors";
 import styles from "./Card.styles";
 import { Typography } from "@mui/material";

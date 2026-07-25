@@ -1,4 +1,4 @@
-import { memo, MouseEventHandler } from "react";
+import { memo, type MouseEventHandler } from "react";
 import { Button, Toolbar, Typography } from "@mui/material";
 interface HeaderProps {
   newGame: MouseEventHandler;

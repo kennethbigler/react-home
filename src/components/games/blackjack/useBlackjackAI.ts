@@ -1,11 +1,11 @@
 import { useAtom } from "jotai";
 import blackjackState, {
-  BlackjackState,
+  type BlackjackState,
   GameFunctions,
   newBlackjackGame,
 } from "../../../jotai/blackjack-state";
-import { DBHand, DBPlayer } from "../../../jotai/player-atom";
-import { TurnState } from "../../../jotai/turn-atom";
+import type { DBHand, DBPlayer } from "../../../jotai/player-atom";
+import type { TurnState } from "../../../jotai/turn-atom";
 import { asyncForEach } from "./asyncForEach";
 import { rankSort } from "../../../jotai/deck-state";
 import useBlackjackDeck from "./useBlackjackDeck";

@@ -1,10 +1,10 @@
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 import {
   FormControl,
   InputLabel,
   Select,
   MenuItem,
-  SelectChangeEvent,
+  type SelectChangeEvent,
   FormControlLabel,
   Switch,
   FormGroup,

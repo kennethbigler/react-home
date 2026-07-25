@@ -1,4 +1,4 @@
-import { memo, ReactElement } from "react";
+import { memo, type ReactElement } from "react";
 import ExpandableCard from "../../common/expandable-card";
 import {
   summarySchools,

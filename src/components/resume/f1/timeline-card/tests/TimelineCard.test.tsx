@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import TimelineCard from "../TimelineCard";
 
 import dateObj from "../../../../../apis/DateHelper";
-import { ContractData } from "../../../../../constants/f1";
+import type { ContractData } from "../../../../../constants/f1";
 
 const data: ContractData[] = [
   {

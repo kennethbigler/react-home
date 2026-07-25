@@ -1,4 +1,4 @@
-import Quarter, { QuarterType } from "./Quarter";
+import Quarter, { type QuarterType } from "./Quarter";
 import { Grid, Typography } from "@mui/material";
 
 export interface YearType {

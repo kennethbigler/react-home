@@ -7,11 +7,22 @@ describe("resume | comp-calc | CompCalculator", () => {
     vi.restoreAllMocks();
   });
 
+  it("shows a warning alert when there are no entries", () => {
+    render(<CompCalculator />);
+
+    expect(
+      screen.getByText("Add a comp entry to see compensation data."),
+    ).toBeInTheDocument();
+  });
+
   it("renders as expected", async () => {
     render(<CompCalculator />);
 
     expect(screen.getByRole("button", { name: "+ Entry" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "+ Stock" })).toBeInTheDocument();
+    expect(
+      screen.getByText("Add a comp entry to see compensation data."),
+    ).toBeInTheDocument();
 
     // open entry modal
     expect(screen.queryByText("New Comp Entry")).toBeNull();
@@ -28,6 +39,9 @@ describe("resume | comp-calc | CompCalculator", () => {
     fireEvent.click(screen.getByText("Add"));
     await waitFor(() => expect(screen.queryByText("Add")).toBeNull());
     expect(screen.getByText("Salary: $10,000.00")).toBeInTheDocument();
+    expect(
+      screen.getByText("* values use the latest stock price shown above."),
+    ).toBeInTheDocument();
 
     // open edit entry modal
     expect(screen.queryByText("Edit Comp Entry")).toBeNull();
@@ -71,17 +85,27 @@ describe("resume | comp-calc | CompCalculator", () => {
     expect(screen.getByText("TSLA: $665.00")).toBeInTheDocument();
     expect(screen.queryByText("TSLA: $666.00")).toBeNull();
 
-    // open edit stock modal
+    // rename stock without retaining the old ticker
     fireEvent.click(screen.getByText("TSLA: $665.00"));
+    fireEvent.change(screen.getByLabelText("Stock"), {
+      target: { value: "AAPL" },
+    });
+    fireEvent.click(screen.getByText("Update"));
+    await waitFor(() => expect(screen.queryByText("Update")).toBeNull());
+    expect(screen.getByText("AAPL: $665.00")).toBeInTheDocument();
+    expect(screen.queryByText("TSLA: $665.00")).toBeNull();
+
+    // open edit stock modal
+    fireEvent.click(screen.getByText("AAPL: $665.00"));
     expect(screen.getByText("Edit Stock Entry")).toBeInTheDocument();
     fireEvent.click(screen.getByText("Delete"));
-    expect(screen.queryByText("TSLA: $665.00")).toBeNull();
+    expect(screen.queryByText("AAPL: $665.00")).toBeNull();
 
     // delete comp entry
     fireEvent.click(screen.getByText("Salary: $10,000.00"));
     expect(screen.getByText("Edit Comp Entry")).toBeInTheDocument();
-    vi.spyOn(window, "confirm").mockReturnValue(true);
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete entry" }));
     await waitFor(() =>
       expect(screen.queryByText("Salary: $10,000.00")).toBeNull(),
     );

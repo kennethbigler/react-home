@@ -4,7 +4,7 @@ import pokerState, {
   PokerGameFunctions as PGF,
   newPokerGameState,
 } from "../../../jotai/poker-state";
-import { DBPlayer } from "../../../jotai/player-atom";
+import type { DBPlayer } from "../../../jotai/player-atom";
 import { computer, findAndPayWinner } from "./pokerHelpers";
 
 const usePoker = () => {

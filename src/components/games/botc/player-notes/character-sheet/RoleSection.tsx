@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { BotCRole } from "../../../../../jotai/botc-atom";
+import type { CSSProperties } from "react";
+import type { BotCRole } from "../../../../../jotai/botc-atom";
 import { Grid, Typography, Button } from "@mui/material";
 import { splitScriptColumns } from "../../botcHelpers";
 
@@ -14,13 +14,20 @@ interface RoleSectionProps {
   onRoleClick?: (role: BotCRole, selected: boolean) => () => void;
 }
 
-const BASE_BUTTON_STYLES: React.CSSProperties = {
+const BASE_BUTTON_STYLES: CSSProperties = {
   textTransform: "none",
   width: "100%",
   wordBreak: "break-word",
   paddingLeft: 0,
   paddingRight: 0,
 };
+
+const COMPACT_BUTTON_STYLES: CSSProperties = {
+  ...BASE_BUTTON_STYLES,
+  fontSize: "0.7rem",
+};
+
+const EMPTY_COLUMNS: [BotCRole[], BotCRole[]] = [[], []];
 
 /** CharacterSheet -> EmojiNotes
  *                 -> Roles -> RoleSelection */
@@ -32,18 +39,10 @@ const RoleSection = ({
   title,
   onRoleClick,
 }: RoleSectionProps) => {
-  const buttonStyles = useMemo<React.CSSProperties>(
-    () =>
-      isText && roles.length >= 18
-        ? { ...BASE_BUTTON_STYLES, fontSize: "0.7rem" }
-        : BASE_BUTTON_STYLES,
-    [isText, roles.length],
-  );
-
-  const [leftColumn, rightColumn] = useMemo(
-    () => (gridSize === 6 ? splitScriptColumns(roles) : [[], []]),
-    [gridSize, roles],
-  );
+  const buttonStyles =
+    isText && roles.length >= 18 ? COMPACT_BUTTON_STYLES : BASE_BUTTON_STYLES;
+  const [leftColumn, rightColumn] =
+    gridSize === 6 ? splitScriptColumns(roles) : EMPTY_COLUMNS;
 
   const renderRoleButton = (role: BotCRole) => {
     const selected = role.name in roleKey;

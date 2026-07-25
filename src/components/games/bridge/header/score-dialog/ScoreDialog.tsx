@@ -7,13 +7,13 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  SelectChangeEvent,
+  type SelectChangeEvent,
 } from "@mui/material";
 import ScoringTable from "./ScoringTable";
-import ScoreForm, { eIn } from "./ScoreForm";
+import ScoreForm, { type eIn } from "./ScoreForm";
 import useBridgeScorer from "./score-helper";
 import bridgeAtom, {
-  AboveScores,
+  type AboveScores,
   bridgeRead,
   newBridgeGame,
   sum,

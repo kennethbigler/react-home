@@ -1,5 +1,5 @@
 import { Link as RouterLink } from "react-router-dom";
-import { RouteMenuItem } from "../common/menu-types";
+import type { RouteMenuItem } from "../common/menu-types";
 import {
   Typography,
   Avatar,

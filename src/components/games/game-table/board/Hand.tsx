@@ -1,7 +1,7 @@
-import { useMemo, CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import { purple } from "@mui/material/colors";
 import Card from "./card/Card";
-import { DBHand } from "../../../../jotai/player-atom";
+import type { DBHand } from "../../../../jotai/player-atom";
 import { Typography } from "@mui/material";
 
 const boldStyle: CSSProperties = {
@@ -11,6 +11,10 @@ const boldStyle: CSSProperties = {
 const normalStyle: CSSProperties = {
   fontWeight: "normal",
   marginTop: "0.5em",
+};
+const activeStyle: CSSProperties = {
+  ...boldStyle,
+  color: purple[700],
 };
 
 interface HandProps {
@@ -36,17 +40,12 @@ const Hand = ({
   isPlayerTurn,
   playerNo,
 }: HandProps) => {
-  const styles = useMemo(
-    () =>
-      isPlayerTurn && (!isMultiHand || (isMultiHand && isHandTurn))
-        ? { ...boldStyle, color: purple[700] }
-        : normalStyle,
-    [isPlayerTurn, isMultiHand, isHandTurn],
-  );
-  const cardsToDiscardSet = useMemo(
-    () => new Set(cardsToDiscard),
-    [cardsToDiscard],
-  );
+  const styles =
+    isPlayerTurn && (!isMultiHand || (isMultiHand && isHandTurn))
+      ? activeStyle
+      : normalStyle;
+  // cardsToDiscard is expected to be a stable reference (see GameTable defaults).
+  const cardsToDiscardSet = new Set(cardsToDiscard);
   const handWeight = hand.weight || 0;
 
   return (

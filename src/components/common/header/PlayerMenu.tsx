@@ -1,4 +1,4 @@
-import { memo, Fragment, FocusEvent } from "react";
+import { memo, Fragment, type FocusEvent } from "react";
 import { useAtom } from "jotai";
 import SimplePopover from "./ButtonPopover";
 import playerAtom from "../../../jotai/player-atom";

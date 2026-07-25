@@ -1,4 +1,4 @@
-import { ReactNode, useId, useState } from "react";
+import { type ReactNode, useId, useState } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
 import TabPanel from "./TabPanel";

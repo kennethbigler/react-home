@@ -7,7 +7,7 @@ import useBotC, {
   useEditPlayers,
   useTracker,
 } from "./useBotC";
-import { BotCRole } from "../../../jotai/botc-atom";
+import type { BotCRole } from "../../../jotai/botc-atom";
 
 describe("useBotC", () => {
   const wrapper = ({ children }: { children: React.ReactNode }) => (

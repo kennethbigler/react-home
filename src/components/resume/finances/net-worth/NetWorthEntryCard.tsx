@@ -7,13 +7,12 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import {
+import type {
   NetWorthCalcEntry,
   NetWorthEntry,
 } from "../../../../jotai/finances-atom";
 import dateObj from "../../../../apis/DateHelper";
 import usDollar from "../../../../apis/usDollar";
-import { CSSProperties } from "react";
 
 interface NetWorthEntryCardProps {
   entry: NetWorthEntry;
@@ -22,11 +21,11 @@ interface NetWorthEntryCardProps {
   onClick: () => void;
 }
 
-const boldStyle: CSSProperties = {
+const boldStyle = {
   fontWeight: "fontWeightBold",
   display: "inline",
   marginLeft: 1,
-};
+} as const;
 
 const NetWorthEntryCard = ({
   entry: { entryDate, amounts },
@@ -45,14 +44,19 @@ const NetWorthEntryCard = ({
     }}
   >
     <Card>
-      <CardActionArea onClick={onClick}>
+      <CardActionArea
+        onClick={onClick}
+        aria-label={`Edit net worth entry for ${dateObj(entryDate).format("MMMM Y")}`}
+      >
         <CardHeader title={dateObj(entryDate).format("MMMM Y")} />
         <CardContent>
-          {categories.map((category) => (
-            <Typography key={category}>
-              {category}: {usDollar.format(amounts[category] ?? 0)}
-            </Typography>
-          ))}
+          {categories.map((category) =>
+            amounts[category] > 0 ? (
+              <Typography key={category}>
+                {category}: {usDollar.format(amounts[category])}
+              </Typography>
+            ) : null,
+          )}
           <Divider aria-hidden />
           <Typography sx={{ display: "inline" }}>Total:</Typography>
           <Typography color="warning" sx={boldStyle}>

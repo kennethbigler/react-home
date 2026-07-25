@@ -1,4 +1,4 @@
-import { MouseEventHandler, memo, CSSProperties } from "react";
+import { type MouseEventHandler, memo, type CSSProperties } from "react";
 import ContentAdd from "@mui/icons-material/Add";
 import { red, lightGreen } from "@mui/material/colors";
 import { Fab } from "@mui/material";

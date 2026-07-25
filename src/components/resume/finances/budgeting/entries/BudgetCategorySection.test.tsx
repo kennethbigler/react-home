@@ -65,7 +65,9 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
     expect(onExpenseClick).toHaveBeenCalledWith(0);
     expect(openExpense).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByRole("button", { name: "Groceries: $250.00" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Edit Groceries: $250.00" }),
+    );
     expect(openExpense).toHaveBeenCalledTimes(1);
   });
 

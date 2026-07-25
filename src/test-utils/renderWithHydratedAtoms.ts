@@ -1,5 +1,10 @@
-import { createElement, Fragment, ReactElement, ReactNode } from "react";
-import { render, RenderOptions } from "@testing-library/react";
+import {
+  createElement,
+  Fragment,
+  type ReactElement,
+  type ReactNode,
+} from "react";
+import { render, type RenderOptions } from "@testing-library/react";
 import { Provider } from "jotai";
 import { useHydrateAtoms } from "jotai/utils";
 

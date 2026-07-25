@@ -61,12 +61,6 @@ describe("resume | f1 | Track", () => {
     expect(screen.getByText("1950")).toBeInTheDocument();
   });
 
-  it("renders when skipped is false", () => {
-    render(<Track {...defaultProps} skipped={false} />);
-
-    expect(screen.getByText("Monaco")).toBeInTheDocument();
-  });
-
   it("renders when skipped is omitted", () => {
     render(<Track {...defaultProps} />);
 

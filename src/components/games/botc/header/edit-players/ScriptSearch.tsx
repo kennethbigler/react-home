@@ -3,10 +3,13 @@ import { Autocomplete, TextField } from "@mui/material";
 import {
   loadAllScriptOptions,
   BASE_SCRIPT_OPTIONS,
-  ScriptOption,
-  CommunityScriptOption,
+  type ScriptOption,
+  type CommunityScriptOption,
 } from "../../../../../utils/botc-script-utils";
-import { ActiveScript, BaseScriptIndex } from "../../../../../jotai/botc-atom";
+import type {
+  ActiveScript,
+  BaseScriptIndex,
+} from "../../../../../jotai/botc-atom";
 
 interface ScriptSearchProps {
   script: ActiveScript;

@@ -1,4 +1,3 @@
-import { memo, useMemo } from "react";
 import { useAtomValue } from "jotai";
 import {
   Chart,
@@ -25,13 +24,10 @@ const options: Highcharts.Options = {
   chart: { type: "pie", backgroundColor: "transparent" },
 };
 
-const BreakdownChart = memo(({ categories, amounts }: BreakdownChartProps) => {
+const BreakdownChart = ({ categories, amounts }: BreakdownChartProps) => {
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
-  const data = useMemo(
-    () => buildNetWorthBreakdownPieData(categories, amounts),
-    [categories, amounts],
-  );
+  const data = buildNetWorthBreakdownPieData(categories, amounts);
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>
@@ -64,8 +60,6 @@ const BreakdownChart = memo(({ categories, amounts }: BreakdownChartProps) => {
       </Chart>
     </figure>
   );
-});
-
-BreakdownChart.displayName = "BreakdownChart";
+};
 
 export default BreakdownChart;

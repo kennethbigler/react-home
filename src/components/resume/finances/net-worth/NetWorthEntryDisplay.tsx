@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import {
+import type {
   NetWorthCalcEntry,
   NetWorthEntry,
 } from "../../../../jotai/finances-atom";

@@ -1,6 +1,6 @@
 import type Highcharts from "highcharts/highcharts.src";
 import dateHelper from "../../../../../apis/DateHelper";
-import {
+import type {
   NetWorthCalcEntry,
   NetWorthEntry,
 } from "../../../../../jotai/finances-atom";
