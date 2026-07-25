@@ -1,4 +1,4 @@
-import { memo, useState, ChangeEvent } from "react";
+import { memo, useState, type ChangeEvent } from "react";
 import {
   Alert,
   Button,
@@ -7,7 +7,7 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  TextFieldProps,
+  type TextFieldProps,
 } from "@mui/material";
 
 const tfProps: TextFieldProps = {

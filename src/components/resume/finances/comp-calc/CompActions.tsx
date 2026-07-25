@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import { useAtom } from "jotai";
 import { Box, Button } from "@mui/material";
 import {
-  CompEntry,
+  type CompEntry,
   sortCompEntriesByDate,
 } from "../../../../jotai/finances-atom";
 import CompEntryDialog from "./CompEntryDialog";

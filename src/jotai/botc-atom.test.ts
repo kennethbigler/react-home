@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { newRoundNotes, newTracker, newBotCGame, BotCState } from "./botc-atom";
+import {
+  newRoundNotes,
+  newTracker,
+  newBotCGame,
+  type BotCState,
+} from "./botc-atom";
 
 describe("botc-atom", () => {
   describe("newRoundNotes", () => {

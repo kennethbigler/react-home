@@ -1,5 +1,5 @@
 import { green, deepOrange, red } from "@mui/material/colors";
-import dateObj, { DateObj } from "../apis/DateHelper";
+import dateObj, { type DateObj } from "../apis/DateHelper";
 
 // --------------------------------------------------     Shared     -------------------------------------------------- //
 interface ChartEntry {

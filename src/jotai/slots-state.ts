@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import slotMachine, {
-  SlotDisplay,
+  type SlotDisplay,
 } from "../components/games/slots/slotMachine";
 import playerAtom from "./player-atom";
 

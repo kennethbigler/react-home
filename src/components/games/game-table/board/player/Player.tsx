@@ -1,10 +1,10 @@
-import { CSSProperties, useCallback } from "react";
+import { type CSSProperties, useCallback } from "react";
 import Add from "@mui/icons-material/Add";
 import Remove from "@mui/icons-material/Remove";
 import { green, blueGrey, red, grey } from "@mui/material/colors";
 import Hand from "../Hand";
-import { DBPlayer } from "../../../../../jotai/player-atom";
-import { TurnState } from "../../../../../jotai/turn-atom";
+import type { DBPlayer } from "../../../../../jotai/player-atom";
+import type { TurnState } from "../../../../../jotai/turn-atom";
 import styles from "./Player.styles";
 import { Card, IconButton, Typography } from "@mui/material";
 

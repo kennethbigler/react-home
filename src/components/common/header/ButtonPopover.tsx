@@ -1,10 +1,10 @@
 import {
   useId,
   useState,
-  MouseEventHandler,
-  MouseEvent,
-  CSSProperties,
-  ReactElement,
+  type MouseEventHandler,
+  type MouseEvent,
+  type CSSProperties,
+  type ReactElement,
 } from "react";
 import { Button, Popover } from "@mui/material";
 

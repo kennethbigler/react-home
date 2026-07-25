@@ -1,6 +1,6 @@
-import { CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import Cell from "./Cell";
-import Row, { RowProps } from "./Row";
+import Row, { type RowProps } from "./Row";
 import {
   Table,
   TableBody,

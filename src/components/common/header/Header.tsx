@@ -1,4 +1,4 @@
-import { useState, useCallback, ReactElement } from "react";
+import { useState, useCallback, type ReactElement } from "react";
 import NavigationClose from "@mui/icons-material/Close";
 import { useTheme } from "@mui/material/styles";
 import TopBar from "./TopBar";

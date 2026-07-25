@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Grid } from "@mui/material";
 import NetWorthChart from "./NetWorthGraph";
 import BreakdownChart from "./BreakdownGraph";
-import {
+import type {
   NetWorthCalcEntry,
   NetWorthEntry,
 } from "../../../../../jotai/finances-atom";
@@ -13,6 +13,8 @@ interface GraphsProps {
   /** Already sorted by final-entry amounts (largest first). */
   categories: string[];
 }
+
+const EMPTY_AMOUNTS: Record<string, number> = {};
 
 const Graphs = ({ entries, calcEntries, categories }: GraphsProps) => {
   const [startIdx, setStartIdx] = useState(0);
@@ -41,7 +43,7 @@ const Graphs = ({ entries, calcEntries, categories }: GraphsProps) => {
       <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
         <BreakdownChart
           categories={categories}
-          amounts={entries[pieIdx]?.amounts ?? {}}
+          amounts={entries[pieIdx]?.amounts ?? EMPTY_AMOUNTS}
         />
       </Grid>
     </Grid>

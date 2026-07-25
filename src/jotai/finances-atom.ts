@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import stockAtom from "./stock-atom";
-import dateHelper, { DateObj } from "../apis/DateHelper";
+import dateHelper, { type DateObj } from "../apis/DateHelper";
 import {
   buildBudgetFlow,
   getLatestBudgetIncome,

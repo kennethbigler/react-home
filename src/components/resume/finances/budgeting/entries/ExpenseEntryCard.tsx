@@ -4,7 +4,7 @@ import {
   getPercentSources,
 } from "../../../../../apis/budget";
 import usDollar from "../../../../../apis/usDollar";
-import {
+import type {
   ExpenseEntry,
   ExpenseEntryColor,
 } from "../../../../../jotai/finances-atom";

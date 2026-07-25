@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import playerAtom, { DBPlayer } from "./player-atom";
-import turnAtom, { TurnState } from "./turn-atom";
+import playerAtom, { type DBPlayer } from "./player-atom";
+import turnAtom, { type TurnState } from "./turn-atom";
 
 export enum GameFunctions {
   NEW_GAME = "New Game",

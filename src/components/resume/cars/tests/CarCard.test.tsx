@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import CarCard from "../CarCard";
-import { CarEntry } from "../../../../constants/cars";
+import type { CarEntry } from "../../../../constants/cars";
 import dateObj from "../../../../apis/DateHelper";
 
 const demoCar: CarEntry = {

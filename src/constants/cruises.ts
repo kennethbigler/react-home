@@ -8,8 +8,8 @@ import {
   grey,
   blueGrey,
 } from "@mui/material/colors";
-import { SeriesOptionsType } from "highcharts/highcharts.src";
-import dateObj, { DateObj } from "../apis/DateHelper";
+import type { SeriesOptionsType } from "highcharts/highcharts.src";
+import dateObj, { type DateObj } from "../apis/DateHelper";
 
 enum Lines {
   Disney = "Disney",

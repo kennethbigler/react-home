@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { type ChangeEvent, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Alert,
@@ -14,9 +14,9 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
+  type SelectChangeEvent,
   TextField,
-  TextFieldProps,
+  type TextFieldProps,
 } from "@mui/material";
 import {
   resolveCategoryMerges,

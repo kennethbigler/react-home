@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import {
   Alert,
   Button,
@@ -12,11 +12,11 @@ import {
   MenuItem,
   Select,
   TextField,
-  TextFieldProps,
-  SelectChangeEvent,
+  type TextFieldProps,
+  type SelectChangeEvent,
 } from "@mui/material";
 import dateHelper, { months } from "../../../../apis/DateHelper";
-import { CompEntry } from "../../../../jotai/finances-atom";
+import type { CompEntry } from "../../../../jotai/finances-atom";
 import { finiteOr } from "./compEntryNumbers";
 
 const tfProps: TextFieldProps = {

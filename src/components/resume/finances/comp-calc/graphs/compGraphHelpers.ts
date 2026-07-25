@@ -1,6 +1,9 @@
 import type Highcharts from "highcharts/highcharts.src";
 import dateHelper from "../../../../../apis/DateHelper";
-import { CompCalcEntry, CompEntry } from "../../../../../jotai/finances-atom";
+import type {
+  CompCalcEntry,
+  CompEntry,
+} from "../../../../../jotai/finances-atom";
 
 export const STOCK = 0;
 export const BONUS = 1;

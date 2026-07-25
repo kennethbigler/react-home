@@ -32,7 +32,7 @@ import turkeySrc from "../../../images/tracks/Turkey_Circuit.avif";
 import tuscanySrc from "../../../images/tracks/Tuscany_Circuit.avif";
 import germanySrc from "../../../images/tracks/Germany_Circuit.avif";
 import germanyHSrc from "../../../images/tracks/Germany_Circuit_Hockenheim.avif";
-import Track, { TrackData } from "./Track";
+import Track, { type TrackData } from "./Track";
 import ExpandableCard from "../../common/expandable-card";
 import { FERRARI_HEX } from "../../../constants/f1";
 

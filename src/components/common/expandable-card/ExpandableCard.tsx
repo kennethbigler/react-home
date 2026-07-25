@@ -1,4 +1,10 @@
-import { useId, useState, CSSProperties, ReactNode, ReactElement } from "react";
+import {
+  useId,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+  type ReactElement,
+} from "react";
 import { useTheme } from "@mui/material/styles";
 import {
   Card,

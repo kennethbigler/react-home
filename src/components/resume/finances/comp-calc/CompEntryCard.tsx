@@ -7,7 +7,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { CompCalcEntry, CompEntry } from "../../../../jotai/finances-atom";
+import type { CompCalcEntry, CompEntry } from "../../../../jotai/finances-atom";
 import dateObj from "../../../../apis/DateHelper";
 import usDollar from "../../../../apis/usDollar";
 

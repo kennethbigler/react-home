@@ -29,14 +29,10 @@ const CategoryBreakdownPie = ({ data, title }: CategoryBreakdownPieProps) => {
   const color = theme.mode === "light" ? "black" : "white";
   const allowAnimation = !prefersReducedMotion();
 
-  const seriesData = useMemo(
-    () =>
-      data.map((point) => ({
-        ...point,
-        yFormatted: usDollar.format(point.y),
-      })),
-    [data],
-  );
+  const seriesData = data.map((point) => ({
+    ...point,
+    yFormatted: usDollar.format(point.y),
+  }));
 
   const options = useMemo(
     () => ({
@@ -84,7 +80,5 @@ const CategoryBreakdownPie = ({ data, title }: CategoryBreakdownPieProps) => {
     </figure>
   );
 };
-
-CategoryBreakdownPie.displayName = "CategoryBreakdownPie";
 
 export default CategoryBreakdownPie;

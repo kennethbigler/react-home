@@ -19,7 +19,7 @@ import {
   buildNetWorthChartData,
   formatNetWorthTooltip,
 } from "./netWorthGraphHelpers";
-import {
+import type {
   NetWorthCalcEntry,
   NetWorthEntry,
 } from "../../../../../jotai/finances-atom";

@@ -8,8 +8,12 @@
  *   - Short key names: p=pk, t=title, a=author, c=characters
  * Decoding happens once in loadAllScriptOptions and is cached.
  */
-import { BotCScript } from "../constants/botc";
-import { BotCRole, BaseScript, BaseScriptIndex } from "../jotai/botc-atom";
+import type { BotCScript } from "../constants/botc";
+import {
+  type BotCRole,
+  BaseScript,
+  type BaseScriptIndex,
+} from "../jotai/botc-atom";
 import { getRoleBySlug } from "../constants/botc-slug-map";
 
 /** Compact encoded entry as stored in botc-scripts.json */

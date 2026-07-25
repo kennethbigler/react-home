@@ -1,5 +1,5 @@
-import { useId, useState, ReactElement, ReactNode } from "react";
-import { MuiColors } from "../types";
+import { useId, useState, type ReactElement, type ReactNode } from "react";
+import type { MuiColors } from "../types";
 import {
   Dialog,
   DialogTitle,

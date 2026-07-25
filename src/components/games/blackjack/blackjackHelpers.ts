@@ -1,6 +1,6 @@
 import { GameFunctions } from "../../../jotai/blackjack-state";
-import { DBCard } from "../../../jotai/deck-state";
-import { DBHand, DBPlayer } from "../../../jotai/player-atom";
+import type { DBCard } from "../../../jotai/deck-state";
+import type { DBHand, DBPlayer } from "../../../jotai/player-atom";
 
 export const DEALER = 0;
 

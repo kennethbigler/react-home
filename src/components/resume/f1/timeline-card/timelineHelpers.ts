@@ -1,6 +1,6 @@
-import dateObj, { DateObj } from "../../../../apis/DateHelper";
-import { ContractData } from "../../../../constants/f1";
-import { SegmentType } from "../../../common/timeline-parts/Segment";
+import dateObj, { type DateObj } from "../../../../apis/DateHelper";
+import type { ContractData } from "../../../../constants/f1";
+import type { SegmentType } from "../../../common/timeline-parts/Segment";
 
 /* *************************     Constants     ************************* */
 const START = dateObj("2012");

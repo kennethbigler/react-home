@@ -1,7 +1,6 @@
-import { useMemo } from "react";
 import InfoPopup from "../../../../common/info-popover/InfoPopup";
 import Roles from "./Roles";
-import {
+import type {
   ActiveScript,
   BotCPlayer,
   BotCPlayerStatus,
@@ -33,10 +32,7 @@ const CharacterSheet = ({
   onRoleClick,
   onStatsToggle,
 }: CharacterSheetProps) => {
-  const roleKey = useMemo(
-    () => Object.fromEntries(roles.map((r) => [r.name, true])),
-    [roles],
-  );
+  const roleKey = Object.fromEntries(roles.map((r) => [r.name, true]));
 
   return (
     <InfoPopup

@@ -12,7 +12,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import CompChart from "./CompGraph";
-import { CompCalcEntry, CompEntry } from "../../../../../jotai/finances-atom";
+import type {
+  CompCalcEntry,
+  CompEntry,
+} from "../../../../../jotai/finances-atom";
 import themeAtom, {
   darkTheme,
   lightTheme,

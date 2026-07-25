@@ -3,7 +3,7 @@ import { vi } from "vitest";
 import Slots from ".";
 import slotMachine, {
   spin,
-  SlotDisplay,
+  type SlotDisplay,
   SlotOption as SO,
 } from "./slotMachine";
 

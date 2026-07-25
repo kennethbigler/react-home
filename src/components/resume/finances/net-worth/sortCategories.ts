@@ -1,4 +1,4 @@
-import { NetWorthEntry } from "../../../../jotai/finances-atom";
+import type { NetWorthEntry } from "../../../../jotai/finances-atom";
 
 /** Largest amounts in the latest-dated entry first (zeros sink to the bottom). */
 export const sortCategoriesByFinalEntry = (

@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import Board from "./board/Board";
 import ButtonGroup from "./button-group/ButtonGroup";
-import { DBPlayer } from "../../../jotai/player-atom";
-import { TurnState } from "../../../jotai/turn-atom";
+import type { DBPlayer } from "../../../jotai/player-atom";
+import type { TurnState } from "../../../jotai/turn-atom";
 
 interface GameTableProps<T extends string> {
   betHandler?: (id: number, value: number) => void;
@@ -18,14 +18,16 @@ interface GameTableProps<T extends string> {
 }
 
 const INACTIVE_TURN: TurnState = { player: -1, hand: -1 };
+const EMPTY_DISCARDS: number[] = [];
+const EMPTY_FUNCTIONS: string[] = [];
 
 /* GameTable ->  Board -> Player -> Hand -> Card
  *          |->  Button Group  ->  Button        */
 const GameTable = <T extends string>({
   betHandler,
   cardClickHandler,
-  cardsToDiscard = [],
-  gameFunctions = [],
+  cardsToDiscard = EMPTY_DISCARDS,
+  gameFunctions = EMPTY_FUNCTIONS as T[],
   gameOver = false,
   hideHands = false,
   isBlackJack = true,

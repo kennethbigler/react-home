@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import TimelineCard from "../TimelineCard";
 
 import dateObj from "../../../../../apis/DateHelper";
-import { CarEntry } from "../../../../../constants/cars";
+import type { CarEntry } from "../../../../../constants/cars";
 
 const carReqs = {
   src: "somewhere",

@@ -1,4 +1,4 @@
-import { Mission } from "../../../../constants/imperial-campaigns";
+import type { Mission } from "../../../../constants/imperial-campaigns";
 import { TextField, Chip, Avatar, Grid, Divider } from "@mui/material";
 
 interface MissionProps {

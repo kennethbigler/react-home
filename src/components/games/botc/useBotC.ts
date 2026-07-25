@@ -1,16 +1,21 @@
-import { useState, ChangeEvent, FocusEvent, ChangeEventHandler } from "react";
+import {
+  useState,
+  type ChangeEvent,
+  type FocusEvent,
+  type ChangeEventHandler,
+} from "react";
 import { useAtom, useAtomValue } from "jotai";
 import botcAtom, {
-  ActiveScript,
+  type ActiveScript,
   botcPlayerShell,
-  BotCPlayerStatus,
-  BotCRole,
+  type BotCPlayerStatus,
+  type BotCRole,
   BaseScript,
-  BaseScriptIndex,
+  type BaseScriptIndex,
   newRoundNotes,
   newTracker,
 } from "../../../jotai/botc-atom";
-import { CommunityScriptOption } from "../../../utils/botc-script-utils";
+import type { CommunityScriptOption } from "../../../utils/botc-script-utils";
 
 const getUpNum = (i: number, pc: number) => {
   const isFull = pc % 2 === 0;

@@ -1,4 +1,4 @@
-import { memo, CSSProperties } from "react";
+import { memo, type CSSProperties } from "react";
 import { Grid, Typography, IconButton, useTheme } from "@mui/material";
 
 export interface TrackData {

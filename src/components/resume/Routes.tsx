@@ -1,8 +1,8 @@
-import { Suspense, ReactElement } from "react";
+import { Suspense, type ReactElement } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Menu from "./Menu";
 import { resumeRoutes } from "./menu-items";
-import Header, { NavProps } from "../common/header/Header";
+import Header, { type NavProps } from "../common/header/Header";
 import LoadingSpinner from "../common/loading-spinner";
 
 interface RoutesProps {

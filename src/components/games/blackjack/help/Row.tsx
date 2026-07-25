@@ -1,5 +1,5 @@
-import { CSSProperties } from "react";
-import Cell, { CellProps } from "./Cell";
+import type { CSSProperties } from "react";
+import Cell, { type CellProps } from "./Cell";
 import { TableRow, TableCell } from "@mui/material";
 
 export interface RowProps {

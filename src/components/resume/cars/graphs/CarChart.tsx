@@ -11,7 +11,7 @@ import {
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../../common/highcharts/sankeyHighcharts";
-import { processData, CarEntry } from "../../../../constants/cars";
+import { processData, type CarEntry } from "../../../../constants/cars";
 
 interface CarChartProps {
   data: CarEntry[];

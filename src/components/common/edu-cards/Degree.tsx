@@ -1,4 +1,4 @@
-import Year, { YearType } from "./Year";
+import Year, { type YearType } from "./Year";
 import ExpandableCard from "../expandable-card";
 
 export interface DegreeType {

@@ -3,8 +3,8 @@ import {
   budgetAtom,
   budgetCategoryColorsAtom,
   budgetFlowRead,
-  ExpenseEntry,
-  ExpenseEntryColor,
+  type ExpenseEntry,
+  type ExpenseEntryColor,
 } from "../../../../../jotai/finances-atom";
 import {
   buildCategoryTotals,

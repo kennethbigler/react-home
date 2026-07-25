@@ -1,12 +1,18 @@
 import { useMemo } from "react";
 import {
-  ActiveScript,
-  BotCRole,
+  type ActiveScript,
+  type BotCRole,
   BaseScript,
 } from "../../../../../jotai/botc-atom";
-import { tb, snv, bmr, other, BotCScript } from "../../../../../constants/botc";
+import {
+  tb,
+  snv,
+  bmr,
+  other,
+  type BotCScript,
+} from "../../../../../constants/botc";
 import { buildScriptFromCharacters } from "../../../../../utils/botc-script-utils";
-import RoleSection, { RoleKey } from "./RoleSection";
+import RoleSection, { type RoleKey } from "./RoleSection";
 
 interface RolesProps {
   isText: boolean;

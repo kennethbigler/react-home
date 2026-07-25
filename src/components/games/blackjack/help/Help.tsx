@@ -3,8 +3,8 @@ import { memo } from "react";
 // material-ui
 import { green, teal, red, orange, deepPurple } from "@mui/material/colors";
 // components
-import Cell, { CellProps } from "./Cell";
-import { RowProps } from "./Row";
+import Cell, { type CellProps } from "./Cell";
+import type { RowProps } from "./Row";
 import BlackjackTable from "./BlackjackTable";
 import {
   Table,

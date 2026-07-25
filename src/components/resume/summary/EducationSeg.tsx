@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Typography } from "@mui/material";
-import { SummarySchool } from "../../../constants/education-summary";
+import type { SummarySchool } from "../../../constants/education-summary";
 
 const EducationSeg = memo(
   ({ degree, honors, location, major, minor, school }: SummarySchool) => (

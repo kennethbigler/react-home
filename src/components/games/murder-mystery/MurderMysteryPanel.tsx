@@ -1,4 +1,4 @@
-import { SyntheticEvent } from "react";
+import type { SyntheticEvent } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import arr2br from "../../../apis/arr2br";
 import {

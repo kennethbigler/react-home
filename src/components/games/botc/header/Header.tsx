@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import { playerDist } from "../../../../constants/botc";
 import Controls from "./Controls";
 import { Typography } from "@mui/material";

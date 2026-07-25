@@ -1,5 +1,5 @@
-import { TopGameScore } from "../types";
-import { Dice } from "../../../../jotai/yahtzee-state";
+import type { TopGameScore } from "../types";
+import type { Dice } from "../../../../jotai/yahtzee-state";
 
 interface DiceHistogram {
   0?: number;

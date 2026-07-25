@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, MouseEvent } from "react";
+import { useState, type ChangeEvent, type MouseEvent } from "react";
 import {
   Button,
   Checkbox,
@@ -12,10 +12,10 @@ import {
   ListItemText,
   MenuItem,
   Select,
-  SelectChangeEvent,
+  type SelectChangeEvent,
   Stack,
   TextField,
-  TextFieldProps,
+  type TextFieldProps,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
@@ -25,7 +25,7 @@ import {
   getPercentSources,
   getTaxBasis,
 } from "../../../../../apis/budget";
-import {
+import type {
   ExpenseEntry,
   ExpensePercentSource,
   ExpenseTaxBasis,

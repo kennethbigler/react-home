@@ -2,7 +2,10 @@ import { useState } from "react";
 import { Grid } from "@mui/material";
 import CompChart from "./CompGraph";
 import BreakdownChart from "./BreakdownGraph";
-import { CompCalcEntry, CompEntry } from "../../../../../jotai/finances-atom";
+import type {
+  CompCalcEntry,
+  CompEntry,
+} from "../../../../../jotai/finances-atom";
 
 interface GraphsProps {
   compCalcEntries: CompCalcEntry[];

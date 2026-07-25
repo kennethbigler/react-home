@@ -16,7 +16,10 @@ import {
   buildCompChartData,
   formatCompTooltip,
 } from "./compGraphHelpers";
-import { CompCalcEntry, CompEntry } from "../../../../../jotai/finances-atom";
+import type {
+  CompCalcEntry,
+  CompEntry,
+} from "../../../../../jotai/finances-atom";
 import themeAtom, {
   darkTheme,
   lightTheme,

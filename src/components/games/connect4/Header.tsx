@@ -1,6 +1,6 @@
-import { MouseEventHandler, memo } from "react";
+import { type MouseEventHandler, memo } from "react";
 import Piece from "./Piece";
-import { C4Turn } from "../../../jotai/connect4-atom";
+import type { C4Turn } from "../../../jotai/connect4-atom";
 import { Button, Toolbar, Typography } from "@mui/material";
 
 interface HeaderProps {

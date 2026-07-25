@@ -1,6 +1,6 @@
 import { atomWithStorage } from "jotai/utils";
 import { indigo, green, teal } from "@mui/material/colors";
-import { Color } from "@mui/material";
+import type { Color } from "@mui/material";
 
 const themes = ["light", "dark"] as const;
 type Themes = (typeof themes)[number];

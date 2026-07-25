@@ -3,13 +3,11 @@ import { Table, TableBody } from "@mui/material";
 import TopScores from "../score-table/TopScores";
 
 describe("games | yahtzee | TopScores", () => {
-  const sx = {};
-
   it("shows 0 bonus when topSum < 63", () => {
     render(
       <Table>
         <TableBody>
-          <TopScores topSum={42} finalTopSum={42} sx={sx} />
+          <TopScores topSum={42} finalTopSum={42} />
         </TableBody>
       </Table>,
     );
@@ -24,7 +22,7 @@ describe("games | yahtzee | TopScores", () => {
     render(
       <Table>
         <TableBody>
-          <TopScores topSum={63} finalTopSum={98} sx={sx} />
+          <TopScores topSum={63} finalTopSum={98} />
         </TableBody>
       </Table>,
     );

@@ -1,5 +1,5 @@
-import { CSSProperties } from "react";
-import Segment, { SegmentType } from "./Segment";
+import type { CSSProperties } from "react";
+import Segment, { type SegmentType } from "./Segment";
 import YearMarker from "./YearMarker";
 
 interface RowProps {

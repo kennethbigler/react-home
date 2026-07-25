@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  SelectChangeEvent,
+  type SelectChangeEvent,
   Typography,
   FormControl,
   InputLabel,

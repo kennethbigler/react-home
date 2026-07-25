@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import { DBPlayer } from "../../../../jotai/player-atom";
+import type { DBPlayer } from "../../../../jotai/player-atom";
 import {
   rankHand,
   getHistogram,

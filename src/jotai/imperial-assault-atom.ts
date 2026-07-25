@@ -1,6 +1,6 @@
 import { atomWithStorage } from "jotai/utils";
 import {
-  Mission,
+  type Mission,
   basic,
   getForcedMission,
 } from "../constants/imperial-campaigns";

@@ -1,9 +1,8 @@
-import { memo } from "react";
 import { useTheme } from "@mui/material/styles";
 import ExpandableCard from "../../../common/expandable-card";
 import Row from "../../../common/timeline-parts/Row";
 import { getYearMarkers, getSegments } from "./timelineHelpers";
-import { ContractData, MERCEDES_HEX } from "../../../../constants/f1";
+import { type ContractData, MERCEDES_HEX } from "../../../../constants/f1";
 
 interface TimelineCardProps {
   /** reads "car" from each array entry and creates segments */
@@ -12,7 +11,7 @@ interface TimelineCardProps {
 
 /** TimelineCard  ->  Row  ->  Segment
  **                       |->  YearMarker */
-const TimelineCard = memo(({ data }: TimelineCardProps) => {
+const TimelineCard = ({ data }: TimelineCardProps) => {
   const theme = useTheme();
   // track elements added already
   const added: boolean[] = [];
@@ -39,8 +38,6 @@ const TimelineCard = memo(({ data }: TimelineCardProps) => {
       </div>
     </ExpandableCard>
   );
-});
-
-TimelineCard.displayName = "TimelineCard";
+};
 
 export default TimelineCard;

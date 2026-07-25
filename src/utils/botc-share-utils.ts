@@ -7,9 +7,13 @@
  *   &players=8
  *   &names=Alice|Bob|Carol    (pipe-separated; numTravelers = names.length - players)
  */
-import { ActiveScript, BotCPlayer, BaseScriptIndex } from "../jotai/botc-atom";
+import type {
+  ActiveScript,
+  BotCPlayer,
+  BaseScriptIndex,
+} from "../jotai/botc-atom";
 import {
-  CommunityScriptOption,
+  type CommunityScriptOption,
   loadAllScriptOptions,
 } from "./botc-script-utils";
 

@@ -7,7 +7,7 @@
  *
  * Unknown slugs (homebrew, experimental, or unrecognized roles) return a placeholder.
  */
-import { BotCRole } from "../jotai/botc-atom";
+import type { BotCRole } from "../jotai/botc-atom";
 
 type RoleType = "townsfolk" | "outsiders" | "minions" | "demons" | "travelers";
 

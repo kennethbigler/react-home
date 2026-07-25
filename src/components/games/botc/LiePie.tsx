@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { useMemo } from "react";
 import { useAtomValue } from "jotai";
 import { useTheme } from "@mui/material/styles";
 import { Chart, Credits, Series, Title } from "@highcharts/react";
@@ -6,7 +6,7 @@ import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../common/highcharts/coreHighcharts";
 import themeAtom from "../../../jotai/theme-atom";
 import { getLieSeries } from "./botcHelpers";
-import { ActiveScript } from "../../../jotai/botc-atom";
+import type { ActiveScript } from "../../../jotai/botc-atom";
 
 interface LiePieProps {
   numPlayers: number;
@@ -36,7 +36,7 @@ const staticOptions: Highcharts.Options = {
   },
 };
 
-const LiePie = memo(({ numPlayers, numTravelers, script }: LiePieProps) => {
+const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
   const muiTheme = useTheme();
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
@@ -53,7 +53,12 @@ const LiePie = memo(({ numPlayers, numTravelers, script }: LiePieProps) => {
         muiTheme.palette.success.main,
       ],
     }),
-    [muiTheme],
+    [
+      muiTheme.palette.error.main,
+      muiTheme.palette.warning.main,
+      muiTheme.palette.info.main,
+      muiTheme.palette.success.main,
+    ],
   );
 
   return (
@@ -66,8 +71,6 @@ const LiePie = memo(({ numPlayers, numTravelers, script }: LiePieProps) => {
       </Chart>
     </figure>
   );
-});
-
-LiePie.displayName = "LiePie";
+};
 
 export default LiePie;

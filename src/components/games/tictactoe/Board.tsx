@@ -1,4 +1,4 @@
-import { useCallback, CSSProperties } from "react";
+import { useCallback, type CSSProperties } from "react";
 import { grey } from "@mui/material/colors";
 import Cell from "./Cell";
 import { Table, TableBody, TableCell, TableRow } from "@mui/material";

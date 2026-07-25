@@ -1,10 +1,10 @@
 import { memo, useCallback } from "react";
 import { useAtomValue } from "jotai";
 import ScoreTable from "./score-table/ScoreTable";
-import { ADD_DICE, BottomGameScore } from "./types";
+import { ADD_DICE, type BottomGameScore } from "./types";
 import Header from "./Header";
 import TableHeader from "./TableHeader";
-import { Dice, yahtzeeRead } from "../../../jotai/yahtzee-state";
+import { type Dice, yahtzeeRead } from "../../../jotai/yahtzee-state";
 import useYahtzeeState from "./use-yahtzee-state";
 import { Typography } from "@mui/material";
 

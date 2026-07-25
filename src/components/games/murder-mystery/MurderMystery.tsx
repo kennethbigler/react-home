@@ -1,9 +1,9 @@
 import {
   useState,
-  SyntheticEvent,
+  type SyntheticEvent,
   useCallback,
   memo,
-  ReactElement,
+  type ReactElement,
 } from "react";
 import roles, { CASINO, Importance, intro } from "../../../constants/murder";
 import MurderMysteryPanel from "./MurderMysteryPanel";

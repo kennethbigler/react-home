@@ -1,4 +1,4 @@
-import { memo, CSSProperties, ReactElement } from "react";
+import { memo, type CSSProperties, type ReactElement } from "react";
 import {
   Table,
   TableBody,

@@ -1,13 +1,13 @@
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { Box, Button } from "@mui/material";
 import {
-  NetWorthEntry,
+  type NetWorthEntry,
   mergeNetWorthCategoryAmounts,
   sortNetWorthEntriesByDate,
   syncNetWorthEntryAmounts,
 } from "../../../../jotai/finances-atom";
 import NetWorthEntryDialog from "./NetWorthEntryDialog";
-import CategoriesDialog, { CategoryMerge } from "./CategoriesDialog";
+import CategoriesDialog, { type CategoryMerge } from "./CategoriesDialog";
 
 interface NetWorthActionsProps {
   entries: NetWorthEntry[];

@@ -1,9 +1,10 @@
-import { ReactElement, ReactNode, CSSProperties } from "react";
-import { BottomGameScore, TopGameScore } from "../types";
-import { Dice } from "../../../../jotai/yahtzee-state";
+import type { ReactElement, ReactNode } from "react";
+import type { BottomGameScore, TopGameScore } from "../types";
+import type { Dice } from "../../../../jotai/yahtzee-state";
 import TopScores from "./TopScores";
 import { hasXDice } from "./scoreTableHelper";
 import { TableCell, TableRow } from "@mui/material";
+import { centerCellSx } from "./styles";
 
 interface TopTableProps {
   finalTopSum: number;
@@ -14,7 +15,6 @@ interface TopTableProps {
     i: number,
   ) => ReactElement;
   showScoreButtons: boolean;
-  sx: CSSProperties;
   top: TopGameScore[];
   bottom: BottomGameScore[];
   topSum: number;
@@ -27,7 +27,6 @@ const TopTable = ({
   showScoreButtons,
   getScoreButton,
   top,
-  sx,
   topSum,
   finalTopSum,
 }: TopTableProps) => {
@@ -74,13 +73,13 @@ const TopTable = ({
               scope="row"
             >{`${name}: ${d},${d},${d} = ${d * 3}`}</TableCell>
             <TableCell>{`Add Only ${name}`}</TableCell>
-            <TableCell sx={sx}>
+            <TableCell sx={centerCellSx}>
               {getTopTableButtons(score, showButton, sum, i)}
             </TableCell>
           </TableRow>
         );
       })}
-      <TopScores topSum={topSum} finalTopSum={finalTopSum} sx={sx} />
+      <TopScores topSum={topSum} finalTopSum={finalTopSum} />
     </>
   );
 };

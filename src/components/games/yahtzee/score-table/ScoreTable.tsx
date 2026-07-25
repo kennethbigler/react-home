@@ -1,6 +1,6 @@
-import { useCallback, ReactElement, CSSProperties } from "react";
-import { TopGameScore, BottomGameScore } from "../types";
-import { Dice } from "../../../../jotai/yahtzee-state";
+import { useCallback, type ReactElement } from "react";
+import type { TopGameScore, BottomGameScore } from "../types";
+import type { Dice } from "../../../../jotai/yahtzee-state";
 import Header from "./Header";
 import TopTable from "./TopTable";
 import BottomTable from "./BottomTable";
@@ -17,8 +17,6 @@ interface ScoreTableProps {
   topSum: number;
   values: Dice[];
 }
-
-const centerStyle: CSSProperties = { textAlign: "center" };
 
 const ScoreTable = ({
   bottom,
@@ -68,13 +66,12 @@ const ScoreTable = ({
 
   return (
     <Table size="small" aria-label="yahtzee game table">
-      <Header sx={centerStyle} />
+      <Header />
       <TableBody>
         <TopTable
           finalTopSum={finalTopSum}
           getScoreButton={getScoreButton}
           showScoreButtons={showScoreButtons}
-          sx={centerStyle}
           top={top}
           values={values}
           bottom={bottom}
@@ -84,7 +81,6 @@ const ScoreTable = ({
           finalTopSum={finalTopSum}
           getScoreButton={getScoreButton}
           showScoreButtons={showScoreButtons}
-          sx={centerStyle}
           top={top}
           values={values}
           bottom={bottom}

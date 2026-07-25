@@ -1,7 +1,7 @@
-import { CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import { Grid, Typography } from "@mui/material";
 import ExpandableCard from "../../common/expandable-card";
-import { Job as JobType } from "../../../constants/work";
+import type { Job as JobType } from "../../../constants/work";
 import { getCSV, groupExpr, parseExprGroup } from "./jobHelpers";
 
 interface JobProps {
