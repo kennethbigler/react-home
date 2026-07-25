@@ -388,6 +388,22 @@ export const cruises: Cruise[] = [
     ship: Ships.Dream,
     region: Regions.Europe,
   },
+  {
+    departure: dateObj("2026-12"),
+    line: Lines.Disney,
+    name: "🇧🇸🇺🇸",
+    nights: 7,
+    ship: Ships.Magic,
+    region: Regions.Caribbean,
+  },
+  {
+    departure: dateObj("2027-06"),
+    line: Lines.Disney,
+    name: "🇮🇹🇬🇷🇭🇷",
+    nights: 8,
+    ship: Ships.Wish,
+    region: Regions.Europe,
+  },
 ];
 
 // -------------------------     Loyalty & Regions     ------------------------- //

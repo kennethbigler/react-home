@@ -257,8 +257,9 @@ const CURRENT_TRACKS: TrackData[] = [
   },
 ];
 
+const today = dateObj();
 CURRENT_TRACKS.some((track) => {
-  if (track.date && dateObj().diff(track.date) < 0) {
+  if (track.date && today.diff(track.date) < 0) {
     track.next = true;
     return true;
   }
