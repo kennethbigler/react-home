@@ -35,6 +35,75 @@ describe("jotai | finances-atom", () => {
     });
   });
 
+  describe("filingJointlyAtom", () => {
+    it("initializes to false", () => {
+      const store = createStore();
+
+      expect(store.get(filingJointlyAtom)).toBe(false);
+    });
+
+    it("persists filing jointly preference", () => {
+      const store = createStore();
+
+      store.set(filingJointlyAtom, true);
+
+      expect(store.get(filingJointlyAtom)).toBe(true);
+    });
+  });
+
+  describe("partnerIncomeAtom", () => {
+    it("initializes with zero salary, bonus, and stock", () => {
+      const store = createStore();
+
+      expect(store.get(partnerIncomeAtom)).toEqual({
+        salary: 0,
+        bonus: 0,
+        stock: 0,
+      });
+    });
+
+    it("persists partner income", () => {
+      const store = createStore();
+      const income = { salary: 80_000, bonus: 5_000, stock: 1_000 };
+
+      store.set(partnerIncomeAtom, income);
+
+      expect(store.get(partnerIncomeAtom)).toEqual(income);
+    });
+  });
+
+  describe("itemizeDeductionsAtom", () => {
+    it("initializes to false", () => {
+      const store = createStore();
+
+      expect(store.get(itemizeDeductionsAtom)).toBe(false);
+    });
+
+    it("persists itemize deductions preference", () => {
+      const store = createStore();
+
+      store.set(itemizeDeductionsAtom, true);
+
+      expect(store.get(itemizeDeductionsAtom)).toBe(true);
+    });
+  });
+
+  describe("itemizedDeductionAtom", () => {
+    it("initializes to zero", () => {
+      const store = createStore();
+
+      expect(store.get(itemizedDeductionAtom)).toBe(0);
+    });
+
+    it("persists itemized deduction amount", () => {
+      const store = createStore();
+
+      store.set(itemizedDeductionAtom, 25_000);
+
+      expect(store.get(itemizedDeductionAtom)).toBe(25_000);
+    });
+  });
+
   describe("compCalcRead", () => {
     it("returns an empty array when there are no comp entries", () => {
       const store = createStore();

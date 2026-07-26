@@ -24,7 +24,7 @@ export const federalTaxBrackets: TaxBracket[] = [
 ];
 
 /** Marginal rates on taxable income after standard deduction (MFJ). */
-export const federalTaxBracketsMfj: TaxBracket[] = [
+export const FEDERAL_TAX_BRACKETS_MFJ: TaxBracket[] = [
   { upTo: 23_850, rate: 0.1 },
   { upTo: 96_950, rate: 0.12 },
   { upTo: 206_700, rate: 0.22 },

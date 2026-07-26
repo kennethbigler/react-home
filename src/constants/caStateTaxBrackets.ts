@@ -32,7 +32,7 @@ export const caStateTaxBrackets: TaxBracket[] = [
 ];
 
 /** Marginal rates on taxable income after CA standard deduction (MFJ / Schedule Y). */
-export const caStateTaxBracketsMfj: TaxBracket[] = [
+export const CA_STATE_TAX_BRACKETS_MFJ: TaxBracket[] = [
   { upTo: 22_158, rate: 0.01 },
   { upTo: 52_528, rate: 0.02 },
   { upTo: 82_904, rate: 0.04 },

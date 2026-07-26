@@ -97,14 +97,14 @@ const BudgetExpenses = () => {
     (event: ChangeEvent<HTMLInputElement>) => {
       setPartnerIncome({
         ...partnerIncome,
-        [field]: finiteOr(Number(event.target.value)),
+        [field]: Math.max(0, finiteOr(Number(event.target.value))),
       });
     };
 
   const handleItemizedDeductionChange = (
     event: ChangeEvent<HTMLInputElement>,
   ) => {
-    setItemizedDeduction(finiteOr(Number(event.target.value)));
+    setItemizedDeduction(Math.max(0, finiteOr(Number(event.target.value))));
   };
 
   return (
@@ -181,7 +181,7 @@ const BudgetExpenses = () => {
                 <Switch
                   checked={filingJointly}
                   onChange={(event) => setFilingJointly(event.target.checked)}
-                  slotProps={{ input: { "aria-label": "Filing jointly" } }}
+                  slotProps={{ input: { "aria-label": "Filing jointly MFJ" } }}
                 />
               }
               label="MFJ"

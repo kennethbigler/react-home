@@ -16,9 +16,9 @@ export const INCOME_NODE_LABELS = {
   salary: "Salary",
   bonus: "Bonus",
   stockAdj: "Stock",
-  partnerSalary: "P Salary",
-  partnerBonus: "P Bonus",
-  partnerStockAdj: "P Stock",
+  partnerSalary: "Partner salary",
+  partnerBonus: "Partner bonus",
+  partnerStockAdj: "Partner stock",
 } as const;
 
 export interface PiePoint {

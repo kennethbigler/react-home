@@ -108,7 +108,7 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
   it("hides partner income fields when filing jointly is off", () => {
     renderBudgetExpenses();
 
-    expect(screen.getByLabelText("Filing jointly")).not.toBeChecked();
+    expect(screen.getByLabelText("Filing jointly MFJ")).not.toBeChecked();
     expect(screen.queryByLabelText("Partner Salary")).not.toBeInTheDocument();
   });
 
@@ -122,7 +122,7 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
     });
     renderBudgetExpenses(sampleEntries, store);
 
-    expect(screen.getByLabelText("Filing jointly")).toBeChecked();
+    expect(screen.getByLabelText("Filing jointly MFJ")).toBeChecked();
     expect(screen.getByLabelText("Partner Salary")).toHaveValue(80_000);
     expect(screen.getByLabelText("Partner Bonus")).toHaveValue(5_000);
     expect(screen.getByLabelText("Partner Stock")).toHaveValue(1_000);
@@ -138,6 +138,39 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
     });
 
     expect(store.get(partnerIncomeAtom).salary).toBe(90_000);
+  });
+
+  it("rejects negative partner income and itemized deduction values", () => {
+    const store = createStore();
+    store.set(filingJointlyAtom, true);
+    store.set(itemizeDeductionsAtom, true);
+    store.set(partnerIncomeAtom, {
+      salary: 80_000,
+      bonus: 5_000,
+      stock: 1_000,
+    });
+    store.set(itemizedDeductionAtom, 20_000);
+    renderBudgetExpenses([], store);
+
+    fireEvent.change(screen.getByLabelText("Partner Salary"), {
+      target: { value: "-100" },
+    });
+    fireEvent.change(screen.getByLabelText("Partner Bonus"), {
+      target: { value: "-50" },
+    });
+    fireEvent.change(screen.getByLabelText("Partner Stock"), {
+      target: { value: "-25" },
+    });
+    fireEvent.change(screen.getByRole("spinbutton", { name: "Deductions" }), {
+      target: { value: "-1000" },
+    });
+
+    expect(store.get(partnerIncomeAtom)).toEqual({
+      salary: 0,
+      bonus: 0,
+      stock: 0,
+    });
+    expect(store.get(itemizedDeductionAtom)).toBe(0);
   });
 
   it("hides deductions field when itemize deductions is off", () => {
@@ -239,11 +272,11 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
   it("toggles filing jointly on and off", () => {
     const { store } = renderBudgetExpenses();
 
-    fireEvent.click(screen.getByRole("switch", { name: "Filing jointly" }));
+    fireEvent.click(screen.getByRole("switch", { name: "Filing jointly MFJ" }));
     expect(store.get(filingJointlyAtom)).toBe(true);
     expect(screen.getByLabelText("Partner Salary")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("switch", { name: "Filing jointly" }));
+    fireEvent.click(screen.getByRole("switch", { name: "Filing jointly MFJ" }));
     expect(store.get(filingJointlyAtom)).toBe(false);
     expect(screen.queryByLabelText("Partner Salary")).not.toBeInTheDocument();
   });

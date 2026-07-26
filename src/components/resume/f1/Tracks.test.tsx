@@ -44,6 +44,22 @@ describe("resume | f1 | Tracks", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("keeps Hungaroring as next on race day and out of Past Tracks", async () => {
+    vi.setSystemTime(new Date(2026, 6, 26));
+    vi.resetModules();
+    await renderTracks();
+
+    expect(
+      screen.getByRole("button", {
+        name: /Hungaroring, Budapest, Hungary circuit details, next race/i,
+      }),
+    ).toBeInTheDocument();
+    // Appears once under 2026 Tracks — never in the static Past Tracks list.
+    expect(screen.getAllByText("Hungaroring, Budapest, Hungary")).toHaveLength(
+      1,
+    );
+  });
+
   it("renders a track marked as skipped with its circuit name visible", async () => {
     await renderTracks();
 

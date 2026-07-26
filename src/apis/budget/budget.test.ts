@@ -56,7 +56,8 @@ describe("apis | budget", () => {
       const withLowerItemized = computeFederalTax(100_000, "single", 5_000);
 
       expect(withHigherItemized).toBeLessThan(withStandard);
-      expect(withLowerItemized).toBeGreaterThan(withStandard);
+      // Below the federal standard, itemizing must not increase tax.
+      expect(withLowerItemized).toBe(withStandard);
     });
 
     it("uses MFJ itemized deduction when filing jointly", () => {
@@ -117,11 +118,16 @@ describe("apis | budget", () => {
 
     it("applies itemized deduction to both federal and state", () => {
       const standard = computeTotalTax(200_000);
-      const itemized = computeTotalTax(200_000, "single", 50_000);
+      // Between CA ($5,706) and federal ($15,750) standards: CA itemizes, federal does not.
+      const betweenStandards = computeTotalTax(200_000, "single", 10_000);
+      const aboveBoth = computeTotalTax(200_000, "single", 50_000);
 
-      expect(itemized.total).toBeLessThan(standard.total);
-      expect(itemized.federal).toBeLessThan(standard.federal);
-      expect(itemized.state).toBeLessThan(standard.state);
+      expect(betweenStandards.federal).toBe(standard.federal);
+      expect(betweenStandards.state).toBeLessThan(standard.state);
+      expect(betweenStandards.total).toBeLessThan(standard.total);
+      expect(aboveBoth.federal).toBeLessThan(standard.federal);
+      expect(aboveBoth.state).toBeLessThan(standard.state);
+      expect(aboveBoth.total).toBeLessThan(standard.total);
     });
   });
 
