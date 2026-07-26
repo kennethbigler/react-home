@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createStore } from "jotai";
+import { createStore, type Atom } from "jotai";
 import compCalcAtom, {
   budgetAtom,
   budgetFlowRead,
@@ -17,6 +17,17 @@ import compCalcAtom, {
 } from "./finances-atom";
 import stockAtom from "./stock-atom";
 
+/** Read atomWithStorage via onMount so a fresh store hydrates from localStorage. */
+const getHydrated = <Value>(anAtom: Atom<Value>): Value => {
+  const store = createStore();
+  const unsub = store.sub(anAtom, () => {});
+  try {
+    return store.get(anAtom);
+  } finally {
+    unsub();
+  }
+};
+
 describe("jotai | finances-atom", () => {
   describe("budgetAtom", () => {
     it("initializes with an empty expense list", () => {
@@ -26,12 +37,12 @@ describe("jotai | finances-atom", () => {
     });
 
     it("persists expense entries", () => {
-      const store = createStore();
+      localStorage.clear();
       const expenses = [{ name: "Rent", category: "Housing", value: 2000 }];
 
-      store.set(budgetAtom, expenses);
+      createStore().set(budgetAtom, expenses);
 
-      expect(store.get(budgetAtom)).toEqual(expenses);
+      expect(getHydrated(budgetAtom)).toEqual(expenses);
     });
   });
 
@@ -43,11 +54,11 @@ describe("jotai | finances-atom", () => {
     });
 
     it("persists filing jointly preference", () => {
-      const store = createStore();
+      localStorage.clear();
 
-      store.set(filingJointlyAtom, true);
+      createStore().set(filingJointlyAtom, true);
 
-      expect(store.get(filingJointlyAtom)).toBe(true);
+      expect(getHydrated(filingJointlyAtom)).toBe(true);
     });
   });
 
@@ -63,12 +74,12 @@ describe("jotai | finances-atom", () => {
     });
 
     it("persists partner income", () => {
-      const store = createStore();
+      localStorage.clear();
       const income = { salary: 80_000, bonus: 5_000, stock: 1_000 };
 
-      store.set(partnerIncomeAtom, income);
+      createStore().set(partnerIncomeAtom, income);
 
-      expect(store.get(partnerIncomeAtom)).toEqual(income);
+      expect(getHydrated(partnerIncomeAtom)).toEqual(income);
     });
   });
 
@@ -80,11 +91,11 @@ describe("jotai | finances-atom", () => {
     });
 
     it("persists itemize deductions preference", () => {
-      const store = createStore();
+      localStorage.clear();
 
-      store.set(itemizeDeductionsAtom, true);
+      createStore().set(itemizeDeductionsAtom, true);
 
-      expect(store.get(itemizeDeductionsAtom)).toBe(true);
+      expect(getHydrated(itemizeDeductionsAtom)).toBe(true);
     });
   });
 
@@ -96,11 +107,11 @@ describe("jotai | finances-atom", () => {
     });
 
     it("persists itemized deduction amount", () => {
-      const store = createStore();
+      localStorage.clear();
 
-      store.set(itemizedDeductionAtom, 25_000);
+      createStore().set(itemizedDeductionAtom, 25_000);
 
-      expect(store.get(itemizedDeductionAtom)).toBe(25_000);
+      expect(getHydrated(itemizedDeductionAtom)).toBe(25_000);
     });
   });
 
