@@ -65,7 +65,7 @@ export const resolveExpenseAmount = (
 
   const sources = getPercentSources(entry);
   const annualGrossBase = sources.reduce(
-    (sum, source) => sum + income[source],
+    (sum, source) => sum + (income[source] ?? 0),
     0,
   );
   const taxBasis = getTaxBasis(entry);
@@ -127,6 +127,12 @@ export const formatPercentSources = (sources: ExpensePercentSource[]): string =>
           return "bonus";
         case "stockAdj":
           return "stock";
+        case "partnerSalary":
+          return "partner salary";
+        case "partnerBonus":
+          return "partner bonus";
+        case "partnerStockAdj":
+          return "partner stock";
       }
     })
     .join(" + ");

@@ -4,10 +4,14 @@ import compCalcAtom, {
   budgetAtom,
   budgetFlowRead,
   compCalcRead,
+  filingJointlyAtom,
+  itemizeDeductionsAtom,
+  itemizedDeductionAtom,
   mergeNetWorthCategoryAmounts,
   netWorthAtom,
   netWorthCategoriesAtom,
   netWorthRead,
+  partnerIncomeAtom,
   sortNetWorthEntriesByDate,
   syncNetWorthEntryAmounts,
 } from "./finances-atom";
@@ -404,6 +408,125 @@ describe("jotai | finances-atom", () => {
       ]);
 
       expect(store.get(budgetFlowRead).flow?.income.gross).toBe(220_000);
+    });
+
+    it("includes partner income and MFJ tax when filing jointly", () => {
+      const store = createStore();
+
+      store.set(compCalcAtom, [
+        {
+          entryDate: "2020-01",
+          salary: 100_000,
+          bonus: 0,
+          stockTick: "",
+          priceThen: 0,
+          grantDuration: 4,
+          grantQty: 0,
+        },
+      ]);
+      store.set(filingJointlyAtom, true);
+      store.set(partnerIncomeAtom, {
+        salary: 80_000,
+        bonus: 5_000,
+        stock: 2_000,
+      });
+
+      const singleStore = createStore();
+      singleStore.set(compCalcAtom, [
+        {
+          entryDate: "2020-01",
+          salary: 100_000,
+          bonus: 0,
+          stockTick: "",
+          priceThen: 0,
+          grantDuration: 4,
+          grantQty: 0,
+        },
+      ]);
+
+      const joint = store.get(budgetFlowRead).flow;
+      const single = singleStore.get(budgetFlowRead).flow;
+
+      expect(joint?.income.gross).toBe(187_000);
+      expect(joint?.income.partnerSalary).toBe(80_000);
+      expect(joint?.totalTax).toBeDefined();
+      expect(single?.totalTax).toBeDefined();
+      // Combined 187k MFJ tax should differ from 100k single (not a simple sum).
+      expect(joint?.federalTax).not.toBe(single?.federalTax);
+    });
+
+    it("uses standard deduction when itemize is off", () => {
+      const store = createStore();
+
+      store.set(compCalcAtom, [
+        {
+          entryDate: "2020-01",
+          salary: 150_000,
+          bonus: 0,
+          stockTick: "",
+          priceThen: 0,
+          grantDuration: 4,
+          grantQty: 0,
+        },
+      ]);
+      store.set(itemizeDeductionsAtom, false);
+      store.set(itemizedDeductionAtom, 50_000);
+
+      const withItemizeOff = store.get(budgetFlowRead).flow;
+
+      const standardStore = createStore();
+      standardStore.set(compCalcAtom, [
+        {
+          entryDate: "2020-01",
+          salary: 150_000,
+          bonus: 0,
+          stockTick: "",
+          priceThen: 0,
+          grantDuration: 4,
+          grantQty: 0,
+        },
+      ]);
+
+      expect(withItemizeOff?.totalTax).toBe(
+        standardStore.get(budgetFlowRead).flow?.totalTax,
+      );
+    });
+
+    it("uses itemized deduction when itemize is on", () => {
+      const store = createStore();
+
+      store.set(compCalcAtom, [
+        {
+          entryDate: "2020-01",
+          salary: 150_000,
+          bonus: 0,
+          stockTick: "",
+          priceThen: 0,
+          grantDuration: 4,
+          grantQty: 0,
+        },
+      ]);
+      store.set(itemizeDeductionsAtom, true);
+      store.set(itemizedDeductionAtom, 50_000);
+
+      const itemized = store.get(budgetFlowRead).flow;
+
+      const standardStore = createStore();
+      standardStore.set(compCalcAtom, [
+        {
+          entryDate: "2020-01",
+          salary: 150_000,
+          bonus: 0,
+          stockTick: "",
+          priceThen: 0,
+          grantDuration: 4,
+          grantQty: 0,
+        },
+      ]);
+
+      expect(itemized?.totalTax).toBeLessThan(
+        standardStore.get(budgetFlowRead).flow?.totalTax ?? Infinity,
+      );
     });
   });
 

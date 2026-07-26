@@ -37,6 +37,9 @@ const sankeyNodeColors = {
   salary: "#a",
   bonus: "#b",
   stockAdj: "#c",
+  partnerSalary: "#aa",
+  partnerBonus: "#bb",
+  partnerStockAdj: "#cc",
   gross: "#d",
   federalTax: "#e",
   stateTax: "#f",
@@ -188,6 +191,54 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
       expect(data.some((link) => link.from === INCOME_NODE_LABELS.bonus)).toBe(
         true,
       );
+    });
+
+    it("adds partner income links into Income when non-zero", () => {
+      const income = getLatestBudgetIncome(100_000, 0, 0, 0, {
+        salary: 80_000,
+        bonus: 10_000,
+        stock: 5_000,
+      });
+      const flow = buildBudgetFlow(income, [], {}, "mfj");
+      const { data } = buildBudgetSankeyData(flow, sankeyNodeColors);
+
+      expect(getSankeyNodeSum(INCOME_NODE_LABELS.salary, data)).toBe(100_000);
+      expect(getSankeyNodeSum(INCOME_NODE_LABELS.partnerSalary, data)).toBe(
+        80_000,
+      );
+      expect(getSankeyNodeSum(INCOME_NODE_LABELS.partnerBonus, data)).toBe(
+        10_000,
+      );
+      expect(getSankeyNodeSum(INCOME_NODE_LABELS.partnerStockAdj, data)).toBe(
+        5_000,
+      );
+      expect(data.filter((link) => link.to === FEDERAL_TAX_LABEL)).toHaveLength(
+        1,
+      );
+      expect(data.filter((link) => link.to === STATE_TAX_LABEL)).toHaveLength(
+        1,
+      );
+      expect(
+        data.filter(
+          (link) =>
+            link.to === PAYROLL_NODE_LABEL && link.from === GROSS_INCOME_NODE,
+        ).length,
+      ).toBeGreaterThanOrEqual(1);
+    });
+
+    it("omits partner income links when partner amounts are zero", () => {
+      const flow = buildBudgetFlow(sampleIncome, []);
+      const { data } = buildBudgetSankeyData(flow, sankeyNodeColors);
+
+      expect(
+        data.some((link) => link.from === INCOME_NODE_LABELS.partnerSalary),
+      ).toBe(false);
+      expect(
+        data.some((link) => link.from === INCOME_NODE_LABELS.partnerBonus),
+      ).toBe(false);
+      expect(
+        data.some((link) => link.from === INCOME_NODE_LABELS.partnerStockAdj),
+      ).toBe(false);
     });
 
     it("omits payroll link when gross income is zero", () => {

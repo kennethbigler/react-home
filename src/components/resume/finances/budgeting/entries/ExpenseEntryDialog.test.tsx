@@ -130,6 +130,19 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     });
   });
 
+  it("offers partner income sources for percent expenses", () => {
+    render(
+      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /Percent of income/i }));
+    fireEvent.mouseDown(screen.getByLabelText("Income Sources"));
+
+    expect(screen.getByText("Partner Salary")).toBeInTheDocument();
+    expect(screen.getByText("Partner Bonus")).toBeInTheDocument();
+    expect(screen.getByText("Partner Stock")).toBeInTheDocument();
+  });
+
   it("submits percent updates with multiple income sources", () => {
     const addExpenseEntry = vi.fn();
 

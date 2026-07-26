@@ -22,6 +22,9 @@ const sankeyNodeColors = {
   salary: "#a",
   bonus: "#b",
   stockAdj: "#c",
+  partnerSalary: "#aa",
+  partnerBonus: "#bb",
+  partnerStockAdj: "#cc",
   gross: "#d",
   federalTax: "#e",
   stateTax: "#f",
@@ -41,6 +44,27 @@ describe("apis | budget", () => {
       expect(tax).toBeGreaterThan(0);
       expect(tax).toBeLessThan(100_000);
     });
+
+    it("uses a higher MFJ standard deduction than single", () => {
+      expect(computeFederalTax(30_000, "mfj")).toBe(0);
+      expect(computeFederalTax(30_000, "single")).toBeGreaterThan(0);
+    });
+
+    it("uses an itemized deduction override when provided", () => {
+      const withStandard = computeFederalTax(100_000);
+      const withHigherItemized = computeFederalTax(100_000, "single", 40_000);
+      const withLowerItemized = computeFederalTax(100_000, "single", 5_000);
+
+      expect(withHigherItemized).toBeLessThan(withStandard);
+      expect(withLowerItemized).toBeGreaterThan(withStandard);
+    });
+
+    it("uses MFJ itemized deduction when filing jointly", () => {
+      const withStandard = computeFederalTax(100_000, "mfj");
+      const withItemized = computeFederalTax(100_000, "mfj", 50_000);
+
+      expect(withItemized).toBeLessThan(withStandard);
+    });
   });
 
   describe("computeCaliforniaTax", () => {
@@ -54,6 +78,27 @@ describe("apis | budget", () => {
 
       expect(withSurcharge).toBeGreaterThan(belowSurcharge);
     });
+
+    it("uses MFJ brackets for joint filing", () => {
+      const single = computeCaliforniaTax(100_000, "single");
+      const mfj = computeCaliforniaTax(100_000, "mfj");
+
+      expect(mfj).toBeLessThan(single);
+    });
+
+    it("uses an itemized deduction override when provided", () => {
+      const withStandard = computeCaliforniaTax(100_000);
+      const withItemized = computeCaliforniaTax(100_000, "single", 20_000);
+
+      expect(withItemized).toBeLessThan(withStandard);
+    });
+
+    it("uses MFJ itemized deduction when filing jointly", () => {
+      const withStandard = computeCaliforniaTax(100_000, "mfj");
+      const withItemized = computeCaliforniaTax(100_000, "mfj", 30_000);
+
+      expect(withItemized).toBeLessThan(withStandard);
+    });
   });
 
   describe("computeTotalTax", () => {
@@ -61,6 +106,22 @@ describe("apis | budget", () => {
       const { federal, state, total } = computeTotalTax(150_000);
 
       expect(total).toBeCloseTo(federal + state, 2);
+    });
+
+    it("applies MFJ filing status to both federal and state", () => {
+      const single = computeTotalTax(200_000, "single");
+      const mfj = computeTotalTax(200_000, "mfj");
+
+      expect(mfj.total).toBeLessThan(single.total);
+    });
+
+    it("applies itemized deduction to both federal and state", () => {
+      const standard = computeTotalTax(200_000);
+      const itemized = computeTotalTax(200_000, "single", 50_000);
+
+      expect(itemized.total).toBeLessThan(standard.total);
+      expect(itemized.federal).toBeLessThan(standard.federal);
+      expect(itemized.state).toBeLessThan(standard.state);
     });
   });
 
@@ -86,6 +147,27 @@ describe("apis | budget", () => {
       };
 
       expect(resolveExpenseAmount(entry, sampleIncome)).toBe(750);
+    });
+
+    it("resolves percent of partner salary", () => {
+      const income = getLatestBudgetIncome(100_000, 0, 0, 0, {
+        salary: 80_000,
+        bonus: 0,
+        stock: 0,
+      });
+      const entry: ExpenseEntry = {
+        name: "Partner 401k",
+        category: "Retirement",
+        value: 10,
+        valueMode: "percent",
+        percentSources: ["partnerSalary"],
+        taxBasis: "pretax",
+      };
+
+      expect(resolveExpenseAmount(entry, income)).toBeCloseTo(
+        (0.1 * 80_000) / 12,
+        5,
+      );
     });
 
     it("resolves post-tax percent using net income when provided", () => {
@@ -260,6 +342,54 @@ describe("apis | budget", () => {
       );
     });
 
+    it("computes payroll per earner then sums into one total", () => {
+      const income = getLatestBudgetIncome(200_000, 0, 0, 0, {
+        salary: 200_000,
+        bonus: 0,
+        stock: 0,
+      });
+      const combinedAsOne = buildBudgetFlow(
+        getLatestBudgetIncome(400_000, 0, 0, 0),
+        [],
+      );
+      const perPartner = buildBudgetFlow(income, [], {}, "mfj");
+
+      // Two $200k wages each hit SS wage base separately; one $400k wage hits once.
+      expect(perPartner.socialSecurity).toBeGreaterThan(
+        combinedAsOne.socialSecurity,
+      );
+      expect(perPartner.totalPayrollDeductions).toBeCloseTo(
+        perPartner.socialSecurity +
+          perPartner.medicare +
+          perPartner.caDisability,
+        2,
+      );
+    });
+
+    it("uses MFJ tax when filing status is mfj", () => {
+      const income = getLatestBudgetIncome(150_000, 0, 0, 0);
+      const single = buildBudgetFlow(income, []);
+      const mfj = buildBudgetFlow(income, [], {}, "mfj");
+
+      expect(mfj.totalTax).toBeLessThan(single.totalTax);
+    });
+
+    it("uses itemized deduction when provided", () => {
+      const income = getLatestBudgetIncome(150_000, 0, 0, 0);
+      const standard = buildBudgetFlow(income, []);
+      const itemized = buildBudgetFlow(income, [], {}, "single", 50_000);
+
+      expect(itemized.totalTax).toBeLessThan(standard.totalTax);
+    });
+
+    it("uses itemized deduction with MFJ filing status", () => {
+      const income = getLatestBudgetIncome(150_000, 0, 0, 0);
+      const standard = buildBudgetFlow(income, [], {}, "mfj");
+      const itemized = buildBudgetFlow(income, [], {}, "mfj", 60_000);
+
+      expect(itemized.totalTax).toBeLessThan(standard.totalTax);
+    });
+
     it("flags over-allocation when expenses exceed net", () => {
       const flow = buildBudgetFlow(sampleIncome, [
         { name: "Everything", category: "Spend", value: 500_000 },
@@ -276,6 +406,9 @@ describe("apis | budget", () => {
         salary: 100,
         bonus: 0,
         stockAdj: 75,
+        partnerSalary: 0,
+        partnerBonus: 0,
+        partnerStockAdj: 0,
         gross: 175,
       });
     });
@@ -285,7 +418,28 @@ describe("apis | budget", () => {
         salary: 100,
         bonus: 0,
         stockAdj: 50,
+        partnerSalary: 0,
+        partnerBonus: 0,
+        partnerStockAdj: 0,
         gross: 150,
+      });
+    });
+
+    it("includes partner income in gross when provided", () => {
+      expect(
+        getLatestBudgetIncome(100_000, 10_000, 0, 5_000, {
+          salary: 80_000,
+          bonus: 5_000,
+          stock: 2_000,
+        }),
+      ).toEqual({
+        salary: 100_000,
+        bonus: 10_000,
+        stockAdj: 5_000,
+        partnerSalary: 80_000,
+        partnerBonus: 5_000,
+        partnerStockAdj: 2_000,
+        gross: 202_000,
       });
     });
   });
@@ -312,8 +466,17 @@ describe("apis | budget", () => {
 
   describe("formatPercentSources", () => {
     it("formats all supported income sources", () => {
-      expect(formatPercentSources(["salary", "bonus", "stockAdj"])).toBe(
-        "salary + bonus + stock",
+      expect(
+        formatPercentSources([
+          "salary",
+          "bonus",
+          "stockAdj",
+          "partnerSalary",
+          "partnerBonus",
+          "partnerStockAdj",
+        ]),
+      ).toBe(
+        "salary + bonus + stock + partner salary + partner bonus + partner stock",
       );
     });
   });

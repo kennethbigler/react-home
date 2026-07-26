@@ -45,6 +45,9 @@ const percentSourceOptions: Array<{
   { value: "salary", label: "Salary" },
   { value: "bonus", label: "Bonus" },
   { value: "stockAdj", label: "Stock" },
+  { value: "partnerSalary", label: "Partner Salary" },
+  { value: "partnerBonus", label: "Partner Bonus" },
+  { value: "partnerStockAdj", label: "Partner Stock" },
 ];
 
 interface ExpenseEntryDialogProps {

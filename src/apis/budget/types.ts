@@ -12,8 +12,16 @@ export type ExpenseEntryColor = (typeof expenseEntryColors)[number];
 export type BudgetCategoryColors = Partial<Record<string, ExpenseEntryColor>>;
 
 export type ExpenseValueMode = "dollar" | "percent";
-export type ExpensePercentSource = "salary" | "bonus" | "stockAdj";
+export type ExpensePercentSource =
+  | "salary"
+  | "bonus"
+  | "stockAdj"
+  | "partnerSalary"
+  | "partnerBonus"
+  | "partnerStockAdj";
 export type ExpenseTaxBasis = "pretax" | "posttax";
+
+export type TaxFilingStatus = "single" | "mfj";
 
 export interface ExpenseEntry {
   name: string;
@@ -30,10 +38,19 @@ export interface ExpenseEntry {
 /** Budget expenses are monthly; comp calculator income and taxes are annual. */
 export const BUDGET_MONTHS_PER_YEAR = 12;
 
+export interface PartnerIncomeInput {
+  salary: number;
+  bonus: number;
+  stock: number;
+}
+
 export interface BudgetIncome {
   salary: number;
   bonus: number;
   stockAdj: number;
+  partnerSalary: number;
+  partnerBonus: number;
+  partnerStockAdj: number;
   gross: number;
 }
 

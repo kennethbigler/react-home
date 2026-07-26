@@ -89,6 +89,27 @@ export const netWorthAtom = atomWithStorage<NetWorthEntry[]>(
   "netWorthAtom",
   [],
 );
+export const filingJointlyAtom = atomWithStorage<boolean>(
+  "filingJointlyAtom",
+  false,
+);
+export interface PartnerIncome {
+  salary: number;
+  bonus: number;
+  stock: number;
+}
+export const partnerIncomeAtom = atomWithStorage<PartnerIncome>(
+  "partnerIncomeAtom",
+  { salary: 0, bonus: 0, stock: 0 },
+);
+export const itemizeDeductionsAtom = atomWithStorage<boolean>(
+  "itemizeDeductionsAtom",
+  false,
+);
+export const itemizedDeductionAtom = atomWithStorage<number>(
+  "itemizedDeductionAtom",
+  0,
+);
 
 /* --------------------     Comp Calc State     -------------------- */
 export const compCalcRead = atom((get) => {
@@ -226,6 +247,10 @@ export const budgetFlowRead = atom((get) => {
   const compEntries = sortCompEntriesByDate(get(compCalcAtom));
   const expenseEntries = get(budgetAtom);
   const categoryColors = get(budgetCategoryColorsAtom);
+  const filingJointly = get(filingJointlyAtom);
+  const partnerIncome = get(partnerIncomeAtom);
+  const itemizeDeductions = get(itemizeDeductionsAtom);
+  const itemizedDeduction = get(itemizedDeductionAtom);
 
   if (compEntries.length === 0 || compCalcEntries.length === 0) {
     return {
@@ -243,8 +268,15 @@ export const budgetFlowRead = atom((get) => {
     latestCompEntry.bonus,
     latestCompCalcEntry.stock,
     latestCompCalcEntry.stockAdj,
+    filingJointly ? partnerIncome : undefined,
   );
-  const flow = buildBudgetFlow(income, expenseEntries, categoryColors);
+  const flow = buildBudgetFlow(
+    income,
+    expenseEntries,
+    categoryColors,
+    filingJointly ? "mfj" : "single",
+    itemizeDeductions ? itemizedDeduction : undefined,
+  );
 
   return {
     hasCompData: true as const,
