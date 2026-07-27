@@ -159,15 +159,24 @@ export const colorizeBreakdownPieData = (
   }));
 };
 
-export const getBudgetSankeyNodeColors = (theme: Theme) => ({
-  salary: compColors[2] ?? theme.palette.success.main,
-  bonus: compColors[1] ?? theme.palette.warning.main,
-  stockAdj: compColors[0] ?? theme.palette.info.main,
-  gross: theme.palette.primary.main,
-  federalTax: theme.palette.error.main,
-  stateTax: theme.palette.error.main,
-  payroll: theme.palette.error.main,
-  unallocated: theme.palette.grey[500],
-  category: (_categoryKey: string, color?: ExpenseEntryColor) =>
-    getSankeyCategoryColor(theme, color),
-});
+export const getBudgetSankeyNodeColors = (theme: Theme) => {
+  const salary = compColors[2] ?? theme.palette.success.main;
+  const bonus = compColors[1] ?? theme.palette.warning.main;
+  const stockAdj = compColors[0] ?? theme.palette.info.main;
+
+  return {
+    salary,
+    bonus,
+    stockAdj,
+    partnerSalary: mixHexColors(salary, theme.palette.grey[300], 0.35),
+    partnerBonus: mixHexColors(bonus, theme.palette.grey[300], 0.35),
+    partnerStockAdj: mixHexColors(stockAdj, theme.palette.grey[300], 0.35),
+    gross: theme.palette.primary.main,
+    federalTax: theme.palette.error.main,
+    stateTax: theme.palette.error.main,
+    payroll: theme.palette.error.main,
+    unallocated: theme.palette.grey[500],
+    category: (_categoryKey: string, color?: ExpenseEntryColor) =>
+      getSankeyCategoryColor(theme, color),
+  };
+};

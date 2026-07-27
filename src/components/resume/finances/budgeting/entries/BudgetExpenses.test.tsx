@@ -5,6 +5,10 @@ import { describe, expect, it } from "vitest";
 import {
   budgetAtom,
   budgetCategoryColorsAtom,
+  filingJointlyAtom,
+  itemizeDeductionsAtom,
+  itemizedDeductionAtom,
+  partnerIncomeAtom,
 } from "../../../../../jotai/finances-atom";
 import type { ExpenseEntry } from "../../../../../apis/budget";
 import BudgetExpenses from "./BudgetExpenses";
@@ -99,6 +103,195 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "+ Expense" }));
     expect(screen.getByText("New Expense Entry")).toBeInTheDocument();
+  });
+
+  it("hides partner income fields when filing jointly is off", () => {
+    renderBudgetExpenses();
+
+    expect(screen.getByLabelText("Filing jointly MFJ")).not.toBeChecked();
+    expect(screen.queryByLabelText("Partner Salary")).not.toBeInTheDocument();
+  });
+
+  it("shows partner income fields when filing jointly is enabled", () => {
+    const store = createStore();
+    store.set(filingJointlyAtom, true);
+    store.set(partnerIncomeAtom, {
+      salary: 80_000,
+      bonus: 5_000,
+      stock: 1_000,
+    });
+    renderBudgetExpenses(sampleEntries, store);
+
+    expect(screen.getByLabelText("Filing jointly MFJ")).toBeChecked();
+    expect(screen.getByLabelText("Partner Salary")).toHaveValue(80_000);
+    expect(screen.getByLabelText("Partner Bonus")).toHaveValue(5_000);
+    expect(screen.getByLabelText("Partner Stock")).toHaveValue(1_000);
+  });
+
+  it("updates partner income when fields change", () => {
+    const store = createStore();
+    store.set(filingJointlyAtom, true);
+    renderBudgetExpenses([], store);
+
+    fireEvent.change(screen.getByLabelText("Partner Salary"), {
+      target: { value: "90000" },
+    });
+
+    expect(store.get(partnerIncomeAtom).salary).toBe(90_000);
+  });
+
+  it("rejects negative partner income and itemized deduction values", () => {
+    const store = createStore();
+    store.set(filingJointlyAtom, true);
+    store.set(itemizeDeductionsAtom, true);
+    store.set(partnerIncomeAtom, {
+      salary: 80_000,
+      bonus: 5_000,
+      stock: 1_000,
+    });
+    store.set(itemizedDeductionAtom, 20_000);
+    renderBudgetExpenses([], store);
+
+    fireEvent.change(screen.getByLabelText("Partner Salary"), {
+      target: { value: "-100" },
+    });
+    fireEvent.change(screen.getByLabelText("Partner Bonus"), {
+      target: { value: "-50" },
+    });
+    fireEvent.change(screen.getByLabelText("Partner Stock"), {
+      target: { value: "-25" },
+    });
+    fireEvent.change(screen.getByRole("spinbutton", { name: "Deductions" }), {
+      target: { value: "-1000" },
+    });
+
+    expect(store.get(partnerIncomeAtom)).toEqual({
+      salary: 0,
+      bonus: 0,
+      stock: 0,
+    });
+    expect(store.get(itemizedDeductionAtom)).toBe(0);
+  });
+
+  it("hides deductions field when itemize deductions is off", () => {
+    renderBudgetExpenses();
+
+    expect(
+      screen.getByRole("switch", { name: "Itemize Deductions" }),
+    ).not.toBeChecked();
+    expect(
+      screen.queryByRole("spinbutton", { name: "Deductions" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows deductions field when itemize deductions is enabled", () => {
+    const store = createStore();
+    store.set(itemizeDeductionsAtom, true);
+    store.set(itemizedDeductionAtom, 20_000);
+    renderBudgetExpenses(sampleEntries, store);
+
+    expect(
+      screen.getByRole("switch", { name: "Itemize Deductions" }),
+    ).toBeChecked();
+    expect(screen.getByRole("spinbutton", { name: "Deductions" })).toHaveValue(
+      20_000,
+    );
+  });
+
+  it("shows an error when deductions are below the standard deduction", () => {
+    const store = createStore();
+    store.set(itemizeDeductionsAtom, true);
+    store.set(itemizedDeductionAtom, 10_000);
+    renderBudgetExpenses(sampleEntries, store);
+
+    expect(screen.getByText("Use Standard Deduction")).toBeInTheDocument();
+  });
+
+  it("uses the MFJ standard when comparing itemized deductions", () => {
+    const store = createStore();
+    store.set(filingJointlyAtom, true);
+    store.set(itemizeDeductionsAtom, true);
+    store.set(itemizedDeductionAtom, 20_000);
+    renderBudgetExpenses(sampleEntries, store);
+
+    expect(screen.getByText("Use Standard Deduction")).toBeInTheDocument();
+  });
+
+  it("hides the standard deduction error when deductions meet the standard", () => {
+    const store = createStore();
+    store.set(itemizeDeductionsAtom, true);
+    store.set(itemizedDeductionAtom, 20_000);
+    renderBudgetExpenses(sampleEntries, store);
+
+    expect(
+      screen.queryByText("Use Standard Deduction"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("updates itemized deduction when the field changes", () => {
+    const store = createStore();
+    store.set(itemizeDeductionsAtom, true);
+    renderBudgetExpenses([], store);
+
+    fireEvent.change(screen.getByRole("spinbutton", { name: "Deductions" }), {
+      target: { value: "25000" },
+    });
+
+    expect(store.get(itemizedDeductionAtom)).toBe(25_000);
+  });
+
+  it("stores zero when itemized deduction input is cleared", () => {
+    const store = createStore();
+    store.set(itemizeDeductionsAtom, true);
+    store.set(itemizedDeductionAtom, 20_000);
+    renderBudgetExpenses([], store);
+
+    fireEvent.change(screen.getByRole("spinbutton", { name: "Deductions" }), {
+      target: { value: "" },
+    });
+
+    expect(store.get(itemizedDeductionAtom)).toBe(0);
+  });
+
+  it("toggles itemize deductions on and off", () => {
+    const { store } = renderBudgetExpenses();
+
+    fireEvent.click(screen.getByRole("switch", { name: "Itemize Deductions" }));
+    expect(store.get(itemizeDeductionsAtom)).toBe(true);
+    expect(
+      screen.getByRole("spinbutton", { name: "Deductions" }),
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("switch", { name: "Itemize Deductions" }));
+    expect(store.get(itemizeDeductionsAtom)).toBe(false);
+    expect(
+      screen.queryByRole("spinbutton", { name: "Deductions" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("toggles filing jointly on and off", () => {
+    const { store } = renderBudgetExpenses();
+
+    fireEvent.click(screen.getByRole("switch", { name: "Filing jointly MFJ" }));
+    expect(store.get(filingJointlyAtom)).toBe(true);
+    expect(screen.getByLabelText("Partner Salary")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("switch", { name: "Filing jointly MFJ" }));
+    expect(store.get(filingJointlyAtom)).toBe(false);
+    expect(screen.queryByLabelText("Partner Salary")).not.toBeInTheDocument();
+  });
+
+  it("stores zero when partner income input is cleared", () => {
+    const store = createStore();
+    store.set(filingJointlyAtom, true);
+    store.set(partnerIncomeAtom, { salary: 80_000, bonus: 0, stock: 0 });
+    renderBudgetExpenses([], store);
+
+    fireEvent.change(screen.getByLabelText("Partner Salary"), {
+      target: { value: "" },
+    });
+
+    expect(store.get(partnerIncomeAtom).salary).toBe(0);
   });
 
   it("adds an expense entry from the dialog", async () => {

@@ -16,5 +16,8 @@ describe("budgeting | chartColors fallbacks", () => {
     expect(colors.salary).toBe(theme.palette.success.main);
     expect(colors.bonus).toBe(theme.palette.warning.main);
     expect(colors.stockAdj).toBe(theme.palette.info.main);
+    expect(colors.partnerSalary).toBeTruthy();
+    expect(colors.partnerBonus).toBeTruthy();
+    expect(colors.partnerStockAdj).toBeTruthy();
   });
 });

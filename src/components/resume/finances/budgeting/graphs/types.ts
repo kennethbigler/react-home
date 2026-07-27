@@ -16,6 +16,9 @@ export const INCOME_NODE_LABELS = {
   salary: "Salary",
   bonus: "Bonus",
   stockAdj: "Stock",
+  partnerSalary: "Partner salary",
+  partnerBonus: "Partner bonus",
+  partnerStockAdj: "Partner stock",
 } as const;
 
 export interface PiePoint {
@@ -45,6 +48,9 @@ export interface BudgetSankeyNodeColors {
   salary: string;
   bonus: string;
   stockAdj: string;
+  partnerSalary: string;
+  partnerBonus: string;
+  partnerStockAdj: string;
   gross: string;
   federalTax: string;
   stateTax: string;

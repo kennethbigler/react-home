@@ -121,6 +121,27 @@ export const buildBudgetSankeyData = (
       weight: income.stockAdj,
     });
   }
+  if (income.partnerSalary > 0) {
+    data.push({
+      from: INCOME_NODE_LABELS.partnerSalary,
+      to: GROSS_INCOME_NODE,
+      weight: income.partnerSalary,
+    });
+  }
+  if (income.partnerBonus > 0) {
+    data.push({
+      from: INCOME_NODE_LABELS.partnerBonus,
+      to: GROSS_INCOME_NODE,
+      weight: income.partnerBonus,
+    });
+  }
+  if (income.partnerStockAdj > 0) {
+    data.push({
+      from: INCOME_NODE_LABELS.partnerStockAdj,
+      to: GROSS_INCOME_NODE,
+      weight: income.partnerStockAdj,
+    });
+  }
 
   const incomeTaxWithholdings: Array<{ amount: number; label: string }> = [
     { amount: federalTax, label: FEDERAL_TAX_LABEL },
@@ -193,6 +214,21 @@ export const buildBudgetSankeyData = (
       id: INCOME_NODE_LABELS.stockAdj,
       column: 0,
       color: nodeColors.stockAdj,
+    },
+    {
+      id: INCOME_NODE_LABELS.partnerSalary,
+      column: 0,
+      color: nodeColors.partnerSalary,
+    },
+    {
+      id: INCOME_NODE_LABELS.partnerBonus,
+      column: 0,
+      color: nodeColors.partnerBonus,
+    },
+    {
+      id: INCOME_NODE_LABELS.partnerStockAdj,
+      column: 0,
+      color: nodeColors.partnerStockAdj,
     },
     {
       id: GROSS_INCOME_NODE,
