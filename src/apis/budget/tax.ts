@@ -53,11 +53,11 @@ export const computeFederalTax = (
 export const computeCaliforniaTax = (
   grossIncome: number,
   filingStatus: TaxFilingStatus = "single",
-  itemizedDeduction?: number,
+  caItemizedDeduction?: number,
 ): number =>
   computeProgressiveTax(
     grossIncome,
-    resolveCaDeduction(filingStatus, itemizedDeduction),
+    resolveCaDeduction(filingStatus, caItemizedDeduction),
     filingStatus === "mfj" ? CA_STATE_TAX_BRACKETS_MFJ : caStateTaxBrackets,
     CA_MENTAL_HEALTH_SURCHARGE,
   );
@@ -65,17 +65,18 @@ export const computeCaliforniaTax = (
 export const computeTotalTax = (
   grossIncome: number,
   filingStatus: TaxFilingStatus = "single",
-  itemizedDeduction?: number,
+  federalItemizedDeduction?: number,
+  caItemizedDeduction: number | undefined = federalItemizedDeduction,
 ) => {
   const federal = computeFederalTax(
     grossIncome,
     filingStatus,
-    itemizedDeduction,
+    federalItemizedDeduction,
   );
   const state = computeCaliforniaTax(
     grossIncome,
     filingStatus,
-    itemizedDeduction,
+    caItemizedDeduction,
   );
 
   return { federal, state, total: federal + state };

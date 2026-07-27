@@ -120,14 +120,26 @@ describe("apis | budget", () => {
       const standard = computeTotalTax(200_000);
       // Between CA ($5,706) and federal ($15,750) standards: CA itemizes, federal does not.
       const betweenStandards = computeTotalTax(200_000, "single", 10_000);
-      const aboveBoth = computeTotalTax(200_000, "single", 50_000);
+      // Distinct federal vs CA itemized amounts.
+      const splitItemized = computeTotalTax(200_000, "single", 40_000, 20_000);
 
       expect(betweenStandards.federal).toBe(standard.federal);
       expect(betweenStandards.state).toBeLessThan(standard.state);
       expect(betweenStandards.total).toBeLessThan(standard.total);
-      expect(aboveBoth.federal).toBeLessThan(standard.federal);
-      expect(aboveBoth.state).toBeLessThan(standard.state);
-      expect(aboveBoth.total).toBeLessThan(standard.total);
+
+      expect(splitItemized.federal).toBe(
+        computeFederalTax(200_000, "single", 40_000),
+      );
+      expect(splitItemized.state).toBe(
+        computeCaliforniaTax(200_000, "single", 20_000),
+      );
+      expect(splitItemized.total).toBeCloseTo(
+        splitItemized.federal + splitItemized.state,
+        2,
+      );
+      expect(splitItemized.federal).toBeLessThan(standard.federal);
+      expect(splitItemized.state).toBeLessThan(standard.state);
+      expect(splitItemized.total).toBeLessThan(standard.total);
     });
   });
 
