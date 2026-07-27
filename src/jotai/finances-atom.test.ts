@@ -511,11 +511,12 @@ describe("jotai | finances-atom", () => {
         stock: 2_000,
       });
 
+      // Same combined $187k gross as the joint case; only filing status differs.
       const singleStore = createStore();
       singleStore.set(compCalcAtom, [
         {
           entryDate: "2020-01",
-          salary: 100_000,
+          salary: 187_000,
           bonus: 0,
           stockTick: "",
           priceThen: 0,
@@ -528,11 +529,11 @@ describe("jotai | finances-atom", () => {
       const single = singleStore.get(budgetFlowRead).flow;
 
       expect(joint?.income.gross).toBe(187_000);
+      expect(single?.income.gross).toBe(187_000);
       expect(joint?.income.partnerSalary).toBe(80_000);
-      expect(joint?.totalTax).toBeDefined();
-      expect(single?.totalTax).toBeDefined();
-      // Combined 187k MFJ tax should differ from 100k single (not a simple sum).
-      expect(joint?.federalTax).not.toBe(single?.federalTax);
+      expect(Number.isFinite(joint?.federalTax)).toBe(true);
+      expect(Number.isFinite(single?.federalTax)).toBe(true);
+      expect(joint!.federalTax).toBeLessThan(single!.federalTax);
     });
 
     it("uses standard deduction when itemize is off", () => {
@@ -552,7 +553,7 @@ describe("jotai | finances-atom", () => {
       store.set(itemizeDeductionsAtom, false);
       store.set(itemizedDeductionAtom, 50_000);
 
-      const withItemizeOff = store.get(budgetFlowRead).flow;
+      const withItemizeOffTax = store.get(budgetFlowRead).flow?.totalTax;
 
       const standardStore = createStore();
       standardStore.set(compCalcAtom, [
@@ -566,10 +567,11 @@ describe("jotai | finances-atom", () => {
           grantQty: 0,
         },
       ]);
+      const standardTax = standardStore.get(budgetFlowRead).flow?.totalTax;
 
-      expect(withItemizeOff?.totalTax).toBe(
-        standardStore.get(budgetFlowRead).flow?.totalTax,
-      );
+      expect(Number.isFinite(withItemizeOffTax)).toBe(true);
+      expect(Number.isFinite(standardTax)).toBe(true);
+      expect(withItemizeOffTax).toBe(standardTax);
     });
 
     it("uses itemized deduction when itemize is on", () => {
@@ -589,7 +591,7 @@ describe("jotai | finances-atom", () => {
       store.set(itemizeDeductionsAtom, true);
       store.set(itemizedDeductionAtom, 50_000);
 
-      const itemized = store.get(budgetFlowRead).flow;
+      const itemizedTax = store.get(budgetFlowRead).flow?.totalTax;
 
       const standardStore = createStore();
       standardStore.set(compCalcAtom, [
@@ -603,10 +605,11 @@ describe("jotai | finances-atom", () => {
           grantQty: 0,
         },
       ]);
+      const standardTax = standardStore.get(budgetFlowRead).flow?.totalTax;
 
-      expect(itemized?.totalTax).toBeLessThan(
-        standardStore.get(budgetFlowRead).flow?.totalTax ?? Infinity,
-      );
+      expect(Number.isFinite(itemizedTax)).toBe(true);
+      expect(Number.isFinite(standardTax)).toBe(true);
+      expect(itemizedTax!).toBeLessThan(standardTax!);
     });
   });
 
