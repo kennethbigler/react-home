@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import NetWorthEntryDialog from "./NetWorthEntryDialog";
 
@@ -141,7 +141,7 @@ describe("resume | finances | net-worth | NetWorthEntryDialog", () => {
     );
   });
 
-  it("shows delete when editing and calls onDelete", () => {
+  it("shows delete when editing and calls onDelete after confirmation", () => {
     const onDelete = vi.fn();
 
     render(
@@ -157,7 +157,40 @@ describe("resume | finances | net-worth | NetWorthEntryDialog", () => {
 
     expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    expect(onDelete).not.toHaveBeenCalled();
+
+    const confirmation = screen.getByRole("dialog", {
+      name: "Delete net worth entry?",
+    });
+    fireEvent.click(
+      within(confirmation).getByRole("button", { name: "Delete entry" }),
+    );
     expect(onDelete).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not delete when confirmation is cancelled", () => {
+    const onDelete = vi.fn();
+
+    render(
+      <NetWorthEntryDialog
+        open
+        entry={entry}
+        categories={["Cash"]}
+        onClose={vi.fn()}
+        addEntry={vi.fn()}
+        onDelete={onDelete}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    const confirmation = screen.getByRole("dialog", {
+      name: "Delete net worth entry?",
+    });
+    fireEvent.click(
+      within(confirmation).getByRole("button", { name: "Cancel" }),
+    );
+
+    expect(onDelete).not.toHaveBeenCalled();
   });
 
   it("hides delete for new entries", () => {

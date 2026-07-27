@@ -11,17 +11,22 @@ const chartTestState = vi.hoisted(() => ({
   tooltipFollowTouchMove: undefined as boolean | undefined,
   tooltipFormatter: null as Highcharts.TooltipFormatterCallbackFunction | null,
   pointClickHandler: null as Highcharts.PointClickCallbackFunction | null,
+  sankeyPointClickHandler: null as Highcharts.PointClickCallbackFunction | null,
 }));
 
-export const resetCapturedNetWorthChartConfig = () => {
+export const resetCapturedChartConfig = () => {
   chartTestState.chartOptions = {};
   chartTestState.series = [];
   chartTestState.tooltipFollowTouchMove = undefined;
   chartTestState.tooltipFormatter = null;
   chartTestState.pointClickHandler = null;
+  chartTestState.sankeyPointClickHandler = null;
 };
 
 export const getChartOptions = () => chartTestState.chartOptions;
+
+export const getTooltipFollowTouchMove = () =>
+  chartTestState.tooltipFollowTouchMove;
 
 export const getTooltipFormatter = () => chartTestState.tooltipFormatter;
 
@@ -45,6 +50,8 @@ export const getBreakdownSeriesData = () => {
   return pieSeries?.data as Array<{ name: string; y: number }> | undefined;
 };
 
+export const getPieSeriesData = () => getBreakdownSeriesData() ?? [];
+
 export const selectChartPoint = (index: number | undefined) => {
   chartTestState.pointClickHandler?.call(
     { index } as Highcharts.Point,
@@ -52,7 +59,18 @@ export const selectChartPoint = (index: number | undefined) => {
   );
 };
 
-vi.mock("../../../../common/highcharts/coreHighcharts", () => ({
+export const clickSankeyNode = (node: { id: string; isNode?: boolean }) => {
+  chartTestState.sankeyPointClickHandler?.call(
+    { isNode: true, ...node } as unknown as Highcharts.Point,
+    {} as Highcharts.PointClickEventObject,
+  );
+};
+
+vi.mock("../coreHighcharts", () => ({
+  default: {},
+}));
+
+vi.mock("../sankeyHighcharts", () => ({
   default: {},
 }));
 
@@ -71,6 +89,14 @@ vi.mock("@highcharts/react", () => ({
     options?: Highcharts.Options;
   }) => {
     chartTestState.chartOptions = options ?? {};
+
+    const sankeyClickHandler =
+      options?.plotOptions?.sankey?.point?.events?.click ??
+      options?.plotOptions?.series?.point?.events?.click;
+    if (sankeyClickHandler) {
+      chartTestState.sankeyPointClickHandler = sankeyClickHandler;
+    }
+
     return <div data-testid="highcharts-chart">{children}</div>;
   },
   Credits: () => null,
@@ -106,6 +132,7 @@ vi.mock("@highcharts/react", () => ({
       <div
         data-testid="highcharts-series"
         data-name={options?.name}
+        data-type={type}
         data-length={Array.isArray(data) ? data.length : 0}
       />
     );
@@ -129,7 +156,9 @@ vi.mock("@highcharts/react", () => ({
     return null;
   },
   XAxis: () => null,
-  YAxis: () => null,
+  // Render children so axis titles passed as children (e.g. TravelDaysGraph's
+  // "Days") stay queryable in tests.
+  YAxis: ({ children }: { children?: ReactNode }) => <>{children}</>,
   setHighcharts: vi.fn(),
 }));
 

@@ -6,32 +6,15 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
   TextField,
-  type TextFieldProps,
-  type SelectChangeEvent,
 } from "@mui/material";
-import dateHelper, { months } from "../../../../apis/DateHelper";
 import type { NetWorthEntry } from "../../../../jotai/finances-atom";
-
-const tfProps: TextFieldProps = {
-  variant: "standard",
-  fullWidth: true,
-  margin: "dense",
-};
+import ConfirmDeleteDialog from "../shared/ConfirmDeleteDialog";
+import MonthYearSelect from "../shared/MonthYearSelect";
+import dialogTextFieldProps from "../shared/dialogTextFieldProps";
+import useMonthYear from "../shared/useMonthYear";
 
 const VALIDATION_ERROR_ID = "net-worth-entry-validation-error";
-
-const currentYear = new Date().getFullYear() - 2000;
-const years: number[] = [];
-for (let i = 0; i <= currentYear; i += 1) {
-  years.push(2000 + i);
-}
-years.reverse();
 
 interface NetWorthEntryDialogProps {
   open: boolean;
@@ -54,13 +37,16 @@ const NetWorthEntryDialog = ({
   addEntry,
   onDelete,
 }: NetWorthEntryDialogProps) => {
-  const [entryDateMonth, setEntryDateMonth] = useState(
-    (entry && (dateHelper(entry.entryDate).month + 1).toString()) || "1",
-  );
-  const [entryDateYear, setEntryDateYear] = useState(
-    (entry && dateHelper(entry.entryDate).year.toString()) ||
-      years[0].toString(),
-  );
+  const [error, setError] = useState("");
+  const [invalidCategories, setInvalidCategories] = useState<string[]>([]);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+
+  const clearValidation = () => {
+    setError("");
+    setInvalidCategories([]);
+  };
+
+  const monthYear = useMonthYear(entry?.entryDate, clearValidation);
   const [amounts, setAmounts] = useState<Record<string, AmountValue>>(() => {
     const initial: Record<string, AmountValue> = {};
     categories.forEach((category) => {
@@ -68,22 +54,6 @@ const NetWorthEntryDialog = ({
     });
     return initial;
   });
-  const [error, setError] = useState("");
-  const [invalidCategories, setInvalidCategories] = useState<string[]>([]);
-
-  const clearValidation = () => {
-    setError("");
-    setInvalidCategories([]);
-  };
-
-  const handleSelectMonth = (e: SelectChangeEvent<string>) => {
-    setEntryDateMonth(e.target.value);
-    clearValidation();
-  };
-  const handleSelectYear = (e: SelectChangeEvent<string>) => {
-    setEntryDateYear(e.target.value);
-    clearValidation();
-  };
 
   const handleAmountChange =
     (category: string) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -101,7 +71,7 @@ const NetWorthEntryDialog = ({
     };
 
   const handleSubmit = () => {
-    const entryDate = `${entryDateYear}-${String(entryDateMonth).padStart(2, "0")}`;
+    const { entryDate } = monthYear;
     if (
       entries.some(
         (existingEntry) =>
@@ -134,88 +104,78 @@ const NetWorthEntryDialog = ({
     });
   };
 
-  return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>{entry ? "Edit" : "New"} Net Worth Entry</DialogTitle>
-      <DialogContent>
-        <Stack direction="row" sx={{ marginTop: 0.625 }}>
-          <FormControl fullWidth>
-            <InputLabel id="net-worth-month-select">Month</InputLabel>
-            <Select
-              labelId="net-worth-month-select"
-              label="Month"
-              value={entryDateMonth}
-              onChange={handleSelectMonth}
-            >
-              {months.map((month, i) => (
-                <MenuItem value={String(i + 1)} key={month}>
-                  {month}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="net-worth-year-select">Year</InputLabel>
-            <Select
-              labelId="net-worth-year-select"
-              label="Year"
-              value={entryDateYear}
-              onChange={handleSelectYear}
-            >
-              {years.map((year) => (
-                <MenuItem value={year} key={year}>
-                  {year}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Stack>
-        {categories.map((category) => {
-          const isInvalid = invalidCategories.includes(category);
+  const confirmDelete = () => {
+    onDelete?.();
+    setConfirmDeleteOpen(false);
+  };
 
-          return (
-            <TextField
-              key={category}
-              label={category}
-              value={amounts[category]}
-              type="number"
-              onChange={handleAmountChange(category)}
-              error={isInvalid}
-              slotProps={{
-                input: { startAdornment: "$" },
-                htmlInput: {
-                  "aria-invalid": isInvalid || undefined,
-                  "aria-describedby": isInvalid
-                    ? VALIDATION_ERROR_ID
-                    : undefined,
-                },
-              }}
-              {...tfProps}
-            />
-          );
-        })}
-        {error ? (
-          <Alert
-            id={VALIDATION_ERROR_ID}
-            severity="error"
-            sx={{ marginTop: 1 }}
-          >
-            {error}
-          </Alert>
-        ) : null}
-      </DialogContent>
-      <DialogActions>
-        {entry && onDelete ? (
-          <Button onClick={onDelete} color="error">
-            Delete
+  return (
+    <>
+      <Dialog open={open} onClose={onClose}>
+        <DialogTitle>{entry ? "Edit" : "New"} Net Worth Entry</DialogTitle>
+        <DialogContent>
+          <MonthYearSelect
+            idPrefix="net-worth"
+            month={monthYear.month}
+            year={monthYear.year}
+            onMonthChange={monthYear.handleMonthChange}
+            onYearChange={monthYear.handleYearChange}
+          />
+          {categories.map((category) => {
+            const isInvalid = invalidCategories.includes(category);
+
+            return (
+              <TextField
+                key={category}
+                label={category}
+                value={amounts[category]}
+                type="number"
+                onChange={handleAmountChange(category)}
+                error={isInvalid}
+                slotProps={{
+                  input: { startAdornment: "$" },
+                  htmlInput: {
+                    "aria-invalid": isInvalid || undefined,
+                    "aria-describedby": isInvalid
+                      ? VALIDATION_ERROR_ID
+                      : undefined,
+                  },
+                }}
+                {...dialogTextFieldProps}
+              />
+            );
+          })}
+          {error ? (
+            <Alert
+              id={VALIDATION_ERROR_ID}
+              severity="error"
+              sx={{ marginTop: 1 }}
+            >
+              {error}
+            </Alert>
+          ) : null}
+        </DialogContent>
+        <DialogActions>
+          {entry && onDelete ? (
+            <Button onClick={() => setConfirmDeleteOpen(true)} color="error">
+              Delete
+            </Button>
+          ) : null}
+          <Button onClick={onClose}>Cancel</Button>
+          <Button type="button" onClick={handleSubmit}>
+            {entry ? "Update" : "Add"}
           </Button>
-        ) : null}
-        <Button onClick={onClose}>Cancel</Button>
-        <Button type="button" onClick={handleSubmit}>
-          {entry ? "Update" : "Add"}
-        </Button>
-      </DialogActions>
-    </Dialog>
+        </DialogActions>
+      </Dialog>
+      <ConfirmDeleteDialog
+        open={confirmDeleteOpen}
+        title="Delete net worth entry?"
+        description="This net worth entry will be permanently deleted."
+        confirmLabel="Delete entry"
+        onCancel={() => setConfirmDeleteOpen(false)}
+        onConfirm={confirmDelete}
+      />
+    </>
   );
 };
 

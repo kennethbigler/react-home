@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Alert } from "@mui/material";
 import { useAtom, useAtomValue } from "jotai";
 import {
@@ -7,6 +7,8 @@ import {
   netWorthRead,
   sortNetWorthEntriesByDate,
 } from "../../../../jotai/finances-atom";
+import useEntryDialog from "../shared/useEntryDialog";
+import useSortedEntries from "../shared/useSortedEntries";
 import NetWorthActions from "./NetWorthActions";
 import Graphs from "./graphs/Graphs";
 import NetWorthEntryDisplay from "./NetWorthEntryDisplay";
@@ -16,33 +18,17 @@ const NetWorth = () => {
   const [entries, setEntries] = useAtom(netWorthAtom);
   const [categories, setCategories] = useAtom(netWorthCategoriesAtom);
   const calcEntries = useAtomValue(netWorthRead);
-
-  const [openEntry, setOpenEntry] = useState(false);
-  const [editEntryIdx, setEditEntryIdx] = useState(-1);
-  const [openCategories, setOpenCategories] = useState(false);
-
-  // Persist chronological order for legacy insertion-ordered storage.
-  useEffect(() => {
-    const sorted = sortNetWorthEntriesByDate(entries);
-    if (sorted.some((entry, i) => entry.entryDate !== entries[i]?.entryDate)) {
-      setEntries(sorted);
-    }
-  }, [entries, setEntries]);
-
-  const sortedEntries = useMemo(
-    () => sortNetWorthEntriesByDate(entries),
-    [entries],
+  const sortedEntries = useSortedEntries(
+    entries,
+    setEntries,
+    sortNetWorthEntriesByDate,
   );
+  const entryDialog = useEntryDialog();
 
   const sortedCategories = useMemo(
     () => sortCategoriesByFinalEntry(categories, sortedEntries),
     [categories, sortedEntries],
   );
-
-  const openEditEntry = (i: number) => () => {
-    setEditEntryIdx(i);
-    setOpenEntry(true);
-  };
 
   return (
     <>
@@ -62,19 +48,14 @@ const NetWorth = () => {
         setEntries={setEntries}
         categories={sortedCategories}
         setCategories={setCategories}
-        openEntry={openEntry}
-        setOpenEntry={setOpenEntry}
-        editEntryIdx={editEntryIdx}
-        setEditEntryIdx={setEditEntryIdx}
-        openCategories={openCategories}
-        setOpenCategories={setOpenCategories}
+        entryDialog={entryDialog}
       />
       {sortedEntries.length > 0 && (
         <NetWorthEntryDisplay
           entries={sortedEntries}
           calcEntries={calcEntries}
           categories={sortedCategories}
-          onClick={openEditEntry}
+          onClick={entryDialog.openEdit}
         />
       )}
     </>

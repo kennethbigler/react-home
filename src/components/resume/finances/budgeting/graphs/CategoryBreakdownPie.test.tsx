@@ -1,4 +1,4 @@
-import { getPieSeriesData } from "./tests/highchartsMocks";
+import { getPieSeriesData } from "../../../../common/highcharts/tests/highchartsMocks";
 import { render, screen } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import { describe, expect, it } from "vitest";

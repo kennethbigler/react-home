@@ -1,4 +1,4 @@
-import "../tests/highchartsMocks";
+import "../../../common/highcharts/tests/highchartsMocks";
 import { render, screen } from "@testing-library/react";
 import { Provider, createStore } from "jotai";
 import themeAtom, { lightTheme } from "../../../../jotai/theme-atom";

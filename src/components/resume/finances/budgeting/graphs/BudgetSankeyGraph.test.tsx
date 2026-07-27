@@ -1,4 +1,4 @@
-import { clickSankeyNode } from "./tests/highchartsMocks";
+import { clickSankeyNode } from "../../../../common/highcharts/tests/highchartsMocks";
 import { render, screen } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import { describe, expect, it, vi } from "vitest";

@@ -5,9 +5,9 @@ import {
   getChartOptions,
   getSeriesByName,
   getTooltipFormatter,
-  resetCapturedNetWorthChartConfig,
+  resetCapturedChartConfig,
   selectChartPoint,
-} from "./tests/highchartsMocks";
+} from "../../../../common/highcharts/tests/highchartsMocks";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
@@ -55,7 +55,7 @@ describe("resume | finances | net-worth | Graphs", () => {
     );
 
   beforeEach(() => {
-    resetCapturedNetWorthChartConfig();
+    resetCapturedChartConfig();
   });
 
   it("renders both net worth charts", () => {
@@ -250,7 +250,7 @@ describe("resume | finances | net-worth | NetWorthChart", () => {
   ];
 
   beforeEach(() => {
-    resetCapturedNetWorthChartConfig();
+    resetCapturedChartConfig();
   });
 
   it("ignores point clicks without an index", () => {

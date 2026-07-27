@@ -1,9 +1,9 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import ExpenseEntryDialog from "./ExpenseEntryDialog";
 
 describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
-  it("submits a dollar expense and resets the form", () => {
+  it("submits a dollar expense", () => {
     const addExpenseEntry = vi.fn();
     const onClose = vi.fn();
 
@@ -32,7 +32,6 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
       value: 250,
       valueMode: "dollar",
     });
-    expect(screen.getByLabelText("Name")).toHaveValue("");
   });
 
   it("allows clearing the value field and submits empty as 0", () => {
@@ -340,7 +339,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  it("shows delete when editing and calls onDelete", () => {
+  it("shows delete when editing and calls onDelete after confirmation", () => {
     const onDelete = vi.fn();
 
     render(
@@ -363,8 +362,44 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     ).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    expect(onDelete).not.toHaveBeenCalled();
+
+    const confirmation = screen.getByRole("dialog", {
+      name: "Delete expense entry?",
+    });
+    fireEvent.click(
+      within(confirmation).getByRole("button", { name: "Delete entry" }),
+    );
 
     expect(onDelete).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not delete when confirmation is cancelled", () => {
+    const onDelete = vi.fn();
+
+    render(
+      <ExpenseEntryDialog
+        open
+        expenseEntry={{
+          name: "Rent",
+          category: "Housing",
+          value: 2000,
+        }}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+        onDelete={onDelete}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    const confirmation = screen.getByRole("dialog", {
+      name: "Delete expense entry?",
+    });
+    fireEvent.click(
+      within(confirmation).getByRole("button", { name: "Cancel" }),
+    );
+
+    expect(onDelete).not.toHaveBeenCalled();
   });
 
   it("does not show delete when creating a new expense", () => {

@@ -1,25 +1,9 @@
+import "../../common/highcharts/tests/highchartsMocks";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import { green, indigo } from "@mui/material/colors";
 import LiePie from "./LiePie";
-
-vi.mock("highcharts/highcharts.src", () => ({
-  default: {},
-}));
-vi.mock("highcharts/modules/accessibility", () => ({ default: vi.fn() }));
-vi.mock("@highcharts/react", () => ({
-  Chart: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  Credits: () => null,
-  Series: () => null,
-  Title: ({ children }: { children: React.ReactNode }) => (
-    <span>{children}</span>
-  ),
-  setHighcharts: vi.fn(),
-}));
-vi.mock("@highcharts/react/modules/Accessibility", () => ({
-  Accessibility: () => null,
-}));
 
 // Use a plain writable atom so tests can control theme.mode deterministically.
 // atomWithStorage caches at module level and ignores per-store overrides.

@@ -16,33 +16,18 @@ import {
   Select,
   type SelectChangeEvent,
   TextField,
-  type TextFieldProps,
 } from "@mui/material";
 import {
   resolveCategoryMerges,
   type CategoryMerge,
+  type CategoryRow,
+  type PendingMerge,
 } from "./resolveCategoryMerges";
+import dialogTextFieldProps from "../shared/dialogTextFieldProps";
 
 export type { CategoryMerge } from "./resolveCategoryMerges";
 
-const tfProps: TextFieldProps = {
-  variant: "standard",
-  fullWidth: true,
-  margin: "dense",
-};
-
 const VALIDATION_ERROR_ID = "categories-dialog-validation-error";
-
-interface CategoryRow {
-  id: string;
-  name: string;
-  previousName?: string;
-}
-
-interface PendingMerge {
-  from: string;
-  intoRowId: string;
-}
 
 interface PendingRemoval {
   rowId: string;
@@ -118,7 +103,10 @@ const CategoriesDialog = ({
   };
 
   const removeRow = (id: string) => () => {
-    const row = rows.find((r) => r.id === id)!;
+    const row = rows.find((r) => r.id === id);
+    if (!row) {
+      return;
+    }
     const remaining = rows.filter((r) => r.id !== id);
     const sourceKey = row.previousName;
 
@@ -140,25 +128,31 @@ const CategoriesDialog = ({
   };
 
   const confirmMergeNo = () => {
-    dropRow(pendingRemoval!.rowId);
+    if (!pendingRemoval) {
+      return;
+    }
+    dropRow(pendingRemoval.rowId);
     closeMergePrompt();
   };
 
   const confirmMergeYes = () => {
+    if (!pendingRemoval) {
+      return;
+    }
     setMerges((prev) => [
       ...prev,
       {
-        from: pendingRemoval!.sourceKey,
-        intoRowId: pendingRemoval!.targetId,
+        from: pendingRemoval.sourceKey,
+        intoRowId: pendingRemoval.targetId,
       },
     ]);
-    dropRow(pendingRemoval!.rowId);
+    dropRow(pendingRemoval.rowId);
     closeMergePrompt();
   };
 
   const handleMergeTargetChange = (e: SelectChangeEvent<string>) => {
     const { value } = e.target;
-    setPendingRemoval((prev) => ({ ...prev!, targetId: value }));
+    setPendingRemoval((prev) => (prev ? { ...prev, targetId: value } : prev));
   };
 
   const handleSave = () => {
@@ -242,7 +236,7 @@ const CategoriesDialog = ({
                         : undefined,
                     },
                   }}
-                  {...tfProps}
+                  {...dialogTextFieldProps}
                 />
                 <IconButton
                   aria-label="remove category"

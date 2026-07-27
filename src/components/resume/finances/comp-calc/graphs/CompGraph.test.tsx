@@ -5,9 +5,9 @@ import {
   getTooltipFollowTouchMove,
   getTooltipFormatter,
   formatTooltip,
-  resetCapturedCompChartConfig,
+  resetCapturedChartConfig,
   selectChartPoint,
-} from "./tests/highchartsMocks";
+} from "../../../../common/highcharts/tests/highchartsMocks";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
@@ -85,7 +85,7 @@ describe("CompGraph", () => {
   };
 
   beforeEach(() => {
-    resetCapturedCompChartConfig();
+    resetCapturedChartConfig();
   });
 
   it("renders the total comp chart", () => {

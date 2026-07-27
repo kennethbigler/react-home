@@ -42,6 +42,11 @@ export type {
 const getAnnualUnallocated = (flow: BudgetFlow): number =>
   Math.max(0, flow.net - flow.totalAllocated * BUDGET_MONTHS_PER_YEAR);
 
+/** Income streams feeding the gross node, in display order. */
+const incomeSourceKeys = Object.keys(INCOME_NODE_LABELS) as Array<
+  keyof typeof INCOME_NODE_LABELS
+>;
+
 /**
  * Payroll category expenses share the Payroll sankey node; remaining categories
  * sort by total descending (heading as tiebreaker).
@@ -100,48 +105,15 @@ export const buildBudgetSankeyData = (
     partitionBudgetCategoriesForCharts(categories);
   const data: BudgetSankeyData["data"] = [];
 
-  if (income.salary > 0) {
-    data.push({
-      from: INCOME_NODE_LABELS.salary,
-      to: GROSS_INCOME_NODE,
-      weight: income.salary,
-    });
-  }
-  if (income.bonus > 0) {
-    data.push({
-      from: INCOME_NODE_LABELS.bonus,
-      to: GROSS_INCOME_NODE,
-      weight: income.bonus,
-    });
-  }
-  if (income.stockAdj > 0) {
-    data.push({
-      from: INCOME_NODE_LABELS.stockAdj,
-      to: GROSS_INCOME_NODE,
-      weight: income.stockAdj,
-    });
-  }
-  if (income.partnerSalary > 0) {
-    data.push({
-      from: INCOME_NODE_LABELS.partnerSalary,
-      to: GROSS_INCOME_NODE,
-      weight: income.partnerSalary,
-    });
-  }
-  if (income.partnerBonus > 0) {
-    data.push({
-      from: INCOME_NODE_LABELS.partnerBonus,
-      to: GROSS_INCOME_NODE,
-      weight: income.partnerBonus,
-    });
-  }
-  if (income.partnerStockAdj > 0) {
-    data.push({
-      from: INCOME_NODE_LABELS.partnerStockAdj,
-      to: GROSS_INCOME_NODE,
-      weight: income.partnerStockAdj,
-    });
-  }
+  incomeSourceKeys.forEach((key) => {
+    if (income[key] > 0) {
+      data.push({
+        from: INCOME_NODE_LABELS[key],
+        to: GROSS_INCOME_NODE,
+        weight: income[key],
+      });
+    }
+  });
 
   const incomeTaxWithholdings: Array<{ amount: number; label: string }> = [
     { amount: federalTax, label: FEDERAL_TAX_LABEL },
@@ -200,36 +172,11 @@ export const buildBudgetSankeyData = (
   }
 
   const nodes: BudgetSankeyData["nodes"] = [
-    {
-      id: INCOME_NODE_LABELS.salary,
+    ...incomeSourceKeys.map((key) => ({
+      id: INCOME_NODE_LABELS[key],
       column: 0,
-      color: nodeColors.salary,
-    },
-    {
-      id: INCOME_NODE_LABELS.bonus,
-      column: 0,
-      color: nodeColors.bonus,
-    },
-    {
-      id: INCOME_NODE_LABELS.stockAdj,
-      column: 0,
-      color: nodeColors.stockAdj,
-    },
-    {
-      id: INCOME_NODE_LABELS.partnerSalary,
-      column: 0,
-      color: nodeColors.partnerSalary,
-    },
-    {
-      id: INCOME_NODE_LABELS.partnerBonus,
-      column: 0,
-      color: nodeColors.partnerBonus,
-    },
-    {
-      id: INCOME_NODE_LABELS.partnerStockAdj,
-      column: 0,
-      color: nodeColors.partnerStockAdj,
-    },
+      color: nodeColors[key],
+    })),
     {
       id: GROSS_INCOME_NODE,
       column: 1,

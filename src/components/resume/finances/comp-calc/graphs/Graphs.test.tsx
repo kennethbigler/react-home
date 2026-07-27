@@ -1,10 +1,10 @@
 import {
   getBreakdownSeriesData,
   getSeriesByName,
-  resetCapturedCompChartConfig,
+  resetCapturedChartConfig,
   selectChartPoint,
   getChartOptions,
-} from "./tests/highchartsMocks";
+} from "../../../../common/highcharts/tests/highchartsMocks";
 import { beforeEach, describe, expect, it } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
@@ -110,7 +110,7 @@ describe("Graphs", () => {
     );
 
   beforeEach(() => {
-    resetCapturedCompChartConfig();
+    resetCapturedChartConfig();
   });
 
   it("renders both CompChart and BreakdownChart", () => {

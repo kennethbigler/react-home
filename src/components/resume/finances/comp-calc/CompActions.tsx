@@ -1,42 +1,30 @@
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { useAtom } from "jotai";
 import { Box, Button } from "@mui/material";
 import {
   type CompEntry,
   sortCompEntriesByDate,
 } from "../../../../jotai/finances-atom";
+import stockAtom from "../../../../jotai/stock-atom";
+import type { EntryDialogState } from "../shared/useEntryDialog";
 import CompEntryDialog from "./CompEntryDialog";
 import StockDialog from "./StockDialog";
-import stockAtom from "../../../../jotai/stock-atom";
 import StockDisplay from "./StockDisplay";
 
 interface CompActionsProps {
   compEntries: CompEntry[];
-  editEntryIdx: number;
-  openEntry: boolean;
   setCompEntries: Dispatch<SetStateAction<CompEntry[]>>;
-  setEditEntryIdx: Dispatch<SetStateAction<number>>;
-  setOpenEntry: Dispatch<SetStateAction<boolean>>;
+  entryDialog: EntryDialogState;
 }
 
 const CompActions = ({
   compEntries,
   setCompEntries,
-  openEntry,
-  setOpenEntry,
-  editEntryIdx,
-  setEditEntryIdx,
+  entryDialog,
 }: CompActionsProps) => {
   const [stockEntries, setStockEntries] = useAtom(stockAtom);
   const [openStock, setOpenStock] = useState(false);
   const [editStockTick, setEditStockTick] = useState("");
-
-  // entry open/closers
-  const closeEntryModal = () => setOpenEntry(false);
-  const openNewEntry = () => {
-    setEditEntryIdx(-1);
-    setOpenEntry(true);
-  };
 
   // stock open/closers
   const closeStockModal = () => setOpenStock(false);
@@ -51,18 +39,18 @@ const CompActions = ({
 
   const addCompEntry = (compEntry: CompEntry) => {
     const newCompEntries = [...compEntries];
-    if (editEntryIdx === -1) {
+    if (entryDialog.editIdx === -1) {
       newCompEntries.push(compEntry);
     } else {
-      newCompEntries[editEntryIdx] = compEntry;
+      newCompEntries[entryDialog.editIdx] = compEntry;
     }
     setCompEntries(sortCompEntriesByDate(newCompEntries));
-    closeEntryModal();
+    entryDialog.close();
   };
 
   const removeCompEntry = () => {
-    setCompEntries(compEntries.filter((_, i) => i !== editEntryIdx));
-    closeEntryModal();
+    setCompEntries(compEntries.filter((_, i) => i !== entryDialog.editIdx));
+    entryDialog.close();
   };
 
   const addStockEntry = (stock: string, price: number) => {
@@ -82,6 +70,8 @@ const CompActions = ({
     closeStockModal();
   };
 
+  const isEditingEntry = entryDialog.editIdx !== -1;
+
   return (
     <>
       <Box
@@ -94,7 +84,7 @@ const CompActions = ({
         }}
       >
         <Box>
-          <Button onClick={openNewEntry}>+ Entry</Button>
+          <Button onClick={entryDialog.openNew}>+ Entry</Button>
           <Button onClick={openNewStock}>+ Stock</Button>
         </Box>
         <StockDisplay
@@ -112,15 +102,15 @@ const CompActions = ({
           removeStockEntry={removeStockEntry}
         />
       )}
-      {openEntry && (
+      {entryDialog.open && (
         <CompEntryDialog
-          open={openEntry}
+          open={entryDialog.open}
           compEntry={
-            editEntryIdx !== -1 ? compEntries[editEntryIdx] : undefined
+            isEditingEntry ? compEntries[entryDialog.editIdx] : undefined
           }
-          onClose={closeEntryModal}
+          onClose={entryDialog.close}
           addCompEntry={addCompEntry}
-          onDelete={editEntryIdx !== -1 ? removeCompEntry : undefined}
+          onDelete={isEditingEntry ? removeCompEntry : undefined}
         />
       )}
     </>

@@ -30,7 +30,7 @@ const CompEntryDisplay = ({
           key={`comp-calc-entry-${i}`}
         />
       ))
-      .reverse()}
+      .toReversed()}
   </Grid>
 );
 

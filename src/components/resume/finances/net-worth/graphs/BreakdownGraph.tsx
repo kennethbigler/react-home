@@ -1,4 +1,3 @@
-import { useAtomValue } from "jotai";
 import {
   Chart,
   Credits,
@@ -10,7 +9,8 @@ import {
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../../../common/highcharts/coreHighcharts";
-import themeAtom from "../../../../../jotai/theme-atom";
+import ChartFigure from "../../shared/ChartFigure";
+import useChartTextColor from "../../shared/useChartTextColor";
 import colors from "./colors";
 import { buildNetWorthBreakdownPieData } from "./buildNetWorthBreakdownPieData";
 
@@ -25,12 +25,11 @@ const options: Highcharts.Options = {
 };
 
 const BreakdownChart = ({ categories, amounts }: BreakdownChartProps) => {
-  const theme = useAtomValue(themeAtom);
-  const color = theme.mode === "light" ? "black" : "white";
+  const color = useChartTextColor();
   const data = buildNetWorthBreakdownPieData(categories, amounts);
 
   return (
-    <figure style={{ margin: 0, width: "100%" }}>
+    <ChartFigure>
       <Chart
         key={JSON.stringify(data)}
         highcharts={Highcharts}
@@ -58,7 +57,7 @@ const BreakdownChart = ({ categories, amounts }: BreakdownChartProps) => {
         />
         <Series type="pie" data={data} />
       </Chart>
-    </figure>
+    </ChartFigure>
   );
 };
 

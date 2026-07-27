@@ -379,6 +379,7 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
       screen.getByRole("button", { name: "Edit Groceries: $250.00" }),
     );
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete entry" }));
 
     await waitFor(() =>
       expect(screen.queryByText("Groceries: $250.00")).toBeNull(),
@@ -450,6 +451,7 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
       screen.getByRole("button", { name: "Edit Groceries: $250.00" }),
     );
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete entry" }));
 
     await waitFor(() =>
       expect(screen.queryByText("Groceries: $250.00")).toBeNull(),

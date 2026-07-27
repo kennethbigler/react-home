@@ -15,7 +15,6 @@ import {
   type SelectChangeEvent,
   Stack,
   TextField,
-  type TextFieldProps,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
@@ -31,12 +30,8 @@ import type {
   ExpenseTaxBasis,
   ExpenseValueMode,
 } from "../../../../../jotai/finances-atom";
-
-const tfProps: TextFieldProps = {
-  variant: "standard",
-  fullWidth: true,
-  margin: "dense",
-};
+import ConfirmDeleteDialog from "../../shared/ConfirmDeleteDialog";
+import dialogTextFieldProps from "../../shared/dialogTextFieldProps";
 
 const percentSourceOptions: Array<{
   value: ExpensePercentSource;
@@ -77,15 +72,7 @@ const ExpenseEntryDialog = ({
     getTaxBasis(expenseEntry ?? {}),
   );
   const [value, setValue] = useState<number | "">(expenseEntry?.value || 0);
-
-  const resetState = () => {
-    setName("");
-    setCategory("");
-    setValueMode("dollar");
-    setPercentSources(["salary"]);
-    setTaxBasis("posttax");
-    setValue(0);
-  };
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
@@ -135,7 +122,11 @@ const ExpenseEntryDialog = ({
         ? { valueMode, percentSources, taxBasis }
         : { valueMode: "dollar" }),
     });
-    resetState();
+  };
+
+  const confirmDelete = () => {
+    onDelete?.();
+    setConfirmDeleteOpen(false);
   };
 
   const numericValue = typeof value === "number" ? value : Number.NaN;
@@ -156,139 +147,150 @@ const ExpenseEntryDialog = ({
     hasPercentSources;
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>{expenseEntry ? "Edit" : "New"} Expense Entry</DialogTitle>
-      <DialogContent>
-        <TextField
-          label="Name"
-          value={name}
-          onChange={handleNameChange}
-          {...tfProps}
-        />
-        <TextField
-          label="Category"
-          value={category}
-          onChange={handleCategoryChange}
-          {...tfProps}
-        />
-        <Stack direction="row" spacing={1} sx={{ alignItems: "flex-end" }}>
+    <>
+      <Dialog open={open} onClose={onClose}>
+        <DialogTitle>{expenseEntry ? "Edit" : "New"} Expense Entry</DialogTitle>
+        <DialogContent>
           <TextField
-            {...tfProps}
-            sx={{ flex: 1, mb: 0 }}
-            label="Value"
-            value={value}
-            type="number"
-            onChange={handleValueChange}
-            slotProps={{
-              htmlInput:
-                valueMode === "percent"
-                  ? { min: 0, max: 100, step: 0.1 }
-                  : { min: 0 },
-            }}
-            error={!isPercentInRange || !isDollarNonNegative}
-            helperText={
-              !isPercentInRange
-                ? "Percent must be between 0 and 100."
-                : !isDollarNonNegative
-                  ? "Amount must be zero or greater."
-                  : undefined
-            }
+            label="Name"
+            value={name}
+            onChange={handleNameChange}
+            {...dialogTextFieldProps}
           />
-          <ToggleButtonGroup
-            exclusive
-            value={valueMode}
-            onChange={handleValueModeChange}
-            size="small"
-            aria-label="Allocation type"
-            sx={{ mb: 1 }}
-          >
-            <ToggleButton value="dollar" aria-label="Dollar amount">
-              $
-            </ToggleButton>
-            <ToggleButton value="percent" aria-label="Percent of income">
-              %
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Stack>
-        {valueMode === "percent" && (
-          <FormControl
-            fullWidth
-            margin="dense"
-            variant="standard"
-            error={!hasPercentSources}
-          >
-            <InputLabel id="percent-sources-label">Income Sources</InputLabel>
-            <Select
-              labelId="percent-sources-label"
-              multiple
-              value={percentSources}
-              label="Income Sources"
-              onChange={handlePercentSourcesChange}
-              aria-describedby={
-                !hasPercentSources ? "percent-sources-error" : undefined
+          <TextField
+            label="Category"
+            value={category}
+            onChange={handleCategoryChange}
+            {...dialogTextFieldProps}
+          />
+          <Stack direction="row" spacing={1} sx={{ alignItems: "flex-end" }}>
+            <TextField
+              {...dialogTextFieldProps}
+              sx={{ flex: 1, mb: 0 }}
+              label="Value"
+              value={value}
+              type="number"
+              onChange={handleValueChange}
+              slotProps={{
+                htmlInput:
+                  valueMode === "percent"
+                    ? { min: 0, max: 100, step: 0.1 }
+                    : { min: 0 },
+              }}
+              error={!isPercentInRange || !isDollarNonNegative}
+              helperText={
+                !isPercentInRange
+                  ? "Percent must be between 0 and 100."
+                  : !isDollarNonNegative
+                    ? "Amount must be zero or greater."
+                    : undefined
               }
-              renderValue={(selected) =>
-                selected
-                  .map(
-                    (source) =>
-                      percentSourceOptions.find(({ value }) => value === source)
-                        ?.label ?? source,
-                  )
-                  .join(", ")
-              }
-            >
-              {percentSourceOptions.map(({ value: optionValue, label }) => (
-                <MenuItem key={optionValue} value={optionValue}>
-                  <Checkbox checked={percentSources.includes(optionValue)} />
-                  <ListItemText primary={label} />
-                </MenuItem>
-              ))}
-            </Select>
-            {!hasPercentSources && (
-              <FormHelperText id="percent-sources-error">
-                Select at least one income source.
-              </FormHelperText>
-            )}
-          </FormControl>
-        )}
-        {valueMode === "percent" && (
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{ mt: 1, alignItems: "center" }}
-          >
-            <Typography variant="body2" component="span">
-              Tax basis
-            </Typography>
+            />
             <ToggleButtonGroup
               exclusive
-              value={taxBasis}
-              onChange={handleTaxBasisChange}
+              value={valueMode}
+              onChange={handleValueModeChange}
               size="small"
-              aria-label="Tax basis"
+              aria-label="Allocation type"
+              sx={{ mb: 1 }}
             >
-              <ToggleButton value="pretax" aria-label="Pre-tax">
-                Pre-tax
+              <ToggleButton value="dollar" aria-label="Dollar amount">
+                $
               </ToggleButton>
-              <ToggleButton value="posttax" aria-label="Post-tax">
-                Post-tax
+              <ToggleButton value="percent" aria-label="Percent of income">
+                %
               </ToggleButton>
             </ToggleButtonGroup>
           </Stack>
-        )}
-      </DialogContent>
-      <DialogActions>
-        {expenseEntry && onDelete ? (
-          <Button onClick={onDelete} color="error">
-            Delete
+          {valueMode === "percent" && (
+            <FormControl
+              fullWidth
+              margin="dense"
+              variant="standard"
+              error={!hasPercentSources}
+            >
+              <InputLabel id="percent-sources-label">Income Sources</InputLabel>
+              <Select
+                labelId="percent-sources-label"
+                multiple
+                value={percentSources}
+                label="Income Sources"
+                onChange={handlePercentSourcesChange}
+                aria-describedby={
+                  !hasPercentSources ? "percent-sources-error" : undefined
+                }
+                renderValue={(selected) =>
+                  selected
+                    .map(
+                      (source) =>
+                        percentSourceOptions.find(
+                          ({ value }) => value === source,
+                        )?.label ?? source,
+                    )
+                    .join(", ")
+                }
+              >
+                {percentSourceOptions.map(({ value: optionValue, label }) => (
+                  <MenuItem key={optionValue} value={optionValue}>
+                    <Checkbox checked={percentSources.includes(optionValue)} />
+                    <ListItemText primary={label} />
+                  </MenuItem>
+                ))}
+              </Select>
+              {!hasPercentSources && (
+                <FormHelperText id="percent-sources-error">
+                  Select at least one income source.
+                </FormHelperText>
+              )}
+            </FormControl>
+          )}
+          {valueMode === "percent" && (
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{ mt: 1, alignItems: "center" }}
+            >
+              <Typography variant="body2" component="span">
+                Tax basis
+              </Typography>
+              <ToggleButtonGroup
+                exclusive
+                value={taxBasis}
+                onChange={handleTaxBasisChange}
+                size="small"
+                aria-label="Tax basis"
+              >
+                <ToggleButton value="pretax" aria-label="Pre-tax">
+                  Pre-tax
+                </ToggleButton>
+                <ToggleButton value="posttax" aria-label="Post-tax">
+                  Post-tax
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Stack>
+          )}
+        </DialogContent>
+        <DialogActions>
+          {expenseEntry && onDelete ? (
+            <Button onClick={() => setConfirmDeleteOpen(true)} color="error">
+              Delete
+            </Button>
+          ) : null}
+          <Button onClick={onClose}>Cancel</Button>
+          <Button type="button" onClick={handleSubmit} disabled={!canSubmit}>
+            {expenseEntry ? "Update" : "Add"}
           </Button>
-        ) : null}
-        <Button onClick={onClose}>Cancel</Button>
-        <Button type="button" onClick={handleSubmit} disabled={!canSubmit}>
-          {expenseEntry ? "Update" : "Add"}
-        </Button>
-      </DialogActions>
-    </Dialog>
+        </DialogActions>
+      </Dialog>
+      <ConfirmDeleteDialog
+        open={confirmDeleteOpen}
+        title="Delete expense entry?"
+        description="This expense entry will be permanently deleted."
+        confirmLabel="Delete entry"
+        onCancel={() => setConfirmDeleteOpen(false)}
+        onConfirm={confirmDelete}
+      />
+    </>
   );
 };
 

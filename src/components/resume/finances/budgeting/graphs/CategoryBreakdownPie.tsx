@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useAtomValue } from "jotai";
 import {
   Chart,
   Credits,
@@ -11,8 +10,9 @@ import {
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../../../common/highcharts/coreHighcharts";
-import themeAtom from "../../../../../jotai/theme-atom";
 import usDollar from "../../../../../apis/usDollar";
+import ChartFigure from "../../shared/ChartFigure";
+import useChartTextColor from "../../shared/useChartTextColor";
 import type { PiePoint } from "./types";
 
 interface CategoryBreakdownPieProps {
@@ -25,8 +25,7 @@ const prefersReducedMotion = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const CategoryBreakdownPie = ({ data, title }: CategoryBreakdownPieProps) => {
-  const theme = useAtomValue(themeAtom);
-  const color = theme.mode === "light" ? "black" : "white";
+  const color = useChartTextColor();
   const allowAnimation = !prefersReducedMotion();
 
   const seriesData = data.map((point) => ({
@@ -49,7 +48,7 @@ const CategoryBreakdownPie = ({ data, title }: CategoryBreakdownPieProps) => {
   );
 
   return (
-    <figure style={{ margin: 0, width: "100%" }}>
+    <ChartFigure>
       {/* Remount when selection / hide-taxes changes so the pie re-animates. */}
       <Chart
         key={JSON.stringify({ title, data: seriesData })}
@@ -77,7 +76,7 @@ const CategoryBreakdownPie = ({ data, title }: CategoryBreakdownPieProps) => {
         />
         <Series type="pie" data={seriesData} />
       </Chart>
-    </figure>
+    </ChartFigure>
   );
 };
 
