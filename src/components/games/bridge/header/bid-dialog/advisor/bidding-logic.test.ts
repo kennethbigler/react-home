@@ -288,10 +288,10 @@ describe("bidding-logic | getOpeningBid", () => {
     expect(rec.bid).toBe("2♣");
   });
 
-  it("25-27 HCP balanced → 3NT Opening", () => {
+  it("25-27 HCP balanced → 2♣ (SAYC has no strong 3NT opening; rebid 3NT next)", () => {
     const rec = getRecommendation(mkHand(25, 4, 3, 3, 3), ctx("opening"));
-    expect(rec.bid).toBe("3NT");
-    expect(rec.category).toContain("25-27");
+    expect(rec.bid).toBe("2♣");
+    expect(rec.category).toContain("Strong 2♣");
   });
 
   it("20-21 HCP balanced → 2NT", () => {
@@ -610,14 +610,20 @@ describe("bidding-logic | responding-1nt", () => {
     expect(rec.bid).toBe("3♠");
   });
 
-  it("6-card clubs invitational (8-9 HCP) → 3♣", () => {
+  // SAYC: 3♣/3♦ over 1NT is natural and FORCING (slam-oriented), not an
+  // invitation — an 8-9 hand with a long minor invites with 2NT instead.
+  it("6-card clubs, 8-9 HCP → 2NT invite (3♣ would be forcing/slam-ish)", () => {
     const rec = getRecommendation(mkHand(8, 2, 2, 3, 6), ctx("responding-1nt"));
-    expect(rec.bid).toBe("3♣");
+    expect(rec.bid).toBe("2NT");
   });
 
-  it("6-card diamonds invitational (8-9 HCP) → 3♦", () => {
-    const rec = getRecommendation(mkHand(9, 2, 2, 6, 3), ctx("responding-1nt"));
+  it("6-card diamonds, 14+ HCP → 3♦ natural forcing with slam interest", () => {
+    const rec = getRecommendation(
+      mkHand(14, 2, 2, 6, 3),
+      ctx("responding-1nt"),
+    );
     expect(rec.bid).toBe("3♦");
+    expect(rec.category).toContain("Forcing");
   });
 
   it("5-card hearts invitational (8-9 pts) → transfer then 2NT", () => {
@@ -675,48 +681,35 @@ describe("bidding-logic | responding-2nt", () => {
 
 // ─── Responding to 3NT Opening ───────────────────────────────────────────────
 
-describe("bidding-logic | responding-3nt-opening", () => {
-  // SAYC has no transfers/Stayman over a 3NT OPENING (opener cannot complete
-  // them), so responses are natural — a 5-card major is offered as a game.
-  it("only a 4-card major, weak → Pass (cannot find a 4-4 fit; 3NT is game)", () => {
+describe("bidding-logic | responding-3nt-opening (Gambling)", () => {
+  // SAYC: a 3NT opening is GAMBLING — a solid running 7-card minor with
+  // little outside.  Responder passes with side-suit cover, escapes with 4♣
+  // (pass-or-correct) when weak, and raises to 5♣ pass-or-correct when strong.
+  it("weak hand → 4♣ escape (pass-or-correct)", () => {
     const rec = getRecommendation(
       mkHand(6, 4, 3, 3, 3),
       ctx("responding-3nt-opening"),
-    ); // 4 spades (no 5-card major)
-    expect(rec.bid).toBe("Pass");
+    );
+    expect(rec.bid).toBe("4♣");
+    expect(rec.reasoning).toMatch(/gambling/i);
   });
 
-  it("5+ hearts → 4♥ natural game (opener can pass it)", () => {
+  it("10+ HCP (side suits covered) → Pass", () => {
     const rec = getRecommendation(
-      mkHand(6, 3, 5, 3, 2),
-      ctx("responding-3nt-opening"),
-    ); // 5 hearts
-    expect(rec.bid).toBe("4♥");
-  });
-
-  it("5+ spades → 4♠ natural game", () => {
-    const rec = getRecommendation(
-      mkHand(6, 5, 3, 3, 2),
-      ctx("responding-3nt-opening"),
-    ); // 5 spades
-    expect(rec.bid).toBe("4♠");
-  });
-
-  it("no major, weak → Pass", () => {
-    const rec = getRecommendation(
-      mkHand(6, 3, 3, 4, 3),
-      ctx("responding-3nt-opening"),
-    ); // no 4-card major
-    expect(rec.bid).toBe("Pass");
-  });
-
-  it("8+ HCP, no 5-card major → 4NT quantitative slam invite (not a broken transfer)", () => {
-    const rec = getRecommendation(
-      mkHand(9, 3, 3, 4, 3),
+      mkHand(11, 3, 5, 3, 2),
       ctx("responding-3nt-opening"),
     );
-    expect(rec.bid).toBe("4NT");
-    expect(rec.category).toContain("Quantitative");
+    expect(rec.bid).toBe("Pass");
+    expect(rec.reasoning).toMatch(/gambling/i);
+  });
+
+  it("15+ HCP → 5♣ pass-or-correct game raise", () => {
+    const rec = getRecommendation(
+      mkHand(16, 5, 3, 3, 2),
+      ctx("responding-3nt-opening"),
+    );
+    expect(rec.bid).toBe("5♣");
+    expect(rec.whatYourBidTellsPartner).toMatch(/correct/i);
   });
 });
 
@@ -5060,11 +5053,11 @@ describe("bidding-logic | bug6 — takeout double requires shape in unbid suits"
 });
 
 describe("bidding-logic | bug7 — reverse bid in getRebidAfterSuit", () => {
-  it("16+ TP, 4-card spades after opening 1♦, partner bids 1♥ → reverse 2♠", () => {
+  it("17+ TP, 4-card spades after opening 1♦, partner bids 1♥ → reverse 2♠", () => {
     // Classic reverse: 1♦ - 1♥ - 2♠ (opener shows 4+ spades ranking higher than diamonds)
-    // 15 HCP + 1 long suit (5 diamonds) = 16 TP
+    // 16 HCP + 1 long suit (5 diamonds) = 17 TP (SAYC reverse = 17+)
     const rec = getRecommendation(
-      mkHand(15, 4, 2, 5, 2),
+      mkHand(16, 4, 2, 5, 2),
       ctx("rebid-after-suit", {
         myPreviousBid: "1♦",
         partnerBid: "1♥",
@@ -5074,11 +5067,11 @@ describe("bidding-logic | bug7 — reverse bid in getRebidAfterSuit", () => {
     expect(rec.category).toContain("Reverse");
   });
 
-  it("16+ TP, 4-card hearts after opening 1♣, partner bids 1♦ → reverse 2♥", () => {
+  it("17+ TP, 4-card hearts after opening 1♣, partner bids 1♦ → reverse 2♥", () => {
     // Classic reverse: 1♣ - 1♦ - 2♥
-    // 15 HCP + 1 long suit (5 clubs) = 16 TP
+    // 16 HCP + 1 long suit (5 clubs) = 17 TP (SAYC reverse = 17+)
     const rec = getRecommendation(
-      mkHand(15, 3, 4, 2, 5),
+      mkHand(16, 3, 4, 2, 5),
       ctx("rebid-after-suit", {
         myPreviousBid: "1♣",
         partnerBid: "1♦",
@@ -5187,12 +5180,12 @@ describe("bidding-logic | deal 2 — 1NT opening, Stayman, 4-4 heart fit, game",
 });
 
 describe("bidding-logic | deal 3 — 1♦ opening, 1-over-1 response, reverse bid", () => {
-  // North (P1): 15 HCP, 4♠2♥5♦2♣ → TP=16, opens 1♦
+  // North (P1): 16 HCP, 4♠2♥5♦2♣ → TP=17, opens 1♦ (17+ needed to reverse later)
   // South (P3): 9 HCP, 3♠4♥3♦3♣ → responds 1♥
-  const northHand = mkHand(15, 4, 2, 5, 2);
+  const northHand = mkHand(16, 4, 2, 5, 2);
   const southHand = mkHand(9, 3, 4, 3, 3);
 
-  it("North (P1) 5-card diamonds, 16 TP → 1♦", () => {
+  it("North (P1) 5-card diamonds, 17 TP → 1♦", () => {
     const rec = getRecommendation(northHand, ctx("opening"));
     expect(rec.bid).toBe("1♦");
   });
@@ -5208,7 +5201,7 @@ describe("bidding-logic | deal 3 — 1♦ opening, 1-over-1 response, reverse bi
     expect(rec.bid).toBe("1♥");
   });
 
-  it("North (P1) with 4 spades, 16 TP, after partner's 1♥ → reverse 2♠", () => {
+  it("North (P1) with 4 spades, 17 TP, after partner's 1♥ → reverse 2♠", () => {
     const state: AuctionState = {
       myPosition: 1,
       completedRounds: [{ 1: "1♦", 2: "Pass", 3: "1♥", 4: "Pass" }],
@@ -5951,15 +5944,17 @@ describe("bidding-logic | regression | Bug 4 — 2♥ response over partner's 1�
     expect(rec.bid).toBe("2♥");
   });
 
-  it("14 HCP 3♠4♥3♦3♣ after partner 1♠ → 4♠ (3-card support, game values; 2NT here would be Jacoby)", () => {
-    // Over a 1-major, a 2NT response is Jacoby (4+ trumps), NOT a natural raise.
-    // With 3-card spade support and game values, bid the known 8-card major game.
+  it("14 HCP 3♠4♥3♦3♣ after partner 1♠ → 2♣/2♦ then 4♠ (direct 4♠ would be the weak raise)", () => {
+    // Over a 1-major, a 2NT response is Jacoby (4+ trumps) and a DIRECT 4♠ is
+    // the SAYC preemptive raise (5+ trumps, <10) — with 3-card support and
+    // game values, go through a forcing new suit then jump to 4♠.
     const hand = mkHand(14, 3, 4, 3, 3);
     const rec = getRecommendation(
       hand,
       ctx("responding-suit", { partnerBid: "1♠" }),
     );
-    expect(rec.bid).toBe("4♠");
+    expect(["2♣", "2♦"]).toContain(rec.bid);
+    expect(rec.whatYourBidTellsPartner).toContain("4♠");
     // Must NOT be a natural 2NT (that bid is Jacoby over a major).
     expect(rec.bid).not.toBe("2NT");
   });
@@ -7131,15 +7126,14 @@ describe("Bug Fix Regression Tests", () => {
     expect(rec.category).not.toContain("2NT");
   });
 
-  // Bug: Responding to double — "jump bid" language removed when bidding at level 2
-  it("BF-9a: 10 HCP, 6-card spades responding to partner double → 2♠ (reasoning should not say jump)", () => {
+  // SAYC advance ladder: 0-8 cheapest level, 9-11 JUMP, 12+ cue-bid.
+  it("BF-9a: 10 HCP, 6-card spades responding to partner double → 3♠ jump (invitational)", () => {
     const rec = getRecommendation(
       mkHand(10, 6, 2, 3, 2),
       ctx("responding-to-double", { rhoBid: "1NT" }),
     );
-    expect(rec.bid).toBe("2♠");
-    expect(rec.reasoning).not.toContain("Jump bid");
-    expect(rec.reasoning).not.toContain("jump bid");
+    expect(rec.bid).toBe("3♠");
+    expect(rec.category).toMatch(/jump/i);
   });
 
   // Stopper feature: responding to partner's overcall over opponent's 1NT (not a suit bid)
@@ -7927,11 +7921,11 @@ describe("bidding-logic | grand-slam-force-response agreedSuit hearts/diamonds (
 });
 
 describe("bidding-logic | responding-2nt hearts 5+ low HCP (line 1340 false branch)", () => {
-  it("5-card hearts, hcp=7 (< 10) → yourRebid says 'Pass or 3NT'", () => {
+  it("5-card hearts, hcp=7 → transfer 3♦; rebid guidance is game (opposite 20-21)", () => {
     const rec = getRecommendation(mkHand(7, 2, 5, 3, 3), ctx("responding-2nt"));
-    // Transfers to hearts exist for 2NT openings — confirm rebid text for minimum
+    // Opposite 20-21, even ~5 HCP belongs in game after the transfer.
     expect(rec.bid).toBe("3♦");
-    expect(rec.expectedResponses[0].yourRebid).toMatch(/pass or 3NT/i);
+    expect(rec.expectedResponses[0].yourRebid).toMatch(/game|4♥/i);
   });
 });
 
@@ -9429,19 +9423,19 @@ describe("bidding-logic | responding-suit — prefer major bid over minor raise"
 // ── 33. Responding to 2NT opening (line ~1397) — transfer yourRebid branch ────
 
 describe("bidding-logic | responding-2nt — transfer to spades yourRebid branch (line ~1397)", () => {
-  it("5+ spades + 8 HCP over partner 2NT → transfer bid 3♥ (yourRebid=Pass)", () => {
-    // hcp < 10 → yourRebid = "Pass"
+  it("5+ spades + 8 HCP over partner 2NT → transfer bid 3♥ (yourRebid = game)", () => {
+    // Opposite 20-21, 8 HCP is a clear game hand after the transfer.
     const rec = getRecommendation(mkHand(8, 5, 3, 3, 2), ctx("responding-2nt"));
     expect(rec.bid).toBe("3♥");
     expect(rec.category).toContain("Transfer to Spades");
     const xferResp = rec.expectedResponses?.find((r) => r.partnerBid === "3♠");
-    expect(xferResp?.yourRebid).toBe("Pass");
+    expect(xferResp?.yourRebid).toMatch(/4♠|game/i);
   });
 
-  it("5+ spades + 10 HCP over partner 2NT → transfer bid 3♥ (yourRebid=4♠ or slam)", () => {
-    // hcp >= 10 → yourRebid = "4♠ or explore slam"
+  it("5+ spades + 12 HCP over partner 2NT → transfer bid 3♥ (yourRebid mentions slam)", () => {
+    // 12+ opposite 20-21 is slam-zone — the rebid guidance should say so.
     const rec = getRecommendation(
-      mkHand(10, 5, 3, 3, 2),
+      mkHand(12, 5, 3, 3, 2),
       ctx("responding-2nt"),
     );
     expect(rec.bid).toBe("3♥");
@@ -10053,10 +10047,13 @@ describe("bidding-logic | audit fixes", () => {
     expect(getRecommendation(mkHand(13, 3, 2, 4, 4), c).bid).not.toBe("2NT");
   });
 
-  it("B4: 1♥–3NT prefers the 8-card major game with 3-card support", () => {
+  it("B4: 1♥ response with 3-card support + game values → 2/1 first (direct 4♥ = weak raise)", () => {
     const c = ctx("responding-suit", { partnerBid: "1♥" });
-    // 14 TP, 3-card heart support, no 4-card spade → 4♥ (known fit), not 3NT
-    expect(getRecommendation(mkHand(14, 2, 3, 4, 4), c).bid).toBe("4♥");
+    // 14 TP, 3-card heart support, no 4-card spade → forcing 2/1, then jump to
+    // 4♥ next turn (a DIRECT 4♥ would be the SAYC preemptive raise) — not 3NT.
+    const rec = getRecommendation(mkHand(14, 2, 3, 4, 4), c);
+    expect(["2♣", "2♦"]).toContain(rec.bid);
+    expect(rec.whatYourBidTellsPartner).toContain("4♥");
   });
 
   it("B9: with two 5-card majors, respond 1♠ (higher) over a minor opening", () => {
@@ -10238,5 +10235,226 @@ describe("bidding-logic | audit fixes — branch coverage", () => {
     expect(getRecommendation(mkHand(14, 2, 3, 3, 5), context).bid).not.toBe(
       "Pass",
     );
+  });
+});
+
+// ─── SAYC audit (seed-42 deal walkthrough) regressions ───────────────────────
+// These pin the fixes found by playing a full deal through the UI:
+//   1♦ (P1) – 3♠ (P2 weak jump overcall) – ? (P3) – 4♠ (P4)
+describe("bidding-logic | SAYC audit — negative doubles apply only through 2♠", () => {
+  it("responder with 9 HCP and 6 hearts over a 3♠ overcall → Pass (neg X off above 2♠)", () => {
+    // Seed-42 P3 hand: 3♠6♥1♦3♣, 9 HCP.  The old engine doubled here while
+    // its own note said negative doubles are off above 2♠.
+    const rec = getRecommendation(
+      mkHand(9, 3, 6, 1, 3),
+      ctx("negative-double", { myPreviousBid: "1♦", rhoBid: "3♠" }),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toContain("Above 2♠");
+  });
+
+  it("responder with 13+ HCP and a 5-card major over a 3♦ overcall → natural bid, not Double", () => {
+    const rec = getRecommendation(
+      mkHand(13, 2, 5, 2, 4),
+      ctx("negative-double", { myPreviousBid: "1♣", rhoBid: "3♦" }),
+    );
+    expect(rec.bid).toBe("3♥");
+    expect(rec.bid).not.toBe("Double");
+  });
+
+  it("negative double still ON through 2♠ (1♦ (2♠) X with 4 hearts, 9 HCP)", () => {
+    const rec = getRecommendation(
+      mkHand(9, 2, 4, 3, 4),
+      ctx("negative-double", { myPreviousBid: "1♦", rhoBid: "2♠" }),
+    );
+    expect(rec.bid).toBe("Double");
+    expect(rec.category).toContain("Negative Double");
+  });
+});
+
+describe("bidding-logic | SAYC audit — opener after partner doubles above 2♠", () => {
+  it("1♦-(3♠)-X-(4♠): 17 HCP, void spades, 4 hearts → pull to 5♥ (extreme shape)", () => {
+    // Seed-42 P1 hand: 0♠4♥6♦3♣, 17 HCP (19 TP).  The old engine computed an
+    // illegal 4♥ below the 4♠ floor and collapsed to a low-confidence Pass.
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♦", 2: "3♠", 3: "Double", 4: "4♠" }],
+      currentRound: {},
+    };
+    const context = deriveSituation(state, "none");
+    const rec = getRecommendation(mkHand(17, 0, 4, 6, 3), context);
+    expect(rec.bid).toBe("5♥");
+    expect(rec.category).toContain("Pull");
+  });
+
+  it("1♦-(3♠)-X-(4♠): minimum balanced opener → Pass (penalty double stands)", () => {
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♦", 2: "3♠", 3: "Double", 4: "4♠" }],
+      currentRound: {},
+    };
+    const context = deriveSituation(state, "none");
+    const rec = getRecommendation(mkHand(13, 3, 3, 4, 3), context);
+    expect(rec.bid).toBe("Pass");
+    expect(rec.reasoning).toMatch(/penalty/i);
+  });
+});
+
+describe("bidding-logic | SAYC audit — doubler's follow-up narrative (negative vs takeout)", () => {
+  it("P3 second turn after 1♦-(3♠)-X-(4♠)-P-(P): Pass, described as a NEGATIVE double", () => {
+    // Old bug: the reasoning claimed a takeout double (12+) and that partner's
+    // 1♦ OPENING was "their best suit in response to your double".
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "1♦", 2: "3♠", 3: "Double", 4: "4♠" }],
+      currentRound: { 1: "Pass", 2: "Pass" },
+    };
+    const context = deriveSituation(state, "none");
+    expect(context.situation).toBe("after-own-double");
+    expect(context.partnerOpened).toBe(true);
+    const rec = getRecommendation(mkHand(9, 3, 6, 1, 3), context);
+    expect(rec.bid).toBe("Pass");
+    expect(rec.reasoning).toMatch(/negative double/i);
+    expect(rec.reasoning).not.toMatch(/best suit in response to your double/i);
+    // The pressure point is the opponents' HIGHEST bid (4♠), not RHO's 3♠.
+    expect(rec.reasoning).toContain("4♠");
+  });
+});
+
+describe("bidding-logic | SAYC audit — getBidMeaning fixes", () => {
+  it("partner's double of 3♠ when their side opened → penalty-oriented, not takeout", () => {
+    const m = getBidMeaning("Double", "partner", "3♠", undefined, "1♦", "1♦");
+    expect(m).toMatch(/penalty/i);
+    expect(m).not.toMatch(/Takeout Double: a double of the opponents/);
+  });
+
+  it("weak jump overcall length scales with jump size (3♠ over 1♦ = 7 cards)", () => {
+    const m = getBidMeaning("3♠", "rho", "1♦", undefined, "none", "1♦");
+    expect(m).toMatch(/7-card suit/);
+  });
+
+  it("single jump overcall still shows a 6-card suit (2♠ over 1♦)", () => {
+    const m = getBidMeaning("2♠", "rho", "1♦", undefined, "none", "1♦");
+    expect(m).toMatch(/6-card suit/);
+  });
+
+  it("4♥ as the OPENING bid is described as a preempt, not a strong game bid", () => {
+    const m = getBidMeaning(
+      "4♥",
+      "partner",
+      undefined,
+      undefined,
+      "none",
+      "4♥",
+    );
+    expect(m).toMatch(/preempt/i);
+  });
+
+  it("3NT opening described as Gambling (solid 7-card minor)", () => {
+    const m = getBidMeaning(
+      "3NT",
+      "partner",
+      undefined,
+      undefined,
+      "none",
+      "3NT",
+    );
+    expect(m).toMatch(/gambling/i);
+  });
+
+  it("jump-shift response labeled strong (17+), not a normal 2-level new suit", () => {
+    // Partner opened 1♦; a 2♠ response (1♠ was available) is a jump shift.
+    const m = getBidMeaning("2♠", "partner", "1♦", undefined, "1♦", "1♦");
+    expect(m).toMatch(/JUMP SHIFT/i);
+    expect(m).toMatch(/17\+/);
+  });
+});
+
+describe("bidding-logic | SAYC audit — response-ladder holes", () => {
+  it("18 HCP balanced facing 1NT (no major) → 6NT, not Pass", () => {
+    const rec = getRecommendation(
+      mkHand(18, 3, 3, 4, 3),
+      ctx("responding-1nt"),
+    );
+    expect(rec.bid).toBe("6NT");
+  });
+
+  it("16-17 semi-balanced facing 1NT (no major, no 6m) → 4NT quantitative", () => {
+    const rec = getRecommendation(
+      mkHand(16, 1, 3, 5, 4),
+      ctx("responding-1nt"),
+    );
+    expect(rec.bid).toBe("4NT");
+  });
+
+  it("12 HCP with a singleton facing 1NT (no major) → 3NT, not Pass", () => {
+    const rec = getRecommendation(
+      mkHand(12, 1, 3, 5, 4),
+      ctx("responding-1nt"),
+    );
+    expect(rec.bid).toBe("3NT");
+  });
+
+  it("13-15 facing 2NT (no major) → 6NT on combined 33+", () => {
+    const rec = getRecommendation(
+      mkHand(13, 3, 3, 4, 3),
+      ctx("responding-2nt"),
+    );
+    expect(rec.bid).toBe("6NT");
+  });
+});
+
+describe("bidding-logic | SAYC audit — competitive fixes", () => {
+  it("16 HCP unbalanced with a good 5-card suit, no shortness in their suit → overcall, never Pass", () => {
+    // (A BALANCED 16 with a stopper correctly prefers a 1NT overcall.)
+    const rec = getRecommendation(
+      mkHand(16, 5, 4, 3, 1),
+      ctx("overcalling", { rhoBid: "1♥" }),
+    );
+    expect(rec.bid).toBe("1♠");
+  });
+
+  it("12+ advancing partner's takeout double (unbalanced, no stopper) → cue-bid, game-forcing", () => {
+    const rec = getRecommendation(
+      { ...mkHand(13, 5, 4, 3, 1), hasStopperInOpponentSuit: false },
+      ctx("responding-to-double", { rhoBid: "1♥" }),
+    );
+    expect(rec.bid).toBe("2♥");
+    expect(rec.category).toMatch(/cue/i);
+  });
+
+  it("10+ HCP, no fit, after partner's opening is doubled → Redouble", () => {
+    const rec = getRecommendation(
+      mkHand(11, 2, 2, 4, 5),
+      ctx("responding-suit-after-double", { partnerBid: "1♠" }),
+    );
+    expect(rec.bid).toBe("Redouble");
+    expect(rec.category).toMatch(/10\+/);
+  });
+});
+
+describe("bidding-logic | SAYC audit — Stayman/transfers over 2NT", () => {
+  it("2NT-3♣-3♥ with 4 hearts and 6 HCP → 4♥ game", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "2NT", 2: "Pass", 3: "3♣", 4: "Pass" }],
+      currentRound: { 1: "3♥", 2: "Pass" },
+    };
+    const context = deriveSituation(state, "none");
+    expect(context.situation).toBe("stayman-response");
+    const rec = getRecommendation(mkHand(6, 3, 4, 3, 3), context);
+    expect(rec.bid).toBe("4♥");
+  });
+
+  it("2NT-3♦(transfer)-3♥ with 5 hearts and 6 HCP → 3NT (partner chooses)", () => {
+    const state: AuctionState = {
+      myPosition: 3,
+      completedRounds: [{ 1: "2NT", 2: "Pass", 3: "3♦", 4: "Pass" }],
+      currentRound: { 1: "3♥", 2: "Pass" },
+    };
+    const context = deriveSituation(state, "none");
+    expect(context.situation).toBe("transfer-response");
+    const rec = getRecommendation(mkHand(6, 2, 5, 3, 3), context);
+    expect(rec.bid).toBe("3NT");
   });
 });
