@@ -44,6 +44,14 @@ describe("resume | finances | comp-calc | StockDialog", () => {
     expect(screen.getByRole("alert")).toHaveTextContent(
       "Enter a stock ticker.",
     );
+    expect(screen.getByLabelText("Stock")).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
+    expect(screen.getByLabelText("Price Now")).not.toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
     expect(addStockEntry).not.toHaveBeenCalled();
   });
 
@@ -60,6 +68,14 @@ describe("resume | finances | comp-calc | StockDialog", () => {
 
     expect(screen.getByRole("alert")).toHaveTextContent(
       "Stock price must be zero or greater.",
+    );
+    expect(screen.getByLabelText("Price Now")).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
+    expect(screen.getByLabelText("Stock")).not.toHaveAttribute(
+      "aria-invalid",
+      "true",
     );
     expect(addStockEntry).not.toHaveBeenCalled();
   });
@@ -81,7 +97,7 @@ describe("resume | finances | comp-calc | StockDialog", () => {
     const removeStockEntry = vi.fn(() => removeTick);
     renderStockDialog({ stock: "AAPL", price: 100, removeStockEntry });
 
-    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete stock entry" }));
     fireEvent.click(screen.getByRole("button", { name: "Delete entry" }));
 
     expect(removeStockEntry).toHaveBeenCalledWith("AAPL");

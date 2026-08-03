@@ -12,6 +12,10 @@ import ConfirmDeleteDialog from "../shared/ConfirmDeleteDialog";
 import dialogTextFieldProps from "../shared/dialogTextFieldProps";
 
 const VALIDATION_ERROR_ID = "stock-dialog-validation-error";
+const STOCK_ERROR = "Enter a stock ticker.";
+const PRICE_ERROR = "Stock price must be zero or greater.";
+
+type FieldError = "stock" | "price";
 
 interface StockDialogProps {
   open: boolean;
@@ -21,6 +25,19 @@ interface StockDialogProps {
   addStockEntry: (s: string, n: number) => void;
   removeStockEntry: (s: string) => () => void;
 }
+
+const fieldA11y = (invalid: boolean) =>
+  invalid
+    ? {
+        error: true as const,
+        slotProps: {
+          htmlInput: {
+            "aria-invalid": true as const,
+            "aria-describedby": VALIDATION_ERROR_ID,
+          },
+        },
+      }
+    : {};
 
 const StockDialog = ({
   open,
@@ -32,27 +49,34 @@ const StockDialog = ({
 }: StockDialogProps) => {
   const [price, setPrice] = useState(exPrice || 0);
   const [stock, setStock] = useState(exStock || "");
-  const [error, setError] = useState("");
+  const [fieldError, setFieldError] = useState<FieldError | null>(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+
+  const errorMessage =
+    fieldError === "stock"
+      ? STOCK_ERROR
+      : fieldError === "price"
+        ? PRICE_ERROR
+        : "";
 
   const handleStockChange = (e: ChangeEvent<HTMLInputElement>) => {
     setStock(e.target.value);
-    setError("");
+    if (fieldError === "stock") setFieldError(null);
   };
 
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPrice(parseFloat(e.target.value) || 0);
-    setError("");
+    if (fieldError === "price") setFieldError(null);
   };
 
   const handleSubmit = () => {
     const normalizedStock = stock.trim().toUpperCase();
     if (!normalizedStock) {
-      setError("Enter a stock ticker.");
+      setFieldError("stock");
       return;
     }
     if (price < 0) {
-      setError("Stock price must be zero or greater.");
+      setFieldError("price");
       return;
     }
 
@@ -66,18 +90,6 @@ const StockDialog = ({
     setConfirmDeleteOpen(false);
   };
 
-  const fieldErrorProps = error
-    ? {
-        error: true,
-        slotProps: {
-          htmlInput: {
-            "aria-invalid": true,
-            "aria-describedby": VALIDATION_ERROR_ID,
-          },
-        },
-      }
-    : {};
-
   return (
     <>
       <Dialog open={open} onClose={onClose}>
@@ -89,7 +101,7 @@ const StockDialog = ({
               value={stock}
               onChange={handleStockChange}
               {...dialogTextFieldProps}
-              {...fieldErrorProps}
+              {...fieldA11y(fieldError === "stock")}
             />
             <TextField
               label="Price Now"
@@ -98,14 +110,14 @@ const StockDialog = ({
               onChange={handlePriceChange}
               slotProps={{
                 input: { startAdornment: "$" },
-                ...(fieldErrorProps.slotProps ?? {}),
+                ...(fieldA11y(fieldError === "price").slotProps ?? {}),
               }}
               {...dialogTextFieldProps}
-              {...(fieldErrorProps.error ? { error: true } : {})}
+              {...(fieldError === "price" ? { error: true } : {})}
             />
-            {error ? (
+            {errorMessage ? (
               <Alert id={VALIDATION_ERROR_ID} severity="error">
-                {error}
+                {errorMessage}
               </Alert>
             ) : null}
           </div>
@@ -113,7 +125,7 @@ const StockDialog = ({
         <DialogActions>
           {exStock ? (
             <Button onClick={() => setConfirmDeleteOpen(true)} color="error">
-              Delete
+              Delete stock entry
             </Button>
           ) : null}
           <Button onClick={onClose}>Cancel</Button>

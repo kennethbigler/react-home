@@ -133,6 +133,25 @@ const BID_ORDER_SIM = [
 const isReal = (b: string | undefined): b is string =>
   !!b && b !== "Pass" && b !== "Double" && b !== "Redouble";
 
+type AuctionCall = { seat: BiddingPosition; call: string };
+
+const samePartnership = (a: BiddingPosition, b: BiddingPosition): boolean =>
+  a % 2 === b % 2;
+
+/** True when a Double recommendation would be illegal for `seat`. */
+function isIllegalDoubleRecommendation(
+  seat: BiddingPosition,
+  auction: AuctionCall[],
+): boolean {
+  const lastNonPass = [...auction].reverse().find((e) => e.call !== "Pass");
+  return (
+    !lastNonPass ||
+    lastNonPass.call === "Double" ||
+    lastNonPass.call === "Redouble" ||
+    samePartnership(seat, lastNonPass.seat)
+  );
+}
+
 interface DealResult {
   transcript: string;
   problems: string[];
@@ -154,7 +173,7 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): DealResult {
 
   const completedRounds: BidRound[] = [];
   let currentRound: BidRound = {};
-  const flatCalls: string[] = [];
+  const flatCalls: AuctionCall[] = [];
   let done = false;
 
   for (let round = 0; round < 8 && !done; round++) {
@@ -206,7 +225,10 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): DealResult {
       const rec = getRecommendation(hand, ctx);
       const call = rec.bid;
 
-      const lastReal = [...flatCalls].reverse().find(isReal);
+      const lastReal = [...flatCalls]
+        .reverse()
+        .map((e) => e.call)
+        .find(isReal);
       if (isReal(call) && lastReal) {
         if (BID_ORDER_SIM.indexOf(call) <= BID_ORDER_SIM.indexOf(lastReal)) {
           problems.push(
@@ -214,15 +236,8 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): DealResult {
           );
         }
       }
-      if (call === "Double") {
-        const lastNonPass = [...flatCalls].reverse().find((b) => b !== "Pass");
-        if (
-          !lastNonPass ||
-          lastNonPass === "Double" ||
-          lastNonPass === "Redouble"
-        ) {
-          problems.push(`P${seat} recommended ILLEGAL Double`);
-        }
+      if (call === "Double" && isIllegalDoubleRecommendation(seat, flatCalls)) {
+        problems.push(`P${seat} recommended ILLEGAL Double`);
       }
       if (
         rec.category.includes("Auction Past Recommended Bid") ||
@@ -241,17 +256,17 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): DealResult {
       if (rec.note) lines.push(`      note: ${rec.note}`);
 
       currentRound[seat] = call;
-      flatCalls.push(call);
+      flatCalls.push({ seat, call });
 
       const trailing = (() => {
         let n = 0;
         for (let i = flatCalls.length - 1; i >= 0; i--) {
-          if (flatCalls[i] === "Pass") n++;
+          if (flatCalls[i].call === "Pass") n++;
           else break;
         }
         return n;
       })();
-      const anyAction = flatCalls.some((b) => b !== "Pass");
+      const anyAction = flatCalls.some((e) => e.call !== "Pass");
       if (
         (anyAction && trailing >= 3 && flatCalls.length > 3) ||
         trailing >= 4
@@ -273,13 +288,13 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): DealResult {
   );
   lines.push("");
   lines.push(
-    `AUCTION: ${flatCalls.join(" – ")}   FINAL: ${isComplete ? `${finalContract ?? "passed out"}${doubling ? ` (${doubling})` : ""}` : "(incomplete)"}`,
+    `AUCTION: ${flatCalls.map((e) => e.call).join(" – ")}   FINAL: ${isComplete ? `${finalContract ?? "passed out"}${doubling ? ` (${doubling})` : ""}` : "(incomplete)"}`,
   );
 
   lines.push("");
   lines.push("── Tooltips (getBidMeaning) ──");
   const allRounds = [...completedRounds, currentRound];
-  const opening = flatCalls.find(isReal);
+  const opening = flatCalls.map((e) => e.call).find(isReal);
   const flat: { seat: BiddingPosition; call: string }[] = [];
   {
     let i = 0;
@@ -373,6 +388,37 @@ const SEEDS = parseSeeds(process.env.SIM_SEEDS);
 const OUT = process.env.SIM_OUT;
 
 describe("bidding-logic | SAYC seeded auction simulation", () => {
+  it("flags doubles of a partner's bid as illegal", () => {
+    expect(
+      isIllegalDoubleRecommendation(3, [
+        { seat: 1, call: "1♣" },
+        { seat: 2, call: "Pass" },
+      ]),
+    ).toBe(true);
+  });
+
+  it("allows doubles of an opponent's bid", () => {
+    expect(isIllegalDoubleRecommendation(2, [{ seat: 1, call: "1♣" }])).toBe(
+      false,
+    );
+  });
+
+  it("flags doubles after Double or Redouble", () => {
+    expect(
+      isIllegalDoubleRecommendation(4, [
+        { seat: 1, call: "1♣" },
+        { seat: 2, call: "Double" },
+      ]),
+    ).toBe(true);
+    expect(
+      isIllegalDoubleRecommendation(1, [
+        { seat: 2, call: "1♣" },
+        { seat: 3, call: "Double" },
+        { seat: 4, call: "Redouble" },
+      ]),
+    ).toBe(true);
+  });
+
   it("plays full auctions for each seed with no auto-flagged problems", async () => {
     const vulCycle: [boolean, boolean][] = [
       [false, false],
