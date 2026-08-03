@@ -1,4 +1,17 @@
 /**
+ * Can you  audit the Bridge bidding application in react-home to ensure that all of the bidding is SAYC compliant? I tried to create a Bridge bidding skill you can use for better accuracy. I want to be sure the recommended bid is accurate, I want to be sure the reasoning for that bid is accurate, and I want to be sure the information on why someone else may have bid something is accurate.
+You'll have to:
+
+1. simulate a deck of cards and deal out 4 hands
+2. Use the tool from the perspective of player 1 to get their recommended bid
+3. Clear out the information and fill it in for player 2 (and put in whatever the recommended bid for player 1 was as their bid)
+4. Then continue for player 3 and player 4.
+5. Then, go back to player 1, and enter in all the previous bids and advance to the next round.
+6. Essentially, you are using the tool from the perspective of all 4 players. Note that each player would only know their own cards, but you will have knowledge of all 4 hands, you have to pretend you don't know the other hands (like you were playing bridge), and make sure that all the information makes sense.
+7. Feel free to make any code changes, update the information, fix any bugs, fix any bad information, and make sure users have the best experience. Ask any questions if you need anything from me.
+8. Continue until you get 3 correct simulations in a row. sim-audit.test.ts was created to help with this a bit on your last run.
+ */
+/**
  * TEMPORARY simulation harness for the SAYC audit — deals seeded hands and
  * auto-plays full auctions through the SAME entry points the Bid Advisor UI
  * uses (deriveSituation → getRecommendation, getBidMeaning for tooltips).
