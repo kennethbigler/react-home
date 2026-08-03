@@ -3,14 +3,24 @@
 You'll have to:
 
 1. simulate a deck of cards and deal out 4 hands
-2. Use the tool from the perspective of player 1 to get their recommended bid
-3. Clear out the information and fill it in for player 2 (and put in whatever the recommended bid for player 1 was as their bid)
-4. Then continue for player 3 and player 4.
-5. Then, go back to player 1, and enter in all the previous bids and advance to the next round.
-6. Essentially, you are using the tool from the perspective of all 4 players. Note that each player would only know their own cards, but you will have knowledge of all 4 hands, you have to pretend you don't know the other hands (like you were playing bridge), and make sure that all the information makes sense.
-7. Feel free to make any code changes, update the information, fix any bugs, fix any bad information, and make sure users have the best experience. Ask any questions if you need anything from me.
-8. Continue until you get 3 correct simulations in a row. sim-audit.test.ts was created to help with this a bit on your last run.
- */
+2. Use the bridge bidding tool from the perspective of player 1 to get their recommended bid
+3. Clear out the information and fill it in for player 2 (and put in whatever the recommended bid for player 1 was as their bid in the Auction Context) to get their recommended bid.
+4. Keep doing the same for players 3 and 4.
+5. Then, go back to player 1, and enter in all the previous bids in the Auction Context and advance to the next round.
+6. Continue the simulation until the bidding is complete for all rounds and the auction has concluded (ensuring all along the way that the recommended bid is correct per SAYC)
+7. Continue running simulations until you get 3 correct final bids in a row with no errors along the way (all recommended bids being compliant). sim-audit.test.ts was created to help with this a bit on your last run.
+
+Notes:
+* Essentially, you are using the tool from the perspective of each of the 4 players.
+* Each player would only know their own cards, but Claude will have knowledge of all 4 hands, please pretend you don't know the other hands (as if you were playing bridge).
+* Along the way, make sure that all information makes sense:
+  * Your Hand Analysis
+  * Why This Bid
+  * What It Tells Partner
+  * And the i icon on why someone else bid what they did. This doesn't have to be perfect, again we don't know EXACTLY what they other person's hand is, but the info here should be accurate to what can be interpreted from their bid.
+* Feel free to make any code changes, update the information, fix any bugs, fix any bad information, and make sure users have the best experience. Ask any questions if you need anything from me.
+*/
+
 /**
  * TEMPORARY simulation harness for the SAYC audit — deals seeded hands and
  * auto-plays full auctions through the SAME entry points the Bid Advisor UI
