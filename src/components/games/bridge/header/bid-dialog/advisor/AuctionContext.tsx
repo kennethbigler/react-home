@@ -96,28 +96,25 @@ function lastSuitBid(
 
 // ─── Bidder-history helper ─────────────────────────────────────────────────────
 
-/**
- * The seat's most recent REAL bid within `rounds` (and optionally `extra`,
- * e.g. the in-progress round).  Used so tooltips can distinguish an opening
- * (e.g. "weak 2♠") from a rebid of a suit the player already showed.
- */
-function lastRealBidBySeat(
+/** The seat's most recent non-pass CALL within `rounds` (and optionally
+ *  `extra`, e.g. the in-progress round) — a Double/Redouble counts: it is
+ *  the context an advance responds to, and a raise after one's own negative
+ *  double reads invitational. Used so tooltips can distinguish an opening
+ *  (e.g. "weak 2♠") from a rebid of a suit the player already showed. */
+function firstRealBidBySeat(
   rounds: BidRound[],
   extra: BidRound | undefined,
   pos: BiddingPosition,
 ): string | undefined {
-  let out: string | undefined;
   for (const r of rounds) {
     const b = r[pos];
-    if (b && b !== "Pass" && b !== "Double" && b !== "Redouble") out = b;
+    if (b && b !== "Pass" && b !== "Double" && b !== "Redouble") return b;
   }
   const e = extra?.[pos];
-  if (e && e !== "Pass" && e !== "Double" && e !== "Redouble") out = e;
-  return out;
+  if (e && e !== "Pass" && e !== "Double" && e !== "Redouble") return e;
+  return undefined;
 }
 
-/** Like lastRealBidBySeat, but a Double/Redouble also counts as the seat's
- *  last action — a takeout double is the context an advance responds to. */
 function lastActionBySeat(
   rounds: BidRound[],
   extra: BidRound | undefined,
@@ -131,6 +128,33 @@ function lastActionBySeat(
   const e = extra?.[pos];
   if (e && e !== "Pass") out = e;
   return out;
+}
+
+/** True when the LAST non-pass call before this seat's turn was a DOUBLE by
+ *  an opponent of `pos` — over a doubled NT the systems are off, so the
+ *  tooltip must read partner's suit bid as a natural escape, not a transfer. */
+function oppDoubledJustBeforeSeat(
+  rounds: BidRound[],
+  extra: BidRound | undefined,
+  pos: BiddingPosition,
+): boolean {
+  const flat: { seat: BiddingPosition; call: string }[] = [];
+  for (const r of rounds) {
+    for (let p = 1 as BiddingPosition; p <= 4; p = (p + 1) as BiddingPosition) {
+      const b = r[p];
+      if (b !== undefined) flat.push({ seat: p, call: b });
+    }
+  }
+  if (extra) {
+    for (let p = 1 as BiddingPosition; p <= 4; p = (p + 1) as BiddingPosition) {
+      const b = extra[p];
+      if (b !== undefined) flat.push({ seat: p, call: b });
+    }
+  }
+  const last = [...flat].reverse().find((e) => e.call !== "Pass");
+  if (!last || last.call !== "Double") return false;
+  const { partner } = getRelatives(pos);
+  return last.seat !== pos && last.seat !== partner;
 }
 
 /** The slice of a round containing only the seats that bid BEFORE `pos`.
@@ -222,6 +246,8 @@ interface BidInfoIconProps {
   bidderPreviousBid?: string;
   bidderPartnerPreviousBid?: string;
   auctionOpeningBid?: string;
+  bidderPartnerFirstBid?: string;
+  oppDoubledJustBefore?: boolean;
 }
 
 function BidInfoIcon({
@@ -231,6 +257,8 @@ function BidInfoIcon({
   bidderPreviousBid,
   bidderPartnerPreviousBid,
   auctionOpeningBid,
+  bidderPartnerFirstBid,
+  oppDoubledJustBefore,
 }: BidInfoIconProps) {
   const [open, setOpen] = useState(false);
   if (!bid) return null;
@@ -244,6 +272,8 @@ function BidInfoIcon({
           bidderPreviousBid,
           bidderPartnerPreviousBid,
           auctionOpeningBid,
+          bidderPartnerFirstBid,
+          oppDoubledJustBefore,
         )}
         placement="right"
         arrow
@@ -285,6 +315,8 @@ interface BidSlotProps {
   bidderPreviousBid?: string;
   bidderPartnerPreviousBid?: string;
   auctionOpeningBid?: string;
+  bidderPartnerFirstBid?: string;
+  oppDoubledJustBefore?: boolean;
 }
 
 function BidSlot({
@@ -297,6 +329,8 @@ function BidSlot({
   bidderPreviousBid,
   bidderPartnerPreviousBid,
   auctionOpeningBid,
+  bidderPartnerFirstBid,
+  oppDoubledJustBefore,
 }: BidSlotProps) {
   const currentValue = value || "Pass";
   const labelId = `bid-label-${slotLabel.replace(/[\s()]+/g, "-").toLowerCase()}`;
@@ -352,7 +386,9 @@ function BidSlot({
           prevHighBid={prevHighBid}
           bidderPreviousBid={bidderPreviousBid}
           bidderPartnerPreviousBid={bidderPartnerPreviousBid}
+          bidderPartnerFirstBid={bidderPartnerFirstBid}
           auctionOpeningBid={auctionOpeningBid}
+          oppDoubledJustBefore={oppDoubledJustBefore}
         />
       )}
     </Box>
@@ -471,9 +507,10 @@ function CompletedRoundRow({
           // raise is not mislabeled a "second suit", nor a response an "overcall").
           const priorRounds = allCompletedRounds.slice(0, roundIndex);
           const thisRoundBefore = roundBefore(round, pos);
-          // The seat's own previous real bid — lets the tooltip describe a REBID
-          // instead of mislabeling it as an opening.
-          const bidderPreviousBid = lastRealBidBySeat(
+          // The seat's own previous non-pass CALL (a Double counts — a raise
+          // after one's own negative double is invitational, not 6-9) — lets
+          // the tooltip describe a REBID instead of mislabeling it an opening.
+          const bidderPreviousBid = lastActionBySeat(
             priorRounds,
             thisRoundBefore,
             pos,
@@ -491,6 +528,12 @@ function CompletedRoundRow({
             bidderPreviousBid,
             bidderPartnerPreviousBid,
             auctionOpeningBidOf(allCompletedRounds),
+            firstRealBidBySeat(
+              priorRounds,
+              thisRoundBefore,
+              getRelatives(pos).partner,
+            ),
+            oppDoubledJustBeforeSeat(priorRounds, thisRoundBefore, pos),
           );
 
           return (
@@ -595,7 +638,7 @@ export default function AuctionContextInput({
   );
 
   // ── 3 consecutive passes detection ───────────────────────────────────────────
-  const { isComplete, finalContract } = getFinalContractInfo(
+  const { isComplete, finalContract, doubling } = getFinalContractInfo(
     completedRounds,
     currentRound,
     myPosition,
@@ -854,7 +897,9 @@ export default function AuctionContextInput({
       {isComplete && (
         <Alert severity="info" sx={{ mb: 2 }}>
           Bidding complete
-          {finalContract ? ` — Final contract: ${finalContract}` : ""}
+          {finalContract
+            ? ` — Final contract: ${finalContract}${doubling ? ` (${doubling})` : ""}`
+            : ""}
         </Alert>
       )}
       {/* ── Completed rounds (prior bids) ─────────────────────────────── */}
@@ -935,7 +980,7 @@ export default function AuctionContextInput({
                     options={options}
                     onChange={(val) => updateCurrentRound(pos, val)}
                     prevHighBid={lastBid}
-                    bidderPreviousBid={lastRealBidBySeat(
+                    bidderPreviousBid={lastActionBySeat(
                       completedRounds,
                       roundBefore(currentRound, pos),
                       pos,
@@ -947,9 +992,19 @@ export default function AuctionContextInput({
                         getRelatives(pos).partner,
                       ) ?? "none"
                     }
+                    bidderPartnerFirstBid={firstRealBidBySeat(
+                      completedRounds,
+                      roundBefore(currentRound, pos),
+                      getRelatives(pos).partner,
+                    )}
                     auctionOpeningBid={auctionOpeningBidOf(
                       completedRounds,
                       currentRound,
+                    )}
+                    oppDoubledJustBefore={oppDoubledJustBeforeSeat(
+                      completedRounds,
+                      roundBefore(currentRound, pos),
+                      pos,
                     )}
                   />
                 );
@@ -1053,7 +1108,7 @@ export default function AuctionContextInput({
                     setNextRoundBids((prev) => ({ ...prev, [pos]: v }))
                   }
                   prevHighBid={effectiveLast}
-                  bidderPreviousBid={lastRealBidBySeat(
+                  bidderPreviousBid={lastActionBySeat(
                     completedRounds,
                     thisRoundBefore,
                     pos,
@@ -1065,9 +1120,19 @@ export default function AuctionContextInput({
                       getRelatives(pos).partner,
                     ) ?? "none"
                   }
+                  bidderPartnerFirstBid={firstRealBidBySeat(
+                    completedRounds,
+                    thisRoundBefore,
+                    getRelatives(pos).partner,
+                  )}
                   auctionOpeningBid={auctionOpeningBidOf(
                     completedRounds,
                     roundSoFar,
+                  )}
+                  oppDoubledJustBefore={oppDoubledJustBeforeSeat(
+                    completedRounds,
+                    thisRoundBefore,
+                    pos,
                   )}
                 />
               );
