@@ -1,34 +1,8 @@
 /**
- * Can you  audit the Bridge bidding application in react-home to ensure that all of the bidding is SAYC compliant? I tried to create a Bridge bidding skill you can use for better accuracy. I want to be sure the recommended bid is accurate, I want to be sure the reasoning for that bid is accurate, and I want to be sure the information on why someone else may have bid something is accurate.
-You'll have to:
-
-1. simulate a deck of cards and deal out 4 hands
-2. Use the bridge bidding tool from the perspective of player 1 to get their recommended bid
-3. Clear out the information and fill it in for player 2 (and put in whatever the recommended bid for player 1 was as their bid in the Auction Context) to get their recommended bid.
-4. Keep doing the same for players 3 and 4.
-5. Then, go back to player 1, and enter in all the previous bids in the Auction Context and advance to the next round.
-6. Continue the simulation until the bidding is complete for all rounds and the auction has concluded (ensuring all along the way that the recommended bid is correct per SAYC)
-7. Continue running simulations until you get 3 correct final bids in a row with no errors along the way (all recommended bids being compliant). sim-audit.test.ts was created to help with this a bit on your last run.
-
-Notes:
-* Essentially, you are using the tool from the perspective of each of the 4 players.
-* Each player would only know their own cards, but Claude will have knowledge of all 4 hands, please pretend you don't know the other hands (as if you were playing bridge).
-* Along the way, make sure that all information makes sense:
-  * Your Hand Analysis
-  * Why This Bid
-  * What It Tells Partner
-  * And the i icon on why someone else bid what they did. This doesn't have to be perfect, again we don't know EXACTLY what they other person's hand is, but the info here should be accurate to what can be interpreted from their bid.
-* Feel free to make any code changes, update the information, fix any bugs, fix any bad information, and make sure users have the best experience. Ask any questions if you need anything from me.
-*/
-
-/**
- * TEMPORARY simulation harness for the SAYC audit — deals seeded hands and
- * auto-plays full auctions through the SAME entry points the Bid Advisor UI
- * uses (deriveSituation → getRecommendation, getBidMeaning for tooltips).
- * Writes a human-readable transcript per seed for manual refereeing.
- * Delete this file when the audit is done.
+ * SAYC simulation regression — deals seeded hands and auto-plays full auctions
+ * through deriveSituation → getRecommendation (same entry points as the Bid
+ * Advisor UI). Optional SIM_OUT writes human-readable transcripts.
  */
-import { writeFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   deriveSituation,
@@ -43,7 +17,7 @@ import {
   type Vulnerability,
 } from "./bidding-logic";
 
-// ─── Deck / deal (mirrors the seeded deal script used for the UI audit) ──────
+// ─── Deck / deal ─────────────────────────────────────────────────────────────
 type Card = { s: "S" | "H" | "D" | "C"; r: string };
 const SUITS = ["S", "H", "D", "C"] as const;
 const RANKS = "AKQJT98765432".split("");
@@ -159,7 +133,12 @@ const BID_ORDER_SIM = [
 const isReal = (b: string | undefined): b is string =>
   !!b && b !== "Pass" && b !== "Double" && b !== "Redouble";
 
-function runDeal(seed: number, nsVul: boolean, ewVul: boolean): string {
+interface DealResult {
+  transcript: string;
+  problems: string[];
+}
+
+function runDeal(seed: number, nsVul: boolean, ewVul: boolean): DealResult {
   const hands = dealHands(seed);
   const lines: string[] = [];
   const problems: string[] = [];
@@ -182,7 +161,6 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): string {
     for (let p = 1 as BiddingPosition; p <= 4; p = (p + 1) as BiddingPosition) {
       const seat = p as BiddingPosition;
       const dealt = hands[seat - 1];
-      // Per-seat vulnerability (NS = seats 1/3)
       const weV = seat === 1 || seat === 3 ? nsVul : ewVul;
       const theyV = seat === 1 || seat === 3 ? ewVul : nsVul;
       const vul: Vulnerability =
@@ -195,8 +173,6 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): string {
       };
       const ctx = deriveSituation(state, vul);
 
-      // Stopper input — same detection the UI uses (rho first, then lho;
-      // ignore a conventional 2♣ over NT).
       const lhoIsNT = ctx.lhoBid?.endsWith("NT") ?? false;
       const rhoIsNT = ctx.rhoBid?.endsWith("NT") ?? false;
       const isConv2C = (b: string) => b === "2♣" && (lhoIsNT || rhoIsNT);
@@ -230,7 +206,6 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): string {
       const rec = getRecommendation(hand, ctx);
       const call = rec.bid;
 
-      // Legality check
       const lastReal = [...flatCalls].reverse().find(isReal);
       if (isReal(call) && lastReal) {
         if (BID_ORDER_SIM.indexOf(call) <= BID_ORDER_SIM.indexOf(lastReal)) {
@@ -268,7 +243,6 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): string {
       currentRound[seat] = call;
       flatCalls.push(call);
 
-      // Termination: 3 passes after any real call, or 4 opening passes
       const trailing = (() => {
         let n = 0;
         for (let i = flatCalls.length - 1; i >= 0; i--) {
@@ -302,7 +276,6 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): string {
     `AUCTION: ${flatCalls.join(" – ")}   FINAL: ${isComplete ? `${finalContract ?? "passed out"}${doubling ? ` (${doubling})` : ""}` : "(incomplete)"}`,
   );
 
-  // ── Tooltip review: each real call as partner + as opponent ────────────────
   lines.push("");
   lines.push("── Tooltips (getBidMeaning) ──");
   const allRounds = [...completedRounds, currentRound];
@@ -384,29 +357,37 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): string {
     lines.push("(no auto-flagged problems)");
   }
   lines.push("");
-  return lines.join("\n");
+  return { transcript: lines.join("\n"), problems };
 }
 
 // ─── Runner ──────────────────────────────────────────────────────────────────
-const SEEDS = (process.env.SIM_SEEDS ?? "43,44,45")
-  .split(",")
-  .map((s) => parseInt(s.trim(), 10));
+const DEFAULT_SEEDS = [43, 44, 45];
+const parseSeeds = (raw: string | undefined): number[] => {
+  const parsed = (raw ?? DEFAULT_SEEDS.join(","))
+    .split(",")
+    .map((s) => parseInt(s.trim(), 10))
+    .filter((n) => Number.isFinite(n));
+  return parsed.length > 0 ? parsed : DEFAULT_SEEDS;
+};
+const SEEDS = parseSeeds(process.env.SIM_SEEDS);
 const OUT = process.env.SIM_OUT;
 
-describe("SAYC simulation audit (temporary harness)", () => {
-  it("plays full auctions for each seed and writes transcripts", () => {
+describe("bidding-logic | SAYC seeded auction simulation", () => {
+  it("plays full auctions for each seed with no auto-flagged problems", async () => {
     const vulCycle: [boolean, boolean][] = [
       [false, false],
       [true, false],
       [false, true],
       [true, true],
     ];
-    const out = SEEDS.map((seed, i) => runDeal(seed, ...vulCycle[i % 4])).join(
-      "\n\n",
-    );
+    const results = SEEDS.map((seed, i) => runDeal(seed, ...vulCycle[i % 4]));
+    const transcript = results.map((r) => r.transcript).join("\n\n");
+    const problems = results.flatMap((r) => r.problems);
+
     if (OUT) {
-      writeFileSync(OUT, out);
+      const { writeFileSync } = await import("node:fs");
+      writeFileSync(OUT, transcript);
     }
-    expect(out.length).toBeGreaterThan(0);
+    expect(problems).toEqual([]);
   });
 });

@@ -147,9 +147,10 @@ export interface AuctionContext {
    */
   systemsOff?: boolean;
   /**
-   * For `after-own-double`: true when MY PARTNER opened the auction, i.e. my
-   * earlier double was a NEGATIVE double (6+ pts, unbid suits) rather than a
-   * takeout double (12+).  Drives the wording of the follow-up advice.
+   * True when MY PARTNER opened the auction — used in `after-own-double` (my
+   * earlier double was a negative double, not takeout) and in
+   * `respond-to-partner-invitation` (partner's jump rebid is the opener
+   * invite ladder). Drives wording of the follow-up advice.
    */
   partnerOpened?: boolean;
   /**
@@ -1446,6 +1447,13 @@ function getResponseToTwoNT(
   const rangeText = after2C ? "22-24 (2♣ then 2NT)" : "20-21";
   // Opposite 22-24, game needs only ~2-3; opposite 20-21 it needs ~4-5.
   const gameFloor = after2C ? 2 : 4;
+  const partnerMin = after2C ? 22 : 20;
+  const partnerMax = after2C ? 24 : 21;
+  const grandSlamGate = after2C ? 14 : 16;
+  const smallSlamGate = after2C ? 11 : 13;
+  const quantInviteHcp = 12;
+  const quantAcceptHcp = after2C ? 23 : 21;
+  const quantDeclineHcp = after2C ? 22 : 20;
 
   // A 5-card major is worth showing even on a bust: transfer and pass leaves
   // partner in a better partscore than 2NT.
@@ -1477,8 +1485,8 @@ function getResponseToTwoNT(
           yourRebid:
             hcp >= 12
               ? "Explore slam"
-              : hcp >= 5
-                ? "Bid 4♥ (or 3NT with only 5 hearts) — game opposite 20-21"
+              : hcp >= gameFloor
+                ? `Bid 4♥ (or 3NT with only 5 hearts) — game opposite ${rangeText}`
                 : "Pass",
         },
       ],
@@ -1499,8 +1507,8 @@ function getResponseToTwoNT(
           yourRebid:
             hcp >= 12
               ? "Explore slam"
-              : hcp >= 5
-                ? "Bid 4♠ (or 3NT with only 5 spades) — game opposite 20-21"
+              : hcp >= gameFloor
+                ? `Bid 4♠ (or 3NT with only 5 spades) — game opposite ${rangeText}`
                 : "Pass",
         },
       ],
@@ -1526,46 +1534,45 @@ function getResponseToTwoNT(
     };
   }
 
-  // 16+ HCP: 20+16 = 36-37 — grand-slam territory on power.
-  if (hcp >= 16) {
+  // Grand-slam territory on power (16+ opposite 20-21, 14+ opposite 22-24).
+  if (hcp >= grandSlamGate) {
     return {
       bid: "7NT",
       category: "7NT (Grand Slam on Combined Values)",
-      reasoning: `With ${hcp} HCP opposite partner's 20-21, the combined count is ${hcp + 20}-${hcp + 21} — at the 37-point grand-slam threshold. Bid 7NT.`,
+      reasoning: `With ${hcp} HCP opposite partner's ${rangeText}, the combined count is ${hcp + partnerMin}-${hcp + partnerMax} — at the 37-point grand-slam threshold. Bid 7NT.`,
       handAnalysis: analysis,
-      whatYourBidTellsPartner: "16+ HCP — combined 37: grand slam on power.",
+      whatYourBidTellsPartner: `${grandSlamGate}+ HCP — combined 37: grand slam on power.`,
       expectedResponses: [{ partnerBid: "Pass", meaning: "To play" }],
       confidence: "medium",
       note: "With a specific suit in mind, Gerber 4♣ (ace ask) is a safer route than blasting.",
     };
   }
 
-  // 13-15 HCP: 20+13 = 33 — small slam is there on power; bid it.
-  if (hcp >= 13) {
+  // Small slam on power (13+ opposite 20-21, 11+ opposite 22-24).
+  if (hcp >= smallSlamGate) {
     return {
       bid: "6NT",
       category: "6NT (Small Slam on Combined Values)",
-      reasoning: `With ${hcp} HCP opposite partner's 20-21, the combined count is ${hcp + 20}-${hcp + 21} — at or past the 33-point small-slam threshold. Bid 6NT directly.`,
+      reasoning: `With ${hcp} HCP opposite partner's ${rangeText}, the combined count is ${hcp + partnerMin}-${hcp + partnerMax} — at or past the 33-point small-slam threshold. Bid 6NT directly.`,
       handAnalysis: analysis,
-      whatYourBidTellsPartner: "13-15 HCP — combined 33+: small slam on power.",
+      whatYourBidTellsPartner: `${smallSlamGate}+ HCP — combined 33+: small slam on power.`,
       expectedResponses: [{ partnerBid: "Pass", meaning: "To play" }],
       confidence: "high",
     };
   }
 
   // Invitational to 6NT (12 HCP)
-  if (hcp >= 12) {
+  if (hcp >= quantInviteHcp) {
     return {
       bid: "4NT",
       category: "Quantitative 4NT (invite to 6NT)",
-      reasoning:
-        "With 12 HCP, invite 6NT with 4NT. Partner accepts with 21 HCP (maximum).",
+      reasoning: `With ${quantInviteHcp} HCP, invite 6NT with 4NT. Partner accepts with ${quantAcceptHcp} HCP (maximum).`,
       handAnalysis: analysis,
       whatYourBidTellsPartner:
         "12 HCP balanced. Inviting 6NT (quantitative — NOT Blackwood).",
       expectedResponses: [
-        { partnerBid: "Pass", meaning: "20 HCP — declines" },
-        { partnerBid: "6NT", meaning: "21 HCP — accepts" },
+        { partnerBid: "Pass", meaning: `${quantDeclineHcp} HCP — declines` },
+        { partnerBid: "6NT", meaning: `${quantAcceptHcp} HCP — accepts` },
       ],
       confidence: "high",
       note: "4NT is quantitative here, not Blackwood — no suit is agreed.",
@@ -1576,8 +1583,7 @@ function getResponseToTwoNT(
   return {
     bid: "3NT",
     category: "3NT Response to 2NT",
-    reasoning:
-      "With 4-11 HCP balanced, bid 3NT. Combined with partner's 20-21 HCP you have enough for game.",
+    reasoning: `With 4-11 HCP balanced, bid 3NT. Combined with partner's ${rangeText} HCP you have enough for game.`,
     handAnalysis: analysis,
     whatYourBidTellsPartner:
       "4-11 HCP, no 4-card major, satisfied with NT game.",
@@ -12676,16 +12682,29 @@ function getRecommendationRaw(
       const w2Interference = [context.lhoBid, context.rhoBid]
         .filter((b): b is string => isRealBid(b))
         .sort((a, b) => BID_ORDER.indexOf(b) - BID_ORDER.indexOf(a))[0];
+      const w2Contested =
+        isRealBid(context.rhoBid) ||
+        isRealBid(context.lhoBid) ||
+        context.rhoBid === "Double" ||
+        context.lhoBid === "Double";
       return getResponseToWeak2(
         hand,
         context.partnerBid ?? "2♥",
-        isRealBid(context.rhoBid) || isRealBid(context.lhoBid),
+        w2Contested,
         w2Interference,
       );
     }
 
-    case "responding-preempt":
-      return getResponseToPreempt(hand, context.partnerBid ?? "3♥");
+    case "responding-preempt": {
+      const preemptInterference = [context.lhoBid, context.rhoBid]
+        .filter((b): b is string => isRealBid(b))
+        .sort((a, b) => BID_ORDER.indexOf(b) - BID_ORDER.indexOf(a))[0];
+      return getResponseToPreempt(
+        hand,
+        context.partnerBid ?? "3♥",
+        preemptInterference,
+      );
+    }
 
     case "overcalling":
       return getOvercall(
@@ -16196,28 +16215,6 @@ function deriveSituationCore(
         rhoBid: effectiveRhoBid,
         vulnerability: vul,
         ...(partnerFirstRealRTD2 && { partnerFirstBid: partnerFirstRealRTD2 }),
-      };
-    }
-
-    // PARTNER's only action is a (takeout) DOUBLE, the opponents opened, and
-    // I have already advanced once — my earlier advance said it all; route to
-    // the advancer-rebid logic (its fallback pass), never to opener handlers.
-    if (
-      partnerBid === "Double" &&
-      isRealBid(myLastBid) &&
-      findAuctionOpenerSeat(completedRounds, currentRound, myPosition) !==
-        myPosition &&
-      findAuctionOpenerSeat(completedRounds, currentRound, myPosition) !==
-        partner
-    ) {
-      return {
-        situation: "advancer-rebid",
-        myPreviousBid: myLastBid,
-        partnerBid: undefined,
-        partnerFirstBid: undefined,
-        lhoBid,
-        rhoBid,
-        vulnerability: vul,
       };
     }
 

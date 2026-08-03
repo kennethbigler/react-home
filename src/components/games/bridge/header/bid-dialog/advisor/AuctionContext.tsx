@@ -96,11 +96,10 @@ function lastSuitBid(
 
 // ─── Bidder-history helper ─────────────────────────────────────────────────────
 
-/** The seat's most recent non-pass CALL within `rounds` (and optionally
- *  `extra`, e.g. the in-progress round) — a Double/Redouble counts: it is
- *  the context an advance responds to, and a raise after one's own negative
- *  double reads invitational. Used so tooltips can distinguish an opening
- *  (e.g. "weak 2♠") from a rebid of a suit the player already showed. */
+/** The seat's first non-Pass, non-Double, non-Redouble bid in `rounds`, with
+ *  `extra` (e.g. the in-progress round) checked as a fallback. Used so
+ *  tooltips can distinguish an opening (e.g. "weak 2♠") from a rebid of a
+ *  suit the player already showed. */
 function firstRealBidBySeat(
   rounds: BidRound[],
   extra: BidRound | undefined,

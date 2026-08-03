@@ -4,8 +4,9 @@ import { blue, lightGreen, orange } from "@mui/material/colors";
 export const stockColor = lightGreen[500];
 export const bonusColor = orange[500];
 export const salaryColor = blue[500];
+const totalColor = orange[900];
 
 /** Series color order matches STOCK / BONUS / SALARY / TOTAL. */
-const colors: string[] = [stockColor, bonusColor, salaryColor, orange[900]];
+const colors: string[] = [stockColor, bonusColor, salaryColor, totalColor];
 
 export default colors;

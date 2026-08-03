@@ -93,9 +93,7 @@ vi.mock("@highcharts/react", () => ({
     const sankeyClickHandler =
       options?.plotOptions?.sankey?.point?.events?.click ??
       options?.plotOptions?.series?.point?.events?.click;
-    if (sankeyClickHandler) {
-      chartTestState.sankeyPointClickHandler = sankeyClickHandler;
-    }
+    chartTestState.sankeyPointClickHandler = sankeyClickHandler ?? null;
 
     return <div data-testid="highcharts-chart">{children}</div>;
   },

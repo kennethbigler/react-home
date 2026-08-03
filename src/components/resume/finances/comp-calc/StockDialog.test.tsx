@@ -76,12 +76,13 @@ describe("resume | finances | comp-calc | StockDialog", () => {
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 
-  it("shows delete for an existing stock and removes it", () => {
+  it("shows delete for an existing stock and removes it after confirmation", () => {
     const removeTick = vi.fn();
     const removeStockEntry = vi.fn(() => removeTick);
     renderStockDialog({ stock: "AAPL", price: 100, removeStockEntry });
 
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete entry" }));
 
     expect(removeStockEntry).toHaveBeenCalledWith("AAPL");
     expect(removeTick).toHaveBeenCalledTimes(1);

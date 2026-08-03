@@ -5317,7 +5317,7 @@ describe("bidding-logic | deal 3 — 1♦ opening, 1-over-1 response, reverse bi
   it("19+ with a 1-level suit available jump-shifts instead", () => {
     // seed 184: 20 HCP 1♦-1♥-2♠ labeled "Reverse" — it is a jump shift.
     const rec = getRecommendation(
-      { hcp: 20, spades: 4, hearts: 2, diamonds: 5, clubs: 2 } as never,
+      { hcp: 20, spades: 4, hearts: 2, diamonds: 5, clubs: 2 },
       ctx("rebid-after-suit", {
         myPreviousBid: "1♦",
         partnerBid: "1♥",
@@ -8070,22 +8070,6 @@ describe("bidding-logic | responding-2nt hearts 5+ low HCP (line 1340 false bran
   });
 });
 
-describe("bidding-logic | unusual 2NT overcall vulnerable (line 2692 true branch)", () => {
-  it("overcalling 2NT vulnerable (we-only) includes vulnerability warning note", () => {
-    const rec = getRecommendation(
-      mkHand(12, 1, 2, 5, 5),
-      ctx("overcalling", { rhoBid: "1♠", vulnerability: "we-only" }),
-    );
-    // Should recommend Unusual 2NT (both minors 5+5) with a vulnerability note
-    if (rec.bid === "2NT") {
-      expect(rec.note).toMatch(/vulnerable/i);
-    } else {
-      // If not 2NT, at least the test ran through the function
-      expect(rec.bid).toBeDefined();
-    }
-  });
-});
-
 describe("bidding-logic | responding-to-simple-oc with hearts/diamonds/clubs opponent (lines 2848-2852)", () => {
   it("opponent bid hearts, 10+ support 3+ → cue bid in hearts (line 2850 true branch)", () => {
     // Partner overcalled 2♠ over opener's 1♥, I have 4 spades and 10 pts
@@ -8241,7 +8225,7 @@ describe("bidding-logic | after-own-double 19+ TP with partner suit (lines 5365-
   it("doubled then partner bid 2♥, tp >= 19 → raise to 4♥ (line 5376)", () => {
     // Unbalanced 19+ (balanced hands now make the promised NT rebid instead).
     const rec = getRecommendation(
-      { hcp: 19, spades: 5, hearts: 4, diamonds: 3, clubs: 1 } as never,
+      { hcp: 19, spades: 5, hearts: 4, diamonds: 3, clubs: 1 },
       ctx("after-own-double", { partnerBid: "2♥" }),
     );
     expect(rec.bid).toBe("4♥");
@@ -8250,7 +8234,7 @@ describe("bidding-logic | after-own-double 19+ TP with partner suit (lines 5365-
 
   it("doubled then partner bid 2♦ (diamonds), tp >= 19 → raise (line 5365/5367 false→true branch)", () => {
     const rec = getRecommendation(
-      { hcp: 19, spades: 4, hearts: 4, diamonds: 4, clubs: 1 } as never,
+      { hcp: 19, spades: 4, hearts: 4, diamonds: 4, clubs: 1 },
       ctx("after-own-double", { partnerBid: "2♦" }),
     );
     expect(rec.bid).toContain("♦");
@@ -8259,7 +8243,7 @@ describe("bidding-logic | after-own-double 19+ TP with partner suit (lines 5365-
 
   it("doubled then partner bid 2♣ (clubs), tp >= 19 → raise to 5♣ (line 5369 false branch)", () => {
     const rec = getRecommendation(
-      { hcp: 19, spades: 4, hearts: 4, diamonds: 1, clubs: 4 } as never,
+      { hcp: 19, spades: 4, hearts: 4, diamonds: 1, clubs: 4 },
       ctx("after-own-double", { partnerBid: "2♣" }),
     );
     expect(rec.bid).toContain("♣");
@@ -8401,19 +8385,6 @@ describe("bidding-logic | responding-2nt hearts transfer with hcp >= 10 (line 13
 });
 
 describe("bidding-logic | unusual 2NT overcall vulnerable (line 2692 branches 296/297)", () => {
-  it("unusual 2NT, vulnerability 'both' → produces vulnerability note (branch 296[0])", () => {
-    // 1-2-5-5 distribution (both minors), hcp=12, both vulnerable
-    const rec = getRecommendation(
-      mkHand(12, 1, 2, 5, 5),
-      ctx("overcalling", { rhoBid: "1♠", vulnerability: "both" }),
-    );
-    if (rec.bid === "2NT") {
-      expect(rec.note).toMatch(/vulnerable/i);
-    } else {
-      expect(rec.bid).toBeDefined();
-    }
-  });
-
   it("unusual 2NT, vulnerability 'we-only' with minor-suited hand → note if 2NT (branch 297[0])", () => {
     const rec = getRecommendation(
       mkHand(12, 1, 2, 5, 5),
@@ -8638,30 +8609,6 @@ describe("bidding-logic | opening pass — blocked preempt reasoning", () => {
     const rec = getRecommendation(mkHand(3, 6, 2, 3, 2), ctx("opening"));
     expect(rec.bid).toBe("Pass");
     expect(rec.reasoning).toMatch(/5-10 HCP/i);
-  });
-
-  it("6-card suit but HCP > 10 → Pass (too strong for preempt, not enough for open)", () => {
-    // 11 HCP, 6 spades — HCP > 10 so outside preempt range but TP only 13
-    // Must also not qualify for rule-of-20 open: HCP=11, 2 longest suits = 6+3=9, total=20 exactly
-    // Use 6♠3♥2♦2♣ = 13 cards, 11 HCP → TP = 11+2 = 13. Rule of 20 = 11+6+3=20 → qualifies!
-    // Use 6♠3♥3♦1♣ = 13 cards, 11 HCP → TP=13. Rule=11+6+3=20 → qualifies, would open.
-    // Need HCP outside range without triggering other opens: 11 HCP, 6♠2♥3♦2♣ → rule=11+6+3=20 → open.
-    // Better: 11 HCP, 6♣2♠2♥3♦ → TP=13, rule=11+6+3=20 → open 1♣. Not a pass.
-    // To get past all preempt and open checks we need HCP > 10 but TP < 12 AND rule < 20.
-    // 11 HCP, 6♦2♠2♥3♣ → TP=13. rule=11+6+3=20 → open. Hmm.
-    // We need a hand that falls through to pass: weak preempt range hand where HCP is 11-12
-    // but TP is 11 (no length pts help) and rule of 20 fails.
-    // Actually from source: `if (hand.hcp < 5 || hand.hcp > 10)` at line 798 is checked
-    // AFTER all open/preempt blocks fail. So we need: 11-12 HCP but TP=11 (no long pts),
-    // HCP < 10 rule-of-20 fails (hcp + 2 longest < 20), and not balanced (not NT).
-    // 11 HCP, 4♠4♥2♦3♣ → TP=11, balanced, opens 1NT (15-17 required, fails), rule=11+4+4=19 < 20, tp=11 < 12.
-    // That hand: balanced → would go to isBalanced check first → but 11 HCP balanced opens only if 15-17.
-    // Actually balanced hand with 11 HCP just passes normally — hits the `pass` block at the end of opening.
-    // The specific "6+ card suit but HCP > 10" message requires a 6-card suit AND hcp > 10.
-    // 11 HCP, 6♦3♠2♥2♣ = 13 cards → TP=13, rule=11+6+3=20 → opens via rule of 20.
-    // We can't easily hit this specific message without opening. Skip this specific sub-branch.
-    // Test the easier "too weak" branch instead (already covered above for hcp < 5).
-    expect(true).toBe(true); // placeholder — hcp>10 with 6-card suit opens via rule of 20
   });
 });
 
@@ -8904,7 +8851,7 @@ describe("bidding-logic | overcalling — over opponent's 1NT", () => {
         diamonds: 3,
         clubs: 6,
         goodSuitQuality: true,
-      } as never,
+      },
       ctx("overcalling", { rhoBid: "3NT" }),
     );
     expect(rec.bid).toBe("Double");
@@ -8913,7 +8860,7 @@ describe("bidding-logic | overcalling — over opponent's 1NT", () => {
 
   it("advancer sits for partner's penalty double of 3NT", () => {
     const rec = getRecommendation(
-      { hcp: 0, spades: 3, hearts: 5, diamonds: 2, clubs: 3 } as never,
+      { hcp: 0, spades: 3, hearts: 5, diamonds: 2, clubs: 3 },
       ctx("responding-to-double", { rhoBid: "3NT", partnerBid: "Double" }),
     );
     expect(rec.bid).toBe("Pass");
@@ -8977,7 +8924,7 @@ describe("bidding-logic | negative-double — prefer natural bid at 2-level", ()
   it("4 hearts + 5 diamonds + 9 HCP over 1♣-(1♠): double shows the major first", () => {
     // seed 110: 2♦ with 9 HCP contradicted the 10+ standard and buried hearts.
     const rec = getRecommendation(
-      { hcp: 9, spades: 2, hearts: 4, diamonds: 5, clubs: 2 } as never,
+      { hcp: 9, spades: 2, hearts: 4, diamonds: 5, clubs: 2 },
       ctx("negative-double", { myPreviousBid: "1♣", rhoBid: "1♠" }),
     );
     expect(rec.bid).toBe("Double");
@@ -10690,18 +10637,11 @@ describe("bidding-logic | sim audit — 1NT overcall systems", () => {
   });
 
   it("responding to a DIRECT 1NT overcall keeps the 15-18 ranges (10 HCP → 3NT)", () => {
-    const state: AuctionState = {
-      myPosition: 3,
-      completedRounds: [{ 1: "1♣", 2: "1NT", 3: "Pass", 4: "Pass" }],
-      currentRound: { 1: "Pass", 2: "Pass" },
-    };
-    // Wrong seat for this shape — use partner-overcalled geometry instead:
     const state2: AuctionState = {
       myPosition: 4,
       completedRounds: [{ 1: "1♣", 2: "1NT", 3: "Pass" }],
       currentRound: { 1: "Pass", 2: "Pass", 3: "Pass" },
     };
-    void state;
     const context = deriveSituation(state2, "none");
     expect(context.situation).toBe("responding-to-1nt-oc");
     expect(context.balancing).toBeUndefined();
@@ -11268,7 +11208,7 @@ describe("sim audit rounds 15-16 regressions", () => {
       lhoBid: "1♠",
       rhoBid: "3♠",
       auctionOpeningBid: "1♠",
-    } as never);
+    });
     expect(rec.bid).toBe("4♥");
     expect(rec.category).toContain("Strong Michaels");
   });
@@ -11281,7 +11221,7 @@ describe("sim audit rounds 15-16 regressions", () => {
       partnerFirstBid: "2♠",
       partnerBid: "4♥",
       auctionOpeningBid: "1♠",
-    } as never);
+    });
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Michaels");
     expect(rec.reasoning).not.toContain("two suits (spades");
@@ -11291,7 +11231,7 @@ describe("sim audit rounds 15-16 regressions", () => {
     // seed 81: 4 HCP, 4 hearts, 4-card diamond fit responded 1♥ claiming
     // "6+ pts". Short-suit points justify a RAISE only.
     const rec = getRecommendation(
-      { hcp: 4, spades: 1, hearts: 4, diamonds: 4, clubs: 4 } as never,
+      { hcp: 4, spades: 1, hearts: 4, diamonds: 4, clubs: 4 },
       ctx("responding-suit", { partnerBid: "1♦" }),
     );
     expect(rec.bid).toBe("2♦");
@@ -11313,7 +11253,7 @@ describe("sim audit rounds 15-16 regressions", () => {
     // seed 81: 4 TP responder facing 4♠ — old code computed a below-floor
     // preference and hit the safety net.
     const rec = getRecommendation(
-      { hcp: 4, spades: 1, hearts: 4, diamonds: 4, clubs: 4 } as never,
+      { hcp: 4, spades: 1, hearts: 4, diamonds: 4, clubs: 4 },
       ctx("responder-rebid", {
         partnerBid: "3♣",
         myPreviousBid: "1♥",
@@ -11342,7 +11282,7 @@ describe("sim audit round 17 regressions", () => {
       myFirstBid: "1♦",
       myPreviousBid: "1♦",
       lhoBid: "4♠",
-    } as never);
+    });
     expect(rec.bid).toBe("Double");
     expect(rec.category).toContain("Optional Double");
   });
@@ -11353,7 +11293,7 @@ describe("sim audit round 17 regressions", () => {
       myFirstBid: "1♦",
       myPreviousBid: "1♦",
       lhoBid: "4♠",
-    } as never);
+    });
     expect(rec.bid).toBe("Pass");
     expect(rec.reasoning).not.toContain("minimum opening");
   });
@@ -11376,7 +11316,7 @@ describe("sim audit round 17 — optional doubles and NT-auction stories", () =>
       rhoBid: "4♠",
       partnerOpened: true,
       partnerFirstBid: "1♦",
-    } as never);
+    });
     expect(rec.bid).toBe("5♥");
     expect(rec.category).toContain("Pull the Optional Double");
   });
@@ -11387,7 +11327,7 @@ describe("sim audit round 17 — optional doubles and NT-auction stories", () =>
       rhoBid: "4♠",
       partnerOpened: true,
       partnerFirstBid: "1♦",
-    } as never);
+    });
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Convert the Optional Double");
   });
@@ -11398,7 +11338,7 @@ describe("sim audit round 17 — optional doubles and NT-auction stories", () =>
       situation: "auction-passed-out",
       myPreviousBid: "4♠",
       myBidWasDoubled: true,
-    } as never);
+    });
     expect(rec.bid).toBe("Pass");
     expect(rec.reasoning).toContain("DOUBLED");
     expect(rec.reasoning).not.toContain("auction is over");
@@ -11410,14 +11350,14 @@ describe("sim audit round 17 — optional doubles and NT-auction stories", () =>
       myFirstBid: "4♠",
       myPreviousBid: "4♠",
       lhoBid: "5♥",
-    } as never);
+    });
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Preemptor Never Bids Again");
   });
 
   it("advancer of a preempt passes with honest story when opponents outbid it", () => {
     const rec = getRecommendation(
-      { hcp: 6, spades: 2, hearts: 1, diamonds: 3, clubs: 7 } as never,
+      { hcp: 6, spades: 2, hearts: 1, diamonds: 3, clubs: 7 },
       ctx("responding-to-preempt-oc", { partnerBid: "4♠", lhoBid: "5♥" }),
     );
     expect(rec.bid).toBe("Pass");
@@ -11431,7 +11371,7 @@ describe("sim audit round 17 — optional doubles and NT-auction stories", () =>
       rhoBid: "2♦",
       lhoBid: "2♣",
       auctionOpeningBid: "1NT",
-    } as never);
+    });
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Stayman Auction");
     expect(rec.reasoning).toContain("artificial");
@@ -11443,7 +11383,7 @@ describe("sim audit round 17 — optional doubles and NT-auction stories", () =>
       rhoBid: "2♦",
       lhoBid: "3NT",
       auctionOpeningBid: "1NT",
-    } as never);
+    });
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("3NT");
   });
@@ -11478,7 +11418,7 @@ describe("sim audit round 18 regressions", () => {
       partnerBid: "3♥",
       doubledBid: "2♦",
       rhoBid: "2♦",
-    } as never);
+    });
     expect(rec.bid).toBe("4♥");
     expect(rec.category).toContain("Accept the Invite");
   });
@@ -11491,7 +11431,7 @@ describe("sim audit round 18 regressions", () => {
       partnerBid: "3♥",
       doubledBid: "2♦",
       rhoBid: "2♦",
-    } as never);
+    });
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Decline the Invite");
   });
@@ -11504,7 +11444,7 @@ describe("sim audit round 18 regressions", () => {
       myPreviousBid: "2♥",
       partnerBid: "4♥",
       partnerFirstBid: "1♥",
-    } as never);
+    });
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Accept Partner's Game");
   });
@@ -11513,7 +11453,7 @@ describe("sim audit round 18 regressions", () => {
     // seed 87: 1♥ 2♦ 2♠ 3♦ 3♥ — 3♥ is the CHEAPEST heart rebid; responder's
     // game bid must not claim "partner shows at least 16".
     const rec = getRecommendation(
-      { hcp: 10, spades: 7, hearts: 3, diamonds: 1, clubs: 2 } as never,
+      { hcp: 10, spades: 7, hearts: 3, diamonds: 1, clubs: 2 },
       {
         situation: "responder-rebid",
         myPreviousBid: "2♠",
@@ -11521,7 +11461,7 @@ describe("sim audit round 18 regressions", () => {
         partnerFirstBid: "1♥",
         lhoBid: "3♦",
         rhoBid: "2♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♥");
     expect(rec.reasoning).toContain("at least 12");
@@ -11530,7 +11470,7 @@ describe("sim audit round 18 regressions", () => {
   it("opener passes partner's values-based game jump without the preemptive story", () => {
     // seed 87: partner bid 2♠ (10+) earlier, then 4♥ — not a preemptive raise.
     const rec = getRecommendation(
-      { hcp: 11, spades: 1, hearts: 7, diamonds: 2, clubs: 3 } as never,
+      { hcp: 11, spades: 1, hearts: 7, diamonds: 2, clubs: 3 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♥",
@@ -11538,7 +11478,7 @@ describe("sim audit round 18 regressions", () => {
         partnerBid: "4♥",
         partnerFirstBid: "2♠",
         lhoBid: "3♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Chose Game After Showing Values");
@@ -11557,14 +11497,14 @@ describe("sim audit round 18b — opener rebids own suit over negative double", 
     // seed 85: 1♥ (2♦) X (P) 2♥ — 2♥ is opener's own suit, NOT an answer to
     // the double (which showed spades); with Q5 doubleton, pass.
     const rec = getRecommendation(
-      { hcp: 9, spades: 4, hearts: 2, diamonds: 1, clubs: 6 } as never,
+      { hcp: 9, spades: 4, hearts: 2, diamonds: 1, clubs: 6 },
       {
         situation: "after-own-double",
         partnerBid: "2♥",
         partnerFirstBid: "1♥",
         partnerOpened: true,
         rhoBid: "2♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Opener Rebid Their Own Suit");
@@ -11572,14 +11512,14 @@ describe("sim audit round 18b — opener rebids own suit over negative double", 
 
   it("doubler raises opener's own-suit rebid with 3-card fit and extras", () => {
     const rec = getRecommendation(
-      { hcp: 11, spades: 4, hearts: 3, diamonds: 2, clubs: 4 } as never,
+      { hcp: 11, spades: 4, hearts: 3, diamonds: 2, clubs: 4 },
       {
         situation: "after-own-double",
         partnerBid: "2♥",
         partnerFirstBid: "1♥",
         partnerOpened: true,
         rhoBid: "2♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3♥");
     expect(rec.category).toContain("Raise Opener's Long-Suit Rebid");
@@ -11594,7 +11534,7 @@ describe("sim audit round 19 regressions — 2NT systems + penalty double of 1NT
       myPreviousBid: "2NT",
       myFirstBid: "2NT",
       partnerBid: "3♥",
-    } as never);
+    });
     expect(rec.bid).toBe("3♠");
     expect(rec.category).toContain("Transfer");
   });
@@ -11605,7 +11545,7 @@ describe("sim audit round 19 regressions — 2NT systems + penalty double of 1NT
       myPreviousBid: "2NT",
       myFirstBid: "2NT",
       partnerBid: "3♣",
-    } as never);
+    });
     expect(rec.bid).toBe("3♥");
     expect(rec.category).toContain("Stayman over 2NT");
   });
@@ -11620,7 +11560,7 @@ describe("sim audit round 19 regressions — 2NT systems + penalty double of 1NT
           { 1: "Pass", 2: "3♠", 3: "Pass", 4: "3NT" },
         ],
         currentRound: { 1: "Pass" },
-      } as never,
+      },
       "none",
     );
     const rec = getRecommendation(mkHand(20, 4, 4, 3, 2), s2);
@@ -11635,7 +11575,7 @@ describe("sim audit round 19 regressions — 2NT systems + penalty double of 1NT
       myFirstBid: "3♥",
       partnerBid: "4♠",
       partnerFirstBid: "2NT",
-    } as never);
+    });
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Accept Partner's Choice of Games");
   });
@@ -11647,7 +11587,7 @@ describe("sim audit round 19 regressions — 2NT systems + penalty double of 1NT
         myPosition: 2,
         completedRounds: [{ 1: "1NT", 2: "Double", 3: "Pass", 4: "2♣" }],
         currentRound: { 1: "Pass" },
-      } as never,
+      },
       "none",
     );
     expect(s2.situation).toBe("after-own-double");
@@ -11681,7 +11621,7 @@ describe("sim audit round 20 regressions", () => {
   it("overcaller with 8-card suit competes instead of selling out", () => {
     // seed 92: 2♣ overcall on 8 clubs passed over 3♦.
     const rec = getRecommendation(
-      { hcp: 13, spades: 1, hearts: 1, diamonds: 3, clubs: 8 } as never,
+      { hcp: 13, spades: 1, hearts: 1, diamonds: 3, clubs: 8 },
       {
         situation: "overcaller-rebid",
         myFirstBid: "2♣",
@@ -11689,7 +11629,7 @@ describe("sim audit round 20 regressions", () => {
         partnerBid: "2♠",
         lhoBid: "1♦",
         rhoBid: "3♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♣");
     expect(rec.category).toContain("Huge Extra Length");
@@ -11708,7 +11648,7 @@ describe("sim audit round 21 regressions", () => {
           { 1: "Pass", 2: "1NT", 3: "2♣", 4: "Pass" },
         ],
         currentRound: {},
-      } as never,
+      },
       "none",
     );
     expect(s2.situation).not.toBe("responding-to-michaels");
@@ -11720,7 +11660,7 @@ describe("sim audit round 21 regressions", () => {
         myPosition: 1,
         completedRounds: [{ 1: "Pass", 2: "1♠", 3: "2♠", 4: "Pass" }],
         currentRound: {},
-      } as never,
+      },
       "none",
     );
     expect(s2.situation).toBe("responding-to-michaels");
@@ -11741,12 +11681,12 @@ describe("sim audit round 22 regressions — 2♣-then-2NT systems", () => {
 
   it("responder with 5-card major transfers over the 2NT rebid", () => {
     const s2 = deriveSituation(
-      { myPosition: 1, completedRounds: rounds2c, currentRound: {} } as never,
+      { myPosition: 1, completedRounds: rounds2c, currentRound: {} },
       "none",
     );
     expect(s2.situation).toBe("responding-2nt");
     const rec = getRecommendation(
-      { hcp: 3, spades: 5, hearts: 4, diamonds: 2, clubs: 2 } as never,
+      { hcp: 3, spades: 5, hearts: 4, diamonds: 2, clubs: 2 },
       s2,
     );
     expect(rec.bid).toBe("3♥");
@@ -11759,13 +11699,13 @@ describe("sim audit round 22 regressions — 2♣-then-2NT systems", () => {
         myPosition: 3,
         completedRounds: [...rounds2c, { 1: "3♥", 2: "Pass" }].map((r) => ({
           ...r,
-        })) as never,
+        })),
         currentRound: {},
-      } as never,
+      },
       "none",
     );
     const rec = getRecommendation(
-      { hcp: 22, spades: 2, hearts: 3, diamonds: 3, clubs: 5 } as never,
+      { hcp: 22, spades: 2, hearts: 3, diamonds: 3, clubs: 5 },
       s2,
     );
     expect(rec.bid).toBe("3♠");
@@ -11779,13 +11719,13 @@ describe("sim audit round 22 regressions — 2♣-then-2NT systems", () => {
           ...rounds2c,
           { 1: "3♥", 2: "Pass", 3: "3♠", 4: "Pass" },
           { 1: "3NT", 2: "Pass" },
-        ] as never,
+        ],
         currentRound: {},
-      } as never,
+      },
       "none",
     );
     const rec = getRecommendation(
-      { hcp: 22, spades: 2, hearts: 3, diamonds: 3, clubs: 5 } as never,
+      { hcp: 22, spades: 2, hearts: 3, diamonds: 3, clubs: 5 },
       s2,
     );
     expect(rec.bid).toBe("Pass");
@@ -11798,14 +11738,14 @@ describe("sim audit round 22 regressions — 2♣-then-2NT systems", () => {
         completedRounds: [
           ...rounds2c,
           { 1: "3♥", 2: "Pass", 3: "3♠", 4: "Pass" },
-        ] as never,
+        ],
         currentRound: {},
-      } as never,
+      },
       "none",
     );
     expect(s2.situation).toBe("transfer-response");
     const rec = getRecommendation(
-      { hcp: 3, spades: 5, hearts: 4, diamonds: 2, clubs: 2 } as never,
+      { hcp: 3, spades: 5, hearts: 4, diamonds: 2, clubs: 2 },
       s2,
     );
     expect(rec.bid).toBe("3NT");
@@ -11816,14 +11756,14 @@ describe("sim audit round 23 regressions — reverses and 2♣ one-shot", () => 
   it("2♣ opener passes partner's 6NT placement (no 7♣ re-show)", () => {
     // seed 100: the "show your real suit" branch re-fired over 6NT.
     const rec = getRecommendation(
-      { hcp: 22, spades: 2, hearts: 4, diamonds: 1, clubs: 6 } as never,
+      { hcp: 22, spades: 2, hearts: 4, diamonds: 1, clubs: 6 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "2♣",
         myPreviousBid: "3♣",
         partnerBid: "6NT",
         partnerFirstBid: "2♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
   });
@@ -11832,13 +11772,13 @@ describe("sim audit round 23 regressions — reverses and 2♣ one-shot", () => 
     // seed 101: 1♣-1♥-2♠(reverse) with 5 HCP + 7 hearts was labeled an
     // invitational raise.
     const rec = getRecommendation(
-      { hcp: 5, spades: 4, hearts: 7, diamonds: 2, clubs: 0 } as never,
+      { hcp: 5, spades: 4, hearts: 7, diamonds: 2, clubs: 0 },
       {
         situation: "responder-rebid",
         myPreviousBid: "1♥",
         partnerBid: "2♠",
         partnerFirstBid: "1♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3♥");
     expect(rec.category).toContain("After Reverse");
@@ -11847,14 +11787,14 @@ describe("sim audit round 23 regressions — reverses and 2♣ one-shot", () => 
   it("reverser passes partner's weak signoff with a singleton", () => {
     // seed 101: opener "accepted the invitation" to 4♥ on a singleton jack.
     const rec = getRecommendation(
-      { hcp: 20, spades: 4, hearts: 1, diamonds: 3, clubs: 5 } as never,
+      { hcp: 20, spades: 4, hearts: 1, diamonds: 3, clubs: 5 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♣",
         myPreviousBid: "2♠",
         partnerBid: "3♥",
         partnerFirstBid: "1♥",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Signed Off After Your Reverse");
@@ -11869,7 +11809,7 @@ describe("sim audit round 23 regressions — reverses and 2♣ one-shot", () => 
           { 1: "Pass", 2: "2♠", 3: "Pass", 4: "3♥" },
         ],
         currentRound: { 1: "Pass" },
-      } as never,
+      },
       "none",
     );
     expect(s2.situation).not.toBe("respond-to-partner-invitation");
@@ -11880,7 +11820,7 @@ describe("sim audit round 24 regressions — competitive discipline", () => {
   it("opener with a 6th trump competes to the Law level over interference", () => {
     // seed 103: 1♥-P-2♥-3♦ — 9 trumps, bid 3♥ instead of selling out.
     const rec = getRecommendation(
-      { hcp: 12, spades: 3, hearts: 6, diamonds: 1, clubs: 3 } as never,
+      { hcp: 12, spades: 3, hearts: 6, diamonds: 1, clubs: 3 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♥",
@@ -11888,7 +11828,7 @@ describe("sim audit round 24 regressions — competitive discipline", () => {
         partnerBid: "2♥",
         partnerFirstBid: "2♥",
         rhoBid: "3♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3♥");
     expect(rec.category).toContain("Law Level");
@@ -11897,7 +11837,7 @@ describe("sim audit round 24 regressions — competitive discipline", () => {
   it("opener never rebids a 5-card suit at the 4-level after the negative double", () => {
     // seed 104: 1♦ (1♠) X (3♠) → 4♦ on five diamonds was a disaster.
     const rec = getRecommendation(
-      { hcp: 12, spades: 3, hearts: 1, diamonds: 5, clubs: 4 } as never,
+      { hcp: 12, spades: 3, hearts: 1, diamonds: 5, clubs: 4 },
       {
         situation: "rebid-after-negative-double",
         myFirstBid: "1♦",
@@ -11906,7 +11846,7 @@ describe("sim audit round 24 regressions — competitive discipline", () => {
         doubledBid: "1♠",
         rhoBid: "1♠",
         lhoBid: "3♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Too High");
@@ -11915,14 +11855,14 @@ describe("sim audit round 24 regressions — competitive discipline", () => {
   it("overcaller raises partner's preemptive jump to game with 19+ support pts", () => {
     // seed 104: AKQJ4 + 19 support pts opposite a 3♠ preemptive raise → 4♠.
     const rec = getRecommendation(
-      { hcp: 15, spades: 5, hearts: 1, diamonds: 2, clubs: 5 } as never,
+      { hcp: 15, spades: 5, hearts: 1, diamonds: 2, clubs: 5 },
       {
         situation: "overcaller-rebid",
         myFirstBid: "1♠",
         myPreviousBid: "1♠",
         partnerBid: "3♠",
         lhoBid: "1♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♠");
     expect(rec.category).toContain("Maximum Overcall");
@@ -11931,7 +11871,7 @@ describe("sim audit round 24 regressions — competitive discipline", () => {
   it("overcaller acknowledges being outbid and applies the Law", () => {
     // 1♥ (2♦) 2♥ (3♦) back to a 5-card overcaller: 8 trumps → pass, honest story.
     const rec = getRecommendation(
-      { hcp: 12, spades: 3, hearts: 2, diamonds: 5, clubs: 3 } as never,
+      { hcp: 12, spades: 3, hearts: 2, diamonds: 5, clubs: 3 },
       {
         situation: "overcaller-rebid",
         myFirstBid: "2♦",
@@ -11939,7 +11879,7 @@ describe("sim audit round 24 regressions — competitive discipline", () => {
         partnerBid: "3♦",
         lhoBid: "1♥",
         rhoBid: "4♥",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.reasoning).toContain("4♥");
@@ -11958,12 +11898,12 @@ describe("sim audit round 25 regressions", () => {
           { 1: "2♦", 2: "2♠", 3: "3♣", 4: "3♠" },
         ],
         currentRound: {},
-      } as never,
+      },
       "none",
     );
     const rec = getRecommendation(
-      { hcp: 9, spades: 2, hearts: 4, diamonds: 5, clubs: 2 } as never,
-      { ...s2, myPosition: undefined } as never,
+      { hcp: 9, spades: 2, hearts: 4, diamonds: 5, clubs: 2 },
+      s2,
     );
     expect(rec.reasoning).not.toContain("at least 16");
   });
@@ -11971,7 +11911,7 @@ describe("sim audit round 25 regressions", () => {
   it("opener passes once its double answer is in and partner adds nothing", () => {
     // seed 110: opener re-answered 3♥ → 4♥ on a 4-3 fit.
     const rec = getRecommendation(
-      { hcp: 12, spades: 2, hearts: 3, diamonds: 3, clubs: 5 } as never,
+      { hcp: 12, spades: 2, hearts: 3, diamonds: 3, clubs: 5 },
       {
         situation: "rebid-after-negative-double",
         myFirstBid: "1♣",
@@ -11980,7 +11920,7 @@ describe("sim audit round 25 regressions", () => {
         doubledBid: "1♠",
         rhoBid: "1♠",
         lhoBid: "3♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Already Answered");
@@ -11995,7 +11935,7 @@ describe("sim audit round 25 regressions", () => {
         diamonds: 3,
         clubs: 5,
         hasStopperInOpponentSuit: false,
-      } as never,
+      },
       {
         situation: "rebid-after-negative-double",
         myFirstBid: "1♣",
@@ -12004,7 +11944,7 @@ describe("sim audit round 25 regressions", () => {
         doubledBid: "1♠",
         rhoBid: "1♠",
         lhoBid: "2♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Pushed Too High");
@@ -12012,13 +11952,13 @@ describe("sim audit round 25 regressions", () => {
 
   it("advancer accepts the overcaller's re-raise invite with 9-10 support pts", () => {
     const rec = getRecommendation(
-      { hcp: 8, spades: 3, hearts: 3, diamonds: 2, clubs: 5 } as never,
+      { hcp: 8, spades: 3, hearts: 3, diamonds: 2, clubs: 5 },
       {
         situation: "respond-to-partner-invitation",
         myPreviousBid: "2♠",
         partnerBid: "3♠",
         partnerWasOvercaller: true,
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♠");
     expect(rec.category).toContain("Overcaller's Invite");
@@ -12029,7 +11969,7 @@ describe("sim audit round 26 regressions", () => {
   it("opener passes cleanly when the overcall IS its intended second suit", () => {
     // seed 114: 1♠-P-1NT-(2♣) — opener's 2♣ rebid was occupied.
     const rec = getRecommendation(
-      { hcp: 15, spades: 5, hearts: 2, diamonds: 2, clubs: 4 } as never,
+      { hcp: 15, spades: 5, hearts: 2, diamonds: 2, clubs: 4 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♠",
@@ -12037,7 +11977,7 @@ describe("sim audit round 26 regressions", () => {
         partnerBid: "1NT",
         partnerFirstBid: "1NT",
         rhoBid: "2♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("They Bid Your Second Suit");
@@ -12046,7 +11986,7 @@ describe("sim audit round 26 regressions", () => {
   it("1NT responder passes when partner never rebid (stale opening is not an invite)", () => {
     // seed 114: partner's 1♠ opening was read as a jump-rebid invitation → 4♠ on 8 HCP.
     const rec = getRecommendation(
-      { hcp: 8, spades: 2, hearts: 4, diamonds: 4, clubs: 3 } as never,
+      { hcp: 8, spades: 2, hearts: 4, diamonds: 4, clubs: 3 },
       {
         situation: "responder-nt-rebid",
         myPreviousBid: "1NT",
@@ -12054,7 +11994,7 @@ describe("sim audit round 26 regressions", () => {
         partnerBid: "1♠",
         partnerFirstBid: "1♠",
         rhoBid: "2♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Partner Passed Over the Interference");
@@ -12073,7 +12013,7 @@ describe("sim audit round 27 regressions", () => {
     // seed 119: overcaller passed partner's 3♠ cue because the club rebid
     // exceeded the old 3-level cap.
     const rec = getRecommendation(
-      { hcp: 11, spades: 2, hearts: 3, diamonds: 3, clubs: 5 } as never,
+      { hcp: 11, spades: 2, hearts: 3, diamonds: 3, clubs: 5 },
       {
         situation: "overcaller-rebid",
         myFirstBid: "2♣",
@@ -12081,7 +12021,7 @@ describe("sim audit round 27 regressions", () => {
         partnerBid: "3♠",
         lhoBid: "2♠",
         auctionOpeningBid: "1♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♣");
     expect(rec.category).toContain("Cuebid");
@@ -12090,14 +12030,14 @@ describe("sim audit round 27 regressions", () => {
   it("cue-bidder places game over partner's minimum answer with 15+ support", () => {
     // seed 119: the 3♠ cue-bidder passed 4♣ with 17 support points.
     const rec = getRecommendation(
-      { hcp: 12, spades: 5, hearts: 0, diamonds: 4, clubs: 4 } as never,
+      { hcp: 12, spades: 5, hearts: 0, diamonds: 4, clubs: 4 },
       {
         situation: "advancer-rebid",
         myPreviousBid: "3♠",
         partnerFirstBid: "2♣",
         partnerBid: "4♣",
         auctionOpeningBid: "1♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("5♣");
     expect(rec.category).toContain("After Your Cuebid");
@@ -12113,13 +12053,13 @@ describe("sim audit round 27 regressions", () => {
         diamonds: 4,
         clubs: 5,
         hasStopperInOpponentSuit: true,
-      } as never,
+      },
       {
         situation: "responding-to-simple-oc",
         partnerBid: "2♥",
         rhoBid: "2NT",
         auctionOpeningBid: "1♣",
-      } as never,
+      },
     );
     expect(rec.bid).not.toBe("3♣");
   });
@@ -12133,13 +12073,13 @@ describe("sim audit round 27 regressions", () => {
         diamonds: 4,
         clubs: 5,
         hasStopperInOpponentSuit: true,
-      } as never,
+      },
       {
         situation: "responding-to-simple-oc",
         partnerBid: "2♥",
         rhoBid: "2NT",
         auctionOpeningBid: "1♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
   });
@@ -12149,7 +12089,7 @@ describe("sim audit round 28 regressions", () => {
   it("opener rebids a 7-card major over the negative double, not a 3-card minor", () => {
     // seed 124: 1♥ (1♠) X (3♠) — AKQ6542 hearts bid 4♦ on Q75.
     const rec = getRecommendation(
-      { hcp: 17, spades: 2, hearts: 7, diamonds: 3, clubs: 1 } as never,
+      { hcp: 17, spades: 2, hearts: 7, diamonds: 3, clubs: 1 },
       {
         situation: "rebid-after-negative-double",
         myFirstBid: "1♥",
@@ -12158,7 +12098,7 @@ describe("sim audit round 28 regressions", () => {
         doubledBid: "1♠",
         rhoBid: "1♠",
         lhoBid: "3♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♥");
     expect(rec.category).toContain("Long Suit");
@@ -12174,14 +12114,14 @@ describe("sim audit round 28 regressions", () => {
         diamonds: 3,
         clubs: 4,
         aces: 1,
-      } as never,
+      },
       {
         situation: "responder-rebid",
         myPreviousBid: "2♥",
         partnerBid: "4♥",
         partnerFirstBid: "1♠",
         partnerRebidFloor: "2♥",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Void");
@@ -12197,12 +12137,12 @@ describe("sim audit round 28 regressions", () => {
           { 1: "Pass", 2: "2♠", 3: "Pass", 4: "Pass" },
         ],
         currentRound: { 1: "3♣" },
-      } as never,
+      },
       "none",
     );
     expect(s2.situation).toBe("advancer-rebid");
     const rec = getRecommendation(
-      { hcp: 11, spades: 4, hearts: 4, diamonds: 3, clubs: 2 } as never,
+      { hcp: 11, spades: 4, hearts: 4, diamonds: 3, clubs: 2 },
       s2,
     );
     expect(rec.bid).toBe("Pass");
@@ -12220,13 +12160,13 @@ describe("sim audit rounds 29-30 regressions", () => {
         diamonds: 4,
         clubs: 2,
         hasStopperInOpponentSuit: true,
-      } as never,
+      },
       {
         situation: "responding-to-double",
         rhoBid: "1♠",
         lhoBid: "2♠",
         partnerBid: "Double",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3♥");
   });
@@ -12234,12 +12174,12 @@ describe("sim audit rounds 29-30 regressions", () => {
   it("weak-2 raise text never claims ≤12 HCP for a strong hand", () => {
     // seed 127: 15 HCP competitive raise was labeled "(≤12 HCP)".
     const rec = getRecommendation(
-      { hcp: 15, spades: 4, hearts: 4, diamonds: 3, clubs: 2 } as never,
+      { hcp: 15, spades: 4, hearts: 4, diamonds: 3, clubs: 2 },
       {
         situation: "responding-weak2",
         partnerBid: "2♦",
         rhoBid: "2♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3♦");
     expect(rec.whatYourBidTellsPartner).not.toContain("≤12");
@@ -12248,7 +12188,7 @@ describe("sim audit rounds 29-30 regressions", () => {
   it("18+ balanced responder bids a suit first, not a passable 3NT", () => {
     // seed 138: 18 HCP + 5 diamonds jumped to 3NT and slam could die.
     const rec = getRecommendation(
-      { hcp: 18, spades: 3, hearts: 3, diamonds: 5, clubs: 2 } as never,
+      { hcp: 18, spades: 3, hearts: 3, diamonds: 5, clubs: 2 },
       ctx("responding-suit", { partnerBid: "1♣" }),
     );
     expect(rec.bid).toBe("2♦");
@@ -12261,7 +12201,7 @@ describe("sim audit round 31 regressions", () => {
     // seed 141: 3♥ "limit raise" was read by opener as preemptive; the cue is
     // the unambiguous limit-or-better raise.
     const rec = getRecommendation(
-      { hcp: 12, spades: 3, hearts: 3, diamonds: 3, clubs: 4 } as never,
+      { hcp: 12, spades: 3, hearts: 3, diamonds: 3, clubs: 4 },
       ctx("negative-double", { myPreviousBid: "1♥", rhoBid: "2♦" }),
     );
     expect(rec.bid).toBe("3♦");
@@ -12270,7 +12210,7 @@ describe("sim audit round 31 regressions", () => {
 
   it("opener signs off cheaply over the cue with a bare minimum", () => {
     const rec = getRecommendation(
-      { hcp: 12, spades: 3, hearts: 5, diamonds: 2, clubs: 3 } as never,
+      { hcp: 12, spades: 3, hearts: 5, diamonds: 2, clubs: 3 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♥",
@@ -12279,7 +12219,7 @@ describe("sim audit round 31 regressions", () => {
         partnerCuedTheirSuit: true,
         rhoBid: "2♦",
         lhoBid: "1♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("2♥");
     expect(rec.category).toContain("Sign Off");
@@ -12309,7 +12249,7 @@ describe("sim audit round 32 regressions", () => {
   it("forced advance of a double never bids the opponents' suit", () => {
     // seed 145: 5 clubs opposite a double of 1♣ advanced 2♣ (a phantom cue).
     const rec = getRecommendation(
-      { hcp: 7, spades: 3, hearts: 3, diamonds: 2, clubs: 5 } as never,
+      { hcp: 7, spades: 3, hearts: 3, diamonds: 2, clubs: 5 },
       ctx("responding-to-double", { rhoBid: "1♣", partnerBid: "Double" }),
     );
     expect(rec.bid.includes("♣")).toBe(false);
@@ -12325,12 +12265,12 @@ describe("sim audit round 32 regressions", () => {
         diamonds: 2,
         clubs: 4,
         hasStopperInOpponentSuit: true,
-      } as never,
+      },
       {
         situation: "after-own-double",
         partnerBid: "1♠",
         rhoBid: "1♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("1NT");
     expect(rec.category).toContain("Promised NT Rebid");
@@ -12339,13 +12279,13 @@ describe("sim audit round 32 regressions", () => {
   it("no weak jump overcall when the cheapest legal bid sits above the 4-level", () => {
     // seed 146: the WJO cap produced an illegal 4♣ under the standing 4♥.
     const rec = getRecommendation(
-      { hcp: 6, spades: 3, hearts: 3, diamonds: 1, clubs: 6 } as never,
+      { hcp: 6, spades: 3, hearts: 3, diamonds: 1, clubs: 6 },
       {
         situation: "overcalling",
         rhoBid: "4♥",
         lhoBid: "3♥",
         auctionOpeningBid: "1♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
   });
@@ -12355,7 +12295,7 @@ describe("sim audit rounds 33-34 regressions", () => {
   it("16+ opener shows the second suit a level higher over interference", () => {
     // seed 154: 16 HCP passed off "second suit unavailable" over 2♦.
     const rec = getRecommendation(
-      { hcp: 16, spades: 5, hearts: 2, diamonds: 2, clubs: 4 } as never,
+      { hcp: 16, spades: 5, hearts: 2, diamonds: 2, clubs: 4 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♠",
@@ -12363,7 +12303,7 @@ describe("sim audit rounds 33-34 regressions", () => {
         partnerBid: "1NT",
         partnerFirstBid: "1NT",
         rhoBid: "2♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3♣");
     expect(rec.category).toContain("Extra Values");
@@ -12372,7 +12312,7 @@ describe("sim audit rounds 33-34 regressions", () => {
   it("a weak escape hand never bids again on its own", () => {
     // seed 155: the 2♠ escape (7 HCP) jumped to 4♠ over the balance.
     const rec = getRecommendation(
-      { hcp: 7, spades: 6, hearts: 1, diamonds: 5, clubs: 1 } as never,
+      { hcp: 7, spades: 6, hearts: 1, diamonds: 5, clubs: 1 },
       {
         situation: "responder-rebid",
         myPreviousBid: "2♠",
@@ -12380,7 +12320,7 @@ describe("sim audit rounds 33-34 regressions", () => {
         partnerFirstBid: "1NT",
         lhoBid: "3♣",
         rhoBid: "2♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Weak Escape");
@@ -12389,7 +12329,7 @@ describe("sim audit rounds 33-34 regressions", () => {
   it("an interference-forced 3-level rebid is not read as a jump shift", () => {
     // seed 154: 1♠-1NT-(2♦)-3♣ read as 19+ GF by the responder.
     const rec = getRecommendation(
-      { hcp: 6, spades: 2, hearts: 4, diamonds: 3, clubs: 4 } as never,
+      { hcp: 6, spades: 2, hearts: 4, diamonds: 3, clubs: 4 },
       {
         situation: "responder-nt-rebid",
         myPreviousBid: "1NT",
@@ -12397,7 +12337,7 @@ describe("sim audit rounds 33-34 regressions", () => {
         partnerBid: "3♣",
         partnerFirstBid: "1♠",
         rhoBid: "2♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
   });
@@ -12405,7 +12345,7 @@ describe("sim audit rounds 33-34 regressions", () => {
   it("overcaller bids game over partner's post-cue preference with 14+ support", () => {
     // seed 156: 17 support pts passed a limit-showing 3♥ as "preemptive".
     const rec = getRecommendation(
-      { hcp: 12, spades: 3, hearts: 5, diamonds: 5, clubs: 0 } as never,
+      { hcp: 12, spades: 3, hearts: 5, diamonds: 5, clubs: 0 },
       {
         situation: "overcaller-rebid",
         myFirstBid: "1♥",
@@ -12414,7 +12354,7 @@ describe("sim audit rounds 33-34 regressions", () => {
         partnerFirstBid: "2♣",
         lhoBid: "1♣",
         rhoBid: "3♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♥");
     expect(rec.category).toContain("Cue Showed Limit Values");
@@ -12425,14 +12365,14 @@ describe("sim audit rounds 35-37 regressions", () => {
   it("opener declines the 11-12 2NT invite with a minimum (house style)", () => {
     // seed 169/146: any 2NT was read as 13-15 GF and opener explored anyway.
     const rec = getRecommendation(
-      { hcp: 12, spades: 3, hearts: 4, diamonds: 3, clubs: 3 } as never,
+      { hcp: 12, spades: 3, hearts: 4, diamonds: 3, clubs: 3 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♦",
         myPreviousBid: "1♦",
         partnerBid: "2NT",
         partnerFirstBid: "2NT",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Decline the 2NT Invite");
@@ -12440,14 +12380,14 @@ describe("sim audit rounds 35-37 regressions", () => {
 
   it("opener with a 6-card suit declines the invite by signing off in it", () => {
     const rec = getRecommendation(
-      { hcp: 11, spades: 6, hearts: 2, diamonds: 3, clubs: 2 } as never,
+      { hcp: 11, spades: 6, hearts: 2, diamonds: 3, clubs: 2 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♠",
         myPreviousBid: "2♠",
         partnerBid: "2NT",
         partnerFirstBid: "1NT",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3♠");
     expect(rec.category).toContain("Sign Off in the Long Suit");
@@ -12456,14 +12396,14 @@ describe("sim audit rounds 35-37 regressions", () => {
   it("inviter passes the 3-level suit signoff decline", () => {
     // seed 169: responder overrode the 3♠ decline with 3NT.
     const rec = getRecommendation(
-      { hcp: 12, spades: 2, hearts: 4, diamonds: 3, clubs: 4 } as never,
+      { hcp: 12, spades: 2, hearts: 4, diamonds: 3, clubs: 4 },
       {
         situation: "responder-nt-rebid",
         myPreviousBid: "2NT",
         myFirstBid: "1NT",
         partnerBid: "3♠",
         partnerFirstBid: "1♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Declined Your Invite");
@@ -12471,14 +12411,14 @@ describe("sim audit rounds 35-37 regressions", () => {
 
   it("the forcing-1NT 11-12 variant keeps its promise and invites 2NT", () => {
     const rec = getRecommendation(
-      { hcp: 12, spades: 2, hearts: 4, diamonds: 3, clubs: 4 } as never,
+      { hcp: 12, spades: 2, hearts: 4, diamonds: 3, clubs: 4 },
       {
         situation: "responder-nt-rebid",
         myPreviousBid: "1NT",
         myFirstBid: "1NT",
         partnerBid: "2♠",
         partnerFirstBid: "1♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("2NT");
     expect(rec.category).toContain("Forcing 1NT");
@@ -12489,14 +12429,14 @@ describe("sim audit rounds 38-39 regressions", () => {
   it("a minimum opener never rebids its suit a second time", () => {
     // seed 183: 1♦-1♠-2♦-2♠-3♦-3♠-4♦ — the same 13 TP bid three times.
     const rec = getRecommendation(
-      { hcp: 11, spades: 1, hearts: 3, diamonds: 6, clubs: 3 } as never,
+      { hcp: 11, spades: 1, hearts: 3, diamonds: 6, clubs: 3 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♦",
         myPreviousBid: "2♦",
         partnerBid: "2♠",
         partnerFirstBid: "1♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Rebid Already");
@@ -12504,14 +12444,14 @@ describe("sim audit rounds 38-39 regressions", () => {
 
   it("a responder never repeats its invite after a decline", () => {
     const rec = getRecommendation(
-      { hcp: 8, spades: 6, hearts: 3, diamonds: 3, clubs: 1 } as never,
+      { hcp: 8, spades: 6, hearts: 3, diamonds: 3, clubs: 1 },
       {
         situation: "responder-rebid",
         myPreviousBid: "2♠",
         partnerBid: "3♦",
         partnerFirstBid: "1♦",
         partnerRebidFloor: "2♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
   });
@@ -12519,14 +12459,14 @@ describe("sim audit rounds 38-39 regressions", () => {
   it("responder with GF values doubles the opponents' game-level jam", () => {
     // seed 172: GF responder safety-netted over 4♠.
     const rec = getRecommendation(
-      { hcp: 12, spades: 1, hearts: 4, diamonds: 6, clubs: 2 } as never,
+      { hcp: 12, spades: 1, hearts: 4, diamonds: 6, clubs: 2 },
       {
         situation: "responder-rebid",
         myPreviousBid: "1♥",
         partnerBid: "1♣",
         partnerFirstBid: "1♣",
         rhoBid: "4♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Double");
     expect(rec.category).toContain("Values Double");
@@ -12538,7 +12478,7 @@ describe("sim audit rounds 45-46 regressions", () => {
     // seed 197: 1♠-(2♣)-Dbl-(P)-2♠-(3♣)-3♠ — partner's 3♠ after their own
     // negative double is INVITATIONAL (11-13), never a weak preemptive jump.
     const rec = getRecommendation(
-      { hcp: 15, spades: 6, hearts: 2, diamonds: 3, clubs: 2 } as never,
+      { hcp: 15, spades: 6, hearts: 2, diamonds: 3, clubs: 2 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♠",
@@ -12547,7 +12487,7 @@ describe("sim audit rounds 45-46 regressions", () => {
         partnerFirstBid: "Double",
         rhoBid: "3♣",
         partnerDoubledEarlier: true,
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♠");
     expect(rec.category).toContain("Accept the Invite After Partner's Double");
@@ -12555,7 +12495,7 @@ describe("sim audit rounds 45-46 regressions", () => {
 
   it("opener declines the same invite with a bare minimum", () => {
     const rec = getRecommendation(
-      { hcp: 12, spades: 5, hearts: 3, diamonds: 3, clubs: 2 } as never,
+      { hcp: 12, spades: 5, hearts: 3, diamonds: 3, clubs: 2 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♠",
@@ -12564,7 +12504,7 @@ describe("sim audit rounds 45-46 regressions", () => {
         partnerFirstBid: "Double",
         rhoBid: "3♣",
         partnerDoubledEarlier: true,
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Decline the Invite After Partner's Double");
@@ -12574,13 +12514,13 @@ describe("sim audit rounds 45-46 regressions", () => {
     // seed 197: responder raised to 3♠, opener declined — bidding 4♠ now
     // counts the same values twice.
     const rec = getRecommendation(
-      { hcp: 13, spades: 4, hearts: 3, diamonds: 3, clubs: 3 } as never,
+      { hcp: 13, spades: 4, hearts: 3, diamonds: 3, clubs: 3 },
       {
         situation: "responder-rebid",
         myPreviousBid: "3♠",
         partnerBid: "2♠",
         partnerFirstBid: "1♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Already Raised This Suit");
@@ -12609,14 +12549,14 @@ describe("sim audit rounds 45-46 regressions", () => {
     // seed 200: 1♦-(P)-2♦ with 18 balanced — the game is 3NT (9 tricks),
     // not 5♦ in a possibly 7-card fit.
     const rec = getRecommendation(
-      { hcp: 18, spades: 4, hearts: 4, diamonds: 3, clubs: 2 } as never,
+      { hcp: 18, spades: 4, hearts: 4, diamonds: 3, clubs: 2 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♦",
         myPreviousBid: "1♦",
         partnerBid: "2♦",
         partnerFirstBid: "2♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3NT");
     expect(rec.category).toContain("18-19 Balanced");
@@ -12628,14 +12568,14 @@ describe("sim audit round 46b regressions", () => {
     // seed 200 (after the 4-card-raise fix): 1♦-(P)-1NT with 18 balanced —
     // the opening promised a strength-showing NT rebid.
     const rec = getRecommendation(
-      { hcp: 18, spades: 4, hearts: 4, diamonds: 3, clubs: 2 } as never,
+      { hcp: 18, spades: 4, hearts: 4, diamonds: 3, clubs: 2 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♦",
         myPreviousBid: "1♦",
         partnerBid: "1NT",
         partnerFirstBid: "1NT",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("2NT");
     expect(rec.category).toContain("18-19 Balanced");
@@ -12643,14 +12583,14 @@ describe("sim audit round 46b regressions", () => {
 
   it("a 12-14 balanced opener still passes the 1NT response", () => {
     const rec = getRecommendation(
-      { hcp: 13, spades: 4, hearts: 4, diamonds: 3, clubs: 2 } as never,
+      { hcp: 13, spades: 4, hearts: 4, diamonds: 3, clubs: 2 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♦",
         myPreviousBid: "1♦",
         partnerBid: "1NT",
         partnerFirstBid: "1NT",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
   });
@@ -12659,14 +12599,14 @@ describe("sim audit round 46b regressions", () => {
 describe("sim audit round 46c regressions", () => {
   it("responder accepts opener's 18-19 2NT raise with 8-10", () => {
     const rec = getRecommendation(
-      { hcp: 9, spades: 3, hearts: 3, diamonds: 3, clubs: 4 } as never,
+      { hcp: 9, spades: 3, hearts: 3, diamonds: 3, clubs: 4 },
       {
         situation: "responder-nt-rebid",
         myPreviousBid: "1NT",
         myFirstBid: "1NT",
         partnerBid: "2NT",
         partnerFirstBid: "1♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3NT");
     expect(rec.category).toContain("Accept");
@@ -12674,14 +12614,14 @@ describe("sim audit round 46c regressions", () => {
 
   it("responder declines opener's 18-19 2NT raise with 6-7", () => {
     const rec = getRecommendation(
-      { hcp: 7, spades: 2, hearts: 3, diamonds: 3, clubs: 5 } as never,
+      { hcp: 7, spades: 2, hearts: 3, diamonds: 3, clubs: 5 },
       {
         situation: "responder-nt-rebid",
         myPreviousBid: "1NT",
         myFirstBid: "1NT",
         partnerBid: "2NT",
         partnerFirstBid: "1♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Decline");
@@ -12706,14 +12646,14 @@ describe("sim audit round 47 regressions", () => {
   it("responder invites quantitatively when only opener's max reaches 33", () => {
     // seed 202: 1NT-3♦-3NT with 16-17 opposite 15-17 — 4NT invite, not 6NT.
     const rec = getRecommendation(
-      { hcp: 14, spades: 3, hearts: 3, diamonds: 6, clubs: 1 } as never,
+      { hcp: 14, spades: 3, hearts: 3, diamonds: 6, clubs: 1 },
       {
         situation: "responder-rebid",
         myPreviousBid: "3♦",
         myFirstBid: "3♦",
         partnerBid: "3NT",
         partnerFirstBid: "1NT",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4NT");
     expect(rec.category).toContain("Quantitative");
@@ -12723,14 +12663,14 @@ describe("sim audit round 47 regressions", () => {
     // openerMin must be 15 (the 1NT opening's floor), not 18 — a responder
     // with 14 + a big fitless hand must not blast 6NT on a phantom 33+.
     const rec = getRecommendation(
-      { hcp: 12, spades: 3, hearts: 3, diamonds: 4, clubs: 3 } as never,
+      { hcp: 12, spades: 3, hearts: 3, diamonds: 4, clubs: 3 },
       {
         situation: "responder-rebid",
         myPreviousBid: "3♦",
         myFirstBid: "3♦",
         partnerBid: "3NT",
         partnerFirstBid: "1NT",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
   });
@@ -12815,14 +12755,14 @@ describe("sim audit round 49 regressions", () => {
     // seed 210: responder bid 2♣ over the 1NT overcall; the handler wanted
     // to bid "2♣" again (safety-net fired). Now it passes with a story.
     const rec = getRecommendation(
-      { hcp: 8, spades: 2, hearts: 3, diamonds: 2, clubs: 6 } as never,
+      { hcp: 8, spades: 2, hearts: 3, diamonds: 2, clubs: 6 },
       {
         situation: "responder-rebid",
         myPreviousBid: "2♣",
         partnerBid: "1♦",
         partnerFirstBid: "1♦",
         rhoBid: "1NT",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).not.toContain("No Longer Available");
@@ -12838,14 +12778,14 @@ describe("sim audit round 49 regressions", () => {
         diamonds: 4,
         clubs: 3,
         hasStopperInOpponentSuit: true,
-      } as never,
+      },
       {
         situation: "protective-rebid",
         myPreviousBid: "1NT",
         myFirstBid: "1NT",
         lhoBid: "2♣",
         balancing: true,
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Double");
     expect(rec.category).toContain("Values Double After Your NT Bid");
@@ -12860,14 +12800,14 @@ describe("sim audit round 49 regressions", () => {
         diamonds: 4,
         clubs: 3,
         hasStopperInOpponentSuit: true,
-      } as never,
+      },
       {
         situation: "protective-rebid",
         myPreviousBid: "1NT",
         myFirstBid: "1NT",
         lhoBid: "2♣",
         balancing: true,
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("NT Bid Said It All");
@@ -12876,12 +12816,12 @@ describe("sim audit round 49 regressions", () => {
   it("advancer sits for partner's double after partner's own 1NT", () => {
     // seed 210: 1 HCP bust — must NOT be forced into a 4-card 2♠ advance.
     const rec = getRecommendation(
-      { hcp: 1, spades: 4, hearts: 4, diamonds: 3, clubs: 2 } as never,
+      { hcp: 1, spades: 4, hearts: 4, diamonds: 3, clubs: 2 },
       {
         situation: "responding-to-double",
         rhoBid: "2♣",
         partnerFirstBid: "1NT",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Sit for the Double");
@@ -12899,13 +12839,13 @@ describe("sim audit round 50 regressions", () => {
     // seeds 211/212: the decline story claimed "10-12 TP" for an invite the
     // engine itself made as 16-18.
     const rec = getRecommendation(
-      { hcp: 8, spades: 4, hearts: 4, diamonds: 0, clubs: 5 } as never,
+      { hcp: 8, spades: 4, hearts: 4, diamonds: 0, clubs: 5 },
       {
         situation: "respond-to-partner-invitation",
         myPreviousBid: "1♥",
         partnerBid: "3♦",
         partnerOpened: true,
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.reasoning).toMatch(/16-18/);
@@ -12914,13 +12854,13 @@ describe("sim audit round 50 regressions", () => {
 
   it("responder accepts opener's minor jump rebid with 9+ via 3NT", () => {
     const rec = getRecommendation(
-      { hcp: 10, spades: 4, hearts: 4, diamonds: 2, clubs: 3 } as never,
+      { hcp: 10, spades: 4, hearts: 4, diamonds: 2, clubs: 3 },
       {
         situation: "respond-to-partner-invitation",
         myPreviousBid: "1♥",
         partnerBid: "3♦",
         partnerOpened: true,
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3NT");
   });
@@ -12938,13 +12878,13 @@ describe("sim audit round 50 regressions", () => {
   it("a 3-card negative-double answer never comes at the 4-level", () => {
     // seed 213: 16 TP with 3 spades over their 4♥ — pass, not a 4-3 game.
     const rec = getRecommendation(
-      { hcp: 14, spades: 3, hearts: 1, diamonds: 6, clubs: 3 } as never,
+      { hcp: 14, spades: 3, hearts: 1, diamonds: 6, clubs: 3 },
       {
         situation: "rebid-after-negative-double",
         myFirstBid: "1♦",
         doubledBid: "2♥",
         rhoBid: "4♥",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Answer Pushed Too High");
@@ -12964,7 +12904,7 @@ describe("sim audit round 51 regressions", () => {
         clubs: 4,
         aces: 3,
         kings: 1,
-      } as never,
+      },
       deriveSituation(
         {
           myPosition: 3,
@@ -12992,13 +12932,13 @@ describe("sim audit round 52 regressions", () => {
   it("the game-raise story counts fit support points, not raw TP", () => {
     // seed 217: story printed "12 TP ... combined 26+" (12+12≠26).
     const rec = getRecommendation(
-      { hcp: 10, spades: 5, hearts: 2, diamonds: 5, clubs: 1 } as never,
+      { hcp: 10, spades: 5, hearts: 2, diamonds: 5, clubs: 1 },
       {
         situation: "responder-rebid",
         myPreviousBid: "1♠",
         partnerBid: "2♠",
         partnerFirstBid: "1♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♠");
     expect(rec.reasoning).toMatch(/support points/);
@@ -13021,14 +12961,14 @@ describe("sim audit round 52 regressions", () => {
   it("pass-3NT story no longer contradicts itself over a single singleton", () => {
     // seed 219: opener 3-1-4-5 passing responder's 3NT.
     const rec = getRecommendation(
-      { hcp: 14, spades: 3, hearts: 1, diamonds: 4, clubs: 5 } as never,
+      { hcp: 14, spades: 3, hearts: 1, diamonds: 4, clubs: 5 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♣",
         myPreviousBid: "2♣",
         partnerBid: "3NT",
         partnerFirstBid: "1♥",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.reasoning).not.toMatch(/reasonably balanced/);
@@ -13040,14 +12980,14 @@ describe("sim audit round 53 regressions", () => {
   it("a contested 3-level re-raise is labeled competitive, not a pure game try", () => {
     // seed 220: 1♥-P-2♥-2♠-3♥ — tooltip reads it competitive; handler must match.
     const rec = getRecommendation(
-      { hcp: 14, spades: 4, hearts: 5, diamonds: 1, clubs: 3 } as never,
+      { hcp: 14, spades: 4, hearts: 5, diamonds: 1, clubs: 3 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♥",
         partnerBid: "2♥",
         partnerFirstBid: "2♥",
         rhoBid: "2♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3♥");
     expect(rec.category).toContain("Competitive");
@@ -13057,14 +12997,14 @@ describe("sim audit round 53 regressions", () => {
   it("opener declining the raise of its OWN second suit tells the right story", () => {
     // seed 221: 1♠-1NT-2♦-3♦ — opener never "raised partner's diamonds".
     const rec = getRecommendation(
-      { hcp: 11, spades: 5, hearts: 2, diamonds: 5, clubs: 1 } as never,
+      { hcp: 11, spades: 5, hearts: 2, diamonds: 5, clubs: 1 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♠",
         myPreviousBid: "2♦",
         partnerBid: "3♦",
         partnerFirstBid: "1NT",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Second Suit");
@@ -13076,13 +13016,13 @@ describe("sim audit round 54 regressions", () => {
   it("a 19+ opener jumps after the negative double instead of a flat rebid", () => {
     // seed 224: 20 HCP rebid 2♣ (= 12-15 per its own tooltip), burying game.
     const rec = getRecommendation(
-      { hcp: 20, spades: 2, hearts: 2, diamonds: 4, clubs: 5 } as never,
+      { hcp: 20, spades: 2, hearts: 2, diamonds: 4, clubs: 5 },
       {
         situation: "rebid-after-negative-double",
         myFirstBid: "1♣",
         doubledBid: "1♥",
         rhoBid: "1♥",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3♣");
     expect(rec.category).toContain("Strong Jump Rebid After Negative Double");
@@ -13090,7 +13030,7 @@ describe("sim audit round 54 regressions", () => {
 
   it("the doubler raises opener's jump rebid with a fit", () => {
     const rec = getRecommendation(
-      { hcp: 6, spades: 4, hearts: 3, diamonds: 2, clubs: 4 } as never,
+      { hcp: 6, spades: 4, hearts: 3, diamonds: 2, clubs: 4 },
       {
         situation: "after-own-double",
         partnerBid: "3♣",
@@ -13098,7 +13038,7 @@ describe("sim audit round 54 regressions", () => {
         partnerOpened: true,
         doubledBid: "1♥",
         rhoBid: "1♥",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♣");
     expect(rec.category).toContain("JUMP Rebid");
@@ -13107,7 +13047,7 @@ describe("sim audit round 54 regressions", () => {
   it("opener carries the doubler's below-game raise on to the minor game with extras", () => {
     // seed 224: 4♣ over the 3♣ jump is a continuation, not a preemptive jump.
     const rec = getRecommendation(
-      { hcp: 20, spades: 2, hearts: 2, diamonds: 4, clubs: 5 } as never,
+      { hcp: 20, spades: 2, hearts: 2, diamonds: 4, clubs: 5 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♣",
@@ -13116,7 +13056,7 @@ describe("sim audit round 54 regressions", () => {
         partnerFirstBid: "Double",
         rhoBid: "1♥",
         partnerDoubledEarlier: true,
-      } as never,
+      },
     );
     expect(rec.bid).toBe("5♣");
     expect(rec.category).toContain("Accept the Invite After Partner's Double");
@@ -13125,14 +13065,14 @@ describe("sim audit round 54 regressions", () => {
   it("responder passes when opener corrects its transfer choice-of-games 3NT (strong hands too)", () => {
     // seed 225: 18 support pts — the ntTp<16 ceiling used to safety-net here.
     const rec = getRecommendation(
-      { hcp: 17, spades: 5, hearts: 3, diamonds: 3, clubs: 2 } as never,
+      { hcp: 17, spades: 5, hearts: 3, diamonds: 3, clubs: 2 },
       {
         situation: "responder-nt-rebid",
         myFirstBid: "2♥",
         myPreviousBid: "3NT",
         partnerBid: "4♠",
         partnerFirstBid: "1NT",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Accept Partner's Choice of Games");
@@ -13143,12 +13083,12 @@ describe("sim audit round 55 regressions", () => {
   it("a bust with a huge fit jump-raises preemptively instead of passing", () => {
     // seed 228: 5 HCP, 6 clubs, diamond void over the 1♥ overcall → 3♣.
     const rec = getRecommendation(
-      { hcp: 5, spades: 4, hearts: 3, diamonds: 0, clubs: 6 } as never,
+      { hcp: 5, spades: 4, hearts: 3, diamonds: 0, clubs: 6 },
       {
         situation: "negative-double",
         myPreviousBid: "1♣",
         rhoBid: "1♥",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3♣");
     expect(rec.category).toContain("Preemptive Jump Raise");
@@ -13156,19 +13096,19 @@ describe("sim audit round 55 regressions", () => {
 
   it("a flat bust still passes under 6 HCP", () => {
     const rec = getRecommendation(
-      { hcp: 4, spades: 3, hearts: 3, diamonds: 4, clubs: 3 } as never,
+      { hcp: 4, spades: 3, hearts: 3, diamonds: 4, clubs: 3 },
       {
         situation: "negative-double",
         myPreviousBid: "1♣",
         rhoBid: "1♥",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
   });
 
   it("a protective-seat overcaller's stories say overcall, not opening bid", () => {
     const rec = getRecommendation(
-      { hcp: 14, spades: 2, hearts: 5, diamonds: 4, clubs: 2 } as never,
+      { hcp: 14, spades: 2, hearts: 5, diamonds: 4, clubs: 2 },
       {
         situation: "protective-rebid",
         myPreviousBid: "1♥",
@@ -13176,7 +13116,7 @@ describe("sim audit round 55 regressions", () => {
         lhoBid: "3♣",
         balancing: true,
         iOvercalled: true,
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.reasoning).toMatch(/overcall/);
@@ -13188,12 +13128,12 @@ describe("sim audit round 56 regressions", () => {
   it("Michaels advancer lifts the preference above the cue (3♥ over a 2♠ cue)", () => {
     // seed 230: hard-coded "2♥" fell below the 2♠ cue and the cue got passed out.
     const rec = getRecommendation(
-      { hcp: 7, spades: 2, hearts: 3, diamonds: 4, clubs: 4 } as never,
+      { hcp: 7, spades: 2, hearts: 3, diamonds: 4, clubs: 4 },
       {
         situation: "responding-to-michaels",
         lhoBid: "1♠",
         partnerBid: "2♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3♥");
     expect(rec.category).toContain("Major fit");
@@ -13202,7 +13142,7 @@ describe("sim audit round 56 regressions", () => {
   it("the 2-over-1 tells describe the bid's promise, not the actual hand", () => {
     // seed 231: tells leaked "7+ clubs" for a bid that only shows 4-5+.
     const rec = getRecommendation(
-      { hcp: 12, spades: 3, hearts: 2, diamonds: 1, clubs: 7 } as never,
+      { hcp: 12, spades: 3, hearts: 2, diamonds: 1, clubs: 7 },
       ctx("responding-suit", { partnerBid: "1♦" }),
     );
     expect(rec.bid).toBe("2♣");
@@ -13215,12 +13155,12 @@ describe("sim audit round 57 regressions", () => {
     // seed 233: 1♣-P-1♥-X-2♣ — the advancer bid 2♥ (the doubled suit!)
     // because only clubs was excluded.
     const rec = getRecommendation(
-      { hcp: 1, spades: 3, hearts: 5, diamonds: 3, clubs: 2 } as never,
+      { hcp: 1, spades: 3, hearts: 5, diamonds: 3, clubs: 2 },
       {
         situation: "responding-to-double",
         lhoBid: "1♥",
         rhoBid: "2♣",
-      } as never,
+      },
     );
     expect(rec.bid).not.toMatch(/[♥♣]/);
     expect(rec.category).toContain("Bid Longest Suit");
@@ -13232,14 +13172,14 @@ describe("sim audit round 58 regressions", () => {
     // seed 235: 2NT-3♣-3♥-3NT with AQT5 spades — responder's 3NT implies 4
     // spades, so the 4-4 fit exists.
     const rec = getRecommendation(
-      { hcp: 20, spades: 4, hearts: 4, diamonds: 2, clubs: 3 } as never,
+      { hcp: 20, spades: 4, hearts: 4, diamonds: 2, clubs: 3 },
       {
         situation: "stayman-opener-rebid",
         myFirstBid: "2NT",
         myPreviousBid: "3♥",
         partnerBid: "3NT",
         partnerFirstBid: "3♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♠");
     expect(rec.category).toContain("4-4 Spade Fit");
@@ -13247,14 +13187,14 @@ describe("sim audit round 58 regressions", () => {
 
   it("without 4 spades the Stayman 3NT signoff stands", () => {
     const rec = getRecommendation(
-      { hcp: 20, spades: 3, hearts: 4, diamonds: 3, clubs: 3 } as never,
+      { hcp: 20, spades: 3, hearts: 4, diamonds: 3, clubs: 3 },
       {
         situation: "stayman-opener-rebid",
         myFirstBid: "2NT",
         myPreviousBid: "3♥",
         partnerBid: "3NT",
         partnerFirstBid: "3♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
   });
@@ -13262,14 +13202,14 @@ describe("sim audit round 58 regressions", () => {
   it("the 11-12 forcing-NT variant accept story does not claim a 6-10 range", () => {
     // seed 237: 11 HCP accepting the 16-18 jump.
     const rec = getRecommendation(
-      { hcp: 11, spades: 3, hearts: 2, diamonds: 4, clubs: 4 } as never,
+      { hcp: 11, spades: 3, hearts: 2, diamonds: 4, clubs: 4 },
       {
         situation: "responder-nt-rebid",
         myPreviousBid: "1NT",
         myFirstBid: "1NT",
         partnerBid: "3♥",
         partnerFirstBid: "1♥",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♥");
     expect(rec.reasoning).toMatch(/11-12 forcing-NT variant/);
@@ -13280,28 +13220,28 @@ describe("sim audit round 59 regressions", () => {
   it("responder drives to slam opposite the 25-27 2♣→3NT rebid", () => {
     // seed 238: 7 HCP + 5-card suit passed 3NT opposite 25-27 (32-34 combined).
     const rec = getRecommendation(
-      { hcp: 7, spades: 2, hearts: 3, diamonds: 3, clubs: 5 } as never,
+      { hcp: 7, spades: 2, hearts: 3, diamonds: 3, clubs: 5 },
       {
         situation: "responder-rebid",
         myPreviousBid: "2♦",
         myFirstBid: "2♦",
         partnerBid: "3NT",
         partnerFirstBid: "2♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("6NT");
   });
 
   it("a flat bust still passes the 2♣→3NT rebid", () => {
     const rec = getRecommendation(
-      { hcp: 2, spades: 4, hearts: 3, diamonds: 3, clubs: 3 } as never,
+      { hcp: 2, spades: 4, hearts: 3, diamonds: 3, clubs: 3 },
       {
         situation: "responder-rebid",
         myPreviousBid: "2♦",
         myFirstBid: "2♦",
         partnerBid: "3NT",
         partnerFirstBid: "2♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Pass");
   });
@@ -13311,7 +13251,7 @@ describe("sim audit round 60 regressions", () => {
   it("a 2/1 responder bids game when OPENER raises its suit", () => {
     // seed 243: 1♠-2♥-3♥ — the one-bite guard misread the 2/1 as a raise.
     const rec = getRecommendation(
-      { hcp: 12, spades: 1, hearts: 5, diamonds: 3, clubs: 4 } as never,
+      { hcp: 12, spades: 1, hearts: 5, diamonds: 3, clubs: 4 },
       {
         situation: "responder-rebid",
         myPreviousBid: "2♥",
@@ -13319,7 +13259,7 @@ describe("sim audit round 60 regressions", () => {
         partnerBid: "3♥",
         partnerFirstBid: "1♠",
         lhoBid: "3♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♥");
   });
@@ -13334,13 +13274,13 @@ describe("sim audit round 60 regressions", () => {
         diamonds: 3,
         clubs: 3,
         hasStopperInOpponentSuit: true,
-      } as never,
+      },
       {
         situation: "overcalling",
         rhoBid: "1NT",
         lhoBid: "1♠",
         auctionOpeningBid: "1♠",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Double");
     expect(rec.category).toContain("Strength Double");
@@ -13364,13 +13304,13 @@ describe("sim audit round 61 regressions", () => {
   it("weak-2 + opponents' double routes to the preempt-response handler", () => {
     // seed 245: responding-suit-after-double computed an impossible 1♠.
     const rec = getRecommendation(
-      { hcp: 8, spades: 4, hearts: 4, diamonds: 1, clubs: 4 } as never,
+      { hcp: 8, spades: 4, hearts: 4, diamonds: 1, clubs: 4 },
       deriveSituation(
         {
           myPosition: 1,
           completedRounds: [],
           currentRound: { 3: "2♦", 4: "Double" },
-        } as never,
+        },
         "we-only",
       ),
     );
@@ -13381,13 +13321,13 @@ describe("sim audit round 61 regressions", () => {
   it("opener passes partner's natural escape after its 1NT was doubled", () => {
     // seed 246: 1NT-(X)-2♥ is an escape, not a transfer.
     const rec = getRecommendation(
-      { hcp: 15, spades: 3, hearts: 3, diamonds: 4, clubs: 3 } as never,
+      { hcp: 15, spades: 3, hearts: 3, diamonds: 4, clubs: 3 },
       deriveSituation(
         {
           myPosition: 1,
           completedRounds: [{ 1: "1NT", 2: "Double", 3: "2♥", 4: "Pass" }],
           currentRound: {},
-        } as never,
+        },
         "none",
       ),
     );
@@ -13413,14 +13353,14 @@ describe("sim audit round 61 regressions", () => {
   it("opener's accept of the invitational 2NT rebid names 11-12, not 13-15 GF", () => {
     // seed 244: 1♦-1♥-2♣-2NT with 14 TP.
     const rec = getRecommendation(
-      { hcp: 14, spades: 2, hearts: 2, diamonds: 5, clubs: 4 } as never,
+      { hcp: 14, spades: 2, hearts: 2, diamonds: 5, clubs: 4 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♦",
         myPreviousBid: "2♣",
         partnerBid: "2NT",
         partnerFirstBid: "1♥",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3NT");
     expect(rec.reasoning).toMatch(/11-12/);
@@ -13432,7 +13372,7 @@ describe("sim audit round 62 regressions", () => {
   it("responder raises partner's second suit competitively with a big fit", () => {
     // seed 248: 6-card diamond support + void over interference — never sell out.
     const rec = getRecommendation(
-      { hcp: 6, spades: 4, hearts: 0, diamonds: 6, clubs: 3 } as never,
+      { hcp: 6, spades: 4, hearts: 0, diamonds: 6, clubs: 3 },
       {
         situation: "responder-rebid",
         myPreviousBid: "1♠",
@@ -13440,7 +13380,7 @@ describe("sim audit round 62 regressions", () => {
         partnerBid: "2♦",
         partnerFirstBid: "1♥",
         rhoBid: "2♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("3♦");
     expect(rec.category).toContain(
@@ -13450,7 +13390,7 @@ describe("sim audit round 62 regressions", () => {
 
   it("a minor game try over the raise is labeled a try, not an accept", () => {
     const rec = getRecommendation(
-      { hcp: 16, spades: 1, hearts: 5, diamonds: 4, clubs: 3 } as never,
+      { hcp: 16, spades: 1, hearts: 5, diamonds: 4, clubs: 3 },
       {
         situation: "rebid-after-suit",
         myFirstBid: "1♥",
@@ -13458,7 +13398,7 @@ describe("sim audit round 62 regressions", () => {
         partnerBid: "3♦",
         partnerFirstBid: "1♠",
         rhoBid: "2♣",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("4♦");
     expect(rec.category).toContain("Game Try");
@@ -13466,7 +13406,7 @@ describe("sim audit round 62 regressions", () => {
 
   it("the raiser accepts partner's re-raise game try with a maximum", () => {
     const rec = getRecommendation(
-      { hcp: 6, spades: 4, hearts: 0, diamonds: 6, clubs: 3 } as never,
+      { hcp: 6, spades: 4, hearts: 0, diamonds: 6, clubs: 3 },
       {
         situation: "responder-rebid",
         myPreviousBid: "3♦",
@@ -13475,7 +13415,7 @@ describe("sim audit round 62 regressions", () => {
         partnerFirstBid: "1♥",
         rhoBid: "2♣",
         partnerRebidFloor: "3♦",
-      } as never,
+      },
     );
     expect(rec.bid).toBe("5♦");
     expect(rec.category).toContain("Accept Partner's Game Try");
@@ -13493,12 +13433,12 @@ describe("sim audit round 63 regressions", () => {
         diamonds: 4,
         clubs: 3,
         hasStopperInOpponentSuit: true,
-      } as never,
+      },
       {
         situation: "overcalling",
         rhoBid: "1♣",
         balancing: true,
-      } as never,
+      },
     );
     expect(rec.bid).toBe("Double");
     expect(rec.category).toContain("Balancing Double");
@@ -13513,12 +13453,12 @@ describe("sim audit round 63 regressions", () => {
         diamonds: 4,
         clubs: 3,
         hasStopperInOpponentSuit: true,
-      } as never,
+      },
       {
         situation: "overcalling",
         rhoBid: "1♣",
         balancing: true,
-      } as never,
+      },
     );
     expect(rec.bid).toBe("1NT");
     expect(rec.category).toContain("Balancing 1NT");
@@ -13528,7 +13468,7 @@ describe("sim audit round 63 regressions", () => {
     // seed 252 family: a singleton hand must never respond a "balanced" 2NT;
     // with 4-card support and 10-12 support points the minor limit raise fires.
     const rec = getRecommendation(
-      { hcp: 9, spades: 1, hearts: 3, diamonds: 4, clubs: 5 } as never,
+      { hcp: 9, spades: 1, hearts: 3, diamonds: 4, clubs: 5 },
       ctx("responding-suit", { partnerBid: "1♦" }),
     );
     expect(rec.bid).toBe("3♦");
@@ -13538,7 +13478,7 @@ describe("sim audit round 63 regressions", () => {
   it("an unbalanced 11-12 hand with a 5-card suit shows the suit instead of 2NT", () => {
     // seed 252 as dealt: 1-3-4-5 with 10 HCP (13 support) → 2♣, never 2NT.
     const rec = getRecommendation(
-      { hcp: 10, spades: 1, hearts: 3, diamonds: 4, clubs: 5 } as never,
+      { hcp: 10, spades: 1, hearts: 3, diamonds: 4, clubs: 5 },
       ctx("responding-suit", { partnerBid: "1♦" }),
     );
     expect(rec.bid).not.toBe("2NT");

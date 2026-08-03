@@ -101,6 +101,26 @@ const CompEntryDialog = ({
     setConfirmDeleteOpen(false);
   };
 
+  const isCompValueError =
+    error === "Compensation values must be zero or greater.";
+  const isGrantDurationError =
+    error === "Grant duration must be greater than zero.";
+  const isStockTickError =
+    error === "Enter a stock ticker when grant quantity is greater than zero.";
+
+  const fieldA11y = (invalid: boolean) =>
+    invalid
+      ? {
+          error: true as const,
+          slotProps: {
+            htmlInput: {
+              "aria-invalid": true as const,
+              "aria-describedby": VALIDATION_ERROR_ID,
+            },
+          },
+        }
+      : {};
+
   return (
     <>
       <Dialog open={open} onClose={onClose}>
@@ -120,6 +140,7 @@ const CompEntryDialog = ({
             onChange={handleChange(setSalary)}
             slotProps={{ input: { startAdornment: "$" } }}
             {...dialogTextFieldProps}
+            {...fieldA11y(isCompValueError)}
           />
           <TextField
             label="Bonus"
@@ -128,6 +149,7 @@ const CompEntryDialog = ({
             onChange={handleChange(setBonus)}
             slotProps={{ input: { startAdornment: "$" } }}
             {...dialogTextFieldProps}
+            {...fieldA11y(isCompValueError)}
           />
           <DialogContentText variant="h6" component="h4" sx={{ marginTop: 7 }}>
             Stock
@@ -137,6 +159,7 @@ const CompEntryDialog = ({
             value={stockTick}
             onChange={handleStockTick}
             {...dialogTextFieldProps}
+            {...fieldA11y(isStockTickError)}
           />
           <TextField
             label="Grant Quantity"
@@ -144,6 +167,7 @@ const CompEntryDialog = ({
             type="number"
             onChange={handleChange(setGrantQty)}
             {...dialogTextFieldProps}
+            {...fieldA11y(isCompValueError)}
           />
           <TextField
             label="Grant Duration"
@@ -151,6 +175,7 @@ const CompEntryDialog = ({
             type="number"
             onChange={handleChange(setGrantDuration)}
             {...dialogTextFieldProps}
+            {...fieldA11y(isGrantDurationError)}
           />
           <TextField
             label="Stock Price Then"
@@ -159,6 +184,7 @@ const CompEntryDialog = ({
             onChange={handleChange(setPriceThen)}
             slotProps={{ input: { startAdornment: "$" } }}
             {...dialogTextFieldProps}
+            {...fieldA11y(isCompValueError)}
           />
           {error ? (
             <Alert
