@@ -126,7 +126,7 @@ const travelDays: TravelDay[] = [
     // updated 8/17
     year: 2026,
     vacation: 47,
-    work: 15,
+    work: 14,
   },
 ];
 
