@@ -381,9 +381,7 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): string {
 const SEEDS = (process.env.SIM_SEEDS ?? "43,44,45")
   .split(",")
   .map((s) => parseInt(s.trim(), 10));
-const OUT =
-  process.env.SIM_OUT ??
-  "/private/tmp/claude-504/-Users-kbigler-Git-a11y-vpat-generator/4c48d52f-1e69-4815-b395-b13373528254/scratchpad/sim-transcripts.txt";
+const OUT = process.env.SIM_OUT;
 
 describe("SAYC simulation audit (temporary harness)", () => {
   it("plays full auctions for each seed and writes transcripts", () => {
@@ -396,7 +394,9 @@ describe("SAYC simulation audit (temporary harness)", () => {
     const out = SEEDS.map((seed, i) => runDeal(seed, ...vulCycle[i % 4])).join(
       "\n\n",
     );
-    writeFileSync(OUT, out);
+    if (OUT) {
+      writeFileSync(OUT, out);
+    }
     expect(out.length).toBeGreaterThan(0);
   });
 });
