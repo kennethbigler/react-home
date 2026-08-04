@@ -21,7 +21,6 @@ const routeCases = [
   { path: "/", heading: "Summary" },
   { path: "/work", heading: "Experience" },
   { path: "/resume", heading: "Resume" },
-  { path: "/education", heading: "Education" },
   { path: "/presentations", heading: "Presentations & Hackathons" },
   { path: "/finances", heading: "Finances" },
   { path: "/f1", heading: "F1" },

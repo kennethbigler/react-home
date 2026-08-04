@@ -24,11 +24,6 @@ const resumeRouteGroups = [
       Component: lazy(() => import("./resume")),
     },
     {
-      name: "Education",
-      route: "education",
-      Component: lazy(() => import("./education")),
-    },
-    {
       name: "Presentations",
       route: "presentations",
       Component: lazy(() => import("./presentations")),

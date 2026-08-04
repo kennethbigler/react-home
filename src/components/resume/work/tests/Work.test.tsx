@@ -12,12 +12,12 @@ describe("resume | work | Work", () => {
       );
     });
 
-    it("renders all three main sections", () => {
+    it("renders all main sections", () => {
       render(<Work />);
 
       expect(screen.getByText("Work")).toBeInTheDocument();
       expect(screen.getByText("Volunteer")).toBeInTheDocument();
-      expect(screen.getByText("School")).toBeInTheDocument();
+      expect(screen.getByText("Education")).toBeInTheDocument();
     });
 
     it("renders work section with correct content", () => {
@@ -45,14 +45,20 @@ describe("resume | work | Work", () => {
       ).toBeInTheDocument();
     });
 
-    it("renders school section with correct content", () => {
+    it("renders education section with degree cards", () => {
       render(<Work />);
 
-      expect(screen.getByText("School")).toBeInTheDocument();
+      expect(screen.getByText("Education")).toBeInTheDocument();
       expect(
-        screen.getByText("Santa Clara University BS, Santa Clara, CA"),
+        screen.getByText(
+          "Santa Clara University - Master of Science in Computer Engineering, Emphasis in Software Engineering",
+        ),
       ).toBeInTheDocument();
-      expect(screen.getByText("SCU MS, Santa Clara, CA")).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "Santa Clara University - Bachelor of Science in Computer Science & Engineering, Minor in Mathematics",
+        ),
+      ).toBeInTheDocument();
     });
   });
 
@@ -106,31 +112,31 @@ describe("resume | work | Work", () => {
       expect(screen.getByText("2009 - 2016")).toBeInTheDocument();
     });
 
-    it("displays correct education details", () => {
+    it("displays education degrees from class data", () => {
       render(<Work />);
 
-      expect(screen.getByText("SCU MS, Santa Clara, CA")).toBeInTheDocument();
-      expect(screen.getByText("Grad Student")).toBeInTheDocument();
-      expect(screen.getAllByText("2015 - 2016")).toHaveLength(2);
-
       expect(
-        screen.getByText("Santa Clara University BS, Santa Clara, CA"),
+        screen.getByText(
+          "Stanford University - Stanford Continuing Studies & Undergrad High School Summer Visitor",
+        ),
       ).toBeInTheDocument();
-      expect(screen.getByText("Undergrad Student")).toBeInTheDocument();
-      expect(screen.getByText("2011 - 2015")).toBeInTheDocument();
+      expect(
+        screen.getByText("The King's Academy - High School Diploma"),
+      ).toBeInTheDocument();
     });
   });
 
   describe("section ordering", () => {
-    it("renders sections in correct order: Work, Volunteer, School", () => {
+    it("renders sections in correct order: Work, Volunteer, Education", () => {
       render(<Work />);
 
-      // Get only the section headings, not the card titles
-      const sectionHeadings = screen.getAllByText(/^(Work|Volunteer|School)$/);
+      const sectionHeadings = screen.getAllByText(
+        /^(Work|Volunteer|Education)$/,
+      );
       expect(sectionHeadings).toHaveLength(3);
       expect(sectionHeadings[0]).toHaveTextContent("Work");
       expect(sectionHeadings[1]).toHaveTextContent("Volunteer");
-      expect(sectionHeadings[2]).toHaveTextContent("School");
+      expect(sectionHeadings[2]).toHaveTextContent("Education");
     });
   });
 
@@ -141,36 +147,31 @@ describe("resume | work | Work", () => {
       const h1 = screen.getByRole("heading", { level: 1 });
       expect(h1).toHaveTextContent("Experience");
 
-      // Check that section headings exist and are properly structured
       expect(screen.getByText("Work")).toBeInTheDocument();
       expect(screen.getByText("Volunteer")).toBeInTheDocument();
-      expect(screen.getByText("School")).toBeInTheDocument();
+      expect(screen.getByText("Education")).toBeInTheDocument();
     });
 
     it("has proper semantic structure", () => {
       render(<Work />);
 
-      // Check that the main heading is properly structured
       const mainHeading = screen.getByRole("heading", { level: 1 });
       expect(mainHeading).toBeInTheDocument();
 
-      // Check that section headings exist
       expect(screen.getByText("Work")).toBeInTheDocument();
       expect(screen.getByText("Volunteer")).toBeInTheDocument();
-      expect(screen.getByText("School")).toBeInTheDocument();
+      expect(screen.getByText("Education")).toBeInTheDocument();
     });
   });
 
   describe("edge cases", () => {
     it("handles components with no jobs gracefully", () => {
-      // This test ensures the component doesn't crash when there are no jobs
-      // The actual data is hardcoded in the constants, so this is more of a smoke test
       render(<Work />);
 
       expect(screen.getByText("Experience")).toBeInTheDocument();
       expect(screen.getByText("Work")).toBeInTheDocument();
       expect(screen.getByText("Volunteer")).toBeInTheDocument();
-      expect(screen.getByText("School")).toBeInTheDocument();
+      expect(screen.getByText("Education")).toBeInTheDocument();
     });
   });
 
@@ -178,7 +179,6 @@ describe("resume | work | Work", () => {
     it("displays all required job information", () => {
       render(<Work />);
 
-      // Check that key information is present for major entries
       expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
       expect(
         screen.getAllByText("Head of Accessibility Engineering").length,
@@ -191,7 +191,7 @@ describe("resume | work | Work", () => {
           "Full Stack Software Engineering Master's Intern, Supply Chain Team",
         ),
       ).toBeInTheDocument();
-      expect(screen.getAllByText("2015 - 2016")).toHaveLength(2);
+      expect(screen.getAllByText("2015 - 2016")).toHaveLength(1);
     });
 
     it("displays parent company information when available", () => {
@@ -210,7 +210,6 @@ describe("resume | work | Work", () => {
     it("displays job descriptions when available", () => {
       render(<Work />);
 
-      // Check that some job descriptions are displayed
       expect(
         screen.getByText(
           /Lead accessibility engineering across Intuit's product portfolio/,

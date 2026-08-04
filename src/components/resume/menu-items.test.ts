@@ -2,7 +2,7 @@ import menuItems, { resumeRouteLabels, resumeRoutes } from "./menu-items";
 
 describe("resume | menu-items", () => {
   it("flattens route groups into resumeRoutes", () => {
-    expect(resumeRoutes).toHaveLength(9);
+    expect(resumeRoutes).toHaveLength(8);
     expect(resumeRoutes.every((route) => route.Component)).toBe(true);
   });
 
@@ -20,5 +20,9 @@ describe("resume | menu-items", () => {
     expect(resumeRouteLabels.get("games")).toBe("Games");
     expect(resumeRoutes.some((route) => route.route === "a11y")).toBe(false);
     expect(resumeRouteLabels.has("a11y")).toBe(false);
+    expect(resumeRoutes.some((route) => route.route === "education")).toBe(
+      false,
+    );
+    expect(resumeRouteLabels.has("education")).toBe(false);
   });
 });
