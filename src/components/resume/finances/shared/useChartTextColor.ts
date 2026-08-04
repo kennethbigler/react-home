@@ -1,15 +1,18 @@
-import { useTheme } from "@mui/material/styles";
+import { createTheme, useTheme } from "@mui/material/styles";
 import { useAtomValue } from "jotai";
 import themeAtom from "../../../../jotai/theme-atom";
 
-/** Contrast color for Highcharts text against the current app theme. */
-const useChartTextColor = (): "black" | "white" => {
+/** Text color for Highcharts labels against the current app theme. */
+const useChartTextColor = (): string => {
   const { palette } = useTheme();
   const appTheme = useAtomValue(themeAtom);
-  // WithTheme keeps MUI palette.mode in sync with themeAtom; tests may only
-  // set the atom without a matching ThemeProvider.
-  const mode = palette.mode === appTheme.mode ? palette.mode : appTheme.mode;
-  return mode === "dark" ? "white" : "black";
+
+  if (palette.mode === appTheme.mode) {
+    return palette.text.primary;
+  }
+
+  // Tests may set themeAtom without a matching ThemeProvider.
+  return createTheme({ palette: { mode: appTheme.mode } }).palette.text.primary;
 };
 
 export default useChartTextColor;

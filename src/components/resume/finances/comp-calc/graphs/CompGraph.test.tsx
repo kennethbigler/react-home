@@ -8,6 +8,7 @@ import {
   resetCapturedChartConfig,
   selectChartPoint,
 } from "../../../../common/highcharts/tests/highchartsMocks";
+import { createTheme } from "@mui/material/styles";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
@@ -176,7 +177,9 @@ describe("CompGraph", () => {
       </Provider>,
     );
 
-    expect(getChartOptions().colors?.at(-1)).toBe("white");
+    expect(getChartOptions().colors?.at(-1)).toBe(
+      createTheme({ palette: { mode: "dark" } }).palette.text.primary,
+    );
   });
 
   it("uses light theme colors when theme mode is light", () => {
@@ -194,7 +197,9 @@ describe("CompGraph", () => {
       </Provider>,
     );
 
-    expect(getChartOptions().colors?.at(-1)).toBe("black");
+    expect(getChartOptions().colors?.at(-1)).toBe(
+      createTheme({ palette: { mode: "light" } }).palette.text.primary,
+    );
   });
 
   it("formats tooltip content for shared and single-point hovers", () => {

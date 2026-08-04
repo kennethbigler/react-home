@@ -403,6 +403,10 @@ describe("bidding-logic | SAYC seeded auction simulation", () => {
     );
   });
 
+  it("flags an opening Double with no prior bid", () => {
+    expect(isIllegalDoubleRecommendation(1, [])).toBe(true);
+  });
+
   it("flags doubles after Double or Redouble", () => {
     expect(
       isIllegalDoubleRecommendation(4, [
