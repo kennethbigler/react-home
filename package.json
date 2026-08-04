@@ -92,27 +92,7 @@
     "Accessibility",
     "Accessibility Engineer",
     "Software Developer",
-    "Web",
     "Web Developer",
-    "Web Technologist",
-    "Santa Clara",
-    "SCU",
-    "scu",
-    "Santa Clara University",
-    "NetApp",
-    "Tesla",
-    "Cisco",
-    "GigNow",
-    "Ernst & Young",
-    "EY",
-    "Intuit",
-    "QuickBooks",
-    "TurboTax",
-    "Mint",
-    "Credit Karma",
-    "Mailchimp"
-  ],
-  "allowScripts": {
-    "fsevents@2.3.3": true
-  }
+    "Web Technologist"
+  ]
 }
