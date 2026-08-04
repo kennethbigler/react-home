@@ -129,8 +129,8 @@ describe("resume | work | Job", () => {
       const image = screen.getByRole("img");
       expect(image).toHaveStyle({
         float: "right",
-        maxWidth: "7em",
-        maxHeight: "4.5em",
+        maxWidth: "112px", // 7em at 16px root (jsdom 30 computes relative units)
+        maxHeight: "72px", // 4.5em at 16px root
         objectFit: "contain",
       });
     });

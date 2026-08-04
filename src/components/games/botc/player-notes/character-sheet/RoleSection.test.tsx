@@ -262,7 +262,7 @@ describe("RoleSection", () => {
 
     buttons.forEach((button) => {
       expect(button).toHaveStyle({
-        fontSize: "0.7rem",
+        fontSize: "11.2px", // 0.7rem at 16px root (jsdom 30 computes relative units)
       });
     });
   });
