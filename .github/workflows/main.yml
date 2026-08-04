@@ -44,7 +44,9 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm config set engine-strict true
+          npm install
 
       - name: Run linters
         run: npm run lint:q

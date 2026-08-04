@@ -11,37 +11,61 @@ updates:
       - dependencies
     groups:
       lint:
+        applies-to: version-updates
         patterns:
           - "@eslint/*"
           - "@typescript-eslint/*"
           - eslint*
           - gts
+        update-types:
+          - minor
+          - patch
       mui:
+        applies-to: version-updates
         patterns:
           - "@mui/*"
           - "@emotion/*"
+        update-types:
+          - minor
+          - patch
       highcharts:
+        applies-to: version-updates
         patterns:
           - highcharts
           - "@highcharts/*"
+        update-types:
+          - minor
+          - patch
       react:
+        applies-to: version-updates
         patterns:
           - react
           - react-dom
           - "@types/react"
           - "@types/react-dom"
           - "@testing-library/*"
+        update-types:
+          - minor
+          - patch
       vite:
+        applies-to: version-updates
         patterns:
           - vite
           - vitest
           - "@vitejs/plugin-react"
           - "@vitest/coverage-v8"
           - jsdom
+        update-types:
+          - minor
+          - patch
       cicd:
+        applies-to: version-updates
         patterns:
           - knip
           - "@lhci/cli"
+        update-types:
+          - minor
+          - patch
 
   - package-ecosystem: github-actions
     directory: /
