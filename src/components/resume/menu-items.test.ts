@@ -18,5 +18,7 @@ describe("resume | menu-items", () => {
   it("maps route segments to labels for page titles", () => {
     expect(resumeRouteLabels.get("")).toBe("Summary");
     expect(resumeRouteLabels.get("games")).toBe("Games");
+    expect(resumeRoutes.some((route) => route.route === "a11y")).toBe(false);
+    expect(resumeRouteLabels.has("a11y")).toBe(false);
   });
 });
