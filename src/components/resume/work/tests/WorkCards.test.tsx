@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import WorkCards from "../WorkCards";
-import { work, volunteer, school } from "../../../../constants/work";
+import { work, volunteer } from "../../../../constants/work";
 
 describe("resume | work | WorkCards", () => {
   describe("rendering", () => {
@@ -40,14 +40,9 @@ describe("resume | work | WorkCards", () => {
     });
 
     it("passes triple prop to Job components correctly", () => {
-      const { container } = render(<WorkCards title="School" jobs={school} />);
+      render(<WorkCards title="Work" jobs={work.slice(0, 3)} />);
 
-      // Check for triple grid sizing (xxl-4) in the container
-      const tripleGridItems = container.querySelectorAll(
-        '[class*="MuiGrid-grid-xxl-4"]',
-      );
-      // Note: The triple prop might not always result in xxl-4 classes, so we test that it renders
-      expect(tripleGridItems.length).toBeGreaterThanOrEqual(0);
+      expect(screen.getAllByRole("button")).toHaveLength(3);
     });
 
     it("uses default sizing when triple prop not specified", () => {
@@ -114,18 +109,12 @@ describe("resume | work | WorkCards", () => {
 
   describe("data handling", () => {
     it("handles different job types correctly", () => {
-      render(
-        <WorkCards
-          title="Mixed Jobs"
-          jobs={[work[0], volunteer[0], school[0]]}
-        />,
-      );
+      render(<WorkCards title="Mixed Jobs" jobs={[work[0], volunteer[0]]} />);
 
       expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
       expect(
         screen.getByText("Midnight Game Club, Sunnyvale, CA"),
       ).toBeInTheDocument();
-      expect(screen.getByText("SCU MS, Santa Clara, CA")).toBeInTheDocument();
     });
 
     it("handles jobs with special characters in company names", () => {

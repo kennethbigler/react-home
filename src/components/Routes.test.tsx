@@ -4,8 +4,8 @@ import RootRoutes from "./Routes";
 
 vi.mock("./resume/Routes", () => ({
   default: ({ handleNav }: { handleNav: (loc: string) => void }) => (
-    <button type="button" onClick={() => handleNav("/education")}>
-      Education
+    <button type="button" onClick={() => handleNav("/work")}>
+      Work
     </button>
   ),
 }));
@@ -24,8 +24,8 @@ describe("components | RootRoutes", () => {
       </MemoryRouter>,
     );
 
-    const educationLink = await screen.findByRole("button", {
-      name: "Education",
+    const workLink = await screen.findByRole("button", {
+      name: "Work",
     });
 
     expect(scrollTo).toHaveBeenCalledWith({
@@ -34,7 +34,7 @@ describe("components | RootRoutes", () => {
       behavior: "auto",
     });
 
-    fireEvent.click(educationLink);
+    fireEvent.click(workLink);
 
     await waitFor(() => {
       expect(scrollTo).toHaveBeenCalledTimes(2);

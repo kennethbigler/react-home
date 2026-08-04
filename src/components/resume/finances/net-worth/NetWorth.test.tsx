@@ -1,40 +1,12 @@
+import "../../../common/highcharts/tests/highchartsMocks";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Provider, createStore } from "jotai";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   netWorthAtom,
   netWorthCategoriesAtom,
 } from "../../../../jotai/finances-atom";
 import NetWorth from "./NetWorth";
-
-vi.mock("../../../common/highcharts/coreHighcharts", () => ({
-  default: {},
-}));
-
-vi.mock("highcharts/highcharts.src", () => ({
-  default: {},
-}));
-
-vi.mock("@highcharts/react", () => ({
-  Chart: ({ children }: { children?: React.ReactNode }) => (
-    <div data-testid="highcharts-chart">{children}</div>
-  ),
-  Credits: () => null,
-  Legend: () => null,
-  PlotOptions: () => null,
-  Series: () => null,
-  Title: ({ children }: { children?: React.ReactNode }) => (
-    <span>{children}</span>
-  ),
-  Tooltip: () => null,
-  XAxis: () => null,
-  YAxis: () => null,
-  setHighcharts: vi.fn(),
-}));
-
-vi.mock("@highcharts/react/modules/Accessibility", () => ({
-  Accessibility: () => null,
-}));
 
 const renderNetWorth = (
   categories: string[] = [],
@@ -121,6 +93,7 @@ describe("resume | finances | net-worth | NetWorth", () => {
 
     fireEvent.click(screen.getByText("Cash: $12,000.00"));
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete entry" }));
     await waitFor(() =>
       expect(screen.queryByText("Cash: $12,000.00")).toBeNull(),
     );

@@ -37,12 +37,10 @@ describe("components | routeTitleUtils", () => {
     it("returns segment title with base for resume sections", () => {
       expect(getPageTitle("/cars")).toBe(`Cars | ${BASE_TITLE}`);
       expect(getPageTitle("/finances")).toBe(`Finances | ${BASE_TITLE}`);
-      expect(getPageTitle("/education")).toBe(`Education | ${BASE_TITLE}`);
       expect(getPageTitle("/f1")).toBe(`F1 | ${BASE_TITLE}`);
       expect(getPageTitle("/presentations")).toBe(
         `Presentations | ${BASE_TITLE}`,
       );
-      expect(getPageTitle("/a11y")).toBe(`A11y | ${BASE_TITLE}`);
       expect(getPageTitle("/resume")).toBe(`Resume | ${BASE_TITLE}`);
       expect(getPageTitle("/work")).toBe(`Work | ${BASE_TITLE}`);
     });

@@ -26,10 +26,11 @@ const NetWorthEntryDisplay = ({
           calcEntry={calcEntries[i]}
           categories={categories}
           onClick={onClick(i)}
-          key={`net-worth-entry-${i}`}
+          // Entry dates are unique (enforced by the entry dialog).
+          key={entry.entryDate}
         />
       ))
-      .reverse()}
+      .toReversed()}
   </Grid>
 );
 

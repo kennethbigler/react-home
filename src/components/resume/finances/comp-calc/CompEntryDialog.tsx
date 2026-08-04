@@ -7,32 +7,19 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
-  type TextFieldProps,
-  type SelectChangeEvent,
 } from "@mui/material";
-import dateHelper, { months } from "../../../../apis/DateHelper";
 import type { CompEntry } from "../../../../jotai/finances-atom";
-import { finiteOr } from "./compEntryNumbers";
-
-const tfProps: TextFieldProps = {
-  variant: "standard",
-  fullWidth: true,
-  margin: "dense",
-};
+import ConfirmDeleteDialog from "../shared/ConfirmDeleteDialog";
+import MonthYearSelect from "../shared/MonthYearSelect";
+import dialogTextFieldProps from "../shared/dialogTextFieldProps";
+import useMonthYear from "../shared/useMonthYear";
 
 const VALIDATION_ERROR_ID = "comp-entry-validation-error";
 
-const currentYear = new Date().getFullYear() - 2000;
-const years: number[] = [];
-for (let i = 0; i <= currentYear; i += 1) {
-  years.push(2000 + i);
-}
-years.reverse();
+type NumericValue = number | "";
+
+const toNumber = (value: NumericValue): number => (value === "" ? 0 : value);
 
 interface CompEntryDialogProps {
   open: boolean;
@@ -49,61 +36,49 @@ const CompEntryDialog = ({
   addCompEntry,
   onDelete,
 }: CompEntryDialogProps) => {
-  const [entryDateMonth, setEntryDateMonth] = useState(
-    (compEntry && (dateHelper(compEntry.entryDate).month + 1).toString()) ||
-      "1",
+  const monthYear = useMonthYear(compEntry?.entryDate);
+  const [salary, setSalary] = useState<NumericValue>(compEntry?.salary ?? 0);
+  const [bonus, setBonus] = useState<NumericValue>(compEntry?.bonus ?? 0);
+  const [stockTick, setStockTick] = useState(compEntry?.stockTick ?? "");
+  const [priceThen, setPriceThen] = useState<NumericValue>(
+    compEntry?.priceThen ?? 0,
   );
-  const [entryDateYear, setEntryDateYear] = useState(
-    (compEntry && dateHelper(compEntry.entryDate).year.toString()) ||
-      years[0].toString(),
+  const [grantDuration, setGrantDuration] = useState<NumericValue>(
+    compEntry?.grantDuration ?? 4,
   );
-  const [salary, setSalary] = useState(compEntry?.salary || 0);
-  const [bonus, setBonus] = useState(compEntry?.bonus || 0);
-  const [stockTick, setStockTick] = useState(compEntry?.stockTick || "");
-  const [priceThen, setPriceThen] = useState(compEntry?.priceThen || 0);
-  const [grantDuration, setGrantDuration] = useState(
-    compEntry?.grantDuration || 4,
+  const [grantQty, setGrantQty] = useState<NumericValue>(
+    compEntry?.grantQty ?? 0,
   );
-  const [grantQty, setGrantQty] = useState(compEntry?.grantQty || 0);
   const [error, setError] = useState("");
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
-  const resetState = () => {
-    setEntryDateMonth("1");
-    setEntryDateYear(years[0].toString());
-    setSalary(0);
-    setBonus(0);
-    setStockTick("");
-    setPriceThen(0);
-    setGrantDuration(4);
-    setGrantQty(0);
-    setError("");
-  };
-
   const handleChange =
-    (func: (n: number) => void) => (e: ChangeEvent<HTMLInputElement>) => {
-      func(parseFloat(e.target.value));
+    (setValue: (n: NumericValue) => void) =>
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      const parsed = parseFloat(value);
+      setValue(value !== "" && Number.isFinite(parsed) ? parsed : "");
       setError("");
     };
   const handleStockTick = (e: ChangeEvent<HTMLInputElement>) => {
     setStockTick(e.target.value);
     setError("");
   };
-  const handleSelectMonth = (e: SelectChangeEvent<string>) =>
-    setEntryDateMonth(e.target.value);
-  const handleSelectYear = (e: SelectChangeEvent<string>) =>
-    setEntryDateYear(e.target.value);
 
   const handleSubmit = () => {
-    if ([salary, bonus, priceThen, grantQty].some((value) => value < 0)) {
+    if (
+      [salary, bonus, priceThen, grantQty].some(
+        (value) => typeof value === "number" && value < 0,
+      )
+    ) {
       setError("Compensation values must be zero or greater.");
       return;
     }
-    if (!Number.isFinite(grantDuration) || grantDuration <= 0) {
+    if (toNumber(grantDuration) <= 0) {
       setError("Grant duration must be greater than zero.");
       return;
     }
-    if (grantQty > 0 && !stockTick.trim()) {
+    if (toNumber(grantQty) > 0 && !stockTick.trim()) {
       setError(
         "Enter a stock ticker when grant quantity is greater than zero.",
       );
@@ -111,19 +86,14 @@ const CompEntryDialog = ({
     }
 
     addCompEntry({
-      entryDate: `${entryDateYear}-${String(entryDateMonth).padStart(2, "0")}`,
-      salary: finiteOr(salary),
-      bonus: finiteOr(bonus),
+      entryDate: monthYear.entryDate,
+      salary: toNumber(salary),
+      bonus: toNumber(bonus),
       stockTick: stockTick.trim().toUpperCase(),
-      priceThen: finiteOr(priceThen),
-      grantDuration: finiteOr(grantDuration, 4),
-      grantQty: finiteOr(grantQty),
+      priceThen: toNumber(priceThen),
+      grantDuration: toNumber(grantDuration),
+      grantQty: toNumber(grantQty),
     });
-    resetState();
-  };
-
-  const handleDelete = () => {
-    setConfirmDeleteOpen(true);
   };
 
   const confirmDelete = () => {
@@ -131,50 +101,46 @@ const CompEntryDialog = ({
     setConfirmDeleteOpen(false);
   };
 
+  const isCompValueError =
+    error === "Compensation values must be zero or greater.";
+  const isGrantDurationError =
+    error === "Grant duration must be greater than zero.";
+  const isStockTickError =
+    error === "Enter a stock ticker when grant quantity is greater than zero.";
+
+  const fieldA11y = (invalid: boolean) =>
+    invalid
+      ? {
+          error: true as const,
+          slotProps: {
+            htmlInput: {
+              "aria-invalid": true as const,
+              "aria-describedby": VALIDATION_ERROR_ID,
+            },
+          },
+        }
+      : {};
+
   return (
     <>
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>{compEntry ? "Edit" : "New"} Comp Entry</DialogTitle>
         <DialogContent>
-          <div style={{ display: "flex", marginTop: 5 }}>
-            <FormControl fullWidth>
-              <InputLabel id="month-select">Month</InputLabel>
-              <Select
-                labelId="month-select"
-                label="Month"
-                value={entryDateMonth}
-                onChange={handleSelectMonth}
-              >
-                {months.map((month, i) => (
-                  <MenuItem value={String(i + 1)} key={i}>
-                    {month}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth>
-              <InputLabel id="year-select">Year</InputLabel>
-              <Select
-                labelId="year-select"
-                label="Year"
-                value={entryDateYear}
-                onChange={handleSelectYear}
-              >
-                {years.map((year) => (
-                  <MenuItem value={year} key={year}>
-                    {year}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
+          <MonthYearSelect
+            idPrefix="comp-entry"
+            month={monthYear.month}
+            year={monthYear.year}
+            onMonthChange={monthYear.handleMonthChange}
+            onYearChange={monthYear.handleYearChange}
+          />
           <TextField
             label="Salary"
             value={salary}
             type="number"
             onChange={handleChange(setSalary)}
             slotProps={{ input: { startAdornment: "$" } }}
-            {...tfProps}
+            {...dialogTextFieldProps}
+            {...fieldA11y(isCompValueError)}
           />
           <TextField
             label="Bonus"
@@ -182,7 +148,8 @@ const CompEntryDialog = ({
             type="number"
             onChange={handleChange(setBonus)}
             slotProps={{ input: { startAdornment: "$" } }}
-            {...tfProps}
+            {...dialogTextFieldProps}
+            {...fieldA11y(isCompValueError)}
           />
           <DialogContentText variant="h6" component="h4" sx={{ marginTop: 7 }}>
             Stock
@@ -191,21 +158,24 @@ const CompEntryDialog = ({
             label="Stock Ticker"
             value={stockTick}
             onChange={handleStockTick}
-            {...tfProps}
+            {...dialogTextFieldProps}
+            {...fieldA11y(isStockTickError)}
           />
           <TextField
             label="Grant Quantity"
             value={grantQty}
             type="number"
             onChange={handleChange(setGrantQty)}
-            {...tfProps}
+            {...dialogTextFieldProps}
+            {...fieldA11y(isCompValueError)}
           />
           <TextField
             label="Grant Duration"
             value={grantDuration}
             type="number"
             onChange={handleChange(setGrantDuration)}
-            {...tfProps}
+            {...dialogTextFieldProps}
+            {...fieldA11y(isGrantDurationError)}
           />
           <TextField
             label="Stock Price Then"
@@ -213,7 +183,8 @@ const CompEntryDialog = ({
             type="number"
             onChange={handleChange(setPriceThen)}
             slotProps={{ input: { startAdornment: "$" } }}
-            {...tfProps}
+            {...dialogTextFieldProps}
+            {...fieldA11y(isCompValueError)}
           />
           {error ? (
             <Alert
@@ -227,7 +198,7 @@ const CompEntryDialog = ({
         </DialogContent>
         <DialogActions>
           {compEntry && onDelete ? (
-            <Button onClick={handleDelete} color="error">
+            <Button onClick={() => setConfirmDeleteOpen(true)} color="error">
               Delete
             </Button>
           ) : null}
@@ -237,23 +208,14 @@ const CompEntryDialog = ({
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog
+      <ConfirmDeleteDialog
         open={confirmDeleteOpen}
-        onClose={() => setConfirmDeleteOpen(false)}
-      >
-        <DialogTitle>Delete compensation entry?</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            This compensation entry will be permanently deleted.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setConfirmDeleteOpen(false)}>Cancel</Button>
-          <Button onClick={confirmDelete} color="error">
-            Delete entry
-          </Button>
-        </DialogActions>
-      </Dialog>
+        title="Delete compensation entry?"
+        description="This compensation entry will be permanently deleted."
+        confirmLabel="Delete entry"
+        onCancel={() => setConfirmDeleteOpen(false)}
+        onConfirm={confirmDelete}
+      />
     </>
   );
 };

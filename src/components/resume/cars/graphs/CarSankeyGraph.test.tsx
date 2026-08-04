@@ -1,4 +1,4 @@
-import "../tests/highchartsMocks";
+import "../../../common/highcharts/tests/highchartsMocks";
 import { render, screen } from "@testing-library/react";
 import CarSankeyGraph from "./CarSankeyGraph";
 import {

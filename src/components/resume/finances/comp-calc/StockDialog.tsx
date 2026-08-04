@@ -1,4 +1,4 @@
-import { memo, useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import {
   Alert,
   Button,
@@ -7,14 +7,15 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  type TextFieldProps,
 } from "@mui/material";
+import ConfirmDeleteDialog from "../shared/ConfirmDeleteDialog";
+import dialogTextFieldProps from "../shared/dialogTextFieldProps";
 
-const tfProps: TextFieldProps = {
-  variant: "standard",
-  fullWidth: true,
-  margin: "dense",
-};
+const VALIDATION_ERROR_ID = "stock-dialog-validation-error";
+const STOCK_ERROR = "Enter a stock ticker.";
+const PRICE_ERROR = "Stock price must be zero or greater.";
+
+type FieldError = "stock" | "price";
 
 interface StockDialogProps {
   open: boolean;
@@ -25,51 +26,72 @@ interface StockDialogProps {
   removeStockEntry: (s: string) => () => void;
 }
 
-const StockDialog = memo(
-  ({
-    open,
-    price: exPrice,
-    stock: exStock,
-    onClose,
-    addStockEntry,
-    removeStockEntry,
-  }: StockDialogProps) => {
-    const [price, setPrice] = useState(exPrice || 0);
-    const [stock, setStock] = useState(exStock || "");
-    const [error, setError] = useState("");
-
-    const resetState = () => {
-      setPrice(0);
-      setStock("");
-      setError("");
-    };
-
-    const handleStockChange = (e: ChangeEvent<HTMLInputElement>) => {
-      setStock(e.target.value);
-      setError("");
-    };
-
-    const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-      setPrice(parseFloat(e.target.value) || 0);
-      setError("");
-    };
-
-    const handleSubmit = () => {
-      const normalizedStock = stock.trim().toUpperCase();
-      if (!normalizedStock) {
-        setError("Enter a stock ticker.");
-        return;
+const fieldA11y = (invalid: boolean) =>
+  invalid
+    ? {
+        error: true as const,
+        slotProps: {
+          htmlInput: {
+            "aria-invalid": true as const,
+            "aria-describedby": VALIDATION_ERROR_ID,
+          },
+        },
       }
-      if (price < 0) {
-        setError("Stock price must be zero or greater.");
-        return;
-      }
+    : {};
 
-      addStockEntry(normalizedStock, price);
-      resetState();
-    };
+const StockDialog = ({
+  open,
+  price: exPrice,
+  stock: exStock,
+  onClose,
+  addStockEntry,
+  removeStockEntry,
+}: StockDialogProps) => {
+  const [price, setPrice] = useState(exPrice || 0);
+  const [stock, setStock] = useState(exStock || "");
+  const [fieldError, setFieldError] = useState<FieldError | null>(null);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
-    return (
+  const errorMessage =
+    fieldError === "stock"
+      ? STOCK_ERROR
+      : fieldError === "price"
+        ? PRICE_ERROR
+        : "";
+
+  const handleStockChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setStock(e.target.value);
+    if (fieldError === "stock") setFieldError(null);
+  };
+
+  const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPrice(parseFloat(e.target.value) || 0);
+    if (fieldError === "price") setFieldError(null);
+  };
+
+  const handleSubmit = () => {
+    const normalizedStock = stock.trim().toUpperCase();
+    if (!normalizedStock) {
+      setFieldError("stock");
+      return;
+    }
+    if (price < 0) {
+      setFieldError("price");
+      return;
+    }
+
+    addStockEntry(normalizedStock, price);
+  };
+
+  const confirmDelete = () => {
+    if (exStock) {
+      removeStockEntry(exStock)();
+    }
+    setConfirmDeleteOpen(false);
+  };
+
+  return (
+    <>
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>{exStock ? "Edit" : "New"} Stock Entry</DialogTitle>
         <DialogContent>
@@ -78,23 +100,32 @@ const StockDialog = memo(
               label="Stock"
               value={stock}
               onChange={handleStockChange}
-              {...tfProps}
+              {...dialogTextFieldProps}
+              {...fieldA11y(fieldError === "stock")}
             />
             <TextField
               label="Price Now"
               value={price}
               type="number"
               onChange={handlePriceChange}
-              slotProps={{ input: { startAdornment: "$" } }}
-              {...tfProps}
+              slotProps={{
+                input: { startAdornment: "$" },
+                ...(fieldA11y(fieldError === "price").slotProps ?? {}),
+              }}
+              {...dialogTextFieldProps}
+              {...(fieldError === "price" ? { error: true } : {})}
             />
-            {error ? <Alert severity="error">{error}</Alert> : null}
+            {errorMessage ? (
+              <Alert id={VALIDATION_ERROR_ID} severity="error">
+                {errorMessage}
+              </Alert>
+            ) : null}
           </div>
         </DialogContent>
         <DialogActions>
           {exStock ? (
-            <Button onClick={removeStockEntry(exStock)} color="error">
-              Delete
+            <Button onClick={() => setConfirmDeleteOpen(true)} color="error">
+              Delete stock entry
             </Button>
           ) : null}
           <Button onClick={onClose}>Cancel</Button>
@@ -103,10 +134,16 @@ const StockDialog = memo(
           </Button>
         </DialogActions>
       </Dialog>
-    );
-  },
-);
-
-StockDialog.displayName = "StockDialog";
+      <ConfirmDeleteDialog
+        open={confirmDeleteOpen}
+        title="Delete stock entry?"
+        description="This stock entry will be permanently deleted."
+        confirmLabel="Delete entry"
+        onCancel={() => setConfirmDeleteOpen(false)}
+        onConfirm={confirmDelete}
+      />
+    </>
+  );
+};
 
 export default StockDialog;

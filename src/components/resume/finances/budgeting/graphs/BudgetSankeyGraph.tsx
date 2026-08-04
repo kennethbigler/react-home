@@ -1,10 +1,10 @@
-import { useAtomValue } from "jotai";
 import { useTheme } from "@mui/material/styles";
 import { Chart, Credits, Series, Title, XAxis, YAxis } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../../../common/highcharts/sankeyHighcharts";
-import themeAtom from "../../../../../jotai/theme-atom";
 import usDollar from "../../../../../apis/usDollar";
+import ChartFigure from "../../shared/ChartFigure";
+import useChartTextColor from "../../shared/useChartTextColor";
 import type { BudgetFlow, CategoryTotal } from "../../../../../apis/budget";
 import {
   buildBudgetSankeyData,
@@ -132,8 +132,7 @@ const BudgetSankeyGraph = ({
   onCategorySelect,
 }: BudgetSankeyGraphProps) => {
   const muiTheme = useTheme();
-  const theme = useAtomValue(themeAtom);
-  const titleColor = theme.mode === "light" ? "black" : "white";
+  const titleColor = useChartTextColor();
 
   const { nodes, data } = buildBudgetSankeyData(
     flow,
@@ -184,7 +183,7 @@ const BudgetSankeyGraph = ({
   });
 
   return (
-    <figure style={{ margin: 0, width: "100%" }}>
+    <ChartFigure>
       <Chart highcharts={Highcharts} options={options}>
         <Accessibility enabled={true} />
         <Credits enabled={false} />
@@ -201,7 +200,7 @@ const BudgetSankeyGraph = ({
           type="sankey"
         />
       </Chart>
-    </figure>
+    </ChartFigure>
   );
 };
 

@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useAtomValue } from "jotai";
 import {
   Chart,
   Credits,
@@ -13,11 +12,12 @@ import {
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../../../common/highcharts/coreHighcharts";
-import themeAtom from "../../../../../jotai/theme-atom";
 import type {
   NetWorthCalcEntry,
   NetWorthEntry,
 } from "../../../../../jotai/finances-atom";
+import ChartFigure from "../../shared/ChartFigure";
+import useChartTextColor from "../../shared/useChartTextColor";
 import colors, { getCategoryColor } from "./colors";
 import {
   buildNetWorthChartData,
@@ -43,8 +43,7 @@ const NetWorthChart = ({
   categories,
   onPointSelect,
 }: NetWorthChartProps) => {
-  const theme = useAtomValue(themeAtom);
-  const color = theme.mode === "light" ? "black" : "white";
+  const color = useChartTextColor();
 
   const { chartData, options } = useMemo(() => {
     const data = buildNetWorthChartData(
@@ -67,6 +66,7 @@ const NetWorthChart = ({
           lineColor: color,
           lineWidth: 1,
           marker: { lineWidth: 1, lineColor: color },
+          // Expand hit target to the filled area so taps register on touch devices.
           trackByArea: true,
         },
       },
@@ -99,7 +99,7 @@ const NetWorthChart = ({
   };
 
   return (
-    <figure style={{ margin: 0, width: "100%" }}>
+    <ChartFigure>
       {/* Remount when entry data/theme changes so markers stay visible.
           Omit startIdx so clicking a point only updates the inflation series. */}
       <Chart
@@ -145,7 +145,7 @@ const NetWorthChart = ({
           data={chartData.inflation}
         />
       </Chart>
-    </figure>
+    </ChartFigure>
   );
 };
 

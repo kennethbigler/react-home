@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { Grid } from "@mui/material";
-import NetWorthChart from "./NetWorthGraph";
-import BreakdownChart from "./BreakdownGraph";
 import type {
   NetWorthCalcEntry,
   NetWorthEntry,
 } from "../../../../../jotai/finances-atom";
+import usePointSelection from "../../shared/usePointSelection";
+import NetWorthChart from "./NetWorthGraph";
+import BreakdownChart from "./BreakdownGraph";
 
 interface GraphsProps {
   entries: NetWorthEntry[];
@@ -17,17 +17,9 @@ interface GraphsProps {
 const EMPTY_AMOUNTS: Record<string, number> = {};
 
 const Graphs = ({ entries, calcEntries, categories }: GraphsProps) => {
-  const [startIdx, setStartIdx] = useState(0);
-  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
-
-  const handlePointSelect = (index: number) => {
-    setStartIdx(index);
-    setSelectedIdx(index);
-  };
-
-  const lastIdx = entries.length - 1;
-  const safeStartIdx = Math.min(startIdx, lastIdx);
-  const pieIdx = Math.min(selectedIdx ?? lastIdx, lastIdx);
+  const { safeStartIdx, pieIdx, handlePointSelect } = usePointSelection(
+    entries.length - 1,
+  );
 
   return (
     <Grid container>

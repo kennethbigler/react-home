@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
 import { Alert } from "@mui/material";
 import { useAtom, useAtomValue } from "jotai";
 import compCalcState, {
   compCalcRead,
   sortCompEntriesByDate,
 } from "../../../../jotai/finances-atom";
+import useEntryDialog from "../shared/useEntryDialog";
+import useSortedEntries from "../shared/useSortedEntries";
 import CompActions from "./CompActions";
 import Graphs from "./graphs/Graphs";
 import CompEntryDisplay from "./CompEntryDisplay";
@@ -12,31 +13,12 @@ import CompEntryDisplay from "./CompEntryDisplay";
 const CompCalculator = () => {
   const [compEntries, setCompEntries] = useAtom(compCalcState);
   const compCalcEntries = useAtomValue(compCalcRead);
-
-  const [openEntry, setOpenEntry] = useState(false);
-  const [editEntryIdx, setEditEntryIdx] = useState(-1);
-
-  useEffect(() => {
-    const sorted = sortCompEntriesByDate(compEntries);
-    if (
-      sorted.some(
-        (entry, index) => entry.entryDate !== compEntries[index]?.entryDate,
-      )
-    ) {
-      setCompEntries(sorted);
-    }
-  }, [compEntries, setCompEntries]);
-
-  const sortedCompEntries = useMemo(
-    () => sortCompEntriesByDate(compEntries),
-    [compEntries],
+  const sortedCompEntries = useSortedEntries(
+    compEntries,
+    setCompEntries,
+    sortCompEntriesByDate,
   );
-
-  // entry open/closers
-  const openEditEntry = (i: number) => () => {
-    setEditEntryIdx(i);
-    setOpenEntry(true);
-  };
+  const entryDialog = useEntryDialog();
 
   return (
     <>
@@ -53,16 +35,13 @@ const CompCalculator = () => {
       <CompActions
         compEntries={sortedCompEntries}
         setCompEntries={setCompEntries}
-        openEntry={openEntry}
-        setOpenEntry={setOpenEntry}
-        editEntryIdx={editEntryIdx}
-        setEditEntryIdx={setEditEntryIdx}
+        entryDialog={entryDialog}
       />
       {sortedCompEntries.length > 0 && (
         <CompEntryDisplay
           compEntries={sortedCompEntries}
           compCalcEntries={compCalcEntries}
-          onClick={openEditEntry}
+          onClick={entryDialog.openEdit}
         />
       )}
     </>

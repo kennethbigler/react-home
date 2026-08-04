@@ -1,5 +1,12 @@
 import { blue, lightGreen, orange } from "@mui/material/colors";
 
-const colors: string[] = [lightGreen[500], orange[500], blue[500], orange[900]];
+/** Kept in sync with the budgeting sankey so income streams match. */
+export const stockColor = lightGreen[500];
+export const bonusColor = orange[500];
+export const salaryColor = blue[500];
+const totalColor = orange[900];
+
+/** Series color order matches STOCK / BONUS / SALARY / TOTAL. */
+const colors: string[] = [stockColor, bonusColor, salaryColor, totalColor];
 
 export default colors;

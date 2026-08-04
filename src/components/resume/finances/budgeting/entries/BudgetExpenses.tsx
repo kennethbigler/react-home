@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 import {
   Alert,
   Button,
@@ -24,7 +24,8 @@ import {
 import BudgetCategorySection from "./BudgetCategorySection";
 import ExpenseEntryDialog from "./ExpenseEntryDialog";
 import useBudgetEntries from "./useBudgetEntries";
-import { finiteOr } from "../../comp-calc/compEntryNumbers";
+import useEntryDialog from "../../shared/useEntryDialog";
+import { finiteOr } from "../../shared/numbers";
 
 const partnerTfProps: TextFieldProps = {
   variant: "standard",
@@ -60,8 +61,7 @@ const BudgetExpenses = () => {
   const [itemizedDeduction, setItemizedDeduction] = useAtom(
     itemizedDeductionAtom,
   );
-  const [openEntry, setOpenEntry] = useState(false);
-  const [editEntryIdx, setEditEntryIdx] = useState(-1);
+  const entryDialog = useEntryDialog();
   const hasPercentageExpenses = expenseEntries.some(
     ({ valueMode }) => valueMode === "percent",
   );
@@ -70,26 +70,14 @@ const BudgetExpenses = () => {
     : FEDERAL_STANDARD_DEDUCTION;
   const deductionBelowStandard = itemizedDeduction < federalStandard;
 
-  const openNewEntry = () => {
-    setEditEntryIdx(-1);
-    setOpenEntry(true);
-  };
-
-  const openEditEntry = (i: number) => () => {
-    setEditEntryIdx(i);
-    setOpenEntry(true);
-  };
-
-  const handleClose = () => setOpenEntry(false);
-
   const handleSave = (expenseEntry: ExpenseEntry) => {
-    addExpenseEntry(expenseEntry, editEntryIdx);
-    handleClose();
+    addExpenseEntry(expenseEntry, entryDialog.editIdx);
+    entryDialog.close();
   };
 
   const handleDelete = () => {
-    removeExpenseEntry(editEntryIdx);
-    handleClose();
+    removeExpenseEntry(entryDialog.editIdx);
+    entryDialog.close();
   };
 
   const handlePartnerChange =
@@ -120,7 +108,7 @@ const BudgetExpenses = () => {
           flexWrap: "wrap",
         }}
       >
-        <Button onClick={openNewEntry}>+ Expense</Button>
+        <Button onClick={entryDialog.openNew}>+ Expense</Button>
         <Stack
           direction="row"
           spacing={2}
@@ -227,21 +215,23 @@ const BudgetExpenses = () => {
             categoryColor={
               category.color ?? categoryColors[category.categoryKey]
             }
-            onExpenseClick={openEditEntry}
+            onExpenseClick={entryDialog.openEdit}
             onCategoryColorChange={handleCategoryColorChange}
           />
         ))}
       </Grid>
 
-      {openEntry && (
+      {entryDialog.open && (
         <ExpenseEntryDialog
-          key={editEntryIdx === -1 ? "new" : editEntryIdx}
-          open={openEntry}
-          onClose={handleClose}
+          key={entryDialog.editIdx === -1 ? "new" : entryDialog.editIdx}
+          open={entryDialog.open}
+          onClose={entryDialog.close}
           addExpenseEntry={handleSave}
-          onDelete={editEntryIdx !== -1 ? handleDelete : undefined}
+          onDelete={entryDialog.editIdx !== -1 ? handleDelete : undefined}
           expenseEntry={
-            editEntryIdx !== -1 ? expenseEntries[editEntryIdx] : undefined
+            entryDialog.editIdx !== -1
+              ? expenseEntries[entryDialog.editIdx]
+              : undefined
           }
         />
       )}

@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { Grid } from "@mui/material";
-import CompChart from "./CompGraph";
-import BreakdownChart from "./BreakdownGraph";
 import type {
   CompCalcEntry,
   CompEntry,
 } from "../../../../../jotai/finances-atom";
+import usePointSelection from "../../shared/usePointSelection";
+import CompChart from "./CompGraph";
+import BreakdownChart from "./BreakdownGraph";
 
 interface GraphsProps {
   compCalcEntries: CompCalcEntry[];
@@ -13,22 +13,14 @@ interface GraphsProps {
 }
 
 const Graphs = ({ compEntries, compCalcEntries }: GraphsProps) => {
-  const [startIdx, setStartIdx] = useState(0);
-  // null = follow the latest entry until the user selects a point
-  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
-
-  const handlePointSelect = (index: number) => {
-    setStartIdx(index);
-    setSelectedIdx(index);
-  };
+  const { safeStartIdx, pieIdx, handlePointSelect } = usePointSelection(
+    compEntries.length - 1,
+  );
 
   if (compEntries.length === 0 || compCalcEntries.length === 0) {
     return null;
   }
 
-  const lastIdx = compEntries.length - 1;
-  const safeStartIdx = Math.min(startIdx, lastIdx);
-  const pieIdx = Math.min(selectedIdx ?? lastIdx, lastIdx);
   const { stock, stockAdj } = compCalcEntries[pieIdx];
   const { bonus, salary } = compEntries[pieIdx];
 

@@ -3,13 +3,13 @@ export interface CategoryMerge {
   into: string;
 }
 
-interface CategoryRow {
+export interface CategoryRow {
   id: string;
   name: string;
   previousName?: string;
 }
 
-interface PendingMerge {
+export interface PendingMerge {
   from: string;
   intoRowId: string;
 }

@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 import { Box, Button } from "@mui/material";
 import {
   type NetWorthEntry,
@@ -6,6 +6,7 @@ import {
   sortNetWorthEntriesByDate,
   syncNetWorthEntryAmounts,
 } from "../../../../jotai/finances-atom";
+import type { EntryDialogState } from "../shared/useEntryDialog";
 import NetWorthEntryDialog from "./NetWorthEntryDialog";
 import CategoriesDialog, { type CategoryMerge } from "./CategoriesDialog";
 
@@ -14,12 +15,7 @@ interface NetWorthActionsProps {
   setEntries: (e: NetWorthEntry[]) => void;
   categories: string[];
   setCategories: (c: string[]) => void;
-  editEntryIdx: number;
-  openEntry: boolean;
-  setEditEntryIdx: Dispatch<SetStateAction<number>>;
-  setOpenEntry: Dispatch<SetStateAction<boolean>>;
-  openCategories: boolean;
-  setOpenCategories: Dispatch<SetStateAction<boolean>>;
+  entryDialog: EntryDialogState;
 }
 
 const NetWorthActions = ({
@@ -27,18 +23,9 @@ const NetWorthActions = ({
   setEntries,
   categories,
   setCategories,
-  openEntry,
-  setOpenEntry,
-  editEntryIdx,
-  setEditEntryIdx,
-  openCategories,
-  setOpenCategories,
+  entryDialog,
 }: NetWorthActionsProps) => {
-  const closeEntryModal = () => setOpenEntry(false);
-  const openNewEntry = () => {
-    setEditEntryIdx(-1);
-    setOpenEntry(true);
-  };
+  const [openCategories, setOpenCategories] = useState(false);
   const closeCategoriesModal = () => setOpenCategories(false);
   const openCategoriesModal = () => setOpenCategories(true);
 
@@ -48,18 +35,18 @@ const NetWorthActions = ({
 
   const addEntry = (entry: NetWorthEntry) => {
     const next = [...entries];
-    if (editEntryIdx === -1) {
+    if (entryDialog.editIdx === -1) {
       next.push(entry);
     } else {
-      next[editEntryIdx] = entry;
+      next[entryDialog.editIdx] = entry;
     }
     persistEntries(next);
-    closeEntryModal();
+    entryDialog.close();
   };
 
   const removeEntry = () => {
-    persistEntries(entries.filter((_, i) => i !== editEntryIdx));
-    closeEntryModal();
+    persistEntries(entries.filter((_, i) => i !== entryDialog.editIdx));
+    entryDialog.close();
   };
 
   const saveCategories = (
@@ -73,10 +60,15 @@ const NetWorthActions = ({
     closeCategoriesModal();
   };
 
+  const isEditingEntry = entryDialog.editIdx !== -1;
+
   return (
     <>
       <Box sx={{ marginTop: 1.25, marginBottom: 1.25 }}>
-        <Button onClick={openNewEntry} disabled={categories.length === 0}>
+        <Button
+          onClick={entryDialog.openNew}
+          disabled={categories.length === 0}
+        >
           + Entry
         </Button>
         <Button onClick={openCategoriesModal}>Set Categories</Button>
@@ -90,15 +82,15 @@ const NetWorthActions = ({
           onSave={saveCategories}
         />
       )}
-      {openEntry && (
+      {entryDialog.open && (
         <NetWorthEntryDialog
-          open={openEntry}
-          entry={editEntryIdx !== -1 ? entries[editEntryIdx] : undefined}
+          open={entryDialog.open}
+          entry={isEditingEntry ? entries[entryDialog.editIdx] : undefined}
           entries={entries}
           categories={categories}
-          onClose={closeEntryModal}
+          onClose={entryDialog.close}
           addEntry={addEntry}
-          onDelete={editEntryIdx !== -1 ? removeEntry : undefined}
+          onDelete={isEditingEntry ? removeEntry : undefined}
         />
       )}
     </>

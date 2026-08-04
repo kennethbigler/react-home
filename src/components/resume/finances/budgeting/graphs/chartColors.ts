@@ -9,31 +9,20 @@ import type {
   CategoryTotal,
   ExpenseEntryColor,
 } from "../../../../../apis/budget";
-import compColors from "../../comp-calc/graphs/colors";
+import {
+  bonusColor,
+  salaryColor,
+  stockColor,
+} from "../../comp-calc/graphs/colors";
 import type { PiePoint } from "./types";
 import { UNALLOCATED_NODE } from "./types";
 
-const getSankeyCategoryColor = (
+/** Category color from the palette, or the given fallback when unset. */
+const resolveCategoryColor = (
   theme: Theme,
-  color?: ExpenseEntryColor,
-): string => {
-  if (!color) {
-    return theme.palette.error.main;
-  }
-
-  return theme.palette[color].main;
-};
-
-const getCategoryPieColor = (
-  theme: Theme,
-  color?: ExpenseEntryColor,
-): string => {
-  if (!color) {
-    return theme.palette.grey[500];
-  }
-
-  return theme.palette[color].main;
-};
+  color: ExpenseEntryColor | undefined,
+  fallback: string,
+): string => (color ? theme.palette[color].main : fallback);
 
 const parseHexColor = (hex: string) => {
   const normalized = hex.replace("#", "");
@@ -72,21 +61,13 @@ export const buildCategoryColorShades = (
     return [];
   }
 
-  if (!color) {
-    const { 300: light, 500: main, 700: dark } = theme.palette.grey;
-
-    if (count === 1) {
-      return [main];
-    }
-
-    return Array.from({ length: count }, (_, index) => {
-      const ratio = index / (count - 1);
-
-      return mixHexColors(light, dark, ratio);
-    });
-  }
-
-  const { light, main, dark } = theme.palette[color];
+  const { light, main, dark } = color
+    ? theme.palette[color]
+    : {
+        light: theme.palette.grey[300],
+        main: theme.palette.grey[500],
+        dark: theme.palette.grey[700],
+      };
 
   if (count === 1) {
     return [main];
@@ -99,17 +80,21 @@ export const buildCategoryColorShades = (
   });
 };
 
+/** Pie color per category heading (grey when the category has no color). */
+const buildColorByHeading = (theme: Theme, categories: CategoryTotal[]) =>
+  new Map(
+    categories.map(({ heading, color }) => [
+      heading,
+      resolveCategoryColor(theme, color, theme.palette.grey[500]),
+    ]),
+  );
+
 export const colorizeCategoryPieData = (
   theme: Theme,
   categories: CategoryTotal[],
   data: PiePoint[],
 ): PiePoint[] => {
-  const colorByHeading = new Map(
-    categories.map(({ heading, color }) => [
-      heading,
-      getCategoryPieColor(theme, color),
-    ]),
-  );
+  const colorByHeading = buildColorByHeading(theme, categories);
 
   return data.map((point) => ({
     ...point,
@@ -122,12 +107,7 @@ export const colorizeIncomeOverviewPieData = (
   categories: CategoryTotal[],
   data: PiePoint[],
 ): PiePoint[] => {
-  const colorByHeading = new Map(
-    categories.map(({ heading, color }) => [
-      heading,
-      getCategoryPieColor(theme, color),
-    ]),
-  );
+  const colorByHeading = buildColorByHeading(theme, categories);
 
   const fixedColors: Record<string, string> = {
     [FEDERAL_TAX_LABEL]: theme.palette.error.main,
@@ -159,24 +139,18 @@ export const colorizeBreakdownPieData = (
   }));
 };
 
-export const getBudgetSankeyNodeColors = (theme: Theme) => {
-  const salary = compColors[2] ?? theme.palette.success.main;
-  const bonus = compColors[1] ?? theme.palette.warning.main;
-  const stockAdj = compColors[0] ?? theme.palette.info.main;
-
-  return {
-    salary,
-    bonus,
-    stockAdj,
-    partnerSalary: mixHexColors(salary, theme.palette.grey[300], 0.35),
-    partnerBonus: mixHexColors(bonus, theme.palette.grey[300], 0.35),
-    partnerStockAdj: mixHexColors(stockAdj, theme.palette.grey[300], 0.35),
-    gross: theme.palette.primary.main,
-    federalTax: theme.palette.error.main,
-    stateTax: theme.palette.error.main,
-    payroll: theme.palette.error.main,
-    unallocated: theme.palette.grey[500],
-    category: (_categoryKey: string, color?: ExpenseEntryColor) =>
-      getSankeyCategoryColor(theme, color),
-  };
-};
+export const getBudgetSankeyNodeColors = (theme: Theme) => ({
+  salary: salaryColor,
+  bonus: bonusColor,
+  stockAdj: stockColor,
+  partnerSalary: mixHexColors(salaryColor, theme.palette.grey[300], 0.35),
+  partnerBonus: mixHexColors(bonusColor, theme.palette.grey[300], 0.35),
+  partnerStockAdj: mixHexColors(stockColor, theme.palette.grey[300], 0.35),
+  gross: theme.palette.primary.main,
+  federalTax: theme.palette.error.main,
+  stateTax: theme.palette.error.main,
+  payroll: theme.palette.error.main,
+  unallocated: theme.palette.grey[500],
+  category: (_categoryKey: string, color?: ExpenseEntryColor) =>
+    resolveCategoryColor(theme, color, theme.palette.error.main),
+});

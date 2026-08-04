@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useAtomValue } from "jotai";
 import {
   Chart,
   Credits,
@@ -13,11 +12,12 @@ import {
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../../../common/highcharts/coreHighcharts";
-import themeAtom from "../../../../../jotai/theme-atom";
 import type {
   CompCalcEntry,
   CompEntry,
 } from "../../../../../jotai/finances-atom";
+import ChartFigure from "../../shared/ChartFigure";
+import useChartTextColor from "../../shared/useChartTextColor";
 import colors from "./colors";
 import {
   BONUS,
@@ -46,9 +46,7 @@ const CompChart = ({
   compEntries,
   onPointSelect,
 }: CompChartProps) => {
-  // process theme
-  const theme = useAtomValue(themeAtom);
-  const color = theme.mode === "light" ? "black" : "white";
+  const color = useChartTextColor();
 
   const { compChartData, options } = useMemo(() => {
     const chartData = buildCompChartData(
@@ -98,7 +96,7 @@ const CompChart = ({
   };
 
   return (
-    <figure style={{ margin: 0, width: "100%" }}>
+    <ChartFigure>
       {/* Remount when entry data/theme changes so markers stay visible.
           Omit startIdx so clicking a point only updates the inflation series. */}
       <Chart
@@ -150,7 +148,7 @@ const CompChart = ({
           data={compChartData[INFL]}
         />
       </Chart>
-    </figure>
+    </ChartFigure>
   );
 };
 

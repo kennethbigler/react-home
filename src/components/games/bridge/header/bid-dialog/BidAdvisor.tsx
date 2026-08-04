@@ -176,7 +176,8 @@ export default function BidAdvisor() {
     hand.clubs,
   );
   const qualityCouldMatter =
-    auctionContext.situation === "opening" &&
+    (auctionContext.situation === "opening" ||
+      auctionContext.situation === "overcalling") &&
     longestSuitLength >= 6 &&
     hand.hcp >= 5 &&
     hand.hcp <= 10;

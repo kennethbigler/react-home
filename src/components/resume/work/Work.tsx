@@ -1,7 +1,9 @@
 import { memo } from "react";
 import { Typography } from "@mui/material";
-import { work, volunteer, school } from "../../../constants/work";
+import { work, volunteer } from "../../../constants/work";
 import WorkCards from "./WorkCards";
+import Degree from "../../common/edu-cards/Degree";
+import classes from "../../../constants/classes";
 
 /* Work  ->  WorkCards  ->  Job */
 const Work = memo(() => (
@@ -11,7 +13,15 @@ const Work = memo(() => (
     </Typography>
     <WorkCards jobs={work} title="Work" />
     <WorkCards jobs={volunteer} title="Volunteer" />
-    <WorkCards jobs={school} title="School" />
+    <div style={{ marginTop: 25 }}>
+      <Typography variant="h3" component="h2">
+        Education
+      </Typography>
+      <hr aria-hidden />
+      {classes.map((d) => (
+        <Degree key={d.degree} degree={d} />
+      ))}
+    </div>
   </>
 ));
 

@@ -24,26 +24,9 @@ const resumeRouteGroups = [
       Component: lazy(() => import("./resume")),
     },
     {
-      name: "Education",
-      route: "education",
-      Component: lazy(() => import("./education")),
-    },
-    {
       name: "Presentations",
       route: "presentations",
       Component: lazy(() => import("./presentations")),
-    },
-  ],
-  [
-    {
-      name: "A11y",
-      route: "a11y",
-      Component: lazy(() => import("./a11y-practice")),
-    },
-    {
-      name: "Finances",
-      route: "finances",
-      Component: lazy(() => import("./finances")),
     },
   ],
   [
@@ -56,6 +39,11 @@ const resumeRouteGroups = [
       name: "Cars",
       route: "cars",
       Component: lazy(() => import("./cars")),
+    },
+    {
+      name: "Finances",
+      route: "finances",
+      Component: lazy(() => import("./finances")),
     },
     {
       name: "Travel Map",

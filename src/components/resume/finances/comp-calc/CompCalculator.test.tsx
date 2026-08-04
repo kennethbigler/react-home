@@ -98,8 +98,9 @@ describe("resume | comp-calc | CompCalculator", () => {
     // open edit stock modal
     fireEvent.click(screen.getByText("AAPL: $665.00"));
     expect(screen.getByText("Edit Stock Entry")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Delete"));
-    expect(screen.queryByText("AAPL: $665.00")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Delete stock entry" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete entry" }));
+    await waitFor(() => expect(screen.queryByText("AAPL: $665.00")).toBeNull());
 
     // delete comp entry
     fireEvent.click(screen.getByText("Salary: $10,000.00"));

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { finiteOr } from "./compEntryNumbers";
+import { finiteOr } from "./numbers";
 
-describe("resume | finances | comp-calc | compEntryNumbers", () => {
+describe("resume | finances | shared | numbers", () => {
   it("returns finite numbers unchanged", () => {
     expect(finiteOr(0)).toBe(0);
     expect(finiteOr(12.5)).toBe(12.5);
