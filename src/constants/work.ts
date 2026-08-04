@@ -13,7 +13,6 @@ import netappLogo from "../images/companies/netapp_logo.webp";
 import vengefulLogo from "../images/companies/vengefulgames_logo.webp";
 import teslaLogo from "../images/companies/tesla_logo.webp";
 import hoverboardLogo from "../images/companies/hoverboard_logo.webp";
-import scuLogo from "../images/companies/scu_logo.webp";
 import {
   ANGULAR,
   ASP2,
@@ -142,33 +141,6 @@ export const volunteer: Job[] = [
     expr: [
       "Instruct and supervise between 10 and 40 volunteers regarding food sorting, packaging and distribution",
       "Food is then distributed to smaller organizations that help the homeless and disadvantaged",
-    ],
-  },
-];
-
-export const school: Job[] = [
-  {
-    color: red[900],
-    company: "SCU MS",
-    location: "Santa Clara, CA",
-    title: "Grad Student",
-    src: scuLogo,
-    time: "2015 - 2016",
-    expr: [
-      "Major: Computer Science and Engineering, Emphasis: Software Engineering",
-      "GPA: 3.7",
-    ],
-  },
-  {
-    color: red[900],
-    company: "Santa Clara University BS",
-    location: "Santa Clara, CA",
-    title: "Undergrad Student",
-    src: scuLogo,
-    time: "2011 - 2015",
-    expr: [
-      "Major: Computer Science and Engineering, Minor: Mathematics",
-      "GPA: 3.7",
     ],
   },
 ];

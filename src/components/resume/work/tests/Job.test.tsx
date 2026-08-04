@@ -1,13 +1,12 @@
 import { render, screen, within } from "@testing-library/react";
 import Job from "../Job";
-import { work, volunteer, school } from "../../../../constants/work";
+import { work, volunteer } from "../../../../constants/work";
 import type { Job as JobType } from "../../../../constants/work";
 
 describe("resume | work | Job", () => {
   const mockJob = work[0]; // Intuit job
   const jobWithParent = work[1]; // GigNow (Ernst & Young)
   const volunteerJob = volunteer[0]; // Midnight Game Club
-  const schoolJob = school[0]; // SCU MS
 
   const baseJob: JobType = {
     company: "Test Co",
@@ -340,13 +339,6 @@ describe("resume | work | Job", () => {
       expect(
         screen.getByText("Frontend Software Engineer and Project Manager"),
       ).toBeInTheDocument();
-    });
-
-    it("renders school job correctly", () => {
-      render(<Job job={schoolJob} />);
-
-      expect(screen.getByText("SCU MS, Santa Clara, CA")).toBeInTheDocument();
-      expect(screen.getByText("Grad Student")).toBeInTheDocument();
     });
   });
 });

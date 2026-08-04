@@ -1,7 +1,6 @@
 import {
   work,
   volunteer,
-  school,
   REACT,
   TS,
   JS,
@@ -85,37 +84,6 @@ describe("constants | work", () => {
     });
   });
 
-  describe("school array", () => {
-    it("exports school array with correct structure", () => {
-      expect(Array.isArray(school)).toBe(true);
-      expect(school.length).toBeGreaterThan(0);
-    });
-
-    it("has valid Job objects in school array", () => {
-      school.forEach((job) => {
-        expect(job).toHaveProperty("company");
-        expect(job).toHaveProperty("location");
-        expect(job).toHaveProperty("title");
-        expect(job).toHaveProperty("time");
-        expect(job).toHaveProperty("color");
-      });
-    });
-
-    it("contains expected schools in school array", () => {
-      const companies = school.map((job) => job.company);
-      expect(companies).toContain("SCU MS");
-      expect(companies).toContain("Santa Clara University BS");
-    });
-
-    it("has correct chronological order (MS before BS)", () => {
-      const msIndex = school.findIndex((job) => job.company === "SCU MS");
-      const bsIndex = school.findIndex(
-        (job) => job.company === "Santa Clara University BS",
-      );
-      expect(msIndex).toBeLessThan(bsIndex);
-    });
-  });
-
   describe("Job interface compliance", () => {
     it("all work jobs comply with Job interface", () => {
       work.forEach((job: Job) => {
@@ -138,7 +106,7 @@ describe("constants | work", () => {
 
   describe("data integrity", () => {
     it("has no duplicate entries", () => {
-      const allJobs = [...work, ...volunteer, ...school];
+      const allJobs = [...work, ...volunteer];
       const jobKeys = allJobs.map(
         (job) => `${job.company}-${job.title}-${job.time}`,
       );
@@ -147,7 +115,7 @@ describe("constants | work", () => {
     });
 
     it("has valid color values", () => {
-      const allJobs = [...work, ...volunteer, ...school];
+      const allJobs = [...work, ...volunteer];
       const colorRegex = /^(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3}|rgb\(.*\)|[a-z]+)$/;
       allJobs.forEach((job) => {
         expect(job.color).toMatch(colorRegex);
