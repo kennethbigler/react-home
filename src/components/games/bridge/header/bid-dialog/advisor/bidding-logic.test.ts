@@ -7099,12 +7099,25 @@ describe("Bug Fix Regression Tests", () => {
     expect(rec.bid).toBe("Pass");
   });
 
-  // Bug 4: Jacoby 2NT eligibility — 13 TP via long-suit points with 4-card fit should qualify
-  it("BF-4a: respond to 1♥ with 11 HCP + 6-card suit (13 TP) and 4-card heart support → Jacoby 2NT", () => {
-    // 11 HCP, S=1, H=4, D=2, C=6 → long-suit points: clubs 6-4=2 → TP = 11+2 = 13
-    // With tp >= 13 and 4+ heart support after 1♥, should bid Jacoby 2NT
+  // Bug 4: Jacoby 2NT eligibility — 13+ support points with 4-card fit AND a
+  // BALANCED-ISH shape (no singleton) should qualify for Jacoby. A singleton
+  // at this same support-point level is a SPLINTER instead (SAYC: Jacoby 2NT
+  // requires "no singleton — with shortness use a splinter").
+  it("BF-4a: respond to 1♥ with 11 HCP, a singleton spade, and 4-card heart support → SPLINTER, not Jacoby", () => {
+    // 11 HCP, S=1 (singleton!), H=4, D=2, C=6 → 13 support points (HCP + short-suit
+    // points for the singleton), but the singleton makes this splinter-eligible.
     const rec = getRecommendation(
-      mkHand(11, 1, 4, 2, 6), // 11 HCP + 2 long-suit points (6-card clubs) = 13 TP
+      mkHand(11, 1, 4, 2, 6),
+      ctx("responding-suit", { partnerBid: "1♥" }),
+    );
+    expect(rec.category).toContain("Splinter");
+    expect(rec.bid.endsWith("♠")).toBe(true);
+  });
+
+  it("BF-4b: respond to 1♥ with 13 TP, 4-card heart support, and NO singleton → Jacoby 2NT", () => {
+    // 12 HCP, S=2, H=4, D=3, C=4 (balanced-ish, no singleton/void) → Jacoby applies.
+    const rec = getRecommendation(
+      mkHand(12, 2, 4, 3, 4),
       ctx("responding-suit", { partnerBid: "1♥" }),
     );
     expect(rec.bid).toBe("2NT");
@@ -7316,17 +7329,38 @@ describe("Bug Fix Regression Tests", () => {
     expect(rec.reasoning).toContain("no stopper");
   });
 
-  // deriveSituation: partner's 2♠ overcall over opp 1NT → responding-to-simple-oc, rhoBid=1NT
-  it("ST-3: deriveSituation routes partner 2♠ OC over opp 1NT correctly", () => {
+  // deriveSituation: partner's 2♠ DIRECTLY over opp's 1NT OPENING is
+  // Cappelletti (spades + a minor), not a natural overcall — SAYC's standard
+  // defense to 1NT.
+  it("ST-3: deriveSituation routes partner's 2♠ over opp's 1NT opening as Cappelletti", () => {
     const state: AuctionState = {
       myPosition: 2,
       completedRounds: [{ 1: "1NT", 2: "Pass", 3: "Pass", 4: "2♠" }],
       currentRound: { 1: "Pass" },
     };
     const context = deriveSituation(state);
-    expect(context.situation).toBe("responding-to-simple-oc");
+    expect(context.situation).toBe("advancing-cappelletti");
     expect(context.partnerBid).toBe("2♠");
     expect(context.rhoBid).toBe("1NT");
+  });
+
+  // seed 2002: 1♦-1♠-2♥ — hearts ranks BELOW spades, so 1♥ is no longer legal
+  // once responder bid 1♠, making opener's 2♥ a genuine REVERSE (17+, forcing
+  // one round), NOT a jump shift (19+, game-forcing) — even though 1♥ ranks
+  // above the 1♦ opening in isolation. Responder must be able to sign off
+  // below game with a weak hand and a long suit of their own.
+  it("BF-reverse-vs-jumpshift: 1♦-1♠-2♥ is a reverse (opener's own suit unavailable given responder's 1♠), so a weak responder signs off", () => {
+    const rec = getRecommendation(
+      mkHand(8, 5, 1, 1, 3), // weak, 5-card spades, nothing else
+      {
+        situation: "responder-rebid",
+        myPreviousBid: "1♠",
+        partnerBid: "2♥",
+        partnerFirstBid: "1♦",
+      },
+    );
+    expect(rec.bid).toBe("2♠");
+    expect(rec.category).not.toContain("Jump Shift");
   });
 });
 
@@ -8614,56 +8648,61 @@ describe("bidding-logic | opening pass — blocked preempt reasoning", () => {
 
 // ── 3. getResponseToOneNT with opponent overcall (lines ~882-904) ─────────────
 
-describe("bidding-logic | responding-1nt — opponent overcall over partner's 1NT", () => {
+describe("bidding-logic | responding-1nt — opponent's Cappelletti interference over partner's 1NT opening", () => {
+  // A direct 2♣/2♦/2♥/2♠/2NT over partner's 1NT OPENING is Cappelletti (SAYC
+  // standard defense) — conventional, not natural. The real suit(s) held by
+  // the opponents are unknown, so responder's job is values (double) vs. a
+  // suit of their OWN vs. passing — not "stopper in their known suit".
+  it("9+ HCP → Double (competing for values over their conventional call)", () => {
+    const rec = getRecommendation(
+      mkHand(10, 4, 2, 4, 3),
+      ctx("responding-1nt", { rhoBid: "2♥" }),
+    );
+    expect(rec.bid).toBe("Double");
+    expect(rec.category).toContain("Cappelletti");
+  });
+
+  it("under 9 HCP with a good 5+ card suit → bid the suit naturally", () => {
+    const rec = getRecommendation(
+      mkHand(6, 5, 2, 3, 3),
+      ctx("responding-1nt", { rhoBid: "2♥" }),
+    );
+    expect(rec.bid).toBe("2♠");
+    expect(rec.category).toContain("Cappelletti");
+  });
+
+  it("under 9 HCP with no suit and no values → Pass", () => {
+    const rec = getRecommendation(
+      mkHand(5, 3, 2, 4, 4),
+      ctx("responding-1nt", { rhoBid: "2♥" }),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toContain("Cappelletti");
+  });
+});
+
+describe("bidding-logic | responding-1nt — NATURAL opponent overcall (partner's 1NT was a response, not an opening)", () => {
+  // getResponseTo1NTOvercall covers partner's own natural 1NT OVERCALL; when
+  // an opponent then bids a suit over it, that interference is natural (their
+  // actual suit), not Cappelletti — Cappelletti only defends a 1NT OPENING.
   it("10 HCP with no stopper, no 5-card suit → Pass over opponent's 2♥", () => {
-    // hasStopperInOpponentSuit is a Hand field (not context)
     const hand = {
       ...mkHand(10, 4, 2, 4, 3),
       hasStopperInOpponentSuit: false as const,
     };
     const rec = getRecommendation(
       hand,
-      ctx("responding-1nt", { rhoBid: "2♥" }),
+      ctx("responding-to-1nt-oc", { interferenceOverPartnerNT: "2♥" }),
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toContain("Pass");
   });
 
-  it("10 HCP with stopper → 2NT invite over opponent's 2♥", () => {
-    // No explicit stopper flag → hasStopperInOpponentSuit is undefined (treated as !false → true path)
-    // But 10 HCP ≥ 8 → penalty Double fires first. Need < 8 HCP to skip that.
-    // Actually: the penalty double requires hcp >= 8 AND hasStopperInOpponentSuit !== false.
-    // So 10 HCP with undefined stopper → Double (penalty). To get 2NT we need stopper true AND hcp 10-12.
-    // But the penalty double fires before the 2NT branch! With 10 HCP and no explicit false, Double fires.
-    // To test the 2NT branch, we need hcp >= 10 but block the double branch.
-    // The double branch at line 847: hcp >= 8 && hand.hasStopperInOpponentSuit !== false → Double.
-    // The 2NT branch at line 882: hcp >= 10 && hand.hasStopperInOpponentSuit !== false → 2NT/3NT.
-    // These two overlap; 2NT branch is unreachable when hcp >= 8 with a stopper (double fires first).
-    // Instead test the stopper=false + 10 HCP → Pass path (different from double path).
-    const hand = {
-      ...mkHand(10, 4, 2, 4, 3),
-      hasStopperInOpponentSuit: false as const,
-    };
-    const rec = getRecommendation(
-      hand,
-      ctx("responding-1nt", { rhoBid: "2♥" }),
-    );
-    expect(rec.bid).toBe("Pass");
-  });
-
-  it("13 HCP with stopper → 3NT game over opponent's 2♥ (note: double fires before NT path when no explicit stopper=false)", () => {
-    // With 13 HCP and rhoBid → penalty double fires. To hit 3NT we need hcp >= 13
-    // and hasStopperInOpponentSuit === false to skip the double, but then the
-    // NT branch also requires hasStopperInOpponentSuit !== false. So NT branch is
-    // reachable only when hcp ∈ [10,12] and stopper is undefined (not false).
-    // For hcp=10-12 with no explicit stopper, double fires. The 3NT branch requires:
-    // - hcp >= 13 (i.e. game) AND hasStopperInOpponentSuit !== false.
-    // With hcp=13 the double fires first. Verify by checking that behavior:
+  it("13 HCP, no explicit stopper=false → penalty Double fires", () => {
     const rec = getRecommendation(
       mkHand(13, 4, 2, 4, 3),
-      ctx("responding-1nt", { rhoBid: "2♥" }),
+      ctx("responding-to-1nt-oc", { interferenceOverPartnerNT: "2♥" }),
     );
-    // With 13 HCP and no explicit stopper=false, penalty double fires (hcp >= 8)
     expect(rec.bid).toBe("Double");
   });
 
@@ -8674,7 +8713,7 @@ describe("bidding-logic | responding-1nt — opponent overcall over partner's 1N
     };
     const rec = getRecommendation(
       hand,
-      ctx("responding-1nt", { rhoBid: "2♥" }),
+      ctx("responding-to-1nt-oc", { interferenceOverPartnerNT: "2♥" }),
     );
     expect(rec.bid).toBe("Pass");
   });
@@ -8728,13 +8767,20 @@ describe("bidding-logic | responding-1nt — minor transfer to diamonds (weak)",
 // ── 6. Responding to suit – game force (13+ TP) with 4+ spades (line ~1720) ──
 
 describe("bidding-logic | responding-suit — game force 13+ TP, 4+ spades", () => {
-  it("13 HCP 4♠ after partner 1♣ → bid 1♠ (game force)", () => {
+  it("13 HCP 4♠ after partner 1♣ → bid 1♠ (forcing one round, not an unconditional game force)", () => {
+    // Sim audit round 66: a 1-level new-suit response is "forcing one
+    // round" per SAYC (skill reference §4) at ANY strength — there is no
+    // separate "unconditional game force" tier at the 1-level (that
+    // distinction exists only for 2-level 2/1 responses). The category no
+    // longer over-claims "Game Force".
     const rec = getRecommendation(
       mkHand(13, 4, 3, 3, 3),
       ctx("responding-suit", { partnerBid: "1♣" }),
     );
     expect(rec.bid).toBe("1♠");
-    expect(rec.category).toContain("Game Force");
+    expect(rec.category).toContain("13+ TP");
+    expect(rec.category).not.toContain("Game Force");
+    expect(rec.reasoning).toMatch(/forcing for one round/);
   });
 
   it("13 HCP 4♠ after partner 1♦ → bid 1♠ (game force, not 1♠ opener)", () => {
@@ -10878,10 +10924,11 @@ describe("bidding-logic | sim audit round 4", () => {
     expect(context.situation).toBe("minor-transfer-response");
   });
 
-  it("tooltip: a floor-forced new suit facing an OVERCALL reads as an advance, not a 17+ jump shift", () => {
-    // Partner overcalled 2♣ (over 1NT); RHO bid 2♠; 3♥ is the CHEAPEST heart bid.
+  it("tooltip: partner's 2♣ directly over a 1NT OPENING is Cappelletti — a later suit call advances/names it, not a 17+ jump shift", () => {
+    // Partner's 2♣ over the auction's opening 1NT is Cappelletti (one-suiter).
+    // 3♥ here is naming/advancing that convention, not a natural jump shift.
     const m = getBidMeaning("3♥", "rho", "2♠", undefined, "2♣", "1NT");
-    expect(m).toMatch(/advance/i);
+    expect(m).toMatch(/advanc|Cappelletti/i);
     expect(m).not.toMatch(/17\+/);
   });
 });
@@ -11768,9 +11815,11 @@ describe("sim audit round 23 regressions — reverses and 2♣ one-shot", () => 
     expect(rec.bid).toBe("Pass");
   });
 
-  it("responder rebids its long suit weakly after partner's reverse", () => {
-    // seed 101: 1♣-1♥-2♠(reverse) with 5 HCP + 7 hearts was labeled an
-    // invitational raise.
+  it("responder keeps the force alive after partner's JUMP SHIFT (not a reverse)", () => {
+    // seed 101: 1♣-1♥-2♠ is a JUMP SHIFT, not a reverse — opener had 1♠
+    // available at the 1-level and skipped it to jump to 2♠ (19+, GF).
+    // With 5 HCP + 7 hearts, responder must keep bidding (never sign off
+    // below game), rebidding hearts to keep describing the hand.
     const rec = getRecommendation(
       { hcp: 5, spades: 4, hearts: 7, diamonds: 2, clubs: 0 },
       {
@@ -11781,7 +11830,7 @@ describe("sim audit round 23 regressions — reverses and 2♣ one-shot", () => 
       },
     );
     expect(rec.bid).toBe("3♥");
-    expect(rec.category).toContain("After Reverse");
+    expect(rec.category).toContain("Jump Shift");
   });
 
   it("reverser passes partner's weak signoff with a singleton", () => {
@@ -12727,15 +12776,18 @@ describe("sim audit round 48 regressions", () => {
     expect(meaning).toMatch(/Unusual/);
   });
 
-  it("a sound 2♣ overcall of 1NT is not labeled preemptive", () => {
-    // seed 206: 13 HCP with AQJ853 clubs — sound end of the wide range.
+  it("2♣ over a genuine 1NT opening is Cappelletti (conventional one-suiter), not a natural/preemptive club bid", () => {
+    // seed 206: 13 HCP with AQJ853 clubs. Over an opponent's 1NT OPENING,
+    // SAYC's standard defense is Cappelletti — 2♣ shows any one-suiter, it is
+    // NOT a natural, HCP-graded club overcall.
     const rec = getRecommendation(
       { ...mkHand(13, 1, 3, 3, 6), goodSuitQuality: true },
       ctx("overcalling", { rhoBid: "1NT" }),
     );
     expect(rec.bid).toBe("2♣");
     expect(rec.category).not.toContain("Preemptive");
-    expect(rec.whatYourBidTellsPartner).toMatch(/sound end/);
+    expect(rec.category).toContain("Cappelletti");
+    expect(rec.reasoning).toMatch(/CONVENTIONAL/);
   });
 });
 
@@ -13483,5 +13535,505 @@ describe("sim audit round 63 regressions", () => {
     );
     expect(rec.bid).not.toBe("2NT");
     expect(rec.bid).toMatch(/^[123][♠♥♦♣]$/);
+  });
+});
+
+describe("sim audit round 64 regressions", () => {
+  it("a responder's REBID inside a strong-2♣ auction is not read as an opener's 18-19 NT rebid", () => {
+    // seed 255: 2♣-3♦(positive)-3♥-3NT — the 3NT was the RESPONDER's rebid
+    // (their previous bid was 3♦, not 2♣), so the "2♣" special-case guard
+    // never fired and it fell through to the generic "opener shows 18-19"
+    // story, which makes no sense inside a 22+ point game-forcing auction.
+    const meaning = getBidMeaning(
+      "3NT",
+      "partner",
+      "3♥",
+      "3♦",
+      "3♥",
+      "2♣",
+      "2♣",
+    );
+    expect(meaning).toMatch(/strong 2♣ opening/);
+    expect(meaning).not.toMatch(/18-19/);
+  });
+
+  it("the opener's own NT rebid after 2♣ still keeps its 22-27 story", () => {
+    const meaning = getBidMeaning(
+      "3NT",
+      "partner",
+      "3♦",
+      "2♣",
+      "3♦",
+      "2♣",
+      "2♣",
+    );
+    expect(meaning).toMatch(/25-27/);
+  });
+
+  it("the doubler's big raise of partner's forced advance tooltips as invitational, not a preemptive jump raise", () => {
+    // seed 254: 1♦-(1♥)-Dbl-P-1♠-P-3♠ — P1's takeout double, then partner's
+    // FORCED 1♠ advance (0+ pts), then P1's 3♠. The old `!jumped` guard
+    // skipped the "raise after own double" branch here (a big level jump
+    // relative to partner's cheap forced advance is NOT a preemptive jump
+    // raise in this auction), so it fell through to the generic
+    // jump-raise story ("10-12 constructive, or weak with extra trumps").
+    const meaning = getBidMeaning(
+      "3♠",
+      "partner",
+      "1♠",
+      "Double",
+      "1♠",
+      "1♦",
+      undefined,
+    );
+    expect(meaning).toMatch(/INVITATIONAL/);
+    expect(meaning).not.toMatch(/10-12 constructive/);
+  });
+
+  it("the invitational-after-double tooltip does not pin a specific point range (varies by double type)", () => {
+    // Negative-double invites fire ~13+, takeout-double invites fire ~19+ —
+    // a single fixed number would be wrong for one of the two.
+    const meaning = getBidMeaning(
+      "3♠",
+      "partner",
+      "1♠",
+      "Double",
+      "1♠",
+      "1♦",
+      undefined,
+    );
+    expect(meaning).not.toMatch(/11-13/);
+  });
+});
+
+describe("sim audit round 65 regressions", () => {
+  it("an 18-19 TP opener whose jump is blocked by suit length does NOT claim a 12-15 minimum", () => {
+    // seed 257: 1♣-(2♥)-Dbl-P — opener has 18 HCP / 19 TP, 5-card clubs (not
+    // 6+, so the 4♣ jump is blocked by the length cap), no fit for the
+    // shown suit, no heart stopper. The cheapest rebid (3♣) is the only safe
+    // option, but the story must not misdescribe this as a true minimum.
+    const rec = getRecommendation(
+      {
+        hcp: 18,
+        spades: 2,
+        hearts: 3,
+        diamonds: 3,
+        clubs: 5,
+        hasStopperInOpponentSuit: false,
+      },
+      {
+        situation: "rebid-after-negative-double",
+        myFirstBid: "1♣",
+        doubledBid: "2♥",
+        rhoBid: "2♥",
+      },
+    );
+    expect(rec.bid).toBe("3♣");
+    expect(rec.category).toContain("Extras Undisclosed");
+    expect(rec.reasoning).not.toMatch(/minimum \(about 12-15\)/);
+  });
+
+  it("a genuine 12-15 minimum with the same shape still tells the minimum story", () => {
+    const rec = getRecommendation(
+      {
+        hcp: 13,
+        spades: 2,
+        hearts: 3,
+        diamonds: 3,
+        clubs: 5,
+        hasStopperInOpponentSuit: false,
+      },
+      {
+        situation: "rebid-after-negative-double",
+        myFirstBid: "1♣",
+        doubledBid: "2♥",
+        rhoBid: "2♥",
+      },
+    );
+    expect(rec.bid).toBe("3♣");
+    expect(rec.category).toBe("Rebid Own Suit After Negative Double");
+    expect(rec.reasoning).toMatch(/minimum opener \(about 12-15\)/);
+  });
+
+  it("the same-suit-rebid tooltip no longer over-promises a 12-15 range on its own", () => {
+    // The tooltip is a static lookup without HCP/TP context, so it can't
+    // distinguish a true minimum from an undisclosed-extras hand stuck at
+    // the cheapest level — it should hedge instead of asserting one range.
+    const meaning = getBidMeaning("3♣", "partner", "2♥", "1♣", "none", "1♣");
+    expect(meaning).toMatch(/usually minimum\/competitive/);
+    expect(meaning).toMatch(/stronger hand can be stuck here too/);
+  });
+
+  it("the opponent-facing view of the same tooltip also hedges the range", () => {
+    const meaning = getBidMeaning("3♣", "rho", "2♥", "1♣", "none", "1♣");
+    expect(meaning).toMatch(/usually extra length with minimum values/);
+    expect(meaning).toMatch(/stronger hand stuck without a safe alternative/);
+  });
+});
+
+describe("sim audit round 66 regressions", () => {
+  it("a 1-level new-suit response never claims an unconditional game force (spades)", () => {
+    // seed 261: skill reference §4 (responses-1level-suit.md) says a
+    // 1-level new suit is simply "forcing one round" at ANY strength — the
+    // engine claimed "game is assured" for 13+ TP, which is only true of
+    // the 2-level 2/1 nuance, not the 1-level rule.
+    const rec = getRecommendation(
+      mkHand(13, 4, 3, 3, 3),
+      ctx("responding-suit", { partnerBid: "1♣" }),
+    );
+    expect(rec.bid).toBe("1♠");
+    expect(rec.category).not.toMatch(/Game Force/);
+    expect(rec.whatYourBidTellsPartner).not.toMatch(/game is assured/);
+  });
+
+  it("a 1-level new-suit response never claims an unconditional game force (hearts)", () => {
+    const rec = getRecommendation(
+      mkHand(13, 3, 4, 3, 3),
+      ctx("responding-suit", { partnerBid: "1♣" }),
+    );
+    expect(rec.bid).toBe("1♥");
+    expect(rec.category).not.toMatch(/Game Force/);
+    expect(rec.whatYourBidTellsPartner).not.toMatch(/game is assured/);
+  });
+});
+
+describe("sim audit round 67 regressions", () => {
+  it("passes when RHO has already advanced past the doubled bid, instead of misreading it as a penalty double of that advance", () => {
+    // seed 262: 1♦-(Double)-2NT(Jordan)-? — the auction's floor (2NT) is NOT
+    // what partner doubled (1♦); the old code fed the floor into the
+    // opponentBid === "2NT" penalty-double branch, producing "Sit for
+    // Partner's Penalty Double of 2NT" when nobody doubled 2NT at all.
+    const rec = getRecommendation(mkHand(7, 4, 2, 3, 4), {
+      situation: "responding-to-double",
+      rhoBid: "2NT",
+      doubledBid: "1♦",
+    });
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toBe("Pass — Opponents Answered the Double");
+    expect(rec.reasoning).not.toMatch(/PENALTY/);
+  });
+
+  it("cue-bids over the opponents' advance with game-going values instead of always sitting", () => {
+    // 12+ opposite partner's takeout double is still game-going even after
+    // RHO's advance — the cue-bid of the doubled suit is the forcing call.
+    const rec = getRecommendation(
+      { hcp: 17, spades: 4, hearts: 3, diamonds: 3, clubs: 3 },
+      {
+        situation: "responding-to-double",
+        rhoBid: "2NT",
+        doubledBid: "1♦",
+      },
+    );
+    expect(rec.bid).toBe("3♦");
+    expect(rec.category).toBe(
+      "Cue-Bid After the Opponents' Advance (12+, Game-Going)",
+    );
+  });
+
+  it("makes a normal free bid over the opponents' advance with ~6+ points and a suit (skill §5: only a bust passes)", () => {
+    // (1♦)-Dbl-(1♠)-? with 8 HCP and 5 hearts: RHO's advance removed the
+    // FORCE, but a free 2♥ is still standard — passing here lets the
+    // opponents steal the partscore.
+    const rec = getRecommendation(
+      { hcp: 8, spades: 2, hearts: 5, diamonds: 3, clubs: 3 },
+      {
+        situation: "responding-to-double",
+        rhoBid: "1♠",
+        doubledBid: "1♦",
+      },
+    );
+    expect(rec.bid).toBe("2♥");
+    expect(rec.category).toContain("Free Bid");
+  });
+
+  it("still passes over the opponents' advance with a bust", () => {
+    const rec = getRecommendation(
+      { hcp: 3, spades: 2, hearts: 5, diamonds: 3, clubs: 3 },
+      {
+        situation: "responding-to-double",
+        rhoBid: "1♠",
+        doubledBid: "1♦",
+      },
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toBe("Pass — Opponents Answered the Double");
+  });
+
+  it("without a diverging doubledBid, the ordinary penalty-double-of-2NT branch still fires (no regression)", () => {
+    const rec = getRecommendation(mkHand(7, 4, 2, 3, 4), {
+      situation: "responding-to-double",
+      rhoBid: "2NT",
+    });
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toContain("Penalty Double of 2NT");
+  });
+
+  it("opener signs off after Jordan 2NT with a minimum, never claiming it as a natural NT decline", () => {
+    // seed 262: 1♦-(Double)-2NT-? for the OPENER. Jordan is a limit raise of
+    // diamonds; 2NT is never the final contract, and "13-15" minimum signs
+    // off in the suit, not "declines and plays 2NT".
+    const rec = getRecommendation(
+      { hcp: 13, spades: 2, hearts: 3, diamonds: 4, clubs: 4 },
+      {
+        situation: "rebid-after-suit",
+        myFirstBid: "1♦",
+        partnerBid: "2NT",
+        lhoBid: "Double",
+      },
+    );
+    expect(rec.bid).toBe("3♦");
+    expect(rec.category).toBe("Sign Off After Jordan 2NT (13-15 TP)");
+    expect(rec.reasoning).toMatch(/Jordan/);
+    expect(rec.reasoning).not.toMatch(/play 2NT/);
+  });
+
+  it("opener accepts Jordan 2NT with game values instead of a natural-invite pass", () => {
+    const rec = getRecommendation(
+      { hcp: 17, spades: 2, hearts: 3, diamonds: 5, clubs: 3 },
+      {
+        situation: "rebid-after-suit",
+        myFirstBid: "1♦",
+        partnerBid: "2NT",
+        lhoBid: "Double",
+      },
+    );
+    expect(rec.bid).toBe("5♦");
+    expect(rec.category).toBe("Accept Jordan 2NT (16+ TP)");
+  });
+
+  it("without a double in the auction, 2NT still reads as the ordinary natural invite (no regression)", () => {
+    const rec = getRecommendation(
+      { hcp: 13, spades: 2, hearts: 3, diamonds: 4, clubs: 4 },
+      {
+        situation: "rebid-after-suit",
+        myFirstBid: "1♦",
+        partnerBid: "2NT",
+      },
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toBe("Decline the 2NT Invite (Minimum)");
+  });
+
+  it("the Jordan 2NT tooltip fires only when an opponent's double sits directly before it", () => {
+    const meaning = getBidMeaning(
+      "2NT",
+      "partner",
+      "1♦",
+      undefined,
+      "1♦",
+      "1♦",
+      "1♦",
+      true,
+    );
+    expect(meaning).toMatch(/JORDAN/);
+    expect(meaning).not.toMatch(/game-interest values/);
+  });
+});
+
+describe("sim audit round 68 regressions", () => {
+  it("the Jacoby 2NT signoff tooltips as completing the game force, not a generic competitive game raise", () => {
+    // seed 267: 1♥-2NT(Jacoby)-3♣(shortness)-4♥ — the old fallback treated
+    // 4♥ as an ordinary raise-to-game ("could be strong, or extending a
+    // preempt in competition"), missing that the game force was already
+    // set by the Jacoby 2NT three rounds earlier.
+    const meaning = getBidMeaning(
+      "4♥",
+      "partner",
+      "3♣",
+      "2NT",
+      "3♣",
+      "1♥",
+      "1♥",
+    );
+    expect(meaning).toMatch(/Jacoby 2NT/);
+    expect(meaning).toMatch(/SIGNOFF at game/);
+    expect(meaning).not.toMatch(/could be strong, or extending a preempt/);
+  });
+
+  it("a below-game continuation after Jacoby 2NT tooltips as a slam try, not a signoff", () => {
+    const meaning = getBidMeaning(
+      "3♥",
+      "partner",
+      "3♣",
+      "2NT",
+      "3♣",
+      "1♥",
+      "1♥",
+    );
+    expect(meaning).toMatch(/slam try/);
+  });
+
+  it("a plain raise to game (no Jacoby in the auction) still gets the generic raise-to-game story", () => {
+    const meaning = getBidMeaning(
+      "4♥",
+      "partner",
+      "3♥",
+      "1♥",
+      "3♥",
+      "1♥",
+      "1♥",
+    );
+    expect(meaning).toMatch(/could be strong, or extending a preempt/);
+  });
+});
+
+describe("sim audit round 69 regressions", () => {
+  it("a new-suit response after an opponent's takeout double is never read as a game-forcing jump shift", () => {
+    // seed 273: 1♣-(Double)-2♠ — the engine's own handler correctly reads
+    // this as a natural, competitive ~10-point new suit (redouble is the
+    // strength-showing call once RHO has doubled), but the tooltip's jump
+    // math ignored the Double and called it a 17+ jump-shift game force —
+    // directly contradicting the handler's own reasoning for the same bid.
+    const meaning = getBidMeaning(
+      "2♠",
+      "partner",
+      "1♣",
+      undefined,
+      "1♣",
+      "1♣",
+      "1♣",
+      true,
+    );
+    expect(meaning).toMatch(/NOT a jump-shift game force/);
+    expect(meaning).not.toMatch(/17\+/);
+  });
+
+  it("without a double, the same jump still reads as a genuine jump-shift game force (no regression)", () => {
+    const meaning = getBidMeaning(
+      "2♠",
+      "partner",
+      "1♣",
+      undefined,
+      "1♣",
+      "1♣",
+      "1♣",
+    );
+    expect(meaning).toMatch(/JUMP SHIFT/);
+    expect(meaning).toMatch(/17\+/);
+  });
+});
+
+describe("sim audit round 70 regressions", () => {
+  it("a 1-level second suit lifts to the 2-level when RHO's advance takes the 1-level away, instead of recommending an illegal bid", () => {
+    // seed 276: 1♣-(1♦)-1♥-(1NT)-? — opener wants to show 4+ spades, but
+    // 1NT (RHO's advance) sits above 1♠, making the old blind "1♠" illegal.
+    // It safety-netted to a phantom Pass instead of the correct 2♠.
+    const rec = getRecommendation(
+      { hcp: 13, spades: 4, hearts: 2, diamonds: 0, clubs: 7 },
+      {
+        situation: "rebid-after-suit",
+        myFirstBid: "1♣",
+        partnerBid: "1♥",
+        rhoBid: "1NT",
+      },
+    );
+    expect(rec.bid).toBe("2♠");
+    expect(rec.category).toContain("Lifted by Interference");
+    expect(rec.reasoning).not.toMatch(/reverse/i);
+  });
+
+  it("without interference, the same hand still shows the suit at the natural 1-level (no regression)", () => {
+    const rec = getRecommendation(
+      { hcp: 13, spades: 4, hearts: 2, diamonds: 0, clubs: 7 },
+      {
+        situation: "rebid-after-suit",
+        myFirstBid: "1♣",
+        partnerBid: "1♥",
+      },
+    );
+    expect(rec.bid).toBe("1♠");
+    expect(rec.category).not.toContain("Lifted by Interference");
+  });
+
+  it("partner's preference after an interference-lifted second suit is never described as following a reverse", () => {
+    // seed 276 continuation: 1♣-(1♦)-1♥-(1NT)-2♠-(P)-3♣-(P)-? — opener's 2♠
+    // was NOT a reverse (only 13 TP, well under the 17+ threshold), so
+    // partner's 3♣ preference must not be attributed to "your reverse".
+    const rec = getRecommendation(
+      { hcp: 13, spades: 4, hearts: 2, diamonds: 0, clubs: 7 },
+      {
+        situation: "rebid-after-suit",
+        myFirstBid: "1♣",
+        myPreviousBid: "2♠",
+        partnerBid: "3♣",
+        partnerFirstBid: "1♥",
+      },
+    );
+    expect(rec.bid).toBe("5♣");
+    expect(rec.category).toContain("Interference-Lifted Preference");
+    expect(rec.reasoning).not.toMatch(/after your reverse/);
+    expect(rec.reasoning).toMatch(
+      /interference took away the cheap 1-level call/,
+    );
+  });
+
+  it("a genuine reverse (17+ TP) still keeps the reverse-preference story (no regression)", () => {
+    const rec = getRecommendation(
+      { hcp: 17, spades: 4, hearts: 1, diamonds: 1, clubs: 7 },
+      {
+        situation: "rebid-after-suit",
+        myFirstBid: "1♣",
+        myPreviousBid: "2♠",
+        partnerBid: "3♣",
+        partnerFirstBid: "1♥",
+      },
+    );
+    expect(rec.category).toContain("Forced Preference");
+    expect(rec.reasoning).toMatch(/after your reverse/);
+  });
+});
+
+describe("sim audit round 71 regressions", () => {
+  it("opener passing partner's 1NT response no longer claims a fixed 6-10 range", () => {
+    // seed 277: partner's 1NT could be the base 6-10 OR the 11-12
+    // forcing variant — the story must not pick one and contradict the
+    // responder's own handler, which may have used either range.
+    const rec = getRecommendation(
+      { hcp: 12, spades: 2, hearts: 5, diamonds: 3, clubs: 3 },
+      ctx("rebid-after-suit", {
+        myFirstBid: "1♥",
+        partnerBid: "1NT",
+        rhoBid: "2♦",
+      }),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.reasoning).toMatch(/6-12 pts/);
+    expect(rec.reasoning).not.toMatch(/showing 6-10 pts\./);
+  });
+
+  it("the negative-double-answer tooltip hedges the minimum claim for a 3-card-support answer", () => {
+    // seed 279: P4 answered at the cheapest level with 18 TP (3-card support
+    // forced the level, not weakness) — the tooltip must not flatly claim
+    // "a minimum (about 11-14)" when a stronger hand can sit at that same
+    // cheapest level.
+    const meaning = getBidMeaning("2♥", "partner", "2♦", "1♠", "Double", "1♠");
+    expect(meaning).toMatch(/usually a minimum/);
+    expect(meaning).toMatch(/3-card answer can hold extras/);
+  });
+
+  it("a genuine jump answer to the double still reads as a maximum (no regression)", () => {
+    const meaning = getBidMeaning("3♥", "partner", "2♦", "1♠", "Double", "1♠");
+    expect(meaning).toMatch(/a JUMP — a maximum/);
+  });
+});
+
+describe("sim audit round 72 regressions", () => {
+  it("a re-raise of the suit the bidder opened hedges the game-try claim (a takeout double earlier can make it competitive instead)", () => {
+    // seed 282: 1♥-(Double)-2♥-P-3♥ — the tooltip flatly claimed "GAME TRY,
+    // 16-18 support points", directly contradicting the handler's own
+    // "Competitive Re-Raise (Try Values Concealed) ... no extra strength"
+    // story for the identical bid. getBidMeaning has no view of the double
+    // 2 calls back, so it must hedge rather than assert game-try.
+    const meaning = getBidMeaning(
+      "3♥",
+      "partner",
+      "2♥",
+      "1♥",
+      "2♥",
+      "1♥",
+      "1♥",
+    );
+    expect(meaning).toMatch(/USUALLY a GAME TRY/);
+    expect(meaning).toMatch(/doubled earlier in the auction.*COMPETITIVE/);
   });
 });
