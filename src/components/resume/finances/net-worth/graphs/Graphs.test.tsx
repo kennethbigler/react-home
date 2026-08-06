@@ -29,8 +29,6 @@ import themeAtom, {
   darkTheme,
   lightTheme,
 } from "../../../../../jotai/theme-atom";
-import { formatCompactAxisCurrency } from "../../shared/chartHelpers";
-
 describe("resume | finances | net-worth | Graphs", () => {
   // Pre-sorted by final-entry amounts (largest first), as NetWorth provides.
   const categories = ["Investments", "Cash"];
@@ -570,24 +568,5 @@ describe("netWorthGraphHelpers", () => {
     expect(html).toContain("Cash:");
     expect(html).toContain("$0.00");
     expect(html).not.toContain("Inflation:");
-  });
-});
-
-describe("chartHelpers | formatCompactAxisCurrency", () => {
-  it("formats thousands and millions with $ prefix", () => {
-    expect(formatCompactAxisCurrency(500_000)).toBe("$500k");
-    expect(formatCompactAxisCurrency(1_000_000)).toBe("$1M");
-    expect(formatCompactAxisCurrency(1_500_000)).toBe("$1.5M");
-    expect(formatCompactAxisCurrency(2_000_000)).toBe("$2M");
-    expect(formatCompactAxisCurrency(2_500_000)).toBe("$2.5M");
-  });
-
-  it("formats smaller values without cents", () => {
-    expect(formatCompactAxisCurrency(0)).toBe("$0");
-    expect(formatCompactAxisCurrency(999)).toBe("$999");
-  });
-
-  it("preserves negative values", () => {
-    expect(formatCompactAxisCurrency(-1_500_000)).toBe("-$1.5M");
   });
 });

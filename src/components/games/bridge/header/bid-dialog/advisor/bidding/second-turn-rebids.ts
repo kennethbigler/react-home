@@ -375,8 +375,13 @@ export function getOvercallerRebid(
       .filter((b): b is string => isRealBid(b))
       .sort((a, b) => BID_ORDER.indexOf(b) - BID_ORDER.indexOf(a))[0];
     const floorCapp = BID_ORDER.indexOf(floorCappBid);
+    // Reveal is forced at 2-level (majors/minor) or 3♣ (clubs consumed 2♣) —
+    // same level cap as the Michaels minor answer (3-level) above.
     const nameSuit = BID_ORDER.find(
-      (b, i) => i > floorCapp && b.endsWith(suitSymbol(realSuit.name)),
+      (b, i) =>
+        i > floorCapp &&
+        /^[23]/.test(b) &&
+        b.endsWith(suitSymbol(realSuit.name)),
     );
     if (nameSuit) {
       return {

@@ -17,7 +17,7 @@ interface BreakdownCategoriesDialogProps {
   onToggle: (category: string, visible: boolean) => void;
 }
 
-const BreakdownCategoriesDialog = ({
+export const BreakdownCategoriesDialog = ({
   open,
   categories,
   amounts,
@@ -52,5 +52,3 @@ const BreakdownCategoriesDialog = ({
     </DialogActions>
   </Dialog>
 );
-
-export default BreakdownCategoriesDialog;

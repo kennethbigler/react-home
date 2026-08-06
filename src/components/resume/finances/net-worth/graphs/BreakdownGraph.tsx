@@ -14,7 +14,7 @@ import Highcharts from "../../../../common/highcharts/coreHighcharts";
 import ChartFigure from "../../shared/ChartFigure";
 import useChartTextColor from "../../shared/useChartTextColor";
 import colors from "./colors";
-import BreakdownCategoriesDialog from "./BreakdownCategoriesDialog";
+import { BreakdownCategoriesDialog } from "./BreakdownCategoriesDialog";
 import { buildNetWorthBreakdownPieData } from "./buildNetWorthBreakdownPieData";
 
 interface BreakdownChartProps {
