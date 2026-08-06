@@ -6,6 +6,7 @@ import {
   longerMinor,
   longestSuitInfo,
   suitBidLevel,
+  suitFromBid,
   suitSymbol,
 } from "./hand-evaluation";
 import type { BidRecommendation, Hand } from "./types";
@@ -114,13 +115,7 @@ export function getResponseToOneNT(
     opponentBid !== "Redouble"
   ) {
     const { name: longestName, length: longestCount } = longestSuitInfo(hand);
-    const opponentSuit = opponentBid.includes("♠")
-      ? "spades"
-      : opponentBid.includes("♥")
-        ? "hearts"
-        : opponentBid.includes("♦")
-          ? "diamonds"
-          : "clubs";
+    const opponentSuit = suitFromBid(opponentBid) ?? "clubs";
     const opponentLevel = parseInt(opponentBid[0]) || 2;
 
     // Double for penalty with 8+ HCP and a stopper
@@ -855,14 +850,7 @@ export function getResponseToSuit(
   // keep the long-suit `tp` for new-suit and notrump responses (no fit).
   const supportTP = calcTPWithFit(hand);
   const isPartnerMajor = partnerBid === "1♥" || partnerBid === "1♠";
-  const partnerSuit =
-    partnerBid === "1♠"
-      ? "spades"
-      : partnerBid === "1♥"
-        ? "hearts"
-        : partnerBid === "1♦"
-          ? "diamonds"
-          : "clubs";
+  const partnerSuit = suitFromBid(partnerBid) ?? "clubs";
   const mySupport = hand[partnerSuit as keyof Hand] as number;
   // A raisable fit is 3+ for a MAJOR but 4+ for a MINOR (the 1m opening may
   // be a 3-card suit).  Short-suit points only count when a raise is actually
@@ -1583,18 +1571,27 @@ export function getResponseToWeak2(
   const analysis = analyzeHand(hand);
   const { hcp } = hand;
   const { tp } = analysis;
-  const partnerSuit =
-    partnerBid === "2♠"
-      ? "spades"
-      : partnerBid === "2♥"
-        ? "hearts"
-        : "diamonds";
+  const partnerSuit = suitFromBid(partnerBid) ?? "diamonds";
   const partnerSuitSym = suitSymbol(partnerSuit);
   const mySupport = hand[partnerSuit as keyof Hand] as number;
 
   // ── 4+ trump support: bid game directly regardless of HCP ─────────────────
   // Bridgedoctor: "Raise to 4: 4-card support OR 16+ TP with at least 2-card support"
   if (mySupport >= 4) {
+    if (partnerSuit === "diamonds") {
+      return {
+        bid: "4♦",
+        category: "Preemptive Raise of Weak 2 (4+ Diamond Support)",
+        reasoning: `With ${mySupport}-card diamond support opposite partner's weak 2♦, raise to 4♦ — a pre-emptive partscore raise, not a game-forcing major raise.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner:
+          "4+ card diamond support — pre-emptive raise in the minor.",
+        expectedResponses: [
+          { partnerBid: "Pass", meaning: "Accept the raise" },
+        ],
+        confidence: "high",
+      };
+    }
     const gameBid = `4${partnerSuitSym}`;
     return {
       bid: gameBid,
@@ -1773,15 +1770,12 @@ export function getResponseToPreempt(
 ): BidRecommendation {
   const analysis = analyzeHand(hand);
   const { hcp } = hand;
-  const partnerSuit = partnerBid.includes("♠")
-    ? "spades"
-    : partnerBid.includes("♥")
-      ? "hearts"
-      : partnerBid.includes("♦")
-        ? "diamonds"
-        : "clubs";
+  const partnerSuit = suitFromBid(partnerBid) ?? "clubs";
   const mySupport = hand[partnerSuit as keyof Hand] as number;
   const preemptLevel = parseInt(partnerBid[0]) || 3;
+  const partnerFloorIdx = BID_ORDER.indexOf(partnerBid);
+  const bidAbovePartner = (bid: string) =>
+    BID_ORDER.indexOf(bid) > partnerFloorIdx;
 
   // Very strong hand (16+ HCP): game over pre-empt
   if (hcp >= 16) {
@@ -1790,38 +1784,44 @@ export function getResponseToPreempt(
       hand.spades >= 5 ? "spades" : hand.hearts >= 5 ? "hearts" : null;
     if (longMajor && longMajor !== partnerSuit) {
       const gameBid = `4${suitSymbol(longMajor)}`;
-      return {
-        bid: gameBid,
-        category: "Bid Own Major over Pre-empt (16+ HCP)",
-        reasoning: `With 16+ HCP and ${hand[longMajor as keyof Hand]}-card ${longMajor}, bid ${gameBid}. A new suit at game level is natural and shows a self-sufficient major suit.`,
-        handAnalysis: analysis,
-        whatYourBidTellsPartner: `Self-sufficient ${longMajor} suit, 16+ HCP.`,
-        expectedResponses: [
-          {
-            partnerBid: "Pass",
-            meaning: "Pre-emptive opener doesn't bid again unless correcting",
-          },
-        ],
-        confidence: "high",
-      };
+      if (bidAbovePartner(gameBid)) {
+        return {
+          bid: gameBid,
+          category: "Bid Own Major over Pre-empt (16+ HCP)",
+          reasoning: `With 16+ HCP and ${hand[longMajor as keyof Hand]}-card ${longMajor}, bid ${gameBid}. A new suit at game level is natural and shows a self-sufficient major suit.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: `Self-sufficient ${longMajor} suit, 16+ HCP.`,
+          expectedResponses: [
+            {
+              partnerBid: "Pass",
+              meaning: "Pre-emptive opener doesn't bid again unless correcting",
+            },
+          ],
+          confidence: "high",
+        };
+      }
+    } else {
+      const gameBid = `4${suitSymbol(partnerSuit)}`;
+      if (bidAbovePartner(gameBid)) {
+        return {
+          bid: gameBid,
+          category: "Game over Pre-empt",
+          reasoning:
+            "With 16+ HCP, bid game in partner's suit or bid a new suit (game-forcing).",
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: "16+ pts — game values.",
+          expectedResponses: [
+            {
+              partnerBid: "Pass",
+              meaning:
+                "Pre-emptive opener does not bid again unless you bid a new suit",
+            },
+          ],
+          confidence: "high",
+          note: "Be cautious about 3NT — opener will have very few side entries.",
+        };
+      }
     }
-    return {
-      bid: `4${suitSymbol(partnerSuit)}`,
-      category: "Game over Pre-empt",
-      reasoning:
-        "With 16+ HCP, bid game in partner's suit or bid a new suit (game-forcing).",
-      handAnalysis: analysis,
-      whatYourBidTellsPartner: "16+ pts — game values.",
-      expectedResponses: [
-        {
-          partnerBid: "Pass",
-          meaning:
-            "Pre-emptive opener does not bid again unless you bid a new suit",
-        },
-      ],
-      confidence: "high",
-      note: "Be cautious about 3NT — opener will have very few side entries.",
-    };
   }
 
   // Good hand (10-15 HCP): bid a 5-card major as a new forcing suit
@@ -1830,27 +1830,29 @@ export function getResponseToPreempt(
       hand.spades >= 5 ? "spades" : hand.hearts >= 5 ? "hearts" : null;
     if (longMajor && longMajor !== partnerSuit) {
       const bid = `${preemptLevel}${suitSymbol(longMajor)}`;
-      return {
-        bid,
-        category: "New Suit over Pre-empt (Invitational, 10-15 HCP)",
-        reasoning: `With ${hcp} HCP and 5+ ${longMajor}, bid ${bid} — a new suit over a preempt is game-forcing (or at least highly invitational). Partner should pass only with a complete minimum.`,
-        handAnalysis: analysis,
-        whatYourBidTellsPartner: `5+ ${longMajor} suit, 10-15 HCP. Forcing.`,
-        expectedResponses: [
-          {
-            partnerBid: `4${suitSymbol(longMajor)}`,
-            meaning: "Fit for your major — bid game",
-          },
-          {
-            partnerBid: "Pass",
-            meaning: "Absolute minimum — accepts the contract",
-          },
-        ],
-        confidence: "medium",
-      };
+      if (bidAbovePartner(bid)) {
+        return {
+          bid,
+          category: "New Suit over Pre-empt (Invitational, 10-15 HCP)",
+          reasoning: `With ${hcp} HCP and 5+ ${longMajor}, bid ${bid} — a new suit over a preempt is game-forcing (or at least highly invitational). Partner should pass only with a complete minimum.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: `5+ ${longMajor} suit, 10-15 HCP. Forcing.`,
+          expectedResponses: [
+            {
+              partnerBid: `4${suitSymbol(longMajor)}`,
+              meaning: "Fit for your major — bid game",
+            },
+            {
+              partnerBid: "Pass",
+              meaning: "Absolute minimum — accepts the contract",
+            },
+          ],
+          confidence: "medium",
+        };
+      }
     }
     // No 5-card major but 10+ HCP — bid 3NT as game-invitational
-    if (hcp >= 13 && analysis.isBalanced) {
+    if (hcp >= 13 && analysis.isBalanced && bidAbovePartner("3NT")) {
       return {
         bid: "3NT",
         category: "3NT over Pre-empt (13+ HCP Balanced)",

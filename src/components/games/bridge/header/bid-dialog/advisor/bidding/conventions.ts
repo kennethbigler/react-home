@@ -351,7 +351,8 @@ export function getStaymanFollowUp(
 
 export function getTransferFollowUp(
   hand: Hand,
-  transferredSuit: string,
+  /** Partner's completed transfer bid (e.g. 2♥ after 2♦ ask), or the transfer ask when completion is not yet reflected. */
+  completedSuitBid: string,
   /** True when the transfer was over a 2NT opening (20-21): completion is at
    *  the 3-level and game needs only ~4-5 HCP. */
   over2NT = false,
@@ -363,7 +364,11 @@ export function getTransferFollowUp(
   const { hcp } = hand;
   const ntRange2 = after2C ? "22-24 (2♣ then 2NT)" : "20-21";
   const gameFloor2NT = after2C ? 2 : 4;
-  const suit = transferredSuit.includes("♥") ? "hearts" : "spades";
+  const suit = completedSuitBid.includes("♠")
+    ? "spades"
+    : completedSuitBid.includes("♥") || completedSuitBid.includes("♦")
+      ? "hearts"
+      : "spades";
   const suitLen = hand[suit as keyof Hand] as number;
   const otherMajor = suit === "hearts" ? "spades" : "hearts";
   const otherMajorLen = hand[otherMajor as keyof Hand] as number;
@@ -439,15 +444,20 @@ export function getTransferFollowUp(
 
   // 5 of major + 5 of other major, invitational (bid other major)
   if (suitLen >= 5 && otherMajorLen >= 5 && hcp >= 8 && hcp <= 9) {
-    return {
-      bid: `2${suitSymbol(otherMajor)}`,
-      category: "Transfer: 5-5 Majors, Invitational",
-      reasoning: `With 5 ${suit} and 5 ${otherMajor} (8-9 pts), bid 2${suitSymbol(otherMajor)} to show the second major. Invitational.`,
-      handAnalysis: analysis,
-      whatYourBidTellsPartner: `5 ${suit} and 5 ${otherMajor}, invitational (8-9 pts).`,
-      expectedResponses: [],
-      confidence: "high",
-    };
+    const otherMajorBid = `2${suitSymbol(otherMajor)}`;
+    if (
+      BID_ORDER.indexOf(otherMajorBid) > BID_ORDER.indexOf(completedSuitBid)
+    ) {
+      return {
+        bid: otherMajorBid,
+        category: "Transfer: 5-5 Majors, Invitational",
+        reasoning: `With 5 ${suit} and 5 ${otherMajor} (8-9 pts), bid ${otherMajorBid} to show the second major. Invitational.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `5 ${suit} and 5 ${otherMajor}, invitational (8-9 pts).`,
+        expectedResponses: [],
+        confidence: "high",
+      };
+    }
   }
 
   // Game with 6+ cards in major
@@ -805,7 +815,7 @@ export function getBlackwoodFollowUp(
     // 5♣ shows 0 OR 4: if you hold any ace, partner cannot hold 4.  With 0
     // aces yourself, read it conservatively as 0 (a 4-ace partner would drive
     // the auction themselves).
-    const partnerAces = aceCount === 0 ? (hand.aces > 0 ? 0 : 0) : aceCount;
+    const partnerAces = aceCount === 0 ? 0 : aceCount;
     const missing = 4 - Math.min(4, hand.aces + partnerAces);
     if (missing >= 2) {
       return {
@@ -1057,6 +1067,26 @@ export function getKingsFollowUp(
           : "♣"
     : fallbackSuit;
 
+  const slamSignOff = (
+    level: 6 | 7,
+    categorySuffix: string,
+    reasoningSuffix: string,
+  ): BidRecommendation | null => {
+    const signOff = `${level}${suitSym}`;
+    if (BID_ORDER.indexOf(signOff) <= BID_ORDER.indexOf(partnerReply)) {
+      return {
+        bid: "Pass",
+        category: `Kings Follow-Up: Pass — Partner Already at ${partnerReply}`,
+        reasoning: `Partner's ${partnerReply} already reaches or exceeds your ${signOff} sign-off${reasoningSuffix}. Pass and play it.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: categorySuffix,
+        expectedResponses: [],
+        confidence: "high",
+      };
+    }
+    return null;
+  };
+
   // Aces missing?  A grand slam must NEVER be bid with an ace outstanding.
   // Partner's earlier ace response plus your own count (if entered) decide.
   const partnerAces = partnerAceResponse
@@ -1068,6 +1098,12 @@ export function getKingsFollowUp(
     : undefined;
 
   if (kingCount === null) {
+    const passAtSix = slamSignOff(
+      6,
+      "Accepting partner's sign-off.",
+      " after an unrecognized kings reply",
+    );
+    if (passAtSix) return passAtSix;
     // Partner's bid was not a recognized kings response. Sign off at small slam.
     return {
       bid: `6${suitSym}`,
@@ -1105,6 +1141,12 @@ export function getKingsFollowUp(
   // four kings.  With 3 kings one is outstanding — it may be the trump king
   // or cash on the opening lead, so settle for the small slam.
   if (totalKings >= 4) {
+    const passAtSeven = slamSignOff(
+      7,
+      "Accepting partner's grand-slam sign-off.",
+      "",
+    );
+    if (passAtSeven) return passAtSeven;
     return {
       bid: `7${suitSym}`,
       category: "Grand Slam!",
@@ -1116,6 +1158,12 @@ export function getKingsFollowUp(
     };
   }
   if (totalKings === 3) {
+    const passAtSix = slamSignOff(
+      6,
+      "Accepting partner's small-slam sign-off.",
+      " with only three kings total",
+    );
+    if (passAtSix) return passAtSix;
     return {
       bid: `6${suitSym}`,
       category: "Small Slam (A King Is Missing — No Grand)",
@@ -1132,6 +1180,13 @@ export function getKingsFollowUp(
     kingCount === 0 && myKings === 0
       ? " Note: 6♣ = 0 OR 4 kings from partner. If you hold any kings yourself, enter them in the hand input to get a more accurate recommendation."
       : undefined;
+
+  const passAtSix = slamSignOff(
+    6,
+    "Accepting partner's small-slam sign-off.",
+    ` with only ${totalKings} king${totalKings !== 1 ? "s" : ""} total`,
+  );
+  if (passAtSix) return passAtSix;
 
   return {
     bid: `6${suitSym}`,

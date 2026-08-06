@@ -264,16 +264,14 @@ function BidInfoIcon({
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
       <Tooltip
-        title={getBidMeaning(
-          bid,
-          relationship,
+        title={getBidMeaning(bid, relationship, {
           prevHighBid,
           bidderPreviousBid,
           bidderPartnerPreviousBid,
           auctionOpeningBid,
           bidderPartnerFirstBid,
           oppDoubledJustBefore,
-        )}
+        })}
         placement="right"
         arrow
         open={open}
@@ -520,20 +518,22 @@ function CompletedRoundRow({
               thisRoundBefore,
               getRelatives(pos).partner,
             ) ?? "none"; // "none" = known to have no previous action
-          const tooltipTitle = getBidMeaning(
-            bid,
-            rel as Relationship,
+          const tooltipTitle = getBidMeaning(bid, rel as Relationship, {
             prevHighBid,
             bidderPreviousBid,
             bidderPartnerPreviousBid,
-            auctionOpeningBidOf(allCompletedRounds),
-            firstRealBidBySeat(
+            auctionOpeningBid: auctionOpeningBidOf(allCompletedRounds),
+            bidderPartnerFirstBid: firstRealBidBySeat(
               priorRounds,
               thisRoundBefore,
               getRelatives(pos).partner,
             ),
-            oppDoubledJustBeforeSeat(priorRounds, thisRoundBefore, pos),
-          );
+            oppDoubledJustBefore: oppDoubledJustBeforeSeat(
+              priorRounds,
+              thisRoundBefore,
+              pos,
+            ),
+          });
 
           return (
             <BidChip

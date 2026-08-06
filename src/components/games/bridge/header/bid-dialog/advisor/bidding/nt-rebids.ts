@@ -1,5 +1,10 @@
 import { BID_ORDER, isRealBid } from "./bid-order";
-import { analyzeHand, calcTPWithFit, suitSymbol } from "./hand-evaluation";
+import {
+  analyzeHand,
+  calcTPWithFit,
+  suitFromBid,
+  suitSymbol,
+} from "./hand-evaluation";
 import type { BidRecommendation, Hand } from "./types";
 
 // ─── Opener's Rebids ──────────────────────────────────────────────────────────
@@ -111,10 +116,15 @@ export function getResponderNTRebid(
         confidence: "medium",
       };
     }
+    const signOffBid =
+      /^4/.test(partnerNaturalBid) &&
+      BID_ORDER.indexOf(partnerNaturalBid) > BID_ORDER.indexOf(gameBid)
+        ? partnerNaturalBid
+        : gameBid;
     return {
-      bid: gameBid,
+      bid: signOffBid,
       category: "Complete the Jacoby Game Force",
-      reasoning: `Your 2NT was Jacoby — the auction is FORCING to game in ${majName}. Partner's ${partnerNaturalBid} described their hand; without slam ambitions, sign off in ${gameBid}.`,
+      reasoning: `Your 2NT was Jacoby — the auction is FORCING to game in ${majName}. Partner's ${partnerNaturalBid} described their hand; without slam ambitions, sign off in ${signOffBid}.`,
       handAnalysis: analysis,
       whatYourBidTellsPartner:
         "Game values only — no slam interest opposite your reply.",
@@ -136,15 +146,7 @@ export function getResponderNTRebid(
     };
   }
 
-  const partnerSuit = partnerNaturalBid.includes("♠")
-    ? "spades"
-    : partnerNaturalBid.includes("♥")
-      ? "hearts"
-      : partnerNaturalBid.includes("♦")
-        ? "diamonds"
-        : partnerNaturalBid.includes("♣")
-          ? "clubs"
-          : null;
+  const partnerSuit = suitFromBid(partnerNaturalBid) ?? null;
 
   // Partner bid 3NT — accept game
   if (partnerNaturalBid === "3NT") {
@@ -228,13 +230,7 @@ export function getResponderNTRebid(
     const secondLen = hand[partnerSuit as keyof Hand] as number;
     const firstSuitName =
       partnerFirstBid && !partnerFirstBid.endsWith("NT")
-        ? partnerFirstBid.includes("♠")
-          ? "spades"
-          : partnerFirstBid.includes("♥")
-            ? "hearts"
-            : partnerFirstBid.includes("♦")
-              ? "diamonds"
-              : "clubs"
+        ? (suitFromBid(partnerFirstBid) ?? null)
         : null;
     const firstLen = firstSuitName
       ? (hand[firstSuitName as keyof Hand] as number)
@@ -571,13 +567,7 @@ export function getRebidAfterNT(
   // NATURAL (to play), not Stayman/transfers.  Pass with a doubleton, raise
   // only with a fit and a maximum.
   if (interference && /^[23][♠♥♦♣]$/.test(partnerResponse)) {
-    const natSuit = partnerResponse.includes("♠")
-      ? "spades"
-      : partnerResponse.includes("♥")
-        ? "hearts"
-        : partnerResponse.includes("♦")
-          ? "diamonds"
-          : "clubs";
+    const natSuit = suitFromBid(partnerResponse)!;
     const fit = hand[natSuit as keyof Hand] as number;
     const isMajorNat = natSuit === "spades" || natSuit === "hearts";
     const lvl = parseInt(partnerResponse[0]);
@@ -863,13 +853,7 @@ export function getRebidAfterNT(
   // (slam interest for a major; strong minor hand otherwise).  The opener may
   // NOT pass below game: raise with a fit, otherwise bid 3NT.
   if (!interference && /^3[♠♥♦♣]$/.test(partnerResponse)) {
-    const respSuit = partnerResponse.includes("♠")
-      ? "spades"
-      : partnerResponse.includes("♥")
-        ? "hearts"
-        : partnerResponse.includes("♦")
-          ? "diamonds"
-          : "clubs";
+    const respSuit = suitFromBid(partnerResponse)!;
     const respFit = hand[respSuit as keyof Hand] as number;
     const respIsMajor = respSuit === "spades" || respSuit === "hearts";
     if (respIsMajor && respFit >= 3) {
@@ -904,19 +888,6 @@ export function getRebidAfterNT(
           meaning: "Insisting on the suit",
         },
       ],
-      confidence: "high",
-    };
-  }
-
-  // Partner passed (1NT was final contract)
-  if (partnerResponse === "Pass") {
-    return {
-      bid: "—",
-      category: "Auction over",
-      reasoning: "Partner passed 1NT. The contract is 1NT.",
-      handAnalysis: analysis,
-      whatYourBidTellsPartner: "Auction complete.",
-      expectedResponses: [],
       confidence: "high",
     };
   }
@@ -1190,11 +1161,9 @@ export function getStaymanOpenerRebid(
   // ── After denying major, partner bids a natural major suit ──────────────────
   if (iDeniedMajor) {
     // Partner had a 5-card major and is now showing it naturally
-    const pMajor = partnerContinuation.includes("♥")
-      ? "hearts"
-      : partnerContinuation.includes("♠")
-        ? "spades"
-        : null;
+    const contSuit = suitFromBid(partnerContinuation);
+    const pMajor =
+      contSuit === "hearts" || contSuit === "spades" ? contSuit : null;
     if (pMajor) {
       const fitLen = hand[pMajor as keyof Hand] as number;
       const hasFit = fitLen >= 3;

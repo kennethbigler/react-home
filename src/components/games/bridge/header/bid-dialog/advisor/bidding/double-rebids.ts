@@ -3,8 +3,9 @@ import {
   analyzeHand,
   calcTPWithFit,
   longerMinor,
-  longestSuitInfo,
+  SUIT_NAMES,
   suitSymbol,
+  type SuitName,
 } from "./hand-evaluation";
 import type { BidRecommendation, Hand } from "./types";
 
@@ -290,7 +291,7 @@ export function getRebidAfterNegativeDouble(
     }
     // Never bid past game in the major on a negative double alone.
     const gameLvl = 4;
-    const bid =
+    let bid =
       tp >= 20
         ? `4${sym}`
         : tp >= 18
@@ -298,6 +299,9 @@ export function getRebidAfterNegativeDouble(
           : tp >= 15
             ? `${Math.min(minShownLevel + 1, gameLvl)}${sym}`
             : minShownBid;
+    if (BID_ORDER.indexOf(bid) < BID_ORDER.indexOf(minShownBid)) {
+      bid = minShownBid;
+    }
     const range =
       tp >= 20
         ? "20-21 TP"
@@ -476,9 +480,15 @@ export function getResponseTo1NTDoubled(hand: Hand): BidRecommendation {
   }
 
   // ── Escape to 5-card suit: too weak to redouble but have a long suit ─────────
-  const escapeSuit = (["spades", "hearts", "diamonds", "clubs"] as const).find(
-    (s) => (hand[s as keyof Hand] as number) >= 5,
-  );
+  const escapeSuit = [...SUIT_NAMES]
+    .filter((s) => (hand[s as keyof Hand] as number) >= 5)
+    .sort((a, b) => {
+      const lenDiff =
+        (hand[b as keyof Hand] as number) - (hand[a as keyof Hand] as number);
+      if (lenDiff !== 0) return lenDiff;
+      const isMajor = (x: SuitName) => x === "spades" || x === "hearts";
+      return (isMajor(b) ? 1 : 0) - (isMajor(a) ? 1 : 0);
+    })[0];
 
   if (escapeSuit && tp >= 2) {
     const escapeBid = `2${suitSymbol(escapeSuit)}`;
@@ -896,7 +906,7 @@ export function getRespondingToSuitAfterDouble(
   // the hand with SHORT-suit support points rather than long-suit TP.
   const supportTP = calcTPWithFit(hand);
 
-  if (mySupport >= 3 && supportTP >= 13) {
+  if (mySupport >= 4 && supportTP >= 13) {
     return {
       bid: "Redouble",
       category: "Re-double (13+ pts, Strong Raise)",
@@ -1029,9 +1039,24 @@ export function getRespondingToSuitAfterDouble(
     };
   }
 
-  // Moderate strength but no fit — bid longest suit
-  const { name: longestName } = longestSuitInfo(hand);
-  const newSuitBid = `${tp >= 9 ? 2 : 1}${suitSymbol(longestName)}`;
+  // Moderate strength but no fit — bid longest suit other than partner's opening
+  const longestName = SUIT_NAMES.filter((s) => s !== suit).sort((a, b) => {
+    const lenDiff =
+      (hand[b as keyof Hand] as number) - (hand[a as keyof Hand] as number);
+    if (lenDiff !== 0) return lenDiff;
+    const isMajor = (x: SuitName) => x === "spades" || x === "hearts";
+    return (isMajor(b) ? 1 : 0) - (isMajor(a) ? 1 : 0);
+  })[0];
+  const openerFloorIdx = BID_ORDER.indexOf(`1${suitSymbol(suit)}`);
+  const longestSym = suitSymbol(longestName);
+  const cheapestLegal = BID_ORDER.find(
+    (b, i) => i > openerFloorIdx && b.endsWith(longestSym),
+  );
+  const preferredBid = `${tp >= 9 ? 2 : 1}${longestSym}`;
+  const newSuitBid =
+    BID_ORDER.indexOf(preferredBid) > openerFloorIdx
+      ? preferredBid
+      : (cheapestLegal ?? preferredBid);
   return {
     bid: newSuitBid,
     category: "Bid New Suit After Opponent's Double",

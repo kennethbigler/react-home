@@ -4,9 +4,9 @@ import {
   calcTP,
   hasFiveCardMajor,
   longerMinor,
-  longestSuitInfo,
   ruleOf20,
   suitBidLevel,
+  suitDescriptors,
   suitSymbol,
 } from "./hand-evaluation";
 import type { BidRecommendation, Hand, Vulnerability } from "./types";
@@ -394,6 +394,15 @@ export function getOpeningBid(
 
   // Rule of 20 check (12 TP).  Requires 10+ HCP — weaker shapely hands
   // (e.g. 9 HCP with a 7-card suit) belong in the preempt structure below.
+  const sortedLengths = [
+    hand.spades,
+    hand.hearts,
+    hand.diamonds,
+    hand.clubs,
+  ].sort((a, b) => b - a);
+  const longest1 = sortedLengths[0];
+  const longest2 = sortedLengths[1];
+  const rule20Total = hand.hcp + longest1 + longest2;
   if ((tp === 12 || (hand.hcp >= 11 && tp <= 12)) && hand.hcp >= 10) {
     if (ruleOf20(hand)) {
       const suit = hasFiveCardMajor(hand)
@@ -402,19 +411,7 @@ export function getOpeningBid(
       return {
         bid: suitBidLevel(suit, 1),
         category: "Rule of 20 Opening",
-        reasoning: `With exactly 12 total points, apply the Rule of 20: HCP (${hand.hcp}) + cards in your 2 longest suits = ${
-          hand.hcp +
-          longestSuitInfo(hand).length +
-          (() => {
-            const sorted = [
-              hand.spades,
-              hand.hearts,
-              hand.diamonds,
-              hand.clubs,
-            ].sort((a, b) => b - a);
-            return sorted[1];
-          })()
-        } ≥ 20. You may open.`,
+        reasoning: `With exactly 12 total points, apply the Rule of 20: HCP (${hand.hcp}) + cards in your 2 longest suits = ${rule20Total} ≥ 20. You may open.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner:
           "12+ pts (by Rule of 20) with a biddable suit. Slightly sub-minimum opening.",
@@ -426,15 +423,6 @@ export function getOpeningBid(
         note: "This is a borderline opening. Partner will not know you are minimum — bid cautiously on rebid.",
       };
     } else {
-      const sortedLengths = [
-        hand.spades,
-        hand.hearts,
-        hand.diamonds,
-        hand.clubs,
-      ].sort((a, b) => b - a);
-      const longest1 = sortedLengths[0];
-      const longest2 = sortedLengths[1];
-      const rule20Total = hand.hcp + longest1 + longest2;
       return {
         bid: "Pass",
         category: "Pass (Rule of 20 fails)",
@@ -450,12 +438,7 @@ export function getOpeningBid(
 
   // Too weak to open — build specific reasoning based on whether a long suit was blocked
   const passReasoning = (() => {
-    const suitsAll = [
-      { name: "spades", count: hand.spades },
-      { name: "hearts", count: hand.hearts },
-      { name: "diamonds", count: hand.diamonds },
-      { name: "clubs", count: hand.clubs },
-    ];
+    const suitsAll = suitDescriptors(hand);
 
     // 7+ card minor blocked by outside 4+ card major
     const sevenPlusSuit = suitsAll.find((s) => s.count >= 7);
@@ -494,7 +477,7 @@ export function getOpeningBid(
         hand.spades >= 4 ? "spades" : hand.hearts >= 4 ? "hearts" : null;
       if (outsideMajor) {
         const outsideLen = hand[outsideMajor as keyof Hand] as number;
-        return `With ${hand.hcp} HCP and a ${hand.clubs}-card clubs suit, a 3♣ pre-empt would normally apply, but an outside ${outsideLen}-card ${outsideMajor} suit makes this inadvisable in standard SAYC — partner might miss the ${outsideMajor} game. Pass.`;
+        return `With ${hand.hcp} HCP and a ${hand.clubs}-card clubs suit, a 3♣ pre-empt requires at least seven clubs and therefore does not apply here${outsideMajor ? `; an outside ${outsideLen}-card ${outsideMajor} suit is a secondary reason to pass rather than pre-empt` : ""}. Pass.`;
       }
     }
 

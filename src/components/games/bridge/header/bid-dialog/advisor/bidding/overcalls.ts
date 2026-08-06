@@ -3,6 +3,7 @@ import {
   analyzeHand,
   calcTPWithFit,
   longestSuitInfo,
+  suitFromBid,
   suitSymbol,
 } from "./hand-evaluation";
 import type { BidRecommendation, Hand, Vulnerability } from "./types";
@@ -25,7 +26,7 @@ function getCappellettiOvercall(
     BID_ORDER.indexOf(opponentBid),
     lhoBid && isRealBid(lhoBid) ? BID_ORDER.indexOf(lhoBid) : -1,
   );
-  if (floorIdx > BID_ORDER.indexOf("2NT")) return null; // no Cappelletti room left
+  if (floorIdx >= BID_ORDER.indexOf("2♣")) return null; // no Cappelletti room left
 
   const bothMajors = spades >= 4 && hearts >= 4 && (spades >= 5 || hearts >= 5);
   const bothMinors =
@@ -605,7 +606,12 @@ export function getOvercall(
       { name: "hearts", count: hand.hearts },
       { name: "diamonds", count: hand.diamonds },
       { name: "clubs", count: hand.clubs },
-    ].sort((a, b) => b.count - a.count || b.count - a.count);
+    ].sort((a, b) => {
+      const lenDiff = b.count - a.count;
+      if (lenDiff !== 0) return lenDiff;
+      const isMajor = (name: string) => name === "spades" || name === "hearts";
+      return (isMajor(b.name) ? 1 : 0) - (isMajor(a.name) ? 1 : 0);
+    });
 
     const bestSuit = allSuits[0];
     // The bid must clear EVERY live opponent bid, not just the NT (their
@@ -1192,19 +1198,6 @@ export function getOvercall(
   // suit (inOpponentSuit <= 2) is exactly what a takeout double wants.  This
   // also catches the 19-21 powerhouses that must NOT pass an opening.
   if (hcp >= 16 && inOpponentSuit <= 2) {
-    if (hcp >= 19 && analysis.isBalanced) {
-      return {
-        bid: "Double",
-        category: "High-Strength Double (19+ HCP Balanced)",
-        reasoning:
-          "With 19+ HCP balanced, double first. On the next round, rebid NT at the lowest available level to show 19+ balanced — too strong for an immediate 1NT/2NT overcall.",
-        handAnalysis: analysis,
-        whatYourBidTellsPartner: "19+ HCP balanced — very strong hand.",
-        expectedResponses: [],
-        confidence: "high",
-        note: "After partner responds, rebid the lowest available NT to show 19+ balanced.",
-      };
-    }
     const strongLabel = hcp >= 19 ? "19+" : "16-18";
     return {
       bid: "Double",
@@ -1336,6 +1329,79 @@ export function getOvercall(
 }
 
 // ─── Negative Double ─────────────────────────────────────────────────────────
+
+function negativeDoubleFitRaise(
+  _hand: Hand,
+  analysis: ReturnType<typeof analyzeHand>,
+  openerBid: string,
+  overcall: string,
+  partnerSuitNameND: string,
+  partnerFitND: number,
+  minFitLength: number,
+  pointTotal: number,
+): BidRecommendation | null {
+  if (
+    partnerFitND < minFitLength ||
+    !(
+      partnerSuitNameND === "hearts" ||
+      partnerSuitNameND === "spades" ||
+      partnerFitND >= minFitLength + 1
+    ) ||
+    overcall.endsWith("NT") ||
+    overcall.slice(1) === openerBid.slice(1)
+  ) {
+    return null;
+  }
+
+  const overcallIdxR = BID_ORDER.indexOf(overcall);
+  const sym = suitSymbol(partnerSuitNameND);
+  const minRaise = BID_ORDER.find(
+    (b, i) => i > overcallIdxR && b.endsWith(sym),
+  );
+  if (pointTotal >= 10 && minRaise && parseInt(minRaise[0]) <= 3) {
+    const cueBidND = BID_ORDER.find(
+      (b, i) =>
+        i > BID_ORDER.indexOf(overcall) && b.endsWith(overcall.slice(1)),
+    );
+    if (cueBidND && parseInt(cueBidND[0]) <= 3) {
+      return {
+        bid: cueBidND,
+        category:
+          pointTotal >= 13
+            ? "Cuebid Raise (13+, Game Forcing)"
+            : "Cuebid Raise (10-12, Limit Raise or Better)",
+        reasoning: `Partner opened ${openerBid} and you hold ${partnerFitND}-card support with ${pointTotal} TP. In competition, direct raises — even jumps — are WEAK/preemptive, so the cuebid of the overcalled suit (${cueBidND}) carries every raise of limit strength or better.${pointTotal >= 13 ? " With game-going values you will insist on game." : " With 10-12, pass partner's minimum signoff."}`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `${partnerFitND}-card ${partnerSuitNameND} support, ${pointTotal >= 13 ? "13+ pts — game-forcing" : "10-12 pts — limit raise"}.`,
+        expectedResponses: [
+          { partnerBid: "Return to the suit", meaning: "Minimum opener" },
+          { partnerBid: "Game", meaning: "Accepting with extras" },
+        ],
+        confidence: "high",
+      };
+    }
+  }
+  if (minRaise && parseInt(minRaise[0]) <= 3) {
+    return {
+      bid: minRaise,
+      category:
+        pointTotal >= 13
+          ? "Raise (Game-Going Hand — Will Bid Again)"
+          : pointTotal >= 10
+            ? "Raise (Limit Values, Cue Unavailable)"
+            : "Competitive Raise",
+      reasoning: `Partner opened ${openerBid} and you hold ${partnerFitND}-card support — raising describes this hand better than a negative double. ${pointTotal >= 13 ? `With ${pointTotal} TP the hand is game-going: the preempt removed the forcing cuebid, so raise now and bid again over partner's sign-off.` : pointTotal >= 10 ? `With ${pointTotal} TP, make a limit raise.` : "With under 10 points, raise once competitively."}`,
+      handAnalysis: analysis,
+      whatYourBidTellsPartner: `${partnerFitND}-card ${partnerSuitNameND} support, ${pointTotal >= 13 ? "13+ pts — I will bid again over a sign-off" : pointTotal >= 10 ? "10-12 pts (limit raise)" : "6-9 pts (competitive)"}.`,
+      expectedResponses: [
+        { partnerBid: "Pass", meaning: "Minimum opener" },
+        { partnerBid: "Game", meaning: "Extra values" },
+      ],
+      confidence: "high",
+    };
+  }
+  return null;
+}
 
 export function getNegativeDouble(
   hand: Hand,
@@ -1603,84 +1669,24 @@ export function getNegativeDouble(
     }
   }
 
-  // ── 4+ card support for partner's suit (after natural-suit preference) ────
-  // With 4+ card support, a raise describes the hand better than a negative
-  // double.  (3-card raises are a last resort — see fallback below.)
-  const partnerSuitNameND = openerBid.includes("♠")
-    ? "spades"
-    : openerBid.includes("♥")
-      ? "hearts"
-      : openerBid.includes("♦")
-        ? "diamonds"
-        : openerBid.includes("♣")
-          ? "clubs"
-          : null;
+  const partnerSuitNameND = suitFromBid(openerBid);
   const partnerFitND = partnerSuitNameND
     ? (hand[partnerSuitNameND as keyof Hand] as number)
     : 0;
-  if (
-    partnerSuitNameND &&
-    partnerFitND >= 4 &&
-    (partnerSuitNameND === "hearts" ||
-      partnerSuitNameND === "spades" ||
-      partnerFitND >= 5) &&
-    !overcall.endsWith("NT") &&
-    overcall.slice(1) !== openerBid.slice(1)
-  ) {
-    const overcallIdxR = BID_ORDER.indexOf(overcall);
-    const sym = suitSymbol(partnerSuitNameND);
-    const minRaise = BID_ORDER.find(
-      (b, i) => i > overcallIdxR && b.endsWith(sym),
-    );
-    // A fit with partner is established here, so re-value with SHORT-suit
-    // (ruffing) support points, not long-suit TP.
-    const tpND = calcTPWithFit(hand);
-    // 10+ with support: the CUEBID of the overcalled suit is the
-    // limit-raise-OR-BETTER — direct raises (including jumps) are weak/
-    // competitive in competition, so all real raises go through the cue.
-    if (tpND >= 10 && minRaise && parseInt(minRaise[0]) <= 3) {
-      const cueBidND = BID_ORDER.find(
-        (b, i) =>
-          i > BID_ORDER.indexOf(overcall) && b.endsWith(overcall.slice(1)),
-      );
-      if (cueBidND && parseInt(cueBidND[0]) <= 3) {
-        return {
-          bid: cueBidND,
-          category:
-            tpND >= 13
-              ? "Cuebid Raise (13+, Game Forcing)"
-              : "Cuebid Raise (10-12, Limit Raise or Better)",
-          reasoning: `Partner opened ${openerBid} and you hold ${partnerFitND}-card support with ${tpND} TP. In competition, direct raises — even jumps — are WEAK/preemptive, so the cuebid of the overcalled suit (${cueBidND}) carries every raise of limit strength or better.${tpND >= 13 ? " With game-going values you will insist on game." : " With 10-12, pass partner's minimum signoff."}`,
-          handAnalysis: analysis,
-          whatYourBidTellsPartner: `${partnerFitND}-card ${partnerSuitNameND} support, ${tpND >= 13 ? "13+ pts — game-forcing" : "10-12 pts — limit raise"}.`,
-          expectedResponses: [
-            { partnerBid: "Return to the suit", meaning: "Minimum opener" },
-            { partnerBid: "Game", meaning: "Accepting with extras" },
-          ],
-          confidence: "high",
-        };
-      }
-    }
-    if (minRaise && parseInt(minRaise[0]) <= 3) {
-      return {
-        bid: minRaise,
-        category:
-          tpND >= 13
-            ? "Raise (Game-Going Hand — Will Bid Again)"
-            : tpND >= 10
-              ? "Raise (Limit Values, Cue Unavailable)"
-              : "Competitive Raise",
-        reasoning: `Partner opened ${openerBid} and you hold ${partnerFitND}-card support — raising describes this hand better than a negative double. ${tpND >= 13 ? `With ${tpND} TP the hand is game-going: the preempt removed the forcing cuebid, so raise now and bid again over partner's sign-off.` : tpND >= 10 ? `With ${tpND} TP, make a limit raise.` : "With under 10 points, raise once competitively."}`,
-        handAnalysis: analysis,
-        whatYourBidTellsPartner: `${partnerFitND}-card ${partnerSuitNameND} support, ${tpND >= 13 ? "13+ pts — I will bid again over a sign-off" : tpND >= 10 ? "10-12 pts (limit raise)" : "6-9 pts (competitive)"}.`,
-        expectedResponses: [
-          { partnerBid: "Pass", meaning: "Minimum opener" },
-          { partnerBid: "Game", meaning: "Extra values" },
-        ],
-        confidence: "high",
-      };
-    }
-  }
+
+  const fourPlusRaise = partnerSuitNameND
+    ? negativeDoubleFitRaise(
+        hand,
+        analysis,
+        openerBid,
+        overcall,
+        partnerSuitNameND,
+        partnerFitND,
+        4,
+        calcTPWithFit(hand),
+      )
+    : null;
+  if (fourPlusRaise) return fourPlusRaise;
 
   // ── Shape check: a negative double PROMISES the unbid major(s) ─────────────
   const shapeOk =
@@ -1693,80 +1699,19 @@ export function getNegativeDouble(
           : // no unbid major: double implies both unbid minors
             hand.diamonds >= 4 && hand.clubs >= 4;
   if (!shapeOk) {
-    // ── Fallback: 3-card raise when no double/natural bid is available ─────────
-    const partnerSuitNameND = openerBid.includes("♠")
-      ? "spades"
-      : openerBid.includes("♥")
-        ? "hearts"
-        : openerBid.includes("♦")
-          ? "diamonds"
-          : openerBid.includes("♣")
-            ? "clubs"
-            : null;
-    const partnerFitND = partnerSuitNameND
-      ? (hand[partnerSuitNameND as keyof Hand] as number)
-      : 0;
-    if (
-      partnerSuitNameND &&
-      partnerFitND >= 3 &&
-      (partnerSuitNameND === "hearts" ||
-        partnerSuitNameND === "spades" ||
-        partnerFitND >= 4) &&
-      !overcall.endsWith("NT") &&
-      overcall.slice(1) !== openerBid.slice(1)
-    ) {
-      const overcallIdxR = BID_ORDER.indexOf(overcall);
-      const sym = suitSymbol(partnerSuitNameND);
-      const minRaise = BID_ORDER.find(
-        (b, i) => i > overcallIdxR && b.endsWith(sym),
-      );
-      const tpND = analysis.tp;
-      // 10+ with support: the CUEBID of the overcalled suit is the
-      // limit-raise-OR-BETTER — direct raises (including jumps) are weak/
-      // competitive in competition, so all real raises go through the cue.
-      if (tpND >= 10 && minRaise && parseInt(minRaise[0]) <= 3) {
-        const cueBidND = BID_ORDER.find(
-          (b, i) =>
-            i > BID_ORDER.indexOf(overcall) && b.endsWith(overcall.slice(1)),
-        );
-        if (cueBidND && parseInt(cueBidND[0]) <= 3) {
-          return {
-            bid: cueBidND,
-            category:
-              tpND >= 13
-                ? "Cuebid Raise (13+, Game Forcing)"
-                : "Cuebid Raise (10-12, Limit Raise or Better)",
-            reasoning: `Partner opened ${openerBid} and you hold ${partnerFitND}-card support with ${tpND} TP. In competition, direct raises — even jumps — are WEAK/preemptive, so the cuebid of the overcalled suit (${cueBidND}) carries every raise of limit strength or better.${tpND >= 13 ? " With game-going values you will insist on game." : " With 10-12, pass partner's minimum signoff."}`,
-            handAnalysis: analysis,
-            whatYourBidTellsPartner: `${partnerFitND}-card ${partnerSuitNameND} support, ${tpND >= 13 ? "13+ pts — game-forcing" : "10-12 pts — limit raise"}.`,
-            expectedResponses: [
-              { partnerBid: "Return to the suit", meaning: "Minimum opener" },
-              { partnerBid: "Game", meaning: "Accepting with extras" },
-            ],
-            confidence: "high",
-          };
-        }
-      }
-      if (minRaise && parseInt(minRaise[0]) <= 3) {
-        return {
-          bid: minRaise,
-          category:
-            tpND >= 13
-              ? "Raise (Game-Going Hand — Will Bid Again)"
-              : tpND >= 10
-                ? "Raise (Limit Values, Cue Unavailable)"
-                : "Competitive Raise",
-          reasoning: `Partner opened ${openerBid} and you hold ${partnerFitND}-card support — raising describes this hand better than a negative double. ${tpND >= 13 ? `With ${tpND} TP the hand is game-going: the preempt removed the forcing cuebid, so raise now and bid again over partner's sign-off.` : tpND >= 10 ? `With ${tpND} TP, make a limit raise.` : "With under 10 points, raise once competitively."}`,
-          handAnalysis: analysis,
-          whatYourBidTellsPartner: `${partnerFitND}-card ${partnerSuitNameND} support, ${tpND >= 13 ? "13+ pts — I will bid again over a sign-off" : tpND >= 10 ? "10-12 pts (limit raise)" : "6-9 pts (competitive)"}.`,
-          expectedResponses: [
-            { partnerBid: "Pass", meaning: "Minimum opener" },
-            { partnerBid: "Game", meaning: "Extra values" },
-          ],
-          confidence: "high",
-        };
-      }
-    }
+    const threePlusRaise = partnerSuitNameND
+      ? negativeDoubleFitRaise(
+          hand,
+          analysis,
+          openerBid,
+          overcall,
+          partnerSuitNameND,
+          partnerFitND,
+          3,
+          analysis.tp,
+        )
+      : null;
+    if (threePlusRaise) return threePlusRaise;
 
     // Before passing: a 4+ card unbid major biddable at the 1-level is a natural,
     // forcing response — show it rather than passing with values.  (A negative
