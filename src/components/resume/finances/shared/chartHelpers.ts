@@ -73,7 +73,11 @@ export const formatCompactAxisCurrency = (value: number): string => {
     return formatScaled(abs / 1_000_000, "M");
   }
   if (abs >= 1_000) {
-    return formatScaled(abs / 1_000, "k");
+    const inK = abs / 1_000;
+    if (inK >= 100 && Math.round(inK) >= 1_000) {
+      return formatScaled(abs / 1_000_000, "M");
+    }
+    return formatScaled(inK, "k");
   }
 
   return `${sign}$${Math.round(abs).toLocaleString("en-US")}`;
