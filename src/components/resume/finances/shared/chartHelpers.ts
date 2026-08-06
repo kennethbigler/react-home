@@ -69,14 +69,11 @@ export const formatCompactAxisCurrency = (value: number): string => {
     return `${sign}$${rounded}${suffix}`;
   };
 
-  if (abs >= 1_000_000) {
+  const inK = abs / 1_000;
+  if (abs >= 1_000_000 || (inK >= 100 && Math.round(inK) >= 1_000)) {
     return formatScaled(abs / 1_000_000, "M");
   }
   if (abs >= 1_000) {
-    const inK = abs / 1_000;
-    if (inK >= 100 && Math.round(inK) >= 1_000) {
-      return formatScaled(abs / 1_000_000, "M");
-    }
     return formatScaled(inK, "k");
   }
 
