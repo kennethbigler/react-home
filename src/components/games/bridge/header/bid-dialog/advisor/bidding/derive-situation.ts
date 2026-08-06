@@ -1323,6 +1323,25 @@ function deriveSituationCore(
     const partnerDoubledEarlierRAS = flatRAS.some(
       (e, i) => e.seat === partner && e.call === "Double" && i < partnerIdxRAS,
     );
+    // Jordan 2NT applies ONLY when an opponent's DOUBLE sat DIRECTLY over MY
+    // OPENING bid — i.e. the auction ran my-opening, (Double), then straight
+    // to partner's response (passes allowed in between, but no other REAL
+    // bid). A double anywhere else (over partner's later bid, a reopening
+    // double after 2NT was already on the table, etc.) does not make 2NT
+    // Jordan — checking only "did LHO or RHO ever double" would
+    // over-trigger on those unrelated auctions.
+    const myOpeningIdxRAS = flatRAS.findIndex(
+      (e) => e.seat === myPosition && e.call === myBids[0],
+    );
+    const oppDoubledMyOpeningDirectlyRAS =
+      myOpeningIdxRAS >= 0 &&
+      partnerIdxRAS > myOpeningIdxRAS &&
+      flatRAS
+        .slice(myOpeningIdxRAS + 1, partnerIdxRAS)
+        .every((e) => e.call === "Pass" || e.call === "Double") &&
+      flatRAS
+        .slice(myOpeningIdxRAS + 1, partnerIdxRAS)
+        .some((e) => e.call === "Double");
     return {
       situation: "rebid-after-suit",
       myPreviousBid: myLastBid,
@@ -1337,6 +1356,9 @@ function deriveSituationCore(
       ...(alreadyDescribed && { partnerHasNothingNew: true }),
       ...(partnerCuedTheirSuit && { partnerCuedTheirSuit: true }),
       ...(partnerDoubledEarlierRAS && { partnerDoubledEarlier: true }),
+      ...(oppDoubledMyOpeningDirectlyRAS && {
+        oppDoubledMyOpeningDirectly: true,
+      }),
     };
   }
 

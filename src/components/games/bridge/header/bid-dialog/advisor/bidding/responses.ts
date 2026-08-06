@@ -1574,36 +1574,45 @@ export function getResponseToWeak2(
   const partnerSuit = suitFromBid(partnerBid) ?? "diamonds";
   const partnerSuitSym = suitSymbol(partnerSuit);
   const mySupport = hand[partnerSuit as keyof Hand] as number;
+  const bidClearsInterference = (bid: string) =>
+    !interferenceBid ||
+    !isRealBid(interferenceBid) ||
+    BID_ORDER.indexOf(bid) > BID_ORDER.indexOf(interferenceBid);
 
   // ── 4+ trump support: bid game directly regardless of HCP ─────────────────
   // Bridgedoctor: "Raise to 4: 4-card support OR 16+ TP with at least 2-card support"
   if (mySupport >= 4) {
     if (partnerSuit === "diamonds") {
-      return {
-        bid: "4♦",
-        category: "Preemptive Raise of Weak 2 (4+ Diamond Support)",
-        reasoning: `With ${mySupport}-card diamond support opposite partner's weak 2♦, raise to 4♦ — a pre-emptive partscore raise, not a game-forcing major raise.`,
-        handAnalysis: analysis,
-        whatYourBidTellsPartner:
-          "4+ card diamond support — pre-emptive raise in the minor.",
-        expectedResponses: [
-          { partnerBid: "Pass", meaning: "Accept the raise" },
-        ],
-        confidence: "high",
-      };
+      if (bidClearsInterference("4♦")) {
+        return {
+          bid: "4♦",
+          category: "Preemptive Raise of Weak 2 (4+ Diamond Support)",
+          reasoning: `With ${mySupport}-card diamond support opposite partner's weak 2♦, raise to 4♦ — a pre-emptive partscore raise, not a game-forcing major raise.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner:
+            "4+ card diamond support — pre-emptive raise in the minor.",
+          expectedResponses: [
+            { partnerBid: "Pass", meaning: "Accept the raise" },
+          ],
+          confidence: "high",
+        };
+      }
+    } else {
+      const gameBid = `4${partnerSuitSym}`;
+      if (bidClearsInterference(gameBid)) {
+        return {
+          bid: gameBid,
+          category: `Game Raise of Weak 2 (${mySupport}-Card Support)`,
+          reasoning: `With ${mySupport}-card ${partnerSuit} support, raise to ${gameBid}. A 10-card fit with partner's 6-card suit provides a solid foundation — game is likely even opposite a minimum weak 2.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: `4+ card ${partnerSuit} support — bidding game. This may also be pre-emptive against opponents.`,
+          expectedResponses: [
+            { partnerBid: "Pass", meaning: "Accept the game contract" },
+          ],
+          confidence: "high",
+        };
+      }
     }
-    const gameBid = `4${partnerSuitSym}`;
-    return {
-      bid: gameBid,
-      category: `Game Raise of Weak 2 (${mySupport}-Card Support)`,
-      reasoning: `With ${mySupport}-card ${partnerSuit} support, raise to ${gameBid}. A 10-card fit with partner's 6-card suit provides a solid foundation — game is likely even opposite a minimum weak 2.`,
-      handAnalysis: analysis,
-      whatYourBidTellsPartner: `4+ card ${partnerSuit} support — bidding game. This may also be pre-emptive against opponents.`,
-      expectedResponses: [
-        { partnerBid: "Pass", meaning: "Accept the game contract" },
-      ],
-      confidence: "high",
-    };
   }
 
   // ── Balanced hand with 16+ HCP and limited support: bid 3NT ───────────────

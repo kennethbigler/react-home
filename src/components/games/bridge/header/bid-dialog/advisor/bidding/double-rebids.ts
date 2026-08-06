@@ -217,7 +217,7 @@ export function getRebidAfterNegativeDouble(
     // Opponent overcalled both majors — negative double shows minors or an unusual hand.
     // Best response: bid NT with stoppers in opponent's suits, otherwise rebid own suit.
     const hasStoppers =
-      hand.hasStopperInOpponentSuit !== false &&
+      hand.hasStopperInOpponentSuit === true &&
       hand.spades >= 2 &&
       hand.hearts >= 2;
     // An NT rebid is a notrump decision: judge by HCP and require a balanced
@@ -323,7 +323,7 @@ export function getRebidAfterNegativeDouble(
 
   // No fit — bid NT with stopper or rebid own suit.  NT level is an HCP
   // decision (the hand is already balanced here).
-  if (analysis.isBalanced && hand.hasStopperInOpponentSuit !== false) {
+  if (analysis.isBalanced && hand.hasStopperInOpponentSuit === true) {
     const ntBid = liftStrain(hand.hcp >= 18 ? 2 : 1, "NT");
     return {
       bid: ntBid,

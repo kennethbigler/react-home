@@ -1445,25 +1445,31 @@ export function getRebidAfterSuit(
     //    real shortness/strength needed to commit straight to game. ───────────
     if (partnerSuitLen >= 4 && supportTP >= 16) {
       const jumpSupportBid = `${raiseLvl + 1}${suitSymbol(partnerSuit)}`;
-      return {
-        bid: jumpSupportBid,
-        category: "Jump Support (16-18 support pts)",
-        reasoning: `With 4+ card support for partner's ${partnerSuit} and ${supportTP} support points (HCP plus short-suit ruffing points, 16-18), jump to ${jumpSupportBid} — an invitational jump raise. This invites partner to bid game with 9+ HCP.`,
-        handAnalysis: analysis,
-        whatYourBidTellsPartner: `4+ card ${partnerSuit} support, 16-18 support points — strong opener. Bid game with 9+ HCP.`,
-        expectedResponses: [
-          {
-            partnerBid: partnerGameBid,
-            meaning: "9+ HCP — accepting the game invitation",
-          },
-          { partnerBid: "Pass", meaning: "Minimum (6-8 HCP) — declining" },
-        ],
-        confidence: "high",
-      };
+      const jumpSupportLegal =
+        !interferenceBid ||
+        !isRealBid(interferenceBid) ||
+        BID_ORDER.indexOf(jumpSupportBid) > BID_ORDER.indexOf(interferenceBid);
+      if (jumpSupportLegal) {
+        return {
+          bid: jumpSupportBid,
+          category: "Jump Support (16-18 support pts)",
+          reasoning: `With 4+ card support for partner's ${partnerSuit} and ${supportTP} support points (HCP plus short-suit ruffing points, 16-18), jump to ${jumpSupportBid} — an invitational jump raise. This invites partner to bid game with 9+ HCP.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: `4+ card ${partnerSuit} support, 16-18 support points — strong opener. Bid game with 9+ HCP.`,
+          expectedResponses: [
+            {
+              partnerBid: partnerGameBid,
+              meaning: "9+ HCP — accepting the game invitation",
+            },
+            { partnerBid: "Pass", meaning: "Minimum (6-8 HCP) — declining" },
+          ],
+          confidence: "high",
+        };
+      }
     }
 
     // ── 4-card support: simple raise of partner's suit (13-15 support pts) ────
-    if (partnerSuitLen >= 4 && supportTP <= 15) {
+    if (partnerSuitLen >= 4 && supportTP <= 15 && raiseBidLegal) {
       return {
         bid: raiseBid,
         category: "Raise Partner's Suit (13-15 support pts)",
@@ -1493,7 +1499,8 @@ export function getRebidAfterSuit(
       partnerSuitLen === 3 &&
       supportTP <= 15 &&
       myOpenSuitLen < 5 &&
-      !analysis.isBalanced
+      !analysis.isBalanced &&
+      raiseBidLegal
     ) {
       return {
         bid: raiseBid,

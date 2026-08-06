@@ -263,11 +263,14 @@ function getRecommendationRaw(
           (b) => !!b && isRealBid(b) && b.endsWith("NT"),
         ),
         context.partnerDoubledEarlier ?? false,
-        // An opponent DOUBLED my opening (not a real bid, so it never
-        // appears in interferenceBid) — partner's 2NT response in this
-        // auction is JORDAN (a limit raise of my suit), not a natural
-        // balanced invite, and must be answered on that ladder instead.
-        context.lhoBid === "Double" || context.rhoBid === "Double",
+        // An opponent's DOUBLE sat DIRECTLY over my opening (derived from the
+        // full auction timeline, not just "did LHO/RHO ever double") —
+        // partner's 2NT response in this auction is JORDAN (a limit raise of
+        // my suit), not a natural balanced invite, and must be answered on
+        // that ladder instead. A double elsewhere in the auction (e.g. over
+        // partner's own bid, or a later reopening double) must NOT trigger
+        // this reading.
+        context.oppDoubledMyOpeningDirectly ?? false,
       );
     }
 
