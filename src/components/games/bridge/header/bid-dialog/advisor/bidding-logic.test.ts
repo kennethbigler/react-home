@@ -9150,6 +9150,24 @@ describe("bidding-logic | overcaller-rebid — partner raised my overcall", () =
   });
 });
 
+describe("bidding-logic | overcaller-rebid — Cappelletti relay reveal blocked", () => {
+  it("1NT-(2♣)-2♦-(3♣): capped reveal unavailable → Pass (2♦ is artificial, not diamonds)", () => {
+    const rec = getRecommendation(
+      mkHand(10, 2, 2, 3, 6),
+      ctx("overcaller-rebid", {
+        myFirstBid: "2♣",
+        myPreviousBid: "2♣",
+        partnerBid: "2♦",
+        lhoBid: "1NT",
+        rhoBid: "3♣",
+      }),
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toContain("Cappelletti Relay Blocked");
+    expect(rec.category).not.toContain("Raise Partner");
+  });
+});
+
 // ── 16. Overcaller rebid — partner cuebid opener's suit (lines ~4582-4640) ────
 
 describe("bidding-logic | overcaller-rebid — partner cuebid opener's suit", () => {
