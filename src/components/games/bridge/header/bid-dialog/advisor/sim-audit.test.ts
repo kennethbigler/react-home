@@ -339,26 +339,22 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): DealResult {
       lastNonPass.call === "Double" &&
       lastNonPass.seat !== pSeat &&
       lastNonPass.seat !== entry.seat;
-    const asPartner = getBidMeaning(
-      entry.call,
-      "partner",
-      prevHigh,
-      bidderPrev,
-      partnerPrev,
-      opening,
-      partnerFirst,
+    const asPartner = getBidMeaning(entry.call, "partner", {
+      prevHighBid: prevHigh,
+      bidderPreviousBid: bidderPrev,
+      bidderPartnerPreviousBid: partnerPrev,
+      auctionOpeningBid: opening,
+      bidderPartnerFirstBid: partnerFirst,
       oppDoubledJustBefore,
-    );
-    const asOpp = getBidMeaning(
-      entry.call,
-      "rho",
-      prevHigh,
-      bidderPrev,
-      partnerPrev,
-      opening,
-      partnerFirst,
+    });
+    const asOpp = getBidMeaning(entry.call, "rho", {
+      prevHighBid: prevHigh,
+      bidderPreviousBid: bidderPrev,
+      bidderPartnerPreviousBid: partnerPrev,
+      auctionOpeningBid: opening,
+      bidderPartnerFirstBid: partnerFirst,
       oppDoubledJustBefore,
-    );
+    });
     lines.push(`#${idx + 1} P${entry.seat} ${entry.call}`);
     lines.push(`   partner-view: ${asPartner}`);
     lines.push(`   opp-view:     ${asOpp}`);

@@ -316,6 +316,8 @@ function getRecommendationRaw(
         context.partnerBid,
         context.auctionOpeningBid,
         context.myPreviousBid,
+        context.lhoBid,
+        context.rhoBid,
       );
 
     case "overcaller-rebid":
@@ -633,7 +635,9 @@ export function getRecommendation(
   // Some options legal — use the lowest legal alternative (the most
   // conservative restatement of the original advice).
   if (tooLow.length > 0 && validBids.length > 0) {
-    const bestBid = validBids[0];
+    const bestBid = validBids.reduce((a, b) =>
+      BID_ORDER.indexOf(a) < BID_ORDER.indexOf(b) ? a : b,
+    );
     return {
       ...rec,
       bid: bestBid,

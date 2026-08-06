@@ -3,6 +3,7 @@ import {
   analyzeHand,
   calcTPWithFit,
   hasVoid,
+  longestSuitInfo,
   suitSymbol,
 } from "./hand-evaluation";
 import { getResponseToOneNT, getResponseToPreempt } from "./responses";
@@ -324,10 +325,9 @@ export function getResponseToSimpleOC(
   // (preferred over forcing a 4-level minor) rather than falling through to a
   // phantom "auction past" pass.  Without a stopper, the no-stopper branches
   // above/below handle it (safe suit or pass).
-  const cheapestNTIdx = BID_ORDER.findIndex(
+  const cheapestNT = BID_ORDER.find(
     (b, i) => i > advanceFloorIdx && b.endsWith("NT"),
   );
-  const cheapestNT = cheapestNTIdx >= 0 ? BID_ORDER[cheapestNTIdx] : undefined;
   const partnerOvercallLvlAdv = parseInt(partnerBid[0]) || 1;
   if (
     cheapestNT === "3NT" &&
@@ -375,16 +375,13 @@ export function getResponseToSimpleOC(
         confidence: "medium",
       };
     }
-    const cheapestNTAdv = BID_ORDER.find(
-      (b, i) => i > advanceFloorIdx && b.endsWith("NT"),
-    );
-    if (cheapestNTAdv !== "1NT") {
+    if (cheapestNT !== "1NT") {
       // The auction is past 1NT — an NT advance would now show 13+ (2NT) or
       // more, which this hand does not have.  Pass.
       return {
         bid: "Pass",
         category: "Pass (NT Advance No Longer Fits the Hand)",
-        reasoning: `With 9-12 pts, the natural advance of partner's overcall would be 1NT — but the auction is already past it (the cheapest notrump is ${cheapestNTAdv ?? "unavailable"}, which would promise 13+). ${noFitNote} Pass; partner's overcall was limited and nothing is forcing you to act.`,
+        reasoning: `With 9-12 pts, the natural advance of partner's overcall would be 1NT — but the auction is already past it (the cheapest notrump is ${cheapestNT ?? "unavailable"}, which would promise 13+). ${noFitNote} Pass; partner's overcall was limited and nothing is forcing you to act.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner:
           "9-12 pts, no fit — nothing safe to say at this level.",
@@ -431,13 +428,8 @@ export function getResponseToSimpleOC(
         confidence: "medium",
       };
     }
-    const cheapestNTAdv2 = BID_ORDER.find(
-      (b, i) => i > advanceFloorIdx && b.endsWith("NT"),
-    );
     const ntAdvBid2 =
-      cheapestNTAdv2 && parseInt(cheapestNTAdv2[0]) <= 2
-        ? cheapestNTAdv2
-        : undefined;
+      cheapestNT && parseInt(cheapestNT[0]) <= 2 ? cheapestNT : undefined;
     if (!ntAdvBid2) {
       return {
         bid: "Pass",
@@ -487,14 +479,11 @@ export function getResponseToSimpleOC(
       confidence: "medium",
     };
   }
-  const cheapestNTAdv3 = BID_ORDER.find(
-    (b, i) => i > advanceFloorIdx && b.endsWith("NT"),
-  );
   const ntAdvBid3 =
-    cheapestNTAdv3 && parseInt(cheapestNTAdv3[0]) <= 3
-      ? cheapestNTAdv3 === "1NT" || cheapestNTAdv3 === "2NT"
+    cheapestNT && parseInt(cheapestNT[0]) <= 3
+      ? cheapestNT === "1NT" || cheapestNT === "2NT"
         ? "3NT"
-        : cheapestNTAdv3
+        : cheapestNT
       : undefined;
   if (!ntAdvBid3) {
     return {
@@ -965,16 +954,17 @@ export function getResponseToDouble(
       .map(suitNameOfAdv)
       .filter((n): n is string => !!n),
   );
-  const longestName = (["spades", "hearts", "diamonds", "clubs"] as const)
-    .filter((sn) => !oppSuitNamesAdv.has(sn))
-    .sort((a, b) => {
+  const unshownSuits = (
+    ["spades", "hearts", "diamonds", "clubs"] as const
+  ).filter((sn) => !oppSuitNamesAdv.has(sn));
+  const longestName =
+    [...unshownSuits].sort((a, b) => {
       const lenDiff =
         (hand[b as keyof Hand] as number) - (hand[a as keyof Hand] as number);
       if (lenDiff !== 0) return lenDiff;
-      // Tie: prefer the major.
       const isMajor = (x: string) => x === "spades" || x === "hearts";
       return (isMajor(b) ? 1 : 0) - (isMajor(a) ? 1 : 0);
-    })[0];
+    })[0] ?? longestSuitInfo(hand).name;
   const sym = suitSymbol(longestName);
   let minLevel = 1;
   while (minLevel < 7 && !clears(`${minLevel}${sym}`)) minLevel++;
@@ -1215,9 +1205,9 @@ export function getResponseToUnusual2NT(hand: Hand): BidRecommendation {
   // Partner showed clubs and diamonds (the two minors after a major opening)
   if (hand.diamonds >= hand.clubs) {
     return {
-      bid: supportTP >= 11 ? "4♦" : "3♦",
+      bid: supportTP >= 11 ? "5♦" : "3♦",
       category: "Respond to Unusual 2NT (Prefer Diamonds)",
-      reasoning: `Partner showed 5+ clubs and 5+ diamonds. With ${hand.diamonds} diamonds${supportTP >= 11 ? " and game values, bid 4♦" : ", bid 3♦"}.`,
+      reasoning: `Partner showed 5+ clubs and 5+ diamonds. With ${hand.diamonds} diamonds${supportTP >= 11 ? " and game values, bid 5♦" : ", bid 3♦"}.`,
       handAnalysis: analysis,
       whatYourBidTellsPartner: "Prefer diamonds.",
       expectedResponses: [],

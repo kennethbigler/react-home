@@ -5,6 +5,7 @@ import {
   hasVoid,
   longestSuitInfo,
   suitBidLevel,
+  suitFromBid,
   suitSymbol,
 } from "./hand-evaluation";
 import type { BidRecommendation, Hand } from "./types";
@@ -88,14 +89,7 @@ export function getRebidAfterSuit(
     partnerResponse.slice(1) !== myOpeningBid.slice(1)
   ) {
     const myCueSym = myOpeningBid.slice(1);
-    const myCueSuitName =
-      myCueSym === "♠"
-        ? "spades"
-        : myCueSym === "♥"
-          ? "hearts"
-          : myCueSym === "♦"
-            ? "diamonds"
-            : "clubs";
+    const myCueSuitName = suitFromBid(myOpeningBid) ?? "clubs";
     const cueFloorIdx = Math.max(
       BID_ORDER.indexOf(partnerResponse),
       isRealBid(interferenceBid) ? BID_ORDER.indexOf(interferenceBid) : -1,
@@ -202,13 +196,7 @@ export function getRebidAfterSuit(
       partnerResponse.slice(1) === partnerFirstBid.slice(1) &&
       partnerResponse !== partnerFirstBid;
     if (iReversedRB && partnerReboundOwnSuit) {
-      const pSuitNameRB = partnerResponse!.includes("♠")
-        ? "spades"
-        : partnerResponse!.includes("♥")
-          ? "hearts"
-          : partnerResponse!.includes("♦")
-            ? "diamonds"
-            : "clubs";
+      const pSuitNameRB = suitFromBid(partnerResponse!) ?? "clubs";
       const myFitRB = hand[pSuitNameRB as keyof Hand] as number;
       const pIsMajorRB = pSuitNameRB === "hearts" || pSuitNameRB === "spades";
       if (myFitRB >= 3 && supportTP >= 20 && pIsMajorRB) {
@@ -440,23 +428,9 @@ export function getRebidAfterSuit(
     };
   }
 
-  const myOpenSuit = myOpeningBid.includes("♠")
-    ? "spades"
-    : myOpeningBid.includes("♥")
-      ? "hearts"
-      : myOpeningBid.includes("♦")
-        ? "diamonds"
-        : "clubs";
+  const myOpenSuit = suitFromBid(myOpeningBid) ?? "clubs";
 
-  const partnerSuit = partnerResponse.includes("♠")
-    ? "spades"
-    : partnerResponse.includes("♥")
-      ? "hearts"
-      : partnerResponse.includes("♦")
-        ? "diamonds"
-        : partnerResponse.includes("♣")
-          ? "clubs"
-          : null;
+  const partnerSuit = suitFromBid(partnerResponse) ?? null;
 
   const myOpenSuitLen = hand[myOpenSuit as keyof Hand] as number;
   const partnerSuitLen = partnerSuit
@@ -522,15 +496,7 @@ export function getRebidAfterSuit(
     // back to diamonds), it shows simple preference (~6-10), NOT a limit/jump
     // raise.  Opener must not treat it as invitational and leap to game.
     const partnerFirstSuit = partnerFirstBid
-      ? partnerFirstBid.includes("♠")
-        ? "spades"
-        : partnerFirstBid.includes("♥")
-          ? "hearts"
-          : partnerFirstBid.includes("♦")
-            ? "diamonds"
-            : partnerFirstBid.includes("♣")
-              ? "clubs"
-              : null
+      ? (suitFromBid(partnerFirstBid) ?? null)
       : null;
     const isMerePreference =
       !!partnerFirstSuit &&
@@ -1304,6 +1270,10 @@ export function getRebidAfterSuit(
     const partnerGameBid = isMajorFit
       ? `4${suitSymbol(partnerSuit)}`
       : `5${suitSymbol(partnerSuit)}`;
+    const raiseBidLegal =
+      !interferenceBid ||
+      !isRealBid(interferenceBid) ||
+      BID_ORDER.indexOf(raiseBid) > BID_ORDER.indexOf(interferenceBid);
 
     // ── I ALREADY RAISED this suit — partner's re-bid is competitive or
     // invitational, NOT a new forcing suit.  My raise told my whole story:
@@ -1400,9 +1370,7 @@ export function getRebidAfterSuit(
       partnerSuitLen === 3 &&
       supportTP >= 12
     ) {
-      const raise3Legal =
-        !interferenceBid ||
-        BID_ORDER.indexOf(raiseBid) > BID_ORDER.indexOf(interferenceBid);
+      const raise3Legal = raiseBidLegal;
       if (raise3Legal) {
         return {
           bid: raiseBid,
@@ -1429,41 +1397,48 @@ export function getRebidAfterSuit(
         // blast 5 of the minor — that steamrolls past 3NT (9 tricks vs 11)
         // and any major fit.  A strong raise keeps every game in the picture;
         // responder's 10+ means the auction will not die below game.
+        if (raiseBidLegal) {
+          return {
+            bid: raiseBid,
+            category: `Strong ${partnerSuit.charAt(0).toUpperCase() + partnerSuit.slice(1)} Raise (${supportTP} support pts — Game Values)`,
+            reasoning: `With 4+ card support for partner's ${partnerSuit} and ${supportTP} support points, game is certain — but do NOT jump to 5${suitSymbol(partnerSuit)}: an 11-trick minor game is the LAST choice when 3NT (9 tricks) or a major fit may be available. Raise to ${raiseBid}; partner's 10+ response guarantees another bid, and the partnership picks the best game next.`,
+            handAnalysis: analysis,
+            whatYourBidTellsPartner: `4+ card ${partnerSuit} support with game-going values — choose the final game (3NT, a major, or 5${suitSymbol(partnerSuit)}).`,
+            expectedResponses: [
+              {
+                partnerBid: "3NT",
+                meaning: "Stoppers in the unbid suits — the 9-trick game",
+              },
+              {
+                partnerBid: "New suit",
+                meaning: "Stopper/shape probe for 3NT or a major fit",
+              },
+              {
+                partnerBid: `5${suitSymbol(partnerSuit)}`,
+                meaning: "No stoppers, no major — the minor game",
+              },
+            ],
+            confidence: "high",
+          };
+        }
+      }
+      if (raiseBidLegal) {
         return {
-          bid: raiseBid,
-          category: `Strong ${partnerSuit.charAt(0).toUpperCase() + partnerSuit.slice(1)} Raise (${supportTP} support pts — Game Values)`,
-          reasoning: `With 4+ card support for partner's ${partnerSuit} and ${supportTP} support points, game is certain — but do NOT jump to 5${suitSymbol(partnerSuit)}: an 11-trick minor game is the LAST choice when 3NT (9 tricks) or a major fit may be available. Raise to ${raiseBid}; partner's 10+ response guarantees another bid, and the partnership picks the best game next.`,
+          bid: partnerGameBid,
+          category: `Game Raise (${supportTP} support pts — Strong Opener)`,
+          reasoning: `With 4+ card support for partner's ${partnerSuit} and ${supportTP} support points (HCP plus short-suit ruffing points for the fit, 19+), bid game directly — ${partnerGameBid}. There is enough combined strength (opener 19+ + responder 6+) to make game.`,
           handAnalysis: analysis,
-          whatYourBidTellsPartner: `4+ card ${partnerSuit} support with game-going values — choose the final game (3NT, a major, or 5${suitSymbol(partnerSuit)}).`,
+          whatYourBidTellsPartner: `4+ card ${partnerSuit} support, ${supportTP} support points (19+). This is a game-level bid.`,
           expectedResponses: [
             {
-              partnerBid: "3NT",
-              meaning: "Stoppers in the unbid suits — the 9-trick game",
+              partnerBid: "Pass",
+              meaning: "Minimum responder — game is enough",
             },
-            {
-              partnerBid: "New suit",
-              meaning: "Stopper/shape probe for 3NT or a major fit",
-            },
-            {
-              partnerBid: `5${suitSymbol(partnerSuit)}`,
-              meaning: "No stoppers, no major — the minor game",
-            },
+            { partnerBid: "4NT", meaning: "Slam interest — Blackwood" },
           ],
           confidence: "high",
         };
       }
-      return {
-        bid: partnerGameBid,
-        category: `Game Raise (${supportTP} support pts — Strong Opener)`,
-        reasoning: `With 4+ card support for partner's ${partnerSuit} and ${supportTP} support points (HCP plus short-suit ruffing points for the fit, 19+), bid game directly — ${partnerGameBid}. There is enough combined strength (opener 19+ + responder 6+) to make game.`,
-        handAnalysis: analysis,
-        whatYourBidTellsPartner: `4+ card ${partnerSuit} support, ${supportTP} support points (19+). This is a game-level bid.`,
-        expectedResponses: [
-          { partnerBid: "Pass", meaning: "Minimum responder — game is enough" },
-          { partnerBid: "4NT", meaning: "Slam interest — Blackwood" },
-        ],
-        confidence: "high",
-      };
     }
 
     // ── Jump support (invitational): 16-18 support points, or 19 without the
@@ -1546,7 +1521,7 @@ export function getRebidAfterSuit(
     // … but an opponent's intervening bid (e.g. 3♦ over partner's 2♥) raises
     // the floor: my suit rebid must be strictly higher than their call.  Bump
     // the level until a bid of my suit clears the interference.
-    if (interferenceBid && interferenceBid !== "Pass") {
+    if (interferenceBid && isRealBid(interferenceBid)) {
       const interferenceIdx = BID_ORDER.indexOf(interferenceBid);
       while (
         simpleLevel < 7 &&
@@ -1581,9 +1556,10 @@ export function getRebidAfterSuit(
         // 1NT before my turn) — the natural landing spot for this suit is
         // then the CHEAPEST level that clears the interference, not a blind
         // "1-level" call, which would be illegal and fall to a phantom pass.
-        const oneLevelFloorIdx = interferenceBid
-          ? BID_ORDER.indexOf(interferenceBid)
-          : BID_ORDER.indexOf(`1${suitSymbol(oneLevelSuit)}`) - 1;
+        const oneLevelFloorIdx =
+          interferenceBid && isRealBid(interferenceBid)
+            ? BID_ORDER.indexOf(interferenceBid)
+            : BID_ORDER.indexOf(`1${suitSymbol(oneLevelSuit)}`) - 1;
         const oneLevelBid = BID_ORDER.find(
           (b, i) =>
             i > oneLevelFloorIdx && b.endsWith(suitSymbol(oneLevelSuit)),
@@ -1931,14 +1907,27 @@ export function getRebidAfterSuit(
   // Balanced hands can still describe their shape with an NT rebid.
   // Unbalanced hands with no clear action should pass.
   if (!partnerSuit) {
+    const interferenceFloorIdx =
+      interferenceBid && isRealBid(interferenceBid)
+        ? BID_ORDER.indexOf(interferenceBid)
+        : -1;
+    const cheapestAbove = (sym: string) =>
+      BID_ORDER.find((b, i) => i > interferenceFloorIdx && b.endsWith(sym));
     if (analysis.isBalanced) {
       const { hcp } = hand;
-      const level = hcp >= 18 ? 2 : 1;
+      const preferredLevel = hcp >= 18 ? 2 : 1;
+      const preferredNT = `${preferredLevel}NT`;
+      const ntBid =
+        BID_ORDER.indexOf(preferredNT) > interferenceFloorIdx
+          ? preferredNT
+          : (BID_ORDER.find(
+              (b, i) => i > interferenceFloorIdx && b.endsWith("NT"),
+            ) ?? preferredNT);
       const hcpRange = hcp >= 18 ? "18-19 HCP" : "12-14 HCP";
       return {
-        bid: `${level}NT`,
-        category: `${level}NT Rebid After Partner's Double (${hcpRange})`,
-        reasoning: `Partner doubled an opponent's bid (or made another non-suit action). With a balanced hand and ${hcp} HCP, rebid ${level}NT to describe your shape and let partner know you are balanced.`,
+        bid: ntBid,
+        category: `${ntBid} Rebid After Partner's Double (${hcpRange})`,
+        reasoning: `Partner doubled an opponent's bid (or made another non-suit action). With a balanced hand and ${hcp} HCP, rebid ${ntBid} to describe your shape and let partner know you are balanced.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner: `Balanced hand, ${hcpRange}.`,
         expectedResponses: [],
@@ -1946,7 +1935,11 @@ export function getRebidAfterSuit(
       };
     }
     if (myOpenSuitLen >= 5) {
-      const rebidBid = `2${suitSymbol(myOpenSuit)}`;
+      const rebidBid =
+        interferenceBid && isRealBid(interferenceBid)
+          ? (cheapestAbove(suitSymbol(myOpenSuit)) ??
+            `2${suitSymbol(myOpenSuit)}`)
+          : `2${suitSymbol(myOpenSuit)}`;
       return {
         bid: rebidBid,
         category: "Rebid Own Suit After Partner's Double",

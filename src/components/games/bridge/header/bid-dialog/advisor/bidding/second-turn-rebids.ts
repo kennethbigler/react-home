@@ -3,6 +3,7 @@ import {
   analyzeHand,
   calcTPWithFit,
   hasVoid,
+  suitFromBid,
   suitSymbol,
 } from "./hand-evaluation";
 import type { AuctionContext, BidRecommendation, Hand } from "./types";
@@ -14,7 +15,7 @@ import type { AuctionContext, BidRecommendation, Hand } from "./types";
 // Opener's decision: accept (bid game) if maximum; decline (Pass) if minimum.
 export function getRespondToPartnerInvitation(
   hand: Hand,
-  _myLastBid: string,
+  myLastBid: string,
   partnerInviteBid: string,
   /** True when PARTNER was an overcaller (not the opener): their invite after
    *  my 6-10 raise shows a 14-15 support-point overcall — accept with 9-10. */
@@ -125,9 +126,9 @@ export function getRespondToPartnerInvitation(
   // (1X-2X-3X): it shows 16-18, and I accept with the TOP of my 6-9 raise.
   const inviteIsOpenersGameTry =
     !partnerWasOvercaller &&
-    !!_myLastBid &&
-    /^[1-7][♠♥♦♣]$/.test(_myLastBid) &&
-    _myLastBid.slice(1) === partnerInviteBid.slice(1);
+    !!myLastBid &&
+    /^[1-7][♠♥♦♣]$/.test(myLastBid) &&
+    myLastBid.slice(1) === partnerInviteBid.slice(1);
   if (inviteIsOpenersGameTry) {
     if (fitTP >= 8) {
       return {
@@ -335,22 +336,11 @@ export function getOvercallerRebid(
     }
   }
 
-  const suitOf = (bid: string | undefined): string | undefined =>
-    bid?.includes("♠")
-      ? "spades"
-      : bid?.includes("♥")
-        ? "hearts"
-        : bid?.includes("♦")
-          ? "diamonds"
-          : bid?.includes("♣")
-            ? "clubs"
-            : undefined;
-
   const myOcBid = context.myFirstBid ?? context.myPreviousBid;
-  const myOcSuit = suitOf(myOcBid);
+  const myOcSuit = suitFromBid(myOcBid);
   const partnerLatest = context.partnerBid;
-  const partnerSuit = suitOf(partnerLatest);
-  const openerSuit = suitOf(context.lhoBid);
+  const partnerSuit = suitFromBid(partnerLatest);
+  const openerSuit = suitFromBid(context.lhoBid);
   const myOcLen = myOcSuit ? (hand[myOcSuit as keyof Hand] as number) : 0;
   const isMajor = myOcSuit === "hearts" || myOcSuit === "spades";
   // Once partner has shown support (a fit is agreed), re-value the hand with
@@ -609,7 +599,12 @@ export function getOvercallerRebid(
     (hand[partnerSuit as keyof Hand] as number) >= 3 &&
     fitTP >= 14
   ) {
-    const latestIdx = BID_ORDER.indexOf(partnerLatest);
+    const latestIdx = Math.max(
+      BID_ORDER.indexOf(partnerLatest),
+      ...[context.lhoBid, context.rhoBid]
+        .filter((b): b is string => isRealBid(b))
+        .map((b) => BID_ORDER.indexOf(b)),
+    );
     const raise = BID_ORDER.find(
       (b, i) => i > latestIdx && b.endsWith(suitSymbol(partnerSuit)),
     );
@@ -917,23 +912,12 @@ export function getResponderRebid(
     };
   }
 
-  const suitOf = (bid: string | undefined): string | undefined =>
-    bid?.includes("♠")
-      ? "spades"
-      : bid?.includes("♥")
-        ? "hearts"
-        : bid?.includes("♦")
-          ? "diamonds"
-          : bid?.includes("♣")
-            ? "clubs"
-            : undefined;
-
   const partnerLatest = context.partnerBid;
   const partnerFirst = context.partnerFirstBid ?? partnerLatest;
   const myBid = context.myPreviousBid;
-  const mySuit = suitOf(myBid);
-  const pFirstSuit = suitOf(partnerFirst);
-  const pLatestSuit = suitOf(partnerLatest);
+  const mySuit = suitFromBid(myBid);
+  const pFirstSuit = suitFromBid(partnerFirst);
+  const pLatestSuit = suitFromBid(partnerLatest);
 
   // Opener's minimum strength implied by their rebid
   const openerMin = (() => {
@@ -1591,6 +1575,8 @@ export function getAdvancerRebid(
   partnerLatestBid: string | undefined,
   auctionOpeningBid?: string,
   myPreviousBid?: string,
+  lhoBid?: string,
+  rhoBid?: string,
 ): BidRecommendation {
   const analysis = analyzeHand(hand);
   const { tp } = analysis;
@@ -1660,17 +1646,6 @@ export function getAdvancerRebid(
     };
   }
 
-  const suitOf = (bid: string | undefined): string | undefined =>
-    bid?.includes("♠")
-      ? "spades"
-      : bid?.includes("♥")
-        ? "hearts"
-        : bid?.includes("♦")
-          ? "diamonds"
-          : bid?.includes("♣")
-            ? "clubs"
-            : undefined;
-
   // Partner's first bid was a CUEBID of the opening suit (Michaels) — it was
   // artificial, NOT a natural suit. Treat only their later bids as natural.
   const firstWasCuebid =
@@ -1681,8 +1656,8 @@ export function getAdvancerRebid(
     partnerFirstBid.slice(1) === auctionOpeningBid.slice(1) &&
     partnerFirstBid !== auctionOpeningBid;
 
-  const sFirst = firstWasCuebid ? undefined : suitOf(partnerFirstBid);
-  const sLatest = suitOf(partnerLatestBid);
+  const sFirst = firstWasCuebid ? undefined : suitFromBid(partnerFirstBid);
+  const sLatest = suitFromBid(partnerLatestBid);
 
   // Partner's Michaels cue → later real-suit bid AT GAME: they have placed
   // the contract in one of their shown suits. Our preference/raise already
@@ -1758,22 +1733,32 @@ export function getAdvancerRebid(
       /^[1-7][♠♥♦♣]$/.test(myPreviousBid) &&
       myPreviousBid.slice(1) === suitSymbol(sLatest);
     if (fitLen >= 3 && fitTp >= 13 && latestLevel <= 3 && !iAlreadyRaisedAR) {
-      const raiseBid = `${latestLevel + 1}${suitSymbol(sLatest)}`;
-      return {
-        bid: raiseBid,
-        category: "Advancer Raise (Undisclosed Extras)",
-        reasoning: `Partner is competing in ${sLatest}. With ${fitLen}-card support and ${tp} TP — more than your earlier action promised — raise once to ${raiseBid}. Non-forcing but encouraging.`,
-        handAnalysis: analysis,
-        whatYourBidTellsPartner: `3+ card ${sLatest} support and extra values (13+ TP) beyond your first response.`,
-        expectedResponses: [
-          { partnerBid: "Pass", meaning: "Minimum — content to play here" },
-          {
-            partnerBid: "Game",
-            meaning: "Extra values — accepting the invitation",
-          },
-        ],
-        confidence: "medium",
-      };
+      const floorIdx = Math.max(
+        BID_ORDER.indexOf(partnerLatestBid),
+        ...[lhoBid, rhoBid]
+          .filter((b): b is string => isRealBid(b))
+          .map((b) => BID_ORDER.indexOf(b)),
+      );
+      const raiseBid = BID_ORDER.find(
+        (b, i) => i > floorIdx && b.endsWith(suitSymbol(sLatest)),
+      );
+      if (raiseBid && parseInt(raiseBid[0]) <= 4) {
+        return {
+          bid: raiseBid,
+          category: "Advancer Raise (Undisclosed Extras)",
+          reasoning: `Partner is competing in ${sLatest}. With ${fitLen}-card support and ${tp} TP — more than your earlier action promised — raise once to ${raiseBid}. Non-forcing but encouraging.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: `3+ card ${sLatest} support and extra values (13+ TP) beyond your first response.`,
+          expectedResponses: [
+            { partnerBid: "Pass", meaning: "Minimum — content to play here" },
+            {
+              partnerBid: "Game",
+              meaning: "Extra values — accepting the invitation",
+            },
+          ],
+          confidence: "medium",
+        };
+      }
     }
   }
 
@@ -1921,17 +1906,19 @@ export function getProtectiveRebid(
   // extras + shortness at a low level, otherwise pass.  Repeated "protective"
   // doubles here would badly misdescribe the hand.
   if (isLiveAuction) {
-    const realOppBids = [lhoBid, rhoBid].filter(
-      (b): b is string =>
-        !!b && b !== "Pass" && b !== "Double" && b !== "Redouble",
+    const realOppBids = [lhoBid, rhoBid].filter((b): b is string =>
+      isRealBid(b),
     );
     const oppBid = realOppBids.sort(
       (a, b) => BID_ORDER.indexOf(a) - BID_ORDER.indexOf(b),
     )[realOppBids.length - 1];
     const oppIdx = oppBid ? BID_ORDER.indexOf(oppBid) : -1;
-    const liveMinRebidIdx = BID_ORDER.findIndex(
-      (bid, i) => i > oppIdx && bid.endsWith(myOpenSuitSym),
-    );
+    const liveMinRebidIdx =
+      oppIdx >= 0
+        ? BID_ORDER.findIndex(
+            (bid, i) => i > oppIdx && bid.endsWith(myOpenSuitSym),
+          )
+        : -1;
     const liveMinRebid =
       liveMinRebidIdx >= 0 ? BID_ORDER[liveMinRebidIdx] : undefined;
 

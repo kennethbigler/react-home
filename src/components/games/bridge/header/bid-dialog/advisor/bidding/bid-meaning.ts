@@ -1,53 +1,41 @@
 import { BID_ORDER, isRealBid } from "./bid-order";
 import { suitSymbol } from "./hand-evaluation";
 
+export interface BidMeaningContext {
+  /** Most recent non-pass bid before this one */
+  prevHighBid?: string;
+  /** Bidder's own previous real bid in this auction */
+  bidderPreviousBid?: string;
+  /** Bidder's partner's previous real bid (`"none"` when partner made no real bid) */
+  bidderPartnerPreviousBid?: string;
+  /** First real bid of the whole auction */
+  auctionOpeningBid?: string;
+  /** Partner's first real bid when it differs from their latest */
+  bidderPartnerFirstBid?: string;
+  /** True when the call immediately before this bid was an opponent's double */
+  oppDoubledJustBefore?: boolean;
+}
+
 // ─── Bid meaning lookup ───────────────────────────────────────────────────────
 
 /**
  * Returns a short plain-English interpretation of what `bid` likely means,
  * given who made it relative to the user.
  *
- * Pass `prevHighBid` (the most recent non-pass bid before this one) to unlock
- * context-aware interpretations for conventional bids (e.g. Stayman, Jacoby
- * Transfers) that have a different meaning depending on what was bid before.
+ * Pass contextual fields via `context` to unlock context-aware interpretations
+ * for conventional bids (e.g. Stayman, Jacoby Transfers).
  */
 export function getBidMeaning(
   bid: string,
   relationship: "partner" | "lho" | "rho",
-  prevHighBid?: string,
-  /**
-   * The bidder's OWN previous real bid in this auction, if any.  This is what
-   * separates "2♠ weak-two OPENING" from "2♠ REBID of the spades they already
-   * showed" — without it the static table mislabels every rebid.
-   */
-  bidderPreviousBid?: string,
-  /**
-   * The bidder's PARTNER's previous real bid, if any — lets the tooltip
-   * recognize a RAISE (bidding the suit partner already showed) and decide
-   * whether an NT bid in front of the bidder was partner's (conventions ON)
-   * or the opponents' (natural defense).  Pass the string "none" when the
-   * partner is KNOWN to have made no real bid; `undefined` means the caller
-   * has no history and convention readings are assumed (legacy behavior).
-   */
-  bidderPartnerPreviousBid?: string,
-  /**
-   * The FIRST real bid of the whole auction.  Since bid values are unique in
-   * an auction, comparing against this identifies openings exactly: the
-   * hovered bid is an opening iff it EQUALS this value.
-   */
-  auctionOpeningBid?: string,
-  /**
-   * The bidder's PARTNER's FIRST real bid, when it differs from their latest —
-   * lets the tooltip recognize a raise of partner's FIRST suit after partner
-   * showed a second (e.g. 1♥-1♠-2♦-4♥: the 4♥ raises the 1♥, not "a new suit").
-   */
-  bidderPartnerFirstBid?: string,
-  /**
-   * True when the call IMMEDIATELY before this bid (skipping passes) was an
-   * opponent's DOUBLE.  Over a doubled NT bid the systems are OFF: a suit
-   * bid is a natural ESCAPE, never Stayman or a transfer.
-   */
-  oppDoubledJustBefore = false,
+  {
+    prevHighBid,
+    bidderPreviousBid,
+    bidderPartnerPreviousBid,
+    auctionOpeningBid,
+    bidderPartnerFirstBid,
+    oppDoubledJustBefore = false,
+  }: BidMeaningContext = {},
 ): string {
   const isPartner = relationship === "partner";
   const isOpponent = relationship === "lho" || relationship === "rho";

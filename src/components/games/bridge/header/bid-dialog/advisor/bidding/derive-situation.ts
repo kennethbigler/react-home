@@ -59,8 +59,6 @@ function wasDoubleOfStayman(
 const WEAK2_BIDS = ["2♦", "2♥", "2♠"];
 const PREEMPT_BIDS = ["3♣", "3♦", "3♥", "3♠"];
 
-/** Returns true if the bid is a non-pass, non-double/redouble natural bid */
-
 /** Returns true if this looks like a Stayman bid (2♣ after partner opened 1NT/2NT/3NT) */
 function wasStayman(
   myBid: string,
@@ -86,9 +84,7 @@ function wasTransfer(
   return false;
 }
 
-/** Returns true if the last bid in BID_ORDER sense is a jump overcall */
-/**
- * Returns true if partnerBid is a JUMP overcall — i.e. partnerBid is at a
+/** Returns true if partnerBid is a JUMP overcall — i.e. partnerBid is at a
  * level higher than the cheapest legal overcall in that strain at the moment
  * the bid was made.
  *
@@ -115,11 +111,6 @@ function isJumpOvercall(partnerBid: string, auctionFloor: string): boolean {
 }
 
 /**
- * Returns the highest suit/NT bid that occurred in the auction BEFORE the
- * specified seat's most recent bid.  This is what "auction floor" means at
- * the moment of that bid.  Returns undefined if no prior suit/NT bid exists.
- */
-/**
  * Identifies which seat OPENED the auction (made its first real bid).
  * Scans for the first round containing a real bid; within that round the
  * opening bid is the LOWEST real bid (all later bids in a round must be
@@ -145,6 +136,11 @@ function findAuctionOpenerSeat(
   return undefined;
 }
 
+/**
+ * Returns the highest suit/NT bid that occurred in the auction BEFORE the
+ * specified seat's most recent bid.  This is what "auction floor" means at
+ * the moment of that bid.  Returns undefined if no prior suit/NT bid exists.
+ */
 function auctionFloorBeforeSeatBid(
   completedRounds: BidRound[],
   currentRound: BidRound,

@@ -1,6 +1,8 @@
 import type { BiddingPosition } from "./types";
 
-export const POSITIONS: BiddingPosition[] = [1, 2, 3, 4];
+export const POSITIONS = [
+  1, 2, 3, 4,
+] as const satisfies readonly BiddingPosition[];
 
 export function getRelatives(position: BiddingPosition): {
   partner: BiddingPosition;

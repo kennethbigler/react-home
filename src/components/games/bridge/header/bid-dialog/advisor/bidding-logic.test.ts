@@ -1777,12 +1777,12 @@ describe("bidding-logic | responding-to-unusual-2nt", () => {
     expect(rec.bid).toContain("♣");
   });
 
-  it("game values with diamonds → 4♦", () => {
+  it("game values with diamonds → 5♦", () => {
     const rec = getRecommendation(
       mkHand(11, 3, 2, 5, 3),
       ctx("responding-to-unusual-2nt"),
     );
-    expect(rec.bid).toContain("4♦");
+    expect(rec.bid).toContain("5♦");
   });
 });
 
@@ -3934,10 +3934,20 @@ describe("bidding-logic | getValidBidsAfter", () => {
     expect(bids).not.toContain("Redouble");
   });
 
-  it("after Pass: all bids + Double are valid", () => {
+  it("after Pass with no floor: all suit bids, no Double", () => {
     const bids = getValidBidsAfter("Pass");
+    expect(bids).toContain("Pass");
     expect(bids).toContain("1♣");
+    expect(bids).not.toContain("Double");
+    expect(bids).not.toContain("Redouble");
+  });
+
+  it("after Pass with lastSuitBid: bids above floor + Double", () => {
+    const bids = getValidBidsAfter("Pass", "2♣");
+    expect(bids).toContain("Pass");
+    expect(bids).toContain("2♦");
     expect(bids).toContain("Double");
+    expect(bids).not.toContain("1♥");
     expect(bids).not.toContain("Redouble");
   });
 
@@ -4017,26 +4027,27 @@ describe("bidding-logic | getBidMeaning", () => {
   it("Double after low suit → Negative ONLY when the doubler's side opened", () => {
     // Negative double requires our side to have opened.  Thread the doubler's
     // partner's opening bid (here partner opened 1♦, opp overcalled 1♠).
-    const neg = getBidMeaning("Double", "partner", "1♠", undefined, "1♦", "1♦");
+    const neg = getBidMeaning("Double", "partner", {
+      prevHighBid: "1♠",
+      bidderPartnerPreviousBid: "1♦",
+      auctionOpeningBid: "1♦",
+    });
     expect(neg.toLowerCase()).toContain("negative");
     expect(neg.toLowerCase()).toContain("not penalty");
 
     // A double of an OPPONENT'S OPENING (partner known silent) is TAKEOUT, not
     // negative — this was the real-play bug (1♦ doubled, mislabeled negative).
-    const takeout = getBidMeaning(
-      "Double",
-      "partner",
-      "1♦",
-      undefined,
-      "none",
-      "1♦",
-    );
+    const takeout = getBidMeaning("Double", "partner", {
+      prevHighBid: "1♦",
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "1♦",
+    });
     expect(takeout.toLowerCase()).toContain("takeout");
     expect(takeout.toLowerCase()).not.toContain("negative");
   });
 
   it("Double from opponent after low suit bid → Takeout/competitive, not Penalty", () => {
-    const meaning = getBidMeaning("Double", "lho", "1♥");
+    const meaning = getBidMeaning("Double", "lho", { prevHighBid: "1♥" });
     expect(meaning.toLowerCase()).not.toContain("penalty double");
     // Confirms it mentions takeout or negative rather than pure penalty
     expect(
@@ -4047,13 +4058,13 @@ describe("bidding-logic | getBidMeaning", () => {
   });
 
   it("Double from opponent after 1NT → Penalty Double of NT", () => {
-    const meaning = getBidMeaning("Double", "rho", "1NT");
+    const meaning = getBidMeaning("Double", "rho", { prevHighBid: "1NT" });
     expect(meaning.toLowerCase()).toContain("penalty");
     expect(meaning.toLowerCase()).toContain("nt");
   });
 
   it("Double from partner after 1NT → Penalty/Takeout note", () => {
-    const meaning = getBidMeaning("Double", "partner", "1NT");
+    const meaning = getBidMeaning("Double", "partner", { prevHighBid: "1NT" });
     expect(meaning).toBeTruthy();
   });
 
@@ -4062,14 +4073,12 @@ describe("bidding-logic | getBidMeaning", () => {
     // with 2♥; responder's 4♥ supports it.  With partner's last action threaded
     // in as 2♥, the meaning must call this a RAISE of partner's suit — not a new
     // "second suit" of the bidder's own.
-    const meaning = getBidMeaning(
-      "4♥",
-      "partner",
-      /* prevHighBid */ "1NT",
-      /* bidderPreviousBid */ "1NT",
-      /* bidderPartnerPreviousBid */ "2♥",
-      /* auctionOpeningBid */ "1♠",
-    );
+    const meaning = getBidMeaning("4♥", "partner", {
+      prevHighBid: "1NT",
+      bidderPreviousBid: "1NT",
+      bidderPartnerPreviousBid: "2♥",
+      auctionOpeningBid: "1♠",
+    });
     expect(meaning.toLowerCase()).toContain("raise");
     expect(meaning).toContain("2♥");
     expect(meaning.toLowerCase()).not.toContain("second suit");
@@ -4079,14 +4088,11 @@ describe("bidding-logic | getBidMeaning", () => {
     // Auction P-1♣-P-1♥ : the 1♥ bidder's partner opened 1♣ earlier the SAME
     // round.  With partner's 1♣ threaded in, 1♥ must read as a response, never
     // an overcall.
-    const meaning = getBidMeaning(
-      "1♥",
-      "rho",
-      /* prevHighBid */ "1♣",
-      /* bidderPreviousBid */ undefined,
-      /* bidderPartnerPreviousBid */ "1♣",
-      /* auctionOpeningBid */ "1♣",
-    );
+    const meaning = getBidMeaning("1♥", "rho", {
+      prevHighBid: "1♣",
+      bidderPartnerPreviousBid: "1♣",
+      auctionOpeningBid: "1♣",
+    });
     expect(meaning.toLowerCase()).toContain("response");
     expect(meaning.toLowerCase()).not.toContain("overcall");
   });
@@ -4094,28 +4100,22 @@ describe("bidding-logic | getBidMeaning", () => {
   it("Michaels cuebid hover names the two-suiter (manual report: cue of a major)", () => {
     // Partner cuebids 2♠ over the opponents' spades: Michaels showing hearts +
     // an unspecified minor.  The hover must NAME the suits, not just say "Michaels".
-    const meaning = getBidMeaning(
-      "2♠",
-      "partner",
-      "1♠",
-      undefined,
-      "none",
-      "1♦",
-    );
+    const meaning = getBidMeaning("2♠", "partner", {
+      prevHighBid: "1♠",
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "1♦",
+    });
     expect(meaning.toLowerCase()).toContain("michaels");
     expect(meaning.toLowerCase()).toContain("hearts");
     expect(meaning.toLowerCase()).toContain("minor");
   });
 
   it("Michaels cuebid hover of a minor names BOTH majors", () => {
-    const meaning = getBidMeaning(
-      "2♦",
-      "partner",
-      "1♦",
-      undefined,
-      "none",
-      "1♦",
-    );
+    const meaning = getBidMeaning("2♦", "partner", {
+      prevHighBid: "1♦",
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "1♦",
+    });
     expect(meaning.toLowerCase()).toContain("michaels");
     expect(meaning.toLowerCase()).toContain("hearts");
     expect(meaning.toLowerCase()).toContain("spades");
@@ -4879,13 +4879,13 @@ describe("bidding-logic | rebid-after-nt — Stayman (partner bid 2♣)", () => 
 
 describe("bidding-logic | getBidMeaning — prevHighBid context", () => {
   it("2♣ after 1NT → Stayman (partner)", () => {
-    const m = getBidMeaning("2♣", "partner", "1NT");
+    const m = getBidMeaning("2♣", "partner", { prevHighBid: "1NT" });
     expect(m.toLowerCase()).toContain("stayman");
     expect(m).not.toContain("22+");
   });
 
   it("2♣ after 2NT → Stayman (partner)", () => {
-    const m = getBidMeaning("2♣", "partner", "2NT");
+    const m = getBidMeaning("2♣", "partner", { prevHighBid: "2NT" });
     expect(m.toLowerCase()).toContain("stayman");
   });
 
@@ -4895,19 +4895,19 @@ describe("bidding-logic | getBidMeaning — prevHighBid context", () => {
   });
 
   it("2♦ after 1NT → Jacoby Transfer to hearts", () => {
-    const m = getBidMeaning("2♦", "partner", "1NT");
+    const m = getBidMeaning("2♦", "partner", { prevHighBid: "1NT" });
     expect(m.toLowerCase()).toContain("jacoby");
     expect(m.toLowerCase()).toContain("heart");
   });
 
   it("2♥ after 1NT → Jacoby Transfer to spades", () => {
-    const m = getBidMeaning("2♥", "partner", "1NT");
+    const m = getBidMeaning("2♥", "partner", { prevHighBid: "1NT" });
     expect(m.toLowerCase()).toContain("jacoby");
     expect(m.toLowerCase()).toContain("spade");
   });
 
   it("2♣ from opponent after 1NT → Stayman context note", () => {
-    const m = getBidMeaning("2♣", "rho", "1NT");
+    const m = getBidMeaning("2♣", "rho", { prevHighBid: "1NT" });
     expect(m.toLowerCase()).toContain("stayman");
   });
 
@@ -4916,26 +4916,46 @@ describe("bidding-logic | getBidMeaning — prevHighBid context", () => {
   //  when it is a Jacoby transfer to hearts.)  Full history is threaded so the
   //  "response to partner's NT opening" branch is exercised.
   it("3♦ after partner's 2NT → Jacoby transfer to hearts (not a slam try)", () => {
-    const m = getBidMeaning("3♦", "partner", "2NT", "Pass", "2NT", "2NT");
+    const m = getBidMeaning("3♦", "partner", {
+      prevHighBid: "2NT",
+      bidderPreviousBid: "Pass",
+      bidderPartnerPreviousBid: "2NT",
+      auctionOpeningBid: "2NT",
+    });
     expect(m.toLowerCase()).toContain("transfer");
     expect(m.toLowerCase()).toContain("heart");
     expect(m.toLowerCase()).not.toContain("slam interest");
   });
 
   it("3♥ after partner's 2NT → Jacoby transfer to spades", () => {
-    const m = getBidMeaning("3♥", "partner", "2NT", "Pass", "2NT", "2NT");
+    const m = getBidMeaning("3♥", "partner", {
+      prevHighBid: "2NT",
+      bidderPreviousBid: "Pass",
+      bidderPartnerPreviousBid: "2NT",
+      auctionOpeningBid: "2NT",
+    });
     expect(m.toLowerCase()).toContain("transfer");
     expect(m.toLowerCase()).toContain("spade");
   });
 
   it("3♣ after partner's 2NT → Stayman", () => {
-    const m = getBidMeaning("3♣", "partner", "2NT", "Pass", "2NT", "2NT");
+    const m = getBidMeaning("3♣", "partner", {
+      prevHighBid: "2NT",
+      bidderPreviousBid: "Pass",
+      bidderPartnerPreviousBid: "2NT",
+      auctionOpeningBid: "2NT",
+    });
     expect(m.toLowerCase()).toContain("stayman");
   });
 
   it("3♦ after partner's 1NT → still a natural slam try (unchanged)", () => {
     // Over 1NT, transfers are at the 2-level, so a 3-level bid IS a slam try.
-    const m = getBidMeaning("3♦", "partner", "1NT", "Pass", "1NT", "1NT");
+    const m = getBidMeaning("3♦", "partner", {
+      prevHighBid: "1NT",
+      bidderPreviousBid: "Pass",
+      bidderPartnerPreviousBid: "1NT",
+      auctionOpeningBid: "1NT",
+    });
     expect(m.toLowerCase()).toContain("slam interest");
   });
 
@@ -7934,13 +7954,13 @@ describe("bidding-logic | getBidMeaning — opponent 1-level opening variants", 
 
 describe("bidding-logic | getBidMeaning — 2-level bids additional coverage", () => {
   it("2♠ from partner after 1NT → minor-suit transfer", () => {
-    const m = getBidMeaning("2♠", "partner", "1NT");
+    const m = getBidMeaning("2♠", "partner", { prevHighBid: "1NT" });
     expect(m.toLowerCase()).toContain("minor");
     expect(m.toLowerCase()).toContain("transfer");
   });
 
   it("2♠ from opponent after 1NT → minor-suit transfer context", () => {
-    const m = getBidMeaning("2♠", "lho", "1NT");
+    const m = getBidMeaning("2♠", "lho", { prevHighBid: "1NT" });
     expect(m.toLowerCase()).toContain("minor");
   });
 
@@ -7966,26 +7986,26 @@ describe("bidding-logic | getBidMeaning — 2-level bids additional coverage", (
   });
 
   it("2♦ after 2♣ (Stayman denial) → denial message from partner", () => {
-    const m = getBidMeaning("2♦", "partner", "2♣");
+    const m = getBidMeaning("2♦", "partner", { prevHighBid: "2♣" });
     expect(m.toLowerCase()).toContain("stayman");
     expect(m.toLowerCase()).toContain("denial");
   });
 
   it("2♦ after 2♣ from opponent → denial note", () => {
-    const m = getBidMeaning("2♦", "rho", "2♣");
+    const m = getBidMeaning("2♦", "rho", { prevHighBid: "2♣" });
     expect(m.toLowerCase()).toContain("stayman");
   });
 });
 
 describe("bidding-logic | getBidMeaning — 2NT and higher bids coverage", () => {
   it("2NT from partner after 1♥ opening → natural game-forcing response", () => {
-    const m = getBidMeaning("2NT", "partner", "1♥");
+    const m = getBidMeaning("2NT", "partner", { prevHighBid: "1♥" });
     expect(m).toContain("13");
     expect(m.toLowerCase()).toContain("game");
   });
 
   it("2NT from opponent after 1♠ → game-forcing from opponent", () => {
-    const m = getBidMeaning("2NT", "lho", "1♠");
+    const m = getBidMeaning("2NT", "lho", { prevHighBid: "1♠" });
     expect(m.toLowerCase()).toContain("game");
   });
 
@@ -8040,7 +8060,7 @@ describe("bidding-logic | getBidMeaning — 2NT and higher bids coverage", () =>
 
   it("Double from partner after high-level suit bid (3♥) → Takeout Double (not Negative)", () => {
     // prevLevel = parseInt("3") = 3 > 2 → NOT negative double → Takeout
-    const m = getBidMeaning("Double", "partner", "3♥");
+    const m = getBidMeaning("Double", "partner", { prevHighBid: "3♥" });
     expect(m.toLowerCase()).toContain("takeout");
     expect(m.toLowerCase()).not.toContain("negative");
   });
@@ -9633,82 +9653,138 @@ describe("bidding-logic | getBidMeaning — more context-aware branches", () => 
   it("raise of partner's previous suit by RHO → identifies as jump or single raise", () => {
     // Bidder (RHO) raises their partner's 1♥ to 2♥ (single raise)
     // bidderPartnerPreviousBid = "1♥", bid = "2♥"
-    const m = getBidMeaning("2♥", "rho", "1♥", undefined, "1♥", "1♥");
+    const m = getBidMeaning("2♥", "rho", {
+      prevHighBid: "1♥",
+      bidderPartnerPreviousBid: "1♥",
+      auctionOpeningBid: "1♥",
+    });
     expect(m).toMatch(/raise/i);
   });
 
   it("advance of takeout double — NT range 2NT by partner", () => {
     // After partner doubled, bid 2NT = 11-12 pts advance
-    const m = getBidMeaning("2NT", "partner", "1♠", undefined, "Double", "1♠");
+    const m = getBidMeaning("2NT", "partner", {
+      prevHighBid: "1♠",
+      bidderPartnerPreviousBid: "Double",
+      auctionOpeningBid: "1♠",
+    });
     expect(m).toMatch(/11-12/);
   });
 
   it("advance of takeout double — NT range 3NT", () => {
-    const m = getBidMeaning("3NT", "partner", "1♠", undefined, "Double", "1♠");
+    const m = getBidMeaning("3NT", "partner", {
+      prevHighBid: "1♠",
+      bidderPartnerPreviousBid: "Double",
+      auctionOpeningBid: "1♠",
+    });
     expect(m).toMatch(/13\+/);
   });
 
   it("response to Michaels cuebid — preference for shown major", () => {
     // Opener bid 1♠, partner cuebid 2♠ (Michaels). My response 3♥ = preference.
-    const m = getBidMeaning("3♥", "partner", "2♠", undefined, "2♠", "1♠");
+    const m = getBidMeaning("3♥", "partner", {
+      prevHighBid: "2♠",
+      bidderPartnerPreviousBid: "2♠",
+      auctionOpeningBid: "1♠",
+    });
     expect(m).toMatch(/PREFERENCE|[Pp]reference/);
   });
 
   it("response to Michaels cuebid — 2NT asks for minor", () => {
-    const m = getBidMeaning("2NT", "partner", "2♠", undefined, "2♠", "1♠");
+    const m = getBidMeaning("2NT", "partner", {
+      prevHighBid: "2♠",
+      bidderPartnerPreviousBid: "2♠",
+      auctionOpeningBid: "1♠",
+    });
     expect(m).toMatch(/minor/i);
   });
 
   it("3-level forcing response over partner's NT (uncontested)", () => {
     // Partner bid 1NT, then 3♥ over it (forced, 6+ suit)
-    const m = getBidMeaning("3♥", "partner", "1NT", undefined, "1NT");
+    const m = getBidMeaning("3♥", "partner", {
+      prevHighBid: "1NT",
+      bidderPartnerPreviousBid: "1NT",
+    });
     expect(m).toMatch(/6\+|forcing/i);
   });
 
   it("2NT response over partner's 1NT (uncontested invitation)", () => {
-    const m = getBidMeaning("2NT", "partner", "1NT", undefined, "1NT");
+    const m = getBidMeaning("2NT", "partner", {
+      prevHighBid: "1NT",
+      bidderPartnerPreviousBid: "1NT",
+    });
     expect(m).toMatch(/8-9|[Ii]nvit/);
   });
 
   it("natural escape over partner's NT when contested", () => {
     // Partner bid 1NT, opponent overcalled, now I bid 2♥ (natural escape)
-    const m = getBidMeaning("2♥", "partner", "2♣", undefined, "1NT");
+    const m = getBidMeaning("2♥", "partner", {
+      prevHighBid: "2♣",
+      bidderPartnerPreviousBid: "1NT",
+    });
     expect(m).toMatch(/natural|escape/i);
   });
 
   it("3NT facing partner's 2NT (to play)", () => {
-    const m = getBidMeaning("3NT", "partner", "2NT", undefined, "2NT");
+    const m = getBidMeaning("3NT", "partner", {
+      prevHighBid: "2NT",
+      bidderPartnerPreviousBid: "2NT",
+    });
     expect(m).toMatch(/4-11 pts/);
   });
 
   it("response to strong 2♣ — 2♦ waiting", () => {
-    const m = getBidMeaning("2♦", "partner", "2♣", undefined, "2♣", "2♣");
+    const m = getBidMeaning("2♦", "partner", {
+      prevHighBid: "2♣",
+      bidderPartnerPreviousBid: "2♣",
+      auctionOpeningBid: "2♣",
+    });
     expect(m).toMatch(/WAITING|[Ww]aiting/);
   });
 
   it("response to strong 2♣ — 2NT positive balanced", () => {
-    const m = getBidMeaning("2NT", "partner", "2♣", undefined, "2♣", "2♣");
+    const m = getBidMeaning("2NT", "partner", {
+      prevHighBid: "2♣",
+      bidderPartnerPreviousBid: "2♣",
+      auctionOpeningBid: "2♣",
+    });
     expect(m).toMatch(/positive|POSITIVE/i);
   });
 
   it("response to strong 2♣ — suit positive", () => {
-    const m = getBidMeaning("2♠", "partner", "2♣", undefined, "2♣", "2♣");
+    const m = getBidMeaning("2♠", "partner", {
+      prevHighBid: "2♣",
+      bidderPartnerPreviousBid: "2♣",
+      auctionOpeningBid: "2♣",
+    });
     expect(m).toMatch(/POSITIVE|[Pp]ositive/);
   });
 
   it("Jacoby 2NT over partner's 1♥ opening", () => {
-    const m = getBidMeaning("2NT", "partner", "1♥", undefined, "1♥", "1♥");
+    const m = getBidMeaning("2NT", "partner", {
+      prevHighBid: "1♥",
+      bidderPartnerPreviousBid: "1♥",
+      auctionOpeningBid: "1♥",
+    });
     expect(m).toMatch(/JACOBY|[Jj]acoby/);
   });
 
   it("new-suit response at 1-level (forcing)", () => {
     // Partner opened 1♣, responder bids 1♥
-    const m = getBidMeaning("1♥", "partner", "1♣", undefined, "1♣", "1♣");
+    const m = getBidMeaning("1♥", "partner", {
+      prevHighBid: "1♣",
+      bidderPartnerPreviousBid: "1♣",
+      auctionOpeningBid: "1♣",
+    });
     expect(m).toMatch(/[Rr]esponse|6\+/);
   });
 
   it("new-suit response at 2-level (10+ pts)", () => {
-    const m = getBidMeaning("2♥", "partner", "1♠", undefined, "1♠", "1♠");
+    const m = getBidMeaning("2♥", "partner", {
+      prevHighBid: "1♠",
+      bidderPartnerPreviousBid: "1♠",
+      auctionOpeningBid: "1♠",
+    });
     expect(m).toMatch(/[Rr]esponse|10\+/);
   });
 });
@@ -9980,16 +10056,21 @@ describe("bidding-logic | real-play bug regressions", () => {
   // T1B1: a double of an opponent's OPENING is a TAKEOUT double, not negative,
   // and every observer's tooltip must agree.
   it("double of an opening 1♦ reads as TAKEOUT for all observers (not negative)", () => {
-    const asPartner = getBidMeaning(
-      "Double",
-      "partner",
-      "1♦",
-      undefined,
-      "none",
-      "1♦",
-    );
-    const asLho = getBidMeaning("Double", "lho", "1♦", undefined, "none", "1♦");
-    const asRho = getBidMeaning("Double", "rho", "1♦", undefined, "none", "1♦");
+    const asPartner = getBidMeaning("Double", "partner", {
+      prevHighBid: "1♦",
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "1♦",
+    });
+    const asLho = getBidMeaning("Double", "lho", {
+      prevHighBid: "1♦",
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "1♦",
+    });
+    const asRho = getBidMeaning("Double", "rho", {
+      prevHighBid: "1♦",
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "1♦",
+    });
     for (const m of [asPartner, asLho, asRho]) {
       expect(m.toLowerCase()).toContain("takeout");
       expect(m.toLowerCase()).not.toContain("negative");
@@ -9998,7 +10079,11 @@ describe("bidding-logic | real-play bug regressions", () => {
 
   it("a true negative double (our side opened) still reads as negative", () => {
     // Partner opened 1♦, RHO overcalled 1♠, I double → negative.
-    const m = getBidMeaning("Double", "partner", "1♠", undefined, "1♦", "1♦");
+    const m = getBidMeaning("Double", "partner", {
+      prevHighBid: "1♠",
+      bidderPartnerPreviousBid: "1♦",
+      auctionOpeningBid: "1♦",
+    });
     expect(m.toLowerCase()).toContain("negative");
   });
 
@@ -10506,48 +10591,56 @@ describe("bidding-logic | SAYC audit — doubler's follow-up narrative (negative
 
 describe("bidding-logic | SAYC audit — getBidMeaning fixes", () => {
   it("partner's double of 3♠ when their side opened → penalty-oriented, not takeout", () => {
-    const m = getBidMeaning("Double", "partner", "3♠", undefined, "1♦", "1♦");
+    const m = getBidMeaning("Double", "partner", {
+      prevHighBid: "3♠",
+      bidderPartnerPreviousBid: "1♦",
+      auctionOpeningBid: "1♦",
+    });
     expect(m).toMatch(/penalty/i);
     expect(m).not.toMatch(/Takeout Double: a double of the opponents/);
   });
 
   it("weak jump overcall length scales with jump size (3♠ over 1♦ = 7 cards)", () => {
-    const m = getBidMeaning("3♠", "rho", "1♦", undefined, "none", "1♦");
+    const m = getBidMeaning("3♠", "rho", {
+      prevHighBid: "1♦",
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "1♦",
+    });
     expect(m).toMatch(/7-card suit/);
   });
 
   it("single jump overcall still shows a 6-card suit (2♠ over 1♦)", () => {
-    const m = getBidMeaning("2♠", "rho", "1♦", undefined, "none", "1♦");
+    const m = getBidMeaning("2♠", "rho", {
+      prevHighBid: "1♦",
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "1♦",
+    });
     expect(m).toMatch(/6-card suit/);
   });
 
   it("4♥ as the OPENING bid is described as a preempt, not a strong game bid", () => {
-    const m = getBidMeaning(
-      "4♥",
-      "partner",
-      undefined,
-      undefined,
-      "none",
-      "4♥",
-    );
+    const m = getBidMeaning("4♥", "partner", {
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "4♥",
+    });
     expect(m).toMatch(/preempt/i);
   });
 
   it("3NT opening described as Gambling (solid 7-card minor)", () => {
-    const m = getBidMeaning(
-      "3NT",
-      "partner",
-      undefined,
-      undefined,
-      "none",
-      "3NT",
-    );
+    const m = getBidMeaning("3NT", "partner", {
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "3NT",
+    });
     expect(m).toMatch(/gambling/i);
   });
 
   it("jump-shift response labeled strong (17+), not a normal 2-level new suit", () => {
     // Partner opened 1♦; a 2♠ response (1♠ was available) is a jump shift.
-    const m = getBidMeaning("2♠", "partner", "1♦", undefined, "1♦", "1♦");
+    const m = getBidMeaning("2♠", "partner", {
+      prevHighBid: "1♦",
+      bidderPartnerPreviousBid: "1♦",
+      auctionOpeningBid: "1♦",
+    });
     expect(m).toMatch(/JUMP SHIFT/i);
     expect(m).toMatch(/17\+/);
   });
@@ -10870,10 +10963,20 @@ describe("bidding-logic | sim audit round 3", () => {
 
   it("tooltip: opener's new-suit answer to partner's double is graded by jump", () => {
     // P2 opened 1♠, P4 doubled 2♦ (negative), P2 answers 3♥ (jump = 15-17).
-    const jump = getBidMeaning("3♥", "rho", "2♦", "1♠", "Double", "1♠");
+    const jump = getBidMeaning("3♥", "rho", {
+      prevHighBid: "2♦",
+      bidderPreviousBid: "1♠",
+      bidderPartnerPreviousBid: "Double",
+      auctionOpeningBid: "1♠",
+    });
     expect(jump).toMatch(/answering their partner's double/i);
     expect(jump).toMatch(/15-17/);
-    const cheap = getBidMeaning("2♥", "rho", "2♦", "1♠", "Double", "1♠");
+    const cheap = getBidMeaning("2♥", "rho", {
+      prevHighBid: "2♦",
+      bidderPreviousBid: "1♠",
+      bidderPartnerPreviousBid: "Double",
+      auctionOpeningBid: "1♠",
+    });
     expect(cheap).toMatch(/11-14/);
   });
 });
@@ -10927,7 +11030,11 @@ describe("bidding-logic | sim audit round 4", () => {
   it("tooltip: partner's 2♣ directly over a 1NT OPENING is Cappelletti — a later suit call advances/names it, not a 17+ jump shift", () => {
     // Partner's 2♣ over the auction's opening 1NT is Cappelletti (one-suiter).
     // 3♥ here is naming/advancing that convention, not a natural jump shift.
-    const m = getBidMeaning("3♥", "rho", "2♠", undefined, "2♣", "1NT");
+    const m = getBidMeaning("3♥", "rho", {
+      prevHighBid: "2♠",
+      bidderPartnerPreviousBid: "2♣",
+      auctionOpeningBid: "1NT",
+    });
     expect(m).toMatch(/advanc|Cappelletti/i);
     expect(m).not.toMatch(/17\+/);
   });
@@ -10971,7 +11078,11 @@ describe("bidding-logic | sim audit round 5", () => {
 // ─── SAYC audit round 6 regressions ──────────────────────────────────────────
 describe("bidding-logic | sim audit round 6", () => {
   it("tooltip: double of interference over partner's 1NT opening = PENALTY, not negative", () => {
-    const m = getBidMeaning("Double", "partner", "2♦", undefined, "1NT", "1NT");
+    const m = getBidMeaning("Double", "partner", {
+      prevHighBid: "2♦",
+      bidderPartnerPreviousBid: "1NT",
+      auctionOpeningBid: "1NT",
+    });
     expect(m).toMatch(/penalty/i);
     expect(m).not.toMatch(/sputnik|negative/i);
   });
@@ -11006,13 +11117,22 @@ describe("bidding-logic | sim audit round 6", () => {
   });
 
   it("tooltip: opener's re-raise after a single raise is a game try (16-18), not a 6-9 raise", () => {
-    const m = getBidMeaning("3♥", "rho", "2♥", "1♥", "2♥", "1♥");
+    const m = getBidMeaning("3♥", "rho", {
+      prevHighBid: "2♥",
+      bidderPreviousBid: "1♥",
+      bidderPartnerPreviousBid: "2♥",
+      auctionOpeningBid: "1♥",
+    });
     expect(m).toMatch(/game.try/i);
     expect(m).toMatch(/16-18/);
   });
 
   it("tooltip: a 4-level first-action jump over their opening is a preempt, not 'strong game bid'", () => {
-    const m = getBidMeaning("4♠", "partner", "1♦", undefined, "none", "1♦");
+    const m = getBidMeaning("4♠", "partner", {
+      prevHighBid: "1♦",
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "1♦",
+    });
     expect(m).toMatch(/weak jump overcall|preempt/i);
     expect(m).not.toMatch(/strong hand/i);
   });
@@ -11092,10 +11212,19 @@ describe("bidding-logic | sim audit round 7", () => {
   });
 
   it("tooltips: the competitive cuebid and the forced game acceptance tell the right story", () => {
-    const cue = getBidMeaning("3♠", "rho", "2♠", undefined, "1♥", "1♥");
+    const cue = getBidMeaning("3♠", "rho", {
+      prevHighBid: "2♠",
+      bidderPartnerPreviousBid: "1♥",
+      auctionOpeningBid: "1♥",
+    });
     expect(cue).toMatch(/cuebid/i);
     expect(cue).toMatch(/raise/i);
-    const forced = getBidMeaning("5♥", "partner", "4♠", "1♥", "3♠", "1♥");
+    const forced = getBidMeaning("5♥", "partner", {
+      prevHighBid: "4♠",
+      bidderPreviousBid: "1♥",
+      bidderPartnerPreviousBid: "3♠",
+      auctionOpeningBid: "1♥",
+    });
     expect(forced).toMatch(/cuebid raise|forced/i);
     expect(forced).not.toMatch(/19-21/);
   });
@@ -11317,7 +11446,12 @@ describe("sim audit round 17 regressions", () => {
   it("1NT-opener raise of a natural interference suit is not called a two-over-one", () => {
     // seed 82: 1NT (2♥) 2♠ ... 3♠ — the raise tooltip claimed responder's 2♠
     // was a near-game-forcing two-over-one (10+); it was a weak natural escape.
-    const meaning = getBidMeaning("3♠", "partner", "3♣", "1NT", "2♠", "1NT");
+    const meaning = getBidMeaning("3♠", "partner", {
+      prevHighBid: "3♣",
+      bidderPreviousBid: "1NT",
+      bidderPartnerPreviousBid: "2♠",
+      auctionOpeningBid: "1NT",
+    });
     expect(meaning).not.toContain("two-over-one");
     expect(meaning).toContain("1NT opener");
   });
@@ -11436,20 +11570,22 @@ describe("sim audit round 17 — optional doubles and NT-auction stories", () =>
   });
 
   it("double tooltip: opener's double of a preempt reads optional, not penalty", () => {
-    const meaning = getBidMeaning("Double", "lho", "4♠", "1♦", "Pass", "1♦");
+    const meaning = getBidMeaning("Double", "lho", {
+      prevHighBid: "4♠",
+      bidderPreviousBid: "1♦",
+      bidderPartnerPreviousBid: "Pass",
+      auctionOpeningBid: "1♦",
+    });
     expect(meaning).toContain("Optional");
     expect(meaning).not.toMatch(/^Penalty Double/);
   });
 
   it("pull tooltip: 5♥ over partner's double of 4♠ described as a pull", () => {
-    const meaning = getBidMeaning(
-      "5♥",
-      "partner",
-      "4♠",
-      undefined,
-      "Double",
-      "1♦",
-    );
+    const meaning = getBidMeaning("5♥", "partner", {
+      prevHighBid: "4♠",
+      bidderPartnerPreviousBid: "Double",
+      auctionOpeningBid: "1♦",
+    });
     expect(meaning).toContain("PULLING");
   });
 });
@@ -11533,7 +11669,12 @@ describe("sim audit round 18 regressions", () => {
 
   it("raise after one's own negative double tooltips as invitational", () => {
     // seed 85 tooltip #9: P1's Double → 3♥ raise of opener's answer.
-    const meaning = getBidMeaning("3♥", "partner", "2♥", "Double", "2♥", "1♥");
+    const meaning = getBidMeaning("3♥", "partner", {
+      prevHighBid: "2♥",
+      bidderPreviousBid: "Double",
+      bidderPartnerPreviousBid: "2♥",
+      auctionOpeningBid: "1♥",
+    });
     expect(meaning).toContain("INVITATIONAL");
     expect(meaning).not.toContain("6-9");
   });
@@ -11644,14 +11785,11 @@ describe("sim audit round 19 regressions — 2NT systems + penalty double of 1NT
   });
 
   it("advance tooltip: suit bid over partner's double of 1NT reads as a scramble", () => {
-    const meaning = getBidMeaning(
-      "2♣",
-      "partner",
-      "1NT",
-      undefined,
-      "Double",
-      "1NT",
-    );
+    const meaning = getBidMeaning("2♣", "partner", {
+      prevHighBid: "1NT",
+      bidderPartnerPreviousBid: "Double",
+      auctionOpeningBid: "1NT",
+    });
     expect(meaning).toContain("BUST");
     expect(meaning).not.toContain("FORCED");
   });
@@ -11660,7 +11798,12 @@ describe("sim audit round 19 regressions — 2NT systems + penalty double of 1NT
 describe("sim audit round 20 regressions", () => {
   it("opener's raise of a 1-level response tooltips as 12-15, not 6-9", () => {
     // seed 91: 1♦ - 1♠ - 2♠ tooltip claimed "single raise ≈ 6-9".
-    const meaning = getBidMeaning("2♠", "partner", "1♠", "1♦", "1♠", "1♦");
+    const meaning = getBidMeaning("2♠", "partner", {
+      prevHighBid: "1♠",
+      bidderPreviousBid: "1♦",
+      bidderPartnerPreviousBid: "1♠",
+      auctionOpeningBid: "1♦",
+    });
     expect(meaning).toContain("OPENER");
     expect(meaning).toContain("12-15");
   });
@@ -11714,7 +11857,12 @@ describe("sim audit round 21 regressions", () => {
   });
 
   it("5♦ pull of partner's 3NT tooltips as a correction, not 19-21", () => {
-    const meaning = getBidMeaning("5♦", "partner", "3NT", "3♦", "3NT", "1♦");
+    const meaning = getBidMeaning("5♦", "partner", {
+      prevHighBid: "3NT",
+      bidderPreviousBid: "3♦",
+      bidderPartnerPreviousBid: "3NT",
+      auctionOpeningBid: "1♦",
+    });
     expect(meaning).toContain("PULLING");
     expect(meaning).not.toContain("19-21");
   });
@@ -12051,7 +12199,12 @@ describe("sim audit round 26 regressions", () => {
 
   it("a double by a prior overcaller tooltips as an action double, not penalty", () => {
     // seed 113: P4 overcalled 3♥ then doubled 3♠.
-    const meaning = getBidMeaning("Double", "lho", "3♠", "3♥", "Pass", "1♠");
+    const meaning = getBidMeaning("Double", "lho", {
+      prevHighBid: "3♠",
+      bidderPreviousBid: "3♥",
+      bidderPartnerPreviousBid: "Pass",
+      auctionOpeningBid: "1♠",
+    });
     expect(meaning).toContain("Action Double");
     expect(meaning).not.toMatch(/^Penalty/);
   });
@@ -12276,20 +12429,22 @@ describe("sim audit round 31 regressions", () => {
 
   it("Jacoby shortness reply tooltips as shortness, not a second suit", () => {
     // seed 140: 1♥-2NT-3♠ read as "natural second suit".
-    const meaning = getBidMeaning("3♠", "partner", "2NT", "1♥", "2NT", "1♥");
+    const meaning = getBidMeaning("3♠", "partner", {
+      prevHighBid: "2NT",
+      bidderPreviousBid: "1♥",
+      bidderPartnerPreviousBid: "2NT",
+      auctionOpeningBid: "1♥",
+    });
     expect(meaning).toContain("SINGLETON OR VOID");
   });
 
   it("a 3-level weak jump overcall tooltips a 7-card suit", () => {
     // seed 139: 3♣ over 1♠ (single jump) showed 7 clubs, not 6.
-    const meaning = getBidMeaning(
-      "3♣",
-      "partner",
-      "1♠",
-      undefined,
-      "none",
-      "1♠",
-    );
+    const meaning = getBidMeaning("3♣", "partner", {
+      prevHighBid: "1♠",
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "1♠",
+    });
     expect(meaning).toContain("7-card");
   });
 });
@@ -12677,15 +12832,13 @@ describe("sim audit round 46c regressions", () => {
   });
 
   it("the 1x-1NT-2NT tooltip reads as the 18-19 raise, not 12-14", () => {
-    const meaning = getBidMeaning(
-      "2NT",
-      "partner",
-      "1NT",
-      "1♦",
-      "1NT",
-      "1♦",
-      "1NT",
-    );
+    const meaning = getBidMeaning("2NT", "partner", {
+      prevHighBid: "1NT",
+      bidderPreviousBid: "1♦",
+      bidderPartnerPreviousBid: "1NT",
+      auctionOpeningBid: "1♦",
+      bidderPartnerFirstBid: "1NT",
+    });
     expect(meaning).toMatch(/18-19/);
     expect(meaning).not.toMatch(/12-14 HCP \(a jump/);
   });
@@ -12758,21 +12911,18 @@ describe("sim audit round 47 regressions", () => {
 describe("sim audit round 48 regressions", () => {
   it("an opponent's 2NT OPENING tooltips as 20-21 balanced, not Unusual", () => {
     // seed 205: 2NT was the auction's first bid.
-    const meaning = getBidMeaning(
-      "2NT",
-      "lho",
-      undefined,
-      undefined,
-      undefined,
-      "2NT",
-    );
+    const meaning = getBidMeaning("2NT", "lho", { auctionOpeningBid: "2NT" });
     expect(meaning).toMatch(/opening/i);
     expect(meaning).toMatch(/20–21|20-21/);
     expect(meaning).not.toMatch(/Unusual/);
   });
 
   it("a direct 2NT overcall still tooltips as Unusual", () => {
-    const meaning = getBidMeaning("2NT", "lho", "1♠", undefined, "none", "1♠");
+    const meaning = getBidMeaning("2NT", "lho", {
+      prevHighBid: "1♠",
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "1♠",
+    });
     expect(meaning).toMatch(/Unusual/);
   });
 
@@ -12880,7 +13030,12 @@ describe("sim audit round 49 regressions", () => {
   });
 
   it("the tooltip reads a double after the bidder's own 1NT as penalty-suggestive", () => {
-    const meaning = getBidMeaning("Double", "partner", "2♣", "1NT", "1♦", "1♦");
+    const meaning = getBidMeaning("Double", "partner", {
+      prevHighBid: "2♣",
+      bidderPreviousBid: "1NT",
+      bidderPartnerPreviousBid: "1♦",
+      auctionOpeningBid: "1♦",
+    });
     expect(meaning).toMatch(/PENALTY-SUGGESTIVE/);
     expect(meaning).not.toMatch(/Takeout Double:/);
   });
@@ -12974,7 +13129,12 @@ describe("sim audit round 51 regressions", () => {
   });
 
   it("the 5NT after own 4NT tooltips as the king ask, not a sign-off", () => {
-    const meaning = getBidMeaning("5NT", "partner", "5♦", "4NT", "1♠", "1♠");
+    const meaning = getBidMeaning("5NT", "partner", {
+      prevHighBid: "5♦",
+      bidderPreviousBid: "4NT",
+      bidderPartnerPreviousBid: "1♠",
+      auctionOpeningBid: "1♠",
+    });
     expect(meaning).toMatch(/KING ASK/i);
     expect(meaning).not.toMatch(/sign-off based on the response/);
   });
@@ -12997,15 +13157,13 @@ describe("sim audit round 52 regressions", () => {
   });
 
   it("the Michaels game-jump tooltip reads TO PLAY, not 'promises no strength'", () => {
-    const meaning = getBidMeaning(
-      "4♠",
-      "partner",
-      "2♦",
-      "Pass",
-      "2♦",
-      "1♦",
-      "2♦",
-    );
+    const meaning = getBidMeaning("4♠", "partner", {
+      prevHighBid: "2♦",
+      bidderPreviousBid: "Pass",
+      bidderPartnerPreviousBid: "2♦",
+      auctionOpeningBid: "1♦",
+      bidderPartnerFirstBid: "2♦",
+    });
     expect(meaning).toMatch(/TO PLAY/);
     expect(meaning).toMatch(/not forcing/);
   });
@@ -13339,14 +13497,12 @@ describe("sim audit round 60 regressions", () => {
   });
 
   it("the tooltip for a double of the 1NT response says strength, not penalty", () => {
-    const meaning = getBidMeaning(
-      "Double",
-      "partner",
-      "1NT",
-      "none",
-      "1♠",
-      "1♠",
-    );
+    const meaning = getBidMeaning("Double", "partner", {
+      prevHighBid: "1NT",
+      bidderPreviousBid: "none",
+      bidderPartnerPreviousBid: "1♠",
+      auctionOpeningBid: "1♠",
+    });
     expect(meaning).toMatch(/Strength Double/);
     expect(meaning).not.toMatch(/pass and collect/i);
   });
@@ -13388,16 +13544,13 @@ describe("sim audit round 61 regressions", () => {
   });
 
   it("the tooltip reads a post-double suit bid as an escape, not a transfer", () => {
-    const meaning = getBidMeaning(
-      "2♥",
-      "partner",
-      "1NT",
-      undefined,
-      "1NT",
-      "1NT",
-      "1NT",
-      true,
-    );
+    const meaning = getBidMeaning("2♥", "partner", {
+      prevHighBid: "1NT",
+      bidderPartnerPreviousBid: "1NT",
+      auctionOpeningBid: "1NT",
+      bidderPartnerFirstBid: "1NT",
+      oppDoubledJustBefore: true,
+    });
     expect(meaning).toMatch(/ESCAPE/);
     expect(meaning).not.toMatch(/Transfer to spades/);
   });
@@ -13544,29 +13697,25 @@ describe("sim audit round 64 regressions", () => {
     // (their previous bid was 3♦, not 2♣), so the "2♣" special-case guard
     // never fired and it fell through to the generic "opener shows 18-19"
     // story, which makes no sense inside a 22+ point game-forcing auction.
-    const meaning = getBidMeaning(
-      "3NT",
-      "partner",
-      "3♥",
-      "3♦",
-      "3♥",
-      "2♣",
-      "2♣",
-    );
+    const meaning = getBidMeaning("3NT", "partner", {
+      prevHighBid: "3♥",
+      bidderPreviousBid: "3♦",
+      bidderPartnerPreviousBid: "3♥",
+      auctionOpeningBid: "2♣",
+      bidderPartnerFirstBid: "2♣",
+    });
     expect(meaning).toMatch(/strong 2♣ opening/);
     expect(meaning).not.toMatch(/18-19/);
   });
 
   it("the opener's own NT rebid after 2♣ still keeps its 22-27 story", () => {
-    const meaning = getBidMeaning(
-      "3NT",
-      "partner",
-      "3♦",
-      "2♣",
-      "3♦",
-      "2♣",
-      "2♣",
-    );
+    const meaning = getBidMeaning("3NT", "partner", {
+      prevHighBid: "3♦",
+      bidderPreviousBid: "2♣",
+      bidderPartnerPreviousBid: "3♦",
+      auctionOpeningBid: "2♣",
+      bidderPartnerFirstBid: "2♣",
+    });
     expect(meaning).toMatch(/25-27/);
   });
 
@@ -13577,15 +13726,12 @@ describe("sim audit round 64 regressions", () => {
     // relative to partner's cheap forced advance is NOT a preemptive jump
     // raise in this auction), so it fell through to the generic
     // jump-raise story ("10-12 constructive, or weak with extra trumps").
-    const meaning = getBidMeaning(
-      "3♠",
-      "partner",
-      "1♠",
-      "Double",
-      "1♠",
-      "1♦",
-      undefined,
-    );
+    const meaning = getBidMeaning("3♠", "partner", {
+      prevHighBid: "1♠",
+      bidderPreviousBid: "Double",
+      bidderPartnerPreviousBid: "1♠",
+      auctionOpeningBid: "1♦",
+    });
     expect(meaning).toMatch(/INVITATIONAL/);
     expect(meaning).not.toMatch(/10-12 constructive/);
   });
@@ -13593,15 +13739,12 @@ describe("sim audit round 64 regressions", () => {
   it("the invitational-after-double tooltip does not pin a specific point range (varies by double type)", () => {
     // Negative-double invites fire ~13+, takeout-double invites fire ~19+ —
     // a single fixed number would be wrong for one of the two.
-    const meaning = getBidMeaning(
-      "3♠",
-      "partner",
-      "1♠",
-      "Double",
-      "1♠",
-      "1♦",
-      undefined,
-    );
+    const meaning = getBidMeaning("3♠", "partner", {
+      prevHighBid: "1♠",
+      bidderPreviousBid: "Double",
+      bidderPartnerPreviousBid: "1♠",
+      auctionOpeningBid: "1♦",
+    });
     expect(meaning).not.toMatch(/11-13/);
   });
 });
@@ -13659,13 +13802,23 @@ describe("sim audit round 65 regressions", () => {
     // The tooltip is a static lookup without HCP/TP context, so it can't
     // distinguish a true minimum from an undisclosed-extras hand stuck at
     // the cheapest level — it should hedge instead of asserting one range.
-    const meaning = getBidMeaning("3♣", "partner", "2♥", "1♣", "none", "1♣");
+    const meaning = getBidMeaning("3♣", "partner", {
+      prevHighBid: "2♥",
+      bidderPreviousBid: "1♣",
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "1♣",
+    });
     expect(meaning).toMatch(/usually minimum\/competitive/);
     expect(meaning).toMatch(/stronger hand can be stuck here too/);
   });
 
   it("the opponent-facing view of the same tooltip also hedges the range", () => {
-    const meaning = getBidMeaning("3♣", "rho", "2♥", "1♣", "none", "1♣");
+    const meaning = getBidMeaning("3♣", "rho", {
+      prevHighBid: "2♥",
+      bidderPreviousBid: "1♣",
+      bidderPartnerPreviousBid: "none",
+      auctionOpeningBid: "1♣",
+    });
     expect(meaning).toMatch(/usually extra length with minimum values/);
     expect(meaning).toMatch(/stronger hand stuck without a safe alternative/);
   });
@@ -13815,16 +13968,13 @@ describe("sim audit round 67 regressions", () => {
   });
 
   it("the Jordan 2NT tooltip fires only when an opponent's double sits directly before it", () => {
-    const meaning = getBidMeaning(
-      "2NT",
-      "partner",
-      "1♦",
-      undefined,
-      "1♦",
-      "1♦",
-      "1♦",
-      true,
-    );
+    const meaning = getBidMeaning("2NT", "partner", {
+      prevHighBid: "1♦",
+      bidderPartnerPreviousBid: "1♦",
+      auctionOpeningBid: "1♦",
+      bidderPartnerFirstBid: "1♦",
+      oppDoubledJustBefore: true,
+    });
     expect(meaning).toMatch(/JORDAN/);
     expect(meaning).not.toMatch(/game-interest values/);
   });
@@ -13836,43 +13986,37 @@ describe("sim audit round 68 regressions", () => {
     // 4♥ as an ordinary raise-to-game ("could be strong, or extending a
     // preempt in competition"), missing that the game force was already
     // set by the Jacoby 2NT three rounds earlier.
-    const meaning = getBidMeaning(
-      "4♥",
-      "partner",
-      "3♣",
-      "2NT",
-      "3♣",
-      "1♥",
-      "1♥",
-    );
+    const meaning = getBidMeaning("4♥", "partner", {
+      prevHighBid: "3♣",
+      bidderPreviousBid: "2NT",
+      bidderPartnerPreviousBid: "3♣",
+      auctionOpeningBid: "1♥",
+      bidderPartnerFirstBid: "1♥",
+    });
     expect(meaning).toMatch(/Jacoby 2NT/);
     expect(meaning).toMatch(/SIGNOFF at game/);
     expect(meaning).not.toMatch(/could be strong, or extending a preempt/);
   });
 
   it("a below-game continuation after Jacoby 2NT tooltips as a slam try, not a signoff", () => {
-    const meaning = getBidMeaning(
-      "3♥",
-      "partner",
-      "3♣",
-      "2NT",
-      "3♣",
-      "1♥",
-      "1♥",
-    );
+    const meaning = getBidMeaning("3♥", "partner", {
+      prevHighBid: "3♣",
+      bidderPreviousBid: "2NT",
+      bidderPartnerPreviousBid: "3♣",
+      auctionOpeningBid: "1♥",
+      bidderPartnerFirstBid: "1♥",
+    });
     expect(meaning).toMatch(/slam try/);
   });
 
   it("a plain raise to game (no Jacoby in the auction) still gets the generic raise-to-game story", () => {
-    const meaning = getBidMeaning(
-      "4♥",
-      "partner",
-      "3♥",
-      "1♥",
-      "3♥",
-      "1♥",
-      "1♥",
-    );
+    const meaning = getBidMeaning("4♥", "partner", {
+      prevHighBid: "3♥",
+      bidderPreviousBid: "1♥",
+      bidderPartnerPreviousBid: "3♥",
+      auctionOpeningBid: "1♥",
+      bidderPartnerFirstBid: "1♥",
+    });
     expect(meaning).toMatch(/could be strong, or extending a preempt/);
   });
 });
@@ -13884,30 +14028,24 @@ describe("sim audit round 69 regressions", () => {
     // strength-showing call once RHO has doubled), but the tooltip's jump
     // math ignored the Double and called it a 17+ jump-shift game force —
     // directly contradicting the handler's own reasoning for the same bid.
-    const meaning = getBidMeaning(
-      "2♠",
-      "partner",
-      "1♣",
-      undefined,
-      "1♣",
-      "1♣",
-      "1♣",
-      true,
-    );
+    const meaning = getBidMeaning("2♠", "partner", {
+      prevHighBid: "1♣",
+      bidderPartnerPreviousBid: "1♣",
+      auctionOpeningBid: "1♣",
+      bidderPartnerFirstBid: "1♣",
+      oppDoubledJustBefore: true,
+    });
     expect(meaning).toMatch(/NOT a jump-shift game force/);
     expect(meaning).not.toMatch(/17\+/);
   });
 
   it("without a double, the same jump still reads as a genuine jump-shift game force (no regression)", () => {
-    const meaning = getBidMeaning(
-      "2♠",
-      "partner",
-      "1♣",
-      undefined,
-      "1♣",
-      "1♣",
-      "1♣",
-    );
+    const meaning = getBidMeaning("2♠", "partner", {
+      prevHighBid: "1♣",
+      bidderPartnerPreviousBid: "1♣",
+      auctionOpeningBid: "1♣",
+      bidderPartnerFirstBid: "1♣",
+    });
     expect(meaning).toMatch(/JUMP SHIFT/);
     expect(meaning).toMatch(/17\+/);
   });
@@ -14006,13 +14144,23 @@ describe("sim audit round 71 regressions", () => {
     // forced the level, not weakness) — the tooltip must not flatly claim
     // "a minimum (about 11-14)" when a stronger hand can sit at that same
     // cheapest level.
-    const meaning = getBidMeaning("2♥", "partner", "2♦", "1♠", "Double", "1♠");
+    const meaning = getBidMeaning("2♥", "partner", {
+      prevHighBid: "2♦",
+      bidderPreviousBid: "1♠",
+      bidderPartnerPreviousBid: "Double",
+      auctionOpeningBid: "1♠",
+    });
     expect(meaning).toMatch(/usually a minimum/);
     expect(meaning).toMatch(/3-card answer can hold extras/);
   });
 
   it("a genuine jump answer to the double still reads as a maximum (no regression)", () => {
-    const meaning = getBidMeaning("3♥", "partner", "2♦", "1♠", "Double", "1♠");
+    const meaning = getBidMeaning("3♥", "partner", {
+      prevHighBid: "2♦",
+      bidderPreviousBid: "1♠",
+      bidderPartnerPreviousBid: "Double",
+      auctionOpeningBid: "1♠",
+    });
     expect(meaning).toMatch(/a JUMP — a maximum/);
   });
 });
@@ -14024,15 +14172,13 @@ describe("sim audit round 72 regressions", () => {
     // "Competitive Re-Raise (Try Values Concealed) ... no extra strength"
     // story for the identical bid. getBidMeaning has no view of the double
     // 2 calls back, so it must hedge rather than assert game-try.
-    const meaning = getBidMeaning(
-      "3♥",
-      "partner",
-      "2♥",
-      "1♥",
-      "2♥",
-      "1♥",
-      "1♥",
-    );
+    const meaning = getBidMeaning("3♥", "partner", {
+      prevHighBid: "2♥",
+      bidderPreviousBid: "1♥",
+      bidderPartnerPreviousBid: "2♥",
+      auctionOpeningBid: "1♥",
+      bidderPartnerFirstBid: "1♥",
+    });
     expect(meaning).toMatch(/USUALLY a GAME TRY/);
     expect(meaning).toMatch(/doubled earlier in the auction.*COMPETITIVE/);
   });

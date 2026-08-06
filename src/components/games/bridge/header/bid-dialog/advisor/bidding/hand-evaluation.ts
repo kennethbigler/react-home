@@ -2,6 +2,32 @@ import type { Hand, HandAnalysis } from "./types";
 
 // ─── Helper Calculations ─────────────────────────────────────────────────────
 
+export const SUIT_NAMES = ["spades", "hearts", "diamonds", "clubs"] as const;
+
+export type SuitName = (typeof SUIT_NAMES)[number];
+
+/** Spades → hearts → diamonds → clubs, with each suit's length from `hand`. */
+export function suitDescriptors(
+  hand: Hand,
+): { name: SuitName; count: number }[] {
+  return [
+    { name: "spades", count: hand.spades },
+    { name: "hearts", count: hand.hearts },
+    { name: "diamonds", count: hand.diamonds },
+    { name: "clubs", count: hand.clubs },
+  ];
+}
+
+/** Map a bid string to its suit name; undefined for notrump and non-suit calls. */
+export function suitFromBid(bid: string | undefined): SuitName | undefined {
+  if (!bid || bid.endsWith("NT")) return undefined;
+  if (bid.includes("♠")) return "spades";
+  if (bid.includes("♥")) return "hearts";
+  if (bid.includes("♦")) return "diamonds";
+  if (bid.includes("♣")) return "clubs";
+  return undefined;
+}
+
 export function calcLongSuitPoints(hand: Hand): number {
   const suits = [hand.spades, hand.hearts, hand.diamonds, hand.clubs];
   return suits.reduce((pts, count) => pts + Math.max(0, count - 4), 0);
@@ -40,28 +66,17 @@ export function hasVoid(hand: Hand): boolean {
 }
 
 export function ruleOf20(hand: Hand): boolean {
-  const suits = [
-    { name: "spades", count: hand.spades },
-    { name: "hearts", count: hand.hearts },
-    { name: "diamonds", count: hand.diamonds },
-    { name: "clubs", count: hand.clubs },
-  ];
+  const suits = suitDescriptors(hand);
   suits.sort((a, b) => b.count - a.count);
   return hand.hcp + suits[0].count + suits[1].count >= 20;
 }
 
 export function longestSuitInfo(hand: Hand): { name: string; length: number } {
-  const suits = [
-    { name: "spades", count: hand.spades },
-    { name: "hearts", count: hand.hearts },
-    { name: "diamonds", count: hand.diamonds },
-    { name: "clubs", count: hand.clubs },
-  ];
+  const suits = suitDescriptors(hand);
   // Spades > hearts > diamonds > clubs for tie-breaking (higher-ranking first)
   suits.sort((a, b) => {
     if (b.count !== a.count) return b.count - a.count;
-    const rankOrder = ["spades", "hearts", "diamonds", "clubs"];
-    return rankOrder.indexOf(a.name) - rankOrder.indexOf(b.name);
+    return SUIT_NAMES.indexOf(a.name) - SUIT_NAMES.indexOf(b.name);
   });
   return { name: suits[0].name, length: suits[0].count };
 }

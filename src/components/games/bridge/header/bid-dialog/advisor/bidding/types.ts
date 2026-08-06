@@ -277,7 +277,3 @@ export interface AuctionState {
   /** Optional override for Blackwood / GSF agreed suit when auto-derivation is ambiguous */
   agreedSuit?: string;
 }
-
-// ─── Position helpers ─────────────────────────────────────────────────────────
-
-/** Bidding positions in clockwise order */

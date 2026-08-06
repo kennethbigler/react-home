@@ -71,8 +71,13 @@ export function getValidBidsAfter(
   const higherSuitBids =
     floorIdx >= 0 ? BID_ORDER.slice(floorIdx + 1) : BID_ORDER;
 
-  if (!lastBid || lastBid === "Pass") {
+  if (!lastBid) {
     result.push(...BID_ORDER, "Double");
+    return result;
+  }
+  if (lastBid === "Pass") {
+    result.push(...higherSuitBids);
+    if (suitFloor) result.push("Double");
     return result;
   }
   if (lastBid === "Double") {
