@@ -397,6 +397,16 @@ export function getOvercallerRebid(
         confidence: "high",
       };
     }
+    return {
+      bid: "Pass",
+      category: "Pass — Cappelletti Relay Blocked",
+      reasoning: `Partner's 2♦ is the artificial relay asking which suit your Cappelletti 2♣ concealed — it is not a natural diamond advance. The opponents' ${floorCappBid} has taken away every legal reveal of your ${realSuit.count}-card ${realSuit.name} at the 2–3 level, so you cannot correct the relay; pass and let partner decide.`,
+      handAnalysis: analysis,
+      whatYourBidTellsPartner:
+        "Nothing new — relay blocked, no valid suit reveal available.",
+      expectedResponses: [],
+      confidence: "high",
+    };
   }
 
   const myOcBid = context.myFirstBid ?? context.myPreviousBid;
