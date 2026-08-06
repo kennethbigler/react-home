@@ -1149,17 +1149,27 @@ export function getResponseToSuit(
 
   // Game-forcing new suit (13+ TP) — check 4-card majors before NT
   if (tp >= 13) {
-    // 2-over-1: 5+ hearts over partner's 1♠ (can't bid 1♥ — must go to 2-level).
+    // 2-over-1: 5+ hearts over partner's 1♠ always shows the suit naturally
+    // (a long second suit outranks a bare 3-card spade fit). A bare 4-card
+    // heart suit follows the same general 4+ rule for a 2-level new suit,
+    // but ONLY without 3-card+ support for opener's major — with a known fit,
+    // SAYC response priority (#1 raise > #3 new suit) favors the
+    // "manufactured 2-over-1 via a minor, then jump to game" technique below
+    // instead of a natural heart bid that would risk concealing the fit.
     // Guard against an extreme-length hand reaching 13+ TP mostly via length
     // points while still under the 10+ HCP floor a 2-level new suit needs.
-    if (partnerBid === "1♠" && hand.hearts >= 5 && hand.hcp >= 10) {
+    if (
+      partnerBid === "1♠" &&
+      hand.hcp >= 10 &&
+      (hand.hearts >= 5 || (hand.hearts === 4 && hand.spades < 3))
+    ) {
       return {
         bid: "2♥",
-        category: "2-Over-1 New Suit (13+ TP, 5+ Hearts)",
-        reasoning: `With ${tp} TP and 5+ hearts after partner's 1♠, bid 2♥ (2-over-1). This is a one-round force showing 5+ hearts and 10+ HCP. It does not set hearts as trump — opener can show a second suit or NT on rebid.`,
+        category: `2-Over-1 New Suit (13+ TP, ${hand.hearts}+ Hearts)`,
+        reasoning: `With ${tp} TP and ${hand.hearts}+ hearts after partner's 1♠, bid 2♥ (2-over-1). This is a one-round force showing 4+ hearts and 10+ HCP. It does not set hearts as trump — opener can show a second suit or NT on rebid.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner:
-          "5+ hearts, 10+ TP. One-round force — game is likely.",
+          "4+ hearts, 10+ TP. One-round force — game is likely.",
         expectedResponses: [
           { partnerBid: "2NT", meaning: "Minimum balanced, no heart fit" },
           { partnerBid: "3♥", meaning: "3-card heart support — fit found" },
@@ -1367,17 +1377,25 @@ export function getResponseToSuit(
 
   // 11-12 TP: bid 4-card major first, otherwise 2NT
   if (tp >= 11 && tp <= 12) {
-    // 2-over-1: 5+ hearts over partner's 1♠ (can't bid 1♥ — must go to 2-level).
-    // A 2-level new suit needs 10+ HCP specifically (not just 10+ TP padded
-    // by length) — SAYC: "you may not bid a new suit at the 2 level on a
-    // weak hand." Below that HCP floor, fall through to the forcing 1NT.
-    if (partnerBid === "1♠" && hand.hearts >= 5 && hand.hcp >= 10) {
+    // 2-over-1: 5+ hearts over partner's 1♠ always shows the suit naturally
+    // (a long second suit outranks a bare 3-card spade fit). A bare 4-card
+    // heart suit follows the same general 4+ rule for a 2-level new suit,
+    // but ONLY without 3-card+ support for opener's major — with a known
+    // fit, the limit-raise logic above takes priority instead. A 2-level new
+    // suit needs 10+ HCP specifically (not just 10+ TP padded by length) —
+    // SAYC: "you may not bid a new suit at the 2 level on a weak hand."
+    // Below that HCP floor, fall through to the forcing 1NT.
+    if (
+      partnerBid === "1♠" &&
+      hand.hcp >= 10 &&
+      (hand.hearts >= 5 || (hand.hearts === 4 && hand.spades < 3))
+    ) {
       return {
         bid: "2♥",
-        category: "2-Over-1 New Suit (11-12 TP, 5+ Hearts)",
-        reasoning: `With ${tp} TP and 5+ hearts after partner's 1♠, bid 2♥ (2-over-1). This is a one-round force showing 5+ hearts and 10+ HCP.`,
+        category: `2-Over-1 New Suit (11-12 TP, ${hand.hearts}+ Hearts)`,
+        reasoning: `With ${tp} TP and ${hand.hearts}+ hearts after partner's 1♠, bid 2♥ (2-over-1). This is a one-round force showing 4+ hearts and 10+ HCP.`,
         handAnalysis: analysis,
-        whatYourBidTellsPartner: "5+ hearts, 10+ TP. One-round force.",
+        whatYourBidTellsPartner: "4+ hearts, 10+ TP. One-round force.",
         expectedResponses: [
           { partnerBid: "2NT", meaning: "Minimum balanced, no heart fit" },
           { partnerBid: "3♥", meaning: "3-card heart support — fit found" },

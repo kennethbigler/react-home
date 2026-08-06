@@ -336,6 +336,58 @@ export function getOvercallerRebid(
     }
   }
 
+  // ── My overcall was CAPPELLETTI 2♣ (one-suiter, suit unknown to partner)
+  // and partner's advance is the 2♦ RELAY — I MUST name my real suit now
+  // (pass would falsely leave the auction in diamonds, a suit I never
+  // showed). Only 2♦ demands an answer; a direct raise/pick of my suit
+  // (2♥/2♠/3♣ etc., skipping the relay) needs no correction from me.
+  if (
+    context.myFirstBid === "2♣" &&
+    context.lhoBid === "1NT" &&
+    context.partnerBid === "2♦" &&
+    context.myPreviousBid === "2♣"
+  ) {
+    const suitsCapp = [
+      { name: "spades", count: hand.spades },
+      { name: "hearts", count: hand.hearts },
+      { name: "diamonds", count: hand.diamonds },
+      { name: "clubs", count: hand.clubs },
+    ];
+    const realSuit = suitsCapp.reduce((best, s) =>
+      s.count > best.count ? s : best,
+    );
+    if (realSuit.name === "diamonds") {
+      return {
+        bid: "Pass",
+        category: "Pass — Diamonds Was the Real Suit",
+        reasoning:
+          "Partner's 2♦ relay asked which suit your Cappelletti 2♣ concealed. Diamonds happens to be your real suit, so 2♦ already names it — pass.",
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: "My one-suiter is diamonds.",
+        expectedResponses: [],
+        confidence: "high",
+      };
+    }
+    const floorCapp = BID_ORDER.indexOf("2♦");
+    const nameSuit = BID_ORDER.find(
+      (b, i) => i > floorCapp && b.endsWith(suitSymbol(realSuit.name)),
+    );
+    if (nameSuit) {
+      return {
+        bid: nameSuit,
+        category: "Name Your Real Suit Over the Cappelletti Relay",
+        reasoning: `Partner's 2♦ is the artificial relay asking which suit your Cappelletti 2♣ concealed. You cannot pass 2♦ — that would wrongly leave the contract in diamonds. Correct to ${nameSuit} to show your real ${realSuit.count}-card ${realSuit.name} suit.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `My one-suiter is ${realSuit.name} (${realSuit.count}+ cards).`,
+        expectedResponses: [
+          { partnerBid: "Pass", meaning: "Happy to play your suit" },
+          { partnerBid: "Raise", meaning: "Support and extra values" },
+        ],
+        confidence: "high",
+      };
+    }
+  }
+
   const myOcBid = context.myFirstBid ?? context.myPreviousBid;
   const myOcSuit = suitFromBid(myOcBid);
   const partnerLatest = context.partnerBid;
