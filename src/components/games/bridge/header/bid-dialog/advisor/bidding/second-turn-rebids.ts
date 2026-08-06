@@ -1686,9 +1686,14 @@ export function getAdvancerRebid(
     const lenLatest = hand[sLatest as keyof Hand] as number;
     if (lenFirst > lenLatest) {
       // Go back to partner's first suit at the cheapest legal level
-      const latestIdx = BID_ORDER.indexOf(partnerLatestBid);
+      const floorIdx = Math.max(
+        BID_ORDER.indexOf(partnerLatestBid),
+        ...[lhoBid, rhoBid]
+          .filter((b): b is string => isRealBid(b))
+          .map((b) => BID_ORDER.indexOf(b)),
+      );
       const prefIdx = BID_ORDER.findIndex(
-        (b, i) => i > latestIdx && b.endsWith(suitSymbol(sFirst)),
+        (b, i) => i > floorIdx && b.endsWith(suitSymbol(sFirst)),
       );
       const prefBid = prefIdx >= 0 ? BID_ORDER[prefIdx] : undefined;
       if (prefBid && parseInt(prefBid[0]) <= 3) {

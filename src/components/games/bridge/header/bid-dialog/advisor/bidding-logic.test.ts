@@ -2549,7 +2549,7 @@ describe("bidding-logic | rebid-after-negative-double", () => {
 
   it("no fit, balanced → NT rebid", () => {
     const rec = getRecommendation(
-      mkHand(15, 4, 2, 4, 3),
+      { ...mkHand(15, 4, 2, 4, 3), hasStopperInOpponentSuit: true },
       ctx("rebid-after-negative-double", {
         myPreviousBid: "1♦",
         rhoBid: "1♠",
@@ -7867,7 +7867,10 @@ describe("bidding-logic | rebid-after-negative-double", () => {
 
   it("overcall both majors (shownSuit=null) → rebid NT or own suit", () => {
     // Artificial: rhoBid contains both ♠ and ♥ → shownSuit = null
-    const hand = mkHand(15, 3, 3, 3, 4);
+    const hand = {
+      ...mkHand(15, 3, 3, 3, 4),
+      hasStopperInOpponentSuit: true,
+    };
     const rec = getRecommendation(
       hand,
       ctx("rebid-after-negative-double", {
@@ -10431,7 +10434,7 @@ describe("bidding-logic | audit fixes — branch coverage", () => {
 
   it("opener competes (does not pass) over partner's negative double — NT", () => {
     const rec = getRecommendation(
-      mkHand(14, 2, 3, 3, 5),
+      { ...mkHand(14, 2, 3, 3, 5), hasStopperInOpponentSuit: true },
       ctx("rebid-after-negative-double", { myPreviousBid: "1♣", rhoBid: "2♥" }),
     );
     expect(rec.bid).not.toBe("Pass");
@@ -13932,6 +13935,7 @@ describe("sim audit round 67 regressions", () => {
         myFirstBid: "1♦",
         partnerBid: "2NT",
         lhoBid: "Double",
+        oppDoubledMyOpeningDirectly: true,
       },
     );
     expect(rec.bid).toBe("3♦");
@@ -13948,6 +13952,7 @@ describe("sim audit round 67 regressions", () => {
         myFirstBid: "1♦",
         partnerBid: "2NT",
         lhoBid: "Double",
+        oppDoubledMyOpeningDirectly: true,
       },
     );
     expect(rec.bid).toBe("5♦");
@@ -13965,6 +13970,57 @@ describe("sim audit round 67 regressions", () => {
     );
     expect(rec.bid).toBe("Pass");
     expect(rec.category).toBe("Decline the 2NT Invite (Minimum)");
+  });
+
+  it("a lhoBid of Double alone (without the derived flag) does NOT trigger Jordan — router must key off oppDoubledMyOpeningDirectly, not raw lhoBid/rhoBid", () => {
+    // Regression for the "known edge" bug: a Double surfacing in lhoBid/rhoBid
+    // does not by itself prove it sat directly over MY opening. The router
+    // must trust only the precise, timeline-derived flag.
+    const rec = getRecommendation(
+      { hcp: 13, spades: 2, hearts: 3, diamonds: 4, clubs: 4 },
+      {
+        situation: "rebid-after-suit",
+        myFirstBid: "1♦",
+        partnerBid: "2NT",
+        lhoBid: "Double",
+        // oppDoubledMyOpeningDirectly intentionally omitted
+      },
+    );
+    expect(rec.bid).toBe("Pass");
+    expect(rec.category).toBe("Decline the 2NT Invite (Minimum)");
+  });
+
+  it("deriveSituation: a double directly over my opening (1♦-Dbl-2NT-Pass) sets oppDoubledMyOpeningDirectly, giving Jordan", () => {
+    // Seat 1 = me, seat 2 = LHO, seat 3 = partner, seat 4 = RHO.
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♦", 2: "Double", 3: "2NT", 4: "Pass" }],
+      currentRound: {},
+    };
+    const context = deriveSituation(state);
+    expect(context.situation).toBe("rebid-after-suit");
+    expect(context.oppDoubledMyOpeningDirectly).toBe(true);
+    const rec = getRecommendation(
+      { hcp: 13, spades: 2, hearts: 3, diamonds: 4, clubs: 4 },
+      context,
+    );
+    expect(rec.category).toBe("Sign Off After Jordan 2NT (13-15 TP)");
+  });
+
+  it("deriveSituation: a double NOT directly over my opening (a later reopening double after partner's own bid) does NOT set oppDoubledMyOpeningDirectly", () => {
+    // 1♦-Pass-1♥-Pass, then round 2: me-Pass, LHO-Double (a reopening/
+    // takeout double of partner's LATER 1♥, not of my original 1♦) —
+    // partner's real first bid was 1♥, and no double sits between my 1♦ and
+    // that response, so Jordan must not fire even though a Double exists
+    // somewhere in lhoBid/rhoBid.
+    const state: AuctionState = {
+      myPosition: 1,
+      completedRounds: [{ 1: "1♦", 2: "Pass", 3: "1♥", 4: "Pass" }],
+      currentRound: { 1: "Pass", 2: "Double" },
+    };
+    const context = deriveSituation(state);
+    expect(context.situation).toBe("rebid-after-suit");
+    expect(context.oppDoubledMyOpeningDirectly).toBeUndefined();
   });
 
   it("the Jordan 2NT tooltip fires only when an opponent's double sits directly before it", () => {

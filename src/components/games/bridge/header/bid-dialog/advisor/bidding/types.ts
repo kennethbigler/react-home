@@ -229,6 +229,16 @@ export interface AuctionContext {
    * opening — stories must say "overcall", not "opening bid".
    */
   iOvercalled?: boolean;
+  /**
+   * For `rebid-after-suit`: an opponent's DOUBLE sat DIRECTLY over my
+   * opening bid (immediately before partner's response — i.e. my
+   * opening-Double-Pass-partner's response, or my opening-Double-response
+   * with no intervening pass). Only then is partner's 2NT response JORDAN (a
+   * limit raise), rather than a natural invite — a double made anywhere
+   * else in the auction (e.g. over partner's own later bid, or a reopening
+   * double after 2NT was already bid) must NOT trigger the Jordan reading.
+   */
+  oppDoubledMyOpeningDirectly?: boolean;
 }
 
 interface ExpectedResponse {

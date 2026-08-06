@@ -331,7 +331,7 @@ export function getResponseToSimpleOC(
   const partnerOvercallLvlAdv = parseInt(partnerBid[0]) || 1;
   if (
     cheapestNT === "3NT" &&
-    hand.hasStopperInOpponentSuit !== false &&
+    hand.hasStopperInOpponentSuit === true &&
     // Partner's own overcall must be HIGH (3-level = sound values) for 11 HCP
     // to make game; when only the OPPONENTS pushed the floor past 2NT,
     // partner's low overcall may be weak — 3NT then needs a full 15+.
@@ -350,7 +350,7 @@ export function getResponseToSimpleOC(
   }
 
   if (hcp >= 9 && hcp <= 12) {
-    if (opponentBidSuit && hand.hasStopperInOpponentSuit === false) {
+    if (opponentBidSuit && hand.hasStopperInOpponentSuit !== true) {
       // No stopper in opponent's suit — cannot bid NT safely.  Bid my longest
       // BIDDABLE suit (never the opponents' suit) at the cheapest legal level;
       // if there is none, pass.
@@ -405,7 +405,7 @@ export function getResponseToSimpleOC(
     };
   }
   if (hcp >= 13 && hcp <= 14) {
-    if (opponentBidSuit && hand.hasStopperInOpponentSuit === false) {
+    if (opponentBidSuit && hand.hasStopperInOpponentSuit !== true) {
       if (noSafeSuitBid) {
         return {
           bid: "Pass",
@@ -429,7 +429,11 @@ export function getResponseToSimpleOC(
       };
     }
     const ntAdvBid2 =
-      cheapestNT && parseInt(cheapestNT[0]) <= 2 ? cheapestNT : undefined;
+      cheapestNT && parseInt(cheapestNT[0]) <= 2
+        ? cheapestNT === "1NT"
+          ? "2NT"
+          : cheapestNT
+        : undefined;
     if (!ntAdvBid2) {
       return {
         bid: "Pass",
@@ -457,7 +461,7 @@ export function getResponseToSimpleOC(
         opponentBidSuit && hand.hasStopperInOpponentSuit ? "high" : "medium",
     };
   }
-  if (opponentBidSuit && hand.hasStopperInOpponentSuit === false) {
+  if (opponentBidSuit && hand.hasStopperInOpponentSuit !== true) {
     if (noSafeSuitBid) {
       return {
         bid: "Pass",
@@ -531,18 +535,29 @@ export function getResponseToJumpOC(
   // Partner's weak jump overcall shows ~5-11 HCP and a 6-card suit. Game
   // needs REAL values opposite that — about 16+ support points.
   if (mySupport >= 3 && supportTP >= 16) {
-    const gameBid = isMajorJOC ? `4${suitSymbol(partnerSuit)}` : "3NT";
+    const majorGameBid = `4${suitSymbol(partnerSuit)}`;
+    const minorGameBid = `5${suitSymbol(partnerSuit)}`;
+    const gameBid = isMajorJOC
+      ? majorGameBid
+      : hand.hasStopperInOpponentSuit === true
+        ? "3NT"
+        : minorGameBid;
     return {
       bid: gameBid,
-      category: "Game over Weak Jump Overcall (16+ support pts)",
-      reasoning: `Partner's weak jump overcall showed about 5-11 HCP with a good 6-card ${partnerSuit} suit. With ${supportTP} support points (16+) and ${mySupport}-card support, the combined values justify game: bid ${gameBid}.`,
+      category: isMajorJOC
+        ? "Game over Weak Jump Overcall (16+ support pts)"
+        : gameBid === "3NT"
+          ? "3NT Game over Weak Jump Overcall (16+ support pts, stopper held)"
+          : "Minor Game over Weak Jump Overcall (16+ support pts, no stopper for NT)",
+      reasoning: isMajorJOC
+        ? `Partner's weak jump overcall showed about 5-11 HCP with a good 6-card ${partnerSuit} suit. With ${supportTP} support points (16+) and ${mySupport}-card support, the combined values justify game: bid ${majorGameBid}.`
+        : gameBid === "3NT"
+          ? `Partner's weak jump overcall showed about 5-11 HCP with a good 6-card ${partnerSuit} suit. With ${supportTP} support points (16+), a confirmed stopper in the opponents' suit, and ${mySupport}-card support, bid 3NT.`
+          : `Partner's weak jump overcall showed about 5-11 HCP with a good 6-card ${partnerSuit} suit. With ${supportTP} support points (16+) and ${mySupport}-card support, game belongs in ${partnerSuit} — bid ${minorGameBid} rather than 3NT without a confirmed stopper.`,
       handAnalysis: analysis,
       whatYourBidTellsPartner: "Real values (16+ support pts) — to play.",
       expectedResponses: [],
       confidence: "high",
-      note: isMajorJOC
-        ? undefined
-        : "3NT needs stoppers in the unbid suits — with an unstopped suit, prefer raising partner's minor instead.",
     };
   }
 
@@ -1043,6 +1058,9 @@ export function getResponseTo1NTOvercall(
   interferenceBid?: string,
 ): BidRecommendation {
   if (balancing) {
+    if (interferenceBid && isRealBid(interferenceBid)) {
+      return getResponseToOneNT(hand, interferenceBid, false);
+    }
     const analysis = analyzeHand(hand);
     const { hcp } = hand;
     // Opposite 11-14 the whole ladder shifts up ~4 HCP versus a 15-18 1NT:

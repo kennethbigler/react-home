@@ -1126,6 +1126,12 @@ export function getKingsFollowUp(
       : ` Partner has ${kingCount === 0 ? "0 or 4" : kingCount} king${kingCount !== 1 ? "s" : ""}.`;
 
   if (totalKings >= 3 && missingAces !== undefined && missingAces > 0) {
+    const passAtSix = slamSignOff(
+      6,
+      "Accepting partner's small-slam sign-off.",
+      " with an ace missing",
+    );
+    if (passAtSix) return passAtSix;
     return {
       bid: `6${suitSym}`,
       category: "Small Slam (Ace Missing — No Grand)",
