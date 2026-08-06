@@ -54,7 +54,7 @@ export const getInflationTooltipValue = (
   return showFinalInflation ? finalInflationValue : point.y;
 };
 
-/** Compact currency labels for chart axes (e.g. $500k, $1M, $1.5M). */
+/** Compact currency labels for chart axes (e.g. $500k, $1M, $1.5M, $1B). */
 export const formatCompactAxisCurrency = (value: number): string => {
   const abs = Math.abs(value);
   const sign = value < 0 ? "-" : "";
@@ -69,9 +69,19 @@ export const formatCompactAxisCurrency = (value: number): string => {
     return `${sign}$${rounded}${suffix}`;
   };
 
+  /** When a lower suffix would round to 1000X, promote to the next suffix. */
+  const promotes = (scaled: number) =>
+    scaled >= 100 && Math.round(scaled) >= 1_000;
+
   const inK = abs / 1_000;
-  if (abs >= 1_000_000 || (inK >= 100 && Math.round(inK) >= 1_000)) {
-    return formatScaled(abs / 1_000_000, "M");
+  const inM = abs / 1_000_000;
+  const inB = abs / 1_000_000_000;
+
+  if (abs >= 1_000_000_000 || promotes(inM)) {
+    return formatScaled(inB, "B");
+  }
+  if (abs >= 1_000_000 || promotes(inK)) {
+    return formatScaled(inM, "M");
   }
   if (abs >= 1_000) {
     return formatScaled(inK, "k");
