@@ -10,7 +10,7 @@ import {
 } from "../../../../common/highcharts/tests/highchartsMocks";
 import { createTheme } from "@mui/material/styles";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import Graphs from "./Graphs";
 import BreakdownChart from "./BreakdownGraph";
@@ -29,6 +29,7 @@ import themeAtom, {
   darkTheme,
   lightTheme,
 } from "../../../../../jotai/theme-atom";
+import { formatCompactAxisCurrency } from "../../shared/chartHelpers";
 
 describe("resume | finances | net-worth | Graphs", () => {
   // Pre-sorted by final-entry amounts (largest first), as NetWorth provides.
@@ -221,6 +222,58 @@ describe("resume | finances | net-worth | Graphs", () => {
       color: createTheme({ palette: { mode: "light" } }).palette.text.primary,
     });
   });
+
+  it("hides breakdown categories toggled off in the pie dialog", async () => {
+    renderGraphs();
+
+    expect(getBreakdownSeriesData()).toEqual([
+      expect.objectContaining({ name: "Investments", y: 60000 }),
+      expect.objectContaining({ name: "Cash", y: 15000 }),
+    ]);
+
+    fireEvent.click(screen.getByRole("button", { name: "Categories" }));
+    expect(
+      screen.getByRole("dialog", { name: "Show Categories" }),
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("switch", { name: "Show Cash" }));
+
+    await waitFor(() => {
+      expect(getBreakdownSeriesData()).toEqual([
+        expect.objectContaining({ name: "Investments", y: 60000 }),
+      ]);
+    });
+  });
+
+  it("disables category switches when the selected entry amount is zero", () => {
+    render(
+      <Provider>
+        <Graphs
+          entries={[
+            {
+              entryDate: "2022-01",
+              amounts: { Investments: 60000, Cash: 15000, Vehicles: 0 },
+            },
+          ]}
+          calcEntries={[{ total: 75000, netDiff: 0 }]}
+          categories={["Investments", "Cash", "Vehicles"]}
+        />
+      </Provider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Categories" }));
+
+    expect(
+      screen.getByRole("switch", { name: "Show Investments" }),
+    ).toBeEnabled();
+    expect(screen.getByRole("switch", { name: "Show Cash" })).toBeEnabled();
+    expect(
+      screen.getByRole("switch", { name: "Show Vehicles" }),
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("switch", { name: "Show Vehicles" }),
+    ).not.toBeChecked();
+  });
 });
 
 describe("resume | finances | net-worth | buildNetWorthBreakdownPieData", () => {
@@ -235,6 +288,27 @@ describe("resume | finances | net-worth | buildNetWorthBreakdownPieData", () => 
         name: "Investments",
         y: 60000,
         color: getCategoryColor(0),
+      },
+    ]);
+  });
+
+  it("omits hidden categories while keeping their colors aligned", () => {
+    expect(
+      buildNetWorthBreakdownPieData(
+        ["Investments", "Cash", "Home"],
+        { Investments: 60000, Cash: 15000, Home: 10000 },
+        new Set(["Cash"]),
+      ),
+    ).toEqual([
+      {
+        name: "Investments",
+        y: 60000,
+        color: getCategoryColor(0),
+      },
+      {
+        name: "Home",
+        y: 10000,
+        color: getCategoryColor(2),
       },
     ]);
   });
@@ -496,5 +570,24 @@ describe("netWorthGraphHelpers", () => {
     expect(html).toContain("Cash:");
     expect(html).toContain("$0.00");
     expect(html).not.toContain("Inflation:");
+  });
+});
+
+describe("chartHelpers | formatCompactAxisCurrency", () => {
+  it("formats thousands and millions with $ prefix", () => {
+    expect(formatCompactAxisCurrency(500_000)).toBe("$500k");
+    expect(formatCompactAxisCurrency(1_000_000)).toBe("$1M");
+    expect(formatCompactAxisCurrency(1_500_000)).toBe("$1.5M");
+    expect(formatCompactAxisCurrency(2_000_000)).toBe("$2M");
+    expect(formatCompactAxisCurrency(2_500_000)).toBe("$2.5M");
+  });
+
+  it("formats smaller values without cents", () => {
+    expect(formatCompactAxisCurrency(0)).toBe("$0");
+    expect(formatCompactAxisCurrency(999)).toBe("$999");
+  });
+
+  it("preserves negative values", () => {
+    expect(formatCompactAxisCurrency(-1_500_000)).toBe("-$1.5M");
   });
 });

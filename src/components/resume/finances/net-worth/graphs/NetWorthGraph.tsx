@@ -17,6 +17,7 @@ import type {
   NetWorthEntry,
 } from "../../../../../jotai/finances-atom";
 import ChartFigure from "../../shared/ChartFigure";
+import { formatCompactAxisCurrency } from "../../shared/chartHelpers";
 import useChartTextColor from "../../shared/useChartTextColor";
 import colors, { getCategoryColor } from "./colors";
 import {
@@ -114,7 +115,12 @@ const NetWorthChart = ({
         <XAxis type="datetime" visible={false} />
         <YAxis
           title={{ text: undefined }}
-          labels={{ style: { color } }}
+          labels={{
+            style: { color },
+            formatter: function () {
+              return formatCompactAxisCurrency(Number(this.value));
+            },
+          }}
           // Keep series order aligned with the pie (largest first) while
           // placing the first series at the bottom of the stack.
           reversedStacks={false}
