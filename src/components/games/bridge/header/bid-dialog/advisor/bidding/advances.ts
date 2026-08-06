@@ -516,6 +516,11 @@ export function getResponseToSimpleOC(
 export function getResponseToJumpOC(
   hand: Hand,
   partnerBid: string,
+  /** The opponents' highest live bid AFTER partner's jump overcall (if any)
+   *  — a game candidate must clear THIS floor too, not just partner's
+   *  overcall, or interference between partner's bid and my turn could make
+   *  the "natural" game call illegal (already-outbid). */
+  interferenceBid?: string,
 ): BidRecommendation {
   const analysis = analyzeHand(hand);
   const partnerSuit = partnerBid.includes("♠")
@@ -531,6 +536,11 @@ export function getResponseToJumpOC(
 
   const isMajorJOC = partnerSuit === "hearts" || partnerSuit === "spades";
   const jumpLevelJOC = parseInt(partnerBid[0]) || 2;
+  const floorIdxJOC = Math.max(
+    BID_ORDER.indexOf(partnerBid),
+    interferenceBid ? BID_ORDER.indexOf(interferenceBid) : -1,
+  );
+  const clearsFloorJOC = (bid: string) => BID_ORDER.indexOf(bid) > floorIdxJOC;
 
   // Partner's weak jump overcall shows ~5-11 HCP and a 6-card suit. Game
   // needs REAL values opposite that — about 16+ support points.
@@ -542,23 +552,29 @@ export function getResponseToJumpOC(
       : hand.hasStopperInOpponentSuit === true
         ? "3NT"
         : minorGameBid;
-    return {
-      bid: gameBid,
-      category: isMajorJOC
-        ? "Game over Weak Jump Overcall (16+ support pts)"
-        : gameBid === "3NT"
-          ? "3NT Game over Weak Jump Overcall (16+ support pts, stopper held)"
-          : "Minor Game over Weak Jump Overcall (16+ support pts, no stopper for NT)",
-      reasoning: isMajorJOC
-        ? `Partner's weak jump overcall showed about 5-11 HCP with a good 6-card ${partnerSuit} suit. With ${supportTP} support points (16+) and ${mySupport}-card support, the combined values justify game: bid ${majorGameBid}.`
-        : gameBid === "3NT"
-          ? `Partner's weak jump overcall showed about 5-11 HCP with a good 6-card ${partnerSuit} suit. With ${supportTP} support points (16+), a confirmed stopper in the opponents' suit, and ${mySupport}-card support, bid 3NT.`
-          : `Partner's weak jump overcall showed about 5-11 HCP with a good 6-card ${partnerSuit} suit. With ${supportTP} support points (16+) and ${mySupport}-card support, game belongs in ${partnerSuit} — bid ${minorGameBid} rather than 3NT without a confirmed stopper.`,
-      handAnalysis: analysis,
-      whatYourBidTellsPartner: "Real values (16+ support pts) — to play.",
-      expectedResponses: [],
-      confidence: "high",
-    };
+    if (clearsFloorJOC(gameBid)) {
+      return {
+        bid: gameBid,
+        category: isMajorJOC
+          ? "Game over Weak Jump Overcall (16+ support pts)"
+          : gameBid === "3NT"
+            ? "3NT Game over Weak Jump Overcall (16+ support pts, stopper held)"
+            : "Minor Game over Weak Jump Overcall (16+ support pts, no stopper for NT)",
+        reasoning: isMajorJOC
+          ? `Partner's weak jump overcall showed about 5-11 HCP with a good 6-card ${partnerSuit} suit. With ${supportTP} support points (16+) and ${mySupport}-card support, the combined values justify game: bid ${majorGameBid}.`
+          : gameBid === "3NT"
+            ? `Partner's weak jump overcall showed about 5-11 HCP with a good 6-card ${partnerSuit} suit. With ${supportTP} support points (16+), a confirmed stopper in the opponents' suit, and ${mySupport}-card support, bid 3NT.`
+            : `Partner's weak jump overcall showed about 5-11 HCP with a good 6-card ${partnerSuit} suit. With ${supportTP} support points (16+) and ${mySupport}-card support, game belongs in ${partnerSuit} — bid ${minorGameBid} rather than 3NT without a confirmed stopper.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: "Real values (16+ support pts) — to play.",
+        expectedResponses: [],
+        confidence: "high",
+      };
+    }
+    // The natural game call no longer clears — the opponents intervened
+    // between partner's overcall and my turn. Fall through to the
+    // Law-of-Total-Tricks / pass handling below rather than recommend an
+    // illegal (already-outbid) bid.
   }
 
   // Anything less: raises of a preempt are PREEMPTIVE (Law of Total Tricks),
@@ -566,8 +582,8 @@ export function getResponseToJumpOC(
   if (mySupport >= 3) {
     const totalTrumps = 6 + mySupport;
     const lottLevel = Math.min(totalTrumps - 6, isMajorJOC ? 4 : 5);
-    if (lottLevel > jumpLevelJOC) {
-      const lottBid = `${lottLevel}${suitSymbol(partnerSuit)}`;
+    const lottBid = `${lottLevel}${suitSymbol(partnerSuit)}`;
+    if (lottLevel > jumpLevelJOC && clearsFloorJOC(lottBid)) {
       return {
         bid: lottBid,
         category: "Preemptive Raise of Jump Overcall (Law of Total Tricks)",

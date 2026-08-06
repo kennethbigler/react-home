@@ -104,7 +104,10 @@ export function getBidMeaning(
     auctionOpeningBid === "1NT" &&
     bidderPreviousBid === "2♣" &&
     bidderPartnerPreviousBid === "2♦" &&
-    /^3[♠♥♦♣]$/.test(bid)
+    // The real suit can be named as cheaply as 2♥/2♠ (still 2-level — only
+    // clubs needs to jump to 3♣, since 2♣ was already used for Cappelletti).
+    /^[23][♠♥♦♣]$/.test(bid) &&
+    bid !== "2♦"
   ) {
     const suitNameCC = bid.includes("♠")
       ? "spades"

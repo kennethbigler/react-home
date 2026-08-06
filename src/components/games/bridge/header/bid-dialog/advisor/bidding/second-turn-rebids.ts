@@ -368,7 +368,13 @@ export function getOvercallerRebid(
         confidence: "high",
       };
     }
-    const floorCapp = BID_ORDER.indexOf("2♦");
+    // The floor to clear is the highest LIVE call — the relay (2♦) itself,
+    // or any opponent bid since (e.g. RHO overcalling the relay) — matching
+    // the approach used for the Michaels-answer branch above.
+    const floorCappBid = [context.lhoBid, context.rhoBid, "2♦"]
+      .filter((b): b is string => isRealBid(b))
+      .sort((a, b) => BID_ORDER.indexOf(b) - BID_ORDER.indexOf(a))[0];
+    const floorCapp = BID_ORDER.indexOf(floorCappBid);
     const nameSuit = BID_ORDER.find(
       (b, i) => i > floorCapp && b.endsWith(suitSymbol(realSuit.name)),
     );

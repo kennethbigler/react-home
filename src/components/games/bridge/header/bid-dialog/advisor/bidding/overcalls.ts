@@ -409,8 +409,8 @@ export function getOvercall(
     );
   }
 
-  // ── RHO's bid is a JACOBY (or minor-suit) TRANSFER over partner's 1NT ──────
-  // e.g. LHO opens 1NT, partner passes, RHO bids 2♦/2♥/2♠ — this is artificial
+  // ── RHO's bid is a JACOBY (or minor-suit) TRANSFER over the opponents' 1NT ─
+  // e.g. LHO (opponent) opens 1NT, partner passes, RHO bids 2♦/2♥/2♠ — this is artificial
   // (2♦→hearts, 2♥→spades, 2♠→a minor), NOT a natural suit. Treating it as a
   // real suit would wrongly claim "your longest suit is the opponent's suit"
   // for a suit the opponents haven't actually shown, and would filter out a
@@ -444,7 +444,7 @@ export function getOvercall(
       return {
         bid: cheapestOC,
         category: "Natural Overcall Over a Jacoby Transfer",
-        reasoning: `RHO's ${opponentBid} is a Jacoby transfer (artificial — partner's 1NT opener will bid ${transferTargetName === "spades" ? "2♠" : transferTargetName === "hearts" ? "2♥" : "the minor"} next), not a natural suit — it doesn't occupy or promise ${transferTargetName}. With a genuine ${longestOC.length}-card ${longestOC.name} suit and ${hcp} HCP, you can compete naturally with ${cheapestOC}.`,
+        reasoning: `RHO's ${opponentBid} is a Jacoby transfer (artificial — the 1NT opener will bid ${transferTargetName === "spades" ? "2♠" : transferTargetName === "hearts" ? "2♥" : "the minor"} next), not a natural suit — it doesn't occupy or promise ${transferTargetName}. With a genuine ${longestOC.length}-card ${longestOC.name} suit and ${hcp} HCP, you can compete naturally with ${cheapestOC}.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner: `${longestOC.length}+ card ${longestOC.name}, competing over their transfer auction.`,
         expectedResponses: [
