@@ -54,6 +54,31 @@ export const getInflationTooltipValue = (
   return showFinalInflation ? finalInflationValue : point.y;
 };
 
+/** Compact currency labels for chart axes (e.g. $500k, $1M, $1.5M). */
+export const formatCompactAxisCurrency = (value: number): string => {
+  const abs = Math.abs(value);
+  const sign = value < 0 ? "-" : "";
+
+  const formatScaled = (scaled: number, suffix: string) => {
+    const rounded =
+      scaled >= 100
+        ? Math.round(scaled).toString()
+        : Number.isInteger(scaled)
+          ? scaled.toString()
+          : scaled.toFixed(1).replace(/\.0$/, "");
+    return `${sign}$${rounded}${suffix}`;
+  };
+
+  if (abs >= 1_000_000) {
+    return formatScaled(abs / 1_000_000, "M");
+  }
+  if (abs >= 1_000) {
+    return formatScaled(abs / 1_000, "k");
+  }
+
+  return `${sign}$${Math.round(abs).toLocaleString("en-US")}`;
+};
+
 /** One "● Name: <b>$value</b>" tooltip row colored to match its series. */
 export const formatTooltipRow = (
   point: TooltipPoint,

@@ -3,6 +3,7 @@ import { getCategoryColor } from "./colors";
 export const buildNetWorthBreakdownPieData = (
   categories: string[],
   amounts: Record<string, number>,
+  hiddenCategories: ReadonlySet<string> = new Set(),
 ) =>
   categories
     .map((name, i) => ({
@@ -12,4 +13,4 @@ export const buildNetWorthBreakdownPieData = (
       // even when zero-value slices are omitted from the pie.
       color: getCategoryColor(i),
     }))
-    .filter(({ y }) => y > 0);
+    .filter(({ name, y }) => y > 0 && !hiddenCategories.has(name));
