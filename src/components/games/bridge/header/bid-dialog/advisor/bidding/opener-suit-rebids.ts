@@ -10,49 +10,65 @@ import {
 } from "./hand-evaluation";
 import type { BidRecommendation, Hand } from "./types";
 
-export function getRebidAfterSuit(
-  hand: Hand,
-  myOpeningBid: string,
-  partnerResponse: string,
-  contested = false,
+export interface RebidAfterSuitFlags {
+  contested?: boolean;
   /**
    * The opponents' highest natural bid AFTER partner's response, if any (e.g.
    * the 3♦ in 1♠-2♦-2♥-3♦).  Rebid-level math must clear this — without it the
    * function computes a bid based only on partner's level and can return an
    * illegal call (e.g. 2♠ over 3♦), which then collapses to a phantom Pass.
    */
-  interferenceBid?: string,
+  interferenceBid?: string;
   /**
    * Partner's FIRST real bid.  When it differs from partnerResponse, a current
    * bid that matches opener's suit is a PREFERENCE back to it (after partner
    * showed another suit), NOT a fresh limit/jump raise — so it must not be
    * treated as invitational.
    */
-  partnerFirstBid?: string,
+  partnerFirstBid?: string;
   /**
    * True when I have ALREADY rebid (opened + made a second descriptive bid)
    * and partner has said nothing new since — their latest real bid is the one
    * I already answered.  My hand is fully described; only the opponents'
    * interference brings the turn back to me.
    */
-  alreadyDescribed = false,
+  alreadyDescribed?: boolean;
   /** True when partnerResponse is a CUEBID of a suit the opponents had shown
    *  BEFORE partner's call (order-checked in the derivation) — a game-forcing
    *  raise of my suit, never natural. */
-  partnerCuedTheirSuit = false,
+  partnerCuedTheirSuit?: boolean;
   /** My LATEST real bid (may differ from the opening) — lets the handler see
    *  that I already raised partner's suit, so a re-bid of it is not "new". */
-  myLatestBid?: string,
+  myLatestBid?: string;
   /** True when an opponent has shown a natural NOTRUMP hand anywhere in the
    *  auction (e.g. a 1NT overcall) — our side must not volunteer notrump. */
-  oppShowedNT = false,
+  oppShowedNT?: boolean;
   /** Partner made a DOUBLE earlier — their raise of my suit is the
    *  invitational (11-13) continuation, never a weak preemptive jump. */
-  partnerDoubledEarlier = false,
+  partnerDoubledEarlier?: boolean;
   /** An OPPONENT doubled my opening bid — partner's 2NT response in this
    *  auction is JORDAN (a limit raise of my suit, 10+ pts, 3+ card support),
    *  never a natural balanced invite, and gets a different response ladder. */
-  oppDoubledMyOpening = false,
+  oppDoubledMyOpening?: boolean;
+}
+
+export function getRebidAfterSuit(
+  hand: Hand,
+  myOpeningBid: string,
+  partnerResponse: string,
+  /** Named flags object — prevents future additions/reorderings from
+   *  silently shifting which boolean/string lands in which slot. */
+  {
+    contested = false,
+    interferenceBid,
+    partnerFirstBid,
+    alreadyDescribed = false,
+    partnerCuedTheirSuit = false,
+    myLatestBid,
+    oppShowedNT = false,
+    partnerDoubledEarlier = false,
+    oppDoubledMyOpening = false,
+  }: RebidAfterSuitFlags = {},
 ): BidRecommendation {
   const analysis = analyzeHand(hand);
   const { tp } = analysis;
@@ -1446,9 +1462,11 @@ export function getRebidAfterSuit(
     if (partnerSuitLen >= 4 && supportTP >= 16) {
       const jumpSupportBid = `${raiseLvl + 1}${suitSymbol(partnerSuit)}`;
       const jumpSupportLegal =
-        !interferenceBid ||
-        !isRealBid(interferenceBid) ||
-        BID_ORDER.indexOf(jumpSupportBid) > BID_ORDER.indexOf(interferenceBid);
+        raiseLvl + 1 <= gameLvl &&
+        (!interferenceBid ||
+          !isRealBid(interferenceBid) ||
+          BID_ORDER.indexOf(jumpSupportBid) >
+            BID_ORDER.indexOf(interferenceBid));
       if (jumpSupportLegal) {
         return {
           bid: jumpSupportBid,

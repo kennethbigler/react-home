@@ -143,8 +143,16 @@ function getRecommendationRaw(
         context.auctionOpeningBid,
       );
 
-    case "responding-to-jump-oc":
-      return getResponseToJumpOC(hand, context.partnerBid ?? "2♠");
+    case "responding-to-jump-oc": {
+      const jumpOCInterference = [context.lhoBid, context.rhoBid]
+        .filter((b): b is string => isRealBid(b))
+        .sort((a, b) => BID_ORDER.indexOf(b) - BID_ORDER.indexOf(a))[0];
+      return getResponseToJumpOC(
+        hand,
+        context.partnerBid ?? "2♠",
+        jumpOCInterference,
+      );
+    }
 
     case "responding-to-double": {
       // The floor an advance must clear is the opponents' HIGHEST bid — the
@@ -253,24 +261,26 @@ function getRecommendationRaw(
         // not what I rebid afterwards.
         context.myFirstBid ?? context.myPreviousBid ?? "1♠",
         context.partnerBid ?? "2♠",
-        !!(context.lhoBid || context.rhoBid),
-        interferenceBid,
-        context.partnerFirstBid,
-        context.partnerHasNothingNew ?? false,
-        context.partnerCuedTheirSuit ?? false,
-        context.myPreviousBid,
-        [context.lhoBid, context.rhoBid].some(
-          (b) => !!b && isRealBid(b) && b.endsWith("NT"),
-        ),
-        context.partnerDoubledEarlier ?? false,
-        // An opponent's DOUBLE sat DIRECTLY over my opening (derived from the
-        // full auction timeline, not just "did LHO/RHO ever double") —
-        // partner's 2NT response in this auction is JORDAN (a limit raise of
-        // my suit), not a natural balanced invite, and must be answered on
-        // that ladder instead. A double elsewhere in the auction (e.g. over
-        // partner's own bid, or a later reopening double) must NOT trigger
-        // this reading.
-        context.oppDoubledMyOpeningDirectly ?? false,
+        {
+          contested: !!(context.lhoBid || context.rhoBid),
+          interferenceBid,
+          partnerFirstBid: context.partnerFirstBid,
+          alreadyDescribed: context.partnerHasNothingNew ?? false,
+          partnerCuedTheirSuit: context.partnerCuedTheirSuit ?? false,
+          myLatestBid: context.myPreviousBid,
+          oppShowedNT: [context.lhoBid, context.rhoBid].some(
+            (b) => !!b && isRealBid(b) && b.endsWith("NT"),
+          ),
+          partnerDoubledEarlier: context.partnerDoubledEarlier ?? false,
+          // An opponent's DOUBLE sat DIRECTLY over my opening (derived from
+          // the full auction timeline, not just "did LHO/RHO ever double") —
+          // partner's 2NT response in this auction is JORDAN (a limit raise
+          // of my suit), not a natural balanced invite, and must be answered
+          // on that ladder instead. A double elsewhere in the auction (e.g.
+          // over partner's own bid, or a later reopening double) must NOT
+          // trigger this reading.
+          oppDoubledMyOpening: context.oppDoubledMyOpeningDirectly ?? false,
+        },
       );
     }
 

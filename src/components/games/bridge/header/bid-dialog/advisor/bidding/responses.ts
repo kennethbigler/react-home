@@ -1169,7 +1169,7 @@ export function getResponseToSuit(
         reasoning: `With ${tp} TP and ${hand.hearts}+ hearts after partner's 1♠, bid 2♥ (2-over-1). This is a one-round force showing 4+ hearts and 10+ HCP. It does not set hearts as trump — opener can show a second suit or NT on rebid.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner:
-          "4+ hearts, 10+ TP. One-round force — game is likely.",
+          "4+ hearts, 10+ HCP. One-round force — game is likely.",
         expectedResponses: [
           { partnerBid: "2NT", meaning: "Minimum balanced, no heart fit" },
           { partnerBid: "3♥", meaning: "3-card heart support — fit found" },
@@ -1395,7 +1395,7 @@ export function getResponseToSuit(
         category: `2-Over-1 New Suit (11-12 TP, ${hand.hearts}+ Hearts)`,
         reasoning: `With ${tp} TP and ${hand.hearts}+ hearts after partner's 1♠, bid 2♥ (2-over-1). This is a one-round force showing 4+ hearts and 10+ HCP.`,
         handAnalysis: analysis,
-        whatYourBidTellsPartner: "4+ hearts, 10+ TP. One-round force.",
+        whatYourBidTellsPartner: "4+ hearts, 10+ HCP. One-round force.",
         expectedResponses: [
           { partnerBid: "2NT", meaning: "Minimum balanced, no heart fit" },
           { partnerBid: "3♥", meaning: "3-card heart support — fit found" },
