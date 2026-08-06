@@ -409,6 +409,63 @@ export function getOvercall(
     );
   }
 
+  // ── RHO's bid is a JACOBY (or minor-suit) TRANSFER over partner's 1NT ──────
+  // e.g. LHO opens 1NT, partner passes, RHO bids 2♦/2♥/2♠ — this is artificial
+  // (2♦→hearts, 2♥→spades, 2♠→a minor), NOT a natural suit. Treating it as a
+  // real suit would wrongly claim "your longest suit is the opponent's suit"
+  // for a suit the opponents haven't actually shown, and would filter out a
+  // genuine overcall in that suit. RHO must be on the SAME side as the 1NT
+  // opener (i.e. LHO's own opening) for this to be a transfer rather than a
+  // Cappelletti-style defensive call (which comes from the side OPPOSING 1NT).
+  const isTransferReply =
+    lhoIsNT &&
+    (auctionOpeningBid === undefined || auctionOpeningBid === "1NT") &&
+    /^2[♦♥♠]$/.test(opponentBid);
+  if (isTransferReply) {
+    // Evaluate purely on our own hand — the transfer says nothing about what
+    // suit the OPPONENTS hold, so no suit is "theirs" to avoid overcalling.
+    const longestOC = longestSuitInfo(hand);
+    const transferTargetName =
+      opponentBid === "2♦"
+        ? "hearts"
+        : opponentBid === "2♥"
+          ? "spades"
+          : "a minor suit";
+    const floorIdxTR = BID_ORDER.indexOf(opponentBid);
+    const cheapestOC = BID_ORDER.find(
+      (b, i) => i > floorIdxTR && b.endsWith(suitSymbol(longestOC.name)),
+    );
+    if (
+      cheapestOC &&
+      parseInt(cheapestOC[0]) <= 2 &&
+      longestOC.length >= 5 &&
+      (longestOC.length >= 6 || hcp >= 8)
+    ) {
+      return {
+        bid: cheapestOC,
+        category: "Natural Overcall Over a Jacoby Transfer",
+        reasoning: `RHO's ${opponentBid} is a Jacoby transfer (artificial — partner's 1NT opener will bid ${transferTargetName === "spades" ? "2♠" : transferTargetName === "hearts" ? "2♥" : "the minor"} next), not a natural suit — it doesn't occupy or promise ${transferTargetName}. With a genuine ${longestOC.length}-card ${longestOC.name} suit and ${hcp} HCP, you can compete naturally with ${cheapestOC}.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `${longestOC.length}+ card ${longestOC.name}, competing over their transfer auction.`,
+        expectedResponses: [
+          { partnerBid: "Pass", meaning: "Weak or no fit" },
+          { partnerBid: "Raise", meaning: "Fit and some values" },
+        ],
+        confidence: "medium",
+      };
+    }
+    return {
+      bid: "Pass",
+      category: "Pass Over Opponents' Jacoby Transfer",
+      reasoning: `RHO's ${opponentBid} is a Jacoby transfer to ${transferTargetName} (artificial) — the 1NT opener (15-17 HCP) will complete it. With ${hcp} HCP and no good 5+ card suit of your own to compete with at a safe level, pass; you'll get another look once the transfer completes.`,
+      handAnalysis: analysis,
+      whatYourBidTellsPartner:
+        "No safe action yet — waiting to see the real auction.",
+      expectedResponses: [],
+      confidence: "medium",
+    };
+  }
+
   const isStayman =
     opponentBid === "2♣" &&
     lhoIsNT &&
@@ -1708,7 +1765,7 @@ export function getNegativeDouble(
           partnerSuitNameND,
           partnerFitND,
           3,
-          analysis.tp,
+          calcTPWithFit(hand),
         )
       : null;
     if (threePlusRaise) return threePlusRaise;

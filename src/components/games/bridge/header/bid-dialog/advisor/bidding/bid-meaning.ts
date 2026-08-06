@@ -59,7 +59,14 @@ export function getBidMeaning(
       // "2-level call" is a natural escape/rebid on the 1NT-opening side, not
       // Cappelletti.
       bidderPreviousBid !== "1NT" &&
-      bidderPreviousBid !== auctionOpeningBid;
+      bidderPreviousBid !== auctionOpeningBid &&
+      // If the BIDDER's own previous call was itself a Cappelletti-qualifying
+      // call, partner's "2X" is answering/relaying to THEM, not making a new
+      // Cappelletti call for the bidder to advance — e.g. I bid 2♣
+      // (Cappelletti one-suiter), partner relays 2♦, and I now name my real
+      // suit. That is "completing my own convention," not "advancing
+      // partner's" — the generic wording below would have it backwards.
+      !/^2[♣♦♥♠]$|^2NT$/.test(bidderPreviousBid ?? "");
     if (
       partnerMadeCappelletti &&
       /^[2-4][♠♥♦♣]$/.test(bid) &&
@@ -72,10 +79,43 @@ export function getBidMeaning(
           : bid.includes("♦")
             ? "diamonds"
             : "clubs";
+      // A 2♦ reply to partner's Cappelletti 2♣ (one-suiter, suit unknown) is
+      // the artificial RELAY asking opener to reveal their real suit — it is
+      // never a natural pick of diamonds, unlike advances of the two-suited
+      // Cappelletti calls (2♥/2♠/2NT), which genuinely do choose a suit.
+      if (partnerCapp === "2♣" && bid === "2♦") {
+        return isPartner
+          ? "2♦: the Cappelletti RELAY asking partner to reveal their real one-suiter. Artificial — says nothing about diamonds."
+          : "2♦ from opponent: the Cappelletti relay asking their partner to reveal their real suit. Artificial — not natural diamonds.";
+      }
       return isPartner
         ? `${bid}: choosing/advancing your Cappelletti ${partnerCapp} — naming or picking ${suitNameCA} as the suit to play. Says nothing about extra strength; the level reflects competition, not values.`
         : `${bid} from opponent: choosing/advancing their partner's Cappelletti ${partnerCapp} — naming or picking ${suitNameCA} to play, not extra strength.`;
     }
+  }
+
+  // ── Completing MY OWN Cappelletti 2♣ (one-suiter) after partner's 2♦ relay
+  // ── The bidder made the original Cappelletti 2♣ call over the opponents'
+  // 1NT, partner replied with the artificial 2♦ relay asking for the real
+  // suit, and this bid names it. This is the mirror image of the branch
+  // above (there, PARTNER made Cappelletti; here, the BIDDER did) — it is
+  // never a natural competitive rebid and promises no extra strength.
+  if (
+    auctionOpeningBid === "1NT" &&
+    bidderPreviousBid === "2♣" &&
+    bidderPartnerPreviousBid === "2♦" &&
+    /^3[♠♥♦♣]$/.test(bid)
+  ) {
+    const suitNameCC = bid.includes("♠")
+      ? "spades"
+      : bid.includes("♥")
+        ? "hearts"
+        : bid.includes("♦")
+          ? "diamonds"
+          : "clubs";
+    return isPartner
+      ? `${bid}: naming your real suit over partner's Cappelletti relay (2♦) — your earlier 2♣ was a concealed one-suiter, and this reveals it as ${suitNameCC}. Says nothing about extra strength; the level is forced by the relay, not a promise of values.`
+      : `${bid} from opponent: naming their real suit over their partner's Cappelletti relay (2♦) — their earlier 2♣ was a concealed one-suiter. Says nothing about extra strength.`;
   }
 
   // ── Escapes after a DOUBLE of partner's NT: systems are OFF ────────────────
@@ -289,10 +329,16 @@ export function getBidMeaning(
         ? `${bid}: raising the suit partner answered your double with — INVITATIONAL, showing real extras beyond what the double alone promised. Bid game with a sound hand, pass with a bare minimum.`
         : `${bid} from opponent: raising the suit their partner answered the double with — invitational, more extras than the double alone promised.`;
     }
-    // A raiser who already LIMITED their hand with an NT response is showing
-    // the TOP of that range, not the generic 6-9 single raise.
+    // A raiser who already LIMITED their hand with a natural NT RESPONSE is
+    // showing the TOP of that range, not the generic 6-9 single raise. This
+    // must NOT fire when the earlier "1NT"/"2NT" was instead a strong
+    // OVERCALL (15-18) or the auction's own opening 1NT/2NT (15-17 / 20-21) —
+    // those show a completely different range than a 6-12 NT response.
     const raiserLimitedWithNT =
-      bidderPreviousBid === "1NT" || bidderPreviousBid === "2NT";
+      (bidderPreviousBid === "1NT" || bidderPreviousBid === "2NT") &&
+      auctionOpeningBid !== undefined &&
+      !auctionOpeningBid.endsWith("NT") &&
+      bidderPreviousBid !== auctionOpeningBid;
     return `${bid}: a RAISE of ${isPartner ? "their partner's" : "their partner's"} ${matchedPartnerSuitBid} — ${raiseAtGame ? "to GAME: to play, based on fit and playing strength (could be strong, or extending a preempt in competition)" : jumped ? "support for the suit with invitational-to-preemptive values (jump raise: 10-12 constructive, or weak with extra trumps in competition)" : raiserLimitedWithNT ? `support for the suit at the TOP of the range their earlier ${bidderPreviousBid} showed (about 9-12) — invitational` : "support for the suit with a limited hand (single raise ≈ 6-9 support points; raising an overcall in competition can be 0-9 with 4 trumps)"}. ${who} is showing a fit, not a new suit.`;
   }
 
