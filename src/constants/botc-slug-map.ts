@@ -8,12 +8,24 @@
  * Unknown slugs (homebrew, experimental, or unrecognized roles) return a placeholder.
  */
 import type { BotCRole } from "../jotai/botc-atom";
+import { type MisinfoTag, getMisinfoForSlug } from "./botc-role-misinfo";
+
+export type { MisinfoTag };
+export {
+  Misinfo,
+  countMisinfoTags,
+  getMisinfoForSlug,
+} from "./botc-role-misinfo";
 
 type RoleType = "townsfolk" | "outsiders" | "minions" | "demons" | "travelers";
 
-export interface RoleCatalogEntry {
+interface RoleCatalogEntryBase {
   role: BotCRole;
   roleType: RoleType;
+}
+
+export interface RoleCatalogEntry extends RoleCatalogEntryBase {
+  misinfo: MisinfoTag[];
 }
 
 /** Normalize a slug: lowercase, strip underscores and hyphens */
@@ -24,6 +36,7 @@ export const normalizeSlug = (slug: string): string =>
 export const unknownRoleEntry = (slug: string): RoleCatalogEntry => ({
   role: { name: `Unknown: ${slug}`, icon: "❓", alignment: "info" },
   roleType: "townsfolk",
+  misinfo: [],
 });
 
 /**
@@ -31,7 +44,7 @@ export const unknownRoleEntry = (slug: string): RoleCatalogEntry => ({
  * Keys are lowercase with underscores and hyphens removed so that variants like
  * "fortune_teller" and "fortuneteller" both resolve to "fortuneteller".
  */
-const ROLE_CATALOG: Record<string, RoleCatalogEntry> = {
+const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   // ── Townsfolk ──────────────────────────────────────────────────────────────
   acrobat: {
     role: { name: "Acrobat", icon: "🤸", alignment: "info" },
@@ -686,6 +699,16 @@ const ROLE_CATALOG: Record<string, RoleCatalogEntry> = {
     roleType: "travelers",
   },
 };
+
+const ROLE_CATALOG: Record<string, RoleCatalogEntry> = Object.fromEntries(
+  Object.entries(ROLE_CATALOG_BASE).map(([slug, entry]) => [
+    slug,
+    {
+      ...entry,
+      misinfo: getMisinfoForSlug(slug, entry.roleType),
+    },
+  ]),
+);
 
 /**
  * Look up a role by its botcscripts.com slug.
