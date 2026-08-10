@@ -1,3 +1,4 @@
+import "../../common/highcharts/tests/highchartsMocks";
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import { Provider } from "jotai";
 import BotC from ".";

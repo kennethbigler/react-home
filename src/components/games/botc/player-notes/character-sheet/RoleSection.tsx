@@ -53,6 +53,7 @@ const RoleSection = ({
           variant={selected ? "contained" : "outlined"}
           color={role.alignment}
           sx={buttonStyles}
+          aria-label={role.name}
           // onRoleClick is curried: calling it during render returns the click handler
           onClick={onRoleClick && onRoleClick(role, selected)}
           title={role.name}
@@ -84,6 +85,7 @@ const RoleSection = ({
                 variant={selected ? "contained" : "outlined"}
                 color={role.alignment}
                 sx={buttonStyles}
+                aria-label={role.name}
                 onClick={onRoleClick && onRoleClick(role, selected)}
                 title={role.name}
               >

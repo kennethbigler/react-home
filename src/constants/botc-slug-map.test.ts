@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
-  Misinfo,
+  MISINFO,
   getMisinfoForSlug,
   normalizeSlug,
   getRoleBySlug,
@@ -136,15 +136,19 @@ describe("botc-slug-map", () => {
 
   describe("misinfo", () => {
     it("tags Poisoner as poison only", () => {
-      expect(getMisinfoForSlug("poisoner")).toEqual([Misinfo.Poison]);
+      expect(getMisinfoForSlug("poisoner")).toEqual([MISINFO.Poison]);
     });
 
     it("tags Fang Gu with one evil (converted outsider)", () => {
-      expect(getMisinfoForSlug("fanggu")).toEqual([Misinfo.Evil]);
+      expect(getMisinfoForSlug("fanggu")).toEqual([MISINFO.Evil]);
     });
 
     it("tags Drunk as drunk only", () => {
-      expect(getMisinfoForSlug("drunk")).toEqual([Misinfo.Drunk]);
+      expect(getMisinfoForSlug("drunk")).toEqual([MISINFO.Drunk]);
+    });
+
+    it("omits fixed misinfo on Vigormortis (handled in botcHelpers)", () => {
+      expect(getMisinfoForSlug("vigormortis")).toBeUndefined();
     });
 
     it("omits default evil on minions and demons without misinfo deltas", () => {
@@ -152,11 +156,8 @@ describe("botc-slug-map", () => {
       expect(getMisinfoForSlug("imp")).toBeUndefined();
     });
 
-    it("omits misinfo when a role has none", () => {
-      expect(getMisinfoForSlug("washerwoman")).toBeUndefined();
-    });
-
     it("returns undefined for roles and unknown slugs without misinfo", () => {
+      expect(getMisinfoForSlug("washerwoman")).toBeUndefined();
       expect(getMisinfoForSlug("fortune_teller")).toBeUndefined();
       expect(getMisinfoForSlug("cook")).toBeUndefined();
     });

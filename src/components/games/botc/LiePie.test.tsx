@@ -1,6 +1,6 @@
 import "../../common/highcharts/tests/highchartsMocks";
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import { green, indigo } from "@mui/material/colors";
 import LiePie from "./LiePie";
@@ -79,5 +79,14 @@ describe("LiePie", () => {
       screen.getByRole("button", { name: /Fang Gu/i }),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Vortox/i })).toBeInTheDocument();
+
+    const fangGuButton = screen.getByRole("button", { name: /Fang Gu/i });
+    const vortoxButton = screen.getByRole("button", { name: /Vortox/i });
+    expect(fangGuButton).toHaveAttribute("aria-pressed", "true");
+    expect(vortoxButton).toHaveAttribute("aria-pressed", "false");
+
+    fireEvent.click(vortoxButton);
+    expect(vortoxButton).toHaveAttribute("aria-pressed", "true");
+    expect(fangGuButton).toHaveAttribute("aria-pressed", "false");
   });
 });

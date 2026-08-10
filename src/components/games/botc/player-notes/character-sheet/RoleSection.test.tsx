@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import RoleSection from "./RoleSection";
 import type { BotCRole } from "../../../../../jotai/botc-atom";
 
@@ -420,5 +421,72 @@ describe("RoleSection", () => {
     expect(screen.getByText("Role-With-Dash")).toBeInTheDocument();
     expect(screen.getByText("Role_With_Underscore")).toBeInTheDocument();
     expect(screen.getByText("Role With Spaces")).toBeInTheDocument();
+  });
+
+  it("queries role buttons by accessible name in text and icon modes", () => {
+    const roles: BotCRole[] = [
+      { name: "Villager", icon: "👤", alignment: "primary" },
+      { name: "Werewolf", icon: "🐺", alignment: "error" },
+    ];
+
+    const { rerender } = render(
+      <RoleSection
+        gridSize={4}
+        isText={true}
+        roleKey={{ Villager: true }}
+        roles={roles}
+        title="Town Roles"
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Villager" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Werewolf" }),
+    ).toBeInTheDocument();
+
+    rerender(
+      <RoleSection
+        gridSize={4}
+        isText={false}
+        roleKey={{ Villager: true }}
+        roles={roles}
+        title="Town Roles"
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Villager" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Werewolf" }),
+    ).toBeInTheDocument();
+  });
+
+  it("invokes onRoleClick from keyboard activation", async () => {
+    const user = userEvent.setup();
+    const handleClick = vi.fn();
+    const mockOnRoleClick = vi.fn(() => handleClick);
+
+    render(
+      <RoleSection
+        gridSize={4}
+        isText={true}
+        roleKey={{}}
+        roles={mockRoles}
+        title="Town Roles"
+        onRoleClick={mockOnRoleClick}
+      />,
+    );
+
+    mockOnRoleClick.mockClear();
+
+    const werewolfButton = screen.getByRole("button", { name: "Werewolf" });
+    werewolfButton.focus();
+    await user.keyboard("{Enter}");
+
+    expect(mockOnRoleClick).not.toHaveBeenCalled();
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });
