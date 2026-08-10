@@ -24,6 +24,7 @@ interface PlayerNotesProps {
 const chipStyle = {
   marginRight: "5px",
   marginTop: "5px",
+  fontWeight: "bold",
 };
 
 const cardStyle = {
@@ -95,7 +96,6 @@ const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
                       title={role.name}
                       label={isText ? role.name : role.icon}
                       color={role.alignment}
-                      variant="outlined"
                       onDelete={
                         player.roles.length > 1
                           ? updateRoles(i)(role, true)
@@ -122,7 +122,7 @@ const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
         />
         <Button
           fullWidth
-          color="error"
+          color="warning"
           variant="outlined"
           onClick={getRandomPlayer}
         >

@@ -38,7 +38,9 @@ const CharacterSheet = ({
     <InfoPopup
       fullWidth
       buttonText={name}
-      buttonVariant={exec || kill ? "contained" : "outlined"}
+      buttonVariant={
+        exec || kill || roles.length === 0 ? "contained" : "outlined"
+      }
       buttonColor={exec || kill ? "error" : "primary"}
       title={`Roles - ${name}`}
     >
