@@ -270,8 +270,60 @@ describe("botcHelpers", () => {
 
       const total = result.reduce((sum, item) => sum + item.y, 0);
 
-      // Total should equal numPlayers + numTravelers - 1 (storyteller)
-      expect(total).toBe(numPlayers + numTravelers - 1);
+      // Total should equal numPlayers + numTravelers
+      expect(total).toBe(numPlayers + numTravelers);
+    });
+
+    it("caps evil and drunk at numPlayers + numTravelers", () => {
+      const numPlayers = 10;
+      const numTravelers = 0;
+      const result = getLieSeries(
+        numPlayers,
+        numTravelers,
+        {
+          type: "base",
+          index: 1,
+        },
+        "vortox",
+      );
+
+      expect(result[0].y + result[1].y).toBeLessThanOrEqual(
+        numPlayers + numTravelers,
+      );
+      result.forEach((item) => {
+        expect(item.y).toBeGreaterThanOrEqual(0);
+      });
+    });
+
+    it("uses misinfo from the selected demon only", () => {
+      const script = { type: "base" as const, index: 1 as const };
+      const withFangGu = getLieSeries(10, 0, script, "fanggu");
+      const withVortox = getLieSeries(10, 0, script, "vortox");
+
+      expect(withVortox[1].y).toBeGreaterThan(withFangGu[1].y);
+    });
+
+    it("scales Vortox poison to townsfolk count at player count", () => {
+      const script = { type: "base" as const, index: 1 as const };
+      const at7 = getLieSeries(7, 0, script, "vortox");
+      const at10 = getLieSeries(10, 0, script, "vortox");
+
+      // playerDist[7] = 5 TF, [10] = 7 TF — more Vortox poison at 10 players
+      expect(at10[1].y).toBeGreaterThanOrEqual(at7[1].y);
+    });
+
+    it("scales Legion evil to townsfolk + outsiders - minions - demons", () => {
+      const script = {
+        type: "community" as const,
+        pk: 1,
+        title: "T",
+        author: "A",
+        characters: ["legion"],
+      };
+      // playerDist[10] = 7,0,2,1 → Legion adds 7 + 0 - 2 - 1 = 4 evil misinfo
+      const result = getLieSeries(10, 0, script, "legion");
+
+      expect(result[0].y).toBe(7);
     });
   });
 });

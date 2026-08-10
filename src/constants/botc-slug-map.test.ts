@@ -1,5 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
+  Misinfo,
+  getMisinfoForSlug,
   normalizeSlug,
   getRoleBySlug,
   isKnownSlug,
@@ -129,6 +131,34 @@ describe("botc-slug-map", () => {
       expect(entry.role.name).toBe("Unknown: my_homebrew_role");
       expect(entry.role.icon).toBe("❓");
       expect(entry.roleType).toBe("townsfolk");
+    });
+  });
+
+  describe("misinfo", () => {
+    it("tags Poisoner as poison only", () => {
+      expect(getMisinfoForSlug("poisoner")).toEqual([Misinfo.Poison]);
+    });
+
+    it("tags Fang Gu with one evil (converted outsider)", () => {
+      expect(getMisinfoForSlug("fanggu")).toEqual([Misinfo.Evil]);
+    });
+
+    it("tags Drunk as drunk only", () => {
+      expect(getMisinfoForSlug("drunk")).toEqual([Misinfo.Drunk]);
+    });
+
+    it("omits default evil on minions and demons without misinfo deltas", () => {
+      expect(getMisinfoForSlug("assassin")).toBeUndefined();
+      expect(getMisinfoForSlug("imp")).toBeUndefined();
+    });
+
+    it("omits misinfo when a role has none", () => {
+      expect(getMisinfoForSlug("washerwoman")).toBeUndefined();
+    });
+
+    it("returns undefined for roles and unknown slugs without misinfo", () => {
+      expect(getMisinfoForSlug("fortune_teller")).toBeUndefined();
+      expect(getMisinfoForSlug("cook")).toBeUndefined();
     });
   });
 });

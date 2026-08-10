@@ -8,24 +8,34 @@
  * Unknown slugs (homebrew, experimental, or unrecognized roles) return a placeholder.
  */
 import type { BotCRole } from "../jotai/botc-atom";
-import { type MisinfoTag, getMisinfoForSlug } from "./botc-role-misinfo";
-
-export type { MisinfoTag };
-export {
-  Misinfo,
-  countMisinfoTags,
-  getMisinfoForSlug,
-} from "./botc-role-misinfo";
 
 type RoleType = "townsfolk" | "outsiders" | "minions" | "demons" | "travelers";
 
-interface RoleCatalogEntryBase {
+/**
+ * Misinformation tags for Blood on the Clocktower roles.
+ *
+ * Used by LiePie and related tooling to estimate how many players may be
+ * lying due to drunk/poison/madness/evil mechanics on a given script.
+ *
+ * Tags (duplicates count separately, e.g. Fang Gu is 😈😈):
+ *   🍺 drunk   — role is drunk or can cause drunkenness
+ *   🧪 poison  — role can poison (disable abilities / false info)
+ *   😡 madness — role imposes madness (must act as-if or face consequences)
+ *   😈 evil    — evil team, registers as evil, can become evil, or adds evil
+ */
+export const Misinfo = {
+  Drunk: "🍺",
+  Poison: "🧪",
+  Madness: "😡",
+  Evil: "😈",
+} as const;
+
+export type MisinfoTag = (typeof Misinfo)[keyof typeof Misinfo];
+
+export interface RoleCatalogEntry {
   role: BotCRole;
   roleType: RoleType;
-}
-
-export interface RoleCatalogEntry extends RoleCatalogEntryBase {
-  misinfo: MisinfoTag[];
+  misinfo?: MisinfoTag[];
 }
 
 /** Normalize a slug: lowercase, strip underscores and hyphens */
@@ -36,7 +46,6 @@ export const normalizeSlug = (slug: string): string =>
 export const unknownRoleEntry = (slug: string): RoleCatalogEntry => ({
   role: { name: `Unknown: ${slug}`, icon: "❓", alignment: "info" },
   roleType: "townsfolk",
-  misinfo: [],
 });
 
 /**
@@ -44,7 +53,7 @@ export const unknownRoleEntry = (slug: string): RoleCatalogEntry => ({
  * Keys are lowercase with underscores and hyphens removed so that variants like
  * "fortune_teller" and "fortuneteller" both resolve to "fortuneteller".
  */
-const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
+const ROLE_CATALOG: Record<string, RoleCatalogEntry> = {
   // ── Townsfolk ──────────────────────────────────────────────────────────────
   acrobat: {
     role: { name: "Acrobat", icon: "🤸", alignment: "info" },
@@ -78,10 +87,10 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
     role: { name: "Banshee", icon: "👻", alignment: "info" },
     roleType: "townsfolk",
   },
-  // bounty_hunter → bountyhunter
   bountyhunter: {
     role: { name: "Bounty Hunter", icon: "🕶", alignment: "info" },
     roleType: "townsfolk",
+    misinfo: [Misinfo.Evil],
   },
   cannibal: {
     role: { name: "Cannibal", icon: "🍰", alignment: "info" },
@@ -107,10 +116,10 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
     role: { name: "Courtier", icon: "🍸", alignment: "info" },
     roleType: "townsfolk",
   },
-  // cult_leader → cultleader
   cultleader: {
     role: { name: "Cult Leader", icon: "🪬", alignment: "info" },
     roleType: "townsfolk",
+    misinfo: [Misinfo.Evil],
   },
   dreamer: {
     role: { name: "Dreamer", icon: "💭", alignment: "info" },
@@ -144,7 +153,6 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
     role: { name: "Fool", icon: "🤡", alignment: "info" },
     roleType: "townsfolk",
   },
-  // fortune_teller → fortuneteller
   fortuneteller: {
     role: { name: "Fortune Teller", icon: "🔮", alignment: "info" },
     roleType: "townsfolk",
@@ -165,7 +173,6 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
     role: { name: "Grandmother", icon: "👵", alignment: "info" },
     roleType: "townsfolk",
   },
-  // high_priestess → highpriestess
   highpriestess: {
     role: { name: "High Priestess", icon: "🧝‍♀️", alignment: "info" },
     roleType: "townsfolk",
@@ -177,6 +184,7 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   innkeeper: {
     role: { name: "Innkeeper", icon: "🛌", alignment: "info" },
     roleType: "townsfolk",
+    misinfo: [Misinfo.Drunk],
   },
   investigator: {
     role: { name: "Investigator", icon: "🔍", alignment: "info" },
@@ -217,6 +225,7 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   minstrel: {
     role: { name: "Minstrel", icon: "🪕", alignment: "info" },
     roleType: "townsfolk",
+    misinfo: [Misinfo.Drunk],
   },
   monk: {
     role: { name: "Monk", icon: "✝️", alignment: "info" },
@@ -241,12 +250,13 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   philosopher: {
     role: { name: "Philosopher", icon: "🤔", alignment: "info" },
     roleType: "townsfolk",
+    misinfo: [Misinfo.Drunk],
   },
   pixie: {
     role: { name: "Pixie", icon: "🧸", alignment: "info" },
     roleType: "townsfolk",
+    misinfo: [Misinfo.Madness],
   },
-  // poppy_grower → poppygrower
   poppygrower: {
     role: { name: "Poppy Grower", icon: "🌺", alignment: "info" },
     roleType: "townsfolk",
@@ -274,6 +284,7 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   sailor: {
     role: { name: "Sailor", icon: "⚓", alignment: "info" },
     roleType: "townsfolk",
+    misinfo: [Misinfo.Drunk],
   },
   savant: {
     role: { name: "Savant", icon: "🦽", alignment: "info" },
@@ -291,10 +302,10 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
     role: { name: "Slayer", icon: "🏹", alignment: "info" },
     roleType: "townsfolk",
   },
-  // snake_charmer → snakecharmer
   snakecharmer: {
     role: { name: "Snake Charmer", icon: "🐍", alignment: "info" },
     roleType: "townsfolk",
+    misinfo: [Misinfo.Poison],
   },
   soldier: {
     role: { name: "Soldier", icon: "🪖", alignment: "info" },
@@ -304,12 +315,10 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
     role: { name: "Steward", icon: "📜", alignment: "info" },
     roleType: "townsfolk",
   },
-  // tea_lady → tealady
   tealady: {
     role: { name: "Tea Lady", icon: "🫖", alignment: "info" },
     roleType: "townsfolk",
   },
-  // town_crier → towncrier
   towncrier: {
     role: { name: "Town Crier", icon: "🔔", alignment: "info" },
     roleType: "townsfolk",
@@ -318,10 +327,10 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
     role: { name: "Undertaker", icon: "🥄", alignment: "info" },
     roleType: "townsfolk",
   },
-  // village_idiot → villageidiot
   villageidiot: {
     role: { name: "Village Idiot", icon: "🍭", alignment: "info" },
     roleType: "townsfolk",
+    misinfo: [Misinfo.Drunk],
   },
   virgin: {
     role: { name: "Virgin", icon: "🔗", alignment: "info" },
@@ -348,6 +357,7 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   drunk: {
     role: { name: "Drunk", icon: "🍺", alignment: "success" },
     roleType: "outsiders",
+    misinfo: [Misinfo.Drunk],
   },
   golem: {
     role: { name: "Golem", icon: "🗿", alignment: "success" },
@@ -356,6 +366,7 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   goon: {
     role: { name: "Goon", icon: "🎭", alignment: "success" },
     roleType: "outsiders",
+    misinfo: [Misinfo.Evil, Misinfo.Drunk],
   },
   hatter: {
     role: { name: "Hatter", icon: "🎩", alignment: "success" },
@@ -368,6 +379,7 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   hermit: {
     role: { name: "Hermit", icon: "🗼", alignment: "success" },
     roleType: "outsiders",
+    misinfo: [Misinfo.Drunk, Misinfo.Evil, Misinfo.Madness],
   },
   klutz: {
     role: { name: "Klutz", icon: "🍌", alignment: "success" },
@@ -376,6 +388,7 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   lunatic: {
     role: { name: "Lunatic", icon: "🌀", alignment: "success" },
     roleType: "outsiders",
+    misinfo: [Misinfo.Madness],
   },
   moonchild: {
     role: { name: "Moonchild", icon: "🌙", alignment: "success" },
@@ -384,12 +397,13 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   mutant: {
     role: { name: "Mutant", icon: "🎪", alignment: "success" },
     roleType: "outsiders",
+    misinfo: [Misinfo.Madness],
   },
   ogre: {
     role: { name: "Ogre", icon: "🏑", alignment: "success" },
     roleType: "outsiders",
+    misinfo: [Misinfo.Evil],
   },
-  // plague_doctor → plaguedoctor
   plaguedoctor: {
     role: { name: "Plague Doctor", icon: "🩺", alignment: "success" },
     roleType: "outsiders",
@@ -397,10 +411,12 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   politician: {
     role: { name: "Politician", icon: "🇺🇸", alignment: "success" },
     roleType: "outsiders",
+    misinfo: [Misinfo.Evil],
   },
   puzzlemaster: {
     role: { name: "Puzzlemaster", icon: "🧩", alignment: "success" },
     roleType: "outsiders",
+    misinfo: [Misinfo.Drunk],
   },
   recluse: {
     role: { name: "Recluse", icon: "🕯️", alignment: "success" },
@@ -417,6 +433,7 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   sweetheart: {
     role: { name: "Sweetheart", icon: "🎀", alignment: "success" },
     roleType: "outsiders",
+    misinfo: [Misinfo.Drunk],
   },
   tinker: {
     role: { name: "Tinker", icon: "🔧", alignment: "success" },
@@ -447,13 +464,12 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   cerenovus: {
     role: { name: "Cerenovus", icon: "🧠", alignment: "error" },
     roleType: "minions",
+    misinfo: [Misinfo.Madness],
   },
-  // devils_advocate → devilsadvocate
   devilsadvocate: {
     role: { name: "Devil's Advocate", icon: "⚖️", alignment: "error" },
     roleType: "minions",
   },
-  // evil_twin → eviltwin
   eviltwin: {
     role: { name: "Evil Twin", icon: "👯‍♀️", alignment: "error" },
     roleType: "minions",
@@ -473,6 +489,7 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   harpy: {
     role: { name: "Harpy", icon: "🦅", alignment: "error" },
     roleType: "minions",
+    misinfo: [Misinfo.Madness],
   },
   marionette: {
     role: { name: "Marionette", icon: "🎭", alignment: "error" },
@@ -485,13 +502,12 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   mezepheles: {
     role: { name: "Mezepheles", icon: "🪶", alignment: "error" },
     roleType: "minions",
+    misinfo: [Misinfo.Evil],
   },
-  // organ_grinder → organgrinder
   organgrinder: {
     role: { name: "Organ Grinder", icon: "🐒", alignment: "error" },
     roleType: "minions",
   },
-  // pit-hag → pithag
   pithag: {
     role: { name: "Pit-Hag", icon: "🥘", alignment: "error" },
     roleType: "minions",
@@ -499,12 +515,12 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   poisoner: {
     role: { name: "Poisoner", icon: "🧪", alignment: "error" },
     roleType: "minions",
+    misinfo: [Misinfo.Poison],
   },
   psychopath: {
     role: { name: "Psychopath", icon: "🪓", alignment: "error" },
     roleType: "minions",
   },
-  // scarlet_woman → scarletwoman
   scarletwoman: {
     role: { name: "Scarlet Woman", icon: "💋", alignment: "error" },
     roleType: "minions",
@@ -516,6 +532,7 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   summoner: {
     role: { name: "Summoner", icon: "⭕️", alignment: "error" },
     roleType: "minions",
+    misinfo: [Misinfo.Evil],
   },
   vizier: {
     role: { name: "Vizier", icon: "👑", alignment: "error" },
@@ -524,6 +541,7 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   widow: {
     role: { name: "Widow", icon: "🕷️", alignment: "error" },
     roleType: "minions",
+    misinfo: [Misinfo.Poison],
   },
   witch: {
     role: { name: "Witch", icon: "🧙‍♀️", alignment: "error" },
@@ -540,18 +558,18 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   xaan: {
     role: { name: "Xaan", icon: "♾️", alignment: "error" },
     roleType: "minions",
+    misinfo: [Misinfo.Poison],
   },
 
   // ── Demons ─────────────────────────────────────────────────────────────────
-  // al-hadikhia → alhadikhia
   alhadikhia: {
     role: { name: "Al-Hadikhia", icon: "🎓", alignment: "error" },
     roleType: "demons",
   },
-  // fang_gu → fanggu
   fanggu: {
     role: { name: "Fang Gu", icon: "🔮", alignment: "error" },
     roleType: "demons",
+    misinfo: [Misinfo.Evil],
   },
   imp: {
     role: { name: "Imp", icon: "🔱", alignment: "error" },
@@ -564,12 +582,12 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   legion: {
     role: { name: "Legion", icon: "✋", alignment: "error" },
     roleType: "demons",
+    // LiePie: evil count = TF + OUT - MIN - DEM at player count (see botcHelpers)
   },
   leviathan: {
     role: { name: "Leviathan", icon: "🦕", alignment: "error" },
     roleType: "demons",
   },
-  // lil_monsta → lilmonsta
   lilmonsta: {
     role: { name: "Lil' Monsta", icon: "🐙", alignment: "error" },
     roleType: "demons",
@@ -577,15 +595,17 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   lleech: {
     role: { name: "Lleech", icon: "🐛", alignment: "error" },
     roleType: "demons",
+    misinfo: [Misinfo.Poison],
   },
   lordoftyphon: {
     role: { name: "Lord of Typhon", icon: "🐂", alignment: "error" },
     roleType: "demons",
+    misinfo: [Misinfo.Evil],
   },
-  // no_dashii → nodashii
   nodashii: {
     role: { name: "No Dashii", icon: "🦑", alignment: "error" },
     roleType: "demons",
+    misinfo: [Misinfo.Poison, Misinfo.Poison],
   },
   ojo: {
     role: { name: "Ojo", icon: "👁️", alignment: "error" },
@@ -598,6 +618,7 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   pukka: {
     role: { name: "Pukka", icon: "🦂", alignment: "error" },
     roleType: "demons",
+    misinfo: [Misinfo.Poison],
   },
   riot: {
     role: { name: "Riot", icon: "🛡️", alignment: "error" },
@@ -610,10 +631,12 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   vigormortis: {
     role: { name: "Vigormortis", icon: "🗝️", alignment: "error" },
     roleType: "demons",
+    misinfo: [Misinfo.Poison, Misinfo.Poison],
   },
   vortox: {
     role: { name: "Vortox", icon: "🌪️", alignment: "error" },
     roleType: "demons",
+    // LiePie: poison count = townsfolk slots at current player count (see botcHelpers)
   },
   yaggababble: {
     role: { name: "Yaggababble", icon: "💭", alignment: "error" },
@@ -641,7 +664,6 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
     role: { name: "Bishop", icon: "✝️", alignment: "warning" },
     roleType: "travelers",
   },
-  // bone_collector → bonecollector
   bonecollector: {
     role: { name: "Bone Collector", icon: "🦴", alignment: "warning" },
     roleType: "travelers",
@@ -700,15 +722,9 @@ const ROLE_CATALOG_BASE: Record<string, RoleCatalogEntryBase> = {
   },
 };
 
-const ROLE_CATALOG: Record<string, RoleCatalogEntry> = Object.fromEntries(
-  Object.entries(ROLE_CATALOG_BASE).map(([slug, entry]) => [
-    slug,
-    {
-      ...entry,
-      misinfo: getMisinfoForSlug(slug, entry.roleType),
-    },
-  ]),
-);
+/** Misinfo tags for a catalog slug, if the role has any */
+export const getMisinfoForSlug = (slug: string): MisinfoTag[] | undefined =>
+  getRoleBySlug(slug).misinfo;
 
 /**
  * Look up a role by its botcscripts.com slug.
