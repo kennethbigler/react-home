@@ -59,4 +59,25 @@ describe("LiePie", () => {
 
     expect(screen.getByText("Who is lying?")).toBeInTheDocument();
   });
+
+  it("renders demon selection for S&V", () => {
+    const store = createStore();
+    render(
+      <Provider store={store}>
+        <LiePie
+          numPlayers={10}
+          numTravelers={0}
+          script={{ type: "base", index: 1 }}
+        />
+      </Provider>,
+    );
+
+    expect(
+      screen.getByRole("group", { name: "Demon in play" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Fang Gu/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Vortox/i })).toBeInTheDocument();
+  });
 });

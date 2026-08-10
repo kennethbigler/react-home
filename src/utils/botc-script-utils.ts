@@ -8,13 +8,26 @@
  *   - Short key names: p=pk, t=title, a=author, c=characters
  * Decoding happens once in loadAllScriptOptions and is cached.
  */
-import type { BotCScript } from "../constants/botc";
+import { bmr, other, snv, tb, type BotCScript } from "../constants/botc";
 import {
+  type ActiveScript,
   type BotCRole,
   BaseScript,
   type BaseScriptIndex,
 } from "../jotai/botc-atom";
-import { getRoleBySlug } from "../constants/botc-slug-map";
+import ROLE_CATALOG, { getRoleBySlug } from "../constants/botc-slug-map";
+
+const BASE_SCRIPTS: Record<BaseScriptIndex, BotCScript> = {
+  [BaseScript.TB]: tb,
+  [BaseScript.SNV]: snv,
+  [BaseScript.BMR]: bmr,
+  [BaseScript.Other]: other,
+};
+
+/** Map display name → normalized catalog slug (one entry per role name) */
+const roleNameToSlug = new Map<string, string>(
+  Object.entries(ROLE_CATALOG).map(([slug, { role }]) => [role.name, slug]),
+);
 
 /** Compact encoded entry as stored in botc-scripts.json */
 interface EncodedScript {
@@ -93,6 +106,58 @@ export const loadAllScriptOptions = async (): Promise<ScriptOption[]> => {
 
   cachedOptions = [...BASE_SCRIPT_OPTIONS, ...communityOptions];
   return cachedOptions;
+};
+
+/** Resolve the active script to its role lists (base or community). */
+const resolveActiveScript = (script: ActiveScript): BotCScript => {
+  if (script.type === "community") {
+    return script.characters.length > 0
+      ? buildScriptFromCharacters(script.characters)
+      : other;
+  }
+  return BASE_SCRIPTS[script.index];
+};
+
+/** Demon slugs on the active script (base or community), in script order */
+export const getScriptDemonSlugs = (script: ActiveScript): string[] => {
+  const resolved = resolveActiveScript(script);
+  return resolved.demons
+    .map((role) => roleNameToSlug.get(role.name))
+    .filter((slug): slug is string => slug !== undefined);
+};
+
+/**
+ * Slugs whose misinfo tags apply to LiePie for the active script.
+ * All non-demon roles on the script plus exactly one selected demon.
+ */
+export const getScriptMisinfoSlugs = (
+  script: ActiveScript,
+  selectedDemonSlug: string,
+): string[] => {
+  const resolved = resolveActiveScript(script);
+  const demonSlugs = getScriptDemonSlugs(script);
+  const demonSet = new Set(demonSlugs);
+
+  const nonDemonSlugs = [
+    ...resolved.townsfolk,
+    ...resolved.outsiders,
+    ...resolved.minions,
+    ...resolved.travelers,
+  ]
+    .map((role) => roleNameToSlug.get(role.name))
+    .filter((slug): slug is string => slug !== undefined);
+
+  const slugs = [...new Set(nonDemonSlugs)];
+
+  const demonSlug = demonSet.has(selectedDemonSlug)
+    ? selectedDemonSlug
+    : demonSlugs[0];
+
+  if (demonSlug) {
+    slugs.push(demonSlug);
+  }
+
+  return slugs;
 };
 
 /**

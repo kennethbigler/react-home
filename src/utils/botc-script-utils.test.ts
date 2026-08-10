@@ -4,6 +4,8 @@ import {
   loadAllScriptOptions,
   BASE_SCRIPT_OPTIONS,
   getBaseScriptLabel,
+  getScriptDemonSlugs,
+  getScriptMisinfoSlugs,
 } from "./botc-script-utils";
 
 describe("botc-script-utils", () => {
@@ -179,6 +181,48 @@ describe("botc-script-utils", () => {
         "Soldier",
         "Mayor",
       ]);
+    });
+  });
+
+  describe("getScriptDemonSlugs", () => {
+    it("returns demon slugs for a base script", () => {
+      expect(getScriptDemonSlugs({ type: "base", index: 1 })).toEqual([
+        "fanggu",
+        "nodashii",
+        "vigormortis",
+        "vortox",
+      ]);
+    });
+
+    it("returns demon slugs from a community character list", () => {
+      expect(
+        getScriptDemonSlugs({
+          type: "community",
+          pk: 1,
+          title: "T",
+          author: "A",
+          characters: ["imp", "poisoner", "fanggu"],
+        }),
+      ).toEqual(["imp", "fanggu"]);
+    });
+  });
+
+  describe("getScriptMisinfoSlugs", () => {
+    it("includes non-demon roles and one selected demon", () => {
+      const script = { type: "base" as const, index: 1 as const };
+      const slugs = getScriptMisinfoSlugs(script, "vortox");
+
+      expect(slugs).toContain("vortox");
+      expect(slugs).toContain("philosopher");
+      expect(slugs).not.toContain("fanggu");
+      expect(slugs).not.toContain("nodashii");
+    });
+
+    it("falls back to the first demon when selection is invalid", () => {
+      const script = { type: "base" as const, index: 0 as const };
+      const slugs = getScriptMisinfoSlugs(script, "not-a-demon");
+
+      expect(slugs).toContain("imp");
     });
   });
 

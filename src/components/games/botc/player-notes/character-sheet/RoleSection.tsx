@@ -20,6 +20,7 @@ const BASE_BUTTON_STYLES: CSSProperties = {
   wordBreak: "break-word",
   paddingLeft: 0,
   paddingRight: 0,
+  marginBottom: 1,
 };
 
 const COMPACT_BUTTON_STYLES: CSSProperties = {
