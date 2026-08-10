@@ -1,6 +1,6 @@
 import { playerDist } from "../../../constants/botc";
 import type { ActiveScript } from "../../../jotai/botc-atom";
-import { Misinfo, getMisinfoForSlug } from "../../../constants/botc-slug-map";
+import { MISINFO, getMisinfoForSlug } from "../../../constants/botc-slug-map";
 import {
   getScriptDemonSlugs,
   getScriptMisinfoSlugs,
@@ -22,6 +22,12 @@ export interface LieSeriesPoint {
 
 const VORTOX_SLUG = "vortox";
 const LEGION_SLUG = "legion";
+const VIGORMORTIS_SLUG = "vigormortis";
+
+const vigormortisPoisonCount = (numPlayers: number): number => {
+  const [, , minions] = PLAYER_DIST_PARSED[numPlayers];
+  return Math.ceil(minions / 2);
+};
 
 /** Good/evil slot swap: townsfolk + outsiders − minions − demons */
 const legionEvilMisinfo = (numPlayers: number): number => {
@@ -49,11 +55,16 @@ const sumMisinfoFromSlugs = (
       continue;
     }
 
+    if (slug === VIGORMORTIS_SLUG) {
+      numDrunk += vigormortisPoisonCount(numPlayers);
+      continue;
+    }
+
     const tags = getMisinfoForSlug(slug);
     if (!tags) continue;
 
     for (const tag of tags) {
-      if (tag === Misinfo.Evil) {
+      if (tag === MISINFO.Evil) {
         numEvil += 1;
       } else {
         numDrunk += 1;

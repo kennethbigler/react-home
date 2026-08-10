@@ -309,7 +309,16 @@ describe("botcHelpers", () => {
       const at10 = getLieSeries(10, 0, script, "vortox");
 
       // playerDist[7] = 5 TF, [10] = 7 TF — more Vortox poison at 10 players
-      expect(at10[1].y).toBeGreaterThanOrEqual(at7[1].y);
+      expect(at10[1].y).toBeGreaterThan(at7[1].y);
+    });
+
+    it("scales Vigormortis poison to ceil(minions / 2) at player count", () => {
+      const script = { type: "base" as const, index: 1 as const };
+      const at9 = getLieSeries(9, 0, script, "vigormortis");
+      const at13 = getLieSeries(13, 0, script, "vigormortis");
+
+      // playerDist[9] = 1 minion → 1 poison, [13] = 3 minions → 2 poison
+      expect(at13[1].y).toBeGreaterThan(at9[1].y);
     });
 
     it("scales Legion evil to townsfolk + outsiders - minions - demons", () => {
