@@ -83,10 +83,22 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
       aria-label="Lie distribution"
     >
       {demonSlugs.length > 0 && (
-        <Grid size={{ xs: 12, sm: 12, md: 6 }}>
+        <Grid
+          size={{ xs: 12, sm: 12, md: 6 }}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <ButtonGroup
             aria-label="Demon in play"
-            sx={{ flexWrap: "wrap", display: "flex" }}
+            color="error"
+            sx={{
+              flexWrap: "wrap",
+              justifyContent: "center",
+              width: "fit-content",
+            }}
           >
             {demonSlugs.map((slug) => {
               const { role } = getRoleBySlug(slug);
