@@ -1,6 +1,7 @@
 import "../../common/highcharts/tests/highchartsMocks";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { createStore, Provider } from "jotai";
 import { green, indigo } from "@mui/material/colors";
 import LiePie from "./LiePie";
@@ -60,7 +61,7 @@ describe("LiePie", () => {
     expect(screen.getByText("Who is lying?")).toBeInTheDocument();
   });
 
-  it("renders demon selection for S&V", () => {
+  it("renders demon selection for S&V", async () => {
     const store = createStore();
     render(
       <Provider store={store}>
@@ -86,6 +87,16 @@ describe("LiePie", () => {
     expect(vortoxButton).toHaveAttribute("aria-pressed", "false");
 
     fireEvent.click(vortoxButton);
+    expect(vortoxButton).toHaveAttribute("aria-pressed", "true");
+    expect(fangGuButton).toHaveAttribute("aria-pressed", "false");
+
+    fireEvent.click(fangGuButton);
+    expect(fangGuButton).toHaveAttribute("aria-pressed", "true");
+    expect(vortoxButton).toHaveAttribute("aria-pressed", "false");
+
+    const user = userEvent.setup();
+    vortoxButton.focus();
+    await user.keyboard("{Enter}");
     expect(vortoxButton).toHaveAttribute("aria-pressed", "true");
     expect(fangGuButton).toHaveAttribute("aria-pressed", "false");
   });

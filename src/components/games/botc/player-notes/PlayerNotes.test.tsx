@@ -117,7 +117,7 @@ describe("PlayerNotes", () => {
       />,
     );
 
-    expect(screen.getByRole("button", { name: "👹" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "✝️" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Imp" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Monk" })).toBeInTheDocument();
   });
 });
