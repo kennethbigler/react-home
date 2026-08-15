@@ -66,6 +66,24 @@ describe("LiePie", () => {
     expect(screen.getByText("Who is lying?")).toBeInTheDocument();
   });
 
+  it("hides demon selection when the script has only one demon", () => {
+    const store = createStore();
+    render(
+      <Provider store={store}>
+        <LiePie
+          numPlayers={8}
+          numTravelers={0}
+          script={{ type: "base", index: 0 }}
+        />
+      </Provider>,
+    );
+
+    expect(
+      screen.queryByRole("group", { name: "Demon in play" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("Who is lying?")).toBeInTheDocument();
+  });
+
   it("renders demon selection for S&V", async () => {
     const store = createStore();
     render(
