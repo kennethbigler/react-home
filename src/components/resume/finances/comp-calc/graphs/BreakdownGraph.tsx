@@ -32,7 +32,7 @@ const BreakdownChart = memo(({ bonus, salary, stock }: BreakdownChartProps) => {
     { name: "Stock", y: stock, color: colors[STOCK] },
     { name: "Bonus", y: bonus, color: colors[BONUS] },
     { name: "Salary", y: salary, color: colors[SALARY] },
-  ].filter(({ y }) => y > 0);
+  ];
 
   return (
     <ChartFigure>

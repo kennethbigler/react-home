@@ -1,10 +1,15 @@
-import "../../common/highcharts/tests/highchartsMocks";
+import {
+  formatTooltip,
+  getPieSeriesData,
+  getTooltipFormatter,
+} from "../../common/highcharts/tests/highchartsMocks";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createStore, Provider } from "jotai";
 import { green, indigo } from "@mui/material/colors";
 import LiePie from "./LiePie";
+import { MISINFO } from "../../../constants/botc-slug-map";
 
 // Use a plain writable atom so tests can control theme.mode deterministically.
 // atomWithStorage caches at module level and ignores per-store overrides.
@@ -99,5 +104,54 @@ describe("LiePie", () => {
     await user.keyboard("{Enter}");
     expect(vortoxButton).toHaveAttribute("aria-pressed", "true");
     expect(fangGuButton).toHaveAttribute("aria-pressed", "false");
+  });
+
+  it("includes zero-value slices in the pie data", () => {
+    const store = createStore();
+    render(
+      <Provider store={store}>
+        <LiePie
+          numPlayers={7}
+          numTravelers={0}
+          script={{ type: "base", index: 0 }}
+        />
+      </Provider>,
+    );
+
+    const pieData = getPieSeriesData();
+    expect(pieData).toHaveLength(6);
+    expect(pieData?.some((point) => point.name === MISINFO.Madness)).toBe(true);
+    expect(pieData?.find((point) => point.name === MISINFO.Madness)?.y).toBe(0);
+  });
+
+  it("renders pie slices with role-aware tooltips", () => {
+    const store = createStore();
+    render(
+      <Provider store={store}>
+        <LiePie
+          numPlayers={7}
+          numTravelers={0}
+          script={{ type: "base", index: 0 }}
+        />
+      </Provider>,
+    );
+
+    const pieData = getPieSeriesData();
+    expect(pieData?.length).toBeGreaterThan(0);
+    expect(pieData?.some((point) => point.name === MISINFO.Drunk)).toBe(true);
+
+    const formatter = getTooltipFormatter();
+    expect(formatter).toBeTruthy();
+
+    const drunkTooltip = formatTooltip({
+      point: {
+        name: "🍺",
+        y: 3,
+        roles: ["Sailor", "Philosopher", "Drunk"],
+      },
+    } as never);
+
+    expect(drunkTooltip).toContain("🍺: <b>3</b>");
+    expect(drunkTooltip).toContain("Sailor, Philosopher, and Drunk");
   });
 });

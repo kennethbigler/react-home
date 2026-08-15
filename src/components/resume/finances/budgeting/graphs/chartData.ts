@@ -69,11 +69,6 @@ export const partitionBudgetCategoriesForCharts = (
   return { payrollCategory, otherCategories };
 };
 
-const getPositivePayrollExpenseItems = (payrollCategory?: CategoryTotal) =>
-  (payrollCategory?.items ?? []).filter(
-    ({ resolvedAmount }) => resolvedAmount > 0,
-  );
-
 export const getSankeyNodeSum = (
   nodeId: string,
   data: Array<{ from: string; to: string; weight: number }>,
@@ -220,9 +215,9 @@ export const buildPayrollPieData = (flow: BudgetFlow): PiePoint[] => {
     { name: SOCIAL_SECURITY_LABEL, y: flow.socialSecurity },
     { name: MEDICARE_LABEL, y: flow.medicare },
     { name: CA_DISABILITY_LABEL, y: flow.caDisability },
-  ].filter(({ y }) => y > 0);
+  ];
 
-  const payrollExpenses = getPositivePayrollExpenseItems(payrollCategory).map(
+  const payrollExpenses = (payrollCategory?.items ?? []).map(
     ({ expenseEntry, resolvedAmount }) => ({
       name: expenseEntry.name,
       y: resolvedAmount * BUDGET_MONTHS_PER_YEAR,
@@ -239,13 +234,9 @@ export const buildIncomeOverviewPieData = (
   const hideTaxes = options?.hideTaxes ?? false;
   const slices: PiePoint[] = [];
 
-  if (!hideTaxes && flow.federalTax > 0) {
+  if (!hideTaxes) {
     slices.push({ name: FEDERAL_TAX_LABEL, y: flow.federalTax });
-  }
-  if (!hideTaxes && flow.stateTax > 0) {
     slices.push({ name: STATE_TAX_LABEL, y: flow.stateTax });
-  }
-  if (!hideTaxes && flow.totalPayrollDeductions > 0) {
     slices.push({
       name: PAYROLL_WITHHOLDINGS_LABEL,
       y: flow.totalPayrollDeductions,
@@ -254,18 +245,10 @@ export const buildIncomeOverviewPieData = (
 
   // Categories (including user Payroll) by total — same order as the list below.
   sortCategoriesByTotal(flow.categories).forEach(({ heading, total }) => {
-    const annualTotal = total * BUDGET_MONTHS_PER_YEAR;
-
-    if (annualTotal > 0) {
-      slices.push({ name: heading, y: annualTotal });
-    }
+    slices.push({ name: heading, y: total * BUDGET_MONTHS_PER_YEAR });
   });
 
-  const unallocated = getAnnualUnallocated(flow);
-
-  if (unallocated > 0) {
-    slices.push({ name: UNALLOCATED_NODE, y: unallocated });
-  }
+  slices.push({ name: UNALLOCATED_NODE, y: getAnnualUnallocated(flow) });
 
   return slices;
 };
@@ -274,9 +257,7 @@ export const isPayrollSankeyNode = (nodeId: string) =>
   nodeId === PAYROLL_NODE_LABEL;
 
 export const buildCategoryPieData = (categories: CategoryTotal[]): PiePoint[] =>
-  categories
-    .filter(({ total }) => total > 0)
-    .map(({ heading, total }) => ({ name: heading, y: total }));
+  categories.map(({ heading, total }) => ({ name: heading, y: total }));
 
 export const buildExpensePieData = (
   categoryKey: string,
@@ -296,7 +277,6 @@ export const buildExpensePieData = (
       ({ expenseEntry }) =>
         normalizeCategoryKey(expenseEntry.category) === normalizedKey,
     )
-    .filter(({ resolvedAmount }) => resolvedAmount > 0)
     .map(({ expenseEntry, resolvedAmount }) => ({
       name: expenseEntry.name,
       y: resolvedAmount,

@@ -392,17 +392,23 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
       );
     });
 
-    it("omits taxes, payroll, zero categories, and unallocated when not applicable", () => {
+    it("includes zero-value taxes, payroll, categories, and unallocated", () => {
       const zeroIncome = getLatestBudgetIncome(0, 0, 0, 0);
       const flow = buildBudgetFlow(zeroIncome, [
         { name: "Empty", category: "Spend", value: 0 },
       ]);
       const pie = buildIncomeOverviewPieData(flow);
 
-      expect(pie).toEqual([]);
+      expect(pie).toEqual([
+        { name: FEDERAL_TAX_LABEL, y: 0 },
+        { name: STATE_TAX_LABEL, y: 0 },
+        { name: PAYROLL_WITHHOLDINGS_LABEL, y: 0 },
+        { name: "Spend", y: 0 },
+        { name: UNALLOCATED_NODE, y: 0 },
+      ]);
     });
 
-    it("omits unallocated when expenses consume all net income", () => {
+    it("includes zero unallocated when expenses consume all net income", () => {
       const income = getLatestBudgetIncome(100_000, 0, 0, 0);
       const probeFlow = buildBudgetFlow(income, []);
       const flow = buildBudgetFlow(income, [
@@ -414,7 +420,8 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
       ]);
       const pie = buildIncomeOverviewPieData(flow);
 
-      expect(pie.map(({ name }) => name)).not.toContain(UNALLOCATED_NODE);
+      expect(pie.map(({ name }) => name)).toContain(UNALLOCATED_NODE);
+      expect(pie.find(({ name }) => name === UNALLOCATED_NODE)?.y).toBe(0);
       expect(pie.some(({ name }) => name === "Spend")).toBe(true);
     });
   });
