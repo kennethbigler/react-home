@@ -95,6 +95,8 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
       return `${point.name}: <b>${point.y}</b>${suffix}`;
     };
 
+  const showDemonSelection = demonSlugs.length > 1;
+
   return (
     <Grid
       container
@@ -102,7 +104,7 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
       component="section"
       aria-label="Lie distribution"
     >
-      {demonSlugs.length > 0 && (
+      {showDemonSelection && (
         <Grid
           size={{ xs: 12, sm: 12, md: 6 }}
           sx={{
@@ -137,7 +139,7 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
           </ButtonGroup>
         </Grid>
       )}
-      <Grid size={{ xs: 12, sm: 12, md: 6 }}>
+      <Grid size={{ xs: 12, sm: 12, md: showDemonSelection ? 6 : 12 }}>
         <figure style={{ margin: 0, width: "100%" }}>
           <Chart highcharts={Highcharts} options={options}>
             <Accessibility enabled={true} />
