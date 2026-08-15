@@ -1,5 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { getGridSize, getLieSeries, splitScriptColumns } from "./botcHelpers";
+import {
+  formatRoleList,
+  getGridSize,
+  getLieSeries,
+  resolveLieAndTrueCounts,
+  splitScriptColumns,
+} from "./botcHelpers";
+import { MISINFO } from "../../../constants/botc-slug-map";
 
 describe("botcHelpers", () => {
   describe("splitScriptColumns", () => {
@@ -58,15 +65,45 @@ describe("botcHelpers", () => {
     });
   });
 
+  describe("formatRoleList", () => {
+    it("formats empty and single-item lists", () => {
+      expect(formatRoleList([])).toBeUndefined();
+      expect(formatRoleList(["Drunk"])).toBe("Drunk");
+    });
+
+    it("formats two- and three-item lists with Oxford comma", () => {
+      expect(formatRoleList(["Sailor", "Philosopher"])).toBe(
+        "Sailor and Philosopher",
+      );
+      expect(formatRoleList(["Sailor", "Philosopher", "Drunk"])).toBe(
+        "Sailor, Philosopher, and Drunk",
+      );
+    });
+  });
+
+  describe("resolveLieAndTrueCounts", () => {
+    it("treats a pool of 1 as truthful", () => {
+      expect(resolveLieAndTrueCounts(1)).toEqual({ numLie: 0, numTrue: 1 });
+    });
+
+    it("splits larger pools with the 20% lie rule", () => {
+      expect(resolveLieAndTrueCounts(2)).toEqual({ numLie: 1, numTrue: 1 });
+      expect(resolveLieAndTrueCounts(5)).toEqual({ numLie: 1, numTrue: 4 });
+      expect(resolveLieAndTrueCounts(10)).toEqual({ numLie: 2, numTrue: 8 });
+    });
+  });
+
   describe("getLieSeries", () => {
     it("calculates lie series for Trouble Brewing (script 0)", () => {
       const result = getLieSeries(7, 0, { type: "base", index: 0 });
 
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(6);
       expect(result[0].name).toBe("😈");
-      expect(result[1].name).toBe("🍺🧪😡");
-      expect(result[2].name).toBe("🤥");
-      expect(result[3].name).toBe("✅");
+      expect(result[1].name).toBe(MISINFO.Poison);
+      expect(result[2].name).toBe(MISINFO.Madness);
+      expect(result[3].name).toBe(MISINFO.Drunk);
+      expect(result[4].name).toBe("🤥");
+      expect(result[5].name).toBe("✅");
 
       // Check that all values are non-negative
       result.forEach((item) => {
@@ -74,10 +111,18 @@ describe("botcHelpers", () => {
       });
     });
 
+    it("lists drunk contributors from script roles", () => {
+      const result = getLieSeries(7, 0, { type: "base", index: 2 });
+      const drunkSlice = result[3];
+
+      expect(drunkSlice.y).toBeGreaterThan(0);
+      expect(drunkSlice.roles).toEqual(expect.arrayContaining(["Sailor"]));
+    });
+
     it("calculates lie series for S&V (script 1)", () => {
       const result = getLieSeries(7, 0, { type: "base", index: 1 });
 
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(6);
       // For S&V, drunk calculation is different
       result.forEach((item) => {
         expect(item.y).toBeGreaterThanOrEqual(0);
@@ -87,7 +132,7 @@ describe("botcHelpers", () => {
     it("calculates lie series for script 3 (Other)", () => {
       const result = getLieSeries(7, 0, { type: "base", index: 3 });
 
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(6);
       result.forEach((item) => {
         expect(item.y).toBeGreaterThanOrEqual(0);
       });
@@ -102,7 +147,7 @@ describe("botcHelpers", () => {
         characters: [],
       });
 
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(6);
       result.forEach((item) => {
         expect(item.y).toBeGreaterThanOrEqual(0);
       });
@@ -151,14 +196,14 @@ describe("botcHelpers", () => {
       });
 
       // With 4+ travelers, should have at least 1 more drunk
-      expect(resultManyTravelers[1].y).toBeGreaterThan(resultFewTravelers[1].y);
+      expect(resultManyTravelers[3].y).toBeGreaterThan(resultFewTravelers[3].y);
     });
 
     it("adds evil outsider for non-TB scripts with outsiders", () => {
       // Script 1 (S&V) should add evil outsider
       const result = getLieSeries(10, 0, { type: "base", index: 1 });
 
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(6);
       // Just verify it doesn't throw and returns valid data
       result.forEach((item) => {
         expect(item.y).toBeGreaterThanOrEqual(0);
@@ -169,7 +214,7 @@ describe("botcHelpers", () => {
       // Script 2 (BMR) should hit default case
       const result = getLieSeries(7, 0, { type: "base", index: 2 });
 
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(6);
       result.forEach((item) => {
         expect(item.y).toBeGreaterThanOrEqual(0);
       });
@@ -201,7 +246,7 @@ describe("botcHelpers", () => {
         characters: [],
       });
 
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(6);
       result.forEach((item) => {
         expect(item.y).toBeGreaterThanOrEqual(0);
       });
@@ -211,7 +256,7 @@ describe("botcHelpers", () => {
       // playerDist[8] = "5, 1, 1, 1" — 1 outsider, so Math.min(1,1) = 1 drunk
       const result = getLieSeries(8, 0, { type: "base", index: 0 });
 
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(6);
       result.forEach((item) => {
         expect(item.y).toBeGreaterThanOrEqual(0);
       });
@@ -222,7 +267,7 @@ describe("botcHelpers", () => {
       // S&V: Math.min(2, 1) = 1 outsider drunk, Math.min(1, 2) = 1 minion drunk
       const result = getLieSeries(9, 0, { type: "base", index: 1 });
 
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(6);
       result.forEach((item) => {
         expect(item.y).toBeGreaterThanOrEqual(0);
       });
@@ -232,7 +277,7 @@ describe("botcHelpers", () => {
       // playerDist[8] = "5, 1, 1, 1" — Other: Math.min(1,2)=1 outsider drunk
       const result = getLieSeries(8, 0, { type: "base", index: 3 });
 
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(6);
       result.forEach((item) => {
         expect(item.y).toBeGreaterThanOrEqual(0);
       });
@@ -243,7 +288,7 @@ describe("botcHelpers", () => {
       // script.index===3 && outsiders>0 → line 29 hit
       const result = getLieSeries(8, 0, { type: "base", index: 3 });
 
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(6);
       result.forEach((item) => {
         expect(item.y).toBeGreaterThanOrEqual(0);
       });
@@ -254,7 +299,7 @@ describe("botcHelpers", () => {
       // case 2: outsiders>=0 → numDrunk+=1; outsiders>=1 → numEvil+=1 (line 55)
       const result = getLieSeries(8, 0, { type: "base", index: 2 });
 
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(6);
       result.forEach((item) => {
         expect(item.y).toBeGreaterThanOrEqual(0);
       });
@@ -287,9 +332,9 @@ describe("botcHelpers", () => {
         "vortox",
       );
 
-      expect(result[0].y + result[1].y).toBeLessThanOrEqual(
-        numPlayers + numTravelers,
-      );
+      expect(
+        result[0].y + result[1].y + result[2].y + result[3].y,
+      ).toBeLessThanOrEqual(numPlayers + numTravelers);
       result.forEach((item) => {
         expect(item.y).toBeGreaterThanOrEqual(0);
       });

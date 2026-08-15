@@ -217,7 +217,7 @@ describe("Graphs", () => {
     ]);
   });
 
-  it("omits zero-value slices from the breakdown chart", () => {
+  it("includes zero-value slices in the breakdown chart", () => {
     render(
       <Provider>
         <Graphs
@@ -248,6 +248,8 @@ describe("Graphs", () => {
     );
 
     expect(getBreakdownSeriesData()).toEqual([
+      breakdownPoint("Stock", 0),
+      breakdownPoint("Bonus", 0),
       breakdownPoint("Salary", 140000),
     ]);
   });

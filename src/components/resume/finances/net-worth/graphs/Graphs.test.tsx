@@ -92,7 +92,7 @@ describe("resume | finances | net-worth | Graphs", () => {
     ]);
   });
 
-  it("hides zero-value pie slices while keeping colors aligned to category order", async () => {
+  it("keeps zero-value pie slices while keeping colors aligned to category order", async () => {
     render(
       <Provider>
         <Graphs
@@ -115,7 +115,7 @@ describe("resume | finances | net-worth | Graphs", () => {
       </Provider>,
     );
 
-    // Final entry: Investments 50k, Cash 5k, Home 0 → Home hidden from pie
+    // Final entry: Investments 50k, Cash 5k, Home 0
     expect(getBreakdownSeriesData()).toEqual([
       expect.objectContaining({
         name: "Investments",
@@ -127,17 +127,27 @@ describe("resume | finances | net-worth | Graphs", () => {
         y: 5000,
         color: getCategoryColor(1),
       }),
+      expect.objectContaining({
+        name: "Home",
+        y: 0,
+        color: getCategoryColor(2),
+      }),
     ]);
 
     selectChartPoint(0);
 
-    // Earlier entry: Home has value, Cash is 0 → Cash hidden; Home keeps index-2 color
+    // Earlier entry: Home has value, Cash is 0
     await waitFor(() => {
       expect(getBreakdownSeriesData()).toEqual([
         expect.objectContaining({
           name: "Investments",
           y: 40000,
           color: getCategoryColor(0),
+        }),
+        expect.objectContaining({
+          name: "Cash",
+          y: 0,
+          color: getCategoryColor(1),
         }),
         expect.objectContaining({
           name: "Home",
@@ -167,10 +177,12 @@ describe("resume | finances | net-worth | Graphs", () => {
       </Provider>,
     );
 
-    expect(getBreakdownSeriesData()).toEqual([]);
+    expect(getBreakdownSeriesData()).toEqual([
+      expect.objectContaining({ name: "Cash", y: 0 }),
+    ]);
   });
 
-  it("omits zero-value and missing category amounts from the breakdown pie", () => {
+  it("includes zero-value and missing category amounts in the breakdown pie", () => {
     render(
       <Provider>
         <Graphs
@@ -188,6 +200,7 @@ describe("resume | finances | net-worth | Graphs", () => {
 
     expect(getBreakdownSeriesData()).toEqual([
       expect.objectContaining({ name: "Investments", y: 60000 }),
+      expect.objectContaining({ name: "Cash", y: 0 }),
     ]);
   });
 
@@ -275,7 +288,7 @@ describe("resume | finances | net-worth | Graphs", () => {
 });
 
 describe("resume | finances | net-worth | buildNetWorthBreakdownPieData", () => {
-  it("keeps positive amounts and drops missing or zero categories", () => {
+  it("keeps positive amounts and includes zero categories", () => {
     expect(
       buildNetWorthBreakdownPieData(["Investments", "Cash", "Home"], {
         Investments: 60000,
@@ -286,6 +299,16 @@ describe("resume | finances | net-worth | buildNetWorthBreakdownPieData", () => 
         name: "Investments",
         y: 60000,
         color: getCategoryColor(0),
+      },
+      {
+        name: "Cash",
+        y: 0,
+        color: getCategoryColor(1),
+      },
+      {
+        name: "Home",
+        y: 0,
+        color: getCategoryColor(2),
       },
     ]);
   });

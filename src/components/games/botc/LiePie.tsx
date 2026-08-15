@@ -3,13 +3,17 @@ import { useAtomValue } from "jotai";
 import { useTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import { Button, ButtonGroup } from "@mui/material";
-import { Chart, Credits, Series, Title } from "@highcharts/react";
+import { Chart, Credits, Series, Title, Tooltip } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "../../common/highcharts/coreHighcharts";
 import themeAtom from "../../../jotai/theme-atom";
-import { getLieSeries } from "./botcHelpers";
+import {
+  formatRoleList,
+  getLieSeries,
+  type LieSeriesPoint,
+} from "./botcHelpers";
 import type { ActiveScript } from "../../../jotai/botc-atom";
-import { getRoleBySlug } from "../../../constants/botc-slug-map";
+import { MISINFO, getRoleBySlug } from "../../../constants/botc-slug-map";
 import { getScriptDemonSlugs } from "../../../utils/botc-script-utils";
 
 interface LiePieProps {
@@ -57,23 +61,39 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
     [numPlayers, numTravelers, script, activeDemon],
   );
 
-  const options = useMemo<Highcharts.Options>(
-    () => ({
-      ...staticOptions,
-      colors: [
-        muiTheme.palette.error.main,
-        muiTheme.palette.warning.main,
-        muiTheme.palette.info.main,
-        muiTheme.palette.success.main,
-      ],
-    }),
-    [
-      muiTheme.palette.error.main,
-      muiTheme.palette.warning.main,
-      muiTheme.palette.info.main,
-      muiTheme.palette.success.main,
-    ],
-  );
+  const pieData = useMemo(() => {
+    const sliceColors: Record<string, string> = {
+      "😈": muiTheme.palette.error.main,
+      [MISINFO.Poison]: muiTheme.palette.warning.main,
+      [MISINFO.Madness]: muiTheme.palette.warning.main,
+      [MISINFO.Drunk]: muiTheme.palette.warning.main,
+      "🤥": muiTheme.palette.info.main,
+      "✅": muiTheme.palette.success.main,
+    };
+
+    return lieSeries.map((point) => ({
+      ...point,
+      color: sliceColors[point.name],
+    }));
+  }, [
+    lieSeries,
+    muiTheme.palette.error.main,
+    muiTheme.palette.warning.main,
+    muiTheme.palette.info.main,
+    muiTheme.palette.success.main,
+  ]);
+
+  const options = useMemo<Highcharts.Options>(() => staticOptions, []);
+
+  const lieTooltipFormatter: Highcharts.TooltipFormatterCallbackFunction =
+    function () {
+      const { point } = this as unknown as {
+        point: Highcharts.Point & { roles?: string[] };
+      };
+      const rolesLabel = formatRoleList(point.roles ?? []);
+      const suffix = rolesLabel ? ` (${rolesLabel})` : "";
+      return `${point.name}: <b>${point.y}</b>${suffix}`;
+    };
 
   return (
     <Grid
@@ -122,8 +142,13 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
           <Chart highcharts={Highcharts} options={options}>
             <Accessibility enabled={true} />
             <Credits enabled={false} />
+            <Tooltip useHTML={true} formatter={lieTooltipFormatter} />
             <Title style={{ color }}>Who is lying?</Title>
-            <Series type="pie" options={{ name: "⛽️🔥❓" }} data={lieSeries} />
+            <Series
+              type="pie"
+              options={{ name: "⛽️🔥❓" }}
+              data={pieData as LieSeriesPoint[]}
+            />
           </Chart>
         </figure>
       </Grid>
