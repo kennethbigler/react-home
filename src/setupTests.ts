@@ -1,6 +1,9 @@
 // react-testing-library renders your components to document.body,
 // this adds jest-dom's custom assertions
 import "@testing-library/jest-dom";
+import { toHaveNoViolations } from "jest-axe";
+
+expect.extend(toHaveNoViolations);
 
 const isBrokenStorage = (storage: unknown): boolean =>
   storage === null ||

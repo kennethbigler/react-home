@@ -42,6 +42,8 @@ export type {
 const getAnnualUnallocated = (flow: BudgetFlow): number =>
   Math.max(0, flow.net - flow.totalAllocated * BUDGET_MONTHS_PER_YEAR);
 
+const clampPieSliceValue = (value: number): number => Math.max(0, value);
+
 /** Income streams feeding the gross node, in display order. */
 const incomeSourceKeys = Object.keys(INCOME_NODE_LABELS) as Array<
   keyof typeof INCOME_NODE_LABELS
@@ -212,15 +214,15 @@ export const buildPayrollPieData = (flow: BudgetFlow): PiePoint[] => {
     flow.categories,
   );
   const withholdings = [
-    { name: SOCIAL_SECURITY_LABEL, y: flow.socialSecurity },
-    { name: MEDICARE_LABEL, y: flow.medicare },
-    { name: CA_DISABILITY_LABEL, y: flow.caDisability },
+    { name: SOCIAL_SECURITY_LABEL, y: clampPieSliceValue(flow.socialSecurity) },
+    { name: MEDICARE_LABEL, y: clampPieSliceValue(flow.medicare) },
+    { name: CA_DISABILITY_LABEL, y: clampPieSliceValue(flow.caDisability) },
   ];
 
   const payrollExpenses = (payrollCategory?.items ?? []).map(
     ({ expenseEntry, resolvedAmount }) => ({
       name: expenseEntry.name,
-      y: resolvedAmount * BUDGET_MONTHS_PER_YEAR,
+      y: clampPieSliceValue(resolvedAmount * BUDGET_MONTHS_PER_YEAR),
     }),
   );
 
@@ -235,20 +237,32 @@ export const buildIncomeOverviewPieData = (
   const slices: PiePoint[] = [];
 
   if (!hideTaxes) {
-    slices.push({ name: FEDERAL_TAX_LABEL, y: flow.federalTax });
-    slices.push({ name: STATE_TAX_LABEL, y: flow.stateTax });
+    slices.push({
+      name: FEDERAL_TAX_LABEL,
+      y: clampPieSliceValue(flow.federalTax),
+    });
+    slices.push({
+      name: STATE_TAX_LABEL,
+      y: clampPieSliceValue(flow.stateTax),
+    });
     slices.push({
       name: PAYROLL_WITHHOLDINGS_LABEL,
-      y: flow.totalPayrollDeductions,
+      y: clampPieSliceValue(flow.totalPayrollDeductions),
     });
   }
 
   // Categories (including user Payroll) by total — same order as the list below.
   sortCategoriesByTotal(flow.categories).forEach(({ heading, total }) => {
-    slices.push({ name: heading, y: total * BUDGET_MONTHS_PER_YEAR });
+    slices.push({
+      name: heading,
+      y: clampPieSliceValue(total * BUDGET_MONTHS_PER_YEAR),
+    });
   });
 
-  slices.push({ name: UNALLOCATED_NODE, y: getAnnualUnallocated(flow) });
+  slices.push({
+    name: UNALLOCATED_NODE,
+    y: clampPieSliceValue(getAnnualUnallocated(flow)),
+  });
 
   return slices;
 };
@@ -257,7 +271,10 @@ export const isPayrollSankeyNode = (nodeId: string) =>
   nodeId === PAYROLL_NODE_LABEL;
 
 export const buildCategoryPieData = (categories: CategoryTotal[]): PiePoint[] =>
-  categories.map(({ heading, total }) => ({ name: heading, y: total }));
+  categories.map(({ heading, total }) => ({
+    name: heading,
+    y: clampPieSliceValue(total),
+  }));
 
 export const buildExpensePieData = (
   categoryKey: string,
@@ -279,7 +296,7 @@ export const buildExpensePieData = (
     )
     .map(({ expenseEntry, resolvedAmount }) => ({
       name: expenseEntry.name,
-      y: resolvedAmount,
+      y: clampPieSliceValue(resolvedAmount),
     }));
 };
 

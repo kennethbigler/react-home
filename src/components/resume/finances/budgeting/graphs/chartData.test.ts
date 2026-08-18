@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 import {
   buildBudgetFlow,
   buildCategoryTotals,
+  BUDGET_MONTHS_PER_YEAR,
   getLatestBudgetIncome,
   resolveExpenseAmount,
+  type BudgetFlow,
   type ExpenseEntry,
 } from "../../../../../apis/budget";
 import {
@@ -408,6 +410,34 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
       ]);
     });
 
+    it("clamps negative taxes, payroll, categories, and unallocated to zero", () => {
+      const baseFlow = buildBudgetFlow(sampleIncome, []);
+      const flow: BudgetFlow = {
+        ...baseFlow,
+        federalTax: -1_000,
+        stateTax: -500,
+        totalPayrollDeductions: -200,
+        categories: [
+          {
+            categoryKey: "spend",
+            heading: "Spend",
+            total: -300,
+            items: [],
+          },
+        ],
+        totalAllocated: baseFlow.net / BUDGET_MONTHS_PER_YEAR + 500,
+      };
+      const pie = buildIncomeOverviewPieData(flow);
+
+      expect(pie).toEqual([
+        { name: FEDERAL_TAX_LABEL, y: 0 },
+        { name: STATE_TAX_LABEL, y: 0 },
+        { name: PAYROLL_WITHHOLDINGS_LABEL, y: 0 },
+        { name: "Spend", y: 0 },
+        { name: UNALLOCATED_NODE, y: 0 },
+      ]);
+    });
+
     it("includes zero unallocated when expenses consume all net income", () => {
       const income = getLatestBudgetIncome(100_000, 0, 0, 0);
       const probeFlow = buildBudgetFlow(income, []);
@@ -423,6 +453,22 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
       expect(pie.map(({ name }) => name)).toContain(UNALLOCATED_NODE);
       expect(pie.find(({ name }) => name === UNALLOCATED_NODE)?.y).toBe(0);
       expect(pie.some(({ name }) => name === "Spend")).toBe(true);
+    });
+
+    it("clamps negative unallocated to zero when over-allocated", () => {
+      const income = getLatestBudgetIncome(100_000, 0, 0, 0);
+      const probeFlow = buildBudgetFlow(income, []);
+      const flow = buildBudgetFlow(income, [
+        {
+          name: "Over",
+          category: "Spend",
+          value: probeFlow.net / 12 + 500,
+        },
+      ]);
+      const pie = buildIncomeOverviewPieData(flow);
+
+      expect(flow.unallocated).toBeLessThan(0);
+      expect(pie.find(({ name }) => name === UNALLOCATED_NODE)?.y).toBe(0);
     });
   });
 
@@ -451,6 +497,44 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
       ]);
       expect(pie[3]).toEqual({ name: "401k", y: 6000 });
     });
+
+    it("clamps negative payroll withholdings and expenses to zero", () => {
+      const baseFlow = buildBudgetFlow(sampleIncome, [
+        { name: "401k", category: "Payroll", value: 500 },
+      ]);
+      const flow: BudgetFlow = {
+        ...baseFlow,
+        socialSecurity: -100,
+        medicare: -50,
+        caDisability: -25,
+        categories: [
+          {
+            categoryKey: "payroll",
+            heading: "Payroll",
+            total: 500,
+            items: [
+              {
+                expenseEntry: {
+                  name: "401k",
+                  category: "Payroll",
+                  value: 500,
+                },
+                index: 0,
+                resolvedAmount: -500,
+              },
+            ],
+          },
+        ],
+      };
+      const pie = buildPayrollPieData(flow);
+
+      expect(pie).toEqual([
+        { name: SOCIAL_SECURITY_LABEL, y: 0 },
+        { name: MEDICARE_LABEL, y: 0 },
+        { name: CA_DISABILITY_LABEL, y: 0 },
+        { name: "401k", y: 0 },
+      ]);
+    });
   });
 
   describe("isPayrollSankeyNode", () => {
@@ -474,6 +558,16 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
 
       expect(pie).toHaveLength(2);
     });
+
+    it("clamps negative category totals to zero", () => {
+      const categories = buildCategoryTotals(
+        [{ name: "Refund", category: "Adjustments", value: -100 }],
+        sampleIncome,
+      );
+      const pie = buildCategoryPieData([{ ...categories[0], total: -100 }]);
+
+      expect(pie).toEqual([{ name: "Adjustments", y: 0 }]);
+    });
   });
 
   describe("buildExpensePieData", () => {
@@ -490,6 +584,16 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
         { name: "Rent", y: 2000 },
         { name: "HOA", y: 300 },
       ]);
+    });
+
+    it("clamps negative expense amounts to zero", () => {
+      const entries: ExpenseEntry[] = [
+        { name: "Credit", category: "Housing", value: -200 },
+      ];
+
+      const pie = buildExpensePieData("housing", entries, sampleIncome);
+
+      expect(pie).toEqual([{ name: "Credit", y: 0 }]);
     });
   });
 

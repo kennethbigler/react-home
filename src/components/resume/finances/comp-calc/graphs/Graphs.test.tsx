@@ -6,6 +6,7 @@ import {
   getChartOptions,
 } from "../../../../common/highcharts/tests/highchartsMocks";
 import { beforeEach, describe, expect, it } from "vitest";
+import { axe } from "jest-axe";
 import { render, screen, waitFor } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import Graphs from "./Graphs";
@@ -217,8 +218,8 @@ describe("Graphs", () => {
     ]);
   });
 
-  it("includes zero-value slices in the breakdown chart", () => {
-    render(
+  it("includes zero-value slices in the breakdown chart", async () => {
+    const { container } = render(
       <Provider>
         <Graphs
           compEntries={[
@@ -252,6 +253,35 @@ describe("Graphs", () => {
       breakdownPoint("Bonus", 0),
       breakdownPoint("Salary", 140000),
     ]);
+
+    const breakdownTitle = screen.getByText("Comp Breakdown");
+    expect(breakdownTitle).toBeVisible();
+    expect(breakdownTitle.closest("figure")).toBeInTheDocument();
+
+    selectChartPoint(0);
+
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("exposes accessible breakdown output and keyboard point selection", async () => {
+    const { container } = renderGraphs();
+
+    const breakdownTitle = screen.getByText("Comp Breakdown");
+    const breakdownFigure = breakdownTitle.closest("figure");
+    expect(breakdownFigure).toBeInTheDocument();
+    expect(breakdownTitle).toBeVisible();
+
+    selectChartPoint(0);
+
+    await waitFor(() => {
+      expect(getBreakdownSeriesData()).toEqual([
+        breakdownPoint("Stock", 55000),
+        breakdownPoint("Bonus", 10000),
+        breakdownPoint("Salary", 100000),
+      ]);
+    });
+
+    expect(await axe(container)).toHaveNoViolations();
   });
 
   it("clamps chart selection when entries are removed after selecting the last point", async () => {
