@@ -10,6 +10,7 @@ import {
 } from "../../../../common/highcharts/tests/highchartsMocks";
 import { createTheme } from "@mui/material/styles";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { axe } from "jest-axe";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import Graphs from "./Graphs";
@@ -93,7 +94,7 @@ describe("resume | finances | net-worth | Graphs", () => {
   });
 
   it("keeps zero-value pie slices while keeping colors aligned to category order", async () => {
-    render(
+    const { container } = render(
       <Provider>
         <Graphs
           entries={[
@@ -114,6 +115,14 @@ describe("resume | finances | net-worth | Graphs", () => {
         />
       </Provider>,
     );
+
+    const breakdownTitle = screen.getByText("Net Worth Breakdown");
+    expect(breakdownTitle).toBeVisible();
+    expect(breakdownTitle.closest("figure")).toBeInTheDocument();
+
+    const categoriesButton = screen.getByRole("button", { name: "Categories" });
+    categoriesButton.focus();
+    expect(categoriesButton).toHaveFocus();
 
     // Final entry: Investments 50k, Cash 5k, Home 0
     expect(getBreakdownSeriesData()).toEqual([
@@ -156,6 +165,8 @@ describe("resume | finances | net-worth | Graphs", () => {
         }),
       ]);
     });
+
+    expect(await axe(container)).toHaveNoViolations();
   });
 
   it("keeps final-entry category order when an earlier point is selected", async () => {
@@ -309,6 +320,26 @@ describe("resume | finances | net-worth | buildNetWorthBreakdownPieData", () => 
         name: "Home",
         y: 0,
         color: getCategoryColor(2),
+      },
+    ]);
+  });
+
+  it("clamps negative category amounts to zero", () => {
+    expect(
+      buildNetWorthBreakdownPieData(["Investments", "Cash"], {
+        Investments: 60000,
+        Cash: -5000,
+      }),
+    ).toEqual([
+      {
+        name: "Investments",
+        y: 60000,
+        color: getCategoryColor(0),
+      },
+      {
+        name: "Cash",
+        y: 0,
+        color: getCategoryColor(1),
       },
     ]);
   });

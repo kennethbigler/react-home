@@ -29,9 +29,9 @@ const options: Highcharts.Options = {
 const BreakdownChart = memo(({ bonus, salary, stock }: BreakdownChartProps) => {
   const color = useChartTextColor();
   const data = [
-    { name: "Stock", y: stock, color: colors[STOCK] },
-    { name: "Bonus", y: bonus, color: colors[BONUS] },
-    { name: "Salary", y: salary, color: colors[SALARY] },
+    { name: "Stock", y: Math.max(0, stock), color: colors[STOCK] },
+    { name: "Bonus", y: Math.max(0, bonus), color: colors[BONUS] },
+    { name: "Salary", y: Math.max(0, salary), color: colors[SALARY] },
   ];
 
   return (
