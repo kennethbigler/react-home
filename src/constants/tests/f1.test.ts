@@ -1,3 +1,4 @@
+import { assert, describe, expect, it } from "vitest";
 import {
   driverCurrentData,
   driverPointsData,
@@ -12,7 +13,7 @@ describe("constants | f1", () => {
         (entry) => entry.name === name,
       )?.data;
 
-      expect(data.length, `${name}`).toBe(standings?.length);
+      assert(data.length === standings?.length, `${name}`);
     });
   });
 
@@ -25,8 +26,8 @@ describe("constants | f1", () => {
         (entry) => entry.name === name,
       )?.data;
 
-      expect(points, `${name} points`).toHaveLength(xAxisYears.length);
-      expect(standings, `${name} standings`).toHaveLength(xAxisYears.length);
+      assert(points?.length === xAxisYears.length, `${name} points`);
+      assert(standings?.length === xAxisYears.length, `${name} standings`);
     });
   });
 
@@ -41,9 +42,7 @@ describe("constants | f1", () => {
   it("keeps thisYear totals non-decreasing and aligned with season points", () => {
     driverCurrentData.forEach(({ name, data }) => {
       for (let i = 1; i < data.length; i += 1) {
-        expect(data[i], `${name} race ${i}`).toBeGreaterThanOrEqual(
-          data[i - 1] ?? 0,
-        );
+        assert((data[i] ?? 0) >= (data[i - 1] ?? 0), `${name} race ${i}`);
       }
 
       const seasonPoints = driverPointsData
@@ -51,7 +50,7 @@ describe("constants | f1", () => {
         ?.data.at(-1);
 
       if (typeof seasonPoints === "number") {
-        expect(data.at(-1), `${name} season total`).toBe(seasonPoints);
+        assert(data.at(-1) === seasonPoints, `${name} season total`);
       }
     });
   });
