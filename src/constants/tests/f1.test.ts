@@ -42,7 +42,14 @@ describe("constants | f1", () => {
   it("keeps thisYear totals non-decreasing and aligned with season points", () => {
     driverCurrentData.forEach(({ name, data }) => {
       for (let i = 1; i < data.length; i += 1) {
-        assert((data[i] ?? 0) >= (data[i - 1] ?? 0), `${name} race ${i}`);
+        const current = data[i];
+        const previous = data[i - 1];
+
+        assert(
+          typeof current === "number" && typeof previous === "number",
+          `${name} race ${i}`,
+        );
+        assert(current >= previous, `${name} race ${i}`);
       }
 
       const seasonPoints = driverPointsData
