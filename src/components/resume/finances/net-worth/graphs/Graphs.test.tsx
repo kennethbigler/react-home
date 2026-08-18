@@ -12,6 +12,7 @@ import { createTheme } from "@mui/material/styles";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { axe } from "jest-axe";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { createStore, Provider } from "jotai";
 import Graphs from "./Graphs";
 import BreakdownChart from "./BreakdownGraph";
@@ -94,6 +95,7 @@ describe("resume | finances | net-worth | Graphs", () => {
   });
 
   it("keeps zero-value pie slices while keeping colors aligned to category order", async () => {
+    const user = userEvent.setup();
     const { container } = render(
       <Provider>
         <Graphs
@@ -121,8 +123,19 @@ describe("resume | finances | net-worth | Graphs", () => {
     expect(breakdownTitle.closest("figure")).toBeInTheDocument();
 
     const categoriesButton = screen.getByRole("button", { name: "Categories" });
-    categoriesButton.focus();
+    for (
+      let tabCount = 0;
+      document.activeElement !== categoriesButton && tabCount < 20;
+      tabCount += 1
+    ) {
+      await user.tab();
+    }
     expect(categoriesButton).toHaveFocus();
+    await user.keyboard("{Enter}");
+
+    expect(
+      screen.getByRole("dialog", { name: "Show Categories" }),
+    ).toBeInTheDocument();
 
     // Final entry: Investments 50k, Cash 5k, Home 0
     expect(getBreakdownSeriesData()).toEqual([
