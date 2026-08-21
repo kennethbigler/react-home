@@ -66,7 +66,7 @@ const addMonth = (date: DateObj): DateObj => {
   return dateObj(`${year}-${String(month).padStart(2, "0")}`);
 };
 
-/** Earliest start and one month after the latest end in the contract dataset */
+/** Earliest start; end is one month after the latest contract, or today if later */
 export const getTimelineRange = (data: ContractData[]): TimelineRange => {
   const range = data.reduce<TimelineRange>(
     (acc, { start, end }) => ({
@@ -76,7 +76,12 @@ export const getTimelineRange = (data: ContractData[]): TimelineRange => {
     { start: data[0].start, end: data[0].end },
   );
 
-  return { start: range.start, end: addMonth(range.end) };
+  const paddedEnd = addMonth(range.end);
+  const today = dateObj();
+  return {
+    start: range.start,
+    end: today.diff(paddedEnd, "months") > 0 ? today : paddedEnd,
+  };
 };
 
 /**

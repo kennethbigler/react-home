@@ -12,15 +12,12 @@ export interface SegmentType {
 }
 
 const bodyStyles: CSSProperties = {
-  boxSizing: "border-box",
   cursor: "pointer",
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  height: "2.5em",
-  lineHeight: 1,
-  overflow: "hidden",
-  verticalAlign: "middle",
+  paddingTop: "0.5em",
+  paddingBottom: "0.5em",
+  lineHeight: 1.5,
+  overflow: "visible",
+  whiteSpace: "normal",
   textAlign: "center",
   borderRadius: 2,
   border: 0,
