@@ -15,6 +15,9 @@ const bodyStyles: CSSProperties = {
   cursor: "pointer",
   paddingTop: "0.5em",
   paddingBottom: "0.5em",
+  lineHeight: 1.5,
+  overflow: "visible",
+  whiteSpace: "normal",
   textAlign: "center",
   borderRadius: 2,
   border: 0,
@@ -51,7 +54,12 @@ const Segment = memo(
     }
 
     return body ? (
-      <button style={style} title={title} onClick={() => onClick(title || "")}>
+      <button
+        style={style}
+        title={title}
+        aria-label={title || undefined}
+        onClick={() => onClick(title || "")}
+      >
         {body || <br />}
       </button>
     ) : (

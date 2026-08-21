@@ -1,41 +1,58 @@
+import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import ExpandableCard from "../../../common/expandable-card";
 import Row from "../../../common/timeline-parts/Row";
-import { getYearMarkers, getSegments } from "./timelineHelpers";
+import {
+  getTimelineRange,
+  getTimelineRows,
+  getYearMarkers,
+} from "./timelineHelpers";
 import { type ContractData, MERCEDES_HEX } from "../../../../constants/f1";
+import type { FormatOutput } from "../../../../apis/DateHelper";
 
 interface TimelineCardProps {
-  /** reads "car" from each array entry and creates segments */
+  /** contract spans used to build timeline segments */
   data: ContractData[];
 }
+
+const DATE_FORMAT: FormatOutput = "MMMM Y";
 
 /** TimelineCard  ->  Row  ->  Segment
  **                       |->  YearMarker */
 const TimelineCard = ({ data }: TimelineCardProps) => {
   const theme = useTheme();
-  // track elements added already
-  const added: boolean[] = [];
+  const range = getTimelineRange(data);
+  const rows = range ? getTimelineRows(data, range) : [];
 
   return (
     <ExpandableCard
       backgroundColor={MERCEDES_HEX}
       title="F1 Team History"
-      subtitle="Drivers over 100 points in 2025"
+      subtitle={
+        range
+          ? `Drivers over 100 points in 2025 · ${range.start.format(DATE_FORMAT)} - ${range.end.format(DATE_FORMAT)}`
+          : "Drivers over 100 points in 2025"
+      }
       inverted
     >
-      <div style={{ width: "100%", paddingBottom: 7 }}>
-        <Row
-          key={data.length}
-          segments={getYearMarkers(theme.palette.error.main)}
-          yearMarkers
-        />
-        {data.map((elm, i) => {
-          const segments = getSegments(data, added, elm, i);
-          return segments.length ? (
-            <Row key={i} segments={segments} first={i === 0} />
-          ) : null;
-        })}
-      </div>
+      <Box sx={{ width: "100%", pb: "7px" }}>
+        {range ? (
+          <Row
+            segments={getYearMarkers(range, theme.palette.error.main)}
+            yearMarkers
+          />
+        ) : null}
+        {rows.map((segments, i) => (
+          <Row
+            key={segments
+              .map((segment) => segment.body)
+              .filter(Boolean)
+              .join("-")}
+            segments={segments}
+            first={i === 0}
+          />
+        ))}
+      </Box>
     </ExpandableCard>
   );
 };

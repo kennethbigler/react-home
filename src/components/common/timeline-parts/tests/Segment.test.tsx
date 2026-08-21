@@ -5,19 +5,23 @@ import Segment from "../Segment";
 describe("common | timeline-card | Segment", () => {
   describe("basic props tests", () => {
     it("with all props", () => {
-      render(<Segment color="#FFF" body="Body" title="Title" width={100} />);
-      // color
-      expect(screen.getByTitle("Title")).toHaveStyle({
+      render(
+        <Segment
+          color="#FFF"
+          body="A Very Long Team Name Here"
+          title="A Very Long Team Name Here"
+          width={100}
+        />,
+      );
+      const button = screen.getByRole("button", {
+        name: "A Very Long Team Name Here",
+      });
+      expect(button).toHaveStyle({
         backgroundColor: "rgb(255, 255, 255)",
       });
-      // body
-      expect(screen.getByText("Body")).toBeInTheDocument();
-      // title
-      expect(screen.getByTitle("Title")).toBeInTheDocument();
-      // width
-      expect(screen.getByTitle("Title")).toHaveStyle({ width: "100%" });
-      // inverted
-      expect(screen.getByTitle("Title")).toHaveStyle({
+      expect(button).toHaveTextContent("A Very Long Team Name Here");
+      expect(button).toHaveStyle({ width: "100%" });
+      expect(button).toHaveStyle({
         color: "rgb(250, 250, 250)",
       });
     });

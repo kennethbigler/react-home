@@ -686,29 +686,10 @@ export interface ContractData {
 
 export const contractData: ContractData[] = [
   {
-    color: MCLAREN_HEX,
-    team: "McLaren - Norris 🥇",
-    start: dateObj("2019"),
-    end: dateObj("2027-12"),
-    inverted: true,
-  },
-  {
-    color: TR_HEX,
-    team: "Torro Rosso",
-    start: dateObj("2015"),
-    end: dateObj("2016-05"),
-  },
-  {
-    color: RED_BULL_HEX,
-    team: "Red Bull - Verstappen 🥇🥇🥇🥇",
-    start: dateObj("2016-05"),
-    end: dateObj("2028-12"),
-  },
-  {
-    color: MCLAREN_HEX,
-    team: "McLaren - Piastri",
-    start: dateObj("2023"),
-    end: dateObj("2028-12"),
+    color: MERCEDES_HEX,
+    team: "Mercedes - Antonelli",
+    start: dateObj("2025"),
+    end: dateObj("2026-12"),
     inverted: true,
   },
   {
@@ -723,18 +704,6 @@ export const contractData: ContractData[] = [
     start: dateObj("2022"),
     end: dateObj("2027-12"),
     inverted: true,
-  },
-  {
-    color: SAUBER_HEX,
-    team: "Sauber",
-    start: dateObj("2018"),
-    end: dateObj("2019"), // full 2018 Season
-  },
-  {
-    color: FERRARI_HEX,
-    team: "Ferrari - Leclerc",
-    start: dateObj("2019"),
-    end: dateObj("2029-12"),
   },
   {
     color: MCLAREN_HEX,
@@ -757,11 +726,42 @@ export const contractData: ContractData[] = [
     end: dateObj("2027-12"),
   },
   {
-    color: MERCEDES_HEX,
-    team: "Mercedes - Antonelli",
-    start: dateObj("2025"),
-    end: dateObj("2026-12"),
+    color: SAUBER_HEX,
+    team: "Sauber",
+    start: dateObj("2018"),
+    end: dateObj("2019"), // full 2018 Season
+  },
+  {
+    color: FERRARI_HEX,
+    team: "Ferrari - Leclerc",
+    start: dateObj("2019"),
+    end: dateObj("2029-12"),
+  },
+  {
+    color: MCLAREN_HEX,
+    team: "McLaren - Norris 🥇",
+    start: dateObj("2019"),
+    end: dateObj("2027-12"),
     inverted: true,
+  },
+  {
+    color: MCLAREN_HEX,
+    team: "McLaren - Piastri",
+    start: dateObj("2023"),
+    end: dateObj("2028-12"),
+    inverted: true,
+  },
+  {
+    color: TR_HEX,
+    team: "Torro Rosso",
+    start: dateObj("2015"),
+    end: dateObj("2016-05"),
+  },
+  {
+    color: RED_BULL_HEX,
+    team: "Red Bull - Verstappen 🥇🥇🥇🥇",
+    start: dateObj("2016-05"),
+    end: dateObj("2030-12"),
   },
 ];
 
