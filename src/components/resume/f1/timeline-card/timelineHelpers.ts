@@ -67,7 +67,13 @@ const addMonth = (date: DateObj): DateObj => {
 };
 
 /** Earliest start; end is one month after the latest contract, or today if later */
-export const getTimelineRange = (data: ContractData[]): TimelineRange => {
+export const getTimelineRange = (
+  data: ContractData[],
+): TimelineRange | undefined => {
+  if (data.length === 0) {
+    return undefined;
+  }
+
   const range = data.reduce<TimelineRange>(
     (acc, { start, end }) => ({
       start: start.diff(acc.start, "months") < 0 ? start : acc.start,

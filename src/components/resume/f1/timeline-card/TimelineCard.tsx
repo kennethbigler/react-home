@@ -21,7 +21,7 @@ const DATE_FORMAT: FormatOutput = "MMMM Y";
  **                       |->  YearMarker */
 const TimelineCard = ({ data }: TimelineCardProps) => {
   const theme = useTheme();
-  const range = data.length ? getTimelineRange(data) : undefined;
+  const range = getTimelineRange(data);
   const rows = range ? getTimelineRows(data, range) : [];
 
   return (
