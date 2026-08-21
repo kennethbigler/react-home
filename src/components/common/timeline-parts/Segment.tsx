@@ -54,7 +54,12 @@ const Segment = memo(
     }
 
     return body ? (
-      <button style={style} title={title} onClick={() => onClick(title || "")}>
+      <button
+        style={style}
+        title={title}
+        aria-label={title || undefined}
+        onClick={() => onClick(title || "")}
+      >
         {body || <br />}
       </button>
     ) : (

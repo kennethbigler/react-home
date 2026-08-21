@@ -1,9 +1,12 @@
 import { render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, vi } from "vitest";
 import TimelineCard from "../TimelineCard";
 import { getTimelineRange } from "../timelineHelpers";
 
-import dateObj from "../../../../../apis/DateHelper";
+import dateObj, { type DateObj } from "../../../../../apis/DateHelper";
 import type { ContractData } from "../../../../../constants/f1";
+
+const FROZEN_NOW = new Date("2026-08-21T12:00:00.000Z");
 
 const data: ContractData[] = [
   {
@@ -34,7 +37,30 @@ const data: ContractData[] = [
   },
 ];
 
+const addMonth = (date: DateObj): DateObj => {
+  const next = date.month + 1;
+  const year = date.year + Math.floor(next / 12);
+  const month = (next % 12) + 1;
+  return dateObj(`${year}-${String(month).padStart(2, "0")}`);
+};
+
+const expectedRangeEnd = (latestEnd: DateObj): string => {
+  const paddedEnd = addMonth(latestEnd);
+  const today = dateObj();
+  return (today.diff(paddedEnd, "months") > 0 ? today : paddedEnd).format(
+    "MMMM Y",
+  );
+};
+
 describe("resume | f1 | timeline-card | TimelineCard", () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ now: FROZEN_NOW, toFake: ["Date"] });
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("renders as expected", () => {
     render(<TimelineCard data={data} />);
 
@@ -49,10 +75,14 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
     // verify Timeline
     expect(screen.getAllByTitle("year")).not.toBeNull();
     expect(screen.getAllByTitle("year-marker")).not.toBeNull();
-    expect(screen.getByTitle("Red Bull")).toBeInTheDocument();
-    expect(screen.getByTitle("McLaren")).toBeInTheDocument();
-    expect(screen.getByTitle("Mercedes")).toBeInTheDocument();
-    expect(screen.getByTitle("Ferrari")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Red Bull" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "McLaren" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Mercedes" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Ferrari" })).toBeInTheDocument();
   });
 
   it("uses the latest contract end as the timeline range", () => {
@@ -67,14 +97,15 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
       },
     ];
 
+    const expectedEnd = expectedRangeEnd(dateObj("2027-12"));
     const range = getTimelineRange(withFuture);
-    expect(range.start.format("MMMM Y")).toBe("January 2019");
-    expect(range.end.format("MMMM Y")).toBe("January 2028");
+    expect(range?.start.format("MMMM Y")).toBe("January 2019");
+    expect(range?.end.format("MMMM Y")).toBe(expectedEnd);
 
     render(<TimelineCard data={withFuture} />);
     expect(
       screen.getByText(
-        "Drivers over 100 points in 2025 · January 2019 - January 2028",
+        `Drivers over 100 points in 2025 · January 2019 - ${expectedEnd}`,
       ),
     ).toBeInTheDocument();
   });
@@ -88,6 +119,10 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
     ).toBeInTheDocument();
     expect(screen.queryByTitle("year")).not.toBeInTheDocument();
     expect(screen.queryByTitle("year-marker")).not.toBeInTheDocument();
+  });
+
+  it("returns no range for an empty dataset", () => {
+    expect(getTimelineRange([])).toBeUndefined();
   });
 
   it("packs later contracts in dataset order when start dates match", () => {
@@ -120,8 +155,11 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
 
     render(<TimelineCard data={overlapping} />);
 
-    const ferrari = screen.getByTitle("Ferrari - Hamilton");
-    const antonelli = screen.getByTitle("Mercedes - Antonelli");
+    const ferrari = screen.getByRole("button", { name: "Ferrari - Hamilton" });
+    const antonelli = screen.getByRole("button", {
+      name: "Mercedes - Antonelli",
+    });
+    expect(ferrari.parentElement).not.toBe(antonelli.parentElement);
     expect(
       ferrari.compareDocumentPosition(antonelli) &
         Node.DOCUMENT_POSITION_FOLLOWING,
