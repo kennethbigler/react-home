@@ -20,7 +20,7 @@ describe("common | timeline-card | Segment", () => {
       expect(screen.getByTitle("Title")).toHaveStyle({
         color: "rgb(250, 250, 250)",
       });
-      expect(screen.getByTitle("Title")).toHaveStyle({ height: "40px" });
+      expect(screen.getByTitle("Title")).toHaveStyle({ lineHeight: "1.5" });
     });
 
     it("with color, with body", () => {

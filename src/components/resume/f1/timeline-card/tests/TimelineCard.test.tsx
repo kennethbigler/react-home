@@ -42,17 +42,17 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
     expect(screen.getByText("F1 Team History")).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Drivers over 100 points in 2025 · June 2019 - March 2020",
+        `Drivers over 100 points in 2025 · June 2019 - ${dateObj().format("MMMM Y")}`,
       ),
     ).toBeInTheDocument();
 
     // verify Timeline
     expect(screen.getAllByTitle("year")).not.toBeNull();
     expect(screen.getAllByTitle("year-marker")).not.toBeNull();
-    expect(screen.getByText("Red Bull")).toBeInTheDocument();
-    expect(screen.getByText("McLaren")).toBeInTheDocument();
-    expect(screen.getByText("Mercedes")).toBeInTheDocument();
-    expect(screen.getByText("Ferrari")).toBeInTheDocument();
+    expect(screen.getByTitle("Red Bull")).toBeInTheDocument();
+    expect(screen.getByTitle("McLaren")).toBeInTheDocument();
+    expect(screen.getByTitle("Mercedes")).toBeInTheDocument();
+    expect(screen.getByTitle("Ferrari")).toBeInTheDocument();
   });
 
   it("uses the latest contract end as the timeline range", () => {
@@ -77,6 +77,17 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
         "Drivers over 100 points in 2025 · January 2019 - January 2028",
       ),
     ).toBeInTheDocument();
+  });
+
+  it("renders fallback subtitle without timeline rows when data is empty", () => {
+    render(<TimelineCard data={[]} />);
+
+    expect(screen.getByText("F1 Team History")).toBeInTheDocument();
+    expect(
+      screen.getByText("Drivers over 100 points in 2025"),
+    ).toBeInTheDocument();
+    expect(screen.queryByTitle("year")).not.toBeInTheDocument();
+    expect(screen.queryByTitle("year-marker")).not.toBeInTheDocument();
   });
 
   it("packs later contracts in dataset order when start dates match", () => {
