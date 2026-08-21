@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import TimelineCard from "../TimelineCard";
+import { getTimelineRange } from "../timelineHelpers";
 
 import dateObj from "../../../../../apis/DateHelper";
 import type { ContractData } from "../../../../../constants/f1";
@@ -39,14 +40,80 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
 
     // verify ExpandableCard
     expect(screen.getByText("F1 Team History")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Drivers over 100 points in 2025 · June 2019 - March 2020",
+      ),
+    ).toBeInTheDocument();
 
     // verify Timeline
     expect(screen.getAllByTitle("year")).not.toBeNull();
     expect(screen.getAllByTitle("year-marker")).not.toBeNull();
-    // F1 segments display team abbreviations (first letter for narrow widths)
-    // Team names: Red Bull (R), McLaren (M), Mercedes (M), Ferrari (F)
-    expect(screen.getByText("R")).toBeInTheDocument();
-    expect(screen.getAllByText("M").length).toBeGreaterThanOrEqual(2);
-    expect(screen.getByText("F")).toBeInTheDocument();
+    expect(screen.getByText("Red Bull")).toBeInTheDocument();
+    expect(screen.getByText("McLaren")).toBeInTheDocument();
+    expect(screen.getByText("Mercedes")).toBeInTheDocument();
+    expect(screen.getByText("Ferrari")).toBeInTheDocument();
+  });
+
+  it("uses the latest contract end as the timeline range", () => {
+    const withFuture: ContractData[] = [
+      ...data,
+      {
+        color: "orange",
+        team: "McLaren - Norris",
+        start: dateObj("2019"),
+        end: dateObj("2027-12"),
+        inverted: true,
+      },
+    ];
+
+    const range = getTimelineRange(withFuture);
+    expect(range.start.format("MMMM Y")).toBe("January 2019");
+    expect(range.end.format("MMMM Y")).toBe("January 2028");
+
+    render(<TimelineCard data={withFuture} />);
+    expect(
+      screen.getByText(
+        "Drivers over 100 points in 2025 · January 2019 - January 2028",
+      ),
+    ).toBeInTheDocument();
+  });
+
+  it("packs later contracts in dataset order when start dates match", () => {
+    const overlapping: ContractData[] = [
+      {
+        color: "orange",
+        team: "07-12 McLaren",
+        start: dateObj("2012"),
+        end: dateObj("2013"),
+      },
+      {
+        color: "teal",
+        team: "Mercedes - Hamilton",
+        start: dateObj("2013"),
+        end: dateObj("2025"),
+      },
+      {
+        color: "red",
+        team: "Ferrari - Hamilton",
+        start: dateObj("2025"),
+        end: dateObj("2027-12"),
+      },
+      {
+        color: "teal",
+        team: "Mercedes - Antonelli",
+        start: dateObj("2025"),
+        end: dateObj("2026-12"),
+      },
+    ];
+
+    render(<TimelineCard data={overlapping} />);
+
+    const ferrari = screen.getByTitle("Ferrari - Hamilton");
+    const antonelli = screen.getByTitle("Mercedes - Antonelli");
+    expect(
+      ferrari.compareDocumentPosition(antonelli) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
   });
 });
