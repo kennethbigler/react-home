@@ -43,10 +43,18 @@ jobs:
             **/node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6.1.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+
       - name: Install dependencies
         run: |
           npm config set engine-strict true
           npm install
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
 
       - name: Run linters
         run: npm run lint:q
@@ -88,8 +96,8 @@ jobs:
       - name: Wait for SPA routes to render
         id: spa-ready
         run: |
-          npx --yes -p playwright playwright install --with-deps chromium
-          npx --yes -p playwright node scripts/wait-for-spa.mjs
+          npx playwright install chromium
+          node scripts/wait-for-spa.mjs
           {
             echo "urls<<EOF"
             node scripts/wait-for-spa.mjs --print-urls

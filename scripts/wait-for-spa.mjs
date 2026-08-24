@@ -50,9 +50,7 @@ export const waitForSpa = async (
 ) => {
   let launch = launchBrowser;
   if (!launch) {
-    const { chromium } = await new Function(
-      "return import('playwright')",
-    )();
+    const { chromium } = await import("playwright");
     launch = chromium.launch.bind(chromium);
   }
   const browser = await launch();

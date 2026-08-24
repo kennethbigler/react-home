@@ -90,7 +90,7 @@ const Connect4 = memo(() => {
   return (
     <>
       <Typography variant="h2" component="h1" gutterBottom>
-        Welcome to Ken&apos;s Connect4 Game
+        Connect4
       </Typography>
       <GameBoard
         board={board}
