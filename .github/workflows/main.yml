@@ -70,36 +70,53 @@ jobs:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.event.pull_request.head.sha || github.sha }}
 
+      # Serve this job's production build so the scanner audits the PR/commit,
+      # not the last GitHub Pages deploy. Composite action shares the runner.
+      - name: Start preview server
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4173 --strictPort &
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:4173/ >/dev/null; then
+              echo "Preview server is up"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Preview server failed to start"
+          exit 1
+
       - name: accessibility-scanner
         uses: github/accessibility-scanner@v3.4.1
         with:
           urls: |
-            https://www.kennethbigler.com/
-            https://www.kennethbigler.com/work
-            https://www.kennethbigler.com/resume
-            https://www.kennethbigler.com/presentations
-            https://www.kennethbigler.com/f1
-            https://www.kennethbigler.com/cars
-            https://www.kennethbigler.com/finances
-            https://www.kennethbigler.com/travel
-            https://www.kennethbigler.com/games
-            https://www.kennethbigler.com/games/botc
-            https://www.kennethbigler.com/games/murder
-            https://www.kennethbigler.com/games/werewolf
-            https://www.kennethbigler.com/games/bridge
-            https://www.kennethbigler.com/games/imperial-assault
-            https://www.kennethbigler.com/games/spades
-            https://www.kennethbigler.com/games/types
-            https://www.kennethbigler.com/games/blackjack
-            https://www.kennethbigler.com/games/deal
-            https://www.kennethbigler.com/games/poker
-            https://www.kennethbigler.com/games/slots
-            https://www.kennethbigler.com/games/yahtzee
-            https://www.kennethbigler.com/games/connect4
-            https://www.kennethbigler.com/games/tictactoe
+            http://127.0.0.1:4173/
+            http://127.0.0.1:4173/work
+            http://127.0.0.1:4173/resume
+            http://127.0.0.1:4173/presentations
+            http://127.0.0.1:4173/f1
+            http://127.0.0.1:4173/cars
+            http://127.0.0.1:4173/finances
+            http://127.0.0.1:4173/travel
+            http://127.0.0.1:4173/games
+            http://127.0.0.1:4173/games/botc
+            http://127.0.0.1:4173/games/murder
+            http://127.0.0.1:4173/games/werewolf
+            http://127.0.0.1:4173/games/bridge
+            http://127.0.0.1:4173/games/imperial-assault
+            http://127.0.0.1:4173/games/spades
+            http://127.0.0.1:4173/games/types
+            http://127.0.0.1:4173/games/blackjack
+            http://127.0.0.1:4173/games/deal
+            http://127.0.0.1:4173/games/poker
+            http://127.0.0.1:4173/games/slots
+            http://127.0.0.1:4173/games/yahtzee
+            http://127.0.0.1:4173/games/connect4
+            http://127.0.0.1:4173/games/tictactoe
           repository: kennethbigler/react-home
           token: ${{ secrets.A11Y_SCANNER_TOKEN }}
-          cache_key: cached_results-kennethbigler.com-main.json
+          cache_key: cached_results-ci-preview.json
+          scans: |
+            ["axe", {"name": "alt-text-scan", "package": "@github/accessibility-scanner-alt-text-plugin", "version": "1.1.0"}]
 
   # Adding a code analyzer job
   analyze:
