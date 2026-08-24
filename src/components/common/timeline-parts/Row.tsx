@@ -26,8 +26,19 @@ const Row = ({
     style = lgMarginTop;
   }
 
+  const rowLabel = yearMarkers
+    ? undefined
+    : segments
+        .map(({ title, body }) => title || body)
+        .filter(Boolean)
+        .join(", ");
+
   return (
-    <div style={style}>
+    <div
+      style={style}
+      role={yearMarkers ? undefined : "group"}
+      aria-label={rowLabel}
+    >
       {segments.map((data, j) =>
         yearMarkers ? (
           <YearMarker

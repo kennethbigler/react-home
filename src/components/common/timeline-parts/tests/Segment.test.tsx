@@ -16,6 +16,7 @@ describe("common | timeline-card | Segment", () => {
       const button = screen.getByRole("button", {
         name: "A Very Long Team Name Here",
       });
+      expect(button).toHaveAttribute("type", "button");
       expect(button).toHaveStyle({
         backgroundColor: "rgb(255, 255, 255)",
       });

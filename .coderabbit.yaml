@@ -3,6 +3,8 @@ language: en-US
 reviews:
   profile: assertive
   request_changes_workflow: true
+  path_filters:
+    - "!docs/**"
   auto_review:
     enabled: true
     drafts: false

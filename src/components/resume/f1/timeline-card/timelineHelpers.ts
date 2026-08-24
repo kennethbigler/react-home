@@ -20,6 +20,11 @@ export interface TimelineRange {
   end: DateObj;
 }
 
+export interface TimelineRow {
+  key: string;
+  segments: SegmentType[];
+}
+
 /* *************************     Local Functions     ************************* */
 /** function to add empty space between start and elm segment */
 const addEmptySegment = (segments: SegmentType[], width: number): void => {
@@ -192,14 +197,14 @@ const getSegments = (
 export const getTimelineRows = (
   data: ContractData[],
   range: TimelineRange,
-): SegmentType[][] => {
+): TimelineRow[] => {
   const added = new Set<number>();
-  const rows: SegmentType[][] = [];
+  const rows: TimelineRow[] = [];
 
   data.forEach((elm, i) => {
     const segments = getSegments(data, added, elm, i, range);
     if (segments.length) {
-      rows.push(segments);
+      rows.push({ key: `${i}-${elm.team}`, segments });
     }
   });
 

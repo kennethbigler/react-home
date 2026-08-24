@@ -1,12 +1,15 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { axe } from "jest-axe";
 import { afterEach, beforeEach, vi } from "vitest";
 import TimelineCard from "../TimelineCard";
 import { getTimelineRange } from "../timelineHelpers";
 
-import dateObj, { type DateObj } from "../../../../../apis/DateHelper";
+import dateObj from "../../../../../apis/DateHelper";
 import type { ContractData } from "../../../../../constants/f1";
 
 const FROZEN_NOW = new Date("2026-08-21T12:00:00.000Z");
+const EXPECTED_FROZEN_TODAY = "August 2026";
+const EXPECTED_JAN_2028 = "January 2028";
 
 const data: ContractData[] = [
   {
@@ -37,21 +40,6 @@ const data: ContractData[] = [
   },
 ];
 
-const addMonth = (date: DateObj): DateObj => {
-  const next = date.month + 1;
-  const year = date.year + Math.floor(next / 12);
-  const month = (next % 12) + 1;
-  return dateObj(`${year}-${String(month).padStart(2, "0")}`);
-};
-
-const expectedRangeEnd = (latestEnd: DateObj): string => {
-  const paddedEnd = addMonth(latestEnd);
-  const today = dateObj();
-  return (today.diff(paddedEnd, "months") > 0 ? today : paddedEnd).format(
-    "MMMM Y",
-  );
-};
-
 describe("resume | f1 | timeline-card | TimelineCard", () => {
   beforeEach(() => {
     vi.useFakeTimers({ now: FROZEN_NOW, toFake: ["Date"] });
@@ -68,7 +56,7 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
     expect(screen.getByText("F1 Team History")).toBeInTheDocument();
     expect(
       screen.getByText(
-        `Drivers over 100 points in 2025 · June 2019 - ${dateObj().format("MMMM Y")}`,
+        `Drivers over 100 points in 2025 · June 2019 - ${EXPECTED_FROZEN_TODAY}`,
       ),
     ).toBeInTheDocument();
 
@@ -85,6 +73,26 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
     expect(screen.getByRole("button", { name: "Ferrari" })).toBeInTheDocument();
   });
 
+  it("extends the timeline end to today when contracts end in the past", () => {
+    const range = getTimelineRange(data);
+
+    expect(range?.end.format("MMMM Y")).toBe(EXPECTED_FROZEN_TODAY);
+  });
+
+  it("pads December contract ends into the next calendar year", () => {
+    const contract: ContractData = {
+      color: "orange",
+      team: "McLaren - Norris",
+      start: dateObj("2019"),
+      end: dateObj("2027-12"),
+      inverted: true,
+    };
+
+    const range = getTimelineRange([contract]);
+
+    expect(range?.end.format("MMMM Y")).toBe(EXPECTED_JAN_2028);
+  });
+
   it("uses the latest contract end as the timeline range", () => {
     const withFuture: ContractData[] = [
       ...data,
@@ -97,15 +105,14 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
       },
     ];
 
-    const expectedEnd = expectedRangeEnd(dateObj("2027-12"));
     const range = getTimelineRange(withFuture);
     expect(range?.start.format("MMMM Y")).toBe("January 2019");
-    expect(range?.end.format("MMMM Y")).toBe(expectedEnd);
+    expect(range?.end.format("MMMM Y")).toBe(EXPECTED_JAN_2028);
 
     render(<TimelineCard data={withFuture} />);
     expect(
       screen.getByText(
-        `Drivers over 100 points in 2025 · January 2019 - ${expectedEnd}`,
+        `Drivers over 100 points in 2025 · January 2019 - ${EXPECTED_JAN_2028}`,
       ),
     ).toBeInTheDocument();
   });
@@ -155,14 +162,38 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
 
     render(<TimelineCard data={overlapping} />);
 
-    const ferrari = screen.getByRole("button", { name: "Ferrari - Hamilton" });
-    const antonelli = screen.getByRole("button", {
-      name: "Mercedes - Antonelli",
+    const ferrariRow = screen.getByRole("group", {
+      name: /Ferrari - Hamilton/i,
     });
-    expect(ferrari.parentElement).not.toBe(antonelli.parentElement);
+    const antonelliRow = screen.getByRole("group", {
+      name: /Mercedes - Antonelli/i,
+    });
+    expect(ferrariRow).not.toBe(antonelliRow);
     expect(
-      ferrari.compareDocumentPosition(antonelli) &
-        Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBeTruthy();
+      screen.getByRole("button", { name: "Ferrari - Hamilton" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Mercedes - Antonelli" }),
+    ).toBeInTheDocument();
+  });
+
+  it("timeline buttons support keyboard focus and activation", () => {
+    render(<TimelineCard data={data} />);
+
+    const redBull = screen.getByRole("button", { name: "Red Bull" });
+    redBull.focus();
+    expect(redBull).toHaveFocus();
+
+    fireEvent.keyDown(redBull, { key: "Enter", code: "Enter" });
+    expect(redBull).toBeInTheDocument();
+
+    fireEvent.keyDown(redBull, { key: " ", code: "Space" });
+    expect(redBull).toBeInTheDocument();
+  });
+
+  it("renders without accessibility violations", async () => {
+    const { container } = render(<TimelineCard data={data} />);
+
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

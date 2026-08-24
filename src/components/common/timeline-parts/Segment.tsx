@@ -55,6 +55,7 @@ const Segment = memo(
 
     return body ? (
       <button
+        type="button"
         style={style}
         title={title}
         aria-label={title || undefined}
