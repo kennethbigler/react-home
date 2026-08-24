@@ -85,33 +85,21 @@ jobs:
           echo "Preview server failed to start"
           exit 1
 
+      - name: Wait for SPA routes to render
+        id: spa-ready
+        run: |
+          npx --yes -p playwright playwright install --with-deps chromium
+          npx --yes -p playwright node scripts/wait-for-spa.mjs
+          {
+            echo "urls<<EOF"
+            node scripts/wait-for-spa.mjs --print-urls
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
       - name: accessibility-scanner
         uses: github/accessibility-scanner@v3.4.1
         with:
-          urls: |
-            http://127.0.0.1:4173/
-            http://127.0.0.1:4173/work
-            http://127.0.0.1:4173/resume
-            http://127.0.0.1:4173/presentations
-            http://127.0.0.1:4173/f1
-            http://127.0.0.1:4173/cars
-            http://127.0.0.1:4173/finances
-            http://127.0.0.1:4173/travel
-            http://127.0.0.1:4173/games
-            http://127.0.0.1:4173/games/botc
-            http://127.0.0.1:4173/games/murder
-            http://127.0.0.1:4173/games/werewolf
-            http://127.0.0.1:4173/games/bridge
-            http://127.0.0.1:4173/games/imperial-assault
-            http://127.0.0.1:4173/games/spades
-            http://127.0.0.1:4173/games/types
-            http://127.0.0.1:4173/games/blackjack
-            http://127.0.0.1:4173/games/deal
-            http://127.0.0.1:4173/games/poker
-            http://127.0.0.1:4173/games/slots
-            http://127.0.0.1:4173/games/yahtzee
-            http://127.0.0.1:4173/games/connect4
-            http://127.0.0.1:4173/games/tictactoe
+          urls: ${{ steps.spa-ready.outputs.urls }}
           repository: kennethbigler/react-home
           token: ${{ secrets.A11Y_SCANNER_TOKEN }}
           cache_key: cached_results-ci-preview.json
