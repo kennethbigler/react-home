@@ -17,6 +17,11 @@ interface EditPlayersProps {
   openToast: () => void;
 }
 
+const outlinedButtonSx = {
+  borderColor: "primary.dark",
+  color: "primary.dark",
+};
+
 /** EditPlayers -> ScriptSearch
  *              -> ScriptControls
  *              -> players.map(EditNameAndPos) */
@@ -90,6 +95,7 @@ const EditPlayers = ({
             (n) => (
               <Button
                 key={n}
+                sx={numTravelers === n ? undefined : outlinedButtonSx}
                 variant={numTravelers === n ? "contained" : "outlined"}
                 onClick={handleClick(n)}
                 aria-label={`${n} traveler`}

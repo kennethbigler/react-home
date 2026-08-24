@@ -49,11 +49,24 @@ const InfoPopup = ({
     handleClose();
   };
 
+  const buttonLabel = typeof title === "string" ? title : undefined;
+  const outlinedSx =
+    buttonVariant === "outlined"
+      ? {
+          "&.MuiButton-outlined": {
+            borderColor: `${buttonColor}.dark`,
+            color: `${buttonColor}.dark`,
+          },
+        }
+      : undefined;
+
   return (
     <>
       <Button
+        aria-label={typeof buttonText === "string" ? undefined : buttonLabel}
         color={buttonColor}
         fullWidth={fullWidth}
+        sx={outlinedSx}
         variant={buttonVariant}
         onClick={handleOpen}
       >

@@ -21,7 +21,7 @@ const History = ({ history, step, jumpToStep }: HistoryProps) => {
       : `Move #${move} (${getTurn(move - 1)}, ` +
         `${Math.floor(location / 3)}, ${location % 3})`;
     // highlight current turn displayed on board
-    const color = step === move ? "secondary" : "primary";
+    const color = step === move ? "primary" : "inherit";
 
     return (
       <Button
@@ -29,6 +29,7 @@ const History = ({ history, step, jumpToStep }: HistoryProps) => {
         color={color}
         onClick={(): void => jumpToStep(move)}
         style={{ display: "block" }}
+        variant={step === move ? "contained" : "text"}
       >
         {description}
       </Button>

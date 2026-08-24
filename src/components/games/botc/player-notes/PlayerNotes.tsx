@@ -124,6 +124,12 @@ const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
         <Button
           fullWidth
           color="warning"
+          sx={{
+            "&.MuiButton-outlined": {
+              borderColor: "#BF360C",
+              color: "#BF360C",
+            },
+          }}
           variant="outlined"
           onClick={getRandomPlayer}
         >

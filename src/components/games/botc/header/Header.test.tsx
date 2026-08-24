@@ -48,14 +48,14 @@ describe("BotC Header", () => {
   it("should render share button", () => {
     render(<Header {...defaultProps} />);
 
-    const shareButton = screen.getByLabelText("share");
+    const shareButton = screen.getByLabelText("Share");
     expect(shareButton).toBeInTheDocument();
   });
 
   it("should open share dialog when share button is clicked", () => {
     render(<Header {...defaultProps} />);
 
-    const shareButton = screen.getByLabelText("share");
+    const shareButton = screen.getByLabelText("Share");
     fireEvent.click(shareButton);
 
     expect(screen.getByText("Share")).toBeInTheDocument();
@@ -65,7 +65,7 @@ describe("BotC Header", () => {
   it("should display QR code in share dialog", () => {
     render(<Header {...defaultProps} />);
 
-    const shareButton = screen.getByLabelText("share");
+    const shareButton = screen.getByLabelText("Share");
     fireEvent.click(shareButton);
 
     const qrCode = document.querySelector("svg");

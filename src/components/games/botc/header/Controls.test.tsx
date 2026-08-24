@@ -16,14 +16,14 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 describe("Controls", () => {
   it("renders without crashing", () => {
     render(<Controls numPlayers={8} numTravelers={0} />, { wrapper });
-    expect(screen.getByLabelText("settings")).toBeInTheDocument();
+    expect(screen.getByLabelText("Settings")).toBeInTheDocument();
   });
 
   it("opens game-reset toast and calls close handler", () => {
     render(<Controls numPlayers={8} numTravelers={0} />, { wrapper });
 
     // Open the Settings popover
-    fireEvent.click(screen.getByLabelText("settings"));
+    fireEvent.click(screen.getByLabelText("Settings"));
     expect(screen.getByText("Reset")).toBeInTheDocument();
 
     // Click Reset to trigger openToast → hasToast = true

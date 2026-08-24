@@ -123,8 +123,8 @@ describe("games | werewolf", () => {
     fireEvent.click(screen.getAllByRole("button")[1]);
 
     const masonText = screen.getByText("Mason");
-    const masonSummary = masonText.closest(".MuiAccordionSummary-root")!;
-    const labels = masonSummary.querySelectorAll("label");
+    const masonRow = masonText.closest(".MuiGrid-grid-xs-12")!;
+    const labels = masonRow.querySelectorAll("label");
 
     // Click star label (count > 0 branch)
     fireEvent.click(labels[0]);
@@ -140,8 +140,8 @@ describe("games | werewolf", () => {
     fireEvent.click(screen.getAllByRole("button")[1]);
 
     const villagerText = screen.getByText("Villager");
-    const villagerSummary = villagerText.closest(".MuiAccordionSummary-root")!;
-    const labels = villagerSummary.querySelectorAll("label");
+    const villagerRow = villagerText.closest(".MuiGrid-grid-xs-12")!;
+    const labels = villagerRow.querySelectorAll("label");
 
     fireEvent.click(labels[0]);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
@@ -155,8 +155,8 @@ describe("games | werewolf", () => {
     fireEvent.click(screen.getAllByRole("button")[2]);
 
     const vampireText = screen.getByText("Vampire");
-    const vampireSummary = vampireText.closest(".MuiAccordionSummary-root")!;
-    const labels = vampireSummary.querySelectorAll("label");
+    const vampireRow = vampireText.closest(".MuiGrid-grid-xs-12")!;
+    const labels = vampireRow.querySelectorAll("label");
 
     fireEvent.click(labels[0]);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
@@ -174,8 +174,8 @@ describe("games | werewolf", () => {
     const werewolfText = werewolfTexts.find(
       (el) => el.closest(".MuiAccordionSummary-root") !== null,
     )!;
-    const werewolfSummary = werewolfText.closest(".MuiAccordionSummary-root")!;
-    const labels = werewolfSummary.querySelectorAll("label");
+    const werewolfRow = werewolfText.closest(".MuiGrid-grid-xs-12")!;
+    const labels = werewolfRow.querySelectorAll("label");
 
     fireEvent.click(labels[0]);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
@@ -191,8 +191,8 @@ describe("games | werewolf", () => {
     const seerText = screen.getByText("Seer");
     expect(seerText).toBeInTheDocument();
 
-    const seerSummary = seerText.closest(".MuiAccordionSummary-root")!;
-    const labels = seerSummary.querySelectorAll("label");
+    const seerRow = seerText.closest(".MuiGrid-grid-xs-12")!;
+    const labels = seerRow.querySelectorAll("label");
 
     fireEvent.click(labels[0]);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();

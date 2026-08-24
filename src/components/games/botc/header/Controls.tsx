@@ -30,7 +30,7 @@ const Controls = ({ numPlayers, numTravelers }: ControlsProps) => {
       <div className="flex-container">
         <InfoPopup
           title="Track Players"
-          buttonText={<EditNoteIcon aria-label="track players" />}
+          buttonText={<EditNoteIcon />}
           buttonVariant="text"
         >
           <Tracker end={numPlayers + numTravelers} />
@@ -38,7 +38,7 @@ const Controls = ({ numPlayers, numTravelers }: ControlsProps) => {
 
         <InfoPopup
           title="Settings"
-          buttonText={<SettingsIcon aria-label="settings" />}
+          buttonText={<SettingsIcon />}
           buttonVariant="text"
         >
           <EditPlayers
@@ -63,7 +63,7 @@ const Controls = ({ numPlayers, numTravelers }: ControlsProps) => {
 
         <InfoPopup
           title="Share"
-          buttonText={<MobileScreenShareIcon aria-label="share" />}
+          buttonText={<MobileScreenShareIcon />}
           buttonVariant="text"
         >
           <QRCodeSVG

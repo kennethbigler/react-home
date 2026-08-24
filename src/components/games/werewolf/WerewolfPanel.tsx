@@ -4,6 +4,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Grid,
   Rating,
   Typography,
@@ -42,28 +43,32 @@ const WerewolfPanel = memo(
     count,
   }: WerewolfPanelProps) => (
     <Grid size={12}>
-      <Accordion
-        expanded={expanded === expandedKey}
-        onChange={handleChange(expandedKey)}
-      >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Rating
-            max={count || 1}
-            sx={{
-              flexWrap: "wrap",
-              minWidth: Math.min(24 * (count || 1), 24 * 7),
-            }}
-            onChange={(_e, numStars) =>
-              handleStar(numStars ? value : -value, numStars || 0, name)
-            }
-          />
-          <div style={containerStyles}>
-            <Typography>{name}</Typography>
-            <Typography>Cost: {value}</Typography>
-          </div>
-        </AccordionSummary>
-        <AccordionDetails>{description}</AccordionDetails>
-      </Accordion>
+      <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
+        <Rating
+          max={count || 1}
+          sx={{
+            flexWrap: "wrap",
+            minWidth: Math.min(24 * (count || 1), 24 * 7),
+            pt: 1,
+          }}
+          onChange={(_e, numStars) =>
+            handleStar(numStars ? value : -value, numStars || 0, name)
+          }
+        />
+        <Accordion
+          expanded={expanded === expandedKey}
+          onChange={handleChange(expandedKey)}
+          sx={{ flex: 1 }}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <div style={containerStyles}>
+              <Typography>{name}</Typography>
+              <Typography>Cost: {value}</Typography>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails>{description}</AccordionDetails>
+        </Accordion>
+      </Box>
     </Grid>
   ),
 );

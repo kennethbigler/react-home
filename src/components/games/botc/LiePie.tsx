@@ -127,6 +127,14 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
               return (
                 <Button
                   key={slug}
+                  sx={
+                    activeDemon === slug
+                      ? undefined
+                      : {
+                          borderColor: "error.dark",
+                          color: "error.dark",
+                        }
+                  }
                   variant={activeDemon === slug ? "contained" : "outlined"}
                   onClick={() => setSelectedDemon(slug)}
                   aria-label={role.name}

@@ -9,6 +9,11 @@ interface TrackerProps {
   end: number;
 }
 
+const outlinedButtonSx = (paletteColor: "primary" | "error" = "primary") => ({
+  borderColor: `${paletteColor}.dark`,
+  color: `${paletteColor}.dark`,
+});
+
 const Tracker = ({ end }: TrackerProps) => {
   const {
     botcPlayers,
@@ -38,6 +43,13 @@ const Tracker = ({ end }: TrackerProps) => {
                   fullWidth
                   variant={tracker[round][i] > 0 ? "contained" : "outlined"}
                   color={tracker[round][i] !== 2 ? "primary" : "error"}
+                  sx={
+                    tracker[round][i] > 0
+                      ? undefined
+                      : outlinedButtonSx(
+                          tracker[round][i] !== 2 ? "primary" : "error",
+                        )
+                  }
                   onClick={onTrackClick(i)}
                 >
                   {name}
@@ -58,6 +70,7 @@ const Tracker = ({ end }: TrackerProps) => {
             <Button
               key={i}
               onClick={onRoundClick(i)}
+              sx={i === round ? undefined : outlinedButtonSx()}
               variant={i === round ? "contained" : "outlined"}
             >
               {i + 1}

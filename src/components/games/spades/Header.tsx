@@ -8,6 +8,13 @@ interface HeaderProps {
   wins2: number;
 }
 
+const chipSx = {
+  "& .MuiChip-avatar": {
+    bgcolor: "grey.900",
+    color: "common.white",
+  },
+};
+
 const Header = ({ initials, wins1, wins2 }: HeaderProps) => (
   <div className="flex-container">
     <Typography variant="h2" component="h1">
@@ -17,11 +24,13 @@ const Header = ({ initials, wins1, wins2 }: HeaderProps) => (
       avatar={<Avatar>{initials[0] + initials[2]}</Avatar>}
       color={getChipColor(wins1, wins2)}
       label={wins1}
+      sx={chipSx}
     />
     <Chip
       avatar={<Avatar>{initials[1] + initials[3]}</Avatar>}
       color={getChipColor(wins2, wins1)}
       label={wins2}
+      sx={chipSx}
     />
     <PlayerMenu />
   </div>
