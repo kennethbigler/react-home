@@ -54,9 +54,13 @@ const Track = memo(
       gridStyles.textAlign = "center";
     }
     if (skipped || next) {
-      const highlightColor = skipped
-        ? muiTheme.palette.error.main
-        : muiTheme.palette.info.main;
+      const paletteColor = skipped
+        ? muiTheme.palette.error
+        : muiTheme.palette.info;
+      const highlightColor =
+        muiTheme.palette.mode === "light"
+          ? paletteColor.dark
+          : paletteColor.light;
       gridStyles.border = `2px solid ${highlightColor}`;
       gridStyles.padding = "2px";
       headingStyles.color = highlightColor;

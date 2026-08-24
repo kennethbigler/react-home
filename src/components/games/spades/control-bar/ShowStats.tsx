@@ -7,6 +7,13 @@ import spadesAtom from "../../../../jotai/spades-atom";
 import StatsNilChart from "./StatsNilsChart";
 import { Avatar, Chip, Typography } from "@mui/material";
 
+const chipSx = {
+  "& .MuiChip-avatar": {
+    bgcolor: "grey.900",
+    color: "common.white",
+  },
+};
+
 interface ShowStatsProps {
   initials: string;
 }
@@ -25,11 +32,13 @@ const ShowStats = ({ initials }: ShowStatsProps) => {
           avatar={<Avatar>{initials[0] + initials[2]}</Avatar>}
           color={getChipColor(total1, total2)}
           label={total1}
+          sx={chipSx}
         />
         <Chip
           avatar={<Avatar>{initials[1] + initials[3]}</Avatar>}
           color={getChipColor(total2, total1)}
           label={total2}
+          sx={chipSx}
         />
       </div>
       <StatsBagsChart

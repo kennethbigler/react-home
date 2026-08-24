@@ -78,10 +78,34 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main' && contains(fromJSON('["push","workflow_dispatch"]'), github.event_name)
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      # Hydration-aware axe scan: waits for route content before analyzing. Use
+      # this as the CI gate until github/accessibility-scanner supports
+      # waitForSelectors (PR #223).
+      - name: Run hydration-aware accessibility scan
+        run: npm run a11y:live-scan
+
       # TODO: After github/accessibility-scanner#223 lands, switch `urls` to
-      # `url_configs` and set waitForSelectors (e.g. h1) so axe waits for the
-      # SPA to hydrate instead of scanning the loading shell.
+      # `url_configs` and set waitForSelectors (e.g. "#main-content h1") so axe
+      # waits for the SPA to hydrate instead of scanning the loading shell.
+      # Until then, keep this step for issue filing, the alt-text plugin, and
+      # Copilot assignment; rely on a11y:live-scan above for accurate CI gating.
       # https://github.com/github/accessibility-scanner/pull/223
       - name: accessibility-scanner
         uses: github/accessibility-scanner@v3.4.1

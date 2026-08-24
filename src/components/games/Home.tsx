@@ -21,7 +21,7 @@ const Home = memo(({ onItemClick }: HomeProps) => (
       This site was created to learn, check out the{" "}
       <Link
         href="https://github.com/kennethbigler/react-home"
-        color="secondary"
+        sx={{ color: "text.primary" }}
       >
         <code>&lt;source&nbsp;code/&gt;</code>
       </Link>

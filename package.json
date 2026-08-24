@@ -31,7 +31,9 @@
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --report-unused-disable-directives",
     "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet",
     "verify": "npm run tsc && npm run knip && npm run lint && npm run test:coverage",
-    "fetch-botc-scripts": "node scripts/fetch-botc-scripts.mjs"
+    "fetch-botc-scripts": "node scripts/fetch-botc-scripts.mjs",
+    "a11y:live-scan": "node scripts/a11y-live-scan.mjs",
+    "a11y:local-scan": "node scripts/a11y-live-scan.mjs --base-url http://localhost:5173"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -47,6 +49,7 @@
     "react-router-dom": "7.18.2"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.10.2",
     "@eslint/compat": "2.1.0",
     "@eslint/eslintrc": "3.3.6",
     "@eslint/js": "10.0.1",
@@ -72,6 +75,7 @@
     "jest-axe": "11.0.0",
     "jsdom": "30.0.1",
     "knip": "6.32.2",
+    "playwright": "1.55.0",
     "typescript": "6.0.3",
     "vite": "8.2.1",
     "vitest": "4.1.11"
