@@ -63,7 +63,6 @@ updates:
         patterns:
           - knip
           - "@lhci/cli"
-          - playwright
         update-types:
           - minor
           - patch

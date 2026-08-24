@@ -42,15 +42,8 @@ const TimelineCard = ({ data }: TimelineCardProps) => {
             yearMarkers
           />
         ) : null}
-        {rows.map((segments, i) => (
-          <Row
-            key={segments
-              .map((segment) => segment.body)
-              .filter(Boolean)
-              .join("-")}
-            segments={segments}
-            first={i === 0}
-          />
+        {rows.map(({ key, segments }, i) => (
+          <Row key={key} segments={segments} first={i === 0} />
         ))}
       </Box>
     </ExpandableCard>
