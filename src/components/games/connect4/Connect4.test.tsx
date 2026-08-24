@@ -5,9 +5,7 @@ describe("games | connect4 | Connect4", () => {
   it("renders as expected", () => {
     render(<Connect4 />);
 
-    expect(
-      screen.getByText("Welcome to Ken's Connect4 Game"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Connect4")).toBeInTheDocument();
     expect(screen.getByText("Turn:")).toBeInTheDocument();
     // get buttons only once to save time
     const buttons = screen.getAllByRole("button");

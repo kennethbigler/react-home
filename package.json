@@ -72,6 +72,7 @@
     "jest-axe": "11.0.0",
     "jsdom": "30.0.1",
     "knip": "6.32.2",
+    "playwright": "1.62.1",
     "typescript": "6.0.3",
     "vite": "8.2.1",
     "vitest": "4.1.11"
