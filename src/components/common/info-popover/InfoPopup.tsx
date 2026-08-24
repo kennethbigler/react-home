@@ -1,5 +1,6 @@
 import { useId, useState, type ReactElement, type ReactNode } from "react";
 import type { MuiColors } from "../types";
+import { outlinedContrastSx } from "../../../apis/outlinedButtonSx";
 import {
   Dialog,
   DialogTitle,
@@ -51,14 +52,7 @@ const InfoPopup = ({
 
   const buttonLabel = typeof title === "string" ? title : undefined;
   const outlinedSx =
-    buttonVariant === "outlined"
-      ? {
-          "&.MuiButton-outlined": {
-            borderColor: `${buttonColor}.dark`,
-            color: `${buttonColor}.dark`,
-          },
-        }
-      : undefined;
+    buttonVariant === "outlined" ? outlinedContrastSx(buttonColor) : undefined;
 
   return (
     <>

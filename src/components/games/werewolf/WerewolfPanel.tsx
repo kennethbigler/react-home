@@ -44,17 +44,24 @@ const WerewolfPanel = memo(
   }: WerewolfPanelProps) => (
     <Grid size={12}>
       <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
-        <Rating
-          max={count || 1}
-          sx={{
-            flexWrap: "wrap",
-            minWidth: Math.min(24 * (count || 1), 24 * 7),
-            pt: 1,
-          }}
-          onChange={(_e, numStars) =>
-            handleStar(numStars ? value : -value, numStars || 0, name)
-          }
-        />
+        <Box
+          role="group"
+          aria-label={`${name} rating`}
+          sx={{ display: "flex", alignItems: "flex-start" }}
+        >
+          <Rating
+            name={`${name}-rating`}
+            max={count || 1}
+            sx={{
+              flexWrap: "wrap",
+              minWidth: Math.min(24 * (count || 1), 24 * 7),
+              pt: 1,
+            }}
+            onChange={(_e, numStars) =>
+              handleStar(numStars ? value : -value, numStars || 0, name)
+            }
+          />
+        </Box>
         <Accordion
           expanded={expanded === expandedKey}
           onChange={handleChange(expandedKey)}

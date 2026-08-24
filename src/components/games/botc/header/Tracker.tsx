@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { useTracker } from "../useBotC";
 import { getGridSize } from "../botcHelpers";
+import { outlinedContrastSx } from "../../../../apis/outlinedButtonSx";
 import { TextField, Grid, Button, ButtonGroup } from "@mui/material";
 
 const ROUND_INDICES = Array.from({ length: 8 }, (_, i) => i);
@@ -8,11 +9,6 @@ const ROUND_INDICES = Array.from({ length: 8 }, (_, i) => i);
 interface TrackerProps {
   end: number;
 }
-
-const outlinedButtonSx = (paletteColor: "primary" | "error" = "primary") => ({
-  borderColor: `${paletteColor}.dark`,
-  color: `${paletteColor}.dark`,
-});
 
 const Tracker = ({ end }: TrackerProps) => {
   const {
@@ -46,7 +42,7 @@ const Tracker = ({ end }: TrackerProps) => {
                   sx={
                     tracker[round][i] > 0
                       ? undefined
-                      : outlinedButtonSx(
+                      : outlinedContrastSx(
                           tracker[round][i] !== 2 ? "primary" : "error",
                         )
                   }
@@ -70,7 +66,7 @@ const Tracker = ({ end }: TrackerProps) => {
             <Button
               key={i}
               onClick={onRoundClick(i)}
-              sx={i === round ? undefined : outlinedButtonSx()}
+              sx={i === round ? undefined : outlinedContrastSx()}
               variant={i === round ? "contained" : "outlined"}
             >
               {i + 1}

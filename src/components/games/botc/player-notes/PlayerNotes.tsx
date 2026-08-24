@@ -3,6 +3,7 @@ import SwapHoriz from "@mui/icons-material/SwapHoriz";
 import CharacterSheet from "./character-sheet/CharacterSheet";
 import { usePlayerNotes } from "../useBotC";
 import { getGridSize } from "../botcHelpers";
+import { warningOutlinedContrastSx } from "../../../../apis/outlinedButtonSx";
 import PlayerAdjControls from "./PlayerAdjControls";
 import type { ActiveScript } from "../../../../jotai/botc-atom";
 import {
@@ -124,12 +125,7 @@ const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
         <Button
           fullWidth
           color="warning"
-          sx={{
-            "&.MuiButton-outlined": {
-              borderColor: "#BF360C",
-              color: "#BF360C",
-            },
-          }}
+          sx={warningOutlinedContrastSx}
           variant="outlined"
           onClick={getRandomPlayer}
         >

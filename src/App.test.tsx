@@ -28,10 +28,11 @@ it("renders without crashing", async () => {
   await waitFor(() => expect(screen.getAllByText("BotC")).toHaveLength(2));
 
   // navigate to BotC game page and verify
-  expect(screen.queryByLabelText("Share")).toBeNull();
+  expect(screen.queryByRole("button", { name: "Share" })).toBeNull();
   fireEvent.click(screen.getAllByText("BotC")[1]);
   await waitFor(
-    () => expect(screen.getByLabelText("Share")).toBeInTheDocument(),
+    () =>
+      expect(screen.getByRole("button", { name: "Share" })).toBeInTheDocument(),
     { timeout: 5000 },
   );
 });

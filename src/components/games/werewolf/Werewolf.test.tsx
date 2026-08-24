@@ -1,7 +1,26 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import { vi } from "vitest";
 import Werewolf from ".";
 import WerewolfPanel from "./WerewolfPanel";
+
+function clickRatingStar(name: string, index: number) {
+  const rating = screen.getByRole("group", { name: `${name} rating` });
+  fireEvent.click(within(rating).getAllByRole("radio")[index]);
+}
+
+function clearRating(name: string) {
+  const rating = screen.getByRole("group", { name: `${name} rating` });
+  const radios = within(rating).getAllByRole("radio");
+  fireEvent.click(radios[radios.length - 1]);
+}
+
+function exerciseRatingKeyboard(name: string, index: number) {
+  const rating = screen.getByRole("group", { name: `${name} rating` });
+  const radio = within(rating).getAllByRole("radio")[index];
+  radio.focus();
+  expect(radio).toHaveFocus();
+  fireEvent.keyDown(radio, { key: "ArrowRight", code: "ArrowRight" });
+}
 
 describe("games | werewolf", () => {
   it("renders as expected", () => {
@@ -122,16 +141,12 @@ describe("games | werewolf", () => {
     render(<Werewolf />);
     fireEvent.click(screen.getAllByRole("button")[1]);
 
-    const masonText = screen.getByText("Mason");
-    const masonRow = masonText.closest(".MuiGrid-grid-xs-12")!;
-    const labels = masonRow.querySelectorAll("label");
-
-    // Click star label (count > 0 branch)
-    fireEvent.click(labels[0]);
+    clickRatingStar("Mason", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
+    clickRatingStar("Mason", 1);
+    exerciseRatingKeyboard("Mason", 1);
 
-    // Click deselect label (count = 0 branch)
-    fireEvent.click(labels[labels.length - 1]);
+    clearRating("Mason");
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
   });
 
@@ -139,14 +154,12 @@ describe("games | werewolf", () => {
     render(<Werewolf />);
     fireEvent.click(screen.getAllByRole("button")[1]);
 
-    const villagerText = screen.getByText("Villager");
-    const villagerRow = villagerText.closest(".MuiGrid-grid-xs-12")!;
-    const labels = villagerRow.querySelectorAll("label");
-
-    fireEvent.click(labels[0]);
+    clickRatingStar("Villager", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
+    clickRatingStar("Villager", 1);
+    exerciseRatingKeyboard("Villager", 1);
 
-    fireEvent.click(labels[labels.length - 1]);
+    clearRating("Villager");
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
   });
 
@@ -154,14 +167,12 @@ describe("games | werewolf", () => {
     render(<Werewolf />);
     fireEvent.click(screen.getAllByRole("button")[2]);
 
-    const vampireText = screen.getByText("Vampire");
-    const vampireRow = vampireText.closest(".MuiGrid-grid-xs-12")!;
-    const labels = vampireRow.querySelectorAll("label");
-
-    fireEvent.click(labels[0]);
+    clickRatingStar("Vampire", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
+    clickRatingStar("Vampire", 1);
+    exerciseRatingKeyboard("Vampire", 1);
 
-    fireEvent.click(labels[labels.length - 1]);
+    clearRating("Vampire");
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
   });
 
@@ -169,18 +180,12 @@ describe("games | werewolf", () => {
     render(<Werewolf />);
     fireEvent.click(screen.getAllByRole("button")[3]);
 
-    // "Werewolf" appears as both page h2 and role name; find the one in an accordion summary
-    const werewolfTexts = screen.getAllByText("Werewolf");
-    const werewolfText = werewolfTexts.find(
-      (el) => el.closest(".MuiAccordionSummary-root") !== null,
-    )!;
-    const werewolfRow = werewolfText.closest(".MuiGrid-grid-xs-12")!;
-    const labels = werewolfRow.querySelectorAll("label");
-
-    fireEvent.click(labels[0]);
+    clickRatingStar("Werewolf", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
+    clickRatingStar("Werewolf", 1);
+    exerciseRatingKeyboard("Werewolf", 1);
 
-    fireEvent.click(labels[labels.length - 1]);
+    clearRating("Werewolf");
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
   });
 
@@ -188,14 +193,9 @@ describe("games | werewolf", () => {
     render(<Werewolf />);
     fireEvent.click(screen.getAllByRole("button")[1]);
 
-    const seerText = screen.getByText("Seer");
-    expect(seerText).toBeInTheDocument();
-
-    const seerRow = seerText.closest(".MuiGrid-grid-xs-12")!;
-    const labels = seerRow.querySelectorAll("label");
-
-    fireEvent.click(labels[0]);
+    clickRatingStar("Seer", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
+    exerciseRatingKeyboard("Seer", 0);
   });
 });
 
@@ -204,7 +204,7 @@ describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
 
   it("Mason: count > 0 branch (star click) and count = 0 branch (deselect)", () => {
     const handleStar = vi.fn();
-    const { container } = render(
+    render(
       <WerewolfPanel
         expanded=""
         expandedKey="mason-0"
@@ -216,18 +216,18 @@ describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
         count={3}
       />,
     );
-    const labels = container.querySelectorAll("label");
-    // Click star 1 (count = 1, true branch)
-    fireEvent.click(labels[0]);
+    clickRatingStar("Mason", 0);
     expect(handleStar).toHaveBeenCalledWith(2, 1, "Mason");
-    // Click deselect label (count = 0, false branch)
-    fireEvent.click(labels[labels.length - 1]);
+    clickRatingStar("Mason", 1);
+    expect(handleStar).toHaveBeenCalledWith(2, 2, "Mason");
+    exerciseRatingKeyboard("Mason", 1);
+    clearRating("Mason");
     expect(handleStar).toHaveBeenCalledWith(-2, 0, "Mason");
   });
 
   it("Villager: count > 0 branch and count = 0 branch", () => {
     const handleStar = vi.fn();
-    const { container } = render(
+    render(
       <WerewolfPanel
         expanded=""
         expandedKey="villager-0"
@@ -239,16 +239,18 @@ describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
         count={5}
       />,
     );
-    const labels = container.querySelectorAll("label");
-    fireEvent.click(labels[0]);
+    clickRatingStar("Villager", 0);
     expect(handleStar).toHaveBeenCalledWith(1, 1, "Villager");
-    fireEvent.click(labels[labels.length - 1]);
+    clickRatingStar("Villager", 1);
+    expect(handleStar).toHaveBeenCalledWith(1, 2, "Villager");
+    exerciseRatingKeyboard("Villager", 1);
+    clearRating("Villager");
     expect(handleStar).toHaveBeenCalledWith(-1, 0, "Villager");
   });
 
   it("Vampire: count > 0 branch and count = 0 branch", () => {
     const handleStar = vi.fn();
-    const { container } = render(
+    render(
       <WerewolfPanel
         expanded=""
         expandedKey="vampire-0"
@@ -260,16 +262,18 @@ describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
         count={8}
       />,
     );
-    const labels = container.querySelectorAll("label");
-    fireEvent.click(labels[0]);
+    clickRatingStar("Vampire", 0);
     expect(handleStar).toHaveBeenCalledWith(-7, 1, "Vampire");
-    fireEvent.click(labels[labels.length - 1]);
+    clickRatingStar("Vampire", 1);
+    expect(handleStar).toHaveBeenCalledWith(-7, 2, "Vampire");
+    exerciseRatingKeyboard("Vampire", 1);
+    clearRating("Vampire");
     expect(handleStar).toHaveBeenCalledWith(7, 0, "Vampire");
   });
 
   it("Werewolf: count > 0 branch and count = 0 branch", () => {
     const handleStar = vi.fn();
-    const { container } = render(
+    render(
       <WerewolfPanel
         expanded=""
         expandedKey="werewolf-0"
@@ -281,16 +285,18 @@ describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
         count={12}
       />,
     );
-    const labels = container.querySelectorAll("label");
-    fireEvent.click(labels[0]);
+    clickRatingStar("Werewolf", 0);
     expect(handleStar).toHaveBeenCalledWith(-6, 1, "Werewolf");
-    fireEvent.click(labels[labels.length - 1]);
+    clickRatingStar("Werewolf", 1);
+    expect(handleStar).toHaveBeenCalledWith(-6, 2, "Werewolf");
+    exerciseRatingKeyboard("Werewolf", 1);
+    clearRating("Werewolf");
     expect(handleStar).toHaveBeenCalledWith(6, 0, "Werewolf");
   });
 
   it("default role (no count): triggers default branch", () => {
     const handleStar = vi.fn();
-    const { container } = render(
+    render(
       <WerewolfPanel
         expanded=""
         expandedKey="seer-0"
@@ -301,8 +307,8 @@ describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
         value={7}
       />,
     );
-    const labels = container.querySelectorAll("label");
-    fireEvent.click(labels[0]);
+    clickRatingStar("Seer", 0);
     expect(handleStar).toHaveBeenCalledWith(7, 1, "Seer");
+    exerciseRatingKeyboard("Seer", 0);
   });
 });
