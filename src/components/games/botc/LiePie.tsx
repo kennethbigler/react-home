@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useAtomValue } from "jotai";
 import { useTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
+import { outlinedContrastSx } from "../../../apis/outlinedButtonSx";
 import { Button, ButtonGroup } from "@mui/material";
 import { Chart, Credits, Series, Title, Tooltip } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
@@ -130,10 +131,7 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
                   sx={
                     activeDemon === slug
                       ? undefined
-                      : {
-                          borderColor: "error.dark",
-                          color: "error.dark",
-                        }
+                      : outlinedContrastSx("error")
                   }
                   variant={activeDemon === slug ? "contained" : "outlined"}
                   onClick={() => setSelectedDemon(slug)}

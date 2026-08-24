@@ -23,7 +23,7 @@ describe("games | BotC", () => {
 
     expect(screen.getByText("BotC")).toBeInTheDocument();
     // Press Players button  to open modal
-    fireEvent.click(screen.getByLabelText("Settings"));
+    fireEvent.click(screen.getByRole("button", { name: "Settings" }));
     // swap to icon mode then back to text mode
     fireEvent.click(screen.getByLabelText("toggle text"));
     fireEvent.click(screen.getByLabelText("toggle text"));
@@ -134,7 +134,7 @@ describe("games | BotC", () => {
   it("can track players over rounds", () => {
     render(<BotC />);
     // open tracker
-    fireEvent.click(screen.getByLabelText("Track Players"));
+    fireEvent.click(screen.getByRole("button", { name: "Track Players" }));
     expect(screen.getByText("Close")).toBeInTheDocument();
     // click a first time
     const kenButton = screen.getAllByText("Ken")[0];

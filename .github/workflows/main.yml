@@ -56,13 +56,6 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Run tests with coverage
-        run: npm run test:coverage
-
-      - name: Codecov
-        uses: codecov/codecov-action@v7.0.0
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       - name: Run knip
         run: npm run knip -- --reporter github-actions --cache
 
@@ -72,10 +65,50 @@ jobs:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.event.pull_request.head.sha || github.sha }}
 
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        node-version: [24.x]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 20
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v7.0.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Cache dependencies
+        uses: actions/cache@v6.1.0
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        run: |
+          npm config set engine-strict true
+          npm install
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Codecov
+        uses: codecov/codecov-action@v7.0.0
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
   # Live-site scan after a merge to main (and manual runs on main).
   # Pull requests skip this: the scanner hits GitHub Pages, not the PR build.
   accessibility:
-    needs: build
+    needs: [build, test]
     if: github.ref == 'refs/heads/main' && contains(fromJSON('["push","workflow_dispatch"]'), github.event_name)
     runs-on: ubuntu-latest
     permissions: {}
@@ -95,11 +128,23 @@ jobs:
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
 
-      # Hydration-aware axe scan: waits for route content before analyzing. Use
-      # this as the CI gate until github/accessibility-scanner supports
-      # waitForSelectors (PR #223).
+      - name: Build site
+        run: npm run build
+
+      # Scan the built revision from this workflow run (vite preview), not the
+      # live GitHub Pages site, which may still serve a previous deploy.
       - name: Run hydration-aware accessibility scan
-        run: npm run a11y:live-scan
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4173 &
+          PREVIEW_PID=$!
+          for i in $(seq 1 60); do
+            if curl -sf http://127.0.0.1:4173/ >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          node scripts/a11y-live-scan.mjs --base-url http://127.0.0.1:4173
+          kill "$PREVIEW_PID"
 
       # TODO: After github/accessibility-scanner#223 lands, switch `urls` to
       # `url_configs` and set waitForSelectors (e.g. "#main-content h1") so axe

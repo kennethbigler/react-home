@@ -1,6 +1,9 @@
 import type { CSSProperties } from "react";
 import type { BotCRole } from "../../../../../jotai/botc-atom";
+import type { MuiColors } from "../../../../common/types";
+import { outlinedContrastSx } from "../../../../../apis/outlinedButtonSx";
 import { Grid, Typography, Button } from "@mui/material";
+import type { SxProps, Theme } from "@mui/material/styles";
 import { splitScriptColumns } from "../../botcHelpers";
 
 export type RoleKey = Record<string, boolean>;
@@ -30,6 +33,15 @@ const COMPACT_BUTTON_STYLES: CSSProperties = {
 
 const EMPTY_COLUMNS: [BotCRole[], BotCRole[]] = [[], []];
 
+const getRoleButtonSx = (
+  buttonStyles: CSSProperties,
+  selected: boolean,
+  alignment: MuiColors,
+): SxProps<Theme> =>
+  selected
+    ? buttonStyles
+    : ([buttonStyles, outlinedContrastSx(alignment)] as SxProps<Theme>);
+
 /** CharacterSheet -> EmojiNotes
  *                 -> Roles -> RoleSelection */
 const RoleSection = ({
@@ -52,13 +64,7 @@ const RoleSection = ({
         <Button
           variant={selected ? "contained" : "outlined"}
           color={role.alignment}
-          sx={{
-            ...buttonStyles,
-            ...(!selected && {
-              borderColor: `${role.alignment}.dark`,
-              color: `${role.alignment}.dark`,
-            }),
-          }}
+          sx={getRoleButtonSx(buttonStyles, selected, role.alignment)}
           aria-label={role.name}
           // onRoleClick is curried: calling it during render returns the click handler
           onClick={onRoleClick && onRoleClick(role, selected)}
@@ -90,13 +96,7 @@ const RoleSection = ({
               <Button
                 variant={selected ? "contained" : "outlined"}
                 color={role.alignment}
-                sx={{
-                  ...buttonStyles,
-                  ...(!selected && {
-                    borderColor: `${role.alignment}.dark`,
-                    color: `${role.alignment}.dark`,
-                  }),
-                }}
+                sx={getRoleButtonSx(buttonStyles, selected, role.alignment)}
                 aria-label={role.name}
                 onClick={onRoleClick && onRoleClick(role, selected)}
                 title={role.name}

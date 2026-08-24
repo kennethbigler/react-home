@@ -9,6 +9,7 @@ import ScriptSearch from "./ScriptSearch";
 import ScriptControls from "./ScriptControls";
 import { playerDist } from "../../../../../constants/botc";
 import { useEditPlayers } from "../../useBotC";
+import { outlinedContrastSx } from "../../../../../apis/outlinedButtonSx";
 import { Button, ButtonGroup, Grid, Typography } from "@mui/material";
 
 interface EditPlayersProps {
@@ -17,10 +18,7 @@ interface EditPlayersProps {
   openToast: () => void;
 }
 
-const outlinedButtonSx = {
-  borderColor: "primary.dark",
-  color: "primary.dark",
-};
+const outlinedButtonSx = outlinedContrastSx();
 
 /** EditPlayers -> ScriptSearch
  *              -> ScriptControls
