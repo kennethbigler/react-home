@@ -424,8 +424,19 @@ const valtteriBottas = filterDriver("Valtteri Bottas")[0].thisYear || [];
 const sergioPerez = filterDriver("Sergio Perez")[0].thisYear || [];
 
 const numRaces = landoNorris.length - 1;
-const getTotal = (d1: number[], d2: number[]) =>
-  (d1[numRaces] || 0) + (d2[numRaces] || 0);
+
+const getTotal = (driverSeries: number[][]) =>
+  driverSeries.reduce((sum, series) => sum + (series[numRaces] || 0), 0);
+
+const sumDriverSeries = (driverSeries: number[][]) => {
+  const length = driverSeries.reduce(
+    (max, series) => Math.max(max, series.length),
+    0,
+  );
+  return Array.from({ length }, (_, i) =>
+    driverSeries.reduce((sum, series) => sum + (series[i] || 0), 0),
+  );
+};
 
 const constructors: Constructor[] = [
   {
@@ -440,10 +451,10 @@ const constructors: Constructor[] = [
       302,
       666,
       833,
-      getTotal(landoNorris, oscarPiastri),
+      getTotal([landoNorris, oscarPiastri]),
     ],
     standings: [6, 4, 3, 4, 5, 4, 1, 1, 3],
-    thisYear: landoNorris?.map((points, i) => points + (oscarPiastri[i] || 0)),
+    thisYear: sumDriverSeries([landoNorris, oscarPiastri]),
   },
   {
     name: "Mercedes",
@@ -457,12 +468,10 @@ const constructors: Constructor[] = [
       409,
       468,
       469,
-      getTotal(kimiAntonelli, georgeRussell),
+      getTotal([kimiAntonelli, georgeRussell]),
     ],
     standings: [1, 1, 1, 1, 3, 2, 4, 2, 1],
-    thisYear: kimiAntonelli.map(
-      (points, i) => points + (georgeRussell[i] || 0),
-    ),
+    thisYear: sumDriverSeries([kimiAntonelli, georgeRussell]),
   },
   {
     name: "Red Bull Racing",
@@ -476,10 +485,10 @@ const constructors: Constructor[] = [
       860,
       589,
       451,
-      getTotal(maxVerstappen, isackHadjar),
+      getTotal([maxVerstappen, isackHadjar]),
     ],
     standings: [3, 3, 2, 2, 1, 1, 3, 3, 4],
-    thisYear: maxVerstappen.map((points, i) => points + (isackHadjar[i] || 0)),
+    thisYear: sumDriverSeries([maxVerstappen, isackHadjar]),
   },
   {
     name: "Ferrari",
@@ -493,12 +502,10 @@ const constructors: Constructor[] = [
       406,
       652,
       398,
-      getTotal(charlesLeclerc, lewisHamilton),
+      getTotal([charlesLeclerc, lewisHamilton]),
     ],
     standings: [2, 2, 6, 3, 2, 3, 2, 4, 2],
-    thisYear: charlesLeclerc.map(
-      (points, i) => points + (lewisHamilton[i] || 0),
-    ),
+    thisYear: sumDriverSeries([charlesLeclerc, lewisHamilton]),
   },
   {
     name: "Williams",
@@ -512,17 +519,22 @@ const constructors: Constructor[] = [
       28,
       17,
       137,
-      getTotal(carlosSainz, alexanderAlbon),
+      getTotal([carlosSainz, alexanderAlbon]),
     ],
     standings: [10, 10, 10, 8, 10, 7, 9, 5, 9],
-    thisYear: carlosSainz.map((points, i) => points + (alexanderAlbon[i] || 0)),
+    thisYear: sumDriverSeries([carlosSainz, alexanderAlbon]),
   },
   {
     name: "Racing Bulls",
     color: RB_HEX,
-    points: [...alphaTauriPoints, 46, 92, getTotal(liamLawson, arvidLindblad)],
+    points: [
+      ...alphaTauriPoints,
+      46,
+      92,
+      getTotal([liamLawson, arvidLindblad]),
+    ],
     standings: [...alphaTauriStandings, 8, 6, 5],
-    thisYear: liamLawson.map((points, i) => points + (arvidLindblad[i] || 0)),
+    thisYear: sumDriverSeries([liamLawson, arvidLindblad]),
   },
   {
     name: "Aston Martin",
@@ -534,10 +546,10 @@ const constructors: Constructor[] = [
       280,
       94,
       89,
-      getTotal(fernandoAlonso, lanceStroll),
+      getTotal([fernandoAlonso, lanceStroll]),
     ],
     standings: [...racingPointStandings, 7, 7, 5, 5, 7, 10],
-    thisYear: fernandoAlonso.map((points, i) => points + (lanceStroll[i] || 0)),
+    thisYear: sumDriverSeries([fernandoAlonso, lanceStroll]),
   },
   {
     name: "Haas",
@@ -551,19 +563,17 @@ const constructors: Constructor[] = [
       12,
       58,
       79,
-      getTotal(oliverBearman, estebanOcon),
+      getTotal([oliverBearman, estebanOcon]),
     ],
     standings: [5, 9, 9, 10, 8, 10, 7, 8, 7],
-    thisYear: oliverBearman.map((points, i) => points + (estebanOcon[i] || 0)),
+    thisYear: sumDriverSeries([oliverBearman, estebanOcon]),
   },
   {
     name: "Audi",
     color: AUDI_HEX,
-    points: [...kickSauberPoints, getTotal(gabrielBortoleto, nicoHulkenberg)],
+    points: [...kickSauberPoints, getTotal([gabrielBortoleto, nicoHulkenberg])],
     standings: [...kickSauberStandings, 8],
-    thisYear: gabrielBortoleto.map(
-      (points, i) => points + (nicoHulkenberg[i] || 0),
-    ),
+    thisYear: sumDriverSeries([gabrielBortoleto, nicoHulkenberg]),
   },
   {
     name: "Alpine",
@@ -575,12 +585,10 @@ const constructors: Constructor[] = [
       120,
       65,
       22,
-      getTotal(pierreGasly, francoColapinto),
+      getTotal([pierreGasly, francoColapinto]),
     ],
     standings: [...renaultStandings, 5, 4, 6, 6, 10, 6],
-    thisYear: pierreGasly.map(
-      (points, i) => points + (francoColapinto[i] || 0),
-    ),
+    thisYear: sumDriverSeries([pierreGasly, francoColapinto]),
   },
   {
     name: "Cadillac",
@@ -594,10 +602,10 @@ const constructors: Constructor[] = [
       null,
       null,
       null,
-      getTotal(valtteriBottas, sergioPerez),
+      getTotal([valtteriBottas, sergioPerez]),
     ],
     standings: [null, null, null, null, null, null, null, null, 11],
-    thisYear: valtteriBottas.map((points, i) => points + (sergioPerez[i] || 0)),
+    thisYear: sumDriverSeries([valtteriBottas, sergioPerez]),
   },
   // ----------     3nd Replacement     ---------- //
   {
