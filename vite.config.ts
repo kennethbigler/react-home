@@ -6,6 +6,10 @@ import { defineConfig } from "vitest/config";
 // eslint-disable-next-line import/no-unresolved
 import react from "@vitejs/plugin-react";
 
+/** Async chart chunks — keep off modulepreload for non-chart routes. */
+const CHART_CHUNK_PATTERN =
+  /charts-core|charts-maps|charts-sankey|coreHighcharts|sankeyHighcharts|mapsHighcharts/;
+
 /** Make main stylesheet non-render-blocking (Lighthouse: eliminate render-blocking resources). */
 function deferStylesheetPlugin(): Plugin {
   return {
@@ -32,37 +36,44 @@ export default defineConfig({
   build: {
     sourcemap: process.env.SOURCEMAPS !== "false",
     target: "es2020",
-    // Prevent Vite from preloading the 1.3MB charts chunk on every page load;
-    // it should only fetch when a chart route is actually visited.
+    // Prevent chart chunks from being preloaded on routes that do not use them.
     modulePreload: {
       resolveDependencies: (_filename, deps) =>
-        deps.filter((dep) => !dep.includes("charts")),
+        deps.filter((dep) => !CHART_CHUNK_PATTERN.test(dep)),
     },
-    // Charts chunk is large but loaded only when visiting F1/Cars/Travel/Comp/Spades/BotC
+    // charts-core is large but loaded only when visiting F1/Cars/Travel/Comp/Spades/BotC
     chunkSizeWarningLimit: 600000,
-    rollupOptions: {
+    // Rolldown codeSplitting.groups (test regex) avoids manualChunks coupling React
+    // into Highcharts chunks, which forced ~900 KiB of charts onto every page load.
+    rolldownOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes("node_modules")) {
-            // Highcharts core only; keep @highcharts/react in main bundle so it shares the same
-            // React instance (avoids "Cannot read properties of undefined (reading 'forwardRef')" in CI).
-            if (
-              id.includes("/highcharts/") &&
-              !id.includes("/@highcharts/react")
-            ) {
-              return "charts";
-            }
-            if (
-              id.includes("/react/") ||
-              id.includes("/react-dom/") ||
-              id.includes("/react-router")
-            ) {
-              return "react-vendor";
-            }
-            if (id.includes("/@mui/") || id.includes("/@emotion/")) {
-              return "mui-vendor";
-            }
-          }
+        codeSplitting: {
+          groups: [
+            {
+              name: "react-vendor",
+              test: /node_modules\/(react-dom|react-router|react)\//,
+            },
+            {
+              name: "mui-vendor",
+              test: /node_modules\/(@mui|@emotion)\//,
+            },
+            {
+              name: "charts-maps",
+              test: /node_modules\/highcharts\/.*highmaps/,
+              includeDependenciesRecursively: false,
+            },
+            {
+              name: "charts-sankey",
+              test:
+                /node_modules\/highcharts\/(highcharts-more|modules\/sankey)/,
+              includeDependenciesRecursively: false,
+            },
+            {
+              name: "charts-core",
+              test: /node_modules\/highcharts\//,
+              includeDependenciesRecursively: false,
+            },
+          ],
         },
       },
     },
