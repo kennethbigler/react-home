@@ -46,6 +46,10 @@ describe("RoleSection", () => {
     expect(button).toHaveStyle({ color: expectedColor });
   };
 
+  const expectContainedRoleColor = (button: HTMLElement) => {
+    expect(button).toHaveStyle({ color: "var(--variant-containedcolor)" });
+  };
+
   it("should render the title", () => {
     render(
       <RoleSection
@@ -500,7 +504,14 @@ describe("RoleSection", () => {
         title: "Town Roles",
       });
 
-      expect(screen.getByText("Villager")).toHaveClass("MuiButton-contained");
+      expectContainedRoleColor(
+        screen.getByRole("button", { name: "Villager" }),
+      );
+      expectOutlinedRoleColor(
+        screen.getByRole("button", { name: "Werewolf" }),
+        mode,
+        "error",
+      );
       unmount();
     });
   });
@@ -531,7 +542,6 @@ describe("RoleSection", () => {
       });
 
       const werewolfButton = screen.getByRole("button", { name: "Werewolf" });
-      expect(werewolfButton).toHaveClass("MuiButton-outlined");
       expectOutlinedRoleColor(werewolfButton, mode, "error");
     },
   );

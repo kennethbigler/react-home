@@ -1,27 +1,9 @@
 name: Setup Node project
-description: Checkout, setup Node.js, cache dependencies, and install packages
-
-inputs:
-  use-pr-ref:
-    description: Checkout the PR head SHA (with fetch-depth) when available
-    required: false
-    default: "false"
+description: Setup Node.js, cache dependencies, and install packages
 
 runs:
   using: composite
   steps:
-    - name: Checkout repository (PR ref)
-      if: inputs.use-pr-ref == 'true'
-      uses: actions/checkout@v7
-      with:
-        ref: ${{ github.event.pull_request.head.sha || github.sha }}
-        fetch-depth: 20
-        persist-credentials: false
-    - name: Checkout repository
-      if: inputs.use-pr-ref != 'true'
-      uses: actions/checkout@v7
-      with:
-        persist-credentials: false
     - name: Setup Node.js
       uses: actions/setup-node@v7.0.0
       with:

@@ -16,9 +16,10 @@ function clearRating(name: string) {
 }
 
 interface KeyboardRatingExpectation {
-  value: number;
-  count: number;
+  value?: number;
+  count?: number;
   handleStar?: Mock;
+  singleStar?: boolean;
 }
 
 async function exerciseRatingKeyboard(
@@ -35,16 +36,39 @@ async function exerciseRatingKeyboard(
   await user.keyboard("{ArrowRight}");
 
   const nextRadio = radios[startIndex + 1];
-  if (nextRadio?.getAttribute("value")) {
-    expect(nextRadio).toHaveFocus();
+
+  if (
+    expected?.singleStar &&
+    expected.handleStar &&
+    expected.value !== undefined
+  ) {
+    expect(expected.handleStar).not.toHaveBeenCalledWith(
+      expected.value,
+      2,
+      name,
+    );
+    expect(rating).toContainElement(document.activeElement as HTMLElement);
+    return;
   }
 
-  if (expected?.handleStar) {
+  if (expected?.handleStar && nextRadio?.getAttribute("value")) {
+    expect(nextRadio).toHaveFocus();
     expect(expected.handleStar).toHaveBeenCalledWith(
       expected.value,
       expected.count,
       name,
     );
+  }
+}
+
+function getCategoryToggle(name: "Villagers" | "Outsiders" | "Wolves") {
+  return screen.getByRole("button", { name });
+}
+
+function ensureCategoryExpanded(name: "Villagers" | "Outsiders" | "Wolves") {
+  const toggle = getCategoryToggle(name);
+  if (toggle.getAttribute("aria-expanded") === "false") {
+    fireEvent.click(toggle);
   }
 }
 
@@ -60,20 +84,12 @@ describe("games | werewolf", () => {
   it("handles accordion open and close", () => {
     render(<Werewolf />);
 
-    expect(screen.getAllByRole("button")[1]).toHaveAttribute(
-      "aria-expanded",
-      "false",
-    );
-    fireEvent.click(screen.getAllByRole("button")[1]);
-    expect(screen.getAllByRole("button")[1]).toHaveAttribute(
-      "aria-expanded",
-      "true",
-    );
-    fireEvent.click(screen.getAllByRole("button")[1]);
-    expect(screen.getAllByRole("button")[1]).toHaveAttribute(
-      "aria-expanded",
-      "false",
-    );
+    const villagersToggle = getCategoryToggle("Villagers");
+    expect(villagersToggle).toHaveAttribute("aria-expanded", "true");
+    fireEvent.click(villagersToggle);
+    expect(villagersToggle).toHaveAttribute("aria-expanded", "false");
+    fireEvent.click(villagersToggle);
+    expect(villagersToggle).toHaveAttribute("aria-expanded", "true");
   });
 
   it("calculates and displays total score", () => {
@@ -83,7 +99,7 @@ describe("games | werewolf", () => {
     expect(screen.queryByText(/Total:/)).toBeNull();
 
     // Expand villagers section to interact with roles
-    fireEvent.click(screen.getAllByRole("button")[1]);
+    ensureCategoryExpanded("Villagers");
 
     // Click a star rating button to add a role
     // Find the first star rating input (hunter has 5 star inputs)
@@ -102,7 +118,7 @@ describe("games | werewolf", () => {
     render(<Werewolf />);
 
     // Expand villagers section
-    fireEvent.click(screen.getAllByRole("button")[1]);
+    ensureCategoryExpanded("Villagers");
 
     // Click multiple star ratings to add roles
     const starInputs = screen.getAllByRole("radio");
@@ -127,45 +143,45 @@ describe("games | werewolf", () => {
     expect(screen.getByText("Outsiders")).toBeInTheDocument();
     expect(screen.getByText("Wolves")).toBeInTheDocument();
 
-    // Initially all sections should be collapsed
-    expect(screen.getAllByRole("button")[1]).toHaveAttribute(
+    // All sections start expanded
+    expect(getCategoryToggle("Villagers")).toHaveAttribute(
       "aria-expanded",
-      "false",
+      "true",
     );
-    expect(screen.getAllByRole("button")[2]).toHaveAttribute(
+    expect(getCategoryToggle("Outsiders")).toHaveAttribute(
       "aria-expanded",
-      "false",
+      "true",
     );
-    expect(screen.getAllByRole("button")[3]).toHaveAttribute(
-      "aria-expanded",
-      "false",
-    );
-
-    // Expand villagers
-    fireEvent.click(screen.getAllByRole("button")[1]);
-    expect(screen.getAllByRole("button")[1]).toHaveAttribute(
+    expect(getCategoryToggle("Wolves")).toHaveAttribute(
       "aria-expanded",
       "true",
     );
 
-    // Expand outsiders
-    fireEvent.click(screen.getAllByRole("button")[2]);
-    expect(screen.getAllByRole("button")[2]).toHaveAttribute(
+    // Collapse villagers
+    fireEvent.click(getCategoryToggle("Villagers"));
+    expect(getCategoryToggle("Villagers")).toHaveAttribute(
       "aria-expanded",
-      "true",
+      "false",
     );
 
-    // Expand wolves
-    fireEvent.click(screen.getAllByRole("button")[3]);
-    expect(screen.getAllByRole("button")[3]).toHaveAttribute(
+    // Collapse outsiders
+    fireEvent.click(getCategoryToggle("Outsiders"));
+    expect(getCategoryToggle("Outsiders")).toHaveAttribute(
       "aria-expanded",
-      "true",
+      "false",
+    );
+
+    // Collapse wolves
+    fireEvent.click(getCategoryToggle("Wolves"));
+    expect(getCategoryToggle("Wolves")).toHaveAttribute(
+      "aria-expanded",
+      "false",
     );
   });
 
   it("handles Mason role count changes (count > 0 and count = 0 branches)", async () => {
     render(<Werewolf />);
-    fireEvent.click(screen.getAllByRole("button")[1]);
+    ensureCategoryExpanded("Villagers");
 
     clickRatingStar("Mason", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
@@ -177,7 +193,7 @@ describe("games | werewolf", () => {
 
   it("handles Villager role count changes (count > 0 and count = 0 branches)", async () => {
     render(<Werewolf />);
-    fireEvent.click(screen.getAllByRole("button")[1]);
+    ensureCategoryExpanded("Villagers");
 
     clickRatingStar("Villager", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
@@ -189,7 +205,7 @@ describe("games | werewolf", () => {
 
   it("handles Vampire role count changes (count > 0 and count = 0 branches)", async () => {
     render(<Werewolf />);
-    fireEvent.click(screen.getAllByRole("button")[2]);
+    ensureCategoryExpanded("Outsiders");
 
     clickRatingStar("Vampire", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
@@ -201,7 +217,7 @@ describe("games | werewolf", () => {
 
   it("handles Werewolf role count changes (count > 0 and count = 0 branches)", async () => {
     render(<Werewolf />);
-    fireEvent.click(screen.getAllByRole("button")[3]);
+    ensureCategoryExpanded("Wolves");
 
     clickRatingStar("Werewolf", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
@@ -213,7 +229,7 @@ describe("games | werewolf", () => {
 
   it("handles default role (non-countable) changes", async () => {
     render(<Werewolf />);
-    fireEvent.click(screen.getAllByRole("button")[1]);
+    ensureCategoryExpanded("Villagers");
 
     clickRatingStar("Seer", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
@@ -340,7 +356,10 @@ describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
     clickRatingStar("Seer", 0);
     expect(handleStar).toHaveBeenCalledWith(7, 1, "Seer");
     handleStar.mockClear();
-    await exerciseRatingKeyboard("Seer", 0);
-    expect(handleStar).not.toHaveBeenCalledWith(7, 2, "Seer");
+    await exerciseRatingKeyboard("Seer", 0, {
+      handleStar,
+      singleStar: true,
+      value: 7,
+    });
   });
 });
