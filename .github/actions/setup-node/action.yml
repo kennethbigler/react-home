@@ -1,5 +1,5 @@
 name: Setup Node project
-description: Setup Node.js, cache dependencies, and install packages
+description: Setup Node.js, cache npm packages, and install dependencies
 
 runs:
   using: composite
@@ -9,12 +9,6 @@ runs:
       with:
         node-version: 24.x
         cache: npm
-    - name: Cache dependencies
-      uses: actions/cache@v6.1.0
-      with:
-        path: |
-          **/node_modules
-        key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
     - name: Install dependencies
       shell: bash
       run: |
