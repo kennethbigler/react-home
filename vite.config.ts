@@ -64,8 +64,7 @@ export default defineConfig({
             },
             {
               name: "charts-sankey",
-              test:
-                /node_modules\/highcharts\/(highcharts-more|modules\/sankey)/,
+              test: /node_modules\/highcharts\/(highcharts-more|modules\/sankey)/,
               includeDependenciesRecursively: false,
             },
             {
