@@ -77,6 +77,8 @@ vi.stubGlobal("CSS", {
   supports: vi.fn().mockImplementation(() => {
     return true;
   }),
+  escape: (ident: string) =>
+    ident.replace(/[^a-zA-Z0-9_-]/g, (char) => `\\${char}`),
 });
 
 // Mock image loading to prevent timeouts in CI

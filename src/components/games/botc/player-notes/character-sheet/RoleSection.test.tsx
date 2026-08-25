@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
+import type { ComponentProps } from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import RoleSection from "./RoleSection";
 import type { BotCRole } from "../../../../../jotai/botc-atom";
 
@@ -18,6 +20,30 @@ describe("RoleSection", () => {
     Villager: true,
     Seer: true,
     Hunter: true,
+  };
+
+  const renderWithTheme = (
+    mode: "light" | "dark",
+    props: ComponentProps<typeof RoleSection>,
+  ) => {
+    const theme = createTheme({ palette: { mode } });
+    return render(
+      <ThemeProvider theme={theme}>
+        <RoleSection {...props} />
+      </ThemeProvider>,
+    );
+  };
+
+  const expectOutlinedRoleColor = (
+    button: HTMLElement,
+    mode: "light" | "dark",
+    alignment: BotCRole["alignment"],
+  ) => {
+    const theme = createTheme({ palette: { mode } });
+    const paletteColor = theme.palette[alignment];
+    const expectedColor =
+      mode === "light" ? paletteColor.dark : paletteColor.light;
+    expect(button).toHaveStyle({ color: expectedColor });
   };
 
   it("should render the title", () => {
@@ -463,6 +489,52 @@ describe("RoleSection", () => {
       screen.getByRole("button", { name: "Werewolf" }),
     ).toBeInTheDocument();
   });
+
+  it("keeps selected role buttons on contained styling in light and dark themes", () => {
+    (["light", "dark"] as const).forEach((mode) => {
+      const { unmount } = renderWithTheme(mode, {
+        gridSize: 4,
+        isText: true,
+        roleKey: mockRoleKey,
+        roles: mockRoles,
+        title: "Town Roles",
+      });
+
+      expect(screen.getByText("Villager")).toHaveClass("MuiButton-contained");
+      unmount();
+    });
+  });
+
+  it.each([
+    ["light", 4],
+    ["dark", 4],
+    ["light", 6],
+    ["dark", 6],
+  ] as const)(
+    "applies theme-aware outlined contrast for unselected roles in %s mode (gridSize %i)",
+    (mode, gridSize) => {
+      const roles: BotCRole[] = [
+        { name: "Villager", icon: "👤", alignment: "primary" },
+        { name: "Werewolf", icon: "🐺", alignment: "error" },
+        { name: "Seer", icon: "🔮", alignment: "info" },
+        { name: "Doctor", icon: "🏥", alignment: "success" },
+        { name: "Hunter", icon: "🏹", alignment: "warning" },
+        { name: "Tanner", icon: "🎭", alignment: "secondary" },
+      ];
+
+      renderWithTheme(mode, {
+        gridSize,
+        isText: true,
+        roleKey: {},
+        roles,
+        title: "Town Roles",
+      });
+
+      const werewolfButton = screen.getByRole("button", { name: "Werewolf" });
+      expect(werewolfButton).toHaveClass("MuiButton-outlined");
+      expectOutlinedRoleColor(werewolfButton, mode, "error");
+    },
+  );
 
   it("invokes onRoleClick from keyboard activation", async () => {
     const user = userEvent.setup();
