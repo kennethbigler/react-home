@@ -7,6 +7,7 @@ export const cssEscape = (value: string): string => {
   while (index < length) {
     const codeUnit = value.charCodeAt(index);
     const char = value.charAt(index);
+    const position = index;
     index += 1;
 
     if (codeUnit === 0x0000) {
@@ -14,29 +15,28 @@ export const cssEscape = (value: string): string => {
       continue;
     }
 
-    if (
-      (codeUnit >= 0x0001 && codeUnit <= 0x001f) ||
-      codeUnit === 0x007f ||
-      (index === 1 && codeUnit >= 0x0030 && codeUnit <= 0x0039) ||
-      (index === 1 &&
-        codeUnit === 0x002d &&
-        length > 1 &&
-        value.charCodeAt(1) >= 0x0030 &&
-        value.charCodeAt(1) <= 0x0039) ||
-      (index === length && codeUnit === 0x0020) ||
-      (index === 1 && codeUnit === 0x002d && length === 1)
-    ) {
+    if ((codeUnit >= 0x0001 && codeUnit <= 0x001f) || codeUnit === 0x007f) {
+      result += `\\${codeUnit.toString(16)} `;
+      continue;
+    }
+
+    if (position === 0 && codeUnit >= 0x0030 && codeUnit <= 0x0039) {
       result += `\\${codeUnit.toString(16)} `;
       continue;
     }
 
     if (
-      index === 2 &&
+      position === 1 &&
       codeUnit >= 0x0030 &&
       codeUnit <= 0x0039 &&
       value.charCodeAt(0) === 0x002d
     ) {
       result += `\\${codeUnit.toString(16)} `;
+      continue;
+    }
+
+    if (codeUnit === 0x0020) {
+      result += "\\ ";
       continue;
     }
 

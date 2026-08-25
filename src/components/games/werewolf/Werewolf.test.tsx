@@ -62,7 +62,7 @@ async function exerciseRatingKeyboard(
 }
 
 function getCategoryToggle(name: "Villagers" | "Outsiders" | "Wolves") {
-  return screen.getByRole("button", { name });
+  return screen.getByRole("button", { name: new RegExp(`^${name}\\b`) });
 }
 
 function ensureCategoryExpanded(name: "Villagers" | "Outsiders" | "Wolves") {
@@ -81,7 +81,8 @@ describe("games | werewolf", () => {
     expect(screen.getByText("Wolves")).toBeInTheDocument();
   });
 
-  it("handles accordion open and close", () => {
+  it("handles accordion open and close", async () => {
+    const user = userEvent.setup();
     render(<Werewolf />);
 
     const villagersToggle = getCategoryToggle("Villagers");
@@ -89,6 +90,12 @@ describe("games | werewolf", () => {
     fireEvent.click(villagersToggle);
     expect(villagersToggle).toHaveAttribute("aria-expanded", "false");
     fireEvent.click(villagersToggle);
+    expect(villagersToggle).toHaveAttribute("aria-expanded", "true");
+
+    villagersToggle.focus();
+    await user.keyboard("{Enter}");
+    expect(villagersToggle).toHaveAttribute("aria-expanded", "false");
+    await user.keyboard(" ");
     expect(villagersToggle).toHaveAttribute("aria-expanded", "true");
   });
 
