@@ -72,13 +72,13 @@ Object.defineProperty(window, "matchMedia", {
   value: vi.fn().mockImplementation(() => ({ matches: false })),
 });
 
+import { cssEscape } from "./apis/cssEscape";
 // highcharts v12.2.0 required adding this
 vi.stubGlobal("CSS", {
   supports: vi.fn().mockImplementation(() => {
     return true;
   }),
-  escape: (ident: string) =>
-    ident.replace(/[^a-zA-Z0-9_-]/g, (char) => `\\${char}`),
+  escape: cssEscape,
 });
 
 // Mock image loading to prevent timeouts in CI
