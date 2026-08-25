@@ -37,10 +37,15 @@ const getRoleButtonSx = (
   buttonStyles: CSSProperties,
   selected: boolean,
   alignment: MuiColors,
-): SxProps<Theme> =>
-  selected
-    ? buttonStyles
-    : ([buttonStyles, outlinedContrastSx(alignment)] as SxProps<Theme>);
+): SxProps<Theme> => {
+  if (selected) {
+    return buttonStyles;
+  }
+
+  const contrastSx = outlinedContrastSx(alignment);
+  const contrastItems = Array.isArray(contrastSx) ? contrastSx : [contrastSx];
+  return [buttonStyles, ...contrastItems];
+};
 
 /** CharacterSheet -> EmojiNotes
  *                 -> Roles -> RoleSelection */

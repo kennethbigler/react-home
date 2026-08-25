@@ -1,5 +1,6 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
-import { vi } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { vi, type Mock } from "vitest";
 import Werewolf from ".";
 import WerewolfPanel from "./WerewolfPanel";
 
@@ -14,12 +15,37 @@ function clearRating(name: string) {
   fireEvent.click(radios[radios.length - 1]);
 }
 
-function exerciseRatingKeyboard(name: string, index: number) {
+interface KeyboardRatingExpectation {
+  value: number;
+  count: number;
+  handleStar?: Mock;
+}
+
+async function exerciseRatingKeyboard(
+  name: string,
+  startIndex: number,
+  expected?: KeyboardRatingExpectation,
+) {
+  const user = userEvent.setup();
   const rating = screen.getByRole("group", { name: `${name} rating` });
-  const radio = within(rating).getAllByRole("radio")[index];
-  radio.focus();
-  expect(radio).toHaveFocus();
-  fireEvent.keyDown(radio, { key: "ArrowRight", code: "ArrowRight" });
+  const radios = within(rating).getAllByRole("radio");
+  const startRadio = radios[startIndex];
+
+  startRadio.focus();
+  await user.keyboard("{ArrowRight}");
+
+  const nextRadio = radios[startIndex + 1];
+  if (nextRadio?.getAttribute("value")) {
+    expect(nextRadio).toHaveFocus();
+  }
+
+  if (expected?.handleStar) {
+    expect(expected.handleStar).toHaveBeenCalledWith(
+      expected.value,
+      expected.count,
+      name,
+    );
+  }
 }
 
 describe("games | werewolf", () => {
@@ -137,72 +163,68 @@ describe("games | werewolf", () => {
     );
   });
 
-  it("handles Mason role count changes (count > 0 and count = 0 branches)", () => {
+  it("handles Mason role count changes (count > 0 and count = 0 branches)", async () => {
     render(<Werewolf />);
     fireEvent.click(screen.getAllByRole("button")[1]);
 
     clickRatingStar("Mason", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
-    clickRatingStar("Mason", 1);
-    exerciseRatingKeyboard("Mason", 1);
+    await exerciseRatingKeyboard("Mason", 0);
 
     clearRating("Mason");
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
   });
 
-  it("handles Villager role count changes (count > 0 and count = 0 branches)", () => {
+  it("handles Villager role count changes (count > 0 and count = 0 branches)", async () => {
     render(<Werewolf />);
     fireEvent.click(screen.getAllByRole("button")[1]);
 
     clickRatingStar("Villager", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
-    clickRatingStar("Villager", 1);
-    exerciseRatingKeyboard("Villager", 1);
+    await exerciseRatingKeyboard("Villager", 0);
 
     clearRating("Villager");
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
   });
 
-  it("handles Vampire role count changes (count > 0 and count = 0 branches)", () => {
+  it("handles Vampire role count changes (count > 0 and count = 0 branches)", async () => {
     render(<Werewolf />);
     fireEvent.click(screen.getAllByRole("button")[2]);
 
     clickRatingStar("Vampire", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
-    clickRatingStar("Vampire", 1);
-    exerciseRatingKeyboard("Vampire", 1);
+    await exerciseRatingKeyboard("Vampire", 0);
 
     clearRating("Vampire");
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
   });
 
-  it("handles Werewolf role count changes (count > 0 and count = 0 branches)", () => {
+  it("handles Werewolf role count changes (count > 0 and count = 0 branches)", async () => {
     render(<Werewolf />);
     fireEvent.click(screen.getAllByRole("button")[3]);
 
     clickRatingStar("Werewolf", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
-    clickRatingStar("Werewolf", 1);
-    exerciseRatingKeyboard("Werewolf", 1);
+    await exerciseRatingKeyboard("Werewolf", 0);
 
     clearRating("Werewolf");
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
   });
 
-  it("handles default role (non-countable) changes", () => {
+  it("handles default role (non-countable) changes", async () => {
     render(<Werewolf />);
     fireEvent.click(screen.getAllByRole("button")[1]);
 
     clickRatingStar("Seer", 0);
     expect(screen.queryByText(/Total:/)).toBeInTheDocument();
-    exerciseRatingKeyboard("Seer", 0);
+    await exerciseRatingKeyboard("Seer", 0);
   });
 });
 
 describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
   const handleChange = vi.fn(() => vi.fn());
 
-  it("Mason: count > 0 branch (star click) and count = 0 branch (deselect)", () => {
+  it("Mason: count > 0 branch (star click) and count = 0 branch (deselect)", async () => {
     const handleStar = vi.fn();
     render(
       <WerewolfPanel
@@ -218,14 +240,16 @@ describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
     );
     clickRatingStar("Mason", 0);
     expect(handleStar).toHaveBeenCalledWith(2, 1, "Mason");
-    clickRatingStar("Mason", 1);
-    expect(handleStar).toHaveBeenCalledWith(2, 2, "Mason");
-    exerciseRatingKeyboard("Mason", 1);
+    await exerciseRatingKeyboard("Mason", 0, {
+      value: 2,
+      count: 2,
+      handleStar,
+    });
     clearRating("Mason");
     expect(handleStar).toHaveBeenCalledWith(-2, 0, "Mason");
   });
 
-  it("Villager: count > 0 branch and count = 0 branch", () => {
+  it("Villager: count > 0 branch and count = 0 branch", async () => {
     const handleStar = vi.fn();
     render(
       <WerewolfPanel
@@ -241,14 +265,16 @@ describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
     );
     clickRatingStar("Villager", 0);
     expect(handleStar).toHaveBeenCalledWith(1, 1, "Villager");
-    clickRatingStar("Villager", 1);
-    expect(handleStar).toHaveBeenCalledWith(1, 2, "Villager");
-    exerciseRatingKeyboard("Villager", 1);
+    await exerciseRatingKeyboard("Villager", 0, {
+      value: 1,
+      count: 2,
+      handleStar,
+    });
     clearRating("Villager");
     expect(handleStar).toHaveBeenCalledWith(-1, 0, "Villager");
   });
 
-  it("Vampire: count > 0 branch and count = 0 branch", () => {
+  it("Vampire: count > 0 branch and count = 0 branch", async () => {
     const handleStar = vi.fn();
     render(
       <WerewolfPanel
@@ -264,14 +290,16 @@ describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
     );
     clickRatingStar("Vampire", 0);
     expect(handleStar).toHaveBeenCalledWith(-7, 1, "Vampire");
-    clickRatingStar("Vampire", 1);
-    expect(handleStar).toHaveBeenCalledWith(-7, 2, "Vampire");
-    exerciseRatingKeyboard("Vampire", 1);
+    await exerciseRatingKeyboard("Vampire", 0, {
+      value: -7,
+      count: 2,
+      handleStar,
+    });
     clearRating("Vampire");
     expect(handleStar).toHaveBeenCalledWith(7, 0, "Vampire");
   });
 
-  it("Werewolf: count > 0 branch and count = 0 branch", () => {
+  it("Werewolf: count > 0 branch and count = 0 branch", async () => {
     const handleStar = vi.fn();
     render(
       <WerewolfPanel
@@ -287,14 +315,16 @@ describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
     );
     clickRatingStar("Werewolf", 0);
     expect(handleStar).toHaveBeenCalledWith(-6, 1, "Werewolf");
-    clickRatingStar("Werewolf", 1);
-    expect(handleStar).toHaveBeenCalledWith(-6, 2, "Werewolf");
-    exerciseRatingKeyboard("Werewolf", 1);
+    await exerciseRatingKeyboard("Werewolf", 0, {
+      value: -6,
+      count: 2,
+      handleStar,
+    });
     clearRating("Werewolf");
     expect(handleStar).toHaveBeenCalledWith(6, 0, "Werewolf");
   });
 
-  it("default role (no count): triggers default branch", () => {
+  it("default role (no count): triggers default branch", async () => {
     const handleStar = vi.fn();
     render(
       <WerewolfPanel
@@ -309,6 +339,8 @@ describe("games | werewolf | handleStar branches via WerewolfPanel", () => {
     );
     clickRatingStar("Seer", 0);
     expect(handleStar).toHaveBeenCalledWith(7, 1, "Seer");
-    exerciseRatingKeyboard("Seer", 0);
+    handleStar.mockClear();
+    await exerciseRatingKeyboard("Seer", 0);
+    expect(handleStar).not.toHaveBeenCalledWith(7, 2, "Seer");
   });
 });

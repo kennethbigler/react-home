@@ -1,64 +1,28 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    strategy:
-      matrix:
-        node-version: [24.x]
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout repository
-        uses: actions/checkout@v7
+      - name: Setup Node project
+        uses: ./.github/actions/setup-node
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: 20
-
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v7.0.0
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-
-      - name: Cache dependencies
-        uses: actions/cache@v6.1.0
-        with:
-          path: |
-            **/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install dependencies
-        run: |
-          npm config set engine-strict true
-          npm install
-
+          use-pr-ref: "true"
       - name: Run linters
         run: npm run lint:q
-
       - name: Build
         run: npm run build
-
       - name: Run knip
         run: npm run knip -- --reporter github-actions --cache
-
       - name: Run lighthouse
         run: npm run lhci
         env:
@@ -69,70 +33,32 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    strategy:
-      matrix:
-        node-version: [24.x]
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
+      - name: Setup Node project
+        uses: ./.github/actions/setup-node
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: 20
-
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v7.0.0
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-
-      - name: Cache dependencies
-        uses: actions/cache@v6.1.0
-        with:
-          path: |
-            **/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install dependencies
-        run: |
-          npm config set engine-strict true
-          npm install
-
+          use-pr-ref: "true"
       - name: Run tests with coverage
         run: npm run test:coverage
-
       - name: Codecov
         uses: codecov/codecov-action@v7.0.0
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-  # Live-site scan after a merge to main (and manual runs on main).
-  # Pull requests skip this: the scanner hits GitHub Pages, not the PR build.
+  # Live-site scan after a merge to main (and manual runs on main). Runs on PR merge.
   accessibility:
     needs: [build, test]
     if: github.ref == 'refs/heads/main' && contains(fromJSON('["push","workflow_dispatch"]'), github.event_name)
     runs-on: ubuntu-latest
     permissions: {}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v7.0.0
-        with:
-          node-version: 24.x
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
+      - name: Setup Node project
+        uses: ./.github/actions/setup-node
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
-
       - name: Build site
         run: npm run build
-
-      # Scan the built revision from this workflow run (vite preview), not the
-      # live GitHub Pages site, which may still serve a previous deploy.
+      # Scan the built revision from this workflow run (vite preview)
       - name: Run hydration-aware accessibility scan
         run: |
           npm run preview -- --host 127.0.0.1 --port 4173 &
@@ -145,7 +71,6 @@ jobs:
           done
           node scripts/a11y-live-scan.mjs --base-url http://127.0.0.1:4173
           kill "$PREVIEW_PID"
-
       # TODO: After github/accessibility-scanner#223 lands, switch `urls` to
       # `url_configs` and set waitForSelectors (e.g. "#main-content h1") so axe
       # waits for the SPA to hydrate instead of scanning the loading shell.
@@ -185,33 +110,22 @@ jobs:
           scans: |
             ["axe", {"name": "alt-text-scan", "package": "@github/accessibility-scanner-alt-text-plugin", "version": "1.1.0"}]
 
-  # Adding a code analyzer job
   analyze:
     runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: read
       security-events: write
-
     strategy:
       fail-fast: false
       matrix:
         language: ["javascript"]
-        # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-
-      # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4.37.7
         with:
           languages: ${{ matrix.language }}
-          # If you wish to specify custom queries, you can do so here or in a config file.
-          # By default, queries listed here will override any specified in a config file.
-          # Prefix the list here with "+" to use these queries and those in the config file.
-          # queries: ./path/to/local/query, your-org/your-repo/queries@main
-
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4.37.7

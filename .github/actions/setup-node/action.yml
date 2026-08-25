@@ -1,0 +1,40 @@
+name: Setup Node project
+description: Checkout, setup Node.js, cache dependencies, and install packages
+
+inputs:
+  use-pr-ref:
+    description: Checkout the PR head SHA (with fetch-depth) when available
+    required: false
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout repository (PR ref)
+      if: inputs.use-pr-ref == 'true'
+      uses: actions/checkout@v7
+      with:
+        ref: ${{ github.event.pull_request.head.sha || github.sha }}
+        fetch-depth: 20
+        persist-credentials: false
+    - name: Checkout repository
+      if: inputs.use-pr-ref != 'true'
+      uses: actions/checkout@v7
+      with:
+        persist-credentials: false
+    - name: Setup Node.js
+      uses: actions/setup-node@v7.0.0
+      with:
+        node-version: 24.x
+        cache: npm
+    - name: Cache dependencies
+      uses: actions/cache@v6.1.0
+      with:
+        path: |
+          **/node_modules
+        key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+    - name: Install dependencies
+      shell: bash
+      run: |
+        npm config set engine-strict true
+        npm ci
