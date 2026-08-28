@@ -9,9 +9,9 @@ interface RowProps {
   onClick?: (title: string) => void;
 }
 
-const smMarginTop: CSSProperties = { marginTop: 10 };
-const lgMarginTop: CSSProperties = { marginTop: 20 };
-const noStyle: CSSProperties = { height: 0 };
+const smMarginTop: CSSProperties = { marginTop: 10, whiteSpace: "nowrap" };
+const lgMarginTop: CSSProperties = { marginTop: 20, whiteSpace: "nowrap" };
+const noStyle: CSSProperties = { height: 0, whiteSpace: "nowrap" };
 
 const Row = ({
   segments,

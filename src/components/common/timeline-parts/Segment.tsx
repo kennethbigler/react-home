@@ -12,17 +12,21 @@ export interface SegmentType {
 }
 
 const bodyStyles: CSSProperties = {
+  boxSizing: "border-box",
   cursor: "pointer",
   paddingTop: "0.5em",
   paddingBottom: "0.5em",
   lineHeight: 1.5,
-  overflow: "visible",
-  whiteSpace: "normal",
+  minWidth: 0,
+  overflow: "hidden",
+  whiteSpace: "nowrap",
+  textOverflow: "ellipsis",
   textAlign: "center",
   borderRadius: 2,
   border: 0,
   fontFamily: "Montserrat, sans-serif",
   fontSize: "1em",
+  verticalAlign: "top",
 };
 
 const Segment = memo(
@@ -42,6 +46,8 @@ const Segment = memo(
     let style: CSSProperties = {
       display: "inline-block",
       width: `${width}%`,
+      minWidth: 0,
+      verticalAlign: "top",
       color: inverted ? "black" : grey[50],
     };
     if (body) {
