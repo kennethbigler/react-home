@@ -4,8 +4,6 @@ import type { SegmentType } from "../../../common/timeline-parts/Segment";
 
 /* *************************     Constants     ************************* */
 const WIDTH = 99;
-const MIN_TEXT_WIDTH = 86;
-const MIN_SHORT_WIDTH = 56;
 const YEAR_WIDTH = 0.3;
 const YEAR_MARK_FREQ = 2;
 
@@ -50,16 +48,7 @@ const addSegment = (
 ): void => {
   const { color, inverted, team } = elm;
   const width = ending - beginning;
-  const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
-  const payload = { color, inverted, width, title: team };
-  // check if name has room
-  if (textWidth < MIN_SHORT_WIDTH) {
-    segments.push({ body: elm.team[0], ...payload });
-  } else if (textWidth < MIN_TEXT_WIDTH) {
-    segments.push({ body: team.substring(0, 5), ...payload });
-  } else {
-    segments.push({ body: elm.team, ...payload });
-  }
+  segments.push({ body: team, color, inverted, width, title: team });
 };
 
 /* *************************     Export Functions     ************************* */

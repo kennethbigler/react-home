@@ -7,8 +7,6 @@ export const START = dateObj("2008-03");
 export const END = dateObj();
 
 const WIDTH = 99;
-const MIN_TEXT_WIDTH = 86;
-const MIN_SHORT_WIDTH = 56;
 const YEAR_WIDTH = 0.3;
 const YEAR_MARK_FREQ = 3;
 
@@ -36,18 +34,9 @@ const addSegment = (
   beginning: number,
   ending: number,
 ): void => {
-  const { color, inverted, title, car, char } = elm;
+  const { color, inverted, title, car } = elm;
   const width = ending - beginning;
-  const textWidth = (width * (window.innerWidth - 64)) / WIDTH;
-  const payload = { color, inverted, width, title };
-  // check if name has room
-  if (textWidth < MIN_SHORT_WIDTH) {
-    segments.push({ body: char || elm.car[0], ...payload });
-  } else if (textWidth < MIN_TEXT_WIDTH) {
-    segments.push({ body: car.substring(0, 5), ...payload });
-  } else {
-    segments.push({ body: elm.car, ...payload });
-  }
+  segments.push({ body: car, color, inverted, width, title });
 };
 
 /* *************************     Export Functions     ************************* */
