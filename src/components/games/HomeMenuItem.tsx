@@ -1,4 +1,4 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 import type { RouteMenuItem } from "../common/menu-types";
 import {
   Typography,
@@ -11,7 +11,6 @@ import {
 interface HomeMenuItemProps {
   items: RouteMenuItem[];
   title: string;
-  onClick?: (loc: string) => void;
 }
 
 const subHeaderStyles: React.CSSProperties = {
@@ -34,10 +33,8 @@ const avatarStyles: React.CSSProperties = {
   color: "white",
 };
 
-const HomeMenuItem = ({ items, title, onClick }: HomeMenuItemProps) => {
+const HomeMenuItem = ({ items, title }: HomeMenuItemProps) => {
   const getPath = (route: string | undefined) => `/games/${route || ""}`;
-  const handleClick = (route: string | undefined) => () =>
-    onClick && onClick(getPath(route));
 
   return (
     <>
@@ -51,7 +48,6 @@ const HomeMenuItem = ({ items, title, onClick }: HomeMenuItemProps) => {
             aria-label={`Open ${name}`}
             component={RouterLink}
             key={name}
-            onClick={handleClick(route)}
             to={getPath(route)}
           >
             <Card sx={cardStyles}>

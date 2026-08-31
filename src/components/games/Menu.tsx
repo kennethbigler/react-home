@@ -1,37 +1,23 @@
 import { memo } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
+import { MenuList, MenuItem } from "@mui/material";
+import NavMenuItems from "../common/NavMenuItems";
 import menuItems from "./menu-items";
-import { MenuList, MenuItem, Divider } from "@mui/material";
 
 interface MenuProps {
-  onItemClick?: (loc: string) => void;
+  onItemClick?: () => void;
 }
 
 const Menu = memo(({ onItemClick }: MenuProps) => (
   <MenuList>
-    <MenuItem
-      component={RouterLink}
-      onClick={() => onItemClick && onItemClick("/")}
-      to="/"
-    >
+    <MenuItem component={RouterLink} onClick={onItemClick} to="/">
       Back to Resume
     </MenuItem>
-    {menuItems.map((item, index) =>
-      "divider" in item ? (
-        <Divider key={index} aria-hidden />
-      ) : (
-        <MenuItem
-          key={item.name}
-          component={RouterLink}
-          onClick={(): void =>
-            onItemClick && onItemClick(`/games/${item.route || ""}`)
-          }
-          to={`/games/${item.route || ""}`}
-        >
-          {item.name}
-        </MenuItem>
-      ),
-    )}
+    <NavMenuItems
+      items={menuItems}
+      pathPrefix="/games/"
+      onItemClick={onItemClick}
+    />
   </MenuList>
 ));
 

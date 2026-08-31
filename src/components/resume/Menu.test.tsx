@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { vi } from "vitest";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import Menu from "./Menu";
 
 describe("resume | Menu", () => {
-  const renderMenu = (onItemClick?: (loc: string) => void) =>
+  const renderMenu = (onItemClick?: () => void) =>
     render(
       <MemoryRouter>
         <Menu onItemClick={onItemClick} />
@@ -32,7 +32,7 @@ describe("resume | Menu", () => {
     const resumeLink = screen.getByRole("menuitem", { name: "Resume" });
     expect(resumeLink).toHaveAttribute("href", "/resume");
     fireEvent.click(resumeLink);
-    expect(handleItemClick).toHaveBeenCalledWith("/resume");
+    expect(handleItemClick).toHaveBeenCalledTimes(1);
   });
 
   it("links to external sites", () => {

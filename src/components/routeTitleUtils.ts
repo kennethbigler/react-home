@@ -12,8 +12,7 @@ export const toTitleCase = (str: string) => {
 
 /** Map path segments to page titles for WCAG 2.4.2 (Page Titled) */
 export const getPageTitle = (pathname: string): string => {
-  const segment = pathname.replace(/^#\/?/, "").split("/").filter(Boolean)[0];
-  const sub = pathname.replace(/^#\/?/, "").split("/").filter(Boolean)[1];
+  const [segment, sub] = pathname.split("/").filter(Boolean);
   let page: string;
   if (!segment) {
     page = BASE_TITLE;

@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useLayoutEffect } from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router";
 import LoadingSpinner from "./common/loading-spinner";
 import { getPageTitle } from "./routeTitleUtils";
 
@@ -8,7 +8,6 @@ const ResumeRoutes = lazy(() => import("./resume/Routes"));
 const GameRoutes = lazy(() => import("./games/Routes"));
 
 const RootRoutes = () => {
-  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -25,10 +24,6 @@ const RootRoutes = () => {
     }
   }, [location.pathname]);
 
-  const handleNav = (loc: string) => {
-    void navigate(loc);
-  };
-
   return (
     <>
       <a className="skip-link" href="#main-content">
@@ -41,11 +36,8 @@ const RootRoutes = () => {
       >
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
-            <Route
-              path="games/*"
-              element={<GameRoutes handleNav={handleNav} />}
-            />
-            <Route path="/*" element={<ResumeRoutes handleNav={handleNav} />} />
+            <Route path="games/*" element={<GameRoutes />} />
+            <Route path="/*" element={<ResumeRoutes />} />
           </Routes>
         </Suspense>
       </main>

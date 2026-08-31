@@ -1,13 +1,5 @@
 import type { ComponentType, LazyExoticComponent } from "react";
 
-interface RouteComponentProps {
-  onItemClick?: (loc: string) => void;
-}
-
-type LazyRouteComponent = LazyExoticComponent<
-  ComponentType<RouteComponentProps>
->;
-
 /** Visual separator in a navigation menu. */
 type MenuDivider = { divider: true };
 
@@ -19,7 +11,7 @@ type MenuRouteFields = {
 /** A menu entry that registers a lazy-loaded route in this section's router. */
 export type RouteMenuItem = MenuRouteFields & {
   icon?: string;
-  Component: LazyRouteComponent;
+  Component: LazyExoticComponent<ComponentType>;
 };
 
 /**

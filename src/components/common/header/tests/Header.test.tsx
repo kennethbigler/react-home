@@ -1,12 +1,11 @@
 import type { ReactElement } from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
-import { vi } from "vitest";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import type { NavProps } from "../Header";
 import Header from "..";
 
 /** This is just used for testing purposes */
 const Menu = ({ onItemClick }: NavProps): ReactElement<NavProps> => (
-  <button onClick={(): void => onItemClick("button")} type="button">
+  <button onClick={onItemClick} type="button">
     Test Button
   </button>
 );
@@ -72,11 +71,9 @@ describe("common | header | Header", () => {
       expect(screen.getByText("Test Button")).toBeInTheDocument();
     });
 
-    it("calls handleNav as expected", () => {
-      const handleNav = vi.fn();
-
+    it("closes the drawer when a menu item is clicked", async () => {
       render(
-        <Header handleNav={handleNav}>
+        <Header>
           {(onItemClick): ReactElement<NavProps> => (
             <Menu onItemClick={onItemClick} />
           )}
@@ -87,10 +84,11 @@ describe("common | header | Header", () => {
       fireEvent.click(screen.getByTitle("Icon Menu Button"));
       // find the button (child)
       expect(screen.getByText("Test Button")).toBeInTheDocument();
-      // click the button
-      expect(handleNav).not.toHaveBeenCalled();
+      // click the button, which closes the drawer
       fireEvent.click(screen.getByText("Test Button"));
-      expect(handleNav).toHaveBeenCalled();
+      await waitFor(() => {
+        expect(screen.queryByText("Test Button")).not.toBeInTheDocument();
+      });
     });
   });
 });

@@ -1,14 +1,13 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import RootRoutes from "./Routes";
 
-vi.mock("./resume/Routes", () => ({
-  default: ({ handleNav }: { handleNav: (loc: string) => void }) => (
-    <button type="button" onClick={() => handleNav("/work")}>
-      Work
-    </button>
-  ),
-}));
+vi.mock("./resume/Routes", async () => {
+  const { Link } = await import("react-router");
+  return {
+    default: () => <Link to="/work">Work</Link>,
+  };
+});
 
 vi.mock("./games/Routes", () => ({
   default: () => <div>Games</div>,
@@ -24,7 +23,7 @@ describe("components | RootRoutes", () => {
       </MemoryRouter>,
     );
 
-    const workLink = await screen.findByRole("button", {
+    const workLink = await screen.findByRole("link", {
       name: "Work",
     });
 

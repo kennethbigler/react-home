@@ -8,11 +8,7 @@ import {
 import HomeMenuItem from "./HomeMenuItem";
 import { Typography, Link } from "@mui/material";
 
-interface HomeProps {
-  onItemClick?: (loc: string) => void;
-}
-
-const Home = memo(({ onItemClick }: HomeProps) => (
+const Home = memo(() => (
   <div style={{ textAlign: "center", marginTop: 20 }}>
     <Typography variant="h2" component="h1">
       Games
@@ -26,10 +22,10 @@ const Home = memo(({ onItemClick }: HomeProps) => (
         <code>&lt;source&nbsp;code/&gt;</code>
       </Link>
     </Typography>
-    <HomeMenuItem title="Deduction" items={socialItems} onClick={onItemClick} />
-    <HomeMenuItem title="Trackers" items={trackerItems} onClick={onItemClick} />
-    <HomeMenuItem title="Casino" items={casinoItems} onClick={onItemClick} />
-    <HomeMenuItem title="Games" items={gameItems} onClick={onItemClick} />
+    <HomeMenuItem title="Deduction" items={socialItems} />
+    <HomeMenuItem title="Trackers" items={trackerItems} />
+    <HomeMenuItem title="Casino" items={casinoItems} />
+    <HomeMenuItem title="Games" items={gameItems} />
   </div>
 ));
 
