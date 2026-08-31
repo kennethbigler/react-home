@@ -13,19 +13,19 @@ import { useAtom } from "jotai";
 import {
   FEDERAL_STANDARD_DEDUCTION,
   FEDERAL_STANDARD_DEDUCTION_MFJ,
-} from "../../../../../constants/federalTaxBrackets";
-import type { ExpenseEntry } from "../../../../../jotai/finances-atom";
+} from "@/constants/federalTaxBrackets";
+import type { ExpenseEntry } from "@/apis/budget";
 import {
   filingJointlyAtom,
   itemizeDeductionsAtom,
   itemizedDeductionAtom,
   partnerIncomeAtom,
-} from "../../../../../jotai/finances-atom";
+} from "@/jotai/budget-atom";
 import BudgetCategorySection from "./BudgetCategorySection";
 import ExpenseEntryDialog from "./ExpenseEntryDialog";
 import useBudgetEntries from "./useBudgetEntries";
-import useEntryDialog from "../../shared/useEntryDialog";
-import { finiteOr } from "../../shared/numbers";
+import useEntryDialog from "@/components/resume/finances/shared/useEntryDialog";
+import { finiteOr } from "@/components/resume/finances/shared/numbers";
 
 const partnerTfProps: TextFieldProps = {
   variant: "standard",

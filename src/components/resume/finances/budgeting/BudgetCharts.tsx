@@ -9,8 +9,8 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useAtomValue } from "jotai";
-import usDollar from "../../../../apis/usDollar";
-import { budgetFlowRead } from "../../../../jotai/finances-atom";
+import usDollar from "@/apis/usDollar";
+import { budgetFlowRead } from "@/jotai/budget-atom";
 import BudgetSankeyGraph from "./graphs/BudgetSankeyGraph";
 import CategoryBreakdownPie from "./graphs/CategoryBreakdownPie";
 import { PAYROLL_CATEGORY_KEY } from "./graphs/chartData";

@@ -1,7 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { Provider, createStore } from "jotai";
+import { createStore } from "jotai";
 import Yahtzee from "..";
-import yahtzeeState from "../../../../jotai/yahtzee-state";
+import yahtzeeState from "@/jotai/yahtzee-atom";
+import { createAtomWrapper } from "@/test-utils/renderWithHydratedAtoms";
 
 describe("games | yahtzee | Yahtzee", () => {
   it("renders as expected", () => {
@@ -140,11 +141,8 @@ describe("games | yahtzee | Yahtzee", () => {
       money: 100,
     });
 
-    render(
-      <Provider store={store}>
-        <Yahtzee />
-      </Provider>,
-    );
+    const { wrapper } = createAtomWrapper([], store);
+    render(<Yahtzee />, { wrapper });
 
     // finish=true → getButtonText returns "New Game"
     expect(screen.getByText("New Game")).toBeInTheDocument();

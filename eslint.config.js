@@ -88,6 +88,9 @@ export default [
       "react-refresh/only-export-components": "warn",
 
       // Import
+      // "@/" is the tsconfig/vite src alias; eslint-plugin-import has no
+      // resolver for it here, and tsc already verifies these paths resolve.
+      "import/no-unresolved": ["error", {ignore: ["^@/"]}],
       "import/no-extraneous-dependencies": [
         "error",
         {

@@ -22,7 +22,7 @@ import {
   type Types,
   effectiveness,
   type Effectiveness,
-} from "../../../constants/type-checker";
+} from "@/constants/type-checker";
 import EffectiveRow from "./EffectiveRow";
 
 const ddOptions = types.reduce(

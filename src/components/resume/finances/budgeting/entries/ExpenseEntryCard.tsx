@@ -1,13 +1,7 @@
 import { Chip } from "@mui/material";
-import {
-  formatPercentSources,
-  getPercentSources,
-} from "../../../../../apis/budget";
-import usDollar from "../../../../../apis/usDollar";
-import type {
-  ExpenseEntry,
-  ExpenseEntryColor,
-} from "../../../../../jotai/finances-atom";
+import { formatPercentSources, getPercentSources } from "@/apis/budget";
+import usDollar from "@/apis/usDollar";
+import type { ExpenseEntry, ExpenseEntryColor } from "@/apis/budget";
 
 interface ExpenseEntryCardProps {
   expenseEntry: ExpenseEntry;

@@ -1,7 +1,7 @@
 import "../../../common/highcharts/tests/highchartsMocks";
 import { render, screen } from "@testing-library/react";
 import CarChart from "./CarChart";
-import { cars } from "../../../../constants/cars";
+import { cars } from "@/constants/cars";
 
 describe("resume | cars | graphs | CarChart", () => {
   it("renders the car data chart", () => {

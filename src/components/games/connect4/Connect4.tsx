@@ -8,7 +8,7 @@ import connect4Atom, {
   C4Turn,
   immutableBoardCopy,
   newConnect4Game,
-} from "../../../jotai/connect4-atom";
+} from "@/jotai/connect4-atom";
 
 /* Connect4  ->  GameBoard  ->  Header  ->  Piece
  *                         |->  Board   ->  Piece */

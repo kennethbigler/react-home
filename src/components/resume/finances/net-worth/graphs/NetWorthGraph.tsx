@@ -11,15 +11,15 @@ import {
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../../../../common/highcharts/coreHighcharts";
-import type {
-  NetWorthCalcEntry,
-  NetWorthEntry,
-} from "../../../../../jotai/finances-atom";
-import ChartFigure from "../../shared/ChartFigure";
-import { formatCompactAxisCurrency } from "../../shared/chartHelpers";
-import useChartTextColor from "../../shared/useChartTextColor";
-import colors, { getCategoryColor } from "./colors";
+import Highcharts from "@/components/common/highcharts/coreHighcharts";
+import type { NetWorthCalcEntry, NetWorthEntry } from "@/jotai/net-worth-atom";
+import ChartFigure from "@/components/resume/finances/shared/ChartFigure";
+import { formatCompactAxisCurrency } from "@/components/resume/finances/shared/chartHelpers";
+import useChartTextColor from "@/components/resume/finances/shared/useChartTextColor";
+import {
+  categoryChartColors,
+  getCategoryColor,
+} from "@/components/resume/finances/shared/chartPalette";
 import {
   buildNetWorthChartData,
   formatNetWorthTooltip,
@@ -56,7 +56,7 @@ const NetWorthChart = ({
 
     const chartOptions: Highcharts.Options = {
       ...staticOptions,
-      colors: [...colors, color],
+      colors: [...categoryChartColors, color],
       legend: {
         itemStyle: { color },
         itemHoverStyle: { color },

@@ -1,4 +1,4 @@
-import type { BotCPlayerStatus } from "../../../../../jotai/botc-atom";
+import type { BotCPlayerStatus } from "@/jotai/botc-atom";
 import { Grid, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 
 interface EmojiNotesProps {

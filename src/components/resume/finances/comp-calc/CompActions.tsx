@@ -1,11 +1,8 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState } from "react";
 import { useAtom } from "jotai";
 import { Box, Button } from "@mui/material";
-import {
-  type CompEntry,
-  sortCompEntriesByDate,
-} from "../../../../jotai/finances-atom";
-import stockAtom from "../../../../jotai/stock-atom";
+import type { CompEntry } from "@/jotai/comp-calc-atom";
+import stockAtom from "@/jotai/stock-atom";
 import type { EntryDialogState } from "../shared/useEntryDialog";
 import CompEntryDialog from "./CompEntryDialog";
 import StockDialog from "./StockDialog";
@@ -13,14 +10,16 @@ import StockDisplay from "./StockDisplay";
 
 interface CompActionsProps {
   compEntries: CompEntry[];
-  setCompEntries: Dispatch<SetStateAction<CompEntry[]>>;
   entryDialog: EntryDialogState;
+  saveCompEntry: (entry: CompEntry) => void;
+  removeCompEntry: () => void;
 }
 
 const CompActions = ({
   compEntries,
-  setCompEntries,
   entryDialog,
+  saveCompEntry,
+  removeCompEntry,
 }: CompActionsProps) => {
   const [stockEntries, setStockEntries] = useAtom(stockAtom);
   const [openStock, setOpenStock] = useState(false);
@@ -35,22 +34,6 @@ const CompActions = ({
   const openEditStock = (s: string) => () => {
     setEditStockTick(s);
     setOpenStock(true);
-  };
-
-  const addCompEntry = (compEntry: CompEntry) => {
-    const newCompEntries = [...compEntries];
-    if (entryDialog.editIdx === -1) {
-      newCompEntries.push(compEntry);
-    } else {
-      newCompEntries[entryDialog.editIdx] = compEntry;
-    }
-    setCompEntries(sortCompEntriesByDate(newCompEntries));
-    entryDialog.close();
-  };
-
-  const removeCompEntry = () => {
-    setCompEntries(compEntries.filter((_, i) => i !== entryDialog.editIdx));
-    entryDialog.close();
   };
 
   const addStockEntry = (stock: string, price: number) => {
@@ -109,7 +92,7 @@ const CompActions = ({
             isEditingEntry ? compEntries[entryDialog.editIdx] : undefined
           }
           onClose={entryDialog.close}
-          addCompEntry={addCompEntry}
+          addCompEntry={saveCompEntry}
           onDelete={isEditingEntry ? removeCompEntry : undefined}
         />
       )}

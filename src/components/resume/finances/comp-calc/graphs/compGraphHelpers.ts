@@ -1,23 +1,34 @@
-import dateHelper from "../../../../../apis/DateHelper";
-import usDollar from "../../../../../apis/usDollar";
-import type {
-  CompCalcEntry,
-  CompEntry,
-} from "../../../../../jotai/finances-atom";
+import { orange } from "@mui/material/colors";
+import dateHelper from "@/apis/DateHelper";
+import usDollar from "@/apis/usDollar";
+import type { CompCalcEntry, CompEntry } from "@/jotai/comp-calc-atom";
+import {
+  bonusColor,
+  salaryColor,
+  stockColor,
+} from "@/components/resume/finances/shared/chartPalette";
 import {
   entryDateToTimestamp,
   formatTooltipRow,
   getInflationTooltipValue,
   type InflationTooltipOptions,
   type TooltipPoint,
-} from "../../shared/chartHelpers";
-import { getInflationRate } from "../../shared/inflation";
+} from "@/components/resume/finances/shared/chartHelpers";
+import { getInflationRate } from "@/components/resume/finances/shared/inflation";
 
 export const STOCK = 0;
 export const BONUS = 1;
 export const SALARY = 2;
 export const TOTAL = 3;
 export const INFL = 4;
+
+/** Series color order matches STOCK / BONUS / SALARY / TOTAL. */
+export const compSeriesColors: string[] = [
+  stockColor,
+  bonusColor,
+  salaryColor,
+  orange[900],
+];
 
 type CompChartPoint = [number, number];
 

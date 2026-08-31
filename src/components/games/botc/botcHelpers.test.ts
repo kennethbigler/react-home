@@ -6,7 +6,7 @@ import {
   resolveLieAndTrueCounts,
   splitScriptColumns,
 } from "./botcHelpers";
-import { MISINFO } from "../../../constants/botc-slug-map";
+import { MISINFO } from "@/constants/botc-slug-map";
 
 describe("botcHelpers", () => {
   describe("splitScriptColumns", () => {

@@ -7,7 +7,7 @@ import {
   resolveExpenseAmount,
   type BudgetFlow,
   type ExpenseEntry,
-} from "../../../../../apis/budget";
+} from "@/apis/budget";
 import {
   buildBudgetSankeyData,
   buildCategoryPieData,
@@ -23,15 +23,15 @@ import {
   partitionBudgetCategoriesForCharts,
   UNALLOCATED_NODE,
 } from "./chartData";
-import { FEDERAL_TAX_LABEL } from "../../../../../constants/federalTaxBrackets";
-import { STATE_TAX_LABEL } from "../../../../../constants/caStateTaxBrackets";
+import { FEDERAL_TAX_LABEL } from "@/constants/federalTaxBrackets";
+import { STATE_TAX_LABEL } from "@/constants/caStateTaxBrackets";
 import {
   CA_DISABILITY_LABEL,
   MEDICARE_LABEL,
   PAYROLL_NODE_LABEL,
   PAYROLL_WITHHOLDINGS_LABEL,
   SOCIAL_SECURITY_LABEL,
-} from "../../../../../constants/payrollDeductions";
+} from "@/constants/payrollDeductions";
 
 const sampleIncome = getLatestBudgetIncome(100_000, 20_000, 1_000, 2_000);
 

@@ -1,4 +1,4 @@
-import InfoPopup from "../../../common/info-popover/InfoPopup";
+import InfoPopup from "@/components/common/info-popover/InfoPopup";
 import { Button, Grid } from "@mui/material";
 
 interface AddPenaltyProps {

@@ -1,4 +1,4 @@
-import { atomWithStorage } from "jotai/utils";
+import persistentAtom from "./storage";
 import { indigo, green, teal } from "@mui/material/colors";
 import type { Color } from "@mui/material";
 
@@ -22,11 +22,12 @@ export const lightTheme: ThemeState = {
   secondary: green,
 };
 
-// matchMedia checks if that setting matches, then returns true or false
-// prefers-color-scheme could be either light or dark, here we check for light
-const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+// prefers-color-scheme could be either light or dark, here we check for light;
+// matchMedia is optional-chained for non-DOM environments (tests, SSR tooling)
+const prefersLight =
+  globalThis.matchMedia?.("(prefers-color-scheme: light)").matches ?? false;
 
-const themeAtom = atomWithStorage(
+const themeAtom = persistentAtom(
   "themeAtom",
   prefersLight ? lightTheme : darkTheme,
 );

@@ -1,9 +1,9 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
-import InfoPopup from "../../../../common/info-popover/InfoPopup";
+import InfoPopup from "@/components/common/info-popover/InfoPopup";
 import BidAdvisor from "./BidAdvisor";
 import BiddingTable from "./BiddingTable";
-import TabGroup from "../../../../common/tab-group/TabGroup";
+import TabGroup from "@/components/common/tab-group/TabGroup";
 
 const BidDialog = () => {
   // Bumping this key remounts BidAdvisor, resetting its hand + auction state

@@ -2,20 +2,20 @@ import { useMemo, useState } from "react";
 import { useAtomValue } from "jotai";
 import { useTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
-import { outlinedContrastSx } from "../../../apis/outlinedButtonSx";
+import { outlinedContrastSx } from "@/apis/outlinedButtonSx";
 import { Button, ButtonGroup } from "@mui/material";
 import { Chart, Credits, Series, Title, Tooltip } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../../common/highcharts/coreHighcharts";
-import themeAtom from "../../../jotai/theme-atom";
+import Highcharts from "@/components/common/highcharts/coreHighcharts";
+import themeAtom from "@/jotai/theme-atom";
 import {
   formatRoleList,
   getLieSeries,
   type LieSeriesPoint,
 } from "./botcHelpers";
-import type { ActiveScript } from "../../../jotai/botc-atom";
-import { MISINFO, getRoleBySlug } from "../../../constants/botc-slug-map";
-import { getScriptDemonSlugs } from "../../../utils/botc-script-utils";
+import type { ActiveScript } from "@/jotai/botc-atom";
+import { MISINFO, getRoleBySlug } from "@/constants/botc-slug-map";
+import { getScriptDemonSlugs } from "@/utils/botc-script-utils";
 
 interface LiePieProps {
   numPlayers: number;

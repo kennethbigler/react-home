@@ -1,5 +1,5 @@
 import type { MouseEventHandler, CSSProperties } from "react";
-import type { Dice } from "../../../jotai/yahtzee-state";
+import type { Dice } from "@/jotai/yahtzee-atom";
 import { Button, Typography } from "@mui/material";
 
 interface TableHeaderProps {

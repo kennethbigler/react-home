@@ -5,11 +5,11 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { QRCodeSVG } from "qrcode.react";
 import { useAtomValue } from "jotai";
 import EditPlayers from "./edit-players/EditPlayers";
-import InfoPopup from "../../../common/info-popover/InfoPopup";
+import InfoPopup from "@/components/common/info-popover/InfoPopup";
 import Tracker from "./Tracker";
 import { Alert, Grid, Snackbar } from "@mui/material";
-import botcAtom from "../../../../jotai/botc-atom";
-import { buildShareUrl } from "../../../../utils/botc-share-utils";
+import botcAtom from "@/jotai/botc-atom";
+import { buildShareUrl } from "@/utils/botc-share-utils";
 
 interface ControlsProps {
   numPlayers: number;

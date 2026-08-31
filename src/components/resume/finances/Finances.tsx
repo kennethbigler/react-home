@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import CompCalculator from "./comp-calc/CompCalculator";
-import TabGroup from "../../common/tab-group/TabGroup";
+import TabGroup from "@/components/common/tab-group/TabGroup";
 import Budgeting from "./budgeting/Budgeting";
 import NetWorth from "./net-worth/NetWorth";
 

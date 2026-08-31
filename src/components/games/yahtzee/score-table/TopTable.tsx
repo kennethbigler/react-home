@@ -1,6 +1,6 @@
 import type { ReactElement, ReactNode } from "react";
 import type { BottomGameScore, TopGameScore } from "../types";
-import type { Dice } from "../../../../jotai/yahtzee-state";
+import type { Dice } from "@/jotai/yahtzee-atom";
 import TopScores from "./TopScores";
 import { hasXDice } from "./scoreTableHelper";
 import { TableCell, TableRow } from "@mui/material";

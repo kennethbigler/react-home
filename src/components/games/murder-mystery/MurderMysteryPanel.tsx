@@ -1,6 +1,6 @@
 import type { SyntheticEvent } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import arr2br from "../../../apis/arr2br";
+import arr2br from "@/apis/arr2br";
 import {
   Accordion,
   AccordionDetails,

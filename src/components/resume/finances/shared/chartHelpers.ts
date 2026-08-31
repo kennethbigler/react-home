@@ -1,6 +1,6 @@
 import type Highcharts from "highcharts/highcharts.src";
-import dateHelper from "../../../../apis/DateHelper";
-import usDollar from "../../../../apis/usDollar";
+import dateHelper from "@/apis/DateHelper";
+import usDollar from "@/apis/usDollar";
 
 /** The subset of a Highcharts point the tooltip formatters rely on. */
 export type TooltipPoint = Pick<Highcharts.Point, "y"> & {

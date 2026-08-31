@@ -7,20 +7,14 @@ import {
   formatTooltip,
   resetCapturedChartConfig,
   selectChartPoint,
-} from "../../../../common/highcharts/tests/highchartsMocks";
+} from "@/components/common/highcharts/tests/highchartsMocks";
 import { createTheme } from "@mui/material/styles";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import CompChart from "./CompGraph";
-import type {
-  CompCalcEntry,
-  CompEntry,
-} from "../../../../../jotai/finances-atom";
-import themeAtom, {
-  darkTheme,
-  lightTheme,
-} from "../../../../../jotai/theme-atom";
+import type { CompCalcEntry, CompEntry } from "@/jotai/comp-calc-atom";
+import themeAtom, { darkTheme, lightTheme } from "@/jotai/theme-atom";
 
 describe("CompGraph", () => {
   const mockCompEntries: CompEntry[] = [

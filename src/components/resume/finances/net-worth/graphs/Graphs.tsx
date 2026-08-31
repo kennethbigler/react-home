@@ -1,9 +1,6 @@
 import { Grid } from "@mui/material";
-import type {
-  NetWorthCalcEntry,
-  NetWorthEntry,
-} from "../../../../../jotai/finances-atom";
-import usePointSelection from "../../shared/usePointSelection";
+import type { NetWorthCalcEntry, NetWorthEntry } from "@/jotai/net-worth-atom";
+import usePointSelection from "@/components/resume/finances/shared/usePointSelection";
 import NetWorthChart from "./NetWorthGraph";
 import BreakdownChart from "./BreakdownGraph";
 

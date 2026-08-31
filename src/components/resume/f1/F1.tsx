@@ -4,14 +4,14 @@ import BudgetSankey from "./charts/BudgetSankey";
 import ConstructorCurrentSpline from "./charts/ConstructorCurrentSpline";
 import ConstructorPointsLine from "./charts/ConstructorPointsLine";
 import ConstructorStandingsLine from "./charts/ConstructorStandingsLine";
-import ExpandableCard from "../../common/expandable-card";
-import themeAtom from "../../../jotai/theme-atom";
+import ExpandableCard from "@/components/common/expandable-card";
+import themeAtom from "@/jotai/theme-atom";
 import {
   RED_BULL_HEX,
   MCLAREN_HEX,
   ASTON_HEX,
   contractData,
-} from "../../../constants/f1";
+} from "@/constants/f1";
 import DriverCurrentSpline from "./charts/DriverCurrentSpline";
 import DriverPointsLine from "./charts/DriverPointsLine";
 import DriverStandingsLine from "./charts/DriverStandingsLine";

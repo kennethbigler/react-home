@@ -4,11 +4,10 @@ import {
   rankSort,
   shuffle,
   deckAtom,
-  lastDealtCardsAtom,
   dealCardsAtom,
   dealPokerAtom,
   shuffleAtom,
-} from "./deck-state";
+} from "./deck-atom";
 import playerAtom from "./player-atom";
 
 const cardNames = [
@@ -28,7 +27,7 @@ const cardNames = [
 ];
 const cardSuits = ["♣", "♦", "♥", "♠"];
 
-describe("jotai | deck-state", () => {
+describe("jotai | deck-atom", () => {
   describe("rankSort", () => {
     it("sorts by weight ascending", () => {
       const hand = [
@@ -82,8 +81,7 @@ describe("jotai | deck-state", () => {
 
     it("deal(0) returns empty array and does not change deck length", () => {
       const initialDeck = store.get(deckAtom);
-      store.set(dealCardsAtom, 0);
-      const dealt = store.get(lastDealtCardsAtom);
+      const dealt = store.set(dealCardsAtom, 0);
       const deck = store.get(deckAtom);
       expect(dealt).toHaveLength(0);
       expect(deck).toHaveLength(initialDeck.length);
@@ -91,8 +89,7 @@ describe("jotai | deck-state", () => {
 
     it("deal(1) returns one card and reduces deck by 1", () => {
       const initialLen = store.get(deckAtom).length;
-      store.set(dealCardsAtom, 1);
-      const dealt = store.get(lastDealtCardsAtom);
+      const dealt = store.set(dealCardsAtom, 1);
       const deck = store.get(deckAtom);
       expect(dealt).toHaveLength(1);
       expect(cardNames).toContain(dealt[0].name);
@@ -102,18 +99,15 @@ describe("jotai | deck-state", () => {
 
     it("deal(2) returns two cards and reduces deck by 2", () => {
       const initialLen = store.get(deckAtom).length;
-      store.set(dealCardsAtom, 2);
-      const dealt = store.get(lastDealtCardsAtom);
+      const dealt = store.set(dealCardsAtom, 2);
       const deck = store.get(deckAtom);
       expect(dealt).toHaveLength(2);
       expect(deck).toHaveLength(initialLen - 2);
     });
 
     it("sequential deals return different cards (no duplicate draws)", () => {
-      store.set(dealCardsAtom, 1);
-      const first = store.get(lastDealtCardsAtom)[0];
-      store.set(dealCardsAtom, 1);
-      const second = store.get(lastDealtCardsAtom)[0];
+      const [first] = store.set(dealCardsAtom, 1);
+      const [second] = store.set(dealCardsAtom, 1);
       expect(first).not.toEqual(second);
     });
   });

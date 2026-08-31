@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
+import persistentAtom from "./storage";
 import playerAtom, { type DBPlayer } from "./player-atom";
 import turnAtom, { type TurnState } from "./turn-atom";
 
@@ -22,7 +22,7 @@ export const newBlackjackGame = (): BlackjackState => ({
   hideHands: true,
 });
 
-const blackjackAtom = atomWithStorage("blackjackAtom", newBlackjackGame());
+const blackjackAtom = persistentAtom("blackjackAtom", newBlackjackGame());
 
 interface BlackjackGameState {
   bj: BlackjackState;
@@ -49,5 +49,6 @@ const blackjackState = atom(
     }
   },
 );
+blackjackState.debugLabel = "blackjackState";
 
 export default blackjackState;

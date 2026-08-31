@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
-import { Provider } from "jotai";
+import { act } from "@testing-library/react";
+import { renderHookWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 import useSpades, {
   bidsToString,
   penaltyHelper,
@@ -9,16 +9,12 @@ import useSpades, {
 } from "./useSpades";
 
 describe("useSpades", () => {
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <Provider>{children}</Provider>
-  );
-
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("initializes with default values", () => {
-    const { result } = renderHook(() => useSpades(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
     expect(result.current.data).toBeDefined();
     expect(result.current.first).toBeDefined();
@@ -288,7 +284,7 @@ describe("useSpades", () => {
 
   describe("addBid", () => {
     it("creates a new data entry when last entry has score (line 40-43 branch)", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       act(() => {
         result.current.addBid([
@@ -304,7 +300,7 @@ describe("useSpades", () => {
     });
 
     it("edits existing data entry when last entry has no score (line 33-37 branch)", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       // First add a bid
       act(() => {
@@ -335,7 +331,7 @@ describe("useSpades", () => {
 
   describe("addScore", () => {
     it("returns early when score already exists (line 82-84 branch)", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       // Add a bid
       act(() => {
@@ -364,7 +360,7 @@ describe("useSpades", () => {
     });
 
     it("adds score successfully when bid exists without score", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       // Add a bid
       act(() => {
@@ -389,7 +385,7 @@ describe("useSpades", () => {
 
   describe("addPenalty", () => {
     it("adjusts last index when current entry has no score (line 48-50 branch)", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       // Add a bid
       act(() => {
@@ -426,7 +422,7 @@ describe("useSpades", () => {
     });
 
     it("adds penalty to team 0 (line 51-62 branch)", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       // Add a bid
       act(() => {
@@ -459,7 +455,7 @@ describe("useSpades", () => {
     });
 
     it("adds penalty to team 1 (line 63-75 else branch)", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       // Add a bid
       act(() => {
@@ -492,7 +488,7 @@ describe("useSpades", () => {
     });
 
     it("returns early when score1 is undefined for team 0 (line 54-56 branch)", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       // Try to add penalty without any data
       act(() => {
@@ -504,7 +500,7 @@ describe("useSpades", () => {
     });
 
     it("returns early when score2 is undefined for team 1 (line 66-68 branch)", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       // Try to add penalty without any data
       act(() => {
@@ -518,7 +514,7 @@ describe("useSpades", () => {
 
   describe("newGame", () => {
     it("increments wins1 when team 1 has higher score (line 145-147 branch)", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       // Add a bid - Team 1 (players 0&2) bids 10, Team 2 (players 1&3) bids 3
       act(() => {
@@ -561,7 +557,7 @@ describe("useSpades", () => {
     });
 
     it("increments wins2 when team 2 has higher score", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       // Add a bid
       act(() => {
@@ -592,7 +588,7 @@ describe("useSpades", () => {
     });
 
     it("increments wins1 when scores are equal but team 1 has more bags (line 146 branch)", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       // This test covers the edge case where score1 === score2 && bags1 > bags2
       // Add a bid
@@ -623,7 +619,7 @@ describe("useSpades", () => {
     });
 
     it("resets data array when starting new game", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       // Add a bid
       act(() => {
@@ -654,7 +650,7 @@ describe("useSpades", () => {
 
   describe("state updates", () => {
     it("updates first player after adding score", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       const initialFirst = result.current.first;
 
@@ -678,7 +674,7 @@ describe("useSpades", () => {
     });
 
     it("resets lastBid after adding score", () => {
-      const { result } = renderHook(() => useSpades(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useSpades());
 
       // Add a bid
       act(() => {

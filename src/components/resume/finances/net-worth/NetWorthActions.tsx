@@ -1,62 +1,41 @@
 import { useState } from "react";
 import { Box, Button } from "@mui/material";
-import {
-  type NetWorthEntry,
-  mergeNetWorthCategoryAmounts,
-  sortNetWorthEntriesByDate,
-  syncNetWorthEntryAmounts,
-} from "../../../../jotai/finances-atom";
+import type { NetWorthEntry } from "@/jotai/net-worth-atom";
 import type { EntryDialogState } from "../shared/useEntryDialog";
 import NetWorthEntryDialog from "./NetWorthEntryDialog";
 import CategoriesDialog, { type CategoryMerge } from "./CategoriesDialog";
 
 interface NetWorthActionsProps {
   entries: NetWorthEntry[];
-  setEntries: (e: NetWorthEntry[]) => void;
   categories: string[];
-  setCategories: (c: string[]) => void;
   entryDialog: EntryDialogState;
+  saveEntry: (entry: NetWorthEntry) => void;
+  removeEntry: () => void;
+  saveCategories: (
+    nextCategories: string[],
+    mappings: { name: string; previousName?: string }[],
+    merges: CategoryMerge[],
+  ) => void;
 }
 
 const NetWorthActions = ({
   entries,
-  setEntries,
   categories,
-  setCategories,
   entryDialog,
+  saveEntry,
+  removeEntry,
+  saveCategories,
 }: NetWorthActionsProps) => {
   const [openCategories, setOpenCategories] = useState(false);
   const closeCategoriesModal = () => setOpenCategories(false);
   const openCategoriesModal = () => setOpenCategories(true);
 
-  const persistEntries = (next: NetWorthEntry[]) => {
-    setEntries(sortNetWorthEntriesByDate(next));
-  };
-
-  const addEntry = (entry: NetWorthEntry) => {
-    const next = [...entries];
-    if (entryDialog.editIdx === -1) {
-      next.push(entry);
-    } else {
-      next[entryDialog.editIdx] = entry;
-    }
-    persistEntries(next);
-    entryDialog.close();
-  };
-
-  const removeEntry = () => {
-    persistEntries(entries.filter((_, i) => i !== entryDialog.editIdx));
-    entryDialog.close();
-  };
-
-  const saveCategories = (
+  const handleSaveCategories = (
     nextCategories: string[],
     mappings: { name: string; previousName?: string }[],
     merges: CategoryMerge[],
   ) => {
-    const merged = mergeNetWorthCategoryAmounts(entries, merges);
-    setCategories(nextCategories);
-    persistEntries(syncNetWorthEntryAmounts(merged, mappings));
+    saveCategories(nextCategories, mappings, merges);
     closeCategoriesModal();
   };
 
@@ -79,7 +58,7 @@ const NetWorthActions = ({
           categories={categories}
           hasEntries={entries.length > 0}
           onClose={closeCategoriesModal}
-          onSave={saveCategories}
+          onSave={handleSaveCategories}
         />
       )}
       {entryDialog.open && (
@@ -89,7 +68,7 @@ const NetWorthActions = ({
           entries={entries}
           categories={categories}
           onClose={entryDialog.close}
-          addEntry={addEntry}
+          addEntry={saveEntry}
           onDelete={isEditingEntry ? removeEntry : undefined}
         />
       )}

@@ -1,11 +1,11 @@
-import InfoPopup from "../../../../common/info-popover/InfoPopup";
+import InfoPopup from "@/components/common/info-popover/InfoPopup";
 import Roles from "./Roles";
 import type {
   ActiveScript,
   BotCPlayer,
   BotCPlayerStatus,
   BotCRole,
-} from "../../../../../jotai/botc-atom";
+} from "@/jotai/botc-atom";
 import EmojiNotes from "./EmojiNotes";
 import { Grid, TextField } from "@mui/material";
 

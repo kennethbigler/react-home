@@ -1,9 +1,9 @@
-import { atomWithStorage } from "jotai/utils";
+import persistentAtom from "./storage";
 
 export interface StockState {
   [key: string]: number;
 }
 
-const stockAtom = atomWithStorage<StockState>("stockAtom", {});
+const stockAtom = persistentAtom<StockState>("stockAtom", {});
 
 export default stockAtom;

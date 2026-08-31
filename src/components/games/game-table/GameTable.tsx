@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import Board from "./board/Board";
 import ButtonGroup from "./button-group/ButtonGroup";
-import type { DBPlayer } from "../../../jotai/player-atom";
-import type { TurnState } from "../../../jotai/turn-atom";
+import type { DBPlayer } from "@/jotai/player-atom";
+import type { TurnState } from "@/jotai/turn-atom";
 
 interface GameTableProps<T extends string> {
   betHandler?: (id: number, value: number) => void;

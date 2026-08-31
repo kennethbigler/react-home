@@ -1,42 +1,27 @@
-import { useMemo } from "react";
 import { Alert } from "@mui/material";
-import { useAtom, useAtomValue } from "jotai";
-import {
-  netWorthAtom,
-  netWorthCategoriesAtom,
-  netWorthRead,
-  sortNetWorthEntriesByDate,
-} from "../../../../jotai/finances-atom";
-import useEntryDialog from "../shared/useEntryDialog";
-import useSortedEntries from "../shared/useSortedEntries";
 import NetWorthActions from "./NetWorthActions";
 import Graphs from "./graphs/Graphs";
 import NetWorthEntryDisplay from "./NetWorthEntryDisplay";
-import { sortCategoriesByFinalEntry } from "./sortCategories";
+import useNetWorthEntries from "./useNetWorthEntries";
 
 const NetWorth = () => {
-  const [entries, setEntries] = useAtom(netWorthAtom);
-  const [categories, setCategories] = useAtom(netWorthCategoriesAtom);
-  const calcEntries = useAtomValue(netWorthRead);
-  const sortedEntries = useSortedEntries(
+  const {
     entries,
-    setEntries,
-    sortNetWorthEntriesByDate,
-  );
-  const entryDialog = useEntryDialog();
-
-  const sortedCategories = useMemo(
-    () => sortCategoriesByFinalEntry(categories, sortedEntries),
-    [categories, sortedEntries],
-  );
+    calcEntries,
+    categories,
+    entryDialog,
+    saveEntry,
+    removeEntry,
+    saveCategories,
+  } = useNetWorthEntries();
 
   return (
     <>
-      {sortedEntries.length > 0 ? (
+      {entries.length > 0 ? (
         <Graphs
-          entries={sortedEntries}
+          entries={entries}
           calcEntries={calcEntries}
-          categories={sortedCategories}
+          categories={categories}
         />
       ) : (
         <Alert severity="warning" sx={{ mb: 2 }}>
@@ -44,17 +29,18 @@ const NetWorth = () => {
         </Alert>
       )}
       <NetWorthActions
-        entries={sortedEntries}
-        setEntries={setEntries}
-        categories={sortedCategories}
-        setCategories={setCategories}
+        entries={entries}
+        categories={categories}
         entryDialog={entryDialog}
+        saveEntry={saveEntry}
+        removeEntry={removeEntry}
+        saveCategories={saveCategories}
       />
-      {sortedEntries.length > 0 && (
+      {entries.length > 0 && (
         <NetWorthEntryDisplay
-          entries={sortedEntries}
+          entries={entries}
           calcEntries={calcEntries}
-          categories={sortedCategories}
+          categories={categories}
           onClick={entryDialog.openEdit}
         />
       )}

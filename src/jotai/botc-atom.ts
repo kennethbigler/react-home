@@ -1,5 +1,6 @@
-import { atomWithStorage } from "jotai/utils";
-import type { MuiColors } from "../components/common/types";
+import { atom } from "jotai";
+import persistentAtom from "./storage";
+import type { MuiColors } from "../@types/mui";
 
 export type BotCPlayerStatus = "liar" | "used" | "exec" | "kill";
 
@@ -85,6 +86,23 @@ export const newBotCGame = (): BotCState => ({
   tracker: newTracker(),
 });
 
-const botcAtom = atomWithStorage("botcAtom_v2", newBotCGame());
+const botcAtom = persistentAtom("botcAtom_v2", newBotCGame());
+
+/* Per-field read atoms so consumers subscribe only to the slice they render.
+ * Each returns a stable reference until that field actually changes. */
+const fieldAtom = <K extends keyof BotCState>(key: K) => {
+  const anAtom = atom((get) => get(botcAtom)[key]);
+  anAtom.debugLabel = `botcAtom.${key}`;
+  return anAtom;
+};
+
+export const botcIsTextAtom = fieldAtom("isText");
+export const botcNumPlayersAtom = fieldAtom("numPlayers");
+export const botcNumTravelersAtom = fieldAtom("numTravelers");
+export const botcScriptAtom = fieldAtom("script");
+export const botcPlayersAtom = fieldAtom("botcPlayers");
+export const botcRoundAtom = fieldAtom("round");
+export const botcRoundNotesAtom = fieldAtom("roundNotes");
+export const botcTrackerAtom = fieldAtom("tracker");
 
 export default botcAtom;

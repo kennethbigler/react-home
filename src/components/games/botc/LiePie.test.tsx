@@ -2,14 +2,13 @@ import {
   formatTooltip,
   getPieSeriesData,
   getTooltipFormatter,
-} from "../../common/highcharts/tests/highchartsMocks";
+} from "@/components/common/highcharts/tests/highchartsMocks";
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { createStore, Provider } from "jotai";
 import { green, indigo } from "@mui/material/colors";
 import LiePie from "./LiePie";
-import { MISINFO } from "../../../constants/botc-slug-map";
+import { MISINFO } from "@/constants/botc-slug-map";
 
 // Use a plain writable atom so tests can control theme.mode deterministically.
 // atomWithStorage caches at module level and ignores per-store overrides.
@@ -28,20 +27,17 @@ vi.mock("../../../jotai/theme-atom", async () => {
 });
 
 // Import themeAtom AFTER the mock so we get the mocked atom instance
-import themeAtom from "../../../jotai/theme-atom";
+import themeAtom from "@/jotai/theme-atom";
+import { renderWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 
 describe("LiePie", () => {
   it("renders in dark mode (theme.mode === 'dark')", () => {
-    const store = createStore();
-    // Store reads the default value (dark) from the atom
-    render(
-      <Provider store={store}>
-        <LiePie
-          numPlayers={8}
-          numTravelers={0}
-          script={{ type: "base", index: 0 }}
-        />
-      </Provider>,
+    renderWithHydratedAtoms(
+      <LiePie
+        numPlayers={8}
+        numTravelers={0}
+        script={{ type: "base", index: 0 }}
+      />,
     );
 
     expect(screen.getByText("Who is lying?")).toBeInTheDocument();
@@ -50,32 +46,30 @@ describe("LiePie", () => {
   it("renders in light mode (covers theme.mode === 'light' branch at line 50)", () => {
     // Override to lightTheme — LiePie reads this and evaluates
     // `theme.mode === "light" ? "black" : "white"` → "black"
-    const store = createStore();
-    store.set(themeAtom, { mode: "light", primary: indigo, secondary: green });
-
-    render(
-      <Provider store={store}>
-        <LiePie
-          numPlayers={8}
-          numTravelers={0}
-          script={{ type: "base", index: 0 }}
-        />
-      </Provider>,
+    renderWithHydratedAtoms(
+      <LiePie
+        numPlayers={8}
+        numTravelers={0}
+        script={{ type: "base", index: 0 }}
+      />,
+      [
+        [
+          themeAtom,
+          { mode: "light", primary: indigo, secondary: green },
+        ] as const,
+      ],
     );
 
     expect(screen.getByText("Who is lying?")).toBeInTheDocument();
   });
 
   it("hides demon selection when the script has only one demon", () => {
-    const store = createStore();
-    render(
-      <Provider store={store}>
-        <LiePie
-          numPlayers={8}
-          numTravelers={0}
-          script={{ type: "base", index: 0 }}
-        />
-      </Provider>,
+    renderWithHydratedAtoms(
+      <LiePie
+        numPlayers={8}
+        numTravelers={0}
+        script={{ type: "base", index: 0 }}
+      />,
     );
 
     expect(
@@ -85,15 +79,12 @@ describe("LiePie", () => {
   });
 
   it("renders demon selection for S&V", async () => {
-    const store = createStore();
-    render(
-      <Provider store={store}>
-        <LiePie
-          numPlayers={10}
-          numTravelers={0}
-          script={{ type: "base", index: 1 }}
-        />
-      </Provider>,
+    renderWithHydratedAtoms(
+      <LiePie
+        numPlayers={10}
+        numTravelers={0}
+        script={{ type: "base", index: 1 }}
+      />,
     );
 
     expect(
@@ -125,15 +116,12 @@ describe("LiePie", () => {
   });
 
   it("includes zero-value slices in the pie data", () => {
-    const store = createStore();
-    render(
-      <Provider store={store}>
-        <LiePie
-          numPlayers={7}
-          numTravelers={0}
-          script={{ type: "base", index: 0 }}
-        />
-      </Provider>,
+    renderWithHydratedAtoms(
+      <LiePie
+        numPlayers={7}
+        numTravelers={0}
+        script={{ type: "base", index: 0 }}
+      />,
     );
 
     const pieData = getPieSeriesData();
@@ -143,15 +131,12 @@ describe("LiePie", () => {
   });
 
   it("renders pie slices with role-aware tooltips", () => {
-    const store = createStore();
-    render(
-      <Provider store={store}>
-        <LiePie
-          numPlayers={7}
-          numTravelers={0}
-          script={{ type: "base", index: 0 }}
-        />
-      </Provider>,
+    renderWithHydratedAtoms(
+      <LiePie
+        numPlayers={7}
+        numTravelers={0}
+        script={{ type: "base", index: 0 }}
+      />,
     );
 
     const pieData = getPieSeriesData();

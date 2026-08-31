@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import { afterEach, vi } from "vitest";
 import TimelineCard from "../TimelineCard";
 
-import dateObj from "../../../../../apis/DateHelper";
-import type { CarEntry } from "../../../../../constants/cars";
+import dateObj from "@/apis/DateHelper";
+import type { CarEntry } from "@/constants/cars";
 
 const carReqs = {
   src: "somewhere",

@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import ConfirmDeleteDialog from "../shared/ConfirmDeleteDialog";
 import dialogTextFieldProps from "../shared/dialogTextFieldProps";
+import useConfirmDelete from "../shared/useConfirmDelete";
 
 const VALIDATION_ERROR_ID = "stock-dialog-validation-error";
 const STOCK_ERROR = "Enter a stock ticker.";
@@ -50,7 +51,11 @@ const StockDialog = ({
   const [price, setPrice] = useState(exPrice || 0);
   const [stock, setStock] = useState(exStock || "");
   const [fieldError, setFieldError] = useState<FieldError | null>(null);
-  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const confirmDelete = useConfirmDelete(() => {
+    if (exStock) {
+      removeStockEntry(exStock)();
+    }
+  });
 
   const errorMessage =
     fieldError === "stock"
@@ -81,13 +86,6 @@ const StockDialog = ({
     }
 
     addStockEntry(normalizedStock, price);
-  };
-
-  const confirmDelete = () => {
-    if (exStock) {
-      removeStockEntry(exStock)();
-    }
-    setConfirmDeleteOpen(false);
   };
 
   return (
@@ -124,7 +122,7 @@ const StockDialog = ({
         </DialogContent>
         <DialogActions>
           {exStock ? (
-            <Button onClick={() => setConfirmDeleteOpen(true)} color="error">
+            <Button onClick={confirmDelete.request} color="error">
               Delete stock entry
             </Button>
           ) : null}
@@ -135,12 +133,12 @@ const StockDialog = ({
         </DialogActions>
       </Dialog>
       <ConfirmDeleteDialog
-        open={confirmDeleteOpen}
+        open={confirmDelete.open}
         title="Delete stock entry?"
         description="This stock entry will be permanently deleted."
         confirmLabel="Delete entry"
-        onCancel={() => setConfirmDeleteOpen(false)}
-        onConfirm={confirmDelete}
+        onCancel={confirmDelete.cancel}
+        onConfirm={confirmDelete.confirm}
       />
     </>
   );

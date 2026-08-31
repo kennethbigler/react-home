@@ -1,15 +1,15 @@
-import { playerDist } from "../../../constants/botc";
-import type { ActiveScript } from "../../../jotai/botc-atom";
+import { playerDist } from "@/constants/botc";
+import type { ActiveScript } from "@/jotai/botc-atom";
 import {
   MISINFO,
   getMisinfoForSlug,
   getRoleBySlug,
   type MisinfoTag,
-} from "../../../constants/botc-slug-map";
+} from "@/constants/botc-slug-map";
 import {
   getScriptDemonSlugs,
   getScriptMisinfoSlugs,
-} from "../../../utils/botc-script-utils";
+} from "@/utils/botc-script-utils";
 
 /** Pre-parsed playerDist: [townsfolk, outsiders, minions, demons] per player count */
 const PLAYER_DIST_PARSED: [number, number, number, number][] = playerDist.map(

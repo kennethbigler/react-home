@@ -6,10 +6,7 @@ import {
   type SelectChangeEvent,
   Typography,
 } from "@mui/material";
-import {
-  type ExpenseEntryColor,
-  expenseEntryColors,
-} from "../../../../../jotai/finances-atom";
+import { type ExpenseEntryColor, expenseEntryColors } from "@/apis/budget";
 
 const categoryColorOptions: ReadonlyArray<{
   value: ExpenseEntryColor | "";

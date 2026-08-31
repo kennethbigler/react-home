@@ -1,7 +1,7 @@
 import { useState } from "react";
-import InfoPopup from "../../../common/info-popover/InfoPopup";
+import InfoPopup from "@/components/common/info-popover/InfoPopup";
 import AddBidPlayer from "./AddBidPlayer";
-import { type Bids, defaultBid } from "../../../../jotai/spades-atom";
+import { type Bids, defaultBid } from "@/jotai/spades-atom";
 import {
   Table,
   TableBody,

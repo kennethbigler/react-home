@@ -4,7 +4,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import RoleSection from "./RoleSection";
-import type { BotCRole } from "../../../../../jotai/botc-atom";
+import type { BotCRole } from "@/jotai/botc-atom";
 
 describe("RoleSection", () => {
   const mockRoles: BotCRole[] = [

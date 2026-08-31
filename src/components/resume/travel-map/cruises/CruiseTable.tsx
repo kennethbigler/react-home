@@ -7,7 +7,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { cruises, totalNights } from "../../../../constants/cruises";
+import { cruises, totalNights } from "@/constants/cruises";
 import { grey } from "@mui/material/colors";
 
 // --------------------     Styles     -------------------- //

@@ -1,6 +1,6 @@
 import { atom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
-import playerAtom from "./player-atom";
+import persistentAtom from "./storage";
+import playerAtom, { patchPlayerAtom } from "./player-atom";
 
 export type Dice = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export interface YahtzeeState {
@@ -28,7 +28,7 @@ export const newYahtzee = (): Omit<
   bottomScores: [-1, -1, -1, -1, -1, -1, -1],
 });
 
-const yahtzeeAtom = atomWithStorage<YahtzeeState>("yahtzeeAtom", {
+const yahtzeeAtom = persistentAtom<YahtzeeState>("yahtzeeAtom", {
   ...newYahtzee(),
   bestScore: 0,
   lastScore: 0,
@@ -71,6 +71,7 @@ export const yahtzeeRead = atom((get) => {
     name,
   };
 });
+yahtzeeRead.debugLabel = "yahtzeeRead";
 
 interface YahtzeeGameState extends YahtzeeState {
   money: number;
@@ -83,14 +84,11 @@ const yahtzeeState = atom(
 
     return { ...yahtzee, money };
   },
-  (get, set, { money, ...yahtzee }: YahtzeeGameState) => {
+  (_get, set, { money, ...yahtzee }: YahtzeeGameState) => {
     set(yahtzeeAtom, yahtzee);
-
-    const players = get(playerAtom);
-    const newPlayers = [...players];
-    newPlayers[0] = { ...players[0], money };
-    set(playerAtom, newPlayers);
+    set(patchPlayerAtom, 0, { money });
   },
 );
+yahtzeeState.debugLabel = "yahtzeeState";
 
 export default yahtzeeState;

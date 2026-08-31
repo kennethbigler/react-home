@@ -5,9 +5,9 @@ import {
   memo,
   type ReactElement,
 } from "react";
-import roles, { CASINO, Importance, intro } from "../../../constants/murder";
+import roles, { CASINO, Importance, intro } from "@/constants/murder";
 import MurderMysteryPanel from "./MurderMysteryPanel";
-import ExpandableCard from "../../common/expandable-card";
+import ExpandableCard from "@/components/common/expandable-card";
 import { Typography } from "@mui/material";
 
 const MurderMystery = memo(() => {

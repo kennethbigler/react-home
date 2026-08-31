@@ -1,4 +1,4 @@
-import type { ScoreRow } from "../../../jotai/spades-atom";
+import type { ScoreRow } from "@/jotai/spades-atom";
 import { getScoreText } from "./helpers/getScoreText";
 import {
   Table,

@@ -6,9 +6,10 @@ import Header from "./Header";
 import dndState, {
   dealOrNoDealRead,
   briefcasesToOpen,
+  dndOpenAtom,
   newDNDGame,
-} from "../../../jotai/deal-or-no-deal-state";
-import PlayerMenu from "../../common/header/PlayerMenu";
+} from "@/jotai/deal-or-no-deal-atom";
+import PlayerMenu from "@/components/common/header/PlayerMenu";
 import { Typography } from "@mui/material";
 
 /* DealOrNoDeal  ->  Header
@@ -16,13 +17,17 @@ import { Typography } from "@mui/material";
  *              |->  Modal  ->  Money */
 const DealOrNoDeal = memo(() => {
   const [{ dnd, money, status }, setState] = useAtom(dndState);
+  const [dndOpen, setDndOpen] = useAtom(dndOpenAtom);
   const { numCases, offer, name } = useAtomValue(dealOrNoDealRead);
-  const { board, dndOpen, isOver, turn, playerChoice, casesToOpen } = dnd;
+  const { board, isOver, turn, playerChoice, casesToOpen } = dnd;
 
   // --------------------     Header     -------------------- //
 
   /** called in Header, resets game */
-  const newGame = (): void => setState({ dnd: newDNDGame() });
+  const newGame = (): void => {
+    setDndOpen(false);
+    setState({ dnd: newDNDGame() });
+  };
 
   // --------------------     Board     -------------------- //
 
@@ -43,11 +48,11 @@ const DealOrNoDeal = memo(() => {
         newBoard[x] = newCase;
 
         // update board
+        setDndOpen(casesToOpen === 1);
         setState({
           dnd: {
             ...dnd,
             board: newBoard,
-            dndOpen: casesToOpen === 1,
             casesToOpen: casesToOpen - 1,
           },
         });
@@ -70,10 +75,10 @@ const DealOrNoDeal = memo(() => {
    */
   const deal = (): void => {
     const total = Math.ceil(offer / 1000);
+    setDndOpen(false);
     setState({
       dnd: {
         ...dnd,
-        dndOpen: false,
         isOver: total,
       },
       money: money + total,
@@ -88,13 +93,13 @@ const DealOrNoDeal = memo(() => {
    */
   const noDeal = (): void => {
     // no deal on last case
+    setDndOpen(false);
     if (numCases <= 2) {
       const newOffer = playerChoice?.val || 0;
       const total = Math.ceil(newOffer / 1000);
       setState({
         dnd: {
           ...dnd,
-          dndOpen: false,
           isOver: total,
         },
         money: money + total,
@@ -105,7 +110,6 @@ const DealOrNoDeal = memo(() => {
       setState({
         dnd: {
           ...dnd,
-          dndOpen: false,
           turn: turn + 1,
           casesToOpen:
             turn < briefcasesToOpen - 1 ? briefcasesToOpen - turn : 1,
@@ -124,10 +128,10 @@ const DealOrNoDeal = memo(() => {
       const bc = board[i];
       if (bc.on && playerChoice && bc.loc !== playerChoice.loc) {
         const total = Math.ceil(bc.val / 1000);
+        setDndOpen(false);
         setState({
           dnd: {
             ...dnd,
-            dndOpen: false,
             isOver: total,
           },
           money: money + total,

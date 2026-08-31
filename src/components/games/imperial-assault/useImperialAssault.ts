@@ -1,5 +1,13 @@
-import { useAtom } from "jotai";
-import impAssAtom from "../../../jotai/imperial-assault-atom";
+import { useAtomValue, useSetAtom } from "jotai";
+import impAssAtom, {
+  impAssCampaignAtom,
+  impAssCampaignIdxAtom,
+  impAssCreditsAtom,
+  impAssForcedMissionsAtom,
+  impAssInfluenceAtom,
+  impAssRebelXPAtom,
+  impAssXPAtom,
+} from "@/jotai/imperial-assault-atom";
 import {
   basic,
   twinShadows,
@@ -9,7 +17,8 @@ import {
   heartOfTheEmpire,
   tyrantsOfLothal,
   getForcedMission,
-} from "../../../constants/imperial-campaigns";
+  type Mission,
+} from "@/constants/imperial-campaigns";
 
 const campaigns = [
   basic,
@@ -21,8 +30,20 @@ const campaigns = [
   tyrantsOfLothal,
 ];
 
+/** Immutable single-mission patch, shared by the mission actions */
+const withMission = (
+  missions: Mission[],
+  i: number,
+  patch: Partial<Mission>,
+): Mission[] => {
+  const newMissions = [...missions];
+  newMissions[i] = { ...newMissions[i], ...patch };
+  return newMissions;
+};
+
 export const useHeader = () => {
-  const [{ campaignIdx }, setState] = useAtom(impAssAtom);
+  const campaignIdx = useAtomValue(impAssCampaignIdxAtom);
+  const setState = useSetAtom(impAssAtom);
 
   /** handle campaign changes */
   const handleCampaignChange = (cIdx: string) => {
@@ -58,82 +79,91 @@ export const useHeader = () => {
 };
 
 export const useRebels = () => {
-  const [{ rebelXP, credits, ...other }, setState] = useAtom(impAssAtom);
+  const rebelXP = useAtomValue(impAssRebelXPAtom);
+  const credits = useAtomValue(impAssCreditsAtom);
+  const setState = useSetAtom(impAssAtom);
 
-  const handleXPClick = (r: number, n: number) => () => {
-    const xp = [...rebelXP];
-    xp[r] = n;
-    setState({ ...other, credits, rebelXP: xp });
-  };
+  const handleXPClick = (r: number, n: number) => () =>
+    setState((prev) => {
+      const xp = [...prev.rebelXP];
+      xp[r] = n;
+      return { ...prev, rebelXP: xp };
+    });
 
   const updateCredits = (e: React.FocusEvent<HTMLInputElement>) =>
-    setState({ ...other, rebelXP, credits: e.target.value || "" });
+    setState((prev) => ({ ...prev, credits: e.target.value || "" }));
 
   return { rebelXP, credits, handleXPClick, updateCredits };
 };
 
 export const useEmpire = () => {
-  const [{ xp, influence, ...other }, setState] = useAtom(impAssAtom);
+  const xp = useAtomValue(impAssXPAtom);
+  const influence = useAtomValue(impAssInfluenceAtom);
+  const setState = useSetAtom(impAssAtom);
+
   const handleXPClick = (n: number) => () =>
-    setState({ ...other, influence, xp: n });
+    setState((prev) => ({ ...prev, xp: n }));
   const handleInfluenceClick = (n: number) => () =>
-    setState({ ...other, xp, influence: n });
+    setState((prev) => ({ ...prev, influence: n }));
 
   return { xp, influence, handleXPClick, handleInfluenceClick };
 };
 
 export const useMissions = () => {
-  const [{ campaign, forcedMissions, ...other }, setState] =
-    useAtom(impAssAtom);
+  const campaign = useAtomValue(impAssCampaignAtom);
+  const setState = useSetAtom(impAssAtom);
 
   const handleVictoryClick = (i: number) => () => {
     if (campaign[i].title === "") {
       return;
     }
-    // update campaign victory
-    const newCampaign = [...campaign];
-    const newMission = {
-      ...campaign[i],
-      victory: (campaign[i].victory + 1) % 3,
-    };
-    newCampaign[i] = newMission;
-    // update forced mission threat
-    const newFMs = [...forcedMissions];
-    const last = newFMs.length - 1;
-    if (newFMs[last].title === "") {
-      const newFM = { ...newFMs[last], threat: newCampaign[i].threat };
-      newFMs[last] = newFM;
-    }
-    // update state
-    setState({ ...other, forcedMissions: newFMs, campaign: newCampaign });
+    setState((prev) => {
+      // update campaign victory
+      const newCampaign = withMission(prev.campaign, i, {
+        victory: (prev.campaign[i].victory + 1) % 3,
+      });
+      // update forced mission threat
+      let newFMs = prev.forcedMissions;
+      const last = newFMs.length - 1;
+      if (newFMs[last].title === "") {
+        newFMs = withMission(newFMs, last, { threat: newCampaign[i].threat });
+      }
+      return { ...prev, forcedMissions: newFMs, campaign: newCampaign };
+    });
   };
 
   const handleRShopClick = (i: number) => () => {
     if (!campaign[i].victory && !campaign[i].rShop) {
       return;
     }
-    const newCampaign = [...campaign];
-    const newMission = { ...campaign[i], rShop: !campaign[i].rShop };
-    newCampaign[i] = newMission;
-    setState({ ...other, forcedMissions, campaign: newCampaign });
+    setState((prev) => ({
+      ...prev,
+      campaign: withMission(prev.campaign, i, {
+        rShop: !prev.campaign[i].rShop,
+      }),
+    }));
   };
 
   const handleEShopClick = (i: number) => () => {
     if (!campaign[i].victory && !campaign[i].eShop) {
       return;
     }
-    const newCampaign = [...campaign];
-    const newMission = { ...campaign[i], eShop: !campaign[i].eShop };
-    newCampaign[i] = newMission;
-    setState({ ...other, forcedMissions, campaign: newCampaign });
+    setState((prev) => ({
+      ...prev,
+      campaign: withMission(prev.campaign, i, {
+        eShop: !prev.campaign[i].eShop,
+      }),
+    }));
   };
 
   const updateMissionName =
     (i: number) => (e: React.FocusEvent<HTMLInputElement>) => {
-      const newCampaign = [...campaign];
-      const newMission = { ...campaign[i], title: e.target.value || "" };
-      newCampaign[i] = newMission;
-      setState({ ...other, forcedMissions, campaign: newCampaign });
+      setState((prev) => ({
+        ...prev,
+        campaign: withMission(prev.campaign, i, {
+          title: e.target.value || "",
+        }),
+      }));
     };
 
   return {
@@ -146,27 +176,33 @@ export const useMissions = () => {
 };
 
 export const useForcedMissions = () => {
-  const [{ forcedMissions, ...other }, setState] = useAtom(impAssAtom);
+  const forcedMissions = useAtomValue(impAssForcedMissionsAtom);
+  const setState = useSetAtom(impAssAtom);
 
   const handleVictoryClick = (i: number) => () => {
     if (forcedMissions[i].title === "") {
       return;
     }
-    const newForcedMissions = [...forcedMissions];
-    newForcedMissions[i].victory = (forcedMissions[i].victory + 1) % 3;
-    // add new forced mission
-    if (i === forcedMissions.length - 1) {
-      newForcedMissions.push(getForcedMission(forcedMissions[i].threat));
-    }
-    setState({ ...other, forcedMissions: newForcedMissions });
+    setState((prev) => {
+      const newForcedMissions = withMission(prev.forcedMissions, i, {
+        victory: (prev.forcedMissions[i].victory + 1) % 3,
+      });
+      // add new forced mission
+      if (i === prev.forcedMissions.length - 1) {
+        newForcedMissions.push(getForcedMission(prev.forcedMissions[i].threat));
+      }
+      return { ...prev, forcedMissions: newForcedMissions };
+    });
   };
 
   const updateMissionName =
     (i: number) => (e: React.FocusEvent<HTMLInputElement>) => {
-      const newFMs = [...forcedMissions];
-      const newMission = { ...newFMs[i], title: e.target.value || "" };
-      newFMs[i] = newMission;
-      setState({ ...other, forcedMissions: newFMs });
+      setState((prev) => ({
+        ...prev,
+        forcedMissions: withMission(prev.forcedMissions, i, {
+          title: e.target.value || "",
+        }),
+      }));
     };
 
   return { forcedMissions, handleVictoryClick, updateMissionName };

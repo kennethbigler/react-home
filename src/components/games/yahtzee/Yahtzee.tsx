@@ -4,8 +4,8 @@ import ScoreTable from "./score-table/ScoreTable";
 import { ADD_DICE, type BottomGameScore } from "./types";
 import Header from "./Header";
 import TableHeader from "./TableHeader";
-import { type Dice, yahtzeeRead } from "../../../jotai/yahtzee-state";
-import useYahtzeeState from "./use-yahtzee-state";
+import { type Dice, yahtzeeRead } from "@/jotai/yahtzee-atom";
+import useYahtzeeState from "./useYahtzeeState";
 import { Typography } from "@mui/material";
 
 const topConstants = [

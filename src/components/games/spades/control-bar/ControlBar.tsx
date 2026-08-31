@@ -1,4 +1,4 @@
-import type { Bids } from "../../../../jotai/spades-atom";
+import type { Bids } from "@/jotai/spades-atom";
 import AddBid from "./AddBid";
 import AddPenalty from "./AddPenalty";
 import AddScore from "./AddScore";

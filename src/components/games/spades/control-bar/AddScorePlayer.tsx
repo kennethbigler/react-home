@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import Add from "@mui/icons-material/Add";
 import Remove from "@mui/icons-material/Remove";
-import { MAX_BID, MIN_BID } from "../../../../jotai/spades-atom";
+import { MAX_BID, MIN_BID } from "@/jotai/spades-atom";
 import { Grid, IconButton, Typography } from "@mui/material";
 
 interface AddScorePlayerProps {

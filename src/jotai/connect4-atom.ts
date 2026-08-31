@@ -1,4 +1,4 @@
-import { atomWithStorage } from "jotai/utils";
+import persistentAtom from "./storage";
 
 export const PIECE = 0;
 export const STREAK = 1;
@@ -35,6 +35,6 @@ export const newConnect4Game = (): Connect4State => ({
   turn: C4Turn.RED,
 });
 
-const connect4Atom = atomWithStorage("connect4Atom", newConnect4Game());
+const connect4Atom = persistentAtom("connect4Atom", newConnect4Game());
 
 export default connect4Atom;

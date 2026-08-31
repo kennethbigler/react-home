@@ -9,8 +9,8 @@ import {
   itemizeDeductionsAtom,
   itemizedDeductionAtom,
   partnerIncomeAtom,
-} from "../../../../../jotai/finances-atom";
-import type { ExpenseEntry } from "../../../../../apis/budget";
+} from "@/jotai/budget-atom";
+import type { ExpenseEntry } from "@/apis/budget";
 import BudgetExpenses from "./BudgetExpenses";
 
 const sampleEntries: ExpenseEntry[] = [

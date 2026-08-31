@@ -1,4 +1,4 @@
-import PlayerMenu from "../../common/header/PlayerMenu";
+import PlayerMenu from "@/components/common/header/PlayerMenu";
 import { getChipColor } from "./helpers/getChipColor";
 import { Avatar, Chip, Typography } from "@mui/material";
 

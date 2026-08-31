@@ -7,7 +7,7 @@ import {
   getTooltipFormatter,
   resetCapturedChartConfig,
   selectChartPoint,
-} from "../../../../common/highcharts/tests/highchartsMocks";
+} from "@/components/common/highcharts/tests/highchartsMocks";
 import { createTheme } from "@mui/material/styles";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { axe } from "jest-axe";
@@ -22,15 +22,9 @@ import {
   buildNetWorthChartData,
   formatNetWorthTooltip,
 } from "./netWorthGraphHelpers";
-import type {
-  NetWorthCalcEntry,
-  NetWorthEntry,
-} from "../../../../../jotai/finances-atom";
-import { getCategoryColor } from "./colors";
-import themeAtom, {
-  darkTheme,
-  lightTheme,
-} from "../../../../../jotai/theme-atom";
+import type { NetWorthCalcEntry, NetWorthEntry } from "@/jotai/net-worth-atom";
+import { getCategoryColor } from "@/components/resume/finances/shared/chartPalette";
+import themeAtom, { darkTheme, lightTheme } from "@/jotai/theme-atom";
 describe("resume | finances | net-worth | Graphs", () => {
   // Pre-sorted by final-entry amounts (largest first), as NetWorth provides.
   const categories = ["Investments", "Cash"];

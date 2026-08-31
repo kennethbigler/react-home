@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import type { BidRecommendation as BidRecommendationType } from "./bidding-logic";
-import { colorSuits } from "../../../suitColor";
+import { colorSuits } from "@/components/games/bridge/suitColor";
 
 interface BidRecommendationProps {
   recommendation: BidRecommendationType;

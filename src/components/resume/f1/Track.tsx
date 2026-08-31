@@ -1,6 +1,6 @@
 import { memo, type CSSProperties } from "react";
 import { Grid, Typography, IconButton, useTheme } from "@mui/material";
-import type { DateObj } from "../../../apis/DateHelper";
+import type { DateObj } from "@/apis/DateHelper";
 
 interface TrackDataBase {
   circuitLen: number;

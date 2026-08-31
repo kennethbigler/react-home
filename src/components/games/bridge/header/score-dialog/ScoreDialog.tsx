@@ -16,24 +16,17 @@ import bridgeAtom, {
   type AboveScores,
   bridgeRead,
   newBridgeGame,
+  pendingContractAtom,
   sum,
-} from "../../../../../jotai/bridge-atom";
+} from "@/jotai/bridge-atom";
 import ScoreSummary from "./ScoreSummary";
 
 const ScoreDialog = memo(() => {
   const [
-    {
-      aboveScores,
-      weBelow,
-      theyBelow,
-      weRubbers,
-      theyRubbers,
-      bids,
-      pendingContract,
-      ...other
-    },
+    { aboveScores, weBelow, theyBelow, weRubbers, theyRubbers, bids, ...other },
     setBridgeState,
   ] = useAtom(bridgeAtom);
+  const [pendingContract, setPendingContract] = useAtom(pendingContractAtom);
   const {
     gameIdx,
     weWins,
@@ -64,7 +57,7 @@ const ScoreDialog = memo(() => {
       setContractSuit(pendingContract.suit);
       setContractTricks(pendingContract.tricks);
       setIsWe(pendingContract.isWe);
-      setBridgeState((prev) => ({ ...prev, pendingContract: null }));
+      setPendingContract(null);
     }
     setIsOpen(true);
   };

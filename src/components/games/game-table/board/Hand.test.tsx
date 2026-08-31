@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import Hand from "./Hand";
-import type { DBHand } from "../../../../jotai/player-atom";
+import type { DBHand } from "@/jotai/player-atom";
 
 describe("games | game-table | Hand", () => {
   const card = { name: "A", suit: "♠", weight: 14 };

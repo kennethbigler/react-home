@@ -6,7 +6,7 @@ import ticTacToeAtom, {
   O,
   EMPTY,
   newTicTacToe,
-} from "../../../jotai/tic-tac-toe-atom";
+} from "@/jotai/tic-tac-toe-atom";
 import Header from "./Header";
 import History from "./History";
 import Board from "./Board";

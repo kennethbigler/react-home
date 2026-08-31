@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { useTracker } from "../useBotC";
 import { getGridSize } from "../botcHelpers";
-import { outlinedContrastSx } from "../../../../apis/outlinedButtonSx";
+import { outlinedContrastSx } from "@/apis/outlinedButtonSx";
 import { TextField, Grid, Button, ButtonGroup } from "@mui/material";
 
 const ROUND_INDICES = Array.from({ length: 8 }, (_, i) => i);

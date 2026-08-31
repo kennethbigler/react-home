@@ -1,4 +1,7 @@
-import type { TaxBracket } from "./federalTaxBrackets";
+export interface TaxBracket {
+  upTo: number;
+  rate: number;
+}
 
 export interface TaxSurcharge {
   threshold: number;

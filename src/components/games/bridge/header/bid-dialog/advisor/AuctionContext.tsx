@@ -23,7 +23,7 @@ import {
   getRelatives,
   getValidBidsAfter,
 } from "./bidding-logic";
-import { colorSuits } from "../../../suitColor";
+import { colorSuits } from "@/components/games/bridge/suitColor";
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 

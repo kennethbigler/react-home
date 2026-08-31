@@ -1,10 +1,10 @@
 import type { CSSProperties } from "react";
-import type { BotCRole } from "../../../../../jotai/botc-atom";
-import type { MuiColors } from "../../../../common/types";
-import { outlinedContrastSx } from "../../../../../apis/outlinedButtonSx";
+import type { BotCRole } from "@/jotai/botc-atom";
+import type { MuiColors } from "@/@types/mui";
+import { outlinedContrastSx } from "@/apis/outlinedButtonSx";
 import { Grid, Typography, Button } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
-import { splitScriptColumns } from "../../botcHelpers";
+import { splitScriptColumns } from "@/components/games/botc/botcHelpers";
 
 export type RoleKey = Record<string, boolean>;
 

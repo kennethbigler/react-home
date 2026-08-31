@@ -2,7 +2,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import BudgetCategorySection from "./BudgetCategorySection";
-import type { CategoryTotal } from "../../../../../apis/budget";
+import type { CategoryTotal } from "@/apis/budget";
 
 const theme = createTheme();
 

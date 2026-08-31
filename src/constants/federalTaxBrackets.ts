@@ -1,4 +1,5 @@
 /** 2025 US federal income tax — single filer (visualization approximation). */
+import type { TaxBracket } from "./taxHelpers";
 
 export const FEDERAL_STANDARD_DEDUCTION = 15_750;
 
@@ -6,11 +7,6 @@ export const FEDERAL_STANDARD_DEDUCTION = 15_750;
 export const FEDERAL_STANDARD_DEDUCTION_MFJ = 31_500;
 
 export const FEDERAL_TAX_LABEL = "Fed Tax";
-
-export interface TaxBracket {
-  upTo: number;
-  rate: number;
-}
 
 /** Marginal rates on taxable income after standard deduction (single). */
 export const federalTaxBrackets: TaxBracket[] = [

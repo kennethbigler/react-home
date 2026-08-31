@@ -1,4 +1,5 @@
 /** 2025 California state income tax — single filer (FTB schedule; visualization approximation). */
+import type { TaxBracket, TaxSurcharge } from "./taxHelpers";
 
 export const CA_STANDARD_DEDUCTION = 5_706;
 
@@ -8,15 +9,10 @@ export const CA_STANDARD_DEDUCTION_MFJ = 11_412;
 export const STATE_TAX_LABEL = "CA Tax";
 
 /** Mental health services surcharge on taxable income above $1M. */
-export const CA_MENTAL_HEALTH_SURCHARGE = {
+export const CA_MENTAL_HEALTH_SURCHARGE: TaxSurcharge = {
   threshold: 1_000_000,
   rate: 0.01,
 };
-
-export interface TaxBracket {
-  upTo: number;
-  rate: number;
-}
 
 /** Marginal rates on taxable income after CA standard deduction (single). */
 export const caStateTaxBrackets: TaxBracket[] = [

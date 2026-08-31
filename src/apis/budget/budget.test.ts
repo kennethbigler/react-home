@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildBudgetSankeyData } from "../../components/resume/finances/budgeting/graphs/chartData";
+import { buildBudgetSankeyData } from "@/components/resume/finances/budgeting/graphs/chartData";
 import {
   buildBudgetFlow,
   buildCategoryTotals,

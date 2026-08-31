@@ -1,14 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  within,
-} from "@testing-library/react";
-import { Provider, createStore } from "jotai";
+import { screen, fireEvent, waitFor, within } from "@testing-library/react";
 import ScoreDialog from "./ScoreDialog";
-import bridgeAtom, { type BridgeState } from "../../../../../jotai/bridge-atom";
+import { renderWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
+import bridgeAtom, {
+  type BridgeState,
+  pendingContractAtom,
+} from "@/jotai/bridge-atom";
 
 describe("games | bridge | ScoreDialog", () => {
   const defaultState: BridgeState = {
@@ -29,27 +26,17 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("renders score dialog button", () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     expect(screen.getByRole("button", { name: /score/i })).toBeInTheDocument();
   });
 
   it("opens dialog when button is clicked", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     const button = screen.getByRole("button", { name: /score/i });
     fireEvent.click(button);
@@ -60,14 +47,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("renders all form sections within dialog", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
 
@@ -81,14 +63,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("initializes with default form values", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
 
@@ -99,14 +76,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("updates state when save button is clicked", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    const { store } = renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
 
@@ -124,14 +96,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("resets form to defaults after save", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
 
@@ -167,14 +134,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handles double toggle correctly", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
 
@@ -190,14 +152,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handles redouble toggle correctly", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
 
@@ -213,14 +170,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("saves score to we when winner is we", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    const { store } = renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
 
@@ -239,14 +191,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("saves score to they when winner is they", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    const { store } = renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
 
@@ -275,14 +222,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("displays ScoringTable component", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
 
@@ -293,14 +235,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("Close button closes the dialog", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -315,25 +252,23 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("Undo button removes last score entry", async () => {
-    const store = createStore();
     // Pre-populate with one scored hand
-    store.set(bridgeAtom, {
-      ...defaultState,
-      aboveScores: [
-        [[50], [0]],
-        [[], []],
-        [[], []],
-      ],
-      weBelow: [40],
-      theyBelow: [0],
-      bids: ["1NT"],
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    const { store } = renderWithHydratedAtoms(<ScoreDialog />, [
+      [
+        bridgeAtom,
+        {
+          ...defaultState,
+          aboveScores: [
+            [[50], [0]],
+            [[], []],
+            [[], []],
+          ],
+          weBelow: [40],
+          theyBelow: [0],
+          bids: ["1NT"],
+        },
+      ] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -352,24 +287,22 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handleEnd increments weRubbers when we win", async () => {
-    const store = createStore();
     // Set up state where we have won a game (aboveScores[0][0] sum >= 100, > they)
-    store.set(bridgeAtom, {
-      ...defaultState,
-      aboveScores: [
-        [[100], [0]],
-        [[], []],
-        [[], []],
-      ],
-      weBelow: [],
-      theyBelow: [],
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    const { store } = renderWithHydratedAtoms(<ScoreDialog />, [
+      [
+        bridgeAtom,
+        {
+          ...defaultState,
+          aboveScores: [
+            [[100], [0]],
+            [[], []],
+            [[], []],
+          ],
+          weBelow: [],
+          theyBelow: [],
+        },
+      ] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -387,23 +320,21 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handleEnd increments theyRubbers when they win", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, {
-      ...defaultState,
-      aboveScores: [
-        [[0], [100]],
-        [[], []],
-        [[], []],
-      ],
-      weBelow: [],
-      theyBelow: [],
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    const { store } = renderWithHydratedAtoms(<ScoreDialog />, [
+      [
+        bridgeAtom,
+        {
+          ...defaultState,
+          aboveScores: [
+            [[0], [100]],
+            [[], []],
+            [[], []],
+          ],
+          weBelow: [],
+          theyBelow: [],
+        },
+      ] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -421,24 +352,22 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handleEnd gives we +100 bonus when tied wins but we have above score", async () => {
-    const store = createStore();
     // Tied game wins (both 0), but we have above-the-line score in current game
-    store.set(bridgeAtom, {
-      ...defaultState,
-      aboveScores: [
-        [[50], [0]],
-        [[], []],
-        [[], []],
-      ],
-      weBelow: [],
-      theyBelow: [],
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    const { store } = renderWithHydratedAtoms(<ScoreDialog />, [
+      [
+        bridgeAtom,
+        {
+          ...defaultState,
+          aboveScores: [
+            [[50], [0]],
+            [[], []],
+            [[], []],
+          ],
+          weBelow: [],
+          theyBelow: [],
+        },
+      ] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -457,23 +386,21 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handleEnd gives they +100 bonus when tied wins but they have above score", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, {
-      ...defaultState,
-      aboveScores: [
-        [[0], [50]],
-        [[], []],
-        [[], []],
-      ],
-      weBelow: [],
-      theyBelow: [],
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    const { store } = renderWithHydratedAtoms(<ScoreDialog />, [
+      [
+        bridgeAtom,
+        {
+          ...defaultState,
+          aboveScores: [
+            [[0], [50]],
+            [[], []],
+            [[], []],
+          ],
+          weBelow: [],
+          theyBelow: [],
+        },
+      ] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -492,14 +419,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handleRedoubleToggle sets isDouble=true when redouble is checked", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -524,14 +446,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handle5HonoursToggle sets isDouble=true when 5 honours is checked", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -570,14 +487,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handleContractSuitChange updates the contract suit display", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -598,14 +510,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handleDoubleToggle toggles the doubled switch", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -625,14 +532,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handleContractTricksChange updates when changing contract tricks", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -653,14 +555,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handleDeclarerTricksChange updates when changing declarer tricks", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -681,14 +578,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handle4AcesToggle toggles the 4 Aces switch (contractSuit=NT)", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -707,14 +599,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handle4HonoursToggle toggles 4 honours switch (contractSuit != NT)", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -747,14 +634,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handle5HonoursToggle OFF branch: toggling off does not crash (line 73 false path)", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -789,14 +671,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handleSave with failed bid shows ❌ in bids string (madeBid=false, line 137)", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    const { store } = renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -825,14 +702,10 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handleEnd with no scores → neither side gets rubber (lines 182/189 false paths)", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState); // all empty
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    // all empty
+    const { store } = renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -852,14 +725,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handleRedoubleToggle unchecking does not force double on (false branch)", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -881,14 +749,9 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("handleSave with redoubled bid appends two ❗️ to bids string (line 137 both isDouble and isRedouble true)", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, defaultState);
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    const { store } = renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -918,17 +781,10 @@ describe("games | bridge | ScoreDialog", () => {
   // ── Pre-fill from a Bid Advisor contract ────────────────────────────────────
 
   it("pre-fills the form from a pendingContract when opened", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, {
-      ...defaultState,
-      pendingContract: { suit: "♥️", tricks: 4, isWe: false },
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+      [pendingContractAtom, { suit: "♥️", tricks: 4, isWe: false }] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
@@ -947,23 +803,16 @@ describe("games | bridge | ScoreDialog", () => {
   });
 
   it("clears pendingContract once consumed so it only seeds once", async () => {
-    const store = createStore();
-    store.set(bridgeAtom, {
-      ...defaultState,
-      pendingContract: { suit: "♠️", tricks: 3, isWe: true },
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDialog />
-      </Provider>,
-    );
+    const { store } = renderWithHydratedAtoms(<ScoreDialog />, [
+      [bridgeAtom, defaultState] as const,
+      [pendingContractAtom, { suit: "♠️", tricks: 3, isWe: true }] as const,
+    ]);
 
     fireEvent.click(screen.getByRole("button", { name: /score/i }));
     await waitFor(() => {
       expect(screen.getByText("Contract")).toBeInTheDocument();
     });
 
-    expect(store.get(bridgeAtom).pendingContract).toBeNull();
+    expect(store.get(pendingContractAtom)).toBeNull();
   });
 });

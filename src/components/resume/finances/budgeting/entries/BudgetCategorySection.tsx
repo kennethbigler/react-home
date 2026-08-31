@@ -1,7 +1,6 @@
 import { Grid, Stack, Typography } from "@mui/material";
-import type { CategoryTotal } from "../../../../../apis/budget";
-import usDollar from "../../../../../apis/usDollar";
-import type { ExpenseEntryColor } from "../../../../../jotai/finances-atom";
+import type { CategoryTotal, ExpenseEntryColor } from "@/apis/budget";
+import usDollar from "@/apis/usDollar";
 import CategoryColorSelect from "./CategoryColorSelect";
 import ExpenseEntryCard from "./ExpenseEntryCard";
 

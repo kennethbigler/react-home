@@ -1,4 +1,4 @@
-import { atomWithStorage } from "jotai/utils";
+import persistentAtom from "./storage";
 
 export const MIN_BID = 0;
 export const MAX_BID = 13;
@@ -80,6 +80,6 @@ const initialState: SpadesState = {
   ],
 };
 
-const spadesAtom = atomWithStorage("spadesAtom", initialState);
+const spadesAtom = persistentAtom("spadesAtom", initialState);
 
 export default spadesAtom;

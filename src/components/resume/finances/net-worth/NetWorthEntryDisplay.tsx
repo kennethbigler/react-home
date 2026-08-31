@@ -1,8 +1,5 @@
 import { Grid } from "@mui/material";
-import type {
-  NetWorthCalcEntry,
-  NetWorthEntry,
-} from "../../../../jotai/finances-atom";
+import type { NetWorthCalcEntry, NetWorthEntry } from "@/jotai/net-worth-atom";
 import NetWorthEntryCard from "./NetWorthEntryCard";
 
 interface NetWorthEntryDisplayProps {

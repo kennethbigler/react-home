@@ -6,7 +6,7 @@ import {
   standingsTTFormatter,
   xAxisLabelFormatter,
 } from "../helpers";
-import { xAxisYears } from "../../../../../constants/f1";
+import { xAxisYears } from "@/constants/f1";
 
 interface MockPointsContext {
   x: number;

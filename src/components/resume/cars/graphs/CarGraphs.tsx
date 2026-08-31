@@ -1,9 +1,9 @@
 import { useAtomValue } from "jotai";
-import type { CarEntry } from "../../../../constants/cars";
+import type { CarEntry } from "@/constants/cars";
 import CarChart from "./CarChart";
 import CarSankeyGraph from "./CarSankeyGraph";
-import ExpandableCard from "../../../common/expandable-card";
-import themeAtom from "../../../../jotai/theme-atom";
+import ExpandableCard from "@/components/common/expandable-card";
+import themeAtom from "@/jotai/theme-atom";
 import CurrentCarStats from "./CurrentCarStats";
 import { red } from "@mui/material/colors";
 import { Grid } from "@mui/material";

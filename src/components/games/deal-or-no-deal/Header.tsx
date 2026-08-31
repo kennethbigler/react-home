@@ -1,6 +1,6 @@
 import type { MouseEventHandler } from "react";
 import { getMoneyText } from "./helpers";
-import type { Briefcase } from "../../../jotai/deal-or-no-deal-state";
+import type { Briefcase } from "@/jotai/deal-or-no-deal-atom";
 import { Button, Grid, Typography } from "@mui/material";
 
 interface HeaderProps {

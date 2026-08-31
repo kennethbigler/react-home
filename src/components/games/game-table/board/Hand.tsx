@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { purple } from "@mui/material/colors";
 import Card from "./card/Card";
-import type { DBHand } from "../../../../jotai/player-atom";
+import type { DBHand } from "@/jotai/player-atom";
 import { Typography } from "@mui/material";
 
 const boldStyle: CSSProperties = {

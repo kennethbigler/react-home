@@ -1,26 +1,13 @@
-import { atomWithStorage } from "jotai/utils";
-import type { DBCard } from "./deck-state";
+import { atom } from "jotai";
+import persistentAtom from "./storage";
+import type { DBCard } from "./deck-atom";
 
-/**
- * weight?: number;
- * soft?: boolean;
- * cards: DBCard[];
- */
 export interface DBHand {
   weight?: number;
   soft?: boolean;
   cards: DBCard[];
 }
 
-/**
- * hands: DBHand[];
- * id: number;
- * isBot: boolean;
- * money: number;
- * status: string;
- * name: string;
- * bet: number;
- */
 export interface DBPlayer {
   hands: DBHand[];
   id: number;
@@ -51,6 +38,22 @@ const initialState: DBPlayer[] = [
   newPlayer(0, "Dealer", true),
 ];
 
-const playerAtom = atomWithStorage("playerAtom", initialState);
+const playerAtom = persistentAtom("playerAtom", initialState);
+
+/**
+ * Immutably patch one player by array index; negative indexes count from the
+ * end (-1 = dealer/house slot). Shared by the game-state facade atoms.
+ */
+export const patchPlayerAtom = atom(
+  null,
+  (get, set, index: number, patch: Partial<DBPlayer>) => {
+    const players = get(playerAtom);
+    const i = index < 0 ? players.length + index : index;
+    const newPlayers = [...players];
+    newPlayers[i] = { ...players[i], ...patch };
+    set(playerAtom, newPlayers);
+  },
+);
+patchPlayerAtom.debugLabel = "patchPlayerAtom";
 
 export default playerAtom;

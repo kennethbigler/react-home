@@ -1,45 +1,37 @@
 import { Alert } from "@mui/material";
-import { useAtom, useAtomValue } from "jotai";
-import compCalcState, {
-  compCalcRead,
-  sortCompEntriesByDate,
-} from "../../../../jotai/finances-atom";
-import useEntryDialog from "../shared/useEntryDialog";
-import useSortedEntries from "../shared/useSortedEntries";
+import compCalcAtom, { compCalcRead } from "@/jotai/comp-calc-atom";
+import useFinanceEntries from "../shared/useFinanceEntries";
 import CompActions from "./CompActions";
 import Graphs from "./graphs/Graphs";
 import CompEntryDisplay from "./CompEntryDisplay";
 
 const CompCalculator = () => {
-  const [compEntries, setCompEntries] = useAtom(compCalcState);
-  const compCalcEntries = useAtomValue(compCalcRead);
-  const sortedCompEntries = useSortedEntries(
-    compEntries,
-    setCompEntries,
-    sortCompEntriesByDate,
-  );
-  const entryDialog = useEntryDialog();
+  const {
+    entries: compEntries,
+    calcEntries: compCalcEntries,
+    entryDialog,
+    saveEntry,
+    removeEntry,
+  } = useFinanceEntries(compCalcAtom, compCalcRead);
 
   return (
     <>
-      {sortedCompEntries.length > 0 ? (
-        <Graphs
-          compEntries={sortedCompEntries}
-          compCalcEntries={compCalcEntries}
-        />
+      {compEntries.length > 0 ? (
+        <Graphs compEntries={compEntries} compCalcEntries={compCalcEntries} />
       ) : (
         <Alert severity="warning">
           Add a comp entry to see compensation data.
         </Alert>
       )}
       <CompActions
-        compEntries={sortedCompEntries}
-        setCompEntries={setCompEntries}
+        compEntries={compEntries}
         entryDialog={entryDialog}
+        saveCompEntry={saveEntry}
+        removeCompEntry={removeEntry}
       />
-      {sortedCompEntries.length > 0 && (
+      {compEntries.length > 0 && (
         <CompEntryDisplay
-          compEntries={sortedCompEntries}
+          compEntries={compEntries}
           compCalcEntries={compCalcEntries}
           onClick={entryDialog.openEdit}
         />

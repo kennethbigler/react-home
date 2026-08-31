@@ -9,10 +9,10 @@ import {
   Tooltip,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../../../../common/highcharts/coreHighcharts";
-import usDollar from "../../../../../apis/usDollar";
-import ChartFigure from "../../shared/ChartFigure";
-import useChartTextColor from "../../shared/useChartTextColor";
+import Highcharts from "@/components/common/highcharts/coreHighcharts";
+import usDollar from "@/apis/usDollar";
+import ChartFigure from "@/components/resume/finances/shared/ChartFigure";
+import useChartTextColor from "@/components/resume/finances/shared/useChartTextColor";
 import type { PiePoint } from "./types";
 
 interface CategoryBreakdownPieProps {
