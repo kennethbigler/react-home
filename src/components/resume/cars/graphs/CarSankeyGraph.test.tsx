@@ -5,7 +5,7 @@ import {
   carSankeyData,
   familySankeyData,
   kenSankeyData,
-} from "../../../../constants/cars";
+} from "@/constants/cars";
 
 describe("resume | cars | graphs | CarSankeyGraph", () => {
   it("renders the sankey chart title", () => {

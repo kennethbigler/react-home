@@ -4,7 +4,7 @@ import type {
   CategoryTotal,
   ExpenseEntry,
   ExpenseEntryColor,
-} from "../../../../../apis/budget";
+} from "@/apis/budget";
 import {
   colorizeBreakdownPieData,
   colorizeIncomeOverviewPieData,

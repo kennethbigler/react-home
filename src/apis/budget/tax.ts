@@ -4,14 +4,14 @@ import {
   CA_STANDARD_DEDUCTION_MFJ,
   CA_STATE_TAX_BRACKETS_MFJ,
   caStateTaxBrackets,
-} from "../../constants/caStateTaxBrackets";
+} from "@/constants/caStateTaxBrackets";
 import {
   FEDERAL_STANDARD_DEDUCTION,
   FEDERAL_STANDARD_DEDUCTION_MFJ,
   FEDERAL_TAX_BRACKETS_MFJ,
   federalTaxBrackets,
-} from "../../constants/federalTaxBrackets";
-import { computeProgressiveTax } from "../../constants/taxHelpers";
+} from "@/constants/federalTaxBrackets";
+import { computeProgressiveTax } from "@/constants/taxHelpers";
 import type { TaxFilingStatus } from "./types";
 
 const resolveFederalDeduction = (

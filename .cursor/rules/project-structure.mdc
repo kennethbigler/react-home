@@ -70,7 +70,8 @@ Reusable UI components used throughout the application:
 - **info-popover/** - Information popup component
 - **loading-spinner/** - Loading state component
 - **tab-group/** - Accessible tab navigation component
-- **types.ts** - Shared TypeScript types for common components
+
+Cross-cutting types (e.g. `MuiColors`) live in `src/@types/` (see below).
 
 #### 2. Games Components (`src/components/games/`)
 
@@ -122,29 +123,42 @@ Jotai atoms for application state management:
 
 ```text
 jotai/
-├── blackjack-state.ts
+├── storage.ts                 # persistentAtom helper (atomWithStorage + getOnInit + debugLabel)
+├── blackjack-atom.ts
 ├── botc-atom.ts (+ test)
 ├── bridge-atom.ts (+ test)
-├── finances-atom.ts
+├── budget-atom.ts (+ test)
+├── comp-calc-atom.ts (+ test)
 ├── connect4-atom.ts
-├── deal-or-no-deal-state.ts
-├── deck-state.ts
+├── deal-or-no-deal-atom.ts
+├── deck-atom.ts (+ test)
 ├── imperial-assault-atom.ts
+├── net-worth-atom.ts (+ test)
 ├── player-atom.ts
-├── poker-state.ts
-├── slots-state.ts
+├── poker-atom.ts
+├── slots-atom.ts
 ├── spades-atom.ts
 ├── stock-atom.ts
 ├── theme-atom.ts
 ├── tic-tac-toe-atom.ts
 ├── turn-atom.ts
-└── yahtzee-state.ts
+└── yahtzee-atom.ts (+ test)
 ```
 
 **Convention**:
 
-- Files ending in `-atom.ts` contain Jotai atom definitions
-- Files ending in `-state.ts` contain state logic and derived atoms
+- Every feature's state file ends in `-atom.ts` and holds its base atoms,
+  derived read atoms, write-only action atoms, state types, and new-game
+  factories
+- Persisted atoms are created with `persistentAtom(key, initial)` from
+  `storage.ts`, never raw `atomWithStorage`
+- Types used by an atom live in the same file; shared domain types live at
+  their canonical source (e.g. budget types in `src/apis/budget`) — no
+  re-export barrels
+- Transient UI state (open dialogs, hand-off values) uses plain `atom()`, not
+  persisted storage atoms
+- Large state objects expose per-field derived read atoms so components
+  subscribe only to what they render
 - Some critical atoms have corresponding test files
 
 ### Constants (`src/constants/`)
@@ -175,8 +189,21 @@ Helper functions and utilities:
 apis/
 ├── arr2br.tsx           # Array to <br/> conversion utility
 ├── DateHelper.ts        # Date formatting and manipulation
+├── shuffleArray.ts      # Generic Fisher–Yates shuffle
+├── sortByEntryDate.ts   # Generic entryDate sort for dated entries
 ├── usDollar.tsx         # Currency formatting utility
 └── tests/               # Tests for utility functions
+```
+
+### Test Utilities (`src/test-utils/`)
+
+Shared Jotai test helpers — use these instead of hand-rolling
+`createStore()` + `<Provider>`:
+
+```text
+test-utils/
+├── renderWithHydratedAtoms.ts  # renderWithHydratedAtoms, renderHookWithHydratedAtoms, createAtomWrapper (all return the store)
+└── getHydratedAtomValue.ts     # read an atomWithStorage atom the way a fresh page load would
 ```
 
 ### Images (`src/images/`)
@@ -216,6 +243,9 @@ wrappers/
 ### Build & Development
 
 - **vite.config.ts** - Vite configuration (plugins, build settings, aliases)
+- **Path alias**: `@/` maps to `src/` (declared in both `tsconfig.json` and
+  `vite.config.ts`). Use `@/` for imports two or more directories up; keep
+  `./` and single `../` imports relative.
 - **tsconfig.json** - TypeScript compiler options for application code
 - **tsconfig.node.json** - TypeScript config for build scripts and tooling
 
@@ -262,7 +292,7 @@ Available npm scripts:
 1. **Components**: PascalCase (e.g., `MyComponent.tsx`)
 2. **Utilities/APIs**: camelCase (e.g., `dateHelper.ts`)
 3. **Constants**: kebab-case files, UPPER_SNAKE_CASE exports (e.g., `work.ts`)
-4. **State/Atoms**: kebab-case with `-atom` or `-state` suffix
+4. **State/Atoms**: kebab-case with `-atom` suffix
 5. **Tests**: Same name as source file with `.test.ts(x)` extension
 6. **Types**: PascalCase for interfaces/types, in `types.ts` files
 
@@ -281,7 +311,7 @@ Available npm scripts:
 
 1. **Adding New Games**:
    - Create folder in `src/components/games/[game-name]/`
-   - Add state atom in `src/jotai/[game-name]-state.ts`
+   - Add state atom in `src/jotai/[game-name]-atom.ts`
    - Update `src/components/games/menu-items.ts`
    - Add route in `src/components/games/Routes.tsx`
 

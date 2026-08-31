@@ -9,10 +9,11 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import type { CompEntry } from "../../../../jotai/finances-atom";
+import type { CompEntry } from "@/jotai/comp-calc-atom";
 import ConfirmDeleteDialog from "../shared/ConfirmDeleteDialog";
 import MonthYearSelect from "../shared/MonthYearSelect";
 import dialogTextFieldProps from "../shared/dialogTextFieldProps";
+import useConfirmDelete from "../shared/useConfirmDelete";
 import useMonthYear from "../shared/useMonthYear";
 
 const VALIDATION_ERROR_ID = "comp-entry-validation-error";
@@ -50,7 +51,7 @@ const CompEntryDialog = ({
     compEntry?.grantQty ?? 0,
   );
   const [error, setError] = useState("");
-  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const confirmDelete = useConfirmDelete(() => onDelete?.());
 
   const handleChange =
     (setValue: (n: NumericValue) => void) =>
@@ -94,11 +95,6 @@ const CompEntryDialog = ({
       grantDuration: toNumber(grantDuration),
       grantQty: toNumber(grantQty),
     });
-  };
-
-  const confirmDelete = () => {
-    onDelete?.();
-    setConfirmDeleteOpen(false);
   };
 
   const isCompValueError =
@@ -198,7 +194,7 @@ const CompEntryDialog = ({
         </DialogContent>
         <DialogActions>
           {compEntry && onDelete ? (
-            <Button onClick={() => setConfirmDeleteOpen(true)} color="error">
+            <Button onClick={confirmDelete.request} color="error">
               Delete
             </Button>
           ) : null}
@@ -209,12 +205,12 @@ const CompEntryDialog = ({
         </DialogActions>
       </Dialog>
       <ConfirmDeleteDialog
-        open={confirmDeleteOpen}
+        open={confirmDelete.open}
         title="Delete compensation entry?"
         description="This compensation entry will be permanently deleted."
         confirmLabel="Delete entry"
-        onCancel={() => setConfirmDeleteOpen(false)}
-        onConfirm={confirmDelete}
+        onCancel={confirmDelete.cancel}
+        onConfirm={confirmDelete.confirm}
       />
     </>
   );

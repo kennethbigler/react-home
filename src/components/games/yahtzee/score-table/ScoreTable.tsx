@@ -1,6 +1,6 @@
 import { useCallback, type ReactElement } from "react";
 import type { TopGameScore, BottomGameScore } from "../types";
-import type { Dice } from "../../../../jotai/yahtzee-state";
+import type { Dice } from "@/jotai/yahtzee-atom";
 import Header from "./Header";
 import TopTable from "./TopTable";
 import BottomTable from "./BottomTable";

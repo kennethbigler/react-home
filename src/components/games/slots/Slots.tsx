@@ -1,11 +1,11 @@
 import { memo, useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
-import slotsState, { slotsRead } from "../../../jotai/slots-state";
+import slotsState, { slotsRead } from "@/jotai/slots-atom";
 import PayoutTable from "./PayoutTable";
 import MoneyTable from "./MoneyTable";
 import ReelDisplay from "./ReelDisplay";
 import slotMachine from "./slotMachine";
-import PlayerMenu from "../../common/header/PlayerMenu";
+import PlayerMenu from "@/components/common/header/PlayerMenu";
 import { Button, Grid, Typography } from "@mui/material";
 
 /* Slots  ->  ReelDisplay

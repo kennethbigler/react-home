@@ -5,11 +5,8 @@ import {
   BASE_SCRIPT_OPTIONS,
   type ScriptOption,
   type CommunityScriptOption,
-} from "../../../../../utils/botc-script-utils";
-import type {
-  ActiveScript,
-  BaseScriptIndex,
-} from "../../../../../jotai/botc-atom";
+} from "@/utils/botc-script-utils";
+import type { ActiveScript, BaseScriptIndex } from "@/jotai/botc-atom";
 
 interface ScriptSearchProps {
   script: ActiveScript;

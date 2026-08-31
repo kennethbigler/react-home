@@ -1,4 +1,4 @@
-import { getCategoryColor } from "./colors";
+import { getCategoryColor } from "@/components/resume/finances/shared/chartPalette";
 
 export const buildNetWorthBreakdownPieData = (
   categories: string[],

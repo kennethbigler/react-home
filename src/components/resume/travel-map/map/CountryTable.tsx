@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { americas, euNaf, asNau } from "../../../../constants/travel";
+import { americas, euNaf, asNau } from "@/constants/travel";
 
 // --------------------     Styles     -------------------- //
 const separatorStyles: CSSProperties = {

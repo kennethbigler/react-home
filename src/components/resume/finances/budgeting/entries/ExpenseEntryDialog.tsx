@@ -23,15 +23,16 @@ import {
   formatCategoryName,
   getPercentSources,
   getTaxBasis,
-} from "../../../../../apis/budget";
+} from "@/apis/budget";
 import type {
   ExpenseEntry,
   ExpensePercentSource,
   ExpenseTaxBasis,
   ExpenseValueMode,
-} from "../../../../../jotai/finances-atom";
-import ConfirmDeleteDialog from "../../shared/ConfirmDeleteDialog";
-import dialogTextFieldProps from "../../shared/dialogTextFieldProps";
+} from "@/apis/budget";
+import ConfirmDeleteDialog from "@/components/resume/finances/shared/ConfirmDeleteDialog";
+import dialogTextFieldProps from "@/components/resume/finances/shared/dialogTextFieldProps";
+import useConfirmDelete from "@/components/resume/finances/shared/useConfirmDelete";
 
 const percentSourceOptions: Array<{
   value: ExpensePercentSource;
@@ -72,7 +73,7 @@ const ExpenseEntryDialog = ({
     getTaxBasis(expenseEntry ?? {}),
   );
   const [value, setValue] = useState<number | "">(expenseEntry?.value || 0);
-  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const confirmDelete = useConfirmDelete(() => onDelete?.());
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
@@ -122,11 +123,6 @@ const ExpenseEntryDialog = ({
         ? { valueMode, percentSources, taxBasis }
         : { valueMode: "dollar" }),
     });
-  };
-
-  const confirmDelete = () => {
-    onDelete?.();
-    setConfirmDeleteOpen(false);
   };
 
   const numericValue = typeof value === "number" ? value : Number.NaN;
@@ -272,7 +268,7 @@ const ExpenseEntryDialog = ({
         </DialogContent>
         <DialogActions>
           {expenseEntry && onDelete ? (
-            <Button onClick={() => setConfirmDeleteOpen(true)} color="error">
+            <Button onClick={confirmDelete.request} color="error">
               Delete
             </Button>
           ) : null}
@@ -283,12 +279,12 @@ const ExpenseEntryDialog = ({
         </DialogActions>
       </Dialog>
       <ConfirmDeleteDialog
-        open={confirmDeleteOpen}
+        open={confirmDelete.open}
         title="Delete expense entry?"
         description="This expense entry will be permanently deleted."
         confirmLabel="Delete entry"
-        onCancel={() => setConfirmDeleteOpen(false)}
-        onConfirm={confirmDelete}
+        onCancel={confirmDelete.cancel}
+        onConfirm={confirmDelete.confirm}
       />
     </>
   );

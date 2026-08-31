@@ -4,9 +4,9 @@ import {
   currentKensCars,
   pastFamilyCars,
   currentFamilyCars,
-} from "../../../constants/cars";
+} from "@/constants/cars";
 import CarCard from "./CarCard";
-import ExpandableCard from "../../common/expandable-card";
+import ExpandableCard from "@/components/common/expandable-card";
 import { red } from "@mui/material/colors";
 import { Grid } from "@mui/material";
 

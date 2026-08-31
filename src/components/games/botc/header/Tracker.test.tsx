@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Tracker from "./Tracker";
-import type { BotCPlayer } from "../../../../jotai/botc-atom";
+import type { BotCPlayer } from "@/jotai/botc-atom";
 import * as useBotCHooks from "../useBotC";
 
 // Mock the useTracker hook

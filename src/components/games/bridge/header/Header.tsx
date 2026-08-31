@@ -3,10 +3,7 @@ import { useAtom, useAtomValue } from "jotai";
 import { Button, Typography } from "@mui/material";
 import BidDialog from "./bid-dialog/BidDialog";
 import ScoreDialog from "./score-dialog/ScoreDialog";
-import bridgeAtom, {
-  bridgeRead,
-  newBridgeGame,
-} from "../../../../jotai/bridge-atom";
+import bridgeAtom, { bridgeRead, newBridgeGame } from "@/jotai/bridge-atom";
 
 const Header = memo(() => {
   const { gameIdx, weWins, theyWins, weSum, theySum } =

@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { Chart, Credits, Series, Title } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../../../common/highcharts/sankeyHighcharts";
-import { budgetData } from "../../../../constants/f1";
+import Highcharts from "@/components/common/highcharts/sankeyHighcharts";
+import { budgetData } from "@/constants/f1";
 
 interface BudgetSankeyProps {
   color: string;

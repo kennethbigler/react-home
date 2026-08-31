@@ -1,19 +1,16 @@
 import type { Theme } from "@mui/material/styles";
-import { STATE_TAX_LABEL } from "../../../../../constants/caStateTaxBrackets";
-import { FEDERAL_TAX_LABEL } from "../../../../../constants/federalTaxBrackets";
+import { STATE_TAX_LABEL } from "@/constants/caStateTaxBrackets";
+import { FEDERAL_TAX_LABEL } from "@/constants/federalTaxBrackets";
 import {
   PAYROLL_NODE_LABEL,
   PAYROLL_WITHHOLDINGS_LABEL,
-} from "../../../../../constants/payrollDeductions";
-import type {
-  CategoryTotal,
-  ExpenseEntryColor,
-} from "../../../../../apis/budget";
+} from "@/constants/payrollDeductions";
+import type { CategoryTotal, ExpenseEntryColor } from "@/apis/budget";
 import {
   bonusColor,
   salaryColor,
   stockColor,
-} from "../../comp-calc/graphs/colors";
+} from "@/components/resume/finances/shared/chartPalette";
 import type { PiePoint } from "./types";
 import { UNALLOCATED_NODE } from "./types";
 

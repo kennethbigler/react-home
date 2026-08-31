@@ -1,4 +1,5 @@
-import { atomWithStorage } from "jotai/utils";
+import { atom } from "jotai";
+import persistentAtom from "./storage";
 import {
   type Mission,
   basic,
@@ -32,6 +33,22 @@ const initialState: ImpAssState = {
   influence: 0,
 };
 
-const impAssAtom = atomWithStorage("impAssAtom", initialState);
+const impAssAtom = persistentAtom("impAssAtom", initialState);
+
+/* Per-field read atoms so consumers subscribe only to the slice they render.
+ * Each returns a stable reference until that field actually changes. */
+const fieldAtom = <K extends keyof ImpAssState>(key: K) => {
+  const anAtom = atom((get) => get(impAssAtom)[key]);
+  anAtom.debugLabel = `impAssAtom.${key}`;
+  return anAtom;
+};
+
+export const impAssCampaignIdxAtom = fieldAtom("campaignIdx");
+export const impAssCampaignAtom = fieldAtom("campaign");
+export const impAssForcedMissionsAtom = fieldAtom("forcedMissions");
+export const impAssCreditsAtom = fieldAtom("credits");
+export const impAssRebelXPAtom = fieldAtom("rebelXP");
+export const impAssXPAtom = fieldAtom("xp");
+export const impAssInfluenceAtom = fieldAtom("influence");
 
 export default impAssAtom;

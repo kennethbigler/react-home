@@ -1,4 +1,4 @@
-import { atomWithStorage } from "jotai/utils";
+import persistentAtom from "./storage";
 
 export interface TurnState {
   player: number;
@@ -7,6 +7,6 @@ export interface TurnState {
 
 const initialState: TurnState = { player: 0, hand: 0 };
 
-const turnAtom = atomWithStorage("turnAtom", initialState);
+const turnAtom = persistentAtom("turnAtom", initialState);
 
 export default turnAtom;

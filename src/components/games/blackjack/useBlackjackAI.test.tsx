@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
-import { Provider } from "jotai";
+import { act } from "@testing-library/react";
+import { renderHookWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 import useBlackjackAI from "./useBlackjackAI";
-import { GameFunctions } from "../../../jotai/blackjack-state";
+import { GameFunctions } from "@/jotai/blackjack-atom";
 
 // Mock useBlackjackDeck to return predictable cards
 vi.mock("./useBlackjackDeck", () => ({
@@ -19,16 +19,12 @@ vi.mock("./useBlackjackDeck", () => ({
 }));
 
 describe("useBlackjackAI", () => {
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <Provider>{children}</Provider>
-  );
-
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("initializes with default state", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     expect(result.current.gameFunctions).toBeDefined();
     expect(result.current.players).toBeDefined();
@@ -37,7 +33,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("handles NEW_GAME click", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -48,7 +44,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("handles STAY click", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -62,7 +58,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("handles unknown game function", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
@@ -80,7 +76,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("handles bet changes", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -97,7 +93,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("checkUpdate returns early when hideHands is true", async () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     await act(async () => {
       await result.current.checkUpdate();
@@ -107,7 +103,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("checkUpdate returns early when gameFunctions is NEW_GAME", async () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -121,7 +117,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("advances turn when staying on last hand", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -135,7 +131,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("handles bet change for multiple players", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -157,14 +153,14 @@ describe("useBlackjackAI", () => {
   });
 
   it("initializes players array", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     expect(Array.isArray(result.current.players)).toBe(true);
     expect(result.current.players.length).toBeGreaterThan(0);
   });
 
   it("initializes turn state correctly", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     expect(result.current.turn).toHaveProperty("player");
     expect(result.current.turn).toHaveProperty("hand");
@@ -173,7 +169,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("handles multiple NEW_GAME calls", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -190,7 +186,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("maintains player count after NEW_GAME", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     const initialPlayerCount = result.current.players.length;
 
@@ -202,7 +198,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("resets hands after NEW_GAME", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -214,7 +210,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("resets bets to default after NEW_GAME", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.betHandler(0, 50);
@@ -229,7 +225,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("handles bet updates with same player multiple times", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -248,7 +244,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("exposes all required hook methods", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     expect(typeof result.current.betHandler).toBe("function");
     expect(typeof result.current.checkUpdate).toBe("function");
@@ -261,7 +257,7 @@ describe("useBlackjackAI", () => {
 
   // Test branches in the double function
   it("double function when turn.hand < lastHand (advances hand)", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -274,7 +270,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("double function when next player is a bot (line 405 branch)", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -290,7 +286,7 @@ describe("useBlackjackAI", () => {
 
   // Test branches in the stay function (lines 371-385)
   it("stay function when turn.hand < numHands (advances hand)", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -305,7 +301,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("stay function when turn.hand >= numHands (advances player)", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -321,7 +317,7 @@ describe("useBlackjackAI", () => {
 
   // Test branches in checkUpdate (lines 480-489)
   it("checkUpdate when hideHands is true (early return)", async () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     // hideHands is true in initial state, so checkUpdate should return early
     await act(async () => {
@@ -332,7 +328,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("checkUpdate when gameFunctions[0] is NEW_GAME (early return at line 481)", async () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     // Don't call NEW_GAME yet, just check the checkUpdate logic
     await act(async () => {
@@ -344,7 +340,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("checkUpdate when player is not a bot (early return at line 483-484)", async () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -364,7 +360,7 @@ describe("useBlackjackAI", () => {
 
   // Test betHandler function (lines 492-499)
   it("betHandler when player.id === id (updates bet)", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -379,7 +375,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("betHandler when player.id !== id (keeps original bet)", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -402,7 +398,7 @@ describe("useBlackjackAI", () => {
 
   // Test the handle Click switch statement branches
   it("handles FINISH_BETTING game function (switch case)", async () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -418,7 +414,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("handles HIT game function (switch case)", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     // Need to set up a game state where HIT is valid
     act(() => {
@@ -430,7 +426,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("handles DOUBLE game function (switch case)", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -441,7 +437,7 @@ describe("useBlackjackAI", () => {
   });
 
   it("handles SPLIT game function (switch case)", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -453,7 +449,7 @@ describe("useBlackjackAI", () => {
 
   // Test edge cases for turn advancement in stay function
   it("stay advances turn.hand when not on last hand", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     act(() => {
       result.current.handleClick(GameFunctions.NEW_GAME);
@@ -472,7 +468,7 @@ describe("useBlackjackAI", () => {
 
   // Test newGame function resets
   it("newGame resets all player properties correctly", () => {
-    const { result } = renderHook(() => useBlackjackAI(), { wrapper });
+    const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
     // Modify some state
     act(() => {

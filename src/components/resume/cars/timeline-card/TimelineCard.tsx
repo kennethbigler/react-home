@@ -1,8 +1,8 @@
-import type { FormatOutput } from "../../../../apis/DateHelper";
-import ExpandableCard from "../../../common/expandable-card";
-import Row from "../../../common/timeline-parts/Row";
+import type { FormatOutput } from "@/apis/DateHelper";
+import ExpandableCard from "@/components/common/expandable-card";
+import Row from "@/components/common/timeline-parts/Row";
 import { START, END, getYearMarkers, getSegments } from "./timelineHelpers";
-import type { CarEntry } from "../../../../constants/cars";
+import type { CarEntry } from "@/constants/cars";
 
 interface TimelineCardProps {
   /** reads "car" from each array entry and creates segments */

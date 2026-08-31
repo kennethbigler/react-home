@@ -1,6 +1,6 @@
 import { useState } from "react";
-import InfoPopup from "../../../common/info-popover/InfoPopup";
-import type { Bids } from "../../../../jotai/spades-atom";
+import InfoPopup from "@/components/common/info-popover/InfoPopup";
+import type { Bids } from "@/jotai/spades-atom";
 import AddScorePlayer from "./AddScorePlayer";
 import { Grid, Typography } from "@mui/material";
 

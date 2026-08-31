@@ -1,5 +1,5 @@
 import type Highcharts from "highcharts/highcharts.src";
-import { xAxisYears } from "../../../../constants/f1";
+import { xAxisYears } from "@/constants/f1";
 
 export const xAxisLabelFormatter: Highcharts.AxisLabelsFormatterCallbackFunction =
   function (point) {

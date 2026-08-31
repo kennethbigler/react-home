@@ -1,6 +1,6 @@
-import { FEDERAL_TAX_LABEL } from "../../../../../constants/federalTaxBrackets";
-import { STATE_TAX_LABEL } from "../../../../../constants/caStateTaxBrackets";
-import type { ExpenseEntryColor } from "../../../../../apis/budget";
+import { FEDERAL_TAX_LABEL } from "@/constants/federalTaxBrackets";
+import { STATE_TAX_LABEL } from "@/constants/caStateTaxBrackets";
+import type { ExpenseEntryColor } from "@/apis/budget";
 
 export const PAYROLL_CATEGORY_KEY = "payroll";
 

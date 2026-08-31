@@ -3,7 +3,7 @@ import { Typography, Grid } from "@mui/material";
 import Info from "./Info";
 import Education from "./Education";
 import Job from "../work/Job";
-import { currentJob } from "../../../constants/work-summary";
+import { currentJob } from "@/constants/work-summary";
 
 /* Summary  ->  Info
  *         |->  Skills

@@ -1,12 +1,12 @@
-import { FEDERAL_TAX_LABEL } from "../../../../../constants/federalTaxBrackets";
-import { STATE_TAX_LABEL } from "../../../../../constants/caStateTaxBrackets";
+import { FEDERAL_TAX_LABEL } from "@/constants/federalTaxBrackets";
+import { STATE_TAX_LABEL } from "@/constants/caStateTaxBrackets";
 import {
   CA_DISABILITY_LABEL,
   MEDICARE_LABEL,
   PAYROLL_NODE_LABEL,
   PAYROLL_WITHHOLDINGS_LABEL,
   SOCIAL_SECURITY_LABEL,
-} from "../../../../../constants/payrollDeductions";
+} from "@/constants/payrollDeductions";
 import {
   BUDGET_MONTHS_PER_YEAR,
   normalizeCategoryKey,
@@ -15,7 +15,7 @@ import {
   type BudgetFlow,
   type CategoryTotal,
   type ExpenseEntry,
-} from "../../../../../apis/budget";
+} from "@/apis/budget";
 import {
   GROSS_INCOME_NODE,
   INCOME_NODE_LABELS,

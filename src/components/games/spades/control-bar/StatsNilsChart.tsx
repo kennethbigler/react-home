@@ -8,8 +8,8 @@ import {
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../../../common/highcharts/coreHighcharts";
-import type { NilMetrics } from "../../../../jotai/spades-atom";
+import Highcharts from "@/components/common/highcharts/coreHighcharts";
+import type { NilMetrics } from "@/jotai/spades-atom";
 interface StatsNilChartProps {
   color: string;
   initials: string;

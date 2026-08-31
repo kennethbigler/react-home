@@ -4,7 +4,7 @@ import {
   resetCapturedChartConfig,
   selectChartPoint,
   getChartOptions,
-} from "../../../../common/highcharts/tests/highchartsMocks";
+} from "@/components/common/highcharts/tests/highchartsMocks";
 import { beforeEach, describe, expect, it } from "vitest";
 import { axe } from "jest-axe";
 import { render, screen, waitFor } from "@testing-library/react";
@@ -15,22 +15,15 @@ import {
   SALARY,
   STOCK,
   buildCompChartData,
+  compSeriesColors,
   formatCompTooltip,
 } from "./compGraphHelpers";
-import type {
-  CompCalcEntry,
-  CompEntry,
-} from "../../../../../jotai/finances-atom";
-import themeAtom, {
-  darkTheme,
-  lightTheme,
-} from "../../../../../jotai/theme-atom";
-import colors from "./colors";
-
+import type { CompCalcEntry, CompEntry } from "@/jotai/comp-calc-atom";
+import themeAtom, { darkTheme, lightTheme } from "@/jotai/theme-atom";
 const sliceColors = {
-  Stock: colors[STOCK],
-  Bonus: colors[BONUS],
-  Salary: colors[SALARY],
+  Stock: compSeriesColors[STOCK],
+  Bonus: compSeriesColors[BONUS],
+  Salary: compSeriesColors[SALARY],
 } as const;
 
 const breakdownPoint = (name: keyof typeof sliceColors, y: number) => ({

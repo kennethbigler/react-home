@@ -1,17 +1,13 @@
 import "../../common/highcharts/tests/highchartsMocks";
-import { render, screen } from "@testing-library/react";
-import { Provider, createStore } from "jotai";
-import themeAtom, { lightTheme } from "../../../jotai/theme-atom";
-import { vacationDays, workDays } from "../../../constants/travel";
+import { screen } from "@testing-library/react";
+import themeAtom, { lightTheme } from "@/jotai/theme-atom";
+import { vacationDays, workDays } from "@/constants/travel";
+import { renderWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 import TravelDaysGraph from "./TravelDaysGraph";
 
 describe("resume | travel-map | TravelDaysGraph", () => {
   it("renders the travel days chart", () => {
-    render(
-      <Provider>
-        <TravelDaysGraph />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<TravelDaysGraph />);
 
     expect(screen.getByText("Travel Days")).toBeInTheDocument();
     expect(screen.getByTestId("highcharts-chart")).toBeInTheDocument();
@@ -27,14 +23,9 @@ describe("resume | travel-map | TravelDaysGraph", () => {
   });
 
   it("renders in light mode", () => {
-    const store = createStore();
-    store.set(themeAtom, lightTheme);
-
-    render(
-      <Provider store={store}>
-        <TravelDaysGraph />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<TravelDaysGraph />, [
+      [themeAtom, lightTheme] as const,
+    ]);
 
     expect(screen.getByText("Travel Days")).toBeInTheDocument();
   });

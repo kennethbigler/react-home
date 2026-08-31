@@ -1,9 +1,9 @@
 import { memo } from "react";
 import { Typography } from "@mui/material";
-import { work, volunteer } from "../../../constants/work";
+import { work, volunteer } from "@/constants/work";
 import WorkCards from "./WorkCards";
-import Degree from "../../common/edu-cards/Degree";
-import classes from "../../../constants/classes";
+import Degree from "@/components/common/edu-cards/Degree";
+import classes from "@/constants/classes";
 
 /* Work  ->  WorkCards  ->  Job */
 const Work = memo(() => (

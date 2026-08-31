@@ -4,8 +4,8 @@ import { afterEach, beforeEach, vi } from "vitest";
 import TimelineCard from "../TimelineCard";
 import { getTimelineRange } from "../timelineHelpers";
 
-import dateObj from "../../../../../apis/DateHelper";
-import type { ContractData } from "../../../../../constants/f1";
+import dateObj from "@/apis/DateHelper";
+import type { ContractData } from "@/constants/f1";
 
 const FROZEN_NOW = new Date("2026-08-21T12:00:00.000Z");
 const EXPECTED_FROZEN_TODAY = "August 2026";

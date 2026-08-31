@@ -7,12 +7,9 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import type {
-  NetWorthCalcEntry,
-  NetWorthEntry,
-} from "../../../../jotai/finances-atom";
-import dateObj from "../../../../apis/DateHelper";
-import usDollar from "../../../../apis/usDollar";
+import type { NetWorthCalcEntry, NetWorthEntry } from "@/jotai/net-worth-atom";
+import dateObj from "@/apis/DateHelper";
+import usDollar from "@/apis/usDollar";
 
 interface NetWorthEntryCardProps {
   entry: NetWorthEntry;

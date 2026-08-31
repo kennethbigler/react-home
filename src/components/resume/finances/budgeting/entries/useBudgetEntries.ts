@@ -3,14 +3,13 @@ import {
   budgetAtom,
   budgetCategoryColorsAtom,
   budgetFlowRead,
-  type ExpenseEntry,
-  type ExpenseEntryColor,
-} from "../../../../../jotai/finances-atom";
+} from "@/jotai/budget-atom";
+import type { ExpenseEntry, ExpenseEntryColor } from "@/apis/budget";
 import {
   buildCategoryTotals,
   getLatestBudgetIncome,
   normalizeCategoryKey,
-} from "../../../../../apis/budget";
+} from "@/apis/budget";
 
 const useBudgetEntries = () => {
   const [expenseEntries, setExpenseEntries] = useAtom(budgetAtom);

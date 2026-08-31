@@ -1,29 +1,20 @@
-import { render, screen } from "@testing-library/react";
-import { Provider, createStore } from "jotai";
+import { screen } from "@testing-library/react";
 import ShowStats from "./ShowStats";
-import themeAtom, { darkTheme, lightTheme } from "../../../../jotai/theme-atom";
+import themeAtom, { darkTheme, lightTheme } from "@/jotai/theme-atom";
+import { renderWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 
 describe("games | spades | ShowStats", () => {
   const defaultProps = { initials: "ABCD" };
 
   it("renders the Stats button", () => {
-    render(
-      <Provider>
-        <ShowStats {...defaultProps} />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ShowStats {...defaultProps} />);
     expect(screen.getByText("Stats")).toBeInTheDocument();
   });
 
   it("opens popup and shows total chips in light mode", async () => {
-    const store = createStore();
-    store.set(themeAtom, lightTheme);
-
-    render(
-      <Provider store={store}>
-        <ShowStats {...defaultProps} />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ShowStats {...defaultProps} />, [
+      [themeAtom, lightTheme] as const,
+    ]);
     screen.getByText("Stats").click();
     expect(await screen.findByText("Totals:")).toBeInTheDocument();
     expect(screen.getByText("AC")).toBeInTheDocument();
@@ -31,14 +22,9 @@ describe("games | spades | ShowStats", () => {
   });
 
   it("renders correctly in dark mode", async () => {
-    const store = createStore();
-    store.set(themeAtom, darkTheme);
-
-    render(
-      <Provider store={store}>
-        <ShowStats {...defaultProps} />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ShowStats {...defaultProps} />, [
+      [themeAtom, darkTheme] as const,
+    ]);
     screen.getByText("Stats").click();
     expect(await screen.findByText("Totals:")).toBeInTheDocument();
   });

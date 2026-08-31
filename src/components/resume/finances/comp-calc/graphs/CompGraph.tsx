@@ -11,15 +11,11 @@ import {
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../../../../common/highcharts/coreHighcharts";
-import type {
-  CompCalcEntry,
-  CompEntry,
-} from "../../../../../jotai/finances-atom";
-import ChartFigure from "../../shared/ChartFigure";
-import { formatCompactAxisCurrency } from "../../shared/chartHelpers";
-import useChartTextColor from "../../shared/useChartTextColor";
-import colors from "./colors";
+import Highcharts from "@/components/common/highcharts/coreHighcharts";
+import type { CompCalcEntry, CompEntry } from "@/jotai/comp-calc-atom";
+import ChartFigure from "@/components/resume/finances/shared/ChartFigure";
+import { formatCompactAxisCurrency } from "@/components/resume/finances/shared/chartHelpers";
+import useChartTextColor from "@/components/resume/finances/shared/useChartTextColor";
 import {
   BONUS,
   INFL,
@@ -27,6 +23,7 @@ import {
   STOCK,
   TOTAL,
   buildCompChartData,
+  compSeriesColors,
   formatCompTooltip,
 } from "./compGraphHelpers";
 
@@ -58,7 +55,7 @@ const CompChart = ({
 
     const chartOptions: Highcharts.Options = {
       ...staticOptions,
-      colors: [...colors, color],
+      colors: [...compSeriesColors, color],
       plotOptions: {
         area: {
           stacking: "normal",

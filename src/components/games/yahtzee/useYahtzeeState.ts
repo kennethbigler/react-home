@@ -1,8 +1,5 @@
 import { useAtom } from "jotai";
-import yahtzeeState, {
-  newYahtzee,
-  type Dice,
-} from "../../../jotai/yahtzee-state";
+import yahtzeeState, { newYahtzee, type Dice } from "@/jotai/yahtzee-atom";
 
 const useYahtzeeState = () => {
   const [state, setState] = useAtom(yahtzeeState);

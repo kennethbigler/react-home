@@ -1,9 +1,9 @@
 import "../../../common/highcharts/tests/highchartsMocks";
 import { render, screen } from "@testing-library/react";
-import { createStore, Provider } from "jotai";
 import CarGraphs from "./CarGraphs";
-import { cars, currentKensCars } from "../../../../constants/cars";
-import themeAtom, { lightTheme } from "../../../../jotai/theme-atom";
+import { cars, currentKensCars } from "@/constants/cars";
+import themeAtom, { lightTheme } from "@/jotai/theme-atom";
+import { renderWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 
 describe("resume | cars | graphs | CarGraphs", () => {
   it("renders stats and chart sections for the active car", () => {
@@ -24,18 +24,14 @@ describe("resume | cars | graphs | CarGraphs", () => {
   });
 
   it("renders with light theme settings", () => {
-    const store = createStore();
-    store.set(themeAtom, lightTheme);
-
-    render(
-      <Provider store={store}>
-        <CarGraphs
-          active={currentKensCars[0]}
-          data={cars}
-          hideFamily={false}
-          hideKen={false}
-        />
-      </Provider>,
+    renderWithHydratedAtoms(
+      <CarGraphs
+        active={currentKensCars[0]}
+        data={cars}
+        hideFamily={false}
+        hideKen={false}
+      />,
+      [[themeAtom, lightTheme] as const],
     );
 
     expect(screen.getByText("Car Graphs")).toBeInTheDocument();

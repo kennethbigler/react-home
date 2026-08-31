@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Grid, Typography } from "@mui/material";
-import ExpandableCard from "../../common/expandable-card";
+import ExpandableCard from "@/components/common/expandable-card";
 import CountryTable from "./map/CountryTable";
 import WorldMap from "./map/WorldMap";
 import CruiseTable from "./cruises/CruiseTable";

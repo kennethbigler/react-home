@@ -1,12 +1,7 @@
 import { memo, useState, useCallback, type SyntheticEvent } from "react";
-import {
-  type Role,
-  villagers,
-  outsiders,
-  wolves,
-} from "../../../constants/werewolf";
+import { type Role, villagers, outsiders, wolves } from "@/constants/werewolf";
 import WerewolfPanel from "./WerewolfPanel";
-import ExpandableCard from "../../common/expandable-card";
+import ExpandableCard from "@/components/common/expandable-card";
 import { Typography, Chip, Grid } from "@mui/material";
 const Werewolf = memo(() => {
   const [expanded, setExpanded] = useState("");

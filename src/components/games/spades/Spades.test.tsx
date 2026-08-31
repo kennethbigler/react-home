@@ -1,7 +1,8 @@
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
-import { Provider, createStore } from "jotai";
+import { createStore } from "jotai";
 import Spades from ".";
-import spadesAtom from "../../../jotai/spades-atom";
+import spadesAtom from "@/jotai/spades-atom";
+import { createAtomWrapper } from "@/test-utils/renderWithHydratedAtoms";
 
 describe("games | spades | Spades", () => {
   it("renders as expected", async () => {
@@ -58,11 +59,8 @@ describe("games | spades | Spades", () => {
         },
       ],
     }));
-    render(
-      <Provider store={store}>
-        <Spades />
-      </Provider>,
-    );
+    const { wrapper } = createAtomWrapper([], store);
+    render(<Spades />, { wrapper });
     expect(screen.getByRole("button", { name: /reset/i })).toBeInTheDocument();
     expect(screen.queryByText("+ Bid")).not.toBeInTheDocument();
   });

@@ -5,7 +5,7 @@ import {
   currentKensCars,
   hideFamilyCars,
   hideKenCars,
-} from "../../../constants/cars";
+} from "@/constants/cars";
 import CarChartControls from "./CarChartControls";
 import CarGraphs from "./graphs/CarGraphs";
 import CarDisplay from "./CarDisplay";

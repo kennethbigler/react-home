@@ -1,14 +1,14 @@
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import ExpandableCard from "../../../common/expandable-card";
-import Row from "../../../common/timeline-parts/Row";
+import ExpandableCard from "@/components/common/expandable-card";
+import Row from "@/components/common/timeline-parts/Row";
 import {
   getTimelineRange,
   getTimelineRows,
   getYearMarkers,
 } from "./timelineHelpers";
-import { type ContractData, MERCEDES_HEX } from "../../../../constants/f1";
-import type { FormatOutput } from "../../../../apis/DateHelper";
+import { type ContractData, MERCEDES_HEX } from "@/constants/f1";
+import type { FormatOutput } from "@/apis/DateHelper";
 
 interface TimelineCardProps {
   /** contract spans used to build timeline segments */

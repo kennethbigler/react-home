@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
-import { Provider } from "jotai";
+import { act } from "@testing-library/react";
+import { renderHookWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 import {
   useHeader,
   useRebels,
@@ -10,23 +10,19 @@ import {
 } from "./useImperialAssault";
 
 describe("useImperialAssault", () => {
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <Provider>{children}</Provider>
-  );
-
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   describe("useHeader", () => {
     it("initializes with default campaign index", () => {
-      const { result } = renderHook(() => useHeader(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useHeader());
       expect(result.current.campaignIdx).toBeDefined();
       expect(typeof result.current.handleCampaignChange).toBe("function");
     });
 
     it("handles campaign change to Twin Shadows (cIdx = 1)", () => {
-      const { result } = renderHook(() => useHeader(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useHeader());
 
       act(() => {
         result.current.handleCampaignChange("1");
@@ -36,7 +32,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles campaign change to The Bespin Gambit (cIdx = 3)", () => {
-      const { result } = renderHook(() => useHeader(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useHeader());
 
       act(() => {
         result.current.handleCampaignChange("3");
@@ -46,7 +42,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles campaign change to Tyrants of Lothal (cIdx = 6)", () => {
-      const { result } = renderHook(() => useHeader(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useHeader());
 
       act(() => {
         result.current.handleCampaignChange("6");
@@ -56,7 +52,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles campaign change to Basic (cIdx = 0) - default branch", () => {
-      const { result } = renderHook(() => useHeader(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useHeader());
 
       act(() => {
         result.current.handleCampaignChange("0");
@@ -66,7 +62,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles campaign change to Return to Hoth (cIdx = 2) - default branch", () => {
-      const { result } = renderHook(() => useHeader(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useHeader());
 
       act(() => {
         result.current.handleCampaignChange("2");
@@ -76,7 +72,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles campaign change to Jabba's Realm (cIdx = 4) - default branch", () => {
-      const { result } = renderHook(() => useHeader(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useHeader());
 
       act(() => {
         result.current.handleCampaignChange("4");
@@ -86,7 +82,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles campaign change to Heart of the Empire (cIdx = 5) - default branch", () => {
-      const { result } = renderHook(() => useHeader(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useHeader());
 
       act(() => {
         result.current.handleCampaignChange("5");
@@ -98,7 +94,7 @@ describe("useImperialAssault", () => {
 
   describe("useRebels", () => {
     it("initializes with default values", () => {
-      const { result } = renderHook(() => useRebels(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useRebels());
 
       expect(result.current.rebelXP).toBeDefined();
       expect(result.current.credits).toBeDefined();
@@ -107,7 +103,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles XP click for rebel index 0", () => {
-      const { result } = renderHook(() => useRebels(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useRebels());
 
       act(() => {
         result.current.handleXPClick(0, 5)();
@@ -117,7 +113,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles XP click for rebel index 1", () => {
-      const { result } = renderHook(() => useRebels(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useRebels());
 
       act(() => {
         result.current.handleXPClick(1, 3)();
@@ -127,7 +123,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles XP click for rebel index 2", () => {
-      const { result } = renderHook(() => useRebels(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useRebels());
 
       act(() => {
         result.current.handleXPClick(2, 7)();
@@ -137,7 +133,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles XP click for rebel index 3", () => {
-      const { result } = renderHook(() => useRebels(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useRebels());
 
       act(() => {
         result.current.handleXPClick(3, 10)();
@@ -147,7 +143,7 @@ describe("useImperialAssault", () => {
     });
 
     it("updates credits", () => {
-      const { result } = renderHook(() => useRebels(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useRebels());
 
       act(() => {
         result.current.updateCredits({
@@ -159,7 +155,7 @@ describe("useImperialAssault", () => {
     });
 
     it("updates credits with empty value", () => {
-      const { result } = renderHook(() => useRebels(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useRebels());
 
       act(() => {
         result.current.updateCredits({
@@ -173,7 +169,7 @@ describe("useImperialAssault", () => {
 
   describe("useEmpire", () => {
     it("initializes with default values", () => {
-      const { result } = renderHook(() => useEmpire(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEmpire());
 
       expect(result.current.xp).toBeDefined();
       expect(result.current.influence).toBeDefined();
@@ -182,7 +178,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles XP click", () => {
-      const { result } = renderHook(() => useEmpire(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEmpire());
 
       act(() => {
         result.current.handleXPClick(5)();
@@ -192,7 +188,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles influence click", () => {
-      const { result } = renderHook(() => useEmpire(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEmpire());
 
       act(() => {
         result.current.handleInfluenceClick(3)();
@@ -204,7 +200,7 @@ describe("useImperialAssault", () => {
 
   describe("useMissions", () => {
     it("initializes with campaign missions", () => {
-      const { result } = renderHook(() => useMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useMissions());
 
       expect(result.current.campaign).toBeDefined();
       expect(typeof result.current.handleVictoryClick).toBe("function");
@@ -214,7 +210,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles victory click when mission has a title", () => {
-      const { result } = renderHook(() => useMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useMissions());
 
       // Ensure we have a mission with a title
       if (result.current.campaign[0] && result.current.campaign[0].title) {
@@ -231,7 +227,7 @@ describe("useImperialAssault", () => {
     });
 
     it("does not handle victory click when mission title is empty (line 90 branch)", () => {
-      const { result } = renderHook(() => useMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useMissions());
 
       // Find a mission with empty title or update one to have empty title
       act(() => {
@@ -251,7 +247,7 @@ describe("useImperialAssault", () => {
     });
 
     it("updates forced mission threat when last forced mission has empty title (line 103 branch)", () => {
-      const { result } = renderHook(() => useMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useMissions());
 
       // Click victory on a mission that has a title
       if (result.current.campaign[0] && result.current.campaign[0].title) {
@@ -265,7 +261,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles rShop click when mission has victory", () => {
-      const { result } = renderHook(() => useMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useMissions());
 
       // First set a victory
       if (result.current.campaign[0] && result.current.campaign[0].title) {
@@ -284,7 +280,7 @@ describe("useImperialAssault", () => {
     });
 
     it("does not handle rShop click when mission has no victory and rShop is false (line 112 branch)", () => {
-      const { result } = renderHook(() => useMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useMissions());
 
       // Ensure mission has no victory and rShop is false
       const initialRShop = result.current.campaign[0]?.rShop || false;
@@ -300,7 +296,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles eShop click when mission has victory", () => {
-      const { result } = renderHook(() => useMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useMissions());
 
       // First set a victory
       if (result.current.campaign[0] && result.current.campaign[0].title) {
@@ -319,7 +315,7 @@ describe("useImperialAssault", () => {
     });
 
     it("does not handle eShop click when mission has no victory and eShop is false (line 122 branch)", () => {
-      const { result } = renderHook(() => useMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useMissions());
 
       // Ensure mission has no victory and eShop is false
       const initialEShop = result.current.campaign[0]?.eShop || false;
@@ -335,7 +331,7 @@ describe("useImperialAssault", () => {
     });
 
     it("updates mission name", () => {
-      const { result } = renderHook(() => useMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useMissions());
 
       act(() => {
         result.current.updateMissionName(0)({
@@ -347,7 +343,7 @@ describe("useImperialAssault", () => {
     });
 
     it("updates mission name with empty value", () => {
-      const { result } = renderHook(() => useMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useMissions());
 
       act(() => {
         result.current.updateMissionName(0)({
@@ -361,7 +357,7 @@ describe("useImperialAssault", () => {
 
   describe("useForcedMissions", () => {
     it("initializes with forced missions", () => {
-      const { result } = renderHook(() => useForcedMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useForcedMissions());
 
       expect(result.current.forcedMissions).toBeDefined();
       expect(Array.isArray(result.current.forcedMissions)).toBe(true);
@@ -370,7 +366,7 @@ describe("useImperialAssault", () => {
     });
 
     it("handles victory click when forced mission has a title", () => {
-      const { result } = renderHook(() => useForcedMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useForcedMissions());
 
       // First set a title
       act(() => {
@@ -391,7 +387,7 @@ describe("useImperialAssault", () => {
     });
 
     it("does not handle victory click when forced mission title is empty (line 152 branch)", () => {
-      const { result } = renderHook(() => useForcedMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useForcedMissions());
 
       const forcedMissionsBeforeClick = result.current.forcedMissions[0];
 
@@ -406,7 +402,7 @@ describe("useImperialAssault", () => {
     });
 
     it("adds new forced mission when clicking victory on last mission (line 158 branch)", () => {
-      const { result } = renderHook(() => useForcedMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useForcedMissions());
 
       // First set a title on the last forced mission
       const lastIndex = result.current.forcedMissions.length - 1;
@@ -428,7 +424,7 @@ describe("useImperialAssault", () => {
     });
 
     it("does not add new forced mission when clicking victory on non-last mission", () => {
-      const { result } = renderHook(() => useForcedMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useForcedMissions());
 
       // Ensure we have at least 2 forced missions
       act(() => {
@@ -463,7 +459,7 @@ describe("useImperialAssault", () => {
     });
 
     it("updates forced mission name", () => {
-      const { result } = renderHook(() => useForcedMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useForcedMissions());
 
       act(() => {
         result.current.updateMissionName(0)({
@@ -477,7 +473,7 @@ describe("useImperialAssault", () => {
     });
 
     it("updates forced mission name with empty value", () => {
-      const { result } = renderHook(() => useForcedMissions(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useForcedMissions());
 
       act(() => {
         result.current.updateMissionName(0)({

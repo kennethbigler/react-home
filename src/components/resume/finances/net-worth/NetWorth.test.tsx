@@ -2,10 +2,7 @@ import "../../../common/highcharts/tests/highchartsMocks";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Provider, createStore } from "jotai";
 import { beforeEach, describe, expect, it } from "vitest";
-import {
-  netWorthAtom,
-  netWorthCategoriesAtom,
-} from "../../../../jotai/finances-atom";
+import { netWorthAtom, netWorthCategoriesAtom } from "@/jotai/net-worth-atom";
 import NetWorth from "./NetWorth";
 
 const renderNetWorth = (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { SelectChangeEvent } from "@mui/material";
-import dateHelper from "../../../../apis/DateHelper";
+import dateHelper from "@/apis/DateHelper";
 
 /** Selectable entry years, newest first (2000 through the current year). */
 export const entryYears: number[] = [];

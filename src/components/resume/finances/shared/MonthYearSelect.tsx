@@ -6,7 +6,7 @@ import {
   Stack,
   type SelectChangeEvent,
 } from "@mui/material";
-import { months } from "../../../../apis/DateHelper";
+import { months } from "@/apis/DateHelper";
 import { entryYears } from "./useMonthYear";
 
 interface MonthYearSelectProps {

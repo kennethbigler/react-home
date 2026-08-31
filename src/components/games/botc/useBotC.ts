@@ -4,18 +4,27 @@ import {
   type FocusEvent,
   type ChangeEventHandler,
 } from "react";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import botcAtom, {
   type ActiveScript,
+  type BotCPlayer,
+  botcIsTextAtom,
+  botcNumPlayersAtom,
+  botcNumTravelersAtom,
+  botcPlayersAtom,
   botcPlayerShell,
   type BotCPlayerStatus,
   type BotCRole,
+  botcRoundAtom,
+  botcRoundNotesAtom,
+  botcScriptAtom,
+  botcTrackerAtom,
   BaseScript,
   type BaseScriptIndex,
   newRoundNotes,
   newTracker,
-} from "../../../jotai/botc-atom";
-import type { CommunityScriptOption } from "../../../utils/botc-script-utils";
+} from "@/jotai/botc-atom";
+import type { CommunityScriptOption } from "@/utils/botc-script-utils";
 
 const getUpNum = (i: number, pc: number) => {
   const isFull = pc % 2 === 0;
@@ -41,29 +50,45 @@ const getDownNum = (i: number, pc: number) => {
   return 2;
 };
 
+/** Immutable single-player update, shared by the player-editing actions */
+const withPlayer = (
+  players: BotCPlayer[],
+  i: number,
+  patch: Partial<BotCPlayer>,
+): BotCPlayer[] => {
+  const newPlayers = [...players];
+  newPlayers[i] = { ...newPlayers[i], ...patch };
+  return newPlayers;
+};
+
 /** -------------------- PlayerNotes Specific Functions -------------------- */
 export const usePlayerAdjControls = () => {
-  const [{ botcPlayers, numPlayers, numTravelers, ...other }, setState] =
-    useAtom(botcAtom);
+  const setState = useSetAtom(botcAtom);
 
   /** move player in array */
   const updatePlayerOrder = (i: number, isUp: boolean) => () => {
-    const mod = isUp
-      ? getUpNum(i, numPlayers + numTravelers)
-      : getDownNum(i, numPlayers + numTravelers);
+    setState((prev) => {
+      const pc = prev.numPlayers + prev.numTravelers;
+      const mod = isUp ? getUpNum(i, pc) : getDownNum(i, pc);
 
-    const newPlayers = [...botcPlayers];
-    [newPlayers[i], newPlayers[i + mod]] = [newPlayers[i + mod], newPlayers[i]];
+      const newPlayers = [...prev.botcPlayers];
+      [newPlayers[i], newPlayers[i + mod]] = [
+        newPlayers[i + mod],
+        newPlayers[i],
+      ];
 
-    setState({ ...other, numPlayers, numTravelers, botcPlayers: newPlayers });
+      return { ...prev, botcPlayers: newPlayers };
+    });
   };
 
   return updatePlayerOrder;
 };
 
 export const usePlayerNotes = () => {
-  const [{ botcPlayers, numPlayers, numTravelers, ...other }, setState] =
-    useAtom(botcAtom);
+  const botcPlayers = useAtomValue(botcPlayersAtom);
+  const numPlayers = useAtomValue(botcNumPlayersAtom);
+  const numTravelers = useAtomValue(botcNumTravelersAtom);
+  const setState = useSetAtom(botcAtom);
   const [randomPlayer, setRandomPlayer] = useState<number | null>(null);
 
   const getRandomPlayer = () => {
@@ -83,9 +108,12 @@ export const usePlayerNotes = () => {
   const updatePlayerTextField =
     (i: number, field: "name" | "notes") =>
     (e: FocusEvent<HTMLInputElement>): void => {
-      const newPlayers = [...botcPlayers];
-      newPlayers[i] = { ...newPlayers[i], [field]: e.target.value || "" };
-      setState({ ...other, numPlayers, numTravelers, botcPlayers: newPlayers });
+      setState((prev) => ({
+        ...prev,
+        botcPlayers: withPlayer(prev.botcPlayers, i, {
+          [field]: e.target.value || "",
+        }),
+      }));
     };
 
   const updateNames = (i: number) => updatePlayerTextField(i, "name");
@@ -94,15 +122,15 @@ export const usePlayerNotes = () => {
   /** handle role selections */
   const updateRoles =
     (i: number) => (role: BotCRole, selected: boolean) => (): void => {
-      // set up immutability for new player
-      const newPlayers = [...botcPlayers];
-      const newPlayer = { ...newPlayers[i] };
-      // if selected remove, if not add
-      newPlayer.roles = selected
-        ? newPlayer.roles.filter((r) => r.name !== role.name)
-        : [...newPlayer.roles, role];
-      newPlayers[i] = newPlayer;
-      setState({ ...other, numPlayers, numTravelers, botcPlayers: newPlayers });
+      setState((prev) => {
+        const roles = selected
+          ? prev.botcPlayers[i].roles.filter((r) => r.name !== role.name)
+          : [...prev.botcPlayers[i].roles, role];
+        return {
+          ...prev,
+          botcPlayers: withPlayer(prev.botcPlayers, i, { roles }),
+        };
+      });
     };
 
   /** handle checkboxes checked for player stat updates */
@@ -110,14 +138,13 @@ export const usePlayerNotes = () => {
     (i: number) =>
     (key: BotCPlayerStatus) =>
     (_e: ChangeEvent<HTMLInputElement>, checked: boolean): void => {
-      const newPlayers = [...botcPlayers];
-      const newPlayer = { ...newPlayers[i] };
-      newPlayer[key] = checked;
-      newPlayers[i] = newPlayer;
       if ((key === "exec" || key === "kill") && checked) {
         setRandomPlayer(null);
       }
-      setState({ ...other, numPlayers, numTravelers, botcPlayers: newPlayers });
+      setState((prev) => ({
+        ...prev,
+        botcPlayers: withPlayer(prev.botcPlayers, i, { [key]: checked }),
+      }));
     };
 
   return {
@@ -133,51 +160,29 @@ export const usePlayerNotes = () => {
 
 /** -------------------- EditPlayers Specific Functions -------------------- */
 export const useEditPlayers = () => {
-  const [
-    { isText, numPlayers, numTravelers, script, botcPlayers, ...other },
-    setState,
-  ] = useAtom(botcAtom);
+  const isText = useAtomValue(botcIsTextAtom);
+  const script = useAtomValue(botcScriptAtom);
+  const setState = useSetAtom(botcAtom);
 
   /** update number of players */
   const updateNumPlayers = (value: number) => {
-    setState({
-      ...other,
-      botcPlayers,
-      isText,
-      numTravelers,
-      script,
-      numPlayers: value,
-    });
+    setState((prev) => ({ ...prev, numPlayers: value }));
   };
 
   /** update number of travelers */
   const updateNumTravelers = (value: number) => {
-    setState({
-      ...other,
-      botcPlayers,
-      isText,
-      numPlayers,
-      script,
-      numTravelers: value,
-    });
+    setState((prev) => ({ ...prev, numTravelers: value }));
   };
 
   /** Select a base script by index (0–3) */
   const updateScript = (index: BaseScriptIndex) => {
-    let newText = isText;
-    // TB / S&V / BMR work best with text mode on
-    if (index !== BaseScript.Other) {
-      newText = true;
-    }
     const newActiveScript: ActiveScript = { type: "base", index };
-    setState({
-      ...other,
-      botcPlayers,
-      numPlayers,
-      numTravelers,
-      isText: newText,
+    setState((prev) => ({
+      ...prev,
+      // TB / S&V / BMR work best with text mode on
+      isText: index !== BaseScript.Other ? true : prev.isText,
       script: newActiveScript,
-    });
+    }));
   };
 
   /** Select a community script from botcscripts.com */
@@ -189,43 +194,26 @@ export const useEditPlayers = () => {
       author: option.author,
       characters: option.characters,
     };
-    setState({
-      ...other,
-      botcPlayers,
-      numPlayers,
-      numTravelers,
-      isText,
-      script: newActiveScript,
-    });
+    setState((prev) => ({ ...prev, script: newActiveScript }));
   };
 
   /** toggle icon/text display mode */
   const updateText = (e: ChangeEvent<HTMLInputElement>): void => {
-    setState({
-      ...other,
-      botcPlayers,
-      numPlayers,
-      numTravelers,
-      script,
-      isText: e.target.checked,
-    });
+    setState((prev) => ({ ...prev, isText: e.target.checked }));
   };
 
   /** set a new game (resets roles/notes/tracker but keeps player names and script) */
   const newBotCGame = () => {
-    setState({
-      isText,
-      numPlayers,
-      numTravelers,
-      script,
+    setState((prev) => ({
+      ...prev,
       round: 0,
-      botcPlayers: botcPlayers.map(({ name }) => ({
+      botcPlayers: prev.botcPlayers.map(({ name }) => ({
         ...botcPlayerShell,
         name,
       })),
       roundNotes: newRoundNotes(),
       tracker: newTracker(),
-    });
+    }));
   };
 
   return {
@@ -242,31 +230,38 @@ export const useEditPlayers = () => {
 
 /** -------------------- Tracker Specific Functions -------------------- */
 export const useTracker = () => {
-  const [{ round, roundNotes, tracker, ...other }, setState] =
-    useAtom(botcAtom);
+  const botcPlayers = useAtomValue(botcPlayersAtom);
+  const round = useAtomValue(botcRoundAtom);
+  const roundNotes = useAtomValue(botcRoundNotesAtom);
+  const tracker = useAtomValue(botcTrackerAtom);
+  const setState = useSetAtom(botcAtom);
 
   const onRoundClick = (i: number) => () =>
-    setState({ ...other, roundNotes, tracker, round: i });
+    setState((prev) => ({ ...prev, round: i }));
 
   const onTrackClick = (i: number) => () => {
-    const updatedRound = [...tracker[round]];
-    updatedRound[i] = (tracker[round][i] + 1) % 3;
-    const updatedTracker = [...tracker];
-    updatedTracker[round] = updatedRound;
-    setState({ ...other, round, roundNotes, tracker: updatedTracker });
+    setState((prev) => {
+      const updatedRound = [...prev.tracker[prev.round]];
+      updatedRound[i] = (prev.tracker[prev.round][i] + 1) % 3;
+      const updatedTracker = [...prev.tracker];
+      updatedTracker[prev.round] = updatedRound;
+      return { ...prev, tracker: updatedTracker };
+    });
   };
 
   /** update round notes onBlur */
   const onNotesChange: ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = (e): void => {
-    const updatedRoundNotes = [...roundNotes];
-    updatedRoundNotes[round] = e.target.value || "";
-    setState({ ...other, round, tracker, roundNotes: updatedRoundNotes });
+    setState((prev) => {
+      const updatedRoundNotes = [...prev.roundNotes];
+      updatedRoundNotes[prev.round] = e.target.value || "";
+      return { ...prev, roundNotes: updatedRoundNotes };
+    });
   };
 
   return {
-    botcPlayers: other.botcPlayers,
+    botcPlayers,
     round,
     roundNotes,
     tracker,
@@ -278,7 +273,10 @@ export const useTracker = () => {
 
 /** -------------------- Home Specific Functions -------------------- */
 const useBotC = () => {
-  const { isText, numPlayers, numTravelers, script } = useAtomValue(botcAtom);
+  const isText = useAtomValue(botcIsTextAtom);
+  const numPlayers = useAtomValue(botcNumPlayersAtom);
+  const numTravelers = useAtomValue(botcNumTravelersAtom);
+  const script = useAtomValue(botcScriptAtom);
   return { isText, numPlayers, numTravelers, script };
 };
 

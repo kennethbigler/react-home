@@ -1,26 +1,22 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
-import { Provider } from "jotai";
+import { act } from "@testing-library/react";
+import { renderHookWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 import useBotC, {
   usePlayerAdjControls,
   usePlayerNotes,
   useEditPlayers,
   useTracker,
 } from "./useBotC";
-import type { BotCRole } from "../../../jotai/botc-atom";
+import type { BotCRole } from "@/jotai/botc-atom";
 
 describe("useBotC", () => {
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <Provider>{children}</Provider>
-  );
-
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   describe("useBotC (main hook)", () => {
     it("returns initial state values", () => {
-      const { result } = renderHook(() => useBotC(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useBotC());
 
       expect(result.current.isText).toBeDefined();
       expect(result.current.numPlayers).toBeDefined();
@@ -35,7 +31,9 @@ describe("useBotC", () => {
 
   describe("usePlayerAdjControls", () => {
     it("moves player up when isUp is true", () => {
-      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() =>
+        usePlayerAdjControls(),
+      );
 
       act(() => {
         const updateFn = result.current(1, true);
@@ -47,7 +45,9 @@ describe("useBotC", () => {
     });
 
     it("moves player down when isUp is false", () => {
-      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() =>
+        usePlayerAdjControls(),
+      );
 
       act(() => {
         const updateFn = result.current(1, false);
@@ -58,7 +58,9 @@ describe("useBotC", () => {
     });
 
     it("handles moving player at position 0 up", () => {
-      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() =>
+        usePlayerAdjControls(),
+      );
 
       act(() => {
         const updateFn = result.current(0, true);
@@ -69,7 +71,9 @@ describe("useBotC", () => {
     });
 
     it("handles moving player at position 3 up", () => {
-      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() =>
+        usePlayerAdjControls(),
+      );
 
       act(() => {
         const updateFn = result.current(3, true);
@@ -80,7 +84,9 @@ describe("useBotC", () => {
     });
 
     it("handles moving player at position 0 down", () => {
-      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() =>
+        usePlayerAdjControls(),
+      );
 
       act(() => {
         const updateFn = result.current(0, false);
@@ -91,7 +97,9 @@ describe("useBotC", () => {
     });
 
     it("handles moving player at position 1 down", () => {
-      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() =>
+        usePlayerAdjControls(),
+      );
 
       act(() => {
         const updateFn = result.current(1, false);
@@ -105,7 +113,9 @@ describe("useBotC", () => {
       // Default atom: numPlayers=8, numTravelers=0, pc=8 (even → isFull=true)
       // getUpNum(6, 8): not i===0, not i===3, not isFull&&i===pc-1 (6≠7)
       // → isFull && i === pc-2 (6===6) → true → return -1 (line 22)
-      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() =>
+        usePlayerAdjControls(),
+      );
       act(() => {
         result.current(6, true)();
       });
@@ -117,7 +127,9 @@ describe("useBotC", () => {
       // getDownNum(7, 8): not first branch (i≠0, isFull&&i===pc-4→7≠4 false)
       // not second branch (i≠1, i===pc-2→7≠6 false, isFull&&i===pc-3→7≠5 false)
       // → i === pc - 1 (7===7) → true → return -1 (line 34)
-      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() =>
+        usePlayerAdjControls(),
+      );
       act(() => {
         result.current(7, false)();
       });
@@ -129,7 +141,9 @@ describe("useBotC", () => {
       // We need pc (numPlayers + numTravelers) even. Default is 5 players, 0 travelers = 5.
       // The hook reads from atom; we can just call with index matching pc-1 for an even total.
       // The easiest path: just call updatePlayerOrder at various indices to exercise all branches.
-      const { result } = renderHook(() => usePlayerAdjControls(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() =>
+        usePlayerAdjControls(),
+      );
 
       // With 5 players + 0 travelers, pc = 5 (odd). i=3 triggers `i === 3` in getUpNum.
       // We need even pc to hit `isFull && i === pc - 1`.
@@ -154,7 +168,7 @@ describe("useBotC", () => {
 
   describe("usePlayerNotes", () => {
     it("returns initial player notes state", () => {
-      const { result } = renderHook(() => usePlayerNotes(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => usePlayerNotes());
 
       expect(result.current.botcPlayers).toBeDefined();
       expect(result.current.randomPlayer).toBeNull();
@@ -166,7 +180,7 @@ describe("useBotC", () => {
     });
 
     it("gets random player from alive players", () => {
-      const { result } = renderHook(() => usePlayerNotes(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => usePlayerNotes());
 
       act(() => {
         result.current.getRandomPlayer();
@@ -177,7 +191,7 @@ describe("useBotC", () => {
     });
 
     it("updates player name onBlur", () => {
-      const { result } = renderHook(() => usePlayerNotes(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => usePlayerNotes());
 
       const mockEvent = {
         target: { value: "Test Player" },
@@ -192,7 +206,7 @@ describe("useBotC", () => {
     });
 
     it("updates player name with empty value", () => {
-      const { result } = renderHook(() => usePlayerNotes(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => usePlayerNotes());
 
       const mockEvent = {
         target: { value: "" },
@@ -207,7 +221,7 @@ describe("useBotC", () => {
     });
 
     it("updates player notes onBlur", () => {
-      const { result } = renderHook(() => usePlayerNotes(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => usePlayerNotes());
 
       const mockEvent = {
         target: { value: "Test Notes" },
@@ -222,7 +236,7 @@ describe("useBotC", () => {
     });
 
     it("updates player notes with empty value", () => {
-      const { result } = renderHook(() => usePlayerNotes(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => usePlayerNotes());
 
       const mockEvent = {
         target: { value: "" },
@@ -237,7 +251,7 @@ describe("useBotC", () => {
     });
 
     it("adds role when not selected", () => {
-      const { result } = renderHook(() => usePlayerNotes(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => usePlayerNotes());
 
       const mockRole: BotCRole = {
         name: "Imp",
@@ -254,7 +268,7 @@ describe("useBotC", () => {
     });
 
     it("removes role when selected", () => {
-      const { result } = renderHook(() => usePlayerNotes(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => usePlayerNotes());
 
       const mockRole: BotCRole = {
         name: "Imp",
@@ -271,7 +285,7 @@ describe("useBotC", () => {
     });
 
     it("updates player stats with checked true", () => {
-      const { result } = renderHook(() => usePlayerNotes(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => usePlayerNotes());
 
       const mockEvent = {} as React.ChangeEvent<HTMLInputElement>;
 
@@ -284,7 +298,7 @@ describe("useBotC", () => {
     });
 
     it("updates player stats with checked false", () => {
-      const { result } = renderHook(() => usePlayerNotes(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => usePlayerNotes());
 
       const mockEvent = {} as React.ChangeEvent<HTMLInputElement>;
 
@@ -297,7 +311,7 @@ describe("useBotC", () => {
     });
 
     it("resets random player when exec is checked", () => {
-      const { result } = renderHook(() => usePlayerNotes(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => usePlayerNotes());
 
       // First set a random player
       act(() => {
@@ -315,7 +329,7 @@ describe("useBotC", () => {
     });
 
     it("resets random player when kill is checked", () => {
-      const { result } = renderHook(() => usePlayerNotes(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => usePlayerNotes());
 
       // First set a random player
       act(() => {
@@ -333,7 +347,7 @@ describe("useBotC", () => {
     });
 
     it("does not reset random player for other stats", () => {
-      const { result } = renderHook(() => usePlayerNotes(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => usePlayerNotes());
 
       const mockEvent = {} as React.ChangeEvent<HTMLInputElement>;
 
@@ -348,7 +362,7 @@ describe("useBotC", () => {
 
   describe("useEditPlayers", () => {
     it("returns initial edit players state", () => {
-      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEditPlayers());
 
       expect(result.current.isText).toBeDefined();
       expect(result.current.script).toBeDefined();
@@ -360,7 +374,7 @@ describe("useBotC", () => {
     });
 
     it("updates number of players", () => {
-      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEditPlayers());
 
       act(() => {
         result.current.updateNumPlayers(10);
@@ -370,7 +384,7 @@ describe("useBotC", () => {
     });
 
     it("updates number of travelers", () => {
-      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEditPlayers());
 
       act(() => {
         result.current.updateNumTravelers(2);
@@ -380,7 +394,7 @@ describe("useBotC", () => {
     });
 
     it("updates script to 0 and sets text to true", () => {
-      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEditPlayers());
 
       act(() => {
         result.current.updateScript(0);
@@ -394,7 +408,7 @@ describe("useBotC", () => {
     });
 
     it("updates script to 1 and sets text to true", () => {
-      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEditPlayers());
 
       act(() => {
         result.current.updateScript(1);
@@ -408,7 +422,7 @@ describe("useBotC", () => {
     });
 
     it("updates script to 2 and sets text to true", () => {
-      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEditPlayers());
 
       act(() => {
         result.current.updateScript(2);
@@ -422,7 +436,7 @@ describe("useBotC", () => {
     });
 
     it("updates script to 3 (Other) without forcing text mode", () => {
-      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEditPlayers());
 
       act(() => {
         result.current.updateScript(3);
@@ -436,7 +450,7 @@ describe("useBotC", () => {
     });
 
     it("updates text setting", () => {
-      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEditPlayers());
 
       const mockEvent = {
         target: { checked: false },
@@ -450,7 +464,7 @@ describe("useBotC", () => {
     });
 
     it("creates new BotC game", () => {
-      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEditPlayers());
 
       act(() => {
         result.current.newBotCGame();
@@ -460,7 +474,7 @@ describe("useBotC", () => {
     });
 
     it("updateCommunityScript sets community script", () => {
-      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEditPlayers());
 
       act(() => {
         result.current.updateCommunityScript({
@@ -480,7 +494,7 @@ describe("useBotC", () => {
     });
 
     it("updateScript sets base script, clears community", () => {
-      const { result } = renderHook(() => useEditPlayers(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useEditPlayers());
 
       // First set a community script
       act(() => {
@@ -509,7 +523,7 @@ describe("useBotC", () => {
 
   describe("useTracker", () => {
     it("returns initial tracker state", () => {
-      const { result } = renderHook(() => useTracker(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useTracker());
 
       expect(result.current.botcPlayers).toBeDefined();
       expect(result.current.round).toBeDefined();
@@ -521,7 +535,7 @@ describe("useBotC", () => {
     });
 
     it("updates round when round is clicked", () => {
-      const { result } = renderHook(() => useTracker(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useTracker());
 
       act(() => {
         const clickFn = result.current.onRoundClick(2);
@@ -532,7 +546,7 @@ describe("useBotC", () => {
     });
 
     it("cycles tracker value through 0, 1, 2", () => {
-      const { result } = renderHook(() => useTracker(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useTracker());
 
       act(() => {
         const clickFn = result.current.onTrackClick(0);
@@ -544,7 +558,7 @@ describe("useBotC", () => {
     });
 
     it("updates round notes with value", () => {
-      const { result } = renderHook(() => useTracker(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useTracker());
 
       const mockEvent = {
         target: { value: "Night 1 notes" },
@@ -560,7 +574,7 @@ describe("useBotC", () => {
     });
 
     it("updates round notes with empty value", () => {
-      const { result } = renderHook(() => useTracker(), { wrapper });
+      const { result } = renderHookWithHydratedAtoms(() => useTracker());
 
       const mockEvent = {
         target: { value: "" },

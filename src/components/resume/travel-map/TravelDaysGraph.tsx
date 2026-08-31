@@ -12,9 +12,9 @@ import {
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../../common/highcharts/sankeyHighcharts";
-import themeAtom from "../../../jotai/theme-atom";
-import { vacationDays, workDays } from "../../../constants/travel";
+import Highcharts from "@/components/common/highcharts/sankeyHighcharts";
+import themeAtom from "@/jotai/theme-atom";
+import { vacationDays, workDays } from "@/constants/travel";
 
 const options: Highcharts.Options = {
   chart: { type: "areaspline", backgroundColor: "transparent" },

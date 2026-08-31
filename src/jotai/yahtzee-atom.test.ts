@@ -1,10 +1,10 @@
 import { createStore } from "jotai";
 import { describe, it, expect } from "vitest";
-import yahtzeeState, { yahtzeeRead } from "./yahtzee-state";
+import yahtzeeState, { yahtzeeRead } from "./yahtzee-atom";
 
 const makeStore = () => createStore();
 
-describe("jotai | yahtzee-state", () => {
+describe("jotai | yahtzee-atom", () => {
   describe("yahtzeeRead", () => {
     it("topSum < 63 → no bonus, finalTopSum = topSum", () => {
       const store = makeStore();

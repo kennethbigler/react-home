@@ -1,6 +1,6 @@
 import { deepOrange } from "@mui/material/colors";
 import type { SxProps, Theme } from "@mui/material/styles";
-import type { MuiColors } from "../components/common/types";
+import type { MuiColors } from "../@types/mui";
 
 export const outlinedContrastSx = (
   paletteColor: MuiColors = "primary",

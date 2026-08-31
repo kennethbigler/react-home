@@ -1,7 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import { describe, expect, it } from "vitest";
-import compCalcAtom, { budgetAtom } from "../../../../jotai/finances-atom";
+import compCalcAtom from "@/jotai/comp-calc-atom";
+import { budgetAtom } from "@/jotai/budget-atom";
 import Budgeting from "./Budgeting";
 
 describe("resume | finances | budgeting | Budgeting", () => {

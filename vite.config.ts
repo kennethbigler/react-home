@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { Plugin } from "vite";
 // eslint-disable-next-line import/no-unresolved
 import { defineConfig } from "vitest/config";
@@ -32,6 +33,11 @@ function deferStylesheetPlugin(): Plugin {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
   // for lighthouse
   build: {
     sourcemap: process.env.SOURCEMAPS !== "false",

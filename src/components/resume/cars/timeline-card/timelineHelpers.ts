@@ -1,6 +1,6 @@
-import dateObj, { type DateObj } from "../../../../apis/DateHelper";
-import type { CarEntry } from "../../../../constants/cars";
-import type { SegmentType } from "../../../common/timeline-parts/Segment";
+import dateObj, { type DateObj } from "@/apis/DateHelper";
+import type { CarEntry } from "@/constants/cars";
+import type { SegmentType } from "@/components/common/timeline-parts/Segment";
 
 /* *************************     Constants     ************************* */
 export const START = dateObj("2008-03");

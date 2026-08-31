@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import bridgeAtom, { bridgeRead } from "../../../jotai/bridge-atom";
+import bridgeAtom, { bridgeRead } from "@/jotai/bridge-atom";
 
 const border = `4px solid ${grey[700]}`;
 

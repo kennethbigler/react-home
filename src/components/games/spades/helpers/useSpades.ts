@@ -1,11 +1,11 @@
 import { useAtom, useAtomValue } from "jotai";
-import playerAtom from "../../../../jotai/player-atom";
+import playerAtom from "@/jotai/player-atom";
 import spadesAtom, {
   type Bid,
   type Bids,
   defaultBid,
   type NilMetrics,
-} from "../../../../jotai/spades-atom";
+} from "@/jotai/spades-atom";
 import { getScoreText } from "./getScoreText";
 
 /** Bid extended with the number of tricks made this round */

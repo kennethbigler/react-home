@@ -11,13 +11,13 @@ import {
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../../../common/highcharts/sankeyHighcharts";
-import themeAtom from "../../../../jotai/theme-atom";
+import Highcharts from "@/components/common/highcharts/sankeyHighcharts";
+import themeAtom from "@/jotai/theme-atom";
 import {
   loyaltySeries,
   loyaltyColors,
   loyaltyNames,
-} from "../../../../constants/cruises";
+} from "@/constants/cruises";
 
 const options: Highcharts.Options = {
   colors: loyaltyColors,

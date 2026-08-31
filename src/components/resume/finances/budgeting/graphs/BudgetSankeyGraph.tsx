@@ -1,11 +1,11 @@
 import { useTheme } from "@mui/material/styles";
 import { Chart, Credits, Series, Title, XAxis, YAxis } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../../../../common/highcharts/sankeyHighcharts";
-import usDollar from "../../../../../apis/usDollar";
-import ChartFigure from "../../shared/ChartFigure";
-import useChartTextColor from "../../shared/useChartTextColor";
-import type { BudgetFlow, CategoryTotal } from "../../../../../apis/budget";
+import Highcharts from "@/components/common/highcharts/sankeyHighcharts";
+import usDollar from "@/apis/usDollar";
+import ChartFigure from "@/components/resume/finances/shared/ChartFigure";
+import useChartTextColor from "@/components/resume/finances/shared/useChartTextColor";
+import type { BudgetFlow, CategoryTotal } from "@/apis/budget";
 import {
   buildBudgetSankeyData,
   BUDGET_WITHHOLDING_NODE_LABELS,

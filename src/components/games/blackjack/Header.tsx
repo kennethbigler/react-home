@@ -1,8 +1,8 @@
 import { memo } from "react";
-import InfoPopup from "../../common/info-popover/InfoPopup";
+import InfoPopup from "@/components/common/info-popover/InfoPopup";
 import Rules from "./Rules";
 import Help from "./help";
-import PlayerMenu from "../../common/header/PlayerMenu";
+import PlayerMenu from "@/components/common/header/PlayerMenu";
 import { Typography } from "@mui/material";
 
 const Header = memo(() => (

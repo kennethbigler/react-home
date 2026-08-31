@@ -4,11 +4,11 @@ import { MapsChart, MapsSeries } from "@highcharts/react/Maps";
 import { Credits, Title } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import { Typography } from "@mui/material";
-import themeAtom from "../../../../jotai/theme-atom";
-import countries, { numCountries } from "../../../../constants/travel";
+import themeAtom from "@/jotai/theme-atom";
+import countries, { numCountries } from "@/constants/travel";
 import { blue } from "@mui/material/colors";
-import LoadingSpinner from "../../../common/loading-spinner";
-import Highcharts from "../../../common/highcharts/mapsHighcharts";
+import LoadingSpinner from "@/components/common/loading-spinner";
+import Highcharts from "@/components/common/highcharts/mapsHighcharts";
 
 const staticOptions: Highcharts.Options = {
   chart: { backgroundColor: "transparent", height: "60%" },

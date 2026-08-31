@@ -1,4 +1,4 @@
-import ExpandableCard from "../../common/expandable-card";
+import ExpandableCard from "@/components/common/expandable-card";
 import {
   Grid,
   Table,

@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
+import persistentAtom from "./storage";
 import turnAtom, { type TurnState } from "./turn-atom";
 import playerAtom, { type DBPlayer } from "./player-atom";
 
@@ -24,7 +24,7 @@ export const newPokerGameState = (): PokerState => ({
   gameOver: false,
 });
 
-const pokerAtom = atomWithStorage("pokerAtom", newPokerGameState());
+const pokerAtom = persistentAtom("pokerAtom", newPokerGameState());
 
 interface PokerGameState {
   poker: PokerState;
@@ -60,5 +60,6 @@ const pokerState = atom(
     }
   },
 );
+pokerState.debugLabel = "pokerState";
 
 export default pokerState;

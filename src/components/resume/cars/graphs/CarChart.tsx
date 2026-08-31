@@ -10,8 +10,8 @@ import {
   YAxis,
 } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
-import Highcharts from "../../../common/highcharts/sankeyHighcharts";
-import { processData, type CarEntry } from "../../../../constants/cars";
+import Highcharts from "@/components/common/highcharts/sankeyHighcharts";
+import { processData, type CarEntry } from "@/constants/cars";
 
 interface CarChartProps {
   data: CarEntry[];

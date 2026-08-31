@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
-import type { CarEntry } from "../../../constants/cars";
-import type { DateObj } from "../../../apis/DateHelper";
+import type { CarEntry } from "@/constants/cars";
+import type { DateObj } from "@/apis/DateHelper";
 import { Card, CardContent, Typography, Grid } from "@mui/material";
 
 interface CarCardProps {

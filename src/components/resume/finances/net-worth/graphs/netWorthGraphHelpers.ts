@@ -1,17 +1,14 @@
-import dateHelper from "../../../../../apis/DateHelper";
-import usDollar from "../../../../../apis/usDollar";
-import type {
-  NetWorthCalcEntry,
-  NetWorthEntry,
-} from "../../../../../jotai/finances-atom";
+import dateHelper from "@/apis/DateHelper";
+import usDollar from "@/apis/usDollar";
+import type { NetWorthCalcEntry, NetWorthEntry } from "@/jotai/net-worth-atom";
 import {
   entryDateToTimestamp,
   formatTooltipRow,
   getInflationTooltipValue,
   type InflationTooltipOptions,
   type TooltipPoint,
-} from "../../shared/chartHelpers";
-import { getInflationRate } from "../../shared/inflation";
+} from "@/components/resume/finances/shared/chartHelpers";
+import { getInflationRate } from "@/components/resume/finances/shared/inflation";
 
 type NetWorthChartPoint = [number, number];
 

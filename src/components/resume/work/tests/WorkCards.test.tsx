@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import WorkCards from "../WorkCards";
-import { work, volunteer } from "../../../../constants/work";
+import { work, volunteer } from "@/constants/work";
 
 describe("resume | work | WorkCards", () => {
   describe("rendering", () => {

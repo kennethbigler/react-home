@@ -1,9 +1,9 @@
 import { memo, type ReactElement } from "react";
-import ExpandableCard from "../../common/expandable-card";
+import ExpandableCard from "@/components/common/expandable-card";
 import {
   summarySchools,
   type SummarySchool,
-} from "../../../constants/education-summary";
+} from "@/constants/education-summary";
 import EducationSeg from "./EducationSeg";
 
 const Education = memo(() => (

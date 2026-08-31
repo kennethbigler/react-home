@@ -1,6 +1,6 @@
 import { createTheme, useTheme } from "@mui/material/styles";
 import { useAtomValue } from "jotai";
-import themeAtom from "../../../../jotai/theme-atom";
+import themeAtom from "@/jotai/theme-atom";
 
 /** Text color for Highcharts labels against the current app theme. */
 const useChartTextColor = (): string => {

@@ -1,17 +1,18 @@
 import { atom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
+import persistentAtom from "./storage";
 import slotMachine, {
   type SlotDisplay,
 } from "../components/games/slots/slotMachine";
-import playerAtom from "./player-atom";
+import playerAtom, { patchPlayerAtom } from "./player-atom";
 
-const slotsAtom = atomWithStorage("slotsAtom", slotMachine.pullHandle());
+const slotsAtom = persistentAtom("slotsAtom", slotMachine.pullHandle());
 
 export const slotsRead = atom((get) => {
   const players = get(playerAtom);
   const { bet, name } = players[0];
   return { bet, name };
 });
+slotsRead.debugLabel = "slotsRead";
 
 interface SlotsState {
   reel: SlotDisplay[];
@@ -28,20 +29,12 @@ const slotsState = atom(
 
     return { reel, money, houseMoney };
   },
-  (get, set, { reel, money, houseMoney }: SlotsState) => {
-    // set reel state
+  (_get, set, { reel, money, houseMoney }: SlotsState) => {
     set(slotsAtom, reel);
-
-    // get player state
-    const players = get(playerAtom);
-    const DEALER_IDX = players.length - 1;
-
-    // set player state
-    const newPlayers = [...players];
-    newPlayers[0] = { ...players[0], money };
-    newPlayers[DEALER_IDX] = { ...players[DEALER_IDX], money: houseMoney };
-    set(playerAtom, newPlayers);
+    set(patchPlayerAtom, 0, { money });
+    set(patchPlayerAtom, -1, { money: houseMoney });
   },
 );
+slotsState.debugLabel = "slotsState";
 
 export default slotsState;

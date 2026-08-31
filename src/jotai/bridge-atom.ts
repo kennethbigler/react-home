@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
+import persistentAtom from "./storage";
 
 export type AboveScores = [
   [number[], number[]],
@@ -23,7 +23,6 @@ export interface BridgeState {
   theyBelow: number[];
   weRubbers: number;
   theyRubbers: number;
-  pendingContract?: PendingContract | null;
 }
 
 export const newBridgeGame: () => Omit<
@@ -38,14 +37,17 @@ export const newBridgeGame: () => Omit<
   bids: [],
   weBelow: [],
   theyBelow: [],
-  pendingContract: null,
 });
 
-const bridgeAtom = atomWithStorage<BridgeState>("bridgeAtom", {
+const bridgeAtom = persistentAtom<BridgeState>("bridgeAtom", {
   ...newBridgeGame(),
   weRubbers: 0,
   theyRubbers: 0,
 });
+
+/** Transient Bid Advisor → Score modal hand-off; deliberately not persisted. */
+export const pendingContractAtom = atom<PendingContract | null>(null);
+pendingContractAtom.debugLabel = "pendingContractAtom";
 
 export const sum = (scores: number[]) => scores.reduce((acc, n) => acc + n, 0);
 
@@ -96,5 +98,6 @@ export const bridgeRead = atom((get) => {
     theyVulnerable,
   };
 });
+bridgeRead.debugLabel = "bridgeRead";
 
 export default bridgeAtom;

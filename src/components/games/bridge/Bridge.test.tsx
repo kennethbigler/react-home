@@ -1,14 +1,10 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { Provider } from "jotai";
+import { screen, fireEvent } from "@testing-library/react";
 import Bridge from ".";
+import { renderWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 
 describe("Bridge Game Component", () => {
   it("renders the bridge game with header and score display", () => {
-    render(
-      <Provider>
-        <Bridge />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<Bridge />);
 
     expect(screen.getByText("🌉")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /score/i })).toBeInTheDocument();
@@ -16,11 +12,7 @@ describe("Bridge Game Component", () => {
   });
 
   it("renders as expected", () => {
-    render(
-      <Provider>
-        <Bridge />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<Bridge />);
     expect(screen.getByText("🌉")).toBeInTheDocument();
 
     expect(screen.queryByText("Scoring Table")).toBeNull();
@@ -35,11 +27,7 @@ describe("Bridge Game Component", () => {
   });
 
   it("opens and closes scoring dialog", () => {
-    render(
-      <Provider>
-        <Bridge />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<Bridge />);
 
     expect(screen.queryByText("Scoring Table")).not.toBeInTheDocument();
 
@@ -48,11 +36,7 @@ describe("Bridge Game Component", () => {
   });
 
   it("opens and closes bid dialog", () => {
-    render(
-      <Provider>
-        <Bridge />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<Bridge />);
 
     expect(screen.queryByText("Opening Bids")).not.toBeInTheDocument();
 
@@ -63,11 +47,7 @@ describe("Bridge Game Component", () => {
   });
 
   it("displays initial score table", () => {
-    render(
-      <Provider>
-        <Bridge />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<Bridge />);
 
     expect(screen.getByText("We")).toBeInTheDocument();
     expect(screen.getByText("They")).toBeInTheDocument();

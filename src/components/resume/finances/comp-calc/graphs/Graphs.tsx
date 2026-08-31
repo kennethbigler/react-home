@@ -1,9 +1,6 @@
 import { Grid } from "@mui/material";
-import type {
-  CompCalcEntry,
-  CompEntry,
-} from "../../../../../jotai/finances-atom";
-import usePointSelection from "../../shared/usePointSelection";
+import type { CompCalcEntry, CompEntry } from "@/jotai/comp-calc-atom";
+import usePointSelection from "@/components/resume/finances/shared/usePointSelection";
 import CompChart from "./CompGraph";
 import BreakdownChart from "./BreakdownGraph";
 

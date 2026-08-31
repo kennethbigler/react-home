@@ -1,8 +1,11 @@
 import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
-import bridgeAtom, { bridgeRead } from "../../../../../jotai/bridge-atom";
-import type { PendingContract } from "../../../../../jotai/bridge-atom";
+import {
+  bridgeRead,
+  pendingContractAtom,
+  type PendingContract,
+} from "@/jotai/bridge-atom";
 import {
   deriveSituation,
   getFinalContractDeclarerSeat,
@@ -234,7 +237,7 @@ export default function BidAdvisor() {
   // — otherwise a contract from a previous (now-abandoned) auction lingers in
   // the atom and the Score modal pre-fills a stale bid (e.g. an old 3♦ showing
   // up after a 1NT auction or a New Game reset).
-  const setBridgeState = useSetAtom(bridgeAtom);
+  const setPendingContract = useSetAtom(pendingContractAtom);
   useEffect(() => {
     let pendingContract: PendingContract | null = null;
     if (biddingComplete && finalContract) {
@@ -252,18 +255,17 @@ export default function BidAdvisor() {
       }
     }
     // Only write when the value actually changes, to avoid an update loop.
-    setBridgeState((prev) => {
-      const a = prev.pendingContract ?? null;
+    setPendingContract((prev) => {
       const same =
-        a === pendingContract ||
-        (!!a &&
+        prev === pendingContract ||
+        (!!prev &&
           !!pendingContract &&
-          a.suit === pendingContract.suit &&
-          a.tricks === pendingContract.tricks &&
-          a.isWe === pendingContract.isWe);
-      return same ? prev : { ...prev, pendingContract };
+          prev.suit === pendingContract.suit &&
+          prev.tricks === pendingContract.tricks &&
+          prev.isWe === pendingContract.isWe);
+      return same ? prev : pendingContract;
     });
-  }, [biddingComplete, finalContract, auctionState, setBridgeState]);
+  }, [biddingComplete, finalContract, auctionState, setPendingContract]);
 
   return (
     <Box>

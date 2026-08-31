@@ -4,12 +4,12 @@ import {
   BOTC_MAX_PLAYERS,
   BOTC_MAX_TRAVELERS,
   BOTC_MIN_PLAYERS,
-} from "../../../../../jotai/botc-atom";
+} from "@/jotai/botc-atom";
 import ScriptSearch from "./ScriptSearch";
 import ScriptControls from "./ScriptControls";
-import { playerDist } from "../../../../../constants/botc";
-import { useEditPlayers } from "../../useBotC";
-import { outlinedContrastSx } from "../../../../../apis/outlinedButtonSx";
+import { playerDist } from "@/constants/botc";
+import { useEditPlayers } from "@/components/games/botc/useBotC";
+import { outlinedContrastSx } from "@/apis/outlinedButtonSx";
 import { Button, ButtonGroup, Grid, Typography } from "@mui/material";
 
 interface EditPlayersProps {

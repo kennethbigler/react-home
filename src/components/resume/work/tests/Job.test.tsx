@@ -1,7 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import Job from "../Job";
-import { work, volunteer } from "../../../../constants/work";
-import type { Job as JobType } from "../../../../constants/work";
+import { work, volunteer } from "@/constants/work";
+import type { Job as JobType } from "@/constants/work";
 
 describe("resume | work | Job", () => {
   const mockJob = work[0]; // Intuit job

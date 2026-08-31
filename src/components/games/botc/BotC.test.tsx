@@ -1,10 +1,9 @@
 import "../../common/highcharts/tests/highchartsMocks";
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import { Provider } from "jotai";
 import BotC from ".";
-import themeAtom, { lightTheme } from "../../../jotai/theme-atom";
-import { resetScriptOptionsCache } from "../../../utils/botc-script-utils";
-import { renderWithHydratedAtoms } from "../../../test-utils/renderWithHydratedAtoms";
+import themeAtom, { lightTheme } from "@/jotai/theme-atom";
+import { resetScriptOptionsCache } from "@/utils/botc-script-utils";
+import { renderWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 
 vi.mock("../../../data/botc-scripts.json", () => ({
   default: {
@@ -114,11 +113,7 @@ describe("games | BotC", () => {
   });
 
   it("highlights random player and covers exec/kill skip in getRandomPlayer", () => {
-    render(
-      <Provider>
-        <BotC />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<BotC />);
     // Mark player index 1 (second card) as exec'd so getRandomPlayer skips them
     // (covers useBotC line 75: !exec && !kill false branch)
     const playerCards = screen.getAllByText("Ken");
@@ -161,11 +156,7 @@ describe("games | BotC — URL hydration", () => {
     );
 
     await act(async () => {
-      render(
-        <Provider>
-          <BotC />
-        </Provider>,
-      );
+      renderWithHydratedAtoms(<BotC />);
     });
 
     expect(screen.getAllByText("Alice").length).toBeGreaterThan(0);
@@ -184,11 +175,7 @@ describe("games | BotC — URL hydration", () => {
     window.history.replaceState = replaceSpy;
 
     await act(async () => {
-      render(
-        <Provider>
-          <BotC />
-        </Provider>,
-      );
+      renderWithHydratedAtoms(<BotC />);
     });
 
     expect(replaceSpy).toHaveBeenCalledWith(
@@ -207,11 +194,7 @@ describe("games | BotC — URL hydration", () => {
     window.history.replaceState = replaceSpy;
 
     await act(async () => {
-      render(
-        <Provider>
-          <BotC />
-        </Provider>,
-      );
+      renderWithHydratedAtoms(<BotC />);
     });
 
     expect(replaceSpy).not.toHaveBeenCalled();
@@ -229,11 +212,7 @@ describe("games | BotC — URL hydration", () => {
     window.history.replaceState = replaceSpy;
 
     await act(async () => {
-      render(
-        <Provider>
-          <BotC />
-        </Provider>,
-      );
+      renderWithHydratedAtoms(<BotC />);
     });
 
     expect(replaceSpy).not.toHaveBeenCalled();
@@ -247,11 +226,7 @@ describe("games | BotC — URL hydration", () => {
     );
 
     await act(async () => {
-      render(
-        <Provider>
-          <BotC />
-        </Provider>,
-      );
+      renderWithHydratedAtoms(<BotC />);
     });
 
     expect(screen.getAllByText("Alice").length).toBeGreaterThan(0);

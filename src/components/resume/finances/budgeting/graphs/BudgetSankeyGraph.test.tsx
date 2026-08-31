@@ -1,19 +1,16 @@
-import { clickSankeyNode } from "../../../../common/highcharts/tests/highchartsMocks";
+import { clickSankeyNode } from "@/components/common/highcharts/tests/highchartsMocks";
 import { render, screen } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
 import { describe, expect, it, vi } from "vitest";
-import themeAtom, { lightTheme } from "../../../../../jotai/theme-atom";
+import themeAtom, { lightTheme } from "@/jotai/theme-atom";
 import BudgetSankeyGraph from "./BudgetSankeyGraph";
-import {
-  buildBudgetFlow,
-  getLatestBudgetIncome,
-} from "../../../../../apis/budget";
+import { buildBudgetFlow, getLatestBudgetIncome } from "@/apis/budget";
 import {
   GROSS_INCOME_NODE,
   INCOME_NODE_LABELS,
   PAYROLL_CATEGORY_KEY,
 } from "./chartData";
-import { PAYROLL_NODE_LABEL } from "../../../../../constants/payrollDeductions";
+import { PAYROLL_NODE_LABEL } from "@/constants/payrollDeductions";
 
 const sampleFlow = buildBudgetFlow(
   getLatestBudgetIncome(100_000, 10_000, 0, 0),

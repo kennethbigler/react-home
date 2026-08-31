@@ -7,8 +7,8 @@ import {
   TableCell,
   TableRow,
 } from "@mui/material";
-import ExpandableCard from "../../common/expandable-card";
-import { currentJob, type Job } from "../../../constants/work-summary";
+import ExpandableCard from "@/components/common/expandable-card";
+import { currentJob, type Job } from "@/constants/work-summary";
 
 const imageStyles: CSSProperties = {
   display: "block",

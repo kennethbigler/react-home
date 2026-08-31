@@ -8,10 +8,11 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import type { NetWorthEntry } from "../../../../jotai/finances-atom";
+import type { NetWorthEntry } from "@/jotai/net-worth-atom";
 import ConfirmDeleteDialog from "../shared/ConfirmDeleteDialog";
 import MonthYearSelect from "../shared/MonthYearSelect";
 import dialogTextFieldProps from "../shared/dialogTextFieldProps";
+import useConfirmDelete from "../shared/useConfirmDelete";
 import useMonthYear from "../shared/useMonthYear";
 
 const VALIDATION_ERROR_ID = "net-worth-entry-validation-error";
@@ -39,7 +40,7 @@ const NetWorthEntryDialog = ({
 }: NetWorthEntryDialogProps) => {
   const [error, setError] = useState("");
   const [invalidCategories, setInvalidCategories] = useState<string[]>([]);
-  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const confirmDelete = useConfirmDelete(() => onDelete?.());
 
   const clearValidation = () => {
     setError("");
@@ -104,11 +105,6 @@ const NetWorthEntryDialog = ({
     });
   };
 
-  const confirmDelete = () => {
-    onDelete?.();
-    setConfirmDeleteOpen(false);
-  };
-
   return (
     <>
       <Dialog open={open} onClose={onClose}>
@@ -157,7 +153,7 @@ const NetWorthEntryDialog = ({
         </DialogContent>
         <DialogActions>
           {entry && onDelete ? (
-            <Button onClick={() => setConfirmDeleteOpen(true)} color="error">
+            <Button onClick={confirmDelete.request} color="error">
               Delete
             </Button>
           ) : null}
@@ -168,12 +164,12 @@ const NetWorthEntryDialog = ({
         </DialogActions>
       </Dialog>
       <ConfirmDeleteDialog
-        open={confirmDeleteOpen}
+        open={confirmDelete.open}
         title="Delete net worth entry?"
         description="This net worth entry will be permanently deleted."
         confirmLabel="Delete entry"
-        onCancel={() => setConfirmDeleteOpen(false)}
-        onConfirm={confirmDelete}
+        onCancel={confirmDelete.cancel}
+        onConfirm={confirmDelete.confirm}
       />
     </>
   );

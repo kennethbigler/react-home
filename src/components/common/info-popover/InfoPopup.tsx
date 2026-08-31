@@ -1,6 +1,6 @@
 import { useId, useState, type ReactElement, type ReactNode } from "react";
-import type { MuiColors } from "../types";
-import { outlinedContrastSx } from "../../../apis/outlinedButtonSx";
+import type { MuiColors } from "@/@types/mui";
+import { outlinedContrastSx } from "@/apis/outlinedButtonSx";
 import {
   Dialog,
   DialogTitle,

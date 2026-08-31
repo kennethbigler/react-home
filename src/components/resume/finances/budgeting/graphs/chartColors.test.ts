@@ -8,12 +8,9 @@ import {
   getBudgetSankeyNodeColors,
   mixHexColors,
 } from "./chartColors";
-import {
-  buildBudgetFlow,
-  getLatestBudgetIncome,
-} from "../../../../../apis/budget";
-import { FEDERAL_TAX_LABEL } from "../../../../../constants/federalTaxBrackets";
-import { PAYROLL_WITHHOLDINGS_LABEL } from "../../../../../constants/payrollDeductions";
+import { buildBudgetFlow, getLatestBudgetIncome } from "@/apis/budget";
+import { FEDERAL_TAX_LABEL } from "@/constants/federalTaxBrackets";
+import { PAYROLL_WITHHOLDINGS_LABEL } from "@/constants/payrollDeductions";
 
 const theme = createTheme();
 

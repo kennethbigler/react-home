@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import CarCard from "../CarCard";
-import type { CarEntry } from "../../../../constants/cars";
-import dateObj from "../../../../apis/DateHelper";
+import type { CarEntry } from "@/constants/cars";
+import dateObj from "@/apis/DateHelper";
 
 const demoCar: CarEntry = {
   color: "yellow",

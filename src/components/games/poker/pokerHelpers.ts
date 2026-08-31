@@ -1,5 +1,5 @@
-import type { DBCard } from "../../../jotai/deck-state";
-import type { DBPlayer } from "../../../jotai/player-atom";
+import type { DBCard } from "@/jotai/deck-atom";
+import type { DBPlayer } from "@/jotai/player-atom";
 
 /** Rankings:
  *   Straight Flush  8

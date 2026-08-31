@@ -3,15 +3,9 @@ import {
   type ActiveScript,
   type BotCRole,
   BaseScript,
-} from "../../../../../jotai/botc-atom";
-import {
-  tb,
-  snv,
-  bmr,
-  other,
-  type BotCScript,
-} from "../../../../../constants/botc";
-import { buildScriptFromCharacters } from "../../../../../utils/botc-script-utils";
+} from "@/jotai/botc-atom";
+import { tb, snv, bmr, other, type BotCScript } from "@/constants/botc";
+import { buildScriptFromCharacters } from "@/utils/botc-script-utils";
 import RoleSection, { type RoleKey } from "./RoleSection";
 
 interface RolesProps {

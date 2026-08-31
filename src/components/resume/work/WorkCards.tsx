@@ -1,6 +1,6 @@
 import { Typography, Grid } from "@mui/material";
 import Job from "./Job";
-import type { Job as JobType } from "../../../constants/work";
+import type { Job as JobType } from "@/constants/work";
 
 interface WorkCardsProps {
   title: string;

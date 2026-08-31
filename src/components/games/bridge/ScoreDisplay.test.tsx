@@ -1,15 +1,11 @@
-import { render, screen } from "@testing-library/react";
-import { Provider, createStore } from "jotai";
+import { screen } from "@testing-library/react";
 import ScoreDisplay from "./ScoreDisplay";
-import bridgeAtom from "../../../jotai/bridge-atom";
+import bridgeAtom from "@/jotai/bridge-atom";
+import { renderWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 
 describe("ScoreDisplay Component", () => {
   it("renders initial empty score table", () => {
-    render(
-      <Provider>
-        <ScoreDisplay />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDisplay />);
 
     expect(screen.getByText("We")).toBeInTheDocument();
     expect(screen.getByText("They")).toBeInTheDocument();
@@ -18,73 +14,67 @@ describe("ScoreDisplay Component", () => {
   });
 
   it("displays vulnerability indicator when we have won a game", () => {
-    const store = createStore();
-    store.set(bridgeAtom, {
-      aboveScores: [
-        [[120], []], // We won first game (>100)
-        [[], []],
-        [[], []],
-      ],
-      bids: [],
-      weBelow: [],
-      theyBelow: [],
-      weRubbers: 0,
-      theyRubbers: 0,
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDisplay />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDisplay />, [
+      [
+        bridgeAtom,
+        {
+          aboveScores: [
+            [[120], []], // We won first game (>100)
+            [[], []],
+            [[], []],
+          ],
+          bids: [],
+          weBelow: [],
+          theyBelow: [],
+          weRubbers: 0,
+          theyRubbers: 0,
+        },
+      ] as const,
+    ]);
 
     expect(screen.getByText(/We 🥇/)).toBeInTheDocument();
   });
 
   it("displays vulnerability indicator when they have won a game", () => {
-    const store = createStore();
-    store.set(bridgeAtom, {
-      aboveScores: [
-        [[], [120]], // They won first game (>100)
-        [[], []],
-        [[], []],
-      ],
-      bids: [],
-      weBelow: [],
-      theyBelow: [],
-      weRubbers: 0,
-      theyRubbers: 0,
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDisplay />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDisplay />, [
+      [
+        bridgeAtom,
+        {
+          aboveScores: [
+            [[], [120]], // They won first game (>100)
+            [[], []],
+            [[], []],
+          ],
+          bids: [],
+          weBelow: [],
+          theyBelow: [],
+          weRubbers: 0,
+          theyRubbers: 0,
+        },
+      ] as const,
+    ]);
 
     expect(screen.getByText(/They 🥇/)).toBeInTheDocument();
   });
 
   it("displays scores above and below the line", () => {
-    const store = createStore();
-    store.set(bridgeAtom, {
-      aboveScores: [
-        [[40], [30]], // Above the line scores
-        [[], []],
-        [[], []],
-      ],
-      bids: ["1♣️"],
-      weBelow: [50], // Below the line score
-      theyBelow: [25],
-      weRubbers: 0,
-      theyRubbers: 0,
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDisplay />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDisplay />, [
+      [
+        bridgeAtom,
+        {
+          aboveScores: [
+            [[40], [30]], // Above the line scores
+            [[], []],
+            [[], []],
+          ],
+          bids: ["1♣️"],
+          weBelow: [50], // Below the line score
+          theyBelow: [25],
+          weRubbers: 0,
+          theyRubbers: 0,
+        },
+      ] as const,
+    ]);
 
     expect(screen.getByText(/40 \(1♣️\)/)).toBeInTheDocument();
     expect(screen.getByText(/30 \(1♣️\)/)).toBeInTheDocument();
@@ -95,28 +85,26 @@ describe("ScoreDisplay Component", () => {
   });
 
   it("displays multiple scores in same game", () => {
-    const store = createStore();
-    store.set(bridgeAtom, {
-      aboveScores: [
-        [
-          [20, 30, 40],
-          [0, 0, 0], // They lost all three hands
-        ],
-        [[], []],
-        [[], []],
-      ],
-      bids: ["1♣️", "2♥️", "3NT"],
-      weBelow: [0, 0, 0],
-      theyBelow: [0, 0, 0],
-      weRubbers: 0,
-      theyRubbers: 0,
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDisplay />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDisplay />, [
+      [
+        bridgeAtom,
+        {
+          aboveScores: [
+            [
+              [20, 30, 40],
+              [0, 0, 0], // They lost all three hands
+            ],
+            [[], []],
+            [[], []],
+          ],
+          bids: ["1♣️", "2♥️", "3NT"],
+          weBelow: [0, 0, 0],
+          theyBelow: [0, 0, 0],
+          weRubbers: 0,
+          theyRubbers: 0,
+        },
+      ] as const,
+    ]);
 
     // Each hand in game 0 shows its OWN bid (flat bids list, indexed per hand):
     // hand 0 → bids[0], hand 1 → bids[1], hand 2 → bids[2].
@@ -127,30 +115,28 @@ describe("ScoreDisplay Component", () => {
   });
 
   it("labels above-the-line hands across multiple games with the correct bid", () => {
-    const store = createStore();
-    store.set(bridgeAtom, {
-      // Game 0: 2 hands (we 40, they 30).  Game 1: 1 hand (we 50).
-      aboveScores: [
-        [
-          [40, 0],
-          [0, 30],
-        ],
-        [[50], [0]],
-        [[], []],
-      ],
-      // Flat bids list, one per hand in save order across all games.
-      bids: ["1♣️", "2♥️", "3♠️"],
-      weBelow: [0, 0, 0],
-      theyBelow: [0, 0, 0],
-      weRubbers: 0,
-      theyRubbers: 0,
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDisplay />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDisplay />, [
+      [
+        bridgeAtom,
+        {
+          // Game 0: 2 hands (we 40, they 30).  Game 1: 1 hand (we 50).
+          aboveScores: [
+            [
+              [40, 0],
+              [0, 30],
+            ],
+            [[50], [0]],
+            [[], []],
+          ],
+          // Flat bids list, one per hand in save order across all games.
+          bids: ["1♣️", "2♥️", "3♠️"],
+          weBelow: [0, 0, 0],
+          theyBelow: [0, 0, 0],
+          weRubbers: 0,
+          theyRubbers: 0,
+        },
+      ] as const,
+    ]);
 
     // Game 0 hand 0 → bids[0], game 0 hand 1 → bids[1], game 1 hand 0 → bids[2].
     expect(screen.getByText(/40 \(1♣️\)/)).toBeInTheDocument();
@@ -159,50 +145,46 @@ describe("ScoreDisplay Component", () => {
   });
 
   it("displays rubber wins", () => {
-    const store = createStore();
-    store.set(bridgeAtom, {
-      aboveScores: [
-        [[], []],
-        [[], []],
-        [[], []],
-      ],
-      bids: [],
-      weBelow: [],
-      theyBelow: [],
-      weRubbers: 2,
-      theyRubbers: 1,
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDisplay />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDisplay />, [
+      [
+        bridgeAtom,
+        {
+          aboveScores: [
+            [[], []],
+            [[], []],
+            [[], []],
+          ],
+          bids: [],
+          weBelow: [],
+          theyBelow: [],
+          weRubbers: 2,
+          theyRubbers: 1,
+        },
+      ] as const,
+    ]);
 
     expect(screen.getByText("Wins: 2")).toBeInTheDocument();
     expect(screen.getByText("Wins: 1")).toBeInTheDocument();
   });
 
   it("displays multiple games with scores", () => {
-    const store = createStore();
-    store.set(bridgeAtom, {
-      aboveScores: [
-        [[100], [80]],
-        [[60], [120]],
-        [[40], []],
-      ],
-      bids: ["3NT", "2♥️", "1♣️"],
-      weBelow: [10, 20],
-      theyBelow: [15],
-      weRubbers: 0,
-      theyRubbers: 0,
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDisplay />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDisplay />, [
+      [
+        bridgeAtom,
+        {
+          aboveScores: [
+            [[100], [80]],
+            [[60], [120]],
+            [[40], []],
+          ],
+          bids: ["3NT", "2♥️", "1♣️"],
+          weBelow: [10, 20],
+          theyBelow: [15],
+          weRubbers: 0,
+          theyRubbers: 0,
+        },
+      ] as const,
+    ]);
 
     // Each game uses its corresponding bid from the bids array
     expect(screen.getByText(/100 \(3NT\)/)).toBeInTheDocument();
@@ -213,25 +195,23 @@ describe("ScoreDisplay Component", () => {
   });
 
   it("correctly reverses the order of above the line scores", () => {
-    const store = createStore();
-    store.set(bridgeAtom, {
-      aboveScores: [
-        [[20], [0]],
-        [[40], [0]],
-        [[60], [0]],
-      ],
-      bids: ["1♣️", "2♥️", "3NT"],
-      weBelow: [0, 0, 0],
-      theyBelow: [0, 0, 0],
-      weRubbers: 0,
-      theyRubbers: 0,
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDisplay />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDisplay />, [
+      [
+        bridgeAtom,
+        {
+          aboveScores: [
+            [[20], [0]],
+            [[40], [0]],
+            [[60], [0]],
+          ],
+          bids: ["1♣️", "2♥️", "3NT"],
+          weBelow: [0, 0, 0],
+          theyBelow: [0, 0, 0],
+          weRubbers: 0,
+          theyRubbers: 0,
+        },
+      ] as const,
+    ]);
 
     // Each game uses its corresponding bid from the bids array
     // Game 2 shows first (top), then game 1, then game 0 (bottom) due to .reverse()
@@ -241,25 +221,23 @@ describe("ScoreDisplay Component", () => {
   });
 
   it("handles empty arrays correctly", () => {
-    const store = createStore();
-    store.set(bridgeAtom, {
-      aboveScores: [
-        [[], []],
-        [[], []],
-        [[], []],
-      ],
-      bids: [],
-      weBelow: [],
-      theyBelow: [],
-      weRubbers: 0,
-      theyRubbers: 0,
-    });
-
-    render(
-      <Provider store={store}>
-        <ScoreDisplay />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<ScoreDisplay />, [
+      [
+        bridgeAtom,
+        {
+          aboveScores: [
+            [[], []],
+            [[], []],
+            [[], []],
+          ],
+          bids: [],
+          weBelow: [],
+          theyBelow: [],
+          weRubbers: 0,
+          theyRubbers: 0,
+        },
+      ] as const,
+    ]);
 
     expect(screen.getAllByText("Total: 0")).toHaveLength(2); // One for each team
   });

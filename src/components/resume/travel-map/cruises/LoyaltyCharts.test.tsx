@@ -1,17 +1,13 @@
 import "../../../common/highcharts/tests/highchartsMocks";
-import { render, screen } from "@testing-library/react";
-import { Provider, createStore } from "jotai";
-import themeAtom, { lightTheme } from "../../../../jotai/theme-atom";
-import { loyaltySeries } from "../../../../constants/cruises";
+import { screen } from "@testing-library/react";
+import themeAtom, { lightTheme } from "@/jotai/theme-atom";
+import { loyaltySeries } from "@/constants/cruises";
+import { renderWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 import LoyaltyCharts from "./LoyaltyCharts";
 
 describe("resume | travel-map | cruises | LoyaltyCharts", () => {
   it("renders the cruise loyalty chart", () => {
-    render(
-      <Provider>
-        <LoyaltyCharts />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<LoyaltyCharts />);
 
     expect(screen.getByText("Cruise Loyalty")).toBeInTheDocument();
     expect(screen.getAllByTestId("highcharts-series")).toHaveLength(
@@ -20,14 +16,9 @@ describe("resume | travel-map | cruises | LoyaltyCharts", () => {
   });
 
   it("renders in light mode", () => {
-    const store = createStore();
-    store.set(themeAtom, lightTheme);
-
-    render(
-      <Provider store={store}>
-        <LoyaltyCharts />
-      </Provider>,
-    );
+    renderWithHydratedAtoms(<LoyaltyCharts />, [
+      [themeAtom, lightTheme] as const,
+    ]);
 
     expect(screen.getByText("Cruise Loyalty")).toBeInTheDocument();
   });

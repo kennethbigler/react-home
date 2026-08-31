@@ -1,4 +1,4 @@
-import { computeTotalPayrollDeductions } from "../../constants/payrollDeductions";
+import { computeTotalPayrollDeductions } from "@/constants/payrollDeductions";
 import { buildCategoryTotals } from "./expenses";
 import { computeTotalTax } from "./tax";
 import {

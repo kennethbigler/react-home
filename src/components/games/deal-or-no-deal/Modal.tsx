@@ -1,7 +1,7 @@
 import type { MouseEventHandler, CSSProperties, ReactElement } from "react";
 import Money from "./Money";
 import { getMoneyText } from "./helpers";
-import type { Briefcase } from "../../../jotai/deal-or-no-deal-state";
+import type { Briefcase } from "@/jotai/deal-or-no-deal-atom";
 import {
   Dialog,
   DialogActions,

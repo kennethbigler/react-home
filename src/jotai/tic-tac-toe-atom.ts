@@ -1,4 +1,4 @@
-import { atomWithStorage } from "jotai/utils";
+import persistentAtom from "./storage";
 
 export interface HistoryEntry {
   board: string[] | null[];
@@ -19,6 +19,6 @@ export const newTicTacToe = (): TicTacToeState => ({
   step: 0,
 });
 
-const tikTacToeAtom = atomWithStorage("tikTacToeAtom", newTicTacToe());
+const tikTacToeAtom = persistentAtom("tikTacToeAtom", newTicTacToe());
 
 export default tikTacToeAtom;

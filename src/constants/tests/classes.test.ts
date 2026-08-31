@@ -1,6 +1,6 @@
 import { vi } from "vitest";
 import { getStart, getEnd } from "../classes";
-import dateObj from "../../apis/DateHelper";
+import dateObj from "@/apis/DateHelper";
 
 describe("constants classes", () => {
   let oldConsole: Console["error"];

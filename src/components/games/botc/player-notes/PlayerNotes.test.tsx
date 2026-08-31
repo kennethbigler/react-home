@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import PlayerNotes from "./PlayerNotes";
-import type { BotCPlayer, BotCRole } from "../../../../jotai/botc-atom";
+import type { BotCPlayer, BotCRole } from "@/jotai/botc-atom";
 
 const mockGetRandomPlayer = vi.fn();
 const mockUpdateRoles =

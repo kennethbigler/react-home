@@ -1,10 +1,10 @@
 import { useAtom, useSetAtom } from "jotai";
-import { shuffleAtom, dealPokerAtom } from "../../../jotai/deck-state";
+import { shuffleAtom, dealPokerAtom } from "@/jotai/deck-atom";
 import pokerState, {
   PokerGameFunctions as PGF,
   newPokerGameState,
-} from "../../../jotai/poker-state";
-import type { DBPlayer } from "../../../jotai/player-atom";
+} from "@/jotai/poker-atom";
+import type { DBPlayer } from "@/jotai/player-atom";
 import { computer, findAndPayWinner } from "./pokerHelpers";
 
 const usePoker = () => {

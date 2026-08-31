@@ -1,5 +1,5 @@
 import { memo } from "react";
-import PlayerMenu from "../../common/header/PlayerMenu";
+import PlayerMenu from "@/components/common/header/PlayerMenu";
 import { Typography } from "@mui/material";
 
 const Header = memo(() => (

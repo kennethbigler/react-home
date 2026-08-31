@@ -1,6 +1,6 @@
 import { useState, type ReactElement } from "react";
 import { getTurn } from "./helpers";
-import type { HistoryEntry } from "../../../jotai/tic-tac-toe-atom";
+import type { HistoryEntry } from "@/jotai/tic-tac-toe-atom";
 import { Button } from "@mui/material";
 
 interface HistoryProps {

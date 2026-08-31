@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
-import { Provider } from "jotai";
+import { screen, fireEvent, act } from "@testing-library/react";
 import Controls from "./Controls";
+import { renderWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 
 vi.mock("../../../../data/botc-scripts.json", () => ({
   default: {
@@ -9,20 +9,16 @@ vi.mock("../../../../data/botc-scripts.json", () => ({
   },
 }));
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <Provider>{children}</Provider>
-);
-
 describe("Controls", () => {
   it("renders without crashing", () => {
-    render(<Controls numPlayers={8} numTravelers={0} />, { wrapper });
+    renderWithHydratedAtoms(<Controls numPlayers={8} numTravelers={0} />);
     expect(
       screen.getByRole("button", { name: "Settings" }),
     ).toBeInTheDocument();
   });
 
   it("opens game-reset toast and calls close handler", () => {
-    render(<Controls numPlayers={8} numTravelers={0} />, { wrapper });
+    renderWithHydratedAtoms(<Controls numPlayers={8} numTravelers={0} />);
 
     // Open the Settings popover
     fireEvent.click(screen.getByRole("button", { name: "Settings" }));

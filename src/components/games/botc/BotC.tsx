@@ -5,11 +5,8 @@ import Header from "./header/Header";
 import PlayerNotes from "./player-notes/PlayerNotes";
 import LiePie from "./LiePie";
 import { Divider } from "@mui/material";
-import botcAtom, {
-  botcPlayerShell,
-  newBotCGame,
-} from "../../../jotai/botc-atom";
-import { parseShareParams } from "../../../utils/botc-share-utils";
+import botcAtom, { botcPlayerShell, newBotCGame } from "@/jotai/botc-atom";
+import { parseShareParams } from "@/utils/botc-share-utils";
 
 const getShareSearch = () => {
   if (window.location.search) return window.location.search;

@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Typography } from "@mui/material";
-import Degree from "../../common/edu-cards/Degree";
-import { presentations } from "../../../constants/classes";
+import Degree from "@/components/common/edu-cards/Degree";
+import { presentations } from "@/constants/classes";
 
 /** Presentations  ->  Degree */
 const Presentations = memo(() => (
