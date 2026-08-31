@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { vi } from "vitest";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import Menu from "../Menu";
 
 describe("games | Menu", () => {
-  const renderMenu = (onItemClick?: (loc: string) => void) =>
+  const renderMenu = (onItemClick?: () => void) =>
     render(
       <MemoryRouter>
         <Menu onItemClick={onItemClick} />
@@ -39,7 +39,7 @@ describe("games | Menu", () => {
     const blackjackLink = screen.getByRole("menuitem", { name: "BlackJack" });
     expect(blackjackLink).toHaveAttribute("href", "/games/blackjack");
     fireEvent.click(blackjackLink);
-    expect(handleItemClick).toHaveBeenCalledWith("/games/blackjack");
+    expect(handleItemClick).toHaveBeenCalledTimes(1);
   });
 
   it("links back to the resume half", () => {
@@ -49,6 +49,6 @@ describe("games | Menu", () => {
     const resumeLink = screen.getByRole("menuitem", { name: "Back to Resume" });
     expect(resumeLink).toHaveAttribute("href", "/");
     fireEvent.click(resumeLink);
-    expect(handleItemClick).toHaveBeenCalledWith("/");
+    expect(handleItemClick).toHaveBeenCalledTimes(1);
   });
 });

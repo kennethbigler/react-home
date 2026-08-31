@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import { vi } from "vitest";
 import ResumeRoutes from "./Routes";
 
@@ -36,7 +36,7 @@ describe("resume | Routes", () => {
     async ({ path, heading }) => {
       render(
         <MemoryRouter initialEntries={[path]}>
-          <ResumeRoutes handleNav={vi.fn()} />
+          <ResumeRoutes />
         </MemoryRouter>,
       );
 

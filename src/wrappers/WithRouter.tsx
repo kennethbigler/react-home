@@ -1,4 +1,4 @@
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 import Routes from "../components/Routes";
 
 /** App class that wraps higher level components of the application */

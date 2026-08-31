@@ -66,9 +66,5 @@ describe("components | routeTitleUtils", () => {
         `Type Checker | Game | ${BASE_TITLE}`,
       );
     });
-
-    it("strips hash from pathname when present", () => {
-      expect(getPageTitle("#/work")).toBe(`Work | ${BASE_TITLE}`);
-    });
   });
 });

@@ -1,33 +1,18 @@
 import { memo } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { MenuList, MenuItem, Divider } from "@mui/material";
+import NavMenuItems from "../common/NavMenuItems";
 import menuItems from "./menu-items";
 
 interface MenuProps {
-  onItemClick?: (loc: string) => void;
+  onItemClick?: () => void;
 }
 
 const Menu = memo(({ onItemClick }: MenuProps) => (
   <MenuList>
-    {menuItems.map((item, index) =>
-      "divider" in item ? (
-        <Divider key={index} aria-hidden />
-      ) : (
-        <MenuItem
-          key={item.name}
-          component={RouterLink}
-          onClick={(): void =>
-            onItemClick && onItemClick(`/${item.route || ""}`)
-          }
-          to={`/${item.route || ""}`}
-        >
-          {item.name}
-        </MenuItem>
-      ),
-    )}
+    <NavMenuItems items={menuItems} pathPrefix="/" onItemClick={onItemClick} />
     <Divider aria-hidden />
     <MenuItem
       component="a"
