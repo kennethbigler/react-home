@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import App from "./wrappers/WithTheme";
+import App from "./App";
 import "./index.css";
 
 const rootEl = document.getElementById("root");

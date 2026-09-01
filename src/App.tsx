@@ -1,12 +1,13 @@
 import { useMemo } from "react";
+import { BrowserRouter } from "react-router";
 import { CssBaseline } from "@mui/material";
 import {
   ThemeProvider,
   StyledEngineProvider,
   createTheme,
 } from "@mui/material/styles";
-import themeAtom from "../jotai/theme-atom";
-import WithRouter from "./WithRouter";
+import themeAtom from "./jotai/theme-atom";
+import RootRoutes from "./components/Routes";
 import { useAtomValue } from "jotai";
 
 declare module "@mui/material/styles" {
@@ -16,8 +17,8 @@ declare module "@mui/material/styles" {
   }
 }
 
-/** App class that wraps higher level components of the application */
-const WithTheme = () => {
+/** App root: theme + router around the route table */
+const App = () => {
   const theme = useAtomValue(themeAtom);
 
   const setTheme = useMemo(
@@ -51,10 +52,12 @@ const WithTheme = () => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={setTheme}>
         <CssBaseline />
-        <WithRouter />
+        <BrowserRouter>
+          <RootRoutes />
+        </BrowserRouter>
       </ThemeProvider>
     </StyledEngineProvider>
   );
 };
 
-export default WithTheme;
+export default App;
