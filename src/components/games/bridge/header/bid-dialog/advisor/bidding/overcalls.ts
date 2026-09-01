@@ -115,10 +115,13 @@ function getCappellettiOvercall(
       confidence: "high",
     };
   }
-  // One-suiter: any single suit, typically 6+ (a strong 5 is acceptable with
-  // good shape/quality since 2♣ commits partner to a preference at the
-  // 2-level only).
-  if (longest.count >= 6 || (longest.count >= 5 && hand.goodSuitQuality)) {
+  // One-suiter: any single suit, typically 6+. A GOOD 5-card suit is
+  // acceptable only with sound values (11+ HCP) — against an announced 15-17
+  // a light 5-card entry invites a penalty with no place to run.
+  if (
+    longest.count >= 6 ||
+    (longest.count >= 5 && hand.goodSuitQuality && hcp >= 11)
+  ) {
     // Partner's 2♦ relay asks which suit; the reply just passes 2♦ if
     // diamonds WAS the real suit (nothing to correct), otherwise names it at
     // the cheapest available level (2♥/2♠, or 3♣ for clubs — passing the
@@ -691,6 +694,11 @@ export function getOvercall(
       bestSuit.count >= 6 &&
       tp >= 7 &&
       hcp >= 5 &&
+      // Same quality standard as every other preempt/overcall: a long but
+      // RAGGED suit (fails 2-of-top-3 / 3-of-top-5) is not biddable here —
+      // partner will raise and lead it, and the NT bidder's side is well
+      // placed to double.
+      hand.goodSuitQuality !== false &&
       (nextLevel <= 2 ||
         (nextLevel === 3 &&
           (bestSuit.count >= 7 || (bestSuit.count >= 6 && notVulnerable))) ||
@@ -722,7 +730,15 @@ export function getOvercall(
 
     // Suit overcall with 5-card suit — only over 1NT (a 2-level call).
     // Bidding a 5-card suit at the 3- or 4-level over 2NT/3NT is far too rich.
-    if (ntLevel === 1 && bestSuit.count >= 5 && hcp >= 8) {
+    // Suit QUALITY matters as much as length: entering between two bidding
+    // opponents (or under a strong NT) on a ragged suit invites a penalty
+    // double with nowhere to run.
+    if (
+      ntLevel === 1 &&
+      bestSuit.count >= 5 &&
+      hcp >= 8 &&
+      hand.goodSuitQuality !== false
+    ) {
       return {
         bid: suitBid,
         category: `Natural Overcall over ${opponentBid}`,
@@ -734,6 +750,22 @@ export function getOvercall(
           { partnerBid: "Raise", meaning: "Fit and some values" },
         ],
         confidence: "medium",
+      };
+    }
+    if (
+      ntLevel === 1 &&
+      bestSuit.count >= 5 &&
+      hcp >= 8 &&
+      hand.goodSuitQuality === false
+    ) {
+      return {
+        bid: "Pass",
+        category: "Pass Over Opponent's 1NT (Ragged Suit)",
+        reasoning: `Your ${bestSuit.count}-card ${bestSuit.name} suit is too RAGGED to bid over the opponents' 1NT — an overcall here promises a GOOD suit (2 of the top 3 honors, or 3 of the top 5), because the 1NT bidder's side is well-placed to double and partner will lead your suit. With ${hcp} HCP, pass and defend.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: "No safe action — suit quality too poor.",
+        expectedResponses: [],
+        confidence: "high",
       };
     }
 
@@ -766,15 +798,25 @@ export function getOvercall(
           confidence: "high",
         };
       }
-      // 10-15 HCP over 1NT with no 5-card suit — Pass is correct in SAYC
+      // 10-15 HCP over 1NT with no biddable suit — Pass is correct in SAYC
       const ntWasOpening =
         auctionOpeningBid === undefined || auctionOpeningBid === "1NT";
+      const longestOverNT = Math.max(
+        hand.spades,
+        hand.hearts,
+        hand.diamonds,
+        hand.clubs,
+      );
+      const suitStoryNT =
+        longestOverNT >= 5
+          ? `your ${longestOverNT}-card suit is too weak to bid here (a sound entry needs a GOOD suit and values)`
+          : "no 5-card suit";
       return {
         bid: "Pass",
         category: "Pass Over Opponent's 1NT",
         reasoning: ntWasOpening
-          ? `With ${hcp} HCP and no 5-card suit, passing over opponent's 1NT is correct in SAYC. You need 16+ HCP to double for penalty, or a 5-card suit to overcall. Bidding at the 2-level with a 4-card suit is risky and non-standard.`
-          : `The opponents' 1NT was a RESPONSE (their side opened a suit first), so both opponents are still describing their hands. Entering here (the "sandwich" seat) requires a good 5+ card suit and shape — with ${hcp} HCP and no 5-card suit, pass and defend.`,
+          ? `With ${hcp} HCP and ${suitStoryNT}, passing over opponent's 1NT is correct in SAYC. You need 16+ HCP to double for penalty, or a good 5+ card suit with values to overcall.`
+          : `The opponents' 1NT was a RESPONSE (their side opened a suit first), so both opponents are still describing their hands. Entering here (the "sandwich" seat) requires a good 5+ card suit and shape — with ${hcp} HCP and ${suitStoryNT}, pass and defend.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner:
           "No clear action — limited hand, no long suit.",
@@ -1215,21 +1257,45 @@ export function getOvercall(
 
   // Takeout Double (12-15 HCP, short in opponent's suit, good shape — 3+ cards in each unbid suit)
   // Requires hasGoodShape: a takeout double promises support for all unbid suits.
-  // Only check the three suits NOT bid by the opponent.
+  // When BOTH opponents have shown suits (a "sandwich" double, e.g. after
+  // 1♦-P-1♥), only the OTHER TWO suits are unbid — and the double then
+  // promises 4+ cards in each of them, plus shortness in both of theirs.
+  const secondOppSuit =
+    lhoBid && isRealBid(lhoBid) && !lhoBid.endsWith("NT")
+      ? (suitFromBid(lhoBid) ?? undefined)
+      : undefined;
   const unOpenedSuits = (
     ["spades", "hearts", "diamonds", "clubs"] as const
-  ).filter((s) => s !== suitOpponent);
+  ).filter(
+    (s) =>
+      s !== suitOpponent &&
+      (secondOppSuit === undefined || s !== secondOppSuit),
+  );
+  const twoOppSuits =
+    secondOppSuit !== undefined && secondOppSuit !== suitOpponent;
+  const unbidMinLen = twoOppSuits ? 4 : 3;
   const hasGoodShape =
     inOpponentSuit <= 2 &&
-    unOpenedSuits.every((s) => (hand[s as keyof Hand] as number) >= 3);
+    (!twoOppSuits || (hand[secondOppSuit as keyof Hand] as number) <= 2) &&
+    unOpenedSuits.every(
+      (s) => (hand[s as keyof Hand] as number) >= unbidMinLen,
+    );
 
-  if (hcp >= 12 && hcp <= 15 && hasGoodShape) {
+  // In the balancing (pass-out) seat the double is about a KING lighter —
+  // partner may have been trapped with values, so ~9-10 HCP with perfect
+  // shape reopens rather than selling out.
+  const doubleFloorTO = balancing ? 9 : 12;
+  if (hcp >= doubleFloorTO && hcp <= 15 && hasGoodShape) {
     return {
       bid: "Double",
-      category: "Takeout Double (12-15 HCP)",
-      reasoning: `With ${hcp} HCP, 0-2 cards in opponent's ${suitOpponent}, and 3+ cards in every unbid suit, double for takeout. This is the classic takeout double shape (e.g. 4441/5440, or a small doubleton in their suit) — you are asking partner to bid their best suit among the unbid suits.`,
+      category: balancing
+        ? `Balancing Takeout Double (${hcp} HCP)`
+        : "Takeout Double (12-15 HCP)",
+      reasoning: twoOppSuits
+        ? `Both opponents have shown suits (${secondOppSuit} and ${suitOpponent}) — a double here is a "sandwich" takeout promising the OTHER TWO suits (${unOpenedSuits.join(" and ")}) with 4+ cards in each and shortness in both of theirs, which this hand has. Partner bids their better unbid suit.`
+        : `With ${hcp} HCP, 0-2 cards in opponent's ${suitOpponent}, and 3+ cards in every unbid suit, double for takeout. This is the classic takeout double shape (e.g. 4441/5440, or a small doubleton in their suit) — you are asking partner to bid their best suit among the unbid suits.${balancing ? " In the balancing (pass-out) seat this double is about a king lighter than a direct double — partner may have been trapped with values, and selling out at the 1-level is the losing action." : ""}`,
       handAnalysis: analysis,
-      whatYourBidTellsPartner: `Opening strength (12-15 HCP) with 0-2 cards in ${suitOpponent} and support for all unbid suits. Please bid your best suit.`,
+      whatYourBidTellsPartner: `${balancing ? "About 9-15 HCP (balancing — a king lighter than a direct double)" : "Opening strength (12-15 HCP)"} with 0-2 cards in ${suitOpponent} and support for all unbid suits. Please bid your best suit${balancing ? ", remembering I may be a king lighter" : ""}.`,
       expectedResponses: [
         {
           partnerBid: "1NT (balanced + stopper)",
@@ -1254,7 +1320,13 @@ export function getOvercall(
   // overcall doubles first, regardless of balance — shortness in the opponent's
   // suit (inOpponentSuit <= 2) is exactly what a takeout double wants.  This
   // also catches the 19-21 powerhouses that must NOT pass an opening.
-  if (hcp >= 16 && inOpponentSuit <= 2) {
+  if (
+    hcp >= 16 &&
+    inOpponentSuit <= 2 &&
+    // With BOTH opponents showing suits, even a strong double promises the
+    // other two suits — length in their second suit disqualifies it.
+    (!twoOppSuits || (hand[secondOppSuit as keyof Hand] as number) <= 2)
+  ) {
     const strongLabel = hcp >= 19 ? "19+" : "16-18";
     return {
       bid: "Double",
@@ -1374,7 +1446,9 @@ export function getOvercall(
         }
       }
       parts.push(
-        "Pass for now. If the opponents stop low you may get a chance to enter the auction later (balancing position).",
+        balancing
+          ? "You are in the balancing (pass-out) seat — a pass here ENDS the auction. Balancing standards are already about a king lighter than a direct action, and this hand still has no suitable call: selling out is better than manufacturing a bid that misdescribes your hand."
+          : "Pass for now. If the opponents stop low you may get a chance to enter the auction later (balancing position).",
       );
       return parts.join(" ");
     })(),
@@ -1803,10 +1877,39 @@ export function getNegativeDouble(
       };
     }
 
+    // A natural NT response with a STOPPER in the overcalled suit describes
+    // this hand far better than a trap pass: over the overcall 1NT = 6-10,
+    // 2NT = 11-12 invitational (both with their suit stopped).
+    if (hand.hasStopperInOpponentSuit === true && analysis.isBalanced) {
+      const ntRespND =
+        hcp >= 11 && hcp <= 12 && BID_ORDER.indexOf("2NT") > floorIdxND
+          ? "2NT"
+          : hcp >= 6 && hcp <= 10 && BID_ORDER.indexOf("1NT") > floorIdxND
+            ? "1NT"
+            : undefined;
+      if (ntRespND) {
+        return {
+          bid: ntRespND,
+          category: `${ntRespND} Response Over the Overcall (Stopper Shown)`,
+          reasoning: `With ${hcp} HCP, a balanced hand, and a stopper in the opponents' ${overcall.slice(1)} suit, bid ${ntRespND} — natural, ${ntRespND === "1NT" ? "6-10" : "11-12, invitational"}. This beats passing: partner hears your values and the stopper right away.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: `${ntRespND === "1NT" ? "6-10" : "11-12"} HCP, balanced, with their suit stopped.`,
+          expectedResponses: [
+            { partnerBid: "Pass", meaning: "Minimum, nothing more to say" },
+            {
+              partnerBid: "Rebid / raise NT",
+              meaning: "Shape or extra values",
+            },
+          ],
+          confidence: "high",
+        };
+      }
+    }
+
     return {
       bid: "Pass",
       category: "Pass (Wrong Shape for Negative Double)",
-      reasoning: `A negative double here promises ${heartsUnbid && spadesUnbid ? "4+ cards in BOTH majors" : heartsUnbid ? "4+ hearts" : spadesUnbid ? "4+ spades" : "both unbid minors"}, which this hand does not hold. With no suit to bid directly either, pass — partner gets another chance.`,
+      reasoning: `A negative double here promises ${heartsUnbid && spadesUnbid ? "4+ cards in BOTH majors" : heartsUnbid ? "4+ hearts" : spadesUnbid ? "4+ spades" : "both unbid minors"}, which this hand does not hold. With no suit to bid directly either${hand.hasStopperInOpponentSuit === true ? "" : ", and no stopper in their suit for a natural NT response"}, pass — partner gets another chance.`,
       handAnalysis: analysis,
       whatYourBidTellsPartner: "Nothing promised — could be weak or trapping.",
       expectedResponses: [],

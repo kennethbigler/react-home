@@ -286,6 +286,29 @@ function getRecommendationRaw(
 
     case "auction-passed-out":
       if (context.myBidWasDoubled) {
+        // A double of a LOW-LEVEL suit bid in the pass-out seat is TAKEOUT —
+        // the doubler's partner will almost always bid, so this pass simply
+        // has nothing to add. A double of a higher/NT contract is closer to
+        // penalty, where "play it doubled" is the real decision.
+        const doubledBid = context.myPreviousBid ?? "";
+        const doubleIsTakeout = /^[12][♠♥♦♣]$/.test(doubledBid);
+        if (doubleIsTakeout) {
+          return {
+            bid: "Pass",
+            category: "Pass — Their Double Is Takeout, Nothing to Add",
+            reasoning: `The opponents' double of your ${doubledBid} in the pass-out seat is TAKEOUT (shortness in your suit, support for the others) — their partner will usually bid, so the auction is not over. Your bid already described this hand: pass and await developments. Redouble only with significant extra strength (about 18+); bidding on with the same values would count them twice.`,
+            handAnalysis: analyzeHand(hand),
+            whatYourBidTellsPartner:
+              "Nothing beyond my earlier bidding — awaiting their runout.",
+            expectedResponses: [
+              {
+                partnerBid: "Pass / compete",
+                meaning: "Partner decides once their side picks a suit",
+              },
+            ],
+            confidence: "high",
+          };
+        }
         return {
           bid: "Pass",
           category: "Pass — Play It Doubled",

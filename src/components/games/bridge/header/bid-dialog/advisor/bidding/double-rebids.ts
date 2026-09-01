@@ -3,6 +3,7 @@ import {
   analyzeHand,
   calcTPWithFit,
   longerMinor,
+  longestSuitInfo,
   SUIT_NAMES,
   suitSymbol,
   type SuitName,
@@ -336,6 +337,36 @@ export function getRebidAfterNegativeDouble(
     };
   }
 
+  // A rebiddable 6+ card suit outranks a 3-card answer: rebidding the real
+  // suit describes the hand honestly, while the 3-card answer is only a
+  // last resort when nothing better exists.
+  {
+    const myOpenLen6 = hand[openSuit as keyof Hand] as number;
+    const sixRebidND = liftStrain(2, suitSymbol(openSuit));
+    if (
+      myFitLen === 3 &&
+      myOpenLen6 >= 6 &&
+      parseInt(sixRebidND[0]) <= 2 &&
+      tp < 17
+    ) {
+      return {
+        bid: sixRebidND,
+        category: `Rebid 6-Card ${openSuit.charAt(0).toUpperCase() + openSuit.slice(1)} After Negative Double`,
+        reasoning: `Partner's negative double showed ${shownSuit}, but you hold only 3 of them — and a ${myOpenLen6}-card ${openSuit} suit. Rebid ${sixRebidND}: the real 6-card suit describes this minimum opener better than a 4-3 answer in ${shownSuit}. Partner can still bid ${shownSuit} with 5 of them.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `6+ ${openSuit}, minimum opener, no 4-card fit for your suit.`,
+        expectedResponses: [
+          { partnerBid: "Pass", meaning: "Accepting the 6-card suit" },
+          {
+            partnerBid: "New suit / raise",
+            meaning: "Extra values or a 5-card suit of their own",
+          },
+        ],
+        confidence: "medium",
+      };
+    }
+  }
+
   // 3-card support: bid the shown suit at the 1-level (minimum) or 2-level (medium).
   // Per SAYC / bridgebum.com: "Bid partner's shown suit with only 3 cards (last resort)."
   // Showing 3-card support is preferred over rebidding a 5-card minor.
@@ -364,7 +395,7 @@ export function getRebidAfterNegativeDouble(
     return {
       bid: threeCardBid,
       category: `3-Card ${shownSuit.charAt(0).toUpperCase() + shownSuit.slice(1)} Support After Negative Double`,
-      reasoning: `Partner's negative double showed ${shownSuit}. With 3-card ${shownSuit} support (the minimum needed to show) and ${tp} TP, bid ${threeCardBid}. Showing 3-card support is preferred over rebidding a 5-card minor when no better bid is available.`,
+      reasoning: `Partner's negative double showed ${shownSuit}. With 3-card ${shownSuit} support and ${tp} TP, bid ${threeCardBid} — the least distortion available: no notrump stopper, no rebiddable 6-card suit, and the double obliges you to bid. Partner knows the answer can be a 3-card suit.`,
       handAnalysis: analysis,
       whatYourBidTellsPartner: `3-card ${shownSuit} support, ${tp >= 17 ? "medium (17+ TP)" : "minimum"} hand.`,
       expectedResponses: [
@@ -857,6 +888,42 @@ export function getAfterOwnDouble(
           confidence: "medium",
         };
       }
+    }
+  }
+
+  // A TAKEOUT double made with 19+ TP promised a second bid ("double, then
+  // bid your suit") — passing now would bury the extra strength the double
+  // was chosen to show. Bid the long suit if it is still available at or
+  // below its game level.
+  if (!myDoubleWasNegative && analysis.tp >= 19) {
+    const longAOD = longestSuitInfo(hand);
+    const floorAOD = Math.max(
+      opponentBid && isRealBid(opponentBid)
+        ? BID_ORDER.indexOf(opponentBid)
+        : -1,
+      partnerBid && isRealBid(partnerBid) ? BID_ORDER.indexOf(partnerBid) : -1,
+    );
+    const strongSuitBidAOD =
+      longAOD.length >= 5 && hand.goodSuitQuality !== false
+        ? BID_ORDER.find(
+            (b, i) => i > floorAOD && b.endsWith(suitSymbol(longAOD.name)),
+          )
+        : undefined;
+    const gameLvlAOD2 =
+      longAOD.name === "hearts" || longAOD.name === "spades" ? 4 : 5;
+    if (strongSuitBidAOD && parseInt(strongSuitBidAOD[0]) <= gameLvlAOD2) {
+      return {
+        bid: strongSuitBidAOD,
+        category: "Bid Your Suit After the Strong Double (19+)",
+        reasoning: `Your takeout double with ${analysis.tp} TP was the first half of "double, then bid your suit" — the sequence that shows a hand too strong for a direct overcall. ${opponentBid ? `The opponents' ${opponentBid} does not change that plan: ` : ""}bid ${strongSuitBidAOD} now. Passing would bury the extra strength your double promised to reveal.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `19+ TP with a real ${longAOD.length}-card ${longAOD.name} suit — too strong for a direct overcall. Raise with a fit and any values.`,
+        expectedResponses: [
+          { partnerBid: "Pass", meaning: "Nothing useful — this is the spot" },
+          { partnerBid: "Raise", meaning: "A fit and a few values" },
+        ],
+        confidence: "medium",
+      };
     }
   }
 

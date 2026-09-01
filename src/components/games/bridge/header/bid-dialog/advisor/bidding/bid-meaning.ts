@@ -296,6 +296,24 @@ export function getBidMeaning(
         ? `${bid}: the OPENER raising your 1-level response — usually 4-card support with a minimum opener (about 12-15 support points). Not forcing; invite with ~11+, bid game with ~13+.`
         : `${bid} from opponent: the opener raising their partner's response — 4-card support, minimum opener (about 12-15).`;
     }
+    // Responder returning to partner's FIRST suit after partner showed a
+    // SECOND suit is a simple PREFERENCE — picking the better of partner's
+    // two suits, often with only 2-3 cards. Not a constructive raise.
+    if (
+      !jumped &&
+      !raiseAtGame &&
+      partnerShownSuit &&
+      bid.slice(1) !== partnerShownSuit &&
+      partnerFirstSuit &&
+      bid.slice(1) === partnerFirstSuit &&
+      bidderPreviousBid &&
+      /^[1-7][♠♥♦♣]$/.test(bidderPreviousBid) &&
+      bidderPreviousBid.slice(1) !== bid.slice(1)
+    ) {
+      return isPartner
+        ? `${bid}: a simple PREFERENCE back to your FIRST suit after you showed two suits — just picking the better of your suits, often with only 2-3 card support. About 6-10 pts; NOT a constructive raise, not forcing.`
+        : `${bid} from opponent: a preference back to their partner's first suit after two suits were shown — 2-3 card support is enough, about 6-10 pts, not forcing.`;
+    }
     // The OPENER raising responder's 2-over-1 (10+) is a constructive raise
     // in a near-game-forcing auction — not the limited 6-9 single raise.
     if (
@@ -592,7 +610,42 @@ export function getBidMeaning(
           ? `${bid} after the opponents' DOUBLE of your partner's ${bidderPartnerPreviousBid}: natural, competing to find a fit — NOT a jump-shift game force (redouble is the strength-showing call once RHO has doubled). About 9-11 pts with a decent 5+ card suit.`
           : `${bid} from opponent after the double of their partner's ${bidderPartnerPreviousBid}: natural new suit competing after the double, not a forcing jump-shift.`;
       }
+      // An opponent's 1NT OVERCALL sits between partner's opening and this
+      // bid: a new suit here is natural and COMPETITIVE (about 6-9, not
+      // forcing) — the 10+ new-suit response structure is off once RHO has
+      // shown a strong balanced hand.
+      if (
+        prevHighBid === "1NT" &&
+        bidderPartnerPreviousBid &&
+        !bidderPartnerPreviousBid.endsWith("NT")
+      ) {
+        return isPartner
+          ? `${bid} after the opponents' 1NT overcall of your partner's ${bidderPartnerPreviousBid}: a natural 5+ card suit, COMPETITIVE (about 6-9 pts) and not forcing — with 10+ they would double the 1NT for penalty instead.`
+          : `${bid} from opponent after their partner's ${bidderPartnerPreviousBid} was overcalled with 1NT: natural 5+ card suit, competitive (about 6-9 pts), non-forcing.`;
+      }
       if (isJumpShiftResp) {
+        // A DOUBLE jump (two levels above the cheapest available call in the
+        // suit) is a SPLINTER — a game-forcing raise of partner's opening
+        // suit with shortness here — not a strong jump shift.
+        const jumpSizeResp = cheapestNewSuit
+          ? parseInt(bid[0]) - parseInt(cheapestNewSuit[0])
+          : 0;
+        if (
+          jumpSizeResp >= 2 &&
+          bidderPartnerPreviousBid &&
+          /^1[♠♥♦♣]$/.test(bidderPartnerPreviousBid)
+        ) {
+          const agreedSuitSp = bidderPartnerPreviousBid.includes("♠")
+            ? "spades"
+            : bidderPartnerPreviousBid.includes("♥")
+              ? "hearts"
+              : bidderPartnerPreviousBid.includes("♦")
+                ? "diamonds"
+                : "clubs";
+          return isPartner
+            ? `${bid}: a SPLINTER — a DOUBLE jump agreeing your ${bidderPartnerPreviousBid} opening as trumps (4+ support, game-forcing) and showing a singleton or void in ${bid.slice(1)}. NOT a natural ${bid.slice(1)} suit; judge slam by how well your honors fit opposite the shortness.`
+            : `${bid} from opponent: a splinter — a game-forcing raise of their partner's ${agreedSuitSp} with a singleton/void in ${bid.slice(1)}, not a natural suit.`;
+        }
         return isPartner
           ? `${bid} JUMP SHIFT response to their partner's ${bidderPartnerPreviousBid}: a strong, game-forcing new suit — about 17+ pts with a good 5+ card suit. (A non-jump new suit would have been available cheaper.)`
           : `${bid} from opponent: jump-shift response — strong (17+ pts), game-forcing, good 5+ card suit.`;
@@ -637,6 +690,22 @@ export function getBidMeaning(
         return isPartner
           ? `${bid} ADVANCE of your overcall: natural — ${bid === "2NT" ? "invitational, about 13-14 pts" : "to play, about 11+ pts counting on your long suit for tricks"}, with the opener's suit stopped.`
           : `${bid} from opponent advancing the overcall: natural, ${bid === "2NT" ? "about 13-14 pts" : "about 11+ pts"} with a stopper.`;
+      }
+      // A raise of partner's NOTRUMP opening is quantitative, keyed to the
+      // opening's range — not the 11-15 response to a suit opening.
+      if (bidderPartnerPreviousBid === "1NT") {
+        return bid === "2NT"
+          ? isPartner
+            ? "2NT RAISE of your 1NT opening: a natural, INVITATIONAL raise — about 8-9 HCP, balanced, no 4-card major worth showing. Pass with 15, bid 3NT with 16-17."
+            : "2NT from opponent: an invitational raise of their partner's 1NT — about 8-9 HCP, balanced."
+          : isPartner
+            ? "3NT RAISE of your 1NT opening: to play — about 10-15 HCP, balanced, no 4-card major worth showing. Not forcing; pass."
+            : "3NT from opponent: raising their partner's 1NT to game — about 10-15 HCP, balanced.";
+      }
+      if (bidderPartnerPreviousBid === "2NT") {
+        return isPartner
+          ? `${bid === "3NT" ? "3NT RAISE of your 2NT opening: to play — about 4-10 HCP, balanced." : `${bid} over your 2NT opening: natural, quantitative.`}`
+          : `${bid} from opponent: a natural raise of their partner's 2NT opening.`;
       }
       return isPartner
         ? `${bid} RESPONSE to partner's opening: balanced with ${bid === "2NT" ? "game-interest values (typically 11-15 pts — invitational to game-forcing by agreement)" : "game values (13+ pts, typically 13-18)"}. Not an opening NT range.`
@@ -932,15 +1001,24 @@ export function getBidMeaning(
       }
       // Opener RAISING the 1NT response (1x-1NT-2NT): 18-19 balanced invite —
       // a 12-14 balanced opener would simply PASS 1NT, so "cheapest = 12-14"
-      // does not apply here.
+      // does not apply here. Only when the bidder IS the opener: a RESPONDER
+      // bidding 2NT over the opener's 1NT rebid is a normal 11-12 invite.
       if (
         bid === "2NT" &&
         /^1[♠♥♦♣]$/.test(bidderPreviousBid) &&
         bidderPartnerPreviousBid === "1NT"
       ) {
+        const bidderWasOpener2NT =
+          auctionOpeningBid === undefined ||
+          auctionOpeningBid === bidderPreviousBid;
+        if (bidderWasOpener2NT) {
+          return isPartner
+            ? `2NT RAISE of your 1NT response (they opened ${bidderPreviousBid}): 18-19 balanced, INVITATIONAL — too strong for a 1NT opening. Pass with 6-7; bid 3NT with 8-10. (A 12-14 balanced opener would have passed 1NT.)`
+            : "2NT from opponent raising their partner's 1NT response: 18-19 balanced, invitational (a 12-14 opener would pass 1NT).";
+        }
         return isPartner
-          ? `2NT RAISE of your 1NT response (they opened ${bidderPreviousBid}): 18-19 balanced, INVITATIONAL — too strong for a 1NT opening. Pass with 6-7; bid 3NT with 8-10. (A 12-14 balanced opener would have passed 1NT.)`
-          : "2NT from opponent raising their partner's 1NT response: 18-19 balanced, invitational (a 12-14 opener would pass 1NT).";
+          ? `2NT by the RESPONDER over your 1NT rebid (they responded ${bidderPreviousBid} to your opening): a natural INVITATION — about 11-12 pts, balanced. Pass with a bare 12-13; bid 3NT with more.`
+          : "2NT from opponent: the responder inviting over their partner's 1NT rebid — about 11-12 pts, balanced, non-forcing.";
       }
       return isPartner
         ? `${bid} REBID (they bid ${bidderPreviousBid} earlier): natural and balanced — NOT an opening NT range. By an opener the cheapest NT shows 12-14 HCP (a jump shows 18-19 HCP); by a responder it is invitational, about 10-12 pts.`
@@ -1070,6 +1148,42 @@ export function getBidMeaning(
         ? `${bid}: a natural suit shown AFTER their earlier ${bidderPreviousBid} — a 5+ card suit offered as a strain (running from notrump or competing). Not an opening bid.`
         : `${bid} from opponent: a natural 5+ card suit shown after their earlier ${bidderPreviousBid} — offering the suit as the strain.`;
     }
+    // An opener's second suit may carry a strength message in its LEVEL:
+    // skipping a still-available cheaper call in the suit = JUMP SHIFT
+    // (19-21, game-forcing); a non-jump 2-level call in a suit ranking above
+    // the opening = REVERSE (17+, forcing one round).
+    {
+      const bidderIsOpener =
+        !!auctionOpeningBid &&
+        bidderPreviousBid === auctionOpeningBid &&
+        // A bid in a suit someone else has already shown is a CUEBID, not a
+        // natural second suit — leave that to the generic text below.
+        (!prevHighBid || prevHighBid.slice(1) !== bidSuitSym);
+      const cheapestNewSuitT = prevHighBid
+        ? BID_ORDER.find(
+            (b, i) =>
+              i > BID_ORDER.indexOf(prevHighBid) && b.endsWith(bidSuitSym),
+          )
+        : undefined;
+      const isJumpShiftT =
+        !!cheapestNewSuitT &&
+        BID_ORDER.indexOf(bid) > BID_ORDER.indexOf(cheapestNewSuitT);
+      const isReverseT =
+        !isJumpShiftT &&
+        /^2[♠♥♦♣]$/.test(bid) &&
+        /^1[♠♥♦♣]$/.test(bidderPreviousBid) &&
+        "♣♦♥♠".indexOf(bidSuitSym) > "♣♦♥♠".indexOf(bidderPreviousBid.slice(1));
+      if (bidderIsOpener && isJumpShiftT) {
+        return isPartner
+          ? `${bid}: a JUMP SHIFT (they skipped a cheaper available bid in this suit after opening ${bidderPreviousBid}) — a natural second suit with 19-21 pts, GAME-FORCING. Neither partner may pass below game.`
+          : `${bid} from opponent: a JUMP SHIFT — a second suit alongside their ${bidderPreviousBid} opening, 19-21 pts and game-forcing for their side.`;
+      }
+      if (bidderIsOpener && isReverseT) {
+        return isPartner
+          ? `${bid}: a REVERSE (a 2-level second suit ranking above their ${bidderPreviousBid} opening) — natural, 17+ pts, forcing for one round. The first suit is longer than the second.`
+          : `${bid} from opponent: a REVERSE — a second suit above their ${bidderPreviousBid} opening, showing 17+ pts, forcing one round for their side.`;
+      }
+    }
     return isPartner
       ? `${bid}: a SECOND suit (they bid ${bidderPreviousBid} earlier) — natural, usually 4+ cards here with the first suit at least as long. Not an opening bid. (If this is a suit the opponents bid, it is a cuebid showing a strong raise instead.)`
       : `${bid} from opponent: a second suit alongside their earlier ${bidderPreviousBid} — natural, not an opening bid.`;
@@ -1194,14 +1308,16 @@ export function getBidMeaning(
           ? "2♥ directly over their 1NT opening: CAPPELLETTI — hearts plus a minor suit, NOT a transfer and not a plain natural heart overcall."
           : "2♥ from opponent over their partner's 1NT: Cappelletti — hearts plus a minor, not a transfer.";
       }
-      // Jacoby Transfer to spades — same ownership requirement as above.
+      // Jacoby Transfer to spades — only when the NT bid belongs to the
+      // bidder's PARTNER (a 1NT/2NT opening or a natural 1NT OVERCALL both
+      // carry transfers). A partner known to be silent ("none") means the 1NT
+      // was an opponent's — the 2♥ is then natural, never a transfer.
       const transferBaseH =
         bidderPartnerPreviousBid === undefined ||
-        bidderPartnerPreviousBid === "none" ||
         bidderPartnerPreviousBid === prevHighBid;
       if ((prevHighBid === "1NT" || prevHighBid === "2NT") && transferBaseH) {
         return isPartner
-          ? `Jacoby Transfer to spades — partner is asking you (${prevHighBid} opener) to bid 2♠, transferring to their spade suit.`
+          ? `Jacoby Transfer to spades — partner is asking you (the ${prevHighBid} bidder) to bid 2♠, transferring to their spade suit.`
           : `Transfer to spades over ${prevHighBid} — the opponent holds 5+ spades.`;
       }
       if (prevHighBid === "1NT" && !transferBaseH) {
@@ -1228,9 +1344,10 @@ export function getBidMeaning(
       // own side's opening/rebid (conventions on); a natural 1NT elsewhere in
       // the auction (e.g. a 1NT RESPONSE to a suit opening) makes this a
       // natural weak-two-style overcall/opening instead, not a transfer.
+      // Partner's own 1NT (opening OR natural overcall) carries the minor
+      // transfer; a silent partner ("none") means the 1NT was an opponent's.
       const transferBase1NT =
         bidderPartnerPreviousBid === undefined ||
-        bidderPartnerPreviousBid === "none" ||
         bidderPartnerPreviousBid === "1NT";
       if (prevHighBid === "1NT" && transferBase1NT) {
         return isPartner
@@ -1327,20 +1444,36 @@ export function getBidMeaning(
           ? `${bid} OPENING: preemptive — a 7-8 card ${suitNm} suit with a weak hand (under opening values). Shape-based blocking bid, not strength.`
           : `${bid} opening from opponent: preempt — 7-8 card ${suitNm} suit, weak hand.`;
       }
-      // A splinter into a MAJOR over partner's MINOR opening (e.g. 1♦-4♥),
-      // made as the bidder's first response: agrees the minor as trumps and
-      // shows shortness in this major — not a natural game bid in the major.
+      // A splinter over partner's 1-level opening (e.g. 1♦-4♥ or 1♠-4♥),
+      // made as the bidder's first response: a DOUBLE jump in a new suit
+      // agrees the opening suit as trumps and shows shortness in the bid
+      // suit — not a natural game bid in it. (4♠ over 1♥ is a TRIPLE jump —
+      // preemptive to play — so require exactly a double jump.)
       const splinterFloorMaj =
         !!prevHighBid &&
-        /^1[♣♦]$/.test(prevHighBid) &&
+        /^1[♠♥♦♣]$/.test(prevHighBid) &&
         prevHighBid === auctionOpeningBid &&
-        bidderPreviousBid === undefined;
+        bidderPreviousBid === undefined &&
+        bid.slice(1) !== prevHighBid.slice(1) &&
+        (() => {
+          const cheapest = BID_ORDER.find(
+            (b, i) =>
+              i > BID_ORDER.indexOf(prevHighBid!) && b.endsWith(bid.slice(1)),
+          );
+          return !!cheapest && parseInt(bid[0]) - parseInt(cheapest[0]) === 2;
+        })();
       if (splinterFloorMaj) {
-        const openMinorName = prevHighBid!.includes("♣") ? "clubs" : "diamonds";
+        const openSuitName3 = prevHighBid!.includes("♠")
+          ? "spades"
+          : prevHighBid!.includes("♥")
+            ? "hearts"
+            : prevHighBid!.includes("♣")
+              ? "clubs"
+              : "diamonds";
         const shortSuitName2 = bid === "4♥" ? "hearts" : "spades";
         return isPartner
-          ? `${bid}: a SPLINTER — a game-forcing raise of your ${openMinorName} opening (4+ trump support) showing a singleton or void in ${shortSuitName2}. NOT a natural game bid in ${shortSuitName2}.`
-          : `${bid} from opponent: a splinter raise of their partner's ${openMinorName} opening, showing shortness in ${shortSuitName2} — not a natural game bid.`;
+          ? `${bid}: a SPLINTER — a game-forcing raise of your ${openSuitName3} opening (4+ trump support) showing a singleton or void in ${shortSuitName2}. NOT a natural game bid in ${shortSuitName2}.`
+          : `${bid} from opponent: a splinter raise of their partner's ${openSuitName3} opening, showing shortness in ${shortSuitName2} — not a natural game bid.`;
       }
       const suitNm2 = bid === "4♥" ? "hearts" : "spades";
       return isPartner

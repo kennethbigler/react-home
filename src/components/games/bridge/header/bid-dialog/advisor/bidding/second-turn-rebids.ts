@@ -886,28 +886,38 @@ export function getResponderRebid(
             ? "diamonds"
             : "clubs";
       const myLenJS = hand[mySuitNameJS as keyof Hand] as number;
-      // Prefer to keep describing shape (rebid a 5+ card suit) if I have one;
-      // otherwise the cheapest available raise of partner's new suit (a
-      // fit-showing preference) keeps the force alive without inventing a
-      // suit I don't hold.
       const floorJSIdx = BID_ORDER.indexOf(pLatestRV);
+      const secondSuitSymJS = pLatestRV.slice(1);
+      const secondSuitNameJS =
+        secondSuitSymJS === "♠"
+          ? "spades"
+          : secondSuitSymJS === "♥"
+            ? "hearts"
+            : secondSuitSymJS === "♦"
+              ? "diamonds"
+              : "clubs";
+      const myFitJS2 = hand[secondSuitNameJS as keyof Hand] as number;
+      const preferenceJS = BID_ORDER.find(
+        (b, i) => i > floorJSIdx && b.endsWith(secondSuitSymJS),
+      );
+      // Priorities: RAISE partner's jump-shift suit with 4+ support (their
+      // suit is 4+, so that is a guaranteed 8-card fit — never hide it);
+      // else keep describing shape by rebidding a 5+ card suit of my own;
+      // else the cheapest preference.
+      const raiseJS = myFitJS2 >= 4 ? preferenceJS : undefined;
       const rebidJS =
-        myLenJS >= 5
+        !raiseJS && myLenJS >= 5
           ? BID_ORDER.find(
               (b, i) => i > floorJSIdx && b.endsWith(suitSymbol(mySuitNameJS)),
             )
           : undefined;
-      const secondSuitSymJS = pLatestRV.slice(1);
-      const preferenceJS = BID_ORDER.find(
-        (b, i) => i > floorJSIdx && b.endsWith(secondSuitSymJS),
-      );
-      const fallbackJS = rebidJS ?? preferenceJS;
+      const fallbackJS = raiseJS ?? rebidJS ?? preferenceJS;
       if (fallbackJS) {
         return {
           bid: fallbackJS,
           category:
             "Keep the Force Alive After Jump Shift (19-21, Game-Forcing)",
-          reasoning: `Partner's ${pLatestRV} is a JUMP SHIFT — 19-21 TP, a game-forcing two-suiter. Even with only ${tp} TP you must NOT sign off below game: this auction is forced. ${rebidJS ? `Rebid your ${myLenJS}-card ${mySuitNameJS} suit (${fallbackJS}) to keep describing your hand.` : `Bid ${fallbackJS} to keep the auction alive while partner continues to describe their hand.`}`,
+          reasoning: `Partner's ${pLatestRV} is a JUMP SHIFT — 19-21 TP, a game-forcing two-suiter. Even with only ${tp} TP you must NOT sign off below game: this auction is forced. ${raiseJS ? `With ${myFitJS2}-card support for partner's ${secondSuitNameJS} (they promised 4+), raise to ${fallbackJS} — an 8-card fit is guaranteed.` : rebidJS ? `Rebid your ${myLenJS}-card ${mySuitNameJS} suit (${fallbackJS}) to keep describing your hand.` : `Bid ${fallbackJS} to keep the auction alive while partner continues to describe their hand.`}`,
           handAnalysis: analysis,
           whatYourBidTellsPartner:
             "Continuing to describe the hand — the auction is forced to game regardless of my exact strength.",
@@ -1075,9 +1085,17 @@ export function getResponderRebid(
         pFirstSuit !== "clubs" &&
         pFirstSuit !== "diamonds"
       ? pFirstSuit
-      : mySuit && myLenIn(mySuit) >= 6 && !partnerDeclinedMySuit
-        ? mySuit
-        : undefined;
+      : // Partner's SECOND suit (their latest bid, e.g. a 1♠ rebid) promises
+        // 4+ cards — 4-card support completes a guaranteed 8-card major fit.
+        pLatestSuit &&
+          pLatestSuit !== mySuit &&
+          pLatestSuit !== pFirstSuit &&
+          (pLatestSuit === "hearts" || pLatestSuit === "spades") &&
+          myLenIn(pLatestSuit) >= 4
+        ? pLatestSuit
+        : mySuit && myLenIn(mySuit) >= 6 && !partnerDeclinedMySuit
+          ? mySuit
+          : undefined;
   const fitIsMajor = fitSuit === "hearts" || fitSuit === "spades";
 
   // With a trump fit, value my hand with short-suit support (ruffing) points.
@@ -1330,7 +1348,7 @@ export function getResponderRebid(
     return {
       bid: "3NT",
       category: "Bid 3NT After Opener's Rebid (Game Values)",
-      reasoning: `Partner's rebid shows at least ${openerMin} points; with your ${tp} TP the combined ${combined}+ is enough for game. With no guaranteed 8-card major fit, 3NT is the standard game.${fiveCardMajorRR ? ` (You do hold 5 ${fiveCardMajorRR} — partner's bidding denied 4-card support, though a 5-3 fit is still possible; checking back with a new-minor 2♣ first is a reasonable alternative.)` : ""}`,
+      reasoning: `Partner's rebid shows at least ${openerMin} points; with your ${tp} TP the combined ${combined}+ is enough for game. With no guaranteed 8-card major fit, 3NT is the standard game.${fiveCardMajorRR ? ` (You do hold ${myLenIn(fiveCardMajorRR)} ${fiveCardMajorRR} — partner's bidding denied 4-card support, though a ${myLenIn(fiveCardMajorRR)}-${myLenIn(fiveCardMajorRR) >= 6 ? "2" : "3"} fit is still possible; checking back with a new-minor 2♣ first is a reasonable alternative.)` : ""}`,
       handAnalysis: analysis,
       whatYourBidTellsPartner:
         "Enough combined strength for game together, no major fit found. My exact strength depends on what your rebid showed.",
@@ -1417,38 +1435,55 @@ export function getResponderRebid(
         };
       }
     }
-    if (cheapestIn("NT") === "2NT") {
-      return {
-        bid: "2NT",
-        category: "Invitational 2NT After Opener's Rebid",
-        reasoning: `Partner's rebid shows at least ${openerMin} points; your ${tp} TP is invitational. With no fit to raise, invite with 2NT — partner passes with a minimum, bids 3NT with extras.`,
-        handAnalysis: analysis,
-        whatYourBidTellsPartner:
-          "Combined strength just short of game — invitational, fairly balanced, no fit.",
-        expectedResponses: [
-          { partnerBid: "Pass", meaning: "Minimum opener" },
-          { partnerBid: "3NT", meaning: "Extra values (14+)" },
-        ],
-        confidence: "medium",
-      };
+    // 2NT is the invitational NT bid whether or not 1NT is also still
+    // available (a cheap 1NT would show a weak 6-10 hand instead). Over a
+    // suit the OPPONENTS have bid, it still promises a stopper there.
+    {
+      const cheapNTInv = cheapestIn("NT");
+      const oppBidSuitInv = [context.lhoBid, context.rhoBid].some(
+        (b) => !!b && isRealBid(b) && !b.endsWith("NT"),
+      );
+      if (
+        (cheapNTInv === "1NT" || cheapNTInv === "2NT") &&
+        (!oppBidSuitInv || hand.hasStopperInOpponentSuit !== false)
+      ) {
+        return {
+          bid: "2NT",
+          category: "Invitational 2NT After Opener's Rebid",
+          reasoning: `Partner's rebid shows at least ${openerMin} points; your ${tp} TP is invitational. With no fit to raise, invite with 2NT — partner passes with a minimum, bids 3NT with extras.${cheapNTInv === "1NT" ? " (A cheap 1NT instead would show a weak 6-10 hand.)" : ""}`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner:
+            "Combined strength just short of game — invitational, fairly balanced, no fit.",
+          expectedResponses: [
+            { partnerBid: "Pass", meaning: "Minimum opener" },
+            { partnerBid: "3NT", meaning: "Extra values (14+)" },
+          ],
+          confidence: "medium",
+        };
+      }
     }
   }
 
   // ── Minimum (6-10): place the partscore ──
-  // Preference between partner's two suits
+  // Preference between partner's two suits. With EQUAL length (e.g. 3-3),
+  // still prefer the FIRST suit — partner's first suit is at least as long
+  // as the second (the classic "false preference").
   if (
     pFirstSuit &&
     pLatestSuit &&
     pFirstSuit !== pLatestSuit &&
     pLatestSuit !== mySuit &&
-    myLenIn(pFirstSuit) > myLenIn(pLatestSuit)
+    (myLenIn(pFirstSuit) > myLenIn(pLatestSuit) ||
+      // Equal length: false preference needs a real holding (3+ cards).
+      (myLenIn(pFirstSuit) === myLenIn(pLatestSuit) &&
+        myLenIn(pFirstSuit) >= 3))
   ) {
     const pref = cheapestIn(suitSymbol(pFirstSuit));
     if (pref && parseInt(pref[0]) <= 3) {
       return {
         bid: pref,
         category: "Preference to Opener's First Suit",
-        reasoning: `Partner showed two suits (${pFirstSuit}, then ${pLatestSuit}). With more cards in ${pFirstSuit}, give simple preference (${pref}). This shows no extra strength.`,
+        reasoning: `Partner showed two suits (${pFirstSuit}, then ${pLatestSuit}). With ${myLenIn(pFirstSuit) > myLenIn(pLatestSuit) ? "more cards in" : `equal length (${myLenIn(pFirstSuit)}-${myLenIn(pLatestSuit)}) — and partner's FIRST suit is at least as long as the second, so prefer`} ${pFirstSuit}, give simple preference (${pref}). This shows no extra strength.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner:
           "Better support for your first suit; no game interest. Simple preference, not a raise.",
@@ -1619,6 +1654,35 @@ export function getResponderRebid(
           "No game interest opposite your shown strength, nothing more to show.",
         expectedResponses: [],
         confidence: "medium",
+      };
+    }
+  }
+
+  // Even with a minimum, RAISE partner's second suit once with 4-card
+  // support (their new suit promised 4+, so the 8-card fit is known) — the
+  // single raise (6-9) improves the partscore and shows the fit; passing
+  // buries it.
+  {
+    const secondSuitRaiseRR =
+      pLatestSuit &&
+      pFirstSuit &&
+      pLatestSuit !== pFirstSuit &&
+      pLatestSuit !== mySuit &&
+      myLenIn(pLatestSuit) >= 4
+        ? cheapestIn(suitSymbol(pLatestSuit))
+        : undefined;
+    if (secondSuitRaiseRR && parseInt(secondSuitRaiseRR[0]) <= 2) {
+      return {
+        bid: secondSuitRaiseRR,
+        category: "Single Raise of Partner's Second Suit (6-9)",
+        reasoning: `Partner's second suit promised 4+ ${pLatestSuit}, and you hold ${myLenIn(pLatestSuit)} — a known 8-card fit. Even with a minimum (${tp} TP), give the single raise to ${secondSuitRaiseRR}: it shows the fit, improves the partscore, and makes it harder for the opponents to balance. Passing would bury the fit.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `4-card ${pLatestSuit} support, 6-9 — a minimum raise; pass without extras.`,
+        expectedResponses: [
+          { partnerBid: "Pass", meaning: "Minimum opener — high enough" },
+          { partnerBid: "Game try", meaning: "Extras — inviting" },
+        ],
+        confidence: "high",
       };
     }
   }
@@ -2068,20 +2132,33 @@ export function getProtectiveRebid(
         su === oppSuitName ||
         (hand[su as keyof Hand] as number) >= 3,
     );
+    // Two ways in: 16+ HCP with tolerable shape, OR a normal opening with
+    // PERFECT takeout shape — a singleton/void in their suit and 3+ cards in
+    // every unbid suit (e.g. 4-1-4-4 over their raised hearts). SAYC openers
+    // compete with the shape double rather than selling out at a low level.
+    const perfectShapeCD =
+      !!oppSuitName && oppSuitLen <= 1 && unbidOkCD && hcp >= 12;
     if (
-      hcp >= 16 &&
       oppBid &&
       parseInt(oppBid[0]) <= 2 &&
-      (!oppSuitName || oppSuitLen <= 3) &&
-      unbidOkCD
+      ((hcp >= 16 && (!oppSuitName || oppSuitLen <= 3) && unbidOkCD) ||
+        perfectShapeCD)
     ) {
       return {
         bid: "Double",
-        category: "Competitive Double (Extra Values)",
-        reasoning: `The opponents are competing over your ${myOpeningBid} opening and partner has not acted. With ${hcp} HCP (extras), shortness in their suit, and 3+ cards in every unbid suit, double to show a strong hand that can handle partner bidding any unbid suit.`,
+        category:
+          hcp >= 16
+            ? "Competitive Double (Extra Values)"
+            : "Competitive Double (Takeout Shape)",
+        reasoning:
+          hcp >= 16
+            ? `The opponents are competing over your ${myOpeningBid} opening and partner has not acted. With ${hcp} HCP (extras), shortness in their suit, and 3+ cards in every unbid suit, double to show a strong hand that can handle partner bidding any unbid suit.`
+            : `The opponents are competing over your ${myOpeningBid} opening and partner has not acted. With a ${oppSuitLen === 0 ? "void" : "singleton"} in their suit and 3+ cards in every unbid suit, this is a PERFECT takeout double — competing beats selling out at the 2-level, and partner (who may have been shut out) picks the strain.`,
         handAnalysis: analysis,
         whatYourBidTellsPartner:
-          "16+ HCP, extras for the opening bid, support for the unbid suits. Partner: bid your best suit or pass for penalties with length/strength in their suit.",
+          hcp >= 16
+            ? "16+ HCP, extras for the opening bid, support for the unbid suits. Partner: bid your best suit or pass for penalties with length/strength in their suit."
+            : "Opening values with shortness in their suit and support for every unbid suit — takeout. Bid your best suit; pass only to convert to penalty.",
         expectedResponses: [
           {
             partnerBid: "New suit",

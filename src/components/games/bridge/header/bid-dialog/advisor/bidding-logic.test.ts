@@ -10384,7 +10384,8 @@ describe("bidding-logic | audit fixes — branch coverage", () => {
       ctx("responding-suit", { partnerBid: "1♦" }),
     );
     expect(rec.bid).toBe("2♣");
-    expect(rec.category).toContain("Two-Over-One");
+    // The 5+ card suit is shown naturally before any direct NT response.
+    expect(rec.category).toContain("New Suit First (Game Values, 5-Card Suit)");
   });
 
   it("weak-2 response is natural under interference: 2♥-(2♠), 13 HCP + fit → 4♥", () => {
@@ -10459,9 +10460,20 @@ describe("bidding-logic | audit fixes — branch coverage", () => {
     expect(rec.bid).toBe("2NT");
   });
 
-  it("opener supports partner's negative-double major, level forced by overcall", () => {
+  it("opener with a 6-card suit rebids it over the 3-card negative-double answer", () => {
+    // 6 spades vs 3-card heart support: the 6-card suit rebid (likely 6-2)
+    // beats a 4-3 heart answer — the honest description of the hand.
     const rec = getRecommendation(
       mkHand(13, 6, 3, 2, 2),
+      ctx("rebid-after-negative-double", { myPreviousBid: "1♠", rhoBid: "2♦" }),
+    );
+    expect(rec.bid).toBe("2♠");
+    expect(rec.category).toContain("Rebid 6-Card");
+  });
+
+  it("opener with only a 5-card suit still answers the negative double with 3-card support", () => {
+    const rec = getRecommendation(
+      mkHand(13, 5, 3, 3, 2),
       ctx("rebid-after-negative-double", { myPreviousBid: "1♠", rhoBid: "2♦" }),
     );
     expect(rec.bid).toBe("2♥");
@@ -11987,10 +11999,26 @@ describe("sim audit round 23 regressions — reverses and 2♣ one-shot", () => 
   it("responder keeps the force alive after partner's JUMP SHIFT (not a reverse)", () => {
     // seed 101: 1♣-1♥-2♠ is a JUMP SHIFT, not a reverse — opener had 1♠
     // available at the 1-level and skipped it to jump to 2♠ (19+, GF).
-    // With 5 HCP + 7 hearts, responder must keep bidding (never sign off
-    // below game), rebidding hearts to keep describing the hand.
+    // Responder must keep bidding (never sign off below game); with 4-card
+    // support for the jump-shift suit (opener promised 4+), raising the
+    // guaranteed 8-card spade fit outranks rebidding the ragged 7-card
+    // heart suit.
     const rec = getRecommendation(
       { hcp: 5, spades: 4, hearts: 7, diamonds: 2, clubs: 0 },
+      {
+        situation: "responder-rebid",
+        myPreviousBid: "1♥",
+        partnerBid: "2♠",
+        partnerFirstBid: "1♣",
+      },
+    );
+    expect(rec.bid).toBe("3♠");
+    expect(rec.category).toContain("Jump Shift");
+  });
+
+  it("responder without a fit rebids their long suit after partner's JUMP SHIFT", () => {
+    const rec = getRecommendation(
+      { hcp: 5, spades: 2, hearts: 7, diamonds: 4, clubs: 0 },
       {
         situation: "responder-rebid",
         myPreviousBid: "1♥",
@@ -12002,8 +12030,10 @@ describe("sim audit round 23 regressions — reverses and 2♣ one-shot", () => 
     expect(rec.category).toContain("Jump Shift");
   });
 
-  it("reverser passes partner's weak signoff with a singleton", () => {
-    // seed 101: opener "accepted the invitation" to 4♥ on a singleton jack.
+  it("jump-shifter completes the game force over partner's suit rebid (3NT with a misfit)", () => {
+    // seed 101: 1♣-1♥-2♠ is a JUMP SHIFT (1♠ was available), GAME-FORCING —
+    // opener may NOT pass partner's 3♥ below game. With a singleton heart,
+    // 3NT is the practical game.
     const rec = getRecommendation(
       { hcp: 20, spades: 4, hearts: 1, diamonds: 3, clubs: 5 },
       {
@@ -12012,6 +12042,24 @@ describe("sim audit round 23 regressions — reverses and 2♣ one-shot", () => 
         myPreviousBid: "2♠",
         partnerBid: "3♥",
         partnerFirstBid: "1♥",
+      },
+    );
+    expect(rec.bid).toBe("3NT");
+    expect(rec.category).toContain("Complete the Game Force");
+  });
+
+  it("a true reverser passes partner's weak signoff with a misfit", () => {
+    // 1♣-1♠-2♦ is a genuine REVERSE (1♦ was NOT available over 1♠) — forcing
+    // one round only. Partner's 2♠ signoff shows a weak hand with long
+    // spades; with a doubleton spade and no game opposite 6-9, pass.
+    const rec = getRecommendation(
+      { hcp: 17, spades: 2, hearts: 2, diamonds: 4, clubs: 5 },
+      {
+        situation: "rebid-after-suit",
+        myFirstBid: "1♣",
+        myPreviousBid: "2♦",
+        partnerBid: "2♠",
+        partnerFirstBid: "1♠",
       },
     );
     expect(rec.bid).toBe("Pass");

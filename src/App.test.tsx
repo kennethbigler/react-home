@@ -18,9 +18,13 @@ it("renders without crashing", async () => {
   // navigate to games page and verify
   expect(screen.queryByText("Deduction")).toBeNull();
   fireEvent.click(screen.getByText("Games"));
-  await waitFor(() =>
-    expect(screen.getByText("Deduction")).toBeInTheDocument(),
-  );
+  // Drawer keeps menu items mounted until the close transition ends.
+  await waitFor(() => {
+    expect(screen.getByText("Deduction")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("menuitem", { name: "BotC" }),
+    ).not.toBeInTheDocument();
+  });
 
   // verify menu closed, then open menu and verify it's open
   expect(screen.getAllByText("BotC")).toHaveLength(1);
