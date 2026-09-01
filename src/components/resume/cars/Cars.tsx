@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import TimelineCard from "./timeline-card/TimelineCard";
 import {
   cars,
@@ -19,19 +19,15 @@ const Cars = () => {
   const handleSegmentClick = (title: string) =>
     cars.forEach((car) => car.title === title && setActive(car));
 
-  const handleHideClick = (isKen: boolean) => () => {
+  const handleHideClick = useCallback((isKen: boolean) => {
     if (isKen) {
-      if (!hideKen && hideFamily) {
-        setHideFamily(false);
-      }
-      setHideKen(!hideKen);
+      setHideKen((prevHideKen) => !prevHideKen);
+      setHideFamily(false);
     } else {
-      if (!hideFamily && hideKen) {
-        setHideKen(false);
-      }
-      setHideFamily(!hideFamily);
+      setHideFamily((prevHideFamily) => !prevHideFamily);
+      setHideKen(false);
     }
-  };
+  }, []);
 
   let data = cars;
   if (hideFamily) {
@@ -46,7 +42,7 @@ const Cars = () => {
         Ken&apos;s Cars
       </Typography>
       <CarChartControls
-        onClick={handleHideClick}
+        onHideClick={handleHideClick}
         hideKen={hideKen}
         hideFamily={hideFamily}
       />

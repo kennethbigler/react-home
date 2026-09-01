@@ -221,8 +221,4 @@ describe("games | bridge | UnbalancedHands", () => {
       screen.getByText(/any other rebid is forcing to game/i),
     ).toBeInTheDocument();
   });
-
-  it("has proper displayName", () => {
-    expect(UnbalancedHands.displayName).toBe("UnbalancedHands");
-  });
 });

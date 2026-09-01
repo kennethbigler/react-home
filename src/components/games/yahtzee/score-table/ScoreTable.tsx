@@ -1,4 +1,4 @@
-import { useCallback, type ReactElement } from "react";
+import type { ReactElement } from "react";
 import type { TopGameScore, BottomGameScore } from "../types";
 import type { Dice } from "@/jotai/yahtzee-atom";
 import Header from "./Header";
@@ -29,40 +29,37 @@ const ScoreTable = ({
   onTopScore,
   onBottomScore,
 }: ScoreTableProps) => {
-  const getScoreButton = useCallback(
-    (
-      showButton: boolean,
-      points: number,
-      wasTop: boolean,
-      i: number,
-    ): ReactElement =>
-      showButton ? (
-        <Button
-          color="secondary"
-          variant="outlined"
-          onClick={
-            wasTop
-              ? (): void => onTopScore(points, i)
-              : (): void => onBottomScore(points, i)
-          }
-        >
-          {`Add ${points} Points`}
-        </Button>
-      ) : (
-        <Button
-          color="secondary"
-          variant="outlined"
-          onClick={
-            wasTop
-              ? (): void => onTopScore(0, i)
-              : (): void => onBottomScore(0, i)
-          }
-        >
-          0
-        </Button>
-      ),
-    [onBottomScore, onTopScore],
-  );
+  const getScoreButton = (
+    showButton: boolean,
+    points: number,
+    wasTop: boolean,
+    i: number,
+  ): ReactElement =>
+    showButton ? (
+      <Button
+        color="secondary"
+        variant="outlined"
+        onClick={
+          wasTop
+            ? (): void => onTopScore(points, i)
+            : (): void => onBottomScore(points, i)
+        }
+      >
+        {`Add ${points} Points`}
+      </Button>
+    ) : (
+      <Button
+        color="secondary"
+        variant="outlined"
+        onClick={
+          wasTop
+            ? (): void => onTopScore(0, i)
+            : (): void => onBottomScore(0, i)
+        }
+      >
+        0
+      </Button>
+    );
 
   return (
     <Table size="small" aria-label="yahtzee game table">

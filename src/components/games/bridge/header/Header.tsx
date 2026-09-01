@@ -1,11 +1,10 @@
-import { memo } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import { Button, Typography } from "@mui/material";
 import BidDialog from "./bid-dialog/BidDialog";
 import ScoreDialog from "./score-dialog/ScoreDialog";
 import bridgeAtom, { bridgeRead, newBridgeGame } from "@/jotai/bridge-atom";
 
-const Header = memo(() => {
+const Header = () => {
   const { gameIdx, weWins, theyWins, weSum, theySum } =
     useAtomValue(bridgeRead);
   const [{ weRubbers, theyRubbers }, setState] = useAtom(bridgeAtom);
@@ -46,8 +45,6 @@ const Header = memo(() => {
       <ScoreDialog />
     </div>
   );
-});
-
-Header.displayName = "Header";
+};
 
 export default Header;

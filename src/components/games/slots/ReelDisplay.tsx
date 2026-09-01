@@ -1,4 +1,4 @@
-import { useCallback, type CSSProperties, type ReactElement } from "react";
+import type { CSSProperties, ReactElement } from "react";
 import type { SlotDisplay } from "./slotMachine";
 import {
   Table,
@@ -19,7 +19,7 @@ const cellStyles: CSSProperties = {
 
 const ReelDisplay = ({ reel }: ReelDisplayProps) => {
   /** generate code for slot machine */
-  const getSlots = useCallback((): ReactElement[] => {
+  const getSlots = (): ReactElement[] => {
     // display for slots
     const slots = [];
     for (let i = 0; i < 3; i += 1) {
@@ -41,7 +41,7 @@ const ReelDisplay = ({ reel }: ReelDisplayProps) => {
       slots.push(slotRow);
     }
     return slots;
-  }, [reel]);
+  };
 
   return (
     <Table aria-label="slots displayed in a 3 by 3 grid">

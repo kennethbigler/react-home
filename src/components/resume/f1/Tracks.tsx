@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { Grid } from "@mui/material";
 import australiaSrc from "@/images/tracks/Australia_Circuit.avif";
 import chinaSrc from "@/images/tracks/China_Circuit.avif";
@@ -337,15 +337,15 @@ const PAST_TRACKS: TrackData[] = [
 const Tracks = memo(() => {
   const [expanded, setExpanded] = useState("");
 
-  const toggleExpanded = (circuitName: string) => () => {
-    setExpanded(circuitName === expanded ? "" : circuitName);
-  };
+  const toggleExpanded = useCallback((circuitName: string) => {
+    setExpanded((prev) => (circuitName === prev ? "" : circuitName));
+  }, []);
 
   const renderTrack = (track: TrackData) => (
     <Track
       key={track.circuitName}
       expanded={expanded}
-      onClick={toggleExpanded}
+      onToggle={toggleExpanded}
       {...track}
     />
   );

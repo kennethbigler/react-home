@@ -6,9 +6,8 @@ import {
   Typography,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { memo } from "react";
 
-const UnbalancedHands = memo(() => (
+const UnbalancedHands = () => (
   <>
     <TableHead>
       <TableRow>
@@ -293,8 +292,6 @@ const UnbalancedHands = memo(() => (
       </TableRow>
     </TableBody>
   </>
-));
-
-UnbalancedHands.displayName = "UnbalancedHands";
+);
 
 export default UnbalancedHands;

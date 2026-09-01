@@ -6,9 +6,8 @@ import {
   Typography,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { memo } from "react";
 
-const Overcalls = memo(() => (
+const Overcalls = () => (
   <>
     <TableHead>
       <TableRow>
@@ -289,8 +288,6 @@ const Overcalls = memo(() => (
       </TableRow>
     </TableBody>
   </>
-));
-
-Overcalls.displayName = "Overcalls";
+);
 
 export default Overcalls;

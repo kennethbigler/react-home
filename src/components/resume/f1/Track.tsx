@@ -21,7 +21,7 @@ export type TrackData =
 
 type TrackProps = TrackData & {
   expanded: string;
-  onClick: (circuitName: string) => () => void;
+  onToggle: (circuitName: string) => void;
 };
 
 const bold: CSSProperties = { fontWeight: "bold" };
@@ -38,7 +38,7 @@ const Track = memo(
     numLaps,
     raceLen,
     skipped,
-    onClick,
+    onToggle,
   }: TrackProps) => {
     const muiTheme = useTheme();
     const isExpanded = expanded === circuitName;
@@ -97,7 +97,7 @@ const Track = memo(
           aria-label={`${isExpanded ? "Collapse" : "Expand"} ${circuitName} circuit details${
             next ? ", next race" : skipped ? ", skipped" : ""
           }`}
-          onClick={onClick(circuitName)}
+          onClick={() => onToggle(circuitName)}
         >
           <img
             src={imgSrc}

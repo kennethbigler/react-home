@@ -6,9 +6,8 @@ import {
   Typography,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { memo } from "react";
 
-const Overleaf = memo(() => (
+const Overleaf = () => (
   <>
     <TableHead>
       <TableRow>
@@ -251,8 +250,6 @@ const Overleaf = memo(() => (
       </TableRow>
     </TableBody>
   </>
-));
-
-Overleaf.displayName = "Overleaf";
+);
 
 export default Overleaf;

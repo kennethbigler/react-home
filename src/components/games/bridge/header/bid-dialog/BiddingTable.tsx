@@ -1,6 +1,5 @@
 import { Table } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { memo } from "react";
 import BalancedHands from "./BalancedHands";
 import UnbalancedHands from "./UnbalancedHands";
 import Overcalls from "./Overcalls";
@@ -14,7 +13,7 @@ const tableStyles = {
   },
 };
 
-const BiddingTable = memo(() => (
+const BiddingTable = () => (
   <>
     <Table size="small" sx={tableStyles}>
       <BalancedHands />
@@ -25,8 +24,6 @@ const BiddingTable = memo(() => (
       <Overleaf />
     </Table>
   </>
-));
-
-BiddingTable.displayName = "BiddingTable";
+);
 
 export default BiddingTable;

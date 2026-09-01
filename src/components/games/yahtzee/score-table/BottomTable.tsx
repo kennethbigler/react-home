@@ -1,4 +1,4 @@
-import { useCallback, type ReactElement, type ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { type TopGameScore, type BottomGameScore, ADD_DICE } from "../types";
 import type { Dice } from "@/jotai/yahtzee-atom";
 import {
@@ -61,31 +61,28 @@ const BottomTable = ({
   finalTopSum,
   bottomSum,
 }: BottomTableProps) => {
-  const getBottomTableButtons = useCallback(
-    (
-      score: number,
-      points: number,
-      hasYahtzee: boolean,
-      i: number,
-    ): ReactNode | null => {
-      if (score >= 0) {
-        return score;
-      }
-      if (showScoreButtons) {
-        // Yahtzee Bonus
-        if (hasYahtzee) {
-          if (canYahtzeeBonus(values, top)) {
-            return getScoreButton(true, points + 100, false, i);
-          }
+  const getBottomTableButtons = (
+    score: number,
+    points: number,
+    hasYahtzee: boolean,
+    i: number,
+  ): ReactNode | null => {
+    if (score >= 0) {
+      return score;
+    }
+    if (showScoreButtons) {
+      // Yahtzee Bonus
+      if (hasYahtzee) {
+        if (canYahtzeeBonus(values, top)) {
+          return getScoreButton(true, points + 100, false, i);
         }
-        return getScoreButton(showButton(i, values), points, false, i);
       }
-      return null;
-    },
-    [getScoreButton, showScoreButtons, top, values],
-  );
+      return getScoreButton(showButton(i, values), points, false, i);
+    }
+    return null;
+  };
 
-  const generateBottomTable = useCallback((): ReactNode => {
+  const generateBottomTable = (): ReactNode => {
     const hasYahtzee = bottom[5].score > 0;
     return bottom.map((gameScore, i) => {
       const { name, hint, points, score } = gameScore;
@@ -104,7 +101,7 @@ const BottomTable = ({
         </TableRow>
       );
     });
-  }, [bottom, getBottomTableButtons, values]);
+  };
 
   return (
     <>
