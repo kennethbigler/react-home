@@ -30,7 +30,7 @@ describe("main.tsx", () => {
     }));
 
     // Mock the App component
-    vi.doMock("./wrappers/WithTheme", () => ({
+    vi.doMock("./App", () => ({
       default: () => <div data-testid="app">Mocked App</div>,
     }));
 

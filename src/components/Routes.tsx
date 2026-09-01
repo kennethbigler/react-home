@@ -1,11 +1,22 @@
-import { lazy, Suspense, useEffect, useLayoutEffect } from "react";
-import { Routes, Route, useLocation } from "react-router";
-import LoadingSpinner from "./common/loading-spinner";
+import { useEffect, useLayoutEffect } from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router";
+import SectionLayout from "./common/SectionLayout";
+import type { RouteMenuItem } from "./common/menu-types";
+import ResumeMenu from "./resume/Menu";
+import GamesMenu from "./games/Menu";
+import { resumeRoutes } from "./resume/menu-items";
+import { gameRoutes } from "./games/menu-items";
 import { getPageTitle } from "./routeTitleUtils";
 
-// lazy load sub routers
-const ResumeRoutes = lazy(() => import("./resume/Routes"));
-const GameRoutes = lazy(() => import("./games/Routes"));
+/** route "" is the section's index route */
+const renderRoutes = (routes: RouteMenuItem[]) =>
+  routes.map(({ Component, route }) =>
+    route ? (
+      <Route key={route} path={route} element={<Component />} />
+    ) : (
+      <Route key="home" index element={<Component />} />
+    ),
+  );
 
 const RootRoutes = () => {
   const location = useLocation();
@@ -34,12 +45,16 @@ const RootRoutes = () => {
         tabIndex={-1}
         style={{ padding: "1em", paddingTop: "5em" }}
       >
-        <Suspense fallback={<LoadingSpinner />}>
-          <Routes>
-            <Route path="games/*" element={<GameRoutes />} />
-            <Route path="/*" element={<ResumeRoutes />} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route path="games" element={<SectionLayout Menu={GamesMenu} />}>
+            {renderRoutes(gameRoutes)}
+            <Route path="*" element={<Navigate to="/games" replace />} />
+          </Route>
+          <Route path="/" element={<SectionLayout Menu={ResumeMenu} />}>
+            {renderRoutes(resumeRoutes)}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
       </main>
     </>
   );

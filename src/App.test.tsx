@@ -1,5 +1,5 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import App from "./wrappers/WithTheme";
+import App from "./App";
 
 it("renders without crashing", async () => {
   render(<App />);
