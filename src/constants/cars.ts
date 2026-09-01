@@ -1,12 +1,4 @@
-import {
-  amber,
-  indigo,
-  grey,
-  red,
-  yellow,
-  teal,
-  orange,
-} from "@mui/material/colors";
+import { amber, indigo, grey, red, yellow, teal } from "@mui/material/colors";
 import dateObj, { type DateObj } from "../apis/DateHelper";
 
 import prius07 from "../images/cars/07_toyota_prius.webp";
@@ -48,7 +40,7 @@ export interface CarEntry {
 
 // --------------------------------------------------     Past Shared Cars     -------------------------------------------------- //
 
-const irene = {
+const irene: CarEntry = {
   color: grey[400],
   start: dateObj("2010-12"),
   fStart: dateObj("2015-02"),
@@ -57,9 +49,6 @@ const irene = {
   nickname: "Irene",
   title: "Chevrolet Impala LS (2010)",
   inverted: true,
-
-  story:
-    "After selling my first car, my parents purchased a 2010 Chevrolet Impala LS for me to drive. It was a used Hertz rental car.",
   src: impala10,
   transmission: "Automatic",
 
@@ -70,7 +59,7 @@ const irene = {
   zTo60: 8.3,
 };
 
-const tesla = {
+const tesla: CarEntry = {
   color: grey[50],
   start: dateObj("2016-03"),
   kStart: dateObj("2025-01"),
@@ -79,9 +68,6 @@ const tesla = {
   char: "X",
   title: "Tesla Model X 90D (2016)",
   inverted: true,
-
-  story:
-    "My Father got a 2016 Tesla Model X 90D while I was working at Tesla. My dad and I traded cars in January 2025 so I could try all electric and he could try a plug-in hybrid.",
   src: tesla16,
   transmission: "Direct",
 
@@ -94,7 +80,7 @@ const tesla = {
 
 // --------------------------------------------------     Present Shared Cars     -------------------------------------------------- //
 
-const camilla = {
+const camilla: CarEntry = {
   color: yellow[500],
   start: dateObj("2019-01"),
   fStart: dateObj("2021-10"),
@@ -103,9 +89,6 @@ const camilla = {
   nickname: "Camilla",
   title: "Chevrolet Corvette Z06 (2018)",
   inverted: true,
-
-  story:
-    "To replace my Mustang I purchased a 2018 Chevrolet Corvette Z06 3LZ with the Z07 Track Package used from the Ron Fellows Performance Driving School. My parents purchased my car in October 2021 to keep it in the family.",
   src: corvette18,
   transmission: "Manual",
 
@@ -116,7 +99,7 @@ const camilla = {
   zTo60: 3.1,
 };
 
-const cheyenne = {
+const cheyenne: CarEntry = {
   color: grey[50],
   start: dateObj("2023-08"),
   fStart: dateObj("2025-01"),
@@ -125,9 +108,6 @@ const cheyenne = {
   nickname: "Cheyenne",
   title: "Porsche Cayenne E-Hybrid (2019)",
   inverted: true,
-
-  story:
-    "I bought a plug-in 2019 Porsche Cayenne E-Hybrid as a bit of an upgrade to my old Bronco. My dad and I traded cars in January 2025 so I could try all electric and he could try a plug-in hybrid.",
   src: porsche19,
   transmission: "Automatic",
 
@@ -356,11 +336,14 @@ const currentKensCars: CarEntry[] = [
 // --------------------------------------------------     Car Processing     -------------------------------------------------- //
 
 const dateSort = (a: DateObj, b: DateObj) => a.diff(b, "months");
-const carSort = (isK?: boolean) => (a: CarEntry, b: CarEntry) => {
-  return isK
-    ? dateSort(a.fStart || a.end, b.fStart || b.end)
-    : dateSort(a.kStart || a.end, b.kStart || b.end);
-};
+
+/** Sort by family timeline (`fStart`) or Ken timeline (`kStart`). */
+const sortCarsByTimeline =
+  (useFamilyDates: boolean) => (a: CarEntry, b: CarEntry) =>
+    dateSort(
+      useFamilyDates ? a.fStart || a.end : a.kStart || a.end,
+      useFamilyDates ? b.fStart || b.end : b.kStart || b.end,
+    );
 
 export const cars: CarEntry[] = [
   ...pastKensCarsNoRepeats,
@@ -370,15 +353,17 @@ export const cars: CarEntry[] = [
 ].sort((a: CarEntry, b: CarEntry) => dateSort(a.end, b.end));
 
 const pastKensCars = [...pastKensCarsNoRepeats, camilla, cheyenne].sort(
-  carSort(true),
+  sortCarsByTimeline(true),
 );
 const pastFamilyCars = [...pastFamilyCarsNoRepeats, irene, tesla].sort(
-  carSort(),
+  sortCarsByTimeline(false),
 );
 const hideFamilyCars = [...pastKensCars, ...currentKensCars].sort(
-  carSort(true),
+  sortCarsByTimeline(true),
 );
-const hideKenCars = [...pastFamilyCars, ...currentFamilyCars].sort(carSort());
+const hideKenCars = [...pastFamilyCars, ...currentFamilyCars].sort(
+  sortCarsByTimeline(false),
+);
 
 export {
   pastKensCars,
@@ -417,8 +402,16 @@ const smoothData = (cur: number, high: number, low: number): number => {
   return Math.floor(100 * ((cur - low) / (high - low)));
 };
 
+const CAR_METRICS = [
+  "horsepower",
+  "MPG",
+  "torque",
+  "weight",
+  "zTo60",
+] as const satisfies ReadonlyArray<keyof CarEntry>;
+
 const getMinAndMax = (data: CarEntry[]) => {
-  const max = {
+  const min = {
     horsepower: data[0].horsepower,
     MPG: data[0].MPG,
     torque: data[0].torque,
@@ -426,37 +419,19 @@ const getMinAndMax = (data: CarEntry[]) => {
     zTo60: data[0].zTo60,
     powerToWeight: data[0].horsepower / data[0].weight,
   };
-  const min = { ...max };
+  const max = { ...min };
 
-  // find the min and max values in the array
   for (let i = 1; i < data.length; i += 1) {
-    const { horsepower, MPG, torque, weight, zTo60 } = data[i];
-    const powerToWeight = horsepower / weight;
+    const car = data[i];
+    const powerToWeight = car.horsepower / car.weight;
 
-    if (horsepower > max.horsepower) {
-      max.horsepower = horsepower;
-    } else if (horsepower < min.horsepower) {
-      min.horsepower = horsepower;
-    }
-    if (MPG > max.MPG) {
-      max.MPG = MPG;
-    } else if (MPG < min.MPG) {
-      min.MPG = MPG;
-    }
-    if (torque > max.torque) {
-      max.torque = torque;
-    } else if (torque < min.torque) {
-      min.torque = torque;
-    }
-    if (weight > max.weight) {
-      max.weight = weight;
-    } else if (weight < min.weight) {
-      min.weight = weight;
-    }
-    if (zTo60 > max.zTo60) {
-      max.zTo60 = zTo60;
-    } else if (zTo60 < min.zTo60) {
-      min.zTo60 = zTo60;
+    for (const metric of CAR_METRICS) {
+      const value = car[metric];
+      if (value > max[metric]) {
+        max[metric] = value;
+      } else if (value < min[metric]) {
+        min[metric] = value;
+      }
     }
     if (powerToWeight > max.powerToWeight) {
       max.powerToWeight = powerToWeight;
@@ -509,129 +484,3 @@ export const processData = (allData: CarEntry[]): GraphData => {
 
   return ret;
 };
-
-// --------------------------------------------------     Sankey     -------------------------------------------------- //
-
-export const carSankeyNodes = [
-  // column 0: sub-brands (have a parent company)
-  //     US
-  { id: "Chevrolet", color: yellow[700] },
-  { id: "Pontiac", color: red[500] },
-  { id: "Plymouth", color: grey[50] },
-  //     Other
-  { id: "Porsche", color: orange[500] },
-  { id: "Jaguar", color: red[900] },
-
-  // column 1: independent brands (own company) — forced so no link skips column 1
-  //     Japan
-  { id: "Honda", color: red[500], column: 1 },
-  { id: "Toyota", color: indigo[400], column: 1 },
-  //     US
-  { id: "Ford", color: indigo[900], column: 1 },
-  { id: "Rivian", color: amber[500], column: 1 },
-  { id: "Tesla", color: red[500], column: 1 },
-
-  // column 1: parent companies (auto-placed by layout, but logically same column)
-  //     US
-  { id: "GM", color: yellow[700] },
-  { id: "Stellantis", color: grey[50] },
-  //     Other
-  { id: "Volkswagen", color: orange[500] },
-  { id: "TATA", color: indigo[500] },
-
-  // column 2 (forced)
-  { id: "🇯🇵", color: red[500], column: 2 },
-  { id: "🇺🇸", color: indigo[900], column: 2 },
-  { id: "🇩🇪", color: orange[500], column: 2 },
-  { id: "🇬🇧", color: "white", column: 2 },
-
-  // column 3
-  { id: "🏎️", color: grey[200] },
-];
-
-export const familySankeyData = [
-  // level 1
-  //     Japan
-  ["Toyota", "🇯🇵", 1],
-  //     US
-  ["Ford", "🇺🇸", 1],
-  ["Chevrolet", "GM", 3],
-  ["Plymouth", "Stellantis", 1],
-  ["Tesla", "🇺🇸", 1],
-  //     Other
-  ["Porsche", "Volkswagen", 2],
-  ["Jaguar", "TATA", 1],
-
-  // level 2
-  //     US
-  ["GM", "🇺🇸", 3],
-  ["Stellantis", "🇺🇸", 1],
-  //     Other
-  ["Volkswagen", "🇩🇪", 2],
-  ["TATA", "🇬🇧", 1],
-
-  // level 3
-  ["🇯🇵", "🏎️", 1],
-  ["🇺🇸", "🏎️", 6],
-  ["🇩🇪", "🏎️", 2],
-  ["🇬🇧", "🏎️", 1],
-];
-
-export const kenSankeyData = [
-  // level 1
-  //     Japan
-  ["Honda", "🇯🇵", 1],
-  //     US
-  ["Ford", "🇺🇸", 2],
-  ["Rivian", "🇺🇸", 1],
-  ["Tesla", "🇺🇸", 1],
-  ["Chevrolet", "GM", 2],
-  ["Pontiac", "GM", 1],
-  //     Other
-  ["Porsche", "Volkswagen", 1],
-  ["Jaguar", "TATA", 1],
-
-  // level 2
-  //     US
-  ["GM", "🇺🇸", 3],
-  //     Other
-  ["Volkswagen", "🇩🇪", 1],
-  ["TATA", "🇬🇧", 1],
-
-  // level 3
-  ["🇯🇵", "🏎️", 1],
-  ["🇺🇸", "🏎️", 7],
-  ["🇩🇪", "🏎️", 1],
-  ["🇬🇧", "🏎️", 1],
-];
-
-export const carSankeyData = [
-  // level 1
-  //     Japan
-  ["Honda", "🇯🇵", 1],
-  ["Toyota", "🇯🇵", 1],
-  //     US
-  ["Ford", "🇺🇸", 3],
-  ["Rivian", "🇺🇸", 1],
-  ["Tesla", "🇺🇸", 1],
-  ["Chevrolet", "GM", 3],
-  ["Pontiac", "GM", 1],
-  ["Plymouth", "Stellantis", 1],
-  //     Other
-  ["Porsche", "Volkswagen", 2],
-  ["Jaguar", "TATA", 2],
-
-  // level 2
-  //     US
-  ["GM", "🇺🇸", 4],
-  ["Stellantis", "🇺🇸", 1],
-  //     Other
-  ["Volkswagen", "🇩🇪", 2],
-  ["TATA", "🇬🇧", 2],
-
-  // level 3
-  ["🇯🇵", "🏎️", 2],
-  ["🇺🇸", "🏎️", 10],
-  ["🇩🇪", "🏎️", 2],
-  ["🇬🇧", "🏎️", 2],
-];

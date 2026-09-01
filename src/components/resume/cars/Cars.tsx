@@ -56,12 +56,7 @@ const Cars = () => {
         useFStart={hideKen}
         onClick={handleSegmentClick}
       />
-      <CarGraphs
-        active={active}
-        data={data}
-        hideFamily={hideFamily}
-        hideKen={hideKen}
-      />
+      <CarGraphs active={active} data={data} />
       <CarDisplay hideFamily={hideFamily} hideKen={hideKen} />
     </>
   );
