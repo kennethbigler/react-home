@@ -301,32 +301,117 @@ function deriveSituationCore(
         return partners.slice(1);
       return undefined;
     })();
+    // Agreed suit for a Blackwood auction: only bids made BEFORE my 4NT ask
+    // count (partner's 5♦/5♠/6♦... ace and king REPLIES are artificial and
+    // must never be read as the agreed suit). Prefer a suit both partners
+    // bid; recognize partner's splinter (a double jump over my 1-of-a-suit
+    // opening agrees MY suit); otherwise the last suit bid before the ask.
+    const deriveAgreedSuitBefore4NT = (): string | undefined => {
+      const flat4NT: { seat: BiddingPosition; call: string }[] = [];
+      for (const r of completedRounds) {
+        for (const p of POSITIONS) {
+          const b = r[p];
+          if (b !== undefined) flat4NT.push({ seat: p, call: b });
+        }
+      }
+      for (const p of POSITIONS) {
+        if (p < myPosition && currentRound[p] !== undefined)
+          flat4NT.push({ seat: p, call: currentRound[p]! });
+      }
+      let askIdx = -1;
+      for (let i = flat4NT.length - 1; i >= 0; i--) {
+        if (flat4NT[i].seat === myPosition && flat4NT[i].call === "4NT") {
+          askIdx = i;
+          break;
+        }
+      }
+      const beforeAsk = askIdx >= 0 ? flat4NT.slice(0, askIdx) : flat4NT;
+      const ourSuitCalls = beforeAsk.filter(
+        (e) =>
+          (e.seat === myPosition || e.seat === partner) &&
+          isRealBid(e.call) &&
+          !e.call.endsWith("NT"),
+      );
+      if (ourSuitCalls.length === 0) return undefined;
+      const mySuitSet = new Set(
+        ourSuitCalls
+          .filter((e) => e.seat === myPosition)
+          .map((e) => e.call.slice(1)),
+      );
+      const partnerSuitSet = new Set(
+        ourSuitCalls
+          .filter((e) => e.seat === partner)
+          .map((e) => e.call.slice(1)),
+      );
+      for (let i = ourSuitCalls.length - 1; i >= 0; i--) {
+        const sym = ourSuitCalls[i].call.slice(1);
+        if (mySuitSet.has(sym) && partnerSuitSet.has(sym)) return sym;
+      }
+      const myOpeningAg = ourSuitCalls.find((e) => e.seat === myPosition)?.call;
+      const partnerLastAg = [...ourSuitCalls]
+        .reverse()
+        .find((e) => e.seat === partner)?.call;
+      if (
+        myOpeningAg &&
+        /^1[♠♥♦♣]$/.test(myOpeningAg) &&
+        partnerLastAg &&
+        /^[34][♠♥♦♣]$/.test(partnerLastAg) &&
+        partnerLastAg.slice(1) !== myOpeningAg.slice(1)
+      ) {
+        const cheapestAg = BID_ORDER.find(
+          (b, i) =>
+            i > BID_ORDER.indexOf(myOpeningAg) &&
+            b.endsWith(partnerLastAg.slice(1)),
+        );
+        if (
+          cheapestAg &&
+          parseInt(partnerLastAg[0]) - parseInt(cheapestAg[0]) === 2
+        )
+          return myOpeningAg.slice(1);
+      }
+      return ourSuitCalls[ourSuitCalls.length - 1].call.slice(1);
+    };
     if (myLastBid === "4NT") {
-      // Agreed suit: explicit override, else the Jacoby major, else the last
-      // real SUIT bid by our side before the 4NT ask (never a blanket
-      // "spades" default downstream).
-      const ourSuitBids4NT = completedRounds
-        .flatMap((r) => [r[myPosition], r[partner]])
-        .filter((b): b is string => isRealBid(b) && !b.endsWith("NT"));
-      const derivedAgreed4NT = ourSuitBids4NT.length
-        ? ourSuitBids4NT[ourSuitBids4NT.length - 1].slice(1)
-        : undefined;
       return {
         situation: "blackwood-response",
         partnerBid,
         vulnerability: vul,
-        agreedSuit: agreedSuit ?? jacobyAgreedMajor ?? derivedAgreed4NT,
+        agreedSuit:
+          agreedSuit ?? jacobyAgreedMajor ?? deriveAgreedSuitBefore4NT(),
       };
     }
     if (myLastBid === "4♣") {
       // Gerber is only valid in uncontested NT auctions (SAYC).
-      // With competition (rhoBid / lhoBid) or if partner never bid NT, treat 4♣ as natural.
-      const partnerBidNT = completedRounds
-        .map((r) => r[partner])
-        .filter(isRealBid)
-        .some((b) => b.includes("NT"));
+      // Partner's NT bid must have come BEFORE my 4♣ — an NT bid partner made
+      // AFTER it (e.g. a 4NT Blackwood over my 4♣ SPLINTER) can never turn my
+      // 4♣ into Gerber retroactively.
+      const partnerBidNTBefore4C = (() => {
+        const flatG: { seat: BiddingPosition; call: string }[] = [];
+        for (const r of completedRounds) {
+          for (const p of POSITIONS) {
+            const b = r[p];
+            if (b !== undefined) flatG.push({ seat: p, call: b });
+          }
+        }
+        for (const p of POSITIONS) {
+          if (p < myPosition && currentRound[p] !== undefined)
+            flatG.push({ seat: p, call: currentRound[p]! });
+        }
+        let fourCIdx = -1;
+        for (let i = flatG.length - 1; i >= 0; i--) {
+          if (flatG[i].seat === myPosition && flatG[i].call === "4♣") {
+            fourCIdx = i;
+            break;
+          }
+        }
+        const beforeG = fourCIdx >= 0 ? flatG.slice(0, fourCIdx) : flatG;
+        return beforeG.some(
+          (e) =>
+            e.seat === partner && isRealBid(e.call) && e.call.includes("NT"),
+        );
+      })();
       const hasInterference = !!(rhoBid || lhoBid);
-      if (!hasInterference && partnerBidNT) {
+      if (!hasInterference && partnerBidNTBefore4C) {
         return { situation: "gerber-response", partnerBid, vulnerability: vul };
       }
       // Otherwise fall through to regular rebid handling
@@ -335,13 +420,6 @@ function deriveSituationCore(
       // Could be blackwood-kings OR grand-slam-force based on whether prior bid was 4NT
       const priorMyBid = myBids[myBids.length - 2];
       if (priorMyBid === "4NT") {
-        // Agreed suit: the last real SUIT bid by our side before the 4NT ask.
-        const ourSuitBids = completedRounds
-          .flatMap((r) => [r[myPosition], r[partner]])
-          .filter((b): b is string => isRealBid(b) && !b.endsWith("NT"));
-        const derivedAgreed = ourSuitBids.length
-          ? ourSuitBids[ourSuitBids.length - 1].slice(1)
-          : undefined;
         // Partner's ACE response was their real bid before the current kings
         // reply (typically last completed round).
         const partnerReal = completedRounds
@@ -354,7 +432,8 @@ function deriveSituationCore(
           situation: "blackwood-kings",
           partnerBid,
           vulnerability: vul,
-          agreedSuit: agreedSuit ?? jacobyAgreedMajor ?? derivedAgreed,
+          agreedSuit:
+            agreedSuit ?? jacobyAgreedMajor ?? deriveAgreedSuitBefore4NT(),
           partnerAceResponse,
         };
       }
@@ -747,7 +826,11 @@ function deriveSituationCore(
       // one seat before mine, and prevPartnerResponse misses it entirely.
       partnerBid === "2NT" &&
       (myLastBid === "1♥" || myLastBid === "1♠") &&
-      iOpenedTheAuction
+      iOpenedTheAuction &&
+      // The 1♥/1♠ must be my OPENING (my only real bid), not a second-suit
+      // rebid — after e.g. 1♦-1♥-1♠, partner's 2NT is a natural invitation,
+      // never Jacoby.
+      myBids.length === 1
     ) {
       return {
         situation: "jacoby-2nt-opener",

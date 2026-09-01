@@ -738,9 +738,12 @@ export function getBlackwoodFollowUp(
   const analysis = analyzeHand(hand);
   const aceCount = decodeAceCount(partnerReply, false);
 
-  if (hasVoid(hand)) {
-    // You bid Blackwood but hold a void — partner can't tell which aces you're actually missing.
-    // Sign off conservatively at 5 of the agreed suit.
+  // You bid Blackwood holding a void and your ace count is UNKNOWN — partner
+  // can't tell which aces are truly missing and neither can this advisor:
+  // sign off conservatively. (With a known ace count the ace-aware logic
+  // below still decides — a void never argues for stopping when the
+  // partnership holds all the aces.)
+  if (hasVoid(hand) && hand.aces === undefined) {
     const signOff = `5${agreedSuit?.includes("♥") ? "♥" : agreedSuit?.includes("♦") ? "♦" : agreedSuit?.includes("♣") ? "♣" : "♠"}`;
     // Partner's answer may already BE the signoff spot — pass, never re-bid it.
     if (BID_ORDER.indexOf(signOff) <= BID_ORDER.indexOf(partnerReply)) {
@@ -1074,15 +1077,34 @@ export function getKingsFollowUp(
   ): BidRecommendation | null => {
     const signOff = `${level}${suitSym}`;
     if (BID_ORDER.indexOf(signOff) <= BID_ORDER.indexOf(partnerReply)) {
-      return {
-        bid: "Pass",
-        category: `Kings Follow-Up: Pass — Partner Already at ${partnerReply}`,
-        reasoning: `Partner's ${partnerReply} already reaches or exceeds your ${signOff} sign-off${reasoningSuffix}. Pass and play it.`,
-        handAnalysis: analysis,
-        whatYourBidTellsPartner: categorySuffix,
-        expectedResponses: [],
-        confidence: "high",
-      };
+      // Pass ONLY when partner's reply is actually in the agreed suit — an
+      // ARTIFICIAL kings reply (e.g. 6♦ with spades agreed) is never a
+      // playable resting spot.
+      if (partnerReply.endsWith(suitSym)) {
+        return {
+          bid: "Pass",
+          category: `Kings Follow-Up: Pass — Partner Already at ${partnerReply}`,
+          reasoning: `Partner's ${partnerReply} already reaches or exceeds your ${signOff} sign-off${reasoningSuffix} — and it is in the agreed suit. Pass and play it.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: categorySuffix,
+          expectedResponses: [],
+          confidence: "high",
+        };
+      }
+      // The artificial reply overshot the sign-off in the agreed suit. You
+      // only ask for kings holding all four aces, so 6NT is a safe harbor.
+      if (level === 6) {
+        return {
+          bid: "6NT",
+          category: "Kings Follow-Up: 6NT — Reply Overshot the Agreed Suit",
+          reasoning: `Partner's artificial ${partnerReply} kings reply is higher than your intended 6${suitSym} sign-off${reasoningSuffix}, and it is NOT a playable strain. With all four aces held (the requirement for the 5NT king ask), settle in 6NT.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: categorySuffix,
+          expectedResponses: [],
+          confidence: "medium",
+        };
+      }
+      return null;
     }
     return null;
   };

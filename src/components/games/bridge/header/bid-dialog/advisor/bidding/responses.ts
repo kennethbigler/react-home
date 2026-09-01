@@ -1161,7 +1161,13 @@ export function getResponseToSuit(
     if (
       partnerBid === "1♠" &&
       hand.hcp >= 10 &&
-      (hand.hearts >= 5 || (hand.hearts === 4 && hand.spades < 3))
+      (hand.hearts >= 5 ||
+        // A bare 4-card heart 2/1 is a last resort: never prefer the 4-card
+        // fragment over a genuine 5+ card minor — bid the real suit instead.
+        (hand.hearts === 4 &&
+          hand.spades < 3 &&
+          hand.clubs <= hand.hearts &&
+          hand.diamonds <= hand.hearts))
     ) {
       return {
         bid: "2♥",
@@ -1287,6 +1293,26 @@ export function getResponseToSuit(
           confidence: "high",
         };
       }
+      // 13-16 balanced WITH a real 5-card suit: SAYC prefers the natural
+      // two-over-one — bidding the suit keeps every game (and slam) in the
+      // picture and describes the hand; a direct 3NT buries a 5-card suit.
+      if ((hand[minor as keyof Hand] as number) >= 5) {
+        return {
+          bid: `2${suitSymbol(minor)}`,
+          category: "Two-Over-One (Game Values, 5-Card Suit)",
+          reasoning: `With ${tp} TP and a 5-card ${minor} suit, bid a forcing 2${suitSymbol(minor)} rather than jumping straight to 3NT — the two-over-one shows 10+ and your real suit, and you can still offer 3NT next turn. A direct 3NT would bury the ${minor} suit and pre-judge the final contract.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: `10+ pts with a real ${minor} suit — forcing one round; game values will show next turn.`,
+          expectedResponses: [
+            {
+              partnerBid: "Rebid",
+              meaning:
+                "Describes shape/strength; you continue toward the best game",
+            },
+          ],
+          confidence: "high",
+        };
+      }
       // 13-16 balanced, no fit: 3NT is the natural game (2NT here = Jacoby).
       return {
         bid: "3NT",
@@ -1323,6 +1349,39 @@ export function getResponseToSuit(
             {
               partnerBid: "Rebid",
               meaning: "Describes shape/strength; you drive on",
+            },
+          ],
+          confidence: "high",
+        };
+      }
+    }
+    // A 5+ card suit deserves a natural (forcing) suit response before any
+    // direct NT ladder bid — 1♦ over 1♣, or a 2-over-1 — keeping every game
+    // and slam in the picture instead of burying the suit.
+    {
+      const fiveSuitResp = (
+        ["diamonds", "clubs", "hearts", "spades"] as const
+      ).find(
+        (sn) => sn !== partnerSuit && (hand[sn as keyof Hand] as number) >= 5,
+      );
+      if (tp >= 13 && fiveSuitResp) {
+        const fiveRespBid = `${
+          ["hearts", "spades"].includes(fiveSuitResp) ||
+          (fiveSuitResp === "diamonds" && partnerSuit === "clubs")
+            ? 1
+            : 2
+        }${suitSymbol(fiveSuitResp)}`;
+        return {
+          bid: fiveRespBid,
+          category: "New Suit First (Game Values, 5-Card Suit)",
+          reasoning: `With ${tp} TP and a 5-card ${fiveSuitResp} suit, bid ${fiveRespBid} — natural and forcing — rather than jumping straight to notrump. Showing the real suit keeps every game (and slam) in the picture; the NT games can still be reached next turn.`,
+          handAnalysis: analysis,
+          whatYourBidTellsPartner: `${fiveRespBid[0] === "1" ? "6+" : "10+"} pts with a real ${fiveSuitResp} suit — forcing one round; game values will show next turn.`,
+          expectedResponses: [
+            {
+              partnerBid: "Rebid",
+              meaning:
+                "Describes shape/strength; you continue toward the best game",
             },
           ],
           confidence: "high",
@@ -1388,7 +1447,13 @@ export function getResponseToSuit(
     if (
       partnerBid === "1♠" &&
       hand.hcp >= 10 &&
-      (hand.hearts >= 5 || (hand.hearts === 4 && hand.spades < 3))
+      (hand.hearts >= 5 ||
+        // A bare 4-card heart 2/1 is a last resort: never prefer the 4-card
+        // fragment over a genuine 5+ card minor — bid the real suit instead.
+        (hand.hearts === 4 &&
+          hand.spades < 3 &&
+          hand.clubs <= hand.hearts &&
+          hand.diamonds <= hand.hearts))
     ) {
       return {
         bid: "2♥",

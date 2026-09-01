@@ -138,12 +138,18 @@ export function getResponseToSimpleOC(
     const lottSafeLevel = Math.min(4, Math.max(2, totalTrumps - 6));
 
     if (partnerLevel >= lottSafeLevel) {
+      // The opponents may have already outbid partner's overcall — then this
+      // pass is a decision to DEFEND, not to play partner's contract.
+      const oppsOutbidPartner =
+        !!opponentBid &&
+        isRealBid(opponentBid) &&
+        BID_ORDER.indexOf(opponentBid) > BID_ORDER.indexOf(partnerBid);
       return {
         bid: "Pass",
         category: `Pass (Already At Safe Level — ${mySupport}-card support, 0-9 pts)`,
-        reasoning: `Partner overcalled at the ${partnerLevel}-level.  With ${mySupport}-card support (est. ${totalTrumps} total trumps), the Law of Total Tricks says your side is safe at the ${lottSafeLevel}-level — partner is already there.  Raising further would commit to more tricks than your trump fit can usually take.  Pass and let partner play the contract.`,
+        reasoning: `Partner overcalled at the ${partnerLevel}-level.  With ${mySupport}-card support (est. ${totalTrumps} total trumps), the Law of Total Tricks says your side is safe at the ${lottSafeLevel}-level — partner already reached it.  Bidding on would commit to more tricks than your trump fit can usually take.  ${oppsOutbidPartner ? `The opponents' ${opponentBid} now holds the auction — pass and defend.` : "Pass and let partner play the contract."}`,
         handAnalysis: analysis,
-        whatYourBidTellsPartner: `${mySupport}-card support, 0-9 pts — accepting partner's overcall as the final contract.`,
+        whatYourBidTellsPartner: `${mySupport}-card support, 0-9 pts — ${oppsOutbidPartner ? "nothing above the Law's safe level; defending." : "accepting partner's overcall as the final contract."}`,
         expectedResponses: [],
         confidence: "high",
       };
@@ -917,6 +923,49 @@ export function getResponseToDouble(
     };
   }
 
+  // ── PENALTY PASS of the 1-level takeout double: with a genuine trump STACK
+  // in their suit (5+ cards headed by top honors) and real values, the best
+  // score is usually defending 1-of-their-suit DOUBLED — convert the takeout
+  // double by passing. This is the one hand type that may pass partner's
+  // takeout double.
+  {
+    const oppSuitNamePP = opponentBid.includes("♠")
+      ? "spades"
+      : opponentBid.includes("♥")
+        ? "hearts"
+        : opponentBid.includes("♦")
+          ? "diamonds"
+          : opponentBid.includes("♣")
+            ? "clubs"
+            : undefined;
+    const myOppLenPP = oppSuitNamePP
+      ? (hand[oppSuitNamePP as keyof Hand] as number)
+      : 0;
+    const oppSuitIsMyLongest =
+      !!oppSuitNamePP &&
+      myOppLenPP >=
+        Math.max(hand.spades, hand.hearts, hand.diamonds, hand.clubs);
+    if (
+      parseInt(opponentBid[0]) === 1 &&
+      myOppLenPP >= 5 &&
+      oppSuitIsMyLongest &&
+      hand.goodSuitQuality === true &&
+      hcp >= 8
+    ) {
+      return {
+        bid: "Pass",
+        category: "Penalty Pass — Convert the Takeout Double",
+        reasoning: `Partner's double asked you to bid — but with ${myOppLenPP} strong ${oppSuitNamePP} (their trump suit!) and ${hcp} HCP, the best contract is ${opponentBid} DOUBLED, defended. Pass to convert the takeout double to penalty: declarer's trumps sit badly and partner's double promises real values (near-opening strength, a king lighter if balancing) to supply the rest. Lead a TRUMP to cut their ruffs.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `A stack in their ${oppSuitNamePP} — converting your double to penalty; defend and lead trumps.`,
+        expectedResponses: [
+          { partnerBid: "Pass", meaning: "Defending the doubled contract" },
+        ],
+        confidence: "high",
+      };
+    }
+  }
+
   if (analysis.isBalanced && hcp >= 6 && hcp <= 10 && clears("1NT")) {
     if (hand.hasStopperInOpponentSuit === false) {
       // No stopper — fall through to bid longest suit
@@ -1029,7 +1078,14 @@ export function getResponseToDouble(
     const gameLevel =
       longestName === "hearts" || longestName === "spades" ? 4 : 5;
     const jumpLevel = minLevel + 1;
-    if (jumpLevel <= gameLevel) {
+    // The invitational jump must leave room: jumping past 3NT into a 4-level
+    // MINOR (e.g. 4♦ over a double of 2♠) commits to ten tricks on
+    // invitational values — there the cheapest bid is enough (the level is
+    // already high, and partner's double may be a lighter balancing action).
+    const jumpIsSane =
+      jumpLevel <= gameLevel &&
+      (longestName === "hearts" || longestName === "spades" || jumpLevel <= 3);
+    if (jumpIsSane) {
       return {
         bid: `${jumpLevel}${sym}`,
         category: "Jump Advance of the Double (9-11, Invitational)",
@@ -1039,6 +1095,20 @@ export function getResponseToDouble(
         expectedResponses: [
           { partnerBid: "Game", meaning: "Extras — accepting the invite" },
           { partnerBid: "Pass", meaning: "Minimum double" },
+        ],
+        confidence: "high",
+      };
+    }
+    if (minLevel <= 3) {
+      return {
+        bid: minSuitBid,
+        category: "Best Suit at the Cheapest Level (High Auction, 9-11)",
+        reasoning: `With ${hcp} HCP opposite partner's takeout double you have invitational values, but the auction is already high — an invitational JUMP here would land at the ${minLevel + 1}-level in a minor, committing to more tricks than the values justify. Bid ${minSuitBid}; partner (who may also be a king lighter in the balancing seat) can raise with extras.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `A real ${longestName} suit with useful values — the level was forced, so I may hold up to invitational strength.`,
+        expectedResponses: [
+          { partnerBid: "Pass", meaning: "Minimum double" },
+          { partnerBid: "Raise", meaning: "Extras — inviting on" },
         ],
         confidence: "high",
       };

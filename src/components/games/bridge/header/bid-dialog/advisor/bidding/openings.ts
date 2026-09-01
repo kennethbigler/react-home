@@ -309,8 +309,34 @@ export function getOpeningBid(
 
   // Unbalanced opening bids (13-21 TP)
   if (tp >= 13 && tp <= 21) {
-    // 5+ card major
+    // 5+ card major — but SAYC opens the LONGEST suit first: a minor strictly
+    // longer than the best major (e.g. 5 spades with 7 clubs) is opened ahead
+    // of it; the major is shown on later rounds.
     const major = bestMajor(hand);
+    const majorLen = major ? (hand[major as keyof Hand] as number) : 0;
+    const longerMinorLen = Math.max(hand.diamonds, hand.clubs);
+    if (major && longerMinorLen > majorLen) {
+      const longMinorName = hand.clubs > hand.diamonds ? "clubs" : "diamonds";
+      return {
+        bid: suitBidLevel(longMinorName, 1),
+        category: `Opening 1${suitSymbol(longMinorName)} (Longest Suit First)`,
+        reasoning: `You hold a 5+ card ${major} suit, but your ${longerMinorLen}-card ${longMinorName} suit is LONGER — SAYC opens the longest suit first. Open 1${suitSymbol(longMinorName)} and show the ${major} on your next turn; opening the shorter major would misdescribe the hand's shape.`,
+        handAnalysis: analysis,
+        whatYourBidTellsPartner: `12-21 total pts with a real ${longMinorName} suit. The ${major} suit will come out on the next bid.`,
+        expectedResponses: [
+          { partnerBid: "Pass", meaning: "0-5 pts — too weak to respond" },
+          {
+            partnerBid: "1 of new suit",
+            meaning: "6+ pts, 4+ cards — natural, one-round force",
+          },
+          {
+            partnerBid: "1NT",
+            meaning: "6-10 pts, no suit to show at the 1-level",
+          },
+        ],
+        confidence: "high",
+      };
+    }
     if (major) {
       return {
         bid: suitBidLevel(major, 1),
