@@ -198,8 +198,4 @@ describe("games | bridge | Overleaf", () => {
     expect(screen.getByText("37+")).toBeInTheDocument();
     expect(screen.getByText("7NT")).toBeInTheDocument();
   });
-
-  it("has proper displayName", () => {
-    expect(Overleaf.displayName).toBe("Overleaf");
-  });
 });

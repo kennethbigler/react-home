@@ -10,7 +10,7 @@ const defaultProps = {
   imgSrc: "/monaco.avif",
   numLaps: 78,
   raceLen: 260,
-  onClick: () => () => {},
+  onToggle: () => {},
 };
 
 describe("resume | f1 | Track", () => {
@@ -29,17 +29,9 @@ describe("resume | f1 | Track", () => {
     expect(screen.getByText("Circuit de Monaco")).toBeInTheDocument();
   });
 
-  it("calls onClick with circuit name when the track image button is clicked", () => {
-    const onClick = vi.fn((circuitName: string) => {
-      void circuitName;
-      return () => {};
-    });
-    render(
-      <Track
-        {...defaultProps}
-        onClick={onClick as (n: string) => () => void}
-      />,
-    );
+  it("calls onToggle with circuit name when the track image button is clicked", () => {
+    const onToggle = vi.fn();
+    render(<Track {...defaultProps} onToggle={onToggle} />);
 
     fireEvent.click(
       screen
@@ -47,7 +39,7 @@ describe("resume | f1 | Track", () => {
         .closest("button")!,
     );
 
-    expect(onClick).toHaveBeenCalledWith("Monaco");
+    expect(onToggle).toHaveBeenCalledWith("Monaco");
   });
 
   it("renders all content when skipped is true", () => {

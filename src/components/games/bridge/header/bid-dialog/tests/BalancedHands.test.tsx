@@ -170,8 +170,4 @@ describe("games | bridge | BalancedHands", () => {
     const rows = screen.getAllByRole("row");
     expect(rows.length).toBeGreaterThan(10);
   });
-
-  it("has proper displayName", () => {
-    expect(BalancedHands.displayName).toBe("BalancedHands");
-  });
 });

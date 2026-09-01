@@ -3,21 +3,21 @@ import { Button, ButtonGroup } from "@mui/material";
 interface CarChartControlsProps {
   hideFamily: boolean;
   hideKen: boolean;
-  onClick: (isKen: boolean) => () => void;
+  onHideClick: (isKen: boolean) => void;
 }
 
 const CarChartControls = memo(
-  ({ onClick, hideFamily, hideKen }: CarChartControlsProps) => (
+  ({ onHideClick, hideFamily, hideKen }: CarChartControlsProps) => (
     <ButtonGroup sx={{ marginTop: 3 }}>
       <Button
-        onClick={onClick(false)}
+        onClick={() => onHideClick(false)}
         variant={hideFamily ? "contained" : "outlined"}
         color="error"
       >
         Hide Family Cars
       </Button>
       <Button
-        onClick={onClick(true)}
+        onClick={() => onHideClick(true)}
         variant={hideKen ? "contained" : "outlined"}
         color="error"
       >

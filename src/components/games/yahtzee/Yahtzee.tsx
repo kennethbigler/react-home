@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo } from "react";
 import { useAtomValue } from "jotai";
 import ScoreTable from "./score-table/ScoreTable";
 import { ADD_DICE, type BottomGameScore } from "./types";
@@ -89,27 +89,24 @@ const Yahtzee = memo(() => {
     diceClick(newValues, newSaved);
   };
 
-  const getButtonText = useCallback(
-    (rollNum: Dice): string => {
-      if (finish) {
-        return "New Game";
-      }
+  const getButtonText = (rollNum: Dice): string => {
+    if (finish) {
+      return "New Game";
+    }
 
-      switch (rollNum) {
-        case 0:
-          return "First Roll";
-        case 1:
-          return "Second Roll";
-        case 2:
-          return "Last Roll";
-        case 3:
-          return "Score";
-        default:
-          return "Error";
-      }
-    },
-    [finish],
-  );
+    switch (rollNum) {
+      case 0:
+        return "First Roll";
+      case 1:
+        return "Second Roll";
+      case 2:
+        return "Last Roll";
+      case 3:
+        return "Score";
+      default:
+        return "Error";
+    }
+  };
 
   const handleTopScore = (points: number, i: number): void => {
     const newTopScores = [...topScores];

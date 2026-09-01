@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import {
   Button,
@@ -21,7 +21,7 @@ import bridgeAtom, {
 } from "@/jotai/bridge-atom";
 import ScoreSummary from "./ScoreSummary";
 
-const ScoreDialog = memo(() => {
+const ScoreDialog = () => {
   const [
     { aboveScores, weBelow, theyBelow, weRubbers, theyRubbers, bids, ...other },
     setBridgeState,
@@ -269,8 +269,6 @@ const ScoreDialog = memo(() => {
       </Dialog>
     </>
   );
-});
-
-ScoreDialog.displayName = "ScoreDialog";
+};
 
 export default ScoreDialog;

@@ -156,8 +156,4 @@ describe("games | bridge | Overcalls", () => {
 
     expect(screen.getByText(/generally pass/i)).toBeInTheDocument();
   });
-
-  it("has proper displayName", () => {
-    expect(Overcalls.displayName).toBe("Overcalls");
-  });
 });

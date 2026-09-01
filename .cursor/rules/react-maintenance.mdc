@@ -28,3 +28,27 @@ alwaysApply: false
   broad public surface.
 - Run the knip check after removals and export cleanup so stale files,
   unused exports, and dependency drift are caught before finishing.
+- Don't add `useMemo`/`useCallback`/`React.memo` by default. Each one has
+  comparison overhead, so only keep it when it earns that cost:
+  - `React.memo` is useless on a component with zero props, or one whose
+    props are recreated fresh every render by the parent (inline object,
+    array, or function literals; curried handlers like
+    `onClick={handleClick(id)}`) — the identity check always fails, so the
+    memo never bails out. Either give the parent a `useCallback`/stable
+    reference, or drop the `memo`.
+  - `useCallback`/`useMemo` only pay off when the result is handed to a
+    `memo`-wrapped consumer (or used as a dependency elsewhere) AND that
+    value would otherwise be expensive to recompute or would break the
+    child's memoization. If the function/value is only called inline in
+    the same render, or its only consumer isn't memoized, drop the hook.
+  - Don't wrap an already-stable reference (a module-level constant, an
+    imported function) in `useMemo`/`useCallback` — it adds a dependency
+    check for a value that never changes.
+  - Don't memoize trivially cheap computations (simple arithmetic, string
+    concatenation, small object literals) — the memo's own comparison
+    costs more than just recomputing.
+  - When memoizing a callback for a memoized child, make sure every
+    dependency is itself stable. A `useCallback` that returns a curried
+    closure (`useCallback((id) => () => {...}, [...])`) still produces a
+    new inner function per render — the outer memoization doesn't help
+    the child that receives the curried result.

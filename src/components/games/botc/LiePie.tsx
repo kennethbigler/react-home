@@ -84,8 +84,6 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
     muiTheme.palette.success.main,
   ]);
 
-  const options = useMemo<Highcharts.Options>(() => staticOptions, []);
-
   const lieTooltipFormatter: Highcharts.TooltipFormatterCallbackFunction =
     function () {
       const { point } = this as unknown as {
@@ -147,7 +145,7 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
       )}
       <Grid size={{ xs: 12, sm: 12, md: showDemonSelection ? 6 : 12 }}>
         <figure style={{ margin: 0, width: "100%" }}>
-          <Chart highcharts={Highcharts} options={options}>
+          <Chart highcharts={Highcharts} options={staticOptions}>
             <Accessibility enabled={true} />
             <Credits enabled={false} />
             <Tooltip useHTML={true} formatter={lieTooltipFormatter} />

@@ -1,4 +1,4 @@
-import { memo, useState, useCallback, type SyntheticEvent } from "react";
+import { memo, useState, type SyntheticEvent } from "react";
 import { type Role, villagers, outsiders, wolves } from "@/constants/werewolf";
 import WerewolfPanel from "./WerewolfPanel";
 import ExpandableCard from "@/components/common/expandable-card";
@@ -11,13 +11,11 @@ const Werewolf = memo(() => {
   const [vampireCount, setVampireCount] = useState(0);
   const [wolfCount, setWolfCount] = useState(0);
 
-  const handleChange = useCallback(
+  const handleChange =
     (panel: string) =>
-      (_event: SyntheticEvent<Element, Event>, exp?: boolean): void => {
-        setExpanded(exp ? panel : "");
-      },
-    [setExpanded],
-  );
+    (_event: SyntheticEvent<Element, Event>, exp?: boolean): void => {
+      setExpanded(exp ? panel : "");
+    };
 
   const handleStar = (value: number, count: number, role: string) => {
     switch (role) {

@@ -1,10 +1,4 @@
-import {
-  useState,
-  type SyntheticEvent,
-  useCallback,
-  memo,
-  type ReactElement,
-} from "react";
+import { useState, type SyntheticEvent, memo, type ReactElement } from "react";
 import roles, { CASINO, Importance, intro } from "@/constants/murder";
 import MurderMysteryPanel from "./MurderMysteryPanel";
 import ExpandableCard from "@/components/common/expandable-card";
@@ -13,13 +7,11 @@ import { Typography } from "@mui/material";
 const MurderMystery = memo(() => {
   const [expanded, setExpanded] = useState("");
 
-  const handleChange = useCallback(
+  const handleChange =
     (panel: string) =>
-      (_event: SyntheticEvent<Element, Event>, exp?: boolean): void => {
-        setExpanded(exp ? panel : "");
-      },
-    [setExpanded],
-  );
+    (_event: SyntheticEvent<Element, Event>, exp?: boolean): void => {
+      setExpanded(exp ? panel : "");
+    };
 
   const requiredRoles: ReactElement[] = [];
   const recRoles: ReactElement[] = [];
