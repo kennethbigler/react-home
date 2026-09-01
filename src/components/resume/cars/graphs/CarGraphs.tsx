@@ -11,11 +11,9 @@ import { Grid } from "@mui/material";
 interface CarGraphsProps {
   active: CarEntry;
   data: CarEntry[];
-  hideFamily: boolean;
-  hideKen: boolean;
 }
 
-const CarGraphs = ({ data, active, hideFamily, hideKen }: CarGraphsProps) => {
+const CarGraphs = ({ data, active }: CarGraphsProps) => {
   const theme = useAtomValue(themeAtom);
   const color = theme.mode === "light" ? "black" : "white";
 
@@ -33,11 +31,7 @@ const CarGraphs = ({ data, active, hideFamily, hideKen }: CarGraphsProps) => {
           powerToWeight={active.horsepower / active.weight}
         />
         <Grid size={{ xs: 12, md: 6 }}>
-          <CarSankeyGraph
-            hideKen={hideKen}
-            hideFamily={hideFamily}
-            color={color}
-          />
+          <CarSankeyGraph color={color} data={data} />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <CarChart data={data} color={color} />

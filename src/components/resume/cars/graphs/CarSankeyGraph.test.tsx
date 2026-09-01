@@ -2,51 +2,60 @@ import "../../../common/highcharts/tests/highchartsMocks";
 import { render, screen } from "@testing-library/react";
 import CarSankeyGraph from "./CarSankeyGraph";
 import {
-  carSankeyData,
-  familySankeyData,
-  kenSankeyData,
-} from "@/constants/cars";
+  buildCarSankeyFromCars,
+  buildCarSankeyNodes,
+} from "@/constants/car-brands";
+import { cars, hideFamilyCars, hideKenCars } from "@/constants/cars";
 
 describe("resume | cars | graphs | CarSankeyGraph", () => {
   it("renders the sankey chart title", () => {
-    render(<CarSankeyGraph color="white" hideKen={false} hideFamily={false} />);
+    render(<CarSankeyGraph color="white" data={cars} />);
 
     expect(screen.getByText("Cars")).toBeInTheDocument();
   });
 
   it("uses all car flows by default", () => {
-    render(<CarSankeyGraph color="white" hideKen={false} hideFamily={false} />);
+    render(<CarSankeyGraph color="white" data={cars} />);
 
     expect(screen.getByTestId("highcharts-series")).toHaveAttribute(
       "data-length",
-      String(carSankeyData.length),
+      String(buildCarSankeyFromCars(cars).length),
     );
   });
 
   it("uses family-only flows when Ken's cars are hidden", () => {
-    render(<CarSankeyGraph color="white" hideKen={true} hideFamily={false} />);
+    render(<CarSankeyGraph color="white" data={hideKenCars} />);
 
     expect(screen.getByTestId("highcharts-series")).toHaveAttribute(
       "data-length",
-      String(familySankeyData.length),
+      String(buildCarSankeyFromCars(hideKenCars).length),
     );
   });
 
   it("uses Ken-only flows when family cars are hidden", () => {
-    render(<CarSankeyGraph color="white" hideKen={false} hideFamily={true} />);
+    render(<CarSankeyGraph color="white" data={hideFamilyCars} />);
 
     expect(screen.getByTestId("highcharts-series")).toHaveAttribute(
       "data-length",
-      String(kenSankeyData.length),
+      String(buildCarSankeyFromCars(hideFamilyCars).length),
     );
   });
 
-  it("renders no flows when both groups are hidden", () => {
-    render(<CarSankeyGraph color="white" hideKen={true} hideFamily={true} />);
+  it("renders no flows when no cars are shown", () => {
+    render(<CarSankeyGraph color="white" data={[]} />);
 
     expect(screen.getByTestId("highcharts-series")).toHaveAttribute(
       "data-length",
       "0",
+    );
+  });
+
+  it("uses the static brand-registry node layout", () => {
+    render(<CarSankeyGraph color="white" data={cars} />);
+
+    expect(screen.getByTestId("highcharts-series")).toBeInTheDocument();
+    expect(buildCarSankeyNodes().some((node) => node.id === "Porsche")).toBe(
+      true,
     );
   });
 });

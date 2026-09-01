@@ -1,18 +1,16 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { Chart, Credits, Series, Title, XAxis, YAxis } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "@/components/common/highcharts/sankeyHighcharts";
+import type { CarEntry } from "@/constants/cars";
 import {
-  carSankeyNodes,
-  carSankeyData,
-  kenSankeyData,
-  familySankeyData,
-} from "@/constants/cars";
+  buildCarSankeyFromCars,
+  buildCarSankeyNodes,
+} from "@/constants/car-brands";
 
 interface CarSankeyGraphProps {
   color: string;
-  hideKen: boolean;
-  hideFamily: boolean;
+  data: CarEntry[];
 }
 
 const options: Highcharts.Options = {
@@ -27,13 +25,13 @@ const options: Highcharts.Options = {
       // Nodes
       nodeWidth: 70,
       nodePadding: 14,
-      nodeAlignment: "center",
+      nodeAlignment: "top",
       borderWidth: 0,
 
       // Links
       linkColorMode: "gradient",
       linkOpacity: 0.45,
-      curveFactor: 0.65,
+      curveFactor: 0.85,
       minLinkWidth: 2, // Flows of 1 car would otherwise be a hairline
 
       // Node labels
@@ -74,46 +72,39 @@ const options: Highcharts.Options = {
   },
 };
 
-const CarSankeyGraph = memo(
-  ({ color, hideKen, hideFamily }: CarSankeyGraphProps) => {
-    let data = carSankeyData;
-    if (hideKen && hideFamily) {
-      data = [];
-    } else if (hideKen) {
-      data = familySankeyData;
-    } else if (hideFamily) {
-      data = kenSankeyData;
-    }
+const carSankeyNodes = buildCarSankeyNodes();
 
-    return (
-      <figure style={{ margin: 0, width: "100%" }}>
-        <Chart highcharts={Highcharts} options={options}>
-          <Accessibility
-            enabled={true}
-            point={{
-              // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
-              valueDescriptionFormat:
-                "{point.to} has {point.weight} from {point.from}.",
-            }}
-          />
-          <Credits enabled={false} />
-          <Title style={{ color }}>Cars</Title>
-          <XAxis visible={false} />
-          <YAxis visible={false} />
-          <Series
-            options={{
-              name: "Cars",
-              keys: ["from", "to", "weight"],
-              nodes: carSankeyNodes,
-            }}
-            data={data}
-            type="sankey"
-          />
-        </Chart>
-      </figure>
-    );
-  },
-);
+const CarSankeyGraph = memo(({ color, data }: CarSankeyGraphProps) => {
+  const sankeyData = useMemo(() => buildCarSankeyFromCars(data), [data]);
+
+  return (
+    <figure style={{ margin: 0, width: "100%" }}>
+      <Chart highcharts={Highcharts} options={options}>
+        <Accessibility
+          enabled={true}
+          point={{
+            // DEFAULT: {highcharts-id}, from: {point.from}, to: {point.to}, weight: {point.weight}.
+            valueDescriptionFormat:
+              "{point.to} has {point.weight} from {point.from}.",
+          }}
+        />
+        <Credits enabled={false} />
+        <Title style={{ color }}>Cars</Title>
+        <XAxis visible={false} />
+        <YAxis visible={false} />
+        <Series
+          options={{
+            name: "Cars",
+            keys: ["from", "to", "weight"],
+            nodes: carSankeyNodes,
+          }}
+          data={sankeyData}
+          type="sankey"
+        />
+      </Chart>
+    </figure>
+  );
+});
 
 CarSankeyGraph.displayName = "CarSankeyGraph";
 
