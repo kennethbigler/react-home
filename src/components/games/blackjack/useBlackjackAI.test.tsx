@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { act } from "@testing-library/react";
+import { act, waitFor } from "@testing-library/react";
 import { renderHookWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 import useBlackjackAI from "./useBlackjackAI";
 import blackjackState, { GameFunctions } from "@/jotai/blackjack-atom";
@@ -776,7 +776,10 @@ describe("useBlackjackAI", () => {
 
       await act(async () => {
         result.current.handleClick(GameFunctions.FINISH_BETTING);
-        await Promise.resolve();
+      });
+
+      await waitFor(() => {
+        expect(result.current.players[0].hands[0].cards).toHaveLength(2);
       });
 
       dealQueue = [[makeCard(4)]];
@@ -890,7 +893,10 @@ describe("useBlackjackAI", () => {
 
       await act(async () => {
         result.current.handleClick(GameFunctions.FINISH_BETTING);
-        await Promise.resolve();
+      });
+
+      await waitFor(() => {
+        expect(result.current.players[0].hands[0].cards).toHaveLength(2);
       });
 
       dealQueue = [[makeCard(3), makeCard(4)]];

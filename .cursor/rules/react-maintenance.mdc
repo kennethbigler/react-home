@@ -39,14 +39,17 @@ alwaysApply: false
     curried handlers like `onClick={handleClick(id)}`) — the identity check
     always fails, so the memo never bails out. Either give the parent a
     `useCallback`/stable reference, or drop the `memo`.
-  - `useCallback`/`useMemo` pay off when the result is handed to a
-    `memo`-wrapped consumer (or used as a dependency elsewhere) AND that
-    value would otherwise be expensive to recompute or would break the
-    child's memoization. `useMemo` can also pay off for expensive
-    calculations within the same component when dependencies are unchanged,
-    even without a memoized consumer — but avoid it for cheap calculations.
-    If the function/value is only called inline in the same render and its
-    only consumer isn't memoized, drop the hook.
+  - `useCallback`/`useMemo` can pay off for dependency or subscription
+    identity stability alone — not only when recomputation is expensive.
+    Inline functions or objects passed as `useEffect`/`useLayoutEffect`
+    dependencies get a new identity every render and can trigger repeated
+    cleanup and setup; when stable identity is not required, move the value
+    into the effect body or depend on primitive values instead. For
+    `memo`-wrapped children, stable references still prevent unnecessary
+    re-renders; `useMemo` can also cache expensive calculations within the
+    same component when dependencies are unchanged. Avoid these hooks when
+    the function/value is only used inline in the same render and its only
+    consumer is not memoized.
   - Don't wrap an already-stable reference (a module-level constant, an
     imported function) in `useMemo`/`useCallback` — it adds a dependency
     check for a value that never changes.
