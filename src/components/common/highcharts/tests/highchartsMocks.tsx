@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { act, type CSSProperties, type ReactNode } from "react";
 import type Highcharts from "highcharts/highcharts.src";
 
 const chartTestState = vi.hoisted(() => ({
@@ -54,17 +54,21 @@ export const getBreakdownSeriesData = () => {
 export const getPieSeriesData = () => getBreakdownSeriesData() ?? [];
 
 export const selectChartPoint = (index: number | undefined) => {
-  chartTestState.pointClickHandler?.call(
-    { index } as Highcharts.Point,
-    {} as Highcharts.PointClickEventObject,
-  );
+  act(() => {
+    chartTestState.pointClickHandler?.call(
+      { index } as Highcharts.Point,
+      {} as Highcharts.PointClickEventObject,
+    );
+  });
 };
 
 export const clickSankeyNode = (node: { id: string; isNode?: boolean }) => {
-  chartTestState.sankeyPointClickHandler?.call(
-    { isNode: true, ...node } as unknown as Highcharts.Point,
-    {} as Highcharts.PointClickEventObject,
-  );
+  act(() => {
+    chartTestState.sankeyPointClickHandler?.call(
+      { isNode: true, ...node } as unknown as Highcharts.Point,
+      {} as Highcharts.PointClickEventObject,
+    );
+  });
 };
 
 vi.mock("../coreHighcharts", () => ({

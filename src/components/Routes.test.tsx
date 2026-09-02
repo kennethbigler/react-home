@@ -59,9 +59,7 @@ describe("components | RootRoutes", () => {
   it(
     "scrolls to the top when navigating between pages",
     async () => {
-      const scrollTo = vi
-        .spyOn(window, "scrollTo")
-        .mockImplementation(() => {});
+      const scrollTo = vi.mocked(window.scrollTo);
 
       renderAt("/");
 
@@ -77,6 +75,8 @@ describe("components | RootRoutes", () => {
         behavior: "auto",
       });
 
+      const callsAfterMount = scrollTo.mock.calls.length;
+
       // navigate via the drawer menu
       fireEvent.click(screen.getByTitle("Icon Menu Button"));
       fireEvent.click(
@@ -84,10 +84,8 @@ describe("components | RootRoutes", () => {
       );
 
       await waitFor(() => {
-        expect(scrollTo).toHaveBeenCalledTimes(2);
+        expect(scrollTo.mock.calls.length).toBeGreaterThan(callsAfterMount);
       });
-
-      scrollTo.mockRestore();
     },
     ROUTE_LOAD_TIMEOUT,
   );

@@ -20,9 +20,7 @@ const openRolesPopup = async (
   user: ReturnType<typeof userEvent.setup>,
   name: string,
 ) => {
-  const trigger = screen.getByRole("button", { name });
-  trigger.focus();
-  await user.keyboard("{Enter}");
+  await user.click(screen.getByRole("button", { name }));
   await waitFor(() => {
     expect(
       screen.getByRole("dialog", { name: `Roles - ${name}` }),

@@ -66,9 +66,7 @@ describe("PlayerNotes", () => {
       />,
     );
 
-    const randomButton = screen.getByRole("button", { name: /Random/i });
-    randomButton.focus();
-    await user.keyboard("{Enter}");
+    await user.click(screen.getByRole("button", { name: /Random/i }));
 
     expect(mockGetRandomPlayer).toHaveBeenCalledTimes(1);
   });
