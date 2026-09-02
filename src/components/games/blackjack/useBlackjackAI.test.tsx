@@ -768,8 +768,6 @@ describe("useBlackjackAI", () => {
     });
 
     it("handles DOUBLE after betting finishes", async () => {
-      dealQueue = [[makeCard(4)]];
-
       const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
 
       act(() => {
@@ -781,12 +779,128 @@ describe("useBlackjackAI", () => {
         await Promise.resolve();
       });
 
+      dealQueue = [[makeCard(4)]];
+
       await act(async () => {
         result.current.handleClick(GameFunctions.DOUBLE);
         await Promise.resolve();
       });
 
       expect(result.current.players[0].bet).toBe(10);
+      expect(result.current.players[0].hands[0].cards).toHaveLength(3);
+    });
+
+    it("splits a pair of fours against a favorable dealer card", async () => {
+      dealQueue = [[makeCard(3), makeCard(4)], [makeCard(2)], [makeCard(2)]];
+
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [4, 4], 5);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      expect(result.current.players[5].hands.length).toBeGreaterThan(1);
+    });
+
+    it("doubles a pair of fives against a favorable dealer card", async () => {
+      dealQueue = [[makeCard(3)]];
+
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [5, 5], 7);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      expect(result.current.players[5].bet).toBe(10);
+      expect(result.current.players[5].hands[0].cards).toHaveLength(3);
+    });
+
+    it("stays on a pair of nines against a strong dealer card", async () => {
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [9, 9], 10);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      expect(result.current.players[5].hands[0].cards).toHaveLength(2);
+      expect(result.current.players[5].hands[0].weight).toBe(18);
+    });
+
+    it("splits a pair of sevens against a weak dealer card", async () => {
+      dealQueue = [[makeCard(3), makeCard(4)], [makeCard(2)], [makeCard(2)]];
+
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [7, 7], 6);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      expect(result.current.players[5].hands.length).toBeGreaterThan(1);
+    });
+
+    it("stays on soft eighteen against a middle dealer card", async () => {
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [14, 7], 7);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      expect(result.current.players[5].hands[0].cards).toHaveLength(2);
+      expect(result.current.players[5].hands[0].weight).toBe(18);
+    });
+
+    it("hits soft eighteen against a strong dealer card", async () => {
+      dealQueue = [[makeCard(3)]];
+
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [14, 7], 10);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      expect(result.current.players[5].hands[0].cards.length).toBeGreaterThan(
+        2,
+      );
+    });
+
+    it("handles SPLIT after betting finishes", async () => {
+      const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
+
+      act(() => {
+        result.current.handleClick(GameFunctions.NEW_GAME);
+      });
+
+      await act(async () => {
+        result.current.handleClick(GameFunctions.FINISH_BETTING);
+        await Promise.resolve();
+      });
+
+      dealQueue = [[makeCard(3), makeCard(4)]];
+
+      await act(async () => {
+        result.current.handleClick(GameFunctions.SPLIT);
+        await Promise.resolve();
+      });
+
+      expect(result.current.players[0].hands.length).toBeGreaterThan(1);
     });
   });
 });

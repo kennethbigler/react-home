@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import Job from "./Job";
 import type { Job as JobType } from "@/constants/work";
-import ExperienceSection from "./ExperienceSection";
+import { ExperienceSection } from "./ExperienceSection";
 
 interface WorkCardsProps {
   title: string;

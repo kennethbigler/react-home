@@ -6,7 +6,10 @@ interface ExperienceSectionProps {
   children: ReactNode;
 }
 
-const ExperienceSection = ({ title, children }: ExperienceSectionProps) => (
+export const ExperienceSection = ({
+  title,
+  children,
+}: ExperienceSectionProps) => (
   <Box sx={{ mt: 3 }}>
     <Typography
       variant="h3"
@@ -19,5 +22,3 @@ const ExperienceSection = ({ title, children }: ExperienceSectionProps) => (
     {children}
   </Box>
 );
-
-export default ExperienceSection;

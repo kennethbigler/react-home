@@ -126,6 +126,69 @@ describe("games | yahtzee | Yahtzee", () => {
     expect(screen.getAllByText(`${submittedValue}`)).toHaveLength(3);
   });
 
+  it("unsaves a saved die back to the roll pool", () => {
+    const store = createStore();
+    const base = store.get(yahtzeeState);
+    store.set(yahtzeeState, {
+      ...base,
+      roll: 1,
+      values: [2, 3, 4, 5],
+      saved: [1],
+    });
+
+    const { wrapper } = createAtomWrapper([], store);
+    const { container } = render(<Yahtzee />, { wrapper });
+
+    expect(
+      container.querySelectorAll(
+        ".MuiButton-outlined.MuiButton-colorSecondary",
+      ),
+    ).toHaveLength(4);
+
+    fireEvent.click(screen.getByRole("button", { name: "1" }));
+
+    expect(
+      container.querySelectorAll(
+        ".MuiButton-outlined.MuiButton-colorSecondary",
+      ),
+    ).toHaveLength(5);
+  });
+
+  it("does not roll again when roll count is already 3", () => {
+    const store = createStore();
+    const base = store.get(yahtzeeState);
+    store.set(yahtzeeState, {
+      ...base,
+      roll: 3,
+      values: [1, 2, 3, 4, 5],
+      saved: [],
+    });
+
+    const { wrapper } = createAtomWrapper([], store);
+    render(<Yahtzee />, { wrapper });
+
+    const rollButton = screen.getByRole("button", { name: "Score" });
+    expect(rollButton).toBeDisabled();
+    fireEvent.click(rollButton);
+    expect(screen.getByText("Roll #3/3")).toBeInTheDocument();
+  });
+
+  it("shows Error for an invalid roll state", () => {
+    const store = createStore();
+    const base = store.get(yahtzeeState);
+    store.set(yahtzeeState, {
+      ...base,
+      roll: 4,
+      values: [1, 2, 3, 4, 5],
+      saved: [],
+    });
+
+    const { wrapper } = createAtomWrapper([], store);
+    render(<Yahtzee />, { wrapper });
+
+    expect(screen.getByText("Error")).toBeInTheDocument();
+  });
+
   it("shows 'New Game' button when game is finished (lines 95, 49-51 true branch)", () => {
     const store = createStore();
     const base = store.get(yahtzeeState);

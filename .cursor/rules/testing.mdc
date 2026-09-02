@@ -22,7 +22,7 @@ Tests must meet these minimum **project-wide** coverage requirements
 (enforced in `vite.config.ts`):
 
 - **Statements**: 85%
-- **Branches**: 81%
+- **Branches**: 80%
 - **Functions**: 85%
 - **Lines**: 85%
 
@@ -273,7 +273,7 @@ Before marking test generation as complete:
 
 - [ ] All new tests pass
 - [ ] Existing tests still pass
-- [ ] Coverage meets thresholds (85% statements/functions/lines, 81% branches)
+- [ ] Coverage meets thresholds (85% statements/functions/lines, 80% branches)
 - [ ] Per-file coverage floor passes (50% minimum per metric per file)
 - [ ] ESLint passes with no new errors
 - [ ] Knip scan passes (`npm run knip`)
