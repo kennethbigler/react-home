@@ -30,12 +30,15 @@ alwaysApply: false
   unused exports, and dependency drift are caught before finishing.
 - Don't add `useMemo`/`useCallback`/`React.memo` by default. Each one has
   comparison overhead, so only keep it when it earns that cost:
-  - `React.memo` is useless on a component with zero props, or one whose
-    props are recreated fresh every render by the parent (inline object,
-    array, or function literals; curried handlers like
-    `onClick={handleClick(id)}`) — the identity check always fails, so the
-    memo never bails out. Either give the parent a `useCallback`/stable
-    reference, or drop the `memo`.
+  - `React.memo` on a zero-prop component can still pay off when the parent
+    re-renders often and the child's subtree is costly — shallow compare sees
+    no prop changes and skips the re-render. Don't add it by default, but
+    don't strip it without weighing parent render frequency and subtree cost.
+  - `React.memo` is useless on a component whose props are recreated fresh
+    every render by the parent (inline object, array, or function literals;
+    curried handlers like `onClick={handleClick(id)}`) — the identity check
+    always fails, so the memo never bails out. Either give the parent a
+    `useCallback`/stable reference, or drop the `memo`.
   - `useCallback`/`useMemo` only pay off when the result is handed to a
     `memo`-wrapped consumer (or used as a dependency elsewhere) AND that
     value would otherwise be expensive to recompute or would break the

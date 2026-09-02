@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import Degree from "@/components/common/edu-cards/Degree";
 import type { School } from "@/constants/classes";
 import ExperienceSection from "./ExperienceSection";
-import experienceCardSize from "./experienceCardSize";
+import { experienceCardSize } from "./experienceCardSize";
 
 interface DegreeCardsProps {
   title: string;

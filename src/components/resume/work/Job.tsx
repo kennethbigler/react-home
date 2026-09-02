@@ -3,7 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import ExpandableCard from "@/components/common/expandable-card";
 import type { Job as JobType } from "@/constants/work";
 import { getCSV, groupExpr, parseExprGroup } from "./jobHelpers";
-import experienceCardSize from "./experienceCardSize";
+import { experienceCardSize } from "./experienceCardSize";
 
 interface JobProps {
   job: JobType;

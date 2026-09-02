@@ -2,18 +2,29 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { act } from "@testing-library/react";
 import { renderHookWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
 import useBlackjackAI from "./useBlackjackAI";
-import { GameFunctions } from "@/jotai/blackjack-atom";
+import blackjackState, { GameFunctions } from "@/jotai/blackjack-atom";
+import type { DBPlayer } from "@/jotai/player-atom";
+import type { DBCard } from "@/jotai/deck-atom";
+import { weighHand } from "./blackjackHelpers";
+
+const makeCard = (weight: number, suit = "♥"): DBCard => ({
+  name: weight === 14 ? "A" : weight >= 11 ? "10" : String(weight),
+  suit,
+  weight,
+});
+
+let dealQueue: DBCard[][] = [];
 
 // Mock useBlackjackDeck to return predictable cards
 vi.mock("./useBlackjackDeck", () => ({
   default: () => ({
     shuffle: vi.fn().mockResolvedValue(undefined),
     deal: vi.fn().mockImplementation((count: number) => {
-      const cards = [];
-      for (let i = 0; i < count; i++) {
-        cards.push({ name: "5", weight: 5, suit: "♥" });
+      const batch = dealQueue.shift();
+      if (batch) {
+        return Promise.resolve(batch.slice(0, count));
       }
-      return Promise.resolve(cards);
+      return Promise.resolve(Array.from({ length: count }, () => makeCard(5)));
     }),
   }),
 }));
@@ -21,6 +32,7 @@ vi.mock("./useBlackjackDeck", () => ({
 describe("useBlackjackAI", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    dealQueue = [];
   });
 
   it("initializes with default state", () => {
@@ -488,6 +500,293 @@ describe("useBlackjackAI", () => {
         // Not dealer
         expect(player.bet).toBe(5);
       }
+    });
+  });
+
+  describe("bot strategy via checkUpdate", () => {
+    const buildHand = (weights: number[]) => {
+      const cards = weights.map((weight) => makeCard(weight));
+      return { cards, ...weighHand(cards) };
+    };
+
+    const buildPlayers = (
+      activeBotWeights: [number, number],
+      dealerUpcard: number,
+      dealerHole = 10,
+    ): DBPlayer[] => {
+      const settledHand = buildHand([10, 10]);
+      const activeBot = {
+        id: 6,
+        name: "Bot-6",
+        isBot: true,
+        status: "",
+        money: 100,
+        bet: 5,
+        hands: [buildHand(activeBotWeights)],
+      };
+
+      return [
+        {
+          id: 1,
+          name: "Ken",
+          isBot: false,
+          status: "",
+          money: 100,
+          bet: 5,
+          hands: [settledHand],
+        },
+        {
+          id: 2,
+          name: "Bot-2",
+          isBot: true,
+          status: "",
+          money: 100,
+          bet: 5,
+          hands: [settledHand],
+        },
+        {
+          id: 3,
+          name: "Bot-3",
+          isBot: true,
+          status: "",
+          money: 100,
+          bet: 5,
+          hands: [settledHand],
+        },
+        {
+          id: 4,
+          name: "Bot-4",
+          isBot: true,
+          status: "",
+          money: 100,
+          bet: 5,
+          hands: [settledHand],
+        },
+        {
+          id: 5,
+          name: "Bot-5",
+          isBot: true,
+          status: "",
+          money: 100,
+          bet: 5,
+          hands: [settledHand],
+        },
+        activeBot,
+        {
+          id: 0,
+          name: "Dealer",
+          isBot: true,
+          status: "",
+          money: 100,
+          bet: 5,
+          hands: [buildHand([dealerUpcard, dealerHole])],
+        },
+      ];
+    };
+
+    const hydrateBotTurn = (
+      store: ReturnType<typeof renderHookWithHydratedAtoms>["store"],
+      activeBotWeights: [number, number],
+      dealerUpcard: number,
+      dealerHole = 10,
+    ) => {
+      act(() => {
+        store.set(blackjackState, {
+          bj: {
+            gameFunctions: [GameFunctions.STAY],
+            hideHands: false,
+          },
+          players: buildPlayers(activeBotWeights, dealerUpcard, dealerHole),
+          turn: { player: 5, hand: 0 },
+        });
+      });
+    };
+
+    it("keeps a pair of tens against a weak dealer card", async () => {
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [10, 10], 6);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      const activeBot = result.current.players[5];
+      expect(activeBot.hands[0].cards).toHaveLength(2);
+      expect(activeBot.hands[0].weight).toBe(20);
+    });
+
+    it("splits a pair of eights against a weak dealer card", async () => {
+      dealQueue = [[makeCard(3), makeCard(4)], [makeCard(2)], [makeCard(2)]];
+
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [8, 8], 6);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      expect(result.current.players[5].hands.length).toBeGreaterThan(1);
+    });
+
+    it("hits a pair of twos against a strong dealer card", async () => {
+      dealQueue = [[makeCard(3)]];
+
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [2, 2], 8);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      expect(result.current.players[5].hands[0].cards.length).toBeGreaterThan(
+        2,
+      );
+    });
+
+    it("doubles soft thirteen against a favorable dealer card", async () => {
+      dealQueue = [[makeCard(5)]];
+
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [14, 2], 5);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      expect(result.current.players[5].bet).toBe(10);
+      expect(result.current.players[5].hands[0].cards).toHaveLength(3);
+    });
+
+    it("stays on hard sixteen against a weak dealer card", async () => {
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [10, 6], 5);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      expect(result.current.players[5].hands[0].cards).toHaveLength(2);
+      expect(result.current.players[5].hands[0].weight).toBe(16);
+    });
+
+    it("hits hard sixteen against a strong dealer card", async () => {
+      dealQueue = [[makeCard(3)]];
+
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [10, 6], 10);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      expect(result.current.players[5].hands[0].cards.length).toBeGreaterThan(
+        2,
+      );
+    });
+
+    it("stays on hard twelve against a middle dealer card", async () => {
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [10, 2], 5);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      expect(result.current.players[5].hands[0].cards).toHaveLength(2);
+      expect(result.current.players[5].hands[0].weight).toBe(12);
+    });
+
+    it("doubles hard eleven", async () => {
+      dealQueue = [[makeCard(4)]];
+
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [5, 6], 5);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      expect(result.current.players[5].bet).toBe(10);
+      expect(result.current.players[5].hands[0].cards).toHaveLength(3);
+    });
+
+    it("lets the dealer hit on sixteen", async () => {
+      dealQueue = [[makeCard(5)]];
+
+      const { result, store } = renderHookWithHydratedAtoms(() =>
+        useBlackjackAI(),
+      );
+      hydrateBotTurn(store, [10, 10], 6, 6);
+
+      await act(async () => {
+        await result.current.checkUpdate();
+      });
+
+      const dealer = result.current.players[6];
+      expect(dealer.hands[0].cards.length).toBeGreaterThan(2);
+    });
+
+    it("handles HIT after betting finishes", async () => {
+      const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
+
+      act(() => {
+        result.current.handleClick(GameFunctions.NEW_GAME);
+      });
+
+      await act(async () => {
+        result.current.handleClick(GameFunctions.FINISH_BETTING);
+        await Promise.resolve();
+      });
+
+      const cardsBeforeHit = result.current.players[0].hands[0].cards.length;
+      expect(cardsBeforeHit).toBe(2);
+
+      await act(async () => {
+        result.current.handleClick(GameFunctions.HIT);
+        await Promise.resolve();
+      });
+
+      expect(result.current.players[0].hands[0].cards.length).toBeGreaterThan(
+        cardsBeforeHit,
+      );
+    });
+
+    it("handles DOUBLE after betting finishes", async () => {
+      dealQueue = [[makeCard(4)]];
+
+      const { result } = renderHookWithHydratedAtoms(() => useBlackjackAI());
+
+      act(() => {
+        result.current.handleClick(GameFunctions.NEW_GAME);
+      });
+
+      await act(async () => {
+        result.current.handleClick(GameFunctions.FINISH_BETTING);
+        await Promise.resolve();
+      });
+
+      await act(async () => {
+        result.current.handleClick(GameFunctions.DOUBLE);
+        await Promise.resolve();
+      });
+
+      expect(result.current.players[0].bet).toBe(10);
     });
   });
 });

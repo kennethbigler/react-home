@@ -9,7 +9,7 @@ const CAR_SANKEY_DESTINATION = {
 
 const CAR_COUNTRIES = {
   de: { flag: "🇩🇪", order: 0, color: orange[500] },
-  gb: { flag: "🇬🇧", order: 1, color: "white" },
+  gb: { flag: "🇬🇧", order: 1, color: grey[100] },
   us: { flag: "🇺🇸", order: 2, color: indigo[900] },
   jp: { flag: "🇯🇵", order: 3, color: red[500] },
 } as const;

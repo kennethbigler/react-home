@@ -7,6 +7,7 @@ const chartTestState = vi.hoisted(() => ({
     type?: string;
     name?: string;
     data?: unknown;
+    nodes?: unknown;
   }>,
   tooltipFollowTouchMove: undefined as boolean | undefined,
   tooltipFormatter: null as Highcharts.TooltipFormatterCallbackFunction | null,
@@ -119,12 +120,13 @@ vi.mock("@highcharts/react", () => ({
   }: {
     type?: string;
     data?: unknown;
-    options?: { name?: string };
+    options?: { name?: string; nodes?: unknown };
   }) => {
     chartTestState.series.push({
       type,
       data,
       name: options?.name,
+      nodes: options?.nodes,
     });
     return (
       <div
