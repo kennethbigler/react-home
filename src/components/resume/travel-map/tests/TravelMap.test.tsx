@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import TravelMap from "..";
 
 // Mock the three Highcharts chart components — Highcharts in JSDOM exhausts the Node.js
@@ -15,18 +15,21 @@ vi.mock("../cruises/LoyaltyCharts", () => ({
 }));
 
 describe("resume | travel-map | TravelMap", () => {
-  it("renders as expected", () => {
+  it("renders as expected", async () => {
     const windowFetch = window.fetch;
     window.fetch = vi
       .fn()
-      .mockImplementation(() => Promise.resolve({ ok: true, json: {} }));
+      .mockImplementation(() =>
+        Promise.resolve({ ok: true, json: async () => ({}) }),
+      );
 
-    // render
     render(<TravelMap />);
-    // Verify World Map
-    expect(
-      screen.getByRole("status", { name: "Loading page content" }),
-    ).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("status", { name: "Loading page content" }),
+      ).not.toBeInTheDocument();
+    });
     // Verify Travel Table
     expect(screen.getByText("The Americas")).toBeInTheDocument();
     expect(screen.getByText("Europe & Africa")).toBeInTheDocument();

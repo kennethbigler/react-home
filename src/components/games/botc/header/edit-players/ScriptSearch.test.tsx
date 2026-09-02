@@ -1,5 +1,11 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  act,
+  waitFor,
+} from "@testing-library/react";
 import ScriptSearch from "./ScriptSearch";
 
 // Mock the scripts data to keep tests fast and deterministic.
@@ -281,7 +287,7 @@ describe("ScriptSearch", () => {
     );
   });
 
-  it("shows community script label with author in the input field", () => {
+  it("shows community script label with author in the input field", async () => {
     render(
       <ScriptSearch
         script={{
@@ -296,9 +302,10 @@ describe("ScriptSearch", () => {
       />,
     );
 
-    const input = screen.getByRole("combobox") as HTMLInputElement;
-    // getOptionLabel for community includes "— author"
-    expect(input.value).toContain("Another Script");
-    expect(input.value).toContain("AnotherAuthor");
+    await waitFor(() => {
+      const input = screen.getByRole("combobox") as HTMLInputElement;
+      expect(input.value).toContain("Another Script");
+      expect(input.value).toContain("AnotherAuthor");
+    });
   });
 });

@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import ShowStats from "./ShowStats";
 import themeAtom, { darkTheme, lightTheme } from "@/jotai/theme-atom";
 import { renderWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
@@ -12,20 +13,22 @@ describe("games | spades | ShowStats", () => {
   });
 
   it("opens popup and shows total chips in light mode", async () => {
+    const user = userEvent.setup();
     renderWithHydratedAtoms(<ShowStats {...defaultProps} />, [
       [themeAtom, lightTheme] as const,
     ]);
-    screen.getByText("Stats").click();
+    await user.click(screen.getByText("Stats"));
     expect(await screen.findByText("Totals:")).toBeInTheDocument();
     expect(screen.getByText("AC")).toBeInTheDocument();
     expect(screen.getByText("BD")).toBeInTheDocument();
   });
 
   it("renders correctly in dark mode", async () => {
+    const user = userEvent.setup();
     renderWithHydratedAtoms(<ShowStats {...defaultProps} />, [
       [themeAtom, darkTheme] as const,
     ]);
-    screen.getByText("Stats").click();
+    await user.click(screen.getByText("Stats"));
     expect(await screen.findByText("Totals:")).toBeInTheDocument();
   });
 });

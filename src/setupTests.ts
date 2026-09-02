@@ -61,9 +61,19 @@ if (isBrokenStorage(globalThis.sessionStorage)) {
   });
 }
 
+// jsdom logs "Not implemented: Window's scrollTo() method" when Routes scrolls
+// to top on navigation; stub it globally so tests stay quiet.
+const scrollToMock = vi.fn();
+Object.defineProperty(window, "scrollTo", {
+  writable: true,
+  configurable: true,
+  value: scrollToMock,
+});
+
 beforeEach(() => {
   localStorage.clear();
   sessionStorage.clear();
+  scrollToMock.mockClear();
 });
 
 // for checks on if dark mode is preferred

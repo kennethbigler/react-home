@@ -1,4 +1,11 @@
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import {
+  act,
+  render,
+  screen,
+  fireEvent,
+  within,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { vi, type Mock } from "vitest";
 import Werewolf from ".";
@@ -6,13 +13,17 @@ import WerewolfPanel from "./WerewolfPanel";
 
 function clickRatingStar(name: string, index: number) {
   const rating = screen.getByRole("group", { name: `${name} rating` });
-  fireEvent.click(within(rating).getAllByRole("radio")[index]);
+  act(() => {
+    fireEvent.click(within(rating).getAllByRole("radio")[index]);
+  });
 }
 
 function clearRating(name: string) {
   const rating = screen.getByRole("group", { name: `${name} rating` });
   const radios = within(rating).getAllByRole("radio");
-  fireEvent.click(radios[radios.length - 1]);
+  act(() => {
+    fireEvent.click(radios[radios.length - 1]);
+  });
 }
 
 interface KeyboardRatingExpectation {
@@ -32,8 +43,10 @@ async function exerciseRatingKeyboard(
   const radios = within(rating).getAllByRole("radio");
   const startRadio = radios[startIndex];
 
-  startRadio.focus();
-  await user.keyboard("{ArrowRight}");
+  await act(async () => {
+    startRadio.focus();
+    await user.keyboard("{ArrowRight}");
+  });
 
   const nextRadio = radios[startIndex + 1];
 
@@ -52,12 +65,14 @@ async function exerciseRatingKeyboard(
   }
 
   if (expected?.handleStar && nextRadio?.getAttribute("value")) {
-    expect(nextRadio).toHaveFocus();
-    expect(expected.handleStar).toHaveBeenCalledWith(
-      expected.value,
-      expected.count,
-      name,
-    );
+    await waitFor(() => {
+      expect(nextRadio).toHaveFocus();
+      expect(expected.handleStar).toHaveBeenCalledWith(
+        expected.value,
+        expected.count,
+        name,
+      );
+    });
   }
 }
 

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import HandInput from "./HandInput";
 import type { Hand } from "./bidding-logic";
@@ -343,13 +343,15 @@ describe("games | bridge | HandInput", () => {
   it("HCP slider onChange calls onChange handler", () => {
     const onChange = vi.fn();
     renderHandInput(defaultHand, onChange);
-    const allSliders = screen.getAllByRole("slider");
-    const hcpSlider = allSliders.find(
-      (s) => s.getAttribute("aria-valuemax") === "37",
-    );
+    const hcpSlider = screen
+      .getAllByRole("slider")
+      .find((slider) => slider.getAttribute("aria-valuemax") === "37");
     expect(hcpSlider).toBeTruthy();
-    hcpSlider!.focus();
-    fireEvent.keyDown(hcpSlider!, { key: "ArrowRight" });
+
+    act(() => {
+      fireEvent.change(hcpSlider!, { target: { value: "16" } });
+    });
+
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ hcp: 16 }));
   });
 

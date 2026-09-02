@@ -6,6 +6,7 @@
  */
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import pc from "picocolors";
 
 const FLOOR = {
   statements: 50,
@@ -24,7 +25,9 @@ const readCoverage = () => {
     raw = readFileSync(coveragePath, "utf8");
   } catch {
     console.error(
-      `Per-file coverage check failed: ${coveragePath} not found. Run npm run test:coverage first.`,
+      pc.red(
+        `× Per-file coverage check failed: ${coveragePath} not found. Run npm run test:coverage first.`,
+      ),
     );
     process.exit(1);
   }
@@ -80,14 +83,18 @@ for (const [file, data] of Object.entries(coverage)) {
 
 if (failures.length > 0) {
   console.error(
-    `\nPer-file coverage floor check failed (${failures.length} violation(s), minimum ${FLOOR.statements}% per metric):\n`,
+    `\n${pc.red(`× Per-file test coverage (${failures.length} violation(s)):`)}\n`,
   );
   for (const { file, metric, value, floor } of failures) {
-    console.error(`  ${file}: ${metric} ${value}% < ${floor}%`);
+    console.error(
+      `  ${pc.dim(file)}: ${pc.red(`${metric} ${value}%`)} ${pc.dim(`< ${floor}%`)}`,
+    );
   }
   process.exit(1);
 }
 
 console.log(
-  `Per-file coverage floor check passed (all files >= ${FLOOR.statements}% for statements, branches, functions, and lines).`,
+  pc.green(
+    `✓ Per-file coverage floor check passed (all files >= ${FLOOR.statements}%)`,
+  ),
 );
