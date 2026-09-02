@@ -40,9 +40,15 @@ describe("resume | work | WorkCards", () => {
     });
 
     it("passes count to Job so three cards can sit in a row", () => {
-      render(<WorkCards title="Work" jobs={work.slice(0, 3)} />);
+      const { container } = render(
+        <WorkCards title="Work" jobs={work.slice(0, 3)} />,
+      );
 
       expect(screen.getAllByRole("button")).toHaveLength(3);
+      const threeColumnGridItems = container.querySelectorAll(
+        '[class*="MuiGrid-grid-xxl-4"]',
+      );
+      expect(threeColumnGridItems).toHaveLength(3);
     });
 
     it("uses full width when only one job is provided", () => {

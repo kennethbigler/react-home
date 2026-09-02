@@ -34,9 +34,7 @@ describe("resume | f1 | Track", () => {
     render(<Track {...defaultProps} onToggle={onToggle} />);
 
     fireEvent.click(
-      screen
-        .getByRole("img", { name: "Monaco track layout" })
-        .closest("button")!,
+      screen.getByRole("button", { name: "Expand Monaco circuit details" }),
     );
 
     expect(onToggle).toHaveBeenCalledWith("Monaco");

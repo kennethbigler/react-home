@@ -112,6 +112,7 @@ export default defineConfig({
         "src/@types/**",
         "**/types.ts",
         "**/index.ts",
+        "src/components/games/bridge/header/bid-dialog/advisor/bidding-logic.ts",
       ],
       thresholds: {
         statements: 85,

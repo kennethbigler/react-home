@@ -13,6 +13,7 @@ const CarChartControls = memo(
         onClick={() => onHideClick(false)}
         variant={hideFamily ? "contained" : "outlined"}
         color="error"
+        aria-pressed={hideFamily}
       >
         Hide Family Cars
       </Button>
@@ -20,6 +21,7 @@ const CarChartControls = memo(
         onClick={() => onHideClick(true)}
         variant={hideKen ? "contained" : "outlined"}
         color="error"
+        aria-pressed={hideKen}
       >
         Hide Ken&apos;s Cars
       </Button>

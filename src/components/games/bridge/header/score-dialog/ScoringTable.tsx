@@ -1,3 +1,4 @@
+import { memo } from "react";
 import {
   Table,
   TableBody,
@@ -9,7 +10,7 @@ import {
 } from "@mui/material";
 import { undertrickTable } from "./score-helper";
 
-const ScoringTable = () => {
+const ScoringTable = memo(() => {
   return (
     <>
       <Divider sx={{ marginTop: 7, marginBottom: 5 }} />
@@ -233,6 +234,8 @@ const ScoringTable = () => {
       </Table>
     </>
   );
-};
+});
+
+ScoringTable.displayName = "ScoringTable";
 
 export default ScoringTable;

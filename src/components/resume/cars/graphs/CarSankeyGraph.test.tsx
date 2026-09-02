@@ -1,4 +1,4 @@
-import "../../../common/highcharts/tests/highchartsMocks";
+import { getSeriesByName } from "../../../common/highcharts/tests/highchartsMocks";
 import { render, screen } from "@testing-library/react";
 import CarSankeyGraph from "./CarSankeyGraph";
 import {
@@ -54,8 +54,10 @@ describe("resume | cars | graphs | CarSankeyGraph", () => {
     render(<CarSankeyGraph color="white" data={cars} />);
 
     expect(screen.getByTestId("highcharts-series")).toBeInTheDocument();
-    expect(buildCarSankeyNodes().some((node) => node.id === "Porsche")).toBe(
-      true,
-    );
+    const nodes = getSeriesByName("Cars")?.nodes as
+      | Array<{ id: string }>
+      | undefined;
+    expect(nodes?.some((node) => node.id === "Porsche")).toBe(true);
+    expect(nodes).toEqual(buildCarSankeyNodes());
   });
 });

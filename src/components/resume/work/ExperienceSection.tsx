@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 
 interface ExperienceSectionProps {
   title: string;
@@ -7,17 +7,17 @@ interface ExperienceSectionProps {
 }
 
 const ExperienceSection = ({ title, children }: ExperienceSectionProps) => (
-  <div style={{ marginTop: 25 }}>
+  <Box sx={{ mt: 3 }}>
     <Typography
       variant="h3"
       component="h2"
-      style={{ textTransform: "capitalize" }}
+      sx={{ textTransform: "capitalize" }}
     >
       {title}
     </Typography>
-    <hr aria-hidden />
+    <Divider aria-hidden />
     {children}
-  </div>
+  </Box>
 );
 
 export default ExperienceSection;
