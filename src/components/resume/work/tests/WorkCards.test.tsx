@@ -39,22 +39,21 @@ describe("resume | work | WorkCards", () => {
       ).toBeInTheDocument();
     });
 
-    it("passes triple prop to Job components correctly", () => {
+    it("passes count to Job so three cards can sit in a row", () => {
       render(<WorkCards title="Work" jobs={work.slice(0, 3)} />);
 
       expect(screen.getAllByRole("button")).toHaveLength(3);
     });
 
-    it("uses default sizing when triple prop not specified", () => {
+    it("uses full width when only one job is provided", () => {
       const { container } = render(
         <WorkCards title="Single Job" jobs={[work[0]]} />,
       );
 
-      // Check for default grid sizing (lg-6)
-      const defaultGridItems = container.querySelectorAll(
-        '[class*="MuiGrid-grid-lg-6"]',
+      const fullWidthGridItems = container.querySelectorAll(
+        '[class*="MuiGrid-grid-lg-12"]',
       );
-      expect(defaultGridItems.length).toBeGreaterThan(0);
+      expect(fullWidthGridItems.length).toBeGreaterThan(0);
     });
   });
 

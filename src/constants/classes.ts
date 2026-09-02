@@ -647,6 +647,14 @@ export const presentations: School[] = [
                 catalog: "Description",
                 name: "This workshop is designed to empower developers to use AI-integrated IDEs, such as Cursor, to generate accessible code. As artificial intelligence increasingly assists in coding tasks, there is both an opportunity & a responsibility to ensure that the outputs of these tools align with accessibility & inclusive design principles. We will open with a discussion of common accessibility shortcomings in AI-generated code, such as missing semantic elements, improper ARIA attributes, inadequate color contrast, or inaccessible form structures. Participants will explore how to configure IDE environments & AI assistants to mitigate these issues, shifting accessibility from a corrective task to a proactive default. Through guided demonstrations & hands-on exercises, attendees will learn practical methods to influence AI code generation, including writing prompts, applying custom rulesets, and integrating automated accessibility checkers directly into the development workflow. Participants will also examine how extensions, linters, and team-level standards can reinforce accessible coding practices. The workshop will be interactive & solution-oriented, blending technical configuration with real-world scenarios.",
               },
+              {
+                catalog: "Ken Bigler",
+                name: "Head of Accessibility Engineering at Intuit",
+              },
+              {
+                catalog: "Kaelig Deloumeau-Prigent",
+                name: "Principal Designer, Design Systems, Intuit",
+              },
             ],
           },
           {
@@ -657,6 +665,18 @@ export const presentations: School[] = [
                 catalog: "Description",
                 name: "Discover real-world examples of AI driving accessibility, from sign language translation to voice banking, navigation, and assistive robotics. Learn how these innovations empower independence, improve communication, and shape inclusive futures across education, healthcare, and daily life.",
               },
+              {
+                catalog: "Ken Bigler",
+                name: "Head of Accessibility Engineering at Intuit",
+              },
+              {
+                catalog: "Cassandra Zuria",
+                name: "Staff Software Engineer at Intuit",
+              },
+              {
+                catalog: "Marco Salsiccia",
+                name: "Accessibility Consultant at OpenAI",
+              },
             ],
           },
           {
@@ -666,6 +686,14 @@ export const presentations: School[] = [
                 catalog: "Description",
                 name: "Learn why disabled buttons, and controls, can hurt more than help. This session shows when to use them, when not to, and what to do instead. You'll leave with tips you can use right away—whether you're a designer, developer, or PM—to make better, more helpful user experiences.",
               },
+              {
+                catalog: "Ken Bigler",
+                name: "Head of Accessibility Engineering at Intuit",
+              },
+              {
+                catalog: "Ted Drake",
+                name: "Head of Accessibility and Inclusive Design at Intuit",
+              },
             ],
           },
           {
@@ -674,6 +702,14 @@ export const presentations: School[] = [
               {
                 catalog: "Description",
                 name: "Join colleagues, innovators, and advocates for an open networking session focused on the rapidly evolving intersection of accessibility and artificial intelligence. This Birds of a Feather meetup provides a space to share experiences, explore challenges, spark collaborations, and discuss the future of inclusive AI. Whether you're developing AI tools, researching impacts, or championing accessibility in your organization, this informal gathering is a chance to connect with others who share your passion. Hosts: Ken Bigler and Ted Drake.",
+              },
+              {
+                catalog: "Ken Bigler",
+                name: "Head of Accessibility Engineering at Intuit",
+              },
+              {
+                catalog: "Ted Drake",
+                name: "Head of Accessibility and Inclusive Design at Intuit",
               },
             ],
           },
@@ -689,6 +725,14 @@ export const presentations: School[] = [
                 catalog: "Description",
                 name: "We will take you on a journey through Intuit's development process, from the initial round of requirements gathering, through the design and development stages, and ultimately to customer testing. We will demonstrate the process we follow at Intuit for our iOS app, and call out some key differences between the iOS development process as compared to web. We will cover some of the technical approaches and solutions for mobile, and cover mobile specific topics like gestures, accessibility actions, visual, auditory, and vibrational notifications, as well as creating an intuitive interface. Finally, we will highlight some accessibility features and resources specific to iOS that enable developers to create a more inclusive experience.",
               },
+              {
+                catalog: "Ken Bigler",
+                name: "Head of Accessibility Engineering at Intuit",
+              },
+              {
+                catalog: "Cassandra Zuria",
+                name: "Staff Software Engineer at Intuit",
+              },
             ],
           },
           {
@@ -698,6 +742,14 @@ export const presentations: School[] = [
               {
                 catalog: "Description",
                 name: "Attendees will see an end to end solution for including WCAG and other accessibility requirements in existing Security dashboards and automated ticketing of gaps via Jira. This is a production solution at Intuit, and we will share the entire process, from generation of the business case and risk metric, to incorporation into our build pipeline, harvesting the data from our data lake and consuming it in our Compliance Portal. Along the way, we will talk about key business partners, changes we made to ease onboarding to Lighthouse, and how this work has improved our compliance with WCAG 2.2.",
+              },
+              {
+                catalog: "Ken Bigler",
+                name: "Head of Accessibility Engineering at Intuit",
+              },
+              {
+                catalog: "David Martin",
+                name: "Global Lead of Accessibility Compliance at Intuit",
               },
             ],
           },
@@ -712,6 +764,10 @@ export const presentations: School[] = [
               {
                 catalog: "Description",
                 name: "What is wrong with Design Systems today? Accessibility is often an afterthought, with many available design systems having numerous errors. What are Design Systems? A design system is a collection of components which work like building blocks to build a web application. Why is it important for a Design System to be Accessible? Because Design Systems are the building blocks of an application, they are used in all facets of all Intuit products. Given their prevalence throughout the applications, it is critical that they meet the highest standards of accessibility. If my Design System is Accessible, am I done worrying about accessibility? Yes, while building a strong foundation is essential, it is not enough to ensure that the components are used correctly, or that other custom elements are built correctly. What design system do we have here at Intuit? We have 1 design system: a component library that follows a set of standards compiled by designers, product managers, and us, the accessibility team. We also have 8 different products to design for. We solve for this by making our design system dynamic, so that certain elements can change while the base component remains the same. What special accessibility considerations have been made for Intuit? Accessibility is a part of the design process, and is taken into consideration before implementation has even begun. On top of this, I am currently adding automation testing for accessibility all throughout the design system.",
+              },
+              {
+                catalog: "Ken Bigler",
+                name: "Accessibility Engineering Leader at Intuit",
               },
             ],
           },
@@ -739,10 +795,6 @@ export const presentations: School[] = [
                 name: "Consumers with disabilities represent one of the largest and potentially most influential market segments in the global economy, yet many brands continue to overlook accessibility and authentic representation as a core driver of growth. From discovery and purchase to loyalty and lifetime value, accessibility and disability inclusion play a critical role in shaping consumer expectations and experiences across industries. When accessibility and representation are embedded into consumer-facing strategies, brands can outperform traditional customer experience benchmarks while building trust, relevance, and long-term engagement. This session unpacks emerging research and real-world examples to illustrate how accessibility and disability representation influence consumer behavior and why it should be a foundational element of modern marketing and brand strategy.",
               },
               {
-                catalog: "Learning Objectives",
-                name: "1. Discover the size, influence, and collective expectations of consumers with disabilities along with trends that underscore why this segment represents a significant growth opportunity for consumer brands. 2. Understand how disability representation and accessible consumer experiences impact key performance indicators such as conversion, retention, brand trust, and lifetime value. 3. Explore practical ways brands can integrate accessibility into consumer-facing marketing and experience strategies to outperform traditional customer experience benchmarks.",
-              },
-              {
                 catalog: "Ken Bigler",
                 name: "Head of Accessibility Engineering at Intuit, Moderator",
               },
@@ -757,10 +809,6 @@ export const presentations: School[] = [
               {
                 catalog: "Bulbul Khera",
                 name: "Global Sr Business Director (GM) Purpose at Nike",
-              },
-              {
-                catalog: "Jennifer Overman",
-                name: "Lead, DEI Partnerships at Nike",
               },
             ],
           },
@@ -780,6 +828,14 @@ export const presentations: School[] = [
                 catalog: "Description",
                 name: "Success in the workforce depends on others recognizing the value you bring to the organization and how they support you when you are not in the room. Your personal brand is how you set their expectations about you, and steer their perception of you and your work, to move your career in a direction you desire. The co-presenters represent both early and late career professionals and will discuss successful strategies for managing your brand when all others see is your disability, as well as discussing the differences and similarities experienced by persons entering the workforce with disabilities vs those who acquire disability mid career.",
               },
+              {
+                catalog: "Ken Bigler",
+                name: "Head of Accessibility Engineering at Intuit",
+              },
+              {
+                catalog: "David Martin",
+                name: "Global Lead of Accessibility Compliance at Intuit",
+              },
             ],
           },
           {
@@ -792,10 +848,6 @@ export const presentations: School[] = [
               {
                 catalog: "Description",
                 name: "Artificial intelligence (AI) is rapidly transforming the workplace, and its potential to support employees with disabilities is immense. This session explores how AI tools can be leveraged to create a more inclusive and accessible work environment, from streamlining recruitment and onboarding to providing personalized accommodations / adjustments. We'll delve into practical applications of AI while addressing important considerations around privacy, and ensuring these technologies are used ethically and responsibly.",
-              },
-              {
-                catalog: "Learning Objectives",
-                name: "1. Identify AI Applications: Participants will be able to recognize and describe various ways AI can be used to enhance accessibility and inclusion for qualified employees with disabilities across different aspects of the employment lifecycle, including recruitment, onboarding, training, performance management, and career development. 2. Tailored Accommodations/Adjustments: Explore how AI-powered tools can personalize accommodations/adjustments to meet the specific needs of employees with disabilities, enhancing their productivity and job satisfaction. 3. Ethical Considerations: Understand the ethical implications of using AI to support employees with disabilities, including issues of privacy, data security, algorithmic bias, and ensuring human oversight.",
               },
               {
                 catalog: "Ken Bigler",
@@ -871,21 +923,20 @@ export const presentations: School[] = [
       },
     ],
   },
+];
+
+export const hackathons: School[] = [
   {
     color: blue[900],
-    degree: "Hackathons",
+    degree: "GitHub: Open Source Assistive Technology Hackathon",
     subtitle: "",
     years: [
       {
-        year: "GitHub: Open Source Assistive Technology Hackathon",
+        year: "May 21 - 22, 2026",
         quarters: [
           {
             quarter: "Markup Driven Pronunciation",
             classes: [
-              {
-                catalog: "Date",
-                name: "May 21 - 22, 2026",
-              },
               {
                 catalog: "Project",
                 name: "“Markup Driven Pronunciation”: This project aims to enhance screen reader pronunciation for complex or ambiguous words such as names, acronyms, numbers, and technical terms by enabling NVDA to use standardized SSML data-ssml metadata. Content authors can provide precise pronunciation cues, improving accessibility for users who rely on assistive technology and reducing confusion in educational and assessment settings. The initiative leverages open standards and collaboration to address ongoing accessibility challenges.",
@@ -894,16 +945,19 @@ export const presentations: School[] = [
           },
         ],
       },
+    ],
+  },
+  {
+    color: blue[900],
+    degree: "GigNow: Hacking the Gig Economy Now",
+    subtitle: "",
+    years: [
       {
-        year: "GigNow: Hacking the Gig Economy Now",
+        year: "Nov. 16, 2018",
         quarters: [
           {
             quarter: "GraphHoppers",
             classes: [
-              {
-                catalog: "Date",
-                name: "Nov. 16, 2018",
-              },
               {
                 catalog: "Prizes",
                 name: "1st Place",
@@ -916,16 +970,19 @@ export const presentations: School[] = [
           },
         ],
       },
+    ],
+  },
+  {
+    color: blue[900],
+    degree: "Accenture: Hackathon Games",
+    subtitle: "",
+    years: [
       {
-        year: "Accenture: Hackathon Games",
+        year: "Oct. 18 - 19, 2014",
         quarters: [
           {
             quarter: "Feedbat",
             classes: [
-              {
-                catalog: "Date",
-                name: "Oct. 18 - 19, 2014",
-              },
               {
                 catalog: "Prizes",
                 name: "Best Use of the PubNub API, Best Use of the Amazon Store API",

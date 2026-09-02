@@ -103,13 +103,11 @@ Professional portfolio sections:
 
 - **cars/** - Personal vehicle history
 - **finances/** - Finances including Compensation calculator and Budgeting
-- **education/** - Educational background
 - **f1/** - Formula 1 interest section
-- **presentations/** - Speaking engagements
 - **resume/** - Professional resume
 - **summary/** - Professional summary
 - **travel-map/** - Travel history visualization
-- **work/** - Work experience
+- **work/** - Experience page (presentations, work, hackathons, education, volunteer)
 - **Menu.tsx** - Resume menu navigation
 - **Routes.tsx** - Resume routing configuration
 

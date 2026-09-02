@@ -14,19 +14,14 @@ const resumeRouteGroups = [
       Component: lazy(() => import("./summary")),
     },
     {
-      name: "Work",
-      route: "work",
+      name: "Experience",
+      route: "experience",
       Component: lazy(() => import("./work")),
     },
     {
       name: "Resume",
       route: "resume",
       Component: lazy(() => import("./resume")),
-    },
-    {
-      name: "Presentations",
-      route: "presentations",
-      Component: lazy(() => import("./presentations")),
     },
   ],
   [

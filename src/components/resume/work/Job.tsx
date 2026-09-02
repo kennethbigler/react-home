@@ -3,11 +3,12 @@ import { Grid, Typography } from "@mui/material";
 import ExpandableCard from "@/components/common/expandable-card";
 import type { Job as JobType } from "@/constants/work";
 import { getCSV, groupExpr, parseExprGroup } from "./jobHelpers";
+import experienceCardSize from "./experienceCardSize";
 
 interface JobProps {
   job: JobType;
   fullWidth?: boolean;
-  triple?: boolean;
+  count?: number;
 }
 
 const logoStyle: CSSProperties = {
@@ -21,8 +22,8 @@ const logoStyle: CSSProperties = {
   objectFit: "contain",
 };
 
-const Job = ({ job, fullWidth, triple }: JobProps) => (
-  <Grid size={{ xs: 12, lg: fullWidth ? 12 : 6, xxl: triple ? 4 : undefined }}>
+const Job = ({ job, fullWidth, count = 1 }: JobProps) => (
+  <Grid size={experienceCardSize(count, fullWidth)}>
     <ExpandableCard
       backgroundColor={job.color}
       subtitle={job.title}

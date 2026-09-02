@@ -265,10 +265,10 @@ describe("resume | work | Job", () => {
   });
 
   describe("grid sizing", () => {
-    it("applies correct grid sizing for default props", () => {
+    it("applies full width by default for a single card", () => {
       const { container } = render(<Job job={mockJob} />);
 
-      const gridItem = container.querySelector('[class*="MuiGrid-grid-lg-6"]');
+      const gridItem = container.querySelector('[class*="MuiGrid-grid-lg-12"]');
       expect(gridItem).toBeInTheDocument();
     });
 
@@ -279,11 +279,22 @@ describe("resume | work | Job", () => {
       expect(gridItem).toBeInTheDocument();
     });
 
-    it("applies triple width when triple prop is true", () => {
-      const { container } = render(<Job job={mockJob} triple={true} />);
+    it("uses half width at lg when count is 2", () => {
+      const { container } = render(<Job job={mockJob} count={2} />);
 
-      const gridItem = container.querySelector('[class*="MuiGrid-grid-xxl-4"]');
+      const gridItem = container.querySelector('[class*="MuiGrid-grid-lg-6"]');
       expect(gridItem).toBeInTheDocument();
+    });
+
+    it("keeps full width even when count would otherwise be triple", () => {
+      const { container } = render(<Job job={mockJob} fullWidth count={3} />);
+
+      expect(
+        container.querySelector('[class*="MuiGrid-grid-lg-12"]'),
+      ).toBeInTheDocument();
+      expect(
+        container.querySelector('[class*="MuiGrid-grid-xxl-4"]'),
+      ).not.toBeInTheDocument();
     });
   });
 

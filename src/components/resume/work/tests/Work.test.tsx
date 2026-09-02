@@ -1,6 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import Work from "..";
 
+const sectionOrder = [
+  "Presentations",
+  "Work",
+  "Hackathons",
+  "Education",
+  "Volunteer",
+];
+
 describe("resume | work | Work", () => {
   describe("rendering", () => {
     it("renders main experience heading", () => {
@@ -15,9 +23,9 @@ describe("resume | work | Work", () => {
     it("renders all main sections", () => {
       render(<Work />);
 
-      expect(screen.getByText("Work")).toBeInTheDocument();
-      expect(screen.getByText("Volunteer")).toBeInTheDocument();
-      expect(screen.getByText("Education")).toBeInTheDocument();
+      sectionOrder.forEach((title) => {
+        expect(screen.getByText(title)).toBeInTheDocument();
+      });
     });
 
     it("renders work section with correct content", () => {
@@ -45,6 +53,23 @@ describe("resume | work | Work", () => {
       ).toBeInTheDocument();
     });
 
+    it("renders presentation and hackathon cards", () => {
+      render(<Work />);
+
+      expect(
+        screen.getByText("CSUN Assistive Technology Conference"),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("Other Public Conference Presentations"),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("GigNow: Hacking the Gig Economy Now"),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("Accenture: Hackathon Games"),
+      ).toBeInTheDocument();
+    });
+
     it("renders education section with degree cards", () => {
       render(<Work />);
 
@@ -66,7 +91,6 @@ describe("resume | work | Work", () => {
     it("displays correct work experience details", () => {
       render(<Work />);
 
-      // Check specific work entries
       expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
       expect(
         screen.getAllByText("Head of Accessibility Engineering").length,
@@ -127,16 +151,15 @@ describe("resume | work | Work", () => {
   });
 
   describe("section ordering", () => {
-    it("renders sections in correct order: Work, Volunteer, Education", () => {
+    it("renders sections in order: Presentations, Work, Hackathons, Education, Volunteer", () => {
       render(<Work />);
 
-      const sectionHeadings = screen.getAllByText(
-        /^(Work|Volunteer|Education)$/,
-      );
-      expect(sectionHeadings).toHaveLength(3);
-      expect(sectionHeadings[0]).toHaveTextContent("Work");
-      expect(sectionHeadings[1]).toHaveTextContent("Volunteer");
-      expect(sectionHeadings[2]).toHaveTextContent("Education");
+      const sectionHeadings = screen
+        .getAllByRole("heading", { level: 2 })
+        .map((heading) => heading.textContent)
+        .filter((text) => sectionOrder.includes(text ?? ""));
+
+      expect(sectionHeadings).toEqual(sectionOrder);
     });
   });
 
@@ -147,20 +170,18 @@ describe("resume | work | Work", () => {
       const h1 = screen.getByRole("heading", { level: 1 });
       expect(h1).toHaveTextContent("Experience");
 
-      expect(screen.getByText("Work")).toBeInTheDocument();
-      expect(screen.getByText("Volunteer")).toBeInTheDocument();
-      expect(screen.getByText("Education")).toBeInTheDocument();
+      sectionOrder.forEach((title) => {
+        expect(screen.getByText(title)).toBeInTheDocument();
+      });
     });
 
     it("has proper semantic structure", () => {
       render(<Work />);
 
-      const mainHeading = screen.getByRole("heading", { level: 1 });
-      expect(mainHeading).toBeInTheDocument();
-
-      expect(screen.getByText("Work")).toBeInTheDocument();
-      expect(screen.getByText("Volunteer")).toBeInTheDocument();
-      expect(screen.getByText("Education")).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
+      sectionOrder.forEach((title) => {
+        expect(screen.getByText(title)).toBeInTheDocument();
+      });
     });
   });
 
@@ -169,9 +190,9 @@ describe("resume | work | Work", () => {
       render(<Work />);
 
       expect(screen.getByText("Experience")).toBeInTheDocument();
-      expect(screen.getByText("Work")).toBeInTheDocument();
-      expect(screen.getByText("Volunteer")).toBeInTheDocument();
-      expect(screen.getByText("Education")).toBeInTheDocument();
+      sectionOrder.forEach((title) => {
+        expect(screen.getByText(title)).toBeInTheDocument();
+      });
     });
   });
 

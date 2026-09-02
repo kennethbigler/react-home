@@ -93,9 +93,8 @@ jobs:
         with:
           urls: |
             https://www.kennethbigler.com/
-            https://www.kennethbigler.com/work
+            https://www.kennethbigler.com/experience
             https://www.kennethbigler.com/resume
-            https://www.kennethbigler.com/presentations
             https://www.kennethbigler.com/f1
             https://www.kennethbigler.com/cars
             https://www.kennethbigler.com/finances

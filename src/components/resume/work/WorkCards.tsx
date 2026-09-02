@@ -1,6 +1,7 @@
-import { Typography, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import Job from "./Job";
 import type { Job as JobType } from "@/constants/work";
+import ExperienceSection from "./ExperienceSection";
 
 interface WorkCardsProps {
   title: string;
@@ -8,21 +9,13 @@ interface WorkCardsProps {
 }
 
 const WorkCards = ({ title, jobs }: WorkCardsProps) => (
-  <div style={{ marginTop: 25 }}>
-    <Typography
-      variant="h3"
-      component="h2"
-      style={{ textTransform: "capitalize" }}
-    >
-      {title}
-    </Typography>
-    <hr aria-hidden />
+  <ExperienceSection title={title}>
     <Grid container spacing={2}>
       {jobs.map((job) => (
-        <Job key={job.company} job={job} triple={jobs.length >= 3} />
+        <Job key={job.company} job={job} count={jobs.length} />
       ))}
     </Grid>
-  </div>
+  </ExperienceSection>
 );
 
 export default WorkCards;

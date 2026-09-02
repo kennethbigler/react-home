@@ -101,18 +101,10 @@ component_management:
       name: Finances
       paths:
         - src/components/resume/finances/**
-    - component_id: module_resume_education
-      name: Education
-      paths:
-        - src/components/resume/education/**
     - component_id: module_resume_f1
       name: F1
       paths:
         - src/components/resume/f1/**
-    - component_id: module_resume_presentations
-      name: Presentations
-      paths:
-        - src/components/resume/presentations/**
     - component_id: module_resume_resume
       name: Resume
       paths:
@@ -126,6 +118,6 @@ component_management:
       paths:
         - src/components/resume/travel-map/**
     - component_id: module_resume_work
-      name: Work
+      name: Experience
       paths:
         - src/components/resume/work/**
