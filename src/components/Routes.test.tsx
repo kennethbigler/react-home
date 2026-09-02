@@ -18,9 +18,8 @@ vi.mock("./resume/travel-map", () => ({
 
 const routeCases = [
   { path: "/", heading: "Summary" },
-  { path: "/work", heading: "Experience" },
+  { path: "/experience", heading: "Experience" },
   { path: "/resume", heading: "Resume" },
-  { path: "/presentations", heading: "Presentations & Hackathons" },
   { path: "/finances", heading: "Finances" },
   { path: "/f1", heading: "F1" },
   { path: "/cars", heading: "Ken's Cars" },
@@ -80,7 +79,9 @@ describe("components | RootRoutes", () => {
 
       // navigate via the drawer menu
       fireEvent.click(screen.getByTitle("Icon Menu Button"));
-      fireEvent.click(await screen.findByRole("menuitem", { name: "Work" }));
+      fireEvent.click(
+        await screen.findByRole("menuitem", { name: "Experience" }),
+      );
 
       await waitFor(() => {
         expect(scrollTo).toHaveBeenCalledTimes(2);

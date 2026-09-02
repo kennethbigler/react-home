@@ -38,11 +38,8 @@ describe("components | routeTitleUtils", () => {
       expect(getPageTitle("/cars")).toBe(`Cars | ${BASE_TITLE}`);
       expect(getPageTitle("/finances")).toBe(`Finances | ${BASE_TITLE}`);
       expect(getPageTitle("/f1")).toBe(`F1 | ${BASE_TITLE}`);
-      expect(getPageTitle("/presentations")).toBe(
-        `Presentations | ${BASE_TITLE}`,
-      );
       expect(getPageTitle("/resume")).toBe(`Resume | ${BASE_TITLE}`);
-      expect(getPageTitle("/work")).toBe(`Work | ${BASE_TITLE}`);
+      expect(getPageTitle("/experience")).toBe(`Experience | ${BASE_TITLE}`);
     });
 
     it("title-cases hyphenated path segments", () => {
