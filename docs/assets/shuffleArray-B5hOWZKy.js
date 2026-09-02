@@ -1,0 +1,1 @@
+var e=e=>{let t=[...e];for(let e=t.length-1;e>0;--e){let n=Math.floor(Math.random()*(e+1));[t[e],t[n]]=[t[n],t[e]]}return t};export{e as t};
