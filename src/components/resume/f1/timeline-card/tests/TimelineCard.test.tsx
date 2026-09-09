@@ -61,8 +61,7 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
     ).toBeInTheDocument();
 
     // verify Timeline
-    expect(screen.getAllByTitle("year")).not.toBeNull();
-    expect(screen.getAllByTitle("year-marker")).not.toBeNull();
+    expect(screen.getByText("'20")).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Red Bull" }),
     ).toBeInTheDocument();
@@ -124,8 +123,7 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
     expect(
       screen.getByText("Drivers over 100 points in 2025"),
     ).toBeInTheDocument();
-    expect(screen.queryByTitle("year")).not.toBeInTheDocument();
-    expect(screen.queryByTitle("year-marker")).not.toBeInTheDocument();
+    expect(screen.queryByText("'20")).not.toBeInTheDocument();
   });
 
   it("returns no range for an empty dataset", () => {

@@ -1,69 +1,38 @@
 import dateObj, { type DateObj } from "@/apis/DateHelper";
 import type { CarEntry } from "@/constants/cars";
 import type { SegmentType } from "@/components/common/timeline-parts/Segment";
+import {
+  TIMELINE_WIDTH,
+  buildYearMarkerSegments,
+  finalizeRowWidths,
+  gapBetweenPositions,
+  positionOnTimeline,
+  type TimelineRange,
+} from "@/components/common/timeline-parts/timelineMath";
 
 /* *************************     Constants     ************************* */
 export const START = dateObj("2008-03");
-export const END = dateObj();
-
-const WIDTH = 99;
-const YEAR_WIDTH = 0.3;
 const YEAR_MARK_FREQ = 3;
 
+export const getCarsTimelineRange = (): TimelineRange => ({
+  start: START,
+  end: dateObj(),
+});
+
 /* *************************     Local Functions     ************************* */
-/** function to add empty space between start and elm segment */
-const addEmptySegment = (segments: SegmentType[], width: number): void => {
+const pushGap = (segments: SegmentType[], width: number): void => {
   if (width > 0) {
     segments.push({ width });
   }
 };
 
-/** Get the width from the beginning of the graph to this bar */
-const getTimeFromStart = (val: DateObj): number => {
-  // get max length
-  const totalDuration = END.diff(START, "months");
-  const timeFromStart = val.diff(START, "months");
-  const width = Math.floor((timeFromStart / totalDuration) * WIDTH);
-  return width > 0 ? width : 0;
-};
-
-/** function to add elm segment */
 const addSegment = (
   segments: SegmentType[],
   elm: CarEntry,
-  beginning: number,
-  ending: number,
+  width: number,
 ): void => {
   const { color, inverted, title, car } = elm;
-  const width = ending - beginning;
   segments.push({ body: car, color, inverted, width, title });
-};
-
-/* *************************     Export Functions     ************************* */
-/** adds gray lines to indicate years */
-export const getYearMarkers = () => {
-  const startYear = Number(START.format("YYYY"));
-  const endYear = Number(END.format("YYYY"));
-
-  const years = [];
-  for (let year = startYear + 1; year <= endYear; year += YEAR_MARK_FREQ) {
-    years.push(dateObj(`${year}`));
-  }
-
-  const marker = { width: YEAR_WIDTH, body: years[0].format("'YY") };
-  const yearMarkers = [
-    { width: getTimeFromStart(years[0]) - YEAR_WIDTH },
-    marker,
-  ];
-
-  for (let i = 1; i < years.length; i += 1) {
-    const previousYear = getTimeFromStart(years[i - 1]);
-    const thisYear = getTimeFromStart(years[i]);
-    yearMarkers.push({ width: thisYear - previousYear - YEAR_WIDTH });
-    yearMarkers.push({ width: YEAR_WIDTH, body: years[i].format("'YY") });
-  }
-
-  return yearMarkers;
 };
 
 const getStart = (data: CarEntry, useKStart: boolean, useFStart: boolean) =>
@@ -79,6 +48,25 @@ const getEnd = (data: CarEntry, useKStart: boolean, useFStart: boolean) =>
       ? data.fStart || data.end
       : data.end;
 
+/* *************************     Export Functions     ************************* */
+/** adds gray lines to indicate years */
+export const getYearMarkers = (
+  range: TimelineRange = getCarsTimelineRange(),
+) => {
+  const startYear = Number(range.start.format("YYYY"));
+  const endYear = Number(range.end.format("YYYY"));
+
+  const markers = [];
+  for (let year = startYear + 1; year <= endYear; year += YEAR_MARK_FREQ) {
+    markers.push({
+      date: dateObj(`${year}`),
+      label: dateObj(`${year}`).format("'YY"),
+    });
+  }
+
+  return buildYearMarkerSegments(range, markers);
+};
+
 /** break data up into segments */
 export const getSegments = (
   data: CarEntry[],
@@ -87,47 +75,43 @@ export const getSegments = (
   useFStart: boolean,
   elm: CarEntry,
   i: number,
+  range: TimelineRange = getCarsTimelineRange(),
 ): SegmentType[] => {
-  // skip if added already
   if (added[i]) {
     return [];
   }
 
-  // local variables
   const segments: SegmentType[] = [];
   const segStart: DateObj = getStart(elm, useKStart, useFStart);
   const segEnd: DateObj = getEnd(elm, useKStart, useFStart);
 
-  let beginning = getTimeFromStart(segStart);
-  let ending = getTimeFromStart(segEnd);
+  let beginning = positionOnTimeline(segStart, range);
+  let ending = positionOnTimeline(segEnd, range);
 
-  // add main segments
-  addEmptySegment(segments, beginning);
-  addSegment(segments, elm, beginning, ending);
-  // track that segments have been added
+  pushGap(segments, beginning);
+  addSegment(segments, elm, gapBetweenPositions(beginning, ending));
   added[i] = true;
 
-  // find any other segments that will fit
   data.forEach((entry, j) => {
-    // skip if added already
     if (!added[j]) {
-      // test segment
-      beginning = getTimeFromStart(getStart(entry, useKStart, useFStart));
-      // if start is after end of main segment
+      beginning = positionOnTimeline(
+        getStart(entry, useKStart, useFStart),
+        range,
+      );
       if (beginning >= ending) {
-        // add filler in between end/start
-        addEmptySegment(segments, beginning - ending);
-        // add next segment
-        ending = getTimeFromStart(getEnd(entry, useKStart, useFStart));
-        addSegment(segments, entry, beginning, ending);
-        // mark as already added
+        pushGap(segments, gapBetweenPositions(ending, beginning));
+        ending = positionOnTimeline(getEnd(entry, useKStart, useFStart), range);
+        addSegment(segments, entry, gapBetweenPositions(beginning, ending));
         added[j] = true;
       }
     }
   });
 
-  // get last segment
-  addEmptySegment(segments, WIDTH - ending);
+  pushGap(segments, gapBetweenPositions(ending, TIMELINE_WIDTH));
 
-  return [...segments];
+  const finalizedWidths = finalizeRowWidths(segments.map(({ width }) => width));
+  return segments.map((segment, index) => ({
+    ...segment,
+    width: finalizedWidths[index],
+  }));
 };

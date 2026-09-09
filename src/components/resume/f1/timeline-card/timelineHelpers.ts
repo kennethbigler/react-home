@@ -1,22 +1,19 @@
 import dateObj, { type DateObj } from "@/apis/DateHelper";
 import type { ContractData } from "@/constants/f1";
 import type { SegmentType } from "@/components/common/timeline-parts/Segment";
+import {
+  TIMELINE_WIDTH,
+  buildYearMarkerSegments,
+  finalizeRowWidths,
+  gapBetweenPositions,
+  positionOnTimeline,
+  type TimelineRange,
+} from "@/components/common/timeline-parts/timelineMath";
 
 /* *************************     Constants     ************************* */
-const WIDTH = 99;
-const YEAR_WIDTH = 0.3;
 const YEAR_MARK_FREQ = 2;
 
-interface YearMarkerType {
-  width: number;
-  body?: string;
-  color?: string;
-}
-
-export interface TimelineRange {
-  start: DateObj;
-  end: DateObj;
-}
+export type { TimelineRange };
 
 export interface TimelineRow {
   key: string;
@@ -24,34 +21,21 @@ export interface TimelineRow {
 }
 
 /* *************************     Local Functions     ************************* */
-/** function to add empty space between start and elm segment */
-const addEmptySegment = (segments: SegmentType[], width: number): void => {
+const pushGap = (segments: SegmentType[], width: number): void => {
   if (width > 0) {
     segments.push({ width });
   }
 };
 
-/** Get the width from the beginning of the graph to this bar */
-const getTimeFromStart = (val: DateObj, range: TimelineRange): number => {
-  const totalDuration = range.end.diff(range.start, "months");
-  const timeFromStart = val.diff(range.start, "months");
-  const width = Math.floor((timeFromStart / totalDuration) * WIDTH);
-  return width > 0 ? width : 0;
-};
-
-/** function to add elm segment */
 const addSegment = (
   segments: SegmentType[],
   elm: ContractData,
-  beginning: number,
-  ending: number,
+  width: number,
 ): void => {
   const { color, inverted, team } = elm;
-  const width = ending - beginning;
   segments.push({ body: team, color, inverted, width, title: team });
 };
 
-/* *************************     Export Functions     ************************* */
 /** One calendar month after a DateObj (December rolls into January) */
 const addMonth = (date: DateObj): DateObj => {
   const next = date.month + 1;
@@ -60,6 +44,7 @@ const addMonth = (date: DateObj): DateObj => {
   return dateObj(`${year}-${String(month).padStart(2, "0")}`);
 };
 
+/* *************************     Export Functions     ************************* */
 /** Earliest start; end is one month after the latest contract, or today if later */
 export const getTimelineRange = (
   data: ContractData[],
@@ -97,7 +82,7 @@ export const getYearMarkers = (
 
   const currentYear = dateObj().year;
   let hasCurrentYear = false;
-  const years = [];
+  const years: DateObj[] = [];
   for (let year = startYear + 1; year <= endYear; year += YEAR_MARK_FREQ) {
     if (year === currentYear) {
       hasCurrentYear = true;
@@ -108,28 +93,13 @@ export const getYearMarkers = (
     years.push(dateObj(`${year}`));
   }
 
-  if (years.length === 0) {
-    return [];
-  }
+  const markers = years.map((yearDate) => ({
+    date: yearDate,
+    label: yearDate.format("'YY"),
+    color: yearDate.year === currentYear ? currentYearColor : undefined,
+  }));
 
-  const marker = { width: YEAR_WIDTH, body: years[0].format("'YY") };
-  const yearMarkers: YearMarkerType[] = [
-    { width: getTimeFromStart(years[0], range) - YEAR_WIDTH },
-    marker,
-  ];
-
-  for (let i = 1; i < years.length; i += 1) {
-    const previousYear = getTimeFromStart(years[i - 1], range);
-    const thisYear = getTimeFromStart(years[i], range);
-    yearMarkers.push({ width: thisYear - previousYear - YEAR_WIDTH });
-    yearMarkers.push({
-      width: YEAR_WIDTH,
-      body: years[i].format("'YY"),
-      color: years[i].year === currentYear ? currentYearColor : undefined,
-    });
-  }
-
-  return yearMarkers;
+  return buildYearMarkerSegments(range, markers);
 };
 
 /** break data up into segments */
@@ -140,46 +110,38 @@ const getSegments = (
   i: number,
   range: TimelineRange,
 ): SegmentType[] => {
-  // skip if added already
   if (added.has(i)) {
     return [];
   }
 
-  // local variables
   const segments: SegmentType[] = [];
 
-  let beginning = getTimeFromStart(elm.start, range);
-  let ending = getTimeFromStart(elm.end, range);
+  let beginning = positionOnTimeline(elm.start, range);
+  let ending = positionOnTimeline(elm.end, range);
 
-  // add main segments
-  addEmptySegment(segments, beginning);
-  addSegment(segments, elm, beginning, ending);
-  // track that segments have been added
+  pushGap(segments, beginning);
+  addSegment(segments, elm, gapBetweenPositions(beginning, ending));
   added.add(i);
 
-  // find any other segments that will fit
   data.forEach((entry, j) => {
-    // skip if added already
     if (!added.has(j)) {
-      // test segment
-      beginning = getTimeFromStart(entry.start, range);
-      // if start is after end of main segment
+      beginning = positionOnTimeline(entry.start, range);
       if (beginning >= ending) {
-        // add filler in between end/start
-        addEmptySegment(segments, beginning - ending);
-        // add next segment
-        ending = getTimeFromStart(entry.end, range);
-        addSegment(segments, entry, beginning, ending);
-        // mark as already added
+        pushGap(segments, gapBetweenPositions(ending, beginning));
+        ending = positionOnTimeline(entry.end, range);
+        addSegment(segments, entry, gapBetweenPositions(beginning, ending));
         added.add(j);
       }
     }
   });
 
-  // get last segment
-  addEmptySegment(segments, WIDTH - ending);
+  pushGap(segments, gapBetweenPositions(ending, TIMELINE_WIDTH));
 
-  return [...segments];
+  const finalizedWidths = finalizeRowWidths(segments.map(({ width }) => width));
+  return segments.map((segment, index) => ({
+    ...segment,
+    width: finalizedWidths[index],
+  }));
 };
 
 /** Pack contracts into rows so non-overlapping spans share a line */

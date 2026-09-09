@@ -3,20 +3,24 @@ import YearMarker from "../YearMarker";
 
 describe("common | timeline-card | YearMarker", () => {
   describe("basic props tests", () => {
-    it("renders a year marker with all elements", () => {
-      render(<YearMarker body="Body" width={50} />);
-      expect(screen.getByTitle("Body")).toBeInTheDocument();
-      expect(screen.getByTitle("Body")).toHaveStyle({ width: "50%" });
-      expect(screen.getByTitle("year-marker")).toBeInTheDocument();
-      expect(screen.getByText("Body")).toBeInTheDocument();
+    it("renders a year marker with label and tick", () => {
+      const { container } = render(<YearMarker body="'25" width={0.3} />);
 
-      expect(screen.queryByTitle("year")).toBeNull();
+      expect(screen.getByText("'25")).toBeInTheDocument();
+      expect(container.firstChild).toHaveStyle({
+        flex: "0 0 0.3%",
+        maxWidth: "0.3%",
+      });
     });
-    it("renders year gap if provided no body", () => {
-      render(<YearMarker width={40} />);
-      expect(screen.queryByTitle("year-marker")).toBeNull();
-      expect(screen.getByTitle("year")).toBeInTheDocument();
-      expect(screen.getByTitle("year")).toHaveStyle({ width: "40%" });
+
+    it("renders year gap when no body is provided", () => {
+      const { container } = render(<YearMarker width={40} />);
+
+      expect(screen.queryByText("'25")).not.toBeInTheDocument();
+      expect(container.firstChild).toHaveStyle({
+        flex: "0 0 40%",
+        maxWidth: "40%",
+      });
     });
   });
 });

@@ -21,7 +21,7 @@ describe("common | timeline-card | Segment", () => {
         backgroundColor: "rgb(255, 255, 255)",
       });
       expect(button).toHaveTextContent("A Very Long Team Name Here");
-      expect(button).toHaveStyle({ width: "100%" });
+      expect(button).toHaveStyle({ flex: "0 0 100%", maxWidth: "100%" });
       expect(button).toHaveStyle({
         color: "rgb(250, 250, 250)",
       });
@@ -38,7 +38,10 @@ describe("common | timeline-card | Segment", () => {
       // title
       expect(screen.getByTitle("Title")).toBeInTheDocument();
       // width
-      expect(screen.getByTitle("Title")).toHaveStyle({ width: "100%" });
+      expect(screen.getByTitle("Title")).toHaveStyle({
+        flex: "0 0 100%",
+        maxWidth: "100%",
+      });
       // inverted
       expect(screen.getByTitle("Title")).toHaveStyle({
         color: "rgb(250, 250, 250)",
@@ -52,7 +55,10 @@ describe("common | timeline-card | Segment", () => {
       // title
       expect(screen.getByTitle("Title")).toBeInTheDocument();
       // width
-      expect(screen.getByTitle("Title")).toHaveStyle({ width: "100%" });
+      expect(screen.getByTitle("Title")).toHaveStyle({
+        flex: "0 0 100%",
+        maxWidth: "100%",
+      });
       // inverted
       expect(screen.getByTitle("Title")).toHaveStyle({
         color: "rgb(250, 250, 250)",
@@ -66,7 +72,10 @@ describe("common | timeline-card | Segment", () => {
       // title
       expect(screen.getByTitle("Title")).toBeInTheDocument();
       // width
-      expect(screen.getByTitle("Title")).toHaveStyle({ width: "100%" });
+      expect(screen.getByTitle("Title")).toHaveStyle({
+        flex: "0 0 100%",
+        maxWidth: "100%",
+      });
       // inverted
       expect(screen.getByTitle("Title")).toHaveStyle({
         color: "rgb(250, 250, 250)",
@@ -78,7 +87,10 @@ describe("common | timeline-card | Segment", () => {
       // title
       expect(screen.getByTitle("Title")).toBeInTheDocument();
       // width
-      expect(screen.getByTitle("Title")).toHaveStyle({ width: "100%" });
+      expect(screen.getByTitle("Title")).toHaveStyle({
+        flex: "0 0 100%",
+        maxWidth: "100%",
+      });
       // inverted
       expect(screen.getByTitle("Title")).toHaveStyle({ color: "rgb(0, 0, 0)" });
     });
@@ -94,8 +106,10 @@ describe("common | timeline-card | Segment", () => {
 
     it("applies correct width style", () => {
       const { container } = render(<Segment width={25} />);
-      const innerDiv = container.querySelector("div > div");
-      expect(innerDiv).toHaveStyle({ width: "25%" });
+      expect(container.firstChild).toHaveStyle({
+        flex: "0 0 25%",
+        maxWidth: "25%",
+      });
     });
   });
 
