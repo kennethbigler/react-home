@@ -1,7 +1,7 @@
 import type { DateObj } from "@/apis/DateHelper";
 
 export const TIMELINE_WIDTH = 100;
-export const YEAR_MARKER_WIDTH = 0.3;
+const YEAR_MARKER_WIDTH = 0.3;
 
 export interface TimelineRange {
   start: DateObj;
@@ -45,14 +45,18 @@ export const finalizeRowWidths = (widths: number[]): number[] => {
   }
 
   const rounded = widths.map((width) => Math.round(width * 10000) / 10000);
-  const sum = rounded.reduce((total, width) => total + width, 0);
-  const diff = TIMELINE_WIDTH - sum;
+  let diff =
+    TIMELINE_WIDTH - rounded.reduce((total, width) => total + width, 0);
 
-  if (diff !== 0) {
-    rounded[rounded.length - 1] = Math.max(
-      0,
-      rounded[rounded.length - 1] + diff,
-    );
+  for (let index = rounded.length - 1; diff !== 0 && index >= 0; index -= 1) {
+    const next = rounded[index] + diff;
+    if (next >= 0) {
+      rounded[index] = next;
+      diff = 0;
+    } else {
+      diff = next;
+      rounded[index] = 0;
+    }
   }
 
   return rounded;

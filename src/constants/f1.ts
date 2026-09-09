@@ -314,6 +314,7 @@ const drivers: Driver[] = [
     color: RED_BULL_HEX,
     points: [null, null, null, 32, 12, 17, 30, 33, 1],
     standings: [null, null, null, 14, 17, 14, 12, 17, 20],
+    thisYear: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
   },
   {
     name: "Stoffel Vandoorne",
