@@ -46,6 +46,13 @@ describe("common | timeline-parts | timelineMath", () => {
     expect(sumWidths(widths.map((width) => ({ width })))).toBe(TIMELINE_WIDTH);
   });
 
+  it("distributes negative finalizeRowWidths drift across preceding segments", () => {
+    const widths = finalizeRowWidths([80, 25, 3]);
+
+    expect(widths).toEqual([80, 20, 0]);
+    expect(sumWidths(widths.map((width) => ({ width })))).toBe(TIMELINE_WIDTH);
+  });
+
   it("keeps F1 contract rows aligned to the same width as year markers", () => {
     const range = getTimelineRange(contractData);
     expect(range).toBeDefined();
@@ -62,7 +69,7 @@ describe("common | timeline-parts | timelineMath", () => {
     });
   });
 
-  it("places Antonelli between the 2025 and 2027 year markers on the F1 timeline", () => {
+  it("places Antonelli from the 2025 marker through December 2027 on the F1 timeline", () => {
     const range = getTimelineRange(contractData);
     expect(range).toBeDefined();
     if (!range) {
@@ -81,10 +88,12 @@ describe("common | timeline-parts | timelineMath", () => {
     const end = positionOnTimeline(antonelli.end, range);
     const marker2025 = positionOnTimeline(dateObj("2025"), range);
     const marker2027 = positionOnTimeline(dateObj("2027"), range);
+    const marker2029 = positionOnTimeline(dateObj("2029"), range);
 
     expect(start).toBeCloseTo(marker2025, 1);
-    expect(end).toBeGreaterThan(positionOnTimeline(dateObj("2026"), range));
-    expect(end).toBeLessThan(marker2027);
+    expect(end).toBeGreaterThan(marker2027);
+    expect(end).toBeLessThan(marker2029);
+    expect(end).toBeCloseTo(positionOnTimeline(dateObj("2027-12"), range), 1);
   });
 
   it("keeps Cayenne shorter than longer-running current cars on the cars timeline", () => {
