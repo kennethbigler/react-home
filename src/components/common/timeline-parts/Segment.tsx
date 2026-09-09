@@ -29,6 +29,12 @@ const bodyStyles: CSSProperties = {
   verticalAlign: "top",
 };
 
+const segmentLayout = (width: number): CSSProperties => ({
+  flex: `0 0 ${width}%`,
+  maxWidth: `${width}%`,
+  minWidth: 0,
+});
+
 const Segment = memo(
   ({
     body,
@@ -42,18 +48,16 @@ const Segment = memo(
       palette: { mode },
     } = useTheme();
 
-    // variables for empty segment
     let style: CSSProperties = {
-      display: "inline-block",
-      width: `${width}%`,
-      minWidth: 0,
-      verticalAlign: "top",
+      ...segmentLayout(width),
       color: inverted ? "black" : grey[50],
     };
     if (body) {
       style = {
         ...style,
         ...bodyStyles,
+        position: "relative",
+        zIndex: 1,
         backgroundColor: color,
         boxShadow: `2px 3px 4px 1px ${mode !== "dark" ? grey[400] : grey[700]}`,
       };
@@ -70,9 +74,7 @@ const Segment = memo(
         {body || <br />}
       </button>
     ) : (
-      <div style={style}>
-        <br />
-      </div>
+      <div style={style} aria-hidden="true" />
     );
   },
 );

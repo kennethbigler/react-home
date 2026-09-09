@@ -74,8 +74,7 @@ describe("common | timeline-card | TimelineCard", () => {
     ).toBeInTheDocument();
 
     // verify Timeline
-    expect(screen.getAllByTitle("year")).not.toBeNull();
-    expect(screen.getAllByTitle("year-marker")).not.toBeNull();
+    expect(screen.getByText("'09")).toBeInTheDocument();
     expect(screen.getByTitle("Title 1")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Title 2" })).toBeInTheDocument();
   });

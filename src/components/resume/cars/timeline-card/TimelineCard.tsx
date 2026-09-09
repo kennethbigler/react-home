@@ -1,7 +1,12 @@
 import type { FormatOutput } from "@/apis/DateHelper";
 import ExpandableCard from "@/components/common/expandable-card";
 import Row from "@/components/common/timeline-parts/Row";
-import { START, END, getYearMarkers, getSegments } from "./timelineHelpers";
+import {
+  START,
+  getCarsTimelineRange,
+  getYearMarkers,
+  getSegments,
+} from "./timelineHelpers";
 import type { CarEntry } from "@/constants/cars";
 
 interface TimelineCardProps {
@@ -48,6 +53,7 @@ const TimelineCard = ({
   const data: CarEntry[] = [...propsData].sort(
     useFStart ? fMonthSort : useKStart ? kMonthSort : monthSort,
   );
+  const range = getCarsTimelineRange();
   // track elements added already
   const added: boolean[] = [];
 
@@ -55,10 +61,10 @@ const TimelineCard = ({
     <ExpandableCard
       backgroundColor="black"
       title="Ken's Cars"
-      subtitle={`${START.format(DATE_FORMAT)} - ${END.format(DATE_FORMAT)}`}
+      subtitle={`${START.format(DATE_FORMAT)} - ${range.end.format(DATE_FORMAT)}`}
     >
       <div style={{ width: "100%", paddingBottom: 7 }}>
-        <Row key={data.length} segments={getYearMarkers()} yearMarkers />
+        <Row key={data.length} segments={getYearMarkers(range)} yearMarkers />
         {data.map((elm, i) => {
           const segments = getSegments(
             data,
@@ -67,6 +73,7 @@ const TimelineCard = ({
             useFStart,
             elm,
             i,
+            range,
           );
           return segments.length ? (
             <Row

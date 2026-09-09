@@ -9,9 +9,28 @@ interface RowProps {
   onClick?: (title: string) => void;
 }
 
-const smMarginTop: CSSProperties = { marginTop: 10, whiteSpace: "nowrap" };
-const lgMarginTop: CSSProperties = { marginTop: 20, whiteSpace: "nowrap" };
-const noStyle: CSSProperties = { height: 0, whiteSpace: "nowrap" };
+const baseRowStyles: CSSProperties = {
+  display: "flex",
+  width: "100%",
+  flexWrap: "nowrap",
+  minWidth: 0,
+};
+
+const smMarginTop: CSSProperties = {
+  marginTop: 10,
+  position: "relative",
+  zIndex: 1,
+};
+const lgMarginTop: CSSProperties = {
+  marginTop: 20,
+  position: "relative",
+  zIndex: 1,
+};
+const yearMarkerRowStyle: CSSProperties = {
+  height: 0,
+  position: "relative",
+  zIndex: 0,
+};
 
 const Row = ({
   segments,
@@ -19,11 +38,11 @@ const Row = ({
   yearMarkers = false,
   first = false,
 }: RowProps) => {
-  let style = smMarginTop;
+  let marginStyle = smMarginTop;
   if (yearMarkers) {
-    style = noStyle;
+    marginStyle = yearMarkerRowStyle;
   } else if (first) {
-    style = lgMarginTop;
+    marginStyle = lgMarginTop;
   }
 
   const rowLabel = yearMarkers
@@ -35,7 +54,7 @@ const Row = ({
 
   return (
     <div
-      style={style}
+      style={{ ...baseRowStyles, ...marginStyle }}
       role={yearMarkers ? undefined : "group"}
       aria-label={rowLabel}
     >
