@@ -63,7 +63,7 @@
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.7",
     "@typescript-eslint/parser": "8.70.0",
-    "@vitejs/plugin-react": "6.1.0",
+    "@vitejs/plugin-react": "6.1.1",
     "@vitest/coverage-v8": "4.1.11",
     "eslint": "10.10.0",
     "eslint-plugin-import": "2.32.0",
