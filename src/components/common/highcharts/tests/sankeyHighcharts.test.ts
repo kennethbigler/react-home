@@ -72,10 +72,15 @@ describe("common | highcharts | sankeyHighcharts", () => {
       toNode: nodeSecond,
       fromNode: nodeFirst,
     };
+    const linkSecondToThird: SankeyLink = {
+      toNode: nodeThird,
+      fromNode: nodeSecond,
+    };
 
     nodeFirst.linksFrom = [linkToThird, linkToSecond];
+    nodeSecond.linksFrom = [linkSecondToThird];
     nodeSecond.linksTo = [linkToSecond];
-    nodeThird.linksTo = [linkToThird];
+    nodeThird.linksTo = [linkSecondToThird, linkToThird];
 
     originalCreateNodeColumns.mockReturnValue([
       [nodeThird, nodeFirst, nodeSecond],
@@ -87,6 +92,7 @@ describe("common | highcharts | sankeyHighcharts", () => {
     expect(columns[0]).toEqual([nodeFirst, nodeSecond, nodeThird]);
     expect(nodeFirst.linksFrom).toEqual([linkToSecond, linkToThird]);
     expect(nodeFirst.linksTo).toEqual([]);
+    expect(nodeThird.linksTo).toEqual([linkToThird, linkSecondToThird]);
   });
 
   it("treats missing order as zero when sorting", () => {
