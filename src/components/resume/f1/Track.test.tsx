@@ -1,5 +1,6 @@
 import { vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
+import dateObj from "@/apis/DateHelper";
 import Track from "./Track";
 
 const defaultProps = {
@@ -58,9 +59,12 @@ describe("resume | f1 | Track", () => {
   });
 
   it("renders all content when next is true", () => {
-    render(<Track {...defaultProps} next={true} />);
+    render(
+      <Track {...defaultProps} next={true} date={dateObj("2026-07-26")} />,
+    );
 
     expect(screen.getByText("Monaco")).toBeInTheDocument();
+    expect(screen.getByText("July 26, 2026")).toBeInTheDocument();
     expect(
       screen.getByRole("img", { name: "Monaco track layout" }),
     ).toBeInTheDocument();

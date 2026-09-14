@@ -34,6 +34,7 @@ describe("resume | f1 | Tracks", () => {
         name: /Hungaroring, Budapest, Hungary circuit details, next race/i,
       }),
     ).toBeInTheDocument();
+    expect(screen.getByText("July 26, 2026")).toBeInTheDocument();
     expect(
       screen.getByText("Circuit de Spa-Francorchamps, Belgium"),
     ).toBeInTheDocument();
