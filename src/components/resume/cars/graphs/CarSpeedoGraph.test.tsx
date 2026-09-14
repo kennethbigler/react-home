@@ -1,3 +1,4 @@
+import { getSeriesByName } from "../../../common/highcharts/tests/highchartsMocks";
 import { render, screen } from "@testing-library/react";
 import CarSpeedoGraph from "./CarSpeedoGraph";
 
@@ -15,12 +16,16 @@ describe("resume | cars | graphs | CarSpeedoGraph", () => {
   it("renders a white-theme gauge", () => {
     render(<CarSpeedoGraph {...baseProps} color="white" />);
 
-    expect(screen.getAllByText("Demo Metric").length).toBeGreaterThan(0);
+    expect(screen.getByText("Demo Metric")).toBeInTheDocument();
+    expect(screen.getByTestId("highcharts-chart")).toBeInTheDocument();
+    expect(getSeriesByName("Demo")?.type).toBe("gauge");
+    expect(getSeriesByName("Demo")?.data).toEqual([42]);
   });
 
   it("renders a black-theme gauge and clamps negative green bands", () => {
     render(<CarSpeedoGraph {...baseProps} color="black" endGreenVal={-10} />);
 
-    expect(screen.getAllByText("Demo Metric").length).toBeGreaterThan(0);
+    expect(screen.getByText("Demo Metric")).toBeInTheDocument();
+    expect(getSeriesByName("Demo")?.data).toEqual([42]);
   });
 });
