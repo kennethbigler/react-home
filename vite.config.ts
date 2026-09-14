@@ -9,7 +9,7 @@ import react from "@vitejs/plugin-react";
 
 /** Async chart chunks — keep off modulepreload for non-chart routes. */
 const CHART_CHUNK_PATTERN =
-  /charts-core|charts-maps|charts-sankey|coreHighcharts|sankeyHighcharts|mapsHighcharts/;
+  /charts-core|charts-maps|coreHighcharts|sankeyHighcharts|mapsHighcharts/;
 
 /** Make main stylesheet non-render-blocking (Lighthouse: eliminate render-blocking resources). */
 function deferStylesheetPlugin(): Plugin {
@@ -66,11 +66,6 @@ export default defineConfig({
             {
               name: "charts-maps",
               test: /node_modules\/highcharts\/.*highmaps/,
-              includeDependenciesRecursively: false,
-            },
-            {
-              name: "charts-sankey",
-              test: /node_modules\/highcharts\/(highcharts-more|modules\/sankey)/,
               includeDependenciesRecursively: false,
             },
             {

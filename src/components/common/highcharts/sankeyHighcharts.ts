@@ -19,11 +19,23 @@ type SankeySeriesPrototype = {
   ) => SankeyNodeColumn[];
 };
 
-const sankeyPrototype = (
-  Highcharts as unknown as {
-    seriesTypes: { sankey: { prototype: SankeySeriesPrototype } };
+const getSankeyPrototype = (): SankeySeriesPrototype => {
+  const sankey = (
+    Highcharts as unknown as {
+      seriesTypes?: { sankey?: { prototype: SankeySeriesPrototype } };
+    }
+  ).seriesTypes?.sankey;
+
+  if (!sankey?.prototype) {
+    throw new Error(
+      "Highcharts sankey series is not registered. Check that highcharts-more and modules/sankey load with the same Highcharts instance as coreHighcharts.",
+    );
   }
-).seriesTypes.sankey.prototype;
+
+  return sankey.prototype;
+};
+
+const sankeyPrototype = getSankeyPrototype();
 
 const getNodeOrder = (node?: SankeyNode) => node?.options.order ?? 0;
 
