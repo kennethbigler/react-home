@@ -176,10 +176,10 @@ const CURRENT_TRACKS: TrackData[] = [
   {
     circuitName: "Madring, Madrid, Spain",
     imgSrc: madridSrc,
-    circuitLen: 0,
+    circuitLen: 5.414,
     firstGP: 2026,
-    numLaps: 0,
-    raceLen: 0,
+    numLaps: 57,
+    raceLen: 308.399,
     date: dateObj("2026-09-13"),
   },
   {

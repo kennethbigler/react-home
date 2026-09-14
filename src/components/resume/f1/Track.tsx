@@ -38,6 +38,7 @@ const Track = memo(
     numLaps,
     raceLen,
     skipped,
+    date,
     onToggle,
   }: TrackProps) => {
     const muiTheme = useTheme();
@@ -83,6 +84,11 @@ const Track = memo(
         >
           {circuitName}
         </Typography>
+        {next && date && (
+          <Typography variant={isExpanded ? "h5" : "body2"} sx={headingStyles}>
+            {date.format("MMMM")} {date.day}, {date.year}
+          </Typography>
+        )}
         {circuitSubName && (
           <Typography
             component="h3"
