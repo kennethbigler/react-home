@@ -74,7 +74,7 @@
     "gts": "7.0.0",
     "jest-axe": "11.0.0",
     "jsdom": "30.0.1",
-    "knip": "6.32.2",
+    "knip": "6.35.1",
     "playwright": "1.55.1",
     "picocolors": "1.1.1",
     "typescript": "6.0.3",
