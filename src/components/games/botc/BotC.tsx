@@ -3,7 +3,7 @@ import { useSetAtom } from "jotai";
 import useBotC from "./useBotC";
 import Header from "./header/Header";
 import PlayerNotes from "./player-notes/PlayerNotes";
-import guardChart from "@/components/common/highcharts/guardChart";
+import { guardChart } from "@/components/common/highcharts/guardChart";
 import { Divider } from "@mui/material";
 import botcAtom, { botcPlayerShell, newBotCGame } from "@/jotai/botc-atom";
 import { parseShareParams } from "@/utils/botc-share-utils";

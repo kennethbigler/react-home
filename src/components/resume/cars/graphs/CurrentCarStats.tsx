@@ -1,5 +1,5 @@
 import { memo } from "react";
-import guardChart from "@/components/common/highcharts/guardChart";
+import { guardChart } from "@/components/common/highcharts/guardChart";
 
 const CarSpeedoGraph = guardChart(() => import("./CarSpeedoGraph"));
 

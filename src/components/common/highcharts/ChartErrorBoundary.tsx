@@ -1,5 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
-import ChartUnavailable from "./ChartUnavailable";
+import { ChartUnavailable } from "./ChartUnavailable";
 
 interface ChartErrorBoundaryProps {
   children: ReactNode;
@@ -11,7 +11,7 @@ interface ChartErrorBoundaryState {
 }
 
 /** Catches Highcharts load/render failures so the rest of the page stays usable. */
-class ChartErrorBoundary extends Component<
+export class ChartErrorBoundary extends Component<
   ChartErrorBoundaryProps,
   ChartErrorBoundaryState
 > {
@@ -32,5 +32,3 @@ class ChartErrorBoundary extends Component<
     return this.props.children;
   }
 }
-
-export default ChartErrorBoundary;

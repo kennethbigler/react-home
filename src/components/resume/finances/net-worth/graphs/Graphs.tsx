@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import type { NetWorthCalcEntry, NetWorthEntry } from "@/jotai/net-worth-atom";
-import guardChart from "@/components/common/highcharts/guardChart";
+import { guardChart } from "@/components/common/highcharts/guardChart";
 import usePointSelection from "@/components/resume/finances/shared/usePointSelection";
 
 const NetWorthChart = guardChart(() => import("./NetWorthGraph"));

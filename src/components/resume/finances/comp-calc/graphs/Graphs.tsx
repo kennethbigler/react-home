@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import type { CompCalcEntry, CompEntry } from "@/jotai/comp-calc-atom";
-import guardChart from "@/components/common/highcharts/guardChart";
+import { guardChart } from "@/components/common/highcharts/guardChart";
 import usePointSelection from "@/components/resume/finances/shared/usePointSelection";
 
 const CompChart = guardChart(() => import("./CompGraph"));

@@ -6,7 +6,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { Box, Typography } from "@mui/material";
 import Header, { type NavProps } from "./header/Header";
@@ -59,19 +59,23 @@ class SectionErrorBoundary extends Component<
 }
 
 /** Layout route for one section of the site (resume, games): header + lazy page outlet. */
-const SectionLayout = ({ Menu }: SectionLayoutProps) => (
-  <>
-    <Header>
-      {(onItemClick): ReactElement<NavProps> => (
-        <Menu onItemClick={onItemClick} />
-      )}
-    </Header>
-    <SectionErrorBoundary>
-      <Suspense fallback={<LoadingSpinner />}>
-        <Outlet />
-      </Suspense>
-    </SectionErrorBoundary>
-  </>
-);
+const SectionLayout = ({ Menu }: SectionLayoutProps) => {
+  const { pathname } = useLocation();
+
+  return (
+    <>
+      <Header>
+        {(onItemClick): ReactElement<NavProps> => (
+          <Menu onItemClick={onItemClick} />
+        )}
+      </Header>
+      <SectionErrorBoundary key={pathname}>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Outlet />
+        </Suspense>
+      </SectionErrorBoundary>
+    </>
+  );
+};
 
 export default SectionLayout;
