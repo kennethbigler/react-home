@@ -1,6 +1,6 @@
 import { Typography, Grid } from "@mui/material";
 import { useAtomValue } from "jotai";
-import guardChart from "@/components/common/highcharts/guardChart";
+import { guardChart } from "@/components/common/highcharts/guardChart";
 import ExpandableCard from "@/components/common/expandable-card";
 import themeAtom from "@/jotai/theme-atom";
 import {

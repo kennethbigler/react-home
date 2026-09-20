@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 import InfoPopup from "@/components/common/info-popover/InfoPopup";
-import guardChart from "@/components/common/highcharts/guardChart";
+import { guardChart } from "@/components/common/highcharts/guardChart";
 import themeAtom from "@/jotai/theme-atom";
 import { getChipColor } from "../helpers/getChipColor";
 import spadesAtom from "@/jotai/spades-atom";

@@ -11,7 +11,7 @@ import { useTheme } from "@mui/material/styles";
 import { useAtomValue } from "jotai";
 import usDollar from "@/apis/usDollar";
 import { budgetFlowRead } from "@/jotai/budget-atom";
-import guardChart from "@/components/common/highcharts/guardChart";
+import { guardChart } from "@/components/common/highcharts/guardChart";
 import { PAYROLL_CATEGORY_KEY } from "./graphs/chartData";
 import { getBudgetPieContent } from "./graphs/getBudgetPieContent";
 

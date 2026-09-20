@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import ChartErrorBoundary from "../ChartErrorBoundary";
+import { ChartErrorBoundary } from "../ChartErrorBoundary";
 
 const ThrowingChart = () => {
   throw new Error("chart boom");

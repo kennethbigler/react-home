@@ -2,7 +2,7 @@ import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { Box, Typography } from "@mui/material";
 
 /** Inline warning shown when a Highcharts chart fails to load or render. */
-const ChartUnavailable = () => (
+export const ChartUnavailable = () => (
   <Box
     role="status"
     aria-live="polite"
@@ -20,5 +20,3 @@ const ChartUnavailable = () => (
     </Typography>
   </Box>
 );
-
-export default ChartUnavailable;

@@ -1,8 +1,23 @@
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import { createStore } from "jotai";
 import Spades from ".";
 import spadesAtom from "@/jotai/spades-atom";
 import { createAtomWrapper } from "@/test-utils/renderWithHydratedAtoms";
+
+// ShowStats lazy-loads these via guardChart; keep Spades page tests free of
+// Highcharts so dialog open/close is not raced by chart chunk evaluation in CI.
+vi.mock("./control-bar/StatsBagsChart", () => ({
+  default: () => <div data-testid="stats-bags-chart" />,
+}));
+vi.mock("./control-bar/StatsNilsChart", () => ({
+  default: () => <div data-testid="stats-nils-chart" />,
+}));
 
 describe("games | spades | Spades", () => {
   it("renders as expected", async () => {
@@ -39,9 +54,10 @@ describe("games | spades | Spades", () => {
     expect(screen.queryByText("Totals:")).toBeNull();
     fireEvent.click(screen.getByText("Stats"));
     expect(screen.getByText("Totals:")).toBeInTheDocument();
-    await waitFor(() => expect(screen.getByText("Close")).toBeInTheDocument());
+    expect(await screen.findByTestId("stats-bags-chart")).toBeInTheDocument();
+    expect(screen.getByTestId("stats-nils-chart")).toBeInTheDocument();
     fireEvent.click(screen.getByText("Close"));
-    await waitFor(() => expect(screen.queryByText("Totals:")).toBeNull());
+    await waitForElementToBeRemoved(() => screen.queryByText("Totals:"));
   });
 
   it("shows Reset button when a team's score reaches 100", () => {
