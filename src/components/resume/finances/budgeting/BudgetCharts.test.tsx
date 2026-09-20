@@ -79,11 +79,11 @@ const renderBudgetCharts = ({
 };
 
 describe("resume | finances | budgeting | BudgetCharts", () => {
-  it("renders sankey and income overview pie", () => {
+  it("renders sankey and income overview pie", async () => {
     renderBudgetCharts();
 
-    expect(screen.getByTestId("budget-sankey")).toBeInTheDocument();
-    expect(screen.getByTestId("category-pie")).toHaveTextContent(
+    expect(await screen.findByTestId("budget-sankey")).toBeInTheDocument();
+    expect(await screen.findByTestId("category-pie")).toHaveTextContent(
       "Income Overview",
     );
   });
@@ -135,32 +135,34 @@ describe("resume | finances | budgeting | BudgetCharts", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows category breakdown when a category is selected on the chart", () => {
+  it("shows category breakdown when a category is selected on the chart", async () => {
     renderBudgetCharts();
 
-    fireEvent.click(screen.getByRole("button", { name: "Select Food" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Select Food" }));
 
-    expect(screen.getByTestId("category-pie")).toHaveTextContent(
+    expect(await screen.findByTestId("category-pie")).toHaveTextContent(
       "Food Breakdown",
     );
   });
 
-  it("shows payroll breakdown when payroll is selected on the chart", () => {
+  it("shows payroll breakdown when payroll is selected on the chart", async () => {
     renderBudgetCharts();
 
-    fireEvent.click(screen.getByRole("button", { name: "Select Payroll" }));
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Select Payroll" }),
+    );
 
-    expect(screen.getByTestId("category-pie")).toHaveTextContent(
+    expect(await screen.findByTestId("category-pie")).toHaveTextContent(
       "Payroll Breakdown",
     );
   });
 
-  it("hides tax and payroll slices from income overview when hideTaxes is on", () => {
+  it("hides tax and payroll slices from income overview when hideTaxes is on", async () => {
     renderBudgetCharts();
 
-    fireEvent.click(screen.getByRole("switch", { name: "Hide taxes" }));
+    fireEvent.click(await screen.findByRole("switch", { name: "Hide taxes" }));
 
-    expect(screen.getByTestId("category-pie")).toHaveTextContent(
+    expect(await screen.findByTestId("category-pie")).toHaveTextContent(
       "Income Overview",
     );
     expect(screen.queryByText("Fed Tax")).not.toBeInTheDocument();
@@ -170,18 +172,18 @@ describe("resume | finances | budgeting | BudgetCharts", () => {
     expect(screen.getByText("Housing")).toBeInTheDocument();
   });
 
-  it("shows tax and payroll slices in income overview by default", () => {
+  it("shows tax and payroll slices in income overview by default", async () => {
     renderBudgetCharts();
 
-    expect(screen.getByText("Fed Tax")).toBeInTheDocument();
+    expect(await screen.findByText("Fed Tax")).toBeInTheDocument();
     expect(screen.getByText("CA Tax")).toBeInTheDocument();
     expect(screen.getByText("Payroll Withholdings")).toBeInTheDocument();
   });
 
-  it("toggles the hide taxes switch", () => {
+  it("toggles the hide taxes switch", async () => {
     renderBudgetCharts();
 
-    const hideTaxesSwitch = screen.getByRole("switch", {
+    const hideTaxesSwitch = await screen.findByRole("switch", {
       name: "Hide taxes",
     });
     expect(hideTaxesSwitch).not.toBeChecked();
@@ -190,14 +192,14 @@ describe("resume | finances | budgeting | BudgetCharts", () => {
     expect(hideTaxesSwitch).toBeChecked();
   });
 
-  it("resets selection when the selected category no longer exists", () => {
+  it("resets selection when the selected category no longer exists", async () => {
     renderBudgetCharts({
       expenseEntries: [{ name: "Rent", category: "Housing", value: 2000 }],
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "Select Fun" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Select Fun" }));
 
-    expect(screen.getByTestId("category-pie")).toHaveTextContent(
+    expect(await screen.findByTestId("category-pie")).toHaveTextContent(
       "Income Overview",
     );
   });

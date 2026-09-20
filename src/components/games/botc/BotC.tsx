@@ -3,10 +3,12 @@ import { useSetAtom } from "jotai";
 import useBotC from "./useBotC";
 import Header from "./header/Header";
 import PlayerNotes from "./player-notes/PlayerNotes";
-import LiePie from "./LiePie";
+import guardChart from "@/components/common/highcharts/guardChart";
 import { Divider } from "@mui/material";
 import botcAtom, { botcPlayerShell, newBotCGame } from "@/jotai/botc-atom";
 import { parseShareParams } from "@/utils/botc-share-utils";
+
+const LiePie = guardChart(() => import("./LiePie"));
 
 const getShareSearch = () => {
   if (window.location.search) return window.location.search;

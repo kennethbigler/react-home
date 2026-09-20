@@ -93,8 +93,8 @@ describe("Graphs", () => {
     },
   ];
 
-  const renderGraphs = () =>
-    render(
+  const renderGraphs = async () => {
+    const view = render(
       <Provider>
         <Graphs
           compEntries={mockCompEntries}
@@ -102,13 +102,16 @@ describe("Graphs", () => {
         />
       </Provider>,
     );
+    await screen.findByText("Total Comp");
+    return view;
+  };
 
   beforeEach(() => {
     resetCapturedChartConfig();
   });
 
-  it("renders both CompChart and BreakdownChart", () => {
-    renderGraphs();
+  it("renders both CompChart and BreakdownChart", async () => {
+    await renderGraphs();
 
     expect(screen.getByText("Total Comp")).toBeInTheDocument();
     expect(screen.getByText("Comp Breakdown")).toBeInTheDocument();
@@ -158,8 +161,8 @@ describe("Graphs", () => {
     expect(screen.getByText("Comp Breakdown")).toBeInTheDocument();
   });
 
-  it("initializes the breakdown chart with the last entry values", () => {
-    renderGraphs();
+  it("initializes the breakdown chart with the last entry values", async () => {
+    await renderGraphs();
 
     expect(getBreakdownSeriesData()).toEqual([
       breakdownPoint("Stock", 70000),
@@ -257,7 +260,7 @@ describe("Graphs", () => {
   });
 
   it("exposes accessible breakdown output and keyboard point selection", async () => {
-    const { container } = renderGraphs();
+    const { container } = await renderGraphs();
 
     const breakdownTitle = screen.getByText("Comp Breakdown");
     const breakdownFigure = breakdownTitle.closest("figure");
@@ -315,7 +318,7 @@ describe("Graphs", () => {
   });
 
   it("updates the breakdown chart when an earlier point is selected", async () => {
-    renderGraphs();
+    await renderGraphs();
 
     selectChartPoint(1);
 
@@ -329,7 +332,7 @@ describe("Graphs", () => {
   });
 
   it("recalculates the inflation line when an earlier point is selected", async () => {
-    renderGraphs();
+    await renderGraphs();
 
     const initialInflation = getSeriesByName("Inflation")?.data;
 
@@ -342,7 +345,7 @@ describe("Graphs", () => {
   });
 
   it("targets the correct entry on consecutive point selections", async () => {
-    renderGraphs();
+    await renderGraphs();
 
     selectChartPoint(1);
 

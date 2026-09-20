@@ -1,10 +1,9 @@
-import type { CSSProperties, ReactNode } from "react";
-
-const figureStyle: CSSProperties = { margin: 0, width: "100%" };
+import type { ReactNode } from "react";
+import ChartShell from "@/components/common/highcharts/ChartShell";
 
 /** Margin-less <figure> wrapper that lets charts fill their grid cell. */
 const ChartFigure = ({ children }: { children: ReactNode }) => (
-  <figure style={figureStyle}>{children}</figure>
+  <ChartShell>{children}</ChartShell>
 );
 
 export default ChartFigure;

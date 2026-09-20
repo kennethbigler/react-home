@@ -96,7 +96,7 @@ describe("resume | finances | net-worth | NetWorth", () => {
     );
   });
 
-  it("shows graphs when entries exist", () => {
+  it("shows graphs when entries exist", async () => {
     renderNetWorth(
       ["Cash", "Investments"],
       [
@@ -107,7 +107,7 @@ describe("resume | finances | net-worth | NetWorth", () => {
       ],
     );
 
-    expect(screen.getByText("Total Net Worth")).toBeInTheDocument();
+    expect(await screen.findByText("Total Net Worth")).toBeInTheDocument();
     expect(screen.getByText("Net Worth Breakdown")).toBeInTheDocument();
   });
 

@@ -9,7 +9,7 @@ import react from "@vitejs/plugin-react";
 
 /** Async chart chunks — keep off modulepreload for non-chart routes. */
 const CHART_CHUNK_PATTERN =
-  /charts-core|charts-maps|coreHighcharts|sankeyHighcharts|mapsHighcharts/;
+  /charts-core|charts-maps|highcharts|coreHighcharts|sankeyHighcharts|mapsHighcharts/;
 
 /** Make main stylesheet non-render-blocking (Lighthouse: eliminate render-blocking resources). */
 function deferStylesheetPlugin(): Plugin {
@@ -34,9 +34,22 @@ function deferStylesheetPlugin(): Plugin {
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
-    alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-    },
+    alias: [
+      {
+        find: "@",
+        replacement: fileURLToPath(new URL("./src", import.meta.url)),
+      },
+      // @highcharts/react still imports es-modules/masters; rewrite to the
+      // self-contained esm bundles that resolve series dependencies correctly.
+      {
+        find: /^highcharts\/es-modules\/masters\/(.+)$/,
+        replacement: "highcharts/esm/$1",
+      },
+    ],
+  },
+  // Highcharts ESM breaks when Vite pre-bundles modules into one dep in dev.
+  optimizeDeps: {
+    exclude: ["highcharts"],
   },
   // for lighthouse
   build: {
@@ -47,12 +60,13 @@ export default defineConfig({
       resolveDependencies: (_filename, deps) =>
         deps.filter((dep) => !CHART_CHUNK_PATTERN.test(dep)),
     },
-    // charts-core is large but loaded only when visiting F1/Cars/Travel/Comp/Spades/BotC
+    // Highcharts is large but loaded only when visiting chart routes.
     chunkSizeWarningLimit: 600000,
-    // Rolldown codeSplitting.groups (test regex) avoids manualChunks coupling React
-    // into Highcharts chunks, which forced ~900 KiB of charts onto every page load.
+    // Isolate React/MUI/Highcharts vendors. strictExecutionOrder keeps series
+    // class inheritance working under Rolldown (Vite 8).
     rolldownOptions: {
       output: {
+        strictExecutionOrder: true,
         codeSplitting: {
           groups: [
             {
