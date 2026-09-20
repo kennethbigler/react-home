@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-8BhlS34s.js";import{_r as t,t as n,vr as r}from"./charts-core-BBkCsW_b.js";var i;function a(){return(a=e((()=>{r(),n(),t.product=`Highmaps`,i=t})))()}export{a as n,i as t};
