@@ -1,11 +1,13 @@
 import { useAtomValue } from "jotai";
 import InfoPopup from "@/components/common/info-popover/InfoPopup";
-import StatsBagsChart from "./StatsBagsChart";
+import guardChart from "@/components/common/highcharts/guardChart";
 import themeAtom from "@/jotai/theme-atom";
 import { getChipColor } from "../helpers/getChipColor";
 import spadesAtom from "@/jotai/spades-atom";
-import StatsNilChart from "./StatsNilsChart";
 import { Avatar, Chip, Typography } from "@mui/material";
+
+const StatsBagsChart = guardChart(() => import("./StatsBagsChart"));
+const StatsNilChart = guardChart(() => import("./StatsNilsChart"));
 
 const chipSx = {
   "& .MuiChip-avatar": {

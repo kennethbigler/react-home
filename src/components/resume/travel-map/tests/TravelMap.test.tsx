@@ -13,34 +13,30 @@ vi.mock("../cruises/CruiseSankeyGraph", () => ({
 vi.mock("../cruises/LoyaltyCharts", () => ({
   default: () => <div data-testid="loyalty-charts" />,
 }));
+vi.mock("../map/WorldMap", () => ({
+  default: () => <div data-testid="world-map" />,
+}));
 
 describe("resume | travel-map | TravelMap", () => {
   it("renders as expected", async () => {
-    const windowFetch = window.fetch;
-    window.fetch = vi
-      .fn()
-      .mockImplementation(() =>
-        Promise.resolve({ ok: true, json: async () => ({}) }),
-      );
-
     render(<TravelMap />);
+
+    // Verify Travel Table
+    expect(screen.getByText("The Americas")).toBeInTheDocument();
+    expect(screen.getByText("Europe & Africa")).toBeInTheDocument();
+    expect(screen.getByText("Asia & Australia")).toBeInTheDocument();
+    // Verify lazy chart placeholders rendered
+    expect(await screen.findByTestId("travel-days-graph")).toBeInTheDocument();
+    expect(screen.getByTestId("cruise-sankey-graph")).toBeInTheDocument();
+    expect(screen.getByTestId("loyalty-charts")).toBeInTheDocument();
+    expect(screen.getByTestId("world-map")).toBeInTheDocument();
+    // Verify Cruise Table
+    expect(screen.getByText("Ship 🚢")).toBeInTheDocument();
 
     await waitFor(() => {
       expect(
         screen.queryByRole("status", { name: "Loading page content" }),
       ).not.toBeInTheDocument();
     });
-    // Verify Travel Table
-    expect(screen.getByText("The Americas")).toBeInTheDocument();
-    expect(screen.getByText("Europe & Africa")).toBeInTheDocument();
-    expect(screen.getByText("Asia & Australia")).toBeInTheDocument();
-    // Verify chart placeholders rendered
-    expect(screen.getByTestId("travel-days-graph")).toBeInTheDocument();
-    expect(screen.getByTestId("cruise-sankey-graph")).toBeInTheDocument();
-    expect(screen.getByTestId("loyalty-charts")).toBeInTheDocument();
-    // Verify Cruise Table
-    expect(screen.getByText("Ship 🚢")).toBeInTheDocument();
-
-    window.fetch = windowFetch;
   });
 });

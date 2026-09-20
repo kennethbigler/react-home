@@ -1,6 +1,6 @@
 import { setHighcharts } from "@highcharts/react";
-import Highcharts from "highcharts/highmaps.src";
-import "highcharts/modules/accessibility";
+import Highcharts from "highcharts/esm/highmaps.src.js";
+import "highcharts/esm/modules/accessibility.src.js";
 
 setHighcharts(Highcharts);
 

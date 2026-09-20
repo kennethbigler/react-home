@@ -39,8 +39,8 @@ describe("resume | finances | net-worth | Graphs", () => {
     { total: 75000, netDiff: 13000 },
   ];
 
-  const renderGraphs = () =>
-    render(
+  const renderGraphs = async () => {
+    const view = render(
       <Provider>
         <Graphs
           entries={entries}
@@ -49,21 +49,24 @@ describe("resume | finances | net-worth | Graphs", () => {
         />
       </Provider>,
     );
+    await screen.findByText("Total Net Worth");
+    return view;
+  };
 
   beforeEach(() => {
     resetCapturedChartConfig();
   });
 
-  it("renders both net worth charts", () => {
-    renderGraphs();
+  it("renders both net worth charts", async () => {
+    await renderGraphs();
 
     expect(screen.getByText("Total Net Worth")).toBeInTheDocument();
     expect(screen.getByText("Net Worth Breakdown")).toBeInTheDocument();
     expect(screen.getAllByTestId("highcharts-chart").length).toBe(2);
   });
 
-  it("builds stacked category series plus inflation", () => {
-    renderGraphs();
+  it("builds stacked category series plus inflation", async () => {
+    await renderGraphs();
 
     expect(getSeriesByName("Cash")?.data).toHaveLength(3);
     expect(getSeriesByName("Investments")?.data).toHaveLength(3);
@@ -71,16 +74,16 @@ describe("resume | finances | net-worth | Graphs", () => {
     expect(getSeriesByName("Inflation")?.data).toHaveLength(3);
   });
 
-  it("stacks categories largest-first to match pie colors; bottom via reversedStacks", () => {
-    renderGraphs();
+  it("stacks categories largest-first to match pie colors; bottom via reversedStacks", async () => {
+    await renderGraphs();
 
     // Same order as the pie (largest first). YAxis reversedStacks={false}
     // puts the first series on the bottom of the area stack.
     expect(getAreaSeriesNamesInOrder()).toEqual(["Investments", "Cash"]);
   });
 
-  it("orders pie slices largest-first from the final entry", () => {
-    renderGraphs();
+  it("orders pie slices largest-first from the final entry", async () => {
+    await renderGraphs();
 
     expect(getBreakdownSeriesData()).toEqual([
       expect.objectContaining({ name: "Investments", y: 60000 }),
@@ -177,7 +180,7 @@ describe("resume | finances | net-worth | Graphs", () => {
   });
 
   it("keeps final-entry category order when an earlier point is selected", async () => {
-    renderGraphs();
+    await renderGraphs();
     selectChartPoint(0);
 
     await waitFor(() => {
@@ -253,7 +256,7 @@ describe("resume | finances | net-worth | Graphs", () => {
   });
 
   it("hides breakdown categories toggled off in the pie dialog", async () => {
-    renderGraphs();
+    await renderGraphs();
 
     expect(getBreakdownSeriesData()).toEqual([
       expect.objectContaining({ name: "Investments", y: 60000 }),

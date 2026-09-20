@@ -1,9 +1,6 @@
 import { Typography, Grid } from "@mui/material";
 import { useAtomValue } from "jotai";
-import BudgetSankey from "./charts/BudgetSankey";
-import ConstructorCurrentSpline from "./charts/ConstructorCurrentSpline";
-import ConstructorPointsLine from "./charts/ConstructorPointsLine";
-import ConstructorStandingsLine from "./charts/ConstructorStandingsLine";
+import guardChart from "@/components/common/highcharts/guardChart";
 import ExpandableCard from "@/components/common/expandable-card";
 import themeAtom from "@/jotai/theme-atom";
 import {
@@ -12,11 +9,26 @@ import {
   ASTON_HEX,
   contractData,
 } from "@/constants/f1";
-import DriverCurrentSpline from "./charts/DriverCurrentSpline";
-import DriverPointsLine from "./charts/DriverPointsLine";
-import DriverStandingsLine from "./charts/DriverStandingsLine";
 import Tracks from "./Tracks";
 import TimelineCard from "./timeline-card/TimelineCard";
+
+const BudgetSankey = guardChart(() => import("./charts/BudgetSankey"));
+const ConstructorCurrentSpline = guardChart(
+  () => import("./charts/ConstructorCurrentSpline"),
+);
+const ConstructorPointsLine = guardChart(
+  () => import("./charts/ConstructorPointsLine"),
+);
+const ConstructorStandingsLine = guardChart(
+  () => import("./charts/ConstructorStandingsLine"),
+);
+const DriverCurrentSpline = guardChart(
+  () => import("./charts/DriverCurrentSpline"),
+);
+const DriverPointsLine = guardChart(() => import("./charts/DriverPointsLine"));
+const DriverStandingsLine = guardChart(
+  () => import("./charts/DriverStandingsLine"),
+);
 
 const F1 = () => {
   const theme = useAtomValue(themeAtom);

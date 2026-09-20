@@ -13,8 +13,8 @@ const { originalCreateNodeColumns } = vi.hoisted(() => ({
   originalCreateNodeColumns: vi.fn(),
 }));
 
-vi.mock("highcharts/highcharts-more", () => ({}));
-vi.mock("highcharts/modules/sankey", () => ({}));
+vi.mock("highcharts/esm/highcharts-more.src.js", () => ({}));
+vi.mock("highcharts/esm/modules/sankey.src.js", () => ({}));
 
 vi.mock("../coreHighcharts", () => ({
   default: {

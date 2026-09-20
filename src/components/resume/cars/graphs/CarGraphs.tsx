@@ -1,12 +1,14 @@
 import { useAtomValue } from "jotai";
 import type { CarEntry } from "@/constants/cars";
-import CarChart from "./CarChart";
-import CarSankeyGraph from "./CarSankeyGraph";
+import guardChart from "@/components/common/highcharts/guardChart";
 import ExpandableCard from "@/components/common/expandable-card";
 import themeAtom from "@/jotai/theme-atom";
 import CurrentCarStats from "./CurrentCarStats";
 import { red } from "@mui/material/colors";
 import { Grid } from "@mui/material";
+
+const CarChart = guardChart(() => import("./CarChart"));
+const CarSankeyGraph = guardChart(() => import("./CarSankeyGraph"));
 
 interface CarGraphsProps {
   active: CarEntry;

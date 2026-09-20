@@ -1,8 +1,10 @@
 import { Grid } from "@mui/material";
 import type { CompCalcEntry, CompEntry } from "@/jotai/comp-calc-atom";
+import guardChart from "@/components/common/highcharts/guardChart";
 import usePointSelection from "@/components/resume/finances/shared/usePointSelection";
-import CompChart from "./CompGraph";
-import BreakdownChart from "./BreakdownGraph";
+
+const CompChart = guardChart(() => import("./CompGraph"));
+const BreakdownChart = guardChart(() => import("./BreakdownGraph"));
 
 interface GraphsProps {
   compCalcEntries: CompCalcEntry[];

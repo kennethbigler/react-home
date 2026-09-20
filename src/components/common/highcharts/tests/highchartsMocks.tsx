@@ -79,6 +79,22 @@ vi.mock("../sankeyHighcharts", () => ({
   default: {},
 }));
 
+vi.mock("../mapsHighcharts", () => ({
+  default: {},
+}));
+
+vi.mock("highcharts/esm/highcharts.src.js", () => ({
+  default: {},
+}));
+
+vi.mock("highcharts/esm/highmaps.src.js", () => ({
+  default: {},
+}));
+
+vi.mock("highcharts/esm/modules/accessibility.src.js", () => ({
+  default: vi.fn(),
+}));
+
 vi.mock("highcharts/highcharts.src", () => ({
   default: {},
 }));

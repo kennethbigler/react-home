@@ -1,12 +1,16 @@
 import { memo } from "react";
 import { Grid, Typography } from "@mui/material";
 import ExpandableCard from "@/components/common/expandable-card";
+import guardChart from "@/components/common/highcharts/guardChart";
 import CountryTable from "./map/CountryTable";
-import WorldMap from "./map/WorldMap";
 import CruiseTable from "./cruises/CruiseTable";
-import CruiseSankeyGraph from "./cruises/CruiseSankeyGraph";
-import LoyaltyCharts from "./cruises/LoyaltyCharts";
-import TravelDaysGraph from "./TravelDaysGraph";
+
+const WorldMap = guardChart(() => import("./map/WorldMap"));
+const CruiseSankeyGraph = guardChart(
+  () => import("./cruises/CruiseSankeyGraph"),
+);
+const LoyaltyCharts = guardChart(() => import("./cruises/LoyaltyCharts"));
+const TravelDaysGraph = guardChart(() => import("./TravelDaysGraph"));
 
 /* TravelMap  ->  WorldMap  ->  Popover
  *           |->  TravelTable

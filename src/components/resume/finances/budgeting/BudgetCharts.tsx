@@ -11,10 +11,16 @@ import { useTheme } from "@mui/material/styles";
 import { useAtomValue } from "jotai";
 import usDollar from "@/apis/usDollar";
 import { budgetFlowRead } from "@/jotai/budget-atom";
-import BudgetSankeyGraph from "./graphs/BudgetSankeyGraph";
-import CategoryBreakdownPie from "./graphs/CategoryBreakdownPie";
+import guardChart from "@/components/common/highcharts/guardChart";
 import { PAYROLL_CATEGORY_KEY } from "./graphs/chartData";
 import { getBudgetPieContent } from "./graphs/getBudgetPieContent";
+
+const BudgetSankeyGraph = guardChart(
+  () => import("./graphs/BudgetSankeyGraph"),
+);
+const CategoryBreakdownPie = guardChart(
+  () => import("./graphs/CategoryBreakdownPie"),
+);
 
 const getMissingDataMessage = (
   hasCompData: boolean,
