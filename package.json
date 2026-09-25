@@ -73,7 +73,7 @@
     "eslint-plugin-react-refresh": "0.5.7",
     "gts": "7.0.0",
     "jest-axe": "11.0.0",
-    "jsdom": "30.0.1",
+    "jsdom": "30.1.1",
     "knip": "6.35.1",
     "picocolors": "1.1.1",
     "playwright": "1.55.1",
