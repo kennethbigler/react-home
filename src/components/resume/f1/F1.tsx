@@ -1,6 +1,10 @@
 import { Typography, Grid } from "@mui/material";
 import { useAtomValue } from "jotai";
-import { guardChart } from "@/components/common/highcharts/guardChart";
+import {
+  guardChart,
+  groupedChart,
+} from "@/components/common/highcharts/guardChart";
+import ChartSection from "@/components/common/highcharts/ChartSection";
 import ExpandableCard from "@/components/common/expandable-card";
 import themeAtom from "@/jotai/theme-atom";
 import {
@@ -13,20 +17,22 @@ import Tracks from "./Tracks";
 import TimelineCard from "./timeline-card/TimelineCard";
 
 const BudgetSankey = guardChart(() => import("./charts/BudgetSankey"));
-const ConstructorCurrentSpline = guardChart(
+const ConstructorCurrentSpline = groupedChart(
   () => import("./charts/ConstructorCurrentSpline"),
 );
-const ConstructorPointsLine = guardChart(
+const ConstructorPointsLine = groupedChart(
   () => import("./charts/ConstructorPointsLine"),
 );
-const ConstructorStandingsLine = guardChart(
+const ConstructorStandingsLine = groupedChart(
   () => import("./charts/ConstructorStandingsLine"),
 );
-const DriverCurrentSpline = guardChart(
+const DriverCurrentSpline = groupedChart(
   () => import("./charts/DriverCurrentSpline"),
 );
-const DriverPointsLine = guardChart(() => import("./charts/DriverPointsLine"));
-const DriverStandingsLine = guardChart(
+const DriverPointsLine = groupedChart(
+  () => import("./charts/DriverPointsLine"),
+);
+const DriverStandingsLine = groupedChart(
   () => import("./charts/DriverStandingsLine"),
 );
 
@@ -49,17 +55,21 @@ const F1 = () => {
             backgroundColor={MCLAREN_HEX}
             inverted
           >
-            <ConstructorCurrentSpline color={color} />
-            <ConstructorPointsLine color={color} />
-            <ConstructorStandingsLine color={color} />
+            <ChartSection>
+              <ConstructorCurrentSpline color={color} />
+              <ConstructorPointsLine color={color} />
+              <ConstructorStandingsLine color={color} />
+            </ChartSection>
           </ExpandableCard>
         </Grid>
 
         <Grid size={{ xs: 12, lg: 6, xxl: 4 }}>
           <ExpandableCard title="Drivers" backgroundColor={RED_BULL_HEX}>
-            <DriverCurrentSpline color={color} />
-            <DriverPointsLine color={color} />
-            <DriverStandingsLine color={color} />
+            <ChartSection>
+              <DriverCurrentSpline color={color} />
+              <DriverPointsLine color={color} />
+              <DriverStandingsLine color={color} />
+            </ChartSection>
           </ExpandableCard>
         </Grid>
 

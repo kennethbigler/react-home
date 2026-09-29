@@ -1,6 +1,6 @@
+import { Suspense, type ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
-import type { ReactElement } from "react";
-import { guardChart } from "../guardChart";
+import { guardChart, groupedChart } from "../guardChart";
 
 describe("common | highcharts | guardChart", () => {
   it("shows ChartUnavailable when the lazy loader rejects, keeping surrounding content", async () => {
@@ -53,5 +53,40 @@ describe("common | highcharts | guardChart", () => {
 
     expect(await screen.findByText("chart ready")).toBeInTheDocument();
     expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
+  });
+
+  it("lets a parent Suspense show one loading UI for several charts", async () => {
+    let resolveFirst!: (value: { default: () => ReactElement }) => void;
+    let resolveSecond!: (value: { default: () => ReactElement }) => void;
+    const firstLoader = new Promise<{ default: () => ReactElement }>(
+      (resolve) => {
+        resolveFirst = resolve;
+      },
+    );
+    const secondLoader = new Promise<{ default: () => ReactElement }>(
+      (resolve) => {
+        resolveSecond = resolve;
+      },
+    );
+
+    const FirstChart = groupedChart<Record<string, never>>(() => firstLoader);
+    const SecondChart = groupedChart<Record<string, never>>(() => secondLoader);
+
+    render(
+      <Suspense fallback={<div role="status">section loading</div>}>
+        <FirstChart />
+        <SecondChart />
+      </Suspense>,
+    );
+
+    expect(screen.getAllByRole("status")).toHaveLength(1);
+    expect(screen.getByRole("status")).toHaveTextContent("section loading");
+
+    resolveFirst({ default: () => <div>first ready</div> });
+    resolveSecond({ default: () => <div>second ready</div> });
+
+    expect(await screen.findByText("first ready")).toBeInTheDocument();
+    expect(screen.getByText("second ready")).toBeInTheDocument();
+    expect(screen.queryByText("section loading")).not.toBeInTheDocument();
   });
 });
