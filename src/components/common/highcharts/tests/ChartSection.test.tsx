@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import ChartSection from "../ChartSection";
+import { ChartSection } from "../ChartSection";
 
 describe("common | highcharts | ChartSection", () => {
   it("renders children", () => {

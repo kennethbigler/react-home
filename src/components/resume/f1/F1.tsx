@@ -4,7 +4,7 @@ import {
   guardChart,
   groupedChart,
 } from "@/components/common/highcharts/guardChart";
-import ChartSection from "@/components/common/highcharts/ChartSection";
+import { ChartSection } from "@/components/common/highcharts/ChartSection";
 import ExpandableCard from "@/components/common/expandable-card";
 import themeAtom from "@/jotai/theme-atom";
 import {
