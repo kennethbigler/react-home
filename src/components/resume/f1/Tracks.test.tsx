@@ -66,7 +66,7 @@ describe("resume | f1 | Tracks", () => {
 
     expect(
       screen.getByRole("button", {
-        name: /Bahrain International Circuit, Sakhir circuit details, skipped/i,
+        name: /Saudi Arabia Circuit, Jeddah circuit details, skipped/i,
       }),
     ).toBeInTheDocument();
   });

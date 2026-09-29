@@ -1,15 +1,6 @@
 import { lazy, Suspense, type ComponentType } from "react";
-import { Box, Typography } from "@mui/material";
 import { ChartErrorBoundary } from "./ChartErrorBoundary";
-
-/** Non-focus-stealing status shown while a chart chunk is loading. */
-const ChartLoading = () => (
-  <Box role="status" aria-live="polite" sx={{ py: 2 }}>
-    <Typography variant="body2" component="span">
-      Loading chart…
-    </Typography>
-  </Box>
-);
+import LoadingSpinner from "../loading-spinner";
 
 /**
  * Lazy-loads a chart module and isolates Highcharts failures to a warning UI
@@ -22,7 +13,7 @@ export const guardChart = <P extends object>(
 
   const GuardedChart = (props: P) => (
     <ChartErrorBoundary>
-      <Suspense fallback={<ChartLoading />}>
+      <Suspense fallback={<LoadingSpinner />}>
         <LazyChart {...props} />
       </Suspense>
     </ChartErrorBoundary>

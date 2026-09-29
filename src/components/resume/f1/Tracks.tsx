@@ -66,15 +66,6 @@ const CURRENT_TRACKS: TrackData[] = [
     date: dateObj("2026-03-29"),
   },
   {
-    circuitName: "Bahrain International Circuit, Sakhir",
-    imgSrc: bahrainSrc,
-    circuitLen: 5.412,
-    firstGP: 2004,
-    numLaps: 57,
-    raceLen: 308.238,
-    skipped: true,
-  },
-  {
     circuitName: "Saudi Arabia Circuit, Jeddah",
     imgSrc: saudiSrc,
     circuitLen: 6.174,
@@ -190,6 +181,15 @@ const CURRENT_TRACKS: TrackData[] = [
     numLaps: 51,
     raceLen: 306.049,
     date: dateObj("2026-09-26"),
+  },
+  {
+    circuitName: "Bahrain International Circuit, Sakhir",
+    imgSrc: bahrainSrc,
+    circuitLen: 5.412,
+    firstGP: 2004,
+    numLaps: 57,
+    raceLen: 308.238,
+    date: dateObj("2026-10-04"),
   },
   {
     circuitName: "Marina Bay Street Circuit, Singapore",
