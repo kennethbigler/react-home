@@ -108,7 +108,7 @@ describe("resume | finances | net-worth | NetWorth", () => {
     );
 
     expect(await screen.findByText("Total Net Worth")).toBeInTheDocument();
-    expect(screen.getByText("Net Worth Breakdown")).toBeInTheDocument();
+    expect(await screen.findByText("Net Worth Breakdown")).toBeInTheDocument();
   });
 
   it("orders categories by latest entry amounts on cards and dialogs", async () => {

@@ -103,6 +103,7 @@ describe("Graphs", () => {
       </Provider>,
     );
     await screen.findByText("Total Comp");
+    await screen.findByText("Comp Breakdown");
     return view;
   };
 
