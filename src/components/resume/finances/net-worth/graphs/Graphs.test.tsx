@@ -50,6 +50,7 @@ describe("resume | finances | net-worth | Graphs", () => {
       </Provider>,
     );
     await screen.findByText("Total Net Worth");
+    await screen.findByText("Net Worth Breakdown");
     return view;
   };
 

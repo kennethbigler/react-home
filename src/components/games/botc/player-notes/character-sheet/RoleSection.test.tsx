@@ -47,7 +47,7 @@ describe("RoleSection", () => {
   };
 
   const expectContainedRoleColor = (button: HTMLElement) => {
-    expect(button).toHaveStyle({ color: "var(--variant-containedcolor)" });
+    expect(button).toHaveStyle({ color: "var(--variant-containedColor)" });
   };
 
   it("should render the title", () => {
