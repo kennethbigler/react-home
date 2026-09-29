@@ -42,11 +42,16 @@ describe("common | highcharts | guardChart", () => {
 
     render(<SlowChart />);
 
-    expect(screen.getByRole("status")).toHaveTextContent(/loading chart/i);
+    expect(
+      screen.getByRole("status", { name: "Loading page content" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("progressbar", { name: "Loading" }),
+    ).toBeInTheDocument();
 
     resolveLoader({ default: () => <div>chart ready</div> });
 
     expect(await screen.findByText("chart ready")).toBeInTheDocument();
-    expect(screen.queryByText(/loading chart/i)).not.toBeInTheDocument();
+    expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
   });
 });
