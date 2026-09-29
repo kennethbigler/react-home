@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Grid, Typography } from "@mui/material";
 import ExpandableCard from "@/components/common/expandable-card";
-import ChartSection from "@/components/common/highcharts/ChartSection";
+import { ChartSection } from "@/components/common/highcharts/ChartSection";
 import {
   guardChart,
   groupedChart,
