@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { guardChart } from "@/components/common/highcharts/guardChart";
+import { groupedChart } from "@/components/common/highcharts/guardChart";
 
-const CarSpeedoGraph = guardChart(() => import("./CarSpeedoGraph"));
+const CarSpeedoGraph = groupedChart(() => import("./CarSpeedoGraph"));
 
 interface CurrentCarStatsProps {
   color: "black" | "white";
