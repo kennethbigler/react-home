@@ -13,6 +13,9 @@ vi.mock("../cruises/CruiseSankeyGraph", () => ({
 vi.mock("../cruises/LoyaltyCharts", () => ({
   default: () => <div data-testid="loyalty-charts" />,
 }));
+vi.mock("../cruises/CruiseAwardCharts", () => ({
+  default: () => <div data-testid="cruise-award-charts" />,
+}));
 vi.mock("../map/WorldMap", () => ({
   default: () => <div data-testid="world-map" />,
 }));
@@ -29,7 +32,19 @@ describe("resume | travel-map | TravelMap", () => {
     expect(await screen.findByTestId("travel-days-graph")).toBeInTheDocument();
     expect(screen.getByTestId("cruise-sankey-graph")).toBeInTheDocument();
     expect(screen.getByTestId("loyalty-charts")).toBeInTheDocument();
+    expect(screen.getByTestId("cruise-award-charts")).toBeInTheDocument();
     expect(screen.getByTestId("world-map")).toBeInTheDocument();
+    expect(
+      screen
+        .getAllByRole("heading", { level: 2 })
+        .map((heading) => heading.textContent),
+    ).toEqual(["Travel Map", "Cruise Charts", "Cruise Rankings", "Cruises"]);
+    expect(
+      document.querySelectorAll('[class*="MuiGrid-grid-md-6"]'),
+    ).toHaveLength(4);
+    expect(
+      document.querySelectorAll('[class*="MuiGrid-grid-xxl-3"]'),
+    ).toHaveLength(4);
     // Verify Cruise Table
     expect(screen.getByText("Ship 🚢")).toBeInTheDocument();
 

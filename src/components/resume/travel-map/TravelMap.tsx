@@ -14,25 +14,31 @@ const CruiseSankeyGraph = groupedChart(
   () => import("./cruises/CruiseSankeyGraph"),
 );
 const LoyaltyCharts = groupedChart(() => import("./cruises/LoyaltyCharts"));
+const CruiseAwardCharts = groupedChart(
+  () => import("./cruises/CruiseAwardCharts"),
+);
 const TravelDaysGraph = guardChart(() => import("./TravelDaysGraph"));
 
 /* TravelMap  ->  WorldMap  ->  Popover
  *           |->  TravelTable
- *           |->  CruiseSankeyGraph */
+ *           |->  CruiseSankeyGraph
+ *           |->  CruiseRankings */
+const cardSize = { xs: 12, md: 6, xxl: 3 } as const;
+
 const TravelMap = memo(() => (
   <>
     <Typography variant="h2" component="h1">
       Travel
     </Typography>
     <Grid container spacing={2}>
-      <Grid size={{ xs: 12, md: 6, xxl: 4 }}>
+      <Grid size={cardSize}>
         <ExpandableCard title="Travel Map">
           <WorldMap />
           <CountryTable />
           <TravelDaysGraph />
         </ExpandableCard>
       </Grid>
-      <Grid size={{ xs: 12, md: 6, xxl: 4 }}>
+      <Grid size={cardSize}>
         <ExpandableCard title="Cruise Charts">
           <ChartSection>
             <CruiseSankeyGraph />
@@ -40,7 +46,14 @@ const TravelMap = memo(() => (
           </ChartSection>
         </ExpandableCard>
       </Grid>
-      <Grid size={{ xs: 12, xxl: 4 }}>
+      <Grid size={cardSize}>
+        <ExpandableCard title="Cruise Rankings">
+          <ChartSection>
+            <CruiseAwardCharts />
+          </ChartSection>
+        </ExpandableCard>
+      </Grid>
+      <Grid size={cardSize}>
         <ExpandableCard title="Cruises">
           <CruiseTable />
         </ExpandableCard>
