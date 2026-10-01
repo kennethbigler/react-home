@@ -1,6 +1,6 @@
 import { memo } from "react";
-import { useAtomValue } from "jotai";
 import { Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import {
   Chart,
   Credits,
@@ -15,7 +15,7 @@ import {
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import type Highcharts from "highcharts/highcharts.src";
 import HighchartsLib from "@/components/common/highcharts/sankeyHighcharts";
-import themeAtom from "@/jotai/theme-atom";
+import useChartTextColor from "@/components/resume/finances/shared/useChartTextColor";
 import {
   cruiseAwardCharts,
   type CruiseRankChart,
@@ -24,16 +24,6 @@ import {
 const chartOptions = (height: number): Highcharts.Options => ({
   chart: { type: "line", backgroundColor: "transparent", height },
 });
-
-/** Black on light brand fills, white on dark ones, so the rank stays readable. */
-const rankLabelColor = (hex: string): string => {
-  const red = Number.parseInt(hex.slice(1, 3), 16);
-  const green = Number.parseInt(hex.slice(3, 5), 16);
-  const blue = Number.parseInt(hex.slice(5, 7), 16);
-  const luminance = (0.2126 * red + 0.7152 * green + 0.0722 * blue) / 255;
-
-  return luminance > 0.55 ? "#111111" : "#ffffff";
-};
 
 const yearAxisFormatter =
   (years: readonly number[]): Highcharts.AxisLabelsFormatterCallbackFunction =>
@@ -68,6 +58,7 @@ interface CruiseAwardStandingsProps {
 }
 
 const CruiseAwardStandings = ({ chart, color }: CruiseAwardStandingsProps) => {
+  const { palette } = useTheme();
   const singleRank = chart.ranks.length === 1;
 
   return (
@@ -131,7 +122,7 @@ const CruiseAwardStandings = ({ chart, color }: CruiseAwardStandingsProps) => {
               custom: { award: series.award },
               dataLabels: {
                 style: {
-                  color: rankLabelColor(series.color),
+                  color: palette.getContrastText(series.color),
                   textOutline: "none",
                   fontWeight: "700",
                 },
@@ -154,8 +145,7 @@ const CruiseAwardStandings = ({ chart, color }: CruiseAwardStandingsProps) => {
 };
 
 const CruiseAwardCharts = memo(() => {
-  const theme = useAtomValue(themeAtom);
-  const color = theme.mode === "light" ? "black" : "white";
+  const color = useChartTextColor();
 
   return (
     <>

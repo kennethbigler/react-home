@@ -1,5 +1,6 @@
 import "../../../common/highcharts/tests/highchartsMocks";
 import { screen } from "@testing-library/react";
+import { createTheme } from "@mui/material/styles";
 import themeAtom, { lightTheme } from "@/jotai/theme-atom";
 import { cruiseAwardCharts } from "@/constants/cruise-awards";
 import { renderWithHydratedAtoms } from "@/test-utils/renderWithHydratedAtoms";
@@ -24,13 +25,13 @@ describe("resume | travel-map | cruises | CruiseAwardCharts", () => {
     expect(CruiseAwardCharts.displayName).toBe("CruiseAwardCharts");
   });
 
-  it("uses black axis text in light mode", () => {
+  it("uses the theme text color for chart text in light mode", () => {
     renderWithHydratedAtoms(<CruiseAwardCharts />, [
       [themeAtom, lightTheme] as const,
     ]);
 
     expect(screen.getAllByText("Best Ocean Cruise Line")[0]).toHaveStyle({
-      color: "rgb(0, 0, 0)",
+      color: createTheme({ palette: { mode: "light" } }).palette.text.primary,
     });
   });
 
