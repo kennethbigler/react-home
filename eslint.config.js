@@ -71,6 +71,10 @@ export default [
     },
     settings: {
       react: {version: "detect"},
+      // Resolves `exports`-only packages (react-router v8, jotai v3 subpaths)
+      // and the "@/" tsconfig path alias, which eslint-import-resolver-node
+      // cannot handle. Keeps import/no-unresolved honest with no ignore list.
+      "import/resolver": {typescript: {alwaysTryTypes: true}},
     },
     rules: {
       // React
@@ -88,15 +92,7 @@ export default [
       "react-refresh/only-export-components": "warn",
 
       // Import
-      // "@/" is the tsconfig/vite src alias; eslint-plugin-import has no
-      // resolver for it here, and tsc already verifies these paths resolve.
-      // react-router v8 is exports-only (no `main`), and jotai v3 subpaths
-      // (`jotai/utils`) are exports-only too. eslint-import-resolver-node
-      // cannot resolve those, and tsc already verifies the imports.
-      "import/no-unresolved": [
-        "error",
-        {ignore: ["^@/", "^react-router(/|$)", "^jotai/"]},
-      ],
+      "import/no-unresolved": "error",
       "import/no-extraneous-dependencies": [
         "error",
         {
@@ -104,6 +100,9 @@ export default [
             "**/*.test.{ts,tsx}",
             "src/setupTests.ts",
             "src/test-utils/**",
+            // Root build/tooling configs legitimately import devDependencies
+            // (vitest, @vitejs/plugin-react); they never ship to runtime.
+            "*.config.{ts,js}",
           ],
         },
       ],

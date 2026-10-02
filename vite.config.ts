@@ -2,9 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Plugin } from "vite";
-// eslint-disable-next-line import/no-unresolved
 import { defineConfig } from "vitest/config";
-// eslint-disable-next-line import/no-unresolved
 import react from "@vitejs/plugin-react";
 
 /** Async chart chunks — keep off modulepreload for non-chart routes. */
@@ -61,7 +59,9 @@ export default defineConfig({
         deps.filter((dep) => !CHART_CHUNK_PATTERN.test(dep)),
     },
     // Highcharts is large but loaded only when visiting chart routes.
-    chunkSizeWarningLimit: 600000,
+    // Limit is in kB (Vite default 500); largest chunk today is ~1540 kB,
+    // so 2000 leaves headroom while still flagging real size regressions.
+    chunkSizeWarningLimit: 2000,
     // Isolate React/MUI/Highcharts vendors. strictExecutionOrder keeps series
     // class inheritance working under Rolldown (Vite 8).
     rolldownOptions: {
