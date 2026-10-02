@@ -55,7 +55,9 @@ const CarSpeedoGraph = memo(
             <YAxis
               min={min}
               max={maxVal}
-              labels={{ distance: -26, style: { color } }}
+              endOnTick={false}
+              startOnTick={false}
+              labels={{ distance: -38, style: { color } }}
               plotBands={[
                 { from: min, to: greenEnd, color: green[400] },
                 { from: startRedVal, to: maxVal, color: red[500] },

@@ -13,6 +13,7 @@ const chartTestState = vi.hoisted(() => ({
   tooltipFormatter: null as Highcharts.TooltipFormatterCallbackFunction | null,
   pointClickHandler: null as Highcharts.PointClickCallbackFunction | null,
   sankeyPointClickHandler: null as Highcharts.PointClickCallbackFunction | null,
+  yAxes: [] as Array<Record<string, unknown>>,
 }));
 
 export const resetCapturedChartConfig = () => {
@@ -22,6 +23,7 @@ export const resetCapturedChartConfig = () => {
   chartTestState.tooltipFormatter = null;
   chartTestState.pointClickHandler = null;
   chartTestState.sankeyPointClickHandler = null;
+  chartTestState.yAxes = [];
 };
 
 export const getChartOptions = () => chartTestState.chartOptions;
@@ -33,6 +35,8 @@ export const getTooltipFormatter = () => chartTestState.tooltipFormatter;
 
 export const formatTooltip = (context: Highcharts.Point) =>
   chartTestState.tooltipFormatter?.call(context, {} as Highcharts.Tooltip);
+
+export const getYAxes = () => chartTestState.yAxes;
 
 export const getSeriesByName = (name: string) =>
   chartTestState.series.filter((series) => series.name === name).at(-1);
@@ -178,7 +182,13 @@ vi.mock("@highcharts/react", () => ({
   XAxis: () => null,
   // Render children so axis titles passed as children (e.g. TravelDaysGraph's
   // "Days") stay queryable in tests.
-  YAxis: ({ children }: { children?: ReactNode }) => <>{children}</>,
+  YAxis: ({
+    children,
+    ...props
+  }: { children?: ReactNode } & Record<string, unknown>) => {
+    chartTestState.yAxes.push(props);
+    return <>{children}</>;
+  },
   setHighcharts: vi.fn(),
 }));
 

@@ -78,13 +78,11 @@ const tesla: CarEntry = {
   zTo60: 4.8,
 };
 
-// --------------------------------------------------     Present Shared Cars     -------------------------------------------------- //
-
 const camilla: CarEntry = {
   color: yellow[500],
   start: dateObj("2019-01"),
   fStart: dateObj("2021-10"),
-  end: dateObj(),
+  end: dateObj("2026-10"),
   car: "Corvette",
   nickname: "Camilla",
   title: "Chevrolet Corvette Z06 (2018)",
@@ -98,6 +96,8 @@ const camilla: CarEntry = {
   weight: 3524,
   zTo60: 3.1,
 };
+
+// --------------------------------------------------     Present Shared Cars     -------------------------------------------------- //
 
 const cheyenne: CarEntry = {
   color: grey[50],
@@ -186,6 +186,7 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     weight: 3705,
     zTo60: 4.5,
   },
+  camilla,
 ];
 
 const currentFamilyCars: CarEntry[] = [
@@ -222,7 +223,6 @@ const currentFamilyCars: CarEntry[] = [
     weight: 4967,
     zTo60: 4.3,
   },
-  camilla,
   cheyenne,
 ];
 

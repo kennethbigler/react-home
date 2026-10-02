@@ -1,4 +1,7 @@
-import { getSeriesByName } from "../../../common/highcharts/tests/highchartsMocks";
+import {
+  getSeriesByName,
+  getYAxes,
+} from "../../../common/highcharts/tests/highchartsMocks";
 import { render, screen } from "@testing-library/react";
 import CarSpeedoGraph from "./CarSpeedoGraph";
 
@@ -20,6 +23,15 @@ describe("resume | cars | graphs | CarSpeedoGraph", () => {
     expect(screen.getByTestId("highcharts-chart")).toBeInTheDocument();
     expect(getSeriesByName("Demo")?.type).toBe("gauge");
     expect(getSeriesByName("Demo")?.data).toEqual([42]);
+    expect(getYAxes().at(-1)).toMatchObject({
+      min: 0,
+      max: 100,
+      endOnTick: false,
+      startOnTick: false,
+    });
+    expect(getYAxes().at(-1)?.plotBands).toEqual(
+      expect.arrayContaining([expect.objectContaining({ from: 80, to: 100 })]),
+    );
   });
 
   it("renders a black-theme gauge and clamps negative green bands", () => {
