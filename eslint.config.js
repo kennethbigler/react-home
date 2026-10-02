@@ -90,7 +90,9 @@ export default [
       // Import
       // "@/" is the tsconfig/vite src alias; eslint-plugin-import has no
       // resolver for it here, and tsc already verifies these paths resolve.
-      "import/no-unresolved": ["error", {ignore: ["^@/"]}],
+      // react-router v8 is exports-only (no `main`). eslint-import-resolver-node
+      // cannot resolve that, and tsc already verifies the import.
+      "import/no-unresolved": ["error", {ignore: ["^@/", "^react-router(/|$)"]}],
       "import/no-extraneous-dependencies": [
         "error",
         {
