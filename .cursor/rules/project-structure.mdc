@@ -13,7 +13,7 @@ Material-UI, and Jotai for state management.
 - **Framework**: React 19.X with TypeScript
 - **Build Tool**: Vite 7.X
 - **UI Library**: Material-UI (MUI) 7.X
-- **State Management**: Jotai 2.X
+- **State Management**: Jotai 3.X
 - **Routing**: React Router 8.X
 - **Testing**: Vitest 4.X + @testing-library/react
 - **Linting**: ESLint 9.X
