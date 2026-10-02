@@ -28,8 +28,8 @@
     "lhci": "lhci autorun",
     "knip": "knip",
     "tsc": "tsc",
-    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --report-unused-disable-directives",
-    "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix --quiet",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"vite.config.ts\" --fix --report-unused-disable-directives",
+    "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"vite.config.ts\" --fix --quiet",
     "verify": "npm run tsc && npm run knip && npm run lint && npm run test:coverage",
     "fetch-botc-scripts": "node scripts/fetch-botc-scripts.mjs",
     "a11y:live-scan": "node scripts/a11y-live-scan.mjs",
@@ -66,6 +66,7 @@
     "@vitejs/plugin-react": "6.1.1",
     "@vitest/coverage-v8": "4.1.11",
     "eslint": "10.11.0",
+    "eslint-import-resolver-typescript": "4.4.5",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react": "7.37.5",
@@ -104,7 +105,8 @@
     "Web Technologist"
   ],
   "allowScripts": {
-    "fsevents@2.3.3": true
+    "fsevents@2.3.3": true,
+    "unrs-resolver@1.12.2": true
   },
   "overrides": {
     "fsevents": "2.3.3"
