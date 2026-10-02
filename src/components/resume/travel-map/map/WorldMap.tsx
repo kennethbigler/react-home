@@ -10,17 +10,36 @@ import { blue } from "@mui/material/colors";
 import LoadingSpinner from "@/components/common/loading-spinner";
 import Highcharts from "@/components/common/highcharts/mapsHighcharts";
 
-const staticOptions: Highcharts.Options = {
-  chart: { backgroundColor: "transparent", height: "60%" },
+type MapTooltipPoint = Highcharts.Point & {
+  isNull?: boolean;
+  flag?: string;
 };
 
-const mapSeriesOptions: Highcharts.SeriesMapOptions = {
+const formatTravelTooltip: Highcharts.TooltipFormatterCallbackFunction =
+  function () {
+    const point = this as MapTooltipPoint;
+    const status = point.isNull ? "Not Visited" : point.series.name;
+    const detail = point.isNull
+      ? point.name
+      : `${point.name}: ${point.flag ?? ""}`;
+    return `<span style="color:${point.color}">\u25CF</span> <span style="font-size: 0.8em"> ${status}</span><br/>${detail}`;
+  };
+
+const staticOptions: Highcharts.Options = {
+  chart: { backgroundColor: "transparent", height: "60%" },
+  tooltip: { formatter: formatTravelTooltip },
+};
+
+const mapSeriesOptions: Highcharts.SeriesMapOptions & {
+  nullInteraction: boolean;
+} = {
   type: "map",
   name: "Visited",
-  states: { hover: { color: blue[500] } },
+  states: { hover: { color: blue[100] } },
   joinBy: ["name", "name"],
   showInLegend: false,
-  tooltip: { pointFormat: "{point.name}: {point.flag}" },
+  nullColor: blue[900],
+  nullInteraction: true,
 };
 
 const WorldMap = memo(() => {
