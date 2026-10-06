@@ -7,7 +7,7 @@ const ForcedMissions = () => {
     useForcedMissions();
   return (
     <>
-      <Typography variant="h3" gutterBottom>
+      <Typography variant="h3" component="h2" gutterBottom>
         Forced Missions
       </Typography>
       <Grid

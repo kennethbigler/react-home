@@ -78,16 +78,22 @@ const CountryTable = memo(() => (
     <TableHead>
       <TableRow>
         <TableCell style={{ ...cellStyles, ...separatorStyles }}>
-          <Typography variant="h6">The Americas</Typography>
+          <Typography variant="h6" component="h3">
+            The Americas
+          </Typography>
         </TableCell>
         <TableCell
           colSpan={EURatio}
           style={{ ...cellStyles, ...separatorStyles }}
         >
-          <Typography variant="h6">Europe &amp; Africa</Typography>
+          <Typography variant="h6" component="h3">
+            Europe &amp; Africa
+          </Typography>
         </TableCell>
         <TableCell style={cellStyles}>
-          <Typography variant="h6">Asia &amp; Australia</Typography>
+          <Typography variant="h6" component="h3">
+            Asia &amp; Australia
+          </Typography>
         </TableCell>
       </TableRow>
     </TableHead>

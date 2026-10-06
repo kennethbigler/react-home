@@ -13,7 +13,9 @@ const Missions = () => {
 
   return (
     <>
-      <Typography variant="h3">Missions</Typography>
+      <Typography variant="h3" component="h2">
+        Missions
+      </Typography>
       <Grid
         container
         spacing={1}

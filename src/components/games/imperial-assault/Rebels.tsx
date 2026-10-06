@@ -16,7 +16,7 @@ const Rebels = () => {
   return (
     <Grid size={{ xs: 12, md: 8 }}>
       <div className="flex-container">
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h3" component="h2" gutterBottom>
           Rebels
         </Typography>
         <TextField
