@@ -61,23 +61,24 @@ const drivers: Driver[] = [
     name: "Alexander Albon",
     color: WILLIAMS_HEX,
     points: [null, 92, 105, null, 4, 27, 12, 73, 5],
-    standings: [null, 8, 7, null, 19, 13, 16, 8, 18],
-    thisYear: [0, 0, 0, 0, 1, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+    standings: [null, 8, 7, null, 19, 13, 16, 8, 19],
+    thisYear: [0, 0, 0, 0, 1, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
   },
   {
     name: "Fernando Alonso",
     color: ASTON_HEX,
-    points: [50, null, null, 81, 81, 206, 70, 56, 3],
-    standings: [11, null, null, 10, 9, 4, 9, 10, 19],
-    thisYear: [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3],
+    points: [50, null, null, 81, 81, 206, 70, 56, 7],
+    standings: [11, null, null, 10, 9, 4, 9, 10, 17],
+    thisYear: [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 7],
   },
   {
     name: "Kimi Antonelli",
     color: MERCEDES_HEX,
-    points: [null, null, null, null, null, null, null, 150, 302],
+    points: [null, null, null, null, null, null, null, 150, 320],
     standings: [null, null, null, null, null, null, null, 7, 1],
     thisYear: [
       0, 18, 47, 72, 100, 131, 156, 156, 171, 179, 204, 219, 242, 267, 292, 302,
+      320,
     ],
   },
   {
@@ -85,14 +86,16 @@ const drivers: Driver[] = [
     color: HAAS_HEX,
     points: [null, null, null, null, null, null, 7, 41, 20],
     standings: [null, null, null, null, null, null, 18, 13, 13],
-    thisYear: [0, 6, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 20],
+    thisYear: [
+      0, 6, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 20, 20,
+    ],
   },
   {
     name: "Gabriel Bortoleto",
     color: AUDI_HEX,
     points: [null, null, null, null, null, null, null, 19, 10],
     standings: [null, null, null, null, null, null, null, 19, 14],
-    thisYear: [0, 2, 2, 2, 2, 2, 2, 2, 2, 6, 10, 10, 10, 10, 10, 10],
+    thisYear: [0, 2, 2, 2, 2, 2, 2, 2, 2, 6, 10, 10, 10, 10, 10, 10, 10],
   },
   {
     name: "Valtteri Bottas",
@@ -105,7 +108,7 @@ const drivers: Driver[] = [
     color: ALPINE_HEX,
     points: [null, null, null, null, null, null, 5, 0, 27],
     standings: [null, null, null, null, null, null, 19, 20, 12],
-    thisYear: [0, 0, 1, 1, 7, 15, 15, 16, 16, 18, 19, 19, 19, 21, 27, 27],
+    thisYear: [0, 0, 1, 1, 7, 15, 15, 16, 16, 18, 19, 19, 19, 21, 27, 27, 27],
   },
   {
     name: "Nyck De Vries",
@@ -136,7 +139,7 @@ const drivers: Driver[] = [
     color: ALPINE_HEX,
     points: [29, 95, 75, 110, 23, 62, 42, 22, 41],
     standings: [15, 7, 10, 9, 14, 11, 10, 18, 10],
-    thisYear: [0, 1, 9, 15, 16, 20, 26, 32, 32, 33, 33, 33, 35, 41, 41, 41],
+    thisYear: [0, 1, 9, 15, 16, 20, 26, 32, 32, 33, 33, 33, 35, 41, 41, 41, 41],
   },
   {
     name: "Antonio Giovinazzi",
@@ -159,17 +162,18 @@ const drivers: Driver[] = [
   {
     name: "Isack Hadjar",
     color: RED_BULL_HEX,
-    points: [null, null, null, null, null, null, null, 51, 86],
+    points: [null, null, null, null, null, null, null, 51, 96],
     standings: [null, null, null, null, null, null, null, 12, 8],
-    thisYear: [0, 0, 4, 4, 4, 14, 29, 34, 42, 52, 60, 71, 71, 71, 71, 86],
+    thisYear: [0, 0, 4, 4, 4, 14, 29, 34, 42, 52, 60, 71, 71, 71, 71, 86, 96],
   },
   {
     name: "Lewis Hamilton",
     color: FERRARI_HEX,
-    points: [408, 413, 347, 387.5, 240, 234, 223, 156, 199],
+    points: [408, 413, 347, 387.5, 240, 234, 223, 156, 214],
     standings: [1, 1, 1, 2, 6, 3, 7, 6, 3],
     thisYear: [
       0, 12, 33, 41, 51, 72, 90, 115, 125, 147, 159, 169, 183, 191, 191, 199,
+      214,
     ],
   },
   {
@@ -183,7 +187,7 @@ const drivers: Driver[] = [
     color: AUDI_HEX,
     points: [69, 37, 10, null, 0, 9, 41, 51, 7],
     standings: [7, 14, 15, null, 22, 16, 11, 11, 15],
-    thisYear: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6, 6, 7, 7],
+    thisYear: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6, 6, 7, 7, 7],
   },
   {
     name: "Robert Kubica",
@@ -206,25 +210,25 @@ const drivers: Driver[] = [
   {
     name: "Liam Lawson",
     color: RB_HEX,
-    points: [null, null, null, null, null, 2, 4, 38, 59],
+    points: [null, null, null, null, null, 2, 4, 38, 65],
     standings: [null, null, null, null, null, 20, 21, 14, 9],
-    thisYear: [0, 0, 8, 10, 10, 16, 26, 26, 30, 39, 39, 43, 51, 51, 59, 59],
+    thisYear: [0, 0, 8, 10, 10, 16, 26, 26, 30, 39, 39, 43, 51, 51, 59, 59, 65],
   },
   {
     name: "Charles Leclerc",
     color: FERRARI_HEX,
-    points: [39, 264, 98, 159, 308, 206, 356, 242, 179],
-    standings: [13, 4, 8, 7, 2, 5, 3, 5, 5],
+    points: [39, 264, 98, 159, 308, 206, 356, 242, 191],
+    standings: [13, 4, 8, 7, 2, 5, 3, 5, 4],
     thisYear: [
-      0, 15, 34, 49, 59, 75, 75, 75, 79, 108, 126, 138, 155, 155, 167, 179,
+      0, 15, 34, 49, 59, 75, 75, 75, 79, 108, 126, 138, 155, 155, 167, 179, 191,
     ],
   },
   {
     name: "Arvid Lindblad",
     color: RB_HEX,
-    points: [null, null, null, null, null, null, null, null, 37],
+    points: [null, null, null, null, null, null, null, null, 38],
     standings: [null, null, null, null, null, null, null, null, 11],
-    thisYear: [0, 4, 4, 4, 4, 5, 13, 13, 14, 20, 22, 25, 25, 29, 31, 37],
+    thisYear: [0, 4, 4, 4, 4, 5, 13, 13, 14, 20, 22, 25, 25, 29, 31, 37, 38],
   },
   {
     name: "Kevin Magnussen",
@@ -241,10 +245,10 @@ const drivers: Driver[] = [
   {
     name: "Lando Norris",
     color: MCLAREN_HEX,
-    points: [null, 49, 97, 160, 122, 205, 374, 423, 186],
-    standings: [null, 11, 9, 6, 7, 6, 2, 1, 4],
+    points: [null, 49, 97, 160, 122, 205, 374, 423, 188],
+    standings: [null, 11, 9, 6, 7, 6, 2, 1, 5],
     thisYear: [
-      0, 10, 15, 25, 51, 58, 58, 73, 79, 97, 103, 128, 159, 171, 186, 186,
+      0, 10, 15, 25, 51, 58, 58, 73, 79, 97, 103, 128, 159, 171, 186, 186, 188,
     ],
   },
   {
@@ -252,7 +256,7 @@ const drivers: Driver[] = [
     color: HAAS_HEX,
     points: [49, null, 62, 74, 92, 58, 23, 38, 7],
     standings: [12, null, 12, 11, 8, 12, 14, 15, 16],
-    thisYear: [0, 0, 0, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7],
+    thisYear: [0, 0, 0, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 7],
   },
   {
     name: "Sergio Perez",
@@ -263,9 +267,11 @@ const drivers: Driver[] = [
   {
     name: "Oscar Piastri",
     color: MCLAREN_HEX,
-    points: [null, null, null, null, null, 97, 292, 410, 120],
+    points: [null, null, null, null, null, 97, 292, 410, 128],
     standings: [null, null, null, null, null, 9, 4, 3, 7],
-    thisYear: [0, 0, 3, 21, 43, 48, 60, 68, 80, 82, 92, 92, 106, 116, 120, 120],
+    thisYear: [
+      0, 0, 3, 21, 43, 48, 60, 68, 80, 82, 92, 92, 106, 116, 120, 120, 128,
+    ],
   },
   {
     name: "Kimi Räikkönen",
@@ -286,14 +292,15 @@ const drivers: Driver[] = [
     standings: [null, 20, 18, 15, 4, 8, 6, 4, 2],
     thisYear: [
       0, 25, 51, 63, 80, 88, 88, 106, 131, 154, 154, 160, 183, 201, 211, 236,
+      236,
     ],
   },
   {
     name: "Carlos Sainz",
     color: WILLIAMS_HEX,
     points: [53, 96, 105, 164.5, 246, 200, 290, 64, 7],
-    standings: [10, 6, 6, 5, 5, 7, 5, 9, 17],
-    thisYear: [0, 0, 2, 2, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7],
+    standings: [10, 6, 6, 5, 5, 7, 5, 9, 18],
+    thisYear: [0, 0, 2, 2, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7],
   },
   {
     name: "Logan Sargeant",
@@ -324,7 +331,7 @@ const drivers: Driver[] = [
     color: RED_BULL_HEX,
     points: [null, null, null, 32, 12, 17, 30, 33, 1],
     standings: [null, null, null, 14, 17, 14, 12, 17, 20],
-    thisYear: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+    thisYear: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
   },
   {
     name: "Stoffel Vandoorne",
@@ -335,10 +342,10 @@ const drivers: Driver[] = [
   {
     name: "Max Verstappen",
     color: RED_BULL_HEX,
-    points: [249, 278, 214, 395.5, 454, 575, 437, 421, 163],
+    points: [249, 278, 214, 395.5, 454, 575, 437, 421, 188],
     standings: [4, 3, 3, 1, 1, 1, 1, 2, 6],
     thisYear: [
-      0, 8, 8, 12, 26, 43, 43, 55, 73, 76, 91, 109, 112, 127, 145, 163,
+      0, 8, 8, 12, 26, 43, 43, 55, 73, 76, 91, 109, 112, 127, 145, 163, 188,
     ],
   },
   {
