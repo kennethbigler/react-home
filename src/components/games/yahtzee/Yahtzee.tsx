@@ -145,7 +145,7 @@ const Yahtzee = memo(() => {
         getButtonText={getButtonText}
       />
       <hr aria-hidden />
-      <Typography variant="h4">{`Total: ${
+      <Typography variant="h4" component="h3">{`Total: ${
         finalTopSum + bottomSum
       }`}</Typography>
       <ScoreTable

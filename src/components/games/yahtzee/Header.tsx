@@ -21,8 +21,14 @@ const Header = memo(({ bestScore, lastScore, money, name }: HeaderProps) => (
       <Typography variant="h4" component="h2">
         {name}: ${money}
       </Typography>
-      <Typography variant="h4">{`Best: ${bestScore}`}</Typography>
-      <Typography variant="h4">{`Last: ${lastScore}`}</Typography>
+      <Typography
+        variant="h4"
+        component="h2"
+      >{`Best: ${bestScore}`}</Typography>
+      <Typography
+        variant="h4"
+        component="h2"
+      >{`Last: ${lastScore}`}</Typography>
     </div>
   </>
 ));

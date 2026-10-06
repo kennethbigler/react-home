@@ -8,7 +8,7 @@ const Empire = () => {
 
   return (
     <Grid size={{ xs: 12, md: 4 }}>
-      <Typography variant="h3" gutterBottom>
+      <Typography variant="h3" component="h2" gutterBottom>
         Empire
       </Typography>
       <Typography>XP</Typography>

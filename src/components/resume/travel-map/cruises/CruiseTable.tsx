@@ -37,7 +37,9 @@ const CruiseTable = memo(() => (
             cruise.departure.year > cruises[i - 1].departure.year) && (
             <TableRow sx={{ borderTop: `2px solid ${grey[400]}` }}>
               <TableCell style={cellStyles} colSpan={5}>
-                <Typography variant="h6">{cruise.departure.year}</Typography>
+                <Typography variant="h6" component="h3">
+                  {cruise.departure.year}
+                </Typography>
               </TableCell>
             </TableRow>
           )}
