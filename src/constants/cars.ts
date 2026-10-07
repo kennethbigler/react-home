@@ -39,26 +39,6 @@ export interface CarEntry {
 }
 
 // --------------------------------------------------     Past Shared Cars     -------------------------------------------------- //
-
-const irene: CarEntry = {
-  color: grey[400],
-  start: dateObj("2010-12"),
-  fStart: dateObj("2015-02"),
-  end: dateObj("2015-06"),
-  car: "Impala",
-  nickname: "Irene",
-  title: "Chevrolet Impala LS (2010)",
-  inverted: true,
-  src: impala10,
-  transmission: "Automatic",
-
-  horsepower: 211,
-  MPG: 22,
-  torque: 216,
-  weight: 3555,
-  zTo60: 8.3,
-};
-
 const tesla: CarEntry = {
   color: grey[50],
   start: dateObj("2016-03"),
@@ -186,7 +166,6 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     weight: 3705,
     zTo60: 4.5,
   },
-  camilla,
 ];
 
 const currentFamilyCars: CarEntry[] = [
@@ -244,7 +223,24 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     weight: 3607,
     zTo60: 8.5,
   },
-  irene,
+  {
+    color: grey[400],
+    start: dateObj("2010-12"),
+    // fStart: dateObj("2015-02"),
+    end: dateObj("2015-06"),
+    car: "Impala",
+    nickname: "Irene",
+    title: "Chevrolet Impala LS (2010)",
+    inverted: true,
+    src: impala10,
+    transmission: "Automatic",
+
+    horsepower: 211,
+    MPG: 22,
+    torque: 216,
+    weight: 3555,
+    zTo60: 8.3,
+  },
   {
     color: red[900],
     start: dateObj("2015-02"),
@@ -278,6 +274,7 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     weight: 3558,
     zTo60: 5.1,
   },
+  camilla,
   {
     color: teal[100],
     start: dateObj("2021-10"),
@@ -352,10 +349,10 @@ export const cars: CarEntry[] = [
   ...currentFamilyCars,
 ].sort((a: CarEntry, b: CarEntry) => dateSort(a.end, b.end));
 
-const pastKensCars = [...pastKensCarsNoRepeats, camilla, cheyenne].sort(
+const pastKensCars = [...pastKensCarsNoRepeats, cheyenne].sort(
   sortCarsByTimeline(true),
 );
-const pastFamilyCars = [...pastFamilyCarsNoRepeats, irene, tesla].sort(
+const pastFamilyCars = [...pastFamilyCarsNoRepeats, tesla, camilla].sort(
   sortCarsByTimeline(false),
 );
 const hideFamilyCars = [...pastKensCars, ...currentKensCars].sort(

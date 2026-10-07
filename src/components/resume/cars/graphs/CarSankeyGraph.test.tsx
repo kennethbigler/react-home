@@ -41,6 +41,18 @@ describe("resume | cars | graphs | CarSankeyGraph", () => {
     );
   });
 
+  it("replaces flows when the car set changes", () => {
+    const { rerender } = render(<CarSankeyGraph color="white" data={cars} />);
+
+    rerender(<CarSankeyGraph color="white" data={hideFamilyCars} />);
+
+    expect(screen.getByTestId("highcharts-series")).toHaveAttribute(
+      "data-length",
+      String(buildCarSankeyFromCars(hideFamilyCars).length),
+    );
+    expect(screen.getAllByTestId("highcharts-chart")).toHaveLength(1);
+  });
+
   it("renders no flows when no cars are shown", () => {
     render(<CarSankeyGraph color="white" data={[]} />);
 
