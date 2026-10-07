@@ -79,7 +79,13 @@ const CarSankeyGraph = memo(({ color, data }: CarSankeyGraphProps) => {
 
   return (
     <figure style={{ margin: 0, width: "100%" }}>
-      <Chart highcharts={Highcharts} options={options}>
+      {/* Remount when the flows change. chart.update diffs series data and
+          leaves the previous sankey links and labels on the chart. */}
+      <Chart
+        key={JSON.stringify(sankeyData)}
+        highcharts={Highcharts}
+        options={options}
+      >
         <Accessibility
           enabled={true}
           point={{
