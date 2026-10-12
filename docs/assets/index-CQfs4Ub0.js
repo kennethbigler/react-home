@@ -1,0 +1,1 @@
+import{t as e}from"./react-home-DtcI0NAr.js";e();
