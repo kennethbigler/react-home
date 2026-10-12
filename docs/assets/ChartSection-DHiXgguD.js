@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-8BhlS34s.js";import{t,v as n}from"./react-vendor-D8CahnDF.js";import{c as r,s as i}from"./react-home-DtcI0NAr.js";var a,o,s;function c(){return(c=e((()=>{a=n(),i(),o=t(),s=({children:e})=>(0,o.jsx)(a.Suspense,{fallback:(0,o.jsx)(r,{}),children:e})})))()}export{c as n,s as t};
