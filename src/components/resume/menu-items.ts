@@ -16,7 +16,7 @@ const resumeRouteGroups = [
     {
       name: "Experience",
       route: "experience",
-      Component: lazy(() => import("./work")),
+      Component: lazy(() => import("./experience")),
     },
     {
       name: "Resume",
