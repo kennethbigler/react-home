@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Work from "..";
 
 const sectionOrder = [
@@ -8,6 +8,10 @@ const sectionOrder = [
   "Education",
   "Volunteer",
 ];
+
+const openTab = (name: string) => {
+  fireEvent.click(screen.getByRole("tab", { name }));
+};
 
 describe("resume | work | Work", () => {
   describe("rendering", () => {
@@ -24,14 +28,17 @@ describe("resume | work | Work", () => {
       render(<Work />);
 
       sectionOrder.forEach((title) => {
-        expect(screen.getByText(title)).toBeInTheDocument();
+        expect(screen.getByRole("tab", { name: title })).toBeInTheDocument();
       });
     });
 
     it("renders work section with correct content", () => {
       render(<Work />);
+      openTab("Work");
 
-      expect(screen.getByText("Work")).toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", { level: 2, name: "Work" }),
+      ).toBeInTheDocument();
       expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
       expect(
         screen.getAllByText("Head of Accessibility Engineering").length,
@@ -43,8 +50,11 @@ describe("resume | work | Work", () => {
 
     it("renders volunteer section with correct content", () => {
       render(<Work />);
+      openTab("Volunteer");
 
-      expect(screen.getByText("Volunteer")).toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", { level: 2, name: "Volunteer" }),
+      ).toBeInTheDocument();
       expect(
         screen.getByText("Midnight Game Club, Sunnyvale, CA"),
       ).toBeInTheDocument();
@@ -62,6 +72,9 @@ describe("resume | work | Work", () => {
       expect(
         screen.getByText("Other Public Conference Presentations"),
       ).toBeInTheDocument();
+
+      openTab("Hackathons");
+
       expect(
         screen.getByText("GigNow: Hacking the Gig Economy Now"),
       ).toBeInTheDocument();
@@ -72,8 +85,11 @@ describe("resume | work | Work", () => {
 
     it("renders education section with degree cards", () => {
       render(<Work />);
+      openTab("Education");
 
-      expect(screen.getByText("Education")).toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", { level: 2, name: "Education" }),
+      ).toBeInTheDocument();
       expect(
         screen.getByText(
           "Santa Clara University - Master of Science in Computer Engineering, Emphasis in Software Engineering",
@@ -90,6 +106,7 @@ describe("resume | work | Work", () => {
   describe("content verification", () => {
     it("displays correct work experience details", () => {
       render(<Work />);
+      openTab("Work");
 
       expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
       expect(
@@ -120,6 +137,7 @@ describe("resume | work | Work", () => {
 
     it("displays correct volunteer experience details", () => {
       render(<Work />);
+      openTab("Volunteer");
 
       expect(
         screen.getByText("Midnight Game Club, Sunnyvale, CA"),
@@ -138,6 +156,7 @@ describe("resume | work | Work", () => {
 
     it("displays education degrees from class data", () => {
       render(<Work />);
+      openTab("Education");
 
       expect(
         screen.getByText(
@@ -154,12 +173,16 @@ describe("resume | work | Work", () => {
     it("renders sections in order: Presentations, Work, Hackathons, Education, Volunteer", () => {
       render(<Work />);
 
-      const sectionHeadings = screen
-        .getAllByRole("heading", { level: 2 })
-        .map((heading) => heading.textContent)
-        .filter((text) => sectionOrder.includes(text ?? ""));
+      const tabs = screen.getAllByRole("tab").map((tab) => tab.textContent);
 
-      expect(sectionHeadings).toEqual(sectionOrder);
+      expect(tabs).toEqual(sectionOrder);
+
+      sectionOrder.forEach((title) => {
+        openTab(title);
+        expect(
+          screen.getByRole("heading", { level: 2, name: title }),
+        ).toBeVisible();
+      });
     });
   });
 
@@ -170,8 +193,11 @@ describe("resume | work | Work", () => {
       const h1 = screen.getByRole("heading", { level: 1 });
       expect(h1).toHaveTextContent("Experience");
 
+      expect(
+        screen.getByRole("heading", { level: 2, name: "Presentations" }),
+      ).toBeVisible();
       sectionOrder.forEach((title) => {
-        expect(screen.getByText(title)).toBeInTheDocument();
+        expect(screen.getByRole("tab", { name: title })).toBeInTheDocument();
       });
     });
 
@@ -179,8 +205,11 @@ describe("resume | work | Work", () => {
       render(<Work />);
 
       expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
+      expect(
+        screen.getByRole("tablist", { name: "Experience" }),
+      ).toBeInTheDocument();
       sectionOrder.forEach((title) => {
-        expect(screen.getByText(title)).toBeInTheDocument();
+        expect(screen.getByRole("tab", { name: title })).toBeInTheDocument();
       });
     });
   });
@@ -191,7 +220,7 @@ describe("resume | work | Work", () => {
 
       expect(screen.getByText("Experience")).toBeInTheDocument();
       sectionOrder.forEach((title) => {
-        expect(screen.getByText(title)).toBeInTheDocument();
+        expect(screen.getByRole("tab", { name: title })).toBeInTheDocument();
       });
     });
   });
@@ -199,6 +228,7 @@ describe("resume | work | Work", () => {
   describe("data integrity", () => {
     it("displays all required job information", () => {
       render(<Work />);
+      openTab("Work");
 
       expect(screen.getByText("Intuit, Mountain View, CA")).toBeInTheDocument();
       expect(
@@ -217,6 +247,7 @@ describe("resume | work | Work", () => {
 
     it("displays parent company information when available", () => {
       render(<Work />);
+      openTab("Work");
 
       expect(
         screen.getByText("GigNow (Ernst & Young), Palo Alto, CA"),
@@ -230,6 +261,7 @@ describe("resume | work | Work", () => {
 
     it("displays job descriptions when available", () => {
       render(<Work />);
+      openTab("Work");
 
       expect(
         screen.getByText(
