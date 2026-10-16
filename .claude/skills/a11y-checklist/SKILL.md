@@ -30,14 +30,22 @@ Guide for auditing web content against WCAG 2.2 with remediation strategies, sev
 
 ## Project Standards
 
-This React project targets **WCAG 2.2 Level AA** — the standard referenced by ADA (US), Section 508 (US federal), EN 301 549 / EAA (EU), and most VPAT reporting. **All frontend work should meet WCAG 2.2 AA.**
+This React project targets **WCAG 2.2 Level AA** as its own standard. **All frontend work should meet WCAG 2.2 AA.**
+
+Legal and regulatory references differ and should be tracked separately from the project target (verify current versions before citing in a report):
+
+- ADA Title II (DOJ rule): WCAG 2.1 AA
+- Section 508 (US federal): WCAG 2.0 AA
+- EAA (EU): EN 301 549; the September 2026 update is not yet the legal reference standard
+
+Meeting WCAG 2.2 AA generally satisfies the older versions, since 2.2 builds on them (except the removed 4.1.1 Parsing).
 
 Prefer **Material-UI (MUI) components and theme tokens** over custom implementations. MUI components include built-in keyboard support, ARIA patterns for complex widgets, and theme-aware styling that reduce the manual audit surface.
 
 | Level | Description | Required For |
 | ----- | ----------- | ------------ |
 | **A** | Essential — if not met, assistive technology may not be able to read, understand, or fully operate the page. | Legal baseline |
-| **AA** | Standard support for most regulations and lawsuits. **Project target.** | ADA, Section 508, EAA, VPAT |
+| **AA** | Standard support for most regulations and lawsuits. **Project target.** | Commonly required by ADA, Section 508, EAA, VPAT (version varies; see above) |
 | **AAA** | Specialized support — typically reserved for parts of sites serving a specialized audience. | Optional / specialized |
 
 This checklist targets many, but not all, Level A and AA concerns. Compliance levels do not indicate implementation difficulty.
@@ -113,13 +121,13 @@ Each checklist item has a corresponding WCAG success criterion, identified by re
 
 Content is the most important part of your site.
 
-- [] Use plain language and avoid figures of speech, idioms, and complicated metaphors.
+- [ ] Use plain language and avoid figures of speech, idioms, and complicated metaphors.
   - User-facing copy (error messages, empty states, labels, tooltips) should target an 8th-grade reading level when possible. Avoid jargon, passive voice, and long multi-clause sentences.
   - 3.1.5 Reading Level
-- [] Make sure that `button`, `a`, and `label` element content is unique and descriptive.
+- [ ] Make sure that `button`, `a`, and `label` element content is unique and descriptive.
   - Terms like "click here" and "read more" do not provide any context. Some people navigate using a list of all buttons or links on a page. When using this mode, the terms indicate what will happen if navigated to or activated.
   - 2.4.4 Link Purpose (In Context)
-- [] Use left-aligned text for left-to-right (LTR) languages, and right-aligned text for right-to-left (RTL) languages.
+- [ ] Use left-aligned text for left-to-right (LTR) languages, and right-aligned text for right-to-left (RTL) languages.
   - Centered-aligned or justified text is difficult to read.
   - 1.4.8 Visual Presentation
 
@@ -127,34 +135,33 @@ Content is the most important part of your site.
 
 Global code is code that affects your entire website or web app.
 
-- [] Validate your HTML.
-  - Valid HTML helps to provide a consistent, expected experience across all browsers and assistive technology.
-  - 4.1.1 Parsing
-- [] Use a `lang` attribute on the `html` element.
+- [ ] Validate your HTML.
+  - Valid HTML helps to provide a consistent, expected experience across all browsers and assistive technology. Engineering best practice; WCAG 2.2 removed 4.1.1 Parsing, so no success criterion applies.
+- [ ] Use a `lang` attribute on the `html` element.
   - This helps assistive technology such as screen readers to pronounce content correctly. Example: `<html lang="en">`.
   - 3.1.1 Language of Page
-- [] Mark language changes within content.
+- [ ] Mark language changes within content.
   - When a page contains content in a different language, wrap it with a `lang` attribute so screen readers switch pronunciation models: `<span lang="fr">bonjour</span>`.
   - 3.1.2 Language of Parts
-- [] Provide a unique `title` for each page or view.
+- [ ] Provide a unique `title` for each page or view.
   - The `title` element is often the first piece of information announced by assistive technology. It helps tell people what page or view they are navigating.
   - 2.4.2 Page Titled
-- [] Ensure that viewport zoom is not disabled.
+- [ ] Ensure that viewport zoom is not disabled.
   - Some people need to increase the size of text to a point where they can read it. Do not stop them from doing this, even for app-like experiences.
   - 1.4.4 Resize Text
-- [] Use landmark elements to indicate important content regions.
+- [ ] Use landmark elements to indicate important content regions.
   - Landmark regions (`<nav>`, `<main>`, `<header>`, `<footer>`, `<aside>`) help communicate page layout and allow quick access to key regions.
-  - 4.1.2 Name, Role, Value
-- [] Ensure a linear content flow.
+  - 1.3.1 Info and Relationships
+- [ ] Ensure a linear content flow.
   - Remove `tabindex` attribute values that aren't `0` or `-1`. Elements that are inherently focusable (links, buttons) do not require a `tabindex`. Elements that are not inherently focusable should not have a `tabindex` outside of very specific use cases.
   - 2.4.3 Focus Order
-- [] Avoid using the `autofocus` attribute.
+- [ ] Avoid using the `autofocus` attribute.
   - People who are blind or have low vision may be disoriented when focus is moved without their permission. `autofocus` can also be problematic for motor control users.
   - 2.4.3 Focus Order
-- [] Remove `title` attribute tooltips.
+- [ ] Remove `title` attribute tooltips.
   - The `title` attribute has numerous issues and should not be used if the information is important for all people to access. An acceptable use is labeling an `<iframe>` element.
   - 4.1.2 Name, Role, Value
-- [] Announce status changes without moving focus.
+- [ ] Announce status changes without moving focus.
   - Dynamic updates (e.g., "3 items added to cart," "Form submitted") must be communicated to assistive technology without requiring a page reload or focus change. Use MUI `Alert` with appropriate ARIA roles, or `role="status"` for polite updates and `role="alert"` for urgent ones.
   - 4.1.3 Status Messages
 
@@ -162,20 +169,20 @@ Global code is code that affects your entire website or web app.
 
 It is important that your interface and content can be operated and navigated by keyboard. Some people cannot use a mouse, or use assistive technologies that do not support hovering or precise clicking.
 
-- [] Do not suppress focus styles — never use `outline: none` or `outline: 0` without a replacement focus indicator.
+- [ ] Do not suppress focus styles — never use `outline: none` or `outline: 0` without a replacement focus indicator.
   - Use `:focus-visible` to provide a clear custom focus ring that meets contrast requirements. MUI applies default focus styles; preserve or enhance them in theme overrides rather than removing them.
   - 2.4.7 Focus Visible
-- [] Remove invisible focusable elements.
+- [ ] Remove invisible focusable elements.
   - Remove the ability to focus on elements that are not presently meant to be discoverable—inactive dropdowns, off-screen navigations, or closed modals.
   - 2.4.3 Focus Order
-- [] Ensure no keyboard traps exist outside of intentional modal focus containment.
+- [ ] Ensure no keyboard traps exist outside of intentional modal focus containment.
   - Users must be able to navigate away from any component using only the keyboard. MUI `Dialog` traps focus by design but must provide a way to close (e.g., Escape key) and return focus to the trigger when closed.
   - 2.1.2 No Keyboard Trap
-- [] Ensure sticky or fixed headers and footers do not completely obscure focused elements.
+- [ ] Ensure sticky or fixed headers and footers do not completely obscure focused elements.
   - When a user tabs to a focused element, the element must not be entirely hidden behind a sticky header, cookie banner, or other fixed-position element.
   - 2.4.11 Focus Not Obscured (WCAG 2.2)
-- [] Ensure all inputs have labels or accessible names (if using an icon for the button, it needs an accessible name)
-- [] Ensure the accessible name contains the visible label text as a substring.
+- [ ] Ensure all inputs have labels or accessible names (if using an icon for the button, it needs an accessible name)
+- [ ] Ensure the accessible name contains the visible label text as a substring.
   - Voice control users activate elements by speaking their visible label. The `aria-label` must include the visible text verbatim (e.g., `aria-label="Save changes"` is fine for a button labelled "Save"; `aria-label="Persist changes"` is not). The visible text does not need to be the full accessible name, but it must appear within it.
   - 2.5.3 Label in Name
 
@@ -183,13 +190,13 @@ It is important that your interface and content can be operated and navigated by
 
 Images are a very common part of most websites. Help make sure they can be enjoyed by all.
 
-- [] Make sure that all `img` elements have an `alt` attribute — even decorative ones.
+- [ ] Make sure that all `img` elements have an `alt` attribute — even decorative ones.
   - The `alt` attribute must always be present. For informative images, provide a meaningful description. For decorative images, use `alt=""` (empty string) so screen readers skip them. When `alt` is absent entirely, a screen reader may announce the image's file name or path instead.
   - 1.1.1 Non-text Content
-- [] Provide a text alternative for complex images such as charts, graphs, and maps.
+- [ ] Provide a text alternative for complex images such as charts, graphs, and maps.
   - Describe all visible information: graph axes, data points, labels, and the overall point the graphic communicates.
   - 1.1.1 Non-text Content
-- [] For images containing text, make sure the alt description includes the image's text.
+- [ ] For images containing text, make sure the alt description includes the image's text.
   - For example, the FedEx logo should have `alt="FedEx"`.
   - 1.1.1 Non-text Content
 
@@ -197,16 +204,16 @@ Images are a very common part of most websites. Help make sure they can be enjoy
 
 Heading elements (`h1`–`h6`) break content into related sections and are critical for assistive technology users to understand page structure and navigate efficiently.
 
-- [] Use heading elements to introduce content.
+- [ ] Use heading elements to introduce content.
   - Heading elements construct a document outline and should not be used for purely visual design. Prefer MUI `Typography` with the appropriate `variant` mapped to semantic heading levels (`component="h2"`, etc.).
   - 2.4.6 Headings or Labels
-- [] Use only one `h1` element per page or view.
+- [ ] Use only one `h1` element per page or view.
   - The `h1` should communicate the high-level purpose of the page. Do not use `h1` for content that does not change between pages (e.g., the site name).
   - 2.4.6 Headings or Labels
-- [] Heading elements should be written in a logical sequence.
+- [ ] Heading elements should be written in a logical sequence.
   - The order of heading elements should descend based on content depth. A tool such as headingsMap can help evaluate this.
   - 2.4.6 Headings or Labels
-- [] Don't skip heading levels.
+- [ ] Don't skip heading levels.
   - For example, don't jump from `h2` to `h4`. If heading levels are being skipped for visual treatment, use CSS classes or MUI `Typography` variants instead.
   - 2.4.6 Headings or Labels
 
@@ -214,10 +221,10 @@ Heading elements (`h1`–`h6`) break content into related sections and are criti
 
 List elements communicate that items are related, whether they are sequential, and how many items are present.
 
-- [] Use list elements (`ol`, `ul`, and `dl` elements) for list content.
+- [ ] Use list elements (`ol`, `ul`, and `dl` elements) for list content.
   - This includes sections of related content, items displayed in a grid-like layout, or sibling `<a>` elements.
   - 1.3.1 Info and Relationships
-- [] Add `role="list"` to `ul` or `ol` elements that have `list-style: none` applied.
+- [ ] Add `role="list"` to `ul` or `ol` elements that have `list-style: none` applied.
   - Safari VoiceOver removes list semantics from elements styled with `list-style: none`. Adding `role="list"` explicitly restores them. This commonly affects navigation menus, tag lists, and card grids rendered as unstyled lists.
   - 1.3.1 Info and Relationships
 
@@ -225,36 +232,37 @@ List elements communicate that items are related, whether they are sequential, a
 
 Controls are interactive elements such as links and buttons that let a person navigate to a destination or perform an action.
 
-- [] Use the `a` element for links.
+- [ ] Use the `a` element for links.
   - Links should always have a `href` attribute, even in Single Page Applications (SPAs). Without a `href`, the link will not be properly exposed to assistive technology. Prefer MUI `Link` with a valid `href` or React Router's `Link` component.
   - 1.3.1 Info and Relationships
-- [] Ensure inline links within body text have an underline.
+- [ ] Ensure inline links within body text have an underline.
   - Links that appear within a sentence or paragraph must be underlined so they are distinguishable from surrounding text without relying on color. Removing underlines from inline links requires a contrast ratio of at least 3:1 between the link and the surrounding text as a minimum alternative — underlines are strongly preferred.
   - 1.4.1 Use of Color
-- [] Use the `button` element for buttons.
+- [ ] Use the `button` element for buttons.
   - Buttons are used to submit data or perform an on-screen action that does not shift keyboard focus. Prefer MUI `Button` with `type="button"` to prevent unintended form submission.
   - 1.3.1 Info and Relationships
-- [] Provide a skip link and make sure that it is visible when focused.
+- [ ] Provide a skip link and make sure that it is visible when focused.
   - A skip link allows quick access to the main content of a page, bypassing repeated navigation. **Note:** Adding `<main id="main-content">` alone does not fix 2.4.1—the host application must also add the skip link. Categorize as Documented/Deferred if the skip link is not yet present.
   - 2.4.1 Bypass Blocks
-- [] Identify links that open in a new tab or window.
+- [ ] Identify links that open in a new tab or window.
   - Ideally, avoid links that open in new tabs. If a link does, communicate its behavior clearly to all users before activation (e.g., visible text or `aria-label` including "opens in new tab").
   - G201: Giving users advanced warning when opening a new window
-- [] Ensure all drag-and-drop functionality has a single-pointer alternative.
-  - Any action that requires dragging (reordering lists, sliders, drawing) must also be operable with a single click, tap, or keyboard interaction. This supports users with motor impairments who cannot perform precise drag gestures.
+- [ ] Ensure all drag-and-drop functionality has a single-pointer alternative.
+  - Any action that requires dragging (reordering lists, sliders) must be completable with a single pointer without dragging, e.g. select an item, then click a destination control ("Move up", "Move to…"). Exception: where dragging is essential (e.g. freehand drawing).
+  - Keyboard access is a separate requirement (2.1.1 Keyboard) — provide it too, not as a substitute.
   - 2.5.7 Dragging Movements (WCAG 2.2)
 
 ## Tables
 
 Tables are a structured set of data that help people understand the relationships between different types of information.
 
-- [] Use the `table` element to describe tabular data.
+- [ ] Use the `table` element to describe tabular data.
   - Do you need to display data in rows and columns? Use the `table` element or MUI `Table`/`TableContainer` which renders semantic table markup.
   - 1.3.1 Info and Relationships
-- [] Use the `th` element for table headers (with appropriate `scope` attributes).
+- [ ] Use the `th` element for table headers (with appropriate `scope` attributes).
   - Use `scope="col"` for column headers and `scope="row"` for row headers. Assistive technology uses `scope` to describe table structure.
-  - 4.1.1 Parsing
-- [] Use the `caption` element to provide a title for the table.
+  - 1.3.1 Info and Relationships
+- [ ] Use the `caption` element to provide a title for the table.
   - The table's `caption` should describe what kind of information the table contains.
   - 2.4.6 Headings or Labels
 
@@ -262,34 +270,34 @@ Tables are a structured set of data that help people understand the relationship
 
 Forms allow people to enter information into a site for processing and manipulation.
 
-- [] All inputs in a form are associated with a corresponding `label` element.
+- [ ] All inputs in a form are associated with a corresponding `label` element.
   - Use a `for`/`id` pairing to guarantee the highest level of browser and assistive technology support. MUI `TextField` and form controls wire labels via `label` prop or `InputLabel`.
-  - 3.2.2 On Input
-- [] Use `fieldset` and `legend` elements where appropriate.
+  - 1.3.1 Info and Relationships; 3.3.2 Labels or Instructions
+- [ ] Use `fieldset` and `legend` elements where appropriate.
   - Does your form contain multiple sections of related inputs? Use `fieldset` to group them and `legend` to label the group. MUI `RadioGroup` and `FormControl` with `FormLabel` serve a similar purpose.
   - 1.3.1 Info and Relationships
-- [] Add `autocomplete` attributes to inputs that collect personal information.
+- [ ] Add `autocomplete` attributes to inputs that collect personal information.
   - Use the appropriate HTML `autocomplete` value for inputs collecting name (`name`, `given-name`, `family-name`), address (`street-address`, `postal-code`, `country`), phone (`tel`), email (`email`), payment (`cc-number`, `cc-exp`), or credentials (`username`, `current-password`, `new-password`). This enables password managers, autofill, and assistive technology to prefill fields, reducing burden on users with cognitive and motor disabilities.
   - 1.3.5 Identify Input Purpose
-- [] Make sure that form input errors are displayed in a list above the form after submission.
+- [ ] Make sure that form input errors are displayed in a list above the form after submission.
   - This provides a high-level summary for assistive technology users. Each reported error should also link to the corresponding field with invalid input.
   - 3.3.1 Error Identification
-- [] Associate input error messaging with the input it corresponds to.
+- [ ] Associate input error messaging with the input it corresponds to.
   - Use `aria-describedby` to link error messages to their input. Use `aria-invalid="true"` on the input when a validation error exists. MUI `TextField` supports `error`, `helperText`, and `FormHelperText` for this pattern.
   - 3.3.1 Error Identification
-- [] Pair color-coded states (error, warning, success) with a non-color indicator.
+- [ ] Pair color-coded states (error, warning, success) with a non-color indicator.
   - Use an icon, text label, or `aria-invalid`/`role="alert"` alongside color so users who cannot perceive color differences still get the state. An error border that turns red must also include an error icon or error message text.
   - 1.4.1 Use of Color
-- [] Provide error correction suggestions when errors can be detected.
+- [ ] Provide error correction suggestions when errors can be detected.
   - When an error is identified, provide a suggestion for correcting it if possible (e.g., "Enter a valid email address like `name@example.com`").
   - 3.3.3 Error Suggestion
-- [] Make consequential actions reversible or confirmable.
+- [ ] Make consequential actions reversible or confirmable.
   - For forms involving legal commitments, financial transactions, or data deletion, allow users to review, correct, or cancel before final submission.
   - 3.3.4 Error Prevention
-- [] Do not require cognitive function tests for authentication without providing an alternative.
+- [ ] Do not require cognitive function tests for authentication without providing an alternative.
   - Authentication must not rely solely on memory tasks (memorizing a password, solving a puzzle) without supporting copy-paste, password managers, or other accessible alternatives.
   - 3.3.8 Accessible Authentication Minimum (WCAG 2.2)
-- [] Do not ask for the same information twice within the same session.
+- [ ] Do not ask for the same information twice within the same session.
   - If a user entered information in a previous step of the same process, auto-populate or allow them to confirm rather than re-enter it. This reduces burden on users with cognitive disabilities.
   - 3.3.7 Redundant Entry (WCAG 2.2)
 
@@ -297,16 +305,15 @@ Forms allow people to enter information into a site for processing and manipulat
 
 Media includes content such as pre-recorded and live audio and video.
 
-- [] Make sure that media does not autoplay.
-  - Unexpected video and audio can be distracting, especially for users with ADHD. Autoplaying video and animation can trigger vestibular and seizure disorders.
-  - 1.4.2 Audio Control
-- [] Do not autoplay audio.
+- [ ] Avoid autoplaying media.
+  - Engineering best practice: unexpected video and audio can be distracting, especially for users with ADHD, and autoplaying motion can trigger vestibular and seizure disorders. Not itself a WCAG failure; see the audio and pause/stop items below for the enforceable criteria.
+- [ ] Do not autoplay audio.
   - Audio that plays automatically for more than 3 seconds with no way to pause or stop it interferes with screen readers — the autoplay audio competes with the screen reader's voice. Either do not autoplay, or provide a visible pause/stop control that is the first focusable element on the page.
   - 1.4.2 Audio Control
-- [] Ensure that media controls use appropriate markup.
+- [ ] Ensure that media controls use appropriate markup.
   - For example, an audio mute button should have a pressed toggle state when active, or a volume slider should use `<input type="range">`.
   - 1.3.1 Info and Relationships
-- [] Check to see that all media can be paused.
+- [ ] Check to see that all media can be paused.
   - Provide a pause or stop control on any media element. Autoplaying audio must also meet 1.4.2 Audio Control above. If the device has a keyboard, ensure the Space key can pause playback without interfering with its ability to scroll the page.
   - 2.2.2 Pause, Stop, Hide
 
@@ -314,29 +321,28 @@ Media includes content such as pre-recorded and live audio and video.
 
 Video-specific checks.
 
-- [] Ensure `<video>` elements include caption and description `<track>` elements.
-  - Add both tracks inside every `<video>`:
-    - `<track kind="captions" src="captions.vtt" srclang="en" label="English" default>` — 1.2.2 Captions (Prerecorded)
-    - `<track kind="descriptions" src="descriptions.vtt" srclang="en" label="English">` — 1.2.3 Audio Description (Prerecorded)
-  - The code pattern (track element presence) is enforceable. Whether the caption and description file content is accurate requires human review.
+- [ ] Provide captions and audio description for video where the content requires them.
+  - Captions are needed for prerecorded video with speech or meaningful audio (1.2.2 Captions (Prerecorded)). Audio description (or a media alternative) is needed when important visual information is not conveyed in the audio (1.2.3 Audio Description or Media Alternative (Prerecorded)). Silent or purely decorative video may need neither.
+  - Typical markup: `<track kind="captions" src="captions.vtt" srclang="en" label="English" default>`; `<track kind="descriptions" ...>` where description is needed. Browser support for description tracks is limited — an alternate described version or transcript may be required.
+  - A `<track>` element's presence does not establish conformance. Accuracy and completeness of the files requires human review.
 
 ## Audio
 
 Audio-specific checks.
 
-- [] Confirm that transcripts are available.
+- [ ] Confirm that transcripts are available.
   - Transcripts allow people who cannot hear to still understand audio content, and allow people to digest audio at a comfortable pace.
   - 1.2.1 Audio-only and Video-only (Prerecorded)
 
 ## Appearance
 
-- [] Do not use instructions that rely solely on visual position, shape, or sound.
+- [ ] Do not use instructions that rely solely on visual position, shape, or sound.
   - Avoid phrases like "click the button on the right" or "after the beep." Use the actual name of the element: "click the Submit button" or "when the confirmation message appears."
   - 1.3.3 Sensory Characteristics
-- [] Verify the layout supports user-defined text spacing without losing content or functionality.
+- [ ] Verify the layout supports user-defined text spacing without losing content or functionality.
   - Users may override text spacing via browser settings or user stylesheets. The design must not break when: line height is set to 1.5× the font size, paragraph spacing to 2×, letter spacing to 0.12×, or word spacing to 0.16×. These are not values to hardcode — they are the maximum overrides the layout must tolerate. Check that no text becomes hidden, clipped, or requires horizontal scrolling when these overrides are applied.
   - 1.4.12 Text Spacing
-- [] Ensure content that appears on hover or focus can be dismissed, hovered, and persisted.
+- [ ] Ensure content that appears on hover or focus can be dismissed, hovered, and persisted.
   - Tooltips and popovers that appear on hover or keyboard focus must: (1) be dismissible without moving pointer or focus (e.g., Escape key), (2) allow the pointer to move over the appeared content without it disappearing, and (3) remain visible until the user intentionally dismisses it or moves away. MUI `Tooltip` and `Popover` support keyboard focus; verify dismiss and hover behavior manually.
   - 1.4.13 Content on Hover or Focus
 
@@ -344,13 +350,13 @@ Audio-specific checks.
 
 Content that moves, either on its own or when triggered by a person activating a control.
 
-- [] Ensure no content flashes more than 3 times per second.
+- [ ] Ensure no content flashes more than 3 times per second.
   - Strobing or rapidly alternating content can trigger seizures. This applies to CSS animations, JavaScript-toggled class alternations, GIFs, Lottie files, and embedded video. If flashing content is unavoidable, warn the user before they encounter it.
   - 2.3.1 Three Flashes or Below Threshold
-- [] Provide a mechanism to pause background video.
+- [ ] Provide a mechanism to pause background video.
   - Background video can be distracting, especially if content is placed over it.
   - 2.2.2 Pause, Stop, Hide
-- [] Make sure all animation obeys the `prefers-reduced-motion` media query.
+- [ ] Make sure all animation obeys the `prefers-reduced-motion` media query.
   - Remove animations when the "reduce motion" setting is activated. If an animation is necessary to communicate meaning, slow its duration down. Respect reduced motion in MUI theme transitions and custom CSS.
 
   ```css
@@ -371,12 +377,12 @@ Color contrast requires verification with an external tool — it cannot be comp
 
 When writing code, flag any hardcoded color value (`#hex`, `rgb()`, `hsl()`, named color) as a candidate for manual contrast verification and recommend the appropriate MUI palette token instead.
 
-- [] Verify all elements requiring 4.5:1 contrast meet that ratio.
+- [ ] Verify all elements requiring 4.5:1 contrast meet that ratio.
   - The following must achieve 4.5:1 against their background — 1.4.3 Contrast (Minimum):
     - Normal-sized text (under 18pt / 14pt bold)
     - Text overlaid on images or video
     - Custom `::selection` foreground/background pairs
-- [] Verify all elements requiring 3:1 contrast meet that ratio.
+- [ ] Verify all elements requiring 3:1 contrast meet that ratio.
   - The following must achieve 3:1 against their background or adjacent color — 1.4.11 Non-text Contrast and 1.4.3 Contrast (Minimum):
     - Large text (18pt / 24px regular, or 14pt / ~18.67px bold)
     - Icons that convey meaning
@@ -384,16 +390,16 @@ When writing code, flag any hardcoded color value (`#hex`, `rgb()`, `hsl()`, nam
 
 ## Mobile Web and Touch Screen
 
-- [] Do not lock orientation — do not set `orientation: portrait` or `orientation: landscape` in CSS or a manifest without a functional reason.
+- [ ] Do not lock orientation — do not set `orientation: portrait` or `orientation: landscape` in CSS or a manifest without a functional reason.
   - Some users mount devices in fixed orientations due to physical disability. Locking orientation removes that accommodation.
   - 1.3.4 Orientation
-- [] Remove horizontal scrolling.
+- [ ] Remove horizontal scrolling.
   - Requiring someone to scroll horizontally can be difficult for some, irritating for all.
   - 1.4.10 Reflow
-- [] Ensure touch targets meet the minimum size requirement.
+- [ ] Ensure touch targets meet the minimum size requirement.
   - Interactive elements must be at least 24×24 CSS pixels, or have sufficient spacing around smaller targets. This supports users with motor control issues and touch screen users.
   - 2.5.8 Target Size (Minimum) (WCAG 2.2)
-- [] Ensure sufficient space between interactive items in order to provide a scroll area.
+- [ ] Ensure sufficient space between interactive items in order to provide a scroll area.
   - Leave enough spacing between adjacent interactive targets that users can scroll past them without accidental activation. Users with hand tremors may struggle when controls have zero spacing between them.
   - 2.5.8 Target Size (Minimum) (WCAG 2.2)
 
