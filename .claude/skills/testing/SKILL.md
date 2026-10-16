@@ -22,7 +22,7 @@ Stack: Vitest (globals, jsdom), `@testing-library/react`, `vi` for mocks. Versio
 | Each covered file | 50% | 50% | 50% | 50% |
 
 Per-file floor: `scripts/check-per-file-coverage.mjs`.
-Excluded: `src/images/**`, `src/index.css`, `src/vite-env.d.ts`, `src/@types/**`, `**/types.ts`, `**/index.ts`.
+Excluded (see `coverage.exclude` in `vite.config.ts` for the authoritative list): `src/images/**`, `src/.DS_Store`, `src/index.css`, `src/vite-env.d.ts`, `src/@types/**`, `**/types.ts`, `**/index.ts`, `src/components/games/bridge/header/bid-dialog/advisor/bidding-logic.ts`.
 
 ## Conventions
 
@@ -54,8 +54,11 @@ Use `src/test-utils/` — don't hand-roll `createStore()` + `<Provider>`:
 ## Error boundary pattern
 
 ```tsx
-const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-render(<ErrorBoundary><Thrower /></ErrorBoundary>);
-expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
-spy.mockRestore();
+afterEach(() => vi.restoreAllMocks());
+
+it("handles errors gracefully", () => {
+  vi.spyOn(console, "error").mockImplementation(() => {});
+  render(<ErrorBoundary><Thrower /></ErrorBoundary>);
+  expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
+});
 ```
