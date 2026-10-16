@@ -1,18 +1,13 @@
-/* eslint-disable import/no-extraneous-dependencies -- Vitest module augmentation */
 import type { TestingLibraryMatchers } from "@testing-library/jest-dom/matchers";
-import "vitest";
 
 declare module "vitest" {
-  // Vitest 5 only picks up custom matchers declared on Matchers<R, T>.
+  // TODO: Drop the TestingLibraryMatchers extend once @testing-library/jest-dom
+  // types target Vitest 5 (https://github.com/testing-library/jest-dom/pull/742).
+  // Keep toHaveNoViolations; jest-axe still has no Vitest matcher types.
   interface Matchers<
     R extends void | Promise<void> = void | Promise<void>,
-    // Matches Vitest's Matchers<R, T>. The received type is not used here.
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- required for declaration merging
     T = unknown,
-  > extends TestingLibraryMatchers<
-    ReturnType<typeof expect.stringContaining>,
-    R
-  > {
+  > extends TestingLibraryMatchers<T, R> {
     toHaveNoViolations(): R;
   }
 }
