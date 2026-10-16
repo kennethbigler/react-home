@@ -123,13 +123,13 @@ Content is the most important part of your site.
 
 - [ ] Use plain language and avoid figures of speech, idioms, and complicated metaphors.
   - User-facing copy (error messages, empty states, labels, tooltips) should target an 8th-grade reading level when possible. Avoid jargon, passive voice, and long multi-clause sentences.
-  - 3.1.5 Reading Level
+  - Project convention. WCAG 3.1.5 Reading Level is Level AAA, beyond the AA target.
 - [ ] Make sure that `button`, `a`, and `label` element content is unique and descriptive.
   - Terms like "click here" and "read more" do not provide any context. Some people navigate using a list of all buttons or links on a page. When using this mode, the terms indicate what will happen if navigated to or activated.
   - 2.4.4 Link Purpose (In Context)
 - [ ] Use left-aligned text for left-to-right (LTR) languages, and right-aligned text for right-to-left (RTL) languages.
   - Centered-aligned or justified text is difficult to read.
-  - 1.4.8 Visual Presentation
+  - Project convention. WCAG 1.4.8 Visual Presentation is Level AAA, beyond the AA target.
 
 ## Global Code
 
@@ -160,7 +160,7 @@ Global code is code that affects your entire website or web app.
   - 2.4.3 Focus Order
 - [ ] Remove `title` attribute tooltips.
   - The `title` attribute has numerous issues and should not be used if the information is important for all people to access. An acceptable use is labeling an `<iframe>` element.
-  - 4.1.2 Name, Role, Value
+  - Project convention, not mandated by WCAG on its own. It becomes a WCAG issue only when the tooltip is the sole source of an accessible name or important information (e.g., 4.1.2 Name, Role, Value).
 - [ ] Announce status changes without moving focus.
   - Dynamic updates (e.g., "3 items added to cart," "Form submitted") must be communicated to assistive technology without requiring a page reload or focus change. Use MUI `Alert` with appropriate ARIA roles, or `role="status"` for polite updates and `role="alert"` for urgent ones.
   - 4.1.3 Status Messages
@@ -206,16 +206,16 @@ Heading elements (`h1`–`h6`) break content into related sections and are criti
 
 - [ ] Use heading elements to introduce content.
   - Heading elements construct a document outline and should not be used for purely visual design. Prefer MUI `Typography` with the appropriate `variant` mapped to semantic heading levels (`component="h2"`, etc.).
-  - 2.4.6 Headings or Labels
+  - 1.3.1 Info and Relationships (headings shown visually must be programmatic); 2.4.6 Headings or Labels (headings must be descriptive).
 - [ ] Use only one `h1` element per page or view.
   - The `h1` should communicate the high-level purpose of the page. Do not use `h1` for content that does not change between pages (e.g., the site name).
-  - 2.4.6 Headings or Labels
+  - Project convention; WCAG does not require a single `h1`.
 - [ ] Heading elements should be written in a logical sequence.
   - The order of heading elements should descend based on content depth. A tool such as headingsMap can help evaluate this.
-  - 2.4.6 Headings or Labels
+  - Best practice supporting 1.3.1 Info and Relationships; WCAG does not mandate a specific heading order.
 - [ ] Don't skip heading levels.
   - For example, don't jump from `h2` to `h4`. If heading levels are being skipped for visual treatment, use CSS classes or MUI `Typography` variants instead.
-  - 2.4.6 Headings or Labels
+  - Best practice (skipped levels are an advisory failure in some tools, not a WCAG failure); supports 1.3.1 Info and Relationships.
 
 ## Lists
 
@@ -307,8 +307,9 @@ Media includes content such as pre-recorded and live audio and video.
 
 - [ ] Avoid autoplaying media.
   - Engineering best practice: unexpected video and audio can be distracting, especially for users with ADHD, and autoplaying motion can trigger vestibular and seizure disorders. Not itself a WCAG failure; see the audio and pause/stop items below for the enforceable criteria.
-- [ ] Do not autoplay audio.
-  - Audio that plays automatically for more than 3 seconds with no way to pause or stop it interferes with screen readers — the autoplay audio competes with the screen reader's voice. Either do not autoplay, or provide a visible pause/stop control that is the first focusable element on the page.
+- [ ] Do not autoplay audio for more than 3 seconds without a way to stop it.
+  - Audio that plays automatically for more than 3 seconds competes with the screen reader's voice. WCAG requires a mechanism to pause or stop it, or to control its volume independently of the system volume. The control does not need to be first in the focus order.
+  - Project policy (stricter than WCAG): do not autoplay audio at all.
   - 1.4.2 Audio Control
 - [ ] Ensure that media controls use appropriate markup.
   - For example, an audio mute button should have a pressed toggle state when active, or a volume slider should use `<input type="range">`.
@@ -357,7 +358,7 @@ Content that moves, either on its own or when triggered by a person activating a
   - Background video can be distracting, especially if content is placed over it.
   - 2.2.2 Pause, Stop, Hide
 - [ ] Make sure all animation obeys the `prefers-reduced-motion` media query.
-  - Remove animations when the "reduce motion" setting is activated. If an animation is necessary to communicate meaning, slow its duration down. Respect reduced motion in MUI theme transitions and custom CSS.
+  - Project convention. Remove animations when the "reduce motion" setting is activated. If an animation is necessary to communicate meaning, slow its duration down. Respect reduced motion in MUI theme transitions and custom CSS.
 
   ```css
   @media (prefers-reduced-motion: reduce) {
@@ -369,7 +370,7 @@ Content that moves, either on its own or when triggered by a person activating a
   }
   ```
 
-  - 2.3.3 Animation from Interactions
+  - Supports 2.3.3 Animation from Interactions (Level AAA, beyond the AA target); technique C39.
 
 ## Color Contrast
 
@@ -390,8 +391,8 @@ When writing code, flag any hardcoded color value (`#hex`, `rgb()`, `hsl()`, nam
 
 ## Mobile Web and Touch Screen
 
-- [ ] Do not lock orientation — do not set `orientation: portrait` or `orientation: landscape` in CSS or a manifest without a functional reason.
-  - Some users mount devices in fixed orientations due to physical disability. Locking orientation removes that accommodation.
+- [ ] Do not restrict content to a single orientation (portrait or landscape) unless it is essential.
+  - Some users mount devices in fixed orientations due to physical disability. Locking orientation (e.g., the manifest `orientation` member, or JS orientation lock) removes that accommodation. Responsive CSS using the `orientation` media feature to adapt layout is not a restriction.
   - 1.3.4 Orientation
 - [ ] Remove horizontal scrolling.
   - Requiring someone to scroll horizontally can be difficult for some, irritating for all.
