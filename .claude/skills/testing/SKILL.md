@@ -6,14 +6,59 @@ description: >-
   complete to confirm tests and verification pass.
 ---
 
-The authoritative content for this skill lives in the shared Cursor rule so that
-Claude Code and Cursor stay in sync from a single source. Read it now:
+# Testing
 
-@../../../.cursor/rules/testing.mdc
+Stack: Vitest (globals, jsdom), `@testing-library/react`, `vi` for mocks. Versions: `package.json`.
 
-Follow the guidance in that file. Ignore its `globs` / `alwaysApply` frontmatter
-keys — they are Cursor-specific and do not apply here.
+## Gate
 
-NOTE: In Cursor this rule is `alwaysApply: true` (always in context). As a Claude
-Code skill it is loaded on demand instead. If you want it always available in
-Claude Code, move its content into CLAUDE.md.
+`npm run verify` = `tsc` → `knip` → `lint` → `test:coverage`. Add `npm run build` if build/config changed.
+
+## Coverage (enforced in `vite.config.ts`)
+
+| Scope | Statements | Branches | Functions | Lines |
+| --- | --- | --- | --- | --- |
+| Project | 85% | 80% | 85% | 85% |
+| Each covered file | 50% | 50% | 50% | 50% |
+
+Per-file floor: `scripts/check-per-file-coverage.mjs`.
+Excluded (see `coverage.exclude` in `vite.config.ts` for the authoritative list): `src/images/**`, `src/.DS_Store`, `src/index.css`, `src/vite-env.d.ts`, `src/@types/**`, `**/types.ts`, `**/index.ts`, `src/components/games/bridge/header/bid-dialog/advisor/bidding-logic.ts`.
+
+## Conventions
+
+- Co-locate: `Name.test.tsx`, `helper.test.ts`; group in `tests/` when needed
+- `describe("category | Name", …)`
+- Test user-visible behavior, not state variable names or internals
+- Don't test third-party libs (React, MUI) or static content
+- Await async UI (`findBy*`, `waitFor`); restore spies/mocks after use
+
+## Query priority
+
+`getByRole` → `getByLabelText` → `getByPlaceholderText` → `getByText` → `getByTestId` (last resort)
+
+## Jotai
+
+Use `src/test-utils/` — don't hand-roll `createStore()` + `<Provider>`:
+
+- `renderWithHydratedAtoms`, `renderHookWithHydratedAtoms`, `createAtomWrapper` (all return the store)
+- `getHydratedAtomValue` — read an `atomWithStorage` atom like a fresh page load
+
+## Always cover
+
+- Clicks, form submits, keyboard events
+- Each conditional render state (loading / data / error)
+- Validation and error handling
+- Props → output
+- Accessible behavior (keyboard nav, ARIA)
+
+## Error boundary pattern
+
+```tsx
+afterEach(() => vi.restoreAllMocks());
+
+it("handles errors gracefully", () => {
+  vi.spyOn(console, "error").mockImplementation(() => {});
+  render(<ErrorBoundary><Thrower /></ErrorBoundary>);
+  expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
+});
+```

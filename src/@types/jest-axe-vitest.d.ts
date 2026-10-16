@@ -1,12 +1,13 @@
-/* eslint-disable import/no-extraneous-dependencies -- Vitest module augmentation */
-import "vitest";
+import type { TestingLibraryMatchers } from "@testing-library/jest-dom/matchers";
 
 declare module "vitest" {
-  interface Assertion<_T = unknown> {
-    toHaveNoViolations(): void;
-  }
-
-  interface AsymmetricMatchersContaining {
-    toHaveNoViolations(): void;
+  // TODO: Drop the TestingLibraryMatchers extend once @testing-library/jest-dom
+  // types target Vitest 5 (https://github.com/testing-library/jest-dom/pull/742).
+  // Keep toHaveNoViolations; jest-axe still has no Vitest matcher types.
+  interface Matchers<
+    R extends void | Promise<void> = void | Promise<void>,
+    T = unknown,
+  > extends TestingLibraryMatchers<T, R> {
+    toHaveNoViolations(): R;
   }
 }

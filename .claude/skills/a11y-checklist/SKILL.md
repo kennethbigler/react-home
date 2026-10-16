@@ -5,11 +5,523 @@ description: >-
   a11y audits, fixing WCAG violations, implementing accessible components,
   reviewing UI for ADA/Section 508/EAA compliance, or writing accessibility reports.
 ---
+# Accessibility Project Checklist
 
-The authoritative content for this skill lives in the shared Cursor rule so that
-Claude Code and Cursor stay in sync from a single source. Read it now:
+Guide for auditing web content against WCAG 2.2 with remediation strategies, severity classification, and structured reporting.
 
-@../../../.cursor/rules/a11y-checklist.mdc
+## When to Use This Resource
 
-Follow the guidance in that file. Ignore its `globs` / `alwaysApply` frontmatter
-keys — they are Cursor-specific and do not apply here.
+- Conducting accessibility audits
+- Fixing WCAG violations
+- Implementing accessible components
+- Preparing for accessibility lawsuits
+- Meeting ADA, Section 508, or EAA (European Accessibility Act) requirements
+- Achieving VPAT compliance
+
+## Quick Start (Audits)
+
+1. **Scope** — Identify the component, page, or feature; note light/dark theme if relevant.
+2. **Automate** — Run `npm run lint` (includes `eslint-plugin-jsx-a11y`); scan with axe DevTools or Lighthouse CI (`lighthouserc.json`).
+3. **Review code** — Walk the checklist sections below; flag hardcoded colors for manual contrast verification.
+4. **Report** — Use the Audit Report Summary Template; categorize each finding as **Fixed**, **Documented/Deferred**, or **Open**.
+5. **Manual QA** — Tell the developer which Manual QA Checklist items apply and cannot be verified from code alone.
+
+**When conducting an audit:** Verify color contrast (or state in the report that contrast was not individually verified and recommend Colour Contrast Analyser against the MUI theme in use). Categorize findings as **Fixed** only when fully resolved—use **Documented/Deferred** when part of the fix is left to the host (e.g. adding `<main>` without a skip link). See "Categorizing audit findings" and "Color Contrast" below.
+
+## Project Standards
+
+This React project targets **WCAG 2.2 Level AA** as its own standard. **All frontend work should meet WCAG 2.2 AA.**
+
+Legal and regulatory references differ and should be tracked separately from the project target (verify current versions before citing in a report):
+
+- ADA Title II (DOJ rule): WCAG 2.1 AA
+- Section 508 (US federal): WCAG 2.0 AA
+- EAA (EU): EN 301 549; the September 2026 update is not yet the legal reference standard
+
+Meeting WCAG 2.2 AA generally satisfies the older versions, since 2.2 builds on them (except the removed 4.1.1 Parsing).
+
+Prefer **Material-UI (MUI) components and theme tokens** over custom implementations. MUI components include built-in keyboard support, ARIA patterns for complex widgets, and theme-aware styling that reduce the manual audit surface.
+
+| Level | Description | Required For |
+| ----- | ----------- | ------------ |
+| **A** | Essential — if not met, assistive technology may not be able to read, understand, or fully operate the page. | Legal baseline |
+| **AA** | Standard support for most regulations and lawsuits. **Project target.** | Commonly required by ADA, Section 508, EAA, VPAT (version varies; see above) |
+| **AAA** | Specialized support — typically reserved for parts of sites serving a specialized audience. | Optional / specialized |
+
+This checklist targets many, but not all, Level A and AA concerns. Compliance levels do not indicate implementation difficulty.
+
+### Recommended Testing Tools
+
+- **Color contrast:** Colour Contrast Analyser (CCA) by TPGI, or WebAIM Contrast Checker — verify against the MUI theme (light/dark) from `WithTheme.tsx`
+- **Static analysis (editor/CI):** `eslint-plugin-jsx-a11y` — enabled in `eslint.config.js`; run via `npm run lint`. Catches missing alt text, incorrect ARIA roles, missing labels, and more. Limited to statically analyzable patterns; supplement with runtime tools.
+- **Automated scanning (browser):** axe DevTools browser extension for quick page-level scans during development
+- **Automated scanning (CI/CD):** Lighthouse CI via `lighthouserc.json` and GitHub Actions; axe-core via jest-axe (Vitest) or axe-playwright when component or E2E tests are added
+- **Screen readers:** VoiceOver (macOS/iOS), NVDA or JAWS (Windows)
+- **Manual inspection:** Browser DevTools accessibility panel, headingsMap browser extension
+
+### MUI vs. Developer Responsibility
+
+**MUI handles:** ARIA roles and states for complex widgets (Dialog, Menu, Tabs, Select, etc.), modal focus trapping, keyboard navigation in interactive components, default `:focus-visible` styles, theme typography and spacing, baseline touch targets, and reduced-motion-friendly transitions when configured in theme.
+
+**Developers handle:** semantic heading hierarchy, HTML landmarks (`<main>`, `<nav>`, `<header>`, `<footer>`), unique page titles, skip links, alt text, `aria-label` on icon-only buttons, form error messaging and associations, descriptive link text, plain-language copy, and using `theme.palette.*` tokens instead of hardcoded colors.
+
+## Audit Methodology
+
+### POUR Principles
+
+Every accessibility requirement maps to one of four principles:
+
+```text
+Perceivable:    Can users perceive the content?
+Operable:       Can users operate the interface?
+Understandable: Can users understand the content?
+Robust:         Does it work with assistive technology?
+```
+
+### Common Violations by Severity
+
+```text
+Critical (blockers — fix before release):
+├── Missing alt text on functional images
+├── No keyboard access to interactive elements
+├── Missing form labels
+└── Auto-playing media without controls
+
+Serious (high priority — fix within current sprint):
+├── Insufficient color contrast
+├── Missing skip links
+├── Inaccessible custom widgets
+└── Missing page titles
+
+Moderate (fix within next sprint):
+├── Missing language attribute
+├── Unclear link text
+├── Missing landmarks
+└── Improper heading hierarchy
+```
+
+### Categorizing Audit Findings
+
+Use consistent categories so readers know what is fully resolved vs. what still depends on the host or future work:
+
+| Category | Use when |
+| -------- | -------- |
+| **Fixed** | The issue is fully resolved in scope. All required changes are in place (e.g., skip link added and `<main>` landmark present for 2.4.1). |
+| **Documented / Deferred** | Only part of the fix is done, or the rest is the host application's responsibility. Example: adding `<main id="main-content">` provides a stable target for a skip link but does **not** fix 2.4.1 until the host adds the skip link. |
+| **Open** | Not yet addressed. |
+
+Do not label a finding as **Fixed** when the fix is deferred. Use **Documented/Deferred** and note that the host must complete the fix.
+
+## Success Criteria
+
+Each checklist item has a corresponding WCAG success criterion, identified by reference number and short title (e.g., 1.4.4 Resize text). Some issues may map to multiple criteria; each item lists the most relevant one.
+
+
+## Content
+
+Content is the most important part of your site.
+
+- [ ] Use plain language and avoid figures of speech, idioms, and complicated metaphors.
+  - User-facing copy (error messages, empty states, labels, tooltips) should target an 8th-grade reading level when possible. Avoid jargon, passive voice, and long multi-clause sentences.
+  - Project convention. WCAG 3.1.5 Reading Level is Level AAA, beyond the AA target.
+- [ ] Make sure that `button`, `a`, and `label` element content is unique and descriptive.
+  - Terms like "click here" and "read more" do not provide any context. Some people navigate using a list of all buttons or links on a page. When using this mode, the terms indicate what will happen if navigated to or activated.
+  - 2.4.4 Link Purpose (In Context)
+- [ ] Use left-aligned text for left-to-right (LTR) languages, and right-aligned text for right-to-left (RTL) languages.
+  - Centered-aligned or justified text is difficult to read.
+  - Project convention. WCAG 1.4.8 Visual Presentation is Level AAA, beyond the AA target.
+
+## Global Code
+
+Global code is code that affects your entire website or web app.
+
+- [ ] Validate your HTML.
+  - Valid HTML helps to provide a consistent, expected experience across all browsers and assistive technology. Engineering best practice; WCAG 2.2 removed 4.1.1 Parsing, so no success criterion applies.
+- [ ] Use a `lang` attribute on the `html` element.
+  - This helps assistive technology such as screen readers to pronounce content correctly. Example: `<html lang="en">`.
+  - 3.1.1 Language of Page
+- [ ] Mark language changes within content.
+  - When a page contains content in a different language, wrap it with a `lang` attribute so screen readers switch pronunciation models: `<span lang="fr">bonjour</span>`.
+  - 3.1.2 Language of Parts
+- [ ] Provide a unique `title` for each page or view.
+  - The `title` element is often the first piece of information announced by assistive technology. It helps tell people what page or view they are navigating.
+  - 2.4.2 Page Titled
+- [ ] Ensure that viewport zoom is not disabled.
+  - Some people need to increase the size of text to a point where they can read it. Do not stop them from doing this, even for app-like experiences.
+  - 1.4.4 Resize Text
+- [ ] Use landmark elements to indicate important content regions.
+  - Landmark regions (`<nav>`, `<main>`, `<header>`, `<footer>`, `<aside>`) help communicate page layout and allow quick access to key regions.
+  - 1.3.1 Info and Relationships
+- [ ] Ensure a linear content flow.
+  - Remove `tabindex` attribute values that aren't `0` or `-1`. Elements that are inherently focusable (links, buttons) do not require a `tabindex`. Elements that are not inherently focusable should not have a `tabindex` outside of very specific use cases.
+  - 2.4.3 Focus Order
+- [ ] Avoid using the `autofocus` attribute.
+  - People who are blind or have low vision may be disoriented when focus is moved without their permission. `autofocus` can also be problematic for motor control users.
+  - 2.4.3 Focus Order
+- [ ] Remove `title` attribute tooltips.
+  - The `title` attribute has numerous issues and should not be used if the information is important for all people to access. An acceptable use is labeling an `<iframe>` element.
+  - Project convention, not mandated by WCAG on its own. It becomes a WCAG issue only when the tooltip is the sole source of an accessible name or important information (e.g., 4.1.2 Name, Role, Value).
+- [ ] Announce status changes without moving focus.
+  - Dynamic updates (e.g., "3 items added to cart," "Form submitted") must be communicated to assistive technology without requiring a page reload or focus change. Use MUI `Alert` with appropriate ARIA roles, or `role="status"` for polite updates and `role="alert"` for urgent ones.
+  - 4.1.3 Status Messages
+
+## Keyboard
+
+It is important that your interface and content can be operated and navigated by keyboard. Some people cannot use a mouse, or use assistive technologies that do not support hovering or precise clicking.
+
+- [ ] Do not suppress focus styles — never use `outline: none` or `outline: 0` without a replacement focus indicator.
+  - Use `:focus-visible` to provide a clear custom focus ring that meets contrast requirements. MUI applies default focus styles; preserve or enhance them in theme overrides rather than removing them.
+  - 2.4.7 Focus Visible
+- [ ] Remove invisible focusable elements.
+  - Remove the ability to focus on elements that are not presently meant to be discoverable—inactive dropdowns, off-screen navigations, or closed modals.
+  - 2.4.3 Focus Order
+- [ ] Ensure no keyboard traps exist outside of intentional modal focus containment.
+  - Users must be able to navigate away from any component using only the keyboard. MUI `Dialog` traps focus by design but must provide a way to close (e.g., Escape key) and return focus to the trigger when closed.
+  - 2.1.2 No Keyboard Trap
+- [ ] Ensure sticky or fixed headers and footers do not completely obscure focused elements.
+  - When a user tabs to a focused element, the element must not be entirely hidden behind a sticky header, cookie banner, or other fixed-position element.
+  - 2.4.11 Focus Not Obscured (WCAG 2.2)
+- [ ] Ensure all inputs have labels or accessible names (if using an icon for the button, it needs an accessible name)
+- [ ] Ensure the accessible name contains the visible label text as a substring.
+  - Voice control users activate elements by speaking their visible label. The `aria-label` must include the visible text verbatim (e.g., `aria-label="Save changes"` is fine for a button labelled "Save"; `aria-label="Persist changes"` is not). The visible text does not need to be the full accessible name, but it must appear within it.
+  - 2.5.3 Label in Name
+
+## Images
+
+Images are a very common part of most websites. Help make sure they can be enjoyed by all.
+
+- [ ] Make sure that all `img` elements have an `alt` attribute — even decorative ones.
+  - The `alt` attribute must always be present. For informative images, provide a meaningful description. For decorative images, use `alt=""` (empty string) so screen readers skip them. When `alt` is absent entirely, a screen reader may announce the image's file name or path instead.
+  - 1.1.1 Non-text Content
+- [ ] Provide a text alternative for complex images such as charts, graphs, and maps.
+  - Describe all visible information: graph axes, data points, labels, and the overall point the graphic communicates.
+  - 1.1.1 Non-text Content
+- [ ] For images containing text, make sure the alt description includes the image's text.
+  - For example, the FedEx logo should have `alt="FedEx"`.
+  - 1.1.1 Non-text Content
+
+## Headings
+
+Heading elements (`h1`–`h6`) break content into related sections and are critical for assistive technology users to understand page structure and navigate efficiently.
+
+- [ ] Use heading elements to introduce content.
+  - Heading elements construct a document outline and should not be used for purely visual design. Prefer MUI `Typography` with the appropriate `variant` mapped to semantic heading levels (`component="h2"`, etc.).
+  - 1.3.1 Info and Relationships (headings shown visually must be programmatic); 2.4.6 Headings or Labels (headings must be descriptive).
+- [ ] Use only one `h1` element per page or view.
+  - The `h1` should communicate the high-level purpose of the page. Do not use `h1` for content that does not change between pages (e.g., the site name).
+  - Project convention; WCAG does not require a single `h1`.
+- [ ] Heading elements should be written in a logical sequence.
+  - The order of heading elements should descend based on content depth. A tool such as headingsMap can help evaluate this.
+  - Best practice supporting 1.3.1 Info and Relationships; WCAG does not mandate a specific heading order.
+- [ ] Don't skip heading levels.
+  - For example, don't jump from `h2` to `h4`. If heading levels are being skipped for visual treatment, use CSS classes or MUI `Typography` variants instead.
+  - Best practice (skipped levels are an advisory failure in some tools, not a WCAG failure); supports 1.3.1 Info and Relationships.
+
+## Lists
+
+List elements communicate that items are related, whether they are sequential, and how many items are present.
+
+- [ ] Use list elements (`ol`, `ul`, and `dl` elements) for list content.
+  - This includes sections of related content, items displayed in a grid-like layout, or sibling `<a>` elements.
+  - 1.3.1 Info and Relationships
+- [ ] Add `role="list"` to `ul` or `ol` elements that have `list-style: none` applied.
+  - Safari VoiceOver removes list semantics from elements styled with `list-style: none`. Adding `role="list"` explicitly restores them. This commonly affects navigation menus, tag lists, and card grids rendered as unstyled lists.
+  - 1.3.1 Info and Relationships
+
+## Controls
+
+Controls are interactive elements such as links and buttons that let a person navigate to a destination or perform an action.
+
+- [ ] Use the `a` element for links.
+  - Links should always have a `href` attribute, even in Single Page Applications (SPAs). Without a `href`, the link will not be properly exposed to assistive technology. Prefer MUI `Link` with a valid `href` or React Router's `Link` component.
+  - 1.3.1 Info and Relationships
+- [ ] Ensure inline links within body text have an underline.
+  - Links that appear within a sentence or paragraph must be underlined so they are distinguishable from surrounding text without relying on color. Removing underlines from inline links requires a contrast ratio of at least 3:1 between the link and the surrounding text as a minimum alternative — underlines are strongly preferred.
+  - 1.4.1 Use of Color
+- [ ] Use the `button` element for buttons.
+  - Buttons are used to submit data or perform an on-screen action that does not shift keyboard focus. Prefer MUI `Button` with `type="button"` to prevent unintended form submission.
+  - 1.3.1 Info and Relationships
+- [ ] Provide a skip link and make sure that it is visible when focused.
+  - A skip link allows quick access to the main content of a page, bypassing repeated navigation. **Note:** Adding `<main id="main-content">` alone does not fix 2.4.1—the host application must also add the skip link. Categorize as Documented/Deferred if the skip link is not yet present.
+  - 2.4.1 Bypass Blocks
+- [ ] Identify links that open in a new tab or window.
+  - Ideally, avoid links that open in new tabs. If a link does, communicate its behavior clearly to all users before activation (e.g., visible text or `aria-label` including "opens in new tab").
+  - G201: Giving users advanced warning when opening a new window
+- [ ] Ensure all drag-and-drop functionality has a single-pointer alternative.
+  - Any action that requires dragging (reordering lists, sliders) must be completable with a single pointer without dragging, e.g. select an item, then click a destination control ("Move up", "Move to…"). Exception: where dragging is essential (e.g. freehand drawing).
+  - Keyboard access is a separate requirement (2.1.1 Keyboard) — provide it too, not as a substitute.
+  - 2.5.7 Dragging Movements (WCAG 2.2)
+
+## Tables
+
+Tables are a structured set of data that help people understand the relationships between different types of information.
+
+- [ ] Use the `table` element to describe tabular data.
+  - Do you need to display data in rows and columns? Use the `table` element or MUI `Table`/`TableContainer` which renders semantic table markup.
+  - 1.3.1 Info and Relationships
+- [ ] Use the `th` element for table headers (with appropriate `scope` attributes).
+  - Use `scope="col"` for column headers and `scope="row"` for row headers. Assistive technology uses `scope` to describe table structure.
+  - 1.3.1 Info and Relationships
+- [ ] Use the `caption` element to provide a title for the table.
+  - The table's `caption` should describe what kind of information the table contains.
+  - 2.4.6 Headings or Labels
+
+## Forms
+
+Forms allow people to enter information into a site for processing and manipulation.
+
+- [ ] All inputs in a form are associated with a corresponding `label` element.
+  - Use a `for`/`id` pairing to guarantee the highest level of browser and assistive technology support. MUI `TextField` and form controls wire labels via `label` prop or `InputLabel`.
+  - 1.3.1 Info and Relationships; 3.3.2 Labels or Instructions
+- [ ] Use `fieldset` and `legend` elements where appropriate.
+  - Does your form contain multiple sections of related inputs? Use `fieldset` to group them and `legend` to label the group. MUI `RadioGroup` and `FormControl` with `FormLabel` serve a similar purpose.
+  - 1.3.1 Info and Relationships
+- [ ] Add `autocomplete` attributes to inputs that collect personal information.
+  - Use the appropriate HTML `autocomplete` value for inputs collecting name (`name`, `given-name`, `family-name`), address (`street-address`, `postal-code`, `country`), phone (`tel`), email (`email`), payment (`cc-number`, `cc-exp`), or credentials (`username`, `current-password`, `new-password`). This enables password managers, autofill, and assistive technology to prefill fields, reducing burden on users with cognitive and motor disabilities.
+  - 1.3.5 Identify Input Purpose
+- [ ] Make sure that form input errors are displayed in a list above the form after submission.
+  - This provides a high-level summary for assistive technology users. Each reported error should also link to the corresponding field with invalid input.
+  - 3.3.1 Error Identification
+- [ ] Associate input error messaging with the input it corresponds to.
+  - Use `aria-describedby` to link error messages to their input. Use `aria-invalid="true"` on the input when a validation error exists. MUI `TextField` supports `error`, `helperText`, and `FormHelperText` for this pattern.
+  - 3.3.1 Error Identification
+- [ ] Pair color-coded states (error, warning, success) with a non-color indicator.
+  - Use an icon, text label, or `aria-invalid`/`role="alert"` alongside color so users who cannot perceive color differences still get the state. An error border that turns red must also include an error icon or error message text.
+  - 1.4.1 Use of Color
+- [ ] Provide error correction suggestions when errors can be detected.
+  - When an error is identified, provide a suggestion for correcting it if possible (e.g., "Enter a valid email address like `name@example.com`").
+  - 3.3.3 Error Suggestion
+- [ ] Make consequential actions reversible or confirmable.
+  - For forms involving legal commitments, financial transactions, or data deletion, allow users to review, correct, or cancel before final submission.
+  - 3.3.4 Error Prevention
+- [ ] Do not require cognitive function tests for authentication without providing an alternative.
+  - Authentication must not rely solely on memory tasks (memorizing a password, solving a puzzle) without supporting copy-paste, password managers, or other accessible alternatives.
+  - 3.3.8 Accessible Authentication Minimum (WCAG 2.2)
+- [ ] Do not ask for the same information twice within the same session.
+  - If a user entered information in a previous step of the same process, auto-populate or allow them to confirm rather than re-enter it. This reduces burden on users with cognitive disabilities.
+  - 3.3.7 Redundant Entry (WCAG 2.2)
+
+## Media
+
+Media includes content such as pre-recorded and live audio and video.
+
+- [ ] Avoid autoplaying media.
+  - Engineering best practice: unexpected video and audio can be distracting, especially for users with ADHD, and autoplaying motion can trigger vestibular and seizure disorders. Not itself a WCAG failure; see the audio and pause/stop items below for the enforceable criteria.
+- [ ] Do not autoplay audio for more than 3 seconds without a way to stop it.
+  - Audio that plays automatically for more than 3 seconds competes with the screen reader's voice. WCAG requires a mechanism to pause or stop it, or to control its volume independently of the system volume. The control does not need to be first in the focus order.
+  - Project policy (stricter than WCAG): do not autoplay audio at all.
+  - 1.4.2 Audio Control
+- [ ] Ensure that media controls use appropriate markup.
+  - For example, an audio mute button should have a pressed toggle state when active, or a volume slider should use `<input type="range">`.
+  - 1.3.1 Info and Relationships
+- [ ] Check to see that all media can be paused.
+  - Provide a pause or stop control on any media element. Autoplaying audio must also meet 1.4.2 Audio Control above. If the device has a keyboard, ensure the Space key can pause playback without interfering with its ability to scroll the page.
+  - 2.2.2 Pause, Stop, Hide
+
+## Video
+
+Video-specific checks.
+
+- [ ] Provide captions and audio description for video where the content requires them.
+  - Captions are needed for prerecorded video with speech or meaningful audio (1.2.2 Captions (Prerecorded)). Audio description (or a media alternative) is needed when important visual information is not conveyed in the audio (1.2.3 Audio Description or Media Alternative (Prerecorded)). Silent or purely decorative video may need neither.
+  - Typical markup: `<track kind="captions" src="captions.vtt" srclang="en" label="English" default>`; `<track kind="descriptions" ...>` where description is needed. Browser support for description tracks is limited — an alternate described version or transcript may be required.
+  - A `<track>` element's presence does not establish conformance. Accuracy and completeness of the files requires human review.
+
+## Audio
+
+Audio-specific checks.
+
+- [ ] Confirm that transcripts are available.
+  - Transcripts allow people who cannot hear to still understand audio content, and allow people to digest audio at a comfortable pace.
+  - 1.2.1 Audio-only and Video-only (Prerecorded)
+
+## Appearance
+
+- [ ] Do not use instructions that rely solely on visual position, shape, or sound.
+  - Avoid phrases like "click the button on the right" or "after the beep." Use the actual name of the element: "click the Submit button" or "when the confirmation message appears."
+  - 1.3.3 Sensory Characteristics
+- [ ] Verify the layout supports user-defined text spacing without losing content or functionality.
+  - Users may override text spacing via browser settings or user stylesheets. The design must not break when: line height is set to 1.5× the font size, paragraph spacing to 2×, letter spacing to 0.12×, or word spacing to 0.16×. These are not values to hardcode — they are the maximum overrides the layout must tolerate. Check that no text becomes hidden, clipped, or requires horizontal scrolling when these overrides are applied.
+  - 1.4.12 Text Spacing
+- [ ] Ensure content that appears on hover or focus can be dismissed, hovered, and persisted.
+  - Tooltips and popovers that appear on hover or keyboard focus must: (1) be dismissible without moving pointer or focus (e.g., Escape key), (2) allow the pointer to move over the appeared content without it disappearing, and (3) remain visible until the user intentionally dismisses it or moves away. MUI `Tooltip` and `Popover` support keyboard focus; verify dismiss and hover behavior manually.
+  - 1.4.13 Content on Hover or Focus
+
+## Animation
+
+Content that moves, either on its own or when triggered by a person activating a control.
+
+- [ ] Ensure no content flashes more than 3 times per second.
+  - Strobing or rapidly alternating content can trigger seizures. This applies to CSS animations, JavaScript-toggled class alternations, GIFs, Lottie files, and embedded video. If flashing content is unavoidable, warn the user before they encounter it.
+  - 2.3.1 Three Flashes or Below Threshold
+- [ ] Provide a mechanism to pause background video.
+  - Background video can be distracting, especially if content is placed over it.
+  - 2.2.2 Pause, Stop, Hide
+- [ ] Make sure all animation obeys the `prefers-reduced-motion` media query.
+  - Project convention. Remove animations when the "reduce motion" setting is activated. If an animation is necessary to communicate meaning, slow its duration down. Respect reduced motion in MUI theme transitions and custom CSS.
+
+  ```css
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  ```
+
+  - Supports 2.3.3 Animation from Interactions (Level AAA, beyond the AA target); technique C39.
+
+## Color Contrast
+
+Color contrast requires verification with an external tool — it cannot be computed from source code alone. Always use **MUI theme palette tokens** (`theme.palette.*`) rather than hardcoded color values. When auditing, use Colour Contrast Analyser (CCA) by TPGI or WebAIM Contrast Checker against the MUI theme in use (light and dark). If contrast was not verified during an audit, state that explicitly in the report.
+
+When writing code, flag any hardcoded color value (`#hex`, `rgb()`, `hsl()`, named color) as a candidate for manual contrast verification and recommend the appropriate MUI palette token instead.
+
+- [ ] Verify all elements requiring 4.5:1 contrast meet that ratio.
+  - The following must achieve 4.5:1 against their background — 1.4.3 Contrast (Minimum):
+    - Normal-sized text (under 18pt / 14pt bold)
+    - Text overlaid on images or video
+    - Custom `::selection` foreground/background pairs
+- [ ] Verify all elements requiring 3:1 contrast meet that ratio.
+  - The following must achieve 3:1 against their background or adjacent color — 1.4.11 Non-text Contrast and 1.4.3 Contrast (Minimum):
+    - Large text (18pt / 24px regular, or 14pt / ~18.67px bold)
+    - Icons that convey meaning
+    - Input element borders (text inputs, radio buttons, checkboxes)
+
+## Mobile Web and Touch Screen
+
+- [ ] Do not restrict content to a single orientation (portrait or landscape) unless it is essential.
+  - Some users mount devices in fixed orientations due to physical disability. Locking orientation (e.g., the manifest `orientation` member, or JS orientation lock) removes that accommodation. Responsive CSS using the `orientation` media feature to adapt layout is not a restriction.
+  - 1.3.4 Orientation
+- [ ] Remove horizontal scrolling.
+  - Requiring someone to scroll horizontally can be difficult for some, irritating for all.
+  - 1.4.10 Reflow
+- [ ] Ensure touch targets meet the minimum size requirement.
+  - Interactive elements must be at least 24×24 CSS pixels, or have sufficient spacing around smaller targets. This supports users with motor control issues and touch screen users.
+  - 2.5.8 Target Size (Minimum) (WCAG 2.2)
+- [ ] Ensure sufficient space between interactive items in order to provide a scroll area.
+  - Leave enough spacing between adjacent interactive targets that users can scroll past them without accidental activation. Users with hand tremors may struggle when controls have zero spacing between them.
+  - 2.5.8 Target Size (Minimum) (WCAG 2.2)
+
+
+## Manual QA Checklist
+
+**These items cannot be verified from source code.** An AI agent must not attempt to check them automatically. When completing a task that touches relevant areas, notify the developer that these checks need to be done manually before the feature ships.
+
+### Visual and browser-based checks
+
+- [ ] Verify visible focus styles — tab through the page and confirm every interactive element has a visible focus ring that meets contrast requirements. (2.4.7 Focus Visible)
+- [ ] Verify keyboard focus order matches the visual reading order — navigate with Tab and confirm the sequence is logical. (1.3.2 Meaningful Sequence)
+- [ ] Verify keyboard traps — navigate every interactive widget and confirm focus can always escape using only the keyboard. (2.1.2 No Keyboard Trap)
+- [ ] Verify sticky or fixed headers do not obscure focused elements — tab to each control and confirm no sticky element covers it. (2.4.11 Focus Not Obscured)
+- [ ] Check content in Windows High Contrast mode and with Inverted Colors — confirm icons, borders, links, and form fields remain visible. (1.4.1 Use of Color)
+- [ ] Increase browser text size to 200% — confirm content is still readable and does not overlap. (1.4.4 Resize Text)
+- [ ] Apply the text-spacing bookmarklet (or equivalent CSS override) — confirm no content is clipped, hidden, or requires horizontal scroll at maximum text spacing values. (1.4.12 Text Spacing)
+- [ ] Run a grayscale filter over the page — confirm color is not the only means of conveying state or information. (1.4.1 Use of Color)
+- [ ] Use the straw test for screen-magnification proximity — simulate 8× zoom to confirm adjacent content is still discoverable without scrolling. (1.3.3 Sensory Characteristics)
+- [ ] Confirm tooltip/popover behavior — verify they appear on keyboard focus, persist when the pointer moves over them, and dismiss with Escape. (1.4.13 Content on Hover or Focus)
+
+### Cross-page and design consistency checks
+
+- [ ] Confirm navigation and repeated UI components appear in a consistent order across pages. (3.2.3 Consistent Navigation)
+- [ ] Confirm the same functionality always has the same label and appearance across pages. (3.2.4 Consistent Identification)
+- [ ] Confirm help mechanisms (chat, contact info, FAQ) are placed in a consistent location across pages. (3.2.6 Consistent Help)
+- [ ] Confirm session timeout warnings give users enough time to extend their session. (2.2.1 Timing Adjustable)
+
+### Device and interaction testing
+
+- [ ] Test on a physical device — confirm touch targets are large enough and have sufficient spacing to be activated without accidentally triggering adjacent controls. (2.5.5 Target Size Enhanced, 2.5.8 Target Size Minimum)
+- [ ] Test with a screen reader (VoiceOver on macOS/iOS, NVDA or JAWS on Windows) — confirm all interactive elements are announced correctly and all content is reachable.
+- [ ] Verify caption and description file content is accurate and complete for all video. (1.2.2, 1.2.3)
+- [ ] Verify transcripts are available and accurate for all audio-only content. (1.2.1)
+
+
+## Automated Testing
+
+Automated tools catch approximately 30–50% of accessibility issues. Always supplement with manual testing and screen reader testing.
+
+**Tools used in this project:**
+
+- **eslint-plugin-jsx-a11y** — Static analysis via `npm run lint` (configured in `eslint.config.js`)
+- **Lighthouse CI** — Automated regression checks via `lighthouserc.json`
+- **axe-core** — Bundled with jsx-a11y; add **jest-axe** to Vitest or **axe-playwright** for component/E2E coverage
+
+```javascript
+// Playwright + axe-playwright
+import { checkA11y } from 'axe-playwright';
+
+test('page has no accessibility violations', async ({ page }) => {
+  await page.goto('/');
+  await checkA11y(page, null, {
+    runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'] }
+  });
+});
+```
+
+```javascript
+// Vitest + jest-axe
+import { axe, toHaveNoViolations } from 'jest-axe';
+expect.extend(toHaveNoViolations);
+
+it('renders without accessibility violations', async () => {
+  const { container } = render(<MyComponent />);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+});
+```
+
+
+## Best Practices
+
+### Do
+
+- **Start early** — Accessibility is cheapest to fix during design and planning.
+- **Use MUI components** — Prefer MUI over custom widgets; extend with theme overrides when needed.
+- **Use semantic HTML first** — Native HTML reduces ARIA complexity. Avoid ARIA when a native element exists (e.g., `<button>` over `<div role="button">`).
+- **Automate what you can** — Run `npm run lint`, Lighthouse CI, jest-axe, and axe-core tests to catch 30–50% of issues before release.
+- **Test with real assistive technology** — Automated tools miss context-dependent issues. Test with VoiceOver, NVDA, or JAWS.
+- **Document deferred fixes** — When a fix requires host application changes, record it as Documented/Deferred, not Fixed.
+
+### Don't
+
+- **Don't rely solely on automated testing** — Manual and screen reader testing is required.
+- **Don't use ARIA as a first solution** — Native semantic HTML is always preferred.
+- **Don't hide focus outlines** — `outline: none` without a replacement breaks keyboard navigation.
+- **Don't disable zoom** — Users need to resize text up to 200%.
+- **Don't use color alone** — Always pair color with another indicator (icon, text, pattern).
+- **Don't mark findings as Fixed prematurely** — If the host must complete the fix, use Documented/Deferred.
+
+
+## Audit Report Summary Template
+
+When completing an accessibility audit, provide a structured summary using this template:
+
+```markdown
+## Accessibility Audit Summary
+
+**Scope:** [Component / page / feature audited]
+**Standard:** WCAG 2.2 AA
+**Date:** [Date]
+**Tools used:** [e.g., eslint-plugin-jsx-a11y, axe DevTools, Colour Contrast Analyser, VoiceOver on macOS]
+**Contrast verified:** [Yes / No — if No, state: "Contrast was not individually verified;
+  recommend verifying with Colour Contrast Analyser against the MUI theme in use (light/dark)."]
+
+### Findings
+
+| ID | Criterion | Description | Severity | Status | Notes |
+|----|-----------|-------------|----------|--------|-------|
+| 1  | 1.1.1     | Icon button missing accessible name | Critical | Fixed | Added `aria-label` |
+| 2  | 2.4.1     | No skip link present | Serious | Documented/Deferred | Added `<main id="main-content">`; host must add skip link |
+| 3  | 1.4.3     | Body text contrast 3.2:1 | Serious | Open | Needs theme palette review |
+
+### Summary Counts
+
+- **Fixed:** X
+- **Documented / Deferred:** X (host responsibility)
+- **Open:** X
+
+### Notes
+
+[Any additional context, MUI component recommendations, or follow-up actions.]
+```
