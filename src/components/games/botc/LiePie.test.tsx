@@ -1,11 +1,14 @@
+import { createElement } from "react";
 import {
   formatTooltip,
   getPieSeriesData,
+  getScreenReaderSection,
   getTooltipFormatter,
 } from "@/components/common/highcharts/tests/highchartsMocks";
 import { describe, it, expect, vi } from "vitest";
-import { screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 import { green, indigo } from "@mui/material/colors";
 import LiePie from "./LiePie";
 import { MISINFO } from "@/constants/botc-slug-map";
@@ -128,6 +131,32 @@ describe("LiePie", () => {
     expect(pieData).toHaveLength(6);
     expect(pieData?.some((point) => point.name === MISINFO.Madness)).toBe(true);
     expect(pieData?.find((point) => point.name === MISINFO.Madness)?.y).toBe(0);
+  });
+
+  it("uses an h2 chart title so heading levels increase by one", async () => {
+    renderWithHydratedAtoms(
+      <LiePie
+        numPlayers={8}
+        numTravelers={0}
+        script={{ type: "base", index: 0 }}
+      />,
+    );
+
+    const format = getScreenReaderSection()?.beforeChartFormat ?? "";
+    const heading = /^<h(\d)>\{chartTitle\}<\/h\1>/.exec(format);
+    const level = heading?.[1] ?? "";
+    expect(level).toBe("2");
+
+    const { container } = render(
+      <main>
+        <h6>Menu</h6>
+        <h1>BotC</h1>
+        <div aria-hidden="false">
+          {createElement(`h${level}`, {}, "Who is lying?")}
+        </div>
+      </main>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 
   it("renders pie slices with role-aware tooltips", () => {
