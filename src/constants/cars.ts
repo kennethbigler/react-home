@@ -10,8 +10,6 @@ import mustang15 from "../images/cars/15_mustang_gt_premium.webp";
 import tesla16 from "../images/cars/16_tesla_x.webp";
 import xj8l05 from "../images/cars/05_jaguar_xj8l.webp";
 import corvette18 from "../images/cars/18_corvette_zo6_3lz.webp";
-import ftype15 from "../images/cars/15_jaguar_f_type.webp";
-import mustang20 from "../images/cars/20_ford_mustang.webp";
 import panamera21 from "../images/cars/21_porsche_panamera.webp";
 import bronco21 from "../images/cars/21_ford_bronco.webp";
 import grom22 from "../images/cars/22_honda_grom.webp";
@@ -39,6 +37,26 @@ export interface CarEntry {
 }
 
 // --------------------------------------------------     Past Shared Cars     -------------------------------------------------- //
+
+const irene: CarEntry = {
+  color: grey[400],
+  start: dateObj("2010-12"),
+  fStart: dateObj("2015-02"),
+  end: dateObj("2015-06"),
+  car: "Impala",
+  nickname: "Irene",
+  title: "Chevrolet Impala LS (2010)",
+  inverted: true,
+  src: impala10,
+  transmission: "Automatic",
+
+  horsepower: 211,
+  MPG: 22,
+  torque: 216,
+  weight: 3555,
+  zTo60: 8.3,
+};
+
 const tesla: CarEntry = {
   color: grey[50],
   start: dateObj("2016-03"),
@@ -149,23 +167,6 @@ const pastFamilyCarsNoRepeats: CarEntry[] = [
     weight: 3777,
     zTo60: 6.3,
   },
-  {
-    color: indigo[900],
-    start: dateObj("2020-03"),
-    end: dateObj("2022-10"),
-    car: "MustangB",
-    char: "Mb",
-    nickname: "Miranda Jr",
-    title: "Ford Mustang GT Premium (2020)",
-    src: mustang20,
-    transmission: "Manual",
-
-    horsepower: 460,
-    MPG: 18,
-    torque: 420,
-    weight: 3705,
-    zTo60: 4.5,
-  },
 ];
 
 const currentFamilyCars: CarEntry[] = [
@@ -223,24 +224,7 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     weight: 3607,
     zTo60: 8.5,
   },
-  {
-    color: grey[400],
-    start: dateObj("2010-12"),
-    // fStart: dateObj("2015-02"),
-    end: dateObj("2015-06"),
-    car: "Impala",
-    nickname: "Irene",
-    title: "Chevrolet Impala LS (2010)",
-    inverted: true,
-    src: impala10,
-    transmission: "Automatic",
-
-    horsepower: 211,
-    MPG: 22,
-    torque: 216,
-    weight: 3555,
-    zTo60: 8.3,
-  },
+  irene,
   {
     color: red[900],
     start: dateObj("2015-02"),
@@ -257,22 +241,6 @@ const pastKensCarsNoRepeats: CarEntry[] = [
     torque: 400,
     weight: 3705,
     zTo60: 4.4,
-  },
-  {
-    color: grey[50],
-    start: dateObj("2018-03"),
-    end: dateObj("2018-08"),
-    car: "Jag F-Type",
-    title: "Jaguar F-Type R Convertible (2015)",
-    inverted: true,
-    src: ftype15,
-    transmission: "Manual",
-
-    horsepower: 380,
-    MPG: 22,
-    torque: 339,
-    weight: 3558,
-    zTo60: 5.1,
   },
   camilla,
   {
@@ -352,7 +320,7 @@ export const cars: CarEntry[] = [
 const pastKensCars = [...pastKensCarsNoRepeats, cheyenne].sort(
   sortCarsByTimeline(true),
 );
-const pastFamilyCars = [...pastFamilyCarsNoRepeats, tesla, camilla].sort(
+const pastFamilyCars = [...pastFamilyCarsNoRepeats, irene, tesla, camilla].sort(
   sortCarsByTimeline(false),
 );
 const hideFamilyCars = [...pastKensCars, ...currentKensCars].sort(
