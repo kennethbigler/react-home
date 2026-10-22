@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { outlinedContrastSx } from "@/apis/outlinedButtonSx";
 import { Button, ButtonGroup } from "@mui/material";
-import { Chart, Credits, Series, Tooltip } from "@highcharts/react";
+import { Chart, Credits, Series, Title, Tooltip } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "@/components/common/highcharts/coreHighcharts";
 import themeAtom from "@/jotai/theme-atom";
@@ -147,12 +147,13 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
       <Grid size={{ xs: 12, sm: 12, md: showDemonSelection ? 6 : 12 }}>
         <figure style={{ margin: 0, width: "100%" }}>
           <Typography variant="h5" component="h2" align="center" sx={{ color }}>
-            Who is lying?
+            Metrics
           </Typography>
           <Chart highcharts={Highcharts} options={staticOptions}>
             <Accessibility enabled={true} />
             <Credits enabled={false} />
             <Tooltip useHTML={true} formatter={lieTooltipFormatter} />
+            <Title style={{ color }}>Who is lying?</Title>
             <Series
               type="pie"
               options={{ name: "⛽️🔥❓" }}
