@@ -131,7 +131,7 @@ describe("LiePie", () => {
     expect(pieData?.find((point) => point.name === MISINFO.Madness)?.y).toBe(0);
   });
 
-  it("renders the chart title as an h2 under the page h1", async () => {
+  it("renders an h2 section heading under the page h1", async () => {
     const { container } = renderWithHydratedAtoms(
       <main>
         <h1>BotC</h1>
@@ -144,7 +144,7 @@ describe("LiePie", () => {
     );
 
     expect(
-      screen.getByRole("heading", { level: 2, name: "Who is lying?" }),
+      screen.getByRole("heading", { level: 2, name: "Metrics" }),
     ).toBeInTheDocument();
     expect(await axe(container)).toHaveNoViolations();
   });
