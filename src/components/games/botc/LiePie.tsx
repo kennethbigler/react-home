@@ -2,9 +2,10 @@ import { useMemo, useState } from "react";
 import { useAtomValue } from "jotai";
 import { useTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { outlinedContrastSx } from "@/apis/outlinedButtonSx";
 import { Button, ButtonGroup } from "@mui/material";
-import { Chart, Credits, Series, Title, Tooltip } from "@highcharts/react";
+import { Chart, Credits, Series, Tooltip } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "@/components/common/highcharts/coreHighcharts";
 import themeAtom from "@/jotai/theme-atom";
@@ -22,22 +23,6 @@ interface LiePieProps {
   numTravelers: number;
   script: ActiveScript;
 }
-
-/**
- * Highcharts picks a heading by walking previous siblings and falls back to
- * h6 when the page h1 is nested elsewhere. The BotC page heading is an h1, so
- * the chart title must be an h2 or axe heading-order fails.
- */
-const BEFORE_CHART_FORMAT =
-  "<h2>{chartTitle}</h2>" +
-  "<div>{typeDescription}</div>" +
-  "<div>{chartSubtitle}</div>" +
-  "<div>{chartLongdesc}</div>" +
-  "<div>{playAsSoundButton}</div>" +
-  "<div>{viewTableButton}</div>" +
-  "<div>{xAxisDescription}</div>" +
-  "<div>{yAxisDescription}</div>" +
-  "<div>{annotationsTitle}{annotationsList}</div>";
 
 const staticOptions: Highcharts.Options = {
   chart: {
@@ -161,14 +146,13 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
       )}
       <Grid size={{ xs: 12, sm: 12, md: showDemonSelection ? 6 : 12 }}>
         <figure style={{ margin: 0, width: "100%" }}>
+          <Typography variant="h5" component="h2" align="center" sx={{ color }}>
+            Who is lying?
+          </Typography>
           <Chart highcharts={Highcharts} options={staticOptions}>
-            <Accessibility
-              enabled={true}
-              screenReaderSection={{ beforeChartFormat: BEFORE_CHART_FORMAT }}
-            />
+            <Accessibility enabled={true} />
             <Credits enabled={false} />
             <Tooltip useHTML={true} formatter={lieTooltipFormatter} />
-            <Title style={{ color }}>Who is lying?</Title>
             <Series
               type="pie"
               options={{ name: "⛽️🔥❓" }}

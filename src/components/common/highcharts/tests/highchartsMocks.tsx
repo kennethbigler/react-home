@@ -14,7 +14,6 @@ const chartTestState = vi.hoisted(() => ({
   pointClickHandler: null as Highcharts.PointClickCallbackFunction | null,
   sankeyPointClickHandler: null as Highcharts.PointClickCallbackFunction | null,
   yAxes: [] as Array<Record<string, unknown>>,
-  screenReaderSection: null as { beforeChartFormat?: string } | null,
 }));
 
 export const resetCapturedChartConfig = () => {
@@ -25,7 +24,6 @@ export const resetCapturedChartConfig = () => {
   chartTestState.pointClickHandler = null;
   chartTestState.sankeyPointClickHandler = null;
   chartTestState.yAxes = [];
-  chartTestState.screenReaderSection = null;
 };
 
 export const getChartOptions = () => chartTestState.chartOptions;
@@ -39,8 +37,6 @@ export const formatTooltip = (context: Highcharts.Point) =>
   chartTestState.tooltipFormatter?.call(context, {} as Highcharts.Tooltip);
 
 export const getYAxes = () => chartTestState.yAxes;
-
-export const getScreenReaderSection = () => chartTestState.screenReaderSection;
 
 export const getSeriesByName = (name: string) =>
   chartTestState.series.filter((series) => series.name === name).at(-1);
@@ -118,7 +114,6 @@ vi.mock("@highcharts/react", () => ({
     options?: Highcharts.Options;
   }) => {
     chartTestState.chartOptions = options ?? {};
-    chartTestState.screenReaderSection = null;
 
     const sankeyClickHandler =
       options?.plotOptions?.sankey?.point?.events?.click ??
@@ -198,10 +193,5 @@ vi.mock("@highcharts/react", () => ({
 }));
 
 vi.mock("@highcharts/react/modules/Accessibility", () => ({
-  Accessibility: (props: {
-    screenReaderSection?: { beforeChartFormat?: string };
-  }) => {
-    chartTestState.screenReaderSection = props.screenReaderSection ?? null;
-    return null;
-  },
+  Accessibility: () => null,
 }));

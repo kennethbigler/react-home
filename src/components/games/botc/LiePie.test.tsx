@@ -1,12 +1,10 @@
-import { createElement } from "react";
 import {
   formatTooltip,
   getPieSeriesData,
-  getScreenReaderSection,
   getTooltipFormatter,
 } from "@/components/common/highcharts/tests/highchartsMocks";
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { green, indigo } from "@mui/material/colors";
@@ -133,29 +131,21 @@ describe("LiePie", () => {
     expect(pieData?.find((point) => point.name === MISINFO.Madness)?.y).toBe(0);
   });
 
-  it("uses an h2 chart title so heading levels increase by one", async () => {
-    renderWithHydratedAtoms(
-      <LiePie
-        numPlayers={8}
-        numTravelers={0}
-        script={{ type: "base", index: 0 }}
-      />,
-    );
-
-    const format = getScreenReaderSection()?.beforeChartFormat ?? "";
-    const heading = /^<h(\d)>\{chartTitle\}<\/h\1>/.exec(format);
-    const level = heading?.[1] ?? "";
-    expect(level).toBe("2");
-
-    const { container } = render(
+  it("renders the chart title as an h2 under the page h1", async () => {
+    const { container } = renderWithHydratedAtoms(
       <main>
-        <h6>Menu</h6>
         <h1>BotC</h1>
-        <div aria-hidden="false">
-          {createElement(`h${level}`, {}, "Who is lying?")}
-        </div>
+        <LiePie
+          numPlayers={8}
+          numTravelers={0}
+          script={{ type: "base", index: 0 }}
+        />
       </main>,
     );
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Who is lying?" }),
+    ).toBeInTheDocument();
     expect(await axe(container)).toHaveNoViolations();
   });
 
