@@ -23,6 +23,22 @@ interface LiePieProps {
   script: ActiveScript;
 }
 
+/**
+ * Highcharts picks a heading by walking previous siblings and falls back to
+ * h6 when the page h1 is nested elsewhere. The BotC page heading is an h1, so
+ * the chart title must be an h2 or axe heading-order fails.
+ */
+const BEFORE_CHART_FORMAT =
+  "<h2>{chartTitle}</h2>" +
+  "<div>{typeDescription}</div>" +
+  "<div>{chartSubtitle}</div>" +
+  "<div>{chartLongdesc}</div>" +
+  "<div>{playAsSoundButton}</div>" +
+  "<div>{viewTableButton}</div>" +
+  "<div>{xAxisDescription}</div>" +
+  "<div>{yAxisDescription}</div>" +
+  "<div>{annotationsTitle}{annotationsList}</div>";
+
 const staticOptions: Highcharts.Options = {
   chart: {
     type: "pie",
@@ -146,7 +162,10 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
       <Grid size={{ xs: 12, sm: 12, md: showDemonSelection ? 6 : 12 }}>
         <figure style={{ margin: 0, width: "100%" }}>
           <Chart highcharts={Highcharts} options={staticOptions}>
-            <Accessibility enabled={true} />
+            <Accessibility
+              enabled={true}
+              screenReaderSection={{ beforeChartFormat: BEFORE_CHART_FORMAT }}
+            />
             <Credits enabled={false} />
             <Tooltip useHTML={true} formatter={lieTooltipFormatter} />
             <Title style={{ color }}>Who is lying?</Title>
