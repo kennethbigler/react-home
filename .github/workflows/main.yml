@@ -84,7 +84,7 @@ jobs:
           kill "$PREVIEW_PID"
       # Wait for the route heading so axe scans hydrated content
       - name: accessibility-scanner
-        uses: github/accessibility-scanner@v3.5.0
+        uses: github/accessibility-scanner@v3.5.1
         with:
           url_configs: |
             [
