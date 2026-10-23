@@ -23,7 +23,7 @@ describe("games | game-table | GameTable", () => {
     );
 
     expect(screen.getByText("Ken: $1000").parentElement).toHaveStyle({
-      background: "rgb(224, 224, 224)",
+      backgroundColor: "rgb(224, 224, 224)",
     });
     expect(screen.getByText("Ken: $1000")).toBeInTheDocument();
     expect(screen.getByText("Bet: $5")).toBeInTheDocument();
@@ -117,8 +117,8 @@ describe("games | game-table | GameTable", () => {
     );
 
     const player = screen.getByText("Ken: $1000").parentElement;
-    expect(player).not.toHaveStyle({ background: "rgb(128, 222, 234)" });
-    expect(player).toHaveStyle({ background: "rgb(129, 199, 132)" });
+    expect(player).not.toHaveStyle({ backgroundColor: "rgb(128, 222, 234)" });
+    expect(player).toHaveStyle({ backgroundColor: "rgb(129, 199, 132)" });
   });
 
   it("changes color on draw status", () => {
@@ -132,8 +132,8 @@ describe("games | game-table | GameTable", () => {
     );
 
     const player = screen.getByText("Ken: $1000").parentElement;
-    expect(player).not.toHaveStyle({ background: "rgb(128, 222, 234)" });
-    expect(player).toHaveStyle({ background: "rgb(144, 164, 174)" });
+    expect(player).not.toHaveStyle({ backgroundColor: "rgb(128, 222, 234)" });
+    expect(player).toHaveStyle({ backgroundColor: "rgb(144, 164, 174)" });
   });
 
   it("changes color on lose status", () => {
@@ -147,8 +147,8 @@ describe("games | game-table | GameTable", () => {
     );
 
     const player = screen.getByText("Ken: $1000").parentElement;
-    expect(player).not.toHaveStyle({ background: "rgb(128, 222, 234)" });
-    expect(player).toHaveStyle({ background: "rgb(229, 115, 115)" });
+    expect(player).not.toHaveStyle({ backgroundColor: "rgb(128, 222, 234)" });
+    expect(player).toHaveStyle({ backgroundColor: "rgb(229, 115, 115)" });
   });
 
   it("renders and clicks gameFunctions", () => {
