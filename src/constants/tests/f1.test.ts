@@ -1,5 +1,7 @@
 import { assert, describe, expect, it } from "vitest";
 import {
+  constructorCurrentData,
+  constructorPointsData,
   driverCurrentData,
   driverPointsData,
   driverStandingsData,
@@ -60,5 +62,38 @@ describe("constants | f1", () => {
         assert(data.at(-1) === seasonPoints, `${name} season total`);
       }
     });
+  });
+
+  it("assigns substitute points to the constructor that fielded the car", () => {
+    const current = (
+      name: string,
+      entries: { name: string; data: unknown[] }[],
+    ) => entries.find((entry) => entry.name === name)?.data as number[];
+
+    const verstappen = current("Max Verstappen", driverCurrentData);
+    const hadjar = current("Isack Hadjar", driverCurrentData);
+    const lawson = current("Liam Lawson", driverCurrentData);
+    const lindblad = current("Arvid Lindblad", driverCurrentData);
+    const tsunoda = current("Yuki Tsunoda", driverCurrentData);
+    const redBull = current("Red Bull Racing", constructorCurrentData);
+    const racingBulls = current("Racing Bulls", constructorCurrentData);
+
+    expect(redBull[11]).toBe(verstappen[11] + hadjar[11]);
+    expect(redBull[12]).toBe(verstappen[12] + hadjar[12] + 6);
+    expect(redBull[13]).toBe(verstappen[13] + hadjar[13] + 6);
+    expect(redBull.at(-1)).toBe(verstappen.at(-1)! + hadjar.at(-1)! + 14);
+
+    expect(racingBulls[11]).toBe(lawson[11] + lindblad[11] + tsunoda[11]);
+    expect(racingBulls[12]).toBe(lawson[12] + lindblad[12] + tsunoda[12] - 6);
+    expect(racingBulls[13]).toBe(lawson[13] + lindblad[13] + tsunoda[13] - 6);
+    expect(racingBulls.at(-1)).toBe(
+      lawson.at(-1)! + lindblad.at(-1)! + tsunoda.at(-1)! - 14,
+    );
+
+    const seasonTotal = (name: string) =>
+      constructorPointsData.find((entry) => entry.name === name)?.data.at(-1);
+
+    expect(redBull.at(-1)).toBe(seasonTotal("Red Bull Racing"));
+    expect(racingBulls.at(-1)).toBe(seasonTotal("Racing Bulls"));
   });
 });

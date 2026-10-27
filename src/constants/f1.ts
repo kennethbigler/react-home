@@ -443,6 +443,7 @@ const alexanderAlbon = filterDriver("Alexander Albon")[0].thisYear || [];
 // Racing Bulls
 const liamLawson = filterDriver("Liam Lawson")[0].thisYear || [];
 const arvidLindblad = filterDriver("Arvid Lindblad")[0].thisYear || [];
+const yukiTsunoda = filterDriver("Yuki Tsunoda")[0].thisYear || [];
 // Aston Martin
 const fernandoAlonso = filterDriver("Fernando Alonso")[0].thisYear || [];
 const lanceStroll = filterDriver("Lance Stroll")[0].thisYear || [];
@@ -473,6 +474,31 @@ const sumDriverSeries = (driverSeries: number[][]) => {
     driverSeries.reduce((sum, series) => sum + (series[i] || 0), 0),
   );
 };
+
+// thisYear index 0 is pre-season. Later races extend these arrays on their own.
+const cumulativeFromRound = (round: number, points: number) =>
+  Array.from({ length: numRaces + 1 }, (_, index) =>
+    index >= round ? points : 0,
+  );
+
+const addSeries = (base: number[], extra: number[]) =>
+  base.map((value, index) => value + (extra[index] || 0));
+
+// Lawson subbed for Hadjar at Red Bull: 6 pts in the Netherlands (round 12)
+// and 8 in Spain (round 14). Tsunoda scored his 1 pt for Racing Bulls at Monza.
+const lawsonAtRedBull = addSeries(
+  cumulativeFromRound(12, 6),
+  cumulativeFromRound(14, 8),
+);
+const redBullThisYear = addSeries(
+  sumDriverSeries([maxVerstappen, isackHadjar]),
+  lawsonAtRedBull,
+);
+const racingBullsThisYear = addSeries(
+  sumDriverSeries([liamLawson, arvidLindblad, yukiTsunoda]),
+  lawsonAtRedBull.map((points) => -points),
+);
+const seriesTotal = (series: number[]) => series[series.length - 1] || 0;
 
 const constructors: Constructor[] = [
   {
@@ -521,10 +547,10 @@ const constructors: Constructor[] = [
       860,
       589,
       451,
-      getTotal([maxVerstappen, isackHadjar]),
+      seriesTotal(redBullThisYear),
     ],
     standings: [3, 3, 2, 2, 1, 1, 3, 3, 3],
-    thisYear: sumDriverSeries([maxVerstappen, isackHadjar]),
+    thisYear: redBullThisYear,
   },
   {
     name: "Ferrari",
@@ -563,14 +589,9 @@ const constructors: Constructor[] = [
   {
     name: "Racing Bulls",
     color: RB_HEX,
-    points: [
-      ...alphaTauriPoints,
-      46,
-      92,
-      getTotal([liamLawson, arvidLindblad]),
-    ],
+    points: [...alphaTauriPoints, 46, 92, seriesTotal(racingBullsThisYear)],
     standings: [...alphaTauriStandings, 8, 6, 5],
-    thisYear: sumDriverSeries([liamLawson, arvidLindblad]),
+    thisYear: racingBullsThisYear,
   },
   {
     name: "Aston Martin",
