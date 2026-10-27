@@ -1,0 +1,1 @@
+import{t as e}from"./react-home-BbWqTqR5.js";e();
