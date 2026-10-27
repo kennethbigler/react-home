@@ -637,6 +637,51 @@ export const presentations: School[] = [
     subtitle: "",
     years: [
       {
+        year: "2027",
+        quarters: [
+          {
+            quarter:
+              "Accessible Dynamic Updates: When aria-live Is Not the Answer",
+            classes: [
+              {
+                catalog: "Description",
+                name: "Not every visual update needs to be spoken. Learn when aria-live, UIAccessibility notifications, and AccessibilityEvent fit the moment on web, iOS, and Android, and when focus management or discoverable status serves users better.",
+              },
+              {
+                catalog: "Ken Bigler",
+                name: "Head of Accessibility Engineering at Intuit",
+              },
+              {
+                catalog: "Jon Ochoa",
+                name: "Senior Software Engineer at Intuit",
+              },
+              {
+                catalog: "Cassandra Zuria",
+                name: "Staff Software Engineer at Intuit",
+              },
+            ],
+          },
+          {
+            quarter:
+              "Beyond Checklists: Designing an AI Accessibility Auditing System",
+            classes: [
+              {
+                catalog: "Description",
+                name: "Learn how to design an AI-powered accessibility audit system that produces traceable, standards-mapped findings at scale. Walk away with a concrete architectural model and design principles for building trustworthy, continuous conformance reporting tools.",
+              },
+              {
+                catalog: "Ken Bigler",
+                name: "Head of Accessibility Engineering at Intuit",
+              },
+              {
+                catalog: "Sarah Margolis-Greenbaum",
+                name: "Head of Accessibility at Intuit",
+              },
+            ],
+          },
+        ],
+      },
+      {
         year: "2026",
         quarters: [
           {
