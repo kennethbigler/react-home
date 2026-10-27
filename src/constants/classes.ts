@@ -812,6 +812,19 @@ export const presentations: School[] = [
               },
             ],
           },
+          {
+            quarter: "Hack for Social Impact",
+            classes: [
+              {
+                catalog: "Title",
+                name: "Accessibility and Automation for Hackathons",
+              },
+              {
+                catalog: "Description",
+                name: "Teach hackathon participants why accessibility matters (for people, business, and AI readiness) and cover the digital accessibility basics: headings, link text, color contrast, alt text, and screen reader announcements. Show how to test manually with keyboard navigation, axe DevTools, Lighthouse, and VoiceOver, then automate those checks with eslint-plugin-jsx-a11y and axe-based tools. Encourage adding or creating AI skills for accessibility, and finish with open source tools like CodeRabbit and GitHub’s accessibility scanner.",
+              },
+            ],
+          },
         ],
       },
       {
