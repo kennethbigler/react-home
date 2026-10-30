@@ -8,6 +8,8 @@ import { useAtomValue, useSetAtom } from "jotai";
 import botcAtom, {
   type ActiveScript,
   type BotCPlayer,
+  botcEvilWinAtom,
+  botcGoodWinAtom,
   botcIsTextAtom,
   botcNumPlayersAtom,
   botcNumTravelersAtom,
@@ -15,6 +17,7 @@ import botcAtom, {
   botcPlayerShell,
   type BotCPlayerStatus,
   type BotCRole,
+  type BotCWinner,
   botcRoundAtom,
   botcRoundNotesAtom,
   botcScriptAtom,
@@ -162,6 +165,8 @@ export const usePlayerNotes = () => {
 export const useEditPlayers = () => {
   const isText = useAtomValue(botcIsTextAtom);
   const script = useAtomValue(botcScriptAtom);
+  const goodWin = useAtomValue(botcGoodWinAtom) ?? 0;
+  const evilWin = useAtomValue(botcEvilWinAtom) ?? 0;
   const setState = useSetAtom(botcAtom);
 
   /** update number of players */
@@ -216,15 +221,25 @@ export const useEditPlayers = () => {
     }));
   };
 
+  /** tally a win for the given side, then start a new game */
+  const recordWin = (winner: BotCWinner) => {
+    const key = winner === "good" ? "goodWin" : "evilWin";
+    setState((prev) => ({ ...prev, [key]: (prev[key] ?? 0) + 1 }));
+    newBotCGame();
+  };
+
   return {
     isText,
     script,
+    goodWin,
+    evilWin,
     updateNumPlayers,
     updateNumTravelers,
     updateScript,
     updateCommunityScript,
     updateText,
     newBotCGame,
+    recordWin,
   };
 };
 
