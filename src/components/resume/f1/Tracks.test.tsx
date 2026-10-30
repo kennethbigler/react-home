@@ -19,11 +19,11 @@ describe("resume | f1 | Tracks", () => {
     return render(<Tracks />);
   };
 
-  it("renders the current and past track sections", async () => {
+  it("renders only the current track section", async () => {
     await renderTracks();
 
     expect(screen.getByText("2026 Tracks")).toBeInTheDocument();
-    expect(screen.getByText("Past Tracks")).toBeInTheDocument();
+    expect(screen.queryByText("Past Tracks")).not.toBeInTheDocument();
   });
 
   it("renders a track marked as next with its circuit name visible", async () => {
@@ -45,7 +45,7 @@ describe("resume | f1 | Tracks", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("keeps Hungaroring as next on race day and out of Past Tracks", async () => {
+  it("keeps Hungaroring as next on race day", async () => {
     vi.setSystemTime(new Date(2026, 6, 26));
     vi.resetModules();
     await renderTracks();
@@ -55,7 +55,6 @@ describe("resume | f1 | Tracks", () => {
         name: /Hungaroring, Budapest, Hungary circuit details, next race/i,
       }),
     ).toBeInTheDocument();
-    // Appears once under 2026 Tracks — never in the static Past Tracks list.
     expect(screen.getAllByText("Hungaroring, Budapest, Hungary")).toHaveLength(
       1,
     );

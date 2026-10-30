@@ -13,11 +13,10 @@ interface TrackDataBase {
   raceLen: number;
 }
 
-/** A track has either `skipped` or `date`, or neither — never both. */
+/** A track has either `skipped` or `date` — never both. */
 export type TrackData =
   | (TrackDataBase & { skipped: true; date?: never })
-  | (TrackDataBase & { date: DateObj; skipped?: never })
-  | (TrackDataBase & { skipped?: never; date?: never });
+  | (TrackDataBase & { date: DateObj; skipped?: never });
 
 type TrackProps = TrackData & {
   expanded: string;
