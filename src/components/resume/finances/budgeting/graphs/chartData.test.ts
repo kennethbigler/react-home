@@ -33,10 +33,11 @@ import {
   PAYROLL_WITHHOLDINGS_LABEL,
   SOCIAL_SECURITY_LABEL,
 } from "@/constants/payrollDeductions";
+import type { BudgetSankeyNodeColors } from "./types";
 
 const sampleIncome = getLatestBudgetIncome(100_000, 20_000, 1_000, 2_000);
 
-const sankeyNodeColors = {
+const sankeyNodeColors: BudgetSankeyNodeColors = {
   salary: "#a",
   bonus: "#b",
   stockAdj: "#c",
@@ -48,9 +49,6 @@ const sankeyNodeColors = {
   stateTax: "#f",
   payroll: "#i",
   unallocated: "#g",
-  spent: "#s",
-  leftOver: "#l",
-  overBudget: "#o",
   category: () => "#h",
 };
 

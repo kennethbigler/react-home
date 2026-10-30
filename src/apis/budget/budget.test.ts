@@ -15,10 +15,11 @@ import {
   resolveExpenseAmount,
   type ExpenseEntry,
 } from "./index";
+import type { BudgetSankeyNodeColors } from "@/components/resume/finances/budgeting/graphs/types";
 
 const sampleIncome = getLatestBudgetIncome(100_000, 20_000, 1_000, 2_000);
 
-const sankeyNodeColors = {
+const sankeyNodeColors: BudgetSankeyNodeColors = {
   salary: "#a",
   bonus: "#b",
   stockAdj: "#c",
@@ -30,9 +31,6 @@ const sankeyNodeColors = {
   stateTax: "#f",
   payroll: "#i",
   unallocated: "#g",
-  spent: "#s",
-  leftOver: "#l",
-  overBudget: "#o",
   category: () => "#h",
 };
 
