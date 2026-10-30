@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-CNOWq4Kh.js";import{Lt as t,Rt as n,n as r}from"./charts-core-C6LRrazj.js";import{r as i,x as a}from"./Accessibility-C9LgmU0x.js";var o;function s(){return(s=e((()=>{n(),r(),i(),t.setOptions({accessibility:{landmarkVerbosity:`one`}}),a(t),o=t})))()}export{s as n,o as t};
