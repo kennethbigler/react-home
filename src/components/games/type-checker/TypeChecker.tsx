@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAtom } from "jotai";
 import {
   type SelectChangeEvent,
   Button,
@@ -18,22 +19,22 @@ import {
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import {
-  types,
+  GENERATIONS,
+  getGenerationChart,
   type Types,
-  effectiveness,
   type Effectiveness,
 } from "@/constants/type-checker";
+import generationAtom from "@/jotai/type-checker-atom";
 import EffectiveRow from "./EffectiveRow";
-
-const ddOptions = types.reduce(
-  (acc: string[], { name }) => acc.concat([name]),
-  ["select secondary"],
-);
 
 const buttonStyles = { padding: "4px 2px" };
 
 /** type checking tool */
 const TypeChecker = () => {
+  const [generation, setGeneration] = useAtom(generationAtom);
+  const { types, effectiveness } = getGenerationChart(generation);
+  const ddOptions = ["select secondary", ...types.map(({ name }) => name)];
+
   const [atkPrimary, setAtkPrimary] = useState(-1);
   const [defPrimary, setDefPrimary] = useState(-1);
   const [defSecondary, setDefSecondary] = useState(0);
@@ -41,13 +42,19 @@ const TypeChecker = () => {
   const [effRowTypes, setEffRowTypes] = useState<Types[]>([...types]);
   const [effColTypes, setEffColTypes] = useState<Types[]>([...types]);
 
-  const resetState = () => {
+  const resetState = (chart = { types, effectiveness }) => {
     setAtkPrimary(-1);
     setDefPrimary(-1);
     setDefSecondary(0);
-    setEffChart([...effectiveness]);
-    setEffRowTypes([...types]);
-    setEffColTypes([...types]);
+    setEffChart([...chart.effectiveness]);
+    setEffRowTypes([...chart.types]);
+    setEffColTypes([...chart.types]);
+  };
+
+  const handleGeneration = (e: SelectChangeEvent<number>) => {
+    const newGeneration = Number(e.target.value);
+    setGeneration(newGeneration);
+    resetState(getGenerationChart(newGeneration));
   };
 
   const handleRowClick = (idx: number) => () => {
@@ -130,10 +137,28 @@ const TypeChecker = () => {
       <Typography variant="h2" component="h1">
         Type Checker
       </Typography>
+      <FormControl sx={{ mb: 2, mr: 2 }}>
+        <InputLabel id="type-checker-generation-label">Generation</InputLabel>
+        <Select
+          labelId="type-checker-generation-label"
+          label="Generation"
+          value={generation}
+          onChange={handleGeneration}
+        >
+          {GENERATIONS.map(({ value, label }) => (
+            <MenuItem key={value} value={value}>
+              {label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       {defPrimary !== -1 && (
-        <FormControl>
-          <InputLabel>Secondary Type</InputLabel>
+        <FormControl sx={{ mb: 2 }}>
+          <InputLabel id="type-checker-secondary-label">
+            Secondary Type
+          </InputLabel>
           <Select
+            labelId="type-checker-secondary-label"
             label="Secondary Type"
             value={defSecondary}
             onChange={handleSelect}
