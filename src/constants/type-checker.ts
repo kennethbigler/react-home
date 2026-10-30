@@ -14,11 +14,7 @@ import {
   red,
   yellow,
 } from "@mui/material/colors";
-import {
-  LATEST_GENERATION,
-  TYPE_CHARTS,
-  TYPE_INTRODUCED,
-} from "./pokemon-type-charts";
+import { TYPE_CHARTS, TYPE_INTRODUCED } from "./pokemon-type-charts";
 
 export interface Types {
   name: string;
@@ -53,13 +49,13 @@ const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 
 export const DEFAULT_GENERATION = 3;
 
-export const GENERATIONS = Array.from(
-  { length: LATEST_GENERATION },
-  (_, i) => ({
-    value: i + 1,
-    label: `Generation ${ROMAN[i] ?? i + 1}`,
-  }),
-);
+const toRoman = (gen: number) => ROMAN[gen - 1] ?? String(gen);
+
+/** one option per distinct chart, e.g. "Generation II–V" */
+export const GENERATIONS = TYPE_CHARTS.map(({ from, to }) => ({
+  value: from,
+  label: `Generation ${toRoman(from)}${from === to ? "" : `–${toRoman(to)}`}`,
+}));
 
 /** types and matchup grid that existed in `generation` */
 export const getGenerationChart = (generation: number) => {
@@ -68,9 +64,10 @@ export const getGenerationChart = (generation: number) => {
     TYPE_CHARTS[TYPE_CHARTS.length - 1];
   const kept = types
     .map((_, i) => i)
-    .filter((i) => TYPE_INTRODUCED[i] <= generation);
+    .filter((i) => TYPE_INTRODUCED[i] <= chart.to);
 
   return {
+    value: chart.from,
     types: kept.map((i) => types[i]),
     effectiveness: kept.map((i) => kept.map((j) => chart.effectiveness[i][j])),
   };

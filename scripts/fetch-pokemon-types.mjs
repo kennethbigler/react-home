@@ -11,7 +11,7 @@
  *   or:  npm run fetch-pokemon-types
  */
 
-import { writeFileSync } from "fs";
+import { existsSync, writeFileSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -104,11 +104,10 @@ interface TypeChart {
   effectiveness: Effectiveness[][];
 }
 
-/** latest generation PokéAPI knows about */
-export const LATEST_GENERATION = ${latest};
-
 /** generation each type was introduced, in \`types\` order */
-export const TYPE_INTRODUCED = [${introduced.join(", ")}];
+export const TYPE_INTRODUCED = [
+  ${introduced.join(", ")},
+];
 
 /** attacker (row) vs defender (column) multipliers, by generation range */
 export const TYPE_CHARTS: TypeChart[] = [
@@ -120,4 +119,10 @@ ${body}
   console.log(`Wrote ${charts.length} charts (gens 1-${latest}) to ${OUTPUT_PATH}`);
 };
 
-await main();
+try {
+  await main();
+} catch (err) {
+  // keep the committed chart so a PokéAPI outage never blocks a deploy
+  if (!existsSync(OUTPUT_PATH)) throw err;
+  console.warn(`PokéAPI fetch failed (${err.message}); keeping existing ${OUTPUT_PATH}`);
+}

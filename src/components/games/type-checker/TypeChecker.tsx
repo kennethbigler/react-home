@@ -32,7 +32,7 @@ const buttonStyles = { padding: "4px 2px" };
 /** type checking tool */
 const TypeChecker = () => {
   const [generation, setGeneration] = useAtom(generationAtom);
-  const { types, effectiveness } = getGenerationChart(generation);
+  const { value, types, effectiveness } = getGenerationChart(generation);
   const ddOptions = ["select secondary", ...types.map(({ name }) => name)];
 
   const [atkPrimary, setAtkPrimary] = useState(-1);
@@ -142,7 +142,7 @@ const TypeChecker = () => {
         <Select
           labelId="type-checker-generation-label"
           label="Generation"
-          value={generation}
+          value={value}
           onChange={handleGeneration}
         >
           {GENERATIONS.map(({ value, label }) => (

@@ -27,6 +27,12 @@ if [ "${SKIP_BOTC_FETCH}" != "1" ]; then
 else
   echo "Skipping BotC community scripts fetch"
 fi
+if [ "${SKIP_POKEMON_FETCH}" != "1" ]; then
+  echo "Fetching latest Pokémon type charts..."
+  node scripts/fetch-pokemon-types.mjs || throwError "fetch-pokemon-types"
+else
+  echo "Skipping Pokémon type charts fetch"
+fi
 echo $LINE
 buildApp false
 echo $LINE

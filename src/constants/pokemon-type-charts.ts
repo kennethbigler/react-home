@@ -7,9 +7,6 @@ interface TypeChart {
   effectiveness: Effectiveness[][];
 }
 
-/** latest generation PokéAPI knows about */
-export const LATEST_GENERATION = 9;
-
 /** generation each type was introduced, in `types` order */
 export const TYPE_INTRODUCED = [
   1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 6,
