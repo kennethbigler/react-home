@@ -20,32 +20,26 @@ const categoryColorOptions: ReadonlyArray<{
 ];
 
 interface CategoryColorSelectProps {
-  categoryKey: string;
   value?: ExpenseEntryColor;
-  onChange: (categoryKey: string, color?: ExpenseEntryColor) => void;
+  onChange: (color?: ExpenseEntryColor) => void;
 }
 
-const CategoryColorSelect = ({
-  categoryKey,
-  value,
-  onChange,
-}: CategoryColorSelectProps) => {
-  const labelId = `${categoryKey}-color-label`;
+const labelId = "category-color-label";
 
+const CategoryColorSelect = ({ value, onChange }: CategoryColorSelectProps) => {
   const handleChange = (event: SelectChangeEvent) => {
     const nextColor = event.target.value as ExpenseEntryColor | "";
-    onChange(categoryKey, nextColor || undefined);
+    onChange(nextColor || undefined);
   };
 
   return (
-    <FormControl size="small" fullWidth sx={{ mb: 1 }}>
+    <FormControl size="small" fullWidth sx={{ mt: 2, mb: 1 }}>
       <InputLabel id={labelId}>Color (Optional)</InputLabel>
       <Select
         labelId={labelId}
         value={value ?? ""}
         label="Color (Optional)"
         onChange={handleChange}
-        onClick={(event) => event.stopPropagation()}
       >
         {categoryColorOptions.map(({ value: optionValue, label }) => (
           <MenuItem key={label} value={optionValue}>

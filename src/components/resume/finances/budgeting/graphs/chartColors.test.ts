@@ -11,6 +11,7 @@ import {
 import { buildBudgetFlow, getLatestBudgetIncome } from "@/apis/budget";
 import { FEDERAL_TAX_LABEL } from "@/constants/federalTaxBrackets";
 import { PAYROLL_WITHHOLDINGS_LABEL } from "@/constants/payrollDeductions";
+import { UNALLOCATED_NODE } from "./types";
 
 const theme = createTheme();
 
@@ -86,11 +87,13 @@ describe("budgeting | chartColors", () => {
       { name: FEDERAL_TAX_LABEL, y: flow.federalTax },
       { name: PAYROLL_WITHHOLDINGS_LABEL, y: flow.totalPayrollDeductions },
       { name: "Housing", y: 24_000 },
+      { name: UNALLOCATED_NODE, y: 1 },
     ]);
 
     expect(data[0]?.color).toBe(theme.palette.error.main);
     expect(data[1]?.color).toBe(theme.palette.error.main);
     expect(data[2]?.color).toBe(theme.palette.grey[500]);
+    expect(data[3]?.color).toBe(theme.palette.success.main);
   });
 
   it("uses grey shades for an uncolored category breakdown", () => {
@@ -120,7 +123,7 @@ describe("budgeting | chartColors", () => {
 
     expect(colors.salary).toBeTruthy();
     expect(colors.federalTax).toBe(theme.palette.error.main);
-    expect(colors.unallocated).toBe(theme.palette.grey[500]);
+    expect(colors.unallocated).toBe(theme.palette.success.main);
     expect(colors.category("housing")).toBe(theme.palette.error.main);
     expect(colors.category("housing", "success")).toBe(
       theme.palette.success.main,

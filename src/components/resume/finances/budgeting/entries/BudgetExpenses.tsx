@@ -14,14 +14,23 @@ import {
   FEDERAL_STANDARD_DEDUCTION,
   FEDERAL_STANDARD_DEDUCTION_MFJ,
 } from "@/constants/federalTaxBrackets";
-import type { ExpenseEntry } from "@/apis/budget";
+import {
+  getRecommendedLabel,
+  normalizeCategoryKey,
+  type BudgetCategory,
+  type ExpenseEntry,
+  type ExpenseEntryColor,
+} from "@/apis/budget";
+import { RECOMMENDED_BUDGET_CATEGORIES } from "@/constants/recommended-budget";
 import {
   filingJointlyAtom,
   itemizeDeductionsAtom,
   itemizedDeductionAtom,
   partnerIncomeAtom,
+  recommendedBudgetViewAtom,
 } from "@/jotai/budget-atom";
 import BudgetCategorySection from "./BudgetCategorySection";
+import CategoryEntryDialog from "./CategoryEntryDialog";
 import ExpenseEntryDialog from "./ExpenseEntryDialog";
 import useBudgetEntries from "./useBudgetEntries";
 import useEntryDialog from "@/components/resume/finances/shared/useEntryDialog";
@@ -47,12 +56,19 @@ const BudgetExpenses = () => {
   const {
     expenseEntries,
     hasCompData,
+    recommended,
     categories,
+    categoryList,
     categoryColors,
     addExpenseEntry,
     removeExpenseEntry,
-    handleCategoryColorChange,
+    saveCategory,
+    removeCategory,
+    isCategoryInUse,
   } = useBudgetEntries();
+  const [recommendedView, setRecommendedView] = useAtom(
+    recommendedBudgetViewAtom,
+  );
   const [filingJointly, setFilingJointly] = useAtom(filingJointlyAtom);
   const [partnerIncome, setPartnerIncome] = useAtom(partnerIncomeAtom);
   const [itemizeDeductions, setItemizeDeductions] = useAtom(
@@ -62,6 +78,10 @@ const BudgetExpenses = () => {
     itemizedDeductionAtom,
   );
   const entryDialog = useEntryDialog();
+  const categoryDialog = useEntryDialog();
+  const editingCategory: BudgetCategory | undefined =
+    categoryList[categoryDialog.editIdx];
+  const editingCategoryKey = normalizeCategoryKey(editingCategory?.name ?? "");
   const hasPercentageExpenses = expenseEntries.some(
     ({ valueMode }) => valueMode === "percent",
   );
@@ -69,6 +89,19 @@ const BudgetExpenses = () => {
     ? FEDERAL_STANDARD_DEDUCTION_MFJ
     : FEDERAL_STANDARD_DEDUCTION;
   const deductionBelowStandard = itemizedDeduction < federalStandard;
+
+  const editingExpense =
+    entryDialog.editIdx !== -1
+      ? expenseEntries[entryDialog.editIdx]
+      : undefined;
+  // Recommended view picks from buckets; custom view from defined categories.
+  const expenseCategoryNames = recommended
+    ? RECOMMENDED_BUDGET_CATEGORIES.map(({ label }) => label)
+    : categoryList.map(({ name }) => name);
+  const expenseInitialCategory =
+    recommended && editingExpense
+      ? getRecommendedLabel(editingExpense.category, categoryList)
+      : undefined;
 
   const handleSave = (expenseEntry: ExpenseEntry) => {
     addExpenseEntry(expenseEntry, entryDialog.editIdx);
@@ -79,6 +112,28 @@ const BudgetExpenses = () => {
     removeExpenseEntry(entryDialog.editIdx);
     entryDialog.close();
   };
+
+  const handleCategorySave = (
+    category: BudgetCategory,
+    color?: ExpenseEntryColor,
+  ) => {
+    saveCategory(category, color, editingCategory?.name);
+    categoryDialog.close();
+  };
+
+  const handleCategoryDelete = () => {
+    if (editingCategory) {
+      removeCategory(editingCategory.name);
+    }
+    categoryDialog.close();
+  };
+
+  const openCategoryEdit = (categoryKey: string) =>
+    categoryDialog.openEdit(
+      categoryList.findIndex(
+        ({ name }) => normalizeCategoryKey(name) === categoryKey,
+      ),
+    );
 
   const handlePartnerChange =
     (field: "salary" | "bonus" | "stock") =>
@@ -108,7 +163,10 @@ const BudgetExpenses = () => {
           flexWrap: "wrap",
         }}
       >
-        <Button onClick={entryDialog.openNew}>+ Expense</Button>
+        <Stack direction="row" spacing={1}>
+          <Button onClick={categoryDialog.openNew}>+ Category</Button>
+          <Button onClick={entryDialog.openNew}>+ Expense</Button>
+        </Stack>
         <Stack
           direction="row"
           spacing={2}
@@ -119,6 +177,18 @@ const BudgetExpenses = () => {
             flexWrap: "wrap",
           }}
         >
+          <FormControlLabel
+            control={
+              <Switch
+                checked={recommendedView}
+                onChange={(event) => setRecommendedView(event.target.checked)}
+                slotProps={{
+                  input: { "aria-label": "Show recommended budget" },
+                }}
+              />
+            }
+            label="Recommended"
+          />
           <Stack
             direction="row"
             spacing={2}
@@ -206,6 +276,11 @@ const BudgetExpenses = () => {
         </Alert>
       ) : null}
 
+      {recommendedView && !recommended ? (
+        <Alert severity="info" sx={{ mb: 2 }}>
+          Add a comp entry to see recommended budget targets.
+        </Alert>
+      ) : null}
       <Grid container spacing={2}>
         {categories.map((category) => (
           <BudgetCategorySection
@@ -216,7 +291,9 @@ const BudgetExpenses = () => {
               category.color ?? categoryColors[category.categoryKey]
             }
             onExpenseClick={entryDialog.openEdit}
-            onCategoryColorChange={handleCategoryColorChange}
+            onEditCategory={
+              recommended ? undefined : openCategoryEdit(category.categoryKey)
+            }
           />
         ))}
       </Grid>
@@ -226,13 +303,30 @@ const BudgetExpenses = () => {
           key={entryDialog.editIdx === -1 ? "new" : entryDialog.editIdx}
           open={entryDialog.open}
           onClose={entryDialog.close}
+          categoryNames={expenseCategoryNames}
+          initialCategory={expenseInitialCategory}
           addExpenseEntry={handleSave}
           onDelete={entryDialog.editIdx !== -1 ? handleDelete : undefined}
-          expenseEntry={
-            entryDialog.editIdx !== -1
-              ? expenseEntries[entryDialog.editIdx]
-              : undefined
+          expenseEntry={editingExpense}
+        />
+      )}
+      {categoryDialog.open && (
+        <CategoryEntryDialog
+          key={categoryDialog.editIdx === -1 ? "new" : categoryDialog.editIdx}
+          open={categoryDialog.open}
+          category={editingCategory}
+          color={
+            editingCategory ? categoryColors[editingCategoryKey] : undefined
           }
+          otherCategoryKeys={categoryList
+            .map(({ name }) => normalizeCategoryKey(name))
+            .filter((key) => key !== editingCategoryKey)}
+          inUse={
+            editingCategory ? isCategoryInUse(editingCategory.name) : false
+          }
+          onClose={categoryDialog.close}
+          onSave={handleCategorySave}
+          onDelete={editingCategory ? handleCategoryDelete : undefined}
         />
       )}
     </>

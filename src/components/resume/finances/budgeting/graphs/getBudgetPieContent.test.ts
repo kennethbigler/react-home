@@ -1,7 +1,11 @@
 import { createTheme } from "@mui/material/styles";
 import { describe, expect, it } from "vitest";
 import { getBudgetPieContent } from "./getBudgetPieContent";
-import { buildBudgetFlow, getLatestBudgetIncome } from "@/apis/budget";
+import {
+  buildBudgetFlow,
+  buildRecommendedTotals,
+  getLatestBudgetIncome,
+} from "@/apis/budget";
 
 const theme = createTheme();
 const income = getLatestBudgetIncome(100_000, 10_000, 0, 0);
@@ -13,14 +17,7 @@ const flow = buildBudgetFlow(income, expenseEntries);
 
 describe("resume | finances | budgeting | getBudgetPieContent", () => {
   it("returns income overview when no category is selected", () => {
-    const content = getBudgetPieContent(
-      flow,
-      flow.categories,
-      null,
-      expenseEntries,
-      {},
-      theme,
-    );
+    const content = getBudgetPieContent(flow, flow.categories, null, {}, theme);
 
     expect(content.title).toBe("Income Overview");
     expect(content.data.length).toBeGreaterThan(0);
@@ -31,7 +28,6 @@ describe("resume | finances | budgeting | getBudgetPieContent", () => {
       flow,
       flow.categories,
       null,
-      expenseEntries,
       {},
       theme,
       true,
@@ -51,7 +47,6 @@ describe("resume | finances | budgeting | getBudgetPieContent", () => {
       flow,
       flow.categories,
       "payroll",
-      expenseEntries,
       {},
       theme,
     );
@@ -65,7 +60,6 @@ describe("resume | finances | budgeting | getBudgetPieContent", () => {
       flow,
       flow.categories,
       "food",
-      expenseEntries,
       {},
       theme,
     );
@@ -81,12 +75,29 @@ describe("resume | finances | budgeting | getBudgetPieContent", () => {
       flow,
       flow.categories,
       "missing",
-      expenseEntries,
       {},
       theme,
     );
 
     expect(content.title).toBe("Category Breakdown");
     expect(content.data).toEqual([]);
+  });
+
+  it("breaks a recommended bucket into its expenses", () => {
+    const buckets = buildRecommendedTotals(
+      flow.categories,
+      [{ name: "Food", recommended: "food" }],
+      flow.net,
+    );
+    const content = getBudgetPieContent(
+      { ...flow, categories: buckets },
+      buckets,
+      "food",
+      {},
+      theme,
+    );
+
+    expect(content.title).toBe("Food Breakdown");
+    expect(content.data.map(({ name }) => name)).toEqual(["Groceries"]);
   });
 });

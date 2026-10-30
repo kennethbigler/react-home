@@ -2,7 +2,6 @@ import type { Theme } from "@mui/material/styles";
 import type {
   BudgetFlow,
   CategoryTotal,
-  ExpenseEntry,
   ExpenseEntryColor,
 } from "@/apis/budget";
 import {
@@ -10,7 +9,7 @@ import {
   colorizeIncomeOverviewPieData,
 } from "./chartColors";
 import {
-  buildExpensePieData,
+  buildCategoryBreakdownPieData,
   buildIncomeOverviewPieData,
   buildPayrollPieData,
   PAYROLL_CATEGORY_KEY,
@@ -26,7 +25,6 @@ export const getBudgetPieContent = (
   flow: BudgetFlow,
   categories: CategoryTotal[],
   selectedCategoryKey: string | null,
-  expenseEntries: ExpenseEntry[],
   categoryColors: Partial<Record<string, ExpenseEntryColor>>,
   theme: Theme,
   hideTaxes = false,
@@ -42,12 +40,9 @@ export const getBudgetPieContent = (
     const selectedCategory = categories.find(
       ({ categoryKey }) => categoryKey === selectedCategoryKey,
     );
-    const data = buildExpensePieData(
-      selectedCategoryKey,
-      expenseEntries,
-      flow.income,
-      flow.net,
-    );
+    const data = selectedCategory
+      ? buildCategoryBreakdownPieData(selectedCategory)
+      : [];
 
     return {
       title: selectedCategory

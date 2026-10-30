@@ -4,7 +4,10 @@ import persistentAtom from "./storage";
 import sortByEntryDate from "../apis/sortByEntryDate";
 import {
   buildBudgetFlow,
+  buildRecommendedTotals,
   getLatestBudgetIncome,
+  mergeBudgetCategories,
+  type BudgetCategory,
   type BudgetCategoryColors,
   type ExpenseEntry,
 } from "../apis/budget";
@@ -19,6 +22,14 @@ export const budgetAtom = persistentAtom<ExpenseEntry[]>("budgetAtom", []);
 export const budgetCategoryColorsAtom = persistentAtom<BudgetCategoryColors>(
   "budgetCategoryColorsAtom",
   {},
+);
+export const budgetCategoriesAtom = persistentAtom<BudgetCategory[]>(
+  "budgetCategoriesAtom",
+  [],
+);
+export const recommendedBudgetViewAtom = persistentAtom<boolean>(
+  "recommendedBudgetViewAtom",
+  false,
 );
 export const filingJointlyAtom = persistentAtom<boolean>(
   "filingJointlyAtom",
@@ -81,3 +92,32 @@ export const budgetFlowRead = atom((get) => {
   };
 });
 budgetFlowRead.debugLabel = "budgetFlowRead";
+
+/** Defined categories plus any legacy free-text expense categories. */
+export const budgetCategoryListRead = atom((get) =>
+  mergeBudgetCategories(get(budgetCategoriesAtom), get(budgetAtom)),
+);
+budgetCategoryListRead.debugLabel = "budgetCategoryListRead";
+
+/** Budget flow regrouped into recommended buckets when the toggle is on. */
+export const budgetDisplayFlowRead = atom((get) => {
+  const budgetFlow = get(budgetFlowRead);
+  const recommended = get(recommendedBudgetViewAtom);
+
+  if (!recommended || !budgetFlow.flow) {
+    return { ...budgetFlow, recommended: false as const };
+  }
+
+  const categories = buildRecommendedTotals(
+    budgetFlow.flow.categories,
+    get(budgetCategoryListRead),
+    budgetFlow.flow.net,
+  );
+
+  return {
+    ...budgetFlow,
+    recommended: true as const,
+    flow: { ...budgetFlow.flow, categories },
+  };
+});
+budgetDisplayFlowRead.debugLabel = "budgetDisplayFlowRead";

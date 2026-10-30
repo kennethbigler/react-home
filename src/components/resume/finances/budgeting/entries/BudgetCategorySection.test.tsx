@@ -2,7 +2,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import BudgetCategorySection from "./BudgetCategorySection";
-import type { CategoryTotal } from "@/apis/budget";
+import type { CategoryTotal, RecommendedCategoryTotal } from "@/apis/budget";
 
 const theme = createTheme();
 
@@ -26,7 +26,7 @@ const sampleCategory: CategoryTotal = {
 };
 
 describe("resume | finances | budgeting | BudgetCategorySection", () => {
-  it("renders heading, color select, and expense cards", () => {
+  it("renders heading and expense cards", () => {
     const onExpenseClick = vi.fn(() => vi.fn());
 
     render(
@@ -34,7 +34,6 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
         category={sampleCategory}
         categoryCount={3}
         onExpenseClick={onExpenseClick}
-        onCategoryColorChange={vi.fn()}
       />,
     );
 
@@ -44,7 +43,9 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
     expect(
       screen.queryByRole("button", { name: "Food ($350.00)" }),
     ).not.toBeInTheDocument();
-    expect(screen.getByLabelText("Color (Optional)")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Edit Food category" }),
+    ).not.toBeInTheDocument();
     expect(screen.getByText("Groceries: $250.00")).toBeInTheDocument();
     expect(screen.getByText("Dining Out: $100.00")).toBeInTheDocument();
   });
@@ -58,7 +59,6 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
         category={sampleCategory}
         categoryCount={1}
         onExpenseClick={onExpenseClick}
-        onCategoryColorChange={vi.fn()}
       />,
     );
 
@@ -79,7 +79,6 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
           categoryCount={2}
           categoryColor="success"
           onExpenseClick={vi.fn(() => vi.fn())}
-          onCategoryColorChange={vi.fn()}
         />
       </ThemeProvider>,
     );
@@ -96,7 +95,6 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
           category={sampleCategory}
           categoryCount={categoryCount}
           onExpenseClick={vi.fn(() => vi.fn())}
-          onCategoryColorChange={vi.fn()}
         />,
       );
 
@@ -104,6 +102,80 @@ describe("resume | finances | budgeting | BudgetCategorySection", () => {
       expect(
         screen.getByRole("heading", { name: "Food ($350.00)" }),
       ).toBeInTheDocument();
+    },
+  );
+
+  it("calls onEditCategory from the edit button", () => {
+    const onEditCategory = vi.fn();
+
+    render(
+      <BudgetCategorySection
+        category={sampleCategory}
+        categoryCount={1}
+        onExpenseClick={vi.fn(() => vi.fn())}
+        onEditCategory={onEditCategory}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Edit Food category" }));
+    expect(onEditCategory).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    {
+      target: 500,
+      remaining: 150,
+      overIsGood: false,
+      text: "$350.00 of $500.00 · $150.00 left",
+      color: "Primary",
+    },
+    {
+      target: 300,
+      remaining: -50,
+      overIsGood: false,
+      text: "$350.00 of $300.00 · $50.00 over",
+      color: "Error",
+    },
+    {
+      target: 300,
+      remaining: -50,
+      overIsGood: true,
+      text: "$350.00 of $300.00 · $50.00 over",
+      color: "Success",
+    },
+    {
+      target: 0,
+      remaining: -350,
+      overIsGood: false,
+      text: "$350.00 of $0.00 · $350.00 over",
+      color: "Error",
+    },
+  ])(
+    "shows $color recommended progress for target $target (overIsGood=$overIsGood)",
+    ({ target, remaining, overIsGood, text, color }) => {
+      const bucket: RecommendedCategoryTotal = {
+        ...sampleCategory,
+        percent: 10,
+        target,
+        remaining,
+        overIsGood,
+      };
+
+      render(
+        <BudgetCategorySection
+          category={bucket}
+          categoryCount={1}
+          onExpenseClick={vi.fn(() => vi.fn())}
+        />,
+      );
+
+      expect(
+        screen.getByRole("heading", { name: "Food (10%)" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("progressbar", { name: "Food spent of target" }),
+      ).toHaveClass(`MuiLinearProgress-color${color}`);
+      expect(screen.getByText(text)).toBeInTheDocument();
     },
   );
 });

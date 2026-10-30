@@ -20,9 +20,9 @@ import {
   Typography,
 } from "@mui/material";
 import {
-  formatCategoryName,
   getPercentSources,
   getTaxBasis,
+  normalizeCategoryKey,
 } from "@/apis/budget";
 import type {
   ExpenseEntry,
@@ -31,6 +31,7 @@ import type {
   ExpenseValueMode,
 } from "@/apis/budget";
 import ConfirmDeleteDialog from "@/components/resume/finances/shared/ConfirmDeleteDialog";
+import dialogFormControlProps from "@/components/resume/finances/shared/dialogFormControlProps";
 import dialogTextFieldProps from "@/components/resume/finances/shared/dialogTextFieldProps";
 import useConfirmDelete from "@/components/resume/finances/shared/useConfirmDelete";
 
@@ -49,6 +50,10 @@ const percentSourceOptions: Array<{
 interface ExpenseEntryDialogProps {
   open: boolean;
   expenseEntry?: ExpenseEntry;
+  /** Category names to pick from. */
+  categoryNames: string[];
+  /** Preselected option; defaults to the entry's category when listed. */
+  initialCategory?: string;
   onClose: () => void;
   addExpenseEntry: (n: ExpenseEntry) => void;
   onDelete?: () => void;
@@ -57,12 +62,22 @@ interface ExpenseEntryDialogProps {
 const ExpenseEntryDialog = ({
   open,
   expenseEntry,
+  categoryNames,
+  initialCategory: initialCategoryProp,
   onClose,
   addExpenseEntry,
   onDelete,
 }: ExpenseEntryDialogProps) => {
   const [name, setName] = useState(expenseEntry?.name || "");
-  const [category, setCategory] = useState(expenseEntry?.category || "");
+  const initialCategory =
+    initialCategoryProp ??
+    categoryNames.find(
+      (categoryName) =>
+        normalizeCategoryKey(categoryName) ===
+        normalizeCategoryKey(expenseEntry?.category ?? ""),
+    ) ??
+    "";
+  const [category, setCategory] = useState(initialCategory);
   const [valueMode, setValueMode] = useState<ExpenseValueMode>(
     expenseEntry?.valueMode ?? "dollar",
   );
@@ -77,7 +92,7 @@ const ExpenseEntryDialog = ({
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
-  const handleCategoryChange = (e: ChangeEvent<HTMLInputElement>) =>
+  const handleCategoryChange = (e: SelectChangeEvent) =>
     setCategory(e.target.value);
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value: next } = e.target;
@@ -117,7 +132,11 @@ const ExpenseEntryDialog = ({
   const handleSubmit = () => {
     addExpenseEntry({
       name: name.trim(),
-      category: formatCategoryName(category),
+      // Unchanged pick keeps the original (e.g. custom category in recommended view).
+      category:
+        expenseEntry && category === initialCategory
+          ? expenseEntry.category
+          : category,
       value: typeof value === "number" ? value : 0,
       ...(valueMode === "percent"
         ? { valueMode, percentSources, taxBasis }
@@ -153,12 +172,32 @@ const ExpenseEntryDialog = ({
             onChange={handleNameChange}
             {...dialogTextFieldProps}
           />
-          <TextField
-            label="Category"
-            value={category}
-            onChange={handleCategoryChange}
-            {...dialogTextFieldProps}
-          />
+          <FormControl {...dialogFormControlProps}>
+            <InputLabel id="expense-category-label">Category</InputLabel>
+            <Select
+              labelId="expense-category-label"
+              value={category}
+              label="Category"
+              onChange={handleCategoryChange}
+              disabled={categoryNames.length === 0}
+              aria-describedby={
+                categoryNames.length === 0
+                  ? "expense-category-empty"
+                  : undefined
+              }
+            >
+              {categoryNames.map((categoryName) => (
+                <MenuItem key={categoryName} value={categoryName}>
+                  {categoryName}
+                </MenuItem>
+              ))}
+            </Select>
+            {categoryNames.length === 0 ? (
+              <FormHelperText id="expense-category-empty">
+                Add a category with + Category first.
+              </FormHelperText>
+            ) : null}
+          </FormControl>
           <Stack direction="row" spacing={1} sx={{ alignItems: "flex-end" }}>
             <TextField
               {...dialogTextFieldProps}
@@ -199,12 +238,7 @@ const ExpenseEntryDialog = ({
             </ToggleButtonGroup>
           </Stack>
           {valueMode === "percent" && (
-            <FormControl
-              fullWidth
-              margin="dense"
-              variant="standard"
-              error={!hasPercentSources}
-            >
+            <FormControl {...dialogFormControlProps} error={!hasPercentSources}>
               <InputLabel id="percent-sources-label">Income Sources</InputLabel>
               <Select
                 labelId="percent-sources-label"
