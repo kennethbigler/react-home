@@ -23,7 +23,7 @@
     "test:no-watch": "vitest run",
     "test:coverage": "NODE_V8_COVERAGE=codecov_reports vitest run --coverage && node scripts/check-per-file-coverage.mjs",
     "deploy": "./scripts/deploy.sh",
-    "deploy:no-fetch": "SKIP_BOTC_FETCH=1 SKIP_POKEMON_FETCH=1 ./scripts/deploy.sh",
+    "deploy:no-fetch": "SKIP_FETCH=1 ./scripts/deploy.sh",
     "analyze": "./scripts/analyze.sh",
     "lhci": "lhci autorun",
     "knip": "knip",
