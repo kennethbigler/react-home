@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildBudgetFlow,
   buildCategoryTotals,
+  buildRecommendedTotals,
   BUDGET_MONTHS_PER_YEAR,
   getLatestBudgetIncome,
   resolveExpenseAmount,
@@ -11,7 +12,7 @@ import {
 import {
   buildBudgetSankeyData,
   buildCategoryPieData,
-  buildExpensePieData,
+  buildCategoryBreakdownPieData,
   buildIncomeOverviewPieData,
   buildPayrollPieData,
   getSankeyNodeClassName,
@@ -47,6 +48,9 @@ const sankeyNodeColors = {
   stateTax: "#f",
   payroll: "#i",
   unallocated: "#g",
+  spent: "#s",
+  leftOver: "#l",
+  overBudget: "#o",
   category: () => "#h",
 };
 
@@ -570,30 +574,77 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
     });
   });
 
-  describe("buildExpensePieData", () => {
-    it("returns line items for a selected category", () => {
-      const entries: ExpenseEntry[] = [
-        { name: "Rent", category: "Housing", value: 2000 },
-        { name: "HOA", category: "Housing", value: 300 },
-        { name: "Groceries", category: "Food", value: 400 },
-      ];
+  describe("buildCategoryBreakdownPieData", () => {
+    it("returns line items for a category", () => {
+      const [housing] = buildCategoryTotals(
+        [
+          { name: "Rent", category: "Housing", value: 2000 },
+          { name: "HOA", category: "Housing", value: 300 },
+        ],
+        sampleIncome,
+      );
 
-      const pie = buildExpensePieData("housing", entries, sampleIncome);
-
-      expect(pie).toEqual([
+      expect(buildCategoryBreakdownPieData(housing)).toEqual([
         { name: "Rent", y: 2000 },
         { name: "HOA", y: 300 },
       ]);
     });
 
     it("clamps negative expense amounts to zero", () => {
-      const entries: ExpenseEntry[] = [
-        { name: "Credit", category: "Housing", value: -200 },
-      ];
+      const [housing] = buildCategoryTotals(
+        [{ name: "Credit", category: "Housing", value: -200 }],
+        sampleIncome,
+      );
 
-      const pie = buildExpensePieData("housing", entries, sampleIncome);
+      expect(buildCategoryBreakdownPieData(housing)).toEqual([
+        { name: "Credit", y: 0 },
+      ]);
+    });
+  });
 
-      expect(pie).toEqual([{ name: "Credit", y: 0 }]);
+  describe("recommended buckets", () => {
+    const flow = buildBudgetFlow(sampleIncome, [
+      { name: "Rent", category: "Rent", value: 2000 },
+      { name: "Groceries", category: "Groceries", value: 100 },
+    ]);
+    const buckets = buildRecommendedTotals(
+      flow.categories,
+      [
+        { name: "Rent", recommended: "housing" },
+        { name: "Groceries", recommended: "food" },
+      ],
+      flow.net,
+    );
+    const recommendedFlow = { ...flow, categories: buckets };
+
+    it("links spent per bucket and hides $0 buckets in the sankey", () => {
+      const { data, nodes } = buildBudgetSankeyData(
+        recommendedFlow,
+        sankeyNodeColors,
+      );
+      const nodeIds = nodes.map(({ id }) => id);
+
+      expect(data).toEqual(
+        expect.arrayContaining([
+          { from: GROSS_INCOME_NODE, to: "Housing", weight: 24_000 },
+          { from: GROSS_INCOME_NODE, to: "Food", weight: 1200 },
+        ]),
+      );
+      expect(nodeIds).toEqual(
+        expect.arrayContaining(["Housing", "Food", UNALLOCATED_NODE]),
+      );
+      expect(nodeIds).not.toContain("Giving");
+      expect(nodeIds).not.toContain(INCOME_NODE_LABELS.partnerSalary);
+    });
+
+    it("keeps $0 buckets in the income overview pie", () => {
+      const names = buildIncomeOverviewPieData(recommendedFlow).map(
+        ({ name }) => name,
+      );
+
+      expect(names).toEqual(
+        expect.arrayContaining(["Housing", "Giving", UNALLOCATED_NODE]),
+      );
     });
   });
 

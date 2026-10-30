@@ -111,7 +111,7 @@ export const colorizeIncomeOverviewPieData = (
     [STATE_TAX_LABEL]: theme.palette.error.main,
     [PAYROLL_NODE_LABEL]: theme.palette.error.main,
     [PAYROLL_WITHHOLDINGS_LABEL]: theme.palette.error.main,
-    [UNALLOCATED_NODE]: theme.palette.grey[500],
+    [UNALLOCATED_NODE]: theme.palette.success.main,
   };
 
   return data.map((point) => ({
@@ -147,7 +147,7 @@ export const getBudgetSankeyNodeColors = (theme: Theme) => ({
   federalTax: theme.palette.error.main,
   stateTax: theme.palette.error.main,
   payroll: theme.palette.error.main,
-  unallocated: theme.palette.grey[500],
+  unallocated: theme.palette.success.main,
   category: (_categoryKey: string, color?: ExpenseEntryColor) =>
     resolveCategoryColor(theme, color, theme.palette.error.main),
 });

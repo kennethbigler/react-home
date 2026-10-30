@@ -9,12 +9,9 @@ import {
 } from "@/constants/payrollDeductions";
 import {
   BUDGET_MONTHS_PER_YEAR,
-  normalizeCategoryKey,
-  resolveExpenseAmount,
   sortCategoriesByTotal,
   type BudgetFlow,
   type CategoryTotal,
-  type ExpenseEntry,
 } from "@/apis/budget";
 import {
   GROSS_INCOME_NODE,
@@ -168,7 +165,7 @@ export const buildBudgetSankeyData = (
     });
   }
 
-  const nodes: BudgetSankeyData["nodes"] = [
+  const allNodes: BudgetSankeyData["nodes"] = [
     ...incomeSourceKeys.map((key) => ({
       id: INCOME_NODE_LABELS[key],
       column: 0,
@@ -205,6 +202,9 @@ export const buildBudgetSankeyData = (
       color: nodeColors.unallocated,
     },
   ];
+  // Hide nodes with no flow (e.g. $0 categories or unused income sources).
+  const linkedIds = new Set(data.flatMap(({ from, to }) => [from, to]));
+  const nodes = allNodes.filter(({ id }) => linkedIds.has(id));
 
   return { nodes, data };
 };
@@ -276,29 +276,14 @@ export const buildCategoryPieData = (categories: CategoryTotal[]): PiePoint[] =>
     y: clampPieSliceValue(total),
   }));
 
-export const buildExpensePieData = (
-  categoryKey: string,
-  expenseEntries: ExpenseEntry[],
-  income: BudgetFlow["income"],
-  netIncome?: number,
-): PiePoint[] => {
-  const normalizedKey = normalizeCategoryKey(categoryKey);
-
-  return expenseEntries
-    .map((expenseEntry, index) => ({
-      expenseEntry,
-      index,
-      resolvedAmount: resolveExpenseAmount(expenseEntry, income, netIncome),
-    }))
-    .filter(
-      ({ expenseEntry }) =>
-        normalizeCategoryKey(expenseEntry.category) === normalizedKey,
-    )
-    .map(({ expenseEntry, resolvedAmount }) => ({
-      name: expenseEntry.name,
-      y: clampPieSliceValue(resolvedAmount),
-    }));
-};
+/** Monthly expense slices for one category. */
+export const buildCategoryBreakdownPieData = (
+  category: CategoryTotal,
+): PiePoint[] =>
+  category.items.map(({ expenseEntry, resolvedAmount }) => ({
+    name: expenseEntry.name,
+    y: clampPieSliceValue(resolvedAmount),
+  }));
 
 export const isCategorySankeyNode = (
   nodeId: string,

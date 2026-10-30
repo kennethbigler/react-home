@@ -33,6 +33,10 @@ type SankeyClickPoint = Highcharts.Point & {
 
 const formatCurrency = (value: number) => usDollar.format(value);
 
+const MIN_CHART_HEIGHT = 640;
+/** Vertical room per outflow node so small categories keep a readable label. */
+const HEIGHT_PER_OUTFLOW_NODE = 64;
+
 /** Nodes that clear category selection when clicked (income, tax, unallocated). */
 const CLEAR_SELECTION_NODE_IDS = new Set<string>([
   ...BUDGET_WITHHOLDING_NODE_LABELS,
@@ -49,7 +53,6 @@ const CLEAR_SELECTION_NODE_IDS = new Set<string>([
 const chartOptions: Highcharts.Options = {
   chart: {
     type: "sankey",
-    height: 640,
     backgroundColor: "transparent",
     animation: { duration: 900, easing: "easeInOutSine" },
   },
@@ -139,8 +142,16 @@ const BudgetSankeyGraph = ({
     getBudgetSankeyNodeColors(muiTheme),
   );
 
+  const outflowNodeCount = nodes.filter(({ column }) => column === 2).length;
   const options: Highcharts.Options = {
     ...chartOptions,
+    chart: {
+      ...chartOptions.chart,
+      height: Math.max(
+        MIN_CHART_HEIGHT,
+        outflowNodeCount * HEIGHT_PER_OUTFLOW_NODE,
+      ),
+    },
     plotOptions: {
       ...chartOptions.plotOptions,
       sankey: {
@@ -184,7 +195,12 @@ const BudgetSankeyGraph = ({
 
   return (
     <ChartFigure>
-      <Chart highcharts={Highcharts} options={options}>
+      <Chart
+        // Highcharts sankey duplicates node labels on in-place updates; remount on data change.
+        key={JSON.stringify(data)}
+        highcharts={Highcharts}
+        options={options}
+      >
         <Accessibility enabled={true} />
         <Credits enabled={false} />
         <Title style={{ color: titleColor }}>Budget Flow (Annual)</Title>

@@ -2,6 +2,13 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import ExpenseEntryDialog from "./ExpenseEntryDialog";
 
+const categoryNames = ["Food", "Fun", "Housing", "Retirement"];
+
+const selectCategory = (name: string) => {
+  fireEvent.mouseDown(screen.getByRole("combobox", { name: "Category" }));
+  fireEvent.click(screen.getByRole("option", { name }));
+};
+
 describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
   it("submits a dollar expense", () => {
     const addExpenseEntry = vi.fn();
@@ -10,6 +17,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     render(
       <ExpenseEntryDialog
         open
+        categoryNames={categoryNames}
         addExpenseEntry={addExpenseEntry}
         onClose={onClose}
       />,
@@ -18,9 +26,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "Groceries" },
     });
-    fireEvent.change(screen.getByLabelText("Category"), {
-      target: { value: "Food" },
-    });
+    selectCategory("Food");
     fireEvent.change(screen.getByLabelText("Value"), {
       target: { value: "250" },
     });
@@ -40,6 +46,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     render(
       <ExpenseEntryDialog
         open
+        categoryNames={categoryNames}
         addExpenseEntry={addExpenseEntry}
         onClose={vi.fn()}
       />,
@@ -48,9 +55,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "Rent" },
     });
-    fireEvent.change(screen.getByLabelText("Category"), {
-      target: { value: "Housing" },
-    });
+    selectCategory("Housing");
     fireEvent.change(screen.getByLabelText("Value"), {
       target: { value: "2000" },
     });
@@ -69,12 +74,13 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     });
   });
 
-  it("title-cases the category when submitting", () => {
+  it("submits the selected category", () => {
     const addExpenseEntry = vi.fn();
 
     render(
       <ExpenseEntryDialog
         open
+        categoryNames={categoryNames}
         addExpenseEntry={addExpenseEntry}
         onClose={vi.fn()}
       />,
@@ -83,9 +89,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "Tickets" },
     });
-    fireEvent.change(screen.getByLabelText("Category"), {
-      target: { value: "fun" },
-    });
+    selectCategory("Fun");
     fireEvent.change(screen.getByLabelText("Value"), {
       target: { value: "50" },
     });
@@ -102,6 +106,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     render(
       <ExpenseEntryDialog
         open
+        categoryNames={categoryNames}
         addExpenseEntry={addExpenseEntry}
         onClose={vi.fn()}
       />,
@@ -110,9 +115,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "401k" },
     });
-    fireEvent.change(screen.getByLabelText("Category"), {
-      target: { value: "Retirement" },
-    });
+    selectCategory("Retirement");
     fireEvent.click(screen.getByRole("button", { name: /Percent of income/i }));
     fireEvent.change(screen.getByLabelText("Value"), {
       target: { value: "9" },
@@ -131,7 +134,12 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
 
   it("offers partner income sources for percent expenses", () => {
     render(
-      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
+      <ExpenseEntryDialog
+        open
+        categoryNames={categoryNames}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+      />,
     );
 
     fireEvent.click(screen.getByRole("button", { name: /Percent of income/i }));
@@ -148,6 +156,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     render(
       <ExpenseEntryDialog
         open
+        categoryNames={categoryNames}
         expenseEntry={{
           name: "401k",
           category: "Retirement",
@@ -178,6 +187,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     render(
       <ExpenseEntryDialog
         open
+        categoryNames={categoryNames}
         addExpenseEntry={addExpenseEntry}
         onClose={vi.fn()}
       />,
@@ -186,9 +196,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "401k" },
     });
-    fireEvent.change(screen.getByLabelText("Category"), {
-      target: { value: "Retirement" },
-    });
+    selectCategory("Retirement");
     fireEvent.click(screen.getByRole("button", { name: /Percent of income/i }));
     fireEvent.change(screen.getByLabelText("Value"), {
       target: { value: "9" },
@@ -208,7 +216,12 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
 
   it("defaults tax basis to post-tax in percent mode", () => {
     render(
-      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
+      <ExpenseEntryDialog
+        open
+        categoryNames={categoryNames}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+      />,
     );
 
     expect(
@@ -227,6 +240,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     render(
       <ExpenseEntryDialog
         open
+        categoryNames={categoryNames}
         expenseEntry={{
           name: "401k",
           category: "Retirement",
@@ -248,7 +262,12 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
 
   it("shows income sources when percent mode is selected", () => {
     render(
-      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
+      <ExpenseEntryDialog
+        open
+        categoryNames={categoryNames}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+      />,
     );
 
     expect(screen.queryByLabelText("Income Sources")).not.toBeInTheDocument();
@@ -260,6 +279,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     render(
       <ExpenseEntryDialog
         open
+        categoryNames={categoryNames}
         expenseEntry={{
           name: "401k",
           category: "Retirement",
@@ -274,14 +294,21 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
 
     expect(screen.getByText("Edit Expense Entry")).toBeInTheDocument();
     expect(screen.getByLabelText("Name")).toHaveValue("401k");
-    expect(screen.getByLabelText("Category")).toHaveValue("Retirement");
+    expect(
+      screen.getByRole("combobox", { name: "Category" }),
+    ).toHaveTextContent("Retirement");
     expect(screen.getByLabelText("Value")).toHaveValue(9);
     expect(screen.getByLabelText("Income Sources")).toHaveTextContent("Bonus");
   });
 
   it("blocks submit when dollar amount is negative", () => {
     render(
-      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
+      <ExpenseEntryDialog
+        open
+        categoryNames={categoryNames}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+      />,
     );
 
     fireEvent.change(screen.getByLabelText("Value"), {
@@ -296,7 +323,12 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
 
   it("blocks submit when percent is outside 0 to 100", () => {
     render(
-      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
+      <ExpenseEntryDialog
+        open
+        categoryNames={categoryNames}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+      />,
     );
 
     fireEvent.click(screen.getByRole("button", { name: /Percent of income/i }));
@@ -312,7 +344,12 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
 
   it("requires at least one income source in percent mode", () => {
     render(
-      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
+      <ExpenseEntryDialog
+        open
+        categoryNames={categoryNames}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+      />,
     );
 
     fireEvent.click(screen.getByRole("button", { name: /Percent of income/i }));
@@ -331,7 +368,12 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     const onClose = vi.fn();
 
     render(
-      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={onClose} />,
+      <ExpenseEntryDialog
+        open
+        categoryNames={categoryNames}
+        addExpenseEntry={vi.fn()}
+        onClose={onClose}
+      />,
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
@@ -345,6 +387,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     render(
       <ExpenseEntryDialog
         open
+        categoryNames={categoryNames}
         expenseEntry={{
           name: "Rent",
           category: "Housing",
@@ -380,6 +423,7 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     render(
       <ExpenseEntryDialog
         open
+        categoryNames={categoryNames}
         expenseEntry={{
           name: "Rent",
           category: "Housing",
@@ -404,7 +448,12 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
 
   it("does not show delete when creating a new expense", () => {
     render(
-      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
+      <ExpenseEntryDialog
+        open
+        categoryNames={categoryNames}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+      />,
     );
 
     expect(
@@ -414,15 +463,18 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
 
   it("blocks submit when name or category is blank", () => {
     render(
-      <ExpenseEntryDialog open addExpenseEntry={vi.fn()} onClose={vi.fn()} />,
+      <ExpenseEntryDialog
+        open
+        categoryNames={categoryNames}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+      />,
     );
 
     fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "   " },
     });
-    fireEvent.change(screen.getByLabelText("Category"), {
-      target: { value: "Food" },
-    });
+    selectCategory("Food");
     fireEvent.change(screen.getByLabelText("Value"), {
       target: { value: "100" },
     });
@@ -430,11 +482,50 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     expect(screen.getByRole("button", { name: "Add" })).toBeDisabled();
   });
 
+  it("disables category select when no categories exist", () => {
+    render(
+      <ExpenseEntryDialog
+        open
+        categoryNames={[]}
+        addExpenseEntry={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    expect(
+      screen.getByRole("combobox", { name: "Category" }),
+    ).toHaveAccessibleDescription("Add a category with + Category first.");
+  });
+
+  it("keeps the original category when the preselected option is unchanged", () => {
+    const addExpenseEntry = vi.fn();
+
+    render(
+      <ExpenseEntryDialog
+        open
+        categoryNames={["Housing", "Food"]}
+        initialCategory="Housing"
+        expenseEntry={{ name: "Rent", category: "Rent", value: 2000 }}
+        addExpenseEntry={addExpenseEntry}
+        onClose={vi.fn()}
+      />,
+    );
+
+    expect(
+      screen.getByRole("combobox", { name: "Category" }),
+    ).toHaveTextContent("Housing");
+    fireEvent.click(screen.getByRole("button", { name: "Update" }));
+    expect(addExpenseEntry).toHaveBeenLastCalledWith(
+      expect.objectContaining({ category: "Rent" }),
+    );
+  });
+
   it("resynchronizes form state when expenseEntry changes", () => {
     const { rerender } = render(
       <ExpenseEntryDialog
         key="rent"
         open
+        categoryNames={categoryNames}
         expenseEntry={{
           name: "Rent",
           category: "Housing",
@@ -447,13 +538,16 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     );
 
     expect(screen.getByLabelText("Name")).toHaveValue("Rent");
-    expect(screen.getByLabelText("Category")).toHaveValue("Housing");
+    expect(
+      screen.getByRole("combobox", { name: "Category" }),
+    ).toHaveTextContent("Housing");
     expect(screen.getByLabelText("Value")).toHaveValue(2000);
 
     rerender(
       <ExpenseEntryDialog
         key="401k"
         open
+        categoryNames={categoryNames}
         expenseEntry={{
           name: "401k",
           category: "Retirement",
@@ -467,7 +561,9 @@ describe("resume | finances | budgeting | ExpenseEntryDialog", () => {
     );
 
     expect(screen.getByLabelText("Name")).toHaveValue("401k");
-    expect(screen.getByLabelText("Category")).toHaveValue("Retirement");
+    expect(
+      screen.getByRole("combobox", { name: "Category" }),
+    ).toHaveTextContent("Retirement");
     expect(screen.getByLabelText("Value")).toHaveValue(9);
     expect(screen.getByLabelText("Income Sources")).toHaveTextContent(
       "Salary, Bonus",

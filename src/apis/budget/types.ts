@@ -1,3 +1,5 @@
+import type { RecommendedCategoryKey } from "@/constants/recommended-budget";
+
 export const expenseEntryColors = [
   "success",
   "info",
@@ -83,4 +85,19 @@ export interface BudgetFlow {
   totalAllocated: number;
   unallocated: number;
   isOverAllocated: boolean;
+}
+
+/** User-defined category mapped to a recommended budget bucket. */
+export interface BudgetCategory {
+  name: string;
+  recommended: RecommendedCategoryKey;
+}
+
+/** Recommended bucket: `total` is monthly spent, `target`/`remaining` monthly. */
+export interface RecommendedCategoryTotal extends CategoryTotal {
+  percent: number;
+  target: number;
+  remaining: number;
+  /** Spending past the target is good (e.g. saving), so don't flag it. */
+  overIsGood: boolean;
 }

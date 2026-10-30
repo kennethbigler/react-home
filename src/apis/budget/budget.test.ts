@@ -30,6 +30,9 @@ const sankeyNodeColors = {
   stateTax: "#f",
   payroll: "#i",
   unallocated: "#g",
+  spent: "#s",
+  leftOver: "#l",
+  overBudget: "#o",
   category: () => "#h",
 };
 

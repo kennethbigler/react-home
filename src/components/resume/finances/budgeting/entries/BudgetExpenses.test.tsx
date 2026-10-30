@@ -2,13 +2,16 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { createStore, Provider } from "jotai";
 import { describe, expect, it } from "vitest";
+import compCalcAtom from "@/jotai/comp-calc-atom";
 import {
   budgetAtom,
+  budgetCategoriesAtom,
   budgetCategoryColorsAtom,
   filingJointlyAtom,
   itemizeDeductionsAtom,
   itemizedDeductionAtom,
   partnerIncomeAtom,
+  recommendedBudgetViewAtom,
 } from "@/jotai/budget-atom";
 import type { ExpenseEntry } from "@/apis/budget";
 import BudgetExpenses from "./BudgetExpenses";
@@ -31,6 +34,21 @@ const renderBudgetExpenses = (
   );
 
   return { ...view, store };
+};
+
+const sampleCompEntry = {
+  entryDate: "2026-01",
+  salary: 120_000,
+  bonus: 0,
+  stockTick: "",
+  priceThen: 0,
+  grantDuration: 4,
+  grantQty: 0,
+};
+
+const selectOption = (label: string, name: string) => {
+  fireEvent.mouseDown(screen.getByRole("combobox", { name: label }));
+  fireEvent.click(screen.getByRole("option", { name }));
 };
 
 describe("resume | finances | budgeting | BudgetExpenses", () => {
@@ -60,16 +78,20 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
 
     expect(screen.getByText("Edit Expense Entry")).toBeInTheDocument();
     expect(screen.getByLabelText("Name")).toHaveValue("Rent");
-    expect(screen.getByLabelText("Category")).toHaveValue("Housing");
+    expect(
+      screen.getByRole("combobox", { name: "Category" }),
+    ).toHaveTextContent("Housing");
     expect(screen.getByLabelText("Value")).toHaveValue(2000);
   });
 
-  it("renders a category color select below each heading", () => {
+  it("renders an edit button for each category", () => {
     renderBudgetExpenses([
       { name: "Electric", category: "Utilities", value: 120 },
     ]);
 
-    expect(screen.getByLabelText("Color (Optional)")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Edit Utilities category" }),
+    ).toBeInTheDocument();
   });
 
   it("shows category columns when comp data is missing", () => {
@@ -295,15 +317,15 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
   });
 
   it("adds an expense entry from the dialog", async () => {
-    const { store } = renderBudgetExpenses([]);
+    const store = createStore();
+    store.set(budgetCategoriesAtom, [{ name: "Food", recommended: "food" }]);
+    renderBudgetExpenses([], store);
 
     fireEvent.click(screen.getByRole("button", { name: "+ Expense" }));
     fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "Groceries" },
     });
-    fireEvent.change(screen.getByLabelText("Category"), {
-      target: { value: "Food" },
-    });
+    selectOption("Category", "Food");
     fireEvent.change(screen.getByLabelText("Value"), {
       target: { value: 250 },
     });
@@ -347,47 +369,6 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
     ).toBeInTheDocument();
   });
 
-  it("updates and clears category colors", () => {
-    const { store } = renderBudgetExpenses([
-      { name: "Electric", category: "Utilities", value: 120 },
-    ]);
-
-    const colorSelect = screen.getByRole("combobox", {
-      name: "Color (Optional)",
-    });
-
-    fireEvent.mouseDown(colorSelect);
-    fireEvent.click(screen.getByRole("option", { name: "Success" }));
-    expect(store.get(budgetCategoryColorsAtom)).toEqual({
-      utilities: "success",
-    });
-
-    fireEvent.mouseDown(colorSelect);
-    fireEvent.click(screen.getByRole("option", { name: "Default (None)" }));
-    expect(store.get(budgetCategoryColorsAtom)).toEqual({});
-  });
-
-  it("deletes an expense and clears its category color when last in category", async () => {
-    const store = createStore();
-    store.set(budgetCategoryColorsAtom, { food: "success" });
-    renderBudgetExpenses(
-      [{ name: "Groceries", category: "Food", value: 250 }],
-      store,
-    );
-
-    fireEvent.click(
-      screen.getByRole("button", { name: "Edit Groceries: $250.00" }),
-    );
-    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
-    fireEvent.click(screen.getByRole("button", { name: "Delete entry" }));
-
-    await waitFor(() =>
-      expect(screen.queryByText("Groceries: $250.00")).toBeNull(),
-    );
-    expect(store.get(budgetAtom)).toEqual([]);
-    expect(store.get(budgetCategoryColorsAtom)).toEqual({});
-  });
-
   it("updates an existing expense from the edit dialog", async () => {
     const { store } = renderBudgetExpenses([
       { name: "Rent", category: "Housing", value: 2000 },
@@ -413,8 +394,53 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
     ]);
   });
 
-  it("moves a category color when the final expense is renamed", async () => {
+  it("deletes an expense but keeps its category", async () => {
     const store = createStore();
+    store.set(budgetCategoryColorsAtom, { food: "success" });
+    renderBudgetExpenses(
+      [{ name: "Groceries", category: "Food", value: 250 }],
+      store,
+    );
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Edit Groceries: $250.00" }),
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete entry" }));
+
+    await waitFor(() =>
+      expect(screen.queryByText("Groceries: $250.00")).toBeNull(),
+    );
+    expect(store.get(budgetAtom)).toEqual([]);
+    expect(store.get(budgetCategoryColorsAtom)).toEqual({ food: "success" });
+  });
+
+  it("adds a category from the + Category dialog", async () => {
+    const { store } = renderBudgetExpenses([]);
+
+    fireEvent.click(screen.getByRole("button", { name: "+ Category" }));
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: "rent" },
+    });
+    selectOption("Recommended Category", "Housing (25%)");
+    selectOption("Color (Optional)", "Success");
+    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+
+    await waitFor(() => expect(screen.queryByText("New Category")).toBeNull());
+    expect(store.get(budgetCategoriesAtom)).toEqual([
+      { name: "Rent", recommended: "housing" },
+    ]);
+    expect(store.get(budgetCategoryColorsAtom)).toEqual({ rent: "success" });
+    expect(
+      screen.getByRole("heading", { name: "Rent ($0.00)" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renames a category and moves its expenses and color", async () => {
+    const store = createStore();
+    store.set(budgetCategoriesAtom, [
+      { name: "Housing", recommended: "housing" },
+    ]);
     store.set(budgetCategoryColorsAtom, { housing: "success" });
     renderBudgetExpenses(
       [{ name: "Rent", category: "Housing", value: 2000 }],
@@ -422,18 +448,127 @@ describe("resume | finances | budgeting | BudgetExpenses", () => {
     );
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Edit Rent: $2,000.00" }),
+      screen.getByRole("button", { name: "Edit Housing category" }),
     );
-    fireEvent.change(screen.getByLabelText("Category"), {
-      target: { value: "Utilities" },
+    expect(screen.getByRole("button", { name: "Delete" })).toBeDisabled();
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: "Home" },
     });
     fireEvent.click(screen.getByRole("button", { name: "Update" }));
 
     await waitFor(() =>
-      expect(store.get(budgetCategoryColorsAtom)).toEqual({
-        utilities: "success",
-      }),
+      expect(store.get(budgetCategoryColorsAtom)).toEqual({ home: "success" }),
     );
+    expect(store.get(budgetCategoriesAtom)).toEqual([
+      { name: "Home", recommended: "housing" },
+    ]);
+    expect(store.get(budgetAtom)).toEqual([
+      { name: "Rent", category: "Home", value: 2000 },
+    ]);
+  });
+
+  it("deletes an unused category and its color", async () => {
+    const store = createStore();
+    store.set(budgetCategoriesAtom, [
+      { name: "Fun", recommended: "recreation" },
+    ]);
+    store.set(budgetCategoryColorsAtom, { fun: "info" });
+    renderBudgetExpenses([], store);
+
+    fireEvent.click(screen.getByRole("button", { name: "Edit Fun category" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete category" }));
+
+    await waitFor(() => expect(store.get(budgetCategoriesAtom)).toEqual([]));
+    expect(store.get(budgetCategoryColorsAtom)).toEqual({});
+  });
+
+  it("offers only recommended buckets for expenses in recommended view", async () => {
+    const store = createStore();
+    store.set(compCalcAtom, [sampleCompEntry]);
+    store.set(recommendedBudgetViewAtom, true);
+    store.set(budgetCategoriesAtom, [{ name: "Rent", recommended: "housing" }]);
+    renderBudgetExpenses(
+      [{ name: "Rent", category: "Rent", value: 2000 }],
+      store,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "+ Expense" }));
+    fireEvent.mouseDown(screen.getByRole("combobox", { name: "Category" }));
+    expect(
+      screen.getAllByRole("option").map(({ textContent }) => textContent),
+    ).toEqual([
+      "Giving",
+      "Saving",
+      "Housing",
+      "Utilities",
+      "Food",
+      "Transportation",
+      "Health",
+      "Insurance",
+      "Recreation",
+      "Personal",
+      "Miscellaneous",
+    ]);
+    fireEvent.click(screen.getByRole("option", { name: "Food" }));
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: "Groceries" },
+    });
+    fireEvent.change(screen.getByLabelText("Value"), {
+      target: { value: 300 },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+
+    await waitFor(() =>
+      expect(screen.queryByText("New Expense Entry")).toBeNull(),
+    );
+    expect(store.get(budgetAtom)[1]).toMatchObject({ category: "Food" });
+    expect(
+      screen.getByRole("heading", { name: "Food (10%)" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Groceries: $300.00")).toBeInTheDocument();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Edit Rent: $2,000.00" }),
+    );
+    expect(
+      screen.getByRole("combobox", { name: "Category" }),
+    ).toHaveTextContent("Housing");
+  });
+
+  it("asks for comp data when recommended view has none", () => {
+    const store = createStore();
+    store.set(recommendedBudgetViewAtom, true);
+    renderBudgetExpenses(sampleEntries, store);
+
+    expect(
+      screen.getByText("Add a comp entry to see recommended budget targets."),
+    ).toBeInTheDocument();
+  });
+
+  it("regroups categories into recommended buckets when toggled", () => {
+    const store = createStore();
+    store.set(compCalcAtom, [sampleCompEntry]);
+    store.set(budgetCategoriesAtom, [
+      { name: "Housing", recommended: "housing" },
+    ]);
+    renderBudgetExpenses(sampleEntries, store);
+
+    fireEvent.click(
+      screen.getByRole("switch", { name: "Show recommended budget" }),
+    );
+
+    expect(store.get(recommendedBudgetViewAtom)).toBe(true);
+    expect(
+      screen.getByRole("heading", { name: "Housing (25%)" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Miscellaneous (5%)" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Groceries: $250.00")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /category$/ }),
+    ).not.toBeInTheDocument();
   });
 
   it("keeps category color when deleting one expense from a multi-item category", async () => {

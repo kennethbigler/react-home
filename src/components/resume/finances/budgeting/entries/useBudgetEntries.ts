@@ -1,20 +1,37 @@
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
   budgetAtom,
+  budgetCategoriesAtom,
   budgetCategoryColorsAtom,
-  budgetFlowRead,
+  budgetCategoryListRead,
+  budgetDisplayFlowRead,
 } from "@/jotai/budget-atom";
-import type { ExpenseEntry, ExpenseEntryColor } from "@/apis/budget";
+import type {
+  BudgetCategory,
+  CategoryTotal,
+  ExpenseEntry,
+  ExpenseEntryColor,
+} from "@/apis/budget";
 import {
   buildCategoryTotals,
+  formatCategoryName,
   getLatestBudgetIncome,
   normalizeCategoryKey,
 } from "@/apis/budget";
 
+const withoutKey = <T>(record: Partial<Record<string, T>>, key: string) => {
+  const { [key]: _removed, ...rest } = record;
+  return rest;
+};
+
 const useBudgetEntries = () => {
   const [expenseEntries, setExpenseEntries] = useAtom(budgetAtom);
   const [categoryColors, setCategoryColors] = useAtom(budgetCategoryColorsAtom);
-  const { flow, hasCompData } = useAtomValue(budgetFlowRead);
+  const setBudgetCategories = useSetAtom(budgetCategoriesAtom);
+  const categoryList = useAtomValue(budgetCategoryListRead);
+  const { flow, hasCompData, recommended } = useAtomValue(
+    budgetDisplayFlowRead,
+  );
 
   const fallbackCategories =
     !flow && expenseEntries.length > 0
@@ -24,91 +41,101 @@ const useBudgetEntries = () => {
           categoryColors,
         )
       : [];
-  const categories = flow?.categories ?? fallbackCategories;
+  const expenseCategories = flow?.categories ?? fallbackCategories;
+  // Defined categories without expenses still get a (zero) card so they can be edited.
+  const expenseCategoryKeys = new Set(
+    expenseCategories.map(({ categoryKey }) => categoryKey),
+  );
+  const emptyCategories: CategoryTotal[] = recommended
+    ? []
+    : categoryList
+        .map(({ name }) => normalizeCategoryKey(name))
+        .filter((categoryKey) => !expenseCategoryKeys.has(categoryKey))
+        .map((categoryKey) => ({
+          categoryKey,
+          heading: formatCategoryName(categoryKey),
+          total: 0,
+          color: categoryColors[categoryKey],
+          items: [],
+        }));
+  const categories = [...expenseCategories, ...emptyCategories];
 
   const addExpenseEntry = (
     expenseEntry: ExpenseEntry,
     editEntryIdx: number,
   ) => {
     const newExpenseEntries = [...expenseEntries];
-    const previousCategoryKey = normalizeCategoryKey(
-      expenseEntries[editEntryIdx]?.category ?? "",
-    );
-    const nextCategoryKey = normalizeCategoryKey(expenseEntry.category);
     if (editEntryIdx === -1) {
       newExpenseEntries.push(expenseEntry);
     } else {
       newExpenseEntries[editEntryIdx] = expenseEntry;
     }
     setExpenseEntries(newExpenseEntries);
-
-    if (
-      editEntryIdx !== -1 &&
-      previousCategoryKey &&
-      previousCategoryKey !== nextCategoryKey
-    ) {
-      const previousCategoryStillExists = newExpenseEntries.some(
-        (entry) => normalizeCategoryKey(entry.category) === previousCategoryKey,
-      );
-      setCategoryColors((currentColors) => {
-        const nextColors = { ...currentColors };
-        const previousColor = currentColors[previousCategoryKey];
-        if (previousColor && !nextColors[nextCategoryKey]) {
-          nextColors[nextCategoryKey] = previousColor;
-        }
-        if (!previousCategoryStillExists) {
-          delete nextColors[previousCategoryKey];
-        }
-        return nextColors;
-      });
-    }
   };
 
-  const removeExpenseEntry = (editEntryIdx: number) => {
-    const deletedCategoryKey = normalizeCategoryKey(
-      expenseEntries[editEntryIdx]?.category ?? "",
-    );
-    const newExpenseEntries = expenseEntries.filter(
-      (_, index) => index !== editEntryIdx,
-    );
-    const categoryStillExists = newExpenseEntries.some(
-      (entry) => normalizeCategoryKey(entry.category) === deletedCategoryKey,
+  const removeExpenseEntry = (editEntryIdx: number) =>
+    setExpenseEntries(
+      expenseEntries.filter((_, index) => index !== editEntryIdx),
     );
 
-    setExpenseEntries(newExpenseEntries);
-
-    if (!categoryStillExists) {
-      setCategoryColors((currentColors) => {
-        const { [deletedCategoryKey]: _removedColor, ...remainingColors } =
-          currentColors;
-        return remainingColors;
-      });
-    }
-  };
-
-  const handleCategoryColorChange = (
-    categoryKey: string,
+  /** Add or update a category; a rename moves its expenses and color. */
+  const saveCategory = (
+    category: BudgetCategory,
     color?: ExpenseEntryColor,
+    previousName?: string,
   ) => {
-    setCategoryColors((currentColors) => {
-      if (!color) {
-        const { [categoryKey]: _removedColor, ...remainingColors } =
-          currentColors;
-        return remainingColors;
-      }
+    const nextKey = normalizeCategoryKey(category.name);
+    const previousKey = normalizeCategoryKey(previousName ?? category.name);
 
-      return { ...currentColors, [categoryKey]: color };
+    setBudgetCategories([
+      ...categoryList.filter(
+        ({ name }) => normalizeCategoryKey(name) !== previousKey,
+      ),
+      category,
+    ]);
+    if (previousKey !== nextKey) {
+      setExpenseEntries(
+        expenseEntries.map((entry) =>
+          normalizeCategoryKey(entry.category) === previousKey
+            ? { ...entry, category: category.name }
+            : entry,
+        ),
+      );
+    }
+    setCategoryColors((currentColors) => {
+      const remaining = withoutKey(currentColors, previousKey);
+      return color ? { ...remaining, [nextKey]: color } : remaining;
     });
   };
+
+  const removeCategory = (name: string) => {
+    const key = normalizeCategoryKey(name);
+    setBudgetCategories(
+      categoryList.filter(
+        (category) => normalizeCategoryKey(category.name) !== key,
+      ),
+    );
+    setCategoryColors((currentColors) => withoutKey(currentColors, key));
+  };
+
+  const isCategoryInUse = (name: string) =>
+    expenseEntries.some(
+      ({ category }) =>
+        normalizeCategoryKey(category) === normalizeCategoryKey(name),
+    );
 
   return {
     expenseEntries,
     hasCompData,
+    recommended,
     categories,
+    categoryList,
     categoryColors,
     addExpenseEntry,
     removeExpenseEntry,
-    handleCategoryColorChange,
+    saveCategory,
+    removeCategory,
+    isCategoryInUse,
   };
 };
 
