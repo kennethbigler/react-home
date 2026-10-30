@@ -21,17 +21,17 @@ function gitSetup() {
   echo -e "Finish with a:\ngit push\n"
 }
 
-if [ "${SKIP_BOTC_FETCH}" != "1" ]; then
+# Each fetch keeps its existing data on failure, so run both and only stop
+# if one failed with nothing cached to fall back on
+if [ "${SKIP_FETCH}" != "1" ]; then
+  FETCH_FAILED=""
   echo "Fetching latest BotC community scripts..."
-  node scripts/fetch-botc-scripts.mjs || throwError "fetch-botc-scripts"
-else
-  echo "Skipping BotC community scripts fetch"
-fi
-if [ "${SKIP_POKEMON_FETCH}" != "1" ]; then
+  node scripts/fetch-botc-scripts.mjs || FETCH_FAILED="$FETCH_FAILED fetch-botc-scripts"
   echo "Fetching latest Pokémon type charts..."
-  node scripts/fetch-pokemon-types.mjs || throwError "fetch-pokemon-types"
+  node scripts/fetch-pokemon-types.mjs || FETCH_FAILED="$FETCH_FAILED fetch-pokemon-types"
+  [ -z "$FETCH_FAILED" ] || throwError "$FETCH_FAILED"
 else
-  echo "Skipping Pokémon type charts fetch"
+  echo "Skipping BotC and Pokémon data fetch"
 fi
 echo $LINE
 buildApp false
