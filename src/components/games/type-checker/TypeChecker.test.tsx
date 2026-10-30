@@ -20,12 +20,12 @@ describe("resume | type-checker", () => {
     expect(screen.getByText("Type Checker")).toBeInTheDocument();
   });
 
-  it("defaults to Generation III", () => {
+  it("defaults to the Generation III chart", () => {
     renderWithHydratedAtoms(<TypeChecker />);
 
     expect(
       screen.getByRole("combobox", { name: "Generation" }),
-    ).toHaveTextContent("Generation III");
+    ).toHaveTextContent("Generation II–V");
     expect(screen.getAllByText("steel")).toHaveLength(2);
     expect(screen.getAllByText("dark")).toHaveLength(2);
     expect(screen.queryByText("fairy")).not.toBeInTheDocument();
@@ -40,7 +40,7 @@ describe("resume | type-checker", () => {
     expect(screen.queryByText("dark")).not.toBeInTheDocument();
     expect(screen.getAllByText("ghost")).toHaveLength(2);
 
-    chooseGeneration("Generation VI");
+    chooseGeneration("Generation VI–IX");
     expect(store.get(generationAtom)).toBe(6);
     expect(screen.getAllByText("fairy")).toHaveLength(2);
   });
@@ -53,7 +53,7 @@ describe("resume | type-checker", () => {
       screen.getByRole("combobox", { name: "Secondary Type" }),
     ).toBeInTheDocument();
 
-    chooseGeneration("Generation II");
+    chooseGeneration("Generation I");
     expect(
       screen.queryByRole("combobox", { name: "Secondary Type" }),
     ).not.toBeInTheDocument();

@@ -16,15 +16,19 @@ describe("constants | type-checker", () => {
     });
   });
 
-  it("labels every generation", () => {
-    expect(GENERATIONS[0]).toEqual({ value: 1, label: "Generation I" });
-    expect(GENERATIONS[2]).toEqual({ value: 3, label: "Generation III" });
+  it("labels one option per chart", () => {
+    expect(GENERATIONS).toEqual([
+      { value: 1, label: "Generation I" },
+      { value: 2, label: "Generation II–V" },
+      { value: 6, label: "Generation VI–IX" },
+    ]);
   });
 
   it("lists only the types that existed", () => {
     expect(getGenerationChart(1).types).toHaveLength(15);
     expect(getGenerationChart(3).types).toHaveLength(17);
     expect(getGenerationChart(9).types).toHaveLength(18);
+    expect(getGenerationChart(3).value).toBe(2);
   });
 
   it("uses past matchups", () => {
