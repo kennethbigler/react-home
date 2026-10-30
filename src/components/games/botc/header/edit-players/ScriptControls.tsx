@@ -28,6 +28,8 @@ const ScriptControls = ({ isText, onChange, onWin }: ScriptControlsProps) => (
       />
       <Typography>Text</Typography>
     </FormControl>
+    {/* No Reset button on purpose: every game must end with a winner so the
+        win tally stays complete. Picking a side also starts the new game. */}
     <ButtonGroup variant="contained" aria-label="record game winner">
       <Button
         color="success"

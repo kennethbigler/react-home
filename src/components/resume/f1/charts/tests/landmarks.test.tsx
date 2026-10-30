@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
+// Lives in tests/ like every other F1 chart test, so the parent-relative imports are intended.
 import ConstructorPointsLine from "../ConstructorPointsLine";
 import ConstructorStandingsLine from "../ConstructorStandingsLine";
 
@@ -38,7 +39,9 @@ describe("F1 charts | landmarks", () => {
       (el) => el.getAttribute("aria-label"),
     );
 
-    expect(labels.length).toBeGreaterThan(0);
+    // One region per chart, each with a real name.
+    expect(labels).toHaveLength(2);
+    labels.forEach((label) => expect(label?.trim()).toBeTruthy());
     expect(new Set(labels).size).toBe(labels.length);
   });
 });
