@@ -14,9 +14,11 @@ const defaultProps = {
   onToggle: () => {},
 };
 
+const datedProps = { ...defaultProps, date: dateObj("2026-06-07") };
+
 describe("resume | f1 | Track", () => {
   it("renders circuit name and track image", () => {
-    render(<Track {...defaultProps} />);
+    render(<Track {...datedProps} />);
 
     expect(screen.getByText("Monaco")).toBeInTheDocument();
     expect(
@@ -25,14 +27,14 @@ describe("resume | f1 | Track", () => {
   });
 
   it("renders circuit subname when provided", () => {
-    render(<Track {...defaultProps} circuitSubName="Circuit de Monaco" />);
+    render(<Track {...datedProps} circuitSubName="Circuit de Monaco" />);
 
     expect(screen.getByText("Circuit de Monaco")).toBeInTheDocument();
   });
 
   it("calls onToggle with circuit name when the track image button is clicked", () => {
     const onToggle = vi.fn();
-    render(<Track {...defaultProps} onToggle={onToggle} />);
+    render(<Track {...datedProps} onToggle={onToggle} />);
 
     fireEvent.click(
       screen.getByRole("button", { name: "Expand Monaco circuit details" }),
@@ -53,7 +55,7 @@ describe("resume | f1 | Track", () => {
   });
 
   it("renders when skipped is omitted", () => {
-    render(<Track {...defaultProps} />);
+    render(<Track {...datedProps} />);
 
     expect(screen.getByText("Monaco")).toBeInTheDocument();
   });
@@ -73,13 +75,13 @@ describe("resume | f1 | Track", () => {
   });
 
   it("renders when next is false", () => {
-    render(<Track {...defaultProps} next={false} />);
+    render(<Track {...datedProps} next={false} />);
 
     expect(screen.getByText("Monaco")).toBeInTheDocument();
   });
 
   it("renders when next is omitted", () => {
-    render(<Track {...defaultProps} />);
+    render(<Track {...datedProps} />);
 
     expect(screen.getByText("Monaco")).toBeInTheDocument();
   });

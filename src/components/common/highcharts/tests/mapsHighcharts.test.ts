@@ -1,11 +1,12 @@
 const setHighcharts = vi.fn();
+const { setOptions } = vi.hoisted(() => ({ setOptions: vi.fn() }));
 
 vi.mock("@highcharts/react", () => ({
   setHighcharts,
 }));
 
 vi.mock("highcharts/esm/highmaps.src.js", () => ({
-  default: { __mapsBrand: "highmaps" },
+  default: { __mapsBrand: "highmaps", setOptions },
 }));
 
 vi.mock("highcharts/esm/modules/accessibility.src.js", () => ({
@@ -19,7 +20,18 @@ describe("common | highcharts | mapsHighcharts", () => {
 
     const mod = await import("../mapsHighcharts");
 
-    expect(setHighcharts).toHaveBeenCalledWith({ __mapsBrand: "highmaps" });
-    expect(mod.default).toEqual({ __mapsBrand: "highmaps" });
+    expect(setHighcharts).toHaveBeenCalledWith(mod.default);
+    expect(mod.default).toMatchObject({ __mapsBrand: "highmaps" });
+  });
+
+  it("limits accessibility landmarks to the chart container", async () => {
+    vi.resetModules();
+    setOptions.mockClear();
+
+    await import("../mapsHighcharts");
+
+    expect(setOptions).toHaveBeenCalledWith({
+      accessibility: { landmarkVerbosity: "one" },
+    });
   });
 });

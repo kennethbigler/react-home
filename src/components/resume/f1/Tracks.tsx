@@ -6,7 +6,6 @@ import japanSrc from "@/images/tracks/Japan_Circuit.avif";
 import bahrainSrc from "@/images/tracks/Bahrain_Circuit.avif";
 import saudiSrc from "@/images/tracks/Saudi_Arabia_Circuit.avif";
 import miamiSrc from "@/images/tracks/Miami_Circuit.avif";
-import emiliaSrc from "@/images/tracks/Emilia_Romagna_Circuit.avif";
 import monacoSrc from "@/images/tracks/Monaco_Circuit.avif";
 import barcelonaSrc from "@/images/tracks/Barcelona_Circuit.avif";
 import canadaSrc from "@/images/tracks/Canada_Circuit.avif";
@@ -25,13 +24,6 @@ import brazilSrc from "@/images/tracks/Brazil_Circuit.avif";
 import lasVegasSrc from "@/images/tracks/Las_Vegas_Circuit.avif";
 import qatarSrc from "@/images/tracks/Qatar_Circuit.avif";
 import abuDhabiSrc from "@/images/tracks/Abu_Dhabi_Circuit.avif";
-import franceSrc from "@/images/tracks/France_Circuit.avif";
-import portugalSrc from "@/images/tracks/Portugal_Circuit.avif";
-import russiaSrc from "@/images/tracks/Russia_Circuit.avif";
-import turkeySrc from "@/images/tracks/Turkey_Circuit.avif";
-import tuscanySrc from "@/images/tracks/Tuscany_Circuit.avif";
-import germanySrc from "@/images/tracks/Germany_Circuit.avif";
-import germanyHSrc from "@/images/tracks/Germany_Circuit_Hockenheim.avif";
 import Track, { type TrackData } from "./Track";
 import ExpandableCard from "@/components/common/expandable-card";
 import { FERRARI_HEX } from "@/constants/f1";
@@ -265,75 +257,6 @@ CURRENT_TRACKS.some((track) => {
   }
 });
 
-const PAST_TRACKS: TrackData[] = [
-  {
-    circuitName: "Imola, Emilia-Romagna, Italy - 2025",
-    circuitSubName: "Autodromo Internazionale Enzo e Dino Ferrari",
-    imgSrc: emiliaSrc,
-    circuitLen: 4.909,
-    firstGP: 1980,
-    numLaps: 63,
-    raceLen: 309.049,
-  },
-  {
-    circuitName: "Circuit Paul Ricard, France, 2022",
-    imgSrc: franceSrc,
-    circuitLen: 5.842,
-    firstGP: 1971,
-    numLaps: 53,
-    raceLen: 309.69,
-  },
-  {
-    circuitName: "Portimao, Portugal, 2021",
-    circuitSubName: "Autodromo Internacional do Algarve",
-    imgSrc: portugalSrc,
-    circuitLen: 4.653,
-    firstGP: 2020,
-    numLaps: 66,
-    raceLen: 306.826,
-  },
-  {
-    circuitName: "Sochi Autodrom, Russia, 2021",
-    imgSrc: russiaSrc,
-    circuitLen: 5.848,
-    firstGP: 2014,
-    numLaps: 53,
-    raceLen: 309.745,
-  },
-  {
-    circuitName: "Turkish Circuit, Akfirat, Turkey, 2021",
-    imgSrc: turkeySrc,
-    circuitLen: 5.338,
-    firstGP: 2005,
-    numLaps: 58,
-    raceLen: 309.396,
-  },
-  {
-    circuitName: "Mugello Circuit, Tuscany, Italy, 2020",
-    imgSrc: tuscanySrc,
-    circuitLen: 5.245,
-    firstGP: 2020,
-    numLaps: 59,
-    raceLen: 309.497,
-  },
-  {
-    circuitName: "Nurburgring, Germany, 2020",
-    imgSrc: germanySrc,
-    circuitLen: 5.148,
-    firstGP: 1951,
-    numLaps: 60,
-    raceLen: 308.617,
-  },
-  {
-    circuitName: "Hockenheim, Germany, 2019",
-    imgSrc: germanyHSrc,
-    circuitLen: 4.574,
-    firstGP: 1970,
-    numLaps: 67,
-    raceLen: 306.458,
-  },
-];
-
 const Tracks = memo(() => {
   const [expanded, setExpanded] = useState("");
 
@@ -351,30 +274,17 @@ const Tracks = memo(() => {
   );
 
   return (
-    <>
-      <ExpandableCard title="2026 Tracks" backgroundColor={FERRARI_HEX}>
-        <Grid
-          container
-          spacing={3}
-          sx={{
-            width: "100%",
-          }}
-        >
-          {CURRENT_TRACKS.map(renderTrack)}
-        </Grid>
-      </ExpandableCard>
-      <ExpandableCard title="Past Tracks" backgroundColor={FERRARI_HEX}>
-        <Grid
-          container
-          spacing={3}
-          sx={{
-            width: "100%",
-          }}
-        >
-          {PAST_TRACKS.map(renderTrack)}
-        </Grid>
-      </ExpandableCard>
-    </>
+    <ExpandableCard title="2026 Tracks" backgroundColor={FERRARI_HEX}>
+      <Grid
+        container
+        spacing={3}
+        sx={{
+          width: "100%",
+        }}
+      >
+        {CURRENT_TRACKS.map(renderTrack)}
+      </Grid>
+    </ExpandableCard>
   );
 });
 
