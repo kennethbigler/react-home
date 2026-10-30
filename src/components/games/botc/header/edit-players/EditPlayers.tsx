@@ -4,6 +4,7 @@ import {
   BOTC_MAX_PLAYERS,
   BOTC_MAX_TRAVELERS,
   BOTC_MIN_PLAYERS,
+  type BotCWinner,
 } from "@/jotai/botc-atom";
 import ScriptSearch from "./ScriptSearch";
 import ScriptControls from "./ScriptControls";
@@ -31,19 +32,21 @@ const EditPlayers = ({
   const {
     isText,
     script,
+    goodWin,
+    evilWin,
     updateNumPlayers,
     updateNumTravelers,
     updateScript,
     updateCommunityScript,
     updateText,
-    newBotCGame,
+    recordWin,
   } = useEditPlayers();
 
   const decrPlayers = () => updateNumPlayers(numPlayers - 1);
   const incrPlayers = () => updateNumPlayers(numPlayers + 1);
   const handleClick = (n: number) => () => updateNumTravelers(n);
-  const handleReset = () => {
-    newBotCGame();
+  const handleWin = (winner: BotCWinner) => {
+    recordWin(winner);
     openToast();
   };
 
@@ -58,7 +61,7 @@ const EditPlayers = ({
         <ScriptControls
           isText={isText}
           onChange={updateText}
-          onReset={handleReset}
+          onWin={handleWin}
         />
       </Grid>
       <Grid size={12} className="flex-container">
@@ -103,6 +106,11 @@ const EditPlayers = ({
             ),
           )}
         </ButtonGroup>
+      </Grid>
+      <Grid size={12} sx={{ textAlign: "center" }}>
+        <Typography aria-live="polite">
+          Wins: 😇 Good {goodWin} · 😈 Evil {evilWin}
+        </Typography>
       </Grid>
     </Grid>
   );

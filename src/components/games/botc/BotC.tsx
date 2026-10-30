@@ -39,13 +39,15 @@ const BotC = memo(() => {
           ? { ...botcPlayerShell, name: names[i] }
           : { ...botcPlayerShell },
       );
-      setState({
+      setState((prev) => ({
+        // prev first so the permanent win tally (not in base) survives
+        ...prev,
         ...base,
         script: shared.script,
         numPlayers: shared.numPlayers,
         numTravelers: shared.numTravelers,
         botcPlayers: newPlayers,
-      });
+      }));
       // Remove share params from URL without reloading
       window.history.replaceState(null, "", getCleanShareUrl());
     });

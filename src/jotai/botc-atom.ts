@@ -52,6 +52,9 @@ export interface BotCState {
   botcPlayers: BotCPlayer[];
   roundNotes: string[];
   tracker: number[][];
+  /** win tally; optional because games saved before it existed lack it */
+  goodWin?: number;
+  evilWin?: number;
 }
 
 export const botcPlayerShell: BotCPlayer = {
@@ -88,6 +91,8 @@ export const newBotCGame = (): BotCState => ({
 
 const botcAtom = persistentAtom("botcAtom_v2", newBotCGame());
 
+export type BotCWinner = "good" | "evil";
+
 /* Per-field read atoms so consumers subscribe only to the slice they render.
  * Each returns a stable reference until that field actually changes. */
 const fieldAtom = <K extends keyof BotCState>(key: K) => {
@@ -104,5 +109,7 @@ export const botcPlayersAtom = fieldAtom("botcPlayers");
 export const botcRoundAtom = fieldAtom("round");
 export const botcRoundNotesAtom = fieldAtom("roundNotes");
 export const botcTrackerAtom = fieldAtom("tracker");
+export const botcGoodWinAtom = fieldAtom("goodWin");
+export const botcEvilWinAtom = fieldAtom("evilWin");
 
 export default botcAtom;

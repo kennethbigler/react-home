@@ -22,10 +22,12 @@ describe("Controls", () => {
 
     // Open the Settings popover
     fireEvent.click(screen.getByRole("button", { name: "Settings" }));
-    expect(screen.getByText("Reset")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Good Win" }),
+    ).toBeInTheDocument();
 
-    // Click Reset to trigger openToast → hasToast = true
-    fireEvent.click(screen.getByText("Reset"));
+    // Click Good Win to trigger openToast → hasToast = true
+    fireEvent.click(screen.getByRole("button", { name: "Good Win" }));
     expect(screen.getByText("Game Reset")).toBeInTheDocument();
 
     // Close the Snackbar via the Alert's close button (covers handleCloseToast)

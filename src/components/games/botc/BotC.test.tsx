@@ -26,9 +26,13 @@ describe("games | BotC", () => {
     // swap to icon mode then back to text mode
     fireEvent.click(screen.getByLabelText("toggle text"));
     fireEvent.click(screen.getByLabelText("toggle text"));
-    // click the reset button
-    fireEvent.click(screen.getByText("Reset"));
+    // record wins (each also resets the game)
+    expect(screen.getByText("Wins: 😇 Good 0 · 😈 Evil 0")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Good Win" }));
     expect(screen.getByText("Game Reset")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Evil Win" }));
+    fireEvent.click(screen.getByRole("button", { name: "Evil Win" }));
+    expect(screen.getByText("Wins: 😇 Good 1 · 😈 Evil 2")).toBeInTheDocument();
     // swap number of players
     expect(screen.getByText("Players: 8 (5, 1, 1, 1)"));
     fireEvent.click(screen.getByLabelText("add player"));

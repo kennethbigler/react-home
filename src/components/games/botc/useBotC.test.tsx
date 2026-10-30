@@ -7,7 +7,7 @@ import useBotC, {
   useEditPlayers,
   useTracker,
 } from "./useBotC";
-import type { BotCRole } from "@/jotai/botc-atom";
+import botcAtom, { type BotCRole, newBotCGame } from "@/jotai/botc-atom";
 
 describe("useBotC", () => {
   beforeEach(() => {
@@ -471,6 +471,41 @@ describe("useBotC", () => {
       });
 
       expect(result.current).toBeDefined();
+    });
+
+    it("recordWin tallies wins per side", () => {
+      const { result } = renderHookWithHydratedAtoms(() => useEditPlayers());
+
+      expect(result.current.goodWin).toBe(0);
+      expect(result.current.evilWin).toBe(0);
+      act(() => {
+        result.current.recordWin("good");
+      });
+      act(() => {
+        result.current.recordWin("evil");
+      });
+      act(() => {
+        result.current.recordWin("evil");
+      });
+
+      expect(result.current.goodWin).toBe(1);
+      expect(result.current.evilWin).toBe(2);
+    });
+
+    it("treats a missing win tally (new or older saved game) as 0", () => {
+      // newBotCGame() has no win keys, same as games saved before the tally
+      const legacy = newBotCGame();
+      const { result } = renderHookWithHydratedAtoms(
+        () => useEditPlayers(),
+        [[botcAtom, legacy]],
+      );
+
+      expect(result.current.goodWin).toBe(0);
+      expect(result.current.evilWin).toBe(0);
+      act(() => {
+        result.current.recordWin("good");
+      });
+      expect(result.current.goodWin).toBe(1);
     });
 
     it("updateCommunityScript sets community script", () => {
