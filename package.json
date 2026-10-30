@@ -32,6 +32,7 @@
     "lint:q": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"vite.config.ts\" --fix --quiet",
     "verify": "npm run tsc && npm run knip && npm run lint && npm run test:coverage",
     "fetch-botc-scripts": "node scripts/fetch-botc-scripts.mjs",
+    "fetch-pokemon-types": "node scripts/fetch-pokemon-types.mjs",
     "a11y:live-scan": "node scripts/a11y-live-scan.mjs",
     "a11y:local-scan": "node scripts/a11y-live-scan.mjs --base-url http://localhost:5173"
   },
