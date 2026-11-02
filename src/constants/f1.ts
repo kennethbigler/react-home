@@ -47,7 +47,6 @@ interface Driver {
   color: string;
   points: (number | null)[];
   standings: (number | null)[];
-  thisYear?: number[];
 }
 
 const drivers: Driver[] = [
@@ -62,43 +61,30 @@ const drivers: Driver[] = [
     color: WILLIAMS_HEX,
     points: [null, 92, 105, null, 4, 27, 12, 73, 5],
     standings: [null, 8, 7, null, 19, 13, 16, 8, 19],
-    thisYear: [0, 0, 0, 0, 1, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
   },
   {
     name: "Fernando Alonso",
     color: ASTON_HEX,
     points: [50, null, null, 81, 81, 206, 70, 56, 7],
     standings: [11, null, null, 10, 9, 4, 9, 10, 17],
-    thisYear: [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 7, 7, 7, 7],
   },
   {
     name: "Kimi Antonelli",
     color: MERCEDES_HEX,
     points: [null, null, null, null, null, null, null, 150, 380],
     standings: [null, null, null, null, null, null, null, 7, 1],
-    thisYear: [
-      0, 18, 47, 72, 100, 131, 156, 156, 171, 179, 204, 219, 242, 267, 292, 302,
-      320, 340, 365, 380,
-    ],
   },
   {
     name: "Oliver Bearman",
     color: HAAS_HEX,
     points: [null, null, null, null, null, null, 7, 41, 23],
     standings: [null, null, null, null, null, null, 18, 13, 13],
-    thisYear: [
-      0, 6, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 20, 20, 23, 23,
-      23,
-    ],
   },
   {
     name: "Gabriel Bortoleto",
     color: AUDI_HEX,
     points: [null, null, null, null, null, null, null, 19, 14],
     standings: [null, null, null, null, null, null, null, 19, 14],
-    thisYear: [
-      0, 2, 2, 2, 2, 2, 2, 2, 2, 6, 10, 10, 10, 10, 10, 10, 10, 10, 10, 14,
-    ],
   },
   {
     name: "Valtteri Bottas",
@@ -111,9 +97,6 @@ const drivers: Driver[] = [
     color: ALPINE_HEX,
     points: [null, null, null, null, null, null, 5, 0, 27],
     standings: [null, null, null, null, null, null, 19, 20, 12],
-    thisYear: [
-      0, 0, 1, 1, 7, 15, 15, 16, 16, 18, 19, 19, 19, 21, 27, 27, 27, 27, 27, 27,
-    ],
   },
   {
     name: "Nyck De Vries",
@@ -144,10 +127,6 @@ const drivers: Driver[] = [
     color: ALPINE_HEX,
     points: [29, 95, 75, 110, 23, 62, 42, 22, 42],
     standings: [15, 7, 10, 9, 14, 11, 10, 18, 10],
-    thisYear: [
-      0, 1, 9, 15, 16, 20, 26, 32, 32, 33, 33, 33, 35, 41, 41, 41, 41, 41, 42,
-      42,
-    ],
   },
   {
     name: "Antonio Giovinazzi",
@@ -172,20 +151,12 @@ const drivers: Driver[] = [
     color: RED_BULL_HEX,
     points: [null, null, null, null, null, null, null, 51, 107],
     standings: [null, null, null, null, null, null, null, 12, 8],
-    thisYear: [
-      0, 0, 4, 4, 4, 14, 29, 34, 42, 52, 60, 71, 71, 71, 71, 86, 96, 97, 105,
-      107,
-    ],
   },
   {
     name: "Lewis Hamilton",
     color: FERRARI_HEX,
     points: [408, 413, 347, 387.5, 240, 234, 223, 156, 259],
     standings: [1, 1, 1, 2, 6, 3, 7, 6, 3],
-    thisYear: [
-      0, 12, 33, 41, 51, 72, 90, 115, 125, 147, 159, 169, 183, 191, 191, 199,
-      214, 229, 241, 259,
-    ],
   },
   {
     name: "Brendon Hartley",
@@ -198,14 +169,12 @@ const drivers: Driver[] = [
     color: HAAS_HEX,
     points: [null, null, null, null, null, null, null, null, 1],
     standings: [null, null, null, null, null, null, null, null, 21],
-    thisYear: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
   },
   {
     name: "Nico Hulkenberg",
     color: AUDI_HEX,
     points: [69, 37, 10, null, 0, 9, 41, 51, 13],
     standings: [7, 14, 15, null, 22, 16, 11, 11, 15],
-    thisYear: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6, 6, 7, 7, 7, 13, 13, 13],
   },
   {
     name: "Robert Kubica",
@@ -230,29 +199,18 @@ const drivers: Driver[] = [
     color: RB_HEX,
     points: [null, null, null, null, null, 2, 4, 38, 83],
     standings: [null, null, null, null, null, 20, 21, 14, 9],
-    thisYear: [
-      0, 0, 8, 10, 10, 16, 26, 26, 30, 39, 39, 43, 51, 51, 59, 59, 65, 75, 77,
-      83,
-    ],
   },
   {
     name: "Charles Leclerc",
     color: FERRARI_HEX,
     points: [39, 264, 98, 159, 308, 206, 356, 242, 245],
     standings: [13, 4, 8, 7, 2, 5, 3, 5, 5],
-    thisYear: [
-      0, 15, 34, 49, 59, 75, 75, 75, 79, 108, 126, 138, 155, 155, 167, 179, 191,
-      215, 233, 245,
-    ],
   },
   {
     name: "Arvid Lindblad",
     color: RB_HEX,
     points: [null, null, null, null, null, null, null, null, 38],
     standings: [null, null, null, null, null, null, null, null, 11],
-    thisYear: [
-      0, 4, 4, 4, 4, 5, 13, 13, 14, 20, 22, 25, 25, 29, 31, 37, 38, 38, 38, 38,
-    ],
   },
   {
     name: "Kevin Magnussen",
@@ -271,17 +229,12 @@ const drivers: Driver[] = [
     color: MCLAREN_HEX,
     points: [null, 49, 97, 160, 122, 205, 374, 423, 221],
     standings: [null, 11, 9, 6, 7, 6, 2, 1, 6],
-    thisYear: [
-      0, 10, 15, 25, 51, 58, 58, 73, 79, 97, 103, 128, 159, 171, 186, 186, 188,
-      201, 211, 221,
-    ],
   },
   {
     name: "Esteban Ocon",
     color: HAAS_HEX,
     points: [49, null, 62, 74, 92, 58, 23, 38, 7],
     standings: [12, null, 12, 11, 8, 12, 14, 15, 16],
-    thisYear: [0, 0, 0, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 7, 7, 7, 7],
   },
   {
     name: "Sergio Perez",
@@ -294,10 +247,6 @@ const drivers: Driver[] = [
     color: MCLAREN_HEX,
     points: [null, null, null, null, null, 97, 292, 410, 144],
     standings: [null, null, null, null, null, 9, 4, 3, 7],
-    thisYear: [
-      0, 0, 3, 21, 43, 48, 60, 68, 80, 82, 92, 92, 106, 116, 120, 120, 128, 138,
-      144, 144,
-    ],
   },
   {
     name: "Kimi Räikkönen",
@@ -316,17 +265,12 @@ const drivers: Driver[] = [
     color: MERCEDES_HEX,
     points: [null, 0, 3, 16, 275, 175, 245, 319, 250],
     standings: [null, 20, 18, 15, 4, 8, 6, 4, 4],
-    thisYear: [
-      0, 25, 51, 63, 80, 88, 88, 106, 131, 154, 154, 160, 183, 201, 211, 236,
-      236, 238, 242, 250,
-    ],
   },
   {
     name: "Carlos Sainz",
     color: WILLIAMS_HEX,
     points: [53, 96, 105, 164.5, 246, 200, 290, 64, 7],
     standings: [10, 6, 6, 5, 5, 7, 5, 9, 18],
-    thisYear: [0, 0, 2, 2, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7],
   },
   {
     name: "Logan Sargeant",
@@ -357,7 +301,6 @@ const drivers: Driver[] = [
     color: RED_BULL_HEX,
     points: [null, null, null, 32, 12, 17, 30, 33, 1],
     standings: [null, null, null, 14, 17, 14, 12, 17, 20],
-    thisYear: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
   },
   {
     name: "Stoffel Vandoorne",
@@ -370,10 +313,6 @@ const drivers: Driver[] = [
     color: RED_BULL_HEX,
     points: [249, 278, 214, 395.5, 454, 575, 437, 421, 261],
     standings: [4, 3, 3, 1, 1, 1, 1, 2, 2],
-    thisYear: [
-      0, 8, 8, 12, 26, 43, 43, 55, 73, 76, 91, 109, 112, 127, 145, 163, 188,
-      221, 236, 261,
-    ],
   },
   {
     name: "Sebastian Vettel",
@@ -385,22 +324,17 @@ const drivers: Driver[] = [
 
 const driverPointsData: ChartEntry[] = [];
 const driverStandingsData: ChartEntry[] = [];
-const driverCurrentData: ChartEntry[] = [];
 
 drivers.forEach((driver) => {
-  const { name, color, points, standings, thisYear } = driver;
+  const { name, color, points, standings } = driver;
   driverPointsData.push({ data: points, name, color });
   driverStandingsData.push({ data: standings, name, color });
-  if (thisYear) {
-    driverCurrentData.push({ data: thisYear, name, color });
-  }
 });
 
 driverPointsData.sort(pointSort);
 driverStandingsData.sort(standingSort);
-driverCurrentData.sort(pointSort);
 
-export { driverPointsData, driverStandingsData, driverCurrentData };
+export { driverPointsData, driverStandingsData };
 
 // --------------------------------------------------     Constructor Data     -------------------------------------------------- //
 interface Constructor {
@@ -408,7 +342,6 @@ interface Constructor {
   color: string;
   points: (number | null)[];
   standings: (number | null)[];
-  thisYear?: number[];
 }
 
 // Audi History
@@ -432,249 +365,72 @@ const alphaTauriStandings = [...toroRossoStandings, 7, 6, 9, 8];
 const renaultPoints = [122, 91, 181];
 const renaultStandings = [4, 5, 5];
 
-// helper function
-const filterDriver = (name: string) =>
-  drivers.filter((driver) => driver.name === name);
-
-// McLaren
-const landoNorris = filterDriver("Lando Norris")[0].thisYear || [];
-const oscarPiastri = filterDriver("Oscar Piastri")[0].thisYear || [];
-// Mercedes
-const georgeRussell = filterDriver("George Russell")[0].thisYear || [];
-const kimiAntonelli = filterDriver("Kimi Antonelli")[0].thisYear || [];
-// Red Bull
-const maxVerstappen = filterDriver("Max Verstappen")[0].thisYear || [];
-const isackHadjar = filterDriver("Isack Hadjar")[0].thisYear || [];
-// Ferrari
-const charlesLeclerc = filterDriver("Charles Leclerc")[0].thisYear || [];
-const lewisHamilton = filterDriver("Lewis Hamilton")[0].thisYear || [];
-// Williams
-const carlosSainz = filterDriver("Carlos Sainz")[0].thisYear || [];
-const alexanderAlbon = filterDriver("Alexander Albon")[0].thisYear || [];
-// Racing Bulls
-const liamLawson = filterDriver("Liam Lawson")[0].thisYear || [];
-const arvidLindblad = filterDriver("Arvid Lindblad")[0].thisYear || [];
-const yukiTsunoda = filterDriver("Yuki Tsunoda")[0].thisYear || [];
-// Aston Martin
-const fernandoAlonso = filterDriver("Fernando Alonso")[0].thisYear || [];
-const lanceStroll = filterDriver("Lance Stroll")[0].thisYear || [];
-// Haas
-const oliverBearman = filterDriver("Oliver Bearman")[0].thisYear || [];
-const estebanOcon = filterDriver("Esteban Ocon")[0].thisYear || [];
-const ryoHirakawa = filterDriver("Ryo Hirakawa")[0].thisYear || [];
-// Audi
-const gabrielBortoleto = filterDriver("Gabriel Bortoleto")[0].thisYear || [];
-const nicoHulkenberg = filterDriver("Nico Hulkenberg")[0].thisYear || [];
-// Alpine
-const pierreGasly = filterDriver("Pierre Gasly")[0].thisYear || [];
-const francoColapinto = filterDriver("Franco Colapinto")[0].thisYear || [];
-// Cadillac
-const valtteriBottas = filterDriver("Valtteri Bottas")[0].thisYear || [];
-const sergioPerez = filterDriver("Sergio Perez")[0].thisYear || [];
-
-const numRaces = landoNorris.length - 1;
-
-const getTotal = (driverSeries: number[][]) =>
-  driverSeries.reduce((sum, series) => sum + (series[numRaces] || 0), 0);
-
-const sumDriverSeries = (driverSeries: number[][]) => {
-  const length = driverSeries.reduce(
-    (max, series) => Math.max(max, series.length),
-    0,
-  );
-  return Array.from({ length }, (_, i) =>
-    driverSeries.reduce((sum, series) => sum + (series[i] || 0), 0),
-  );
-};
-
-// thisYear index 0 is pre-season. Later races extend these arrays on their own.
-const cumulativeFromRound = (round: number, points: number) =>
-  Array.from({ length: numRaces + 1 }, (_, index) =>
-    index >= round ? points : 0,
-  );
-
-const addSeries = (base: number[], extra: number[]) =>
-  base.map((value, index) => value + (extra[index] || 0));
-
-// Lawson subbed for Hadjar at Red Bull: 6 pts in the Netherlands (round 12)
-// and 8 in Spain (round 14). Tsunoda scored his 1 pt for Racing Bulls at Monza.
-const lawsonAtRedBull = addSeries(
-  cumulativeFromRound(12, 6),
-  cumulativeFromRound(14, 8),
-);
-const redBullThisYear = addSeries(
-  sumDriverSeries([maxVerstappen, isackHadjar]),
-  lawsonAtRedBull,
-);
-const racingBullsThisYear = addSeries(
-  sumDriverSeries([liamLawson, arvidLindblad, yukiTsunoda]),
-  lawsonAtRedBull.map((points) => -points),
-);
-const seriesTotal = (series: number[]) => series[series.length - 1] || 0;
-
 const constructors: Constructor[] = [
   {
     name: "McLaren",
     color: MCLAREN_HEX,
-    points: [
-      62,
-      145,
-      202,
-      275,
-      159,
-      302,
-      666,
-      833,
-      getTotal([landoNorris, oscarPiastri]),
-    ],
+    points: [62, 145, 202, 275, 159, 302, 666, 833, 365],
     standings: [6, 4, 3, 4, 5, 4, 1, 1, 4],
-    thisYear: sumDriverSeries([landoNorris, oscarPiastri]),
   },
   {
     name: "Mercedes",
     color: MERCEDES_HEX,
-    points: [
-      655,
-      739,
-      573,
-      613.5,
-      515,
-      409,
-      468,
-      469,
-      getTotal([kimiAntonelli, georgeRussell]),
-    ],
+    points: [655, 739, 573, 613.5, 515, 409, 468, 469, 630],
     standings: [1, 1, 1, 1, 3, 2, 4, 2, 1],
-    thisYear: sumDriverSeries([kimiAntonelli, georgeRussell]),
   },
   {
     name: "Red Bull Racing",
     color: RED_BULL_HEX,
-    points: [
-      419,
-      417,
-      319,
-      585.5,
-      759,
-      860,
-      589,
-      451,
-      seriesTotal(redBullThisYear),
-    ],
+    points: [419, 417, 319, 585.5, 759, 860, 589, 451, 382],
     standings: [3, 3, 2, 2, 1, 1, 3, 3, 3],
-    thisYear: redBullThisYear,
   },
   {
     name: "Ferrari",
     color: FERRARI_HEX,
-    points: [
-      571,
-      504,
-      131,
-      323.5,
-      554,
-      406,
-      652,
-      398,
-      getTotal([charlesLeclerc, lewisHamilton]),
-    ],
+    points: [571, 504, 131, 323.5, 554, 406, 652, 398, 504],
     standings: [2, 2, 6, 3, 2, 3, 2, 4, 2],
-    thisYear: sumDriverSeries([charlesLeclerc, lewisHamilton]),
   },
   {
     name: "Williams",
     color: WILLIAMS_HEX,
-    points: [
-      7,
-      1,
-      0,
-      23,
-      8,
-      28,
-      17,
-      137,
-      getTotal([carlosSainz, alexanderAlbon]),
-    ],
+    points: [7, 1, 0, 23, 8, 28, 17, 137, 12],
     standings: [10, 10, 10, 8, 10, 7, 9, 5, 9],
-    thisYear: sumDriverSeries([carlosSainz, alexanderAlbon]),
   },
   {
     name: "Racing Bulls",
     color: RB_HEX,
-    points: [...alphaTauriPoints, 46, 92, seriesTotal(racingBullsThisYear)],
+    points: [...alphaTauriPoints, 46, 92, 108],
     standings: [...alphaTauriStandings, 8, 6, 5],
-    thisYear: racingBullsThisYear,
   },
   {
     name: "Aston Martin",
     color: ASTON_HEX,
-    points: [
-      ...racingPointPoints,
-      77,
-      55,
-      280,
-      94,
-      89,
-      getTotal([fernandoAlonso, lanceStroll]),
-    ],
+    points: [...racingPointPoints, 77, 55, 280, 94, 89, 7],
     standings: [...racingPointStandings, 7, 7, 5, 5, 7, 10],
-    thisYear: sumDriverSeries([fernandoAlonso, lanceStroll]),
   },
   {
     name: "Haas",
     color: HAAS_HEX,
-    points: [
-      93,
-      28,
-      3,
-      0,
-      37,
-      12,
-      58,
-      79,
-      getTotal([oliverBearman, estebanOcon, ryoHirakawa]),
-    ],
+    points: [93, 28, 3, 0, 37, 12, 58, 79, 31],
     standings: [5, 9, 9, 10, 8, 10, 7, 8, 7],
-    thisYear: sumDriverSeries([oliverBearman, estebanOcon, ryoHirakawa]),
   },
   {
     name: "Audi",
     color: AUDI_HEX,
-    points: [...kickSauberPoints, getTotal([gabrielBortoleto, nicoHulkenberg])],
+    points: [...kickSauberPoints, 27],
     standings: [...kickSauberStandings, 8],
-    thisYear: sumDriverSeries([gabrielBortoleto, nicoHulkenberg]),
   },
   {
     name: "Alpine",
     color: ALPINE_HEX,
-    points: [
-      ...renaultPoints,
-      155,
-      173,
-      120,
-      65,
-      22,
-      getTotal([pierreGasly, francoColapinto]),
-    ],
+    points: [...renaultPoints, 155, 173, 120, 65, 22, 69],
     standings: [...renaultStandings, 5, 4, 6, 6, 10, 6],
-    thisYear: sumDriverSeries([pierreGasly, francoColapinto]),
   },
   {
     name: "Cadillac",
     color: CADILLAC_HEX,
-    points: [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      getTotal([valtteriBottas, sergioPerez]),
-    ],
+    points: [null, null, null, null, null, null, null, null, 0],
     standings: [null, null, null, null, null, null, null, null, 11],
-    thisYear: sumDriverSeries([valtteriBottas, sergioPerez]),
   },
   // ----------     3nd Replacement     ---------- //
   {
@@ -731,26 +487,17 @@ const constructors: Constructor[] = [
 
 const constructorPointsData: ChartEntry[] = [];
 const constructorStandingsData: ChartEntry[] = [];
-const constructorCurrentData: ChartEntry[] = [];
 
 constructors.forEach((constructor) => {
-  const { name, color, points, standings, thisYear } = constructor;
+  const { name, color, points, standings } = constructor;
   constructorPointsData.push({ data: points, name, color });
   constructorStandingsData.push({ data: standings, name, color });
-  if (thisYear) {
-    constructorCurrentData.push({ data: thisYear, name, color });
-  }
 });
 
 constructorPointsData.sort(pointSort);
 constructorStandingsData.sort(standingSort);
-constructorCurrentData.sort(pointSort);
 
-export {
-  constructorPointsData,
-  constructorStandingsData,
-  constructorCurrentData,
-};
+export { constructorPointsData, constructorStandingsData };
 
 // --------------------------------------------------     Contract Data     -------------------------------------------------- //
 export interface ContractData {

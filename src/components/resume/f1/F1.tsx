@@ -17,17 +17,11 @@ import Tracks from "./Tracks";
 import TimelineCard from "./timeline-card/TimelineCard";
 
 const BudgetSankey = guardChart(() => import("./charts/BudgetSankey"));
-const ConstructorCurrentSpline = groupedChart(
-  () => import("./charts/ConstructorCurrentSpline"),
-);
 const ConstructorPointsLine = groupedChart(
   () => import("./charts/ConstructorPointsLine"),
 );
 const ConstructorStandingsLine = groupedChart(
   () => import("./charts/ConstructorStandingsLine"),
-);
-const DriverCurrentSpline = groupedChart(
-  () => import("./charts/DriverCurrentSpline"),
 );
 const DriverPointsLine = groupedChart(
   () => import("./charts/DriverPointsLine"),
@@ -56,7 +50,6 @@ const F1 = () => {
             inverted
           >
             <ChartSection>
-              <ConstructorCurrentSpline color={color} />
               <ConstructorPointsLine color={color} />
               <ConstructorStandingsLine color={color} />
             </ChartSection>
@@ -66,7 +59,6 @@ const F1 = () => {
         <Grid size={{ xs: 12, lg: 6, xxl: 4 }}>
           <ExpandableCard title="Drivers" backgroundColor={RED_BULL_HEX}>
             <ChartSection>
-              <DriverCurrentSpline color={color} />
               <DriverPointsLine color={color} />
               <DriverStandingsLine color={color} />
             </ChartSection>
