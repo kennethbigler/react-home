@@ -77,7 +77,7 @@ describe("common | timeline-parts | timelineMath", () => {
     }
 
     const antonelli = contractData.find(
-      (contract) => contract.team === "Mercedes - Antonelli",
+      (contract) => contract.team === "Mercedes - Antonelli 🥇",
     );
     expect(antonelli).toBeDefined();
     if (!antonelli) {
