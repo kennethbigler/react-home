@@ -1,0 +1,1 @@
+import{t as e}from"./react-home-CVahdPaG.js";e();
