@@ -8,14 +8,10 @@ import {
   getYearMarkers,
 } from "./timelineHelpers";
 import { type ContractData, MERCEDES_HEX } from "@/constants/f1";
-import type { FormatOutput } from "@/apis/DateHelper";
-
 interface TimelineCardProps {
   /** contract spans used to build timeline segments */
   data: ContractData[];
 }
-
-const DATE_FORMAT: FormatOutput = "MMMM Y";
 
 /** TimelineCard  ->  Row  ->  Segment
  **                       |->  YearMarker */
@@ -28,11 +24,7 @@ const TimelineCard = ({ data }: TimelineCardProps) => {
     <ExpandableCard
       backgroundColor={MERCEDES_HEX}
       title="F1 Team History"
-      subtitle={
-        range
-          ? `Drivers over 100 points in 2025 · ${range.start.format(DATE_FORMAT)} - ${range.end.format(DATE_FORMAT)}`
-          : "Drivers over 100 points in 2025"
-      }
+      subtitle="Drivers over 100 points in 2026"
       inverted
     >
       <Box sx={{ width: "100%", pb: "7px" }}>

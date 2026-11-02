@@ -55,9 +55,7 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
     // verify ExpandableCard
     expect(screen.getByText("F1 Team History")).toBeInTheDocument();
     expect(
-      screen.getByText(
-        `Drivers over 100 points in 2025 · June 2019 - ${EXPECTED_FROZEN_TODAY}`,
-      ),
+      screen.getByText("Drivers over 100 points in 2026"),
     ).toBeInTheDocument();
 
     // verify Timeline
@@ -110,9 +108,7 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
 
     render(<TimelineCard data={withFuture} />);
     expect(
-      screen.getByText(
-        `Drivers over 100 points in 2025 · January 2019 - ${EXPECTED_JAN_2028}`,
-      ),
+      screen.getByText("Drivers over 100 points in 2026"),
     ).toBeInTheDocument();
   });
 
@@ -121,7 +117,7 @@ describe("resume | f1 | timeline-card | TimelineCard", () => {
 
     expect(screen.getByText("F1 Team History")).toBeInTheDocument();
     expect(
-      screen.getByText("Drivers over 100 points in 2025"),
+      screen.getByText("Drivers over 100 points in 2026"),
     ).toBeInTheDocument();
     expect(screen.queryByText("'20")).not.toBeInTheDocument();
   });
