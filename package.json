@@ -79,7 +79,7 @@
     "knip": "6.44.1",
     "picocolors": "1.1.1",
     "playwright": "1.55.1",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "vite": "8.3.5",
     "vitest": "5.1.0"
   },
