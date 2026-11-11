@@ -12,3 +12,6 @@ reviews:
       - "main"
     ignore_usernames:
       - "dependabot[bot]"
+  tools:
+    eslint:
+      enabled: false
