@@ -1,5 +1,6 @@
 import { gameRouteLabels } from "./games/menu-items";
 import { resumeRouteLabels } from "./resume/menu-items";
+import { sudokuRouteLabels } from "./sudoku/menu-items";
 
 export const BASE_TITLE = "Ken Bigler's Website";
 
@@ -20,6 +21,10 @@ export const getPageTitle = (pathname: string): string => {
     page = sub
       ? `${gameRouteLabels.get(sub) || toTitleCase(sub.replace(/-/g, " "))} | Game`
       : "Games";
+  } else if (segment === "sudoku") {
+    page = sub
+      ? `${sudokuRouteLabels.get(sub) || toTitleCase(sub.replace(/-/g, " "))} | Sudoku`
+      : "Sudoku";
   } else {
     page =
       resumeRouteLabels.get(segment) || toTitleCase(segment.replace(/-/g, " "));
