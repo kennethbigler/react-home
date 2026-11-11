@@ -26,7 +26,6 @@ const routeCases = [
   { path: "/travel", heading: "Travel" },
   { path: "/games", heading: "Games" },
   { path: "/sudoku", heading: "Sudoku 16x16" },
-  { path: "/sudoku/marketing", heading: "Sudoku 16x16" },
   { path: "/sudoku/support", heading: "Sudoku 16x16 Support" },
   { path: "/sudoku/privacy", heading: "Privacy Policy" },
   // catch-all routes redirect to the section home
