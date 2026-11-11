@@ -39,7 +39,7 @@ const DriverStandingsLine = memo(({ color }: DriverStandingsLineProps) => (
       />
       <YAxis
         labels={{ style: { color } }}
-        tickPositions={[1, 5, 10, 15, 20, 24]}
+        tickPositions={[1, 5, 10, 15, 20, 25]}
         reversed={true}
         title={{ text: undefined }}
         gridLineDashStyle="Dot"
