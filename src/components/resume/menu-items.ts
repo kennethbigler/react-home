@@ -55,12 +55,20 @@ const gamesLink = {
   route: "games",
 } as const;
 
+/** Links to /sudoku, which is handled by the root sudoku router. */
+const sudokuLink = {
+  link: true,
+  name: "Sudoku",
+  route: "sudoku",
+} as const;
+
 export const resumeRoutes = resumeRouteGroups.flat();
 
 const menuItems: MenuItem[] = [
   ...interleaveDividers(resumeRouteGroups),
   { divider: true },
   gamesLink,
+  sudokuLink,
 ];
 
 export const resumeRouteLabels = new Map(

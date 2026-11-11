@@ -4,8 +4,10 @@ import SectionLayout from "./common/SectionLayout";
 import type { RouteMenuItem } from "./common/menu-types";
 import ResumeMenu from "./resume/Menu";
 import GamesMenu from "./games/Menu";
+import SudokuMenu from "./sudoku/Menu";
 import { resumeRoutes } from "./resume/menu-items";
 import { gameRoutes } from "./games/menu-items";
+import { sudokuRoutes } from "./sudoku/menu-items";
 import { getPageTitle } from "./routeTitleUtils";
 
 /** route "" is the section's index route */
@@ -49,6 +51,10 @@ const RootRoutes = () => {
           <Route path="games" element={<SectionLayout Menu={GamesMenu} />}>
             {renderRoutes(gameRoutes)}
             <Route path="*" element={<Navigate to="/games" replace />} />
+          </Route>
+          <Route path="sudoku" element={<SectionLayout Menu={SudokuMenu} />}>
+            {renderRoutes(sudokuRoutes)}
+            <Route path="*" element={<Navigate to="/sudoku" replace />} />
           </Route>
           <Route path="/" element={<SectionLayout Menu={ResumeMenu} />}>
             {renderRoutes(resumeRoutes)}

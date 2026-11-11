@@ -63,5 +63,21 @@ describe("components | routeTitleUtils", () => {
         `Type Checker | Game | ${BASE_TITLE}`,
       );
     });
+
+    it("returns Sudoku with base when on sudoku index", () => {
+      expect(getPageTitle("/sudoku")).toBe(`Sudoku | ${BASE_TITLE}`);
+    });
+
+    it("returns sudoku sub-name with base when on a sudoku route", () => {
+      expect(getPageTitle("/sudoku/marketing")).toBe(
+        `Marketing | Sudoku | ${BASE_TITLE}`,
+      );
+      expect(getPageTitle("/sudoku/support")).toBe(
+        `Support | Sudoku | ${BASE_TITLE}`,
+      );
+      expect(getPageTitle("/sudoku/privacy")).toBe(
+        `Privacy | Sudoku | ${BASE_TITLE}`,
+      );
+    });
   });
 });
