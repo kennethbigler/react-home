@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Ken's resume site + games (incl. Blood on the Clocktower tool). React, Vite, TypeScript (strict), MUI + Emotion, Jotai, React Router, Vitest + Testing Library. Versions: see `package.json` (don't hardcode them in docs). Node `>=24.15`, npm `>=11.6`.
+Ken's resume site + games (incl. Blood on the Clocktower tool). React, Vite, TypeScript (strict), MUI + Emotion, Jotai, React Router, Vitest + Testing Library. Versions: see `package.json` (don't hardcode them in docs). Node `^24.15 || >=26`, npm `>=11.6`.
 
 ## 💬 Response style (always)
 
