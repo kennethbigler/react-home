@@ -43,7 +43,7 @@
     "@mui/icons-material": "9.5.0",
     "@mui/material": "9.5.0",
     "highcharts": "13.1.1",
-    "jotai": "3.0.1",
+    "jotai": "3.0.2",
     "qrcode.react": "4.2.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
