@@ -7,7 +7,11 @@ import useBotC, {
   useEditPlayers,
   useTracker,
 } from "./useBotC";
-import botcAtom, { type BotCRole, newBotCGame } from "@/jotai/botc-atom";
+import botcAtom, {
+  BaseScript,
+  type BotCRole,
+  newBotCGame,
+} from "@/jotai/botc-atom";
 
 describe("useBotC", () => {
   beforeEach(() => {
@@ -506,6 +510,52 @@ describe("useBotC", () => {
         result.current.recordWin("good");
       });
       expect(result.current.goodWin).toBe(1);
+    });
+
+    it("keeps a separate win tally per script", () => {
+      const { result } = renderHookWithHydratedAtoms(() => useEditPlayers());
+
+      act(() => {
+        result.current.recordWin("good");
+      });
+      expect(result.current.goodWin).toBe(1);
+
+      act(() => {
+        result.current.updateScript(BaseScript.SNV);
+      });
+      expect(result.current.goodWin).toBe(0);
+      expect(result.current.evilWin).toBe(0);
+      act(() => {
+        result.current.recordWin("evil");
+      });
+      expect(result.current.evilWin).toBe(1);
+
+      act(() => {
+        result.current.updateScript(BaseScript.TB);
+      });
+      expect(result.current.goodWin).toBe(1);
+      expect(result.current.evilWin).toBe(0);
+    });
+
+    it("migrates a legacy tally into the current script on next win", () => {
+      const legacy = { ...newBotCGame(), goodWin: 3, evilWin: 2 };
+      const { result } = renderHookWithHydratedAtoms(
+        () => useEditPlayers(),
+        [[botcAtom, legacy]],
+      );
+
+      expect(result.current.goodWin).toBe(3);
+      act(() => {
+        result.current.recordWin("evil");
+      });
+      expect(result.current.goodWin).toBe(3);
+      expect(result.current.evilWin).toBe(3);
+
+      act(() => {
+        result.current.updateScript(BaseScript.BMR);
+      });
+      expect(result.current.goodWin).toBe(0);
+      expect(result.current.evilWin).toBe(0);
     });
 
     it("updateCommunityScript sets community script", () => {

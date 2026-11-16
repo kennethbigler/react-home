@@ -43,6 +43,21 @@ export const BOTC_MIN_PLAYERS = 5;
 export const BOTC_MAX_PLAYERS = 15;
 export const BOTC_MAX_TRAVELERS = 5;
 
+export interface WinTally {
+  good: number;
+  evil: number;
+}
+
+export const botcScriptKey = (script: ActiveScript) =>
+  script.type === "base" ? `base:${script.index}` : `community:${script.pk}`;
+
+/** Wins for a script; falls back to the legacy tally if not yet migrated */
+export const getScriptWins = (state: BotCState): WinTally =>
+  state.winsByScript?.[botcScriptKey(state.script)] ?? {
+    good: state.goodWin ?? 0,
+    evil: state.evilWin ?? 0,
+  };
+
 export interface BotCState {
   isText: boolean;
   numPlayers: number;
@@ -52,7 +67,9 @@ export interface BotCState {
   botcPlayers: BotCPlayer[];
   roundNotes: string[];
   tracker: number[][];
-  /** win tally; optional because games saved before it existed lack it */
+  /** win tallies per script (see botcScriptKey); absent on older saves */
+  winsByScript?: Record<string, WinTally>;
+  /** legacy script-agnostic tally; migrated into winsByScript on next win */
   goodWin?: number;
   evilWin?: number;
 }
@@ -109,7 +126,7 @@ export const botcPlayersAtom = fieldAtom("botcPlayers");
 export const botcRoundAtom = fieldAtom("round");
 export const botcRoundNotesAtom = fieldAtom("roundNotes");
 export const botcTrackerAtom = fieldAtom("tracker");
-export const botcGoodWinAtom = fieldAtom("goodWin");
-export const botcEvilWinAtom = fieldAtom("evilWin");
+export const botcGoodWinAtom = atom((get) => getScriptWins(get(botcAtom)).good);
+export const botcEvilWinAtom = atom((get) => getScriptWins(get(botcAtom)).evil);
 
 export default botcAtom;
