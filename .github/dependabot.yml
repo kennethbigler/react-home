@@ -5,6 +5,7 @@ updates:
     schedule:
       interval: weekly
       day: friday
+    open-pull-requests-limit: 100
     assignees:
       - kennethbigler
     labels:
@@ -72,6 +73,7 @@ updates:
     schedule:
       interval: weekly
       day: friday
+    open-pull-requests-limit: 100
     assignees:
       - kennethbigler
     labels:
