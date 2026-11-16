@@ -598,6 +598,7 @@ export const contractData: ContractData[] = [
     team: "Racing Bulls",
     start: dateObj("2025"),
     end: dateObj("2026"), // full 2025 Season
+    inverted: true,
   },
   {
     color: RED_BULL_HEX,
