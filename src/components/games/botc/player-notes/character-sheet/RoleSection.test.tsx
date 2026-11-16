@@ -46,8 +46,15 @@ describe("RoleSection", () => {
     expect(button).toHaveStyle({ color: expectedColor });
   };
 
-  const expectContainedRoleColor = (button: HTMLElement) => {
-    expect(button).toHaveStyle({ color: "var(--variant-containedColor)" });
+  const expectContainedRoleColor = (
+    button: HTMLElement,
+    mode: "light" | "dark",
+    alignment: BotCRole["alignment"],
+  ) => {
+    const theme = createTheme({ palette: { mode } });
+    expect(button).toHaveStyle({
+      color: theme.palette[alignment].contrastText,
+    });
   };
 
   it("should render the title", () => {
@@ -506,6 +513,8 @@ describe("RoleSection", () => {
 
       expectContainedRoleColor(
         screen.getByRole("button", { name: "Villager" }),
+        mode,
+        "primary",
       );
       expectOutlinedRoleColor(
         screen.getByRole("button", { name: "Werewolf" }),
