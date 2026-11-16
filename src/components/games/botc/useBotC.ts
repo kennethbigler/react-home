@@ -26,6 +26,8 @@ import botcAtom, {
   type BaseScriptIndex,
   newRoundNotes,
   newTracker,
+  botcScriptKey,
+  getScriptWins,
 } from "@/jotai/botc-atom";
 import type { CommunityScriptOption } from "@/utils/botc-script-utils";
 
@@ -165,8 +167,8 @@ export const usePlayerNotes = () => {
 export const useEditPlayers = () => {
   const isText = useAtomValue(botcIsTextAtom);
   const script = useAtomValue(botcScriptAtom);
-  const goodWin = useAtomValue(botcGoodWinAtom) ?? 0;
-  const evilWin = useAtomValue(botcEvilWinAtom) ?? 0;
+  const goodWin = useAtomValue(botcGoodWinAtom);
+  const evilWin = useAtomValue(botcEvilWinAtom);
   const setState = useSetAtom(botcAtom);
 
   /** update number of players */
@@ -223,8 +225,20 @@ export const useEditPlayers = () => {
 
   /** tally a win for the given side, then start a new game */
   const recordWin = (winner: BotCWinner) => {
-    const key = winner === "good" ? "goodWin" : "evilWin";
-    setState((prev) => ({ ...prev, [key]: (prev[key] ?? 0) + 1 }));
+    setState((prev) => {
+      const { goodWin: _g, evilWin: _e, ...rest } = prev;
+      const current = getScriptWins(prev);
+      return {
+        ...rest,
+        winsByScript: {
+          ...prev.winsByScript,
+          [botcScriptKey(prev.script)]: {
+            ...current,
+            [winner]: current[winner] + 1,
+          },
+        },
+      };
+    });
     newBotCGame();
   };
 
