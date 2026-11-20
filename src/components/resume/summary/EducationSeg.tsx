@@ -12,16 +12,16 @@ const EducationSeg = memo(
         {degree + (major ? ` in ${major}` : "")}
       </Typography>
       <ul>
-        {minor && (
+        {minor ? (
           <li>
             <Typography>{minor}</Typography>
           </li>
-        )}
-        {honors && (
+        ) : null}
+        {honors ? (
           <li>
             <Typography>{honors}</Typography>
           </li>
-        )}
+        ) : null}
       </ul>
     </div>
   ),

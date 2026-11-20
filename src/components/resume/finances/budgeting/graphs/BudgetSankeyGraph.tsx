@@ -159,11 +159,7 @@ const BudgetSankeyGraph = ({
         point: {
           events: {
             click() {
-              handleSankeyNodeClick(
-                this as SankeyClickPoint,
-                flow.categories,
-                onCategorySelect,
-              );
+              handleSankeyNodeClick(this, flow.categories, onCategorySelect);
             },
           },
         },

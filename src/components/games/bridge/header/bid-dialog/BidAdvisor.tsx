@@ -120,11 +120,11 @@ export default function BidAdvisor() {
   const isOpponentSuitBid =
     opponentSuitBid !== null && !opponentSuitBid.endsWith("NT");
   const opponentSuitName = isOpponentSuitBid
-    ? opponentSuitBid!.includes("♠")
+    ? opponentSuitBid.includes("♠")
       ? "spades"
-      : opponentSuitBid!.includes("♥")
+      : opponentSuitBid.includes("♥")
         ? "hearts"
-        : opponentSuitBid!.includes("♦")
+        : opponentSuitBid.includes("♦")
           ? "diamonds"
           : "clubs"
     : null;

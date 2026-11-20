@@ -336,7 +336,7 @@ describe("games | bridge | HandInput", () => {
     render(
       <HandInput hand={handWithAces} onChange={vi.fn()} showAcesInput={true} />,
     );
-    const acesInput = screen.getByLabelText("Aces count") as HTMLInputElement;
+    const acesInput = screen.getByLabelText<HTMLInputElement>("Aces count");
     expect(acesInput.value).toBe("2");
   });
 
@@ -386,9 +386,9 @@ describe("games | bridge | HandInput", () => {
         opponentSuitLabel="♠ spades"
       />,
     );
-    const checkbox = screen.getByLabelText(
+    const checkbox = screen.getByLabelText<HTMLInputElement>(
       "Has stopper in opponent's suit",
-    ) as HTMLInputElement;
+    );
     fireEvent.click(checkbox);
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({ hasStopperInOpponentSuit: true }),
@@ -416,9 +416,9 @@ describe("games | bridge | HandInput", () => {
         opponentSuitLabel="♥ hearts"
       />,
     );
-    const checkbox = screen.getByLabelText(
+    const checkbox = screen.getByLabelText<HTMLInputElement>(
       "Has stopper in opponent's suit",
-    ) as HTMLInputElement;
+    );
     expect(checkbox.checked).toBe(true);
   });
 
@@ -497,9 +497,9 @@ describe("games | bridge | HandInput", () => {
         longSuitLabel="hearts"
       />,
     );
-    const checkbox = screen.getByLabelText(
+    const checkbox = screen.getByLabelText<HTMLInputElement>(
       "Long suit is a good suit",
-    ) as HTMLInputElement;
+    );
     fireEvent.click(checkbox);
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({ goodSuitQuality: true }),

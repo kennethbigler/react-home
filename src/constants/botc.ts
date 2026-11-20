@@ -127,7 +127,7 @@ export const other: BotCScript = (() => {
     travelers: [],
   };
   Object.values(ROLE_CATALOG).forEach(({ role, roleType }) => {
-    (script[roleType] as BotCRole[]).push(role);
+    script[roleType].push(role);
   });
   return script;
 })();

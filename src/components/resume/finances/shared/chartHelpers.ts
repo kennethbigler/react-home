@@ -1,5 +1,6 @@
 import type Highcharts from "highcharts/highcharts.src";
 import dateHelper from "@/apis/DateHelper";
+import { colorToCss } from "@/components/common/highcharts/colorToCss";
 import usDollar from "@/apis/usDollar";
 
 /** The subset of a Highcharts point the tooltip formatters rely on. */
@@ -96,6 +97,6 @@ export const formatTooltipRow = (
   value: number | null | undefined,
 ) =>
   [
-    `<span style="color:${point.series.color?.toString() || "inherit"}">&#9679;</span>`,
+    `<span style="color:${colorToCss(point.series.color)}">&#9679;</span>`,
     `${escapeHtml(point.series.name)}: <b>${usDollar.format(value || 0)}</b>`,
   ].join(" ");

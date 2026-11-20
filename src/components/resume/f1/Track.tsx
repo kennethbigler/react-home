@@ -83,12 +83,12 @@ const Track = memo(
         >
           {circuitName}
         </Typography>
-        {next && date && (
+        {next && date ? (
           <Typography variant={isExpanded ? "h5" : "body2"} sx={headingStyles}>
             {date.format("MMMM")} {date.day}, {date.year}
           </Typography>
-        )}
-        {circuitSubName && (
+        ) : null}
+        {circuitSubName ? (
           <Typography
             component="h3"
             variant={isExpanded ? "h4" : "body2"}
@@ -96,7 +96,7 @@ const Track = memo(
           >
             {circuitSubName}
           </Typography>
-        )}
+        ) : null}
         <IconButton
           aria-expanded={isExpanded}
           aria-label={`${isExpanded ? "Collapse" : "Expand"} ${circuitName} circuit details${

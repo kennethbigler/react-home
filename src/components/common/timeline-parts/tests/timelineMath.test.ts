@@ -115,7 +115,7 @@ describe("common | timeline-parts | timelineMath", () => {
 
   it("keeps packed car rows at exactly TIMELINE_WIDTH", () => {
     const range = getCarsTimelineRange();
-    const added = new Array(cars.length).fill(false);
+    const added = new Array<boolean>(cars.length).fill(false);
     const rowWidths = cars
       .map((car, index) =>
         getSegments(cars, added, false, false, car, index, range),

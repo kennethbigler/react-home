@@ -9,7 +9,7 @@ export interface ClassProps {
 const Class = memo(({ name, catalog }: ClassProps) => (
   <li>
     <Typography>
-      {catalog && <strong>{`${catalog} - `}</strong>}
+      {catalog ? <strong>{`${catalog} - `}</strong> : null}
       {name}
     </Typography>
   </li>

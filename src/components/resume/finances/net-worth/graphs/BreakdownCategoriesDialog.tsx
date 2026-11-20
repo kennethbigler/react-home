@@ -36,7 +36,7 @@ export const BreakdownCategoriesDialog = ({
             key={category}
             control={
               <Switch
-                checked={hasValue && !hiddenCategories.has(category)}
+                checked={!!hasValue && !hiddenCategories.has(category)}
                 disabled={!hasValue}
                 onChange={(_, checked) => onToggle(category, checked)}
                 slotProps={{ input: { "aria-label": `Show ${category}` } }}

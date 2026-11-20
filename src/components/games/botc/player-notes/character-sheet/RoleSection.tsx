@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import type { BotCRole } from "@/jotai/botc-atom";
 import type { MuiColors } from "@/@types/mui";
 import { outlinedContrastSx } from "@/apis/outlinedButtonSx";
+import { toSxArray } from "@/components/common/sx";
 import { Grid, Typography, Button } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { splitScriptColumns } from "@/components/games/botc/botcHelpers";
@@ -43,8 +44,7 @@ const getRoleButtonSx = (
   }
 
   const contrastSx = outlinedContrastSx(alignment);
-  const contrastItems = Array.isArray(contrastSx) ? contrastSx : [contrastSx];
-  return [buttonStyles, ...contrastItems];
+  return [buttonStyles, ...toSxArray(contrastSx)];
 };
 
 /** CharacterSheet -> EmojiNotes
@@ -72,7 +72,7 @@ const RoleSection = ({
           sx={getRoleButtonSx(buttonStyles, selected, role.alignment)}
           aria-label={role.name}
           // onRoleClick is curried: calling it during render returns the click handler
-          onClick={onRoleClick && onRoleClick(role, selected)}
+          onClick={onRoleClick?.(role, selected)}
           title={role.name}
         >
           {isText ? role.name : role.icon}
@@ -103,7 +103,7 @@ const RoleSection = ({
                 color={role.alignment}
                 sx={getRoleButtonSx(buttonStyles, selected, role.alignment)}
                 aria-label={role.name}
-                onClick={onRoleClick && onRoleClick(role, selected)}
+                onClick={onRoleClick?.(role, selected)}
                 title={role.name}
               >
                 {isText ? role.name : role.icon}

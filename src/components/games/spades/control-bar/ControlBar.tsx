@@ -35,7 +35,9 @@ const ControlBar = ({
       scoreText={scoreText}
       onBidSave={onBidSave}
     />
-    {showPenalty && <AddPenalty initials={initials} onPenalty={onPenalty} />}
+    {showPenalty ? (
+      <AddPenalty initials={initials} onPenalty={onPenalty} />
+    ) : null}
     <ShowStats initials={initials} />
     <AddScore initials={initials} lastBid={lastBid} onScoreSave={onScoreSave} />
   </div>

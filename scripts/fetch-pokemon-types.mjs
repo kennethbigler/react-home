@@ -71,7 +71,9 @@ const relationsFor = (type, gen) => {
 
 const main = async () => {
   const { count: latest } = await getJson("generation");
-  const apiTypes = await Promise.all(TYPE_NAMES.map((n) => getJson(`type/${n}`)));
+  const apiTypes = await Promise.all(
+    TYPE_NAMES.map((n) => getJson(`type/${n}`)),
+  );
   const introduced = apiTypes.map((t) => idFromUrl(t.generation.url));
 
   // group consecutive generations that share an identical chart
@@ -79,7 +81,10 @@ const main = async () => {
   for (let gen = 1; gen <= latest; gen += 1) {
     const effectiveness = apiTypes.map((t) => toRow(relationsFor(t, gen)));
     const prev = charts[charts.length - 1];
-    if (prev && JSON.stringify(prev.effectiveness) === JSON.stringify(effectiveness)) {
+    if (
+      prev &&
+      JSON.stringify(prev.effectiveness) === JSON.stringify(effectiveness)
+    ) {
       prev.to = gen;
     } else {
       charts.push({ from: gen, to: gen, effectiveness });
@@ -87,7 +92,9 @@ const main = async () => {
   }
 
   const rows = (eff) =>
-    eff.map((row, i) => `      // ${TYPE_NAMES[i]}\n      [${row.join(", ")}],`).join("\n");
+    eff
+      .map((row, i) => `      // ${TYPE_NAMES[i]}\n      [${row.join(", ")}],`)
+      .join("\n");
   const body = charts
     .map(
       (c) =>
@@ -116,7 +123,9 @@ ${body}
 `;
 
   writeFileSync(OUTPUT_PATH, file);
-  console.log(`Wrote ${charts.length} charts (gens 1-${latest}) to ${OUTPUT_PATH}`);
+  console.log(
+    `Wrote ${charts.length} charts (gens 1-${latest}) to ${OUTPUT_PATH}`,
+  );
 };
 
 try {
@@ -124,5 +133,7 @@ try {
 } catch (err) {
   // keep the committed chart so a PokéAPI outage never blocks a deploy
   if (!existsSync(OUTPUT_PATH)) throw err;
-  console.warn(`PokéAPI fetch failed (${err.message}); keeping existing ${OUTPUT_PATH}`);
+  console.warn(
+    `PokéAPI fetch failed (${err.message}); keeping existing ${OUTPUT_PATH}`,
+  );
 }

@@ -298,7 +298,7 @@ const BudgetExpenses = () => {
         ))}
       </Grid>
 
-      {entryDialog.open && (
+      {entryDialog.open ? (
         <ExpenseEntryDialog
           key={entryDialog.editIdx === -1 ? "new" : entryDialog.editIdx}
           open={entryDialog.open}
@@ -309,8 +309,8 @@ const BudgetExpenses = () => {
           onDelete={entryDialog.editIdx !== -1 ? handleDelete : undefined}
           expenseEntry={editingExpense}
         />
-      )}
-      {categoryDialog.open && (
+      ) : null}
+      {categoryDialog.open ? (
         <CategoryEntryDialog
           key={categoryDialog.editIdx === -1 ? "new" : categoryDialog.editIdx}
           open={categoryDialog.open}
@@ -328,7 +328,7 @@ const BudgetExpenses = () => {
           onSave={handleCategorySave}
           onDelete={editingCategory ? handleCategoryDelete : undefined}
         />
-      )}
+      ) : null}
     </>
   );
 };

@@ -96,8 +96,8 @@ vi.stubGlobal("CSS", {
 beforeEach(() => {
   // Override Image constructor to simulate instant loading
   const MockImage = class {
-    onload: ((this: GlobalEventHandlers, ev: Event) => unknown) | null = null;
-    onerror: ((this: GlobalEventHandlers, ev: Event) => unknown) | null = null;
+    onload: ((ev: Event) => unknown) | null = null;
+    onerror: ((ev: Event) => unknown) | null = null;
     src = "";
     alt = "";
     width = 0;
@@ -109,7 +109,7 @@ beforeEach(() => {
         if (this.onload) {
           // Call without 'this' binding to avoid type issues
           const event = new Event("load");
-          (this.onload as (ev: Event) => unknown)(event);
+          this.onload(event);
         }
       });
     }

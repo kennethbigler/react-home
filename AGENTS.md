@@ -21,7 +21,9 @@ Ken's resume site + games (incl. Blood on the Clocktower tool). React, Vite, Typ
 | Dead code | `npm run knip` |
 
 - `.npmrc` sets `legacy-peer-deps=true` on purpose — don't remove.
-- Formatting is ESLint + Prettier (GTS). No standalone Prettier CLI.
+- Formatting is ESLint + Prettier (`eslint-plugin-prettier`). No standalone Prettier CLI.
+- `npm run lint` runs `eslint .` (whole repo, incl. `scripts/` and `eslint.config.js`). Type-aware rules (`typescript-eslint` recommended-type-checked) apply to TS files.
+- `eslint.config.js` globally ignores `docs/**` (compiled GitHub Pages site — never lint it), `dist/`, `coverage/`, `codecov_reports/`.
 
 ## ✅ Definition of done
 

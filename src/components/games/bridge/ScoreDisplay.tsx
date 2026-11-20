@@ -30,9 +30,11 @@ const ScoreDisplay = () => {
       <TableHead>
         <TableRow sx={{ borderBottom: border }}>
           <TableCell align="center" sx={{ borderRight: border }}>
-            We {weVulnerable && "🥇"}
+            We {weVulnerable ? "🥇" : null}
           </TableCell>
-          <TableCell align="center">They {theyVulnerable && "🥇"}</TableCell>
+          <TableCell align="center">
+            They {theyVulnerable ? "🥇" : null}
+          </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>

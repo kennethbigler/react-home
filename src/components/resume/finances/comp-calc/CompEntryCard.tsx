@@ -107,7 +107,7 @@ const CompEntryCard = ({
               )}
             </CardContent>
           </Grid>
-          {stockTick && (
+          {stockTick ? (
             <Grid size={6}>
               <CardHeader title="Stock Grant" />
               <CardContent>
@@ -136,7 +136,7 @@ const CompEntryCard = ({
                 )}
               </CardContent>
             </Grid>
-          )}
+          ) : null}
         </Grid>
       </CardActionArea>
     </Card>

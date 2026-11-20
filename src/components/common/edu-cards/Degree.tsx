@@ -30,7 +30,7 @@ const Degree = ({ degree }: DegreeProps) => {
 
   return (
     <ExpandableCard
-      backgroundColor={degree.color && degree.color}
+      backgroundColor={degree.color}
       subtitle={subtitle}
       title={title}
     >

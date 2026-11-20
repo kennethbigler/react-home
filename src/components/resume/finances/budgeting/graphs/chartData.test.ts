@@ -290,9 +290,9 @@ describe("resume | finances | budgeting | graphs | chartData", () => {
         column2NodeIds.indexOf("Transport"),
       );
       expect(payrollLinkIndexes).toHaveLength(2);
-      expect(payrollLinkIndexes[1]).toBe(payrollLinkIndexes[0]! + 1);
+      expect(payrollLinkIndexes[1]).toBe(payrollLinkIndexes[0] + 1);
       expect(incomeLinkTargets.indexOf("Housing")).toBe(
-        payrollLinkIndexes[1]! + 1,
+        payrollLinkIndexes[1] + 1,
       );
       expect(getSankeyNodeSum(PAYROLL_NODE_LABEL, data)).toBeCloseTo(
         flow.totalPayrollDeductions + 500 * 12,

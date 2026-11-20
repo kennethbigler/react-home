@@ -1,4 +1,5 @@
 import type Highcharts from "highcharts/highcharts.src";
+import { colorToCss } from "@/components/common/highcharts/colorToCss";
 import { xAxisYears } from "@/constants/f1";
 
 export const xAxisLabelFormatter: Highcharts.AxisLabelsFormatterCallbackFunction =
@@ -18,7 +19,7 @@ export const standingsTTFormatter = function (this: Highcharts.Point): string {
     tooltip += i < this.series.data.length - 1 ? ", " : ": ";
   });
 
-  tooltip += `<span style="color: ${this.color?.toString()};">&#11044;</span> <b>${this.series.name}</b><br/>`;
+  tooltip += `<span style="color: ${colorToCss(this.color)};">&#11044;</span> <b>${this.series.name}</b><br/>`;
 
   return tooltip;
 };
@@ -35,7 +36,7 @@ export function pointsTTFormatter(
   const tooltipHist: Record<number, string> = {};
 
   (point.points || []).forEach((p: Highcharts.Point) => {
-    const team = `<span style="color: ${p.series.color?.toString()};">&#11044;</span> ${p.series.name}`;
+    const team = `<span style="color: ${colorToCss(p.series.color)};">&#11044;</span> ${p.series.name}`;
     const i = p.y || 0;
 
     if (tooltipHist[i] === undefined) {

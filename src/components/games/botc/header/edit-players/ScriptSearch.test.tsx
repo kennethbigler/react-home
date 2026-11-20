@@ -45,7 +45,7 @@ describe("ScriptSearch", () => {
       />,
     );
 
-    const input = screen.getByRole("combobox") as HTMLInputElement;
+    const input = screen.getByRole<HTMLInputElement>("combobox");
     expect(input.value).toBe("Trouble Brewing");
   });
 
@@ -58,7 +58,7 @@ describe("ScriptSearch", () => {
       />,
     );
 
-    const input = screen.getByRole("combobox") as HTMLInputElement;
+    const input = screen.getByRole<HTMLInputElement>("combobox");
     expect(input.value).toBe("Sects and Violets");
   });
 
@@ -71,7 +71,7 @@ describe("ScriptSearch", () => {
       />,
     );
 
-    const input = screen.getByRole("combobox") as HTMLInputElement;
+    const input = screen.getByRole<HTMLInputElement>("combobox");
     expect(input.value).toBe("Bad Moon Rising");
   });
 
@@ -84,7 +84,7 @@ describe("ScriptSearch", () => {
       />,
     );
 
-    const input = screen.getByRole("combobox") as HTMLInputElement;
+    const input = screen.getByRole<HTMLInputElement>("combobox");
     expect(input.value).toBe("Other (All Roles)");
   });
 
@@ -103,7 +103,7 @@ describe("ScriptSearch", () => {
       />,
     );
 
-    const input = screen.getByRole("combobox") as HTMLInputElement;
+    const input = screen.getByRole<HTMLInputElement>("combobox");
     expect(input.value).toContain("The Spy Who Pinged Me");
   });
 
@@ -134,7 +134,7 @@ describe("ScriptSearch", () => {
     });
 
     // Input still shows the correct base label after options load
-    const input = screen.getByRole("combobox") as HTMLInputElement;
+    const input = screen.getByRole<HTMLInputElement>("combobox");
     expect(input.value).toBe("Trouble Brewing");
   });
 
@@ -276,7 +276,7 @@ describe("ScriptSearch", () => {
     // Open the dropdown — MUI calls isOptionEqualToValue for each option to determine
     // which one should be highlighted/selected. Community options are now in the list.
     const input = screen.getByRole("combobox");
-    await act(async () => {
+    act(() => {
       fireEvent.click(input);
       fireEvent.keyDown(input, { key: "ArrowDown" });
     });
@@ -303,7 +303,7 @@ describe("ScriptSearch", () => {
     );
 
     await waitFor(() => {
-      const input = screen.getByRole("combobox") as HTMLInputElement;
+      const input = screen.getByRole<HTMLInputElement>("combobox");
       expect(input.value).toContain("Another Script");
       expect(input.value).toContain("AnotherAuthor");
     });

@@ -9,11 +9,7 @@ import { Chart, Credits, Series, Title, Tooltip } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import Highcharts from "@/components/common/highcharts/coreHighcharts";
 import themeAtom from "@/jotai/theme-atom";
-import {
-  formatRoleList,
-  getLieSeries,
-  type LieSeriesPoint,
-} from "./botcHelpers";
+import { formatRoleList, getLieSeries } from "./botcHelpers";
 import type { ActiveScript } from "@/jotai/botc-atom";
 import { MISINFO, getRoleBySlug } from "@/constants/botc-slug-map";
 import { getScriptDemonSlugs } from "@/utils/botc-script-utils";
@@ -104,7 +100,7 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
       component="section"
       aria-label="Lie distribution"
     >
-      {showDemonSelection && (
+      {showDemonSelection ? (
         <Grid
           size={{ xs: 12, sm: 12, md: 6 }}
           sx={{
@@ -143,7 +139,7 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
             })}
           </ButtonGroup>
         </Grid>
-      )}
+      ) : null}
       <Grid size={{ xs: 12, sm: 12, md: showDemonSelection ? 6 : 12 }}>
         <figure style={{ margin: 0, width: "100%" }}>
           <Typography variant="h5" component="h2" align="center" sx={{ color }}>
@@ -154,11 +150,7 @@ const LiePie = ({ numPlayers, numTravelers, script }: LiePieProps) => {
             <Credits enabled={false} />
             <Tooltip useHTML={true} formatter={lieTooltipFormatter} />
             <Title style={{ color }}>Who is lying?</Title>
-            <Series
-              type="pie"
-              options={{ name: "⛽️🔥❓" }}
-              data={pieData as LieSeriesPoint[]}
-            />
+            <Series type="pie" options={{ name: "⛽️🔥❓" }} data={pieData} />
           </Chart>
         </figure>
       </Grid>

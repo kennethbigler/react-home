@@ -63,7 +63,7 @@ describe("components | RootRoutes", () => {
   it(
     "scrolls to the top when navigating between pages",
     async () => {
-      const scrollTo = vi.mocked(window.scrollTo);
+      const scrollTo = vi.spyOn(window, "scrollTo");
 
       renderAt("/");
 

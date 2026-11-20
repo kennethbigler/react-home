@@ -1,20 +1,32 @@
 import { act, type CSSProperties, type ReactNode } from "react";
 import type Highcharts from "highcharts/highcharts.src";
 
-const chartTestState = vi.hoisted(() => ({
-  chartOptions: {} as Highcharts.Options,
-  series: [] as Array<{
+type ChartTestState = {
+  chartOptions: Highcharts.Options;
+  series: Array<{
     type?: string;
     name?: string;
     data?: unknown;
     nodes?: unknown;
-  }>,
-  tooltipFollowTouchMove: undefined as boolean | undefined,
-  tooltipFormatter: null as Highcharts.TooltipFormatterCallbackFunction | null,
-  pointClickHandler: null as Highcharts.PointClickCallbackFunction | null,
-  sankeyPointClickHandler: null as Highcharts.PointClickCallbackFunction | null,
-  yAxes: [] as Array<Record<string, unknown>>,
-}));
+  }>;
+  tooltipFollowTouchMove: boolean | undefined;
+  tooltipFormatter: Highcharts.TooltipFormatterCallbackFunction | null;
+  pointClickHandler: Highcharts.PointClickCallbackFunction | null;
+  sankeyPointClickHandler: Highcharts.PointClickCallbackFunction | null;
+  yAxes: Array<Record<string, unknown>>;
+};
+
+const chartTestState = vi.hoisted(
+  (): ChartTestState => ({
+    chartOptions: {},
+    series: [],
+    tooltipFollowTouchMove: undefined,
+    tooltipFormatter: null,
+    pointClickHandler: null,
+    sankeyPointClickHandler: null,
+    yAxes: [],
+  }),
+);
 
 export const resetCapturedChartConfig = () => {
   chartTestState.chartOptions = {};

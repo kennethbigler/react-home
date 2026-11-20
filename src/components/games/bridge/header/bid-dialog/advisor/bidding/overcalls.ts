@@ -1776,8 +1776,8 @@ export function getNegativeDouble(
     (m) =>
       !openerBid.includes(suitSymbol(m)) &&
       !overcall.includes(suitSymbol(m)) &&
-      (hand[m] as number) >= 4 &&
-      (hand[m] as number) <= 4,
+      hand[m] >= 4 &&
+      hand[m] <= 4,
   );
   for (const s of naturalCandidates) {
     const natBid = BID_ORDER.find(
@@ -1917,7 +1917,7 @@ export function getNegativeDouble(
     };
   }
 
-  let shownSuits = "";
+  let shownSuits: string;
   if (heartsUnbid && spadesUnbid) {
     shownSuits = "4+ hearts AND 4+ spades (both majors at 1-level)";
   } else if (heartsUnbid) {

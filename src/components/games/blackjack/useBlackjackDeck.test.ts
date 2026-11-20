@@ -29,9 +29,9 @@ describe("games | blackjack | useBlackjackDeck", () => {
     expect(dealt).toHaveLength(3);
     dealt.forEach((card) => {
       expect(card).toMatchObject({
-        name: expect.any(String),
-        suit: expect.any(String),
-        weight: expect.any(Number),
+        name: expect.any(String) as string,
+        suit: expect.any(String) as string,
+        weight: expect.any(Number) as number,
       });
     });
   });

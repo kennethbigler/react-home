@@ -40,12 +40,12 @@ const ScoreTable = ({ initials, data }: ScoreTableProps) => (
           <TableCell>
             {getScoreText(s.score1, s.score2)}
             {s.bags1}
-            {s.mod1 && ` (${s.mod1})`}
+            {s.mod1 ? ` (${s.mod1})` : null}
           </TableCell>
           <TableCell>
             {getScoreText(s.score2, s.score1)}
             {s.bags2}
-            {s.mod2 && ` (${s.mod2})`}
+            {s.mod2 ? ` (${s.mod2})` : null}
           </TableCell>
         </TableRow>
       ))}

@@ -21,15 +21,15 @@ const PlayerAdjControls = ({ i, count }: PlayerAdjControlsProps) => {
     <ButtonGroup aria-label="move player" orientation="vertical" variant="text">
       <Button aria-label="up" size="small" onClick={updateOrder(i, true)}>
         {i >= 3 && !hasMid && <ArrowUp />}
-        {(i === 1 || i === 2 || hasMid) && <ArrowLeft />}
+        {i === 1 || i === 2 || hasMid ? <ArrowLeft /> : null}
         {i === 0 && <ArrowRight />}
       </Button>
       <Button aria-label="down" size="small" onClick={updateOrder(i, false)}>
         {(i === 0 || (i >= 2 && i < last - (isFull ? 2 : 1))) && <ArrowDown />}
         {i === last && <ArrowLeft />}
-        {(i === 1 || i === last - 1 || (isFull && i === last - 2)) && (
+        {i === 1 || i === last - 1 || (isFull && i === last - 2) ? (
           <ArrowRight />
-        )}
+        ) : null}
       </Button>
     </ButtonGroup>
   );

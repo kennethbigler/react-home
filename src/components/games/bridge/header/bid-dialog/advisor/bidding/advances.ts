@@ -205,11 +205,11 @@ export function getResponseToSimpleOC(
   // Gated to UNBALANCED hands (a balanced hand prefers an NT advance), and the
   // no-stopper-vs-opponent-suit case is left to the dedicated branches below.
   const oppSuitName = opponentBidSuit
-    ? opponentBid!.includes("♠")
+    ? opponentBid.includes("♠")
       ? "spades"
-      : opponentBid!.includes("♥")
+      : opponentBid.includes("♥")
         ? "hearts"
-        : opponentBid!.includes("♦")
+        : opponentBid.includes("♦")
           ? "diamonds"
           : "clubs"
     : null;
@@ -301,8 +301,8 @@ export function getResponseToSimpleOC(
   // natural.  Longest suit I can actually bid (not partner's, not opponents'):
   const myBiddableSuit = (["spades", "hearts", "diamonds", "clubs"] as const)
     .filter((s) => s !== partnerSuit && s !== oppSuitName)
-    .sort((a, b) => (hand[b] as number) - (hand[a] as number))[0];
-  const myBiddableLen = myBiddableSuit ? (hand[myBiddableSuit] as number) : 0;
+    .sort((a, b) => hand[b] - hand[a])[0];
+  const myBiddableLen = myBiddableSuit ? hand[myBiddableSuit] : 0;
   // Floor = the highest live call so far (partner's overcall and any opp bid).
   const advanceFloorIdx = Math.max(
     BID_ORDER.indexOf(partnerBid),
@@ -372,7 +372,7 @@ export function getResponseToSimpleOC(
         };
       }
       return {
-        bid: cheapestMySuit!,
+        bid: cheapestMySuit,
         category: "Bid Longest Suit (No Stopper, 9-12 pts)",
         reasoning: `With 9-12 pts and no stopper in the opponent's ${opponentBid} suit, bidding NT is not safe. ${noFitNote} Bid your longest unbid suit (${cheapestMySuit}) to show values.`,
         handAnalysis: analysis,
@@ -424,7 +424,7 @@ export function getResponseToSimpleOC(
         };
       }
       return {
-        bid: cheapestMySuit!,
+        bid: cheapestMySuit,
         category: "Bid Longest Suit (No Stopper, 13-14 pts)",
         reasoning: `With 13-14 pts and no stopper in the opponent's ${opponentBid} suit, you cannot safely bid 2NT. ${noFitNote} Bid your longest unbid suit (${cheapestMySuit}) to show your values.`,
         handAnalysis: analysis,
@@ -480,7 +480,7 @@ export function getResponseToSimpleOC(
       };
     }
     return {
-      bid: cheapestMySuit!,
+      bid: cheapestMySuit,
       category: "Bid Longest Suit (No Stopper, 15+ pts)",
       reasoning: `With 15+ pts and no stopper in the opponent's ${opponentBid} suit, you cannot safely bid 3NT. ${noFitNote} Bid your longest unbid suit (${cheapestMySuit}) to force game.`,
       handAnalysis: analysis,
@@ -714,7 +714,7 @@ export function getResponseToDouble(
     // needs a little more (10+, or 8+ with a 5-card suit).
     const freeCandidates = (["spades", "hearts", "diamonds", "clubs"] as const)
       .filter((s) => s !== doubledSuitName && s !== advSuitName)
-      .map((s) => ({ name: s, count: hand[s] as number }))
+      .map((s) => ({ name: s, count: hand[s] }))
       .sort((a, b) => b.count - a.count);
     const bestFree = freeCandidates[0];
     const minFreeLen = doubleWasPenalty ? 5 : 4;
@@ -892,8 +892,8 @@ export function getResponseToDouble(
       ? (hand[oppSuitRTD as keyof Hand] as number)
       : 3;
     const pullCandidates = (["spades", "hearts", "diamonds", "clubs"] as const)
-      .filter((sn) => sn !== oppSuitRTD && (hand[sn] as number) >= 5)
-      .sort((a, b) => (hand[b] as number) - (hand[a] as number));
+      .filter((sn) => sn !== oppSuitRTD && hand[sn] >= 5)
+      .sort((a, b) => hand[b] - hand[a]);
     const pullSuit = pullCandidates[0];
     const pullBid = pullSuit
       ? BID_ORDER.find((b, i) => i > oppIdx && b.endsWith(suitSymbol(pullSuit)))

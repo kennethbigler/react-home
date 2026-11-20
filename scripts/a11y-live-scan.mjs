@@ -15,7 +15,7 @@
  */
 
 import { chromium } from "playwright";
-import AxeBuilder from "@axe-core/playwright";
+import { AxeBuilder } from "@axe-core/playwright";
 
 const DEFAULT_BASE_URL = "https://www.kennethbigler.com";
 
@@ -123,7 +123,9 @@ async function main() {
     return;
   }
 
-  process.stderr.write(`\nAccessibility scan failed for ${failures.length} URL(s):\n`);
+  process.stderr.write(
+    `\nAccessibility scan failed for ${failures.length} URL(s):\n`,
+  );
 
   for (const failure of failures) {
     process.stderr.write(`\n${failure.url}\n`);
@@ -147,6 +149,8 @@ async function main() {
 }
 
 main().catch((error) => {
-  process.stderr.write(`${error instanceof Error ? error.stack : String(error)}\n`);
+  process.stderr.write(
+    `${error instanceof Error ? error.stack : String(error)}\n`,
+  );
   process.exit(1);
 });

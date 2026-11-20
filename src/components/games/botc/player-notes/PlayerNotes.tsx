@@ -63,9 +63,9 @@ const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
                   }}
                 >
                   <div className="flex-container">
-                    {showMove && (
+                    {showMove ? (
                       <PlayerAdjControls i={i} count={playerCount} />
-                    )}
+                    ) : null}
                     <CharacterSheet
                       isText={isText}
                       script={script}
@@ -78,16 +78,17 @@ const PlayerNotes = ({ isText, playerCount, script }: PlayerNotesProps) => {
                   </div>
 
                   <Typography>
-                    {player.liar && "😈"}
-                    {player.used && "❌"}
-                    {player.kill && "💀"}
-                    {player.exec && "✋"}
+                    {player.liar ? "😈" : null}
+                    {player.used ? "❌" : null}
+                    {player.kill ? "💀" : null}
+                    {player.exec ? "✋" : null}
                     {(player.liar ||
                       player.exec ||
                       player.kill ||
                       player.used) &&
-                      player.notes &&
-                      " - "}
+                    player.notes
+                      ? " - "
+                      : null}
                     {player.notes}
                   </Typography>
 

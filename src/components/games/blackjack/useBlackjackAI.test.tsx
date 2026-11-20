@@ -774,7 +774,7 @@ describe("useBlackjackAI", () => {
         result.current.handleClick(GameFunctions.NEW_GAME);
       });
 
-      await act(async () => {
+      act(() => {
         result.current.handleClick(GameFunctions.FINISH_BETTING);
       });
 
@@ -891,7 +891,7 @@ describe("useBlackjackAI", () => {
         result.current.handleClick(GameFunctions.NEW_GAME);
       });
 
-      await act(async () => {
+      act(() => {
         result.current.handleClick(GameFunctions.FINISH_BETTING);
       });
 

@@ -18,15 +18,13 @@ describe("main.tsx", () => {
   });
 
   it("should render the app without crashing", async () => {
-    // Mock ReactDOM.createRoot
+    // Mock createRoot
     const mockCreateRoot = vi.fn(() => ({
       render: vi.fn(),
     }));
 
     vi.doMock("react-dom/client", () => ({
-      default: {
-        createRoot: mockCreateRoot,
-      },
+      createRoot: mockCreateRoot,
     }));
 
     // Mock the App component
@@ -40,7 +38,7 @@ describe("main.tsx", () => {
     // Import and execute main.tsx
     await import("./main.tsx");
 
-    // Verify ReactDOM.createRoot was called with the root element
+    // Verify createRoot was called with the root element
     expect(mockCreateRoot).toHaveBeenCalledWith(
       expect.objectContaining({ id: "root" }),
     );

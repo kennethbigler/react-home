@@ -45,7 +45,7 @@ const AddBid = ({
 
   const handleBid =
     (n: number) => (bid: number, blind: boolean, train: boolean) => {
-      let newBid = { bid, blind, train };
+      let newBid: { bid: number; blind: boolean; train: boolean };
       if (blind) {
         newBid = { bid: 0, blind, train: false };
       } else if (train) {

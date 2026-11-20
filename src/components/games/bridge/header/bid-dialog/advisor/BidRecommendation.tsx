@@ -133,7 +133,7 @@ export default function BidRecommendation({
         </Typography>
       </Box>
       {/* Alternative bid */}
-      {alternativeBid && (
+      {alternativeBid ? (
         <Box
           sx={{
             mb: 2,
@@ -148,9 +148,9 @@ export default function BidRecommendation({
             size="small"
           />
         </Box>
-      )}
+      ) : null}
       {/* Note / caveat */}
-      {note && (
+      {note ? (
         <Paper
           variant="outlined"
           sx={{
@@ -165,7 +165,7 @@ export default function BidRecommendation({
             ⚠️ {note}
           </Typography>
         </Paper>
-      )}
+      ) : null}
       {/* Expected partner responses accordion */}
       {expectedResponses.length > 0 && (
         <Accordion>
@@ -200,7 +200,7 @@ export default function BidRecommendation({
                           {" "}
                           {colorSuits(resp.meaning)}
                         </Typography>
-                        {resp.yourRebid && (
+                        {resp.yourRebid ? (
                           <Typography
                             variant="caption"
                             sx={{
@@ -210,7 +210,7 @@ export default function BidRecommendation({
                           >
                             Your rebid: {colorSuits(resp.yourRebid)}
                           </Typography>
-                        )}
+                        ) : null}
                       </>
                     }
                   />

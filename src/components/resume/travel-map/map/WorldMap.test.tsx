@@ -36,7 +36,7 @@ vi.mock("@highcharts/react/Maps", () => ({
 }));
 
 describe("resume | travel-map | map | WorldMap", () => {
-  const originalFetch = window.fetch;
+  const originalFetch = window.fetch.bind(window);
 
   afterEach(() => {
     window.fetch = originalFetch;
@@ -55,7 +55,7 @@ describe("resume | travel-map | map | WorldMap", () => {
   it("renders the map after topology loads", async () => {
     window.fetch = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({ type: "Topology" }),
+      json: () => Promise.resolve({ type: "Topology" }),
     });
 
     renderWithHydratedAtoms(<WorldMap />);
@@ -87,7 +87,7 @@ describe("resume | travel-map | map | WorldMap", () => {
   it("colors unvisited countries red and labels them not visited", async () => {
     window.fetch = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({ type: "Topology" }),
+      json: () => Promise.resolve({ type: "Topology" }),
     });
 
     renderWithHydratedAtoms(<WorldMap />);
@@ -133,7 +133,7 @@ describe("resume | travel-map | map | WorldMap", () => {
   it("renders title in dark mode", async () => {
     window.fetch = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({ type: "Topology" }),
+      json: () => Promise.resolve({ type: "Topology" }),
     });
 
     renderWithHydratedAtoms(<WorldMap />, [[themeAtom, darkTheme] as const]);
