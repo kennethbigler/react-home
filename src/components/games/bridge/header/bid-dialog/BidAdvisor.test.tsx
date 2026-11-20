@@ -410,9 +410,9 @@ describe("games | bridge | BidAdvisor", () => {
   it("answering the suit-quality question keeps a valid recommendation", () => {
     render(<BidAdvisor />);
     makeWeakTwoHand();
-    const checkbox = screen.getByLabelText(
+    const checkbox = screen.getByLabelText<HTMLInputElement>(
       "Long suit is a good suit",
-    ) as HTMLInputElement;
+    );
     fireEvent.click(checkbox); // mark the suit good
     expect(screen.getByLabelText("Recommended bid")).toBeInTheDocument();
   });

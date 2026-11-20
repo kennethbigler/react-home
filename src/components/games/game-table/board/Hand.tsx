@@ -51,7 +51,9 @@ const Hand = ({
   return (
     <>
       <Typography variant="h4" style={styles}>
-        {isBlackJack && `${handWeight > 21 ? "Bust" : "Hand"}: ${handWeight}`}
+        {isBlackJack
+          ? `${handWeight > 21 ? "Bust" : "Hand"}: ${handWeight}`
+          : null}
       </Typography>
       {hand.cards.map((card, i) => {
         const dropped: boolean = cardsToDiscardSet.has(i);

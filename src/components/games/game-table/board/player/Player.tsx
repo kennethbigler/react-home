@@ -67,7 +67,7 @@ const Player = ({
       <Typography variant="h4" component="h2" style={{ ...weight }}>
         {`${player.name}: $${player.money}`}
       </Typography>
-      {showBetting && (
+      {showBetting ? (
         <IconButton
           aria-label={`Decrease ${player.name} bet`}
           onClick={decrBet}
@@ -76,9 +76,9 @@ const Player = ({
         >
           <Remove />
         </IconButton>
-      )}
+      ) : null}
       {player.bet}
-      {showBetting && (
+      {showBetting ? (
         <IconButton
           aria-label={`Increase ${player.name} bet`}
           onClick={incrBet}
@@ -87,13 +87,13 @@ const Player = ({
         >
           <Add />
         </IconButton>
-      )}
-      {isBlackJack && player.id !== 0 && (
+      ) : null}
+      {isBlackJack && player.id !== 0 ? (
         <Typography
           variant="h5"
           component="h3"
         >{`Bet: $${player.bet}`}</Typography>
-      )}
+      ) : null}
       {player.hands.map((hand, i) => {
         const isHandTurn: boolean = !!turn && turn.hand === i;
         return (

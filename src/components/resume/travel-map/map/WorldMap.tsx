@@ -4,6 +4,7 @@ import { MapsChart, MapsSeries } from "@highcharts/react/Maps";
 import { Credits, Title } from "@highcharts/react";
 import { Accessibility } from "@highcharts/react/modules/Accessibility";
 import { Typography } from "@mui/material";
+import { colorToCss } from "@/components/common/highcharts/colorToCss";
 import themeAtom from "@/jotai/theme-atom";
 import countries, { numCountries } from "@/constants/travel";
 import { blue } from "@mui/material/colors";
@@ -22,7 +23,7 @@ const formatTravelTooltip: Highcharts.TooltipFormatterCallbackFunction =
     const detail = point.isNull
       ? point.name
       : `${point.name}: ${point.flag ?? ""}`;
-    return `<span style="color:${point.color}">\u25CF</span> <span style="font-size: 0.8em"> ${status}</span><br/>${detail}`;
+    return `<span style="color:${colorToCss(point.color)}">\u25CF</span> <span style="font-size: 0.8em"> ${status}</span><br/>${detail}`;
   };
 
 const staticOptions: Highcharts.Options = {

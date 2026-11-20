@@ -68,7 +68,7 @@ const CategoryEntryDialog = ({
     setName(e.target.value);
   const handleRecommendedChange = (
     e: SelectChangeEvent<RecommendedCategoryKey>,
-  ) => setRecommended(e.target.value as RecommendedCategoryKey);
+  ) => setRecommended(e.target.value);
   const handleSubmit = () =>
     onSave({ name: formatCategoryName(name), recommended }, color);
 

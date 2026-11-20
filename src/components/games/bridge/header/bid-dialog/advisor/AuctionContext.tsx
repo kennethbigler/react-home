@@ -364,7 +364,7 @@ function BidSlot({
           ))}
         </Select>
       </FormControl>
-      {cue && (
+      {cue ? (
         <Typography
           variant="caption"
           sx={{
@@ -375,11 +375,11 @@ function BidSlot({
         >
           {cue}
         </Typography>
-      )}
+      ) : null}
       {relationship !== "me" && (
         <BidInfoIcon
           bid={currentValue}
-          relationship={relationship as Relationship}
+          relationship={relationship}
           prevHighBid={prevHighBid}
           bidderPreviousBid={bidderPreviousBid}
           bidderPartnerPreviousBid={bidderPartnerPreviousBid}
@@ -518,7 +518,7 @@ function CompletedRoundRow({
               thisRoundBefore,
               getRelatives(pos).partner,
             ) ?? "none"; // "none" = known to have no previous action
-          const tooltipTitle = getBidMeaning(bid, rel as Relationship, {
+          const tooltipTitle = getBidMeaning(bid, rel, {
             prevHighBid,
             bidderPreviousBid,
             bidderPartnerPreviousBid,
@@ -797,7 +797,7 @@ export default function AuctionContextInput({
                 label: "You",
                 seats: [myPosition, getRelatives(myPosition).partner].sort(
                   (a, b) => a - b,
-                ) as BiddingPosition[],
+                ),
               },
               {
                 side: "them" as Side,
@@ -805,7 +805,7 @@ export default function AuctionContextInput({
                 seats: [
                   getRelatives(myPosition).lho,
                   getRelatives(myPosition).rho,
-                ].sort((a, b) => a - b) as BiddingPosition[],
+                ].sort((a, b) => a - b),
               },
             ] as const
           ).map((group) => (
@@ -893,14 +893,14 @@ export default function AuctionContextInput({
         </Box>
       </Box>
       {/* ── Bidding complete banner ────────────────────────────────────── */}
-      {isComplete && (
+      {isComplete ? (
         <Alert severity="info" sx={{ mb: 2 }}>
           Bidding complete
           {finalContract
             ? ` — Final contract: ${finalContract}${doubling ? ` (${doubling})` : ""}`
             : ""}
         </Alert>
-      )}
+      ) : null}
       {/* ── Completed rounds (prior bids) ─────────────────────────────── */}
       {completedRounds.length > 0 && (
         <Box
@@ -1023,7 +1023,7 @@ export default function AuctionContextInput({
             sx={{ display: "flex", flexDirection: "column", gap: 1.5, mb: 1.5 }}
           >
             {/* My bid */}
-            {myBidVisible && (
+            {myBidVisible ? (
               <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
                 <BidSlot
                   slotLabel="My bid"
@@ -1037,7 +1037,7 @@ export default function AuctionContextInput({
                     setNextRoundBids((prev) => ({ ...prev, [myPosition]: val }))
                   }
                 />
-                {showUseRecommendation && (
+                {showUseRecommendation ? (
                   <Chip
                     label={`↩ Use recommendation: ${recommendedBid}`}
                     size="small"
@@ -1048,14 +1048,14 @@ export default function AuctionContextInput({
                     onClick={() =>
                       setNextRoundBids((prev) => ({
                         ...prev,
-                        [myPosition]: recommendedBid!,
+                        [myPosition]: recommendedBid,
                       }))
                     }
                     sx={{ alignSelf: "flex-start" }}
                   />
-                )}
+                ) : null}
               </Box>
-            )}
+            ) : null}
             {/* Positions after me */}
             {visibleAfterPositions.map((pos) => {
               const afterIdx = positionsAfter.indexOf(pos);
@@ -1143,7 +1143,7 @@ export default function AuctionContextInput({
         </Box>
       )}
       {/* ── Agreed trump suit (Blackwood / GSF) ──────────────────────── */}
-      {needsAgreedSuit && (
+      {needsAgreedSuit ? (
         <Box
           sx={{
             mb: 1.5,
@@ -1165,7 +1165,7 @@ export default function AuctionContextInput({
             </Select>
           </FormControl>
         </Box>
-      )}
+      ) : null}
     </Box>
   );
 }

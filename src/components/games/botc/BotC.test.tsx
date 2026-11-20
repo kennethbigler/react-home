@@ -161,6 +161,7 @@ describe("games | BotC — URL hydration", () => {
 
     await act(async () => {
       renderWithHydratedAtoms(<BotC />);
+      await Promise.resolve();
     });
 
     expect(screen.getAllByText("Alice").length).toBeGreaterThan(0);
@@ -180,6 +181,7 @@ describe("games | BotC — URL hydration", () => {
 
     await act(async () => {
       renderWithHydratedAtoms(<BotC />);
+      await Promise.resolve();
     });
 
     expect(replaceSpy).toHaveBeenCalledWith(
@@ -199,6 +201,7 @@ describe("games | BotC — URL hydration", () => {
 
     await act(async () => {
       renderWithHydratedAtoms(<BotC />);
+      await Promise.resolve();
     });
 
     expect(replaceSpy).not.toHaveBeenCalled();
@@ -217,6 +220,7 @@ describe("games | BotC — URL hydration", () => {
 
     await act(async () => {
       renderWithHydratedAtoms(<BotC />);
+      await Promise.resolve();
     });
 
     expect(replaceSpy).not.toHaveBeenCalled();
@@ -231,6 +235,7 @@ describe("games | BotC — URL hydration", () => {
 
     await act(async () => {
       renderWithHydratedAtoms(<BotC />);
+      await Promise.resolve();
     });
 
     expect(screen.getAllByText("Alice").length).toBeGreaterThan(0);

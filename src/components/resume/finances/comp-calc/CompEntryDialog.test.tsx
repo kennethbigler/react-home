@@ -13,7 +13,7 @@ const compEntry = {
 };
 
 describe("resume | finances | comp-calc | CompEntryDialog", () => {
-  it("submits a new comp entry with selected month and year", async () => {
+  it("submits a new comp entry with selected month and year", () => {
     const addCompEntry = vi.fn();
     const onClose = vi.fn();
 
@@ -58,7 +58,7 @@ describe("resume | finances | comp-calc | CompEntryDialog", () => {
     });
   });
 
-  it("updates an existing comp entry", async () => {
+  it("updates an existing comp entry", () => {
     const addCompEntry = vi.fn();
 
     render(

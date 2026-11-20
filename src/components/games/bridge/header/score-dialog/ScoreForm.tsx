@@ -195,7 +195,7 @@ const ScoreForm = ({
         </FormControl>
       </Grid>
 
-      {madeBid && (
+      {madeBid ? (
         <>
           <Grid size={12}>
             <Typography variant="h6">Honours</Typography>
@@ -242,7 +242,7 @@ const ScoreForm = ({
             </>
           )}
         </>
-      )}
+      ) : null}
     </Grid>
   </FormGroup>
 );

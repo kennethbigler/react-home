@@ -169,7 +169,10 @@ describe("games | bridge | AuctionContext", () => {
     fireEvent.click(within(listbox).getAllByText("1NT")[0]);
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
-        currentRound: expect.objectContaining({ 1: "1NT" }),
+        currentRound: expect.objectContaining({ 1: "1NT" }) as Record<
+          number,
+          string
+        >,
       }),
     );
   });
@@ -183,7 +186,10 @@ describe("games | bridge | AuctionContext", () => {
     fireEvent.click(within(listbox).getAllByText(byTextContent("1♥"))[0]);
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
-        currentRound: expect.objectContaining({ 1: "1♥" }),
+        currentRound: expect.objectContaining({ 1: "1♥" }) as Record<
+          number,
+          string
+        >,
       }),
     );
   });
@@ -313,10 +319,8 @@ describe("games | bridge | AuctionContext", () => {
     };
     renderAuctionContext(state, onChange);
     fireEvent.click(screen.getByRole("button", { name: /confirm round/i }));
-    const round = onChange.mock.calls[0][0].completedRounds[1] as Record<
-      number,
-      string
-    >;
+    const round = (onChange.mock.calls[0][0] as AuctionState)
+      .completedRounds[1];
     expect(round[1]).toBe("Pass");
     expect(round[2]).toBe("Pass");
     expect(round[3]).toBeUndefined();
@@ -344,10 +348,8 @@ describe("games | bridge | AuctionContext", () => {
     const listbox = screen.getByRole("listbox");
     fireEvent.click(within(listbox).getAllByText("2NT")[0]);
     fireEvent.click(screen.getByRole("button", { name: /confirm round/i }));
-    const round = onChange.mock.calls.at(-1)![0].completedRounds[0] as Record<
-      number,
-      string
-    >;
+    const round = (onChange.mock.calls.at(-1)![0] as AuctionState)
+      .completedRounds[0];
     expect(round[1]).toBe("Pass");
     expect(round[2]).toBe("Pass");
     expect(round[3]).toBe("Pass");

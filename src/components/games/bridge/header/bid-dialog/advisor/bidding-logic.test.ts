@@ -8164,10 +8164,7 @@ describe("bidding-logic | stayman-opener-rebid partner shows 2♠ after my 2♥ 
       currentRound: {},
     });
     // hcp < 16 → 2NT
-    const rec = getRecommendation(
-      mkHand(13, 2, 5, 3, 3),
-      state as AuctionContext,
-    );
+    const rec = getRecommendation(mkHand(13, 2, 5, 3, 3), state);
     expect(rec.bid).toBe("2NT");
   });
 
@@ -8180,10 +8177,7 @@ describe("bidding-logic | stayman-opener-rebid partner shows 2♠ after my 2♥ 
       ],
       currentRound: {},
     });
-    const rec = getRecommendation(
-      mkHand(16, 2, 5, 3, 3),
-      state as AuctionContext,
-    );
+    const rec = getRecommendation(mkHand(16, 2, 5, 3, 3), state);
     expect(rec.bid).toBe("3NT");
   });
 });

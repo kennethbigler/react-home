@@ -178,7 +178,7 @@ function runDeal(seed: number, nsVul: boolean, ewVul: boolean): DealResult {
 
   for (let round = 0; round < 8 && !done; round++) {
     for (let p = 1 as BiddingPosition; p <= 4; p = (p + 1) as BiddingPosition) {
-      const seat = p as BiddingPosition;
+      const seat = p;
       const dealt = hands[seat - 1];
       const weV = seat === 1 || seat === 3 ? nsVul : ewVul;
       const theyV = seat === 1 || seat === 3 ? ewVul : nsVul;

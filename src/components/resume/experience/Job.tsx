@@ -31,7 +31,7 @@ const Job = ({ job, fullWidth, count = 1 }: JobProps) => (
       title={`${job.company}${job.parent ? ` (${job.parent})` : ""}, ${job.location}`}
     >
       <Grid size={12} style={{ overflow: "auto" }}>
-        {job.src && (
+        {job.src ? (
           <img
             alt={job.alt}
             src={job.src}
@@ -39,15 +39,15 @@ const Job = ({ job, fullWidth, count = 1 }: JobProps) => (
             decoding="async"
             style={logoStyle}
           />
-        )}
+        ) : null}
         <Typography>{job.time}</Typography>
-        {job.expr && (
+        {job.expr ? (
           <>
             {groupExpr(job.expr).map((group, groupIndex) => (
               <ul key={`expr-group${groupIndex}`}>
                 {parseExprGroup(group).map((item, i) => (
                   <li key={`desc${groupIndex}-${i}`}>
-                    {item.text && <Typography>{item.text}</Typography>}
+                    {item.text ? <Typography>{item.text}</Typography> : null}
                     {item.children.length > 0 && (
                       <ul>
                         {item.children.map((child, j) => (
@@ -62,8 +62,8 @@ const Job = ({ job, fullWidth, count = 1 }: JobProps) => (
               </ul>
             ))}
           </>
-        )}
-        {job.tech && job.tech.length !== 0 && (
+        ) : null}
+        {job.tech && job.tech.length !== 0 ? (
           <>
             <hr aria-hidden />
             <Typography
@@ -75,7 +75,7 @@ const Job = ({ job, fullWidth, count = 1 }: JobProps) => (
             </Typography>
             {getCSV(job.tech)}
           </>
-        )}
+        ) : null}
       </Grid>
     </ExpandableCard>
   </Grid>

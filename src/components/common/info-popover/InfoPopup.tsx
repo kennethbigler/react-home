@@ -76,11 +76,11 @@ const InfoPopup = ({
         <DialogTitle id={titleId}>{title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
         <DialogActions>
-          {onSave && (
+          {onSave ? (
             <Button color="secondary" onClick={handleSave}>
               Save
             </Button>
-          )}
+          ) : null}
           <Button color="primary" onClick={handleClose}>
             Close
           </Button>

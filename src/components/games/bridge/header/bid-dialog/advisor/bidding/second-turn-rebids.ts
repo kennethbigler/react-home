@@ -285,7 +285,7 @@ export function getOvercallerRebid(
       tp >= 16 &&
       context.partnerBid &&
       /^[1-7][♠♥♦♣]$/.test(context.partnerBid) &&
-      context.partnerBid.slice(1) !== myFirst!.slice(1)
+      context.partnerBid.slice(1) !== myFirst.slice(1)
     ) {
       const prefSym = context.partnerBid.slice(1);
       const prefSuitName =
@@ -1535,12 +1535,12 @@ export function getResponderRebid(
       openerNewSuit &&
       pFirstLvl === 1 &&
       pLatestLvl === 2 &&
-      SUIT_RANK_RR[pLatestSuit!] > SUIT_RANK_RR[pFirstSuit!];
+      SUIT_RANK_RR[pLatestSuit] > SUIT_RANK_RR[pFirstSuit];
     const isOpenerJumpShift = (() => {
       if (!openerNewSuit || !myBid || !partnerLatest) return false;
       const floor = BID_ORDER.indexOf(myBid);
       const cheapest = BID_ORDER.find(
-        (b, i) => i > floor && b.endsWith(suitSymbol(pLatestSuit!)),
+        (b, i) => i > floor && b.endsWith(suitSymbol(pLatestSuit)),
       );
       return (
         !!cheapest &&

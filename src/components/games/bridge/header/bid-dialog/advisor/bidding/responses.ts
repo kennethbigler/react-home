@@ -911,9 +911,9 @@ export function getResponseToSuit(
   ) {
     const shortSuitSp = (["spades", "hearts", "diamonds", "clubs"] as const)
       .filter((s) => s !== partnerSuit)
-      .find((s) => (hand[s] as number) <= 1);
+      .find((s) => hand[s] <= 1);
     if (shortSuitSp) {
-      const shortLenSp = hand[shortSuitSp] as number;
+      const shortLenSp = hand[shortSuitSp];
       // A splinter is a DOUBLE JUMP: skip both the natural new-suit response
       // AND the single-jump (limit-raise-of-a-new-suit) level. Find the
       // cheapest legal bid in the short suit above partner's opening, then

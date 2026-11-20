@@ -20,7 +20,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUTPUT_PATH = join(__dirname, "../src/data/botc-scripts.json");
 const API_BASE = "https://botcscripts.com/api/scripts/";
 const MIRROR_URL = "https://botc-tools.xyz/scripts.json";
-const USER_AGENT = "react-home/5.0.0 (https://github.com/kennethbigler/react-home; +https://kennethbigler.com)";
+const USER_AGENT =
+  "react-home/5.0.0 (https://github.com/kennethbigler/react-home; +https://kennethbigler.com)";
 
 const DEFAULT_HEADERS = {
   Accept: "application/json",
@@ -138,7 +139,9 @@ async function fetchFromApi() {
     for (const page of batchResults) {
       allScripts.push(...page.results.map(parseScript));
     }
-    console.log(`  fetched up to page ${Math.min(batch + BATCH_SIZE - 1, totalPages)} / ${totalPages}`);
+    console.log(
+      `  fetched up to page ${Math.min(batch + BATCH_SIZE - 1, totalPages)} / ${totalPages}`,
+    );
   }
 
   // Sort descending by pk to match botc-tools convention
@@ -175,21 +178,31 @@ function loadCachedScripts() {
 }
 
 function keepCachedScripts(cached, reason) {
-  console.log(`✓ Keeping existing cached scripts (${cached.scripts.length} scripts, ${cached.slugs.length} slugs)`);
+  console.log(
+    `✓ Keeping existing cached scripts (${cached.scripts.length} scripts, ${cached.slugs.length} slugs)`,
+  );
   console.log(`  ${reason}`);
-  console.log("  Deploy will continue with the last successfully fetched data.");
+  console.log(
+    "  Deploy will continue with the last successfully fetched data.",
+  );
 }
 
 function saveScripts(scripts, source) {
   const output = encodeCompact(scripts);
   writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 0), "utf-8");
-  console.log(`✓ Saved ${scripts.length} scripts from ${source} to src/data/botc-scripts.json (${output.slugs.length} unique slugs)`);
+  console.log(
+    `✓ Saved ${scripts.length} scripts from ${source} to src/data/botc-scripts.json (${output.slugs.length} unique slugs)`,
+  );
 
   const swpm = scripts.find((s) => s.pk === 6506);
   if (swpm) {
-    console.log(`✓ Found "The Spy Who Pinged Me" (pk ${swpm.pk}) by ${swpm.author}`);
+    console.log(
+      `✓ Found "The Spy Who Pinged Me" (pk ${swpm.pk}) by ${swpm.author}`,
+    );
   } else {
-    console.log(`ℹ "The Spy Who Pinged Me" (pk 6506) not found — it may have a different pk on botcscripts.com`);
+    console.log(
+      `ℹ "The Spy Who Pinged Me" (pk 6506) not found — it may have a different pk on botcscripts.com`,
+    );
   }
 }
 
@@ -217,7 +230,10 @@ try {
     console.warn(`⚠ mirror unavailable: ${mirrorErr.message}`);
 
     if (cached) {
-      keepCachedScripts(cached, "Using cached copy because live sources are unavailable.");
+      keepCachedScripts(
+        cached,
+        "Using cached copy because live sources are unavailable.",
+      );
       process.exit(0);
     }
 

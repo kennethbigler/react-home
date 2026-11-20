@@ -59,14 +59,14 @@ const MurderMysteryPanel = ({
               </TableCell>
               <TableCell>{arr2br(description)}</TableCell>
             </TableRow>
-            {hint && (
+            {hint ? (
               <TableRow>
                 <TableCell component="th" scope="row">
                   Hint
                 </TableCell>
                 <TableCell>{arr2br(hint)}</TableCell>
               </TableRow>
-            )}
+            ) : null}
             <TableRow>
               <TableCell component="th" scope="row">
                 Clue

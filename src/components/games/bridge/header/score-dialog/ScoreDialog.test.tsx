@@ -587,9 +587,8 @@ describe("games | bridge | ScoreDialog", () => {
       expect(screen.getByLabelText(/4 Aces in 1 hand/i)).toBeInTheDocument();
     });
 
-    const acesInput = screen.getByLabelText(
-      /4 Aces in 1 hand/i,
-    ) as HTMLInputElement;
+    const acesInput =
+      screen.getByLabelText<HTMLInputElement>(/4 Aces in 1 hand/i);
     expect(acesInput.checked).toBe(false);
 
     fireEvent.click(acesInput);

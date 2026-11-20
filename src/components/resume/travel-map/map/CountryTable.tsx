@@ -41,7 +41,7 @@ for (let i = 0; i < len; i += 1) {
       style={{ ...cellStyles, ...separatorStyles }}
     >
       {americas[i]?.name || ""}{" "}
-      {americas[i] && <span aria-hidden>{americas[i].flag}</span>}
+      {americas[i] ? <span aria-hidden>{americas[i].flag}</span> : null}
     </TableCell>,
   );
   // add EU or AF Countries
@@ -54,9 +54,9 @@ for (let i = 0; i < len; i += 1) {
         }
       >
         {euNaf[EURatio * i + j]?.name || ""}{" "}
-        {euNaf[EURatio * i + j] && (
+        {euNaf[EURatio * i + j] ? (
           <span aria-hidden>{euNaf[EURatio * i + j].flag}</span>
-        )}
+        ) : null}
       </TableCell>,
     );
   }
@@ -64,7 +64,7 @@ for (let i = 0; i < len; i += 1) {
   row.push(
     <TableCell key={`tmc${i}-as-au`} style={cellStyles}>
       {asNau[i]?.name || ""}{" "}
-      {asNau[i] && <span aria-hidden>{asNau[i].flag}</span>}
+      {asNau[i] ? <span aria-hidden>{asNau[i].flag}</span> : null}
     </TableCell>,
   );
   // form the row

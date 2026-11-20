@@ -30,7 +30,7 @@ function wasDoubleOfStayman(
   }
   for (const p of POSITIONS) {
     if (p < myPosition && currentRound[p] !== undefined)
-      flat.push({ seat: p, call: currentRound[p]! });
+      flat.push({ seat: p, call: currentRound[p] });
   }
   let dblIdx = -1;
   for (let i = flat.length - 1; i >= 0; i--) {
@@ -316,7 +316,7 @@ function deriveSituationCore(
       }
       for (const p of POSITIONS) {
         if (p < myPosition && currentRound[p] !== undefined)
-          flat4NT.push({ seat: p, call: currentRound[p]! });
+          flat4NT.push({ seat: p, call: currentRound[p] });
       }
       let askIdx = -1;
       for (let i = flat4NT.length - 1; i >= 0; i--) {
@@ -395,7 +395,7 @@ function deriveSituationCore(
         }
         for (const p of POSITIONS) {
           if (p < myPosition && currentRound[p] !== undefined)
-            flatG.push({ seat: p, call: currentRound[p]! });
+            flatG.push({ seat: p, call: currentRound[p] });
         }
         let fourCIdx = -1;
         for (let i = flatG.length - 1; i >= 0; i--) {
@@ -666,7 +666,7 @@ function deriveSituationCore(
           }
           for (const p of POSITIONS) {
             if (p < myPosition && currentRound[p] !== undefined)
-              flatSO.push({ seat: p, call: currentRound[p]! });
+              flatSO.push({ seat: p, call: currentRound[p] });
           }
           let myNTIdxSO = -1;
           for (let i = flatSO.length - 1; i >= 0; i--) {
@@ -704,7 +704,7 @@ function deriveSituationCore(
           }
           for (const p of POSITIONS) {
             if (p < myPosition && currentRound[p] !== undefined)
-              flatNTR.push({ seat: p, call: currentRound[p]! });
+              flatNTR.push({ seat: p, call: currentRound[p] });
           }
           let myIdxNTR = -1;
           for (let i = flatNTR.length - 1; i >= 0; i--) {
@@ -792,7 +792,7 @@ function deriveSituationCore(
         }
         for (const p of POSITIONS) {
           if (p < myPosition && currentRound[p] !== undefined)
-            flatSO.push({ seat: p, call: currentRound[p]! });
+            flatSO.push({ seat: p, call: currentRound[p] });
         }
         const lastRealIdxSO = (seat: BiddingPosition) => {
           for (let i = flatSO.length - 1; i >= 0; i--) {
@@ -873,7 +873,7 @@ function deriveSituationCore(
         }
         for (const p of POSITIONS) {
           if (p < myPosition && currentRound[p] !== undefined)
-            flatND.push({ seat: p, call: currentRound[p]! });
+            flatND.push({ seat: p, call: currentRound[p] });
         }
         for (let i = flatND.length - 1; i >= 0; i--) {
           if (flatND[i].seat === partner && flatND[i].call === "Double") {
@@ -968,7 +968,7 @@ function deriveSituationCore(
         }
         for (const p of POSITIONS) {
           if (p < myPosition && currentRound[p] !== undefined)
-            flatInv.push({ seat: p, call: currentRound[p]! });
+            flatInv.push({ seat: p, call: currentRound[p] });
         }
         let pIdxInv = -1;
         for (let i = flatInv.length - 1; i >= 0; i--) {
@@ -1184,7 +1184,7 @@ function deriveSituationCore(
           }
           for (const p of POSITIONS) {
             if (p < myPosition && currentRound[p] !== undefined)
-              flatOCR.push({ seat: p, call: currentRound[p]! });
+              flatOCR.push({ seat: p, call: currentRound[p] });
           }
           const lastRealOCR = (seat: BiddingPosition) => {
             for (let i = flatOCR.length - 1; i >= 0; i--) {
@@ -1240,7 +1240,7 @@ function deriveSituationCore(
           }
           for (const p of POSITIONS) {
             if (p < myPosition && currentRound[p] !== undefined)
-              flatRR.push({ seat: p, call: currentRound[p]! });
+              flatRR.push({ seat: p, call: currentRound[p] });
           }
           const lastRealRR = (seat: BiddingPosition) => {
             for (let i = flatRR.length - 1; i >= 0; i--) {
@@ -1311,7 +1311,7 @@ function deriveSituationCore(
         // An opponent DOUBLE after my last bid keeps the auction alive — I may
         // pass, redouble, or run.  Flag it so the handler tells that story
         // instead of "auction over".
-        const myLastCallPos = flatCalls.lastIndexOf(myLastBid!);
+        const myLastCallPos = flatCalls.lastIndexOf(myLastBid);
         const doubledSince =
           myLastCallPos >= 0 &&
           flatCalls.slice(myLastCallPos + 1).includes("Double");
@@ -1364,7 +1364,7 @@ function deriveSituationCore(
     }
     for (const p of POSITIONS) {
       if (p < myPosition && currentRound[p] !== undefined)
-        flatRAS.push({ seat: p, call: currentRound[p]! });
+        flatRAS.push({ seat: p, call: currentRound[p] });
     }
     const lastRealIdxRAS = (seat: BiddingPosition) => {
       for (let i = flatRAS.length - 1; i >= 0; i--) {
@@ -1493,10 +1493,10 @@ function deriveSituationCore(
   // If no completed rounds, check current round using bid levels
   if (!auctionOpenedByPartner && !auctionOpenedByOpponent) {
     const partnerBidIdx = isRealBid(partnerBid)
-      ? BID_ORDER.indexOf(partnerBid!)
+      ? BID_ORDER.indexOf(partnerBid)
       : 999;
-    const rhoBidIdx = isRealBid(rhoBid) ? BID_ORDER.indexOf(rhoBid!) : 999;
-    const lhoBidIdx = isRealBid(lhoBid) ? BID_ORDER.indexOf(lhoBid!) : 999;
+    const rhoBidIdx = isRealBid(rhoBid) ? BID_ORDER.indexOf(rhoBid) : 999;
+    const lhoBidIdx = isRealBid(lhoBid) ? BID_ORDER.indexOf(lhoBid) : 999;
 
     if (
       isRealBid(partnerBid) &&
@@ -1667,7 +1667,7 @@ function deriveSituationCore(
           }
           for (const p of POSITIONS) {
             if (p < myPosition && currentRound[p] !== undefined)
-              flatAOD.push({ seat: p, call: currentRound[p]! });
+              flatAOD.push({ seat: p, call: currentRound[p] });
           }
           for (let i = flatAOD.length - 1; i >= 0; i--) {
             if (
@@ -1875,7 +1875,7 @@ function deriveSituationCore(
         }
         for (const p of POSITIONS) {
           if (p < myPosition && currentRound[p] !== undefined)
-            flatRTD.push({ seat: p, call: currentRound[p]! });
+            flatRTD.push({ seat: p, call: currentRound[p] });
         }
         for (let i = flatRTD.length - 1; i >= 0; i--) {
           if (flatRTD[i].seat === partner && flatRTD[i].call === "Double") {
@@ -1917,7 +1917,7 @@ function deriveSituationCore(
         }
         for (const p of POSITIONS) {
           if (p < myPosition && currentRound[p] !== undefined)
-            flatCapp.push({ seat: p, call: currentRound[p]! });
+            flatCapp.push({ seat: p, call: currentRound[p] });
         }
         let partnerIdxCapp = -1;
         for (let i = flatCapp.length - 1; i >= 0; i--) {
@@ -1946,7 +1946,7 @@ function deriveSituationCore(
       }
       for (const p of POSITIONS) {
         if (p < myPosition && currentRound[p] !== undefined)
-          flatCappInt.push({ seat: p, call: currentRound[p]! });
+          flatCappInt.push({ seat: p, call: currentRound[p] });
       }
       const cappIdx = flatCappInt.map((e) => e.call).lastIndexOf(partnerBid);
       let interferenceOverCapp: string | undefined;
@@ -2017,7 +2017,7 @@ function deriveSituationCore(
       }
       for (const p of POSITIONS) {
         if (p < myPosition && currentRound[p] !== undefined)
-          flatMC.push({ seat: p, call: currentRound[p]! });
+          flatMC.push({ seat: p, call: currentRound[p] });
       }
       let partnerIdxMC = -1;
       for (let i = flatMC.length - 1; i >= 0; i--) {
@@ -2075,7 +2075,7 @@ function deriveSituationCore(
       }
       for (const p of POSITIONS) {
         if (p < myPosition && currentRound[p] !== undefined)
-          flatForBal.push({ seat: p, call: currentRound[p]! });
+          flatForBal.push({ seat: p, call: currentRound[p] });
       }
       const ntIdx = flatForBal.map((e) => e.call).lastIndexOf("1NT");
       const partnerBalanced =
@@ -2222,7 +2222,7 @@ export function deriveSituation(
   }
   for (const p of POSITIONS) {
     if (p < myPosition && currentRound[p] !== undefined)
-      flatAll.push(currentRound[p]!);
+      flatAll.push(currentRound[p]);
   }
   const lastNonPassCall = [...flatAll].reverse().find((b) => b !== "Pass");
 

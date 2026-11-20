@@ -120,7 +120,7 @@ export default function HandInput({
                 { value: 20 },
                 { value: 37 },
               ]}
-              onChange={(_, v) => handleHcpChange(v as number)}
+              onChange={(_, v) => handleHcpChange(v)}
               data-testid="hcp-slider"
             />
           </Grid>
@@ -220,7 +220,7 @@ export default function HandInput({
             );
           })}
         </Grid>
-        {cardCountError && (
+        {cardCountError ? (
           <Typography
             color="error"
             variant="caption"
@@ -229,10 +229,10 @@ export default function HandInput({
           >
             {cardCountError}
           </Typography>
-        )}
+        ) : null}
       </Box>
       {/* Blackwood: Aces input (shown only when partner bids 4NT) */}
-      {showAcesInput && (
+      {showAcesInput ? (
         <Box
           sx={{
             mb: 2,
@@ -266,9 +266,9 @@ export default function HandInput({
             }}
           />
         </Box>
-      )}
+      ) : null}
       {/* Blackwood: Kings input (shown only when partner bids 5NT kings ask) */}
-      {showKingsInput && (
+      {showKingsInput ? (
         <Box
           sx={{
             mb: 2,
@@ -302,9 +302,9 @@ export default function HandInput({
             }}
           />
         </Box>
-      )}
+      ) : null}
       {/* Stopper question (shown when opponent has bid a suit) */}
-      {showStopperInput && (
+      {showStopperInput ? (
         <Box
           sx={{
             mb: 2,
@@ -365,9 +365,9 @@ export default function HandInput({
             }
           />
         </Box>
-      )}
+      ) : null}
       {/* Suit-quality question (shown for a weak-2 / preempt opening) */}
-      {showSuitQualityInput && (
+      {showSuitQualityInput ? (
         <Box
           sx={{
             mb: 2,
@@ -427,7 +427,7 @@ export default function HandInput({
             }
           />
         </Box>
-      )}
+      ) : null}
       {/* TP display */}
       <Box
         sx={{

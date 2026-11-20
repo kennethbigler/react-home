@@ -1,6 +1,7 @@
 import { type ReactNode, useId, useState } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
+import { toSxArray } from "@/components/common/sx";
 import TabPanel from "./TabPanel";
 import a11yTabProps from "./a11y-tab-props";
 import slugifyTabPrefix from "./slugify-tab-prefix";
@@ -55,11 +56,7 @@ const TabGroup = ({
                 pr: 1,
               }
             : {},
-          ...(tabBarSx
-            ? Array.isArray(tabBarSx)
-              ? tabBarSx
-              : [tabBarSx]
-            : []),
+          ...(tabBarSx ? toSxArray(tabBarSx) : []),
         ]}
       >
         <Tabs value={value} onChange={handleChange} aria-label={label}>

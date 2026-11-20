@@ -734,7 +734,7 @@ export function getAfterOwnDouble(
       opponentBid && isRealBid(opponentBid)
         ? BID_ORDER.indexOf(opponentBid)
         : -1,
-      partnerResponded ? BID_ORDER.indexOf(partnerBid!) : -1,
+      partnerResponded ? BID_ORDER.indexOf(partnerBid) : -1,
     );
     const ntBid = BID_ORDER.find((b, i) => i > floorIdx && b.endsWith("NT"));
     const ntLevel = ntBid ? parseInt(ntBid[0]) : 99;
@@ -766,7 +766,7 @@ export function getAfterOwnDouble(
     partnerSuitName &&
     partnerOpeningBid &&
     !partnerOpeningBid.endsWith("NT") &&
-    partnerBid!.slice(1) === partnerOpeningBid.slice(1) &&
+    partnerBid.slice(1) === partnerOpeningBid.slice(1) &&
     partnerBid !== partnerOpeningBid
   ) {
     const ownSuitLen = hand[partnerSuitName as keyof Hand] as number;
@@ -845,7 +845,7 @@ export function getAfterOwnDouble(
     // Only measure jump-ness when partner's answer is still the highest call
     // (if the opponents bid again afterwards, stay conservative).
     const answerAboveOpp =
-      BID_ORDER.indexOf(partnerBid!) > oppFloorAOD || oppFloorAOD === -1;
+      BID_ORDER.indexOf(partnerBid) > oppFloorAOD || oppFloorAOD === -1;
     const cheapestAnswer = BID_ORDER.find(
       (b, i) => i > oppFloorAOD && b.endsWith(suitSymbol(partnerSuitName)),
     );

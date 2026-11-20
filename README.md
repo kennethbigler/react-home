@@ -48,7 +48,7 @@ The dev server runs at [http://localhost:5173](http://localhost:5173) by default
 | `npm run lhci` | Run Lighthouse CI against the production build |
 | `npm run analyze` | Analyze bundle size |
 
-Formatting and style checks run through ESLint via [GTS](https://github.com/google/gts) (`eslint-plugin-prettier`), not a standalone Prettier CLI.
+Formatting and style checks run through ESLint (`eslint-plugin-prettier`), not a standalone Prettier CLI.
 
 Production builds target `es2020` browsers (see `build.target` in `vite.config.ts`).
 
@@ -78,7 +78,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for additional guidelines.
 * [React Router](https://reactrouter.com/)
 * [Highcharts](https://www.highcharts.com/)
 * [Jōtai](https://jotai.org/)
-* [ESLint](https://eslint.org/) / [GTS](https://github.com/google/gts)
+* [ESLint](https://eslint.org/) / [Prettier](https://prettier.io/)
 * [A11y MCP](https://github.com/ronantakizawa/a11ymcp)
 
 ## Deployments

@@ -290,18 +290,18 @@ export function getRebidAfterSuit(
     );
     const cheapestSecondSuitRB = iShowedSecondSuitRB
       ? BID_ORDER.find(
-          (b, i) => i > rebidFloorRB && b.endsWith(myLatestBid!.slice(1)),
+          (b, i) => i > rebidFloorRB && b.endsWith(myLatestBid.slice(1)),
         )
       : undefined;
     const iJumpShiftedRB =
       iShowedSecondSuitRB &&
       !!cheapestSecondSuitRB &&
-      BID_ORDER.indexOf(myLatestBid!) > BID_ORDER.indexOf(cheapestSecondSuitRB);
+      BID_ORDER.indexOf(myLatestBid) > BID_ORDER.indexOf(cheapestSecondSuitRB);
     const iReversedRB =
       iShowedSecondSuitRB &&
       !iJumpShiftedRB &&
-      /^2[♠♥♦♣]$/.test(myLatestBid!) &&
-      "♣♦♥♠".indexOf(myLatestBid!.slice(1)) >
+      /^2[♠♥♦♣]$/.test(myLatestBid) &&
+      "♣♦♥♠".indexOf(myLatestBid.slice(1)) >
         "♣♦♥♠".indexOf(myOpeningBid.slice(1));
     const partnerReboundOwnSuit =
       !!partnerFirstBid &&
@@ -315,11 +315,11 @@ export function getRebidAfterSuit(
       (!myLatestBid ||
         BID_ORDER.find(
           (b, i) =>
-            i > BID_ORDER.indexOf(myLatestBid!) &&
+            i > BID_ORDER.indexOf(myLatestBid) &&
             b.endsWith(partnerResponse.slice(1)),
         ) === partnerResponse);
     if (iReversedRB && partnerReboundOwnSuit) {
-      const pSuitNameRB = suitFromBid(partnerResponse!) ?? "clubs";
+      const pSuitNameRB = suitFromBid(partnerResponse) ?? "clubs";
       const myFitRB = hand[pSuitNameRB as keyof Hand] as number;
       const pIsMajorRB = pSuitNameRB === "hearts" || pSuitNameRB === "spades";
       if (myFitRB >= 3 && supportTP >= 20 && pIsMajorRB) {
@@ -351,11 +351,11 @@ export function getRebidAfterSuit(
     // raise a major with 3-card support, otherwise 3NT, otherwise the cheapest
     // game available.
     if (iJumpShiftedRB && partnerReboundOwnSuit) {
-      const pSuitNameJS = suitFromBid(partnerResponse!) ?? "clubs";
+      const pSuitNameJS = suitFromBid(partnerResponse) ?? "clubs";
       const myFitJS = hand[pSuitNameJS as keyof Hand] as number;
       const pIsMajorJS = pSuitNameJS === "hearts" || pSuitNameJS === "spades";
       const jsFloorIdx = Math.max(
-        BID_ORDER.indexOf(partnerResponse!),
+        BID_ORDER.indexOf(partnerResponse),
         interferenceBid && isRealBid(interferenceBid)
           ? BID_ORDER.indexOf(interferenceBid)
           : -1,
@@ -388,10 +388,10 @@ export function getRebidAfterSuit(
       // A VOID in partner's suit argues against notrump — with 5+ cards in my
       // jump-shift suit, re-show it (natural, still game-forcing) and let
       // partner choose between my suits.
-      const jsSuitName = suitFromBid(myLatestBid!) ?? "spades";
+      const jsSuitName = suitFromBid(myLatestBid) ?? "spades";
       const jsSuitLen = hand[jsSuitName as keyof Hand] as number;
       const jsRebid = BID_ORDER.find(
-        (b, i) => i > jsFloorIdx && b.endsWith(myLatestBid!.slice(1)),
+        (b, i) => i > jsFloorIdx && b.endsWith(myLatestBid.slice(1)),
       );
       if (
         myFitJS === 0 &&
@@ -462,13 +462,13 @@ export function getRebidAfterSuit(
       !iJumpShiftedRB &&
       partnerReboundOwnSuit
     ) {
-      const pSuitNameSS = suitFromBid(partnerResponse!) ?? "spades";
+      const pSuitNameSS = suitFromBid(partnerResponse) ?? "spades";
       const myFitSS = hand[pSuitNameSS as keyof Hand] as number;
       const pIsMajorSS = pSuitNameSS === "hearts" || pSuitNameSS === "spades";
       const supportSS = calcTPWithFit(hand);
       const raiseSS = BID_ORDER.find(
         (b, i) =>
-          i > BID_ORDER.indexOf(partnerResponse!) &&
+          i > BID_ORDER.indexOf(partnerResponse) &&
           b.endsWith(suitSymbol(pSuitNameSS)),
       );
       if (
@@ -670,7 +670,7 @@ export function getRebidAfterSuit(
     // and explain the feature concept to the beginner.
     const sideFeatureSuit = (["spades", "hearts", "diamonds", "clubs"] as const)
       .filter((s) => s !== weakSuit)
-      .sort((a, b) => (hand[b] as number) - (hand[a] as number))[0];
+      .sort((a, b) => hand[b] - hand[a])[0];
 
     return {
       bid: `3${suitSymbol(sideFeatureSuit)}`,
@@ -2003,8 +2003,7 @@ export function getRebidAfterSuit(
       // LONGER than the second suit (e.g. 5+ diamonds and 4 hearts) — equal
       // length (4-4) does not qualify, since responder couldn't safely give
       // simple preference back to a suit no longer than the one just shown.
-      const reverseShapeOk =
-        !!reverseSuit && myOpenSuitLen > (hand[reverseSuit] as number);
+      const reverseShapeOk = !!reverseSuit && myOpenSuitLen > hand[reverseSuit];
       if (reverseSuit && (oneLevelAvailableRV || reverseShapeOk)) {
         const reverseBid = `2${suitSymbol(reverseSuit)}`;
         const oneLevelAvailable = oneLevelAvailableRV;
@@ -2124,7 +2123,7 @@ export function getRebidAfterSuit(
       }
       if (lowerSuit && secondSuitLegal) {
         return {
-          bid: lowerSuitBid!,
+          bid: lowerSuitBid,
           category: `Show Second Suit (${lowerSuitBid})`,
           reasoning: `With 4+ ${lowerSuit} and a ${myOpenSuitLen}-card ${myOpenSuit} opening, bid ${lowerSuitBid} to show your second suit. This is not a reverse — ${lowerSuit} ranks lower than ${myOpenSuit}, so partner can prefer ${myOpenSuit} at the 2-level. No extra strength required.`,
           handAnalysis: analysis,

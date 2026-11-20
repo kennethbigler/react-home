@@ -11,7 +11,6 @@
 import { bmr, other, snv, tb, type BotCScript } from "../constants/botc";
 import {
   type ActiveScript,
-  type BotCRole,
   BaseScript,
   type BaseScriptIndex,
 } from "../jotai/botc-atom";
@@ -28,14 +27,6 @@ const BASE_SCRIPTS: Record<BaseScriptIndex, BotCScript> = {
 const roleNameToSlug = new Map<string, string>(
   Object.entries(ROLE_CATALOG).map(([slug, { role }]) => [role.name, slug]),
 );
-
-/** Compact encoded entry as stored in botc-scripts.json */
-interface EncodedScript {
-  p: number;
-  t: string;
-  a: string;
-  c: number[];
-}
 
 /** A script option shown in the autocomplete selector */
 export interface BaseScriptOption {
@@ -91,10 +82,7 @@ export const loadAllScriptOptions = async (): Promise<ScriptOption[]> => {
   if (cachedOptions) return cachedOptions;
 
   const { default: data } = await import("../data/botc-scripts.json");
-  const { slugs, scripts } = data as {
-    slugs: string[];
-    scripts: EncodedScript[];
-  };
+  const { slugs, scripts } = data;
 
   const communityOptions: CommunityScriptOption[] = scripts.map((s) => ({
     type: "community",
@@ -188,7 +176,7 @@ export const buildScriptFromCharacters = (characters: string[]): BotCScript => {
     if (seenNames.has(dedupeKey)) continue;
     seenNames.add(dedupeKey);
 
-    (script[roleType] as BotCRole[]).push(role);
+    script[roleType].push(role);
   }
 
   return script;

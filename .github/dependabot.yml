@@ -15,9 +15,10 @@ updates:
         applies-to: version-updates
         patterns:
           - "@eslint/*"
-          - "@typescript-eslint/*"
           - eslint*
-          - gts
+          - globals
+          - prettier
+          - typescript-eslint
         update-types:
           - minor
           - patch

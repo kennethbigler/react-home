@@ -75,7 +75,7 @@ const CompActions = ({
           openStockModal={openEditStock}
         />
       </Box>
-      {openStock && (
+      {openStock ? (
         <StockDialog
           open={openStock}
           price={editStockTick ? stockEntries[editStockTick] : undefined}
@@ -84,8 +84,8 @@ const CompActions = ({
           addStockEntry={addStockEntry}
           removeStockEntry={removeStockEntry}
         />
-      )}
-      {entryDialog.open && (
+      ) : null}
+      {entryDialog.open ? (
         <CompEntryDialog
           open={entryDialog.open}
           compEntry={
@@ -95,7 +95,7 @@ const CompActions = ({
           addCompEntry={saveCompEntry}
           onDelete={isEditingEntry ? removeCompEntry : undefined}
         />
-      )}
+      ) : null}
     </>
   );
 };

@@ -27,7 +27,7 @@ const Board = ({ board, isOver, onClick, playerChoice: pc }: BoardProps) => (
         briefcase={bc}
         isOver={isOver}
         onClick={(): void => onClick(i)}
-        secondary={pc && pc.loc === bc.loc}
+        secondary={!!pc && pc.loc === bc.loc}
       />
     ))}
   </Paper>

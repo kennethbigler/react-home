@@ -30,7 +30,7 @@ const useBridgeScorer = (
   // --------------------     Winning Team     -------------------- //
   const madeBid = declarerTricks >= contractTricks + 6;
   let winner: "we" | "they";
-  let isVulnerable = false;
+  let isVulnerable: boolean;
   if (madeBid) {
     winner = isWe ? "we" : "they";
     isVulnerable = isWe ? weVulnerable : theyVulnerable;

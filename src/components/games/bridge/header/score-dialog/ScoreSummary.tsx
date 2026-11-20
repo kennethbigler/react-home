@@ -17,7 +17,7 @@ const ScoreSummary = memo(
       ) : (
         <Typography>Defender ({winner}) successfully defended!</Typography>
       )}
-      {madeBid && <Typography>Above the line: {aboveTheLine}</Typography>}
+      {madeBid ? <Typography>Above the line: {aboveTheLine}</Typography> : null}
       <Typography>Below the line: {belowTheLine}</Typography>
     </div>
   ),

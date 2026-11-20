@@ -395,21 +395,21 @@ export function getBidMeaning(
     if (/^[1-5][♠♥♦♣]$/.test(bid)) {
       // Partner doubled the opponents' NT: penalty — a suit bid pulls it,
       // showing a bust with a long suit, never a forced takeout advance.
-      if (prevHighBid!.endsWith("NT")) {
+      if (prevHighBid.endsWith("NT")) {
         return isPartner
           ? `${bid}: pulling your PENALTY double of ${prevHighBid} — a BUST (about 0-5) with a long ${bid.slice(1)} suit, scrambling to safety. With any real values they would have passed for penalties. Do not raise.`
           : `${bid} from opponent: pulling their partner's penalty double of ${prevHighBid} — a bust with a long suit, not a constructive bid.`;
       }
       // Partner doubled a HIGH bid (4-level+): that double was OPTIONAL, so a
       // suit bid here is a PULL — offense over defense, not a forced advance.
-      if (parseInt(prevHighBid![0]) >= 4) {
+      if (parseInt(prevHighBid[0]) >= 4) {
         return isPartner
           ? `${bid}: PULLING your double of ${prevHighBid} — a long suit with shortness in their suit, choosing offense over defense. Not forced: a pass would have converted your double to penalty.`
           : `${bid} from opponent: pulling their partner's double of ${prevHighBid} to a long suit — no defensive interest.`;
       }
       const minIdxD = BID_ORDER.findIndex(
         (b, i) =>
-          i > BID_ORDER.indexOf(prevHighBid!) && b.endsWith(bid.slice(1)),
+          i > BID_ORDER.indexOf(prevHighBid) && b.endsWith(bid.slice(1)),
       );
       const jumpedD = minIdxD >= 0 && BID_ORDER[minIdxD] !== bid;
       return jumpedD
@@ -431,7 +431,7 @@ export function getBidMeaning(
 
   // ── Responses: bidder's first action when PARTNER already bid ──────────────
   if (prevIsRealBid && bidderIsFirstAction && partnerKnownBid) {
-    const partnerBidIsNT = bidderPartnerPreviousBid!.endsWith("NT");
+    const partnerBidIsNT = bidderPartnerPreviousBid.endsWith("NT");
     // Partner's bid was a CUEBID of the opening suit (Michaels): 2NT asks for
     // the minor, raises of the shown major are preference.
     const partnerCuebidMichaels =
@@ -439,12 +439,12 @@ export function getBidMeaning(
       auctionOpeningBid !== undefined &&
       !auctionOpeningBid.endsWith("NT") &&
       bidderPartnerPreviousBid !== auctionOpeningBid &&
-      bidderPartnerPreviousBid!.slice(1) === auctionOpeningBid.slice(1);
+      bidderPartnerPreviousBid.slice(1) === auctionOpeningBid.slice(1);
     // 2NT over partner's WEAK TWO opening: the forcing feature-ask inquiry
     if (
       bid === "2NT" &&
       bidderPartnerPreviousBid === auctionOpeningBid &&
-      ["2♦", "2♥", "2♠"].includes(bidderPartnerPreviousBid!)
+      ["2♦", "2♥", "2♠"].includes(bidderPartnerPreviousBid)
     ) {
       return isPartner
         ? "2NT over your weak two: ARTIFICIAL forcing inquiry (feature ask) — about 15+ pts, asking you to show an outside ace/king (or rebid the suit with a minimum). If an opponent doubled in between, it is Jordan-style instead: 10-12 pts with a fit."
@@ -553,7 +553,7 @@ export function getBidMeaning(
     if (
       !partnerBidIsNT &&
       /^[1-3][♠♥♦♣]$/.test(bid) &&
-      bid.slice(1) !== bidderPartnerPreviousBid!.slice(1)
+      bid.slice(1) !== bidderPartnerPreviousBid.slice(1)
     ) {
       // CUEBID of the opponents' suit (the bid matches the last enemy bid's
       // suit, which is NOT partner's): the forcing raise in competition.
@@ -578,7 +578,7 @@ export function getBidMeaning(
       // the LAST bid before it (prevHighBid — interference may have raised the
       // floor), not merely against partner's bid.  If not cheapest, it is a
       // JUMP.
-      const jumpFloor = prevHighBid ?? bidderPartnerPreviousBid!;
+      const jumpFloor = prevHighBid ?? bidderPartnerPreviousBid;
       const cheapestNewSuit = BID_ORDER.find(
         (b, i) => i > BID_ORDER.indexOf(jumpFloor) && b.endsWith(bid.slice(1)),
       );
@@ -743,8 +743,7 @@ export function getBidMeaning(
         ? "2NT directly over their 1NT opening: CAPPELLETTI — shows both minors (5-4 or 5-5), NOT natural notrump. Pick the better minor (or ask further); says nothing about balanced strength."
         : "2NT from opponent over their partner's 1NT: Cappelletti — both minors (5-4 or 5-5), not natural notrump.";
     }
-    const overOneLevel =
-      prevHighBid![0] === "1" && !prevHighBid!.endsWith("NT");
+    const overOneLevel = prevHighBid[0] === "1" && !prevHighBid.endsWith("NT");
     if (overOneLevel) {
       return isPartner
         ? "2NT directly over a 1-level opening: the UNUSUAL 2NT — a 5-5 two-suiter in the two lowest unbid suits. Strength is UNLIMITED (5+ pts): often weak and obstructive, occasionally very strong. (Some pairs play natural 20-21 instead — confirm the agreement; the engine bids it as Unusual.)"
@@ -797,7 +796,7 @@ export function getBidMeaning(
     /^[2-4][♠♥♦♣]$/.test(bid)
   ) {
     const suitSym2 = bid.slice(1);
-    if (!prevHighBid!.endsWith("NT") && prevHighBid!.slice(1) === suitSym2) {
+    if (!prevHighBid.endsWith("NT") && prevHighBid.slice(1) === suitSym2) {
       // Name the exact two-suiter Michaels shows for the cued suit:
       //   cue a MINOR → both majors (5-5); cue a MAJOR → the OTHER major + an
       //   unspecified 5+ card minor.
@@ -815,13 +814,13 @@ export function getBidMeaning(
         ? `${bid}: a MICHAELS CUEBID of the opponents' suit — artificial, NOT natural in ${suitSym2}. It shows a two-suiter: ${michaelsShows}. Strength is either weak-competitive (~6-11 pts) or strong (16+) — rarely in between. ${advanceTip} (Later in the auction a cuebid instead shows a strong raise.)`
         : `${bid} from opponent: a Michaels cuebid — artificial two-suiter showing ${michaelsShows}, not natural.`;
     }
-    if (prevHighBid!.endsWith("NT")) {
+    if (prevHighBid.endsWith("NT")) {
       return isPartner
         ? `${bid} over the opponents' NT: natural — a good suit (usually 5-6+ cards) with a WIDE range, roughly 5-17 pts: anything from a weak obstructive hand to a strong hand that preferred its suit to a penalty double. Judge by the auction's development.`
         : `${bid} from opponent over the NT: natural good suit (5-6+ cards), wide range (roughly 5-17 pts).`;
     }
     const minIdx2 = BID_ORDER.findIndex(
-      (b, i) => i > BID_ORDER.indexOf(prevHighBid!) && b.endsWith(suitSym2),
+      (b, i) => i > BID_ORDER.indexOf(prevHighBid) && b.endsWith(suitSym2),
     );
     const isJump2 = minIdx2 >= 0 && BID_ORDER[minIdx2] !== bid;
     if (isJump2) {
@@ -1420,11 +1419,11 @@ export function getBidMeaning(
         bidderPreviousBid === undefined &&
         bid.slice(1) !== prevHighBid.slice(1);
       if (splinterFloorHi) {
-        const openSuitName = prevHighBid!.includes("♠")
+        const openSuitName = prevHighBid.includes("♠")
           ? "spades"
-          : prevHighBid!.includes("♥")
+          : prevHighBid.includes("♥")
             ? "hearts"
-            : prevHighBid!.includes("♦")
+            : prevHighBid.includes("♦")
               ? "diamonds"
               : "clubs";
         const shortSuitName = bid.includes("♣") ? "clubs" : "diamonds";
@@ -1458,16 +1457,16 @@ export function getBidMeaning(
         (() => {
           const cheapest = BID_ORDER.find(
             (b, i) =>
-              i > BID_ORDER.indexOf(prevHighBid!) && b.endsWith(bid.slice(1)),
+              i > BID_ORDER.indexOf(prevHighBid) && b.endsWith(bid.slice(1)),
           );
           return !!cheapest && parseInt(bid[0]) - parseInt(cheapest[0]) === 2;
         })();
       if (splinterFloorMaj) {
-        const openSuitName3 = prevHighBid!.includes("♠")
+        const openSuitName3 = prevHighBid.includes("♠")
           ? "spades"
-          : prevHighBid!.includes("♥")
+          : prevHighBid.includes("♥")
             ? "hearts"
-            : prevHighBid!.includes("♣")
+            : prevHighBid.includes("♣")
               ? "clubs"
               : "diamonds";
         const shortSuitName2 = bid === "4♥" ? "hearts" : "spades";
@@ -1533,7 +1532,7 @@ export function getBidMeaning(
 
       // The doubler's side opened in NOTRUMP: a double of the interference is
       // PENALTY (bidding stays natural over our own 1NT), never negative.
-      if (doublerSideOpened && dpb!.endsWith("NT")) {
+      if (doublerSideOpened && dpb.endsWith("NT")) {
         return `${who} Penalty Double: their side opened ${dpb}, so a double of the interference is PENALTY — about 8+ HCP, often with length/strength in the overcalled suit. ${isPartner ? "Pass and collect unless you are very distributional." : "Their partner is expected to pass."}`;
       }
       // The DOUBLER personally bid NOTRUMP earlier (a 1NT overcall or
