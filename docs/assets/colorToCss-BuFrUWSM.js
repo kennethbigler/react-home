@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-CNOWq4Kh.js";var t;function n(){return(n=e((()=>{t=e=>typeof e==`string`?e:`inherit`})))()}export{n,t};
